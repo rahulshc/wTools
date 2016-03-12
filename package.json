@@ -1,0 +1,29 @@
+{
+  "name" : "wtools",
+  "version" : "0.5.0",
+  "description" : "Core tools for solving generic problems in Java Script.",
+  "main" : "index.js",
+  "scripts" :
+  {
+    "test" : "echo test"
+  },
+  "repository" :
+  {
+    "type" : "git",
+    "url" : "https://github.com/Wandalen/wtools.git"
+  },
+  "keywords" :
+  [
+    "basic",
+    "core",
+    "platform",
+    "tools"
+  ],
+  "author" : "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
+  "license": "MIT",
+  "bugs" :
+  {
+    "url" : "https://github.com/Wandalen/wtools/issues"
+  },
+  "files" : [ "wTools.core.s" ]
+}
