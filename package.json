@@ -1,29 +1,41 @@
 {
-  "name" : "wtools",
+  "name" : "wTools",
   "version" : "0.5.0",
-  "description" : "Core tools for solving generic problems in Java Script.",
-  "main" : "index.js",
+  "description" : "Generic purpose base tools in Java Script.",
+  "author" : "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
+  "license" : "MIT",
+  "main" : "production/wTools.manual.s",
+  "files" :
+  [
+    "./production/wTools.manual.s"
+  ],
   "scripts" :
   {
-    "test" : "echo test"
+    "test" : "node ./staging/z.test/All.s"
   },
   "repository" :
   {
     "type" : "git",
     "url" : "https://github.com/Wandalen/wtools.git"
   },
-  "keywords" :
-  [
-    "basic",
-    "core",
-    "platform",
-    "tools"
-  ],
-  "author" : "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
-  "license": "MIT",
   "bugs" :
   {
     "url" : "https://github.com/Wandalen/wtools/issues"
   },
-  "files" : [ "wTools.core.s" ]
+  "dependencies":
+  {
+    "underscore" : ""
+  },
+  "keywords" :
+  [
+    "base",
+    "basic",
+    "core",
+    "platform",
+    "tools",
+    "wTools",
+    "wBase",
+    "generic",
+    "underscore"
+  ]
 }
