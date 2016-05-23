@@ -90,12 +90,16 @@ var execStages = function( stages,options )
   {
 
     if( err )
-    console.error( err );
+    {
+      debugger;
+      _.errLog( err );
+    }
 
     if( options.onEnd )
     wConsequence.prototype.giveWithContextAndErrorTo( options.onEnd,options.context,err,options );
 
     conEnd.giveWithError( err,null );
+
   }
 
   // next

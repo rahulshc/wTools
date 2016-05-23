@@ -1088,21 +1088,30 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
-var err = function err()
+var _err = function _err( o )
 {
   var result;
 
-  if( arguments[ 0 ] === 'not tested' || arguments[ 0 ] === 'unexpected' )
+  if( arguments.length !== 1 )
+  throw '_err : expects single argument';
+
+  if( !_.arrayLike( o.args ) )
+  throw '_err : o.args should be array like';
+
+  if( !_.numberIs( o.level ) )
+  o.level = _err.defaults.level;
+
+  if( o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
 
   /*Error.stackTraceLimit = 99;*/
 
-  for( var a = 0 ; a < arguments.length ; a++ )
+  for( var a = 0 ; a < o.args.length ; a++ )
   {
-    if( arguments[ a ] instanceof Error )
+    if( o.args[ a ] instanceof Error )
     {
-      result = arguments[ a ];
-      arguments[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'Unknown error';
+      result = o.args[ a ];
+      o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'Unknown error';
       break;
     }
   }
@@ -1110,9 +1119,9 @@ var err = function err()
   var originalMessage = '';
   var fileName,lineNumber;
 
-  for( var a = 0 ; a < arguments.length ; a++ )
+  for( var a = 0 ; a < o.args.length ; a++ )
   {
-    var argument = arguments[a];
+    var argument = o.args[ a ];
     var str;
 
     if( argument )
@@ -1120,6 +1129,7 @@ var err = function err()
       if( _.routineIs( argument.toStr ) ) str = argument.toStr();
       else if( _.strIs( argument.originalMessage ) ) str = argument.originalMessage;
       else if( _.strIs( argument.message ) ) str = argument.message;
+      else if( !_.atomicIs( argument ) && _.routineIs( argument.toString ) ) str = argument.toString();
       else str = String( argument );
     }
     else str = String( argument );
@@ -1148,26 +1158,87 @@ var err = function err()
 
   //
 
+  if( originalMessage[ 0 ] !== '\n' )
+  originalMessage = '\n' + originalMessage;
+  originalMessage = '\n' + 'caught ' + _.stack().split( '\n' )[ o.level ] + originalMessage;
+
+  //
+
   if( !result )
   {
     var e = new Error();
-    result = new Error( originalMessage + '\n' + ( e.stack || '' ) + '\n +' );
+    result = new Error( originalMessage + '\n' + ( e.stack || '' ) + '\n' );
+    result.originalStack = e.stack;
   }
   else try
   {
     result.message = '';
-    result.message = originalMessage + '\n' + ( result.stack || '' ) + '\n';
+    result.message = originalMessage + '\n' + ( result.originalStack || result.stack || '' ) + '\n';
     /*result = new result.constructor( originalMessage + '\n' + result.stack + '\n',fileName,lineNumber );*/
   }
   catch( e )
   {
-    xxx
+    throw 'err error';
     result = new result.constructor( originalMessage + '\n' + ( result.stack || '' ) + '\n' );
   }
 
   result.originalMessage = originalMessage;
 
   return result;
+}
+
+_err.defaults =
+{
+  level : 0,
+  args : null,
+}
+
+//
+
+var err = function err()
+{
+  return _err
+  ({
+    args : arguments,
+    level : 2,
+  });
+}
+
+//
+
+var errLog = function errLog()
+{
+
+  _.assert( arguments.length === 1 );
+
+  var c = _global_.logger || console;
+  var err = _err
+  ({
+    args : arguments,
+    level : 2,
+  });
+
+  debugger;
+  if( _.routineIs( err.toString ) )
+  {
+
+    var messageWas = err.message;
+    //if( err.originalMessage )
+    //err.message = err.originalMessage
+
+    c.error( err.toString() );
+
+    //err.message = messageWas;
+
+  }
+  else
+  {
+
+    c.error( err );
+
+  }
+
+  return err;
 }
 
 //
@@ -1386,15 +1457,11 @@ var stack = function()
 {
 
   var e = new Error();
-  var result = e.stack
-  .replace( /Error/gm, '' )
-  //.replace( /^[^\(]+?[\n$]/gm, '' )
-  //.replace( /^\s+at\s+/gm, '' )
-  //.replace( /^Object.<anonymous>\s*\(/gm, '{anonymous}()@' )
-  .split( '\n' )
-  ;
+  var result = e.stack;
 
-  result.splice( 1,1 );
+  result = result.split( '\n' );
+
+  result.splice( 0,2 );
   result = String( result.join( '\n' ) );
   return result;
 }
@@ -1825,6 +1892,8 @@ var htmlIs = function( src )
 
 var jqueryIs = function( src )
 {
+  if( typeof jQuery === 'undefined' )
+  return;1
   return src instanceof jQuery;
 }
 
@@ -3265,7 +3334,7 @@ var arrayIron = function()
 
 //
 
-var arrayIronToMap = function()
+var arrayIronToMapUnique = function()
 {
   var result = _.arrayIs( this ) ? this : {};
 
@@ -3291,7 +3360,7 @@ var arrayIronToMap = function()
     for( var s = 0 ; s < src.length ; s++ )
     {
       if( _.arrayIs( src[ s ] ) )
-      _.arrayIronToMap.call( result,src[ s ] );
+      _.arrayIronToMapUnique.call( result,src[ s ] );
       else if( _.objectIs( src[ s ] ) )
       extend( result, src );
       else
@@ -3678,6 +3747,29 @@ var arraySlice = function arraySlice( array,a,b )
 
   return result;
   //return _ArraySlice.call( array,a,b );
+}
+
+//
+
+var arraySplice = function arraySplice( dstArray,a,b,srcArray )
+{
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( srcArray ) );
+
+  var result;
+  var a = a !== undefined ? a : 0;
+  var b = b !== undefined ? b : dstArray.length;
+  if( b < a )
+  b = a;
+
+  var srcArray = srcArray.slice();
+  srcArray.unshift( b-a );
+  srcArray.unshift( a );
+
+  debugger;
+  dstArray.splice.apply( dstArray,srcArray );
+
+  return result;
 }
 
 //
@@ -4124,6 +4216,24 @@ var arrayRandom = function( options )
     if( options.int )
     result[ i ] = Math.floor(  result[ i ] );
   }
+
+  return result;
+}
+
+//
+
+var arrayRange = function( range )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( range ) );
+  _.assert( range.length === 2 );
+
+  var result = [];
+  var first = range[ 0 ];
+  var len = range[ 1 ] - range[ 0 ];
+
+  for( var i = 0 ; i < len ; i++ )
+  result[ i ] = first + i;
 
   return result;
 }
@@ -4922,7 +5032,7 @@ buffersDeserialize.defaults =
   onAttribute : function( attributeOptions,buffer )
   {
     attributeOptions.buffer = buffer;
-    new this.BufferAttribute( attributeOptions ).addTo( this );
+    new this.AttributeOfGeometry( attributeOptions ).addTo( this );
   },
 }
 
@@ -6010,7 +6120,10 @@ var Proto =
 
   // diagnostics
 
+  _err: _err,
   err: err,
+  errLog: errLog,
+
   assert: assert,
   assertMapNoUndefine: assertMapNoUndefine,
   assertMapOnly: assertMapOnly,
@@ -6168,7 +6281,7 @@ var Proto =
   arrayIndicesOfGreatest: arrayIndicesOfGreatest,
 
   arrayIron: arrayIron,
-  arrayIronToMap: arrayIronToMap,
+  arrayIronToMapUnique: arrayIronToMapUnique,
 
   arrayCopy: arrayCopy,
   arrayAppendMerging: arrayAppendMerging,
@@ -6192,6 +6305,7 @@ var Proto =
   arraySpliceArray: arraySpliceArray,
 
   arraySlice: arraySlice,
+  arraySplice: arraySplice,
   arrayAs: arrayAs,
 
   arrayToStr: arrayToStr,
@@ -6216,7 +6330,9 @@ var Proto =
 
   arraySupplement: arraySupplement,
   arrayExtendScreening: arrayExtendScreening,
+
   arrayRandom: arrayRandom,
+  arrayRange: arrayRange,
 
 
   // array set

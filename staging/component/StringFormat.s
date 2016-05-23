@@ -76,6 +76,7 @@ var toStrFine_gen = function()
 
     onlyRoutines : 0,
     noSubObject : 0,
+    singleElementPerLine : 0,
 
     /**/
 
@@ -564,6 +565,7 @@ var _toStrFromContainer = function( options )
       result += String( names[ n ] ) + containerOptions.colon;
       if( !r.simple )
       result += '\n' + o.tab;
+
     }
 
     result += r.text;
@@ -810,37 +812,62 @@ strSplitChunks.defaults =
 
 //
 
-var strSplit = function( options )
+var strSplit = function( o )
 {
 
-  var optionsDefault =
+  if( _.strIs( o ) )
   {
-    src : null,
-    splitter : ' ',
-    strip : 1,
+    o = { src : o };
   }
 
-  if( _.strIs( options ) )
-  {
-    options = { src : options };
-  }
-
-  _.mapSupplement( options,optionsDefault );
-  _.assertMapOnly( options,optionsDefault );
-  _.assert( _.strIs( options.src ) );
+  _.mapSupplement( o,strSplit.defaults );
+  _.assertMapOnly( o,strSplit.defaults );
   _.assert( arguments.length === 1 );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
 
-  var result = options.src.split( options.splitter );
+  var splitter = _.arrayIs( o.splitter ) ? o.splitter.slice() : [ o.splitter ];
+  var result = o.src.split( splitter[ 0 ] );
+  splitter.splice( 0,1 );
+
+  /**/
+
+  while( splitter.length )
+  {
+
+    for( var r = result.length-1 ; r >= 0 ; r-- )
+    {
+
+      var sub = result[ r ].split( splitter[ 0 ] );
+      if( sub.length > 1 )
+      _.arraySplice( result,r,r+1,sub );
+
+    }
+
+    splitter.splice( 0,1 );
+
+  }
+
+  /**/
 
   for( var r = result.length-1 ; r >= 0 ; r-- )
   {
-    if( options.strip )
+
+    if( o.strip )
     result[ r ] = _.strStrip( result[ r ] );
     if( !result[ r ] )
     result.splice( r,1 );
+
   }
 
   return result;
+}
+
+strSplit.defaults =
+{
+  src : null,
+  splitter : ' ',
+  strip : 1,
 }
 
 //
@@ -863,7 +890,7 @@ var strStripAllSpaces = function( src,sub )
 
 var strIron = function()
 {
-
+t
   var result = '';
 
   for( var a = 0 ; a < arguments.length ; a++ )
@@ -895,8 +922,13 @@ var _strParts = function( src,delimeter ){
 
   var result = [];
 
-  var index = src.indexOf( src );
-  if( index === -1 ) return result;
+  var index = src.indexOf( delimeter );
+  if( index === -1 )
+  {
+    result[ 0 ] = src;
+    return result;
+  }
+
   result[ 0 ] = src.substr( 0,index );
   result[ 1 ] = src.substr( index+delimeter.length );
 
@@ -909,18 +941,56 @@ var strParts = function( src,delimeter ){
 
   var result = [];
 
+  _.assert( _.strIs( src ) )
+  _.assert( _.strIs( delimeter ) || _.arrayIs( delimeter ) )
+
+/*
   if( _.strIs( delimeter ) )
   {
-
+*/
     result = _strParts( src,delimeter );
-
+/*
   }
   else
   {
-    _.until( src,function( e,k,i ){
+    _.until( src,function( e,k,i )
+    {
 
       result = _strParts( src,e );
       return result.length;
+
+    });
+  }
+*/
+  return result;
+}
+
+//
+
+var strReplaceAll = function( src, ins, sub )
+{
+  return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
+}
+
+  //
+
+var strReplaceNames = function( src,ins,sub )
+{
+  _.assert( _.arrayIs( ins ) );
+  _.assert( _.arrayIs( sub ) );
+  _.assert( ins.length === sub.length );
+
+  var result = src;
+  for( var i = 0 ; i < ins.length ; i++ )
+  {
+    var r = new RegExp( '(\\W|^)' + ins[ i ] + '(?=\\W|$)','gm' );
+    result = result.replace( r,function( original )
+    {
+
+      if( original[ 0 ] !== sub[ i ][ 0 ] )
+      return original[ 0 ] + sub[ i ];
+      else
+      return sub[ i ];
 
     });
   }
@@ -930,11 +1000,76 @@ var strParts = function( src,delimeter ){
 
 //
 
-var strReplaceAll = function( src, ins, sub )
+var strJoin = function()
 {
-  return src.replace( new RegExp( regexpEscape( ins ),'g' ), sub );
+  var result = [ '' ];
+  var arrayEncountered = 0;
+  var arrayLength;
+
+  var join = function( s,src )
+  {
+    /*
+    if( result[ s ] === undefined )
+    result[ s ] = '';
+    */
+    result[ s ] += src;
+  }
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+
+    _.assert( _.strIs( src ) || _.arrayIs( src ) );
+
+    if( _.arrayIs( src ) )
+    {
+
+      if( arrayEncountered === 0 )
+      for( var s = 1 ; s < src.length ; s++ )
+      result[ s ] = result[ 0 ];
+
+      _.assert( arrayLength === undefined || arrayLength === src.length, 'strJoin : all arrays should has same length' );
+
+      arrayEncountered = 1;
+      for( var s = 0 ; s < src.length ; s++ )
+      join( s,src[ s ] );
+
+    }
+    else
+    {
+
+      for( var s = 0 ; s < result.length ; s++ )
+      join( s,src );
+
+    }
+
+  }
+
+  if( arrayEncountered )
+  return result;
+  else
+  return result[ 0 ];
 }
 
+//
+/*
+var strStick = function strStick( src, prefix, postfix )
+{
+
+  if( _.arrayIs( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    src[ s ] = _.strStick( src[ s ],prefix,postfix );
+    return src;
+  }
+
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( prefix ) || prefix === undefined );
+  _.assert( _.strIs( postfix ) || postfix === undefined );
+
+  return ( prefix ? prefix : '' ) + src + ( postfix ? postfix : '' );
+}
+*/
 //
 
 var strDropPrefix = function( src,prefix )
@@ -1464,6 +1599,10 @@ var Proto =
   strParts: strParts,
 
   strReplaceAll: strReplaceAll,
+  strReplaceNames: strReplaceNames,
+
+  strJoin: strJoin,
+  /*strStick: strStick,*/
 
   strDropPrefix: strDropPrefix,
   strDropPostfix: strDropPostfix,

@@ -1,4 +1,3 @@
-_global_.wCopyable = wTools.Copyable =
 ( function(){
 
 'use strict';
@@ -40,7 +39,7 @@ var mixin = function( dst )
   /*_.assertMapOwnNone( dst,hasNot );*/
   _.accessorForbidOnce( dst,forbid );
 
-  _.assert( dst.hasOwnProperty( 'constructor' ) );
+  _.assert( dst.hasOwnProperty( 'constructor' ),'prototype of object should has own constructor' );
 
   //
 
@@ -816,9 +815,9 @@ var Self =
 _.mapExtend( Self,Proto );
 
 if( typeof module !== 'undefined' )
-{
-  module[ 'exports' ] = Self;
-}
+module[ 'exports' ] = Self;
+
+_global_.wCopyable = wTools.Copyable = Self;
 
 return Self;
 

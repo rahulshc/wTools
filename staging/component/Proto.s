@@ -234,6 +234,7 @@ var accessorForbid = function accessorForbid( object,names )
 
   // property
 
+  /*var stack = _.stack();*/
   var methods = {};
   for( var n in names )
   {
@@ -250,7 +251,8 @@ var accessorForbid = function accessorForbid( object,names )
       var messageLine = protoName + rawName + ': ' + message;
       var handler = function forbidden()
       {
-        console.error( messageLine );
+        /*console.log( 'stack :\n' + stack );*/
+        /*_.errLog( messageLine );*/
         throw _.err( messageLine );
       }
 

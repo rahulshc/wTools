@@ -6,7 +6,7 @@ if( typeof module !== 'undefined' )
 {
   require( '../wTools.s' );
   require( '../syn/Consequence.s' );
-  require( '../component/printer/Logger.s' );
+  require( '../object/printer/Logger.s' );
   require( '../component/StringFormat.s' );
 }
 
