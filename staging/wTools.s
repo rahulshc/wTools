@@ -2756,7 +2756,7 @@ var _regexpObjectOrderingExclusion = function( ordering )
  * Internal implementation. xxx
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
- * @method mapOwn
+ * @method _routineBind
  * @memberof wTools#
  */
 
@@ -3587,7 +3587,7 @@ var arrayElementsSwap = function( dst,index1,index2 )
 
 //
 
-var toArray = function( src )
+var arrayFrom = function( src )
 {
 
   if( _.arrayIs( src ) )
@@ -3783,7 +3783,8 @@ var arrayAs = function( src ) {
 
 //
 
-var arrayToStr = function( src,options ) {
+var arrayToStr = function( src,options )
+{
 
   var result = '';
   var options = options || {};
@@ -4221,6 +4222,18 @@ var arrayRandom = function( options )
 }
 
 //
+
+/**
+ * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1;
+ *
+ * @param {arrayLike} range
+ *  The first and the last+1 elements of the progression.
+ * @return {array}
+ *  An array of numbers for the requested range. May be an empty
+ *    array if adding the step would not converge toward the end value.
+ * @method arrayRange
+ * @memberof wTools#
+ */
 
 var arrayRange = function( range )
 {
@@ -5184,13 +5197,17 @@ var mapCopy = function mapCopy()
 // --
 
 /**
- * Returns first key/value pair as array.
- * @param {object} srcObject - object.
- * @method mapFirst
+ * Returns first pair key / value as array.
+ *
+ * @param {objectLike} srcObject
+ *    Object like entity of get first pair.
+ * @return {array}
+ *    Pair key / value as array if srcObject has fields otherwise undefiend.
+ * @method mapFirstPair
  * @memberof wTools#
  */
 
-var mapFirst = function mapFirst( srcObject )
+var mapFirstPair = function mapFirstPair( srcObject )
 {
 
   for( var s in srcObject )
@@ -5306,7 +5323,7 @@ var mapPairs = function( src )
 }
 
 //
-
+/*
 var mapsPluck = function( srcMaps,filterName )
 {
   var result = new srcMaps.constructor();
@@ -5323,7 +5340,7 @@ var mapsPluck = function( srcMaps,filterName )
 
   return result;
 }
-
+*/
 //
 
 var mapGroup = function( src,options )
@@ -5354,40 +5371,6 @@ var mapGroup = function( src,options )
   return result;
 }
 
-/*
-var _mapFilter = function( srcMap,filterNames )
-{
-  var result = {};
-
-  _assert( _.objectIs( srcMap ) );
-
-  _.each( srcMaps,function( e,k )
-  {
-
-    result[ k ] = e;
-
-  });
-
-}
-
-//
-
-var mapsFilter = function( srcMaps,filterNames )
-{
-  var result = new srcMaps.constructor();
-  var filterNames = _.nameFielded( filterNames );
-
-  _assert( _.arrayIs( srcMaps ) || _.objectIs( srcMaps ) );
-
-  _.each( srcMaps,function( e,k )
-  {
-
-    result[ k ] = e;
-
-  });
-
-}
-*/
 // --
 // map filter
 // --
@@ -6139,7 +6122,6 @@ var Proto =
   diagnosticWatchFields: diagnosticWatchFields,
 
 
-
   // name and symbol
 
   nameUnfielded: nameUnfielded,
@@ -6298,7 +6280,7 @@ var Proto =
   arrayRemovedAll: arrayRemovedAll,
   arrayRemoveAll: arrayRemoveAll,
 
-  toArray: toArray,
+  arrayFrom: arrayFrom,
   arrayToMap: arrayToMap,
   arrayAddOnce: arrayAddOnce,
 
@@ -6387,7 +6369,7 @@ var Proto =
 
   // map converter
 
-  mapFirst: mapFirst,
+  mapFirstPair: mapFirstPair,
 
   mapToArray: mapToArray,
   mapValWithIndex: mapValWithIndex,
@@ -6398,7 +6380,7 @@ var Proto =
   mapValues: mapValues,
   mapPairs: mapPairs,
 
-  mapsPluck: mapsPluck,
+  /* mapsPluck: mapsPluck, */
   mapGroup: mapGroup,
 
 
@@ -6433,7 +6415,6 @@ Self.constructor = function wTools(){};
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
-
 var timeNow = Self.timeNow = Self._timeNow_gen();
 
 
