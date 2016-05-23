@@ -1,34 +1,28 @@
 {
-  "name" : "wTools",
-  "version" : "0.5.9",
-  "description" : "Generic purpose tools of base level for solving problems in Java Script.",
-  "author" : "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
-  "license" : "MIT",
-  "main" : "staging/wTools.s",
-  "files" :
-  [
+  "name": "wTools",
+  "version": "0.5.10",
+  "description": "Generic purpose tools of base level for solving problems in Java Script.",
+  "author": "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
+  "license": "MIT",
+  "main": "staging/wTools.s",
+  "files": [
     "staging/wTools.s",
     "production"
   ],
-  "scripts" :
-  {
-    "test" : "node ./staging/z.test/All.s"
+  "scripts": {
+    "test": "node ./staging/z.test/All.s"
   },
-  "repository" :
-  {
-    "type" : "git",
-    "url" : "https://github.com/Wandalen/wTools.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wandalen/wTools.git"
   },
-  "bugs" :
-  {
-    "url" : "https://github.com/Wandalen/wTools/issues"
+  "bugs": {
+    "url": "https://github.com/Wandalen/wTools/issues"
   },
-  "dependencies" :
-  {
-    "underscore" : ""
+  "dependencies": {
+    "underscore": ""
   },
-  "keywords" :
-  [
+  "keywords": [
     "base",
     "basic",
     "core",
