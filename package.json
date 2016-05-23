@@ -1,14 +1,12 @@
 {
   "name" : "wTools",
-  "version" : "0.5.2",
+  "version" : "0.5.4",
   "description" : "Generic purpose tools of base level for solving problems in Java Script.",
   "author" : "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
   "license" : "MIT",
   "main" : "production/wTools.manual.s",
   "files" :
   [
-    "production",
-    "production/wTools.manual.s",
     "./production",
     "./production/wTools.manual.s"
   ],
