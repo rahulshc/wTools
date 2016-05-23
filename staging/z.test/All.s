@@ -5,7 +5,7 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( './aTesting.s' );
+  require( '../object/zTesting.debug.s' );
 
   require( './ArraySorted.test.s' );
   require( './Consequence.test.s' );

@@ -4,7 +4,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  require( './aTesting.s' );
+  require( '../object/zTesting.debug.s' );
   require( '../mixin/EventHandler.s' );
 }
 

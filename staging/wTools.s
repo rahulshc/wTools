@@ -4218,7 +4218,7 @@ var arrayRandom = function( options )
     result[ i ] = Math.floor(  result[ i ] );
   }
 
-  return result; 
+  return result;
 }
 
 //
@@ -4237,6 +4237,10 @@ var arrayRandom = function( options )
 
 var arrayRange = function( range )
 {
+
+  if( _.numberIs( range ) )
+  range = [ 0,range ];
+
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( range ) );
   _.assert( range.length === 2 );

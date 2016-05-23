@@ -4,7 +4,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  require( './aTesting.s' );
+  require( '../object/zTesting.debug.s' );
 }
 
 _global_.wTests = _global_.wTests === undefined ? {} : _global_.wTests;

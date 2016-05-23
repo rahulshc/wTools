@@ -1,3 +1,3 @@
-# wTools
+# wTesting
 
-Generic purpose tools of base level for solving problems in Java Script.
+Tool for unit testing in Java Script.

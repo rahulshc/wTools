@@ -4,7 +4,10 @@
 
 if( typeof module !== 'undefined' )
 {
+  if( require( 'fs' ).existsSync( '../wTools.s' ) )
   require( '../wTools.s' );
+  else
+  require( 'wTools' );
   require( '../syn/Consequence.s' );
   require( '../object/printer/Logger.s' );
   require( '../component/StringFormat.s' );
@@ -125,6 +128,34 @@ var contain = function( got,expected )
   return outcome;
 }
 
+//
+
+var shouldThrowError = function( routine )
+{
+  var test = this;
+  var options = {};
+  var thrown = 0;
+  var outcome;
+
+  _.assert( _.routineIs( routine ) )
+  _.assert( arguments.length === 1 );
+
+  try
+  {
+    routine.call( this );
+  }
+  catch()
+  {
+    thrown = 1;
+    outcome = test.reportOutcome( 1,true,true );
+  }
+
+  if( !thrown )
+  outcome = test.reportOutcome( 0,false,true );
+
+  return outcome;
+}
+
 // --
 // tester
 // --
@@ -182,8 +213,8 @@ var _testCollectionDelayed = function( context )
   self.queue = new wConsequence().give();
 
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( context.name ) );
-  _.assert( _.objectIs( context.tests ) );
+  _.assert( _.strIs( context.name ),'testing context should has name' );
+  _.assert( _.objectIs( context.tests ),'testing context should has map with tests' );
 
   self.queue.got( function()
   {
@@ -316,6 +347,7 @@ var Self =
   identical: identical,
   equivalent: equivalent,
   contain: contain,
+  shouldThrowError: shouldThrowError,
 
   // tester
 
@@ -340,6 +372,11 @@ var Self =
 };
 
 wTools.testing = Self;
+
+if( typeof module !== 'undefined' && module !== null )
+{
+  module[ 'exports' ] = Self;
+}
 
 //_.timeOut( 5000, _.routineBind( Self.test,Self ) );
 

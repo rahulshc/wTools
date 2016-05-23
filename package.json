@@ -17,11 +17,11 @@
   "repository" :
   {
     "type" : "git",
-    "url" : "https://github.com/Wandalen/wtools.git"
+    "url" : "https://github.com/Wandalen/wTools.git"
   },
   "bugs" :
   {
-    "url" : "https://github.com/Wandalen/wtools/issues"
+    "url" : "https://github.com/Wandalen/wTools/issues"
   },
   "dependencies" :
   {
