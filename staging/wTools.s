@@ -4218,7 +4218,7 @@ var arrayRandom = function( options )
     result[ i ] = Math.floor(  result[ i ] );
   }
 
-  return result;
+  return result; 
 }
 
 //
