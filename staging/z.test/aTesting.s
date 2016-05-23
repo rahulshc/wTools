@@ -4,10 +4,13 @@
 
 if( typeof module !== 'undefined' )
 {
-  if( require( 'fs' ).existsSync( '../wTools.s' ) )
+
+  debugger;
+  if( require( 'fs' ).existsSync( __dirname + '/../wTools.s' ) )
   require( '../wTools.s' );
   else
   require( 'wTools' );
+
   require( '../syn/Consequence.s' );
   require( '../object/printer/Logger.s' );
   require( '../component/StringFormat.s' );
@@ -144,14 +147,14 @@ var shouldThrowError = function( routine )
   {
     routine.call( this );
   }
-  catch()
+  catch( err )
   {
     thrown = 1;
-    outcome = test.reportOutcome( 1,true,true );
+    outcome = test.reportOutcome( 1,true,true,'' );
   }
 
   if( !thrown )
-  outcome = test.reportOutcome( 0,false,true );
+  outcome = test.reportOutcome( 0,false,true,'' );
 
   return outcome;
 }

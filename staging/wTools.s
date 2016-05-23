@@ -1209,8 +1209,6 @@ var err = function err()
 var errLog = function errLog()
 {
 
-  _.assert( arguments.length === 1 );
-
   var c = _global_.logger || console;
   var err = _err
   ({
