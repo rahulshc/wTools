@@ -2216,6 +2216,14 @@ var regexpModeNamesToReplace = namesCoded
   excludeAll : 'excludeAll',
 });
 
+/**
+ * Escapes regexp string
+ *
+ * @param {String} src Regexp string
+ * @returns {String} Escaped string
+ * @method regexpEscape
+ * @memberOf wTools#
+ */
 var regexpEscape = function( src )
 {
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
@@ -2223,6 +2231,14 @@ var regexpEscape = function( src )
 
 //
 
+/**
+ * Turn a *-wildcard style glob into a regular expression
+ *
+ * @param {String} glob *-wildcard style glob
+ * @returns {RegExp} RegExp that represent passed glob
+ * @method regexpForGlob
+ * @memberOf wTools#
+ */
 var regexpForGlob = function( glob )
 {
   var result = '';
@@ -2259,6 +2275,14 @@ var regexpForGlob = function( glob )
 
 //
 
+/**
+ * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
+ *
+ * @param {String[]|String} src - array of strings/regexps or single string/regexp
+ * @returns {RegExp[]} Array of regexps
+ * @method regexpMakeArray
+ * @memberOf wTools#
+ */
 var regexpMakeArray = function( src )
 {
   _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ) );
@@ -2277,6 +2301,15 @@ var regexpMakeArray = function( src )
 
 //
 
+
+/**
+ * Make regexp from string.
+ *
+ * @param {String} src - string or regexp
+ * @returns {String} Regexp
+ * @method regexpMakeExpression
+ * @memberOf wTools#
+ */
 var regexpMakeExpression = function( src )
 {
 
@@ -2292,6 +2325,19 @@ var regexpMakeExpression = function( src )
 
 //
 
+/**
+ * Checks if any regexp passed in `arr` is found in string `ins`
+ * If match was found - returns match index
+ * If no matches found and regexp array is not empty - returns false
+ * If regexp array is empty - returns some default value passed in the `none` input param
+ *
+ * @param {String[]} arr Array of regular expressions strings
+ * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
+ * @param {*} none - Default return value if array is empty
+ * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
+ * @method _regexpAny
+ * @memberOf wTools#
+ */
 var _regexpAny = function( arr,ins,none )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -2309,6 +2355,19 @@ var _regexpAny = function( arr,ins,none )
 
 //
 
+/**
+ * Checks if all regexps passed in `arr` are found in string `ins`
+ * If any of regex was not found - returns match index
+ * If regexp array is not empty and all regexps passed test - returns true
+ * If regexp array is empty - returns some default value passed in the `none` input param
+ *
+ * @param {String[]} arr Array of regular expressions strings
+ * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
+ * @param {*} none - Default return value if array is empty
+ * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
+ * @method _regexpAll
+ * @memberOf wTools#
+ */
 var _regexpAll = function( arr,ins,none )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -6420,6 +6479,7 @@ var Proto =
 }
 
 mapExtend( Self, Proto );
+  /** @class wTools */
 Self.constructor = function wTools(){};
 
 // --
