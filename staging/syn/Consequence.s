@@ -202,7 +202,7 @@ var ifNoErrorThen = function()
 
       if( !err )
       {
-        return onEnd();
+        return onEnd( err,data );
       }
       else
       {
