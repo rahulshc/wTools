@@ -392,7 +392,10 @@ var _handleGot = function()
           _.timeOut( 1, function()
           {
             if( self.mark && self.mark.indexOf( err ) !== -1 )
-            _.errLog( err );
+            {
+              console.log( 'in consequence' );
+              _.errLog( err );
+            }
           });
         }
       }

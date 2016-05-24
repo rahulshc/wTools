@@ -1,4 +1,4 @@
-(function _wTools(){
+(function _wTools_s(){
 
 'use strict';
 
@@ -6481,7 +6481,6 @@ var Proto =
 }
 
 mapExtend( Self, Proto );
-  /** @class wTools */
 Self.constructor = function wTools(){};
 
 // --
