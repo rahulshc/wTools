@@ -2217,8 +2217,10 @@ var regexpModeNamesToReplace = namesCoded
 });
 
 /**
- * Escapes regexp string
+ * Escapes special characters with a slash (\). Supports next set of characters: .*+?^=!:${}()|[]/\
  *
+ * @example
+ * wTools.regexpEscape('Hello. How are you?'); // "Hello\. How are you\?"
  * @param {String} src Regexp string
  * @returns {String} Escaped string
  * @method regexpEscape
