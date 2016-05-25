@@ -5,7 +5,6 @@
 if( typeof module !== 'undefined' )
 {
 
-  debugger;
   if( require( 'fs' ).existsSync( __dirname + '/../wTools.s' ) )
   require( '../wTools.s' );
   else

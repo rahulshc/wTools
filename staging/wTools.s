@@ -1,4 +1,4 @@
-(function _wTools(){
+(function _file_wTools_s_(){
 
 'use strict';
 
@@ -1743,6 +1743,16 @@ var strIs = function( src )
 
 //
 
+var strIsNotEmpty = function( src )
+{
+  if( !src )
+  return false;
+  var result = _ObjectToString.call( src ) === '[object String]';
+  return result;
+}
+
+//
+
 var symbolIs = function( src )
 {
   var result = _ObjectToString.call( src ) === '[object Symbol]';
@@ -2944,7 +2954,7 @@ var _routineBind = function _routineBind( options )
     if( context !== undefined && args === undefined )
     {
       if( options.seal === true )
-      throw _.err( 'not tested, not clear what convetion to use' );
+      throw _.err( 'not tested, not clear what convetion was meant. use [] as third argument or rotineJoin' );
       return _FunctionBind.call( routine, context );
     }
     else if( context !== undefined )
@@ -6310,6 +6320,7 @@ var Proto =
   mapIs: mapIs,
 
   strIs: strIs,
+  strIsNotEmpty: strIsNotEmpty,
   symbolIs: symbolIs,
 
   bufferIs: bufferIs,
@@ -6577,7 +6588,6 @@ var Proto =
 }
 
 mapExtend( Self, Proto );
-  /** @class wTools */
 Self.constructor = function wTools(){};
 
 // --

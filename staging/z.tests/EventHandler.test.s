@@ -4,7 +4,11 @@
 
 if( typeof module !== 'undefined' )
 {
+  if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
   require( '../object/Testing.debug.s' );
+  else
+  require( 'wTesting' );
+
   require( '../mixin/EventHandler.s' );
 }
 
