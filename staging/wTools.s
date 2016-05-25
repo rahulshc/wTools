@@ -2235,7 +2235,10 @@ var regexpEscape = function( src )
 
 /**
  * Turn a *-wildcard style glob into a regular expression
- *
+ * @example
+ * var glob = '* /www/*.js';
+ * wTools.regexpForGlob(glob);
+ * // /^.\/[^\/]*\/www\/[^\/]*\.js$/m
  * @param {String} glob *-wildcard style glob
  * @returns {RegExp} RegExp that represent passed glob
  * @method regexpForGlob
@@ -2280,6 +2283,8 @@ var regexpForGlob = function( glob )
 /**
  * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
  *
+ * @example
+ * wTools.regexpMakeArray(['red', 'white', /[a-z]/]); // [/red/, /white/, /[a-z]/]
  * @param {String[]|String} src - array of strings/regexps or single string/regexp
  * @returns {RegExp[]} Array of regexps
  * @method regexpMakeArray
@@ -2307,6 +2312,8 @@ var regexpMakeArray = function( src )
 /**
  * Make regexp from string.
  *
+ * @example
+ * wTools.regexpMakeExpression('Hello. How are you?'); // /Hello\. How are you\?/
  * @param {String} src - string or regexp
  * @returns {String} Regexp
  * @method regexpMakeExpression
@@ -2333,6 +2340,14 @@ var regexpMakeExpression = function( src )
  * If no matches found and regexp array is not empty - returns false
  * If regexp array is empty - returns some default value passed in the `none` input param
  *
+ * @example
+ * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+ *
+ * var regArr2 = [/yellow/, /blue/, /red/];
+ * wTools._regexpAny(regArr2, str, false); // 1
+ *
+ * var regArr3 = [/yellow/, /white/, /greey/]
+ * wTools._regexpAny(regArr3, str, false); // false
  * @param {String[]} arr Array of regular expressions strings
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
@@ -2363,6 +2378,14 @@ var _regexpAny = function( arr,ins,none )
  * If regexp array is not empty and all regexps passed test - returns true
  * If regexp array is empty - returns some default value passed in the `none` input param
  *
+ * @example
+ * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+ *
+ * var regArr1 = [/red/, /green/, /blue/];
+ * wTools._regexpAll(regArr1, str, false); // true
+ *
+ * var regArr2 = [/yellow/, /blue/, /red/];
+ * wTools._regexpAll(regArr2, str, false); // 0
  * @param {String[]} arr Array of regular expressions strings
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
@@ -2387,6 +2410,39 @@ var _regexpAll = function( arr,ins,none )
 
 //
 
+  /**
+   * Function for testing `ins` string for different regexps combination. If all condition passed in `src` object are
+   * met method return true
+   *
+   * @example
+   * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+   *     regArr1 = [/red/, /green/, /blue/],
+   *     regArr2 = [/yellow/, /blue/, /red/],
+   *     regArr3 = [/yellow/, /white/, /greey/],
+   *     options = {
+   *        includeAny : regArr2,
+   *        includeAll : regArr1,
+   *        excludeAny : regArr3,
+   *        excludeAll : regArr2
+   *     };
+   *
+   * wTools.regexpTest(options, str); // true
+   * @param {Object} src Map object in wich keys are strings each of them mean different condition for test, and values
+   * are the arrays of regexps;
+   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
+   * return false
+   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
+   * false
+   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If any of them don't match `ins` string method
+   * return false
+   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one of regexps don't match `ins` string
+   * method return false
+   * @param ins String for testing
+   * @returns {boolean} If all test passed return true;
+   * @method regexpTest
+   * @memberOf wTools#
+     */
+
 var regexpTest = function( src,ins )
 {
   var result = regexpTestReason( src,ins );
@@ -2403,6 +2459,34 @@ var regexpTest = function( src,ins )
 
 //
 
+  /**
+   * Test the `ins` string by condition specified in `src`. If all condition are met, return true
+   * @example
+   * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+   *     regArr1 = [/red/, /green/, /blue/],
+   *     regArr2 = [/yellow/, /blue/, /red/],
+   *     regArr3 = [/yellow/, /white/, /greey/],
+   *     options = {
+   *        includeAny : regArr2,
+   *        includeAll : regArr1,
+   *        excludeAny : regArr3,
+   *        excludeAll : regArr2
+   *     };
+   * regexpTestReason(options, str); // true
+   * @param {Object} src Object with options for test
+   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
+   * return the "excludeAll" string, otherwise checks next property in the `src` object
+   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
+   * it source string, otherwise checks next property in the `src` object
+   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If all of them match `ins` string method check
+   * next property in `src` object, otherwise return source of regexp that don't match.
+   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one regexp don't match method return
+   * "inlcude none from includeAny" string. Else method return true;
+   * @param {String} ins String for testing
+   * @returns {String|boolean} If all reason match, return true, otherwise return string with fail reason
+   * @method regexpTestReason
+   * @memberOf wTools#
+     */
 var regexpTestReason = function( src,ins )
 {
 
@@ -2444,6 +2528,29 @@ var regexpTestReason = function( src,ins )
 }
 
 //
+
+  /**
+   *  Generates "but" regular expression pattern. Accepts a list of words, which will be used in regexp.
+   *  The result regexp matches the strings that do not contain any of those words.
+   *
+   * @example
+   * wTools.regexpBut_('yellow', 'red', 'green'); //   /^(?:(?!yellow|red|green).)+$/
+   *
+   * var options = {
+   *    but: ['yellow', 'red', 'green'],
+   *    atLeastOnce: false
+   * };
+   * wTools.regexpBut_(options); // /^(?:(?!yellow|red|green).)*$/
+   *
+   * @param {Object} [options] options for generate regexp. If this argument ommited then default options will be used
+   * @param {String[]} [options.but=null] a list of words,from each will consist regexp
+   * @param {boolean} [options.atLeastOne=true] indicates whether search matches at least once
+   * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
+   * options object.
+   * @returns {RegExp} Result regexp
+   * @method regexpBut_
+   * @memberOf wTools#
+   */
 
 var regexpBut_ = function( options )
 {
