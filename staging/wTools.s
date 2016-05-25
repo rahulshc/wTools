@@ -2471,6 +2471,29 @@ var regexpTestReason = function( src,ins )
 
 //
 
+  /**
+   *  Generates "but" regular expression pattern. Accepts a list of words, which will be used in regexp.
+   *  The result regexp matches the strings that do not contain any of those words.
+   *
+   * @example
+   * wTools.regexpBut_('yellow', 'red', 'green'); //   /^(?:(?!yellow|red|green).)+$/
+   *
+   * var options = {
+   *    but: ['yellow', 'red', 'green'],
+   *    atLeastOnce: false
+   * };
+   * wTools.regexpBut_(options); // /^(?:(?!yellow|red|green).)*$/
+   *
+   * @param {Object} [options] options for generate regexp. If this argument ommited then default options will be used
+   * @param {String[]} [options.but=null] a list of words,from each will consist regexp
+   * @param {boolean} [options.atLeastOne=true] indicates whether search matches at least once
+   * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
+   * options object.
+   * @returns {RegExp} Result regexp
+   * @method regexpBut_
+   * @memberOf wTools#
+   */
+
 var regexpBut_ = function( options )
 {
   var args = arguments;
