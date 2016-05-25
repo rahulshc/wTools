@@ -1,4 +1,4 @@
-(function _wTools_s(){
+(function _file_wTools_s_(){
 
 'use strict';
 

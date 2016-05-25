@@ -2,6 +2,16 @@
 
 'use strict';
 
+/*
+
+to run this test
+from the project directory run
+
+npm install
+node ./staging/z.tests/Sample.test.s
+
+*/
+
 if( typeof module !== 'undefined' )
 {
 
