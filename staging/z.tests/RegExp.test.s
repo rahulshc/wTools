@@ -95,6 +95,60 @@
   };
 
 //
+
+  var regexpForGlob = function( test )
+  {
+    var globSample1 = '*.txt',
+      globSample2 = '*.*',
+      globSample3 = '??',
+      globSample4 = '**',
+      globSample5 = 'subdir/img*/th_?';
+
+    var expected1 = /^.\/[^\/]*\.txt$/m,
+      expected2 = /^.\/[^\/]*\.[^\/]*$/m,
+      expected3 = /^.\/..$/m,
+      expected4 = /^.\/.*$/m,
+      expected5 = /^.\/subdir\/img[^\/]*\/th_.$/m;
+
+    test.description = 'pattern for all .txt files in directory';
+    var got = _.regexpForGlob( globSample1 );
+    test.identical( got.source, expected1.source );
+
+    test.description = 'pattern for all files in directory';
+    var got = _.regexpForGlob( globSample2 );
+    test.identical( got.source, expected2.source );
+
+    test.description = 'pattern for exactly two characters in length file names';
+    var got = _.regexpForGlob( globSample3 );
+    test.identical( got.source, expected3.source );
+
+    test.description = 'pattern for all files and directories';
+    var got = _.regexpForGlob( globSample4 );
+    test.identical( got.source, expected4.source );
+
+    test.description = 'complex pattern';
+    var got = _.regexpForGlob( globSample5 );
+    test.identical( got.source, expected5.source );
+
+
+    if( Config.debug )
+    {
+
+      test.description = 'missing arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpForGlob();
+      });
+
+      test.description = 'argument is not string';
+      test.shouldThrowError( function()
+      {
+        _.regexpForGlob({});
+      });
+    }
+  };
+
+//
   var _regexpObjectExtend = function( test ) 
   {
     var src1 =
@@ -398,6 +452,7 @@
     tests: {
 
       regexpEscape       : regexpEscape,
+      regexpForGlob      : regexpForGlob,
       _regexpObjectExtend: _regexpObjectExtend,
       regexpObjectBroaden: regexpObjectBroaden,
       regexpObjectShrink : regexpObjectShrink
