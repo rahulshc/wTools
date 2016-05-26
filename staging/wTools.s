@@ -2,7 +2,7 @@
 
 'use strict';
 
-//
+// //
 
 var _global_ = undefined;
 
@@ -38,6 +38,11 @@ if( typeof DEBUG === 'undefined' )
 }
 
 //
+
+/**
+ * wTools - main class.
+ * @class AppViewer
+ */
 
 var Self = wTools;
 var _ = wTools;
@@ -2108,7 +2113,16 @@ var numberFrom = function( src )
 // --
 // str
 // --
-
+/**
+*Return type of src.
+  *@example
+  var str = _.strTypeOf('testing');
+*@param {*} src
+*@return {string}
+*string name of type src
+*@method strTypeOf
+*@memberof wTools#
+*/
 var strTypeOf = function( src )
 {
 
@@ -2117,12 +2131,20 @@ var strTypeOf = function( src )
 
   if( !result )
   throw _.err( 'strTypeOf:','unknown type',name );
-
   return result[ 2 ];
 }
 
 //
+/**
+*Return in one string value of all arguments.
+  *@example
+   var args = _.str('test2');
+*@return {string}
+*If no arguments return empty string
+*@method str
+*@memberof wTools#
 
+*/
 var str = function()
 {
 
@@ -2140,21 +2162,52 @@ var str = function()
 }
 
 //
-
+/**
+*Compares two strings.
+*@param {string} src - source string
+*@param {string} begin
+  *example
+   var scr = ._strBegins("abc","a");
+*@return {Boolean}
+*If param begin is match with param src first chars than return true
+*@method strBegins
+*@memberof wTools#
+*/
 var strBegins = function( src,begin )
 {
   return src.lastIndexOf( begin,0 ) === 0;
 }
 
 //
-
+/**
+*Compares two strings.
+*@param {string} src - source string
+*@param {string} end
+   *example
+    var scr = ._strEnds("abc","c");
+*@return {Boolean}
+*If param end is match with param src last chars than return true
+*@method strEnds
+*@memberof wTools#
+*/
 var strEnds = function( src,end )
 {
   return src.indexOf( end,src.length - end.length ) !== -1;
 }
 
 //
-
+/**
+*Cut begin of the string.
+*@param {string} src
+*@param {string} begin
+  *example 
+   var scr = ._strBeginRemove("abc","a");
+*@return {string}
+*If result of method strBegins - false, than return src
+*else cut begin of param src
+*@method strBeginRemove
+*@memberof wTools#
+*/
 var strBeginRemove = function( src,begin )
 {
   if( !strBegins( src,begin ) )
@@ -2163,7 +2216,18 @@ var strBeginRemove = function( src,begin )
 }
 
 //
-
+/**
+*Cut end of the string.
+*@param {string} src
+*@param {string} end
+  *example
+   var scr = ._strEndRemove("abc","c");
+*@return {string}
+*If result of method strEnds - false, than return src
+*Else cut end of param src
+*@method strEndRemove
+*@memberof wTools#
+*/
 var strEndRemove = function( src,end )
 {
   if( !strEnds( src,end ) )
@@ -2173,7 +2237,18 @@ var strEndRemove = function( src,end )
 }
 
 //
-
+/**
+*Prepend string to begin of other string.
+*@param {string} src
+*@param {string} begin
+  *example
+   var scr = ._strPrependOnce("test","test");
+*@return {string}
+*If begin match with first chars of param src, return src
+*Else add param src to param begin
+*@method strPrependOnce 
+*@memberof wTools#
+*/
 var strPrependOnce = function( src,begin )
 {
   if( src.lastIndexOf( begin,0 ) === 0 )
@@ -2183,7 +2258,18 @@ var strPrependOnce = function( src,begin )
 }
 
 //
-
+/**
+*Append string to end of other string.
+*@param {string} src
+*@param {string} end
+  *example
+   var src = ._strAppendOnce("test","test");
+*@return {string}
+*If end match with last chars of param src, return src
+*Else add param end to param src
+*@method strPrependOnce 
+*@memberof wTools#
+*/
 var strAppendOnce = function( src,end )
 {
   if( src.indexOf( end,src.length - end.length ) !== -1 )
@@ -4496,13 +4582,16 @@ var arrayRandom = function( options )
 //
 
 /**
- * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1;
+ * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1.
+ *
+ * @example
+    var range = _.arrayRange([ 1,10 ]);
  *
  * @param {arrayLike} range
- *  The first and the last+1 elements of the progression.
+    The first and the last+1 elements of the progression.
  * @return {array}
- *  An array of numbers for the requested range. May be an empty
- *    array if adding the step would not converge toward the end value.
+    An array of numbers for the requested range. May be an empty
+    array if adding the step would not converge toward the end value.
  * @method arrayRange
  * @memberof wTools#
  */

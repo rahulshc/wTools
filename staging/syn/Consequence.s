@@ -207,10 +207,6 @@ var ifNoErrorThen = function()
       else
       {
         debugger;
-/*
-        if( Config.debug )
-        _.errLog( err );
-*/
         return wConsequence().error( err );
       }
 
@@ -380,11 +376,9 @@ var _handleGot = function()
       catch( err )
       {
         debugger;
-        /*if( Config.debug )*/
-        /*_.errLog( err );*/
         var err = _.err( err );
         result = new wConsequence().error( err );
-        if( Config.debug )
+        if( Config.debug ) // something wrong with the flag in server !!!
         if( !self._taker.length )
         {
           self.mark = self.mark || [];
