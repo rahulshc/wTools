@@ -39,6 +39,11 @@ if( typeof DEBUG === 'undefined' )
 
 //
 
+/**
+ * wTools - main class.
+ * @class AppViewer
+ */
+
 var Self = wTools;
 var _ = wTools;
 
@@ -4418,13 +4423,16 @@ var arrayRandom = function( options )
 //
 
 /**
- * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1;
+ * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1.
+ *
+ * @example
+    var range = _.arrayRange([ 1,10 ]);
  *
  * @param {arrayLike} range
- *  The first and the last+1 elements of the progression.
+    The first and the last+1 elements of the progression.
  * @return {array}
- *  An array of numbers for the requested range. May be an empty
- *    array if adding the step would not converge toward the end value.
+    An array of numbers for the requested range. May be an empty
+    array if adding the step would not converge toward the end value.
  * @method arrayRange
  * @memberof wTools#
  */
