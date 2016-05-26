@@ -25,20 +25,51 @@
   var _ = wTools;
   var Self = {};
 
+// shared variables
+  var ArrOfRegx1 = [ /0/, /1/, /2/ ],
+    ArrOfRegx2 = [ /3/, /4/, /5/ ],
+    ArrOfRegx3 = [ /6/, /7/, /8/ ],
+    ArrOfRegx4 = [ /9/, /10/, /11/ ],
+    ArrOfRegx5 = [ /12/, /13/, /14/ ],
+    ArrOfRegx6 = [ /14/, /16/, /17/ ],
+    ArrOfRegx7 = [ /18/, /19/, /20/ ],
+    ArrOfRegx8 = [ /21/, /22/, /23/ ],
+
+    src1 =
+    {
+      includeAny: ArrOfRegx1,
+      includeAll: ArrOfRegx2,
+      excludeAny: ArrOfRegx3,
+      excludeAll: ArrOfRegx4
+    },
+    src2 =
+    {
+      includeAny: ArrOfRegx5,
+      includeAll: ArrOfRegx6,
+      excludeAny: ArrOfRegx7,
+      excludeAll: ArrOfRegx8
+    },
+    src3 =
+    {
+      includeAny: [ /a0/, /a1/, /a2/ ],
+      includeAll: [ /b0/, /c1/, /c2/ ],
+      excludeAny: [ /c0/, /c1/, /c2/ ],
+      excludeAll: [ /d0/, /d1/, /d2/ ]
+    },
+    wrongSrc =
+    {
+      includeAny: ArrOfRegx5,
+      includeAll: ArrOfRegx6,
+      excludeAny: ArrOfRegx7,
+      excludeAll: ArrOfRegx8,
+      excludeSome: [ /[^a]/ ]
+    };
+
 //
 
   var _regexpObjectExtend = function( test ) 
   {
-    var ArrOfRegx1 = [ /0/, /1/, /2/ ],
-      ArrOfRegx2 = [ /3/, /4/, /5/ ],
-      ArrOfRegx3 = [ /6/, /7/, /8/ ],
-      ArrOfRegx4 = [ /9/, /10/, /11/ ],
-      ArrOfRegx5 = [ /12/, /13/, /14/ ],
-      ArrOfRegx6 = [ /14/, /16/, /17/ ],
-      ArrOfRegx7 = [ /18/, /19/, /20/ ],
-      ArrOfRegx8 = [ /21/, /22/, /23/ ],
-
-      src1 = 
+    var src1 =
       [
         {
           includeAny: ArrOfRegx1,
@@ -217,46 +248,7 @@
 
   var regexpObjectBroaden = function( test )
   {
-    var ArrOfRegx1 = [ /0/, /1/, /2/ ],
-      ArrOfRegx2 = [ /3/, /4/, /5/ ],
-      ArrOfRegx3 = [ /6/, /7/, /8/ ],
-      ArrOfRegx4 = [ /9/, /10/, /11/ ],
-      ArrOfRegx5 = [ /12/, /13/, /14/ ],
-      ArrOfRegx6 = [ /14/, /16/, /17/ ],
-      ArrOfRegx7 = [ /18/, /19/, /20/ ],
-      ArrOfRegx8 = [ /21/, /22/, /23/ ],
-
-      src1 =
-      {
-        includeAny: ArrOfRegx1,
-        includeAll: ArrOfRegx2,
-        excludeAny: ArrOfRegx3,
-        excludeAll: ArrOfRegx4
-      },
-      src2 =
-      {
-        includeAny: ArrOfRegx5,
-        includeAll: ArrOfRegx6,
-        excludeAny: ArrOfRegx7,
-        excludeAll: ArrOfRegx8
-      },
-      src3 =
-      {
-        includeAny: [ /a0/, /a1/, /a2/ ],
-        includeAll: [ /b0/, /c1/, /c2/ ],
-        excludeAny: [ /c0/, /c1/, /c2/ ],
-        excludeAll: [ /d0/, /d1/, /d2/ ]
-      },
-      wrongSrc =
-      {
-        includeAny: ArrOfRegx5,
-        includeAll: ArrOfRegx6,
-        excludeAny: ArrOfRegx7,
-        excludeAll: ArrOfRegx8,
-        excludeSome: [ /[^a]/ ]
-      },
-
-      dst1 = {},
+    var dst1 = {},
       dst2 =
       {
         includeAny: [ /a0/, /a1/, /a2/ ],
@@ -309,6 +301,64 @@
       });
     }
   };
+  
+  //
+
+  var regexpObjectShrink = function( test )
+  {
+    var dst1 = {},
+      dst2 =
+      {
+        includeAny: [ /a0/, /a1/, /a2/ ],
+        includeAll: [ /b0/, /c1/, /c2/ ],
+        excludeAny: [ /c0/, /c1/, /c2/ ],
+        excludeAll: [ /d0/, /d1/, /d2/ ]
+      },
+
+
+      expected0 =
+      {
+        includeAny: [],
+        includeAll: [],
+        excludeAny: [],
+        excludeAll: []
+      },
+      expected1 = src1,
+      expected2 =
+      {
+        includeAny: src3.includeAny,
+        includeAll: dst2.includeAll.concat( src1.includeAll, src2.includeAll, src3.includeAll ),
+        excludeAny: dst2.excludeAny.concat( src1.excludeAny, src2.excludeAny, src3.excludeAny ),
+        excludeAll: src3.excludeAll
+      };
+
+    test.description = 'empty RegexpObject object broaden nothing (missed source for RegexpObject extend)';
+    var got = _.regexpObjectShrink( {} );
+    test.identical( got, expected0 );
+
+    test.description = 'empty RegexpObject object broaden by single object';
+    var got = _.regexpObjectShrink( dst1, src1  );
+    test.identical( got, expected1 );
+
+    test.description = 'RegexpObjec with existing data broaden by other RegexpObject objects';
+    var got = _.regexpObjectShrink( dst2, src1, src2, src3  );
+    test.identical( got, expected2 );
+
+    if( Config.debug )
+    {
+      test.description = 'result (first passed) parameter in not object';
+      test.shouldThrowError( function ()
+      {
+        _.regexpObjectShrink( 'hello', src1 );
+      });
+
+      test.description = 'source for RegexpObject extend has extra parameter';
+      test.shouldThrowError( function ()
+      {
+        _.regexpObjectShrink( {}, wrongSrc );
+      });
+    }
+  };
 
   //
 
@@ -320,7 +370,8 @@
     tests: {
 
       _regexpObjectExtend: _regexpObjectExtend,
-      regexpObjectBroaden: regexpObjectBroaden
+      regexpObjectBroaden: regexpObjectBroaden,
+      regexpObjectShrink : regexpObjectShrink
 
     }
 
