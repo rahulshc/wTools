@@ -2586,6 +2586,46 @@ regexpBut_.defaults =
 
 //
 
+  /**
+   * Extends `result` of RegexpObjects by merging other RegexpObjects.
+   * The properties such as includeAll, excludeAny are complemented from appropriate properties in source  objects
+     by merging all of them;
+   * Properties includeAny and excludeAll are always replaced by appropriate properties from sources without merging,
+   *
+   * @example
+   * var dest = {
+   *     includeAny : [/yellow/, /blue/],
+   *     includeAll : [/red/],
+   *     excludeAny : [/yellow/],
+   *     excludeAll : [/red/]
+   * },
+   *
+   * src1 = {
+   *     includeAll : [/green/],
+   *     excludeAny : [/white/],
+   *     excludeAll : [/green/, /blue/]
+   * },
+   * src2 = {
+   *     includeAny : [/red/],
+   *     includeAll : [/brown/],
+   *     excludeAny : [/greey/],
+   * }
+   *
+   * wTools.regexpObjectShrink(dest, src1, src2);
+   *
+   * //{
+   * //    includeAny : [/red/],
+   * //    includeAll : [/red/, /green/, /brown/],
+   * //    excludeAny : [/yellow/, /white/, /greey/],
+   * //    excludeAll : [/green/, /blue/]
+   * //};
+   * @param {RegexpObject} result RegexpObject to merge in.
+   * @param {...RegexpObject} [src] RegexpObjects to merge from.
+   * @returns {RegexpObject} Reference to `result` parameter;
+   * @method regexpObjectShrink
+   * @memberOf wTools#
+   */
+
 var regexpObjectShrink = function( result )
 {
 
