@@ -3056,7 +3056,7 @@ var routineSeal = function routineSeal( context, routine, args )
 }
 
 //
-
+/*
 var routineDelayed = function routineDelayed( delay,routine )
 {
 
@@ -3076,7 +3076,7 @@ var routineDelayed = function routineDelayed( delay,routine )
   }
 
 }
-
+*/
 //
 
 var routinesCall = function routinesCall()
@@ -3260,12 +3260,10 @@ var timeOut = function( delay,onReady )
 }
 
 //
-
+/*
 var timePeriodic = function( delay,onReady )
 {
   var id;
-
-  /*throw _.err( 'not tested' );*/
 
   _assert( _.routineIs( onReady ) );
 
@@ -3294,7 +3292,7 @@ var timePeriodicStop = function( id )
 {
   clearInterval( id );
 }
-
+*/
 //
 
 var _timeNow_gen = function()
@@ -6411,7 +6409,7 @@ var Proto =
   routineBind: routineBind,
   routineJoin: routineJoin,
   routineSeal: routineSeal,
-  routineDelayed: routineDelayed,
+  /*routineDelayed: routineDelayed,*/
 
   routinesCall: routinesCall,
 
@@ -6423,11 +6421,11 @@ var Proto =
   timeReady: timeReady,
   timeOnce: timeOnce,
   timeOut: timeOut,
-
+/*
   timePeriodic: timePeriodic,
   timePeriodicStart: timePeriodic,
   timePeriodicStop: timePeriodicStop,
-
+*/
   _timeNow_gen: _timeNow_gen,
   timeSpent: timeSpent,
   dateToStr: dateToStr,
