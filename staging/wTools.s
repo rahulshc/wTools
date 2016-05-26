@@ -2621,6 +2621,14 @@ var regexpObjectBroaden = function( result )
 
 //
 
+  /**
+   *
+   * @param options
+   * @returns {*}
+   * @method _regexpObjectExtend
+   * @memberOf wTools#
+   */
+
 var _regexpObjectExtend = function( options )
 {
 
