@@ -370,6 +370,12 @@
 
     if( Config.debug )
     {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function ()
+      {
+        _.regexpObjectBroaden();
+      });
+
       test.description = 'result (first passed) parameter in not object';
       test.shouldThrowError( function ()
       {
@@ -428,6 +434,12 @@
 
     if( Config.debug )
     {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function ()
+      {
+        _.regexpObjectShrink();
+      });
+
       test.description = 'result (first passed) parameter in not object';
       test.shouldThrowError( function ()
       {
