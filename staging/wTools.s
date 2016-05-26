@@ -2196,6 +2196,15 @@ var strAppendOnce = function( src,end )
 // regexp
 // --
 
+  /**
+   * The complete RegexpObject object.
+   * @typedef {Object} RegexpObject
+   * @property {RegExp[]} includeAny - Array of RegExps, to check matching any of them;
+   * @property {REgExp[]} includeAll - Array of RegExps, to check matching all of them;
+   * @property {REgExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
+   * @property {REgExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
+   */
+
 var regexpModeNames = namesCoded
 ({
   includeAny : 'includeAny',
@@ -2461,17 +2470,6 @@ var regexpTest = function( src,ins )
 
   /**
    * Test the `ins` string by condition specified in `src`. If all condition are met, return true
-   * @example
-   * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
-   *     regArr1 = [/red/, /green/, /blue/],
-   *     regArr2 = [/yellow/, /blue/, /red/],
-   *     regArr3 = [/yellow/, /white/, /greey/],
-   *     options = {
-   *        includeAny : regArr2,
-   *        includeAll : regArr1,
-   *        excludeAny : regArr3,
-   *        excludeAll : regArr2
-   *     };
    * regexpTestReason(options, str); // true
    * @param {Object} src Object with options for test
    * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
@@ -2521,7 +2519,7 @@ var regexpTestReason = function( src,ins )
   {
     var r = _._regexpAny( src.includeAny,ins,true );
     if( r === false )
-    return 'inlcude none from includeAny';
+    return 'include none from includeAny';
   }
 
   return true;
@@ -2542,7 +2540,7 @@ var regexpTestReason = function( src,ins )
    * };
    * wTools.regexpBut_(options); // /^(?:(?!yellow|red|green).)*$/
    *
-   * @param {Object} [options] options for generate regexp. If this argument ommited then default options will be used
+   * @param {Object} [options] options for generate regexp. If this argument omitted then default options will be used
    * @param {String[]} [options.but=null] a list of words,from each will consist regexp
    * @param {boolean} [options.atLeastOne=true] indicates whether search matches at least once
    * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
@@ -2603,8 +2601,48 @@ var regexpObjectShrink = function( result )
 
 //
 
+  /**
+   * Extends `result` of RegexpObjects by merging other RegexpObjects.
+   * Appropriate properties such as includeAny, includeAll, excludeAny and excludeAll are complemented from appropriate
+   * properties in source objects by merging;
+   *
+   * @example
+   * var dest = {
+   *     includeAny : [/yellow/, /blue/],
+   *     includeAll : [/red/],
+   *     excludeAny : [/yellow/],
+   *     excludeAll : [/red/]
+   * },
+   *
+   * src1 = {
+   *     includeAll : [/green/],
+   *     excludeAny : [/white/],
+   *     excludeAll : [/green/, /blue/]
+   * },
+   * src2 = {
+   *     includeAny : [/red/],
+   *     includeAll : [/brown/],
+   *     excludeAny : [/greey/],
+   * }
+   *
+   * wTools.regexpObjectBroaden(dest, src1, src2);
+   *
+   * //{
+   * //    includeAny : [/yellow/, /blue/, /red/],
+   * //    includeAll : [/red/, /green/, /brown/],
+   * //    excludeAny : [/yellow/, /white/, /greey/],
+   * //    excludeAll : [/red/, /green/, /blue/]
+   * //};
+   * @param {RegexpObject} result RegexpObject to merge in.
+   * @param {...RegexpObject} [src] RegexpObjects to merge from.
+   * @returns {RegexpObject} Reference to `result` parameter;
+   * @method regexpObjectBroaden
+   * @memberOf wTools#
+   */
+
 var regexpObjectBroaden = function( result )
 {
+
 
   _regexpObjectExtend
   ({
@@ -2623,8 +2661,8 @@ var regexpObjectBroaden = function( result )
 
   /**
    * Merge several RegexpObjects extending one by others.
-      Order of extending make difference because joining of some paramterers without lose is not possible.
-      options.shrinking gives a hint in what direction the lost shoul be made.
+      Order of extending make difference because joining of some parameters without lose is not possible.
+      options.shrinking gives a hint in what direction the lost should be made.
 
    * @param {object} options - options of merging.
    * @param {RegexpObject} options.dst
@@ -2633,8 +2671,8 @@ var regexpObjectBroaden = function( result )
       RegexpObjects to merge from.
    * @param {Boolean} options.shrinking -
       Shrinking or broadening mode.
-      Joining of some paramterers without lose is not possible.
-      This parameter gives a hint in what direction the lost shoul be made.
+      Joining of some parameters without lose is not possible.
+      This parameter gives a hint in what direction the lost should be made.
    * @returns {RegexpObject}
       merged RegexpObject.
    * @method _regexpObjectExtend
