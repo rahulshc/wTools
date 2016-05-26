@@ -67,6 +67,34 @@
 
 //
 
+  var regexpEscape = function( test )
+  {
+    var simpleStr = 'hello world',
+      specialCharacters = '.*+?^=!:${}()|[]/\\',
+      simpleSent = 'Hello. How are you?',
+      empty = '';
+
+    var expected1 = '\\.\\*\\+\\?\\^\\=\\!\\:\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\',
+      expected2 = "Hello\\. How are you\\?"
+
+    test.description = 'escape simple str without spec. characters';
+    var got = _.regexpEscape( simpleStr );
+    test.identical( got, simpleStr );
+
+    test.description = 'escape special characters';
+    var got = _.regexpEscape( specialCharacters );
+    test.identical( got, expected1 );
+
+    test.description = 'escape simple sentences';
+    var got = _.regexpEscape( simpleSent );
+    test.identical( got, expected2 );
+
+    test.description = 'escape empty string';
+    var got = _.regexpEscape( empty );
+    test.identical( got, empty );
+  };
+
+//
   var _regexpObjectExtend = function( test ) 
   {
     var src1 =
@@ -369,6 +397,7 @@
 
     tests: {
 
+      regexpEscape       : regexpEscape,
       _regexpObjectExtend: _regexpObjectExtend,
       regexpObjectBroaden: regexpObjectBroaden,
       regexpObjectShrink : regexpObjectShrink
