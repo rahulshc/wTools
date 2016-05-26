@@ -2108,7 +2108,14 @@ var numberFrom = function( src )
 // --
 // str
 // --
-
+/**
+*return type of src
+*@param {*} src
+*@return {string}
+*string name of type src
+*@method strTypeOf
+*@memberof wTools
+*/
 var strTypeOf = function( src )
 {
 
@@ -2117,12 +2124,18 @@ var strTypeOf = function( src )
 
   if( !result )
   throw _.err( 'strTypeOf:','unknown type',name );
-
   return result[ 2 ];
 }
 
 //
+/**
+*return in one string value of all arguments
+*@return {string}
+*if no arguments return empty string
+*@method str
+*@memberof wTools
 
+*/
 var str = function()
 {
 
@@ -2140,21 +2153,46 @@ var str = function()
 }
 
 //
-
+/**
+*compares two strings
+*@param {string} src - source string
+*@param {string} begin
+*@return {Boolean}
+*if param begin is match with param src first chars than return true
+*@method strBegins
+*@memberof wTools
+*/
 var strBegins = function( src,begin )
 {
   return src.lastIndexOf( begin,0 ) === 0;
 }
 
 //
-
+/**
+*compares two strings
+*@param {string} src - source string
+*@param {string} end
+*@return {Boolean}
+*if param end is match with param src last chars than return true
+*@method strEnds
+*@memberof wTools
+*/
 var strEnds = function( src,end )
 {
   return src.indexOf( end,src.length - end.length ) !== -1;
 }
 
 //
-
+/**
+*cut begin of the string
+*@param {string} src
+*@param {string} begin
+*@return {string}
+*if result of method strBegins - false, than return src
+*else cut begin of param src
+*@method strBeginRemove
+*@memberof wTools
+*/
 var strBeginRemove = function( src,begin )
 {
   if( !strBegins( src,begin ) )
@@ -2163,7 +2201,16 @@ var strBeginRemove = function( src,begin )
 }
 
 //
-
+/**
+*cut end of the string
+*@param {string} src
+*@param {string} end
+*@return {string}
+*if result of method strEnds - false, than return src
+*else cut end of param src
+*@method strEndRemove
+*@memberof wTools
+*/
 var strEndRemove = function( src,end )
 {
   if( !strEnds( src,end ) )
@@ -2173,7 +2220,16 @@ var strEndRemove = function( src,end )
 }
 
 //
-
+/**
+*prepend string to begin of other string
+*@param {string} src
+*@param {string} begin
+*@return {string}
+*if begin match with first chars of param src, return src
+*else add param src to param begin
+*@method strPrependOnce 
+*@memberof wTools
+*/
 var strPrependOnce = function( src,begin )
 {
   if( src.lastIndexOf( begin,0 ) === 0 )
@@ -2183,7 +2239,16 @@ var strPrependOnce = function( src,begin )
 }
 
 //
-
+/**
+*append string to end of other string
+*@param {string} src
+*@param {string} end
+*@return {string}
+*if end match with last chars of param src, return src
+*else add param end to param src
+*@method strPrependOnce 
+*@memberof wTools
+*/
 var strAppendOnce = function( src,end )
 {
   if( src.indexOf( end,src.length - end.length ) !== -1 )
