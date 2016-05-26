@@ -12,12 +12,13 @@
 
    */
 
-  if (typeof module !== 'undefined') {
+  if( typeof module !== 'undefined' )
+  {
 
-    if (require('fs').existsSync(__dirname + '/../object/Testing.debug.s'))
-      require('../object/Testing.debug.s');
+    if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
+    require( '../object/Testing.debug.s' );
     else
-      require('wTesting');
+    require( 'wTesting' );
 
   }
 
@@ -26,7 +27,8 @@
 
 //
 
-  var _regexpObjectExtend = function( test ) {
+  var _regexpObjectExtend = function( test ) 
+  {
     var ArrOfRegx1 = [ /0/, /1/, /2/ ],
       ArrOfRegx2 = [ /3/, /4/, /5/ ],
       ArrOfRegx3 = [ /6/, /7/, /8/ ],
@@ -175,30 +177,36 @@
 
     /**/
 
-    if (Config.debug) {
+    if( Config.debug )
+    {
 
       test.description = 'missing parameters in options argument';
-      test.shouldThrowError(function () {
+      test.shouldThrowError( function ()
+      {
         _._regexpObjectExtend( wrongOpt1 );
       });
 
       test.description = 'options.dist is not object';
-      test.shouldThrowError(function () {
+      test.shouldThrowError( function ()
+      {
         _._regexpObjectExtend( wrongOpt2 );
       });
 
       test.description = 'options.srcs not wrapped into array';
-      test.shouldThrowError(function () {
+      test.shouldThrowError( function ()
+      {
         _._regexpObjectExtend( wrongOpt3 );
       });
 
       test.description = 'element of options.srcs is not object';
-      test.shouldThrowError(function () {
+      test.shouldThrowError( function ()
+      {
         _._regexpObjectExtend( wrongOpt4 );
       });
 
       test.description = 'element of options.srcs has wrong format: (extra property)';
-      test.shouldThrowError(function () {
+      test.shouldThrowError( function ()
+      {
         _._regexpObjectExtend( wrongOpt5 );
       });
     }
@@ -220,9 +228,9 @@
 
   }
 
-  _.mapExtend(Self, Proto);
+  _.mapExtend( Self, Proto );
 
-  if (typeof module !== 'undefined' && !module.parent)
-    _.testing.test(Self);
+  if( typeof module !== 'undefined' && !module.parent )
+  _.testing.test(Self);
 
-})();
+} )( );
