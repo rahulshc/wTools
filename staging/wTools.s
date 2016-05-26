@@ -2622,9 +2622,21 @@ var regexpObjectBroaden = function( result )
 //
 
   /**
-   *
-   * @param options
-   * @returns {*}
+   * Merge several RegexpObjects extending one by others.
+      Order of extending make difference because joining of some paramterers without lose is not possible.
+      options.shrinking gives a hint in what direction the lost shoul be made.
+
+   * @param {object} options - options of merging.
+   * @param {RegexpObject} options.dst
+      RegexpObject to merge in.
+   * @param {RegexpObject} options.srcs -
+      RegexpObjects to merge from.
+   * @param {Boolean} options.shrinking -
+      Shrinking or broadening mode.
+      Joining of some paramterers without lose is not possible.
+      This parameter gives a hint in what direction the lost shoul be made.
+   * @returns {RegexpObject}
+      merged RegexpObject.
    * @method _regexpObjectExtend
    * @memberOf wTools#
    */
@@ -2633,7 +2645,7 @@ var _regexpObjectExtend = function( options )
 {
 
   _.assertMapOnly( _regexpObjectExtend.defaults,options );
-  _.mapComplement( options,buffersSerialize.defaults );
+  _.mapComplement( options,_regexpObjectExtend.defaults );
 
   _.assert( _.mapIs( options.dst ) );
   _.assert( _.arrayLike( options.srcs ) );
