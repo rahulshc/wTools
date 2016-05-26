@@ -2109,12 +2109,14 @@ var numberFrom = function( src )
 // str
 // --
 /**
-*return type of src
+*Return type of src.
+  *@example
+  var str = _.strTypeOf('testing');
 *@param {*} src
 *@return {string}
 *string name of type src
 *@method strTypeOf
-*@memberof wTools
+*@memberof wTools#
 */
 var strTypeOf = function( src )
 {
@@ -2129,11 +2131,13 @@ var strTypeOf = function( src )
 
 //
 /**
-*return in one string value of all arguments
+*Return in one string value of all arguments.
+  *@example
+   var args = _.str('test2');
 *@return {string}
-*if no arguments return empty string
+*If no arguments return empty string
 *@method str
-*@memberof wTools
+*@memberof wTools#
 
 */
 var str = function()
@@ -2154,13 +2158,15 @@ var str = function()
 
 //
 /**
-*compares two strings
+*Compares two strings.
 *@param {string} src - source string
 *@param {string} begin
+  *example
+   var scr = ._strBegins("abc","a");
 *@return {Boolean}
-*if param begin is match with param src first chars than return true
+*If param begin is match with param src first chars than return true
 *@method strBegins
-*@memberof wTools
+*@memberof wTools#
 */
 var strBegins = function( src,begin )
 {
@@ -2169,13 +2175,15 @@ var strBegins = function( src,begin )
 
 //
 /**
-*compares two strings
+*Compares two strings.
 *@param {string} src - source string
 *@param {string} end
+   *example
+    var scr = ._strEnds("abc","c");
 *@return {Boolean}
-*if param end is match with param src last chars than return true
+*If param end is match with param src last chars than return true
 *@method strEnds
-*@memberof wTools
+*@memberof wTools#
 */
 var strEnds = function( src,end )
 {
@@ -2184,14 +2192,16 @@ var strEnds = function( src,end )
 
 //
 /**
-*cut begin of the string
+*Cut begin of the string.
 *@param {string} src
 *@param {string} begin
+  *example 
+   var scr = ._strBeginRemove("abc","a");
 *@return {string}
-*if result of method strBegins - false, than return src
+*If result of method strBegins - false, than return src
 *else cut begin of param src
 *@method strBeginRemove
-*@memberof wTools
+*@memberof wTools#
 */
 var strBeginRemove = function( src,begin )
 {
@@ -2202,14 +2212,16 @@ var strBeginRemove = function( src,begin )
 
 //
 /**
-*cut end of the string
+*Cut end of the string.
 *@param {string} src
 *@param {string} end
+  *example
+   var scr = ._strEndRemove("abc","c");
 *@return {string}
-*if result of method strEnds - false, than return src
-*else cut end of param src
+*If result of method strEnds - false, than return src
+*Else cut end of param src
 *@method strEndRemove
-*@memberof wTools
+*@memberof wTools#
 */
 var strEndRemove = function( src,end )
 {
@@ -2221,14 +2233,16 @@ var strEndRemove = function( src,end )
 
 //
 /**
-*prepend string to begin of other string
+*Prepend string to begin of other string.
 *@param {string} src
 *@param {string} begin
+  *example
+   var scr = ._strPrependOnce("test","test");
 *@return {string}
-*if begin match with first chars of param src, return src
-*else add param src to param begin
+*If begin match with first chars of param src, return src
+*Else add param src to param begin
 *@method strPrependOnce 
-*@memberof wTools
+*@memberof wTools#
 */
 var strPrependOnce = function( src,begin )
 {
@@ -2240,14 +2254,16 @@ var strPrependOnce = function( src,begin )
 
 //
 /**
-*append string to end of other string
+*Append string to end of other string.
 *@param {string} src
 *@param {string} end
+  *example
+   var src = ._strAppendOnce("test","test");
 *@return {string}
-*if end match with last chars of param src, return src
-*else add param end to param src
+*If end match with last chars of param src, return src
+*Else add param end to param src
 *@method strPrependOnce 
-*@memberof wTools
+*@memberof wTools#
 */
 var strAppendOnce = function( src,end )
 {
