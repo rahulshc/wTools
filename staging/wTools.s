@@ -2232,7 +2232,7 @@ var strEndRemove = function( src,end )
 *@return {string}
 *if begin match with first chars of param src, return src
 *else add param src to param begin
-*@method strPrependOnce 
+*@method strPrependOnce
 *@memberof wTools
 */
 var strPrependOnce = function( src,begin )
@@ -2251,7 +2251,7 @@ var strPrependOnce = function( src,begin )
 *@return {string}
 *if end match with last chars of param src, return src
 *else add param end to param src
-*@method strPrependOnce 
+*@method strPrependOnce
 *@memberof wTools
 */
 var strAppendOnce = function( src,end )
@@ -3224,7 +3224,7 @@ var routineSeal = function routineSeal( context, routine, args )
 }
 
 //
-/*
+
 var routineDelayed = function routineDelayed( delay,routine )
 {
 
@@ -3244,7 +3244,6 @@ var routineDelayed = function routineDelayed( delay,routine )
   }
 
 }
-*/
 //
 
 var routinesCall = function routinesCall()
@@ -4478,10 +4477,11 @@ var arraySupplement = function arraySupplement( dstArray )
 
   var length = result.length;
   _assert( _.arrayLike( result ),'expects object as argument' );
+
   for( a = arguments.length-1 ; a >= 1 ; a-- )
   {
-    length = Math.max( length,arguments[ a ].length )
-    _assert( arguments[ a ],'argument is not defined:',a );
+    _assert( _.arrayLike( arguments[ a ] ),'argument is not defined:',a );
+    length = Math.max( length,arguments[ a ].length );
   }
 
   for( var k = 0 ; k < length ; k++ )
@@ -6580,7 +6580,7 @@ var Proto =
   routineBind: routineBind,
   routineJoin: routineJoin,
   routineSeal: routineSeal,
-  /*routineDelayed: routineDelayed,*/
+  routineDelayed: routineDelayed,
 
   routinesCall: routinesCall,
 
