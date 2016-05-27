@@ -289,7 +289,7 @@ If regexp array is empty - returns some default value passed in the `none` input
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2484">line 2484</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2479">line 2479</a>
     </li></ul></dd>
     
 
@@ -502,7 +502,7 @@ If regexp array is empty - returns some default value passed in the `none` input
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2446">line 2446</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2441">line 2441</a>
     </li></ul></dd>
     
 
@@ -765,7 +765,7 @@ wTools._regexpAny(regArr3, str, false); // false</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2802">line 2802</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2797">line 2797</a>
     </li></ul></dd>
     
 
@@ -918,7 +918,7 @@ wTools._regexpAny(regArr3, str, false); // false</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line3129">line 3129</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line3124">line 3124</a>
     </li></ul></dd>
     
 
@@ -1071,7 +1071,7 @@ wTools._regexpAny(regArr3, str, false); // false</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line4623">line 4623</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line4618">line 4618</a>
     </li></ul></dd>
     
 
@@ -1339,7 +1339,7 @@ Array to return a new array from begin to but not including end.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line4099">line 4099</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line4094">line 4094</a>
     </li></ul></dd>
     
 
@@ -1388,8 +1388,8 @@ Array to return a new array from begin to but not including end.</td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns [3, 4, 5, 6, 7, 8, 9]
-arraySlice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, 9);</code></pre>
+    <pre class="prettyprint"><code>// returns [ 3, 4, 5, 6, 7, 8, 9 ]
+arraySlice( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 9 );</code></pre>
 
 
 
@@ -2106,353 +2106,6 @@ arraySlice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, 9);</code></pre>
 
     
 
-    <h4 class="name" id=".mapContain"><span class="type-signature">(static) </span>mapContain<span class="signature">(src, ins)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-
-    
-
-
-
-<div class="description">
-    The mapContain() returns true, if the first object (src)
-has the same values as the second object(ins).
-
-It takes two objects (scr, ins),
-checks if the first object (src) has the same [key, value] as
-the second object (ins).
-If true, it returns true,
-otherwise it returns false.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>src</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">objectLike</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Target object.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>ins</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">objectLike</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Second object.
-Objects to compare values.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5908">line 5908</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-    <div class="param-desc">
-    
-        Will throw an error if (arguments.length !== 2).
-    
-    </div>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>// returns true
-mapContain({a: 7, b: 13, c: 15}, {a: 7, b: 13});</code></pre>
-
-    <pre class="prettyprint"><code>returns false
-mapContain({a: 7, b: 13}, {a: 7, b: 13, c: 15});</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".mapExtend"><span class="type-signature">(static) </span>mapExtend<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
-
-    
-
-
-
-<div class="description">
-    The mapExtend() is used to copy the values of all properties
-from one or more source objects to a target object.
-
-It takes first object (dstObject)
-creates variable (result) and assign first object.
-Checks if arguments equal two or more and if (result) is an object.
-If true,
-it extends (result) from the next objects.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5519">line 5519</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        Will throw an error if the argument is not an object.
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">mapExtend</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    It will return the target object.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns {a: 7, b: 13, c: 3, d: 33, e: 77}
-mapExtend({a: 7, b: 13}, {c: 3, d: 33}, {e: 77});</code></pre>
-
-
-
-        
-            
-
-    
-
     <h4 class="name" id=".mapFirstPair"><span class="type-signature">(static) </span>mapFirstPair<span class="signature">(srcObject)</span><span class="type-signature"> &rarr; {array}</span></h4>
 
     
@@ -2553,7 +2206,7 @@ mapExtend({a: 7, b: 13}, {c: 3, d: 33}, {e: 77});</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5624">line 5624</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5619">line 5619</a>
     </li></ul></dd>
     
 
@@ -2714,7 +2367,7 @@ otherwise it returns an empty array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5705">line 5705</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5700">line 5700</a>
     </li></ul></dd>
     
 
@@ -2764,223 +2417,8 @@ corresponding to the enumerable properties found directly upon object.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns ["a", "b"]
-mapKeys({a: 7, b: 13});</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".mapOwn"><span class="type-signature">(static) </span>mapOwn<span class="signature">(object, name)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-
-    
-
-
-
-<div class="description">
-    The mapOwn() returns true if property (name)
-has in the (object).
-
-It takes (name) checks if (name) is a String,
-if (object) has own property with the (name).
-If true, it returns true.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>object</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">objectLike</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Object that will be check.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">name</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Target property.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5970">line 5970</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        Will throw an error if the (name) is unknown.
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">mapOwn</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// returns true
-mapOwn({a: 7, b: 13}, 'a');
-
-mapOwn({a: 7, b: 13}, 'c');
-output: false</code></pre>
+    <pre class="prettyprint"><code>// returns [ "a", "b" ]
+mapKeys( { a : 7, b : 13 } );</code></pre>
 
 
 
@@ -3089,7 +2527,7 @@ output: false</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5961">line 5961</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5956">line 5956</a>
     </li></ul></dd>
     
 
@@ -3149,11 +2587,11 @@ output: false</code></pre>
 
 
 <div class="description">
-    The mapPairs() converts an object into a list of [key, value] pairs.
+    The mapPairs() converts an object into a list of [ key, value ] pairs.
 
 It takes an object (src) creates an empty array,
 checks if (src) is an object.
-If true, it returns a list of [key, value] pairs,
+If true, it returns a list of [ key, value ] pairs,
 otherwise it returns an empty array.
 </div>
 
@@ -3206,7 +2644,7 @@ otherwise it returns an empty array.
 
             
 
-            <td class="description last">Object to get a list of [key, value] pairs.</td>
+            <td class="description last">Object to get a list of [ key, value ] pairs.</td>
         </tr>
 
     
@@ -3247,7 +2685,7 @@ otherwise it returns an empty array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5779">line 5779</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5774">line 5774</a>
     </li></ul></dd>
     
 
@@ -3274,7 +2712,7 @@ otherwise it returns an empty array.
 
         
 <div class="param-desc">
-    A list of [key, value] pairs.
+    A list of [ key, value ] pairs.
 </div>
 
 
@@ -3296,210 +2734,8 @@ otherwise it returns an empty array.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns [ ["a", 7], ["b", 13] ]
-mapPairs({a: 7, b: 13});</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".mapSame"><span class="type-signature">(static) </span>mapSame<span class="signature">(src1, src2)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-
-    
-
-
-
-<div class="description">
-    The mapSame() returns true, if the second object (src2)
-has the same values as the first object(src1).
-
-It takes two objects (scr1, src2), checks
-if both object have the same length and [key, value] return true
-otherwise it returns undefined.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>src1</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">objectLike</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">First object.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>src2</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">objectLike</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Target object.
-Objects to compare values.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5864">line 5864</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-    <div class="param-desc">
-    
-        Will throw an error if (arguments.length !== 2).
-    
-    </div>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>// returns true
-mapSame({a: 7, b: 13}, {a: 7, b: 13});</code></pre>
-
-    <pre class="prettyprint"><code>returns undefined
-mapSame({a: 7, b: 13}, {a: 33, b: 13});</code></pre>
-
-    <pre class="prettyprint"><code>returns undefined
-mapSame({a: 7, b: 13, c: 33}, {a: 7, b: 13});</code></pre>
+    <pre class="prettyprint"><code>// returns [ [ "a", 7 ], [ "b", 13 ] ]
+mapPairs( { a : 7, b : 13 } );</code></pre>
 
 
 
@@ -3615,7 +2851,7 @@ otherwise it returns an empty array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5744">line 5744</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5739">line 5739</a>
     </li></ul></dd>
     
 
@@ -3665,8 +2901,8 @@ corresponding to the enumerable property values found directly upon object.
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// returns ["7", "13"]
-mapValues({a: 7, b: 13});</code></pre>
+    <pre class="prettyprint"><code>// returns [ "7", "13" ]
+mapValues( { a : 7, b : 13 } );</code></pre>
 
 
 
@@ -4391,7 +3627,7 @@ options object.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2630">line 2630</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2625">line 2625</a>
     </li></ul></dd>
     
 
@@ -4555,7 +3791,7 @@ wTools.regexpBut_(options); // /^(?:(?!yellow|red|green).)*$/</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2328">line 2328</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2323">line 2323</a>
     </li></ul></dd>
     
 
@@ -4713,7 +3949,7 @@ wTools.regexpBut_(options); // /^(?:(?!yellow|red|green).)*$/</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2345">line 2345</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2340">line 2340</a>
     </li></ul></dd>
     
 
@@ -4876,7 +4112,7 @@ wTools.regexpForGlob(glob);
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2392">line 2392</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2387">line 2387</a>
     </li></ul></dd>
     
 
@@ -5034,7 +4270,7 @@ wTools.regexpForGlob(glob);
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2421">line 2421</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2416">line 2416</a>
     </li></ul></dd>
     
 
@@ -5239,7 +4475,7 @@ properties in source objects by merging;
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2744">line 2744</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2739">line 2739</a>
     </li></ul></dd>
     
 
@@ -5470,7 +4706,7 @@ Properties includeAny and excludeAll are always replaced by appropriate properti
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2689">line 2689</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2684">line 2684</a>
     </li></ul></dd>
     
 
@@ -5837,7 +5073,7 @@ method return false</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2522">line 2522</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2517">line 2517</a>
     </li></ul></dd>
     
 
@@ -6194,7 +5430,7 @@ next property in `src` object, otherwise return source of regexp that don't matc
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2571">line 2571</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2566">line 2566</a>
     </li></ul></dd>
     
 
@@ -6374,7 +5610,7 @@ next property in `src` object, otherwise return source of regexp that don't matc
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2273">line 2273</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2268">line 2268</a>
     </li></ul></dd>
     
 
@@ -6420,6 +5656,952 @@ else add param end to param src
 </dl>
 
     
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".strPrependOnce"><span class="type-signature">(static) </span>strPrependOnce<span class="signature">(src, begin)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Prepend string to begin of other string.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>begin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2245">line 2245</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    if begin match with first chars of param src, return src
+else add param src to param begin
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var scr = ._strPrependOnce("test","test");</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapContain"><span class="type-signature"></span>mapContain<span class="signature">(src, ins)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    The mapContain() returns true, if the first object (src)
+has the same values as the second object(ins).
+
+It takes two objects (scr, ins),
+checks if the first object (src) has the same [key, value] as
+the second object (ins).
+If true, it returns true,
+otherwise it returns false.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">objectLike</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Target object.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ins</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">objectLike</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Second object.
+Objects to compare values.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5903">line 5903</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        Will throw an error if ( arguments.length !== 2 ).
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// returns true
+mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );</code></pre>
+
+    <pre class="prettyprint"><code>returns false
+mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapExtend"><span class="type-signature"></span>mapExtend<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    The mapExtend() is used to copy the values of all properties
+from one or more source objects to a target object.
+
+It takes first object (dstObject)
+creates variable (result) and assign first object.
+Checks if arguments equal two or more and if (result) is an object.
+If true,
+it extends (result) from the next objects.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5514">line 5514</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Will throw an error if the argument is not an object.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">mapExtend</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    It will return the target object.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapOwn"><span class="type-signature"></span>mapOwn<span class="signature">(object, name)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    The mapOwn() returns true if property (name)
+has in the (object).
+
+It takes (name) checks if (name) is a String,
+if (object) has own property with the (name).
+If true, it returns true.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">objectLike</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Object that will be check.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">name</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Target property.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5965">line 5965</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Will throw an error if the (name) is unknown.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">mapOwn</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns true
+mapOwn( { a : 7, b : 13 }, 'a' );
+
+mapOwn( { a : 7, b : 13 }, 'c' );
+output: false</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="mapSame"><span class="type-signature"></span>mapSame<span class="signature">(src1, src2)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    The mapSame() returns true, if the second object (src2)
+has the same values as the first object(src1).
+
+It takes two objects (scr1, src2), checks
+if both object have the same length and [key, value] return true
+otherwise it returns undefined.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">objectLike</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">First object.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>src2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">objectLike</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Target object.
+Objects to compare values.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5859">line 5859</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        Will throw an error if ( arguments.length !== 2 ).
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// returns true
+mapSame( { a : 7, b : 13 }, { a : 7, b : 13 } );</code></pre>
+
+    <pre class="prettyprint"><code>returns undefined
+mapSame( { a : 7, b : 13 }, { a : 33, b : 13 } );</code></pre>
+
+    <pre class="prettyprint"><code>returns undefined
+mapSame( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );</code></pre>
 
 
 
@@ -8994,7 +9176,7 @@ Else cut end of param src
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2298">line 2298</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line2293">line 2293</a>
     </li></ul></dd>
     
 
@@ -9030,7 +9212,7 @@ Else cut end of param src
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri May 27 2016 14:12:09 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Fri May 27 2016 14:33:18 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

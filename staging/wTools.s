@@ -5954,17 +5954,7 @@ var mapContain = function( src,ins )
 //
 
 /**
- * Check does map has own fields. Accept name in map format.
- * @param {object} object - object to check.
- * @return {object} object - name in key/value format.
- * @method mapOwn
- * @memberof wTools
- */
-
-
-/**
- * The mapOwn() returns true if property (name)
- * has in the (object).
+ * The mapOwn() returns true if object has own property.
  *
  * It takes (name) checks if (name) is a String,
  * if (object) has own property with the (name).
