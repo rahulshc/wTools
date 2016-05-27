@@ -2,7 +2,7 @@
 
 'use strict';
 
-//
+// //
 
 var _global_ = undefined;
 
@@ -2114,12 +2114,14 @@ var numberFrom = function( src )
 // str
 // --
 /**
-*return type of src
+*Return type of src.
+  *@example
+  var str = _.strTypeOf('testing');
 *@param {*} src
 *@return {string}
 *string name of type src
 *@method strTypeOf
-*@memberof wTools
+*@memberof wTools#
 */
 var strTypeOf = function( src )
 {
@@ -2134,11 +2136,13 @@ var strTypeOf = function( src )
 
 //
 /**
-*return in one string value of all arguments
+*Return in one string value of all arguments.
+  *@example
+   var args = _.str('test2');
 *@return {string}
-*if no arguments return empty string
+*If no arguments return empty string
 *@method str
-*@memberof wTools
+*@memberof wTools#
 
 */
 var str = function()
@@ -2159,13 +2163,15 @@ var str = function()
 
 //
 /**
-*compares two strings
+*Compares two strings.
 *@param {string} src - source string
 *@param {string} begin
+  *example
+   var scr = ._strBegins("abc","a");
 *@return {Boolean}
-*if param begin is match with param src first chars than return true
+*If param begin is match with param src first chars than return true
 *@method strBegins
-*@memberof wTools
+*@memberof wTools#
 */
 var strBegins = function( src,begin )
 {
@@ -2174,13 +2180,15 @@ var strBegins = function( src,begin )
 
 //
 /**
-*compares two strings
+*Compares two strings.
 *@param {string} src - source string
 *@param {string} end
+   *example
+    var scr = ._strEnds("abc","c");
 *@return {Boolean}
-*if param end is match with param src last chars than return true
+*If param end is match with param src last chars than return true
 *@method strEnds
-*@memberof wTools
+*@memberof wTools#
 */
 var strEnds = function( src,end )
 {
@@ -2189,14 +2197,16 @@ var strEnds = function( src,end )
 
 //
 /**
-*cut begin of the string
+*Cut begin of the string.
 *@param {string} src
 *@param {string} begin
+  *example 
+   var scr = ._strBeginRemove("abc","a");
 *@return {string}
-*if result of method strBegins - false, than return src
+*If result of method strBegins - false, than return src
 *else cut begin of param src
 *@method strBeginRemove
-*@memberof wTools
+*@memberof wTools#
 */
 var strBeginRemove = function( src,begin )
 {
@@ -2207,14 +2217,16 @@ var strBeginRemove = function( src,begin )
 
 //
 /**
-*cut end of the string
+*Cut end of the string.
 *@param {string} src
 *@param {string} end
+  *example
+   var scr = ._strEndRemove("abc","c");
 *@return {string}
-*if result of method strEnds - false, than return src
-*else cut end of param src
+*If result of method strEnds - false, than return src
+*Else cut end of param src
 *@method strEndRemove
-*@memberof wTools
+*@memberof wTools#
 */
 var strEndRemove = function( src,end )
 {
@@ -2226,14 +2238,23 @@ var strEndRemove = function( src,end )
 
 //
 /**
-*prepend string to begin of other string
+*Prepend string to begin of other string.
 *@param {string} src
 *@param {string} begin
+  *example
+   var scr = ._strPrependOnce("test","test");
 *@return {string}
+<<<<<<< HEAD
 *if begin match with first chars of param src, return src
 *else add param src to param begin
 *@method strPrependOnce
 *@memberof wTools
+=======
+*If begin match with first chars of param src, return src
+*Else add param src to param begin
+*@method strPrependOnce 
+*@memberof wTools#
+>>>>>>> bfa2be8c1ddc64cfa93955301c5533a1d2ca1a31
 */
 var strPrependOnce = function( src,begin )
 {
@@ -2245,14 +2266,23 @@ var strPrependOnce = function( src,begin )
 
 //
 /**
-*append string to end of other string
+*Append string to end of other string.
 *@param {string} src
 *@param {string} end
+  *example
+   var src = ._strAppendOnce("test","test");
 *@return {string}
+<<<<<<< HEAD
 *if end match with last chars of param src, return src
 *else add param end to param src
 *@method strPrependOnce
 *@memberof wTools
+=======
+*If end match with last chars of param src, return src
+*Else add param end to param src
+*@method strPrependOnce 
+*@memberof wTools#
+>>>>>>> bfa2be8c1ddc64cfa93955301c5533a1d2ca1a31
 */
 var strAppendOnce = function( src,end )
 {
@@ -4066,7 +4096,32 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
   return dstArray;
 }
 
-//
+/**
+ * The arraySlice() returns a shallow copy of a portion of an array
+ * into a new array.
+ *
+ * It takes array and two variables
+ * checks if array is an Array creates variables (result, a, b)
+ * and assign them values.
+ * arraySlice() creates a new array from (a) to but not including (b).
+ * If (b) is omitted, arraySlice extracts
+ * through the end of the sequence (array.length).
+ * If not arguments, it assigns a default variables
+ * and return an empty array.
+ *
+ * @param {Array} [array = []] - Array
+ * @param {a} [a = 0] - begin zero-based index at which to begin extraction.
+ * @param {b} [b = array.length] - end zero-based index at which to end extraction.
+ * Array to return a new array from begin to but not including end.
+ *
+ * @example
+ * // returns [3, 4, 5, 6, 7, 8, 9]
+ * arraySlice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, 9);
+ *
+ * @returns {Array} returns a shallow copy of elements from the original array.
+ * @method arraySlice
+ * @memberof wTools#
+*/
 
 var arraySlice = function arraySlice( array,a,b )
 {
@@ -5461,7 +5516,28 @@ var mapExtendFiltering = function( filter,dstObject )
   return result;
 }
 
-//
+/**
+ * The mapExtend() is used to copy the values of all properties
+ * from one or more source objects to a target object.
+ *
+ * It takes first object (dstObject)
+ * creates variable (result) and assign first object.
+ * Checks if arguments equal two or more and if (result) is an object.
+ * If true,
+ * it extends (result) from the next objects.
+ *
+ * @param{...objectLike} [dstObject = {}] - The target object.
+ * @param{...arguments[]} - The source object(s).
+ *
+ * @example
+ * // returns {a: 7, b: 13, c: 3, d: 33, e: 77}
+ * mapExtend({a: 7, b: 13}, {c: 3, d: 33}, {e: 77});
+ *
+ * @returns {Object} It will return the target object.
+ * @method mapExtend
+ * @throws {mapExtend} Will throw an error if the argument is not an object.
+ * @memberof wTools#
+*/
 
 var mapExtend = function mapExtend( dstObject )
 {
@@ -5626,7 +5702,29 @@ var mapToString = function( src,keyValSep,tupleSep )
   return result
 }
 
-//
+/**
+ * The mapKeys() returns
+ * an array of a given object's own enumerable properties,
+ * in the same order as that provided by a for...in loop.
+ *
+ * It takes an object (src) creates an empty array,
+ * checks if (src) is an object and has any keys.
+ * If true,
+ * it returns an array of keys,
+ * otherwise it returns an empty array.
+ *
+ * @param {objectLike} src
+ * The object whose properties are to be returned.
+ *
+ * @example
+ * // returns ["a", "b"]
+ * mapKeys({a: 7, b: 13});
+ *
+ * @return {Array} Returns an array whose elements are strings
+ * corresponding to the enumerable properties found directly upon object.
+ * @method mapKeys
+ * @memberof wTools#
+*/
 
 var mapKeys = function mapKeys( src )
 {
@@ -5643,7 +5741,28 @@ var mapKeys = function mapKeys( src )
   return result;
 }
 
-//
+/**
+ * The mapValues() method returns an array of a given object's
+ * own enumerable property values,
+ * in the same order as that provided by a for...in loop.
+ *
+ * It takes an object (src) creates an empty array,
+ * checks if (src) is an object.
+ * If true, it returns an array of values,
+ * otherwise it returns an empty array.
+ *
+ * @param {objectLike} src
+ * The object whose property values are to be returned.
+ *
+ * @example
+ * // returns ["7", "13"]
+ * mapValues({a: 7, b: 13});
+ *
+ * @returns {Array} returns an array whose elements are strings
+ * corresponding to the enumerable property values found directly upon object.
+ * @method mapValues
+ * @memberof wTools#
+*/
 
 var mapValues = function( src )
 {
@@ -5657,7 +5776,24 @@ var mapValues = function( src )
   return result;
 }
 
-//
+/**
+ * The mapPairs() converts an object into a list of [key, value] pairs.
+ *
+ * It takes an object (src) creates an empty array,
+ * checks if (src) is an object.
+ * If true, it returns a list of [key, value] pairs,
+ * otherwise it returns an empty array.
+ *
+ * @param {objectLike} src - Object to get a list of [key, value] pairs.
+ *
+ * @example
+ * // returns [ ["a", 7], ["b", 13] ]
+ * mapPairs({a: 7, b: 13});
+ *
+ * @returns {Array} A list of [key, value] pairs.
+ * @method mapPairs
+ * @memberof wTools#
+*/
 
 var mapPairs = function( src )
 {
@@ -5724,6 +5860,37 @@ var mapGroup = function( src,options )
 // map filter
 // --
 
+
+/**
+ * The mapSame() returns true, if the second object (src2)
+ * has the same values as the first object(src1).
+ *
+ * It takes two objects (scr1, src2), checks
+ * if both object have the same length and [key, value] return true
+ * otherwise it returns undefined.
+ *
+ * @param {objectLike} src1 - First object.
+ * @param {objectLike} src2 - Target object.
+ * Objects to compare values.
+ *
+ * @example
+ * // returns true
+ * mapSame({a: 7, b: 13}, {a: 7, b: 13});
+ *
+ * @example
+ * returns undefined
+ * mapSame({a: 7, b: 13}, {a: 33, b: 13});
+ *
+ * @example
+ * returns undefined
+ * mapSame({a: 7, b: 13, c: 33}, {a: 7, b: 13});
+ *
+ * @returns {Boolean}
+ * @method mapSame
+ * @throws Will throw an error if (arguments.length !== 2).
+ * @memberof wTools#
+*/
+
 var mapSame = function( src1,src2 ){
 
   _.assert( arguments.length === 2 );
@@ -5738,7 +5905,33 @@ var mapSame = function( src1,src2 ){
   return true;
 }
 
-//
+/**
+ * The mapContain() returns true, if the first object (src)
+ * has the same values as the second object(ins).
+ *
+ * It takes two objects (scr, ins),
+ * checks if the first object (src) has the same [key, value] as
+ * the second object (ins).
+ * If true, it returns true,
+ * otherwise it returns false.
+ *
+ * @param {objectLike} src - Target object.
+ * @param {objectLike} ins - Second object.
+ * Objects to compare values.
+ *
+ * @example
+ * // returns true
+ * mapContain({a: 7, b: 13, c: 15}, {a: 7, b: 13});
+ *
+ * @example
+ * returns false
+ * mapContain({a: 7, b: 13}, {a: 7, b: 13, c: 15});
+ *
+ * @returns {Boolean}
+ * @method mapContain
+ * @throws Will throw an error if (arguments.length !== 2).
+ * @memberof wTools#
+*/
 
 var mapContain = function( src,ins )
 {
@@ -5772,6 +5965,31 @@ var mapContain = function( src,ins )
  * @method mapOwn
  * @memberof wTools#
  */
+
+
+/**
+ * The mapOwn() returns true if property (name)
+ * has in the (object).
+ *
+ * It takes (name) checks if (name) is a String,
+ * if (object) has own property with the (name).
+ * If true, it returns true.
+ *
+ * @param {objectLike} object - Object that will be check.
+ * @param {name} name - Target property.
+ *
+ * @example
+ * // returns true
+ * mapOwn({a: 7, b: 13}, 'a');
+ *
+ * mapOwn({a: 7, b: 13}, 'c');
+ * output: false
+ *
+ * @returns {Boolean}
+ * @method mapOwn
+ * @throws {mapOwn} Will throw an error if the (name) is unknown.
+ * @memberof wTools#
+*/
 
 var mapOwn = function( object,name )
 {
