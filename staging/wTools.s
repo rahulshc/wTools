@@ -5477,7 +5477,28 @@ var mapExtendFiltering = function( filter,dstObject )
   return result;
 }
 
-//
+/**
+ * The mapExtend() is used to copy the values of all properties
+ * from one or more source objects to a target object.
+ *
+ * It takes first object (dstObject)
+ * creates variable (result) and assign first object.
+ * Checks if arguments equal two or more and if (result) is an object.
+ * If true,
+ * it extends (result) from the next objects.
+ *
+ * @param{...objectLike} [dstObject = {}] - The target object.
+ * @param{...arguments[]} - The source object(s).
+ *
+ * @example
+ * // returns {a: 7, b: 13, c: 3, d: 33, e: 77}
+ * mapExtend({a: 7, b: 13}, {c: 3, d: 33}, {e: 77});
+ *
+ * @returns {Object} It will return the target object.
+ * @method mapExtend
+ * @throws {mapExtend} Will throw an error if the argument is not an object.
+ * @memberof wTools#
+*/
 
 var mapExtend = function mapExtend( dstObject )
 {
