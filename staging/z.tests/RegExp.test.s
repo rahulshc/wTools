@@ -246,6 +246,54 @@
       });
     }
   };
+//
+
+  var _regexpAny = function( test )
+  {
+    var strForTest1 = 'some text 5',
+      wrongTypeArr = [/a/, /b/, '5'],
+      expectedIndex = 2,
+      defaultParam = true;
+
+    test.description = 'regexp is found in str';
+    var got = _._regexpAny( ArrOfRegx2, strForTest1, false );
+    test.identical( got, expectedIndex );
+
+    test.description = 'regexp isn\'t found in str';
+    var got = _._regexpAny( ArrOfRegx3, strForTest1, false );
+    test.identical( got, false );
+
+    test.description = 'empty regexp array passed';
+    var got = _._regexpAny( [], strForTest1, defaultParam );
+    test.identical( got, defaultParam );
+
+    if( Config.debug )
+    {
+      test.description = 'missed all arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny()
+      });
+
+      test.description = 'missed one of arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny(ArrOfRegx2, strForTest1)
+      });
+
+      test.description = 'first argument is not array';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny('hello', strForTest1, false);
+      });
+
+      test.description = 'element of array is not regexp';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny(wrongTypeArr, strForTest1, false);
+      });
+    }
+  };
 
 //
   var _regexpObjectExtend = function( test ) 
@@ -566,6 +614,7 @@
       regexpForGlob       : regexpForGlob,
       regexpMakeArray     : regexpMakeArray,
       regexpMakeExpression: regexpMakeExpression,
+      _regexpAny          : _regexpAny,
       _regexpObjectExtend : _regexpObjectExtend,
       regexpObjectBroaden : regexpObjectBroaden,
       regexpObjectShrink  : regexpObjectShrink
