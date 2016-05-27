@@ -198,7 +198,7 @@ var ifNoErrorThen = function()
     return function ifNoErrorThen( err,data )
     {
 
-      _.assert( arguments.length === 2 );
+      _.assert( arguments.length === 2 ); 
 
       if( !err )
       {
@@ -207,7 +207,7 @@ var ifNoErrorThen = function()
       else
       {
         debugger;
-        return wConsequence().error( err );
+        return wConsequence().error( _.err( err ) );
       }
 
     }
@@ -233,7 +233,7 @@ var ifNoErrorThen = function()
 
 //
 
-var thenDebug = function thenDebug( taker )
+var thenDebug = function thenDebug()
 {
   var self = this;
 
