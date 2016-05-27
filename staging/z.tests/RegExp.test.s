@@ -8,7 +8,7 @@
    from the project directory run
 
    npm install
-   node ./staging/z.tests/Sample.test.s
+   node ./staging/z.tests/RegExp.test.s
 
    */
 
@@ -144,6 +144,63 @@
       test.shouldThrowError( function()
       {
         _.regexpForGlob({});
+      });
+    }
+  };
+
+//
+
+  var regexpMakeArray = function( test )
+  {
+    var arrOfStr = [ 'hello', 'world' ],
+      singleStr = 'hello',
+      singleReg = /world/,
+      wrongParam1 = null,
+      wrongParam2 = [ 3, 4 ],
+      expectedArr1 = [ /hello/, /world/ ],
+      expectedArr2 = [ /hello/ ],
+      expectedArr3 = [ singleReg ];
+
+    var getSource = function ( v )
+    {
+      return v.source;
+    }
+
+    test.description = 'argument is array of string';
+    var got = _.regexpMakeArray(arrOfStr);
+    test.identical( got.map( getSource ), expectedArr1.map( getSource ) );
+
+    test.description = 'argument is array of regexp';
+    var got = _.regexpMakeArray( ArrOfRegx1 );
+    test.identical( got, ArrOfRegx1 );
+
+    test.description = 'argument is single string';
+    var got = _.regexpMakeArray( singleStr );
+    test.identical( got.map( getSource ), expectedArr2.map( getSource ) );
+
+    test.description = 'argument is single regexp';
+    var got = _.regexpMakeArray( singleReg );
+    test.identical( got, expectedArr3 );
+
+    test.description = 'argument is empty arr';
+    var got = _.regexpMakeArray( [] );
+    test.identical( got, [] );
+
+    if( Config.debug )
+    {
+      test.description = 'call without arguments';
+      test.shouldThrowError( function() {
+        _.regexpMakeArray();
+      });
+
+      test.description = 'call with wrong type argument';
+      test.shouldThrowError( function() {
+        _.regexpMakeArray( wrongParam1 );
+      });
+
+      test.description = 'call with wrong type argument';
+      test.shouldThrowError( function() {
+        _.regexpMakeArray( wrongParam2 );
       });
     }
   };
@@ -465,6 +522,7 @@
 
       regexpEscape       : regexpEscape,
       regexpForGlob      : regexpForGlob,
+      regexpMakeArray    : regexpMakeArray,
       _regexpObjectExtend: _regexpObjectExtend,
       regexpObjectBroaden: regexpObjectBroaden,
       regexpObjectShrink : regexpObjectShrink
