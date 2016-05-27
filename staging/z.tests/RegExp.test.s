@@ -8,7 +8,7 @@
    from the project directory run
 
    npm install
-   node ./staging/z.tests/Sample.test.s
+   node ./staging/z.tests/RegExp.test.s
 
    */
 
@@ -144,6 +144,202 @@
       test.shouldThrowError( function()
       {
         _.regexpForGlob({});
+      });
+    }
+  };
+
+//
+
+  var regexpMakeArray = function( test )
+  {
+    var arrOfStr = [ 'hello', 'world' ],
+      singleStr = 'hello',
+      singleReg = /world/,
+      wrongParam1 = null,
+      wrongParam2 = [ 3, 4 ],
+      expectedArr1 = [ /hello/, /world/ ],
+      expectedArr2 = [ /hello/ ],
+      expectedArr3 = [ singleReg ];
+
+    var getSource = function ( v )
+    {
+      return v.source;
+    }
+
+    test.description = 'argument is array of string';
+    var got = _.regexpMakeArray(arrOfStr);
+    test.identical( got.map( getSource ), expectedArr1.map( getSource ) );
+
+    test.description = 'argument is array of regexp';
+    var got = _.regexpMakeArray( ArrOfRegx1 );
+    test.identical( got, ArrOfRegx1 );
+
+    test.description = 'argument is single string';
+    var got = _.regexpMakeArray( singleStr );
+    test.identical( got.map( getSource ), expectedArr2.map( getSource ) );
+
+    test.description = 'argument is single regexp';
+    var got = _.regexpMakeArray( singleReg );
+    test.identical( got, expectedArr3 );
+
+    test.description = 'argument is empty arr';
+    var got = _.regexpMakeArray( [] );
+    test.identical( got, [] );
+
+    if( Config.debug )
+    {
+      test.description = 'call without arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpMakeArray();
+      });
+
+      test.description = 'call with wrong type argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpMakeArray( wrongParam1 );
+      });
+
+      test.description = 'call with wrong type argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpMakeArray( wrongParam2 );
+      });
+    }
+  };
+
+//
+  var regexpMakeExpression = function( test )
+  {
+    var simpleStr = 'hello',
+      simpleReg = /world/,
+      strWithSpChar ='Hello. How are you?',
+      wrongParam1 = null,
+      expected1 = /hello/,
+      expected2 = /Hello\. How are you\?/;
+
+
+    test.description = 'argument is simple string';
+    var got = _.regexpMakeExpression( simpleStr );
+    test.identical( got.source, expected1.source );
+
+    test.description = 'argument is regexp';
+    var got = _.regexpMakeExpression( simpleReg );
+    test.identical( got, simpleReg );
+
+    test.description = 'argument is string with special characters';
+    var got = _.regexpMakeExpression( strWithSpChar );
+    test.identical( got.source, expected2.source );
+
+    if( Config.debug )
+    {
+      test.description = 'call without arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpMakeExpression();
+      });
+
+      test.description = 'call with wrong type argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpMakeExpression( wrongParam1 );
+      });
+    }
+  };
+//
+
+  var _regexpAny = function( test )
+  {
+    var strForTest1 = 'some text 5',
+      wrongTypeArr = [/a/, /b/, '5'],
+      expectedIndex = 2,
+      defaultParam = true;
+
+    test.description = 'regexp is found in str';
+    var got = _._regexpAny( ArrOfRegx2, strForTest1, false );
+    test.identical( got, expectedIndex );
+
+    test.description = 'regexp isn\'t found in str';
+    var got = _._regexpAny( ArrOfRegx3, strForTest1, false );
+    test.identical( got, false );
+
+    test.description = 'empty regexp array passed';
+    var got = _._regexpAny( [], strForTest1, defaultParam );
+    test.identical( got, defaultParam );
+
+    if( Config.debug )
+    {
+      test.description = 'missed all arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny()
+      });
+
+      test.description = 'missed one of arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny(ArrOfRegx2, strForTest1)
+      });
+
+      test.description = 'first argument is not array';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny('hello', strForTest1, false);
+      });
+
+      test.description = 'element of array is not regexp';
+      test.shouldThrowError( function()
+      {
+        _._regexpAny(wrongTypeArr, strForTest1, false);
+      });
+    }
+  };
+
+//
+
+  var _regexpAll = function( test )
+  {
+    var strForTest1 = '012349',
+      wrongTypeArr = [/0/, /3/, '9'],
+      expectedIndex = 2,
+      defaultParam = false;
+
+    test.description = 'all regexp is found in str';
+    var got = _._regexpAll( ArrOfRegx1, strForTest1, false );
+    test.identical( got, true );
+
+    test.description = 'one of regexp isn\'t found in str';
+    var got = _._regexpAll( ArrOfRegx2, strForTest1, false );
+    test.identical( got, expectedIndex );
+
+    test.description = 'empty regexp array passed';
+    var got = _._regexpAll( [], strForTest1, defaultParam );
+    test.identical( got, defaultParam );
+
+    if( Config.debug )
+    {
+      test.description = 'missed all arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll()
+      });
+
+      test.description = 'missed one of arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll(ArrOfRegx2, strForTest1)
+      });
+
+      test.description = 'first argument is not array';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll('hello', strForTest1, false);
+      });
+
+      test.description = 'element of array is not regexp';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll(wrongTypeArr, strForTest1, false);
       });
     }
   };
@@ -463,11 +659,15 @@
 
     tests: {
 
-      regexpEscape       : regexpEscape,
-      regexpForGlob      : regexpForGlob,
-      _regexpObjectExtend: _regexpObjectExtend,
-      regexpObjectBroaden: regexpObjectBroaden,
-      regexpObjectShrink : regexpObjectShrink
+      regexpEscape        : regexpEscape,
+      regexpForGlob       : regexpForGlob,
+      regexpMakeArray     : regexpMakeArray,
+      regexpMakeExpression: regexpMakeExpression,
+      _regexpAny          : _regexpAny,
+      _regexpAll          : _regexpAll,
+      _regexpObjectExtend : _regexpObjectExtend,
+      regexpObjectBroaden : regexpObjectBroaden,
+      regexpObjectShrink  : regexpObjectShrink
 
     }
 
