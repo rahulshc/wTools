@@ -4096,16 +4096,16 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  * If not arguments, it assigns a default variables
  * and return an empty array.
  *
- * @param {Array} [array = []] - Array
- * @param {a} [a = 0] - begin zero-based index at which to begin extraction.
- * @param {b} [b = array.length] - end zero-based index at which to end extraction.
+ * @param { Array } [ array = [] ] - Array
+ * @param { a } [ a = 0 ] - begin zero-based index at which to begin extraction.
+ * @param { b } [ b = array.length ] - end zero-based index at which to end extraction.
  * Array to return a new array from begin to but not including end.
  *
  * @example
- * // returns [3, 4, 5, 6, 7, 8, 9]
- * arraySlice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, 9);
+ * // returns [ 3, 4, 5, 6, 7, 8, 9 ]
+ * arraySlice( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 9 );
  *
- * @returns {Array} returns a shallow copy of elements from the original array.
+ * @returns { Array } returns a shallow copy of elements from the original array.
  * @method arraySlice
  * @memberof wTools#
 */
@@ -5512,16 +5512,16 @@ var mapExtendFiltering = function( filter,dstObject )
  * If true,
  * it extends (result) from the next objects.
  *
- * @param{...objectLike} [dstObject = {}] - The target object.
- * @param{...arguments[]} - The source object(s).
+ * @param{ ...objectLike } [ dstObject = {} ] - The target object.
+ * @param{ ...arguments[] } - The source object(s).
  *
  * @example
- * // returns {a: 7, b: 13, c: 3, d: 33, e: 77}
- * mapExtend({a: 7, b: 13}, {c: 3, d: 33}, {e: 77});
+ * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+ * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
  *
- * @returns {Object} It will return the target object.
+ * @returns { Object } It will return the target object.
  * @method mapExtend
- * @throws {mapExtend} Will throw an error if the argument is not an object.
+ * @throws { mapExtend } Will throw an error if the argument is not an object.
  * @memberof wTools#
 */
 
@@ -5699,14 +5699,14 @@ var mapToString = function( src,keyValSep,tupleSep )
  * it returns an array of keys,
  * otherwise it returns an empty array.
  *
- * @param {objectLike} src
+ * @param { objectLike } src
  * The object whose properties are to be returned.
  *
  * @example
- * // returns ["a", "b"]
- * mapKeys({a: 7, b: 13});
+ * // returns [ "a", "b" ]
+ * mapKeys( { a : 7, b : 13 } );
  *
- * @return {Array} Returns an array whose elements are strings
+ * @return { Array } Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
  * @method mapKeys
  * @memberof wTools#
@@ -5737,14 +5737,14 @@ var mapKeys = function mapKeys( src )
  * If true, it returns an array of values,
  * otherwise it returns an empty array.
  *
- * @param {objectLike} src
+ * @param { objectLike } src
  * The object whose property values are to be returned.
  *
  * @example
- * // returns ["7", "13"]
- * mapValues({a: 7, b: 13});
+ * // returns [ "7", "13" ]
+ * mapValues( { a : 7, b : 13 } );
  *
- * @returns {Array} returns an array whose elements are strings
+ * @returns { Array } returns an array whose elements are strings
  * corresponding to the enumerable property values found directly upon object.
  * @method mapValues
  * @memberof wTools#
@@ -5763,20 +5763,20 @@ var mapValues = function( src )
 }
 
 /**
- * The mapPairs() converts an object into a list of [key, value] pairs.
+ * The mapPairs() converts an object into a list of [ key, value ] pairs.
  *
  * It takes an object (src) creates an empty array,
  * checks if (src) is an object.
- * If true, it returns a list of [key, value] pairs,
+ * If true, it returns a list of [ key, value ] pairs,
  * otherwise it returns an empty array.
  *
- * @param {objectLike} src - Object to get a list of [key, value] pairs.
+ * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
  *
  * @example
- * // returns [ ["a", 7], ["b", 13] ]
- * mapPairs({a: 7, b: 13});
+ * // returns [ [ "a", 7 ], [ "b", 13 ] ]
+ * mapPairs( { a : 7, b : 13 } );
  *
- * @returns {Array} A list of [key, value] pairs.
+ * @returns { Array } A list of [ key, value ] pairs.
  * @method mapPairs
  * @memberof wTools#
 */
@@ -5855,25 +5855,25 @@ var mapGroup = function( src,options )
  * if both object have the same length and [key, value] return true
  * otherwise it returns undefined.
  *
- * @param {objectLike} src1 - First object.
- * @param {objectLike} src2 - Target object.
+ * @param { objectLike } src1 - First object.
+ * @param { objectLike } src2 - Target object.
  * Objects to compare values.
  *
  * @example
  * // returns true
- * mapSame({a: 7, b: 13}, {a: 7, b: 13});
+ * mapSame( { a : 7, b : 13 }, { a : 7, b : 13 } );
  *
  * @example
  * returns undefined
- * mapSame({a: 7, b: 13}, {a: 33, b: 13});
+ * mapSame( { a : 7, b : 13 }, { a : 33, b : 13 } );
  *
  * @example
  * returns undefined
- * mapSame({a: 7, b: 13, c: 33}, {a: 7, b: 13});
+ * mapSame( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
  *
- * @returns {Boolean}
+ * @returns { Boolean }
  * @method mapSame
- * @throws Will throw an error if (arguments.length !== 2).
+ * @throws Will throw an error if ( arguments.length !== 2 ).
  * @memberof wTools#
 */
 
@@ -5901,21 +5901,21 @@ var mapSame = function( src1,src2 ){
  * If true, it returns true,
  * otherwise it returns false.
  *
- * @param {objectLike} src - Target object.
- * @param {objectLike} ins - Second object.
+ * @param { objectLike } src - Target object.
+ * @param { objectLike } ins - Second object.
  * Objects to compare values.
  *
  * @example
  * // returns true
- * mapContain({a: 7, b: 13, c: 15}, {a: 7, b: 13});
+ * mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
  *
  * @example
  * returns false
- * mapContain({a: 7, b: 13}, {a: 7, b: 13, c: 15});
+ * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
  *
- * @returns {Boolean}
+ * @returns { Boolean }
  * @method mapContain
- * @throws Will throw an error if (arguments.length !== 2).
+ * @throws Will throw an error if ( arguments.length !== 2 ).
  * @memberof wTools#
 */
 
@@ -5961,19 +5961,19 @@ var mapContain = function( src,ins )
  * if (object) has own property with the (name).
  * If true, it returns true.
  *
- * @param {objectLike} object - Object that will be check.
- * @param {name} name - Target property.
+ * @param { objectLike } object - Object that will be check.
+ * @param { name } name - Target property.
  *
  * @example
  * // returns true
- * mapOwn({a: 7, b: 13}, 'a');
+ * mapOwn( { a : 7, b : 13 }, 'a' );
  *
- * mapOwn({a: 7, b: 13}, 'c');
+ * mapOwn( { a : 7, b : 13 }, 'c' );
  * output: false
  *
- * @returns {Boolean}
+ * @returns { Boolean }
  * @method mapOwn
- * @throws {mapOwn} Will throw an error if the (name) is unknown.
+ * @throws { mapOwn } Will throw an error if the (name) is unknown.
  * @memberof wTools#
 */
 
