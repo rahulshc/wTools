@@ -296,6 +296,55 @@
   };
 
 //
+
+  var _regexpAll = function( test )
+  {
+    var strForTest1 = '012349',
+      wrongTypeArr = [/0/, /3/, '9'],
+      expectedIndex = 2,
+      defaultParam = false;
+
+    test.description = 'all regexp is found in str';
+    var got = _._regexpAll( ArrOfRegx1, strForTest1, false );
+    test.identical( got, true );
+
+    test.description = 'one of regexp isn\'t found in str';
+    var got = _._regexpAll( ArrOfRegx2, strForTest1, false );
+    test.identical( got, expectedIndex );
+
+    test.description = 'empty regexp array passed';
+    var got = _._regexpAll( [], strForTest1, defaultParam );
+    test.identical( got, defaultParam );
+
+    if( Config.debug )
+    {
+      test.description = 'missed all arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll()
+      });
+
+      test.description = 'missed one of arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll(ArrOfRegx2, strForTest1)
+      });
+
+      test.description = 'first argument is not array';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll('hello', strForTest1, false);
+      });
+
+      test.description = 'element of array is not regexp';
+      test.shouldThrowError( function()
+      {
+        _._regexpAll(wrongTypeArr, strForTest1, false);
+      });
+    }
+  };
+
+//
   var _regexpObjectExtend = function( test ) 
   {
     var src1 =
@@ -615,6 +664,7 @@
       regexpMakeArray     : regexpMakeArray,
       regexpMakeExpression: regexpMakeExpression,
       _regexpAny          : _regexpAny,
+      _regexpAll          : _regexpAll,
       _regexpObjectExtend : _regexpObjectExtend,
       regexpObjectBroaden : regexpObjectBroaden,
       regexpObjectShrink  : regexpObjectShrink
