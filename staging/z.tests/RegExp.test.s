@@ -189,18 +189,60 @@
     if( Config.debug )
     {
       test.description = 'call without arguments';
-      test.shouldThrowError( function() {
+      test.shouldThrowError( function()
+      {
         _.regexpMakeArray();
       });
 
       test.description = 'call with wrong type argument';
-      test.shouldThrowError( function() {
+      test.shouldThrowError( function()
+      {
         _.regexpMakeArray( wrongParam1 );
       });
 
       test.description = 'call with wrong type argument';
-      test.shouldThrowError( function() {
+      test.shouldThrowError( function()
+      {
         _.regexpMakeArray( wrongParam2 );
+      });
+    }
+  };
+
+//
+  var regexpMakeExpression = function( test )
+  {
+    var simpleStr = 'hello',
+      simpleReg = /world/,
+      strWithSpChar ='Hello. How are you?',
+      wrongParam1 = null,
+      expected1 = /hello/,
+      expected2 = /Hello\. How are you\?/;
+
+
+    test.description = 'argument is simple string';
+    var got = _.regexpMakeExpression( simpleStr );
+    test.identical( got.source, expected1.source );
+
+    test.description = 'argument is regexp';
+    var got = _.regexpMakeExpression( simpleReg );
+    test.identical( got, simpleReg );
+
+    test.description = 'argument is string with special characters';
+    var got = _.regexpMakeExpression( strWithSpChar );
+    test.identical( got.source, expected2.source );
+
+    if( Config.debug )
+    {
+      test.description = 'call without arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpMakeExpression();
+      });
+
+      test.description = 'call with wrong type argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpMakeExpression( wrongParam1 );
       });
     }
   };
@@ -520,12 +562,13 @@
 
     tests: {
 
-      regexpEscape       : regexpEscape,
-      regexpForGlob      : regexpForGlob,
-      regexpMakeArray    : regexpMakeArray,
-      _regexpObjectExtend: _regexpObjectExtend,
-      regexpObjectBroaden: regexpObjectBroaden,
-      regexpObjectShrink : regexpObjectShrink
+      regexpEscape        : regexpEscape,
+      regexpForGlob       : regexpForGlob,
+      regexpMakeArray     : regexpMakeArray,
+      regexpMakeExpression: regexpMakeExpression,
+      _regexpObjectExtend : _regexpObjectExtend,
+      regexpObjectBroaden : regexpObjectBroaden,
+      regexpObjectShrink  : regexpObjectShrink
 
     }
 
