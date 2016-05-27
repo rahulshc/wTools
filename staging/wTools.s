@@ -2,7 +2,11 @@
 
 'use strict';
 
-// //
+/**
+ * @file wTools.s - Generic purpose tools of base level for solving problems in Java Script.
+ */
+
+//
 
 var _global_ = undefined;
 
@@ -41,7 +45,7 @@ if( typeof DEBUG === 'undefined' )
 
 /**
  * wTools - main class.
- * @class AppViewer
+ * @class wTools
  */
 
 var Self = wTools;
@@ -364,7 +368,7 @@ var entityHasUndef = function( src )
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
  * @method entitySame
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var entitySame = function entitySame( src1,src2,options )
@@ -480,7 +484,7 @@ var _entitySame = function _entitySame( src1,src2,options,path )
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
  * @method entityIdentical
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var entityIdentical = function entityIdentical( src1,src2,options )
@@ -504,7 +508,7 @@ var entityIdentical = function entityIdentical( src1,src2,options )
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
  * @method entityEquivalent
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var entityEquivalent = function entityEquivalent( src1,src2,options )
@@ -542,7 +546,7 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
  * @method entityContain
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var entityContain = function entityContain( src1,src2,options )
@@ -1591,7 +1595,7 @@ diagnosticWatchFields.defaults =
  * @param {string} nameString - object coded name or string.
  * @return {object} nameKeyValue - name in key/value format.
  * @method nameFielded
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var nameFielded = function nameFielded( nameString )
@@ -1618,7 +1622,7 @@ var nameFielded = function nameFielded( nameString )
  * @param {object} nameObject - fielded name or name as string.
  * @return {object} name splitted in coded/raw fields.
  * @method nameUnfielded
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var nameUnfielded = function nameUnfielded( nameObject )
@@ -1658,7 +1662,7 @@ var nameUnfielded = function nameUnfielded( nameObject )
  * @param {object} namesMap - fielded names.
  * @return {object} expected map.
  * @method namesCoded
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var namesCoded = function( namesMap )
@@ -2200,7 +2204,7 @@ var strEnds = function( src,end )
 *Cut begin of the string.
 *@param {string} src
 *@param {string} begin
-  *example 
+  *example
    var scr = ._strBeginRemove("abc","a");
 *@return {string}
 *If result of method strBegins - false, than return src
@@ -2252,7 +2256,7 @@ var strEndRemove = function( src,end )
 =======
 *If begin match with first chars of param src, return src
 *Else add param src to param begin
-*@method strPrependOnce 
+*@method strPrependOnce
 *@memberof wTools#
 >>>>>>> bfa2be8c1ddc64cfa93955301c5533a1d2ca1a31
 */
@@ -2265,25 +2269,20 @@ var strPrependOnce = function( src,begin )
 }
 
 //
-/**
-*Append string to end of other string.
-*@param {string} src
-*@param {string} end
-  *example
-   var src = ._strAppendOnce("test","test");
-*@return {string}
-<<<<<<< HEAD
-*if end match with last chars of param src, return src
-*else add param end to param src
-*@method strPrependOnce
-*@memberof wTools
-=======
-*If end match with last chars of param src, return src
-*Else add param end to param src
-*@method strPrependOnce 
-*@memberof wTools#
->>>>>>> bfa2be8c1ddc64cfa93955301c5533a1d2ca1a31
-*/
+
+  /**
+    * Append string to end of other string.
+    * @param {string} src
+    * @param {string} end
+    * example
+      var src = ._strAppendOnce("test","test");
+    * @return {string}
+    * if end match with last chars of param src, return src
+    * else add param end to param src
+    * @method strPrependOnce
+    * @memberof wTools
+  */
+
 var strAppendOnce = function( src,end )
 {
   if( src.indexOf( end,src.length - end.length ) !== -1 )
@@ -2303,6 +2302,7 @@ var strAppendOnce = function( src,end )
    * @property {REgExp[]} includeAll - Array of RegExps, to check matching all of them;
    * @property {REgExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
    * @property {REgExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
+   * @memberof wTools
    */
 
 var regexpModeNames = namesCoded
@@ -2333,7 +2333,7 @@ var regexpModeNamesToReplace = namesCoded
  * @param {String} src Regexp string
  * @returns {String} Escaped string
  * @method regexpEscape
- * @memberOf wTools#
+ * @memberof wTools
  */
 var regexpEscape = function( src )
 {
@@ -2351,7 +2351,7 @@ var regexpEscape = function( src )
  * @param {String} glob *-wildcard style glob
  * @returns {RegExp} RegExp that represent passed glob
  * @method regexpForGlob
- * @memberOf wTools#
+ * @memberof wTools
  */
 var regexpForGlob = function( glob )
 {
@@ -2397,7 +2397,7 @@ var regexpForGlob = function( glob )
  * @param {String[]|String} src - array of strings/regexps or single string/regexp
  * @returns {RegExp[]} Array of regexps
  * @method regexpMakeArray
- * @memberOf wTools#
+ * @memberof wTools
  */
 var regexpMakeArray = function( src )
 {
@@ -2426,7 +2426,7 @@ var regexpMakeArray = function( src )
  * @param {String} src - string or regexp
  * @returns {String} Regexp
  * @method regexpMakeExpression
- * @memberOf wTools#
+ * @memberof wTools
  */
 var regexpMakeExpression = function( src )
 {
@@ -2462,7 +2462,7 @@ var regexpMakeExpression = function( src )
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @method _regexpAny
- * @memberOf wTools#
+ * @memberof wTools
  */
 var _regexpAny = function( arr,ins,none )
 {
@@ -2500,7 +2500,7 @@ var _regexpAny = function( arr,ins,none )
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @method _regexpAll
- * @memberOf wTools#
+ * @memberof wTools
  */
 var _regexpAll = function( arr,ins,none )
 {
@@ -2549,7 +2549,7 @@ var _regexpAll = function( arr,ins,none )
    * @param ins String for testing
    * @returns {boolean} If all test passed return true;
    * @method regexpTest
-   * @memberOf wTools#
+   * @memberof wTools
      */
 
 var regexpTest = function( src,ins )
@@ -2583,7 +2583,7 @@ var regexpTest = function( src,ins )
    * @param {String} ins String for testing
    * @returns {String|boolean} If all reason match, return true, otherwise return string with fail reason
    * @method regexpTestReason
-   * @memberOf wTools#
+   * @memberof wTools
      */
 var regexpTestReason = function( src,ins )
 {
@@ -2647,7 +2647,7 @@ var regexpTestReason = function( src,ins )
    * options object.
    * @returns {RegExp} Result regexp
    * @method regexpBut_
-   * @memberOf wTools#
+   * @memberof wTools
    */
 
 var regexpBut_ = function( options )
@@ -2723,7 +2723,7 @@ regexpBut_.defaults =
    * @param {...RegexpObject} [src] RegexpObjects to merge from.
    * @returns {RegexpObject} Reference to `result` parameter;
    * @method regexpObjectShrink
-   * @memberOf wTools#
+   * @memberof wTools
    */
 
 var regexpObjectShrink = function( result )
@@ -2777,7 +2777,7 @@ var regexpObjectShrink = function( result )
    * @param {...RegexpObject} [src] RegexpObjects to merge from.
    * @returns {RegexpObject} Reference to `result` parameter;
    * @method regexpObjectBroaden
-   * @memberOf wTools#
+   * @memberof wTools
    */
 
 var regexpObjectBroaden = function( result )
@@ -2816,7 +2816,7 @@ var regexpObjectBroaden = function( result )
    * @returns {RegexpObject}
       merged RegexpObject.
    * @method _regexpObjectExtend
-   * @memberOf wTools#
+   * @memberof wTools
    */
 
 var _regexpObjectExtend = function( options )
@@ -3131,7 +3131,7 @@ var _regexpObjectOrderingExclusion = function( ordering )
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
  * @method _routineBind
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var _routineBind = function _routineBind( options )
@@ -4120,7 +4120,7 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  *
  * @returns {Array} returns a shallow copy of elements from the original array.
  * @method arraySlice
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var arraySlice = function arraySlice( array,a,b )
@@ -4632,7 +4632,7 @@ var arrayRandom = function( options )
     An array of numbers for the requested range. May be an empty
     array if adding the step would not converge toward the end value.
  * @method arrayRange
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayRange = function( range )
@@ -5536,7 +5536,7 @@ var mapExtendFiltering = function( filter,dstObject )
  * @returns {Object} It will return the target object.
  * @method mapExtend
  * @throws {mapExtend} Will throw an error if the argument is not an object.
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var mapExtend = function mapExtend( dstObject )
@@ -5629,7 +5629,7 @@ var mapCopy = function mapCopy()
  * @return {array}
  *    Pair key / value as array if srcObject has fields otherwise undefiend.
  * @method mapFirstPair
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var mapFirstPair = function mapFirstPair( srcObject )
@@ -5723,7 +5723,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  * @return {Array} Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
  * @method mapKeys
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var mapKeys = function mapKeys( src )
@@ -5761,7 +5761,7 @@ var mapKeys = function mapKeys( src )
  * @returns {Array} returns an array whose elements are strings
  * corresponding to the enumerable property values found directly upon object.
  * @method mapValues
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var mapValues = function( src )
@@ -5792,7 +5792,7 @@ var mapValues = function( src )
  *
  * @returns {Array} A list of [key, value] pairs.
  * @method mapPairs
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var mapPairs = function( src )
@@ -5888,7 +5888,7 @@ var mapGroup = function( src,options )
  * @returns {Boolean}
  * @method mapSame
  * @throws Will throw an error if (arguments.length !== 2).
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var mapSame = function( src1,src2 ){
@@ -5930,7 +5930,7 @@ var mapSame = function( src1,src2 ){
  * @returns {Boolean}
  * @method mapContain
  * @throws Will throw an error if (arguments.length !== 2).
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var mapContain = function( src,ins )
@@ -5963,7 +5963,7 @@ var mapContain = function( src,ins )
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
  * @method mapOwn
- * @memberof wTools#
+ * @memberof wTools
  */
 
 
@@ -5988,7 +5988,7 @@ var mapContain = function( src,ins )
  * @returns {Boolean}
  * @method mapOwn
  * @throws {mapOwn} Will throw an error if the (name) is unknown.
- * @memberof wTools#
+ * @memberof wTools
 */
 
 var mapOwn = function( object,name )
