@@ -6014,7 +6014,7 @@ var mapOwn = function( object,name )
    * @memberof wTools#
    */
 
-var mapBut = function( srcMap )
+var mapBut = function( srcMap ) 
 {
   var result = {};
   var a,k;
