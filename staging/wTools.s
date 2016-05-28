@@ -6132,7 +6132,7 @@ var mapOwn = function( object,name )
    * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
    *
    * @throws { Error }
-   *  In debug mode it throws an error if the first argument is not object like.
+   *  In debug mode it throws an error if any argument is not object like.
 
    * @returns { Object } Returns new object made by unique keys.
    * @method mapBut
@@ -6152,7 +6152,7 @@ var mapBut = function( srcMap )
     {
       var argument = arguments[ a ];
 
-      _assert( _.objectIs( argument ),'argument','#'+a,'is not object' );
+      _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
       break;
