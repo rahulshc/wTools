@@ -75,30 +75,30 @@ var _modeSet = function _modeSet( value )
 // mechanics
 // --
 
-var _gotterAppend = function( options )
+var _gotterAppend = function( o )
 {
   var self = this;
-  var taker = options.taker;
-  var name = options.name || taker ? taker.name : null || null;
+  var taker = o.taker;
+  var name = o.name || taker ? taker.name : null || null;
 
   _.assert( arguments.length === 1 );
-  _.assert( _.boolIs( options.thenning ) );
+  _.assert( _.boolIs( o.thenning ) );
   _.assert( _.routineIs( taker ) || taker instanceof Self );
 
   if( _.routineIs( taker ) )
   {
-    if( options.context !== undefined || options.argument !== undefined )
-    taker = _.routineBind( taker,options.context,options.argument );
+    if( o.context !== undefined || o.argument !== undefined )
+    taker = _.routineBind( taker,o.context,o.argument );
   }
   else
   {
-    _.assert( options.context === undefined && options.argument === undefined );
+    _.assert( o.context === undefined && o.argument === undefined );
   }
 
   self._taker.push
   ({
     onGot : taker,
-    thenning : options.thenning,
+    thenning : o.thenning,
     name : name,
   });
 
@@ -207,7 +207,7 @@ var ifNoErrorThen = function()
       else
       {
         debugger;
-        return wConsequence().error( err );
+        return wConsequence().error( _.err( err ) );
       }
 
     }
@@ -233,7 +233,7 @@ var ifNoErrorThen = function()
 
 //
 
-var thenDebug = function thenDebug( taker )
+var thenDebug = function thenDebug()
 {
   var self = this;
 
@@ -387,7 +387,7 @@ var _handleGot = function()
           {
             if( self.mark && self.mark.indexOf( err ) !== -1 )
             {
-              console.log( 'in consequence' );
+              console.error( 'Uncaught error caught by Consequence:' );
               _.errLog( err );
             }
           });
@@ -434,44 +434,79 @@ var _handleGot = function()
 // class
 // --
 
-var _giveTo = function _giveTo( options )
+var _giveTo = function _giveTo( o )
 {
-  var give, context;
-  var args = options.args;
+  var context;
+
+  if( !( _.arrayIs( o.args ) && o.args.length <= 1 ) )
+  debugger;
 
   _.assert( arguments.length );
-  _.assert( _.objectIs( options ) );
-
-  if( options.error === undefined )
-  options.error = undefined;
-
-  if( options.context === undefined )
-  options.context = undefined;
+  _.assert( _.objectIs( o ) );
+  _.assert( _.arrayIs( o.args ) && o.args.length <= 1, 'not tested' );
 
   //
 
-  if( options.consequence instanceof Self )
+  if( o.consequence instanceof Self )
   {
-    if( options.error === undefined )
-    give = options.consequence.give;
+/*
+    if( o.error === undefined )
+    give = o.consequence.give;
     else
-    give = options.consequence.giveWithError;
-    context = options.consequence;
+    give = o.consequence.giveWithError;
+*/
+    _.assert( _.arrayIs( o.args ) && o.args.length <= 1 );
+
+    context = o.consequence;
+
+    if( o.error !== undefined )
+    {
+      o.consequence.giveWithError( o.error,o.args[ 0 ] );
+    }
+    else
+    {
+      o.consequence.give( o.args[ 0 ] );
+    }
+/*
+    if( o.args )
+    give.apply( context,o.args );
+    else
+    give.call( context,got );
+*/
   }
-  else if( _.routineIs( options.consequence ) )
+  else if( _.routineIs( o.consequence ) )
   {
-    give = options.consequence;
-    context = options.context;
+
+    _.assert( _.arrayIs( o.args ) && o.args.length <= 1 );
+
+/*
+    give = o.consequence;
+    context = o.context;
+
+    if( o.error !== undefined )
+    {
+      o.args = o.args || [];
+      o.args.unshift( o.error );
+    }
+
+    if( o.args )
+    o.consequence.apply( context,o.args );
+    else
+    o.consequence.call( context,got );
+*/
+
+    if( o.error !== undefined )
+    {
+      return o.consequence.call( context,o.error,o.args[ 0 ] );
+    }
+    else
+    {
+      return o.consequence.call( context,null,o.args[ 0 ] );
+    }
+
   }
   else throw _.err( 'Unknown type of consequence' );
 
-  if( options.error !== undefined )
-  args.unshift( options.error );
-
-  if( options.args )
-  give.apply( context,options.args );
-  else
-  give.call( context,got );
 
 }
 
@@ -527,7 +562,7 @@ var errorTo = function( consequence,error )
     consequence : consequence,
     context : undefined,
     error : error,
-    args : undefined,
+    args : [],
   });
 
 }
@@ -697,6 +732,7 @@ var Proto =
   done: got,
   gotOnce: gotOnce,
   then_: then_,
+  ifNoErrorThen: ifNoErrorThen,
   thenDebug: thenDebug,
   timeOut: timeOut,
 
@@ -707,12 +743,14 @@ var Proto =
 
   _handleGot: _handleGot,
 
+
+  //
+
   _giveTo: _giveTo,
 
   giveWithContextTo: giveWithContextTo,
   giveTo: giveTo,
   errorTo: errorTo,
-  ifNoErrorThen: ifNoErrorThen,
 
   giveWithContextAndErrorTo: giveWithContextAndErrorTo,
   giveWithErrorTo: giveWithErrorTo,

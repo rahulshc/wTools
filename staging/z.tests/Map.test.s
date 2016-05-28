@@ -78,7 +78,7 @@
       {
         _.mapKeys( true );
       });
-      
+
       test.description = 'wrong type of string';
       test.shouldThrowError( function()
       {
@@ -90,14 +90,14 @@
   };
 
 
-  var mapValues = function( test ) 
+  var mapValues = function( test )
   {
-    
+
     test.description = 'an empty array';
     var got = _.mapValues( { } );
     var expected = [ ];
     test.identical( got, expected );
-    
+
     test.description = 'two values';
     var got = _.mapValues( { a : 7, b : 13 } );
     var expected = [ 7, 13 ];
@@ -235,17 +235,17 @@
     {
 
       test.description = 'no argument';
-      test.shouldThrowError( function() 
+      test.shouldThrowError( function()
       {
         _.mapPairs();
       });
-      
+
       test.description = 'redundant argument';
-      test.shouldThrowError( function() 
+      test.shouldThrowError( function()
       {
         _.mapPairs( {},{} );
       });
-      
+
       test.description = 'wrong type of number';
       test.shouldThrowError( function()
       {

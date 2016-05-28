@@ -10,7 +10,8 @@
     "production"
   ],
   "scripts": {
-    "test": "node ./staging/z.test/All.s"
+    "test": "node ./staging/z.test/All.s",
+    "make_doc": "./doc.sh"
   },
   "repository": {
     "type": "git",

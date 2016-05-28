@@ -1,1 +1,10 @@
-.idea/
+.*
+-*
+*.log
+*.db
+*.sh
+*.bat
+builder
+proto
+node_modules
+html.build.coffee
