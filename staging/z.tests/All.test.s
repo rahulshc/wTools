@@ -1,4 +1,4 @@
-( function _file_All_test_s_( ) {
+( function _file_All_s_( ) {
 
 'use strict';
 
@@ -14,9 +14,6 @@ if( typeof module !== 'undefined' )
   require( './Consequence.test.s' );
   require( './EventHandler.test.s' );
   require( './String.test.s' );
-
-  require( './RegExp.test.s' );
-  require( './Map.test.s' );
 
 }
 
