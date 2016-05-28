@@ -6110,9 +6110,9 @@ var mapOwn = function( object,name )
 //
 
   /**
-   * Returns an object without repeating keys.
+   * Returns new object with unique keys.
    *
-   * Takes anu number of objects.
+   * Takes any number of objects.
    * Returns new object filled by unqiue keys
    * from the first (srcMap) original object.
    * Values for result object come from original object (srcMap)
