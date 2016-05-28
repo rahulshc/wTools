@@ -2282,36 +2282,50 @@ var str = function()
 }
 
 //
-/**
-*Compares two strings.
-*@param {string} src - source string
-*@param {string} begin
-  *example
-   var scr = ._strBegins("abc","a");
-*@return {Boolean}
-*If param begin is match with param src first chars than return true
-*@method strBegins
-*@memberof wTools#
-*/
+
+  /**
+    * Compares two strings.
+    * @param {string} src - source string
+    * @param {string} begin
+    * @example
+        var scr = ._strBegins("abc","a");
+    * @return {Boolean}
+    * If param begin is match with param src first chars than return true
+    * @method strBegins
+    * @memberof wTools#
+    */
+
 var strBegins = function( src,begin )
 {
+
+  _.assert( _.strIs( src ),'expects string' );
+  _.assert( _.strIs( begin ),'expects string' );
+  _.assert( arguments.length === 2 );
+
   return src.lastIndexOf( begin,0 ) === 0;
 }
 
 //
-/**
-*Compares two strings.
-*@param {string} src - source string
-*@param {string} end
-   *example
-    var scr = ._strEnds("abc","c");
-*@return {Boolean}
-*If param end is match with param src last chars than return true
-*@method strEnds
-*@memberof wTools#
-*/
+
+  /**
+    * Compares two strings.
+    * @param {string} src - source string
+    * @param {string} end
+    * @example
+        var scr = ._strEnds("abc","c");
+    * @return {Boolean}
+    * If param end is match with param src last chars than return true
+    * @method strEnds
+    * @memberof wTools#
+    */
+
 var strEnds = function( src,end )
 {
+
+  _.assert( _.strIs( src ),'expects string' );
+  _.assert( _.strIs( end ),'expects string' );
+  _.assert( arguments.length === 2 );
+
   return src.indexOf( end,src.length - end.length ) !== -1;
 }
 

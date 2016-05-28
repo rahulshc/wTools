@@ -438,10 +438,12 @@ var _giveTo = function _giveTo( o )
 {
   var context;
 
+  if( !( _.arrayIs( o.args ) && o.args.length <= 1 ) )
+  debugger;
+
   _.assert( arguments.length );
   _.assert( _.objectIs( o ) );
-
-  _.assert( _.arrayIs( o.args ) && o.args.length <= 1 );
+  _.assert( _.arrayIs( o.args ) && o.args.length <= 1, 'not tested' );
 
   //
 
@@ -560,7 +562,7 @@ var errorTo = function( consequence,error )
     consequence : consequence,
     context : undefined,
     error : error,
-    args : undefined,
+    args : [],
   });
 
 }
