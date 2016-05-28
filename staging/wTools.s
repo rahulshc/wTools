@@ -5882,7 +5882,7 @@ var mapKeys = function mapKeys( src )
  * The object whose property values are to be returned.
  *
  * @example
- * // returns [ "7", "13" ]
+ * // returns [ 7, 13 ]
  * mapValues( { a : 7, b : 13 } );
  *
  * @returns { Array } returns an array whose elements are strings
