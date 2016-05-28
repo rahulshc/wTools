@@ -44,7 +44,7 @@ if( typeof DEBUG === 'undefined' )
 //
 
 /**
- * wTools - main class.
+ * wTools - Generic purpose tools of base level for solving problems in Java Script..
  * @class wTools
  */
 
@@ -797,6 +797,33 @@ _entitySelect.defaults =
   container : null,
   set : null,
   undefinedForNone : 1,
+}
+
+//
+
+var entityMap = function( src,onEach )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) || _.arrayLike( src ) );
+  _.assert( _.routineIs( onEach ) );
+
+  var result;
+
+  if( _.objectLike( src ) )
+  {
+    result = new src.constructor()
+    for( var s in src )
+    result[ s ] = onEach( src[ s ],s,src );
+  }
+  else
+  {
+    result = _.arrayNewOfSameLength( src );
+    for( var s = 0 ; s < src.length ; s++ )
+    result[ s ] = onEach( src[ s ],s,src );
+  }
+
+  return result;
 }
 
 //
@@ -1680,13 +1707,17 @@ var namesCoded = function( namesMap )
   return result;
 }
 
+// --
+// type test
+// --
+
 /**
- * Function objectIs checks incoming param whether it is object. 
+ * Function objectIs checks incoming param whether it is object.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
- * @example 
+ * @example
  * // returns true
- * var obj = {x : 100};  
+ * var obj = {x : 100};
  * objectIs(obj);
  * @example
  * // returns false
@@ -1726,12 +1757,12 @@ var mapIs = function( src )
 }
 
 /**
- * Function arrayIs checks incoming param whether it is array. 
+ * Function arrayIs checks incoming param whether it is array.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
- * @example 
+ * @example
  * // returns true
- * var arr = [1, 2];  
+ * var arr = [1, 2];
  * arrayIs(arr);
  * @example
  * // returns false
@@ -1773,11 +1804,11 @@ var hasLength = function( src )
 }
 
 /**
- * Function strIs checks incoming param whether it is string. 
+ * Function strIs checks incoming param whether it is string.
  * Returns "true" if incoming param is string. Othervise "false" returned
  *
- * @example 
- * //returns true 
+ * @example
+ * //returns true
  * strIsIs('song');
  * @example
  * // returns false
@@ -1814,11 +1845,11 @@ var symbolIs = function( src )
 }
 
 /**
- * Function numberIs checks incoming param whether it is number. 
+ * Function numberIs checks incoming param whether it is number.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
- * @example 
- * //returns true 
+ * @example
+ * //returns true
  * numberIs(5);
  * @example
  * // returns false
@@ -2177,17 +2208,42 @@ var numberFrom = function( src )
 // --
 // str
 // --
+
 /**
-*Return type of src.
-  *@example
-  var str = _.strTypeOf('testing');
-*@param {*} src
-*@return {string}
-*string name of type src
-*@method strTypeOf
-*@memberof wTools#
-*/
+  * Return type of src.
+  * @example
+      var str = _.strTypeOf('testing');
+  * @param {*} src
+  * @return {string}
+  * string name of type src
+  * @method strTypeOf
+  * @memberof wTools#
+  */
+
 var strTypeOf = function( src )
+{
+
+  if( _.objectIs( src ) )
+  if( src.constructor && src.constructor.name )
+  return src.constructor.name;
+
+  return _.strPrimitiveTypeOf( src );
+}
+
+//
+
+/**
+  * Return primitive type of src.
+  * @example
+      var str = _.strPrimitiveTypeOf('testing');
+  * @param {*} src
+  * @return {string}
+  * string name of type src
+  * @method strPrimitiveTypeOf
+  * @memberof wTools#
+  */
+
+var strPrimitiveTypeOf = function( src )
 {
 
   var name = _ObjectToString.call( src );
@@ -3182,7 +3238,7 @@ var _regexpObjectOrderingExclusion = function( ordering )
 // --
 
 /**
- * Internal implementation. xxx
+ * Internal implementation.
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
  * @method _routineBind
@@ -5757,6 +5813,8 @@ var mapToString = function( src,keyValSep,tupleSep )
   return result
 }
 
+//
+
 /**
  * The mapKeys() returns
  * an array of a given object's own enumerable properties,
@@ -6025,7 +6083,7 @@ var mapContain = function( src,ins )
  *
  * @example
  * // returns true
- * mapOwn( { a : 7, b : 13 }, 'a' );
+ * mapOwn({a: 7, b: 13}, 'a');
  *
  * mapOwn( { a : 7, b : 13 }, 'c' );
  * output: false
@@ -6073,7 +6131,7 @@ var mapOwn = function( object,name )
    * @memberof wTools#
    */
 
-var mapBut = function( srcMap ) 
+var mapBut = function( srcMap )
 {
   var result = {};
   var a,k;
@@ -6726,6 +6784,8 @@ var Proto =
 
   /*strFormat: strFormat,*/
 
+  entityMap: entityMap,
+
 
   // iterator
 
@@ -6821,6 +6881,8 @@ var Proto =
   // str
 
   strTypeOf: strTypeOf,
+  strPrimitiveTypeOf: strPrimitiveTypeOf,
+
   str: str,
 
   strBegins: strBegins,
