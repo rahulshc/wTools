@@ -44,7 +44,7 @@ if( typeof DEBUG === 'undefined' )
 //
 
 /**
- * wTools - main class.
+ * wTools - Generic purpose tools of base level for solving problems in Java Script..
  * @class wTools
  */
 
@@ -797,6 +797,33 @@ _entitySelect.defaults =
   container : null,
   set : null,
   undefinedForNone : 1,
+}
+
+//
+
+var entityMap = function( src,onEach )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) || _.arrayLike( src ) );
+  _.assert( _.routineIs( onEach ) );
+
+  var result;
+
+  if( _.objectLike( src ) )
+  {
+    result = new src.constructor()
+    for( var s in src )
+    result[ s ] = onEach( src[ s ],s,src );
+  }
+  else
+  {
+    result = _.arrayNewOfSameLength( src );
+    for( var s = 0 ; s < src.length ; s++ )
+    result[ s ] = onEach( src[ s ],s,src );
+  }
+
+  return result;
 }
 
 //
@@ -1680,23 +1707,9 @@ var namesCoded = function( namesMap )
   return result;
 }
 
-/**
- * Function objectIs checks incoming param whether it is object. 
- * Returns "true" if incoming param is object. Othervise "false" returned.
- *
- * @example 
- * // returns true
- * var obj = {x : 100};  
- * objectIs(obj);
- * @example
- * // returns false
- * objectIs(10);
- *
- * @param {*} src.
- * @return {Boolean}.
- * @method objectIs.
- * @memberof wTools#.
- */
+// --
+// type test
+// --
 
 var objectIs = function( src )
 {
@@ -1725,23 +1738,7 @@ var mapIs = function( src )
   /*return _.objectIs( src ) && src.__proto__ === Object.prototype;*/
 }
 
-/**
- * Function arrayIs checks incoming param whether it is array. 
- * Returns "true" if incoming param is object. Othervise "false" returned.
- *
- * @example 
- * // returns true
- * var arr = [1, 2];  
- * arrayIs(arr);
- * @example
- * // returns false
- * arrayIs(10);
- *
- * @param {*} src.
- * @return {Boolean}.
- * @method arrayIs.
- * @memberof wTools#.
- */
+//
 
 var arrayIs = function( src )
 {
@@ -1772,22 +1769,7 @@ var hasLength = function( src )
   return false;
 }
 
-/**
- * Function strIs checks incoming param whether it is string. 
- * Returns "true" if incoming param is string. Othervise "false" returned
- *
- * @example 
- * //returns true 
- * strIsIs('song');
- * @example
- * // returns false
- * strIs(5);
- *
- * @param {*} src.
- * @return {Boolean}.
- * @method strIs.
- * @memberof wTools#.
- */
+//
 
 var strIs = function( src )
 {
@@ -1813,22 +1795,7 @@ var symbolIs = function( src )
   return result;
 }
 
-/**
- * Function numberIs checks incoming param whether it is number. 
- * Returns "true" if incoming param is object. Othervise "false" returned.
- *
- * @example 
- * //returns true 
- * numberIs(5);
- * @example
- * // returns false
- * numberIs('song');
- *
- * @param {*} src.
- * @return {Boolean}.
- * @method numberIs.
- * @memberof wTools#.
- */
+//
 
 var numberIs = function( src )
 {
@@ -2177,24 +2144,49 @@ var numberFrom = function( src )
 // --
 // str
 // --
+
 /**
-*Return type of src.
-  *@example
-  var str = _.strTypeOf('testing');
-*@param {*} src
-*@return {string}
-*string name of type src
-*@method strTypeOf
-*@memberof wTools#
-*/
+  * Return type of src.
+  * @example
+      var str = _.strTypeOf('testing');
+  * @param {*} src
+  * @return {string}
+  * string name of type src
+  * @method strTypeOf
+  * @memberof wTools#
+  */
+
 var strTypeOf = function( src )
+{
+
+  if( _.objectIs( src ) )
+  if( src.constructor && src.constructor.name )
+  return src.constructor.name;
+
+  return _.strPrimitiveTypeOf( src );
+}
+
+//
+
+/**
+  * Return primitive type of src.
+  * @example
+      var str = _.strPrimitiveTypeOf('testing');
+  * @param {*} src
+  * @return {string}
+  * string name of type src
+  * @method strPrimitiveTypeOf
+  * @memberof wTools#
+  */
+
+var strPrimitiveTypeOf = function( src )
 {
 
   var name = _ObjectToString.call( src );
   var result = /\[(\w+) (\w+)\]/.exec( name );
 
   if( !result )
-  throw _.err( 'strTypeOf:','unknown type',name );
+  throw _.err( 'strPrimitiveTypeOf:','unknown type',name );
   return result[ 2 ];
 }
 
@@ -2301,20 +2293,25 @@ var strEndRemove = function( src,end )
 }
 
 //
-
-  /**
-    * Prepend string to begin of other string.
-    * @param {string} src
-    * @param {string} begin
-    * @example
-      var scr = ._strPrependOnce("test","test");
-    * @return {string}
-    * if begin match with first chars of param src, return src
-    * else add param src to param begin
-    * @method strPrependOnce
-    * @memberof wTools
-    */
-
+/**
+*Prepend string to begin of other string.
+*@param {string} src
+*@param {string} begin
+  *example
+   var scr = ._strPrependOnce("test","test");
+*@return {string}
+<<<<<<< HEAD
+*if begin match with first chars of param src, return src
+*else add param src to param begin
+*@method strPrependOnce
+*@memberof wTools
+=======
+*If begin match with first chars of param src, return src
+*Else add param src to param begin
+*@method strPrependOnce
+*@memberof wTools#
+>>>>>>> bfa2be8c1ddc64cfa93955301c5533a1d2ca1a31
+*/
 var strPrependOnce = function( src,begin )
 {
   if( src.lastIndexOf( begin,0 ) === 0 )
@@ -4164,16 +4161,16 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  * If not arguments, it assigns a default variables
  * and return an empty array.
  *
- * @param { Array } [ array = [] ] - Array
- * @param { a } [ a = 0 ] - begin zero-based index at which to begin extraction.
- * @param { b } [ b = array.length ] - end zero-based index at which to end extraction.
+ * @param {Array} [array = []] - Array
+ * @param {a} [a = 0] - begin zero-based index at which to begin extraction.
+ * @param {b} [b = array.length] - end zero-based index at which to end extraction.
  * Array to return a new array from begin to but not including end.
  *
  * @example
- * // returns [ 3, 4, 5, 6, 7, 8, 9 ]
- * arraySlice( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 9 );
+ * // returns [3, 4, 5, 6, 7, 8, 9]
+ * arraySlice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, 9);
  *
- * @returns { Array } returns a shallow copy of elements from the original array.
+ * @returns {Array} returns a shallow copy of elements from the original array.
  * @method arraySlice
  * @memberof wTools
 */
@@ -5581,18 +5578,18 @@ var mapExtendFiltering = function( filter,dstObject )
  * If true,
  * it extends (result) from the next objects.
  *
- * @param{ ...objectLike } [ dstObject = {} ] - The target object.
- * @param{ ...arguments[] } - The source object(s).
+ * @param{...objectLike} [dstObject = {}] - The target object.
+ * @param{...arguments[]} - The source object(s).
  *
  * @example
- * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
- * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+ * // returns {a: 7, b: 13, c: 3, d: 33, e: 77}
+ * mapExtend({a: 7, b: 13}, {c: 3, d: 33}, {e: 77});
  *
- * @returns { Object } It will return the target object.
+ * @returns {Object} It will return the target object.
  * @method mapExtend
- * @throws { mapExtend } Will throw an error if the argument is not an object.
- * @memberof wTools#
- */
+ * @throws {mapExtend} Will throw an error if the argument is not an object.
+ * @memberof wTools
+*/
 
 var mapExtend = function mapExtend( dstObject )
 {
@@ -5757,6 +5754,8 @@ var mapToString = function( src,keyValSep,tupleSep )
   return result
 }
 
+//
+
 /**
  * The mapKeys() returns
  * an array of a given object's own enumerable properties,
@@ -5768,14 +5767,14 @@ var mapToString = function( src,keyValSep,tupleSep )
  * it returns an array of keys,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src
+ * @param {objectLike} src
  * The object whose properties are to be returned.
  *
  * @example
- * // returns [ "a", "b" ]
- * mapKeys( { a : 7, b : 13 } );
+ * // returns ["a", "b"]
+ * mapKeys({a: 7, b: 13});
  *
- * @return { Array } Returns an array whose elements are strings
+ * @return {Array} Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
  * @method mapKeys
  * @memberof wTools
@@ -5796,6 +5795,8 @@ var mapKeys = function mapKeys( src )
   return result;
 }
 
+//
+
 /**
  * The mapValues() method returns an array of a given object's
  * own enumerable property values,
@@ -5806,14 +5807,14 @@ var mapKeys = function mapKeys( src )
  * If true, it returns an array of values,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src
+ * @param {objectLike} src
  * The object whose property values are to be returned.
  *
  * @example
- * // returns [ "7", "13" ]
- * mapValues( { a : 7, b : 13 } );
+ * // returns ["7", "13"]
+ * mapValues({a: 7, b: 13});
  *
- * @returns { Array } returns an array whose elements are strings
+ * @returns {Array} returns an array whose elements are strings
  * corresponding to the enumerable property values found directly upon object.
  * @method mapValues
  * @memberof wTools
@@ -5832,20 +5833,20 @@ var mapValues = function( src )
 }
 
 /**
- * The mapPairs() converts an object into a list of [ key, value ] pairs.
+ * The mapPairs() converts an object into a list of [key, value] pairs.
  *
  * It takes an object (src) creates an empty array,
  * checks if (src) is an object.
- * If true, it returns a list of [ key, value ] pairs,
+ * If true, it returns a list of [key, value] pairs,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
+ * @param {objectLike} src - Object to get a list of [key, value] pairs.
  *
  * @example
- * // returns [ [ "a", 7 ], [ "b", 13 ] ]
- * mapPairs( { a : 7, b : 13 } );
+ * // returns [ ["a", 7], ["b", 13] ]
+ * mapPairs({a: 7, b: 13});
  *
- * @returns { Array } A list of [ key, value ] pairs.
+ * @returns {Array} A list of [key, value] pairs.
  * @method mapPairs
  * @memberof wTools
 */
@@ -5924,27 +5925,27 @@ var mapGroup = function( src,options )
  * if both object have the same length and [key, value] return true
  * otherwise it returns undefined.
  *
- * @param { objectLike } src1 - First object.
- * @param { objectLike } src2 - Target object.
+ * @param {objectLike} src1 - First object.
+ * @param {objectLike} src2 - Target object.
  * Objects to compare values.
  *
  * @example
  * // returns true
- * mapSame( { a : 7, b : 13 }, { a : 7, b : 13 } );
+ * mapSame({a: 7, b: 13}, {a: 7, b: 13});
  *
  * @example
  * returns undefined
- * mapSame( { a : 7, b : 13 }, { a : 33, b : 13 } );
+ * mapSame({a: 7, b: 13}, {a: 33, b: 13});
  *
  * @example
  * returns undefined
- * mapSame( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
+ * mapSame({a: 7, b: 13, c: 33}, {a: 7, b: 13});
  *
- * @returns { Boolean }
+ * @returns {Boolean}
  * @method mapSame
- * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools#
- */
+ * @throws Will throw an error if (arguments.length !== 2).
+ * @memberof wTools
+*/
 
 var mapSame = function( src1,src2 ){
 
@@ -5970,23 +5971,23 @@ var mapSame = function( src1,src2 ){
  * If true, it returns true,
  * otherwise it returns false.
  *
- * @param { objectLike } src - Target object.
- * @param { objectLike } ins - Second object.
+ * @param {objectLike} src - Target object.
+ * @param {objectLike} ins - Second object.
  * Objects to compare values.
  *
  * @example
  * // returns true
- * mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
+ * mapContain({a: 7, b: 13, c: 15}, {a: 7, b: 13});
  *
  * @example
  * returns false
- * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
+ * mapContain({a: 7, b: 13}, {a: 7, b: 13, c: 15});
  *
- * @returns { Boolean }
+ * @returns {Boolean}
  * @method mapContain
- * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools#
- */
+ * @throws Will throw an error if (arguments.length !== 2).
+ * @memberof wTools
+*/
 
 var mapContain = function( src,ins )
 {
@@ -6014,27 +6015,37 @@ var mapContain = function( src,ins )
 //
 
 /**
- * The mapOwn() returns true if object has own property.
+ * Check does map has own fields. Accept name in map format.
+ * @param {object} object - object to check.
+ * @return {object} object - name in key/value format.
+ * @method mapOwn
+ * @memberof wTools
+ */
+
+
+/**
+ * The mapOwn() returns true if property (name)
+ * has in the (object).
  *
  * It takes (name) checks if (name) is a String,
  * if (object) has own property with the (name).
  * If true, it returns true.
  *
- * @param { objectLike } object - Object that will be check.
- * @param { name } name - Target property.
+ * @param {objectLike} object - Object that will be check.
+ * @param {name} name - Target property.
  *
  * @example
  * // returns true
- * mapOwn( { a : 7, b : 13 }, 'a' );
+ * mapOwn({a: 7, b: 13}, 'a');
  *
- * mapOwn( { a : 7, b : 13 }, 'c' );
+ * mapOwn({a: 7, b: 13}, 'c');
  * output: false
  *
- * @returns { Boolean }
+ * @returns {Boolean}
  * @method mapOwn
- * @throws { mapOwn } Will throw an error if the (name) is unknown.
- * @memberof wTools#
- */
+ * @throws {mapOwn} Will throw an error if the (name) is unknown.
+ * @memberof wTools
+*/
 
 var mapOwn = function( object,name )
 {
@@ -6049,31 +6060,9 @@ var mapOwn = function( object,name )
   throw _.err( 'mapOwn :','unknown arguments' );
 }
 
-  /**
-   * Returns an object without repeating keys.
-   *
-   * It takes an object or more (srcMap, ., .),
-   * creates a new object (result),
-   * checks if (srcMap, ., .) are objects.
-   * If the first object has the same keys like another objects,
-   * it don't add to the result these keys.
-   *
-   * @param{ ...objectLike } srcMap - one or more objects.
-   * Objects to return an object without repeating keys.
-   *
-   * @example
-   * // returns { c : 3 }
-   * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
-   *
-   * @throws { mapBut } Will throw an error if the first argument is not an object.
-   * @throws { argument } Will throw an error if the next arguments is not the objects.
+//
 
-   * @returns { Object } It will return the object without repeating keys.
-   * @method mapBut
-   * @memberof wTools#
-   */
-
-var mapBut = function( srcMap ) 
+var mapBut = function( srcMap )
 {
   var result = {};
   var a,k;
@@ -6726,6 +6715,8 @@ var Proto =
 
   /*strFormat: strFormat,*/
 
+  entityMap: entityMap,
+
 
   // iterator
 
@@ -6821,6 +6812,8 @@ var Proto =
   // str
 
   strTypeOf: strTypeOf,
+  strPrimitiveTypeOf: strPrimitiveTypeOf,
+
   str: str,
 
   strBegins: strBegins,
