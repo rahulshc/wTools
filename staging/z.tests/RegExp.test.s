@@ -746,6 +746,125 @@
     }
   };
 
+  var regexpObjectMake = function( test )
+  {
+    var src1 = {},
+      src2 = [],
+
+      src3 =
+      {
+        includeAny: [ /a0/, /a1/, /a2/ ],
+        includeAll: [ /b0/, /c1/, /c2/ ],
+        excludeAny: [ /c0/, /c1/, /c2/ ],
+        excludeAll: [ /d0/, /d1/, /d2/ ]
+      },
+
+      src4 =
+      {
+        includeAny: [ 'a0', 'a1', 'a2' ],
+        includeAll: [ 'b0', 'c1', 'c2' ],
+        excludeAny: [ 'c0', 'c1', 'c2' ],
+        excludeAll: [ 'd0', 'd1', 'd2' ]
+      },
+
+      src5 = [ 'c0', 'c1', 'c2' ],
+
+      src6 = 'hello',
+      src7 = /world/,
+
+      expected4 =
+      {
+        includeAny: [ /a0/, /a1/, /a2/ ],
+        includeAll: [ /b0/, /c1/, /c2/ ],
+        excludeAny: [ /c0/, /c1/, /c2/ ],
+        excludeAll: [ /d0/, /d1/, /d2/ ]
+      },
+      expected5 =
+      {
+        excludeAny: [ /c0/, /c1/, /c2/ ]
+      },
+      expected6 =
+      {
+        includeAny: [ /hello/ ]
+      },
+      expected7 =
+      {
+        includeAll: [ /world/ ]
+      };
+
+    var getSource = function( v )
+    {
+      return v.source;
+    };
+
+    var getSourceFromMap = function(resultObj)
+    {
+      var i;
+      for( i in src3 )
+      resultObj.hasOwnProperty(i) && (resultObj[i] = resultObj[i].map( getSource ));
+    };
+
+    getSourceFromMap(expected4);
+    getSourceFromMap(expected5);
+    getSourceFromMap(expected6);
+    getSourceFromMap(expected7);
+
+    test.description = 'argument is an empty object';
+    var got = _.regexpObjectMake(src1);
+    test.identical( got, {} );
+
+    test.description = 'as argument passed RegexpObject object';
+    var got = _.regexpObjectMake(src3);
+    test.identical( got, src3 );
+
+    test.description = 'as argument passed map of arrays object';
+    var got = _.regexpObjectMake(src4);
+    getSourceFromMap( got );
+    test.identical( got, expected4 );
+
+    test.description = 'as argument passed array of strings object';
+    var got = _.regexpObjectMake(src5, 'excludeAny');
+    getSourceFromMap( got );
+    test.identical( got, expected5 );
+
+    test.description = 'as argument passed RegexpObject object';
+    var got = _.regexpObjectMake(src6, 'includeAny');
+    getSourceFromMap( got );
+    test.identical( got, expected6 );
+
+    test.description = 'as argument passed RegexpObject object';
+    var got = _.regexpObjectMake(src7, 'includeAll');
+    getSourceFromMap( got );
+    test.identical( got, expected7 );
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake();
+      });
+
+      test.description = 'passed array as source without defaultMode argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(src2);
+      });
+
+      test.description = 'passed string as source without defaultMode argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(src6);
+      });
+
+      test.description = 'passed regexp as source without defaultMode argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(src7);
+      });
+    }
+  };
+
   //
 
   var Proto =
@@ -764,7 +883,8 @@
       regexpTest          : regexpTest,
       _regexpObjectExtend : _regexpObjectExtend,
       regexpObjectBroaden : regexpObjectBroaden,
-      regexpObjectShrink  : regexpObjectShrink
+      regexpObjectShrink  : regexpObjectShrink,
+      regexpObjectMake    : regexpObjectMake
 
     }
 
