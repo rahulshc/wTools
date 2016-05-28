@@ -61,22 +61,28 @@
         _.mapKeys();
       });
 
+      test.description = 'redundant argument';
+      test.shouldThrowError( function()
+      {
+        _.mapKeys( {},{} );
+      });
+
       test.description = 'wrong type of number';
       test.shouldThrowError( function()
       {
-        _.mapKeys(13);
+        _.mapKeys( 13 );
       });
 
       test.description = 'wrong type of boolean';
-      test.shouldThrowError( function() 
+      test.shouldThrowError( function()
       {
-        _.mapKeys(true);
+        _.mapKeys( true );
       });
-      
+
       test.description = 'wrong type of string';
-      test.shouldThrowError( function() 
+      test.shouldThrowError( function()
       {
-        _.mapKeys('');
+        _.mapKeys( '' );
       });
 
     }

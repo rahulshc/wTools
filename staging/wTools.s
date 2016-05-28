@@ -6107,26 +6107,34 @@ var mapOwn = function( object,name )
   throw _.err( 'mapOwn :','unknown arguments' );
 }
 
+//
+
   /**
    * Returns an object without repeating keys.
    *
-   * It takes an object or more (srcMap, ., .),
-   * creates a new object (result),
-   * checks if (srcMap, ., .) are objects.
-   * If the first object has the same keys like another objects,
-   * it don't add to the result these keys.
+   * Takes anu number of objects.
+   * Returns new object filled by unqiue keys
+   * from the first (srcMap) original object.
+   * Values for result object come from original object (srcMap)
+   * not from second or other one.
+   * If the first object has same key any other object has
+   * then this pair( key/value ) will not be included into result object.
+   * Otherwise pair( key/value ) from the first object goes into result object.
    *
-   * @param{ ...objectLike } srcMap - one or more objects.
+   * @param{ objectLike } srcMap - original object.
+   * @param{ ... } srcMap - one or more objects.
    * Objects to return an object without repeating keys.
    *
    * @example
    * // returns { c : 3 }
    * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+   * // returns { c : 3 }
+   * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
    *
-   * @throws { mapBut } Will throw an error if the first argument is not an object.
-   * @throws { argument } Will throw an error if the next arguments is not the objects.
+   * @throws { Error }
+   *  In debug mode it throws an error if the first argument is not object like.
 
-   * @returns { Object } It will return the object without repeating keys.
+   * @returns { Object } Returns new object made by unique keys.
    * @method mapBut
    * @memberof wTools#
    */
