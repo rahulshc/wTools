@@ -1680,9 +1680,23 @@ var namesCoded = function( namesMap )
   return result;
 }
 
-// --
-// type test
-// --
+/**
+ * Function objectIs checks incoming param whether it is object. 
+ * Returns "true" if incoming param is object. Othervise "false" returned.
+ *
+ * @example 
+ * // returns true
+ * var obj = {x : 100};  
+ * objectIs(obj);
+ * @example
+ * // returns false
+ * objectIs(10);
+ *
+ * @param {*} src.
+ * @return {Boolean}.
+ * @method objectIs.
+ * @memberof wTools#.
+ */
 
 var objectIs = function( src )
 {
@@ -1711,7 +1725,23 @@ var mapIs = function( src )
   /*return _.objectIs( src ) && src.__proto__ === Object.prototype;*/
 }
 
-//
+/**
+ * Function arrayIs checks incoming param whether it is array. 
+ * Returns "true" if incoming param is object. Othervise "false" returned.
+ *
+ * @example 
+ * // returns true
+ * var arr = [1, 2];  
+ * arrayIs(arr);
+ * @example
+ * // returns false
+ * arrayIs(10);
+ *
+ * @param {*} src.
+ * @return {Boolean}.
+ * @method arrayIs.
+ * @memberof wTools#.
+ */
 
 var arrayIs = function( src )
 {
@@ -1742,7 +1772,22 @@ var hasLength = function( src )
   return false;
 }
 
-//
+/**
+ * Function strIs checks incoming param whether it is string. 
+ * Returns "true" if incoming param is string. Othervise "false" returned
+ *
+ * @example 
+ * //returns true 
+ * strIsIs('song');
+ * @example
+ * // returns false
+ * strIs(5);
+ *
+ * @param {*} src.
+ * @return {Boolean}.
+ * @method strIs.
+ * @memberof wTools#.
+ */
 
 var strIs = function( src )
 {
@@ -1768,7 +1813,22 @@ var symbolIs = function( src )
   return result;
 }
 
-//
+/**
+ * Function numberIs checks incoming param whether it is number. 
+ * Returns "true" if incoming param is object. Othervise "false" returned.
+ *
+ * @example 
+ * //returns true 
+ * numberIs(5);
+ * @example
+ * // returns false
+ * numberIs('song');
+ *
+ * @param {*} src.
+ * @return {Boolean}.
+ * @method numberIs.
+ * @memberof wTools#.
+ */
 
 var numberIs = function( src )
 {
@@ -5989,9 +6049,31 @@ var mapOwn = function( object,name )
   throw _.err( 'mapOwn :','unknown arguments' );
 }
 
-//
+  /**
+   * Returns an object without repeating keys.
+   *
+   * It takes an object or more (srcMap, ., .),
+   * creates a new object (result),
+   * checks if (srcMap, ., .) are objects.
+   * If the first object has the same keys like another objects,
+   * it don't add to the result these keys.
+   *
+   * @param{ ...objectLike } srcMap - one or more objects.
+   * Objects to return an object without repeating keys.
+   *
+   * @example
+   * // returns { c : 3 }
+   * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+   *
+   * @throws { mapBut } Will throw an error if the first argument is not an object.
+   * @throws { argument } Will throw an error if the next arguments is not the objects.
 
-var mapBut = function( srcMap )
+   * @returns { Object } It will return the object without repeating keys.
+   * @method mapBut
+   * @memberof wTools#
+   */
+
+var mapBut = function( srcMap ) 
 {
   var result = {};
   var a,k;
