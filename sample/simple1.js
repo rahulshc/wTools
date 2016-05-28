@@ -4,6 +4,6 @@ require( 'wTools' );
 
 var _ = wTools;
 
-var arr = _.strBegins(11,11);
+var arr = _.arrayRange([ 2,10 ]);
 
-console.log( arr );
+console.log( 'arr :',arr );
