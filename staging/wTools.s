@@ -6142,8 +6142,6 @@ var mapOwn = function( object,name )
    * @example
    * // returns { c : 3 }
    * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
-   * // returns { c : 3 }
-   * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
    *
    * @throws { Error }
    *  In debug mode it throws an error if any argument is not object like.
