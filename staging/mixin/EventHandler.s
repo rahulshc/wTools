@@ -479,10 +479,25 @@ var eventHandleUntil = function( event,value )
 
 //
 
+var eventHandleSingle = function( event )
+{
+  var self = this;
+
+  _.assert( arguments.length === 1 );
+
+  if( _.strIs( event ) )
+  event = { kind : event };
+
+  return self._eventHandle( event,{ single : 1 } );
+}
+
+//
+
 var _eventHandle = function( event,options )
 {
   var self = this;
   var result = options.result = options.result || [];
+  var untilFound = 0;
 
   _.assert( arguments.length === 2 );
 
@@ -491,8 +506,6 @@ var _eventHandle = function( event,options )
 
   if( self.usingEventLogging )
   logger.log( 'fired event', self.nickName + '.' + event.kind );
-
-  var isUntil = options.hasOwnProperty( 'until' );
 
   var handlers = self._eventHandlerDescriptors;
   if( handlers === undefined )
@@ -508,6 +521,12 @@ var _eventHandle = function( event,options )
 
   if( self.usingEventLogging )
   logger.up();
+
+  if( options.single )
+  _.assert( handlerArray.length <= 1,'expects single handler, but has ' + handlerArray.length );
+
+  if( options.single )
+  debugger;
 
   //
 
@@ -526,11 +545,11 @@ var _eventHandle = function( event,options )
     else
     {
       result.push( handler.onHandleEffective.call( self, event ) );
-      if( isUntil )
+      if( options.until )
       {
         if( result[ result.length-1 ] === options.until )
         {
-          isUntil = 'found';
+          untilFound = 1;
           result = options.until;
           break;
         }
@@ -544,8 +563,12 @@ var _eventHandle = function( event,options )
   if( self.usingEventLogging )
   logger.down();
 
-  if( isUntil === true )
+  if( options.single )
+  result = result[ 0 ];
+
+  if( options.until && !untilFound )
   result = undefined;
+
   return result;
 }
 
@@ -765,6 +788,7 @@ var Proto =
   emit : eventHandle,
   eventHandle : eventHandle,
   eventHandleUntil : eventHandleUntil,
+  eventHandleSingle : eventHandleSingle,
   _eventHandle : _eventHandle,
 
   // get

@@ -38,8 +38,6 @@ var execAsyn = function( routine,onEnd,context )
 var execStages = function( stages,options )
 {
 
-  console.log( 'execStages' );
-
   // options
 
   var options = options || {};

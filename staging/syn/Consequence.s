@@ -629,6 +629,22 @@ var givenGet = function()
   return self._given;
 }
 
+//
+
+var toStr = function()
+{
+  var self = this;
+  var result = self.nickName;
+
+  _.assert( arguments.length === 0 );
+
+  result += '\n  takers : ' + self.takersGet().length;
+  result += '\n  given : ' + self.givenGet().length;
+
+  return result;
+}
+
+
 // --
 // clear
 // --
@@ -760,6 +776,7 @@ var Proto =
 
   takersGet: takersGet,
   givenGet: givenGet,
+  toStr: toStr,
 
 
   //
