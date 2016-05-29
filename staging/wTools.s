@@ -5817,10 +5817,15 @@ var mapFirstPair = function mapFirstPair( srcObject )
 var mapToArray = function( src )
 {
   var result = [];
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectIs( src ) );
+
   for( var s in src )
   {
     result.push( [ s,src[s] ] );
   }
+
   return result;
 }
 
