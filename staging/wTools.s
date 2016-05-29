@@ -2788,7 +2788,10 @@ var regexpBut_ = function( options )
   }
 
   var words = _.arrayIron( args );
-  var result = '^(? :(?!';
+  var result = '^(?:(?!';
+
+  // !!! test me in builder
+  // var result = '^(? :(?!';
 
   for( var w = 0 ; w < words.length ; w++ )
   _.assert( _.strIs( words[ w ] ) );
@@ -2799,6 +2802,8 @@ var regexpBut_ = function( options )
   result += ').)+$';
   else
   result += ').)*$';
+
+  console.log( 'regexpBut_.result : ' + result )
 
   return new RegExp( result );
 }

@@ -525,9 +525,6 @@ var _eventHandle = function( event,options )
   if( options.single )
   _.assert( handlerArray.length <= 1,'expects single handler, but has ' + handlerArray.length );
 
-  if( options.single )
-  debugger;
-
   //
 
   for( var i = 0, il = handlerArray.length; i < il; i ++ )
