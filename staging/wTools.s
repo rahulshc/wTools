@@ -5817,9 +5817,31 @@ var mapFirstPair = function mapFirstPair( srcObject )
 
 }
 
-//
+  /**
+   * The mapToArray() converts an object (src) into array [ [ key, value ] ... ]. 
+   *
+   * It takes an object (src) creates an empty array,
+   * checks if ( arguments.length === 1 ) and (src) is an object.
+   * If true, it returns a list of [ [ key, value ] ... ] pairs.
+   * Otherwise it throws an Error.
+   *
+   * @param { objectLike } src - object to get a list of [ key, value ] pairs.
+   *
+   * @example
+   * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
+   * mapToArray( { a : 3, b : 13, c : 7 } );
+   *
+   * @example
+   * // returns [ [ 0, 'a' ], [ 1, 'b' ], [ 2, 'c' ], [ 3, 'd'] ];
+   * mapToArray( [ a, b, c, d ] );
+   *
+   * @returns { Array } returns a list of [ [ key, value ] ... ] pairs.
+   * @method mapToArray
+   * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
+   * @memberof wTools
+   */
 
-var mapToArray = function( src )
+var mapToArray = function( src ) 
 {
   var result = [];
 
@@ -5834,10 +5856,37 @@ var mapToArray = function( src )
   return result;
 }
 
-//
+  /**
+   * The mapValWithIndex() returns [ key, value ] by corresponding index.
+   *
+   * It takes array and index, creates a variable ( i = 0 ),
+   * checks if ( index > 0 ), iterate over array (src) and match
+   * if ( i == index ).
+   * If true, it returns [ key, value ].
+   * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
+   *
+   * @param { objectLike } src - The Iterable array.
+   * @param { number } index - To find the position an element.
+   *
+   * @example
+   * // returns ["c", 7]
+   * mapValWithIndex( [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ], 2 );
+   *
+   * @example
+   * // returns {c: 7}
+   * mapValWithIndex( [ { a : 3 }, { b : 13 }, { c : 7 } ], 2 );
+   *
+   * @returns { Array } returns [ key, value ] by corresponding index.
+   * @method mapValWithIndex
+   * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Array.
+   * @memberof wTools
+   */
 
 var mapValWithIndex = function( src,index )
 {
+
+  _.assert( arguments.length > 2 );
+  _.assert( _.arrayLike( src ) );
 
   if( index < 0 ) return;
 
