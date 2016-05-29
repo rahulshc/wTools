@@ -5791,7 +5791,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
    * @memberof wTools
    */
 
-var mapToArray = function( src )
+var mapToArray = function( src ) 
 {
   var result = [];
 
