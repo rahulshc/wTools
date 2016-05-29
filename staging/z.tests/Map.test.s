@@ -50,6 +50,7 @@
     var expected = [ '0' , '1', '2' ];
     test.identical( got, expected );
 
+
     /**/
 
     if( Config.debug )
@@ -156,16 +157,25 @@
   var mapExtend = function( test )
   {
 
+    test.description = 'nothing';
+    var got = _.mapExtend( {}, {} );
+    var expected = {};
+    test.identical( got, expected);
+
     test.description = 'multiple object properties';
     var got = _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
     var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
     test.identical( got, expected );
 
+    test.description = 'object like array';
+    var got = _.mapExtend( {}, [ 3, 7, 13, 73 ] );
+    var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
+    test.identical( got, expected );
 
-
-
-
-
+    test.description = 'object like array2';
+    var got = _.mapExtend( { a : 7, b : 13 }, [ 33, 3, 7, 13 ] );
+    var expected = { 0 : 33, 1 : 3, 2 : 7, 3 : 13, a : 7, b : 13 };
+    test.identical(got, expected);
 
     /**/
 
@@ -182,6 +192,12 @@
       test.shouldThrowError( function()
       {
         _.mapExtend( {} );
+      });
+
+      test.description = 'next arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.mapExtend( {}, 'wrong arguments' );
       });
 
       test.description = 'wrong type of array';
@@ -217,19 +233,16 @@
   {
 
     test.description = 'a list of [ key, value ] pairs';
-    var got = mapPairs( { a : 7, b : 13 } );
+    var got = _.mapPairs( { a : 7, b : 13 } );
     var expected = [ [ "a", 7 ], [ "b", 13 ] ];
     test.identical( got, expected );
 
     test.description = 'nothing';
-    var got = mapPairs( { } );
+    var got = _.mapPairs( { } );
     var expected = [];
     test.identical( got, expected );
 
-
-
-
-
+    /**/
 
     if( Config.debug )
     {
@@ -243,7 +256,7 @@
       test.description = 'redundant argument';
       test.shouldThrowError( function()
       {
-        _.mapPairs( {},{} );
+        _.mapPairs( {}, 'wrong arguments' );
       });
 
       test.description = 'wrong type of number';
@@ -269,6 +282,245 @@
   };
 
 
+  var mapOwn = function( test )
+  {
+
+    test.description = 'true';
+    var got = _.mapOwn( { a : 7, b : 13 }, 'a' );
+    var expected = true;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+      
+      test.description = 'no argument';
+      test.shouldThrowError( function() 
+      {
+        _.mapOwn();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapOwn( {} );
+      });
+
+      test.description = 'redundant argument';
+      test.shouldThrowError( function()
+      {
+        _.mapOwn( {}, '', 'wrong arguments' );
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapOwn( [] );
+      });
+
+      test.description = 'wrong type of second argument';
+      test.shouldThrowError( function()
+      {
+        _.mapOwn( {}, 13 );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapOwn( '', 7 );
+      });
+
+    }
+
+  };
+
+
+  var mapSame = function( test )
+  {
+
+    test.description = 'two empty objects';
+    var got = _.mapSame( {}, {} );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'two empty arrays';
+    var got = _.mapSame( [], [] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'same [ keys, values ]';
+    var got = _.mapSame( { a : 7, b : 13 }, { a : 7, b : 13 } );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'same [ keys, values ] in the arrays';
+    var got = _.mapSame( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 13 ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapSame();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapSame( {} );
+      });
+
+      test.description = 'number of keys not equal';
+      test.shouldThrowError( function()
+      {
+        _.mapSame( { a : 1, b : 2 }, { a : 1 } );
+      });
+
+      test.description = 'wrong sequence one';
+      test.shouldThrowError( function()
+      {
+        _.mapSame( {}, [] );
+      });
+
+      test.description = 'wrong sequence two';
+      test.shouldThrowError( function()
+      {
+        _.mapSame( [], {} );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapSame( 'wrong arguments' );
+      });
+
+    }
+
+  };
+
+
+  var mapContain = function( test )
+  {
+
+    test.description = 'two empty objects';
+    var got = _.mapContain( {}, {} );
+    var expected = true;
+    test.identical( got ,expected );
+
+    test.description = 'two empty arrays';
+    var got = _.mapContain( [], [] );
+    var expected = true;
+    test.identical( got ,expected );
+
+    test.description = 'first has same keys like second';
+    var got = _.mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'in the array';
+    var got = _.mapContain( [ 'a', 7, 'b', 13, 'c', 15 ], [ 'a', 7, 'b', 13 ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapContain();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapContain( {} );
+      });
+
+      test.description = 'number of keys in first not equal';
+      test.shouldThrowError( function()
+      {
+        _.mapContain( { a : 1 }, { a : 1, b : 2 } );
+      });
+
+      test.description = 'wrong sequence one';
+      test.shouldThrowError( function()
+      {
+        _.mapContain( {}, [] );
+      });
+
+      test.description = 'wrong sequence two';
+      test.shouldThrowError( function()
+      {
+        _.mapContain( [], {} );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapContain( 'wrong arguments' );
+      });
+
+    }
+
+  };
+
+
+  var mapBut = function( test )
+  {
+
+    test.description = 'two empty objects';
+    var got = _.mapBut( {}, {} );
+    var expected = {};
+    test.identical( got ,expected );
+
+    test.description = 'a unique object';
+    var got = _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+    var expected = { c : 3 };
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapBut();
+      });
+
+      test.description = 'wrong sequence one';
+      test.shouldThrowError( function()
+      {
+        _.mapBut( {}, [] );
+      });
+
+      test.description = 'wrong sequence two';
+      test.shouldThrowError( function()
+      {
+        _.mapBut( [], {} );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapBut( 'wrong arguments' );
+      });
+
+    }
+
+  };
+
+  
 
 
 //
@@ -276,15 +528,28 @@
   var Proto =
   {
 
-    name : 'mapKeys',
+    //name : 'mapKeys',
+    //name : 'mapValues',
+    //name : 'mapExtend',
+    //name : 'mapPairs',
+    //name : 'mapOwn',
+    //name : 'mapSame',
+    //name : 'mapContain',
+    name : 'mapBut',
+
 
     tests:
     {
 
-      mapKeys : mapKeys,
-      mapValues : mapValues,
-      mapExtend : mapExtend,
-      mapPairs : mapPairs
+      //mapKeys : mapKeys,
+      //mapValues : mapValues
+      //mapExtend : mapExtend,
+      //mapPairs : mapPairs,
+      //mapOwn : mapOwn,
+      //mapSame : mapSame,
+      //mapContain : mapContain,
+      mapBut : mapBut,
+
 
     }
 
