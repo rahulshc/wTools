@@ -30,11 +30,6 @@
   var mapKeys = function( test )
   {
 
-    test.description = 'an empty object';
-    var got = _.mapKeys( { } );
-    var expected = [ ];
-    test.identical( got, expected );
-
     test.description = 'two keys';
     var got = _.mapKeys( { a : 7, b : 13 } );
     var expected = [ 'a', 'b' ];
@@ -94,11 +89,6 @@
   var mapValues = function( test )
   {
 
-    test.description = 'an empty array';
-    var got = _.mapValues( { } );
-    var expected = [ ];
-    test.identical( got, expected );
-
     test.description = 'two values';
     var got = _.mapValues( { a : 7, b : 13 } );
     var expected = [ 7, 13 ];
@@ -156,11 +146,6 @@
 
   var mapExtend = function( test )
   {
-
-    test.description = 'nothing';
-    var got = _.mapExtend( {}, {} );
-    var expected = {};
-    test.identical( got, expected);
 
     test.description = 'multiple object properties';
     var got = _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
@@ -235,11 +220,6 @@
     test.description = 'a list of [ key, value ] pairs';
     var got = _.mapPairs( { a : 7, b : 13 } );
     var expected = [ [ "a", 7 ], [ "b", 13 ] ];
-    test.identical( got, expected );
-
-    test.description = 'nothing';
-    var got = _.mapPairs( { } );
-    var expected = [];
     test.identical( got, expected );
 
     /**/
@@ -339,16 +319,6 @@
   var mapSame = function( test )
   {
 
-    test.description = 'two empty objects';
-    var got = _.mapSame( {}, {} );
-    var expected = true;
-    test.identical( got, expected );
-
-    test.description = 'two empty arrays';
-    var got = _.mapSame( [], [] );
-    var expected = true;
-    test.identical( got, expected );
-
     test.description = 'same [ keys, values ]';
     var got = _.mapSame( { a : 7, b : 13 }, { a : 7, b : 13 } );
     var expected = true;
@@ -407,16 +377,6 @@
 
   var mapContain = function( test )
   {
-
-    test.description = 'two empty objects';
-    var got = _.mapContain( {}, {} );
-    var expected = true;
-    test.identical( got ,expected );
-
-    test.description = 'two empty arrays';
-    var got = _.mapContain( [], [] );
-    var expected = true;
-    test.identical( got ,expected );
 
     test.description = 'first has same keys like second';
     var got = _.mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
@@ -477,11 +437,6 @@
   var mapBut = function( test )
   {
 
-    test.description = 'two empty objects';
-    var got = _.mapBut( {}, {} );
-    var expected = {};
-    test.identical( got ,expected );
-
     test.description = 'a unique object';
     var got = _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
     var expected = { c : 3 };
@@ -520,8 +475,98 @@
 
   };
 
-  
 
+  var mapToArray = function( test )
+  {
+
+    test.description = 'a list of [ key, value ] pairs'
+    var got = _.mapToArray( { a : 3, b : 13, c : 7 } );
+    var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
+    test.identical( got, expected );
+
+    test.description = 'a list of pairs like array';
+    var got = _.mapToArray( [ 'a', 'b', 'c', 'd' ] );
+    var expected = [ [ '0', 'a' ], [ '1', 'b' ], [ '2', 'c' ], [ '3', 'd'] ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapToArray();
+      });
+
+      test.description = 'redundant argument';
+      test.shouldThrowError( function()
+      {
+        _.mapToArray( {}, 'wrong arguments' );
+      });
+
+      test.description = 'wrong type of argument';
+      test.shouldThrowError( function()
+      {
+        _.mapToArray( 'wrong argumetns' );
+      });
+
+    }
+
+  };
+
+
+  var mapValWithIndex = function( test )
+  {
+
+    test.description = 'an element';
+    var got = _.mapValWithIndex( [ [ 'a', 3 ] ], 0 );
+    var expected = [ 'a', 3 ];
+    test.identical( got, expected );
+
+    test.description = 'an array';
+    var got = _.mapValWithIndex( [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ], 2 );
+    var expected = ["c", 7];
+    test.identical( got, expected );
+
+    test.description = 'an object';
+    var got = _.mapValWithIndex( [ { a : 3 }, { b : 13 }, { c : 7 } ], 2 );
+    var expected = {c: 7};
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapValWithIndex();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapValWithIndex( [ [] ] );
+      });
+
+      test.description = 'redundant argument';
+      test.shouldThrowError( function()
+      {
+        _.mapValWithIndex( [ [] ], 2, 'wrong arguments' );
+      });
+
+      test.description = 'wrong type of argument';
+      test.shouldThrowError( function()
+      {
+        _.mapValWithIndex( 'wrong argumetns' );
+      });
+
+    }
+
+  };
 
 //
 
@@ -535,7 +580,9 @@
     //name : 'mapOwn',
     //name : 'mapSame',
     //name : 'mapContain',
-    name : 'mapBut',
+    //name : 'mapBut',
+    //name : 'mapToArray',
+    name : 'mapValWithIndex',
 
 
     tests:
@@ -548,7 +595,9 @@
       //mapOwn : mapOwn,
       //mapSame : mapSame,
       //mapContain : mapContain,
-      mapBut : mapBut,
+      //mapBut : mapBut,
+      //mapToArray : mapToArray,
+      mapValWithIndex : mapValWithIndex,
 
 
     }
