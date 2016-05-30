@@ -520,6 +520,11 @@
   var mapValWithIndex = function( test )
   {
 
+    test.description = 'second index';
+    var got = _.mapValWithIndex( [ 3, 13, 'c', 7 ], 2 );
+    var expected = 'c';
+    test.identical( got, expected );
+
     test.description = 'an element';
     var got = _.mapValWithIndex( [ [ 'a', 3 ] ], 0 );
     var expected = [ 'a', 3 ];
@@ -552,6 +557,12 @@
         _.mapValWithIndex( [ [] ] );
       });
 
+      test.description = 'first the four argument not wrapped into array';
+      test.shouldThrowError( function()
+      {
+        _.mapValWithIndex( 3, 13, 'c', 7 , 2 );
+      });
+
       test.description = 'redundant argument';
       test.shouldThrowError( function()
       {
@@ -567,7 +578,57 @@
     }
 
   };
+  
+  
+  var mapKeyWithIndex = function( test ) 
+  {
+    
+    test.description = 'last key';
+    var got = _.mapKeyWithIndex( { 'a': 3, 'b': 13, 'c': 7 }, 2 );
+    var expected = 'c';
+    test.identical( got, expected );
+    
+    test.description = 'first key';
+    var got = _.mapKeyWithIndex( [ { a : 3 }, 13, 'c', 7 ], 0 );
+    var expected = '0';
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug )
+    {
 
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapKeyWithIndex();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapKeyWithIndex( [] );
+      });
+
+      test.description = 'redundant argument';
+      test.shouldThrowError( function()
+      {
+        _.mapKeyWithIndex( [  ], 2, 'wrong arguments' );
+      });
+
+      test.description = 'wrong type of argument';
+      test.shouldThrowError( function()
+      {
+        _.mapKeyWithIndex( 'wrong argumetns' );
+      });
+
+    }
+    
+  };
+  
+  
+  
+  
 //
 
   var Proto =
@@ -582,7 +643,8 @@
     //name : 'mapContain',
     //name : 'mapBut',
     //name : 'mapToArray',
-    name : 'mapValWithIndex',
+    //name : 'mapValWithIndex',
+    name : 'mapKeyWithIndex',
 
 
     tests:
@@ -597,7 +659,8 @@
       //mapContain : mapContain,
       //mapBut : mapBut,
       //mapToArray : mapToArray,
-      mapValWithIndex : mapValWithIndex,
+      //mapValWithIndex : mapValWithIndex,
+      mapKeyWithIndex : mapKeyWithIndex,
 
 
     }

@@ -5841,7 +5841,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
    * @memberof wTools
    */
 
-var mapToArray = function( src ) 
+var mapToArray = function( src )
 {
   var result = [];
 
@@ -5857,15 +5857,15 @@ var mapToArray = function( src )
 }
 
   /**
-   * The mapValWithIndex() returns [ key, value ] by corresponding index.
+   * The mapValWithIndex() returns value of (src) by corresponding (index).
    *
-   * It takes array and index, creates a variable ( i = 0 ),
+   * It takes (src) and (index), creates a variable ( i = 0 ),
    * checks if ( index > 0 ), iterate over array (src) and match
    * if ( i == index ).
-   * If true, it returns [ key, value ].
+   * If true, it returns value of (src).
    * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
    *
-   * @param { objectLike } src - The Iterable array.
+   * @param { objectLike } src - The iterable array.
    * @param { number } index - To find the position an element.
    *
    * @example
@@ -5876,17 +5876,18 @@ var mapToArray = function( src )
    * // returns {c: 7}
    * mapValWithIndex( [ { a : 3 }, { b : 13 }, { c : 7 } ], 2 );
    *
-   * @returns { Array } returns [ key, value ] by corresponding index.
+   * @example
+   * // returns 'c'
+   * mapValWithIndex( [ 3, 13, 'c', 7 ], 2 );
+   *
+   * @returns { * } returns [ key, value ] by corresponding (index).
    * @method mapValWithIndex
-   * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Array.
+   * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
    * @memberof wTools
    */
 
 var mapValWithIndex = function( src,index )
 {
-
-  _.assert( arguments.length > 2 );
-  _.assert( _.arrayLike( src ) );
 
   if( index < 0 ) return;
 
@@ -5898,7 +5899,31 @@ var mapValWithIndex = function( src,index )
   }
 }
 
-//
+  /**
+   * The mapKeyWithIndex() returns key of (src) by corresponding (index).
+   *
+   * It takes (src) and (index), creates a variable ( i = 0 ),
+   * checks if ( index > 0 ), iterate over array (src) and match
+   * if ( i == index ).
+   * If true, it returns value of (src).
+   * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
+   *
+   * @param src - The iterable array.
+   * @param index - To find the position an element.
+   *
+   * @example
+   * // returns 'c'
+   * mapKeyWithIndex( { 'a': 3, 'b': 13, 'c': 7 }, 2 );
+   *
+   * @example
+   * // returns '2'
+   * mapKeyWithIndex( [ { a : 3 }, 13, 'c', 7 ], 2 );
+   *
+   * @returns {string} returns key of (src) by corresponding (index).
+   * @method mapKeyWithIndex
+   * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
+   * @memberof wTools
+   */
 
 var mapKeyWithIndex = function( src,index )
 {
