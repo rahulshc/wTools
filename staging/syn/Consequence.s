@@ -19,6 +19,20 @@ var Self = function wConsequence( options )
   return Self.prototype.init.apply( this,arguments );
 }
 
+/*
+
+ !!! move promise / event property from object to taker
+
+ !!! test difference :
+
+    if( errs.length )
+    return new wConsequence().error( errs[ 0 ] );
+
+    if( errs.length )
+    throw _.err( errs[ 0 ] );
+
+*/
+
 //
 
 var init = function init( options )
@@ -350,7 +364,59 @@ var _handleGot = function()
 
   //
 
-  var giveTo = function( _taker )
+  var _giveToConsequence = function( _taker )
+  {
+
+    result = _taker.onGot.giveWithError.call( _taker.onGot,_given.error,_given.argument );
+    if( self.mode === 'promise' && _taker.thenning )
+    {
+      self.giveWithError( _given.error,_given.argument );
+    }
+
+  }
+
+  //
+
+  var _giveToRoutine = function( _taker )
+  {
+
+    try
+    {
+      result = _taker.onGot.call( self,_given.error,_given.argument );
+    }
+    catch( err )
+    {
+      debugger;
+      var err = _.err( err );
+      result = new wConsequence().error( err );
+      if( Config.debug ) // something wrong with the flag in server !!!
+      if( !self._taker.length )
+      {
+        self.mark = self.mark || [];
+        self.mark.push( err );
+        _.timeOut( 1, function()
+        {
+          if( self.mark && self.mark.indexOf( err ) !== -1 )
+          {
+            console.error( 'Uncaught error caught by Consequence:' );
+            _.errLog( err );
+          }
+        });
+      }
+    }
+    if( self.mode === 'promise' && _taker.thenning )
+    {
+      if( result instanceof Self )
+      result.got( self );
+      else
+      self.give( result );
+    }
+
+  }
+
+  //
+
+  var _giveTo = function( _taker )
   {
 
     if( _taker.onGot === _onDebug )
@@ -361,45 +427,11 @@ var _handleGot = function()
 
     if( _taker.onGot instanceof Self )
     {
-      result = _taker.onGot.giveWithError.call( _taker.onGot,_given.error,_given.argument );
-      if( self.mode === 'promise' && _taker.thenning )
-      {
-        self.giveWithError( _given.error,_given.argument );
-      }
+      _giveToConsequence( _taker );
     }
     else
     {
-      try
-      {
-        result = _taker.onGot.call( self,_given.error,_given.argument );
-      }
-      catch( err )
-      {
-        debugger;
-        var err = _.err( err );
-        result = new wConsequence().error( err );
-        if( Config.debug ) // something wrong with the flag in server !!!
-        if( !self._taker.length )
-        {
-          self.mark = self.mark || [];
-          self.mark.push( err );
-          _.timeOut( 1, function()
-          {
-            if( self.mark && self.mark.indexOf( err ) !== -1 )
-            {
-              console.error( 'Uncaught error caught by Consequence:' );
-              _.errLog( err );
-            }
-          });
-        }
-      }
-      if( self.mode === 'promise' && _taker.thenning )
-      {
-        if( result instanceof Self )
-        result.got( self );
-        else
-        self.give( result );
-      }
+      _giveToRoutine( _taker );
     }
 
   }
@@ -411,14 +443,14 @@ var _handleGot = function()
 
     var _taker = self._taker[ 0 ];
     self._taker.splice( 0,1 );
-    giveTo( _taker );
+    _giveTo( _taker );
 
   }
   else if( self.mode === 'event' )
   {
 
     for( var i = 0 ; i < self._taker.length ; i++ )
-    giveTo( self._taker[ i ] );
+    _giveTo( self._taker[ i ] );
 
   }
   else throw _.err( 'unexepected' );
@@ -629,6 +661,22 @@ var givenGet = function()
   return self._given;
 }
 
+//
+
+var toStr = function()
+{
+  var self = this;
+  var result = self.nickName;
+
+  _.assert( arguments.length === 0 );
+
+  result += '\n  takers : ' + self.takersGet().length;
+  result += '\n  given : ' + self.givenGet().length;
+
+  return result;
+}
+
+
 // --
 // clear
 // --
@@ -760,6 +808,7 @@ var Proto =
 
   takersGet: takersGet,
   givenGet: givenGet,
+  toStr: toStr,
 
 
   //
