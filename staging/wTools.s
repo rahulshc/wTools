@@ -3667,6 +3667,20 @@ var dateToStr = function dateToStr( date )
 // --
 // array
 // --
+/**
+ * The arraySub() method returns a section of an array from (begin) to (end).
+ * 
+ * @example
+ * // returns [ 3, 4 ]
+ * var arr = _.arraySub([ 1, 2, 3, 4, 5], 2, 4);
+ *
+ * @param {Array} src - Source array
+ * @param {Number} begin - Index at which to begin extraction
+ * @param {Number} end - Index at which to end extraction
+ * @returns {Array} - The new array
+ * @method arraySub
+ * @memberof wTools
+ */
 
 var arraySub = function( src,begin,end )
 {
