@@ -19,6 +19,20 @@ var Self = function wConsequence( options )
   return Self.prototype.init.apply( this,arguments );
 }
 
+/*
+
+ !!! move promise / event property from object to taker
+
+ !!! test difference :
+
+    if( errs.length )
+    return new wConsequence().error( errs[ 0 ] );
+
+    if( errs.length )
+    throw _.err( errs[ 0 ] );
+
+*/
+
 //
 
 var init = function init( options )
@@ -75,30 +89,30 @@ var _modeSet = function _modeSet( value )
 // mechanics
 // --
 
-var _gotterAppend = function( options )
+var _gotterAppend = function( o )
 {
   var self = this;
-  var taker = options.taker;
-  var name = options.name || taker ? taker.name : null || null;
+  var taker = o.taker;
+  var name = o.name || taker ? taker.name : null || null;
 
   _.assert( arguments.length === 1 );
-  _.assert( _.boolIs( options.thenning ) );
+  _.assert( _.boolIs( o.thenning ) );
   _.assert( _.routineIs( taker ) || taker instanceof Self );
 
   if( _.routineIs( taker ) )
   {
-    if( options.context !== undefined || options.argument !== undefined )
-    taker = _.routineBind( taker,options.context,options.argument );
+    if( o.context !== undefined || o.argument !== undefined )
+    taker = _.routineBind( taker,o.context,o.argument );
   }
   else
   {
-    _.assert( options.context === undefined && options.argument === undefined );
+    _.assert( o.context === undefined && o.argument === undefined );
   }
 
   self._taker.push
   ({
     onGot : taker,
-    thenning : options.thenning,
+    thenning : o.thenning,
     name : name,
   });
 
@@ -198,7 +212,7 @@ var ifNoErrorThen = function()
     return function ifNoErrorThen( err,data )
     {
 
-      _.assert( arguments.length === 2 ); 
+      _.assert( arguments.length === 2 );
 
       if( !err )
       {
@@ -350,7 +364,59 @@ var _handleGot = function()
 
   //
 
-  var giveTo = function( _taker )
+  var _giveToConsequence = function( _taker )
+  {
+
+    result = _taker.onGot.giveWithError.call( _taker.onGot,_given.error,_given.argument );
+    if( self.mode === 'promise' && _taker.thenning )
+    {
+      self.giveWithError( _given.error,_given.argument );
+    }
+
+  }
+
+  //
+
+  var _giveToRoutine = function( _taker )
+  {
+
+    try
+    {
+      result = _taker.onGot.call( self,_given.error,_given.argument );
+    }
+    catch( err )
+    {
+      debugger;
+      var err = _.err( err );
+      result = new wConsequence().error( err );
+      if( Config.debug ) // something wrong with the flag in server !!!
+      if( !self._taker.length )
+      {
+        self.mark = self.mark || [];
+        self.mark.push( err );
+        _.timeOut( 1, function()
+        {
+          if( self.mark && self.mark.indexOf( err ) !== -1 )
+          {
+            console.error( 'Uncaught error caught by Consequence:' );
+            _.errLog( err );
+          }
+        });
+      }
+    }
+    if( self.mode === 'promise' && _taker.thenning )
+    {
+      if( result instanceof Self )
+      result.got( self );
+      else
+      self.give( result );
+    }
+
+  }
+
+  //
+
+  var _giveTo = function( _taker )
   {
 
     if( _taker.onGot === _onDebug )
@@ -361,45 +427,11 @@ var _handleGot = function()
 
     if( _taker.onGot instanceof Self )
     {
-      result = _taker.onGot.giveWithError.call( _taker.onGot,_given.error,_given.argument );
-      if( self.mode === 'promise' && _taker.thenning )
-      {
-        self.giveWithError( _given.error,_given.argument );
-      }
+      _giveToConsequence( _taker );
     }
     else
     {
-      try
-      {
-        result = _taker.onGot.call( self,_given.error,_given.argument );
-      }
-      catch( err )
-      {
-        debugger;
-        var err = _.err( err );
-        result = new wConsequence().error( err );
-        if( Config.debug ) // something wrong with the flag in server !!!
-        if( !self._taker.length )
-        {
-          self.mark = self.mark || [];
-          self.mark.push( err );
-          _.timeOut( 1, function()
-          {
-            if( self.mark && self.mark.indexOf( err ) !== -1 )
-            {
-              console.log( 'in consequence' );
-              _.errLog( err );
-            }
-          });
-        }
-      }
-      if( self.mode === 'promise' && _taker.thenning )
-      {
-        if( result instanceof Self )
-        result.got( self );
-        else
-        self.give( result );
-      }
+      _giveToRoutine( _taker );
     }
 
   }
@@ -411,14 +443,14 @@ var _handleGot = function()
 
     var _taker = self._taker[ 0 ];
     self._taker.splice( 0,1 );
-    giveTo( _taker );
+    _giveTo( _taker );
 
   }
   else if( self.mode === 'event' )
   {
 
     for( var i = 0 ; i < self._taker.length ; i++ )
-    giveTo( self._taker[ i ] );
+    _giveTo( self._taker[ i ] );
 
   }
   else throw _.err( 'unexepected' );
@@ -434,44 +466,79 @@ var _handleGot = function()
 // class
 // --
 
-var _giveTo = function _giveTo( options )
+var _giveTo = function _giveTo( o )
 {
-  var give, context;
-  var args = options.args;
+  var context;
+
+  if( !( _.arrayIs( o.args ) && o.args.length <= 1 ) )
+  debugger;
 
   _.assert( arguments.length );
-  _.assert( _.objectIs( options ) );
-
-  if( options.error === undefined )
-  options.error = undefined;
-
-  if( options.context === undefined )
-  options.context = undefined;
+  _.assert( _.objectIs( o ) );
+  _.assert( _.arrayIs( o.args ) && o.args.length <= 1, 'not tested' );
 
   //
 
-  if( options.consequence instanceof Self )
+  if( o.consequence instanceof Self )
   {
-    if( options.error === undefined )
-    give = options.consequence.give;
+/*
+    if( o.error === undefined )
+    give = o.consequence.give;
     else
-    give = options.consequence.giveWithError;
-    context = options.consequence;
+    give = o.consequence.giveWithError;
+*/
+    _.assert( _.arrayIs( o.args ) && o.args.length <= 1 );
+
+    context = o.consequence;
+
+    if( o.error !== undefined )
+    {
+      o.consequence.giveWithError( o.error,o.args[ 0 ] );
+    }
+    else
+    {
+      o.consequence.give( o.args[ 0 ] );
+    }
+/*
+    if( o.args )
+    give.apply( context,o.args );
+    else
+    give.call( context,got );
+*/
   }
-  else if( _.routineIs( options.consequence ) )
+  else if( _.routineIs( o.consequence ) )
   {
-    give = options.consequence;
-    context = options.context;
+
+    _.assert( _.arrayIs( o.args ) && o.args.length <= 1 );
+
+/*
+    give = o.consequence;
+    context = o.context;
+
+    if( o.error !== undefined )
+    {
+      o.args = o.args || [];
+      o.args.unshift( o.error );
+    }
+
+    if( o.args )
+    o.consequence.apply( context,o.args );
+    else
+    o.consequence.call( context,got );
+*/
+
+    if( o.error !== undefined )
+    {
+      return o.consequence.call( context,o.error,o.args[ 0 ] );
+    }
+    else
+    {
+      return o.consequence.call( context,null,o.args[ 0 ] );
+    }
+
   }
   else throw _.err( 'Unknown type of consequence' );
 
-  if( options.error !== undefined )
-  args.unshift( options.error );
-
-  if( options.args )
-  give.apply( context,options.args );
-  else
-  give.call( context,got );
 
 }
 
@@ -527,7 +594,7 @@ var errorTo = function( consequence,error )
     consequence : consequence,
     context : undefined,
     error : error,
-    args : undefined,
+    args : [],
   });
 
 }
@@ -593,6 +660,22 @@ var givenGet = function()
   var self = this;
   return self._given;
 }
+
+//
+
+var toStr = function()
+{
+  var self = this;
+  var result = self.nickName;
+
+  _.assert( arguments.length === 0 );
+
+  result += '\n  takers : ' + self.takersGet().length;
+  result += '\n  given : ' + self.givenGet().length;
+
+  return result;
+}
+
 
 // --
 // clear
@@ -697,6 +780,7 @@ var Proto =
   done: got,
   gotOnce: gotOnce,
   then_: then_,
+  ifNoErrorThen: ifNoErrorThen,
   thenDebug: thenDebug,
   timeOut: timeOut,
 
@@ -707,12 +791,14 @@ var Proto =
 
   _handleGot: _handleGot,
 
+
+  //
+
   _giveTo: _giveTo,
 
   giveWithContextTo: giveWithContextTo,
   giveTo: giveTo,
   errorTo: errorTo,
-  ifNoErrorThen: ifNoErrorThen,
 
   giveWithContextAndErrorTo: giveWithContextAndErrorTo,
   giveWithErrorTo: giveWithErrorTo,
@@ -722,6 +808,7 @@ var Proto =
 
   takersGet: takersGet,
   givenGet: givenGet,
+  toStr: toStr,
 
 
   //
