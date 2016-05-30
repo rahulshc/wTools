@@ -961,6 +961,62 @@
 
   //
 
+  var regexpObjectBut = function( test )
+  {
+    var src5 =
+      {
+        includeAny: ArrOfRegx1,
+        includeAll: ArrOfRegx2,
+        excludeAny: ArrOfRegx3,
+        excludeAll: ArrOfRegx4
+      },
+      src6 =
+      {
+        includeAny: ArrOfRegx6,
+        excludeAny: ArrOfRegx7,
+      },
+      expected1 =
+      {
+        includeAny: []
+      },
+      expected2 =
+      {
+        includeAny: ArrOfRegx3,
+        includeAll: ArrOfRegx4,
+        excludeAny: ArrOfRegx1,
+        excludeAll: ArrOfRegx2
+      },
+      expected3 =
+      {
+        includeAny: ArrOfRegx3.concat(ArrOfRegx7),
+        includeAll: ArrOfRegx4,
+        excludeAny: ArrOfRegx1.concat(ArrOfRegx6),
+        excludeAll: ArrOfRegx2
+      };
+    test.description = 'arguments are missing';
+    var got = _.regexpObjectBut();
+    test.identical( got, expected1 );
+
+    test.description = 'argument is single RegexpObject map';
+    var got = _.regexpObjectBut( src1 );
+    test.identical( got, expected2 );
+
+    test.description = 'arguments are several RegexpObject maps';
+    var got = _.regexpObjectBut( src5, src6 );
+    test.identical( got, expected3 );
+
+    if( Config.debug )
+    {
+      test.description = 'passed incompatibility arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectBut(src2, src3);
+      });
+    }
+  };
+
+  //
+
   var Proto =
   {
 
@@ -978,7 +1034,8 @@
       _regexpObjectExtend : _regexpObjectExtend,
       regexpObjectBroaden : regexpObjectBroaden,
       regexpObjectShrink  : regexpObjectShrink,
-      regexpObjectMake    : regexpObjectMake
+      regexpObjectMake    : regexpObjectMake,
+      regexpObjectBut     : regexpObjectBut
 
     }
 
