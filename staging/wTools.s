@@ -3009,6 +3009,50 @@ _regexpObjectExtend.defaults =
 
 //
 
+  /**
+   * Make RegexpObject from different type sources.
+      If passed RegexpObject or map with properties similar to RegexpObject but with string in values, then the second
+   parameter is not required;
+      All strings in sources will be turned into RegExps.
+      If passed single RegExp/String or array of RegExps/Strings, then method will return RegexpObject with
+   `defaultMode` as key, and array of RegExps created from first parameter as value.
+      If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
+   with shrinking (see [regexpObjectShrink]{@link wTools#regexpObjectShrink}) RegexpObjects and RegExps that associates
+   with `defaultMode` key.
+   *
+   * @example
+     var src = [
+         /hello/,
+         'world',
+         {
+            includeAny : ['yellow', 'blue', 'red'],
+            includeAll : [/red/, /green/, /brown/],
+            excludeAny : [/yellow/, /white/, /greey/],
+            excludeAll : [/red/, /green/, /blue/]
+         }
+     ];
+     wTools.regexpObjectMake(src, 'excludeAll');
+
+     // {
+     //    includeAny: [/yellow/, /blue/, /red/],
+     //    includeAll: [/red/, /green/, /brown/],
+     //    excludeAny: [/yellow/, /white/, /greey/],
+     //    excludeAll: [/hello/, /world/]
+     // }
+   * @param {RegexpObject|String|RegExp|RegexpObject[]|String[]|RegExp[]} src Source for making RegexpObject
+   * @param {String} [defaultMode] key for result RegexpObject map. Can be one of next strings: 'includeAny',
+   'includeAll','excludeAny' or 'excludeAll'.
+   * @returns {RegexpObject} Result RegexpObject
+   * @throws {Error} Missing arguments if call without argument
+   * @throws {Error} Missing arguments if passed array without `defaultMode`
+   * @throws {Error} Unknown mode `defaultMode`
+   * @throws {Error} Unknown src if first argument is not array, map, string or regexp.
+   * @throws {Error} Unexpected if type of array element is not string regexp or RegexpObject.
+   * @throws {Error} Unknown regexp filters if passed map has unexpected properties (see RegexpObject).
+   * @method regexpObjectMake
+   * @memberof wTools
+   */
+
 var regexpObjectMake = function( src,defaultMode )
 {
   var result = {};
@@ -7229,7 +7273,8 @@ var Proto =
 }
 
 mapExtend( Self, Proto );
-Self.constructor = function wTools(){};
+
+  Self.constructor = function wTools(){};
 
 // --
 // cache
