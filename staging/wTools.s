@@ -3759,6 +3759,24 @@ var dateToStr = function dateToStr( date )
 // array
 // --
 
+/**
+ * The arraySub() method returns a copy of a portion of the array to a new array.
+ *
+ * It will returns a new array containing the elements from (begin) index
+ * to the (end) index, but not including it.
+ *
+ * @example
+ * // returns [ 3, 4 ]
+ * var arr = _.arraySub([ 1, 2, 3, 4, 5], 2, 4);
+ *
+ * @param {Array} src - Source array
+ * @param {Number} begin - Index at which to begin extraction
+ * @param {Number} end - Index at which to end extraction.
+ * @returns {Array} - The new array
+ * @method arraySub
+ * @memberof wTools#
+ */
+
 var arraySub = function( src,begin,end )
 {
 
@@ -3774,7 +3792,23 @@ var arraySub = function( src,begin,end )
   return src.slice( begin,end );
 }
 
-//
+/**
+ * The arrayNew() method returns a new array with length equal (length)
+ * or the length of the initial array.
+ * 
+ * @example
+ * // returns [ , ,  ]
+ * var arr = _.arrayNew([ 1, 2, 3 ]);
+ * 
+ * // returns [ , , ,  ]
+ * var arr = _.arrayNew([ 1, 2, 3 ], 4);
+ * 
+ * @param {arrayLike} ins - Instance of an array
+ * @param {Number} length - The length of the new array
+ * @returns {arrayLike} - An empty array
+ * @method arrayNew
+ * @memberof wTools#
+ */
 
 var arrayNew = function( ins,length )
 {
@@ -3793,7 +3827,18 @@ var arrayNew = function( ins,length )
   return result;
 }
 
-//
+/**
+ * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
+ *
+ * * @example
+ * // returns [ , , , ,  ]
+ * var arr = _.arrayNewOfSameLength([ 1, 2, 3, 4, 5]);
+ *
+ * @param {arrayLike} ins - Instance of an array
+ * @returns {arrayLike} - If (ins) in not an array return a function. Otherwise create and empty array
+ * @method arrayNewOfSameLength
+ * @memberof wTools#
+ */
 
 var arrayNewOfSameLength = function( ins )
 {
