@@ -3667,6 +3667,7 @@ var dateToStr = function dateToStr( date )
 // --
 // array
 // --
+
 /**
  * The arraySub() method returns a section of an array from (begin) to (end).
  * 
@@ -3679,7 +3680,7 @@ var dateToStr = function dateToStr( date )
  * @param {Number} end - Index at which to end extraction
  * @returns {Array} - The new array
  * @method arraySub
- * @memberof wTools
+ * @memberof wTools#
  */
 
 var arraySub = function( src,begin,end )
@@ -3697,7 +3698,20 @@ var arraySub = function( src,begin,end )
   return src.slice( begin,end );
 }
 
-//
+/**
+ * The arrayNew() method returns a new array with length equal (length)
+ * or the length of the initial array.
+ * 
+ * @example
+ * // returns [ , ,  ]
+ * var arr = _.arrayNew([ 1, 2, 3 ]);
+ * 
+ * @param {Array} ins - Initial array
+ * @param {Number} length - The length of the new array
+ * @returns {Array} - An empty array
+ * @method arrayNew
+ * @memberof wTools#
+ */
 
 var arrayNew = function( ins,length )
 {
