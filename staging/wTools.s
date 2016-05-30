@@ -3281,6 +3281,20 @@ var regexpArrayIndex = function regexpArrayIndex( arr,ins )
 
 //
 
+  /**
+   * Wrap strings passed in `ordering` array into RegexpObjects.
+      Any non empty string in input array turns into RegExp which is wraped into array and assign to includeAll,
+   property of appropriate object. An empty string in array are replaced by merged subtractions for all created
+   RegexpObjects objects.
+
+   * @param {String[]} ordering - array of strings.
+   * @returns {RegexpObject[]} Returns array of RegexpObject
+   * @private
+   * @throws {Error} If no arguments, or arguments more than 1.
+   * @method _regexpObjectOrderingExclusion
+   * @memberof wTools
+   */
+
 var _regexpObjectOrderingExclusion = function( ordering )
 {
 
