@@ -3027,7 +3027,7 @@ _regexpObjectExtend.defaults =
          {
             includeAny : ['yellow', 'blue', 'red'],
             includeAll : [/red/, /green/, /brown/],
-            excludeAny : [/yellow/, /white/, /greey/],
+            excludeAny : [/yellow/, /white/, /grey/],
             excludeAll : [/red/, /green/, /blue/]
          }
      ];
@@ -3036,7 +3036,7 @@ _regexpObjectExtend.defaults =
      // {
      //    includeAny: [/yellow/, /blue/, /red/],
      //    includeAll: [/red/, /green/, /brown/],
-     //    excludeAny: [/yellow/, /white/, /greey/],
+     //    excludeAny: [/yellow/, /white/, /grey/],
      //    excludeAll: [/hello/, /world/]
      // }
    * @param {RegexpObject|String|RegExp|RegexpObject[]|String[]|RegExp[]} src Source for making RegexpObject
@@ -3132,6 +3132,39 @@ var regexpObjectMake = function( src,defaultMode )
 regexpObjectMake.names = regexpModeNames;
 
 //
+
+  /**
+   * Create RegexpObject, that represents the subtraction for match`s/mismatched with the input RegexpObject object
+   e.g. if { includeAll: [ /red/, /green/, /blue/ ] } represents subset of all strings that contains each 'red', 'green'
+   and 'blue' words, then result of regexpObjectBut() - { excludeAll: [ /red/, /green/, /blue/ ]} will represent the
+   subset of all strings that does not contains at least one of those worlds.
+   *
+   * @example
+     var options = {
+           includeAny : [/yellow/, /blue/, /red/],
+           includeAll : [/red/, /green/, /blue/],
+           excludeAny : [/yellow/, /white/, /grey/],
+           excludeAll : [/black/, /brown/, /pink/]
+       };
+
+     wTools.regexpObjectBut(options);
+
+      // {
+      //   "includeAny":[/yellow/, /white/, /grey/],
+      //   "excludeAny":[/yellow/, /blue/, /red/],
+      //   "excludeAll":[/red/, /green/, /blue/],
+      //   "includeAll":[/black/, /brown/, /pink/]
+      // }
+   * @param {...RegexpObject|...String|...RegExp} [src] Input RegexpObject map/maps. If passed primitive values, they will
+   be interpreted as value for `includeAny` property of RegexpObject. If objects more than one, their includeAny and
+   excludeAny properties will be merged. Notice: if objects more than one and every has includeAll/excludeAll arrays
+   with more than one elements, method will throw error.
+   * @returns {RegexpObject} Result RegexpObject map.
+   * @throws {Error} If objects more than one and every has includeAll/excludeAll arrays with more than one elements
+   * throws 'cant combine such regexp objects with "but" combiner'
+   * @method regexpObjectBut
+   * @memberof wTools
+   */
 
 var regexpObjectBut = function()
 {
@@ -3247,6 +3280,20 @@ var regexpArrayIndex = function regexpArrayIndex( arr,ins )
 }
 
 //
+
+  /**
+   * Wrap strings passed in `ordering` array into RegexpObjects.
+      Any non empty string in input array turns into RegExp which is wraped into array and assign to includeAll,
+   property of appropriate object. An empty string in array are replaced by merged subtractions for all created
+   RegexpObjects objects.
+
+   * @param {String[]} ordering - array of strings.
+   * @returns {RegexpObject[]} Returns array of RegexpObject
+   * @private
+   * @throws {Error} If no arguments, or arguments more than 1.
+   * @method _regexpObjectOrderingExclusion
+   * @memberof wTools
+   */
 
 var _regexpObjectOrderingExclusion = function( ordering )
 {

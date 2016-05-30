@@ -65,6 +65,18 @@
       excludeSome: [ /[^a]/ ]
     };
 
+  var getSource = function( v )
+  {
+    return (typeof v === 'string') ? v : v.source;
+  };
+
+  var getSourceFromMap = function(resultObj)
+  {
+    var i;
+    for( i in resultObj )
+    resultObj.hasOwnProperty( i ) && (resultObj[ i ] = resultObj[ i ].map( getSource ));
+  };
+
 //
 
   var regexpEscape = function( test )
@@ -852,17 +864,7 @@
         excludeAll: ArrOfRegx8
       };
 
-    var getSource = function( v )
-    {
-      return v.source;
-    };
 
-    var getSourceFromMap = function(resultObj)
-    {
-      var i;
-      for( i in resultObj )
-      resultObj.hasOwnProperty(i) && (resultObj[i] = resultObj[i].map( getSource ));
-    };
 
     getSourceFromMap(expected4);
     getSourceFromMap(expected5);
@@ -961,6 +963,126 @@
 
   //
 
+  var regexpObjectBut = function( test )
+  {
+    var src5 =
+      {
+        includeAny: ArrOfRegx1,
+        includeAll: ArrOfRegx2,
+        excludeAny: ArrOfRegx3,
+        excludeAll: ArrOfRegx4
+      },
+      src6 =
+      {
+        includeAny: ArrOfRegx6,
+        excludeAny: ArrOfRegx7,
+      },
+      expected1 =
+      {
+        includeAny: []
+      },
+      expected2 =
+      {
+        includeAny: ArrOfRegx3,
+        includeAll: ArrOfRegx4,
+        excludeAny: ArrOfRegx1,
+        excludeAll: ArrOfRegx2
+      },
+      expected3 =
+      {
+        includeAny: ArrOfRegx3.concat(ArrOfRegx7),
+        includeAll: ArrOfRegx4,
+        excludeAny: ArrOfRegx1.concat(ArrOfRegx6),
+        excludeAll: ArrOfRegx2
+      };
+    test.description = 'arguments are missing';
+    var got = _.regexpObjectBut();
+    test.identical( got, expected1 );
+
+    test.description = 'argument is single RegexpObject map';
+    var got = _.regexpObjectBut( src1 );
+    test.identical( got, expected2 );
+
+    test.description = 'arguments are several RegexpObject maps';
+    var got = _.regexpObjectBut( src5, src6 );
+    test.identical( got, expected3 );
+
+    if( Config.debug )
+    {
+      test.description = 'passed incompatibility arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectBut(src2, src3);
+      });
+    }
+  };
+
+  //
+
+  var _regexpObjectOrderingExclusion = function( test )
+  {
+    var arrOfStr1 = [ '0', '1', '2' ],
+      arrOfStr2 = [ '0', '1', '', '2', '' ],
+      expected0 = [],
+      expected1 =
+      [
+        { includeAll: [ /0/ ] },
+        { includeAll: [ /1/ ] },
+        { includeAll: [ /2/ ] },
+      ],
+      e1 = expected1.length,
+      expected2 =
+      [
+        { includeAll: [ /0/ ] },
+        { includeAll: [ /1/ ] },
+        { includeAll: [], includeAny: [], excludeAll: [], excludeAny: [ /0/, /1/, /2/ ] },
+        { includeAll: [ /2/ ] },
+        { includeAll: [], includeAny: [], excludeAll: [], excludeAny: [ /0/, /1/, /2/ ] }
+      ],
+      e2 = expected2.length;
+
+    while( e1-- )
+    getSourceFromMap(expected1[ e1 ]);
+
+    while( e2-- )
+    getSourceFromMap(expected2[ e2 ]);
+
+    test.description = 'passed null as parameter';
+    var got = _._regexpObjectOrderingExclusion(null);
+    test.identical( got, expected0 );
+
+    test.description = 'passed array of strings without empty strings';
+    var got = _._regexpObjectOrderingExclusion(arrOfStr1),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected1 );
+
+    test.description = 'passed array of strings without empty strings';
+    var got = _._regexpObjectOrderingExclusion(arrOfStr2),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected2 );
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpObjectOrderingExclusion();
+      } );
+
+      test.description = 'passed more that 1 argument';
+      test.shouldThrowError( function()
+      {
+        _._regexpObjectOrderingExclusion(arrOfStr1, arrOfStr1);
+      } );
+    }
+  };
+
+  //
+
   var Proto =
   {
 
@@ -978,7 +1100,9 @@
       _regexpObjectExtend : _regexpObjectExtend,
       regexpObjectBroaden : regexpObjectBroaden,
       regexpObjectShrink  : regexpObjectShrink,
-      regexpObjectMake    : regexpObjectMake
+      regexpObjectMake    : regexpObjectMake,
+      regexpObjectBut     : regexpObjectBut,
+      _regexpObjectOrderingExclusion: _regexpObjectOrderingExclusion
 
     }
 
