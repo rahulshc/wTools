@@ -3706,6 +3706,9 @@ var arraySub = function( src,begin,end )
  * // returns [ , ,  ]
  * var arr = _.arrayNew([ 1, 2, 3 ]);
  * 
+ * // returns [ , , ,  ]
+ * var arr = _.arrayNew([ 1, 2, 3 ], 4);
+ * 
  * @param {Array} ins - Initial array
  * @param {Number} length - The length of the new array
  * @returns {Array} - An empty array
@@ -3730,7 +3733,18 @@ var arrayNew = function( ins,length )
   return result;
 }
 
-//
+/**
+ * The arrayNewOfSameLength() method returns an empty array with the same length as in (ins).
+ *
+ * * @example
+ * // returns [ , , , ,  ]
+ * var arr = _.arrayNewOfSameLength([ 1, 2, 3, 4, 5]);
+ *
+ * @param {Array} ins - Instance of an array
+ * @returns {Array} - If (ins) in not an array return a function. Otherwise create and empty array
+ * @method arrayNewOfSameLength
+ * @memberof wTools#
+ */
 
 var arrayNewOfSameLength = function( ins )
 {
