@@ -772,6 +772,51 @@
       src6 = 'hello',
       src7 = /world/,
 
+      src8 =
+      [
+        {
+          includeAny: ArrOfRegx1,
+          includeAll: ArrOfRegx2,
+          excludeAny: ArrOfRegx3,
+          excludeAll: ArrOfRegx4
+        },
+        {
+          includeAny: ArrOfRegx5,
+          includeAll: ArrOfRegx6,
+          excludeAny: ArrOfRegx7,
+          excludeAll: ArrOfRegx8
+        }
+      ],
+
+      src9 = [
+        'cf0',
+        'cf1',
+        'cf2',
+        /world/,
+        {
+          includeAny: [ 'a0', 'a1', 'a2' ],
+          includeAll: [ 'b0', 'c1', 'c2' ],
+          excludeAny: [ 'c0', 'c1', 'c2' ],
+          excludeAll: [ 'd0', 'd1', 'd2' ]
+        },
+        {
+          includeAny: ArrOfRegx5,
+          includeAll: ArrOfRegx6,
+          excludeAny: ArrOfRegx7,
+          excludeAll: ArrOfRegx8
+        }
+      ],
+
+      wrongSrc1 =
+      {
+        includeAny: [ /a0/, /a1/, /a2/ ],
+        includeAll: [ /b0/, null, /c2/ ],
+        excludeAny: [ /c0/, /c1/, /c2/ ],
+        excludeAll: [ /d0/, /d1/, /d2/ ]
+      },
+      wrongSrc2 = [ 'c0', 'c1', 44 ],
+      wrongDefaultMode = 'includeSome',
+
       expected4 =
       {
         includeAny: [ /a0/, /a1/, /a2/ ],
@@ -790,6 +835,21 @@
       expected7 =
       {
         includeAll: [ /world/ ]
+      },
+
+      expected8 =
+      {
+        includeAny: src8[1].includeAny,
+        includeAll: src8[0].includeAll.concat( src8[1].includeAll ),
+        excludeAny: src8[0].excludeAny.concat( src8[1].excludeAny ),
+        excludeAll: src8[1].excludeAll
+      },
+      expected9 =
+      {
+        includeAny: ArrOfRegx5,
+        includeAll: [ /b0/, /c1/, /c2/, /14/, /16/, /17/, /cf0/, /cf1/, /cf2/, /world/],
+        excludeAny: [ /c0/, /c1/, /c2/, /18/, /19/, /20/ ],
+        excludeAll: ArrOfRegx8
       };
 
     var getSource = function( v )
@@ -800,7 +860,7 @@
     var getSourceFromMap = function(resultObj)
     {
       var i;
-      for( i in src3 )
+      for( i in resultObj )
       resultObj.hasOwnProperty(i) && (resultObj[i] = resultObj[i].map( getSource ));
     };
 
@@ -808,6 +868,7 @@
     getSourceFromMap(expected5);
     getSourceFromMap(expected6);
     getSourceFromMap(expected7);
+    getSourceFromMap(expected9);
 
     test.description = 'argument is an empty object';
     var got = _.regexpObjectMake(src1);
@@ -837,6 +898,15 @@
     getSourceFromMap( got );
     test.identical( got, expected7 );
 
+    test.description = 'as argument passed an array of RegexpObject object';
+    var got = _.regexpObjectMake(src8, 'excludeAll');
+    test.identical( got, expected8 );
+
+    test.description = 'as argument passed an array of mixed type object';
+    var got = _.regexpObjectMake(src9, 'includeAll');
+    getSourceFromMap( got );
+    test.identical( got, expected9 );
+
     if( Config.debug )
     {
       test.description = 'missed arguments';
@@ -861,6 +931,30 @@
       test.shouldThrowError( function()
       {
         _.regexpObjectMake(src7);
+      });
+
+      test.description = 'passed unexpected argument type argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(44, 'includeAll');
+      });
+
+      test.description = 'passed object that contain unexpected type';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(wrongSrc1);
+      });
+
+      test.description = 'passed array that contain unexpected type';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(wrongSrc2, 'includeAll');
+      });
+
+      test.description = 'passed unexpected defaultMode argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(src5, wrongDefaultMode);
       });
     }
   };
