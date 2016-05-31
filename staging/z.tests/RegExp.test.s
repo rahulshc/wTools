@@ -1019,6 +1019,97 @@
 
   //
 
+  var regexpObjectOrering = function( test )
+  {
+    var  arrOfStr0 = [],
+      arrOfStr1 = [ '0', '1', '2' ],
+      arrOfStr2 = [ '3', '4', '5' ],
+      arrOfStr3 = ['0', '1'],
+      arrOfStr4 = ['3', '', '4'],
+      expected0 = [],
+      expected1 =
+      [
+        { includeAll: [ /0/ ] },
+        { includeAll: [ /1/ ] },
+        { includeAll: [ /2/ ] }
+      ],
+      e1 = expected1.length,
+      expected2 =
+      [
+        { includeAny: [], includeAll: [ /0/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/, /5/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /5/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /2/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /2/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /2/, /5/ ], excludeAny: [], excludeAll: [] }
+      ],
+      e2 = expected2.length,
+      expected3 =
+      [
+        { includeAny: [], includeAll: [ /0/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/], excludeAny: [/3/, /4/], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/ ], excludeAny: [/3/, /4/], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /4/ ], excludeAny: [], excludeAll: [] }
+      ],
+      e3 = expected3.length;
+
+    while( e1-- )
+    getSourceFromMap(expected1[ e1 ]);
+
+    while( e2-- )
+    getSourceFromMap(expected2[ e2 ]);
+
+    while( e3-- )
+    getSourceFromMap(expected3[ e3 ]);
+
+    test.description = 'passed empty array as argument';
+    var got = _.regexpObjectOrering(arrOfStr0);
+    test.identical( got, expected0 );
+
+    test.description = 'passed array of strings without empty strings';
+    var got = _.regexpObjectOrering(arrOfStr1),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected1 );
+
+    test.description = 'passed multiple array of strings without empty strings';
+    var got = _.regexpObjectOrering(arrOfStr1, arrOfStr2),
+      gl = got.length;
+    while( gl-- )
+      getSourceFromMap(got[ gl ]);
+    test.identical( got, expected2 );
+
+    test.description = 'passed multiple arrays with empty strings';
+    var got = _.regexpObjectOrering(arrOfStr3, arrOfStr4),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected3 );
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectOrering();
+      } );
+
+      test.description = 'passed non array/string parameter';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectOrering(4, arrOfStr1);
+      } );
+    }
+  };
+  
+  //
+
   var regexpArrayIndex = function( test )
   {
     var str1 = 'some text 012',
@@ -1107,7 +1198,7 @@
     while( e2-- )
     getSourceFromMap(expected2[ e2 ]);
 
-    test.description = 'passed null as parameter';
+    test.description = 'passed some falsy value as parameter';
     var got = _._regexpObjectOrderingExclusion(null);
     test.identical( got, expected0 );
 
@@ -1162,6 +1253,7 @@
       regexpObjectShrink  : regexpObjectShrink,
       regexpObjectMake    : regexpObjectMake,
       regexpObjectBut     : regexpObjectBut,
+      regexpObjectOrering : regexpObjectOrering,
       regexpArrayIndex    : regexpArrayIndex,
       _regexpObjectOrderingExclusion: _regexpObjectOrderingExclusion
 
