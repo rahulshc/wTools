@@ -3223,6 +3223,51 @@ var regexpObjectBut = function()
 
 //
 
+  /**
+   * Creates array of RegexpObjects, that will be associated with some ordered set of subsets of strings.
+   Accepts array of strings. They will be used as base for RegexpObjects. The empty string in array will be
+   interpreted into RegexpObject that associated with subset what is the subtraction all possible subsets of strings and union
+   of subset which matches other words in array.
+   If in method passed several arrays, the result will be cartesian product of appropriates arrays described above.
+   * @example
+   *
+   var arr1 = ['red', 'blue'],
+   arr2 = ['', 'green'];
+
+   wTools.regexpObjectOrering(arr1, arr2);
+   // [
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/red/],
+   //         excludeAny:[/green/],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/red/,/green/],
+   //         excludeAny:[],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/blue/],
+   //         excludeAny:[/green/],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/blue/, /green/],
+   //         excludeAny:[],
+   //         excludeAll:[]
+   //     }
+   // ]
+   * @param {...String[]} ordering аrray/аrrays of strings
+   * @returns {RegexpObject[]} аrray of RegexpObject that represent resulting ordering
+   * @throws {Error} Unexpected type, if passed arguments is not arrays.
+   * @method regexpObjectOrering
+   * @memberof wTools
+   */
+
 var regexpObjectOrering = function( ordering )
 {
   var res = [];
