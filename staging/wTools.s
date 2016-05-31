@@ -810,20 +810,233 @@ var entityMap = function( src,onEach )
 
   var result;
 
-  if( _.objectLike( src ) )
-  {
-    result = new src.constructor()
-    for( var s in src )
-    result[ s ] = onEach( src[ s ],s,src );
-  }
-  else
+  if( _.arrayLike( src ) )
   {
     result = _.arrayNewOfSameLength( src );
     for( var s = 0 ; s < src.length ; s++ )
     result[ s ] = onEach( src[ s ],s,src );
   }
+  else
+  {
+    result = new src.constructor()
+    for( var s in src )
+    result[ s ] = onEach( src[ s ],s,src );
+  }
 
   return result;
+}
+
+//
+
+var entityFilter = function( src,onEach )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) || _.arrayLike( src ) );
+  _.assert( _.routineIs( onEach ) );
+
+  var result;
+
+  if( _.arrayLike( src ) )
+  {
+    result = _.arrayNewOfSameLength( src );
+    for( var s = 0, d = 0 ; s < src.length ; s++, d++ )
+    {
+      var r = onEach( src[ s ],s,src );
+      if( r === undefined )
+      d--;
+      else
+      result[ d ] = r;
+    }
+  }
+  else
+  {
+    result = new src.constructor()
+    for( var s in src )
+    {
+      r = onEach( src[ s ],s,src );
+      if( r !== undefined )
+      result[ s ] = r;
+    }
+  }
+
+  return result;
+}
+
+//
+
+var _entityMostComparing = function( src,onCompare )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( onCompare === undefined )
+  onCompare = function( a,b ){ return a-b; }
+
+  var result = { key : undefined, value : undefined };
+
+  if( _.arrayLike( src ) )
+  {
+    result.key = 0;
+    result.value = src[ 0 ];
+    for( var s = 0 ; s < src.length ; s++ )
+    if( onCompare( src[ s ],result.value ) < 0 )
+    {
+      result.key = s;
+      result.value = src[ s ];
+    }
+  }
+  else
+  {
+    throw _.err( 'not tested' );
+    for( var s in src )
+    {
+      result.key = s;
+      result.value = src[ s ];
+      break;
+    }
+    for( var s in src )
+    if( onCompare( src[ s ],result.value ) < 0 )
+    {
+      result.key = s;
+      result.value = src[ s ];
+    }
+  }
+
+  return result;
+}
+
+//
+
+var entityMinComparing = function( src,onCompare )
+{
+
+  var _onCompare = null;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( onCompare === undefined )
+  _onCompare = function( a,b ){ return a-b; };
+  else
+  {
+    throw _.err( 'not tested' );
+    _onCompare = function( a,b ){ - onCompare( a,b ) };
+  }
+
+  return _entityMost( src,_onCompare );
+}
+
+//
+
+var entityMaxComparing = function( src,onCompare )
+{
+
+  var _onCompare = null;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( onCompare === undefined )
+  _onCompare = function( a,b ){ return b-a; };
+  else
+  {
+    throw _.err( 'not tested' );
+    _onCompare = onCompare;
+  }
+
+  return _entityMost( src,_onCompare );
+}
+
+//
+
+var _entityMost = function( src,onElement,returnMax )
+{
+
+  _.assert( arguments.length === 3 );
+
+  if( onElement === undefined )
+  onElement = function( element ){ return element; }
+
+  var onCompare = null;
+
+  if( returnMax )
+  onCompare = function( a,b )
+  {
+    return a-b;
+  }
+  else
+  onCompare = function( a,b )
+  {
+    return b-a;
+  }
+
+  var result = { index : -1, key : undefined, value : undefined, element : undefined };
+
+  if( _.arrayLike( src ) )
+  {
+
+    if( src.length === 0 )
+    return result;
+    result.key = 0;
+    result.value = onElement( src[ 0 ] );
+    result.element = src[ 0 ];
+
+    for( var s = 0 ; s < src.length ; s++ )
+    {
+      var value = onElement( src[ s ] );
+      if( onCompare( value,result.value ) > 0 )
+      {
+        result.key = s;
+        result.value = value;
+        result.element = src[ s ];
+      }
+    }
+    result.index = result.key;
+
+  }
+  else
+  {
+
+    throw _.err( 'not tested' );
+    for( var s in src )
+    {
+      result.index = 0;
+      result.key = s;
+      result.value = onElement( src[ s ] );
+      result.element = src[ s ]
+      break;
+    }
+
+    var index = 0;
+    for( var s in src )
+    {
+      var value = onElement( src[ s ] );
+      if( onCompare( value,result.value ) > 0 )
+      {
+        result.index = index;
+        result.key = s;
+        result.value = value;
+        result.element = src[ s ];
+      }
+      index += 1;
+    }
+
+  }
+
+  return result;
+}
+
+//
+
+var entityMin = function( src,onElement )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return _entityMost( src,onElement,0 );
+}
+
+//
+
+var entityMax = function( src,onElement )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return _entityMost( src,onElement,1 );
 }
 
 //
@@ -1252,7 +1465,6 @@ var errLog = function errLog()
     level : 2,
   });
 
-  debugger;
   if( _.routineIs( err.toString ) )
   {
 
@@ -1272,6 +1484,7 @@ var errLog = function errLog()
 
   }
 
+  debugger;
   return err;
 }
 
@@ -2223,7 +2436,7 @@ var numberFrom = function( src )
 var strTypeOf = function( src )
 {
 
-  if( _.objectIs( src ) )
+  if( !_.atomicIs( src ) )
   if( src.constructor && src.constructor.name )
   return src.constructor.name;
 
@@ -4639,14 +4852,35 @@ var arrayHasAny = function( src )
 var arrayCount = function( src,instance )
 {
   var result = 0;
+
   _assert( arguments.length === 2 );
-  _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayCount :','array expected' );
+  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
 
   var index = src.indexOf( instance );
   while( index !== -1 )
   {
     result += 1;
     index = src.indexOf( instance,index+1 );
+  }
+
+  return result;
+}
+
+//
+
+var arraySum = function( src,onElement )
+{
+  var result = 0;
+
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
+
+  if( onElement === undefined )
+  onElement = function( e ){ return e; }
+
+  for( var i = 0 ; i < src.length ; i++ )
+  {
+    result += onElement( src[ i ],i,src );
   }
 
   return result;
@@ -5421,8 +5655,10 @@ var bufferRawFrom = function( buffer )
   {
 
     result = new Uint8Array( buffer ).buffer;
+/*
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
     result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
+*/
 
   }
   else if( _.bufferIs( buffer ) )
@@ -5818,7 +6054,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
 }
 
   /**
-   * The mapToArray() converts an object (src) into array [ [ key, value ] ... ]. 
+   * The mapToArray() converts an object (src) into array [ [ key, value ] ... ].
    *
    * It takes an object (src) creates an empty array,
    * checks if ( arguments.length === 1 ) and (src) is an object.
@@ -5841,7 +6077,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
    * @memberof wTools
    */
 
-var mapToArray = function( src ) 
+var mapToArray = function( src )
 {
   var result = [];
 
@@ -6909,6 +7145,15 @@ var Proto =
   /*strFormat : strFormat,*/
 
   entityMap : entityMap,
+  entityFilter : entityFilter,
+
+  _entityMostComparing : _entityMostComparing,
+  entityMinComparing : entityMinComparing,
+  entityMaxComparing : entityMaxComparing,
+
+  _entityMost : _entityMost,
+  entityMin : entityMin,
+  entityMax : entityMax,
 
 
   // iterator
@@ -7130,6 +7375,7 @@ var Proto =
 
   arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
+  arraySum : arraySum,
 
   arraySupplement : arraySupplement,
   arrayExtendScreening : arrayExtendScreening,

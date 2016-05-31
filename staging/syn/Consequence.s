@@ -398,6 +398,7 @@ var _handleGot = function()
         {
           if( self.mark && self.mark.indexOf( err ) !== -1 )
           {
+            debugger;
             console.error( 'Uncaught error caught by Consequence:' );
             _.errLog( err );
           }
@@ -668,14 +669,14 @@ var toStr = function()
   var self = this;
   var result = self.nickName;
 
-  _.assert( arguments.length === 0 );
+  var names = _.entitySelect( self.takersGet(),'*.name' );
 
-  result += '\n  takers : ' + self.takersGet().length;
   result += '\n  given : ' + self.givenGet().length;
+  result += '\n  takers : ' + self.takersGet().length;
+  result += '\n  takers : ' + names.join( ' ' );
 
   return result;
 }
-
 
 // --
 // clear
@@ -892,6 +893,7 @@ if( typeof module !== 'undefined' )
 
 //
 
+_global_.wConsequence = Self;
 return Self;
 
 })();
