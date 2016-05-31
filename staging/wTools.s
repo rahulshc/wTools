@@ -3848,7 +3848,19 @@ var arrayNewOfSameLength = function( ins )
   return result;
 }
 
-//
+/**
+ * The arrayOrNumber() method returns a new array witch contains only numbers.
+ *
+ * @example
+ * // returns [ 2, 2, 2, 2 ]
+ * var arr = _.arrayOrNumber(2, 4);
+ *
+ * @param {Number} dst - Value to fill the array
+ * @param {Number} length - The length of the new array
+ * @returns {Number[]} - The new array of numbers
+ * @method arrayOrNumber
+ * @memberof wTools#
+ */
 
 var arrayOrNumber = function( dst,length )
 {
