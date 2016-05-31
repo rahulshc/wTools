@@ -4145,7 +4145,7 @@ var arrayCopy = function arrayCopy()
  * // returns [ 1, 2, 'str', false, { a: 1 }, 42 ]
  * var arr = _.arrayAppendMerging([1,2], 'str', false, {a: 1}, 42);
  *
- * @param {arrayLike} dst - Initial array
+ * @param {Array} dst - Initial array
  * @returns {arrayLike} - The new array
  * @method arrayAppendMerging
  * @throws Will throw an error if the argument is undefined.
@@ -4172,7 +4172,20 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
   return result;
 }
 
-//
+/**
+ * The arrayPrependMerging() method returns an array of elements from (dst)
+ * and prepending all of the following arguments(from end) to the beginning.
+ *
+ * @example
+ * // returns [ 'str', false, { a: 1 }, 42, 1, 2 ]
+ * var arr = _.arrayPrependMerging([1,2], 'str', false, {a: 1}, 42);
+ *
+ * @param {Array} dst - Initial array
+ * @returns {arrayLike} - The new array
+ * @method arrayPrependMerging
+ * @throws Will throw an error if the argument is undefined.
+ * @memberof wTools#
+ */
 
 var arrayPrependMerging = function arrayPrependMerging( dst )
 {
