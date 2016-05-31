@@ -4081,26 +4081,32 @@ var dateToStr = function dateToStr( date )
 // array
 // --
 
+// not really copy in case of TypedArray !!!
+// does it throw something? !!!
+
 /**
  * The arraySub() method returns a copy of a portion of the array to a new array.
  *
- * It will returns a new array containing the elements from (begin) index
+ * It returns a new array containing the elements from (begin) index
  * to the (end) index, but not including it.
  *
  * @example
  * // returns [ 3, 4 ]
  * var arr = _.arraySub([ 1, 2, 3, 4, 5], 2, 4);
  *
- * @param {Array} src - Source array
- * @param {Number} begin - Index at which to begin extraction
+ * @param {Array} src - Source array.
+ * @param {Number} begin - Index at which to begin extraction.
  * @param {Number} end - Index at which to end extraction.
- * @returns {Array} - The new array
+ * @returns {Array} - The new array.
+ * @throws {Error} ... what ... ?
  * @method arraySub
  * @memberof wTools#
  */
 
 var arraySub = function( src,begin,end )
 {
+
+  _.assert( arguments.length <= 3 );
 
   if( _.atomicIs( src ) )
   throw _.err( 'arraySub','Unknown argument type' );
@@ -4114,9 +4120,15 @@ var arraySub = function( src,begin,end )
   return src.slice( begin,end );
 }
 
+//
+
+// not really copy in case of TypedArray !!!
+// does it throw something? !!!
+// second arguments is optional !!!
+
 /**
  * The arrayNew() method returns a new array with length equal (length)
- * or the length of the initial array.
+ * or the same length of the initial array if second argument is not provided.
  *
  * @example
  * // returns [ , ,  ]
@@ -4136,6 +4148,8 @@ var arrayNew = function( ins,length )
 {
   var result;
 
+  _.assert( arguments.length <= 2 );
+
   if( length === undefined )
   {
     _assert( _.numberIs( ins.length ) );
@@ -4148,6 +4162,11 @@ var arrayNew = function( ins,length )
 
   return result;
 }
+
+//
+
+// !!! return a function?
+// does it throw something? !!!
 
 /**
  * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
@@ -4164,11 +4183,19 @@ var arrayNew = function( ins,length )
 
 var arrayNewOfSameLength = function( ins )
 {
+
+  _.assert( arguments.length === 1 );
+
   if( _.atomicIs( ins ) ) return;
   if( !_.arrayIs( ins ) && !_.bufferIs( ins ) ) return;
   var result = arrayNew( ins,ins.length );
   return result;
 }
+
+//
+
+// does it throw something? !!!
+// what numbers? !!!
 
 /**
  * The arrayOrNumber() method returns a new array which contains only numbers.
@@ -4198,10 +4225,15 @@ var arrayOrNumber = function( dst,length )
   return dst;
 }
 
+//
+
+// i like !!!
+// does it throw something? !!!
+
 /**
  * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray)
  *
- * @exaple
+ * @example
  * // returns [ 3, 4, 5 ]
  * var arr = _.arraySelect([ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ]);
  *
@@ -4286,6 +4318,11 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 
   return result;
 }
+
+//
+
+// poor description !!!
+// does it throw something? !!!
 
 /**
  * The arrayIron() method returns an array of elements which passed as arguments with the exception of undefined.
