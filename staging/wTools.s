@@ -3849,7 +3849,7 @@ var arrayNewOfSameLength = function( ins )
 }
 
 /**
- * The arrayOrNumber() method returns a new array witch contains only numbers.
+ * The arrayOrNumber() method returns a new array which contains only numbers.
  *
  * @example
  * // returns [ 2, 2, 2, 2 ]
@@ -3965,8 +3965,17 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
   return result;
 }
 
-//
-
+/**
+ * The arrayIron() method returns an array of elements which passed as arguments with the exception of undefined.
+ *
+ * @example
+ * // returns [ 'str', {}, 1, 2, 5, true ]
+ * var arr = _.arrayIron('str', {}, [1,2], 5, true);
+ *
+ * @returns {Array}
+ * @method arrayIron
+ * @memberof wTools#
+ */
 var arrayIron = function()
 {
   var result = _.arrayIs( this ) ? this : [];
