@@ -3876,7 +3876,23 @@ var arrayOrNumber = function( dst,length )
   return dst;
 }
 
-//
+/**
+ * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray)
+ *
+ * @exaple
+ * // returns [ 3, 4, 5 ]
+ * var arr = _.arraySelect([ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ]);
+ * 
+ * // returns [ undefined, undefined ]
+ * var arr = _.arraySelect([ 1, 2, 3 ], [ 4, 5 ]);
+ *
+ * @param {arrayLike} srcArray - Values for the new array
+ * @param {arrayLike} indicesArray - Index of elements from the (srcArray)
+ * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
+   If there is no element with necessary index then the value will be undefined.
+ * @method arraySelect
+ * @memberof wTools#
+ */
 
 var arraySelect = function( srcArray,indicesArray )
 {
