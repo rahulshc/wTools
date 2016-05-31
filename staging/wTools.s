@@ -3264,7 +3264,7 @@ var regexpObjectOrering = function( ordering )
 //
 
   /**
-   * regexpArrayIndex() returns the index of the first regular expression match of the inside the string.
+   * regexpArrayIndex() returns the index of the first regular expression that matches substring
     Otherwise, it returns -1.
    * @example
    *
