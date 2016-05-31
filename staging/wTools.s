@@ -4117,14 +4117,14 @@ var arraySub = function( src,begin,end )
 /**
  * The arrayNew() method returns a new array with length equal (length)
  * or the length of the initial array.
- * 
+ *
  * @example
  * // returns [ , ,  ]
  * var arr = _.arrayNew([ 1, 2, 3 ]);
- * 
+ *
  * // returns [ , , ,  ]
  * var arr = _.arrayNew([ 1, 2, 3 ], 4);
- * 
+ *
  * @param {arrayLike} ins - Instance of an array
  * @param {Number} length - The length of the new array
  * @returns {arrayLike} - An empty array
@@ -4204,7 +4204,7 @@ var arrayOrNumber = function( dst,length )
  * @exaple
  * // returns [ 3, 4, 5 ]
  * var arr = _.arraySelect([ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ]);
- * 
+ *
  * // returns [ undefined, undefined ]
  * var arr = _.arraySelect([ 1, 2, 3 ], [ 4, 5 ]);
  *
@@ -4462,7 +4462,7 @@ var arrayCopy = function arrayCopy()
 /**
  * The arrayAppendMerging() method returns an array of elements from (dst)
  * and appending all of the following arguments to the end.
- * 
+ *
  * @example
  * // returns [ 1, 2, 'str', false, { a: 1 }, 42 ]
  * var arr = _.arrayAppendMerging([1,2], 'str', false, {a: 1}, 42);
@@ -4597,7 +4597,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
 var arrayElementsSwap = function( dst,index1,index2 )
 {
-  _assert( _.arrayIs( dst ),'arrayElementsSwap :','argument must be array' );
+  _assert( _.arrayLike( dst ),'arrayElementsSwap :','argument must be array' );
   _assert( 0 <= index1 && index1 < dst.length,'arrayElementsSwap :','index1 is out of bound' );
   _assert( 0 <= index2 && index2 < dst.length,'arrayElementsSwap :','index2 is out of bound' );
 
@@ -4628,6 +4628,7 @@ var arrayFrom = function( src )
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
+  throw _.err( 'arrayFrom : unknown source : ' + _.strTypeOf( src ) );
 }
 
 //
@@ -4635,6 +4636,10 @@ var arrayFrom = function( src )
 var arrayToMap = function( array )
 {
   var result = {};
+
+  _.assert( array.length === 1 );
+  _.assert( _.arrayLike( array ) );
+
   for( var a = 0 ; a < array.length ; a++ )
   result[ a ] = array[ a ];
   return result;
@@ -4725,13 +4730,38 @@ var arrayRemoveAll = function( dstArray,ins,onEqual )
 
 //
 
-var arrayAddOnce = function( dst,src )
+var arrayAppendOnce = function( dst,src )
 {
-  if( !dst ) return [ src ];
+
+  _.assert( _.arrayIs( dst ) || dst === undefined );
+  _.assert( arguments.length === 2 );
+
+  if( !dst )
+  return [ src ];
 
   var i = dst.indexOf( src );
 
-  if( i === -1 ) dst.push( src );
+  if( i === -1 )
+  dst.push( src );
+
+  return dst;
+}
+
+//
+
+var arrayPrependOnce = function( dst,src )
+{
+
+  _.assert( _.arrayIs( dst ) || dst === undefined );
+  _.assert( arguments.length === 2 );
+
+  if( !dst )
+  return [ src ];
+
+  var i = dst.indexOf( src );
+
+  if( i === -1 )
+  dst.unshift( src );
 
   return dst;
 }
@@ -7718,7 +7748,7 @@ var Proto =
   arrayOrNumber : arrayOrNumber,
 
   arraySelect : arraySelect,
-  arrayIndicesOfGreatest : arrayIndicesOfGreatest,
+  arrayIndicesOfGreatest : arrayIndicesOfGreatest, /*?*/
 
   arrayIron : arrayIron,
   arrayIronToMapUnique : arrayIronToMapUnique,
@@ -7730,6 +7760,9 @@ var Proto =
   arrayAppendOnceMerging : arrayAppendOnceMerging,
   arrayPrependOnceMerging : arrayPrependOnceMerging,
 
+  arrayAppendOnce : arrayAppendOnce,
+  arrayPrependOnce : arrayPrependOnce,
+
   arrayElementsSwap : arrayElementsSwap,
 
   arrayRemovedOnce : arrayRemovedOnce,
@@ -7740,7 +7773,6 @@ var Proto =
 
   arrayFrom : arrayFrom,
   arrayToMap : arrayToMap,
-  arrayAddOnce : arrayAddOnce,
 
   arraySpliceArray : arraySpliceArray,
 
