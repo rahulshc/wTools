@@ -65,6 +65,18 @@
       excludeSome: [ /[^a]/ ]
     };
 
+  var getSource = function( v )
+  {
+    return (typeof v === 'string') ? v : v.source;
+  };
+
+  var getSourceFromMap = function(resultObj)
+  {
+    var i;
+    for( i in resultObj )
+    resultObj.hasOwnProperty( i ) && (resultObj[ i ] = resultObj[ i ].map( getSource ));
+  };
+
 //
 
   var regexpEscape = function( test )
@@ -772,6 +784,51 @@
       src6 = 'hello',
       src7 = /world/,
 
+      src8 =
+      [
+        {
+          includeAny: ArrOfRegx1,
+          includeAll: ArrOfRegx2,
+          excludeAny: ArrOfRegx3,
+          excludeAll: ArrOfRegx4
+        },
+        {
+          includeAny: ArrOfRegx5,
+          includeAll: ArrOfRegx6,
+          excludeAny: ArrOfRegx7,
+          excludeAll: ArrOfRegx8
+        }
+      ],
+
+      src9 = [
+        'cf0',
+        'cf1',
+        'cf2',
+        /world/,
+        {
+          includeAny: [ 'a0', 'a1', 'a2' ],
+          includeAll: [ 'b0', 'c1', 'c2' ],
+          excludeAny: [ 'c0', 'c1', 'c2' ],
+          excludeAll: [ 'd0', 'd1', 'd2' ]
+        },
+        {
+          includeAny: ArrOfRegx5,
+          includeAll: ArrOfRegx6,
+          excludeAny: ArrOfRegx7,
+          excludeAll: ArrOfRegx8
+        }
+      ],
+
+      wrongSrc1 =
+      {
+        includeAny: [ /a0/, /a1/, /a2/ ],
+        includeAll: [ /b0/, null, /c2/ ],
+        excludeAny: [ /c0/, /c1/, /c2/ ],
+        excludeAll: [ /d0/, /d1/, /d2/ ]
+      },
+      wrongSrc2 = [ 'c0', 'c1', 44 ],
+      wrongDefaultMode = 'includeSome',
+
       expected4 =
       {
         includeAny: [ /a0/, /a1/, /a2/ ],
@@ -790,24 +847,30 @@
       expected7 =
       {
         includeAll: [ /world/ ]
+      },
+
+      expected8 =
+      {
+        includeAny: src8[1].includeAny,
+        includeAll: src8[0].includeAll.concat( src8[1].includeAll ),
+        excludeAny: src8[0].excludeAny.concat( src8[1].excludeAny ),
+        excludeAll: src8[1].excludeAll
+      },
+      expected9 =
+      {
+        includeAny: ArrOfRegx5,
+        includeAll: [ /b0/, /c1/, /c2/, /14/, /16/, /17/, /cf0/, /cf1/, /cf2/, /world/],
+        excludeAny: [ /c0/, /c1/, /c2/, /18/, /19/, /20/ ],
+        excludeAll: ArrOfRegx8
       };
 
-    var getSource = function( v )
-    {
-      return v.source;
-    };
 
-    var getSourceFromMap = function(resultObj)
-    {
-      var i;
-      for( i in src3 )
-      resultObj.hasOwnProperty(i) && (resultObj[i] = resultObj[i].map( getSource ));
-    };
 
     getSourceFromMap(expected4);
     getSourceFromMap(expected5);
     getSourceFromMap(expected6);
     getSourceFromMap(expected7);
+    getSourceFromMap(expected9);
 
     test.description = 'argument is an empty object';
     var got = _.regexpObjectMake(src1);
@@ -837,6 +900,15 @@
     getSourceFromMap( got );
     test.identical( got, expected7 );
 
+    test.description = 'as argument passed an array of RegexpObject object';
+    var got = _.regexpObjectMake(src8, 'excludeAll');
+    test.identical( got, expected8 );
+
+    test.description = 'as argument passed an array of mixed type object';
+    var got = _.regexpObjectMake(src9, 'includeAll');
+    getSourceFromMap( got );
+    test.identical( got, expected9 );
+
     if( Config.debug )
     {
       test.description = 'missed arguments';
@@ -862,6 +934,301 @@
       {
         _.regexpObjectMake(src7);
       });
+
+      test.description = 'passed unexpected argument type argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(44, 'includeAll');
+      });
+
+      test.description = 'passed object that contain unexpected type';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(wrongSrc1);
+      });
+
+      test.description = 'passed array that contain unexpected type';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(wrongSrc2, 'includeAll');
+      });
+
+      test.description = 'passed unexpected defaultMode argument';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectMake(src5, wrongDefaultMode);
+      });
+    }
+  };
+
+  //
+
+  var regexpObjectBut = function( test )
+  {
+    var src5 =
+      {
+        includeAny: ArrOfRegx1,
+        includeAll: ArrOfRegx2,
+        excludeAny: ArrOfRegx3,
+        excludeAll: ArrOfRegx4
+      },
+      src6 =
+      {
+        includeAny: ArrOfRegx6,
+        excludeAny: ArrOfRegx7,
+      },
+      expected1 =
+      {
+        includeAny: []
+      },
+      expected2 =
+      {
+        includeAny: ArrOfRegx3,
+        includeAll: ArrOfRegx4,
+        excludeAny: ArrOfRegx1,
+        excludeAll: ArrOfRegx2
+      },
+      expected3 =
+      {
+        includeAny: ArrOfRegx3.concat(ArrOfRegx7),
+        includeAll: ArrOfRegx4,
+        excludeAny: ArrOfRegx1.concat(ArrOfRegx6),
+        excludeAll: ArrOfRegx2
+      };
+    test.description = 'arguments are missing';
+    var got = _.regexpObjectBut();
+    test.identical( got, expected1 );
+
+    test.description = 'argument is single RegexpObject map';
+    var got = _.regexpObjectBut( src1 );
+    test.identical( got, expected2 );
+
+    test.description = 'arguments are several RegexpObject maps';
+    var got = _.regexpObjectBut( src5, src6 );
+    test.identical( got, expected3 );
+
+    if( Config.debug )
+    {
+      test.description = 'passed incompatibility arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectBut(src2, src3);
+      });
+    }
+  };
+
+  //
+
+  var regexpObjectOrering = function( test )
+  {
+    var  arrOfStr0 = [],
+      arrOfStr1 = [ '0', '1', '2' ],
+      arrOfStr2 = [ '3', '4', '5' ],
+      arrOfStr3 = ['0', '1'],
+      arrOfStr4 = ['3', '', '4'],
+      expected0 = [],
+      expected1 =
+      [
+        { includeAll: [ /0/ ] },
+        { includeAll: [ /1/ ] },
+        { includeAll: [ /2/ ] }
+      ],
+      e1 = expected1.length,
+      expected2 =
+      [
+        { includeAny: [], includeAll: [ /0/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/, /5/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /5/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /2/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /2/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /2/, /5/ ], excludeAny: [], excludeAll: [] }
+      ],
+      e2 = expected2.length,
+      expected3 =
+      [
+        { includeAny: [], includeAll: [ /0/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/], excludeAny: [/3/, /4/], excludeAll: [] },
+        { includeAny: [], includeAll: [ /0/, /4/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /3/ ], excludeAny: [], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/ ], excludeAny: [/3/, /4/], excludeAll: [] },
+        { includeAny: [], includeAll: [ /1/, /4/ ], excludeAny: [], excludeAll: [] }
+      ],
+      e3 = expected3.length;
+
+    while( e1-- )
+    getSourceFromMap(expected1[ e1 ]);
+
+    while( e2-- )
+    getSourceFromMap(expected2[ e2 ]);
+
+    while( e3-- )
+    getSourceFromMap(expected3[ e3 ]);
+
+    test.description = 'passed empty array as argument';
+    var got = _.regexpObjectOrering(arrOfStr0);
+    test.identical( got, expected0 );
+
+    test.description = 'passed array of strings without empty strings';
+    var got = _.regexpObjectOrering(arrOfStr1),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected1 );
+
+    test.description = 'passed multiple array of strings without empty strings';
+    var got = _.regexpObjectOrering(arrOfStr1, arrOfStr2),
+      gl = got.length;
+    while( gl-- )
+      getSourceFromMap(got[ gl ]);
+    test.identical( got, expected2 );
+
+    test.description = 'passed multiple arrays with empty strings';
+    var got = _.regexpObjectOrering(arrOfStr3, arrOfStr4),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected3 );
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectOrering();
+      } );
+
+      test.description = 'passed non array/string parameter';
+      test.shouldThrowError( function()
+      {
+        _.regexpObjectOrering(4, arrOfStr1);
+      } );
+    }
+  };
+  
+  //
+
+  var regexpArrayIndex = function( test )
+  {
+    var str1 = 'some text 012',
+      str2 = '056',
+      notArray = null,
+      notStr = 12,
+      notRegexp = [1, 2],
+      expected1 = 0,
+      expected2 = 0,
+      expected3 = 2,
+      expected4 = -1;
+
+
+    test.description = 'all regexps match in string';
+    var got = _.regexpArrayIndex( ArrOfRegx1, str1 );
+    test.identical( got, expected1 );
+
+    test.description = 'first regexps matches in string';
+    var got = _.regexpArrayIndex( ArrOfRegx1, str2 );
+    test.identical( got, expected2 );
+
+    test.description = 'third regexps matches in string';
+    var got = _.regexpArrayIndex( ArrOfRegx2, str2 );
+    test.identical( got, expected3 );
+
+    test.description = 'no one of the regexps do not match in string';
+    var got = _.regexpArrayIndex( ArrOfRegx3, str1 );
+    test.identical( got, expected4 );
+
+    if( Config.debug )
+    {
+      test.description = 'missing arguments';
+      test.shouldThrowError( function()
+      {
+        _.regexpArrayIndex();
+      });
+
+      test.description = 'first parameter is not array';
+      test.shouldThrowError( function()
+      {
+        _.regexpArrayIndex(notArray, str1);
+      });
+
+      test.description = 'second parameter is not string';
+      test.shouldThrowError( function()
+      {
+        _.regexpArrayIndex(ArrOfRegx1, notStr);
+      });
+
+      test.description = 'element of array is not RegExp';
+      test.shouldThrowError( function()
+      {
+        _.regexpArrayIndex(notRegexp, str1);
+      });
+    }
+
+  };
+
+  //
+
+  var _regexpObjectOrderingExclusion = function( test )
+  {
+    var arrOfStr1 = [ '0', '1', '2' ],
+      arrOfStr2 = [ '0', '1', '', '2', '' ],
+      expected0 = [],
+      expected1 =
+      [
+        { includeAll: [ /0/ ] },
+        { includeAll: [ /1/ ] },
+        { includeAll: [ /2/ ] },
+      ],
+      e1 = expected1.length,
+      expected2 =
+      [
+        { includeAll: [ /0/ ] },
+        { includeAll: [ /1/ ] },
+        { includeAll: [], includeAny: [], excludeAll: [], excludeAny: [ /0/, /1/, /2/ ] },
+        { includeAll: [ /2/ ] },
+        { includeAll: [], includeAny: [], excludeAll: [], excludeAny: [ /0/, /1/, /2/ ] }
+      ],
+      e2 = expected2.length;
+
+    while( e1-- )
+    getSourceFromMap(expected1[ e1 ]);
+
+    while( e2-- )
+    getSourceFromMap(expected2[ e2 ]);
+
+    test.description = 'passed some falsy value as parameter';
+    var got = _._regexpObjectOrderingExclusion(null);
+    test.identical( got, expected0 );
+
+    test.description = 'passed array of strings without empty strings';
+    var got = _._regexpObjectOrderingExclusion(arrOfStr1),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected1 );
+
+    test.description = 'passed array of strings without empty strings';
+    var got = _._regexpObjectOrderingExclusion(arrOfStr2),
+      gl = got.length;
+    while( gl-- )
+    getSourceFromMap(got[ gl ]);
+    test.identical( got, expected2 );
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _._regexpObjectOrderingExclusion();
+      } );
+
+      test.description = 'passed more that 1 argument';
+      test.shouldThrowError( function()
+      {
+        _._regexpObjectOrderingExclusion(arrOfStr1, arrOfStr1);
+      } );
     }
   };
 
@@ -884,7 +1251,11 @@
       _regexpObjectExtend : _regexpObjectExtend,
       regexpObjectBroaden : regexpObjectBroaden,
       regexpObjectShrink  : regexpObjectShrink,
-      regexpObjectMake    : regexpObjectMake
+      regexpObjectMake    : regexpObjectMake,
+      regexpObjectBut     : regexpObjectBut,
+      regexpObjectOrering : regexpObjectOrering,
+      regexpArrayIndex    : regexpArrayIndex,
+      _regexpObjectOrderingExclusion: _regexpObjectOrderingExclusion
 
     }
 
