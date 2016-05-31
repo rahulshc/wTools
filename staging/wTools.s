@@ -5847,7 +5847,34 @@ var mapClone = function( srcObject,options )
   return result;
 }
 
-//
+  /**
+   * The mapExtendFiltering() creates a new [ key, value ]
+   * from the next objects if callback function (filter) returns true.
+   *
+   * It calls a provided callback function (filter) once for each key in an (argument),
+   * and adds to the (srcObject) all the [ key, value ] for which callback
+   * function (filter) returns true.
+   *
+   * @callback requestCallback
+   * @param { objectLike } dstObject - The target object.
+   * @param { objectLike } argument - The next object.
+   * @param { string } key - The key of the (argument) object.
+   *
+   * @param { requestCallback } filter - Callback function to test each [ key, value ]
+   * of the (dstObject) object.
+   * @param { objectLike } dstObject - The target object.
+   * @param { arguments[] } - The next object.
+   *
+   * @example
+   * // returns { a : 1, b : 2, c : 3 }
+   * mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+   *
+   * @returns { objectLike } Returns the unique [ key, value ].
+   * @method mapExtendFiltering
+   * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
+   * is not a Function, (result) and (argument) are not the objects.
+   * @memberof wTools#
+   */
 
 var mapExtendFiltering = function( filter,dstObject )
 {

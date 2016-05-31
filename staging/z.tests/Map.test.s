@@ -686,7 +686,46 @@
   };
 
 
-  
+  var mapExtendFiltering = function( test )
+  {
+
+    test.description = 'an unique object';
+    var got = _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+    var expected = { a : 1, b : 2, c : 3 };
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapExtendFiltering();
+      });
+
+      test.description = 'few argument';
+      test.shouldThrowError( function()
+      {
+        _.mapExtendFiltering( filter );
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapExtendFiltering( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapExtendFiltering( 'wrong arguments' );
+      });
+
+    }
+    
+  };
 
   
 //
@@ -706,7 +745,8 @@
     //name : 'mapValWithIndex',
     //name : 'mapKeyWithIndex',
     //name : 'mapIs',
-    name : 'mapClone',
+    //name : 'mapClone',
+    name : 'mapExtendFiltering',
 
     tests:
     {
@@ -723,7 +763,8 @@
       //mapValWithIndex : mapValWithIndex,
       //mapKeyWithIndex : mapKeyWithIndex,
       //mapIs : mapIs,
-      mapClone : mapClone,
+      //mapClone : mapClone,
+      mapExtendFiltering : mapExtendFiltering,
 
     }
 
