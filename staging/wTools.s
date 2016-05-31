@@ -3263,6 +3263,25 @@ var regexpObjectOrering = function( ordering )
 
 //
 
+  /**
+   * regexpArrayIndex() returns the index of the first regular expression match of the inside the string.
+    Otherwise, it returns -1.
+   * @example
+   *
+     var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+     var regArr1 = [/white/, /green/, /blue/];
+     wTools.regexpArrayIndex(regArr1, str); // 1
+
+   * @param {RegExp[]} arr Array for regular expressions.
+   * @param {String} ins String, inside which will be execute search
+   * @returns {number} Index of first matching or -1.
+   * @throws {Error} If first argument is not array.
+   * @throws {Error} If second argument is not string.
+   * @throws {Error} If element of array is not RegExp.
+   * @method regexpArrayIndex
+   * @memberof wTools
+   */
+
 var regexpArrayIndex = function regexpArrayIndex( arr,ins )
 {
   _.assert( _.arrayIs( arr ) );
