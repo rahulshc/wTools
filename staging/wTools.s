@@ -3976,6 +3976,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  * @method arrayIron
  * @memberof wTools#
  */
+
 var arrayIron = function()
 {
   var result = _.arrayIs( this ) ? this : [];
@@ -4136,7 +4137,20 @@ var arrayCopy = function arrayCopy()
   return result;
 }
 
-//
+/**
+ * The arrayAppendMerging() method returns an array of elements from (dst)
+ * and appending all of the following arguments to the end.
+ * 
+ * @example
+ * // returns [ 1, 2, 'str', false, { a: 1 }, 42 ]
+ * var arr = _.arrayAppendMerging([1,2], 'str', false, {a: 1}, 42);
+ *
+ * @param {arrayLike} dst - Initial array
+ * @returns {arrayLike} - The new array
+ * @method arrayAppendMerging
+ * @throws Will throw an error if the argument is undefined.
+ * @memberof wTools#
+ */
 
 var arrayAppendMerging = function arrayAppendMerging( dst )
 {
