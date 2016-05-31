@@ -3871,7 +3871,19 @@ var arrayNewOfSameLength = function( ins )
   return result;
 }
 
-//
+/**
+ * The arrayOrNumber() method returns a new array which contains only numbers.
+ *
+ * @example
+ * // returns [ 2, 2, 2, 2 ]
+ * var arr = _.arrayOrNumber(2, 4);
+ *
+ * @param {Number} dst - Value to fill the array
+ * @param {Number} length - The length of the new array
+ * @returns {Number[]} - The new array of numbers
+ * @method arrayOrNumber
+ * @memberof wTools#
+ */
 
 var arrayOrNumber = function( dst,length )
 {
@@ -3887,7 +3899,23 @@ var arrayOrNumber = function( dst,length )
   return dst;
 }
 
-//
+/**
+ * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray)
+ *
+ * @exaple
+ * // returns [ 3, 4, 5 ]
+ * var arr = _.arraySelect([ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ]);
+ * 
+ * // returns [ undefined, undefined ]
+ * var arr = _.arraySelect([ 1, 2, 3 ], [ 4, 5 ]);
+ *
+ * @param {arrayLike} srcArray - Values for the new array
+ * @param {arrayLike} indicesArray - Index of elements from the (srcArray)
+ * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
+   If there is no element with necessary index then the value will be undefined.
+ * @method arraySelect
+ * @memberof wTools#
+ */
 
 var arraySelect = function( srcArray,indicesArray )
 {
@@ -3960,7 +3988,17 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
   return result;
 }
 
-//
+/**
+ * The arrayIron() method returns an array of elements which passed as arguments with the exception of undefined.
+ *
+ * @example
+ * // returns [ 'str', {}, 1, 2, 5, true ]
+ * var arr = _.arrayIron('str', {}, [1,2], 5, true);
+ *
+ * @returns {Array}
+ * @method arrayIron
+ * @memberof wTools#
+ */
 
 var arrayIron = function()
 {
@@ -4122,7 +4160,20 @@ var arrayCopy = function arrayCopy()
   return result;
 }
 
-//
+/**
+ * The arrayAppendMerging() method returns an array of elements from (dst)
+ * and appending all of the following arguments to the end.
+ * 
+ * @example
+ * // returns [ 1, 2, 'str', false, { a: 1 }, 42 ]
+ * var arr = _.arrayAppendMerging([1,2], 'str', false, {a: 1}, 42);
+ *
+ * @param {Array} dst - Initial array
+ * @returns {arrayLike} - The new array
+ * @method arrayAppendMerging
+ * @throws Will throw an error if the argument is undefined.
+ * @memberof wTools#
+ */
 
 var arrayAppendMerging = function arrayAppendMerging( dst )
 {
@@ -4144,7 +4195,20 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
   return result;
 }
 
-//
+/**
+ * The arrayPrependMerging() method returns an array of elements from (dst)
+ * and prepending all of the following arguments(from end) to the beginning.
+ *
+ * @example
+ * // returns [ 'str', false, { a: 1 }, 42, 1, 2 ]
+ * var arr = _.arrayPrependMerging([1,2], 'str', false, {a: 1}, 42);
+ *
+ * @param {Array} dst - Initial array
+ * @returns {arrayLike} - The new array
+ * @method arrayPrependMerging
+ * @throws Will throw an error if the argument is undefined.
+ * @memberof wTools#
+ */
 
 var arrayPrependMerging = function arrayPrependMerging( dst )
 {
