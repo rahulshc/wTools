@@ -1748,7 +1748,30 @@ var objectLike = function( src )
   return false; /* isObject */
 }
 
-//
+  /**
+   * The mapIs() method determines whether the passed value is an Object.
+   *
+   * If the (src) is an Object, true is returned,
+   * otherwise false is.
+   *
+   * @param { objectLike } src - The object to be checked.
+   *
+   * @example
+   * // returns true
+   * mapIs( { a : 7, b : 13 } );
+   *
+   * @example
+   * // returns false
+   * mapIs( 13 );
+   *
+   * @example
+   * // returns false
+   * mapIs( [ 3, 7, 13 ] );
+   *
+   * @returns { Boolean }
+   * @method mapIs
+   * @memberof wTools#.
+   */
 
 var mapIs = function( src )
 {
@@ -5768,6 +5791,35 @@ buffersDeserialize.defaults =
 // map
 // --
 
+  /**
+   * The mapClone() method is used to clone the values of all
+   * enumerable own properties from (srcObject) object to an (options.dst) object.
+   *
+   * It creates two variables:
+   * var options = options || {}, result = options.dst || {}.
+   * Iterate over (srcObject) object, checks if (srcObject) object has own properties.
+   * If true, it creates [ key, value ] for each (key) to the result,
+   * and returns clone result.__proto__ = srcObject.__proto__;
+   *
+   * @param { objectLike } srcObject - The source object.
+   * @param { objectLike } [ options.dst = {} ] - The target object.
+   *
+   * @example
+   * var Example = function() {
+   *   this.name = 'Peter';
+   *   this.age = 27;
+   * }
+   * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
+   * mapClone( new Example(), { dst : { sex : 'Male' } } );
+   *
+   * @returns { objectLike }  The (result) object gets returned.
+   * @method mapClone
+   * @throws { Error } Will throw an Error if ( options ) is not an Object,
+   * if ( arguments.length > 2 ), if (key) is not a String or
+   * if (srcObject) has not own properties.
+   * @memberof wTools#
+   */
+
 var mapClone = function( srcObject,options )
 {
   var options = options || {};
@@ -5795,7 +5847,34 @@ var mapClone = function( srcObject,options )
   return result;
 }
 
-//
+  /**
+   * The mapExtendFiltering() creates a new [ key, value ]
+   * from the next objects if callback function (filter) returns true.
+   *
+   * It calls a provided callback function (filter) once for each key in an (argument),
+   * and adds to the (srcObject) all the [ key, value ] for which callback
+   * function (filter) returns true.
+   *
+   * @callback requestCallback
+   * @param { objectLike } dstObject - The target object.
+   * @param { objectLike } argument - The next object.
+   * @param { string } key - The key of the (argument) object.
+   *
+   * @param { requestCallback } filter - Callback function to test each [ key, value ]
+   * of the (dstObject) object.
+   * @param { objectLike } dstObject - The target object.
+   * @param { arguments[] } - The next object.
+   *
+   * @example
+   * // returns { a : 1, b : 2, c : 3 }
+   * mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+   *
+   * @returns { objectLike } Returns the unique [ key, value ].
+   * @method mapExtendFiltering
+   * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
+   * is not a Function, (result) and (argument) are not the objects.
+   * @memberof wTools#
+   */
 
 var mapExtendFiltering = function( filter,dstObject )
 {
@@ -5837,16 +5916,17 @@ var mapExtendFiltering = function( filter,dstObject )
  * If true,
  * it extends (result) from the next objects.
  *
- * @param{ ...objectLike } [ dstObject = {} ] - The target object.
- * @param{ ...arguments[] } - The source object(s).
+ * @param{ objectLike } [ dstObject = {} ] - The target object.
+ * @param{ arguments[] } - The source object(s).
  *
  * @example
  * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
  * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
  *
- * @returns { Object } It will return the target object.
+ * @returns { objectLike } It will return the target object.
  * @method mapExtend
- * @throws { mapExtend } Will throw an error if the argument is not an object.
+ * @throws { Error } Will throw an error if ( arguments.length < 2 ),
+ * if the (dstObject) is not an Object.
  * @memberof wTools#
  */
 
@@ -6105,8 +6185,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  * it returns an array of keys,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src
- * The object whose properties are to be returned.
+ * @param { objectLike } src - The object whose properties are to be returned.
  *
  * @example
  * // returns [ "a", "b" ]
@@ -6115,6 +6194,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  * @return { Array } Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
  * @method mapKeys
+ * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
@@ -6143,16 +6223,16 @@ var mapKeys = function mapKeys( src )
  * If true, it returns an array of values,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src
- * The object whose property values are to be returned.
+ * @param { objectLike } src - The object whose property values are to be returned.
  *
  * @example
  * // returns [ "7", "13" ]
  * mapValues( { a : 7, b : 13 } );
  *
- * @returns { Array } returns an array whose elements are strings
+ * @returns { Array } returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @method mapValues
+ * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
@@ -6184,6 +6264,7 @@ var mapValues = function( src )
  *
  * @returns { Array } A list of [ key, value ] pairs.
  * @method mapPairs
+ * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
