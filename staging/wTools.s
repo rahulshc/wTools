@@ -3226,9 +3226,10 @@ var regexpObjectBut = function()
   /**
    * Creates array of RegexpObjects, that will be associated with some ordered set of subsets of strings.
    Accepts array of strings. They will be used as base for RegexpObjects. The empty string in array will be
-   interpreted into RegexpObject that associated with subset what is the subtraction all possible subsets of strings and union
-   of subset which matches other words in array.
-   If in method passed several arrays, the result will be cartesian product of appropriates arrays described above.
+   converted into RegexpObject that associates with subset what is the subtraction of all possible subsets of strings
+   and union of subsets which match other words in array.
+   If several arrays are passed in the method, the result will be cartesian product of appropriates arrays described
+   above.
    * @example
    *
    var arr1 = ['red', 'blue'],
