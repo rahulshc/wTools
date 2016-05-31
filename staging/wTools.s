@@ -2498,6 +2498,8 @@ var regexpEscape = function( src )
  * // /^.\/[^\/]*\/www\/[^\/]*\.js$/m
  * @param {String} glob *-wildcard style glob
  * @returns {RegExp} RegExp that represent passed glob
+ * @throw {Error} If missed argument, or got more than one argumet
+ * @throw {Error} If glob is not string
  * @method regexpForGlob
  * @memberof wTools
  */
@@ -2544,6 +2546,7 @@ var regexpForGlob = function( glob )
  * wTools.regexpMakeArray(['red', 'white', /[a-z]/]); // [/red/, /white/, /[a-z]/]
  * @param {String[]|String} src - array of strings/regexps or single string/regexp
  * @returns {RegExp[]} Array of regexps
+ * @throw {Error} if `src` in not string, regexp, or array
  * @method regexpMakeArray
  * @memberof wTools
  */
@@ -2573,6 +2576,8 @@ var regexpMakeArray = function( src )
  * wTools.regexpMakeExpression('Hello. How are you?'); // /Hello\. How are you\?/
  * @param {String} src - string or regexp
  * @returns {String} Regexp
+ * @throws {Error} Throw error with message 'unknown type of expression, expects regexp or string, but got' error
+ if src not string or regexp
  * @method regexpMakeExpression
  * @memberof wTools
  */
@@ -2609,6 +2614,7 @@ var regexpMakeExpression = function( src )
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
+ * @thows {Error} If missed one of arguments
  * @method _regexpAny
  * @memberof wTools
  */
@@ -2647,6 +2653,7 @@ var _regexpAny = function( arr,ins,none )
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
+ * @thows {Error} If missed one of arguments
  * @method _regexpAll
  * @memberof wTools
  */
@@ -2696,6 +2703,8 @@ var _regexpAll = function( arr,ins,none )
    * method return false
    * @param ins String for testing
    * @returns {boolean} If all test passed return true;
+   * @throws {Error} Throw an 'expects string' error if `ins` is not string
+   * @throws {Error} Throw an 'expects object' error if `src` is not object
    * @method regexpTest
    * @memberof wTools
      */
@@ -2730,6 +2739,8 @@ var regexpTest = function( src,ins )
    * "inlcude none from includeAny" string. Else method return true;
    * @param {String} ins String for testing
    * @returns {String|boolean} If all reason match, return true, otherwise return string with fail reason
+   * @throws {Error} Throw an 'expects string' error if `ins` is not string
+   * @throws {Error} Throw an 'expects object' error if `src` is not object
    * @method regexpTestReason
    * @memberof wTools
      */
@@ -2794,6 +2805,8 @@ var regexpTestReason = function( src,ins )
    * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
    * options object.
    * @returns {RegExp} Result regexp
+   * @throws {Error} If passed arguments are not strings or options object.
+   * @throws {Error} If options contains any different from 'but' or 'atLeastOnce' properties.
    * @method regexpBut_
    * @memberof wTools
    */
@@ -2875,6 +2888,8 @@ regexpBut_.defaults =
    * @param {RegexpObject} result RegexpObject to merge in.
    * @param {...RegexpObject} [src] RegexpObjects to merge from.
    * @returns {RegexpObject} Reference to `result` parameter;
+   * @throws {Error} If missed arguments
+   * @throws {Error} If arguments are not RegexpObject
    * @method regexpObjectShrink
    * @memberof wTools
    */
@@ -2929,6 +2944,8 @@ var regexpObjectShrink = function( result )
    * @param {RegexpObject} result RegexpObject to merge in.
    * @param {...RegexpObject} [src] RegexpObjects to merge from.
    * @returns {RegexpObject} Reference to `result` parameter;
+   * @throws {Error} If missed arguments
+   * @throws {Error} If arguments are not RegexpObject
    * @method regexpObjectBroaden
    * @memberof wTools
    */
@@ -2968,6 +2985,10 @@ var regexpObjectBroaden = function( result )
       This parameter gives a hint in what direction the lost should be made.
    * @returns {RegexpObject}
       merged RegexpObject.
+   * @throws {Error} If in options missed any of 'dst', 'srcs' or 'shrinking' properties
+   * @throws {Error} If options.dst is not object
+   * @throws {Error} If options.srcs is not arrayLike object
+   * @throws {Error} If options.srcs element is not RegexpObject object
    * @method _regexpObjectExtend
    * @memberof wTools
    */
@@ -3246,6 +3267,52 @@ var regexpObjectBut = function()
 
 //
 
+  /**
+   * Creates array of RegexpObjects, that will be associated with some ordered set of subsets of strings.
+   Accepts array of strings. They will be used as base for RegexpObjects. The empty string in array will be
+   converted into RegexpObject that associates with subset what is the subtraction of all possible subsets of strings
+   and union of subsets which match other words in array.
+   If several arrays are passed in the method, the result will be cartesian product of appropriates arrays described
+   above.
+   * @example
+   *
+   var arr1 = ['red', 'blue'],
+   arr2 = ['', 'green'];
+
+   wTools.regexpObjectOrering(arr1, arr2);
+   // [
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/red/],
+   //         excludeAny:[/green/],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/red/,/green/],
+   //         excludeAny:[],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/blue/],
+   //         excludeAny:[/green/],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/blue/, /green/],
+   //         excludeAny:[],
+   //         excludeAll:[]
+   //     }
+   // ]
+   * @param {...String[]} ordering аrray/аrrays of strings
+   * @returns {RegexpObject[]} аrray of RegexpObject that represent resulting ordering
+   * @throws {Error} Unexpected type, if passed arguments is not arrays.
+   * @method regexpObjectOrering
+   * @memberof wTools
+   */
+
 var regexpObjectOrering = function( ordering )
 {
   var res = [];
@@ -3285,6 +3352,25 @@ var regexpObjectOrering = function( ordering )
 }
 
 //
+
+  /**
+   * regexpArrayIndex() returns the index of the first regular expression that matches substring
+    Otherwise, it returns -1.
+   * @example
+   *
+     var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+     var regArr1 = [/white/, /green/, /blue/];
+     wTools.regexpArrayIndex(regArr1, str); // 1
+
+   * @param {RegExp[]} arr Array for regular expressions.
+   * @param {String} ins String, inside which will be execute search
+   * @returns {number} Index of first matching or -1.
+   * @throws {Error} If first argument is not array.
+   * @throws {Error} If second argument is not string.
+   * @throws {Error} If element of array is not RegExp.
+   * @method regexpArrayIndex
+   * @memberof wTools
+   */
 
 var regexpArrayIndex = function regexpArrayIndex( arr,ins )
 {
