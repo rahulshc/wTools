@@ -3771,9 +3771,10 @@ var dateToStr = function dateToStr( date )
  *
  * @param {Array} src - Source array
  * @param {Number} begin - Index at which to begin extraction
- * @param {Number} end - Index at which to end extraction.
+ * @param {Number} end - Index at which to end extraction
  * @returns {Array} - The new array
  * @method arraySub
+ * @throws Will throw an error if the first argument is not array
  * @memberof wTools#
  */
 
@@ -3807,6 +3808,7 @@ var arraySub = function( src,begin,end )
  * @param {Number} length - The length of the new array
  * @returns {arrayLike} - An empty array
  * @method arrayNew
+ * @throws Will throw an error if the first argument in not array like object
  * @memberof wTools#
  */
 
@@ -3835,8 +3837,9 @@ var arrayNew = function( ins,length )
  * var arr = _.arrayNewOfSameLength([ 1, 2, 3, 4, 5]);
  *
  * @param {arrayLike} ins - Instance of an array
- * @returns {arrayLike} - If (ins) in not an array return a function. Otherwise create and empty array
+ * @returns {arrayLike} - If (ins) in not an array break a function. Otherwise create and empty array
  * @method arrayNewOfSameLength
+ * @throws Will throw an error if the first argument in not array like object
  * @memberof wTools#
  */
 
@@ -3859,6 +3862,7 @@ var arrayNewOfSameLength = function( ins )
  * @param {Number} length - The length of the new array
  * @returns {Number[]} - The new array of numbers
  * @method arrayOrNumber
+ * @throws Will throw an error if
  * @memberof wTools#
  */
 
@@ -3877,7 +3881,7 @@ var arrayOrNumber = function( dst,length )
 }
 
 /**
- * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray)
+ * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray).
  *
  * @exaple
  * // returns [ 3, 4, 5 ]
@@ -3887,7 +3891,7 @@ var arrayOrNumber = function( dst,length )
  * var arr = _.arraySelect([ 1, 2, 3 ], [ 4, 5 ]);
  *
  * @param {arrayLike} srcArray - Values for the new array
- * @param {arrayLike} indicesArray - Index of elements from the (srcArray)
+ * @param {(arrayLike|object)} [indicesArray] - Index of elements from the (srcArray) or options object
  * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
    If there is no element with necessary index then the value will be undefined.
  * @method arraySelect
