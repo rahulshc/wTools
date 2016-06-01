@@ -25,35 +25,35 @@
   var _ = wTools;
   var Self = {};
 
+  // shared variables
+  var testFunction1 = function( x, y )
+    {
+      return x + y
+    },
+
+    testFunction2 = function( x, y )
+    {
+      return this;
+    },
+    testFunction3 = function( x, y )
+    {
+      return x + y + this.k;
+    },
+    testFunction4 = function( x, y )
+    {
+      return this;
+    };
+
+  var contextConstructor3 = function() {
+      this.k = 15
+    },
+    context3 = new contextConstructor3();
+
   //
 
   var _routineBind = function( test )
   {
     
-    var testFunction1 = function( x, y )
-      {
-        return x + y
-      },
-
-      testFunction2 = function( x, y )
-      {
-        return this;
-      },
-      testFunction3 = function( x, y )
-      {
-        return x + y + this.k;
-      },
-      testFunction4 = function( x, y )
-      {
-        return this;
-      };
-
-    var contextConstructor3 = function() {
-        this.k = 15
-      },
-      context3 = new contextConstructor3(),
-      context5 = new contextConstructor3();
-
     var testParam1 = 2,
       testParam2 = 4,
       options1 =
@@ -89,21 +89,21 @@
         seal: true,
         routine: testFunction3,
         args: [ testParam1, testParam2 ], // x
-        context: context5
+        context: context3
       },
 
       wrongOpt1 = {
         seal: true,
         routine: {},
         args: [ testParam1, testParam2 ], // x
-        context: context5
+        context: context3
       },
 
       wrongOpt2 = {
         seal: true,
         routine: testFunction3,
         args: 'wrong', // x
-        context: context5
+        context: context3
       },
 
       expected1 = 6,
@@ -171,6 +171,66 @@
 
   //
 
+  var routineBind = function( test )
+  {
+    var testParam1 = 2,
+      testParam2 = 4,
+      expected1 = 6,
+      expected2 = undefined,
+      expected3 = 21;
+
+    test.description = 'simple function without context with arguments bind: result check';
+    var gotfn = _.routineBind( testFunction1, undefined, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got,expected1 );
+
+    test.description = 'simple function without context: context test';
+    var gotfn = _.routineBind(testFunction2, undefined, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got, expected2 );
+
+    test.description = 'simple function with context and arguments: result check';
+    var gotfn = _.routineBind(testFunction3, context3, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got, expected3 );
+
+    test.description = 'simple function with context and arguments: context check';
+    var gotfn = _.routineBind(testFunction4, context3, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got instanceof contextConstructor3, true );
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed argument';
+      test.shouldThrowError( function()
+      {
+        _.routineBind();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.routineBind( testFunction4, context3, [ testParam2 ], [ testParam1 ] );
+      });
+
+      test.description = 'passed non callable object';
+      test.shouldThrowError( function()
+      {
+        _.routineBind( {}, context3, [ testParam2 ] );
+      });
+
+      test.description = 'passed arguments as primitive value';
+      test.shouldThrowError( function()
+      {
+        _.routineBind( testFunction4, context3, testParam2 );
+      });
+
+    }
+  };
+
+  //
+
   var Proto =
   {
     name : 'routine',
@@ -178,7 +238,8 @@
     tests:
     {
 
-      _routineBind : _routineBind
+      _routineBind : _routineBind,
+      routineBind  : routineBind
 
     }
   };
