@@ -3912,6 +3912,32 @@ var routineDelayed = function routineDelayed( delay,routine )
 }
 //
 
+  /**
+   * Call each routines in array with passed context and arguments.
+      The context and arguments are same for each called functions.
+      Can accept only routines without context and args.
+      Can accept single routine instead array.
+   * @example
+      var x = 2, y = 3,
+          o { z: 6 };
+
+      var sum = function(x, y) {
+          return x + y + this.z;
+      },
+      prod = function (x, y) {
+          return x * y * this.z;
+      },
+      routines = [ sum, prod ];
+      var res = wTools.routinesCall(o, routines, [x, y]);
+   // [ 11, 36 ]
+   * @param {Object} [context] Context in which calls each function.
+   * @param {Function[]} routines Array of called function
+   * @param {Array<*>} [args] Arguments that will be passed to each functions.
+   * @returns {Array<*>} Array with results of functions invocation.
+   * @method routinesCall
+   * @memberof wTools
+   */
+
 var routinesCall = function routinesCall()
 {
   var result = [];
