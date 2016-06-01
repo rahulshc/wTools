@@ -6318,7 +6318,7 @@ buffersDeserialize.defaults =
    * @throws { Error } Will throw an Error if ( options ) is not an Object,
    * if ( arguments.length > 2 ), if (key) is not a String or
    * if (srcObject) has not own properties.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var mapClone = function( srcObject,options )
@@ -6374,7 +6374,7 @@ var mapClone = function( srcObject,options )
    * @method mapExtendFiltering
    * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
    * is not a Function, (result) and (argument) are not the objects.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var mapExtendFiltering = function( filter,dstObject )
@@ -6428,7 +6428,7 @@ var mapExtendFiltering = function( filter,dstObject )
  * @method mapExtend
  * @throws { Error } Will throw an error if ( arguments.length < 2 ),
  * if the (dstObject) is not an Object.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var mapExtend = function mapExtend( dstObject )
@@ -6455,7 +6455,23 @@ var mapExtend = function mapExtend( dstObject )
   return result;
 }
 
-//
+  /**
+   * The mapSupplement() method returns an object with unique [ key, value ].
+   *
+   * It creates the variable (args), assign to a copy of pseudo array (arguments),
+   * adds a callback function filter to the beginning of the (args)
+   * and returns an object with unique [ key, value ].
+   *
+   * @param { arguments[] } - The source object(s).
+   *
+   * @example
+   * // returns { a : 1, b : 2, c : 3 }
+   * mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+   *
+   * @returns { objectLike } Returns an object with unique [ key, value ].
+   * @method mapSupplement
+   * @memberof wTools
+   */
 
 var mapSupplement = function( dst )
 {
@@ -6501,7 +6517,20 @@ var mapComplement = function( dst )
 
 }
 
-//
+  /**
+   * The mapCopy() method is used to copy the values of all properties
+   * from one or more source objects to a target object.
+   *
+   * @param { arguments[] } - The source object(s).
+   *
+   * @example
+   * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+   * mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+   *
+   * @returns { objectLike } It will return the target object.
+   * @method mapCopy
+   * @memberof wTools
+   */
 
 var mapCopy = function mapCopy()
 {
@@ -6550,10 +6579,6 @@ var mapFirstPair = function mapFirstPair( srcObject )
    * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
    * mapToArray( { a : 3, b : 13, c : 7 } );
    *
-   * @example
-   * // returns [ [ 0, 'a' ], [ 1, 'b' ], [ 2, 'c' ], [ 3, 'd'] ];
-   * mapToArray( [ a, b, c, d ] );
-   *
    * @returns { Array } returns a list of [ [ key, value ] ... ] pairs.
    * @method mapToArray
    * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
@@ -6586,22 +6611,14 @@ var mapToArray = function( src )
    * If true, it returns value of (src).
    * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
    *
-   * @param { objectLike } src - The iterable array.
+   * @param { array } src - The Array.
    * @param { number } index - To find the position an element.
    *
    * @example
-   * // returns ["c", 7]
-   * mapValWithIndex( [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ], 2 );
+   * // returns 7
+   * mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
    *
-   * @example
-   * // returns {c: 7}
-   * mapValWithIndex( [ { a : 3 }, { b : 13 }, { c : 7 } ], 2 );
-   *
-   * @example
-   * // returns 'c'
-   * mapValWithIndex( [ 3, 13, 'c', 7 ], 2 );
-   *
-   * @returns { * } returns [ key, value ] by corresponding (index).
+   * @returns { * } Returns value of (src) by corresponding (index).
    * @method mapValWithIndex
    * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
    * @memberof wTools
@@ -6631,18 +6648,14 @@ var mapValWithIndex = function( src,index )
    * If true, it returns value of (src).
    * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
    *
-   * @param src - The iterable array.
-   * @param index - To find the position an element.
+   * @param { array } src - The Array.
+   * @param { number } index - To find the position an element.
    *
    * @example
-   * // returns 'c'
-   * mapKeyWithIndex( { 'a': 3, 'b': 13, 'c': 7 }, 2 );
+   * // returns 'b'
+   * mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
    *
-   * @example
-   * // returns '2'
-   * mapKeyWithIndex( [ { a : 3 }, 13, 'c', 7 ], 2 );
-   *
-   * @returns {string} returns key of (src) by corresponding (index).
+   * @returns { string } Returns key of (src) by corresponding (index).
    * @method mapKeyWithIndex
    * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
    * @memberof wTools
@@ -6662,7 +6675,27 @@ var mapKeyWithIndex = function( src,index )
 
 }
 
-//
+  /**
+   * The mapToString() method returns a string representing object.
+   *
+   * It takes an object and two strings (keyValSep) and (tupleSep),
+   * checks if (keyValSep and tupleSep) are strings.
+   * If false, it assigns them defaults (' : ') to the (keyValSep) and
+   * ('; ') to the tupleSep.
+   * Otherwise, it returns a string representing object.
+   *
+   * @param { objectLike } src - The object.
+   * @param { string } keyValSep - colon.
+   * @param { string } tupleSep - semicolon.
+   *
+   * @example
+   * // returns 'a : 1; b : 2; c : 3; d : 4'
+   * mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+   *
+   * @returns { string } Returns string (result) representing object.
+   * @method mapToString
+   * @memberof wTools
+   */
 
 var mapToString = function( src,keyValSep,tupleSep )
 {
