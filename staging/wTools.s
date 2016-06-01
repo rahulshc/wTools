@@ -810,20 +810,233 @@ var entityMap = function( src,onEach )
 
   var result;
 
-  if( _.objectLike( src ) )
-  {
-    result = new src.constructor()
-    for( var s in src )
-    result[ s ] = onEach( src[ s ],s,src );
-  }
-  else
+  if( _.arrayLike( src ) )
   {
     result = _.arrayNewOfSameLength( src );
     for( var s = 0 ; s < src.length ; s++ )
     result[ s ] = onEach( src[ s ],s,src );
   }
+  else
+  {
+    result = new src.constructor()
+    for( var s in src )
+    result[ s ] = onEach( src[ s ],s,src );
+  }
 
   return result;
+}
+
+//
+
+var entityFilter = function( src,onEach )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) || _.arrayLike( src ) );
+  _.assert( _.routineIs( onEach ) );
+
+  var result;
+
+  if( _.arrayLike( src ) )
+  {
+    result = _.arrayNew( src,0 );
+    for( var s = 0, d = 0 ; s < src.length ; s++, d++ )
+    {
+      var r = onEach( src[ s ],s,src );
+      if( r === undefined )
+      d--;
+      else
+      result[ d ] = r;
+    }
+  }
+  else
+  {
+    result = new src.constructor()
+    for( var s in src )
+    {
+      r = onEach( src[ s ],s,src );
+      if( r !== undefined )
+      result[ s ] = r;
+    }
+  }
+
+  return result;
+}
+
+//
+
+var _entityMostComparing = function( src,onCompare )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( onCompare === undefined )
+  onCompare = function( a,b ){ return a-b; }
+
+  var result = { key : undefined, value : undefined };
+
+  if( _.arrayLike( src ) )
+  {
+    result.key = 0;
+    result.value = src[ 0 ];
+    for( var s = 0 ; s < src.length ; s++ )
+    if( onCompare( src[ s ],result.value ) < 0 )
+    {
+      result.key = s;
+      result.value = src[ s ];
+    }
+  }
+  else
+  {
+    throw _.err( 'not tested' );
+    for( var s in src )
+    {
+      result.key = s;
+      result.value = src[ s ];
+      break;
+    }
+    for( var s in src )
+    if( onCompare( src[ s ],result.value ) < 0 )
+    {
+      result.key = s;
+      result.value = src[ s ];
+    }
+  }
+
+  return result;
+}
+
+//
+
+var entityMinComparing = function( src,onCompare )
+{
+
+  var _onCompare = null;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( onCompare === undefined )
+  _onCompare = function( a,b ){ return a-b; };
+  else
+  {
+    throw _.err( 'not tested' );
+    _onCompare = function( a,b ){ - onCompare( a,b ) };
+  }
+
+  return _entityMost( src,_onCompare );
+}
+
+//
+
+var entityMaxComparing = function( src,onCompare )
+{
+
+  var _onCompare = null;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( onCompare === undefined )
+  _onCompare = function( a,b ){ return b-a; };
+  else
+  {
+    throw _.err( 'not tested' );
+    _onCompare = onCompare;
+  }
+
+  return _entityMost( src,_onCompare );
+}
+
+//
+
+var _entityMost = function( src,onElement,returnMax )
+{
+
+  _.assert( arguments.length === 3 );
+
+  if( onElement === undefined )
+  onElement = function( element ){ return element; }
+
+  var onCompare = null;
+
+  if( returnMax )
+  onCompare = function( a,b )
+  {
+    return a-b;
+  }
+  else
+  onCompare = function( a,b )
+  {
+    return b-a;
+  }
+
+  var result = { index : -1, key : undefined, value : undefined, element : undefined };
+
+  if( _.arrayLike( src ) )
+  {
+
+    if( src.length === 0 )
+    return result;
+    result.key = 0;
+    result.value = onElement( src[ 0 ] );
+    result.element = src[ 0 ];
+
+    for( var s = 0 ; s < src.length ; s++ )
+    {
+      var value = onElement( src[ s ] );
+      if( onCompare( value,result.value ) > 0 )
+      {
+        result.key = s;
+        result.value = value;
+        result.element = src[ s ];
+      }
+    }
+    result.index = result.key;
+
+  }
+  else
+  {
+
+    throw _.err( 'not tested' );
+    for( var s in src )
+    {
+      result.index = 0;
+      result.key = s;
+      result.value = onElement( src[ s ] );
+      result.element = src[ s ]
+      break;
+    }
+
+    var index = 0;
+    for( var s in src )
+    {
+      var value = onElement( src[ s ] );
+      if( onCompare( value,result.value ) > 0 )
+      {
+        result.index = index;
+        result.key = s;
+        result.value = value;
+        result.element = src[ s ];
+      }
+      index += 1;
+    }
+
+  }
+
+  return result;
+}
+
+//
+
+var entityMin = function( src,onElement )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return _entityMost( src,onElement,0 );
+}
+
+//
+
+var entityMax = function( src,onElement )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  return _entityMost( src,onElement,1 );
 }
 
 //
@@ -1252,7 +1465,6 @@ var errLog = function errLog()
     level : 2,
   });
 
-  debugger;
   if( _.routineIs( err.toString ) )
   {
 
@@ -1272,6 +1484,7 @@ var errLog = function errLog()
 
   }
 
+  debugger;
   return err;
 }
 
@@ -1748,7 +1961,30 @@ var objectLike = function( src )
   return false; /* isObject */
 }
 
-//
+  /**
+   * The mapIs() method determines whether the passed value is an Object.
+   *
+   * If the (src) is an Object, true is returned,
+   * otherwise false is.
+   *
+   * @param { objectLike } src - The object to be checked.
+   *
+   * @example
+   * // returns true
+   * mapIs( { a : 7, b : 13 } );
+   *
+   * @example
+   * // returns false
+   * mapIs( 13 );
+   *
+   * @example
+   * // returns false
+   * mapIs( [ 3, 7, 13 ] );
+   *
+   * @returns { Boolean }
+   * @method mapIs
+   * @memberof wTools#.
+   */
 
 var mapIs = function( src )
 {
@@ -2223,7 +2459,7 @@ var numberFrom = function( src )
 var strTypeOf = function( src )
 {
 
-  if( _.objectIs( src ) )
+  if( !_.atomicIs( src ) )
   if( src.constructor && src.constructor.name )
   return src.constructor.name;
 
@@ -2475,6 +2711,8 @@ var regexpEscape = function( src )
  * // /^.\/[^\/]*\/www\/[^\/]*\.js$/m
  * @param {String} glob *-wildcard style glob
  * @returns {RegExp} RegExp that represent passed glob
+ * @throw {Error} If missed argument, or got more than one argumet
+ * @throw {Error} If glob is not string
  * @method regexpForGlob
  * @memberof wTools
  */
@@ -2514,34 +2752,6 @@ var regexpForGlob = function( glob )
 
 //
 
-/**
- * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
- *
- * @example
- * wTools.regexpMakeArray(['red', 'white', /[a-z]/]); // [/red/, /white/, /[a-z]/]
- * @param {String[]|String} src - array of strings/regexps or single string/regexp
- * @returns {RegExp[]} Array of regexps
- * @method regexpMakeArray
- * @memberof wTools
- */
-var regexpMakeArray = function( src )
-{
-  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ) );
-
-  src = _.arrayIron( src );
-
-  _.each( src,function( e,k,i )
-  {
-
-    src[ k ] = _.regexpMakeExpression( e );
-
-  });
-
-  return src;
-}
-
-//
-
 
 /**
  * Make regexp from string.
@@ -2550,6 +2760,8 @@ var regexpMakeArray = function( src )
  * wTools.regexpMakeExpression('Hello. How are you?'); // /Hello\. How are you\?/
  * @param {String} src - string or regexp
  * @returns {String} Regexp
+ * @throws {Error} Throw error with message 'unknown type of expression, expects regexp or string, but got' error
+ if src not string or regexp
  * @method regexpMakeExpression
  * @memberof wTools
  */
@@ -2564,190 +2776,6 @@ var regexpMakeExpression = function( src )
 
   debugger;
   throw _.err( 'regexpMakeExpression :','unknown type of expression, expects regexp or string, but got',src );
-}
-
-//
-
-/**
- * Checks if any regexp passed in `arr` is found in string `ins`
- * If match was found - returns match index
- * If no matches found and regexp array is not empty - returns false
- * If regexp array is empty - returns some default value passed in the `none` input param
- *
- * @example
- * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
- *
- * var regArr2 = [/yellow/, /blue/, /red/];
- * wTools._regexpAny(regArr2, str, false); // 1
- *
- * var regArr3 = [/yellow/, /white/, /greey/]
- * wTools._regexpAny(regArr3, str, false); // false
- * @param {String[]} arr Array of regular expressions strings
- * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
- * @param {*} none - Default return value if array is empty
- * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
- * @method _regexpAny
- * @memberof wTools
- */
-var _regexpAny = function( arr,ins,none )
-{
-  _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-  _.assert( arguments.length === 3 );
-
-  var arr = _.arrayAs( arr );
-  for( var m = 0 ; m < arr.length ; m++ )
-  {
-    if( arr[ m ].test( ins ) )
-    return m;
-  }
-
-  return arr.length ? false : none;
-}
-
-//
-
-/**
- * Checks if all regexps passed in `arr` are found in string `ins`
- * If any of regex was not found - returns match index
- * If regexp array is not empty and all regexps passed test - returns true
- * If regexp array is empty - returns some default value passed in the `none` input param
- *
- * @example
- * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
- *
- * var regArr1 = [/red/, /green/, /blue/];
- * wTools._regexpAll(regArr1, str, false); // true
- *
- * var regArr2 = [/yellow/, /blue/, /red/];
- * wTools._regexpAll(regArr2, str, false); // 0
- * @param {String[]} arr Array of regular expressions strings
- * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
- * @param {*} none - Default return value if array is empty
- * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
- * @method _regexpAll
- * @memberof wTools
- */
-var _regexpAll = function( arr,ins,none )
-{
-  _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-  _.assert( arguments.length === 3 );
-
-  var arr = _.arrayAs( arr );
-  for( var m = 0 ; m < arr.length ; m++ )
-  {
-    if( !arr[ m ].test( ins ) )
-    return m;
-  }
-
-  return arr.length ? true : none;
-}
-
-//
-
-  /**
-   * Function for testing `ins` string for different regexps combination. If all condition passed in `src` object are
-   * met method return true
-   *
-   * @example
-   * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
-   *     regArr1 = [/red/, /green/, /blue/],
-   *     regArr2 = [/yellow/, /blue/, /red/],
-   *     regArr3 = [/yellow/, /white/, /greey/],
-   *     options = {
-   *        includeAny : regArr2,
-   *        includeAll : regArr1,
-   *        excludeAny : regArr3,
-   *        excludeAll : regArr2
-   *     };
-   *
-   * wTools.regexpTest(options, str); // true
-   * @param {Object} src Map object in wich keys are strings each of them mean different condition for test, and values
-   * are the arrays of regexps;
-   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
-   * return false
-   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
-   * false
-   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If any of them don't match `ins` string method
-   * return false
-   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one of regexps don't match `ins` string
-   * method return false
-   * @param ins String for testing
-   * @returns {boolean} If all test passed return true;
-   * @method regexpTest
-   * @memberof wTools
-     */
-
-var regexpTest = function( src,ins )
-{
-  var result = regexpTestReason( src,ins );
-
-  if( _.strIs( result ) )
-  return false;
-
-  if( result === true )
-  return true;
-
-  debugger;
-  throw _.err( 'unexpected' );
-}
-
-//
-
-  /**
-   * Test the `ins` string by condition specified in `src`. If all condition are met, return true
-   * regexpTestReason(options, str); // true
-   * @param {Object} src Object with options for test
-   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
-   * return the "excludeAll" string, otherwise checks next property in the `src` object
-   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
-   * it source string, otherwise checks next property in the `src` object
-   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If all of them match `ins` string method check
-   * next property in `src` object, otherwise return source of regexp that don't match.
-   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one regexp don't match method return
-   * "inlcude none from includeAny" string. Else method return true;
-   * @param {String} ins String for testing
-   * @returns {String|boolean} If all reason match, return true, otherwise return string with fail reason
-   * @method regexpTestReason
-   * @memberof wTools
-     */
-var regexpTestReason = function( src,ins )
-{
-
-  if( !_.strIs( ins ) )
-  throw _.err( 'regexpTest :','expects string',ins );
-
-  if( !_.mapIs( src ) )
-  throw _.err( 'regexpTest :','expects object',src );
-
-  if( src.excludeAll )
-  {
-    var r = _._regexpAll( src.excludeAll,ins,false );
-    if( r === true )
-    return 'excludeAll';
-  }
-
-  if( src.excludeAny )
-  {
-    var r = _._regexpAny( src.excludeAny,ins,false );
-    if( r !== false )
-    return src.excludeAny[ r ].source;
-  }
-
-  if( src.includeAll )
-  {
-    var r = _._regexpAll( src.includeAll,ins,true );
-    if( r !== true )
-    return src.includeAll[ r ].source;
-  }
-
-  if( src.includeAny )
-  {
-    var r = _._regexpAny( src.includeAny,ins,true );
-    if( r === false )
-    return 'include none from includeAny';
-  }
-
-  return true;
 }
 
 //
@@ -2771,6 +2799,8 @@ var regexpTestReason = function( src,ins )
    * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
    * options object.
    * @returns {RegExp} Result regexp
+   * @throws {Error} If passed arguments are not strings or options object.
+   * @throws {Error} If options contains any different from 'but' or 'atLeastOnce' properties.
    * @method regexpBut_
    * @memberof wTools
    */
@@ -2816,195 +2846,150 @@ regexpBut_.defaults =
 
 //
 
-  /**
-   * Extends `result` of RegexpObjects by merging other RegexpObjects.
-   * The properties such as includeAll, excludeAny are complemented from appropriate properties in source  objects
-     by merging all of them;
-   * Properties includeAny and excludeAll are always replaced by appropriate properties from sources without merging,
-   *
-   * @example
-   * var dest = {
-   *     includeAny : [/yellow/, /blue/],
-   *     includeAll : [/red/],
-   *     excludeAny : [/yellow/],
-   *     excludeAll : [/red/]
-   * },
-   *
-   * src1 = {
-   *     includeAll : [/green/],
-   *     excludeAny : [/white/],
-   *     excludeAll : [/green/, /blue/]
-   * },
-   * src2 = {
-   *     includeAny : [/red/],
-   *     includeAll : [/brown/],
-   *     excludeAny : [/greey/],
-   * }
-   *
-   * wTools.regexpObjectShrink(dest, src1, src2);
-   *
-   * //{
-   * //    includeAny : [/red/],
-   * //    includeAll : [/red/, /green/, /brown/],
-   * //    excludeAny : [/yellow/, /white/, /greey/],
-   * //    excludeAll : [/green/, /blue/]
-   * //};
-   * @param {RegexpObject} result RegexpObject to merge in.
-   * @param {...RegexpObject} [src] RegexpObjects to merge from.
-   * @returns {RegexpObject} Reference to `result` parameter;
-   * @method regexpObjectShrink
-   * @memberof wTools
-   */
+/**
+ * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
+ *
+ * @example
+ * wTools.regexpArrayMake( ['red', 'white', /[a-z]/] ); // [ /red/, /white/, /[a-z]/ ]
+ * @param {String[]|String} src - array of strings/regexps or single string/regexp
+ * @returns {RegExp[]} Array of regexps
+ * @throw {Error} if `src` in not string, regexp, or array
+ * @method regexpArrayMake
+ * @memberof wTools
+ */
 
-var regexpObjectShrink = function( result )
+var regexpArrayMake = function( src )
 {
+  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ) );
 
-  _regexpObjectExtend
-  ({
-    dst : result,
-    srcs : _.arraySlice( arguments,1 ),
-    shrinking : 1,
-  });
+  src = _.arrayIron( src );
 
-  return result;
-}
-
-//
-
-  /**
-   * Extends `result` of RegexpObjects by merging other RegexpObjects.
-   * Appropriate properties such as includeAny, includeAll, excludeAny and excludeAll are complemented from appropriate
-   * properties in source objects by merging;
-   *
-   * @example
-   * var dest = {
-   *     includeAny : [/yellow/, /blue/],
-   *     includeAll : [/red/],
-   *     excludeAny : [/yellow/],
-   *     excludeAll : [/red/]
-   * },
-   *
-   * src1 = {
-   *     includeAll : [/green/],
-   *     excludeAny : [/white/],
-   *     excludeAll : [/green/, /blue/]
-   * },
-   * src2 = {
-   *     includeAny : [/red/],
-   *     includeAll : [/brown/],
-   *     excludeAny : [/greey/],
-   * }
-   *
-   * wTools.regexpObjectBroaden(dest, src1, src2);
-   *
-   * //{
-   * //    includeAny : [/yellow/, /blue/, /red/],
-   * //    includeAll : [/red/, /green/, /brown/],
-   * //    excludeAny : [/yellow/, /white/, /greey/],
-   * //    excludeAll : [/red/, /green/, /blue/]
-   * //};
-   * @param {RegexpObject} result RegexpObject to merge in.
-   * @param {...RegexpObject} [src] RegexpObjects to merge from.
-   * @returns {RegexpObject} Reference to `result` parameter;
-   * @method regexpObjectBroaden
-   * @memberof wTools
-   */
-
-var regexpObjectBroaden = function( result )
-{
-
-
-  _regexpObjectExtend
-  ({
-    dst : result,
-    srcs : _.arraySlice( arguments,1 ),
-    shrinking : 0,
-  });
-
-  debugger;
-  throw _.err( 'not tested' );
-
-  return result;
-}
-
-//
-
-  /**
-   * Merge several RegexpObjects extending one by others.
-      Order of extending make difference because joining of some parameters without lose is not possible.
-      options.shrinking gives a hint in what direction the lost should be made.
-
-   * @param {object} options - options of merging.
-   * @param {RegexpObject} options.dst
-      RegexpObject to merge in.
-   * @param {RegexpObject} options.srcs -
-      RegexpObjects to merge from.
-   * @param {Boolean} options.shrinking -
-      Shrinking or broadening mode.
-      Joining of some parameters without lose is not possible.
-      This parameter gives a hint in what direction the lost should be made.
-   * @returns {RegexpObject}
-      merged RegexpObject.
-   * @method _regexpObjectExtend
-   * @memberof wTools
-   */
-
-var _regexpObjectExtend = function( options )
-{
-
-  _.assertMapOnly( _regexpObjectExtend.defaults,options );
-  _.mapComplement( options,_regexpObjectExtend.defaults );
-
-  _.assert( _.mapIs( options.dst ) );
-  _.assert( _.arrayLike( options.srcs ) );
-
-  var result = options.dst;
-  for( var n in regexpModeNames )
-  if( !result[ n ] )
-  result[ n ] = [];
-
-  for( var s = 0 ; s < options.srcs.length ; s++ )
+  _.each( src,function( e,k,i )
   {
 
-    var src = options.srcs[ s ];
+    src[ k ] = _.regexpMakeExpression( e );
 
-    if( !_.mapIs( src ) )
-    {
-      debugger;
-      throw _.err( 'regexpObjectExtend :','argument must be regexp object',src );
-    }
+  });
 
-    _.assertMapOnly( src,regexpModeNames );
-
-    var toExtend = options.shrinking ? regexpModeNamesToExtend : regexpModeNames;
-
-    for( var n in toExtend )
-    if( src[ n ] )
-    if( ( _.arrayIs( src[ n ] ) && src[ n ].length ) || !_.arrayIs( src[ n ] ) )
-    result[ n ] = _.arrayAppendMerging( result[ n ], src[ n ] );
-
-    if( options.shrinking )
-    for( var n in regexpModeNamesToReplace )
-    if( src[ n ] )
-    if( ( _.arrayIs( src[ n ] ) && src[ n ].length ) || !_.arrayIs( src[ n ] ) )
-    {
-/*
-      if( result[ n ].length )
-      debugger;
-*/
-      result[ n ] = src[ n ];
-    }
-
-  }
-
-  return result;
+  return src;
 }
 
-_regexpObjectExtend.defaults =
+//
+
+  /**
+   * regexpArrayIndex() returns the index of the first regular expression that matches substring
+    Otherwise, it returns -1.
+   * @example
+   *
+     var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+     var regArr1 = [/white/, /green/, /blue/];
+     wTools.regexpArrayIndex(regArr1, str); // 1
+
+   * @param {RegExp[]} arr Array for regular expressions.
+   * @param {String} ins String, inside which will be execute search
+   * @returns {number} Index of first matching or -1.
+   * @throws {Error} If first argument is not array.
+   * @throws {Error} If second argument is not string.
+   * @throws {Error} If element of array is not RegExp.
+   * @method regexpArrayIndex
+   * @memberof wTools
+   */
+
+var regexpArrayIndex = function regexpArrayIndex( arr,ins )
 {
-  dst : null,
-  srcs : null,
-  shrinking : true,
+  _.assert( _.arrayIs( arr ) );
+  _.assert( _.strIs( ins ) );
+
+  for( var a = 0 ; a < arr.length ; a++ )
+  {
+    var regexp = arr[ a ];
+    _.assert( _.regexpIs( regexp ) );
+    if( regexp.test( ins ) )
+    return a;
+  }
+
+  return -1;
+}
+
+//
+
+/**
+ * Checks if any regexp passed in `arr` is found in string `ins`
+ * If match was found - returns match index
+ * If no matches found and regexp array is not empty - returns false
+ * If regexp array is empty - returns some default value passed in the `none` input param
+ *
+ * @example
+ * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+ *
+ * var regArr2 = [/yellow/, /blue/, /red/];
+ * wTools._regexpArrayAny(regArr2, str, false); // 1
+ *
+ * var regArr3 = [/yellow/, /white/, /greey/]
+ * wTools._regexpArrayAny(regArr3, str, false); // false
+ * @param {String[]} arr Array of regular expressions strings
+ * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
+ * @param {*} none - Default return value if array is empty
+ * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
+ * @thows {Error} If missed one of arguments
+ * @method _regexpArrayAny
+ * @memberof wTools
+ */
+
+var _regexpArrayAny = function( arr,ins,none )
+{
+
+  _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
+  _.assert( arguments.length === 3 );
+
+  var arr = _.arrayAs( arr );
+  for( var m = 0 ; m < arr.length ; m++ )
+  {
+    if( arr[ m ].test( ins ) )
+    return m;
+  }
+
+  return arr.length ? false : none;
+}
+
+//
+
+/**
+ * Checks if all regexps passed in `arr` are found in string `ins`
+ * If any of regex was not found - returns match index
+ * If regexp array is not empty and all regexps passed test - returns true
+ * If regexp array is empty - returns some default value passed in the `none` input param
+ *
+ * @example
+ * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+ *
+ * var regArr1 = [/red/, /green/, /blue/];
+ * wTools._regexpArrayAll(regArr1, str, false); // true
+ *
+ * var regArr2 = [/yellow/, /blue/, /red/];
+ * wTools._regexpArrayAll(regArr2, str, false); // 0
+ * @param {String[]} arr Array of regular expressions strings
+ * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
+ * @param {*} none - Default return value if array is empty
+ * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
+ * @thows {Error} If missed one of arguments
+ * @method _regexpArrayAll
+ * @memberof wTools
+ */
+
+var _regexpArrayAll = function( arr,ins,none )
+{
+  _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
+  _.assert( arguments.length === 3 );
+
+  var arr = _.arrayAs( arr );
+  for( var m = 0 ; m < arr.length ; m++ )
+  {
+    if( !arr[ m ].test( ins ) )
+    return m;
+  }
+
+  return arr.length ? true : none;
 }
 
 //
@@ -3110,7 +3095,7 @@ var regexpObjectMake = function( src,defaultMode )
       result[ defaultMode ] = ar;
     }
 
-    /* result[ defaultMode ] = _.regexpMakeArray( ar ); */
+    /* result[ defaultMode ] = _.regexpArrayMake( ar ); */
 
   }
   else if( _.mapIs( src ) )
@@ -3118,7 +3103,7 @@ var regexpObjectMake = function( src,defaultMode )
 
     _.each( src,function( e,k,i )
     {
-      result[ k ] = _.regexpMakeArray( e );
+      result[ k ] = _.regexpArrayMake( e );
     });
 
   }
@@ -3223,6 +3208,366 @@ var regexpObjectBut = function()
 
 //
 
+  /**
+   * Test the `ins` string by condition specified in `src`. If all condition are met, return true
+   * _regexpObjectTestReason(options, str); // true
+   * @param {Object} src Object with options for test
+   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
+   * return the "excludeAll" string, otherwise checks next property in the `src` object
+   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
+   * it source string, otherwise checks next property in the `src` object
+   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If all of them match `ins` string method check
+   * next property in `src` object, otherwise return source of regexp that don't match.
+   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one regexp don't match method return
+   * "inlcude none from includeAny" string. Else method return true;
+   * @param {String} ins String for testing
+   * @returns {String|boolean} If all reason match, return true, otherwise return string with fail reason
+   * @throws {Error} Throw an 'expects string' error if `ins` is not string
+   * @throws {Error} Throw an 'expects object' error if `src` is not object
+   * @method _regexpObjectTestReason
+   * @memberof wTools
+  */
+
+var _regexpObjectTestReason = function( src,ins )
+{
+
+  if( !_.strIs( ins ) )
+  throw _.err( 'regexpObjectTest :','expects string as second argument',ins );
+
+  if( !_.mapIs( src ) )
+  throw _.err( 'regexpObjectTest :','expects object',src );
+
+  if( src.excludeAll )
+  {
+    var r = _._regexpArrayAll( src.excludeAll,ins,false );
+    if( r === true )
+    return 'excludeAll';
+  }
+
+  if( src.excludeAny )
+  {
+    var r = _._regexpArrayAny( src.excludeAny,ins,false );
+    if( r !== false )
+    return src.excludeAny[ r ].source;
+  }
+
+  if( src.includeAll )
+  {
+    var r = _._regexpArrayAll( src.includeAll,ins,true );
+    if( r !== true )
+    return src.includeAll[ r ].source;
+  }
+
+  if( src.includeAny )
+  {
+    var r = _._regexpArrayAny( src.includeAny,ins,true );
+    if( r === false )
+    return 'include none from includeAny';
+  }
+
+  return true;
+}
+
+//
+
+  /**
+   * Function for testing `ins` string for different regexps combination. If all condition passed in `src` object are
+   * met method return true
+   *
+   * @example
+   * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+   *     regArr1 = [/red/, /green/, /blue/],
+   *     regArr2 = [/yellow/, /blue/, /red/],
+   *     regArr3 = [/yellow/, /white/, /greey/],
+   *     options = {
+   *        includeAny : regArr2,
+   *        includeAll : regArr1,
+   *        excludeAny : regArr3,
+   *        excludeAll : regArr2
+   *     };
+   *
+   * wTools.regexpObjectTest( options, str ); // true
+   * @param {Object} src Map object in wich keys are strings each of them mean different condition for test, and values
+   * are the arrays of regexps;
+   * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
+   * return false
+   * @param {Regexp[]} [src.excludeAny] Array with regexps for testing. If any of them match `ins` string` method return
+   * false
+   * @param {Regexp[]} [src.includeAll] Array with regexps for testing. If any of them don't match `ins` string method
+   * return false
+   * @param {Regexp[]} [src.includeAny] Array with regexps for testing. If no one of regexps don't match `ins` string
+   * method return false
+   * @param ins String for testing
+   * @returns {boolean} If all test passed return true;
+   * @throws {Error} Throw an 'expects string' error if `ins` is not string
+   * @throws {Error} Throw an 'expects object' error if `src` is not object
+   * @method regexpObjectTest
+   * @memberof wTools
+     */
+
+var regexpObjectTest = function( src,ins )
+{
+  var result = _regexpObjectTestReason( src,ins );
+
+  if( _.strIs( result ) )
+  return false;
+
+  if( result === true )
+  return true;
+
+  debugger;
+  throw _.err( 'unexpected' );
+}
+
+//
+
+  /**
+   * Extends `result` of RegexpObjects by merging other RegexpObjects.
+   * The properties such as includeAll, excludeAny are complemented from appropriate properties in source  objects
+     by merging all of them;
+   * Properties includeAny and excludeAll are always replaced by appropriate properties from sources without merging,
+   *
+   * @example
+   * var dest = {
+   *     includeAny : [/yellow/, /blue/],
+   *     includeAll : [/red/],
+   *     excludeAny : [/yellow/],
+   *     excludeAll : [/red/]
+   * },
+   *
+   * src1 = {
+   *     includeAll : [/green/],
+   *     excludeAny : [/white/],
+   *     excludeAll : [/green/, /blue/]
+   * },
+   * src2 = {
+   *     includeAny : [/red/],
+   *     includeAll : [/brown/],
+   *     excludeAny : [/greey/],
+   * }
+   *
+   * wTools.regexpObjectShrink(dest, src1, src2);
+   *
+   * //{
+   * //    includeAny : [/red/],
+   * //    includeAll : [/red/, /green/, /brown/],
+   * //    excludeAny : [/yellow/, /white/, /greey/],
+   * //    excludeAll : [/green/, /blue/]
+   * //};
+   * @param {RegexpObject} result RegexpObject to merge in.
+   * @param {...RegexpObject} [src] RegexpObjects to merge from.
+   * @returns {RegexpObject} Reference to `result` parameter;
+   * @throws {Error} If missed arguments
+   * @throws {Error} If arguments are not RegexpObject
+   * @method regexpObjectShrink
+   * @memberof wTools
+   */
+
+var regexpObjectShrink = function( result )
+{
+
+  _regexpObjectExtend
+  ({
+    dst : result,
+    srcs : _.arraySlice( arguments,1 ),
+    shrinking : 1,
+  });
+
+  return result;
+}
+
+//
+
+  /**
+   * Extends `result` of RegexpObjects by merging other RegexpObjects.
+   * Appropriate properties such as includeAny, includeAll, excludeAny and excludeAll are complemented from appropriate
+   * properties in source objects by merging;
+   *
+   * @example
+   * var dest = {
+   *     includeAny : [/yellow/, /blue/],
+   *     includeAll : [/red/],
+   *     excludeAny : [/yellow/],
+   *     excludeAll : [/red/]
+   * },
+   *
+   * src1 = {
+   *     includeAll : [/green/],
+   *     excludeAny : [/white/],
+   *     excludeAll : [/green/, /blue/]
+   * },
+   * src2 = {
+   *     includeAny : [/red/],
+   *     includeAll : [/brown/],
+   *     excludeAny : [/greey/],
+   * }
+   *
+   * wTools.regexpObjectBroaden(dest, src1, src2);
+   *
+   * //{
+   * //    includeAny : [/yellow/, /blue/, /red/],
+   * //    includeAll : [/red/, /green/, /brown/],
+   * //    excludeAny : [/yellow/, /white/, /greey/],
+   * //    excludeAll : [/red/, /green/, /blue/]
+   * //};
+   * @param {RegexpObject} result RegexpObject to merge in.
+   * @param {...RegexpObject} [src] RegexpObjects to merge from.
+   * @returns {RegexpObject} Reference to `result` parameter;
+   * @throws {Error} If missed arguments
+   * @throws {Error} If arguments are not RegexpObject
+   * @method regexpObjectBroaden
+   * @memberof wTools
+   */
+
+var regexpObjectBroaden = function( result )
+{
+
+
+  _regexpObjectExtend
+  ({
+    dst : result,
+    srcs : _.arraySlice( arguments,1 ),
+    shrinking : 0,
+  });
+
+  debugger;
+  throw _.err( 'not tested' );
+
+  return result;
+}
+
+//
+
+  /**
+   * Merge several RegexpObjects extending one by others.
+      Order of extending make difference because joining of some parameters without lose is not possible.
+      options.shrinking gives a hint in what direction the lost should be made.
+
+   * @param {object} options - options of merging.
+   * @param {RegexpObject} options.dst
+      RegexpObject to merge in.
+   * @param {RegexpObject} options.srcs -
+      RegexpObjects to merge from.
+   * @param {Boolean} options.shrinking -
+      Shrinking or broadening mode.
+      Joining of some parameters without lose is not possible.
+      This parameter gives a hint in what direction the lost should be made.
+   * @returns {RegexpObject}
+      merged RegexpObject.
+   * @throws {Error} If in options missed any of 'dst', 'srcs' or 'shrinking' properties
+   * @throws {Error} If options.dst is not object
+   * @throws {Error} If options.srcs is not arrayLike object
+   * @throws {Error} If options.srcs element is not RegexpObject object
+   * @method _regexpObjectExtend
+   * @memberof wTools
+   */
+
+var _regexpObjectExtend = function( options )
+{
+
+  _.assertMapOnly( _regexpObjectExtend.defaults,options );
+  _.mapComplement( options,_regexpObjectExtend.defaults );
+
+  _.assert( _.mapIs( options.dst ) );
+  _.assert( _.arrayLike( options.srcs ) );
+
+  var result = options.dst;
+  for( var n in regexpModeNames )
+  if( !result[ n ] )
+  result[ n ] = [];
+
+  for( var s = 0 ; s < options.srcs.length ; s++ )
+  {
+
+    var src = options.srcs[ s ];
+
+    if( !_.mapIs( src ) )
+    {
+      debugger;
+      throw _.err( 'regexpObjectExtend :','argument must be regexp object',src );
+    }
+
+    _.assertMapOnly( src,regexpModeNames );
+
+    var toExtend = options.shrinking ? regexpModeNamesToExtend : regexpModeNames;
+
+    for( var n in toExtend )
+    if( src[ n ] )
+    if( ( _.arrayIs( src[ n ] ) && src[ n ].length ) || !_.arrayIs( src[ n ] ) )
+    result[ n ] = _.arrayAppendMerging( result[ n ], src[ n ] );
+
+    if( options.shrinking )
+    for( var n in regexpModeNamesToReplace )
+    if( src[ n ] )
+    if( ( _.arrayIs( src[ n ] ) && src[ n ].length ) || !_.arrayIs( src[ n ] ) )
+    {
+/*
+      if( result[ n ].length )
+      debugger;
+*/
+      result[ n ] = src[ n ];
+    }
+
+  }
+
+  return result;
+}
+
+_regexpObjectExtend.defaults =
+{
+  dst : null,
+  srcs : null,
+  shrinking : true,
+}
+
+//
+
+  /**
+   * Creates array of RegexpObjects, that will be associated with some ordered set of subsets of strings.
+   Accepts array of strings. They will be used as base for RegexpObjects. The empty string in array will be
+   converted into RegexpObject that associates with subset what is the subtraction of all possible subsets of strings
+   and union of subsets which match other words in array.
+   If several arrays are passed in the method, the result will be cartesian product of appropriates arrays described
+   above.
+   * @example
+   *
+   var arr1 = ['red', 'blue'],
+   arr2 = ['', 'green'];
+
+   wTools.regexpObjectOrering(arr1, arr2);
+   // [
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/red/],
+   //         excludeAny:[/green/],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/red/,/green/],
+   //         excludeAny:[],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/blue/],
+   //         excludeAny:[/green/],
+   //         excludeAll:[]},
+   //
+   //     {
+   //         includeAny:[],
+   //         includeAll:[/blue/, /green/],
+   //         excludeAny:[],
+   //         excludeAll:[]
+   //     }
+   // ]
+   * @param {...String[]} ordering аrray/аrrays of strings
+   * @returns {RegexpObject[]} аrray of RegexpObject that represent resulting ordering
+   * @throws {Error} Unexpected type, if passed arguments is not arrays.
+   * @method regexpObjectOrering
+   * @memberof wTools
+   */
+
 var regexpObjectOrering = function( ordering )
 {
   var res = [];
@@ -3259,24 +3604,6 @@ var regexpObjectOrering = function( ordering )
   });
 
   return result;
-}
-
-//
-
-var regexpArrayIndex = function regexpArrayIndex( arr,ins )
-{
-  _.assert( _.arrayIs( arr ) );
-  _.assert( _.strIs( ins ) );
-
-  for( var a = 0 ; a < arr.length ; a++ )
-  {
-    var regexp = arr[ a ];
-    _.assert( _.regexpIs( regexp ) );
-    if( regexp.test( ins ) )
-    return a;
-  }
-
-  return -1;
 }
 
 //
@@ -3759,10 +4086,13 @@ var dateToStr = function dateToStr( date )
 // array
 // --
 
+// not really copy in case of TypedArray !!!
+// does it throw something? !!!
+
 /**
  * The arraySub() method returns a copy of a portion of the array to a new array.
  *
- * It will returns a new array containing the elements from (begin) index
+ * It returns a new array containing the elements from (begin) index
  * to the (end) index, but not including it.
  *
  * @example
@@ -3773,6 +4103,11 @@ var dateToStr = function dateToStr( date )
  * @param {Number} begin - Index at which to begin extraction
  * @param {Number} end - Index at which to end extraction
  * @returns {Array} - The new array
+ * @param {Array} src - Source array.
+ * @param {Number} begin - Index at which to begin extraction.
+ * @param {Number} end - Index at which to end extraction.
+ * @returns {Array} - The new array.
+ * @throws {Error} ... what ... ?
  * @method arraySub
  * @throws Will throw an error if the first argument is not array
  * @memberof wTools#
@@ -3780,6 +4115,8 @@ var dateToStr = function dateToStr( date )
 
 var arraySub = function( src,begin,end )
 {
+
+  _.assert( arguments.length <= 3 );
 
   if( _.atomicIs( src ) )
   throw _.err( 'arraySub','Unknown argument type' );
@@ -3793,17 +4130,23 @@ var arraySub = function( src,begin,end )
   return src.slice( begin,end );
 }
 
+//
+
+// not really copy in case of TypedArray !!!
+// does it throw something? !!!
+// second arguments is optional !!!
+
 /**
  * The arrayNew() method returns a new array with length equal (length)
- * or the length of the initial array.
- * 
+ * or the same length of the initial array if second argument is not provided.
+ *
  * @example
  * // returns [ , ,  ]
  * var arr = _.arrayNew([ 1, 2, 3 ]);
- * 
+ *
  * // returns [ , , ,  ]
  * var arr = _.arrayNew([ 1, 2, 3 ], 4);
- * 
+ *
  * @param {arrayLike} ins - Instance of an array
  * @param {Number} length - The length of the new array
  * @returns {arrayLike} - An empty array
@@ -3815,6 +4158,8 @@ var arraySub = function( src,begin,end )
 var arrayNew = function( ins,length )
 {
   var result;
+
+  _.assert( arguments.length <= 2 );
 
   if( length === undefined )
   {
@@ -3828,6 +4173,11 @@ var arrayNew = function( ins,length )
 
   return result;
 }
+
+//
+
+// !!! return a function?
+// does it throw something? !!!
 
 /**
  * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
@@ -3845,11 +4195,19 @@ var arrayNew = function( ins,length )
 
 var arrayNewOfSameLength = function( ins )
 {
+
+  _.assert( arguments.length === 1 );
+
   if( _.atomicIs( ins ) ) return;
   if( !_.arrayIs( ins ) && !_.bufferIs( ins ) ) return;
   var result = arrayNew( ins,ins.length );
   return result;
 }
+
+//
+
+// does it throw something? !!!
+// what numbers? !!!
 
 /**
  * The arrayOrNumber() method returns a new array which contains only numbers.
@@ -3880,13 +4238,18 @@ var arrayOrNumber = function( dst,length )
   return dst;
 }
 
+//
+
+// i like !!!
+// does it throw something? !!!
+
 /**
  * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray).
  *
- * @exaple
+ * @example
  * // returns [ 3, 4, 5 ]
  * var arr = _.arraySelect([ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ]);
- * 
+ *
  * // returns [ undefined, undefined ]
  * var arr = _.arraySelect([ 1, 2, 3 ], [ 4, 5 ]);
  *
@@ -3968,6 +4331,11 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 
   return result;
 }
+
+//
+
+// poor description !!!
+// does it throw something? !!!
 
 /**
  * The arrayIron() method returns an array of elements which passed as arguments with the exception of undefined.
@@ -4144,7 +4512,7 @@ var arrayCopy = function arrayCopy()
 /**
  * The arrayAppendMerging() method returns an array of elements from (dst)
  * and appending all of the following arguments to the end.
- * 
+ *
  * @example
  * // returns [ 1, 2, 'str', false, { a: 1 }, 42 ]
  * var arr = _.arrayAppendMerging([1,2], 'str', false, {a: 1}, 42);
@@ -4279,7 +4647,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
 var arrayElementsSwap = function( dst,index1,index2 )
 {
-  _assert( _.arrayIs( dst ),'arrayElementsSwap :','argument must be array' );
+  _assert( _.arrayLike( dst ),'arrayElementsSwap :','argument must be array' );
   _assert( 0 <= index1 && index1 < dst.length,'arrayElementsSwap :','index1 is out of bound' );
   _assert( 0 <= index2 && index2 < dst.length,'arrayElementsSwap :','index2 is out of bound' );
 
@@ -4310,6 +4678,7 @@ var arrayFrom = function( src )
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
+  throw _.err( 'arrayFrom : unknown source : ' + _.strTypeOf( src ) );
 }
 
 //
@@ -4317,8 +4686,55 @@ var arrayFrom = function( src )
 var arrayToMap = function( array )
 {
   var result = {};
+
+  _.assert( array.length === 1 );
+  _.assert( _.arrayLike( array ) );
+
   for( var a = 0 ; a < array.length ; a++ )
   result[ a ] = array[ a ];
+  return result;
+}
+
+//
+
+var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  var result = 0;
+  var index = -1;
+
+  if( arguments.length === 2 )
+  {
+
+    for( var i = 0 ; i < insArray.length ; i++ )
+    {
+      index = dstArray.indexOf( insArray[ i ] );
+      if( !( index >= 0 ) )
+      continue;
+      dstArray.splice( index,1 );
+      result += 1;
+    }
+
+  }
+  else if( arguments.length === 3 )
+  {
+
+    _.assert( _.routineIs( onEqual ) );
+    for( var i = 0 ; i < insArray.length ; i++ )
+    {
+      index = arrayLeftIndexOf( dstArray,insArray[ i ],onEqual );
+      if( !( index >= 0 ) )
+      continue;
+      dstArray.splice( index,1 );
+      result += 1;
+    }
+
+  }
+  else throw _.err( 'unexpected' );
+
   return result;
 }
 
@@ -4334,14 +4750,14 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
   if( arguments.length === 2 )
   {
 
-    var index = dstArray.indexOf( ins );
+    index = dstArray.indexOf( ins );
 
   }
   else if( arguments.length === 3 )
   {
 
     _.assert( _.routineIs( onEqual ) );
-    var index = arrayLeftIndexOf( dstArray,ins,onEqual );
+    index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
   }
   else throw _.err( 'unexpected' );
@@ -4407,13 +4823,38 @@ var arrayRemoveAll = function( dstArray,ins,onEqual )
 
 //
 
-var arrayAddOnce = function( dst,src )
+var arrayAppendOnce = function( dst,src )
 {
-  if( !dst ) return [ src ];
+
+  _.assert( _.arrayIs( dst ) || dst === undefined );
+  _.assert( arguments.length === 2 );
+
+  if( !dst )
+  return [ src ];
 
   var i = dst.indexOf( src );
 
-  if( i === -1 ) dst.push( src );
+  if( i === -1 )
+  dst.push( src );
+
+  return dst;
+}
+
+//
+
+var arrayPrependOnce = function( dst,src )
+{
+
+  _.assert( _.arrayIs( dst ) || dst === undefined );
+  _.assert( arguments.length === 2 );
+
+  if( !dst )
+  return [ src ];
+
+  var i = dst.indexOf( src );
+
+  if( i === -1 )
+  dst.unshift( src );
 
   return dst;
 }
@@ -4843,14 +5284,35 @@ var arrayHasAny = function( src )
 var arrayCount = function( src,instance )
 {
   var result = 0;
+
   _assert( arguments.length === 2 );
-  _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayCount :','array expected' );
+  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
 
   var index = src.indexOf( instance );
   while( index !== -1 )
   {
     result += 1;
     index = src.indexOf( instance,index+1 );
+  }
+
+  return result;
+}
+
+//
+
+var arraySum = function( src,onElement )
+{
+  var result = 0;
+
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
+
+  if( onElement === undefined )
+  onElement = function( e ){ return e; }
+
+  for( var i = 0 ; i < src.length ; i++ )
+  {
+    result += onElement( src[ i ],i,src );
   }
 
   return result;
@@ -5625,8 +6087,10 @@ var bufferRawFrom = function( buffer )
   {
 
     result = new Uint8Array( buffer ).buffer;
+/*
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
     result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
+*/
 
   }
   else if( _.bufferIs( buffer ) )
@@ -5836,6 +6300,35 @@ buffersDeserialize.defaults =
 // map
 // --
 
+  /**
+   * The mapClone() method is used to clone the values of all
+   * enumerable own properties from (srcObject) object to an (options.dst) object.
+   *
+   * It creates two variables:
+   * var options = options || {}, result = options.dst || {}.
+   * Iterate over (srcObject) object, checks if (srcObject) object has own properties.
+   * If true, it creates [ key, value ] for each (key) to the result,
+   * and returns clone result.__proto__ = srcObject.__proto__;
+   *
+   * @param { objectLike } srcObject - The source object.
+   * @param { objectLike } [ options.dst = {} ] - The target object.
+   *
+   * @example
+   * var Example = function() {
+   *   this.name = 'Peter';
+   *   this.age = 27;
+   * }
+   * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
+   * mapClone( new Example(), { dst : { sex : 'Male' } } );
+   *
+   * @returns { objectLike }  The (result) object gets returned.
+   * @method mapClone
+   * @throws { Error } Will throw an Error if ( options ) is not an Object,
+   * if ( arguments.length > 2 ), if (key) is not a String or
+   * if (srcObject) has not own properties.
+   * @memberof wTools#
+   */
+
 var mapClone = function( srcObject,options )
 {
   var options = options || {};
@@ -5863,7 +6356,34 @@ var mapClone = function( srcObject,options )
   return result;
 }
 
-//
+  /**
+   * The mapExtendFiltering() creates a new [ key, value ]
+   * from the next objects if callback function (filter) returns true.
+   *
+   * It calls a provided callback function (filter) once for each key in an (argument),
+   * and adds to the (srcObject) all the [ key, value ] for which callback
+   * function (filter) returns true.
+   *
+   * @callback requestCallback
+   * @param { objectLike } dstObject - The target object.
+   * @param { objectLike } argument - The next object.
+   * @param { string } key - The key of the (argument) object.
+   *
+   * @param { requestCallback } filter - Callback function to test each [ key, value ]
+   * of the (dstObject) object.
+   * @param { objectLike } dstObject - The target object.
+   * @param { arguments[] } - The next object.
+   *
+   * @example
+   * // returns { a : 1, b : 2, c : 3 }
+   * mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+   *
+   * @returns { objectLike } Returns the unique [ key, value ].
+   * @method mapExtendFiltering
+   * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
+   * is not a Function, (result) and (argument) are not the objects.
+   * @memberof wTools#
+   */
 
 var mapExtendFiltering = function( filter,dstObject )
 {
@@ -5905,16 +6425,17 @@ var mapExtendFiltering = function( filter,dstObject )
  * If true,
  * it extends (result) from the next objects.
  *
- * @param{ ...objectLike } [ dstObject = {} ] - The target object.
- * @param{ ...arguments[] } - The source object(s).
+ * @param{ objectLike } [ dstObject = {} ] - The target object.
+ * @param{ arguments[] } - The source object(s).
  *
  * @example
  * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
  * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
  *
- * @returns { Object } It will return the target object.
+ * @returns { objectLike } It will return the target object.
  * @method mapExtend
- * @throws { mapExtend } Will throw an error if the argument is not an object.
+ * @throws { Error } Will throw an error if ( arguments.length < 2 ),
+ * if the (dstObject) is not an Object.
  * @memberof wTools#
  */
 
@@ -6000,16 +6521,16 @@ var mapCopy = function mapCopy()
 // map converter
 // --
 
-/**
- * Returns first pair key / value as array.
- *
- * @param {objectLike} srcObject
- *    Object like entity of get first pair.
- * @return {array}
- *    Pair key / value as array if srcObject has fields otherwise undefiend.
- * @method mapFirstPair
- * @memberof wTools
- */
+  /**
+   * Returns first pair key / value as array.
+   *
+   * @param {objectLike} srcObject
+   *    Object like entity of get first pair.
+   * @return {array}
+   *    Pair key / value as array if srcObject has fields otherwise undefiend.
+   * @method mapFirstPair
+   * @memberof wTools
+   */
 
 var mapFirstPair = function mapFirstPair( srcObject )
 {
@@ -6021,8 +6542,10 @@ var mapFirstPair = function mapFirstPair( srcObject )
 
 }
 
+//
+
   /**
-   * The mapToArray() converts an object (src) into array [ [ key, value ] ... ]. 
+   * The mapToArray() converts an object (src) into array [ [ key, value ] ... ].
    *
    * It takes an object (src) creates an empty array,
    * checks if ( arguments.length === 1 ) and (src) is an object.
@@ -6059,6 +6582,8 @@ var mapToArray = function( src )
 
   return result;
 }
+
+//
 
   /**
    * The mapValWithIndex() returns value of (src) by corresponding (index).
@@ -6102,6 +6627,8 @@ var mapValWithIndex = function( src,index )
     i++;
   }
 }
+
+//
 
   /**
    * The mapKeyWithIndex() returns key of (src) by corresponding (index).
@@ -6173,8 +6700,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  * it returns an array of keys,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src
- * The object whose properties are to be returned.
+ * @param { objectLike } src - The object whose properties are to be returned.
  *
  * @example
  * // returns [ "a", "b" ]
@@ -6183,6 +6709,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  * @return { Array } Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
  * @method mapKeys
+ * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
@@ -6201,6 +6728,8 @@ var mapKeys = function mapKeys( src )
   return result;
 }
 
+//
+
 /**
  * The mapValues() method returns an array of a given object's
  * own enumerable property values,
@@ -6211,16 +6740,16 @@ var mapKeys = function mapKeys( src )
  * If true, it returns an array of values,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src
- * The object whose property values are to be returned.
+ * @param { objectLike } src - The object whose property values are to be returned.
  *
  * @example
  * // returns [ "7", "13" ]
  * mapValues( { a : 7, b : 13 } );
  *
- * @returns { Array } returns an array whose elements are strings
+ * @returns { Array } returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @method mapValues
+ * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
@@ -6235,6 +6764,8 @@ var mapValues = function( src )
 
   return result;
 }
+
+//
 
 /**
  * The mapPairs() converts an object into a list of [ key, value ] pairs.
@@ -6252,6 +6783,7 @@ var mapValues = function( src )
  *
  * @returns { Array } A list of [ key, value ] pairs.
  * @method mapPairs
+ * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
@@ -6320,7 +6852,6 @@ var mapGroup = function( src,options )
 // map filter
 // --
 
-
 /**
  * The mapSame() returns true, if the second object (src2)
  * has the same values as the first object(src1).
@@ -6364,6 +6895,8 @@ var mapSame = function( src1,src2 ){
 
   return true;
 }
+
+//
 
 /**
  * The mapContain() returns true, if the first object (src)
@@ -7138,6 +7671,15 @@ var Proto =
   /*strFormat : strFormat,*/
 
   entityMap : entityMap,
+  entityFilter : entityFilter,
+
+  _entityMostComparing : _entityMostComparing,
+  entityMinComparing : entityMinComparing,
+  entityMaxComparing : entityMaxComparing,
+
+  _entityMost : _entityMost,
+  entityMin : entityMin,
+  entityMax : entityMax,
 
 
   // iterator
@@ -7253,24 +7795,29 @@ var Proto =
   regexpForGlob : regexpForGlob,
 
   regexpMakeObject : regexpObjectMake,
-  regexpMakeArray : regexpMakeArray,
+  regexpMakeArray : regexpArrayMake,
   regexpMakeExpression : regexpMakeExpression,
 
-  _regexpAny : _regexpAny,
-  _regexpAll : _regexpAll,
-  regexpTest : regexpTest,
-
   regexpBut_ : regexpBut_,
+
+  regexpArrayMake : regexpArrayMake,
+  regexpArrayIndex : regexpArrayIndex,
+  _regexpArrayAny : _regexpArrayAny,
+  _regexpArrayAll : _regexpArrayAll,
+
+  /**/
+
+  regexpObjectMake : regexpObjectMake,
+  regexpObjectBut : regexpObjectBut,
+
+  _regexpObjectTestReason : _regexpObjectTestReason,
+  regexpObjectTest : regexpObjectTest,
 
   regexpObjectShrink : regexpObjectShrink,
   regexpObjectBroaden : regexpObjectBroaden,
   _regexpObjectExtend : _regexpObjectExtend,
 
-  regexpObjectMake : regexpObjectMake,
-  regexpObjectBut : regexpObjectBut,
   regexpObjectOrering : regexpObjectOrering,
-
-  regexpArrayIndex : regexpArrayIndex,
   _regexpObjectOrderingExclusion : _regexpObjectOrderingExclusion,
 
 
@@ -7310,7 +7857,7 @@ var Proto =
   arrayOrNumber : arrayOrNumber,
 
   arraySelect : arraySelect,
-  arrayIndicesOfGreatest : arrayIndicesOfGreatest,
+  arrayIndicesOfGreatest : arrayIndicesOfGreatest, /*?*/
 
   arrayIron : arrayIron,
   arrayIronToMapUnique : arrayIronToMapUnique,
@@ -7322,7 +7869,12 @@ var Proto =
   arrayAppendOnceMerging : arrayAppendOnceMerging,
   arrayPrependOnceMerging : arrayPrependOnceMerging,
 
+  arrayAppendOnce : arrayAppendOnce,
+  arrayPrependOnce : arrayPrependOnce,
+
   arrayElementsSwap : arrayElementsSwap,
+
+  arrayRemoveArrayOnce : arrayRemoveArrayOnce,
 
   arrayRemovedOnce : arrayRemovedOnce,
   arrayRemoveOnce : arrayRemoveOnce,
@@ -7332,7 +7884,6 @@ var Proto =
 
   arrayFrom : arrayFrom,
   arrayToMap : arrayToMap,
-  arrayAddOnce : arrayAddOnce,
 
   arraySpliceArray : arraySpliceArray,
 
@@ -7359,6 +7910,7 @@ var Proto =
 
   arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
+  arraySum : arraySum,
 
   arraySupplement : arraySupplement,
   arrayExtendScreening : arrayExtendScreening,
