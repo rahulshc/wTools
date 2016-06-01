@@ -245,9 +245,9 @@
 
     if( Config.debug )
     {
-      
+
       test.description = 'no argument';
-      test.shouldThrowError( function() 
+      test.shouldThrowError( function()
       {
         _.mapOwn();
       });

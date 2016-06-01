@@ -4,10 +4,18 @@
 
 if( typeof wCopyable === 'undefined' && typeof module !== 'undefined' )
 {
-  require( '../component/Proto.s' );
-  require( '../component/Exec.s' );
-  require( '../object/printer/aPrinter.s' );
-  require( '../mixin/Copyable.s' );
+
+  if( require( 'fs' ).existsSync( __dirname + '/../wTools.s' ) )
+  {
+    require( '../wTools.s' );
+    require( '../component/Proto.s' );
+    require( '../mixin/Copyable.s' );
+  }
+  else
+  {
+    require( 'wTools' );
+  }
+
 }
 
 var _ = wTools;
@@ -30,6 +38,7 @@ var Self = function wConsequence( options )
 
     if( errs.length )
     throw _.err( errs[ 0 ] );
+
 
 */
 
@@ -398,6 +407,7 @@ var _handleGot = function()
         {
           if( self.mark && self.mark.indexOf( err ) !== -1 )
           {
+            debugger;
             console.error( 'Uncaught error caught by Consequence:' );
             _.errLog( err );
           }
@@ -668,14 +678,14 @@ var toStr = function()
   var self = this;
   var result = self.nickName;
 
-  _.assert( arguments.length === 0 );
+  var names = _.entitySelect( self.takersGet(),'*.name' );
 
-  result += '\n  takers : ' + self.takersGet().length;
   result += '\n  given : ' + self.givenGet().length;
+  result += '\n  takers : ' + self.takersGet().length;
+  result += '\n  takers : ' + names.join( ' ' );
 
   return result;
 }
-
 
 // --
 // clear
@@ -859,6 +869,7 @@ _.mapExtend( Self.prototype,Proto );
 _global_.wConsequence = wTools.Consequence = Self;
 */
 
+if( _global_.wCopyable )
 wCopyable.mixin( Self.prototype );
 
 //
@@ -892,6 +903,7 @@ if( typeof module !== 'undefined' )
 
 //
 
+_global_.wConsequence = Self;
 return Self;
 
 })();
