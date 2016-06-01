@@ -231,6 +231,66 @@
 
   //
 
+  var routineJoin = function( test )
+  {
+    var testParam1 = 2,
+      testParam2 = 4,
+      expected1 = 6,
+      expected2 = undefined,
+      expected3 = 21;
+
+    test.description = 'simple function without context with arguments bind: result check';
+    var gotfn = _.routineJoin( undefined, testFunction1, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got,expected1 );
+
+    test.description = 'simple function without context: context test';
+    var gotfn = _.routineJoin(undefined, testFunction2, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got, expected2 );
+
+    test.description = 'simple function with context and arguments: result check';
+    var gotfn = _.routineJoin(context3, testFunction3, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got, expected3 );
+
+    test.description = 'simple function with context and arguments: context check';
+    var gotfn = _.routineJoin(context3, testFunction4, [ testParam2 ]);
+    var got = gotfn( testParam1 );
+    test.identical( got instanceof contextConstructor3, true );
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed argument';
+      test.shouldThrowError( function()
+      {
+        _.routineJoin();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.routineJoin( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
+      });
+
+      test.description = 'passed non callable object';
+      test.shouldThrowError( function()
+      {
+        _.routineJoin( context3, {}, [ testParam2 ] );
+      });
+
+      test.description = 'passed arguments as primitive value';
+      test.shouldThrowError( function()
+      {
+        _.routineJoin( context3, testFunction4, testParam2 );
+      });
+
+    }
+  };
+
+  //
+
   var Proto =
   {
     name : 'routine',
@@ -239,7 +299,8 @@
     {
 
       _routineBind : _routineBind,
-      routineBind  : routineBind
+      routineBind  : routineBind,
+      routineJoin  : routineJoin
 
     }
   };
