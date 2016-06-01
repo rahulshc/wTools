@@ -351,6 +351,93 @@
 
   //
 
+  var routinesCall = function( test )
+  {
+    var value1 = 'result1',
+      value2 = 4,
+      value3 = 5;
+    var function1 = function()
+      {
+        return value1;
+      },
+      function2 = function()
+      {
+        return value2;
+      },
+      function3 = function()
+      {
+        return value3;
+      },
+      function4 = testFunction3,
+      function5 = function(x, y)
+      {
+        return x + y * this.k;
+      },
+      function6 = testFunction4;
+
+    var expected1 = [ value1 ],
+      expected2 = [ value2 + value3 + context3.k ],
+      expected3 = [ value1, value2, value3 ],
+      expected4 =
+      [
+        value2 + value3 + context3.k,
+        value2 + value3 * context3.k,
+        context3
+      ];
+
+    test.description = 'call single function without arguments and context';
+    var got = _.routinesCall( function1 );
+    test.identical( got, expected1 );
+
+    test.description = 'call single function with context and arguments';
+    var got = _.routinesCall( context3, testFunction3, [value2, value3] );
+    test.identical( got, expected2 );
+
+    test.description = 'call functions without context and arguments';
+    var got = _.routinesCall( [ function1, function2, function3 ] );
+    test.identical( got, expected3 );
+
+    test.description = 'call functions with context and arguments';
+    var got = _.routinesCall( context3, [ function4, function5, function6 ], [value2, value3] );
+    test.identical( got, expected4 );
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed argument';
+      test.shouldThrowError( function()
+      {
+        _.routinesCall();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.routinesCall(
+          context3,
+          [ function1, function2, function3 ],
+          [ function4, function5, function6 ],
+          [value2, value3]
+        );
+      });
+
+      test.description = 'passed non callable object';
+      test.shouldThrowError( function()
+      {
+        _.routinesCall( null );
+      });
+
+      test.description = 'passed arguments as primitive value (no wrapped into array)';
+      test.shouldThrowError( function()
+      {
+         _.routinesCall( context3, testFunction3, value2 )
+      });
+
+    }
+  };
+
+  //
+
   var Proto =
   {
     name : 'routine',
@@ -361,7 +448,8 @@
       _routineBind : _routineBind,
       routineBind  : routineBind,
       routineJoin  : routineJoin,
-      routineSeal  : routineSeal
+      routineSeal  : routineSeal,
+      routinesCall : routinesCall
 
     }
   };
