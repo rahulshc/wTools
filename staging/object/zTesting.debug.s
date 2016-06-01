@@ -380,6 +380,6 @@ if( typeof module !== 'undefined' && module !== null )
   module[ 'exports' ] = Self;
 }
 
-//_.timeOut( 5000, _.routineBind( Self.test,Self ) );
+//_.timeOut( 5000, _.routineJoin( self,Self.test ) );
 
 })();

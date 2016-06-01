@@ -111,7 +111,7 @@ var _gotterAppend = function( o )
   if( _.routineIs( taker ) )
   {
     if( o.context !== undefined || o.argument !== undefined )
-    taker = _.routineBind( taker,o.context,o.argument );
+    taker = _.routineJoin( o.context,taker,o.argument );
   }
   else
   {

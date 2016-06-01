@@ -4016,7 +4016,7 @@ var timePeriodic = function( delay,onReady )
   {
     throw _.err( 'Not tested' );
     _assert( arguments.length <= 4 );
-    onReady = _.routineBind.call( _,onReady,arguments[ 2 ],arguments[ 3 ] );
+    onReady = _.routineJoin( arguments[ 2 ],onReady,arguments[ 3 ] );
   }
 
   var _onReady = function()
@@ -4047,9 +4047,9 @@ var _timeNow_gen = function()
   _assert( arguments.length === 0 );
 
   if( typeof performance !== 'undefined' && performance.now !== undefined )
-  now = _.routineBind( performance.now,performance );
+  now = _.routineJoin( performance,performance.now );
   else if( Date.now )
-  now = _.routineBind( Date.now,Date );
+  now = _.routineJoin( Date,Date.now );
   else
   now = function(){ return Date().getTime() };
 
@@ -4811,6 +4811,41 @@ var arrayRemoveAll = function( dstArray,ins,onEqual )
   arrayRemovedAll( dstArray,ins,onEqual );
 
   return dstArray;
+}
+
+//
+
+var arrayReplaceOnce = function( dstArray,ins,sub )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( arguments.length === 3 );
+
+  var index = -1;
+
+  index = dstArray.indexOf( ins );
+
+  if( index >= 0 )
+  dstArray.splice( index,1,sub );
+
+  return index;
+}
+
+//
+
+var arrayUpdate = function( dstArray,ins,sub )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( arguments.length === 3 );
+
+  var index = arrayReplaceOnce( dstArray,ins,sub );
+
+  if( index === -1 )
+  {
+    dstArray.push( sub );
+    index = dstArray.length - 1;
+  }
+
+  return index;
 }
 
 //
@@ -7816,8 +7851,9 @@ var Proto =
   // routine
 
   _routineBind : _routineBind,
-  routineBind : routineBind,
+  routineBind : routineBind, /* depreacation */
   routineJoin : routineJoin,
+  _routineJoin : routineJoin, /* temp */
   routineSeal : routineSeal,
   routineDelayed : routineDelayed,
 
@@ -7873,6 +7909,9 @@ var Proto =
 
   arrayRemovedAll : arrayRemovedAll,
   arrayRemoveAll : arrayRemoveAll,
+
+  arrayReplaceOnce : arrayReplaceOnce,
+  arrayUpdate : arrayUpdate,
 
   arrayFrom : arrayFrom,
   arrayToMap : arrayToMap,
@@ -8003,7 +8042,7 @@ var Proto =
 
 mapExtend( Self, Proto );
 
-  Self.constructor = function wTools(){};
+Self.constructor = function wTools(){};
 
 // --
 // cache
