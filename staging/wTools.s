@@ -3749,6 +3749,33 @@ var _routineBind = function _routineBind( options )
 
 //
 
+  /**
+   * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
+   value. Argumetns `args` of target function which are passed before arguments of binded function during
+   calling of target function
+   * @example
+    var o = {
+        z: 5
+    };
+
+    var y = 4;
+
+    function sum(x, y) {
+       return x + y + this.z;
+    }
+    var newSum = wTools.routineBind(sum, o, [3]);
+    newSum(y); // 12
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
+   function. Must be wraped into array.
+   * @returns {Function} New created function with preceding this, and args.
+   * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
+   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+   * @method routineBind
+   * @memberof wTools
+   */
+
 var routineBind = function routineBind( routine, context, args )
 {
 
@@ -3766,6 +3793,34 @@ var routineBind = function routineBind( routine, context, args )
 }
 
 //
+
+  /**
+   * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
+   value. Argumetns `args` of target function which are passed before arguments of binded function during
+   calling of target function
+   * @example
+   var o = {
+        z: 5
+    };
+
+   var y = 4;
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineJoin(o, sum, [3]);
+   newSum(y); // 12
+
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
+   calling of target function. Must be wraped into array.
+   * @returns {Function} New created function with preceding this, and args.
+   * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
+   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+   * @method routineJoin
+   * @memberof wTools
+   */
 
 var routineJoin = function routineJoin( context, routine, args )
 {
@@ -3785,6 +3840,27 @@ var routineJoin = function routineJoin( context, routine, args )
 
 //
 
+  /**
+   * Return new function with sealed context and arguments.
+   *
+   * @example
+   var o = {
+        z: 5
+    };
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineSeal(o, sum, [3, 4]);
+   newSum(y); // 12
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
+   * @returns {Function} Result function with sealed context and arguments.
+   * @method routineJoin
+   * @memberof wTools
+   */
+
 var routineSeal = function routineSeal( context, routine, args )
 {
 
@@ -3802,6 +3878,18 @@ var routineSeal = function routineSeal( context, routine, args )
 }
 
 //
+
+  /**
+   * Return function that will call passed routine function with delay.
+   * @param {number} delay delay in milliseconds
+   * @param {Function} routine function that will be called with delay.
+   * @returns {Function} result function
+   * @throws {Error} If arguments less then 2
+   * @throws {Error} If `delay` is not a number
+   * @throws {Error} If `routine` is not a function
+   * @method routineDelayed
+   * @memberof wTools
+   */
 
 var routineDelayed = function routineDelayed( delay,routine )
 {
@@ -3823,6 +3911,32 @@ var routineDelayed = function routineDelayed( delay,routine )
 
 }
 //
+
+  /**
+   * Call each routines in array with passed context and arguments.
+      The context and arguments are same for each called functions.
+      Can accept only routines without context and args.
+      Can accept single routine instead array.
+   * @example
+      var x = 2, y = 3,
+          o { z: 6 };
+
+      var sum = function(x, y) {
+          return x + y + this.z;
+      },
+      prod = function (x, y) {
+          return x * y * this.z;
+      },
+      routines = [ sum, prod ];
+      var res = wTools.routinesCall(o, routines, [x, y]);
+   // [ 11, 36 ]
+   * @param {Object} [context] Context in which calls each function.
+   * @param {Function[]} routines Array of called function
+   * @param {Array<*>} [args] Arguments that will be passed to each functions.
+   * @returns {Array<*>} Array with results of functions invocation.
+   * @method routinesCall
+   * @memberof wTools
+   */
 
 var routinesCall = function routinesCall()
 {
