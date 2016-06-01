@@ -291,6 +291,66 @@
 
   //
 
+  var routineSeal = function(test)
+  {
+    var testParam1 = 2,
+      testParam2 = 4,
+      expected1 = 6,
+      expected2 = undefined,
+      expected3 = 21;
+
+    test.description = 'simple function with seal arguments: result check';
+    var gotfn = _.routineSeal(undefined, testFunction1, [testParam1, testParam2]);
+    var got = gotfn( testParam1 );
+    test.identical( got, expected1 );
+
+    test.description = 'simple function with seal arguments: context check';
+    var gotfn = _.routineSeal(undefined, testFunction2, [testParam1, testParam2]);
+    var got = gotfn( testParam1 );
+    test.identical( got, expected2 );
+
+    test.description = 'simple function with seal context and arguments: result check';
+    var gotfn = _.routineSeal(context3, testFunction3, [testParam1, testParam2]);
+    var got = gotfn( testParam1 );
+    test.identical( got, expected3 );
+
+    test.description = 'simple function with seal context and arguments: context check';
+    var gotfn = _.routineSeal(context3, testFunction4, [testParam1, testParam2]);
+    var got = gotfn( testParam1 );
+    test.identical( got instanceof contextConstructor3, true );
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed argument';
+      test.shouldThrowError( function()
+      {
+        _.routineSeal();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.routineSeal( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
+      });
+
+      test.description = 'passed non callable object';
+      test.shouldThrowError( function()
+      {
+        _.routineSeal( context3, {}, [ testParam1, testParam2 ] );
+      });
+
+      test.description = 'passed arguments as primitive value';
+      test.shouldThrowError( function()
+      {
+        _.routineSeal( context3, testFunction4, testParam2 );
+      });
+
+    }
+  };
+
+  //
+
   var Proto =
   {
     name : 'routine',
@@ -300,7 +360,8 @@
 
       _routineBind : _routineBind,
       routineBind  : routineBind,
-      routineJoin  : routineJoin
+      routineJoin  : routineJoin,
+      routineSeal  : routineSeal
 
     }
   };
