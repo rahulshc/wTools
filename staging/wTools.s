@@ -4103,13 +4103,9 @@ var dateToStr = function dateToStr( date )
  * @param {Number} begin - Index at which to begin extraction
  * @param {Number} end - Index at which to end extraction
  * @returns {Array} - The new array
- * @param {Array} src - Source array.
- * @param {Number} begin - Index at which to begin extraction.
- * @param {Number} end - Index at which to end extraction.
- * @returns {Array} - The new array.
- * @throws {Error} ... what ... ?
  * @method arraySub
- * @throws Will throw an error if the first argument is not array
+ * @throws {Error} If passed arguments is less then three
+ * @throws {Error} If the first argument is not array
  * @memberof wTools#
  */
 
@@ -4148,10 +4144,11 @@ var arraySub = function( src,begin,end )
  * var arr = _.arrayNew([ 1, 2, 3 ], 4);
  *
  * @param {arrayLike} ins - Instance of an array
- * @param {Number} length - The length of the new array
+ * @param {Number} [length] - The length of the new array
  * @returns {arrayLike} - An empty array
  * @method arrayNew
- * @throws Will throw an error if the first argument in not array like object
+ * @throws {Error} If passed arguments is less then two
+ * @throws {Error} If the first argument in not array like object
  * @memberof wTools#
  */
 
@@ -4176,9 +4173,6 @@ var arrayNew = function( ins,length )
 
 //
 
-// !!! return a function?
-// does it throw something? !!!
-
 /**
  * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
  *
@@ -4187,9 +4181,10 @@ var arrayNew = function( ins,length )
  * var arr = _.arrayNewOfSameLength([ 1, 2, 3, 4, 5]);
  *
  * @param {arrayLike} ins - Instance of an array
- * @returns {arrayLike} - If (ins) in not an array break a function. Otherwise create and empty array
+ * @returns {arrayLike} - The new empty array
  * @method arrayNewOfSameLength
- * @throws Will throw an error if the first argument in not array like object
+ * @throws {Error} If missed argument, or got more than one argument
+ * @throws {Error} If the first argument in not array like object
  * @memberof wTools#
  */
 
@@ -4206,11 +4201,8 @@ var arrayNewOfSameLength = function( ins )
 
 //
 
-// does it throw something? !!!
-// what numbers? !!!
-
 /**
- * The arrayOrNumber() method returns a new array which contains only numbers.
+ * The arrayOrNumber() method returns a new array which containing the elements only type of Number.
  *
  * @example
  * // returns [ 2, 2, 2, 2 ]
@@ -4220,7 +4212,10 @@ var arrayNewOfSameLength = function( ins )
  * @param {Number} length - The length of the new array
  * @returns {Number[]} - The new array of numbers
  * @method arrayOrNumber
- * @throws Will throw an error if
+ * @throws {Error} If missed argument, or got less or more than two argument
+ * @throws {Error} If type of the first argument is not a number or array
+ * @throws {Error} If the second argument is less then 0 
+ * @throws {Error} If length of the first argument is less then value of second argument
  * @memberof wTools#
  */
 
@@ -4240,9 +4235,6 @@ var arrayOrNumber = function( dst,length )
 
 //
 
-// i like !!!
-// does it throw something? !!!
-
 /**
  * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray).
  *
@@ -4258,6 +4250,8 @@ var arrayOrNumber = function( dst,length )
  * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
    If there is no element with necessary index then the value will be undefined.
  * @method arraySelect
+ * @throws {Error} If passed arguments is not array like object
+ * @throws {Error} If the atomsPerElement property is not equal to 1
  * @memberof wTools#
  */
 
@@ -4334,18 +4328,16 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 
 //
 
-// poor description !!!
-// does it throw something? !!!
-
 /**
- * The arrayIron() method returns an array of elements which passed as arguments with the exception of undefined.
+ * The arrayIron() method copy the values of all arguments to a new array.
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
  * var arr = _.arrayIron('str', {}, [1,2], 5, true);
  *
- * @returns {Array}
+ * @returns {Array} - The new array
  * @method arrayIron
+ * @throws {Error} If type of the passed arguments is equal undefined
  * @memberof wTools#
  */
 
@@ -4520,7 +4512,8 @@ var arrayCopy = function arrayCopy()
  * @param {Array} dst - Initial array
  * @returns {arrayLike} - The new array
  * @method arrayAppendMerging
- * @throws Will throw an error if the argument is undefined.
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
  * @memberof wTools#
  */
 
@@ -4555,7 +4548,8 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
  * @param {Array} dst - Initial array
  * @returns {arrayLike} - The new array
  * @method arrayPrependMerging
- * @throws Will throw an error if the argument is undefined.
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
  * @memberof wTools#
  */
 
