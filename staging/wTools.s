@@ -3750,9 +3750,9 @@ var _routineBind = function _routineBind( options )
 //
 
   /**
-   * The routineBind() static method creates a new function with its 'this' reference set to the provided `context`
-   value. A passed sequence of arguments `args` predefine leads parameters in passed function. The result function will
-   be accept only not predefined by `args` parametes.
+   * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
+   value. Argumetns `args` of target function which are passed before arguments of binded function during
+   calling of target function
    * @example
     var o = {
         z: 5
@@ -3765,14 +3765,14 @@ var _routineBind = function _routineBind( options )
     }
     var newSum = wTools.routineBind(sum, o, [3]);
     newSum(y); // 12
-   * @param {Function} routine
+   * @param {Function} routine Function which will be used as base for result function.
    * @param {Object} context The value that will be set as 'this' keyword in new function
    * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
    function. Must be wraped into array.
    * @returns {Function} New created function with preceding this, and args.
    * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
    * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
-   * @throws routineBind
+   * @method routineBind
    * @memberof wTools
    */
 
@@ -3795,9 +3795,9 @@ var routineBind = function routineBind( routine, context, args )
 //
 
   /**
-   * The routineJoin() method creates a new function with its 'this' reference set to the provided `context`
-   value. A passed sequence of arguments `args` predefine leads parameters in passed function. The result function will
-   be accept only not predefined by `args` parametes.
+   * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
+   value. Argumetns `args` of target function which are passed before arguments of binded function during
+   calling of target function
    * @example
    var o = {
         z: 5
@@ -3812,13 +3812,13 @@ var routineBind = function routineBind( routine, context, args )
    newSum(y); // 12
 
    * @param {Object} context The value that will be set as 'this' keyword in new function
-   * @param {Function} routine
-   * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
-   function. Must be wraped into array.
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
+   calling of target function. Must be wraped into array.
    * @returns {Function} New created function with preceding this, and args.
-   * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
+   * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
    * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
-   * @throws routineJoin
+   * @method routineJoin
    * @memberof wTools
    */
 
@@ -3839,6 +3839,27 @@ var routineJoin = function routineJoin( context, routine, args )
 }
 
 //
+
+  /**
+   * Return new function with sealed context and arguments.
+   *
+   * @example
+   var o = {
+        z: 5
+    };
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineSeal(o, sum, [3, 4]);
+   newSum(y); // 12
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
+   * @returns {Function} Result function with sealed context and arguments.
+   * @method routineJoin
+   * @memberof wTools
+   */
 
 var routineSeal = function routineSeal( context, routine, args )
 {
