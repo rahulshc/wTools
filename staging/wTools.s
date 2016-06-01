@@ -3879,6 +3879,18 @@ var routineSeal = function routineSeal( context, routine, args )
 
 //
 
+  /**
+   * Return function that will call passed routine function with delay.
+   * @param {number} delay delay in milliseconds
+   * @param {Function} routine function that will be called with delay.
+   * @returns {Function} result function
+   * @throws {Error} If arguments less then 2
+   * @throws {Error} If `delay` is not a number
+   * @throws {Error} If `routine` is not a function
+   * @method routineDelayed
+   * @memberof wTools
+   */
+
 var routineDelayed = function routineDelayed( delay,routine )
 {
 
