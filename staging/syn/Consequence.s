@@ -4,10 +4,18 @@
 
 if( typeof wCopyable === 'undefined' && typeof module !== 'undefined' )
 {
-  require( '../component/Proto.s' );
-  require( '../component/Exec.s' );
-  require( '../object/printer/aPrinter.s' );
-  require( '../mixin/Copyable.s' );
+
+  if( require( 'fs' ).existsSync( __dirname + '/../wTools.s' ) )
+  {
+    require( '../wTools.s' );
+    require( '../component/Proto.s' );
+    require( '../mixin/Copyable.s' );
+  }
+  else
+  {
+    require( 'wTools' );
+  }
+
 }
 
 var _ = wTools;
@@ -30,6 +38,7 @@ var Self = function wConsequence( options )
 
     if( errs.length )
     throw _.err( errs[ 0 ] );
+
 
 */
 
@@ -860,6 +869,7 @@ _.mapExtend( Self.prototype,Proto );
 _global_.wConsequence = wTools.Consequence = Self;
 */
 
+if( _global_.wCopyable )
 wCopyable.mixin( Self.prototype );
 
 //

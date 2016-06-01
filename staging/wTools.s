@@ -839,7 +839,7 @@ var entityFilter = function( src,onEach )
 
   if( _.arrayLike( src ) )
   {
-    result = _.arrayNewOfSameLength( src );
+    result = _.arrayNew( src,0 );
     for( var s = 0, d = 0 ; s < src.length ; s++, d++ )
     {
       var r = onEach( src[ s ],s,src );
@@ -4689,6 +4689,49 @@ var arrayToMap = function( array )
 
 //
 
+var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  var result = 0;
+  var index = -1;
+
+  if( arguments.length === 2 )
+  {
+
+    for( var i = 0 ; i < insArray.length ; i++ )
+    {
+      index = dstArray.indexOf( insArray[ i ] );
+      if( !( index >= 0 ) )
+      continue;
+      dstArray.splice( index,1 );
+      result += 1;
+    }
+
+  }
+  else if( arguments.length === 3 )
+  {
+
+    _.assert( _.routineIs( onEqual ) );
+    for( var i = 0 ; i < insArray.length ; i++ )
+    {
+      index = arrayLeftIndexOf( dstArray,insArray[ i ],onEqual );
+      if( !( index >= 0 ) )
+      continue;
+      dstArray.splice( index,1 );
+      result += 1;
+    }
+
+  }
+  else throw _.err( 'unexpected' );
+
+  return result;
+}
+
+//
+
 var arrayRemovedOnce = function( dstArray,ins,onEqual )
 {
   _.assert( _.arrayLike( dstArray ) );
@@ -4699,14 +4742,14 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
   if( arguments.length === 2 )
   {
 
-    var index = dstArray.indexOf( ins );
+    index = dstArray.indexOf( ins );
 
   }
   else if( arguments.length === 3 )
   {
 
     _.assert( _.routineIs( onEqual ) );
-    var index = arrayLeftIndexOf( dstArray,ins,onEqual );
+    index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
   }
   else throw _.err( 'unexpected' );
@@ -7822,6 +7865,8 @@ var Proto =
   arrayPrependOnce : arrayPrependOnce,
 
   arrayElementsSwap : arrayElementsSwap,
+
+  arrayRemoveArrayOnce : arrayRemoveArrayOnce,
 
   arrayRemovedOnce : arrayRemovedOnce,
   arrayRemoveOnce : arrayRemoveOnce,
