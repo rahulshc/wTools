@@ -708,7 +708,7 @@
       test.description = 'few argument';
       test.shouldThrowError( function()
       {
-        _.mapExtendFiltering( filter );
+        _.mapExtendFiltering( _.filter.supplementary() );
       });
 
       test.description = 'wrong type of array';
@@ -725,6 +725,126 @@
 
     }
     
+  };
+
+
+  var mapSupplement = function( test )
+  {
+
+    test.description = 'an object';
+    var got = _.mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+    var expected = { a : 1, b : 2, c : 3 };
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapSupplement();
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapSupplement( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapSupplement( 'wrong arguments' );
+      });
+
+    }
+
+  };
+  
+  
+  var mapCopy = function( test ) 
+  {
+    
+    test.description = 'an object';
+    var got = _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+    var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
+    test.identical( got, expected );
+
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapCopy();
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapCopy( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapCopy( 'wrong arguments' );
+      });
+      
+    }
+    
+  };
+
+
+  var mapToString = function( test )
+  {
+
+    test.description = 'an object';
+    var got = _.mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+    var expected = 'a : 1; b : 2; c : 3; d : 4';
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapToString();
+      });
+      
+      test.description = 'few arguments';
+      test.shouldThrowError( function() 
+      {
+        _.mapToString( {}, ' : ' );
+      });
+
+      test.description = 'redundant arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapToString( {}, ' : ', '; ', 'wrong arguments' );
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapToString( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapToString( 'wrong arguments' );
+      });
+
+    }
+
   };
 
   
@@ -746,7 +866,11 @@
     //name : 'mapKeyWithIndex',
     //name : 'mapIs',
     //name : 'mapClone',
-    name : 'mapExtendFiltering',
+    //name : 'mapExtendFiltering',
+    //name : 'mapSupplement',
+    //name : 'mapCopy',
+    name : 'mapToString',
+    
 
     tests:
     {
@@ -764,7 +888,11 @@
       //mapKeyWithIndex : mapKeyWithIndex,
       //mapIs : mapIs,
       //mapClone : mapClone,
-      mapExtendFiltering : mapExtendFiltering,
+      //mapExtendFiltering : mapExtendFiltering,
+      //mapSupplement : mapSupplement,
+      //mapCopy : mapCopy,
+      mapToString : mapToString,
+
 
     }
 
