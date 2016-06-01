@@ -3749,6 +3749,33 @@ var _routineBind = function _routineBind( options )
 
 //
 
+  /**
+   * The routineBind() static method creates a new function with its 'this' reference set to the provided`context`
+   value. A passed sequence of arguments `args` predefine leads parameters in passed function. The result function will
+   be accept only not predefined by `args` parametes.
+   * @example
+    var o = {
+        z: 5
+    };
+
+    var y = 4;
+
+    function sum(x, y) {
+       return x + y + this.z;
+    }
+    var newSum = wTools.routineBind(sum, o, [3]);
+    newSum(y); // 12
+   * @param {Function} routine
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
+   function. Must be wraped into array.
+   * @returns {Function} New created function with preceding this, and args.
+   * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
+   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+   * @throws routineBind
+   * @memberof wTools
+   */
+
 var routineBind = function routineBind( routine, context, args )
 {
 
