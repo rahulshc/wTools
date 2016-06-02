@@ -1458,6 +1458,32 @@ _err.defaults =
 
 //
 
+  /**
+   * Creates error object, with message created from passed `msg` parameters and contains error trace.
+   *
+   * @example
+   *  function divide (x, y) {
+        if (y == 0 ) throw wTools.err('divide by zero')
+        return x / y;
+      }
+      divide(3, 0);
+
+   // Error:
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1418:13)
+   //   at wTools.err (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1449:10)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+   *
+   * @param {...String|Error} msg Accepts list of messeges/errors.
+   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+   * reference.
+   * @method err
+   * @memberof wTools
+   */
+
 var err = function err()
 {
   return _err
