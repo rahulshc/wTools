@@ -4086,14 +4086,9 @@ var dateToStr = function dateToStr( date )
 // array
 // --
 
-// not really copy in case of TypedArray !!!
-// does it throw something? !!!
-
 /**
- * The arraySub() method returns a copy of a portion of the array to a new array.
- *
- * It returns a new array containing the elements from (begin) index
- * to the (end) index, but not including it.
+ * The arraySub() method creates a new array or a new TypedArray that contains
+ * the elements from (begin) index to the (end) index, but not including (end).
  *
  * @example
  * // returns [ 3, 4 ]
@@ -4133,7 +4128,7 @@ var arraySub = function( src,begin,end )
 // second arguments is optional !!!
 
 /**
- * The arrayNew() method returns a new array with length equal (length)
+ * The arrayNew() method returns a new array or a new TypedArray with length equal (length)
  * or the same length of the initial array if second argument is not provided.
  *
  * @example
@@ -4174,7 +4169,7 @@ var arrayNew = function( ins,length )
 //
 
 /**
- * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
+ * The arrayNewOfSameLength() method returns a new empty array or a new TypedArray with the same length as in (ins).
  *
  * * @example
  * // returns [ , , , ,  ]
