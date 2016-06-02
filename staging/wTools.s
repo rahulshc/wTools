@@ -1805,6 +1805,33 @@ var assertMapOwnNone = function( src,none )
 
 //
 
+  /**
+   * Return stack trace.
+   * @example
+   *  var stack;
+      function function1() {
+        function2();
+      }
+
+      function function2() {
+        function3();
+      }
+
+      function function3() {
+        stack = wTools.stack();
+      }
+
+      stack
+     //"    at function3 (<anonymous>:10:17)
+     // at function2 (<anonymous>:6:2)
+     // at function1 (<anonymous>:2:2)
+     // at <anonymous>:1:1"
+   *
+   * @returns {String} Return stack trace from call point.
+   * @method stack
+   * @memberof wTools
+   */
+
 var stack = function()
 {
 
