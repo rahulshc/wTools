@@ -4670,6 +4670,24 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
 //
 
+/**
+ * The arrayElementsSwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
+ *
+ * @example
+ * // returns [ 5, 2, 3, 4, 1 ]
+ * var arr = _.arrayElementsSwap([ 1, 2, 3, 4, 5], 0, 4);
+ *
+ * @param {Array} dst - Initial array
+ * @param {Number} index1 - The first index
+ * @param {Number} index2 - The second index
+ * @returns {Array} - Modified array of
+ * @method arrayElementsSwap
+ * @throws {Error} If the first argument in not an array
+ * @throws {Error} If the second argument is less then 0 and more then a length initial array
+ * @throws {Error} If the third argument is less then 0 and more then a length initial array
+ * @memberof wTools#
+ */
+
 var arrayElementsSwap = function( dst,index1,index2 )
 {
   _assert( _.arrayLike( dst ),'arrayElementsSwap :','argument must be array' );
