@@ -1495,6 +1495,32 @@ var err = function err()
 
 //
 
+  /**
+   * Method similar to {@link wTools#err} except that it prints the created error.
+   * If _global_.logger defined, method will use it to print error, else console
+   *
+   *@example
+   * function divide (x, y) {
+        if (y == 0 ) throw wTools.errLog('divide by zero')
+        return x / y;
+     }
+     divide (3, 0);
+
+     // Error:
+     // caught     at divide (<anonymous>:2:29)
+     // divide by zero
+     // Error
+     //   at _err (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1418:13)
+     //   at wTools.errLog (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1462:13)
+     //   at divide (<anonymous>:2:29)
+     //   at <anonymous>:1:1
+   *
+   * @param {...String|Error} msg Accepts list of messeges/errors.
+   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+   * @method errLog
+   * @memberof wTools
+   */
+
 var errLog = function errLog()
 {
 

@@ -179,6 +179,41 @@
 
   //
 
+  var errLog = function( test )
+  {
+    var errMsg1 = 'some error message',
+      fileName = 'Diagnostics.test.s',
+      errObj1 = new Error('err obj for tesst'),
+      errMsg2 = errObj1.message;
+
+
+    test.description = 'single string passed as args property: result should be Error obj';
+    var got = _.errLog(errMsg1);
+    test.identical( got instanceof Error, true );
+
+    test.description = 'single string passed as args property: result message should contains passed string';
+    var expectMsg = new RegExp(errMsg1);
+    test.identical(expectMsg.test(got.message), true);
+
+    test.description = 'single string passed as args property: result message should contains file name';
+    var expectFileName = new RegExp(fileName);
+    test.identical(expectFileName.test(got.message), true);
+
+    test.description = 'single error instance passed as args property: result should be Error obj';
+    var got = _.errLog(errObj1);
+    test.identical( got instanceof Error, true );
+
+    test.description = 'single error instance passed as args property: result message should contains passed string';
+    var expectMsg = new RegExp(errMsg2);
+    test.identical(expectMsg.test(got.message), true);
+
+    test.description = 'single error instance passed as args property: result message should contains file name';
+    var expectFileName = new RegExp(errObj1.fileName);
+    test.identical(expectFileName.test(got.message), true);
+  };
+
+  //
+
   var Proto =
   {
 
@@ -187,8 +222,9 @@
     tests:
     {
 
-      _err : _err,
-      err  : err
+      _err  : _err,
+      err   : err,
+      errLog: errLog
 
     }
 
