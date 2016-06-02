@@ -650,6 +650,15 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
 
 //
 
+var strCapitalize = function( src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1 );
+  return src[ 0 ].toUpperCase() + src.substring( 1 );
+}
+
+//
+
 var strTimes = function( s,times )
 {
   var result = '';
@@ -1620,6 +1629,7 @@ var Proto =
   toStrForRange: toStrForRange,
   toStrForCall: toStrForCall,
 
+  strCapitalize: strCapitalize,
   strTimes: strTimes,
   strLineCount: strLineCount,
   strSplitStrNumber: strSplitStrNumber,

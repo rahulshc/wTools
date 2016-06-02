@@ -3749,6 +3749,33 @@ var _routineBind = function _routineBind( options )
 
 //
 
+  /**
+   * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
+   value. Argumetns `args` of target function which are passed before arguments of binded function during
+   calling of target function
+   * @example
+    var o = {
+        z: 5
+    };
+
+    var y = 4;
+
+    function sum(x, y) {
+       return x + y + this.z;
+    }
+    var newSum = wTools.routineBind(sum, o, [3]);
+    newSum(y); // 12
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
+   function. Must be wraped into array.
+   * @returns {Function} New created function with preceding this, and args.
+   * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
+   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+   * @method routineBind
+   * @memberof wTools
+   */
+
 var routineBind = function routineBind( routine, context, args )
 {
 
@@ -3766,6 +3793,34 @@ var routineBind = function routineBind( routine, context, args )
 }
 
 //
+
+  /**
+   * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
+   value. Argumetns `args` of target function which are passed before arguments of binded function during
+   calling of target function
+   * @example
+   var o = {
+        z: 5
+    };
+
+   var y = 4;
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineJoin(o, sum, [3]);
+   newSum(y); // 12
+
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
+   calling of target function. Must be wraped into array.
+   * @returns {Function} New created function with preceding this, and args.
+   * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
+   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+   * @method routineJoin
+   * @memberof wTools
+   */
 
 var routineJoin = function routineJoin( context, routine, args )
 {
@@ -3785,6 +3840,27 @@ var routineJoin = function routineJoin( context, routine, args )
 
 //
 
+  /**
+   * Return new function with sealed context and arguments.
+   *
+   * @example
+   var o = {
+        z: 5
+    };
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineSeal(o, sum, [3, 4]);
+   newSum(y); // 12
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
+   * @returns {Function} Result function with sealed context and arguments.
+   * @method routineJoin
+   * @memberof wTools
+   */
+
 var routineSeal = function routineSeal( context, routine, args )
 {
 
@@ -3802,6 +3878,18 @@ var routineSeal = function routineSeal( context, routine, args )
 }
 
 //
+
+  /**
+   * Return function that will call passed routine function with delay.
+   * @param {number} delay delay in milliseconds
+   * @param {Function} routine function that will be called with delay.
+   * @returns {Function} result function
+   * @throws {Error} If arguments less then 2
+   * @throws {Error} If `delay` is not a number
+   * @throws {Error} If `routine` is not a function
+   * @method routineDelayed
+   * @memberof wTools
+   */
 
 var routineDelayed = function routineDelayed( delay,routine )
 {
@@ -3823,6 +3911,32 @@ var routineDelayed = function routineDelayed( delay,routine )
 
 }
 //
+
+  /**
+   * Call each routines in array with passed context and arguments.
+      The context and arguments are same for each called functions.
+      Can accept only routines without context and args.
+      Can accept single routine instead array.
+   * @example
+      var x = 2, y = 3,
+          o { z: 6 };
+
+      var sum = function(x, y) {
+          return x + y + this.z;
+      },
+      prod = function (x, y) {
+          return x * y * this.z;
+      },
+      routines = [ sum, prod ];
+      var res = wTools.routinesCall(o, routines, [x, y]);
+   // [ 11, 36 ]
+   * @param {Object} [context] Context in which calls each function.
+   * @param {Function[]} routines Array of called function
+   * @param {Array<*>} [args] Arguments that will be passed to each functions.
+   * @returns {Array<*>} Array with results of functions invocation.
+   * @method routinesCall
+   * @memberof wTools
+   */
 
 var routinesCall = function routinesCall()
 {
@@ -4016,7 +4130,7 @@ var timePeriodic = function( delay,onReady )
   {
     throw _.err( 'Not tested' );
     _assert( arguments.length <= 4 );
-    onReady = _.routineBind.call( _,onReady,arguments[ 2 ],arguments[ 3 ] );
+    onReady = _.routineJoin( arguments[ 2 ],onReady,arguments[ 3 ] );
   }
 
   var _onReady = function()
@@ -4047,9 +4161,9 @@ var _timeNow_gen = function()
   _assert( arguments.length === 0 );
 
   if( typeof performance !== 'undefined' && performance.now !== undefined )
-  now = _.routineBind( performance.now,performance );
+  now = _.routineJoin( performance,performance.now );
   else if( Date.now )
-  now = _.routineBind( Date.now,Date );
+  now = _.routineJoin( Date,Date.now );
   else
   now = function(){ return Date().getTime() };
 
@@ -4099,12 +4213,13 @@ var dateToStr = function dateToStr( date )
  * // returns [ 3, 4 ]
  * var arr = _.arraySub([ 1, 2, 3, 4, 5], 2, 4);
  *
- * @param {Array} src - Source array.
- * @param {Number} begin - Index at which to begin extraction.
- * @param {Number} end - Index at which to end extraction.
- * @returns {Array} - The new array.
- * @throws {Error} ... what ... ?
+ * @param {Array} src - Source array
+ * @param {Number} begin - Index at which to begin extraction
+ * @param {Number} end - Index at which to end extraction
+ * @returns {Array} - The new array
  * @method arraySub
+ * @throws {Error} If passed arguments is less then three
+ * @throws {Error} If the first argument is not array
  * @memberof wTools#
  */
 
@@ -4143,9 +4258,11 @@ var arraySub = function( src,begin,end )
  * var arr = _.arrayNew([ 1, 2, 3 ], 4);
  *
  * @param {arrayLike} ins - Instance of an array
- * @param {Number} length - The length of the new array
+ * @param {Number} [length] - The length of the new array
  * @returns {arrayLike} - An empty array
  * @method arrayNew
+ * @throws {Error} If passed arguments is less then two
+ * @throws {Error} If the first argument in not array like object
  * @memberof wTools#
  */
 
@@ -4170,9 +4287,6 @@ var arrayNew = function( ins,length )
 
 //
 
-// !!! return a function?
-// does it throw something? !!!
-
 /**
  * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
  *
@@ -4181,8 +4295,10 @@ var arrayNew = function( ins,length )
  * var arr = _.arrayNewOfSameLength([ 1, 2, 3, 4, 5]);
  *
  * @param {arrayLike} ins - Instance of an array
- * @returns {arrayLike} - If (ins) in not an array return a function. Otherwise create and empty array
+ * @returns {arrayLike} - The new empty array
  * @method arrayNewOfSameLength
+ * @throws {Error} If missed argument, or got more than one argument
+ * @throws {Error} If the first argument in not array like object
  * @memberof wTools#
  */
 
@@ -4199,11 +4315,8 @@ var arrayNewOfSameLength = function( ins )
 
 //
 
-// does it throw something? !!!
-// what numbers? !!!
-
 /**
- * The arrayOrNumber() method returns a new array which contains only numbers.
+ * The arrayOrNumber() method returns a new array which containing the elements only type of Number.
  *
  * @example
  * // returns [ 2, 2, 2, 2 ]
@@ -4213,6 +4326,10 @@ var arrayNewOfSameLength = function( ins )
  * @param {Number} length - The length of the new array
  * @returns {Number[]} - The new array of numbers
  * @method arrayOrNumber
+ * @throws {Error} If missed argument, or got less or more than two argument
+ * @throws {Error} If type of the first argument is not a number or array
+ * @throws {Error} If the second argument is less then 0 
+ * @throws {Error} If length of the first argument is less then value of second argument
  * @memberof wTools#
  */
 
@@ -4232,11 +4349,8 @@ var arrayOrNumber = function( dst,length )
 
 //
 
-// i like !!!
-// does it throw something? !!!
-
 /**
- * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray)
+ * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray).
  *
  * @example
  * // returns [ 3, 4, 5 ]
@@ -4246,10 +4360,12 @@ var arrayOrNumber = function( dst,length )
  * var arr = _.arraySelect([ 1, 2, 3 ], [ 4, 5 ]);
  *
  * @param {arrayLike} srcArray - Values for the new array
- * @param {arrayLike} indicesArray - Index of elements from the (srcArray)
+ * @param {(arrayLike|object)} [indicesArray] - Index of elements from the (srcArray) or options object
  * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
    If there is no element with necessary index then the value will be undefined.
  * @method arraySelect
+ * @throws {Error} If passed arguments is not array like object
+ * @throws {Error} If the atomsPerElement property is not equal to 1
  * @memberof wTools#
  */
 
@@ -4326,18 +4442,16 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 
 //
 
-// poor description !!!
-// does it throw something? !!!
-
 /**
- * The arrayIron() method returns an array of elements which passed as arguments with the exception of undefined.
+ * The arrayIron() method copy the values of all arguments to a new array.
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
  * var arr = _.arrayIron('str', {}, [1,2], 5, true);
  *
- * @returns {Array}
+ * @returns {Array} - The new array
  * @method arrayIron
+ * @throws {Error} If type of the passed arguments is equal undefined
  * @memberof wTools#
  */
 
@@ -4512,7 +4626,8 @@ var arrayCopy = function arrayCopy()
  * @param {Array} dst - Initial array
  * @returns {arrayLike} - The new array
  * @method arrayAppendMerging
- * @throws Will throw an error if the argument is undefined.
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
  * @memberof wTools#
  */
 
@@ -4547,7 +4662,8 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
  * @param {Array} dst - Initial array
  * @returns {arrayLike} - The new array
  * @method arrayPrependMerging
- * @throws Will throw an error if the argument is undefined.
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
  * @memberof wTools#
  */
 
@@ -4811,6 +4927,41 @@ var arrayRemoveAll = function( dstArray,ins,onEqual )
   arrayRemovedAll( dstArray,ins,onEqual );
 
   return dstArray;
+}
+
+//
+
+var arrayReplaceOnce = function( dstArray,ins,sub )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( arguments.length === 3 );
+
+  var index = -1;
+
+  index = dstArray.indexOf( ins );
+
+  if( index >= 0 )
+  dstArray.splice( index,1,sub );
+
+  return index;
+}
+
+//
+
+var arrayUpdate = function( dstArray,ins,sub )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( arguments.length === 3 );
+
+  var index = arrayReplaceOnce( dstArray,ins,sub );
+
+  if( index === -1 )
+  {
+    dstArray.push( sub );
+    index = dstArray.length - 1;
+  }
+
+  return index;
 }
 
 //
@@ -7849,8 +8000,9 @@ var Proto =
   // routine
 
   _routineBind : _routineBind,
-  routineBind : routineBind,
+  routineBind : routineBind, /* depreacation */
   routineJoin : routineJoin,
+  _routineJoin : routineJoin, /* temp */
   routineSeal : routineSeal,
   routineDelayed : routineDelayed,
 
@@ -7906,6 +8058,9 @@ var Proto =
 
   arrayRemovedAll : arrayRemovedAll,
   arrayRemoveAll : arrayRemoveAll,
+
+  arrayReplaceOnce : arrayReplaceOnce,
+  arrayUpdate : arrayUpdate,
 
   arrayFrom : arrayFrom,
   arrayToMap : arrayToMap,
@@ -8036,7 +8191,7 @@ var Proto =
 
 mapExtend( Self, Proto );
 
-  Self.constructor = function wTools(){};
+Self.constructor = function wTools(){};
 
 // --
 // cache
