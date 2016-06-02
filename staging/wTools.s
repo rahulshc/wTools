@@ -4496,6 +4496,8 @@ var arrayCopy = function arrayCopy()
   return result;
 }
 
+//
+
 /**
  * The arrayAppendMerging() method returns an array of elements from (dst)
  * and appending all of the following arguments to the end.
@@ -4531,6 +4533,8 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
 
   return result;
 }
+
+//
 
 /**
  * The arrayPrependMerging() method returns an array of elements from (dst)
@@ -4617,6 +4621,22 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 }
 
 //
+
+/**
+ * The arrayAppendOnceMerging() method returns an array of elements from (dst)
+ * and prepending only unique following arguments to the beginning.
+ *
+ * @example
+ * // returns [ {}, 'str', 5, 2, 4 ]
+ * var arr = _.arrayPrependOnceMerging([2, 4], 5, 4, 'str', {});
+ *
+ * @param {Array} dst - Initial array
+ * @returns {Array} - The new array
+ * @method arrayPrependOnceMerging
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
+ * @memberof wTools#
+ */
 
 var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 {
