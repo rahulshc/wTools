@@ -1337,6 +1337,20 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
+  /**
+   * Creates Error object based on passed options;
+   * Result error contains in message detailed stack trace and error description.
+   * @param {Object} o Options for creating error.
+   * @param {String[]|Error[]>} o.args array with messages or errors objects, from which will be created Error obj.
+   * @param {number} [o.level] using for specifying in error message on which level of stack trace was caught error.
+   * @returns {Error} Result Error. If in `o.args` passed Error object, result will be reference to it.
+   * @private
+   * @throws {Error} Expects single argument if pass les or more than one argument
+   * @throws {Error} o.args should be array like, if o.args is not array.
+   * @method _err
+   * @memberof wTools
+   */
+
 var _err = function _err( o )
 {
   var result;
