@@ -1579,7 +1579,9 @@ var errLog = function errLog()
    //   at <anonymous>:1:1
    * @param {*} condition
    * @param {...String|Error} msgs error messages for generated exception.
-   * @throws {Error} If passed condition failed, Method thow an error.
+   * @throws {Error} If passed condition failed, Method throws an error.
+   * @method assert
+   * @memberof wTools
    */
 
 var assert = function assert( condition )
@@ -1778,7 +1780,20 @@ var assertMapOwnNone = function( src,none )
 
 //
 
-var warn = function( condition )
+  /**
+   * If condition failed, method prints warning messages passed after condition argument
+   * @example
+   *  function checkAngles(a, b, c) {
+         wTools.warn((a + b + c) === 180, 'triangle with that angles does not exists');
+      };
+      checkAngles(120, 23, 130)
+   // triangle with that angles does not exists
+   * @param condition Condition to check.
+   * @param messages messages to print.
+   * @method warn
+   * @memberof wTools
+   */
+  var warn = function( condition )
 {
 
   if( !condition )
