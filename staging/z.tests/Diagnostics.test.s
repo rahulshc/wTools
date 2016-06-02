@@ -214,6 +214,40 @@
 
   //
 
+  var assert = function( test )
+  {
+    var err,
+      msg1 = 'short error description',
+      rgMsg1 = new RegExp(msg1);
+
+    test.description = 'assert successful condition';
+    var got = _.assert(5 === 5);
+    test.identical( got, undefined );
+
+    test.description = 'passed failure condition: should generates exception';
+    try
+    {
+      _.assert(5 != 5)
+    }
+    catch (e)
+    {
+      err = e;
+    }
+    test.identical( err instanceof Error, true );
+
+    test.description = 'passed failure condition with passed message: should generates exception with message';
+    try
+    {
+      _.assert(false, msg1)
+    }
+    catch (e)
+    {
+      err = e;
+    }
+    test.identical( rgMsg1.test(err.message), true );
+  };
+  //
+
   var Proto =
   {
 
@@ -224,7 +258,9 @@
 
       _err  : _err,
       err   : err,
-      errLog: errLog
+      errLog: errLog,
+
+      assert: assert
 
     }
 
