@@ -246,6 +246,41 @@
     }
     test.identical( rgMsg1.test(err.message), true );
   };
+
+  //
+
+  var stack = function( test )
+  {
+    function function1()
+    {
+      return function2();
+    }
+
+    function function2()
+    {
+      return function3();
+    }
+
+    function function3()
+    {
+      return _.stack();
+    }
+
+    var expectedTrace = [ 'function3', 'function2', 'function1', 'Diagnostics.test.s' ];
+
+    test.description = 'test stack function sequence';
+    var got = function1();
+    got = got.split('\n');
+    console.log(got.length);
+    expectedTrace.forEach( function(v, i)
+    {
+      var rg = new RegExp(v);
+      test.identical(rg.test(got[i]), true);
+    });
+
+
+  };
+
   //
 
   var Proto =
@@ -256,11 +291,12 @@
     tests:
     {
 
-      _err  : _err,
-      err   : err,
-      errLog: errLog,
+      _err   : _err,
+      err    : err,
+      errLog : errLog,
 
-      assert: assert
+      assert : assert,
+      stack  : stack
 
     }
 
