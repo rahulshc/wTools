@@ -936,6 +936,42 @@
     }
 
   };
+
+
+  var mapComplement = function( test )
+  {
+
+    test.description = 'an object';
+    var got = _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+    var expected = { a : 1, b : 'yyy', c : 3 };
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapComplement();
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapComplement( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapComplement( 'wrong arguments' );
+      });
+      
+    }
+
+  };
   
 
   
@@ -962,8 +998,8 @@
     //name : 'mapCopy',
     //name : 'mapToString',
     //name : 'mapGroup',
-    name : 'mapButFiltering',
-    
+    //name : 'mapButFiltering',
+    name : 'mapComplement',
 
     tests:
     {
@@ -986,8 +1022,8 @@
       //mapCopy : mapCopy,
       //mapToString : mapToString,
       //mapGroup : mapGroup,
-      mapButFiltering : mapButFiltering,
-
+      //mapButFiltering : mapButFiltering,
+      mapComplement : mapComplement,
 
     }
 

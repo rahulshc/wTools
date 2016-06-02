@@ -6658,6 +6658,25 @@ var mapSupplement = function( dst )
 }
 
 //
+  /**
+   * The mapComplement() method returns an object 
+   * filled by all unique, clone [ key, value ].
+   *
+   * It creates the variable (args), assign to a copy of pseudo array (arguments),
+   * adds a specific callback function (_.filter.supplementaryCloning()) 
+   * to the beginning of the (args)
+   * and returns an object filled by all unique clone [key, value].
+   * 
+   * @param { ...objectLike } - The source object(s).
+   * 
+   * @example
+   * // returns { a : 1, b : 'yyy', c : 3 };
+   * mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+   * 
+   * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
+   * @method mapComplement
+   * @memberof wTools
+   */
 
 var mapComplement = function( dst )
 {
