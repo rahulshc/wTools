@@ -4570,6 +4570,22 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
 
 //
 
+/**
+ * The arrayAppendOnceMerging() method returns an array of elements from (dst)
+ * and appending only unique following arguments to the end.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', {}, 5 ]
+ * var arr = _.arrayAppendOnceMerging([ 1, 2 ], 'str', 2, {}, [ 'str', 5 ]);
+ *
+ * @param {Array} dst - Initial array
+ * @returns {Array} - The new array
+ * @method arrayAppendOnceMerging
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
+ * @memberof wTools#
+ */
+
 var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 {
   var result = dst;
