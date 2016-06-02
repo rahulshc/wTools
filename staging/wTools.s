@@ -1472,8 +1472,8 @@ _err.defaults =
    // caught     at divide (<anonymous>:2:29)
    // divide by zero
    // Error
-   //   at _err (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1418:13)
-   //   at wTools.err (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1449:10)
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.err (file:///.../wTools/staging/wTools.s:1449:10)
    //   at divide (<anonymous>:2:29)
    //   at <anonymous>:1:1
    *
@@ -1510,8 +1510,8 @@ var err = function err()
      // caught     at divide (<anonymous>:2:29)
      // divide by zero
      // Error
-     //   at _err (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1418:13)
-     //   at wTools.errLog (file:///home/ostash/work/nodejs/wTools/staging/wTools.s:1462:13)
+     //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+     //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
      //   at divide (<anonymous>:2:29)
      //   at <anonymous>:1:1
    *
@@ -1557,6 +1557,30 @@ var errLog = function errLog()
 //
 
 /** @inline */
+
+  /**
+   * Checks condition. If condition converts to true method terminates without exceptions.
+   * Else If condition converts to false, method will generates and throws exception. By default will generate error with
+   * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
+   *
+   * @example
+   * function divide (x, y) {
+        wTools.assert(y != 0, 'divide by zero');
+        return x / y;
+     }
+     divide (3, 0);
+
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+   * @param {*} condition
+   * @param {...String|Error} msgs error messages for generated exception.
+   * @throws {Error} If passed condition failed, Method thow an error.
+   */
 
 var assert = function assert( condition )
 {
