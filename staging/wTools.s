@@ -1337,6 +1337,20 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
+  /**
+   * Creates Error object based on passed options;
+   * Result error contains in message detailed stack trace and error description.
+   * @param {Object} o Options for creating error.
+   * @param {String[]|Error[]>} o.args array with messages or errors objects, from which will be created Error obj.
+   * @param {number} [o.level] using for specifying in error message on which level of stack trace was caught error.
+   * @returns {Error} Result Error. If in `o.args` passed Error object, result will be reference to it.
+   * @private
+   * @throws {Error} Expects single argument if pass les or more than one argument
+   * @throws {Error} o.args should be array like, if o.args is not array.
+   * @method _err
+   * @memberof wTools
+   */
+
 var _err = function _err( o )
 {
   var result;
@@ -1444,6 +1458,32 @@ _err.defaults =
 
 //
 
+  /**
+   * Creates error object, with message created from passed `msg` parameters and contains error trace.
+   *
+   * @example
+   *  function divide (x, y) {
+        if (y == 0 ) throw wTools.err('divide by zero')
+        return x / y;
+      }
+      divide(3, 0);
+
+   // Error:
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.err (file:///.../wTools/staging/wTools.s:1449:10)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+   *
+   * @param {...String|Error} msg Accepts list of messeges/errors.
+   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+   * reference.
+   * @method err
+   * @memberof wTools
+   */
+
 var err = function err()
 {
   return _err
@@ -1454,6 +1494,32 @@ var err = function err()
 }
 
 //
+
+  /**
+   * Method similar to {@link wTools#err} except that it prints the created error.
+   * If _global_.logger defined, method will use it to print error, else console
+   *
+   *@example
+   * function divide (x, y) {
+        if (y == 0 ) throw wTools.errLog('divide by zero')
+        return x / y;
+     }
+     divide (3, 0);
+
+     // Error:
+     // caught     at divide (<anonymous>:2:29)
+     // divide by zero
+     // Error
+     //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+     //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
+     //   at divide (<anonymous>:2:29)
+     //   at <anonymous>:1:1
+   *
+   * @param {...String|Error} msg Accepts list of messeges/errors.
+   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+   * @method errLog
+   * @memberof wTools
+   */
 
 var errLog = function errLog()
 {
@@ -1491,6 +1557,32 @@ var errLog = function errLog()
 //
 
 /** @inline */
+
+  /**
+   * Checks condition. If condition converts to true method terminates without exceptions.
+   * Else If condition converts to false, method will generates and throws exception. By default will generate error with
+   * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
+   *
+   * @example
+   * function divide (x, y) {
+        wTools.assert(y != 0, 'divide by zero');
+        return x / y;
+     }
+     divide (3, 0);
+
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+   * @param {*} condition
+   * @param {...String|Error} msgs error messages for generated exception.
+   * @throws {Error} If passed condition failed, Method throws an error.
+   * @method assert
+   * @memberof wTools
+   */
 
 var assert = function assert( condition )
 {
@@ -1688,7 +1780,20 @@ var assertMapOwnNone = function( src,none )
 
 //
 
-var warn = function( condition )
+  /**
+   * If condition failed, method prints warning messages passed after condition argument
+   * @example
+   *  function checkAngles(a, b, c) {
+         wTools.warn((a + b + c) === 180, 'triangle with that angles does not exists');
+      };
+      checkAngles(120, 23, 130)
+   // triangle with that angles does not exists
+   * @param condition Condition to check.
+   * @param messages messages to print.
+   * @method warn
+   * @memberof wTools
+   */
+  var warn = function( condition )
 {
 
   if( !condition )
@@ -1699,6 +1804,33 @@ var warn = function( condition )
 }
 
 //
+
+  /**
+   * Return stack trace.
+   * @example
+   *  var stack;
+      function function1() {
+        function2();
+      }
+
+      function function2() {
+        function3();
+      }
+
+      function function3() {
+        stack = wTools.stack();
+      }
+
+      stack
+     //"    at function3 (<anonymous>:10:17)
+     // at function2 (<anonymous>:6:2)
+     // at function1 (<anonymous>:2:2)
+     // at <anonymous>:1:1"
+   *
+   * @returns {String} Return stack trace from call point.
+   * @method stack
+   * @memberof wTools
+   */
 
 var stack = function()
 {
