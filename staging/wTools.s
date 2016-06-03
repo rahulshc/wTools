@@ -1,4 +1,4 @@
-(function _file_wTools_s_(){
+(function _wTools_s_(){
 
 'use strict';
 
@@ -6936,20 +6936,20 @@ var mapSupplement = function( dst )
 
 //
   /**
-   * The mapComplement() method returns an object 
+   * The mapComplement() method returns an object
    * filled by all unique, clone [ key, value ].
    *
    * It creates the variable (args), assign to a copy of pseudo array (arguments),
-   * adds a specific callback function (_.filter.supplementaryCloning()) 
+   * adds a specific callback function (_.filter.supplementaryCloning())
    * to the beginning of the (args)
    * and returns an object filled by all unique clone [key, value].
-   * 
+   *
    * @param { ...objectLike } - The source object(s).
-   * 
+   *
    * @example
    * // returns { a : 1, b : 'yyy', c : 3 };
    * mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
-   * 
+   *
    * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
    * @method mapComplement
    * @memberof wTools
@@ -7566,7 +7566,7 @@ var mapBut = function( srcMap )
    * @example
    * // returns {a: 1, b: "xxx"}
    * mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
-   * 
+   *
    * @returns { objectLike } Returns an object whose (values) are not equal to the arrays or objects.
    * @method mapButFiltering
    * @throws { Error } Will throw an Error if (srcMap) is not an object.
