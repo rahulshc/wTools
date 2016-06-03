@@ -207,6 +207,76 @@
 
   //
 
+  var _entityMost = function( test ) {
+
+    var args1 = [ 3, 1, 9, 0, 5 ],
+      args2 = [3, -4, 9, -16, 5, -2],
+      args3 = { a: 25, b: 16, c: 9 },
+      expected1 = { index : 2, key : 2, value : 9, element : 9 },
+      expected2 = { index : 3, key : 3, value : 0, element : 0 },
+      expected3 = { index : 3, key : 3, value : 256, element : -16 },
+      expected4 = args2.slice(),
+      expected5 = { index : 5, key : 5, value : 4, element : -2 },
+      expected6 = { index : 0, key : 'a', value : 25, element : 25  },
+      expected7 = { index : 2, key : 'c', value : 3, element : 9  };
+
+    var sqr = function(v)
+    {
+      return v * v;
+    };
+
+    test.description = 'test entityMost with array and default onElement and returnMax = true';
+    var got = _._entityMost(args1, undefined, true);
+    test.identical(got, expected1);
+
+    test.description = 'test entityMost with array and default onElement and returnMax = false';
+    var got = _._entityMost(args1, undefined, false);
+    test.identical(got, expected2);
+
+    test.description = 'test entityMost with array simple onElement function and returnMax = true';
+    var got = _._entityMost(args2, sqr, true);
+    test.identical(got, expected3);
+
+    test.description = 'test entityMost with array: passed array should be unmodified';
+    test.identical(args2, expected4);
+
+    test.description = 'test entityMost with array simple onElement function and returnMax = false';
+    var got = _._entityMost(args2, sqr, false);
+    test.identical(got, expected5);
+
+    test.description = 'test entityMost with map and default onElement and returnMax = true';
+    var got = _._entityMost(args3, undefined, true);
+    test.identical(got, expected6);
+
+    test.description = 'test entityMost with map and returnMax = false';
+    var got = _._entityMost(args3, Math.sqrt, false);
+    test.identical(got, expected7);
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _._entityMost();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _._entityMost( [ 1,3 ], sqr, true, false);
+      });
+
+      test.description = 'second argument is not routine';
+      test.shouldThrowError( function()
+      {
+        _._entityMost( [ 1,3 ], 'callback', true);
+      });
+    }
+
+  };
+
+  //
+
   var Proto =
   {
 
@@ -216,7 +286,8 @@
     {
 
       entityMap : entityMap,
-      entityFilter: entityFilter
+      entityFilter: entityFilter,
+      _entityMost: _entityMost
 
     }
 
