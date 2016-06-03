@@ -5080,6 +5080,23 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 
 //
 
+/**
+ * The arrayAs() method copies passed argument to the array.
+ *
+ * @example
+ * // returns [ false ]
+ * var arr = _.arrayAs(false);
+ *
+ * // returns [ { a: 1, b: 2 } ]
+ * var arr = _.arrayAs({a: 1, b: 2});
+ *
+ * @param {*} src - Source value
+ * @method arrayAs
+ * @returns {Array} - If passed null or undefined than return the empty array. If passed an array then return it.
+   Otherwise return an array which contains the element from argument.
+ * @memberof wTools#
+ */
+
 var arrayAs = function( src ) {
 
   if( src === null || src === undefined ) return [];
