@@ -4841,6 +4841,26 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 
 //
 
+/**
+ * The arrayRemoveOnce() method removes the first matching element from (dstArray)
+ * that corresponds to the condition in the callback function and returns a modified array.
+ *
+ * @example
+ * // returns [ 1, 2, 3, 'str' ]
+ * var arr = _.arrayRemoveOnce([1, 'str', 2, 3, 'str'], 'str', function (el, ins) {
+ *   return el === ins;
+ * });
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @method arrayRemoveOnce
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @memberof wTools#
+ */
+
 var arrayRemoveOnce = function( dstArray,ins,onEqual )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
