@@ -105,6 +105,12 @@
         _.entityMap( [ 1,3 ], callback1, callback2);
       });
 
+      test.description = 'passed argument is not ArrayLike, ObjectLike';
+      test.shouldThrowError( function()
+      {
+        _.entityFilter( 44, callback1);
+      });
+
       test.description = 'second argument is not routine';
       test.shouldThrowError( function()
       {
@@ -113,6 +119,90 @@
 
     }
 
+  };
+
+  //
+
+  var entityFilter = function( test ) {
+    var entity1 = [ 9, -16, 25, 36, -49 ],
+      entity2 = { '3': 9, '4': 16, '5': 25 },
+      expected1 = [ 3, 5, 6 ],
+      expected2 = { '3': 3, '4': 4, '5': 5 },
+      expected3 = entity1.slice();
+
+    var callback1 = function(v, i, ent) {
+      if( v < 0 ) return;
+      return Math.sqrt(v);
+    };
+
+    var testFn1 = function() {
+      console.log(arguments);
+      return _.entityFilter(arguments, callback1);
+    }
+
+    test.description = 'simple test with mapping array by sqrt';
+    var got = _.entityFilter(entity1, callback1);
+    test.identical( got,expected1 );
+
+    test.description = 'simple test with arrayLike';
+    var got = null;
+    try
+    {
+      got = testFn1( 9, -16, 25, 36, -49 );
+      
+    }
+    catch(e)
+    {
+      console.log(' test throws errror, but should not ');
+      console.log(e);
+    }
+    finally
+    {
+      test.identical( got, expected1 );
+    }
+
+    test.description = 'simple test with mapping array by sqrt: source array should not be modified';
+    var got = _.entityFilter(entity1, callback1);
+    test.identical( entity1, expected3 );
+
+    test.description = 'simple test with mapping object by sqrt';
+    var got = _.entityFilter(entity2, callback1);
+    test.identical( got,expected2 );
+
+    test.description = 'simple test with mapping array by sqrt';
+    var got = _.entityFilter(entity1, callback1);
+    test.identical( got,expected1 );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.entityFilter();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.entityFilter( [ 1,3 ], callback1, callback2);
+      });
+
+      test.description = 'passed argument is not ArrayLike, ObjectLike';
+      test.shouldThrowError( function()
+      {
+        _.entityFilter( 44, callback1);
+      });
+
+      test.description = 'second argument is not routine';
+      test.shouldThrowError( function()
+      {
+        _.entityFilter( [ 1,3 ], 'callback');
+      });
+
+    }
   };
 
   //
@@ -126,6 +216,7 @@
     {
 
       entityMap : entityMap,
+      entityFilter: entityFilter
 
     }
 

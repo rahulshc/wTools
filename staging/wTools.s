@@ -839,9 +839,9 @@ _entitySelect.defaults =
     var res = wTools.entityMap(numbers, checkSidesOfTriangle);
    // [true, true, true]
    *
-   * @param {Array|Object} src Entity, on each elements of which will be called `onEach` function.
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
    * @param {onEach} onEach Function that produces an element of the new entity;
-   * @returns {Array|Object} New entity.
+   * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
    * @thorws {Error} If `onEach` is not function;
