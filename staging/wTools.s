@@ -4644,7 +4644,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
   _assert( _.arrayIs( dst ),'arrayPrependOnceMerging :','expects array' );
 
-  for( var a = 1 ; a < arguments.length ; a++ )
+  for( var a = arguments.length-1 ; a > 0 ; a-- )
   {
     var argument = arguments[ a ];
 
@@ -4653,7 +4653,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = argument.length-1 ; i >= 0 ; i++ )
+      for( var i = argument.length-1 ; i >= 0 ; i-- )
       if( result.indexOf( argument[ i ] ) === -1 )
       result.unshift( argument[ i ] );
     }
