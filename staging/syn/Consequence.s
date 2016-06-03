@@ -1,19 +1,28 @@
-( function(){
+( function _Consequence_s_(){
 
 'use strict';
 
-if( typeof wCopyable === 'undefined' && typeof module !== 'undefined' )
+if( typeof module !== 'undefined' )
 {
 
-  if( require( 'fs' ).existsSync( __dirname + '/../wTools.s' ) )
-  {
-    require( '../wTools.s' );
-    require( '../component/Proto.s' );
-    require( '../mixin/Copyable.s' );
-  }
-  else
+  try
   {
     require( 'wTools' );
+  }
+  catch( err )
+  {
+    require( '../wTools.s' );
+  }
+
+  try
+  {
+    require( 'wProto' );
+    require( 'wCopyable' );
+  }
+  catch( err )
+  {
+    require( '../component/Proto.s' );
+    require( '../mixin/Copyable.s' );
   }
 
 }

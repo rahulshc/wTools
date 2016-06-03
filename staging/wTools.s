@@ -8078,10 +8078,6 @@ var Proto =
   entityMap : entityMap,
   entityFilter : entityFilter,
 
-  _entityMostComparing : _entityMostComparing,
-  entityMinComparing : entityMinComparing,
-  entityMaxComparing : entityMaxComparing,
-
   _entityMost : _entityMost,
   entityMin : entityMin,
   entityMax : entityMax,
