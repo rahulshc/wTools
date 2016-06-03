@@ -4119,39 +4119,59 @@ var timeOut = function( delay,onReady )
 }
 
 //
-/*
+
 var timePeriodic = function( delay,onReady )
 {
+  var con = new wConsequence();
   var id;
-
-  _assert( _.routineIs( onReady ) );
 
   if( arguments.length > 2 )
   {
     throw _.err( 'Not tested' );
     _assert( arguments.length <= 4 );
-    onReady = _.routineJoin( arguments[ 2 ],onReady,arguments[ 3 ] );
+    onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
   }
 
-  var _onReady = function()
+  _assert( _.numberIs( delay ) );
+
+  var handlePeriodicCon = function( err )
+  {
+    if( err ) clearInterval( id );
+  }
+
+  var _onReady = null;
+
+  if( _.routineIs( onReady ) )
+  _onReady = function()
   {
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
+    wConsequence.giveTo( con );
+    con.then_( handlePeriodicCon );
   }
+  else if( onReady instanceof wConsquence )
+  _onReady = function()
+  {
+    var result = onReady.ping();
+    if( result === false )
+    clearInterval( id );
+    wConsequence.giveTo( con );
+    con.then_( handlePeriodicCon );
+  }
+  else if( onReady === undefined )
+  _onReady = function()
+  {
+    wConsequence.giveTo( con );
+    con.then_( handlePeriodicCon );
+  }
+  else throw _.err( 'unexpected type of onReady' );
 
   id = setInterval( _onReady,delay );
 
-  return id;
+  return con;
 }
 
-//
-
-var timePeriodicStop = function( id )
-{
-  clearInterval( id );
-}
-*/
 //
 
 var _timeNow_gen = function()
@@ -4328,7 +4348,7 @@ var arrayNewOfSameLength = function( ins )
  * @method arrayOrNumber
  * @throws {Error} If missed argument, or got less or more than two argument
  * @throws {Error} If type of the first argument is not a number or array
- * @throws {Error} If the second argument is less then 0 
+ * @throws {Error} If the second argument is less then 0
  * @throws {Error} If length of the first argument is less then value of second argument
  * @memberof wTools#
  */
@@ -8016,11 +8036,13 @@ var Proto =
   timeReady : timeReady,
   timeOnce : timeOnce,
   timeOut : timeOut,
-/*
+
   timePeriodic : timePeriodic,
+/*
   timePeriodicStart : timePeriodic,
   timePeriodicStop : timePeriodicStop,
 */
+
   _timeNow_gen : _timeNow_gen,
   timeSpent : timeSpent,
   dateToStr : dateToStr,

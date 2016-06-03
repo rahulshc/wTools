@@ -248,11 +248,10 @@ var accessorForbid = function accessorForbid( object,names )
     (function _accessorForbid()
     {
 
-      var messageLine = protoName + rawName + ': ' + message;
+      var messageLine = protoName + rawName + ' : ' + message;
       var handler = function forbidden()
       {
-        /*console.log( 'stack :\n' + stack );*/
-        /*_.errLog( messageLine );*/
+        debugger;
         throw _.err( messageLine );
       }
 

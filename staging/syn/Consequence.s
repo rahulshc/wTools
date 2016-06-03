@@ -407,7 +407,6 @@ var _handleGot = function()
         {
           if( self.mark && self.mark.indexOf( err ) !== -1 )
           {
-            debugger;
             console.error( 'Uncaught error caught by Consequence:' );
             _.errLog( err );
           }
