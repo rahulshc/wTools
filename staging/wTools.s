@@ -4808,6 +4808,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  * @returns {Number} - The index of element
  * @throws {Error} If the first argument is not an array
  * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
  * @memberof wTools#
  */
 
@@ -4858,6 +4859,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
  * @returns {Array} - Modified array
  * @throws {Error} If the first argument is not an array
  * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
  * @memberof wTools#
  */
 
@@ -4874,6 +4876,27 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemovedAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the amount them.
+ *
+ * @example
+ * // returns 4
+ * var arr = _.arrayRemovedAll([ 1, 2, 3, 4, 5, 5, 5 ], 5, function (el, ins) {
+ *   return el < ins;
+ * });
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @method arrayRemovedAll
+ * @returns {Number} - The amount removed elements
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemovedAll = function( dstArray,ins,onEqual )
 {
