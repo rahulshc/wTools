@@ -4332,14 +4332,9 @@ var dateToStr = function dateToStr( date )
 // array
 // --
 
-// not really copy in case of TypedArray !!!
-// does it throw something? !!!
-
 /**
- * The arraySub() method returns a copy of a portion of the array to a new array.
- *
- * It returns a new array containing the elements from (begin) index
- * to the (end) index, but not including it.
+ * The arraySub() method creates a new array or a new TypedArray that contains
+ * the elements from (begin) index to the (end) index, but not including (end).
  *
  * @example
  * // returns [ 3, 4 ]
@@ -4350,7 +4345,7 @@ var dateToStr = function dateToStr( date )
  * @param {Number} end - Index at which to end extraction
  * @returns {Array} - The new array
  * @method arraySub
- * @throws {Error} If passed arguments is less then three
+ * @throws {Error} If passed arguments is less than three
  * @throws {Error} If the first argument is not array
  * @memberof wTools#
  */
@@ -4379,7 +4374,7 @@ var arraySub = function( src,begin,end )
 // second arguments is optional !!!
 
 /**
- * The arrayNew() method returns a new array with length equal (length)
+ * The arrayNew() method returns a new array or a new TypedArray with length equal (length)
  * or the same length of the initial array if second argument is not provided.
  *
  * @example
@@ -4393,7 +4388,7 @@ var arraySub = function( src,begin,end )
  * @param {Number} [length] - The length of the new array
  * @returns {arrayLike} - An empty array
  * @method arrayNew
- * @throws {Error} If passed arguments is less then two
+ * @throws {Error} If passed arguments is less than two
  * @throws {Error} If the first argument in not array like object
  * @memberof wTools#
  */
@@ -4420,7 +4415,7 @@ var arrayNew = function( ins,length )
 //
 
 /**
- * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
+ * The arrayNewOfSameLength() method returns a new empty array or a new TypedArray with the same length as in (ins).
  *
  * * @example
  * // returns [ , , , ,  ]
@@ -4460,8 +4455,8 @@ var arrayNewOfSameLength = function( ins )
  * @method arrayOrNumber
  * @throws {Error} If missed argument, or got less or more than two argument
  * @throws {Error} If type of the first argument is not a number or array
- * @throws {Error} If the second argument is less then 0 
- * @throws {Error} If length of the first argument is less then value of second argument
+ * @throws {Error} If the second argument is less than 0
+ * @throws {Error} If length of the first argument is less than value of second argument
  * @memberof wTools#
  */
 
@@ -4494,7 +4489,7 @@ var arrayOrNumber = function( dst,length )
  * @param {arrayLike} srcArray - Values for the new array
  * @param {(arrayLike|object)} [indicesArray] - Index of elements from the (srcArray) or options object
  * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
-   If there is no element with necessary index then the value will be undefined.
+   If there is no element with necessary index than the value will be undefined.
  * @method arraySelect
  * @throws {Error} If passed arguments is not array like object
  * @throws {Error} If the atomsPerElement property is not equal to 1
@@ -4747,6 +4742,8 @@ var arrayCopy = function arrayCopy()
   return result;
 }
 
+//
+
 /**
  * The arrayAppendMerging() method returns an array of elements from (dst)
  * and appending all of the following arguments to the end.
@@ -4782,6 +4779,8 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
 
   return result;
 }
+
+//
 
 /**
  * The arrayPrependMerging() method returns an array of elements from (dst)
@@ -4821,6 +4820,22 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
 
 //
 
+/**
+ * The arrayAppendOnceMerging() method returns an array of elements from (dst)
+ * and appending only unique following arguments to the end.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', {}, 5 ]
+ * var arr = _.arrayAppendOnceMerging([ 1, 2 ], 'str', 2, {}, [ 'str', 5 ]);
+ *
+ * @param {Array} dst - Initial array
+ * @returns {Array} - The new array
+ * @method arrayAppendOnceMerging
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
+ * @memberof wTools#
+ */
+
 var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 {
   var result = dst;
@@ -4853,6 +4868,22 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 
 //
 
+/**
+ * The arrayAppendOnceMerging() method returns an array of elements from (dst)
+ * and prepending only unique following arguments to the beginning.
+ *
+ * @example
+ * // returns [ {}, 'str', 5, 2, 4 ]
+ * var arr = _.arrayPrependOnceMerging([2, 4], 5, 4, 'str', {});
+ *
+ * @param {Array} dst - Initial array
+ * @returns {Array} - The new array
+ * @method arrayPrependOnceMerging
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
+ * @memberof wTools#
+ */
+
 var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 {
   var result = dst;
@@ -4884,6 +4915,24 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 }
 
 //
+
+/**
+ * The arrayElementsSwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
+ *
+ * @example
+ * // returns [ 5, 2, 3, 4, 1 ]
+ * var arr = _.arrayElementsSwap([ 1, 2, 3, 4, 5], 0, 4);
+ *
+ * @param {Array} dst - Initial array
+ * @param {Number} index1 - The first index
+ * @param {Number} index2 - The second index
+ * @returns {Array} - Modified array of
+ * @method arrayElementsSwap
+ * @throws {Error} If the first argument in not an array
+ * @throws {Error} If the second argument is less than 0 and more than a length initial array
+ * @throws {Error} If the third argument is less than 0 and more than a length initial array
+ * @memberof wTools#
+ */
 
 var arrayElementsSwap = function( dst,index1,index2 )
 {
@@ -4979,6 +5028,34 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
 }
 
 //
+
+/**
+ * Callback for compare two value.
+ *
+ * @callback compareCallback
+ * @param {Number} el - Element of the array
+ * @param {Number} ins - Value to compare
+ */
+
+/**
+ * The arrayRemovedOnce() method returns the index of the first matching element from (dstArray)
+ * that corresponds to the condition in the callback function and remove this element.
+ *
+ * @example
+ * // returns 1
+ * var arr = _.arrayRemovedOnce([2, 4, 6], 2, function (el, ins) {
+ *   return el > ins;
+ * });
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @method arrayRemovedOnce
+ * @returns {Number} - The index of element
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @memberof wTools#
+ */
 
 var arrayRemovedOnce = function( dstArray,ins,onEqual )
 {
