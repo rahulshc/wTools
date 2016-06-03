@@ -801,6 +801,54 @@ _entitySelect.defaults =
 
 //
 
+  /**
+   * Function that produces an elements for entityMap result
+   * @callback onEach
+   * @param {*} val The current element being processed in the entity.
+   * @param {string|number} key The index (if entity is array) or key of processed element.
+   * @param {Array|Object} src The src passed to entityMap
+   */
+
+  /**
+   * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
+   * function on every element of src. If entity is array, the new array has the same length as source.
+   *
+   * @example
+   * var numbers = [ 3, 4, 6 ];
+
+    function sqr(v) {
+      return v * v
+    };
+
+    var res = wTools.entityMap(numbers, sqr);
+    // [9, 16, 36]
+    // numbers is still [ 3, 4, 6 ]
+
+    function checkSidesOfTriangle(v, i, src) {
+      var sumOthers = 0,
+        l = src.length,
+        j;
+
+      for (j = 0; j < l; j++) {
+        if (i === j) continue;
+        sumOthers += src[j]
+      }
+      return v < sumOthers;
+    }
+
+    var res = wTools.entityMap(numbers, checkSidesOfTriangle);
+   // [true, true, true]
+   *
+   * @param {Array|Object} src Entity, on each elements of which will be called `onEach` function.
+   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @returns {Array|Object} New entity.
+   * @thorws {Error} If number of arguments less or more than 2;
+   * @thorws {Error} If `src` is not Array or ObjectLike;
+   * @thorws {Error} If `onEach` is not function;
+   * @method entityMap
+   * @memberof wTools
+   */
+
 var entityMap = function( src,onEach )
 {
 
@@ -1341,7 +1389,7 @@ var eachRecursive = function() {
    * Creates Error object based on passed options;
    * Result error contains in message detailed stack trace and error description.
    * @param {Object} o Options for creating error.
-   * @param {String[]|Error[]>} o.args array with messages or errors objects, from which will be created Error obj.
+   * @param {String[]|Error[]} o.args array with messages or errors objects, from which will be created Error obj.
    * @param {number} [o.level] using for specifying in error message on which level of stack trace was caught error.
    * @returns {Error} Result Error. If in `o.args` passed Error object, result will be reference to it.
    * @private
@@ -2113,9 +2161,9 @@ var objectLike = function( src )
    * // returns false
    * mapIs( [ 3, 7, 13 ] );
    *
-   * @returns { Boolean }
+   * @returns { boolean }
    * @method mapIs
-   * @memberof wTools#.
+   * @memberof wTools
    */
 
 var mapIs = function( src )
@@ -6744,7 +6792,7 @@ var mapClone = function( srcObject,options )
    * @param { requestCallback } filter - Callback function to test each [ key, value ]
    * of the (dstObject) object.
    * @param { objectLike } dstObject - The target object.
-   * @param { arguments[] } - The next object.
+   * @param { ...objectLike } - The next object.
    *
    * @example
    * // returns { a : 1, b : 2, c : 3 }
@@ -6798,7 +6846,7 @@ var mapExtendFiltering = function( filter,dstObject )
  * it extends (result) from the next objects.
  *
  * @param{ objectLike } [ dstObject = {} ] - The target object.
- * @param{ arguments[] } - The source object(s).
+ * @param{ ...objectLike } - The source object(s).
  *
  * @example
  * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
@@ -6842,7 +6890,7 @@ var mapExtend = function mapExtend( dstObject )
    * adds a callback function filter to the beginning of the (args)
    * and returns an object with unique [ key, value ].
    *
-   * @param { arguments[] } - The source object(s).
+   * @param { ...objectLike } - The source object(s).
    *
    * @example
    * // returns { a : 1, b : 2, c : 3 }
@@ -6887,6 +6935,25 @@ var mapSupplement = function( dst )
 }
 
 //
+  /**
+   * The mapComplement() method returns an object 
+   * filled by all unique, clone [ key, value ].
+   *
+   * It creates the variable (args), assign to a copy of pseudo array (arguments),
+   * adds a specific callback function (_.filter.supplementaryCloning()) 
+   * to the beginning of the (args)
+   * and returns an object filled by all unique clone [key, value].
+   * 
+   * @param { ...objectLike } - The source object(s).
+   * 
+   * @example
+   * // returns { a : 1, b : 'yyy', c : 3 };
+   * mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+   * 
+   * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
+   * @method mapComplement
+   * @memberof wTools
+   */
 
 var mapComplement = function( dst )
 {
@@ -6899,15 +6966,15 @@ var mapComplement = function( dst )
 
   /**
    * The mapCopy() method is used to copy the values of all properties
-   * from one or more source objects to a target object.
+   * from one or more source objects to the new object.
    *
-   * @param { arguments[] } - The source object(s).
+   * @param { ...objectLike } - The source object(s).
    *
    * @example
    * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
    * mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
    *
-   * @returns { objectLike } It will return the target object.
+   * @returns { objectLike } It will return the new object filled by [ key, value ].
    * @method mapCopy
    * @memberof wTools
    */
@@ -6959,7 +7026,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
    * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
    * mapToArray( { a : 3, b : 13, c : 7 } );
    *
-   * @returns { Array } returns a list of [ [ key, value ] ... ] pairs.
+   * @returns { array } returns a list of [ [ key, value ] ... ] pairs.
    * @method mapToArray
    * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
    * @memberof wTools
@@ -7111,7 +7178,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  * // returns [ "a", "b" ]
  * mapKeys( { a : 7, b : 13 } );
  *
- * @return { Array } Returns an array whose elements are strings
+ * @return { array } Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
  * @method mapKeys
  * @throws { Error } Will throw an Error if (src) is not an Object.
@@ -7151,7 +7218,7 @@ var mapKeys = function mapKeys( src )
  * // returns [ "7", "13" ]
  * mapValues( { a : 7, b : 13 } );
  *
- * @returns { Array } returns an array whose elements are strings.
+ * @returns { array } returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @method mapValues
  * @throws { Error } Will throw an Error if (src) is not an Object.
@@ -7186,7 +7253,7 @@ var mapValues = function( src )
  * // returns [ [ "a", 7 ], [ "b", 13 ] ]
  * mapPairs( { a : 7, b : 13 } );
  *
- * @returns { Array } A list of [ key, value ] pairs.
+ * @returns { array } A list of [ key, value ] pairs.
  * @method mapPairs
  * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
@@ -7224,6 +7291,28 @@ var mapsPluck = function( srcMaps,filterName )
 }
 */
 //
+
+  /**
+   * The mapGroup() method returns an object with certain group of key.
+   *
+   * It creates an empty (result) object, iterate over array (src),
+   * checks if (result) object has certain value.
+   * If undefined, it creates (value) with an empty array.
+   * Otherwise, it adds to certain (value) the object with target key.
+   *
+   * @param { array } src - The target array.
+   * @param { objectLike | string } options - The object with key or string of the key.
+   *
+   * @example
+   * // returns { 33 : [ { key1 : 33 } ], 44 : [ { key1 : 44 }, { key2 : 77 } ] }
+   * mapGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');
+   *
+   * @returns { objectLike } Returns an object with certain group of key.
+   * @method mapGroup
+   * @throws { Error } Will throw an Error if (options.key) is not a string,
+   * if (src) is not an object, if (options) is not an object.
+   * @memberof wTools
+   */
 
 var mapGroup = function( src,options )
 {
@@ -7281,10 +7370,10 @@ var mapGroup = function( src,options )
  * returns undefined
  * mapSame( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
  *
- * @returns { Boolean }
+ * @returns { boolean }
  * @method mapSame
  * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var mapSame = function( src1,src2 ){
@@ -7325,10 +7414,10 @@ var mapSame = function( src1,src2 ){
  * returns false
  * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
  *
- * @returns { Boolean }
+ * @returns { boolean }
  * @method mapContain
  * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var mapContain = function( src,ins )
@@ -7373,10 +7462,10 @@ var mapContain = function( src,ins )
  * mapOwn( { a : 7, b : 13 }, 'c' );
  * output : false
  *
- * @returns { Boolean }
+ * @returns { boolean }
  * @method mapOwn
  * @throws { mapOwn } Will throw an error if the (name) is unknown.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var mapOwn = function( object,name )
@@ -7407,7 +7496,7 @@ var mapOwn = function( object,name )
    * Otherwise pair( key/value ) from the first object goes into result object.
    *
    * @param{ objectLike } srcMap - original object.
-   * @param{ ... } srcMap - one or more objects.
+   * @param{ ...objectLike } srcMap - one or more objects.
    * Objects to return an object without repeating keys.
    *
    * @example
@@ -7417,9 +7506,9 @@ var mapOwn = function( object,name )
    * @throws { Error }
    *  In debug mode it throws an error if any argument is not object like.
 
-   * @returns { Object } Returns new object made by unique keys.
+   * @returns { object } Returns new object made by unique keys.
    * @method mapBut
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var mapBut = function( srcMap )
@@ -7452,7 +7541,38 @@ var mapBut = function( srcMap )
 
 //
 
-var mapButFiltering = function( filter,srcMap )
+  /**
+   * The mapButFiltering() method returns a new object (result)
+   * whose (values) are not equal to the arrays or objects.
+   *
+   * Takes any number of objects.
+   * If the first object has same key any other object has
+   * then this pair [ key, value ] will not be included into (result) object.
+   * Otherwise,
+   * it calls a provided callback function (_.filter.atomic())
+   * once for each key in the (srcMap), and adds to the (result) object
+   * all the [ key, value ],
+   * if values are not equal to the array or object.
+   *
+   * @callback requestCallback
+   * @param { objectLike } result - The new object.
+   * @param { objectLike } srcMap - The target object.
+   * @param { string } k - The key of the (srcMap) object.
+   *
+   * @param { requestCallback } filter - Callback function to test each [ key, value ] of the (srcMap) object.
+   * @param { objectLike } srcMap - The target object.
+   * @param { ...objectLike } - The next objects.
+   *
+   * @example
+   * // returns {a: 1, b: "xxx"}
+   * mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+   * 
+   * @returns { objectLike } Returns an object whose (values) are not equal to the arrays or objects.
+   * @method mapButFiltering
+   * @throws { Error } Will throw an Error if (srcMap) is not an object.
+   * @memberof wTools
+   */
+  var mapButFiltering = function( filter,srcMap )
 {
   var result = {};
   var filter = _.filter.makeMapper( filter );
