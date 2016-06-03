@@ -846,6 +846,133 @@
     }
 
   };
+  
+  
+  var mapGroup = function( test ) 
+  {
+    
+    test.description = 'an object';
+    var got = _.mapGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');
+    var expected = { 33 : [ { key1 : 33 } ], 44 : [ { key1 : 44, key2 : 77 } ] };
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapGroup();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapGroup( [] );
+      });
+
+      test.description = 'redundant arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapGroup( {}, '', 'wrong arguments' );
+      });
+
+      test.description = 'first argument not wrapped into array';
+      test.shouldThrowError( function()
+      {
+        _.mapGroup( { key1 : 44, key2 : 77 }, { key1 : 33 } , 'key1' );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapGroup( 'wrong arguments' );
+      });
+      
+    }
+    
+  };
+
+
+  var mapButFiltering = function( test )
+  {
+
+    test.description = 'an object';
+    var got = _.mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+    var expected = {a: 1, b: "xxx"};
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapButFiltering();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapButFiltering( _.filter.atomic() );
+      });
+
+      test.description = 'second argument is wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapButFiltering( _.filter.atomic(), [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapButFiltering( 'wrong arguments' );
+      });
+
+    }
+
+  };
+
+
+  var mapComplement = function( test )
+  {
+
+    test.description = 'an object';
+    var got = _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+    var expected = { a : 1, b : 'yyy', c : 3 };
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.mapComplement();
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapComplement( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapComplement( 'wrong arguments' );
+      });
+      
+    }
+
+  };
+  
 
   
 //
@@ -869,8 +996,10 @@
     //name : 'mapExtendFiltering',
     //name : 'mapSupplement',
     //name : 'mapCopy',
-    name : 'mapToString',
-    
+    //name : 'mapToString',
+    //name : 'mapGroup',
+    //name : 'mapButFiltering',
+    name : 'mapComplement',
 
     tests:
     {
@@ -891,8 +1020,10 @@
       //mapExtendFiltering : mapExtendFiltering,
       //mapSupplement : mapSupplement,
       //mapCopy : mapCopy,
-      mapToString : mapToString,
-
+      //mapToString : mapToString,
+      //mapGroup : mapGroup,
+      //mapButFiltering : mapButFiltering,
+      mapComplement : mapComplement,
 
     }
 
