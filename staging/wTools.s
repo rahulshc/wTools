@@ -4803,7 +4803,8 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  *
  * @param {Array} dstArray - Source array
  * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
  * @method arrayRemovedOnce
  * @returns {Number} - The index of element
  * @throws {Error} If the first argument is not an array
@@ -4848,13 +4849,12 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
  *
  * @example
  * // returns [ 1, 2, 3, 'str' ]
- * var arr = _.arrayRemoveOnce([1, 'str', 2, 3, 'str'], 'str', function (el, ins) {
- *   return el === ins;
- * });
+ * var arr = _.arrayRemoveOnce([1, 'str', 2, 3, 'str'], 'str');
  *
  * @param {Array} dstArray - Source array
  * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
  * @method arrayRemoveOnce
  * @returns {Array} - Modified array
  * @throws {Error} If the first argument is not an array
@@ -4889,7 +4889,8 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
  *
  * @param {Array} dstArray - Source array
  * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
  * @method arrayRemovedAll
  * @returns {Number} - The amount removed elements
  * @throws {Error} If the first argument is not an array
@@ -4922,6 +4923,26 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemoveAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the modified array.
+ *
+ * @example
+ * // returns [ 1, 3, 5 ]
+ * var arr = _.arrayRemoveAll([1, 2, 2, 3, 5], 2);
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemoveAll
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemoveAll = function( dstArray,ins,onEqual )
 {
