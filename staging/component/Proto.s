@@ -2,17 +2,26 @@
 
 'use strict';
 
+if( typeof module !== 'undefined' )
+{
+
+  try
+  {
+    require( 'wTools' );
+  }
+  catch( err )
+  {
+    require( '../wTools.s' );
+  }
+
+}
+
 var Self = wTools;
 var _ = wTools;
 
-var _ArraySlice = Array.prototype.slice;
-var _FunctionBind = Function.prototype.bind;
-var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
-
 var _assert = _.assert;
-var _arraySlice = _.arraySlice;
-var nameFielded = _.nameFielded;
+var _nameFielded = _.nameFielded;
 
 // --
 // property
@@ -35,7 +44,7 @@ var _accessorOptions = function( object,names )
   if( !options.methods )
   options.methods = object;
 
-  var names = options.names = nameFielded( names );
+  var names = options.names = _nameFielded( names );
 
   if( arguments.length > 2 )
   {
@@ -180,21 +189,6 @@ var _accessor = function( options )
     })();
 
   }
-
-  //goog.exportProperty( object,names );
-  //goog.exportProperty( object,names + 'Set',object[ names + 'Set' ] );
-  //goog.exportProperty( object,names + 'Get',object[ names + 'Get' ] );
-
-  //goog.exportSymbol( names );
-  //goog.exportSymbol( names + 'Set',object[ names + 'Set' ] );
-  //goog.exportSymbol( names + 'Get',object[ names + 'Get' ] );
-
-  //ex. goog.exportSymbol('public.path.Foo.prototype.myMethod',
-  //                      Foo.prototype.myMethod);
-  //    new public.path.Foo().myMethod();
-
-  // * ex. goog.exportSymbol('public.path.Foo.staticFunction', Foo.staticFunction);
-  // *     public.path.Foo.staticFunction();
 
 }
 
@@ -613,7 +607,7 @@ var protoHas = function( srcProto,insProto )
 
 var protoOwning = function( srcObject,names )
 {
-  var names = _.nameFielded( names );
+  var names = _nameFielded( names );
   _assert( _.objectIs( srcObject ) );
 
   do
@@ -683,8 +677,6 @@ _.protoMake
   extend : Proto,
   supplement : Original.prototype,
   usingAtomicExtension : true,
-  usingGlobalName : true,
-  wname : { Bitmask : 'Bitmask' },
 });
 */
 
@@ -743,54 +735,10 @@ var protoMake = function( options )
     constructor : options.constructor,
     extend : options.extend,
     supplement : options.supplement,
+    static : options.static,
     usingAtomicExtension : options.usingAtomicExtension,
     overrideOriginal : options.overrideOriginal,
   });
-
-  // extend fields and methods
-/*
-  if( options.extend )
-  {
-    var extend = _.mapBut( options.extend,ClassFacility );
-    _.mapExtend( prototype,extend );
-  }
-
-  if( options.supplement )
-  _.mapSupplement( prototype,options.supplement );
-
-  // extend relationships
-
-  var ParentPrototype = prototype.__proto__;
-  if( options.overrideOriginal )
-  {
-
-    for( var f in ClassFacility )
-    if( options.extend[ f ] )
-    _propertyAddOwnDefaults( f,prototype,options.extend[ f ],{ override : true } );
-
-  }
-  else
-  {
-
-    for( var f in ClassFacility )
-    if( prototype.hasOwnProperty( f ) && ParentPrototype[ f ] )
-    {
-      _assert( prototype[ f ].constructor === ParentPrototype[ f ].constructor || prototype[ f ] === Object );
-      prototype[ f ].__proto__ = ParentPrototype[ f ];
-    }
-
-  }
-
-  // atomic extension
-
-  if( options.usingAtomicExtension )
-  {
-    if( _.mapOwn( prototype,{ Composes : 'Composes' } ) )
-    _.mapExtendFiltering( _.filter.atomicOwn(),prototype,prototype.Composes );
-    if( _.mapOwn( prototype,{ Aggregates : 'Aggregates' } ) )
-    _.mapExtendFiltering( _.filter.atomicOwn(),prototype,prototype.Aggregates );
-  }
-*/
 
   // name
 
@@ -811,6 +759,7 @@ protoMake.defaults =
   parent : null,
   extend : null,
   supplement : null,
+  static : null,
   wname : null,
   usingGlobalName : false,
   usingAtomicExtension : false,
@@ -834,22 +783,11 @@ protoMake.defaults =
 var protoExtend = function( options )
 {
 
-/*
-  var hasNot =
-  {
-    Parent : 'Parent',
-    Self : 'Self',
-    Type : 'Type',
-    type : 'type',
-  }
-*/
-
   _assert( arguments.length === 1 );
   _assert( _.objectIs( options ) );
 
   _assert( _.routineIs( options.constructor ) );
-  _assert( options.constructor.name );
-  /*_.assertMapOwnNone( options.constructor.prototype,hasNot );*/
+  _assert( options.constructor.name,'class constructor should have name' );
 
   _assert( _.routineIs( options.parent ) || options.parent === undefined || options.parent === null );
   _assert( _.objectIs( options.extend ) || options.extend === undefined || options.extend === null );
@@ -880,6 +818,12 @@ var protoExtend = function( options )
 
   if( options.supplement )
   _.mapSupplement( prototype,options.supplement );
+
+  if( options.static )
+  {
+    _.mapSupplement( prototype,options.static );
+    _.mapSupplement( options.constructor,options.static );
+  }
 
   // extend relationships
 
@@ -930,6 +874,7 @@ protoExtend.defaults =
   constructor : null,
   extend : null,
   supplement : null,
+  static : null,
   usingAtomicExtension : false,
   overrideOriginal : false,
 }
