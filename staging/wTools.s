@@ -876,6 +876,31 @@ var entityMap = function( src,onEach )
 
 //
 
+  /**
+   * Similar to {@link wTools#entityMap} except that the result ArrayLike/Object will not include results for which
+   * `onEach` returns undefined.
+   *
+   * @example
+   * var numbers = [ 36, -25, 49, 64, -16];
+
+     function sqrt(v) {
+        return (v > 0) ? Math.sqrt(v) : undefined;
+     };
+
+     var res = wTools.entityMap(numbers, sqr);
+   // [6, 7, 8]
+   // numbers is still [ 36, -25, 49, 64, -16];
+   *
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
+   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @returns {ArrayLike|ObjectLike} New entity.
+   * @thorws {Error} If number of arguments less or more than 2;
+   * @thorws {Error} If `src` is not Array or ObjectLike;
+   * @thorws {Error} If `onEach` is not function;
+   * @method entityMap
+   * @memberof wTools
+   */
+
 var entityFilter = function( src,onEach )
 {
 
