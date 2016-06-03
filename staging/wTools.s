@@ -801,6 +801,54 @@ _entitySelect.defaults =
 
 //
 
+  /**
+   * Function that produces an elements for entityMap result
+   * @callback onEach
+   * @param {*} val The current element being processed in the entity.
+   * @param {string|number} key The index (if entity is array) or key of processed element.
+   * @param {Array|Object} src The src passed to entityMap
+   */
+
+  /**
+   * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
+   * function on every element of src. If entity is array, the new array has the same length as source.
+   *
+   * @example
+   * var numbers = [ 3, 4, 6 ];
+
+    function sqr(v) {
+      return v * v
+    };
+
+    var res = wTools.entityMap(numbers, sqr);
+    // [9, 16, 36]
+    // numbers is still [ 3, 4, 6 ]
+
+    function checkSidesOfTriangle(v, i, src) {
+      var sumOthers = 0,
+        l = src.length,
+        j;
+
+      for (j = 0; j < l; j++) {
+        if (i === j) continue;
+        sumOthers += src[j]
+      }
+      return v < sumOthers;
+    }
+
+    var res = wTools.entityMap(numbers, checkSidesOfTriangle);
+   // [true, true, true]
+   *
+   * @param {Array|Object} src Entity, on each elements of which will be called `onEach` function.
+   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @returns {Array|Object} New entity.
+   * @thorws {Error} If number of arguments less or more than 2;
+   * @thorws {Error} If `src` is not Array or ObjectLike;
+   * @thorws {Error} If `onEach` is not function;
+   * @method entityMap
+   * @memberof wTools
+   */
+
 var entityMap = function( src,onEach )
 {
 
@@ -1341,7 +1389,7 @@ var eachRecursive = function() {
    * Creates Error object based on passed options;
    * Result error contains in message detailed stack trace and error description.
    * @param {Object} o Options for creating error.
-   * @param {String[]|Error[]>} o.args array with messages or errors objects, from which will be created Error obj.
+   * @param {String[]|Error[]} o.args array with messages or errors objects, from which will be created Error obj.
    * @param {number} [o.level] using for specifying in error message on which level of stack trace was caught error.
    * @returns {Error} Result Error. If in `o.args` passed Error object, result will be reference to it.
    * @private
