@@ -555,6 +555,94 @@
 
   //
 
+  var entityIdentical = function( test )
+  {
+
+    var options =
+    {
+      strict : 0
+    };
+
+    // numbers
+
+    var x1 = 44, y1 = 44,
+      x2 = 44, y2 = 34;
+
+    // strings
+
+    var strX1 = '4', strY1 = 4,
+      strX2 = '0', strY2 = '0',
+      strX3 = '0', strY3 = new String('0');
+
+    // array values
+
+    var arrX1 = [ 0, 1, 3 ], arrY1 = [ 0, 1, 3 ],
+      arrX2 = [ 0, 1, 3 ], arrY2 = [ 0, 1, 2 ];
+
+
+    // object values
+
+    var objX1 = { a: 0, b: 1, c: 3 }, objY1 = { a: 0, b: 1, c: 3 },
+      objX2 = { a: 0, b: 1, c: 3 }, objY2 = { a: 0, b: 1, c: 2 },
+      objX3 = { a: 0, b: 1, e: { c: 2, d: 3 } }, objY3 = { a: 0, b: 1, e: { c: 2, d: 3 } };
+
+
+    // numbers test
+
+    test.description = 'identical numbers';
+    var got = _.entityIdentical( x1, y1 );
+    test.identical(got, true);
+
+    test.description = 'not identical numbers';
+    var got = _.entityIdentical( x2, y2 );
+    test.identical(got, false);
+
+    // strins test
+
+    test.description = 'mismatch types';
+    var got = _.entityIdentical( strX1, strX1 );
+    test.identical(got, false);
+
+    test.description = 'mismatch types: no strict';
+    var got = _.entityIdentical( strX1, strX1, options );
+    test.identical(got, true);
+
+    test.description = 'entities is two non empty same strings';
+    var got = _.entityIdentical( strX2, strY2 );
+    test.identical(got, true);
+
+    test.description = 'string and object';
+    var got = _.entityIdentical( strX3, strY3, options);
+    test.identical(got, true);
+
+    // array tests
+
+    test.description = 'tests two non empty arrays';
+    var got = _.entityIdentical( arrX1, arrY1 );
+    test.identical(got, true);
+
+    test.description = 'tests two non empty different arrays';
+    var got = _.entityIdentical( arrX2, arrY2 );
+    test.identical(got, false);
+
+    // object tests
+
+    test.description = 'tests two non empty objects';
+    var got = _.entityIdentical( objX1, objY1 );
+    test.identical(got, true);
+
+    test.description = 'tests two different objects';
+    var got = _.entityIdentical( objX2, objY2 );
+    test.identical(got, false);
+
+    test.description = 'tests nested objects';
+    var got = _.entityIdentical( objX3, objY3 );
+    test.identical(got, true);
+
+  };
+
+  //
+
   var Proto =
   {
 
@@ -568,7 +656,8 @@
       _entityMost  : _entityMost,
       entityMin    : entityMin,
       entityMax    : entityMax,
-      _entitySame  : _entitySame
+      _entitySame  : _entitySame,
+      entityIdentical: entityIdentical
 
     }
 
