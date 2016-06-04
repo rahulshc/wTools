@@ -5340,6 +5340,20 @@ var arrayFill = function arrayFill( options )
 
 //
 
+/**
+ * The arrayCompare() method returns the first difference between the values of the first array from the second.
+ *
+ * @example
+ * // returns 3
+ * var arr = _.arrayCompare([1, 5], [1, 2]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arrayCompare
+ * @returns {Number} - Difference the values
+ * @memberof wTools#
+ */
+
 var arrayCompare = function( src1,src2 )
 {
 
