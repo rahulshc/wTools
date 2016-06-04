@@ -277,6 +277,121 @@
 
   //
 
+  var entityMin = function( test )
+  {
+    var args1 = [ 3, 1, 9, 0, 5 ],
+      args2 = [3, -4, 9, -16, 5, -2],
+      args3 = { a: 25, b: 16, c: 9 },
+      expected1 = { index : 3, key : 3, value : 0, element : 0 },
+      expected2 = { index : 5, key : 5, value : 4, element : -2 },
+      expected3 = args2.slice(),
+      expected4 = { index : 2, key : 'c', value : 9, element : 9  };
+
+    var sqr = function(v)
+    {
+      return v * v;
+    };
+
+    test.description = 'test entityMin with array and without onElement callback';
+    var got = _.entityMin(args1);
+    test.identical(got, expected1);
+
+
+
+    test.description = 'test entityMin with array simple onElement function';
+    var got = _.entityMin(args2, sqr);
+    test.identical(got, expected2);
+
+    test.description = 'test entityMin with array: passed array should be unmodified';
+    test.identical(args2, expected3);
+
+
+
+    test.description = 'test entityMin with map';
+    var got = _.entityMin(args3);
+    test.identical(got, expected4);
+
+
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.entityMin();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.entityMin( [ 1,3 ], sqr, true);
+      });
+
+      test.description = 'second argument is not routine';
+      test.shouldThrowError( function()
+      {
+        _.entityMin( [ 1,3 ], 'callback');
+      });
+    }
+  };
+
+  //
+
+  var entityMax = function( test )
+  {
+
+    var args1 = [ 3, 1, 9, 0, 5 ],
+      args2 = [3, -4, 9, -16, 5, -2],
+      args3 = { a: 25, b: 16, c: 9 },
+      expected1 = { index : 2, key : 2, value : 9, element : 9 },
+      expected2 = args2.slice(),
+      expected3 = { index : 3, key : 3, value : 256, element : -16 },
+      expected4 = { index : 0, key : 'a', value : 5, element : 25  };
+
+    var sqr = function(v)
+    {
+      return v * v;
+    };
+
+    test.description = 'test entityMax with array';
+    var got = _.entityMax(args1);
+    test.identical(got, expected1);
+
+    test.description = 'test entityMax with array and simple onElement function';
+    var got = _.entityMax(args2, sqr);
+    test.identical(got, expected3);
+
+    test.description = 'test entityMax with array: passed array should be unmodified';
+    test.identical(args2, expected2);
+
+    test.description = 'test entityMax with map';
+    var got = _.entityMax(args3, Math.sqrt);
+    test.identical(got, expected4);
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.entityMax();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.entityMax( [ 1,3 ], sqr, true);
+      });
+
+      test.description = 'second argument is not routine';
+      test.shouldThrowError( function()
+      {
+        _.entityMax( [ 1,3 ], 'callback');
+      });
+    }
+  };
+
+  //
+
   var Proto =
   {
 
@@ -285,9 +400,11 @@
     tests:
     {
 
-      entityMap : entityMap,
-      entityFilter: entityFilter,
-      _entityMost: _entityMost
+      entityMap    : entityMap,
+      entityFilter : entityFilter,
+      _entityMost  : _entityMost,
+      entityMin    : entityMin,
+      entityMax    : entityMax
 
     }
 
