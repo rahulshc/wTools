@@ -5480,6 +5480,20 @@ var arrayLeftGet = function( arr,ins,equalizer )
 
 //
 
+/**
+ * The arrayHasAny() method checks in the array has at least one value of the following arguments.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arrayHasAny([ 5, 'str', 42, false ], false, 7);
+ *
+ * @param {arrayLike} src - Source array
+ * @method arrayHasAny
+ * @returns {Boolean} - Returns true if there are and false if not
+ * @throws {Error} If the first argument in not an array
+ * @memberof wTools#
+ */
+
 var arrayHasAny = function( src )
 {
   _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayHasAny :','array expected' );
