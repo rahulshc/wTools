@@ -392,6 +392,169 @@
 
   //
 
+  var  _entitySame = function( test )
+  {
+    // number values
+
+    var sameNumbers1 = function( a,b )
+    {
+      return a === b;
+    };
+
+    var options1 =
+    {
+      onSameNumbers : sameNumbers1,
+      contain : 0,
+      strict : 1,
+      lastPath : '',
+    };
+
+    var options2 =
+    {
+      onSameNumbers : sameNumbers1,
+      contain : 0,
+      strict : 0,
+      lastPath : '',
+    };
+
+    var x1 = -0, y1 = +0,
+      x2 = Number.MAX_VALUE, y2 = Number.MAX_VALUE,
+      x3 = 44, y3 = 34;
+
+    // string values
+
+      var strX1 = '', strY1 = '',
+        strX2 = '0', strY2 = '0',
+        strX3 = '0', strY3 = new String('0');
+
+    // array values
+
+    var arrX1 = [], arrY1 = [],
+      arrX2 = [ 0, 1, 3 ],              arrY2 = [ 0, 1, 3 ],
+      arrX3 = [ 0, 1, 3 ],              arrY3 = [ 0, 1, 2 ],
+      arrX4 = [ 0, 1, [ 2, 3 ] ],       arrY4 = [ 0, 1, [ 2, 3 ] ],
+      arrX5 = [ 0, 1, { a: 2, b: 3 } ], arrY5 = [ 0, 1, { a: 2, b: 3 } ],
+      arrX6 = [ 0, 1, 3 ],              arrY6 = [ '0', '1', '2' ];
+
+    // object values
+
+    var constructor1 = function() {
+      this.a = 1;
+      this.b = 2;
+    };
+
+    var constructor2 = function() {
+      this['a'] = 1;
+      this['b'] = 2;
+    };
+
+    var objX1 = {}, objY1 = {},
+      objX2 = { a: 0, b: 1, c: 3 },              objY2 = { a: 0, b: 1, c: 3 },
+      objX3 = { a: 0, b: 1, c: 3 },              objY3 = { a: 0, b: 1, c: 2 },
+      objX4 = { a: 0, b: 1, e: { c: 2, d: 3 } }, objY4 = { a: 0, b: 1, e: { c: 2, d: 3 } },
+      objX5 = { a: 0, b: 1, c: 3 },              objY5 = { a: '0', b: '1', c: '2' },
+      objX6 = new constructor1(),                objY6 = new constructor1(),
+      objX7 = objX6,                             objY7 = new constructor2();
+
+    // numbers test
+
+    test.description = 'entity same +0 and -0';
+    var got = _._entitySame(x1, y1, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entity same Number.MAX_VALUE';
+    var got = _._entitySame(x2, y2, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entity not same numbers';
+    var got = _._entitySame(x3, y3, options1, '');
+    test.identical(got, false);
+
+    // string tests
+
+    test.description = 'entities is two empty strings';
+    var got = _._entitySame(strX1, strY1, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two non empty strings';
+    var got = _._entitySame(strX2, strY2, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entity same: string and object strict mode';
+    var got = _._entitySame(strX3, strY3, options1, '');
+    test.identical(got, false);
+
+    test.description = 'entity same: string and object non strict mode';
+    var got = _._entitySame(strX3, strY3, options2, '');
+    test.identical(got, true);
+
+    // array tests
+
+    test.description = 'entities is two empty arrays';
+    var got = _._entitySame(arrX1, arrY1, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two non empty arrays';
+    var got = _._entitySame(arrX2, arrY2, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two non empty different arrays';
+    var got = _._entitySame(arrX3, arrY3, options1, '');
+    test.identical(got, false);
+
+    test.description = 'entities is two non empty nested arrays';
+    var got = _._entitySame(arrX4, arrY4, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two arrays with objects as elements';
+    var got = _._entitySame(arrX5, arrY5, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two arrays with strict mode';
+    var got = _._entitySame(arrX6, arrY6, options1, '');
+    test.identical(got, false);
+
+    test.description = 'entities is two arrays without strict mode';
+    var got = _._entitySame(arrX5, arrY5, options2, '');
+    test.identical(got, true);
+
+    // object tests
+
+    test.description = 'entities is two empty objects';
+    var got = _._entitySame(objX1, objY1, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two non empty objects';
+    var got = _._entitySame(objX2, objY2, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two different objects';
+    var got = _._entitySame(objX3, objY3, options1, '');
+    test.identical(got, false);
+
+    test.description = 'entities is two non empty nested objects';
+    var got = _._entitySame(objX4, objY4, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two objects with different type elements: strict mode';
+    var got = _._entitySame(objX5, objY5, options1, '');
+    test.identical(got, false);
+
+    test.description = 'entities is two objects with different type elements: non strict mode';
+    var got = _._entitySame(objX5, objY5, options2, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two objects';
+    var got = _._entitySame(objX6, objY6, options1, '');
+    test.identical(got, true);
+
+    test.description = 'entities is two same objects: different constructors';
+    var got = _._entitySame(objX7, objY7, options1, '');
+    test.identical(got, true);
+  };
+
+  //
+
   var Proto =
   {
 
@@ -404,7 +567,8 @@
       entityFilter : entityFilter,
       _entityMost  : _entityMost,
       entityMin    : entityMin,
-      entityMax    : entityMax
+      entityMax    : entityMax,
+      _entitySame  : _entitySame
 
     }
 
