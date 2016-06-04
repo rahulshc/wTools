@@ -551,6 +551,22 @@
     test.description = 'entities is two same objects: different constructors';
     var got = _._entitySame(objX7, objY7, options1, '');
     test.identical(got, true);
+
+    if( Config.debug )
+    {
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _._entitySame();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _._entitySame( rrX5, arrY5, options1, '', false);
+      });
+
+    }
   };
 
   //
@@ -638,6 +654,23 @@
     test.description = 'tests nested objects';
     var got = _.entityIdentical( objX3, objY3 );
     test.identical(got, true);
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.entityIdentical();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.entityIdentical( strX3, strY3, options, '');
+      });
+
+    }
 
   };
 
