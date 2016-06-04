@@ -5370,7 +5370,7 @@ var arrayCompare = function( src1,src2 )
  * @param {Array} src1 - The first array
  * @param {Array} src2 - The second array
  * @method arraySame
- * @returns {Boolean} - Returns true if all elements of the two array are equal. Otherwise returns false.
+ * @returns {Boolean} - Returns true if all values of the two array are equal. Otherwise returns false.
  * @memberof wTools#
  */
 
@@ -5487,6 +5487,22 @@ var arrayHasAny = function( src )
 }
 
 //
+
+/**
+ * The arrayCount() method returns the count of matching elements in the array.
+ *
+ * @example
+ * // returns 2
+ * var arr = _.arrayCount([1, 2, 'str', 10, 10, true], 10);
+ *
+ * @param {arrayLike} src - Source array
+ * @param {*} instance - Value to search
+ * @method arrayCount
+ * @returns {Number} - Count of elements
+ * @throws {Error} If passed arguments is less than two or more than three
+ * @throws {Error} If the first argument is not an array like object
+ * @memberof wTools#
+ */
 
 var arrayCount = function( src,instance )
 {
