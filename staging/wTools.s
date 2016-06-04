@@ -5360,6 +5360,20 @@ var arrayCompare = function( src1,src2 )
 
 //
 
+/**
+ * The arraySame() method check the equality of two arrays.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arraySame([1, 2, 3], [1, 2, 3]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arraySame
+ * @returns {Boolean} - Returns true if all elements of the two array are equal. Otherwise returns false.
+ * @memberof wTools#
+ */
+
 var arraySame = function( src1,src2 )
 {
 
