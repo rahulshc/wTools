@@ -1019,6 +1019,27 @@ var entityMaxComparing = function( src,onCompare )
 
 //
 
+  /**
+   * The result of _entityMost method object.
+   * @typedef {Object} entityMostResult
+   * @property {number} index - Index of found element;
+   * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
+   * Else if search was on array - to index of found element.
+   * @property {number} value - The found result of onElement, if onElement don't set, this value will be same as element.
+   * @property {number} element - The appropriate element for found value.
+   */
+
+  /**
+   * Method do search through results of `onElement` callback. If `onElement` is undefined, search was do through
+   * passed `src` elements. Returns maximum or minimum of values.
+   * @param {ArrayLike|Object} src Input entity with elements.
+   * @param {onEach} onElement Function that produces an values for search. Calls with each element of `src` as
+   * argument;
+   * @param {boolean} returnMax If true - method returns maximum, else method returns minimum.
+   * @returns {entityMostResult} Object with results of search.
+   * @private
+   */
+
 var _entityMost = function( src,onElement,returnMax )
 {
 
