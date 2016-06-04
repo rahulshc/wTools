@@ -5612,6 +5612,26 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 
 //
 
+/**
+ * The arrayRandom() method returns an array which contains the random numbers.
+ *
+ * @example
+ * // returns [ 6, 2, 4, 7, 8 ]
+ * var arr = _.arrayRandom({
+ *   length: 5,
+ *   range: [1, 9],
+ *   int: true
+ * });
+ *
+ * @param {Object} options - Options for getting random numbers
+ * @param {Number} options.length - The length of array
+ * @param {Array} [options.range = [0, 1]] - The range of numbers
+ * @param {Boolean} [options.int = false] - Floating point numbers or not
+ * @method arrayRandom
+ * @returns {Array} - The array of numbers
+ * @memberof wTools#
+ */
+
 var arrayRandom = function( options )
 {
   var result = [];
