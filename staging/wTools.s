@@ -5284,12 +5284,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 //
 
 /**
- * The arrayFill() method create a new array and fills it the value of the properties (options.value)
- * and repeats it (options.times) times.
- *
- * If passed argument is Number or Array than the value to fill will be equal 0.
- * For Number the length a new array will be the value of argument.
- * For Array a new array will be the same length.
+ * The arrayFill() method creates a new array and fills it a values.
  *
  * @example
  * // returns [ 3, 3, 3, 3, 3 ]
@@ -5302,6 +5297,9 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
  * var arr = _.arrayFill([1, 2, 3]);
  *
  * @param {Object} options - Options to fill the array
+ * @param {Number} options.times - The count of repeats.
+   If in the function passed Array, the times will be equal the length of array. If Number than this value.
+ * @param {Number} [options.value = 0] - Value for the filling
  * @method arrayFill
  * @returns {Array} - The new array
  * @throws {Error} If missed argument, or got more than one argument
