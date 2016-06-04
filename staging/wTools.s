@@ -5148,6 +5148,21 @@ var arrayToStr = function( src,options )
 
 //
 
+/**
+ * The arrayPut() method puts all value of arguments after second argument to (dstArray)
+ * in the position (dstOffset) and changes values of following index.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
+ * var arr = _.arrayPut([1, 2, 3, 4, 5, 6, 9], 2, 'str', true, [7, 8]);
+ * 
+ * @param {arrayLike} dstArray - Source array
+ * @param {Number} dstOffset - The index of element where need to put the new values
+ * @method arrayPut
+ * @returns {arrayLike} - Modified array
+ * @memberof wTools#
+ */
+
 var arrayPut = function arrayPut( dstArray, dstOffset )
 {
   dstOffset = dstOffset || 0;
