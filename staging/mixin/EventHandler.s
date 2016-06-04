@@ -138,6 +138,42 @@ var eventHandlerRegister = function( kind, onHandle )
 
 //
 
+var eventForbid = function( kinds )
+{
+  var self = this;
+  var owner;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( kinds ) || _.arrayIs( kinds ) );
+
+  var kinds = _.arrayAs( kinds );
+
+  var onHandle = function()
+  {
+    throw _.err( kinds.join( ' ' ),'event is forbidden in',self.nickName );
+  }
+
+  for( var k = 0 ; k < kinds.length ; k++ )
+  {
+
+    var kind = kinds[ k ];
+
+    var descriptor =
+    {
+      kind : kind,
+      onHandle : onHandle,
+      forbidden : 1,
+    }
+
+    self._eventHandlerRegister( descriptor );
+
+  }
+
+  return self;
+}
+
+//
+
 var eventHandlerRegisterOneTime = function( kind, onHandle )
 {
   var self = this;
@@ -177,6 +213,9 @@ var _eventHandlerRegister = function _eventHandlerRegister( descriptor )
   _.assert( _.routineIs( descriptor.onHandle ) );
   _.assertMapOnly( descriptor,_eventHandlerRegister.defaults );
   _.assert( arguments.length === 1 );
+
+  if( descriptor.forbidden )
+  console.warn( 'REMINDER : forbidden event is not implemented!' );
 
   if( self._eventKinds && self._eventKinds.indexOf( kind ) === -1 )
   throw _.err( 'eventHandlerRegister:','Object does not support such kind of events:',kind,self );
@@ -229,6 +268,7 @@ _eventHandlerRegister.defaults =
   owner : null,
   proxy : 0,
   once : 0,
+  forbidden : 0,
 }
 
 // --
@@ -239,8 +279,7 @@ var eventHandlerUnregister = function( kind, onHandle )
 {
   var self = this;
 
-  var handlers = self._eventHandlerDescriptors;
-  if( !handlers )
+  if( !self._eventHandlerDescriptors )
   return self;
 
   if( arguments.length === 0 )
@@ -392,29 +431,6 @@ _eventHandlerUnregister.defaults =
   owner : null,
   strict : 1,
 }
-
-//
-
-/*
-var eventHandlerUnregisterAll = function( kind, handlersToUnregister )
-{
-  var self = this;
-
-  _.assert( arguments.length === 1,'not implemented' );
-
-  var handlers = self._eventHandlerDescriptors;
-  if( !handlers )
-  return self;
-
-  handlers = handlers[ kind ];
-  if( !handlers )
-  return self;
-
-  handlers.splice( 0,handlers.length );
-
-  return self;
-}
-*/
 
 //
 
@@ -766,6 +782,8 @@ var Proto =
   addEventListener : eventHandlerRegister,
   on : eventHandlerRegister,
 
+  eventForbid : eventForbid,
+
   eventHandlerRegisterOneTime : eventHandlerRegisterOneTime,
   once : eventHandlerRegisterOneTime,
   _eventHandlerRegister: _eventHandlerRegister,
@@ -788,6 +806,7 @@ var Proto =
   eventHandleSingle : eventHandleSingle,
   _eventHandle : _eventHandle,
 
+
   // get
 
   _eventHandlerDescriptorByKindAndOwner : _eventHandlerDescriptorByKindAndOwner,
@@ -795,10 +814,12 @@ var Proto =
   _eventHandlerDescriptorByHandler : _eventHandlerDescriptorByHandler,
   _eventHandlerDescriptorsByKind : _eventHandlerDescriptorsByKind,
 
+
   // proxy
 
   eventProxyTo : eventProxyTo,
   eventProxyFrom : eventProxyFrom,
+
 
   // ident
 

@@ -1,4 +1,4 @@
-(function _file_wTools_s_(){
+(function _wTools_s_(){
 
 'use strict';
 
@@ -801,6 +801,54 @@ _entitySelect.defaults =
 
 //
 
+  /**
+   * Function that produces an elements for entityMap result
+   * @callback onEach
+   * @param {*} val The current element being processed in the entity.
+   * @param {string|number} key The index (if entity is array) or key of processed element.
+   * @param {Array|Object} src The src passed to entityMap
+   */
+
+  /**
+   * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
+   * function on every element of src. If entity is array, the new array has the same length as source.
+   *
+   * @example
+   * var numbers = [ 3, 4, 6 ];
+
+    function sqr(v) {
+      return v * v
+    };
+
+    var res = wTools.entityMap(numbers, sqr);
+    // [9, 16, 36]
+    // numbers is still [ 3, 4, 6 ]
+
+    function checkSidesOfTriangle(v, i, src) {
+      var sumOthers = 0,
+        l = src.length,
+        j;
+
+      for (j = 0; j < l; j++) {
+        if (i === j) continue;
+        sumOthers += src[j]
+      }
+      return v < sumOthers;
+    }
+
+    var res = wTools.entityMap(numbers, checkSidesOfTriangle);
+   // [true, true, true]
+   *
+   * @param {Array|Object} src Entity, on each elements of which will be called `onEach` function.
+   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @returns {Array|Object} New entity.
+   * @thorws {Error} If number of arguments less or more than 2;
+   * @thorws {Error} If `src` is not Array or ObjectLike;
+   * @thorws {Error} If `onEach` is not function;
+   * @method entityMap
+   * @memberof wTools
+   */
+
 var entityMap = function( src,onEach )
 {
 
@@ -1337,6 +1385,20 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
+  /**
+   * Creates Error object based on passed options;
+   * Result error contains in message detailed stack trace and error description.
+   * @param {Object} o Options for creating error.
+   * @param {String[]|Error[]} o.args array with messages or errors objects, from which will be created Error obj.
+   * @param {number} [o.level] using for specifying in error message on which level of stack trace was caught error.
+   * @returns {Error} Result Error. If in `o.args` passed Error object, result will be reference to it.
+   * @private
+   * @throws {Error} Expects single argument if pass les or more than one argument
+   * @throws {Error} o.args should be array like, if o.args is not array.
+   * @method _err
+   * @memberof wTools
+   */
+
 var _err = function _err( o )
 {
   var result;
@@ -1444,6 +1506,32 @@ _err.defaults =
 
 //
 
+  /**
+   * Creates error object, with message created from passed `msg` parameters and contains error trace.
+   *
+   * @example
+   *  function divide (x, y) {
+        if (y == 0 ) throw wTools.err('divide by zero')
+        return x / y;
+      }
+      divide(3, 0);
+
+   // Error:
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.err (file:///.../wTools/staging/wTools.s:1449:10)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+   *
+   * @param {...String|Error} msg Accepts list of messeges/errors.
+   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+   * reference.
+   * @method err
+   * @memberof wTools
+   */
+
 var err = function err()
 {
   return _err
@@ -1454,6 +1542,32 @@ var err = function err()
 }
 
 //
+
+  /**
+   * Method similar to {@link wTools#err} except that it prints the created error.
+   * If _global_.logger defined, method will use it to print error, else console
+   *
+   *@example
+   * function divide (x, y) {
+        if (y == 0 ) throw wTools.errLog('divide by zero')
+        return x / y;
+     }
+     divide (3, 0);
+
+     // Error:
+     // caught     at divide (<anonymous>:2:29)
+     // divide by zero
+     // Error
+     //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+     //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
+     //   at divide (<anonymous>:2:29)
+     //   at <anonymous>:1:1
+   *
+   * @param {...String|Error} msg Accepts list of messeges/errors.
+   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+   * @method errLog
+   * @memberof wTools
+   */
 
 var errLog = function errLog()
 {
@@ -1491,6 +1605,32 @@ var errLog = function errLog()
 //
 
 /** @inline */
+
+  /**
+   * Checks condition. If condition converts to true method terminates without exceptions.
+   * Else If condition converts to false, method will generates and throws exception. By default will generate error with
+   * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
+   *
+   * @example
+   * function divide (x, y) {
+        wTools.assert(y != 0, 'divide by zero');
+        return x / y;
+     }
+     divide (3, 0);
+
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+   * @param {*} condition
+   * @param {...String|Error} msgs error messages for generated exception.
+   * @throws {Error} If passed condition failed, Method throws an error.
+   * @method assert
+   * @memberof wTools
+   */
 
 var assert = function assert( condition )
 {
@@ -1688,7 +1828,20 @@ var assertMapOwnNone = function( src,none )
 
 //
 
-var warn = function( condition )
+  /**
+   * If condition failed, method prints warning messages passed after condition argument
+   * @example
+   *  function checkAngles(a, b, c) {
+         wTools.warn((a + b + c) === 180, 'triangle with that angles does not exists');
+      };
+      checkAngles(120, 23, 130)
+   // triangle with that angles does not exists
+   * @param condition Condition to check.
+   * @param messages messages to print.
+   * @method warn
+   * @memberof wTools
+   */
+  var warn = function( condition )
 {
 
   if( !condition )
@@ -1699,6 +1852,33 @@ var warn = function( condition )
 }
 
 //
+
+  /**
+   * Return stack trace.
+   * @example
+   *  var stack;
+      function function1() {
+        function2();
+      }
+
+      function function2() {
+        function3();
+      }
+
+      function function3() {
+        stack = wTools.stack();
+      }
+
+      stack
+     //"    at function3 (<anonymous>:10:17)
+     // at function2 (<anonymous>:6:2)
+     // at function1 (<anonymous>:2:2)
+     // at <anonymous>:1:1"
+   *
+   * @returns {String} Return stack trace from call point.
+   * @method stack
+   * @memberof wTools
+   */
 
 var stack = function()
 {
@@ -4119,39 +4299,59 @@ var timeOut = function( delay,onReady )
 }
 
 //
-/*
+
 var timePeriodic = function( delay,onReady )
 {
+  var con = new wConsequence();
   var id;
-
-  _assert( _.routineIs( onReady ) );
 
   if( arguments.length > 2 )
   {
     throw _.err( 'Not tested' );
     _assert( arguments.length <= 4 );
-    onReady = _.routineJoin( arguments[ 2 ],onReady,arguments[ 3 ] );
+    onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
   }
 
-  var _onReady = function()
+  _assert( _.numberIs( delay ) );
+
+  var handlePeriodicCon = function( err )
+  {
+    if( err ) clearInterval( id );
+  }
+
+  var _onReady = null;
+
+  if( _.routineIs( onReady ) )
+  _onReady = function()
   {
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
+    wConsequence.giveTo( con );
+    con.then_( handlePeriodicCon );
   }
+  else if( onReady instanceof wConsquence )
+  _onReady = function()
+  {
+    var result = onReady.ping();
+    if( result === false )
+    clearInterval( id );
+    wConsequence.giveTo( con );
+    con.then_( handlePeriodicCon );
+  }
+  else if( onReady === undefined )
+  _onReady = function()
+  {
+    wConsequence.giveTo( con );
+    con.then_( handlePeriodicCon );
+  }
+  else throw _.err( 'unexpected type of onReady' );
 
   id = setInterval( _onReady,delay );
 
-  return id;
+  return con;
 }
 
-//
-
-var timePeriodicStop = function( id )
-{
-  clearInterval( id );
-}
-*/
 //
 
 var _timeNow_gen = function()
@@ -4200,14 +4400,9 @@ var dateToStr = function dateToStr( date )
 // array
 // --
 
-// not really copy in case of TypedArray !!!
-// does it throw something? !!!
-
 /**
- * The arraySub() method returns a copy of a portion of the array to a new array.
- *
- * It returns a new array containing the elements from (begin) index
- * to the (end) index, but not including it.
+ * The arraySub() method creates a new array or a new TypedArray that contains
+ * the elements from (begin) index to the (end) index, but not including (end).
  *
  * @example
  * // returns [ 3, 4 ]
@@ -4218,7 +4413,7 @@ var dateToStr = function dateToStr( date )
  * @param {Number} end - Index at which to end extraction
  * @returns {Array} - The new array
  * @method arraySub
- * @throws {Error} If passed arguments is less then three
+ * @throws {Error} If passed arguments is less than three
  * @throws {Error} If the first argument is not array
  * @memberof wTools#
  */
@@ -4247,7 +4442,7 @@ var arraySub = function( src,begin,end )
 // second arguments is optional !!!
 
 /**
- * The arrayNew() method returns a new array with length equal (length)
+ * The arrayNew() method returns a new array or a new TypedArray with length equal (length)
  * or the same length of the initial array if second argument is not provided.
  *
  * @example
@@ -4261,7 +4456,7 @@ var arraySub = function( src,begin,end )
  * @param {Number} [length] - The length of the new array
  * @returns {arrayLike} - An empty array
  * @method arrayNew
- * @throws {Error} If passed arguments is less then two
+ * @throws {Error} If passed arguments is less than two
  * @throws {Error} If the first argument in not array like object
  * @memberof wTools#
  */
@@ -4288,7 +4483,7 @@ var arrayNew = function( ins,length )
 //
 
 /**
- * The arrayNewOfSameLength() method returns a new empty array with the same length as in (ins).
+ * The arrayNewOfSameLength() method returns a new empty array or a new TypedArray with the same length as in (ins).
  *
  * * @example
  * // returns [ , , , ,  ]
@@ -4322,14 +4517,14 @@ var arrayNewOfSameLength = function( ins )
  * // returns [ 2, 2, 2, 2 ]
  * var arr = _.arrayOrNumber(2, 4);
  *
- * @param {Number} dst - Value to fill the array
- * @param {Number} length - The length of the new array
- * @returns {Number[]} - The new array of numbers
+ * @param {Number} dst - Value to fill the array.
+ * @param {Number} length - The length of the new array.
+ * @returns {Number[]} - The new array of numbers.
  * @method arrayOrNumber
- * @throws {Error} If missed argument, or got less or more than two argument
- * @throws {Error} If type of the first argument is not a number or array
- * @throws {Error} If the second argument is less then 0 
- * @throws {Error} If length of the first argument is less then value of second argument
+ * @throws {Error} If missed argument, or got less or more than two argument.
+ * @throws {Error} If type of the first argument is not a number or array.
+ * @throws {Error} If the second argument is less then 0.
+ * @throws {Error} If length of the first argument is less then value of second argument.
  * @memberof wTools#
  */
 
@@ -4362,10 +4557,10 @@ var arrayOrNumber = function( dst,length )
  * @param {arrayLike} srcArray - Values for the new array
  * @param {(arrayLike|object)} [indicesArray] - Index of elements from the (srcArray) or options object
  * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
-   If there is no element with necessary index then the value will be undefined.
+   If there is no element with necessary index than the value will be undefined.
  * @method arraySelect
- * @throws {Error} If passed arguments is not array like object
- * @throws {Error} If the atomsPerElement property is not equal to 1
+ * @throws {Error} If passed arguments is not array like object.
+ * @throws {Error} If the atomsPerElement property is not equal to 1.
  * @memberof wTools#
  */
 
@@ -4615,6 +4810,8 @@ var arrayCopy = function arrayCopy()
   return result;
 }
 
+//
+
 /**
  * The arrayAppendMerging() method returns an array of elements from (dst)
  * and appending all of the following arguments to the end.
@@ -4650,6 +4847,8 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
 
   return result;
 }
+
+//
 
 /**
  * The arrayPrependMerging() method returns an array of elements from (dst)
@@ -4689,6 +4888,22 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
 
 //
 
+/**
+ * The arrayAppendOnceMerging() method returns an array of elements from (dst)
+ * and appending only unique following arguments to the end.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', {}, 5 ]
+ * var arr = _.arrayAppendOnceMerging([ 1, 2 ], 'str', 2, {}, [ 'str', 5 ]);
+ *
+ * @param {Array} dst - Initial array
+ * @returns {Array} - The new array
+ * @method arrayAppendOnceMerging
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
+ * @memberof wTools#
+ */
+
 var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 {
   var result = dst;
@@ -4721,6 +4936,22 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 
 //
 
+/**
+ * The arrayAppendOnceMerging() method returns an array of elements from (dst)
+ * and prepending only unique following arguments to the beginning.
+ *
+ * @example
+ * // returns [ {}, 'str', 5, 2, 4 ]
+ * var arr = _.arrayPrependOnceMerging([2, 4], 5, 4, 'str', {});
+ *
+ * @param {Array} dst - Initial array
+ * @returns {Array} - The new array
+ * @method arrayPrependOnceMerging
+ * @throws {Error} If the first argument is not array
+ * @throws {Error} If type of the argument is equal undefined
+ * @memberof wTools#
+ */
+
 var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 {
   var result = dst;
@@ -4752,6 +4983,24 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 }
 
 //
+
+/**
+ * The arrayElementsSwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
+ *
+ * @example
+ * // returns [ 5, 2, 3, 4, 1 ]
+ * var arr = _.arrayElementsSwap([ 1, 2, 3, 4, 5], 0, 4);
+ *
+ * @param {Array} dst - Initial array
+ * @param {Number} index1 - The first index
+ * @param {Number} index2 - The second index
+ * @returns {Array} - Modified array of
+ * @method arrayElementsSwap
+ * @throws {Error} If the first argument in not an array
+ * @throws {Error} If the second argument is less than 0 and more than a length initial array
+ * @throws {Error} If the third argument is less than 0 and more than a length initial array
+ * @memberof wTools#
+ */
 
 var arrayElementsSwap = function( dst,index1,index2 )
 {
@@ -4847,6 +5096,34 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
 }
 
 //
+
+/**
+ * Callback for compare two value.
+ *
+ * @callback compareCallback
+ * @param {Number} el - Element of the array
+ * @param {Number} ins - Value to compare
+ */
+
+/**
+ * The arrayRemovedOnce() method returns the index of the first matching element from (dstArray)
+ * that corresponds to the condition in the callback function and remove this element.
+ *
+ * @example
+ * // returns 1
+ * var arr = _.arrayRemovedOnce([2, 4, 6], 2, function (el, ins) {
+ *   return el > ins;
+ * });
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @method arrayRemovedOnce
+ * @returns {Number} - The index of element
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @memberof wTools#
+ */
 
 var arrayRemovedOnce = function( dstArray,ins,onEqual )
 {
@@ -6659,20 +6936,20 @@ var mapSupplement = function( dst )
 
 //
   /**
-   * The mapComplement() method returns an object 
+   * The mapComplement() method returns an object
    * filled by all unique, clone [ key, value ].
    *
    * It creates the variable (args), assign to a copy of pseudo array (arguments),
-   * adds a specific callback function (_.filter.supplementaryCloning()) 
+   * adds a specific callback function (_.filter.supplementaryCloning())
    * to the beginning of the (args)
    * and returns an object filled by all unique clone [key, value].
-   * 
+   *
    * @param { ...objectLike } - The source object(s).
-   * 
+   *
    * @example
    * // returns { a : 1, b : 'yyy', c : 3 };
    * mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
-   * 
+   *
    * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
    * @method mapComplement
    * @memberof wTools
@@ -7289,7 +7566,7 @@ var mapBut = function( srcMap )
    * @example
    * // returns {a: 1, b: "xxx"}
    * mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
-   * 
+   *
    * @returns { objectLike } Returns an object whose (values) are not equal to the arrays or objects.
    * @method mapButFiltering
    * @throws { Error } Will throw an Error if (srcMap) is not an object.
@@ -7921,10 +8198,6 @@ var Proto =
   entityMap : entityMap,
   entityFilter : entityFilter,
 
-  _entityMostComparing : _entityMostComparing,
-  entityMinComparing : entityMinComparing,
-  entityMaxComparing : entityMaxComparing,
-
   _entityMost : _entityMost,
   entityMin : entityMin,
   entityMax : entityMax,
@@ -8088,11 +8361,13 @@ var Proto =
   timeReady : timeReady,
   timeOnce : timeOnce,
   timeOut : timeOut,
-/*
+
   timePeriodic : timePeriodic,
+/*
   timePeriodicStart : timePeriodic,
   timePeriodicStop : timePeriodicStop,
 */
+
   _timeNow_gen : _timeNow_gen,
   timeSpent : timeSpent,
   dateToStr : dateToStr,
