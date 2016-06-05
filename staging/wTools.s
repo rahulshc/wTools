@@ -801,6 +801,8 @@ _entitySelect.defaults =
 
 //
 
+// !!! REMINDER : improve code formatting, please
+
   /**
    * Function that produces an elements for entityMap result
    * @callback onEach
@@ -875,6 +877,10 @@ var entityMap = function( src,onEach )
 }
 
 //
+
+// !!! improve description,
+// !!! improve code formatting
+// !!! use @see
 
   /**
    * Similar to {@link wTools#entityMap} except that the result ArrayLike/Object will not include results for which
@@ -1028,6 +1034,8 @@ var entityMaxComparing = function( src,onCompare )
    * @property {number} value - The found result of onElement, if onElement don't set, this value will be same as element.
    * @property {number} element - The appropriate element for found value.
    */
+
+// !!! not clear what onElement for?
 
   /**
    * Method do search through results of `onElement` callback. If `onElement` is undefined, search was do through
@@ -1431,6 +1439,8 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
+// !!! very good
+
   /**
    * Creates Error object based on passed options.
    * Result error contains in message detailed stack trace and error description.
@@ -1553,6 +1563,10 @@ _err.defaults =
 
 //
 
+// !!! not bad
+// !!! improve code formatting
+// !!! please add "concatenate" word to description
+
   /**
    * Creates error object, with message created from passed `msg` parameters and contains error trace.
    *
@@ -1589,6 +1603,10 @@ var err = function err()
 }
 
 //
+
+// !!! good
+// !!! improve code formatting
+// !!! please use @see
 
   /**
    * Method similar to {@link wTools#err} except that it prints the created error.
@@ -1651,11 +1669,14 @@ var errLog = function errLog()
 
 //
 
-/** @inline */
+// !!! good
+// !!! replace terminates by returns
+// !!! less fututure more present simple
+// !!! no but :)
 
   /**
    * Checks condition. If condition converts to true method terminates without exceptions.
-   * Else If condition converts to false, method will generates and throws exception. By default will generate error with
+   * Else If condition is false, method generates and throws exception. By default generates error with
    * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
    *
    * @example
@@ -1928,7 +1949,8 @@ var assertMapOwnNone = function( src,none )
    * @method warn
    * @memberof wTools
    */
-  var warn = function( condition )
+
+var warn = function( condition )
 {
 
   if( !condition )
@@ -1940,8 +1962,10 @@ var assertMapOwnNone = function( src,none )
 
 //
 
+// !!! formatting
+
   /**
-   * Return stack trace.
+   * Return stack trace as string.
    * @example
    *  var stack;
       function function1() {
@@ -5591,7 +5615,7 @@ var arrayToStr = function( src,options )
  * @example
  * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
  * var arr = _.arrayPut([1, 2, 3, 4, 5, 6, 9], 2, 'str', true, [7, 8]);
- * 
+ *
  * @param {arrayLike} dstArray - Source array
  * @param {Number} dstOffset - The index of element where need to put the new values
  * @method arrayPut
@@ -7988,7 +8012,7 @@ var mapScreens = function( srcObject,screenObject )
    * // returns { a : "abc", c : 33, d : "name" };
    * _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
    *
-   * @returns { objectLike } returns the object filled by unique [ key, value ]   
+   * @returns { objectLike } returns the object filled by unique [ key, value ]
    * from others objects.
    * @method mapScreen
    * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
