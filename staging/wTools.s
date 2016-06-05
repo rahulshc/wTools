@@ -5004,7 +5004,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
   _assert( _.arrayIs( dst ),'arrayPrependOnceMerging :','expects array' );
 
-  for( var a = 1 ; a < arguments.length ; a++ )
+  for( var a = arguments.length-1 ; a > 0 ; a-- )
   {
     var argument = arguments[ a ];
 
@@ -5013,7 +5013,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = argument.length-1 ; i >= 0 ; i++ )
+      for( var i = argument.length-1 ; i >= 0 ; i-- )
       if( result.indexOf( argument[ i ] ) === -1 )
       result.unshift( argument[ i ] );
     }
@@ -5163,11 +5163,13 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  *
  * @param {Array} dstArray - Source array
  * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
  * @method arrayRemovedOnce
  * @returns {Number} - The index of element
  * @throws {Error} If the first argument is not an array
  * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
  * @memberof wTools#
  */
 
@@ -5201,6 +5203,26 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 
 //
 
+/**
+ * The arrayRemoveOnce() method removes the first matching element from (dstArray)
+ * that corresponds to the condition in the callback function and returns a modified array.
+ *
+ * @example
+ * // returns [ 1, 2, 3, 'str' ]
+ * var arr = _.arrayRemoveOnce([1, 'str', 2, 3, 'str'], 'str');
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemoveOnce
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
+
 var arrayRemoveOnce = function( dstArray,ins,onEqual )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -5214,6 +5236,28 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemovedAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the amount them.
+ *
+ * @example
+ * // returns 4
+ * var arr = _.arrayRemovedAll([ 1, 2, 3, 4, 5, 5, 5 ], 5, function (el, ins) {
+ *   return el < ins;
+ * });
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemovedAll
+ * @returns {Number} - The amount removed elements
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemovedAll = function( dstArray,ins,onEqual )
 {
@@ -5239,6 +5283,26 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemoveAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the modified array.
+ *
+ * @example
+ * // returns [ 1, 3, 5 ]
+ * var arr = _.arrayRemoveAll([1, 2, 2, 3, 5], 2);
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemoveAll
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemoveAll = function( dstArray,ins,onEqual )
 {
@@ -5411,6 +5475,23 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 
 //
 
+/**
+ * The arrayAs() method copies passed argument to the array.
+ *
+ * @example
+ * // returns [ false ]
+ * var arr = _.arrayAs(false);
+ *
+ * // returns [ { a: 1, b: 2 } ]
+ * var arr = _.arrayAs({a: 1, b: 2});
+ *
+ * @param {*} src - Source value
+ * @method arrayAs
+ * @returns {Array} - If passed null or undefined than return the empty array. If passed an array then return it.
+   Otherwise return an array which contains the element from argument.
+ * @memberof wTools#
+ */
+
 var arrayAs = function( src ) {
 
   if( src === null || src === undefined ) return [];
@@ -5461,6 +5542,21 @@ var arrayToStr = function( src,options )
 }
 
 //
+
+/**
+ * The arrayPut() method puts all value of arguments after second argument to (dstArray)
+ * in the position (dstOffset) and changes values of following index.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
+ * var arr = _.arrayPut([1, 2, 3, 4, 5, 6, 9], 2, 'str', true, [7, 8]);
+ * 
+ * @param {arrayLike} dstArray - Source array
+ * @param {Number} dstOffset - The index of element where need to put the new values
+ * @method arrayPut
+ * @returns {arrayLike} - Modified array
+ * @memberof wTools#
+ */
 
 var arrayPut = function arrayPut( dstArray, dstOffset )
 {
@@ -5582,6 +5678,30 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 
 //
 
+/**
+ * The arrayFill() method creates a new array and fills it a values.
+ *
+ * @example
+ * // returns [ 3, 3, 3, 3, 3 ]
+ * var arr = _.arrayFill({times: 5, value: 3});
+ *
+ * // returns [ 0, 0, 0, 0 ]
+ * var arr = _.arrayFill(4);
+ *
+ * // returns [ 0, 0, 0 ]
+ * var arr = _.arrayFill([1, 2, 3]);
+ *
+ * @param {Object} options - Options to fill the array
+ * @param {Number} options.times - The count of repeats.
+   If in the function passed Array, the times will be equal the length of array. If Number than this value.
+ * @param {Number} [options.value = 0] - Value for the filling
+ * @method arrayFill
+ * @returns {Array} - The new array
+ * @throws {Error} If missed argument, or got more than one argument
+ * @throws {Error} If passed argument is not object
+ * @memberof wTools#
+ */
+
 var arrayFill = function arrayFill( options )
 {
 
@@ -5615,6 +5735,20 @@ var arrayFill = function arrayFill( options )
 
 //
 
+/**
+ * The arrayCompare() method returns the first difference between the values of the first array from the second.
+ *
+ * @example
+ * // returns 3
+ * var arr = _.arrayCompare([1, 5], [1, 2]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arrayCompare
+ * @returns {Number} - Difference the values
+ * @memberof wTools#
+ */
+
 var arrayCompare = function( src1,src2 )
 {
 
@@ -5632,6 +5766,20 @@ var arrayCompare = function( src1,src2 )
 }
 
 //
+
+/**
+ * The arraySame() method check the equality of two arrays.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arraySame([1, 2, 3], [1, 2, 3]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arraySame
+ * @returns {Boolean} - Returns true if all values of the two array are equal. Otherwise returns false.
+ * @memberof wTools#
+ */
 
 var arraySame = function( src1,src2 )
 {
@@ -5727,6 +5875,20 @@ var arrayLeftGet = function( arr,ins,equalizer )
 
 //
 
+/**
+ * The arrayHasAny() method checks in the array has at least one value of the following arguments.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arrayHasAny([ 5, 'str', 42, false ], false, 7);
+ *
+ * @param {arrayLike} src - Source array
+ * @method arrayHasAny
+ * @returns {Boolean} - Returns true if there are and false if not
+ * @throws {Error} If the first argument in not an array
+ * @memberof wTools#
+ */
+
 var arrayHasAny = function( src )
 {
   _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayHasAny :','array expected' );
@@ -5746,6 +5908,22 @@ var arrayHasAny = function( src )
 }
 
 //
+
+/**
+ * The arrayCount() method returns the count of matching elements in the array.
+ *
+ * @example
+ * // returns 2
+ * var arr = _.arrayCount([1, 2, 'str', 10, 10, true], 10);
+ *
+ * @param {arrayLike} src - Source array
+ * @param {*} instance - Value to search
+ * @method arrayCount
+ * @returns {Number} - Count of elements
+ * @throws {Error} If passed arguments is less than two or more than three
+ * @throws {Error} If the first argument is not an array like object
+ * @memberof wTools#
+ */
 
 var arrayCount = function( src,instance )
 {
@@ -5854,6 +6032,26 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 }
 
 //
+
+/**
+ * The arrayRandom() method returns an array which contains the random numbers.
+ *
+ * @example
+ * // returns [ 6, 2, 4, 7, 8 ]
+ * var arr = _.arrayRandom({
+ *   length: 5,
+ *   range: [1, 9],
+ *   int: true
+ * });
+ *
+ * @param {Object} options - Options for getting random numbers
+ * @param {Number} options.length - The length of array
+ * @param {Array} [options.range = [0, 1]] - The range of numbers
+ * @param {Boolean} [options.int = false] - Floating point numbers or not
+ * @method arrayRandom
+ * @returns {Array} - The array of numbers
+ * @memberof wTools#
+ */
 
 var arrayRandom = function( options )
 {
