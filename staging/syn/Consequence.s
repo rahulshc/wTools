@@ -406,15 +406,19 @@ var _handleGot = function()
     {
       debugger;
       var err = _.err( err );
+      err.respected = 1;
       result = new wConsequence().error( err );
-      if( Config.debug ) // something wrong with the flag in server !!!
-      if( !self._taker.length )
+      if( Config.debug )
+      console.error( 'Consequence caught error' ); 
+      if( Config.debug )
+      //if( !self._taker.length )
       {
-        self.mark = self.mark || [];
-        self.mark.push( err );
+        //self.mark = self.mark || [];
+        //self.mark.push( err );
         _.timeOut( 1, function()
         {
-          if( self.mark && self.mark.indexOf( err ) !== -1 )
+          //if( self.mark && self.mark.indexOf( err ) !== -1 )
+          if( err.respected )
           {
             console.error( 'Uncaught error caught by Consequence:' );
             _.errLog( err );

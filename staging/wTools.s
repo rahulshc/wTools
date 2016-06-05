@@ -1386,7 +1386,7 @@ var eachRecursive = function() {
 // --
 
   /**
-   * Creates Error object based on passed options;
+   * Creates Error object based on passed options.
    * Result error contains in message detailed stack trace and error description.
    * @param {Object} o Options for creating error.
    * @param {String[]|Error[]} o.args array with messages or errors objects, from which will be created Error obj.
@@ -1422,6 +1422,8 @@ var _err = function _err( o )
     if( o.args[ a ] instanceof Error )
     {
       result = o.args[ a ];
+      if( result.respected )
+      result.respected = 0;
       o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'Unknown error';
       break;
     }
@@ -1477,19 +1479,18 @@ var _err = function _err( o )
 
   if( !result )
   {
-    var e = new Error();
-    result = new Error( originalMessage + '\n' + ( e.stack || '' ) + '\n' );
+    var e = new Error(); result = new Error( originalMessage + '\n' + ( e.stack || '' ) + '\n' );
     result.originalStack = e.stack;
   }
   else try
   {
     result.message = '';
     result.message = originalMessage + '\n' + ( result.originalStack || result.stack || '' ) + '\n';
-    /*result = new result.constructor( originalMessage + '\n' + result.stack + '\n',fileName,lineNumber );*/
   }
   catch( e )
   {
-    throw 'err error';
+    debugger;
+    throw 'error in err';
     result = new result.constructor( originalMessage + '\n' + ( result.stack || '' ) + '\n' );
   }
 
@@ -1643,13 +1644,23 @@ var assert = function assert( condition )
   {
     debugger;
     if( arguments.length === 1 )
-    throw _.err( 'Assertion failed' );
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+    });
     else if( arguments.length === 2 )
-    throw _.err( arguments[ 1 ] );
-    else if( arguments.length === 3 )
-    throw _.err( arguments[ 1 ],arguments[ 2 ] );
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+    });
     else
-    throw _.err.apply( _,_arraySlice( arguments,1 ) );
+    throw _err
+    ({
+      args : _arraySlice( arguments,1 ),
+      level : 2,
+    });
   }
 
   return;
@@ -1663,11 +1674,21 @@ var assertMapNoUndefine = function assertMapNoUndefine( src )
   if( DEBUG === false )
   return;
 
-  var hasMsg = arguments.length > 1;
+  _.assert( arguments.length === 1 || arguments.length === 2 )
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
 
   for( var s in src )
   if( src[ s ] === undefined )
-  throw _.err( ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1687,8 +1708,13 @@ var assertMapOnly = function assertMapOnly( src )
   if( but.length )
   {
     debugger;
-    throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) );
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+      level : 2,
+    });
   }
+
 }
 
 //
@@ -1707,7 +1733,11 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
   if( but.length )
   {
     debugger;
-    throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) );
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
+      level : 2,
+    });
   }
 
 }
@@ -1717,16 +1747,25 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
 var assertMapAll = function( src,all,msg )
 {
 
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( arguments.length === 2 || _.strIs( msg ) );
-
   if( DEBUG === false )
   return;
 
+  _assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapBut( all,src ) );
 
   if( but.length )
-  throw _.err( msg ? msg : '','Object should have fields :',but.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1735,16 +1774,25 @@ var assertMapAll = function( src,all,msg )
 var assertMapOwnAll = function( src,all,msg )
 {
 
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( arguments.length === 2 || _.strIs( msg ) );
-
   if( DEBUG === false )
   return;
 
+  _assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapOwnBut( all,src ) );
 
   if( but.length )
-  throw _.err( msg ? msg : '','Object should have fields :',but.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have own fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1752,10 +1800,6 @@ var assertMapOwnAll = function( src,all,msg )
 
 var assertMapNone = function( src )
 {
-
-/*
-  throw _.err( 'not tested' );
-*/
 
   if( DEBUG === false )
   return;
@@ -1775,7 +1819,14 @@ var assertMapNone = function( src )
   }
 
   if( Object.keys( none ).length )
-  throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should not have fields :',none.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',none.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1791,23 +1842,6 @@ var assertMapOwnNone = function( src,none )
   var hasMsg = _.strIs( arguments[ l-1 ] );
   if( hasMsg ) l -= 1;
 
-/*
-  if( l > 2 )
-  {
-    var args =_ArraySlice.call( arguments,1,l ); debugger;
-    none = _.mapCopy.apply( this,args );
-  }
-
-  var has = Object.keys( _._mapScreens
-  ({
-    filter : filter.own(),
-    iterateObject : none,
-    includeObject : src,
-    srcObject : src,
-    dstObject : {},
-  }));
-*/
-
   if( l > 2 )
   {
     var args =_ArraySlice.call( arguments,1,l ); debugger;
@@ -1822,7 +1856,14 @@ var assertMapOwnNone = function( src,none )
   }));
 
   if( has.length )
-  throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should not have fields :',has.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',has.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -3040,7 +3081,7 @@ regexpBut_.defaults =
 
 var regexpArrayMake = function( src )
 {
-  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ) );
+  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
 
   src = _.arrayIron( src );
 
@@ -3281,7 +3322,7 @@ var regexpObjectMake = function( src,defaultMode )
   else if( _.mapIs( src ) )
   {
 
-    _.each( src,function( e,k,i )
+    _.each( src,function _onEach( e,k,i )
     {
       result[ k ] = _.regexpArrayMake( e );
     });
@@ -3289,7 +3330,7 @@ var regexpObjectMake = function( src,defaultMode )
   }
   else throw _.err( 'regexpObjectMake :','unknown src',src );
 
-  _.assertMapOnly( result,regexpObjectMake.names,'unknown regexp filters' );
+  _.assertMapOnly( result,regexpObjectMake.names,'Unknown regexp filters.' );
 
   return result;
 }
