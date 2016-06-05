@@ -7731,7 +7731,7 @@ var mapOwn = function( object,name )
    * Returns new object with unique keys.
    *
    * Takes any number of objects.
-   * Returns new object filled by unqiue keys
+   * Returns new object filled by unique keys
    * from the first (srcMap) original object.
    * Values for result object come from original object (srcMap)
    * not from second or other one.
@@ -7844,6 +7844,31 @@ var mapBut = function( srcMap )
 }
 
 //
+  /**
+   * The mapOwnBut() returns new object with unique own keys.
+   *
+   * Takes any number of objects.
+   * Returns new object filled by unique own keys
+   * from the first (srcMap) original object.
+   * Values for (result) object come from original object (srcMap)
+   * not from second or other one.
+   * If (srcMap) does not have own properties it skips rest of code and checks another properties.
+   * If the first object has same key any other object has
+   * then this pair( key/value ) will not be included into result object.
+   * Otherwise pair( key/value ) from the first object goes into result object.
+   *
+   * @param { objectLike } srcMap - original object.
+   * @param { ...objectLike } argument(s) - one or more objects.
+   *
+   * @example
+   * // returns { a : 7 }
+   * mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
+   *
+   * @returns { objectLike } Returns new (result) object with unique own keys.
+   * @method mapOwnBut
+   * @throws { Error } Will throw an Error if (srcMap) is not an object.
+   * @memberof wTools
+   */
 
 var mapOwnBut = function mapOwnBut( srcMap )
 {
@@ -7902,6 +7927,32 @@ var mapScreens = function( srcObject,screenObject )
 }
 
 //
+  /**
+   * The mapScreen() returns an object filled by unique [ key, value ]
+   * from others objects.
+   *
+   * It takes number of objects, configure a new object by three properties.
+   *
+   * @property { objectLike } screenObjects.screenObject - first object.
+   * @property { ...objectLike } srcObject.arguments[1,...] -
+   * is pseudo array (arguments[]) from the first [1] index to the end.
+   * @property { objectLike } dstObject - is an empty object.
+   *
+   * and calls the _mapScreen( {} ) with new object.
+   *
+   * @param { objectLike } screenObject - first object.
+   * @param { ...objectLike } arguments[] - one or more objects.
+   *
+   * @example
+   * // returns { a : "abc", c : 33, d : "name" };
+   * _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+   *
+   * @returns { objectLike } returns the object filled by unique [ key, value ]   
+   * from others objects.
+   * @method mapScreen
+   * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
+   * @memberof wTools
+   */
 
 var mapScreen = function( screenObject )
 {
@@ -7919,6 +7970,46 @@ var mapScreen = function( screenObject )
 }
 
 //
+  /**
+   * The _mapScreen() returns an object filled by unique [ key, value]
+   * from others objects.
+   *
+   * The _mapScreen() checks whether there are the keys of
+   * the (screenObject) in the list of (srcObjects).
+   * If true, it calls a provided callback function (filter)
+   * and adds to the (dstObject) all the [ key, value ]
+   * for which callback function returns true.
+   *
+   * @callback requestCallback - filter
+   * @param { objectLike } (dstObject) - an empty object.
+   * @param { objectLike }  (srcObjects) - the source object.
+   * @param { string } - the key of the (screenObject).
+   *
+   * @param { objectLike } options - set of objects, (options.dstObject = {}),
+   * (options.screenObjects), (options.srcObjects).
+   *
+   * @example
+   * // returns { a : 33, c : 33, name : "Mikle" };
+   * var options = {};
+   * options.dstObject = {};
+   * options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+   * options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+   * _mapScreen( options );
+   *
+   * @example
+   * // returns { a : "abc", c : 33, d : "name" };
+   * var options = {};
+   * options.dstObject = {};
+   * options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
+   * options.srcObjects = { d : 'name', c : 33, a : 'abc' };
+   * _mapScreen( options );
+   *
+   * @returns { objectLike }
+   * @method _mapScreen
+   * @throws { Error } Will throw an Error if (options.dstObject or screenObject) are not objects,
+   * or if (srcObjects) is not an array
+   * @memberof wTools
+   */
 
 var _mapScreen = function( options )
 {

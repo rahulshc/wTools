@@ -972,7 +972,154 @@
     }
 
   };
+
+
+  var mapOwnBut = function( test )
+  {
+
+    test.description = 'an object';
+    var got = _.mapOwnBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+    var expected = { c : 3 };
+    test.identical( got, expected );
+    
+    test.description = 'an unique object';
+    var got = _.mapOwnBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
+    var expected = { a : 7 };
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapOwnBut();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapOwnBut( {} );
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapOwnBut( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapOwnBut( 'wrong arguments' );
+      });
+      
+    }
+
+  };
+
+
+
+  var _mapScreen = function( test )
+  {
+    
+    test.description = 'an object';
+    var options = {};
+    options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+    options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+    var got = _._mapScreen( options );
+    var expected = { a : 33, c : 33, name : "Mikle" };
+    test.identical( got, expected );
+
+    test.description = 'an object2'
+    var options = {};
+    options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
+    options.srcObjects = { d : 'name', c : 33, a : 'abc' };
+    var got = _._mapScreen( options );
+    var expected = { a : "abc", c : 33, d : "name" };
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _._mapScreen();
+      });
+      
+      test.description = 'redundant arguments';
+      test.shouldThrowError( function() 
+      {
+        _._mapScreen( {}, 'wrong arguments' );
+      });
+      
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function() 
+      {
+        _._mapScreen( [] );
+      });
+      
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function() 
+      {
+        _._mapScreen( 'wrong arguments' );
+      });
+
+    }
+
+  };
   
+  
+  var mapScreen = function( test ) 
+  {
+    
+
+    test.description = 'an object'
+    var got = _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+    var expected = { a : "abc", c : 33, d : "name" };
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapScreen();
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapScreen( {} );
+      });
+
+      test.description = 'wrong type of array';
+      test.shouldThrowError( function()
+      {
+        _.mapScreen( [] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapScreen( 'wrong arguments' );
+      });
+      
+    }
+    
+  };
+  
+  
+  
+  //node ./staging/z.tests/Map.test.s
 
   
 //
@@ -999,7 +1146,10 @@
     //name : 'mapToString',
     //name : 'mapGroup',
     //name : 'mapButFiltering',
-    name : 'mapComplement',
+    //name : 'mapComplement',
+    //name : 'mapOwnBut',
+    //name : 'mapScreen',
+    name : '_mapScreen',
 
     tests:
     {
@@ -1023,8 +1173,10 @@
       //mapToString : mapToString,
       //mapGroup : mapGroup,
       //mapButFiltering : mapButFiltering,
-      mapComplement : mapComplement,
-
+      //mapComplement : mapComplement,
+      //mapOwnBut : mapOwnBut,
+      //mapScreen : mapScreen,
+      _mapScreen : _mapScreen,
     }
 
   }
