@@ -839,9 +839,9 @@ _entitySelect.defaults =
     var res = wTools.entityMap(numbers, checkSidesOfTriangle);
    // [true, true, true]
    *
-   * @param {Array|Object} src Entity, on each elements of which will be called `onEach` function.
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
    * @param {onEach} onEach Function that produces an element of the new entity;
-   * @returns {Array|Object} New entity.
+   * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
    * @thorws {Error} If `onEach` is not function;
@@ -875,6 +875,31 @@ var entityMap = function( src,onEach )
 }
 
 //
+
+  /**
+   * Similar to {@link wTools#entityMap} except that the result ArrayLike/Object will not include results for which
+   * `onEach` returns undefined.
+   *
+   * @example
+   * var numbers = [ 36, -25, 49, 64, -16];
+
+     function sqrt(v) {
+        return (v > 0) ? Math.sqrt(v) : undefined;
+     };
+
+     var res = wTools.entityMap(numbers, sqr);
+   // [6, 7, 8]
+   // numbers is still [ 36, -25, 49, 64, -16];
+   *
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
+   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @returns {ArrayLike|ObjectLike} New entity.
+   * @thorws {Error} If number of arguments less or more than 2;
+   * @thorws {Error} If `src` is not Array or ObjectLike;
+   * @thorws {Error} If `onEach` is not function;
+   * @method entityMap
+   * @memberof wTools
+   */
 
 var entityFilter = function( src,onEach )
 {
@@ -993,6 +1018,27 @@ var entityMaxComparing = function( src,onCompare )
 }
 
 //
+
+  /**
+   * The result of _entityMost method object.
+   * @typedef {Object} entityMostResult
+   * @property {number} index - Index of found element;
+   * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
+   * Else if search was on array - to index of found element.
+   * @property {number} value - The found result of onElement, if onElement don't set, this value will be same as element.
+   * @property {number} element - The appropriate element for found value.
+   */
+
+  /**
+   * Method do search through results of `onElement` callback. If `onElement` is undefined, search was do through
+   * passed `src` elements. Returns maximum or minimum of values.
+   * @param {ArrayLike|Object} src Input entity with elements.
+   * @param {onEach} onElement Function that produces an values for search. Calls with each element of `src` as
+   * argument;
+   * @param {boolean} returnMax If true - method returns maximum, else method returns minimum.
+   * @returns {entityMostResult} Object with results of search.
+   * @private
+   */
 
 var _entityMost = function( src,onElement,returnMax )
 {
@@ -4999,7 +5045,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
   _assert( _.arrayIs( dst ),'arrayPrependOnceMerging :','expects array' );
 
-  for( var a = 1 ; a < arguments.length ; a++ )
+  for( var a = arguments.length-1 ; a > 0 ; a-- )
   {
     var argument = arguments[ a ];
 
@@ -5008,7 +5054,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = argument.length-1 ; i >= 0 ; i++ )
+      for( var i = argument.length-1 ; i >= 0 ; i-- )
       if( result.indexOf( argument[ i ] ) === -1 )
       result.unshift( argument[ i ] );
     }
@@ -5158,11 +5204,13 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  *
  * @param {Array} dstArray - Source array
  * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
  * @method arrayRemovedOnce
  * @returns {Number} - The index of element
  * @throws {Error} If the first argument is not an array
  * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
  * @memberof wTools#
  */
 
@@ -5196,6 +5244,26 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 
 //
 
+/**
+ * The arrayRemoveOnce() method removes the first matching element from (dstArray)
+ * that corresponds to the condition in the callback function and returns a modified array.
+ *
+ * @example
+ * // returns [ 1, 2, 3, 'str' ]
+ * var arr = _.arrayRemoveOnce([1, 'str', 2, 3, 'str'], 'str');
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemoveOnce
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
+
 var arrayRemoveOnce = function( dstArray,ins,onEqual )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -5209,6 +5277,28 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemovedAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the amount them.
+ *
+ * @example
+ * // returns 4
+ * var arr = _.arrayRemovedAll([ 1, 2, 3, 4, 5, 5, 5 ], 5, function (el, ins) {
+ *   return el < ins;
+ * });
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemovedAll
+ * @returns {Number} - The amount removed elements
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemovedAll = function( dstArray,ins,onEqual )
 {
@@ -5234,6 +5324,26 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemoveAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the modified array.
+ *
+ * @example
+ * // returns [ 1, 3, 5 ]
+ * var arr = _.arrayRemoveAll([1, 2, 2, 3, 5], 2);
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemoveAll
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemoveAll = function( dstArray,ins,onEqual )
 {
@@ -5406,6 +5516,23 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 
 //
 
+/**
+ * The arrayAs() method copies passed argument to the array.
+ *
+ * @example
+ * // returns [ false ]
+ * var arr = _.arrayAs(false);
+ *
+ * // returns [ { a: 1, b: 2 } ]
+ * var arr = _.arrayAs({a: 1, b: 2});
+ *
+ * @param {*} src - Source value
+ * @method arrayAs
+ * @returns {Array} - If passed null or undefined than return the empty array. If passed an array then return it.
+   Otherwise return an array which contains the element from argument.
+ * @memberof wTools#
+ */
+
 var arrayAs = function( src ) {
 
   if( src === null || src === undefined ) return [];
@@ -5456,6 +5583,21 @@ var arrayToStr = function( src,options )
 }
 
 //
+
+/**
+ * The arrayPut() method puts all value of arguments after second argument to (dstArray)
+ * in the position (dstOffset) and changes values of following index.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
+ * var arr = _.arrayPut([1, 2, 3, 4, 5, 6, 9], 2, 'str', true, [7, 8]);
+ * 
+ * @param {arrayLike} dstArray - Source array
+ * @param {Number} dstOffset - The index of element where need to put the new values
+ * @method arrayPut
+ * @returns {arrayLike} - Modified array
+ * @memberof wTools#
+ */
 
 var arrayPut = function arrayPut( dstArray, dstOffset )
 {
@@ -5577,6 +5719,30 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 
 //
 
+/**
+ * The arrayFill() method creates a new array and fills it a values.
+ *
+ * @example
+ * // returns [ 3, 3, 3, 3, 3 ]
+ * var arr = _.arrayFill({times: 5, value: 3});
+ *
+ * // returns [ 0, 0, 0, 0 ]
+ * var arr = _.arrayFill(4);
+ *
+ * // returns [ 0, 0, 0 ]
+ * var arr = _.arrayFill([1, 2, 3]);
+ *
+ * @param {Object} options - Options to fill the array
+ * @param {Number} options.times - The count of repeats.
+   If in the function passed Array, the times will be equal the length of array. If Number than this value.
+ * @param {Number} [options.value = 0] - Value for the filling
+ * @method arrayFill
+ * @returns {Array} - The new array
+ * @throws {Error} If missed argument, or got more than one argument
+ * @throws {Error} If passed argument is not object
+ * @memberof wTools#
+ */
+
 var arrayFill = function arrayFill( options )
 {
 
@@ -5610,6 +5776,20 @@ var arrayFill = function arrayFill( options )
 
 //
 
+/**
+ * The arrayCompare() method returns the first difference between the values of the first array from the second.
+ *
+ * @example
+ * // returns 3
+ * var arr = _.arrayCompare([1, 5], [1, 2]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arrayCompare
+ * @returns {Number} - Difference the values
+ * @memberof wTools#
+ */
+
 var arrayCompare = function( src1,src2 )
 {
 
@@ -5627,6 +5807,20 @@ var arrayCompare = function( src1,src2 )
 }
 
 //
+
+/**
+ * The arraySame() method check the equality of two arrays.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arraySame([1, 2, 3], [1, 2, 3]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arraySame
+ * @returns {Boolean} - Returns true if all values of the two array are equal. Otherwise returns false.
+ * @memberof wTools#
+ */
 
 var arraySame = function( src1,src2 )
 {
@@ -5722,6 +5916,20 @@ var arrayLeftGet = function( arr,ins,equalizer )
 
 //
 
+/**
+ * The arrayHasAny() method checks in the array has at least one value of the following arguments.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arrayHasAny([ 5, 'str', 42, false ], false, 7);
+ *
+ * @param {arrayLike} src - Source array
+ * @method arrayHasAny
+ * @returns {Boolean} - Returns true if there are and false if not
+ * @throws {Error} If the first argument in not an array
+ * @memberof wTools#
+ */
+
 var arrayHasAny = function( src )
 {
   _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayHasAny :','array expected' );
@@ -5741,6 +5949,22 @@ var arrayHasAny = function( src )
 }
 
 //
+
+/**
+ * The arrayCount() method returns the count of matching elements in the array.
+ *
+ * @example
+ * // returns 2
+ * var arr = _.arrayCount([1, 2, 'str', 10, 10, true], 10);
+ *
+ * @param {arrayLike} src - Source array
+ * @param {*} instance - Value to search
+ * @method arrayCount
+ * @returns {Number} - Count of elements
+ * @throws {Error} If passed arguments is less than two or more than three
+ * @throws {Error} If the first argument is not an array like object
+ * @memberof wTools#
+ */
 
 var arrayCount = function( src,instance )
 {
@@ -5849,6 +6073,26 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 }
 
 //
+
+/**
+ * The arrayRandom() method returns an array which contains the random numbers.
+ *
+ * @example
+ * // returns [ 6, 2, 4, 7, 8 ]
+ * var arr = _.arrayRandom({
+ *   length: 5,
+ *   range: [1, 9],
+ *   int: true
+ * });
+ *
+ * @param {Object} options - Options for getting random numbers
+ * @param {Number} options.length - The length of array
+ * @param {Array} [options.range = [0, 1]] - The range of numbers
+ * @param {Boolean} [options.int = false] - Floating point numbers or not
+ * @method arrayRandom
+ * @returns {Array} - The array of numbers
+ * @memberof wTools#
+ */
 
 var arrayRandom = function( options )
 {
@@ -7528,7 +7772,7 @@ var mapOwn = function( object,name )
    * Returns new object with unique keys.
    *
    * Takes any number of objects.
-   * Returns new object filled by unqiue keys
+   * Returns new object filled by unique keys
    * from the first (srcMap) original object.
    * Values for result object come from original object (srcMap)
    * not from second or other one.
@@ -7641,6 +7885,31 @@ var mapBut = function( srcMap )
 }
 
 //
+  /**
+   * The mapOwnBut() returns new object with unique own keys.
+   *
+   * Takes any number of objects.
+   * Returns new object filled by unique own keys
+   * from the first (srcMap) original object.
+   * Values for (result) object come from original object (srcMap)
+   * not from second or other one.
+   * If (srcMap) does not have own properties it skips rest of code and checks another properties.
+   * If the first object has same key any other object has
+   * then this pair( key/value ) will not be included into result object.
+   * Otherwise pair( key/value ) from the first object goes into result object.
+   *
+   * @param { objectLike } srcMap - original object.
+   * @param { ...objectLike } argument(s) - one or more objects.
+   *
+   * @example
+   * // returns { a : 7 }
+   * mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
+   *
+   * @returns { objectLike } Returns new (result) object with unique own keys.
+   * @method mapOwnBut
+   * @throws { Error } Will throw an Error if (srcMap) is not an object.
+   * @memberof wTools
+   */
 
 var mapOwnBut = function mapOwnBut( srcMap )
 {
@@ -7699,6 +7968,32 @@ var mapScreens = function( srcObject,screenObject )
 }
 
 //
+  /**
+   * The mapScreen() returns an object filled by unique [ key, value ]
+   * from others objects.
+   *
+   * It takes number of objects, configure a new object by three properties.
+   *
+   * @property { objectLike } screenObjects.screenObject - first object.
+   * @property { ...objectLike } srcObject.arguments[1,...] -
+   * is pseudo array (arguments[]) from the first [1] index to the end.
+   * @property { objectLike } dstObject - is an empty object.
+   *
+   * and calls the _mapScreen( {} ) with new object.
+   *
+   * @param { objectLike } screenObject - first object.
+   * @param { ...objectLike } arguments[] - one or more objects.
+   *
+   * @example
+   * // returns { a : "abc", c : 33, d : "name" };
+   * _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+   *
+   * @returns { objectLike } returns the object filled by unique [ key, value ]   
+   * from others objects.
+   * @method mapScreen
+   * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
+   * @memberof wTools
+   */
 
 var mapScreen = function( screenObject )
 {
@@ -7716,6 +8011,46 @@ var mapScreen = function( screenObject )
 }
 
 //
+  /**
+   * The _mapScreen() returns an object filled by unique [ key, value]
+   * from others objects.
+   *
+   * The _mapScreen() checks whether there are the keys of
+   * the (screenObject) in the list of (srcObjects).
+   * If true, it calls a provided callback function (filter)
+   * and adds to the (dstObject) all the [ key, value ]
+   * for which callback function returns true.
+   *
+   * @callback requestCallback - filter
+   * @param { objectLike } (dstObject) - an empty object.
+   * @param { objectLike }  (srcObjects) - the source object.
+   * @param { string } - the key of the (screenObject).
+   *
+   * @param { objectLike } options - set of objects, (options.dstObject = {}),
+   * (options.screenObjects), (options.srcObjects).
+   *
+   * @example
+   * // returns { a : 33, c : 33, name : "Mikle" };
+   * var options = {};
+   * options.dstObject = {};
+   * options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+   * options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+   * _mapScreen( options );
+   *
+   * @example
+   * // returns { a : "abc", c : 33, d : "name" };
+   * var options = {};
+   * options.dstObject = {};
+   * options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
+   * options.srcObjects = { d : 'name', c : 33, a : 'abc' };
+   * _mapScreen( options );
+   *
+   * @returns { objectLike }
+   * @method _mapScreen
+   * @throws { Error } Will throw an Error if (options.dstObject or screenObject) are not objects,
+   * or if (srcObjects) is not an array
+   * @memberof wTools
+   */
 
 var _mapScreen = function( options )
 {
