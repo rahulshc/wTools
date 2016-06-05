@@ -839,9 +839,9 @@ _entitySelect.defaults =
     var res = wTools.entityMap(numbers, checkSidesOfTriangle);
    // [true, true, true]
    *
-   * @param {Array|Object} src Entity, on each elements of which will be called `onEach` function.
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
    * @param {onEach} onEach Function that produces an element of the new entity;
-   * @returns {Array|Object} New entity.
+   * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
    * @thorws {Error} If `onEach` is not function;
@@ -875,6 +875,31 @@ var entityMap = function( src,onEach )
 }
 
 //
+
+  /**
+   * Similar to {@link wTools#entityMap} except that the result ArrayLike/Object will not include results for which
+   * `onEach` returns undefined.
+   *
+   * @example
+   * var numbers = [ 36, -25, 49, 64, -16];
+
+     function sqrt(v) {
+        return (v > 0) ? Math.sqrt(v) : undefined;
+     };
+
+     var res = wTools.entityMap(numbers, sqr);
+   // [6, 7, 8]
+   // numbers is still [ 36, -25, 49, 64, -16];
+   *
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
+   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @returns {ArrayLike|ObjectLike} New entity.
+   * @thorws {Error} If number of arguments less or more than 2;
+   * @thorws {Error} If `src` is not Array or ObjectLike;
+   * @thorws {Error} If `onEach` is not function;
+   * @method entityMap
+   * @memberof wTools
+   */
 
 var entityFilter = function( src,onEach )
 {
@@ -993,6 +1018,27 @@ var entityMaxComparing = function( src,onCompare )
 }
 
 //
+
+  /**
+   * The result of _entityMost method object.
+   * @typedef {Object} entityMostResult
+   * @property {number} index - Index of found element;
+   * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
+   * Else if search was on array - to index of found element.
+   * @property {number} value - The found result of onElement, if onElement don't set, this value will be same as element.
+   * @property {number} element - The appropriate element for found value.
+   */
+
+  /**
+   * Method do search through results of `onElement` callback. If `onElement` is undefined, search was do through
+   * passed `src` elements. Returns maximum or minimum of values.
+   * @param {ArrayLike|Object} src Input entity with elements.
+   * @param {onEach} onElement Function that produces an values for search. Calls with each element of `src` as
+   * argument;
+   * @param {boolean} returnMax If true - method returns maximum, else method returns minimum.
+   * @returns {entityMostResult} Object with results of search.
+   * @private
+   */
 
 var _entityMost = function( src,onElement,returnMax )
 {
