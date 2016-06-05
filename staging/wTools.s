@@ -7741,8 +7741,6 @@ var mapScreen = function( screenObject )
    * @param { objectLike }  (srcObjects) - the source object.
    * @param { string } - the key of the (screenObject).
    *
-   * @param { requestCallback } filter - callback function to test each key
-   * of (screenObject) and (srcObjects).
    * @param { objectLike } options - set of objects, (options.dstObject = {}),
    * (options.screenObjects), (options.srcObjects).
    *
