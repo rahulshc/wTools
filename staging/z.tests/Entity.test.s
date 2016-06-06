@@ -737,6 +737,84 @@
 
   //
 
+  var entityContain = function( test )
+  {
+    // array values
+
+    var arrX1 = [ 0, 1, 3 ], arrY1 = [ 0, 1, 3 ],
+      arrX2 = [ 0, 1, 3 ], arrY2 = [ 0, 1, 2 ],
+      arrX3 = [ 0, 1, 2, 3, 9 ], arrY3 = [ 0, 1, 2 ],
+      arrX4 = [ [0, 1, 2], 3, 9 ], arrY4 = [ 0, 1, 2 ],
+      arrX5 = [ [0, 1, 2], 3, 9 ], arrY5 = [[ 0, 1, 2 ]];
+
+
+    // object values
+
+    var objX1 = { a: 0, b: 1, c: 3 }, objY1 = { a: 0, b: 1, c: 3 },
+      objX2 = { a: 0, b: 1, c: 3 }, objY2 = { a: 0, b: 1, d: 2 },
+      objX3 = { a: 0, b: 1, e: { c: 2, d: 3 } }, objY3 = { a: 0, e: { c: 2, d: 3 } },
+      objX4 = { a: 0, b: 1, c: 3 }, objY4 = { a: 0, b: 1 };
+
+    // array tests
+
+    test.description = 'tests two non empty arrays: same length';
+    var got = _.entityContain( arrX1, arrY1 );
+    test.identical(got, true);
+
+    test.description = 'tests two non empty different arrays';
+    var got = _.entityContain( arrX2, arrY2 );
+    test.identical(got, false);
+
+    test.description = 'one array contains other`s elements';
+    var got = _.entityContain( arrX3, arrY3 );
+    test.identical(got, true);
+
+    test.description = 'one array contains other as element';
+    var got = _.entityContain( arrX4, arrY4 );
+    test.identical(got, false);
+
+    test.description = 'nested arrays';
+    var got = _.entityContain( arrX5, arrY5 );
+    test.identical(got, true);
+
+    // object tests
+
+    test.description = 'tests two non empty objects: identical keys';
+    var got = _.entityContain( objX1, objY1 );
+    test.identical(got, true);
+
+    test.description = 'tests two different objects: identical keys';
+    var got = _.entityContain( objX2, objY2 );
+    test.identical(got, false);
+
+    test.description = 'tests nested objects: identical';
+    var got = _.entityContain( objX3, objY3 );
+    test.identical(got, true);
+
+    test.description = 'one object contains elements of another';
+    var got = _.entityContain( objX4, objY4 );
+    test.identical(got, true);
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.entityContain();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.entityContain( strX3, strY3, options, '');
+      });
+
+    }
+  };
+
+  //
+
   var Proto =
   {
 
@@ -752,7 +830,8 @@
       entityMax    : entityMax,
       _entitySame  : _entitySame,
       entityIdentical: entityIdentical,
-      entityEquivalent: entityEquivalent
+      entityEquivalent: entityEquivalent,
+      entityContain: entityContain
 
     }
 
