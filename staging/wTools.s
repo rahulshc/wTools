@@ -7146,6 +7146,8 @@ var mapExtendFiltering = function( filter,dstObject )
   return result;
 }
 
+  // !!! the param "dstObject" in not optional.
+
 /**
  * The mapExtend() is used to copy the values of all properties
  * from one or more source objects to a target object.
