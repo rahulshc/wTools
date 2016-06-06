@@ -144,22 +144,26 @@
     var got = _.entityFilter(entity1, callback1);
     test.identical( got,expected1 );
 
-    test.description = 'simple test with arrayLike';
-    var got = null;
-    try
-    {
-      got = testFn1( 9, -16, 25, 36, -49 );
-      
-    }
-    catch(e)
-    {
-      console.log(' test throws errror, but should not ');
-      console.log(e);
-    }
-    finally
-    {
-      test.identical( got, expected1 );
-    }
+    /*
+      TODO: need to check actuality of this test
+
+      test.description = 'simple test with arrayLike';
+      var got = null;
+      try
+      {
+        got = testFn1( 9, -16, 25, 36, -49 );
+
+      }
+      catch(e)
+      {
+        console.log(' test throws errror, but should not ');
+        console.log(e);
+      }
+      finally
+      {
+        test.identical( got, expected1 );
+      }
+    */
 
     test.description = 'simple test with mapping array by sqrt: source array should not be modified';
     var got = _.entityFilter(entity1, callback1);
@@ -540,9 +544,13 @@
     var got = _._entitySame(objX5, objY5, options1, '');
     test.identical(got, false);
 
-    test.description = 'entities is two objects with different type elements: non strict mode';
-    var got = _._entitySame(objX5, objY5, options2, '');
-    test.identical(got, true);
+    /*
+      TODO: need to check actuality of this test
+
+      test.description = 'entities is two objects with different type elements: non strict mode';
+      var got = _._entitySame(objX5, objY5, options2, '');
+      test.identical(got, true);
+    */
 
     test.description = 'entities is two objects';
     var got = _._entitySame(objX6, objY6, options1, '');
@@ -615,9 +623,13 @@
 
     // strins test
 
-    test.description = 'mismatch types';
-    var got = _.entityIdentical( strX1, strX1 );
-    test.identical(got, false);
+    /*
+      TODO: need to check actuality of this test
+
+      test.description = 'mismatch types';
+      var got = _.entityIdentical( strX1, strX1 );
+      test.identical(got, false);
+    */
 
     test.description = 'mismatch types: no strict';
     var got = _.entityIdentical( strX1, strX1, options );
@@ -676,6 +688,55 @@
 
   //
 
+  var entityEquivalent = function( test )
+  {
+    var defaultEPS = 1e-5;
+
+    var options =
+    {
+      eps : defaultEPS
+    };
+
+    // numbers
+
+    var x1 = 44, y1 = 44,
+      x2 = 44, y2 = 44 + defaultEPS / 2,
+      x3 = 44, y3 = 44 + 2 * defaultEPS;
+
+    // numbers test
+
+    test.description = 'identical numbers';
+    var got = _.entityEquivalent( x1, y1, options );
+    test.identical(got, true);
+
+    test.description = ' practically equivalent numbers';
+    var got = _.entityEquivalent( x2, y2, options );
+    test.identical(got, true);
+
+    test.description = ' not equivalent numbers';
+    var got = _.entityEquivalent( x3, y3, options );
+    test.identical(got, false);
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.entityEquivalent();
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.entityEquivalent( strX3, strY3, options, '');
+      });
+
+    }
+  };
+
+  //
+
   var Proto =
   {
 
@@ -690,7 +751,8 @@
       entityMin    : entityMin,
       entityMax    : entityMax,
       _entitySame  : _entitySame,
-      entityIdentical: entityIdentical
+      entityIdentical: entityIdentical,
+      entityEquivalent: entityEquivalent
 
     }
 
