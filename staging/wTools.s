@@ -415,6 +415,29 @@ var entitySame = function entitySame( src1,src2,options )
 
 //
 
+  /**
+   * Compare two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
+      in the `options`. If in some moment method finds different values in two entities, then it returns false.
+   * @param {*} src1 entity for comparison
+   * @param {*} src2 entity for comparison
+   * @param {Object} options Comparison criteria
+   * @param {Function} options.onSameNumbers Function that uses for comparison two numbers. If function returned true,
+      the passed numbers is considered equal.
+   * @param {boolean} options.contain If this parameter sets to true, two entities will be considered the same,
+      if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
+      types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
+      the same lengths, same keys/indexes and same appropriates values.
+   * @param {boolean} options.strict Specify equality comparison. When it set to true, then the Strict equality
+      using (===), else the Loose equality using (==).
+   * @param {String} options.lastPath This parameters is modified during the execution of method. Specified on path to
+      value, that composite from keys/indexes separated by '.'
+   * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
+   * @returns {boolean}
+   * @private
+   * @method entitySame
+   * @memberof wTools
+   */
+
 var _entitySame = function _entitySame( src1,src2,options,path )
 {
 
@@ -564,6 +587,20 @@ var entityContain = function entityContain( src1,src2,options )
 }
 
 //
+  /**
+   * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
+      properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
+   * @example
+   *
+     var obj =
+     {
+       a: 1,
+       b: { e: 2, c: 3 }
+     };
+     wTools.entityLength(obj); // 2
+   * @param {*} src Input entity
+   * @returns {number} Length of entity.
+   */
 
 var entityLength = function( src )
 {
@@ -1135,6 +1172,28 @@ var _entityMost = function( src,onElement,returnMax )
 
 //
 
+  /**
+   * Method returns minimum of results `onEach` function.
+   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
+      minimum of passed `src` elements.
+   * @example
+   *
+     var obj = { a: 25, b: 16, c: 9 };
+
+     var min = wTools.entityMin( obj, Math.sqrt );
+     // expected4 = { index : 2, key : 'c', value 3: , element : 9  };
+
+   * @param {ArrayLike|Object} src
+   * @param {onEach} onElement onElement `onEach` function calls for every element of `src`.
+   * @returns {entityMostResult}
+   * @throws {Error} If missed arguments.
+   * @throws {Error} If passed extra arguments.
+   * @see {@link onEach}
+   * @see {@link entityMostResult}
+   * @method entityMin
+   * @memberof wTools
+   */
+
 var entityMin = function( src,onElement )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1142,6 +1201,32 @@ var entityMin = function( src,onElement )
 }
 
 //
+
+  /**
+   * Method returns maximum of results `onEach` function.
+   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
+      maximum of passed `src` elements.
+   * @example
+   *
+     var args = [3, -4, 9, -16, 5, -2];
+
+     var sqr = function( v )
+     {
+       return v * v;
+     };
+     var max = wTools.entityMax( args, sqr );
+     // { index : 3, key : 3, value : 256, element : -16 }
+
+   * @param {ArrayLike|Object} src
+   * @param {onEach} onElement `onEach` function calls for every element of `src`.
+   * @returns {entityMostResult}
+   * @throws {Error} If missed arguments.
+   * @throws {Error} If passed extra arguments.
+   * @see {@link onEach}
+   * @see {@link entityMostResult}
+   * @method entityMax
+   * @memberof wTools
+   */
 
 var entityMax = function( src,onElement )
 {
