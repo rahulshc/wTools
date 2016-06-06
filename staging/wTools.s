@@ -415,6 +415,29 @@ var entitySame = function entitySame( src1,src2,options )
 
 //
 
+  /**
+   * Compare two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
+      in the `options`. If in some moment method finds different values in two entities, then it returns false.
+   * @param {*} src1 entity for comparison
+   * @param {*} src2 entity for comparison
+   * @param {Object} options Comparison criteria
+   * @param {Function} options.onSameNumbers Function that uses for comparison two numbers. If function returned true,
+      the passed numbers is considered equal.
+   * @param {boolean} options.contain If this parameter sets to true, two entities will be considered the same,
+      if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
+      types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
+      the same lengths, same keys/indexes and same appropriates values.
+   * @param {boolean} options.strict Specify equality comparison. When it set to true, then the Strict equality
+      using (===), else the Loose equality using (==).
+   * @param {String} options.lastPath This parameters is modified during the execution of method. Specified on path to
+      value, that composite from keys/indexes separated by '.'
+   * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
+   * @returns {boolean}
+   * @private
+   * @method entitySame
+   * @memberof wTools
+   */
+
 var _entitySame = function _entitySame( src1,src2,options,path )
 {
 
@@ -564,6 +587,20 @@ var entityContain = function entityContain( src1,src2,options )
 }
 
 //
+  /**
+   * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
+      properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
+   * @example
+   *
+     var obj =
+     {
+       a: 1,
+       b: { e: 2, c: 3 }
+     };
+     wTools.entityLength(obj); // 2
+   * @param {*} src Input entity
+   * @returns {number} Length of entity.
+   */
 
 var entityLength = function( src )
 {
@@ -801,7 +838,7 @@ _entitySelect.defaults =
 
 //
 
-// !!! REMINDER : improve code formatting, please
+// +++ REMINDER : improve code formatting, please
 
   /**
    * Function that produces an elements for entityMap result
@@ -816,30 +853,33 @@ _entitySelect.defaults =
    * function on every element of src. If entity is array, the new array has the same length as source.
    *
    * @example
-   * var numbers = [ 3, 4, 6 ];
+    var numbers = [ 3, 4, 6 ];
 
-    function sqr(v) {
+    function sqr( v )
+    {
       return v * v
     };
 
     var res = wTools.entityMap(numbers, sqr);
-    // [9, 16, 36]
+    // [ 9, 16, 36 ]
     // numbers is still [ 3, 4, 6 ]
 
-    function checkSidesOfTriangle(v, i, src) {
+    function checkSidesOfTriangle( v, i, src )
+    {
       var sumOthers = 0,
         l = src.length,
         j;
 
-      for (j = 0; j < l; j++) {
-        if (i === j) continue;
-        sumOthers += src[j]
+      for ( j = 0; j < l; j++ )
+      {
+        if ( i === j ) continue;
+        sumOthers += src[ j ];
       }
       return v < sumOthers;
     }
 
-    var res = wTools.entityMap(numbers, checkSidesOfTriangle);
-   // [true, true, true]
+    var res = wTools.entityMap( numbers, checkSidesOfTriangle );
+   // [ true, true, true ]
    *
    * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
    * @param {onEach} onEach Function that produces an element of the new entity;
@@ -878,24 +918,27 @@ var entityMap = function( src,onEach )
 
 //
 
-// !!! improve description,
-// !!! improve code formatting
-// !!! use @see
+// +++ improve description,
+// +++ improve code formatting
+// +++ use @see
 
   /**
-   * Similar to {@link wTools#entityMap} except that the result ArrayLike/Object will not include results for which
-   * `onEach` returns undefined.
+   * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
+   * function on every element of src. If `onEach` returns undefined, then this result is not included into the new
+   * entity.
+   * @see {@link wTools#entityMap}
    *
    * @example
-   * var numbers = [ 36, -25, 49, 64, -16];
+     var numbers = [ 36, -25, 49, 64, -16 ];
 
-     function sqrt(v) {
-        return (v > 0) ? Math.sqrt(v) : undefined;
+     function sqrt( v )
+     {
+        return ( v > 0 ) ? Math.sqrt( v ) : undefined;
      };
 
-     var res = wTools.entityMap(numbers, sqr);
-   // [6, 7, 8]
-   // numbers is still [ 36, -25, 49, 64, -16];
+     var res = wTools.entityMap( numbers, sqr );
+   // [ 6, 7, 8 ]
+   // numbers is still [ 36, -25, 49, 64, -16 ];
    *
    * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
    * @param {onEach} onEach Function that produces an element of the new entity;
@@ -1035,17 +1078,19 @@ var entityMaxComparing = function( src,onCompare )
    * @property {number} element - The appropriate element for found value.
    */
 
-// !!! not clear what onElement for?
+// +++ not clear what onElement for?
 
   /**
-   * Method do search through results of `onElement` callback. If `onElement` is undefined, search was do through
-   * passed `src` elements. Returns maximum or minimum of values.
+   * On depend from passed `returnMax` argument, method returns maximum or minimum of results `onEach` function.
+   * `onEach` function calls for every element of passed `src` entity. If `onElement` is undefined, method return
+   maximum or minimum of passed `src` elements.
    * @param {ArrayLike|Object} src Input entity with elements.
-   * @param {onEach} onElement Function that produces an values for search. Calls with each element of `src` as
-   * argument;
-   * @param {boolean} returnMax If true - method returns maximum, else method returns minimum.
+   * @param {onEach} onElement `onEach` function calls for every element of `src`.
+   * @param {boolean} returnMax If true - method returns maximum, else method returns minimum of values.
    * @returns {entityMostResult} Object with results of search.
    * @private
+   * @method _entityMost
+   * @memberof wTools
    */
 
 var _entityMost = function( src,onElement,returnMax )
@@ -1127,6 +1172,28 @@ var _entityMost = function( src,onElement,returnMax )
 
 //
 
+  /**
+   * Method returns minimum of results `onEach` function.
+   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
+      minimum of passed `src` elements.
+   * @example
+   *
+     var obj = { a: 25, b: 16, c: 9 };
+
+     var min = wTools.entityMin( obj, Math.sqrt );
+     // expected4 = { index : 2, key : 'c', value 3: , element : 9  };
+
+   * @param {ArrayLike|Object} src
+   * @param {onEach} onElement onElement `onEach` function calls for every element of `src`.
+   * @returns {entityMostResult}
+   * @throws {Error} If missed arguments.
+   * @throws {Error} If passed extra arguments.
+   * @see {@link onEach}
+   * @see {@link entityMostResult}
+   * @method entityMin
+   * @memberof wTools
+   */
+
 var entityMin = function( src,onElement )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1134,6 +1201,32 @@ var entityMin = function( src,onElement )
 }
 
 //
+
+  /**
+   * Method returns maximum of results `onEach` function.
+   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
+      maximum of passed `src` elements.
+   * @example
+   *
+     var args = [3, -4, 9, -16, 5, -2];
+
+     var sqr = function( v )
+     {
+       return v * v;
+     };
+     var max = wTools.entityMax( args, sqr );
+     // { index : 3, key : 3, value : 256, element : -16 }
+
+   * @param {ArrayLike|Object} src
+   * @param {onEach} onElement `onEach` function calls for every element of `src`.
+   * @returns {entityMostResult}
+   * @throws {Error} If missed arguments.
+   * @throws {Error} If passed extra arguments.
+   * @see {@link onEach}
+   * @see {@link entityMostResult}
+   * @method entityMax
+   * @memberof wTools
+   */
 
 var entityMax = function( src,onElement )
 {
@@ -1564,18 +1657,22 @@ _err.defaults =
 //
 
 // !!! not bad
-// !!! improve code formatting
-// !!! please add "concatenate" word to description
+// +++ improve code formatting
+// +++ please add "concatenate" word to description
 
   /**
    * Creates error object, with message created from passed `msg` parameters and contains error trace.
+   * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
+   concatenating them.
    *
    * @example
-   *  function divide (x, y) {
-        if (y == 0 ) throw wTools.err('divide by zero')
-        return x / y;
-      }
-      divide(3, 0);
+    function divide ( x, y )
+    {
+      if (y == 0 )
+        throw wTools.err( 'divide by zero' )
+      return x / y;
+    }
+    divide( 3, 0 );
 
    // Error:
    // caught     at divide (<anonymous>:2:29)
@@ -1605,16 +1702,21 @@ var err = function err()
 //
 
 // !!! good
-// !!! improve code formatting
-// !!! please use @see
+// +++ improve code formatting
+// +++ please use @see
 
   /**
-   * Method similar to {@link wTools#err} except that it prints the created error.
-   * If _global_.logger defined, method will use it to print error, else console
+   * Creates error object, with message created from passed `msg` parameters and contains error trace.
+   * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
+   concatenating them. Prints the created error.
+   * If _global_.logger defined, method will use it to print error, else uses console
+   * @see {@link wTools#err}
    *
    *@example
-   * function divide (x, y) {
-        if (y == 0 ) throw wTools.errLog('divide by zero')
+     function divide ( x, y )
+     {
+        if (y == 0 )
+          throw wTools.errLog('divide by zero')
         return x / y;
      }
      divide (3, 0);
@@ -1670,18 +1772,19 @@ var errLog = function errLog()
 //
 
 // !!! good
-// !!! replace terminates by returns
+// +++ replace terminates by returns
 // !!! less fututure more present simple
 // !!! no but :)
 
   /**
-   * Checks condition. If condition converts to true method terminates without exceptions.
+   * Checks condition. If condition converts to true method returns without exceptions.
    * Else If condition is false, method generates and throws exception. By default generates error with
    * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
    *
    * @example
-   * function divide (x, y) {
-        wTools.assert(y != 0, 'divide by zero');
+     function divide ( x, y )
+     {
+        wTools.assert( y != 0, 'divide by zero' );
         return x / y;
      }
      divide (3, 0);
@@ -1939,10 +2042,12 @@ var assertMapOwnNone = function( src,none )
   /**
    * If condition failed, method prints warning messages passed after condition argument
    * @example
-   *  function checkAngles(a, b, c) {
-         wTools.warn((a + b + c) === 180, 'triangle with that angles does not exists');
-      };
-      checkAngles(120, 23, 130)
+    function checkAngles( a, b, c )
+    {
+       wTools.warn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+    };
+    checkAngles( 120, 23, 130 );
+
    // triangle with that angles does not exists
    * @param condition Condition to check.
    * @param messages messages to print.
@@ -1962,29 +2067,33 @@ var warn = function( condition )
 
 //
 
-// !!! formatting
+// +++ formatting
 
   /**
    * Return stack trace as string.
    * @example
-   *  var stack;
-      function function1() {
-        function2();
-      }
+    var stack;
+    function function1()
+    {
+      function2();
+    }
 
-      function function2() {
-        function3();
-      }
+    function function2()
+    {
+      function3();
+    }
 
-      function function3() {
-        stack = wTools.stack();
-      }
+    function function3()
+    {
+      stack = wTools.stack();
+    }
 
-      stack
-     //"    at function3 (<anonymous>:10:17)
-     // at function2 (<anonymous>:6:2)
-     // at function1 (<anonymous>:2:2)
-     // at <anonymous>:1:1"
+    function1();
+    stack
+   //"    at function3 (<anonymous>:10:17)
+   // at function2 (<anonymous>:6:2)
+   // at function1 (<anonymous>:2:2)
+   // at <anonymous>:1:1"
    *
    * @returns {String} Return stack trace from call point.
    * @method stack
