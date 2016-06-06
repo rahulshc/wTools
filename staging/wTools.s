@@ -7029,6 +7029,8 @@ buffersDeserialize.defaults =
 // map
 // --
 
+  // !!! this description could be improved by adding the param (options)
+
   /**
    * The mapClone() method is used to clone the values of all
    * enumerable own properties from (srcObject) object to an (options.dst) object.
@@ -7298,6 +7300,10 @@ var mapCopy = function mapCopy()
 // map converter
 // --
 
+  // !!! this description could be improved by adding example(s).
+  // !!! undefiend???
+  // !!! formatting
+
   /**
    * Returns first pair key / value as array.
    *
@@ -7358,6 +7364,9 @@ var mapToArray = function( src )
 
 //
 
+  // !!! param (src) may be not only an array.
+  // !!! throws is not defined in the function.
+
   /**
    * The mapValWithIndex() returns value of (src) by corresponding (index).
    *
@@ -7394,6 +7403,10 @@ var mapValWithIndex = function( src,index )
 }
 
 //
+
+  // !!! param (src) may be not only an array.
+  // !!! in the example does not return the value of "b".
+  // !!! throws is not defined in the function.
 
   /**
    * The mapKeyWithIndex() returns key of (src) by corresponding (index).
@@ -7457,7 +7470,7 @@ var mapToString = function( src,keyValSep,tupleSep )
 {
 
   if( !_.strIs( keyValSep ) ) keyValSep = ' : ';
-  if( !_.strIs( tupleSep ) ) keyValSep = '; ';
+  if( !_.strIs( tupleSep ) ) keyValSep = '; '; // !!! instead "keyValSep" should be "tupleSep"
   var result = '';
   for( var s in src )
   {
@@ -7967,6 +7980,8 @@ var mapOwnBut = function mapOwnBut( srcMap )
 }
 
 //
+
+  // !!! this description missing
 
 var mapScreens = function( srcObject,screenObject )
 {
