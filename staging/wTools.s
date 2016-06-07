@@ -503,9 +503,18 @@ var _entitySame = function _entitySame( src1,src2,options,path )
 
 /**
  * Deep strict equaliser of 2 entities.
+ * @example
+   var obj1 = { a: 0, b: 1, e: { c: 2, d: 3 } },
+    obj2 = { a: 0, b: 1, e: { c: 2, d: 3 } };
+
+   wTools.entityIdentical( obj1, obj2 );
+
+   // true
  * @param {object} src1 - entity to compare.
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
+ * @throws {Error} Missed arguments.
+ * @throws {Error} Extra arguments.
  * @method entityIdentical
  * @memberof wTools
  */
@@ -527,9 +536,18 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 
 /**
  * Deep soft equaliser of 2 entities.
+ * @example
+   var eps = 1e-5,
+   x = 1,
+   y = 1 + eps / 2
+
+   wTools.entityEquivalent( x, y );
+   // true
  * @param {object} src1 - entity to compare.
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
+ * @throws {Error} Missed arguments.
+ * @throws {Error} Extra arguments.
  * @method entityEquivalent
  * @memberof wTools
  */
@@ -565,9 +583,16 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
 
 /**
  * Deep contain equaliser of 2 entities.
+ * @example
+   var arr1 = [ 0, 1, 2, 3, 9 ],
+   arr2 = [ 0, 1, 2 ];
+   wTools.entityContain( arr1, arr2 );
+   // true
  * @param {object} src1 - entity to compare.
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
+ * @throws {Error} Missed arguments.
+ * @throws {Error} Extra arguments.
  * @method entityContain
  * @memberof wTools
  */
@@ -1101,7 +1126,7 @@ var _entityMost = function( src,onElement,returnMax )
   if( onElement === undefined )
   onElement = function( element ){ return element; }
 
-  var onCompare = null;
+  var onCompare = null;ghb
 
   if( returnMax )
   onCompare = function( a,b )
