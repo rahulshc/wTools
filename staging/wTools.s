@@ -415,6 +415,29 @@ var entitySame = function entitySame( src1,src2,options )
 
 //
 
+  /**
+   * Compare two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
+      in the `options`. If in some moment method finds different values in two entities, then it returns false.
+   * @param {*} src1 entity for comparison
+   * @param {*} src2 entity for comparison
+   * @param {Object} options Comparison criteria
+   * @param {Function} options.onSameNumbers Function that uses for comparison two numbers. If function returned true,
+      the passed numbers is considered equal.
+   * @param {boolean} options.contain If this parameter sets to true, two entities will be considered the same,
+      if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
+      types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
+      the same lengths, same keys/indexes and same appropriates values.
+   * @param {boolean} options.strict Specify equality comparison. When it set to true, then the Strict equality
+      using (===), else the Loose equality using (==).
+   * @param {String} options.lastPath This parameters is modified during the execution of method. Specified on path to
+      value, that composite from keys/indexes separated by '.'
+   * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
+   * @returns {boolean}
+   * @private
+   * @method entitySame
+   * @memberof wTools
+   */
+
 var _entitySame = function _entitySame( src1,src2,options,path )
 {
 
@@ -564,6 +587,20 @@ var entityContain = function entityContain( src1,src2,options )
 }
 
 //
+  /**
+   * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
+      properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
+   * @example
+   *
+     var obj =
+     {
+       a: 1,
+       b: { e: 2, c: 3 }
+     };
+     wTools.entityLength(obj); // 2
+   * @param {*} src Input entity
+   * @returns {number} Length of entity.
+   */
 
 var entityLength = function( src )
 {
@@ -801,6 +838,8 @@ _entitySelect.defaults =
 
 //
 
+// +++ REMINDER : improve code formatting, please
+
   /**
    * Function that produces an elements for entityMap result
    * @callback onEach
@@ -814,34 +853,37 @@ _entitySelect.defaults =
    * function on every element of src. If entity is array, the new array has the same length as source.
    *
    * @example
-   * var numbers = [ 3, 4, 6 ];
+    var numbers = [ 3, 4, 6 ];
 
-    function sqr(v) {
+    function sqr( v )
+    {
       return v * v
     };
 
     var res = wTools.entityMap(numbers, sqr);
-    // [9, 16, 36]
+    // [ 9, 16, 36 ]
     // numbers is still [ 3, 4, 6 ]
 
-    function checkSidesOfTriangle(v, i, src) {
+    function checkSidesOfTriangle( v, i, src )
+    {
       var sumOthers = 0,
         l = src.length,
         j;
 
-      for (j = 0; j < l; j++) {
-        if (i === j) continue;
-        sumOthers += src[j]
+      for ( j = 0; j < l; j++ )
+      {
+        if ( i === j ) continue;
+        sumOthers += src[ j ];
       }
       return v < sumOthers;
     }
 
-    var res = wTools.entityMap(numbers, checkSidesOfTriangle);
-   // [true, true, true]
+    var res = wTools.entityMap( numbers, checkSidesOfTriangle );
+   // [ true, true, true ]
    *
-   * @param {Array|Object} src Entity, on each elements of which will be called `onEach` function.
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
    * @param {onEach} onEach Function that produces an element of the new entity;
-   * @returns {Array|Object} New entity.
+   * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
    * @thorws {Error} If `onEach` is not function;
@@ -875,6 +917,38 @@ var entityMap = function( src,onEach )
 }
 
 //
+
+// +++ improve description,
+// +++ improve code formatting
+// +++ use @see
+
+  /**
+   * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
+   * function on every element of src. If `onEach` returns undefined, then this result is not included into the new
+   * entity.
+   * @see {@link wTools#entityMap}
+   *
+   * @example
+     var numbers = [ 36, -25, 49, 64, -16 ];
+
+     function sqrt( v )
+     {
+        return ( v > 0 ) ? Math.sqrt( v ) : undefined;
+     };
+
+     var res = wTools.entityMap( numbers, sqr );
+   // [ 6, 7, 8 ]
+   // numbers is still [ 36, -25, 49, 64, -16 ];
+   *
+   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
+   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @returns {ArrayLike|ObjectLike} New entity.
+   * @thorws {Error} If number of arguments less or more than 2;
+   * @thorws {Error} If `src` is not Array or ObjectLike;
+   * @thorws {Error} If `onEach` is not function;
+   * @method entityMap
+   * @memberof wTools
+   */
 
 var entityFilter = function( src,onEach )
 {
@@ -994,6 +1068,31 @@ var entityMaxComparing = function( src,onCompare )
 
 //
 
+  /**
+   * The result of _entityMost method object.
+   * @typedef {Object} entityMostResult
+   * @property {number} index - Index of found element;
+   * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
+   * Else if search was on array - to index of found element.
+   * @property {number} value - The found result of onElement, if onElement don't set, this value will be same as element.
+   * @property {number} element - The appropriate element for found value.
+   */
+
+// +++ not clear what onElement for?
+
+  /**
+   * On depend from passed `returnMax` argument, method returns maximum or minimum of results `onEach` function.
+   * `onEach` function calls for every element of passed `src` entity. If `onElement` is undefined, method return
+   maximum or minimum of passed `src` elements.
+   * @param {ArrayLike|Object} src Input entity with elements.
+   * @param {onEach} onElement `onEach` function calls for every element of `src`.
+   * @param {boolean} returnMax If true - method returns maximum, else method returns minimum of values.
+   * @returns {entityMostResult} Object with results of search.
+   * @private
+   * @method _entityMost
+   * @memberof wTools
+   */
+
 var _entityMost = function( src,onElement,returnMax )
 {
 
@@ -1073,6 +1172,28 @@ var _entityMost = function( src,onElement,returnMax )
 
 //
 
+  /**
+   * Method returns minimum of results `onEach` function.
+   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
+      minimum of passed `src` elements.
+   * @example
+   *
+     var obj = { a: 25, b: 16, c: 9 };
+
+     var min = wTools.entityMin( obj, Math.sqrt );
+     // expected4 = { index : 2, key : 'c', value 3: , element : 9  };
+
+   * @param {ArrayLike|Object} src
+   * @param {onEach} onElement onElement `onEach` function calls for every element of `src`.
+   * @returns {entityMostResult}
+   * @throws {Error} If missed arguments.
+   * @throws {Error} If passed extra arguments.
+   * @see {@link onEach}
+   * @see {@link entityMostResult}
+   * @method entityMin
+   * @memberof wTools
+   */
+
 var entityMin = function( src,onElement )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1080,6 +1201,32 @@ var entityMin = function( src,onElement )
 }
 
 //
+
+  /**
+   * Method returns maximum of results `onEach` function.
+   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
+      maximum of passed `src` elements.
+   * @example
+   *
+     var args = [3, -4, 9, -16, 5, -2];
+
+     var sqr = function( v )
+     {
+       return v * v;
+     };
+     var max = wTools.entityMax( args, sqr );
+     // { index : 3, key : 3, value : 256, element : -16 }
+
+   * @param {ArrayLike|Object} src
+   * @param {onEach} onElement `onEach` function calls for every element of `src`.
+   * @returns {entityMostResult}
+   * @throws {Error} If missed arguments.
+   * @throws {Error} If passed extra arguments.
+   * @see {@link onEach}
+   * @see {@link entityMostResult}
+   * @method entityMax
+   * @memberof wTools
+   */
 
 var entityMax = function( src,onElement )
 {
@@ -1385,8 +1532,10 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
+// !!! very good
+
   /**
-   * Creates Error object based on passed options;
+   * Creates Error object based on passed options.
    * Result error contains in message detailed stack trace and error description.
    * @param {Object} o Options for creating error.
    * @param {String[]|Error[]} o.args array with messages or errors objects, from which will be created Error obj.
@@ -1422,6 +1571,8 @@ var _err = function _err( o )
     if( o.args[ a ] instanceof Error )
     {
       result = o.args[ a ];
+      if( result.respected )
+      result.respected = 0;
       o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'Unknown error';
       break;
     }
@@ -1477,19 +1628,18 @@ var _err = function _err( o )
 
   if( !result )
   {
-    var e = new Error();
-    result = new Error( originalMessage + '\n' + ( e.stack || '' ) + '\n' );
+    var e = new Error(); result = new Error( originalMessage + '\n' + ( e.stack || '' ) + '\n' );
     result.originalStack = e.stack;
   }
   else try
   {
     result.message = '';
     result.message = originalMessage + '\n' + ( result.originalStack || result.stack || '' ) + '\n';
-    /*result = new result.constructor( originalMessage + '\n' + result.stack + '\n',fileName,lineNumber );*/
   }
   catch( e )
   {
-    throw 'err error';
+    debugger;
+    throw 'error in err';
     result = new result.constructor( originalMessage + '\n' + ( result.stack || '' ) + '\n' );
   }
 
@@ -1506,15 +1656,23 @@ _err.defaults =
 
 //
 
+// !!! not bad
+// +++ improve code formatting
+// +++ please add "concatenate" word to description
+
   /**
    * Creates error object, with message created from passed `msg` parameters and contains error trace.
+   * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
+   concatenating them.
    *
    * @example
-   *  function divide (x, y) {
-        if (y == 0 ) throw wTools.err('divide by zero')
-        return x / y;
-      }
-      divide(3, 0);
+    function divide ( x, y )
+    {
+      if (y == 0 )
+        throw wTools.err( 'divide by zero' )
+      return x / y;
+    }
+    divide( 3, 0 );
 
    // Error:
    // caught     at divide (<anonymous>:2:29)
@@ -1543,13 +1701,22 @@ var err = function err()
 
 //
 
+// !!! good
+// +++ improve code formatting
+// +++ please use @see
+
   /**
-   * Method similar to {@link wTools#err} except that it prints the created error.
-   * If _global_.logger defined, method will use it to print error, else console
+   * Creates error object, with message created from passed `msg` parameters and contains error trace.
+   * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
+   concatenating them. Prints the created error.
+   * If _global_.logger defined, method will use it to print error, else uses console
+   * @see {@link wTools#err}
    *
    *@example
-   * function divide (x, y) {
-        if (y == 0 ) throw wTools.errLog('divide by zero')
+     function divide ( x, y )
+     {
+        if (y == 0 )
+          throw wTools.errLog('divide by zero')
         return x / y;
      }
      divide (3, 0);
@@ -1604,16 +1771,20 @@ var errLog = function errLog()
 
 //
 
-/** @inline */
+// !!! good
+// +++ replace terminates by returns
+// !!! less fututure more present simple
+// !!! no but :)
 
   /**
-   * Checks condition. If condition converts to true method terminates without exceptions.
-   * Else If condition converts to false, method will generates and throws exception. By default will generate error with
+   * Checks condition. If condition converts to true method returns without exceptions.
+   * Else If condition is false, method generates and throws exception. By default generates error with
    * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
    *
    * @example
-   * function divide (x, y) {
-        wTools.assert(y != 0, 'divide by zero');
+     function divide ( x, y )
+     {
+        wTools.assert( y != 0, 'divide by zero' );
         return x / y;
      }
      divide (3, 0);
@@ -1643,13 +1814,23 @@ var assert = function assert( condition )
   {
     debugger;
     if( arguments.length === 1 )
-    throw _.err( 'Assertion failed' );
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+    });
     else if( arguments.length === 2 )
-    throw _.err( arguments[ 1 ] );
-    else if( arguments.length === 3 )
-    throw _.err( arguments[ 1 ],arguments[ 2 ] );
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+    });
     else
-    throw _.err.apply( _,_arraySlice( arguments,1 ) );
+    throw _err
+    ({
+      args : _arraySlice( arguments,1 ),
+      level : 2,
+    });
   }
 
   return;
@@ -1663,11 +1844,21 @@ var assertMapNoUndefine = function assertMapNoUndefine( src )
   if( DEBUG === false )
   return;
 
-  var hasMsg = arguments.length > 1;
+  _.assert( arguments.length === 1 || arguments.length === 2 )
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
 
   for( var s in src )
   if( src[ s ] === undefined )
-  throw _.err( ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1687,8 +1878,13 @@ var assertMapOnly = function assertMapOnly( src )
   if( but.length )
   {
     debugger;
-    throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) );
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+      level : 2,
+    });
   }
+
 }
 
 //
@@ -1707,7 +1903,11 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
   if( but.length )
   {
     debugger;
-    throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) );
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
+      level : 2,
+    });
   }
 
 }
@@ -1717,16 +1917,25 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
 var assertMapAll = function( src,all,msg )
 {
 
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( arguments.length === 2 || _.strIs( msg ) );
-
   if( DEBUG === false )
   return;
 
+  _assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapBut( all,src ) );
 
   if( but.length )
-  throw _.err( msg ? msg : '','Object should have fields :',but.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1735,16 +1944,25 @@ var assertMapAll = function( src,all,msg )
 var assertMapOwnAll = function( src,all,msg )
 {
 
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( arguments.length === 2 || _.strIs( msg ) );
-
   if( DEBUG === false )
   return;
 
+  _assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapOwnBut( all,src ) );
 
   if( but.length )
-  throw _.err( msg ? msg : '','Object should have fields :',but.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have own fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1752,10 +1970,6 @@ var assertMapOwnAll = function( src,all,msg )
 
 var assertMapNone = function( src )
 {
-
-/*
-  throw _.err( 'not tested' );
-*/
 
   if( DEBUG === false )
   return;
@@ -1775,7 +1989,14 @@ var assertMapNone = function( src )
   }
 
   if( Object.keys( none ).length )
-  throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should not have fields :',none.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',none.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1791,23 +2012,6 @@ var assertMapOwnNone = function( src,none )
   var hasMsg = _.strIs( arguments[ l-1 ] );
   if( hasMsg ) l -= 1;
 
-/*
-  if( l > 2 )
-  {
-    var args =_ArraySlice.call( arguments,1,l ); debugger;
-    none = _.mapCopy.apply( this,args );
-  }
-
-  var has = Object.keys( _._mapScreens
-  ({
-    filter : filter.own(),
-    iterateObject : none,
-    includeObject : src,
-    srcObject : src,
-    dstObject : {},
-  }));
-*/
-
   if( l > 2 )
   {
     var args =_ArraySlice.call( arguments,1,l ); debugger;
@@ -1822,7 +2026,14 @@ var assertMapOwnNone = function( src,none )
   }));
 
   if( has.length )
-  throw _.err( hasMsg ? arguments[ l-1 ] : '','Object should not have fields :',has.join( ',' ) );
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',has.join( ',' ) ],
+      level : 2,
+    });
+  }
 
 }
 
@@ -1831,17 +2042,20 @@ var assertMapOwnNone = function( src,none )
   /**
    * If condition failed, method prints warning messages passed after condition argument
    * @example
-   *  function checkAngles(a, b, c) {
-         wTools.warn((a + b + c) === 180, 'triangle with that angles does not exists');
-      };
-      checkAngles(120, 23, 130)
+    function checkAngles( a, b, c )
+    {
+       wTools.warn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+    };
+    checkAngles( 120, 23, 130 );
+
    // triangle with that angles does not exists
    * @param condition Condition to check.
    * @param messages messages to print.
    * @method warn
    * @memberof wTools
    */
-  var warn = function( condition )
+
+var warn = function( condition )
 {
 
   if( !condition )
@@ -1853,27 +2067,33 @@ var assertMapOwnNone = function( src,none )
 
 //
 
+// +++ formatting
+
   /**
-   * Return stack trace.
+   * Return stack trace as string.
    * @example
-   *  var stack;
-      function function1() {
-        function2();
-      }
+    var stack;
+    function function1()
+    {
+      function2();
+    }
 
-      function function2() {
-        function3();
-      }
+    function function2()
+    {
+      function3();
+    }
 
-      function function3() {
-        stack = wTools.stack();
-      }
+    function function3()
+    {
+      stack = wTools.stack();
+    }
 
-      stack
-     //"    at function3 (<anonymous>:10:17)
-     // at function2 (<anonymous>:6:2)
-     // at function1 (<anonymous>:2:2)
-     // at <anonymous>:1:1"
+    function1();
+    stack
+   //"    at function3 (<anonymous>:10:17)
+   // at function2 (<anonymous>:6:2)
+   // at function1 (<anonymous>:2:2)
+   // at <anonymous>:1:1"
    *
    * @returns {String} Return stack trace from call point.
    * @method stack
@@ -3040,7 +3260,7 @@ regexpBut_.defaults =
 
 var regexpArrayMake = function( src )
 {
-  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ) );
+  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
 
   src = _.arrayIron( src );
 
@@ -3281,7 +3501,7 @@ var regexpObjectMake = function( src,defaultMode )
   else if( _.mapIs( src ) )
   {
 
-    _.each( src,function( e,k,i )
+    _.each( src,function _onEach( e,k,i )
     {
       result[ k ] = _.regexpArrayMake( e );
     });
@@ -3289,7 +3509,7 @@ var regexpObjectMake = function( src,defaultMode )
   }
   else throw _.err( 'regexpObjectMake :','unknown src',src );
 
-  _.assertMapOnly( result,regexpObjectMake.names,'unknown regexp filters' );
+  _.assertMapOnly( result,regexpObjectMake.names,'Unknown regexp filters.' );
 
   return result;
 }
@@ -4958,7 +5178,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
   _assert( _.arrayIs( dst ),'arrayPrependOnceMerging :','expects array' );
 
-  for( var a = 1 ; a < arguments.length ; a++ )
+  for( var a = arguments.length-1 ; a > 0 ; a-- )
   {
     var argument = arguments[ a ];
 
@@ -4967,7 +5187,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = argument.length-1 ; i >= 0 ; i++ )
+      for( var i = argument.length-1 ; i >= 0 ; i-- )
       if( result.indexOf( argument[ i ] ) === -1 )
       result.unshift( argument[ i ] );
     }
@@ -5117,11 +5337,13 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  *
  * @param {Array} dstArray - Source array
  * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
  * @method arrayRemovedOnce
  * @returns {Number} - The index of element
  * @throws {Error} If the first argument is not an array
  * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
  * @memberof wTools#
  */
 
@@ -5155,6 +5377,26 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 
 //
 
+/**
+ * The arrayRemoveOnce() method removes the first matching element from (dstArray)
+ * that corresponds to the condition in the callback function and returns a modified array.
+ *
+ * @example
+ * // returns [ 1, 2, 3, 'str' ]
+ * var arr = _.arrayRemoveOnce([1, 'str', 2, 3, 'str'], 'str');
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemoveOnce
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
+
 var arrayRemoveOnce = function( dstArray,ins,onEqual )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -5168,6 +5410,28 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemovedAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the amount them.
+ *
+ * @example
+ * // returns 4
+ * var arr = _.arrayRemovedAll([ 1, 2, 3, 4, 5, 5, 5 ], 5, function (el, ins) {
+ *   return el < ins;
+ * });
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemovedAll
+ * @returns {Number} - The amount removed elements
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemovedAll = function( dstArray,ins,onEqual )
 {
@@ -5193,6 +5457,26 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 }
 
 //
+
+/**
+ * The arrayRemoveAll() method removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the modified array.
+ *
+ * @example
+ * // returns [ 1, 3, 5 ]
+ * var arr = _.arrayRemoveAll([1, 2, 2, 3, 5], 2);
+ *
+ * @param {Array} dstArray - Source array
+ * @param {Number} ins - Value to remove
+ * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
+   By default, it checks the equality of two arguments.
+ * @method arrayRemoveAll
+ * @returns {Array} - Modified array
+ * @throws {Error} If the first argument is not an array
+ * @throws {Error} If passed less than two or more than three arguments
+ * @throws {Error} If the third argument is not a function
+ * @memberof wTools#
+ */
 
 var arrayRemoveAll = function( dstArray,ins,onEqual )
 {
@@ -5365,6 +5649,23 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 
 //
 
+/**
+ * The arrayAs() method copies passed argument to the array.
+ *
+ * @example
+ * // returns [ false ]
+ * var arr = _.arrayAs(false);
+ *
+ * // returns [ { a: 1, b: 2 } ]
+ * var arr = _.arrayAs({a: 1, b: 2});
+ *
+ * @param {*} src - Source value
+ * @method arrayAs
+ * @returns {Array} - If passed null or undefined than return the empty array. If passed an array then return it.
+   Otherwise return an array which contains the element from argument.
+ * @memberof wTools#
+ */
+
 var arrayAs = function( src ) {
 
   if( src === null || src === undefined ) return [];
@@ -5415,6 +5716,21 @@ var arrayToStr = function( src,options )
 }
 
 //
+
+/**
+ * The arrayPut() method puts all value of arguments after second argument to (dstArray)
+ * in the position (dstOffset) and changes values of following index.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
+ * var arr = _.arrayPut([1, 2, 3, 4, 5, 6, 9], 2, 'str', true, [7, 8]);
+ *
+ * @param {arrayLike} dstArray - Source array
+ * @param {Number} dstOffset - The index of element where need to put the new values
+ * @method arrayPut
+ * @returns {arrayLike} - Modified array
+ * @memberof wTools#
+ */
 
 var arrayPut = function arrayPut( dstArray, dstOffset )
 {
@@ -5536,6 +5852,30 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 
 //
 
+/**
+ * The arrayFill() method creates a new array and fills it a values.
+ *
+ * @example
+ * // returns [ 3, 3, 3, 3, 3 ]
+ * var arr = _.arrayFill({times: 5, value: 3});
+ *
+ * // returns [ 0, 0, 0, 0 ]
+ * var arr = _.arrayFill(4);
+ *
+ * // returns [ 0, 0, 0 ]
+ * var arr = _.arrayFill([1, 2, 3]);
+ *
+ * @param {Object} options - Options to fill the array
+ * @param {Number} options.times - The count of repeats.
+   If in the function passed Array, the times will be equal the length of array. If Number than this value.
+ * @param {Number} [options.value = 0] - Value for the filling
+ * @method arrayFill
+ * @returns {Array} - The new array
+ * @throws {Error} If missed argument, or got more than one argument
+ * @throws {Error} If passed argument is not object
+ * @memberof wTools#
+ */
+
 var arrayFill = function arrayFill( options )
 {
 
@@ -5569,6 +5909,20 @@ var arrayFill = function arrayFill( options )
 
 //
 
+/**
+ * The arrayCompare() method returns the first difference between the values of the first array from the second.
+ *
+ * @example
+ * // returns 3
+ * var arr = _.arrayCompare([1, 5], [1, 2]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arrayCompare
+ * @returns {Number} - Difference the values
+ * @memberof wTools#
+ */
+
 var arrayCompare = function( src1,src2 )
 {
 
@@ -5586,6 +5940,20 @@ var arrayCompare = function( src1,src2 )
 }
 
 //
+
+/**
+ * The arraySame() method check the equality of two arrays.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arraySame([1, 2, 3], [1, 2, 3]);
+ *
+ * @param {Array} src1 - The first array
+ * @param {Array} src2 - The second array
+ * @method arraySame
+ * @returns {Boolean} - Returns true if all values of the two array are equal. Otherwise returns false.
+ * @memberof wTools#
+ */
 
 var arraySame = function( src1,src2 )
 {
@@ -5681,6 +6049,20 @@ var arrayLeftGet = function( arr,ins,equalizer )
 
 //
 
+/**
+ * The arrayHasAny() method checks in the array has at least one value of the following arguments.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arrayHasAny([ 5, 'str', 42, false ], false, 7);
+ *
+ * @param {arrayLike} src - Source array
+ * @method arrayHasAny
+ * @returns {Boolean} - Returns true if there are and false if not
+ * @throws {Error} If the first argument in not an array
+ * @memberof wTools#
+ */
+
 var arrayHasAny = function( src )
 {
   _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayHasAny :','array expected' );
@@ -5700,6 +6082,22 @@ var arrayHasAny = function( src )
 }
 
 //
+
+/**
+ * The arrayCount() method returns the count of matching elements in the array.
+ *
+ * @example
+ * // returns 2
+ * var arr = _.arrayCount([1, 2, 'str', 10, 10, true], 10);
+ *
+ * @param {arrayLike} src - Source array
+ * @param {*} instance - Value to search
+ * @method arrayCount
+ * @returns {Number} - Count of elements
+ * @throws {Error} If passed arguments is less than two or more than three
+ * @throws {Error} If the first argument is not an array like object
+ * @memberof wTools#
+ */
 
 var arrayCount = function( src,instance )
 {
@@ -5808,6 +6206,26 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 }
 
 //
+
+/**
+ * The arrayRandom() method returns an array which contains the random numbers.
+ *
+ * @example
+ * // returns [ 6, 2, 4, 7, 8 ]
+ * var arr = _.arrayRandom({
+ *   length: 5,
+ *   range: [1, 9],
+ *   int: true
+ * });
+ *
+ * @param {Object} options - Options for getting random numbers
+ * @param {Number} options.length - The length of array
+ * @param {Array} [options.range = [0, 1]] - The range of numbers
+ * @param {Boolean} [options.int = false] - Floating point numbers or not
+ * @method arrayRandom
+ * @returns {Array} - The array of numbers
+ * @memberof wTools#
+ */
 
 var arrayRandom = function( options )
 {
@@ -7703,7 +8121,7 @@ var mapScreens = function( srcObject,screenObject )
    * // returns { a : "abc", c : 33, d : "name" };
    * _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
    *
-   * @returns { objectLike } returns the object filled by unique [ key, value ]   
+   * @returns { objectLike } returns the object filled by unique [ key, value ]
    * from others objects.
    * @method mapScreen
    * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
