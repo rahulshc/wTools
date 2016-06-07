@@ -1586,8 +1586,6 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
-// !!! very good
-
   /**
    * Creates Error object based on passed options.
    * Result error contains in message detailed stack trace and error description.
@@ -1710,19 +1708,15 @@ _err.defaults =
 
 //
 
-// !!! not bad
-// +++ improve code formatting
-// +++ please add "concatenate" word to description
-
   /**
    * Creates error object, with message created from passed `msg` parameters and contains error trace.
    * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
    concatenating them.
    *
    * @example
-    function divide ( x, y )
+    function divide( x, y )
     {
-      if (y == 0 )
+      if( y == 0 )
         throw wTools.err( 'divide by zero' )
       return x / y;
     }
@@ -1755,10 +1749,6 @@ var err = function err()
 
 //
 
-// !!! good
-// +++ improve code formatting
-// +++ please use @see
-
   /**
    * Creates error object, with message created from passed `msg` parameters and contains error trace.
    * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
@@ -1767,9 +1757,9 @@ var err = function err()
    * @see {@link wTools#err}
    *
    *@example
-     function divide ( x, y )
+     function divide( x, y )
      {
-        if (y == 0 )
+        if( y == 0 )
           throw wTools.errLog('divide by zero')
         return x / y;
      }
@@ -1824,11 +1814,6 @@ var errLog = function errLog()
 }
 
 //
-
-// !!! good
-// +++ replace terminates by returns
-// !!! less fututure more present simple
-// !!! no but :)
 
   /**
    * Checks condition. If condition converts to true method returns without exceptions.
@@ -5083,7 +5068,7 @@ var arrayCopy = function arrayCopy()
     }
   }
 
-  // !!! not optimal !!!
+  // !!! not optimal
 
   return result;
 }
