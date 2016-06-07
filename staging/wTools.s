@@ -2381,7 +2381,7 @@ var objectLike = function( src )
    * // returns false
    * mapIs( [ 3, 7, 13 ] );
    *
-   * @returns { boolean }
+   * @returns { boolean } Returns true if (src) is an Object.
    * @method mapIs
    * @memberof wTools
    */
@@ -2392,6 +2392,12 @@ var mapIs = function( src )
   /*return _.objectIs( src ) && src.__proto__ === Object.prototype;*/
 }
 
+  //
+  // !!! Not bad.
+  // !!! Please change the proposal 'is object' to the 'is an Array'.
+  // !!! Please change '@return' to the '@returns'.
+  // !!! Please add description for @param and @returns.
+  // !!! Please improve code formatting: add more spaces.
 /**
  * Function arrayIs checks incoming param whether it is array.
  * Returns "true" if incoming param is object. Othervise "false" returned.
@@ -4619,6 +4625,11 @@ var dateToStr = function dateToStr( date )
 // --
 // array
 // --
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please change the proposal 'creates a new array' to the
+  //     'returns a shallow copy of a portion of an array'.
 
 /**
  * The arraySub() method creates a new array or a new TypedArray that contains
@@ -4661,6 +4672,9 @@ var arraySub = function( src,begin,end )
 // does it throw something? !!!
 // second arguments is optional !!!
 
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 /**
  * The arrayNew() method returns a new array or a new TypedArray with length equal (length)
  * or the same length of the initial array if second argument is not provided.
@@ -4701,6 +4715,9 @@ var arrayNew = function( ins,length )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arrayNewOfSameLength() method returns a new empty array or a new TypedArray with the same length as in (ins).
@@ -4729,6 +4746,11 @@ var arrayNewOfSameLength = function( ins )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces.
+  // !!! @param (dst) has to be @param { ( number | arrayLike ) }.
+  // !!! Please add description: What will happen if the first argument is an array?
+  // !!! Please add at least two different example.
 
 /**
  * The arrayOrNumber() method returns a new array which containing the elements only type of Number.
@@ -4763,9 +4785,12 @@ var arrayOrNumber = function( dst,length )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
- * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray).
+ * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
  *
  * @example
  * // returns [ 3, 4, 5 ]
@@ -4856,6 +4881,11 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } - 'description'.
+  // !!! Please add description: What will happen if within (arguments) will be an array or an object?
 
 /**
  * The arrayIron() method copy the values of all arguments to a new array.
