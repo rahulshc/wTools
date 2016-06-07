@@ -1142,6 +1142,35 @@ var entityMax = function( src,onElement )
 }
 
 //
+
+var entityCoerceTo = function( src,ins )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.numberIs( ins ) )
+  {
+
+    return _.numberFrom( src );
+
+  }
+  else if( _.strIs( ins ) )
+  {
+
+    return _.strFrom( src );
+
+  }
+  else if( _.boolIs( ins ) )
+  {
+
+    return _.boolFrom( src );
+
+  }
+  else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
+
+}
+
+//
 /*
 var strFormat = function( src,context )
 {
@@ -2599,9 +2628,11 @@ var typeIsBuffer = function( src )
 
 }
 
-//
+// --
+// bool
+// --
 
-var toBool = function( src )
+var boolFrom = function( src )
 {
   if( strIs( src ) )
   {
@@ -4438,7 +4469,7 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
-    wConsequence.giveTo( con );
+    wConsequence.give( con );
     con.then_( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
@@ -4447,13 +4478,13 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.ping();
     if( result === false )
     clearInterval( id );
-    wConsequence.giveTo( con );
+    wConsequence.give( con );
     con.then_( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
-    wConsequence.giveTo( con );
+    wConsequence.give( con );
     con.then_( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
@@ -4747,6 +4778,8 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 }
 
 //
+
+// !!! not clear what for?
 
 /**
  * The arrayIron() method copy the values of all arguments to a new array.
@@ -7792,6 +7825,23 @@ var mapOwn = function( object,name )
 
 //
 
+var mapHas = function( object,name )
+{
+  var name = _.nameUnfielded( name ).coded;
+
+  var descriptor = Object.getOwnPropertyDescriptor( object,name );
+
+  if( !descriptor )
+  return false;
+
+  if( descriptor.set && descriptor.set.forbid )
+  return false;
+
+  return true;
+}
+
+//
+
   /**
    * Returns new object with unique keys.
    *
@@ -8602,6 +8652,8 @@ var Proto =
   entityMin : entityMin,
   entityMax : entityMax,
 
+  entityCoerceTo : entityCoerceTo,
+
 
   // iterator
 
@@ -8684,7 +8736,10 @@ var Proto =
   typeOf : typeOf,
   typeIsBuffer : typeIsBuffer,
 
-  toBool : toBool,
+
+  // bool
+
+  boolFrom : boolFrom,
 
 
   // number
@@ -8917,6 +8972,7 @@ var Proto =
   // map logic
 
   mapOwn : mapOwn,
+  mapHas : mapHas,
 
   mapSame : mapSame,
   mapContain : mapContain,

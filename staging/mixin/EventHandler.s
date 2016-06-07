@@ -111,6 +111,17 @@ var finit = function( Prototype )
 // register
 // --
 
+var eventHandlerInit = function()
+{
+  var self = this;
+
+  _.assert( arguments.length === 0 );
+
+  self._eventHandlerDescriptorsByKind( '' );
+}
+
+//
+
 var eventHandlerRegister = function( kind, onHandle )
 {
   var self = this;
@@ -800,6 +811,8 @@ var Proto =
 
   // register
 
+  eventHandlerInit : eventHandlerInit,
+
   eventHandlerRegister : eventHandlerRegister,
   addEventListener : eventHandlerRegister,
   on : eventHandlerRegister,
@@ -809,6 +822,7 @@ var Proto =
   eventHandlerRegisterOneTime : eventHandlerRegisterOneTime,
   once : eventHandlerRegisterOneTime,
   _eventHandlerRegister: _eventHandlerRegister,
+
 
   // unregister
 
