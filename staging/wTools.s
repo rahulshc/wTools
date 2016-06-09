@@ -503,9 +503,18 @@ var _entitySame = function _entitySame( src1,src2,options,path )
 
 /**
  * Deep strict equaliser of 2 entities.
+ * @example
+   var obj1 = { a: 0, b: 1, e: { c: 2, d: 3 } },
+    obj2 = { a: 0, b: 1, e: { c: 2, d: 3 } };
+
+   wTools.entityIdentical( obj1, obj2 );
+
+   // true
  * @param {object} src1 - entity to compare.
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
+ * @throws {Error} Missed arguments.
+ * @throws {Error} Extra arguments.
  * @method entityIdentical
  * @memberof wTools
  */
@@ -527,9 +536,18 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 
 /**
  * Deep soft equaliser of 2 entities.
+ * @example
+   var eps = 1e-5,
+   x = 1,
+   y = 1 + eps / 2
+
+   wTools.entityEquivalent( x, y );
+   // true
  * @param {object} src1 - entity to compare.
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
+ * @throws {Error} Missed arguments.
+ * @throws {Error} Extra arguments.
  * @method entityEquivalent
  * @memberof wTools
  */
@@ -565,9 +583,16 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
 
 /**
  * Deep contain equaliser of 2 entities.
+ * @example
+   var arr1 = [ 0, 1, 2, 3, 9 ],
+   arr2 = [ 0, 1, 2 ];
+   wTools.entityContain( arr1, arr2 );
+   // true
  * @param {object} src1 - entity to compare.
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
+ * @throws {Error} Missed arguments.
+ * @throws {Error} Extra arguments.
  * @method entityContain
  * @memberof wTools
  */
@@ -1101,7 +1126,7 @@ var _entityMost = function( src,onElement,returnMax )
   if( onElement === undefined )
   onElement = function( element ){ return element; }
 
-  var onCompare = null;
+  var onCompare = null;ghb
 
   if( returnMax )
   onCompare = function( a,b )
@@ -1232,6 +1257,35 @@ var entityMax = function( src,onElement )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   return _entityMost( src,onElement,1 );
+}
+
+//
+
+var entityCoerceTo = function( src,ins )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.numberIs( ins ) )
+  {
+
+    return _.numberFrom( src );
+
+  }
+  else if( _.strIs( ins ) )
+  {
+
+    return _.strFrom( src );
+
+  }
+  else if( _.boolIs( ins ) )
+  {
+
+    return _.boolFrom( src );
+
+  }
+  else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
+
 }
 
 //
@@ -1532,8 +1586,6 @@ var eachRecursive = function() {
 // diagnostics
 // --
 
-// !!! very good
-
   /**
    * Creates Error object based on passed options.
    * Result error contains in message detailed stack trace and error description.
@@ -1656,19 +1708,15 @@ _err.defaults =
 
 //
 
-// !!! not bad
-// +++ improve code formatting
-// +++ please add "concatenate" word to description
-
   /**
    * Creates error object, with message created from passed `msg` parameters and contains error trace.
    * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
    concatenating them.
    *
    * @example
-    function divide ( x, y )
+    function divide( x, y )
     {
-      if (y == 0 )
+      if( y == 0 )
         throw wTools.err( 'divide by zero' )
       return x / y;
     }
@@ -1701,10 +1749,6 @@ var err = function err()
 
 //
 
-// !!! good
-// +++ improve code formatting
-// +++ please use @see
-
   /**
    * Creates error object, with message created from passed `msg` parameters and contains error trace.
    * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
@@ -1713,9 +1757,9 @@ var err = function err()
    * @see {@link wTools#err}
    *
    *@example
-     function divide ( x, y )
+     function divide( x, y )
      {
-        if (y == 0 )
+        if( y == 0 )
           throw wTools.errLog('divide by zero')
         return x / y;
      }
@@ -1770,11 +1814,6 @@ var errLog = function errLog()
 }
 
 //
-
-// !!! good
-// +++ replace terminates by returns
-// !!! less fututure more present simple
-// !!! no but :)
 
   /**
    * Checks condition. If condition converts to true method returns without exceptions.
@@ -2714,9 +2753,11 @@ var typeIsBuffer = function( src )
 
 }
 
-//
+// --
+// bool
+// --
 
-var toBool = function( src )
+var boolFrom = function( src )
 {
   if( strIs( src ) )
   {
@@ -4553,7 +4594,7 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
-    wConsequence.giveTo( con );
+    wConsequence.give( con );
     con.then_( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
@@ -4562,13 +4603,13 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.ping();
     if( result === false )
     clearInterval( id );
-    wConsequence.giveTo( con );
+    wConsequence.give( con );
     con.then_( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
-    wConsequence.giveTo( con );
+    wConsequence.give( con );
     con.then_( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
@@ -4887,6 +4928,8 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
   // !!! Please add @param { ... } - 'description'.
   // !!! Please add description: What will happen if within (arguments) will be an array or an object?
 
+// !!! not clear what for?
+
 /**
  * The arrayIron() method copy the values of all arguments to a new array.
  *
@@ -5055,7 +5098,7 @@ var arrayCopy = function arrayCopy()
     }
   }
 
-  // !!! not optimal !!!
+  // !!! not optimal
 
   return result;
 }
@@ -7931,6 +7974,23 @@ var mapOwn = function( object,name )
 
 //
 
+var mapHas = function( object,name )
+{
+  var name = _.nameUnfielded( name ).coded;
+
+  var descriptor = Object.getOwnPropertyDescriptor( object,name );
+
+  if( !descriptor )
+  return false;
+
+  if( descriptor.set && descriptor.set.forbid )
+  return false;
+
+  return true;
+}
+
+//
+
   /**
    * Returns new object with unique keys.
    *
@@ -8741,6 +8801,8 @@ var Proto =
   entityMin : entityMin,
   entityMax : entityMax,
 
+  entityCoerceTo : entityCoerceTo,
+
 
   // iterator
 
@@ -8823,7 +8885,10 @@ var Proto =
   typeOf : typeOf,
   typeIsBuffer : typeIsBuffer,
 
-  toBool : toBool,
+
+  // bool
+
+  boolFrom : boolFrom,
 
 
   // number
@@ -9056,6 +9121,7 @@ var Proto =
   // map logic
 
   mapOwn : mapOwn,
+  mapHas : mapHas,
 
   mapSame : mapSame,
   mapContain : mapContain,
