@@ -4928,7 +4928,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
   // !!! Not bad.
   // !!! Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } - 'description'.
+  // !!! Please add @param { ... } arguments[] - 'description'.
   // !!! Please add description: How method adds elements,if (arguments) contain an array or an object?
   // !!! Not clear what the (@returns) returns?
 
@@ -5112,7 +5112,7 @@ var arrayCopy = function arrayCopy()
   // !!! Not bad
   // !!! Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } - 'description'.
+  // !!! Please add @param { ... } arguments[] - 'description'.
   // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
   // !!! Not clear what the (@returns) returns.
 
@@ -5156,7 +5156,7 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
   // !!! Not bad
   // !!! Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } - 'description'.
+  // !!! Please add @param { ... } arguments[] - 'description'.
   // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
   // !!! Not clear what the (@returns) returns?
 
@@ -5201,7 +5201,7 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
   // !!! Not bad
   // !!! Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } - 'description'.
+  // !!! Please add @param { ... } arguments[] - 'description'.
   // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
   // !!! Not clear what the (@returns) returns?
 
@@ -5256,7 +5256,7 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
   // !!! Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
   // !!! Please change the proposal 'The arrayAppendOnceMerging() to the arrayPrependOnceMerging()'.
-  // !!! Please add @param { ... } - 'description'.
+  // !!! Please add @param { ... } arguments[] - 'description'.
   // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
   // !!! Not clear what the (@returns) returns.
 
@@ -5532,7 +5532,14 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 
 //
 
-/**
+   // !!! Not bad
+   // !!! Please improve code formatting: add more spaces,
+   //     add dots at the end of sentences.
+   // !!! Please add description: How does it work, with default callback and with another cb
+   //     and add at least two different example of it.
+   // !!! Describe the (@callback) function.
+
+  /**
  * The arrayRemovedAll() method removes all (ins) values from (dstArray)
  * that corresponds to the condition in the callback function and returns the amount them.
  *
@@ -5578,6 +5585,13 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add description: How does it work if passed two or three arguments
+  // !!! and add at least two different example of it.
+  // !!! Describe the (@callback) function.
 
 /**
  * The arrayRemoveAll() method removes all (ins) values from (dstArray)
@@ -5701,25 +5715,25 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  * into a new array.
  *
  * It takes array and two variables
- * checks if array is an Array creates variables (result, a, b)
+ * checks if (array) is an Array creates variables (result, a, b)
  * and assign them values.
- * arraySlice() creates a new array from (a) to but not including (b).
+ * The arraySlice() creates a new array from (a) to but not including (b).
  * If (b) is omitted, arraySlice extracts
  * through the end of the sequence (array.length).
  * If not arguments, it assigns a default variables
- * and return an empty array.
+ * and returns an empty array.
  *
- * @param { Array } [ array = [] ] - Array
+ * @param { Array } [ array = [] ] - Array to return a new array from begin to but not including end.
  * @param { a } [ a = 0 ] - begin zero-based index at which to begin extraction.
  * @param { b } [ b = array.length ] - end zero-based index at which to end extraction.
- * Array to return a new array from begin to but not including end.
  *
  * @example
  * // returns [ 3, 4, 5, 6, 7, 8, 9 ]
  * arraySlice( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 9 );
  *
- * @returns { Array } returns a shallow copy of elements from the original array.
+ * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
+ * @throws { Error } Will throw an Error if (array) is not an Array.
  * @memberof wTools
 */
 
@@ -5769,6 +5783,10 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arrayAs() method copies passed argument to the array.
@@ -5838,7 +5856,14 @@ var arrayToStr = function( src,options )
 
 //
 
-/**
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How does it work if (arguments) has an array or an object.
+
+
+  /**
  * The arrayPut() method puts all value of arguments after second argument to (dstArray)
  * in the position (dstOffset) and changes values of following index.
  *
@@ -5973,6 +5998,12 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add to the @param { number } [ options.times = result.length ].
+  // !!! There is one more @throws at the end of method, add it please.
+
 /**
  * The arrayFill() method creates a new array and fills it a values.
  *
@@ -6029,6 +6060,9 @@ var arrayFill = function arrayFill( options )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arrayCompare() method returns the first difference between the values of the first array from the second.
@@ -6061,6 +6095,10 @@ var arrayCompare = function( src1,src2 )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arraySame() method check the equality of two arrays.
@@ -6170,6 +6208,12 @@ var arrayLeftGet = function( arr,ins,equalizer )
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How does it work?
+
 /**
  * The arrayHasAny() method checks in the array has at least one value of the following arguments.
  *
@@ -6203,6 +6247,10 @@ var arrayHasAny = function( src )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arrayCount() method returns the count of matching elements in the array.
@@ -6328,6 +6376,10 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+
 /**
  * The arrayRandom() method returns an array which contains the random numbers.
  *
@@ -6374,8 +6426,15 @@ var arrayRandom = function( options )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please describe the @example?
+  // !!! Please add @throws?
+  // !!! Please add description how does it work?
+  // !!! Please correct this word '@return' to the '@returns'.
 
-/**
+  /**
  * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1.
  *
  * @example
@@ -7631,8 +7690,8 @@ var mapToArray = function( src )
 var mapValWithIndex = function( src,index )
 {
 
- // _.assert( arguments.length > 2 );
- // _.assert( _.objectLike( src ) );
+  //_.assert( arguments.length === 2 );
+  //_.assert( _.objectLike( src ) );
 
 
   if( index < 0 ) return;
@@ -7672,7 +7731,7 @@ var mapValWithIndex = function( src,index )
 var mapKeyWithIndex = function( src,index )
 {
 
-  // _.assert( arguments.length > 2 );
+  // _.assert( arguments.length === 2 );
   // _.assert( _.objectLike( src ) );
 
   if( index < 0 ) return;
