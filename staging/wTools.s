@@ -6376,6 +6376,10 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+
 /**
  * The arrayRandom() method returns an array which contains the random numbers.
  *
@@ -6422,8 +6426,15 @@ var arrayRandom = function( options )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please describe the @example?
+  // !!! Please add @throws?
+  // !!! Please add description how does it work?
+  // !!! Please correct this word '@return' to the '@returns'.
 
-/**
+  /**
  * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1.
  *
  * @example
