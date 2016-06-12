@@ -5815,12 +5815,111 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
  * @memberof wTools#
  */
 
-var arrayAs = function( src ) {
+var arrayAs = function( src )
+{
 
   if( src === null || src === undefined ) return [];
   else if( _.arrayIs( src ) ) return src;
   else return [ src ];
-};
+
+}
+
+//
+
+var arrayUniqueIs = function arrayUniqueIs( o )
+{
+
+  debugger;
+
+  if( _.arrayLike( o ) )
+  o = { src : o };
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( o.src ) );
+  _.assertMapOnly( o,arrayUniqueIs.defaults );
+
+  /**/
+
+  if( o.onElement )
+  {
+    throw _.err( 'not tested' );
+    o.src = _.enityMap( o.src,function( e ){ return o.onElement( e ) } );
+  }
+
+  /**/
+
+  var number = o.src.length;
+  var isUnique = arrayNewOfSameLength( o.src );
+  var index;
+
+  for( var i = 0 ; i < o.src.length ; i++ )
+  isUnique[ i ] = 1;
+
+  for( var i = 0 ; i < o.src.length ; i++ )
+  {
+
+    index = i;
+
+    if( !isUnique[ i ] )
+    continue;
+
+    var currentUnique = 1;
+    do
+    {
+      var index = o.src.indexOf( o.src[ i ],index+1 );
+      if( index !== -1 )
+      {
+        isUnique[ index ] = 0;
+        number -= 1;
+        currentUnique = 0;
+      }
+    }
+    while( index !== -1 );
+
+    if( !o.includeFirst )
+    if( !currentUnique )
+    {
+      isUnique[ i ] = 0;
+      number -= 1;
+    }
+
+  }
+
+  return { number : number, array : isUnique };
+}
+
+arrayUniqueIs.defaults =
+{
+  src : null,
+  onElement : null,
+  includeFirst : 0,
+}
+
+//
+
+var arrayUnique = function arrayUnique( src,onElement )
+{
+
+  debugger;
+
+  var isUnique = arrayUniqueIs
+  ({
+    src : src,
+    onElement : onElement,
+    includeFirst : 1,
+  });
+  var result = arrayNew( src,isUnique.number );
+
+  var c = 0;
+  for( var i = 0 ; i < src.length ; i++ )
+  if( isUnique.array[ i ] )
+  {
+    result[ c ] = src[ i ];
+    c += 1;
+  }
+
+  return result;
+}
 
 //
 
@@ -6293,6 +6392,39 @@ var arrayCount = function( src,instance )
   }
 
   return result;
+}
+
+//
+
+var arrayCountSame = function( src,onElement )
+{
+  var result = 0;
+  var found = [];
+  var onEelement = onEelement || function( e ){ return e };
+
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
+
+  for( var i1 = 0 ; i1 < src.length ; i1++ )
+  {
+    var element1 = onElement( src[ i1 ] );
+    if( found.indexOf( element1 ) !== -1 )
+    continue;
+
+    for( var i2 = i1+1 ; i2 < src.length ; i2++ )
+    {
+
+      var element2 = onElement( src[ i2 ] );
+      if( found.indexOf( element2 ) !== -1 )
+      continue;
+
+      if( element1 === element2 )
+      found.push( element1 );
+
+    }
+  }
+
+  return found.length;
 }
 
 //
@@ -7566,7 +7698,7 @@ var mapSupplement = function( dst )
    * @param { objectLike } srcContainer - The next object.
    * @param { string } key - The key of the (srcContainer) object.
    */
-  
+
   /**
    * The mapComplement() method returns an object
    * filled by all unique, clone [ key, value ].
@@ -9136,6 +9268,7 @@ var Proto =
   timeOut : timeOut,
 
   timePeriodic : timePeriodic,
+
 /*
   timePeriodicStart : timePeriodic,
   timePeriodicStop : timePeriodicStop,
@@ -9191,6 +9324,9 @@ var Proto =
   arraySplice : arraySplice,
   arrayAs : arrayAs,
 
+  arrayUniqueIs : arrayUniqueIs,
+  arrayUnique : arrayUnique,
+
   arrayToStr : arrayToStr,
 
   arrayPut : arrayPut,
@@ -9210,6 +9346,8 @@ var Proto =
 
   arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
+  arrayCountSame : arrayCountSame,
+
   arraySum : arraySum,
 
   arraySupplement : arraySupplement,
