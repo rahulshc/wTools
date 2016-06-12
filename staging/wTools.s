@@ -2426,7 +2426,7 @@ var objectLike = function( src )
    * // returns false
    * mapIs( [ 3, 7, 13 ] );
    *
-   * @returns { boolean }
+   * @returns { boolean } Returns true if (src) is an Object.
    * @method mapIs
    * @memberof wTools
    */
@@ -2437,6 +2437,12 @@ var mapIs = function( src )
   /*return _.objectIs( src ) && src.__proto__ === Object.prototype;*/
 }
 
+  //
+  // !!! Not bad.
+  // !!! Please change the proposal 'is object' to the 'is an Array'.
+  // !!! Please change '@return' to the '@returns'.
+  // !!! Please add description for @param and @returns.
+  // !!! Please improve code formatting: add more spaces.
 /**
  * Function arrayIs checks incoming param whether it is array.
  * Returns "true" if incoming param is object. Othervise "false" returned.
@@ -4670,6 +4676,12 @@ var dateToStr = function dateToStr( date )
 // --
 // array
 // --
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please change the proposal 'creates a new array' to the
+  //     'returns a shallow copy of a portion of an array'.
+  // !!! Describe the @returns.
 
 /**
  * The arraySub() method creates a new array or a new TypedArray that contains
@@ -4712,6 +4724,10 @@ var arraySub = function( src,begin,end )
 // does it throw something? !!!
 // second arguments is optional !!!
 
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Describe the @returns.
 /**
  * The arrayNew() method returns a new array or a new TypedArray with length equal (length)
  * or the same length of the initial array if second argument is not provided.
@@ -4752,6 +4768,10 @@ var arrayNew = function( ins,length )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add description to the @returns 'with the same length as in (ins)'.
 
 /**
  * The arrayNewOfSameLength() method returns a new empty array or a new TypedArray with the same length as in (ins).
@@ -4780,6 +4800,11 @@ var arrayNewOfSameLength = function( ins )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces.
+  // !!! @param (dst) has to be @param { ( number | arrayLike ) }.
+  // !!! Please add description: What will happen if the first argument is an array?
+  // !!! Please add at least two different example.
 
 /**
  * The arrayOrNumber() method returns a new array which containing the elements only type of Number.
@@ -4814,9 +4839,12 @@ var arrayOrNumber = function( dst,length )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
- * The arraySelect() method selects elements form (srcArray) by indexes of (indicesArray).
+ * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
  *
  * @example
  * // returns [ 3, 4, 5 ]
@@ -4907,6 +4935,12 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 }
 
 //
+  // !!! Not bad.
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How method adds elements,if (arguments) contain an array or an object?
+  // !!! Not clear what the (@returns) returns?
 
 // !!! not clear what for?
 
@@ -5085,6 +5119,13 @@ var arrayCopy = function arrayCopy()
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // !!! Not clear what the (@returns) returns.
+
 /**
  * The arrayAppendMerging() method returns an array of elements from (dst)
  * and appending all of the following arguments to the end.
@@ -5122,6 +5163,13 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // !!! Not clear what the (@returns) returns?
+
 
 /**
  * The arrayPrependMerging() method returns an array of elements from (dst)
@@ -5160,6 +5208,12 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // !!! Not clear what the (@returns) returns?
 
 /**
  * The arrayAppendOnceMerging() method returns an array of elements from (dst)
@@ -5208,6 +5262,13 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please change the proposal 'The arrayAppendOnceMerging() to the arrayPrependOnceMerging()'.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // !!! Not clear what the (@returns) returns.
 
 /**
  * The arrayAppendOnceMerging() method returns an array of elements from (dst)
@@ -5256,6 +5317,10 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Not clear what the (@returns) returns.
 
 /**
  * The arrayElementsSwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
@@ -5369,8 +5434,14 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add description: How it works if passed two or three arguments.
+  // !!! Not clear what the (@returns) returns.
 
-/**
+
+  /**
  * Callback for compare two value.
  *
  * @callback compareCallback
@@ -5429,8 +5500,15 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add description: How it works if passed two or three arguments.
+  // !!! Describe the (@callback) function.
+  // !!! Not clear what the (@returns) returns.
 
-/**
+
+  /**
  * The arrayRemoveOnce() method removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
@@ -5464,7 +5542,14 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 
 //
 
-/**
+   // !!! Not bad
+   // !!! Please improve code formatting: add more spaces,
+   //     add dots at the end of sentences.
+   // !!! Please add description: How does it work, with default callback and with another cb
+   //     and add at least two different example of it.
+   // !!! Describe the (@callback) function.
+
+  /**
  * The arrayRemovedAll() method removes all (ins) values from (dstArray)
  * that corresponds to the condition in the callback function and returns the amount them.
  *
@@ -5510,6 +5595,13 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add description: How does it work if passed two or three arguments
+  // !!! and add at least two different example of it.
+  // !!! Describe the (@callback) function.
 
 /**
  * The arrayRemoveAll() method removes all (ins) values from (dstArray)
@@ -5633,25 +5725,25 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  * into a new array.
  *
  * It takes array and two variables
- * checks if array is an Array creates variables (result, a, b)
+ * checks if (array) is an Array creates variables (result, a, b)
  * and assign them values.
- * arraySlice() creates a new array from (a) to but not including (b).
+ * The arraySlice() creates a new array from (a) to but not including (b).
  * If (b) is omitted, arraySlice extracts
  * through the end of the sequence (array.length).
  * If not arguments, it assigns a default variables
- * and return an empty array.
+ * and returns an empty array.
  *
- * @param { Array } [ array = [] ] - Array
+ * @param { Array } [ array = [] ] - Array to return a new array from begin to but not including end.
  * @param { a } [ a = 0 ] - begin zero-based index at which to begin extraction.
  * @param { b } [ b = array.length ] - end zero-based index at which to end extraction.
- * Array to return a new array from begin to but not including end.
  *
  * @example
  * // returns [ 3, 4, 5, 6, 7, 8, 9 ]
  * arraySlice( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 9 );
  *
- * @returns { Array } returns a shallow copy of elements from the original array.
+ * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
+ * @throws { Error } Will throw an Error if (array) is not an Array.
  * @memberof wTools
 */
 
@@ -5701,6 +5793,10 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arrayAs() method copies passed argument to the array.
@@ -5770,7 +5866,14 @@ var arrayToStr = function( src,options )
 
 //
 
-/**
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How does it work if (arguments) has an array or an object.
+
+
+  /**
  * The arrayPut() method puts all value of arguments after second argument to (dstArray)
  * in the position (dstOffset) and changes values of following index.
  *
@@ -5905,6 +6008,12 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add to the @param { number } [ options.times = result.length ].
+  // !!! There is one more @throws at the end of method, add it please.
+
 /**
  * The arrayFill() method creates a new array and fills it a values.
  *
@@ -5961,6 +6070,9 @@ var arrayFill = function arrayFill( options )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arrayCompare() method returns the first difference between the values of the first array from the second.
@@ -5993,6 +6105,10 @@ var arrayCompare = function( src1,src2 )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arraySame() method check the equality of two arrays.
@@ -6102,6 +6218,12 @@ var arrayLeftGet = function( arr,ins,equalizer )
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please add @param { ... } arguments[] - 'description'.
+  // !!! Please add description: How does it work?
+
 /**
  * The arrayHasAny() method checks in the array has at least one value of the following arguments.
  *
@@ -6135,6 +6257,10 @@ var arrayHasAny = function( src )
 }
 
 //
+
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
 
 /**
  * The arrayCount() method returns the count of matching elements in the array.
@@ -6260,6 +6386,10 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 
 //
 
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+
 /**
  * The arrayRandom() method returns an array which contains the random numbers.
  *
@@ -6306,8 +6436,15 @@ var arrayRandom = function( options )
 }
 
 //
+  // !!! Not bad
+  // !!! Please improve code formatting: add more spaces,
+  //     add dots at the end of sentences.
+  // !!! Please describe the @example?
+  // !!! Please add @throws?
+  // !!! Please add description how does it work?
+  // !!! Please correct this word '@return' to the '@returns'.
 
-/**
+  /**
  * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1.
  *
  * @example
@@ -7194,6 +7331,8 @@ buffersDeserialize.defaults =
 // map
 // --
 
+  // !!! this description could be improved by adding the param (options)
+
   /**
    * The mapClone() method is used to clone the values of all
    * enumerable own properties from (srcObject) object to an (options.dst) object.
@@ -7251,6 +7390,13 @@ var mapClone = function( srcObject,options )
 }
 
   /**
+   * @callback _.filter.supplementary()
+   * @param { objectLike } dstObject - The target object.
+   * @param { objectLike } argument - The next object.
+   * @param { string } key - The key of the (argument) object.
+   */
+
+  /**
    * The mapExtendFiltering() creates a new [ key, value ]
    * from the next objects if callback function (filter) returns true.
    *
@@ -7258,19 +7404,14 @@ var mapClone = function( srcObject,options )
    * and adds to the (srcObject) all the [ key, value ] for which callback
    * function (filter) returns true.
    *
-   * @callback requestCallback
-   * @param { objectLike } dstObject - The target object.
-   * @param { objectLike } argument - The next object.
-   * @param { string } key - The key of the (argument) object.
-   *
-   * @param { requestCallback } filter - Callback function to test each [ key, value ]
+   * @param { _.filter.supplementary() } filter - Callback function to test each [ key, value ]
    * of the (dstObject) object.
    * @param { objectLike } dstObject - The target object.
    * @param { ...objectLike } - The next object.
    *
    * @example
    * // returns { a : 1, b : 2, c : 3 }
-   * mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+   * _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
    *
    * @returns { objectLike } Returns the unique [ key, value ].
    * @method mapExtendFiltering
@@ -7308,6 +7449,8 @@ var mapExtendFiltering = function( filter,dstObject )
 
   return result;
 }
+
+  // !!! the param "dstObject" is not optional.
 
 /**
  * The mapExtend() is used to copy the values of all properties
@@ -7356,12 +7499,20 @@ var mapExtend = function mapExtend( dstObject )
 
   return result;
 }
+  //
+
+  /**
+   * @callback  _.filter.supplementary()
+   * @param { objectLike } dstObject - The target object.
+   * @param { objectLike } argument - The next object.
+   * @param { string } key - The key of the (argument) object.
+   */
 
   /**
    * The mapSupplement() method returns an object with unique [ key, value ].
    *
    * It creates the variable (args), assign to a copy of pseudo array (arguments),
-   * adds a callback function filter to the beginning of the (args)
+   * adds a callback function ( _.filter.supplementary() ) to the beginning of the (args)
    * and returns an object with unique [ key, value ].
    *
    * @param { ...objectLike } - The source object(s).
@@ -7410,6 +7561,13 @@ var mapSupplement = function( dst )
 
 //
   /**
+   * @callback  _.filter.supplementaryCloning()
+   * @param { objectLike } dstContainer - The target object.
+   * @param { objectLike } srcContainer - The next object.
+   * @param { string } key - The key of the (srcContainer) object.
+   */
+  
+  /**
    * The mapComplement() method returns an object
    * filled by all unique, clone [ key, value ].
    *
@@ -7422,7 +7580,7 @@ var mapSupplement = function( dst )
    *
    * @example
    * // returns { a : 1, b : 'yyy', c : 3 };
-   * mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+   * _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
    *
    * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
    * @method mapComplement
@@ -7446,9 +7604,10 @@ var mapComplement = function( dst )
    *
    * @example
    * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
-   * mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+   * _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
    *
-   * @returns { objectLike } It will return the new object filled by [ key, value ].
+   * @returns { objectLike } It will return the new object filled by [ key, value ]
+   * from one or more source objects.
    * @method mapCopy
    * @memberof wTools
    */
@@ -7462,6 +7621,10 @@ var mapCopy = function mapCopy()
 // --
 // map converter
 // --
+
+  // !!! this description could be improved by adding example(s).
+  // !!! undefiend???
+  // !!! formatting
 
   /**
    * Returns first pair key / value as array.
@@ -7498,9 +7661,9 @@ var mapFirstPair = function mapFirstPair( srcObject )
    *
    * @example
    * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
-   * mapToArray( { a : 3, b : 13, c : 7 } );
+   * _.mapToArray( { a : 3, b : 13, c : 7 } );
    *
-   * @returns { array } returns a list of [ [ key, value ] ... ] pairs.
+   * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
    * @method mapToArray
    * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
    * @memberof wTools
@@ -7523,6 +7686,9 @@ var mapToArray = function( src )
 
 //
 
+  // !!! param (src) may be not only an array.
+  // !!! throws is not defined in the function.
+
   /**
    * The mapValWithIndex() returns value of (src) by corresponding (index).
    *
@@ -7532,12 +7698,12 @@ var mapToArray = function( src )
    * If true, it returns value of (src).
    * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
    *
-   * @param { array } src - The Array.
+   * @param { objectLike } src - An object.
    * @param { number } index - To find the position an element.
    *
    * @example
    * // returns 7
-   * mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
+   * _.mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
    *
    * @returns { * } Returns value of (src) by corresponding (index).
    * @method mapValWithIndex
@@ -7547,6 +7713,10 @@ var mapToArray = function( src )
 
 var mapValWithIndex = function( src,index )
 {
+
+  //_.assert( arguments.length === 2 );
+  //_.assert( _.objectLike( src ) );
+
 
   if( index < 0 ) return;
 
@@ -7560,6 +7730,10 @@ var mapValWithIndex = function( src,index )
 
 //
 
+  // !!! param (src) may be not only an array.
+  // !!! in the example does not return the value of "b".
+  // !!! throws is not defined in the function.
+
   /**
    * The mapKeyWithIndex() returns key of (src) by corresponding (index).
    *
@@ -7569,12 +7743,12 @@ var mapValWithIndex = function( src,index )
    * If true, it returns value of (src).
    * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
    *
-   * @param { array } src - The Array.
+   * @param { objectLike } src - An object.
    * @param { number } index - To find the position an element.
    *
    * @example
    * // returns 'b'
-   * mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
+   * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
    *
    * @returns { string } Returns key of (src) by corresponding (index).
    * @method mapKeyWithIndex
@@ -7584,6 +7758,9 @@ var mapValWithIndex = function( src,index )
 
 var mapKeyWithIndex = function( src,index )
 {
+
+  // _.assert( arguments.length === 2 );
+  // _.assert( _.objectLike( src ) );
 
   if( index < 0 ) return;
 
@@ -7611,7 +7788,7 @@ var mapKeyWithIndex = function( src,index )
    *
    * @example
    * // returns 'a : 1; b : 2; c : 3; d : 4'
-   * mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+   * _.mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
    *
    * @returns { string } Returns string (result) representing object.
    * @method mapToString
@@ -7622,7 +7799,7 @@ var mapToString = function( src,keyValSep,tupleSep )
 {
 
   if( !_.strIs( keyValSep ) ) keyValSep = ' : ';
-  if( !_.strIs( tupleSep ) ) keyValSep = '; ';
+  if( !_.strIs( tupleSep ) ) keyValSep = '; '; // !!! instead "keyValSep" should be "tupleSep"
   var result = '';
   for( var s in src )
   {
@@ -7650,7 +7827,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  *
  * @example
  * // returns [ "a", "b" ]
- * mapKeys( { a : 7, b : 13 } );
+ * _.mapKeys( { a : 7, b : 13 } );
  *
  * @return { array } Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
@@ -7690,9 +7867,9 @@ var mapKeys = function mapKeys( src )
  *
  * @example
  * // returns [ "7", "13" ]
- * mapValues( { a : 7, b : 13 } );
+ * _.mapValues( { a : 7, b : 13 } );
  *
- * @returns { array } returns an array whose elements are strings.
+ * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @method mapValues
  * @throws { Error } Will throw an Error if (src) is not an Object.
@@ -7725,7 +7902,7 @@ var mapValues = function( src )
  *
  * @example
  * // returns [ [ "a", 7 ], [ "b", 13 ] ]
- * mapPairs( { a : 7, b : 13 } );
+ * _.mapPairs( { a : 7, b : 13 } );
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @method mapPairs
@@ -7779,9 +7956,9 @@ var mapsPluck = function( srcMaps,filterName )
    *
    * @example
    * // returns { 33 : [ { key1 : 33 } ], 44 : [ { key1 : 44 }, { key2 : 77 } ] }
-   * mapGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');
+   * _.mapGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');
    *
-   * @returns { objectLike } Returns an object with certain group of key.
+   * @returns { object } Returns an object with certain group of key.
    * @method mapGroup
    * @throws { Error } Will throw an Error if (options.key) is not a string,
    * if (src) is not an object, if (options) is not an object.
@@ -7838,13 +8015,14 @@ var mapGroup = function( src,options )
  *
  * @example
  * returns undefined
- * mapSame( { a : 7, b : 13 }, { a : 33, b : 13 } );
+ * _.mapSame( { a : 7, b : 13 }, { a : 33, b : 13 } );
  *
  * @example
  * returns undefined
- * mapSame( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
+ * _.mapSame( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
  *
- * @returns { boolean }
+ * @returns { boolean } Returns true, if the second object (src2)
+ * has the same values as the first object(src1).
  * @method mapSame
  * @throws Will throw an error if ( arguments.length !== 2 ).
  * @memberof wTools
@@ -7888,7 +8066,8 @@ var mapSame = function( src1,src2 ){
  * returns false
  * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
  *
- * @returns { boolean }
+ * @returns { boolean } Returns true, if the first object (src)
+ * has the same values as the second object(ins).
  * @method mapContain
  * @throws Will throw an error if ( arguments.length !== 2 ).
  * @memberof wTools
@@ -7920,23 +8099,24 @@ var mapContain = function( src,ins )
 //
 
 /**
- * The mapOwn() returns true if object has own property.
+ * The mapOwn() returns true if (object) has own property.
  *
  * It takes (name) checks if (name) is a String,
  * if (object) has own property with the (name).
  * If true, it returns true.
  *
- * @param { objectLike } object - Object that will be check.
+ * @param { Object } object - Object that will be check.
  * @param { name } name - Target property.
  *
  * @example
  * // returns true
- * mapOwn({a : 7, b : 13}, 'a');
+ * _.mapOwn({a : 7, b : 13}, 'a');
  *
- * mapOwn( { a : 7, b : 13 }, 'c' );
- * output : false
+ * @example
+ * // returns false
+ * _.mapOwn( { a : 7, b : 13 }, 'c' );
  *
- * @returns { boolean }
+ * @returns { boolean } Returns true if (object) has own property.
  * @method mapOwn
  * @throws { mapOwn } Will throw an error if the (name) is unknown.
  * @memberof wTools
@@ -7996,7 +8176,6 @@ var mapHas = function( object,name )
    *
    * @throws { Error }
    *  In debug mode it throws an error if any argument is not object like.
-
    * @returns { object } Returns new object made by unique keys.
    * @method mapBut
    * @memberof wTools
@@ -8033,6 +8212,13 @@ var mapBut = function( srcMap )
 //
 
   /**
+   * @callback  _.filter.atomic()
+   * @param { object } result - The new object.
+   * @param { objectLike } srcMap - The target object.
+   * @param { string } k - The key of the (srcMap) object.
+   */
+
+  /**
    * The mapButFiltering() method returns a new object (result)
    * whose (values) are not equal to the arrays or objects.
    *
@@ -8040,17 +8226,12 @@ var mapBut = function( srcMap )
    * If the first object has same key any other object has
    * then this pair [ key, value ] will not be included into (result) object.
    * Otherwise,
-   * it calls a provided callback function (_.filter.atomic())
+   * it calls a provided callback function ( _.filter.atomic() )
    * once for each key in the (srcMap), and adds to the (result) object
    * all the [ key, value ],
    * if values are not equal to the array or object.
    *
-   * @callback requestCallback
-   * @param { objectLike } result - The new object.
-   * @param { objectLike } srcMap - The target object.
-   * @param { string } k - The key of the (srcMap) object.
-   *
-   * @param { requestCallback } filter - Callback function to test each [ key, value ] of the (srcMap) object.
+   * @param { _.filter.atomic() } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
    * @param { objectLike } srcMap - The target object.
    * @param { ...objectLike } - The next objects.
    *
@@ -8058,7 +8239,7 @@ var mapBut = function( srcMap )
    * // returns {a: 1, b: "xxx"}
    * mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
    *
-   * @returns { objectLike } Returns an object whose (values) are not equal to the arrays or objects.
+   * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
    * @method mapButFiltering
    * @throws { Error } Will throw an Error if (srcMap) is not an object.
    * @memberof wTools
@@ -8111,7 +8292,7 @@ var mapBut = function( srcMap )
    * // returns { a : 7 }
    * mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
    *
-   * @returns { objectLike } Returns new (result) object with unique own keys.
+   * @returns { object } Returns new (result) object with unique own keys.
    * @method mapOwnBut
    * @throws { Error } Will throw an Error if (srcMap) is not an object.
    * @memberof wTools
@@ -8150,6 +8331,8 @@ var mapOwnBut = function mapOwnBut( srcMap )
 
 //
 
+  // !!! this description missing
+
 var mapScreens = function( srcObject,screenObject )
 {
 
@@ -8183,7 +8366,7 @@ var mapScreens = function( srcObject,screenObject )
    * @property { objectLike } screenObjects.screenObject - first object.
    * @property { ...objectLike } srcObject.arguments[1,...] -
    * is pseudo array (arguments[]) from the first [1] index to the end.
-   * @property { objectLike } dstObject - is an empty object.
+   * @property { object } dstObject - is an empty object.
    *
    * and calls the _mapScreen( {} ) with new object.
    *
@@ -8194,7 +8377,7 @@ var mapScreens = function( srcObject,screenObject )
    * // returns { a : "abc", c : 33, d : "name" };
    * _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
    *
-   * @returns { objectLike } returns the object filled by unique [ key, value ]
+   * @returns { objectLike } Returns the object filled by unique [ key, value ]
    * from others objects.
    * @method mapScreen
    * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
@@ -8218,6 +8401,13 @@ var mapScreen = function( screenObject )
 
 //
   /**
+   * @callback  filter
+   * @param { objectLike } (dstObject) - an empty object.
+   * @param { objectLike }  (srcObjects) - the source object.
+   * @param { string } - the key of the (screenObject).
+   */
+
+  /**
    * The _mapScreen() returns an object filled by unique [ key, value]
    * from others objects.
    *
@@ -8226,11 +8416,6 @@ var mapScreen = function( screenObject )
    * If true, it calls a provided callback function (filter)
    * and adds to the (dstObject) all the [ key, value ]
    * for which callback function returns true.
-   *
-   * @callback requestCallback - filter
-   * @param { objectLike } (dstObject) - an empty object.
-   * @param { objectLike }  (srcObjects) - the source object.
-   * @param { string } - the key of the (screenObject).
    *
    * @param { objectLike } options - set of objects, (options.dstObject = {}),
    * (options.screenObjects), (options.srcObjects).
@@ -8251,7 +8436,8 @@ var mapScreen = function( screenObject )
    * options.srcObjects = { d : 'name', c : 33, a : 'abc' };
    * _mapScreen( options );
    *
-   * @returns { objectLike }
+   * @returns { objectLike } Returns an object filled by unique [ key, value]
+   * from others objects.
    * @method _mapScreen
    * @throws { Error } Will throw an Error if (options.dstObject or screenObject) are not objects,
    * or if (srcObjects) is not an array

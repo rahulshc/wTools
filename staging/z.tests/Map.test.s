@@ -1136,7 +1136,7 @@
     //name : 'mapContain',
     //name : 'mapBut',
     //name : 'mapToArray',
-    //name : 'mapValWithIndex',
+    name : 'mapValWithIndex',
     //name : 'mapKeyWithIndex',
     //name : 'mapIs',
     //name : 'mapClone',
@@ -1149,7 +1149,7 @@
     //name : 'mapComplement',
     //name : 'mapOwnBut',
     //name : 'mapScreen',
-    name : '_mapScreen',
+    //name : '_mapScreen',
 
     tests:
     {
@@ -1163,7 +1163,7 @@
       //mapContain : mapContain,
       //mapBut : mapBut,
       //mapToArray : mapToArray,
-      //mapValWithIndex : mapValWithIndex,
+      mapValWithIndex : mapValWithIndex,
       //mapKeyWithIndex : mapKeyWithIndex,
       //mapIs : mapIs,
       //mapClone : mapClone,
@@ -1176,7 +1176,7 @@
       //mapComplement : mapComplement,
       //mapOwnBut : mapOwnBut,
       //mapScreen : mapScreen,
-      _mapScreen : _mapScreen,
+      //_mapScreen : _mapScreen,
     }
 
   }
