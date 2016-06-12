@@ -1126,7 +1126,7 @@ var _entityMost = function( src,onElement,returnMax )
   if( onElement === undefined )
   onElement = function( element ){ return element; }
 
-  var onCompare = null;ghb
+  var onCompare = null;
 
   if( returnMax )
   onCompare = function( a,b )
@@ -1916,6 +1916,8 @@ var assertMapOnly = function assertMapOnly( src )
 
   if( but.length )
   {
+    if( _.strJoin )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
@@ -1941,6 +1943,8 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
 
   if( but.length )
   {
+    if( _.strJoin )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
@@ -2178,23 +2182,25 @@ var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
 //
 
 /*
+
 _.diagnosticWatchFields
 ({
-  dst : _global_,
+  dst : _global_,`
   names : 'Uniforms',
 });
+
 _.diagnosticWatchFields
 ({
-  dst : session.filterVisibility,
-  names : 'changed',
+  dst : state,
+  names : 'filterColor',
 });
-*/
-/*
+
 _.diagnosticWatchFields
 ({
   dst : _global_,
   names : 'Config',
 });
+
 */
 
 var diagnosticWatchFields = function( options )
@@ -4545,6 +4551,10 @@ var timeOut = function( delay,onReady )
     {
       onReady.give();
       onReady.then_( con );
+    }
+    else
+    {
+      con.give();
     }
   }
 
@@ -7025,7 +7035,10 @@ var buffersSerialize = function buffersSerialize( options )
     var name = attributes[ a ][ 0 ];
     var attribute = attributes[ a ][ 1 ];
     var buffer = options.onBufferGet.call( options.context,attribute );
-    var bufferSize = buffer.length*buffer.BYTES_PER_ELEMENT;
+
+    _.assert( _.bufferIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+
+    var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
     if( options.dropAttribute && options.dropAttribute[ name ] )
     continue;
@@ -7035,7 +7048,7 @@ var buffersSerialize = function buffersSerialize( options )
     descriptor.name = name;
     descriptor.buffer = buffer;
     descriptor.bufferSize = bufferSize;
-    descriptor.sizeOfAtom = buffer.BYTES_PER_ELEMENT;
+    descriptor.sizeOfAtom = buffer ? buffer.BYTES_PER_ELEMENT : 0;
     buffers.push( descriptor );
 
     size += bufferSize;
@@ -7069,7 +7082,7 @@ var buffersSerialize = function buffersSerialize( options )
     var name = buffers[ b ].name;
     var attribute = buffers[ b ].attribute;
     var buffer = buffers[ b ].buffer;
-    var bytes = _.bufferBytesGet( buffer );
+    var bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
     var bufferSize = buffers[ b ].bufferSize;
 
     if( options.dropAttribute && options.dropAttribute[ name ] )
@@ -7079,8 +7092,8 @@ var buffersSerialize = function buffersSerialize( options )
 
     var serialized = store[ 'attributes' ][ name ] =
     {
-      'bufferConstructorName' : buffer.constructor.name,
-      'sizeOfAtom' : buffer.BYTES_PER_ELEMENT,
+      'bufferConstructorName' : buffer ? buffer.constructor.name : 'null',
+      'sizeOfAtom' : buffer ? buffer.BYTES_PER_ELEMENT : 0,
       'offsetInCommonBuffer' : offset,
       'size' : bytes.length,
     }
@@ -7144,13 +7157,13 @@ var buffersDeserialize = function( options )
   {
     var attribute = store[ 'attributes' ][ a ];
 
-    var bufferConstructor = _global_[ attribute[ 'bufferConstructorName' ] ];
+    var bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global_[ attribute[ 'bufferConstructorName' ] ];
     var offset = attribute[ 'offsetInCommonBuffer' ];
     var size = attribute[ 'size' ];
     var sizeOfAtom = attribute[ 'sizeOfAtom' ];
     var fields = attribute[ 'fields' ];
 
-    _.assert( _.routineIs( bufferConstructor ),'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
+    _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null,'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
     _.assert( _.numberIs( offset ),'unknown attribute\' offset in common buffer :',offset )
     _.assert( _.numberIs( size ),'unknown attribute\' size of buffer :',size )
     _.assert( _.numberIs( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
@@ -7158,7 +7171,7 @@ var buffersDeserialize = function( options )
     if( attribute.offset+size > commonBuffer.byteLength )
     throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
 
-    var buffer = new bufferConstructor( commonBuffer,offset,size / sizeOfAtom );
+    var buffer = bufferConstructor ? new bufferConstructor( commonBuffer,offset,size / sizeOfAtom ) : null;
 
     options.onAttribute.call( options.context,fields,buffer,a );
 

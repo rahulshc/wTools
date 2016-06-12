@@ -33,24 +33,7 @@ var mixin = function( dst )
     constructor : 'constructor',
   }
 
-  var hasNot =
-  {
-    Parent : 'Parent',
-    Self : 'Self',
-    Type : 'Type',
-    type : 'type',
-  }
-
-  var forbid =
-  {
-    Type : 'Type',
-    type : 'type',
-  }
-
   _.assertMapOwnAll( dst,has );
-  /*_.assertMapOwnNone( dst,hasNot );*/
-  _.accessorForbidOnce( dst,forbid );
-
   _.assert( dst.hasOwnProperty( 'constructor' ),'prototype of object should has own constructor' );
 
   //
@@ -76,6 +59,8 @@ var mixin = function( dst )
   var forbid =
   {
     nickname : 'nickname',
+    Type : 'Type',
+    type : 'type',
   }
 
   _.accessorReadOnly
@@ -83,6 +68,7 @@ var mixin = function( dst )
     object : dst,
     names : accessor,
     preserveValues : 0,
+    strict : 0,
   });
 
   _.accessorForbid
@@ -90,6 +76,7 @@ var mixin = function( dst )
     object : dst,
     names : forbid,
     preserveValues : 0,
+    strict : 0,
   });
 
   if( dst.finit.name === 'finitEventHandler' )
@@ -271,6 +258,7 @@ var copyCustom = function( options )
   _.assert( _.objectIs( Prototype ) );
   _.assert( drop );
   _.assert( !options.drop || ( options.drop && !constitutes ),'Not implemented' );
+  _.assert( !options.copyCustomFields || _.objectIs( options.copyCustomFields ) );
 
   _.assertMapOwnOnly( src, Composes, Aggregates, Restricts );
 
@@ -320,15 +308,18 @@ var copyCustom = function( options )
 */
   // copy composes
 
-  if( options.copyComposes || options.copyConstitutes )
+  if( options.copyComposes || options.copyConstitutes || options.copyCustomFields )
   {
 
-    if( options.copyComposes && options.copyConstitutes )
-    copyFacets( _.mapExtend( {},Prototype.Constitutes,Prototype.Composes ),true );
-    else if( options.copyComposes )
-    copyFacets( Prototype.Composes,true );
-    else if( options.copyConstitutes )
-    copyFacets( Prototype.copyConstitutes,true );
+    var copySource = {};
+    if( options.copyCustomFields )
+    _.mapExtend( copySource,options.copyCustomFields )
+    if( options.Constitutes )
+    _.mapExtend( copySource,Prototype.Constitutes )
+    if( options.copyComposes )
+    _.mapExtend( copySource,Prototype.Composes )
+
+    copyFacets( copySource,true );
 
   }
 
@@ -390,6 +381,7 @@ copyCustom.defaults =
   copyAggregates : true,
   copyRestricts : false,
   copyConstitutes : false,
+  copyCustomFields : null,
   constitutes : true,
 }
 
@@ -761,7 +753,6 @@ var _classNameGet = function _classNameGet()
 
 var _classIsGet = function _classIsGet()
 {
-  throw _.err( 'Not tested' );
   return this.hasOwnProperty( 'constructor' );
 }
 
