@@ -298,14 +298,6 @@ var copyCustom = function( options )
 
   }
 
-  // copy constitutes
-/*
-  if( options.copyConstitutes && Object.keys( Prototype.Constitutes ).length )
-  {
-    debugger;
-    copyFacets( Prototype.Constitutes,false );
-  }
-*/
   // copy composes
 
   if( options.copyComposes || options.copyConstitutes || options.copyCustomFields )
@@ -330,23 +322,6 @@ var copyCustom = function( options )
 
     copyFacets( Prototype.Aggregates,false );
 
-/*
-    var filter = _.filter.bypass();
-    if( options.drop )
-    {
-      debugger;
-      filter = _.filter.drop( drop );
-    }
-
-    _._mapScreen
-    ({
-      filter : _.filter.drop( drop ),
-      screenObjects : Prototype.Aggregates,
-      dstObject : dst,
-      srcObjects : src,
-    });
-*/
-
   }
 
   // copy restricts
@@ -359,6 +334,7 @@ var copyCustom = function( options )
 
   // constitutes
 
+/*
   if( constitutes && Prototype.Constitutes )
   for( var c in Prototype.Constitutes )
   {
@@ -367,6 +343,7 @@ var copyCustom = function( options )
     self.constituteField( dst,c );
 
   }
+*/
 
   return dst;
 }
@@ -453,15 +430,36 @@ var clone = function( dst )
 var _copyFieldConstituting = function _copyFieldConstituting( Constitutes,cloning,dstContainer,srcContainer,key )
 {
 
-  if( Constitutes[ key ] && !dstContainer[ key ] && _.mapIs( srcContainer[ key ] ) )
+  if( Constitutes[ key ] /*&& _.objectIs( srcContainer[ key ] )*/ )
   {
-    dstContainer[ key ] = Constitutes[ key ]( srcContainer[ key ],dstContainer );
+
+    var constitute = Constitutes[ key ];
+    if( _.objectIs( constitute ) || _.arrayIs( constitute ) || !_.routineIs( constitute ) )
+    {
+      throw _.err( 'expects routine as constitute, but got ' + _.typeOf( constitute ) );
+    }
+
+    if( !_.objectIs( srcContainer[ key ] && key !== 'includePillarMapOnly' ) )
+    debugger; 
+
+    if( !dstContainer[ key ] )
+    {
+      dstContainer[ key ] = constitute.apply( dstContainer,srcContainer[ key ],dstContainer );
+    }
+    else
+    {
+      debugger;
+      dstContainer[ key ] = constitute.call( dstContainer,srcContainer[ key ],dstContainer );
+    }
+
   }
   else
   {
+
     if( cloning )
     _.entityCopyField( dstContainer,srcContainer,key );
     else dstContainer[ key ] = srcContainer[ key ];
+
   }
 
 }
@@ -570,9 +568,14 @@ var constituteField = function( dst,fieldName )
   {
 
     if( src.Composes )
-    return;
+    {
+      debugger;
+      return;
+    }
 
+    debugger;
     _.assert( constitution.length === 2 );
+
     var n = constitution( src,self );
     if( n !== undefined )
     dstContainer[ key ] = n;
@@ -584,6 +587,7 @@ var constituteField = function( dst,fieldName )
 
   if( _.objectIs( constitution ) )
   {
+    throw _.err( 'deprecated' );
 
     for( var a in dst[ fieldName ] )
     constituteIt( constitution[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
@@ -591,7 +595,7 @@ var constituteField = function( dst,fieldName )
   }
   else if( _.arrayIs( constitution ) )
   {
-    throw _.err( 'Not tested' );
+    throw _.err( 'deprecated' );
 
     for( var a = 0 ; a < dst[ fieldName ].length ; a++ )
     constituteIt( constitution[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
