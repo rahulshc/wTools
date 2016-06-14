@@ -2439,24 +2439,28 @@ var mapIs = function( src )
 
   //
   // !!! Not bad.
-  // !!! Please change the proposal 'is object' to the 'is an Array'.
-  // !!! Please change '@return' to the '@returns'.
-  // !!! Please add description for @param and @returns.
-  // !!! Please improve code formatting: add more spaces.
+  // +++ Please change the proposal 'is object' to the 'is an Array'.
+  // +++ Please change '@return' to the '@returns'.
+  // +++ Please add description for @param and @returns.
+  // +++ Please improve code formatting: add more spaces.
 /**
- * Function arrayIs checks incoming param whether it is array.
- * Returns "true" if incoming param is object. Othervise "false" returned.
+ * The arrayIs() method determines whether the passed value is an Array.
+ *
+ * If the (src) is an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
  *
  * @example
  * // returns true
- * var arr = [1, 2];
- * arrayIs(arr);
+ * var arr = [ 1, 2 ];
+ * arrayIs( arr );
+ *
  * @example
  * // returns false
- * arrayIs(10);
+ * arrayIs( 10 );
  *
- * @param {*} src.
- * @return {Boolean}.
+ * @returns { Boolean } Returns true if (src) is an Array.
  * @method arrayIs.
  * @memberof wTools#.
  */
@@ -4677,27 +4681,30 @@ var dateToStr = function dateToStr( date )
 // array
 // --
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please change the proposal 'creates a new array' to the
+  // +++ Please change the proposal 'creates a new array' to the
   //     'returns a shallow copy of a portion of an array'.
-  // !!! Describe the @returns.
+  // +++ Describe the @returns.
 
 /**
- * The arraySub() method creates a new array or a new TypedArray that contains
- * the elements from (begin) index to the (end) index, but not including (end).
+ * The arraySub() method returns a shallow copy of a portion of an array
+ * or a new TypedArray that contains
+ * the elements from (begin) index to the (end) index,
+ * but not including (end).
+ *
+ * @param { Array } src - Source array.
+ * @param { Number } begin - Index at which to begin extraction.
+ * @param { Number } end - Index at which to end extraction.
  *
  * @example
  * // returns [ 3, 4 ]
- * var arr = _.arraySub([ 1, 2, 3, 4, 5], 2, 4);
+ * var arr = _.arraySub( [ 1, 2, 3, 4, 5 ], 2, 4 );
  *
- * @param {Array} src - Source array
- * @param {Number} begin - Index at which to begin extraction
- * @param {Number} end - Index at which to end extraction
- * @returns {Array} - The new array
+ * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
  * @method arraySub
- * @throws {Error} If passed arguments is less than three
- * @throws {Error} If the first argument is not array
+ * @throws { Error } If the passed arguments is less than three.
+ * @throws { Error } If the first argument is not an array.
  * @memberof wTools#
  */
 
@@ -4725,26 +4732,28 @@ var arraySub = function( src,begin,end )
 // second arguments is optional !!!
 
   // !!! Not bad.
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Describe the @returns.
+  // +++ Describe the @returns.
 /**
  * The arrayNew() method returns a new array or a new TypedArray with length equal (length)
  * or the same length of the initial array if second argument is not provided.
  *
+ * @param { arrayLike } ins - The instance of an array.
+ * @param { Number} [ length ] - The length of the new array.
+ *
  * @example
  * // returns [ , ,  ]
- * var arr = _.arrayNew([ 1, 2, 3 ]);
+ * var arr = _.arrayNew( [ 1, 2, 3 ] );
  *
+ * @example
  * // returns [ , , ,  ]
- * var arr = _.arrayNew([ 1, 2, 3 ], 4);
+ * var arr = _.arrayNew( [ 1, 2, 3 ], 4 );
  *
- * @param {arrayLike} ins - Instance of an array
- * @param {Number} [length] - The length of the new array
- * @returns {arrayLike} - An empty array
+ * @returns { arrayLike }  Returns an array with a certain (length).
  * @method arrayNew
- * @throws {Error} If passed arguments is less than two
- * @throws {Error} If the first argument in not array like object
+ * @throws { Error } If the passed arguments is less than two.
+ * @throws { Error } If the first argument in not an array like object.
  * @memberof wTools#
  */
 
@@ -4769,22 +4778,24 @@ var arrayNew = function( ins,length )
 
 //
   // !!! Not bad.
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add description to the @returns 'with the same length as in (ins)'.
+  // +++ Please add description to the @returns 'with the same length as in (ins)'.
 
 /**
- * The arrayNewOfSameLength() method returns a new empty array or a new TypedArray with the same length as in (ins).
+ * The arrayNewOfSameLength() method returns a new empty array
+ * or a new TypedArray with the same length as in (ins).
  *
- * * @example
- * // returns [ , , , ,  ]
- * var arr = _.arrayNewOfSameLength([ 1, 2, 3, 4, 5]);
+ * @param { arrayLike } ins - The instance of an array.
  *
- * @param {arrayLike} ins - Instance of an array
- * @returns {arrayLike} - The new empty array
+ * @example
+ * // returns [ , , , , ]
+ * var arr = _.arrayNewOfSameLength( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @returns { arrayLike } - The new empty array with the same length as in (ins).
  * @method arrayNewOfSameLength
- * @throws {Error} If missed argument, or got more than one argument
- * @throws {Error} If the first argument in not array like object
+ * @throws { Error } If missed argument, or got more than one argument.
+ * @throws { Error } If the first argument in not array like object.
  * @memberof wTools#
  */
 
@@ -4801,26 +4812,40 @@ var arrayNewOfSameLength = function( ins )
 
 //
   // !!! Not bad.
-  // !!! Please improve code formatting: add more spaces.
-  // !!! @param (dst) has to be @param { ( number | arrayLike ) }.
-  // !!! Please add description: What will happen if the first argument is an array?
-  // !!! Please add at least two different example.
+  // +++ Please improve code formatting: add more spaces.
+  // +++ @param (dst) has to be @param { ( number | array ) }.
+  // +++ Please add description: What will happen if the first argument is an array?
+  // +++ Please add at least two different example.
 
 /**
- * The arrayOrNumber() method returns a new array which containing the elements only type of Number.
+ * The arrayOrNumber() method returns a new array
+ * which containing the static elements only type of Number.
+ *
+ * It takes two argument (dst) and (length)
+ * checks if the (dst) is a Number, If the (length) is greater than or equal to zero.
+ * If true, it returns the new array of static (dst) numbers.
+ * Otherwise, if the first argument (dst) is an Array,
+ * and its (dst.length) is equal to the (length),
+ * it returns the original (dst) Array.
+ * Otherwise, it throws an Error.
+ *
+ * @param { ( Number | Array ) } dst - A number or an Array.
+ * @param { Number } length - The length of the new array.
  *
  * @example
- * // returns [ 2, 2, 2, 2 ]
- * var arr = _.arrayOrNumber(2, 4);
+ * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
+ * var arr = _.arrayOrNumber( 3, 7 );
  *
- * @param {Number} dst - Value to fill the array.
- * @param {Number} length - The length of the new array.
- * @returns {Number[]} - The new array of numbers.
+ * @example
+ * // returns [ 3, 7, 13 ]
+ * var arr = _.arrayOrNumber( [ 3, 7, 13 ], 3 );
+ *
+ * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
  * @method arrayOrNumber
- * @throws {Error} If missed argument, or got less or more than two argument.
- * @throws {Error} If type of the first argument is not a number or array.
- * @throws {Error} If the second argument is less then 0.
- * @throws {Error} If length of the first argument is less then value of second argument.
+ * @throws { Error } If missed argument, or got less or more than two argument.
+ * @throws { Error } If type of the first argument is not a number or array.
+ * @throws { Error } If the second argument is less than 0.
+ * @throws { Error } If (dst.length) is not equal to the (length).
  * @memberof wTools#
  */
 
@@ -4840,26 +4865,28 @@ var arrayOrNumber = function( dst,length )
 
 //
   // !!! Not bad.
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
 
 /**
  * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
  *
+ * @param { arrayLike } srcArray - Values for the new array.
+ * @param { ( arrayLike | object ) } [ indicesArray ] - Indexes of elements from the (srcArray) or options object.
+ *
  * @example
  * // returns [ 3, 4, 5 ]
- * var arr = _.arraySelect([ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ]);
+ * var arr = _.arraySelect( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );
  *
+ * @example
  * // returns [ undefined, undefined ]
- * var arr = _.arraySelect([ 1, 2, 3 ], [ 4, 5 ]);
+ * var arr = _.arraySelect( [ 1, 2, 3 ], [ 4, 5 ] );
  *
- * @param {arrayLike} srcArray - Values for the new array
- * @param {(arrayLike|object)} [indicesArray] - Index of elements from the (srcArray) or options object
- * @returns {arrayLike} - Return a new array with the length equal indicesArray.length and elements from (srcArray).
+ * @returns { arrayLike } - Returns a new array with the length equal (indicesArray.length) and elements from (srcArray).
    If there is no element with necessary index than the value will be undefined.
  * @method arraySelect
- * @throws {Error} If passed arguments is not array like object.
- * @throws {Error} If the atomsPerElement property is not equal to 1.
+ * @throws { Error } If passed arguments is not array like object.
+ * @throws { Error } If the atomsPerElement property is not equal to 1.
  * @memberof wTools#
  */
 
@@ -4936,24 +4963,34 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 
 //
   // !!! Not bad.
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } arguments[] - 'description'.
-  // !!! Please add description: How method adds elements,if (arguments) contain an array or an object?
-  // !!! Not clear what the (@returns) returns?
+  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add description: How method adds elements,if (arguments) contain an array or an object?
+  // +++ Not clear what the (@returns) returns?
 
 // !!! not clear what for?
 
 /**
- * The arrayIron() method copy the values of all arguments to a new array.
+ * The arrayIron() method returns an array that contains all the passed arguments.
+ *
+ * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) and assigns to the (src) each element,
+ * checks if (src) is an array and if (src) is not equal to the 'undefined'.
+ * If true, it adds to the (result) each element of the (src) array.
+ * Otherwise, if (src) is not equal to the 'undefined',
+ * it adds element to the result.
+ * Otherwise, if (src) is equal to the 'undefined' it throws an Error.
+ *
+ * @param { ... } arguments[] - One or more argument(s).
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
- * var arr = _.arrayIron('str', {}, [1,2], 5, true);
+ * var arr = _.arrayIron( 'str', {}, [ 1, 2 ], 5, true );
  *
- * @returns {Array} - The new array
+ * @returns { Array } - Returns an array of the passed argument(s).
  * @method arrayIron
- * @throws {Error} If type of the passed arguments is equal undefined
+ * @throws { Error } If type of the passed arguments is equal undefined.
  * @memberof wTools#
  */
 
@@ -5120,25 +5157,35 @@ var arrayCopy = function arrayCopy()
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } arguments[] - 'description'.
-  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
-  // !!! Not clear what the (@returns) returns.
+  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // +++ Not clear what the (@returns) returns.
 
 /**
- * The arrayAppendMerging() method returns an array of elements from (dst)
- * and appending all of the following arguments to the end.
+ * The arrayAppendMerging() method adds one or more elements to the end of the (dst)
+ * and returns the new length of the array.
+ *
+ * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) and assigns to the (argument) each element,
+ * checks, if (argument) is equal to the 'undefined'.
+ * If true, it throws an Error.
+ * if (argument) is an array-like.
+ * If true, it merges the (argument) into the (result) array.
+ * Otherwise, it adds element to the result.
+ *
+ * @param { ... } arguments[] - One or more argument(s).
+ * @param { Array } dst - Initial array.
  *
  * @example
  * // returns [ 1, 2, 'str', false, { a: 1 }, 42 ]
- * var arr = _.arrayAppendMerging([1,2], 'str', false, {a: 1}, 42);
+ * var arr = _.arrayAppendMerging( [ 1, 2 ], 'str', false, { a: 1 }, 42 );
  *
- * @param {Array} dst - Initial array
- * @returns {arrayLike} - The new array
+ * @returns { Array } - Returns an array (dst) with all of the following argument(s).
  * @method arrayAppendMerging
- * @throws {Error} If the first argument is not array
- * @throws {Error} If type of the argument is equal undefined
+ * @throws { Error } If the first argument is not array.
+ * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools#
  */
 
