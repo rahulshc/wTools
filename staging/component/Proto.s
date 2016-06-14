@@ -438,7 +438,7 @@ var mixin = function( options )
   if( !dst._mixins )
   dst._mixins = {};
 
-  _.assert( !dst._mixins[ options.name ],'same mixin enclountered several times' );
+  _.assert( !dst._mixins[ options.name ],'try to mixin same mixin same several times : ' + options.name + ' into ' + 'dst.constructor.name' );
 
   dst._mixins[ options.name ] = 1;
 

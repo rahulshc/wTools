@@ -33,24 +33,7 @@ var mixin = function( dst )
     constructor : 'constructor',
   }
 
-  var hasNot =
-  {
-    Parent : 'Parent',
-    Self : 'Self',
-    Type : 'Type',
-    type : 'type',
-  }
-
-  var forbid =
-  {
-    Type : 'Type',
-    type : 'type',
-  }
-
   _.assertMapOwnAll( dst,has );
-  /*_.assertMapOwnNone( dst,hasNot );*/
-  _.accessorForbidOnce( dst,forbid );
-
   _.assert( dst.hasOwnProperty( 'constructor' ),'prototype of object should has own constructor' );
 
   //
@@ -76,6 +59,8 @@ var mixin = function( dst )
   var forbid =
   {
     nickname : 'nickname',
+    Type : 'Type',
+    type : 'type',
   }
 
   _.accessorReadOnly
@@ -83,6 +68,7 @@ var mixin = function( dst )
     object : dst,
     names : accessor,
     preserveValues : 0,
+    strict : 0,
   });
 
   _.accessorForbid
@@ -90,6 +76,7 @@ var mixin = function( dst )
     object : dst,
     names : forbid,
     preserveValues : 0,
+    strict : 0,
   });
 
   if( dst.finit.name === 'finitEventHandler' )
@@ -271,6 +258,7 @@ var copyCustom = function( options )
   _.assert( _.objectIs( Prototype ) );
   _.assert( drop );
   _.assert( !options.drop || ( options.drop && !constitutes ),'Not implemented' );
+  _.assert( !options.copyCustomFields || _.objectIs( options.copyCustomFields ) );
 
   _.assertMapOwnOnly( src, Composes, Aggregates, Restricts );
 
@@ -310,25 +298,20 @@ var copyCustom = function( options )
 
   }
 
-  // copy constitutes
-/*
-  if( options.copyConstitutes && Object.keys( Prototype.Constitutes ).length )
-  {
-    debugger;
-    copyFacets( Prototype.Constitutes,false );
-  }
-*/
   // copy composes
 
-  if( options.copyComposes || options.copyConstitutes )
+  if( options.copyComposes || options.copyConstitutes || options.copyCustomFields )
   {
 
-    if( options.copyComposes && options.copyConstitutes )
-    copyFacets( _.mapExtend( {},Prototype.Constitutes,Prototype.Composes ),true );
-    else if( options.copyComposes )
-    copyFacets( Prototype.Composes,true );
-    else if( options.copyConstitutes )
-    copyFacets( Prototype.copyConstitutes,true );
+    var copySource = {};
+    if( options.copyCustomFields )
+    _.mapExtend( copySource,options.copyCustomFields )
+    if( options.Constitutes )
+    _.mapExtend( copySource,Prototype.Constitutes )
+    if( options.copyComposes )
+    _.mapExtend( copySource,Prototype.Composes )
+
+    copyFacets( copySource,true );
 
   }
 
@@ -338,23 +321,6 @@ var copyCustom = function( options )
   {
 
     copyFacets( Prototype.Aggregates,false );
-
-/*
-    var filter = _.filter.bypass();
-    if( options.drop )
-    {
-      debugger;
-      filter = _.filter.drop( drop );
-    }
-
-    _._mapScreen
-    ({
-      filter : _.filter.drop( drop ),
-      screenObjects : Prototype.Aggregates,
-      dstObject : dst,
-      srcObjects : src,
-    });
-*/
 
   }
 
@@ -368,6 +334,7 @@ var copyCustom = function( options )
 
   // constitutes
 
+/*
   if( constitutes && Prototype.Constitutes )
   for( var c in Prototype.Constitutes )
   {
@@ -376,6 +343,7 @@ var copyCustom = function( options )
     self.constituteField( dst,c );
 
   }
+*/
 
   return dst;
 }
@@ -390,6 +358,7 @@ copyCustom.defaults =
   copyAggregates : true,
   copyRestricts : false,
   copyConstitutes : false,
+  copyCustomFields : null,
   constitutes : true,
 }
 
@@ -461,15 +430,36 @@ var clone = function( dst )
 var _copyFieldConstituting = function _copyFieldConstituting( Constitutes,cloning,dstContainer,srcContainer,key )
 {
 
-  if( Constitutes[ key ] && !dstContainer[ key ] && _.mapIs( srcContainer[ key ] ) )
+  if( Constitutes[ key ] /*&& _.objectIs( srcContainer[ key ] )*/ )
   {
-    dstContainer[ key ] = Constitutes[ key ]( srcContainer[ key ],dstContainer );
+
+    var constitute = Constitutes[ key ];
+    if( _.objectIs( constitute ) || _.arrayIs( constitute ) || !_.routineIs( constitute ) )
+    {
+      throw _.err( 'expects routine as constitute, but got ' + _.typeOf( constitute ) );
+    }
+
+    if( !_.objectIs( srcContainer[ key ] && key !== 'includePillarMapOnly' ) )
+    debugger; 
+
+    if( !dstContainer[ key ] )
+    {
+      dstContainer[ key ] = constitute.apply( dstContainer,srcContainer[ key ],dstContainer );
+    }
+    else
+    {
+      debugger;
+      dstContainer[ key ] = constitute.call( dstContainer,srcContainer[ key ],dstContainer );
+    }
+
   }
   else
   {
+
     if( cloning )
     _.entityCopyField( dstContainer,srcContainer,key );
     else dstContainer[ key ] = srcContainer[ key ];
+
   }
 
 }
@@ -578,9 +568,14 @@ var constituteField = function( dst,fieldName )
   {
 
     if( src.Composes )
-    return;
+    {
+      debugger;
+      return;
+    }
 
+    debugger;
     _.assert( constitution.length === 2 );
+
     var n = constitution( src,self );
     if( n !== undefined )
     dstContainer[ key ] = n;
@@ -592,6 +587,7 @@ var constituteField = function( dst,fieldName )
 
   if( _.objectIs( constitution ) )
   {
+    throw _.err( 'deprecated' );
 
     for( var a in dst[ fieldName ] )
     constituteIt( constitution[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
@@ -599,7 +595,7 @@ var constituteField = function( dst,fieldName )
   }
   else if( _.arrayIs( constitution ) )
   {
-    throw _.err( 'Not tested' );
+    throw _.err( 'deprecated' );
 
     for( var a = 0 ; a < dst[ fieldName ].length ; a++ )
     constituteIt( constitution[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
@@ -761,7 +757,6 @@ var _classNameGet = function _classNameGet()
 
 var _classIsGet = function _classIsGet()
 {
-  throw _.err( 'Not tested' );
   return this.hasOwnProperty( 'constructor' );
 }
 

@@ -1126,7 +1126,7 @@ var _entityMost = function( src,onElement,returnMax )
   if( onElement === undefined )
   onElement = function( element ){ return element; }
 
-  var onCompare = null;ghb
+  var onCompare = null;
 
   if( returnMax )
   onCompare = function( a,b )
@@ -1916,6 +1916,8 @@ var assertMapOnly = function assertMapOnly( src )
 
   if( but.length )
   {
+    if( _.strJoin )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
@@ -1941,6 +1943,8 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
 
   if( but.length )
   {
+    if( _.strJoin )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
@@ -2178,23 +2182,25 @@ var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
 //
 
 /*
+
 _.diagnosticWatchFields
 ({
-  dst : _global_,
+  dst : _global_,`
   names : 'Uniforms',
 });
+
 _.diagnosticWatchFields
 ({
-  dst : session.filterVisibility,
-  names : 'changed',
+  dst : state,
+  names : 'filterColor',
 });
-*/
-/*
+
 _.diagnosticWatchFields
 ({
   dst : _global_,
   names : 'Config',
 });
+
 */
 
 var diagnosticWatchFields = function( options )
@@ -4552,6 +4558,10 @@ var timeOut = function( delay,onReady )
       onReady.give();
       onReady.then_( con );
     }
+    else
+    {
+      con.give();
+    }
   }
 
   if( arguments.length > 2 )
@@ -5805,12 +5815,111 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
  * @memberof wTools#
  */
 
-var arrayAs = function( src ) {
+var arrayAs = function( src )
+{
 
   if( src === null || src === undefined ) return [];
   else if( _.arrayIs( src ) ) return src;
   else return [ src ];
-};
+
+}
+
+//
+
+var arrayUniqueIs = function arrayUniqueIs( o )
+{
+
+  debugger;
+
+  if( _.arrayLike( o ) )
+  o = { src : o };
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( o.src ) );
+  _.assertMapOnly( o,arrayUniqueIs.defaults );
+
+  /**/
+
+  if( o.onElement )
+  {
+    throw _.err( 'not tested' );
+    o.src = _.enityMap( o.src,function( e ){ return o.onElement( e ) } );
+  }
+
+  /**/
+
+  var number = o.src.length;
+  var isUnique = arrayNewOfSameLength( o.src );
+  var index;
+
+  for( var i = 0 ; i < o.src.length ; i++ )
+  isUnique[ i ] = 1;
+
+  for( var i = 0 ; i < o.src.length ; i++ )
+  {
+
+    index = i;
+
+    if( !isUnique[ i ] )
+    continue;
+
+    var currentUnique = 1;
+    do
+    {
+      var index = o.src.indexOf( o.src[ i ],index+1 );
+      if( index !== -1 )
+      {
+        isUnique[ index ] = 0;
+        number -= 1;
+        currentUnique = 0;
+      }
+    }
+    while( index !== -1 );
+
+    if( !o.includeFirst )
+    if( !currentUnique )
+    {
+      isUnique[ i ] = 0;
+      number -= 1;
+    }
+
+  }
+
+  return { number : number, array : isUnique };
+}
+
+arrayUniqueIs.defaults =
+{
+  src : null,
+  onElement : null,
+  includeFirst : 0,
+}
+
+//
+
+var arrayUnique = function arrayUnique( src,onElement )
+{
+
+  debugger;
+
+  var isUnique = arrayUniqueIs
+  ({
+    src : src,
+    onElement : onElement,
+    includeFirst : 1,
+  });
+  var result = arrayNew( src,isUnique.number );
+
+  var c = 0;
+  for( var i = 0 ; i < src.length ; i++ )
+  if( isUnique.array[ i ] )
+  {
+    result[ c ] = src[ i ];
+    c += 1;
+  }
+
+  return result;
+}
 
 //
 
@@ -6283,6 +6392,39 @@ var arrayCount = function( src,instance )
   }
 
   return result;
+}
+
+//
+
+var arrayCountSame = function( src,onElement )
+{
+  var result = 0;
+  var found = [];
+  var onEelement = onEelement || function( e ){ return e };
+
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
+
+  for( var i1 = 0 ; i1 < src.length ; i1++ )
+  {
+    var element1 = onElement( src[ i1 ] );
+    if( found.indexOf( element1 ) !== -1 )
+    continue;
+
+    for( var i2 = i1+1 ; i2 < src.length ; i2++ )
+    {
+
+      var element2 = onElement( src[ i2 ] );
+      if( found.indexOf( element2 ) !== -1 )
+      continue;
+
+      if( element1 === element2 )
+      found.push( element1 );
+
+    }
+  }
+
+  return found.length;
 }
 
 //
@@ -7162,7 +7304,10 @@ var buffersSerialize = function buffersSerialize( options )
     var name = attributes[ a ][ 0 ];
     var attribute = attributes[ a ][ 1 ];
     var buffer = options.onBufferGet.call( options.context,attribute );
-    var bufferSize = buffer.length*buffer.BYTES_PER_ELEMENT;
+
+    _.assert( _.bufferIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+
+    var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
     if( options.dropAttribute && options.dropAttribute[ name ] )
     continue;
@@ -7172,7 +7317,7 @@ var buffersSerialize = function buffersSerialize( options )
     descriptor.name = name;
     descriptor.buffer = buffer;
     descriptor.bufferSize = bufferSize;
-    descriptor.sizeOfAtom = buffer.BYTES_PER_ELEMENT;
+    descriptor.sizeOfAtom = buffer ? buffer.BYTES_PER_ELEMENT : 0;
     buffers.push( descriptor );
 
     size += bufferSize;
@@ -7206,7 +7351,7 @@ var buffersSerialize = function buffersSerialize( options )
     var name = buffers[ b ].name;
     var attribute = buffers[ b ].attribute;
     var buffer = buffers[ b ].buffer;
-    var bytes = _.bufferBytesGet( buffer );
+    var bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
     var bufferSize = buffers[ b ].bufferSize;
 
     if( options.dropAttribute && options.dropAttribute[ name ] )
@@ -7216,8 +7361,8 @@ var buffersSerialize = function buffersSerialize( options )
 
     var serialized = store[ 'attributes' ][ name ] =
     {
-      'bufferConstructorName' : buffer.constructor.name,
-      'sizeOfAtom' : buffer.BYTES_PER_ELEMENT,
+      'bufferConstructorName' : buffer ? buffer.constructor.name : 'null',
+      'sizeOfAtom' : buffer ? buffer.BYTES_PER_ELEMENT : 0,
       'offsetInCommonBuffer' : offset,
       'size' : bytes.length,
     }
@@ -7281,13 +7426,13 @@ var buffersDeserialize = function( options )
   {
     var attribute = store[ 'attributes' ][ a ];
 
-    var bufferConstructor = _global_[ attribute[ 'bufferConstructorName' ] ];
+    var bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global_[ attribute[ 'bufferConstructorName' ] ];
     var offset = attribute[ 'offsetInCommonBuffer' ];
     var size = attribute[ 'size' ];
     var sizeOfAtom = attribute[ 'sizeOfAtom' ];
     var fields = attribute[ 'fields' ];
 
-    _.assert( _.routineIs( bufferConstructor ),'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
+    _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null,'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
     _.assert( _.numberIs( offset ),'unknown attribute\' offset in common buffer :',offset )
     _.assert( _.numberIs( size ),'unknown attribute\' size of buffer :',size )
     _.assert( _.numberIs( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
@@ -7295,7 +7440,7 @@ var buffersDeserialize = function( options )
     if( attribute.offset+size > commonBuffer.byteLength )
     throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
 
-    var buffer = new bufferConstructor( commonBuffer,offset,size / sizeOfAtom );
+    var buffer = bufferConstructor ? new bufferConstructor( commonBuffer,offset,size / sizeOfAtom ) : null;
 
     options.onAttribute.call( options.context,fields,buffer,a );
 
@@ -7317,6 +7462,8 @@ buffersDeserialize.defaults =
 // --
 // map
 // --
+
+  // !!! this description could be improved by adding the param (options)
 
   /**
    * The mapClone() method is used to clone the values of all
@@ -7435,6 +7582,8 @@ var mapExtendFiltering = function( filter,dstObject )
   return result;
 }
 
+  // !!! the param "dstObject" is not optional.
+
 /**
  * The mapExtend() is used to copy the values of all properties
  * from one or more source objects to a target object.
@@ -7549,7 +7698,7 @@ var mapSupplement = function( dst )
    * @param { objectLike } srcContainer - The next object.
    * @param { string } key - The key of the (srcContainer) object.
    */
-  
+
   /**
    * The mapComplement() method returns an object
    * filled by all unique, clone [ key, value ].
@@ -7604,6 +7753,10 @@ var mapCopy = function mapCopy()
 // --
 // map converter
 // --
+
+  // !!! this description could be improved by adding example(s).
+  // !!! undefiend???
+  // !!! formatting
 
   /**
    * Returns first pair key / value as array.
@@ -7665,6 +7818,9 @@ var mapToArray = function( src )
 
 //
 
+  // !!! param (src) may be not only an array.
+  // !!! throws is not defined in the function.
+
   /**
    * The mapValWithIndex() returns value of (src) by corresponding (index).
    *
@@ -7705,6 +7861,10 @@ var mapValWithIndex = function( src,index )
 }
 
 //
+
+  // !!! param (src) may be not only an array.
+  // !!! in the example does not return the value of "b".
+  // !!! throws is not defined in the function.
 
   /**
    * The mapKeyWithIndex() returns key of (src) by corresponding (index).
@@ -7771,7 +7931,7 @@ var mapToString = function( src,keyValSep,tupleSep )
 {
 
   if( !_.strIs( keyValSep ) ) keyValSep = ' : ';
-  if( !_.strIs( tupleSep ) ) keyValSep = '; ';
+  if( !_.strIs( tupleSep ) ) keyValSep = '; '; // !!! instead "keyValSep" should be "tupleSep"
   var result = '';
   for( var s in src )
   {
@@ -8302,6 +8462,8 @@ var mapOwnBut = function mapOwnBut( srcMap )
 }
 
 //
+
+  // !!! this description missing
 
 var mapScreens = function( srcObject,screenObject )
 {
@@ -9106,6 +9268,7 @@ var Proto =
   timeOut : timeOut,
 
   timePeriodic : timePeriodic,
+
 /*
   timePeriodicStart : timePeriodic,
   timePeriodicStop : timePeriodicStop,
@@ -9161,6 +9324,9 @@ var Proto =
   arraySplice : arraySplice,
   arrayAs : arrayAs,
 
+  arrayUniqueIs : arrayUniqueIs,
+  arrayUnique : arrayUnique,
+
   arrayToStr : arrayToStr,
 
   arrayPut : arrayPut,
@@ -9180,6 +9346,8 @@ var Proto =
 
   arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
+  arrayCountSame : arrayCountSame,
+
   arraySum : arraySum,
 
   arraySupplement : arraySupplement,

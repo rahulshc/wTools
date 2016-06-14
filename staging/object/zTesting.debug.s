@@ -7,7 +7,7 @@ if( typeof module !== 'undefined' )
 
   try
   {
-    require( '../wTools.ss' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
@@ -16,16 +16,16 @@ if( typeof module !== 'undefined' )
 
   try
   {
-    require( '../syn/Consequence.ss' );
+    require( '../../abase/syn/Consequence.s' );
   }
   catch( err )
   {
     require( 'wConsequence' );
   }
 
-  require( '../object/printer/Logger.s' );
-  require( '../component/StringFormat.s' );
-  require( '../component/Exec.s' );
+  require( '../../abase/object/printer/Logger.s' );
+  require( '../../abase/component/StringFormat.s' );
+  require( '../../abase/component/Exec.s' );
 
 }
 
