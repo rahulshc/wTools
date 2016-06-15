@@ -87,6 +87,27 @@
     }
 
   }
+
+  var arrayAppendMerging = function( test ) 
+  {
+    
+    test.description = 'unshift()';
+    var got = _.arrayAppendMerging( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+    console.log(got);
+    var expected = [ 1, 2, 'str', false, { a: 1 }, 42, 3, 7, 13 ];
+    test.identical( got, expected );
+    
+    
+    
+    if( Config.debug ) 
+    {
+      
+      
+      
+    }
+  }
+    
+  
   
 
 //
@@ -99,7 +120,8 @@
     tests:
     {
 
-      arrayPrependOnceMerging : arrayPrependOnceMerging,
+      //arrayPrependOnceMerging : arrayPrependOnceMerging,
+      arrayAppendMerging : arrayAppendMerging,
     
     }
 

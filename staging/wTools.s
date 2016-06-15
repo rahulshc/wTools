@@ -5164,7 +5164,7 @@ var arrayCopy = function arrayCopy()
   // +++ Not clear what the (@returns) returns.
 
 /**
- * The arrayAppendMerging() method adds one or more elements to the end of the (dst)
+ * The arrayAppendMerging() method adds one or more elements to the end of the (dst) array
  * and returns the new length of the array.
  *
  * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
@@ -5175,14 +5175,14 @@ var arrayCopy = function arrayCopy()
  * If true, it merges the (argument) into the (result) array.
  * Otherwise, it adds element to the result.
  *
- * @param { ... } arguments[] - One or more argument(s).
  * @param { Array } dst - Initial array.
+ * @param { ... } arguments[] - One or more argument(s) to add to the end of the (dst) array.
  *
  * @example
- * // returns [ 1, 2, 'str', false, { a: 1 }, 42 ]
- * var arr = _.arrayAppendMerging( [ 1, 2 ], 'str', false, { a: 1 }, 42 );
+ * // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
+ * var arr = _.arrayAppendMerging( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
  *
- * @returns { Array } - Returns an array (dst) with all of the following argument(s).
+ * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
  * @method arrayAppendMerging
  * @throws { Error } If the first argument is not array.
  * @throws { Error } If type of the argument is equal undefined.
@@ -5211,26 +5211,36 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } arguments[] - 'description'.
-  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
-  // !!! Not clear what the (@returns) returns?
+  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // +++ Not clear what the (@returns) returns?
 
 
 /**
- * The arrayPrependMerging() method returns an array of elements from (dst)
- * and prepending all of the following arguments(from end) to the beginning.
+ * The arrayPrependMerging() method adds one or more elements to the beginning of the (dst) array
+ * and returns the new length of the array.
+ *
+ * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) from the end to the beginning and assigns to the (argument) each element,
+ * checks, if (argument) is equal to the 'undefined'.
+ * If true, it throws an Error.
+ * if (argument) is an array-like.
+ * If true, it merges the (argument) into the (result) array.
+ * Otherwise, it adds element to the result.
+ *
+ * @param { Array } dst - Initial array.
+ * @param { ... } arguments[] - One or more argument(s) to add to the front of the (dst) array.
  *
  * @example
- * // returns [ 'str', false, { a: 1 }, 42, 1, 2 ]
- * var arr = _.arrayPrependMerging([1,2], 'str', false, {a: 1}, 42);
+ * // returns [ 'str', false, { a : 1 }, 42, 3, 7, 13, 1, 2 ];
+ * var arr = _.arrayPrependMerging( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
  *
- * @param {Array} dst - Initial array
- * @returns {arrayLike} - The new array
+ * @returns { arrayLike } - Returns an array (dst) with all of the following argument(s) that were added to the beginning of the (dst) array.
  * @method arrayPrependMerging
- * @throws {Error} If the first argument is not array
- * @throws {Error} If type of the argument is equal undefined
+ * @throws { Error } If the first argument is not array.
+ * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools#
  */
 
@@ -5256,25 +5266,37 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } arguments[] - 'description'.
-  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
-  // !!! Not clear what the (@returns) returns?
+  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // +++ Not clear what the (@returns) returns?
 
 /**
  * The arrayAppendOnceMerging() method returns an array of elements from (dst)
  * and appending only unique following arguments to the end.
  *
+ * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) and assigns to the (argument) each element,
+ * checks, if (argument) is equal to the 'undefined'.
+ * If true, it throws an Error.
+ * if (argument) is an array-like.
+ * If true, it iterate over array (argument) and checks if (result) has the same values as the (argument).
+ * If false, it adds elements of (argument) to the end of the (result) array.
+ * Otherwise, it checks if (result) has not the same values as the (argument).
+ * If true, it adds elements to the end of the (result) array.
+ *
+ * @param { Array } dst - Initial array.
+ * @param { ... } arguments[] - One or more argument(s).
+ *
  * @example
  * // returns [ 1, 2, 'str', {}, 5 ]
- * var arr = _.arrayAppendOnceMerging([ 1, 2 ], 'str', 2, {}, [ 'str', 5 ]);
+ * var arr = _.arrayAppendOnceMerging( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
  *
- * @param {Array} dst - Initial array
- * @returns {Array} - The new array
+ * @returns { Array } - Returns an array (dst) with only unique following argument(s) that were added to the end of the (dst) array.
  * @method arrayAppendOnceMerging
- * @throws {Error} If the first argument is not array
- * @throws {Error} If type of the argument is equal undefined
+ * @throws { Error } If the first argument is not array.
+ * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools#
  */
 
@@ -5310,26 +5332,38 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please change the proposal 'The arrayAppendOnceMerging() to the arrayPrependOnceMerging()'.
-  // !!! Please add @param { ... } arguments[] - 'description'.
-  // !!! Please add description: How method adds elements, if (arguments) contain an array or an object?
-  // !!! Not clear what the (@returns) returns.
+  // +++ Please change the proposal 'The arrayAppendOnceMerging() to the arrayPrependOnceMerging()'.
+  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
+  // +++ Not clear what the (@returns) returns.
 
 /**
- * The arrayAppendOnceMerging() method returns an array of elements from (dst)
+ * The arrayPrependOnceMerging() method returns an array of elements from (dst)
  * and prepending only unique following arguments to the beginning.
+ *
+ * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) from the end to the beginning and assigns to the (argument) each element,
+ * checks, if (argument) is equal to the 'undefined'.
+ * If true, it throws an Error.
+ * if (argument) is an array-like.
+ * If true, it iterate over array (argument) and checks if (result) has the same values as the (argument).
+ * If false, it adds elements of (argument) to the beginning of the (result) array.
+ * Otherwise, it checks if (result) has not the same values as the (argument).
+ * If true, it adds elements to the beginning of the (result) array.
+ *
+ * @param { Array } dst - Initial array.
+ * @param { ... } arguments[] - One or more argument(s).
  *
  * @example
  * // returns [ {}, 'str', 5, 2, 4 ]
- * var arr = _.arrayPrependOnceMerging([2, 4], 5, 4, 'str', {});
+ * var arr = _.arrayPrependOnceMerging( [ 2, 4 ], 5, 4, 'str', {} );
  *
- * @param {Array} dst - Initial array
- * @returns {Array} - The new array
+ * @returns { Array } - Returns an array (dst) with only unique following argument(s) that were added to the beginning of the (dst) array.
  * @method arrayPrependOnceMerging
- * @throws {Error} If the first argument is not array
- * @throws {Error} If type of the argument is equal undefined
+ * @throws { Error } If the first argument is not array.
+ * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools#
  */
 
@@ -5365,25 +5399,26 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Not clear what the (@returns) returns.
+  // +++ Not clear what the (@returns) returns.
 
 /**
  * The arrayElementsSwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
  *
+ * @param { Array } dst - The initial array.
+ * @param { Number } index1 - The first index.
+ * @param { Number } index2 - The second index.
+ *
  * @example
  * // returns [ 5, 2, 3, 4, 1 ]
- * var arr = _.arrayElementsSwap([ 1, 2, 3, 4, 5], 0, 4);
+ * var arr = _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], 0, 4 );
  *
- * @param {Array} dst - Initial array
- * @param {Number} index1 - The first index
- * @param {Number} index2 - The second index
- * @returns {Array} - Modified array of
+ * @returns { Array } - Returns the (dst) array that has been modified in place by indexes (index1) and (index2).
  * @method arrayElementsSwap
- * @throws {Error} If the first argument in not an array
- * @throws {Error} If the second argument is less than 0 and more than a length initial array
- * @throws {Error} If the third argument is less than 0 and more than a length initial array
+ * @throws { Error } If the first argument in not an array.
+ * @throws { Error } If the second argument is less than 0 and more than a length initial array.
+ * @throws { Error } If the third argument is less than 0 and more than a length initial array.
  * @memberof wTools#
  */
 
@@ -5482,39 +5517,52 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add description: How it works if passed two or three arguments.
-  // !!! Not clear what the (@returns) returns.
+  // +++ Please add description: How it works if passed two or three arguments.
+  // +++ Not clear what the (@returns) returns.
 
 
   /**
  * Callback for compare two value.
  *
  * @callback compareCallback
- * @param {Number} el - Element of the array
- * @param {Number} ins - Value to compare
+ * @param { Number } el - Element of the array.
+ * @param { Number } ins - Value to compare.
  */
 
 /**
  * The arrayRemovedOnce() method returns the index of the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and remove this element.
  *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
+ * checks if arguments passed two, it calls built in function ([].indexOf(ins)) that looking for index of the (ins).
+ * If true, it removes the value (ins) from (dstArray) array by corresponding index.
+ * Otherwise, if passed three arguments, it calls the method
+ * @see arrayLeftIndexOf( dstArray, ins, onEqual )  See for more information.
+ * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray).
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { Number } ins - The value to remove.
+ * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
+ *
  * @example
  * // returns 1
- * var arr = _.arrayRemovedOnce([2, 4, 6], 2, function (el, ins) {
+ * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function ( el, ins ) {
  *   return el > ins;
  * });
  *
- * @param {Array} dstArray - Source array
- * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
-   By default, it checks the equality of two arguments.
+ * @example
+ * // returns 0
+ * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 2 );
+ *
+ * @returns { Number } - Returns the index of the value (ins) that will be removed from (dstArray),
+ * if the callback function returns true.
  * @method arrayRemovedOnce
- * @returns {Number} - The index of element
- * @throws {Error} If the first argument is not an array
- * @throws {Error} If passed less than two or more than three arguments
- * @throws {Error} If the third argument is not a function
+ * @throws { Error } If the first argument is not an array-like.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
  * @memberof wTools#
  */
 
@@ -5548,30 +5596,51 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add description: How it works if passed two or three arguments.
-  // !!! Describe the (@callback) function.
-  // !!! Not clear what the (@returns) returns.
+  // +++ Please add description: How it works if passed two or three arguments.
+  // +++ Describe the (@callback) function.
+  // +++ Not clear what the (@returns) returns.
 
+/**
+ * Callback for compare two value.
+ *
+ * @callback compareCallback
+ * @param { Number } el - Element of the array.
+ * @param { Number } ins - Value to compare.
+ */
 
-  /**
+/**
  * The arrayRemoveOnce() method removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
+ * checks if arguments passed two, it calls the method
+ * @see arrayRemovedOnce( dstArray, ins )  See for more information.
+ * Otherwise, if passed three arguments, it calls the method
+ * @see arrayRemovedOnce( dstArray, ins, onEqual )  See for more information.
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { Number } ins - The value to remove.
+ * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
+ *
  * @example
  * // returns [ 1, 2, 3, 'str' ]
- * var arr = _.arrayRemoveOnce([1, 'str', 2, 3, 'str'], 'str');
+ * var arr = _.arrayRemoveOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
  *
- * @param {Array} dstArray - Source array
- * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
-   By default, it checks the equality of two arguments.
+ * @example
+ * // returns [ 3, 7, 13, 33 ]
+ * var arr = _.arrayRemoveOnce( [ 3, 7, 33, 13, 33 ], 13, function ( el, ins ) {
+ *   return el > ins;
+ * });
+ *
+ * @returns { Array } - Returns the modified (dstArray) array with the new length,
+ * if the callback function returns true.
  * @method arrayRemoveOnce
- * @returns {Array} - Modified array
- * @throws {Error} If the first argument is not an array
- * @throws {Error} If passed less than two or more than three arguments
- * @throws {Error} If the third argument is not a function
+ * @throws { Error } If the first argument is not an array.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
  * @memberof wTools#
  */
 
@@ -5590,31 +5659,51 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 //
 
    // !!! Not bad
-   // !!! Please improve code formatting: add more spaces,
+   // +++ Please improve code formatting: add more spaces,
    //     add dots at the end of sentences.
-   // !!! Please add description: How does it work, with default callback and with another cb
+   // +++ Please add description: How does it work, with default callback and with another cb
    //     and add at least two different example of it.
-   // !!! Describe the (@callback) function.
+   // +++ Describe the (@callback) function.
 
-  /**
+/**
+ * Callback for compare two value.
+ *
+ * @callback compareCallback
+ * @param { Number } el - Element of the array.
+ * @param { Number } ins - Value to compare.
+ */
+
+/**
  * The arrayRemovedAll() method removes all (ins) values from (dstArray)
- * that corresponds to the condition in the callback function and returns the amount them.
+ * that corresponds to the condition in the callback function and returns the amount of them.
+ *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
+ * checks if (onEqual) is equal to the 'undefined'.
+ * If true, it assigns by default callback function that checks the equality of two arguments.
+ * Otherwise, it uses given callback function (onEqual).
+ * Then it iterates over (dstArray) from the end to the beginning, checks if (onEqual) returns true.
+ * If true, it removes the value (ins) from (dstArray) array by corresponding index, and increases (result++).
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { Number } ins - The value to remove.
+ * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
  *
  * @example
  * // returns 4
- * var arr = _.arrayRemovedAll([ 1, 2, 3, 4, 5, 5, 5 ], 5, function (el, ins) {
+ * var arr = _.arrayRemovedAll( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
  *   return el < ins;
  * });
  *
- * @param {Array} dstArray - Source array
- * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
-   By default, it checks the equality of two arguments.
+ * @example
+ * // returns 3
+ * var arr = _.arrayRemovedAll( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
+ *
+ * @returns { Number } - Returns the amount of the removed elements.
  * @method arrayRemovedAll
- * @returns {Number} - The amount removed elements
- * @throws {Error} If the first argument is not an array
- * @throws {Error} If passed less than two or more than three arguments
- * @throws {Error} If the third argument is not a function
+ * @throws { Error } If the first argument is not an array-like.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
  * @memberof wTools#
  */
 
@@ -5644,29 +5733,51 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add description: How does it work if passed two or three arguments
-  // !!! and add at least two different example of it.
-  // !!! Describe the (@callback) function.
+  // +++ Please add description: How does it work if passed two or three arguments
+  // +++ and add at least two different example of it.
+  // +++ Describe the (@callback) function.
+
+/**
+ * Callback for compare two value.
+ *
+ * @callback compareCallback
+ * @param { Number } el - Element of the array.
+ * @param { Number } ins - Value to compare.
+ */
 
 /**
  * The arrayRemoveAll() method removes all (ins) values from (dstArray)
  * that corresponds to the condition in the callback function and returns the modified array.
  *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
+ * checks if arguments passed two, it calls the method
+ * @see arrayRemovedAll( dstArray, ins )  See for more information.
+ * Otherwise, if passed three arguments, it calls the method
+ * @see arrayRemovedAll( dstArray, ins, onEqual )  See for more information.
+ *
+ * @param { Array } dstArray - The source array
+ * @param { Number } ins - The value to remove
+ * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns [ 2, 2, 3, 5 ]
+ * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2, function ( el, ins ) {
+ *   return el < ins;
+ * });
+ *
  * @example
  * // returns [ 1, 3, 5 ]
- * var arr = _.arrayRemoveAll([1, 2, 2, 3, 5], 2);
+ * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2 );
  *
- * @param {Array} dstArray - Source array
- * @param {Number} ins - Value to remove
- * @param {compareCallback} [onEqual] - The callback that compares (ins) with elements of the array.
-   By default, it checks the equality of two arguments.
+ * @returns { Array } - Returns the modified (dstArray) array with the new length,
+ * if the callback function returns true.
  * @method arrayRemoveAll
- * @returns {Array} - Modified array
- * @throws {Error} If the first argument is not an array
- * @throws {Error} If passed less than two or more than three arguments
- * @throws {Error} If the third argument is not a function
+ * @throws { Error } If the first argument is not an array-like.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
  * @memberof wTools#
  */
 
@@ -5842,23 +5953,25 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
 
 /**
  * The arrayAs() method copies passed argument to the array.
  *
+ * @param { * } src - The source value.
+ *
  * @example
  * // returns [ false ]
- * var arr = _.arrayAs(false);
+ * var arr = _.arrayAs( false );
  *
- * // returns [ { a: 1, b: 2 } ]
- * var arr = _.arrayAs({a: 1, b: 2});
+ * @example
+ * // returns [ { a : 1, b : 2 } ]
+ * var arr = _.arrayAs( { a : 1, b : 2 } );
  *
- * @param {*} src - Source value
+ * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
+ * Otherwise return an array which contains the element from argument.
  * @method arrayAs
- * @returns {Array} - If passed null or undefined than return the empty array. If passed an array then return it.
-   Otherwise return an array which contains the element from argument.
  * @memberof wTools#
  */
 
