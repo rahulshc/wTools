@@ -88,13 +88,13 @@
 
   }
 
-  var arrayAppendMerging = function( test ) 
+  var arrayRange = function( test ) 
   {
     
-    test.description = 'unshift()';
-    var got = _.arrayAppendMerging( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+    test.description = 'array';
+    var got = _.arrayRange( 0 );
     console.log(got);
-    var expected = [ 1, 2, 'str', false, { a: 1 }, 42, 3, 7, 13 ];
+    var expected = got;
     test.identical( got, expected );
     
     
@@ -121,7 +121,7 @@
     {
 
       //arrayPrependOnceMerging : arrayPrependOnceMerging,
-      arrayAppendMerging : arrayAppendMerging,
+      arrayRange : arrayRange,
     
     }
 

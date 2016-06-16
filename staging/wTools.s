@@ -6126,24 +6126,32 @@ var arrayToStr = function( src,options )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } arguments[] - 'description'.
-  // !!! Please add description: How does it work if (arguments) has an array or an object.
+  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add description: How does it work if (arguments) has an array or an object.
 
  
-  /**
- * The arrayPut() method puts all value of arguments after second argument to (dstArray)
- * in the position (dstOffset) and changes values of following index.
+/**
+ * The arrayPut() method puts all values of (arguments[]) after the second argument to the (dstArray)
+ * in the position (dstOffset) and changes values of the following index.
  *
+ * @param { arrayLike } dstArray - The source array.
+ * @param { Number } [ dstOffset = 0 ] - The index of element where need to put the new values.
+ * @param { ... } arguments[] - One or more argument(s).
+ * If the (argument) is an array it iterates over array and adds each element to the next (dstOffset++) index of the (dstArray).
+ * Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstArray).
+ * 
  * @example
  * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
- * var arr = _.arrayPut([1, 2, 3, 4, 5, 6, 9], 2, 'str', true, [7, 8]);
+ * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 2, 'str', true, [ 7, 8 ] );
+ * 
+ * @example
+ * // returns [ 'str', true, 7, 8, 5, 6, 9 ]
+ * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], undefined, 'str', true, [ 7, 8 ] );
  *
- * @param {arrayLike} dstArray - Source array
- * @param {Number} dstOffset - The index of element where need to put the new values
+ * @returns { arrayLike } - Returns an array containing the changed values.
  * @method arrayPut
- * @returns {arrayLike} - Modified array
  * @memberof wTools#
  */
 
@@ -6268,32 +6276,37 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add to the @param { number } [ options.times = result.length ].
-  // !!! There is one more @throws at the end of method, add it please.
+  // +++ Please add to the @param { number } [ options.times = result.length ].
+  // +++ There is one more @throws at the end of method, add it please.
 
 /**
- * The arrayFill() method creates a new array and fills it a values.
+ * The arrayFill() method fills all the elements of the given or a new array from the 0 index to an (options.times) index
+ * with a static value.
+ *
+ * @param { Object } options - The options to fill the array.
+ * @param { Number } [ options.times = result.length ] options.times - The count of repeats.
+   If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
+ * @param { Number } [ options.value = 0 ] - The value for the filling.
  *
  * @example
  * // returns [ 3, 3, 3, 3, 3 ]
- * var arr = _.arrayFill({times: 5, value: 3});
+ * var arr = _.arrayFill( { times : 5, value : 3} );
  *
+ * @example
  * // returns [ 0, 0, 0, 0 ]
- * var arr = _.arrayFill(4);
+ * var arr = _.arrayFill( 4 );
  *
+ * @example
  * // returns [ 0, 0, 0 ]
- * var arr = _.arrayFill([1, 2, 3]);
+ * var arr = _.arrayFill( [ 1, 2, 3 ] );
  *
- * @param {Object} options - Options to fill the array
- * @param {Number} options.times - The count of repeats.
-   If in the function passed Array, the times will be equal the length of array. If Number than this value.
- * @param {Number} [options.value = 0] - Value for the filling
+ * @returns { Array } - Returns an array filled with a static value.
  * @method arrayFill
- * @returns {Array} - The new array
- * @throws {Error} If missed argument, or got more than one argument
- * @throws {Error} If passed argument is not object
+ * @throws { Error } If missed argument, or got more than one argument.
+ * @throws { Error } If passed argument is not an object.
+ * @throws { Error } If the last element of the (options.result) is not equal to the (options.value).
  * @memberof wTools#
  */
 
@@ -6330,20 +6343,21 @@ var arrayFill = function arrayFill( options )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
 
 /**
  * The arrayCompare() method returns the first difference between the values of the first array from the second.
  *
+ * @param { Array } src1 - The first array.
+ * @param { Array } src2 - The second array.
+ *
  * @example
  * // returns 3
- * var arr = _.arrayCompare([1, 5], [1, 2]);
+ * var arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
  *
- * @param {Array} src1 - The first array
- * @param {Array} src2 - The second array
+ * @returns { Number } - Returns the first difference between the values of the two arrays.
  * @method arrayCompare
- * @returns {Number} - Difference the values
  * @memberof wTools#
  */
 
@@ -6366,20 +6380,21 @@ var arrayCompare = function( src1,src2 )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
 
 /**
  * The arraySame() method check the equality of two arrays.
  *
+ * @param { Array } src1 - The first array.
+ * @param { Array } src2 - The second array.
+ *
  * @example
  * // returns true
- * var arr = _.arraySame([1, 2, 3], [1, 2, 3]);
+ * var arr = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
- * @param {Array} src1 - The first array
- * @param {Array} src2 - The second array
+ * @returns { Boolean } - Returns true if all values of the two array are equal. Otherwise, returns false.
  * @method arraySame
- * @returns {Boolean} - Returns true if all values of the two array are equal. Otherwise returns false.
  * @memberof wTools#
  */
 
@@ -6478,22 +6493,30 @@ var arrayLeftGet = function( arr,ins,equalizer )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please add @param { ... } arguments[] - 'description'.
-  // !!! Please add description: How does it work?
+  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add description: How does it work?
 
 /**
- * The arrayHasAny() method checks in the array has at least one value of the following arguments.
+ * The arrayHasAny() method checks if the (src) array has at least one value of the following arguments.
+ *
+ * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the method
+ * @see arrayAs()  See for more information.
+ * Checks, if (src) array has at least one value of the (ins) array.
+ * If true, it returns true.
+ * Otherwise, it returns false.
+ *
+ * @param { arrayLike } src - The source array.
+ * @param { ... } arguments[] - One or more argument(s).
  *
  * @example
  * // returns true
- * var arr = _.arrayHasAny([ 5, 'str', 42, false ], false, 7);
+ * var arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
  *
- * @param {arrayLike} src - Source array
+ * @returns { Boolean } - Returns true, if (src) has at least one value of the following argument(s), otherwise false is returned.
  * @method arrayHasAny
- * @returns {Boolean} - Returns true if there are and false if not
- * @throws {Error} If the first argument in not an array
+ * @throws { Error } If the first argument in not an array.
  * @memberof wTools#
  */
 
@@ -6518,22 +6541,23 @@ var arrayHasAny = function( src )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
 
 /**
- * The arrayCount() method returns the count of matching elements in the array.
+ * The arrayCount() method returns the count of matching elements in the (src) array.
+ *
+ * @param { Array } src - The source array.
+ * @param { * } instance - The value to search.
  *
  * @example
  * // returns 2
- * var arr = _.arrayCount([1, 2, 'str', 10, 10, true], 10);
+ * var arr = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );
  *
- * @param {arrayLike} src - Source array
- * @param {*} instance - Value to search
+ * @returns { Number } - Returns the count of matched elements in the (src).
  * @method arrayCount
- * @returns {Number} - Count of elements
- * @throws {Error} If passed arguments is less than two or more than three
- * @throws {Error} If the first argument is not an array like object
+ * @throws { Error } If passed arguments is less than two or more than two.
+ * @throws { Error } If the first argument is not an array-like object.
  * @memberof wTools#
  */
 
@@ -6542,7 +6566,7 @@ var arrayCount = function( src,instance )
   var result = 0;
 
   _assert( arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
+  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );//???
 
   var index = src.indexOf( instance );
   while( index !== -1 )
@@ -6679,26 +6703,27 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 //
 
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
 
 /**
  * The arrayRandom() method returns an array which contains the random numbers.
  *
+ * @param { Object } options - The options for getting random numbers.
+ * @param { Number } options.length - The length of an array.
+ * @param { Array } [ options.range = [ 0, 1 ] ] - The range of numbers.
+ * @param { Boolean } [ options.int = false ] - Floating point numbers or not.
+ * 
  * @example
  * // returns [ 6, 2, 4, 7, 8 ]
- * var arr = _.arrayRandom({
+ * var arr = _.arrayRandom( {
  *   length: 5,
- *   range: [1, 9],
+ *   range: [ 1, 9 ],
  *   int: true
- * });
+ * } );
  *
- * @param {Object} options - Options for getting random numbers
- * @param {Number} options.length - The length of array
- * @param {Array} [options.range = [0, 1]] - The range of numbers
- * @param {Boolean} [options.int = false] - Floating point numbers or not
+ * @returns { Array } - Returns an array of random numbers.
  * @method arrayRandom
- * @returns {Array} - The array of numbers
  * @memberof wTools#
  */
 
@@ -6729,25 +6754,36 @@ var arrayRandom = function( options )
 
 //
   // !!! Not bad
-  // !!! Please improve code formatting: add more spaces,
+  // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // !!! Please describe the @example?
-  // !!! Please add @throws?
-  // !!! Please add description how does it work?
-  // !!! Please correct this word '@return' to the '@returns'.
+  // +++ Please describe the @example?
+  // +++ Please add @throws?
+  // +++ Please add description how does it work?
+  // +++ Please correct this word '@return' to the '@returns'.
 
-  /**
- * Generate array of arithmetic progression series. From range[ 0 ] to range[ 1 ] with increment 1.
+/**
+ * The arrayRange() method generate array of arithmetic progression series,
+ * from the range[ 0 ] to the range[ 1 ] with increment 1.
  *
+ * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
+ * and assigns to the each index of the (result) array (range[ 0 ] + 1).
+ * 
+ * @param { arrayLike } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
+ * 
  * @example
-    var range = _.arrayRange([ 1,10 ]);
+ * // returns [ 1, 2, 3, 4 ]
+ * var range = _.arrayRange( [ 1, 5 ] );
+ * 
+ * @example
+ * // returns [ 0, 1, 2, 3, 4 ]
+ * var range = _.arrayRange( 5 );
  *
- * @param {arrayLike} range
-    The first and the last+1 elements of the progression.
- * @return {array}
-    An array of numbers for the requested range. May be an empty
-    array if adding the step would not converge toward the end value.
+ * @returns { array } Returns an array of numbers for the requested range with increment 1.
+ * May be an empty array if adding the step would not converge toward the end value.
  * @method arrayRange
+ * @throws { Error } If passed arguments is less than one or more than one.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the length of the (range) is not equal to the two.
  * @memberof wTools
  */
 
