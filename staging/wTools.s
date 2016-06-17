@@ -7659,7 +7659,13 @@ buffersDeserialize.defaults =
 // map
 // --
 
-  // !!! this description could be improved by adding the param (options)
+  // +++ this description could be improved by adding the param (options)
+  /**
+   * @callback options~onCopyField
+   * @param { objectLike } dstContainer - The target object.
+   * @param { objectLike } srcContainer - The source object.
+   * @param { string } key - The key of the (srcObject) target object.
+   */
 
   /**
    * The mapClone() method is used to clone the values of all
@@ -7668,18 +7674,22 @@ buffersDeserialize.defaults =
    * It creates two variables:
    * var options = options || {}, result = options.dst || {}.
    * Iterate over (srcObject) object, checks if (srcObject) object has own properties.
-   * If true, it creates [ key, value ] for each (key) to the result,
-   * and returns clone result.__proto__ = srcObject.__proto__;
+   * If true, it calls the provided callback function ( options.onCopyField( result, srcObject, k ) ) for each key (k),
+   * and copies each [ key, value ] of the (srcObject) to the (result),
+   * and after cycle, returns clone result.__proto__ = srcObject.__proto__;.
    *
    * @param { objectLike } srcObject - The source object.
-   * @param { objectLike } [ options.dst = {} ] - The target object.
+   * @param { Object } options - The options.
+   * @param { objectLike } [options.dst = {}] - The target object.
+   * @param { options~onCopyField } [options.onCopyField()] - The callback function to copy each [ key, value ]
+   * of the (srcObject) to the (result).
    *
    * @example
+   * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
    * var Example = function() {
    *   this.name = 'Peter';
    *   this.age = 27;
    * }
-   * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
    * mapClone( new Example(), { dst : { sex : 'Male' } } );
    *
    * @returns { objectLike }  The (result) object gets returned.
@@ -7732,10 +7742,10 @@ var mapClone = function( srcObject,options )
    * and adds to the (srcObject) all the [ key, value ] for which callback
    * function (filter) returns true.
    *
-   * @param { _.filter.supplementary() } filter - Callback function to test each [ key, value ]
+   * @param { function } filter - The callback function to test each [ key, value ]
    * of the (dstObject) object.
    * @param { objectLike } dstObject - The target object.
-   * @param { ...objectLike } - The next object.
+   * @param { ...objectLike } arguments[] - The next object.
    *
    * @example
    * // returns { a : 1, b : 2, c : 3 }
@@ -7790,8 +7800,8 @@ var mapExtendFiltering = function( filter,dstObject )
  * If true,
  * it extends (result) from the next objects.
  *
- * @param{ objectLike } [ dstObject = {} ] - The target object.
- * @param{ ...objectLike } - The source object(s).
+ * @param{ objectLike } [dstObject = {}] - The target object.
+ * @param{ ...objectLike } arguments[] - The source object(s).
  *
  * @example
  * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
@@ -7843,7 +7853,7 @@ var mapExtend = function mapExtend( dstObject )
    * adds a callback function ( _.filter.supplementary() ) to the beginning of the (args)
    * and returns an object with unique [ key, value ].
    *
-   * @param { ...objectLike } - The source object(s).
+   * @param { ...objectLike } arguments[] - The source object(s).
    *
    * @example
    * // returns { a : 1, b : 2, c : 3 }
@@ -7904,7 +7914,7 @@ var mapSupplement = function( dst )
    * to the beginning of the (args)
    * and returns an object filled by all unique clone [key, value].
    *
-   * @param { ...objectLike } - The source object(s).
+   * @param { ...objectLike } arguments[] - The source object(s).
    *
    * @example
    * // returns { a : 1, b : 'yyy', c : 3 };
@@ -7928,7 +7938,7 @@ var mapComplement = function( dst )
    * The mapCopy() method is used to copy the values of all properties
    * from one or more source objects to the new object.
    *
-   * @param { ...objectLike } - The source object(s).
+   * @param { ...objectLike } arguments[] - The source object(s).
    *
    * @example
    * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
@@ -7950,23 +7960,38 @@ var mapCopy = function mapCopy()
 // map converter
 // --
 
-  // !!! this description could be improved by adding example(s).
-  // !!! undefiend???
-  // !!! formatting
+  // +++ this description could be improved by adding example(s).
+  // +++ undefiend???
+  // +++ formatting
 
   /**
-   * Returns first pair key / value as array.
+   * The mapFirstPair() method returns first pair [ key, value ] as array.
    *
-   * @param {objectLike} srcObject
-   *    Object like entity of get first pair.
-   * @return {array}
-   *    Pair key / value as array if srcObject has fields otherwise undefiend.
+   * @param { objectLike } srcObject - An object like entity of get first pair.
+   *
+   * @example
+   * // returns [ 'a', 3 ]
+   * _.mapFirstPair( { a : 3, b : 13 } );
+   * 
+   * @example
+   * // returns 'undefined'
+   * _.mapFirstPair( {  } );
+   *
+   * @example
+   * // returns [ '0', [ 'a', 7 ] ]
+   * _.mapFirstPair( [ [ 'a', 7 ] ] );
+   *
+   * @returns { Array } Returns pair [ key, value ] as array if (srcObject) has fields, otherwise, undefined.
    * @method mapFirstPair
+   * @throws { Error } Will throw an Error if (arguments.length) less than one, if (srcObject) is not an object-like.
    * @memberof wTools
    */
 
 var mapFirstPair = function mapFirstPair( srcObject )
 {
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( srcObject ) );
 
   for( var s in srcObject )
   {
@@ -8014,19 +8039,19 @@ var mapToArray = function( src )
 
 //
 
-  // !!! param (src) may be not only an array.
-  // !!! throws is not defined in the function.
+  // +++ param (src) may be not only an array.
+  // +++ throws is not defined in the function.
 
   /**
    * The mapValWithIndex() returns value of (src) by corresponding (index).
    *
    * It takes (src) and (index), creates a variable ( i = 0 ),
-   * checks if ( index > 0 ), iterate over array (src) and match
+   * checks if ( index > 0 ), iterate over (src) object-like and match
    * if ( i == index ).
    * If true, it returns value of (src).
    * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
    *
-   * @param { objectLike } src - An object.
+   * @param { objectLike } src - An object-like.
    * @param { number } index - To find the position an element.
    *
    * @example
@@ -8042,8 +8067,8 @@ var mapToArray = function( src )
 var mapValWithIndex = function( src,index )
 {
 
-  //_.assert( arguments.length === 2 );
-  //_.assert( _.objectLike( src ) );
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) );
 
 
   if( index < 0 ) return;
@@ -8058,24 +8083,24 @@ var mapValWithIndex = function( src,index )
 
 //
 
-  // !!! param (src) may be not only an array.
-  // !!! in the example does not return the value of "b".
-  // !!! throws is not defined in the function.
+  // +++ param (src) may be not only an array.
+  // +++ in the example does not return the value of "b".
+  // +++ throws is not defined in the function.
 
   /**
    * The mapKeyWithIndex() returns key of (src) by corresponding (index).
    *
    * It takes (src) and (index), creates a variable ( i = 0 ),
-   * checks if ( index > 0 ), iterate over array (src) and match
+   * checks if ( index > 0 ), iterate over (src) object-like and match
    * if ( i == index ).
    * If true, it returns value of (src).
    * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
    *
-   * @param { objectLike } src - An object.
+   * @param { objectLike } src - An object-like.
    * @param { number } index - To find the position an element.
    *
    * @example
-   * // returns 'b'
+   * // returns '1'
    * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
    *
    * @returns { string } Returns key of (src) by corresponding (index).
@@ -8087,8 +8112,8 @@ var mapValWithIndex = function( src,index )
 var mapKeyWithIndex = function( src,index )
 {
 
-  // _.assert( arguments.length === 2 );
-  // _.assert( _.objectLike( src ) );
+   _.assert( arguments.length === 2 );
+   _.assert( _.objectLike( src ) );
 
   if( index < 0 ) return;
 
@@ -8438,7 +8463,7 @@ var mapContain = function( src,ins )
  *
  * @example
  * // returns true
- * _.mapOwn({a : 7, b : 13}, 'a');
+ * _.mapOwn( { a : 7, b : 13 }, 'a' );
  *
  * @example
  * // returns false
@@ -8495,7 +8520,7 @@ var mapHas = function( object,name )
    * Otherwise pair( key/value ) from the first object goes into result object.
    *
    * @param{ objectLike } srcMap - original object.
-   * @param{ ...objectLike } srcMap - one or more objects.
+   * @param{ ...objectLike } arguments[] - one or more objects.
    * Objects to return an object without repeating keys.
    *
    * @example
@@ -8559,12 +8584,12 @@ var mapBut = function( srcMap )
    * all the [ key, value ],
    * if values are not equal to the array or object.
    *
-   * @param { _.filter.atomic() } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
+   * @param { function } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
    * @param { objectLike } srcMap - The target object.
-   * @param { ...objectLike } - The next objects.
+   * @param { ...objectLike } arguments[] - The next objects.
    *
    * @example
-   * // returns {a: 1, b: "xxx"}
+   * // returns { a : 1, b : "xxx" }
    * mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
    *
    * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
@@ -8613,8 +8638,8 @@ var mapBut = function( srcMap )
    * then this pair( key/value ) will not be included into result object.
    * Otherwise pair( key/value ) from the first object goes into result object.
    *
-   * @param { objectLike } srcMap - original object.
-   * @param { ...objectLike } argument(s) - one or more objects.
+   * @param { objectLike } srcMap - The original object.
+   * @param { ...objectLike } arguments[] - One or more objects.
    *
    * @example
    * // returns { a : 7 }
@@ -8659,13 +8684,46 @@ var mapOwnBut = function mapOwnBut( srcMap )
 
 //
 
-  // !!! this description missing
+  // +++ this description missing
+
+  /**
+   * @namespace
+   * @property { objectLike } srcObjects.srcObject - The target object.
+   * @property { objectLike } screenObjects.screenObject - The source object.
+   * @property { Object } dstObject - The empty object.
+   */
+
+  /**
+   * The mapScreens() returns an object filled by unique [ key, value ]
+   * from (srcObject) object.
+   *
+   * It creates the variable (dstObject) assignes and calls the method (__mapScreen( { } ) )
+   * with three properties.
+   *
+   * @see __mapScreen( { } )  See for more information.
+   *
+   * @param { objectLike } srcObject - The target object.
+   * @param { objectLike } screenObject - The source object.
+   *
+   * @example
+   * // returns { a : "abc", c : 33, d : "name" };
+   * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+   *
+   * @returns { Object } Returns an (dstObject) object filled by unique [ key, value ]
+   * from (srcObject) objects.
+   * @method mapScreens
+   * @throws { Error } Will throw an Error if (arguments.length) more that two,
+   * if (srcObject or screenObject) are not objects-like.
+   * @memberof wTools
+   */
 
 var mapScreens = function( srcObject,screenObject )
 {
-
+  
   _assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-
+  _assert( _.objectLike( srcObject ),'mapScreens :','expects object as argument' );
+  _assert( _.objectLike( screenObject ),'mapScreens :','expects object as screenObject' );
+  
   if( arguments.length > 2 )
   {
     debugger;
@@ -8686,26 +8744,30 @@ var mapScreens = function( srcObject,screenObject )
 
 //
   /**
+   * @namespace
+   * @property { objectLike } screenObjects.screenObject - The first object.
+   * @property { ...objectLike } srcObject.arguments[1,...] -
+   * The pseudo array (arguments[]) from the first [1] index to the end.
+   * @property { object } dstObject - The empty object.
+   */
+
+  /**
    * The mapScreen() returns an object filled by unique [ key, value ]
    * from others objects.
    *
-   * It takes number of objects, configure a new object by three properties.
+   * It takes number of objects, creates a new object by three properties
+   * and calls the _mapScreen( {} ) with created object.
    *
-   * @property { objectLike } screenObjects.screenObject - first object.
-   * @property { ...objectLike } srcObject.arguments[1,...] -
-   * is pseudo array (arguments[]) from the first [1] index to the end.
-   * @property { object } dstObject - is an empty object.
+   * @see  _mapScreen( { } )  See for more information.
    *
-   * and calls the _mapScreen( {} ) with new object.
-   *
-   * @param { objectLike } screenObject - first object.
-   * @param { ...objectLike } arguments[] - one or more objects.
+   * @param { objectLike } screenObject - The first object.
+   * @param { ...objectLike } arguments[] - One or more objects.
    *
    * @example
    * // returns { a : "abc", c : 33, d : "name" };
    * _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
    *
-   * @returns { objectLike } Returns the object filled by unique [ key, value ]
+   * @returns { Object } Returns the object filled by unique [ key, value ]
    * from others objects.
    * @method mapScreen
    * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
@@ -8729,10 +8791,10 @@ var mapScreen = function( screenObject )
 
 //
   /**
-   * @callback  filter
-   * @param { objectLike } (dstObject) - an empty object.
-   * @param { objectLike }  (srcObjects) - the source object.
-   * @param { string } - the key of the (screenObject).
+   * @callback  options.filter
+   * @param { objectLike } dstObject - An empty object.
+   * @param { objectLike } srcObjects - The target object.
+   * @param { string } - The key of the (screenObject).
    */
 
   /**
@@ -8745,8 +8807,10 @@ var mapScreen = function( screenObject )
    * and adds to the (dstObject) all the [ key, value ]
    * for which callback function returns true.
    *
-   * @param { objectLike } options - set of objects, (options.dstObject = {}),
-   * (options.screenObjects), (options.srcObjects).
+   * @param { function } [options.filter = filter.bypass()] options.filter - The callback function.
+   * @param { objectLike } options.srcObjects - The target object.
+   * @param { objectLike } options.screenObjects - The source object.
+   * @param { Object } [options.dstObject = {}] options.dstObject - The empty object.
    *
    * @example
    * // returns { a : 33, c : 33, name : "Mikle" };
@@ -8764,7 +8828,7 @@ var mapScreen = function( screenObject )
    * options.srcObjects = { d : 'name', c : 33, a : 'abc' };
    * _mapScreen( options );
    *
-   * @returns { objectLike } Returns an object filled by unique [ key, value]
+   * @returns { Object } Returns an object filled by unique [ key, value ]
    * from others objects.
    * @method _mapScreen
    * @throws { Error } Will throw an Error if (options.dstObject or screenObject) are not objects,

@@ -87,27 +87,6 @@
     }
 
   }
-
-  var arrayRange = function( test ) 
-  {
-    
-    test.description = 'array';
-    var got = _.arrayRange( 0 );
-    console.log(got);
-    var expected = got;
-    test.identical( got, expected );
-    
-    
-    
-    if( Config.debug ) 
-    {
-      
-      
-      
-    }
-  }
-    
-  
   
 
 //
@@ -120,8 +99,7 @@
     tests:
     {
 
-      //arrayPrependOnceMerging : arrayPrependOnceMerging,
-      arrayRange : arrayRange,
+      arrayPrependOnceMerging : arrayPrependOnceMerging,
     
     }
 
