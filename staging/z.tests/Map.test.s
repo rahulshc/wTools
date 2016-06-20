@@ -124,6 +124,11 @@
   var mapExtend = function( test )
   {
 
+    test.description = 'first argument is null';
+    var got = _.mapExtend( null, { a : 7, b : 13 }, { c : 3, d : 33 } );
+    var expected = { a : 7, b : 13, c : 3, d : 33 };
+    test.identical( got, expected );
+
     test.description = 'multiple object properties';
     var got = _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
     var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
@@ -511,13 +516,12 @@
     if( Config.debug )
     {
 
-      test.description = 'no argument';
-      test.shouldThrowError( function()
-      {
+      test.description = 'no arguments';
+      test.shouldThrowError( function() {
         _.mapValWithIndex();
       });
 
-      test.description = 'few arguments';
+      test.description = 'few argument';
       test.shouldThrowError( function()
       {
         _.mapValWithIndex( [ [] ] );
@@ -543,7 +547,7 @@
 
     }
 
-  };
+  }
   
   
   var mapKeyWithIndex = function( test ) 
@@ -797,6 +801,46 @@
       
     }
     
+  };
+
+
+  var mapFirstPair = function( test )
+  {
+
+    test.description = 'first pair [ key, value ]';
+    var got = _.mapFirstPair( { a : 3, b : 13 } );
+    var expected = [ 'a', 3 ];
+    test.identical( got, expected );
+
+    test.description = 'undefined';
+    var got = _.mapFirstPair( {  } );
+    var expected = undefined;
+    test.identical( got, expected );
+
+    test.description = 'object-like';
+    var got = _.mapFirstPair( [ [ 'a', 7 ] ] );
+    var expected = [ '0', [ 'a', 7 ] ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug )
+    {
+      
+      test.description = 'no argument';
+      test.shouldThrowError( function() 
+      {
+        _.mapFirstPair();
+      });
+
+      test.description = 'wrong type of argument';
+      test.shouldThrowError( function()
+      {
+        _.mapFirstPair( 'wrong argument' );
+      });
+      
+    }
+
   };
 
 
@@ -1118,6 +1162,68 @@
   };
   
   
+  var mapScreens = function( test ) 
+  {
+    
+    
+    test.description = 'test1';
+    var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+    console.log(got);
+    var expected = { a : "abc", c : 33, d : "name" };
+    test.identical( got, expected );
+
+    test.description = 'test2';
+    var got = _.mapScreens( [ { d : 'name', c : 33, a : 'abc' } ], [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+    console.log(got);
+    var expected = { a : "abc", c : 33, d : "name" };
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+      
+      test.description = 'no arguments';
+      test.shouldThrowError( function() 
+      {
+        _.mapScreens();
+      });
+
+      test.description = 'first argument is not an object-like';
+      test.shouldThrowError( function()
+      {
+        _.mapScreens( 3, [] );
+      });
+
+      test.description = 'second argument is not an object-like';
+      test.shouldThrowError( function()
+      {
+        _.mapScreens( [], '' );
+      });
+
+      test.description = 'few arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapScreen( {} );
+      });
+
+      test.description = 'redundant arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapScreen( [], [], {} );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.mapScreen( 'wrong arguments' );
+      });
+
+    }
+  };
+  
+  
+  
   
   //node ./staging/z.tests/Map.test.s
 
@@ -1136,18 +1242,20 @@
     //name : 'mapContain',
     //name : 'mapBut',
     //name : 'mapToArray',
-    name : 'mapValWithIndex',
+    //name : 'mapValWithIndex',
     //name : 'mapKeyWithIndex',
     //name : 'mapIs',
     //name : 'mapClone',
     //name : 'mapExtendFiltering',
     //name : 'mapSupplement',
     //name : 'mapCopy',
+    name : 'mapFirstPair',
     //name : 'mapToString',
     //name : 'mapGroup',
     //name : 'mapButFiltering',
     //name : 'mapComplement',
     //name : 'mapOwnBut',
+    //name : 'mapScreens',
     //name : 'mapScreen',
     //name : '_mapScreen',
 
@@ -1163,18 +1271,20 @@
       //mapContain : mapContain,
       //mapBut : mapBut,
       //mapToArray : mapToArray,
-      mapValWithIndex : mapValWithIndex,
+      //mapValWithIndex : mapValWithIndex,
       //mapKeyWithIndex : mapKeyWithIndex,
       //mapIs : mapIs,
       //mapClone : mapClone,
       //mapExtendFiltering : mapExtendFiltering,
       //mapSupplement : mapSupplement,
       //mapCopy : mapCopy,
+      mapFirstPair : mapFirstPair,
       //mapToString : mapToString,
       //mapGroup : mapGroup,
       //mapButFiltering : mapButFiltering,
       //mapComplement : mapComplement,
       //mapOwnBut : mapOwnBut,
+      //mapScreens : mapScreens,
       //mapScreen : mapScreen,
       //_mapScreen : _mapScreen,
     }
