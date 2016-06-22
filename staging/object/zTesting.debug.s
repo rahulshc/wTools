@@ -348,7 +348,7 @@ var colorGood = 'background-color: #00aa00; color: #ffffff; font-weight:lighter;
 var colorNeutral = 'background-color: #aaaaaa; color: #ffffff; font-weight:lighter;';
 var EPS = 1e-5;
 var safe = false;
-var verbose = true;
+var verbose = false;
 
 // --
 // prototype

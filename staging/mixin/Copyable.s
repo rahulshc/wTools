@@ -103,8 +103,8 @@ var init = function( Prototype )
     var self = this;
 
 /*
-    _.mapExtendFiltering( _.filter.cloningOwn(),self,Composes );
-    _.mapExtendFiltering( _.filter.cloningOwn(),self,Aggregates );
+    _.mapExtendFiltering( _.filter.cloningSrcOwn(),self,Composes );
+    _.mapExtendFiltering( _.filter.cloningSrcOwn(),self,Aggregates );
 
     if( options )
     self.copy( options );
@@ -125,8 +125,8 @@ var init = function( options )
 {
   var self = this;
 
-  _.mapExtendFiltering( _.filter.cloningOwn(),self,Composes );
-  _.mapExtendFiltering( _.filter.cloningOwn(),self,Aggregates );
+  _.mapExtendFiltering( _.filter.cloningSrcOwn(),self,Composes );
+  _.mapExtendFiltering( _.filter.cloningSrcOwn(),self,Aggregates );
 
   if( options )
   self.copy( options );
@@ -139,8 +139,8 @@ var init = function( options )
 {
   var self = this;
 
-  _.mapExtendFiltering( _.filter.notAtomicCloningOwn(),self,Composes );
-  _.mapExtendFiltering( _.filter.notAtomicCloningOwn(),self,Aggregates );
+  _.mapExtendFiltering( _.filter.notAtomicCloningSrcOwn(),self,Composes );
+  _.mapExtendFiltering( _.filter.notAtomicCloningSrcOwn(),self,Aggregates );
 
   if( options )
   self.copy( options );
@@ -300,6 +300,11 @@ var copyCustom = function( options )
 
   // copy composes
 
+/*
+  if( src.nickName === "eFaceCellEnclosing( m_faceCellEnclosing )" )
+  debugger;
+*/
+
   if( options.copyComposes || options.copyConstitutes || options.copyCustomFields )
   {
 
@@ -340,7 +345,7 @@ var copyCustom = function( options )
   {
 
     var constitution = Prototype.Constitutes[ c ];
-    self.constituteField( dst,c );
+    self._constituteField( dst,c );
 
   }
 */
@@ -429,9 +434,14 @@ var clone = function( dst )
 
 var _copyFieldConstituting = function _copyFieldConstituting( Constitutes,cloning,dstContainer,srcContainer,key )
 {
-
+/*
+  if( key === 'm_faceCellEnclosing' )
+  debugger;
+*/
   if( Constitutes[ key ] /*&& _.objectIs( srcContainer[ key ] )*/ )
   {
+
+    throw _.err( 'constituting is deprecated, use getter for ' + key );
 
     var constitute = Constitutes[ key ];
     if( _.objectIs( constitute ) || _.arrayIs( constitute ) || !_.routineIs( constitute ) )
@@ -439,12 +449,17 @@ var _copyFieldConstituting = function _copyFieldConstituting( Constitutes,clonin
       throw _.err( 'expects routine as constitute, but got ' + _.typeOf( constitute ) );
     }
 
-    if( !_.objectIs( srcContainer[ key ] && key !== 'includePillarMapOnly' ) )
-    debugger; 
+    _.assert( constitute.length === 1,'constitute should take single argument' );
+
+    if( !_.objectIs( srcContainer[ key ] ) && key !== 'includePillarMapOnly' )
+    debugger;
+
+    //if( key === 'includePillarMapOnly' )
+    //debugger;
 
     if( !dstContainer[ key ] )
     {
-      dstContainer[ key ] = constitute.apply( dstContainer,srcContainer[ key ],dstContainer );
+      dstContainer[ key ] = constitute.call( dstContainer,srcContainer[ key ],dstContainer );
     }
     else
     {
@@ -523,6 +538,28 @@ var _copyFieldNotConstituting = function _copyFieldNotConstituting( Constitutes,
 //
 
 /**
+ * Gives descriptive string of the object.
+ * @method toStr
+ * @memberof wCopyable#
+ */
+/*
+var toStr = function()
+{
+  var self = this;
+  var result = '';
+
+  _.assert( arguments.length === 0 );
+
+  result += self.nickName + '\n';
+
+  var fields = _.mapScreens( self,self.Composes || {},self.Aggregates || {},self.Restricts || {} );
+  result += _.toStr( fields );
+
+}
+*/
+//
+
+/**
  * Make sure src does not have redundant fields.
  * @param {object} src - source object of the class.
  * @method doesNotHaveRedundantFields
@@ -546,25 +583,27 @@ var doesNotHaveRedundantFields = function( src )
 /**
  * Constitutes field.
  * @param {object} fieldName - src isntance.
- * @method constituteField
+ * @method _constituteField
  * @memberof wCopyable#
  */
 
-var constituteField = function( dst,fieldName )
+var _constituteField = function( dst,fieldName )
 {
   var self = this;
   var Prototype = self.__proto__ || options.prototype;
-  var constitution = Prototype.Constitutes[ fieldName ];
+  var constitute = Prototype.Constitutes[ fieldName ];
 
-  if( !constitution )
+  if( !constitute )
   return;
 
   if( dst[ fieldName ] === undefined || dst[ fieldName ] === null )
   return;
 
+  throw _.err( 'constituting is deprecated, use getter for ' + fieldName );
+
   //
 
-  var constituteIt = function( constitution,src,dstContainer,key )
+  var constituteIt = function( constitute,src,dstContainer,key )
   {
 
     if( src.Composes )
@@ -574,9 +613,9 @@ var constituteField = function( dst,fieldName )
     }
 
     debugger;
-    _.assert( constitution.length === 2 );
+    _.assert( constitute.length === 1,'constitute should take single argument' );
 
-    var n = constitution( src,self );
+    var n = constitute( src,self );
     if( n !== undefined )
     dstContainer[ key ] = n;
     else throw _.err( 'not tested' );
@@ -585,26 +624,26 @@ var constituteField = function( dst,fieldName )
 
   //
 
-  if( _.objectIs( constitution ) )
+  if( _.objectIs( constitute ) )
   {
     throw _.err( 'deprecated' );
 
     for( var a in dst[ fieldName ] )
-    constituteIt( constitution[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
+    constituteIt( constitute[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
 
   }
-  else if( _.arrayIs( constitution ) )
+  else if( _.arrayIs( constitute ) )
   {
     throw _.err( 'deprecated' );
 
     for( var a = 0 ; a < dst[ fieldName ].length ; a++ )
-    constituteIt( constitution[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
+    constituteIt( constitute[ 0 ],dst[ fieldName ][ a ],dst[ fieldName ],a );
 
   }
   else
   {
 
-    constituteIt( constitution,dst[ fieldName ],dst,fieldName );
+    constituteIt( constitute,dst[ fieldName ],dst,fieldName );
 
   }
 
@@ -783,39 +822,41 @@ var Restricts =
 var Proto =
 {
 
-  finit: finit,
-  copyCustom: copyCustom,
-  copy: copy,
+  finit : finit,
+  copyCustom : copyCustom,
+  copy : copy,
 
-  cloneData: cloneData,
-  clone: clone,
+  cloneData : cloneData,
+  clone : clone,
 
-  _copyFieldConstituting: _copyFieldConstituting,
-  _copyFieldNotConstituting: _copyFieldNotConstituting,
+  _copyFieldConstituting : _copyFieldConstituting,
+  _copyFieldNotConstituting : _copyFieldNotConstituting,
 
-  doesNotHaveRedundantFields: doesNotHaveRedundantFields,
-  constituteField: constituteField,
-  classEachParent: classEachParent,
+  //toStr : toStr,
+  doesNotHaveRedundantFields : doesNotHaveRedundantFields,
+  _constituteField : _constituteField,
+  classEachParent : classEachParent,
 
-  isFinited: isFinited,
-  isIdentical: isIdentical,
+  isFinited : isFinited,
+  isIdentical : isIdentical,
 
-  '_SelfGet': _SelfGet,
-  '_ParentGet': _ParentGet,
-  '_classNameGet': _classNameGet,
-  '_classIsGet': _classIsGet,
-  '_nickNameGet': _nickNameGet,
+  '_SelfGet' : _SelfGet,
+  '_ParentGet' : _ParentGet,
+  '_classNameGet' : _classNameGet,
+  '_classIsGet' : _classIsGet,
+  '_nickNameGet' : _nickNameGet,
 
-  Composes: Composes,
-  Aggregates: Aggregates,
-  Restricts: Restricts,
+  Composes : Composes,
+  Aggregates : Aggregates,
+  Restricts : Restricts,
 
 }
 
 var Self =
 {
 
-  mixin: mixin,
+  mixin : mixin,
+  Proto : Proto,
 
 }
 
