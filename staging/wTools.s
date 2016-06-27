@@ -3290,7 +3290,7 @@ var regexpBut_ = function( options )
   else
   result += ').)*$';
 
-  console.log( 'regexpBut_.result : ' + result )
+  /* console.log( 'regexpBut_.result : ' + result ) */
 
   return new RegExp( result );
 }
@@ -5989,8 +5989,6 @@ var arrayAs = function( src )
 var arrayUniqueIs = function arrayUniqueIs( o )
 {
 
-  debugger;
-
   if( _.arrayLike( o ) )
   o = { src : o };
 
@@ -6059,8 +6057,6 @@ arrayUniqueIs.defaults =
 
 var arrayUnique = function arrayUnique( src,onElement )
 {
-
-  debugger;
 
   var isUnique = arrayUniqueIs
   ({
@@ -6973,6 +6969,9 @@ var _arraySortedLookUpAct = function( arr,ins,comparator,left,right )
 var arraySortedLookUp = function( arr,ins,comparator )
 {
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
+
   if( comparator === undefined )
   comparator = function( a,b ){ return a-b };
 
@@ -6993,7 +6992,11 @@ var arraySortedLookUp = function( arr,ins,comparator )
 var arraySortedClosest = function( arr,ins,comparator )
 {
 
-  if( !arr.length ) return { index : 0 };
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
+
+  if( !arr.length )
+  return { index : 0 };
 
   if( comparator === undefined )
   comparator = function( a,b ){ return a-b };
@@ -7032,6 +7035,9 @@ var arraySortedClosest = function( arr,ins,comparator )
 var arraySortedRemove = function( arr,ins,comparator )
 {
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
+
   if( comparator === undefined ) comparator = function( a,b ){ return a-b };
   var l = arr.length;
   var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
@@ -7047,6 +7053,9 @@ var arraySortedRemove = function( arr,ins,comparator )
 
 var arraySortedAddOnce = function( arr,ins,comparator )
 {
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
 
   if( comparator === undefined ) comparator = function( a,b ){ return a-b };
   var l = arr.length;
@@ -7064,6 +7073,9 @@ var arraySortedAddOnce = function( arr,ins,comparator )
 var arraySortedAdd = function( arr,ins,comparator )
 {
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
+
   if( comparator === undefined ) comparator = function( a,b ){ return a-b };
   var l = arr.length;
   var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
@@ -7077,6 +7089,9 @@ var arraySortedAdd = function( arr,ins,comparator )
 
 var arraySortedAddArray = function( dst,src,comparator )
 {
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
 
   var result = 0;
 
@@ -9005,10 +9020,10 @@ var supplementaryCloning = function()
 
 //
 
-var supplementaryOwn = function()
+var supplementarySrcOwn = function()
 {
 
-  var routine = function supplementaryOwn( dstContainer,srcContainer,key )
+  var routine = function supplementarySrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -9025,14 +9040,34 @@ var supplementaryOwn = function()
 
 //
 
-var supplementaryCloningOwn = function()
+var supplementaryCloningSrcOwn = function()
 {
 
-  var routine = function supplementaryCloningOwn( dstContainer,srcContainer,key )
+  var routine = function supplementaryCloningSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
     if( dstContainer[ key ] !== undefined )
+    return;
+
+    _.entityCopyField( dstContainer,srcContainer,key );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
+var supplementaryCloningDstNotOwn = function()
+{
+
+  var routine = function supplementaryCloningDstNotOwn( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
 
     _.entityCopyField( dstContainer,srcContainer,key );
@@ -9058,7 +9093,7 @@ var cloning = function()
 
 //
 
-var cloningOwn = function()
+var cloningSrcOwn = function()
 {
 
   var routine = function cloning( dstContainer,srcContainer,key )
@@ -9093,10 +9128,10 @@ var atomic = function()
 
 //
 
-var atomicOwn = function()
+var atomicSrcOwn = function()
 {
 
-  var routine = function atomicOwn( dstContainer,srcContainer,key )
+  var routine = function atomicSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -9130,10 +9165,10 @@ var notAtomicCloning = function()
 
 //
 
-var notAtomicCloningOwn = function()
+var notAtomicCloningSrcOwn = function()
 {
 
-  var routine = function notAtomicCloningOwn( dstContainer,srcContainer,key )
+  var routine = function notAtomicCloningSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -9149,10 +9184,10 @@ var notAtomicCloningOwn = function()
 
 //
 
-var notAtomicCloningRecursiveOwn = function()
+var notAtomicCloningRecursiveSrcOwn = function()
 {
 
-  var routine = function notAtomicCloningRecursiveOwn( dstContainer,srcContainer,key )
+  var routine = function notAtomicCloningRecursiveSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -9294,18 +9329,19 @@ var filter =
 
   supplementary : supplementary,
   supplementaryCloning : supplementaryCloning,
-  supplementaryOwn : supplementaryOwn,
-  supplementaryCloningOwn : supplementaryCloningOwn,
+  supplementarySrcOwn : supplementarySrcOwn,
+  supplementaryCloningSrcOwn : supplementaryCloningSrcOwn,
+  supplementaryCloningDstNotOwn : supplementaryCloningDstNotOwn,
 
   cloning : cloning,
-  cloningOwn : cloningOwn,
+  cloningSrcOwn : cloningSrcOwn,
 
   atomic : atomic,
-  atomicOwn : atomicOwn,
+  atomicSrcOwn : atomicSrcOwn,
 
   notAtomicCloning : notAtomicCloning,
-  notAtomicCloningOwn : notAtomicCloningOwn,
-  notAtomicCloningRecursiveOwn : notAtomicCloningRecursiveOwn,
+  notAtomicCloningSrcOwn : notAtomicCloningSrcOwn,
+  notAtomicCloningRecursiveSrcOwn : notAtomicCloningRecursiveSrcOwn,
 
   recursiveClonning : recursiveClonning,
 

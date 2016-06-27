@@ -31,13 +31,20 @@ if( typeof module !== 'undefined' )
 
   try
   {
-    require( 'wProto' );
     require( 'wCopyable' );
   }
   catch( err )
   {
-    require( '../component/Proto.s' );
     require( '../mixin/Copyable.s' );
+  }
+
+  try
+  {
+    require( 'wProto' );
+  }
+  catch( err )
+  {
+    require( '../component/Proto.s' );
   }
 
 }
@@ -62,7 +69,7 @@ var init = function init( options )
   if( _.routineIs( options ) )
   options = { all : options };
 
-  _.mapExtendFiltering( _.filter.notAtomicCloningOwn(),self,Composes );
+  _.mapExtendFiltering( _.filter.notAtomicCloningSrcOwn(),self,Composes );
 
   if( options )
   self.copy( options );
@@ -177,7 +184,10 @@ var gotOnce = function gotOnce( taker )
   var i = _.arrayLeftIndexOf( self._taker,key,function( a )
   {
     if( a.name === key )
-    return true;
+    {
+      //debugger;
+      return true;
+    }
   });
 
   if( i >= 0 )
@@ -278,7 +288,6 @@ var ifNoErrorThenClass = function()
     }
     else
     {
-      debugger;
       return wConsequence().error( err );
     }
 
@@ -470,7 +479,6 @@ var _handleGot = function()
       }
       else
       {
-        debugger;
         self.give( _given.error,_given.argument );
       }
     }
@@ -926,7 +934,7 @@ _.accessorForbid( Self.prototype,
 
 //
 
-_.mapExtendFiltering( _.filter.atomicOwn(),Self.prototype,Composes );
+_.mapExtendFiltering( _.filter.atomicSrcOwn(),Self.prototype,Composes );
 
 if( typeof module !== 'undefined' )
 {

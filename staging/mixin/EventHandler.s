@@ -36,9 +36,10 @@ var mixin = function( dst )
   {
     _eventHandlers : '_eventHandlers',
     _eventHandlerOwners : '_eventHandlerOwners',
+    _eventHandlerDescriptors : '_eventHandlerDescriptors',
   });
 
-  _.assert( dst.Restricts._eventHandlerDescriptors );
+  _.assert( dst.Restricts._eventHandler );
 
 }
 
@@ -61,6 +62,11 @@ var init = function( Prototype )
   return function initEventHandler()
   {
     var self = this;
+
+    _.assert( !self._eventHandler,'EventHandler.init already done for ',self.nickName );
+
+    self._eventHandlerInit();
+
     var result = originalInit.apply( self,arguments );
 
     self.eventHandle( 'init' );
@@ -83,6 +89,7 @@ var finit = function( Prototype )
 {
 
   var originalFinit = Prototype.finit;
+
 /*
   if( !originalFinit )
   {
@@ -91,6 +98,7 @@ var finit = function( Prototype )
     return;
   }
 */
+
   return function finitEventHandler()
   {
     var self = this;
@@ -111,13 +119,14 @@ var finit = function( Prototype )
 // register
 // --
 
-var eventHandlerInit = function()
+var _eventHandlerInit = function()
 {
   var self = this;
 
-  _.assert( arguments.length === 0 );
+  _.assert( self instanceof self.constructor );
 
-  self._eventHandlerDescriptorsByKind( '' );
+  self._eventHandler = {};
+  self._eventHandler.descriptors = {};
 }
 
 //
@@ -290,7 +299,7 @@ var eventHandlerUnregister = function( kind, onHandle )
 {
   var self = this;
 
-  if( !self._eventHandlerDescriptors )
+  if( !self._eventHandler.descriptors )
   return self;
 
   if( arguments.length === 0 )
@@ -358,10 +367,10 @@ var _eventHandlerUnregister = function( options )
 
   _.assert( arguments.length === 1 );
   _.assertMapOnly( options,_eventHandlerUnregister.defaults );
-  if( options.strict === undefined )
+  if( Object.keys( options ).length && options.strict === undefined )
   options.strict = 1;
 
-  var handlers = self._eventHandlerDescriptors;
+  var handlers = self._eventHandler.descriptors;
   if( !handlers )
   return self;
 
@@ -451,7 +460,7 @@ var eventHandlerUnregisterByKindAndOwner = function( kind, owner )
 
   _.assert( arguments.length === 2 && owner,'eventHandlerUnregister:','expects "kind" and "owner" as arguments' );
 
-  var handlers = self._eventHandlerDescriptors;
+  var handlers = self._eventHandler.descriptors;
   if( !handlers )
   return self;
 
@@ -483,6 +492,7 @@ var eventHandle = function( event )
   var self = this;
 
   _.assert( arguments.length === 1 );
+  _.assert( self instanceof self.constructor );
 
   if( _.strIs( event ) )
   event = { kind : event };
@@ -539,7 +549,10 @@ var _eventHandle = function( event,options )
   if( self.usingEventLogging )
   logger.log( 'fired event', self.nickName + '.' + event.kind );
 
-  var handlers = self._eventHandlerDescriptors;
+  if( !self._eventHandler )
+  debugger;
+
+  var handlers = self._eventHandler.descriptors;
   if( handlers === undefined )
   return result;
 
@@ -609,7 +622,7 @@ var _eventHandlerDescriptorByKindAndOwner = function( kind,owner )
 {
   var self = this;
 
-  var handlers = self._eventHandlerDescriptors;
+  var handlers = self._eventHandler.descriptors;
   if( !handlers )
   return;
 
@@ -638,7 +651,7 @@ var _eventHandlerDescriptorByKindAndHandler = function( kind,onHandle )
 {
   var self = this;
 
-  var handlers = self._eventHandlerDescriptors;
+  var handlers = self._eventHandler.descriptors;
   if( !handlers )
   return;
 
@@ -670,7 +683,7 @@ var _eventHandlerDescriptorByHandler = function( onHandle )
   _.assert( _.routineIs( onHandle ) );
   _.assert( arguments.length === 1 );
 
-  var handlers = self._eventHandlerDescriptors;
+  var handlers = self._eventHandler.descriptors;
   if( !handlers )
   return;
 
@@ -695,10 +708,7 @@ var _eventHandlerDescriptorsByKind = function( kind )
 {
   var self = this;
 
-  if( self._eventHandlerDescriptors === undefined )
-  self._eventHandlerDescriptors = {};
-
-  var handlers = self._eventHandlerDescriptors;
+  var handlers = self._eventHandler.descriptors;
   var handlers = handlers[ kind ] = handlers[ kind ] || [];
 
   return handlers;
@@ -786,7 +796,7 @@ var Composes =
 var Restricts =
 {
   usingEventLogging : 0,
-  _eventHandlerDescriptors : {},
+  _eventHandler : {},
 }
 
 var Functors =
@@ -806,7 +816,7 @@ var Proto =
 
   // register
 
-  eventHandlerInit : eventHandlerInit,
+  _eventHandlerInit : _eventHandlerInit,
 
   eventHandlerRegister : eventHandlerRegister,
   addEventListener : eventHandlerRegister,
@@ -863,6 +873,9 @@ var Proto =
 
 var Self =
 {
+
+  Functors : Functors,
+  Proto : Proto,
 
   mixin : mixin,
 
