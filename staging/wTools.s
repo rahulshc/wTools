@@ -2453,15 +2453,14 @@ var mapIs = function( src )
  *
  * @example
  * // returns true
- * var arr = [ 1, 2 ];
- * arrayIs( arr );
+ * arrayIs( [ 1, 2 ] );
  *
  * @example
  * // returns false
  * arrayIs( 10 );
  *
- * @returns { Boolean } Returns true if (src) is an Array.
- * @method arrayIs.
+ * @returns { boolean } Returns true if (src) is an Array.
+ * @method arrayIs
  * @memberof wTools#.
  */
 
@@ -2471,6 +2470,32 @@ var arrayIs = function( src )
 }
 
 //
+  /**
+   * The arrayLike() method determines whether the passed value is an array-like or an Array.
+   *
+   * If (src) is an array-like or an Array, true is returned,
+   * otherwise false is.
+   *
+   * @param { * } src - The object to be checked.
+   *
+   * @example
+   * // returns true
+   * arrayLike( [ 1, 2 ] );
+   *
+   * @example
+   * // returns false
+   * arrayLike( 10 );
+   *
+   * @example
+   * // returns true
+   * var isArr = ( function() {
+   *   return _.arrayLike( arguments );
+   * } )('Hello there!');
+   * 
+   * @returns { boolean } Returns true if (src) is an array-like or an Array.
+   * @method arrayLike.
+   * @memberof wTools#.
+   */
 
 var arrayLike = function( src )
 {
@@ -2478,7 +2503,7 @@ var arrayLike = function( src )
 
   if( _.routineIs( src ) ) return false;
   if( _.objectIs( src ) ) return false;
-  if( _.strIs( src ) ) return false;
+  if( _.strIs( src ) ) return false; // ???
 
   if( !_.numberIs( src.length ) ) return false;
 
@@ -2486,6 +2511,41 @@ var arrayLike = function( src )
 }
 
 //
+  /**
+   * The hasLength() method determines whether the passed value has the property (length).
+   *
+   * If (src) is equal to the (undefined) or (null) false is returned.
+   * If (src) has the property (length) true is returned.
+   * Otherwise false is.
+   *
+   * @param { * } src - The object to be checked.
+   *
+   * @example
+   * // returns true
+   * hasLength( [ 1, 2 ] );
+   * 
+   * @example
+   * // returns true
+   * hasLength( 'Hello there!' );
+   *
+   * @example
+   * // returns true
+   * var isLength = ( function() {
+   *   return _.hasLength( arguments );
+   * } )('Hello there!');
+   * 
+   * @example
+   * // returns false
+   * hasLength( 10 );
+   *
+   * @example
+   * // returns false
+   * hasLength( { } );
+   * 
+   * @returns { boolean } Returns true if (src) has the property (length).
+   * @method hasLength
+   * @memberof wTools#.
+   */
 
 var hasLength = function( src )
 {
@@ -4701,9 +4761,17 @@ var dateToStr = function dateToStr( date )
  * // returns [ 3, 4 ]
  * var arr = _.arraySub( [ 1, 2, 3, 4, 5 ], 2, 4 );
  *
+ * @example
+ * // returns [ 2, 3 ]
+ * _.arraySub( [ 1, 2, 3, 4, 5 ], -4, -2 );
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4, 5 ]
+ * _.arraySub( [ 1, 2, 3, 4, 5 ] );
+ *
  * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
  * @method arraySub
- * @throws { Error } If the passed arguments is less than three.
+ * @throws { Error } If the passed arguments is more than three.
  * @throws { Error } If the first argument is not an array.
  * @memberof wTools#
  */
@@ -4740,7 +4808,7 @@ var arraySub = function( src,begin,end )
  * or the same length of the initial array if second argument is not provided.
  *
  * @param { arrayLike } ins - The instance of an array.
- * @param { Number} [ length ] - The length of the new array.
+ * @param { Number } [ length = ins.length ] - The length of the new array.
  *
  * @example
  * // returns [ , ,  ]
@@ -4753,7 +4821,9 @@ var arraySub = function( src,begin,end )
  * @returns { arrayLike }  Returns an array with a certain (length).
  * @method arrayNew
  * @throws { Error } If the passed arguments is less than two.
+ * @throws { Error } If the (length) is not a number.
  * @throws { Error } If the first argument in not an array like object.
+ * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
  * @memberof wTools#
  */
 
@@ -4761,7 +4831,8 @@ var arrayNew = function( ins,length )
 {
   var result;
 
-  _.assert( arguments.length <= 2 );
+  _.assert( arguments.length <= 2);
+  _.assert( _.numberIs( length ) );
 
   if( length === undefined )
   {
@@ -4872,7 +4943,7 @@ var arrayOrNumber = function( dst,length )
  * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
  *
  * @param { arrayLike } srcArray - Values for the new array.
- * @param { ( arrayLike | object ) } [ indicesArray ] - Indexes of elements from the (srcArray) or options object.
+ * @param { ( arrayLike | object ) } [ indicesArray = indicesArray.indices ] - Indexes of elements from the (srcArray) or options object.
  *
  * @example
  * // returns [ 3, 4, 5 ]
@@ -4976,11 +5047,11 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  *
  * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
  * iterate over array-like object (arguments[]) and assigns to the (src) each element,
- * checks if (src) is an array and if (src) is not equal to the 'undefined'.
+ * checks if (src) is not equal to the 'undefined'.
+ * If true, it adds element to the result.
+ * If (src) is an Array and if element(s) of the (src) is not equal to the 'undefined'.
  * If true, it adds to the (result) each element of the (src) array.
- * Otherwise, if (src) is not equal to the 'undefined',
- * it adds element to the result.
- * Otherwise, if (src) is equal to the 'undefined' it throws an Error.
+ * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
  *
  * @param { ... } arguments[] - One or more argument(s).
  *
@@ -4990,7 +5061,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  *
  * @returns { Array } - Returns an array of the passed argument(s).
  * @method arrayIron
- * @throws { Error } If type of the passed arguments is equal undefined.
+ * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
  * @memberof wTools#
  */
 
