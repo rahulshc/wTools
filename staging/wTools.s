@@ -4208,8 +4208,11 @@ var _routineBind = function _routineBind( options )
 
   /**
    * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
-   value. Argumetns `args` of target function which are passed before arguments of binded function during
-   calling of target function
+   value. Unlike Function.prototype.bind() method if `context` is undefined`, in new function 'this' context will not be
+   sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
+   target function.
+   * Besides the aforementioned difference, routineBind method accepts function as argument, that makes it more useful
+      than Function.prototype.bind().
    * @example
     var o = {
         z: 5
@@ -4254,7 +4257,7 @@ var routineBind = function routineBind( routine, context, args )
   /**
    * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
    value. Argumetns `args` of target function which are passed before arguments of binded function during
-   calling of target function
+   calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
    * @example
    var o = {
         z: 5
@@ -4273,6 +4276,7 @@ var routineBind = function routineBind( routine, context, args )
    * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
    calling of target function. Must be wraped into array.
    * @returns {Function} New created function with preceding this, and args.
+   * @see [routineBind]{@link wTools#routineBind}
    * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
    * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
    * @method routineJoin
