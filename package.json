@@ -4,13 +4,13 @@
   "description": "Generic purpose tools of base level for solving problems in Java Script.",
   "author": "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
   "license": "MIT",
-  "main": "staging/wTools.s",
+  "main": "base/staging/wTools.s",
   "files": [
-    "staging/wTools.s",
+    "base/staging/wTools.s",
     "production"
   ],
   "scripts": {
-    "test": "node ./staging/z.test/All.s",
+    "test": "node ./base/staging/z.test/All.s",
     "make_doc": "./doc.sh"
   },
   "repository": {
