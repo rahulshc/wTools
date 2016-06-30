@@ -2491,7 +2491,7 @@ var arrayIs = function( src )
    * var isArr = ( function() {
    *   return _.arrayLike( arguments );
    * } )('Hello there!');
-   * 
+   *
    * @returns { boolean } Returns true if (src) is an array-like or an Array.
    * @method arrayLike.
    * @memberof wTools#.
@@ -2523,7 +2523,7 @@ var arrayLike = function( src )
    * @example
    * // returns true
    * hasLength( [ 1, 2 ] );
-   * 
+   *
    * @example
    * // returns true
    * hasLength( 'Hello there!' );
@@ -2533,7 +2533,7 @@ var arrayLike = function( src )
    * var isLength = ( function() {
    *   return _.hasLength( arguments );
    * } )('Hello there!');
-   * 
+   *
    * @example
    * // returns false
    * hasLength( 10 );
@@ -2541,7 +2541,7 @@ var arrayLike = function( src )
    * @example
    * // returns false
    * hasLength( { } );
-   * 
+   *
    * @returns { boolean } Returns true if (src) has the property (length).
    * @method hasLength
    * @memberof wTools#.
@@ -5582,9 +5582,9 @@ var arrayFrom = function( src )
 //
   /**
    * The arrayToMap() converts an (array) into Object.
-   * 
+   *
    * @param { arrayLike } array - To convert into Object.
-   * 
+   *
    * @example
    * // returns {  }
    * _.arrayToMap( [  ] );
@@ -5599,7 +5599,7 @@ var arrayFrom = function( src )
    *   return arguments;
    * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
    * _.arrayToMap( args );
-   * 
+   *
    * @returns { Object } Returns an Object.
    * @method arrayToMap
    * @throws { Error } Will throw an Error if (array) is not an array-like.
@@ -5609,7 +5609,7 @@ var arrayFrom = function( src )
 var arrayToMap = function( array )
 {
   var result = {};
-  
+
   _.assert( array.length === 1 ); //???
   _.assert( _.arrayLike( array ) );
 
