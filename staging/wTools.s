@@ -5242,7 +5242,7 @@ var arrayCopy = function arrayCopy()
  * iterate over array-like object (arguments[]) and assigns to the (argument) each element,
  * checks, if (argument) is equal to the 'undefined'.
  * If true, it throws an Error.
- * if (argument) is an array-like.
+ * If (argument) is an array-like.
  * If true, it merges the (argument) into the (result) array.
  * Otherwise, it adds element to the result.
  *
@@ -5255,7 +5255,7 @@ var arrayCopy = function arrayCopy()
  *
  * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
  * @method arrayAppendMerging
- * @throws { Error } If the first argument is not array.
+ * @throws { Error } If the first argument is not an array.
  * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools#
  */
@@ -5409,7 +5409,7 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
   // +++ Please add @param { ... } arguments[] - 'description'.
   // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
   // +++ Not clear what the (@returns) returns.
-
+  // !!! @example is wrong, has to be [ 5, 'str', {}, 2, 4 ].
 /**
  * The arrayPrependOnceMerging() method returns an array of elements from (dst)
  * and prepending only unique following arguments to the beginning.
@@ -5507,6 +5507,35 @@ var arrayElementsSwap = function( dst,index1,index2 )
 }
 
 //
+  /**
+   * The arrayFrom() method converts an object-like (src) into Array.
+   *
+   * @param { objectLike } src - To convert into Array.
+   *
+   * @example
+   * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+   * _.arrayFrom( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+   *
+   * @example
+   * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
+   * _.arrayFrom( { a : 3, b : 7, c : 13 } );
+   *
+   * @example
+   * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
+   * _.arrayFrom( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+   *
+   * @example
+   * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
+   * var args = ( function() {
+   *   return arguments;
+   * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+   * _.arrayFrom( args );
+   *
+   * @returns { Array } Returns an Array.
+   * @method arrayFrom
+   * @throws { Error } Will throw an Error if (src) is not an object-like.
+   * @memberof wTools#
+   */
 
 var arrayFrom = function( src )
 {
@@ -5519,23 +5548,48 @@ var arrayFrom = function( src )
 
   if( _.strIs( src ) )
   {
-    var sep = ( src.indexOf( ',' ) !== -1 )?( ',' ) :' ';
+    var sep = ( src.indexOf( ',' ) !== -1 )?( ',' ) :' '; //???
     return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
   }
 
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
-  throw _.err( 'arrayFrom : unknown source : ' + _.strTypeOf( src ) );
+  throw _.err( 'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
 }
 
 //
+  /**
+   * The arrayToMap() converts an (array) into Object.
+   * 
+   * @param { arrayLike } array - To convert into Object.
+   * 
+   * @example
+   * // returns {  }
+   * _.arrayToMap( [  ] );
+   *
+   * @example
+   * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
+   * _.arrayToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
+   *
+   * @example
+   * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
+   * var args = ( function() {
+   *   return arguments;
+   * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+   * _.arrayToMap( args );
+   * 
+   * @returns { Object } Returns an Object.
+   * @method arrayToMap
+   * @throws { Error } Will throw an Error if (array) is not an array-like.
+   * @memberof wTools#
+   */
 
 var arrayToMap = function( array )
 {
   var result = {};
-
-  _.assert( array.length === 1 );
+  
+  _.assert( array.length === 1 ); //???
   _.assert( _.arrayLike( array ) );
 
   for( var a = 0 ; a < array.length ; a++ )
@@ -5544,6 +5598,54 @@ var arrayToMap = function( array )
 }
 
 //
+  /**
+   * The callback function to compare two values.
+   *
+   * @callback onEqual
+   * @param { * } el - The element of the (dstArray[n]) array.
+   * @param { * } ins - The value to compare (insArray[n]).
+   */
+
+  /**
+   * The arrayRemoveArrayOnce() determines whether the (dstArray) array has the same values as in the (insArray) array,
+   * and returns amount of the deleted elements from the (dstArray).
+   *
+   * It takes two (dstArray, insArray) or three (dstArray, insArray, onEqual) arguments, creates variable (var result = 0),
+   * checks if (arguments[..]) passed two, it iterates over the (insArray) array and calls for each element built in function (dstArray.indexOf(insArray[i])).
+   * that looking for the value of the (insArray[i]) array in the (dstArray) array.
+   * If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
+   * and incrementing the variable (result++).
+   * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the method
+   * @see arrayLeftIndexOf( dstArray, insArray[i], onEqual )  See for more information.
+   * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray),
+   * and then incrementing the variable (result++).
+   *
+   * @param { arrayLike } dstArray - The target array.
+   * @param { arrayLike } insArray - The source array.
+   * @param { function } [ onEqual ] onEqual - The callback function.
+   * By default, it checks the equality of two arguments.
+   *
+   * @example
+   * // returns 0
+   * _.arrayRemoveArrayOnce( [  ], [  ] );
+   *
+   * @example
+   * // returns 2
+   * _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
+   *
+   * @example
+   * // returns 4
+   * var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
+   *   return a < b;
+   * } );
+   *
+   * @returns { number }  Returns amount of the deleted elements from the (dstArray).
+   * @method arrayRemoveArrayOnce
+   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (insArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
+   * @memberof wTools#
+   */
 
 var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
 {
@@ -5595,11 +5697,11 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
 
 
   /**
- * Callback for compare two value.
+ * The callback function to compare two values.
  *
  * @callback compareCallback
- * @param { Number } el - Element of the array.
- * @param { Number } ins - Value to compare.
+ * @param { * } el - The element of the array.
+ * @param { * } ins - The value to compare.
  */
 
 /**

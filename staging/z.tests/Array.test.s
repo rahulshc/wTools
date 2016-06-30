@@ -27,7 +27,7 @@
 
 //
 
-  var arrayPrependOnceMerging = function( test )
+  /*var arrayPrependOnceMerging = function( test )
   {
 
     test.description = 'array';
@@ -60,7 +60,7 @@
     var expected = [ null,3,9 ];
     test.identical( got,expected );
 
-    /**/
+
 
     if( Config.debug )
     {
@@ -86,7 +86,7 @@
 
     }
 
-  };
+  }*/
 
 
   var arrayIs = function( test ) 
@@ -492,7 +492,7 @@
         _.arrayOrNumber( [ 1, 2, 3 ], 4 );
       });
 
-      test.description = 'argument is not wrapped into array';
+      test.description = 'first three arguments are not wrapped into array';
       test.shouldThrowError( function()
       {
         _.arrayOrNumber( 1, 2, 3, 3 );
@@ -588,6 +588,389 @@
     
   };
   
+
+  var arrayAppendMerging = function( test )
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayAppendMerging( [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'an argument';
+    var got = _.arrayAppendMerging( [ 1, 2, undefined ] );
+    var expected = [ 1, 2, undefined ];
+    test.identical( got, expected );
+
+    test.description = 'an array';
+    var got = _.arrayAppendMerging( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+    var expected = [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendMerging();
+      });
+
+      test.description = 'arguments[0] is wrong, has to be an array';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendMerging( 'wrong argument', 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+      });
+
+      test.description = 'arguments[1] is undefined';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendMerging( [ 1, 2 ], undefined, false, { a : 1 }, 42, [ 3, 7, 13 ] );
+      });
+
+    }
+
+  };
+
+
+  var arrayPrependMerging = function( test )
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayPrependMerging( [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'an argument';
+    var got = _.arrayPrependMerging( [ 1, 2, undefined ], 2, 1, [ 6, 7 ] );
+    var expected = [ 2, 1, 6, 7, 1, 2, undefined ];
+    test.identical( got, expected );
+
+    test.description = 'an array';
+    var got = _.arrayPrependMerging( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+    var expected = [ 'str', false, { a : 1 }, 42, 3, 7, 13, 1, 2 ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependMerging();
+      });
+
+      test.description = 'arguments[0] is wrong, has to be an array';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependMerging( 'wrong argument', 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+      });
+
+      test.description = 'arguments[1] is undefined';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependMerging( [ 1, 2 ], undefined, false, { a : 1 }, 42, [ 3, 7, 13 ] );
+      });
+
+    }
+
+  };
+
+
+  var arrayAppendOnceMerging = function( test )
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayAppendOnceMerging( [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'an argument';
+    var got = _.arrayAppendOnceMerging( [ 1, 2, undefined ] );
+    var expected = [ 1, 2, undefined ];
+    test.identical( got, expected );
+
+    test.description = 'an array';
+    var got = _.arrayAppendOnceMerging( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
+    var expected = [ 1, 2, 'str', {}, 5 ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendOnceMerging();
+      });
+
+      test.description = 'arguments[0] is wrong, has to be an array';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendOnceMerging('wrong argument', 'str', 2, {}, [ 'str', 5 ] );
+      });
+
+      test.description = 'arguments[3] is undefined';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendOnceMerging( [ 1, 2 ], 'str', 2, undefined, [ 'str', 5 ] );
+      });
+
+    }
+
+  };
+
+
+  var arrayPrependOnceMerging = function( test ) // it doesn't work???
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayPrependOnceMerging( [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'an argument';
+    var got = _.arrayPrependOnceMerging( [ undefined, 2, 1 ], 2, 1, [ 6, 7 ] );
+    var expected = [ 6, 7, undefined, 2, 1 ];
+    test.identical( got, expected );
+
+    test.description = 'an array';
+    var got = _.arrayPrependOnceMerging( [ 2, 4 ], [ 5, 3 ], 2, 4, 'str', {} );
+    var expected = [ 5, 3, 'str', {}, 2, 4 ];
+    test.identical( got, expected );
+
+    /**/
+    //node ./staging/z.tests/Array.test.s
+    
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependOnceMerging();
+      });
+
+      test.description = 'arguments[0] is wrong, has to be an array';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependOnceMerging('wrong argument', 5, 4, 'str', {} );
+      });
+
+      test.description = 'arguments[3] is undefined';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependOnceMerging( [ 1, 2 ], 5, 4, undefined, {} );
+      });
+
+    }
+
+  };
+
+  
+  var arrayElementsSwap = function( test )
+  {
+
+    test.description = 'an element';
+    var got = _.arrayElementsSwap( [ 7 ], 0, 0 );
+    var expected = [ 7 ];
+    test.identical( got, expected );
+
+    test.description = 'reverses first index and last index';
+    var got = _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], 0, 4  );
+    var expected = [ 5, 2, 3, 4, 1 ];
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayElementsSwap();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayElementsSwap('wrong argument', 'wrong argument', 'wrong argument');
+      });
+
+      test.description = 'arguments[1] and arguments[2] are out of bound';
+      test.shouldThrowError( function()
+      {
+        _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], -1, -4 );
+      });
+
+      test.description = 'first five arguments are not wrapped into array';
+      test.shouldThrowError( function()
+      {
+        _.arrayElementsSwap( 1, 2, 3, 4, 5, 0, 4 );
+      });
+
+    }
+
+  };
+  
+  
+  var arrayFrom = function( test ) 
+  {
+
+    test.description = 'an array';
+    var got = _.arrayFrom( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+    var expected = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+    test.identical( got, expected );
+    
+    test.description = 'an object';
+    var got = _.arrayFrom( { a : 3, b : 7, c : 13 } );
+    var expected = [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ];
+    test.identical( got, expected );
+
+    test.description = 'a string';
+    var got = _.arrayFrom( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+    var expected = [ 3, 7, 13, 3.5, 5, 7.5, 13 ];
+    test.identical( got, expected );
+
+    test.description = 'arguments[...]';
+    var args = ( function() {
+      return arguments;
+    } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+    var got = _.arrayFrom( args );
+    var expected = [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayFrom();
+      });
+
+      test.description = 'wrong type of argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayFrom( 'wrong argument' );
+      });
+      
+    }
+    
+  };
+
+
+  var arrayToMap = function( test )
+  {
+
+    test.description = 'an empty object';
+    var got = _.arrayToMap( [  ] );
+    var expected = {  };
+    test.identical( got, expected );
+
+    test.description = 'an object';
+    var got = _.arrayToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
+    var expected = { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} };
+    test.identical( got, expected );
+
+    test.description = 'arguments[...]';
+    var args = ( function() {
+      return arguments;
+    } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+    var got = _.arrayToMap( args );
+    var expected = { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } };
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayToMap();
+      });
+
+      test.description = 'wrong type of argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayToMap( 'wrong argument' );
+      });
+
+    }
+
+  };
+  
+  
+  var arrayRemoveArrayOnce = function( test ) // it doesn't work???
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayRemoveArrayOnce( [  ], [  ] );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'three elements left';
+    var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
+    var expected = 2;
+    test.identical( got, expected );
+
+    test.description = 'one elements left';
+    var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
+      return a < b;
+    } );
+    var expected = 4;
+    test.identical( got, expected );
+
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveArrayOnce();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveArrayOnce('wrong argument', 'wrong argument', 'wrong argument');
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) { return a < b }, 'redundant argument' );
+      });
+      
+    }
+    
+  };
+  
   
   //node ./staging/z.tests/Array.test.s
 
@@ -610,8 +993,19 @@
       //arrayNewOfSameLength : arrayNewOfSameLength,
       //arrayOrNumber : arrayOrNumber,
       //arraySelect : arraySelect,
-      
       //arrayIron : arrayIron,
+
+      //arrayAppendMerging : arrayAppendMerging,
+      //arrayPrependMerging : arrayPrependMerging,
+      //arrayAppendOnceMerging : arrayAppendOnceMerging,
+
+      //arrayPrependOnceMerging : arrayPrependOnceMerging,
+
+      //arrayElementsSwap : arrayElementsSwap,
+      //arrayFrom : arrayFrom,
+      //arrayToMap : arrayToMap,
+      arrayRemoveArrayOnce : arrayRemoveArrayOnce,
+      
     }
 
   }
