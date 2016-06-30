@@ -2491,7 +2491,7 @@ var arrayIs = function( src )
    * var isArr = ( function() {
    *   return _.arrayLike( arguments );
    * } )('Hello there!');
-   * 
+   *
    * @returns { boolean } Returns true if (src) is an array-like or an Array.
    * @method arrayLike.
    * @memberof wTools#.
@@ -2523,7 +2523,7 @@ var arrayLike = function( src )
    * @example
    * // returns true
    * hasLength( [ 1, 2 ] );
-   * 
+   *
    * @example
    * // returns true
    * hasLength( 'Hello there!' );
@@ -2533,7 +2533,7 @@ var arrayLike = function( src )
    * var isLength = ( function() {
    *   return _.hasLength( arguments );
    * } )('Hello there!');
-   * 
+   *
    * @example
    * // returns false
    * hasLength( 10 );
@@ -2541,7 +2541,7 @@ var arrayLike = function( src )
    * @example
    * // returns false
    * hasLength( { } );
-   * 
+   *
    * @returns { boolean } Returns true if (src) has the property (length).
    * @method hasLength
    * @memberof wTools#.
@@ -2595,16 +2595,18 @@ var symbolIs = function( src )
   return result;
 }
 
+//
+
 /**
  * Function numberIs checks incoming param whether it is number.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
  * @example
  * //returns true
- * numberIs(5);
+ * numberIs( 5 );
  * @example
  * // returns false
- * numberIs('song');
+ * numberIs( 'song' );
  *
  * @param {*} src.
  * @return {Boolean}.
@@ -2885,6 +2887,25 @@ var toStrFast = function( src ) {
 // --
 // number
 // --
+
+var numberIsInt = function numberIsInt( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numberIsInt( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return Math.floor( src ) === src;
+}
+
+//
 
 var numberRandomInt = function( range )
 {
@@ -5561,9 +5582,9 @@ var arrayFrom = function( src )
 //
   /**
    * The arrayToMap() converts an (array) into Object.
-   * 
+   *
    * @param { arrayLike } array - To convert into Object.
-   * 
+   *
    * @example
    * // returns {  }
    * _.arrayToMap( [  ] );
@@ -5578,7 +5599,7 @@ var arrayFrom = function( src )
    *   return arguments;
    * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
    * _.arrayToMap( args );
-   * 
+   *
    * @returns { Object } Returns an Object.
    * @method arrayToMap
    * @throws { Error } Will throw an Error if (array) is not an array-like.
@@ -5588,7 +5609,7 @@ var arrayFrom = function( src )
 var arrayToMap = function( array )
 {
   var result = {};
-  
+
   _.assert( array.length === 1 ); //???
   _.assert( _.arrayLike( array ) );
 
@@ -6300,7 +6321,7 @@ var arrayToStr = function( src,options )
   // +++ Please add @param { ... } arguments[] - 'description'.
   // +++ Please add description: How does it work if (arguments) has an array or an object.
 
- 
+
 /**
  * The arrayPut() method puts all values of (arguments[]) after the second argument to the (dstArray)
  * in the position (dstOffset) and changes values of the following index.
@@ -6310,11 +6331,11 @@ var arrayToStr = function( src,options )
  * @param { ... } arguments[] - One or more argument(s).
  * If the (argument) is an array it iterates over array and adds each element to the next (dstOffset++) index of the (dstArray).
  * Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstArray).
- * 
+ *
  * @example
  * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
  * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 2, 'str', true, [ 7, 8 ] );
- * 
+ *
  * @example
  * // returns [ 'str', true, 7, 8, 5, 6, 9 ]
  * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], undefined, 'str', true, [ 7, 8 ] );
@@ -6360,15 +6381,17 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
 var arrayMask = function arrayMask( srcArray, mask )
 {
 
+  _.assert( arguments.length === 2 );
+
   if( !_.arrayLike( srcArray ) )
-  throw _.err( 'arrayMask :','expects array-like as srcArray' )
+  throw _.err( 'arrayMask :','expects array-like as srcArray' );
   if( !_.arrayLike( mask )  )
-  throw _.err( 'arrayMask :','expects array-like as mask' )
+  throw _.err( 'arrayMask :','expects array-like as mask' );
 
   var atomsPerElement = mask.length;
   var length = srcArray.length / atomsPerElement;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask has component for each atom of srcArray',_.toStr({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
+  throw _.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.toStr({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
 
   var preserve = 0;
   for( var m = 0 ; m < mask.length ; m++ )
@@ -6390,6 +6413,71 @@ var arrayMask = function arrayMask( srcArray, mask )
   }
 
   return dstArray;
+}
+
+//
+
+var arrayUnmask = function arrayUnmask( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( arguments.length === 2 )
+  o =
+  {
+    src : arguments[ 0 ],
+    mask : arguments[ 1 ],
+  }
+
+  _.assertMapOnly( o,arrayUnmask.defaults );
+  _.assert( _.arrayLike( o.src ),'arrayUnmask : expects o.src as ArrayLike' );
+
+  debugger;
+
+  var atomsPerElement = o.mask.length;
+
+  var atomsPerElementPreserved = 0;
+  for( var m = 0 ; m < o.mask.length ; m++ )
+  if( o.mask[ m ] )
+  atomsPerElementPreserved += 1;
+
+  var length = o.src.length / atomsPerElementPreserved;
+  if( Math.floor( length ) !== length )
+  throw _.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.toStr({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
+
+  var dstArray = new o.src.constructor( atomsPerElement*length );
+
+  var e = [];
+  for( var i = 0 ; i < length ; i++ )
+  {
+
+    for( var m = 0, p = 0 ; m < o.mask.length ; m++ )
+    if( o.mask[ m ] )
+    {
+      e[ m ] = o.src[ i*atomsPerElementPreserved + p ];
+      p += 1;
+    }
+    else
+    {
+      e[ m ] = 0;
+    }
+
+    if( o.onEach )
+    o.onEach( e,i );
+
+    for( var m = 0 ; m < o.mask.length ; m++ )
+    dstArray[ i*atomsPerElement + m ] = e[ m ];
+
+  }
+
+  return dstArray;
+}
+
+arrayUnmask.defaults =
+{
+  src : null,
+  mask : null,
+  onEach : null,
 }
 
 //
@@ -6882,7 +6970,7 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
  * @param { Number } options.length - The length of an array.
  * @param { Array } [ options.range = [ 0, 1 ] ] - The range of numbers.
  * @param { Boolean } [ options.int = false ] - Floating point numbers or not.
- * 
+ *
  * @example
  * // returns [ 6, 2, 4, 7, 8 ]
  * var arr = _.arrayRandom( {
@@ -6936,13 +7024,13 @@ var arrayRandom = function( options )
  *
  * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
  * and assigns to the each index of the (result) array (range[ 0 ] + 1).
- * 
+ *
  * @param { arrayLike } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
- * 
+ *
  * @example
  * // returns [ 1, 2, 3, 4 ]
  * var range = _.arrayRange( [ 1, 5 ] );
- * 
+ *
  * @example
  * // returns [ 0, 1, 2, 3, 4 ]
  * var range = _.arrayRange( 5 );
@@ -8160,7 +8248,7 @@ var mapCopy = function mapCopy()
    * @example
    * // returns [ 'a', 3 ]
    * _.mapFirstPair( { a : 3, b : 13 } );
-   * 
+   *
    * @example
    * // returns 'undefined'
    * _.mapFirstPair( {  } );
@@ -8907,11 +8995,11 @@ var mapOwnBut = function mapOwnBut( srcMap )
 
 var mapScreens = function( srcObject,screenObject )
 {
-  
+
   _assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
   _assert( _.objectLike( srcObject ),'mapScreens :','expects object as argument' );
   _assert( _.objectLike( screenObject ),'mapScreens :','expects object as screenObject' );
-  
+
   if( arguments.length > 2 )
   {
     debugger;
@@ -9663,6 +9751,7 @@ var Proto =
 
   // number
 
+  numberIsInt : numberIsInt,
   numberRandomInt : numberRandomInt,
   numberRandomIntNot : numberRandomIntNot,
   numberFrom : numberFrom,
@@ -9801,6 +9890,8 @@ var Proto =
   arrayPut : arrayPut,
 
   arrayMask : arrayMask,
+  arrayUnmask : arrayUnmask,
+
   arrayDuplicate : arrayDuplicate,
   arrayFill : arrayFill,
 
