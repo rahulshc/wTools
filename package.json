@@ -1,16 +1,16 @@
 {
   "name": "wTools",
-  "version": "0.5.14",
+  "version": "0.5.18",
   "description": "Generic purpose tools of base level for solving problems in Java Script.",
   "author": "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
   "license": "MIT",
-  "main": "staging/wTools.s",
+  "main": "staging/abase/wTools.s",
   "files": [
-    "staging/wTools.s",
+    "staging/abase/wTools.s",
     "production"
   ],
   "scripts": {
-    "test": "node ./staging/z.test/All.s",
+    "test": "node ./staging/abase/z.test/All.s",
     "make_doc": "./doc.sh"
   },
   "repository": {
@@ -21,7 +21,8 @@
     "url": "https://github.com/Wandalen/wTools/issues"
   },
   "dependencies": {
-    "underscore": ""
+    "underscore": "",
+    "wTools": ""
   },
   "devDependencies": {
     "wTesting": ""
