@@ -166,7 +166,10 @@ var execStages = function( stages,options )
     var isSyn = stage.syn || ( options.syn && !stage.asyn );
 
     if( !isSyn && !( ret instanceof wConsequence ) )
-    throw _.err( 'Asynchronous stage should return wConsequence' );
+    {
+      isSyn = false;
+      //throw _.err( 'Asynchronous stage should return wConsequence' );
+    }
     else if( isSyn && ( ret instanceof wConsequence ) )
     throw _.err( 'Synchronous stage should not return wConsequence' );
 

@@ -228,6 +228,20 @@ var then_ = function then_( taker )
 
 //
 
+var thenClone = function thenClone()
+{
+  var self = this;
+
+  _.assert( arguments.length === 0 );
+
+  var result = new wConsequence();
+  self.then_( result );
+
+  return result;
+}
+
+//
+
 var inform = function inform( taker )
 {
   var self = this;
@@ -466,7 +480,7 @@ var _handleGot = function()
     if( self.mode === 'promise' && _taker.thenning )
     {
       if( result instanceof Self )
-      result.got( self );
+      result.then_( self ); // !!! got?
       else
       self.give( result );
     }
@@ -475,7 +489,7 @@ var _handleGot = function()
       if( result instanceof Self )
       {
         debugger;
-        result.got( function _informing(){ debugger; self.give( _given.error,_given.argument ); } );
+        result.then_( function _informing(){ debugger; self.give( _given.error,_given.argument ); } ); // !!! got?
       }
       else
       {
@@ -831,7 +845,10 @@ var Proto =
   got : got,
   done : got,
   gotOnce : gotOnce,
+
   then_ : then_,
+  thenClone : thenClone,
+
   inform : inform,
   ifNoErrorThen : ifNoErrorThen,
   thenDebug : thenDebug,
