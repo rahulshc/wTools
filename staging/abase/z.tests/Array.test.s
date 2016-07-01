@@ -8,7 +8,7 @@
    from the project directory run
 
    npm install
-   node ./staging/z.tests/Array.test.s
+   node ./staging/abase/z.tests/Array.test.s
 
    */
 
@@ -972,7 +972,321 @@
   };
   
   
-  //node ./staging/z.tests/Array.test.s
+  var arrayRemovedOnce = function( test )
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayRemovedOnce( [  ], 2 );
+    var expected = -1;
+    test.identical( got, expected );
+
+    test.description = 'second element removed';
+    var got = _.arrayRemovedOnce( [ 2, 4, 6 ], 4 );
+    var expected = 1;
+    test.identical( got, expected );
+
+    test.description = 'first element removed';
+    var got = _.arrayRemovedOnce( [ true, false, 6 ], true );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'second element removed';
+    var got = _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function ( el, ins ) {
+      return el > ins;
+    });
+    var expected = 1;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedOnce();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedOnce( [ 2, 4, 6 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedOnce( 'wrong argument', 2 );
+      });
+
+      test.description = 'arguments[2] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
+      });
+      
+    }
+    
+  };
+  
+  
+  var arrayRemoveOnce = function( test ) {
+
+    test.description = 'nothing';
+    var got = _.arrayRemoveOnce( [  ], 2 );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'one element left';
+    var got = _.arrayRemoveOnce( [ 2, 4 ], 4 );
+    var expected = [ 2 ];
+    test.identical( got, expected );
+
+    test.description = 'two elements left';
+    var got = _.arrayRemoveOnce( [ true, false, 6 ], true );
+    var expected = [ false, 6 ];
+    test.identical( got, expected );
+
+    test.description = 'three elements left';
+    var got = _.arrayRemoveOnce( [ 2, 1, 4, 6 ], 2, function ( el, ins ) {
+      return el > ins;
+    });
+    var expected = [ 2, 1, 6 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveOnce();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveOnce( [ 2, 4, 6 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveOnce( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveOnce( 'wrong argument', 2 );
+      });
+
+      test.description = 'arguments[2] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
+      });
+      
+    }
+    
+  };
+  
+  
+  var arrayRemovedAll = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayRemovedAll( [  ], 2 );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'one element removed';
+    var got = _.arrayRemovedAll( [ 2, 4, 6 ], 4 );
+    var expected = 1;
+    test.identical( got, expected );
+
+    test.description = 'two elements removed';
+    var got = _.arrayRemovedAll( [ true, false, 6, true ], true );
+    var expected = 2;
+    test.identical( got, expected );
+
+    test.description = 'three elements removed';
+    var got = _.arrayRemovedAll( [ 2, 4, 6, 7 ], 2, function ( el, ins ) {
+      return el > ins;
+    });
+    var expected = 3;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedAll();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedAll( [ 2, 4, 6 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedAll( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedAll( 'wrong argument', 2 );
+      });
+
+      test.description = 'arguments[2] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemovedAll( [ 2, 4, 6 ], 2, 'wrong argument' );
+      });
+      
+    }
+    
+  };
+
+
+  var arrayRemoveAll = function( test ) {
+
+    test.description = 'nothing';
+    var got = _.arrayRemoveAll( [  ], 2 );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'one element left';
+    var got = _.arrayRemoveAll( [ 2, 4 ], 4 );
+    var expected = [ 2 ];
+    test.identical( got, expected );
+
+    test.description = 'two elements left';
+    var got = _.arrayRemoveAll( [ true, false, 6 ], true );
+    var expected = [ false, 6 ];
+    test.identical( got, expected );
+
+    test.description = 'two elements left';
+    var got = _.arrayRemoveAll( [ 2, 1, 4, 6 ], 2, function ( el, ins ) {
+      return el > ins;
+    });
+    var expected = [ 2, 1 ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveAll();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveAll( [ 2, 4, 6 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveAll( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveAll( 'wrong argument', 2 );
+      });
+
+      test.description = 'arguments[2] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayRemoveAll( [ 2, 4, 6 ], 2, 'wrong argument' );
+      });
+
+    }
+
+  };
+
+  var arrayReplaceOnce = function( test ) // it doesn't work (_.arrayReplaceOnce is not a function)
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayReplaceOnce( [  ], 0, 0 );
+    var expected = -1;
+    test.identical( got, expected );
+
+    test.description = 'second element';
+    var got = _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+    var expected = 1;
+    test.identical( got, expected );
+
+    test.description = 'third element';
+    var got = _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+    var expected = 3;
+    test.identical( got, expected );
+
+    test.description = 'fourth element';
+    var got = _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
+    var expected = 4;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayReplaceOnce();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayReplaceOnce( 'wrong argument', undefined, 3 );
+      });
+      
+    }
+    
+  };
+  
+  
+  //node ./staging/abase/z.tests/Array.test.s
 
 //
 
@@ -1004,8 +1318,14 @@
       //arrayElementsSwap : arrayElementsSwap,
       //arrayFrom : arrayFrom,
       //arrayToMap : arrayToMap,
-      arrayRemoveArrayOnce : arrayRemoveArrayOnce,
+      //arrayRemoveArrayOnce : arrayRemoveArrayOnce,
       
+      //arrayRemovedOnce : arrayRemovedOnce,
+      //arrayRemoveOnce : arrayRemoveOnce,
+      //arrayRemovedAll : arrayRemovedAll,
+      //arrayRemoveAll : arrayRemoveAll,
+      //arrayReplaceOnce : arrayReplaceOnce,
+
     }
 
   }
