@@ -6039,6 +6039,41 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
 }
 
 //
+  /**
+   * The arrayUpdate() method adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
+   * and returns the last added index or the last replaced index of the array (dstArray).
+   * 
+   * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
+   * @see arrayReplaceOnce( dstArray, ins, sub )  See for more information.
+   * Checks if (index) equal to the -1.
+   * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
+   * Otherwise, it returns the replaced (index).
+   *
+   * @param { Array } dstArray - The source array.
+   * @param { * } ins - The value to change.
+   * @param { * } sub - The value to add or replace.
+   * 
+   * @example
+   * // returns 3
+   * var add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
+   * console.log( add ) = > [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+   *
+   * @example
+   * // returns 5
+   * var add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
+   * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
+   * 
+   * @example
+   * // returns 4
+   * var replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
+   * console.log( replace ) => [ true, true true, true, true ];
+   *
+   * @returns { number } Returns the last added or the last replaced index.
+   * @method arrayUpdate
+   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than three.
+   * @memberof wTools#
+   */
 
 var arrayUpdate = function( dstArray,ins,sub )
 {
@@ -6057,6 +6092,36 @@ var arrayUpdate = function( dstArray,ins,sub )
 }
 
 //
+  /**
+   * The arrayAppendOnce() method adds at the end of an array (dst) a value (src),
+   * if the array (dst) doesn't have the value (src).
+   *
+   * @param { Array } dst - The source array.
+   * @param { * } src - The value to add.
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
+   *
+   * @example
+   * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
+   * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+   *
+   * @example
+   * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
+   * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+   *
+   * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
+   * otherwise, it returns the original array (dst).
+   * @method arrayAppendOnce
+   * @throws { Error } Will throw an Error if (dst) is not an Array.
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+   * @memberof wTools#
+   */
 
 var arrayAppendOnce = function( dst,src )
 {
@@ -6076,6 +6141,36 @@ var arrayAppendOnce = function( dst,src )
 }
 
 //
+  /**
+   * The arrayPrependOnce() method adds at the beginning of an array (dst) a value (src),
+   * if the array (dst) doesn't have the value (src).
+   *
+   * @param { Array } dst - The source array.
+   * @param { * } src - The value to add.
+   *
+   * @example
+   * // returns [ 5, 1, 2, 3, 4 ]
+   * _.arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+   *
+   * @example
+   * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
+   * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+   *
+   * @example
+   * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
+   * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+   *
+   * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
+   * otherwise, it returns the original array (dst).
+   * @method arrayPrependOnce
+   * @throws { Error } Will throw an Error if (dst) is not an Array.
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+   * @memberof wTools#
+   */
 
 var arrayPrependOnce = function( dst,src )
 {
@@ -6095,12 +6190,64 @@ var arrayPrependOnce = function( dst,src )
 }
 
 //
+  /**
+   * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
+   * and/or adding new elements.
+   *
+   * @param { Array } dstArray - The target array.
+   * @param { Array } srcArray - The source array.
+   * @param { Number } first - The index at which to start changing the (dstArray) array.
+   * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
+   * If (first) is negative, will begin that many elements from the end.
+   * @param { Number } replace - The number of old array (dstArray) elements to remove.
+   * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
+   * then all of the elements through the end of the array will be deleted.
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
+   *
+   * @example
+   * // returns [ 1, 'a', 2, 3, 4, 'd' ]
+   * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
+   *
+   * @example
+   * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
+   *
+   * @example
+   * // returns [ 1, 'a', 'b', 'c' ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
+   *
+   * @example
+   * // returns [ 1, 4, 5 ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
+   * 
+   * @returns { Array } Returns the modified array (dstArray) with the new length.
+   * @method arraySpliceArray
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
+   * @throws { Error } Will throw an Error if (dstArray) is not an Array.
+   * @throws { Error } Will throw an Error if (srcArray) is not an Array.
+   * @throws { Error } Will throw an Error if (first) is not a Number.
+   * @throws { Error } Will throw an Error if (replace) is not a Number.
+   * @memberof wTools#
+   */
 
 var arraySpliceArray = function( dstArray,srcArray,first,replace )
 {
+  _.assert( arguments.length === 4 );
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( srcArray ) );
+  _.assert( _.numberIs( first ) );
+  _.assert( _.numberIs( replace ) );
 
   var args = [ first,replace ];
-  args.push.apply( args,srcArray )
+  args.push.apply( args,srcArray );
+
   dstArray.splice.apply( dstArray,args );
 
   return dstArray;
@@ -6110,26 +6257,26 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  * The arraySlice() returns a shallow copy of a portion of an array
  * into a new array.
  *
- * It takes array and two variables
- * checks if (array) is an Array creates variables (result, a, b)
- * and assign them values.
- * The arraySlice() creates a new array from (a) to but not including (b).
- * If (b) is omitted, arraySlice extracts
- * through the end of the sequence (array.length).
- * If not arguments, it assigns a default variables
- * and returns an empty array.
+ * It takes three arguments (array, a, b)
+ * checks if (array) is an Array, if (a) and (b) are numbers.
+ * Creates variables (result, a, b) and assigns them values.
+ * The arraySlice() creates a new array (result) from (a) to but not including (b),
+ * and returns (result).
  *
- * @param { Array } [ array = [] ] - Array to return a new array from begin to but not including end.
- * @param { a } [ a = 0 ] - begin zero-based index at which to begin extraction.
- * @param { b } [ b = array.length ] - end zero-based index at which to end extraction.
+ * @param { Array } array - An array to return a new array from begin to but not including end.
+ * @param { Number } [ a = 0 ] a - begin zero-based index at which to begin extraction.
+ * @param { Number } [ b = array.length ] b - end zero-based index at which to end extraction.
+ * If (b) is omitted, arraySlice extracts through the end of the sequence (array.length).
  *
  * @example
- * // returns [ 3, 4, 5, 6, 7, 8, 9 ]
- * arraySlice( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 9 );
+ * // returns [ 3, 4, 5, 6 ]
+ * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
  *
  * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
  * @throws { Error } Will throw an Error if (array) is not an Array.
+ * @throws { Error } Will throw an Error if (a) is not a Number.
+ * @throws { Error } Will throw an Error if (b) is not a Number.
  * @memberof wTools
 */
 
@@ -6140,6 +6287,10 @@ var arraySlice = function arraySlice( array,a,b )
   var result;
   var a = a !== undefined ? a : 0;
   var b = b !== undefined ? b : array.length;
+
+  _.assert( _.numberIs( a ) );
+  _.assert( _.numberIs( b ) );
+
   if( b < a )
   b = a;
 

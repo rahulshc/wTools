@@ -1284,6 +1284,305 @@
     }
     
   };
+
+
+  var arrayUpdate = function( test ) // it doesn't work (_.arrayUpdate is not a function)
+  {
+
+    test.description = 'add a new element';
+    var got = _.arrayUpdate( [  ], 1, 1 );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
+    var expected = 5;
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
+    var expected = 3;
+    test.identical( got, expected );
+
+    test.description = 'change the fourth element';
+    var got = _.arrayUpdate( [ true, true, true, true, false ], false, true );
+    var expected = 4;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayUpdate();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayUpdate( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayUpdate( 'wrong argument', 6, 6 );
+      });
+      
+    }
+    
+  };
+
+
+  var arrayAppendOnce = function( test ) // it doesn't work (_.arrayAppendOnce is not a function)
+  {
+
+    test.description = 'add a new element';
+    var got = _.arrayAppendOnce( [  ], 1 );
+    var expected = [ 1 ];
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+
+    test.description = 'nothing add';
+    var got = _.arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+    var expected = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+    test.identical( got, expected );
+
+    test.description = 'nothing add';
+    var got = _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+    var expected = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendOnce();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendOnce( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 6, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayAppendOnce( 'wrong argument', 5 );
+      });
+
+    }
+
+  };
+
+
+  var arrayPrependOnce = function( test ) // it doesn't work (_.arrayPrependOnce is not a function)
+  {
+
+    test.description = 'add a new element';
+    var got = _.arrayPrependOnce( [  ], 1 );
+    var expected = [ 1 ];
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+    var expected = [ 5, 1, 2, 3, 4 ];
+    test.identical( got, expected );
+
+    test.description = 'nothing add';
+    var got = _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+    var expected = [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ];
+    test.identical( got, expected );
+
+    test.description = 'nothing add';
+    var got = _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+    var expected = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependOnce();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 6, 'redundant argument' );
+      });
+
+      test.description = 'arguments[0] is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayPrependOnce( 'wrong argument', 5 );
+      });
+
+    }
+
+  };
+
+
+  var arraySpliceArray = function( test )
+  {
+
+    test.description = 'remove two elements';
+    var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
+    var expected = [ 1, 4, 5 ];
+    test.identical( got, expected );
+
+    test.description = 'replace three elements from first index';
+    var got = _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+
+    test.description = 'replace two elements and add a new one';
+    var got = _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ], -3, 2  );
+    var expected = [ 1, 'a', 2, 3, 4, 'd' ];
+    test.identical( got, expected );
+
+    test.description = 'replace two and add three elements';
+    var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
+    var expected = [ 1, 1, 2, 3, 'a', 'b', 4, 5 ];
+    test.identical( got, expected );
+
+    test.description = 'add the new elements from arguments[0].length';
+    var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
+    var expected = [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ];
+    test.identical( got, expected );
+
+    test.description = 'remove from first index to the end and add the new elements';
+    var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
+    var expected = [ 1, 'a', 'b', 'c' ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySpliceArray();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySpliceArray( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3, 'redundant argument' );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySpliceArray( 'wrong argument', 'wrong argument', 'wrong argument', 'wrong argument' );
+      });
+
+    }
+
+  };
+
+
+  var arraySlice = function( test )
+  {
+
+    test.description = 'nothing';
+    var got = _.arraySlice( [  ], [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'third argument is not provided';
+    var got = _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2 );
+    var expected = [ 3, 4, 5, 6, 7 ];
+    test.identical( got, expected );
+
+    test.description = 'second argument is undefined';
+    var got = _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], undefined, 4  );
+    var expected = [ 1, 2, 3, 4 ];
+    test.identical( got, expected );
+
+    test.description = 'from two to six';
+    var got = _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
+    var expected = [ 3, 4, 5, 6 ];
+    test.identical( got, expected );
+
+    test.description = 'indexes are out of bound';
+    var got = _.arraySlice( [ 3, 4, 5, 6 ], 5, 8 );
+    var expected = [ undefined, undefined, undefined ];
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySlice();
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySlice( 'wrong argument', 'wrong argument', 'wrong argument' );
+      });
+
+    }
+
+  };
+  
   
   
   //node ./staging/abase/z.tests/Array.test.s
@@ -1325,6 +1624,12 @@
       //arrayRemovedAll : arrayRemovedAll,
       //arrayRemoveAll : arrayRemoveAll,
       //arrayReplaceOnce : arrayReplaceOnce,
+
+      //arrayUpdate : arrayUpdate,
+      //arrayAppendOnce : arrayAppendOnce,
+      //arrayPrependOnce : arrayPrependOnce,
+      arraySpliceArray : arraySpliceArray,
+      //arraySlice : arraySlice, 
 
     }
 
