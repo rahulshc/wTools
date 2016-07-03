@@ -1582,10 +1582,235 @@
     }
 
   };
+
+
+  var arrayAs = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayAs();
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'an empty array';
+    var got = _.arrayAs( [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'undefined';
+    var got = _.arrayAs( undefined );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'null';
+    var got = _.arrayAs( null );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'array contains an object';
+    var got = _.arrayAs( { a : 1, b : 2 } );
+    var expected = [ { a : 1, b : 2 } ];
+    test.identical( got, expected );
+
+    test.description = 'array contains boolean';
+    var got = _.arrayAs( true );
+    var expected = [ true ];
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug ) 
+    {
+      
+      
+      
+    }
+    
+  };
+
+
+  var arrayPut = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayPut( [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'adds the new elements';
+    var got = _.arrayPut( [  ], undefined, 'str', true, [ 7, 8 ] );
+    var expected = [ 'str', true, 7, 8 ];
+    test.identical( got, expected );
+
+    test.description = 'adds after second element';
+    var got = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 2, 'str', true, [ 7, 8 ] );
+    var expected = [ 1, 2, 'str', true, 7, 8, 9 ];
+    test.identical( got, expected );
+
+    test.description = 'adds at the beginning';
+    var got = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], undefined, 'str', true, [ 7, 8 ] );
+    var expected = [ 'str', true, 7, 8, 5, 6, 9 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayPut();
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayPut( 'wrong argument', 'wrong argument', 'str', true, [ 7, 8 ] );
+      });
+      
+    }
+    
+  };
   
   
+  var arrayMask = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayMask( [ 1, 2, 3, 4 ], [ undefined, null, 0, '' ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'adds last three values';
+    var got = _.arrayMask( [ 'a', 'b', 'c', 4, 5 ], [ 0, '', 1, 2, 3 ] );
+    var expected = [ "c", 4, 5 ];
+    test.identical( got, expected );
+
+    test.description = 'adds the certain values';
+    var got = _.arrayMask( [ 'a', 'b', 'c', 4, 5, 'd' ], [ 3, 7, 0, '', 13, 33 ] );
+    var expected = [ "a", 'b', 5, 'd' ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayMask();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayMask( [ 1, 2, 3, 4 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayMask( [ 'a', 'b', 'c', 4, 5 ], [ 0, '', 1, 2, 3 ], 'redundant argument' );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayMask( 'wrong argument', 'wrong argument' );
+      });
+
+      test.description = 'both arrays are empty';
+      test.shouldThrowError( function()
+      {
+        _.arrayMask( [  ], [  ] );
+      });
+
+      test.description = 'length of the first array is not equal to the second array';
+      test.shouldThrowError( function()
+      {
+        _.arrayMask( [ 1, 2, 3 ], [ undefined, null, 0, '' ] );
+      });
+
+      test.description = 'length of the second array is not equal to the first array';
+      test.shouldThrowError( function()
+      {
+        _.arrayMask( [ 1, 2, 3, 4 ], [ undefined, null, 0 ] );
+      });
+      
+    }
+    
+  };
   
-  //node ./staging/abase/z.tests/Array.test.s
+  
+  var arrayDuplicate = function( test ) 
+  {
+
+    test.description = 'couple of repeats';
+    var got = _.arrayDuplicate( [ 'a', 'b', 'c' ] );
+    var expected = [ 'a', 'a', 'b', 'b', 'c', 'c' ];
+    test.identical( got, expected );
+
+    test.description = 'different options';
+    var options = {
+      src : [ 'abc', 'def' ],
+      result : [  ],
+      numberOfAtomsPerElement : 2,
+      numberOfDuplicatesPerElement : 3
+    };
+    var got = _.arrayDuplicate( options, {  } );
+    var expected = [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ];
+    test.identical( got, expected );
+
+    test.description = 'second argument is replaced and non-existent elements from options.src is replaced undefined';
+    var options = {
+      src : [ 'abc', 'def' ],
+      result : [  ],
+      numberOfAtomsPerElement : 3,
+      numberOfDuplicatesPerElement : 3
+    };
+    var got = _.arrayDuplicate( options, { a : 7, b : 13 } );
+    var expected = [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayDuplicate();
+      });
+
+      test.description = 'second argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayDuplicate( [ 'a', 'b', 'c' ], 'wrong argument' );
+      });
+
+      test.description = 'options.src is not provided or "undefined"';
+      var options = {
+        src : undefined,
+        result : [  ],
+        numberOfAtomsPerElement : 3,
+        numberOfDuplicatesPerElement : 3
+      };
+      test.shouldThrowError( function()
+      {
+        _.arrayDuplicate( options, { a : 13 } );
+      });
+
+    }
+    
+  };
+
+
+
+  // node ./staging/abase/z.tests/Array.test.s
 
 //
 
@@ -1628,8 +1853,14 @@
       //arrayUpdate : arrayUpdate,
       //arrayAppendOnce : arrayAppendOnce,
       //arrayPrependOnce : arrayPrependOnce,
-      arraySpliceArray : arraySpliceArray,
-      //arraySlice : arraySlice, 
+      //arraySpliceArray : arraySpliceArray,
+      //arraySlice : arraySlice,
+      
+      //arrayAs : arrayAs,
+      //arrayPut : arrayPut,
+      //arrayMask : arrayMask,
+      //arrayDuplicate : arrayDuplicate,
+
 
     }
 

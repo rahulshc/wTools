@@ -6192,7 +6192,7 @@ var arrayPrependOnce = function( dst,src )
 //
   /**
    * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
-   * and/or adding new elements.
+   * and/or adding new elements from an array (srcArray).
    *
    * @param { Array } dstArray - The target array.
    * @param { Array } srcArray - The source array.
@@ -6512,7 +6512,7 @@ var arrayToStr = function( src,options )
  * in the position (dstOffset) and changes values of the following index.
  *
  * @param { arrayLike } dstArray - The source array.
- * @param { Number } [ dstOffset = 0 ] - The index of element where need to put the new values.
+ * @param { Number } [ dstOffset = 0 ] dstOffset - The index of element where need to put the new values.
  * @param { ... } arguments[] - One or more argument(s).
  * If the (argument) is an array it iterates over array and adds each element to the next (dstOffset++) index of the (dstArray).
  * Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstArray).
@@ -6527,11 +6527,18 @@ var arrayToStr = function( src,options )
  *
  * @returns { arrayLike } - Returns an array containing the changed values.
  * @method arrayPut
+ * @throws { Error } Will throw an Error if (arguments.length) is less than one.
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (dstOffset) is not a Number.
  * @memberof wTools#
  */
 
 var arrayPut = function arrayPut( dstArray, dstOffset )
 {
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.numberIs( dstOffset ) );
+
   dstOffset = dstOffset || 0;
 
   for( var a = 2 ; a < arguments.length ; a++ )
@@ -6562,8 +6569,43 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
 }
 
 //
+  /**
+   * The arrayMask() method returns a new instance of array that contains the certain value(s) from array (srcArray),
+   * if an array (mask) contains the truth-value(s).
+   *
+   * The arrayMask() method checks, how much an array (mask) contain the truth value(s),
+   * and from that amount of truth values it builds a new array, that contains the certain value(s) of an array (srcArray),
+   * by corresponding index(es) (the truth value(s)) of the array (mask).
+   * If amount is equal 0, it returns an empty array.
+   *
+   * @param { arrayLike } srcArray - The source array.
+   * @param { arrayLike } mask - The target array.
+   *
+   * @example
+   * // returns [  ]
+   * _.arrayMask( [ 1, 2, 3, 4 ], [ undefined, null, 0, '' ] );
+   *
+   * @example
+   * // returns [ "c", 4, 5 ]
+   * _arrayMask( [ 'a', 'b', 'c', 4, 5 ], [ 0, '', 1, 2, 3 ] );
+   *
+   * @example
+   * // returns [ 'a', 'b', 5, 'd' ]
+   * _.arrayMask( [ 'a', 'b', 'c', 4, 5, 'd' ], [ 3, 7, 0, '', 13, 33 ] );
+   *
+   * @returns { arrayLike } Returns a new instance of array that contains the certain value(s) from array (srcArray),
+   * if an array (mask) contains the truth-value(s).
+   * If (mask) contains all falsy values, it returns an empty array.
+   * Otherwise, it returns a new array with certain value(s) of an array (srcArray).
+   * @method arrayMask
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more that two.
+   * @throws { Error } Will throw an Error if (srcArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (mask) is not an array-like.
+   * @throws { Error } Will throw an Error if length of both (srcArray and mask) is not equal.
+   * @memberof wTools#
+   */
 
-var arrayMask = function arrayMask( srcArray, mask )
+var arrayMask = function arrayMask( srcArray, mask ) 
 {
 
   _.assert( arguments.length === 2 );
@@ -6666,6 +6708,47 @@ arrayUnmask.defaults =
 }
 
 //
+  /**
+   * The arrayDuplicate() method returns an array with duplicate values of a certain number of times.
+   *
+   * @param { Array | Object } srcArray - The initial array or object.
+   * @param { objectLike } [ options = {  } ] options - The set of arguments.
+   * @param { arrayLike } options.src - The given initial array.
+   * @param { arrayLike } options.result - To collect all data.
+   * @param { Number } [ options.numberOfAtomsPerElement = 1 ] options.numberOfAtomsPerElement - The certain number of times
+   * to append the next value from (srcArray or options.src) to the (options.result).
+   * If (options.numberOfAtomsPerElement) is greater that length of a (srcArray or options.src) it appends the 'undefined'.
+   * @param { Number } [ options.numberOfDuplicatesPerElement = 2 ] options.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
+   *
+   * @example
+   * // returns [ 'a', 'a', 'b', 'b', 'c', 'c' ]
+   * _.arrayDuplicate( [ 'a', 'b', 'c' ] );
+   *
+   * @example
+   * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
+   * var options = {
+   *   src : [ 'abc', 'def' ],
+   *   result : [  ],
+   *   numberOfAtomsPerElement : 2,
+   *   numberOfDuplicatesPerElement : 3
+   * };
+   * _.arrayDuplicate( options, {} );
+   *
+   * @example
+   * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
+   * var options = {
+   *   src : [ 'abc', 'def' ],
+   *   result : [  ],
+   *   numberOfAtomsPerElement : 3,
+   *   numberOfDuplicatesPerElement : 3
+   * };
+   * _.arrayDuplicate( options, { a : 7, b : 13 } );
+   *
+   * @returns { Array } Returns an array with duplicate values of a certain number of times.
+   * @method arrayDuplicate
+   * @throws { Error } Will throw an Error if (options) is not an objectLike.
+   * @memberof wTools#
+   */
 
 var arrayDuplicate = function arrayDuplicate( srcArray, options )
 {
