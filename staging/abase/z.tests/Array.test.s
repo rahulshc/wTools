@@ -1809,7 +1809,216 @@
   };
 
 
+  var arrayFill = function( test ) 
+  {
 
+    test.description = 'an element';
+    var got = _.arrayFill( [ 7 ] );
+    var expected = [ 0 ];
+    test.identical( got, expected );
+
+    test.description = 'an object';
+    var got = _.arrayFill( { times : 5, value : 3 } );
+    var expected = [ 3, 3, 3, 3, 3 ];
+    test.identical( got, expected );
+
+    test.description = 'an array';
+    var got = _.arrayFill( [ 1, 2, 3 ] );
+    var expected = [ 0, 0, 0 ];
+    test.identical( got, expected );
+
+    test.description = 'a number';
+    var got = _.arrayFill( 3 );
+    var expected = [ 0, 0, 0 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayFill();
+      });
+
+      test.description = 'array is empty';
+      test.shouldThrowError( function()
+      {
+        _.arrayFill( [  ] );
+      });
+
+      test.description = 'wrong argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayFill( 'wrong argument' );
+      });
+      
+    }
+    
+  };
+  
+  
+  var arrayCompare = function( test ) 
+  {
+
+    test.description = 'empty arrays';
+    var got = _.arrayCompare( [  ], [  ] );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'first array is empty';
+    var got = _.arrayCompare( [  ], [ 1, 2 ] );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'length of the first array is less than second';
+    var got = _.arrayCompare( [ 4 ], [ 1, 2 ] );
+    var expected = 3;
+    test.identical( got, expected );
+
+    test.description = 'arrays are equal';
+    var got = _.arrayCompare( [ 1, 5 ], [ 1, 5 ] );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'a difference';
+    var got = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
+    var expected = 3;
+    test.identical( got, expected );
+
+    test.description = 'a negative difference';
+    var got = _.arrayCompare( [ 1, 5 ], [ 1, 6 ] );
+    var expected = -1;
+    test.identical( got, expected );
+
+    test.description = 'array-like arguments';
+    var src1 = function() {
+      return arguments;
+    }( 1, 5 );
+    var src2 = function() {
+      return arguments;
+    }( 1, 2 );
+    var got = _.arrayCompare( src1, src2 );
+    var expected = 3;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayCompare();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayCompare( [ 1, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayCompare( [ 1, 5 ], [ 1, 2 ], 'redundant argument' );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayCompare( 'wrong argument', 'wrong argument' );
+      });
+
+      test.description = 'second array is empty';
+      test.shouldThrowError( function()
+      {
+        _.arrayCompare( [ 1, 5 ], [  ] );
+      });
+
+      test.description = 'length of the second array is less than first';
+      test.shouldThrowError( function()
+      {
+        _.arrayCompare( [ 1, 5 ], [ 1 ] );
+      });
+      
+    }
+    
+  };
+
+
+  var arraySame = function( test ) 
+  {
+
+    test.description = 'empty arrays';
+    var got = _.arraySame( [  ], [  ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'arrays are equal';
+    var got = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'array-like arguments';
+    var src1 = function() {
+      return arguments;
+    }( 3, 7, 13 );
+    var src2 = function() {
+      return arguments;
+    }( 3, 7, 33 );
+    var got = _.arraySame( src1, src2 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'arrays are not equal';
+    var got = _.arraySame( [ 1, 2, 3, 'Hi!' ], [ 1, 2, 3, 'Hello there!' ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'arrays length are not equal';
+    var got = _.arraySame( [ 1, 2, 3 ], [ 1, 2 ] );
+    var expected = false;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySame();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySame( [ 1, 2, 3 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arraySame( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
+      });
+
+      test.description = 'wrong type of arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySame( 'wrong argument', 'wrong argument' );
+      });
+      
+    }
+    
+  };
+  
+  
+  
   // node ./staging/abase/z.tests/Array.test.s
 
 //
@@ -1861,6 +2070,10 @@
       //arrayMask : arrayMask,
       //arrayDuplicate : arrayDuplicate,
 
+      //arrayFill : arrayFill,
+      //arrayCompare : arrayCompare,
+      //arraySame : arraySame,
+      
 
     }
 

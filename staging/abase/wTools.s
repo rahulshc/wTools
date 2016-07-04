@@ -6711,7 +6711,7 @@ arrayUnmask.defaults =
   /**
    * The arrayDuplicate() method returns an array with duplicate values of a certain number of times.
    *
-   * @param { Array | Object } srcArray - The initial array or object.
+   * @param { ( Array | Object ) } srcArray - The initial array or object.
    * @param { objectLike } [ options = {  } ] options - The set of arguments.
    * @param { arrayLike } options.src - The given initial array.
    * @param { arrayLike } options.result - To collect all data.
@@ -6810,14 +6810,14 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
  * The arrayFill() method fills all the elements of the given or a new array from the 0 index to an (options.times) index
  * with a static value.
  *
- * @param { Object } options - The options to fill the array.
+ * @param { ( Object | Number | Array ) } options - The options to fill the array.
  * @param { Number } [ options.times = result.length ] options.times - The count of repeats.
    If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
  * @param { Number } [ options.value = 0 ] - The value for the filling.
  *
  * @example
  * // returns [ 3, 3, 3, 3, 3 ]
- * var arr = _.arrayFill( { times : 5, value : 3} );
+ * var arr = _.arrayFill( { times : 5, value : 3 } );
  *
  * @example
  * // returns [ 0, 0, 0, 0 ]
@@ -6874,8 +6874,8 @@ var arrayFill = function arrayFill( options )
 /**
  * The arrayCompare() method returns the first difference between the values of the first array from the second.
  *
- * @param { Array } src1 - The first array.
- * @param { Array } src2 - The second array.
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
  *
  * @example
  * // returns 3
@@ -6883,11 +6883,17 @@ var arrayFill = function arrayFill( options )
  *
  * @returns { Number } - Returns the first difference between the values of the two arrays.
  * @method arrayCompare
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
+ * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length). 
  * @memberof wTools#
  */
 
 var arrayCompare = function( src1,src2 )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
+  _.assert( src2.length >= src1.length );
 
   var result = 0;
 
@@ -6909,22 +6915,26 @@ var arrayCompare = function( src1,src2 )
   //     add dots at the end of sentences.
 
 /**
- * The arraySame() method check the equality of two arrays.
+ * The arraySame() method checks the equality of two arrays.
  *
- * @param { Array } src1 - The first array.
- * @param { Array } src2 - The second array.
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
  *
  * @example
  * // returns true
  * var arr = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
- * @returns { Boolean } - Returns true if all values of the two array are equal. Otherwise, returns false.
+ * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
  * @method arraySame
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
  * @memberof wTools#
  */
 
 var arraySame = function( src1,src2 )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
 
   var result = true;
 
