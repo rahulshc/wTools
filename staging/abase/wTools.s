@@ -5628,7 +5628,7 @@ var arrayToMap = function( array )
    */
 
   /**
-   * The arrayRemoveArrayOnce() determines whether the (dstArray) array has the same values as in the (insArray) array,
+   * The arrayRemoveArrayOnce() determines whether a (dstArray) array has the same values as in a (insArray) array,
    * and returns amount of the deleted elements from the (dstArray).
    *
    * It takes two (dstArray, insArray) or three (dstArray, insArray, onEqual) arguments, creates variable (var result = 0),
@@ -6927,14 +6927,12 @@ var arrayCompare = function( src1,src2 )
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
  * @method arraySame
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
  * @memberof wTools#
  */
 
 var arraySame = function( src1,src2 )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
 
   var result = true;
 
@@ -6972,12 +6970,65 @@ var arraySameSet = function( src1,src2 )
 }
 
 //
+  /**
+   * Callback for compare two values.
+   *
+   * @callback equalizer
+   * @param { * } el - The element of an array.
+   * @param { * } ins - The value to compare.
+   */
+
+  /**
+   * The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
+   * that corresponds to the condition in the callback function.
+   *
+   * It iterates over an array (arr) from the left to the right,
+   * and checks by callback function (equalizer(arr[a], ins)).
+   * If callback function returns true, it returns corresponding index.
+   * Otherwise, it returns -1.
+   *
+   * @param { arrayLike } arr - The target array.
+   * @param { * } ins - The value to compare.
+   * @param { Function } equalizer - A callback function.
+   * By default, it checks the equality of two arguments.
+   *
+   * @example
+   * // returns 0
+   * _.arrayLeftIndexOf( [ 1, 2, 3 ], 1 );
+   *
+   * @example
+   * // returns -1
+   * _.arrayLeftIndexOf( [ 1, 2, 3 ], 4 );
+   *
+   * @example
+   * // returns 3
+   * _.arrayLeftIndexOf( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
+   * 
+   * @example
+   * // returns 3
+   * _.arrayLeftIndexOf( 'abcdef', 'd' );
+   * 
+   * @example
+   * // returns 2
+   * var arr = function() {
+   *   return arguments;
+   * }( 3, 7, 13 );
+   * _.arrayLeftIndexOf( arr, 13 );
+   *
+   * @returns { Number } Returns the corresponding index, if a callback function (equalizer) returns true.
+   * Otherwise, it returns -1.
+   * @method arrayLeftIndexOf
+   * @throws { Error } Will throw an Error if (equalizer) is not a Function.
+   * @memberof wTools#
+   */
 
 var arrayLeftIndexOf = function( arr,ins,equalizer )
 {
 
   if( !equalizer )
   equalizer = function( a,b ){ return a === b };
+
+  _.assert( _.routineIs( equalizer ) );
 
   for( var a = 0 ; a < arr.length ; a++ )
   {
@@ -7101,7 +7152,7 @@ var arrayCount = function( src,instance )
   var result = 0;
 
   _assert( arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );//???
+  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
 
   var index = src.indexOf( instance );
   while( index !== -1 )
@@ -7119,7 +7170,7 @@ var arrayCountSame = function( src,onElement )
 {
   var result = 0;
   var found = [];
-  var onEelement = onEelement || function( e ){ return e };
+  var onElement = onElement || function( e ){ return e };
 
   _assert( arguments.length === 1 || arguments.length === 2 );
   _assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
@@ -7129,15 +7180,15 @@ var arrayCountSame = function( src,onElement )
     var element1 = onElement( src[ i1 ] );
     if( found.indexOf( element1 ) !== -1 )
     continue;
-
+    
     for( var i2 = i1+1 ; i2 < src.length ; i2++ )
     {
 
       var element2 = onElement( src[ i2 ] );
-      if( found.indexOf( element2 ) !== -1 )
+      if( found.indexOf( element2 ) !== -1 ) 
       continue;
 
-      if( element1 === element2 )
+      if( element1 === element2 ) 
       found.push( element1 );
 
     }
@@ -7205,6 +7256,40 @@ var arraySupplement = function arraySupplement( dstArray )
 }
 
 //
+  /**
+   * The arrayExtendScreening() method iterates over (arguments[...]) from the right to the left (arguments[2]),
+   * and returns a (dstArray) containing the values of the following arrays,
+   * if the following arrays contains the indexes of the (screenArray).
+   *
+   * @param { arrayLike } screenArray - The source array.
+   * @param { arrayLike } dstArray - To add the values from the following arrays,
+   * if the following arrays contains indexes of the (screenArray).
+   * If (dstArray) contains values, the certain values will be replaced.
+   * @param { ...[] } arguments[...] - The following arrays.
+   * 
+   * @example
+   * // returns [ 5, 6, 2 ]
+   * _.arrayExtendScreening( [ 1, 2, 3 ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
+   *
+   * @example
+   * // returns [ 'a', 6, 2, 13 ]
+   * _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
+   * 
+   * @example
+   * // returns [ 3, 'abc', 7, 13 ]
+   * _.arrayExtendScreening( [  ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] )
+   * 
+   * @returns { arrayLike } Returns a (dstArray) containing the values of the following arrays,
+   * if the following arrays contains the indexes of the (screenArray).
+   * If (screenArray) is empty, it returns a (dstArray).
+   * If (dstArray) is equal to the null, it creates a new array,
+   * and returns the corresponding values of the following arrays by the indexes of a (screenArray).
+   * @method arrayExtendScreening
+   * @throws { Error } Will throw an Error if (screenArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments[...]) is/are not an array-like.
+   * @memberof wTools#
+   */
 
 var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 {
@@ -7252,9 +7337,9 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
  * @example
  * // returns [ 6, 2, 4, 7, 8 ]
  * var arr = _.arrayRandom( {
- *   length: 5,
- *   range: [ 1, 9 ],
- *   int: true
+ *   length : 5,
+ *   range : [ 1, 9 ],
+ *   int : true
  * } );
  *
  * @returns { Array } - Returns an array of random numbers.
@@ -8342,7 +8427,7 @@ var mapExtendFiltering = function( filter,dstObject )
   return result;
 }
 
-  // !!! the param "dstObject" is not optional.
+  // +++ the param "dstObject" is not optional.
 
 /**
  * The mapExtend() is used to copy the values of all properties
@@ -8354,7 +8439,7 @@ var mapExtendFiltering = function( filter,dstObject )
  * If true,
  * it extends (result) from the next objects.
  *
- * @param{ objectLike } [dstObject = {}] - The target object.
+ * @param{ objectLike } dstObject - The target object.
  * @param{ ...objectLike } arguments[] - The source object(s).
  *
  * @example

@@ -2006,11 +2006,276 @@
       {
         _.arraySame( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
       });
+      
+    }
+    
+  };
 
-      test.description = 'wrong type of arguments';
+
+  var arrayLeftIndexOf = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayLeftIndexOf( [  ], 3 );
+    var expected = -1;
+    test.identical( got, expected );
+
+    test.description = 'second index';
+    var got = _.arrayLeftIndexOf( [ 1, 2, 3 ], 3 );
+    var expected = 2;
+    test.identical( got, expected );
+
+    test.description = 'zero index';
+    var got = _.arrayLeftIndexOf( [ 1, 2, 3 ], 3, function( el, ins ) { return el < ins } );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'nothing';
+    var got = _.arrayLeftIndexOf( [ 1, 2, 3 ], 4 );
+    var expected = -1;
+    test.identical( got, expected );
+
+    test.description = 'zero index';
+    var got = _.arrayLeftIndexOf( [ 1, 2, 3 ], 3, function( el, ins ) { return el > ins } );
+    var expected = -1;
+    test.identical( got, expected );
+
+    test.description = 'array-like arguments';
+    var arr = function() {
+      return arguments;
+    }( 3, 7, 13 );
+    var got = _.arrayLeftIndexOf( arr, 13 );
+    var expected = 2;
+    test.identical( got, expected );
+
+    test.description = 'fifth index';
+    var got = _.arrayLeftIndexOf( 'abcdef', 'e', function( el, ins ) { return el > ins } );
+    var expected = 5;
+    test.identical( got, expected );
+
+    test.description = 'third index';
+    var got = _.arrayLeftIndexOf( 'abcdef', 'd' );
+    var expected = 3;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
       test.shouldThrowError( function()
       {
-        _.arraySame( 'wrong argument', 'wrong argument' );
+        _.arrayLeftIndexOf();
+      });
+
+      test.description = 'third argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayLeftIndexOf( [ 1, 2, 3 ], 2, 'wrong argument' );
+      });
+      
+    }
+    
+  };
+  
+  
+  var arrayHasAny = function( test ) 
+  {
+
+    test.description = 'false';
+    var got = _.arrayHasAny( [  ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'false';
+    var got = _.arrayHasAny( [  ], false, 7 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'true';
+    var got = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
+    var expected = true;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayHasAny();
+      });
+
+      test.description = 'first argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayHasAny( 'wrong argument', false, 7 );
+      });
+      
+    }
+    
+  };
+  
+  
+  var arrayCount = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayCount( [  ], 3 );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'two matching';
+    var got = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );
+    var expected = 2;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+      
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayCount();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayCount( [ 1, 2, 3, 'abc', 13 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayCount( [ 1, 2, 3, true ], true, 'redundant argument' );
+      });
+
+      test.description = 'first argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayCount( 'wrong argument', true );
+      });
+      
+    }
+    
+  };
+
+
+  var arrayExtendScreening = function( test )
+  {
+
+    test.description = 'returns an empty array';
+    var got = _.arrayExtendScreening( [  ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'returns the corresponding values by indexes of the first argument';
+    var got = _.arrayExtendScreening( [ 1, 2, 3 ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
+    var expected = [ 5, 6, 2 ];
+    test.identical( got, expected );
+
+    test.description = 'creates a new array and returns the corresponding values by indexes of the first argument';
+    var got = _.arrayExtendScreening( [ 1, 2, 3 ], null, [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
+    var expected = [ 5, 6, 2 ];
+    test.identical( got, expected );
+
+    test.description = 'returns the corresponding values by indexes of the first argument';
+    var got = _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
+    var expected = [ 'a', 6, 2, 13 ];
+    test.identical( got, expected );
+
+    test.description = 'returns the second argument';
+    var got = _.arrayExtendScreening( [  ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
+    var expected = [ 3, 'abc', 7, 13 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayExtendScreening();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayExtendScreening( [ 1, 2, 3, 'abc', 13 ] );
+      });
+
+      test.description = 'next arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 3, 7 ], 'wrong arguments' );
+      });
+
+      test.description = 'arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayExtendScreening( 'wrong argument', 'wrong argument', 'wrong arguments' );
+      });
+      
+    }
+    
+  };
+
+
+  var arrayRandom = function( test ) 
+  {
+
+    test.description = 'an array';
+    var got = _.arrayRandom( [  ] );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'an empty object';
+    var got = _.arrayRandom( {  } );
+    var expected = [  ];
+    test.identical( got, expected );
+
+    test.description = 'a function';
+    var got = _.arrayRandom( function() {  } );
+    var expected = [  ];
+    test.identical( got, expected );
+    
+    test.description = 'a number';
+    var got = _.arrayRandom( 5 );
+    var expected = got;
+    test.identical( got, expected );
+
+    test.description = 'an object';
+    var got = _.arrayRandom( {
+      length : 5,
+      range : [ 1, 9 ],
+      int : true
+    } );
+    var expected = got;
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayRandom();
+      });
+
+      test.description = 'wrong argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayRandom( 'wrong argument' );
       });
       
     }
@@ -2073,8 +2338,13 @@
       //arrayFill : arrayFill,
       //arrayCompare : arrayCompare,
       //arraySame : arraySame,
-      
 
+      //arrayLeftIndexOf : arrayLeftIndexOf,
+      //arrayHasAny : arrayHasAny,
+      //arrayCount : arrayCount,
+      //arrayExtendScreening : arrayExtendScreening,
+      //arrayRandom : arrayRandom,
+      
     }
 
   }
