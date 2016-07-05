@@ -4289,20 +4289,29 @@ var _routineBind = function _routineBind( options )
 
   /**
    * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
-   value. Argumetns `args` of target function which are passed before arguments of binded function during
-   calling of target function
+   value. Unlike Function.prototype.bind() method if `context` is undefined`, in new function 'this' context will not be
+   sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
+   target function.
+   * Besides the aforementioned difference, routineBind method accepts function as argument, that makes it more useful
+      than Function.prototype.bind().
    * @example
-    var o = {
-        z: 5
-    };
+      var o = {
+          z: 5
+      };
 
-    var y = 4;
+      var y = 4;
 
-    function sum(x, y) {
-       return x + y + this.z;
-    }
-    var newSum = wTools.routineBind(sum, o, [3]);
-    newSum(y); // 12
+      function sum(x, y) {
+         return x + y + this.z;
+      }
+      var newSum = wTools.routineBind(sum, o, [3]);
+      newSum(y); // 12
+
+     var f1 = function(){ console.log( this ) };
+     var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+     f2.call( o ); // try to call new function with context set to { z: 5 }
+     var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
+     f3.call( o ) // print  { z: 5 }
    * @param {Function} routine Function which will be used as base for result function.
    * @param {Object} context The value that will be set as 'this' keyword in new function
    * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
@@ -4335,25 +4344,32 @@ var routineBind = function routineBind( routine, context, args )
   /**
    * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
    value. Argumetns `args` of target function which are passed before arguments of binded function during
-   calling of target function
+   calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
    * @example
-   var o = {
-        z: 5
-    };
+     var o = {
+          z: 5
+      };
 
-   var y = 4;
+     var y = 4;
 
-   function sum(x, y) {
-       return x + y + this.z;
-    }
-   var newSum = wTools.routineJoin(o, sum, [3]);
-   newSum(y); // 12
+     function sum(x, y) {
+         return x + y + this.z;
+      }
+     var newSum = wTools.routineJoin(o, sum, [3]);
+     newSum(y); // 12
+
+     var f1 = function(){ console.log( this ) };
+     var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+     f2.call( o ); // try to call new function with context set to { z: 5 }
+     var f3 = _.routineJoin( undefined,f1 ); // new function.
+     f3.call( o ) // print  { z: 5 }
 
    * @param {Object} context The value that will be set as 'this' keyword in new function
    * @param {Function} routine Function which will be used as base for result function.
    * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
    calling of target function. Must be wraped into array.
    * @returns {Function} New created function with preceding this, and args.
+   * @see [routineBind]{@link wTools#routineBind}
    * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
    * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
    * @method routineJoin
