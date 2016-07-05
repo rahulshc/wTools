@@ -5644,7 +5644,7 @@ var arrayToMap = function( array )
    */
 
   /**
-   * The arrayRemoveArrayOnce() determines whether the (dstArray) array has the same values as in the (insArray) array,
+   * The arrayRemoveArrayOnce() determines whether a (dstArray) array has the same values as in a (insArray) array,
    * and returns amount of the deleted elements from the (dstArray).
    *
    * It takes two (dstArray, insArray) or three (dstArray, insArray, onEqual) arguments, creates variable (var result = 0),
@@ -6055,6 +6055,41 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
 }
 
 //
+  /**
+   * The arrayUpdate() method adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
+   * and returns the last added index or the last replaced index of the array (dstArray).
+   * 
+   * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
+   * @see arrayReplaceOnce( dstArray, ins, sub )  See for more information.
+   * Checks if (index) equal to the -1.
+   * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
+   * Otherwise, it returns the replaced (index).
+   *
+   * @param { Array } dstArray - The source array.
+   * @param { * } ins - The value to change.
+   * @param { * } sub - The value to add or replace.
+   * 
+   * @example
+   * // returns 3
+   * var add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
+   * console.log( add ) = > [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+   *
+   * @example
+   * // returns 5
+   * var add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
+   * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
+   * 
+   * @example
+   * // returns 4
+   * var replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
+   * console.log( replace ) => [ true, true true, true, true ];
+   *
+   * @returns { number } Returns the last added or the last replaced index.
+   * @method arrayUpdate
+   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than three.
+   * @memberof wTools#
+   */
 
 var arrayUpdate = function( dstArray,ins,sub )
 {
@@ -6073,6 +6108,36 @@ var arrayUpdate = function( dstArray,ins,sub )
 }
 
 //
+  /**
+   * The arrayAppendOnce() method adds at the end of an array (dst) a value (src),
+   * if the array (dst) doesn't have the value (src).
+   *
+   * @param { Array } dst - The source array.
+   * @param { * } src - The value to add.
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
+   *
+   * @example
+   * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
+   * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+   *
+   * @example
+   * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
+   * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+   *
+   * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
+   * otherwise, it returns the original array (dst).
+   * @method arrayAppendOnce
+   * @throws { Error } Will throw an Error if (dst) is not an Array.
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+   * @memberof wTools#
+   */
 
 var arrayAppendOnce = function( dst,src )
 {
@@ -6092,6 +6157,36 @@ var arrayAppendOnce = function( dst,src )
 }
 
 //
+  /**
+   * The arrayPrependOnce() method adds at the beginning of an array (dst) a value (src),
+   * if the array (dst) doesn't have the value (src).
+   *
+   * @param { Array } dst - The source array.
+   * @param { * } src - The value to add.
+   *
+   * @example
+   * // returns [ 5, 1, 2, 3, 4 ]
+   * _.arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+   *
+   * @example
+   * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
+   * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+   *
+   * @example
+   * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
+   * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+   *
+   * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
+   * otherwise, it returns the original array (dst).
+   * @method arrayPrependOnce
+   * @throws { Error } Will throw an Error if (dst) is not an Array.
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+   * @memberof wTools#
+   */
 
 var arrayPrependOnce = function( dst,src )
 {
@@ -6111,12 +6206,64 @@ var arrayPrependOnce = function( dst,src )
 }
 
 //
+  /**
+   * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
+   * and/or adding new elements from an array (srcArray).
+   *
+   * @param { Array } dstArray - The target array.
+   * @param { Array } srcArray - The source array.
+   * @param { Number } first - The index at which to start changing the (dstArray) array.
+   * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
+   * If (first) is negative, will begin that many elements from the end.
+   * @param { Number } replace - The number of old array (dstArray) elements to remove.
+   * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
+   * then all of the elements through the end of the array will be deleted.
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5 ]
+   * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
+   *
+   * @example
+   * // returns [ 1, 'a', 2, 3, 4, 'd' ]
+   * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
+   *
+   * @example
+   * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
+   *
+   * @example
+   * // returns [ 1, 'a', 'b', 'c' ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
+   *
+   * @example
+   * // returns [ 1, 4, 5 ]
+   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
+   * 
+   * @returns { Array } Returns the modified array (dstArray) with the new length.
+   * @method arraySpliceArray
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
+   * @throws { Error } Will throw an Error if (dstArray) is not an Array.
+   * @throws { Error } Will throw an Error if (srcArray) is not an Array.
+   * @throws { Error } Will throw an Error if (first) is not a Number.
+   * @throws { Error } Will throw an Error if (replace) is not a Number.
+   * @memberof wTools#
+   */
 
 var arraySpliceArray = function( dstArray,srcArray,first,replace )
 {
+  _.assert( arguments.length === 4 );
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( srcArray ) );
+  _.assert( _.numberIs( first ) );
+  _.assert( _.numberIs( replace ) );
 
   var args = [ first,replace ];
-  args.push.apply( args,srcArray )
+  args.push.apply( args,srcArray );
+
   dstArray.splice.apply( dstArray,args );
 
   return dstArray;
@@ -6126,26 +6273,26 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  * The arraySlice() returns a shallow copy of a portion of an array
  * into a new array.
  *
- * It takes array and two variables
- * checks if (array) is an Array creates variables (result, a, b)
- * and assign them values.
- * The arraySlice() creates a new array from (a) to but not including (b).
- * If (b) is omitted, arraySlice extracts
- * through the end of the sequence (array.length).
- * If not arguments, it assigns a default variables
- * and returns an empty array.
+ * It takes three arguments (array, a, b)
+ * checks if (array) is an Array, if (a) and (b) are numbers.
+ * Creates variables (result, a, b) and assigns them values.
+ * The arraySlice() creates a new array (result) from (a) to but not including (b),
+ * and returns (result).
  *
- * @param { Array } [ array = [] ] - Array to return a new array from begin to but not including end.
- * @param { a } [ a = 0 ] - begin zero-based index at which to begin extraction.
- * @param { b } [ b = array.length ] - end zero-based index at which to end extraction.
+ * @param { Array } array - An array to return a new array from begin to but not including end.
+ * @param { Number } [ a = 0 ] a - begin zero-based index at which to begin extraction.
+ * @param { Number } [ b = array.length ] b - end zero-based index at which to end extraction.
+ * If (b) is omitted, arraySlice extracts through the end of the sequence (array.length).
  *
  * @example
- * // returns [ 3, 4, 5, 6, 7, 8, 9 ]
- * arraySlice( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ], 2, 9 );
+ * // returns [ 3, 4, 5, 6 ]
+ * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
  *
  * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
  * @throws { Error } Will throw an Error if (array) is not an Array.
+ * @throws { Error } Will throw an Error if (a) is not a Number.
+ * @throws { Error } Will throw an Error if (b) is not a Number.
  * @memberof wTools
 */
 
@@ -6156,6 +6303,10 @@ var arraySlice = function arraySlice( array,a,b )
   var result;
   var a = a !== undefined ? a : 0;
   var b = b !== undefined ? b : array.length;
+
+  _.assert( _.numberIs( a ) );
+  _.assert( _.numberIs( b ) );
+
   if( b < a )
   b = a;
 
@@ -6377,7 +6528,7 @@ var arrayToStr = function( src,options )
  * in the position (dstOffset) and changes values of the following index.
  *
  * @param { arrayLike } dstArray - The source array.
- * @param { Number } [ dstOffset = 0 ] - The index of element where need to put the new values.
+ * @param { Number } [ dstOffset = 0 ] dstOffset - The index of element where need to put the new values.
  * @param { ... } arguments[] - One or more argument(s).
  * If the (argument) is an array it iterates over array and adds each element to the next (dstOffset++) index of the (dstArray).
  * Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstArray).
@@ -6392,11 +6543,18 @@ var arrayToStr = function( src,options )
  *
  * @returns { arrayLike } - Returns an array containing the changed values.
  * @method arrayPut
+ * @throws { Error } Will throw an Error if (arguments.length) is less than one.
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (dstOffset) is not a Number.
  * @memberof wTools#
  */
 
 var arrayPut = function arrayPut( dstArray, dstOffset )
 {
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.numberIs( dstOffset ) );
+
   dstOffset = dstOffset || 0;
 
   for( var a = 2 ; a < arguments.length ; a++ )
@@ -6427,8 +6585,43 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
 }
 
 //
+  /**
+   * The arrayMask() method returns a new instance of array that contains the certain value(s) from array (srcArray),
+   * if an array (mask) contains the truth-value(s).
+   *
+   * The arrayMask() method checks, how much an array (mask) contain the truth value(s),
+   * and from that amount of truth values it builds a new array, that contains the certain value(s) of an array (srcArray),
+   * by corresponding index(es) (the truth value(s)) of the array (mask).
+   * If amount is equal 0, it returns an empty array.
+   *
+   * @param { arrayLike } srcArray - The source array.
+   * @param { arrayLike } mask - The target array.
+   *
+   * @example
+   * // returns [  ]
+   * _.arrayMask( [ 1, 2, 3, 4 ], [ undefined, null, 0, '' ] );
+   *
+   * @example
+   * // returns [ "c", 4, 5 ]
+   * _arrayMask( [ 'a', 'b', 'c', 4, 5 ], [ 0, '', 1, 2, 3 ] );
+   *
+   * @example
+   * // returns [ 'a', 'b', 5, 'd' ]
+   * _.arrayMask( [ 'a', 'b', 'c', 4, 5, 'd' ], [ 3, 7, 0, '', 13, 33 ] );
+   *
+   * @returns { arrayLike } Returns a new instance of array that contains the certain value(s) from array (srcArray),
+   * if an array (mask) contains the truth-value(s).
+   * If (mask) contains all falsy values, it returns an empty array.
+   * Otherwise, it returns a new array with certain value(s) of an array (srcArray).
+   * @method arrayMask
+   * @throws { Error } Will throw an Error if (arguments.length) is less or more that two.
+   * @throws { Error } Will throw an Error if (srcArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (mask) is not an array-like.
+   * @throws { Error } Will throw an Error if length of both (srcArray and mask) is not equal.
+   * @memberof wTools#
+   */
 
-var arrayMask = function arrayMask( srcArray, mask )
+var arrayMask = function arrayMask( srcArray, mask ) 
 {
 
   _.assert( arguments.length === 2 );
@@ -6531,6 +6724,47 @@ arrayUnmask.defaults =
 }
 
 //
+  /**
+   * The arrayDuplicate() method returns an array with duplicate values of a certain number of times.
+   *
+   * @param { ( Array | Object ) } srcArray - The initial array or object.
+   * @param { objectLike } [ options = {  } ] options - The set of arguments.
+   * @param { arrayLike } options.src - The given initial array.
+   * @param { arrayLike } options.result - To collect all data.
+   * @param { Number } [ options.numberOfAtomsPerElement = 1 ] options.numberOfAtomsPerElement - The certain number of times
+   * to append the next value from (srcArray or options.src) to the (options.result).
+   * If (options.numberOfAtomsPerElement) is greater that length of a (srcArray or options.src) it appends the 'undefined'.
+   * @param { Number } [ options.numberOfDuplicatesPerElement = 2 ] options.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
+   *
+   * @example
+   * // returns [ 'a', 'a', 'b', 'b', 'c', 'c' ]
+   * _.arrayDuplicate( [ 'a', 'b', 'c' ] );
+   *
+   * @example
+   * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
+   * var options = {
+   *   src : [ 'abc', 'def' ],
+   *   result : [  ],
+   *   numberOfAtomsPerElement : 2,
+   *   numberOfDuplicatesPerElement : 3
+   * };
+   * _.arrayDuplicate( options, {} );
+   *
+   * @example
+   * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
+   * var options = {
+   *   src : [ 'abc', 'def' ],
+   *   result : [  ],
+   *   numberOfAtomsPerElement : 3,
+   *   numberOfDuplicatesPerElement : 3
+   * };
+   * _.arrayDuplicate( options, { a : 7, b : 13 } );
+   *
+   * @returns { Array } Returns an array with duplicate values of a certain number of times.
+   * @method arrayDuplicate
+   * @throws { Error } Will throw an Error if (options) is not an objectLike.
+   * @memberof wTools#
+   */
 
 var arrayDuplicate = function arrayDuplicate( srcArray, options )
 {
@@ -6592,14 +6826,14 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
  * The arrayFill() method fills all the elements of the given or a new array from the 0 index to an (options.times) index
  * with a static value.
  *
- * @param { Object } options - The options to fill the array.
+ * @param { ( Object | Number | Array ) } options - The options to fill the array.
  * @param { Number } [ options.times = result.length ] options.times - The count of repeats.
    If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
  * @param { Number } [ options.value = 0 ] - The value for the filling.
  *
  * @example
  * // returns [ 3, 3, 3, 3, 3 ]
- * var arr = _.arrayFill( { times : 5, value : 3} );
+ * var arr = _.arrayFill( { times : 5, value : 3 } );
  *
  * @example
  * // returns [ 0, 0, 0, 0 ]
@@ -6656,8 +6890,8 @@ var arrayFill = function arrayFill( options )
 /**
  * The arrayCompare() method returns the first difference between the values of the first array from the second.
  *
- * @param { Array } src1 - The first array.
- * @param { Array } src2 - The second array.
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
  *
  * @example
  * // returns 3
@@ -6665,11 +6899,17 @@ var arrayFill = function arrayFill( options )
  *
  * @returns { Number } - Returns the first difference between the values of the two arrays.
  * @method arrayCompare
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
+ * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length). 
  * @memberof wTools#
  */
 
 var arrayCompare = function( src1,src2 )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
+  _.assert( src2.length >= src1.length );
 
   var result = 0;
 
@@ -6691,22 +6931,24 @@ var arrayCompare = function( src1,src2 )
   //     add dots at the end of sentences.
 
 /**
- * The arraySame() method check the equality of two arrays.
+ * The arraySame() method checks the equality of two arrays.
  *
- * @param { Array } src1 - The first array.
- * @param { Array } src2 - The second array.
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
  *
  * @example
  * // returns true
  * var arr = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
- * @returns { Boolean } - Returns true if all values of the two array are equal. Otherwise, returns false.
+ * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
  * @method arraySame
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools#
  */
 
 var arraySame = function( src1,src2 )
 {
+  _.assert( arguments.length === 2 );
 
   var result = true;
 
@@ -6744,12 +6986,65 @@ var arraySameSet = function( src1,src2 )
 }
 
 //
+  /**
+   * Callback for compare two values.
+   *
+   * @callback equalizer
+   * @param { * } el - The element of an array.
+   * @param { * } ins - The value to compare.
+   */
+
+  /**
+   * The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
+   * that corresponds to the condition in the callback function.
+   *
+   * It iterates over an array (arr) from the left to the right,
+   * and checks by callback function (equalizer(arr[a], ins)).
+   * If callback function returns true, it returns corresponding index.
+   * Otherwise, it returns -1.
+   *
+   * @param { arrayLike } arr - The target array.
+   * @param { * } ins - The value to compare.
+   * @param { Function } equalizer - A callback function.
+   * By default, it checks the equality of two arguments.
+   *
+   * @example
+   * // returns 0
+   * _.arrayLeftIndexOf( [ 1, 2, 3 ], 1 );
+   *
+   * @example
+   * // returns -1
+   * _.arrayLeftIndexOf( [ 1, 2, 3 ], 4 );
+   *
+   * @example
+   * // returns 3
+   * _.arrayLeftIndexOf( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
+   * 
+   * @example
+   * // returns 3
+   * _.arrayLeftIndexOf( 'abcdef', 'd' );
+   * 
+   * @example
+   * // returns 2
+   * var arr = function() {
+   *   return arguments;
+   * }( 3, 7, 13 );
+   * _.arrayLeftIndexOf( arr, 13 );
+   *
+   * @returns { Number } Returns the corresponding index, if a callback function (equalizer) returns true.
+   * Otherwise, it returns -1.
+   * @method arrayLeftIndexOf
+   * @throws { Error } Will throw an Error if (equalizer) is not a Function.
+   * @memberof wTools#
+   */
 
 var arrayLeftIndexOf = function( arr,ins,equalizer )
 {
 
   if( !equalizer )
   equalizer = function( a,b ){ return a === b };
+
+  _.assert( _.routineIs( equalizer ) );
 
   for( var a = 0 ; a < arr.length ; a++ )
   {
@@ -6873,7 +7168,7 @@ var arrayCount = function( src,instance )
   var result = 0;
 
   _assert( arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );//???
+  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
 
   var index = src.indexOf( instance );
   while( index !== -1 )
@@ -6891,7 +7186,7 @@ var arrayCountSame = function( src,onElement )
 {
   var result = 0;
   var found = [];
-  var onEelement = onEelement || function( e ){ return e };
+  var onElement = onElement || function( e ){ return e };
 
   _assert( arguments.length === 1 || arguments.length === 2 );
   _assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
@@ -6901,15 +7196,15 @@ var arrayCountSame = function( src,onElement )
     var element1 = onElement( src[ i1 ] );
     if( found.indexOf( element1 ) !== -1 )
     continue;
-
+    
     for( var i2 = i1+1 ; i2 < src.length ; i2++ )
     {
 
       var element2 = onElement( src[ i2 ] );
-      if( found.indexOf( element2 ) !== -1 )
+      if( found.indexOf( element2 ) !== -1 ) 
       continue;
 
-      if( element1 === element2 )
+      if( element1 === element2 ) 
       found.push( element1 );
 
     }
@@ -6977,6 +7272,40 @@ var arraySupplement = function arraySupplement( dstArray )
 }
 
 //
+  /**
+   * The arrayExtendScreening() method iterates over (arguments[...]) from the right to the left (arguments[2]),
+   * and returns a (dstArray) containing the values of the following arrays,
+   * if the following arrays contains the indexes of the (screenArray).
+   *
+   * @param { arrayLike } screenArray - The source array.
+   * @param { arrayLike } dstArray - To add the values from the following arrays,
+   * if the following arrays contains indexes of the (screenArray).
+   * If (dstArray) contains values, the certain values will be replaced.
+   * @param { ...[] } arguments[...] - The following arrays.
+   * 
+   * @example
+   * // returns [ 5, 6, 2 ]
+   * _.arrayExtendScreening( [ 1, 2, 3 ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
+   *
+   * @example
+   * // returns [ 'a', 6, 2, 13 ]
+   * _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
+   * 
+   * @example
+   * // returns [ 3, 'abc', 7, 13 ]
+   * _.arrayExtendScreening( [  ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] )
+   * 
+   * @returns { arrayLike } Returns a (dstArray) containing the values of the following arrays,
+   * if the following arrays contains the indexes of the (screenArray).
+   * If (screenArray) is empty, it returns a (dstArray).
+   * If (dstArray) is equal to the null, it creates a new array,
+   * and returns the corresponding values of the following arrays by the indexes of a (screenArray).
+   * @method arrayExtendScreening
+   * @throws { Error } Will throw an Error if (screenArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments[...]) is/are not an array-like.
+   * @memberof wTools#
+   */
 
 var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 {
@@ -7024,9 +7353,9 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
  * @example
  * // returns [ 6, 2, 4, 7, 8 ]
  * var arr = _.arrayRandom( {
- *   length: 5,
- *   range: [ 1, 9 ],
- *   int: true
+ *   length : 5,
+ *   range : [ 1, 9 ],
+ *   int : true
  * } );
  *
  * @returns { Array } - Returns an array of random numbers.
@@ -8114,7 +8443,7 @@ var mapExtendFiltering = function( filter,dstObject )
   return result;
 }
 
-  // !!! the param "dstObject" is not optional.
+  // +++ the param "dstObject" is not optional.
 
 /**
  * The mapExtend() is used to copy the values of all properties
@@ -8126,7 +8455,7 @@ var mapExtendFiltering = function( filter,dstObject )
  * If true,
  * it extends (result) from the next objects.
  *
- * @param{ objectLike } [dstObject = {}] - The target object.
+ * @param{ objectLike } dstObject - The target object.
  * @param{ ...objectLike } arguments[] - The source object(s).
  *
  * @example
