@@ -2283,7 +2283,335 @@
   };
   
   
-  
+  var arraySetContainAll = function( test ) 
+  {
+    
+    test.description = 'returns true';
+    var got = _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'length of the first argument is more than second argument';
+    var got = _.arraySetContainAll( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'length of the first argument is more than second argument';
+    var got = _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+    var expected = false;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySetContainAll();
+      });
+
+      test.description = 'wrong arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySetContainAll( [ 1, 2, 3, 4 ], 'wrong arguments' );
+      });
+      
+    }
+    
+  };
+
+
+  var arraySetContainSomething = function( test )
+  {
+
+    test.description = 'returns false';
+    var got = _.arraySetContainSomething( [  ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'returns false';
+    var got = _.arraySetContainSomething( [  ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'returns false';
+    var got = _.arraySetContainSomething( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'matching from arguments[1]';
+    var got = _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'matching from arguments[2]';
+    var got = _.arraySetContainSomething( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySetContainSomething();
+      });
+
+      test.description = 'wrong arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySetContainSomething( [ 1, 2, 3, 4 ], 'wrong arguments' );
+      });
+
+    }
+
+  };
+
+
+  var _arraySortedLookUpAct = function( test )
+  {
+
+    test.description = 'first argument is empty, so it returns the index from which it ended search at';
+    var got = _._arraySortedLookUpAct( [  ], 55, function( a, b ){ return a - b }, 0, 5 );
+    var expected = 3;
+    test.identical( got, expected );
+
+    test.description = 'returns the last index of the first argument';
+    var got = _._arraySortedLookUpAct( [ 1, 2, 3, 4, 5 ], 5, function( a, b ){ return a - b }, 0, 5 );
+    var expected = 4;
+    test.identical( got, expected );
+
+    test.description = 'second argument was not found, so it returns the length of the first argument';
+    var got = _._arraySortedLookUpAct( [ 1, 2, 3, 4, 5 ], 55, function( a, b ){ return a - b }, 0, 5 );
+    var expected = 5;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _._arraySortedLookUpAct();
+      });
+
+    }
+
+  };
+
+
+  var arraySortedLookUp = function( test ) 
+  {
+
+    test.description = 'returns an object that containing the found value';
+    var got = _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b } );
+    var expected = { value : 5, index : 4 };
+    test.identical( got, expected );
+
+    test.description = 'returns undefined';
+    var got = _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } );
+    var expected = undefined;
+    test.identical( got, expected );
+
+    test.description = 'call without a callback function';
+    var got = _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 3 );
+    var expected = { value : 3, index : 2 };
+    test.identical( got, expected );
+    
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedLookUp();
+      });
+
+      test.description = 'first argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedLookUp( 'wrong argument', 5, function( a, b ) { return a - b } );
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+      });
+      
+    }
+    
+  };
+
+
+  var arraySortedRemove = function( test )
+  {
+
+    test.description = 'nothing to remove';
+    var got = _.arraySortedRemove( [  ], 55 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'nothing to remove';
+    var got = _.arraySortedRemove( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'remove last index from first argument';
+    var got = _.arraySortedRemove( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b } );
+    var expected = true;
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedRemove();
+      });
+
+      test.description = 'first argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedRemove( 'wrong argument', 5, function( a, b ) { return a - b } );
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedRemove( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedRemove( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+      });
+      
+    }
+    
+  };
+
+
+  var arraySortedAddOnce = function( test )
+  {
+
+    test.description = 'add an element';
+    var got = _.arraySortedAddOnce( [  ], 55 );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'do not add, because the second element already has in the first argument';
+    var got = _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b } );
+    var expected = false;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAddOnce();
+      });
+
+      test.description = 'first argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAddOnce( 'wrong argument', 5, function( a, b ) { return a - b } );
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+      });
+
+    }
+
+  };
+
+
+  var arraySortedAdd = function( test )
+  {
+
+    test.description = 'add an element';
+    var got = _.arraySortedAdd( [  ], 55 );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.description = 'add a new element';
+    var got = _.arraySortedAdd( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } );
+    var expected = 5;
+    test.identical( got, expected );
+
+    test.description = 'offsets arguments[0][1]';
+    var got = _.arraySortedAdd( [ 1, 2, 3, 4 ], 2, function( a, b ) { return a - b } );
+    var expected = 1;
+    test.identical( got, expected );
+
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAdd();
+      });
+
+      test.description = 'first argument is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAdd( 'wrong argument', 5, function( a, b ) { return a - b } );
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAdd( [ 1, 2, 3, 4, 5 ] );
+      });
+
+      test.description = 'extra argument';
+      test.shouldThrowError( function()
+      {
+        _.arraySortedAdd( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+      });
+
+    }
+
+  };
   // node ./staging/abase/z.tests/Array.test.s
 
 //
@@ -2344,6 +2672,14 @@
       //arrayCount : arrayCount,
       //arrayExtendScreening : arrayExtendScreening,
       //arrayRandom : arrayRandom,
+
+      //arraySetContainAll: arraySetContainAll,
+      //arraySetContainSomething : arraySetContainSomething,
+      //_arraySortedLookUpAct : _arraySortedLookUpAct,
+      //arraySortedLookUp : arraySortedLookUp,
+      //arraySortedRemove : arraySortedRemove,
+      //arraySortedAddOnce : arraySortedAddOnce,
+      //arraySortedAdd : arraySortedAdd,
       
     }
 
