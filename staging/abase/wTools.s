@@ -2407,12 +2407,13 @@ var objectLike = function( src )
 }
 
   /**
-   * The mapIs() method determines whether the passed value is an Object.
+   * The mapIs() method determines whether the passed value is an Object,
+   * and not inherits through the prototype chain.
    *
    * If the (src) is an Object, true is returned,
    * otherwise false is.
    *
-   * @param { objectLike } src - The object to be checked.
+   * @param { * } src - Entity to check.
    *
    * @example
    * // returns true
@@ -2426,7 +2427,7 @@ var objectLike = function( src )
    * // returns false
    * mapIs( [ 3, 7, 13 ] );
    *
-   * @returns { boolean } Returns true if (src) is an Object.
+   * @returns { Boolean } Returns true if (src) is an Object, and not inherits through the prototype chain.
    * @method mapIs
    * @memberof wTools
    */
@@ -7005,7 +7006,7 @@ var arraySameSet = function( src1,src2 )
    *
    * @param { arrayLike } arr - The target array.
    * @param { * } ins - The value to compare.
-   * @param { Function } equalizer - A callback function.
+   * @param { Function } [ function( a, b ) { return a === b } ] equalizer - A callback function.
    * By default, it checks the equality of two arguments.
    *
    * @example
@@ -7076,6 +7077,35 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
 }
 
 //
+  /**
+   * The arrayLeftGet() method returns a new object containing the properties, (index, element),
+   * corresponding to a found value (ins) from an array (arr).
+   *
+   * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
+   * that returns the index of the value (ins) in the array (arr).
+   * @see { @link wTools#_.arrayLeftIndexOf() } - See for more information.
+   * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
+   * Otherwise, it returns the 'undefined'.
+   *
+   * @param { arrayLike } arr - Entity to check.
+   * @param { * } ins - Element to locate in the array.
+   * @param { Function } equalizer - A callback function.
+   *
+   * @example
+   * // returns { index : 3, element : 'str' }
+   * _.arrayLeftGet( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
+   *
+   * @example
+   * // returns undefined
+   * _.arrayLeftGet( [ 1, 2, 3, 4, 5 ], 6 );
+   *
+   * @returns { Object } Returns a new object containing the properties, (index, element),
+   * corresponding to the found value (ins) from the array (arr).
+   * Otherwise, it returns 'undefined'.
+   * @method arrayLeftGet
+   * @throws { Error } Will throw an Error if (equalizer) is not a Function.
+   * @memberof wTools#
+   */
 
 var arrayLeftGet = function( arr,ins,equalizer )
 {
@@ -7147,7 +7177,7 @@ var arrayHasAny = function( src )
   //     add dots at the end of sentences.
 
 /**
- * The arrayCount() method returns the count of matching elements in the (src) array.
+ * The arrayCount() method returns the count of matched elements in the (src) array.
  *
  * @param { Array } src - The source array.
  * @param { * } instance - The value to search.
@@ -7181,6 +7211,27 @@ var arrayCount = function( src,instance )
 }
 
 //
+  /**
+   * The arrayCountSame() method returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
+   *
+   * @param { arrayLike } src - The source array.
+   * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
+   *
+   * @example
+   * // returns 3
+   * _.arrayCountSame( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+   *
+   * @example
+   * // returns 0
+   * _.arrayCountSame( [ 1, 2, 3, 4, 5 ] );
+   *
+   * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
+   * @method arrayCountSame
+   * @throws { Error } If passed arguments is less than one or more than two.
+   * @throws { Error } If the first argument is not an array-like object.
+   * @throws { Error } If the second argument is not a Function.
+   * @memberof wTools#
+   */
 
 var arrayCountSame = function( src,onElement )
 {
@@ -7188,8 +7239,9 @@ var arrayCountSame = function( src,onElement )
   var found = [];
   var onElement = onElement || function( e ){ return e };
 
-  _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
+  _.assert( _.routineIs( onElement ) );
 
   for( var i1 = 0 ; i1 < src.length ; i1++ )
   {
@@ -7214,6 +7266,32 @@ var arrayCountSame = function( src,onElement )
 }
 
 //
+  /**
+   * The arraySum() method returns the sum of an array (src).
+   *
+   * @param { arrayLike } src - The source array.
+   * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
+   *
+   * @example
+   * // returns 15
+   * _.arraySum( [ 1, 2, 3, 4, 5 ] );
+   *
+   * @example
+   * // returns 29
+   * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
+   * 
+   * @example
+   * // returns 94
+   * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
+   *
+   * @returns { Number } - Returns the sum of an array (src).
+   * @method arraySum
+   * @throws { Error } If passed arguments is less than one or more than two.
+   * @throws { Error } If the first argument is not an array-like object.
+   * @throws { Error } If the second argument is not a Function.
+   * @memberof wTools#
+   */
+
 
 var arraySum = function( src,onElement )
 {
@@ -7223,7 +7301,9 @@ var arraySum = function( src,onElement )
   _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
 
   if( onElement === undefined )
-  onElement = function( e ){ return e; }
+  onElement = function( e ){ return e; };
+
+  _.assert( _.routineIs( onElement ) );
 
   for( var i = 0 ; i < src.length ; i++ )
   {
@@ -7234,6 +7314,39 @@ var arraySum = function( src,onElement )
 }
 
 //
+  /**
+   * The arraySupplement() method returns an array (dstArray), that contains values from following arrays only type of numbers.
+   * If the initial (dstArray) isn't contain numbers, they are replaced.
+   *
+   * It finds among the arrays the biggest array, and assigns to the variable (length), iterates over from 0 to the (length),
+   * creates inner loop that iterates over (arguments[...]) from the right (arguments.length - 1) to the (arguments[0]) left,
+   * checks each element of the arrays, if it contains only type of number.
+   * If true, it adds element to the array (dstArray) by corresponding index.
+   * Otherwise, it skips and checks following array from the last executable index, previous array.
+   * If the last executable index doesn't exist, it adds 'undefined' to the array (dstArray).
+   * After that it returns to the previous array, and executes again, until (length).
+   *
+   * @param { arrayLike } dstArray - The initial array.
+   * @param { ...arrayLike } arguments[...] - The following array(s).
+   *
+   * @example
+   * // returns [ 4, 5, 33, 13, 9, 7 ]
+   * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, 8, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
+   * 
+   * @example
+   * // returns [ 4, 5, 33, 13, undefined, 7 ];
+   * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
+   *
+   * @example
+   * // returns [ 6, 7, 33, 13, 9, 7 ];
+   * _.arraySupplement( [ 'a', 'b' ], [ 1, 2, 3 ], [ 6, 7, 8, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
+   *
+   * @returns { arrayLike } - Returns an array that contains values only type of numbers.
+   * @method arraySupplement
+   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments[...]) is/are not the array-like.
+   * @memberof wTools#
+   */
 
 var arraySupplement = function arraySupplement( dstArray )
 {
@@ -7273,7 +7386,7 @@ var arraySupplement = function arraySupplement( dstArray )
 
 //
   /**
-   * The arrayExtendScreening() method iterates over (arguments[...]) from the right to the left (arguments[2]),
+   * The arrayExtendScreening() method iterates over (arguments[...]) from the right to the left (arguments[1]),
    * and returns a (dstArray) containing the values of the following arrays,
    * if the following arrays contains the indexes of the (screenArray).
    *
@@ -7281,7 +7394,7 @@ var arraySupplement = function arraySupplement( dstArray )
    * @param { arrayLike } dstArray - To add the values from the following arrays,
    * if the following arrays contains indexes of the (screenArray).
    * If (dstArray) contains values, the certain values will be replaced.
-   * @param { ...[] } arguments[...] - The following arrays.
+   * @param { ...arrayLike } arguments[...] - The following arrays.
    * 
    * @example
    * // returns [ 5, 6, 2 ]
@@ -7511,6 +7624,30 @@ var arraySetContainAll = function( src )
 }
 */
 //
+  /**
+   * The arraySetContainAll() method returns true, if at least one of the following arrays (arguments[...]),
+   * contains all the same values as in the (src) array.
+   *
+   * @param { arrayLike } src - The source array.
+   * @param { ...arrayLike } arguments[...] - The target array.
+   *
+   * @example
+   * // returns true
+   * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
+   *
+   * @example
+   * // returns false
+   * _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+   *
+   * @returns { boolean } Returns true, if at least one of the following arrays (arguments[...]),
+   * contains all the same values as in the (src) array.
+   * If length of the (src) is more than the next argument, it returns false.
+   * Otherwise, it returns false.
+   * @method arraySetContainAll
+   * @throws { Error } Will throw an Error if (src) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
+   * @memberof wTools#
+   */
 
 var arraySetContainAll = function( src )
 {
@@ -7534,10 +7671,37 @@ var arraySetContainAll = function( src )
 
   }
 
-  return true;
+  return true; // return false
 }
 
 //
+  /**
+   * The arraySetContainSomething() method returns true, if at least one of the following arrays (arguments[...]),
+   * contains the first matching value from (src).
+   *
+   * @param { arrayLike } src - The source array.
+   * @param { ...arrayLike } arguments[...] - The target array.
+   *
+   * @example
+   * // returns true
+   * _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
+   *
+   * @example
+   * // returns true
+   * _.arraySetContainSomething( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+   *
+   * @example
+   * // returns false
+   * _.arraySetContainSomething( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
+   *
+   * @returns { Boolean } Returns true, if at least one of the following arrays (arguments[...]),
+   * contains the first matching value from (src).
+   * Otherwise, it returns false.
+   * @method arraySetContainSomething
+   * @throws { Error } Will throw an Error if (src) is not an array-like.
+   * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
+   * @memberof wTools#
+   */
 
 var arraySetContainSomething = function( src )
 {
@@ -7566,6 +7730,31 @@ var arraySetContainSomething = function( src )
 // --
 // array sorted
 // --
+
+  /**
+   * The _arraySortedLookUpAct() method returns the first index at which a given element (ins)
+   * can be found in the array (arr).
+   *
+   * @param { arrayLike } arr - Entity to check.
+   * @param { Number } ins - Element to locate in the array.
+   * @param { Function } comparator - A callback function.
+   * @param { Number } left - The index to start the search at.
+   * @param { Number } right - The index to end the search at.
+   *
+   * @example
+   * // returns 4
+   * _arraySortedLookUpAct( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 0, 5 );
+   *
+   * @example
+   * // returns 5
+   * _arraySortedLookUpAct( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b }, 0, 5 );
+   *
+   * @returns { Number } Returns the first index at which a given element (ins)
+   * can be found in the array (arr).
+   * Otherwise, if (ins) was not found, it returns the length of the array (arr) or the index from which it ended search at.
+   * @method _arraySortedLookUpAct
+   * @memberof wTools#
+   */
 
 var _arraySortedLookUpAct = function( arr,ins,comparator,left,right )
 {
@@ -7605,6 +7794,37 @@ var _arraySortedLookUpAct = function( arr,ins,comparator,left,right )
 }
 
 //
+  /**
+   * The arraySortedLookUp() method returns a new object containing the properties, (value, index),
+   * corresponding to the found value (ins) from array (arr).
+   *
+   * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
+   * that returns the index of the value (ins) in the array (arr).
+   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * If (index) is equal to the one, it returns 'undefined'.
+   * If call callback function (comparator( ins, arr[ index ]) returns a value that is not equal to the zero, it returns 'undefined'.
+   * Otherwise, it returns the object containing the properties ({ value : arr[ index ], index : index }).
+   *
+   * @param { arrayLike } arr - Entity to check.
+   * @param { Number } ins - Element to locate in the array.
+   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   *
+   * @example
+   * // returns { value : 5, index : 4 }
+   * arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b } );
+   *
+   * @example
+   * // returns undefined
+   * arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } );
+   *
+   * @returns { Object } Returns a new object containing the properties, (value, index),
+   * corresponding to the found value (ins) from the array (arr).
+   * Otherwise, it returns 'undefined'.
+   * @method arraySortedLookUp
+   * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
+   * @throws { Error } Will throw an Error if (arr) is not an array-like.
+   * @memberof wTools#
+   */
 
 var arraySortedLookUp = function( arr,ins,comparator )
 {
@@ -7671,6 +7891,36 @@ var arraySortedClosest = function( arr,ins,comparator )
 }
 
 //
+  /**
+   * The arraySortedRemove() method returns true, if a value (ins) was removed from an array (arr).
+   * Otherwise, it returns false.
+   *
+   * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
+   * that returns the index of the value (ins) in the array (arr).
+   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * If (index) is not equal to the one, and call callback function (comparator( ins, arr[ index ])
+   * returns a value that is equal to the zero (i.e the array (arr) contains the value (ins)), it removes the value (ins) from the array (arr), and returns true.
+   * Otherwise, it returns false.
+   *
+   * @param { arrayLike } arr - Entity to check.
+   * @param { Number } ins - Element to locate in the array.
+   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   *
+   * @example
+   * // returns true
+   * arraySortedRemove( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b } ); // => [ 1, 2, 3, 4 ]
+   *
+   * @example
+   * // returns false
+   * arraySortedRemove( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } ); // => [ 1, 2, 3, 4, 5 ]
+   *
+   * @returns { Boolean } Returns true, if a value (ins) was removed from an array (arr).
+   * Otherwise, it returns false.
+   * @method arraySortedRemove
+   * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
+   * @throws { Error } Will throw an Error if (arr) is not an array-like.
+   * @memberof wTools#
+   */
 
 var arraySortedRemove = function( arr,ins,comparator )
 {
@@ -7690,6 +7940,36 @@ var arraySortedRemove = function( arr,ins,comparator )
 }
 
 //
+  /**
+   * The arraySortedAddOnce() method returns true, if a value (ins) was added to an array (arr).
+   * Otherwise, it returns false.
+   *
+   * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
+   * that returns the index of the value (ins) in the array (arr).
+   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * If (index) is equal to the one, and call callback function (comparator( ins, arr[ index ])
+   * returns a value that is not equal to the zero (i.e the array (arr) doesn't contain the value (ins)), it adds the value (ins) to the array (arr), and returns true.
+   * Otherwise, it returns false.
+   *
+   * @param { arrayLike } arr - Entity to check.
+   * @param { Number } ins - Element to locate in the array.
+   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   *
+   * @example
+   * // returns false
+   * arraySortedAddOnce( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b } ); // => [ 1, 2, 3, 4, 5 ]
+   *
+   * @example
+   * // returns true
+   * arraySortedAddOnce( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } ); // => [ 1, 2, 3, 4, 5, 55 ]
+   *
+   * @returns { Boolean } Returns true, if a value (ins) was added to an array (arr).
+   * Otherwise, it returns false.
+   * @method arraySortedAddOnce
+   * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
+   * @throws { Error } Will throw an Error if (arr) is not an array-like.
+   * @memberof wTools#
+   */
 
 var arraySortedAddOnce = function( arr,ins,comparator )
 {
@@ -7709,29 +7989,83 @@ var arraySortedAddOnce = function( arr,ins,comparator )
 }
 
 //
+  /**
+   * The arraySortedAdd() method adds the value (ins) to the array (arr), no matter whether it has there or hasn't,
+   * and returns the new added or the updated index.
+   *
+   * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
+   * that returns the index of the value (ins) in the array (arr).
+   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * If value (ins) has in the array (arr), it adds (ins) to that found index and offsets the old values in the (arr).
+   * Otherwise, it adds the new index.
+   *
+   * @param { arrayLike } arr - Entity to check.
+   * @param { Number } ins - Element to locate in the array.
+   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   *
+   * @example
+   * // returns 5
+   * arraySortedAdd( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b } ); // => [ 1, 2, 3, 4, 5, 5 ]
+   *
+   * @example
+   * // returns 4
+   * arraySortedAdd( [ 1, 2, 3, 4 ], 2, function( a, b ) { return a - b } ); // => [ 1, 2, 2, 3, 4 ]
+   *
+   * @returns { Number } Returns the new added or the updated index.
+   * @method arraySortedAdd
+   * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
+   * @throws { Error } Will throw an Error if (arr) is not an array-like.
+   * @memberof wTools#
+   */
 
 var arraySortedAdd = function( arr,ins,comparator )
-{
+  {
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayLike( arr ) );
+    _.assert( arguments.length === 2 || arguments.length === 3 );
+    _.assert( _.arrayLike( arr ) );
 
-  if( comparator === undefined ) comparator = function( a,b ){ return a-b };
-  var l = arr.length;
-  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
+    if( comparator === undefined ) comparator = function( a,b ){ return a-b };
+    var l = arr.length;
+    var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
 
-  arr.splice( index,0,ins );
+    arr.splice( index,0,ins );
 
-  return index;
-}
+    return index;
+  }
 
 //
+  /**
+   * The arraySortedAddArray() method returns the sum of the added indexes from an array (src) to an array (dst).
+   *
+   * It creates variable (result = 0), iterates over an array (src),
+   * adds to the (result +=) each call the function (arraySortedAdd( dst, src[ s ], comparator ))
+   * that returns the new added or the updated index.
+   * @see { @link wTools#_.arraySortedAdd() } - See for more information.
+   *
+   * @param { arrayLike } dst - Entity to check.
+   * @param { arrayLike } src - Entity to check.
+   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   *
+   * @example
+   * // returns 19
+   * arraySortedAddArray( [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 2 ], function( a, b ) { return a - b } ); // => [ 1, 2, 2, 3, 4, 5, 6, 7, 8 ]
+   *
+   * @example
+   * // returns 3
+   * arraySortedAddArray( [  ], [ 1, 2, 3 ], function( a, b ) { return a - b } ); // => [ 1, 2, 3 ]
+   *
+   * @returns { Number } Returns the sum of the added indexes from an array (src) to an array (dst).
+   * @method arraySortedAddArray
+   * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
+   * @throws { Error } Will throw an Error if (dst and src) are not an array-like.
+   * @memberof wTools#
+   */
 
 var arraySortedAddArray = function( dst,src,comparator )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayLike( arr ) );
+  _.assert( _.arrayLike( dst ) && _.arrayLike( src ) );
 
   var result = 0;
 
