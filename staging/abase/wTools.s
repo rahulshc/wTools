@@ -57,7 +57,7 @@ var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
-// entity
+// entity modifier
 // --
 
 var enityExtend = function( dst,src )
@@ -188,6 +188,212 @@ var entityClone = function( src,options )
 
 //
 
+var entityCloneObject = function( o )
+{
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,entityCloneObject.defaults );
+  _.mapSupplement( o,entityCloneObject.defaults );
+
+  o.path = '';
+  o.technique = 'object'
+
+  var result = _entityClone( o );
+
+  return result;
+}
+
+entityCloneObject.defaults =
+{
+
+  src : null,
+  rootSrc : null,
+
+  copyComposes : true,
+  copyAggregates : false,
+  copyRestricts : false,
+  copyConstitutes : false,
+
+  levels : 16,
+
+}
+
+//
+
+var entityCloneData = function( o )
+{
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,entityCloneData.defaults );
+  _.mapSupplement( o,entityCloneData.defaults )
+
+  o.path = '';
+  o.technique = 'data'
+
+  var result = _entityClone( o );
+
+  return result;
+}
+
+entityCloneData.defaults =
+{
+
+  src : null,
+  rootSrc : null,
+
+  copyComposes : true,
+  copyAggregates : false,
+  copyRestricts : false,
+  copyConstitutes : false,
+
+  levels : 16,
+
+}
+
+//
+
+var _entityClone = function( o )
+{
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,_entityClone.defaults );
+
+  return _entityCloneAct( o );
+}
+
+_entityClone.defaults =
+{
+
+  src : null,
+  rootSrc : null,
+
+  copyComposes : true,
+  copyAggregates : true,
+  copyRestricts : false,
+  copyConstitutes : false,
+
+  levels : 16,
+  path : '',
+  technique : null,
+
+  key : null,
+  onRoutine : null,
+
+}
+
+//
+
+var _entityCloneAct = function( o )
+{
+
+  if( !( o.levels > 0 ) )
+  throw _.err( 'failed to clone data\nat ' + o.path + '\ntoo deep structure',o.src );
+  o.levels -= 1;
+
+  /* routine */
+
+  if( _.routineIs( o.src ) )
+  {
+    if( o.onRoutine )
+    o.onRoutine.call( o,o.src );
+    return o.src;
+  }
+
+  /* atomic */
+
+  if( _.atomicIs( o.src ) )
+  {
+    return o.src;
+  }
+
+  /* class instance */
+
+  if( o.technique === 'data' )
+  {
+    if( o.src.cloneData )
+    {
+      return o.src.cloneData( o );
+    }
+  }
+  else if( o.technique === 'object' )
+  {
+    if( o.src.cloneObject )
+    {
+      return o.src.cloneObject( o );
+    }
+  }
+  else
+  {
+    debugger;
+    throw _.err( 'unexpected clone technique : ' + o.technique );
+  }
+
+  /* map */
+
+  if( _.objectIs( o.src ) )
+  {
+
+    var mapIs = _.mapIs( o.src );
+
+    if( !mapIs )
+    if( o.src.constructor !== Object && o.src.constructor !== null )
+    {
+      debugger;
+      throw _.err
+      (
+        'Complex objets should have ' +
+        ( o.technique === 'data' ? 'cloneData' : 'cloneObject' ) +
+        ', but object ' + _.strTypeOf( o.src ) + ' \n' +
+        'at ' + ( o.path || '.' ) + '\ndoes not have ',o.src
+      );
+    }
+
+    var result = new o.src.constructor();
+
+    for( var s in o.src )
+    {
+
+      if( !mapIs )
+      if( !Object.hasOwnProperty.call( o.src,s ) )
+      continue;
+
+      var elementOptions = _.mapExtend( {},o );
+      elementOptions.src = o.src[ s ];
+      elementOptions.path += '.' + s;
+      result[ s ] = _entityCloneAct( elementOptions );
+    }
+
+    return result;
+  }
+
+  /* array like */
+
+  if( _.arrayLike( o.src ) )
+  {
+    var result = _.arrayNewOfSameLength( o.src );
+
+    for( var s = 0 ; s < o.src.length ; s++ )
+    {
+      var elementOptions = _.mapExtend( {},o );
+      elementOptions.src = o.src[ s ];
+      elementOptions.path += '.' + s;
+      result[ s ] = _entityCloneAct( elementOptions );
+    }
+
+    return result;
+  }
+
+  throw _.err( 'unexpected type of src : ' + _.strTypeOf( o.src ) );
+}
+
+//
+
 var entityCopy = function( dst,src,onRecursive )
 {
   var result;
@@ -296,7 +502,9 @@ var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
   return result;
 }
 
-//
+// --
+// entity checker
+// --
 
 var entityHasNan = function( src )
 {
@@ -611,7 +819,10 @@ var entityContain = function entityContain( src1,src2,options )
   return _.entitySame( src1,src2,options );
 }
 
-//
+// --
+// entity selector
+// --
+
   /**
    * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
       properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
@@ -1011,7 +1222,7 @@ var entityFilter = function( src,onEach )
 }
 
 //
-
+/*
 var _entityMostComparing = function( src,onCompare )
 {
 
@@ -1090,7 +1301,7 @@ var entityMaxComparing = function( src,onCompare )
 
   return _entityMost( src,_onCompare );
 }
-
+*/
 //
 
   /**
@@ -1374,24 +1585,28 @@ var until = function()
 
 //
 
-var each = function()
+var _each = function( o )
 {
 
   var i = 0;
-  var onEach = arguments[ arguments.length-1 ];
+  var onEach = o.args[ o.args.length-1 ];
   if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
 
-  for( var arg = 0, l = arguments.length-1 ; arg < l ; arg++ )
+  for( var arg = 0, l = o.args.length-1 ; arg < l ; arg++ )
   {
 
-    var src = arguments[ arg ];
+    var src = o.args[ arg ];
 
     if( _.arrayIs( src ) || ( !_.objectIs( src ) && _.arrayLike( src ) ) )
     {
 
       for( var a = 0 ; a < src.length ; a++ )
       {
-        onEach.call( src,src[a],a,i );
+        if( o.own )
+        if( !Object.hasOwnProperty.call( src,a ) )
+        continue;
+
+        onEach.call( src,src[ a ],a,i );
         i++;
       }
 
@@ -1401,6 +1616,10 @@ var each = function()
 
       for( var a in src )
       {
+        if( o.own )
+        if( !Object.hasOwnProperty.call( src,a ) )
+        continue;
+
         onEach.call( src,src[a],a,i );
         i++;
       }
@@ -1421,50 +1640,114 @@ var each = function()
 
 //
 
-var eachSample = function( samples,onEach )
+var each = function()
 {
 
-  var direct = 1;
-  var options = {};
-  if( _.objectIs( samples ) )
+  return _each({ args : arguments });
+
+}
+
+//
+
+var eachOwn = function()
+{
+
+  return _each({ args : arguments, own : 1 });
+
+}
+
+//
+
+//var eachSample = function( samples,onEach )
+var eachSample = function( o )
+{
+
+  if( arguments.length === 2 )
   {
-    options = arguments[ 0 ];
-    samples = options.samples;
-    onEach = options.onEach;
-    direct = options.direct !== undefined ? options.direct : 1;
-    _.assert( arguments.length === 1 );
+    o =
+    {
+      elementArrays : arguments[ 0 ],
+      onEach : arguments[ 1 ],
+    }
   }
-  else
-  {
-    _.assert( arguments.length === 2 );
-  }
+
+  _.assertMapOnly( o,eachSample.defaults );
+  if( o.direct === undefined )
+  o.direct = true;
+
+  /**/
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayIs( samples ) );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routineIs( o.onEach ) || o.onEach === undefined );
+  _.assert( _.arrayIs( o.elementArrays ) || o.base !== undefined || o.add !== undefined );
 
+  /**/
+
+  if( o.base !== undefined || o.add !== undefined )
+  {
+
+    var l = 1;
+    if( _.arrayLike( o.base ) )
+    l = o.base.length;
+    else if( _.arrayLike( o.add ) )
+    l = o.add.length;
+
+    if( !o.base )
+    o.base = 0;
+    o.base = _.arrayOrNumber( o.base,l );
+    o.add = _.arrayOrNumber( o.add,l );
+
+    _.assert( o.base.length === o.add.length );
+    _.assert( !o.elementArrays );
+
+    o.elementArrays = [];
+
+    for( var b = 0 ; b < o.base.length ; b++ )
+    {
+      var e = [ o.base[ b ], o.base[ b ] + o.add[ b ] ];
+      o.elementArrays.push( e );
+    }
+
+  }
+
+  /* elementArrays */
+
+  if( !o.base )
+  for( var i = 0 ; i < o.elementArrays.length ; i++ )
+  {
+    _.assert( _.arrayLike( o.elementArrays[ i ] ) || _.atomicIs( o.elementArrays[ i ] ) );
+    if( _.atomicIs( o.elementArrays[ i ] ) )
+    o.elementArrays[ i ] = [ o.elementArrays[ i ] ];
+  }
+
+  /**/
+
+  var result = [];
   var sample = [];
   var counter = [];
   var len = [];
   var index = 0;
 
-  //
+  /**/
 
   var firstSample = function()
   {
 
-    for( var s = 0, l = samples.length; s < l ; s++ )
+    for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
     {
-      len[ s ] = samples[ s ].length;
+      len[ s ] = o.elementArrays[ s ].length;
       counter[ s ] = 0;
-      sample[ s ] = samples[ s ][ counter[ s ] ];
-      if( !len[ s ] ) return 0;
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
+      if( !len[ s ] )
+      return 0;
     }
+
+    result.push( sample.slice() );
 
     return 1;
   }
 
-  //
+  /**/
 
   var _nextSample = function( s )
   {
@@ -1473,28 +1756,30 @@ var eachSample = function( samples,onEach )
     if( counter[ s ] >= len[ s ] )
     {
       counter[ s ] = 0;
-      sample[ s ] = samples[ s ][ counter[ s ] ];
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
     }
     else
     {
-      sample[ s ] = samples[ s ][ counter[ s ] ];
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
       index += 1;
+      result.push( sample.slice() );
       return 1;
     }
 
+    return 0;
   }
 
-  //
+  /**/
 
   var nextSample = function()
   {
 
-    if( direct ) for( var s = 0, l = samples.length; s < l ; s++ )
+    if( o.direct ) for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
     {
       if( _nextSample( s ) )
       return 1;
     }
-    else for( var s = samples.length - 1, l = samples.length; s >= 0 ; s-- )
+    else for( var s = o.elementArrays.length - 1, l = o.elementArrays.length; s >= 0 ; s-- )
     {
       if( _nextSample( s ) )
       return 1;
@@ -1503,21 +1788,34 @@ var eachSample = function( samples,onEach )
     return 0;
   }
 
-  //
+  /**/
 
-  if( !_.arrayIs( samples ) )
+  if( !_.arrayIs( o.elementArrays ) )
   throw _.err( 'eachSample :','array only supported' );
 
   if( !firstSample() )
-  return index;
+  return result;
 
   do
   {
-    onEach.call( sample,sample,index );
+    if( o.onEach )
+    o.onEach.call( sample,sample,index );
   }
   while( nextSample() );
 
-  return index;
+  return result;
+}
+
+eachSample.defaults =
+{
+
+  direct : 1,
+  onEach : null,
+
+  elementArrays : null,
+  base : null,
+  add : null,
+
 }
 
 //
@@ -1623,8 +1921,8 @@ var _err = function _err( o )
     if( o.args[ a ] instanceof Error )
     {
       result = o.args[ a ];
-      if( result.respected )
-      result.respected = 0;
+      if( result.needAttention )
+      result.needAttention = 0;
       o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'Unknown error';
       break;
     }
@@ -2433,7 +2731,7 @@ var objectLike = function( src )
 
 var mapIs = function( src )
 {
-  return _.objectIs( src ) && src.__proto__.__proto__ === null;
+  return _.objectIs( src ) && ( !src.__proto__ || src.__proto__.__proto__ === null );
   /*return _.objectIs( src ) && src.__proto__ === Object.prototype;*/
 }
 
@@ -4131,7 +4429,7 @@ var regexpObjectOrering = function( ordering )
   _.eachSample
   ({
     direct : 0,
-    samples : res,
+    elementArrays : res,
     onEach : function( sample,index )
     {
       var mask = _.regexpObjectShrink( {},sample[ 0 ] );
@@ -5528,10 +5826,11 @@ var arrayElementsSwap = function( dst,index1,index2 )
 }
 
 //
+
   /**
    * The arrayFrom() method converts an object-like (src) into Array.
    *
-   * @param { objectLike } src - To convert into Array.
+   * @param { * } src - To convert into Array.
    *
    * @example
    * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
@@ -5561,6 +5860,8 @@ var arrayElementsSwap = function( dst,index1,index2 )
 var arrayFrom = function( src )
 {
 
+  _.assert( arguments.length === 1 );
+
   if( _.arrayIs( src ) )
   return src;
 
@@ -5580,6 +5881,7 @@ var arrayFrom = function( src )
 }
 
 //
+
   /**
    * The arrayToMap() converts an (array) into Object.
    *
@@ -5610,7 +5912,7 @@ var arrayToMap = function( array )
 {
   var result = {};
 
-  _.assert( array.length === 1 ); //???
+  _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( array ) );
 
   for( var a = 0 ; a < array.length ; a++ )
@@ -5777,6 +6079,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
   {
 
     _.assert( _.routineIs( onEqual ) );
+    _.assert( onEqual.length === 1 && onEqual.length === 2 );
     index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
   }
@@ -6504,7 +6807,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
   });
 
   //if( options.numberOfAtomsPerElement !== 1 )
-  //throw 'Not tested';
+  //throw _.err( 'not tested' );
 
   var length = srcArray.length * options.numberOfDuplicatesPerElement;
   var result = options.result || arrayNew( srcArray,length );
@@ -6701,11 +7004,27 @@ var arrayLeftIndexOf = function( arr,ins,equalizer )
   if( !equalizer )
   equalizer = function( a,b ){ return a === b };
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( equalizer.length === 1 || equalizer.length === 2 );
+
+  if( equalizer.length === 2 )
   for( var a = 0 ; a < arr.length ; a++ )
   {
 
     if( equalizer( arr[ a ],ins ) )
     return a;
+
+  }
+  else
+  {
+
+    for( var a = 0 ; a < arr.length ; a++ )
+    {
+
+      if( equalizer( arr[ a ] ) === ins )
+      return a;
+
+    }
 
   }
 
@@ -6717,13 +7036,30 @@ var arrayLeftIndexOf = function( arr,ins,equalizer )
 var arrayRightIndexOf = function( arr,ins,equalizer )
 {
 
-  if( !equalizer ) equalizer = _.arraySame;
+  if( !equalizer )
+  equalizer = function( a,b ){ return a === b };
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( equalizer.length === 1 || equalizer.length === 2 );
+
+  if( equalizer.length === 2 )
   for( var a = arr.length-1 ; a >= 0 ; a-- )
   {
 
     if( equalizer( arr[ a ],ins ) )
     return a;
+
+  }
+  else
+  {
+
+    for( var a = arr.length-1 ; a >= 0 ; a-- )
+    {
+
+      if( equalizer( arr[ a ] ) === ins )
+      return a;
+
+    }
 
   }
 
@@ -6732,16 +7068,31 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
 
 //
 
-var arrayLeftGet = function( arr,ins,equalizer )
+var arrayLeft = function( arr,ins,equalizer )
 {
-  var result;
+  var result = {};
   var i = _.arrayLeftIndexOf( arr,ins,equalizer );
 
   if( i >= 0 )
-  result =
   {
-    index : i,
-    element : arr[ i ],
+    result.index = i;
+    result.element = arr[ i ];
+  }
+
+  return result;
+}
+
+//
+
+var arrayRight = function( arr,ins,equalizer )
+{
+  var result = {};
+  var i = _.arrayRightIndexOf( arr,ins,equalizer );
+
+  if( i >= 0 )
+  {
+    result.index = i;
+    result.element = arr[ i ];
   }
 
   return result;
@@ -6845,6 +7196,7 @@ var arrayCountSame = function( src,onElement )
 
   _assert( arguments.length === 1 || arguments.length === 2 );
   _assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
+  _assert( onElement.length === 1 );
 
   for( var i1 = 0 ; i1 < src.length ; i1++ )
   {
@@ -6863,6 +7215,7 @@ var arrayCountSame = function( src,onElement )
       found.push( element1 );
 
     }
+
   }
 
   return found.length;
@@ -7356,7 +7709,7 @@ var arraySortedAddArray = function( dst,src,comparator )
 
   var result = 0;
 
-  //throw 'Not tested';
+  //throw _.err( 'not tested' );
 
   if( comparator === undefined ) comparator = function( a,b ){ return a-b };
 
@@ -7570,7 +7923,7 @@ var bufferToDom = function( xmlBuffer ) {
 
 //
 
-var bufferLeftBuffer = function( src,ins )
+var bufferLeftBufferIndex = function( src,ins )
 {
 
   if( !_.bufferIs( src ) )
@@ -7657,32 +8010,54 @@ var bufferFromArrayOfArray = function( array,options ){
 
 //
 
-var bufferFromObject = function( bufferObject,options )
+var bufferFrom = function( o )
 {
 
-  _assert( arguments.length === 2 );
-  _assert( _.objectIs( options ) );
+  _assert( arguments.length === 1 );
+  _assert( _.objectIs( o ) );
+  _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
+  _.assertMapOnly( o,bufferFrom.defaults );
 
-  if( _.bufferIs( bufferObject ) || _.arrayIs( bufferObject ) )
-  return bufferObject;
+  /* buffer */
 
-  var length = bufferObject.length;
+  if( _.bufferIs( o.src ) )
+  return o.src;
 
+  /* number */
+
+  if( _.numberIs( o.src ) )
+  o.src = [ o.src ];
+
+  /**/
+
+  _.assert( _.objectLike( o ) || _.arrayIs( o ) );
+
+  /* length */
+
+  var length = o.src.length;
   if( !_.numberIs( length ) )
   {
 
     var length = 0;
-    while( bufferObject[ length ] !== undefined )
+    while( o.src[ length ] !== undefined )
     length += 1;
 
   }
 
-  var result = new options.bufferConstructor( length );
+  /* make */
+
+  var result = new o.bufferConstructor( length );
 
   for( var i = 0 ; i < length ; i++ )
-  result[ i ] = bufferObject[ i ];
+  result[ i ] = o.src[ i ];
 
   return result;
+}
+
+bufferFrom.defaults =
+{
+  src : null,
+  bufferConstructor : null,
 }
 
 //
@@ -7736,14 +8111,14 @@ var bufferRawFrom = function( buffer )
   else if( _.strIs( buffer ) )
   {
 
-    result = _.utf8ToBuffer( buffer );
+    result = _.utf8ToBuffer( buffer ).buffer;
 
   }
   else if( _global_.File && buffer instanceof File )
   {
     var fileReader = new FileReaderSync();
     result = fileReader.readAsArrayBuffer( buffer );
-    throw 'Not tested';
+    throw _.err( 'not tested' );
   }
   else throw _.err( 'bufferRawFrom : unknown source' );
 
@@ -7845,10 +8220,12 @@ var buffersSerialize = function buffersSerialize( options )
 
       dst : {},
       src : attribute,
-      constitutes : false,
+      /*constitutes : false,*/
       copyComposes : true,
-      copyConstitutes : true,
       copyAggregates : false,
+      /*copyConstitutes : true,*/
+
+      technique : 'data',
 
     });
 
@@ -8547,6 +8924,23 @@ var mapPairs = function( src )
 
   for( var s in src )
   result.push([ s, src[ s ] ]);
+
+  return result;
+}
+
+//
+
+var mapInvertKeyValue = function( src )
+{
+  var result = {};
+
+  _.assert( _.objectLike( src ) );
+
+  for( var s in src )
+  {
+    _.assert( result[ src[ s ] ] === undefined,'cant invert key value of the map' );
+    result[ src[ s ] ] = s;
+  }
 
   return result;
 }
@@ -9620,15 +10014,23 @@ var filter =
 var Proto =
 {
 
-  // entity
+  // entity modifier
 
   enityExtend : enityExtend,
   entityClone : entityClone,
 
+  entityCloneObject : entityCloneObject,
+  entityCloneData : entityCloneData,
+
+  _entityClone : _entityClone,
+  _entityCloneAct : _entityCloneAct,
+
   entityCopy : entityCopy,
   entityCopyField : entityCopyField,
   entityAssignField : entityAssignField,
-  /*entitySetField : entitySetField,*/
+
+
+  // entity checker
 
   entityHasNan : entityHasNan,
   entityHasUndef : entityHasUndef,
@@ -9639,6 +10041,9 @@ var Proto =
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
   entityContain : entityContain,
+
+
+  // entity selector
 
   entityLength : entityLength,
 
@@ -9665,7 +10070,11 @@ var Proto =
   // iterator
 
   until : until,
+
+  _each : _each,
   each : each,
+  eachOwn : eachOwn,
+
   eachSample : eachSample,
   eachRecursive : eachRecursive,
 
@@ -9902,7 +10311,8 @@ var Proto =
   arrayLeftIndexOf : arrayLeftIndexOf,
   arrayRightIndexOf : arrayRightIndexOf,
 
-  arrayLeftGet : arrayLeftGet,
+  arrayLeft : arrayLeft,
+  arrayRight : arrayRight,
 
   arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
@@ -9946,10 +10356,10 @@ var Proto =
   bufferToStr : bufferToStr,
   bufferToDom : bufferToDom,
 
-  bufferLeftBuffer : bufferLeftBuffer,
+  bufferLeftBufferIndex : bufferLeftBufferIndex,
 
   bufferFromArrayOfArray : bufferFromArrayOfArray,
-  bufferFromObject : bufferFromObject,
+  bufferFrom : bufferFrom,
   bufferRawFromBuffer : bufferRawFromBuffer,
   bufferRawFrom : bufferRawFrom,
 
@@ -9980,6 +10390,8 @@ var Proto =
   mapKeys : mapKeys,
   mapValues : mapValues,
   mapPairs : mapPairs,
+
+  mapInvertKeyValue : mapInvertKeyValue,
 
   /* mapsPluck : mapsPluck, */
   mapGroup : mapGroup,
