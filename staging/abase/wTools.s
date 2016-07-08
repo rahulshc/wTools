@@ -6362,7 +6362,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
   /**
    * The arrayUpdate() method adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
    * and returns the last added index or the last replaced index of the array (dstArray).
-   * 
+   *
    * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
    * @see arrayReplaceOnce( dstArray, ins, sub )  See for more information.
    * Checks if (index) equal to the -1.
@@ -6372,7 +6372,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * @param { Array } dstArray - The source array.
    * @param { * } ins - The value to change.
    * @param { * } sub - The value to add or replace.
-   * 
+   *
    * @example
    * // returns 3
    * var add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
@@ -6382,7 +6382,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * // returns 5
    * var add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
    * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
-   * 
+   *
    * @example
    * // returns 4
    * var replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
@@ -6546,7 +6546,7 @@ var arrayPrependOnce = function( dst,src )
    * @example
    * // returns [ 1, 4, 5 ]
    * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
-   * 
+   *
    * @returns { Array } Returns the modified array (dstArray) with the new length.
    * @method arraySpliceArray
    * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
@@ -6925,7 +6925,7 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
    * @memberof wTools#
    */
 
-var arrayMask = function arrayMask( srcArray, mask ) 
+var arrayMask = function arrayMask( srcArray, mask )
 {
 
   _.assert( arguments.length === 2 );
@@ -7205,7 +7205,7 @@ var arrayFill = function arrayFill( options )
  * @method arrayCompare
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
- * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length). 
+ * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
  * @memberof wTools#
  */
 
@@ -7323,11 +7323,11 @@ var arraySameSet = function( src1,src2 )
    * @example
    * // returns 3
    * _.arrayLeftIndexOf( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
-   * 
+   *
    * @example
    * // returns 3
    * _.arrayLeftIndexOf( 'abcdef', 'd' );
-   * 
+   *
    * @example
    * // returns 2
    * var arr = function() {
@@ -7348,15 +7348,11 @@ var arrayLeftIndexOf = function( arr,ins,equalizer )
   if( !equalizer )
   equalizer = function( a,b ){ return a === b };
 
-<<<<<<< HEAD
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( equalizer.length === 1 || equalizer.length === 2 );
-
-  if( equalizer.length === 2 )
-=======
   _.assert( _.routineIs( equalizer ) );
 
->>>>>>> f794286bb6a61533bc3d8d06d82a264926e8d7f7
+  if( equalizer.length === 2 )
   for( var a = 0 ; a < arr.length ; a++ )
   {
 
@@ -7593,30 +7589,25 @@ var arrayCountSame = function( src,onElement )
   var found = [];
   var onElement = onElement || function( e ){ return e };
 
-<<<<<<< HEAD
-  _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
-  _assert( onElement.length === 1 );
-=======
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
   _.assert( _.routineIs( onElement ) );
->>>>>>> f794286bb6a61533bc3d8d06d82a264926e8d7f7
+  _.assert( onElement.length === 1 );
 
   for( var i1 = 0 ; i1 < src.length ; i1++ )
   {
     var element1 = onElement( src[ i1 ] );
     if( found.indexOf( element1 ) !== -1 )
     continue;
-    
+
     for( var i2 = i1+1 ; i2 < src.length ; i2++ )
     {
 
       var element2 = onElement( src[ i2 ] );
-      if( found.indexOf( element2 ) !== -1 ) 
+      if( found.indexOf( element2 ) !== -1 )
       continue;
 
-      if( element1 === element2 ) 
+      if( element1 === element2 )
       found.push( element1 );
 
     }
@@ -7640,7 +7631,7 @@ var arrayCountSame = function( src,onElement )
    * @example
    * // returns 29
    * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
-   * 
+   *
    * @example
    * // returns 94
    * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
@@ -7693,7 +7684,7 @@ var arraySum = function( src,onElement )
    * @example
    * // returns [ 4, 5, 33, 13, 9, 7 ]
    * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, 8, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
-   * 
+   *
    * @example
    * // returns [ 4, 5, 33, 13, undefined, 7 ];
    * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
@@ -7756,7 +7747,7 @@ var arraySupplement = function arraySupplement( dstArray )
    * if the following arrays contains indexes of the (screenArray).
    * If (dstArray) contains values, the certain values will be replaced.
    * @param { ...arrayLike } arguments[...] - The following arrays.
-   * 
+   *
    * @example
    * // returns [ 5, 6, 2 ]
    * _.arrayExtendScreening( [ 1, 2, 3 ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
@@ -7764,11 +7755,11 @@ var arraySupplement = function arraySupplement( dstArray )
    * @example
    * // returns [ 'a', 6, 2, 13 ]
    * _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
-   * 
+   *
    * @example
    * // returns [ 3, 'abc', 7, 13 ]
    * _.arrayExtendScreening( [  ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] )
-   * 
+   *
    * @returns { arrayLike } Returns a (dstArray) containing the values of the following arrays,
    * if the following arrays contains the indexes of the (screenArray).
    * If (screenArray) is empty, it returns a (dstArray).
