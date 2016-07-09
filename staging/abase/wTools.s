@@ -6474,6 +6474,30 @@ var arrayUnique = function arrayUnique( src,onElement )
 }
 
 //
+  /**
+   * The arrayToStr() method joins an array (src) and returns one string containing each array element separated by space,
+   * only types of integer or floating point.
+   *
+   * @param { arrayLike } src - The source array.
+   * @param { objectLike } [ options = {  } ] options - The options.
+   * @param { Number } [ options.precision = 5 ] - The precision of numbers.
+   * @param { String } [ options.type = 'mixed' ] - The type of elements.
+   *
+   * @example
+   * // returns "1 2 3 "
+   * _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
+   *
+   * @example
+   * // returns "3.500 13.77 7.330"
+   * _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
+   *
+   * @returns { String } Returns one string containing each array element separated by space,
+   * only types of integer or floating point.
+   * If (src.length) is empty, it returns the empty string.
+   * @method arrayToStr
+   * @throws { Error } Will throw an Error If (options.type) is not the number or float.
+   * @memberof wTools#
+   */
 
 var arrayToStr = function( src,options )
 {

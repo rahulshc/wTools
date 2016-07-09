@@ -1627,6 +1627,62 @@
     
   };
 
+  var arrayToStr = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayToStr( [  ] );
+    var expected = "";
+    test.identical( got, expected );
+
+    test.description = 'returns the string';
+    var got = _.arrayToStr( 'abcdefghijklmnopqrstuvwxyz', { type : 'int' } );
+    var expected = "a b c d e f g h i j k l m n o p q r s t u v w x y z ";
+    test.identical( got, expected );
+    
+    test.description = 'returns a single string representing the integer values';
+    var got = _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
+    var expected = "1 2 3 ";
+    test.identical( got, expected );
+
+    test.description = 'returns a single string representing the float values';
+    var got = _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
+    var expected = "3.500 13.77 7.330";
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr();
+      });
+
+      test.description = 'in second argument property (type) is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr( [ 1, 2, 3 ], { type : 'wrong type' } );
+      });
+
+      test.description = 'in second argument property (type) is not provided';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr( [ 1, 2, 3 ], { precission : 4 } );
+      });
+
+      test.description = 'first argument is string';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr( 'wrong argument', {  type : 'float' } );
+      });
+      
+    }
+    
+  };
+
 
   var arrayPut = function( test ) 
   {
@@ -2975,6 +3031,7 @@
       //arraySlice : arraySlice,
       
       //arrayAs : arrayAs,
+      arrayToStr : arrayToStr,
       //arrayPut : arrayPut,
       //arrayMask : arrayMask,
       //arrayDuplicate : arrayDuplicate,
@@ -2984,7 +3041,7 @@
       //arraySame : arraySame,
 
       //arrayLeftIndexOf : arrayLeftIndexOf,
-      arrayLeftGet : arrayLeftGet,
+      //arrayLeftGet : arrayLeftGet,
       //arrayHasAny : arrayHasAny,
       //arrayCount : arrayCount,
       //arrayCountSame : arrayCountSame,
