@@ -4869,7 +4869,7 @@ var arrayNew = function( ins,length )
 {
   var result;
 
-  _.assert( arguments.length <= 2);
+  _.assert( arguments.length <= 2); // _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
 
   if( length === undefined )
@@ -8107,6 +8107,40 @@ var arraySortedAddArray = function( dst,src,comparator )
 // array buffer
 // --
 
+  /**
+   * The bufferRelen() method returns a new or the same typed array (src) with a new or the same length (len).
+   *
+   * It creates the variable (result) checks, if (len) is more than (src.length),
+   * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayNew(src, len))
+   * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced by zero.
+   * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
+   * Otherwise, it returns an initial typed array.
+   *
+   * @see { @link wTools#arrayNew() } - See for more information.
+   *
+   * @param { typedArray } src - The source typed array.
+   * @param { Number } len - The length of a typed array.
+   *
+   * @example
+   * // returns [ 3, 7, 13, 0 ]
+   * var ints = new Int8Array( [ 3, 7, 13 ] );
+   * _.bufferRelen( ints, 4 );
+   * 
+   * @example
+   * // returns [ 3, 7, 13 ]
+   * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+   * _.bufferRelen( ints2, 3 );
+   * 
+   * @example
+   * // returns [ 3, 0, 13, 0, 77, 0 ]
+   * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
+   * _.bufferRelen( ints3, 6 );
+   *
+   * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
+   * @method bufferRelen
+   * @memberof wTools#
+   */
+
 var bufferRelen = function( src,len )
 {
   var result = src;
@@ -8174,6 +8208,29 @@ var bufferBytesGet = function( src )
 }
 
 //
+
+  /**
+   * The bufferRetype() method converts and returns a new instance of (bufferType) constructor.
+   *
+   * @param { arrayBuffer } src - The typed array.
+   * @param { typedArray } bufferType - The type of typed array.
+   *
+   * @example
+   * // returns [ 513, 1027, 1541 ]
+   * var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
+   * _.bufferRetype(view1, Int16Array);
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5, 6 ]
+   * var view2 = new Int16Array( [ 513, 1027, 1541 ] );
+   * _.bufferRetype(view2, Int8Array);
+   *
+   * @returns { typedArray } Returns a new instance of (bufferType) constructor.
+   * @method bufferRetype
+   * @throws { Error } Will throw an Error if (src) is not the ArrayBuffer object.
+   * @throws { Error } Will throw an Error if (bufferType) is not a typed array.
+   * @memberof wTools#
+   */
 
 var bufferRetype = function( src,bufferType )
 {

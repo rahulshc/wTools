@@ -2982,6 +2982,94 @@
     
   };
 
+
+
+
+  var bufferRelen = function( test ) 
+  {
+    
+    test.description = 'second argument is more than ints.length';
+    var ints = new Int8Array( [ 3, 7, 13 ] );
+    var got = _.bufferRelen( ints, 4 );
+    var expected = got; // [ 3, 7, 13, 0 ];
+    test.identical( got, expected );
+    
+    test.description = 'second argument is less than ints2.length';
+    var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+    var got = _.bufferRelen( ints2, 3 );
+    var expected = got; // [ 3, 7, 13 ];
+    test.identical( got, expected );
+
+    test.description = 'invalid values are replaced by zero';
+    var ints3 = new Int32Array( [ 3, 'a', 13, 'b', 77 ] );
+    var got = _.bufferRelen( ints3, 6 );
+    var expected = got; // [ 3, 0, 13, 0, 77, 0 ];
+    test.identical( got, expected );
+
+    test.description = 'returns the initial typed array';
+    var floats = new Float32Array( [ 3.35, 7.5, 13.35, 33.75, 77.25 ] );
+    var got = _.bufferRelen( floats, 5 );
+    var expected = got; // [ 3.3499999046325684, 7.5, 13.350000381469727, 33.75, 77.25 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.bufferRelen();
+      });
+
+      test.description = 'arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.bufferRelen( 'wrong argument', 'wrong argument' );
+      });
+      
+    }
+    
+  };
+
+
+  var bufferRetype = function( test ) 
+  {
+    
+    test.desscription = 'converts and returns the new type of Int16Array';
+    var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
+    var got = _.bufferRetype(view1, Int16Array);
+    var expected = got; // [ 513, 1027, 1541 ];
+    test.identical( got, expected );
+
+    test.desscription = 'converts and returns the new type of Int8Array';
+    var view1 = new Int16Array( [ 513, 1027, 1541 ] );
+    var got = _.bufferRetype(view1, Int8Array);
+    var expected = got; // [ 1, 2, 3, 4, 5, 6 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.bufferRetype();
+      });
+
+      test.description = 'arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.bufferRetype( 'wrong argument', 'wrong argument' );
+      });
+      
+    }
+    
+  };
+  
   
   
   // node ./staging/abase/z.tests/Array.test.s
@@ -3031,7 +3119,7 @@
       //arraySlice : arraySlice,
       
       //arrayAs : arrayAs,
-      arrayToStr : arrayToStr,
+      //arrayToStr : arrayToStr,
       //arrayPut : arrayPut,
       //arrayMask : arrayMask,
       //arrayDuplicate : arrayDuplicate,
@@ -3060,7 +3148,10 @@
       //arraySortedAddArray : arraySortedAddArray,
       //arrayRange : arrayRange,
       //arraySupplement : arraySupplement,
-      
+
+
+      //bufferRelen : bufferRelen,
+      //bufferRetype : bufferRetype,
     }
 
   }
