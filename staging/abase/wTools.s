@@ -8112,7 +8112,7 @@ var arraySortedAddArray = function( dst,src,comparator )
    *
    * It creates the variable (result) checks, if (len) is more than (src.length),
    * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayNew(src, len))
-   * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced by zero.
+   * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
    * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
    * Otherwise, it returns an initial typed array.
    *
@@ -8212,7 +8212,7 @@ var bufferBytesGet = function( src )
   /**
    * The bufferRetype() method converts and returns a new instance of (bufferType) constructor.
    *
-   * @param { arrayBuffer } src - The typed array.
+   * @param { typedArray } src - The typed array.
    * @param { typedArray } bufferType - The type of typed array.
    *
    * @example
@@ -8227,8 +8227,8 @@ var bufferBytesGet = function( src )
    *
    * @returns { typedArray } Returns a new instance of (bufferType) constructor.
    * @method bufferRetype
-   * @throws { Error } Will throw an Error if (src) is not the ArrayBuffer object.
-   * @throws { Error } Will throw an Error if (bufferType) is not a typed array.
+   * @throws { Error } Will throw an Error if (src) is not a typed array object.
+   * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
    * @memberof wTools#
    */
 
@@ -8480,6 +8480,31 @@ var bufferFromObject = function( bufferObject,options )
 }
 
 //
+  /**
+   * The bufferRawFromBuffer() method returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
+   * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
+   *
+   * @param { typedArray } buffer - Entity to check.
+   *
+   * @example
+   * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+   * var buffer1 = new ArrayBuffer(10);
+   * var view1 = new Int8Array( buffer1 );
+   * _.bufferRawFromBuffer( view1 );
+   *
+   * @example
+   * // returns [ 0, 0, 0, 0, 0, 0 ]
+   * var buffer2 = new ArrayBuffer(10);
+   * var view2 = new Int8Array( buffer2, 2 );
+   * _.bufferRawFromBuffer( view2 );
+   *
+   * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
+   * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
+   * @method bufferRawFromBuffer
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (buffer) is not a typed array.
+   * @memberof wTools#
+   */
 
 var bufferRawFromBuffer = function( buffer )
 {

@@ -3069,6 +3069,45 @@
     }
     
   };
+
+
+  var bufferRawFromBuffer = function( test ) // it doesn't work (_.bufferRawFromBuffer is not a function)
+  {
+
+    var buffer1 = new ArrayBuffer(10);
+    var view1 = new Int8Array( buffer1 );
+    test.description = 'returns the same length of typed array';
+    var got = _.bufferRawFromBuffer( view1 );
+    var expected = got; // [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+    test.identical( got, expected );
+    
+    var buffer2 = new ArrayBuffer(10);
+    var view2 = new Int8Array( buffer2, 2 );
+    test.description = 'returns the new sub typed array';
+    var got = _.bufferRawFromBuffer( view2 );
+    var expected = got; // [ 0, 0, 0, 0, 0, 0 ]
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.bufferRawFromBuffer();
+      });
+
+      test.description = 'arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.bufferRawFromBuffer( 'wrong argument' );
+      });
+      
+    }
+
+  };
   
   
   
@@ -3152,6 +3191,7 @@
 
       //bufferRelen : bufferRelen,
       //bufferRetype : bufferRetype,
+      bufferRawFromBuffer : bufferRawFromBuffer,
       
     }
 
