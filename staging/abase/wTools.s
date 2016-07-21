@@ -20,7 +20,7 @@ _global_._global_ = _global_;
 
 if( typeof module !== 'undefined' && module !== null )
 {
-  if( typeof Underscore === 'undefined' )
+  if( !_global_.Underscore )
   _global_.Underscore = require( 'underscore' );
 }
 
@@ -31,15 +31,12 @@ if( typeof wTools === 'undefined' )
   else _global_.wTools = {};
 }
 
-if( typeof Config === 'undefined' )
+if( !_global_.Config )
 {
   _global_.Config = Object.freeze({ debug : true });
 }
 
-if( typeof DEBUG === 'undefined' )
-{
-  _global_.DEBUG = !!Config.debug;
-}
+_global_.DEBUG = !!Config.debug;
 
 //
 
@@ -57,7 +54,7 @@ var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
-// entity
+// entity modifier
 // --
 
 var enityExtend = function( dst,src )
@@ -188,6 +185,409 @@ var entityClone = function( src,options )
 
 //
 
+var _entityCloneAct = function( o )
+{
+
+  var result;
+
+  if( !( o.levels > 0 ) )
+  throw _.err( 'failed to clone data\nat ' + o.path + '\ntoo deep structure',o.src );
+  o.levels -= 1;
+
+  /* routine */
+
+  if( _.routineIs( o.src ) )
+  {
+    if( o.onRoutine )
+    return o.onRoutine( o.src );
+    return o.src;
+  }
+
+  /* string */
+
+  if( _.strIs( o.src ) )
+  {
+    if( o.onString )
+    return o.onString( o.src );
+    return o.src;
+  }
+
+  /* atomic */
+
+  if( _.atomicIs( o.src ) )
+  {
+    return o.src;
+  }
+
+  /* class instance */
+
+  if( o.technique === 'data' )
+  {
+    if( o.src.cloneData )
+    {
+      return o.src.cloneData( o );
+    }
+  }
+  else if( o.technique === 'object' )
+  {
+    if( o.src.cloneObject )
+    {
+      return o.src.cloneObject( o );
+    }
+  }
+  else
+  {
+    //debugger;
+    throw _.err( 'unexpected clone technique : ' + o.technique );
+  }
+
+  /* map */
+
+  if( _.objectIs( o.src ) )
+  {
+
+    var mapIs = _.mapIs( o.src );
+
+    if( !mapIs )
+    if( o.src.constructor !== Object && o.src.constructor !== null )
+    {
+      //debugger;
+      throw _.err
+      (
+        'Complex objets should have ' +
+        ( o.technique === 'data' ? 'cloneData' : 'cloneObject' ) +
+        ', but object ' + _.strTypeOf( o.src ) + ' \n' +
+        'at ' + ( o.path || '.' ) + '\ndoes not have ',o.src
+      );
+    }
+
+    if( o.dst )
+    result = o.dst;
+    else if( o.proto )
+    result = new o.proto();
+    else
+    result = new o.src.constructor();
+
+    for( var s in o.src )
+    {
+
+      if( !mapIs )
+      if( !Object.hasOwnProperty.call( o.src,s ) )
+      continue;
+
+      var elementOptions = _.mapExtend( {},o );
+      elementOptions.src = o.src[ s ];
+      elementOptions.path += '.' + s;
+      delete elementOptions.dst;
+      delete elementOptions.proto;
+      result[ s ] = _entityCloneAct( elementOptions );
+    }
+
+    return result;
+  }
+
+  /* array like */
+
+  if( _.arrayLike( o.src ) )
+  {
+
+    if( _.bufferIs( o.src ) )
+    {
+
+      if( o.copyBuffers )
+      {
+        debugger;
+        result = new o.src.constructor( o.src );
+      }
+      else
+      {
+        result = o.src;
+      }
+
+      if( o.onBuffer )
+      {
+        result = o.onBuffer.call( o,result );
+      }
+
+      return result;
+    }
+
+
+    /**/
+
+    if( o.dst )
+    result = o.dst;
+    else if( o.proto )
+    result = new o.proto( o.src.length );
+    else
+    result = _.arrayNewOfSameLength( o.src );
+
+    /**/
+
+    if( _.bufferRawIs( o.src ) )
+    throw _.err( 'not implemented' );
+
+    for( var s = 0 ; s < o.src.length ; s++ )
+    {
+      var elementOptions = _.mapExtend( {},o );
+      elementOptions.src = o.src[ s ];
+      elementOptions.path += '.' + s;
+      delete elementOptions.dst;
+      delete elementOptions.proto;
+      result[ s ] = _entityCloneAct( elementOptions );
+    }
+
+    return result;
+  }
+
+  throw _.err( 'unexpected type of src : ' + _.strTypeOf( o.src ) );
+}
+
+//
+
+var _entityClone = function( o )
+{
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,_entityClone.defaults );
+
+  return _entityCloneAct( o );
+}
+
+_entityClone.defaults =
+{
+
+  src : null,
+  rootSrc : null,
+  key : null,
+
+  dst : null,
+  proto : null,
+
+  copyComposes : true,
+  copyAggregates : true,
+  copyAssociates : true,
+  copyRestricts : false,
+  copyBuffers : false,
+
+  levels : 16,
+  path : '',
+  technique : null,
+
+  onString : null,
+  onRoutine : null,
+  onBuffer : null,
+
+}
+
+//
+
+var entityCloneObject = function( o )
+{
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,entityCloneObject.defaults );
+  _.mapSupplement( o,entityCloneObject.defaults );
+
+  var result = _entityClone( o );
+
+  return result;
+}
+
+entityCloneObject.defaults =
+{
+  copyAssociates : true,
+  technique : 'object',
+}
+
+entityCloneObject.defaults.__proto__ = _entityClone.defaults;
+
+//
+
+var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( o )
+{
+  var result = {};
+  var src = o.src;
+  var descriptorsMap = o.src.descriptorsMap;
+  var buffer = o.src.buffer;
+  var data = o.src.data;
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,entityCloneObjectMergingBuffers.defaults );
+  _.mapSupplement( o,entityCloneObjectMergingBuffers.defaults );
+
+  _.assert( _.objectIs( o.src.descriptorsMap ) );
+  _.assert( _.bufferRawIs( o.src.buffer ) );
+  _.assert( o.src.data !== undefined );
+
+  /**/
+
+  var optionsCloneObject = _.mapScreen( _.entityCloneObject.defaults,o );
+  optionsCloneObject.src = data;
+
+  /* onString */
+
+  optionsCloneObject.onString = function onString( strString )
+  {
+
+    var id = _.strUnjoin( strString,[ '--buffer-->',_.strUnjoin.any,'<--buffer--' ] )
+
+    if( id === undefined )
+    return strString;
+
+    var descriptor = o.src.descriptorsMap[ strString ];
+    _.assert( descriptor !== undefined );
+
+    var bufferConstructor = _global_[ descriptor[ 'bufferConstructorName' ] ];
+    var offset = descriptor[ 'offset' ];
+    var size = descriptor[ 'size' ];
+    var sizeOfAtom = descriptor[ 'sizeOfAtom' ];
+    var result = bufferConstructor ? new bufferConstructor( buffer,offset,size / sizeOfAtom ) : null;
+
+    return result;
+  }
+
+  /* clone object */
+
+  var result = _.entityCloneObject( optionsCloneObject );
+
+  // xxx
+
+  return result;
+}
+
+entityCloneObjectMergingBuffers.defaults =
+{
+  copyBuffers : false,
+}
+
+entityCloneObjectMergingBuffers.defaults.__proto__ = entityCloneObject.defaults;
+
+//
+
+var entityCloneData = function( o )
+{
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,entityCloneData.defaults );
+  _.mapSupplement( o,entityCloneData.defaults );
+
+  var result = _entityClone( o );
+
+  return result;
+}
+
+entityCloneData.defaults =
+{
+  technique : 'data',
+  copyAssociates : false,
+}
+
+entityCloneData.defaults.__proto__ = _entityClone.defaults;
+
+//
+
+var entityCloneDataSeparatingBuffers = function entityCloneDataSeparatingBuffers( o )
+{
+  var result = {};
+  var buffers = [];
+  var descriptorsArray = [];
+  var descriptorsMap = {};
+  var size = 0;
+  var offset = 0;
+
+  if( o.rootSrc === undefined )
+  o.rootSrc = o.src;
+
+  _.assertMapOnly( o,entityCloneDataSeparatingBuffers.defaults );
+  _.mapSupplement( o,entityCloneDataSeparatingBuffers.defaults );
+
+  /* onBuffer */
+
+  o.onBuffer = function onBuffer( srcBuffer )
+  {
+
+    _.assert( _.bufferIs( srcBuffer ),'not tested' );
+
+    var index = buffers.length;
+    var id = _.strJoin( '--buffer-->',index,'<--buffer--' );
+    var bufferSize = srcBuffer ? srcBuffer.length*srcBuffer.BYTES_PER_ELEMENT : 0;
+    size += bufferSize;
+
+    var descriptor =
+    {
+      'bufferConstructorName' : srcBuffer ? srcBuffer.constructor.name : 'null',
+      'sizeOfAtom' : srcBuffer ? srcBuffer.BYTES_PER_ELEMENT : 0,
+      'offset' : -1,
+      'size' : bufferSize,
+      'index' : index,
+      //'id' : id,
+    }
+
+    buffers.push( srcBuffer );
+    descriptorsArray.push( descriptor );
+    descriptorsMap[ id ] = descriptor;
+
+    return id;
+  }
+
+  /* clone data */
+
+  result.data = _entityCloneAct( o );
+  result.descriptorsMap = descriptorsMap;
+
+  /* sort by atom size */
+
+  descriptorsArray.sort( function( a,b )
+  {
+    return b[ 'sizeOfAtom' ] - a[ 'sizeOfAtom' ];
+  });
+
+  /* alloc */
+
+  result.buffer = new ArrayBuffer( size );
+  var dstBuffer = _.bufferBytesGet( result.buffer );
+
+  /* copy buffers */
+
+  for( var b = 0 ; b < descriptorsArray.length ; b++ )
+  {
+
+    var descriptor = descriptorsArray[ b ];
+    var buffer = buffers[ descriptor.index ];
+    var bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
+    var bufferSize = descriptor[ 'size' ];
+
+    descriptor[ 'offset' ] = offset;
+
+    _.bufferMove( dstBuffer.subarray( offset,offset+bufferSize ),bytes );
+
+    offset += bufferSize;
+
+  }
+
+  /**/ // xxx
+
+  return result;
+}
+
+entityCloneDataSeparatingBuffers.defaults =
+{
+  copyBuffers : false,
+}
+
+entityCloneDataSeparatingBuffers.defaults.__proto__ = entityCloneData.defaults;
+
+//
+
 var entityCopy = function( dst,src,onRecursive )
 {
   var result;
@@ -296,7 +696,9 @@ var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
   return result;
 }
 
-//
+// --
+// entity checker
+// --
 
 var entityHasNan = function( src )
 {
@@ -362,59 +764,6 @@ var entityHasUndef = function( src )
 
 //
 
-/**
- * Deep equaliser of 2 entities.
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
- * @method entitySame
- * @memberof wTools
- */
-
-var entitySame = function entitySame( src1,src2,options )
-{
-
-  var _sameNumbers = function( a,b )
-  {
-    if( a === b )
-    return true;
-    if( isNaN( a ) === true && isNaN( b ) === true )
-    return true;
-    return Math.abs( a-b ) <= EPS;
-  }
-
-  var sameNumbers = function( a,b )
-  {
-    return a === b;
-  }
-
-  var def =
-  {
-    onSameNumbers : sameNumbers,
-    contain : 0,
-    strict : 1,
-    lastPath : '',
-  }
-
-  Object.freeze( def );
-
-  return function entitySame( src1,src2,options )
-  {
-
-    _assert( arguments.length === 2 || arguments.length === 3 );
-    _assert( options === undefined || _.objectIs( options ), '_.toStrFine :','options must be object' );
-    var options = options || {};
-
-    _.assertMapOnly( options,def );
-    _.mapSupplement( options,def );
-
-    return _entitySame( src1,src2,options,'' );
-  }
-
-}();
-
-//
-
   /**
    * Compare two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
       in the `options`. If in some moment method finds different values in two entities, then it returns false.
@@ -438,14 +787,15 @@ var entitySame = function entitySame( src1,src2,options )
    * @memberof wTools
    */
 
-var _entitySame = function _entitySame( src1,src2,options,path )
+var _entitySame = function _entitySame( src1,src2,o )
 {
 
-  options.lastPath = path;
+  var path = o.path;
+  o.lastPath = path;
 
-  _.assert( arguments.length === 4 );
+  _.assert( arguments.length === 3 );
 
-  if( options.strict )
+  if( o.strict )
   {
     if( _ObjectToString.call( src1 ) !== _ObjectToString.call( src2 ) )
     return false;
@@ -456,35 +806,57 @@ var _entitySame = function _entitySame( src1,src2,options,path )
     return false;
   }
 
+  /**/
+
   if( _.arrayLike( src1 ) )
   {
     if( !src2 )
     return false;
     if( src1.constructor !== src2.constructor )
     return false;
-    if( !options.contain )
+    if( !o.contain )
     if( src1.length !== src2.length )
     return false;
     for( var k = 0 ; k < src2.length ; k++ )
-    if( !_entitySame( src1[ k ], src2[ k ], options, path + '.' + k ) )
-    return false;
+    {
+      o.path = path + '.' + k;
+      if( !_entitySame( src1[ k ], src2[ k ], o ) )
+      return false;
+      o.path = path;
+    }
   }
-  else if( _.objectIs( src1 ) )
+  else if( _.objectLike( src1 ) )
   {
-    if( !options.contain )
-    if( _.entityLength( src1 ) !== _.entityLength( src2 ) )
-    return false;
-    for( var k in src2 )
-    if( !_entitySame( src1[ k ], src2[ k ], options, path + '.' + k ) )
-    return false;
+
+    if( _.routineIs( src1.isSame ) )
+    {
+      _.assert( src1.isSame.length === 3 );
+      if( !src1.isSame( src1,src2,o ) )
+      return false;
+    }
+    else
+    {
+
+      if( !o.contain )
+      if( _.entityLength( src1 ) !== _.entityLength( src2 ) )
+      return false;
+      for( var k in src2 )
+      {
+        o.path = path + '.' + k;
+        if( !_entitySame( src1[ k ], src2[ k ], o ) )
+        return false;
+        o.path = path;
+      }
+
+    }
   }
   else if( _.numberIs( src1 ) )
   {
-    return options.onSameNumbers( src1,src2 );
+    return o.onSameNumbers( src1,src2 );
   }
   else
   {
-    if( options.strict )
+    if( o.strict )
     {
       if( src1 !== src2 )
       return false;
@@ -498,6 +870,51 @@ var _entitySame = function _entitySame( src1,src2,options,path )
 
   return true;
 }
+
+//
+
+/**
+ * Deep equaliser of 2 entities.
+ * @param {object} src1 - entity to compare.
+ * @param {object} src2 - entity to compare.
+ * @param {object} options - options.
+ * @method entitySame
+ * @memberof wTools
+ */
+
+var entitySame = function entitySame()
+{
+
+  var sameNumbers = function( a,b )
+  {
+    return a === b;
+  }
+
+  var def =
+  {
+    onSameNumbers : sameNumbers,
+    contain : 0,
+    strict : 1,
+    lastPath : '',
+    path : '',
+  }
+
+  Object.freeze( def );
+
+  return function entitySame( src1,src2,o )
+  {
+
+    _assert( arguments.length === 2 || arguments.length === 3 );
+    _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+    var o = o || {};
+
+    _.assertMapOnly( o,def );
+    _.mapSupplement( o,def );
+
+    return _entitySame( src1,src2,o );
+  }
+
+}();
 
 //
 
@@ -611,7 +1028,10 @@ var entityContain = function entityContain( src1,src2,options )
   return _.entitySame( src1,src2,options );
 }
 
-//
+// --
+// entity selector
+// --
+
   /**
    * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
       properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
@@ -1011,7 +1431,7 @@ var entityFilter = function( src,onEach )
 }
 
 //
-
+/*
 var _entityMostComparing = function( src,onCompare )
 {
 
@@ -1090,7 +1510,7 @@ var entityMaxComparing = function( src,onCompare )
 
   return _entityMost( src,_onCompare );
 }
-
+*/
 //
 
   /**
@@ -1122,6 +1542,7 @@ var _entityMost = function( src,onElement,returnMax )
 {
 
   _.assert( arguments.length === 3 );
+  _.assert( onElement.length === 1,'not mplemented' );
 
   if( onElement === undefined )
   onElement = function( element ){ return element; }
@@ -1288,38 +1709,6 @@ var entityCoerceTo = function( src,ins )
 
 }
 
-//
-/*
-var strFormat = function( src,context )
-{
-  if( arguments.length === 1 )
-  {
-    src = arguments[ 0 ].src;
-    context = arguments[ 0 ].context;
-  }
-  else
-  {
-    _.assert( arguments.length === 2 );
-  }
-
-  _.assert( _.strIs( src ) );
-  _.assert( context !== undefined );
-
-  var regexp = /[{]([^{}]+)[}]/g;
-  var handleReplace = function( match,p1,offset,s )
-  {
-    _.assert( _.numberIs( offset ) );
-
-    debugger; xxx;
-    //  _.entitySelect( context, );
-
-  }
-
-  var result = this.replace( regexp,handleReplace );
-
-  return result;
-}
-*/
 // --
 // iterator
 // --
@@ -1374,24 +1763,28 @@ var until = function()
 
 //
 
-var each = function()
+var _each = function( o )
 {
 
   var i = 0;
-  var onEach = arguments[ arguments.length-1 ];
+  var onEach = o.args[ o.args.length-1 ];
   if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
 
-  for( var arg = 0, l = arguments.length-1 ; arg < l ; arg++ )
+  for( var arg = 0, l = o.args.length-1 ; arg < l ; arg++ )
   {
 
-    var src = arguments[ arg ];
+    var src = o.args[ arg ];
 
     if( _.arrayIs( src ) || ( !_.objectIs( src ) && _.arrayLike( src ) ) )
     {
 
       for( var a = 0 ; a < src.length ; a++ )
       {
-        onEach.call( src,src[a],a,i );
+        if( o.own )
+        if( !Object.hasOwnProperty.call( src,a ) )
+        continue;
+
+        onEach.call( src,src[ a ],a,i );
         i++;
       }
 
@@ -1401,6 +1794,10 @@ var each = function()
 
       for( var a in src )
       {
+        if( o.own )
+        if( !Object.hasOwnProperty.call( src,a ) )
+        continue;
+
         onEach.call( src,src[a],a,i );
         i++;
       }
@@ -1421,50 +1818,114 @@ var each = function()
 
 //
 
-var eachSample = function( samples,onEach )
+var each = function()
 {
 
-  var direct = 1;
-  var options = {};
-  if( _.objectIs( samples ) )
+  return _each({ args : arguments });
+
+}
+
+//
+
+var eachOwn = function()
+{
+
+  return _each({ args : arguments, own : 1 });
+
+}
+
+//
+
+//var eachSample = function( samples,onEach )
+var eachSample = function( o )
+{
+
+  if( arguments.length === 2 )
   {
-    options = arguments[ 0 ];
-    samples = options.samples;
-    onEach = options.onEach;
-    direct = options.direct !== undefined ? options.direct : 1;
-    _.assert( arguments.length === 1 );
+    o =
+    {
+      elementArrays : arguments[ 0 ],
+      onEach : arguments[ 1 ],
+    }
   }
-  else
-  {
-    _.assert( arguments.length === 2 );
-  }
+
+  _.assertMapOnly( o,eachSample.defaults );
+  if( o.direct === undefined )
+  o.direct = true;
+
+  /**/
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayIs( samples ) );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( _.routineIs( o.onEach ) || o.onEach === undefined );
+  _.assert( _.arrayIs( o.elementArrays ) || o.base !== undefined || o.add !== undefined );
 
+  /**/
+
+  if( o.base !== undefined || o.add !== undefined )
+  {
+
+    var l = 1;
+    if( _.arrayLike( o.base ) )
+    l = o.base.length;
+    else if( _.arrayLike( o.add ) )
+    l = o.add.length;
+
+    if( !o.base )
+    o.base = 0;
+    o.base = _.arrayOrNumber( o.base,l );
+    o.add = _.arrayOrNumber( o.add,l );
+
+    _.assert( o.base.length === o.add.length );
+    _.assert( !o.elementArrays );
+
+    o.elementArrays = [];
+
+    for( var b = 0 ; b < o.base.length ; b++ )
+    {
+      var e = [ o.base[ b ], o.base[ b ] + o.add[ b ] ];
+      o.elementArrays.push( e );
+    }
+
+  }
+
+  /* elementArrays */
+
+  if( !o.base )
+  for( var i = 0 ; i < o.elementArrays.length ; i++ )
+  {
+    _.assert( _.arrayLike( o.elementArrays[ i ] ) || _.atomicIs( o.elementArrays[ i ] ) );
+    if( _.atomicIs( o.elementArrays[ i ] ) )
+    o.elementArrays[ i ] = [ o.elementArrays[ i ] ];
+  }
+
+  /**/
+
+  var result = [];
   var sample = [];
   var counter = [];
   var len = [];
   var index = 0;
 
-  //
+  /**/
 
   var firstSample = function()
   {
 
-    for( var s = 0, l = samples.length; s < l ; s++ )
+    for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
     {
-      len[ s ] = samples[ s ].length;
+      len[ s ] = o.elementArrays[ s ].length;
       counter[ s ] = 0;
-      sample[ s ] = samples[ s ][ counter[ s ] ];
-      if( !len[ s ] ) return 0;
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
+      if( !len[ s ] )
+      return 0;
     }
+
+    result.push( sample.slice() );
 
     return 1;
   }
 
-  //
+  /**/
 
   var _nextSample = function( s )
   {
@@ -1473,28 +1934,30 @@ var eachSample = function( samples,onEach )
     if( counter[ s ] >= len[ s ] )
     {
       counter[ s ] = 0;
-      sample[ s ] = samples[ s ][ counter[ s ] ];
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
     }
     else
     {
-      sample[ s ] = samples[ s ][ counter[ s ] ];
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
       index += 1;
+      result.push( sample.slice() );
       return 1;
     }
 
+    return 0;
   }
 
-  //
+  /**/
 
   var nextSample = function()
   {
 
-    if( direct ) for( var s = 0, l = samples.length; s < l ; s++ )
+    if( o.direct ) for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
     {
       if( _nextSample( s ) )
       return 1;
     }
-    else for( var s = samples.length - 1, l = samples.length; s >= 0 ; s-- )
+    else for( var s = o.elementArrays.length - 1, l = o.elementArrays.length; s >= 0 ; s-- )
     {
       if( _nextSample( s ) )
       return 1;
@@ -1503,21 +1966,34 @@ var eachSample = function( samples,onEach )
     return 0;
   }
 
-  //
+  /**/
 
-  if( !_.arrayIs( samples ) )
+  if( !_.arrayIs( o.elementArrays ) )
   throw _.err( 'eachSample :','array only supported' );
 
   if( !firstSample() )
-  return index;
+  return result;
 
   do
   {
-    onEach.call( sample,sample,index );
+    if( o.onEach )
+    o.onEach.call( sample,sample,index );
   }
   while( nextSample() );
 
-  return index;
+  return result;
+}
+
+eachSample.defaults =
+{
+
+  direct : 1,
+  onEach : null,
+
+  elementArrays : null,
+  base : null,
+  add : null,
+
 }
 
 //
@@ -1623,9 +2099,9 @@ var _err = function _err( o )
     if( o.args[ a ] instanceof Error )
     {
       result = o.args[ a ];
-      if( result.respected )
-      result.respected = 0;
-      o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'Unknown error';
+      if( result.attentionNeeded !== undefined )
+      result.attentionNeeded = 0;
+      o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'unknown error';
       break;
     }
   }
@@ -1790,10 +2266,14 @@ var errLog = function errLog()
     level : 2,
   });
 
+  err.attentionNeeded = 0;
+  err.attentionGiven = 1;
+
   if( _.routineIs( err.toString ) )
   {
 
     var messageWas = err.message;
+
     //if( err.originalMessage )
     //err.message = err.originalMessage
 
@@ -1846,7 +2326,8 @@ var assert = function assert( condition )
 {
 
   /*return;*/
-  if( DEBUG === false )
+
+  if( Config.debug === false )
   return;
 
   if( !condition )
@@ -1880,7 +2361,7 @@ var assert = function assert( condition )
 var assertMapNoUndefine = function assertMapNoUndefine( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   _.assert( arguments.length === 1 || arguments.length === 2 )
@@ -1906,7 +2387,7 @@ var assertMapNoUndefine = function assertMapNoUndefine( src )
 var assertMapOnly = function assertMapOnly( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -1933,7 +2414,7 @@ var assertMapOnly = function assertMapOnly( src )
 var assertMapOwnOnly = function assertMapOwnOnly( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -1960,7 +2441,7 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
 var assertMapAll = function( src,all,msg )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   _assert( arguments.length === 2 || arguments.length === 3 );
@@ -1987,7 +2468,7 @@ var assertMapAll = function( src,all,msg )
 var assertMapOwnAll = function( src,all,msg )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   _assert( arguments.length === 2 || arguments.length === 3 );
@@ -2014,7 +2495,7 @@ var assertMapOwnAll = function( src,all,msg )
 var assertMapNone = function( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -2048,7 +2529,7 @@ var assertMapNone = function( src )
 var assertMapOwnNone = function( src,none )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -2434,8 +2915,18 @@ var objectLike = function( src )
 
 var mapIs = function( src )
 {
-  return _.objectIs( src ) && src.__proto__.__proto__ === null;
-  /*return _.objectIs( src ) && src.__proto__ === Object.prototype;*/
+
+  if( !_.objectIs( src ) )
+  return false;
+
+  _.assert( Object.getPrototypeOf( src ) === null || Object.getPrototypeOf( src ),'unexpected case' );
+
+  if( Object.getPrototypeOf( src ) === null )
+  return true;
+  if( Object.getPrototypeOf( Object.getPrototypeOf( src ) ) === null )
+  return true;
+
+  return false;
 }
 
   //
@@ -2659,6 +3150,15 @@ var bufferIs = function( src )
 
 //
 
+var bufferViewIs = function( src )
+{
+  var type = _ObjectToString.call( src );
+  var result = type === '[object DataView]';
+  return result;
+}
+
+//
+
 var bufferRawIs = function( src )
 {
   var type = _ObjectToString.call( src );
@@ -2673,6 +3173,13 @@ var bufferNodeIs = function( src )
   if( typeof Buffer !== 'undefined' )
   return src instanceof Buffer;
   return false;
+}
+
+//
+
+var bufferSomeIs = function( src )
+{
+  return bufferIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
 }
 
 //
@@ -2761,8 +3268,21 @@ var jqueryIs = function( src )
 
 //
 
+var canvasIs = function( src )
+{
+  if( _.jqueryIs( src ) )
+  src = src[ 0 ];
+  if( !domIs( src ) )
+  return false;
+  return src.tagName === 'CANVAS';
+}
+
+//
+
 var domIs = function( src )
 {
+  if( !_global_.Node )
+  return false;
   return src instanceof Node;
   /*return src instanceof Element;*/
 }
@@ -4132,7 +4652,7 @@ var regexpObjectOrering = function( ordering )
   _.eachSample
   ({
     direct : 0,
-    samples : res,
+    elementArrays : res,
     onEach : function( sample,index )
     {
       var mask = _.regexpObjectShrink( {},sample[ 0 ] );
@@ -4647,6 +5167,13 @@ var timeOut = function( delay,onReady )
   var onEnd = function()
   {
     var result;
+
+    if( onReady )
+    con.first( onReady );
+    else
+    con.give();
+
+/*
     if( _.routineIs( onReady ) )
     {
       result = onReady();
@@ -4657,13 +5184,15 @@ var timeOut = function( delay,onReady )
     }
     else if( onReady instanceof wConsequence )
     {
-      onReady.give();
       onReady.then_( con );
+      onReady.give();
     }
     else
     {
       con.give();
     }
+*/
+
   }
 
   if( arguments.length > 2 )
@@ -4920,11 +5449,6 @@ var arrayNewOfSameLength = function( ins )
 }
 
 //
-  // !!! Not bad.
-  // +++ Please improve code formatting: add more spaces.
-  // +++ @param (dst) has to be @param { ( number | array ) }.
-  // +++ Please add description: What will happen if the first argument is an array?
-  // +++ Please add at least two different example.
 
 /**
  * The arrayOrNumber() method returns a new array
@@ -4973,9 +5497,6 @@ var arrayOrNumber = function( dst,length )
 }
 
 //
-  // !!! Not bad.
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
 
 /**
  * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
@@ -5545,10 +6066,11 @@ var arrayElementsSwap = function( dst,index1,index2 )
 }
 
 //
+
   /**
    * The arrayFrom() method converts an object-like (src) into Array.
    *
-   * @param { objectLike } src - To convert into Array.
+   * @param { * } src - To convert into Array.
    *
    * @example
    * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
@@ -5578,6 +6100,8 @@ var arrayElementsSwap = function( dst,index1,index2 )
 var arrayFrom = function( src )
 {
 
+  _.assert( arguments.length === 1 );
+
   if( _.arrayIs( src ) )
   return src;
 
@@ -5597,6 +6121,7 @@ var arrayFrom = function( src )
 }
 
 //
+
   /**
    * The arrayToMap() converts an (array) into Object.
    *
@@ -5627,7 +6152,7 @@ var arrayToMap = function( array )
 {
   var result = {};
 
-  _.assert( array.length === 1 ); //???
+  _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( array ) );
 
   for( var a = 0 ; a < array.length ; a++ )
@@ -5794,6 +6319,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
   {
 
     _.assert( _.routineIs( onEqual ) );
+    _.assert( onEqual.length === 1 && onEqual.length === 2 );
     index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
   }
@@ -6059,7 +6585,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
   /**
    * The arrayUpdate() method adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
    * and returns the last added index or the last replaced index of the array (dstArray).
-   * 
+   *
    * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
    * @see arrayReplaceOnce( dstArray, ins, sub )  See for more information.
    * Checks if (index) equal to the -1.
@@ -6069,7 +6595,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * @param { Array } dstArray - The source array.
    * @param { * } ins - The value to change.
    * @param { * } sub - The value to add or replace.
-   * 
+   *
    * @example
    * // returns 3
    * var add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
@@ -6079,7 +6605,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * // returns 5
    * var add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
    * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
-   * 
+   *
    * @example
    * // returns 4
    * var replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
@@ -6243,7 +6769,7 @@ var arrayPrependOnce = function( dst,src )
    * @example
    * // returns [ 1, 4, 5 ]
    * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
-   * 
+   *
    * @returns { Array } Returns the modified array (dstArray) with the new length.
    * @method arraySpliceArray
    * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
@@ -6646,7 +7172,7 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
    * @memberof wTools#
    */
 
-var arrayMask = function arrayMask( srcArray, mask ) 
+var arrayMask = function arrayMask( srcArray, mask )
 {
 
   _.assert( arguments.length === 2 );
@@ -6813,7 +7339,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
   });
 
   //if( options.numberOfAtomsPerElement !== 1 )
-  //throw 'Not tested';
+  //throw _.err( 'not tested' );
 
   var length = srcArray.length * options.numberOfDuplicatesPerElement;
   var result = options.result || arrayNew( srcArray,length );
@@ -6841,20 +7367,14 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 
 //
 
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
-  // +++ Please add to the @param { number } [ options.times = result.length ].
-  // +++ There is one more @throws at the end of method, add it please.
-
 /**
  * The arrayFill() method fills all the elements of the given or a new array from the 0 index to an (options.times) index
  * with a static value.
  *
- * @param { ( Object | Number | Array ) } options - The options to fill the array.
- * @param { Number } [ options.times = result.length ] options.times - The count of repeats.
+ * @param { ( Object | Number | Array ) } o - The options to fill the array.
+ * @param { Number } [ o.times = result.length ] o.times - The count of repeats.
    If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
- * @param { Number } [ options.value = 0 ] - The value for the filling.
+ * @param { Number } [ o.value = 0 ] - The value for the filling.
  *
  * @example
  * // returns [ 3, 3, 3, 3, 3 ]
@@ -6872,24 +7392,32 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
  * @method arrayFill
  * @throws { Error } If missed argument, or got more than one argument.
  * @throws { Error } If passed argument is not an object.
- * @throws { Error } If the last element of the (options.result) is not equal to the (options.value).
+ * @throws { Error } If the last element of the (o.result) is not equal to the (o.value).
  * @memberof wTools#
  */
 
-var arrayFill = function arrayFill( options )
+var arrayFill = function arrayFill( o )
 {
 
-  _assert( arguments.length === 1 );
-  _assert( _.objectIs( options ) || _.numberIs( options ) || _.arrayIs( options ),'arrayFill :','"options" must be object' );
+  if( arguments.length === 1 )
+  {
+    if( _.numberIs( o ) )
+    o = { times : o };
+    else if( _.arrayIs( o ) )
+    o = { result : o };
+  }
+  else
+  {
+    o = { result : arguments[ 0 ], value : arguments[ 1 ] };
+  }
 
-  if( _.numberIs( options ) )
-  options = { times : options };
-  else if( _.arrayIs( options ) )
-  options = { result : options };
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _.assertMapOnly( o,arrayFill.defaults );
+  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
-  var result = options.result || [];
-  var times = options.times !== undefined ? options.times : result.length;
-  var value = options.value !== undefined ? options.value : 0;
+  var result = o.result || [];
+  var times = o.times !== undefined ? o.times : result.length;
+  var value = o.value !== undefined ? o.value : 0;
 
   if( _.routineIs( result.fill ) )
   {
@@ -6907,10 +7435,12 @@ var arrayFill = function arrayFill( options )
   return result;
 }
 
-//
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
+arrayFill.defaults =
+{
+  result : null,
+  times : null,
+  value : null,
+}
 
 /**
  * The arrayCompare() method returns the first difference between the values of the first array from the second.
@@ -6926,7 +7456,7 @@ var arrayFill = function arrayFill( options )
  * @method arrayCompare
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
- * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length). 
+ * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
  * @memberof wTools#
  */
 
@@ -6984,7 +7514,9 @@ var arraySame = function( src1,src2 )
   {
 
     result = src1[ s ] === src2[ s ];
-    if( !result ) return result;
+
+    if( result === false )
+    return false;
 
   }
 
@@ -7044,11 +7576,11 @@ var arraySameSet = function( src1,src2 )
    * @example
    * // returns 3
    * _.arrayLeftIndexOf( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
-   * 
+   *
    * @example
    * // returns 3
    * _.arrayLeftIndexOf( 'abcdef', 'd' );
-   * 
+   *
    * @example
    * // returns 2
    * var arr = function() {
@@ -7069,13 +7601,28 @@ var arrayLeftIndexOf = function( arr,ins,equalizer )
   if( !equalizer )
   equalizer = function( a,b ){ return a === b };
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( equalizer.length === 1 || equalizer.length === 2 );
   _.assert( _.routineIs( equalizer ) );
 
+  if( equalizer.length === 2 )
   for( var a = 0 ; a < arr.length ; a++ )
   {
 
     if( equalizer( arr[ a ],ins ) )
     return a;
+
+  }
+  else
+  {
+
+    for( var a = 0 ; a < arr.length ; a++ )
+    {
+
+      if( equalizer( arr[ a ] ) === ins )
+      return a;
+
+    }
 
   }
 
@@ -7087,13 +7634,30 @@ var arrayLeftIndexOf = function( arr,ins,equalizer )
 var arrayRightIndexOf = function( arr,ins,equalizer )
 {
 
-  if( !equalizer ) equalizer = _.arraySame;
+  if( !equalizer )
+  equalizer = function( a,b ){ return a === b };
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( equalizer.length === 1 || equalizer.length === 2 );
+
+  if( equalizer.length === 2 )
   for( var a = arr.length-1 ; a >= 0 ; a-- )
   {
 
     if( equalizer( arr[ a ],ins ) )
     return a;
+
+  }
+  else
+  {
+
+    for( var a = arr.length-1 ; a >= 0 ; a-- )
+    {
+
+      if( equalizer( arr[ a ] ) === ins )
+      return a;
+
+    }
 
   }
 
@@ -7131,16 +7695,31 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
    * @memberof wTools#
    */
 
-var arrayLeftGet = function( arr,ins,equalizer )
+var arrayLeft = function( arr,ins,equalizer )
 {
-  var result;
+  var result = {};
   var i = _.arrayLeftIndexOf( arr,ins,equalizer );
 
   if( i >= 0 )
-  result =
   {
-    index : i,
-    element : arr[ i ],
+    result.index = i;
+    result.element = arr[ i ];
+  }
+
+  return result;
+}
+
+//
+
+var arrayRight = function( arr,ins,equalizer )
+{
+  var result = {};
+  var i = _.arrayRightIndexOf( arr,ins,equalizer );
+
+  if( i >= 0 )
+  {
+    result.index = i;
+    result.element = arr[ i ];
   }
 
   return result;
@@ -7266,24 +7845,26 @@ var arrayCountSame = function( src,onElement )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
   _.assert( _.routineIs( onElement ) );
+  _.assert( onElement.length === 1 );
 
   for( var i1 = 0 ; i1 < src.length ; i1++ )
   {
     var element1 = onElement( src[ i1 ] );
     if( found.indexOf( element1 ) !== -1 )
     continue;
-    
+
     for( var i2 = i1+1 ; i2 < src.length ; i2++ )
     {
 
       var element2 = onElement( src[ i2 ] );
-      if( found.indexOf( element2 ) !== -1 ) 
+      if( found.indexOf( element2 ) !== -1 )
       continue;
 
-      if( element1 === element2 ) 
+      if( element1 === element2 )
       found.push( element1 );
 
     }
+
   }
 
   return found.length;
@@ -7303,7 +7884,7 @@ var arrayCountSame = function( src,onElement )
    * @example
    * // returns 29
    * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
-   * 
+   *
    * @example
    * // returns 94
    * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
@@ -7356,7 +7937,7 @@ var arraySum = function( src,onElement )
    * @example
    * // returns [ 4, 5, 33, 13, 9, 7 ]
    * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, 8, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
-   * 
+   *
    * @example
    * // returns [ 4, 5, 33, 13, undefined, 7 ];
    * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
@@ -7379,7 +7960,7 @@ var arraySupplement = function arraySupplement( dstArray )
   result = [];
 
   var length = result.length;
-  _assert( _.arrayLike( result ),'expects object as argument' );
+  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
 
   for( a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -7387,10 +7968,17 @@ var arraySupplement = function arraySupplement( dstArray )
     length = Math.max( length,arguments[ a ].length );
   }
 
+  if( _.numberIs( result ) )
+  result = arrayFill
+  ({
+    value : result,
+    times : length,
+  });
+
   for( var k = 0 ; k < length ; k++ )
   {
 
-    if( k in dstArray && !isNaN( dstArray[ k ] ) )
+    if( k in dstArray && isFinite( dstArray[ k ] ) )
     continue;
 
     var a;
@@ -7419,7 +8007,7 @@ var arraySupplement = function arraySupplement( dstArray )
    * if the following arrays contains indexes of the (screenArray).
    * If (dstArray) contains values, the certain values will be replaced.
    * @param { ...arrayLike } arguments[...] - The following arrays.
-   * 
+   *
    * @example
    * // returns [ 5, 6, 2 ]
    * _.arrayExtendScreening( [ 1, 2, 3 ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
@@ -7427,11 +8015,11 @@ var arraySupplement = function arraySupplement( dstArray )
    * @example
    * // returns [ 'a', 6, 2, 13 ]
    * _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
-   * 
+   *
    * @example
    * // returns [ 3, 'abc', 7, 13 ]
    * _.arrayExtendScreening( [  ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] )
-   * 
+   *
    * @returns { arrayLike } Returns a (dstArray) containing the values of the following arrays,
    * if the following arrays contains the indexes of the (screenArray).
    * If (screenArray) is empty, it returns a (dstArray).
@@ -8093,7 +8681,7 @@ var arraySortedAddArray = function( dst,src,comparator )
 
   var result = 0;
 
-  //throw 'Not tested';
+  //throw _.err( 'not tested' );
 
   if( comparator === undefined ) comparator = function( a,b ){ return a-b };
 
@@ -8125,12 +8713,12 @@ var arraySortedAddArray = function( dst,src,comparator )
    * // returns [ 3, 7, 13, 0 ]
    * var ints = new Int8Array( [ 3, 7, 13 ] );
    * _.bufferRelen( ints, 4 );
-   * 
+   *
    * @example
    * // returns [ 3, 7, 13 ]
    * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
    * _.bufferRelen( ints2, 3 );
-   * 
+   *
    * @example
    * // returns [ 3, 0, 13, 0, 77, 0 ]
    * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
@@ -8364,7 +8952,7 @@ var bufferToDom = function( xmlBuffer ) {
 
 //
 
-var bufferLeftBuffer = function( src,ins )
+var bufferLeftBufferIndex = function( src,ins )
 {
 
   if( !_.bufferIs( src ) )
@@ -8451,32 +9039,72 @@ var bufferFromArrayOfArray = function( array,options ){
 
 //
 
-var bufferFromObject = function( bufferObject,options )
+var bufferFrom = function( o )
 {
+  var result;
 
-  _assert( arguments.length === 2 );
-  _assert( _.objectIs( options ) );
+  _assert( arguments.length === 1 );
+  _assert( _.objectIs( o ) );
+  _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
+  _.assertMapOnly( o,bufferFrom.defaults );
 
-  if( _.bufferIs( bufferObject ) || _.arrayIs( bufferObject ) )
-  return bufferObject;
+  /* buffer */
 
-  var length = bufferObject.length;
+  if( _.bufferIs( o.src ) )
+  {
+    if( o.src.constructor === o.bufferConstructor )
+    return o.src;
 
+    debugger;
+
+    result = new o.bufferConstructor( o.src );
+    return result;
+  }
+
+  /* number */
+
+  if( _.numberIs( o.src ) )
+  o.src = [ o.src ];
+
+  /* midverification */
+
+  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
+
+  /* length */
+
+  var length = o.src.length;
   if( !_.numberIs( length ) )
   {
 
     var length = 0;
-    while( bufferObject[ length ] !== undefined )
+    while( o.src[ length ] !== undefined )
     length += 1;
 
   }
 
-  var result = new options.bufferConstructor( length );
+  /* make */
 
-  for( var i = 0 ; i < length ; i++ )
-  result[ i ] = bufferObject[ i ];
+  if( _.arrayIs( o.src ) )
+  result = new o.bufferConstructor( o.src );
+  else if ( _.arrayLike( o.src ) )
+  {
+    result = new o.bufferConstructor( o.src );
+    throw _.err( 'not tested' );
+  }
+  else
+  {
+    result = new o.bufferConstructor( length );
+    for( var i = 0 ; i < length ; i++ )
+    result[ i ] = o.src[ i ];
+  }
 
   return result;
+}
+
+bufferFrom.defaults =
+{
+  src : null,
+  bufferConstructor : null,
 }
 
 //
@@ -8520,6 +9148,8 @@ var bufferRawFromBuffer = function( buffer )
   if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
   result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
 
+  _.assert( _.bufferRawIs( result ) );
+
   return result;
 }
 
@@ -8538,13 +9168,9 @@ var bufferRawFrom = function( buffer )
   {
 
     result = new Uint8Array( buffer ).buffer;
-/*
-    if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
-    result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
-*/
 
   }
-  else if( _.bufferIs( buffer ) )
+  else if( _.bufferIs( buffer ) || _.bufferViewIs( buffer ) )
   {
 
     buffer = buffer.buffer;
@@ -8555,36 +9181,38 @@ var bufferRawFrom = function( buffer )
   else if( _.strIs( buffer ) )
   {
 
-    result = _.utf8ToBuffer( buffer );
+    result = _.utf8ToBuffer( buffer ).buffer;
 
   }
   else if( _global_.File && buffer instanceof File )
   {
     var fileReader = new FileReaderSync();
     result = fileReader.readAsArrayBuffer( buffer );
-    throw 'Not tested';
+    throw _.err( 'not tested' );
   }
   else throw _.err( 'bufferRawFrom : unknown source' );
+
+  _.assert( _.bufferRawIs( result ) );
 
   return result;
 }
 
 //
 
-var buffersSerialize = function buffersSerialize( options )
+var buffersSerialize = function buffersSerialize( o )
 {
   var self = this;
   var size = 0;
-  var options = options || {};
+  var o = o || {};
 
-  _.assertMapNoUndefine( options );
-  _.assertMapOnly( options,buffersSerialize.defaults );
-  _.mapComplement( options,buffersSerialize.defaults );
-  _.assert( _.objectIs( options.store ) );
+  _.assertMapNoUndefine( o );
+  _.assertMapOnly( o,buffersSerialize.defaults );
+  _.mapComplement( o,buffersSerialize.defaults );
+  _.assert( _.objectIs( o.store ) );
 
-  var store = options.store;
+  var store = o.store;
   var storeAttributes = store[ 'attributes' ] = store[ 'attributes' ] || {};
-  var attributes = options.onAttributesGet.call( options.context );
+  var attributes = o.onAttributesGet.call( o.context );
   var buffers = [];
 
   // eval size
@@ -8594,13 +9222,13 @@ var buffersSerialize = function buffersSerialize( options )
 
     var name = attributes[ a ][ 0 ];
     var attribute = attributes[ a ][ 1 ];
-    var buffer = options.onBufferGet.call( options.context,attribute );
+    var buffer = o.onBufferGet.call( o.context,attribute );
 
     _.assert( _.bufferIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
 
     var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
-    if( options.dropAttribute && options.dropAttribute[ name ] )
+    if( o.dropAttribute && o.dropAttribute[ name ] )
     continue;
 
     var descriptor = {};
@@ -8618,7 +9246,7 @@ var buffersSerialize = function buffersSerialize( options )
   // make buffer
 
   if( !store[ 'buffer' ] )
-  store[ 'buffer' ] = new ArrayBuffer( size );;
+  store[ 'buffer' ] = new ArrayBuffer( size );
 
   var dstBuffer = _.bufferBytesGet( store[ 'buffer' ] );
 
@@ -8626,7 +9254,7 @@ var buffersSerialize = function buffersSerialize( options )
   if( store[ 'buffer' ].byteLength < size )
   throw _.err( 'buffersSerialize :','buffer does not have enough space' );
 
-  // sort by component size
+  /* sort by atom size */
 
   buffers.sort( function( a,b )
   {
@@ -8645,7 +9273,7 @@ var buffersSerialize = function buffersSerialize( options )
     var bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
     var bufferSize = buffers[ b ].bufferSize;
 
-    if( options.dropAttribute && options.dropAttribute[ name ] )
+    if( o.dropAttribute && o.dropAttribute[ name ] )
     continue;
 
     _.bufferMove( dstBuffer.subarray( offset,offset+bufferSize ),bytes );
@@ -8658,16 +9286,20 @@ var buffersSerialize = function buffersSerialize( options )
       'size' : bytes.length,
     }
 
+    // debugger; // xxx
+
     if( attribute.copyCustom )
     serialized[ 'fields' ] = attribute.copyCustom
     ({
 
       dst : {},
       src : attribute,
-      constitutes : false,
+
       copyComposes : true,
-      copyConstitutes : true,
-      copyAggregates : false,
+      copyAggregates : true,
+      copyAssociates : false,
+
+      technique : 'data',
 
     });
 
@@ -8685,7 +9317,9 @@ buffersSerialize.defaults =
 
   context : null,
   store : null,
+
   dropAttribute : {},
+
   onAttributesGet : function()
   {
     return _.mapPairs( this.attributes );
@@ -8699,16 +9333,16 @@ buffersSerialize.defaults =
 
 //
 
-var buffersDeserialize = function( options )
+var buffersDeserialize = function( o )
 {
-  var options = options || {};
-  var store = options.store;
+  var o = o || {};
+  var store = o.store;
   var commonBuffer = store[ 'buffer' ];
 
-  _.assertMapNoUndefine( options );
-  _.assertMapOnly( options,buffersDeserialize.defaults );
-  _.mapComplement( options,buffersDeserialize.defaults );
-  _.assert( _.objectIs( options.store ) );
+  _.assertMapNoUndefine( o );
+  _.assertMapOnly( o,buffersDeserialize.defaults );
+  _.mapComplement( o,buffersDeserialize.defaults );
+  _.assert( _.objectIs( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferIs( commonBuffer ) );
 
   commonBuffer = _.bufferRawFromBuffer( commonBuffer );
@@ -8731,9 +9365,11 @@ var buffersDeserialize = function( options )
     if( attribute.offset+size > commonBuffer.byteLength )
     throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
 
+    /* logger.log( 'bufferConstructor( ' + commonBuffer + ',' + offset + ',' + size / sizeOfAtom + ' )' ); */
+
     var buffer = bufferConstructor ? new bufferConstructor( commonBuffer,offset,size / sizeOfAtom ) : null;
 
-    options.onAttribute.call( options.context,fields,buffer,a );
+    o.onAttribute.call( o.context,fields,buffer,a );
 
   }
 
@@ -8771,7 +9407,7 @@ buffersDeserialize.defaults =
    * Iterate over (srcObject) object, checks if (srcObject) object has own properties.
    * If true, it calls the provided callback function ( options.onCopyField( result, srcObject, k ) ) for each key (k),
    * and copies each [ key, value ] of the (srcObject) to the (result),
-   * and after cycle, returns clone result.__proto__ = srcObject.__proto__;.
+   * and after cycle, returns clone with prototype of srcObject.
    *
    * @param { objectLike } srcObject - The source object.
    * @param { Object } options - The options.
@@ -8817,7 +9453,7 @@ var mapClone = function( srcObject,options )
     options.onCopyField( result,srcObject,k,options.onCopyField );
   }
 
-  result.__proto__ = srcObject.__proto__;
+  Object.setPrototypeOf( result, Object.getPrototypeOf( srcObject ) );
 
   return result;
 }
@@ -9371,6 +10007,23 @@ var mapPairs = function( src )
 }
 
 //
+
+var mapInvertKeyValue = function( src )
+{
+  var result = {};
+
+  _.assert( _.objectLike( src ) );
+
+  for( var s in src )
+  {
+    _.assert( result[ src[ s ] ] === undefined,'cant invert key value of the map' );
+    result[ src[ s ] ] = s;
+  }
+
+  return result;
+}
+
+//
 /*
 var mapsPluck = function( srcMaps,filterName )
 {
@@ -9684,8 +10337,8 @@ var mapBut = function( srcMap )
    * @param { ...objectLike } arguments[] - The next objects.
    *
    * @example
-   * // returns { a : 1, b : "xxx" }
-   * mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+   * // returns { a : 1, b : "b" }
+   * mapButFiltering( _.filter.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
    *
    * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
    * @method mapButFiltering
@@ -9822,7 +10475,6 @@ var mapScreens = function( srcObject,screenObject )
   if( arguments.length > 2 )
   {
     debugger;
-    throw _.err( 'not tested' );
     var args =_ArraySlice.call( arguments,1 );
     screenObject = _.mapCopy.apply( this,args );
   }
@@ -10433,31 +11085,58 @@ var filter =
 }
 
 // --
+// var
+// --
+
+var ErrorAbort = function()
+{
+  this.message = arguments.length ? _.arrayFrom( arguments ) : 'Aborted';
+}
+ErrorAbort.prototype = Object.create( Error.prototype );
+
+var error =
+{
+  ErrorAbort : ErrorAbort,
+}
+
+// --
 // prototype
 // --
 
 var Proto =
 {
 
-  // entity
+  // entity modifier
 
   enityExtend : enityExtend,
   entityClone : entityClone,
 
+  _entityCloneAct : _entityCloneAct,
+  _entityClone : _entityClone,
+  entityCloneObject : entityCloneObject,
+  entityCloneObjectMergingBuffers : entityCloneObjectMergingBuffers,
+  entityCloneData : entityCloneData,
+  entityCloneDataSeparatingBuffers : entityCloneDataSeparatingBuffers,
+
   entityCopy : entityCopy,
   entityCopyField : entityCopyField,
   entityAssignField : entityAssignField,
-  /*entitySetField : entitySetField,*/
+
+
+  // entity checker
 
   entityHasNan : entityHasNan,
   entityHasUndef : entityHasUndef,
 
-  entitySame : entitySame,
   _entitySame : _entitySame,
+  entitySame : entitySame,
 
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
   entityContain : entityContain,
+
+
+  // entity selector
 
   entityLength : entityLength,
 
@@ -10484,7 +11163,11 @@ var Proto =
   // iterator
 
   until : until,
+
+  _each : _each,
   each : each,
+  eachOwn : eachOwn,
+
   eachSample : eachSample,
   eachRecursive : eachRecursive,
 
@@ -10532,8 +11215,10 @@ var Proto =
   symbolIs : symbolIs,
 
   bufferIs : bufferIs,
+  bufferViewIs : bufferViewIs,
   bufferRawIs : bufferRawIs,
   bufferNodeIs : bufferNodeIs,
+  bufferSomeIs : bufferSomeIs,
 
   argumentsIs : argumentsIs,
 
@@ -10552,6 +11237,7 @@ var Proto =
   eventIs : eventIs,
   htmlIs : htmlIs,
   jqueryIs : jqueryIs,
+  canvasIs : canvasIs,
   domIs : domIs,
   domableIs : domableIs,
 
@@ -10721,7 +11407,8 @@ var Proto =
   arrayLeftIndexOf : arrayLeftIndexOf,
   arrayRightIndexOf : arrayRightIndexOf,
 
-  arrayLeftGet : arrayLeftGet,
+  arrayLeft : arrayLeft,
+  arrayRight : arrayRight,
 
   arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
@@ -10765,10 +11452,10 @@ var Proto =
   bufferToStr : bufferToStr,
   bufferToDom : bufferToDom,
 
-  bufferLeftBuffer : bufferLeftBuffer,
+  bufferLeftBufferIndex : bufferLeftBufferIndex,
 
   bufferFromArrayOfArray : bufferFromArrayOfArray,
-  bufferFromObject : bufferFromObject,
+  bufferFrom : bufferFrom,
   bufferRawFromBuffer : bufferRawFromBuffer,
   bufferRawFrom : bufferRawFrom,
 
@@ -10800,6 +11487,8 @@ var Proto =
   mapValues : mapValues,
   mapPairs : mapPairs,
 
+  mapInvertKeyValue : mapInvertKeyValue,
+
   /* mapsPluck : mapsPluck, */
   mapGroup : mapGroup,
 
@@ -10824,6 +11513,10 @@ var Proto =
   // map filter
 
   filter : filter,
+
+  // var
+
+  error : error,
 
 }
 
