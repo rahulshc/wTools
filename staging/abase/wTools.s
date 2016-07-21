@@ -5398,7 +5398,7 @@ var arrayNew = function( ins,length )
 {
   var result;
 
-  _.assert( arguments.length <= 2);
+  _.assert( arguments.length <= 2); // _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
 
   if( length === undefined )
@@ -7000,6 +7000,30 @@ var arrayUnique = function arrayUnique( src,onElement )
 }
 
 //
+  /**
+   * The arrayToStr() method joins an array (src) and returns one string containing each array element separated by space,
+   * only types of integer or floating point.
+   *
+   * @param { arrayLike } src - The source array.
+   * @param { objectLike } [ options = {  } ] options - The options.
+   * @param { Number } [ options.precision = 5 ] - The precision of numbers.
+   * @param { String } [ options.type = 'mixed' ] - The type of elements.
+   *
+   * @example
+   * // returns "1 2 3 "
+   * _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
+   *
+   * @example
+   * // returns "3.500 13.77 7.330"
+   * _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
+   *
+   * @returns { String } Returns one string containing each array element separated by space,
+   * only types of integer or floating point.
+   * If (src.length) is empty, it returns the empty string.
+   * @method arrayToStr
+   * @throws { Error } Will throw an Error If (options.type) is not the number or float.
+   * @memberof wTools#
+   */
 
 var arrayToStr = function( src,options )
 {
@@ -8671,6 +8695,40 @@ var arraySortedAddArray = function( dst,src,comparator )
 // array buffer
 // --
 
+  /**
+   * The bufferRelen() method returns a new or the same typed array (src) with a new or the same length (len).
+   *
+   * It creates the variable (result) checks, if (len) is more than (src.length),
+   * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayNew(src, len))
+   * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
+   * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
+   * Otherwise, it returns an initial typed array.
+   *
+   * @see { @link wTools#arrayNew() } - See for more information.
+   *
+   * @param { typedArray } src - The source typed array.
+   * @param { Number } len - The length of a typed array.
+   *
+   * @example
+   * // returns [ 3, 7, 13, 0 ]
+   * var ints = new Int8Array( [ 3, 7, 13 ] );
+   * _.bufferRelen( ints, 4 );
+   * 
+   * @example
+   * // returns [ 3, 7, 13 ]
+   * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+   * _.bufferRelen( ints2, 3 );
+   * 
+   * @example
+   * // returns [ 3, 0, 13, 0, 77, 0 ]
+   * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
+   * _.bufferRelen( ints3, 6 );
+   *
+   * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
+   * @method bufferRelen
+   * @memberof wTools#
+   */
+
 var bufferRelen = function( src,len )
 {
   var result = src;
@@ -8738,6 +8796,29 @@ var bufferBytesGet = function( src )
 }
 
 //
+
+  /**
+   * The bufferRetype() method converts and returns a new instance of (bufferType) constructor.
+   *
+   * @param { typedArray } src - The typed array.
+   * @param { typedArray } bufferType - The type of typed array.
+   *
+   * @example
+   * // returns [ 513, 1027, 1541 ]
+   * var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
+   * _.bufferRetype(view1, Int16Array);
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5, 6 ]
+   * var view2 = new Int16Array( [ 513, 1027, 1541 ] );
+   * _.bufferRetype(view2, Int8Array);
+   *
+   * @returns { typedArray } Returns a new instance of (bufferType) constructor.
+   * @method bufferRetype
+   * @throws { Error } Will throw an Error if (src) is not a typed array object.
+   * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
+   * @memberof wTools#
+   */
 
 var bufferRetype = function( src,bufferType )
 {
@@ -9027,6 +9108,31 @@ bufferFrom.defaults =
 }
 
 //
+  /**
+   * The bufferRawFromBuffer() method returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
+   * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
+   *
+   * @param { typedArray } buffer - Entity to check.
+   *
+   * @example
+   * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+   * var buffer1 = new ArrayBuffer(10);
+   * var view1 = new Int8Array( buffer1 );
+   * _.bufferRawFromBuffer( view1 );
+   *
+   * @example
+   * // returns [ 0, 0, 0, 0, 0, 0 ]
+   * var buffer2 = new ArrayBuffer(10);
+   * var view2 = new Int8Array( buffer2, 2 );
+   * _.bufferRawFromBuffer( view2 );
+   *
+   * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
+   * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
+   * @method bufferRawFromBuffer
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (buffer) is not a typed array.
+   * @memberof wTools#
+   */
 
 var bufferRawFromBuffer = function( buffer )
 {
