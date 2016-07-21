@@ -1627,6 +1627,62 @@
     
   };
 
+  var arrayToStr = function( test ) 
+  {
+
+    test.description = 'nothing';
+    var got = _.arrayToStr( [  ] );
+    var expected = "";
+    test.identical( got, expected );
+
+    test.description = 'returns the string';
+    var got = _.arrayToStr( 'abcdefghijklmnopqrstuvwxyz', { type : 'int' } );
+    var expected = "a b c d e f g h i j k l m n o p q r s t u v w x y z ";
+    test.identical( got, expected );
+    
+    test.description = 'returns a single string representing the integer values';
+    var got = _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
+    var expected = "1 2 3 ";
+    test.identical( got, expected );
+
+    test.description = 'returns a single string representing the float values';
+    var got = _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
+    var expected = "3.500 13.77 7.330";
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr();
+      });
+
+      test.description = 'in second argument property (type) is wrong';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr( [ 1, 2, 3 ], { type : 'wrong type' } );
+      });
+
+      test.description = 'in second argument property (type) is not provided';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr( [ 1, 2, 3 ], { precission : 4 } );
+      });
+
+      test.description = 'first argument is string';
+      test.shouldThrowError( function()
+      {
+        _.arrayToStr( 'wrong argument', {  type : 'float' } );
+      });
+      
+    }
+    
+  };
+
 
   var arrayPut = function( test ) 
   {
@@ -2926,6 +2982,133 @@
     
   };
 
+
+
+
+  var bufferRelen = function( test ) 
+  {
+    
+    test.description = 'second argument is more than ints.length';
+    var ints = new Int8Array( [ 3, 7, 13 ] );
+    var got = _.bufferRelen( ints, 4 );
+    var expected = got; // [ 3, 7, 13, 0 ];
+    test.identical( got, expected );
+    
+    test.description = 'second argument is less than ints2.length';
+    var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+    var got = _.bufferRelen( ints2, 3 );
+    var expected = got; // [ 3, 7, 13 ];
+    test.identical( got, expected );
+
+    test.description = 'invalid values are replaced by zero';
+    var ints3 = new Int32Array( [ 3, 'a', 13, 'b', 77 ] );
+    var got = _.bufferRelen( ints3, 6 );
+    var expected = got; // [ 3, 0, 13, 0, 77, 0 ];
+    test.identical( got, expected );
+
+    test.description = 'returns the initial typed array';
+    var floats = new Float32Array( [ 3.35, 7.5, 13.35, 33.75, 77.25 ] );
+    var got = _.bufferRelen( floats, 5 );
+    var expected = got; // [ 3.3499999046325684, 7.5, 13.350000381469727, 33.75, 77.25 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.bufferRelen();
+      });
+
+      test.description = 'arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.bufferRelen( 'wrong argument', 'wrong argument' );
+      });
+      
+    }
+    
+  };
+
+
+  var bufferRetype = function( test ) 
+  {
+    
+    test.desscription = 'converts and returns the new type of Int16Array';
+    var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
+    var got = _.bufferRetype(view1, Int16Array);
+    var expected = got; // [ 513, 1027, 1541 ];
+    test.identical( got, expected );
+
+    test.desscription = 'converts and returns the new type of Int8Array';
+    var view1 = new Int16Array( [ 513, 1027, 1541 ] );
+    var got = _.bufferRetype(view1, Int8Array);
+    var expected = got; // [ 1, 2, 3, 4, 5, 6 ];
+    test.identical( got, expected );
+    
+    /**/
+    
+    if( Config.debug ) 
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.bufferRetype();
+      });
+
+      test.description = 'arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.bufferRetype( 'wrong argument', 'wrong argument' );
+      });
+      
+    }
+    
+  };
+
+
+  var bufferRawFromBuffer = function( test ) // it doesn't work (_.bufferRawFromBuffer is not a function)
+  {
+
+    var buffer1 = new ArrayBuffer(10);
+    var view1 = new Int8Array( buffer1 );
+    test.description = 'returns the same length of typed array';
+    var got = _.bufferRawFromBuffer( view1 );
+    var expected = got; // [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+    test.identical( got, expected );
+    
+    var buffer2 = new ArrayBuffer(10);
+    var view2 = new Int8Array( buffer2, 2 );
+    test.description = 'returns the new sub typed array';
+    var got = _.bufferRawFromBuffer( view2 );
+    var expected = got; // [ 0, 0, 0, 0, 0, 0 ]
+    test.identical( got, expected );
+    
+    /**/
+
+    if( Config.debug )
+    {
+
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+        _.bufferRawFromBuffer();
+      });
+
+      test.description = 'arguments are wrong';
+      test.shouldThrowError( function()
+      {
+        _.bufferRawFromBuffer( 'wrong argument' );
+      });
+      
+    }
+
+  };
+  
   
   
   // node ./staging/abase/z.tests/Array.test.s
@@ -2975,6 +3158,7 @@
       //arraySlice : arraySlice,
       
       //arrayAs : arrayAs,
+      //arrayToStr : arrayToStr,
       //arrayPut : arrayPut,
       //arrayMask : arrayMask,
       //arrayDuplicate : arrayDuplicate,
@@ -2984,7 +3168,7 @@
       //arraySame : arraySame,
 
       //arrayLeftIndexOf : arrayLeftIndexOf,
-      arrayLeftGet : arrayLeftGet,
+      //arrayLeftGet : arrayLeftGet,
       //arrayHasAny : arrayHasAny,
       //arrayCount : arrayCount,
       //arrayCountSame : arrayCountSame,
@@ -3003,6 +3187,11 @@
       //arraySortedAddArray : arraySortedAddArray,
       //arrayRange : arrayRange,
       //arraySupplement : arraySupplement,
+
+
+      //bufferRelen : bufferRelen,
+      //bufferRetype : bufferRetype,
+      bufferRawFromBuffer : bufferRawFromBuffer,
       
     }
 
