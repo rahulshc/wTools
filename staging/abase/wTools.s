@@ -8713,12 +8713,12 @@ var arraySortedAddArray = function( dst,src,comparator )
    * // returns [ 3, 7, 13, 0 ]
    * var ints = new Int8Array( [ 3, 7, 13 ] );
    * _.bufferRelen( ints, 4 );
-   * 
+   *
    * @example
    * // returns [ 3, 7, 13 ]
    * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
    * _.bufferRelen( ints2, 3 );
-   * 
+   *
    * @example
    * // returns [ 3, 0, 13, 0, 77, 0 ]
    * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
