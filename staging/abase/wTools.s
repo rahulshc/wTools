@@ -306,7 +306,6 @@ var _entityCloneAct = function( o )
 
       if( o.onBuffer )
       {
-        debugger;
         result = o.onBuffer.call( o,result );
       }
 
@@ -429,7 +428,7 @@ var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( 
 
   /**/
 
-  var optionsCloneObject = _.mapScreen( o,_.entityCloneObject.defaults );
+  var optionsCloneObject = _.mapScreen( _.entityCloneObject.defaults,o );
   optionsCloneObject.src = data;
 
   /* onString */
@@ -456,9 +455,7 @@ var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( 
 
   /* clone object */
 
-  debugger;
   var result = _.entityCloneObject( optionsCloneObject );
-  debugger;
 
   // xxx
 
@@ -544,7 +541,7 @@ var entityCloneDataSeparatingBuffers = function entityCloneDataSeparatingBuffers
 
   /* clone data */
 
-  result.data = _entityClone( o );
+  result.data = _entityCloneAct( o );
   result.descriptorsMap = descriptorsMap;
 
   /* sort by atom size */
@@ -1545,6 +1542,7 @@ var _entityMost = function( src,onElement,returnMax )
 {
 
   _.assert( arguments.length === 3 );
+  _.assert( onElement.length === 1,'not mplemented' );
 
   if( onElement === undefined )
   onElement = function( element ){ return element; }
@@ -2101,9 +2099,9 @@ var _err = function _err( o )
     if( o.args[ a ] instanceof Error )
     {
       result = o.args[ a ];
-      if( result.needAttention )
-      result.needAttention = 0;
-      o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'Unknown error';
+      if( result.attentionNeeded !== undefined )
+      result.attentionNeeded = 0;
+      o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'unknown error';
       break;
     }
   }
@@ -2268,10 +2266,14 @@ var errLog = function errLog()
     level : 2,
   });
 
+  err.attentionNeeded = 0;
+  err.attentionGiven = 1;
+
   if( _.routineIs( err.toString ) )
   {
 
     var messageWas = err.message;
+
     //if( err.originalMessage )
     //err.message = err.originalMessage
 
@@ -3148,6 +3150,15 @@ var bufferIs = function( src )
 
 //
 
+var bufferViewIs = function( src )
+{
+  var type = _ObjectToString.call( src );
+  var result = type === '[object DataView]';
+  return result;
+}
+
+//
+
 var bufferRawIs = function( src )
 {
   var type = _ObjectToString.call( src );
@@ -3168,7 +3179,7 @@ var bufferNodeIs = function( src )
 
 var bufferSomeIs = function( src )
 {
-  return bufferIs( src ) || bufferRawIs( src ) || bufferNodeIs( src );
+  return bufferIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
 }
 
 //
@@ -3257,8 +3268,21 @@ var jqueryIs = function( src )
 
 //
 
+var canvasIs = function( src )
+{
+  if( _.jqueryIs( src ) )
+  src = src[ 0 ];
+  if( !domIs( src ) )
+  return false;
+  return src.tagName === 'CANVAS';
+}
+
+//
+
 var domIs = function( src )
 {
+  if( !_global_.Node )
+  return false;
   return src instanceof Node;
   /*return src instanceof Element;*/
 }
@@ -5143,6 +5167,13 @@ var timeOut = function( delay,onReady )
   var onEnd = function()
   {
     var result;
+
+    if( onReady )
+    con.first( onReady );
+    else
+    con.give();
+
+/*
     if( _.routineIs( onReady ) )
     {
       result = onReady();
@@ -5153,13 +5184,15 @@ var timeOut = function( delay,onReady )
     }
     else if( onReady instanceof wConsequence )
     {
-      onReady.give();
       onReady.then_( con );
+      onReady.give();
     }
     else
     {
       con.give();
     }
+*/
+
   }
 
   if( arguments.length > 2 )
@@ -5416,11 +5449,6 @@ var arrayNewOfSameLength = function( ins )
 }
 
 //
-  // !!! Not bad.
-  // +++ Please improve code formatting: add more spaces.
-  // +++ @param (dst) has to be @param { ( number | array ) }.
-  // +++ Please add description: What will happen if the first argument is an array?
-  // +++ Please add at least two different example.
 
 /**
  * The arrayOrNumber() method returns a new array
@@ -5469,9 +5497,6 @@ var arrayOrNumber = function( dst,length )
 }
 
 //
-  // !!! Not bad.
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
 
 /**
  * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
@@ -7318,20 +7343,14 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
 
 //
 
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
-  // +++ Please add to the @param { number } [ options.times = result.length ].
-  // +++ There is one more @throws at the end of method, add it please.
-
 /**
  * The arrayFill() method fills all the elements of the given or a new array from the 0 index to an (options.times) index
  * with a static value.
  *
- * @param { ( Object | Number | Array ) } options - The options to fill the array.
- * @param { Number } [ options.times = result.length ] options.times - The count of repeats.
+ * @param { ( Object | Number | Array ) } o - The options to fill the array.
+ * @param { Number } [ o.times = result.length ] o.times - The count of repeats.
    If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
- * @param { Number } [ options.value = 0 ] - The value for the filling.
+ * @param { Number } [ o.value = 0 ] - The value for the filling.
  *
  * @example
  * // returns [ 3, 3, 3, 3, 3 ]
@@ -7349,24 +7368,32 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
  * @method arrayFill
  * @throws { Error } If missed argument, or got more than one argument.
  * @throws { Error } If passed argument is not an object.
- * @throws { Error } If the last element of the (options.result) is not equal to the (options.value).
+ * @throws { Error } If the last element of the (o.result) is not equal to the (o.value).
  * @memberof wTools#
  */
 
-var arrayFill = function arrayFill( options )
+var arrayFill = function arrayFill( o )
 {
 
-  _assert( arguments.length === 1 );
-  _assert( _.objectIs( options ) || _.numberIs( options ) || _.arrayIs( options ),'arrayFill :','"options" must be object' );
+  if( arguments.length === 1 )
+  {
+    if( _.numberIs( o ) )
+    o = { times : o };
+    else if( _.arrayIs( o ) )
+    o = { result : o };
+  }
+  else
+  {
+    o = { result : arguments[ 0 ], value : arguments[ 1 ] };
+  }
 
-  if( _.numberIs( options ) )
-  options = { times : options };
-  else if( _.arrayIs( options ) )
-  options = { result : options };
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _.assertMapOnly( o,arrayFill.defaults );
+  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
-  var result = options.result || [];
-  var times = options.times !== undefined ? options.times : result.length;
-  var value = options.value !== undefined ? options.value : 0;
+  var result = o.result || [];
+  var times = o.times !== undefined ? o.times : result.length;
+  var value = o.value !== undefined ? o.value : 0;
 
   if( _.routineIs( result.fill ) )
   {
@@ -7384,10 +7411,12 @@ var arrayFill = function arrayFill( options )
   return result;
 }
 
-//
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
+arrayFill.defaults =
+{
+  result : null,
+  times : null,
+  value : null,
+}
 
 /**
  * The arrayCompare() method returns the first difference between the values of the first array from the second.
@@ -7907,7 +7936,7 @@ var arraySupplement = function arraySupplement( dstArray )
   result = [];
 
   var length = result.length;
-  _assert( _.arrayLike( result ),'expects object as argument' );
+  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
 
   for( a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -7915,10 +7944,17 @@ var arraySupplement = function arraySupplement( dstArray )
     length = Math.max( length,arguments[ a ].length );
   }
 
+  if( _.numberIs( result ) )
+  result = arrayFill
+  ({
+    value : result,
+    times : length,
+  });
+
   for( var k = 0 ; k < length ; k++ )
   {
 
-    if( k in dstArray && !isNaN( dstArray[ k ] ) )
+    if( k in dstArray && isFinite( dstArray[ k ] ) )
     continue;
 
     var a;
@@ -9006,6 +9042,8 @@ var bufferRawFromBuffer = function( buffer )
   if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
   result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
 
+  _.assert( _.bufferRawIs( result ) );
+
   return result;
 }
 
@@ -9024,13 +9062,9 @@ var bufferRawFrom = function( buffer )
   {
 
     result = new Uint8Array( buffer ).buffer;
-/*
-    if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
-    result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
-*/
 
   }
-  else if( _.bufferIs( buffer ) )
+  else if( _.bufferIs( buffer ) || _.bufferViewIs( buffer ) )
   {
 
     buffer = buffer.buffer;
@@ -9051,6 +9085,8 @@ var bufferRawFrom = function( buffer )
     throw _.err( 'not tested' );
   }
   else throw _.err( 'bufferRawFrom : unknown source' );
+
+  _.assert( _.bufferRawIs( result ) );
 
   return result;
 }
@@ -9144,7 +9180,7 @@ var buffersSerialize = function buffersSerialize( o )
       'size' : bytes.length,
     }
 
-    debugger; // xxx
+    // debugger; // xxx
 
     if( attribute.copyCustom )
     serialized[ 'fields' ] = attribute.copyCustom
@@ -9223,7 +9259,7 @@ var buffersDeserialize = function( o )
     if( attribute.offset+size > commonBuffer.byteLength )
     throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
 
-    logger.log( 'bufferConstructor( ' + commonBuffer + ',' + offset + ',' + size / sizeOfAtom + ' )' );
+    /* logger.log( 'bufferConstructor( ' + commonBuffer + ',' + offset + ',' + size / sizeOfAtom + ' )' ); */
 
     var buffer = bufferConstructor ? new bufferConstructor( commonBuffer,offset,size / sizeOfAtom ) : null;
 
@@ -10333,7 +10369,6 @@ var mapScreens = function( srcObject,screenObject )
   if( arguments.length > 2 )
   {
     debugger;
-    throw _.err( 'not tested' );
     var args =_ArraySlice.call( arguments,1 );
     screenObject = _.mapCopy.apply( this,args );
   }
@@ -10944,6 +10979,21 @@ var filter =
 }
 
 // --
+// var
+// --
+
+var ErrorAbort = function()
+{
+  this.message = arguments.length ? _.arrayFrom( arguments ) : 'Aborted';
+}
+ErrorAbort.prototype = Object.create( Error.prototype );
+
+var error =
+{
+  ErrorAbort : ErrorAbort,
+}
+
+// --
 // prototype
 // --
 
@@ -11059,6 +11109,7 @@ var Proto =
   symbolIs : symbolIs,
 
   bufferIs : bufferIs,
+  bufferViewIs : bufferViewIs,
   bufferRawIs : bufferRawIs,
   bufferNodeIs : bufferNodeIs,
   bufferSomeIs : bufferSomeIs,
@@ -11080,6 +11131,7 @@ var Proto =
   eventIs : eventIs,
   htmlIs : htmlIs,
   jqueryIs : jqueryIs,
+  canvasIs : canvasIs,
   domIs : domIs,
   domableIs : domableIs,
 
@@ -11355,6 +11407,10 @@ var Proto =
   // map filter
 
   filter : filter,
+
+  // var
+
+  error : error,
 
 }
 
