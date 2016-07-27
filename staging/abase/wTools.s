@@ -1142,11 +1142,11 @@ var entitySelect = function( container,query )
   _.assert( arguments.length === 2 || arguments.length === 1 );
 
   if( arguments.length === 2 )
-  var options = _entitySelectAdjust( arguments[ 0 ],arguments[ 1 ] )
+  var o = _entitySelectAdjust( arguments[ 0 ],arguments[ 1 ] )
   else
-  var options = _entitySelectAdjust( arguments[ 0 ] );
+  var o = _entitySelectAdjust( arguments[ 0 ] );
 
-  var result = _entitySelect( options );
+  var result = _entitySelect( o );
   return result;
 }
 
@@ -1158,16 +1158,16 @@ var entitySelectSet = function( container,query,value )
 
   if( arguments.length === 3 )
   {
-    var options = _entitySelectAdjust( arguments[ 0 ],arguments[ 1 ] );
-    options.set = value;
+    var o = _entitySelectAdjust( arguments[ 0 ],arguments[ 1 ] );
+    o.set = value;
   }
   else
   {
-    var options = _entitySelectAdjust( arguments[ 0 ] );
-    _.assert( _.mapOwn( options,{ set : 'set' } ) );
+    var o = _entitySelectAdjust( arguments[ 0 ] );
+    _.assert( _.mapOwn( o,{ set : 'set' } ) );
   }
 
-  var result = _entitySelect( options );
+  var result = _entitySelect( o );
   return result;
 }
 
@@ -1176,62 +1176,70 @@ var entitySelectSet = function( container,query,value )
 var _entitySelectAdjust = function( container,query )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  var delimeter = '.';
+  var delimeter = [ '.','[',']' ];
 
   if( arguments.length === 1 )
   {
-    var options = container;
-    _.assert( _.strIs( options.query ) );
-    delimeter = options.delimeter || delimeter;
-    options.qarrey = options.query.split( delimeter );
-    delete options.delimeter;
-    delete options.query;
+    debugger;
+    var o = container;
+    _.assert( _.strIs( o.query ) );
+    delimeter = o.delimeter || delimeter;
+    query = o.query;
+    delete o.delimeter;
+    delete o.query;
   }
   else
   {
-    var options = {};
-    options.container = container;
-    options.qarrey = query.split( delimeter );
+    var o = {};
+    o.container = container;
   }
 
-  if( options.qarrey[ 0 ] === '' )
-  options.qarrey.splice( 0,1 );
+  o.qarrey = _.strSplit
+  ({
+    src : query,
+    splitter : delimeter,
+    strip : 1,
+  });
 
-  if( options.undefinedForNone === undefined )
-  options.undefinedForNone = 1;
+  if( o.qarrey[ 0 ] === '' )
+  o.qarrey.splice( 0,1 );
 
-  return options;
+  if( o.undefinedForNone === undefined )
+  o.undefinedForNone = 1;
+
+  return o;
 }
 
 //
 
-var _entitySelect = function( options )
+var _entitySelect = function( o )
 {
 
   _.assert( arguments.length === 1 );
-  _.assertMapOnly( options,_entitySelect.defaults );
+  _.assertMapOnly( o,_entitySelect.defaults );
 
-  var isSet = _.mapOwn( options,{ set : 'set' } );
+  var isSet = _.mapOwn( o,{ set : 'set' } );
   var result;
-  var container = options.container;
-  var name = options.qarrey[ 0 ];
+  var container = o.container;
+  var name = o.qarrey[ 0 ];
+  var name2 = o.qarrey[ 1 ];
 
-  if( !options.qarrey.length )
+  if( !o.qarrey.length )
   return container;
 
   if( _.atomicIs( container ) )
   {
-    if( options.undefinedForNone )
+    if( o.undefinedForNone )
     return undefined;
     else
-    throw _.err( 'cant select',options.qarrey.join( '  ' ),'from atomic',container );
+    throw _.err( 'cant select',o.qarrey.join( '  ' ),'from atomic',container );
   }
 
-  var o = _.mapExtend( {},options );
-  o.qarrey = options.qarrey.slice( 1 );
+  var o = _.mapExtend( {},o );
+  o.qarrey = o.qarrey.slice( 1 );
 
   if( isSet )
-  o.set = options.set;
+  o.set = o.set;
 
   //
 
@@ -1239,14 +1247,20 @@ var _entitySelect = function( options )
   {
 
     if( !o.qarrey.length && isSet )
-    container[ name ] = options.set;
+    container[ name ] = o.set;
 
     var field = container[ name ];
 
     if( field === undefined && isSet )
     {
-      debugger;
-      container[ name ] = field = {};
+      if( !isNaN( name2 ) )
+      {
+        container[ name ] = field = [];
+      }
+      else
+      {
+        container[ name ] = field = {};
+      }
     }
 
     var selectOptions = _.mapExtend( {},o,{ container : field } );
@@ -1282,8 +1296,6 @@ _entitySelect.defaults =
 }
 
 //
-
-// +++ REMINDER : improve code formatting, please
 
   /**
    * Function that produces an elements for entityMap result
@@ -1998,7 +2010,8 @@ eachSample.defaults =
 
 //
 
-var eachRecursive = function() {
+var eachRecursive = function()
+{
 
   var i = 0;
 
@@ -2056,6 +2069,34 @@ var eachRecursive = function() {
   }
 
   return i;
+}
+
+//
+
+var dup = function( times,ins,result )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.numberIs( times ) || _.arrayLike( times ),'dup expects times as number or array' );
+
+  if( _.numberIs( times ) )
+  {
+    if( !result )
+    result = new Array( times );
+    for( var t = 0 ; t < times ; t++ )
+    result[ t ] = ins;
+    return result;
+  }
+  else if( _.arrayLike( times ) )
+  {
+    _.assert( times.length === 2 );
+    var l = times[ 1 ] - times[ 0 ];
+    if( !result )
+    result = new Array( times[ 1 ] );
+    for( var t = 0 ; t < l ; t++ )
+    result[ times[ 0 ] + t ] = ins;
+    return result;
+  }
+
 }
 
 // --
@@ -3127,6 +3168,25 @@ var numberIsRegular = function( src )
 
 //
 
+var numbersAreInt = function numbersAreInt( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersAreInt( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return Math.floor( src ) === src;
+}
+
+//
+
 var dateIs = function( src )
 {
   return _ObjectToString.call( src ) === '[object Date]';
@@ -3409,25 +3469,6 @@ var toStrFast = function( src ) {
 // number
 // --
 
-var numberIsInt = function numberIsInt( src )
-{
-
-  if( _.arrayLike( src ) )
-  {
-    for( var s = 0 ; s < src.length ; s++ )
-    if( !numberIsInt( src[ s ] ) )
-    return false;
-    return true;
-  }
-
-  if( !_.numberIs( src ) )
-  return false;
-
-  return Math.floor( src ) === src;
-}
-
-//
-
 var numberRandomInt = function( range )
 {
 
@@ -3625,18 +3666,20 @@ var strEnds = function( src,end )
 }
 
 //
-/**
-*Cut begin of the string.
-*@param {string} src
-*@param {string} begin
-  *example
-   var scr = ._strBeginRemove("abc","a");
-*@return {string}
-*If result of method strBegins - false, than return src
-*else cut begin of param src
-*@method strBeginRemove
-*@memberof wTools#
-*/
+
+ /**
+  *Cut begin of the string.
+  *@param {string} src
+  *@param {string} begin
+    *example
+     var scr = ._strBeginRemove("abc","a");
+  *@return {string}
+  *If result of method strBegins - false, than return src
+  *else cut begin of param src
+  *@method strBeginRemove
+  *@memberof wTools#
+  */
+
 var strBeginRemove = function( src,begin )
 {
   if( !strBegins( src,begin ) )
@@ -4994,16 +5037,18 @@ var routineDelayed = function routineDelayed( delay,routine )
       Can accept single routine instead array.
    * @example
       var x = 2, y = 3,
-          o { z: 6 };
+          o { z : 6 };
 
-      var sum = function(x, y) {
+      var sum = function( x, y )
+      {
           return x + y + this.z;
       },
-      prod = function (x, y) {
+      prod = function( x, y )
+      {
           return x * y * this.z;
       },
       routines = [ sum, prod ];
-      var res = wTools.routinesCall(o, routines, [x, y]);
+      var res = wTools.routinesCall( o, routines, [ x, y ] );
    // [ 11, 36 ]
    * @param {Object} [context] Context in which calls each function.
    * @param {Function[]} routines Array of called function
@@ -6853,6 +6898,7 @@ var arraySlice = function arraySlice( array,a,b )
 
 var arraySplice = function arraySplice( dstArray,a,b,srcArray )
 {
+
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayIs( srcArray ) );
 
@@ -6866,7 +6912,6 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
   srcArray.unshift( b-a );
   srcArray.unshift( a );
 
-  debugger;
   dstArray.splice.apply( dstArray,srcArray );
 
   return result;
@@ -9386,11 +9431,55 @@ buffersDeserialize.defaults =
   },
 }
 
+//
+
+var bufferToNodeBuffer = ( function( buffer )
+{
+
+  var toBuffer = null;
+
+  return function bufferToNodeBuffer( buffer )
+  {
+
+    _.assert( _.bufferIs( buffer ) || _.bufferRawIs( buffer ) );
+
+    /* */
+
+    if( toBuffer === null )
+    try
+    {
+      toBuffer = require( 'typedarray-to-buffer' );
+    }
+    catch( err )
+    {
+      toBuffer = false;
+    }
+
+    /* */
+
+    if( !buffer.length && !buffer.byteLength )
+    buffer = new Buffer([]);
+    else if( toBuffer )
+    try
+    {
+      buffer = toBuffer( buffer );
+    }
+    catch( err )
+    {
+      debugger;
+      buffer = toBuffer( buffer );
+    }
+    else throw _.err( 'unexpected' );
+
+    return buffer;
+  }
+
+})();
+
 // --
 // map
 // --
 
-  // +++ this description could be improved by adding the param (options)
   /**
    * @callback options~onCopyField
    * @param { objectLike } dstContainer - The target object.
@@ -11171,6 +11260,8 @@ var Proto =
   eachSample : eachSample,
   eachRecursive : eachRecursive,
 
+  dup : dup,
+
 
   // diagnostics
 
@@ -11226,6 +11317,7 @@ var Proto =
 
   numberIs : numberIs,
   numberIsRegular : numberIsRegular,
+  numbersAreInt : numbersAreInt,
 
   dateIs : dateIs,
   boolIs : boolIs,
@@ -11256,7 +11348,6 @@ var Proto =
 
   // number
 
-  numberIsInt : numberIsInt,
   numberRandomInt : numberRandomInt,
   numberRandomIntNot : numberRandomIntNot,
   numberFrom : numberFrom,
@@ -11462,6 +11553,8 @@ var Proto =
   buffersSerialize : buffersSerialize,
   buffersDeserialize : buffersDeserialize,
 
+  bufferToNodeBuffer : bufferToNodeBuffer,
+
 
   // map
 
@@ -11522,7 +11615,7 @@ var Proto =
 
 mapExtend( Self, Proto );
 
-Self.constructor = function wTools(){};
+Self.constructor = function wTools() {};
 
 // --
 // cache
@@ -11540,6 +11633,8 @@ var timeNow = Self.timeNow = Self._timeNow_gen();
 if( typeof module !== 'undefined' && module !== null )
 {
   module[ 'exports' ] = Self;
+  require( './component/Exec.s' );
+  require( './component/StringFormat.s' );
 }
 
 _global_[ 'wTools' ] = Self;

@@ -7,6 +7,7 @@
   "main": "staging/abase/wTools.s",
   "files": [
     "staging/abase/wTools.s",
+    "staging/abase/component",
     "production"
   ],
   "scripts": {
