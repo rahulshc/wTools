@@ -11632,9 +11632,11 @@ var timeNow = Self.timeNow = Self._timeNow_gen();
 
 if( typeof module !== 'undefined' && module !== null )
 {
+
   module[ 'exports' ] = Self;
   require( './component/Exec.s' );
   require( './component/StringFormat.s' );
+
 }
 
 _global_[ 'wTools' ] = Self;
