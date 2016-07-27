@@ -11635,7 +11635,7 @@ if( typeof module !== 'undefined' && module !== null )
 
   module[ 'exports' ] = Self;
   require( './component/Exec.s' );
-  require( './component/StringFormat.s' );
+  /* require( './component/StringFormat.s' ); */
 
 }
 
