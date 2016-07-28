@@ -5342,7 +5342,9 @@ var timeSpent = function( description,time )
   _assert( _.numberIs( time ) );
   _assert( _.strIs( description ) );
 
-  var result = /*'Spent ' +*/ ( description || '' ) + ( description ? ' : ' : '' ) + ( 0.001*( now-time ) ).toFixed( 3 ) + 's';
+  var result = /*'Spent ' +*/ ( description ? description : '' ) + ( description ? ' : ' : '' ) + ( 0.001*( now-time ) ).toFixed( 3 ) + 's';
+
+  debugger;
 
   return result;
 }
