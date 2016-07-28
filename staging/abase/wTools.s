@@ -1,4 +1,4 @@
-(function _wTools_s_(){
+( function _wTools_s_() {
 
 'use strict';
 
@@ -2187,17 +2187,18 @@ var _err = function _err( o )
     else originalMessage += str + ' ';
   }
 
-  //
+  /* */
 
   if( originalMessage[ 0 ] !== '\n' )
   originalMessage = '\n' + originalMessage;
   originalMessage = '\n' + 'caught ' + _.stack().split( '\n' )[ o.level ] + originalMessage;
 
-  //
+  /* */
 
   if( !result )
   {
-    var e = new Error(); result = new Error( originalMessage + '\n' + ( e.stack || '' ) + '\n' );
+    var stack = new Error().stack || '';
+    result = new Error( originalMessage + '\n' + stack + '\n' );
     result.originalStack = e.stack;
   }
   else try
@@ -2208,8 +2209,13 @@ var _err = function _err( o )
   catch( e )
   {
     debugger;
-    throw 'error in err';
-    result = new result.constructor( originalMessage + '\n' + ( result.stack || '' ) + '\n' );
+    var stack = result.stack || new Error().stack;
+    result = new Error( originalMessage + '\n' + stack + '\n' );
+    result.stack = stack;
+    result.originalStack = stack;
+
+    _.errLog( result );
+
   }
 
   result.originalMessage = originalMessage;
@@ -4828,8 +4834,8 @@ var _routineBind = function _routineBind( options )
       if( options.seal === true )
       return function sealedArguments()
       {
-        throw _.err( 'not tested' );
-        return routine.apply( this, args );
+        /*throw _.err( 'not tested' );*/
+        return routine.apply( undefined, args );
       }
       else
       return function boundArguments()
@@ -5325,13 +5331,21 @@ var _timeNow_gen = function()
 
 //
 
-var timeSpent = function( time,description )
+var timeSpent = function( description,time )
 {
   var now = timeNow();
 
-  _assert( 1 <= arguments.length && arguments.length <= 2 );
+  if( arguments.length === 1 )
+  {
+    time = arguments[ 0 ];
+    description = 'Spent';
+  }
 
-  var result = 'Spent ' + ( description || '' ) + ' : ' + ( 0.001*( now-time ) ).toFixed( 3 ) + 's';
+  _assert( 1 <= arguments.length && arguments.length <= 2 );
+  _assert( _.numberIs( time ) );
+  _assert( _.strIs( description ) );
+
+  var result = /*'Spent ' +*/ ( description || '' ) + ( description ? ' : ' : '' ) + ( 0.001*( now-time ) ).toFixed( 3 ) + 's';
 
   return result;
 }
