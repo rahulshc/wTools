@@ -2199,7 +2199,7 @@ var _err = function _err( o )
   {
     var stack = new Error().stack || '';
     result = new Error( originalMessage + '\n' + stack + '\n' );
-    result.originalStack = e.stack;
+    result.originalStack = stack;
   }
   else try
   {
@@ -2213,9 +2213,6 @@ var _err = function _err( o )
     result = new Error( originalMessage + '\n' + stack + '\n' );
     result.stack = stack;
     result.originalStack = stack;
-
-    _.errLog( result );
-
   }
 
   result.originalMessage = originalMessage;
