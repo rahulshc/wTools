@@ -5347,8 +5347,6 @@ var timeSpent = function( description,time )
 
   var result = description + ( 0.001*( now-time ) ).toFixed( 3 ) + 's';
 
-  debugger;
-
   return result;
 }
 
