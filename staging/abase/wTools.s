@@ -9866,23 +9866,31 @@ var mapKeyWithIndex = function( src,index )
 }
 
   /**
-   * The mapToString() method returns a string representing object.
+   * The mapToString() method converts and returns the passed object (src) to the string.
    *
    * It takes an object and two strings (keyValSep) and (tupleSep),
    * checks if (keyValSep and tupleSep) are strings.
    * If false, it assigns them defaults (' : ') to the (keyValSep) and
    * ('; ') to the tupleSep.
-   * Otherwise, it returns a string representing object.
+   * Otherwise, it returns a string representing the passed object (src).
    *
-   * @param { objectLike } src - The object.
-   * @param { string } keyValSep - colon.
-   * @param { string } tupleSep - semicolon.
+   * @param { objectLike } src - The object to convert to the string.
+   * @param { string } [ keyValSep = ' : ' ] keyValSep - colon.
+   * @param { string } [ tupleSep = '; ' ] tupleSep - semicolon.
    *
    * @example
    * // returns 'a : 1; b : 2; c : 3; d : 4'
    * _.mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+   * 
+   * @example
+   * // returns '0 : 1; 1 : 2; 2 : 3';
+   * _.mapToString( [ 1, 2, 3 ], ' : ', '; ' );
    *
-   * @returns { string } Returns string (result) representing object.
+   * @example
+   * // returns '0 : a; 1 : b; 2 : c';
+   * _.mapToString( 'abc', ' : ', '; ' );
+   *
+   * @returns { string } Returns a string (result) representing the passed object (src).
    * @method mapToString
    * @memberof wTools
    */
@@ -9891,7 +9899,7 @@ var mapToString = function( src,keyValSep,tupleSep )
 {
 
   if( !_.strIs( keyValSep ) ) keyValSep = ' : ';
-  if( !_.strIs( tupleSep ) ) keyValSep = '; '; // !!! instead "keyValSep" should be "tupleSep"
+  if( !_.strIs( tupleSep ) ) tupleSep = '; '; // +++ instead "keyValSep" should be "tupleSep"
   var result = '';
   for( var s in src )
   {
