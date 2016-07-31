@@ -6320,7 +6320,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 
     _.assert( _.routineIs( onEqual ) );
     _.assert( onEqual.length === 1 || onEqual.length === 2 );
-    index = arrayLeftIndbufferRelenexOf( dstArray,ins,onEqual );
+    index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
   }
   else throw _.err( 'unexpected' );
@@ -7700,7 +7700,6 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
 var arrayLeft = function( arr,ins,equalizer )
 {
 
-  _.assert( arguments.length === 2 );
   var result = {};
   var i = _.arrayLeftIndexOf( arr,ins,equalizer );
 
