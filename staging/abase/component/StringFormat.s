@@ -332,7 +332,7 @@ var _toStrShort = function( src,options )
    * 
    * @returns { string } Returns a converted number (src) to the string.
    * @method _toStrFromNumber
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var _toStrFromNumber = function( src,options )
@@ -650,7 +650,7 @@ var _toStrFromContainer = function( options )
    * or is not an array-like, otherwise, it returns 'false'.
    * If (element) is the string, it returns 'true' only if (element.length) is less than 40 symbols.
    * @method _toStrIsSimpleElement
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var _toStrIsSimpleElement = function( element )
@@ -686,7 +686,7 @@ var _toStrIsSimpleElement = function( element )
    * @method toStrForRange
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
    * @throws { Error } Will throw an Error if (range) is not an Array.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var toStrForRange = function( range )
@@ -752,7 +752,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
    * @method strCapitalize
    * @throws { Error } Will throw an Error if (src) is not a String.
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strCapitalize = function( src )
@@ -788,7 +788,7 @@ var strCapitalize = function( src )
    * @method strTimes
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2.
    * @throws { Error } Will throw an Error if (times) is not a Number.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strTimes = function( s,times )
@@ -824,7 +824,7 @@ var strTimes = function( s,times )
    * @method strLineCount
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
    * @throws { Error } Will throw an Error if (src) is not a String.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strLineCount = function( src )
@@ -858,7 +858,7 @@ var strLineCount = function( src )
    * @method strSplitStrNumber
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
    * @throws { Error } Will throw an Error if (src) is not a String.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strSplitStrNumber = function( src )
@@ -1069,7 +1069,7 @@ strInhalf.defaults =
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
    * @throws { Error } Will throw an Error if (src) is not a String.
    * @throws { Error } Will throw an Error if (o.splitter) is not a String or is not an Array.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strSplit = function( o )
@@ -1151,7 +1151,7 @@ strSplit.defaults =
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
    * @throws { Error } Will throw an Error if (src) is not a String.
    * @throws { Error } Will throw an Error if (o.stripper) is not a String or is not an Array.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
   var strStrip = function( o )
 {
@@ -1217,7 +1217,7 @@ strStrip.defaults =
    * @method strRemoveAllSpaces
    * @throws { Error } Will throw an Error if (arguments.length) is lees than 1 or greater than 2.
    * @throws { Error } Will throw an Error if (src) is not a String.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strRemoveAllSpaces = function( src,sub )
@@ -1497,7 +1497,7 @@ var strDropPostfix = function( src,postfix )
    * @method strDifference
    * @throws { Error } Will throw an Error if (src1) is not a String.
    * @throws { Error } Will throw an Error if (src2) is not a String.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strDifference = function( src1,src2,options )
@@ -1541,7 +1541,7 @@ var strSimilarity = function( src1,src2,options )
    *
    * @returns { object } Returns an object that contains the array-like data ({ key : value, ... length : .}).
    * @method strLattersSpectre
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strLattersSpectre = function( src )
@@ -1714,7 +1714,7 @@ var strIndentation = function( src,tab )
    * @returns { string } Returns an ordered (srcStr).
    * @method strNumberLines
    * @throws { Error } Will throw an Error if (srcStr) is not a String.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strNumberLines = function( srcStr )
@@ -1748,7 +1748,7 @@ var strNumberLines = function( srcStr )
    * @method strCount
    * @throws { Error } Will throw an Error if (src) is not a String.
    * @throws { Error } Will throw an Error if (ins) is not a String.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strCount = function( src,ins )
@@ -1783,7 +1783,7 @@ var strCount = function( src,ins )
    * @returns { typedArray } Returns the typed-array (Uint8Array).
    * @method strToBytes
    * @throws { Error } Will throw an Error if (str) is not a String.
-   * @memberof StringFormat#
+   * @memberof wTools#
    */
 
 var strToBytes = function( str )

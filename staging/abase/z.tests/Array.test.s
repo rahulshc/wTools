@@ -101,29 +101,56 @@
     var got = _.arrayIs( [ 1, 2, 3 ] );
     var expected  = true;
     test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.arrayIs( {  } );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'number';
+    var got = _.arrayIs( 6 );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'string';
+    var got = _.arrayIs( 'abc' );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'boolean';
+    var got = _.arrayIs( true );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'function';
+    var got = _.arrayIs( function() {  } );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'a pseudo array';
+    var got = ( function() {
+      return _.arrayIs( arguments );
+    } )('Hello there!');
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'no argument';
+    var got = _.arrayIs();
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'null';
+    var got = _.arrayIs();
+    var expected  = false;
+    test.identical( got, expected );
+    
     
     /**/
     
     if( Config.debug ) 
     {
 
-      test.description = 'no argument';
-      test.shouldThrowError( function()
-      {
-        _.arrayIs();
-      });
-
-      test.description = 'wrong type of argument';
-      test.shouldThrowError( function()
-      {
-        _.arrayIs('wrong argument');
-      });
-
-      test.description = 'argument is not wrapped into array';
-      test.shouldThrowError( function()
-      {
-        _.arrayIs( 1, 2, 3 );
-      });
+      
       
     }
     
@@ -150,28 +177,47 @@
     var expected = true;
     test.identical( got, expected );
 
+    test.description = 'no argument';
+    var got = _.arrayLike();
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'null';
+    var got = _.arrayLike();
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'function';
+    var got = _.arrayLike( function() {  } );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'string';
+    var got = _.arrayLike();
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'number';
+    var got = _.arrayLike();
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'boolean';
+    var got = _.arrayLike( true );
+    var expected  = false;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.arrayLike();
+    var expected  = false;
+    test.identical( got, expected );
+
     /**/
     
     if( Config.debug ) 
     {
       
-      test.description = 'no argument';
-      test.shouldThrowError( function() 
-      {
-        _.arrayLike();
-      });
-
-      test.description = 'wrong type of argument';
-      test.shouldThrowError( function()
-      {
-        _.arrayLike('wrong argument');
-      });
       
-      test.description = 'argument is not wrapped into array';
-      test.shouldThrowError( function() 
-      {
-        _.arrayLike( 1, 2, 3 );
-      });
       
     }
     
@@ -213,29 +259,23 @@
     var got = _.hasLength( 'Hello there!' );
     var expected = true;
     test.identical( got, expected );
+
+    test.description = 'no arguments';
+    var got = _.hasLength();
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'null';
+    var got = _.hasLength();
+    var expected = false;
+    test.identical( got, expected );
     
     /**/
     
     if( Config.debug ) 
     {
-
-      test.description = 'no argument';
-      test.shouldThrowError( function()
-      {
-        _.hasLength();
-      });
-
-      test.description = 'wrong type of argument';
-      test.shouldThrowError( function()
-      {
-        _.hasLength('wrong argument');
-      });
-
-      test.description = 'argument is not wrapped into array';
-      test.shouldThrowError( function()
-      {
-        _.hasLength( 1, 2, 3 );
-      });
+      
+      
       
     }
     
@@ -321,11 +361,6 @@
 
   var arrayNew = function( test ) 
   {
-    
-    test.description = 'nothing';
-    var got = _.arrayNew( [  ] );
-    var expected = [  ];
-    test.identical( got, expected );
 
     test.description = 'an empty array';
     var got = _.arrayNew( [  ], 0 );
@@ -340,11 +375,6 @@
     test.description = 'length = 2';
     var got = _.arrayNew( [ 1, 2, 3 ], 2 );
     var expected = [ , , ];
-    test.identical( got, expected );
-
-    test.description = 'length = 3';
-    var got = _.arrayNew( [ 1, 2, 3 ] );
-    var expected = [ , , , ];
     test.identical( got, expected );
 
     test.description = 'length = 4';
@@ -414,12 +444,6 @@
       test.shouldThrowError( function()
       {
         _.arrayNewOfSameLength();
-      });
-
-      test.description = 'wrong type of argument';
-      test.shouldThrowError( function()
-      {
-        _.arrayNewOfSameLength('wrong argument');
       });
 
       test.description = 'extra argument';
@@ -727,7 +751,7 @@
   };
 
 
-  var arrayPrependOnceMerging = function( test ) // it doesn't work???
+  var arrayPrependOnceMerging = function( test )
   {
 
     test.description = 'nothing';
@@ -866,7 +890,13 @@
       test.description = 'wrong type of argument';
       test.shouldThrowError( function()
       {
-        _.arrayFrom( 'wrong argument' );
+        _.arrayFrom( 6 );
+      });
+
+      test.description = 'wrong type of argument';
+      test.shouldThrowError( function()
+      {
+        _.arrayFrom( true );
       });
       
     }
@@ -917,7 +947,7 @@
   };
   
   
-  var arrayRemoveArrayOnce = function( test ) // it doesn't work???
+  var arrayRemoveArrayOnce = function( test )
   {
 
     test.description = 'nothing';
@@ -988,13 +1018,6 @@
     var got = _.arrayRemovedOnce( [ true, false, 6 ], true );
     var expected = 0;
     test.identical( got, expected );
-
-    test.description = 'second element removed';
-    var got = _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function ( el, ins ) {
-      return el > ins;
-    });
-    var expected = 1;
-    test.identical( got, expected );
     
     /**/
     
@@ -1016,7 +1039,7 @@
       test.description = 'extra argument';
       test.shouldThrowError( function()
       {
-        _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+        _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function( el ) { return el; }, 'redundant argument' );
       });
 
       test.description = 'arguments[0] is wrong';
@@ -1051,13 +1074,6 @@
     test.description = 'two elements left';
     var got = _.arrayRemoveOnce( [ true, false, 6 ], true );
     var expected = [ false, 6 ];
-    test.identical( got, expected );
-
-    test.description = 'three elements left';
-    var got = _.arrayRemoveOnce( [ 2, 1, 4, 6 ], 2, function ( el, ins ) {
-      return el > ins;
-    });
-    var expected = [ 2, 1, 6 ];
     test.identical( got, expected );
     
     /**/
@@ -1228,7 +1244,7 @@
 
   };
 
-  var arrayReplaceOnce = function( test ) // it doesn't work (_.arrayReplaceOnce is not a function)
+  var arrayReplaceOnce = function( test )
   {
 
     test.description = 'nothing';
@@ -1285,7 +1301,7 @@
   };
 
 
-  var arrayUpdate = function( test ) // it doesn't work (_.arrayUpdate is not a function)
+  var arrayUpdate = function( test )
   {
 
     test.description = 'add a new element';
@@ -1342,7 +1358,7 @@
   };
 
 
-  var arrayAppendOnce = function( test ) // it doesn't work (_.arrayAppendOnce is not a function)
+  var arrayAppendOnce = function( test )
   {
 
     test.description = 'add a new element';
@@ -1404,7 +1420,7 @@
   };
 
 
-  var arrayPrependOnce = function( test ) // it doesn't work (_.arrayPrependOnce is not a function)
+  var arrayPrependOnce = function( test )
   {
 
     test.description = 'add a new element';
@@ -1537,7 +1553,7 @@
   {
 
     test.description = 'nothing';
-    var got = _.arraySlice( [  ], [  ] );
+    var got = _.arraySlice( [  ] );
     var expected = [  ];
     test.identical( got, expected );
 
@@ -1687,23 +1703,13 @@
   var arrayPut = function( test ) 
   {
 
-    test.description = 'nothing';
-    var got = _.arrayPut( [  ] );
-    var expected = [  ];
-    test.identical( got, expected );
-
-    test.description = 'adds the new elements';
-    var got = _.arrayPut( [  ], undefined, 'str', true, [ 7, 8 ] );
-    var expected = [ 'str', true, 7, 8 ];
-    test.identical( got, expected );
-
     test.description = 'adds after second element';
     var got = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 2, 'str', true, [ 7, 8 ] );
     var expected = [ 1, 2, 'str', true, 7, 8, 9 ];
     test.identical( got, expected );
 
     test.description = 'adds at the beginning';
-    var got = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], undefined, 'str', true, [ 7, 8 ] );
+    var got = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 0, 'str', true, [ 7, 8 ] );
     var expected = [ 'str', true, 7, 8, 5, 6, 9 ];
     test.identical( got, expected );
     
@@ -2112,6 +2118,11 @@
     var got = _.arrayLeftIndexOf( 'abcdef', 'd' );
     var expected = 3;
     test.identical( got, expected );
+
+    test.description = 'second index';
+    var got = _.arrayLeftIndexOf( 'abcdef', 'c', function( el ) { return el; } );
+    var expected = 2;
+    test.identical( got, expected );
     
     /**/
     
@@ -2122,6 +2133,12 @@
       test.shouldThrowError( function()
       {
         _.arrayLeftIndexOf();
+      });
+
+      test.description = 'not enough arguments';
+      test.shouldThrowError( function()
+      {
+        _.arrayLeftIndexOf( [ 1, 2, 3 ] );
       });
 
       test.description = 'third argument is wrong';
@@ -2135,22 +2152,27 @@
   };
   
   
-  var arrayLeftGet = function( test ) 
+  var arrayLeft = function( test )
   {
 
     test.description = 'nothing';
-    var got = _.arrayLeftGet( [  ] );
-    var expected = undefined;
+    var got = _.arrayLeft( [  ] );
+    var expected = {  };
     test.identical( got, expected );
 
-    test.description = 'nothing';
-    var got = _.arrayLeftGet( [ 1, 2, 3, 4, 5 ], 3 );
-    var expected = { index : 2, element : 3 };;
+    test.description = 'returns an object';
+    var got = _.arrayLeft( [ 1, 2, 3, 4, 5 ], 3 );
+    var expected = { index : 2, element : 3 };
     test.identical( got, expected );
     
     test.description = 'returns an object';
-    var got = _.arrayLeftGet( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
+    var got = _.arrayLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
     var expected = { index : 3, element : 'str' };
+    test.identical( got, expected );
+
+    test.description = 'returns an object';
+    var got = _.arrayLeft( [ 1, 2, false, 'str', 5 ], 5, function( a ) { return a; } );
+    var expected = { index : 4, element : 5 };
     test.identical( got, expected );
     
     /**/
@@ -2161,13 +2183,13 @@
       test.description = 'no arguments';
       test.shouldThrowError( function()
       {
-        _.arrayLeftGet();
+        _.arrayLeft();
       });
 
       test.description = 'third argument is wrong';
       test.shouldThrowError( function()
       {
-        _.arrayLeftGet( [ 1, 2, 3 ], 2, 'wrong argument' );
+        _.arrayLeft( [ 1, 2, 3 ], 2, 'wrong argument' );
       });
       
     }
@@ -2262,7 +2284,7 @@
   };
 
 
-  var arrayCountSame = function( test ) // it doesn't work (_.arrayCountSame is not a function)
+  var arrayCountSame = function( test )
   {
 
     test.description = 'nothing';
@@ -2314,7 +2336,7 @@
   };
   
 
-  var arraySum = function( test ) // it doesn't work (_.arraySum is not a function)
+  var arraySum = function( test )
   {
 
     test.description = 'nothing';
@@ -3022,12 +3044,6 @@
       {
         _.bufferRelen();
       });
-
-      test.description = 'arguments are wrong';
-      test.shouldThrowError( function()
-      {
-        _.bufferRelen( 'wrong argument', 'wrong argument' );
-      });
       
     }
     
@@ -3071,7 +3087,7 @@
   };
 
 
-  var bufferRawFromBuffer = function( test ) // it doesn't work (_.bufferRawFromBuffer is not a function)
+  var bufferRawFromBuffer = function( test )
   {
 
     var buffer1 = new ArrayBuffer(10);
@@ -3122,8 +3138,7 @@
     
     tests:
     {
-
-      //arrayPrependOnceMerging : arrayPrependOnceMerging,
+      
       //arrayIs : arrayIs,
       //arrayLike : arrayLike,
       //hasLength : hasLength,
@@ -3168,7 +3183,7 @@
       //arraySame : arraySame,
 
       //arrayLeftIndexOf : arrayLeftIndexOf,
-      //arrayLeftGet : arrayLeftGet,
+      //arrayLeft : arrayLeft,
       //arrayHasAny : arrayHasAny,
       //arrayCount : arrayCount,
       //arrayCountSame : arrayCountSame,
@@ -3189,9 +3204,9 @@
       //arraySupplement : arraySupplement,
 
 
-      //bufferRelen : bufferRelen,
+      //bufferRelen : bufferRelen, 
       //bufferRetype : bufferRetype,
-      bufferRawFromBuffer : bufferRawFromBuffer,
+      //bufferRawFromBuffer : bufferRawFromBuffer,
       
     }
 
