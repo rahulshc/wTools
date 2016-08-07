@@ -10019,7 +10019,7 @@ var mapKeyWithIndex = function( src,index )
    * @example
    * // returns 'a : 1; b : 2; c : 3; d : 4'
    * _.mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
-   * 
+   *
    * @example
    * // returns '0 : 1; 1 : 2; 2 : 3';
    * _.mapToString( [ 1, 2, 3 ], ' : ', '; ' );
