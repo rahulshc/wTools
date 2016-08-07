@@ -6380,8 +6380,8 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  *
  * @example
  * // returns 1
- * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function ( el, ins ) {
- *   return el > ins;
+ * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 4, function ( el ) {
+ *   return el;
  * });
  *
  * @example
@@ -6413,7 +6413,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
   {
 
     _.assert( _.routineIs( onEqual ) );
-    _.assert( onEqual.length === 1 && onEqual.length === 2 );
+    _.assert( onEqual.length === 1 || onEqual.length === 2 );
     index = arrayLeftIndexOf( dstArray,ins,onEqual );
 
   }
@@ -7184,7 +7184,7 @@ var arrayToStr = function( src,options )
  *
  * @example
  * // returns [ 'str', true, 7, 8, 5, 6, 9 ]
- * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], undefined, 'str', true, [ 7, 8 ] );
+ * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 0, 'str', true, [ 7, 8 ] );
  *
  * @returns { arrayLike } - Returns an array containing the changed values.
  * @method arrayPut
@@ -7685,6 +7685,8 @@ var arraySameSet = function( src1,src2 )
    * @returns { Number } Returns the corresponding index, if a callback function (equalizer) returns true.
    * Otherwise, it returns -1.
    * @method arrayLeftIndexOf
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
+   * @throws { Error } Will throw an Error if (equalizer.length) is not equal to the 1 or 2.
    * @throws { Error } Will throw an Error if (equalizer) is not a Function.
    * @memberof wTools#
    */
@@ -7760,14 +7762,14 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
 
 //
   /**
-   * The arrayLeftGet() method returns a new object containing the properties, (index, element),
+   * The arrayLeft() method returns a new object containing the properties, (index, element),
    * corresponding to a found value (ins) from an array (arr).
    *
    * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
    * that returns the index of the value (ins) in the array (arr).
    * @see { @link wTools#_.arrayLeftIndexOf() } - See for more information.
    * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
-   * Otherwise, it returns the 'undefined'.
+   * Otherwise, it returns the empty object.
    *
    * @param { arrayLike } arr - Entity to check.
    * @param { * } ins - Element to locate in the array.
@@ -7775,22 +7777,23 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
    *
    * @example
    * // returns { index : 3, element : 'str' }
-   * _.arrayLeftGet( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
+   * _.arrayLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
    *
    * @example
-   * // returns undefined
-   * _.arrayLeftGet( [ 1, 2, 3, 4, 5 ], 6 );
+   * // returns {  }
+   * _.arrayLeft( [ 1, 2, 3, 4, 5 ], 6 );
    *
    * @returns { Object } Returns a new object containing the properties, (index, element),
    * corresponding to the found value (ins) from the array (arr).
-   * Otherwise, it returns 'undefined'.
-   * @method arrayLeftGet
+   * Otherwise, it returns the empty object.
+   * @method arrayLeft
    * @throws { Error } Will throw an Error if (equalizer) is not a Function.
    * @memberof wTools#
    */
 
 var arrayLeft = function( arr,ins,equalizer )
 {
+
   var result = {};
   var i = _.arrayLeftIndexOf( arr,ins,equalizer );
 
@@ -8825,6 +8828,11 @@ var arraySortedAddArray = function( dst,src,comparator )
 
 var bufferRelen = function( src,len )
 {
+
+  _.assert( _.bufferIs( src ) );
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( len ) );
+
   var result = src;
 
   if( len > src.length )
@@ -9996,23 +10004,31 @@ var mapKeyWithIndex = function( src,index )
 }
 
   /**
-   * The mapToString() method returns a string representing object.
+   * The mapToString() method converts and returns the passed object (src) to the string.
    *
    * It takes an object and two strings (keyValSep) and (tupleSep),
    * checks if (keyValSep and tupleSep) are strings.
    * If false, it assigns them defaults (' : ') to the (keyValSep) and
    * ('; ') to the tupleSep.
-   * Otherwise, it returns a string representing object.
+   * Otherwise, it returns a string representing the passed object (src).
    *
-   * @param { objectLike } src - The object.
-   * @param { string } keyValSep - colon.
-   * @param { string } tupleSep - semicolon.
+   * @param { objectLike } src - The object to convert to the string.
+   * @param { string } [ keyValSep = ' : ' ] keyValSep - colon.
+   * @param { string } [ tupleSep = '; ' ] tupleSep - semicolon.
    *
    * @example
    * // returns 'a : 1; b : 2; c : 3; d : 4'
    * _.mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+   * 
+   * @example
+   * // returns '0 : 1; 1 : 2; 2 : 3';
+   * _.mapToString( [ 1, 2, 3 ], ' : ', '; ' );
    *
-   * @returns { string } Returns string (result) representing object.
+   * @example
+   * // returns '0 : a; 1 : b; 2 : c';
+   * _.mapToString( 'abc', ' : ', '; ' );
+   *
+   * @returns { string } Returns a string (result) representing the passed object (src).
    * @method mapToString
    * @memberof wTools
    */
@@ -10021,7 +10037,7 @@ var mapToString = function( src,keyValSep,tupleSep )
 {
 
   if( !_.strIs( keyValSep ) ) keyValSep = ' : ';
-  if( !_.strIs( tupleSep ) ) keyValSep = '; '; // !!! instead "keyValSep" should be "tupleSep"
+  if( !_.strIs( tupleSep ) ) tupleSep = '; '; // +++ instead "keyValSep" should be "tupleSep"
   var result = '';
   for( var s in src )
   {

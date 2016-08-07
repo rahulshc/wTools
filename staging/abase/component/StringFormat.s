@@ -306,6 +306,38 @@ var _toStrShort = function( src,options )
 }
 
 //
+  /**
+   * The _toStrFromNumber() method returns a converted number (src) to the string.
+   *
+   * @param { number } src - The number to convert.
+   * @param { object } options - Entity to check.
+   * @param { number } options.precision - An integer specifying the number of significant digits.
+   * @param { number } options.fixed - The number of digits to appear after the decimal point.
+   * 
+   * @example
+   * // returns '3.1235'
+   * var options = { precision : 5 };
+   * _._toStrFromNumber( 3.123456, options );
+   * 
+   * @example
+   * // returns '3.1'
+   * var options = { precision : 2 };
+   * _._toStrFromNumber( 3.123456, options );
+   *
+   * @example
+   * // returns '13.7500'
+   * var options = { fixed : 4 };
+   * _._toStrFromNumber( 13.75, options );
+   *
+   * @example
+   * // returns '13.5'
+   * var options = { fixed : 1 };
+   * _._toStrFromNumber( 13.46, options );
+   * 
+   * @returns { string } Returns a converted number (src) to the string.
+   * @method _toStrFromNumber
+   * @memberof wTools#
+   */
 
 var _toStrFromNumber = function( src,options )
 {
@@ -592,6 +624,38 @@ var _toStrFromContainer = function( options )
 }
 
 //
+  /**
+   * The _toStrIsSimpleElement() method returns 'true', if an (element) is not an object-like,
+   * or is not an array-like, otherwise, it returns 'false'.
+   *
+   * @param { * } element - Entity to check.
+   *
+   * @example
+   * // returns true
+   * _._toStrIsSimpleElement('test');
+   *
+   * @example
+   * // returns true
+   * _._toStrIsSimpleElement( 7 );
+   * 
+   * @example
+   * // returns false
+   * _._toStrIsSimpleElement('test,test,test,test,test,test,test,test,test.');
+   *
+   * @example
+   * // returns false
+   * _._toStrIsSimpleElement( { a : 3 } );
+   *
+   * @example
+   * // returns false
+   * _._toStrIsSimpleElement( [ 1, 2, 3 ] );
+   *
+   * @returns { boolean } Returns 'true', if an (element) is not an object-like,
+   * or is not an array-like, otherwise, it returns 'false'.
+   * If (element) is the string, it returns 'true' only if (element.length) is less than 40 symbols.
+   * @method _toStrIsSimpleElement
+   * @memberof wTools#
+   */
 
 var _toStrIsSimpleElement = function( element )
 {
@@ -606,6 +670,28 @@ var _toStrIsSimpleElement = function( element )
 }
 
 //
+  /**
+   * The toStrForRange() method creates and returns the string for an array (range) that represents range
+   * from the (range[0]) to the (range[1]).
+   * For example (range = [ 1, 10 ]) returns '[ 1..10 ]'.
+   *
+   * @param { array } range - An array with two elements.
+   *
+   * @example
+   * // returns '[ 1..10 ]'
+   * _.toStrForRange( [ 1, 10 ] );
+   *
+   * @example
+   * // returns '[ a..z ]'
+   * _.toStrForRange( [ 'a', 'z' ] );
+   * 
+   * @returns { string } Returns the string for an array (range) that represents the range
+   * from the (range[0]) to the (range[1]).
+   * @method toStrForRange
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (range) is not an Array.
+   * @memberof wTools#
+   */
 
 var toStrForRange = function( range )
 {
@@ -653,6 +739,25 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
 }
 
 //
+  /**
+   * The strCapitalize() method returns converted to upper case the first letter of a string (src).
+   *
+   * @param { string } src - The string to convert.
+   *
+   * @example
+   * // returns 'Hello'
+   * _.strCapitalize('hello');
+   *
+   * @example
+   * // returns 'Object'
+   * _.strCapitalize('object');
+   *
+   * @returns { string } Returns converted to upper case the first letter of a string (src).
+   * @method strCapitalize
+   * @throws { Error } Will throw an Error if (src) is not a String.
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @memberof wTools#
+   */
 
 var strCapitalize = function( src )
 {
@@ -662,6 +767,33 @@ var strCapitalize = function( src )
 }
 
 //
+  /**
+   * The strTimes() method constructs and returns a new string
+   * which contains the specified number of copies (times) on which it was called (s),
+   * concatenated together.
+   *
+   * @param { * } s - The value to repeat.
+   * @param { number } times - An integer indicating the number of times to repeat
+   * in the newly-created string that is to be returned.
+   *
+   * @example
+   * // returns ''
+   * _.strTimes( 'abc', 0);
+   *
+   * @example
+   * // returns 'abc'
+   * _.strTimes( 'abc', 1);
+   *
+   * @example
+   * // returns 'abcabcabc'
+   * _.strTimes( 'abc', 3);
+   *
+   * @returns { string } A new string containing the specified number of copies of the given value.
+   * @method strTimes
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2.
+   * @throws { Error } Will throw an Error if (times) is not a Number.
+   * @memberof wTools#
+   */
 
 var strTimes = function( s,times )
 {
@@ -677,17 +809,67 @@ var strTimes = function( s,times )
 }
 
 //
+  /**
+   * The strLineCount() method returns the count of the row.
+   *
+   * @param { string } src - The string to check.
+   *
+   * @example
+   * // returns 4
+   * var func = 'function( x, y ) \n { \n   return x + y; \n }';
+   * _.strLineCount(func);
+   * 
+   * @example
+   * // returns 1
+   * var func = 'function( x, y ) { return x + y; }';
+   * _.strLineCount(func);
+   *
+   * @returns { number } Returns the count of the row.
+   * @method strLineCount
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (src) is not a String.
+   * @memberof wTools#
+   */
 
 var strLineCount = function( src )
 {
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) );
+  
   var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
   return result;
 }
 
 //
+  /**
+   * The strSplitStrNumber() method parses a string (src) and returns the object that contains
+   * two properties, representing the values of string and number parsed from the given string (src).
+   *
+   * @param { string } src - The string to parse.
+   *
+   * @example
+   * // returns { str : 'abc', number : 3 }
+   * _.strSplitStrNumber( 'abc3def' );
+   * 
+   * @example
+   * // returns { str : 'abcdef' }
+   * _.strSplitStrNumber( 'abcdef' );
+   *
+   * @returns { object } Returns the object that contains two properties,
+   * representing the values of string and number parsed from the given string (src).
+   * If a string (src) doesn't contain number(s), it returns the object that contains one property,
+   * representing the initial value of string (src).
+   * @method strSplitStrNumber
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (src) is not a String.
+   * @memberof wTools#
+   */
 
 var strSplitStrNumber = function( src )
 {
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) );
+  
   var result = {};
   var mnumber = src.match(/\d+/);
   if( mnumber && mnumber.length )
@@ -870,6 +1052,29 @@ strInhalf.defaults =
 }
 
 //
+  /**
+   * The strSplit() splits a String object into an array of strings
+   * by separating the string into substrings.
+   *
+   * @param { string } o - The string to split.
+   *
+   * @example
+   * // returns [ 'test','test','test' ]
+   * _.strSplit( ' test  test  test ' );
+   *
+   * @example
+   * // returns [ 'test', 'test', 'test' ]
+   * strSplit.defaults.splitter = '.';
+   * _.strSplit( 'test. test. test.' );
+   *
+   * @returns { string } Returns an array of strings split at each point
+   * where the separator (o.splitter) occurs in the given string.
+   * @method strSplit
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (src) is not a String.
+   * @throws { Error } Will throw an Error if (o.splitter) is not a String or is not an Array.
+   * @memberof wTools#
+   */
 
 var strSplit = function( o )
 {
@@ -928,8 +1133,31 @@ strSplit.defaults =
 }
 
 //
-
-var strStrip = function( o )
+  /**
+   * The strStrip() method removes by default whitespace (or the given symbol o.stripper)
+   * from both ends of a string.
+   * Whitespace in this context is all the whitespace characters (space, tab, line terminator etc.).
+   *
+   * @param { string } o - The string to trim.
+   *
+   * @example
+   * // returns 'test'
+   * _.strStrip( ' test ' );
+   *
+   * @example
+   * // returns 'test'
+   * strStrip.defaults.stripper = ',';
+   * _.strStrip( 'test,' );
+   * 
+   * @returns { string } Returns the string stripped of whitespace by default
+   * (or the given symbol o.stripper) from both ends.
+   * @method strStrip
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (src) is not a String.
+   * @throws { Error } Will throw an Error if (o.stripper) is not a String or is not an Array.
+   * @memberof wTools#
+   */
+  var strStrip = function( o )
 {
 
   if( _.strIs( o ) )
@@ -974,9 +1202,33 @@ strStrip.defaults =
 }
 
 //
+  /**
+   * The strRemoveAllSpaces() method replaces all the whitespaces with the symbols (sub) in the given string (src).
+   *
+   * @param { string } src - The string to check.
+   * @param { string } [ sub = '' ] sub - The source to replace.
+   *
+   * @example
+   * // returns 'abcdef'
+   * _.strRemoveAllSpaces( 'a b c d e f' );
+   *
+   * @example
+   * // returns 'a,b,c,d,e,f'
+   * _.strRemoveAllSpaces( 'a b c d e f', ',' );
+   *
+   * @returns { string } Returns a string (src), where the whitespaces were replaced with the symbols (sub).
+   * By default it removes the spaces.
+   * @method strRemoveAllSpaces
+   * @throws { Error } Will throw an Error if (arguments.length) is lees than 1 or greater than 2.
+   * @throws { Error } Will throw an Error if (src) is not a String.
+   * @memberof wTools#
+   */
 
 var strRemoveAllSpaces = function( src,sub )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+  
   if( sub === undefined ) sub = '';
   return src.replace( /\s/g,sub );
 }
@@ -985,11 +1237,12 @@ var strRemoveAllSpaces = function( src,sub )
 
 var strStripEmptyLines = function( srcStr )
 {
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( srcStr ) );
+
   var result = '';
   var lines = srcStr.split( '\n' );
-
-  _.assert( _.strIs( srcStr ) );
-  _.assert( arguments.length === 1 );
 
   for( var l = 0; l < lines.length; l += 1 )
   {
@@ -1008,7 +1261,7 @@ var strStripEmptyLines = function( srcStr )
 
 var strIron = function()
 {
-t
+
   var result = '';
 
   for( var a = 0 ; a < arguments.length ; a++ )
@@ -1221,6 +1474,35 @@ var strDropPostfix = function( src,postfix )
 }
 
 //
+  /**
+   * The strDifference() method creates and returns a string where indicates once by asterix
+   * where the difference is between both (src1, src2), if (src1) and (src2) are not equal,
+   * for example (src1 = 'abc', src2 = 'abd') returns 'ab*'.
+   * Otherwise, if (src1) and (src2) are equal, it returns 'false'.
+   *
+   * @param { string } src1 - An entity to check.
+   * @param { string } src2 - An entity to check.
+   *
+   * @example
+   * // returns 'ab*'
+   * _.strDifference( 'abc', 'abd' );
+   *
+   * @example
+   * // returns '*'
+   * _.strDifference( 'abc', 'def' );
+   *
+   * @example
+   * // returns 'ab*'
+   * _.strDifference( 'abc', 'abd' );
+   *
+   * @returns { string | boolean } Returns a string where indicates once by asterix
+   * where the difference is between both (src1, src2).
+   * Otherwise, returns 'false'.
+   * @method strDifference
+   * @throws { Error } Will throw an Error if (src1) is not a String.
+   * @throws { Error } Will throw an Error if (src2) is not a String.
+   * @memberof wTools#
+   */
 
 var strDifference = function( src1,src2,options )
 {
@@ -1234,7 +1516,7 @@ var strDifference = function( src1,src2,options )
   if( src1[ i ] !== src2[ i ] )
   return src1.substr( 0,i ) + '*';
 
-  return src1.substr( 0,i ) + '*';
+  return src1.substr( 0,i ) + '*';//?
 }
 
 //
@@ -1250,6 +1532,21 @@ var strSimilarity = function( src1,src2,options )
 }
 
 //
+  /**
+   * The strLattersSpectre() creates and returns an object that contains the array-like data ({ key : value, ... length : .}),
+   * where (key) is the each symbol in a string (src) and the (value) that indicates
+   * the count of the same (key) in a string (src).
+   *
+   * @param { string } src - A string to convert to the object.
+   *
+   * @example
+   * // returns { a : 2, b : 1, c : 3, length: 6 }
+   * _.strLattersSpectre('abcacc');
+   *
+   * @returns { object } Returns an object that contains the array-like data ({ key : value, ... length : .}).
+   * @method strLattersSpectre
+   * @memberof wTools#
+   */
 
 var strLattersSpectre = function( src )
 {
@@ -1405,9 +1702,28 @@ var strIndentation = function( src,tab )
 }
 
 //
+  /**
+   * The strNumberLines() method successively adds at the beginning of each new line the number
+   * and returns an ordered (srcStr).
+   *
+   * @param { string } srcStr - A string to modify.
+   *
+   * @example
+   * // returns
+   *  '1: abc
+   *   2: def
+   *   3: ghi'
+   * _.strNumberLines( 'abc\ndef\nghi' );
+   *
+   * @returns { string } Returns an ordered (srcStr).
+   * @method strNumberLines
+   * @throws { Error } Will throw an Error if (srcStr) is not a String.
+   * @memberof wTools#
+   */
 
 var strNumberLines = function( srcStr )
 {
+  _.assert( _.strIs( srcStr ) );
 
   var lines = srcStr.split( '\n' );
 
@@ -1422,6 +1738,22 @@ var strNumberLines = function( srcStr )
 }
 
 //
+  /**
+   * The strCount() method returns count of found (ins) in a string (src).
+   *
+   * @param { string } src - An entity to check.
+   * @param { string } ins - Target to find.
+   *
+   * @example
+   * // returns 2
+   * _.strCount( 'abc\ndef\nghi', '\n' );
+   *
+   * @returns { number } Returns the count of found (ins) in a string (src).
+   * @method strCount
+   * @throws { Error } Will throw an Error if (src) is not a String.
+   * @throws { Error } Will throw an Error if (ins) is not a String.
+   * @memberof wTools#
+   */
 
 var strCount = function( src,ins )
 {
@@ -1442,9 +1774,25 @@ var strCount = function( src,ins )
 }
 
 //
+  /**
+   * The strToBytes() method converts each symbol of a string (str) to the byte,
+   * and returns the typed-array (Uint8Array).
+   *
+   * @param { string } str - The string to convert.
+   *
+   * @example
+   * // returns [ 97, 98, 99 ]
+   * _.strToBytes( 'abc' );
+   *
+   * @returns { typedArray } Returns the typed-array (Uint8Array).
+   * @method strToBytes
+   * @throws { Error } Will throw an Error if (str) is not a String.
+   * @memberof wTools#
+   */
 
 var strToBytes = function( str )
 {
+  _.assert( _.strIs( str ) );
 
   var result = new Uint8Array( str.length );
 
