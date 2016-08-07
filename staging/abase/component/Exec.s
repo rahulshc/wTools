@@ -120,8 +120,15 @@ var execStages = function( stages,o )
 
   // begin
 
+  if( _.routineIs( o.onBegin ) )
+  {
+    debugger;
+    o.onBegin = _.routineJoin( o.context,o.onBegin );
+  }
+
   if( o.onBegin )
-  wConsequence.giveWithContextAndErrorTo( o.onBegin,o.context,null,o );
+  wConsequence.give( o.onBegin,o );
+  //wConsequence.giveWithContextAndErrorTo( o.onBegin,o.context,null,o );
 
   // end
 
@@ -134,8 +141,15 @@ var execStages = function( stages,o )
       _.errLog( err );
     }
 
+    if( _.routineIs( o.onEnd ) )
+    {
+      debugger;
+      o.onEnd = _.routineJoin( o.context,o.onEnd );
+    }
+
     if( o.onEnd )
-    wConsequence.giveWithContextAndErrorTo( o.onEnd,o.context,err,o );
+    wConsequence.give( o.onBegin,o );
+    //wConsequence.giveWithContextAndErrorTo( o.onEnd,o.context,err,o );
 
     conEnd._giveWithError( err,null );
 

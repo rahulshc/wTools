@@ -1,3 +1,4 @@
+//#! /usr/bin/env NODE
 ( function _wTools_s_() {
 
 'use strict';
@@ -2702,6 +2703,7 @@ var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
     }
     //debugger;
   });
+
 }
 
 //
@@ -2794,6 +2796,13 @@ diagnosticWatchFields.defaults =
   printValue : false,
   names : null,
   dst : null,
+}
+
+//
+
+var diagnosticBeep = function()
+{
+  console.log( '\x07' );
 }
 
 // --
@@ -2974,11 +2983,7 @@ var mapIs = function( src )
 }
 
   //
-  // !!! Not bad.
-  // +++ Please change the proposal 'is object' to the 'is an Array'.
-  // +++ Please change '@return' to the '@returns'.
-  // +++ Please add description for @param and @returns.
-  // +++ Please improve code formatting: add more spaces.
+
 /**
  * The arrayIs() method determines whether the passed value is an Array.
  *
@@ -3006,6 +3011,7 @@ var arrayIs = function( src )
 }
 
 //
+
   /**
    * The arrayLike() method determines whether the passed value is an array-like or an Array.
    *
@@ -3472,15 +3478,24 @@ var toStrFast = function( src ) {
 // number
 // --
 
+var numberRandomInRange = function( range )
+{
+
+  _assert( arguments.length === 1 && _.arrayIs( range ),'numberRandomInRange :','expects range( array ) as argument' );
+  _assert( range.length === 2 );
+
+  return _random()*( range[ 1 ] - range[ 0 ] ) + range[ 0 ];
+
+}
+
+//
+
 var numberRandomInt = function( range )
 {
 
   _assert( _.arrayIs( range ) || _.numberIs( range ) );
-/*
-  if( range === undefined )
-  range = 0;
-  else
-*/
+  _assert( range.length === 2 );
+
   if( _.numberIs( range ) )
   range = range >= 0 ? [ 0,range ] : [ range,0 ];
   else if( _.arrayIs( range ) )
@@ -5107,6 +5122,26 @@ var routinesCall = function routinesCall()
   return result;
 }
 
+//
+
+var routineOptions = function routineOptions( routine,options )
+{
+
+  if( options === undefined )
+  options = {};
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
+  _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
+  _.assert( _.objectIs( options ),'routineOptions : expects object' );
+
+  _.assertMapNoUndefine( options );
+  _.assertMapOnly( options,routine.defaults );
+  _.mapComplement( options,routine.defaults );
+
+  return options;
+}
+
 // --
 // time
 // --
@@ -5654,7 +5689,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
   // !!! Not bad.
   // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add @param {*} arguments[] - 'description'.
   // +++ Please add description: How method adds elements,if (arguments) contain an array or an object?
   // +++ Not clear what the (@returns) returns?
 
@@ -5671,7 +5706,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  * If true, it adds to the (result) each element of the (src) array.
  * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
  *
- * @param { ... } arguments[] - One or more argument(s).
+ * @param {*} arguments[] - One or more argument(s).
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
@@ -5848,7 +5883,7 @@ var arrayCopy = function arrayCopy()
   // !!! Not bad
   // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add @param {*} arguments[] - 'description'.
   // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
   // +++ Not clear what the (@returns) returns.
 
@@ -5865,7 +5900,7 @@ var arrayCopy = function arrayCopy()
  * Otherwise, it adds element to the result.
  *
  * @param { Array } dst - Initial array.
- * @param { ... } arguments[] - One or more argument(s) to add to the end of the (dst) array.
+ * @param {*} arguments[] - One or more argument(s) to add to the end of the (dst) array.
  *
  * @example
  * // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
@@ -5902,7 +5937,7 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
   // !!! Not bad
   // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add @param {*} arguments[] - 'description'.
   // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
   // +++ Not clear what the (@returns) returns?
 
@@ -5920,7 +5955,7 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
  * Otherwise, it adds element to the result.
  *
  * @param { Array } dst - Initial array.
- * @param { ... } arguments[] - One or more argument(s) to add to the front of the (dst) array.
+ * @param {*} arguments[] - One or more argument(s) to add to the front of the (dst) array.
  *
  * @example
  * // returns [ 'str', false, { a : 1 }, 42, 3, 7, 13, 1, 2 ];
@@ -5957,7 +5992,7 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
   // !!! Not bad
   // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add @param {*} arguments[] - 'description'.
   // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
   // +++ Not clear what the (@returns) returns?
 
@@ -5976,7 +6011,7 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
  * If true, it adds elements to the end of the (result) array.
  *
  * @param { Array } dst - Initial array.
- * @param { ... } arguments[] - One or more argument(s).
+ * @param {*} arguments[] - One or more argument(s).
  *
  * @example
  * // returns [ 1, 2, 'str', {}, 5 ]
@@ -6024,7 +6059,7 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
   // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
   // +++ Please change the proposal 'The arrayAppendOnceMerging() to the arrayPrependOnceMerging()'.
-  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add @param {*} arguments[] - 'description'.
   // +++ Please add description: How method adds elements, if (arguments) contain an array or an object?
   // +++ Not clear what the (@returns) returns.
   // !!! @example is wrong, has to be [ 5, 'str', {}, 2, 4 ].
@@ -6043,7 +6078,7 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
  * If true, it adds elements to the beginning of the (result) array.
  *
  * @param { Array } dst - Initial array.
- * @param { ... } arguments[] - One or more argument(s).
+ * @param {*} arguments[] - One or more argument(s).
  *
  * @example
  * // returns [ {}, 'str', 5, 2, 4 ]
@@ -7129,7 +7164,7 @@ var arrayToStr = function( src,options )
   // !!! Not bad
   // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add @param {*} arguments[] - 'description'.
   // +++ Please add description: How does it work if (arguments) has an array or an object.
 
 
@@ -7139,7 +7174,7 @@ var arrayToStr = function( src,options )
  *
  * @param { arrayLike } dstArray - The source array.
  * @param { Number } [ dstOffset = 0 ] dstOffset - The index of element where need to put the new values.
- * @param { ... } arguments[] - One or more argument(s).
+ * @param {*} arguments[] - One or more argument(s).
  * If the (argument) is an array it iterates over array and adds each element to the next (dstOffset++) index of the (dstArray).
  * Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstArray).
  *
@@ -7789,7 +7824,7 @@ var arrayRight = function( arr,ins,equalizer )
   // !!! Not bad
   // +++ Please improve code formatting: add more spaces,
   //     add dots at the end of sentences.
-  // +++ Please add @param { ... } arguments[] - 'description'.
+  // +++ Please add @param {*} arguments[] - 'description'.
   // +++ Please add description: How does it work?
 
 /**
@@ -7802,7 +7837,7 @@ var arrayRight = function( arr,ins,equalizer )
  * Otherwise, it returns false.
  *
  * @param { arrayLike } src - The source array.
- * @param { ... } arguments[] - One or more argument(s).
+ * @param {*} arguments[] - One or more argument(s).
  *
  * @example
  * // returns true
@@ -10535,8 +10570,6 @@ var mapOwnBut = function mapOwnBut( srcMap )
 
 //
 
-  // +++ this description missing
-
   /**
    * @namespace
    * @property { objectLike } srcObjects.srcObject - The target object.
@@ -10551,7 +10584,7 @@ var mapOwnBut = function mapOwnBut( srcMap )
    * It creates the variable (dstObject) assignes and calls the method (__mapScreen( { } ) )
    * with three properties.
    *
-   * @see __mapScreen( { } )  See for more information.
+   * @see __mapScreen( { } ) See for more information.
    *
    * @param { objectLike } srcObject - The target object.
    * @param { objectLike } screenObject - The source object.
@@ -11296,6 +11329,7 @@ var Proto =
 
   diagnosticWatchObject : diagnosticWatchObject,
   diagnosticWatchFields : diagnosticWatchFields,
+  diagnosticBeep : diagnosticBeep,
 
 
   // name and symbol
@@ -11362,6 +11396,7 @@ var Proto =
 
   // number
 
+  numberRandomInRange : numberRandomInRange,
   numberRandomInt : numberRandomInt,
   numberRandomIntNot : numberRandomIntNot,
   numberFrom : numberFrom,
@@ -11425,6 +11460,7 @@ var Proto =
   routineDelayed : routineDelayed,
 
   routinesCall : routinesCall,
+  routineOptions : routineOptions,
 
   bind : null,
 
