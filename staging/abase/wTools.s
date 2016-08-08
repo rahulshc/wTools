@@ -10202,32 +10202,23 @@ var mapToString = function( src,keyValSep,tupleSep )
 //
 
 /**
- * The mapKeys() returns
- * an array of a given object's own enumerable properties,
+ * The mapOwnKeys() returns an array of a given objects own enumerable properties,
  * in the same order as that provided by a for...in loop.
  *
- * It takes an object (src) creates an empty array,
- * checks if (src) is an object and has any keys.
- * If true,
- * it returns an array of keys,
- * otherwise it returns an empty array.
- *
- * @param { objectLike } src - The object whose properties are to be returned.
+ * @param { ...objectLike } src - The object whose properties are to be returned.
  *
  * @example
  * // returns [ "a", "b" ]
- * _.mapKeys({ a : 7, b : 13 });
+ * _.mapOwnKeys({ a : 7, b : 13 });
  *
  * @return { array } Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
- * @method mapKeys
+ * @method mapOwnKeys
  * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
-console.warn( '!!! problem with mapKeys : split own' );
-
-var mapKeys = function mapKeys( src )
+var mapOwnKeys = function mapOwnKeys( src )
 {
   var result = [];
 
@@ -10241,13 +10232,56 @@ var mapKeys = function mapKeys( src )
   return Object.keys( src );
 
   for( var s in src )
+  if( _ObjectHasOwnProperty.call( src,s ) )
   result.push( s );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
     var src = arguments[ a ];
     for( var s in src )
-    _.arrayAppendOnce( result,s ); 
+    if( _ObjectHasOwnProperty.call( src,s ) )
+    _.arrayAppendOnce( result,s );
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The mapKeys() returns an array of a given objects enumerable properties,
+ * in the same order as that provided by a for...in loop.
+ *
+ * @param { ...objectLike } src - The object whose properties are to be returned.
+ *
+ * @example
+ * // returns [ "a", "b" ]
+ * _.mapKeys({ a : 7, b : 13 });
+ *
+ * @return { array } Returns an array whose elements are strings
+ * corresponding to the enumerable properties found directly upon object.
+ * @method mapKeys
+ * @throws { Error } Will throw an Error if (src) is not an Object.
+ * @memberof wTools
+*/
+
+var mapKeys = function mapKeys( src )
+{
+  var result = [];
+
+  if( arguments.length === 0 )
+  return result;
+
+  _.assert( _.objectLike( src ) );
+
+  for( var s in src )
+  result.push( s );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    for( var s in src )
+    _.arrayAppendOnce( result,s );
   }
 
   return result;
@@ -11767,6 +11801,7 @@ var Proto =
   mapKeyWithIndex : mapKeyWithIndex,
   mapToString : mapToString,
 
+  mapOwnKeys : mapOwnKeys,
   mapKeys : mapKeys,
   mapValues : mapValues,
   mapPairs : mapPairs,
