@@ -1525,15 +1525,9 @@ var entityFilter = function( src,onEach )
    * @memberof wTools
    */
 
-var entityGroup = function( src,o )
+var entityGroup = function( o )
 {
   var o = o || {};
-
-  if( arguments.length === 2 )
-  {
-    o = arguments[ 1 ];
-    o.src = arguments[ 0 ];
-  }
 
   /* key */
 
@@ -1544,9 +1538,9 @@ var entityGroup = function( src,o )
     o.usingOriginal = 0;
 
     if( _.arrayLike( o.key ) )
-    o.key = _.mapKeys.apply( o.src );
+    o.key = _.mapKeys.apply( _,o.src );
     else
-    o.key = _.mapKeys.apply( _.mapValues( o.src ) );
+    o.key = _.mapKeys.apply( _,_.mapValues( o.src ) );
 
   }
 
@@ -1554,27 +1548,32 @@ var entityGroup = function( src,o )
 
   var o = _.routineOptions( entityGroup,o );
 
-  _assert( arguments.length <= 2 );
+  _assert( arguments.length === 1 );
   _assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
   _assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
+  _assert( _.arrayIs( o.src ),'not tested' );
 
   /* */
 
-  var groupForKey = function( key )
+  var groupForKey = function( key,result )
   {
-    var result = new o.src.constructor();
 
     _.each( o.src, function( e,k,c )
     {
 
-      var rkey = o.src[ k ][ key ];
-      if( result[ rkey ] === undefined )
-      result[ rkey ] = [];
+      var value = o.usingOriginal ? o.src[ k ] : o.src[ k ][ key ];
+      var dstKey = o.usingOriginal ? o.src[ k ][ key ] : k;
 
       if( o.usingOriginal )
-      result[ rkey ].push( o.src[ k ] );
+      {
+        if( result[ dstKey ] === undefined )
+        result[ dstKey ] = [];
+        result[ dstKey ].push( value );
+      }
       else
-      result[ rkey ].push( o.src[ k ][ key ] );
+      {
+        result[ dstKey ] = value;
+      }
 
     });
 
@@ -1586,13 +1585,16 @@ var entityGroup = function( src,o )
   var result;
   if( _.arrayIs( o.key ) )
   {
+
     result = {};
-    for( var k = 0 ; k < o.key ; k++ )
-    result[ o.key[ k ] ] = groupForKey( o.key[ k ] );
+    for( var k = 0 ; k < o.key.length ; k++ )
+    result[ o.key[ k ] ] = groupForKey( o.key[ k ],o.usingOriginal ? {} : new o.src.constructor() );
+
   }
   else
   {
-    result = groupForKey( o.key );
+    result = {};
+    groupForKey( o.key,result );
   }
 
   /**/
@@ -10223,7 +10225,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  * @memberof wTools
 */
 
-console.warn( '!!! problem with mapKeys : split' );
+console.warn( '!!! problem with mapKeys : split own' );
 
 var mapKeys = function mapKeys( src )
 {
@@ -10245,7 +10247,7 @@ var mapKeys = function mapKeys( src )
   {
     var src = arguments[ a ];
     for( var s in src )
-    _.arrayAppendOnce( result,s );
+    _.arrayAppendOnce( result,s ); 
   }
 
   return result;
