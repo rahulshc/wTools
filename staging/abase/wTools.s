@@ -190,9 +190,11 @@ var _entityCloneAct = function( o )
 {
 
   var result;
+  var o = o || {};
 
   if( !( o.levels > 0 ) )
   throw _.err( 'failed to clone data\nat ' + o.path + '\ntoo deep structure',o.src );
+
   o.levels -= 1;
 
   /* routine */
@@ -920,6 +922,49 @@ var entitySame = function entitySame()
 //
 
 /**
+ * Deep equaliser of 2 entities.
+ * Return string refering first found difference or false if entities are sames.
+ * @param {object} src1 - entity to compare.
+ * @param {object} src2 - entity to compare.
+ * @param {object} o - options.
+ * @method entityDiff
+ * @memberof wTools
+ */
+
+var entityDiff = function entityDiff( src1,src2,o )
+{
+
+  var o = o || {};
+  _assert( arguments.length === 2 || arguments.length === 3 );
+  var same = _.entitySame( src1,src2,o );
+
+  if( same )
+  return false;
+
+  var result = '';
+
+  if( !_.atomicIs( src1 ) )
+  src1 = _.toStr( _.entitySelect( src1,o.path ) );
+
+  if( !_.atomicIs( src2 ) )
+  src2 = _.toStr( _.entitySelect( src2,o.path ) );
+
+  result += _.str
+  (
+    'at : ' + o.path +
+    '\nsrc1 :\n' + src1 +
+    '\nsrc2 :\n' + src2
+  );
+
+  if( _.strIs( src1 ) && _.strIs( src2 ) )
+  result += ( '\ndifference :\n' + _.strDifference( src1,src2 ) );
+
+  return result;
+}
+
+//
+
+/**
  * Deep strict equaliser of 2 entities.
  * @example
    var obj1 = { a: 0, b: 1, e: { c: 2, d: 3 } },
@@ -1143,9 +1188,9 @@ var entitySelect = function( container,query )
   _.assert( arguments.length === 2 || arguments.length === 1 );
 
   if( arguments.length === 2 )
-  var o = _entitySelectAdjust( arguments[ 0 ],arguments[ 1 ] )
+  var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] )
   else
-  var o = _entitySelectAdjust( arguments[ 0 ] );
+  var o = _entitySelectOptions( arguments[ 0 ] );
 
   var result = _entitySelect( o );
   return result;
@@ -1159,22 +1204,23 @@ var entitySelectSet = function( container,query,value )
 
   if( arguments.length === 3 )
   {
-    var o = _entitySelectAdjust( arguments[ 0 ],arguments[ 1 ] );
+    var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
     o.set = value;
   }
   else
   {
-    var o = _entitySelectAdjust( arguments[ 0 ] );
+    var o = _entitySelectOptions( arguments[ 0 ] );
     _.assert( _.mapOwn( o,{ set : 'set' } ) );
   }
 
   var result = _entitySelect( o );
+
   return result;
 }
 
 //
 
-var _entitySelectAdjust = function( container,query )
+var _entitySelectOptions = function( container,query )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   var delimeter = [ '.','[',']' ];
@@ -1300,7 +1346,7 @@ _entitySelect.defaults =
 
   /**
    * Function that produces an elements for entityMap result
-   * @callback onEach
+   * @callback entityMap~onEach
    * @param {*} val The current element being processed in the entity.
    * @param {string|number} key The index (if entity is array) or key of processed element.
    * @param {Array|Object} src The src passed to entityMap
@@ -1340,7 +1386,7 @@ _entitySelect.defaults =
    // [ true, true, true ]
    *
    * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
-   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @param {entityMap~onEach} onEach Function that produces an element of the new entity;
    * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
@@ -1376,10 +1422,6 @@ var entityMap = function( src,onEach )
 
 //
 
-// +++ improve description,
-// +++ improve code formatting
-// +++ use @see
-
   /**
    * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
    * function on every element of src. If `onEach` returns undefined, then this result is not included into the new
@@ -1411,11 +1453,25 @@ var entityMap = function( src,onEach )
 var entityFilter = function( src,onEach )
 {
 
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.arrayLike( src ) );
-  _.assert( _.routineIs( onEach ) );
-
   var result;
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( src ) );
+  _.assert( _.routineIs( onEach ) || _.objectIs( onEach ) );
+
+  /**/
+
+  if( _.objectIs( onEach ) )
+  {
+    var template = onEach;
+    onEach = function( e )
+    {
+      if( _.mapSatisfy( template,e ) )
+      return e;
+    };
+  }
+
+  /**/
 
   if( _.arrayLike( src ) )
   {
@@ -1440,103 +1496,128 @@ var entityFilter = function( src,onEach )
     }
   }
 
-  return result;
-}
-
-//
-/*
-var _entityMostComparing = function( src,onCompare )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( onCompare === undefined )
-  onCompare = function( a,b ){ return a-b; }
-
-  var result = { key : undefined, value : undefined };
-
-  if( _.arrayLike( src ) )
-  {
-    result.key = 0;
-    result.value = src[ 0 ];
-    for( var s = 0 ; s < src.length ; s++ )
-    if( onCompare( src[ s ],result.value ) < 0 )
-    {
-      result.key = s;
-      result.value = src[ s ];
-    }
-  }
-  else
-  {
-    throw _.err( 'not tested' );
-    for( var s in src )
-    {
-      result.key = s;
-      result.value = src[ s ];
-      break;
-    }
-    for( var s in src )
-    if( onCompare( src[ s ],result.value ) < 0 )
-    {
-      result.key = s;
-      result.value = src[ s ];
-    }
-  }
+  /**/
 
   return result;
 }
 
 //
 
-var entityMinComparing = function( src,onCompare )
+  /**
+   * The entityGroup() group input data structure by one or several keys.
+   *
+   * It creates an empty (result) object, iterate over array (src),
+   * checks if (result) object has certain value.
+   * If undefined, it creates (value) with an empty array.
+   * Otherwise, it adds to certain (value) the object with target key.
+   *
+   * @param { array } src - The target array.
+   * @param { objectLike | string } o - Options.
+   *
+   * @example
+   * // returns { 33 : [ { key1 : 33 } ], 44 : [ { key1 : 44 }, { key2 : 77 } ] }
+   * _.entityGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');
+   *
+   * @returns { object } Returns an object with certain group of key.
+   * @method entityGroup
+   * @throws { Error } Will throw an Error if (o.key) is not a string,
+   * if (src) is not an object, if (o) is not an object.
+   * @memberof wTools
+   */
+
+var entityGroup = function( src,o )
 {
+  var o = o || {};
 
-  var _onCompare = null;
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( onCompare === undefined )
-  _onCompare = function( a,b ){ return a-b; };
-  else
+  if( arguments.length === 2 )
   {
-    throw _.err( 'not tested' );
-    _onCompare = function( a,b ){ - onCompare( a,b ) };
+    o = arguments[ 1 ];
+    o.src = arguments[ 0 ];
   }
 
-  return _entityMost( src,_onCompare );
-}
+  /* key */
 
-//
-
-var entityMaxComparing = function( src,onCompare )
-{
-
-  var _onCompare = null;
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( onCompare === undefined )
-  _onCompare = function( a,b ){ return b-a; };
-  else
+  if( o.key === undefined || o.key === null )
   {
-    throw _.err( 'not tested' );
-    _onCompare = onCompare;
+
+    if( o.usingOriginal === undefined )
+    o.usingOriginal = 0;
+
+    if( _.arrayLike( o.key ) )
+    o.key = _.mapKeys.apply( o.src );
+    else
+    o.key = _.mapKeys.apply( _.mapValues( o.src ) );
+
   }
 
-  return _entityMost( src,_onCompare );
+  /* */
+
+  var o = _.routineOptions( entityGroup,o );
+
+  _assert( arguments.length <= 2 );
+  _assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
+  _assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
+
+  /* */
+
+  var groupForKey = function( key )
+  {
+    var result = new o.src.constructor();
+
+    _.each( o.src, function( e,k,c )
+    {
+
+      var rkey = o.src[ k ][ key ];
+      if( result[ rkey ] === undefined )
+      result[ rkey ] = [];
+
+      if( o.usingOriginal )
+      result[ rkey ].push( o.src[ k ] );
+      else
+      result[ rkey ].push( o.src[ k ][ key ] );
+
+    });
+
+    return result;
+  }
+
+  /* */
+
+  var result;
+  if( _.arrayIs( o.key ) )
+  {
+    result = {};
+    for( var k = 0 ; k < o.key ; k++ )
+    result[ o.key[ k ] ] = groupForKey( o.key[ k ] );
+  }
+  else
+  {
+    result = groupForKey( o.key );
+  }
+
+  /**/
+
+  return result;
 }
-*/
+
+entityGroup.defaults =
+{
+  src : null,
+  key : null,
+  usingOriginal : 1,
+}
+
 //
 
   /**
    * The result of _entityMost method object.
-   * @typedef {Object} entityMostResult
+   * @typedef {Object} _entityMost~entityMostResult
    * @property {number} index - Index of found element;
    * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
    * Else if search was on array - to index of found element.
    * @property {number} value - The found result of onElement, if onElement don't set, this value will be same as element.
    * @property {number} element - The appropriate element for found value.
    */
-
-// +++ not clear what onElement for?
 
   /**
    * On depend from passed `returnMax` argument, method returns maximum or minimum of results `onEach` function.
@@ -1545,7 +1626,7 @@ var entityMaxComparing = function( src,onCompare )
    * @param {ArrayLike|Object} src Input entity with elements.
    * @param {onEach} onElement `onEach` function calls for every element of `src`.
    * @param {boolean} returnMax If true - method returns maximum, else method returns minimum of values.
-   * @returns {entityMostResult} Object with results of search.
+   * @returns {_entityMost~entityMostResult} Object with results of search.
    * @private
    * @method _entityMost
    * @memberof wTools
@@ -2636,8 +2717,6 @@ var warn = function( condition )
 
 //
 
-// +++ formatting
-
   /**
    * Return stack trace as string.
    * @example
@@ -2680,6 +2759,36 @@ var stack = function()
   result.splice( 0,2 );
   result = String( result.join( '\n' ) );
   return result;
+}
+
+//
+
+var includeAny = function()
+{
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+
+    if( a === arguments.length-1 )
+    {
+      if( src !== '' )
+      return require( src );
+    }
+    else try
+    {
+
+      var result = require( src );
+      return result;
+
+    }
+    catch( err )
+    {
+      _.errLog( err );
+    }
+
+  }
+
 }
 
 //
@@ -2940,6 +3049,8 @@ var objectLike = function( src )
   return false; /* isObject */
 }
 
+//
+
   /**
    * The mapIs() method determines whether the passed value is an Object,
    * and not inherits through the prototype chain.
@@ -3014,6 +3125,7 @@ var arrayIs = function( src )
 
   /**
    * The arrayLike() method determines whether the passed value is an array-like or an Array.
+   * Imortant : arrayLike returns false for Object, even if the object has length field.
    *
    * If (src) is an array-like or an Array, true is returned,
    * otherwise false is.
@@ -3045,7 +3157,7 @@ var arrayLike = function( src )
 
   if( _.routineIs( src ) ) return false;
   if( _.objectIs( src ) ) return false;
-  if( _.strIs( src ) ) return false; // ???
+  if( _.strIs( src ) ) return false;
 
   if( !_.numberIs( src.length ) ) return false;
 
@@ -3053,6 +3165,7 @@ var arrayLike = function( src )
 }
 
 //
+
   /**
    * The hasLength() method determines whether the passed value has the property (length).
    *
@@ -3095,6 +3208,8 @@ var hasLength = function( src )
   if( _.numberIs( src.length ) ) return true;
   return false;
 }
+
+//
 
 /**
  * Function strIs checks incoming param whether it is string.
@@ -3566,7 +3681,7 @@ var numberFrom = function( src )
 /**
   * Return type of src.
   * @example
-      var str = _.strTypeOf('testing');
+      var str = _.strTypeOf( 'testing' );
   * @param {*} src
   * @return {string}
   * string name of type src
@@ -3581,7 +3696,13 @@ var strTypeOf = function( src )
   if( src.constructor && src.constructor.name )
   return src.constructor.name;
 
-  return _.strPrimitiveTypeOf( src );
+  var result = _.strPrimitiveTypeOf( src );
+
+  if( result === 'Object' )
+  if( src.__proto__ !== Object.__proto__ )
+  result = 'Object:Fake';
+
+  return result;
 }
 
 //
@@ -3609,16 +3730,17 @@ var strPrimitiveTypeOf = function( src )
 }
 
 //
-/**
-*Return in one string value of all arguments.
-  *@example
-   var args = _.str('test2');
-*@return {string}
-*If no arguments return empty string
-*@method str
-*@memberof wTools#
 
-*/
+/**
+  * Return in one string value of all arguments.
+  * @example
+   var args = _.str('test2');
+  * @return {string}
+  * If no arguments return empty string
+  * @method str
+  * @memberof wTools#
+  */
+
 var str = function()
 {
 
@@ -3686,17 +3808,17 @@ var strEnds = function( src,end )
 //
 
  /**
-  *Cut begin of the string.
-  *@param {string} src
-  *@param {string} begin
-    *example
+   * Cut begin of the string.
+   * @param {string} src
+   * @param {string} begin
+   * example
      var scr = ._strBeginRemove("abc","a");
-  *@return {string}
-  *If result of method strBegins - false, than return src
-  *else cut begin of param src
-  *@method strBeginRemove
-  *@memberof wTools#
-  */
+   * @return {string}
+   * If result of method strBegins - false, than return src
+   * else cut begin of param src
+   * @method strBeginRemove
+   * @memberof wTools#
+   */
 
 var strBeginRemove = function( src,begin )
 {
@@ -3706,18 +3828,20 @@ var strBeginRemove = function( src,begin )
 }
 
 //
-/**
-*Cut end of the string.
-*@param {string} src
-*@param {string} end
-  *example
-   var scr = ._strEndRemove("abc","c");
-*@return {string}
-*If result of method strEnds - false, than return src
-*Else cut end of param src
-*@method strEndRemove
-*@memberof wTools#
-*/
+
+  /**
+   * Cut end of the string.
+   * @param {string} src
+   * @param {string} end
+   * example
+     var scr = ._strEndRemove("abc","c");
+   * @return {string}
+   * If result of method strEnds - false, than return src
+   * Else cut end of param src
+   * @method strEndRemove
+   * @memberof wTools#
+   */
+
 var strEndRemove = function( src,end )
 {
   if( !strEnds( src,end ) )
@@ -3816,6 +3940,7 @@ var regexpModeNamesToReplace = namesCoded
  * @method regexpEscape
  * @memberof wTools
  */
+
 var regexpEscape = function( src )
 {
   return src.replace( /([.*+?^=! :${}()|\[\]\/\\])/g, "\\$1" );
@@ -3836,6 +3961,7 @@ var regexpEscape = function( src )
  * @method regexpForGlob
  * @memberof wTools
  */
+
 var regexpForGlob = function( glob )
 {
   var result = '';
@@ -6258,7 +6384,7 @@ var arrayToMap = function( array )
   /**
    * The callback function to compare two values.
    *
-   * @callback onEqual
+   * @callback arrayRemoveArrayOnce~onEqual
    * @param { * } el - The element of the (dstArray[n]) array.
    * @param { * } ins - The value to compare (insArray[n]).
    */
@@ -6356,7 +6482,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
   /**
  * The callback function to compare two values.
  *
- * @callback compareCallback
+ * @callback arrayRemovedOnce~compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
@@ -6426,17 +6552,11 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 }
 
 //
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
-  // +++ Please add description: How it works if passed two or three arguments.
-  // +++ Describe the (@callback) function.
-  // +++ Not clear what the (@returns) returns.
 
 /**
  * Callback for compare two value.
  *
- * @callback compareCallback
+ * @callback arrayRemoveOnce~compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
@@ -6488,17 +6608,10 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
 
 //
 
-   // !!! Not bad
-   // +++ Please improve code formatting: add more spaces,
-   //     add dots at the end of sentences.
-   // +++ Please add description: How does it work, with default callback and with another cb
-   //     and add at least two different example of it.
-   // +++ Describe the (@callback) function.
-
 /**
  * Callback for compare two value.
  *
- * @callback compareCallback
+ * @callback arrayRemovedAll~compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
@@ -6562,17 +6675,10 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
 
 //
 
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
-  // +++ Please add description: How does it work if passed two or three arguments
-  // +++ and add at least two different example of it.
-  // +++ Describe the (@callback) function.
-
 /**
  * Callback for compare two value.
  *
- * @callback compareCallback
+ * @callback arrayRemoveAll~compareCallback
  * @param { * } el - Element of the array.
  * @param { * } ins - Value to compare.
  */
@@ -7640,7 +7746,7 @@ var arraySameSet = function( src1,src2 )
   /**
    * Callback for compare two values.
    *
-   * @callback equalizer
+   * @callback arrayLeftIndexOf~equalizer
    * @param { * } el - The element of an array.
    * @param { * } ins - The value to compare.
    */
@@ -9538,7 +9644,7 @@ var bufferToNodeBuffer = ( function( buffer )
 // --
 
   /**
-   * @callback options~onCopyField
+   * @callback mapClone~onCopyField
    * @param { objectLike } dstContainer - The target object.
    * @param { objectLike } srcContainer - The source object.
    * @param { string } key - The key of the (srcObject) target object.
@@ -9558,7 +9664,7 @@ var bufferToNodeBuffer = ( function( buffer )
    * @param { objectLike } srcObject - The source object.
    * @param { Object } options - The options.
    * @param { objectLike } [options.dst = {}] - The target object.
-   * @param { options~onCopyField } [options.onCopyField()] - The callback function to copy each [ key, value ]
+   * @param { mapClone~onCopyField } [options.onCopyField()] - The callback function to copy each [ key, value ]
    * of the (srcObject) to the (result).
    *
    * @example
@@ -9604,12 +9710,12 @@ var mapClone = function( srcObject,options )
   return result;
 }
 
-  /**
-   * @callback _.filter.supplementary()
-   * @param { objectLike } dstObject - The target object.
-   * @param { objectLike } argument - The next object.
-   * @param { string } key - The key of the (argument) object.
-   */
+  // /**
+  //  * @callback _.filter.supplementary()
+  //  * @param { objectLike } dstObject - The target object.
+  //  * @param { objectLike } argument - The next object.
+  //  * @param { string } key - The key of the (argument) object.
+  //  */
 
   /**
    * The mapExtendFiltering() creates a new [ key, value ]
@@ -9716,12 +9822,12 @@ var mapExtend = function mapExtend( dstObject )
 }
   //
 
-  /**
-   * @callback  _.filter.supplementary()
-   * @param { objectLike } dstObject - The target object.
-   * @param { objectLike } argument - The next object.
-   * @param { string } key - The key of the (argument) object.
-   */
+  // /**
+  //  * @callback  _.filter.supplementary()
+  //  * @param { objectLike } dstObject - The target object.
+  //  * @param { objectLike } argument - The next object.
+  //  * @param { string } key - The key of the (argument) object.
+  //  */
 
   /**
    * The mapSupplement() method returns an object with unique [ key, value ].
@@ -9775,12 +9881,13 @@ var mapSupplement = function( dst )
 }
 
 //
-  /**
-   * @callback  _.filter.supplementaryCloning()
-   * @param { objectLike } dstContainer - The target object.
-   * @param { objectLike } srcContainer - The next object.
-   * @param { string } key - The key of the (srcContainer) object.
-   */
+
+  // /**
+  //  * @callback  _.filter.supplementaryCloning()
+  //  * @param { objectLike } dstContainer - The target object.
+  //  * @param { objectLike } srcContainer - The next object.
+  //  * @param { string } key - The key of the (srcContainer) object.
+  //  */
 
   /**
    * The mapComplement() method returns an object
@@ -9834,12 +9941,54 @@ var mapCopy = function mapCopy()
 }
 
 // --
-// map converter
+// map test
 // --
 
-  // +++ this description could be improved by adding example(s).
-  // +++ undefiend???
-  // +++ formatting
+var mapSatisfy = function mapSatisfy( o )
+{
+
+  if( arguments.length === 2 )
+  o = { template : arguments[ 0 ], src : arguments[ 1 ] };
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
+  _.assert( o.src !== undefined );
+
+  _.routineOptions( mapSatisfy,o );
+
+  return _mapSatisfy( o.template,o.src,o.src,o.levels );
+}
+
+mapSatisfy.defaults =
+{
+  template : null,
+  src : null,
+  levels : 256,
+}
+
+//
+
+var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
+{
+
+  if( levels <= 0 )
+  throw _.err( '_mapSatisfy : too deep structure' );
+
+  if( _.routineIs( template ) )
+  return template( src );
+
+  if( objectIs( template ) )
+  {
+    for( var t in template )
+    return _mapSatisfy( template[ t ],src[ t ],root,levels-1 );
+  }
+
+  return template === src;
+}
+
+// --
+// map converter
+// --
 
   /**
    * The mapFirstPair() method returns first pair [ key, value ] as array.
@@ -10065,7 +10214,7 @@ var mapToString = function( src,keyValSep,tupleSep )
  *
  * @example
  * // returns [ "a", "b" ]
- * _.mapKeys( { a : 7, b : 13 } );
+ * _.mapKeys({ a : 7, b : 13 });
  *
  * @return { array } Returns an array whose elements are strings
  * corresponding to the enumerable properties found directly upon object.
@@ -10074,17 +10223,30 @@ var mapToString = function( src,keyValSep,tupleSep )
  * @memberof wTools
 */
 
+console.warn( '!!! problem with mapKeys : split' );
+
 var mapKeys = function mapKeys( src )
 {
   var result = [];
 
+  if( arguments.length === 0 )
+  return result;
+
   _.assert( _.objectLike( src ) );
 
+  if( arguments.length === 1 )
   if( _.objectIs( src ) && Object.keys )
   return Object.keys( src );
 
   for( var s in src )
   result.push( s );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    for( var s in src )
+    _.arrayAppendOnce( result,s );
+  }
 
   return result;
 }
@@ -10196,57 +10358,6 @@ var mapsPluck = function( srcMaps,filterName )
   return result;
 }
 */
-//
-
-  /**
-   * The mapGroup() method returns an object with certain group of key.
-   *
-   * It creates an empty (result) object, iterate over array (src),
-   * checks if (result) object has certain value.
-   * If undefined, it creates (value) with an empty array.
-   * Otherwise, it adds to certain (value) the object with target key.
-   *
-   * @param { array } src - The target array.
-   * @param { objectLike | string } options - The object with key or string of the key.
-   *
-   * @example
-   * // returns { 33 : [ { key1 : 33 } ], 44 : [ { key1 : 44 }, { key2 : 77 } ] }
-   * _.mapGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');
-   *
-   * @returns { object } Returns an object with certain group of key.
-   * @method mapGroup
-   * @throws { Error } Will throw an Error if (options.key) is not a string,
-   * if (src) is not an object, if (options) is not an object.
-   * @memberof wTools
-   */
-
-var mapGroup = function( src,options )
-{
-  var result = {};
-
-  if( _.strIs( options ) )
-  options = { key : options };
-
-  _assert( _.strIs( options.key ) );
-
-  _assert( _.objectIs( src ) || _.arrayIs( src ) );
-
-  _assert( _.objectIs( options ) );
-
-  var key = options.key;
-
-  _.each( src, function( e,k,c )
-  {
-
-    if( result[ src[ k ][ key ] ] === undefined )
-    result[ src[ k ][ key ] ] = [];
-
-    result[ src[ k ][ key ] ].push( src[ k ] );
-
-  });
-
-  return result;
-}
 
 // --
 // map filter
@@ -10392,7 +10503,7 @@ var mapOwn = function( object,name )
 
 //
 
-var mapHas = function( object,name )
+var mapHas = function mapHas( object,name )
 {
   var name = _.nameUnfielded( name ).coded;
 
@@ -10466,12 +10577,12 @@ var mapBut = function( srcMap )
 
 //
 
-  /**
-   * @callback  _.filter.atomic()
-   * @param { object } result - The new object.
-   * @param { objectLike } srcMap - The target object.
-   * @param { string } k - The key of the (srcMap) object.
-   */
+  // /**
+  //  * @callback  _.filter.atomic()
+  //  * @param { object } result - The new object.
+  //  * @param { objectLike } srcMap - The target object.
+  //  * @param { string } k - The key of the (srcMap) object.
+  //  */
 
   /**
    * The mapButFiltering() method returns a new object (result)
@@ -10689,12 +10800,13 @@ var mapScreen = function( screenObject )
 }
 
 //
-  /**
-   * @callback  options.filter
-   * @param { objectLike } dstObject - An empty object.
-   * @param { objectLike } srcObjects - The target object.
-   * @param { string } - The key of the (screenObject).
-   */
+
+  // /**
+  //  * @callback  options.filter
+  //  * @param { objectLike } dstObject - An empty object.
+  //  * @param { objectLike } srcObjects - The target object.
+  //  * @param { string } - The key of the (screenObject).
+  //  */
 
   /**
    * The _mapScreen() returns an object filled by unique [ key, value]
@@ -11251,6 +11363,8 @@ var error =
   ErrorAbort : ErrorAbort,
 }
 
+Error.stackTraceLimit = Infinity;
+
 // --
 // prototype
 // --
@@ -11282,6 +11396,7 @@ var Proto =
 
   _entitySame : _entitySame,
   entitySame : entitySame,
+  entityDiff : entityDiff,
 
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
@@ -11298,12 +11413,12 @@ var Proto =
 
   entitySelect : entitySelect,
   entitySelectSet : entitySelectSet,
+  _entitySelectOptions : _entitySelectOptions,
   _entitySelect : _entitySelect,
-
-  /*strFormat : strFormat,*/
 
   entityMap : entityMap,
   entityFilter : entityFilter,
+  entityGroup : entityGroup,
 
   _entityMost : _entityMost,
   entityMin : entityMin,
@@ -11342,6 +11457,8 @@ var Proto =
   assertMapOwnAll : assertMapOwnAll,
   warn : warn,
   stack : stack,
+
+  includeAny : includeAny,
 
   diagnosticWatchObject : diagnosticWatchObject,
   diagnosticWatchFields : diagnosticWatchFields,
@@ -11622,7 +11739,7 @@ var Proto =
   bufferToNodeBuffer : bufferToNodeBuffer,
 
 
-  // map
+  // map extend
 
   mapClone : mapClone,
 
@@ -11631,6 +11748,12 @@ var Proto =
   mapSupplement : mapSupplement,
   mapComplement : mapComplement,
   mapCopy : mapCopy,
+
+
+  // map test
+
+  mapSatisfy : mapSatisfy,
+  _mapSatisfy : _mapSatisfy,
 
 
   // map converter
@@ -11649,7 +11772,6 @@ var Proto =
   mapInvertKeyValue : mapInvertKeyValue,
 
   /* mapsPluck : mapsPluck, */
-  mapGroup : mapGroup,
 
 
   // map logic

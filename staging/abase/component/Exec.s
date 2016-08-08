@@ -20,6 +20,20 @@ var _arraySlice = _.arraySlice;
 
 */
 
+/*
+
+!!!
+
+var read = function( data )
+{
+  var vm = VirtualMachine.createContext({});
+  var script = VirtualMachine.createScript( '(' + s + ')' );
+  return script.runInNewContext( vm );
+};
+
+*/
+
+
 // --
 // exec
 // --
