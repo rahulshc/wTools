@@ -3146,7 +3146,7 @@ var namesCoded = function( namesMap )
  * @param {*} src.
  * @return {Boolean}.
  * @method objectIs
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var objectIs = function( src )
@@ -3232,7 +3232,7 @@ var mapIs = function( src )
  *
  * @returns { boolean } Returns true if (src) is an Array.
  * @method arrayIs
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayIs = function( src )
@@ -3267,7 +3267,7 @@ var arrayIs = function( src )
    *
    * @returns { boolean } Returns true if (src) is an array-like or an Array.
    * @method arrayLike.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayLike = function( src )
@@ -3318,7 +3318,7 @@ var arrayLike = function( src )
    *
    * @returns { boolean } Returns true if (src) has the property (length).
    * @method hasLength
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var hasLength = function( src )
@@ -3344,7 +3344,7 @@ var hasLength = function( src )
  * @param {*} src.
  * @return {Boolean}.
  * @method strIs.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var strIs = function( src )
@@ -3387,7 +3387,7 @@ var symbolIs = function( src )
  * @param {*} src.
  * @return {Boolean}.
  * @method numberIs.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var numberIs = function( src )
@@ -3805,7 +3805,7 @@ var numberFrom = function( src )
   * @return {string}
   * string name of type src
   * @method strTypeOf
-  * @memberof wTools#
+  * @memberof wTools
   */
 
 var strTypeOf = function( src )
@@ -3836,7 +3836,7 @@ var strTypeOf = function( src )
   * @return {string}
   * string name of type src
   * @method strPrimitiveTypeOf
-  * @memberof wTools#
+  * @memberof wTools
   */
 
 var strPrimitiveTypeOf = function( src )
@@ -3859,7 +3859,7 @@ var strPrimitiveTypeOf = function( src )
   * @return {string}
   * If no arguments return empty string
   * @method str
-  * @memberof wTools#
+  * @memberof wTools
   */
 
 var str = function()
@@ -3889,7 +3889,7 @@ var str = function()
     * @return {Boolean}
     * If param begin is match with param src first chars than return true
     * @method strBegins
-    * @memberof wTools#
+    * @memberof wTools
     */
 
 var strBegins = function( src,begin )
@@ -3913,7 +3913,7 @@ var strBegins = function( src,begin )
     * @return {Boolean}
     * If param end is match with param src last chars than return true
     * @method strEnds
-    * @memberof wTools#
+    * @memberof wTools
     */
 
 var strEnds = function( src,end )
@@ -3938,7 +3938,7 @@ var strEnds = function( src,end )
    * If result of method strBegins - false, than return src
    * else cut begin of param src
    * @method strBeginRemove
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var strBeginRemove = function( src,begin )
@@ -3960,7 +3960,7 @@ var strBeginRemove = function( src,begin )
    * If result of method strEnds - false, than return src
    * Else cut end of param src
    * @method strEndRemove
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var strEndRemove = function( src,end )
@@ -5680,7 +5680,7 @@ var dateToStr = function dateToStr( date )
    *
    * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
    * @method bufferRelen
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var bufferRelen = function( src,len )
@@ -5776,7 +5776,7 @@ var bufferBytesGet = function( src )
    * @method bufferRetype
    * @throws { Error } Will throw an Error if (src) is not a typed array object.
    * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var bufferRetype = function( src,bufferType )
@@ -6090,7 +6090,7 @@ bufferFrom.defaults =
    * @method bufferRawFromBuffer
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
    * @throws { Error } Will throw an Error if (buffer) is not a typed array.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var bufferRawFromBuffer = function( buffer )
@@ -6420,7 +6420,7 @@ var bufferToNodeBuffer = ( function( buffer )
  * @method arraySub
  * @throws { Error } If the passed arguments is more than three.
  * @throws { Error } If the first argument is not an array.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arraySub = function( src,begin,end )
@@ -6471,7 +6471,7 @@ var arraySub = function( src,begin,end )
  * @throws { Error } If the (length) is not a number.
  * @throws { Error } If the first argument in not an array like object.
  * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayNew = function( ins,length )
@@ -6514,7 +6514,7 @@ var arrayNew = function( ins,length )
  * @method arrayNewOfSameLength
  * @throws { Error } If missed argument, or got more than one argument.
  * @throws { Error } If the first argument in not array like object.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayNewOfSameLength = function( ins )
@@ -6559,7 +6559,7 @@ var arrayNewOfSameLength = function( ins )
  * @throws { Error } If type of the first argument is not a number or array.
  * @throws { Error } If the second argument is less than 0.
  * @throws { Error } If (dst.length) is not equal to the (length).
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayOrNumber = function( dst,length )
@@ -6597,7 +6597,7 @@ var arrayOrNumber = function( dst,length )
  * @method arraySelect
  * @throws { Error } If passed arguments is not array like object.
  * @throws { Error } If the atomsPerElement property is not equal to 1.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arraySelect = function( srcArray,indicesArray )
@@ -6701,7 +6701,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  * @returns { Array } - Returns an array of the passed argument(s).
  * @method arrayIron
  * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayIron = function()
@@ -6896,7 +6896,7 @@ var arrayCopy = function arrayCopy()
  * @method arrayAppendMerging
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayAppendMerging = function arrayAppendMerging( dst )
@@ -6951,7 +6951,7 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
  * @method arrayPrependMerging
  * @throws { Error } If the first argument is not array.
  * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayPrependMerging = function arrayPrependMerging( dst )
@@ -7007,7 +7007,7 @@ var arrayPrependMerging = function arrayPrependMerging( dst )
  * @method arrayAppendOnceMerging
  * @throws { Error } If the first argument is not array.
  * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
@@ -7074,7 +7074,7 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
  * @method arrayPrependOnceMerging
  * @throws { Error } If the first argument is not array.
  * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
@@ -7129,7 +7129,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
  * @throws { Error } If the first argument in not an array.
  * @throws { Error } If the second argument is less than 0 and more than a length initial array.
  * @throws { Error } If the third argument is less than 0 and more than a length initial array.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayElementsSwap = function( dst,index1,index2 )
@@ -7174,7 +7174,7 @@ var arrayElementsSwap = function( dst,index1,index2 )
    * @returns { Array } Returns an Array.
    * @method arrayFrom
    * @throws { Error } Will throw an Error if (src) is not an object-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayFrom = function( src )
@@ -7225,7 +7225,7 @@ var arrayFrom = function( src )
    * @returns { Object } Returns an Object.
    * @method arrayToMap
    * @throws { Error } Will throw an Error if (array) is not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayToMap = function( array )
@@ -7294,7 +7294,7 @@ var arrayToMap = function( array )
    * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
    * @throws { Error } Will throw an Error if (insArray) is not an array-like.
    * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
@@ -7386,7 +7386,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayRemovedOnce = function( dstArray,ins,onEqual )
@@ -7458,7 +7458,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayRemoveOnce = function( dstArray,ins,onEqual )
@@ -7514,7 +7514,7 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayRemovedAll = function( dstArray,ins,onEqual )
@@ -7580,7 +7580,7 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayRemoveAll = function( dstArray,ins,onEqual )
@@ -7630,7 +7630,7 @@ var arrayRemoveAll = function( dstArray,ins,onEqual )
    * @method arrayReplaceOnce
    * @throws { Error } Will throw an Error if (dstArray) is not an array.
    * @throws { Error } Will throw an Error if (arguments.length) is less than three.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayReplaceOnce = function( dstArray,ins,sub )
@@ -7682,7 +7682,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * @method arrayUpdate
    * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
    * @throws { Error } Will throw an Error if (arguments.length) is less or more than three.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayUpdate = function( dstArray,ins,sub )
@@ -7730,7 +7730,7 @@ var arrayUpdate = function( dstArray,ins,sub )
    * @method arrayAppendOnce
    * @throws { Error } Will throw an Error if (dst) is not an Array.
    * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayAppendOnce = function( dst,src )
@@ -7779,7 +7779,7 @@ var arrayAppendOnce = function( dst,src )
    * @method arrayPrependOnce
    * @throws { Error } Will throw an Error if (dst) is not an Array.
    * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayPrependOnce = function( dst,src )
@@ -7844,7 +7844,7 @@ var arrayPrependOnce = function( dst,src )
    * @throws { Error } Will throw an Error if (srcArray) is not an Array.
    * @throws { Error } Will throw an Error if (first) is not a Number.
    * @throws { Error } Will throw an Error if (replace) is not a Number.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySpliceArray = function( dstArray,srcArray,first,replace )
@@ -7961,7 +7961,7 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
  * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
  * Otherwise return an array which contains the element from argument.
  * @method arrayAs
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayAs = function( src )
@@ -8089,7 +8089,7 @@ var arrayUnique = function arrayUnique( src,onElement )
    * If (src.length) is empty, it returns the empty string.
    * @method arrayToStr
    * @throws { Error } Will throw an Error If (options.type) is not the number or float.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayToStr = function( src,options )
@@ -8164,7 +8164,7 @@ var arrayToStr = function( src,options )
  * @throws { Error } Will throw an Error if (arguments.length) is less than one.
  * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
  * @throws { Error } Will throw an Error if (dstOffset) is not a Number.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayPut = function arrayPut( dstArray, dstOffset )
@@ -8236,7 +8236,7 @@ var arrayPut = function arrayPut( dstArray, dstOffset )
    * @throws { Error } Will throw an Error if (srcArray) is not an array-like.
    * @throws { Error } Will throw an Error if (mask) is not an array-like.
    * @throws { Error } Will throw an Error if length of both (srcArray and mask) is not equal.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayMask = function arrayMask( srcArray, mask )
@@ -8381,7 +8381,7 @@ arrayUnmask.defaults =
    * @returns { Array } Returns an array with duplicate values of a certain number of times.
    * @method arrayDuplicate
    * @throws { Error } Will throw an Error if (options) is not an objectLike.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayDuplicate = function arrayDuplicate( srcArray, options )
@@ -8460,7 +8460,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
  * @throws { Error } If missed argument, or got more than one argument.
  * @throws { Error } If passed argument is not an object.
  * @throws { Error } If the last element of the (o.result) is not equal to the (o.value).
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayFill = function arrayFill( o )
@@ -8524,7 +8524,7 @@ arrayFill.defaults =
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
  * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayCompare = function( src1,src2 )
@@ -8565,7 +8565,7 @@ var arrayCompare = function( src1,src2 )
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
  * @method arraySame
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arraySame = function( src1,src2 )
@@ -8661,7 +8661,7 @@ var arraySameSet = function( src1,src2 )
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
    * @throws { Error } Will throw an Error if (equalizer.length) is not equal to the 1 or 2.
    * @throws { Error } Will throw an Error if (equalizer) is not a Function.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayLeftIndexOf = function( arr,ins,equalizer )
@@ -8761,7 +8761,7 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
    * Otherwise, it returns the empty object.
    * @method arrayLeft
    * @throws { Error } Will throw an Error if (equalizer) is not a Function.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayLeft = function( arr,ins,equalizer )
@@ -8822,7 +8822,7 @@ var arrayRight = function( arr,ins,equalizer )
  * @returns { Boolean } - Returns true, if (src) has at least one value of the following argument(s), otherwise false is returned.
  * @method arrayHasAny
  * @throws { Error } If the first argument in not an array.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayHasAny = function( src )
@@ -8863,7 +8863,7 @@ var arrayHasAny = function( src )
  * @method arrayCount
  * @throws { Error } If passed arguments is less than two or more than two.
  * @throws { Error } If the first argument is not an array-like object.
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayCount = function( src,instance )
@@ -8903,7 +8903,7 @@ var arrayCount = function( src,instance )
    * @throws { Error } If passed arguments is less than one or more than two.
    * @throws { Error } If the first argument is not an array-like object.
    * @throws { Error } If the second argument is not a Function.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayCountSame = function( src,onElement )
@@ -8964,7 +8964,7 @@ var arrayCountSame = function( src,onElement )
    * @throws { Error } If passed arguments is less than one or more than two.
    * @throws { Error } If the first argument is not an array-like object.
    * @throws { Error } If the second argument is not a Function.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 
@@ -9020,7 +9020,7 @@ var arraySum = function( src,onElement )
    * @method arraySupplement
    * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is/are not the array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySupplement = function arraySupplement( dstArray )
@@ -9099,7 +9099,7 @@ var arraySupplement = function arraySupplement( dstArray )
    * @throws { Error } Will throw an Error if (screenArray) is not an array-like.
    * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is/are not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
@@ -9155,7 +9155,7 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
  *
  * @returns { Array } - Returns an array of random numbers.
  * @method arrayRandom
- * @memberof wTools#
+ * @memberof wTools
  */
 
 var arrayRandom = function( options )
@@ -9328,7 +9328,7 @@ var arraySetContainAll = function( src )
    * @method arraySetContainAll
    * @throws { Error } Will throw an Error if (src) is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySetContainAll = function( src )
@@ -9382,7 +9382,7 @@ var arraySetContainAll = function( src )
    * @method arraySetContainSomething
    * @throws { Error } Will throw an Error if (src) is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySetContainSomething = function( src )
@@ -9435,7 +9435,7 @@ var arraySetContainSomething = function( src )
    * can be found in the array (arr).
    * Otherwise, if (ins) was not found, it returns the length of the array (arr) or the index from which it ended search at.
    * @method _arraySortedLookUpAct
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var _arraySortedLookUpAct = function( arr,ins,comparator,left,right )
@@ -9505,7 +9505,7 @@ var _arraySortedLookUpAct = function( arr,ins,comparator,left,right )
    * @method arraySortedLookUp
    * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
    * @throws { Error } Will throw an Error if (arr) is not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySortedLookUp = function( arr,ins,comparator )
@@ -9601,7 +9601,7 @@ var arraySortedClosest = function( arr,ins,comparator )
    * @method arraySortedRemove
    * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
    * @throws { Error } Will throw an Error if (arr) is not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySortedRemove = function( arr,ins,comparator )
@@ -9650,7 +9650,7 @@ var arraySortedRemove = function( arr,ins,comparator )
    * @method arraySortedAddOnce
    * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
    * @throws { Error } Will throw an Error if (arr) is not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySortedAddOnce = function( arr,ins,comparator )
@@ -9697,7 +9697,7 @@ var arraySortedAddOnce = function( arr,ins,comparator )
    * @method arraySortedAdd
    * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
    * @throws { Error } Will throw an Error if (arr) is not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySortedAdd = function( arr,ins,comparator )
@@ -9740,7 +9740,7 @@ var arraySortedAdd = function( arr,ins,comparator )
    * @method arraySortedAddArray
    * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
    * @throws { Error } Will throw an Error if (dst and src) are not an array-like.
-   * @memberof wTools#
+   * @memberof wTools
    */
 
 var arraySortedAddArray = function( dst,src,comparator )

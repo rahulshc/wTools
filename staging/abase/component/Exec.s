@@ -57,11 +57,19 @@ var shell = ( function( o )
     Exec = require( 'child_process' ).exec;
 
     if( o.usingLogging )
-    console.log( o.code );
+    logger.log( o.code );
 
     var child = Exec( o.code );
-    child.stdout.on( 'data', function( data ) { console.log( data ); } );
-    child.stderr.on( 'data', function( data ) { console.error( 'ERROR :',data ); } );
+
+    child.stdout.on( 'data', function( data )
+    {
+      logger.log( _.strIndentation( data,'  ' ) );
+    });
+    child.stderr.on( 'data', function( data )
+    {
+      logger.log( '  Error :' + _.strIndentation( data,'  ' ) );
+    });
+
     child.on( 'close', function() { debugger; con.give(); } );
 
     return con;
