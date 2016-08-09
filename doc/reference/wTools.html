@@ -376,7 +376,7 @@ for which callback function returns true.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10813">line 10813</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10851">line 10851</a>
     </li></ul></dd>
     
 
@@ -1922,7 +1922,7 @@ and assigns to the each index of the (result) array (range[ 0 ] + 1).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8330">line 8330</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8334">line 8334</a>
     </li></ul></dd>
     
 
@@ -2270,7 +2270,7 @@ If (b) is omitted, arraySlice extracts through the end of the sequence (array.le
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7001">line 7001</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7005">line 7005</a>
     </li></ul></dd>
     
 
@@ -3751,211 +3751,6 @@ _.entityGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');</code></pre
 
 <div class="description">
     Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
-function on every element of src. If `onEach` returns undefined, then this result is not included into the new
-entity.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>src</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ArrayLike</span>
-|
-
-<span class="param-type">ObjectLike</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Entity, on each elements of which will be called `onEach` function.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onEach</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">onEach</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Function that produces an element of the new entity;</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line1425">line 1425</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li>wTools#entityMap</li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    New entity.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ArrayLike</span>
-|
-
-<span class="param-type">ObjectLike</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>var numbers = [ 36, -25, 49, 64, -16 ];
-
-     function sqrt( v )
-     {
-        return ( v > 0 ) ? Math.sqrt( v ) : undefined;
-     };
-
-     var res = wTools.entityMap( numbers, sqr );
-   // [ 6, 7, 8 ]
-   // numbers is still [ 36, -25, 49, 64, -16 ];</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".entityMap"><span class="type-signature">(static) </span>entityMap<span class="signature">(src, onEach)</span><span class="type-signature"> &rarr; {ArrayLike|ObjectLike}</span></h4>
-
-    
-
-
-
-<div class="description">
-    Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
 function on every element of src. If entity is array, the new array has the same length as source.
 </div>
 
@@ -4154,6 +3949,211 @@ function on every element of src. If entity is array, the new array has the same
 
     var res = wTools.entityMap( numbers, checkSidesOfTriangle );
    // [ true, true, true ]</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".entityMap"><span class="type-signature">(static) </span>entityMap<span class="signature">(src, onEach)</span><span class="type-signature"> &rarr; {ArrayLike|ObjectLike}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
+function on every element of src. If `onEach` returns undefined, then this result is not included into the new
+entity.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ArrayLike</span>
+|
+
+<span class="param-type">ObjectLike</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Entity, on each elements of which will be called `onEach` function.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onEach</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">onEach</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function that produces an element of the new entity;</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line1425">line 1425</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>wTools#entityMap</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    New entity.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ArrayLike</span>
+|
+
+<span class="param-type">ObjectLike</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var numbers = [ 36, -25, 49, 64, -16 ];
+
+     function sqrt( v )
+     {
+        return ( v > 0 ) ? Math.sqrt( v ) : undefined;
+     };
+
+     var res = wTools.entityMap( numbers, sqr );
+   // [ 6, 7, 8 ]
+   // numbers is still [ 36, -25, 49, 64, -16 ];</code></pre>
 
 
 
@@ -5268,7 +5268,7 @@ Otherwise pair( key/value ) from the first object goes into result object.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10525">line 10525</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10563">line 10563</a>
     </li></ul></dd>
     
 
@@ -5540,7 +5540,7 @@ if values are not equal to the array or object.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10589">line 10589</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10627">line 10627</a>
     </li></ul></dd>
     
 
@@ -5866,7 +5866,7 @@ of the (srcObject) to the (result).</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9655">line 9655</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9659">line 9659</a>
     </li></ul></dd>
     
 
@@ -6078,7 +6078,7 @@ and returns an object filled by all unique clone [key, value].
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9894">line 9894</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9898">line 9898</a>
     </li></ul></dd>
     
 
@@ -6268,7 +6268,7 @@ Objects to compare values.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10415">line 10415</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10453">line 10453</a>
     </li></ul></dd>
     
 
@@ -6456,7 +6456,7 @@ from one or more source objects to the new object.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9923">line 9923</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9927">line 9927</a>
     </li></ul></dd>
     
 
@@ -6574,7 +6574,7 @@ it extends (result) from the next objects.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9778">line 9778</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9782">line 9782</a>
     </li></ul></dd>
     
 
@@ -6843,7 +6843,7 @@ of the (dstObject) object.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9722">line 9722</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9726">line 9726</a>
     </li></ul></dd>
     
 
@@ -7032,7 +7032,7 @@ _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9995">line 9995</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9999">line 9999</a>
     </li></ul></dd>
     
 
@@ -7295,22 +7295,15 @@ mapIs( [ 3, 7, 13 ] );</code></pre>
 
     
 
-    <h4 class="name" id=".mapKeys"><span class="type-signature">(static) </span>mapKeys<span class="signature">(src)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    <h4 class="name" id=".mapKeys"><span class="type-signature">(static) </span>mapKeys<span class="signature">(&hellip;src)</span><span class="type-signature"> &rarr; {array}</span></h4>
 
     
 
 
 
 <div class="description">
-    The mapKeys() returns
-an array of a given object's own enumerable properties,
+    The mapKeys() returns an array of a given objects enumerable properties,
 in the same order as that provided by a for...in loop.
-
-It takes an object (src) creates an empty array,
-checks if (src) is an object and has any keys.
-If true,
-it returns an array of keys,
-otherwise it returns an empty array.
 </div>
 
 
@@ -7333,6 +7326,8 @@ otherwise it returns an empty array.
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -7358,6 +7353,16 @@ otherwise it returns an empty array.
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
             
 
             
@@ -7403,7 +7408,7 @@ otherwise it returns an empty array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10204">line 10204</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10255">line 10255</a>
     </li></ul></dd>
     
 
@@ -7621,7 +7626,7 @@ Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match ind
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10118">line 10118</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10122">line 10122</a>
     </li></ul></dd>
     
 
@@ -7836,7 +7841,7 @@ If true, it returns true.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10469">line 10469</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10507">line 10507</a>
     </li></ul></dd>
     
 
@@ -8080,7 +8085,7 @@ Otherwise pair( key/value ) from the first object goes into result object.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10643">line 10643</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10681">line 10681</a>
     </li></ul></dd>
     
 
@@ -8160,6 +8165,208 @@ Otherwise pair( key/value ) from the first object goes into result object.
     
     <pre class="prettyprint"><code>// returns { a : 7 }
 mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".mapOwnKeys"><span class="type-signature">(static) </span>mapOwnKeys<span class="signature">(&hellip;src)</span><span class="type-signature"> &rarr; {array}</span></h4>
+
+    
+
+
+
+<div class="description">
+    The mapOwnKeys() returns an array of a given objects own enumerable properties,
+in the same order as that provided by a for...in loop.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">objectLike</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The object whose properties are to be returned.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10208">line 10208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Will throw an Error if (src) is not an Object.
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Returns an array whose elements are strings
+corresponding to the enumerable properties found directly upon object.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// returns [ "a", "b" ]
+_.mapOwnKeys({ a : 7, b : 13 });</code></pre>
 
 
 
@@ -8273,7 +8480,7 @@ otherwise it returns an empty array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10295">line 10295</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10333">line 10333</a>
     </li></ul></dd>
     
 
@@ -8490,7 +8697,7 @@ Objects to compare values.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10368">line 10368</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10406">line 10406</a>
     </li></ul></dd>
     
 
@@ -8715,7 +8922,7 @@ and calls the _mapScreen( {} ) with created object.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10766">line 10766</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10804">line 10804</a>
     </li></ul></dd>
     
 
@@ -8938,7 +9145,7 @@ with three properties.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10709">line 10709</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10747">line 10747</a>
     </li></ul></dd>
     
 
@@ -9151,7 +9358,7 @@ and returns an object with unique [ key, value ].
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9834">line 9834</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9838">line 9838</a>
     </li></ul></dd>
     
 
@@ -9315,7 +9522,7 @@ Otherwise it throws an Error.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10033">line 10033</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10037">line 10037</a>
     </li></ul></dd>
     
 
@@ -9603,7 +9810,7 @@ Otherwise, it returns a string representing the passed object (src).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10157">line 10157</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10161">line 10161</a>
     </li></ul></dd>
     
 
@@ -9775,7 +9982,7 @@ otherwise it returns an empty array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10258">line 10258</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10296">line 10296</a>
     </li></ul></dd>
     
 
@@ -9993,7 +10200,7 @@ Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match ind
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10073">line 10073</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10077">line 10077</a>
     </li></ul></dd>
     
 
@@ -14219,218 +14426,6 @@ Besides the aforementioned difference, routineBind method accepts function as ar
 
 
 <div class="description">
-    Return new function with sealed context and arguments.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>context</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The value that will be set as 'this' keyword in new function</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>routine</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Function which will be used as base for result function.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>args</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;*></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Arguments wrapped into array. Will be used as argument to `routine` function</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5107">line 5107</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    Result function with sealed context and arguments.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">function</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>var o = {
-        z: 5
-    };
-
-   function sum(x, y) {
-       return x + y + this.z;
-    }
-   var newSum = wTools.routineSeal(o, sum, [3, 4]);
-   newSum(y); // 12</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".routineJoin"><span class="type-signature">(static) </span>routineJoin<span class="signature">(context, routine, args)</span><span class="type-signature"> &rarr; {function}</span></h4>
-
-    
-
-
-
-<div class="description">
     The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
    value. Argumetns `args` of target function which are passed before arguments of binded function during
    calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
@@ -14675,6 +14670,218 @@ Besides the aforementioned difference, routineBind method accepts function as ar
      f2.call( o ); // try to call new function with context set to { z: 5 }
      var f3 = _.routineJoin( undefined,f1 ); // new function.
      f3.call( o ) // print  { z: 5 }</code></pre>
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".routineJoin"><span class="type-signature">(static) </span>routineJoin<span class="signature">(context, routine, args)</span><span class="type-signature"> &rarr; {function}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Return new function with sealed context and arguments.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>context</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The value that will be set as 'this' keyword in new function</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>routine</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function which will be used as base for result function.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;*></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Arguments wrapped into array. Will be used as argument to `routine` function</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line5107">line 5107</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Result function with sealed context and arguments.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var o = {
+        z: 5
+    };
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineSeal(o, sum, [3, 4]);
+   newSum(y); // 12</code></pre>
 
 
 
@@ -16774,7 +16981,7 @@ can be found in the array (arr).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8551">line 8551</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8555">line 8555</a>
     </li></ul></dd>
     
 
@@ -17650,7 +17857,7 @@ if the array (dst) doesn't have the value (src).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6840">line 6840</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6844">line 6844</a>
     </li></ul></dd>
     
 
@@ -18124,7 +18331,7 @@ var arr = _.arrayAppendOnceMerging( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7083">line 7083</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7087">line 7087</a>
     </li></ul></dd>
     
 
@@ -18310,7 +18517,7 @@ var arr = _.arrayAs( { a : 1, b : 2 } );</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7647">line 7647</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7651">line 7651</a>
     </li></ul></dd>
     
 
@@ -18575,7 +18782,7 @@ var arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7987">line 7987</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7991">line 7991</a>
     </li></ul></dd>
     
 
@@ -18845,7 +19052,7 @@ var arr = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8022">line 8022</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8026">line 8026</a>
     </li></ul></dd>
     
 
@@ -19328,7 +19535,7 @@ If (options.numberOfAtomsPerElement) is greater that length of a (srcArray or op
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7480">line 7480</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7484">line 7484</a>
     </li></ul></dd>
     
 
@@ -19900,7 +20107,7 @@ If (dstArray) contains values, the certain values will be replaced.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8205">line 8205</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8209">line 8209</a>
     </li></ul></dd>
     
 
@@ -20268,7 +20475,7 @@ with a static value.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7572">line 7572</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7576">line 7576</a>
     </li></ul></dd>
     
 
@@ -20741,7 +20948,7 @@ It iterates over array-like (arguments[]) copies each argument to the array (ins
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7941">line 7941</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7945">line 7945</a>
     </li></ul></dd>
     
 
@@ -21185,7 +21392,7 @@ that returns the index of the value (ins) in the array (arr).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7872">line 7872</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7876">line 7876</a>
     </li></ul></dd>
     
 
@@ -21484,7 +21691,7 @@ By default, it checks the equality of two arguments.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7756">line 7756</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7760">line 7760</a>
     </li></ul></dd>
     
 
@@ -21771,7 +21978,7 @@ If amount is equal 0, it returns an empty array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7341">line 7341</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7345">line 7345</a>
     </li></ul></dd>
     
 
@@ -23174,7 +23381,7 @@ if the array (dst) doesn't have the value (src).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6889">line 6889</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6893">line 6893</a>
     </li></ul></dd>
     
 
@@ -23741,7 +23948,7 @@ Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstAr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7279">line 7279</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7283">line 7283</a>
     </li></ul></dd>
     
 
@@ -24129,7 +24336,7 @@ var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 0, 'str', true, [ 7, 8 ] );</code
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8275">line 8275</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8279">line 8279</a>
     </li></ul></dd>
     
 
@@ -24371,7 +24578,7 @@ By default, it checks the equality of two arguments.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6688">line 6688</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6692">line 6692</a>
     </li></ul></dd>
     
 
@@ -24544,6 +24751,9 @@ that looking for the value of the (insArray[i]) array in the (dstArray) array.
 If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
 and incrementing the variable (result++).
 Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the method
+
+If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray),
+and then incrementing the variable (result++).
 </div>
 
 
@@ -24721,9 +24931,11 @@ By default, it checks the equality of two arguments.</td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>arrayLeftIndexOf( dstArray, insArray[i], onEqual )  See for more information.
-If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray),
-and then incrementing the variable (result++).</li>
+            <li>wTools.arrayLeftIndexOf</li>
+        
+            <li><a href="wTools.html#arrayLeftIndexOf">wTools#arrayLeftIndexOf</a></li>
+        
+            <li>wTools~arrayLeftIndexOf</li>
         </ul>
     </dd>
     
@@ -25053,7 +25265,7 @@ By default, it checks the equality of two arguments.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6621">line 6621</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6625">line 6625</a>
     </li></ul></dd>
     
 
@@ -25382,7 +25594,7 @@ By default, it checks the equality of two arguments.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6492">line 6492</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6496">line 6496</a>
     </li></ul></dd>
     
 
@@ -25716,7 +25928,7 @@ By default, it checks the equality of two arguments.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6566">line 6566</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6570">line 6570</a>
     </li></ul></dd>
     
 
@@ -26025,7 +26237,7 @@ Otherwise, it returns (-1) index.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6734">line 6734</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6738">line 6738</a>
     </li></ul></dd>
     
 
@@ -26273,7 +26485,7 @@ _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7690">line 7690</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7694">line 7694</a>
     </li></ul></dd>
     
 
@@ -26782,7 +26994,7 @@ contains all the same values as in the (src) array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8444">line 8444</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8448">line 8448</a>
     </li></ul></dd>
     
 
@@ -27047,7 +27259,7 @@ contains the first matching value from (src).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8495">line 8495</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8499">line 8499</a>
     </li></ul></dd>
     
 
@@ -27364,7 +27576,7 @@ that returns the index of the value (ins) in the array (arr).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8809">line 8809</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8813">line 8813</a>
     </li></ul></dd>
     
 
@@ -27685,7 +27897,7 @@ that returns the new added or the updated index.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8854">line 8854</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8858">line 8858</a>
     </li></ul></dd>
     
 
@@ -28004,7 +28216,7 @@ that returns the index of the value (ins) in the array (arr).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8760">line 8760</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8764">line 8764</a>
     </li></ul></dd>
     
 
@@ -28327,7 +28539,7 @@ that returns the index of the value (ins) in the array (arr).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8614">line 8614</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8618">line 8618</a>
     </li></ul></dd>
     
 
@@ -28651,7 +28863,7 @@ that returns the index of the value (ins) in the array (arr).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8711">line 8711</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8715">line 8715</a>
     </li></ul></dd>
     
 
@@ -28954,7 +29166,7 @@ then all of the elements through the end of the array will be deleted.</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6938">line 6938</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6942">line 6942</a>
     </li></ul></dd>
     
 
@@ -29590,7 +29802,7 @@ _.arraySub( [ 1, 2, 3, 4, 5 ] );</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8079">line 8079</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8083">line 8083</a>
     </li></ul></dd>
     
 
@@ -29890,7 +30102,7 @@ After that it returns to the previous array, and executes again, until (length).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8127">line 8127</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8131">line 8131</a>
     </li></ul></dd>
     
 
@@ -30472,7 +30684,7 @@ only types of integer or floating point.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7205">line 7205</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7209">line 7209</a>
     </li></ul></dd>
     
 
@@ -30714,7 +30926,7 @@ It creates the variable (index) assigns and calls to it the function (arrayRepla
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6787">line 6787</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line6791">line 6791</a>
     </li></ul></dd>
     
 
@@ -30949,7 +31161,7 @@ or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9321">line 9321</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9325">line 9325</a>
     </li></ul></dd>
     
 
@@ -31201,7 +31413,7 @@ Otherwise, it returns an initial typed array.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8903">line 8903</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8907">line 8907</a>
     </li></ul></dd>
     
 
@@ -31399,7 +31611,7 @@ _.bufferRelen( ints3, 6 );</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9010">line 9010</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9014">line 9014</a>
     </li></ul></dd>
     
 
@@ -35807,7 +36019,7 @@ _.toStrForRange( [ 'a', 'z' ] );</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.6</a> on Mon Aug 08 2016 20:36:10 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.6</a> on Mon Aug 08 2016 21:14:56 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
