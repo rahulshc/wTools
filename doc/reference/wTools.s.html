@@ -1137,9 +1137,13 @@ var entityWithKeyRecursive = function( src,key,onEach )
 {
   var i = 0;
 
+  debugger;
+  throw _.err( 'deprecated' );
+
   if( key in src )
   {
-    if( onEach ) onEach.call( src,src[ key ],key,i );
+    if( onEach )
+    onEach.call( src,src[ key ],key,i );
     return src[ key ];
   }
 
@@ -1586,7 +1590,7 @@ var entityGroup = function( o )
   var groupForKey = function( key,result )
   {
 
-    _.each( o.src, function( e,k,c )
+    _.each( o.src, function( e,k )
     {
 
       var value = o.usingOriginal ? o.src[ k ] : o.src[ k ][ key ];
@@ -1833,10 +1837,260 @@ var entityCoerceTo = function( src,ins )
 
 }
 
+//
+
+var entitySearch = function( o )
+{
+
+  if( arguments.length === 2 )
+  {
+    o = { src : arguments[ 0 ], ins : arguments[ 1 ] };
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.routineOptions( entitySearch,o );
+
+  debugger;
+
+
+}
+
+entitySearch.defaults =
+{
+  src : null,
+  ins : null,
+}
+
 // --
 // iterator
 // --
 
+var __eachAct = function( o )
+{
+
+  var i = 0;
+  var src = o.src;
+
+  var __onElement = function( k )
+  {
+
+    o.onUp.call( o,src[ k ],k,i );
+
+    o.counter += 1;
+    i += 1;
+
+    if( o.recursive )
+    {
+
+      __eachAct
+      ({
+        src : src[ k ],
+        root : o.root,
+        onUp : o.onUp,
+        onDown : o.onDown,
+        own : o.own,
+        recursive : o.recursive,
+        levels : o.levels-1,
+        counter : o.counter,
+      });
+
+      o.onDown.call( o,src[ k ],k,i );
+
+    }
+
+  }
+
+  /* */
+
+  if( _.arrayLike( src ) )
+  {
+
+    for( var k = 0 ; k &lt; src.length ; k++ )
+    {
+
+      __onElement( k );
+
+    }
+
+  }
+  else if( _.objectLike( src ) )
+  {
+
+    for( var k in src )
+    {
+
+      if( o.own )
+      if( !Object.hasOwnProperty.call( src,k ) )
+      continue;
+
+      __onElement( k );
+
+    }
+
+  }
+  else
+  {
+
+    if( o.src !== o.root )
+    return;
+
+    o.onUp.call( o,src[ k ],k,i );
+    o.onDown.call( o,src[ k ],k,i );
+    o.counter += 1;
+    i++;
+
+  }
+
+  return i;
+}
+
+//
+
+var _each = function( o )
+{
+
+  if( o.root === undefined )
+  o.root = o.src;
+
+  _.routineOptions( _each,o );
+  _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
+
+  o.onUp = o.onUp || function(){};
+  o.onDown = o.onDown || function(){};
+
+  return __eachAct( o );
+}
+
+_each.defaults =
+{
+  src : null,
+  root : null,
+  onUp : null,
+  onDown : null,
+  own : 0,
+  recursive : 0,
+  levels : 256,
+  counter : 0,
+}
+
+//
+
+var each = function( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  o.own = 0;
+
+  return _each( o );
+
+}
+
+//
+
+var eachOwn = function( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  o.own = 1;
+
+  return _each( o );
+}
+
+//
+
+var eachRecursive = function( o )
+{
+  debugger;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  o.own = 0;
+  o.recursive = 1;
+
+  return _each( o );
+
+/*
+  var i = 0;
+
+  //var handlEach = function( e,k,i ){
+  //
+  //}
+
+  var onEach = arguments[arguments.length-1];
+  if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
+
+  for( var arg = 0, l = arguments.length-1 ; arg &lt; l ; arg++ )
+  {
+
+    var src = arguments[arg];
+
+    if( _.arrayIs( src ) )
+    {
+
+      for( var a = 0 ; a &lt; src.length ; a++ )
+      {
+        if( _.arrayIs( src[a] ) || _.objectIs( src[a] ) )
+        {
+          i += eachRecursive( src[a],onEach );
+        }
+        else
+        {
+          onEach.call( src,src[a],a,i );
+          i++;
+        }
+      }
+
+    }
+    else if( _.objectIs( src ) )
+    {
+
+      for( var a in src )
+      {
+        if( _.arrayIs( src[a] ) || _.objectIs( src[a] ) )
+        {
+          i += eachRecursive( src[a],onEach );
+        }
+        else
+        {
+          onEach.call( src,src[a],a,i );
+          i++;
+        }
+      }
+
+    }
+    else
+    {
+      onEach.call( null,src,null,i );
+    }
+
+  }
+
+  return i;
+*/
+}
+
+//
+
+var eachOwnRecursive = function( o )
+{
+  debugger;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onEach : arguments[ 1 ] }
+  o.own = 1;
+  o.recursive = 1;
+
+  return _each( o );
+}
+
+//
+/*
 var until = function()
 {
 
@@ -1884,83 +2138,10 @@ var until = function()
 
   return i;
 }
+*/
 
 //
 
-var _each = function( o )
-{
-
-  var i = 0;
-  var onEach = o.args[ o.args.length-1 ];
-  if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
-
-  for( var arg = 0, l = o.args.length-1 ; arg &lt; l ; arg++ )
-  {
-
-    var src = o.args[ arg ];
-
-    if( _.arrayIs( src ) || ( !_.objectIs( src ) &amp;&amp; _.arrayLike( src ) ) )
-    {
-
-      for( var a = 0 ; a &lt; src.length ; a++ )
-      {
-        if( o.own )
-        if( !Object.hasOwnProperty.call( src,a ) )
-        continue;
-
-        onEach.call( src,src[ a ],a,i );
-        i++;
-      }
-
-    }
-    else if( _.objectIs( src ) || _.objectLike( src ) )
-    {
-
-      for( var a in src )
-      {
-        if( o.own )
-        if( !Object.hasOwnProperty.call( src,a ) )
-        continue;
-
-        onEach.call( src,src[a],a,i );
-        i++;
-      }
-
-    }
-    else if( src !== undefined )
-    {
-
-      onEach.call( src,src );
-      i++;
-
-    }
-
-  }
-
-  return i;
-}
-
-//
-
-var each = function()
-{
-
-  return _each({ args : arguments });
-
-}
-
-//
-
-var eachOwn = function()
-{
-
-  return _each({ args : arguments, own : 1 });
-
-}
-
-//
-
-//var eachSample = function( samples,onEach )
 var eachSample = function( o )
 {
 
@@ -2119,70 +2300,6 @@ eachSample.defaults =
   add : null,
 
 }
-
-//
-
-var eachRecursive = function()
-{
-
-  var i = 0;
-
-  //var handlEach = function( e,k,i ){
-  //
-  //}
-
-  var onEach = arguments[arguments.length-1];
-  if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
-
-  for( var arg = 0, l = arguments.length-1 ; arg &lt; l ; arg++ )
-  {
-
-    var src = arguments[arg];
-
-    if( _.arrayIs( src ) )
-    {
-
-      for( var a = 0 ; a &lt; src.length ; a++ )
-      {
-        if( _.arrayIs( src[a] ) || _.objectIs( src[a] ) )
-        {
-          i += eachRecursive( src[a],onEach );
-        }
-        else
-        {
-          onEach.call( src,src[a],a,i );
-          i++;
-        }
-      }
-
-    }
-    else if( _.objectIs( src ) )
-    {
-
-      for( var a in src )
-      {
-        if( _.arrayIs( src[a] ) || _.objectIs( src[a] ) )
-        {
-          i += eachRecursive( src[a],onEach );
-        }
-        else
-        {
-          onEach.call( src,src[a],a,i );
-          i++;
-        }
-      }
-
-    }
-    else
-    {
-      onEach.call( null,src,null,i );
-    }
-
-  }
-
-  return i;
-}
-
 //
 
 var dup = function( times,ins,result )
@@ -3056,8 +3173,8 @@ var namesCoded = function( namesMap )
  *
  * @param {*} src.
  * @return {Boolean}.
- * @method objectIs.
- * @memberof wTools#.
+ * @method objectIs
+ * @memberof wTools#
  */
 
 var objectIs = function( src )
@@ -3143,7 +3260,7 @@ var mapIs = function( src )
  *
  * @returns { boolean } Returns true if (src) is an Array.
  * @method arrayIs
- * @memberof wTools#.
+ * @memberof wTools#
  */
 
 var arrayIs = function( src )
@@ -3178,7 +3295,7 @@ var arrayIs = function( src )
    *
    * @returns { boolean } Returns true if (src) is an array-like or an Array.
    * @method arrayLike.
-   * @memberof wTools#.
+   * @memberof wTools#
    */
 
 var arrayLike = function( src )
@@ -3229,7 +3346,7 @@ var arrayLike = function( src )
    *
    * @returns { boolean } Returns true if (src) has the property (length).
    * @method hasLength
-   * @memberof wTools#.
+   * @memberof wTools#
    */
 
 var hasLength = function( src )
@@ -3255,7 +3372,7 @@ var hasLength = function( src )
  * @param {*} src.
  * @return {Boolean}.
  * @method strIs.
- * @memberof wTools#.
+ * @memberof wTools#
  */
 
 var strIs = function( src )
@@ -3298,7 +3415,7 @@ var symbolIs = function( src )
  * @param {*} src.
  * @return {Boolean}.
  * @method numberIs.
- * @memberof wTools#.
+ * @memberof wTools#
  */
 
 var numberIs = function( src )
@@ -3721,6 +3838,8 @@ var numberFrom = function( src )
 
 var strTypeOf = function( src )
 {
+
+  _.assert( arguments.length === 1 );
 
   if( !_.atomicIs( src ) )
   if( src.constructor &amp;&amp; src.constructor.name )
@@ -5555,14 +5674,753 @@ var dateToStr = function dateToStr( date )
 }
 
 // --
+// buffer
+// --
+
+  /**
+   * The bufferRelen() method returns a new or the same typed array (src) with a new or the same length (len).
+   *
+   * It creates the variable (result) checks, if (len) is more than (src.length),
+   * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayNew(src, len))
+   * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
+   * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
+   * Otherwise, it returns an initial typed array.
+   *
+   * @see { @link wTools#arrayNew() } - See for more information.
+   *
+   * @param { typedArray } src - The source typed array.
+   * @param { Number } len - The length of a typed array.
+   *
+   * @example
+   * // returns [ 3, 7, 13, 0 ]
+   * var ints = new Int8Array( [ 3, 7, 13 ] );
+   * _.bufferRelen( ints, 4 );
+   *
+   * @example
+   * // returns [ 3, 7, 13 ]
+   * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+   * _.bufferRelen( ints2, 3 );
+   *
+   * @example
+   * // returns [ 3, 0, 13, 0, 77, 0 ]
+   * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
+   * _.bufferRelen( ints3, 6 );
+   *
+   * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
+   * @method bufferRelen
+   * @memberof wTools#
+   */
+
+var bufferRelen = function( src,len )
+{
+
+  _.assert( _.bufferIs( src ) );
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( len ) );
+
+  var result = src;
+
+  if( len > src.length )
+  {
+    result = arrayNew( src, len );
+    result.set( src );
+  }
+  else if( len &lt; src.length )
+  {
+    result = src.subarray( 0,len );
+  }
+
+  return result;
+}
+
+//
+
+var bufferResize = function bufferResize( src,size )
+{
+  var result = src;
+
+  if( !( src instanceof ArrayBuffer ) )
+  throw _.err( '_.bufferResize :','"src" is not instance of "ArrayBuffer"' );
+
+  if( size > src.byteLength )
+  {
+    result = arrayNew( src, size );
+    var resultTyped = new Uint8Array( result,0,result.byteLength );
+    var srcTyped = new Uint8Array( src,0,src.byteLength );
+    resultTyped.set( srcTyped );
+  }
+  else if( size &lt; src.byteLength )
+  {
+    result = src.slice( 0,size );
+  }
+
+  return result;
+}
+
+//
+
+var bufferBytesGet = function( src )
+{
+
+  if( src instanceof ArrayBuffer )
+  {
+    return new Uint8Array( src );
+  }
+  else if( typeof Buffer !== 'undefined' &amp;&amp; src instanceof Buffer )
+  {
+    return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
+  }
+  else if( _.bufferIs( src ) )
+  {
+    return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
+  }
+  else if( _.strIs( src ) )
+  {
+    return new Uint8Array( _.utf8ToBuffer( src ) );
+  }
+  else throw _.err( '_.bufferBytesGet :','wrong argument' );
+
+}
+
+//
+
+  /**
+   * The bufferRetype() method converts and returns a new instance of (bufferType) constructor.
+   *
+   * @param { typedArray } src - The typed array.
+   * @param { typedArray } bufferType - The type of typed array.
+   *
+   * @example
+   * // returns [ 513, 1027, 1541 ]
+   * var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
+   * _.bufferRetype(view1, Int16Array);
+   *
+   * @example
+   * // returns [ 1, 2, 3, 4, 5, 6 ]
+   * var view2 = new Int16Array( [ 513, 1027, 1541 ] );
+   * _.bufferRetype(view2, Int8Array);
+   *
+   * @returns { typedArray } Returns a new instance of (bufferType) constructor.
+   * @method bufferRetype
+   * @throws { Error } Will throw an Error if (src) is not a typed array object.
+   * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
+   * @memberof wTools#
+   */
+
+var bufferRetype = function( src,bufferType )
+{
+
+  _.assert( _.bufferIs( src ) );
+  _.assert( _.typeIsBuffer( bufferType ) );
+
+  var o = src.byteOffset;
+  var l = Math.floor( src.byteLength / bufferType.BYTES_PER_ELEMENT );
+  var result = new bufferType( src.buffer,o,l );
+
+  return result;
+}
+
+//
+
+var bufferMove = function( dst,src )
+{
+
+  if( arguments.length === 2 )
+  {
+
+    _.assert( _.arrayLike( dst ) );
+    _.assert( _.arrayLike( src ) );
+
+    if( dst.length !== src.length )
+    throw _.err( '_.bufferMove :','"dst" and "src" must have same length' );
+
+    if( dst.set )
+    {
+      dst.set( src );
+      return dst;
+    }
+
+    for( var s = 0 ; s &lt; src.length ; s++ )
+    dst[ s ] = src[ s ];
+
+  }
+  else if( arguments.length === 1 )
+  {
+
+    var options = arguments[ 0 ];
+    _.assertMapOnly( options,bufferMove.defaults );
+
+    var src = options.src;
+    var dst = options.dst;
+
+    if( _.bufferRawIs( dst ) )
+    {
+      dst = new Uint8Array( dst );
+      if( _.bufferIs( src ) &amp;&amp; !( src instanceof Uint8Array ) )
+      src = new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
+    }
+
+    _.assert( _.arrayLike( dst ) );
+    _.assert( _.arrayLike( src ) );
+
+    options.dstOffset = options.dstOffset || 0;
+
+    if( dst.set )
+    {
+      dst.set( src,options.dstOffset );
+      return dst;
+    }
+
+    for( var s = 0, d = options.dstOffset ; s &lt; src.length ; s++, d++ )
+    dst[ d ] = src[ s ];
+
+  }
+  else throw _.err( 'unexpected' );
+
+  return dst;
+}
+
+bufferMove.defaults =
+{
+  dst : null,
+  src : null,
+  dstOffset : null,
+}
+
+//
+
+var bufferToStr = function( src,options )
+{
+
+  var result = '';
+  var options = options || {};
+
+  if( src instanceof ArrayBuffer ) src = new Uint8Array( src,0,src.byteLength );
+
+  try
+  {
+    result = String.fromCharCode.apply( null, src );
+  }
+  catch( e )
+  {
+    for( var i = 0 ; i &lt; src.byteLength ; i++ )
+    {
+      result += String.fromCharCode( src[i] );
+    }
+  }
+
+  return result;
+}
+
+//
+
+var bufferToDom = function( xmlBuffer ) {
+
+  var result;
+
+  if( typeof DOMParser !== 'undefined' &amp;&amp; DOMParser.prototype.parseFromBuffer )
+  {
+
+    var parser = new DOMParser();
+    result = parser.parseFromBuffer( xmlBuffer,xmlBuffer.byteLength,'text/xml' );
+    throw _.err( 'not tested' );
+
+  }
+  else
+  {
+
+    var xmlStr = _.bufferToStr( xmlBuffer );
+    result = this.strToDom( xmlStr );
+
+  }
+
+  return result;
+}
+
+//
+
+var bufferLeftBufferIndex = function( src,ins )
+{
+
+  if( !_.bufferIs( src ) )
+  src = _.bufferBytesGet( src );
+
+  if( !_.bufferIs( ins ) )
+  ins = _.bufferBytesGet( ins );
+
+  _.assert( _.bufferIs( src ) );
+  _.assert( _.bufferIs( ins ) );
+
+/*
+    var srcw = _.bufferRetype( src,Uint32Array );
+    var insw = _.bufferRetype( ins,Uint32Array );
+    debugger;
+*/
+
+  var o = -1
+  do
+  {
+
+    o += 1;
+    var o = src.indexOf( ins[ 0 ],o );
+
+    for( var i = 0 ; i &lt; ins.length ; i++ )
+    if( src[ o+i ] !== ins[ i ] )
+    break;
+
+    if( i === ins.length )
+    return o;
+
+  }
+  while( o !== -1 );
+
+  return -1;
+}
+
+//
+
+var bufferFromArrayOfArray = function( array,options ){
+
+  if( _.objectIs( array ) )
+  {
+    options = array;
+    array = options.buffer;
+  }
+
+  var options = options || {};
+  var array = options.buffer = array || options.buffer;
+
+  //
+
+  if( options.BufferType === undefined ) options.BufferType = Float32Array;
+  if( options.sameLength === undefined ) options.sameLength = 1;
+  if( !options.sameLength ) throw _.err( '_.bufferFromArrayOfArray :','differemt length of arrays is not implemented' );
+
+  if( !array.length ) return new options.BufferType();
+
+  var atomsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
+
+  if( !_.numberIs( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :','cant find out element length' );
+
+  var length = array.length * atomsPerElement;
+  var result = new options.BufferType( length );
+  var i = 0;
+
+  for( var a = 0 ; a &lt; array.length ; a++ )
+  {
+
+    var element = array[ a ];
+
+    for( var e = 0 ; e &lt; atomsPerElement ; e++ )
+    {
+
+      result[ i ] = element[ e ];
+      i += 1;
+
+    }
+
+  }
+
+  return result;
+}
+
+//
+
+var bufferFrom = function( o )
+{
+  var result;
+
+  _assert( arguments.length === 1 );
+  _assert( _.objectIs( o ) );
+  _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
+  _.assertMapOnly( o,bufferFrom.defaults );
+
+  /* buffer */
+
+  if( _.bufferIs( o.src ) )
+  {
+    if( o.src.constructor === o.bufferConstructor )
+    return o.src;
+
+    debugger;
+
+    result = new o.bufferConstructor( o.src );
+    return result;
+  }
+
+  /* number */
+
+  if( _.numberIs( o.src ) )
+  o.src = [ o.src ];
+
+  /* midverification */
+
+  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
+
+  /* length */
+
+  var length = o.src.length;
+  if( !_.numberIs( length ) )
+  {
+
+    var length = 0;
+    while( o.src[ length ] !== undefined )
+    length += 1;
+
+  }
+
+  /* make */
+
+  if( _.arrayIs( o.src ) )
+  result = new o.bufferConstructor( o.src );
+  else if ( _.arrayLike( o.src ) )
+  {
+    result = new o.bufferConstructor( o.src );
+    throw _.err( 'not tested' );
+  }
+  else
+  {
+    result = new o.bufferConstructor( length );
+    for( var i = 0 ; i &lt; length ; i++ )
+    result[ i ] = o.src[ i ];
+  }
+
+  return result;
+}
+
+bufferFrom.defaults =
+{
+  src : null,
+  bufferConstructor : null,
+}
+
+//
+  /**
+   * The bufferRawFromBuffer() method returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
+   * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
+   *
+   * @param { typedArray } buffer - Entity to check.
+   *
+   * @example
+   * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+   * var buffer1 = new ArrayBuffer(10);
+   * var view1 = new Int8Array( buffer1 );
+   * _.bufferRawFromBuffer( view1 );
+   *
+   * @example
+   * // returns [ 0, 0, 0, 0, 0, 0 ]
+   * var buffer2 = new ArrayBuffer(10);
+   * var view2 = new Int8Array( buffer2, 2 );
+   * _.bufferRawFromBuffer( view2 );
+   *
+   * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
+   * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
+   * @method bufferRawFromBuffer
+   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+   * @throws { Error } Will throw an Error if (buffer) is not a typed array.
+   * @memberof wTools#
+   */
+
+var bufferRawFromBuffer = function( buffer )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.bufferIs( buffer ) || _.bufferRawIs( buffer ) );
+
+  if( _.bufferRawIs( buffer ) )
+  return buffer;
+
+  var result = buffer.buffer;
+
+  if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
+  result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
+
+  _.assert( _.bufferRawIs( result ) );
+
+  return result;
+}
+
+//
+
+var bufferRawFrom = function( buffer )
+{
+  var result;
+
+  _.assert( arguments.length === 1 );
+
+  if( buffer instanceof ArrayBuffer )
+  return buffer;
+
+  if( _.bufferNodeIs( buffer ) )
+  {
+
+    result = new Uint8Array( buffer ).buffer;
+
+  }
+  else if( _.bufferIs( buffer ) || _.bufferViewIs( buffer ) )
+  {
+
+    buffer = buffer.buffer;
+    if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
+    result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
+
+  }
+  else if( _.strIs( buffer ) )
+  {
+
+    result = _.utf8ToBuffer( buffer ).buffer;
+
+  }
+  else if( _global_.File &amp;&amp; buffer instanceof File )
+  {
+    var fileReader = new FileReaderSync();
+    result = fileReader.readAsArrayBuffer( buffer );
+    throw _.err( 'not tested' );
+  }
+  else throw _.err( 'bufferRawFrom : unknown source' );
+
+  _.assert( _.bufferRawIs( result ) );
+
+  return result;
+}
+
+//
+
+var buffersSerialize = function buffersSerialize( o )
+{
+  var self = this;
+  var size = 0;
+  var o = o || {};
+
+  _.assertMapNoUndefine( o );
+  _.assertMapOnly( o,buffersSerialize.defaults );
+  _.mapComplement( o,buffersSerialize.defaults );
+  _.assert( _.objectIs( o.store ) );
+
+  var store = o.store;
+  var storeAttributes = store[ 'attributes' ] = store[ 'attributes' ] || {};
+  var attributes = o.onAttributesGet.call( o.context );
+  var buffers = [];
+
+  // eval size
+
+  for( var a = 0 ; a &lt; attributes.length ; a++ )
+  {
+
+    var name = attributes[ a ][ 0 ];
+    var attribute = attributes[ a ][ 1 ];
+    var buffer = o.onBufferGet.call( o.context,attribute );
+
+    _.assert( _.bufferIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+
+    var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
+
+    if( o.dropAttribute &amp;&amp; o.dropAttribute[ name ] )
+    continue;
+
+    var descriptor = {};
+    descriptor.attribute = attribute;
+    descriptor.name = name;
+    descriptor.buffer = buffer;
+    descriptor.bufferSize = bufferSize;
+    descriptor.sizeOfAtom = buffer ? buffer.BYTES_PER_ELEMENT : 0;
+    buffers.push( descriptor );
+
+    size += bufferSize;
+
+  }
+
+  // make buffer
+
+  if( !store[ 'buffer' ] )
+  store[ 'buffer' ] = new ArrayBuffer( size );
+
+  var dstBuffer = _.bufferBytesGet( store[ 'buffer' ] );
+
+  _.assert( store[ 'buffer' ].byteLength === size );
+  if( store[ 'buffer' ].byteLength &lt; size )
+  throw _.err( 'buffersSerialize :','buffer does not have enough space' );
+
+  /* sort by atom size */
+
+  buffers.sort( function( a,b )
+  {
+    return b.sizeOfAtom - a.sizeOfAtom;
+  });
+
+  // store into single buffer
+
+  var offset = 0;
+  for( var b = 0 ; b &lt; buffers.length ; b++ )
+  {
+
+    var name = buffers[ b ].name;
+    var attribute = buffers[ b ].attribute;
+    var buffer = buffers[ b ].buffer;
+    var bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
+    var bufferSize = buffers[ b ].bufferSize;
+
+    if( o.dropAttribute &amp;&amp; o.dropAttribute[ name ] )
+    continue;
+
+    _.bufferMove( dstBuffer.subarray( offset,offset+bufferSize ),bytes );
+
+    var serialized = store[ 'attributes' ][ name ] =
+    {
+      'bufferConstructorName' : buffer ? buffer.constructor.name : 'null',
+      'sizeOfAtom' : buffer ? buffer.BYTES_PER_ELEMENT : 0,
+      'offsetInCommonBuffer' : offset,
+      'size' : bytes.length,
+    }
+
+    // debugger; // xxx
+
+    if( attribute.copyCustom )
+    serialized[ 'fields' ] = attribute.copyCustom
+    ({
+
+      dst : {},
+      src : attribute,
+
+      copyComposes : true,
+      copyAggregates : true,
+      copyAssociates : false,
+
+      technique : 'data',
+
+    });
+
+    offset += bufferSize;
+
+  }
+
+  // return
+
+  return store;
+}
+
+buffersSerialize.defaults =
+{
+
+  context : null,
+  store : null,
+
+  dropAttribute : {},
+
+  onAttributesGet : function()
+  {
+    return _.mapPairs( this.attributes );
+  },
+  onBufferGet : function( attribute )
+  {
+    return attribute.buffer;
+  },
+
+}
+
+//
+
+var buffersDeserialize = function( o )
+{
+  var o = o || {};
+  var store = o.store;
+  var commonBuffer = store[ 'buffer' ];
+
+  _.assertMapNoUndefine( o );
+  _.assertMapOnly( o,buffersDeserialize.defaults );
+  _.mapComplement( o,buffersDeserialize.defaults );
+  _.assert( _.objectIs( o.store ) );
+  _.assert( _.bufferRawIs( commonBuffer ) || _.bufferIs( commonBuffer ) );
+
+  commonBuffer = _.bufferRawFromBuffer( commonBuffer );
+
+  for( var a in store[ 'attributes' ] )
+  {
+    var attribute = store[ 'attributes' ][ a ];
+
+    var bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global_[ attribute[ 'bufferConstructorName' ] ];
+    var offset = attribute[ 'offsetInCommonBuffer' ];
+    var size = attribute[ 'size' ];
+    var sizeOfAtom = attribute[ 'sizeOfAtom' ];
+    var fields = attribute[ 'fields' ];
+
+    _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null,'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
+    _.assert( _.numberIs( offset ),'unknown attribute\' offset in common buffer :',offset )
+    _.assert( _.numberIs( size ),'unknown attribute\' size of buffer :',size )
+    _.assert( _.numberIs( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
+
+    if( attribute.offset+size > commonBuffer.byteLength )
+    throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
+
+    /* logger.log( 'bufferConstructor( ' + commonBuffer + ',' + offset + ',' + size / sizeOfAtom + ' )' ); */
+
+    var buffer = bufferConstructor ? new bufferConstructor( commonBuffer,offset,size / sizeOfAtom ) : null;
+
+    o.onAttribute.call( o.context,fields,buffer,a );
+
+  }
+
+}
+
+buffersDeserialize.defaults =
+{
+  store : null,
+  context : null,
+  onAttribute : function( attributeOptions,buffer )
+  {
+    attributeOptions.buffer = buffer;
+    new this.AttributeOfGeometry( attributeOptions ).addTo( this );
+  },
+}
+
+//
+
+var bufferToNodeBuffer = ( function( buffer )
+{
+
+  var toBuffer = null;
+
+  return function bufferToNodeBuffer( buffer )
+  {
+
+    _.assert( _.bufferIs( buffer ) || _.bufferRawIs( buffer ) );
+
+    /* */
+
+    if( toBuffer === null )
+    try
+    {
+      toBuffer = require( 'typedarray-to-buffer' );
+    }
+    catch( err )
+    {
+      toBuffer = false;
+    }
+
+    /* */
+
+    if( !buffer.length &amp;&amp; !buffer.byteLength )
+    buffer = new Buffer([]);
+    else if( toBuffer )
+    try
+    {
+      buffer = toBuffer( buffer );
+    }
+    catch( err )
+    {
+      debugger;
+      buffer = toBuffer( buffer );
+    }
+    else throw _.err( 'unexpected' );
+
+    return buffer;
+  }
+
+})();
+
+// --
 // array
 // --
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
-  // +++ Please change the proposal 'creates a new array' to the
-  //     'returns a shallow copy of a portion of an array'.
-  // +++ Describe the @returns.
 
 /**
  * The arraySub() method returns a shallow copy of a portion of an array
@@ -6433,6 +7291,9 @@ var arrayToMap = function( array )
    * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray),
    * and then incrementing the variable (result++).
    *
+
+// !!! second is correct
+
    * @see wTools.arrayLeftIndexOf
    * @see wTools#arrayLeftIndexOf
    * @see wTools~arrayLeftIndexOf
@@ -8929,751 +9790,6 @@ var arraySortedAddArray = function( dst,src,comparator )
 }
 
 // --
-// array buffer
-// --
-
-  /**
-   * The bufferRelen() method returns a new or the same typed array (src) with a new or the same length (len).
-   *
-   * It creates the variable (result) checks, if (len) is more than (src.length),
-   * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayNew(src, len))
-   * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
-   * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
-   * Otherwise, it returns an initial typed array.
-   *
-   * @see { @link wTools#arrayNew() } - See for more information.
-   *
-   * @param { typedArray } src - The source typed array.
-   * @param { Number } len - The length of a typed array.
-   *
-   * @example
-   * // returns [ 3, 7, 13, 0 ]
-   * var ints = new Int8Array( [ 3, 7, 13 ] );
-   * _.bufferRelen( ints, 4 );
-   *
-   * @example
-   * // returns [ 3, 7, 13 ]
-   * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
-   * _.bufferRelen( ints2, 3 );
-   *
-   * @example
-   * // returns [ 3, 0, 13, 0, 77, 0 ]
-   * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
-   * _.bufferRelen( ints3, 6 );
-   *
-   * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
-   * @method bufferRelen
-   * @memberof wTools#
-   */
-
-var bufferRelen = function( src,len )
-{
-
-  _.assert( _.bufferIs( src ) );
-  _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( len ) );
-
-  var result = src;
-
-  if( len > src.length )
-  {
-    result = arrayNew( src, len );
-    result.set( src );
-  }
-  else if( len &lt; src.length )
-  {
-    result = src.subarray( 0,len );
-  }
-
-  return result;
-}
-
-//
-
-var bufferResize = function bufferResize( src,size )
-{
-  var result = src;
-
-  if( !( src instanceof ArrayBuffer ) )
-  throw _.err( '_.bufferResize :','"src" is not instance of "ArrayBuffer"' );
-
-  if( size > src.byteLength )
-  {
-    result = arrayNew( src, size );
-    var resultTyped = new Uint8Array( result,0,result.byteLength );
-    var srcTyped = new Uint8Array( src,0,src.byteLength );
-    resultTyped.set( srcTyped );
-  }
-  else if( size &lt; src.byteLength )
-  {
-    result = src.slice( 0,size );
-  }
-
-  return result;
-}
-
-//
-
-var bufferBytesGet = function( src )
-{
-
-  if( src instanceof ArrayBuffer )
-  {
-    return new Uint8Array( src );
-  }
-  else if( typeof Buffer !== 'undefined' &amp;&amp; src instanceof Buffer )
-  {
-    return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
-  }
-  else if( _.bufferIs( src ) )
-  {
-    return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
-  }
-  else if( _.strIs( src ) )
-  {
-    return new Uint8Array( _.utf8ToBuffer( src ) );
-  }
-  else throw _.err( '_.bufferBytesGet :','wrong argument' );
-
-}
-
-//
-
-  /**
-   * The bufferRetype() method converts and returns a new instance of (bufferType) constructor.
-   *
-   * @param { typedArray } src - The typed array.
-   * @param { typedArray } bufferType - The type of typed array.
-   *
-   * @example
-   * // returns [ 513, 1027, 1541 ]
-   * var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
-   * _.bufferRetype(view1, Int16Array);
-   *
-   * @example
-   * // returns [ 1, 2, 3, 4, 5, 6 ]
-   * var view2 = new Int16Array( [ 513, 1027, 1541 ] );
-   * _.bufferRetype(view2, Int8Array);
-   *
-   * @returns { typedArray } Returns a new instance of (bufferType) constructor.
-   * @method bufferRetype
-   * @throws { Error } Will throw an Error if (src) is not a typed array object.
-   * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
-   * @memberof wTools#
-   */
-
-var bufferRetype = function( src,bufferType )
-{
-
-  _.assert( _.bufferIs( src ) );
-  _.assert( _.typeIsBuffer( bufferType ) );
-
-  var o = src.byteOffset;
-  var l = Math.floor( src.byteLength / bufferType.BYTES_PER_ELEMENT );
-  var result = new bufferType( src.buffer,o,l );
-
-  return result;
-}
-
-//
-
-var bufferMove = function( dst,src )
-{
-
-  if( arguments.length === 2 )
-  {
-
-    _.assert( _.arrayLike( dst ) );
-    _.assert( _.arrayLike( src ) );
-
-    if( dst.length !== src.length )
-    throw _.err( '_.bufferMove :','"dst" and "src" must have same length' );
-
-    if( dst.set )
-    {
-      dst.set( src );
-      return dst;
-    }
-
-    for( var s = 0 ; s &lt; src.length ; s++ )
-    dst[ s ] = src[ s ];
-
-  }
-  else if( arguments.length === 1 )
-  {
-
-    var options = arguments[ 0 ];
-    _.assertMapOnly( options,bufferMove.defaults );
-
-    var src = options.src;
-    var dst = options.dst;
-
-    if( _.bufferRawIs( dst ) )
-    {
-      dst = new Uint8Array( dst );
-      if( _.bufferIs( src ) &amp;&amp; !( src instanceof Uint8Array ) )
-      src = new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
-    }
-
-    _.assert( _.arrayLike( dst ) );
-    _.assert( _.arrayLike( src ) );
-
-    options.dstOffset = options.dstOffset || 0;
-
-    if( dst.set )
-    {
-      dst.set( src,options.dstOffset );
-      return dst;
-    }
-
-    for( var s = 0, d = options.dstOffset ; s &lt; src.length ; s++, d++ )
-    dst[ d ] = src[ s ];
-
-  }
-  else throw _.err( 'unexpected' );
-
-  return dst;
-}
-
-bufferMove.defaults =
-{
-  dst : null,
-  src : null,
-  dstOffset : null,
-}
-
-//
-
-var bufferToStr = function( src,options )
-{
-
-  var result = '';
-  var options = options || {};
-
-  if( src instanceof ArrayBuffer ) src = new Uint8Array( src,0,src.byteLength );
-
-  try
-  {
-    result = String.fromCharCode.apply( null, src );
-  }
-  catch( e )
-  {
-    for( var i = 0 ; i &lt; src.byteLength ; i++ )
-    {
-      result += String.fromCharCode( src[i] );
-    }
-  }
-
-  return result;
-}
-
-//
-
-var bufferToDom = function( xmlBuffer ) {
-
-  var result;
-
-  if( typeof DOMParser !== 'undefined' &amp;&amp; DOMParser.prototype.parseFromBuffer )
-  {
-
-    var parser = new DOMParser();
-    result = parser.parseFromBuffer( xmlBuffer,xmlBuffer.byteLength,'text/xml' );
-    throw _.err( 'not tested' );
-
-  }
-  else
-  {
-
-    var xmlStr = _.bufferToStr( xmlBuffer );
-    result = this.strToDom( xmlStr );
-
-  }
-
-  return result;
-}
-
-//
-
-var bufferLeftBufferIndex = function( src,ins )
-{
-
-  if( !_.bufferIs( src ) )
-  src = _.bufferBytesGet( src );
-
-  if( !_.bufferIs( ins ) )
-  ins = _.bufferBytesGet( ins );
-
-  _.assert( _.bufferIs( src ) );
-  _.assert( _.bufferIs( ins ) );
-
-/*
-    var srcw = _.bufferRetype( src,Uint32Array );
-    var insw = _.bufferRetype( ins,Uint32Array );
-    debugger;
-*/
-
-  var o = -1
-  do
-  {
-
-    o += 1;
-    var o = src.indexOf( ins[ 0 ],o );
-
-    for( var i = 0 ; i &lt; ins.length ; i++ )
-    if( src[ o+i ] !== ins[ i ] )
-    break;
-
-    if( i === ins.length )
-    return o;
-
-  }
-  while( o !== -1 );
-
-  return -1;
-}
-
-//
-
-var bufferFromArrayOfArray = function( array,options ){
-
-  if( _.objectIs( array ) )
-  {
-    options = array;
-    array = options.buffer;
-  }
-
-  var options = options || {};
-  var array = options.buffer = array || options.buffer;
-
-  //
-
-  if( options.BufferType === undefined ) options.BufferType = Float32Array;
-  if( options.sameLength === undefined ) options.sameLength = 1;
-  if( !options.sameLength ) throw _.err( '_.bufferFromArrayOfArray :','differemt length of arrays is not implemented' );
-
-  if( !array.length ) return new options.BufferType();
-
-  var atomsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
-
-  if( !_.numberIs( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :','cant find out element length' );
-
-  var length = array.length * atomsPerElement;
-  var result = new options.BufferType( length );
-  var i = 0;
-
-  for( var a = 0 ; a &lt; array.length ; a++ )
-  {
-
-    var element = array[ a ];
-
-    for( var e = 0 ; e &lt; atomsPerElement ; e++ )
-    {
-
-      result[ i ] = element[ e ];
-      i += 1;
-
-    }
-
-  }
-
-  return result;
-}
-
-//
-
-var bufferFrom = function( o )
-{
-  var result;
-
-  _assert( arguments.length === 1 );
-  _assert( _.objectIs( o ) );
-  _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
-  _.assertMapOnly( o,bufferFrom.defaults );
-
-  /* buffer */
-
-  if( _.bufferIs( o.src ) )
-  {
-    if( o.src.constructor === o.bufferConstructor )
-    return o.src;
-
-    debugger;
-
-    result = new o.bufferConstructor( o.src );
-    return result;
-  }
-
-  /* number */
-
-  if( _.numberIs( o.src ) )
-  o.src = [ o.src ];
-
-  /* midverification */
-
-  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
-
-  /* length */
-
-  var length = o.src.length;
-  if( !_.numberIs( length ) )
-  {
-
-    var length = 0;
-    while( o.src[ length ] !== undefined )
-    length += 1;
-
-  }
-
-  /* make */
-
-  if( _.arrayIs( o.src ) )
-  result = new o.bufferConstructor( o.src );
-  else if ( _.arrayLike( o.src ) )
-  {
-    result = new o.bufferConstructor( o.src );
-    throw _.err( 'not tested' );
-  }
-  else
-  {
-    result = new o.bufferConstructor( length );
-    for( var i = 0 ; i &lt; length ; i++ )
-    result[ i ] = o.src[ i ];
-  }
-
-  return result;
-}
-
-bufferFrom.defaults =
-{
-  src : null,
-  bufferConstructor : null,
-}
-
-//
-  /**
-   * The bufferRawFromBuffer() method returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
-   * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
-   *
-   * @param { typedArray } buffer - Entity to check.
-   *
-   * @example
-   * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
-   * var buffer1 = new ArrayBuffer(10);
-   * var view1 = new Int8Array( buffer1 );
-   * _.bufferRawFromBuffer( view1 );
-   *
-   * @example
-   * // returns [ 0, 0, 0, 0, 0, 0 ]
-   * var buffer2 = new ArrayBuffer(10);
-   * var view2 = new Int8Array( buffer2, 2 );
-   * _.bufferRawFromBuffer( view2 );
-   *
-   * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
-   * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
-   * @method bufferRawFromBuffer
-   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
-   * @throws { Error } Will throw an Error if (buffer) is not a typed array.
-   * @memberof wTools#
-   */
-
-var bufferRawFromBuffer = function( buffer )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.bufferIs( buffer ) || _.bufferRawIs( buffer ) );
-
-  if( _.bufferRawIs( buffer ) )
-  return buffer;
-
-  var result = buffer.buffer;
-
-  if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
-  result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
-
-  _.assert( _.bufferRawIs( result ) );
-
-  return result;
-}
-
-//
-
-var bufferRawFrom = function( buffer )
-{
-  var result;
-
-  _.assert( arguments.length === 1 );
-
-  if( buffer instanceof ArrayBuffer )
-  return buffer;
-
-  if( _.bufferNodeIs( buffer ) )
-  {
-
-    result = new Uint8Array( buffer ).buffer;
-
-  }
-  else if( _.bufferIs( buffer ) || _.bufferViewIs( buffer ) )
-  {
-
-    buffer = buffer.buffer;
-    if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
-    result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
-
-  }
-  else if( _.strIs( buffer ) )
-  {
-
-    result = _.utf8ToBuffer( buffer ).buffer;
-
-  }
-  else if( _global_.File &amp;&amp; buffer instanceof File )
-  {
-    var fileReader = new FileReaderSync();
-    result = fileReader.readAsArrayBuffer( buffer );
-    throw _.err( 'not tested' );
-  }
-  else throw _.err( 'bufferRawFrom : unknown source' );
-
-  _.assert( _.bufferRawIs( result ) );
-
-  return result;
-}
-
-//
-
-var buffersSerialize = function buffersSerialize( o )
-{
-  var self = this;
-  var size = 0;
-  var o = o || {};
-
-  _.assertMapNoUndefine( o );
-  _.assertMapOnly( o,buffersSerialize.defaults );
-  _.mapComplement( o,buffersSerialize.defaults );
-  _.assert( _.objectIs( o.store ) );
-
-  var store = o.store;
-  var storeAttributes = store[ 'attributes' ] = store[ 'attributes' ] || {};
-  var attributes = o.onAttributesGet.call( o.context );
-  var buffers = [];
-
-  // eval size
-
-  for( var a = 0 ; a &lt; attributes.length ; a++ )
-  {
-
-    var name = attributes[ a ][ 0 ];
-    var attribute = attributes[ a ][ 1 ];
-    var buffer = o.onBufferGet.call( o.context,attribute );
-
-    _.assert( _.bufferIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
-
-    var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
-
-    if( o.dropAttribute &amp;&amp; o.dropAttribute[ name ] )
-    continue;
-
-    var descriptor = {};
-    descriptor.attribute = attribute;
-    descriptor.name = name;
-    descriptor.buffer = buffer;
-    descriptor.bufferSize = bufferSize;
-    descriptor.sizeOfAtom = buffer ? buffer.BYTES_PER_ELEMENT : 0;
-    buffers.push( descriptor );
-
-    size += bufferSize;
-
-  }
-
-  // make buffer
-
-  if( !store[ 'buffer' ] )
-  store[ 'buffer' ] = new ArrayBuffer( size );
-
-  var dstBuffer = _.bufferBytesGet( store[ 'buffer' ] );
-
-  _.assert( store[ 'buffer' ].byteLength === size );
-  if( store[ 'buffer' ].byteLength &lt; size )
-  throw _.err( 'buffersSerialize :','buffer does not have enough space' );
-
-  /* sort by atom size */
-
-  buffers.sort( function( a,b )
-  {
-    return b.sizeOfAtom - a.sizeOfAtom;
-  });
-
-  // store into single buffer
-
-  var offset = 0;
-  for( var b = 0 ; b &lt; buffers.length ; b++ )
-  {
-
-    var name = buffers[ b ].name;
-    var attribute = buffers[ b ].attribute;
-    var buffer = buffers[ b ].buffer;
-    var bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
-    var bufferSize = buffers[ b ].bufferSize;
-
-    if( o.dropAttribute &amp;&amp; o.dropAttribute[ name ] )
-    continue;
-
-    _.bufferMove( dstBuffer.subarray( offset,offset+bufferSize ),bytes );
-
-    var serialized = store[ 'attributes' ][ name ] =
-    {
-      'bufferConstructorName' : buffer ? buffer.constructor.name : 'null',
-      'sizeOfAtom' : buffer ? buffer.BYTES_PER_ELEMENT : 0,
-      'offsetInCommonBuffer' : offset,
-      'size' : bytes.length,
-    }
-
-    // debugger; // xxx
-
-    if( attribute.copyCustom )
-    serialized[ 'fields' ] = attribute.copyCustom
-    ({
-
-      dst : {},
-      src : attribute,
-
-      copyComposes : true,
-      copyAggregates : true,
-      copyAssociates : false,
-
-      technique : 'data',
-
-    });
-
-    offset += bufferSize;
-
-  }
-
-  // return
-
-  return store;
-}
-
-buffersSerialize.defaults =
-{
-
-  context : null,
-  store : null,
-
-  dropAttribute : {},
-
-  onAttributesGet : function()
-  {
-    return _.mapPairs( this.attributes );
-  },
-  onBufferGet : function( attribute )
-  {
-    return attribute.buffer;
-  },
-
-}
-
-//
-
-var buffersDeserialize = function( o )
-{
-  var o = o || {};
-  var store = o.store;
-  var commonBuffer = store[ 'buffer' ];
-
-  _.assertMapNoUndefine( o );
-  _.assertMapOnly( o,buffersDeserialize.defaults );
-  _.mapComplement( o,buffersDeserialize.defaults );
-  _.assert( _.objectIs( o.store ) );
-  _.assert( _.bufferRawIs( commonBuffer ) || _.bufferIs( commonBuffer ) );
-
-  commonBuffer = _.bufferRawFromBuffer( commonBuffer );
-
-  for( var a in store[ 'attributes' ] )
-  {
-    var attribute = store[ 'attributes' ][ a ];
-
-    var bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global_[ attribute[ 'bufferConstructorName' ] ];
-    var offset = attribute[ 'offsetInCommonBuffer' ];
-    var size = attribute[ 'size' ];
-    var sizeOfAtom = attribute[ 'sizeOfAtom' ];
-    var fields = attribute[ 'fields' ];
-
-    _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null,'unknown attribute\' constructor :',attribute[ 'bufferConstructorName' ] )
-    _.assert( _.numberIs( offset ),'unknown attribute\' offset in common buffer :',offset )
-    _.assert( _.numberIs( size ),'unknown attribute\' size of buffer :',size )
-    _.assert( _.numberIs( sizeOfAtom ),'unknown attribute\' sizeOfAtom of buffer :',sizeOfAtom )
-
-    if( attribute.offset+size > commonBuffer.byteLength )
-    throw _.err( 'cant deserialize attribute','"'+a+'"','it is out of common buffer' );
-
-    /* logger.log( 'bufferConstructor( ' + commonBuffer + ',' + offset + ',' + size / sizeOfAtom + ' )' ); */
-
-    var buffer = bufferConstructor ? new bufferConstructor( commonBuffer,offset,size / sizeOfAtom ) : null;
-
-    o.onAttribute.call( o.context,fields,buffer,a );
-
-  }
-
-}
-
-buffersDeserialize.defaults =
-{
-  store : null,
-  context : null,
-  onAttribute : function( attributeOptions,buffer )
-  {
-    attributeOptions.buffer = buffer;
-    new this.AttributeOfGeometry( attributeOptions ).addTo( this );
-  },
-}
-
-//
-
-var bufferToNodeBuffer = ( function( buffer )
-{
-
-  var toBuffer = null;
-
-  return function bufferToNodeBuffer( buffer )
-  {
-
-    _.assert( _.bufferIs( buffer ) || _.bufferRawIs( buffer ) );
-
-    /* */
-
-    if( toBuffer === null )
-    try
-    {
-      toBuffer = require( 'typedarray-to-buffer' );
-    }
-    catch( err )
-    {
-      toBuffer = false;
-    }
-
-    /* */
-
-    if( !buffer.length &amp;&amp; !buffer.byteLength )
-    buffer = new Buffer([]);
-    else if( toBuffer )
-    try
-    {
-      buffer = toBuffer( buffer );
-    }
-    catch( err )
-    {
-      debugger;
-      buffer = toBuffer( buffer );
-    }
-    else throw _.err( 'unexpected' );
-
-    return buffer;
-  }
-
-})();
-
-// --
 // map
 // --
 
@@ -10143,10 +10259,6 @@ var mapValWithIndex = function( src,index )
 
 //
 
-  // +++ param (src) may be not only an array.
-  // +++ in the example does not return the value of "b".
-  // +++ throws is not defined in the function.
-
   /**
    * The mapKeyWithIndex() returns key of (src) by corresponding (index).
    *
@@ -10185,6 +10297,8 @@ var mapKeyWithIndex = function( src,index )
   }
 
 }
+
+//
 
   /**
    * The mapToString() method converts and returns the passed object (src) to the string.
@@ -11420,6 +11534,13 @@ var filter =
 // var
 // --
 
+/**
+ * Throwen to indicate that operation was aborted by user or other subject.
+ *
+ * @error ErrorAbort
+ * @memberof wTools
+ */
+
 var ErrorAbort = function()
 {
   this.message = arguments.length ? _.arrayFrom( arguments ) : 'Aborted';
@@ -11432,6 +11553,14 @@ var error =
 }
 
 Error.stackTraceLimit = Infinity;
+
+/**
+ * Some Event
+ *
+ * @event wTools#init
+ * @property {string} kind - kind of event( 'init' ).
+ * @memberof wTools
+ */
 
 // --
 // prototype
@@ -11494,17 +11623,22 @@ var Proto =
 
   entityCoerceTo : entityCoerceTo,
 
+  entitySearch : entitySearch,
+
 
   // iterator
 
-  until : until,
-
+  __eachAct : __eachAct,
   _each : _each,
+
   each : each,
   eachOwn : eachOwn,
-
-  eachSample : eachSample,
   eachRecursive : eachRecursive,
+  eachOwnRecursive : eachOwnRecursive,
+
+  /* until : until, */
+
+  eachSample : eachSample, /* experimental */
 
   dup : dup,
 
@@ -11674,14 +11808,33 @@ var Proto =
 
   timePeriodic : timePeriodic,
 
-/*
-  timePeriodicStart : timePeriodic,
-  timePeriodicStop : timePeriodicStop,
-*/
-
   _timeNow_gen : _timeNow_gen,
   timeSpent : timeSpent,
   dateToStr : dateToStr,
+
+
+  // buffer
+
+  bufferRelen : bufferRelen,
+  bufferResize : bufferResize,
+  bufferBytesGet : bufferBytesGet,
+  bufferRetype : bufferRetype,
+
+  bufferMove : bufferMove,
+  bufferToStr : bufferToStr,
+  bufferToDom : bufferToDom,
+
+  bufferLeftBufferIndex : bufferLeftBufferIndex,
+
+  bufferFromArrayOfArray : bufferFromArrayOfArray,
+  bufferFrom : bufferFrom,
+  bufferRawFromBuffer : bufferRawFromBuffer,
+  bufferRawFrom : bufferRawFrom,
+
+  buffersSerialize : buffersSerialize, /* deprecated */
+  buffersDeserialize : buffersDeserialize, /* deprecated */
+
+  bufferToNodeBuffer : bufferToNodeBuffer,
 
 
   // array
@@ -11692,7 +11845,7 @@ var Proto =
   arrayOrNumber : arrayOrNumber,
 
   arraySelect : arraySelect,
-  arrayIndicesOfGreatest : arrayIndicesOfGreatest, /*?*/
+  arrayIndicesOfGreatest : arrayIndicesOfGreatest,  /* experimental */
 
   arrayIron : arrayIron,
   arrayIronToMapUnique : arrayIronToMapUnique,
@@ -11781,30 +11934,6 @@ var Proto =
   arraySortedAdd : arraySortedAdd,
   arraySortedAddOnce : arraySortedAddOnce,
   arraySortedAddArray : arraySortedAddArray,
-
-
-  // buffer
-
-  bufferRelen : bufferRelen,
-  bufferResize : bufferResize,
-  bufferBytesGet : bufferBytesGet,
-  bufferRetype : bufferRetype,
-
-  bufferMove : bufferMove,
-  bufferToStr : bufferToStr,
-  bufferToDom : bufferToDom,
-
-  bufferLeftBufferIndex : bufferLeftBufferIndex,
-
-  bufferFromArrayOfArray : bufferFromArrayOfArray,
-  bufferFrom : bufferFrom,
-  bufferRawFromBuffer : bufferRawFromBuffer,
-  bufferRawFrom : bufferRawFrom,
-
-  buffersSerialize : buffersSerialize,
-  buffersDeserialize : buffersDeserialize,
-
-  bufferToNodeBuffer : bufferToNodeBuffer,
 
 
   // map extend
@@ -11912,13 +12041,13 @@ _global_.wTools = Self;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="wTools.html">wTools</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="wTools.html">wTools</a></li></ul><h3>Events</h3><ul><li><a href="wTools.html#event:init">init</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.6</a> on Mon Aug 08 2016 21:14:56 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 09 2016 10:36:51 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

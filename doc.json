@@ -33,7 +33,7 @@
   "opts" :
   {
     "encoding" : "utf8",
-    "destination" : "../doc/reference",
+    "destination" : "./doc/reference",
     "recurse" : true
   },
 
@@ -45,8 +45,8 @@
 
     "include" :
     [
-      "../server",
-      "../staging"
+      "./server",
+      "./staging"
     ]
 
   }

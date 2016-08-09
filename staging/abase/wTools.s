@@ -1809,6 +1809,30 @@ var entityCoerceTo = function( src,ins )
 
 }
 
+//
+
+var entitySearch = function( o )
+{
+
+  if( arguments.length === 2 )
+  {
+    o = { src : arguments[ 0 ], ins : arguments[ 1 ] };
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.routineOptions( entitySearch,o );
+
+  debugger;
+
+
+}
+
+entitySearch.defaults =
+{
+  src : null,
+  ins : null,
+}
+
 // --
 // iterator
 // --
@@ -11571,11 +11595,14 @@ var Proto =
 
   entityCoerceTo : entityCoerceTo,
 
+  entitySearch : entitySearch,
+
 
   // iterator
 
   __eachAct : __eachAct,
   _each : _each,
+
   each : each,
   eachOwn : eachOwn,
   eachRecursive : eachRecursive,
