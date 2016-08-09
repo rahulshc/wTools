@@ -1430,7 +1430,7 @@ var entityMap = function( src,onEach )
    * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
    * function on every element of src. If `onEach` returns undefined, then this result is not included into the new
    * entity.
-   * @see {@link wTools#entityMap}
+   * @see wTools.entityMap
    *
    * @example
      var numbers = [ 36, -25, 49, 64, -16 ];
@@ -1450,7 +1450,7 @@ var entityMap = function( src,onEach )
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
    * @thorws {Error} If `onEach` is not function;
-   * @method entityMap
+   * @method entityFilter
    * @memberof wTools
    */
 
