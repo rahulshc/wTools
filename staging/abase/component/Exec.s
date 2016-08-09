@@ -38,24 +38,28 @@ var read = function( data )
 // exec
 // --
 
-var exec = ( function( o )
+var shell = ( function( o )
 {
 
   var Exec;
 
-  return function exec( o )
+  return function shell( o )
   {
     var con = new wConsequence();
 
     if( _.strIs( o ) )
-    o = { command : o };
-    _.assertMapOnly( o,exec.defaults );
+    o = { code : o };
+
+    _.routineOptions( shell,o );
     _.assert( arguments.length === 1 );
 
     if( !Exec )
     Exec = require( 'child_process' ).exec;
 
-    var child = Exec( 'npm install' );
+    if( o.usingLogging )
+    console.log( o.code );
+
+    var child = Exec( o.code );
     child.stdout.on( 'data', function( data ) { console.log( data ); } );
     child.stderr.on( 'data', function( data ) { console.error( 'ERROR :',data ); } );
     child.on( 'close', function() { debugger; con.give(); } );
@@ -65,9 +69,10 @@ var exec = ( function( o )
 
 })();
 
-exec.defaults =
+shell.defaults =
 {
-  command : null,
+  code : null,
+  usingLogging : 1,
 }
 
 //
@@ -541,7 +546,7 @@ var Proto =
 
   // exec
 
-  exec : exec,
+  shell : shell,
   execAsyn : execAsyn,
   execStages : execStages,
   execInRange : execInRange,
