@@ -10,7 +10,7 @@ BASE_DIR=$(dirname $0)
 cd $BASE_DIR
 
   rm -rf ./doc/reference/*
-  npm -g install jsdoc
+  #npm -g install jsdoc
   jsdoc --recurse --verbose --configure doc.json
 
 cd $WAS_DIR
