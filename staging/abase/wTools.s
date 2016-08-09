@@ -7363,8 +7363,9 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the method
+ * [arrayLeftIndexOf( dstArray, ins, onEqual )]{@link wTools.arrayLeftIndexOf}
  * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray).
- * @see [arrayLeftIndexOf( dstArray, ins, onEqual )]{@link wTools.arrayLeftIndexOf}  See for more information.
+ * @see {@link wTools.arrayLeftIndexOf}  See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
@@ -7426,10 +7427,10 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
  * checks if arguments passed two, it calls the method
- * @see arrayRemovedOnce( dstArray, ins )  See for more information.
+ * [arrayRemovedOnce( dstArray, ins )]{@link wTools.arrayRemovedOnce}
  * Otherwise, if passed three arguments, it calls the method
- * @see arrayRemovedOnce( dstArray, ins, onEqual )  See for more information.
- *
+ * [arrayRemovedOnce( dstArray, ins, onEqual )]{@link wTools.arrayRemovedOnce}
+ * @see  wTools.arrayRemovedOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
  * @param { wTools~compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
