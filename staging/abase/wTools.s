@@ -7263,12 +7263,7 @@ var arrayToMap = function( array )
    * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray),
    * and then incrementing the variable (result++).
    *
-
-// !!! second is correct
-
    * @see wTools.arrayLeftIndexOf
-   * @see wTools#arrayLeftIndexOf
-   * @see wTools~arrayLeftIndexOf
    *
    * @param { arrayLike } dstArray - The target array.
    * @param { arrayLike } insArray - The source array.
@@ -7365,7 +7360,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  * Otherwise, if passed three arguments, it calls the method
  * [arrayLeftIndexOf( dstArray, ins, onEqual )]{@link wTools.arrayLeftIndexOf}
  * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray).
- * @see {@link wTools.arrayLeftIndexOf}  See for more information.
+ * @see {@link wTools.arrayLeftIndexOf} - See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
