@@ -6692,7 +6692,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  * If true, it adds to the (result) each element of the (src) array.
  * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
  *
- * @param {*} arguments[] - One or more argument(s).
+ * @param {...*} arguments - One or more argument(s).
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
@@ -7549,13 +7549,15 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
  * checks if arguments passed two, it calls the method
- * @see arrayRemovedAll( dstArray, ins )  See for more information.
+ * [arrayRemovedAll( dstArray, ins )]{@link wTools.arrayRemovedAll}
  * Otherwise, if passed three arguments, it calls the method
- * @see arrayRemovedAll( dstArray, ins, onEqual )  See for more information.
+ * [arrayRemovedAll( dstArray, ins, onEqual )]{@link wTools.arrayRemovedAll}
+ *
+ * @see wTools.arrayRemovedAll
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -7647,10 +7649,12 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * and returns the last added index or the last replaced index of the array (dstArray).
    *
    * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
-   * @see arrayReplaceOnce( dstArray, ins, sub )  See for more information.
+   * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
    * Checks if (index) equal to the -1.
    * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
    * Otherwise, it returns the replaced (index).
+   *
+   * @see wTools.arrayReplaceOnce
    *
    * @param { Array } dstArray - The source array.
    * @param { * } ins - The value to change.
@@ -8604,14 +8608,6 @@ var arraySameSet = function( src1,src2 )
 
 //
   /**
-   * Callback for compare two values.
-   *
-   * @callback arrayLeftIndexOf~equalizer
-   * @param { * } el - The element of an array.
-   * @param { * } ins - The value to compare.
-   */
-
-  /**
    * The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
    * that corresponds to the condition in the callback function.
    *
@@ -8622,7 +8618,7 @@ var arraySameSet = function( src1,src2 )
    *
    * @param { arrayLike } arr - The target array.
    * @param { * } ins - The value to compare.
-   * @param { Function } [ function( a, b ) { return a === b } ] equalizer - A callback function.
+   * @param { wTools~compareCallback } [equalizer] equalizer - A callback function.
    * By default, it checks the equality of two arguments.
    *
    * @example
@@ -8733,13 +8729,15 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
    *
    * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_.arrayLeftIndexOf() } - See for more information.
+   * [wTools.arrayLeftIndexOf()]{@link wTools.arrayLeftIndexOf}
    * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
    * Otherwise, it returns the empty object.
    *
+   * @see {@link wTools.arrayLeftIndexOf} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { * } ins - Element to locate in the array.
-   * @param { Function } equalizer - A callback function.
+   * @param { wTools~compareCallback } equalizer - A callback function.
    *
    * @example
    * // returns { index : 3, element : 'str' }
@@ -8800,13 +8798,15 @@ var arrayRight = function( arr,ins,equalizer )
  * The arrayHasAny() method checks if the (src) array has at least one value of the following arguments.
  *
  * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the method
- * @see arrayAs()  See for more information.
+ * [arrayAs()]{@link wTools.arrayAs}
  * Checks, if (src) array has at least one value of the (ins) array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
+ * @see {@link wTools.arrayAs} - See for more information.
+ *
  * @param { arrayLike } src - The source array.
- * @param {*} arguments[] - One or more argument(s).
+ * @param {...*} arguments - One or more argument(s).
  *
  * @example
  * // returns true
@@ -9475,14 +9475,16 @@ var _arraySortedLookUpAct = function( arr,ins,comparator,left,right )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct()]{@link wTools._arraySortedLookUpAct}.
    * If (index) is equal to the one, it returns 'undefined'.
    * If call callback function (comparator( ins, arr[ index ]) returns a value that is not equal to the zero, it returns 'undefined'.
    * Otherwise, it returns the object containing the properties ({ value : arr[ index ], index : index }).
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [comparator=function( a, b ) { return a - b }] comparator - A callback function.
    *
    * @example
    * // returns { value : 5, index : 4 }
@@ -9572,14 +9574,16 @@ var arraySortedClosest = function( arr,ins,comparator )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct()]{@link wTools._arraySortedLookUpAct}.
    * If (index) is not equal to the one, and call callback function (comparator( ins, arr[ index ])
    * returns a value that is equal to the zero (i.e the array (arr) contains the value (ins)), it removes the value (ins) from the array (arr), and returns true.
    * Otherwise, it returns false.
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns true
@@ -9621,14 +9625,16 @@ var arraySortedRemove = function( arr,ins,comparator )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct() ]{@link wTools._arraySortedLookUpAct}.
    * If (index) is equal to the one, and call callback function (comparator( ins, arr[ index ])
    * returns a value that is not equal to the zero (i.e the array (arr) doesn't contain the value (ins)), it adds the value (ins) to the array (arr), and returns true.
    * Otherwise, it returns false.
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns false
@@ -9670,13 +9676,15 @@ var arraySortedAddOnce = function( arr,ins,comparator )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct() ]{@link wTools._arraySortedLookUpAct}.
    * If value (ins) has in the array (arr), it adds (ins) to that found index and offsets the old values in the (arr).
    * Otherwise, it adds the new index.
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns 5
@@ -9715,11 +9723,12 @@ var arraySortedAdd = function( arr,ins,comparator )
    * It creates variable (result = 0), iterates over an array (src),
    * adds to the (result +=) each call the function (arraySortedAdd( dst, src[ s ], comparator ))
    * that returns the new added or the updated index.
-   * @see { @link wTools#_.arraySortedAdd() } - See for more information.
+   *
+   * @see {@link wTools_.arraySortedAdd} - See for more information.
    *
    * @param { arrayLike } dst - Entity to check.
    * @param { arrayLike } src - Entity to check.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns 19
@@ -10855,10 +10864,10 @@ var mapOwnBut = function mapOwnBut( srcMap )
    * The mapScreens() returns an object filled by unique [ key, value ]
    * from (srcObject) object.
    *
-   * It creates the variable (dstObject) assignes and calls the method (__mapScreen( { } ) )
+   * It creates the variable (dstObject) assignes and calls the method (_mapScreen( { } ) )
    * with three properties.
    *
-   * @see __mapScreen( { } ) See for more information.
+   * @see {@link wTools._mapScreen} - See for more information.
    *
    * @param { objectLike } srcObject - The target object.
    * @param { objectLike } screenObject - The source object.
@@ -10915,7 +10924,7 @@ var mapScreens = function( srcObject,screenObject )
    * It takes number of objects, creates a new object by three properties
    * and calls the _mapScreen( {} ) with created object.
    *
-   * @see  _mapScreen( { } )  See for more information.
+   * @see  {@link wTools._mapScreen} - See for more information.
    *
    * @param { objectLike } screenObject - The first object.
    * @param { ...objectLike } arguments[] - One or more objects.

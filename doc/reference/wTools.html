@@ -640,7 +640,7 @@ for which callback function returns true.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10958">line 10958</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10967">line 10967</a>
     </li></ul></dd>
     
 
@@ -2476,7 +2476,7 @@ if the array (dst) doesn't have the value (src).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7698">line 7698</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7702">line 7702</a>
     </li></ul></dd>
     
 
@@ -2956,7 +2956,7 @@ var arr = _.arrayAppendOnceMerging( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );</cod
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7941">line 7941</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7945">line 7945</a>
     </li></ul></dd>
     
 
@@ -3146,7 +3146,7 @@ var arr = _.arrayAs( { a : 1, b : 2 } );</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8505">line 8505</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8509">line 8509</a>
     </li></ul></dd>
     
 
@@ -4176,7 +4176,7 @@ If (options.numberOfAtomsPerElement) is greater that length of a (srcArray or op
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8338">line 8338</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8342">line 8342</a>
     </li></ul></dd>
     
 
@@ -5127,7 +5127,7 @@ with a static value.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8430">line 8430</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8434">line 8434</a>
     </li></ul></dd>
     
 
@@ -5479,7 +5479,7 @@ _.arrayFrom( args );</code></pre>
 
     
 
-    <h4 class="name" id=".arrayHasAny"><span class="type-signature">(static) </span>arrayHasAny<span class="signature">(src, arguments[)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    <h4 class="name" id=".arrayHasAny"><span class="type-signature">(static) </span>arrayHasAny<span class="signature">(src, &hellip;arguments)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
 
     
     <p class="summary">The arrayHasAny() method checks if the (src) array has at least one value of the following arguments.</p>
@@ -5489,7 +5489,11 @@ _.arrayFrom( args );</code></pre>
 
 <div class="description">
     <p>The arrayHasAny() method checks if the (src) array has at least one value of the following arguments.</p>
-<p>It iterates over array-like (arguments[]) copies each argument to the array (ins) by the method</p>
+<p>It iterates over array-like (arguments[]) copies each argument to the array (ins) by the method
+<a href="wTools.html#.arrayAs">arrayAs()</a>
+Checks, if (src) array has at least one value of the (ins) array.
+If true, it returns true.
+Otherwise, it returns false.</p>
 </div>
 
 
@@ -5512,6 +5516,8 @@ _.arrayFrom( args );</code></pre>
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -5538,6 +5544,14 @@ _.arrayFrom( args );</code></pre>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -5548,7 +5562,7 @@ _.arrayFrom( args );</code></pre>
 
         <tr>
             
-                <td class="name"><code>arguments[</code></td>
+                <td class="name"><code>arguments</code></td>
             
 
             <td class="type">
@@ -5560,6 +5574,16 @@ _.arrayFrom( args );</code></pre>
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
             
 
             
@@ -5605,7 +5629,7 @@ _.arrayFrom( args );</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8799">line 8799</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8797">line 8797</a>
     </li></ul></dd>
     
 
@@ -5615,10 +5639,7 @@ _.arrayFrom( args );</code></pre>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>arrayAs()  See for more information.
-Checks, if (src) array has at least one value of the (ins) array.
-If true, it returns true.
-Otherwise, it returns false.</li>
+            <li><a href="wTools.html#.arrayAs">wTools.arrayAs</a> - See for more information.</li>
         </ul>
     </dd>
     
@@ -5705,7 +5726,7 @@ var arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );</code></pre>
 
     
 
-    <h4 class="name" id=".arrayIron"><span class="type-signature">(static) </span>arrayIron<span class="signature">(arguments[)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    <h4 class="name" id=".arrayIron"><span class="type-signature">(static) </span>arrayIron<span class="signature">(&hellip;arguments)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
     <p class="summary">The arrayIron() method returns an array that contains all the passed arguments.</p>
@@ -5745,6 +5766,8 @@ Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the '
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -5757,7 +5780,7 @@ Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the '
 
         <tr>
             
-                <td class="name"><code>arguments[</code></td>
+                <td class="name"><code>arguments</code></td>
             
 
             <td class="type">
@@ -5769,6 +5792,16 @@ Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the '
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
             
 
             
@@ -6083,7 +6116,10 @@ corresponding to a found value (ins) from an array (arr).</p></p>
     <p>The arrayLeft() method returns a new object containing the properties, (index, element),
 corresponding to a found value (ins) from an array (arr).</p>
 <p>It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
-that returns the index of the value (ins) in the array (arr).</p>
+that returns the index of the value (ins) in the array (arr).
+<a href="wTools.html#.arrayLeftIndexOf">wTools.arrayLeftIndexOf()</a>
+If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
+Otherwise, it returns the empty object.</p>
 </div>
 
 
@@ -6171,7 +6207,7 @@ that returns the index of the value (ins) in the array (arr).</p>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -6222,7 +6258,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8730">line 8730</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8726">line 8726</a>
     </li></ul></dd>
     
 
@@ -6232,9 +6268,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><p>{ @link wTools#_.arrayLeftIndexOf() } - See for more information.
-If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
-Otherwise, it returns the empty object.</p></li>
+            <li><a href="wTools.html#.arrayLeftIndexOf">wTools.arrayLeftIndexOf</a> - See for more information.</li>
         </ul>
     </dd>
     
@@ -6324,7 +6358,7 @@ _.arrayLeft( [ 1, 2, 3, 4, 5 ], 6 );</code></pre>
 
     
 
-    <h4 class="name" id=".arrayLeftIndexOf"><span class="type-signature">(static) </span>arrayLeftIndexOf<span class="signature">(arr, ins, function( a, b ) { return a<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    <h4 class="name" id=".arrayLeftIndexOf"><span class="type-signature">(static) </span>arrayLeftIndexOf<span class="signature">(arr, ins, equalizer<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Number}</span></h4>
 
     
     <p class="summary"><p>The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
@@ -6367,8 +6401,6 @@ Otherwise, it returns -1.</p>
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -6402,10 +6434,6 @@ Otherwise, it returns -1.</p>
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
             <td class="description last"><p>The target array.</p></td>
         </tr>
@@ -6437,10 +6465,6 @@ Otherwise, it returns -1.</p>
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
             <td class="description last"><p>The value to compare.</p></td>
         </tr>
@@ -6449,13 +6473,13 @@ Otherwise, it returns -1.</p>
 
         <tr>
             
-                <td class="name"><code>function( a, b ) { return a</code></td>
+                <td class="name"><code>equalizer</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -6473,12 +6497,6 @@ Otherwise, it returns -1.</p>
                 </td>
             
 
-            
-                <td class="default">
-                
-                    == b }
-                
-                </td>
             
 
             <td class="description last"><p>equalizer - A callback function.
@@ -6523,7 +6541,7 @@ By default, it checks the equality of two arguments.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8614">line 8614</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8610">line 8610</a>
     </li></ul></dd>
     
 
@@ -6984,7 +7002,7 @@ If amount is equal 0, it returns an empty array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8199">line 8199</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8203">line 8203</a>
     </li></ul></dd>
     
 
@@ -8406,7 +8424,7 @@ if the array (dst) doesn't have the value (src).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7747">line 7747</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7751">line 7751</a>
     </li></ul></dd>
     
 
@@ -8980,7 +8998,7 @@ Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstAr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8137">line 8137</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8141">line 8141</a>
     </li></ul></dd>
     
 
@@ -9702,7 +9720,10 @@ that corresponds to the condition in the callback function and returns the modif
     <p>The arrayRemoveAll() method removes all (ins) values from (dstArray)
 that corresponds to the condition in the callback function and returns the modified array.</p>
 <p>It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
-checks if arguments passed two, it calls the method</p>
+checks if arguments passed two, it calls the method
+<a href="wTools.html#.arrayRemovedAll">arrayRemovedAll( dstArray, ins )</a>
+Otherwise, if passed three arguments, it calls the method
+<a href="wTools.html#.arrayRemovedAll">arrayRemovedAll( dstArray, ins, onEqual )</a></p>
 </div>
 
 
@@ -9808,7 +9829,7 @@ checks if arguments passed two, it calls the method</p>
             <td class="type">
             
                 
-<span class="param-type">compareCallback</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -9880,10 +9901,7 @@ By default, it checks the equality of two arguments.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>arrayRemovedAll( dstArray, ins )  See for more information.
-Otherwise, if passed three arguments, it calls the method</li>
-        
-            <li>arrayRemovedAll( dstArray, ins, onEqual )  See for more information.</li>
+            <li><a href="wTools.html#.arrayRemovedAll">wTools.arrayRemovedAll</a></li>
         </ul>
     </dd>
     
@@ -11548,7 +11566,7 @@ Otherwise, it returns (-1) index.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7592">line 7592</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7594">line 7594</a>
     </li></ul></dd>
     
 
@@ -11798,7 +11816,7 @@ _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );</code></pr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8548">line 8548</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8552">line 8552</a>
     </li></ul></dd>
     
 
@@ -12911,7 +12929,7 @@ If (b) is omitted, arraySlice extracts through the end of the sequence (array.le
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7859">line 7859</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7863">line 7863</a>
     </li></ul></dd>
     
 
@@ -13066,7 +13084,10 @@ and returns the new added or the updated index.</p></p>
     <p>The arraySortedAdd() method adds the value (ins) to the array (arr), no matter whether it has there or hasn't,
 and returns the new added or the updated index.</p>
 <p>It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
-that returns the index of the value (ins) in the array (arr).</p>
+that returns the index of the value (ins) in the array (arr).
+<a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct() </a>.
+If value (ins) has in the array (arr), it adds (ins) to that found index and offsets the old values in the (arr).
+Otherwise, it adds the new index.</p>
 </div>
 
 
@@ -13182,7 +13203,7 @@ that returns the index of the value (ins) in the array (arr).</p>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -13249,7 +13270,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9667">line 9667</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9673">line 9673</a>
     </li></ul></dd>
     
 
@@ -13259,9 +13280,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>{ @link wTools#_._arraySortedLookUpAct() } - See for more information.
-If value (ins) has in the array (arr), it adds (ins) to that found index and offsets the old values in the (arr).
-Otherwise, it adds the new index.</li>
+            <li><a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct</a> - See for more information.</li>
         </ul>
     </dd>
     
@@ -13504,7 +13523,7 @@ that returns the new added or the updated index.</p>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -13571,7 +13590,7 @@ that returns the new added or the updated index.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9712">line 9712</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9720">line 9720</a>
     </li></ul></dd>
     
 
@@ -13581,7 +13600,7 @@ that returns the new added or the updated index.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>{ @link wTools#_.arraySortedAdd() } - See for more information.</li>
+            <li>wTools_.arraySortedAdd - See for more information.</li>
         </ul>
     </dd>
     
@@ -13708,7 +13727,11 @@ arraySortedAddArray( [  ], [ 1, 2, 3 ], function( a, b ) { return a - b } ); // 
     <p>The arraySortedAddOnce() method returns true, if a value (ins) was added to an array (arr).
 Otherwise, it returns false.</p>
 <p>It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
-that returns the index of the value (ins) in the array (arr).</p>
+that returns the index of the value (ins) in the array (arr).
+<a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct() </a>.
+If (index) is equal to the one, and call callback function (comparator( ins, arr[ index ])
+returns a value that is not equal to the zero (i.e the array (arr) doesn't contain the value (ins)), it adds the value (ins) to the array (arr), and returns true.
+Otherwise, it returns false.</p>
 </div>
 
 
@@ -13824,7 +13847,7 @@ that returns the index of the value (ins) in the array (arr).</p>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -13891,7 +13914,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9618">line 9618</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9622">line 9622</a>
     </li></ul></dd>
     
 
@@ -13901,10 +13924,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><p>{ @link wTools#_._arraySortedLookUpAct() } - See for more information.
-If (index) is equal to the one, and call callback function (comparator( ins, arr[ index ])
-returns a value that is not equal to the zero (i.e the array (arr) doesn't contain the value (ins)), it adds the value (ins) to the array (arr), and returns true.
-Otherwise, it returns false.</p></li>
+            <li><a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct</a> - See for more information.</li>
         </ul>
     </dd>
     
@@ -14033,7 +14053,11 @@ corresponding to the found value (ins) from array (arr).</p></p>
     <p>The arraySortedLookUp() method returns a new object containing the properties, (value, index),
 corresponding to the found value (ins) from array (arr).</p>
 <p>It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
-that returns the index of the value (ins) in the array (arr).</p>
+that returns the index of the value (ins) in the array (arr).
+<a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct()</a>.
+If (index) is equal to the one, it returns 'undefined'.
+If call callback function (comparator( ins, arr[ index ]) returns a value that is not equal to the zero, it returns 'undefined'.
+Otherwise, it returns the object containing the properties ({ value : arr[ index ], index : index }).</p>
 </div>
 
 
@@ -14149,7 +14173,7 @@ that returns the index of the value (ins) in the array (arr).</p>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -14226,10 +14250,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><p>{ @link wTools#_._arraySortedLookUpAct() } - See for more information.
-If (index) is equal to the one, it returns 'undefined'.
-If call callback function (comparator( ins, arr[ index ]) returns a value that is not equal to the zero, it returns 'undefined'.
-Otherwise, it returns the object containing the properties ({ value : arr[ index ], index : index }).</p></li>
+            <li><a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct</a> - See for more information.</li>
         </ul>
     </dd>
     
@@ -14358,7 +14379,11 @@ arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 55, function( a, b ) { return a - b } );</
     <p>The arraySortedRemove() method returns true, if a value (ins) was removed from an array (arr).
 Otherwise, it returns false.</p>
 <p>It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
-that returns the index of the value (ins) in the array (arr).</p>
+that returns the index of the value (ins) in the array (arr).
+<a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct()</a>.
+If (index) is not equal to the one, and call callback function (comparator( ins, arr[ index ])
+returns a value that is equal to the zero (i.e the array (arr) contains the value (ins)), it removes the value (ins) from the array (arr), and returns true.
+Otherwise, it returns false.</p>
 </div>
 
 
@@ -14474,7 +14499,7 @@ that returns the index of the value (ins) in the array (arr).</p>
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="wTools.html#~compareCallback">wTools~compareCallback</a></span>
 
 
             
@@ -14541,7 +14566,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9569">line 9569</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9571">line 9571</a>
     </li></ul></dd>
     
 
@@ -14551,10 +14576,7 @@ that returns the index of the value (ins) in the array (arr).</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><p>{ @link wTools#_._arraySortedLookUpAct() } - See for more information.
-If (index) is not equal to the one, and call callback function (comparator( ins, arr[ index ])
-returns a value that is equal to the zero (i.e the array (arr) contains the value (ins)), it removes the value (ins) from the array (arr), and returns true.
-Otherwise, it returns false.</p></li>
+            <li><a href="wTools.html#._arraySortedLookUpAct">wTools._arraySortedLookUpAct</a> - See for more information.</li>
         </ul>
     </dd>
     
@@ -14847,7 +14869,7 @@ then all of the elements through the end of the array will be deleted.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7796">line 7796</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7800">line 7800</a>
     </li></ul></dd>
     
 
@@ -16384,7 +16406,7 @@ only types of integer or floating point.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8063">line 8063</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line8067">line 8067</a>
     </li></ul></dd>
     
 
@@ -16489,7 +16511,11 @@ and returns the last added index or the last replaced index of the array (dstArr
 <div class="description">
     <p>The arrayUpdate() method adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
 and returns the last added index or the last replaced index of the array (dstArray).</p>
-<p>It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).</p>
+<p>It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
+<a href="wTools.html#.arrayReplaceOnce">arrayReplaceOnce( dstArray, ins, sub )</a>.
+Checks if (index) equal to the -1.
+If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
+Otherwise, it returns the replaced (index).</p>
 </div>
 
 
@@ -16628,7 +16654,7 @@ and returns the last added index or the last replaced index of the array (dstArr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7645">line 7645</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line7647">line 7647</a>
     </li></ul></dd>
     
 
@@ -16638,10 +16664,7 @@ and returns the last added index or the last replaced index of the array (dstArr
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>arrayReplaceOnce( dstArray, ins, sub )  See for more information.
-Checks if (index) equal to the -1.
-If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
-Otherwise, it returns the replaced (index).</li>
+            <li><a href="wTools.html#.arrayReplaceOnce">wTools.arrayReplaceOnce</a></li>
         </ul>
     </dd>
     
@@ -20315,7 +20338,7 @@ If <em>global</em>.logger defined, method will use it to print error, else uses 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line11509">line 11509</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line11518">line 11518</a>
     </li></ul></dd>
     
 
@@ -20585,7 +20608,7 @@ Otherwise pair( key/value ) from the first object goes into result object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10670">line 10670</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10679">line 10679</a>
     </li></ul></dd>
     
 
@@ -20859,7 +20882,7 @@ if values are not equal to the array or object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10734">line 10734</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10743">line 10743</a>
     </li></ul></dd>
     
 
@@ -21187,7 +21210,7 @@ of the (srcObject) to the (result).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9768">line 9768</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9777">line 9777</a>
     </li></ul></dd>
     
 
@@ -21401,7 +21424,7 @@ and returns an object filled by all unique clone [key, value].</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10007">line 10007</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10016">line 10016</a>
     </li></ul></dd>
     
 
@@ -21593,7 +21616,7 @@ Objects to compare values.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10560">line 10560</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10569">line 10569</a>
     </li></ul></dd>
     
 
@@ -21784,7 +21807,7 @@ from one or more source objects to the new object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10036">line 10036</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10045">line 10045</a>
     </li></ul></dd>
     
 
@@ -21904,7 +21927,7 @@ it extends (result) from the next objects.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9891">line 9891</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9900">line 9900</a>
     </li></ul></dd>
     
 
@@ -22175,7 +22198,7 @@ of the (dstObject) object.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9835">line 9835</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9844">line 9844</a>
     </li></ul></dd>
     
 
@@ -22366,7 +22389,7 @@ _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10108">line 10108</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10117">line 10117</a>
     </li></ul></dd>
     
 
@@ -22747,7 +22770,7 @@ in the same order as that provided by a for...in loop.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10362">line 10362</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10371">line 10371</a>
     </li></ul></dd>
     
 
@@ -22966,7 +22989,7 @@ Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match ind
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10227">line 10227</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10236">line 10236</a>
     </li></ul></dd>
     
 
@@ -23182,7 +23205,7 @@ If true, it returns true.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10614">line 10614</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10623">line 10623</a>
     </li></ul></dd>
     
 
@@ -23427,7 +23450,7 @@ Otherwise pair( key/value ) from the first object goes into result object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10788">line 10788</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10797">line 10797</a>
     </li></ul></dd>
     
 
@@ -23631,7 +23654,7 @@ in the same order as that provided by a for...in loop.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10315">line 10315</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10324">line 10324</a>
     </li></ul></dd>
     
 
@@ -23826,7 +23849,7 @@ otherwise it returns an empty array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10440">line 10440</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10449">line 10449</a>
     </li></ul></dd>
     
 
@@ -24045,7 +24068,7 @@ Objects to compare values.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10513">line 10513</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10522">line 10522</a>
     </li></ul></dd>
     
 
@@ -24272,7 +24295,7 @@ and calls the _mapScreen( {} ) with created object.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10911">line 10911</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10920">line 10920</a>
     </li></ul></dd>
     
 
@@ -24380,7 +24403,7 @@ from (srcObject) object.</p></p>
 <div class="description">
     <p>The mapScreens() returns an object filled by unique [ key, value ]
 from (srcObject) object.</p>
-<p>It creates the variable (dstObject) assignes and calls the method (__mapScreen( { } ) )
+<p>It creates the variable (dstObject) assignes and calls the method (_mapScreen( { } ) )
 with three properties.</p>
 </div>
 
@@ -24497,7 +24520,7 @@ with three properties.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10854">line 10854</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10863">line 10863</a>
     </li></ul></dd>
     
 
@@ -24507,7 +24530,7 @@ with three properties.</p>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li>__mapScreen( { } ) See for more information.</li>
+            <li><a href="wTools.html#._mapScreen">wTools._mapScreen</a> - See for more information.</li>
         </ul>
     </dd>
     
@@ -24711,7 +24734,7 @@ and returns an object with unique [ key, value ].</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9947">line 9947</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line9956">line 9956</a>
     </li></ul></dd>
     
 
@@ -24876,7 +24899,7 @@ Otherwise it throws an Error.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10146">line 10146</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10155">line 10155</a>
     </li></ul></dd>
     
 
@@ -25165,7 +25188,7 @@ Otherwise, it returns a string representing the passed object (src).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10268">line 10268</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10277">line 10277</a>
     </li></ul></dd>
     
 
@@ -25340,7 +25363,7 @@ otherwise it returns an empty array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10403">line 10403</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10412">line 10412</a>
     </li></ul></dd>
     
 
@@ -25559,7 +25582,7 @@ Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match ind
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10186">line 10186</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line10195">line 10195</a>
     </li></ul></dd>
     
 
@@ -37114,7 +37137,7 @@ Else if search was on array - to index of found element.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line11522">line 11522</a>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line11531">line 11531</a>
     </li></ul></dd>
     
 
@@ -37158,7 +37181,7 @@ Else if search was on array - to index of found element.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 09 2016 13:56:08 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 09 2016 15:41:13 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
