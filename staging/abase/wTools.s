@@ -786,7 +786,7 @@ var entityHasUndef = function( src )
    * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
    * @returns {boolean}
    * @private
-   * @method entitySame
+   * @method _entitySame
    * @memberof wTools
    */
 
@@ -1350,7 +1350,7 @@ _entitySelect.defaults =
 
   /**
    * Function that produces an elements for entityMap result
-   * @callback entityMap~onEach
+   * @callback wTools~onEach
    * @param {*} val The current element being processed in the entity.
    * @param {string|number} key The index (if entity is array) or key of processed element.
    * @param {Array|Object} src The src passed to entityMap
@@ -1390,7 +1390,7 @@ _entitySelect.defaults =
    // [ true, true, true ]
    *
    * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
-   * @param {entityMap~onEach} onEach Function that produces an element of the new entity;
+   * @param {wTools~onEach} onEach Function that produces an element of the new entity;
    * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
@@ -1445,7 +1445,7 @@ var entityMap = function( src,onEach )
    // numbers is still [ 36, -25, 49, 64, -16 ];
    *
    * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
-   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @param {wTools~onEach} onEach Function that produces an element of the new entity;
    * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
@@ -1617,7 +1617,7 @@ entityGroup.defaults =
 
   /**
    * The result of _entityMost method object.
-   * @typedef {Object} _entityMost~entityMostResult
+   * @typedef {Object} wTools~entityMostResult
    * @property {number} index - Index of found element;
    * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
    * Else if search was on array - to index of found element.
@@ -1632,7 +1632,7 @@ entityGroup.defaults =
    * @param {ArrayLike|Object} src Input entity with elements.
    * @param {onEach} onElement `onEach` function calls for every element of `src`.
    * @param {boolean} returnMax If true - method returns maximum, else method returns minimum of values.
-   * @returns {_entityMost~entityMostResult} Object with results of search.
+   * @returns {wTools~entityMostResult} Object with results of search.
    * @private
    * @method _entityMost
    * @memberof wTools
@@ -1731,11 +1731,11 @@ var _entityMost = function( src,onElement,returnMax )
 
    * @param {ArrayLike|Object} src
    * @param {onEach} onElement onElement `onEach` function calls for every element of `src`.
-   * @returns {entityMostResult}
+   * @returns {wTools~entityMostResult}
    * @throws {Error} If missed arguments.
    * @throws {Error} If passed extra arguments.
-   * @see {@link onEach}
-   * @see {@link entityMostResult}
+   * @see wTools~onEach
+   * @see wTools~entityMostResult
    * @method entityMin
    * @memberof wTools
    */
@@ -1764,12 +1764,12 @@ var entityMin = function( src,onElement )
      // { index : 3, key : 3, value : 256, element : -16 }
 
    * @param {ArrayLike|Object} src
-   * @param {onEach} onElement `onEach` function calls for every element of `src`.
-   * @returns {entityMostResult}
+   * @param {wTools~onEach} onElement `onEach` function calls for every element of `src`.
+   * @returns {wTools~entityMostResult}
    * @throws {Error} If missed arguments.
    * @throws {Error} If passed extra arguments.
-   * @see {@link onEach}
-   * @see {@link entityMostResult}
+   * @see wTools~onEach
+   * @see wTools~entityMostResult
    * @method entityMax
    * @memberof wTools
    */
@@ -2475,7 +2475,7 @@ var err = function err()
    * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
    concatenating them. Prints the created error.
    * If _global_.logger defined, method will use it to print error, else uses console
-   * @see {@link wTools#err}
+   * @see wTools.err
    *
    *@example
      function divide( x, y )
@@ -4025,9 +4025,9 @@ var strAppendOnce = function( src,end )
    * The complete RegexpObject object.
    * @typedef {Object} RegexpObject
    * @property {RegExp[]} includeAny - Array of RegExps, to check matching any of them;
-   * @property {REgExp[]} includeAll - Array of RegExps, to check matching all of them;
-   * @property {REgExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
-   * @property {REgExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
+   * @property {RegExp[]} includeAll - Array of RegExps, to check matching all of them;
+   * @property {RegExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
+   * @property {RegExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
    * @memberof wTools
    */
 
@@ -5198,7 +5198,7 @@ var routineBind = function routineBind( routine, context, args )
    * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
    calling of target function. Must be wraped into array.
    * @returns {Function} New created function with preceding this, and args.
-   * @see [routineBind]{@link wTools#routineBind}
+   * @see wTools.routineBind
    * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
    * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
    * @method routineJoin
@@ -5658,7 +5658,7 @@ var dateToStr = function dateToStr( date )
    * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
    * Otherwise, it returns an initial typed array.
    *
-   * @see { @link wTools#arrayNew() } - See for more information.
+   * @see {@link wTools.arrayNew} - See for more information.
    *
    * @param { typedArray } src - The source typed array.
    * @param { Number } len - The length of a typed array.
@@ -6692,7 +6692,7 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  * If true, it adds to the (result) each element of the (src) array.
  * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
  *
- * @param {*} arguments[] - One or more argument(s).
+ * @param {...*} arguments - One or more argument(s).
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
@@ -7349,7 +7349,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
   /**
  * The callback function to compare two values.
  *
- * @callback arrayRemovedOnce~compareCallback
+ * @callback wTools~compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
@@ -7363,12 +7363,13 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the method
- * @see arrayLeftIndexOf( dstArray, ins, onEqual )  See for more information.
+ * [arrayLeftIndexOf( dstArray, ins, onEqual )]{@link wTools.arrayLeftIndexOf}
  * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray).
+ * @see {@link wTools.arrayLeftIndexOf}  See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -7421,26 +7422,18 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 //
 
 /**
- * Callback for compare two value.
- *
- * @callback arrayRemoveOnce~compareCallback
- * @param { * } el - The element of the array.
- * @param { * } ins - The value to compare.
- */
-
-/**
  * The arrayRemoveOnce() method removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
  * checks if arguments passed two, it calls the method
- * @see arrayRemovedOnce( dstArray, ins )  See for more information.
+ * [arrayRemovedOnce( dstArray, ins )]{@link wTools.arrayRemovedOnce}
  * Otherwise, if passed three arguments, it calls the method
- * @see arrayRemovedOnce( dstArray, ins, onEqual )  See for more information.
- *
+ * [arrayRemovedOnce( dstArray, ins, onEqual )]{@link wTools.arrayRemovedOnce}
+ * @see  wTools.arrayRemovedOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -7556,13 +7549,15 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onEqual) arguments,
  * checks if arguments passed two, it calls the method
- * @see arrayRemovedAll( dstArray, ins )  See for more information.
+ * [arrayRemovedAll( dstArray, ins )]{@link wTools.arrayRemovedAll}
  * Otherwise, if passed three arguments, it calls the method
- * @see arrayRemovedAll( dstArray, ins, onEqual )  See for more information.
+ * [arrayRemovedAll( dstArray, ins, onEqual )]{@link wTools.arrayRemovedAll}
+ *
+ * @see wTools.arrayRemovedAll
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -7654,10 +7649,12 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * and returns the last added index or the last replaced index of the array (dstArray).
    *
    * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
-   * @see arrayReplaceOnce( dstArray, ins, sub )  See for more information.
+   * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
    * Checks if (index) equal to the -1.
    * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
    * Otherwise, it returns the replaced (index).
+   *
+   * @see wTools.arrayReplaceOnce
    *
    * @param { Array } dstArray - The source array.
    * @param { * } ins - The value to change.
@@ -8611,14 +8608,6 @@ var arraySameSet = function( src1,src2 )
 
 //
   /**
-   * Callback for compare two values.
-   *
-   * @callback arrayLeftIndexOf~equalizer
-   * @param { * } el - The element of an array.
-   * @param { * } ins - The value to compare.
-   */
-
-  /**
    * The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
    * that corresponds to the condition in the callback function.
    *
@@ -8629,7 +8618,7 @@ var arraySameSet = function( src1,src2 )
    *
    * @param { arrayLike } arr - The target array.
    * @param { * } ins - The value to compare.
-   * @param { Function } [ function( a, b ) { return a === b } ] equalizer - A callback function.
+   * @param { wTools~compareCallback } [equalizer] equalizer - A callback function.
    * By default, it checks the equality of two arguments.
    *
    * @example
@@ -8740,13 +8729,15 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
    *
    * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_.arrayLeftIndexOf() } - See for more information.
+   * [wTools.arrayLeftIndexOf()]{@link wTools.arrayLeftIndexOf}
    * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
    * Otherwise, it returns the empty object.
    *
+   * @see {@link wTools.arrayLeftIndexOf} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { * } ins - Element to locate in the array.
-   * @param { Function } equalizer - A callback function.
+   * @param { wTools~compareCallback } equalizer - A callback function.
    *
    * @example
    * // returns { index : 3, element : 'str' }
@@ -8807,13 +8798,15 @@ var arrayRight = function( arr,ins,equalizer )
  * The arrayHasAny() method checks if the (src) array has at least one value of the following arguments.
  *
  * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the method
- * @see arrayAs()  See for more information.
+ * [arrayAs()]{@link wTools.arrayAs}
  * Checks, if (src) array has at least one value of the (ins) array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
+ * @see {@link wTools.arrayAs} - See for more information.
+ *
  * @param { arrayLike } src - The source array.
- * @param {*} arguments[] - One or more argument(s).
+ * @param {...*} arguments - One or more argument(s).
  *
  * @example
  * // returns true
@@ -9482,14 +9475,16 @@ var _arraySortedLookUpAct = function( arr,ins,comparator,left,right )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct()]{@link wTools._arraySortedLookUpAct}.
    * If (index) is equal to the one, it returns 'undefined'.
    * If call callback function (comparator( ins, arr[ index ]) returns a value that is not equal to the zero, it returns 'undefined'.
    * Otherwise, it returns the object containing the properties ({ value : arr[ index ], index : index }).
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [comparator=function( a, b ) { return a - b }] comparator - A callback function.
    *
    * @example
    * // returns { value : 5, index : 4 }
@@ -9579,14 +9574,16 @@ var arraySortedClosest = function( arr,ins,comparator )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct()]{@link wTools._arraySortedLookUpAct}.
    * If (index) is not equal to the one, and call callback function (comparator( ins, arr[ index ])
    * returns a value that is equal to the zero (i.e the array (arr) contains the value (ins)), it removes the value (ins) from the array (arr), and returns true.
    * Otherwise, it returns false.
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns true
@@ -9628,14 +9625,16 @@ var arraySortedRemove = function( arr,ins,comparator )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct() ]{@link wTools._arraySortedLookUpAct}.
    * If (index) is equal to the one, and call callback function (comparator( ins, arr[ index ])
    * returns a value that is not equal to the zero (i.e the array (arr) doesn't contain the value (ins)), it adds the value (ins) to the array (arr), and returns true.
    * Otherwise, it returns false.
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns false
@@ -9677,13 +9676,15 @@ var arraySortedAddOnce = function( arr,ins,comparator )
    *
    * It calls the method (_._arraySortedLookUpAct( arr, ins, comparator, 0, arr.length - 1 )),
    * that returns the index of the value (ins) in the array (arr).
-   * @see { @link wTools#_._arraySortedLookUpAct() } - See for more information.
+   * [wTools._arraySortedLookUpAct() ]{@link wTools._arraySortedLookUpAct}.
    * If value (ins) has in the array (arr), it adds (ins) to that found index and offsets the old values in the (arr).
    * Otherwise, it adds the new index.
    *
+   * @see {@link wTools._arraySortedLookUpAct} - See for more information.
+   *
    * @param { arrayLike } arr - Entity to check.
    * @param { Number } ins - Element to locate in the array.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns 5
@@ -9722,11 +9723,12 @@ var arraySortedAdd = function( arr,ins,comparator )
    * It creates variable (result = 0), iterates over an array (src),
    * adds to the (result +=) each call the function (arraySortedAdd( dst, src[ s ], comparator ))
    * that returns the new added or the updated index.
-   * @see { @link wTools#_.arraySortedAdd() } - See for more information.
+   *
+   * @see {@link wTools_.arraySortedAdd} - See for more information.
    *
    * @param { arrayLike } dst - Entity to check.
    * @param { arrayLike } src - Entity to check.
-   * @param { Function } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
    *
    * @example
    * // returns 19
@@ -10862,10 +10864,10 @@ var mapOwnBut = function mapOwnBut( srcMap )
    * The mapScreens() returns an object filled by unique [ key, value ]
    * from (srcObject) object.
    *
-   * It creates the variable (dstObject) assignes and calls the method (__mapScreen( { } ) )
+   * It creates the variable (dstObject) assignes and calls the method (_mapScreen( { } ) )
    * with three properties.
    *
-   * @see __mapScreen( { } ) See for more information.
+   * @see {@link wTools._mapScreen} - See for more information.
    *
    * @param { objectLike } srcObject - The target object.
    * @param { objectLike } screenObject - The source object.
@@ -10922,7 +10924,7 @@ var mapScreens = function( srcObject,screenObject )
    * It takes number of objects, creates a new object by three properties
    * and calls the _mapScreen( {} ) with created object.
    *
-   * @see  _mapScreen( { } )  See for more information.
+   * @see  {@link wTools._mapScreen} - See for more information.
    *
    * @param { objectLike } screenObject - The first object.
    * @param { ...objectLike } arguments[] - One or more objects.
