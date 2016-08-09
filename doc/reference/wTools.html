@@ -3312,6 +3312,213 @@ Return string refering first found difference or false if entities are sames.</p
 
     
 
+    <h4 class="name" id=".entityFilter"><span class="type-signature">(static) </span>entityFilter<span class="signature">(src, onEach)</span><span class="type-signature"> &rarr; {ArrayLike|ObjectLike}</span></h4>
+
+    
+    <p class="summary">Creates new instance with same as <code>src</code> type.</p>
+    
+
+
+
+<div class="description">
+    <p>Creates new instance with same as <code>src</code> type. Elements of new instance results of calling a provided <code>onEach</code>
+function on every element of src. If <code>onEach</code> returns undefined, then this result is not included into the new
+entity.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ArrayLike</span>
+|
+
+<span class="param-type">ObjectLike</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Entity, on each elements of which will be called <code>onEach</code> function.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onEach</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">onEach</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Function that produces an element of the new entity;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line1429">line 1429</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>wTools#entityMap</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>New entity.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ArrayLike</span>
+|
+
+<span class="param-type">ObjectLike</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var numbers = [ 36, -25, 49, 64, -16 ];
+
+     function sqrt( v )
+     {
+        return ( v > 0 ) ? Math.sqrt( v ) : undefined;
+     };
+
+     var res = wTools.entityMap( numbers, sqr );
+   // [ 6, 7, 8 ]
+   // numbers is still [ 36, -25, 49, 64, -16 ];</code></pre>
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id=".entityGroup"><span class="type-signature">(static) </span>entityGroup<span class="signature">(src, o)</span><span class="type-signature"> &rarr; {object}</span></h4>
 
     
@@ -3986,213 +4193,6 @@ function on every element of src. If entity is array, the new array has the same
 
     var res = wTools.entityMap( numbers, checkSidesOfTriangle );
    // [ true, true, true ]</code></pre>
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".entityMap"><span class="type-signature">(static) </span>entityMap<span class="signature">(src, onEach)</span><span class="type-signature"> &rarr; {ArrayLike|ObjectLike}</span></h4>
-
-    
-    <p class="summary">Creates new instance with same as <code>src</code> type.</p>
-    
-
-
-
-<div class="description">
-    <p>Creates new instance with same as <code>src</code> type. Elements of new instance results of calling a provided <code>onEach</code>
-function on every element of src. If <code>onEach</code> returns undefined, then this result is not included into the new
-entity.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>src</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ArrayLike</span>
-|
-
-<span class="param-type">ObjectLike</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Entity, on each elements of which will be called <code>onEach</code> function.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onEach</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">onEach</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Function that produces an element of the new entity;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="wTools.s.html">wTools.s</a>, <a href="wTools.s.html#line1429">line 1429</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li>wTools#entityMap</li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>New entity.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ArrayLike</span>
-|
-
-<span class="param-type">ObjectLike</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>var numbers = [ 36, -25, 49, 64, -16 ];
-
-     function sqrt( v )
-     {
-        return ( v > 0 ) ? Math.sqrt( v ) : undefined;
-     };
-
-     var res = wTools.entityMap( numbers, sqr );
-   // [ 6, 7, 8 ]
-   // numbers is still [ 36, -25, 49, 64, -16 ];</code></pre>
 
 
 
@@ -36617,7 +36617,7 @@ _.toStrForRange( [ 'a', 'z' ] );</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 09 2016 10:36:51 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Aug 09 2016 12:07:39 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
