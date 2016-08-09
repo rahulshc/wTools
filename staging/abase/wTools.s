@@ -786,7 +786,7 @@ var entityHasUndef = function( src )
    * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
    * @returns {boolean}
    * @private
-   * @method entitySame
+   * @method _entitySame
    * @memberof wTools
    */
 
@@ -1350,7 +1350,7 @@ _entitySelect.defaults =
 
   /**
    * Function that produces an elements for entityMap result
-   * @callback entityMap~onEach
+   * @callback wTools~onEach
    * @param {*} val The current element being processed in the entity.
    * @param {string|number} key The index (if entity is array) or key of processed element.
    * @param {Array|Object} src The src passed to entityMap
@@ -1390,7 +1390,7 @@ _entitySelect.defaults =
    // [ true, true, true ]
    *
    * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
-   * @param {entityMap~onEach} onEach Function that produces an element of the new entity;
+   * @param {wTools~onEach} onEach Function that produces an element of the new entity;
    * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
@@ -1445,7 +1445,7 @@ var entityMap = function( src,onEach )
    // numbers is still [ 36, -25, 49, 64, -16 ];
    *
    * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
-   * @param {onEach} onEach Function that produces an element of the new entity;
+   * @param {wTools~onEach} onEach Function that produces an element of the new entity;
    * @returns {ArrayLike|ObjectLike} New entity.
    * @thorws {Error} If number of arguments less or more than 2;
    * @thorws {Error} If `src` is not Array or ObjectLike;
@@ -1617,7 +1617,7 @@ entityGroup.defaults =
 
   /**
    * The result of _entityMost method object.
-   * @typedef {Object} _entityMost~entityMostResult
+   * @typedef {Object} wTools~entityMostResult
    * @property {number} index - Index of found element;
    * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
    * Else if search was on array - to index of found element.
@@ -1632,7 +1632,7 @@ entityGroup.defaults =
    * @param {ArrayLike|Object} src Input entity with elements.
    * @param {onEach} onElement `onEach` function calls for every element of `src`.
    * @param {boolean} returnMax If true - method returns maximum, else method returns minimum of values.
-   * @returns {_entityMost~entityMostResult} Object with results of search.
+   * @returns {wTools~entityMostResult} Object with results of search.
    * @private
    * @method _entityMost
    * @memberof wTools
@@ -1731,11 +1731,11 @@ var _entityMost = function( src,onElement,returnMax )
 
    * @param {ArrayLike|Object} src
    * @param {onEach} onElement onElement `onEach` function calls for every element of `src`.
-   * @returns {entityMostResult}
+   * @returns {wTools~entityMostResult}
    * @throws {Error} If missed arguments.
    * @throws {Error} If passed extra arguments.
-   * @see {@link onEach}
-   * @see {@link entityMostResult}
+   * @see wTools~onEach
+   * @see wTools~entityMostResult
    * @method entityMin
    * @memberof wTools
    */
@@ -1764,12 +1764,12 @@ var entityMin = function( src,onElement )
      // { index : 3, key : 3, value : 256, element : -16 }
 
    * @param {ArrayLike|Object} src
-   * @param {onEach} onElement `onEach` function calls for every element of `src`.
-   * @returns {entityMostResult}
+   * @param {wTools~onEach} onElement `onEach` function calls for every element of `src`.
+   * @returns {wTools~entityMostResult}
    * @throws {Error} If missed arguments.
    * @throws {Error} If passed extra arguments.
-   * @see {@link onEach}
-   * @see {@link entityMostResult}
+   * @see wTools~onEach
+   * @see wTools~entityMostResult
    * @method entityMax
    * @memberof wTools
    */
@@ -2475,7 +2475,7 @@ var err = function err()
    * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
    concatenating them. Prints the created error.
    * If _global_.logger defined, method will use it to print error, else uses console
-   * @see {@link wTools#err}
+   * @see wTools.err
    *
    *@example
      function divide( x, y )
@@ -4025,9 +4025,9 @@ var strAppendOnce = function( src,end )
    * The complete RegexpObject object.
    * @typedef {Object} RegexpObject
    * @property {RegExp[]} includeAny - Array of RegExps, to check matching any of them;
-   * @property {REgExp[]} includeAll - Array of RegExps, to check matching all of them;
-   * @property {REgExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
-   * @property {REgExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
+   * @property {RegExp[]} includeAll - Array of RegExps, to check matching all of them;
+   * @property {RegExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
+   * @property {RegExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
    * @memberof wTools
    */
 
@@ -5198,7 +5198,7 @@ var routineBind = function routineBind( routine, context, args )
    * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
    calling of target function. Must be wraped into array.
    * @returns {Function} New created function with preceding this, and args.
-   * @see [routineBind]{@link wTools#routineBind}
+   * @see wTools.routineBind
    * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
    * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
    * @method routineJoin
@@ -5658,7 +5658,7 @@ var dateToStr = function dateToStr( date )
    * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
    * Otherwise, it returns an initial typed array.
    *
-   * @see { @link wTools#arrayNew() } - See for more information.
+   * @see {@link wTools.arrayNew} - See for more information.
    *
    * @param { typedArray } src - The source typed array.
    * @param { Number } len - The length of a typed array.
@@ -7349,7 +7349,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
   /**
  * The callback function to compare two values.
  *
- * @callback arrayRemovedOnce~compareCallback
+ * @callback wTools~compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
@@ -7363,12 +7363,12 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the method
- * @see arrayLeftIndexOf( dstArray, ins, onEqual )  See for more information.
  * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray).
+ * @see [arrayLeftIndexOf( dstArray, ins, onEqual )]{@link wTools.arrayLeftIndexOf}  See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -7421,14 +7421,6 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
 //
 
 /**
- * Callback for compare two value.
- *
- * @callback arrayRemoveOnce~compareCallback
- * @param { * } el - The element of the array.
- * @param { * } ins - The value to compare.
- */
-
-/**
  * The arrayRemoveOnce() method removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
@@ -7440,7 +7432,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEqual ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
