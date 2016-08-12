@@ -1316,7 +1316,7 @@ var __entitySelectAct = function __entitySelectAct( o )
   var hasSet = !!o.set;
   var result;
   var container = o.container;
-  debugger;
+
   var name = o.qarrey[ 0 ];
   var name2 = o.qarrey[ 1 ];
 
@@ -1862,30 +1862,37 @@ var entitySearch = function( o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( !o.searchingCaseinsensitive,'not implemented' );
 
-  debugger;
-
   var strIns,regexpIns;
   strIns = String( o.ins );
   if( o.searchingCaseinsensitive )
   regexpIns = new RegExp( ( o.searchingSubstring ? '' : '^' ) + strIns + ( o.searchingSubstring ? '' : '$' ),'i' );
 
-  debugger;
-
-  /**/
+  /* */
 
   var handleUp = function( e,k )
   {
+
+    var path;
+    if( o.pathOfParent )
+    path = this.path;
+    else
+    path = this.path + k;
+
+    var r;
+    if( o.returnParent )
+    r = this.src;
+    else
+    r = e;
 
     if( o.searchingValue )
     {
       if( e === o.ins )
       {
-        result[ this.path ] = e;
-        debugger;
+        result[ path ] = r;
       }
       else if( o.searchingSubstring && _.strIs( e ) && e.indexOf( strIns ) !== -1 )
       {
-        result[ this.path ] = e;
+        result[ path ] = r;
       }
     }
 
@@ -1893,16 +1900,17 @@ var entitySearch = function( o )
     {
       if( k === o.ins )
       {
-        result[ this.path + k ] = e;
-        debugger;
+        result[ path ] = r;
       }
       else if( o.searchingSubstring && _.strIs( k ) && k.indexOf( strIns ) !== -1 )
       {
-        result[ this.path + k ] = e;
+        result[ path ] = r;
       }
     }
 
   }
+
+  /* */
 
   _.eachRecursive
   ({
@@ -1921,6 +1929,8 @@ entitySearch.defaults =
   ins : null,
 
   own : 1,
+  pathOfParent : 1,
+  returnParent : 0,
 
   searchingKey : 1,
   searchingValue : 1,
@@ -2092,7 +2102,6 @@ var eachRecursive = function( o )
 
 var eachOwnRecursive = function( o )
 {
-  debugger;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( arguments.length === 2 )
