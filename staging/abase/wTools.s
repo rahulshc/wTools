@@ -7159,10 +7159,6 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 }
 
 //
-  // !!! Not bad
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
-  // +++ Not clear what the (@returns) returns.
 
 /**
  * The arrayElementsSwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
@@ -7185,6 +7181,8 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
 var arrayElementsSwap = function( dst,index1,index2 )
 {
+
+  _ssert( arguments.length === 3 );
   _assert( _.arrayLike( dst ),'arrayElementsSwap :','argument must be array' );
   _assert( 0 <= index1 && index1 < dst.length,'arrayElementsSwap :','index1 is out of bound' );
   _assert( 0 <= index2 && index2 < dst.length,'arrayElementsSwap :','index2 is out of bound' );
