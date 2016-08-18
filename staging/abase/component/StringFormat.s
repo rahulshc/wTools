@@ -1498,7 +1498,27 @@ strUnjoin.any = function( src )
 }
 
 //
-
+/**
+ * This function finds substring( prefix ) occurrence from the begining of the source( src )
+ * provided by first argument and removes it.
+ * If the function can not find occurrence in source( src ) it returns the original string.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} prefix - String that is to be dropped.
+ * @returns {string} Returns string with result of prefix removement.
+ *
+ * @example
+ * //returns mple
+ * _.strDropPrefix( 'example','exa' );
+ *
+ * @example
+ * //returns example
+ * _.strDropPrefix( 'example','abc' );
+ *
+ * @method strDropPrefix
+  * @memberof wTools
+ *
+*/
 var strDropPrefix = function( src,prefix )
 {
   if( src.indexOf( prefix ) !== -1 )
