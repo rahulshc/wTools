@@ -319,6 +319,29 @@ var _toStrShort = function( src,options )
 
 //
 
+/**
+ * This function converts Number to String with options.
+ *
+ * @param {Number} src - Number for conversion.
+ * @param {Object} options - Contains conversion options.
+ * @param {Number} options.precision - Integer value that specifying  length of a number.
+ * @param {Number} options.fixed - Number of digits after the decimal point.
+ *
+ * @returns {String} Returns number converted to the string.
+ *
+ * @example
+ * //returns 8.9
+ * _._toStrFromNumber( 8.923964453, { precision : 2 } )
+ *
+ * @example
+ * //returns 8.9240
+ * _._toStrFromNumber( 8.923964453, { fixed : 4 } )
+ *
+ * @method _toStrFromNumber
+ * @memberof wTools
+ *
+*/
+
 var _toStrFromNumber = function( src,options )
 {
   var result = '';
