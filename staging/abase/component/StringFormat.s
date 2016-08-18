@@ -689,23 +689,23 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
 
 //
 /**
- * This function returns  string that starts from capital letter,
- * Accept one object : the string to be formatted.
+ * This function returns  string that starts from capital letter.
+ * Expects one object: the string to be formatted.
  *
  * @param {string} src - Source string.
  * @returns {String} Returns a string with the first letter capitalized.
  *
  * @example
  * //returns Test string
- * _.strCapitalize('test string');
+ * _.strCapitalize ('test string');
  *
  * @example
  * //returns Another_test_string
- * _.strCapitalize('another_test_string')
+ * _.strCapitalize ('another_test_string')
  *
  * @method strCapitalize
- * @throws { Exception } Will throw an exception if (src) is not a String.
- * @throws { Exception } Will throw an exception if (arguments.length) is not equal 1.
+ * @throws { Exception } Throw an exception if (src) is not a String.
+ * @throws { Exception } Throw an exception if (arguments.length) is not equal 1.
  * @memberof wTools
  *
 */
