@@ -1522,7 +1522,26 @@ var strNumberLines = function( srcStr )
 }
 
 //
+/**
+ * This function returns  count of occurrences of a substring in a string,
+ * Accept two objects in order: source string, substring.
+ *
+ * @param {string} src - Source string.
+ * @param {string} ins - Substring.
+ * @returns {Number} Returns number of occurrences of a substring in a string.
+ *
+ * @example
+ * //returns 2
+ * _.strCount ("aaaabab","ab");
+ *
+ * @method strCount
+ * @throws { Exception } Will throw an exception if (src) is not a String
+ * @throws { Exception } Will throw an exception if (ins) is not a String
+ * @memberof wTools
+ *
 
+
+*/
 var strCount = function( src,ins )
 {
   var result = -1;
