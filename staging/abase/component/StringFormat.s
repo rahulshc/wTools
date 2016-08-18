@@ -1199,7 +1199,27 @@ strStrip.defaults =
 }
 
 //
-
+/**
+ * This function removes all whitespaces from the string passed by first argument( src ).
+ * If second argument is not equal 'undefined', function replaces whitespaces with( sub )
+ * argument value. Else function removes only whitespaces.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} sub - Substring that replaces whitespaces.
+ * @returns {string} Returns a string with removed whitespaces.
+ *
+ * @example
+ * //returns abcde
+ * _.strRemoveAllSpaces( 'a b c d e' );
+ *
+ * @example
+ * //returns a*b*c*d*e
+ * _.strRemoveAllSpaces( 'a b c d e','*' );
+ *
+ * @method strRemoveAllSpaces
+ * @memberof wTools
+ *
+*/
 var strRemoveAllSpaces = function( src,sub )
 {
   if( sub === undefined ) sub = '';
