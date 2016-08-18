@@ -1599,8 +1599,8 @@ var strNumberLines = function( srcStr )
  * _.strCount ("aaaabab","ab");
  *
  * @method strCount
- * @throws { Exception } Throw an exception if (src) is not a String
- * @throws { Exception } Throw an exception if (ins) is not a String
+ * @throws { Exception } Will throw an exception if (src) is not a String
+ * @throws { Exception } Will throw an exception if (ins) is not a String
  * @memberof wTools
  *
 
