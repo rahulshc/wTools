@@ -717,7 +717,28 @@ var strCapitalize = function( src )
 }
 
 //
-
+/**
+ * This function returns a string concatenated with itself n-times,
+ * Accept two object : the string to be concatenated and count of concatenations.
+ *
+ * @param {string} s - Source string.
+ * @param {number} times - An count of concatenation cycles.
+ * @returns {String} Returns a string concatenated n-times.
+ *
+ * @example
+ * //returns WordWordWordWordWord
+ * _.strTimes('Word',5);
+ *
+ * @example
+ * //returns 1 21 2
+ * _.strTimes('1 '+'2',2);
+ *
+ * @method strTimes
+ * @throws { Exception } Will throw an exception if (times) is not a Number.
+ * @throws { Exception } Will throw an exception if (arguments.length) is not equal 2.
+ * @memberof wTools
+ *
+*/
 var strTimes = function( s,times )
 {
   var result = '';
