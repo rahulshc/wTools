@@ -1071,7 +1071,31 @@ strInhalfRight.defaults =
 }
 
 //
-
+/**
+ * This function splits a string at each position where the separator (o.splitter)
+ * occurs in the string (o.src) into substrings and appends them to the array of strings.
+ * Splitter can be set by using (strSplit.defaults.splitter) property.
+ * Expects one object: the string to be processed.
+ *
+ * @param {string} o - Source string to split.
+ * @returns {object} Returns an array of strings split by separator (o.splitter).
+ *
+ * @example
+ * //returns [ 'first', 'second', 'third' ]
+ * _.strSplit ( ' first second third ' );
+ *
+ * @example
+ * //returns [ 'first', 'second', 'third' ]
+ * _.strSplit.defaults.splitter= '..';
+ * _.strSplit (' first..second..third ');
+ *
+ * @method strSplitStrNumber
+ * @throws { Exception } Throw an exception if (arguments.length) is not equal 1.
+ * @throws { Exception } Throw an exception if (o.src) is not a String.
+ * @throws { Exception } Throw an exception if (o.splitter) is not a String or an Array.
+ * @memberof wTools
+ *
+*/
 var strSplit = function( o )
 {
 
