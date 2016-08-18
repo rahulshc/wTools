@@ -1217,6 +1217,7 @@ strStrip.defaults =
  * _.strRemoveAllSpaces( 'a b c d e','*' );
  *
  * @method strRemoveAllSpaces
+
  * @memberof wTools
  *
 */
@@ -1227,7 +1228,31 @@ var strRemoveAllSpaces = function( src,sub )
 }
 
 //
-
+/**
+ * This function removes all empty lines from the string passed by first argument( srcStr ).
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @returns {string} Returns a string with empty lines removed.
+ *
+ * @example
+ * //returns
+ * //first
+ * //second
+ * _.strStripEmptyLines( 'first\n\nsecond' );
+ *
+ * @example
+ * //returns
+ * //zero
+ * //first
+ * //second
+ * _.strStripEmptyLines( 'zero\n\nfirst\n\nsecond' );
+ *
+ * @method strStripEmptyLines
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @memberof wTools
+ *
+*/
 var strStripEmptyLines = function( srcStr )
 {
   var result = '';
