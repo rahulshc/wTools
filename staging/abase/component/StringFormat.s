@@ -697,15 +697,15 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
  *
  * @example
  * //returns Test string
- * _.strCapitalize ('test string');
+ * _.strCapitalize( 'test string' );
  *
  * @example
  * //returns Another_test_string
- * _.strCapitalize ('another_test_string')
+ * _.strCapitalize( 'another_test_string' );
  *
  * @method strCapitalize
- * @throws { Exception } Throw an exception if (src) is not a String.
- * @throws { Exception } Throw an exception if (arguments.length) is not equal 1.
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @memberof wTools
  *
 */
@@ -727,15 +727,15 @@ var strCapitalize = function( src )
  *
  * @example
  * //returns WordWordWordWordWord
- * _.strTimes ('Word',5);
+ * _.strTimes( 'Word',5 );
  *
  * @example
  * //returns 1 21 2
- * _.strTimes ('1 '+'2',2);
+ * _.strTimes( '1 '+'2',2 );
  *
  * @method strTimes
- * @throws { Exception } Throw an exception if (times) is not a Number.
- * @throws { Exception } Throw an exception if (arguments.length) is not equal 2.
+ * @throws { Exception } Throw an exception if( times ) is not a Number.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
  *
 */
@@ -762,11 +762,11 @@ var strTimes = function( s,times )
  *
  * @example
  * //returns 2
- * _.strLineCount ('first\nsecond');
+ * _.strLineCount( 'first\nsecond' );
  *
  * @example
  * //returns 4
- * _.strLineCount ('first\nsecond\nthird\n');
+ * _.strLineCount( 'first\nsecond\nthird\n' );
  *
  * @method strLineCount
  * @memberof wTools
@@ -786,17 +786,17 @@ var strLineCount = function( src )
  * Expects one object: the string to be processed.
  *
  * @param {string} src - Source string.
- * @returns {object} Returns the object with two properties (str) and (number),
- * with values parsed from source string. If a string (src) doesn't contain number (s),
- * it returns the object with value of string (src).
+ * @returns {object} Returns the object with two properties:( str ) and ( number ),
+ * with values parsed from source string. If a string( src ) doesn't contain number( s ),
+ * it returns the object with value of string( src ).
  *
  * @example
  * //returns { str: 'bd', number: 1 }
- * _.strSplitStrNumber ('bd1');
+ * _.strSplitStrNumber( 'bd1' );
  *
  * @example
  * //returns { str: 'bdxf' }
- * _.strSplitStrNumber ('bdxf');
+ * _.strSplitStrNumber( 'bdxf' );
  *
  * @method strSplitStrNumber
  * @memberof wTools
@@ -1074,25 +1074,25 @@ strInhalfRight.defaults =
 /**
  * This function splits a string at each position where the separator (o.splitter)
  * occurs in the string (o.src) into substrings and appends them to the array of strings.
- * Splitter can be set by using (strSplit.defaults.splitter) property.
+ * Splitter can be set by using( strSplit.defaults.splitter ) property.
  * Expects one object: the string to be processed.
  *
  * @param {string} o - Source string to split.
- * @returns {object} Returns an array of strings split by separator (o.splitter).
+ * @returns {object} Returns an array of strings split by separator( o.splitter ).
  *
  * @example
  * //returns [ 'first', 'second', 'third' ]
- * _.strSplit ( ' first second third ' );
+ * _.strSplit( ' first second third ' );
  *
  * @example
  * //returns [ 'first', 'second', 'third' ]
  * _.strSplit.defaults.splitter= '..';
- * _.strSplit (' first..second..third ');
+ * _.strSplit( ' first..second..third ' );
  *
  * @method strSplit
- * @throws { Exception } Throw an exception if (arguments.length) is not equal 1.
- * @throws { Exception } Throw an exception if (o.src) is not a String.
- * @throws { Exception } Throw an exception if (o.splitter) is not a String or an Array.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.splitter ) is not a String or an Array.
  * @memberof wTools
  *
 */
@@ -1660,11 +1660,11 @@ var strNumberLines = function( srcStr )
  *
  * @example
  * //returns 2
- * _.strCount ("aaaabab","ab");
+ * _.strCount( "aaaabab","ab" );
  *
  * @method strCount
- * @throws { Exception } Throw an exception if (src) is not a String
- * @throws { Exception } Throw an exception if (ins) is not a String
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( ins ) is not a String.
  * @memberof wTools
  *
 
