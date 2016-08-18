@@ -689,23 +689,23 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
 
 //
 /**
- * This function returns  string that starts from capital letter,
- * Accept one object : the string to be formatted.
+ * This function returns  string that starts from capital letter.
+ * Expects one object: the string to be formatted.
  *
  * @param {string} src - Source string.
  * @returns {String} Returns a string with the first letter capitalized.
  *
  * @example
  * //returns Test string
- * _.strCapitalize('test string');
+ * _.strCapitalize( 'test string' );
  *
  * @example
  * //returns Another_test_string
- * _.strCapitalize('another_test_string')
+ * _.strCapitalize( 'another_test_string' );
  *
  * @method strCapitalize
- * @throws { Exception } Will throw an exception if (src) is not a String.
- * @throws { Exception } Will throw an exception if (arguments.length) is not equal 1.
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @memberof wTools
  *
 */
@@ -718,8 +718,8 @@ var strCapitalize = function( src )
 
 //
 /**
- * This function returns a string concatenated with itself n-times,
- * Accept two object : the string to be concatenated and count of concatenations.
+ * This function returns a string concatenated with itself n-times.
+ * Expects two object: the string to be concatenated and count of concatenations.
  *
  * @param {string} s - Source string.
  * @param {number} times - An count of concatenation cycles.
@@ -727,15 +727,15 @@ var strCapitalize = function( src )
  *
  * @example
  * //returns WordWordWordWordWord
- * _.strTimes('Word',5);
+ * _.strTimes( 'Word',5 );
  *
  * @example
  * //returns 1 21 2
- * _.strTimes('1 '+'2',2);
+ * _.strTimes( '1 '+'2',2 );
  *
  * @method strTimes
- * @throws { Exception } Will throw an exception if (times) is not a Number.
- * @throws { Exception } Will throw an exception if (arguments.length) is not equal 2.
+ * @throws { Exception } Throw an exception if( times ) is not a Number.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
  *
 */
@@ -753,7 +753,25 @@ var strTimes = function( s,times )
 }
 
 //
-
+/**
+ * This function calculates a count of lines in a string.
+ * Expects one object: the string to be processed.
+ *
+ * @param {string} src - Source string.
+ * @returns {number} Returns a number of lines in string
+ *
+ * @example
+ * //returns 2
+ * _.strLineCount( 'first\nsecond' );
+ *
+ * @example
+ * //returns 4
+ * _.strLineCount( 'first\nsecond\nthird\n' );
+ *
+ * @method strLineCount
+ * @memberof wTools
+ *
+*/
 var strLineCount = function( src )
 {
   var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
@@ -761,7 +779,29 @@ var strLineCount = function( src )
 }
 
 //
-
+/**
+ * This function parses a string and separates numbers and string values
+ * in to object that contains two properties,representing the values of string
+ * and number parsed from the given string.
+ * Expects one object: the string to be processed.
+ *
+ * @param {string} src - Source string.
+ * @returns {object} Returns the object with two properties:( str ) and ( number ),
+ * with values parsed from source string. If a string( src ) doesn't contain number( s ),
+ * it returns the object with value of string( src ).
+ *
+ * @example
+ * //returns { str: 'bd', number: 1 }
+ * _.strSplitStrNumber( 'bd1' );
+ *
+ * @example
+ * //returns { str: 'bdxf' }
+ * _.strSplitStrNumber( 'bdxf' );
+ *
+ * @method strSplitStrNumber
+ * @memberof wTools
+ *
+*/
 var strSplitStrNumber = function( src )
 {
   var result = {};
@@ -1031,7 +1071,31 @@ strInhalfRight.defaults =
 }
 
 //
-
+/**
+ * This function splits a string at each position where the separator (o.splitter)
+ * occurs in the string (o.src) into substrings and appends them to the array of strings.
+ * Splitter can be set by using( strSplit.defaults.splitter ) property.
+ * Expects one object: the string to be processed.
+ *
+ * @param {string} o - Source string to split.
+ * @returns {object} Returns an array of strings split by separator( o.splitter ).
+ *
+ * @example
+ * //returns [ 'first', 'second', 'third' ]
+ * _.strSplit( ' first second third ' );
+ *
+ * @example
+ * //returns [ 'first', 'second', 'third' ]
+ * _.strSplit.defaults.splitter= '..';
+ * _.strSplit( ' first..second..third ' );
+ *
+ * @method strSplit
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.splitter ) is not a String or an Array.
+ * @memberof wTools
+ *
+*/
 var strSplit = function( o )
 {
 
@@ -1135,7 +1199,28 @@ strStrip.defaults =
 }
 
 //
+/**
+ * This function removes all whitespaces from the string passed by first argument( src ).
+ * If second argument is not equal 'undefined', function replaces whitespaces with( sub )
+ * argument value. Else function removes only whitespaces.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} sub - Substring that replaces whitespaces.
+ * @returns {string} Returns a string with removed whitespaces.
+ *
+ * @example
+ * //returns abcde
+ * _.strRemoveAllSpaces( 'a b c d e' );
+ *
+ * @example
+ * //returns a*b*c*d*e
+ * _.strRemoveAllSpaces( 'a b c d e','*' );
+ *
+ * @method strRemoveAllSpaces
 
+ * @memberof wTools
+ *
+*/
 var strRemoveAllSpaces = function( src,sub )
 {
   if( sub === undefined ) sub = '';
@@ -1143,7 +1228,31 @@ var strRemoveAllSpaces = function( src,sub )
 }
 
 //
-
+/**
+ * This function removes all empty lines from the string passed by first argument( srcStr ).
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @returns {string} Returns a string with empty lines removed.
+ *
+ * @example
+ * //returns
+ * //first
+ * //second
+ * _.strStripEmptyLines( 'first\n\nsecond' );
+ *
+ * @example
+ * //returns
+ * //zero
+ * //first
+ * //second
+ * _.strStripEmptyLines( 'zero\n\nfirst\n\nsecond' );
+ *
+ * @method strStripEmptyLines
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @memberof wTools
+ *
+*/
 var strStripEmptyLines = function( srcStr )
 {
   var result = '';
@@ -1588,7 +1697,7 @@ var strNumberLines = function( srcStr )
 //
 /**
  * This function returns  count of occurrences of a substring in a string,
- * Accept two objects in order: source string, substring.
+ * Expects two objects in order: source string, substring.
  *
  * @param {string} src - Source string.
  * @param {string} ins - Substring.
@@ -1596,11 +1705,11 @@ var strNumberLines = function( srcStr )
  *
  * @example
  * //returns 2
- * _.strCount ("aaaabab","ab");
+ * _.strCount( "aaaabab","ab" );
  *
  * @method strCount
- * @throws { Exception } Will throw an exception if (src) is not a String
- * @throws { Exception } Will throw an exception if (ins) is not a String
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( ins ) is not a String.
  * @memberof wTools
  *
 
