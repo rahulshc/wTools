@@ -753,7 +753,24 @@ var strTimes = function( s,times )
 }
 
 //
-
+/**
+ * Expects one object: the string to be processed.
+ *
+ * @param {string} s - Source string.
+ * @returns {number} Returns a number of lines in string
+ *
+ * @example
+ * //returns 2
+ * _.strLineCount ('first\nsecond');
+ *
+ * @example
+ * //returns 4
+ * _.strLineCount('first\nsecond\nthird\n');
+ *
+ * @method strLineCount
+ * @memberof wTools
+ *
+*/
 var strLineCount = function( src )
 {
   var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
