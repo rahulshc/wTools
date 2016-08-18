@@ -1527,6 +1527,7 @@ var strCount = function( src,ins )
 {
   var result = -1;
 
+  _.assert( arguments.length === 2 );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
