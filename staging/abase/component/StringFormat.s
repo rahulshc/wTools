@@ -319,6 +319,29 @@ var _toStrShort = function( src,options )
 
 //
 
+/**
+ * This function converts Number to String with options.
+ *
+ * @param {Number} src - Number for conversion.
+ * @param {Object} options - Contains conversion options.
+ * @param {Number} options.precision - Integer value that specifying  length of a number.
+ * @param {Number} options.fixed - Number of digits after the decimal point.
+ *
+ * @returns {String} Returns number converted to the string.
+ *
+ * @example
+ * //returns 8.9
+ * _._toStrFromNumber( 8.923964453, { precision : 2 } )
+ *
+ * @example
+ * //returns 8.9240
+ * _._toStrFromNumber( 8.923964453, { fixed : 4 } )
+ *
+ * @method _toStrFromNumber
+ * @memberof wTools
+ *
+*/
+
 var _toStrFromNumber = function( src,options )
 {
   var result = '';
@@ -665,7 +688,27 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
 }
 
 //
-
+/**
+ * This function returns  string that starts from capital letter,
+ * Accept one object : the string to be formatted.
+ *
+ * @param {string} src - Source string.
+ * @returns {String} Returns a string with the first letter capitalized.
+ *
+ * @example
+ * //returns Test string
+ * _.strCapitalize('test string');
+ *
+ * @example
+ * //returns Another_test_string
+ * _.strCapitalize('another_test_string')
+ *
+ * @method strCapitalize
+ * @throws { Exception } Will throw an exception if (src) is not a String.
+ * @throws { Exception } Will throw an exception if (arguments.length) is not equal 1.
+ * @memberof wTools
+ *
+*/
 var strCapitalize = function( src )
 {
   _.assert( _.strIs( src ) );
@@ -674,7 +717,28 @@ var strCapitalize = function( src )
 }
 
 //
-
+/**
+ * This function returns a string concatenated with itself n-times,
+ * Accept two object : the string to be concatenated and count of concatenations.
+ *
+ * @param {string} s - Source string.
+ * @param {number} times - An count of concatenation cycles.
+ * @returns {String} Returns a string concatenated n-times.
+ *
+ * @example
+ * //returns WordWordWordWordWord
+ * _.strTimes('Word',5);
+ *
+ * @example
+ * //returns 1 21 2
+ * _.strTimes('1 '+'2',2);
+ *
+ * @method strTimes
+ * @throws { Exception } Will throw an exception if (times) is not a Number.
+ * @throws { Exception } Will throw an exception if (arguments.length) is not equal 2.
+ * @memberof wTools
+ *
+*/
 var strTimes = function( s,times )
 {
   var result = '';
@@ -1522,7 +1586,26 @@ var strNumberLines = function( srcStr )
 }
 
 //
+/**
+ * This function returns  count of occurrences of a substring in a string,
+ * Accept two objects in order: source string, substring.
+ *
+ * @param {string} src - Source string.
+ * @param {string} ins - Substring.
+ * @returns {Number} Returns number of occurrences of a substring in a string.
+ *
+ * @example
+ * //returns 2
+ * _.strCount ("aaaabab","ab");
+ *
+ * @method strCount
+ * @throws { Exception } Will throw an exception if (src) is not a String
+ * @throws { Exception } Will throw an exception if (ins) is not a String
+ * @memberof wTools
+ *
 
+
+*/
 var strCount = function( src,ins )
 {
   var result = -1;
