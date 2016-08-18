@@ -1307,7 +1307,32 @@ var strIron = function()
 }
 
 //
-
+/**
+ * This function finds substring passed by second argument( ins ) in the source string( src )
+ * and replaces each occurrence with the third argument( sub ).
+ * If the function can not find any occurrence in source( src ) it returns the original string.
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @param {string} ins - String that is to be replaced by( ins ).
+ * @param {string} sub - String that replaces substring.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns aacaa
+ * _.strReplaceAll( 'aabaa','b','c' );
+ *
+ * @example
+ * //returns xxbxx
+ * _.strReplaceAll( 'aabaa','a','x' );
+ *
+ * @example
+ * //returns aabaa
+ * _.strReplaceAll( 'aabaa','y','x' );
+ *
+ * @method strReplaceAll
+  * @memberof wTools
+ *
+*/
 var strReplaceAll = function( src, ins, sub )
 {
   return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
