@@ -784,7 +784,7 @@ var entityHasUndef = function( src )
    * @param {String} options.lastPath This parameters is modified during the execution of method. Specified on path to
       value, that composite from keys/indexes separated by '.'
    * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
-   * @returns {boolean}
+   * @returns {boolean} result - true for same entities.
    * @private
    * @method _entitySame
    * @memberof wTools
@@ -967,12 +967,12 @@ var entityDiff = function entityDiff( src1,src2,o )
 /**
  * Deep strict equaliser of 2 entities.
  * @example
-   var obj1 = { a: 0, b: 1, e: { c: 2, d: 3 } },
+    var obj1 = { a: 0, b: 1, e: { c: 2, d: 3 } },
     obj2 = { a: 0, b: 1, e: { c: 2, d: 3 } };
 
-   wTools.entityIdentical( obj1, obj2 );
+    wTools.entityIdentical( obj1, obj2 );
 
-   // true
+    // returns true
  * @param {object} src1 - entity to compare.
  * @param {object} src2 - entity to compare.
  * @param {object} options - options.
@@ -3983,8 +3983,8 @@ var strEnds = function( src,end )
    * Cut begin of the string.
    * @param {string} src
    * @param {string} begin
-   * example
-     var scr = ._strBeginRemove("abc","a");
+   * @example
+     var scr = _.strBeginRemove( "abc","a" );
    * @return {string}
    * If result of method strBegins - false, than return src
    * else cut begin of param src
@@ -4005,8 +4005,8 @@ var strBeginRemove = function( src,begin )
    * Cut end of the string.
    * @param {string} src
    * @param {string} end
-   * example
-     var scr = ._strEndRemove("abc","c");
+   * @example
+     var scr = _.strEndRemove( "abc","c" );
    * @return {string}
    * If result of method strEnds - false, than return src
    * Else cut end of param src
@@ -4068,6 +4068,28 @@ var strAppendOnce = function( src,end )
   return src + end;
 }
 
+//
+/*
+var strBefore = function( src,ins )
+{
+  debugger;
+  var i = src.indexOf( ins );
+  if( i === -1 )
+  return '';
+  return src.substr( 0,i );
+}
+
+//
+
+var strAfter = function( src,ins )
+{
+  debugger;
+  var i = src.lastIndexOf( ins );
+  if( i === -1 )
+  return '';
+  return src.substr( i );
+}
+*/
 // --
 // regexp
 // --
@@ -4235,7 +4257,7 @@ var regexpBut_ = function( options )
     atLeastOnce = options.atLeastOnce;
   }
 
-  var words = _.arrayIron( args );
+  var words = _.arrayFlatten( args );
   var result = '^(?:(?!';
 
   // !!! test me in builder
@@ -4280,7 +4302,7 @@ var regexpArrayMake = function( src )
 {
   _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
 
-  src = _.arrayIron( src );
+  src = _.arrayFlatten( src );
 
   _.each( src,function( e,k,i )
   {
@@ -4490,7 +4512,7 @@ var regexpObjectMake = function( src,defaultMode )
     if( !defaultMode )
     throw _.err( 'regexpObjectMake :','defaultMode is needed for array' );
 
-    src = _.arrayIron( src );
+    src = _.arrayFlatten( src );
 
     var ar = [];
     for( var s = 0 ; s < src.length ; s += 1 )
@@ -4725,6 +4747,10 @@ var _regexpObjectTestReason = function( src,ins )
 
 var regexpObjectTest = function( src,ins )
 {
+
+  if( _.strIs( src ) || _.regexpIs( src ) )
+  src = _.regexpObjectMake( src,'includeAll' );
+
   var result = _regexpObjectTestReason( src,ins );
 
   if( _.strIs( result ) )
@@ -6723,17 +6749,9 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
 }
 
 //
-  // !!! Not bad.
-  // +++ Please improve code formatting: add more spaces,
-  //     add dots at the end of sentences.
-  // +++ Please add @param {*} arguments[] - 'description'.
-  // +++ Please add description: How method adds elements,if (arguments) contain an array or an object?
-  // +++ Not clear what the (@returns) returns?
-
-// !!! not clear what for?
 
 /**
- * The arrayIron() method returns an array that contains all the passed arguments.
+ * The arrayFlatten() method returns an array that contains all the passed arguments.
  *
  * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
  * iterate over array-like object (arguments[]) and assigns to the (src) each element,
@@ -6747,15 +6765,15 @@ var arrayIndicesOfGreatest = function( srcArray,numberOfElements,comparator )
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
- * var arr = _.arrayIron( 'str', {}, [ 1, 2 ], 5, true );
+ * var arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
  *
  * @returns { Array } - Returns an array of the passed argument(s).
- * @method arrayIron
+ * @method arrayFlatten
  * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
  * @memberof wTools
  */
 
-var arrayIron = function()
+var arrayFlatten = function()
 {
   var result = _.arrayIs( this ) ? this : [];
 
@@ -6773,7 +6791,7 @@ var arrayIron = function()
     for( var s = 0 ; s < src.length ; s++ )
     {
       if( _.arrayIs( src[ s ] ) )
-      _.arrayIron.call( result,src[ s ] );
+      _.arrayFlatten.call( result,src[ s ] );
       else if( src[ s ] !== undefined )
       result.push( src[ s ] );
       else if( src[ s ] === undefined )
@@ -6787,7 +6805,7 @@ var arrayIron = function()
 
 //
 
-var arrayIronToMapUnique = function()
+var arrayFlattenToMapUnique = function()
 {
   var result = _.arrayIs( this ) ? this : {};
 
@@ -6813,7 +6831,7 @@ var arrayIronToMapUnique = function()
     for( var s = 0 ; s < src.length ; s++ )
     {
       if( _.arrayIs( src[ s ] ) )
-      _.arrayIronToMapUnique.call( result,src[ s ] );
+      _.arrayFlattenToMapUnique.call( result,src[ s ] );
       else if( _.objectIs( src[ s ] ) )
       extend( result, src );
       else
@@ -9714,6 +9732,7 @@ var arraySortedAddOnce = function( arr,ins,comparator )
 }
 
 //
+
   /**
    * The arraySortedAdd() method adds the value (ins) to the array (arr), no matter whether it has there or hasn't,
    * and returns the new added or the updated index.
@@ -10351,8 +10370,12 @@ var mapKeyWithIndex = function( src,index )
 var mapToString = function( src,keyValSep,tupleSep )
 {
 
-  if( !_.strIs( keyValSep ) ) keyValSep = ' : ';
-  if( !_.strIs( tupleSep ) ) tupleSep = '; '; // +++ instead "keyValSep" should be "tupleSep"
+  if( !_.strIs( keyValSep ) )
+  keyValSep = ' : ';
+
+  if( !_.strIs( tupleSep ) )
+  tupleSep = '; ';
+
   var result = '';
   for( var s in src )
   {
@@ -10413,21 +10436,26 @@ var mapOwnKeys = function mapOwnKeys( src )
 //
 
 /**
- * The mapKeys() returns an array of a given objects enumerable properties,
+ * This routine returns an array of a given objects enumerable properties,
  * in the same order as that provided by a for...in loop.
+ * Accept several objects or single. Each element of result array is unique.
+ * Unlike standard [Object.keys]{@https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
+ * which accept object only mapKeys accept any object-like entity.
  *
- * @param { ...objectLike } src - The object whose properties are to be returned.
+ * @see {@link wTools.mapOwnKeys} - Similar routine taking into account own elements only.
+ * @see {@link wTools.mapValues} - Similar routine returning values.
  *
  * @example
  * // returns [ "a", "b" ]
  * _.mapKeys({ a : 7, b : 13 });
  *
- * @return { array } Returns an array whose elements are strings
+ * @param { ...objectLike } src - objects of interest to extract keys.
+ * @return { array } Returns an array with unique string elements.
  * corresponding to the enumerable properties found directly upon object.
  * @method mapKeys
- * @throws { Error } Will throw an Error if (src) is not an Object.
+ * @throws { Exception } Throw an exception if (src) is not an object-like entity.
  * @memberof wTools
-*/
+ */
 
 var mapKeys = function mapKeys( src )
 {
@@ -10444,6 +10472,7 @@ var mapKeys = function mapKeys( src )
   for( var a = 1 ; a < arguments.length ; a++ )
   {
     var src = arguments[ a ];
+    _.assert( _.objectLike( src ) );
     for( var s in src )
     _.arrayAppendOnce( result,s );
   }
@@ -10966,9 +10995,12 @@ var mapScreens = function( srcObject,screenObject )
 
   if( arguments.length > 2 )
   {
-    debugger;
+    //debugger;
+    screenObject =_ArraySlice.call( arguments,1 );
+/*
     var args =_ArraySlice.call( arguments,1 );
     screenObject = _.mapCopy.apply( this,args );
+*/
   }
 
   var dstObject = _mapScreen
@@ -11799,7 +11831,10 @@ var Proto =
 
   strPrependOnce : strPrependOnce,
   strAppendOnce : strAppendOnce,
-
+/*
+  strBefore : strBefore,
+  strAfter : strAfter,
+*/
 
   // regexp
 
@@ -11895,8 +11930,8 @@ var Proto =
   arraySelect : arraySelect,
   arrayIndicesOfGreatest : arrayIndicesOfGreatest,  /* experimental */
 
-  arrayIron : arrayIron,
-  arrayIronToMapUnique : arrayIronToMapUnique,
+  arrayFlatten : arrayFlatten,
+  arrayFlattenToMapUnique : arrayFlattenToMapUnique,
 
   arrayCopy : arrayCopy,
   arrayAppendMerging : arrayAppendMerging,
@@ -12070,7 +12105,7 @@ if( typeof module !== 'undefined' && module !== null )
 
   module[ 'exports' ] = Self;
   require( './component/Exec.s' );
-  require( './component/StringFormat.s' );
+  require( './component/StringTools.s' );
 
 }
 
