@@ -1089,7 +1089,7 @@ strInhalfRight.defaults =
  * _.strSplit.defaults.splitter= '..';
  * _.strSplit (' first..second..third ');
  *
- * @method strSplitStrNumber
+ * @method strSplit
  * @throws { Exception } Throw an exception if (arguments.length) is not equal 1.
  * @throws { Exception } Throw an exception if (o.src) is not a String.
  * @throws { Exception } Throw an exception if (o.splitter) is not a String or an Array.
