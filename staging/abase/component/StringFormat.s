@@ -727,11 +727,11 @@ var strCapitalize = function( src )
  *
  * @example
  * //returns WordWordWordWordWord
- * _.strTimes('Word',5);
+ * _.strTimes ('Word',5);
  *
  * @example
  * //returns 1 21 2
- * _.strTimes('1 '+'2',2);
+ * _.strTimes ('1 '+'2',2);
  *
  * @method strTimes
  * @throws { Exception } Throw an exception if (times) is not a Number.
@@ -754,9 +754,10 @@ var strTimes = function( s,times )
 
 //
 /**
+ * This function calculates a count of lines in a string.
  * Expects one object: the string to be processed.
  *
- * @param {string} s - Source string.
+ * @param {string} src - Source string.
  * @returns {number} Returns a number of lines in string
  *
  * @example
@@ -765,7 +766,7 @@ var strTimes = function( s,times )
  *
  * @example
  * //returns 4
- * _.strLineCount('first\nsecond\nthird\n');
+ * _.strLineCount ('first\nsecond\nthird\n');
  *
  * @method strLineCount
  * @memberof wTools
@@ -778,7 +779,29 @@ var strLineCount = function( src )
 }
 
 //
-
+/**
+ * This function parses a string and separates numbers and string values
+ * in to object that contains two properties,representing the values of string
+ * and number parsed from the given string.
+ * Expects one object: the string to be processed.
+ *
+ * @param {string} src - Source string.
+ * @returns {object} Returns the object with two properties (str) and (number),
+ * with values parsed from source string. If a string (src) doesn't contain number (s),
+ * it returns the object with value of string (src).
+ *
+ * @example
+ * //returns { str: 'bd', number: 1 }
+ * _.strSplitStrNumber ('bd1');
+ *
+ * @example
+ * //returns { str: 'bdxf' }
+ * _.strSplitStrNumber ('bdxf');
+ *
+ * @method strSplitStrNumber
+ * @memberof wTools
+ *
+*/
 var strSplitStrNumber = function( src )
 {
   var result = {};
