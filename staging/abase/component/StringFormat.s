@@ -2090,7 +2090,30 @@ var strCamelize = function( srcStr )
 }
 
 //
-
+/**
+ * This function parses string provided as first( srcStr ) argument and replaces character finded by
+ * pattern with second argument property( options.separator ).If(options.separator) is not defined,
+ * function sets value to( '_' ).
+ * When function finds character from this( '<','>',' :','"',''','/','\','|','&','?','*','\n' ) list and whitespaces,
+ * it replaces character with( options.separator ).
+ *
+ * @param {string} srcStr - Source string.
+ * @param {object} options - Object that contains options.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns _example_file_name
+ * _.strFilenameFor( "'example\\file?name" );
+ *
+ * @example
+ * //returns #example#file#name
+ * var options = { 'separator':'#' };
+ * _.strFilenameFor( "'example\\file?name",options );
+ *
+ * @method strFilenameFor
+ * @memberof wTools
+ *
+*/
 var strFilenameFor = function( srcStr,options )
 {
   var result = srcStr;
