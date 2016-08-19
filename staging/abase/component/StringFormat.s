@@ -2091,24 +2091,22 @@ var strCamelize = function( srcStr )
 
 //
 /**
- * This function parses string provided as first( srcStr ) argument and replaces character finded by
- * pattern with second argument property( options.separator ).If(options.separator) is not defined,
+ * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
+ * pattern with second argument( options ) property( options.separator ).If( options.separator ) is not defined,
  * function sets value to( '_' ).
- * When function finds character from this( '<','>',' :','"',''','/','\','|','&','?','*','\n' ) list and whitespaces,
- * it replaces character with( options.separator ).
  *
  * @param {string} srcStr - Source string.
  * @param {object} options - Object that contains options.
  * @returns {string} Returns string with result of replacements.
  *
  * @example
- * //returns _example_file_name
- * _.strFilenameFor( "'example\\file?name" );
+ * //returns _example_file_name.txt
+ * _.strFilenameFor( "'example\\file?name.txt" );
  *
  * @example
- * //returns #example#file#name
+ * //returns #example#file#name.js
  * var options = { 'separator':'#' };
- * _.strFilenameFor( "'example\\file?name",options );
+ * _.strFilenameFor( "'example\\file?name.js",options );
  *
  * @method strFilenameFor
  * @memberof wTools
