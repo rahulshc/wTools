@@ -2056,21 +2056,21 @@ var strCsvFrom = function( src,options )
 
 //
 /**
- * This function parses string provided as( srcStr ) argument and converts letters finded by
- * pattern to uppercase.If function finds character from this( '.','-','_','/' ) list before letter,
+ * This function converts string to camelcase using special pattern.
+ * If function finds character from this( '.','-','_','/' ) list before letter,
  * it replaces letter with uppercase version.
- * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ).
+ * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ). *
  *
  * @param {string} srcStr - Source string.
- * @returns {string} Returns string with uppercase letters.
+ * @returns {string} Returns camelcase version of string.
  *
  * @example
- * //returns ABCD
- * _.strCamelize( '.a-b_c/d' );
+ * //returns aBCD
+ * _.strCamelize( 'a-b_c/d' );
  *
  * @example
- * //returns Test String
- * _.strCamelize( '.test -string' );
+ * //returns testString
+ * _.strCamelize( 'test-string' );
  *
  * @method strCamelize
  * @memberof wTools
