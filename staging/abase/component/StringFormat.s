@@ -1678,7 +1678,7 @@ var strToDom = function( xmlStr )
  * _.strHtmlEscape( '//test//' );
  *
  * @method strHtmlEscape
-  * @memberof wTools
+ * @memberof wTools
  *
 */
 var _strHtmlEscapeMap =
@@ -1729,7 +1729,32 @@ var strToConfig = function( src,options ){
 }
 
 //
-
+/**
+ * This function appends indentation character passed by the second argument( tab )
+ * before first and every next new line in a source string( src ).
+ * If( src ) represents single line, function puts indentation at the begining of the string.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} tab - Indentation character.
+ * @returns {string} Returns indented string.
+ *
+ * @example
+ * //returns
+ *  a
+ *  b
+ *  c
+ * _.strIndentation( 'a\nb\nc','  ' );
+ *
+ * @example
+ * //returns '  single line'
+ * _.strIndentation( 'single line','  ' );
+ *
+ * @method strIndentation
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( tab ) is not a String.
+ * @memberof wTools
+ *
+*/
 var strIndentation = function( src,tab )
 {
 
