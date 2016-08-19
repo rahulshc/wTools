@@ -1307,7 +1307,32 @@ var strIron = function()
 }
 
 //
-
+/**
+ * This function finds substring passed by second argument( ins ) in the source string( src )
+ * and replaces each occurrence with the third argument( sub ).
+ * If the function can not find any occurrence in source( src ) it returns the original string.
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @param {string} ins - String that is to be replaced by( ins ).
+ * @param {string} sub - String that replaces substring.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns aacaa
+ * _.strReplaceAll( 'aabaa','b','c' );
+ *
+ * @example
+ * //returns xxbxx
+ * _.strReplaceAll( 'aabaa','a','x' );
+ *
+ * @example
+ * //returns aabaa
+ * _.strReplaceAll( 'aabaa','y','x' );
+ *
+ * @method strReplaceAll
+  * @memberof wTools
+ *
+*/
 var strReplaceAll = function( src, ins, sub )
 {
   return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
@@ -1473,7 +1498,27 @@ strUnjoin.any = function( src )
 }
 
 //
-
+/**
+ * This function finds substring( prefix ) occurrence from the begining of the source( src )
+ * provided by first argument and removes it.
+ * If the function can not find occurrence in source( src ) it returns the original string.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} prefix - String that is to be dropped.
+ * @returns {string} Returns string with result of prefix removement.
+ *
+ * @example
+ * //returns mple
+ * _.strDropPrefix( 'example','exa' );
+ *
+ * @example
+ * //returns example
+ * _.strDropPrefix( 'example','abc' );
+ *
+ * @method strDropPrefix
+  * @memberof wTools
+ *
+*/
 var strDropPrefix = function( src,prefix )
 {
   if( src.indexOf( prefix ) !== -1 )
@@ -1612,7 +1657,30 @@ var strToDom = function( xmlStr )
 };
 
 //
-
+/**
+ * This function finds all occurrences of html escape symbols from( _strHtmlEscapeMap )
+ * in source( str ) and replaces them with code equivalent like( '&' -> '&amp;' ).
+ *
+ * @param {string} str - Source string to parse.
+ * @global {object} _strHtmlEscapeMap - Html escape symbols map.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns &lt;&amp;test &amp;text &amp;here&gt;
+ * _.strHtmlEscape( '<&test &text &here>' );
+ *
+ * @example
+ * //returns 1 &lt; 2
+ * _.strHtmlEscape( '1 < 2' );
+ *
+ * @example
+ * //returns &#x2F;&#x2F;test&#x2F;&#x2F;
+ * _.strHtmlEscape( '//test//' );
+ *
+ * @method strHtmlEscape
+ * @memberof wTools
+ *
+*/
 var _strHtmlEscapeMap =
 {
   '&' : '&amp;',
@@ -1661,7 +1729,32 @@ var strToConfig = function( src,options ){
 }
 
 //
-
+/**
+ * This function appends indentation character passed by the second argument( tab )
+ * before first and every next new line in a source string( src ).
+ * If( src ) represents single line, function puts indentation at the begining of the string.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} tab - Indentation character.
+ * @returns {string} Returns indented string.
+ *
+ * @example
+ * //returns
+ *  a
+ *  b
+ *  c
+ * _.strIndentation( 'a\nb\nc','  ' );
+ *
+ * @example
+ * //returns '  single line'
+ * _.strIndentation( 'single line','  ' );
+ *
+ * @method strIndentation
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( tab ) is not a String.
+ * @memberof wTools
+ *
+*/
 var strIndentation = function( src,tab )
 {
 
@@ -1678,7 +1771,27 @@ var strIndentation = function( src,tab )
 }
 
 //
-
+/**
+ * This function puts line counter before each new line in the string provided by argument( srcStr ).
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @returns {string} Returns string with line enumeration.
+ *
+ * @example
+ * //returns
+ * 1: line1
+ * 2: line2
+ * 3: line3
+ * _.strNumberLines( 'line1\nline2\nline3' );
+ *
+ * @example
+ * //returns 1: sigle line example
+ * _.strNumberLines( 'sigle line example' );
+ *
+ * @method strNumberLines
+ * @memberof wTools
+ *
+*/
 var strNumberLines = function( srcStr )
 {
 
@@ -1712,8 +1825,6 @@ var strNumberLines = function( srcStr )
  * @throws { Exception } Throw an exception if( ins ) is not a String.
  * @memberof wTools
  *
-
-
 */
 var strCount = function( src,ins )
 {
@@ -1735,7 +1846,21 @@ var strCount = function( src,ins )
 }
 
 //
-
+/**
+ * This function converts each character of string passed by argument( str )
+ * to array of 8-bit unsigned integers.
+ *
+ * @param {string} str - Source string to convert.
+ * @returns {typedArray} Returns typed array that represents string characters in 8-bit unsigned integers.
+ *
+ * @example
+ * //returns Uint8Array [ 101, 120, 97, 109, 112, 108, 101 ]
+ * _.strToBytes( 'example' );
+ *
+ * @method strToBytes
+ * @memberof wTools
+ *
+*/
 var strToBytes = function( str )
 {
 
@@ -1930,7 +2055,27 @@ var strCsvFrom = function( src,options )
 
 
 //
-
+/**
+ * This function converts string to camelcase using special pattern.
+ * If function finds character from this( '.','-','_','/' ) list before letter,
+ * it replaces letter with uppercase version.
+ * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ). *
+ *
+ * @param {string} srcStr - Source string.
+ * @returns {string} Returns camelcase version of string.
+ *
+ * @example
+ * //returns aBCD
+ * _.strCamelize( 'a-b_c/d' );
+ *
+ * @example
+ * //returns testString
+ * _.strCamelize( 'test-string' );
+ *
+ * @method strCamelize
+ * @memberof wTools
+ *
+*/
 var strCamelize = function( srcStr )
 {
   var result = srcStr;
@@ -1945,7 +2090,28 @@ var strCamelize = function( srcStr )
 }
 
 //
-
+/**
+ * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
+ * pattern with second argument( options ) property( options.separator ).If( options.separator ) is not defined,
+ * function sets value to( '_' ).
+ *
+ * @param {string} srcStr - Source string.
+ * @param {object} options - Object that contains options.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns _example_file_name.txt
+ * _.strFilenameFor( "'example\\file?name.txt" );
+ *
+ * @example
+ * //returns #example#file#name.js
+ * var options = { 'separator':'#' };
+ * _.strFilenameFor( "'example\\file?name.js",options );
+ *
+ * @method strFilenameFor
+ * @memberof wTools
+ *
+*/
 var strFilenameFor = function( srcStr,options )
 {
   var result = srcStr;
