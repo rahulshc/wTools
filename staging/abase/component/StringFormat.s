@@ -713,6 +713,9 @@ var strCapitalize = function( src )
 {
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1 );
+  _.assert( src.length >= 1 );
+  _.assert( src.match( /^\W?/ ) === null );
+
   return src[ 0 ].toUpperCase() + src.substring( 1 );
 }
 
