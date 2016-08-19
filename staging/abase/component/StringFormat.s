@@ -1657,7 +1657,30 @@ var strToDom = function( xmlStr )
 };
 
 //
-
+/**
+ * This function finds all occurrences of html escape symbols from( _strHtmlEscapeMap )
+ * in source( str ) and replaces them with code equivalent like( '&' -> '&amp;' ).
+ *
+ * @param {string} str - Source string to parse.
+ * @global {object} _strHtmlEscapeMap - Html escape symbols map.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns &lt;&amp;test &amp;text &amp;here&gt;
+ * _.strHtmlEscape( '<&test &text &here>' );
+ *
+ * @example
+ * //returns 1 &lt; 2
+ * _.strHtmlEscape( '1 < 2' );
+ *
+ * @example
+ * //returns &#x2F;&#x2F;test&#x2F;&#x2F;
+ * _.strHtmlEscape( '//test//' );
+ *
+ * @method strHtmlEscape
+  * @memberof wTools
+ *
+*/
 var _strHtmlEscapeMap =
 {
   '&' : '&amp;',
