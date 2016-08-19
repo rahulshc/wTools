@@ -8,7 +8,7 @@ to run this test
 from the project directory run
 
 npm install
-node ./staging/z.tests/StringTools.s
+node ./staging/z.tests/Sample.test.s
 
 */
 
@@ -40,6 +40,11 @@ var strCapitalize = function( test )
   var expected = 'One two';
   test.identical( got,expected );
 
+  test.description = 'first symbol is not a letter';
+  var got = _.strCapitalize( '\none' );
+  var expected = '\nOne';
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
@@ -61,19 +66,6 @@ var strCapitalize = function( test )
     {
       _.strCapitalize();
     });
-
-    test.description = 'zero length string provided';
-    test.shouldThrowError( function()
-    {
-      _.strCapitalize('');
-    });
-
-    test.description = 'first symbol is not a word';
-    test.shouldThrowError( function()
-    {
-      _.strCapitalize('#example');
-    });
-
   }
 }
 
