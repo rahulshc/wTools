@@ -1771,7 +1771,27 @@ var strIndentation = function( src,tab )
 }
 
 //
-
+/**
+ * This function puts line counter before each new line in the string provided by argument( srcStr ).
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @returns {string} Returns string with line enumeration.
+ *
+ * @example
+ * //returns
+ * 1: line1
+ * 2: line2
+ * 3: line3
+ * _.strNumberLines( 'line1\nline2\nline3' );
+ *
+ * @example
+ * //returns 1: sigle line example
+ * _.strNumberLines( 'sigle line example' );
+ *
+ * @method strNumberLines
+ * @memberof wTools
+ *
+*/
 var strNumberLines = function( srcStr )
 {
 
