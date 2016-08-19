@@ -40,11 +40,6 @@ var strCapitalize = function( test )
   var expected = 'One two';
   test.identical( got,expected );
 
-  test.description = 'first symbol is not a letter';
-  var got = _.strCapitalize( '\none' );
-  var expected = '\nOne';
-  test.identical( got,expected );
-
   /**/
 
   if( Config.debug )
@@ -65,6 +60,18 @@ var strCapitalize = function( test )
     test.shouldThrowError( function()
     {
       _.strCapitalize();
+    });
+
+    test.description = 'zero length string provided';
+    test.shouldThrowError( function()
+    {
+      _.strCapitalize('');
+    });
+
+    test.description = 'first symbol is not a letter';
+    test.shouldThrowError( function()
+    {
+      _.strCapitalize('#example');
     });
   }
 }
