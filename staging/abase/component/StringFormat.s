@@ -1848,7 +1848,21 @@ var strCount = function( src,ins )
 }
 
 //
-
+/**
+ * This function converts each character of string passed by argument( str )
+ * to array of 8-bit unsigned integers.
+ *
+ * @param {string} str - Source string to convert.
+ * @returns {typedArray} Returns typed array that represents string characters in 8-bit unsigned integers.
+ *
+ * @example
+ * //returns Uint8Array [ 101, 120, 97, 109, 112, 108, 101 ]
+ * _.strToBytes( 'example' );
+ *
+ * @method strToBytes
+ * @memberof wTools
+ *
+*/
 var strToBytes = function( str )
 {
 
