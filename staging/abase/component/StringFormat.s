@@ -1825,8 +1825,6 @@ var strNumberLines = function( srcStr )
  * @throws { Exception } Throw an exception if( ins ) is not a String.
  * @memberof wTools
  *
-
-
 */
 var strCount = function( src,ins )
 {
@@ -2057,7 +2055,27 @@ var strCsvFrom = function( src,options )
 
 
 //
-
+/**
+ * This function parses string provided as( srcStr ) argument and converts letters finded by
+ * pattern to uppercase.If function finds character from this( '.','-','_','/' ) list before letter,
+ * it replaces letter with uppercase version.
+ * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ).
+ *
+ * @param {string} srcStr - Source string.
+ * @returns {string} Returns string with uppercase letters.
+ *
+ * @example
+ * //returns ABCD
+ * _.strCamelize( '.a-b_c/d' );
+ *
+ * @example
+ * //returns Test String
+ * _.strCamelize( '.test -string' );
+ *
+ * @method strCamelize
+ * @memberof wTools
+ *
+*/
 var strCamelize = function( srcStr )
 {
   var result = srcStr;
