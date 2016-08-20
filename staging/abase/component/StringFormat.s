@@ -713,6 +713,9 @@ var strCapitalize = function( src )
 {
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1 );
+  _.assert( src.length > 0 );
+  _.assert( src.match(/(^\W)/) === null );
+
   return src[ 0 ].toUpperCase() + src.substring( 1 );
 }
 
@@ -1499,9 +1502,8 @@ strUnjoin.any = function( src )
 
 //
 /**
- * This function finds substring( prefix ) occurrence from the begining of the source( src )
- * provided by first argument and removes it.
- * If the function can not find occurrence in source( src ) it returns the original string.
+ * Finds substring( prefix ) occurrence from the begining of the source( src ) and removes it.
+ * Returns original string if source( src ) does not have occurrence of ( prefix ).
  *
  * @param {string} src - Source string to parse.
  * @param {string} prefix - String that is to be dropped.
