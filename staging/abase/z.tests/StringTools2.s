@@ -1,4 +1,4 @@
-( function Sample_test_s( ) {
+( function _StringTools2_s_( ) {
 
 'use strict';
 
