@@ -714,21 +714,35 @@ var strSplitStrNumber = function( src )
 
 //
 
-var strSplitChunks = function( src,options )
+var strSplitChunks = function( o )
 {
 
   var result = { chunks : [] };
-  var options = options || {};
 
-  _.mapSupplement( options,strSplitChunks.defaults );
-  _.assertMapOnly( options,strSplitChunks.defaults );
-  _.assert( _.strIs( src ) );
 
-  if( !_.regexpIs( options.prefix ) )
-  options.prefix = RegExp( _.regexpEscape( options.prefix ),'m' );
+  if( arguments.length === 2 )
+  {
+    var o = arguments[ 1 ] || {};
+    o.src = arguments[ 0 ];
+  }
+  else
+  {
+    _.assert( arguments.length === 1 );
+    if( _.strIs( arguments[ 0 ] ) )
+    o = { src : arguments[ 0 ] };
+  }
 
-  if( !_.regexpIs( options.postfix ) )
-  options.postfix = RegExp( _.regexpEscape( options.postfix ),'m' );
+  _.mapSupplement( o,strSplitChunks.defaults );
+  _.assertMapOnly( o,strSplitChunks.defaults );
+  _.assert( _.strIs( o.src ) );
+
+  if( !_.regexpIs( o.prefix ) )
+  o.prefix = RegExp( _.regexpEscape( o.prefix ),'m' );
+
+  if( !_.regexpIs( o.postfix ) )
+  o.postfix = RegExp( _.regexpEscape( o.postfix ),'m' );
+
+  var src = o.src;
 
   //
 
@@ -758,7 +772,7 @@ var strSplitChunks = function( src,options )
 
     /* begin */
 
-    var begin = src.search( options.prefix );
+    var begin = src.search( o.prefix );
     if( begin === -1 ) begin = src.length;
 
     /* text chunk */
@@ -786,11 +800,11 @@ var strSplitChunks = function( src,options )
 
     /* end */
 
-    var end = src.search( options.postfix );
+    var end = src.search( o.postfix );
     if( end === -1 )
     {
       result.lines = src.split( '\n' ).length;
-      result.error = _.err( 'Openning prefix',options.prefix,'of chunk #' + result.chunks.length,'at'+line,'line does not have closing tag :',options.postfix );
+      result.error = _.err( 'Openning prefix',o.prefix,'of chunk #' + result.chunks.length,'at'+line,'line does not have closing tag :',o.postfix );
       return result;
     }
 
@@ -800,9 +814,9 @@ var strSplitChunks = function( src,options )
     chunk.line = line;
     chunk.column = column;
     chunk.index = chunkIndex;
-    chunk.prefix = src.match( options.prefix )[ 0 ];
+    chunk.prefix = src.match( o.prefix )[ 0 ];
     chunk.code = src.substring( chunk.prefix.length,end );
-    if( options.investigate )
+    if( o.investigate )
     {
       chunk.lines = chunk.code.split( '\n' );
       chunk.tab = /^\s*/.exec( chunk.lines[ chunk.lines.length-1 ] )[ 0 ];
@@ -815,7 +829,7 @@ var strSplitChunks = function( src,options )
     /* postfix */
 
     src = src.substring( chunk.prefix.length + chunk.code.length );
-    chunk.postfix = src.match( options.postfix )[ 0 ];
+    chunk.postfix = src.match( o.postfix )[ 0 ];
     src = src.substring( chunk.postfix.length );
 
     /* wind */
@@ -830,6 +844,7 @@ var strSplitChunks = function( src,options )
 
 strSplitChunks.defaults =
 {
+  src : null,
   investigate : 1,
   prefix : '//>-' + '->//',
   postfix : '//<-' + '-<//',
@@ -851,7 +866,6 @@ var _strInhalf = function( o )
   var splitter,index;
   if( _.arrayIs( o.splitter ) )
   {
-    debugger;
 
     if( !o.splitter.length )
     return [ o.src,'' ];
@@ -1690,7 +1704,8 @@ var strCsvFrom = function( src,options )
 
     options.header = [];
 
-    _.eachRecursive( _.entityValueWithIndex( src,0 ),function( e,k,i ){
+    _.eachRecursive( _.entityValueWithIndex( src,0 ),function( e,k,i )
+    {
       options.header.push( k );
     });
 
@@ -1719,6 +1734,7 @@ var strCsvFrom = function( src,options )
     _.each( options.header,function( key )
     {
 
+      debugger;
       var element = _.entityWithKeyRecursive( row,key );
       if( element === undefined ) element = '';
       element = String( element );
