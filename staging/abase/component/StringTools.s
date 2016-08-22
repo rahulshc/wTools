@@ -1582,7 +1582,13 @@ var strDropPrefix = function( src,prefix )
 var strDropPostfix = function( src,postfix )
 {
   throw _.err( 'Not tested' );
+
+  // _.assert( _.strIs( src ) );
+  // _.assert( _.strIs( postfix ) );
+  // _.assert( arguments.length === 2 );
+
   var l = src.length - postfix.length;
+  // if( src.length > postfix.length && src.lastIndexOf( postfix ) === l )
   if( src.length > postfix.length && src.indexOf( postfix ) === l )
   return src.substr( 0,l );
   else return src;
