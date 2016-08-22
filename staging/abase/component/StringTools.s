@@ -2187,6 +2187,12 @@ var strCamelize = function( srcStr )
 */
 var strFilenameFor = function( srcStr,options )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( srcStr ) );
+
+  if( arguments.length === 2 )
+  _.assert( _.mapIs( arguments[ 1 ] ) );
+
   var result = srcStr;
   var options = options || {};
   if( options.separator === undefined )
