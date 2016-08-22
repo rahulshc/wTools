@@ -827,7 +827,7 @@
       x5 = [ 0, 1, [ 2, 4 ] ],
       x6 = { a: 1, b: 2, c: 3},
       x7 = { a: 1, b: { e: 2, c: 3}},
-      x8 = (function(){ return arguments })( 0, 1, 2, 4 ); // array like object
+      x8 = (function(){ return arguments })( 0, 1, 2, 4 ); // array like entity
 
     var Constr1 = function()
     {
@@ -871,47 +871,49 @@
       expected9 = 3,
       expected10 = 1;
 
-    test.entityLength = 'entity is undefined';
+    test.description = 'entity is undefined';
     var got = _.entityLength( x1 );
     test.identical(got, expected1);
 
-    test.entityLength = 'entity is number';
+    test.description = 'entity is number';
     var got = _.entityLength( x2 );
     test.identical(got, expected2);
 
-    test.entityLength = 'entity is string';
+    test.description = 'entity is string';
     var got = _.entityLength( x3 );
     test.identical(got, expected3);
 
-    test.entityLength = 'entity is array';
+    test.description = 'entity is array';
     var got = _.entityLength( x4 );
     test.identical(got, expected4);
 
-    test.entityLength = 'entity is nested array';
+    test.description = 'entity is nested array';
     var got = _.entityLength( x5 );
     test.identical(got, expected5);
 
-    test.entityLength = 'entity is object';
+    test.description = 'entity is object';
     var got = _.entityLength( x6 );
     test.identical(got, expected6);
 
-    test.entityLength = 'entity is nested object';
+    test.description = 'entity is nested object';
     var got = _.entityLength( x7 );
     test.identical(got, expected7);
 
-    test.entityLength = 'entity is array like';
+    test.description = 'entity is array like';
     var got = _.entityLength( x8 );
     test.identical(got, expected8);
 
-    test.entityLength = 'entity is array like';
+    test.description = 'entity is array like';
     var got = _.entityLength( x8 );
     test.identical(got, expected8);
 
-    test.entityLength = 'entity is created instance of class';
+    console.log( _.toStr( x9 ) );
+
+    test.description = 'entity is created instance of class';
     var got = _.entityLength( x9 );
     test.identical(got, expected9);
 
-    test.entityLength = 'some properties are non enumerable';
+    test.description = 'some properties are non enumerable';
     var got = _.entityLength( x10 );
     test.identical(got, expected10);
 

@@ -1141,7 +1141,7 @@ var entityLength = function( src )
   if( _.arrayLike( src ) )
   return src.length;
   else if( _.objectLike( src ) )
-  return _.mapKeys( src ).length;
+  return _.mapOwnKeys( src ).length; 
   else return 1;
 }
 
