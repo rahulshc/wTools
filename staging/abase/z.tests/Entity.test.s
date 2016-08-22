@@ -465,85 +465,85 @@
     // numbers test
 
     test.description = 'entity same +0 and -0';
-    var got = _._entitySame(x1, y1, options1, '');
+    var got = _._entitySame(x1, y1, options1 );
     test.identical(got, true);
 
     test.description = 'entity same Number.MAX_VALUE';
-    var got = _._entitySame(x2, y2, options1, '');
+    var got = _._entitySame(x2, y2, options1 );
     test.identical(got, true);
 
     test.description = 'entity not same numbers';
-    var got = _._entitySame(x3, y3, options1, '');
+    var got = _._entitySame(x3, y3, options1 );
     test.identical(got, false);
 
     // string tests
 
     test.description = 'entities is two empty strings';
-    var got = _._entitySame(strX1, strY1, options1, '');
+    var got = _._entitySame(strX1, strY1, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two non empty strings';
-    var got = _._entitySame(strX2, strY2, options1, '');
+    var got = _._entitySame(strX2, strY2, options1 );
     test.identical(got, true);
 
     test.description = 'entity same: string and object strict mode';
-    var got = _._entitySame(strX3, strY3, options1, '');
+    var got = _._entitySame(strX3, strY3, options1 );
     test.identical(got, false);
 
     test.description = 'entity same: string and object non strict mode';
-    var got = _._entitySame(strX3, strY3, options2, '');
+    var got = _._entitySame(strX3, strY3, options2 );
     test.identical(got, true);
 
     // array tests
 
     test.description = 'entities is two empty arrays';
-    var got = _._entitySame(arrX1, arrY1, options1, '');
+    var got = _._entitySame(arrX1, arrY1, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two non empty arrays';
-    var got = _._entitySame(arrX2, arrY2, options1, '');
+    var got = _._entitySame(arrX2, arrY2, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two non empty different arrays';
-    var got = _._entitySame(arrX3, arrY3, options1, '');
+    var got = _._entitySame(arrX3, arrY3, options1 );
     test.identical(got, false);
 
     test.description = 'entities is two non empty nested arrays';
-    var got = _._entitySame(arrX4, arrY4, options1, '');
+    var got = _._entitySame(arrX4, arrY4, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two arrays with objects as elements';
-    var got = _._entitySame(arrX5, arrY5, options1, '');
+    var got = _._entitySame(arrX5, arrY5, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two arrays with strict mode';
-    var got = _._entitySame(arrX6, arrY6, options1, '');
+    var got = _._entitySame(arrX6, arrY6, options1 );
     test.identical(got, false);
 
     test.description = 'entities is two arrays without strict mode';
-    var got = _._entitySame(arrX5, arrY5, options2, '');
+    var got = _._entitySame(arrX5, arrY5, options2 );
     test.identical(got, true);
 
     // object tests
 
     test.description = 'entities is two empty objects';
-    var got = _._entitySame(objX1, objY1, options1, '');
+    var got = _._entitySame(objX1, objY1, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two non empty objects';
-    var got = _._entitySame(objX2, objY2, options1, '');
+    var got = _._entitySame(objX2, objY2, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two different objects';
-    var got = _._entitySame(objX3, objY3, options1, '');
+    var got = _._entitySame(objX3, objY3, options1 );
     test.identical(got, false);
 
     test.description = 'entities is two non empty nested objects';
-    var got = _._entitySame(objX4, objY4, options1, '');
+    var got = _._entitySame(objX4, objY4, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two objects with different type elements: strict mode';
-    var got = _._entitySame(objX5, objY5, options1, '');
+    var got = _._entitySame(objX5, objY5, options1 );
     test.identical(got, false);
 
     /*
@@ -555,11 +555,11 @@
     */
 
     test.description = 'entities is two objects';
-    var got = _._entitySame(objX6, objY6, options1, '');
+    var got = _._entitySame(objX6, objY6, options1 );
     test.identical(got, true);
 
     test.description = 'entities is two same objects: different constructors';
-    var got = _._entitySame(objX7, objY7, options1, '');
+    var got = _._entitySame(objX7, objY7, options1 );
     test.identical(got, true);
 
     if( Config.debug )
@@ -573,7 +573,7 @@
       test.description = 'extra argument';
       test.shouldThrowError( function()
       {
-        _._entitySame( rrX5, arrY5, options1, '', false);
+        _._entitySame( rrX5, arrY5, options1 , false);
       });
 
     }
