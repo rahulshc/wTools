@@ -4364,7 +4364,7 @@ var _regexpArrayAll = function( arr,ins,none )
       If passed single RegExp/String or array of RegExps/Strings, then method will return RegexpObject with
    `defaultMode` as key, and array of RegExps created from first parameter as value.
       If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
-   with shrinking (see [regexpObjectShrink]{@link wTools#regexpObjectShrink}) RegexpObjects and RegExps that associates
+   with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
    with `defaultMode` key.
    *
    * @example

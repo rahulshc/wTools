@@ -34,7 +34,7 @@ var Self = function wRegexpObject( o )
       If passed single RegExp/String or array of RegExps/Strings, then method will return RegexpObject with
    `defaultMode` as key, and array of RegExps created from first parameter as value.
       If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
-   with shrinking (see [regexpObjectShrink]{@link wTools#regexpObjectShrink}) RegexpObjects and RegExps that associates
+   with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
    with `defaultMode` key.
    *
    * @example
@@ -112,7 +112,7 @@ var init = function( src,defaultMode )
       if( _.regexpIs( src[ s ] ) || _.strIs( src[ s ] ) )
       ar.push( _.regexpMakeExpression( src[ s ] ) );
       else if( _.objectIs( src[ s ] ) )
-      _.RegexpObject.regexpObjectShrink( self,Self( src[ s ] ) );
+      _.RegexpObject.shrink( self,Self( src[ s ] ) );
       else throw _.err( 'unexpected' );
     }
 
@@ -120,7 +120,7 @@ var init = function( src,defaultMode )
     {
       var r = {};
       r[ defaultMode ] = ar;
-      _.RegexpObject.regexpObjectShrink( self,r );
+      _.RegexpObject.shrink( self,r );
     }
     else
     {
@@ -179,7 +179,7 @@ var _test = function( ins )
   _.assert( arguments.length === 1 );
 
   if( !_.strIs( ins ) )
-  throw _.err( 'regexpObjectTest :','expects string as second argument',ins );
+  throw _.err( 'test :','expects string as second argument',ins );
 
   if( src.excludeAll )
   {
@@ -230,7 +230,7 @@ var _test = function( ins )
    *        excludeAll : regArr2
    *     };
    *
-   * wTools.regexpObjectTest( options, str ); // true
+   * wTools.test( options, str ); // true
    * @param {Object} src Map object in wich keys are strings each of them mean different condition for test, and values
    * are the arrays of regexps;
    * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
@@ -249,7 +249,7 @@ var _test = function( ins )
    * @memberof wRegexpObject
      */
 
-//var regexpObjectTest = function( src,ins )
+//var test = function( src,ins )
 var test = function( ins )
 {
   var self = this;
@@ -285,7 +285,7 @@ var test = function( ins )
    *        excludeAll : regArr2
    *     };
    *
-   * wTools.regexpObjectTest( options, str ); // true
+   * wTools.test( options, str ); // true
    * @param {Object} src Map object in wich keys are strings each of them mean different condition for test, and values
    * are the arrays of regexps;
    * @param {Regexp[]} [src.excludeAll] Array with regexps for testing. If all of the regexps match at `ins` method
@@ -300,11 +300,11 @@ var test = function( ins )
    * @returns {boolean} If all test passed return true;
    * @throws {Error} Throw an 'expects string' error if `ins` is not string
    * @throws {Error} Throw an 'expects object' error if `src` is not object
-   * @method regexpObjectTest
+   * @method test
    * @memberof wRegexpObject
    */
 
-var regexpObjectTest = function( self,ins )
+var test_class = function( self,ins )
 {
 
   _.assert( arguments.length === 2 );
@@ -377,7 +377,7 @@ var broaden = function()
    *     excludeAny : [/greey/],
    * }
    *
-   * wTools.regexpObjectShrink(dest, src1, src2);
+   * wTools.shrink(dest, src1, src2);
    *
    * //{
    * //    includeAny : [/red/],
@@ -390,11 +390,11 @@ var broaden = function()
    * @returns {RegexpObject} Reference to `result` parameter;
    * @throws {Error} If missed arguments
    * @throws {Error} If arguments are not RegexpObject
-   * @method regexpObjectShrink
+   * @method shrink
    * @memberof wRegexpObject
    */
 
-var regexpObjectShrink = function( dst )
+var shrink_class = function( dst )
 {
 
   var result = _regexpObjectExtend
@@ -433,7 +433,7 @@ var regexpObjectShrink = function( dst )
    *     excludeAny : [/greey/],
    * }
    *
-   * wTools.regexpObjectBroaden(dest, src1, src2);
+   * wTools.broaden(dest, src1, src2);
    *
    * //{
    * //    includeAny : [/yellow/, /blue/, /red/],
@@ -446,11 +446,11 @@ var regexpObjectShrink = function( dst )
    * @returns {RegexpObject} Reference to `result` parameter;
    * @throws {Error} If missed arguments
    * @throws {Error} If arguments are not RegexpObject
-   * @method regexpObjectBroaden
+   * @method broaden
    * @memberof wRegexpObject
    */
 
-var regexpObjectBroaden = function( dst )
+var broaden_class = function( dst )
 {
 
   var result = _regexpObjectExtend
@@ -554,7 +554,7 @@ _regexpObjectExtend.defaults =
   /**
    * Create RegexpObject, that represents the subtraction for match`s/mismatched with the input RegexpObject object
    e.g. if { includeAll: [ /red/, /green/, /blue/ ] } represents subset of all strings that contains each 'red', 'green'
-   and 'blue' words, then result of regexpObjectBut() - { excludeAll: [ /red/, /green/, /blue/ ]} will represent the
+   and 'blue' words, then result of but() - { excludeAll: [ /red/, /green/, /blue/ ]} will represent the
    subset of all strings that does not contains at least one of those worlds.
    *
    * @example
@@ -565,7 +565,7 @@ _regexpObjectExtend.defaults =
            excludeAll : [/black/, /brown/, /pink/]
        };
 
-     wTools.regexpObjectBut(options);
+     wTools.but(options);
 
       // {
       //   "includeAny":[/yellow/, /white/, /grey/],
@@ -580,11 +580,11 @@ _regexpObjectExtend.defaults =
    * @returns {RegexpObject} Result RegexpObject map.
    * @throws {Error} If objects more than one and every has includeAll/excludeAll arrays with more than one elements
    * throws 'cant combine such regexp objects with "but" combiner'
-   * @method regexpObjectBut
+   * @method but
    * @memberof wRegexpObject
    */
 
-var regexpObjectBut = function()
+var but = function()
 {
   var result = Self( [],Self.Names.includeAny );
 
@@ -606,7 +606,7 @@ var regexpObjectBut = function()
       {
         result.excludeAll = _.arrayAppendMerging( result.excludeAll || [], src.includeAll );
       }
-      else throw _.err( 'regexpObjectBut :','cant combine such regexp objects with "but" combiner' );
+      else throw _.err( 'but :','cant combine such regexp objects with "but" combiner' );
     }
 
     if( src.excludeAll && src.excludeAll.length )
@@ -619,7 +619,7 @@ var regexpObjectBut = function()
       {
         result.includeAll = _.arrayAppendMerging( result.includeAll || [], src.excludeAll );
       }
-      else throw _.err( 'regexpObjectBut :','cant combine such regexp objects with "but" combiner' );
+      else throw _.err( 'but :','cant combine such regexp objects with "but" combiner' );
     }
 
     /*
@@ -653,7 +653,7 @@ var regexpObjectBut = function()
    var arr1 = ['red', 'blue'],
    arr2 = ['', 'green'];
 
-   wTools.regexpObjectOrering(arr1, arr2);
+   wTools.order(arr1, arr2);
    // [
    //     {
    //         includeAny:[],
@@ -683,11 +683,11 @@ var regexpObjectBut = function()
    * @param {...String[]} ordering аrray/аrrays of strings
    * @returns {RegexpObject[]} аrray of RegexpObject that represent resulting ordering
    * @throws {Error} Unexpected type, if passed arguments is not arrays.
-   * @method regexpObjectOrering
+   * @method order
    * @memberof wRegexpObject
    */
 
-var regexpObjectOrering = function( ordering )
+var order = function( ordering )
 {
   var res = [];
 
@@ -715,9 +715,9 @@ var regexpObjectOrering = function( ordering )
     elementArrays : res,
     onEach : function( sample,index )
     {
-      var mask = _.RegexpObject.regexpObjectShrink( {},sample[ 0 ] );
+      var mask = _.RegexpObject.shrink( {},sample[ 0 ] );
       for( var s = 1 ; s < sample.length ; s++ )
-      _.RegexpObject.regexpObjectShrink( mask,sample[ s ] );
+      _.RegexpObject.shrink( mask,sample[ s ] );
       result.push( mask );
     }
   });
@@ -766,7 +766,7 @@ var _regexpObjectOrderingExclusion = function( ordering )
   var nomask = {};
   for( var r = 0 ; r < result.length ; r++ )
   {
-    _.RegexpObject.regexpObjectShrink( nomask,Self.regexpObjectBut( result[ r ] ) );
+    _.RegexpObject.shrink( nomask,Self.but( result[ r ] ) );
   }
 
   for( var o = 0 ; o < ordering.length ; o++ )
@@ -781,7 +781,7 @@ var _regexpObjectOrderingExclusion = function( ordering )
 
   return [
     before,
-    Self.regexpObjectBut( before,after ),
+    Self.but( before,after ),
     after,
   ];
 */
@@ -840,15 +840,15 @@ var Restricts =
 var Static =
 {
 
-  regexpObjectTest : regexpObjectTest,
+  test : test_class,
 
-  regexpObjectShrink : regexpObjectShrink,
-  regexpObjectBroaden : regexpObjectBroaden,
+  shrink : shrink_class,
+  broaden : broaden_class,
   _regexpObjectExtend : _regexpObjectExtend,
 
-  regexpObjectBut : regexpObjectBut,
+  but : but,
 
-  regexpObjectOrering : regexpObjectOrering,
+  order : order,
   _regexpObjectOrderingExclusion : _regexpObjectOrderingExclusion,
 
   Names : Names,
