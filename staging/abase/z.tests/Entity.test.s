@@ -927,9 +927,11 @@
 
       entityMap    : entityMap,
       entityFilter : entityFilter,
+
       _entityMost  : _entityMost,
       entityMin    : entityMin,
       entityMax    : entityMax,
+
       _entitySame  : _entitySame,
       entityIdentical: entityIdentical,
       entityEquivalent: entityEquivalent,
