@@ -19,7 +19,7 @@ if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ 
 // name
 
 if( _global_.wBase )
-throw 'wTools included several times';
+throw new Error( 'wTools included several times' );
 
 _global_[ '_global_' ] = _global_;
 _global_._global_ = _global_;
@@ -1767,7 +1767,7 @@ var _entityMost = function( src,onElement,returnMax )
   else
   {
 
-    throw _.err( 'not tested' );
+    //throw _.err( 'not tested' );
     for( var s in src )
     {
       result.index = 0;
