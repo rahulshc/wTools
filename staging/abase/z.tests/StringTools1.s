@@ -36,37 +36,37 @@ var _toStrFromNumber = function( test )
   var options = { precision : 5 };
   var got = _._toStrFromNumber( 3.123456, options );
   var expected = '3.1235';
-  test.identical( got, expected);
+  test.identical( got, expected );
 
   test.description = 'returns with precision until 2';
   var options = { precision : 2 };
   var got = _._toStrFromNumber( 3.123456, options );
   var expected = '3.1';
-  test.identical( got, expected);
+  test.identical( got, expected );
 
   test.description = 'is returned with four numbers after dot';
   var options = { fixed : 4 };
   var got = _._toStrFromNumber( 13.75, options );
   var expected = '13.7500';
-  test.identical( got, expected);
+  test.identical( got, expected );
 
   test.description = 'is returned the rounded number to the top';
   var options = { fixed : 0 };
   var got = _._toStrFromNumber( 13.50, options );
   var expected = '14';
-  test.identical( got, expected);
+  test.identical( got, expected );
 
   test.description = 'is returned the rounded number to the bottom';
   var options = { fixed : 0 };
   var got = _._toStrFromNumber( 13.49, options );
   var expected = '13';
-  test.identical( got, expected);
+  test.identical( got, expected );
 
   test.description = 'returns string';
   var options = {  };
   var got = _._toStrFromNumber( 13.75, options );
   var expected = '13.75';
-  test.identical( got, expected);
+  test.identical( got, expected );
 
   /**/
 
@@ -74,28 +74,28 @@ var _toStrFromNumber = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _._toStrFromNumber();
-    });
+      _._toStrFromNumber( );
+    } );
 
     test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _._toStrFromNumber( 'wrong argument', { fixed : 3 } );
-    });
+    } );
 
     test.description = 'second argument is not provided';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _._toStrFromNumber( 13.75 );
-    });
+    } );
 
     test.description = 'second argument is wrong precision must be between 1 and 21';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _._toStrFromNumber( 13.75, { precision : 0 } );
-    });
+    } );
 
   }
 
@@ -106,7 +106,7 @@ var _toStrIsSimpleElement = function( test )
 {
 
   test.description = 'argument\'s length is less than 40 symbols';
-  var got = _._toStrIsSimpleElement('test');
+  var got = _._toStrIsSimpleElement( 'test' );
   var expected = true;
   test.identical( got, expected );
 
@@ -131,7 +131,7 @@ var _toStrIsSimpleElement = function( test )
   test.identical( got, expected );
 
   test.description = 'argument\'s length is greater than 40 symbols';
-  var got = _._toStrIsSimpleElement('test,test,test,test,test,test,test,test,test.');
+  var got = _._toStrIsSimpleElement( 'test,test,test,test,test,test,test,test,test.' );
   var expected = false;
   test.identical( got, expected );
 
@@ -146,7 +146,7 @@ var _toStrIsSimpleElement = function( test )
   test.identical( got, expected );
 
   test.description = 'argument is an array-like';
-  var arrLike = ( function() { return arguments; } )( 1, 2, 3 );
+  var arrLike = ( function( ) { return arguments; } )( 1, 2, 3 );
   var got = _._toStrIsSimpleElement( arrLike );
   var expected = false;
   test.identical( got, expected );
@@ -181,22 +181,22 @@ var toStrForRange = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.toStrForRange();
-    });
+      _.toStrForRange( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.toStrForRange( 'wrong argument' );
-    });
+    } );
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
+    test.description = 'too many arguments';
+    test.shouldThrowError( function( )
     {
       _.toStrForRange( [ 1, 10 ], 'redundant argument' );
-    });
+    } );
 
   }
 
@@ -208,7 +208,7 @@ var strCapitalize = function( test )
 {
 
   test.description = 'first letter is upper case';
-  var got = _.strCapitalize('object');
+  var got = _.strCapitalize( 'object' );
   var expected = 'Object';
   test.identical( got, expected );
 
@@ -218,48 +218,49 @@ var strCapitalize = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strCapitalize();
-    });
+      _.strCapitalize( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strCapitalize( 33 );
-    });
+    } );
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
+    test.description = 'too many arguments';
+    test.shouldThrowError( function( )
     {
       _.strCapitalize( 'object', 'redundant argument' );
-    });
+    } );
 
   }
 
 };
 
+//
 
 var strTimes = function( test )
 {
 
   test.description = 'returns the empty string';
-  var got = _.strTimes( 'abc', 0);
+  var got = _.strTimes( 'abc', 0 );
   var expected = '';
   test.identical( got, expected );
 
   test.description = 'returns the first copy of the given string';
-  var got = _.strTimes( 'abc', 1);
+  var got = _.strTimes( 'abc', 1 );
   var expected = 'abc';
   test.identical( got, expected );
 
   test.description = 'copies and concatenates first argument three times';
-  var got = _.strTimes( 'abc', 3);
+  var got = _.strTimes( 'abc', 3 );
   var expected = 'abcabcabc';
   test.identical( got, expected );
 
-  test.description = 'copies and concatenates first argument (number) three times';
-  var got = _.strTimes( 13, 3);
+  test.description = 'copies and concatenates first argument ( number ) three times';
+  var got = _.strTimes( 13, 3 );
   var expected = '131313';
   test.identical( got, expected );
 
@@ -269,40 +270,41 @@ var strTimes = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strTimes();
-    });
+      _.strTimes( );
+    } );
 
     test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strTimes( 'a', 'wrong argument' );
-    });
+    } );
 
     test.description = 'second argument is not provided';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strTimes( 'a' );
-    });
+    } );
 
   }
 
-};
+}
 
+//
 
 var strLineCount = function( test )
 {
 
   test.description = 'returns 1';
   var func = 'function( x, y ) { return x + y; }';
-  var got = _.strLineCount(func);
+  var got = _.strLineCount( func );
   var expected = 1;
   test.identical( got, expected );
 
   test.description = 'returns 4';
   var func = 'function( x, y ) \n { \n   return x + y; \n }';
-  var got = _.strLineCount(func);
+  var got = _.strLineCount( func );
   var expected = 4;
   test.identical( got, expected );
 
@@ -312,33 +314,34 @@ var strLineCount = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strLineCount();
-    });
+      _.strLineCount( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strLineCount( [1, '\n', 2 ] );
-    });
+      _.strLineCount( [ 1, '\n', 2 ] );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strLineCount( 13 );
-    });
+    } );
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
+    test.description = 'too many arguments';
+    test.shouldThrowError( function( )
     {
       _.strLineCount( 'function( x, y ) \n { \n   return x + y; \n }', 'redundant argument' );
-    });
+    } );
 
   }
 
-};
+}
 
+//
 
 var strSplitStrNumber = function( test )
 {
@@ -359,33 +362,34 @@ var strSplitStrNumber = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strSplitStrNumber();
-    });
+      _.strSplitStrNumber( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strSplitStrNumber( [  ] );
-    });
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strSplitStrNumber( 13 );
-    });
+    } );
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
+    test.description = 'too many arguments';
+    test.shouldThrowError( function( )
     {
       _.strSplitStrNumber( 'abc3', 'redundant argument' );
-    });
+    } );
 
   }
 
-};
+}
 
+//
 
 var strStrip = function( test )
 {
@@ -406,28 +410,28 @@ var strStrip = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strStrip();
-    });
+      _.strStrip( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strStrip( [  ] );
-    });
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strStrip( 13 );
-    });
+    } );
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
+    test.description = 'too many arguments';
+    test.shouldThrowError( function( )
     {
       _.strStrip( ' test ', 'redundant argument' );
-    });
+    } );
 
   }
 
@@ -453,28 +457,28 @@ var strSplit = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strSplit();
-    });
+      _.strSplit( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strSplit( [  ] );
-    });
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strSplit( 13 );
-    });
+    } );
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
+    test.description = 'too many arguments';
+    test.shouldThrowError( function( )
     {
       _.strSplit( ' test   test   test ', 'redundant argument' );
-    });
+    } );
 
   }
 
@@ -500,28 +504,28 @@ var strRemoveAllSpaces = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strRemoveAllSpaces();
-    });
+      _.strRemoveAllSpaces( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strRemoveAllSpaces( [  ] );
-    });
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strRemoveAllSpaces( 13 );
-    });
+    } );
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
+    test.description = 'too many arguments';
+    test.shouldThrowError( function( )
     {
       _.strRemoveAllSpaces( 'a b c d e f', ',', 'redundant argument' );
-    });
+    } );
 
   }
 
@@ -552,28 +556,28 @@ var strDifference = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strDifference();
-    });
+      _.strDifference( );
+    } );
 
     test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strDifference( [  ], 'abc' );
-    });
+    } );
 
     test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strDifference( 'abc', 13 );
-    });
+    } );
 
     test.description = 'not enough arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strDifference( 'abc' );
-    });
+    } );
 
   }
 
@@ -584,7 +588,7 @@ var strLattersSpectre = function( test )
 {
 
   test.description = 'returns the object';
-  var got = _.strLattersSpectre('abcacc');
+  var got = _.strLattersSpectre( 'abcacc' );
   var expected = { a: 2, b: 1, c: 3, length: 6 };
   test.identical( got, expected );
 
@@ -594,10 +598,10 @@ var strLattersSpectre = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strLattersSpectre();
-    });
+      _.strLattersSpectre( );
+    } );
 
   }
 
@@ -618,22 +622,22 @@ var strNumberLines = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strNumberLines();
-    });
+      _.strNumberLines( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strNumberLines( [  ] );
-    });
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strNumberLines( 13 );
-    });
+    } );
 
   }
 
@@ -654,28 +658,28 @@ var strCount = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strCount();
-    });
+      _.strCount( );
+    } );
 
     test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strCount( [  ], '\n' );
-    });
+    } );
 
     test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strCount( 'abc\ndef\nghi', 13 );
-    });
+    } );
 
     test.description = 'not enough arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strCount( 'abc\ndef\nghi' );
-    });
+    } );
 
   }
 
@@ -697,22 +701,22 @@ var strToBytes = function( test )
   {
 
     test.description = 'no arguments';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
-      _.strToBytes();
-    });
+      _.strToBytes( );
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strToBytes( [  ] );
-    });
+    } );
 
     test.description = 'argument is wrong';
-    test.shouldThrowError( function()
+    test.shouldThrowError( function( )
     {
       _.strToBytes( 13 );
-    });
+    } );
 
   }
 

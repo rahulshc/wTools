@@ -764,6 +764,7 @@ var strTimes = function( s,times )
 }
 
 //
+
 /**
  * This function calculates a count of lines in a string.
  * Expects one object: the string to be processed.
@@ -783,13 +784,17 @@ var strTimes = function( s,times )
  * @memberof wTools
  *
 */
+
 var strLineCount = function( src )
 {
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) );
   var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
   return result;
 }
 
 //
+
 /**
  * This function parses a string and separates numbers and string values
  * in to object that contains two properties,representing the values of string
@@ -812,10 +817,15 @@ var strLineCount = function( src )
  * @method strSplitStrNumber
  * @memberof wTools
  *
-*/
+ */
+
 var strSplitStrNumber = function( src )
 {
   var result = {};
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) );
+
   var mnumber = src.match(/\d+/);
   if( mnumber && mnumber.length )
   {
@@ -823,7 +833,10 @@ var strSplitStrNumber = function( src )
     result.str = mstr[ 0 ];
     result.number = _.numberFrom( mnumber[0] );
   }
-  else result.str = src;
+  else
+  {
+    result.str = src;
+  }
   return result;
 }
 
@@ -1246,9 +1259,16 @@ strStrip.defaults =
  * @memberof wTools
  *
 */
+
 var strRemoveAllSpaces = function( src,sub )
 {
-  if( sub === undefined ) sub = '';
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+
+  if( sub === undefined )
+  sub = '';
+
   return src.replace( /\s/g,sub );
 }
 
@@ -1870,6 +1890,7 @@ var strCount = function( src,ins )
 }
 
 //
+
 /**
  * This function converts each character of string passed by argument( str )
  * to array of 8-bit unsigned integers.
@@ -1884,15 +1905,19 @@ var strCount = function( src,ins )
  * @method strToBytes
  * @memberof wTools
  *
-*/
-var strToBytes = function( str )
+ */
+
+var strToBytes = function( src )
 {
 
-  var result = new Uint8Array( str.length );
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) );
 
-  for( var s = 0, sl = str.length ; s < sl ; s++ )
+  var result = new Uint8Array( src.length );
+
+  for( var s = 0, sl = src.length ; s < sl ; s++ )
   {
-    result[ s ] = str.charCodeAt( s );
+    result[ s ] = src.charCodeAt( s );
   }
 
   return result;
