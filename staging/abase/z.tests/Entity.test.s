@@ -1,4 +1,4 @@
-( function( ) {
+( function _Entity_test_s_( ) {
 
   'use strict';
 

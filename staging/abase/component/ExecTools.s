@@ -175,7 +175,7 @@ var execStages = function( stages,o )
     }
 
     if( o.onEnd )
-    wConsequence.give( o.onBegin,o );
+    wConsequence.give( o.onEnd,o );
     //wConsequence.giveWithContextAndErrorTo( o.onEnd,o.context,err,o );
 
     conEnd._giveWithError( err,null );
