@@ -188,19 +188,65 @@ var strReplaceAll = function( test )
 
 //
 
+var strDropPrefix = function( test )
+{
+  test.description = 'returns string with removed occurrence from start';
+  var got = _.strDropPrefix( 'example','exa' );
+  var expected = 'mple';
+  test.identical( got,expected );
+
+  test.description = 'returns original if no occurrence found';
+  var got = _.strDropPrefix( 'mple','exa' );
+  var expected = 'mple';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strDropPrefix( 'abcd','a','a' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strDropPrefix( );
+    });
+
+    test.description = 'first argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strDropPrefix( 1,'2' );
+    });
+
+    test.description = 'second argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strDropPrefix( '1',2 );
+    });
+
+  }
+
+}
+
 //
 
 var Proto =
 {
 
-  name : 'strCapitalize test',
+  name : 'StringTools2 test',
 
   tests:
   {
 
     strCapitalize : strCapitalize,
     strStripEmptyLines : strStripEmptyLines,
-    strReplaceAll : strReplaceAll
+    strReplaceAll : strReplaceAll,
+    strDropPrefix : strDropPrefix
 
   }
 
