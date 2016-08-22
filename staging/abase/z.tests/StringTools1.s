@@ -1,4 +1,4 @@
-( function _StringTools1_s_( ) {
+( function _StringTools1_test_s_( ) {
 
 'use strict';
 
@@ -15,12 +15,13 @@
 if( typeof module !== 'undefined' )
 {
 
+  require( '../wTools.s' );
+  require( '../component/StringTools.s' );
+
   if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
     require( '../object/Testing.debug.s' );
   else
     require( 'wTesting' );
-
-  require( '../component/StringTools.s' );
 
 }
 

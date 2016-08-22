@@ -1,4 +1,4 @@
-( function _StringTools2_s_( ) {
+( function _StringTools2_test_s_( ) {
 
 'use strict';
 
@@ -15,12 +15,13 @@ node ./staging/z.tests/Sample.test.s
 if( typeof module !== 'undefined' )
 {
 
+  require( '../wTools.s' );
+  require( '../component/StringTools.s' );
+
   if( require( 'fs' ).existsSync( __dirname + '/../../amid/diagnostic/Testing.debug.s' ) )
   require( '../../amid/diagnostic/Testing.debug.s' );
   else
   require( 'wTesting' );
-
-  require( '../component/StringTools.s' );
 
 }
 

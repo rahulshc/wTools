@@ -1352,6 +1352,7 @@ var strIron = function()
 }
 
 //
+
 /**
  * This function finds substring passed by second argument( ins ) in the source string( src )
  * and replaces each occurrence with the third argument( sub ).
@@ -1375,9 +1376,10 @@ var strIron = function()
  * _.strReplaceAll( 'aabaa','y','x' );
  *
  * @method strReplaceAll
-  * @memberof wTools
+ * @memberof wTools
  *
-*/
+ */
+
 var strReplaceAll = function( src, ins, sub )
 {
   return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
