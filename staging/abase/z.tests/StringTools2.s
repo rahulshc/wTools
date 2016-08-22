@@ -400,6 +400,52 @@ var strCamelize = function( test )
 
 //
 
+var strFilenameFor = function( test )
+{
+  test.description = 'converts string to camelcase';
+  var got = _.strFilenameFor( "'example\\file?name.txt" );
+  var expected = '_example_file_name.txt';
+  test.identical( got,expected );
+
+  test.description = 'convertion with options';
+  var got = _.strFilenameFor( "'example\\file?name.js",{ 'separator':'#' } );
+  var expected = '#example#file#name.js';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strFilenameFor( 'one','two','three' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strFilenameFor( );
+    });
+
+    test.description = 'first argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strFilenameFor( 111 );
+    });
+
+    test.description = 'second argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strFilenameFor( "'example\\file?name.txt",'wrong' );
+    });
+
+
+  }
+}
+
+//
+
 var Proto =
 {
 
@@ -415,7 +461,8 @@ var Proto =
     strDropPostfix : strDropPostfix,
     strHtmlEscape : strHtmlEscape,
     strIndentation : strIndentation,
-    strCamelize : strCamelize
+    strCamelize : strCamelize,
+    strFilenameFor : strFilenameFor
 
   }
 
