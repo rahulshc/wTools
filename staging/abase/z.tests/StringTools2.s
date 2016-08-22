@@ -359,6 +359,47 @@ var strIndentation = function( test )
 
 //
 
+var strCamelize = function( test )
+{
+  test.description = 'converts string to camelcase';
+  var got = _.strCamelize( 'a-b_c/d' );
+  var expected = 'aBCD';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strCamelize( 'one','two' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strCamelize( );
+    });
+
+    test.description = 'wrong argument type';
+    test.shouldThrowError( function()
+    {
+      _.strCamelize( 111 );
+    });
+
+    test.description = 'wrong argument type';
+    test.shouldThrowError( function()
+    {
+      _.strCamelize( [ ] );
+    });
+
+
+  }
+}
+
+//
+
 var Proto =
 {
 
@@ -373,7 +414,8 @@ var Proto =
     strDropPrefix : strDropPrefix,
     strDropPostfix : strDropPostfix,
     strHtmlEscape : strHtmlEscape,
-    strIndentation : strIndentation
+    strIndentation : strIndentation,
+    strCamelize : strCamelize
 
   }
 
