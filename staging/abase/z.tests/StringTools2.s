@@ -281,6 +281,44 @@ var strDropPostfix = function( test )
 
 //
 
+var strHtmlEscape = function( test )
+{
+  test.description = 'replaces html escape symbols';
+  var got = _.strHtmlEscape( '<&test &text &here>' );
+  var expected = '&lt;&amp;test &amp;text &amp;here&gt';
+  test.identical( got,expected );
+
+  test.description = 'replaces html escape symbols from array';
+  var got = _.strHtmlEscape( ['&','<'] );
+  var expected = '&amp;&amp;,&lt;';
+  test.identical( got,expected );
+
+  test.description = 'object passed';
+  var got = _.strHtmlEscape( {'prop': 'value'} );
+  var expected = '[object Object]';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strHtmlEscape( 'one','two' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strHtmlEscape( );
+    });
+  }
+}
+
+//
+
 var Proto =
 {
 
@@ -293,7 +331,8 @@ var Proto =
     strStripEmptyLines : strStripEmptyLines,
     strReplaceAll : strReplaceAll,
     strDropPrefix : strDropPrefix,
-    strDropPostfix : strDropPostfix
+    strDropPostfix : strDropPostfix,
+    strHtmlEscape : strHtmlEscape
 
   }
 
