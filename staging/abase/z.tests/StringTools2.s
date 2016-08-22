@@ -285,12 +285,12 @@ var strHtmlEscape = function( test )
 {
   test.description = 'replaces html escape symbols';
   var got = _.strHtmlEscape( '<&test &text &here>' );
-  var expected = '&lt;&amp;test &amp;text &amp;here&gt';
+  var expected = '&lt;&amp;test &amp;text &amp;here&gt;';
   test.identical( got,expected );
 
   test.description = 'replaces html escape symbols from array';
   var got = _.strHtmlEscape( ['&','<'] );
-  var expected = '&amp;&amp;,&lt;';
+  var expected = '&amp;,&lt;';
   test.identical( got,expected );
 
   test.description = 'object passed';
@@ -319,6 +319,46 @@ var strHtmlEscape = function( test )
 
 //
 
+var strIndentation = function( test )
+{
+  test.description = 'returns indented string';
+  var got = _.strIndentation( 'a\nb\nc','\t' );
+  var expected = '\ta\n\tb\n\tc';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strIndentation( 'one','two','three' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strIndentation( );
+    });
+
+    test.description = 'first argument type is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strIndentation( 123,'second' );
+    });
+
+    test.description = 'second argument type is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strIndentation( 'first', 321 );
+    });
+  }
+}
+
+//
+
 var Proto =
 {
 
@@ -332,7 +372,8 @@ var Proto =
     strReplaceAll : strReplaceAll,
     strDropPrefix : strDropPrefix,
     strDropPostfix : strDropPostfix,
-    strHtmlEscape : strHtmlEscape
+    strHtmlEscape : strHtmlEscape,
+    strIndentation : strIndentation
 
   }
 
