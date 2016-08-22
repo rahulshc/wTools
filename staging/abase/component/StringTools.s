@@ -1819,6 +1819,8 @@ var strIndentation = function( src,tab )
 
   _assert( _.strIs( src ),'strIndentation : expects string src' );
   _assert( _.strIs( tab ),'strIndentation : expects string tab' );
+  _assert( arguments.length === 2,'strIndentation : expects two arguments' );
+
 
   if( src.indexOf( '\n' ) === -1 )
   return tab + src;
