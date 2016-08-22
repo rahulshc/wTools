@@ -1568,6 +1568,10 @@ strUnjoin.any = function( src )
 */
 var strDropPrefix = function( src,prefix )
 {
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( prefix ) );
+  _.assert( arguments.length === 2 );
+
   if( src.indexOf( prefix ) !== -1 )
   return src.substr( prefix.length,src.length-prefix.length );
   else return src;
