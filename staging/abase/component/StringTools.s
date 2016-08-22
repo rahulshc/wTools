@@ -1750,6 +1750,8 @@ var _strHtmlEscapeMap =
 
 var strHtmlEscape = function( str )
 {
+  _.assert( arguments.length === 1 );
+
   return String( str ).replace( /[&<>"'\/]/g, function( s )
   {
     return _strHtmlEscapeMap[ s ];
