@@ -1273,6 +1273,7 @@ var strRemoveAllSpaces = function( src,sub )
 }
 
 //
+
 /**
  * This function removes all empty lines from the string passed by first argument( srcStr ).
  *
@@ -1297,7 +1298,8 @@ var strRemoveAllSpaces = function( src,sub )
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @memberof wTools
  *
-*/
+ */
+
 var strStripEmptyLines = function( srcStr )
 {
   var result = '';
