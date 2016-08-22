@@ -235,6 +235,52 @@ var strDropPrefix = function( test )
 
 //
 
+var strDropPostfix = function( test )
+{
+  test.description = 'returns string with removed occurrence from end';
+  var got = _.strDropPostfix( 'example','mple' );
+  var expected = 'exa';
+  test.identical( got,expected );
+
+  test.description = 'returns original if no occurrence found ';
+  var got = _.strDropPostfix( 'example','' );
+  var expected = 'example';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strDropPostfix( 'one','two','three' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strDropPostfix( );
+    });
+
+    test.description = 'first argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strDropPostfix( 1,'second' );
+    });
+
+    test.description = 'second argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strDropPostfix( 'first',2 );
+    });
+
+  }
+}
+
+//
+
 var Proto =
 {
 
@@ -246,7 +292,8 @@ var Proto =
     strCapitalize : strCapitalize,
     strStripEmptyLines : strStripEmptyLines,
     strReplaceAll : strReplaceAll,
-    strDropPrefix : strDropPrefix
+    strDropPrefix : strDropPrefix,
+    strDropPostfix : strDropPostfix
 
   }
 
