@@ -838,7 +838,7 @@ var _entitySame = function _entitySame( src1,src2,o )
   var path = o.path;
   o.lastPath = path;
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3 ); 
 
   if( o.strict )
   {
