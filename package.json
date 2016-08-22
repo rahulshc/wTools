@@ -8,6 +8,7 @@
   "files": [
     "staging/abase/wTools.s",
     "staging/abase/component",
+    "staging/abase/object",
     "production"
   ],
   "scripts": {
