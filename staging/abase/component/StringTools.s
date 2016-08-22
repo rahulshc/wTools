@@ -2148,6 +2148,9 @@ var strCsvFrom = function( src,options )
 */
 var strCamelize = function( srcStr )
 {
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( srcStr ) );
+
   var result = srcStr;
   var regexp = /\.\w|-\w|_\w|\/\w/g;
 
