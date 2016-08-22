@@ -1,4 +1,5 @@
-( function _Entity_test_s_( ) {
+( function _Entity_test_s_( )
+{
 
   'use strict';
 
@@ -38,7 +39,8 @@
       expected2 = { '3': 9, '4': 16, '5': 25 },
       expected3 = entity1.slice();
 
-    var constr1 = function() {
+    var constr1 = function()
+    {
       this.a = 1;
       this.b = 3;
       this.c = 4;
@@ -47,15 +49,18 @@
       expected4 = { a: '1a', b: '9b', c: '16c'};
 
 
-    var callback1 = function(v, i, ent) {
+    var callback1 = function(v, i, ent)
+    {
       return v * v;
     };
 
-    var callback2 = function(v, i, ent) {
+    var callback2 = function(v, i, ent)
+    {
       return v * v + i;
     };
 
-    var callback3 = function(v, i, ent) {
+    var callback3 = function(v, i, ent)
+    {
       if (externEnt) externEnt = ent;
       return v * v + i;
     };
@@ -125,19 +130,22 @@
 
   //
 
-  var entityFilter = function( test ) {
+  var entityFilter = function( test )
+  {
     var entity1 = [ 9, -16, 25, 36, -49 ],
       entity2 = { '3': 9, '4': 16, '5': 25 },
       expected1 = [ 3, 5, 6 ],
       expected2 = { '3': 3, '4': 4, '5': 5 },
       expected3 = entity1.slice();
 
-    var callback1 = function(v, i, ent) {
+    var callback1 = function(v, i, ent)
+    {
       if( v < 0 ) return;
       return Math.sqrt(v);
     };
 
-    var testFn1 = function() {
+    var testFn1 = function()
+    {
       console.log(arguments);
       return _.entityFilter(arguments, callback1);
     }
@@ -213,7 +221,8 @@
 
   //
 
-  var _entityMost = function( test ) {
+  var _entityMost = function( test )
+  {
 
     var args1 = [ 3, 1, 9, 0, 5 ],
       args2 = [3, -4, 9, -16, 5, -2],
@@ -444,12 +453,14 @@
 
     // object values
 
-    var constructor1 = function() {
+    var constructor1 = function()
+    {
       this.a = 1;
       this.b = 2;
     };
 
-    var constructor2 = function() {
+    var constructor2 = function()
+    {
       this['a'] = 1;
       this['b'] = 2;
     };
@@ -836,7 +847,9 @@
       this[100] = 'sms';
     };
 
-    Constr1.prototype.toString = function() { console.log('some message'); }
+    Constr1.prototype.toString = function()
+    {
+      console.log('some message'); }
 
     Constr1.prototype.c = 99;
 
