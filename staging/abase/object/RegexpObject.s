@@ -1,4 +1,4 @@
-( function _RegexpObject_s_(){
+( function _RegexpObject_s_() {
 
 'use strict';
 
