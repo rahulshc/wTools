@@ -20,6 +20,8 @@ if( typeof module !== 'undefined' )
   else
     require( 'wTesting' );
 
+  require( '../component/StringTools.s' );
+
 }
 
 var _ = wTools;

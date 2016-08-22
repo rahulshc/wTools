@@ -20,6 +20,8 @@ if( typeof module !== 'undefined' )
   else
   require( 'wTesting' );
 
+  require( '../component/StringTools.s' );
+
 }
 
 var _ = wTools;
@@ -44,6 +46,7 @@ var strCapitalize = function( test )
 
   if( Config.debug )
   {
+
     test.description = 'invalid arguments length';
     test.shouldThrowError( function()
     {
@@ -62,17 +65,6 @@ var strCapitalize = function( test )
       _.strCapitalize();
     });
 
-    test.description = 'zero length string provided';
-    test.shouldThrowError( function()
-    {
-      _.strCapitalize('');
-    });
-
-    test.description = 'first symbol is not a letter';
-    test.shouldThrowError( function()
-    {
-      _.strCapitalize('#example');
-    });
   }
 }
 

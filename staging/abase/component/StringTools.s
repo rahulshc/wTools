@@ -688,6 +688,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
 }
 
 //
+
 /**
  * This function returns  string that starts from capital letter.
  * Expects one object: the string to be formatted.
@@ -708,18 +709,24 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @memberof wTools
  *
-*/
+ */
+
 var strCapitalize = function( src )
 {
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1 );
-  _.assert( src.length > 0 );
-  _.assert( src.match(/(^\W)/) === null );
+
+  /*_.assert( src.length > 0 );*/
+  /*_.assert( src.match(/(^\W)/) === null );*/
+
+  if( src.length === 0 )
+  return src;
 
   return src[ 0 ].toUpperCase() + src.substring( 1 );
 }
 
 //
+
 /**
  * This function returns a string concatenated with itself n-times.
  * Expects two object: the string to be concatenated and count of concatenations.
@@ -741,7 +748,8 @@ var strCapitalize = function( src )
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
  *
-*/
+ */
+
 var strTimes = function( s,times )
 {
   var result = '';
