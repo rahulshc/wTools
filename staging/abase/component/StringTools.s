@@ -1380,6 +1380,9 @@ var strIron = function()
 */
 var strReplaceAll = function( src, ins, sub )
 {
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+  _.assert( _.strIs( sub ) );
   return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
 }
 
