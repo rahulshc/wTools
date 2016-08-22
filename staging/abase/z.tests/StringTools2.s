@@ -68,6 +68,8 @@ var strCapitalize = function( test )
   }
 }
 
+//
+
 var strStripEmptyLines = function( test )
 {
 
@@ -91,6 +93,8 @@ var strStripEmptyLines = function( test )
   var expected = 'a\nb\n';
   test.identical( got,expected );
 
+  /**/
+
   if( Config.debug )
   {
 
@@ -106,8 +110,83 @@ var strStripEmptyLines = function( test )
       _.strStripEmptyLines( 111 );
     });
 
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.strStripEmptyLines( );
+    });
+
   }
 }
+
+//
+
+var strReplaceAll = function( test )
+{
+  test.description = 'simple replace';
+  var got = _.strReplaceAll( 'aabaa','b','c' );
+  var expected = 'aacaa';
+  test.identical( got,expected );
+
+  test.description = 'first two args empty strings';
+  var got = _.strReplaceAll( '', '', 'c' );
+  var expected = 'c';
+  test.identical( got,expected );
+
+  test.description = 'secong argument is empty string';
+  var got = _.strReplaceAll( 'a', '', 'c' );
+  var expected = 'a';
+  test.identical( got,expected );
+
+  test.description = 'all three args empty strings';
+  var got = _.strReplaceAll( '', '', '' );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.description = 'third arg is empty string ';
+  var got = _.strReplaceAll( 'a', 'a', '' );
+  var expected = '';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( '1','2','3','4' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( );
+    });
+
+    test.description = 'first argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( 1,'2','3');
+    });
+
+    test.description = 'second argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( '1',2,'3');
+    });
+
+    test.description = 'third argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( '1','2',3);
+    });
+
+  }
+}
+
+//
 
 //
 
@@ -120,7 +199,8 @@ var Proto =
   {
 
     strCapitalize : strCapitalize,
-    strStripEmptyLines : strStripEmptyLines
+    strStripEmptyLines : strStripEmptyLines,
+    strReplaceAll : strReplaceAll
 
   }
 
