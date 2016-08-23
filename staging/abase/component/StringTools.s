@@ -1384,6 +1384,11 @@ var strIron = function()
 
 var strReplaceAll = function( src, ins, sub )
 {
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+  _.assert( _.strIs( sub ) );
+  _.assert( arguments.length === 3 );
+
   return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
 }
 
@@ -1569,6 +1574,10 @@ strUnjoin.any = function( src )
 */
 var strDropPrefix = function( src,prefix )
 {
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( prefix ) );
+  _.assert( arguments.length === 2 );
+
   if( src.indexOf( prefix ) !== -1 )
   return src.substr( prefix.length,src.length-prefix.length );
   else return src;
@@ -1579,7 +1588,13 @@ var strDropPrefix = function( src,prefix )
 var strDropPostfix = function( src,postfix )
 {
   throw _.err( 'Not tested' );
+
+  // _.assert( _.strIs( src ) );
+  // _.assert( _.strIs( postfix ) );
+  // _.assert( arguments.length === 2 );
+
   var l = src.length - postfix.length;
+  // if( src.length > postfix.length && src.lastIndexOf( postfix ) === l )
   if( src.length > postfix.length && src.indexOf( postfix ) === l )
   return src.substr( 0,l );
   else return src;
@@ -1741,6 +1756,8 @@ var _strHtmlEscapeMap =
 
 var strHtmlEscape = function( str )
 {
+  _.assert( arguments.length === 1 );
+
   return String( str ).replace( /[&<>"'\/]/g, function( s )
   {
     return _strHtmlEscapeMap[ s ];
@@ -1808,6 +1825,8 @@ var strIndentation = function( src,tab )
 
   _assert( _.strIs( src ),'strIndentation : expects string src' );
   _assert( _.strIs( tab ),'strIndentation : expects string tab' );
+  _assert( arguments.length === 2,'strIndentation : expects two arguments' );
+
 
   if( src.indexOf( '\n' ) === -1 )
   return tab + src;
@@ -2133,6 +2152,9 @@ var strCsvFrom = function( src,options )
 */
 var strCamelize = function( srcStr )
 {
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( srcStr ) );
+
   var result = srcStr;
   var regexp = /\.\w|-\w|_\w|\/\w/g;
 
@@ -2169,6 +2191,12 @@ var strCamelize = function( srcStr )
 */
 var strFilenameFor = function( srcStr,options )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( srcStr ) );
+
+  if( arguments.length === 2 )
+  _.assert( _.mapIs( arguments[ 1 ] ) );
+
   var result = srcStr;
   var options = options || {};
   if( options.separator === undefined )
