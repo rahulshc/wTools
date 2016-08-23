@@ -427,6 +427,11 @@ var strFilenameFor = function( test )
   var expected = '#example#file#name.js';
   test.identical( got,expected );
 
+  test.description = 'empty string';
+  var got = _.strFilenameFor( '' );
+  var expected = '';
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
