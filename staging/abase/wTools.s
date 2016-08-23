@@ -67,11 +67,11 @@ var _initConfig = function _initConfig()
 
   if( !_global_.Config )
   {
-
-    /*_global_.Config = Object.freeze({ debug : true });*/
-    _global_.Config = { debug : true };
-
+    _global_.Config = {};
   }
+
+  if( _global_.Config.debug === undefined )
+  _global_.Config.debug = true;
 
   Object.defineProperty( _global_, 'Config',
   {
@@ -1141,7 +1141,7 @@ var entityLength = function( src )
   if( _.arrayLike( src ) )
   return src.length;
   else if( _.objectLike( src ) )
-  return _.mapOwnKeys( src ).length; 
+  return _.mapOwnKeys( src ).length;
   else return 1;
 }
 
@@ -11260,22 +11260,34 @@ _global_.wBase = Proto;
 
 mapExtend( Self, Proto );
 
-//Self.constructor = function wTools() {};
+/*Self.constructor = function wTools() {};*/
 
-// --
-// init
-// --
+//
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
 var timeNow = Self.timeNow = Self._timeNow_gen();
 
+//
+
+_global_[ 'wTools' ] = Self;
+_global_.wTools = Self;
+
+//debugger;
+
+if( typeof module !== 'undefined' && module !== null )
+try
+{
+  require( '../ServerTools.ss' );
+}
+catch( err )
+{
+}
+
+//debugger;
+
 if( _global_.wToolsInitConfigExpected !== false )
 _._initConfig();
-
-// --
-// export
-// --
 
 if( typeof module !== 'undefined' && module !== null )
 {
@@ -11285,13 +11297,8 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/NameTools.s' );
   require( './component/ExecTools.s' );
   require( './component/StringTools.s' );
-  require( './object/RegexpObject.s' );
+  //require( './object/RegexpObject.s' );
 
 }
-
-_global_[ 'wTools' ] = Self;
-_global_.wTools = Self;
-
-/*_.constant( _global_,{ Config : Config } );*/
 
 })();

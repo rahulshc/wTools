@@ -141,4 +141,3 @@ if( typeof module !== 'undefined' && !module.parent )
 _.testing.test( Self );
 
 } )( );
-xxx

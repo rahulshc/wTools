@@ -1728,7 +1728,8 @@ var strToDom = function( xmlStr )
  * @method strHtmlEscape
  * @memberof wTools
  *
-*/
+ */
+
 var _strHtmlEscapeMap =
 {
   '&' : '&amp;',
@@ -1737,7 +1738,7 @@ var _strHtmlEscapeMap =
   '"' : '&quot;',
   '\'' : '&#39;',
   '/' : '&#x2F;'
-};
+}
 
 var strHtmlEscape = function( str )
 {
