@@ -52,6 +52,25 @@ var toStrFields = function( src,options )
  *
  * @param {object} src - Source object.
  * @param {object} options - Convertion options.
+ * @param {boolean} [ options.wrap=true ] - wrap array-like and object-like entities
+ * into "[ .. ]" / "{ .. }" respecitvely.
+ * @param {number} [ options.levels=1 ] - value represents depth of object architecture like
+ * ( [ [ 1 ],[ 1 ] ] ) its ( level=2 ).
+ * @param {boolean} [ options.prependTab=true ] - prepend tab before each line.
+ * @param {boolean} [ options.errorAsMap=false ] - if true Error object is interpreted as Map.
+ * @param {boolean} [ options.own=true ] - function uses only direct properties of object( options ).
+ * @param {string} [ options.tab='' ] - value of prepended tab before each line.
+ * @param {string} [ options.dtab='  ' ] - double tab value.
+ * @param {string} [ options.colon=' : ' ] - colon between property and value like ( { a : 1 } ).
+ * @param {boolean} [ options.noRoutine=false ] - blocking object behavior like Routine.
+ * @param {boolean} [ options.noAtomic=false ] - blocking object behavior like Atomic.
+ * @param {boolean} [ options.noArray=false ] - blocking object behavior like Array.
+ * @param {boolean} [ options.noObject=false ] - blocking object behavior like Object.
+ * @param {boolean} [ options.noRow=false ] - blocking object behavior like Row.
+ * @param {boolean} [ options.noError=false ] - blocking object behavior like Error.
+ * @param {boolean} [ options.noNumber=false ] - blocking object behavior like Number.
+ * @param {boolean} [ options.noString=false ] - blocking object behavior like String.
+ * @param {boolean} [ options.noDate=false ] - blocking object behavior like Date.
  * @returns {string} Returns string that represents object data.
  *
  * @example
