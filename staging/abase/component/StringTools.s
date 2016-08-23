@@ -46,7 +46,39 @@ var toStrFields = function( src,options )
 }
 
 //
-
+/**
+ * Converts object passed by argument( src ) to string format using parameters passed
+ * by argument( options ), like ( { comma : ',', wrap : 0 } ) etc.
+ *
+ * @param {object} src - Source object.
+ * @param {object} options - Convertion options.
+ * @returns {string} Returns string that represents object data.
+ *
+ * @example
+ * //returns 1 , 2 , 3 , 4
+ * _toStrFine( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } )
+ *
+ * @example
+ * //returns [ Array with 4 elements ]
+ * _toStrFine( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } )
+ *
+ * @example
+ * //returns { routine add }
+ * _.toStrFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
+ *
+ *  @example
+ * //returns { Object with 1 elements }
+ * _.toStrFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )
+ *
+ * @example
+ * //returns a : 1 | b : 2
+ * _.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
+ *
+ * @method toStrFine
+ * @throws { Exception } Throw an exception if( options ) is not a Object.
+ * @memberof wTools
+ *
+*/
 var toStrFine_gen = function()
 {
 
