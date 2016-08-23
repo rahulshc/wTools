@@ -54,8 +54,7 @@ var toStrFields = function( src,options )
  * @param {object} options - Convertion options.
  * @param {boolean} [ options.wrap=true ] - wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {number} [ options.levels=1 ] - value represents depth of object architecture like
- * ( [ [ 1 ],[ 1 ] ] ) its ( level=2 ).
+ * @param {number} [ options.levels=1 ] - restricts max depth of object architecture.
  * @param {boolean} [ options.prependTab=true ] - prepend tab before each line.
  * @param {boolean} [ options.errorAsMap=false ] - if true Error object is interpreted as Map.
  * @param {boolean} [ options.own=true ] - function uses only direct properties of object( options ).
@@ -71,6 +70,15 @@ var toStrFields = function( src,options )
  * @param {boolean} [ options.noNumber=false ] - blocking object behavior like Number.
  * @param {boolean} [ options.noString=false ] - blocking object behavior like String.
  * @param {boolean} [ options.noDate=false ] - blocking object behavior like Date.
+ * @param {boolean} [ options.onlyRoutines=false ] - makes object behavior Routine only.
+ * @param {boolean} [ options.noSubObject=false ] - ignores subobjects from( src ).
+ * @param {boolean} [ options.singleElementPerLine=false ] - writes each object element in new line
+ * @param {number} [ options.precision =3 ] - value that specifying  length of a number.
+ * @param {number} [ options.fixed=3 ] - number of digits after the decimal point.
+ * @param {string} [ options.comma=', ' ] - splitter between elements.
+ * @param {boolean} [ options.multiline=0 ] - writes each object property in new line.
+ * @param {boolean} [ options.unescape=0 ] - disables escape symbols in object elements.
+ * @param {number} [ options.level=0 ] - min depth of object architecture. *
  * @returns {string} Returns string that represents object data.
  *
  * @example
