@@ -17,3 +17,7 @@ console.log( _.toStr( { a : 1, b : 2 } ) );
 
 //returns '{ a : 1, b : 2 }'
 console.log( _.toStr( { a : 1, b : 2 },{ wrap : 0 } ) );
+
+//returns '{ a : 1, b : 2 }'
+console.log( _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3 } ) );
+console.log( _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-' } ) );

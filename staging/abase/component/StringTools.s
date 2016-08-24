@@ -84,11 +84,11 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns 1 , 2 , 3 , 4
- * _toStrFine( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } )
+ * _toStrFine( [ 1,2,3,4 ], { levels : 1, wrap : 0, comma : ' , ' } )
  *
  * @example
  * //returns [ Array with 4 elements ]
- * _toStrFine( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } )
+ * _toStrFine( [ 'a','b','c' ], { levels : 0, wrap : 0, comma : ' , ' } )
  *
  * @example
  * //returns { routine add }
