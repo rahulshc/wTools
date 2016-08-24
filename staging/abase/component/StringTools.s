@@ -49,7 +49,7 @@ var toStrFields = function( src,options )
 
 /**
  * Converts object passed by argument( src ) to string format using parameters passed
- * by argument( options ), like ( { comma : ',', wrap : 0 } ) etc.
+ * by argument( options ).
  *
  * @param {object} src - Source object for representing it as string.
  * @param {object} options - Convertion options.
@@ -78,7 +78,7 @@ var toStrFields = function( src,options )
  * @param {number} [ options.fixed=3 ] - . need also example!!!
  * @param {string} [ options.comma=', ' ] - splitter between elements, example : [ 1,2,3 ].
  * @param {boolean} [ options.multiline=0 ] - writes each object property in new line.
- * @param {boolean} [ options.unescape=0 ] - disables escaping special characters.
+ * @param {boolean} [ options.unescape=0 ] - disables escaping of special characters.
  * @param {number} [ options.level=0 ] - . *
  * @returns {string} Returns string that represents object data.
  *
@@ -102,7 +102,7 @@ var toStrFields = function( src,options )
  * //returns a : 1 | b : 2
  * _.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
  *
- * @method toStrFine
+ * @method toStr
  * @throws { Exception } Throw an exception if( options ) is not a Object.
  * @memberof wTools
  *
