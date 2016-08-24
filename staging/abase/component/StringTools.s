@@ -83,18 +83,23 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns 1 , 2 , 3 , 4
+ * _.toStr( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } );
  *
  * @example
  * //returns [ Array with 4 elements ]
+ * _.toStr( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } );
  *
  * @example
  * //returns { routine add }
+ * _.toStr( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } );
  *
  *  @example
  * //returns { Object with 1 elements }
+ * _.toStr( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } );
  *
  * @example
  * //returns a : 1 | b : 2
+ * _.toStr( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } );
  *
  * * @example
  * //Each time function parses next level of object depth
