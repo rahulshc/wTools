@@ -46,7 +46,66 @@ var toStrFields = function( src,options )
 }
 
 //
-
+/**
+ * Converts object passed by argument( src ) to string format using parameters passed
+ * by argument( options ), like ( { comma : ',', wrap : 0 } ) etc.
+ *
+ * @param {object} src - Source object.
+ * @param {object} options - Convertion options.
+ * @param {boolean} [ options.wrap=true ] - wrap array-like and object-like entities
+ * into "[ .. ]" / "{ .. }" respecitvely.
+ * @param {number} [ options.levels=1 ] - restricts max depth of object architecture.
+ * @param {boolean} [ options.prependTab=true ] - prepend tab before each line.
+ * @param {boolean} [ options.errorAsMap=false ] - if true Error object is interpreted as Map.
+ * @param {boolean} [ options.own=true ] - function uses only direct properties of object( options ).
+ * @param {string} [ options.tab='' ] - value of prepended tab before each line.
+ * @param {string} [ options.dtab='  ' ] - double tab value.
+ * @param {string} [ options.colon=' : ' ] - colon between property and value like ( { a : 1 } ).
+ * @param {boolean} [ options.noRoutine=false ] - blocking object behavior like Routine.
+ * @param {boolean} [ options.noAtomic=false ] - blocking object behavior like Atomic.
+ * @param {boolean} [ options.noArray=false ] - blocking object behavior like Array.
+ * @param {boolean} [ options.noObject=false ] - blocking object behavior like Object.
+ * @param {boolean} [ options.noRow=false ] - blocking object behavior like Row.
+ * @param {boolean} [ options.noError=false ] - blocking object behavior like Error.
+ * @param {boolean} [ options.noNumber=false ] - blocking object behavior like Number.
+ * @param {boolean} [ options.noString=false ] - blocking object behavior like String.
+ * @param {boolean} [ options.noDate=false ] - blocking object behavior like Date.
+ * @param {boolean} [ options.onlyRoutines=false ] - makes object behavior Routine only.
+ * @param {boolean} [ options.noSubObject=false ] - ignores subobjects from( src ).
+ * @param {boolean} [ options.singleElementPerLine=false ] - writes each object element in new line
+ * @param {number} [ options.precision =3 ] - value that specifying  length of a number.
+ * @param {number} [ options.fixed=3 ] - number of digits after the decimal point.
+ * @param {string} [ options.comma=', ' ] - splitter between elements.
+ * @param {boolean} [ options.multiline=0 ] - writes each object property in new line.
+ * @param {boolean} [ options.unescape=0 ] - disables escape symbols in object elements.
+ * @param {number} [ options.level=0 ] - min depth of object architecture. *
+ * @returns {string} Returns string that represents object data.
+ *
+ * @example
+ * //returns 1 , 2 , 3 , 4
+ * _toStrFine( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } )
+ *
+ * @example
+ * //returns [ Array with 4 elements ]
+ * _toStrFine( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } )
+ *
+ * @example
+ * //returns { routine add }
+ * _.toStrFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
+ *
+ *  @example
+ * //returns { Object with 1 elements }
+ * _.toStrFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )
+ *
+ * @example
+ * //returns a : 1 | b : 2
+ * _.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
+ *
+ * @method toStrFine
+ * @throws { Exception } Throw an exception if( options ) is not a Object.
+ * @memberof wTools
+ *
+*/
 var toStrFine_gen = function()
 {
 
