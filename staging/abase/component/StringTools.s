@@ -46,6 +46,7 @@ var toStrFields = function( src,options )
 }
 
 //
+
 /**
  * Converts object passed by argument( src ) to string format using parameters passed
  * by argument( options ), like ( { comma : ',', wrap : 0 } ) etc.
@@ -105,7 +106,8 @@ var toStrFields = function( src,options )
  * @throws { Exception } Throw an exception if( options ) is not a Object.
  * @memberof wTools
  *
-*/
+ */
+
 var toStrFine_gen = function()
 {
 
@@ -169,7 +171,7 @@ var toStrFine_gen = function()
   Object.preventExtensions( optional );
   Object.preventExtensions( restricts );
 
-  var def
+  var def;
   if( _.protoUnitedInterface )
   def = _.protoUnitedInterface([ primeFilter,composes,optional ]);
   else
