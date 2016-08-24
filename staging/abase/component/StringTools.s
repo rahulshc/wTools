@@ -495,10 +495,10 @@ var _toStrFromArray = function( src,o )
   //
 
   var length = src.length;
-  var o = _.mapExtend( {},o );
-  o.tab = o.tab + o.dtab;
-  o.level = o.level + 1;
-  o.prependTab = 0;
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
 
   //
 
@@ -517,7 +517,7 @@ var _toStrFromArray = function( src,o )
   ({
     values : src,
     optionsContainer : o,
-    optionsItem : o,
+    optionsItem : optionsItem,
     simple : simple,
     prefix : '[',
     postfix : ']',
