@@ -51,35 +51,35 @@ var toStrFields = function( src,options )
  * Converts object passed by argument( src ) to string format using parameters passed
  * by argument( options ), like ( { comma : ',', wrap : 0 } ) etc.
  *
- * @param {object} src - Source object.
+ * @param {object} src - Source object for representing it as string.
  * @param {object} options - Convertion options.
  * @param {boolean} [ options.wrap=true ] - wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {number} [ options.levels=1 ] - restricts max depth of object architecture.
+ * @param {number} [ options.levels=1 ] - restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ options.prependTab=true ] - prepend tab before each line.
- * @param {boolean} [ options.errorAsMap=false ] - if true Error object is interpreted as Map.
- * @param {boolean} [ options.own=true ] - function uses only direct properties of object( options ).
- * @param {string} [ options.tab='' ] - value of prepended tab before each line.
- * @param {string} [ options.dtab='  ' ] - double tab value.
- * @param {string} [ options.colon=' : ' ] - colon between property and value like ( { a : 1 } ).
- * @param {boolean} [ options.noRoutine=false ] - blocking object behavior like Routine.
- * @param {boolean} [ options.noAtomic=false ] - blocking object behavior like Atomic.
- * @param {boolean} [ options.noArray=false ] - blocking object behavior like Array.
- * @param {boolean} [ options.noObject=false ] - blocking object behavior like Object.
- * @param {boolean} [ options.noRow=false ] - blocking object behavior like Row.
- * @param {boolean} [ options.noError=false ] - blocking object behavior like Error.
- * @param {boolean} [ options.noNumber=false ] - blocking object behavior like Number.
- * @param {boolean} [ options.noString=false ] - blocking object behavior like String.
- * @param {boolean} [ options.noDate=false ] - blocking object behavior like Date.
- * @param {boolean} [ options.onlyRoutines=false ] - makes object behavior Routine only.
- * @param {boolean} [ options.noSubObject=false ] - ignores subobjects from( src ).
+ * @param {boolean} [ options.errorAsMap=false ] - interprets Error as Map if true.
+ * @param {boolean} [ options.own=true ] - use only own properties of ( src ), ignore properties of ( src ) prototype.
+ * @param {string} [ options.tab='' ] - prepended before each line tab.
+ * @param {string} [ options.dtab='  ' ] - .
+ * @param {string} [ options.colon=' : ' ] - colon between name and value, example : { a : 1 }.
+ * @param {boolean} [ options.noRoutine=false ] - ignores all entities of type Routine.
+ * @param {boolean} [ options.noAtomic=false ] - .
+ * @param {boolean} [ options.noArray=false ] - .
+ * @param {boolean} [ options.noObject=false ] - . Object.
+ * @param {boolean} [ options.noRow=false ] - . Row.
+ * @param {boolean} [ options.noError=false ] - . Error.
+ * @param {boolean} [ options.noNumber=false ] - . Number.
+ * @param {boolean} [ options.noString=false ] - . String.
+ * @param {boolean} [ options.noDate=false ] - . Date.
+ * @param {boolean} [ options.onlyRoutines=false ] - ignores all entities, but Routine.
+ * @param {boolean} [ options.noSubObject=false ] - .
  * @param {boolean} [ options.singleElementPerLine=false ] - writes each object element in new line
- * @param {number} [ options.precision =3 ] - value that specifying  length of a number.
- * @param {number} [ options.fixed=3 ] - number of digits after the decimal point.
- * @param {string} [ options.comma=', ' ] - splitter between elements.
+ * @param {number} [ options.precision=3 ] - . need also example!!!
+ * @param {number} [ options.fixed=3 ] - . need also example!!!
+ * @param {string} [ options.comma=', ' ] - splitter between elements, example : [ 1,2,3 ].
  * @param {boolean} [ options.multiline=0 ] - writes each object property in new line.
- * @param {boolean} [ options.unescape=0 ] - disables escape symbols in object elements.
- * @param {number} [ options.level=0 ] - min depth of object architecture. *
+ * @param {boolean} [ options.unescape=0 ] - disables escaping special characters.
+ * @param {number} [ options.level=0 ] - . *
  * @returns {string} Returns string that represents object data.
  *
  * @example
