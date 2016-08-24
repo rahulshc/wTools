@@ -2129,6 +2129,7 @@ var strCsvFrom = function( src,options )
 
 
 //
+
 /**
  * This function converts string to camelcase using special pattern.
  * If function finds character from this( '.','-','_','/' ) list before letter,
@@ -2149,7 +2150,8 @@ var strCsvFrom = function( src,options )
  * @method strCamelize
  * @memberof wTools
  *
-*/
+ */
+
 var strCamelize = function( srcStr )
 {
   _.assert( arguments.length === 1 );
@@ -2167,6 +2169,7 @@ var strCamelize = function( srcStr )
 }
 
 //
+
 /**
  * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
  * pattern with second argument( options ) property( options.separator ).If( options.separator ) is not defined,
@@ -2188,7 +2191,8 @@ var strCamelize = function( srcStr )
  * @method strFilenameFor
  * @memberof wTools
  *
-*/
+ */
+
 var strFilenameFor = function( srcStr,options )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );

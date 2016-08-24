@@ -9137,7 +9137,7 @@ var mapExtendFiltering = function( filter,dstObject )
 
     var argument = arguments[ a ];
 
-    _.assert( !_.atomicIs( argument ) );
+    _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
 
     for( var k in argument )
     {

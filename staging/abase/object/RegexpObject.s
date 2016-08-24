@@ -2,15 +2,30 @@
 
 'use strict';
 
-  /**
-   * The complete RegexpObject object.
-   * @typedef {Object} wRegexpObject
-   * @property {RegExp[]} includeAny - Array of RegExps, to check matching any of them;
-   * @property {RegExp[]} includeAll - Array of RegExps, to check matching all of them;
-   * @property {RegExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
-   * @property {RegExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
-   * @memberof wRegexpObject
-   */
+if( typeof module !== 'undefined' )
+{
+
+  if( typeof wBase === 'undefined' )
+  try
+  {
+    require( '../wTools.s' );
+  }
+  catch( err )
+  {
+    require( 'wTools' );
+  }
+
+}
+
+/**
+ * The complete RegexpObject object.
+ * @typedef {Object} wRegexpObject
+ * @property {RegExp[]} includeAny - Array of RegExps, to check matching any of them;
+ * @property {RegExp[]} includeAll - Array of RegExps, to check matching all of them;
+ * @property {RegExp[]} excludeAny - Array of RegExps, to check mismatch any of them;
+ * @property {RegExp[]} excludeAll - Array of RegExps, to check mismatch all of them;
+ * @memberof wRegexpObject
+ */
 
 var _ = wTools;
 var Parent = null;
@@ -98,7 +113,7 @@ var init = function( src,defaultMode )
   if( _.arrayIs( src ) )
   {
 
-    _.assert( arguments.length === 2 );
+    _.assert( arguments.length === 2,'expects second argument as default mode, for example "includeAny"' );
     _.assert( self.Names[ defaultMode ],'unknown mode :',defaultMode );
 
     if( !defaultMode )
