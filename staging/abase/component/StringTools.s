@@ -27,6 +27,29 @@ var strTypeOf = _.strTypeOf;
 
 //
 
+/**
+ * Short-cut for toStr function that works only with Routine type entities.
+ * Converts object passed by argument( src ) to string representation using
+ * options provided by argument( o ).
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @param {boolean} [ options.onlyRoutines=true ] - makes object behavior Routine only.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @returns {string} Returns string that represents object data.
+ *
+ * @example
+ * //returns { routine add }
+ * _.toStrMethods( ( function add(){} ), { } )
+ *
+ * @example
+ * //returns { routine noname }
+ * _.toStrMethods( ( function (){} ), { } )
+ *
+ * @method toStrMethods
+ * @memberof wTools
+ *
+*/
 var toStrMethods = function( src,o )
 {
   var o = o || {};
@@ -73,9 +96,9 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
  * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
  * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
- * @param {boolean} [ o.singleElementPerLine=false ] - Writes each object element in new line
- * @param {number} [ o.precision=3 ] - An integer specifying the number of significant digits, exampe : [ '8.01' ]
- * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ]
+ * @param {boolean} [ o.singleElementPerLine=false ] - Writes each object element in new line.
+ * @param {number} [ o.precision=3 ] - An integer specifying the number of significant digits, exampe : [ '8.01' ].
+ * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
  * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1,2,3 ].
  * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
  * @param {boolean} [ o.unescape=0 ] - Disables escaping of special characters.
