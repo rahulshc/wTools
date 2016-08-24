@@ -27,58 +27,59 @@ var strTypeOf = _.strTypeOf;
 
 //
 
-var toStrMethods = function( src,options )
+var toStrMethods = function( src,o )
 {
-  var options = options || {};
-  options.onlyRoutines = 1;
-  var result = toStrFine( src,options );
+  var o = o || {};
+  o.onlyRoutines = 1;
+  var result = toStrFine( src,o );
   return result;
 }
 
 //
 
-var toStrFields = function( src,options )
+var toStrFields = function( src,o )
 {
-  var options = options || {};
-  options.noRoutine = 1;
-  var result = toStrFine( src,options );
+  var o = o || {};
+  o.noRoutine = 1;
+  var result = toStrFine( src,o );
   return result;
 }
 
 //
+
 /**
  * Converts object passed by argument( src ) to string format using parameters passed
- * by argument( options ), like ( { comma : ',', wrap : 0 } ) etc.
+ * by argument( o ).
  *
- * @param {object} src - Source object.
- * @param {object} options - Convertion options.
- * @param {boolean} [ options.wrap=true ] - wrap array-like and object-like entities
+ * @param {object} src - Source object for representing it as string.
+ * @param {object} o - Convertion o.
+ * @param {boolean} [ o.wrap=true ] - wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {number} [ options.levels=1 ] - restricts max depth of object architecture.
- * @param {boolean} [ options.prependTab=true ] - prepend tab before each line.
- * @param {boolean} [ options.errorAsMap=false ] - if true Error object is interpreted as Map.
- * @param {boolean} [ options.own=true ] - function uses only direct properties of object( options ).
- * @param {string} [ options.tab='' ] - value of prepended tab before each line.
- * @param {string} [ options.dtab='  ' ] - double tab value.
- * @param {string} [ options.colon=' : ' ] - colon between property and value like ( { a : 1 } ).
- * @param {boolean} [ options.noRoutine=false ] - blocking object behavior like Routine.
- * @param {boolean} [ options.noAtomic=false ] - blocking object behavior like Atomic.
- * @param {boolean} [ options.noArray=false ] - blocking object behavior like Array.
- * @param {boolean} [ options.noObject=false ] - blocking object behavior like Object.
- * @param {boolean} [ options.noRow=false ] - blocking object behavior like Row.
- * @param {boolean} [ options.noError=false ] - blocking object behavior like Error.
- * @param {boolean} [ options.noNumber=false ] - blocking object behavior like Number.
- * @param {boolean} [ options.noString=false ] - blocking object behavior like String.
- * @param {boolean} [ options.noDate=false ] - blocking object behavior like Date.
- * @param {boolean} [ options.onlyRoutines=false ] - makes object behavior Routine only.
- * @param {boolean} [ options.noSubObject=false ] - ignores subobjects from( src ).
- * @param {boolean} [ options.singleElementPerLine=false ] - writes each object element in new line
- * @param {number} [ options.precision =3 ] - value that specifying  length of a number.
- * @param {number} [ options.fixed=3 ] - number of digits after the decimal point.
- * @param {string} [ options.comma=', ' ] - splitter between elements.
- * @param {boolean} [ options.multiline=0 ] - writes each object property in new line.
- * @param {boolean} [ options.unescape=0 ] - disables escape symbols in object elements.
- * @param {number} [ options.level=0 ] - min depth of object architecture. *
+ * @param {number} [ o.levels=1 ] - restricts max depth of looking into source object. Looks only in one level by default.
+ * @param {boolean} [ o.prependTab=true ] - prepend tab before each line.
+ * @param {boolean} [ o.errorAsMap=false ] - interprets Error as Map if true.
+ * @param {boolean} [ o.own=true ] - use only own properties of ( src ), ignore properties of ( src ) prototype.
+ * @param {string} [ o.tab='' ] - prepended before each line tab.
+ * @param {string} [ o.dtab='  ' ] - .
+ * @param {string} [ o.colon=' : ' ] - colon between name and value, example : { a : 1 }.
+ * @param {boolean} [ o.noRoutine=false ] - ignores all entities of type Routine.
+ * @param {boolean} [ o.noAtomic=false ] - .
+ * @param {boolean} [ o.noArray=false ] - .
+ * @param {boolean} [ o.noObject=false ] - . Object.
+ * @param {boolean} [ o.noRow=false ] - . Row.
+ * @param {boolean} [ o.noError=false ] - . Error.
+ * @param {boolean} [ o.noNumber=false ] - . Number.
+ * @param {boolean} [ o.noString=false ] - . String.
+ * @param {boolean} [ o.noDate=false ] - . Date.
+ * @param {boolean} [ o.onlyRoutines=false ] - ignores all entities, but Routine.
+ * @param {boolean} [ o.noSubObject=false ] - .
+ * @param {boolean} [ o.singleElementPerLine=false ] - writes each object element in new line
+ * @param {number} [ o.precision=3 ] - . need also example!!!
+ * @param {number} [ o.fixed=3 ] - . need also example!!!
+ * @param {string} [ o.comma=', ' ] - splitter between elements, example : [ 1,2,3 ].
+ * @param {boolean} [ o.multiline=0 ] - writes each object property in new line.
+ * @param {boolean} [ o.unescape=0 ] - disables escaping of special characters.
+ * @param {number} [ o.level=0 ] - . *
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -101,11 +102,12 @@ var toStrFields = function( src,options )
  * //returns a : 1 | b : 2
  * _.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
  *
- * @method toStrFine
- * @throws { Exception } Throw an exception if( options ) is not a Object.
+ * @method toStr
+ * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @memberof wTools
  *
-*/
+ */
+
 var toStrFine_gen = function()
 {
 
@@ -169,37 +171,37 @@ var toStrFine_gen = function()
   Object.preventExtensions( optional );
   Object.preventExtensions( restricts );
 
-  var def
+  var def;
   if( _.protoUnitedInterface )
   def = _.protoUnitedInterface([ primeFilter,composes,optional ]);
   else
   def = _.mapExtend( {},primeFilter,composes,optional );
 
-  var routine = function toStrFine( src,options )
+  var routine = function toStrFine( src,o )
   {
 
-    if( options !== undefined && !_.objectIs( options ) )
-    throw _.err( '_.toStrFine :','options must be object' );
+    if( o !== undefined && !_.objectIs( o ) )
+    throw _.err( '_.toStrFine :','o must be object' );
 
-    var options = options || {};
+    var o = o || {};
 
-    _.assertMapOnly( options,composes,primeFilter,optional );
-    options = _.mapSupplement( {},options,composes,restricts );
+    _.assertMapOnly( o,composes,primeFilter,optional );
+    o = _.mapSupplement( {},o,composes,restricts );
 
-    if( options.onlyRoutines )
+    if( o.onlyRoutines )
     {
       for( var f in primeFilter )
-      options[ f ] = 1;
-      options.noRoutine = 0;
+      o[ f ] = 1;
+      o.noRoutine = 0;
     }
 
-    if( options.comma === undefined )
-    options.comma = options.wrap ? optional.comma : ' ';
+    if( o.comma === undefined )
+    o.comma = o.wrap ? optional.comma : ' ';
 
-    if( options.comma && !_.strIs( options.comma ) )
-    options.comma = optional.comma;
+    if( o.comma && !_.strIs( o.comma ) )
+    o.comma = optional.comma;
 
-    var r = _toStrFine( src,options );
+    var r = _toStrFine( src,o );
 
     return r ? r.text : '';
   }
@@ -215,37 +217,37 @@ var toStrFine_gen = function()
 
 //
 
-var _toStrFine = function _toStrFine( src,options )
+var _toStrFine = function _toStrFine( src,o )
 {
   var result = '';
   var simple = 1;
 
-  if( options.level >= options.levels )
+  if( o.level >= o.levels )
   {
-    return { text : _toStrShort( src,options ), simple : 1 };
+    return { text : _toStrShort( src,o ), simple : 1 };
   }
 
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
 
-  if( options.noAtomic )
+  if( o.noAtomic )
   if( _.atomicIs( src ) )
   return;
 
-  /*options.noError = 1;*/
+  /*o.noError = 1;*/
 
-  if( isArray && options.noArray )
+  if( isArray && o.noArray )
   return;
 
-  if( isObject && options.noObject )
+  if( isObject && o.noObject )
   return;
 
   //
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
-    var r = src.toStr( options );
+    var r = src.toStr( o );
     if( _.objectIs( r ) )
     {
       _assert( r.simple !== undefined && r.text !== undefined );
@@ -261,51 +263,51 @@ var _toStrFine = function _toStrFine( src,options )
   }
   else if( _.rowIs( src ) )
   {
-    if( options.noRow )
+    if( o.noRow )
     return;
-    result += _.row.toStr( src,options );
+    result += _.row.toStr( src,o );
   }
-  else if( _.errorIs( src ) && !options.errorAsMap )
+  else if( _.errorIs( src ) && !o.errorAsMap )
   {
-    if( options.noError )
+    if( o.noError )
     return;
     result += src.toString();
     /*result += src.message;*/
   }
   else if( _.routineIs( src ) )
   {
-    if( options.noRoutine )
+    if( o.noRoutine )
     return;
     result += '{ routine ' + ( src.name || 'noname' ) + ' }';
   }
   else if( _.numberIs( src ) )
   {
-    if( options.noNumber )
+    if( o.noNumber )
     return;
-    result += _toStrFromNumber( src,options );
+    result += _toStrFromNumber( src,o );
   }
   else if( _.strIs( src ) )
   {
-    if( options.noString )
+    if( o.noString )
     return;
-    result += _toStrFromStr( src,options );
+    result += _toStrFromStr( src,o );
   }
   else if( src instanceof Date )
   {
-    if( options.noDate )
+    if( o.noDate )
     return;
 
     result += src.toISOString();
   }
   else if( isArray )
   {
-    var r = _toStrFromArray( src,options );
+    var r = _toStrFromArray( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( isObject )
   {
-    var r = _toStrFromObject( src,options );
+    var r = _toStrFromObject( src,o );
     result += r.text;
     simple = r.simple;
   }
@@ -324,7 +326,7 @@ var _toStrFine = function _toStrFine( src,options )
 
 //
 
-var _toStrShort = function( src,options )
+var _toStrShort = function( src,o )
 {
   var result = '';
 
@@ -342,7 +344,7 @@ var _toStrShort = function( src,options )
   }
   else if( _.numberIs( src ) )
   {
-    result += _toStrFromNumber( src,options );
+    result += _toStrFromNumber( src,o );
   }
   else if( _.strIs( src ) )
   {
@@ -379,12 +381,12 @@ var _toStrShort = function( src,options )
 //
 
 /**
- * This function converts Number to String with options.
+ * This function converts Number to String with o.
  *
  * @param {Number} src - Number for conversion.
- * @param {Object} options - Contains conversion options.
- * @param {Number} options.precision - Integer value that specifying  length of a number.
- * @param {Number} options.fixed - Number of digits after the decimal point.
+ * @param {Object} o - Contains conversion o.
+ * @param {Number} o.precision - Integer value that specifying  length of a number.
+ * @param {Number} o.fixed - Number of digits after the decimal point.
  *
  * @returns {String} Returns number converted to the string.
  *
@@ -401,14 +403,14 @@ var _toStrShort = function( src,options )
  *
 */
 
-var _toStrFromNumber = function( src,options )
+var _toStrFromNumber = function( src,o )
 {
   var result = '';
 
-  if( _.numberIs( options.precision ) )
-  result += src.toPrecision( options.precision );
-  else if( _.numberIs( options.fixed ) )
-  result += src.toFixed( options.fixed );
+  if( _.numberIs( o.precision ) )
+  result += src.toPrecision( o.precision );
+  else if( _.numberIs( o.fixed ) )
+  result += src.toFixed( o.fixed );
   else
   result += String( src );
 
@@ -417,11 +419,11 @@ var _toStrFromNumber = function( src,options )
 
 //
 
-var _toStrFromStr = function( src,options )
+var _toStrFromStr = function( src,o )
 {
   var result = '';
 
-  if( options.unescape )
+  if( o.unescape )
   {
     result += '"';
     for( var s = 0 ; s < src.length ; s++ )
@@ -456,20 +458,20 @@ var _toStrFromStr = function( src,options )
 
 //
 
-var _toStrFromArray = function( src,options )
+var _toStrFromArray = function( src,o )
 {
   var result = '';
 
   _assert( src && _.numberIs( src.length ) );
 
-  if( options.level >= options.levels )
+  if( o.level >= o.levels )
   {
-    return { text : _toStrShort( src,options ), simple : 1 };
+    return { text : _toStrShort( src,o ), simple : 1 };
   }
 
   if( src.length === 0 )
   {
-    if( !options.wrap )
+    if( !o.wrap )
     return { text : '', simple : 1 };
     return { text : '[]', simple : 1 };
   }
@@ -477,14 +479,14 @@ var _toStrFromArray = function( src,options )
   //
 
   var length = src.length;
-  var o = _.mapExtend( {},options );
-  o.tab = options.tab + options.dtab;
-  o.level = options.level + 1;
+  var o = _.mapExtend( {},o );
+  o.tab = o.tab + o.dtab;
+  o.level = o.level + 1;
   o.prependTab = 0;
 
   //
 
-  var simple = !options.multiline;
+  var simple = !o.multiline;
   if( simple )
   for( var i = 0 ; i < length ; i++ )
   {
@@ -498,7 +500,7 @@ var _toStrFromArray = function( src,options )
   result += _toStrFromContainer
   ({
     values : src,
-    containerOptions : options,
+    containerOptions : o,
     itemOptions : o,
     simple : simple,
     prefix : '[',
@@ -510,34 +512,34 @@ var _toStrFromArray = function( src,options )
 
 //
 
-var _toStrFromObject = function( src,options )
+var _toStrFromObject = function( src,o )
 {
   var result = '';
 
   _assert( _.objectIs( src ) || _.objectLike( src ) );
 
-  if( options.level >= options.levels )
+  if( o.level >= o.levels )
   {
-    return { text : _toStrShort( src,options ), simple : 1 };
+    return { text : _toStrShort( src,o ), simple : 1 };
   }
 
-  if( options.noObject )
+  if( o.noObject )
   return;
 
   //
 
-  var names = options.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
+  var names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
   var length = names.length;
   if( length === 0 )
   {
-    if( !options.wrap )
+    if( !o.wrap )
     return { text : '', simple : 1 };
     return { text : '{}', simple : 1 };
   }
 
   //
 
-  var simple = !options.multiline;
+  var simple = !o.multiline;
   if( simple )
   simple = length < 4;
   if( simple )
@@ -550,17 +552,17 @@ var _toStrFromObject = function( src,options )
 
   //
 
-  var optionsItem = _.mapExtend( {},options );
-  optionsItem.noObject = options.noSubObject ? 1 : 0;
-  optionsItem.tab = options.tab + options.dtab;
-  optionsItem.level = options.level + 1;
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.noObject = o.noSubObject ? 1 : 0;
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
   optionsItem.prependTab = 0;
 
   result += _toStrFromContainer
   ({
     values : src,
     names : names,
-    containerOptions : options,
+    containerOptions : o,
     itemOptions : optionsItem,
     simple : simple,
     prefix : '{',
@@ -572,18 +574,18 @@ var _toStrFromObject = function( src,options )
 
 //
 
-var _toStrFromContainer = function( options )
+var _toStrFromContainer = function( o )
 {
   var result = '';
 
-  var values = options.values;
-  var names = options.names;
-  var containerOptions = options.containerOptions;
-  var o = options.itemOptions;
+  var values = o.values;
+  var names = o.names;
+  var containerOptions = o.containerOptions;
+  var o = o.itemOptions;
 
-  var simple = options.simple;
-  var prefix = options.prefix;
-  var postfix = options.postfix;
+  var simple = o.simple;
+  var prefix = o.prefix;
+  var postfix = o.postfix;
 
   // line postfix
 
@@ -715,7 +717,7 @@ var toStrForRange = function( range )
 
 //
 
-var toStrForCall = function( nameOfRoutine,args,ret,options )
+var toStrForCall = function( nameOfRoutine,args,ret,o )
 {
   var result = nameOfRoutine + '( ';
   var first = true;
@@ -730,9 +732,9 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
     result += ', ';
 
     if( _.objectIs( e ) )
-    result += k + ' :' + _.toStr( e,options );
+    result += k + ' :' + _.toStr( e,o );
     else
-    result += _.toStr( e,options );
+    result += _.toStr( e,o );
 
     first = false;
 
@@ -741,7 +743,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,options )
   result += ' )';
 
   if( arguments.length >= 3 )
-  result += ' -> ' + _.toStr( ret,options );
+  result += ' -> ' + _.toStr( ret,o );
 
   return result;
 }
@@ -1332,6 +1334,7 @@ var strRemoveAllSpaces = function( src,sub )
 }
 
 //
+
 /**
  * This function removes all empty lines from the string passed by first argument( srcStr ).
  *
@@ -1356,7 +1359,8 @@ var strRemoveAllSpaces = function( src,sub )
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @memberof wTools
  *
-*/
+ */
+
 var strStripEmptyLines = function( srcStr )
 {
   var result = '';
@@ -1411,6 +1415,7 @@ var strIron = function()
 }
 
 //
+
 /**
  * This function finds substring passed by second argument( ins ) in the source string( src )
  * and replaces each occurrence with the third argument( sub ).
@@ -1434,9 +1439,10 @@ var strIron = function()
  * _.strReplaceAll( 'aabaa','y','x' );
  *
  * @method strReplaceAll
-  * @memberof wTools
+ * @memberof wTools
  *
-*/
+ */
+
 var strReplaceAll = function( src, ins, sub )
 {
   _.assert( _.strIs( src ) );
@@ -1642,22 +1648,21 @@ var strDropPrefix = function( src,prefix )
 
 var strDropPostfix = function( src,postfix )
 {
-  throw _.err( 'Not tested' );
 
-  // _.assert( _.strIs( src ) );
-  // _.assert( _.strIs( postfix ) );
-  // _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( postfix ) );
+  _.assert( arguments.length === 2 );
 
   var l = src.length - postfix.length;
-  // if( src.length > postfix.length && src.lastIndexOf( postfix ) === l )
-  if( src.length > postfix.length && src.indexOf( postfix ) === l )
+
+  if( src.length > postfix.length && src.lastIndexOf( postfix ) === l )
   return src.substr( 0,l );
   else return src;
 }
 
 //
 
-var strDifference = function( src1,src2,options )
+var strDifference = function( src1,src2,o )
 {
   _assert( _.strIs( src1 ) );
   _assert( _.strIs( src2 ) );
@@ -1674,7 +1679,7 @@ var strDifference = function( src1,src2,options )
 
 //
 
-var strSimilarity = function( src1,src2,options )
+var strSimilarity = function( src1,src2,o )
 {
   _assert( _.strIs( src1 ) );
   _assert( _.strIs( src2 ) );
@@ -1798,7 +1803,8 @@ var strToDom = function( xmlStr )
  * @method strHtmlEscape
  * @memberof wTools
  *
-*/
+ */
+
 var _strHtmlEscapeMap =
 {
   '&' : '&amp;',
@@ -1807,7 +1813,7 @@ var _strHtmlEscapeMap =
   '"' : '&quot;',
   '\'' : '&#39;',
   '/' : '&#x2F;'
-};
+}
 
 var strHtmlEscape = function( str )
 {
@@ -1821,13 +1827,13 @@ var strHtmlEscape = function( str )
 
 //
 
-var strToConfig = function( src,options ){
+var strToConfig = function( src,o ){
 
   var result = {};
   if( !_.strIs( src ) ) throw _.err( '_.strToConfig :','require string' );
 
-  var options = options || {};
-  if( options.delimeter === undefined ) options.delimeter = ' :';
+  var o = o || {};
+  if( o.delimeter === undefined ) o.delimeter = ' :';
 
   var src = src.split( '\n' );
 
@@ -1835,7 +1841,7 @@ var strToConfig = function( src,options ){
   {
 
     var row = src[ s ];
-    var i = row.indexOf( options.delimeter );
+    var i = row.indexOf( o.delimeter );
     if( i === -1 ) continue;
 
     var key = row.substr( 0,i ).trim();
@@ -2042,35 +2048,35 @@ var _metrics =
 
 }
 
-var strMetricFormat = function( number,options )
+var strMetricFormat = function( number,o )
 {
 
-  var options = options || {};
+  var o = o || {};
 
   if( _.strIs( number ) ) number = parseFloat( number );
   if( !_.numberIs( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
 
-  if( options.divisor === undefined ) options.divisor = 3;
-  if( options.thousand === undefined ) options.thousand = 1000;
-  if( options.fixed === undefined ) options.fixed = 1;
-  if( options.dimensions === undefined ) options.dimensions = 1;
-  if( options.metric === undefined ) options.metric = 0;
+  if( o.divisor === undefined ) o.divisor = 3;
+  if( o.thousand === undefined ) o.thousand = 1000;
+  if( o.fixed === undefined ) o.fixed = 1;
+  if( o.dimensions === undefined ) o.dimensions = 1;
+  if( o.metric === undefined ) o.metric = 0;
 
-  if( options.dimensions !== 1 ) options.thousand = Math.pow( options.thousand,options.dimensions );
+  if( o.dimensions !== 1 ) o.thousand = Math.pow( o.thousand,o.dimensions );
 
-  var metric = options.metric;
+  var metric = o.metric;
   var original = number;
 
-  if( Math.abs( number ) > options.thousand )
+  if( Math.abs( number ) > o.thousand )
   {
 
-    while( Math.abs( number ) > options.thousand || !_metrics[ String( metric ) ] )
+    while( Math.abs( number ) > o.thousand || !_metrics[ String( metric ) ] )
     {
 
-      if( metric + options.divisor > _metrics.range[ 1 ] ) break;
+      if( metric + o.divisor > _metrics.range[ 1 ] ) break;
 
-      number /= options.thousand;
-      metric += options.divisor;
+      number /= o.thousand;
+      metric += o.divisor;
 
     }
 
@@ -2081,10 +2087,10 @@ var strMetricFormat = function( number,options )
     while( Math.abs( number ) < 1 || !_metrics[ String( metric ) ] )
     {
 
-      if( metric - options.divisor < _metrics.range[ 0 ] ) break;
+      if( metric - o.divisor < _metrics.range[ 0 ] ) break;
 
-      number *= options.thousand;
-      metric -= options.divisor;
+      number *= o.thousand;
+      metric -= o.divisor;
 
     }
 
@@ -2094,11 +2100,11 @@ var strMetricFormat = function( number,options )
 
   if( _metrics[ String( metric ) ] )
   {
-    result = number.toFixed( options.fixed ) + ' ' + _metrics[ String( metric ) ].symbol;
+    result = number.toFixed( o.fixed ) + ' ' + _metrics[ String( metric ) ].symbol;
   }
   else
   {
-    result = original.toFixed( options.fixed ) + ' ';
+    result = original.toFixed( o.fixed ) + ' ';
   }
 
   return result;
@@ -2106,54 +2112,54 @@ var strMetricFormat = function( number,options )
 
 //
 
-var strMetricFormatBytes = function( number,options )
+var strMetricFormatBytes = function( number,o )
 {
 
-  var options = options || {};
+  var o = o || {};
   var defaultOptions =
   {
     divisor : 3,
     thousand : 1024,
   };
 
-  _.mapSupplement( options,defaultOptions );
+  _.mapSupplement( o,defaultOptions );
 
-  return _.strMetricFormat( number,options ) + 'b';
+  return _.strMetricFormat( number,o ) + 'b';
 }
 
 //
 
-var strCsvFrom = function( src,options )
+var strCsvFrom = function( src,o )
 {
 
   var result = '';
-  var options = options || {};
+  var o = o || {};
 
-  if( !options.header )
+  if( !o.header )
   {
 
-    options.header = [];
+    o.header = [];
 
     _.eachRecursive( _.entityValueWithIndex( src,0 ),function( e,k,i )
     {
-      options.header.push( k );
+      o.header.push( k );
     });
 
   }
 
-  if( options.cellSeparator === undefined ) options.cellSeparator = ',';
-  if( options.rowSeparator === undefined ) options.rowSeparator = '\n';
-  if( options.substitute === undefined ) options.substitute = '';
-  if( options.withHeader === undefined ) options.withHeader = 1;
+  if( o.cellSeparator === undefined ) o.cellSeparator = ',';
+  if( o.rowSeparator === undefined ) o.rowSeparator = '\n';
+  if( o.substitute === undefined ) o.substitute = '';
+  if( o.withHeader === undefined ) o.withHeader = 1;
 
-  //console.log( 'options',options );
+  //console.log( 'o',o );
 
-  if( options.withHeader )
+  if( o.withHeader )
   {
-    _.eachRecursive( options.header,function( e,k,i ){
-      result += e + options.cellSeparator;
+    _.eachRecursive( o.header,function( e,k,i ){
+      result += e + o.cellSeparator;
     });
-    result = result.substr( 0,result.length-options.cellSeparator.length ) + options.rowSeparator;
+    result = result.substr( 0,result.length-o.cellSeparator.length ) + o.rowSeparator;
   }
 
   _.each( src,function( row )
@@ -2161,21 +2167,21 @@ var strCsvFrom = function( src,options )
 
     var rowString = '';
 
-    _.each( options.header,function( key )
+    _.each( o.header,function( key )
     {
 
       debugger;
       var element = _.entityWithKeyRecursive( row,key );
       if( element === undefined ) element = '';
       element = String( element );
-      if( element.indexOf( options.rowSeparator ) !== -1 ) element = _.strReplaceAll( element,options.rowSeparator,options.substitute );
-      if( element.indexOf( options.cellSeparator ) !== -1 ) element = _.strReplaceAll( element,options.cellSeparator,options.substitute );
+      if( element.indexOf( o.rowSeparator ) !== -1 ) element = _.strReplaceAll( element,o.rowSeparator,o.substitute );
+      if( element.indexOf( o.cellSeparator ) !== -1 ) element = _.strReplaceAll( element,o.cellSeparator,o.substitute );
 
-      rowString += element + options.cellSeparator;
+      rowString += element + o.cellSeparator;
 
     });
 
-    result += rowString.substr( 0,rowString.length-options.cellSeparator.length ) + options.rowSeparator;
+    result += rowString.substr( 0,rowString.length-o.cellSeparator.length ) + o.rowSeparator;
 
   });
 
@@ -2184,6 +2190,7 @@ var strCsvFrom = function( src,options )
 
 
 //
+
 /**
  * This function converts string to camelcase using special pattern.
  * If function finds character from this( '.','-','_','/' ) list before letter,
@@ -2204,7 +2211,8 @@ var strCsvFrom = function( src,options )
  * @method strCamelize
  * @memberof wTools
  *
-*/
+ */
+
 var strCamelize = function( srcStr )
 {
   _.assert( arguments.length === 1 );
@@ -2222,13 +2230,14 @@ var strCamelize = function( srcStr )
 }
 
 //
+
 /**
  * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
- * pattern with second argument( options ) property( options.separator ).If( options.separator ) is not defined,
+ * pattern with second argument( o ) property( o.separator ).If( o.separator ) is not defined,
  * function sets value to( '_' ).
  *
  * @param {string} srcStr - Source string.
- * @param {object} options - Object that contains options.
+ * @param {object} o - Object that contains o.
  * @returns {string} Returns string with result of replacements.
  *
  * @example
@@ -2237,14 +2246,15 @@ var strCamelize = function( srcStr )
  *
  * @example
  * //returns #example#file#name.js
- * var options = { 'separator':'#' };
- * _.strFilenameFor( "'example\\file?name.js",options );
+ * var o = { 'separator':'#' };
+ * _.strFilenameFor( "'example\\file?name.js",o );
  *
  * @method strFilenameFor
  * @memberof wTools
  *
-*/
-var strFilenameFor = function( srcStr,options )
+ */
+
+var strFilenameFor = function( srcStr,o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( srcStr ) );
@@ -2253,15 +2263,15 @@ var strFilenameFor = function( srcStr,options )
   _.assert( _.mapIs( arguments[ 1 ] ) );
 
   var result = srcStr;
-  var options = options || {};
-  if( options.separator === undefined )
-  options.separator = '_';
+  var o = o || {};
+  if( o.separator === undefined )
+  o.separator = '_';
 
   var regexp = /<|>| :|"|'|\/|\\|\||\&|\?|\*|\n|\s/g;
 
   var result = result.replace( regexp,function( match )
   {
-    return options.separator;
+    return o.separator;
   });
 
   return result;

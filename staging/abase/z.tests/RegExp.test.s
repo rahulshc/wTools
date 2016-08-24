@@ -1,4 +1,4 @@
-( function( ) {
+( function _RegExp_test_s( ) {
 
   'use strict';
 
@@ -14,6 +14,8 @@
 
   if( typeof module !== 'undefined' )
   {
+
+    require( '../wTools.s' );
 
     if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
     require( '../object/Testing.debug.s' );
@@ -358,7 +360,7 @@
     }
   };
 
-// 
+//
 
   var regexpTest = function( test )
   {
@@ -1107,7 +1109,7 @@
       } );
     }
   };
-  
+
   //
 
   var regexpArrayIndex = function( test )
@@ -1239,7 +1241,8 @@
 
     name: 'regexp',
 
-    tests: {
+    tests:
+    {
 
       regexpEscape        : regexpEscape,
       regexpForGlob       : regexpForGlob,

@@ -3,7 +3,7 @@ set -o errexit
 #set -o pipefail
 #set -o verbose
 
-#npm install -g jsdoc
+npm install -g jsdoc
 
 WAS_DIR=$PWD
 BASE_DIR=$(dirname $0)

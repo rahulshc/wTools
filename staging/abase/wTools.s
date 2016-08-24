@@ -19,7 +19,7 @@ if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ 
 // name
 
 if( _global_.wBase )
-throw 'wTools included several times';
+throw new Error( 'wTools included several times' );
 
 _global_[ '_global_' ] = _global_;
 _global_._global_ = _global_;
@@ -67,11 +67,11 @@ var _initConfig = function _initConfig()
 
   if( !_global_.Config )
   {
-
-    /*_global_.Config = Object.freeze({ debug : true });*/
-    _global_.Config = { debug : true };
-
+    _global_.Config = {};
   }
+
+  if( _global_.Config.debug === undefined )
+  _global_.Config.debug = true;
 
   Object.defineProperty( _global_, 'Config',
   {
@@ -1141,7 +1141,7 @@ var entityLength = function( src )
   if( _.arrayLike( src ) )
   return src.length;
   else if( _.objectLike( src ) )
-  return _.mapKeys( src ).length;
+  return _.mapOwnKeys( src ).length;
   else return 1;
 }
 
@@ -1721,11 +1721,11 @@ entityGroup.defaults =
 var _entityMost = function( src,onElement,returnMax )
 {
 
-  _.assert( arguments.length === 3 );
-  _.assert( onElement.length === 1,'not mplemented' );
-
   if( onElement === undefined )
   onElement = function( element ){ return element; }
+
+  _.assert( arguments.length === 3 );
+  _.assert( onElement.length === 1,'not mplemented' );
 
   var onCompare = null;
 
@@ -1767,7 +1767,7 @@ var _entityMost = function( src,onElement,returnMax )
   else
   {
 
-    throw _.err( 'not tested' );
+    //throw _.err( 'not tested' );
     for( var s in src )
     {
       result.index = 0;
@@ -4364,7 +4364,7 @@ var _regexpArrayAll = function( arr,ins,none )
       If passed single RegExp/String or array of RegExps/Strings, then method will return RegexpObject with
    `defaultMode` as key, and array of RegExps created from first parameter as value.
       If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
-   with shrinking (see [regexpObjectShrink]{@link wTools#regexpObjectShrink}) RegexpObjects and RegExps that associates
+   with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
    with `defaultMode` key.
    *
    * @example
@@ -9137,7 +9137,7 @@ var mapExtendFiltering = function( filter,dstObject )
 
     var argument = arguments[ a ];
 
-    _.assert( !_.atomicIs( argument ) );
+    _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
 
     for( var k in argument )
     {
@@ -11260,22 +11260,34 @@ _global_.wBase = Proto;
 
 mapExtend( Self, Proto );
 
-//Self.constructor = function wTools() {};
+/*Self.constructor = function wTools() {};*/
 
-// --
-// init
-// --
+//
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
 var timeNow = Self.timeNow = Self._timeNow_gen();
 
+//
+
+_global_[ 'wTools' ] = Self;
+_global_.wTools = Self;
+
+//debugger;
+
+if( typeof module !== 'undefined' && module !== null )
+try
+{
+  require( '../ServerTools.ss' );
+}
+catch( err )
+{
+}
+
+//debugger;
+
 if( _global_.wToolsInitConfigExpected !== false )
 _._initConfig();
-
-// --
-// export
-// --
 
 if( typeof module !== 'undefined' && module !== null )
 {
@@ -11285,13 +11297,8 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/NameTools.s' );
   require( './component/ExecTools.s' );
   require( './component/StringTools.s' );
-  require( './object/RegexpObject.s' );
+  //require( './object/RegexpObject.s' );
 
 }
-
-_global_[ 'wTools' ] = Self;
-_global_.wTools = Self;
-
-/*_.constant( _global_,{ Config : Config } );*/
 
 })();
