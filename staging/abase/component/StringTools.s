@@ -75,13 +75,8 @@ var toStrFields = function( src,o )
  * by argument( o ).
  *
  * @param {object} src - Source object for representing it as string.
-<<<<<<< HEAD
  * @param {object} o - Convertion options.
  * @param {boolean} [ o.wrap=true ] - wrap array-like and object-like entities
-=======
- * @param {object} o - Convertion o.
- * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
->>>>>>> 854df1edd3d0a51f284e4540f4ff21b3985c627b
  * into "[ .. ]" / "{ .. }" respecitvely.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
@@ -111,31 +106,23 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns 1 , 2 , 3 , 4
-<<<<<<< HEAD
- * _toStrFine( [ 1,2,3,4 ], { levels : 1, wrap : 0, comma : ' , ' } )
+ * _.toStr( [ 1,2,3,4 ], { levels : 1, wrap : 0, comma : ' , ' } );
  *
  * @example
  * //returns [ Array with 4 elements ]
- * _toStrFine( [ 'a','b','c' ], { levels : 0, wrap : 0, comma : ' , ' } )
-=======
- * _.toStr( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } );
- *
- * @example
- * //returns [ Array with 4 elements ]
- * _.toStr( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } );
->>>>>>> 854df1edd3d0a51f284e4540f4ff21b3985c627b
+ * _.toStr( ['a','b','c'], { levels : 0, wrap : 0 } );
  *
  * @example
  * //returns { routine add }
- * _.toStr( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } );
+ * _.toStr( function add( ){ }, { levels : 1 } );
  *
  *  @example
  * //returns { Object with 1 elements }
- * _.toStr( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } );
+ * _.toStr( { o : 1 }, { levels : 0 } );
  *
  * @example
  * //returns a : 1 | b : 2
- * _.toStr( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } );
+ * _.toStr( { a : 1, b : 2 }, { wrap : 0, comma : ' | ' } );
  *
  * * @example
  * //Each time function parses next level of object depth
