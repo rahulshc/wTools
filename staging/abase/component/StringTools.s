@@ -53,53 +53,64 @@ var toStrFields = function( src,o )
  *
  * @param {object} src - Source object for representing it as string.
  * @param {object} o - Convertion o.
- * @param {boolean} [ o.wrap=true ] - wrap array-like and object-like entities
+ * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {number} [ o.levels=1 ] - restricts max depth of looking into source object. Looks only in one level by default.
- * @param {boolean} [ o.prependTab=true ] - prepend tab before each line.
- * @param {boolean} [ o.errorAsMap=false ] - interprets Error as Map if true.
- * @param {boolean} [ o.own=true ] - use only own properties of ( src ), ignore properties of ( src ) prototype.
- * @param {string} [ o.tab='' ] - prepended before each line tab.
- * @param {string} [ o.dtab='  ' ] - prepended before each object property.
- * @param {string} [ o.colon=' : ' ] - colon between name and value, example : { a : 1 }.
- * @param {boolean} [ o.noRoutine=false ] - ignores all entities of type Routine.
- * @param {boolean} [ o.noAtomic=false ] - ignores all entities of type Atomic.
- * @param {boolean} [ o.noArray=false ] - ignores all entities of type Array.
- * @param {boolean} [ o.noObject=false ] - ignores all entities of type Object.
- * @param {boolean} [ o.noRow=false ] - ignores all entities of type Row.
- * @param {boolean} [ o.noError=false ] - ignores all entities of type Error.
- * @param {boolean} [ o.noNumber=false ] - ignores all entities of type Number.
- * @param {boolean} [ o.noString=false ] - ignores all entities of type String.
- * @param {boolean} [ o.noDate=false ] - ignores all entities of type Date.
- * @param {boolean} [ o.onlyRoutines=false ] - ignores all entities, but Routine.
- * @param {boolean} [ o.noSubObject=false ] - ignores all child entities.
- * @param {boolean} [ o.singleElementPerLine=false ] - writes each object element in new line
- * @param {number} [ o.precision=3 ] - an integer specifying the number of significant digits, exampe : [ '5.12' ]
- * @param {number} [ o.fixed=3 ] - the number of digits to appear after the decimal point, example : [ '12345.678' ]
- * @param {string} [ o.comma=', ' ] - splitter between elements, example : [ 1,2,3 ].
- * @param {boolean} [ o.multiline=0 ] - writes each object property in new line.
- * @param {boolean} [ o.unescape=0 ] - disables escaping of special characters.
+ * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+ * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
+ * @param {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
+ * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
+ * @param {string} [ o.tab='' ] - Prepended before each line tab.
+ * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+ * @param {string} [ o.colon=' : ' ] - Colon between name and value, example : { a : 1 }.
+ * @param {boolean} [ o.noRoutine=false ] - Ignores all entities of type Routine.
+ * @param {boolean} [ o.noAtomic=false ] - Ignores all entities of type Atomic.
+ * @param {boolean} [ o.noArray=false ] - Ignores all entities of type Array.
+ * @param {boolean} [ o.noObject=false ] - Ignores all entities of type Object.
+ * @param {boolean} [ o.noRow=false ] - Ignores all entities of type Row.
+ * @param {boolean} [ o.noError=false ] - Ignores all entities of type Error.
+ * @param {boolean} [ o.noNumber=false ] - Ignores all entities of type Number.
+ * @param {boolean} [ o.noString=false ] - Ignores all entities of type String.
+ * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
+ * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
+ * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
+ * @param {boolean} [ o.singleElementPerLine=false ] - Writes each object element in new line
+ * @param {number} [ o.precision=3 ] - An integer specifying the number of significant digits, exampe : [ '8.01' ]
+ * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ]
+ * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1,2,3 ].
+ * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
+ * @param {boolean} [ o.unescape=0 ] - Disables escaping of special characters.
  * @returns {string} Returns string that represents object data.
  *
  * @example
  * //returns 1 , 2 , 3 , 4
- * _toStrFine( [1,2,3,4], { levels : 1, wrap : 0, comma : ' , ' } )
  *
  * @example
  * //returns [ Array with 4 elements ]
- * _toStrFine( ['a','b','c'], { levels : 0, wrap : 0, comma : ' , ' } )
  *
  * @example
  * //returns { routine add }
- * _.toStrFine( function add( ){ }, { levels : 1 ,wrap : 1, comma : ' , ' } )
  *
  *  @example
  * //returns { Object with 1 elements }
- * _.toStrFine( { o : 1 }, { levels : 0 ,wrap : 1, comma : ' , ' } )
  *
  * @example
  * //returns a : 1 | b : 2
- * _.toStrFine( { a : 1, b : 2 }, { levels : 1 ,wrap : 0, comma : ' | ' } )
+ *
+ * * @example
+ * //Each time function parses next level of object depth
+ * //the ( o.dtab ) string ( '-' ) is attached to ( o.tab ).
+ * //returns
+ * { // level 1
+ * -a : 1,
+ * -b : 2,
+ * -c :
+ * -{ // level 2
+ * --subd : "some test",
+ * --sube : true,
+ * --subf : {  x : 1  // level 3}
+ * -}
+ * }
+ * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} ));
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
