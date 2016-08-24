@@ -27,28 +27,6 @@ var strTypeOf = _.strTypeOf;
 
 //
 
-/**
- * Short-cut for toStr( toStrFine ) function.Converts function passed by argument( src ) to string
- * representation using options provided by argument( options ).
- *
- * @param {object} src - Source object.
- * @param {object} options - Convertion options.
- * @param {boolean} [ options.onlyRoutines=true ] - makes object behavior Routine only.
- * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
- * @returns {string} Returns string that represents object data.
- *
- * @example
- * //returns { routine add }
- * _.toStrMethods( ( function add(){} ), { } )
- *
- * @example
- * //returns { routine noname }
- * _.toStrMethods( ( function (){} ), { } )
- *
- * @method toStrMethods
- * @memberof wTools
- *
-*/
 var toStrMethods = function( src,options )
 {
   var options = options || {};
