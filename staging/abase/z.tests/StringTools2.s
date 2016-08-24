@@ -367,6 +367,21 @@ var strCamelize = function( test )
   var expected = 'aBCD';
   test.identical( got,expected );
 
+  test.description = 'string with spaces';
+  var got = _.strCamelize( '.test -str_ing /with .spaces' );
+  var expected = 'Test StrIng With Spaces';
+  test.identical( got,expected );
+
+  test.description = 'string with no spaces';
+  var got = _.strCamelize( 'camel.case/string' );
+  var expected = 'camelCaseString';
+  test.identical( got,expected );
+
+  test.description = 'empty string';
+  var got = _.strCamelize( '' );
+  var expected = '';
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
@@ -411,6 +426,11 @@ var strFilenameFor = function( test )
   test.description = 'convertion with options';
   var got = _.strFilenameFor( "'example\\file?name.js",{ 'separator':'#' } );
   var expected = '#example#file#name.js';
+  test.identical( got,expected );
+
+  test.description = 'empty string';
+  var got = _.strFilenameFor( '' );
+  var expected = '';
   test.identical( got,expected );
 
   /**/
