@@ -52,7 +52,7 @@ var toStrFields = function( src,o )
  * by argument( o ).
  *
  * @param {object} src - Source object for representing it as string.
- * @param {object} o - Convertion o.
+ * @param {object} o - Convertion options.
  * @param {boolean} [ o.wrap=true ] - wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
  * @param {number} [ o.levels=1 ] - restricts max depth of looking into source object. Looks only in one level by default.
@@ -180,8 +180,7 @@ var toStrFine_gen = function()
   var routine = function toStrFine( src,o )
   {
 
-    if( o !== undefined && !_.objectIs( o ) )
-    throw _.err( '_.toStrFine :','o must be object' );
+    _.assert( _.objectIs( o ) || o === undefined,'expects map o' );
 
     var o = o || {};
 
@@ -231,18 +230,6 @@ var _toStrFine = function _toStrFine( src,o )
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
 
-  if( o.noAtomic )
-  if( _.atomicIs( src ) )
-  return;
-
-  /*o.noError = 1;*/
-
-  if( isArray && o.noArray )
-  return;
-
-  if( isObject && o.noObject )
-  return;
-
   //
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
@@ -278,7 +265,7 @@ var _toStrFine = function _toStrFine( src,o )
   {
     if( o.noRoutine )
     return;
-    result += '{ routine ' + ( src.name || 'noname' ) + ' }';
+    result += _toStrFromRoutine( src,o );
   }
   else if( _.numberIs( src ) )
   {
@@ -296,28 +283,32 @@ var _toStrFine = function _toStrFine( src,o )
   {
     if( o.noDate )
     return;
-
     result += src.toISOString();
   }
   else if( isArray )
   {
+    if( o.noArray )
+    return;
     var r = _toStrFromArray( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( isObject )
   {
+    if( o.noObject )
+    return;
     var r = _toStrFromObject( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( !isAtomic && _.routineIs( src.toString ) )
   {
-    /*throw _.err( 'not tested' );*/
     result += src.toString();
   }
   else
   {
+    if( _.atomicIs( src ) )
+    return;
     result += String( src );
   }
 
@@ -367,13 +358,38 @@ var _toStrShort = function( src,o )
   else if( _.objectIs( src ) || _.objectLike( src ) )
   {
 
-    result += '{ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' }';
+    result += '[ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' ]';
 
   }
   else
   {
     result += String( src );
   }
+
+  return result;
+}
+
+//
+
+var _toStrIsSimpleElement = function( element )
+{
+  if( _.strIs( element ) )
+  return element.length < 40;
+  else if( element && !_.objectIs( element ) && _.numberIs( element.length ) )
+  return !element.length;
+  else if( _.objectIs( element ) || _.objectLike( element ) )
+  return !_.entityLength( element );
+  else
+  return _.atomicIs( element );
+}
+
+//
+
+var _toStrFromRoutine = function( src,o )
+{
+  var result = '';
+
+  result = '[ routine ' + ( src.name || src._name || 'without name' ) + ' ]';
 
   return result;
 }
@@ -500,8 +516,8 @@ var _toStrFromArray = function( src,o )
   result += _toStrFromContainer
   ({
     values : src,
-    containerOptions : o,
-    itemOptions : o,
+    optionsContainer : o,
+    optionsItem : o,
     simple : simple,
     prefix : '[',
     postfix : ']',
@@ -526,7 +542,7 @@ var _toStrFromObject = function( src,o )
   if( o.noObject )
   return;
 
-  //
+  /* */
 
   var names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
   var length = names.length;
@@ -537,7 +553,7 @@ var _toStrFromObject = function( src,o )
     return { text : '{}', simple : 1 };
   }
 
-  //
+  /* */
 
   var simple = !o.multiline;
   if( simple )
@@ -550,7 +566,7 @@ var _toStrFromObject = function( src,o )
     break;
   }
 
-  //
+  /* */
 
   var optionsItem = _.mapExtend( {},o );
   optionsItem.noObject = o.noSubObject ? 1 : 0;
@@ -562,8 +578,8 @@ var _toStrFromObject = function( src,o )
   ({
     values : src,
     names : names,
-    containerOptions : o,
-    itemOptions : optionsItem,
+    optionsContainer : o,
+    optionsItem : optionsItem,
     simple : simple,
     prefix : '{',
     postfix : '}',
@@ -578,10 +594,12 @@ var _toStrFromContainer = function( o )
 {
   var result = '';
 
+  _.assert( arguments.length );
+
   var values = o.values;
   var names = o.names;
-  var containerOptions = o.containerOptions;
-  var o = o.itemOptions;
+  var optionsContainer = o.optionsContainer;
+  var optionsItem = o.optionsItem;
 
   var simple = o.simple;
   var prefix = o.prefix;
@@ -590,47 +608,47 @@ var _toStrFromContainer = function( o )
   // line postfix
 
   var linePostfix = '';
-  if( containerOptions.comma )
-  linePostfix += containerOptions.comma;
+  if( optionsContainer.comma )
+  linePostfix += optionsContainer.comma;
   if( !simple )
-  linePostfix += '\n' + o.tab;
+  linePostfix += '\n' + optionsItem.tab;
 
   // prepend
 
-  if( containerOptions.prependTab  )
+  if( optionsContainer.prependTab  )
   {
-    if( containerOptions.wrap )
+    if( optionsContainer.wrap )
     {
       //if( !simple )
       //result += '\n';
-      result += containerOptions.tab;
+      result += optionsContainer.tab;
     }
   }
 
   // wrap
 
-  if( containerOptions.wrap )
+  if( optionsContainer.wrap )
   {
     result += prefix;
     if( simple )
     result += ' ';
     else
-    result += '\n' + o.tab;
+    result += '\n' + optionsItem.tab;
   }
   else if( !simple )
   {
-    /*result += '\n' + o.tab;*/
+    /*result += '\n' + optionsItem.tab;*/
   }
 
   // prepend
 
-  if( containerOptions.prependTab  )
+  if( optionsContainer.prependTab  )
   {
-    if( !containerOptions.wrap )
+    if( !optionsContainer.wrap )
     {
       //if( !simple )
       //result += '\n';
-      result += o.tab;
+      result += optionsItem.tab;
     }
   }
 
@@ -641,13 +659,13 @@ var _toStrFromContainer = function( o )
   for( var n = 0, l = ( names ? names.length : values.length ) ; n < l ; n++ )
   {
 
-    _assert( o.tab === containerOptions.tab + containerOptions.dtab );
-    _assert( o.level === containerOptions.level + 1 );
+    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
+    _assert( optionsItem.level === optionsContainer.level + 1 );
 
     if( names )
-    r = _toStrFine( values[ names[ n ] ],o );
+    r = _toStrFine( values[ names[ n ] ],optionsItem );
     else
-    r = _toStrFine( values[ n ],o );
+    r = _toStrFine( values[ n ],optionsItem );
 
     if( r === undefined )
     continue;
@@ -655,16 +673,16 @@ var _toStrFromContainer = function( o )
     if( r.text === undefined )
     continue;
 
-    _assert( o.tab === containerOptions.tab + containerOptions.dtab );
+    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
 
     if( written > 0 )
     result += linePostfix;
 
     if( names )
     {
-      result += String( names[ n ] ) + containerOptions.colon;
+      result += String( names[ n ] ) + optionsContainer.colon;
       if( !r.simple )
-      result += '\n' + o.tab;
+      result += '\n' + optionsItem.tab;
 
     }
 
@@ -675,30 +693,16 @@ var _toStrFromContainer = function( o )
 
   // wrap
 
-  if( containerOptions.wrap )
+  if( optionsContainer.wrap )
   {
     if( simple )
     result += ' ';
     else
-    result += '\n' + containerOptions.tab;
+    result += '\n' + optionsContainer.tab;
     result += postfix;
   }
 
   return result;
-}
-
-//
-
-var _toStrIsSimpleElement = function( element )
-{
-  if( _.strIs( element ) )
-  return element.length < 40;
-  else if( element && !_.objectIs( element ) && _.numberIs( element.length ) )
-  return !element.length;
-  else if( _.objectIs( element ) || _.objectLike( element ) )
-  return !_.entityLength( element );
-  else
-  return _.atomicIs( element );
 }
 
 //
@@ -2291,12 +2295,14 @@ var Proto =
   _toStrFine : _toStrFine,
 
   _toStrShort : _toStrShort,
+  _toStrIsSimpleElement : _toStrIsSimpleElement,
+
+  _toStrFromRoutine : _toStrFromRoutine,
   _toStrFromNumber : _toStrFromNumber,
   _toStrFromStr : _toStrFromStr,
   _toStrFromArray : _toStrFromArray,
   _toStrFromObject : _toStrFromObject,
   _toStrFromContainer : _toStrFromContainer,
-  _toStrIsSimpleElement : _toStrIsSimpleElement,
 
   //
 
