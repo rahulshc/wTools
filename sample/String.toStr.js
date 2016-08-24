@@ -12,5 +12,8 @@ console.log( 'toStr( onlyRoutines : 0 )',_.toStr( ( function add(){} ),{ onlyRou
 //returns '{ routine add }'
 console.log( 'toStr( onlyRoutines : 1 )',_.toStr( ( function add(){} ),{ onlyRoutines : 1 } ) );
 
-//returns ''
+//returns '{ a : 1, b : 2 }'
 console.log( _.toStr( { a : 1, b : 2 } ) );
+
+//returns '{ a : 1, b : 2 }'
+console.log( _.toStr( { a : 1, b : 2 },{ wrap : 0 } ) );

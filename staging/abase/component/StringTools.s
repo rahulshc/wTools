@@ -234,6 +234,11 @@ var _toStrFine = function _toStrFine( src,o )
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
+    if( isObject && o.noObject )
+    return;
+    if( isArray && o.noArray )
+    return;
+
     var r = src.toStr( o );
     if( _.objectIs( r ) )
     {
@@ -307,7 +312,7 @@ var _toStrFine = function _toStrFine( src,o )
   }
   else
   {
-    if( _.atomicIs( src ) )
+    if( o.noAtomic )
     return;
     result += String( src );
   }
