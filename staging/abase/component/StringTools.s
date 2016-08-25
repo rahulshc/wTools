@@ -187,12 +187,12 @@ var toStrFine_gen = function()
 
     onlyRoutines : 0,
     noSubObject : 0,
-    singleElementPerLine : 0,
+    //singleElementPerLine : 0,
 
     /**/
 
-    precision : 3,
-    fixed : 3,
+    precision : null,
+    fixed : null,
     comma : ', ',
     multiline : 0,
     unescape : 0,
