@@ -480,32 +480,57 @@ var toStr = function( test )
         desc :  'Object test',
         src :
         [
-          { a : 1, b : 2, c : 3 },
-          { x : 3, y : 5, z : 5 },
-          { q : 6, w : 7, e : 8 },
-          { u : 12, i : { o : 13 }, p : 14 },
-          { r : 9, t : { a : 10 }, y : 11 },
-          { z : '01', x : { c : { g : 4 } }, v : '03' },
-          { u : 12, i : { o : { x : { y : [ 1, 2, 3 ] } } }, p : 14 },
+        /*01*/  { a : 1, b : 2, c : 3 },
+        /*02*/  { x : 3, y : 5, z : 5 },
+        /*03*/  { q : 6, w : 7, e : 8 },
+        /*04*/  { u : 12, i : { o : 13 }, p : 14 },
+        /*05*/  { r : 9, t : { a : 10 }, y : 11 },
+          /* redundant */
+        /*06*/  { z : '01', x : { c : { g : 4 } }, v : '03' },
+        /*07*/  { u : 12, i : { o : { x : { y : [ 1, 2, 3 ] } } }, p : 14 },
+          /* redundant */
+        /*08*/  { q : { a : 1 }, w : 'c', e : [1] },
+        /*09*/  { z : '02', x : { c : { g : 6 } }, v : '01' },
+        /*10*/  { h : { d : 1 }, g : 'c', c : [2] },
+        /*11*/  { a : 6, b : 7, c : 1 },
+        /*12*/  { a : true, b : '2', c : 3, d : undefined },
+
+
+
+
 
 
         ],
         options :
         [
-          { },
-          { levels : 0 },
-          { levels : 1 },
-          { levels : 1 },
-          { levels : 2 },
-          { levels : 3 },
-          { levels : 5 },
+        /*01*/  { },
+        /*02*/  { levels : 0 },
+        /*03*/  { levels : 1 },
+        /*04*/  { levels : 1 },
+        /*05*/  { levels : 2 },
+
+          /* redundant */
+        /*06*/  { levels : 3 },
+        /*07*/  { levels : 5 },
+          /* redundant */
+
+        /*08*/  { levels : 2, noSubObject : 1, noArray : 1 },
+        /*09*/  { levels : 3, noAtomic : 1 },
+        /*10*/  { levels : 2, noObject : 1 },
+
+
+        /*11*/  { wrap : 0, comma : ' | ' },
+        /*12*/  { wrap : 0, noString : 1, noNumber: 1 },
+
+
         ],
         expected :
         [
-          '{ a : 1, b : 2, c : 3 }',
-          '[ Object with 3 elements ]',
-          '{ q : 6, w : 7, e : 8 }',
+        /*01*/  '{ a : 1, b : 2, c : 3 }',
+        /*02*/  '[ Object with 3 elements ]',
+        /*03*/  '{ q : 6, w : 7, e : 8 }',
 
+        /*04*/
           [
             '{',
             '  u : 12, ',
@@ -514,6 +539,7 @@ var toStr = function( test )
             '}'
           ].join( '\n' ),
 
+        /*05*/
           [
             '{',
             '  r : 9, ',
@@ -522,6 +548,8 @@ var toStr = function( test )
             '}'
           ].join( '\n' ),
 
+          /* redundant */
+        /*06*/
           [
             '{',
             '  z : "01", ',
@@ -533,6 +561,7 @@ var toStr = function( test )
             '}'
           ].join( '\n' ),
 
+        /*07*/
           [
             '{',
             '  u : 12, ',
@@ -549,6 +578,38 @@ var toStr = function( test )
             '  p : 14',
             '}'
           ].join( '\n' ),
+        /* redundant */
+
+        /*08*/
+          [
+            '{',
+            '  w : "c"',
+            '}'
+          ].join( '\n' ),
+
+        /*09*/
+          [
+            '{',
+            '  x : ',
+            '  {',
+            '    c : { g : 6 }',
+            '  }',
+            '}'
+          ].join( '\n' ),
+
+        /*10*/  '',
+        /*11*/  '  a : 6 | b : 7 | c : 1',
+
+        /*12*/
+          [
+            '  a : true ',
+            '  b : "2" ',
+            '  c : 3 ',
+            '  d : undefined'
+
+          ].join( '\n' ),
+
+
         ]
       },
 
