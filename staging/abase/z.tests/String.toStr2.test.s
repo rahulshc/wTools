@@ -120,6 +120,7 @@ var toStr = function( test )
         '\nsample4\n',
         'sample5',
         'sample6',
+        '\nsample7'
 
       ],
       options :
@@ -131,6 +132,7 @@ var toStr = function( test )
         { unescape : 1 },
         { tab : '---' },
         { levels : 0 },
+        { },
       ],
       expected :
       [
@@ -140,7 +142,104 @@ var toStr = function( test )
         '',
         '"\\nsample4\\n"',
         '"sample5"',
-        '"sample6"'
+        '"sample6"',
+        '"\nsample7"'
+      ]
+    },
+
+    {
+      desc :  'boolean, null, undefined test',
+      src :
+      [
+        Boolean(),
+        true,
+        false,
+        1!=2,
+
+        null,
+        null,
+
+        undefined,
+        undefined
+      ],
+      options :
+      [
+        { },
+        { },
+        { levels : 0 },
+        { onlyRoutines : 1 },
+
+        { },
+        { levels : 3 },
+
+        { },
+        { noAtomic : 1 }
+
+      ],
+      expected :
+      [
+        'false',
+        'true',
+        'false',
+        '',
+
+        'null',
+        'null',
+
+        'undefined',
+        ''
+      ]
+    },
+
+    {
+      desc :  'Date test',
+      src :
+      [
+        new Date(Date.UTC(1993, 12, 12)),
+        new Date(1990, 0, 0),
+        new Date(2016, 12, 8),
+        new Date(2016, 1, 2),
+
+      ],
+      options :
+      [
+        { },
+        { },
+        { levels : 0 },
+        { noDate : 1 }
+      ],
+      expected :
+      [
+        '1994-01-12T00:00:00.000Z',
+        '1989-12-30T22:00:00.000Z',
+        'Sun Jan 08 2017 00:00:00 GMT+0200 (FLE Standard Time)',
+        '',
+      ]
+    },
+
+    {
+      desc :  'Error test',
+      src :
+      [
+        new Error(),
+        new Error('msg'),
+        new Error('msg2'),
+        new Error('message'),
+      ],
+      options :
+      [
+        { },
+        { },
+        { levels : 0 },
+        { noError : 1 }
+
+      ],
+      expected :
+      [
+        'Error',
+        'Error: msg',
+        '[object Error]',
+        ''
       ]
     },
 
@@ -162,7 +261,14 @@ var toStr = function( test )
         [ { k : 3 }, { l : 4 } ],
         [ 1, { a : 2 }, 5 ],
         [ 0, { b : 1 }, 3 ],
-        [ 'a', 7, { u : 2 }, 8, 'b' ]
+        [ 'a', 7, { u : 2 }, 8, 'b' ],
+        [  7, { v : 0 }, 1, 'x' ],
+        [ function( ){ }, function add( ){ } ],
+        [ function f1( ){ }, function ( ){ } ],
+        [ function f2( ){ }, function f3( ){ } ],
+        [ 'e', 'e', 'e' ],
+        [ { a : { a : '1' } } ],
+        [ '\n\nUnescape test' ],
 
 
       ],
@@ -182,7 +288,14 @@ var toStr = function( test )
         { levels : 2, colon : '->' },
         { levels : 2, noObject : 1 },
         { levels : 2, noNumber : 1 },
-        { levels : 2, noAtomic : 1 }
+        { levels : 2, noAtomic : 1 },
+        { noAtomic : 1 },
+        { },
+        { levels : 2 },
+        { levels : 2, noRoutine : 1},
+        { noArray : 1 },
+        { levels: 3, noSubObject : 1 },
+        { unescape : 1, levels : 2 },
 
 
       ],
@@ -262,7 +375,31 @@ var toStr = function( test )
           '[',
           '  { u : 2 }',
           ']'
-        ].join( '\n' )
+        ].join( '\n' ),
+
+        [
+          '[',
+          '  7, ',
+          '  [ Object with 1 elements ], ',
+          '  1, ',
+          '  "x"',
+          ']'
+        ].join( '\n' ),
+
+        '[ [object Function], [object Function] ]',
+        '[ [ routine f1 ], [ routine without name ] ]',
+        '[  ]',
+        '',
+
+        [
+          '[',
+          '  {',
+          '    ',
+          '  }',
+          ']'
+        ].join( '\n' ),
+
+        '[ "\\n\\nUnescape test" ]',
 
 
 
