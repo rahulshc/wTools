@@ -435,13 +435,13 @@ var _toStrFine = function _toStrFine( src,o )
   }
   else if( _.numberIs( src ) )
   {
-    if( o.noNumber )
+    if( o.noNumber || o.noAtomic )
     return;
     result += _toStrFromNumber( src,o );
   }
   else if( _.strIs( src ) )
   {
-    if( o.noString )
+    if( o.noString || o.noAtomic  )
     return;
     result += _toStrFromStr( src,o );
   }
