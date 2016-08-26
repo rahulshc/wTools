@@ -102,12 +102,48 @@ var toStr = function( test )
         '1.50e+4',
         '1222.2',
         '',
-        '15',
+        '',
         '99',
         '22'
 
       ]
     },
+
+    {
+      desc :  'String test',
+      src :
+      [
+        String(),
+        'sample',
+        'sample2',
+        'sample3',
+        '\nsample4\n',
+        'sample5',
+        'sample6',
+
+      ],
+      options :
+      [
+        { },
+        { },
+        { noAtomic : 1 },
+        { noString : 1 },
+        { unescape : 1 },
+        { tab : '---' },
+        { levels : 0 },
+      ],
+      expected :
+      [
+        '""',
+        '"sample"',
+        '',
+        '',
+        '"\\nsample4\\n"',
+        '"sample5"',
+        '"sample6"'
+      ]
+    },
+
     {
       desc : 'Array test',
       src :
@@ -119,7 +155,14 @@ var toStr = function( test )
         [ 0, 1, 2 ],
         [ 'a','b','c', 1, 2, 3 ],
         [ { a : 1 }, { b : 2 } ],
-        [ { x : 1 }, { y : 2 } ]
+        [ { x : 1 }, { y : 2 } ],
+        [ 1, [ 2, 3, 4 ], 5 ],
+        [ 0, 1, 2 ],
+        [ 6, [ 7, 8, 9 ], 10 ],
+        [ { k : 3 }, { l : 4 } ],
+        [ 1, { a : 2 }, 5 ],
+        [ 0, { b : 1 }, 3 ],
+        [ 'a', 7, { u : 2 }, 8, 'b' ]
 
 
       ],
@@ -132,7 +175,14 @@ var toStr = function( test )
         { levels : 0 },
         { levels : 2, noString : 1 },
         { },
-        { levels : 2, dtab : '-' }
+        { levels : 2, dtab : '-' },
+        { levels : 2, multiline : 1 },
+        { noArray : 1 },
+        { levels : 2, noNumber : 1 },
+        { levels : 2, colon : '->' },
+        { levels : 2, noObject : 1 },
+        { levels : 2, noNumber : 1 },
+        { levels : 2, noAtomic : 1 }
 
 
       ],
@@ -140,6 +190,7 @@ var toStr = function( test )
       [
         '[ 1, 2, 3 ]',
         '  1|2|3',
+
         [
           '[',
           '  1.0e+3, ',
@@ -147,21 +198,75 @@ var toStr = function( test )
           '  3.0e+3',
           ']',
         ].join( '\n' ),
+
         '[ 1.11, 2.22, 3.33 ]',
         '[ Array with 3 elements ]',
         '[ 1, 2, 3 ]',
+
         [
           '[',
           '  [ Object with 1 elements ], ',
           '  [ Object with 1 elements ]',
           ']'
         ].join( '\n' ),
+
         [
           '[',
           '-{ x : 1 }, ',
           '-{ y : 2 }',
           ']'
+        ].join( '\n' ),
+
+        [
+          '[',
+          '  1, ',
+          '  [',
+          '    2, ',
+          '    3, ',
+          '    4',
+          '  ], ',
+          '  5',
+          ']',
+
+        ].join( '\n' ),
+
+        '',
+
+        [
+          '[',
+          '  [ 7, 8, 9 ]',
+          ']'
+        ].join( '\n' ),
+
+        [
+          '[',
+          '  { k->3 }, ',
+          '  { l->4 }',
+          ']'
+        ].join( '\n' ),
+
+        [
+          '[',
+          '  1, ',
+          '  5',
+          ']',
+        ].join( '\n' ),
+
+        [
+          '[',
+          '  { b : 1 }',
+          ']'
+        ].join( '\n' ),
+
+        [
+          '[',
+          '  { u : 2 }',
+          ']'
         ].join( '\n' )
+
+
+
+
       ]
     },
 
