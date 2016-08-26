@@ -247,63 +247,72 @@ var toStr = function( test )
       desc : 'Array test',
       src :
       [
-        [ 1, 2, 3 ],
-        [ 1, 2, 3 ],
-        [ 1000, 2000, 3000 ],
-        [ 1.1111, 2.2222, 3.3333 ],
-        [ 0, 1, 2 ],
-        [ 'a','b','c', 1, 2, 3 ],
-        [ { a : 1 }, { b : 2 } ],
-        [ { x : 1 }, { y : 2 } ],
-        [ 1, [ 2, 3, 4 ], 5 ],
-        [ 0, 1, 2 ],
-        [ 6, [ 7, 8, 9 ], 10 ],
-        [ { k : 3 }, { l : 4 } ],
-        [ 1, { a : 2 }, 5 ],
-        [ 0, { b : 1 }, 3 ],
-        [ 'a', 7, { u : 2 }, 8, 'b' ],
-        [  7, { v : 0 }, 1, 'x' ],
-        [ function( ){ }, function add( ){ } ],
-        [ function f1( ){ }, function ( ){ } ],
-        [ function f2( ){ }, function f3( ){ } ],
-        [ 'e', 'e', 'e' ],
-        [ { a : { a : '1' } } ],
-        [ '\n\nUnescape test' ],
+      /*01*/ [ 1, 2, 3 ],
+      /*02*/ [ 1, 2, 3 ],
+      /*03*/ [ 1000, 2000, 3000 ],
+      /*04*/ [ 1.1111, 2.2222, 3.3333 ],
+      /*05*/ [ 0, 1, 2 ],
+      /*06*/ [ 'a','b','c', 1, 2, 3 ],
+      /*07*/ [ { a : 1 }, { b : 2 } ],
+      /*08*/ [ { x : 1 }, { y : 2 } ],
+      /*09*/ [ 1, [ 2, 3, 4 ], 5 ],
+      /*10*/ [ 0, 1, 2 ],
+      /*11*/ [ 6, [ 7, 8, 9 ], 10 ],
+      /*12*/ [ { k : 3 }, { l : 4 } ],
+      /*13*/ [ 1, { a : 2 }, 5 ],
+      /*14*/ [ 0, { b : 1 }, 3 ],
+      /*15*/ [ 'a', 7, { u : 2 }, 8, 'b' ],
+      /*16*/ [  7, { v : 0 }, 1, 'x' ],
+      /*17*/ [ function( ){ }, function add( ){ } ],
+      /*18*/ [ function f1( ){ }, function ( ){ } ],
+      /*19*/ [ function f2( ){ }, function f3( ){ } ],
+      /*20*/ [ 'e', 'e', 'e' ],
+      /*21*/ [ { a : { a : '1' } } ],
+      /*22*/ [ '\n\nUnescape test' ],
+      /*23*/ [ { c : 1 }, { d : 2 } ],
+        /*multilevel tests*/
+      /*24*/ [ { one : { two : { three : { four : {five:'x'}  }  }  }  }],
+      /*25*/ [ { a : [ { b : [ { c : [ { d : [ 1,'2','3',4 ] } ] } ] } ] } ],
 
 
       ],
       options :
       [
-        { },
-        { wrap : 0, comma : '|' },
-        { precision : 2, multiline : 1 },
-        { fixed : 2 },
-        { levels : 0 },
-        { levels : 2, noString : 1 },
-        { },
-        { levels : 2, dtab : '-' },
-        { levels : 2, multiline : 1 },
-        { noArray : 1 },
-        { levels : 2, noNumber : 1 },
-        { levels : 2, colon : '->' },
-        { levels : 2, noObject : 1 },
-        { levels : 2, noNumber : 1 },
-        { levels : 2, noAtomic : 1 },
-        { noAtomic : 1 },
-        { },
-        { levels : 2 },
-        { levels : 2, noRoutine : 1},
-        { noArray : 1 },
-        { levels: 3, noSubObject : 1 },
-        { unescape : 1, levels : 2 },
+      /*01*/ { },
+      /*02*/ { wrap : 0, comma : '|' },
+      /*03*/ { precision : 2, multiline : 1 },
+      /*04*/ { fixed : 2 },
+      /*05*/ { levels : 0 },
+      /*06*/ { levels : 2, noString : 1 },
+      /*07*/ { },
+      /*08*/ { levels : 2, dtab : '-' },
+      /*09*/ { levels : 2, multiline : 1 },
+      /*10*/ { noArray : 1 },
+      /*11*/ { levels : 2, noNumber : 1 },
+      /*12*/ { levels : 2, colon : '->' },
+      /*13*/ { levels : 2, noObject : 1 },
+      /*14*/ { levels : 2, noNumber : 1 },
+      /*15*/ { levels : 2, noAtomic : 1 },
+      /*16*/ { noAtomic : 1 },
+      /*17*/ { },
+      /*18*/ { levels : 2 },
+      /*19*/ { levels : 2, noRoutine : 1},
+      /*20*/ { noArray : 1 },
+      /*21*/ { levels: 3, noSubObject : 1 },
+      /*22*/ { unescape : 1, levels : 2 },
+      /*23*/ { levels : 2, tab : '|', prependTab : 0 },
+        /*multilevel tests*/
+      /*24*/ { levels : 6 },
+      /*25*/ { levels : 10, noString : 1 },
 
 
       ],
       expected :
       [
-        '[ 1, 2, 3 ]',
-        '  1|2|3',
+      /*01*/ '[ 1, 2, 3 ]',
+      /*02*/ '  1|2|3',
 
+      /*03*/
         [
           '[',
           '  1.0e+3, ',
@@ -312,10 +321,11 @@ var toStr = function( test )
           ']',
         ].join( '\n' ),
 
-        '[ 1.11, 2.22, 3.33 ]',
-        '[ Array with 3 elements ]',
-        '[ 1, 2, 3 ]',
+      /*04*/ '[ 1.11, 2.22, 3.33 ]',
+      /*05*/ '[ Array with 3 elements ]',
+      /*06*/ '[ 1, 2, 3 ]',
 
+      /*07*/
         [
           '[',
           '  [ Object with 1 elements ], ',
@@ -323,6 +333,7 @@ var toStr = function( test )
           ']'
         ].join( '\n' ),
 
+      /*08*/
         [
           '[',
           '-{ x : 1 }, ',
@@ -330,6 +341,7 @@ var toStr = function( test )
           ']'
         ].join( '\n' ),
 
+      /*09*/
         [
           '[',
           '  1, ',
@@ -343,14 +355,16 @@ var toStr = function( test )
 
         ].join( '\n' ),
 
-        '',
+      /*10*/ '',
 
+      /*11*/
         [
           '[',
           '  [ 7, 8, 9 ]',
           ']'
         ].join( '\n' ),
 
+      /*12*/
         [
           '[',
           '  { k->3 }, ',
@@ -358,6 +372,7 @@ var toStr = function( test )
           ']'
         ].join( '\n' ),
 
+      /*13*/
         [
           '[',
           '  1, ',
@@ -365,18 +380,21 @@ var toStr = function( test )
           ']',
         ].join( '\n' ),
 
+      /*14*/
         [
           '[',
           '  { b : 1 }',
           ']'
         ].join( '\n' ),
 
+      /*15*/
         [
           '[',
           '  { u : 2 }',
           ']'
         ].join( '\n' ),
 
+      /*16*/
         [
           '[',
           '  7, ',
@@ -386,11 +404,12 @@ var toStr = function( test )
           ']'
         ].join( '\n' ),
 
-        '[ [object Function], [object Function] ]',
-        '[ [ routine f1 ], [ routine without name ] ]',
-        '[  ]',
-        '',
+      /*17*/ '[ [object Function], [object Function] ]',
+      /*18*/ '[ [ routine f1 ], [ routine without name ] ]',
+      /*19*/ '[  ]',
+      /*20*/ '',
 
+      /*21*/
         [
           '[',
           '  {',
@@ -399,13 +418,141 @@ var toStr = function( test )
           ']'
         ].join( '\n' ),
 
-        '[ "\\n\\nUnescape test" ]',
+      /*22*/ '[ "\\n\\nUnescape test" ]',
+
+      /*23*/
+        [
+          '[',
+          '|  { c : 1 }, ',
+          '|  { d : 2 }',
+          '|]',
+        ].join( '\n' ),
+
+      /*24*/
+        [
+          '[',
+          '  {',
+          '    one : ',
+          '    {',
+          '      two : ',
+          '      {',
+          '        three : ',
+          '        {',
+          '          four : { five : "x" }',
+          '        }',
+          '      }',
+          '    }',
+          '  }',
+          ']'
+        ].join( '\n' ),
+
+      /*25*/
+        [
+          '[',
+          '  {',
+          '    a : ',
+          '    [',
+          '      {',
+          '        b : ',
+          '        [',
+          '          {',
+          '            c : ',
+          '            [',
+          '              {',
+          '                d : [ 1, 4 ]',
+          '              }',
+          '            ]',
+          '          }',
+          '        ]',
+          '      }',
+          '    ]',
+          '  }',
+          ']',
+        ].join( '\n' ),
 
 
 
 
       ]
     },
+
+      {
+        desc :  'Object test',
+        src :
+        [
+          { a : 1, b : 2, c : 3 },
+          { x : 3, y : 5, z : 5 },
+          { q : 6, w : 7, e : 8 },
+          { u : 12, i : { o : 13 }, p : 14 },
+          { r : 9, t : { a : 10 }, y : 11 },
+          { z : '01', x : { c : { g : 4 } }, v : '03' },
+          { u : 12, i : { o : { x : { y : [ 1, 2, 3 ] } } }, p : 14 },
+
+
+        ],
+        options :
+        [
+          { },
+          { levels : 0 },
+          { levels : 1 },
+          { levels : 1 },
+          { levels : 2 },
+          { levels : 3 },
+          { levels : 5 },
+        ],
+        expected :
+        [
+          '{ a : 1, b : 2, c : 3 }',
+          '[ Object with 3 elements ]',
+          '{ q : 6, w : 7, e : 8 }',
+
+          [
+            '{',
+            '  u : 12, ',
+            '  i : [ Object with 1 elements ], ',
+            '  p : 14',
+            '}'
+          ].join( '\n' ),
+
+          [
+            '{',
+            '  r : 9, ',
+            '  t : { a : 10 }, ',
+            '  y : 11',
+            '}'
+          ].join( '\n' ),
+
+          [
+            '{',
+            '  z : "01", ',
+            '  x : ',
+            '  {',
+            '    c : { g : 4 }',
+            '  }, ',
+            '  v : "03"',
+            '}'
+          ].join( '\n' ),
+
+          [
+            '{',
+            '  u : 12, ',
+            '  i : ',
+            '  {',
+            '    o : ',
+            '    {',
+            '      x : ',
+            '      {',
+            '        y : [ 1, 2, 3 ]',
+            '      }',
+            '    }',
+            '  }, ',
+            '  p : 14',
+            '}'
+          ].join( '\n' ),
+        ]
+      },
+
+
 
 
 
