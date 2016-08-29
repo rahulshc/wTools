@@ -4137,7 +4137,7 @@ var regexpModeNamesToReplace = namesCoded
 
 var regexpEscape = function( src )
 {
-  return src.replace( /([.*+?^=! :${}()|\[\]\/\\])/g, "\\$1" );
+  return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
 
 //
