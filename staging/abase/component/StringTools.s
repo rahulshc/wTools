@@ -356,7 +356,8 @@ var toStrFine_gen = function()
     }
 
     if( o.comma === undefined )
-    o.comma = o.wrap ? optional.comma : ' ';
+    // o.comma = o.wrap ? optional.comma : ' ';
+    o.comma = optional.comma;
 
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
