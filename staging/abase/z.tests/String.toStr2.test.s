@@ -269,6 +269,26 @@ var toStr = function( test )
       /*20*/ [ function f2( ){ }, function f3( ){ } ],
       /*21*/ [ { a : { a : '1' } } ],
       /*22*/ [ { c : 1 }, { d : 2 } ],
+      /*23*/ [ new Date( Date.UTC( 1993, 12, 12 ) ), { d : 2 }, new Error( 'error' ) ],
+      /*24*/ [ function ff( ){ }, { d : 3 }, 15 ],
+      /*25*/ [ [ 1, 2, 3 ],[ 4, 5, 6 ] ],
+      /*26*/ [ [ 1, 2, 3 ],[ '4, 5, 6' ], undefined, false ],
+      /*27*/ [ 'e', 'e', 'e' ],
+      /*28*/ [ 'a','b','c', 1, 2, 3 ],
+      /*29*/ [ 15, 16, 17, 18 ],
+      /*30*/ [ { a : 5, b : 6, c : 7 } ],
+      /*31*/ [ 'a', 1, function () { }, false ],
+      /*32*/ [ 'b', 2, function () { }, true ],
+      /*33*/ [ function () { } ],
+      /*34*/ [ 'a', 1000, 2000, 3000 ],
+      /*35*/ [ 1.1111, 2.2222, 3.3333 ],
+      /*36*/ [  7, { v : 0 }, 1, 'x' ],
+      /*37*/ [ '\n\nUnescape & wrap test' ],
+
+
+
+
+
 
 
 
@@ -297,6 +317,22 @@ var toStr = function( test )
       /*20*/ { levels : 2, noRoutine : 1},
       /*21*/ { levels : 3, noSubObject : 1 },
       /*22*/ { levels : 2, tab : '|', prependTab : 0 },
+      /*23*/ { levels : 2, noError : 1, noDate : 1 },
+      /*24*/ { levels : 2, noRoutine : 1, noSubObject : 1 },
+
+      /*25*/  { wrap : 0, comma : ' | ' },
+      /*26*/  { wrap : 0, noString : 1, noNumber: 1 },
+      /*27*/  { wrap : 0 },
+      /*28*/  { wrap : 0, prependTab : 0 },
+      /*29*/  { wrap : 0, tab : '| ', dtab : '' },
+      /*30*/  { wrap : 0, colon : '->' },
+      /*31*/  { wrap : 0, noRoutine : 1 },
+      /*32*/  { wrap : 0, noAtomic : 1 },
+      /*33*/  { wrap : 0, onlyRoutines : 1 },
+      /*34*/  { wrap : 0, precision : 3 },
+      /*35*/  { wrap : 0,  fixed : 3 },
+      /*36*/  { wrap : 0,  multiline : 1 },
+      /*37*/  { wrap : 0,  unescape : 1 },
 
 
 
@@ -425,6 +461,65 @@ var toStr = function( test )
         '|]',
       ].join( '\n' ),
 
+      /*23*/
+      [
+        '[',
+        '  { d : 2 }',
+        ']',
+      ].join( '\n' ),
+
+      /*24*/
+      [
+        '[',
+        '  { d : 3 }, ',
+        '  15',
+        ']',
+      ].join( '\n' ),
+
+      /*25*/
+      [
+        '  [ Array with 3 elements ] | ',
+        '  [ Array with 3 elements ]',
+      ].join( '\n' ),
+
+      /*26*/
+      [
+        '  [ Array with 3 elements ], ',
+        '  [ Array with 1 elements ], ',
+        '  undefined, ',
+        '  false',
+      ].join( '\n' ),
+
+      /*27*/
+      '  "e", "e", "e"',
+
+      /*28*/
+      '"a", "b", "c", 1, 2, 3',
+      /*29*/
+      '| 15, 16, 17, 18',
+      /*30*/
+      '  [ Object with 3 elements ]',
+      /*31*/
+      '  "a", 1, [object Function], false',
+      /*32*/
+      '  "b", 2, [object Function], true',
+      /*33*/
+      '',
+      /*34*/
+      '  "a", 1.00e+3, 2.00e+3, 3.00e+3',
+
+      /*35*/
+      '  1.111, 2.222, 3.333',
+      /*36*/
+      [
+        '  7, ',
+        '  [ Object with 1 elements ], ',
+        '  1, ',
+        '  "x"',
+      ].join( '\n' ),
+
+      /*37*/
+      '  ""...',
 
 
 
@@ -517,17 +612,11 @@ var toStr = function( test )
 
 
         /*11*/  { wrap : 0, comma : ' | ' },
-
-
         /*12*/  { wrap : 0, noString : 1, noNumber: 1 },
         /*13*/  { wrap : 0 },
         /*14*/  { wrap : 0, prependTab : 0 },
-
         /*15*/  { wrap : 0, tab : '| ', dtab : '' },
-
-
         /*16*/  { wrap : 0, colon : '' },
-
         /*17*/  { wrap : 0, noRoutine : 1 },
         /*18*/  { wrap : 0, noAtomic : 1 },
         /*19*/  { wrap : 0, onlyRoutines : 1 },
