@@ -506,6 +506,24 @@ var toStr = function( test )
         /*22*/  { m : 8, n : 9 },
         /*23*/  { x : '\n10', z : '\\11' },
 
+        /*24*/  { a : 1, b : { d : 2 }, c : 3 },
+        /*25*/  { a : 3, b : { d : 2 }, c : 1 },
+        /*26*/  { a : 4, b : { d : 5 }, c : 6 },
+        /*27*/  { a : 7, b : { d : 8 }, c : 9 },
+        /*28*/  { a : 9, b : { d : 8 }, c : 7 },
+        /*29*/  { a : 10, b : { d : 20 }, c : 30 },
+        /*30*/  { a : 10.00, b : { d : 20.00 }, c : 30.00 },
+        /*31*/  { a : 'a', b : { d : false }, c : 3 },
+        /*32*/  { a : '\na', b : { d : '\ntrue' }, c : '\n' },
+        /*33*/  { a : 'a', b : { d : false }, c : 3 },
+        /*34*/  { a : 'aa', b : { d : true }, c : 40 },
+        /*35*/  { a : ['a','b'], b : { d : 'true' }, c : 1 },
+        /*36*/  { a : ['a','b'], b : { d : 'true' }, c : 1 },
+        /*37*/  { a : 1, b : { d : 2 }, c : 3 },
+
+
+
+
 
 
 
@@ -550,6 +568,22 @@ var toStr = function( test )
         /*21*/  { wrap : 0,  fixed : 3 },
         /*22*/  { wrap : 0,  multiline : 1 },
         /*23*/  { wrap : 0,  unescape : 1 },
+
+        /*24*/  { levels : 2, wrap : 0 },
+        /*25*/  { levels : 2, wrap : 0, comma : '. '},
+        /*26*/  { levels : 2, wrap : 0, tab : '| ', dtab : '' },
+        /*27*/  { levels : 2, wrap : 0, colon : ' - ' },
+        /*28*/  { levels : 2, wrap : 0, prependTab : 0 },
+        /*29*/  { levels : 2, wrap : 0, fixed : 1 },
+        /*30*/  { levels : 2, wrap : 0, precision : 1 },
+        /*31*/  { levels : 2, wrap : 0, multiline : 1 },
+        /*32*/  { levels : 3, wrap : 0, unescape : 1 },
+        /*33*/  { levels : 2, wrap : 0, noAtomic : 1 },
+        /*34*/  { levels : 3, wrap : 0, noAtomic : 1 },
+        /*35*/  { levels : 2, wrap : 0, noSubObject : 1, noArray : 1 },
+        /*36*/  { levels : 2, wrap : 0, noString : 1, noNumber : 1 },
+        /*37*/  { levels : 2, comma : '. '},
+
 
 
         ],
@@ -719,6 +753,105 @@ var toStr = function( test )
           /*23*/
 
           '  x : ""..., z : "\\11"',
+
+          /*24*/
+          [
+            '  a : 1, ',
+            '  b : d : 2, ',
+            '  c : 3'
+
+          ].join( '\n' ),
+
+          /*25*/
+          [
+            '  a : 3. ',
+            '  b : d : 2. ',
+            '  c : 1'
+
+          ].join( '\n' ),
+
+          /*26*/
+          [
+            '| a : 4, ',
+            '| b : d : 5, ',
+            '| c : 6'
+
+          ].join( '\n' ),
+
+          /*27*/
+          [
+            '  a - 7, ',
+            '  b - d - 8, ',
+            '  c - 9'
+
+          ].join( '\n' ),
+
+          /*28*/
+          [
+            'a : 9, ',
+            '  b : d : 8, ',
+            '  c : 7'
+
+          ].join( '\n' ),
+
+          /*29*/
+          [
+            '  a : 10.0, ',
+            '  b : d : 20.0, ',
+            '  c : 30.0'
+
+          ].join( '\n' ),
+
+          /*30*/
+          [
+            '  a : 1e+1, ',
+            '  b : d : 2e+1, ',
+            '  c : 3e+1'
+
+          ].join( '\n' ),
+
+          /*31*/
+          [
+            '  a : "a", ',
+            '  b : ',
+            '  d : false, ',
+            '  c : 3'
+
+          ].join( '\n' ),
+
+          /*32*/
+          [
+            '  a : "\\na", ',
+            '  b : d : "\\ntrue", ',
+            '  c : "\\n"'
+
+          ].join( '\n' ),
+
+          /*33*/
+          '  b : d : false',
+
+          /*34*/
+          '  b : ',
+
+          /*35*/
+          '  c : 1',
+
+          /*36*/
+          [
+            '  a : "a", "b", ',
+            '  b : d : "true"'
+
+          ].join( '\n' ),
+
+          /*37*/
+          [
+            '{',
+            '  a : 1. ',
+            '  b : { d : 2 }. ',
+            '  c : 3',
+            '}'
+
+          ].join( '\n' ),
 
 
         ],
