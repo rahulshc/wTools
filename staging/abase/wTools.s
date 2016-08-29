@@ -741,6 +741,85 @@ var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
   return result;
 }
 
+//
+
+var entityCoerceTo = function( src,ins )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.numberIs( ins ) )
+  {
+
+    return _.numberFrom( src );
+
+  }
+  else if( _.strIs( ins ) )
+  {
+
+    return _.strFrom( src );
+
+  }
+  else if( _.boolIs( ins ) )
+  {
+
+    return _.boolFrom( src );
+
+  }
+  else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
+
+}
+
+//
+
+var entityWrap = function( o )
+{
+  var result = {};
+
+  _.routineOptions( entityWrap,o );
+  _.assert( arguments.length === 1 );
+
+  o.onCondition = _entityConditionMake( o.onCondition );
+
+  /* */
+
+  var handleUp = function( e,k )
+  {
+
+    //debugger;
+    //if( o.condition )
+
+    if( o.onCondition( e ) === undefined )
+    return;
+
+    var e2 = this.src[ k ] = {};
+    e2._ = e;
+
+  }
+
+  /* */
+
+  _.eachRecursive
+  ({
+    src : o.dst,
+    own : o.own,
+    levels : o.levels,
+    onUp : handleUp,
+  });
+
+  return result;
+}
+
+entityWrap.defaults =
+{
+
+  onCondition : null,
+  dst : null,
+  own : 1,
+  levels : 256,
+
+}
+
 // --
 // entity checker
 // --
@@ -1228,15 +1307,32 @@ var entityKeyWithValue = function( src,value )
 
 //
 
+var entitySelectUnique = function( o )
+{
+
+  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
+  debugger;
+
+  var result = _entitySelect( o );
+
+  if( o.qarrey.indexOf( '*' ) !== -1 )
+  if( _.arrayLike( result ) )
+  result = _.arrayUnique( result );
+
+  return result;
+}
+
+//
+
 var entitySelect = function( o )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 1 );
+  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
 
-  if( arguments.length === 2 )
-  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] )
-  else
-  o = _entitySelectOptions( arguments[ 0 ] );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   var result = _entitySelect( o );
 
@@ -1248,7 +1344,7 @@ var entitySelect = function( o )
 var entitySelectSet = function( container,query,value )
 {
 
-  _.assert( arguments.length === 3 || arguments.length === 1 );
+  _.assert( arguments.length === 1 || arguments.length === 3 );
 
   if( arguments.length === 3 )
   {
@@ -1268,11 +1364,10 @@ var entitySelectSet = function( container,query,value )
 
 //
 
-//var _entitySelectOptions = function( container,query )
 var _entitySelectOptions = function( o )
 {
 
-  if( arguments.length === 2 )
+  if( arguments.length === 2 && arguments[ 1 ] !== undefined )
   {
     var o = {};
     o.container = arguments[ 0 ];
@@ -1506,6 +1601,30 @@ var entityMap = function( src,onEach )
 
 //
 
+var _entityConditionMake = function( condition )
+{
+  var result;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
+
+  if( _.objectIs( condition ) )
+  {
+    var template = condition;
+    condition = function( e )
+    {
+      if( !_.objectLike( e ) )
+      return;
+      if( _.mapSatisfy( template,e ) )
+      return e;
+    };
+  }
+
+  return condition;
+}
+
+//
+
   /**
    * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
    * function on every element of src. If `onEach` returns undefined, then this result is not included into the new
@@ -1538,22 +1657,11 @@ var entityFilter = function( src,onEach )
 {
 
   var result;
+  var onEach = _entityConditionMake( onEach );
 
   _.assert( arguments.length === 2 );
   _.assert( _.objectLike( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( src ) );
   _.assert( _.routineIs( onEach ) || _.objectIs( onEach ) );
-
-  /**/
-
-  if( _.objectIs( onEach ) )
-  {
-    var template = onEach;
-    onEach = function( e )
-    {
-      if( _.mapSatisfy( template,e ) )
-      return e;
-    };
-  }
 
   /**/
 
@@ -1862,35 +1970,6 @@ var entityMax = function( src,onElement )
 
 //
 
-var entityCoerceTo = function( src,ins )
-{
-
-  _.assert( arguments.length === 2 );
-
-  if( _.numberIs( ins ) )
-  {
-
-    return _.numberFrom( src );
-
-  }
-  else if( _.strIs( ins ) )
-  {
-
-    return _.strFrom( src );
-
-  }
-  else if( _.boolIs( ins ) )
-  {
-
-    return _.boolFrom( src );
-
-  }
-  else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
-
-}
-
-//
-
 var entitySearch = function( o )
 {
   var result = {};
@@ -1902,11 +1981,11 @@ var entitySearch = function( o )
 
   _.routineOptions( entitySearch,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( !o.searchingCaseinsensitive,'not implemented' );
+  _.assert( !o.searchingCaseInsensitive,'not implemented' );
 
   var strIns,regexpIns;
   strIns = String( o.ins );
-  if( o.searchingCaseinsensitive )
+  if( o.searchingCaseInsensitive )
   regexpIns = new RegExp( ( o.searchingSubstring ? '' : '^' ) + strIns + ( o.searchingSubstring ? '' : '$' ),'i' );
 
   /* */
@@ -1977,7 +2056,7 @@ entitySearch.defaults =
   searchingKey : 1,
   searchingValue : 1,
   searchingSubstring : 1,
-  searchingCaseinsensitive : 0,
+  searchingCaseInsensitive : 0,
 
 }
 
@@ -2733,7 +2812,7 @@ var assertMapOnly = function assertMapOnly( src )
   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
   var but = Object.keys( _.mapBut.apply( this,args ) );
 
-  if( but.length )
+  if( but.length > 0 )
   {
     if( _.strJoin )
     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
@@ -2760,7 +2839,7 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
   var but = Object.keys( _.mapOwnBut.apply( this,args ) );
 
-  if( but.length )
+  if( but.length > 0 )
   {
     if( _.strJoin )
     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
@@ -2789,7 +2868,7 @@ var assertMapAll = function( src,all,msg )
   var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapBut( all,src ) );
 
-  if( but.length )
+  if( but.length > 0 )
   {
     debugger;
     throw _err
@@ -2816,7 +2895,7 @@ var assertMapOwnAll = function( src,all,msg )
   var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapOwnBut( all,src ) );
 
-  if( but.length )
+  if( but.length > 0 )
   {
     debugger;
     throw _err
@@ -2882,7 +2961,7 @@ var assertMapOwnNone = function( src,none )
 
   var has = Object.keys( _._mapScreen
   ({
-    filter : filter.own(),
+    filter : filter.srcOwn(),
     screenObjects : none,
     srcObjects : src,
   }));
@@ -3051,56 +3130,56 @@ _.diagnosticWatchFields
 
 */
 
-var diagnosticWatchFields = function( options )
+var diagnosticWatchFields = function( o )
 {
-  var options = options || {};
+  var o = o || {};
 
-  if( options.names )
-  options.names = _.nameFielded( options.names );
+  if( o.names )
+  o.names = _.nameFielded( o.names );
   else
-  options.names = options.dst;
+  o.names = o.dst;
 
   _assert( arguments.length === 1 );
-  _.assertMapOnly( options,diagnosticWatchFields.defaults );
-  _.mapComplement( options,diagnosticWatchFields.defaults );
-  _assert( options.dst );
-  _assert( options.names );
+  _.assertMapOnly( o,diagnosticWatchFields.defaults );
+  _.mapComplement( o,diagnosticWatchFields.defaults );
+  _assert( o.dst );
+  _assert( o.names );
 
-  for( var f in options.names ) ( function()
+  for( var f in o.names ) ( function()
   {
 
     var fieldName = f;
     var fieldSymbol = Symbol.for( f );
-    options.dst[ fieldSymbol ] = options.dst[ f ];
+    o.dst[ fieldSymbol ] = o.dst[ f ];
 
-    //
+    /* */
 
     var read = function read()
     {
-      var result = options.dst[ fieldSymbol ];
-      if( options.printValue )
+      var result = o.dst[ fieldSymbol ];
+      if( o.printValue )
       console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
       else
       console.log( 'reading ' + fieldName );
       return result;
     }
 
-    //
+    /* */
 
     var write = function write( src )
     {
-      if( options.printValue )
+      if( o.printValue )
       console.log( 'writing ' + fieldName + ' ' + _.toStr( src ) );
       else
       console.log( 'writing ' + fieldName );
       debugger;
-      options.dst[ fieldSymbol ] = src;
+      o.dst[ fieldSymbol ] = src;
     }
 
-    //
+    /* */
 
     debugger;
-    Object.defineProperty( options.dst, fieldName,
+    Object.defineProperty( o.dst, fieldName,
     {
       enumerable : true,
       configurable : true,
@@ -3114,7 +3193,7 @@ var diagnosticWatchFields = function( options )
 
 diagnosticWatchFields.defaults =
 {
-  printValue : false,
+  printValue : true,
   names : null,
   dst : null,
 }
@@ -9937,7 +10016,7 @@ var mapOwn = function( object,name )
 
   if( arguments.length === 1 )
   {
-    var result = _.mapExtendFiltering( _.filter.own(),{},object );
+    var result = _.mapExtendFiltering( _.filter.srcOwn(),{},object );
     return result;
   }
 
@@ -10029,67 +10108,6 @@ var mapBut = function( srcMap )
 
 //
 
-  // /**
-  //  * @callback  _.filter.atomic()
-  //  * @param { object } result - The new object.
-  //  * @param { objectLike } srcMap - The target object.
-  //  * @param { string } k - The key of the (srcMap) object.
-  //  */
-
-  /**
-   * The mapButFiltering() method returns a new object (result)
-   * whose (values) are not equal to the arrays or objects.
-   *
-   * Takes any number of objects.
-   * If the first object has same key any other object has
-   * then this pair [ key, value ] will not be included into (result) object.
-   * Otherwise,
-   * it calls a provided callback function ( _.filter.atomic() )
-   * once for each key in the (srcMap), and adds to the (result) object
-   * all the [ key, value ],
-   * if values are not equal to the array or object.
-   *
-   * @param { function } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
-   * @param { objectLike } srcMap - The target object.
-   * @param { ...objectLike } arguments[] - The next objects.
-   *
-   * @example
-   * // returns { a : 1, b : "b" }
-   * mapButFiltering( _.filter.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
-   *
-   * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
-   * @method mapButFiltering
-   * @throws { Error } Will throw an Error if (srcMap) is not an object.
-   * @memberof wTools
-   */
-  var mapButFiltering = function( filter,srcMap )
-{
-  var result = {};
-  var filter = _.filter.makeMapper( filter );
-  var a,k;
-
-  assert( objectLike( srcMap ),'mapButFiltering :','expects object as argument' );
-
-  for( k in srcMap )
-  {
-    for( a = 2 ; a < arguments.length ; a++ )
-    {
-      var argument = arguments[ a ];
-
-      if( k in argument )
-      break;
-
-    }
-    if( a === arguments.length )
-    {
-      filter.call( this,result,srcMap,k );
-    }
-  }
-
-  return result;
-}
-
-//
   /**
    * The mapOwnBut() returns new object with unique own keys.
    *
@@ -10147,38 +10165,127 @@ var mapOwnBut = function mapOwnBut( srcMap )
   return result;
 }
 
-//
+  // /**
+  //  * @callback  _.filter.atomic()
+  //  * @param { object } result - The new object.
+  //  * @param { objectLike } srcMap - The target object.
+  //  * @param { string } k - The key of the (srcMap) object.
+  //  */
 
   /**
-   * @namespace
-   * @property { objectLike } srcObjects.srcObject - The target object.
-   * @property { objectLike } screenObjects.screenObject - The source object.
-   * @property { Object } dstObject - The empty object.
-   */
-
-  /**
-   * The mapScreens() returns an object filled by unique [ key, value ]
-   * from (srcObject) object.
+   * The mapButFiltering() method returns a new object (result)
+   * whose (values) are not equal to the arrays or objects.
    *
-   * It creates the variable (dstObject) assignes and calls the method (_mapScreen( { } ) )
-   * with three properties.
+   * Takes any number of objects.
+   * If the first object has same key any other object has
+   * then this pair [ key, value ] will not be included into (result) object.
+   * Otherwise,
+   * it calls a provided callback function ( _.filter.atomic() )
+   * once for each key in the (srcMap), and adds to the (result) object
+   * all the [ key, value ],
+   * if values are not equal to the array or object.
    *
-   * @see {@link wTools._mapScreen} - See for more information.
-   *
-   * @param { objectLike } srcObject - The target object.
-   * @param { objectLike } screenObject - The source object.
+   * @param { function } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
+   * @param { objectLike } srcMap - The target object.
+   * @param { ...objectLike } arguments[] - The next objects.
    *
    * @example
-   * // returns { a : "abc", c : 33, d : "name" };
-   * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+   * // returns { a : 1, b : "b" }
+   * mapButFiltering( _.filter.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
    *
-   * @returns { Object } Returns an (dstObject) object filled by unique [ key, value ]
-   * from (srcObject) objects.
-   * @method mapScreens
-   * @throws { Error } Will throw an Error if (arguments.length) more that two,
-   * if (srcObject or screenObject) are not objects-like.
+   * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
+   * @method mapButFiltering
+   * @throws { Error } Will throw an Error if (srcMap) is not an object.
    * @memberof wTools
    */
+
+var mapButFiltering = function( filter,srcMap )
+{
+  var result = {};
+  var filter = _.filter.makeMapper( filter );
+  var a,k;
+
+  assert( objectLike( srcMap ),'mapButFiltering :','expects object as argument' );
+
+  for( k in srcMap )
+  {
+    for( a = 2 ; a < arguments.length ; a++ )
+    {
+      var argument = arguments[ a ];
+
+      if( k in argument )
+      break;
+
+    }
+    if( a === arguments.length )
+    {
+      filter.call( this,result,srcMap,k );
+    }
+  }
+
+  return result;
+}
+
+//
+
+var mapOwnButFiltering = function( filter,srcMap )
+{
+  var result = {};
+  var filter = _.filter.makeMapper( filter );
+  var a,k;
+
+  assert( objectLike( srcMap ),'mapOwnButFiltering :','expects object as argument' );
+
+  for( k in srcMap )
+  {
+    for( a = 2 ; a < arguments.length ; a++ )
+    {
+      var argument = arguments[ a ];
+
+      if( _ObjectHasOwnProperty.call( argument,k ) )
+      break;
+
+    }
+    if( a === arguments.length )
+    {
+      filter.call( this,result,srcMap,k );
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * @property { objectLike } srcObjects.srcObject - The target object.
+ * @property { objectLike } screenObjects.screenObject - The source object.
+ * @property { Object } dstObject - The empty object.
+ */
+
+/**
+ * The mapScreens() returns an object filled by unique [ key, value ]
+ * from (srcObject) object.
+ *
+ * It creates the variable (dstObject) assignes and calls the method (_mapScreen( { } ) )
+ * with three properties.
+ *
+ * @see {@link wTools._mapScreen} - See for more information.
+ *
+ * @param { objectLike } srcObject - The target object.
+ * @param { objectLike } screenObject - The source object.
+ *
+ * @example
+ * // returns { a : "abc", c : 33, d : "name" };
+ * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+ *
+ * @returns { Object } Returns an (dstObject) object filled by unique [ key, value ]
+ * from (srcObject) objects.
+ * @method mapScreens
+ * @throws { Error } Will throw an Error if (arguments.length) more that two,
+ * if (srcObject or screenObject) are not objects-like.
+ * @memberof wTools
+ */
 
 var mapScreens = function( srcObject,screenObject )
 {
@@ -10376,10 +10483,29 @@ var bypass = function()
 
 //
 
-var own = function()
+var srcAndDstOwn = function()
 {
 
-  var routine = function own( dstContainer,srcContainer,key )
+  var routine = function srcAndDstOwn( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    if( !_ObjectHasOwnProperty.call( dstContainer, key ) )
+    return false;
+
+    return true;
+  }
+
+  routine.functionKind = 'field-filter';
+  return routine;
+}
+
+//
+
+var srcOwn = function()
+{
+
+  var routine = function srcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -10394,10 +10520,10 @@ var own = function()
 
 //
 
-var ownRoutines = function()
+var srcOwnRoutines = function()
 {
 
-  var routine = function ownRoutines( dstContainer,srcContainer,key )
+  var routine = function srcOwnRoutines( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -10414,10 +10540,10 @@ var ownRoutines = function()
 
 //
 
-var supplementaryOwnRoutines = function()
+var supplementarySrcOwnRoutines = function()
 {
 
-  var routine = function supplementaryOwnRoutines( dstContainer,srcContainer,key )
+  var routine = function supplementarySrcOwnRoutines( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -10774,9 +10900,11 @@ var filter =
 
   bypass : bypass,
 
-  own : own,
-  ownRoutines : ownRoutines,
-  supplementaryOwnRoutines : supplementaryOwnRoutines,
+  srcAndDstOwn : srcAndDstOwn,
+
+  srcOwn : srcOwn,
+  srcOwnRoutines : srcOwnRoutines,
+  supplementarySrcOwnRoutines : supplementarySrcOwnRoutines,
 
   supplementary : supplementary,
   supplementaryCloning : supplementaryCloning,
@@ -10814,10 +10942,11 @@ var filter =
  * @memberof wTools
  */
 
-var ErrorAbort = function()
+function ErrorAbort()
 {
   this.message = arguments.length ? _.arrayFrom( arguments ) : 'Aborted';
 }
+
 ErrorAbort.prototype = Object.create( Error.prototype );
 
 var error =
@@ -10863,6 +10992,10 @@ var Proto =
   entityCopyField : entityCopyField,
   entityAssignField : entityAssignField,
 
+  entityCoerceTo : entityCoerceTo,
+
+  entityWrap : entityWrap,
+
 
   // entity checker
 
@@ -10886,6 +11019,7 @@ var Proto =
   entityValueWithIndex : entityValueWithIndex,
   entityKeyWithValue : entityKeyWithValue,
 
+  entitySelectUnique : entitySelectUnique,
   entitySelect : entitySelect,
   entitySelectSet : entitySelectSet,
   _entitySelectOptions : _entitySelectOptions,
@@ -10899,8 +11033,6 @@ var Proto =
   _entityMost : _entityMost,
   entityMin : entityMin,
   entityMax : entityMax,
-
-  entityCoerceTo : entityCoerceTo,
 
   entitySearch : entitySearch,
 
@@ -11238,8 +11370,10 @@ var Proto =
   mapContain : mapContain,
 
   mapBut : mapBut,
-  mapButFiltering : mapButFiltering,
   mapOwnBut : mapOwnBut,
+
+  mapButFiltering : mapButFiltering,
+  mapOwnButFiltering : mapOwnButFiltering,
 
   mapScreens : mapScreens,
   mapScreen : mapScreen,
