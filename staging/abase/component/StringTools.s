@@ -356,8 +356,8 @@ var toStrFine_gen = function()
     }
 
     if( o.comma === undefined )
-    // o.comma = o.wrap ? optional.comma : ' ';
-    o.comma = optional.comma;
+    o.comma = o.wrap ? optional.comma : ' ';
+    //o.comma = optional.comma;
 
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
@@ -2537,15 +2537,6 @@ _.mapExtend( Self, Proto );
 
 var toStrFine = Self.toStrFine = Self.toStrFine_gen();
 var toStr = Self.toStr = Self.strFrom = toStrFine;
-
-/*
-debugger;
-var r = _.strInhalfLeft( 'aaa/bbb/ccc','/' );
-var r = _.strInhalfRight( 'aaa/bbb/ccc','/' );
-
-var r = _.strInhalfLeft( 'a.a.a/b.b.b/c.c.c',[ '/','.' ] );
-var r = _.strInhalfRight( 'a.a.a/b.b.b/c.c.c',[ '/','.' ] );
-*/
 
 //
 
