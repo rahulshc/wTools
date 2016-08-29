@@ -494,6 +494,18 @@ var toStr = function( test )
         /*10*/  { h : { d : 1 }, g : 'c', c : [2] },
         /*11*/  { a : 6, b : 7, c : 1 },
         /*12*/  { a : true, b : '2', c : 3, d : undefined },
+        /*13*/  { a : null, b : 1, c : '2', d : undefined, e : true, f : Symbol( 'symbol' ) },
+        /*14*/  { a : 'true', b : 2, c : false, d : undefined },
+        /*15*/  { e : new Error('msg') },
+        /*16*/  { f : 1, g : function f(  ) { } },
+        /*17*/  { x : function y(  ) { } },
+        /*18*/  { a : null, b : 1, c : '2', d : undefined },
+        /*19*/  { e : function r( ) { }, f : 1, g : '2', h : [ 1 ] },
+        /*20*/  { i : 0, k : 1, g : 2, l : 3 },
+        /*21*/  { o : 4, p : 5, r : 6, s : 7 },
+        /*22*/  { m : 8, n : 9 },
+        /*23*/  { x : '\n10', z : '\\11' },
+
 
 
 
@@ -520,7 +532,24 @@ var toStr = function( test )
 
 
         /*11*/  { wrap : 0, comma : ' | ' },
+
+
         /*12*/  { wrap : 0, noString : 1, noNumber: 1 },
+        /*13*/  { wrap : 0 },
+        /*14*/  { wrap : 0, prependTab : 0 },
+
+        /*15*/  { wrap : 0, tab : '| ', dtab : '' },
+
+
+        /*16*/  { wrap : 0, colon : '' },
+
+        /*17*/  { wrap : 0, noRoutine : 1 },
+        /*18*/  { wrap : 0, noAtomic : 1 },
+        /*19*/  { wrap : 0, onlyRoutines : 1 },
+        /*20*/  { wrap : 0, precision : 3 },
+        /*21*/  { wrap : 0,  fixed : 3 },
+        /*22*/  { wrap : 0,  multiline : 1 },
+        /*23*/  { wrap : 0,  unescape : 1 },
 
 
         ],
@@ -598,19 +627,103 @@ var toStr = function( test )
           ].join( '\n' ),
 
         /*10*/  '',
+
+
+
+
+
         /*11*/  '  a : 6 | b : 7 | c : 1',
 
         /*12*/
           [
-            '  a : true ',
-            '  b : "2" ',
-            '  c : 3 ',
+            '  a : true, ',
+            '  b : "2", ',
+            '  c : 3, ',
             '  d : undefined'
 
           ].join( '\n' ),
 
+        /*13*/
+          [
+            '  a : null, ',
+            '  b : 1, ',
+            '  c : "2", ',
+            '  d : undefined, ',
+            '  e : true, ',
+            '  f : Symbol(symbol)'
 
-        ]
+          ].join( '\n' ),
+
+          /*14*/
+            [
+              'a : "true", ',
+              '  b : 2, ',
+              '  c : false, ',
+              '  d : undefined'
+
+            ].join( '\n' ),
+
+          /*15*/
+
+            '| e : [object Error]',
+
+          /*16*/
+
+            '  f1, g[object Function]',
+
+          /*17*/
+
+            '  x : [object Function]',
+
+          /*18*/
+          [
+            '  a : null, ',
+            '  b : 1, ',
+            '  c : "2", ',
+            '  d : undefined'
+
+          ].join( '\n' ),
+
+          /*19*/
+
+          '',
+
+          /*20*/
+
+          [
+            '  i : 0.00, ',
+            '  k : 1.00, ',
+            '  g : 2.00, ',
+            '  l : 3.00'
+
+          ].join( '\n' ),
+
+          /*21*/
+
+          [
+            '  o : 4.000, ',
+            '  p : 5.000, ',
+            '  r : 6.000, ',
+            '  s : 7.000'
+
+          ].join( '\n' ),
+
+          /*22*/
+
+          [
+            '  m : 8, ',
+            '  n : 9'
+
+          ].join( '\n' ),
+
+          /*23*/
+
+          '  x : ""..., z : "\\11"',
+
+
+        ],
+
+
       },
 
 
