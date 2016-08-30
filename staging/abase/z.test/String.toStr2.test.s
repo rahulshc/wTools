@@ -301,6 +301,29 @@ var toStr = function( test )
       /*52*/ [ { a : 0 }, { b : 1 }, [ 2, 3 ] ],
       /*53*/ [ [ 1.100,1.200 ], [ 2, 3 ] ],
       /*54*/ [ 9000,[ 8000, 6000], 7000 ],
+      /*55*/ [ { a : '\\test' }, { b : '\ntest' }, { c : 'test' } ],
+      /*56*/ [ { a : function func ( ){ } }, 0, 1, 'a' ],
+      /*57*/ [ { b : function f ( ){ } }, 1, 2 , 3 ],
+      /*58*/ [ new Error('msg'),new Date(1990, 0, 0),'test' ],
+      /*59*/ [ 1, [ 2, 3, 4 ], 2 ],
+      /*60*/ [ 1, [ '2', null,undefined, '4' ], 2 ],
+      /*61*/ [ [ 1, 2 ],'string',{ a : true, b : null }, undefined ],
+      /*62*/ [ [ 0, 1 ],'test',{ a : Symbol() }, undefined ],
+      /*63*/ [ 0, 'str', { a : Symbol() },function test(){ }, null ],
+      /*64*/ [ 0, 'str', { a : Symbol() },function test( ){ }, true, new Date(1990, 0, 0) ],
+      /*65*/ [ [ 0, 1 ],'test', { a : 'a' } ],
+      /*66*/ [ [ 1, 2 ],'sample', { a : 'b' } ],
+      /*67*/ [ 11,22,function routine( ){ }, { a : 'string' } ],
+      /*68*/ [ ['a',100],['b',200] ],
+      /*69*/ [ ['aa',300],['bb',400] ],
+      /*70*/ [ [ 1.00, 2.00 ], [ 3.00, 4.00],'str sample' ],
+      /*71*/ [ '1', [ 2, 3, 4 ], '2' ],
+      /*72*/ [ '1', [ 2.00, 3.00, 4.00 ], '2' ],
+      /*73*/ [ 'o', [ 90, 80, 70 ], 'o' ],
+      /*74*/ [ 'o', 1, { a : true, b : undefined, c : null } ],
+      /*75*/ [ 'a', 2, { a : '\\true', b : true, c : null } ],
+      /*76*/ [ [ 'a', 1 ], new Error( 'err msg' ), new Date(1990, 0, 0) ],
+      /*77*/ [ [ 'a', 1 ], new Date(1999, 1, 1) ],
 
       ],
       options :
@@ -362,10 +385,30 @@ var toStr = function( test )
       /*52*/  { levels : 2, wrap : 0, comma : ',, ', tab :'  |', colon : '->' },
       /*53*/  { levels : 2, prependTab : 0, fixed : 2 },
       /*54*/  { levels : 2, prependTab : 0, precision : 1 },
-      // /*55*/  { levels : 2, multiline : 1, unescape : 1 },
-      // /*56*/  { levels : 2, noRoutine : 1,},
-      // /*57*/  { levels : 3, noRoutine : 1,},
-      // /*58*/  { levels : 3, noError : 1, noDate : 1},
+      /*55*/  { levels : 2, multiline : 1, unescape : 1 },
+      /*56*/  { levels : 2, noRoutine : 1,},
+      /*57*/  { levels : 3, noRoutine : 1,},
+      /*58*/  { levels : 3, noError : 1, noDate : 1},
+      /*59*/  { levels : 2, noArray : 1},
+      /*60*/  { levels : 2, noNumber : 1, noString : 1},
+      /*61*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1 },
+      /*62*/  { levels : 3, noNumber : 1, noString : 1, noObject : 1 },
+      /*63*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1, noRoutine : 1 },
+      /*64*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1, noRoutine : 1, noDate : 1 },
+      /*65*/  { levels : 2, noNumber : 1, noString : 1, noSubObject : 1 },
+      /*66*/  { levels : 3, noNumber : 1, noString : 1, noSubObject : 1 },
+      /*67*/  { levels : 2, noNumber : 1, noString : 1, onlyRoutines : 1 },
+      /*68*/  { levels : 2, noString : 1, precision : 2 },
+      /*69*/  { levels : 3, noString : 1, precision : 3 },
+      /*70*/  { levels : 2, noString : 1, fixed : 3 },
+      /*71*/  { levels : 2, noString : 1, noNumber :1, precision : 1 },
+      /*72*/  { levels : 2, noString : 1, noNumber :1, fixed : 1 },
+      /*73*/  { levels : 3, noString : 1, noNumber :1, precision : 1 },
+      /*74*/  { levels : 2, noString : 1, noNumber :1, multiline : 1 },
+      /*75*/  { levels : 2, noString : 1, noNumber :1, multiline : 1, unescape : 1 },
+      /*76*/  { levels : 2, noString : 1, noNumber :1, noError : 1 },
+      /*77*/  { levels : 2, noString : 1, noNumber :1, tab : '|', prependTab : 0 },
+
 
       ],
       expected :
@@ -661,6 +704,204 @@ var toStr = function( test )
         '  7e+3',
         ']',
       ].join( '\n' ),
+
+      /*55*/
+      [
+        '[',
+        '  {',
+        '    a : "\\test"',
+        '  }, ',
+        '  {',
+        '    b : ""...',
+        '  }, ',
+        '  {',
+        '    c : "test"',
+        '  }',
+        ']',
+      ].join( '\n' ),
+
+      /*56*/
+      [
+        '[',
+        '  { a : [object Function] }, ',
+        '  0, ',
+        '  1, ',
+        '  "a"',
+        ']',
+      ].join( '\n' ),
+
+      /*57*/
+      [
+        '[',
+        '  {  }, ',
+        '  1, ',
+        '  2, ',
+        '  3',
+        ']',
+      ].join( '\n' ),
+
+      /*58*/
+      [ '[',
+        '  "test"',
+        ']',
+      ].join( '\n' ),
+
+      /*59*/
+       '',
+
+      /*60*/
+
+      [ '[',
+        '  [ "2", null, undefined, "4" ]',
+        ']',
+      ].join( '\n' ),
+
+      /*61*/
+
+      [ '[',
+        '  [ 1, 2 ], ',
+        '  undefined',
+        ']',
+      ].join( '\n' ),
+
+      /*62*/
+
+      [ '[',
+        '  [  ], ',
+        '  undefined',
+        ']',
+      ].join( '\n' ),
+
+      /*63*/
+
+      [ '[',
+        '  null',
+        ']',
+      ].join( '\n' ),
+
+      /*64*/
+
+      [ '[',
+        '  true',
+        ']',
+      ].join( '\n' ),
+
+      /*65*/
+
+      [ '[',
+        '  [ 0, 1 ], ',
+        '  { a : "a" }',
+        ']',
+      ].join( '\n' ),
+
+      /*66*/
+
+      [ '[',
+        '  [  ], ',
+        '  {  }',
+        ']',
+      ].join( '\n' ),
+
+      /*67*/
+
+      [
+        ''
+      ].join( '\n' ),
+
+      /*68*/
+
+      [
+        '[',
+        '  [ "a", 1.0e+2 ], ',
+        '  [ "b", 2.0e+2 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*69*/
+
+      [
+        '[',
+        '  [ 300 ], ',
+        '  [ 400 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*70*/
+
+      [
+        '[',
+        '  [ 1.000, 2.000 ], ',
+        '  [ 3.000, 4.000 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*71*/
+
+      [
+        '[',
+        '  [ 2, 3, 4 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*72*/
+
+      [
+        '[',
+        '  [ 2.0, 3.0, 4.0 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*73*/
+
+      [
+        '[',
+        '  [  ]',
+        ']'
+      ].join( '\n' ),
+
+      /*74*/
+
+      [
+        '[',
+        '  {',
+        '    a : true, ',
+        '    b : undefined, ',
+        '    c : null',
+        '  }',
+        ']'
+      ].join( '\n' ),
+
+      /*75*/
+
+      [
+        '[',
+        '  {',
+        '    a : "\\true", ',
+        '    b : true, ',
+        '    c : null',
+        '  }',
+        ']'
+      ].join( '\n' ),
+
+      /*76*/
+
+      [
+        '[',
+        '  [ "a", 1 ], ',
+        '  1989-12-30T22:00:00.000Z',
+        ']'
+      ].join( '\n' ),
+
+      /*77*/
+
+      [
+        '[',
+        '|  [ "a", 1 ], ',
+        '|  1999-01-31T22:00:00.000Z',
+        '|]'
+      ].join( '\n' ),
+
+
 
 
       ]
