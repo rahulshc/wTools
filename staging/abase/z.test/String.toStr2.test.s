@@ -965,7 +965,10 @@ var toStr = function( test )
         /*50*/  { "sequence" : "\t\u005b\u0063\u0062\u0061\u005d\t", "data" : 100, "code" : "\n[cba]\n"  },
         /*51*/  { "sequence" : "\u005CABC\u005C", "data" : 100, "code" : "\\ABC\\"  },
         /*52*/  { "sequence" : "\u000Aline\u000A", "data" : null, "code" : "\nline\n"  },
-
+        /*53*/  { "sequence" : "\rspace\r",  },
+        /*54*/  { "sequence" : "\btest",  },
+        /*55*/  { "sequence" : "\vsample",  },
+        /*56*/  { "sequence" : "\ftest",  },
 
 
 
@@ -1031,6 +1034,10 @@ var toStr = function( test )
         /*50*/  { levels : 2, multiline : 1, unescape : 1 },
         /*51*/  { levels : 2, multiline : 1, unescape : 1 },
         /*52*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*53*/  { levels : 2, unescape : 1 },
+        /*54*/  { levels : 2, unescape : 1 },
+        /*55*/  { levels : 2, unescape : 1 },
+        /*56*/  { levels : 2, unescape : 1 },
 
 
 
@@ -1453,18 +1460,68 @@ var toStr = function( test )
 
         ].join( '\n' ),
 
+        /*53*/
+        [
+          '{',
+          '  sequence : "\\rspace\\r", ',
+          '}'
+
+        ].join( '\n' ),
+
+        /*54*/
+        [
+          '{',
+          '  sequence : "\\btest", ',
+          '}'
+
+        ].join( '\n' ),
+
+        /*55*/
+        [
+          '{',
+          '  sequence : "\\vsample", ',
+          '}'
+
+        ].join( '\n' ),
+
+        /*56*/
+        [
+          '{',
+          '  sequence : "\\ftest", ',
+          '}'
+
+        ].join( '\n' ),
+
+
 
         ],
 
 
       },
 
+      {
+       desc :  'json test',
+       src :
+       [
+          {	"a": 100,	"b": "c",	"c": {"d": true,"e": null	} },
+
+       ],
+       options :
+       [
+         { levels : 2 , json : 1 },
+
+       ]
 
 
+
+      },
 
 
 
   ];
+
+
+
 
   debugger;
   for( var i = 0; i < cases.length; ++i )
@@ -1473,13 +1530,24 @@ var toStr = function( test )
     var src = _case['src'];
     var exp = _case['expected'];
     var o = _case['options'];
-
+    var got = null;
     for( var k = 0; k < src.length; ++k  )
     {
       test.description = _case.desc;
-      var got = _.toStr( src[ k ], o[ k ] || o[ 0 ] );
-      var expected = exp[ k ];
-      test.identical( got,expected )
+      got = _.toStr( src[ k ], o[ k ] || o[ 0 ]);
+
+      if( test.description === 'json test' )
+      {
+        var expected = JSON.parse( got );
+        test.identical( src[ k ],expected );
+
+      }
+
+      else
+        test.identical( got,exp[k] );
+
+
+
     }
 
 
