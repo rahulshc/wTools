@@ -2634,7 +2634,7 @@ var Proto =
   strNumberLines : strNumberLines,
 
   strCount : strCount,
-  strDup : strDup,
+  strDup : strDup, /* document me */
 
   strCamelize : strCamelize,
   strFilenameFor : strFilenameFor,

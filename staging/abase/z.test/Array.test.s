@@ -8,7 +8,7 @@
    from the project directory run
 
    npm install
-   node ./staging/abase/z.tests/Array.test.s
+   node ./staging/abase/z.test/Array.test.s
 
    */
 
@@ -3127,7 +3127,7 @@
   
   
   
-  // node ./staging/abase/z.tests/Array.test.s
+  // node ./staging/abase/z.test/Array.test.s
 
 //
 
