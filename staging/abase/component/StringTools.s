@@ -2030,6 +2030,7 @@ var strNumberLines = function( srcStr )
 }
 
 //
+
 /**
  * This function returns  count of occurrences of a substring in a string,
  * Expects two objects in order: source string, substring.
@@ -2047,7 +2048,8 @@ var strNumberLines = function( srcStr )
  * @throws { Exception } Throw an exception if( ins ) is not a String.
  * @memberof wTools
  *
-*/
+ */
+
 var strCount = function( src,ins )
 {
   var result = -1;
@@ -2067,6 +2069,21 @@ var strCount = function( src,ins )
   return result;
 }
 
+//
+
+var strDup = function strDup( src,times )
+{
+  var result = '';
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+  _.assert( _.numberIs( times ) );
+
+  for( var t = 0 ; t < times ; t++ )
+  result += src;
+
+  return result;
+}
 
 //
 
@@ -2526,6 +2543,7 @@ var Proto =
   strNumberLines : strNumberLines,
 
   strCount : strCount,
+  strDup : strDup,
 
   strCamelize : strCamelize,
   strFilenameFor : strFilenameFor,
