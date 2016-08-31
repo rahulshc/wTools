@@ -8,7 +8,7 @@
    from the project directory run
 
    npm install
-   node ./staging/z.tests/Map.test.s
+   node ./staging/z.test/Map.test.s
 
    */
 
@@ -1199,7 +1199,7 @@
   
   
   
-  // node ./staging/abase/z.tests/Map.test.s
+  // node ./staging/abase/z.test/Map.test.s
 
 
 //

@@ -9,7 +9,7 @@
    from the project directory run
 
    npm install
-   node ./staging/z.tests/Sample.test.s
+   node ./staging/z.test/Sample.test.s
 
    */
 

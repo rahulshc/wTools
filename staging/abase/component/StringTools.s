@@ -292,6 +292,7 @@ var toStrFine_gen = function()
 
     levels : 1,
     wrap : 1,
+    wrapString : 1,
     prependTab : 1,
     errorAsMap : 0,
     own : 1,
@@ -520,7 +521,9 @@ var _toStrShort = function( src,o )
       result += '"' + src.substr( 0,Math.min( maxStringLength,nl ) ) + '"' + '...';
     }
     else
-    result += '"' + src + '"';
+    {
+      result += '"' + src + '"';
+    }
   }
   else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
   {
@@ -534,6 +537,10 @@ var _toStrShort = function( src,o )
     result += '[ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' ]';
 
   }
+  else if( src instanceof Date )
+  {
+    result += src.toISOString();
+  }
   else
   {
     result += String( src );
@@ -544,10 +551,18 @@ var _toStrShort = function( src,o )
 
 //
 
-var _toStrIsSimpleElement = function( element )
+var _toStrIsSimpleElement = function( element,o )
 {
+  _.assert( arguments.length === 2 );
+
   if( _.strIs( element ) )
-  return element.length < 40;
+  {
+    if( element.length > 40 )
+    return false;
+    if( !o.escaping )
+    return element.indexOf( '\n' ) === -1;
+    return true;
+  }
   else if( element && !_.objectIs( element ) && _.numberIs( element.length ) )
   return !element.length;
   else if( _.objectIs( element ) || _.objectLike( element ) )
@@ -612,13 +627,36 @@ var _toStrFromStr = function( src,o )
 {
   var result = '';
 
+  // 007f : ""
+  // . . .
+  // 009f : ""
+
+  // 00ad : "­"
+
+  // \' 	single quote 	byte 0x27 in ASCII encoding
+  // \" 	double quote 	byte 0x22 in ASCII encoding
+  // \\ 	backslash 	byte 0x5c in ASCII encoding
+  // \b 	backspace 	byte 0x08 in ASCII encoding
+  // \f 	form feed - new page 	byte 0x0c in ASCII encoding
+  // \n 	line feed - new line 	byte 0x0a in ASCII encoding
+  // \r 	carriage return 	byte 0x0d in ASCII encoding
+  // \t 	horizontal tab 	byte 0x09 in ASCII encoding
+  // \v 	vertical tab 	byte 0x0b in ASCII encoding
+  // source : http://en.cppreference.com/w/cpp/language/escape
+
   if( o.escaping )
   {
     result += '"';
     for( var s = 0 ; s < src.length ; s++ )
     {
       var c = src[ s ];
-      switch( c )
+      var code = c.charCodeAt( 0 );
+
+      if( 0x007f <= code && code <= 0x009f || code === 0x00ad )
+      {
+        result += _.strUnicodeEscape( c );
+      }
+      else switch( c )
       {
 
         case '\\' :
@@ -626,11 +664,43 @@ var _toStrFromStr = function( src,o )
           result += '\\\\';
           break;
 
+        case '\"' :
+          result += '\\"';
+          break;
+
+        case '\'' :
+          result += "\\'";
+          break;
+
+        case '\b' :
+          result += '\\b';
+          break;
+
+        case '\f' :
+          result += '\\f';
+          break;
+
         case '\n' :
           result += '\\n';
           break;
 
+        case '\r' :
+          result += '\\r';
+          break;
+
+        case '\t' :
+          result += '\\t';
+          break;
+
+        case '\v' :
+          result += '\\v';
+          break;
+
         default :
+
+          if( code < 32 )
+          result += _.strUnicodeEscape( c );
+          else
           result += c;
 
       }
@@ -679,7 +749,7 @@ var _toStrFromArray = function( src,o )
   if( simple )
   for( var i = 0 ; i < length ; i++ )
   {
-    simple = _toStrIsSimpleElement( src[ i ] );;
+    simple = _toStrIsSimpleElement( src[ i ],o );;
     if( !simple )
     break;
   }
@@ -734,7 +804,7 @@ var _toStrFromObject = function( src,o )
   if( simple )
   for( var k in src )
   {
-    simple = _toStrIsSimpleElement( src[ k ] );
+    simple = _toStrIsSimpleElement( src[ k ],o );
     if( !simple )
     break;
   }
@@ -1949,6 +2019,26 @@ var strHtmlEscape = function( str )
 
 //
 
+var strUnicodeEscape = function( src )
+{
+  var result = '';
+
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1 );
+
+  for( var i = 0 ; i > src.length ; i++ )
+  {
+    var c = src[ i ];
+    var code = c.charCodeAt( 0 );
+    var h = code.toString( 16 );
+    var d = _.strDup( '0',4-h.length ) + h;
+    result + '\\u' + d;
+  }
+
+}
+
+//
+
 /**
  * This function appends indentation character passed by the second argument( tab )
  * before first and every next new line in a source string( src ).
@@ -2538,12 +2628,13 @@ var Proto =
   lattersSpectreComparison : lattersSpectreComparison, /* exmperimental */
 
   strHtmlEscape : strHtmlEscape,
+  strUnicodeEscape : strUnicodeEscape,
 
   strIndentation : strIndentation,
   strNumberLines : strNumberLines,
 
   strCount : strCount,
-  strDup : strDup,
+  strDup : strDup, /* document me */
 
   strCamelize : strCamelize,
   strFilenameFor : strFilenameFor,
