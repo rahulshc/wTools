@@ -102,7 +102,7 @@ var toStrFields = function( src,o )
  * Number must be between 0 and 20.
  * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
  * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
- * @param {boolean} [ o.unescape=0 ] - Disables escaping of special characters.
+ * @param {boolean} [ o.escaping=1 ] - enable escaping of special characters.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -123,7 +123,7 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns " \n1500 "
- * _.toStr( ' \n1500 ', { unescape : 1 } );
+ * _.toStr( ' \n1500 ', { escaping : 1 } );
  *
  * @example
  * //returns
@@ -310,6 +310,7 @@ var toStrFine_gen = function()
 
     onlyRoutines : 0,
     noSubObject : 0,
+
     //singleElementPerLine : 0,
 
     /**/
@@ -318,7 +319,8 @@ var toStrFine_gen = function()
     fixed : null,
     comma : ', ',
     multiline : 0,
-    unescape : 0,
+    escaping : 1,
+    json : 0,
 
   }
 
@@ -610,7 +612,7 @@ var _toStrFromStr = function( src,o )
 {
   var result = '';
 
-  if( o.unescape )
+  if( o.escaping )
   {
     result += '"';
     for( var s = 0 ; s < src.length ; s++ )
@@ -1900,61 +1902,6 @@ var lattersSpectreComparison = function( src1,src2 )
 }
 
 //
-
-var strToDom = function( xmlStr )
-{
-
-  var xmlDoc = null;
-  var isIEParser = window.ActiveXObject || "ActiveXObject" in window;
-
-  if( xmlStr === undefined ) return xmlDoc;
-
-  if ( window.DOMParser )
-  {
-
-    var parser = new window.DOMParser();
-    var parsererrorNS = null;
-
-    if( !isIEParser ) {
-
-      try {
-        parsererrorNS = parser.parseFromString( "INVALID", "text/xml" ).childNodes[0].namespaceURI;
-      }
-      catch( err ) {
-        parsererrorNS = null;
-      }
-    }
-
-    try
-    {
-      xmlDoc = parser.parseFromString( xmlStr, "text/xml" );
-      if( parsererrorNS!= null && xmlDoc.getElementsByTagNameNS( parsererrorNS, "parsererror" ).length > 0 )
-      {
-        throw 'Error parsing XML';
-        xmlDoc = null;
-      }
-    }
-    catch( err )
-    {
-      throw 'Error parsing XML';
-      xmlDoc = null;
-    }
-  }
-  else
-  {
-    if( xmlStr.indexOf( "<?" )==0 )
-    {
-      xmlStr = xmlStr.substr( xmlStr.indexOf( "?>" ) + 2 );
-    }
-    xmlDoc = new ActiveXObject( "Microsoft.XMLDOM" );
-    xmlDoc.async = "false";
-    xmlDoc.loadXML( xmlStr );
-  }
-
-  return xmlDoc;
-};
-
-//
 /**
  * This function finds all occurrences of html escape symbols from( _strHtmlEscapeMap )
  * in source( str ) and replaces them with code equivalent like( '&' -> '&amp;' ).
@@ -2002,34 +1949,6 @@ var strHtmlEscape = function( str )
 
 //
 
-var strToConfig = function( src,o ){
-
-  var result = {};
-  if( !_.strIs( src ) ) throw _.err( '_.strToConfig :','require string' );
-
-  var o = o || {};
-  if( o.delimeter === undefined ) o.delimeter = ' :';
-
-  var src = src.split( '\n' );
-
-  for( var s = 0 ; s < src.length ; s++ )
-  {
-
-    var row = src[ s ];
-    var i = row.indexOf( o.delimeter );
-    if( i === -1 ) continue;
-
-    var key = row.substr( 0,i ).trim();
-    var val = row.substr( i+1 ).trim();
-
-    result[ key ] = val;
-
-  }
-
-  return result;
-}
-
-//
 /**
  * This function appends indentation character passed by the second argument( tab )
  * before first and every next new line in a source string( src ).
@@ -2148,7 +2067,98 @@ var strCount = function( src,ins )
   return result;
 }
 
+
 //
+
+/**
+ * This function converts string to camelcase using special pattern.
+ * If function finds character from this( '.','-','_','/' ) list before letter,
+ * it replaces letter with uppercase version.
+ * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ). *
+ *
+ * @param {string} srcStr - Source string.
+ * @returns {string} Returns camelcase version of string.
+ *
+ * @example
+ * //returns aBCD
+ * _.strCamelize( 'a-b_c/d' );
+ *
+ * @example
+ * //returns testString
+ * _.strCamelize( 'test-string' );
+ *
+ * @method strCamelize
+ * @memberof wTools
+ *
+ */
+
+var strCamelize = function( srcStr )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( srcStr ) );
+
+  var result = srcStr;
+  var regexp = /\.\w|-\w|_\w|\/\w/g;
+
+  var result = result.replace( regexp,function( match )
+  {
+    return match[ 1 ].toUpperCase();
+  });
+
+  return result;
+}
+
+//
+
+/**
+ * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
+ * pattern with second argument( o ) property( o.separator ).If( o.separator ) is not defined,
+ * function sets value to( '_' ).
+ *
+ * @param {string} srcStr - Source string.
+ * @param {object} o - Object that contains o.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns _example_file_name.txt
+ * _.strFilenameFor( "'example\\file?name.txt" );
+ *
+ * @example
+ * //returns #example#file#name.js
+ * var o = { 'separator':'#' };
+ * _.strFilenameFor( "'example\\file?name.js",o );
+ *
+ * @method strFilenameFor
+ * @memberof wTools
+ *
+ */
+
+var strFilenameFor = function( srcStr,o )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( srcStr ) );
+
+  if( arguments.length === 2 )
+  _.assert( _.mapIs( arguments[ 1 ] ) );
+
+  var result = srcStr;
+  var o = o || {};
+  if( o.separator === undefined )
+  o.separator = '_';
+
+  var regexp = /<|>| :|"|'|\/|\\|\||\&|\?|\*|\n|\s/g;
+
+  var result = result.replace( regexp,function( match )
+  {
+    return o.separator;
+  });
+
+  return result;
+}
+
+// --
+// format
+// --
 
 /**
  * This function converts each character of string passed by argument( str )
@@ -2183,14 +2193,6 @@ var strToBytes = function( src )
 }
 
 //
-
-var strTimeFormat = function( time )
-{
-  var result = strMetricFormat( time*0.001,{ fixed : 3 } ) + 's';
-  return result;
-}
-
-// -- number
 
 var _metrics =
 {
@@ -2304,11 +2306,21 @@ var strMetricFormatBytes = function( number,o )
 
 //
 
+var strTimeFormat = function( time )
+{
+  var result = strMetricFormat( time*0.001,{ fixed : 3 } ) + 's';
+  return result;
+}
+
+//
+
 var strCsvFrom = function( src,o )
 {
 
   var result = '';
   var o = o || {};
+
+  debugger;
 
   if( !o.header )
   {
@@ -2363,91 +2375,87 @@ var strCsvFrom = function( src,o )
   return result;
 }
 
-
 //
 
-/**
- * This function converts string to camelcase using special pattern.
- * If function finds character from this( '.','-','_','/' ) list before letter,
- * it replaces letter with uppercase version.
- * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ). *
- *
- * @param {string} srcStr - Source string.
- * @returns {string} Returns camelcase version of string.
- *
- * @example
- * //returns aBCD
- * _.strCamelize( 'a-b_c/d' );
- *
- * @example
- * //returns testString
- * _.strCamelize( 'test-string' );
- *
- * @method strCamelize
- * @memberof wTools
- *
- */
-
-var strCamelize = function( srcStr )
+var strToDom = function( xmlStr )
 {
-  _.assert( arguments.length === 1 );
-  _.assert( _.strIs( srcStr ) );
 
-  var result = srcStr;
-  var regexp = /\.\w|-\w|_\w|\/\w/g;
+  var xmlDoc = null;
+  var isIEParser = window.ActiveXObject || "ActiveXObject" in window;
 
-  var result = result.replace( regexp,function( match )
+  if( xmlStr === undefined ) return xmlDoc;
+
+  if ( window.DOMParser )
   {
-    return match[ 1 ].toUpperCase();
-  });
 
-  return result;
+    var parser = new window.DOMParser();
+    var parsererrorNS = null;
+
+    if( !isIEParser ) {
+
+      try {
+        parsererrorNS = parser.parseFromString( "INVALID", "text/xml" ).childNodes[0].namespaceURI;
+      }
+      catch( err ) {
+        parsererrorNS = null;
+      }
+    }
+
+    try
+    {
+      xmlDoc = parser.parseFromString( xmlStr, "text/xml" );
+      if( parsererrorNS!= null && xmlDoc.getElementsByTagNameNS( parsererrorNS, "parsererror" ).length > 0 )
+      {
+        throw 'Error parsing XML';
+        xmlDoc = null;
+      }
+    }
+    catch( err )
+    {
+      throw 'Error parsing XML';
+      xmlDoc = null;
+    }
+  }
+  else
+  {
+    if( xmlStr.indexOf( "<?" )==0 )
+    {
+      xmlStr = xmlStr.substr( xmlStr.indexOf( "?>" ) + 2 );
+    }
+    xmlDoc = new ActiveXObject( "Microsoft.XMLDOM" );
+    xmlDoc.async = "false";
+    xmlDoc.loadXML( xmlStr );
+  }
+
+  return xmlDoc;
 }
 
 //
 
-/**
- * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
- * pattern with second argument( o ) property( o.separator ).If( o.separator ) is not defined,
- * function sets value to( '_' ).
- *
- * @param {string} srcStr - Source string.
- * @param {object} o - Object that contains o.
- * @returns {string} Returns string with result of replacements.
- *
- * @example
- * //returns _example_file_name.txt
- * _.strFilenameFor( "'example\\file?name.txt" );
- *
- * @example
- * //returns #example#file#name.js
- * var o = { 'separator':'#' };
- * _.strFilenameFor( "'example\\file?name.js",o );
- *
- * @method strFilenameFor
- * @memberof wTools
- *
- */
+var strToConfig = function( src,o ){
 
-var strFilenameFor = function( srcStr,o )
-{
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( srcStr ) );
+  var result = {};
+  if( !_.strIs( src ) )
+  throw _.err( '_.strToConfig :','require string' );
 
-  if( arguments.length === 2 )
-  _.assert( _.mapIs( arguments[ 1 ] ) );
-
-  var result = srcStr;
   var o = o || {};
-  if( o.separator === undefined )
-  o.separator = '_';
+  if( o.delimeter === undefined ) o.delimeter = ' :';
 
-  var regexp = /<|>| :|"|'|\/|\\|\||\&|\?|\*|\n|\s/g;
+  var src = src.split( '\n' );
 
-  var result = result.replace( regexp,function( match )
+  for( var s = 0 ; s < src.length ; s++ )
   {
-    return o.separator;
-  });
+
+    var row = src[ s ];
+    var i = row.indexOf( o.delimeter );
+    if( i === -1 ) continue;
+
+    var key = row.substr( 0,i ).trim();
+    var val = row.substr( i+1 ).trim();
+
+    result[ key ] = val;
+
+  }
 
   return result;
 }
@@ -2512,26 +2520,27 @@ var Proto =
   strLattersSpectre : strLattersSpectre, /* exmperimental */
   lattersSpectreComparison : lattersSpectreComparison, /* exmperimental */
 
-  strToDom : strToDom, /* exmperimental */
   strHtmlEscape : strHtmlEscape,
-
-  strToConfig : strToConfig, /* exmperimental */
 
   strIndentation : strIndentation,
   strNumberLines : strNumberLines,
 
   strCount : strCount,
 
-  strToBytes : strToBytes,
+  strCamelize : strCamelize,
+  strFilenameFor : strFilenameFor,
 
-  strTimeFormat : strTimeFormat,
+  // format
+
+  strToBytes : strToBytes,
   strMetricFormat : strMetricFormat,
   strMetricFormatBytes : strMetricFormatBytes,
 
-  strCsvFrom : strCsvFrom, /* exmperimental */
+  strTimeFormat : strTimeFormat,
 
-  strCamelize : strCamelize,
-  strFilenameFor : strFilenameFor,
+  strCsvFrom : strCsvFrom, /* exmperimental */
+  strToDom : strToDom, /* exmperimental */
+  strToConfig : strToConfig, /* exmperimental */
 
 }
 
