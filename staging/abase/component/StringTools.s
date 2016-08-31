@@ -470,7 +470,10 @@ var _toStr = function _toStr( src,o )
     simple = r.simple;
   }
   else if( isObject )
-  {
+  { if( o.json === 1 )
+    {
+      _.assert( o.wrapString === 1 );
+    }
     if( o.noObject )
     return;
     var r = _toStrFromObject( src,o );
