@@ -2660,11 +2660,6 @@ _.mapExtend( Self, Proto );
 var toStrFine = Self.toStrFine = Self.toStrFine_gen();
 var toStr = Self.toStr = Self.strFrom = toStrFine;
 
-debugger;
-var d = new Date( 2016, 12, 8 );
-console.log( _.toStr( d ) );
-debugger;
-
 //
 
 if( typeof module !== 'undefined' && module !== null )
