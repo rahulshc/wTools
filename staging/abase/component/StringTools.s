@@ -454,6 +454,7 @@ var _toStr = function _toStr( src,o )
   }
   else if( src instanceof Date )
   {
+    debugger;
     if( o.noDate )
     return;
     result += src.toISOString();
@@ -535,6 +536,10 @@ var _toStrShort = function( src,o )
 
     result += '[ ' + strTypeOf( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' ]';
 
+  }
+  else if( src instanceof Date )
+  {
+    result += src.toISOString();
   }
   else
   {
@@ -2654,6 +2659,11 @@ _.mapExtend( Self, Proto );
 
 var toStrFine = Self.toStrFine = Self.toStrFine_gen();
 var toStr = Self.toStr = Self.strFrom = toStrFine;
+
+debugger;
+var d = new Date( 2016, 12, 8 );
+console.log( _.toStr( d ) );
+debugger;
 
 //
 
