@@ -292,6 +292,7 @@ var toStrFine_gen = function()
 
     levels : 1,
     wrap : 1,
+    wrapString : 1,
     prependTab : 1,
     errorAsMap : 0,
     own : 1,
@@ -454,7 +455,6 @@ var _toStr = function _toStr( src,o )
   }
   else if( src instanceof Date )
   {
-    debugger;
     if( o.noDate )
     return;
     result += src.toISOString();
