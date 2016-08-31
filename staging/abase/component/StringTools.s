@@ -546,11 +546,17 @@ var _toStrShort = function( src,o )
 
 //
 
-var _toStrIsSimpleElement = function( element )
+var _toStrIsSimpleElement = function( element,o )
 {
+  _.assert( arguments.length === 2 );
+
   if( _.strIs( element ) )
   {
-    return element.length < 40 && element.indexOf( '\n' ) === -1;
+    if( element.length > 40 )
+    return false;
+    if( !o.escaping )
+    return element.indexOf( '\n' ) === -1;
+    return true;
   }
   else if( element && !_.objectIs( element ) && _.numberIs( element.length ) )
   return !element.length;
@@ -703,7 +709,7 @@ var _toStrFromArray = function( src,o )
   if( simple )
   for( var i = 0 ; i < length ; i++ )
   {
-    simple = _toStrIsSimpleElement( src[ i ] );;
+    simple = _toStrIsSimpleElement( src[ i ],o );;
     if( !simple )
     break;
   }
@@ -758,7 +764,7 @@ var _toStrFromObject = function( src,o )
   if( simple )
   for( var k in src )
   {
-    simple = _toStrIsSimpleElement( src[ k ] );
+    simple = _toStrIsSimpleElement( src[ k ],o );
     if( !simple )
     break;
   }
