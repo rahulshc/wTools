@@ -297,10 +297,33 @@ var toStr = function( test )
       /*48*/ [ 1, { a : 2 }, '03' ],
       /*49*/ [ 0, [ 1, 2, 3, 4 ], 5, { a : 6 } ],
       /*50*/ [ { a : 'string' }, [ true ], 1 ],
-      /*51*/ [ [ 5, 4, 3 ],[ 2, 1, 0 ] ],
+      /*51*/ [ [ 5, 4, [ 3 ] ],[ 2, 1, 0 ] ],
       /*52*/ [ { a : 0 }, { b : 1 }, [ 2, 3 ] ],
       /*53*/ [ [ 1.100,1.200 ], [ 2, 3 ] ],
       /*54*/ [ 9000,[ 8000, 6000], 7000 ],
+      /*55*/ [ { a : '\\test' }, { b : '\ntest' }, { c : 'test' } ],
+      /*56*/ [ { a : function func ( ){ } }, 0, 1, 'a' ],
+      /*57*/ [ { b : function f ( ){ } }, 1, 2 , 3 ],
+      /*58*/ [ new Error('msg'),new Date(1990, 0, 0),'test' ],
+      /*59*/ [ 1, [ 2, 3, 4 ], 2 ],
+      /*60*/ [ 1, [ '2', null,undefined, '4' ], 2 ],
+      /*61*/ [ [ 1, 2 ],'string',{ a : true, b : null }, undefined ],
+      /*62*/ [ [ 0, 1 ],'test',{ a : Symbol() }, undefined ],
+      /*63*/ [ 0, 'str', { a : Symbol() },function test(){ }, null ],
+      /*64*/ [ 0, 'str', { a : Symbol() },function test( ){ }, true, new Date(1990, 0, 0) ],
+      /*65*/ [ [ 0, 1 ],'test', { a : 'a' } ],
+      /*66*/ [ [ 1, 2 ],'sample', { a : 'b' } ],
+      /*67*/ [ 11,22,function routine( ){ }, { a : 'string' } ],
+      /*68*/ [ ['a',100],['b',200] ],
+      /*69*/ [ ['aa',300],['bb',400] ],
+      /*70*/ [ [ 1.00, 2.00 ], [ 3.00, 4.00],'str sample' ],
+      /*71*/ [ '1', [ 2, 3, 4 ], '2' ],
+      /*72*/ [ '1', [ 2.00, 3.00, 4.00 ], '2' ],
+      /*73*/ [ 'o', [ 90, 80, 70 ], 'o' ],
+      /*74*/ [ 'o', 1, { a : true, b : undefined, c : null } ],
+      /*75*/ [ 'a', 2, { a : '\\true', b : true, c : null } ],
+      /*76*/ [ [ 'a', 1 ], new Error( 'err msg' ), new Date(1990, 0, 0) ],
+      /*77*/ [ [ 'a', 1 ], new Date(1999, 1, 1) ],
 
       ],
       options :
@@ -331,41 +354,61 @@ var toStr = function( test )
       /*24*/ { levels : 2, noRoutine : 1, noSubObject : 1 },
 
       /*25*/  { wrap : 0, comma : ' | ' },
-      /*26*/  { wrap : 0, noString : 1, noNumber: 1 },
-      /*27*/  { wrap : 0 },
-      /*28*/  { wrap : 0, prependTab : 0 },
-      /*29*/  { wrap : 0, tab : '| ', dtab : '' },
-      /*30*/  { wrap : 0, colon : '->' },
-      /*31*/  { wrap : 0, noRoutine : 1 },
-      /*32*/  { wrap : 0, noAtomic : 1 },
-      /*33*/  { wrap : 0, onlyRoutines : 1 },
-      /*34*/  { wrap : 0, precision : 3 },
-      /*35*/  { wrap : 0,  fixed : 3 },
-      /*36*/  { wrap : 0,  multiline : 1 },
-      /*37*/  { wrap : 0,  unescape : 1 },
+      /*26*/  { wrap : 0, noString : 1, noNumber: 1, comma : ', ' },
+      /*27*/  { wrap : 0, comma : ' ' },
+      /*28*/  { wrap : 0, prependTab : 0, comma : ', ' },
+      /*29*/  { wrap : 0, tab : '| ', dtab : '', comma : '. ' },
+      /*30*/  { wrap : 0, colon : '->', comma : '.' },
+      /*31*/  { wrap : 0, noRoutine : 1, comma : '. ' },
+      /*32*/  { wrap : 0, noAtomic : 1, comma : '. ' },
+      /*33*/  { wrap : 0, onlyRoutines : 1, comma : '| ' },
+      /*34*/  { wrap : 0, precision : 3, comma : '* ' },
+      /*35*/  { wrap : 0, fixed : 3, comma : ', ' },
+      /*36*/  { wrap : 0, multiline : 1, comma : '. ' },
+      /*37*/  { wrap : 0, unescape : 1, comma : '. ' },
 
-      /*38*/  { levels : 2, wrap : 0 },
+      /*38*/  { levels : 2, wrap : 0, comma : '- ' },
       /*39*/  { levels : 2, wrap : 0, comma : '. '},
-      /*40*/  { levels : 2, wrap : 0, tab : '| ', dtab : '' },
-      /*41*/  { levels : 2, wrap : 0, colon : ' - ' },
-      /*42*/  { levels : 2, wrap : 0, prependTab : 0 },
-      /*43*/  { levels : 2, wrap : 0, fixed : 1 },
-      /*44*/  { levels : 2, wrap : 0, precision : 1 },
-      /*45*/  { levels : 2, wrap : 0, multiline : 1 },
-      /*46*/  { levels : 3, wrap : 0, unescape : 1 },
-      /*47*/  { levels : 4, wrap : 0, unescape : 1 },
-      /*48*/  { levels : 3, wrap : 0, noAtomic : 1 },
-      /*49*/  { levels : 2, wrap : 0, noSubObject : 1, noArray : 1 },
-      /*50*/  { levels : 2, wrap : 0, noString : 1, noNumber : 1 },
+      /*40*/  { levels : 2, wrap : 0, tab : '| ', dtab : '', comma : ', ' },
+      /*41*/  { levels : 2, wrap : 0, colon : ' - ', comma : '| ' },
+      /*42*/  { levels : 2, wrap : 0, prependTab : 0, comma : ', ' },
+      /*43*/  { levels : 2, wrap : 0, fixed : 1, comma : '* ' },
+      /*44*/  { levels : 2, wrap : 0, precision : 1, comma : ', ' },
+      /*45*/  { levels : 2, wrap : 0, multiline : 1, comma : '| ' },
+      /*46*/  { levels : 3, wrap : 0, unescape : 1, comma : '. ' },
+      /*47*/  { levels : 4, wrap : 0, unescape : 1, comma : ', ' },
+      /*48*/  { levels : 3, wrap : 0, noAtomic : 1, comma : ' ,' },
+      /*49*/  { levels : 2, wrap : 0, noSubObject : 1, noArray : 1, comma : ' ..' },
+      /*50*/  { levels : 2, wrap : 0, noString : 1, noNumber : 1, comma : '/ ' },
 
-      /*51*/  { levels : 2, comma : '. '},
-      /*52*/  { levels : 2, comma : ',, ', tab :'  |', colon : '->' },
+      /*51*/  { levels : 3, wrap : 0, comma : '||' },
+      /*52*/  { levels : 2, wrap : 0, comma : ',, ', tab :'  |', colon : '->' },
       /*53*/  { levels : 2, prependTab : 0, fixed : 2 },
       /*54*/  { levels : 2, prependTab : 0, precision : 1 },
-      // /*55*/  { levels : 2, multiline : 1, unescape : 1 },
-      // /*56*/  { levels : 2, noRoutine : 1,},
-      // /*57*/  { levels : 3, noRoutine : 1,},
-      // /*58*/  { levels : 3, noError : 1, noDate : 1},
+      /*55*/  { levels : 2, multiline : 1, unescape : 1 },
+      /*56*/  { levels : 2, noRoutine : 1,},
+      /*57*/  { levels : 3, noRoutine : 1,},
+      /*58*/  { levels : 3, noError : 1, noDate : 1},
+      /*59*/  { levels : 2, noArray : 1},
+      /*60*/  { levels : 2, noNumber : 1, noString : 1},
+      /*61*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1 },
+      /*62*/  { levels : 3, noNumber : 1, noString : 1, noObject : 1 },
+      /*63*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1, noRoutine : 1 },
+      /*64*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1, noRoutine : 1, noDate : 1 },
+      /*65*/  { levels : 2, noNumber : 1, noString : 1, noSubObject : 1 },
+      /*66*/  { levels : 3, noNumber : 1, noString : 1, noSubObject : 1 },
+      /*67*/  { levels : 2, noNumber : 1, noString : 1, onlyRoutines : 1 },
+      /*68*/  { levels : 2, noString : 1, precision : 2 },
+      /*69*/  { levels : 3, noString : 1, precision : 3 },
+      /*70*/  { levels : 2, noString : 1, fixed : 3 },
+      /*71*/  { levels : 2, noString : 1, noNumber :1, precision : 1 },
+      /*72*/  { levels : 2, noString : 1, noNumber :1, fixed : 1 },
+      /*73*/  { levels : 3, noString : 1, noNumber :1, precision : 1 },
+      /*74*/  { levels : 2, noString : 1, noNumber :1, multiline : 1 },
+      /*75*/  { levels : 2, noString : 1, noNumber :1, multiline : 1, unescape : 1 },
+      /*76*/  { levels : 2, noString : 1, noNumber :1, noError : 1 },
+      /*77*/  { levels : 2, noString : 1, noNumber :1, tab : '|', prependTab : 0 },
+
 
       ],
       expected :
@@ -519,30 +562,30 @@ var toStr = function( test )
       ].join( '\n' ),
 
       /*27*/
-      '  "e", "e", "e"',
+      '  "e" "e" "e"',
 
       /*28*/
       '"a", "b", "c", 1, 2, 3',
       /*29*/
-      '| 15, 16, 17, 18',
+      '| 15. 16. 17. 18',
       /*30*/
       '  [ Object with 3 elements ]',
       /*31*/
-      '  "a", 1, [object Function], false',
+      '  "a". 1. [object Function]. false',
       /*32*/
-      '  "b", 2, [object Function], true',
+      '  "b". 2. [object Function]. true',
       /*33*/
       '',
       /*34*/
-      '  "a", 1.00e+3, 2.00e+3, 3.00e+3',
+      '  "a"* 1.00e+3* 2.00e+3* 3.00e+3',
 
       /*35*/
       '  1.111, 2.222, 3.333',
       /*36*/
       [
-        '  7, ',
-        '  [ Object with 1 elements ], ',
-        '  1, ',
+        '  7. ',
+        '  [ Object with 1 elements ]. ',
+        '  1. ',
         '  "x"',
       ].join( '\n' ),
 
@@ -551,9 +594,9 @@ var toStr = function( test )
 
       /*38*/
       [
-        '  0, ',
-        '  1, 2, 3, 4, ',
-        '  5, ',
+        '  0- ',
+        '  1- 2- 3- 4- ',
+        '  5- ',
         '  a : 6',
       ].join( '\n' ),
 
@@ -573,7 +616,7 @@ var toStr = function( test )
 
       /*41*/
       [
-        '  a - "a", b - "b", c - "c"'
+        '  a - "a"| b - "b"| c - "c"'
       ].join( '\n' ),
 
       /*42*/
@@ -587,7 +630,7 @@ var toStr = function( test )
 
       /*43*/
       [
-        '  0.1, 0.2, 0.3',
+        '  0.1* 0.2* 0.3',
       ].join( '\n' ),
 
       /*44*/
@@ -597,14 +640,14 @@ var toStr = function( test )
 
       /*45*/
       [
-        '  0, ',
-        '  b : 1, ',
+        '  0| ',
+        '  b : 1| ',
         '  3',
       ].join( '\n' ),
 
       /*46*/
       [
-        '  a : "\\na", ',
+        '  a : "\\na". ',
         '    b : d : ""...',
       ].join( '\n' ),
 
@@ -626,25 +669,23 @@ var toStr = function( test )
 
       /*50*/
       [
-        '  a : "string", ',
+        '  a : "string"/ ',
         '  true'
       ].join( '\n' ),
 
       /*51*/
       [
-        '[',
-        '  [ 5. 4. 3 ]. ',
-        '  [ 2. 1. 0 ]',
-        ']',
+        '  5||',
+        '    4||',
+        '    3||',
+        '  2||1||0',
       ].join( '\n' ),
 
       /*52*/
       [
-        '  |[',
-        '  |  { a->0 },, ',
-        '  |  { b->1 },, ',
-        '  |  [ 2,, 3 ]',
-        '  |]',
+        '  |  a->0,, ',
+        '  |  b->1,, ',
+        '  |  2,, 3',
       ].join( '\n' ),
 
       /*53*/
@@ -663,6 +704,204 @@ var toStr = function( test )
         '  7e+3',
         ']',
       ].join( '\n' ),
+
+      /*55*/
+      [
+        '[',
+        '  {',
+        '    a : "\\test"',
+        '  }, ',
+        '  {',
+        '    b : ""...',
+        '  }, ',
+        '  {',
+        '    c : "test"',
+        '  }',
+        ']',
+      ].join( '\n' ),
+
+      /*56*/
+      [
+        '[',
+        '  { a : [object Function] }, ',
+        '  0, ',
+        '  1, ',
+        '  "a"',
+        ']',
+      ].join( '\n' ),
+
+      /*57*/
+      [
+        '[',
+        '  {  }, ',
+        '  1, ',
+        '  2, ',
+        '  3',
+        ']',
+      ].join( '\n' ),
+
+      /*58*/
+      [ '[',
+        '  "test"',
+        ']',
+      ].join( '\n' ),
+
+      /*59*/
+       '',
+
+      /*60*/
+
+      [ '[',
+        '  [ "2", null, undefined, "4" ]',
+        ']',
+      ].join( '\n' ),
+
+      /*61*/
+
+      [ '[',
+        '  [ 1, 2 ], ',
+        '  undefined',
+        ']',
+      ].join( '\n' ),
+
+      /*62*/
+
+      [ '[',
+        '  [  ], ',
+        '  undefined',
+        ']',
+      ].join( '\n' ),
+
+      /*63*/
+
+      [ '[',
+        '  null',
+        ']',
+      ].join( '\n' ),
+
+      /*64*/
+
+      [ '[',
+        '  true',
+        ']',
+      ].join( '\n' ),
+
+      /*65*/
+
+      [ '[',
+        '  [ 0, 1 ], ',
+        '  { a : "a" }',
+        ']',
+      ].join( '\n' ),
+
+      /*66*/
+
+      [ '[',
+        '  [  ], ',
+        '  {  }',
+        ']',
+      ].join( '\n' ),
+
+      /*67*/
+
+      [
+        ''
+      ].join( '\n' ),
+
+      /*68*/
+
+      [
+        '[',
+        '  [ "a", 1.0e+2 ], ',
+        '  [ "b", 2.0e+2 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*69*/
+
+      [
+        '[',
+        '  [ 300 ], ',
+        '  [ 400 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*70*/
+
+      [
+        '[',
+        '  [ 1.000, 2.000 ], ',
+        '  [ 3.000, 4.000 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*71*/
+
+      [
+        '[',
+        '  [ 2, 3, 4 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*72*/
+
+      [
+        '[',
+        '  [ 2.0, 3.0, 4.0 ]',
+        ']'
+      ].join( '\n' ),
+
+      /*73*/
+
+      [
+        '[',
+        '  [  ]',
+        ']'
+      ].join( '\n' ),
+
+      /*74*/
+
+      [
+        '[',
+        '  {',
+        '    a : true, ',
+        '    b : undefined, ',
+        '    c : null',
+        '  }',
+        ']'
+      ].join( '\n' ),
+
+      /*75*/
+
+      [
+        '[',
+        '  {',
+        '    a : "\\true", ',
+        '    b : true, ',
+        '    c : null',
+        '  }',
+        ']'
+      ].join( '\n' ),
+
+      /*76*/
+
+      [
+        '[',
+        '  [ "a", 1 ], ',
+        '  1989-12-30T22:00:00.000Z',
+        ']'
+      ].join( '\n' ),
+
+      /*77*/
+
+      [
+        '[',
+        '|  [ "a", 1 ], ',
+        '|  1999-01-31T22:00:00.000Z',
+        '|]'
+      ].join( '\n' ),
+
+
 
 
       ]
@@ -718,6 +957,18 @@ var toStr = function( test )
         /*42*/  { a : 'aa', b : { d : function(){ } } },
         /*43*/  { a : 'bb', b : { d : function(){ } } },
         /*44*/  { a : new Date( Date.UTC( 1993, 12, 12 ) ), b : { d : new Error('msg') }, c : 1 },
+        /*45*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
+        /*46*/  { "sequence" : "\x7f[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
+        /*47*/  { "sequence" : "<\u001cb>text<\u001cb>", "data" : { "name" : "myname", "age" : 1 }, "shift" : false, "code" : "<b>text<b>"  },
+        /*48*/  { "sequence" : "\u0068\u0065\u004C\u004C\u006F", "shift" : false, "code" : "heLLo"  },
+        /*49*/  { "sequence" : "\n\u0061\u0062\u0063", "shift" : false, "code" : "abc"  },
+        /*50*/  { "sequence" : "\t\u005b\u0063\u0062\u0061\u005d\t", "data" : 100, "code" : "\n[cba]\n"  },
+        /*51*/  { "sequence" : "\u005CABC\u005C", "data" : 100, "code" : "\\ABC\\"  },
+        /*52*/  { "sequence" : "\u000Aline\u000A", "data" : null, "code" : "\nline\n"  },
+        /*53*/  { "sequence" : "\rspace\r",  },
+        /*54*/  { "sequence" : "\btest",  },
+        /*55*/  { "sequence" : "\vsample",  },
+        /*56*/  { "sequence" : "\ftest",  },
 
 
 
@@ -741,40 +992,52 @@ var toStr = function( test )
 
 
         /*11*/  { wrap : 0, comma : ' | ' },
-        /*12*/  { wrap : 0, noString : 1, noNumber: 1 },
-        /*13*/  { wrap : 0 },
-        /*14*/  { wrap : 0, prependTab : 0 },
-        /*15*/  { wrap : 0, tab : '| ', dtab : '' },
-        /*16*/  { wrap : 0, colon : '' },
-        /*17*/  { wrap : 0, noRoutine : 1 },
-        /*18*/  { wrap : 0, noAtomic : 1 },
-        /*19*/  { wrap : 0, onlyRoutines : 1 },
-        /*20*/  { wrap : 0, precision : 3 },
-        /*21*/  { wrap : 0,  fixed : 3 },
-        /*22*/  { wrap : 0,  multiline : 1 },
-        /*23*/  { wrap : 0,  unescape : 1 },
+        /*12*/  { wrap : 0, noString : 1, noNumber: 1, comma : ', ' },
+        /*13*/  { wrap : 0, comma : '* ' },
+        /*14*/  { wrap : 0, prependTab : 0, comma : '-> ' },
+        /*15*/  { wrap : 0, tab : '| ', dtab : '', comma : '> ' },
+        /*16*/  { wrap : 0, colon : '', comma : ' ' },
+        /*17*/  { wrap : 0, noRoutine : 1, comma : '.. ' },
+        /*18*/  { wrap : 0, noAtomic : 1, comma : ', ' },
+        /*19*/  { wrap : 0, onlyRoutines : 1, comma : '<< ' },
+        /*20*/  { wrap : 0, precision : 3, comma : '| ' },
+        /*21*/  { wrap : 0,  fixed : 3, comma : '^ ' },
+        /*22*/  { wrap : 0,  multiline : 1, comma : ', ' },
+        /*23*/  { wrap : 0,  unescape : 1, comma : '| ' },
 
-        /*24*/  { levels : 2, wrap : 0 },
+        /*24*/  { levels : 2, wrap : 0, comma : '. ' },
         /*25*/  { levels : 2, wrap : 0, comma : '. '},
-        /*26*/  { levels : 2, wrap : 0, tab : '| ', dtab : '' },
-        /*27*/  { levels : 2, wrap : 0, colon : ' - ' },
-        /*28*/  { levels : 2, wrap : 0, prependTab : 0 },
-        /*29*/  { levels : 2, wrap : 0, fixed : 1 },
-        /*30*/  { levels : 2, wrap : 0, precision : 1 },
-        /*31*/  { levels : 2, wrap : 0, multiline : 1 },
-        /*32*/  { levels : 3, wrap : 0, unescape : 1 },
-        /*33*/  { levels : 2, wrap : 0, noAtomic : 1 },
-        /*34*/  { levels : 3, wrap : 0, noAtomic : 1 },
-        /*35*/  { levels : 2, wrap : 0, noSubObject : 1, noArray : 1 },
-        /*36*/  { levels : 2, wrap : 0, noString : 1, noNumber : 1 },
-        /*37*/  { levels : 2, comma : '. '},
-        /*38*/  { levels : 2, comma : ',, ', tab :'  |', colon : '->' },
+        /*26*/  { levels : 2, wrap : 0, tab : '| ', dtab : '', comma : '@ ' },
+        /*27*/  { levels : 2, wrap : 0, colon : ' - ', comma : '-? ' },
+        /*28*/  { levels : 2, wrap : 0, prependTab : 0, comma : ', ' },
+        /*29*/  { levels : 2, wrap : 0, fixed : 1, comma : '| ' },
+        /*30*/  { levels : 2, wrap : 0, precision : 1, comma : '/ ' },
+        /*31*/  { levels : 2, wrap : 0, multiline : 1, comma : ',, ' },
+        /*32*/  { levels : 3, wrap : 0, unescape : 1, comma : '| ' },
+        /*33*/  { levels : 2, wrap : 0, noAtomic : 1, comma : '< ' },
+        /*34*/  { levels : 3, wrap : 0, noAtomic : 1, comma : ', ' },
+        /*35*/  { levels : 2, wrap : 0, noSubObject : 1, noArray : 1, comma : '' },
+        /*36*/  { levels : 2, wrap : 0, noString : 1, noNumber : 1, comma : '. ' },
+        /*37*/  { levels : 2, wrap : 0, comma : '. '},
+        /*38*/  { levels : 2, wrap : 0, comma : ',, ', tab :'  |', colon : '->' },
         /*39*/  { levels : 2, prependTab : 0, fixed : 5 },
         /*40*/  { levels : 2, prependTab : 0, precision : 5 },
         /*41*/  { levels : 2, multiline : 1, unescape : 1 },
         /*42*/  { levels : 2, noRoutine : 1,},
         /*43*/  { levels : 3, noRoutine : 1,},
         /*44*/  { levels : 3, noError : 1, noDate : 1},
+        /*45*/  { },
+        /*46*/  { },
+        /*47*/  { },
+        /*48*/  { multiline : 1 },
+        /*49*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*50*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*51*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*52*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*53*/  { levels : 2, unescape : 1 },
+        /*54*/  { levels : 2, unescape : 1 },
+        /*55*/  { levels : 2, unescape : 1 },
+        /*56*/  { levels : 2, unescape : 1 },
 
 
 
@@ -871,20 +1134,20 @@ var toStr = function( test )
 
         /*13*/
           [
-            '  a : null, ',
-            '  b : 1, ',
-            '  c : "2", ',
-            '  d : undefined, ',
-            '  e : true, ',
+            '  a : null* ',
+            '  b : 1* ',
+            '  c : "2"* ',
+            '  d : undefined* ',
+            '  e : true* ',
             '  f : Symbol(symbol)'
 
           ].join( '\n' ),
 
         /*14*/
           [
-            'a : "true", ',
-            '  b : 2, ',
-            '  c : false, ',
+            'a : "true"-> ',
+            '  b : 2-> ',
+            '  c : false-> ',
             '  d : undefined'
 
           ].join( '\n' ),
@@ -895,7 +1158,7 @@ var toStr = function( test )
 
         /*16*/
 
-          '  f1, g[object Function]',
+          '  f1 g[object Function]',
 
         /*17*/
 
@@ -917,9 +1180,9 @@ var toStr = function( test )
         /*20*/
 
         [
-          '  i : 0.00, ',
-          '  k : 1.00, ',
-          '  g : 2.00, ',
+          '  i : 0.00| ',
+          '  k : 1.00| ',
+          '  g : 2.00| ',
           '  l : 3.00'
 
         ].join( '\n' ),
@@ -927,9 +1190,9 @@ var toStr = function( test )
         /*21*/
 
         [
-          '  o : 4.000, ',
-          '  p : 5.000, ',
-          '  r : 6.000, ',
+          '  o : 4.000^ ',
+          '  p : 5.000^ ',
+          '  r : 6.000^ ',
           '  s : 7.000'
 
         ].join( '\n' ),
@@ -944,12 +1207,12 @@ var toStr = function( test )
 
         /*23*/
 
-        '  x : ""..., z : "\\11"',
+        '  x : ""...| z : "\\11"',
 
         /*24*/
         [
-          '  a : 1, ',
-          '  b : d : 2, ',
+          '  a : 1. ',
+          '  b : d : 2. ',
           '  c : 3'
 
         ].join( '\n' ),
@@ -964,16 +1227,16 @@ var toStr = function( test )
 
         /*26*/
         [
-          '| a : 4, ',
-          '| b : d : 5, ',
+          '| a : 4@ ',
+          '| b : d : 5@ ',
           '| c : 6'
 
         ].join( '\n' ),
 
         /*27*/
         [
-          '  a - 7, ',
-          '  b - d - 8, ',
+          '  a - 7-? ',
+          '  b - d - 8-? ',
           '  c - 9'
 
         ].join( '\n' ),
@@ -988,33 +1251,33 @@ var toStr = function( test )
 
         /*29*/
         [
-          '  a : 10.0, ',
-          '  b : d : 20.0, ',
+          '  a : 10.0| ',
+          '  b : d : 20.0| ',
           '  c : 30.0'
 
         ].join( '\n' ),
 
         /*30*/
         [
-          '  a : 1e+1, ',
-          '  b : d : 2e+1, ',
+          '  a : 1e+1/ ',
+          '  b : d : 2e+1/ ',
           '  c : 3e+1'
 
         ].join( '\n' ),
 
         /*31*/
         [
-          '  a : "a", ',
+          '  a : "a",, ',
           '  b : ',
-          '  d : false, ',
+          '  d : false,, ',
           '  c : 3'
 
         ].join( '\n' ),
 
         /*32*/
         [
-          '  a : "\\na", ',
-          '  b : d : "\\ntrue", ',
+          '  a : "\\na"| ',
+          '  b : d : "\\ntrue"| ',
           '  c : "\\n"'
 
         ].join( '\n' ),
@@ -1030,29 +1293,23 @@ var toStr = function( test )
 
         /*36*/
         [
-          '  a : "a", "b", ',
+          '  a : "a". "b". ',
           '  b : d : "true"'
 
         ].join( '\n' ),
 
         /*37*/
         [
-          '{',
           '  a : 1. ',
-          '  b : { d : 2 }. ',
+          '  b : d : 2. ',
           '  c : 3',
-          '}'
-
         ].join( '\n' ),
 
         /*38*/
         [
-          '  |{',
           '  |  a->3,, ',
-          '  |  b->{ d->2 },, ',
+          '  |  b->d->2,, ',
           '  |  c->1',
-          '  |}'
-
         ].join( '\n' ),
 
         /*39*/
@@ -1117,18 +1374,154 @@ var toStr = function( test )
 
         ].join( '\n' ),
 
+        /*45*/
+        [
+          '{',
+          '  sequence : "[A", ',
+          '  name : "undefined", ',
+          '  shift : false, ',
+          '  code : "[A"',
+          '}'
+
+        ].join( '\n' ),
+
+
+
+
+        /*46*/
+        [
+          '{',
+          '  sequence : "[A", ',
+          '  name : "undefined", ',
+          '  shift : false, ',
+          '  code : "[A"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*47*/
+        [
+          '{',
+          '  sequence : "<\u001cb>text<\u001cb>", ',
+          '  data : [ Object with 2 elements ], ',
+          '  shift : false, ',
+          '  code : "<b>text<b>"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*48*/
+        [
+          '{',
+          '  sequence : "heLLo", ',
+          '  shift : false, ',
+          '  code : "heLLo"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*49*/
+        [
+          '{',
+          '  sequence : "\\n\\u0061\\u0062\\u0063", ',
+          '  shift : false, ',
+          '  code : "abc"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*50*/
+        [
+          '{',
+          '  sequence : "\\t\\u005b\\u0063\\u0062\\u0061\\u005d\\t", ',
+          '  data : 100, ',
+          '  code : "\\n[cba]\\n"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*51*/
+        [
+          '{',
+          '  sequence : "\\u005CABC\\u005C", ',
+          '  data : 100, ',
+          '  code : "\\\\ABC\\\\"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*52*/
+        [
+          '{',
+          '  sequence : "\\u000Aline\\u000A", ',
+          '  data : null, ',
+          '  code : "\\nline\\n"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*53*/
+        [
+          '{',
+          '  sequence : "\\rspace\\r", ',
+          '}'
+
+        ].join( '\n' ),
+
+        /*54*/
+        [
+          '{',
+          '  sequence : "\\btest", ',
+          '}'
+
+        ].join( '\n' ),
+
+        /*55*/
+        [
+          '{',
+          '  sequence : "\\vsample", ',
+          '}'
+
+        ].join( '\n' ),
+
+        /*56*/
+        [
+          '{',
+          '  sequence : "\\ftest", ',
+          '}'
+
+        ].join( '\n' ),
+
+
 
         ],
 
 
       },
 
+      {
+       desc :  'json test',
+       src :
+       [
+          {	"a": 100,	"b": "c",	"c": {"d": true,"e": null	} },
+
+       ],
+       options :
+       [
+         { levels : 2 , json : 1 },
+
+       ]
 
 
+
+      },
 
 
 
   ];
+
+
+
 
   debugger;
   for( var i = 0; i < cases.length; ++i )
@@ -1137,13 +1530,24 @@ var toStr = function( test )
     var src = _case['src'];
     var exp = _case['expected'];
     var o = _case['options'];
-
+    var got = null;
     for( var k = 0; k < src.length; ++k  )
     {
       test.description = _case.desc;
-      var got = _.toStr( src[ k ], o[ k ] || o[ 0 ] );
-      var expected = exp[ k ];
-      test.identical( got,expected )
+      got = _.toStr( src[ k ], o[ k ] || o[ 0 ]);
+
+      if( test.description === 'json test' )
+      {
+        var expected = JSON.parse( got );
+        test.identical( src[ k ],expected );
+
+      }
+
+      else
+        test.identical( got,exp[k] );
+
+
+
     }
 
 
