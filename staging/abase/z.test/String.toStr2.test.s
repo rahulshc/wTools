@@ -957,6 +957,15 @@ var toStr = function( test )
         /*42*/  { a : 'aa', b : { d : function(){ } } },
         /*43*/  { a : 'bb', b : { d : function(){ } } },
         /*44*/  { a : new Date( Date.UTC( 1993, 12, 12 ) ), b : { d : new Error('msg') }, c : 1 },
+        /*45*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
+        /*46*/  { "sequence" : "\x7f[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
+        /*47*/  { "sequence" : "<\u001cb>text<\u001cb>", "data" : { "name" : "myname", "age" : 1 }, "shift" : false, "code" : "<b>text<b>"  },
+        /*48*/  { "sequence" : "\u0068\u0065\u004C\u004C\u006F", "shift" : false, "code" : "heLLo"  },
+        /*49*/  { "sequence" : "\n\u0061\u0062\u0063", "shift" : false, "code" : "abc"  },
+        /*50*/  { "sequence" : "\t\u005b\u0063\u0062\u0061\u005d\t", "data" : 100, "code" : "\n[cba]\n"  },
+        /*51*/  { "sequence" : "\u005CABC\u005C", "data" : 100, "code" : "\\ABC\\"  },
+        /*52*/  { "sequence" : "\u000Aline\u000A", "data" : null, "code" : "\nline\n"  },
+
 
 
 
@@ -1014,6 +1023,14 @@ var toStr = function( test )
         /*42*/  { levels : 2, noRoutine : 1,},
         /*43*/  { levels : 3, noRoutine : 1,},
         /*44*/  { levels : 3, noError : 1, noDate : 1},
+        /*45*/  { },
+        /*46*/  { },
+        /*47*/  { },
+        /*48*/  { multiline : 1 },
+        /*49*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*50*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*51*/  { levels : 2, multiline : 1, unescape : 1 },
+        /*52*/  { levels : 2, multiline : 1, unescape : 1 },
 
 
 
@@ -1346,6 +1363,92 @@ var toStr = function( test )
           '    ',
           '  }, ',
           '  c : 1',
+          '}'
+
+        ].join( '\n' ),
+
+        /*45*/
+        [
+          '{',
+          '  sequence : "[A", ',
+          '  name : "undefined", ',
+          '  shift : false, ',
+          '  code : "[A"',
+          '}'
+
+        ].join( '\n' ),
+
+
+
+
+        /*46*/
+        [
+          '{',
+          '  sequence : "[A", ',
+          '  name : "undefined", ',
+          '  shift : false, ',
+          '  code : "[A"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*47*/
+        [
+          '{',
+          '  sequence : "<\u001cb>text<\u001cb>", ',
+          '  data : [ Object with 2 elements ], ',
+          '  shift : false, ',
+          '  code : "<b>text<b>"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*48*/
+        [
+          '{',
+          '  sequence : "heLLo", ',
+          '  shift : false, ',
+          '  code : "heLLo"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*49*/
+        [
+          '{',
+          '  sequence : "\\nabc", ',
+          '  shift : false, ',
+          '  code : "abc"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*50*/
+        [
+          '{',
+          '  sequence : "\t[cba]\t", ',
+          '  data : 100, ',
+          '  code : "\\n[cba]\\n"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*51*/
+        [
+          '{',
+          '  sequence : "\\\\ABC\\\\", ',
+          '  data : 100, ',
+          '  code : "\\\\ABC\\\\"',
+          '}'
+
+        ].join( '\n' ),
+
+        /*52*/
+        [
+          '{',
+          '  sequence : "\\nline\\n", ',
+          '  data : null, ',
+          '  code : "\\nline\\n"',
           '}'
 
         ].join( '\n' ),
