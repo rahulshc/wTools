@@ -344,9 +344,13 @@ var toStrFine_gen = function()
     _.assert( _.objectIs( o ) || o === undefined,'expects map o' );
 
     var o = o || {};
+    var toStrDefaults = {};
+
+    if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
+    toStrDefaults = src.toStr.defaults;
 
     _.assertMapOnly( o,composes,primeFilter,optional );
-    o = _.mapSupplement( {},o,composes,restricts );
+    o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
 
     if( o.onlyRoutines )
     {
@@ -362,7 +366,7 @@ var toStrFine_gen = function()
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
 
-    var r = _toStrFine( src,o );
+    var r = _toStr( src,o );
 
     return r ? r.text : '';
   }
@@ -378,7 +382,7 @@ var toStrFine_gen = function()
 
 //
 
-var _toStrFine = function _toStrFine( src,o )
+var _toStr = function _toStr( src,o )
 {
   var result = '';
   var simple = 1;
@@ -392,7 +396,7 @@ var _toStrFine = function _toStrFine( src,o )
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
 
-  //
+  /* */
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
@@ -830,9 +834,9 @@ var _toStrFromContainer = function( o )
     _assert( optionsItem.level === optionsContainer.level + 1 );
 
     if( names )
-    r = _toStrFine( values[ names[ n ] ],optionsItem );
+    r = _toStr( values[ names[ n ] ],optionsItem );
     else
-    r = _toStrFine( values[ n ],optionsItem );
+    r = _toStr( values[ n ],optionsItem );
 
     if( r === undefined )
     continue;
@@ -2459,7 +2463,7 @@ var Proto =
   toStrFields : toStrFields,
 
   toStrFine_gen : toStrFine_gen,
-  _toStrFine : _toStrFine,
+  _toStr : _toStr,
 
   _toStrShort : _toStrShort,
   _toStrIsSimpleElement : _toStrIsSimpleElement,

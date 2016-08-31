@@ -235,7 +235,14 @@ var _entityCloneAct = function( o )
   var o = o || {};
 
   if( !( o.levels > 0 ) )
-  throw _.err( 'failed to clone data\nat ' + o.path + '\ntoo deep structure',o.src );
+  throw _.err
+  (
+    'failed to clone structure',_.strTypeOf( o.rootSrc ) +
+    '\nat ' + o.path +
+    '\ntoo deep structure' +
+    '\no : ' + _.toStr( o ) +
+    '\no.rootSrc : ' + _.toStr( o.rootSrc )
+  );
 
   o.levels -= 1;
 
@@ -397,6 +404,7 @@ var _entityClone = function( o )
   o.rootSrc = o.src;
 
   _.assertMapOnly( o,_entityClone.defaults );
+  _.mapComplement( o,_entityClone.defaults );
 
   return _entityCloneAct( o );
 }
@@ -660,7 +668,7 @@ var entityCopy = function( dst,src,onRecursive )
       throw _.err( 'not tested' );
       result = src.clone( dst );
     }
-    else if( _.atomicIs( dst ) )
+    else if( _.atomicIs( dst ) || _.arrayLike( dst ) )
     {
       result = src.clone();
     }
@@ -8471,13 +8479,37 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
 
 //
 
+var arrayShuffle = function arrayShuffle( dst,times )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.arrayLike( dst ) );
+
+  if( times === undefined )
+  times = dst.length;
+
+  var l = dst.length;
+  var e1,e2;
+  for( var t1 = 0 ; t1 < times ; t1++ )
+  {
+    var t2 = Math.floor( Math.random() * l );
+    e1 = dst[ t1 ];
+    e2 = dst[ t2 ];
+    dst[ t1 ] = e2;
+    dst[ t2 ] = e1;
+  }
+
+  return dst;
+}
+
+//
+
 /**
- * The arrayRandom() method returns an array which contains the random numbers.
+ * The arrayRandom() method returns an array which contains random numbers.
  *
- * @param { Object } options - The options for getting random numbers.
- * @param { Number } options.length - The length of an array.
- * @param { Array } [ options.range = [ 0, 1 ] ] - The range of numbers.
- * @param { Boolean } [ options.int = false ] - Floating point numbers or not.
+ * @param { Object } o - The options for getting random numbers.
+ * @param { Number } o.length - The length of an array.
+ * @param { Array } [ o.range = [ 0, 1 ] ] - The range of numbers.
+ * @param { Boolean } [ o.int = false ] - Floating point numbers or not.
  *
  * @example
  * // returns [ 6, 2, 4, 7, 8 ]
@@ -8492,25 +8524,27 @@ var arrayExtendScreening = function arrayExtendScreening( screenArray,dstArray )
  * @memberof wTools
  */
 
-var arrayRandom = function( options )
+var arrayRandom = function( o )
 {
   var result = [];
 
-  if( _.numberIs( options ) )
+  _.assert( arguments.length === 1 );
+
+  if( _.numberIs( o ) )
   {
-    options = { length : options };
+    o = { length : o };
   }
 
-  if( options.int === undefined )
-  options.int = false;
+  if( o.int === undefined )
+  o.int = false;
 
-  if( options.range === undefined )
-  options.range = [ 0,1 ];
+  if( o.range === undefined )
+  o.range = [ 0,1 ];
 
-  for( var i = 0 ; i < options.length ; i++ )
+  for( var i = 0 ; i < o.length ; i++ )
   {
-    result[ i ] = options.range[ 0 ] + Math.random()*( options.range[ 1 ] - options.range[ 0 ] );
-    if( options.int )
+    result[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
+    if( o.int )
     result[ i ] = Math.floor(  result[ i ] );
   }
 
@@ -11302,6 +11336,7 @@ var Proto =
   arraySupplement : arraySupplement,
   arrayExtendScreening : arrayExtendScreening,
 
+  arrayShuffle : arrayShuffle,
   arrayRandom : arrayRandom,
   arrayRange : arrayRange,
 
