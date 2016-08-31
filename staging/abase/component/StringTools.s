@@ -520,7 +520,9 @@ var _toStrShort = function( src,o )
       result += '"' + src.substr( 0,Math.min( maxStringLength,nl ) ) + '"' + '...';
     }
     else
-    result += '"' + src + '"';
+    {
+      result += '"' + src + '"';
+    }
   }
   else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
   {
@@ -547,7 +549,9 @@ var _toStrShort = function( src,o )
 var _toStrIsSimpleElement = function( element )
 {
   if( _.strIs( element ) )
-  return element.length < 40;
+  {
+    return element.length < 40 && element.indexOf( '\n' ) === -1;
+  }
   else if( element && !_.objectIs( element ) && _.numberIs( element.length ) )
   return !element.length;
   else if( _.objectIs( element ) || _.objectLike( element ) )
@@ -640,6 +644,14 @@ var _toStrFromStr = function( src,o )
 
         case '\n' :
           result += '\\n';
+          break;
+
+        case '\r' :
+          result += '\\r';
+          break;
+
+        case '\t' :
+          result += '\\t';
           break;
 
         default :
