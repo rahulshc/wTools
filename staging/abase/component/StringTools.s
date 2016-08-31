@@ -628,6 +628,17 @@ var _toStrFromStr = function( src,o )
 
   // 00ad : "­"
 
+  // \' 	single quote 	byte 0x27 in ASCII encoding
+  // \" 	double quote 	byte 0x22 in ASCII encoding
+  // \\ 	backslash 	byte 0x5c in ASCII encoding
+  // \b 	backspace 	byte 0x08 in ASCII encoding
+  // \f 	form feed - new page 	byte 0x0c in ASCII encoding
+  // \n 	line feed - new line 	byte 0x0a in ASCII encoding
+  // \r 	carriage return 	byte 0x0d in ASCII encoding
+  // \t 	horizontal tab 	byte 0x09 in ASCII encoding
+  // \v 	vertical tab 	byte 0x0b in ASCII encoding
+  // source : http://en.cppreference.com/w/cpp/language/escape
+
   if( o.escaping )
   {
     result += '"';
@@ -648,6 +659,22 @@ var _toStrFromStr = function( src,o )
           result += '\\\\';
           break;
 
+        case '\"' :
+          result += '\\"';
+          break;
+
+        case '\'' :
+          result += "\\'";
+          break;
+
+        case '\b' :
+          result += '\\b';
+          break;
+
+        case '\f' :
+          result += '\\f';
+          break;
+
         case '\n' :
           result += '\\n';
           break;
@@ -660,7 +687,15 @@ var _toStrFromStr = function( src,o )
           result += '\\t';
           break;
 
+        case '\v' :
+          result += '\\v';
+          break;
+
         default :
+
+          if( code < 32 )
+          result += _.strUnicodeEscape( c );
+          else
           result += c;
 
       }
