@@ -1416,7 +1416,7 @@ var toStr = function( test )
         /*49*/
         [
           '{',
-          '  sequence : "\\nabc", ',
+          '  sequence : "\\n\\u0061\\u0062\\u0063", ',
           '  shift : false, ',
           '  code : "abc"',
           '}'
@@ -1426,7 +1426,7 @@ var toStr = function( test )
         /*50*/
         [
           '{',
-          '  sequence : "\t[cba]\t", ',
+          '  sequence : "\\t\\u005b\\u0063\\u0062\\u0061\\u005d\\t", ',
           '  data : 100, ',
           '  code : "\\n[cba]\\n"',
           '}'
@@ -1436,7 +1436,7 @@ var toStr = function( test )
         /*51*/
         [
           '{',
-          '  sequence : "\\\\ABC\\\\", ',
+          '  sequence : "\\u005CABC\\u005C", ',
           '  data : 100, ',
           '  code : "\\\\ABC\\\\"',
           '}'
@@ -1446,7 +1446,7 @@ var toStr = function( test )
         /*52*/
         [
           '{',
-          '  sequence : "\\nline\\n", ',
+          '  sequence : "\\u000Aline\\u000A", ',
           '  data : null, ',
           '  code : "\\nline\\n"',
           '}'
