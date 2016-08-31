@@ -612,13 +612,25 @@ var _toStrFromStr = function( src,o )
 {
   var result = '';
 
+  // 007f : ""
+  // . . .
+  // 009f : ""
+
+  // 00ad : "­"
+
   if( o.escaping )
   {
     result += '"';
     for( var s = 0 ; s < src.length ; s++ )
     {
       var c = src[ s ];
-      switch( c )
+      var code = c.charCodeAt( 0 );
+
+      if( 0x007f <= code && code <= 0x009f || code === 0x00ad )
+      {
+        result += _.strUnicodeEscape( c );
+      }
+      else switch( c )
       {
 
         case '\\' :
@@ -1949,6 +1961,26 @@ var strHtmlEscape = function( str )
 
 //
 
+var strUnicodeEscape = function( src )
+{
+  var result = '';
+
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1 );
+
+  for( var i = 0 ; i > src.length ; i++ )
+  {
+    var c = src[ i ];
+    var code = c.charCodeAt( 0 );
+    var h = code.toString( 16 );
+    var d = _.strDup( '0',4-h.length ) + h;
+    result + '\\u' + d;
+  }
+
+}
+
+//
+
 /**
  * This function appends indentation character passed by the second argument( tab )
  * before first and every next new line in a source string( src ).
@@ -2538,6 +2570,7 @@ var Proto =
   lattersSpectreComparison : lattersSpectreComparison, /* exmperimental */
 
   strHtmlEscape : strHtmlEscape,
+  strUnicodeEscape : strUnicodeEscape,
 
   strIndentation : strIndentation,
   strNumberLines : strNumberLines,
