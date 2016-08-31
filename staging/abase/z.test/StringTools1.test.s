@@ -8,7 +8,7 @@
  from the project directory run
 
  npm install
- node ./staging/abase/z.tests/StringFormat.test.s
+ node ./staging/abase/z.test/StringFormat.test.s
 
  */
 
@@ -725,7 +725,7 @@ var strToBytes = function( test )
 
 
 
-// node ./staging/abase/z.tests/StringFormat.test.s
+// node ./staging/abase/z.test/StringFormat.test.s
 
 //
 

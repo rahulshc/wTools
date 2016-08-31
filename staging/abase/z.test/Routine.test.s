@@ -8,7 +8,7 @@
    from the project directory run
 
    npm install
-   node ./staging/z.tests/Routine.test.s
+   node ./staging/z.test/Routine.test.s
 
    */
 
