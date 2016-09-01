@@ -1014,6 +1014,11 @@ var toStr = function( test )
         /*54*/  { "sequence" : "\btest",  },
         /*55*/  { "sequence" : "\vsample",  },
         /*56*/  { "sequence" : "\ftest",  },
+        /*57*/  { a : 1, b : { d : 'string' }, c : true },
+        /*58*/  { a : 1, b : { d : 'string' }, c : new Date() },
+        /*59*/  { a : 1000, b : { d : 'string' }, c : 1.500 },
+        /*60*/  { a : 1000, b : 'text', c : 1.500 },
+        /*61*/  { a : 1000, b : 'text', c : false, d : undefined, e : null},
 
 
 
@@ -1083,6 +1088,12 @@ var toStr = function( test )
         /*54*/  { levels : 2, escaping : 1 },
         /*55*/  { levels : 2, escaping : 1 },
         /*56*/  { levels : 2, escaping : 1 },
+        /*57*/  { levels : 3, noNumber : 1, noString : 1},
+        /*58*/  { levels : 3, noNumber : 1, noString : 1, noDate : 1},
+        /*59*/  { levels : 2, noString : 1, fixed : 1},
+        /*60*/  { levels : 2, noString : 1, precision : 1},
+        /*61*/  { levels : 2, noString : 1, noNumber :1, tab : '-', prependTab : 0 },
+
 
 
 
@@ -1529,6 +1540,52 @@ var toStr = function( test )
 
         ].join( '\n' ),
 
+        /*57*/
+        [
+          '{',
+          '  b : {  }, ',
+          '  c : true',
+          '}'
+
+
+        ].join( '\n' ),
+
+        /*58*/
+        [
+          '{',
+          '  b : {  }',
+          '}'
+
+
+        ].join( '\n' ),
+
+        /*59*/
+        [
+          '{',
+          '  a : 1000.0, ',
+          '  b : { d : "string" }, ',
+          '  c : 1.5',
+          '}'
+
+
+        ].join( '\n' ),
+
+        /*60*/
+        [
+          '{ a : 1e+3, c : 2 }',
+
+        ].join( '\n' ),
+
+        /*61*/
+        [
+          '{',
+          '-  c : false, ',
+          '-  d : undefined, ',
+          '-  e : null',
+          '-}'
+
+
+        ].join( '\n' ),
 
 
         ],
