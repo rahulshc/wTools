@@ -1422,7 +1422,7 @@ var toStr = function( test )
         /*45*/
         [
           '{',
-          '  sequence : "[A", ',
+          '  sequence : "\\u001b[A", ',
           '  name : "undefined", ',
           '  shift : false, ',
           '  code : "[A"',
@@ -1436,7 +1436,7 @@ var toStr = function( test )
         /*46*/
         [
           '{',
-          '  sequence : "[A", ',
+          '  sequence : "\\x7f[A", ',
           '  name : "undefined", ',
           '  shift : false, ',
           '  code : "[A"',
@@ -1447,7 +1447,7 @@ var toStr = function( test )
         /*47*/
         [
           '{',
-          '  sequence : "<\u001cb>text<\u001cb>", ',
+          '  sequence : "<\\u001cb>text<\\u001cb>", ',
           '  data : [ Object with 2 elements ], ',
           '  shift : false, ',
           '  code : "<b>text<b>"',
@@ -1535,17 +1535,192 @@ var toStr = function( test )
 
 
       },
+      {
+       desc :  'wrapString test',
+       src :
+       [
+       /*01*/ { a : "string",b : 1, c : null , d : undefined },
+       /*02*/ { a : "sample",b : 0, c : false , d : [ "a" ] },
+       /*03*/ { a : [ "example" ],b : 1, c : null , d : [ "b" ] },
+       /*04*/ { a : "test", new Error( "err" ) },
+
+
+
+       ],
+       options :
+       [
+       /*01*/ { wrapString : 0 },
+       /*02*/ { levels : 2, wrapString : 0 },
+       /*03*/ { levels : 3, wrapString : 0 },
+       /*04*/ { levels : 2 },
+
+
+       ],
+
+       expected :
+       [
+        /*01*/
+          [
+           '{',
+           '  a : "string", ',
+           '  b : 1, ',
+           '  c : null, ',
+           '  d : undefined',
+           '}'
+
+         ].join( '\n' ),
+
+        /*02*/
+          [
+           '{',
+           '  a : sample, ',
+           '  b : 0, ',
+           '  c : false, ',
+           '  d : [ "a" ]',
+           '}'
+
+         ].join( '\n' ),
+
+        /*03*/
+          [
+           '{',
+           '  a : [ example ], ',
+           '  b : 1, ',
+           '  c : null, ',
+           '  d : [ b ]',
+           '}'
+
+         ].join( '\n' ),
+
+        /*04*/
+          [
+           '{',
+           ' a : "test", ',
+           ' b : Error: err',
+           '}'
+
+         ].join( '\n' ),
+
+
+       ]
+
+
+
+      },
 
       {
        desc :  'json test',
        src :
        [
-          { "a" : 100, "b" : "c", "c" : { "d" : true, "e" : null } },
+       /*01*/ { "a" : 100, "b" : "c", "c" : { "d" : true, "e" : null } },
+       /*02*/ { "b" : "a", "c" : 50, "d" : { "a" : "undefined", "e" : null } },
+       /*03*/ [ { "a" : 100, "b" : "x", "c" : { "d" : true, "e" : null } } ],
+       /*04*/ { a : "aa", b : [ 1,2,3 ], c : function r( ){ } },
+       /*05*/ [ { a : 1, b : 2, c : { d : [ null,undefined ] } } ],
+       /*06*/ { a : new Date( Date.UTC( 1993, 12, 12 ) ) },
+       /*07*/ { a : new Error( "r" ) },
+       /*08*/ { a : Symbol('sm') },
 
        ],
        options :
        [
-         { levels : 2 , json : 1 },
+       /*01*/ { json : 1 },
+       /*02*/ { json : 1 },
+       /*03*/ { json : 1 },
+       /*04*/ { json : 1 },
+       /*05*/ { json : 1 },
+       /*06*/ { json : 1 },
+       /*07*/ { json : 1 },
+       /*08*/ { json : 1 },
+
+       ],
+
+       expected :
+       [
+        /*01*/
+          [
+           '{',
+           ' "a" : 100, ',
+           ' "b" : "c", ',
+           ' "c" : { "d" : true, "e" : null }',
+           '}'
+
+         ].join( '\n' ),
+
+        /*02*/
+        [
+          '{',
+          '  "b" : "a", ',
+          '  "c" : 50, ',
+          '  "d" : { "a" : "undefined", "e" : null }',
+          '}'
+
+        ].join( '\n' ),
+
+        /*03*/
+        [
+          '[',
+          '  {',
+          '    "a" : 100, ',
+          '    "b" : "x", ',
+          '    "c" : { "d" : true, "e" : null }',
+          '  }',
+          ']'
+
+        ].join( '\n' ),
+
+        /*04*/
+        [
+          '  {',
+          '  "a" : "aa", ',
+          '  "b" : [ 1, 2, 3 ], ',
+          '  "c" : [ "routine r" ]',
+          '  }',
+
+        ].join( '\n' ),
+
+        /*05*/
+        [
+          '[',
+          '  {',
+          '    "a" : 1, ',
+          '    "b" : 2, ',
+          '    "c" : ',
+          '    {',
+          '      "d" : [ null, null ]',
+          '    }',
+          '  }',
+          ']'
+
+        ].join( '\n' ),
+
+        /*06*/
+        [
+
+          '{',
+          '  "a" : "1994-01-12T00:00:00.000Z"',
+          '}',
+
+
+        ].join( '\n' ),
+
+        /*07*/
+        [
+
+          '{',
+          '  "a" : "Error: r"',
+          '}',
+
+
+        ].join( '\n' ),
+
+        /*08*/
+        [
+
+          '{ "a" : "Symbol(sm)" }'
+
+
+        ].join( '\n' ),
 
        ]
 
@@ -1568,20 +1743,35 @@ var toStr = function( test )
     var exp = _case['expected'];
     var o = _case['options'];
     var got = null;
+    var result = null;
+    var expected = null;
     for( var k = 0; k < src.length; ++k  )
     {
       test.description = _case.desc;
       got = _.toStr( src[ k ], o[ k ] || o[ 0 ]);
 
-      if( test.description === 'json test' )
+      if( test.description === 'json test' && o[ k ].json )
       {
-        var expected = JSON.parse( got );
-        test.identical( src[ k ],expected );
+        //if JSON.parse is OK,compare source vs parse result
+        // else compare toStr() result vs expected
+        expected = src[ k ]; //source obj
+        try
+        {
+          result = JSON.parse( got );
+
+        }
+        catch( e )
+        {
+          console.log( e );
+          result = got;
+          expected = exp[k];
+        }
+        test.identical( result, expected );
 
       }
 
       else
-        test.identical( got,exp[k] );
+      test.identical( got, exp[ k ] );
 
 
 
