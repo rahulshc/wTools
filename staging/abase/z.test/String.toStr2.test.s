@@ -1542,7 +1542,7 @@ var toStr = function( test )
        /*01*/ { a : "string",b : 1, c : null , d : undefined },
        /*02*/ { a : "sample",b : 0, c : false , d : [ "a" ] },
        /*03*/ { a : [ "example" ],b : 1, c : null , d : [ "b" ] },
-       /*04*/ { a : "test", new Error( "err" ) },
+       /*04*/ { a : "test", b : new Error( "err" ) },
 
 
 
@@ -1595,8 +1595,8 @@ var toStr = function( test )
         /*04*/
           [
            '{',
-           ' a : "test", ',
-           ' b : Error: err',
+           '  a : "test", ',
+           '  b : Error: err',
            '}'
 
          ].join( '\n' ),
