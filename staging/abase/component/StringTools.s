@@ -354,6 +354,11 @@ var toStrFine_gen = function()
     if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
     toStrDefaults = src.toStr.defaults;
 
+   if( o.levels === undefined && o.json )
+   {
+     o.levels = 256;
+   }
+
     _.assertMapOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
 
@@ -472,7 +477,7 @@ var _toStr = function _toStr( src,o )
   else if( isObject )
   { if( o.json === 1 )
     {
-      _.assert( o.wrapString === 1 );
+      _.assert( o.wrapString );
     }
     if( o.noObject )
     return;
