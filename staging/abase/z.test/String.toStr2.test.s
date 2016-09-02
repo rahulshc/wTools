@@ -1790,7 +1790,38 @@ var toStr = function( test )
   ];
 
 
+  /**/
 
+  if( Config.debug )
+{
+
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, null );
+  });
+
+  test.description = '( o.precision ) is not between 1 and 21';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, { precision : 0 } );
+  });
+
+  test.description = '( o.fixed ) is not between 0 and 20';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, { fixed : 22 } );
+  });
+
+  test.description = 'if json : 1, wrapString must be equal to 1';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, { json : 1, wrapString : 0 } );
+  });
+
+
+
+}
 
   debugger;
   for( var i = 0; i < cases.length; ++i )
