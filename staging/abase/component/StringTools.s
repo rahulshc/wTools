@@ -263,8 +263,17 @@ var toStrFields = function( src,o )
  * //returns { b : 1, c : 2 }
  * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , noString : 1 } );
  *
+ * @example
+ * //returns { a : string, b : str, c : 2 }
+ * _.toStr( { a : 'string', b : "str" , c : 2  }, { levels : 2 , wrapString : 0 } );
+ *
+ * @example
+ * //returns { "a" : "string", "b" : 1, "c" : 2 }
+ * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
+ *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } Throw an exception if( o.wrapString ) is not equal 1 when ( o.json ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
  * @memberof wTools
