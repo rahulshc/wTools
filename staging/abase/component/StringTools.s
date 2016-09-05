@@ -78,7 +78,7 @@ var toStrFields = function( src,o )
  * @param {object} o - Convertion o.
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {number} [ o.wrapString=1 ] - Wrap string in to "".
+ * @param {number} [ o.wrapString=true ] - Wrap string into "".
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
  * @param {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
@@ -273,7 +273,7 @@ var toStrFields = function( src,o )
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
- * @throws { Exception } Throw an exception if( o.wrapString ) is not equal 1 when ( o.json ) is true.
+ * @throws { Exception } Throw an exception if( o.wrapString ) is not equal true when ( o.json ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
  * @memberof wTools
@@ -484,10 +484,9 @@ var _toStr = function _toStr( src,o )
     simple = r.simple;
   }
   else if( isObject )
-  { if( o.json === 1 )
-    {
-      _.assert( o.wrapString );
-    }
+  {
+    if( o.json === 1 )
+    _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
     if( o.noObject )
     return;
     var r = _toStrFromObject( src,o );
@@ -665,7 +664,6 @@ var _toStrFromStr = function( src,o )
 
   if( o.escaping )
   {
-    result += '"';
     for( var s = 0 ; s < src.length ; s++ )
     {
       var c = src[ s ];
@@ -724,20 +722,11 @@ var _toStrFromStr = function( src,o )
 
       }
     }
-    result += '"';
-  }
-  else if( o.wrapString )
-  {
-    result = '"' + src + '"';
-  }
-  else if( o.json )
-  {
-    result = '"' + src + '"';
   }
 
-  else
+  if( o.wrapString )
   {
-    result = src;
+    result = '"' + result + '"';
   }
 
   return result;
