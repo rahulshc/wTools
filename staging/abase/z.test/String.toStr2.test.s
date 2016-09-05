@@ -1758,19 +1758,19 @@ var toStr = function( test )
         
         /*66*/
         [
-          'nameLong : "abc" ',
-          'description : "edf" ',
-          'rewardForVisitor : a : 1 ',
-          'stationary : 1 ',
-          'f : "f" ',
-          'quantity : 1 ',
+          '   nameLong : "abc" ',
+          '    description : "edf" ',
+          '    rewardForVisitor : a : 1 ',
+          '    stationary : 1 ',
+          '    f : "f" ',
+          '    quantity : 1 ',
           '',
-          'nameLong : "abc2" ',
-          'description : "edf2',
-          'rewardForVisitor : a : 1 ',
-          'stationary : 1 ',
-          'f : "f" ',
-          'quantity : 1',
+          '    nameLong : "abc2" ',
+          '    description : "edf2',
+          '    rewardForVisitor : a : 1 ',
+          '    stationary : 1 ',
+          '    f : "f" ',
+          '    quantity : 1',
           
           '}',
 
