@@ -1770,6 +1770,71 @@ var toStr = function( test )
 
 
       },
+      
+      
+      {
+       desc :  'level test',
+       src :
+       [
+       
+       /*01*/ { a : "a", b : "b", c : { d : "d" } },
+       /*02*/ { a : { h : "a" }, b : "b", c : { d : "d" } },
+       /*03*/ { a : [ "example" ],b : 1, c : null , d : [ "b" ] },
+       /*04*/ { a : "a", b : "b", c : { d : "d" } },
+        
+
+
+
+       ],
+       options :
+       [
+       
+       /*01*/ { level: 0, levels : 0 },
+       /*02*/ { level: 1, levels : 2 },
+       /*03*/ { level: 1, levels : 0 },
+       /*04*/ { },
+
+
+       ],
+
+       expected :
+       [
+        /*01*/
+          [
+           '[ Object with 3 elements ]',
+         ].join( '\n' ),
+
+        /*02*/
+          [
+           '{',
+           '  a : [ Object with 1 elements ], ',
+           '  b : "b", ',
+           '  c : [ Object with 1 elements ]',
+           '}'
+
+         ].join( '\n' ),
+         
+        /*03*/
+          [
+           '[ Object with 4 elements ]',
+
+         ].join( '\n' ),
+         
+        /*04*/
+          [
+           '{',
+           '  a : "a", ',
+           '  b : "b", ',
+           '  c : [ Object with 1 elements ]',
+           '}',
+
+         ].join( '\n' ),
+
+       ]
+
+
+
+      },
 
       {
        desc :  'json test',
