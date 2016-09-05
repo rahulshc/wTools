@@ -730,7 +730,6 @@ var _toStrFromStr = function( src,o )
   {
     result = '"' + src + '"';
   }
-
   else if( o.json )
   {
     result = '"' + src + '"';
@@ -951,15 +950,14 @@ var _toStrFromContainer = function( o )
     result += linePostfix;
 
     if( names )
-    { if(optionsContainer.json)
-      {
+    {
+      if( optionsContainer.json )
       result += '"'+String( names[ n ] )+'"' + optionsContainer.colon;
-      }
       else
       result += String( names[ n ] ) + optionsContainer.colon;
+
       if( !r.simple )
       result += '\n' + optionsItem.tab;
-
     }
 
 
