@@ -1040,7 +1040,7 @@ var toStr = function( test )
         /*41*/  { a : '\na', b : { d : '\ntrue' } },
         /*42*/  { a : 'aa', b : { d : function(){ } } },
         /*43*/  { a : 'bb', b : { d : function(){ } } },
-        /*44*/  { a : new Date( Date.UTC( 1993, 12, 12 ) ), b : { d : new Error('msg') }, c : 1 },
+        /*44*/  { a : new Date( Date.UTC( 1993, 12, 12 ) ), b : { d : new Error( 'msg' ) }, c : 1 },
         /*45*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
         /*46*/  { "sequence" : "\x7f[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
         /*47*/  { "sequence" : "<\u001cb>text<\u001cb>", "data" : { "name" : "myname", "age" : 1 }, "shift" : false, "code" : "<b>text<b>"  },
