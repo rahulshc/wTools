@@ -325,6 +325,7 @@ var toStrFine_gen = function()
 
     onlyRoutines : 0,
     noSubObject : 0,
+    onlyEnumerable : 1,
 
     /**/
 
