@@ -102,9 +102,9 @@ var toStrFields = function( src,o )
  * @param {number} [ o.fixed=null ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
  * Number must be between 0 and 20.
  * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
- * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
- * @param {boolean} [ o.escaping=1 ] - enable escaping of special characters.
- * @param {boolean} [ o.json=0 ] - enable convertion of object( src ) to JSON string.
+ * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
+ * @param {boolean} [ o.escaping=true ] - enable escaping of special characters.
+ * @param {boolean} [ o.json=false ] - enable convertion of object( src ) to JSON string.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -355,7 +355,7 @@ var toStrFine_gen = function()
   var routine = function toStrFine( src,o )
   {
 
-    _.assert( _.objectIs( o ) || o === undefined,'expects map o' );
+    _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
     var o = o || {};
     var toStrDefaults = {};
@@ -363,10 +363,8 @@ var toStrFine_gen = function()
     if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
     toStrDefaults = src.toStr.defaults;
 
-   if( o.levels === undefined && o.json )
-   {
-     o.levels = 256;
-   }
+    if( o.levels === undefined && o.json )
+    o.levels = 256;
 
     _.assertMapOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
@@ -941,7 +939,7 @@ var _toStrFromContainer = function( o )
     if( names )
     {
       if( optionsContainer.json )
-      result += '"'+String( names[ n ] )+'"' + optionsContainer.colon;
+      result += '"' + String( names[ n ] ) + '"' + optionsContainer.colon;
       else
       result += String( names[ n ] ) + optionsContainer.colon;
 
