@@ -79,6 +79,7 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
  * @param {number} [ o.wrapString=true ] - Wrap string into "".
+ * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
  * @param {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
