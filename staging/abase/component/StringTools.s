@@ -534,11 +534,16 @@ var _toStrShort = function( src,o )
     if( nl === -1 ) nl = src.length;
     if( src.length > maxStringLength || nl !== src.length )
     {
-      result += '"' + src.substr( 0,Math.min( maxStringLength,nl ) ) + '"' + '...';
+      src = src.substr( 0,Math.min( maxStringLength,nl ) );
+      if( o.wrapString )
+      result = '"' + src + '"';
+      result += src + '...';
     }
     else
     {
-      result += '"' + src + '"';
+      if( o.wrapString )
+      src = '"' + src + '"';
+      result += src;
     }
   }
   else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
@@ -720,6 +725,10 @@ var _toStrFromStr = function( src,o )
 
       }
     }
+  }
+  else
+  {
+    result = src;
   }
 
   if( o.wrapString )
