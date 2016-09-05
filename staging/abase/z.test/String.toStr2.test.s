@@ -2164,7 +2164,7 @@ var toStr = function( test )
         }
         catch( err )
         {
-          //_.errLog( err );
+          _.errLog( err );
           result = got;
           expected = exp[ k ];
         }
