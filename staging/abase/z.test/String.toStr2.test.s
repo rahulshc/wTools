@@ -1835,6 +1835,143 @@ var toStr = function( test )
 
 
       },
+      
+      {
+       desc :  'onlyEnumerable test',
+       src :
+       [
+       /*01*/ ( function ()
+              {
+               var x = Object.create({},
+                {
+                  getFoo:
+                  {
+                    value: function() { return this.foo; },
+                    enumerable: false
+                  }
+                });
+
+               x.foo = 1;
+
+               var y = Object.create( x );
+               y.a = "string";
+
+               return y;
+
+              } )(),
+
+       /*02*/ ( function ()
+              {
+               var x = Object.create({},
+                {
+                  getFoo:
+                  {
+                    value: function() { return this.foo; },
+                    enumerable: false
+                  }
+                });
+
+               x.foo = 1;
+
+               var y = Object.create( x );
+               y.a = "string";
+
+               return y;
+
+              } )(),
+
+       /*03*/ ( function ()
+              {
+               var x = Object.create({},
+                {
+                  getFoo:
+                  {
+                    value: function() { return this.foo; },
+                    enumerable: false
+                  }
+                });
+
+               x.foo = 1;
+
+               return x;
+
+              } )(),
+
+        /*04*/ ( function ()
+        {
+          var x = Object.create({},
+            {
+              getFoo:
+              {
+                value: function() { return this.foo; },
+                enumerable: false
+              }
+            });
+
+            x.foo = 1;
+
+            var y = Object.create( x );
+            y.a = "string";
+
+            return y;
+
+          } )(),
+
+       ],
+       options :
+       [
+       /*01*/ {  }, //own :1,onlyEnumerable:1
+       /*02*/ { own : 0 }, //own :0,onlyEnumerable:1
+       /*03*/ { onlyEnumerable : 0 }, //own :1,onlyEnumerable:0
+       /*04*/ { own : 0, onlyEnumerable : 0 },
+
+
+       ],
+
+       expected :
+       [
+        /*01*/
+          [
+           '{ a : "string" }'
+          ].join( '\n' ),
+
+        /*02*/
+          [
+           '{ a : "string", foo : 1 }'
+          ].join( '\n' ),
+
+        /*03*/
+          [
+           '{ getFoo : [object Function], foo : 1 }'
+          ].join( '\n' ),
+
+        /*04*/
+          [
+           '{',
+           '  a : "string", ',
+           '  getFoo : [object Function], ',
+           '  foo : 1, ',
+           '  __defineGetter__ : [object Function], ',
+           '  __defineSetter__ : [object Function], ',
+           '  hasOwnProperty : [object Function], ',
+           '  __lookupGetter__ : [object Function], ',
+           '  __lookupSetter__ : [object Function], ',
+           '  constructor : [object Function], ',
+           '  toString : [object Function], ',
+           '  toLocaleString : [object Function], ',
+           '  valueOf : [object Function], ',
+           '  isPrototypeOf : [object Function], ',
+           '  propertyIsEnumerable : [object Function], ',
+           '  __proto__ : [ Object with 1 elements ]',
+           '}',
+          ].join( '\n' ),
+
+
+       ]
+
+
+
+      },
 
       {
        desc :  'json test',
