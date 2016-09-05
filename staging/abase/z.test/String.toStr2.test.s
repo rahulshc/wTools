@@ -1076,6 +1076,30 @@ var toStr = function( test )
                   y.c = '3';
                   return y;
                 } )( ),
+                
+        /*66*/  ( function( ) 
+                {
+                  var structure =
+                  [
+                    {
+                      nameLong : "abc",
+                      description : "edf",
+                      rewardForVisitor : { a : 1 },
+                      stationary : 1,
+                      f : "f",
+                      quantity : 1
+                    },
+                    {
+                      nameLong : "abc2",
+                      description : "edf2",
+                      rewardForVisitor : { a : 1 },
+                      stationary : 1,
+                      f : "f",
+                      quantity : 1
+                    },
+                  ];
+                  return structure;
+                } )( ),
 
 
 
@@ -1155,6 +1179,7 @@ var toStr = function( test )
         /*63*/  { levels : 2, onlyRoutines : 1, noRoutine : 1 },
         /*64*/  { own : 0},
         /*65*/  {  },
+        /*66*/  { levels : 3,wrap : 0 },
 
 
 
@@ -1668,6 +1693,26 @@ var toStr = function( test )
           '{ c : "3" }',
 
         ].join( '\n' ),
+        
+        /*66*/
+        [
+          'nameLong : "abc" ',
+          'description : "edf" ',
+          'rewardForVisitor : a : 1 ',
+          'stationary : 1 ',
+          'f : "f" ',
+          'quantity : 1 ',
+          '',
+          'nameLong : "abc2" ',
+          'description : "edf2',
+          'rewardForVisitor : a : 1 ',
+          'stationary : 1 ',
+          'f : "f" ',
+          'quantity : 1',
+          
+          '}',
+
+        ].join( '\n' ),
 
 
         ],
@@ -1988,6 +2033,7 @@ var toStr = function( test )
        /*06*/ { a : new Date( Date.UTC( 1993, 12, 12 ) ) },
        /*07*/ { a : new Error( "r" ) },
        /*08*/ { a : Symbol('sm') },
+       /*09*/ { a : '\n\nABC' },
 
        ],
 
@@ -2001,6 +2047,7 @@ var toStr = function( test )
        /*06*/ { json : 1 },
        /*07*/ { json : 1 },
        /*08*/ { json : 1 },
+       /*09*/ { json : 1 },
        ],
 
        expected :
@@ -2085,6 +2132,14 @@ var toStr = function( test )
         [
 
           '{ "a" : Symbol(sm) }'
+
+
+        ].join( '\n' ),
+        
+        /*09*/
+        [
+
+          '{ "a" : "\\n\\nABC" }'
 
 
         ].join( '\n' ),
