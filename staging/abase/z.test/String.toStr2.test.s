@@ -194,7 +194,7 @@ var toStr = function( test )
     },
 
     {
-      desc :  'boolean, null, undefined test',
+      desc : 'boolean, null, undefined test',
       src :
       [
         Boolean(),
@@ -1813,16 +1813,17 @@ var toStr = function( test )
 
         /*04*/
         [
-          '  {',
+          '{',
           '  "a" : "aa", ',
           '  "b" : [ 1, 2, 3 ], ',
-          '  "c" : [ "routine r" ]',
-          '  }',
+          '  "c" : [ routine r ]',
+          '}',
 
         ].join( '\n' ),
 
         /*05*/
         [
+
           '[',
           '  {',
           '    "a" : 1, ',
@@ -1832,7 +1833,7 @@ var toStr = function( test )
           '      "d" : [ null, null ]',
           '    }',
           '  }',
-          ']'
+          ']',
 
         ].join( '\n' ),
 
@@ -1840,7 +1841,7 @@ var toStr = function( test )
         [
 
           '{',
-          '  "a" : "1994-01-12T00:00:00.000Z"',
+          '  "a" : 1994-01-12T00:00:00.000Z',
           '}',
 
         ].join( '\n' ),
@@ -1849,7 +1850,7 @@ var toStr = function( test )
         [
 
           '{',
-          '  "a" : "Error: r"',
+          '  "a" : Error: r',
           '}',
 
         ].join( '\n' ),
@@ -1857,7 +1858,7 @@ var toStr = function( test )
         /*08*/
         [
 
-          '{ "a" : "Symbol(sm)" }'
+          '{ "a" : Symbol(sm) }'
 
 
         ].join( '\n' ),
@@ -1934,11 +1935,10 @@ var toStr = function( test )
         try
         {
           result = JSON.parse( got );
-
         }
-        catch( e )
+        catch( err )
         {
-          console.log( e );
+          //_.errLog( err );
           result = got;
           expected = exp[ k ];
         }
@@ -1968,11 +1968,9 @@ var Proto =
 
   name : 'toStr',
 
-  tests:
+  tests :
   {
-      toStr : toStr
-
-
+    toStr : toStr
   }
 
 };
