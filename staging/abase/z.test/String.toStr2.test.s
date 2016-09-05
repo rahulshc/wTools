@@ -194,7 +194,7 @@ var toStr = function( test )
     },
 
     {
-      desc :  'boolean, null, undefined test',
+      desc : 'boolean, null, undefined test',
       src :
       [
         Boolean(),
@@ -781,7 +781,7 @@ var toStr = function( test )
       [
         '[',
         '  {',
-        '    a : "\\test"',
+        '    a : "\\\\test"',
         '  }, ',
         '  {',
         '    b : ""...',
@@ -948,7 +948,7 @@ var toStr = function( test )
       [
         '[',
         '  {',
-        '    a : "\\true", ',
+        '    a : "\\\\true", ',
         '    b : true, ',
         '    c : null',
         '  }',
@@ -1134,9 +1134,9 @@ var toStr = function( test )
         /*42*/  { levels : 2, noRoutine : 1,},
         /*43*/  { levels : 3, noRoutine : 1,},
         /*44*/  { levels : 3, noError : 1, noDate : 1},
-        /*45*/  { },
-        /*46*/  { },
-        /*47*/  { },
+        /*45*/  { escaping : 0 },
+        /*46*/  { escaping : 0 },
+        /*47*/  { escaping : 0 },
         /*48*/  { multiline : 1 },
         /*49*/  { levels : 2, multiline : 1, escaping : 1 },
         /*50*/  { levels : 2, multiline : 1, escaping : 1 },
@@ -1235,9 +1235,6 @@ var toStr = function( test )
         /*10*/  '',
 
 
-
-
-
         /*11*/  '  a : 6 | b : 7 | c : 1',
 
         /*12*/
@@ -1324,7 +1321,7 @@ var toStr = function( test )
 
         /*23*/
 
-        '  x : ""...| z : "\\11"',
+        '  x : ""...| z : "\\\\11"',
 
         /*24*/
         [
@@ -1493,8 +1490,9 @@ var toStr = function( test )
 
         /*45*/
         [
+
           '{',
-          '  sequence : "\\u001b[A", ',
+          '  sequence : "\u001b[A", ',
           '  name : "undefined", ',
           '  shift : false, ',
           '  code : "[A"',
@@ -1502,13 +1500,10 @@ var toStr = function( test )
 
         ].join( '\n' ),
 
-
-
-
         /*46*/
         [
           '{',
-          '  sequence : "\\x7f[A", ',
+          '  sequence : "\x7f[A", ',
           '  name : "undefined", ',
           '  shift : false, ',
           '  code : "[A"',
@@ -1519,7 +1514,7 @@ var toStr = function( test )
         /*47*/
         [
           '{',
-          '  sequence : "<\\u001cb>text<\\u001cb>", ',
+          '  sequence : "<\u001cb>text<\u001cb>", ',
           '  data : [ Object with 2 elements ], ',
           '  shift : false, ',
           '  code : "<b>text<b>"',
@@ -1687,6 +1682,8 @@ var toStr = function( test )
        /*02*/ { a : "sample",b : 0, c : false , d : [ "a" ] },
        /*03*/ { a : [ "example" ],b : 1, c : null , d : [ "b" ] },
        /*04*/ { a : "test", b : new Error( "err" ) },
+       /*05*/ { a : "a", b : "b", c : { d : "d" } },
+       /*06*/ { a : { h : "a" }, b : "b", c : { d : "d" } },
 
 
 
@@ -1697,6 +1694,8 @@ var toStr = function( test )
        /*02*/ { levels : 2, wrapString : 0 },
        /*03*/ { levels : 3, wrapString : 0 },
        /*04*/ { levels : 2 },
+       /*05*/ { wrapString: 0, levels : 1 },
+       /*06*/ { wrapString: 0, levels : 2 },
 
 
        ],
@@ -1706,7 +1705,7 @@ var toStr = function( test )
         /*01*/
           [
            '{',
-           '  a : "string", ',
+           '  a : string, ',
            '  b : 1, ',
            '  c : null, ',
            '  d : undefined',
@@ -1720,7 +1719,7 @@ var toStr = function( test )
            '  a : sample, ',
            '  b : 0, ',
            '  c : false, ',
-           '  d : [ "a" ]',
+           '  d : [ a ]',
            '}'
 
          ].join( '\n' ),
@@ -1745,6 +1744,26 @@ var toStr = function( test )
 
          ].join( '\n' ),
 
+        /*05*/
+          [
+           '{',
+           '  a : a, ',
+           '  b : b, ',
+           '  c : [ Object with 1 elements ]',
+           '}'
+
+         ].join( '\n' ),
+
+        /*05*/
+          [
+           '{',
+           '  a : { h : a }, ',
+           '  b : b, ',
+           '  c : { d : d }',
+           '}'
+
+         ].join( '\n' ),
+
 
        ]
 
@@ -1754,11 +1773,14 @@ var toStr = function( test )
 
       {
        desc :  'json test',
+
        src :
        [
+
        /*01*/ { "a" : 100, "b" : "c", "c" : { "d" : true, "e" : null } },
        /*02*/ { "b" : "a", "c" : 50, "d" : { "a" : "undefined", "e" : null } },
        /*03*/ [ { "a" : 100, "b" : "x", "c" : { "d" : true, "e" : null } } ],
+
        /*04*/ { a : "aa", b : [ 1,2,3 ], c : function r( ){ } },
        /*05*/ [ { a : 1, b : 2, c : { d : [ null,undefined ] } } ],
        /*06*/ { a : new Date( Date.UTC( 1993, 12, 12 ) ) },
@@ -1766,6 +1788,7 @@ var toStr = function( test )
        /*08*/ { a : Symbol('sm') },
 
        ],
+
        options :
        [
        /*01*/ { json : 1 },
@@ -1776,20 +1799,19 @@ var toStr = function( test )
        /*06*/ { json : 1 },
        /*07*/ { json : 1 },
        /*08*/ { json : 1 },
-
        ],
 
        expected :
        [
-        /*01*/
-          [
-           '{',
-           ' "a" : 100, ',
-           ' "b" : "c", ',
-           ' "c" : { "d" : true, "e" : null }',
-           '}'
 
-         ].join( '\n' ),
+        /*01*/
+        [
+          '{',
+          ' "a" : 100, ',
+          ' "b" : "c", ',
+          ' "c" : { "d" : true, "e" : null }',
+          '}'
+        ].join( '\n' ),
 
         /*02*/
         [
@@ -1815,16 +1837,17 @@ var toStr = function( test )
 
         /*04*/
         [
-          '  {',
+          '{',
           '  "a" : "aa", ',
           '  "b" : [ 1, 2, 3 ], ',
-          '  "c" : [ "routine r" ]',
-          '  }',
+          '  "c" : [ routine r ]',
+          '}',
 
         ].join( '\n' ),
 
         /*05*/
         [
+
           '[',
           '  {',
           '    "a" : 1, ',
@@ -1834,7 +1857,7 @@ var toStr = function( test )
           '      "d" : [ null, null ]',
           '    }',
           '  }',
-          ']'
+          ']',
 
         ].join( '\n' ),
 
@@ -1842,9 +1865,8 @@ var toStr = function( test )
         [
 
           '{',
-          '  "a" : "1994-01-12T00:00:00.000Z"',
+          '  "a" : 1994-01-12T00:00:00.000Z',
           '}',
-
 
         ].join( '\n' ),
 
@@ -1852,16 +1874,15 @@ var toStr = function( test )
         [
 
           '{',
-          '  "a" : "Error: r"',
+          '  "a" : Error: r',
           '}',
-
 
         ].join( '\n' ),
 
         /*08*/
         [
 
-          '{ "a" : "Symbol(sm)" }'
+          '{ "a" : Symbol(sm) }'
 
 
         ].join( '\n' ),
@@ -1880,41 +1901,39 @@ var toStr = function( test )
   /**/
 
   if( Config.debug )
-{
-
-  test.description = 'wrong type of argument';
-  test.shouldThrowError( function()
   {
-    _.toStr( { a : 1 }, null );
-  });
 
-  test.description = '( o.precision ) is not between 1 and 21';
-  test.shouldThrowError( function()
-  {
-    _.toStr( { a : 1 }, { precision : 0 } );
-  });
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.toStr( { a : 1 }, null );
+    });
 
-  test.description = '( o.fixed ) is not between 0 and 20';
-  test.shouldThrowError( function()
-  {
-    _.toStr( { a : 1 }, { fixed : 22 } );
-  });
+    test.description = '( o.precision ) is not between 1 and 21';
+    test.shouldThrowError( function()
+    {
+      _.toStr( { a : 1 }, { precision : 0 } );
+    });
 
-  test.description = 'if json : 1, wrapString must be equal to 1';
-  test.shouldThrowError( function()
-  {
-    _.toStr( { a : 1 }, { json : 1, wrapString : 0 } );
-  });
+    test.description = '( o.fixed ) is not between 0 and 20';
+    test.shouldThrowError( function()
+    {
+      _.toStr( { a : 1 }, { fixed : 22 } );
+    });
 
-  test.description = 'wrong arguments count';
-  test.shouldThrowError( function()
-  {
-    _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
-  });
+    test.description = 'if json : 1, wrapString must be equal to 1';
+    test.shouldThrowError( function()
+    {
+      _.toStr( { a : 1 }, { json : 1, wrapString : 0 } );
+    });
 
+    test.description = 'wrong arguments count';
+    test.shouldThrowError( function()
+    {
+      _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
+    });
 
-
-}
+  }
 
   debugger;
   for( var i = 0; i < cases.length; ++i )
@@ -1933,19 +1952,19 @@ var toStr = function( test )
 
       if( test.description === 'json test' && o[ k ].json )
       {
-        //if JSON.parse is OK,compare source vs parse result
+        // good
+        // if JSON.parse is OK,compare source vs parse result
         // else compare toStr() result vs expected
         expected = src[ k ]; //source obj
         try
         {
           result = JSON.parse( got );
-
         }
-        catch( e )
+        catch( err )
         {
-          console.log( e );
+          //_.errLog( err );
           result = got;
-          expected = exp[k];
+          expected = exp[ k ];
         }
         test.identical( result, expected );
 
@@ -1973,11 +1992,9 @@ var Proto =
 
   name : 'toStr',
 
-  tests:
+  tests :
   {
-      toStr : toStr
-
-
+    toStr : toStr
   }
 
 };
