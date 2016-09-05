@@ -266,25 +266,87 @@ var toStr = function( test )
       desc :  'Error test',
       src :
       [
-        new Error(),
-        new Error('msg'),
-        new Error('msg2'),
-        new Error('message'),
+      /*01*/  new Error(),
+      /*02*/  new Error('msg'),
+      /*03*/  new Error('msg2'),
+      /*04*/  new Error('message'),
+      /*05*/  new Error('message2'),
+      /*06*/  new Error('err message'),
+      /*07*/  new Error('my message'),
+      /*08*/  new Error('my message2'),
+      /*09*/  new Error('my message3'),
+      /*10*/  ( function() 
+                {
+                  var err = new Error( 'my message4' );
+                  err.stack = err.stack.slice( 0,18 );
+                  return err;
+                } )(),
+      
+      /*11*/  ( function() 
+                {
+                  var err = new Error( 'my error' );
+                  err.stack = err.stack.slice( 0,16 );
+                  return err;
+                } )(),
       ],
       options :
       [
-        { },
-        { },
-        { levels : 0 },
-        { noError : 1 }
+      /*01*/  { },
+      /*02*/  { },
+      /*03*/  { levels : 0 },
+      /*04*/  { noError : 1 },
+      /*05*/  { errorAsMap : 1 },
+      /*06*/  { errorAsMap : 1, onlyEnumerable : 1 },
+      /*07*/  { errorAsMap : 1, onlyEnumerable : 1, own : 0 },
+      /*08*/  { errorAsMap : 1, onlyEnumerable : 0 },
+      /*09*/  { errorAsMap : 1, onlyEnumerable : 0, own : 0 },
+      /*10*/  { errorAsMap : 1, levels : 2 },
+      /*11*/  { errorAsMap : 1, levels : 2, escaping : 1 },
 
       ],
       expected :
       [
-        'Error',
-        'Error: msg',
-        '[object Error]',
-        ''
+        
+      /*01*/  'Error',
+      /*02*/  'Error: msg',
+      /*03*/  '[object Error]',
+      /*04*/  '',
+      /*05*/  '{ stack : "Error: message2"..., message : "message2" }',
+      /*06*/  '{}',
+      /*07*/  '{}',
+      /*08*/  '{ stack : "Error: my message2"..., message : "my message2" }',
+      /*09*/  
+        [
+          '{',
+          '  stack : "Error: my message3"..., ',
+          '  message : "my message3", ',
+          '  name : "Error", ',
+          '  message : "my message3", ',
+          '  constructor : [object Function], ',
+          '  toString : [object Function], ',
+          '  __defineGetter__ : [object Function],',
+          '  hasOwnProperty : [object Function], ',
+          '  __lookupGetter__ : [object Function], ',
+          '  __lookupSetter__ : [object Function], ',
+          '  constructor : [object Function], ',
+          '  toString : [object Function], ',
+          '  toLocaleString : [object Function], ',
+          '  valueOf : [object Function], ',
+          '  isPrototypeOf : [object Function], ',
+          '  propertyIsEnumerable : [object Function], ',
+          '  __proto__ : [ Error with 0 elements ]',
+          '}',
+        ].join( '\n' ),
+        
+      /*10*/  
+        [
+          '{ stack : "Error: my message4", message : "my message4" }',
+        ].join( '\n' ),
+        
+      /*11*/  
+        [
+          '{ stack : "Error: my error\\n", message : "my error" }',
+        ].join( '\n' ),
       ]
     },
 
