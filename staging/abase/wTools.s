@@ -9847,10 +9847,10 @@ var mapOwnKeys = function mapOwnKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.objectLike( src ) || _.errorIs( src ) );
 
   if( arguments.length === 1 )
-  if( _.objectIs( src ) && Object.keys )
+  if( _.objectIs( src ) || _.errorIs( src ) && Object.keys )
   return Object.keys( src );
 
   for( var s in src )
@@ -9899,7 +9899,7 @@ var mapKeys = function mapKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) );
+  _.assert( _.objectLike( src ) || errorIs( src ));
 
   for( var s in src )
   result.push( s );
@@ -9907,7 +9907,7 @@ var mapKeys = function mapKeys( src )
   for( var a = 1 ; a < arguments.length ; a++ )
   {
     var src = arguments[ a ];
-    _.assert( _.objectLike( src ) );
+    _.assert( _.objectLike( src ) || errorIs( src ) );
     for( var s in src )
     _.arrayAppendOnce( result,s );
   }
