@@ -486,7 +486,11 @@ var _toStr = function _toStr( src,o )
   else if( isObject )
   {
     if( o.json === 1 )
-    _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+    {
+      _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+      if( o.escaping === undefined )
+      o.escaping = 1;
+    }
     if( o.noObject )
     return;
     var r = _toStrFromObject( src,o );
