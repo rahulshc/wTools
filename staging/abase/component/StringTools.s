@@ -97,6 +97,7 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.noString=false ] - Ignores all entities of type String.
  * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
  * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
+ * @param {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
  * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
  * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].
  * Number must be between 1 and 21.
