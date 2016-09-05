@@ -1771,6 +1771,58 @@ var toStr = function( test )
 
       },
 
+
+      {
+       desc :  'level test',
+       src :
+       [
+       /*01*/ { a : "string",b : 1, c : { d : 5 } },
+       /*02*/ { a : "abc",b : 1, c : 2 , d : { e : 3 }  },
+       /*03*/ { a : "cba",b : 0, c : 1 , d : { e : 2 }  },
+
+
+
+
+       ],
+       options :
+       [
+       /*01*/ { level : 1, levels : 2 },
+       /*02*/ { level : 0, levels : 0 },
+       /*03*/ { level : 1, levels : 0 },
+
+
+
+       ],
+
+       expected :
+       [
+        /*01*/
+          [
+           '{',
+           '  a : "string", ',
+           '  b : 1, ',
+           '  c : [ Object with 1 elements ]',
+           '}'
+
+         ].join( '\n' ),
+         
+        /*02*/
+          [
+           '[ Object with 4 elements ]'
+          ].join( '\n' ),
+          
+        /*03*/
+          [
+           '[ Object with 4 elements ]'
+          ].join( '\n' ),
+
+
+       ]
+
+
+
+      },
+
       {
        desc :  'json test',
 
@@ -1962,7 +2014,7 @@ var toStr = function( test )
         }
         catch( err )
         {
-          //_.errLog( err );
+          _.errLog( err );
           result = got;
           expected = exp[ k ];
         }
