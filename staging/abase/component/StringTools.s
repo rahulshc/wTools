@@ -451,6 +451,16 @@ var _toStr = function _toStr( src,o )
     result += src.toString();
     /*result += src.message;*/
   }
+  else if( _.errorIs( src ) && o.errorAsMap )
+  {
+    if( o.noError )
+    return;
+    if( o.onlyEnumerable === undefined )
+    o.onlyEnumerable = 0;
+    var r = _toStrFromObject( src,o );
+    result += r.text;
+    simple = r.simple;
+  }
   else if( _.routineIs( src ) )
   {
     if( o.noRoutine )
@@ -498,7 +508,7 @@ var _toStr = function _toStr( src,o )
     simple = r.simple;
   }
   else if( !isAtomic && _.routineIs( src.toString ) )
-  {
+  { 
     result += src.toString();
   }
   else
@@ -813,7 +823,7 @@ var _toStrFromObject = function( src,o )
 {
   var result = '';
 
-  _assert( _.objectIs( src ) || _.objectLike( src ) );
+  _assert( _.objectIs( src ) || _.objectLike( src ) || _.errorIs( src ));
 
   if( o.level >= o.levels )
   {
@@ -825,25 +835,27 @@ var _toStrFromObject = function( src,o )
 
   /* */
 
-if( o.onlyEnumerable === 0  && o.own === 1)
-{
-  var names = Object.getOwnPropertyNames( src );
-}
 
-else if( o.onlyEnumerable === 0  && o.own === 0 )
-{
-  var names = [];
-  var proto = src;
-
-  names = Object.getOwnPropertyNames(src);
-
-  while( Object.getPrototypeOf( proto ) )
-  {
-    proto = Object.getPrototypeOf( proto );
-    names = names.concat( Object.getOwnPropertyNames( proto ) );
+if( o.onlyEnumerable === 0  )
+  { 
+    if( o.own  )
+    var names = Object.getOwnPropertyNames( src );
+    
+    else 
+    {
+      var names = [];
+      var proto = src;
+      
+      names = Object.getOwnPropertyNames(src);
+      
+      while( Object.getPrototypeOf( proto ) )
+      {
+        proto = Object.getPrototypeOf( proto );
+        names = names.concat( Object.getOwnPropertyNames( proto ) );
+      }
+    }
+    
   }
-
-}
 
 else
 {
