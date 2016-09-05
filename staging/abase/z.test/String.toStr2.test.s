@@ -1687,6 +1687,8 @@ var toStr = function( test )
        /*02*/ { a : "sample",b : 0, c : false , d : [ "a" ] },
        /*03*/ { a : [ "example" ],b : 1, c : null , d : [ "b" ] },
        /*04*/ { a : "test", b : new Error( "err" ) },
+       /*05*/ { a : "a", b : "b", c : { d : "d" } },
+       /*06*/ { a : { h : "a" }, b : "b", c : { d : "d" } },
 
 
 
@@ -1697,6 +1699,8 @@ var toStr = function( test )
        /*02*/ { levels : 2, wrapString : 0 },
        /*03*/ { levels : 3, wrapString : 0 },
        /*04*/ { levels : 2 },
+       /*05*/ { wrapString: 0, levels : 1 },
+       /*06*/ { wrapString: 0, levels : 2 },
 
 
        ],
@@ -1741,6 +1745,26 @@ var toStr = function( test )
            '{',
            '  a : "test", ',
            '  b : Error: err',
+           '}'
+
+         ].join( '\n' ),
+
+        /*05*/
+          [
+           '{',
+           '  a : a, ',
+           '  b : b, ',
+           '  c : [ Object with 1 elements ]',
+           '}'
+
+         ].join( '\n' ),
+
+        /*05*/
+          [
+           '{',
+           '  a : { h : a }, ',
+           '  b : b, ',
+           '  c : { d : d }',
            '}'
 
          ].join( '\n' ),
