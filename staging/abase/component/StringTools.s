@@ -535,14 +535,16 @@ var _toStrShort = function( src,o )
     if( src.length > maxStringLength || nl !== src.length )
     {
       src = src.substr( 0,Math.min( maxStringLength,nl ) );
-      if( o.wrapString )
-      result = '"' + src + '"';
+      src = _toStrFromStr( src,o );
+      //if( o.wrapString )
+      //result = '"' + src + '"';
       result += src + '...';
     }
     else
     {
-      if( o.wrapString )
-      src = '"' + src + '"';
+      src = _toStrFromStr( src,o );
+      //if( o.wrapString )
+      //src = '"' + src + '"';
       result += src;
     }
   }
@@ -667,6 +669,8 @@ var _toStrFromStr = function( src,o )
 
   if( o.escaping )
   {
+    debugger;
+
     for( var s = 0 ; s < src.length ; s++ )
     {
       var c = src[ s ];
@@ -674,6 +678,7 @@ var _toStrFromStr = function( src,o )
 
       if( 0x007f <= code && code <= 0x009f || code === 0x00ad )
       {
+        debugger;
         result += _.strUnicodeEscape( c );
       }
       else switch( c )
@@ -719,7 +724,10 @@ var _toStrFromStr = function( src,o )
         default :
 
           if( code < 32 )
-          result += _.strUnicodeEscape( c );
+          {
+            debugger;
+            result += _.strUnicodeEscape( c );
+          }
           else
           result += c;
 
@@ -2109,15 +2117,16 @@ var strUnicodeEscape = function( src )
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1 );
 
-  for( var i = 0 ; i > src.length ; i++ )
+  for( var i = 0 ; i < src.length ; i++ )
   {
     var c = src[ i ];
     var code = c.charCodeAt( 0 );
     var h = code.toString( 16 );
     var d = _.strDup( '0',4-h.length ) + h;
-    result + '\\u' + d;
+    result += '\\u' + d;
   }
 
+  return result;
 }
 
 //
@@ -2711,8 +2720,8 @@ var Proto =
   strLattersSpectre : strLattersSpectre, /* exmperimental */
   lattersSpectreComparison : lattersSpectreComparison, /* exmperimental */
 
-  strHtmlEscape : strHtmlEscape,
-  strUnicodeEscape : strUnicodeEscape,
+  strHtmlEscape : strHtmlEscape, /* improve me */
+  strUnicodeEscape : strUnicodeEscape, /* document me */
 
   strIndentation : strIndentation,
   strNumberLines : strNumberLines,
