@@ -78,6 +78,7 @@ var toStrFields = function( src,o )
  * @param {object} o - Convertion o.
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
+ * @param {number} [ o.wrapString=1 ] - Wrap string in to "".
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
  * @param {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
@@ -103,6 +104,7 @@ var toStrFields = function( src,o )
  * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
  * @param {boolean} [ o.multiline=0 ] - Writes each object property in new line.
  * @param {boolean} [ o.escaping=1 ] - enable escaping of special characters.
+ * @param {boolean} [ o.json=0 ] - enable convertion of object( src ) to JSON string.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -261,8 +263,17 @@ var toStrFields = function( src,o )
  * //returns { b : 1, c : 2 }
  * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , noString : 1 } );
  *
+ * @example
+ * //returns { a : string, b : str, c : 2 }
+ * _.toStr( { a : 'string', b : "str" , c : 2  }, { levels : 2 , wrapString : 0 } );
+ *
+ * @example
+ * //returns { "a" : "string", "b" : 1, "c" : 2 }
+ * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
+ *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } Throw an exception if( o.wrapString ) is not equal 1 when ( o.json ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
  * @memberof wTools
@@ -351,6 +362,11 @@ var toStrFine_gen = function()
 
     if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
     toStrDefaults = src.toStr.defaults;
+
+   if( o.levels === undefined && o.json )
+   {
+     o.levels = 256;
+   }
 
     _.assertMapOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
@@ -468,7 +484,10 @@ var _toStr = function _toStr( src,o )
     simple = r.simple;
   }
   else if( isObject )
-  {
+  { if( o.json === 1 )
+    {
+      _.assert( o.wrapString );
+    }
     if( o.noObject )
     return;
     var r = _toStrFromObject( src,o );
@@ -707,9 +726,19 @@ var _toStrFromStr = function( src,o )
     }
     result += '"';
   }
-  else
+  else if( o.wrapString )
   {
     result = '"' + src + '"';
+  }
+
+  else if( o.json )
+  {
+    result = '"' + src + '"';
+  }
+
+  else
+  {
+    result = src;
   }
 
   return result;
@@ -922,12 +951,17 @@ var _toStrFromContainer = function( o )
     result += linePostfix;
 
     if( names )
-    {
+    { if(optionsContainer.json)
+      {
+      result += '"'+String( names[ n ] )+'"' + optionsContainer.colon;
+      }
+      else
       result += String( names[ n ] ) + optionsContainer.colon;
       if( !r.simple )
       result += '\n' + optionsItem.tab;
 
     }
+
 
     result += r.text;
     written += 1;

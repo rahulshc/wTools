@@ -289,6 +289,29 @@ var toStr = function( test )
     },
 
     {
+      desc :  'Routine test',
+      src :
+      [
+        function rr( ){ },
+        function rx( ){ },
+        [ function ry( ){ } , 1],
+      ],
+      options :
+      [
+        { },
+        { noRoutine : 1 },
+        { onlyRoutines : 1 },
+
+      ],
+      expected :
+      [
+        '[ routine rr ]',
+        '',
+        '',
+      ]
+    },
+
+    {
       desc : 'Array test',
       src :
       [
@@ -369,6 +392,8 @@ var toStr = function( test )
       /*75*/ [ 'a', 2, { a : '\\true', b : true, c : null } ],
       /*76*/ [ [ 'a', 1 ], new Error( 'err msg' ), new Date(1990, 0, 0) ],
       /*77*/ [ [ 'a', 1 ], new Date(1999, 1, 1) ],
+      /*78*/ [ [ 1, 2, 3 ], 'a' ],
+      /*79*/ [ function routine( ){ }, 'a' ],
 
       ],
       options :
@@ -446,13 +471,15 @@ var toStr = function( test )
       /*68*/  { levels : 2, noString : 1, precision : 2 },
       /*69*/  { levels : 3, noString : 1, precision : 3 },
       /*70*/  { levels : 2, noString : 1, fixed : 3 },
-      /*71*/  { levels : 2, noString : 1, noNumber :1, precision : 1 },
-      /*72*/  { levels : 2, noString : 1, noNumber :1, fixed : 1 },
-      /*73*/  { levels : 3, noString : 1, noNumber :1, precision : 1 },
-      /*74*/  { levels : 2, noString : 1, noNumber :1, multiline : 1 },
-      /*75*/  { levels : 2, noString : 1, noNumber :1, multiline : 1, escaping : 1 },
-      /*76*/  { levels : 2, noString : 1, noNumber :1, noError : 1 },
-      /*77*/  { levels : 2, noString : 1, noNumber :1, tab : '|', prependTab : 0 },
+      /*71*/  { levels : 2, noString : 1, noNumber : 1, precision : 1 },
+      /*72*/  { levels : 2, noString : 1, noNumber : 1, fixed : 1 },
+      /*73*/  { levels : 3, noString : 1, noNumber : 1, precision : 1 },
+      /*74*/  { levels : 2, noString : 1, noNumber : 1, multiline : 1 },
+      /*75*/  { levels : 2, noString : 1, noNumber : 1, multiline : 1, escaping : 1 },
+      /*76*/  { levels : 2, noString : 1, noNumber : 1, noError : 1 },
+      /*77*/  { levels : 2, noString : 1, noNumber : 1, tab : '|', prependTab : 0 },
+      /*78*/  { levels : 3, noAtomic : 1, noNumber : 0 },
+      /*79*/  { levels : 2, onlyRoutines : 1, noRoutine : 1 },
 
 
       ],
@@ -946,6 +973,18 @@ var toStr = function( test )
         '|]'
       ].join( '\n' ),
 
+      /*78*/
+
+      [
+        '[',
+        '  [  ]',
+        ']'
+      ].join( '\n' ),
+
+      /*79*/
+       '',
+
+
 
 
 
@@ -1014,6 +1053,30 @@ var toStr = function( test )
         /*54*/  { "sequence" : "\btest",  },
         /*55*/  { "sequence" : "\vsample",  },
         /*56*/  { "sequence" : "\ftest",  },
+        /*57*/  { a : 1, b : { d : 'string' }, c : true },
+        /*58*/  { a : 1, b : { d : 'string' }, c : new Date() },
+        /*59*/  { a : 1000, b : { d : 'string' }, c : 1.500 },
+        /*60*/  { a : 1000, b : 'text', c : 1.500 },
+        /*61*/  { a : 1000, b : 'text', c : false, d : undefined, e : null},
+        /*62*/  { a : 1001, b : 'text', c : false, d : undefined, e : null},
+        /*63*/  { a : function routine( ){ }, b : 'a'},
+
+        /*64*/  ( function( ) //own:0 option test
+                {
+                  var x = { a : 1, b : 2 },
+                  y = Object.create( x );
+                  y.c = 3;
+                  return y;
+                } )( ),
+
+        /*65*/  ( function( ) //own:1 option test
+                {
+                  var x = { a : '0', b : '1' },
+                  y = Object.create( x );
+                  y.c = '3';
+                  return y;
+                } )( ),
+
 
 
 
@@ -1083,6 +1146,15 @@ var toStr = function( test )
         /*54*/  { levels : 2, escaping : 1 },
         /*55*/  { levels : 2, escaping : 1 },
         /*56*/  { levels : 2, escaping : 1 },
+        /*57*/  { levels : 3, noNumber : 1, noString : 1},
+        /*58*/  { levels : 3, noNumber : 1, noString : 1, noDate : 1},
+        /*59*/  { levels : 2, noString : 1, fixed : 1},
+        /*60*/  { levels : 2, noString : 1, precision : 1},
+        /*61*/  { levels : 2, noString : 1, noNumber :1, tab : '-', prependTab : 0 },
+        /*62*/  { levels : 2, noAtomic : 1, noNumber : 0 },
+        /*63*/  { levels : 2, onlyRoutines : 1, noRoutine : 1 },
+        /*64*/  { own : 0},
+        /*65*/  {  },
 
 
 
@@ -1422,7 +1494,7 @@ var toStr = function( test )
         /*45*/
         [
           '{',
-          '  sequence : "[A", ',
+          '  sequence : "\\u001b[A", ',
           '  name : "undefined", ',
           '  shift : false, ',
           '  code : "[A"',
@@ -1436,7 +1508,7 @@ var toStr = function( test )
         /*46*/
         [
           '{',
-          '  sequence : "[A", ',
+          '  sequence : "\\x7f[A", ',
           '  name : "undefined", ',
           '  shift : false, ',
           '  code : "[A"',
@@ -1447,7 +1519,7 @@ var toStr = function( test )
         /*47*/
         [
           '{',
-          '  sequence : "<\u001cb>text<\u001cb>", ',
+          '  sequence : "<\\u001cb>text<\\u001cb>", ',
           '  data : [ Object with 2 elements ], ',
           '  shift : false, ',
           '  code : "<b>text<b>"',
@@ -1529,9 +1601,153 @@ var toStr = function( test )
 
         ].join( '\n' ),
 
+        /*57*/
+        [
+          '{',
+          '  b : {  }, ',
+          '  c : true',
+          '}'
+
+
+        ].join( '\n' ),
+
+        /*58*/
+        [
+          '{',
+          '  b : {  }',
+          '}'
+
+
+        ].join( '\n' ),
+
+        /*59*/
+        [
+          '{',
+          '  a : 1000.0, ',
+          '  b : { d : "string" }, ',
+          '  c : 1.5',
+          '}'
+
+
+        ].join( '\n' ),
+
+        /*60*/
+        [
+          '{ a : 1e+3, c : 2 }',
+
+        ].join( '\n' ),
+
+        /*61*/
+        [
+          '{',
+          '-  c : false, ',
+          '-  d : undefined, ',
+          '-  e : null',
+          '-}'
+
+
+        ].join( '\n' ),
+
+        /*62*/
+        [
+          '{',
+          '  ',
+          '}'
+
+        ].join( '\n' ),
+
+        /*63*/
+        [
+          '',
+
+        ].join( '\n' ),
+
+        /*64*/
+        [
+          '{ c : 3, a : 1, b : 2 }',
+
+        ].join( '\n' ),
+
+        /*65*/
+        [
+          '{ c : "3" }',
+
+        ].join( '\n' ),
 
 
         ],
+
+
+      },
+      {
+       desc :  'wrapString test',
+       src :
+       [
+       /*01*/ { a : "string",b : 1, c : null , d : undefined },
+       /*02*/ { a : "sample",b : 0, c : false , d : [ "a" ] },
+       /*03*/ { a : [ "example" ],b : 1, c : null , d : [ "b" ] },
+       /*04*/ { a : "test", b : new Error( "err" ) },
+
+
+
+       ],
+       options :
+       [
+       /*01*/ { wrapString : 0 },
+       /*02*/ { levels : 2, wrapString : 0 },
+       /*03*/ { levels : 3, wrapString : 0 },
+       /*04*/ { levels : 2 },
+
+
+       ],
+
+       expected :
+       [
+        /*01*/
+          [
+           '{',
+           '  a : "string", ',
+           '  b : 1, ',
+           '  c : null, ',
+           '  d : undefined',
+           '}'
+
+         ].join( '\n' ),
+
+        /*02*/
+          [
+           '{',
+           '  a : sample, ',
+           '  b : 0, ',
+           '  c : false, ',
+           '  d : [ "a" ]',
+           '}'
+
+         ].join( '\n' ),
+
+        /*03*/
+          [
+           '{',
+           '  a : [ example ], ',
+           '  b : 1, ',
+           '  c : null, ',
+           '  d : [ b ]',
+           '}'
+
+         ].join( '\n' ),
+
+        /*04*/
+          [
+           '{',
+           '  a : "test", ',
+           '  b : Error: err',
+           '}'
+
+         ].join( '\n' ),
+
+
+       ]
+
 
 
       },
@@ -1540,12 +1756,115 @@ var toStr = function( test )
        desc :  'json test',
        src :
        [
-          { "a" : 100, "b" : "c", "c" : { "d" : true, "e" : null } },
+       /*01*/ { "a" : 100, "b" : "c", "c" : { "d" : true, "e" : null } },
+       /*02*/ { "b" : "a", "c" : 50, "d" : { "a" : "undefined", "e" : null } },
+       /*03*/ [ { "a" : 100, "b" : "x", "c" : { "d" : true, "e" : null } } ],
+       /*04*/ { a : "aa", b : [ 1,2,3 ], c : function r( ){ } },
+       /*05*/ [ { a : 1, b : 2, c : { d : [ null,undefined ] } } ],
+       /*06*/ { a : new Date( Date.UTC( 1993, 12, 12 ) ) },
+       /*07*/ { a : new Error( "r" ) },
+       /*08*/ { a : Symbol('sm') },
 
        ],
        options :
        [
-         { levels : 2 , json : 1 },
+       /*01*/ { json : 1 },
+       /*02*/ { json : 1 },
+       /*03*/ { json : 1 },
+       /*04*/ { json : 1 },
+       /*05*/ { json : 1 },
+       /*06*/ { json : 1 },
+       /*07*/ { json : 1 },
+       /*08*/ { json : 1 },
+
+       ],
+
+       expected :
+       [
+        /*01*/
+          [
+           '{',
+           ' "a" : 100, ',
+           ' "b" : "c", ',
+           ' "c" : { "d" : true, "e" : null }',
+           '}'
+
+         ].join( '\n' ),
+
+        /*02*/
+        [
+          '{',
+          '  "b" : "a", ',
+          '  "c" : 50, ',
+          '  "d" : { "a" : "undefined", "e" : null }',
+          '}'
+
+        ].join( '\n' ),
+
+        /*03*/
+        [
+          '[',
+          '  {',
+          '    "a" : 100, ',
+          '    "b" : "x", ',
+          '    "c" : { "d" : true, "e" : null }',
+          '  }',
+          ']'
+
+        ].join( '\n' ),
+
+        /*04*/
+        [
+          '  {',
+          '  "a" : "aa", ',
+          '  "b" : [ 1, 2, 3 ], ',
+          '  "c" : [ "routine r" ]',
+          '  }',
+
+        ].join( '\n' ),
+
+        /*05*/
+        [
+          '[',
+          '  {',
+          '    "a" : 1, ',
+          '    "b" : 2, ',
+          '    "c" : ',
+          '    {',
+          '      "d" : [ null, null ]',
+          '    }',
+          '  }',
+          ']'
+
+        ].join( '\n' ),
+
+        /*06*/
+        [
+
+          '{',
+          '  "a" : "1994-01-12T00:00:00.000Z"',
+          '}',
+
+
+        ].join( '\n' ),
+
+        /*07*/
+        [
+
+          '{',
+          '  "a" : "Error: r"',
+          '}',
+
+
+        ].join( '\n' ),
+
+        /*08*/
+        [
+
+          '{ "a" : "Symbol(sm)" }'
+
+
+        ].join( '\n' ),
 
        ]
 
@@ -1558,7 +1877,44 @@ var toStr = function( test )
   ];
 
 
+  /**/
 
+  if( Config.debug )
+{
+
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, null );
+  });
+
+  test.description = '( o.precision ) is not between 1 and 21';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, { precision : 0 } );
+  });
+
+  test.description = '( o.fixed ) is not between 0 and 20';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, { fixed : 22 } );
+  });
+
+  test.description = 'if json : 1, wrapString must be equal to 1';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, { json : 1, wrapString : 0 } );
+  });
+
+  test.description = 'wrong arguments count';
+  test.shouldThrowError( function()
+  {
+    _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
+  });
+
+
+
+}
 
   debugger;
   for( var i = 0; i < cases.length; ++i )
@@ -1568,20 +1924,35 @@ var toStr = function( test )
     var exp = _case['expected'];
     var o = _case['options'];
     var got = null;
+    var result = null;
+    var expected = null;
     for( var k = 0; k < src.length; ++k  )
     {
       test.description = _case.desc;
       got = _.toStr( src[ k ], o[ k ] || o[ 0 ]);
 
-      if( test.description === 'json test' )
+      if( test.description === 'json test' && o[ k ].json )
       {
-        var expected = JSON.parse( got );
-        test.identical( src[ k ],expected );
+        //if JSON.parse is OK,compare source vs parse result
+        // else compare toStr() result vs expected
+        expected = src[ k ]; //source obj
+        try
+        {
+          result = JSON.parse( got );
+
+        }
+        catch( e )
+        {
+          console.log( e );
+          result = got;
+          expected = exp[k];
+        }
+        test.identical( result, expected );
 
       }
 
       else
-        test.identical( got,exp[k] );
+      test.identical( got, exp[ k ] );
 
 
 
