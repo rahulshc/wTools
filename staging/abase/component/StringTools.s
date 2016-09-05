@@ -820,7 +820,31 @@ var _toStrFromObject = function( src,o )
 
   /* */
 
+if( o.onlyEnumerable === 0  && o.own === 1)
+{
+  var names = Object.getOwnPropertyNames( src );
+}
+
+else if( o.onlyEnumerable === 0  && o.own === 0 )
+{
+  var names = [];
+  var proto = src;
+
+  names = Object.getOwnPropertyNames(src);
+
+  while( Object.getPrototypeOf( proto ) )
+  {
+    proto = Object.getPrototypeOf( proto );
+    names = names.concat( Object.getOwnPropertyNames( proto ) );
+  }
+
+}
+
+else
+{
   var names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
+}
+
   var length = names.length;
   if( length === 0 )
   {
