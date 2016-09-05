@@ -782,26 +782,49 @@ var entityCoerceTo = function( src,ins )
 
 var entityWrap = function( o )
 {
-  var result = {};
+  var result = o.dst;
 
   _.routineOptions( entityWrap,o );
   _.assert( arguments.length === 1 );
 
+  if( o.onCondition )
   o.onCondition = _entityConditionMake( o.onCondition );
 
   /* */
 
-  var handleUp = function( e,k )
+  var handleDown = function( e,k,i )
   {
 
     //debugger;
     //if( o.condition )
 
-    if( o.onCondition( e ) === undefined )
-    return;
+    if( o.onCondition )
+    if( !o.onCondition.call( this,e,k,i ) )
+    return
 
-    var e2 = this.src[ k ] = {};
-    e2._ = e;
+    if( o.onWrap )
+    {
+      var newElement = o.onWrap.call( this,e,k,i );
+
+      if( newElement !== e )
+      {
+        if( e === result )
+        result = newElement;
+        if( this.down && this.down.src )
+        this.down.src[ k ] = newElement;
+      }
+
+    }
+    else
+    {
+
+      var newElement = { _ : e };
+      if( e === result )
+      result = newElement;
+      else
+      this.down.src[ k ] = newElement;
+
+    }
 
   }
 
@@ -812,7 +835,7 @@ var entityWrap = function( o )
     src : o.dst,
     own : o.own,
     levels : o.levels,
-    onUp : handleUp,
+    onDown : handleDown,
   });
 
   return result;
@@ -822,6 +845,7 @@ entityWrap.defaults =
 {
 
   onCondition : null,
+  onWrap : null,
   dst : null,
   own : 1,
   levels : 256,
@@ -1531,6 +1555,30 @@ var __entitySelectAct = function __entitySelectAct( o )
 
 //
 
+var _entityConditionMake = function( condition )
+{
+  var result;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
+
+  if( _.objectIs( condition ) )
+  {
+    var template = condition;
+    condition = function( e )
+    {
+      if( !_.objectLike( e ) )
+      return;
+      if( _.mapSatisfy( template,e ) )
+      return e;
+    };
+  }
+
+  return condition;
+}
+
+//
+
   /**
    * Function that produces an elements for entityMap result
    * @callback wTools~onEach
@@ -1605,30 +1653,6 @@ var entityMap = function( src,onEach )
   }
 
   return result;
-}
-
-//
-
-var _entityConditionMake = function( condition )
-{
-  var result;
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
-
-  if( _.objectIs( condition ) )
-  {
-    var template = condition;
-    condition = function( e )
-    {
-      if( !_.objectLike( e ) )
-      return;
-      if( _.mapSatisfy( template,e ) )
-      return e;
-    };
-  }
-
-  return condition;
 }
 
 //
@@ -1996,10 +2020,40 @@ var entitySearch = function( o )
   if( o.searchingCaseInsensitive )
   regexpIns = new RegExp( ( o.searchingSubstring ? '' : '^' ) + strIns + ( o.searchingSubstring ? '' : '$' ),'i' );
 
+  if( o.condition )
+  o.condition = _entityConditionMake( o.condition );
+
   /* */
 
-  var handleUp = function( e,k )
+  var checkCandidate = function( e,k,i,r,path )
   {
+
+    var c = true;
+    if( o.condition )
+    c = o.condition.call( this,e,k,i );
+
+    if( !c )
+    return c;
+
+    if( e === o.ins )
+    {
+      result[ path ] = r;
+    }
+    else if( o.searchingSubstring && _.strIs( e ) && e.indexOf( strIns ) !== -1 )
+    {
+      result[ path ] = r;
+    }
+
+  }
+
+  /* */
+
+  var handleUp = function( e,k,i )
+  {
+
+    if( o.onUp )
+    if( o.onUp.call( this,e,k,i ) === false )
+    return false;
 
     var path;
     if( o.pathOfParent )
@@ -2008,33 +2062,23 @@ var entitySearch = function( o )
     path = this.path + k;
 
     var r;
-    if( o.returnParent )
-    r = this.src;
+    if( o.returnParent && this.down )
+    r = this.down.src;
     else
     r = e;
 
     if( o.searchingValue )
     {
-      if( e === o.ins )
-      {
-        result[ path ] = r;
-      }
-      else if( o.searchingSubstring && _.strIs( e ) && e.indexOf( strIns ) !== -1 )
-      {
-        result[ path ] = r;
-      }
+
+      checkCandidate.call( this,e,k,i,r,path );
+
     }
 
     if( o.searchingKey )
     {
-      if( k === o.ins )
-      {
-        result[ path ] = r;
-      }
-      else if( o.searchingSubstring && _.strIs( k ) && k.indexOf( strIns ) !== -1 )
-      {
-        result[ path ] = r;
-      }
+
+      checkCandidate.call( this,k,k,i,r,path );
+
     }
 
   }
@@ -2046,6 +2090,7 @@ var entitySearch = function( o )
     src : o.src,
     own : o.own,
     onUp : handleUp,
+    onDown : o.onDown,
   });
 
   return result;
@@ -2056,6 +2101,10 @@ entitySearch.defaults =
 
   src : null,
   ins : null,
+  condition : null,
+
+  onUp : null,
+  onDown : null,
 
   own : 1,
   pathOfParent : 1,
@@ -2078,15 +2127,60 @@ var __eachAct = function( o )
   var i = 0;
   var src = o.src;
 
+  /* usingVisits */
+
+  if( o.usingVisits )
+  {
+    if( o.visited.indexOf( o.src ) !== -1 )
+    return i;
+    o.visited.push( o.src );
+  }
+
+  var end = function()
+  {
+
+    if( o.root !== src )
+    o.onDown.call( o,src,o.key,o.index );
+    else if( o.usingRootVisit )
+    {
+      o.onDown.call( o,src,o.key,o.index );
+    }
+
+    if( o.usingVisits )
+    {
+      _.assert( o.visited[ o.visited.length-1 ] === o.src );
+      o.visited.pop();
+    }
+
+    return i;
+  }
+
+  /* on up */
+
+  o.counter += 1;
+  var c = true;
+  if( o.root !== src )
+  {
+    c = o.onUp.call( o,src,o.key,o.index );
+  }
+  else if( o.usingRootVisit )
+  {
+    c = o.onUp.call( o,src,o.key,o.index );
+  }
+
+  if( c === false )
+  return end();
+
+  /* element */
+
   var __onElement = function( k )
   {
 
-    o.onUp.call( o,src[ k ],k,i );
-
-    o.counter += 1;
+    //o.onUp.call( o,src[ k ],k,i );
+    //o.counter += 1;
     i += 1;
 
-    if( o.recursive )
+    if( o.recursive || o.root === o.src )
     {
 
       __eachAct
@@ -2097,14 +2191,19 @@ var __eachAct = function( o )
         onDown : o.onDown,
         own : o.own,
         recursive : o.recursive,
-        levels : o.levels-1,
+        usingVisits : o.usingVisits,
         counter : o.counter,
+        visited : o.visited,
+        levels : o.levels-1,
         path : o.path + k + '.',
+        key : k,
+        index : i,
+        down : o,
       });
 
-      o.onDown.call( o,src[ k ],k,i );
-
     }
+
+    //o.onDown.call( o,src[ k ],k,i );
 
   }
 
@@ -2139,17 +2238,24 @@ var __eachAct = function( o )
   else
   {
 
-    if( o.src !== o.root )
-    return;
-
-    o.onUp.call( o,src[ k ],k,i );
-    o.onDown.call( o,src[ k ],k,i );
-    o.counter += 1;
-    i++;
+    // if( o.src !== o.root )
+    // {
+    //   end();
+    //   return i;
+    // }
+    //
+    // debugger;
+    //
+    // o.onUp.call( o,src[ k ],k,i );
+    // o.onDown.call( o,src[ k ],k,i );
+    // o.counter += 1;
+    // i++;
 
   }
 
-  return i;
+  /* end */
+
+  return end();
 }
 
 //
@@ -2177,9 +2283,14 @@ _each.defaults =
   onDown : null,
   own : 0,
   recursive : 0,
-  levels : 256,
+  usingVisits : 1,
+  usingRootVisit : 1,
   counter : 0,
+  visited : [],
+  levels : 256,
   path : '.',
+  key : null,
+  index : 0,
 }
 
 //
@@ -2194,8 +2305,16 @@ var each = function( o )
   if( o.own === undefined )
   o.own = 0;
 
-  return _each( o );
+  if( o.usingVisits === undefined )
+  o.usingVisits = 0;
 
+  if( o.recursive === undefined )
+  o.recursive = 0;
+
+  if( o.usingRootVisit === undefined )
+  o.usingRootVisit = 0;
+
+  return _each( o );
 }
 
 //
@@ -2207,6 +2326,15 @@ var eachOwn = function( o )
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
   o.own = 1;
+
+  if( o.usingVisits === undefined )
+  o.usingVisits = 0;
+
+  if( o.recursive === undefined )
+  o.recursive = 0;
+
+  if( o.usingRootVisit === undefined )
+  o.usingRootVisit = 0;
 
   return _each( o );
 }
@@ -11060,6 +11188,7 @@ var Proto =
   _entitySelect : _entitySelect,
   __entitySelectAct : __entitySelectAct,
 
+  _entityConditionMake : _entityConditionMake,
   entityMap : entityMap,
   entityFilter : entityFilter,
   entityGroup : entityGroup,

@@ -291,6 +291,8 @@ var toStrFine_gen = function()
   {
 
     levels : 1,
+    level : 0,
+
     wrap : 1,
     wrapString : 1,
     prependTab : 1,
@@ -312,8 +314,6 @@ var toStrFine_gen = function()
     onlyRoutines : 0,
     noSubObject : 0,
 
-    //singleElementPerLine : 0,
-
     /**/
 
     precision : null,
@@ -327,7 +327,7 @@ var toStrFine_gen = function()
 
   var restricts =
   {
-    level : 0,
+    /*level : 0,*/
   }
 
   Object.preventExtensions( primeFilter );
@@ -735,7 +735,7 @@ var _toStrFromArray = function( src,o )
     return { text : '[]', simple : 1 };
   }
 
-  //
+  /* */
 
   var length = src.length;
   var optionsItem = _.mapExtend( {},o );
@@ -743,7 +743,7 @@ var _toStrFromArray = function( src,o )
   optionsItem.level = o.level + 1;
   optionsItem.prependTab = 0;
 
-  //
+  /* */
 
   var simple = !o.multiline;
   if( simple )
@@ -754,7 +754,7 @@ var _toStrFromArray = function( src,o )
     break;
   }
 
-  //
+  /* */
 
   result += _toStrFromContainer
   ({
@@ -1663,6 +1663,8 @@ var strIron = function()
 
 //
 
+/* !!! update me, please */
+
 /**
  * This function finds substring passed by second argument( ins ) in the source string( src )
  * and replaces each occurrence with the third argument( sub ).
@@ -1690,14 +1692,66 @@ var strIron = function()
  *
  */
 
-var strReplaceAll = function( src, ins, sub )
+var strReplaceAll = function( dst, ins, sub )
 {
-  _.assert( _.strIs( src ) );
-  _.assert( _.strIs( ins ) );
-  _.assert( _.strIs( sub ) );
-  _.assert( arguments.length === 3 );
 
-  return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
+  var o;
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length === 3 )
+  {
+    _.assert( _.strIs( ins ) );
+    _.assert( _.strIs( sub ) );
+    o = { dst : dst };
+    o.dictionary = {};
+    o.dictionary[ ins ] = sub;
+  }
+  else if( arguments.length === 2 )
+  {
+    o = { dst : dst , dictionary : arguments[ 1 ] };
+  }
+  else if( arguments.length === 1 )
+  {
+    o = arguments[ 0 ];
+  }
+
+  /**/
+
+  _.assert( _.strIs( o.dst ) );
+  _.assert( _.objectIs( o.dictionary ) );
+
+  /**/
+
+  var dst = o.dst;
+  var l = Object.keys( o.dictionary );
+  for( var ins in o.dictionary )
+  {
+
+    var index = -1;
+    var sub = o.dictionary[ ins ];
+
+    do
+    {
+
+      var index = dst.indexOf( ins,index+1 );
+      if( index >= 0 )
+      dst = dst.substring( 0,index ) + sub + dst.substring( index+ins.length );
+      else
+      break;
+
+    }
+    while( 1 );
+
+  }
+
+  return dst;
+  //return dst.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
+}
+
+strReplaceAll.defaults =
+{
+  dst : null,
+  dictionary : null,
 }
 
   //
@@ -1775,6 +1829,7 @@ var strJoin = function()
   return result;
   else
   return result[ 0 ];
+
 }
 
 //
@@ -2539,7 +2594,8 @@ var strToDom = function( xmlStr )
 
 //
 
-var strToConfig = function( src,o ){
+function strToConfig( src,o,x = 1 )
+{
 
   var result = {};
   if( !_.strIs( src ) )
@@ -2613,11 +2669,11 @@ var Proto =
 
   strIron : strIron, /* exmperimental */
 
-  strReplaceAll : strReplaceAll,
+  strReplaceAll : strReplaceAll, /* document me */
   strReplaceNames : strReplaceNames,
 
-  strJoin : strJoin,
-  strUnjoin : strUnjoin,
+  strJoin : strJoin, /* document me */
+  strUnjoin : strUnjoin, /* document me */
 
   strDropPrefix : strDropPrefix,
   strDropPostfix : strDropPostfix,
@@ -2667,4 +2723,4 @@ if( typeof module !== 'undefined' && module !== null )
   module[ 'exports' ] = Self;
 }
 
-})();
+}).call( this );
