@@ -207,6 +207,8 @@ var toStrError = function ( test )
 
 }
 
+toStrError.cover = [ _.toStr ];
+
 //
 
 var toStrArray = function( test )
@@ -887,6 +889,7 @@ var toStrArray = function( test )
     
   testFunction( test,desc,src,options,expected );
 }
+toStrArray.cover = [ _.toStr ];
 //
 
 var toStrObject = function( test )
@@ -1611,6 +1614,7 @@ var toStrObject = function( test )
   testFunction( test,desc,src,options,expected );
 
 }
+toStrObject.cover = [ _.toStr ];
 
 //
 
@@ -1746,7 +1750,7 @@ var toStrJson = function( test )
   testFunction( test,desc,src,options,expected );
 
 }
-
+toStrJson.cover = [ _.toStr ];
 //
 
 var toStrWrapString = function( test )
@@ -1841,7 +1845,7 @@ var toStrWrapString = function( test )
   testFunction( test,desc,src,options,expected );
 
 }
-
+toStrWrapString.cover = [ _.toStr ];
 //
 
 var toStrLevel = function( test )
@@ -1897,7 +1901,7 @@ var toStrLevel = function( test )
    ]
   testFunction( test,desc,src,options,expected );
 }
-
+toStrLevel.cover = [ _.toStr ];
 //
 
 var toStrEnumerable = function( test )
@@ -2030,7 +2034,7 @@ var toStrEnumerable = function( test )
    ]
   testFunction( test,desc,src,options,expected );
 }
-
+toStrEnumerable.cover = [ _.toStr ];
 //
 
 var toStrEmptyArgs = function( test )
@@ -2042,7 +2046,7 @@ var toStrEmptyArgs = function( test )
   
   testFunction( test,desc,src,options,expected );
 }
-
+toStrEmptyArgs.cover = [ _.toStr ];
 //
 
 var toStrSymbol = function( test )
@@ -2073,7 +2077,7 @@ var toStrSymbol = function( test )
   
   testFunction( test,desc,src,options,expected );
 }
-
+toStrSymbol.cover = [ _.toStr ];
 //
 
 var toStrNumber = function( test )
@@ -2118,7 +2122,7 @@ var toStrNumber = function( test )
   
   testFunction( test,desc,src,options,expected );
 }
-
+toStrNumber.cover = [ _.toStr ];
 //
 
 var toStrString = function( test )
@@ -2161,7 +2165,7 @@ var toStrString = function( test )
   
   testFunction( test,desc,src,options,expected );
 }
-
+toStrString.cover = [ _.toStr ];
 //
 
 var toStrAtomic = function( test )
@@ -2209,7 +2213,7 @@ var toStrAtomic = function( test )
   ]
   testFunction( test,desc,src,options,expected );
 }
-
+toStrAtomic.cover = [ _.toStr ];
 //
 
 var toStrDate = function( test )
@@ -2238,7 +2242,7 @@ var toStrDate = function( test )
   ]
   testFunction( test,desc,src,options,expected );
 }
-
+toStrDate.cover = [ _.toStr ];
 //
 
 var toStrRoutine = function( test )
@@ -2265,7 +2269,7 @@ var toStrRoutine = function( test )
   ]
   testFunction( test,desc,src,options,expected );
 }
-
+toStrRoutine.cover = [ _.toStr ];
 //
 
 var toStrThrow = function( test )
@@ -2303,7 +2307,7 @@ var toStrThrow = function( test )
     });
   }
 }
-
+toStrThrow.cover = [ _.toStr ];
 //
 
 var Proto =
