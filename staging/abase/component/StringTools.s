@@ -97,6 +97,7 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.noString=false ] - Ignores all entities of type String.
  * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
  * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
+ * @param {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
  * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
  * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].
  * Number must be between 1 and 21.
@@ -325,6 +326,7 @@ var toStrFine_gen = function()
 
     onlyRoutines : 0,
     noSubObject : 0,
+    onlyEnumerable : 1,
 
     /**/
 
@@ -450,6 +452,16 @@ var _toStr = function _toStr( src,o )
     result += src.toString();
     /*result += src.message;*/
   }
+  else if( _.errorIs( src ) && o.errorAsMap )
+  {
+    if( o.noError )
+    return;
+    if( o.onlyEnumerable === undefined )
+    o.onlyEnumerable = 0;
+    var r = _toStrFromObject( src,o );
+    result += r.text;
+    simple = r.simple;
+  }
   else if( _.routineIs( src ) )
   {
     if( o.noRoutine )
@@ -485,7 +497,11 @@ var _toStr = function _toStr( src,o )
   else if( isObject )
   {
     if( o.json === 1 )
-    _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+    {
+      _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+      if( o.escaping === undefined )
+      o.escaping = 1;
+    }
     if( o.noObject )
     return;
     var r = _toStrFromObject( src,o );
@@ -493,7 +509,7 @@ var _toStr = function _toStr( src,o )
     simple = r.simple;
   }
   else if( !isAtomic && _.routineIs( src.toString ) )
-  {
+  { 
     result += src.toString();
   }
   else
@@ -808,7 +824,7 @@ var _toStrFromObject = function( src,o )
 {
   var result = '';
 
-  _assert( _.objectIs( src ) || _.objectLike( src ) );
+  _assert( _.objectIs( src ) || _.objectLike( src ) || _.errorIs( src ));
 
   if( o.level >= o.levels )
   {
@@ -820,7 +836,33 @@ var _toStrFromObject = function( src,o )
 
   /* */
 
+
+if( o.onlyEnumerable === 0  )
+  { 
+    if( o.own  )
+    var names = Object.getOwnPropertyNames( src );
+    
+    else 
+    {
+      var names = [];
+      var proto = src;
+      
+      names = Object.getOwnPropertyNames(src);
+      
+      while( Object.getPrototypeOf( proto ) )
+      {
+        proto = Object.getPrototypeOf( proto );
+        names = names.concat( Object.getOwnPropertyNames( proto ) );
+      }
+    }
+    
+  }
+
+else
+{
   var names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
+}
+
   var length = names.length;
   if( length === 0 )
   {
