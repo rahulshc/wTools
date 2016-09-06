@@ -92,18 +92,18 @@ var testFunction = function( test, desc, src, options, expected )
       // good
       // if JSON.parse is OK,compare source vs parse result
       // else compare toStr() result vs expected
-      exp = src[ k ]; //source obj
       try
       {
         result = JSON.parse( got );
+        test.identical( result, src[ k ] );
+        
       }
       catch( err )
       {
-        _.errLog( err );
-        result = got;
-        exp = expected[ k ];
+        // _.errLog( err );
+        test.identical( got, expected[ k ] );
+        
       }
-      test.identical( result, exp );
     }
 
     else
@@ -890,6 +890,7 @@ var toStrArray = function( test )
   testFunction( test,desc,src,options,expected );
 }
 toStrArray.cover = [ _.toStr ];
+
 //
 
 var toStrObject = function( test )
@@ -1614,6 +1615,7 @@ var toStrObject = function( test )
   testFunction( test,desc,src,options,expected );
 
 }
+
 toStrObject.cover = [ _.toStr ];
 
 //
@@ -1628,13 +1630,27 @@ var toStrJson = function( test )
      /*01*/ { "a" : 100, "b" : "c", "c" : { "d" : true, "e" : null } },
      /*02*/ { "b" : "a", "c" : 50, "d" : { "a" : "undefined", "e" : null } },
      /*03*/ [ { "a" : 100, "b" : "x", "c" : { "d" : true, "e" : null } } ],
-
      /*04*/ { a : "aa", b : [ 1,2,3 ], c : function r( ){ } },
      /*05*/ [ { a : 1, b : 2, c : { d : [ null,undefined ] } } ],
      /*06*/ { a : new Date( Date.UTC( 1993, 12, 12 ) ) },
      /*07*/ { a : new Error( "r" ) },
      /*08*/ { a : Symbol('sm') },
      /*09*/ { a : '\n\nABC' },
+     /*10*/ {
+             a : 1,
+             b : [ 'MZ� ♥   ♦   ��  �       @' ],
+             c : { d : 'MZ► ♥   ♦   ⌂⌂  8       @' },
+           },
+            
+     /*11*/ {
+             a : 2,
+             b : [ '��������G∟�L�`��◄֥_�' ],
+             c : { d : '+☻⌂4☼A↑"G∟"Lw`@a◄V%_' },
+           },
+     /*12*/ {
+             a : "�'aY��Tb���§�+R���☼→",
+             b : [ "o?='aYo?=o?=Tbo?=o?=" ],
+            }
 
    ],
 
@@ -1649,6 +1665,9 @@ var toStrJson = function( test )
      /*07*/ { json : 1 },
      /*08*/ { json : 1 },
      /*09*/ { json : 1 },
+     /*10*/ { json : 1 },
+     /*11*/ { json : 1 },
+     /*12*/ { json : 1 },
    ],
 
    expected =
@@ -1657,12 +1676,12 @@ var toStrJson = function( test )
     /*01*/
     [
       '{',
-      ' "a" : 100, ',
-      ' "b" : "c", ',
-      ' "c" : { "d" : true, "e" : null }',
+      '  "a" : 100, ',
+      '  "b" : "c", ',
+      '  "c" : { "d" : true, "e" : null }',
       '}'
     ].join( '\n' ),
-
+    
     /*02*/
     [
       '{',
@@ -1670,9 +1689,9 @@ var toStrJson = function( test )
       '  "c" : 50, ',
       '  "d" : { "a" : "undefined", "e" : null }',
       '}'
-
+    
     ].join( '\n' ),
-
+    
     /*03*/
     [
       '[',
@@ -1682,9 +1701,9 @@ var toStrJson = function( test )
       '    "c" : { "d" : true, "e" : null }',
       '  }',
       ']'
-
+    
     ].join( '\n' ),
-
+    
     /*04*/
     [
       '{',
@@ -1692,12 +1711,12 @@ var toStrJson = function( test )
       '  "b" : [ 1, 2, 3 ], ',
       '  "c" : [ routine r ]',
       '}',
-
+    
     ].join( '\n' ),
-
+    
     /*05*/
     [
-
+    
       '[',
       '  {',
       '    "a" : 1, ',
@@ -1708,49 +1727,91 @@ var toStrJson = function( test )
       '    }',
       '  }',
       ']',
-
+    
     ].join( '\n' ),
-
+    
     /*06*/
     [
-
+    
       '{',
       '  "a" : 1994-01-12T00:00:00.000Z',
       '}',
-
+    
     ].join( '\n' ),
-
+    
     /*07*/
     [
-
+    
       '{',
       '  "a" : Error: r',
       '}',
-
+    
     ].join( '\n' ),
-
+    
     /*08*/
     [
-
+    
       '{ "a" : Symbol(sm) }'
-
-
+    
+    
     ].join( '\n' ),
     
     /*09*/
     [
-
+    
       '{ "a" : "\\n\\nABC" }'
-
-
+    
+    
     ].join( '\n' ),
+    
+    /*10*/
+    [
+    
+      '{',
+      '  "a" : 1, ',
+      '  "b" : [ "MZ� ♥   ♦   ��  �       @" ], ',
+      '  "c" : { "d" : "MZ► ♥   ♦   ⌂⌂  8       @" } ',
+      '}'
+    
+    
+    ].join( '\n' ),
+    
+    /*11*/
+    [
+    
+      '{',
+      '  "a" : 2, ',
+      '  "b" : ',
+      '  [',
+      '    "MZ� ♥   ♦   ��  �       @"',
+      '  ], ',
+      '  "c" : ',
+      '  {',
+      '    "d" : "MZ► ♥   ♦   ⌂⌂  8       @"',
+      '  }',
+      '}'
+    
+    
+    ].join( '\n' ),
+    /*12*/
+    [
+    
+      '{',
+      '  "a" : "�\\\'aY��Tb���§�+R���☼→", ',
+      '  "b" : [ "o?=\\\'aYo?=o?=Tbo?=o?=" ]',
+      '}'
+    
+    
+    ].join( '\n' ),
+    
 
    ]
 
-  testFunction( test,desc,src,options,expected );
+  testFunction( test, desc, src, options, expected );
 
 }
 toStrJson.cover = [ _.toStr ];
+
 //
 
 var toStrWrapString = function( test )
@@ -1846,6 +1907,7 @@ var toStrWrapString = function( test )
 
 }
 toStrWrapString.cover = [ _.toStr ];
+
 //
 
 var toStrLevel = function( test )
@@ -1902,6 +1964,7 @@ var toStrLevel = function( test )
   testFunction( test,desc,src,options,expected );
 }
 toStrLevel.cover = [ _.toStr ];
+
 //
 
 var toStrEnumerable = function( test )
@@ -2214,6 +2277,7 @@ var toStrAtomic = function( test )
   testFunction( test,desc,src,options,expected );
 }
 toStrAtomic.cover = [ _.toStr ];
+
 //
 
 var toStrDate = function( test )
@@ -2308,6 +2372,7 @@ var toStrThrow = function( test )
   }
 }
 toStrThrow.cover = [ _.toStr ];
+
 //
 
 var Proto =
