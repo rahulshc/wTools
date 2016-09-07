@@ -507,6 +507,7 @@ var _toStr = function _toStr( src,o )
     if( o.json === 1 )
     {
       _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if ( o.json ) is true to make valid JSON' );
       if( o.escaping === undefined )
       o.escaping = 1;
     }
@@ -860,7 +861,10 @@ var _toStrFromStr = function( src,o )
   }
 
   if( o.wrapString )
-  {
+  { 
+    if( o.usingMultilineStringWrapper )
+    result = '`' + result + '`';
+    else
     result = '"' + result + '"';
   }
 
