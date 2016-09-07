@@ -79,7 +79,8 @@ var toStrFields = function( src,o )
  * @param {object} o - Convertion o.
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {number} [ o.wrapString=true ] - Wrap string into "".
+ * @param {boolean} [ o.wrapString=true ] - Wrap string into "".
+ * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
  * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
@@ -315,6 +316,7 @@ var toStrFine_gen = function()
     tab : '',
     dtab : '  ',
     colon : ' : ',
+    usingMultilineStringWrapper : 0,
 
   }
 
@@ -335,7 +337,7 @@ var toStrFine_gen = function()
     fixed : null,
     comma : ', ',
     multiline : 0,
-    escaping : 1,
+    escaping : 0,
     json : 0,
 
   }
@@ -506,6 +508,7 @@ var _toStr = function _toStr( src,o )
     if( o.json === 1 )
     {
       _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if ( o.json ) is true to make valid JSON' );
       if( o.escaping === undefined )
       o.escaping = 1;
     }
@@ -862,7 +865,10 @@ var _toStrFromStr = function( src,o )
   }
 
   if( o.wrapString )
-  {
+  { 
+    if( o.usingMultilineStringWrapper )
+    result = '`' + result + '`';
+    else
     result = '"' + result + '"';
   }
 

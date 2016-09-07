@@ -1792,8 +1792,8 @@ var toStrJson = function( test )
     [
 
       '{',
-      '  "a" : "�\\\'aY��Tb���§�+R���☼→", ',
-      '  "b" : [ "o?=\\\'aYo?=o?=Tbo?=o?=" ]',
+      '  "a" : "�\'aY��Tb���§�+R���☼→", ',
+      '  "b" : [ "o?=\'aYo?=o?=Tbo?=o?=" ]',
       '}'
 
 
@@ -1820,6 +1820,8 @@ var toStrWrapString = function( test )
      /*04*/ { a : "test", b : new Error( "err" ) },
      /*05*/ { a : "a", b : "b", c : { d : "d" } },
      /*06*/ { a : { h : "a" }, b : "b", c : { d : "d" } },
+     /*07*/ { a : "line1\nline2\nline3" },
+     /*08*/ { a : "line1" },
    ],
    options =
    [
@@ -1829,12 +1831,15 @@ var toStrWrapString = function( test )
      /*04*/ { levels : 2 },
      /*05*/ { wrapString: 0, levels : 1 },
      /*06*/ { wrapString: 0, levels : 2 },
+     /*07*/ { levels : 2, usingMultilineStringWrapper : 1 },
+     /*08*/ { levels : 2, wrapString : 0, usingMultilineStringWrapper : 1 },
    ],
 
    expected =
    [
     /*01*/
       [
+        
        '{',
        '  a : string, ',
        '  b : 1, ',
@@ -1846,6 +1851,7 @@ var toStrWrapString = function( test )
 
     /*02*/
       [
+        
        '{',
        '  a : sample, ',
        '  b : 0, ',
@@ -1857,6 +1863,7 @@ var toStrWrapString = function( test )
 
     /*03*/
       [
+        
        '{',
        '  a : [ example ], ',
        '  b : 1, ',
@@ -1868,15 +1875,14 @@ var toStrWrapString = function( test )
 
     /*04*/
       [
-       '{',
-       '  a : "test", ',
-       '  b : Error: err',
-       '}'
-
+        
+       '{ a : "test", b : Error: err }',
+       
      ].join( '\n' ),
 
     /*05*/
       [
+        
        '{',
        '  a : a, ',
        '  b : b, ',
@@ -1885,8 +1891,9 @@ var toStrWrapString = function( test )
 
      ].join( '\n' ),
 
-    /*05*/
+    /*06*/
       [
+        
        '{',
        '  a : { h : a }, ',
        '  b : b, ',
@@ -1894,6 +1901,24 @@ var toStrWrapString = function( test )
        '}'
 
      ].join( '\n' ),
+     
+    /*07*/
+      [
+        
+       '{',
+       '  a : `line1',
+       'line2',
+       'line3`',
+       '}'
+
+     ].join( '\n' ),
+     
+    /*07*/
+      [
+        
+       '{ a : line1 }',
+
+      ].join( '\n' ),
 
 
    ]
@@ -2363,6 +2388,12 @@ var toStrThrow = function( test )
     test.shouldThrowError( function()
     {
       _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
+    });
+    
+    test.description = 'invalid json if ( o.usingMultilineStringWrapper ) is true';
+    test.shouldThrowError( function()
+    {
+      _.toStr( { a : 1, b : "text" }, { json : 1, usingMultilineStringWrapper : 1 } );
     });
   }
 }
