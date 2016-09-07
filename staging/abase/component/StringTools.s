@@ -49,7 +49,8 @@ var strTypeOf = _.strTypeOf;
  * @method toStrMethods
  * @memberof wTools
  *
-*/
+ */
+
 var toStrMethods = function( src,o )
 {
   var o = o || {};
@@ -412,6 +413,9 @@ var _toStr = function _toStr( src,o )
     return { text : _toStrShort( src,o ), simple : 1 };
   }
 
+  if( !_toStrIsVisibleElement( src,o ) )
+  return;
+
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
@@ -420,10 +424,10 @@ var _toStr = function _toStr( src,o )
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
-    if( isObject && o.noObject )
-    return;
-    if( isArray && o.noArray )
-    return;
+    // if( isObject && o.noObject )
+    // return;
+    // if( isArray && o.noArray )
+    // return;
 
     var r = src.toStr( o );
     if( _.objectIs( r ) )
@@ -438,24 +442,25 @@ var _toStr = function _toStr( src,o )
       result += r;
     }
     else throw _.err( 'unexpected' );
+
   }
   else if( _.rowIs( src ) )
   {
-    if( o.noRow )
-    return;
+    // if( o.noRow )
+    // return;
     result += _.row.toStr( src,o );
   }
   else if( _.errorIs( src ) && !o.errorAsMap )
   {
-    if( o.noError )
-    return;
+    // if( o.noError )
+    // return;
     result += src.toString();
     /*result += src.message;*/
   }
   else if( _.errorIs( src ) && o.errorAsMap )
   {
-    if( o.noError )
-    return;
+    // if( o.noError )
+    // return;
     if( o.onlyEnumerable === undefined )
     o.onlyEnumerable = 0;
     var r = _toStrFromObject( src,o );
@@ -496,14 +501,15 @@ var _toStr = function _toStr( src,o )
   }
   else if( isObject )
   {
+    // xxx
     if( o.json === 1 )
     {
       _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
       if( o.escaping === undefined )
       o.escaping = 1;
     }
-    if( o.noObject )
-    return;
+    // if( o.noObject )
+    // return;
     var r = _toStrFromObject( src,o );
     result += r.text;
     simple = r.simple;
@@ -514,8 +520,8 @@ var _toStr = function _toStr( src,o )
   }
   else
   {
-    if( o.noAtomic )
-    return;
+    // if( o.noAtomic )
+    // return;
     result += String( src );
   }
 
@@ -587,6 +593,97 @@ var _toStrShort = function( src,o )
   }
 
   return result;
+}
+
+//
+
+var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
+{
+
+  var isAtomic = _.atomicIs( src );
+  var isArray = _.arrayLike( src );
+  var isObject = !isArray && _.objectLike( src );
+
+  /* */
+
+  if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
+  {
+    if( isObject && o.noObject )
+    return false;
+    if( isArray && o.noArray )
+    return false;
+
+    return true;
+  }
+  else if( _.rowIs( src ) )
+  {
+    if( o.noRow )
+    return false;
+    return true;
+  }
+  else if( _.errorIs( src ) && !o.errorAsMap )
+  {
+    if( o.noError )
+    return false;
+    return true;
+  }
+  else if( _.errorIs( src ) && o.errorAsMap )
+  {
+    if( o.noError )
+    return false;
+    return true;
+  }
+  else if( _.routineIs( src ) )
+  {
+    if( o.noRoutine )
+    return false;
+    return true;
+  }
+  else if( _.numberIs( src ) )
+  {
+    if( o.noNumber || o.noAtomic )
+    return false;
+    return true;
+  }
+  else if( _.strIs( src ) )
+  {
+    if( o.noString || o.noAtomic  )
+    return false;
+    return true;
+  }
+  else if( src instanceof Date )
+  {
+    if( o.noDate )
+    return false;
+    return true;
+  }
+  else if( isArray )
+  {
+    if( o.noArray )
+    return false;
+    return true;
+  }
+  else if( isObject )
+  {
+    if( o.noObject )
+    return false;
+    return true;
+  }
+  else if( !isAtomic && _.routineIs( src.toString ) )
+  {
+    if( isObject && o.noObject )
+    return false;
+    if( isArray && o.noArray )
+    return false;
+    return true;
+  }
+  else
+  {
+    if( o.noAtomic )
+    return false;
+    return true;
+  }
+
 }
 
 //
@@ -714,6 +811,10 @@ var _toStrFromStr = function( src,o )
           result += "\\'";
           break;
 
+        // case '\`' :
+        //   result += "\\`";
+        //   break;
+
         case '\b' :
           result += '\\b';
           break;
@@ -824,7 +925,7 @@ var _toStrFromObject = function( src,o )
 {
   var result = '';
 
-  _assert( _.objectIs( src ) || _.objectLike( src ) || _.errorIs( src ));
+  _assert( _.objectLike( src ) );
 
   if( o.level >= o.levels )
   {
@@ -922,6 +1023,9 @@ var _toStrFromContainer = function( o )
   var simple = o.simple;
   var prefix = o.prefix;
   var postfix = o.postfix;
+  var l = ( names ? names.length : values.length )
+
+  debugger;
 
   // line postfix
 
@@ -949,9 +1053,14 @@ var _toStrFromContainer = function( o )
   {
     result += prefix;
     if( simple )
-    result += ' ';
+    {
+      if( l )
+      result += ' ';
+    }
     else
-    result += '\n' + optionsItem.tab;
+    {
+      result += '\n' + optionsItem.tab;
+    }
   }
   else if( !simple )
   {
@@ -974,7 +1083,7 @@ var _toStrFromContainer = function( o )
 
   var r;
   var written = 0;
-  for( var n = 0, l = ( names ? names.length : values.length ) ; n < l ; n++ )
+  for( var n = 0 ; n < l ; n++ )
   {
 
     _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
@@ -1018,9 +1127,14 @@ var _toStrFromContainer = function( o )
   if( optionsContainer.wrap )
   {
     if( simple )
-    result += ' ';
+    {
+      if( l )
+      result += ' ';
+    }
     else
-    result += '\n' + optionsContainer.tab;
+    {
+      result += '\n' + optionsContainer.tab;
+    }
     result += postfix;
   }
 
@@ -2714,9 +2828,11 @@ var Proto =
   toStrFields : toStrFields,
 
   toStrFine_gen : toStrFine_gen,
-  _toStr : _toStr,
 
+  _toStr : _toStr,
   _toStrShort : _toStrShort,
+
+  _toStrIsVisibleElement : _toStrIsVisibleElement,
   _toStrIsSimpleElement : _toStrIsSimpleElement,
 
   _toStrFromRoutine : _toStrFromRoutine,

@@ -932,8 +932,8 @@ var toStrObject = function( test )
     /*32*/  { a : '\na', b : { d : '\ntrue' }, c : '\n' },
     /*33*/  { a : 'a', b : { d : false }, c : 3 },
     /*34*/  { a : 'aa', b : { d : true }, c : 40 },
-    /*35*/  { a : ['a','b'], b : { d : 'true' }, c : 1 },
-    /*36*/  { a : ['a','b'], b : { d : 'true' }, c : 1 },
+    /*35*/  { a : [ 'a','b' ], b : { d : 'true' }, c : 1 },
+    /*36*/  { a : [ 'a','b' ], b : { d : 'true' }, c : 1 },
     /*37*/  { a : 1, b : { d : 2 }, c : 3 },
     /*38*/  { a : 3, b : { d : 2 }, c : 1 },
     /*39*/  { a : 'bb', b : { d : false }, c : 30 },
@@ -1054,7 +1054,7 @@ var toStrObject = function( test )
     /*41*/  { levels : 2, multiline : 1, escaping : 1 },
     /*42*/  { levels : 2, noRoutine : 1,},
     /*43*/  { levels : 3, noRoutine : 1,},
-    /*44*/  { levels : 3, noError : 1, noDate : 1},
+    /*44*/  { levels : 3, noError : 1, noDate : 1 },
     /*45*/  { escaping : 0 },
     /*46*/  { escaping : 0 },
     /*47*/  { escaping : 0 },
@@ -1399,10 +1399,7 @@ var toStrObject = function( test )
     /*44*/
     [
       '{',
-      '  b : ',
-      '  {',
-      '    ',
-      '  }, ',
+      '  b : {}, ',
       '  c : 1',
       '}'
 
