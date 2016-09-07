@@ -49,7 +49,8 @@ var strTypeOf = _.strTypeOf;
  * @method toStrMethods
  * @memberof wTools
  *
-*/
+ */
+
 var toStrMethods = function( src,o )
 {
   var o = o || {};
@@ -78,7 +79,8 @@ var toStrFields = function( src,o )
  * @param {object} o - Convertion o.
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {number} [ o.wrapString=true ] - Wrap string into "".
+ * @param {boolean} [ o.wrapString=true ] - Wrap string into "".
+ * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
  * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
@@ -314,6 +316,7 @@ var toStrFine_gen = function()
     tab : '',
     dtab : '  ',
     colon : ' : ',
+    usingMultilineStringWrapper : 0,
 
   }
 
@@ -334,7 +337,7 @@ var toStrFine_gen = function()
     fixed : null,
     comma : ', ',
     multiline : 0,
-    escaping : 1,
+    escaping : 0,
     json : 0,
 
   }
@@ -412,6 +415,9 @@ var _toStr = function _toStr( src,o )
     return { text : _toStrShort( src,o ), simple : 1 };
   }
 
+  if( !_toStrIsVisibleElement( src,o ) )
+  return;
+
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
@@ -420,10 +426,11 @@ var _toStr = function _toStr( src,o )
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
-    if( isObject && o.noObject )
-    return;
-    if( isArray && o.noArray )
-    return;
+
+    // if( isObject && o.noObject )
+    // return;
+    // if( isArray && o.noArray )
+    // return;
 
     var r = src.toStr( o );
     if( _.objectIs( r ) )
@@ -438,24 +445,25 @@ var _toStr = function _toStr( src,o )
       result += r;
     }
     else throw _.err( 'unexpected' );
+
   }
   else if( _.rowIs( src ) )
   {
-    if( o.noRow )
-    return;
+    // if( o.noRow )
+    // return;
     result += _.row.toStr( src,o );
   }
   else if( _.errorIs( src ) && !o.errorAsMap )
   {
-    if( o.noError )
-    return;
+    // if( o.noError )
+    // return;
     result += src.toString();
     /*result += src.message;*/
   }
   else if( _.errorIs( src ) && o.errorAsMap )
   {
-    if( o.noError )
-    return;
+    // if( o.noError )
+    // return;
     if( o.onlyEnumerable === undefined )
     o.onlyEnumerable = 0;
     var r = _toStrFromObject( src,o );
@@ -496,26 +504,28 @@ var _toStr = function _toStr( src,o )
   }
   else if( isObject )
   {
+    // xxx
     if( o.json === 1 )
     {
       _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if ( o.json ) is true to make valid JSON' );
       if( o.escaping === undefined )
       o.escaping = 1;
     }
-    if( o.noObject )
-    return;
+    // if( o.noObject )
+    // return;
     var r = _toStrFromObject( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( !isAtomic && _.routineIs( src.toString ) )
-  { 
+  {
     result += src.toString();
   }
   else
   {
-    if( o.noAtomic )
-    return;
+    // if( o.noAtomic )
+    // return;
     result += String( src );
   }
 
@@ -546,6 +556,7 @@ var _toStrShort = function( src,o )
   }
   else if( _.strIs( src ) )
   {
+
     var maxStringLength = 40;
     var nl = src.substr( 0,Math.min( src.length,maxStringLength ) ).indexOf( '\n' );
     if( nl === -1 ) nl = src.length;
@@ -564,6 +575,7 @@ var _toStrShort = function( src,o )
       //src = '"' + src + '"';
       result += src;
     }
+
   }
   else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
   {
@@ -591,6 +603,97 @@ var _toStrShort = function( src,o )
 
 //
 
+var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
+{
+
+  var isAtomic = _.atomicIs( src );
+  var isArray = _.arrayLike( src );
+  var isObject = !isArray && _.objectLike( src );
+
+  /* */
+
+  if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
+  {
+    if( isObject && o.noObject )
+    return false;
+    if( isArray && o.noArray )
+    return false;
+
+    return true;
+  }
+  else if( _.rowIs( src ) )
+  {
+    if( o.noRow )
+    return false;
+    return true;
+  }
+  else if( _.errorIs( src ) && !o.errorAsMap )
+  {
+    if( o.noError )
+    return false;
+    return true;
+  }
+  else if( _.errorIs( src ) && o.errorAsMap )
+  {
+    if( o.noError )
+    return false;
+    return true;
+  }
+  else if( _.routineIs( src ) )
+  {
+    if( o.noRoutine )
+    return false;
+    return true;
+  }
+  else if( _.numberIs( src ) )
+  {
+    if( o.noNumber || o.noAtomic )
+    return false;
+    return true;
+  }
+  else if( _.strIs( src ) )
+  {
+    if( o.noString || o.noAtomic  )
+    return false;
+    return true;
+  }
+  else if( src instanceof Date )
+  {
+    if( o.noDate )
+    return false;
+    return true;
+  }
+  else if( isArray )
+  {
+    if( o.noArray )
+    return false;
+    return true;
+  }
+  else if( isObject )
+  {
+    if( o.noObject )
+    return false;
+    return true;
+  }
+  else if( !isAtomic && _.routineIs( src.toString ) )
+  {
+    if( isObject && o.noObject )
+    return false;
+    if( isArray && o.noArray )
+    return false;
+    return true;
+  }
+  else
+  {
+    if( o.noAtomic )
+    return false;
+    return true;
+  }
+
+}
+
+//
+
 var _toStrIsSimpleElement = function( element,o )
 {
   _.assert( arguments.length === 2 );
@@ -609,6 +712,7 @@ var _toStrIsSimpleElement = function( element,o )
   return !_.entityLength( element );
   else
   return _.atomicIs( element );
+
 }
 
 //
@@ -714,6 +818,10 @@ var _toStrFromStr = function( src,o )
           result += "\\'";
           break;
 
+        // case '\`' :
+        //   result += "\\`";
+        //   break;
+
         case '\b' :
           result += '\\b';
           break;
@@ -758,6 +866,9 @@ var _toStrFromStr = function( src,o )
 
   if( o.wrapString )
   {
+    if( o.usingMultilineStringWrapper )
+    result = '`' + result + '`';
+    else
     result = '"' + result + '"';
   }
 
@@ -777,6 +888,15 @@ var _toStrFromArray = function( src,o )
     return { text : _toStrShort( src,o ), simple : 1 };
   }
 
+  /* item options */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
+
+  /* empty case */
+
   if( src.length === 0 )
   {
     if( !o.wrap )
@@ -784,21 +904,41 @@ var _toStrFromArray = function( src,o )
     return { text : '[]', simple : 1 };
   }
 
-  /* */
+  /* filter */
+
+  var v = 0;
+  var length = src.length;
+  for( var i = 0 ; i < length ; i++ )
+  {
+    v += !!_toStrIsVisibleElement( src[ i ],optionsItem );
+  }
+
+  if( v !== length )
+  {
+    var i2 = 0;
+    var i = 0;
+    var src2 = _.arrayNew( src,v );
+    while( i < length )
+    {
+      if( _toStrIsVisibleElement( src[ i ],optionsItem ) )
+      {
+        src2[ i2 ] = src[ i ];
+        i2 += 1;
+      }
+      i += 1;
+    }
+    src = src2;
+    length = src.length;
+  }
+
+  /* is simple */
 
   var length = src.length;
-  var optionsItem = _.mapExtend( {},o );
-  optionsItem.tab = o.tab + o.dtab;
-  optionsItem.level = o.level + 1;
-  optionsItem.prependTab = 0;
-
-  /* */
-
-  var simple = !o.multiline;
+  var simple = !optionsItem.multiline;
   if( simple )
   for( var i = 0 ; i < length ; i++ )
   {
-    simple = _toStrIsSimpleElement( src[ i ],o );;
+    simple = _toStrIsSimpleElement( src[ i ],optionsItem );;
     if( !simple )
     break;
   }
@@ -824,7 +964,7 @@ var _toStrFromObject = function( src,o )
 {
   var result = '';
 
-  _assert( _.objectIs( src ) || _.objectLike( src ) || _.errorIs( src ));
+  _assert( _.objectLike( src ) );
 
   if( o.level >= o.levels )
   {
@@ -834,34 +974,53 @@ var _toStrFromObject = function( src,o )
   if( o.noObject )
   return;
 
-  /* */
+  /* item options */
 
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.noObject = o.noSubObject ? 1 : 0;
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
 
-if( o.onlyEnumerable === 0  )
-  { 
+  /* get names */
+
+  var names;
+  if( o.onlyEnumerable === 0  )
+  {
     if( o.own  )
-    var names = Object.getOwnPropertyNames( src );
-    
-    else 
     {
-      var names = [];
-      var proto = src;
-      
-      names = Object.getOwnPropertyNames(src);
-      
-      while( Object.getPrototypeOf( proto ) )
-      {
-        proto = Object.getPrototypeOf( proto );
-        names = names.concat( Object.getOwnPropertyNames( proto ) );
-      }
+      names = Object.getOwnPropertyNames( src );
     }
-    
+    else
+    {
+      var proto = src;
+      names = [];
+      do
+      {
+        names = _.arrayPrependOnceMerging( names,Object.getOwnPropertyNames( proto ) );
+        proto = Object.getPrototypeOf( proto );
+      }
+      while( proto )
+    }
+
+  }
+  else
+  {
+    names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
   }
 
-else
-{
-  var names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
-}
+  /* filter */
+
+  for( var n = 0 ; n < names.length ; n++ )
+  {
+    if( !_toStrIsVisibleElement( src[ names[ n ] ],optionsItem ) )
+    {
+      names.splice( n,1 );
+      n -= 1;
+    }
+  }
+
+  /* empty case */
 
   var length = names.length;
   if( length === 0 )
@@ -871,26 +1030,20 @@ else
     return { text : '{}', simple : 1 };
   }
 
-  /* */
+  /* is simple */
 
-  var simple = !o.multiline;
+  var simple = !optionsItem.multiline;
   if( simple )
   simple = length < 4;
   if( simple )
   for( var k in src )
   {
-    simple = _toStrIsSimpleElement( src[ k ],o );
+    simple = _toStrIsSimpleElement( src[ k ],optionsItem );
     if( !simple )
     break;
   }
 
   /* */
-
-  var optionsItem = _.mapExtend( {},o );
-  optionsItem.noObject = o.noSubObject ? 1 : 0;
-  optionsItem.tab = o.tab + o.dtab;
-  optionsItem.level = o.level + 1;
-  optionsItem.prependTab = 0;
 
   result += _toStrFromContainer
   ({
@@ -922,6 +1075,7 @@ var _toStrFromContainer = function( o )
   var simple = o.simple;
   var prefix = o.prefix;
   var postfix = o.postfix;
+  var l = ( names ? names.length : values.length )
 
   // line postfix
 
@@ -949,9 +1103,14 @@ var _toStrFromContainer = function( o )
   {
     result += prefix;
     if( simple )
-    result += ' ';
+    {
+      if( l )
+      result += ' ';
+    }
     else
-    result += '\n' + optionsItem.tab;
+    {
+      result += '\n' + optionsItem.tab;
+    }
   }
   else if( !simple )
   {
@@ -974,7 +1133,7 @@ var _toStrFromContainer = function( o )
 
   var r;
   var written = 0;
-  for( var n = 0, l = ( names ? names.length : values.length ) ; n < l ; n++ )
+  for( var n = 0 ; n < l ; n++ )
   {
 
     _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
@@ -985,11 +1144,13 @@ var _toStrFromContainer = function( o )
     else
     r = _toStr( values[ n ],optionsItem );
 
-    if( r === undefined )
-    continue;
+    _.assert( _.objectIs( r ) && _.strIs( r.text ) );
 
-    if( r.text === undefined )
-    continue;
+    // if( r === undefined )
+    // continue;
+    //
+    // if( r.text === undefined )
+    // continue;
 
     _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
 
@@ -1007,7 +1168,6 @@ var _toStrFromContainer = function( o )
       result += '\n' + optionsItem.tab;
     }
 
-
     result += r.text;
     written += 1;
 
@@ -1018,9 +1178,14 @@ var _toStrFromContainer = function( o )
   if( optionsContainer.wrap )
   {
     if( simple )
-    result += ' ';
+    {
+      if( l )
+      result += ' ';
+    }
     else
-    result += '\n' + optionsContainer.tab;
+    {
+      result += '\n' + optionsContainer.tab;
+    }
     result += postfix;
   }
 
@@ -2674,7 +2839,7 @@ var strToDom = function( xmlStr )
 
 //
 
-function strToConfig( src,o,x = 1 )
+function strToConfig( src,o )
 {
 
   var result = {};
@@ -2714,9 +2879,11 @@ var Proto =
   toStrFields : toStrFields,
 
   toStrFine_gen : toStrFine_gen,
-  _toStr : _toStr,
 
+  _toStr : _toStr,
   _toStrShort : _toStrShort,
+
+  _toStrIsVisibleElement : _toStrIsVisibleElement,
   _toStrIsSimpleElement : _toStrIsSimpleElement,
 
   _toStrFromRoutine : _toStrFromRoutine,
@@ -2763,7 +2930,7 @@ var Proto =
   strLattersSpectre : strLattersSpectre, /* exmperimental */
   lattersSpectreComparison : lattersSpectreComparison, /* exmperimental */
 
-  strHtmlEscape : strHtmlEscape, /* improve me */
+  strHtmlEscape : strHtmlEscape, /* improve my document */
   strUnicodeEscape : strUnicodeEscape, /* document me */
 
   strIndentation : strIndentation,

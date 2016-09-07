@@ -3376,10 +3376,13 @@ var objectLike = function( src )
   if( routineIs( src ) ) return true;
   if( atomicIs( src ) ) return false;
 
-  for( var s in src )
+  if( Object.getOwnPropertyNames( src ).length )
   return true;
 
-  return false; /* isObject */
+  // for( var s in src )
+  // return true;
+
+  return false;
 }
 
 //
@@ -6565,8 +6568,6 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 
 //
 
-  // !!! @example is wrong, has to be [ 5, 'str', {}, 2, 4 ].
-
 /**
  * The arrayPrependOnceMerging() method returns an array of elements from (dst)
  * and prepending only unique following arguments to the beginning.
@@ -6601,12 +6602,11 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
   _assert( _.arrayIs( dst ),'arrayPrependOnceMerging :','expects array' );
 
-  for( var a = arguments.length-1 ; a > 0 ; a-- )
+  for( var a = 0 ; a < arguments.length ; a++ )
   {
     var argument = arguments[ a ];
 
-    if( argument === undefined )
-    throw _.err( 'arrayPrependOnceMerging','argument is not defined' );
+    _assert( argument !== undefined,'arrayPrependOnceMerging','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
@@ -9503,32 +9503,32 @@ var mapSupplement = function( dst )
 
 //
 
-  // /**
-  //  * @callback  _.filter.supplementaryCloning()
-  //  * @param { objectLike } dstContainer - The target object.
-  //  * @param { objectLike } srcContainer - The next object.
-  //  * @param { string } key - The key of the (srcContainer) object.
-  //  */
+// /**
+//  * @callback  _.filter.supplementaryCloning()
+//  * @param { objectLike } dstContainer - The target object.
+//  * @param { objectLike } srcContainer - The next object.
+//  * @param { string } key - The key of the (srcContainer) object.
+//  */
 
-  /**
-   * The mapComplement() method returns an object
-   * filled by all unique, clone [ key, value ].
-   *
-   * It creates the variable (args), assign to a copy of pseudo array (arguments),
-   * adds a specific callback function (_.filter.supplementaryCloning())
-   * to the beginning of the (args)
-   * and returns an object filled by all unique clone [key, value].
-   *
-   * @param { ...objectLike } arguments[] - The source object(s).
-   *
-   * @example
-   * // returns { a : 1, b : 'yyy', c : 3 };
-   * _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
-   *
-   * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
-   * @method mapComplement
-   * @memberof wTools
-   */
+/**
+ * The mapComplement() method returns an object
+ * filled by all unique, clone [ key, value ].
+ *
+ * It creates the variable (args), assign to a copy of pseudo array (arguments),
+ * adds a specific callback function (_.filter.supplementaryCloning())
+ * to the beginning of the (args)
+ * and returns an object filled by all unique clone [key, value].
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 1, b : 'yyy', c : 3 };
+ * _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+ *
+ * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
+ * @method mapComplement
+ * @memberof wTools
+ */
 
 var mapComplement = function( dst )
 {
@@ -9847,10 +9847,10 @@ var mapOwnKeys = function mapOwnKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) || _.errorIs( src ) );
+  _.assert( _.objectLike( src ) );
 
   if( arguments.length === 1 )
-  if( _.objectIs( src ) || _.errorIs( src ) && Object.keys )
+  if( _.objectIs( src ) && Object.keys )
   return Object.keys( src );
 
   for( var s in src )
@@ -10798,10 +10798,10 @@ var supplementaryCloningSrcOwn = function()
 
 //
 
-var supplementaryCloningDstNotOwn = function()
+var cloningSrcOwnDstNotOwn = function()
 {
 
-  var routine = function supplementaryCloningDstNotOwn( dstContainer,srcContainer,key )
+  var routine = function cloningSrcOwnDstNotOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -10956,6 +10956,23 @@ var recursiveClonning = function()
 
 //
 
+var recursiveCloningSrcOwn = function()
+{
+
+  var routine = function recursiveCloningSrcOwn( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+
+    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
 var drop = function( dropContainer )
 {
 
@@ -11072,7 +11089,7 @@ var filter =
   supplementaryCloning : supplementaryCloning,
   supplementarySrcOwn : supplementarySrcOwn,
   supplementaryCloningSrcOwn : supplementaryCloningSrcOwn,
-  supplementaryCloningDstNotOwn : supplementaryCloningDstNotOwn,
+  cloningSrcOwnDstNotOwn : cloningSrcOwnDstNotOwn,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,
@@ -11085,6 +11102,7 @@ var filter =
   notAtomicCloningRecursiveSrcOwn : notAtomicCloningRecursiveSrcOwn,
 
   recursiveClonning : recursiveClonning,
+  recursiveCloningSrcOwn : recursiveCloningSrcOwn,
 
   drop : drop,
 
