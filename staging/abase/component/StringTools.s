@@ -865,7 +865,7 @@ var _toStrFromStr = function( src,o )
   }
 
   if( o.wrapString )
-  { 
+  {
     if( o.usingMultilineStringWrapper )
     result = '`' + result + '`';
     else

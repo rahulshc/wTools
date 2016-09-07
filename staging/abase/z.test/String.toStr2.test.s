@@ -1830,6 +1830,7 @@ var toStrJson = function( test )
   testFunction( test, desc, src, options);
 
 }
+
 toStrJson.cover = [ _.toStr ];
 
 //
@@ -1864,7 +1865,7 @@ var toStrWrapString = function( test )
    [
     /*01*/
       [
-        
+
        '{',
        '  a : string, ',
        '  b : 1, ',
@@ -1876,7 +1877,7 @@ var toStrWrapString = function( test )
 
     /*02*/
       [
-        
+
        '{',
        '  a : sample, ',
        '  b : 0, ',
@@ -1888,7 +1889,7 @@ var toStrWrapString = function( test )
 
     /*03*/
       [
-        
+
        '{',
        '  a : [ example ], ',
        '  b : 1, ',
@@ -1900,14 +1901,14 @@ var toStrWrapString = function( test )
 
     /*04*/
       [
-        
+
        '{ a : "test", b : Error: err }',
-       
+
      ].join( '\n' ),
 
     /*05*/
       [
-        
+
        '{',
        '  a : a, ',
        '  b : b, ',
@@ -1918,7 +1919,7 @@ var toStrWrapString = function( test )
 
     /*06*/
       [
-        
+
        '{',
        '  a : { h : a }, ',
        '  b : b, ',
@@ -1926,10 +1927,10 @@ var toStrWrapString = function( test )
        '}'
 
      ].join( '\n' ),
-     
+
     /*07*/
       [
-        
+
        '{',
        '  a : `line1',
        'line2',
@@ -1937,10 +1938,10 @@ var toStrWrapString = function( test )
        '}'
 
      ].join( '\n' ),
-     
+
     /*07*/
       [
-        
+
        '{ a : line1 }',
 
       ].join( '\n' ),
@@ -2414,7 +2415,7 @@ var toStrThrow = function( test )
     {
       _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
     });
-    
+
     test.description = 'invalid json if ( o.usingMultilineStringWrapper ) is true';
     test.shouldThrowError( function()
     {
