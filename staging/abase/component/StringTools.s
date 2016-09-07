@@ -337,7 +337,7 @@ var toStrFine_gen = function()
     fixed : null,
     comma : ', ',
     multiline : 0,
-    escaping : 1,
+    escaping : 0,
     json : 0,
 
   }
