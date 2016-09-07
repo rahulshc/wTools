@@ -424,6 +424,7 @@ var _toStr = function _toStr( src,o )
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
+
     // if( isObject && o.noObject )
     // return;
     // if( isArray && o.noArray )
@@ -552,6 +553,7 @@ var _toStrShort = function( src,o )
   }
   else if( _.strIs( src ) )
   {
+
     var maxStringLength = 40;
     var nl = src.substr( 0,Math.min( src.length,maxStringLength ) ).indexOf( '\n' );
     if( nl === -1 ) nl = src.length;
@@ -570,6 +572,7 @@ var _toStrShort = function( src,o )
       //src = '"' + src + '"';
       result += src;
     }
+
   }
   else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
   {
@@ -706,6 +709,7 @@ var _toStrIsSimpleElement = function( element,o )
   return !_.entityLength( element );
   else
   return _.atomicIs( element );
+
 }
 
 //
@@ -878,6 +882,15 @@ var _toStrFromArray = function( src,o )
     return { text : _toStrShort( src,o ), simple : 1 };
   }
 
+  /* item options */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
+
+  /* empty case */
+
   if( src.length === 0 )
   {
     if( !o.wrap )
@@ -885,21 +898,41 @@ var _toStrFromArray = function( src,o )
     return { text : '[]', simple : 1 };
   }
 
-  /* */
+  /* filter */
+
+  var v = 0;
+  var length = src.length;
+  for( var i = 0 ; i < length ; i++ )
+  {
+    v += !!_toStrIsVisibleElement( src[ i ],optionsItem );
+  }
+
+  if( v !== length )
+  {
+    var i2 = 0;
+    var i = 0;
+    var src2 = _.arrayNew( src,v );
+    while( i < length )
+    {
+      if( _toStrIsVisibleElement( src[ i ],optionsItem ) )
+      {
+        src2[ i2 ] = src[ i ];
+        i2 += 1;
+      }
+      i += 1;
+    }
+    src = src2;
+    length = src.length;
+  }
+
+  /* is simple */
 
   var length = src.length;
-  var optionsItem = _.mapExtend( {},o );
-  optionsItem.tab = o.tab + o.dtab;
-  optionsItem.level = o.level + 1;
-  optionsItem.prependTab = 0;
-
-  /* */
-
-  var simple = !o.multiline;
+  var simple = !optionsItem.multiline;
   if( simple )
   for( var i = 0 ; i < length ; i++ )
   {
-    simple = _toStrIsSimpleElement( src[ i ],o );;
+    simple = _toStrIsSimpleElement( src[ i ],optionsItem );;
     if( !simple )
     break;
   }
@@ -935,7 +968,15 @@ var _toStrFromObject = function( src,o )
   if( o.noObject )
   return;
 
-  /* */
+  /* item options */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.noObject = o.noSubObject ? 1 : 0;
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
+
+  /* get names */
 
   var names;
   if( o.onlyEnumerable === 0  )
@@ -962,7 +1003,18 @@ var _toStrFromObject = function( src,o )
     names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
   }
 
-  /* */
+  /* filter */
+
+  for( var n = 0 ; n < names.length ; n++ )
+  {
+    if( !_toStrIsVisibleElement( src[ names[ n ] ],optionsItem ) )
+    {
+      names.splice( n,1 );
+      n -= 1;
+    }
+  }
+
+  /* empty case */
 
   var length = names.length;
   if( length === 0 )
@@ -972,26 +1024,20 @@ var _toStrFromObject = function( src,o )
     return { text : '{}', simple : 1 };
   }
 
-  /* */
+  /* is simple */
 
-  var simple = !o.multiline;
+  var simple = !optionsItem.multiline;
   if( simple )
   simple = length < 4;
   if( simple )
   for( var k in src )
   {
-    simple = _toStrIsSimpleElement( src[ k ],o );
+    simple = _toStrIsSimpleElement( src[ k ],optionsItem );
     if( !simple )
     break;
   }
 
   /* */
-
-  var optionsItem = _.mapExtend( {},o );
-  optionsItem.noObject = o.noSubObject ? 1 : 0;
-  optionsItem.tab = o.tab + o.dtab;
-  optionsItem.level = o.level + 1;
-  optionsItem.prependTab = 0;
 
   result += _toStrFromContainer
   ({
@@ -1024,8 +1070,6 @@ var _toStrFromContainer = function( o )
   var prefix = o.prefix;
   var postfix = o.postfix;
   var l = ( names ? names.length : values.length )
-
-  debugger;
 
   // line postfix
 
@@ -1094,11 +1138,13 @@ var _toStrFromContainer = function( o )
     else
     r = _toStr( values[ n ],optionsItem );
 
-    if( r === undefined )
-    continue;
+    _.assert( _.objectIs( r ) && _.strIs( r.text ) );
 
-    if( r.text === undefined )
-    continue;
+    // if( r === undefined )
+    // continue;
+    //
+    // if( r.text === undefined )
+    // continue;
 
     _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
 
@@ -1115,7 +1161,6 @@ var _toStrFromContainer = function( o )
       if( !r.simple )
       result += '\n' + optionsItem.tab;
     }
-
 
     result += r.text;
     written += 1;

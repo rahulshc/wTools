@@ -316,7 +316,7 @@ var toStrArray = function( test )
     /*17*/ { levels : 2, noNumber : 1 },
     /*18*/ { levels : 2, noAtomic : 1 },
     /*19*/ { levels : 2 },
-    /*20*/ { levels : 2, noRoutine : 1},
+    /*20*/ { levels : 2, noRoutine : 1 },
     /*21*/ { levels : 3, noSubObject : 1 },
     /*22*/ { levels : 2, tab : '|', prependTab : 0 },
     /*23*/ { levels : 2, noError : 1, noDate : 1 },
@@ -2398,7 +2398,7 @@ var Proto =
 
 _.mapExtend( Self,Proto );
 
-if( typeof module !== 'undefined' && !module.parent )
-  _.testing.test( Self );
+if( typeof module === 'undefined' || !module.parent )
+_.testing.test( Self );
 
 } )( );
