@@ -2631,7 +2631,7 @@ var strToDom = function( xmlStr )
 
 //
 
-function strToConfig( src,o,x = 1 )
+function strToConfig( src,o )
 {
 
   var result = {};

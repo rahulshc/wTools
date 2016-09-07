@@ -9503,32 +9503,32 @@ var mapSupplement = function( dst )
 
 //
 
-  // /**
-  //  * @callback  _.filter.supplementaryCloning()
-  //  * @param { objectLike } dstContainer - The target object.
-  //  * @param { objectLike } srcContainer - The next object.
-  //  * @param { string } key - The key of the (srcContainer) object.
-  //  */
+// /**
+//  * @callback  _.filter.supplementaryCloning()
+//  * @param { objectLike } dstContainer - The target object.
+//  * @param { objectLike } srcContainer - The next object.
+//  * @param { string } key - The key of the (srcContainer) object.
+//  */
 
-  /**
-   * The mapComplement() method returns an object
-   * filled by all unique, clone [ key, value ].
-   *
-   * It creates the variable (args), assign to a copy of pseudo array (arguments),
-   * adds a specific callback function (_.filter.supplementaryCloning())
-   * to the beginning of the (args)
-   * and returns an object filled by all unique clone [key, value].
-   *
-   * @param { ...objectLike } arguments[] - The source object(s).
-   *
-   * @example
-   * // returns { a : 1, b : 'yyy', c : 3 };
-   * _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
-   *
-   * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
-   * @method mapComplement
-   * @memberof wTools
-   */
+/**
+ * The mapComplement() method returns an object
+ * filled by all unique, clone [ key, value ].
+ *
+ * It creates the variable (args), assign to a copy of pseudo array (arguments),
+ * adds a specific callback function (_.filter.supplementaryCloning())
+ * to the beginning of the (args)
+ * and returns an object filled by all unique clone [key, value].
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 1, b : 'yyy', c : 3 };
+ * _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+ *
+ * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
+ * @method mapComplement
+ * @memberof wTools
+ */
 
 var mapComplement = function( dst )
 {
@@ -10798,10 +10798,10 @@ var supplementaryCloningSrcOwn = function()
 
 //
 
-var supplementaryCloningDstNotOwn = function()
+var cloningSrcOwnDstNotOwn = function()
 {
 
-  var routine = function supplementaryCloningDstNotOwn( dstContainer,srcContainer,key )
+  var routine = function cloningSrcOwnDstNotOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -10956,6 +10956,23 @@ var recursiveClonning = function()
 
 //
 
+var recursiveCloningSrcOwn = function()
+{
+
+  var routine = function recursiveCloningSrcOwn( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+
+    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
 var drop = function( dropContainer )
 {
 
@@ -11072,7 +11089,7 @@ var filter =
   supplementaryCloning : supplementaryCloning,
   supplementarySrcOwn : supplementarySrcOwn,
   supplementaryCloningSrcOwn : supplementaryCloningSrcOwn,
-  supplementaryCloningDstNotOwn : supplementaryCloningDstNotOwn,
+  cloningSrcOwnDstNotOwn : cloningSrcOwnDstNotOwn,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,
@@ -11085,6 +11102,7 @@ var filter =
   notAtomicCloningRecursiveSrcOwn : notAtomicCloningRecursiveSrcOwn,
 
   recursiveClonning : recursiveClonning,
+  recursiveCloningSrcOwn : recursiveCloningSrcOwn,
 
   drop : drop,
 
