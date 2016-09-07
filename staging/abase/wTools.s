@@ -3376,10 +3376,13 @@ var objectLike = function( src )
   if( routineIs( src ) ) return true;
   if( atomicIs( src ) ) return false;
 
-  for( var s in src )
+  if( Object.getOwnPropertyNames( src ).length )
   return true;
 
-  return false; /* isObject */
+  // for( var s in src )
+  // return true;
+
+  return false;
 }
 
 //
@@ -6565,8 +6568,6 @@ var arrayAppendOnceMerging = function arrayAppendOnceMerging( dst )
 
 //
 
-  // !!! @example is wrong, has to be [ 5, 'str', {}, 2, 4 ].
-
 /**
  * The arrayPrependOnceMerging() method returns an array of elements from (dst)
  * and prepending only unique following arguments to the beginning.
@@ -6601,12 +6602,11 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 
   _assert( _.arrayIs( dst ),'arrayPrependOnceMerging :','expects array' );
 
-  for( var a = arguments.length-1 ; a > 0 ; a-- )
+  for( var a = 0 ; a < arguments.length ; a++ )
   {
     var argument = arguments[ a ];
 
-    if( argument === undefined )
-    throw _.err( 'arrayPrependOnceMerging','argument is not defined' );
+    _assert( argument !== undefined,'arrayPrependOnceMerging','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
@@ -9847,10 +9847,10 @@ var mapOwnKeys = function mapOwnKeys( src )
   if( arguments.length === 0 )
   return result;
 
-  _.assert( _.objectLike( src ) || _.errorIs( src ) );
+  _.assert( _.objectLike( src ) );
 
   if( arguments.length === 1 )
-  if( _.objectIs( src ) || _.errorIs( src ) && Object.keys )
+  if( _.objectIs( src ) && Object.keys )
   return Object.keys( src );
 
   for( var s in src )

@@ -509,7 +509,7 @@ var _toStr = function _toStr( src,o )
     simple = r.simple;
   }
   else if( !isAtomic && _.routineIs( src.toString ) )
-  { 
+  {
     result += src.toString();
   }
   else
@@ -836,32 +836,32 @@ var _toStrFromObject = function( src,o )
 
   /* */
 
-
-if( o.onlyEnumerable === 0  )
-  { 
+  var names;
+  if( o.onlyEnumerable === 0  )
+  {
     if( o.own  )
-    var names = Object.getOwnPropertyNames( src );
-    
-    else 
     {
-      var names = [];
-      var proto = src;
-      
-      names = Object.getOwnPropertyNames(src);
-      
-      while( Object.getPrototypeOf( proto ) )
-      {
-        proto = Object.getPrototypeOf( proto );
-        names = names.concat( Object.getOwnPropertyNames( proto ) );
-      }
+      names = Object.getOwnPropertyNames( src );
     }
-    
+    else
+    {
+      var proto = src;
+      names = [];
+      do
+      {
+        names = _.arrayPrependOnceMerging( names,Object.getOwnPropertyNames( proto ) );
+        proto = Object.getPrototypeOf( proto );
+      }
+      while( proto )
+    }
+
+  }
+  else
+  {
+    names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
   }
 
-else
-{
-  var names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
-}
+  /* */
 
   var length = names.length;
   if( length === 0 )
@@ -2763,7 +2763,7 @@ var Proto =
   strLattersSpectre : strLattersSpectre, /* exmperimental */
   lattersSpectreComparison : lattersSpectreComparison, /* exmperimental */
 
-  strHtmlEscape : strHtmlEscape, /* improve me */
+  strHtmlEscape : strHtmlEscape, /* improve my document */
   strUnicodeEscape : strUnicodeEscape, /* document me */
 
   strIndentation : strIndentation,

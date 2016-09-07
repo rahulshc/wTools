@@ -96,13 +96,13 @@ var testFunction = function( test, desc, src, options, expected )
       {
         result = JSON.parse( got );
         test.identical( result, src[ k ] );
-        
+
       }
       catch( err )
       {
         // _.errLog( err );
         test.identical( got, expected[ k ] );
-        
+
       }
     }
 
@@ -171,23 +171,21 @@ var toStrError = function ( test )
     /*09*/
       [
         '{',
-        '  stack : "Error: my message3"..., ',
-        '  message : "my message3", ',
-        '  name : "Error", ',
-        '  message : "my message3", ',
-        '  constructor : [object Function], ',
-        '  toString : [object Function], ',
-        '  __defineGetter__ : [object Function],',
-        '  hasOwnProperty : [object Function], ',
-        '  __lookupGetter__ : [object Function], ',
-        '  __lookupSetter__ : [object Function], ',
-        '  constructor : [object Function], ',
-        '  toString : [object Function], ',
         '  toLocaleString : [object Function], ',
         '  valueOf : [object Function], ',
+        '  hasOwnProperty : [object Function], ',
         '  isPrototypeOf : [object Function], ',
         '  propertyIsEnumerable : [object Function], ',
-        '  __proto__ : [ Error with 0 elements ]',
+        '  __defineGetter__ : [object Function], ',
+        '  __lookupGetter__ : [object Function], ',
+        '  __defineSetter__ : [object Function], ',
+        '  __lookupSetter__ : [object Function], ',
+        '  __proto__ : [ Error with 0 elements ], ',
+        '  name : "Error", ',
+        '  constructor : [object Function], ',
+        '  toString : [object Function], ',
+        '  stack : "Error: my message3"..., ',
+        '  message : "my message3"',
         '}',
       ].join( '\n' ),
 
@@ -201,8 +199,8 @@ var toStrError = function ( test )
         '{ stack : "Error: my error\\n", message : "my error" }',
       ].join( '\n' ),
   ];
-  
-  
+
+
   testFunction( test,desc,src,options,expected );
 
 }
@@ -886,7 +884,7 @@ var toStrArray = function( test )
      '',
 
   ];
-    
+
   testFunction( test,desc,src,options,expected );
 }
 toStrArray.cover = [ _.toStr ];
@@ -979,8 +977,8 @@ var toStrObject = function( test )
               y.c = '3';
               return y;
             } )( ),
-            
-    /*66*/  ( function( ) 
+
+    /*66*/  ( function( )
             {
               var structure =
               [
@@ -1086,7 +1084,7 @@ var toStrObject = function( test )
     /*01*/  '{ a : 1, b : 2, c : 3 }',
     /*02*/  '[ Object with 3 elements ]',
     /*03*/  '{ q : 6, w : 7, e : 8 }',
-    
+
     /*04*/
     [
       '{',
@@ -1590,7 +1588,7 @@ var toStrObject = function( test )
       '{ c : "3" }',
 
     ].join( '\n' ),
-    
+
     /*66*/
     [
       '   nameLong : "abc" ',
@@ -1641,7 +1639,7 @@ var toStrJson = function( test )
              b : [ 'MZ� ♥   ♦   ��  �       @' ],
              c : { d : 'MZ► ♥   ♦   ⌂⌂  8       @' },
            },
-            
+
      /*11*/ {
              a : 2,
              b : [ '��������G∟�L�`��◄֥_�' ],
@@ -1681,7 +1679,7 @@ var toStrJson = function( test )
       '  "c" : { "d" : true, "e" : null }',
       '}'
     ].join( '\n' ),
-    
+
     /*02*/
     [
       '{',
@@ -1689,9 +1687,9 @@ var toStrJson = function( test )
       '  "c" : 50, ',
       '  "d" : { "a" : "undefined", "e" : null }',
       '}'
-    
+
     ].join( '\n' ),
-    
+
     /*03*/
     [
       '[',
@@ -1701,9 +1699,9 @@ var toStrJson = function( test )
       '    "c" : { "d" : true, "e" : null }',
       '  }',
       ']'
-    
+
     ].join( '\n' ),
-    
+
     /*04*/
     [
       '{',
@@ -1711,12 +1709,12 @@ var toStrJson = function( test )
       '  "b" : [ 1, 2, 3 ], ',
       '  "c" : [ routine r ]',
       '}',
-    
+
     ].join( '\n' ),
-    
+
     /*05*/
     [
-    
+
       '[',
       '  {',
       '    "a" : 1, ',
@@ -1727,58 +1725,58 @@ var toStrJson = function( test )
       '    }',
       '  }',
       ']',
-    
+
     ].join( '\n' ),
-    
+
     /*06*/
     [
-    
+
       '{',
       '  "a" : 1994-01-12T00:00:00.000Z',
       '}',
-    
+
     ].join( '\n' ),
-    
+
     /*07*/
     [
-    
+
       '{',
       '  "a" : Error: r',
       '}',
-    
+
     ].join( '\n' ),
-    
+
     /*08*/
     [
-    
+
       '{ "a" : Symbol(sm) }'
-    
-    
+
+
     ].join( '\n' ),
-    
+
     /*09*/
     [
-    
+
       '{ "a" : "\\n\\nABC" }'
-    
-    
+
+
     ].join( '\n' ),
-    
+
     /*10*/
     [
-    
+
       '{',
       '  "a" : 1, ',
       '  "b" : [ "MZ� ♥   ♦   ��  �       @" ], ',
       '  "c" : { "d" : "MZ► ♥   ♦   ⌂⌂  8       @" } ',
       '}'
-    
-    
+
+
     ].join( '\n' ),
-    
+
     /*11*/
     [
-    
+
       '{',
       '  "a" : 2, ',
       '  "b" : ',
@@ -1790,20 +1788,20 @@ var toStrJson = function( test )
       '    "d" : "MZ► ♥   ♦   ⌂⌂  8       @"',
       '  }',
       '}'
-    
-    
+
+
     ].join( '\n' ),
     /*12*/
     [
-    
+
       '{',
       '  "a" : "�\\\'aY��Tb���§�+R���☼→", ',
       '  "b" : [ "o?=\\\'aYo?=o?=Tbo?=o?=" ]',
       '}'
-    
-    
+
+
     ].join( '\n' ),
-    
+
 
    ]
 
@@ -1902,7 +1900,7 @@ var toStrWrapString = function( test )
 
 
    ]
-   
+
   testFunction( test,desc,src,options,expected );
 
 }
@@ -1944,12 +1942,12 @@ var toStrLevel = function( test )
        '}'
 
       ].join( '\n' ),
-     
+
     /*03*/
       [
        '[ Object with 4 elements ]',
       ].join( '\n' ),
-     
+
     /*04*/
       [
        '{',
@@ -2076,23 +2074,23 @@ var toStrEnumerable = function( test )
 
     /*04*/
       [
-       '{',
-       '  a : "string", ',
-       '  getFoo : [object Function], ',
-       '  foo : 1, ',
-       '  __defineGetter__ : [object Function], ',
-       '  __defineSetter__ : [object Function], ',
-       '  hasOwnProperty : [object Function], ',
-       '  __lookupGetter__ : [object Function], ',
-       '  __lookupSetter__ : [object Function], ',
-       '  constructor : [object Function], ',
-       '  toString : [object Function], ',
-       '  toLocaleString : [object Function], ',
-       '  valueOf : [object Function], ',
-       '  isPrototypeOf : [object Function], ',
-       '  propertyIsEnumerable : [object Function], ',
-       '  __proto__ : [ Object with 1 elements ]',
-       '}',
+        '{',
+        '  constructor : [object Function], ',
+        '  toString : [object Function], ',
+        '  toLocaleString : [object Function], ',
+        '  valueOf : [object Function], ',
+        '  hasOwnProperty : [object Function], ',
+        '  isPrototypeOf : [object Function], ',
+        '  propertyIsEnumerable : [object Function], ',
+        '  __defineGetter__ : [object Function], ',
+        '  __lookupGetter__ : [object Function], ',
+        '  __defineSetter__ : [object Function], ',
+        '  __lookupSetter__ : [object Function], ',
+        '  __proto__ : [ Object with 1 elements ], ',
+        '  getFoo : [object Function], ',
+        '  foo : 1, ',
+        '  a : "string"',
+        '}',
       ].join( '\n' ),
    ]
   testFunction( test,desc,src,options,expected );
@@ -2106,7 +2104,7 @@ var toStrEmptyArgs = function( test )
   src = [ {}, '', [] ],
   options = [ {} ],
   expected =[ '{}', '""', '[]' ];
-  
+
   testFunction( test,desc,src,options,expected );
 }
 toStrEmptyArgs.cover = [ _.toStr ];
@@ -2137,7 +2135,7 @@ var toStrSymbol = function( test )
     'Symbol(sx)',
     ''
   ]
-  
+
   testFunction( test,desc,src,options,expected );
 }
 toStrSymbol.cover = [ _.toStr ];
@@ -2182,7 +2180,7 @@ var toStrNumber = function( test )
     '22'
 
   ]
-  
+
   testFunction( test,desc,src,options,expected );
 }
 toStrNumber.cover = [ _.toStr ];
@@ -2225,7 +2223,7 @@ var toStrString = function( test )
     '"sample6"',
     '"\nsample7"'
   ]
-  
+
   testFunction( test,desc,src,options,expected );
 }
 toStrString.cover = [ _.toStr ];
@@ -2345,25 +2343,25 @@ var toStrThrow = function( test )
     {
       _.toStr( { a : 1 }, null );
     });
-  
+
     test.description = '( o.precision ) is not between 1 and 21';
     test.shouldThrowError( function()
     {
       _.toStr( { a : 1 }, { precision : 0 } );
     });
-  
+
     test.description = '( o.fixed ) is not between 0 and 20';
     test.shouldThrowError( function()
     {
       _.toStr( { a : 1 }, { fixed : 22 } );
     });
-  
+
     test.description = 'if json : 1, wrapString must be equal to 1';
     test.shouldThrowError( function()
     {
       _.toStr( { a : 1 }, { json : 1, wrapString : 0 } );
     });
-  
+
     test.description = 'wrong arguments count';
     test.shouldThrowError( function()
     {
