@@ -61,6 +61,30 @@ var toStrMethods = function( src,o )
 
 //
 
+/**
+ * Short-cut for toStr function that works with all entities, but ingnores Routine type.
+ * Converts object passed by argument( src ) to string representation using
+ * options provided by argument( o ).
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @param {boolean} [ options.noRoutine=false ] - Ignores all entities of type Routine.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @returns {string} Returns string that represents object data.
+ *
+ * @example
+ * //returns [ 0, "a" ]
+ * _.toStrFields( [ function del(){}, 0, 'a' ], {} )
+ *
+ * @example
+ * //returns { c : 1, d : "2" }
+ * _.toStrFields( { a : function b(){},  c : 1 , d : '2' }, {} )
+ *
+ * @method toStrFields
+ * @memberof wTools
+ *
+ */
+ 
 var toStrFields = function( src,o )
 {
   var o = o || {};
