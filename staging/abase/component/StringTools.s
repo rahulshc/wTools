@@ -574,6 +574,8 @@ var _toStr = function _toStr( src,o )
 //
 
 /**
+ * Converts object passed by argument( src ) to string representation.Using
+ * options provided by argument( o ) for string and number types.
  * Returns string with object type for routines and errors, iso format for date, string representation for atomic.
  * For object,array and row returns count of elemets, example: '[ Row with 3 elements ]'.
  *
