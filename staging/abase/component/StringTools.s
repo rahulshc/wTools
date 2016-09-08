@@ -2259,6 +2259,26 @@ strReplaceAll.defaults =
 
   //
 
+/**
+ * Replaces occurrence of each word from array( ins ) in string( src ) with word
+ * from array( sub ) considering it position.
+ * @param {string} src - Source string to parse.
+ * @param {array} ins - Array with strings to replace.
+ * @param {string} sub - Array with new strings.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns " your cars are"
+ * _.strReplaceNames(' my name is',['my','name','is'],['your','cars','are'])
+ *
+ * @method strReplaceNames
+ * @throws { Exception } Throws a exception if( ins ) is not a Array.
+ * @throws { Exception } Throws a exception if( sub ) is not a Array.
+ * @throws { TypeError } Throws a exception if( src ) is not a String.
+ * @memberof wTools
+ *
+ */
+
 var strReplaceNames = function( src,ins,sub )
 {
   _.assert( _.arrayIs( ins ) );
