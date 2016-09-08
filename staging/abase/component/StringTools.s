@@ -2305,6 +2305,32 @@ var strReplaceNames = function( src,ins,sub )
 
 //
 
+/**
+ * Concatenates objects provided to function in orded that they are specified.
+ * If arguments are different type,like array and number, function appends number to each
+ * array value. Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
+ * @param {array-like} arguments - Contains provided objects.
+ * @returns {object} Returns concatenated objects as string or array.Return type depends
+ * from arguments type.
+ *
+ * @example
+ * //returns "123"
+ * _.strJoin( 1, 2, 3 );
+ * 
+ * @example
+ * //returns [ "12", "22", "32" ]
+ * _.strJoin( [ 1, 2, 3 ], 2)
+ * 
+ * @example
+ * //returns [ "11", "23" ]
+ * _.strJoin( [ 1, 2 ], [ 1, 3 ] )
+ *
+ * @method strJoin
+ * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array,String or Number.
+ * @memberof wTools
+ *
+ */
+
 var strJoin = function()
 {
   var result = [ '' ];
