@@ -662,6 +662,25 @@ var _toStrShort = function( src,o )
 
 //
 
+/**
+ * Checks if object provided by argument( src ) must be ignored by toStr() function.
+ * Filters are provided by argument( o ). 
+ * Returns false if object must be ignored.
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @returns {boolean} Returns result of filter check.
+ *
+ * @example
+ * //returns false
+ * _.toStrIsVisibleElement( function del(){}, { noRoutine : 1 } )
+ *
+ * @method _toStrIsVisibleElement
+ * @memberof wTools
+ *
+ */
+
 var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
 {
 
