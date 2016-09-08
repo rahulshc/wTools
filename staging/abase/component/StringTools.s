@@ -820,6 +820,24 @@ var _toStrIsSimpleElement = function( element,o )
 
 //
 
+/**
+ * Returns string representation of routine provided by argument( src ) using options
+ * from argument( o ).
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @returns {string} Returns routine as string.
+ *
+ * @example
+ * //returns [ routine a ]
+ * _.toStrFromRoutine( function a(){}, {} );
+ * 
+ * @method _toStrFromRoutine
+ * @memberof wTools
+ *
+ */
+
 var _toStrFromRoutine = function( src,o )
 {
   var result = '';
