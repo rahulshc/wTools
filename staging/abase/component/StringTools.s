@@ -1284,6 +1284,32 @@ var _toStrFromObject = function( src,o )
 
 //
 
+/**
+ * Function builds string that represents  container structure like object or array using keys and values from
+ * argument( o ).Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
+ *
+ * @param {Object} o - Contains data and options.
+ * @param {object} [ o.values ] - Source object that contains values.
+ * @param {array} [ o.names ] - Source object keys.
+ * @param {object} [ o.optionsContainer ] - Options for container.
+ * @param {string} [ o.optionsContainer.comma ] - Splitter between elements, example : [ 1, 2, 3 ].
+ * @param {boolean} [ o.optionsContainer.wrap] - Wrap array-like and object-like entities.
+ * @param {boolean} [ o.optionsContainer.json ] - Enable convertion of object( src ) to JSON string.
+ * @param {string} [ o.optionsContainer.tab ] - Prepended before each line tab.
+ * @param {string} [ o.optionsContainer.dtab ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+ * @param {boolean} [ o.optionsContainer.prependTab ] - Prepend tab before first line.
+ * @param {string} [ o.optionsContainer.colon ] - Colon between name and value, example : { a : 1 }.
+ * @param {object} [ o.optionsItem ] - Options for items that object contains.
+ * @param {string} [ o.optionsItem.tab ] - Prepended before each line tab.
+ * @param {number} [ o.optionsItem.level ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+ * @returns {String} Returns string representation of container.
+ * 
+ * @method _toStrFromContainer
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @memberof wTools
+ *
+*/
+
 var _toStrFromContainer = function( o )
 {
   var result = '';
