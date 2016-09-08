@@ -668,13 +668,13 @@ var _toStrShort = function( src,o )
  * Returns false if object must be ignored.
  *
  * @param {object} src - Source object.
- * @param {object} o - Convertion options.
+ * @param {object} o - Filters.
  * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {boolean} Returns result of filter check.
  *
  * @example
  * //returns false
- * _.toStrIsVisibleElement( function del(){}, { noRoutine : 1 } )
+ * _.toStrIsVisibleElement( function del(){}, { noRoutine : 1 } );
  *
  * @method _toStrIsVisibleElement
  * @memberof wTools
@@ -771,6 +771,31 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
 }
 
 //
+
+/**
+ * Checks if object length provided by argument( src ) is enough to represent it as single line string.
+ * Options are provided by argument( o ). 
+ * Returns true if object can be represented as one line.
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Check options.
+ * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @returns {boolean} Returns result of length check.
+ *
+ * @example
+ * //returns true
+ * _.toStrIsSimpleElement( 'string', { } );
+ * 
+ * @example
+ * //returns false
+ * _.toStrIsSimpleElement( { a : 1, b : 2, c : 3, d : 4, e : 5 }, { } );
+ *
+ * @method _toStrIsSimpleElement
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
 
 var _toStrIsSimpleElement = function( element,o )
 {
