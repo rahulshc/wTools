@@ -103,11 +103,11 @@ var toStrFields = function( src,o )
  * @param {object} o - Convertion o.
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {boolean} [ o.wrapString=true ] - Wrap string into "".
+ * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
  * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
  * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
- * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
+ * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
  * @param {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
  * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
  * @param {string} [ o.tab='' ] - Prepended before each line tab.
@@ -131,7 +131,7 @@ var toStrFields = function( src,o )
  * Number must be between 0 and 20.
  * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
  * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
- * @param {boolean} [ o.escaping=true ] - enable escaping of special characters.
+ * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
  * @param {boolean} [ o.json=false ] - enable convertion of object( src ) to JSON string.
  * @returns {string} Returns string that represents object data.
  *
@@ -149,7 +149,7 @@ var toStrFields = function( src,o )
  * // --subf : {  x : 1  // level 3}
  * // -}
  * // }
- * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} ));
+ * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} );
  *
  * @example
  * //returns " \n1500 "
@@ -203,8 +203,8 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns
- * // a : 1
- * // b : 2
+ * // "    a : 1 
+ * //      b : 2"
  * _.toStr( [ { a : 1 }, { b : 2 } ], { levels : 2, wrap : 0 } );
  *
  * @example
@@ -241,7 +241,7 @@ var toStrFields = function( src,o )
  * _.toStr( [ 0, [ 1,2,3 ], 4 ], { levels : 2, multiline : 1 } );
  *
  * @example
- * //returns { routine sample }
+ * //returns [ routine sample ]
  * _.toStr( function sample( ){ });
  *
  * @example
@@ -298,10 +298,24 @@ var toStrFields = function( src,o )
  * @example
  * //returns { "a" : "string", "b" : 1, "c" : 2 }
  * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
+ * 
+ * @example
+ * //returns { stack : "Error: my message2"..., message : "my message2" }
+ * _.toStr( new Error('my message2'), { onlyEnumerable : 0,errorAsMap : 1 } );
+ * 
+ * @example
+ * //returns 
+ * // "{
+ * //  a : `line1
+ * // line2
+ * // line3`
+ * // }"
+ * _.toStr( { a : "line1\nline2\nline3" }, { levels: 2, usingMultilineStringWrapper : 1 } );
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @throws { Exception } Throw an exception if( o.wrapString ) is not equal true when ( o.json ) is true.
+ * @throws { Exception } Throw an exception if( o.usingMultilineStringWrapper ) is not equal false when ( o.json ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
  * @memberof wTools
