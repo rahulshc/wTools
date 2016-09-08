@@ -856,11 +856,11 @@ var _toStrFromRoutine = function( src,o )
  *
  * @example
  * //returns 8.9
- * _._toStrFromNumber( 8.923964453, { precision : 2 } )
+ * _._toStrFromNumber( 8.923964453, { precision : 2 } );
  *
  * @example
  * //returns 8.9240
- * _._toStrFromNumber( 8.923964453, { fixed : 4 } )
+ * _._toStrFromNumber( 8.923964453, { fixed : 4 } );
  *
  * @method _toStrFromNumber
  * @memberof wTools
@@ -888,7 +888,7 @@ var _toStrFromNumber = function( src,o )
  * by argument( o ).Disables escape characters if ( o.escaping ) is true.
  * Also string can be wrapped in to backtick( `` ) if ( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true. 
  *
- * @param {object} src - Number for conversion.
+ * @param {object} src - String to parse.
  * @param {Object} o - Contains conversion options.
  * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
  * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
@@ -897,15 +897,15 @@ var _toStrFromNumber = function( src,o )
  *
  * @example
  * //returns "hello"
- * _.toStrFromStr( 'hello', {} )
+ * _.toStrFromStr( 'hello', {} );
  *
  * @example
  * //returns "test\n"
- * _.toStrFromStr( 'test\n', { escaping : 1 } )
+ * _.toStrFromStr( 'test\n', { escaping : 1 } );
  * 
  * @example
  * //returns `test`
- * _.toStrFromStr( 'test', { usingMultilineStringWrapper : 1 } )
+ * _.toStrFromStr( 'test', { usingMultilineStringWrapper : 1 } );
  *
  * @method _toStrFromStr
  * @memberof wTools
@@ -1021,6 +1021,47 @@ var _toStrFromStr = function( src,o )
 }
 
 //
+
+/**
+ * Function converts array provided by argument( src ) to string representation
+ * using options provided by argument( o ).
+ *
+ * @param {object} src - Array to convert.
+ * @param {Object} o - Contains conversion options.
+ * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+ * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+ * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
+ * @param {string} [ o.tab='' ] - Prepended before each line tab.
+ * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+ * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
+ * @returns {String} Returns string representation of array.
+ *
+ * @example
+ * //returns 
+ * //[
+ * //  [ Object with 1 elements ], 
+ * //  [ Object with 1 elements ]
+ * //]
+ * _.toStrFromArray( [ { a : 1 }, { b : 2 } ], {} );
+ *
+ * @example
+ * //returns
+ * // [
+ * //   1,
+ * //   [
+ * //     2,
+ * //     3,
+ * //     4'
+ * //   ],
+ * //   5
+ * // ]
+ * _.toStrFromArray( [ 1, [ 2, 3, 4 ], 5 ], { levels : 2, multiline : 1 } );
+ * 
+ * @method _toStrFromArray
+ * @throws { Exception } Throw an exception if( src ) is undefined.
+ * @memberof wTools
+ *
+*/
 
 var _toStrFromArray = function( src,o )
 {
