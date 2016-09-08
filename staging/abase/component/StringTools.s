@@ -1146,6 +1146,43 @@ var _toStrFromArray = function( src,o )
 
 //
 
+/**
+ * Function converts object provided by argument( src ) to string representation
+ * using options provided by argument( o ).
+ *
+ * @param {object} src - Object to convert.
+ * @param {Object} o - Contains conversion options.
+ * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+ * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+ * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
+ * @param {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
+ * @param {boolean} [ o.noObject=false ] - Ignores all entities of type Object.
+ * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
+ * @param {string} [ o.tab='' ] - Prepended before each line tab.
+ * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+ * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
+ * @returns {String} Returns string representation of object.
+ *
+ * @example
+ * //returns 
+ * // {
+ * //  r : 9, 
+ * //  t : { a : 10 }, 
+ * //  y : 11
+ * // }
+ * _.toStrFromObject( { r : 9, t : { a : 10 }, y : 11 }, { levels : 2 } );
+ *
+ * @example
+ * //returns ''
+ * _.toStrFromObject( { h : { d : 1 }, g : 'c', c : [2] }, { levels : 2, noObject : 1 } );
+ * 
+ * @method _toStrFromObject
+ * @throws { Exception } Throw an exception if( src ) is not a object-like.
+ * @memberof wTools
+ *
+*/
+
+
 var _toStrFromObject = function( src,o )
 {
   var result = '';
