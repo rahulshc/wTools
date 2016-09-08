@@ -2156,31 +2156,41 @@ var strIron = function()
 
 //
 
-/* !!! update me, please */
 
 /**
- * This function finds substring passed by second argument( ins ) in the source string( src )
- * and replaces each occurrence with the third argument( sub ).
- * If the function can not find any occurrence in source( src ) it returns the original string.
- *
- * @param {string} srcStr - Source string to parse.
- * @param {string} ins - String that is to be replaced by( ins ).
- * @param {string} sub - String that replaces substring.
+ * Replaces each occurrence of( ins ) in string( dst ) with( sub ).
+ * If the function can not find any occurrence in source( dst ) it returns the original string.
+ * Function  can be called in three different ways:
+ *  One argument: object that contains properties: dst,dictionary.
+ *  Two arguments: dst, dictionary.
+ *  Three arguments: dst, ins, sub.
+ * @param {string} dst - Source string to parse.
+ * @param {string} ins - String that is to be replaced by( sub ).
+ * @param {string} sub - String that replaces finded occurrence.
+ * @param {object} dictionary - Object with properties like ( { 'ins' : 'sub' } ).
  * @returns {string} Returns string with result of replacements.
  *
  * @example
- * //returns aacaa
- * _.strReplaceAll( 'aabaa','b','c' );
+ * //one argument
+ * //returns xbc
+ * _.strReplaceAll( { dst : 'abc', dictionary : { 'a' : 'x' } } );
  *
  * @example
- * //returns xxbxx
- * _.strReplaceAll( 'aabaa','a','x' );
+ * //two arguments
+ * //returns a12
+ * _.strReplaceAll( 'abc',{ 'a' : '1', 'b' : '2' } );
  *
  * @example
- * //returns aabaa
- * _.strReplaceAll( 'aabaa','y','x' );
+ * //three arguments
+ * //returns axc
+ * _.strReplaceAll( 'abc','b','x' );
  *
  * @method strReplaceAll
+ * @throws { Exception } Throws a exception if no arguments provided.
+ * @throws { Exception } Throws a exception if( dst ) is not a String.
+ * @throws { Exception } Throws a exception if( ins ) is not a String.
+ * @throws { Exception } Throws a exception if( sub ) is not a String.
+ * @throws { Exception } Throws a exception if( dictionary ) is not a Object.
  * @memberof wTools
  *
  */
