@@ -443,6 +443,7 @@ var toStrFine_gen = function()
 
 //
 
+
 var _toStr = function _toStr( src,o )
 {
   var result = '';
@@ -571,6 +572,24 @@ var _toStr = function _toStr( src,o )
 }
 
 //
+
+/**
+ * Returns string with object type for routines and errors, iso format for date, string representation for atomic.
+ * For object,array and row returns count of elemets, example: '[ Row with 3 elements ]'.
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @returns {string} Returns string that represents object data.
+ *
+ * @example
+ * //returns [ Array with 3 elements ]
+ * _.toStrShort( [ function del(){}, 0, 'a' ], { levels : 0 } )
+ *
+ * @method _toStrShort
+ * @memberof wTools
+ *
+ */
 
 var _toStrShort = function( src,o )
 {
