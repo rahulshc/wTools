@@ -581,7 +581,6 @@ var _toStr = function _toStr( src,o )
  *
  * @param {object} src - Source object.
  * @param {object} o - Convertion options.
- * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -669,7 +668,6 @@ var _toStrShort = function( src,o )
  *
  * @param {object} src - Source object.
  * @param {object} o - Filters.
- * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {boolean} Returns result of filter check.
  *
  * @example
@@ -780,7 +778,6 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
  * @param {object} src - Source object.
  * @param {object} o - Check options.
  * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
- * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {boolean} Returns result of length check.
  *
  * @example
@@ -826,7 +823,6 @@ var _toStrIsSimpleElement = function( element,o )
  *
  * @param {object} src - Source object.
  * @param {object} o - Convertion options.
- * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns routine as string.
  *
  * @example
@@ -850,13 +846,12 @@ var _toStrFromRoutine = function( src,o )
 //
 
 /**
- * This function converts Number to String with o.
+ * This function converts Number to String with options.
  *
  * @param {Number} src - Number for conversion.
- * @param {Object} o - Contains conversion o.
+ * @param {Object} o - Contains conversion options.
  * @param {Number} o.precision - Integer value that specifying  length of a number.
  * @param {Number} o.fixed - Number of digits after the decimal point.
- *
  * @returns {String} Returns number converted to the string.
  *
  * @example
@@ -887,6 +882,35 @@ var _toStrFromNumber = function( src,o )
 }
 
 //
+
+/**
+ * Function wraps string( src ) in to( "" ) using options provided 
+ * by argument( o ).Disables escape characters if ( o.escaping ) is true.
+ * Also string can be wrapped in to backtick( `` ) if ( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true. 
+ *
+ * @param {object} src - Number for conversion.
+ * @param {Object} o - Contains conversion options.
+ * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
+ * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
+ * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
+ * @returns {String} Returns wrapped string.
+ *
+ * @example
+ * //returns "hello"
+ * _.toStrFromStr( 'hello', {} )
+ *
+ * @example
+ * //returns "test\n"
+ * _.toStrFromStr( 'test\n', { escaping : 1 } )
+ * 
+ * @example
+ * //returns `test`
+ * _.toStrFromStr( 'test', { usingMultilineStringWrapper : 1 } )
+ *
+ * @method _toStrFromStr
+ * @memberof wTools
+ *
+*/
 
 var _toStrFromStr = function( src,o )
 {
