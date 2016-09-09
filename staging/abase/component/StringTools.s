@@ -2819,6 +2819,29 @@ var strCount = function( src,ins )
 
 //
 
+/**
+ * Returns n( times ) duplicates of string( src ) .
+ *
+ * @param {string} src - Source string.
+ * @param {number} times - Number of duplicates.
+ * @returns {string} Returns string duplicated n-times.
+ *
+ * @example
+ * //returns aaaaa
+ * _.strDup( "a", 5 );
+ * 
+ * @example
+ * //returns abcabc
+ * _.strDup( "abc", 2 );
+ *
+ * @method strDup
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( times ) is not a Number.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
+
 var strDup = function strDup( src,times )
 {
   var result = '';
