@@ -2988,6 +2988,50 @@ var strToBytes = function( src )
 
 //
 
+/**
+ * Returns string that represents number( src ) with metric unit prefix that depends on options( o ).
+ * If no options provided function start calculating metric with default options.
+ * Example: for number ( 50000 ) function returns ( "50.0 k" ), where "k"- thousand.
+ *
+ * @param {(number|string)} src - Source object.
+ * @param {object} o - Convertion options.
+ * @global {object} _metrics - Contains metric prefixes.
+ * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
+ * @param {number} [ o.thousand=1000 ] - Sets integer power of one thousand.
+ * @param {boolean} [ o.fixed=true ] - Formats number to fixed-point notation.
+ * @param {number} [ o.dimensions=1 ] - Sets exponent of a number.
+ * @param {number} [ o.metric=0 ] - Sets the metric unit type from the map( _metrics ).
+ * @returns {string} Returns number with metric prefix as a string.
+ *
+ * @example
+ * //returns "1.0 M"
+ * _.strMetricFormat( 1, { metric : 6 } );
+ * 
+ * @example
+ * //returns "100.0 "
+ * _.strMetricFormat( "100m", { } );
+ * 
+ * @example
+ * //returns "100.0 T
+ * _.strMetricFormat( "100m", { metric : 12 } );
+ * 
+ * @example
+ * //returns "2 k"
+ * _.strMetricFormat( "1500", { fixed : 0 } );
+ * 
+ * @example
+ * //returns "1.0 M"
+ * _.strMetricFormat( "1000000",{ divisor:2, thousand:100 } );
+ * 
+ * @example
+ * //returns "10.0 h"
+ * _.strMetricFormat( "10000", { divisor:2, thousand:10, dimensions:3 } );
+ *
+ * @method strMetricFormat
+ * @memberof wTools
+ *
+ */
+
 var _metrics =
 {
 
