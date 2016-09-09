@@ -2499,6 +2499,7 @@ var strDropPrefix = function( src,prefix )
 
 /**
  * Removes occurrence of( postfix ) from the end of string( src ).
+ * Returns original string if no occurrence finded.
  * @param {string} src - Source string to parse.
  * @param {string} postfix - String that is to be dropped.
  * @returns {string} Returns string with result of postfix removement.
@@ -2617,8 +2618,13 @@ var lattersSpectreComparison = function( src1,src2 )
  * @example
  * //returns &#x2F;&#x2F;test&#x2F;&#x2F;
  * _.strHtmlEscape( '//test//' );
+ * 
+ * @example
+ * //returns &lt;div class=&quot;cls&quot;&gt;&lt;&#x2F;div&gt;
+ * _.strHtmlEscape('<div class="cls"></div>');
  *
  * @method strHtmlEscape
+ * @throws { Exception } Throws a exception if no argument provided.
  * @memberof wTools
  *
  */
