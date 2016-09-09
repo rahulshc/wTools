@@ -2998,7 +2998,8 @@ var strToBytes = function( src )
  * @global {object} _metrics - Contains metric prefixes.
  * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
  * @param {number} [ o.thousand=1000 ] - Sets integer power of one thousand.
- * @param {boolean} [ o.fixed=true ] - Formats number to fixed-point notation.
+ * @param {boolean} [ o.fixed=1 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
+ * Number must be between 0 and 20.
  * @param {number} [ o.dimensions=1 ] - Sets exponent of a number.
  * @param {number} [ o.metric=0 ] - Sets the metric unit type from the map( _metrics ).
  * @returns {string} Returns number with metric prefix as a string.
@@ -3129,7 +3130,7 @@ var strMetricFormat = function( number,o )
 
 /**
  * Short-cut for strMetricFormat() function.
- * Converts number( number ) to specific count of bytes with metrix prefix.
+ * Converts number( number ) to specific count of bytes with metric prefix.
  * Example: ( 2048 -> 2.0 kb). 
  *
  * @param {(string|number} str - Source number to  convert.
@@ -3172,6 +3173,34 @@ var strMetricFormatBytes = function( number,o )
 }
 
 //
+
+/**
+ * Short-cut for strMetricFormat() function.
+ * Converts number( number ) to specific count of seconds with metric prefix.
+ * Example: ( 1000 (ms) -> 1.000 s). 
+ *
+ * @param {number} str - Source number to  convert.
+ * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
+ * Can`t be changed.
+ * @see {@link wTools.strMetricFormat} Check out main function for more usage options and details.
+ * @returns {string} Returns number of seconds with metric prefix as a string.
+ *
+ * @example
+ * //returns "1.000 s"
+ * _.strMetricFormatBytes( 1000 );
+ * 
+ * @example
+ * //returns "10.000 ks"
+ * _.strTimeFormat(Math.pow(10,7));
+ * 
+ * @example
+ * //returns "78.125 s"
+ * _.strTimeFormat(Math.pow(5,7));
+ *
+ * @method strTimeFormat
+ * @memberof wTools
+ *
+ */
 
 var strTimeFormat = function( time )
 {
