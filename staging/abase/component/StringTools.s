@@ -2859,7 +2859,7 @@ var strDup = function strDup( src,times )
 //
 
 /**
- * This function converts string to camelcase using special pattern.
+ * Converts string to camelcase using special pattern.
  * If function finds character from this( '.','-','_','/' ) list before letter,
  * it replaces letter with uppercase version.
  * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ). *
@@ -2876,6 +2876,8 @@ var strDup = function strDup( src,times )
  * _.strCamelize( 'test-string' );
  *
  * @method strCamelize
+ * @throws { Exception } Throws a exception if( srcStr ) is not a String.
+ * @throws { Exception } Throws a exception if no argument provided.
  * @memberof wTools
  *
  */
@@ -2899,7 +2901,7 @@ var strCamelize = function( srcStr )
 //
 
 /**
- * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
+ * Removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
  * pattern with second argument( o ) property( o.separator ).If( o.separator ) is not defined,
  * function sets value to( '_' ).
  *
@@ -2917,6 +2919,9 @@ var strCamelize = function( srcStr )
  * _.strFilenameFor( "'example\\file?name.js",o );
  *
  * @method strFilenameFor
+ * @throws { Exception } Throws a exception if( srcStr ) is not a String.
+ * @throws { Exception } Throws a exception if( o ) is not a Map.
+ * @throws { Exception } Throws a exception if no arguments provided.
  * @memberof wTools
  *
  */
@@ -2949,17 +2954,18 @@ var strFilenameFor = function( srcStr,o )
 // --
 
 /**
- * This function converts each character of string passed by argument( str )
- * to array of 8-bit unsigned integers.
+ * Converts string( str ) to array of unsigned 8-bit integers.
  *
  * @param {string} str - Source string to convert.
  * @returns {typedArray} Returns typed array that represents string characters in 8-bit unsigned integers.
  *
  * @example
- * //returns Uint8Array [ 101, 120, 97, 109, 112, 108, 101 ]
+ * //returns [ 101, 120, 97, 109, 112, 108, 101 ]
  * _.strToBytes( 'example' );
  *
  * @method strToBytes
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if no argument provided.
  * @memberof wTools
  *
  */
