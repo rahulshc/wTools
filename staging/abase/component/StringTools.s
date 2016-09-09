@@ -2669,10 +2669,6 @@ var strHtmlEscape = function( str )
  * //returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
  * _.strUnicodeEscape( '//test//' );
  * 
- * @example
- * //returns &lt;div class=&quot;cls&quot;&gt;&lt;&#x2F;div&gt;
- * _.strHtmlEscape('<div class="cls"></div>');
- *
  * @method strUnicodeEscape
  * @throws { Exception } Throws a exception if no argument provided.
  * @throws { Exception } Throws a exception if ( src ) is not a String.
