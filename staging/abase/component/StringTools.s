@@ -2651,6 +2651,35 @@ var strHtmlEscape = function( str )
 
 //
 
+/**
+ * Returns string with escaped unicode sequence based on string( src ).
+ *
+ * @param {string} str - Source string to parse.
+ * @returns {string} Returns string with result of convertion.
+ *
+ * @example
+ * //returns \u0061\u0062\u0063;
+ * _.strUnicodeEscape( 'abc' );
+ *
+ * @example
+ * //returns \u0077\u006f\u0072\u006c\u0064
+ * _.strUnicodeEscape( "world" ); 
+ *
+ * @example
+ * //returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
+ * _.strUnicodeEscape( '//test//' );
+ * 
+ * @example
+ * //returns &lt;div class=&quot;cls&quot;&gt;&lt;&#x2F;div&gt;
+ * _.strHtmlEscape('<div class="cls"></div>');
+ *
+ * @method strUnicodeEscape
+ * @throws { Exception } Throws a exception if no argument provided.
+ * @throws { Exception } Throws a exception if ( src ) is not a String.
+ * @memberof wTools
+ *
+ */
+
 var strUnicodeEscape = function( src )
 {
   var result = '';
