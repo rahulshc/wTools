@@ -3127,6 +3127,35 @@ var strMetricFormat = function( number,o )
 
 //
 
+/**
+ * Short-cut for strMetricFormat() function.
+ * Converts number( number ) to specific count of bytes with metrix prefix.
+ * Example: ( 2048 -> 2.0 kb). 
+ *
+ * @param {(string|number} str - Source number to  convert.
+ * @param {object} o - Convertion options.
+ * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
+ * @param {number} [ o.thousand=1024 ] - Sets integer power of one thousand.
+ * @see {@link wTools.strMetricFormat} Check out main function for more usage options and details.
+ * @returns {string} Returns number of bytes with metric prefix as a string.
+ *
+ * @example
+ * //returns "100.0 b"
+ * _.strMetricFormatBytes( 100 );
+ * 
+ * @example
+ * //returns "4.0 kb"
+ * _.strMetricFormatBytes( 4096 );
+ * 
+ * @example
+ * //returns "1024.0 Mb"
+ * _.strMetricFormatBytes( Math.pow( 2, 30 ) );
+ *
+ * @method strMetricFormatBytes
+ * @memberof wTools
+ *
+ */
+
 var strMetricFormatBytes = function( number,o )
 {
 
