@@ -94,10 +94,10 @@ var testFunction = function( test, desc, src, options, expected )
   var exp = null;
   for( var k = 0; k < src.length; ++k  )
   {
-    test.description = desc;
+    test.description = desc ;
     got = _.toStr( src[ k ], options[ k ] || options[ 0 ]);
 
-    if( test.description === 'json test' && options[ k ].json )
+    if( test.description.slice(0,4) === 'json' && options[ k ].json )
     {
       // good
       // if JSON.parse is OK,compare source vs parse result
@@ -109,9 +109,10 @@ var testFunction = function( test, desc, src, options, expected )
       }
       catch( err )
       {
-         throw err;
-        // _.errLog( err );
-
+        //  throw err;
+        _.errLog( err );
+        //test fail call when JSON.parse throws error
+        test.identical( 0,1 );
       }
     }
 
@@ -1631,18 +1632,6 @@ var toStrJson = function( test )
      /*07*/ { a : new Error( "r" ) },
      /*08*/ { a : Symbol('sm') },
      /*09*/ { a : '\n\nABC' },
-    //  /*10*/ { a : stringFromFile( './file/file1', 'utf8' ), b : stringFromFile( './file/file1', 'ascii' ), c : 1 },
-    //  /*11*/ { a : [ stringFromFile( './file/file2', 'utf8') ], b : { e : stringFromFile( './file/file2', 'ascii' ) }, c : 1 },
-    //  /*12*/ { a : [ stringFromFile( './file/file3', 'utf8') ], b : stringFromFile( './file/file3', 'ascii' ) },
-    //  /*13*/ { a : [ stringFromFile( './file/file4.pdf', 'utf8') ], b : stringFromFile( './file/file4.pdf', 'ascii' ) },
-    //  /*14*/ { a : [ stringFromFile( './file/test.exe', 'utf8' ) ], b : stringFromFile( './file/test.exe', 'ascii' ) },
-     /*15*/ { a : stringFromFile( './file/small', 'utf8' ), b : [ stringFromFile( './file/small', 'ascii' ) ] },
-     /*16*/ { a : stringFromFile( './file/small2', 'utf8' ), b : stringFromFile( './file/small2', 'ascii' ) },
-     /*17*/ { a : stringFromFile( './file/small3', 'utf8' ), b : stringFromFile( './file/small3', 'ascii' ) },
-     /*18*/ { a : stringFromFile( './file/small4', 'utf8' ), b : stringFromFile( './file/small4', 'ascii' ) },
-     /*19*/ { a : stringFromFile( './file/small5', 'utf8' ), b : stringFromFile( './file/small5', 'ascii' ) },
-     /*20*/ { a : stringFromFile( './file/small6', 'utf8' ), b : stringFromFile( './file/small6', 'ascii' ) },
-     /*21*/ { a : stringFromFile( './file/small7', 'utf8' ), b : stringFromFile( './file/small7', 'ascii' ) },
 
    ],
 
@@ -1657,18 +1646,6 @@ var toStrJson = function( test )
      /*07*/ { json : 1 },
      /*08*/ { json : 1 },
      /*09*/ { json : 1 },
-    //  /*10*/ { json : 1 },
-    //  /*11*/ { json : 1 },
-    //  /*12*/ { json : 1 },
-    //  /*13*/ { json : 1 },
-    //  /*14*/ { json : 1 },
-     /*15*/ { json : 1 },
-     /*16*/ { json : 1 },
-     /*17*/ { json : 1 },
-     /*18*/ { json : 1 },
-     /*19*/ { json : 1 },
-     /*20*/ { json : 1 },
-     /*21*/ { json : 1 },
      
    ]
 
@@ -1832,6 +1809,71 @@ var toStrJson = function( test )
 }
 
 toStrJson.cover = [ _.toStr ];
+
+//
+var toStrJsonFromFileU = function( test )
+{
+   var desc =  'json from file as utf8',
+
+   src =
+   [
+     /*01*/ { a : stringFromFile( './file/file1', 'utf8' ), b : stringFromFile( './file/file2', 'utf8' ), c : 1 },
+     /*02*/ { a : stringFromFile( './file/file3', 'utf8' ), b : stringFromFile( './file/file4.pdf', 'utf8' ), c : 1 },
+     /*03*/ { a : [ stringFromFile( './file/test.exe', 'utf8' ) ], b : stringFromFile( './file/small', 'utf8' ) },
+     /*04*/ { a : stringFromFile( './file/small2', 'utf8' ), b : stringFromFile( './file/small3', 'utf8' ) },
+     /*05*/ { a : stringFromFile( './file/small4', 'utf8' ), b : stringFromFile( './file/small5', 'utf8' ) },
+     /*06*/ { a : stringFromFile( './file/small6', 'utf8' ), b : stringFromFile( './file/small7', 'utf8' ) },
+
+   ],
+
+   options =
+   [
+     /*01*/ { json : 1 },
+     /*02*/ { json : 1 },
+     /*03*/ { json : 1 },
+     /*04*/ { json : 1 },
+     /*05*/ { json : 1 },
+     /*06*/ { json : 1 },
+
+   ]
+
+  testFunction( test, desc, src, options);
+
+}
+
+toStrJsonFromFileU.cover = [ _.toStr ];
+
+//
+var toStrJsonFromFileA = function( test )
+{
+   var desc =  'json from file as ascii',
+
+   src =
+   [   
+     /*01*/ { a : stringFromFile( './file/file1', 'ascii' ), b : stringFromFile( './file/file2', 'ascii' ), c : 1 },
+     /*02*/ { a : stringFromFile( './file/file3', 'ascii' ), b : stringFromFile( './file/file4.pdf', 'ascii' ), c : 1 },
+     /*03*/ { a : [ stringFromFile( './file/test.exe', 'ascii' ) ], b : stringFromFile( './file/small', 'ascii' ) },
+     /*04*/ { a : stringFromFile( './file/small2', 'ascii' ), b : stringFromFile( './file/small3', 'ascii' ) },
+     /*05*/ { a : stringFromFile( './file/small4', 'ascii' ), b : stringFromFile( './file/small5', 'ascii' ) },
+     /*06*/ { a : stringFromFile( './file/small6', 'ascii' ), b : stringFromFile( './file/small7', 'ascii' ) },
+   ],
+   
+   options =
+   [
+     /*01*/ { json : 1 },
+     /*02*/ { json : 1 },
+     /*03*/ { json : 1 },
+     /*04*/ { json : 1 },
+     /*05*/ { json : 1 },
+     /*06*/ { json : 1 },
+     
+   ]
+
+  testFunction( test, desc, src, options);
+
+}
+
+toStrJsonFromFileA.cover = [ _.toStr ];
 
 //
 
@@ -2438,6 +2480,8 @@ var Proto =
     toStrArray : toStrArray,
     toStrObject : toStrObject,
     toStrJson : toStrJson,
+    toStrJsonFromFileU : toStrJsonFromFileU,
+    toStrJsonFromFileA : toStrJsonFromFileA,
     toStrWrapString : toStrWrapString,
     toStrLevel : toStrLevel,
     toStrEnumerable : toStrEnumerable,
