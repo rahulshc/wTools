@@ -2481,7 +2481,7 @@ strUnjoin.any = function( src )
  * _.strDropPrefix( 'example','abc' );
  *
  * @method strDropPrefix
-  * @memberof wTools
+ * @memberof wTools
  *
 */
 var strDropPrefix = function( src,prefix )
@@ -2496,6 +2496,28 @@ var strDropPrefix = function( src,prefix )
 }
 
 //
+
+/**
+ * Removes occurrence of( postfix ) from the end of string( src ).
+ * @param {string} src - Source string to parse.
+ * @param {string} postfix - String that is to be dropped.
+ * @returns {string} Returns string with result of postfix removement.
+ *
+ * @example
+ * //returns examp
+ * _.strDropPostfix( 'example','le' );
+ *
+ * @example
+ * //returns example
+ * _.strDropPostfix( 'example','abc' );
+ *
+ * @method strDropPostfix
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( postfix ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+*/
 
 var strDropPostfix = function( src,postfix )
 {
