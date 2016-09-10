@@ -2383,6 +2383,29 @@ var strJoin = function()
 
 //
 
+/**
+ * Separates part of string( srcStr ) using array( maskArray ) as mask and returns them in array.
+ * @param {string} srcStr - Source string.
+ * @param {array} maskArray - Contains mask for source string.
+ * @returns {array} Returns array with unjoined string part.
+ *
+ * @example
+ * //returns [ "prefix", "_something_", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] )
+ * 
+ * @example
+ * //returns [ "prefix_", "something", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[_.strUnjoin.any,'something','postfix'] )
+ * 
+ *
+ * @method strUnjoin
+ * @throws { Exception } Throws a exception if no arguments provided.
+ * @throws { Exception } Throws a exception if( srcStr ) is not a String.
+ * @throws { Exception } Throws a exception if( maskArray ) is not a Array.
+ * @memberof wTools
+ *
+ */
+ 
 var strUnjoin = function( srcStr,maskArray )
 {
 
