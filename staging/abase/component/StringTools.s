@@ -565,6 +565,10 @@ var _toStr = function _toStr( src,o )
   {
     // if( o.noAtomic )
     // return;
+    
+    if( o.json && src === undefined)
+    result += null;
+    else    
     result += String( src );
   }
 
