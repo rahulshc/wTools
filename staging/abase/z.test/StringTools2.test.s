@@ -514,17 +514,17 @@ var toStrMethods = function( test )
 var toStrFields = function( test )
 {
   test.description = 'Fields default options';
-  var got = _.toStrFields( [ 1, 2, 'text',undefined ] );
+  var got = _.toStrFields( [ 1, 2, 'text', undefined ] );
   var expected = '[ 1, 2, "text", undefined ]';
   test.identical( got,expected );
   
   test.description = 'Fields, levels : 0';
-  var got = _.toStrFields( [ 1, 2, 'text',undefined ], { levels : 0 } );
+  var got = _.toStrFields( [ 1, 2, 'text', undefined ], { levels : 0 } );
   var expected = '[ Array with 4 elements ]';
   test.identical( got,expected );
   
   test.description = 'Ignore routine';
-  var got = _.toStrFields( [ function f () {} , 1 ,2 ,3 ] );
+  var got = _.toStrFields( [ function f () {}, 1, 2, 3 ] );
   var expected = '[ 1, 2, 3 ]';
   test.identical( got,expected );
   
@@ -549,7 +549,7 @@ var toStrFields = function( test )
     test.description = 'onlyRoutines & noRoutine both true';
     test.shouldThrowError( function()
     {
-      _.toStrFields( function f () {},{ onlyRoutines : 1 } );
+      _.toStrFields( function f () {}, { onlyRoutines : 1 } );
     });
     
     test.description = 'no arguments';
@@ -559,6 +559,107 @@ var toStrFields = function( test )
     });
   }
 }
+
+//
+
+var _toStrShort = function( test )
+{
+  test.description = 'Array length test';
+  var got = _._toStrShort( [ 1, 2, 'text', undefined ] );
+  var expected = '[ Array with 4 elements ]';
+  test.identical( got,expected );
+  
+  test.description = 'date to string';
+  var got = _._toStrShort( new Date( Date.UTC( 1993, 12, 12 ) ) );
+  var expected = '1994-01-12T00:00:00.000Z';
+  test.identical( got,expected );
+  
+  test.description = 'string length > 40';
+  var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', {} );
+  var expected = 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyr...';
+  test.identical( got,expected );
+  
+  test.description = 'string with options';
+  var got = _._toStrShort( '\toxtndmtmdb', { escaping : 1 } );
+  var expected = '\\toxtndmtmdb';
+  test.identical( got,expected );
+  
+  test.description = 'error to string ';
+  var got = _._toStrShort( new Error( 'err' ) );
+  var expected = '[object Error]';
+  test.identical( got,expected );
+  
+  test.description = 'no arguments ';
+  var got = _._toStrShort();
+  var expected = 'undefined';
+  test.identical( got,expected );
+  
+  /**/
+
+  if( Config.debug )
+  {
+    
+    test.description = 'invalid options argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrShort( '1', 2 );
+    });
+    
+    test.description = 'if string and no options provided';
+    test.shouldThrowError( function()
+    {
+      _._toStrShort( '1' );
+    });
+    
+  }
+}
+
+//
+
+var _toStrIsVisibleElement = function( test )
+{
+  test.description = 'default options';
+  var got = _._toStrIsVisibleElement( 123, {} );
+  var expected = true;
+  test.identical( got,expected );
+  
+  test.description = 'noAtomic';
+  var got = _._toStrIsVisibleElement( 'test', { noAtomic : 1 } );
+  var expected = false;
+  test.identical( got,expected );
+  
+  test.description = 'noObject';
+  var got = _._toStrIsVisibleElement( { a : 'test' }, { noObject : 1 } );
+  var expected = false;
+  test.identical( got,expected );
+  
+  
+  /**/
+
+  if( Config.debug )
+  {
+    
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _._toStrIsVisibleElement( '1' );
+    });
+    
+    test.description = 'second argument is not a object';
+    test.shouldThrowError( function()
+    {
+      _._toStrIsVisibleElement( '1', 2 );
+    });
+    
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrIsVisibleElement();
+    });
+    
+  }
+}
+
 var Proto =
 {
 
@@ -578,6 +679,8 @@ var Proto =
     strFilenameFor : strFilenameFor,
     toStrMethods : toStrMethods,
     toStrFields : toStrFields,
+    _toStrShort : _toStrShort,
+    _toStrIsVisibleElement : _toStrIsVisibleElement,
 
   }
 
