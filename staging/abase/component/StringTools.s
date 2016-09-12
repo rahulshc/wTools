@@ -402,6 +402,7 @@ var toStrFine_gen = function()
   var routine = function toStrFine( src,o )
   {
 
+    _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
     var o = o || {};
@@ -2163,14 +2164,13 @@ var strIron = function()
 
 //
 
-
 /**
- * Replaces each occurrence of( ins ) in string( dst ) with( sub ).
- * If the function can not find any occurrence in source( dst ) it returns the original string.
- * Function  can be called in three different ways:
- *  One argument: object that contains properties: dst,dictionary.
- *  Two arguments: dst, dictionary.
- *  Three arguments: dst, ins, sub.
+ * Replaces each occurrence of ( ins ) in string ( dst ) with ( sub ).
+ * If the function can not find any occurrence in source ( dst ) it returns the original string.
+ * Function can be called in three different ways:
+ *  One argument: object that contains properties: map ( o ) with options.
+ *  Two arguments: string ( dst ), map ( dictionary ).
+ *  Three arguments: string ( dst ), string ( ins ), string ( sub )
  * @param {string} dst - Source string to parse.
  * @param {string} ins - String that is to be replaced by( sub ).
  * @param {string} sub - String that replaces finded occurrence.
@@ -2204,7 +2204,6 @@ var strIron = function()
 
 var strReplaceAll = function( dst, ins, sub )
 {
-
   var o;
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 
@@ -2276,7 +2275,7 @@ strReplaceAll.defaults =
  *
  * @example
  * //returns " your cars are"
- * _.strReplaceNames(' my name is',['my','name','is'],['your','cars','are'])
+ * _.strReplaceNames( ' my name is',[ 'my','name','is' ],[ 'your','cars','are' ] )
  *
  * @method strReplaceNames
  * @throws { Exception } Throws a exception if( ins ) is not a Array.
@@ -2314,8 +2313,8 @@ var strReplaceNames = function( src,ins,sub )
 
 /**
  * Concatenates objects provided to function in orded that they are specified.
- * If arguments are different type,like array and number, function appends number to each
- * array value. Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
+ * If one of argument is array-like, makes string for each element of the argument.
+ * Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
  * @param {array-like} arguments - Contains provided objects.
  * @returns {object} Returns concatenated objects as string or array.Return type depends
  * from arguments type.
@@ -2333,7 +2332,7 @@ var strReplaceNames = function( src,ins,sub )
  * _.strJoin( [ 1, 2 ], [ 1, 3 ] )
  *
  * @method strJoin
- * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array,String or Number.
+ * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array, String or Number.
  * @memberof wTools
  *
  */
