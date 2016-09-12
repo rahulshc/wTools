@@ -1,4 +1,4 @@
-( function _Exec_s_() {
+( function _ExecTools_s_() {
 
 'use strict';
 
@@ -41,7 +41,7 @@ var read = function( data )
 var shell = ( function( o )
 {
 
-  var Exec;
+  var ChildProcess,Chalk;
 
   return function shell( o )
   {
@@ -53,24 +53,59 @@ var shell = ( function( o )
     _.routineOptions( shell,o );
     _.assert( arguments.length === 1 );
 
-    if( !Exec )
-    Exec = require( 'child_process' ).exec;
+    /* */
+
+    if( !ChildProcess )
+    ChildProcess = require( 'child_process' );
+
+    if( Chalk === undefined && typeof module !== 'undefined' )
+    try
+    {
+      Chalk = require( 'chalk' );
+    }
+    catch( err ) 
+    {
+      Chalk = null;
+    }
+
+    /* */
 
     if( o.usingLogging )
     logger.log( o.code );
 
-    var child = Exec( o.code );
+    if( o.usingFork )
+    o.child = ChildProcess.fork( o.code,'',{ silent : false } );
+    else
+    o.child = ChildProcess.exec( o.code );
 
-    child.stdout.on( 'data', function( data )
+    debugger;
+
+    if( o.child.stdout )
+    o.child.stdout.on( 'data', function( data )
     {
-      logger.log( _.strIndentation( data,'  ' ) );
-    });
-    child.stderr.on( 'data', function( data )
-    {
-      logger.log( '  Error :' + _.strIndentation( data,'  ' ) );
+      data = 'Output :' + _.strIndentation( data,'  ' );
+      if( Chalk )
+      data = Chalk.bgYellow( Chalk.black( data ) );
+      logger.log( data );
     });
 
-    child.on( 'close', function() { debugger; con.give(); } );
+    if( o.child.stderr )
+    o.child.stderr.on( 'data', function( data )
+    {
+      data = 'Error :' + _.strIndentation( data,'  ' );
+      if( Chalk )
+      data = Chalk.bgYellow( Chalk.red( data ) );
+      logger.log( data );
+    });
+
+    o.child.on( 'close', function( errCode )
+    {
+      debugger;
+      if( errCode !== 0 )
+      con.error( _.err( 'error code',errCode ) );
+      else
+      con.give( errCode );
+    });
 
     return con;
   }
@@ -81,6 +116,7 @@ shell.defaults =
 {
   code : null,
   usingLogging : 1,
+  usingFork : 0,
 }
 
 //

@@ -790,7 +790,6 @@ var _toStrFromStr = function( src,o )
 
   if( o.escaping )
   {
-    debugger;
 
     for( var s = 0 ; s < src.length ; s++ )
     {
@@ -2768,8 +2767,10 @@ var strCsvFrom = function( src,o )
       var element = _.entityWithKeyRecursive( row,key );
       if( element === undefined ) element = '';
       element = String( element );
-      if( element.indexOf( o.rowSeparator ) !== -1 ) element = _.strReplaceAll( element,o.rowSeparator,o.substitute );
-      if( element.indexOf( o.cellSeparator ) !== -1 ) element = _.strReplaceAll( element,o.cellSeparator,o.substitute );
+      if( element.indexOf( o.rowSeparator ) !== -1 )
+      element = _.strReplaceAll( element,o.rowSeparator,o.substitute );
+      if( element.indexOf( o.cellSeparator ) !== -1 )
+      element = _.strReplaceAll( element,o.cellSeparator,o.substitute );
 
       rowString += element + o.cellSeparator;
 

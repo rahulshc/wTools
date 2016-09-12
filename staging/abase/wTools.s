@@ -1231,22 +1231,22 @@ var entityContain = function entityContain( src1,src2,options )
 // entity selector
 // --
 
-  /**
-   * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
-      properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
-   * @example
-   *
-     var obj =
-     {
-       a: 1,
-       b: { e: 2, c: 3 }
-     };
-     wTools.entityLength(obj); // 2
-   * @param {*} src Input entity
-   * @returns {number} Length of entity.
-   */
+/**
+ * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
+    properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
+ * @example
+ *
+   var obj =
+   {
+     a: 1,
+     b: { e: 2, c: 3 }
+   };
+   wTools.entityLength(obj); // 2
+ * @param {*} src Input entity
+ * @returns {number} Length of entity.
+ */
 
-var entityLength = function( src )
+var entityLength = function entityLength( src )
 {
   if( src === undefined ) return 0;
   if( _.arrayLike( src ) )
@@ -1254,6 +1254,24 @@ var entityLength = function( src )
   else if( _.objectLike( src ) )
   return _.mapOwnKeys( src ).length;
   else return 1;
+}
+
+//
+
+var entitySize = function entitySize( src )
+{
+  if( _.strIs( src ) )
+  return src.length;
+  if( _.atomicIs( src ) )
+  return null;
+
+  if( _.numberIs( src.byteLength ) )
+  return src.byteLength;
+
+  if( _.arrayLike( src ) )
+  return src.length;
+
+  return null;
 }
 
 //
@@ -2664,12 +2682,17 @@ var _err = function _err( o )
     var argument = o.args[ a ];
     var str;
 
-    if( argument )
+    if( argument && !_.atomicIs( argument ) )
     {
+
       if( _.routineIs( argument.toStr ) ) str = argument.toStr();
-      else if( _.strIs( argument.originalMessage ) ) str = argument.originalMessage;
-      else if( _.strIs( argument.message ) ) str = argument.message;
-      else if( !_.atomicIs( argument ) && _.routineIs( argument.toString ) ) str = argument.toString();
+      else if( _.errorIs( argument ) )
+      {
+        if( _.strIs( argument.originalMessage ) ) str = argument.originalMessage;
+        else if( _.strIs( argument.message ) ) str = argument.message;
+        else str = _.toStr( argument );
+      }
+      else if( _.routineIs( argument.toString ) ) str = argument.toString();
       else str = String( argument );
     }
     else str = String( argument );
@@ -2700,14 +2723,15 @@ var _err = function _err( o )
 
   if( originalMessage[ 0 ] !== '\n' )
   originalMessage = '\n' + originalMessage;
-  originalMessage = '\n' + 'caught ' + _.stack().split( '\n' )[ o.level ] + originalMessage;
+  originalMessage = '\n' + 'caught ' + _.stack( o.level ).split( '\n' ) + originalMessage;
 
   /* */
 
   if( !result )
   {
-    var stack = new Error().stack || '';
+    var stack = _.stack( o.level,-1 );
     result = new Error( originalMessage + '\n' + stack + '\n' );
+    result.stack = stack;
     result.originalStack = stack;
   }
   else try
@@ -3045,6 +3069,16 @@ var assertMapOwnAll = function( src,all,msg )
 
 //
 
+var assertNotTested = function( src )
+{
+
+  debugger;
+  _.assert( false,'not tested : ' + stack( 1 ) );
+
+}
+
+//
+
 var assertMapNone = function( src )
 {
 
@@ -3121,19 +3155,22 @@ var assertMapOwnNone = function( src,none )
    * @example
     function checkAngles( a, b, c )
     {
-       wTools.warn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+       wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
     };
     checkAngles( 120, 23, 130 );
 
    // triangle with that angles does not exists
    * @param condition Condition to check.
    * @param messages messages to print.
-   * @method warn
+   * @method assertWarn
    * @memberof wTools
    */
 
-var warn = function( condition )
+var assertWarn = function( condition )
 {
+
+  if( DEBUG )
+  return;
 
   if( !condition )
   {
@@ -3175,16 +3212,55 @@ var warn = function( condition )
    * @memberof wTools
    */
 
-var stack = function()
+var stack = function stack( first,extent )
 {
-
   var e = new Error();
   var result = e.stack;
+
+  /*_.assert( arguments.length === 0 && arguments.length === 1 );*/
 
   result = result.split( '\n' );
 
   result.splice( 0,2 );
+
+  /* */
+
+  if( _.numberIs( first ) )
+  if( first < 0 )
+  result.length + first;
+
+  if( _.numberIs( extent ) )
+  if( extent < 0 )
+  result.length + extent;
+
+  /* */
+
+  if( arguments.length === 0 )
+  {
+  }
+  else if( arguments.length === 1 )
+  {
+    result = result[ first ];
+
+    if( _.strIs( result ) )
+    {
+      result = result.replace( /^\s+/,'' );
+      result = result.replace( /^at/,'' );
+      result = result.replace( /^\s+/,'' );
+    }
+
+    return result;
+  }
+  else if( arguments.length === 2 )
+  {
+    result = result.slice( first,extent );
+  }
+  else throw new Error( '( stack ) expects zero, one or two arguments' );
+
+  /* */
+
   result = String( result.join( '\n' ) );
+
   return result;
 }
 
@@ -11194,6 +11270,7 @@ var Proto =
   // entity selector
 
   entityLength : entityLength,
+  entitySize : entitySize,
 
   entityWithKeyRecursive : entityWithKeyRecursive, /* deprecated */
   entityValueWithIndex : entityValueWithIndex,
@@ -11247,7 +11324,9 @@ var Proto =
   assertMapOwnNone : assertMapOwnNone,
   assertMapAll : assertMapAll,
   assertMapOwnAll : assertMapOwnAll,
-  warn : warn,
+  assertNotTested : assertNotTested,
+
+  assertWarn : assertWarn,
   stack : stack,
 
   includeAny : includeAny,  /* experimental */
