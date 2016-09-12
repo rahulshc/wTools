@@ -714,6 +714,40 @@ var _toStrIsSimpleElement = function( test )
   }
 }
 
+//
+
+var _toStrFromRoutine = function( test )
+{
+  test.description = 'routine test';
+  var got = _._toStrFromRoutine( function a () {} );
+  var expected = '[ routine a ]';
+  test.identical( got,expected );
+
+  test.description = 'routine without name';
+  var got = _._toStrFromRoutine( function () {} );
+  var expected = '[ routine without name ]';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromRoutine( '1' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromRoutine();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -736,6 +770,7 @@ var Proto =
     _toStrShort : _toStrShort,
     _toStrIsVisibleElement : _toStrIsVisibleElement,
     _toStrIsSimpleElement : _toStrIsSimpleElement,
+    _toStrFromRoutine : _toStrFromRoutine,
 
   }
 
