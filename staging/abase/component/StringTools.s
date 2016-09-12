@@ -1785,6 +1785,35 @@ strSplitChunks.defaults =
 
 //
 
+/**
+ * Finds occurrence of splitter( o.splitter ) in source( o.src ) and splits string in finded position by half.
+ * If function finds  more then one occurrence, it separates string in the position of the last. 
+ * @param {object} [ o.src=null ] - Source string.
+ * @param { ( string | array ) } [ o.splitter=' ' ] - Splitter of the string.
+ * @param { boolean } [ o.left=1 ] - Finds occurrence from begining of the string.
+ * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
+ *
+ * @example
+ * //returns [ "sample", "string" ]
+ * _._strInhalf( { src : 'sample,string', splitter : [ ',' ] } );
+ *
+ * @example
+ * //returns [ "sample", "string" ]
+ *_._strInhalf( { src : 'sample string', splitter : ' ' } )
+ * 
+ * @example
+ * //returns [ "sample string,name", "string" ]
+ * _._strInhalf( { src : 'sample string,name string', splitter : [ ',', ' ' ] } )
+ *
+ * @method _strInhalf
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o ) is not a Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.splitter ) is not a Array or String.
+ * @memberof wTools
+ *
+ */
+
 var _strInhalf = function( o )
 {
   var result = [];
