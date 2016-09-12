@@ -844,8 +844,8 @@ var _toStrIsSimpleElement = function( element,o )
 
 var _toStrFromRoutine = function( src,o )
 {
+  _.assert( _.routineIs( src ),'expects routine ( src )' );
   var result = '';
-
   result = '[ routine ' + ( src.name || src._name || 'without name' ) + ' ]';
 
   return result;
@@ -910,7 +910,7 @@ var _toStrFromNumber = function( src,o )
  * @example
  * //returns "test\n"
  * _.toStrFromStr( 'test\n', { escaping : 1 } );
- * 
+ *
  * @example
  * //returns `test`
  * _.toStrFromStr( 'test', { usingMultilineStringWrapper : 1 } );
