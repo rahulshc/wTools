@@ -689,7 +689,9 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
-
+  
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+  
   /* */
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
