@@ -412,9 +412,9 @@ var toStrFine_gen = function()
 
     _.assertMapOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
-
     if( o.onlyRoutines )
     {
+      _.assert( !o.noRoutine,'expects ( o.noRoutine ) false if ( o.onlyRoutines ) is true' );
       for( var f in primeFilter )
       o[ f ] = 1;
       o.noRoutine = 0;
