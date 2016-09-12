@@ -33,7 +33,7 @@ var strTypeOf = _.strTypeOf;
  * options provided by argument( o ).
  *
  * @param {object} src - Source object.
- * @param {object} o - Convertion options.
+ * @param {wTools~toStrOptions} o - conversion o {@link wTools~toStrOptions}.
  * @param {boolean} [ options.onlyRoutines=true ] - makes object behavior Routine only.
  * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns string that represents object data.
@@ -67,7 +67,7 @@ var toStrMethods = function( src,o )
  * options provided by argument( o ).
  *
  * @param {object} src - Source object.
- * @param {object} o - Convertion options.
+ * @param {wTools~toStrOptions} o - conversion o {@link wTools~toStrOptions}.
  * @param {boolean} [ options.noRoutine=false ] - Ignores all entities of type Routine.
  * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns string that represents object data.
@@ -84,7 +84,7 @@ var toStrMethods = function( src,o )
  * @memberof wTools
  *
  */
- 
+
 var toStrFields = function( src,o )
 {
   var o = o || {};
@@ -94,45 +94,49 @@ var toStrFields = function( src,o )
 }
 
 //
+/**
+* Options object for toStr function.
+* @typedef {Object} wTools~toStrOptions
+* @property {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
+* into "[ .. ]" / "{ .. }" respecitvely.
+* @property {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
+* @property {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
+* @property {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+* @property {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+* @property {boolean} [ o.prependTab=true ] - Prepend tab before first line.
+* @property {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
+* @property {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
+* @property {string} [ o.tab='' ] - Prepended before each line tab.
+* @property {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+* @property {string} [ o.colon=' : ' ] - Colon between name and value, example : { a : 1 }.
+* @property {boolean} [ o.noRoutine=false ] - Ignores all entities of type Routine.
+* @property {boolean} [ o.noAtomic=false ] - Ignores all entities of type Atomic.
+* @property {boolean} [ o.noArray=false ] - Ignores all entities of type Array.
+* @property {boolean} [ o.noObject=false ] - Ignores all entities of type Object.
+* @property {boolean} [ o.noRow=false ] - Ignores all entities of type Row.
+* @property {boolean} [ o.noError=false ] - Ignores all entities of type Error.
+* @property {boolean} [ o.noNumber=false ] - Ignores all entities of type Number.
+* @property {boolean} [ o.noString=false ] - Ignores all entities of type String.
+* @property {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
+* @property {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
+* @property {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
+* @property {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
+* @property {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].
+* Number must be between 1 and 21.
+* @property {number} [ o.fixed=null ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
+* Number must be between 0 and 20.
+* @property {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
+* @property {boolean} [ o.multiline=false ] - Writes each object property in new line.
+* @property {boolean} [ o.escaping=false ] - enable escaping of special characters.
+* @property {boolean} [ o.json=false ] - enable conversion of object( src ) to JSON string.
+*/
 
 /**
  * Converts object passed by argument( src ) to string format using parameters passed
- * by argument( o ).If object ( src ) has own ( toStr ) method defined function uses it for convertion.
+ * by argument( o ).If object ( src ) has own ( toStr ) method defined function uses it for conversion.
  *
  * @param {object} src - Source object for representing it as string.
- * @param {object} o - Convertion o.
- * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
- * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
- * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
- * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
- * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
- * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
- * @param {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
- * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
- * @param {string} [ o.tab='' ] - Prepended before each line tab.
- * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
- * @param {string} [ o.colon=' : ' ] - Colon between name and value, example : { a : 1 }.
- * @param {boolean} [ o.noRoutine=false ] - Ignores all entities of type Routine.
- * @param {boolean} [ o.noAtomic=false ] - Ignores all entities of type Atomic.
- * @param {boolean} [ o.noArray=false ] - Ignores all entities of type Array.
- * @param {boolean} [ o.noObject=false ] - Ignores all entities of type Object.
- * @param {boolean} [ o.noRow=false ] - Ignores all entities of type Row.
- * @param {boolean} [ o.noError=false ] - Ignores all entities of type Error.
- * @param {boolean} [ o.noNumber=false ] - Ignores all entities of type Number.
- * @param {boolean} [ o.noString=false ] - Ignores all entities of type String.
- * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
- * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
- * @param {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
- * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
- * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].
- * Number must be between 1 and 21.
- * @param {number} [ o.fixed=null ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
- * Number must be between 0 and 20.
- * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
- * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
- * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
- * @param {boolean} [ o.json=false ] - enable convertion of object( src ) to JSON string.
+ * @param {wTools~toStrOptions} o - conversion o {@link wTools~toStrOptions}.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -249,7 +253,7 @@ var toStrFields = function( src,o )
  * _.toStr( function add( ){ }, { levels : 0 } );
  *
  * @example
- * //If object ( src ) has own ( toStr ) method defined function uses it for convertion
+ * //If object ( src ) has own ( toStr ) method defined function uses it for conversion
  * //returns
  * //function func(  ) {
  * //console.log('sample');
@@ -298,13 +302,13 @@ var toStrFields = function( src,o )
  * @example
  * //returns { "a" : "string", "b" : 1, "c" : 2 }
  * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
- * 
+ *
  * @example
  * //returns { stack : "Error: my message2"..., message : "my message2" }
  * _.toStr( new Error('my message2'), { onlyEnumerable : 0,errorAsMap : 1 } );
- * 
+ *
  * @example
- * //returns 
+ * //returns
  * // "{
  * //  a : `line1
  * // line2
@@ -584,7 +588,7 @@ var _toStr = function _toStr( src,o )
  * For object,array and row returns count of elemets, example: '[ Row with 3 elements ]'.
  *
  * @param {object} src - Source object.
- * @param {object} o - Convertion options.
+ * @param {wTools~toStrOptions} o - conversion options {@link wTools~toStrOptions}.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -671,7 +675,7 @@ var _toStrShort = function( src,o )
  * Returns false if object must be ignored.
  *
  * @param {object} src - Source object.
- * @param {object} o - Filters.
+ * @param {wTools~toStrOptions} o - Filters {@link wTools~toStrOptions}.
  * @returns {boolean} Returns result of filter check.
  *
  * @example
@@ -777,19 +781,19 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
 //
 
 /**
- * Checks if object length provided by argument( src ) is enough to represent it as single line string.
+ * Checks if object length provided by argument( element ) is enough to represent it as single line string.
  * Options are provided by argument( o ). 
  * Returns true if object can be represented as one line.
  *
- * @param {object} src - Source object.
- * @param {object} o - Check options.
+ * @param {object} element - Source object.
+ * @param {wTools~toStrOptions} o - Check options {@link wTools~toStrOptions}.
  * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
  * @returns {boolean} Returns result of length check.
  *
  * @example
  * //returns true
  * _.toStrIsSimpleElement( 'string', { } );
- * 
+ *
  * @example
  * //returns false
  * _.toStrIsSimpleElement( { a : 1, b : 2, c : 3, d : 4, e : 5 }, { } );
@@ -830,13 +834,13 @@ var _toStrIsSimpleElement = function( element,o )
  * from argument( o ).
  *
  * @param {object} src - Source object.
- * @param {object} o - Convertion options.
+ * @param {wTools~toStrOptions} o - conversion options {@link wTools~toStrOptions}.
  * @returns {string} Returns routine as string.
  *
  * @example
  * //returns [ routine a ]
  * _.toStrFromRoutine( function a(){}, {} );
- * 
+ *
  * @method _toStrFromRoutine
  * @memberof wTools
  *
@@ -857,7 +861,7 @@ var _toStrFromRoutine = function( src,o )
  * This function converts Number to String with options.
  *
  * @param {Number} src - Number for conversion.
- * @param {Object} o - Contains conversion options.
+ * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
  * @param {Number} o.precision - Integer value that specifying  length of a number.
  * @param {Number} o.fixed - Number of digits after the decimal point.
  * @returns {String} Returns number converted to the string.
@@ -897,7 +901,7 @@ var _toStrFromNumber = function( src,o )
  * Also string can be wrapped in to backtick( `` ) if ( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true. 
  *
  * @param {object} src - String to parse.
- * @param {Object} o - Contains conversion options.
+ * @param {wTools~toStrOptions} o - Contains conversion  options {@link wTools~toStrOptions}.
  * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
  * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
  * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
@@ -1039,7 +1043,7 @@ var _toStrFromStr = function( src,o )
  * using options provided by argument( o ).
  *
  * @param {object} src - Array to convert.
- * @param {Object} o - Contains conversion options.
+ * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
  * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
@@ -1163,7 +1167,7 @@ var _toStrFromArray = function( src,o )
  * using options provided by argument( o ).
  *
  * @param {object} src - Object to convert.
- * @param {Object} o - Contains conversion options.
+ * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
  * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
  * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
@@ -1300,13 +1304,13 @@ var _toStrFromObject = function( src,o )
  * Function builds string that represents  container structure like object or array using keys and values from
  * argument( o ).Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
  *
- * @param {Object} o - Contains data and options.
+ * @param {wTools~toStrOptions} o - Contains data and options {@link wTools~toStrOptions}.
  * @param {object} [ o.values ] - Source object that contains values.
  * @param {array} [ o.names ] - Source object keys.
  * @param {object} [ o.optionsContainer ] - Options for container.
  * @param {string} [ o.optionsContainer.comma ] - Splitter between elements, example : [ 1, 2, 3 ].
  * @param {boolean} [ o.optionsContainer.wrap] - Wrap array-like and object-like entities.
- * @param {boolean} [ o.optionsContainer.json ] - Enable convertion of object( src ) to JSON string.
+ * @param {boolean} [ o.optionsContainer.json ] - Enable conversion of object( src ) to JSON string.
  * @param {string} [ o.optionsContainer.tab ] - Prepended before each line tab.
  * @param {string} [ o.optionsContainer.dtab ] - String attached to ( o.tab ) each time the function parses next level of object depth.
  * @param {boolean} [ o.optionsContainer.prependTab ] - Prepend tab before first line.
@@ -1315,7 +1319,7 @@ var _toStrFromObject = function( src,o )
  * @param {string} [ o.optionsItem.tab ] - Prepended before each line tab.
  * @param {number} [ o.optionsItem.level ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @returns {String} Returns string representation of container.
- * 
+ *
  * @method _toStrFromContainer
  * @throws { Exception } Throw an exception if no argument provided.
  * @memberof wTools
@@ -2802,7 +2806,7 @@ var strHtmlEscape = function( str )
  * Returns string with escaped unicode sequence based on string( src ).
  *
  * @param {string} str - Source string to parse.
- * @returns {string} Returns string with result of convertion.
+ * @returns {string} Returns string with result of conversion.
  *
  * @example
  * //returns \u0061\u0062\u0063;
@@ -3141,7 +3145,7 @@ var strToBytes = function( src )
  * Example: for number ( 50000 ) function returns ( "50.0 k" ), where "k"- thousand.
  *
  * @param {(number|string)} src - Source object.
- * @param {object} o - Convertion options.
+ * @param {object} o - conversion options.
  * @global {object} _metrics - Contains metric prefixes.
  * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
  * @param {number} [ o.thousand=1000 ] - Sets integer power of one thousand.
@@ -3281,7 +3285,7 @@ var strMetricFormat = function( number,o )
  * Example: ( 2048 -> 2.0 kb). 
  *
  * @param {(string|number} str - Source number to  convert.
- * @param {object} o - Convertion options.
+ * @param {object} o - conversion options.
  * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
  * @param {number} [ o.thousand=1024 ] - Sets integer power of one thousand.
  * @see {@link wTools.strMetricFormat} Check out main function for more usage options and details.
