@@ -1789,8 +1789,8 @@ strSplitChunks.defaults =
  * Finds occurrence of splitter( o.splitter ) in source( o.src ) and splits string in finded position by half.
  * If function finds  more then one occurrence, it separates string in the position of the last. 
  * @param {object} [ o.src=null ] - Source string.
- * @param { ( string | array ) } [ o.splitter=' ' ] - Splitter of the string.
- * @param { boolean } [ o.left=1 ] - Finds occurrence from begining of the string.
+ * @param {string | array} [ o.splitter=' ' ] - Splitter of the string.
+ * @param {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -1885,6 +1885,34 @@ _strInhalf.defaults =
 }
 
 //
+
+/**
+ * Short-cut for _strInhalf function. 
+ * Finds occurrence of splitter( o.splitter ) from begining of ( o.src ) and splits string in finded position by half.
+ * @param {object} [ o.src=null ] - Source string.
+ * @param {string | array} [ o.splitter=' ' ] - Splitter of the string.
+ * @param {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
+ * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
+ *
+ * @example
+ * //returns [ "sample", "string" ]
+ * _.strInhalfLeft( { src : 'sample,string', splitter : [ ',' ] } );
+ *
+ * @example
+ * //returns [ "sample", "string" ]
+ *_.strInhalfLeft( { src : 'sample string', splitter : ' ' } )
+ * 
+ * @example
+ * //returns [ "sample string,name", "string" ]
+ * _.strInhalfLeft( { src : 'sample string,name string', splitter : [ ',', ' ' ] } )
+ *
+ * @method strInhalfLeft
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o ) is not a Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @memberof wTools
+ *
+ */
 
 var strInhalfLeft = function( o )
 {
