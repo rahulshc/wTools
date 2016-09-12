@@ -689,9 +689,9 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
-  
+
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
-  
+
   /* */
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
@@ -803,6 +803,8 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
 var _toStrIsSimpleElement = function( element,o )
 {
   _.assert( arguments.length === 2 );
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+
 
   if( _.strIs( element ) )
   {
