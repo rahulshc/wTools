@@ -924,6 +924,10 @@ var _toStrFromStr = function( src,o )
 {
   var result = '';
 
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ), 'expects string ( src )'  );
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+
   // 007f : ""
   // . . .
   // 009f : ""
