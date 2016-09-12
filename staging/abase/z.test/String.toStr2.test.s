@@ -27,6 +27,7 @@ if( typeof module !== 'undefined' )
 
 var _ = wTools;
 var Self = {};
+var fs = require('fs');
 
 
 //
@@ -76,6 +77,15 @@ var reportChars = function()
 
 //
 
+var stringFromFile = function ( path, encoding, begin, end )
+{
+  var str = fs.readFileSync( path, encoding );
+  str = str.slice( begin, end );
+  return str;
+}
+
+//
+
 var testFunction = function( test, desc, src, options, expected )
 {
   debugger;
@@ -84,25 +94,25 @@ var testFunction = function( test, desc, src, options, expected )
   var exp = null;
   for( var k = 0; k < src.length; ++k  )
   {
-    test.description = desc;
+    test.description = desc ;
     got = _.toStr( src[ k ], options[ k ] || options[ 0 ]);
 
-    if( test.description === 'json test' && options[ k ].json )
+    if( test.description.slice(0,4) === 'json' && options[ k ].json )
     {
       // good
       // if JSON.parse is OK,compare source vs parse result
-      // else compare toStr() result vs expected
+      // else throws error
       try
       {
         result = JSON.parse( got );
         test.identical( result, src[ k ] );
-
       }
       catch( err )
       {
-        // _.errLog( err );
-        test.identical( got, expected[ k ] );
-
+        //  throw err;
+        _.errLog( err );
+        //test fail call when JSON.parse throws error
+        test.identical( 0,1 );
       }
     }
 
@@ -355,11 +365,11 @@ var toStrArray = function( test )
     /*53*/  { levels : 2, prependTab : 0, fixed : 2 },
     /*54*/  { levels : 2, prependTab : 0, precision : 1 },
     /*55*/  { levels : 2, multiline : 1, escaping : 1 },
-    /*56*/  { levels : 2, noRoutine : 1,},
-    /*57*/  { levels : 3, noRoutine : 1,},
-    /*58*/  { levels : 3, noError : 1, noDate : 1},
-    /*59*/  { levels : 2, noArray : 1},
-    /*60*/  { levels : 2, noNumber : 1, noString : 1},
+    /*56*/  { levels : 2, noRoutine : 1 },
+    /*57*/  { levels : 3, noRoutine : 1 },
+    /*58*/  { levels : 3, noError : 1, noDate : 1 },
+    /*59*/  { levels : 2, noArray : 1 },
+    /*60*/  { levels : 2, noNumber : 1, noString : 1 },
     /*61*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1 },
     /*62*/  { levels : 3, noNumber : 1, noString : 1, noObject : 1 },
     /*63*/  { levels : 2, noNumber : 1, noString : 1, noObject : 1, noRoutine : 1 },
@@ -411,10 +421,7 @@ var toStrArray = function( test )
     /*07*/
     [
       '[',
-      '  7, ',
-      '  [ Object with 1 elements ], ',
-      '  1, ',
-      '  "x"',
+      '  [ Object with 1 elements ]',
       ']'
     ].join( '\n' ),
 
@@ -450,7 +457,7 @@ var toStrArray = function( test )
     /*14*/
     [
       '[',
-      '  [ 7, 8, 9 ]',
+      '  []',
       ']'
     ].join( '\n' ),
 
@@ -464,34 +471,31 @@ var toStrArray = function( test )
 
     /*16*/
     [
-      '[',
-      '  1, ',
-      '  5',
-      ']',
+      
+      '[ 1, 5 ]'
+      
     ].join( '\n' ),
 
     /*17*/
     [
       '[',
-      '  { b : 1 }',
+      '  {}',
       ']'
     ].join( '\n' ),
 
     /*18*/
     [
       '[',
-      '  { u : 2 }',
+      '  {}',
       ']'
     ].join( '\n' ),
 
     /*19*/ '[ [ routine f1 ], [ routine without name ] ]',
-    /*20*/ '[  ]',
+    /*20*/ '[]',
     /*21*/
     [
       '[',
-      '  {',
-      '    ',
-      '  }',
+      '  {}',
       ']'
     ].join( '\n' ),
 
@@ -542,9 +546,9 @@ var toStrArray = function( test )
     /*30*/
     '  [ Object with 3 elements ]',
     /*31*/
-    '  "a". 1. [object Function]. false',
+    '  "a". 1. false',
     /*32*/
-    '  "b". 2. [object Function]. true',
+    '  [object Function]',
     /*33*/
     '',
     /*34*/
@@ -640,7 +644,7 @@ var toStrArray = function( test )
 
     /*50*/
     [
-      '  a : "string"/ ',
+      '',
       '  true'
     ].join( '\n' ),
 
@@ -694,7 +698,7 @@ var toStrArray = function( test )
     /*56*/
     [
       '[',
-      '  { a : [object Function] }, ',
+      '  {}, ',
       '  0, ',
       '  1, ',
       '  "a"',
@@ -704,7 +708,7 @@ var toStrArray = function( test )
     /*57*/
     [
       '[',
-      '  {  }, ',
+      '  {}, ',
       '  1, ',
       '  2, ',
       '  3',
@@ -712,9 +716,8 @@ var toStrArray = function( test )
     ].join( '\n' ),
 
     /*58*/
-    [ '[',
-      '  "test"',
-      ']',
+    [
+      '[ "test" ]',
     ].join( '\n' ),
 
     /*59*/
@@ -723,14 +726,14 @@ var toStrArray = function( test )
     /*60*/
 
     [ '[',
-      '  [ "2", null, undefined, "4" ]',
+      '  [ null, undefined ]',
       ']',
     ].join( '\n' ),
 
     /*61*/
 
     [ '[',
-      '  [ 1, 2 ], ',
+      '  [], ',
       '  undefined',
       ']',
     ].join( '\n' ),
@@ -738,38 +741,36 @@ var toStrArray = function( test )
     /*62*/
 
     [ '[',
-      '  [  ], ',
+      '  [], ',
       '  undefined',
       ']',
     ].join( '\n' ),
 
     /*63*/
 
-    [ '[',
-      '  null',
-      ']',
+    [
+      '[ null ]',
     ].join( '\n' ),
 
     /*64*/
 
-    [ '[',
-      '  true',
-      ']',
+    [
+      '[ true ]',
     ].join( '\n' ),
 
     /*65*/
 
     [ '[',
-      '  [ 0, 1 ], ',
-      '  { a : "a" }',
+      '  [], ',
+      '  {}',
       ']',
     ].join( '\n' ),
 
     /*66*/
 
     [ '[',
-      '  [  ], ',
-      '  {  }',
+      '  [], ',
+      '  {}',
       ']',
     ].join( '\n' ),
 
@@ -783,8 +784,8 @@ var toStrArray = function( test )
 
     [
       '[',
-      '  [ "a", 1.0e+2 ], ',
-      '  [ "b", 2.0e+2 ]',
+      '  [ 1.0e+2 ], ',
+      '  [ 2.0e+2 ]',
       ']'
     ].join( '\n' ),
 
@@ -810,7 +811,7 @@ var toStrArray = function( test )
 
     [
       '[',
-      '  [ 2, 3, 4 ]',
+      '  []',
       ']'
     ].join( '\n' ),
 
@@ -818,7 +819,7 @@ var toStrArray = function( test )
 
     [
       '[',
-      '  [ 2.0, 3.0, 4.0 ]',
+      '  []',
       ']'
     ].join( '\n' ),
 
@@ -826,7 +827,7 @@ var toStrArray = function( test )
 
     [
       '[',
-      '  [  ]',
+      '  []',
       ']'
     ].join( '\n' ),
 
@@ -847,7 +848,6 @@ var toStrArray = function( test )
     [
       '[',
       '  {',
-      '    a : "\\\\true", ',
       '    b : true, ',
       '    c : null',
       '  }',
@@ -858,7 +858,7 @@ var toStrArray = function( test )
 
     [
       '[',
-      '  [ "a", 1 ], ',
+      '  [], ',
       '  1989-12-30T22:00:00.000Z',
       ']'
     ].join( '\n' ),
@@ -867,7 +867,7 @@ var toStrArray = function( test )
 
     [
       '[',
-      '|  [ "a", 1 ], ',
+      '|  [], ',
       '|  1999-01-31T22:00:00.000Z',
       '|]'
     ].join( '\n' ),
@@ -876,7 +876,7 @@ var toStrArray = function( test )
 
     [
       '[',
-      '  [  ]',
+      '  []',
       ']'
     ].join( '\n' ),
 
@@ -1001,6 +1001,7 @@ var toStrObject = function( test )
               ];
               return structure;
             } )( ),
+    /*67*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
   ],
   options =
   [
@@ -1052,10 +1053,10 @@ var toStrObject = function( test )
     /*39*/  { levels : 2, prependTab : 0, fixed : 5 },
     /*40*/  { levels : 2, prependTab : 0, precision : 5 },
     /*41*/  { levels : 2, multiline : 1, escaping : 1 },
-    /*42*/  { levels : 2, noRoutine : 1,},
+    /*42*/  { levels : 2, noRoutine : 1 },
     /*43*/  { levels : 3, noRoutine : 1,},
     /*44*/  { levels : 3, noError : 1, noDate : 1 },
-    /*45*/  { escaping : 0 },
+    /*45*/  { escaping : 1 },
     /*46*/  { escaping : 0 },
     /*47*/  { escaping : 0 },
     /*48*/  { multiline : 1 },
@@ -1077,6 +1078,7 @@ var toStrObject = function( test )
     /*64*/  { own : 0},
     /*65*/  {  },
     /*66*/  { levels : 3,wrap : 0 },
+    /*67*/  {  },
 
   ],
   expected =
@@ -1147,7 +1149,7 @@ var toStrObject = function( test )
       '{',
       '  x : ',
       '  {',
-      '    c : { g : 6 }',
+      '    c : {}',
       '  }',
       '}'
     ].join( '\n' ),
@@ -1159,10 +1161,7 @@ var toStrObject = function( test )
 
     /*12*/
     [
-      '  a : true, ',
-      '  b : "2", ',
-      '  c : 3, ',
-      '  d : undefined'
+      '  a : true, d : undefined'
 
     ].join( '\n' ),
 
@@ -1196,14 +1195,11 @@ var toStrObject = function( test )
 
     /*17*/
 
-      '  x : [object Function]',
+      '',
 
     /*18*/
     [
-      '  a : null, ',
-      '  b : 1, ',
-      '  c : "2", ',
-      '  d : undefined'
+      ''
 
     ].join( '\n' ),
 
@@ -1317,7 +1313,7 @@ var toStrObject = function( test )
     ].join( '\n' ),
 
     /*33*/
-    '  b : d : false',
+    '  b : ',
 
     /*34*/
     '  b : ',
@@ -1327,8 +1323,8 @@ var toStrObject = function( test )
 
     /*36*/
     [
-      '  a : "a". "b". ',
-      '  b : d : "true"'
+      '  a : . ',
+      '  b : '
 
     ].join( '\n' ),
 
@@ -1382,7 +1378,7 @@ var toStrObject = function( test )
     [
       '{',
       '  a : "aa", ',
-      '  b : { d : [object Function] }',
+      '  b : {}',
       '}'
 
     ].join( '\n' ),
@@ -1391,7 +1387,7 @@ var toStrObject = function( test )
     [
       '{',
       '  a : "bb", ',
-      '  b : {  }',
+      '  b : {}',
       '}'
 
     ].join( '\n' ),
@@ -1409,7 +1405,7 @@ var toStrObject = function( test )
     [
 
       '{',
-      '  sequence : "\u001b[A", ',
+      '  sequence : "\\u001b[A", ',
       '  name : "undefined", ',
       '  shift : false, ',
       '  code : "[A"',
@@ -1516,7 +1512,7 @@ var toStrObject = function( test )
     /*57*/
     [
       '{',
-      '  b : {  }, ',
+      '  b : {}, ',
       '  c : true',
       '}'
 
@@ -1526,7 +1522,7 @@ var toStrObject = function( test )
     /*58*/
     [
       '{',
-      '  b : {  }',
+      '  b : {}',
       '}'
 
 
@@ -1536,7 +1532,7 @@ var toStrObject = function( test )
     [
       '{',
       '  a : 1000.0, ',
-      '  b : { d : "string" }, ',
+      '  b : {}, ',
       '  c : 1.5',
       '}'
 
@@ -1551,20 +1547,13 @@ var toStrObject = function( test )
 
     /*61*/
     [
-      '{',
-      '-  c : false, ',
-      '-  d : undefined, ',
-      '-  e : null',
-      '-}'
-
+      '{ c : false, d : undefined, e : null }'
 
     ].join( '\n' ),
 
     /*62*/
     [
-      '{',
-      '  ',
-      '}'
+      '{}',
 
     ].join( '\n' ),
 
@@ -1603,6 +1592,18 @@ var toStrObject = function( test )
       '    quantity : 1',
 
     ].join( '\n' ),
+    
+    /*67*/
+    [
+
+      '{',
+      '  sequence : "[A", ',
+      '  name : "undefined", ',
+      '  shift : false, ',
+      '  code : "[A"',
+      '}'
+
+    ].join( '\n' ),
 
 
   ];
@@ -1631,21 +1632,6 @@ var toStrJson = function( test )
      /*07*/ { a : new Error( "r" ) },
      /*08*/ { a : Symbol('sm') },
      /*09*/ { a : '\n\nABC' },
-     /*10*/ {
-             a : 1,
-             b : [ 'MZ� ♥   ♦   ��  �       @' ],
-             c : { d : 'MZ► ♥   ♦   ⌂⌂  8       @' },
-           },
-
-     /*11*/ {
-             a : 2,
-             b : [ '��������G∟�L�`��◄֥_�' ],
-             c : { d : '+☻⌂4☼A↑"G∟"Lw`@a◄V%_' },
-           },
-     /*12*/ {
-             a : "�'aY��Tb���§�+R���☼→",
-             b : [ "o?='aYo?=o?=Tbo?=o?=" ],
-            }
 
    ],
 
@@ -1660,152 +1646,234 @@ var toStrJson = function( test )
      /*07*/ { json : 1 },
      /*08*/ { json : 1 },
      /*09*/ { json : 1 },
-     /*10*/ { json : 1 },
-     /*11*/ { json : 1 },
-     /*12*/ { json : 1 },
-   ],
-
-   expected =
-   [
-
-    /*01*/
-    [
-      '{',
-      '  "a" : 100, ',
-      '  "b" : "c", ',
-      '  "c" : { "d" : true, "e" : null }',
-      '}'
-    ].join( '\n' ),
-
-    /*02*/
-    [
-      '{',
-      '  "b" : "a", ',
-      '  "c" : 50, ',
-      '  "d" : { "a" : "undefined", "e" : null }',
-      '}'
-
-    ].join( '\n' ),
-
-    /*03*/
-    [
-      '[',
-      '  {',
-      '    "a" : 100, ',
-      '    "b" : "x", ',
-      '    "c" : { "d" : true, "e" : null }',
-      '  }',
-      ']'
-
-    ].join( '\n' ),
-
-    /*04*/
-    [
-      '{',
-      '  "a" : "aa", ',
-      '  "b" : [ 1, 2, 3 ], ',
-      '  "c" : [ routine r ]',
-      '}',
-
-    ].join( '\n' ),
-
-    /*05*/
-    [
-
-      '[',
-      '  {',
-      '    "a" : 1, ',
-      '    "b" : 2, ',
-      '    "c" : ',
-      '    {',
-      '      "d" : [ null, null ]',
-      '    }',
-      '  }',
-      ']',
-
-    ].join( '\n' ),
-
-    /*06*/
-    [
-
-      '{',
-      '  "a" : 1994-01-12T00:00:00.000Z',
-      '}',
-
-    ].join( '\n' ),
-
-    /*07*/
-    [
-
-      '{',
-      '  "a" : Error: r',
-      '}',
-
-    ].join( '\n' ),
-
-    /*08*/
-    [
-
-      '{ "a" : Symbol(sm) }'
-
-
-    ].join( '\n' ),
-
-    /*09*/
-    [
-
-      '{ "a" : "\\n\\nABC" }'
-
-
-    ].join( '\n' ),
-
-    /*10*/
-    [
-
-      '{',
-      '  "a" : 1, ',
-      '  "b" : [ "MZ� ♥   ♦   ��  �       @" ], ',
-      '  "c" : { "d" : "MZ► ♥   ♦   ⌂⌂  8       @" } ',
-      '}'
-
-
-    ].join( '\n' ),
-
-    /*11*/
-    [
-
-      '{',
-      '  "a" : 2, ',
-      '  "b" : ',
-      '  [',
-      '    "MZ� ♥   ♦   ��  �       @"',
-      '  ], ',
-      '  "c" : ',
-      '  {',
-      '    "d" : "MZ► ♥   ♦   ⌂⌂  8       @"',
-      '  }',
-      '}'
-
-    ].join( '\n' ),
-
-    /*12*/
-    [
-
-      '{',
-      '  "a" : "�\\\'aY��Tb���§�+R���☼→", ',
-      '  "b" : [ "o?=\\\'aYo?=o?=Tbo?=o?=" ]',
-      '}'
-
-    ].join( '\n' ),
-
-
+     
    ]
 
-  testFunction( test, desc, src, options, expected );
+  //  expected =
+  //  [
+   // 
+  //   /*01*/
+  //   [
+  //     '{',
+  //     '  "a" : 100, ',
+  //     '  "b" : "c", ',
+  //     '  "c" : { "d" : true, "e" : null }',
+  //     '}'
+  //   ].join( '\n' ),
+   // 
+  //   /*02*/
+  //   [
+  //     '{',
+  //     '  "b" : "a", ',
+  //     '  "c" : 50, ',
+  //     '  "d" : { "a" : "undefined", "e" : null }',
+  //     '}'
+   // 
+  //   ].join( '\n' ),
+   // 
+  //   /*03*/
+  //   [
+  //     '[',
+  //     '  {',
+  //     '    "a" : 100, ',
+  //     '    "b" : "x", ',
+  //     '    "c" : { "d" : true, "e" : null }',
+  //     '  }',
+  //     ']'
+   // 
+  //   ].join( '\n' ),
+   // 
+  //   /*04*/
+  //   [
+  //     '{',
+  //     '  "a" : "aa", ',
+  //     '  "b" : [ 1, 2, 3 ], ',
+  //     '  "c" : [ routine r ]',
+  //     '}',
+   // 
+  //   ].join( '\n' ),
+   // 
+  //   /*05*/
+  //   [
+   // 
+  //     '[',
+  //     '  {',
+  //     '    "a" : 1, ',
+  //     '    "b" : 2, ',
+  //     '    "c" : ',
+  //     '    {',
+  //     '      "d" : [ null, null ]',
+  //     '    }',
+  //     '  }',
+  //     ']',
+   // 
+  //   ].join( '\n' ),
+   // 
+  //   /*06*/
+  //   [
+   // 
+  //     '{',
+  //     '  "a" : 1994-01-12T00:00:00.000Z',
+  //     '}',
+   // 
+  //   ].join( '\n' ),
+   // 
+  //   /*07*/
+  //   [
+   // 
+  //     '{ "a" : "Error: r" }',
+   // 
+  //   ].join( '\n' ),
+   // 
+  //   /*08*/
+  //   [
+   // 
+  //     '{ "a" : Symbol(sm) }'
+   // 
+   // 
+  //   ].join( '\n' ),
+   // 
+  //   /*09*/
+  //   [
+   // 
+  //     '{ "a" : "\\n\\nABC" }'
+   // 
+   // 
+  //   ].join( '\n' ),
+  //   
+  //     /*10*/
+  //     [
+  //       '',
+  //     ].join( '\n' ),
+  //     
+  //     /*11*/
+  //     [
+  //       ''
+  //     ].join( '\n' ),
+  //     
+  //     /*12*/
+  //     [
+  //       ''
+  //     
+  //     ].join( '\n' ),
+  //     
+  //     /*13*/
+  //     [
+  //       ''
+  //     ].join( '\n' ),
+  //     
+  //     /*14*/
+  //     [
+  //       ''
+  //     ].join( '\n' ),
+  //   
+  //   /*15*/
+  //   [
+  //     ''
+  //   ].join( '\n' ),
+  //   
+  //   /*16*/
+  //   [
+  //     ''
+  //   ].join( '\n' ),
+  //       
+  //   /*17*/
+  //   [
+  //     ''
+  //   ].join( '\n' ),
+  //   
+  //   /*18*/
+  //   [
+  //     ''
+  //   ].join( '\n' ),
+  //   
+  //   /*19*/
+  //   [
+  //     ''
+  //   ].join( '\n' ),
+  //   
+  //   /*20*/
+  //   [
+  //     ''
+  //   ].join( '\n' ),
+  //   
+  //   /*21*/
+  //   [
+  //     ''
+  //   ].join( '\n' ),
+   // 
+  //  ]
+
+  testFunction( test, desc, src, options);
 
 }
 
 toStrJson.cover = [ _.toStr ];
+
+//
+var toStrJsonFromFileU = function( test )
+{
+   var desc =  'json from file as utf8',
+
+   src =
+   [
+     /*01*/ { a : stringFromFile( './file/file1', 'utf8' ), b : stringFromFile( './file/file2', 'utf8' ), c : 1 },
+     /*02*/ { a : stringFromFile( './file/file3', 'utf8' ), b : stringFromFile( './file/file4.pdf', 'utf8' ), c : 1 },
+     /*03*/ { a : [ stringFromFile( './file/test.exe', 'utf8' ) ], b : stringFromFile( './file/small', 'utf8' ) },
+     /*04*/ { a : stringFromFile( './file/small2', 'utf8' ), b : stringFromFile( './file/small3', 'utf8' ) },
+     /*05*/ { a : stringFromFile( './file/small4', 'utf8' ), b : stringFromFile( './file/small5', 'utf8' ) },
+     /*06*/ { a : stringFromFile( './file/small6', 'utf8' ), b : stringFromFile( './file/small7', 'utf8' ) },
+
+   ],
+
+   options =
+   [
+     /*01*/ { json : 1 },
+     /*02*/ { json : 1 },
+     /*03*/ { json : 1 },
+     /*04*/ { json : 1 },
+     /*05*/ { json : 1 },
+     /*06*/ { json : 1 },
+
+   ]
+
+  testFunction( test, desc, src, options);
+
+}
+
+toStrJsonFromFileU.cover = [ _.toStr ];
+
+//
+var toStrJsonFromFileA = function( test )
+{
+   var desc =  'json from file as ascii',
+
+   src =
+   [   
+     /*01*/ { a : stringFromFile( './file/file1', 'ascii' ), b : stringFromFile( './file/file2', 'ascii' ), c : 1 },
+     /*02*/ { a : stringFromFile( './file/file3', 'ascii' ), b : stringFromFile( './file/file4.pdf', 'ascii' ), c : 1 },
+     /*03*/ { a : [ stringFromFile( './file/test.exe', 'ascii' ) ], b : stringFromFile( './file/small', 'ascii' ) },
+     /*04*/ { a : stringFromFile( './file/small2', 'ascii' ), b : stringFromFile( './file/small3', 'ascii' ) },
+     /*05*/ { a : stringFromFile( './file/small4', 'ascii' ), b : stringFromFile( './file/small5', 'ascii' ) },
+     /*06*/ { a : stringFromFile( './file/small6', 'ascii' ), b : stringFromFile( './file/small7', 'ascii' ) },
+   ],
+   
+   options =
+   [
+     /*01*/ { json : 1 },
+     /*02*/ { json : 1 },
+     /*03*/ { json : 1 },
+     /*04*/ { json : 1 },
+     /*05*/ { json : 1 },
+     /*06*/ { json : 1 },
+     
+   ]
+
+  testFunction( test, desc, src, options);
+
+}
+
+toStrJsonFromFileA.cover = [ _.toStr ];
 
 //
 
@@ -2412,6 +2480,8 @@ var Proto =
     toStrArray : toStrArray,
     toStrObject : toStrObject,
     toStrJson : toStrJson,
+    toStrJsonFromFileU : toStrJsonFromFileU,
+    toStrJsonFromFileA : toStrJsonFromFileA,
     toStrWrapString : toStrWrapString,
     toStrLevel : toStrLevel,
     toStrEnumerable : toStrEnumerable,

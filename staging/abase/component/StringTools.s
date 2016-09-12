@@ -61,6 +61,30 @@ var toStrMethods = function( src,o )
 
 //
 
+/**
+ * Short-cut for toStr function that works with all entities, but ingnores Routine type.
+ * Converts object passed by argument( src ) to string representation using
+ * options provided by argument( o ).
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @param {boolean} [ options.noRoutine=false ] - Ignores all entities of type Routine.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @returns {string} Returns string that represents object data.
+ *
+ * @example
+ * //returns [ 0, "a" ]
+ * _.toStrFields( [ function del(){}, 0, 'a' ], {} )
+ *
+ * @example
+ * //returns { c : 1, d : "2" }
+ * _.toStrFields( { a : function b(){},  c : 1 , d : '2' }, {} )
+ *
+ * @method toStrFields
+ * @memberof wTools
+ *
+ */
+ 
 var toStrFields = function( src,o )
 {
   var o = o || {};
@@ -79,11 +103,11 @@ var toStrFields = function( src,o )
  * @param {object} o - Convertion o.
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
- * @param {boolean} [ o.wrapString=true ] - Wrap string into "".
+ * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
  * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
  * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
  * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
- * @param {boolean} [ o.prependTab=true ] - Prepend tab before each line.
+ * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
  * @param {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
  * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
  * @param {string} [ o.tab='' ] - Prepended before each line tab.
@@ -107,7 +131,7 @@ var toStrFields = function( src,o )
  * Number must be between 0 and 20.
  * @param {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
  * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
- * @param {boolean} [ o.escaping=true ] - enable escaping of special characters.
+ * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
  * @param {boolean} [ o.json=false ] - enable convertion of object( src ) to JSON string.
  * @returns {string} Returns string that represents object data.
  *
@@ -125,7 +149,7 @@ var toStrFields = function( src,o )
  * // --subf : {  x : 1  // level 3}
  * // -}
  * // }
- * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} ));
+ * _.toStr( { a : 1, b : 2, c : { subd : 'some test', sube : true, subf : { x : 1 } } },{ levels : 3, dtab : '-'} );
  *
  * @example
  * //returns " \n1500 "
@@ -179,8 +203,8 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns
- * // a : 1
- * // b : 2
+ * // "    a : 1 
+ * //      b : 2"
  * _.toStr( [ { a : 1 }, { b : 2 } ], { levels : 2, wrap : 0 } );
  *
  * @example
@@ -217,7 +241,7 @@ var toStrFields = function( src,o )
  * _.toStr( [ 0, [ 1,2,3 ], 4 ], { levels : 2, multiline : 1 } );
  *
  * @example
- * //returns { routine sample }
+ * //returns [ routine sample ]
  * _.toStr( function sample( ){ });
  *
  * @example
@@ -274,10 +298,24 @@ var toStrFields = function( src,o )
  * @example
  * //returns { "a" : "string", "b" : 1, "c" : 2 }
  * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
+ * 
+ * @example
+ * //returns { stack : "Error: my message2"..., message : "my message2" }
+ * _.toStr( new Error('my message2'), { onlyEnumerable : 0,errorAsMap : 1 } );
+ * 
+ * @example
+ * //returns 
+ * // "{
+ * //  a : `line1
+ * // line2
+ * // line3`
+ * // }"
+ * _.toStr( { a : "line1\nline2\nline3" }, { levels: 2, usingMultilineStringWrapper : 1 } );
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @throws { Exception } Throw an exception if( o.wrapString ) is not equal true when ( o.json ) is true.
+ * @throws { Exception } Throw an exception if( o.usingMultilineStringWrapper ) is not equal false when ( o.json ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
  * @memberof wTools
@@ -405,6 +443,7 @@ var toStrFine_gen = function()
 
 //
 
+
 var _toStr = function _toStr( src,o )
 {
   var result = '';
@@ -526,6 +565,10 @@ var _toStr = function _toStr( src,o )
   {
     // if( o.noAtomic )
     // return;
+    
+    if( o.json && src === undefined)
+    result += null;
+    else    
     result += String( src );
   }
 
@@ -533,6 +576,25 @@ var _toStr = function _toStr( src,o )
 }
 
 //
+
+/**
+ * Converts object passed by argument( src ) to string representation.Using
+ * options provided by argument( o ) for string and number types.
+ * Returns string with object type for routines and errors, iso format for date, string representation for atomic.
+ * For object,array and row returns count of elemets, example: '[ Row with 3 elements ]'.
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @returns {string} Returns string that represents object data.
+ *
+ * @example
+ * //returns [ Array with 3 elements ]
+ * _.toStrShort( [ function del(){}, 0, 'a' ], { levels : 0 } )
+ *
+ * @method _toStrShort
+ * @memberof wTools
+ *
+ */
 
 var _toStrShort = function( src,o )
 {
@@ -602,6 +664,24 @@ var _toStrShort = function( src,o )
 }
 
 //
+
+/**
+ * Checks if object provided by argument( src ) must be ignored by toStr() function.
+ * Filters are provided by argument( o ). 
+ * Returns false if object must be ignored.
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Filters.
+ * @returns {boolean} Returns result of filter check.
+ *
+ * @example
+ * //returns false
+ * _.toStrIsVisibleElement( function del(){}, { noRoutine : 1 } );
+ *
+ * @method _toStrIsVisibleElement
+ * @memberof wTools
+ *
+ */
 
 var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
 {
@@ -694,6 +774,30 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
 
 //
 
+/**
+ * Checks if object length provided by argument( src ) is enough to represent it as single line string.
+ * Options are provided by argument( o ). 
+ * Returns true if object can be represented as one line.
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Check options.
+ * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
+ * @returns {boolean} Returns result of length check.
+ *
+ * @example
+ * //returns true
+ * _.toStrIsSimpleElement( 'string', { } );
+ * 
+ * @example
+ * //returns false
+ * _.toStrIsSimpleElement( { a : 1, b : 2, c : 3, d : 4, e : 5 }, { } );
+ *
+ * @method _toStrIsSimpleElement
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
+
 var _toStrIsSimpleElement = function( element,o )
 {
   _.assert( arguments.length === 2 );
@@ -717,6 +821,23 @@ var _toStrIsSimpleElement = function( element,o )
 
 //
 
+/**
+ * Returns string representation of routine provided by argument( src ) using options
+ * from argument( o ).
+ *
+ * @param {object} src - Source object.
+ * @param {object} o - Convertion options.
+ * @returns {string} Returns routine as string.
+ *
+ * @example
+ * //returns [ routine a ]
+ * _.toStrFromRoutine( function a(){}, {} );
+ * 
+ * @method _toStrFromRoutine
+ * @memberof wTools
+ *
+ */
+
 var _toStrFromRoutine = function( src,o )
 {
   var result = '';
@@ -729,22 +850,21 @@ var _toStrFromRoutine = function( src,o )
 //
 
 /**
- * This function converts Number to String with o.
+ * This function converts Number to String with options.
  *
  * @param {Number} src - Number for conversion.
- * @param {Object} o - Contains conversion o.
+ * @param {Object} o - Contains conversion options.
  * @param {Number} o.precision - Integer value that specifying  length of a number.
  * @param {Number} o.fixed - Number of digits after the decimal point.
- *
  * @returns {String} Returns number converted to the string.
  *
  * @example
  * //returns 8.9
- * _._toStrFromNumber( 8.923964453, { precision : 2 } )
+ * _._toStrFromNumber( 8.923964453, { precision : 2 } );
  *
  * @example
  * //returns 8.9240
- * _._toStrFromNumber( 8.923964453, { fixed : 4 } )
+ * _._toStrFromNumber( 8.923964453, { fixed : 4 } );
  *
  * @method _toStrFromNumber
  * @memberof wTools
@@ -766,6 +886,35 @@ var _toStrFromNumber = function( src,o )
 }
 
 //
+
+/**
+ * Function wraps string( src ) in to( "" ) using options provided 
+ * by argument( o ).Disables escape characters if ( o.escaping ) is true.
+ * Also string can be wrapped in to backtick( `` ) if ( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true. 
+ *
+ * @param {object} src - String to parse.
+ * @param {Object} o - Contains conversion options.
+ * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
+ * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
+ * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
+ * @returns {String} Returns wrapped string.
+ *
+ * @example
+ * //returns "hello"
+ * _.toStrFromStr( 'hello', {} );
+ *
+ * @example
+ * //returns "test\n"
+ * _.toStrFromStr( 'test\n', { escaping : 1 } );
+ * 
+ * @example
+ * //returns `test`
+ * _.toStrFromStr( 'test', { usingMultilineStringWrapper : 1 } );
+ *
+ * @method _toStrFromStr
+ * @memberof wTools
+ *
+*/
 
 var _toStrFromStr = function( src,o )
 {
@@ -876,6 +1025,47 @@ var _toStrFromStr = function( src,o )
 
 //
 
+/**
+ * Function converts array provided by argument( src ) to string representation
+ * using options provided by argument( o ).
+ *
+ * @param {object} src - Array to convert.
+ * @param {Object} o - Contains conversion options.
+ * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+ * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+ * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
+ * @param {string} [ o.tab='' ] - Prepended before each line tab.
+ * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+ * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
+ * @returns {String} Returns string representation of array.
+ *
+ * @example
+ * //returns 
+ * //[
+ * //  [ Object with 1 elements ], 
+ * //  [ Object with 1 elements ]
+ * //]
+ * _.toStrFromArray( [ { a : 1 }, { b : 2 } ], {} );
+ *
+ * @example
+ * //returns
+ * // [
+ * //   1,
+ * //   [
+ * //     2,
+ * //     3,
+ * //     4'
+ * //   ],
+ * //   5
+ * // ]
+ * _.toStrFromArray( [ 1, [ 2, 3, 4 ], 5 ], { levels : 2, multiline : 1 } );
+ * 
+ * @method _toStrFromArray
+ * @throws { Exception } Throw an exception if( src ) is undefined.
+ * @memberof wTools
+ *
+*/
+
 var _toStrFromArray = function( src,o )
 {
   var result = '';
@@ -958,6 +1148,43 @@ var _toStrFromArray = function( src,o )
 }
 
 //
+
+/**
+ * Function converts object provided by argument( src ) to string representation
+ * using options provided by argument( o ).
+ *
+ * @param {object} src - Object to convert.
+ * @param {Object} o - Contains conversion options.
+ * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+ * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+ * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
+ * @param {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
+ * @param {boolean} [ o.noObject=false ] - Ignores all entities of type Object.
+ * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
+ * @param {string} [ o.tab='' ] - Prepended before each line tab.
+ * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+ * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
+ * @returns {String} Returns string representation of object.
+ *
+ * @example
+ * //returns 
+ * // {
+ * //  r : 9, 
+ * //  t : { a : 10 }, 
+ * //  y : 11
+ * // }
+ * _.toStrFromObject( { r : 9, t : { a : 10 }, y : 11 }, { levels : 2 } );
+ *
+ * @example
+ * //returns ''
+ * _.toStrFromObject( { h : { d : 1 }, g : 'c', c : [2] }, { levels : 2, noObject : 1 } );
+ * 
+ * @method _toStrFromObject
+ * @throws { Exception } Throw an exception if( src ) is not a object-like.
+ * @memberof wTools
+ *
+*/
+
 
 var _toStrFromObject = function( src,o )
 {
@@ -1059,6 +1286,32 @@ var _toStrFromObject = function( src,o )
 }
 
 //
+
+/**
+ * Function builds string that represents  container structure like object or array using keys and values from
+ * argument( o ).Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
+ *
+ * @param {Object} o - Contains data and options.
+ * @param {object} [ o.values ] - Source object that contains values.
+ * @param {array} [ o.names ] - Source object keys.
+ * @param {object} [ o.optionsContainer ] - Options for container.
+ * @param {string} [ o.optionsContainer.comma ] - Splitter between elements, example : [ 1, 2, 3 ].
+ * @param {boolean} [ o.optionsContainer.wrap] - Wrap array-like and object-like entities.
+ * @param {boolean} [ o.optionsContainer.json ] - Enable convertion of object( src ) to JSON string.
+ * @param {string} [ o.optionsContainer.tab ] - Prepended before each line tab.
+ * @param {string} [ o.optionsContainer.dtab ] - String attached to ( o.tab ) each time the function parses next level of object depth.
+ * @param {boolean} [ o.optionsContainer.prependTab ] - Prepend tab before first line.
+ * @param {string} [ o.optionsContainer.colon ] - Colon between name and value, example : { a : 1 }.
+ * @param {object} [ o.optionsItem ] - Options for items that object contains.
+ * @param {string} [ o.optionsItem.tab ] - Prepended before each line tab.
+ * @param {number} [ o.optionsItem.level ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+ * @returns {String} Returns string representation of container.
+ * 
+ * @method _toStrFromContainer
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @memberof wTools
+ *
+*/
 
 var _toStrFromContainer = function( o )
 {
@@ -1906,31 +2159,41 @@ var strIron = function()
 
 //
 
-/* !!! update me, please */
 
 /**
- * This function finds substring passed by second argument( ins ) in the source string( src )
- * and replaces each occurrence with the third argument( sub ).
- * If the function can not find any occurrence in source( src ) it returns the original string.
- *
- * @param {string} srcStr - Source string to parse.
- * @param {string} ins - String that is to be replaced by( ins ).
- * @param {string} sub - String that replaces substring.
+ * Replaces each occurrence of( ins ) in string( dst ) with( sub ).
+ * If the function can not find any occurrence in source( dst ) it returns the original string.
+ * Function  can be called in three different ways:
+ *  One argument: object that contains properties: dst,dictionary.
+ *  Two arguments: dst, dictionary.
+ *  Three arguments: dst, ins, sub.
+ * @param {string} dst - Source string to parse.
+ * @param {string} ins - String that is to be replaced by( sub ).
+ * @param {string} sub - String that replaces finded occurrence.
+ * @param {object} dictionary - Object with properties like ( { 'ins' : 'sub' } ).
  * @returns {string} Returns string with result of replacements.
  *
  * @example
- * //returns aacaa
- * _.strReplaceAll( 'aabaa','b','c' );
+ * //one argument
+ * //returns xbc
+ * _.strReplaceAll( { dst : 'abc', dictionary : { 'a' : 'x' } } );
  *
  * @example
- * //returns xxbxx
- * _.strReplaceAll( 'aabaa','a','x' );
+ * //two arguments
+ * //returns a12
+ * _.strReplaceAll( 'abc',{ 'a' : '1', 'b' : '2' } );
  *
  * @example
- * //returns aabaa
- * _.strReplaceAll( 'aabaa','y','x' );
+ * //three arguments
+ * //returns axc
+ * _.strReplaceAll( 'abc','b','x' );
  *
  * @method strReplaceAll
+ * @throws { Exception } Throws a exception if no arguments provided.
+ * @throws { Exception } Throws a exception if( dst ) is not a String.
+ * @throws { Exception } Throws a exception if( ins ) is not a String.
+ * @throws { Exception } Throws a exception if( sub ) is not a String.
+ * @throws { Exception } Throws a exception if( dictionary ) is not a Object.
  * @memberof wTools
  *
  */
@@ -1999,6 +2262,26 @@ strReplaceAll.defaults =
 
   //
 
+/**
+ * Replaces occurrence of each word from array( ins ) in string( src ) with word
+ * from array( sub ) considering it position.
+ * @param {string} src - Source string to parse.
+ * @param {array} ins - Array with strings to replace.
+ * @param {string} sub - Array with new strings.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns " your cars are"
+ * _.strReplaceNames(' my name is',['my','name','is'],['your','cars','are'])
+ *
+ * @method strReplaceNames
+ * @throws { Exception } Throws a exception if( ins ) is not a Array.
+ * @throws { Exception } Throws a exception if( sub ) is not a Array.
+ * @throws { TypeError } Throws a exception if( src ) is not a String.
+ * @memberof wTools
+ *
+ */
+
 var strReplaceNames = function( src,ins,sub )
 {
   _.assert( _.arrayIs( ins ) );
@@ -2024,6 +2307,32 @@ var strReplaceNames = function( src,ins,sub )
 }
 
 //
+
+/**
+ * Concatenates objects provided to function in orded that they are specified.
+ * If arguments are different type,like array and number, function appends number to each
+ * array value. Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
+ * @param {array-like} arguments - Contains provided objects.
+ * @returns {object} Returns concatenated objects as string or array.Return type depends
+ * from arguments type.
+ *
+ * @example
+ * //returns "123"
+ * _.strJoin( 1, 2, 3 );
+ * 
+ * @example
+ * //returns [ "12", "22", "32" ]
+ * _.strJoin( [ 1, 2, 3 ], 2)
+ * 
+ * @example
+ * //returns [ "11", "23" ]
+ * _.strJoin( [ 1, 2 ], [ 1, 3 ] )
+ *
+ * @method strJoin
+ * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array,String or Number.
+ * @memberof wTools
+ *
+ */
 
 var strJoin = function()
 {
@@ -2077,6 +2386,29 @@ var strJoin = function()
 
 //
 
+/**
+ * Separates part of string( srcStr ) using array( maskArray ) as mask and returns them in array.
+ * @param {string} srcStr - Source string.
+ * @param {array} maskArray - Contains mask for source string.
+ * @returns {array} Returns array with unjoined string part.
+ *
+ * @example
+ * //returns [ "prefix", "_something_", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] )
+ * 
+ * @example
+ * //returns [ "prefix_", "something", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[_.strUnjoin.any,'something','postfix'] )
+ * 
+ *
+ * @method strUnjoin
+ * @throws { Exception } Throws a exception if no arguments provided.
+ * @throws { Exception } Throws a exception if( srcStr ) is not a String.
+ * @throws { Exception } Throws a exception if( maskArray ) is not a Array.
+ * @memberof wTools
+ *
+ */
+ 
 var strUnjoin = function( srcStr,maskArray )
 {
 
@@ -2175,7 +2507,7 @@ strUnjoin.any = function( src )
  * _.strDropPrefix( 'example','abc' );
  *
  * @method strDropPrefix
-  * @memberof wTools
+ * @memberof wTools
  *
 */
 var strDropPrefix = function( src,prefix )
@@ -2190,6 +2522,29 @@ var strDropPrefix = function( src,prefix )
 }
 
 //
+
+/**
+ * Removes occurrence of( postfix ) from the end of string( src ).
+ * Returns original string if no occurrence finded.
+ * @param {string} src - Source string to parse.
+ * @param {string} postfix - String that is to be dropped.
+ * @returns {string} Returns string with result of postfix removement.
+ *
+ * @example
+ * //returns examp
+ * _.strDropPostfix( 'example','le' );
+ *
+ * @example
+ * //returns example
+ * _.strDropPostfix( 'example','abc' );
+ *
+ * @method strDropPostfix
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( postfix ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+*/
 
 var strDropPostfix = function( src,postfix )
 {
@@ -2289,8 +2644,13 @@ var lattersSpectreComparison = function( src1,src2 )
  * @example
  * //returns &#x2F;&#x2F;test&#x2F;&#x2F;
  * _.strHtmlEscape( '//test//' );
+ * 
+ * @example
+ * //returns &lt;div class=&quot;cls&quot;&gt;&lt;&#x2F;div&gt;
+ * _.strHtmlEscape('<div class="cls"></div>');
  *
  * @method strHtmlEscape
+ * @throws { Exception } Throws a exception if no argument provided.
  * @memberof wTools
  *
  */
@@ -2316,6 +2676,31 @@ var strHtmlEscape = function( str )
 }
 
 //
+
+/**
+ * Returns string with escaped unicode sequence based on string( src ).
+ *
+ * @param {string} str - Source string to parse.
+ * @returns {string} Returns string with result of convertion.
+ *
+ * @example
+ * //returns \u0061\u0062\u0063;
+ * _.strUnicodeEscape( 'abc' );
+ *
+ * @example
+ * //returns \u0077\u006f\u0072\u006c\u0064
+ * _.strUnicodeEscape( "world" ); 
+ *
+ * @example
+ * //returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
+ * _.strUnicodeEscape( '//test//' );
+ * 
+ * @method strUnicodeEscape
+ * @throws { Exception } Throws a exception if no argument provided.
+ * @throws { Exception } Throws a exception if ( src ) is not a String.
+ * @memberof wTools
+ *
+ */
 
 var strUnicodeEscape = function( src )
 {
@@ -2460,6 +2845,29 @@ var strCount = function( src,ins )
 
 //
 
+/**
+ * Returns n( times ) duplicates of string( src ) .
+ *
+ * @param {string} src - Source string.
+ * @param {number} times - Number of duplicates.
+ * @returns {string} Returns string duplicated n-times.
+ *
+ * @example
+ * //returns aaaaa
+ * _.strDup( "a", 5 );
+ * 
+ * @example
+ * //returns abcabc
+ * _.strDup( "abc", 2 );
+ *
+ * @method strDup
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( times ) is not a Number.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
+
 var strDup = function strDup( src,times )
 {
   var result = '';
@@ -2477,7 +2885,7 @@ var strDup = function strDup( src,times )
 //
 
 /**
- * This function converts string to camelcase using special pattern.
+ * Converts string to camelcase using special pattern.
  * If function finds character from this( '.','-','_','/' ) list before letter,
  * it replaces letter with uppercase version.
  * For example: '.an _example' or '/an -example', method converts string to( 'An Example' ). *
@@ -2494,6 +2902,8 @@ var strDup = function strDup( src,times )
  * _.strCamelize( 'test-string' );
  *
  * @method strCamelize
+ * @throws { Exception } Throws a exception if( srcStr ) is not a String.
+ * @throws { Exception } Throws a exception if no argument provided.
  * @memberof wTools
  *
  */
@@ -2517,7 +2927,7 @@ var strCamelize = function( srcStr )
 //
 
 /**
- * This function removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
+ * Removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
  * pattern with second argument( o ) property( o.separator ).If( o.separator ) is not defined,
  * function sets value to( '_' ).
  *
@@ -2535,6 +2945,9 @@ var strCamelize = function( srcStr )
  * _.strFilenameFor( "'example\\file?name.js",o );
  *
  * @method strFilenameFor
+ * @throws { Exception } Throws a exception if( srcStr ) is not a String.
+ * @throws { Exception } Throws a exception if( o ) is not a Map.
+ * @throws { Exception } Throws a exception if no arguments provided.
  * @memberof wTools
  *
  */
@@ -2567,17 +2980,18 @@ var strFilenameFor = function( srcStr,o )
 // --
 
 /**
- * This function converts each character of string passed by argument( str )
- * to array of 8-bit unsigned integers.
+ * Converts string( str ) to array of unsigned 8-bit integers.
  *
  * @param {string} str - Source string to convert.
  * @returns {typedArray} Returns typed array that represents string characters in 8-bit unsigned integers.
  *
  * @example
- * //returns Uint8Array [ 101, 120, 97, 109, 112, 108, 101 ]
+ * //returns [ 101, 120, 97, 109, 112, 108, 101 ]
  * _.strToBytes( 'example' );
  *
  * @method strToBytes
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if no argument provided.
  * @memberof wTools
  *
  */
@@ -2599,6 +3013,51 @@ var strToBytes = function( src )
 }
 
 //
+
+/**
+ * Returns string that represents number( src ) with metric unit prefix that depends on options( o ).
+ * If no options provided function start calculating metric with default options.
+ * Example: for number ( 50000 ) function returns ( "50.0 k" ), where "k"- thousand.
+ *
+ * @param {(number|string)} src - Source object.
+ * @param {object} o - Convertion options.
+ * @global {object} _metrics - Contains metric prefixes.
+ * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
+ * @param {number} [ o.thousand=1000 ] - Sets integer power of one thousand.
+ * @param {boolean} [ o.fixed=1 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
+ * Number must be between 0 and 20.
+ * @param {number} [ o.dimensions=1 ] - Sets exponent of a number.
+ * @param {number} [ o.metric=0 ] - Sets the metric unit type from the map( _metrics ).
+ * @returns {string} Returns number with metric prefix as a string.
+ *
+ * @example
+ * //returns "1.0 M"
+ * _.strMetricFormat( 1, { metric : 6 } );
+ * 
+ * @example
+ * //returns "100.0 "
+ * _.strMetricFormat( "100m", { } );
+ * 
+ * @example
+ * //returns "100.0 T
+ * _.strMetricFormat( "100m", { metric : 12 } );
+ * 
+ * @example
+ * //returns "2 k"
+ * _.strMetricFormat( "1500", { fixed : 0 } );
+ * 
+ * @example
+ * //returns "1.0 M"
+ * _.strMetricFormat( "1000000",{ divisor:2, thousand:100 } );
+ * 
+ * @example
+ * //returns "10.0 h"
+ * _.strMetricFormat( "10000", { divisor:2, thousand:10, dimensions:3 } );
+ *
+ * @method strMetricFormat
+ * @memberof wTools
+ *
+ */
 
 var _metrics =
 {
@@ -2695,6 +3154,35 @@ var strMetricFormat = function( number,o )
 
 //
 
+/**
+ * Short-cut for strMetricFormat() function.
+ * Converts number( number ) to specific count of bytes with metric prefix.
+ * Example: ( 2048 -> 2.0 kb). 
+ *
+ * @param {(string|number} str - Source number to  convert.
+ * @param {object} o - Convertion options.
+ * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
+ * @param {number} [ o.thousand=1024 ] - Sets integer power of one thousand.
+ * @see {@link wTools.strMetricFormat} Check out main function for more usage options and details.
+ * @returns {string} Returns number of bytes with metric prefix as a string.
+ *
+ * @example
+ * //returns "100.0 b"
+ * _.strMetricFormatBytes( 100 );
+ * 
+ * @example
+ * //returns "4.0 kb"
+ * _.strMetricFormatBytes( 4096 );
+ * 
+ * @example
+ * //returns "1024.0 Mb"
+ * _.strMetricFormatBytes( Math.pow( 2, 30 ) );
+ *
+ * @method strMetricFormatBytes
+ * @memberof wTools
+ *
+ */
+
 var strMetricFormatBytes = function( number,o )
 {
 
@@ -2711,6 +3199,34 @@ var strMetricFormatBytes = function( number,o )
 }
 
 //
+
+/**
+ * Short-cut for strMetricFormat() function.
+ * Converts number( number ) to specific count of seconds with metric prefix.
+ * Example: ( 1000 (ms) -> 1.000 s). 
+ *
+ * @param {number} str - Source number to  convert.
+ * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
+ * Can`t be changed.
+ * @see {@link wTools.strMetricFormat} Check out main function for more usage options and details.
+ * @returns {string} Returns number of seconds with metric prefix as a string.
+ *
+ * @example
+ * //returns "1.000 s"
+ * _.strMetricFormatBytes( 1000 );
+ * 
+ * @example
+ * //returns "10.000 ks"
+ * _.strTimeFormat(Math.pow(10,7));
+ * 
+ * @example
+ * //returns "78.125 s"
+ * _.strTimeFormat(Math.pow(5,7));
+ *
+ * @method strTimeFormat
+ * @memberof wTools
+ *
+ */
 
 var strTimeFormat = function( time )
 {
