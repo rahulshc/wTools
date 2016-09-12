@@ -207,7 +207,7 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns
- * // "    a : 1 
+ * // "    a : 1
  * //      b : 2"
  * _.toStr( [ { a : 1 }, { b : 2 } ], { levels : 2, wrap : 0 } );
  *
@@ -341,6 +341,7 @@ var toStrFine_gen = function()
     noNumber : 0,
     noString : 0,
     noDate : 0,
+    noUndefines : 0,
 
   }
 
@@ -369,8 +370,8 @@ var toStrFine_gen = function()
 
     /* secondary filter */
 
-    onlyRoutines : 0,
     noSubObject : 0,
+    onlyRoutines : 0,
     onlyEnumerable : 1,
 
     /**/
@@ -403,6 +404,7 @@ var toStrFine_gen = function()
   var routine = function toStrFine( src,o )
   {
 
+    _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
     var o = o || {};
@@ -413,6 +415,14 @@ var toStrFine_gen = function()
 
     if( o.levels === undefined && o.json )
     o.levels = 256;
+
+    if( o.json === 1 )
+    {
+      _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
+      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if ( o.json ) is true to make valid JSON' );
+      if( o.escaping === undefined )
+      o.escaping = 1;
+    }
 
     _.assertMapOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
@@ -446,7 +456,6 @@ var toStrFine_gen = function()
 }
 
 //
-
 
 var _toStr = function _toStr( src,o )
 {
@@ -515,46 +524,38 @@ var _toStr = function _toStr( src,o )
   }
   else if( _.routineIs( src ) )
   {
-    if( o.noRoutine )
-    return;
+    //if( o.noRoutine )
+    //return;
     result += _toStrFromRoutine( src,o );
   }
   else if( _.numberIs( src ) )
   {
-    if( o.noNumber || o.noAtomic )
-    return;
+    //if( o.noNumber || o.noAtomic )
+    //return;
     result += _toStrFromNumber( src,o );
   }
   else if( _.strIs( src ) )
   {
-    if( o.noString || o.noAtomic  )
-    return;
+    //if( o.noString || o.noAtomic  )
+    //return;
     result += _toStrFromStr( src,o );
   }
   else if( src instanceof Date )
   {
-    if( o.noDate )
-    return;
+    //if( o.noDate )
+    //return;
     result += src.toISOString();
   }
   else if( isArray )
   {
-    if( o.noArray )
-    return;
+    //if( o.noArray )
+    //return;
     var r = _toStrFromArray( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( isObject )
   {
-    // xxx
-    if( o.json === 1 )
-    {
-      _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
-      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if ( o.json ) is true to make valid JSON' );
-      if( o.escaping === undefined )
-      o.escaping = 1;
-    }
     // if( o.noObject )
     // return;
     var r = _toStrFromObject( src,o );
@@ -569,11 +570,11 @@ var _toStr = function _toStr( src,o )
   {
     // if( o.noAtomic )
     // return;
-    
-    if( o.json && src === undefined)
-    result += null;
-    else    
+    if( o.json && src === undefined )
+    result += 'null';
+    else
     result += String( src );
+
   }
 
   return { text : result, simple : simple };
@@ -671,7 +672,7 @@ var _toStrShort = function( src,o )
 
 /**
  * Checks if object provided by argument( src ) must be ignored by toStr() function.
- * Filters are provided by argument( o ). 
+ * Filters are provided by argument( o ).
  * Returns false if object must be ignored.
  *
  * @param {object} src - Source object.
@@ -772,6 +773,8 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
   else
   {
     if( o.noAtomic )
+    return false;
+    if( o.noUndefines && src === undefined )
     return false;
     return true;
   }
@@ -896,9 +899,9 @@ var _toStrFromNumber = function( src,o )
 //
 
 /**
- * Function wraps string( src ) in to( "" ) using options provided 
+ * Function wraps string( src ) in to( "" ) using options provided
  * by argument( o ).Disables escape characters if ( o.escaping ) is true.
- * Also string can be wrapped in to backtick( `` ) if ( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true. 
+ * Also string can be wrapped in to backtick( `` ) if ( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true.
  *
  * @param {object} src - String to parse.
  * @param {wTools~toStrOptions} o - Contains conversion  options {@link wTools~toStrOptions}.
@@ -951,7 +954,6 @@ var _toStrFromStr = function( src,o )
 
   if( o.escaping )
   {
-    debugger;
 
     for( var s = 0 ; s < src.length ; s++ )
     {
@@ -1053,9 +1055,9 @@ var _toStrFromStr = function( src,o )
  * @returns {String} Returns string representation of array.
  *
  * @example
- * //returns 
+ * //returns
  * //[
- * //  [ Object with 1 elements ], 
+ * //  [ Object with 1 elements ],
  * //  [ Object with 1 elements ]
  * //]
  * _.toStrFromArray( [ { a : 1 }, { b : 2 } ], {} );
@@ -1072,7 +1074,7 @@ var _toStrFromStr = function( src,o )
  * //   5
  * // ]
  * _.toStrFromArray( [ 1, [ 2, 3, 4 ], 5 ], { levels : 2, multiline : 1 } );
- * 
+ *
  * @method _toStrFromArray
  * @throws { Exception } Throw an exception if( src ) is undefined.
  * @memberof wTools
@@ -1180,10 +1182,10 @@ var _toStrFromArray = function( src,o )
  * @returns {String} Returns string representation of object.
  *
  * @example
- * //returns 
+ * //returns
  * // {
- * //  r : 9, 
- * //  t : { a : 10 }, 
+ * //  r : 9,
+ * //  t : { a : 10 },
  * //  y : 11
  * // }
  * _.toStrFromObject( { r : 9, t : { a : 10 }, y : 11 }, { levels : 2 } );
@@ -1191,7 +1193,7 @@ var _toStrFromArray = function( src,o )
  * @example
  * //returns ''
  * _.toStrFromObject( { h : { d : 1 }, g : 'c', c : [2] }, { levels : 2, noObject : 1 } );
- * 
+ *
  * @method _toStrFromObject
  * @throws { Exception } Throw an exception if( src ) is not a object-like.
  * @memberof wTools
@@ -2284,14 +2286,13 @@ var strIron = function()
 
 //
 
-
 /**
- * Replaces each occurrence of( ins ) in string( dst ) with( sub ).
- * If the function can not find any occurrence in source( dst ) it returns the original string.
- * Function  can be called in three different ways:
- *  One argument: object that contains properties: dst,dictionary.
- *  Two arguments: dst, dictionary.
- *  Three arguments: dst, ins, sub.
+ * Replaces each occurrence of ( ins ) in string ( dst ) with ( sub ).
+ * If the function can not find any occurrence in source ( dst ) it returns the original string.
+ * Function can be called in three different ways:
+ *  One argument: object that contains properties: map ( o ) with options.
+ *  Two arguments: string ( dst ), map ( dictionary ).
+ *  Three arguments: string ( dst ), string ( ins ), string ( sub )
  * @param {string} dst - Source string to parse.
  * @param {string} ins - String that is to be replaced by( sub ).
  * @param {string} sub - String that replaces finded occurrence.
@@ -2325,7 +2326,6 @@ var strIron = function()
 
 var strReplaceAll = function( dst, ins, sub )
 {
-
   var o;
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 
@@ -2397,7 +2397,7 @@ strReplaceAll.defaults =
  *
  * @example
  * //returns " your cars are"
- * _.strReplaceNames(' my name is',['my','name','is'],['your','cars','are'])
+ * _.strReplaceNames( ' my name is',[ 'my','name','is' ],[ 'your','cars','are' ] )
  *
  * @method strReplaceNames
  * @throws { Exception } Throws a exception if( ins ) is not a Array.
@@ -2435,8 +2435,8 @@ var strReplaceNames = function( src,ins,sub )
 
 /**
  * Concatenates objects provided to function in orded that they are specified.
- * If arguments are different type,like array and number, function appends number to each
- * array value. Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
+ * If one of argument is array-like, makes string for each element of the argument.
+ * Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
  * @param {array-like} arguments - Contains provided objects.
  * @returns {object} Returns concatenated objects as string or array.Return type depends
  * from arguments type.
@@ -2444,17 +2444,17 @@ var strReplaceNames = function( src,ins,sub )
  * @example
  * //returns "123"
  * _.strJoin( 1, 2, 3 );
- * 
+ *
  * @example
  * //returns [ "12", "22", "32" ]
  * _.strJoin( [ 1, 2, 3 ], 2)
- * 
+ *
  * @example
  * //returns [ "11", "23" ]
  * _.strJoin( [ 1, 2 ], [ 1, 3 ] )
  *
  * @method strJoin
- * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array,String or Number.
+ * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array, String or Number.
  * @memberof wTools
  *
  */
@@ -2520,11 +2520,11 @@ var strJoin = function()
  * @example
  * //returns [ "prefix", "_something_", "postfix" ]
  * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] )
- * 
+ *
  * @example
  * //returns [ "prefix_", "something", "postfix" ]
  * _.strUnjoin( 'prefix_something_postfix',[_.strUnjoin.any,'something','postfix'] )
- * 
+ *
  *
  * @method strUnjoin
  * @throws { Exception } Throws a exception if no arguments provided.
@@ -2533,7 +2533,7 @@ var strJoin = function()
  * @memberof wTools
  *
  */
- 
+
 var strUnjoin = function( srcStr,maskArray )
 {
 
@@ -2769,7 +2769,7 @@ var lattersSpectreComparison = function( src1,src2 )
  * @example
  * //returns &#x2F;&#x2F;test&#x2F;&#x2F;
  * _.strHtmlEscape( '//test//' );
- * 
+ *
  * @example
  * //returns &lt;div class=&quot;cls&quot;&gt;&lt;&#x2F;div&gt;
  * _.strHtmlEscape('<div class="cls"></div>');
@@ -2814,12 +2814,12 @@ var strHtmlEscape = function( str )
  *
  * @example
  * //returns \u0077\u006f\u0072\u006c\u0064
- * _.strUnicodeEscape( "world" ); 
+ * _.strUnicodeEscape( "world" );
  *
  * @example
  * //returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
  * _.strUnicodeEscape( '//test//' );
- * 
+ *
  * @method strUnicodeEscape
  * @throws { Exception } Throws a exception if no argument provided.
  * @throws { Exception } Throws a exception if ( src ) is not a String.
@@ -2980,7 +2980,7 @@ var strCount = function( src,ins )
  * @example
  * //returns aaaaa
  * _.strDup( "a", 5 );
- * 
+ *
  * @example
  * //returns abcabc
  * _.strDup( "abc", 2 );
@@ -3158,23 +3158,23 @@ var strToBytes = function( src )
  * @example
  * //returns "1.0 M"
  * _.strMetricFormat( 1, { metric : 6 } );
- * 
+ *
  * @example
  * //returns "100.0 "
  * _.strMetricFormat( "100m", { } );
- * 
+ *
  * @example
  * //returns "100.0 T
  * _.strMetricFormat( "100m", { metric : 12 } );
- * 
+ *
  * @example
  * //returns "2 k"
  * _.strMetricFormat( "1500", { fixed : 0 } );
- * 
+ *
  * @example
  * //returns "1.0 M"
  * _.strMetricFormat( "1000000",{ divisor:2, thousand:100 } );
- * 
+ *
  * @example
  * //returns "10.0 h"
  * _.strMetricFormat( "10000", { divisor:2, thousand:10, dimensions:3 } );
@@ -3282,7 +3282,7 @@ var strMetricFormat = function( number,o )
 /**
  * Short-cut for strMetricFormat() function.
  * Converts number( number ) to specific count of bytes with metric prefix.
- * Example: ( 2048 -> 2.0 kb). 
+ * Example: ( 2048 -> 2.0 kb).
  *
  * @param {(string|number} str - Source number to  convert.
  * @param {object} o - conversion options.
@@ -3294,11 +3294,11 @@ var strMetricFormat = function( number,o )
  * @example
  * //returns "100.0 b"
  * _.strMetricFormatBytes( 100 );
- * 
+ *
  * @example
  * //returns "4.0 kb"
  * _.strMetricFormatBytes( 4096 );
- * 
+ *
  * @example
  * //returns "1024.0 Mb"
  * _.strMetricFormatBytes( Math.pow( 2, 30 ) );
@@ -3328,7 +3328,7 @@ var strMetricFormatBytes = function( number,o )
 /**
  * Short-cut for strMetricFormat() function.
  * Converts number( number ) to specific count of seconds with metric prefix.
- * Example: ( 1000 (ms) -> 1.000 s). 
+ * Example: ( 1000 (ms) -> 1.000 s).
  *
  * @param {number} str - Source number to  convert.
  * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
@@ -3339,11 +3339,11 @@ var strMetricFormatBytes = function( number,o )
  * @example
  * //returns "1.000 s"
  * _.strMetricFormatBytes( 1000 );
- * 
+ *
  * @example
  * //returns "10.000 ks"
  * _.strTimeFormat(Math.pow(10,7));
- * 
+ *
  * @example
  * //returns "78.125 s"
  * _.strTimeFormat(Math.pow(5,7));
@@ -3408,8 +3408,10 @@ var strCsvFrom = function( src,o )
       var element = _.entityWithKeyRecursive( row,key );
       if( element === undefined ) element = '';
       element = String( element );
-      if( element.indexOf( o.rowSeparator ) !== -1 ) element = _.strReplaceAll( element,o.rowSeparator,o.substitute );
-      if( element.indexOf( o.cellSeparator ) !== -1 ) element = _.strReplaceAll( element,o.cellSeparator,o.substitute );
+      if( element.indexOf( o.rowSeparator ) !== -1 )
+      element = _.strReplaceAll( element,o.rowSeparator,o.substitute );
+      if( element.indexOf( o.cellSeparator ) !== -1 )
+      element = _.strReplaceAll( element,o.cellSeparator,o.substitute );
 
       rowString += element + o.cellSeparator;
 
