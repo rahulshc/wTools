@@ -1891,7 +1891,6 @@ _strInhalf.defaults =
  * Finds occurrence of splitter( o.splitter ) from begining of ( o.src ) and splits string in finded position by half.
  * @param {object} [ o.src=null ] - Source string.
  * @param {string | array} [ o.splitter=' ' ] - Splitter of the string.
- * @param {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -1904,7 +1903,7 @@ _strInhalf.defaults =
  * 
  * @example
  * //returns [ "sample string,name", "string" ]
- * _.strInhalfLeft( { src : 'sample string,name string', splitter : [ ',', ' ' ] } )
+ * _.strInhalfLeft( 'sample string,name string', ',' )
  *
  * @method strInhalfLeft
  * @throws { Exception } Throw an exception if no argument provided.
@@ -1942,6 +1941,33 @@ strInhalfLeft.defaults =
 }
 
 //
+
+/**
+ * Short-cut for _strInhalf function. 
+ * Finds occurrence of splitter( o.splitter ) from end of ( o.src ) and splits string in finded position by half.
+ * @param {object} [ o.src=null ] - Source string.
+ * @param {string | array} [ o.splitter=' ' ] - Splitter of the string.
+ * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
+ *
+ * @example
+ * //returns [ "sample", "string" ]
+ * _.strInhalfRight( { src : 'sample,string', splitter : [ ',' ] } );
+ *
+ * @example
+ * //returns [ "sample", "string" ]
+ *_.strInhalfRight( { src : 'sample string', splitter : ' ' } )
+ * 
+ * @example
+ * //returns [ "sample, ", "string" ]
+ * _.strInhalfRight( { src : 'sample,  string', splitter : [ ',', ' ' ] } )
+ *
+ * @method strInhalfRight
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o ) is not a Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @memberof wTools
+ *
+ */
 
 var strInhalfRight = function( o )
 {
