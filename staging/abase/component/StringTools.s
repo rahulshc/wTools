@@ -117,6 +117,7 @@ var toStrFields = function( src,o )
 * @property {boolean} [ o.noError=false ] - Ignores all entities of type Error.
 * @property {boolean} [ o.noNumber=false ] - Ignores all entities of type Number.
 * @property {boolean} [ o.noString=false ] - Ignores all entities of type String.
+* @property {boolean} [ o.noUndefines=false ] - Ignores all entities of type Undefined.
 * @property {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
 * @property {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
 * @property {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
