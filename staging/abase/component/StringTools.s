@@ -100,7 +100,7 @@ var toStrFields = function( src,o )
  * by argument( o ).If object ( src ) has own ( toStr ) method defined function uses it for convertion.
  *
  * @param {object} src - Source object for representing it as string.
- * @param {object} o - Convertion o.
+ * @param {object} o - Convertion options.
  * @param {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
  * into "[ .. ]" / "{ .. }" respecitvely.
  * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
@@ -122,9 +122,10 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.noNumber=false ] - Ignores all entities of type Number.
  * @param {boolean} [ o.noString=false ] - Ignores all entities of type String.
  * @param {boolean} [ o.noDate=false ] - Ignores all entities of type Date.
+ * @param {boolean} [ o.noUndefines=false ] - !!! .
+ * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
  * @param {boolean} [ o.onlyRoutines=false ] - Ignores all entities, but Routine.
  * @param {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
- * @param {boolean} [ o.noSubObject=false ] - Ignores all child entities of type Object.
  * @param {number} [ o.precision=null ] - An integer specifying the number of significant digits,example : [ '1500' ].
  * Number must be between 1 and 21.
  * @param {number} [ o.fixed=null ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
@@ -133,8 +134,7 @@ var toStrFields = function( src,o )
  * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
  * @param {boolean} [ o.escaping=false ] - enables escaping of special characters.
  * @param {boolean} [ o.json=false ] - enables convertion of object( src ) to JSON string. Puts keys of maps into double quotes.
- * @param {boolean} [ o.dropUndefines=false ] - !!! .
-
+ *
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -339,6 +339,7 @@ var toStrFine_gen = function()
     noNumber : 0,
     noString : 0,
     noDate : 0,
+    noUndefines : 0,
 
   }
 
@@ -367,8 +368,8 @@ var toStrFine_gen = function()
 
     /* secondary filter */
 
-    onlyRoutines : 0,
     noSubObject : 0,
+    onlyRoutines : 0,
     onlyEnumerable : 1,
 
     /**/
@@ -379,7 +380,6 @@ var toStrFine_gen = function()
     multiline : 0,
     escaping : 0,
     json : 0,
-    dropUndefines : 0,
 
   }
 
@@ -769,7 +769,7 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
   {
     if( o.noAtomic )
     return false;
-    if( o.dropUndefines && src === undefined )
+    if( o.noUndefines && src === undefined )
     return false;
     return true;
   }
