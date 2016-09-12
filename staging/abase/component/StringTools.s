@@ -2080,6 +2080,35 @@ strSplit.defaults =
 
 //
 
+/**
+ * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
+ * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
+ *
+ * @param {string} [ o.src ]- Source string to strip.
+ * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
+ * @returns {string} Returns result of removement in a string.
+ *
+ * @example
+ * //returns "b"
+ * _.strStrip( { src : 'aabaa', stripper : 'a' } );
+ *
+ * @example
+ * //returns "b"
+ * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
+ * 
+ * @example
+ * //returns "b"
+ * _.strStrip( { src : '   b  \n' } )
+ *
+ * @method strStrip
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( o ) is not Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
+ * @memberof wTools
+ *
+*/
+
 var strStrip = function( o )
 {
 
