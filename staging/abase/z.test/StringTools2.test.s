@@ -994,6 +994,118 @@ var _toStrFromObject = function( test )
   }
 }
 
+//
+
+var _toStrFromContainer = function( test )
+{
+  var o = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0, noSubObject : 0, prependTab : 1, json : 0, wrapString : 1};
+  var src = { a : 1, b : 2, c : 'text' };
+  var names = _.mapOwnKeys( src );
+  var optionsItem = null;
+
+  var item_options = function()
+  {
+  optionsItem = _.mapExtend( {}, o);
+  optionsItem.noObject = o.noSubObject ? 1 : 0;
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
+  };
+
+  test.description = 'default options';
+  item_options();
+  var got = _._toStrFromContainer
+  ({
+    values : src,
+    names : names,
+    optionsContainer : o,
+    optionsItem : optionsItem,
+    simple : !o.multiline,
+    prefix : '{',
+    postfix : '}',
+  });
+  var expected = ' { a : 1, b : 2, c : "text" }';
+  test.identical( got,expected );
+
+  test.description = 'wrap 0,comma ,dtab, multiline test';
+
+  o.wrap = 0;
+  o.comma = '_';
+  o.dtab = '*';
+  o.colon = ' | ';
+  o.multiline = 1;
+  item_options();
+
+  var got = _._toStrFromContainer
+  ({
+    values : src,
+    names : names,
+    optionsContainer : o,
+    optionsItem : optionsItem,
+    simple : !o.multiline,
+    prefix : '{',
+    postfix : '}',
+  });
+  var expected =
+  [
+    ' *a | 1_',
+    ' *b | 2_',
+    ' *c | "text"',
+  ].join( '\n' );
+
+  test.identical( got,expected );
+
+  test.description = 'json test';
+
+  o.wrap = 1;
+  o.comma = ', ';
+  o.dtab = '  ';
+  o.multiline = 0;
+  o.colon = ' : ';
+  o.json = 1;
+  o.levels = 256;
+  item_options();
+
+  var got = _._toStrFromContainer
+  ({
+    values : src,
+    names : names,
+    optionsContainer : o,
+    optionsItem : optionsItem,
+    simple : !o.multiline,
+    prefix : '{',
+    postfix : '}',
+  });
+  var expected = ' { "a" : 1, "b" : 2, "c" : "text" }';
+
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid  argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromContainer( 1 );
+    });
+
+    test.description = 'empty object';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromContainer( { } );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromContainer();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1021,6 +1133,7 @@ var Proto =
     _toStrFromStr : _toStrFromStr,
     _toStrFromArray : _toStrFromArray,
     _toStrFromObject : _toStrFromObject,
+    _toStrFromContainer : _toStrFromContainer,
 
   }
 
