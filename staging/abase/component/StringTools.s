@@ -1196,7 +1196,10 @@ var _toStrFromObject = function( src,o )
 {
   var result = '';
 
+  _assert( arguments.length === 2 );
   _assert( _.objectLike( src ) );
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+
 
   if( o.level >= o.levels )
   {
