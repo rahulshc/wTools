@@ -1322,6 +1322,8 @@ var _toStrFromContainer = function( o )
   var result = '';
 
   _.assert( arguments.length );
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+
 
   var values = o.values;
   var names = o.names;
