@@ -18,10 +18,12 @@ if( typeof module !== 'undefined' )
   require( '../wTools.s' );
   require( '../component/StringTools.s' );
 
-  if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
-    require( '../object/Testing.debug.s' );
-  else
-    require( 'wTesting' );
+  require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
+
+  // if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
+  //   require( '../object/Testing.debug.s' );
+  // else
+  //   require( 'wTesting' );
 
 }
 
@@ -97,7 +99,7 @@ var testFunction = function( test, desc, src, options, expected )
     test.description = desc ;
     got = _.toStr( src[ k ], options[ k ] || options[ 0 ]);
 
-    if( test.description.slice(0,4) === 'json' && options[ k ].json )
+    if( test.description.slice( 0,4 ) === 'json' && options[ k ].json )
     {
       // good
       // if JSON.parse is OK,compare source vs parse result
@@ -469,9 +471,9 @@ var toStrArray = function( test )
 
     /*16*/
     [
-      
+
       '[ 1, 5 ]'
-      
+
     ].join( '\n' ),
 
     /*17*/
@@ -1579,8 +1581,8 @@ var toStrObject = function( test )
       '    quantity : 1',
 
     ].join( '\n' ),
-    
-    /*66*/
+
+    /*67*/
     [
 
       '{',
@@ -1633,12 +1635,12 @@ var toStrJson = function( test )
      /*07*/ { json : 1 },
      /*08*/ { json : 1 },
      /*09*/ { json : 1 },
-     
+
    ]
 
   //  expected =
   //  [
-   // 
+   //
   //   /*01*/
   //   [
   //     '{',
@@ -1647,7 +1649,7 @@ var toStrJson = function( test )
   //     '  "c" : { "d" : true, "e" : null }',
   //     '}'
   //   ].join( '\n' ),
-   // 
+   //
   //   /*02*/
   //   [
   //     '{',
@@ -1655,9 +1657,9 @@ var toStrJson = function( test )
   //     '  "c" : 50, ',
   //     '  "d" : { "a" : "undefined", "e" : null }',
   //     '}'
-   // 
+   //
   //   ].join( '\n' ),
-   // 
+   //
   //   /*03*/
   //   [
   //     '[',
@@ -1667,9 +1669,9 @@ var toStrJson = function( test )
   //     '    "c" : { "d" : true, "e" : null }',
   //     '  }',
   //     ']'
-   // 
+   //
   //   ].join( '\n' ),
-   // 
+   //
   //   /*04*/
   //   [
   //     '{',
@@ -1677,12 +1679,12 @@ var toStrJson = function( test )
   //     '  "b" : [ 1, 2, 3 ], ',
   //     '  "c" : [ routine r ]',
   //     '}',
-   // 
+   //
   //   ].join( '\n' ),
-   // 
+   //
   //   /*05*/
   //   [
-   // 
+   //
   //     '[',
   //     '  {',
   //     '    "a" : 1, ',
@@ -1693,102 +1695,102 @@ var toStrJson = function( test )
   //     '    }',
   //     '  }',
   //     ']',
-   // 
+   //
   //   ].join( '\n' ),
-   // 
+   //
   //   /*06*/
   //   [
-   // 
+   //
   //     '{',
   //     '  "a" : 1994-01-12T00:00:00.000Z',
   //     '}',
-   // 
+   //
   //   ].join( '\n' ),
-   // 
+   //
   //   /*07*/
   //   [
-   // 
+   //
   //     '{ "a" : "Error: r" }',
-   // 
+   //
   //   ].join( '\n' ),
-   // 
+   //
   //   /*08*/
   //   [
-   // 
+   //
   //     '{ "a" : Symbol(sm) }'
-   // 
-   // 
+   //
+   //
   //   ].join( '\n' ),
-   // 
+   //
   //   /*09*/
   //   [
-   // 
+   //
   //     '{ "a" : "\\n\\nABC" }'
-   // 
-   // 
+   //
+   //
   //   ].join( '\n' ),
-  //   
+  //
   //     /*10*/
   //     [
   //       '',
   //     ].join( '\n' ),
-  //     
+  //
   //     /*11*/
   //     [
   //       ''
   //     ].join( '\n' ),
-  //     
+  //
   //     /*12*/
   //     [
   //       ''
-  //     
+  //
   //     ].join( '\n' ),
-  //     
+  //
   //     /*13*/
   //     [
   //       ''
   //     ].join( '\n' ),
-  //     
+  //
   //     /*14*/
   //     [
   //       ''
   //     ].join( '\n' ),
-  //   
+  //
   //   /*15*/
   //   [
   //     ''
   //   ].join( '\n' ),
-  //   
+  //
   //   /*16*/
   //   [
   //     ''
   //   ].join( '\n' ),
-  //       
+  //
   //   /*17*/
   //   [
   //     ''
   //   ].join( '\n' ),
-  //   
+  //
   //   /*18*/
   //   [
   //     ''
   //   ].join( '\n' ),
-  //   
+  //
   //   /*19*/
   //   [
   //     ''
   //   ].join( '\n' ),
-  //   
+  //
   //   /*20*/
   //   [
   //     ''
   //   ].join( '\n' ),
-  //   
+  //
   //   /*21*/
   //   [
   //     ''
   //   ].join( '\n' ),
-   // 
+   //
   //  ]
 
   testFunction( test, desc, src, options);
@@ -1836,7 +1838,7 @@ var toStrJsonFromFileA = function( test )
    var desc =  'json from file as ascii',
 
    src =
-   [   
+   [
      /*01*/ { a : stringFromFile( './file/file1', 'ascii' ), b : stringFromFile( './file/file2', 'ascii' ), c : 1 },
      /*02*/ { a : stringFromFile( './file/file3', 'ascii' ), b : stringFromFile( './file/file4.pdf', 'ascii' ), c : 1 },
      /*03*/ { a : [ stringFromFile( './file/test.exe', 'ascii' ) ], b : stringFromFile( './file/small', 'ascii' ) },
@@ -1844,7 +1846,7 @@ var toStrJsonFromFileA = function( test )
      /*05*/ { a : stringFromFile( './file/small4', 'ascii' ), b : stringFromFile( './file/small5', 'ascii' ) },
      /*06*/ { a : stringFromFile( './file/small6', 'ascii' ), b : stringFromFile( './file/small7', 'ascii' ) },
    ],
-   
+
    options =
    [
      /*01*/ { json : 1 },
@@ -1853,7 +1855,7 @@ var toStrJsonFromFileA = function( test )
      /*04*/ { json : 1 },
      /*05*/ { json : 1 },
      /*06*/ { json : 1 },
-     
+
    ]
 
   testFunction( test, desc, src, options);
