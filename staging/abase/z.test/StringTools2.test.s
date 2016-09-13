@@ -1147,6 +1147,54 @@ var strTimes = function( test )
   }
 }
 
+//
+
+var strLineCount = function( test )
+{
+  test.description = 'one line string test';
+  var got = _.strLineCount( 'one line' );
+  var expected = 1;
+  test.identical( got,expected );
+
+  test.description = 'multiline string test';
+  var got = _.strLineCount( 'first line\nsecond line\nthird line' );
+  var expected = 3;
+  test.identical( got,expected );
+
+  test.description = 'multiline  text test';
+  var got = _.strLineCount( `one
+                             two
+                             three`
+                          );
+  var expected = 3;
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strLineCount( '1', '2' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strLineCount( 123 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strLineCount();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1177,6 +1225,7 @@ var Proto =
     _toStrFromContainer : _toStrFromContainer,
     _toStrFromContainer : _toStrFromContainer,
     strTimes : strTimes,
+    strLineCount : strLineCount,
 
   }
 
