@@ -590,7 +590,7 @@ var _toStr = function _toStr( src,o )
  * For object,array and row returns count of elemets, example: '[ Row with 3 elements ]'.
  *
  * @param {object} src - Source object.
- * @param {wTools~toStrOptions} o - conversion options {@link wTools~toStrOptions}.
+ * @param {wTools~toStrOptions} o - Conversion options {@link wTools~toStrOptions}.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -866,8 +866,6 @@ var _toStrFromRoutine = function( src,o )
  *
  * @param {Number} src - Number for conversion.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
- * @param {Number} o.precision - Integer value that specifying  length of a number.
- * @param {Number} o.fixed - Number of digits after the decimal point.
  * @returns {String} Returns number converted to the string.
  *
  * @example
@@ -906,9 +904,6 @@ var _toStrFromNumber = function( src,o )
  *
  * @param {object} src - String to parse.
  * @param {wTools~toStrOptions} o - Contains conversion  options {@link wTools~toStrOptions}.
- * @param {boolean} [ o.escaping=false ] - enable escaping of special characters.
- * @param {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
- * @param {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
  * @returns {String} Returns wrapped string.
  *
  * @example
@@ -1047,12 +1042,6 @@ var _toStrFromStr = function( src,o )
  *
  * @param {object} src - Array to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
- * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
- * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
- * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
- * @param {string} [ o.tab='' ] - Prepended before each line tab.
- * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
- * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
  * @returns {String} Returns string representation of array.
  *
  * @example
@@ -1171,15 +1160,6 @@ var _toStrFromArray = function( src,o )
  *
  * @param {object} src - Object to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
- * @param {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
- * @param {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
- * @param {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
- * @param {boolean} [ o.onlyEnumerable=true ] - Ignores all non-enumerable properties of object ( src ).
- * @param {boolean} [ o.noObject=false ] - Ignores all entities of type Object.
- * @param {boolean} [ o.prependTab=true ] - Prepend tab before first line.
- * @param {string} [ o.tab='' ] - Prepended before each line tab.
- * @param {string} [ o.dtab='  ' ] - String attached to ( o.tab ) each time the function parses next level of object depth.
- * @param {boolean} [ o.multiline=false ] - Writes each object property in new line.
  * @returns {String} Returns string representation of object.
  *
  * @example
@@ -1307,17 +1287,12 @@ var _toStrFromObject = function( src,o )
  * Function builds string that represents  container structure like object or array using keys and values from
  * argument( o ).Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
  *
- * @param {wTools~toStrOptions} o - Contains data and options {@link wTools~toStrOptions}.
+ * @param {object} o - Contains data and options.
  * @param {object} [ o.values ] - Source object that contains values.
  * @param {array} [ o.names ] - Source object keys.
- * @param {object} [ o.optionsContainer ] - Options for container.
- * @param {string} [ o.optionsContainer.comma ] - Splitter between elements, example : [ 1, 2, 3 ].
- * @param {boolean} [ o.optionsContainer.wrap] - Wrap array-like and object-like entities.
- * @param {boolean} [ o.optionsContainer.json ] - Enable conversion of object( src ) to JSON string.
- * @param {string} [ o.optionsContainer.tab ] - Prepended before each line tab.
- * @param {string} [ o.optionsContainer.dtab ] - String attached to ( o.tab ) each time the function parses next level of object depth.
- * @param {boolean} [ o.optionsContainer.prependTab ] - Prepend tab before first line.
- * @param {string} [ o.optionsContainer.colon ] - Colon between name and value, example : { a : 1 }.
+ * @param {string} [ o.prefix ] - Denotes begin of container.
+ * @param {string} [ o.postfix ] - Denotes end of container.
+ * @param {wTools~toStrOptions} o.optionsContainer - Options for container {@link wTools~toStrOptions}.
  * @param {object} [ o.optionsItem ] - Options for items that object contains.
  * @param {string} [ o.optionsItem.tab ] - Prepended before each line tab.
  * @param {number} [ o.optionsItem.level ] - Sets the min depth of looking into source object. Function starts from zero level by default.
@@ -1801,11 +1776,16 @@ strSplitChunks.defaults =
 //
 
 /**
+* @typedef {object} wTools~toStrInhalfOptions
+* @property {string} [ o.src=null ] - Source string.
+* @property {string | array} [ o.splitter=' ' ] - Splitter of the string.
+* @property {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
+*/
+
+/**
  * Finds occurrence of splitter( o.splitter ) in source( o.src ) and splits string in finded position by half.
- * If function finds  more then one occurrence, it separates string in the position of the last. 
- * @param {object} [ o.src=null ] - Source string.
- * @param {string | array} [ o.splitter=' ' ] - Splitter of the string.
- * @param {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
+ * If function finds  more then one occurrence, it separates string in the position of the last.
+ * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -1815,7 +1795,7 @@ strSplitChunks.defaults =
  * @example
  * //returns [ "sample", "string" ]
  *_._strInhalf( { src : 'sample string', splitter : ' ' } )
- * 
+ *
  * @example
  * //returns [ "sample string,name", "string" ]
  * _._strInhalf( { src : 'sample string,name string', splitter : [ ',', ' ' ] } )
@@ -1902,10 +1882,9 @@ _strInhalf.defaults =
 //
 
 /**
- * Short-cut for _strInhalf function. 
+ * Short-cut for _strInhalf function.
  * Finds occurrence of splitter( o.splitter ) from begining of ( o.src ) and splits string in finded position by half.
- * @param {object} [ o.src=null ] - Source string.
- * @param {string | array} [ o.splitter=' ' ] - Splitter of the string.
+ * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -1958,10 +1937,9 @@ strInhalfLeft.defaults =
 //
 
 /**
- * Short-cut for _strInhalf function. 
+ * Short-cut for _strInhalf function.
  * Finds occurrence of splitter( o.splitter ) from end of ( o.src ) and splits string in finded position by half.
- * @param {object} [ o.src=null ] - Source string.
- * @param {string | array} [ o.splitter=' ' ] - Splitter of the string.
+ * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
@@ -1971,7 +1949,7 @@ strInhalfLeft.defaults =
  * @example
  * //returns [ "sample", "string" ]
  *_.strInhalfRight( { src : 'sample string', splitter : ' ' } )
- * 
+ *
  * @example
  * //returns [ "sample, ", "string" ]
  * _.strInhalfRight( { src : 'sample,  string', splitter : [ ',', ' ' ] } )
