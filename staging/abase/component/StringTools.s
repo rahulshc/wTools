@@ -888,6 +888,8 @@ var _toStrFromRoutine = function( src,o )
 
 var _toStrFromNumber = function( src,o )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( src ) && _.objectIs( o ) );
   var result = '';
 
   if( _.numberIs( o.precision ) )
