@@ -1106,6 +1106,47 @@ var _toStrFromContainer = function( test )
   }
 }
 
+//
+
+var strTimes = function( test )
+{
+  test.description = 'concatenation test';
+  var got = _.strTimes( 'a', 2 );
+  var expected = 'aa';
+  test.identical( got,expected );
+
+  test.description = 'invalid times value';
+  var got = _.strTimes( 'a', -2 );
+  var expected = 'a';
+  test.identical( got,expected );
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strTimes( '1' );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _.strTimes( '1', '2' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strTimes();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1134,6 +1175,8 @@ var Proto =
     _toStrFromArray : _toStrFromArray,
     _toStrFromObject : _toStrFromObject,
     _toStrFromContainer : _toStrFromContainer,
+    _toStrFromContainer : _toStrFromContainer,
+    strTimes : strTimes,
 
   }
 
