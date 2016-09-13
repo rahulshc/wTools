@@ -843,7 +843,7 @@ var _toStrFromStr = function( test )
     test.description = 'invalid first argument type';
     test.shouldThrowError( function()
     {
-      _._toStrFromStr( 2,{} );
+      _._toStrFromStr( 2, {} );
     });
 
     test.description = 'invalid second argument type';
@@ -856,6 +856,63 @@ var _toStrFromStr = function( test )
     test.shouldThrowError( function()
     {
       _._toStrFromStr();
+    });
+
+  }
+}
+
+//
+
+var _toStrFromArray = function( test )
+{
+  test.description = 'default options';
+  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 1, comma : ', ', wrap : 1 } ).text;
+  var expected = '[ 1, 2, 3 ]';
+  test.identical( got,expected );
+
+  test.description = 'wrap test';
+  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 1, comma : ', ', wrap : 0 } ).text;
+  var expected = '1, 2, 3';
+  test.identical( got,expected );
+
+  test.description = 'levels 0 test';
+  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 0, levels : 0, comma : ', ', wrap : 1 } ).text;
+  var expected = '[ Array with 3 elements ]';
+  test.identical( got,expected );
+
+  test.description = 'tab & multiline test';
+  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab: '-', level : 0, comma : ', ', wrap : 1, multiline : 1 } ).text;
+  var expected =
+  [
+    '[',
+    ' -1, ',
+    ' -2, ',
+    ' -3',
+    ' ]',
+  ].join( '\n' );
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromArray( 2, {} );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromArray( [], 2 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromArray();
     });
 
   }
@@ -886,6 +943,7 @@ var Proto =
     _toStrFromRoutine : _toStrFromRoutine,
     _toStrFromNumber : _toStrFromNumber,
     _toStrFromStr : _toStrFromStr,
+    _toStrFromArray : _toStrFromArray,
 
   }
 
