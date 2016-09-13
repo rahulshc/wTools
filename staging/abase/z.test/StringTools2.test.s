@@ -1194,6 +1194,73 @@ var strLineCount = function( test )
 
   }
 }
+//
+
+var _strInhalf = function( test )
+{
+  test.description = 'three words with comma';
+  var got = _._strInhalf( { src : 'one,two,three', splitter : ',' } );
+  var expected = [ 'one,two','three' ];
+  test.identical( got,expected );
+
+  test.description = 'array of splitters';
+  var got = _._strInhalf( { src : 'one word,two words,three words', splitter : [ ',',' ' ] } );
+  var expected = [ "one word,two words,three", "words" ]
+  test.identical( got,expected );
+
+  test.description = 'zero splitter length';
+  var got = _._strInhalf( { src : 'word,word', splitter : '' } );
+  var expected = [ "word,word", "" ];
+  test.identical( got,expected );
+
+  test.description = 'left equal zero';
+  var got = _._strInhalf( { src : 'word,word_word', splitter : '_', left : 0 } );
+  var expected = [ "word,word", "word" ];
+  test.identical( got,expected );
+
+  test.description = 'left 1 & splitter length equal zero';
+  var got = _._strInhalf( { src : 'word,word_word', splitter : '', left : 1 } );
+  var expected = [ "", "word,word_word" ];
+  test.identical( got,expected );
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _._strInhalf( '1', '2' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _._strInhalf( 123 );
+    });
+
+    test.description = 'invalid property type';
+    test.shouldThrowError( function()
+    {
+      _._strInhalf( { src : 1 } );
+    });
+
+    test.description = 'invalid property type';
+    test.shouldThrowError( function()
+    {
+      _._strInhalf( { src : 'word', splitter : 0 } );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._strInhalf();
+    });
+
+  }
+}
 
 var Proto =
 {
@@ -1226,6 +1293,7 @@ var Proto =
     _toStrFromContainer : _toStrFromContainer,
     strTimes : strTimes,
     strLineCount : strLineCount,
+    _strInhalf : _strInhalf,
 
   }
 
