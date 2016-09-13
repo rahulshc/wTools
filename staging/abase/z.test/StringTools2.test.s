@@ -133,17 +133,17 @@ var strReplaceAll = function( test )
   // var got = _.strReplaceAll( '', '', 'c' );
   // var expected = 'c';
   // test.identical( got,expected );
-  // 
+
   // test.description = 'secong argument is empty string';
   // var got = _.strReplaceAll( 'a', '', 'c' );
   // var expected = 'a';
   // test.identical( got,expected );
-  // 
+
   // test.description = 'all three args empty strings';
   // var got = _.strReplaceAll( '', '', '' );
   // var expected = '';
   // test.identical( got,expected );
-  // 
+
   test.description = 'third arg is empty string ';
   var got = _.strReplaceAll( 'a', 'a', '' );
   var expected = '';
@@ -748,6 +748,68 @@ var _toStrFromRoutine = function( test )
   }
 }
 
+//
+
+var _toStrFromNumber = function( test )
+{
+  test.description = 'default options';
+  var got = _._toStrFromNumber( 123, {} );
+  var expected = '123';
+  test.identical( got,expected );
+
+  test.description = 'number precision test';
+  var got = _._toStrFromNumber( 123, { precision : 2 } );
+  var expected = '1.2e+2';
+  test.identical( got,expected );
+
+  test.description = 'number fixed test';
+  var got = _._toStrFromNumber( 123, { fixed : 2 } );
+  var expected = '123.00';
+  test.identical( got,expected );
+
+  test.description = 'invalid option type';
+  var got = _._toStrFromNumber( 123, { fixed : '2' } );
+  var expected = '123';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromNumber( '1',{} );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromNumber( 1, 2 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromNumber();
+    });
+
+    test.description = 'precision out of range';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromNumber( 1, { precision : 22 });
+    });
+
+    test.description = 'fixed out of range';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromNumber( 1, { precision : 22 });
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -771,6 +833,7 @@ var Proto =
     _toStrIsVisibleElement : _toStrIsVisibleElement,
     _toStrIsSimpleElement : _toStrIsSimpleElement,
     _toStrFromRoutine : _toStrFromRoutine,
+    _toStrFromNumber : _toStrFromNumber,
 
   }
 
