@@ -880,7 +880,7 @@ var _toStrFromArray = function( test )
   var expected = '[ Array with 3 elements ]';
   test.identical( got,expected );
 
-  test.description = 'tab & multiline test';
+  test.description = 'dtab & multiline test';
   var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab: '-', level : 0, comma : ', ', wrap : 1, multiline : 1 } ).text;
   var expected =
   [
@@ -918,6 +918,82 @@ var _toStrFromArray = function( test )
   }
 }
 
+//
+
+var _toStrFromObject = function( test )
+{
+  var def = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0};
+
+  test.description = 'default options';
+  var got = _._toStrFromObject( { a : 1, b : 2 , c : 'text' }, def );
+  var expected = '{ a : 1, b : 2, c : text }';
+  test.identical( got.text,expected );
+
+  test.description = 'levels 0 test';
+  def.levels = 0;
+  var got = _._toStrFromObject( { a : 1, b : 2 , c : 'text' }, def );
+  var expected = '[ Object with 3 elements ]';
+  test.identical( got.text,expected );
+
+  test.description = 'wrap 0 test';
+  def.levels = 1;
+  def.wrap = 0;
+  var got = _._toStrFromObject( { a : 1, b : 2, c : 'text' }, def );
+  var expected = 'a : 1, b : 2, c : text';
+  test.identical( got.text,expected );
+
+  test.description = 'noObject test';
+  def.noObject = 1;
+  var got = _._toStrFromObject( { a : 1, b : 2, c : 'text' }, def );
+  var expected = undefined;
+  test.identical( got,expected );
+
+  test.description = 'dtab & prependTab & multiline test';
+  def.noObject = 0;
+  def.dtab = '*';
+  def.multiline  = 1;
+  def.prependTab = 1;
+  var got = _._toStrFromObject( { a : 1, b : 2, c : 'text' }, def );
+  var expected =
+  [
+    ' *a : 1, ',
+    ' *b : 2, ',
+    ' *c : text',
+  ].join( '\n' );
+  test.identical( got.text,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromObject( 1, {} );
+    });
+
+    test.description = 'empty options';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromObject( { a : 1 }, {} );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromObject( { a : 1 }, 2 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromObject();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -944,6 +1020,7 @@ var Proto =
     _toStrFromNumber : _toStrFromNumber,
     _toStrFromStr : _toStrFromStr,
     _toStrFromArray : _toStrFromArray,
+    _toStrFromObject : _toStrFromObject,
 
   }
 
