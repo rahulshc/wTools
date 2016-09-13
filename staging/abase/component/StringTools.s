@@ -791,7 +791,7 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
 
 /**
  * Checks if object length provided by argument( element ) is enough to represent it as single line string.
- * Options are provided by argument( o ). 
+ * Options are provided by argument( o ).
  * Returns true if object can be represented as one line.
  *
  * @param {object} element - Source object.
@@ -1082,7 +1082,10 @@ var _toStrFromArray = function( src,o )
 {
   var result = '';
 
+  _assert( arguments.length === 2 );
   _assert( src && _.numberIs( src.length ) );
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+
 
   if( o.level >= o.levels )
   {
@@ -1901,7 +1904,7 @@ _strInhalf.defaults =
  * @example
  * //returns [ "sample", "string" ]
  *_.strInhalfLeft( { src : 'sample string', splitter : ' ' } )
- * 
+ *
  * @example
  * //returns [ "sample string,name", "string" ]
  * _.strInhalfLeft( 'sample string,name string', ',' )
@@ -2095,7 +2098,7 @@ strSplit.defaults =
  * @example
  * //returns "b"
  * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
- * 
+ *
  * @example
  * //returns "b"
  * _.strStrip( { src : '   b  \n' } )
