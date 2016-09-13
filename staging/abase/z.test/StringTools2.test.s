@@ -810,6 +810,57 @@ var _toStrFromNumber = function( test )
   }
 }
 
+//
+
+var _toStrFromStr = function( test )
+{
+  test.description = 'default options';
+  var got = _._toStrFromStr( '123', {} );
+  var expected = '123';
+  test.identical( got,expected );
+
+  test.description = 'escaping';
+  var got = _._toStrFromStr( '\n123\u001b', { escaping : 1 } );
+  var expected = '\\n123\\u001b';
+  test.identical( got,expected );
+
+  test.description = 'wrapString';
+  var got = _._toStrFromStr( 'string', { wrapString : 1 } );
+  var expected = '"string"';
+  test.identical( got,expected );
+
+  test.description = 'usingMultilineStringWrapper';
+  var got = _._toStrFromStr( 'string\nstring2', { wrapString : 1, usingMultilineStringWrapper : 1 } );
+  var expected = "`string\nstring2`";
+  test.identical( got,expected );
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromStr( 2,{} );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromStr( '1', 2 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrFromStr();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -834,6 +885,7 @@ var Proto =
     _toStrIsSimpleElement : _toStrIsSimpleElement,
     _toStrFromRoutine : _toStrFromRoutine,
     _toStrFromNumber : _toStrFromNumber,
+    _toStrFromStr : _toStrFromStr,
 
   }
 
