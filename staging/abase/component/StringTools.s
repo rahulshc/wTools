@@ -2527,7 +2527,7 @@ var strJoin = function()
 //
 
 /**
- * Separates part of string( srcStr ) using array( maskArray ) as mask and returns them in array.
+ * Separates parts of string( srcStr ) using array( maskArray ) as mask and returns them as array.
  * @param {string} srcStr - Source string.
  * @param {array} maskArray - Contains mask for source string.
  * @returns {array} Returns array with unjoined string part.
