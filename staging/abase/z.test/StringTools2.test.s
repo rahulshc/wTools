@@ -1590,6 +1590,52 @@ var strRemoveAllSpaces = function( test )
   }
 }
 
+//
+
+var strStripEmptyLines = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strStripEmptyLines( 'line_one\n\nline_two' );
+  var expected = 'line_one\nline_two';
+  test.identical( got,expected );
+
+  test.description = 'empty string';
+  var got = _.strStripEmptyLines( '' );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.description = 'single line';
+  var got = _.strStripEmptyLines( 'b' );
+  var expected = 'b';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strStripEmptyLines( '1', '2', '3' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strStripEmptyLines( 123 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strStripEmptyLines();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1627,6 +1673,7 @@ var Proto =
     strSplit : strSplit,
     strStrip : strStrip,
     strRemoveAllSpaces : strRemoveAllSpaces,
+    strStripEmptyLines : strStripEmptyLines,
 
   }
 
