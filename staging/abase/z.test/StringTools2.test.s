@@ -1590,6 +1590,58 @@ var strStripEmptyLines = function( test )
   }
 }
 
+//
+
+var strReplaceNames = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strReplaceNames( 'a b c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var expected = 'a x y d';
+  test.identical( got,expected );
+
+  test.description = 'escaping string';
+  var got = _.strReplaceNames( '\na b \n c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var expected = '\na x \n y d';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceNames( '1', '2');
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceNames( 123,[],[] );
+    });
+
+    test.description = 'invalid arrays length type';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceNames( 'one two',[ 'one' ],[ 'one', 'two' ] );
+    });
+
+    test.description = 'invalid second arg type';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceNames( 'one two',5,[ 'one', 'two' ] );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceNames();
+    });
+
+  }
+}
 var Proto =
 {
 
@@ -1627,6 +1679,7 @@ var Proto =
     strStrip : strStrip,
     strRemoveAllSpaces : strRemoveAllSpaces,
     strStripEmptyLines : strStripEmptyLines,
+    strReplaceNames : strReplaceNames,
 
   }
 
