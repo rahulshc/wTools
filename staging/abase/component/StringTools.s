@@ -2216,7 +2216,7 @@ var strRemoveAllSpaces = function( src,sub )
 //
 
 /**
- * This function removes all empty lines from the string passed by first argument( srcStr ).
+ * Removes empty lines from the string passed by argument( srcStr ).
  *
  * @param {string} srcStr - Source string to parse.
  * @returns {string} Returns a string with empty lines removed.
