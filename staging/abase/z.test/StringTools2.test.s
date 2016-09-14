@@ -71,57 +71,6 @@ var strCapitalize = function( test )
 
 //
 
-var strStripEmptyLines = function( test )
-{
-
-  test.description = 'single line test';
-  var got = _.strStripEmptyLines( 'first\n\nsecond' );
-  var expected = 'first\nsecond\n';
-  test.identical( got,expected );
-
-  test.description = 'no empty lines';
-  var got = _.strStripEmptyLines( 'first' );
-  var expected = 'first\n';
-  test.identical( got,expected );
-
-  test.description = 'empty string';
-  var got = _.strStripEmptyLines( '' );
-  var expected = '';
-  test.identical( got,expected );
-
-  test.description = 'multiple breaklines';
-  var got = _.strStripEmptyLines( '\n\na\n\nb\n\n\n' );
-  var expected = 'a\nb\n';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strStripEmptyLines( 'line1','line2' );
-    });
-
-    test.description = 'wrong argument type';
-    test.shouldThrowError( function()
-    {
-      _.strStripEmptyLines( 111 );
-    });
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.strStripEmptyLines( );
-    });
-
-  }
-}
-
-//
-
 var strReplaceAll = function( test )
 {
   test.description = 'simple replace';
@@ -1597,7 +1546,7 @@ var strStripEmptyLines = function( test )
 
   test.description = 'simple string';
   var got = _.strStripEmptyLines( 'line_one\n\nline_two' );
-  var expected = 'line_one\nline_two';
+  var expected = 'line_one\nline_two\n';
   test.identical( got,expected );
 
   test.description = 'empty string';
@@ -1608,6 +1557,11 @@ var strStripEmptyLines = function( test )
   test.description = 'single line';
   var got = _.strStripEmptyLines( 'b' );
   var expected = 'b';
+  test.identical( got,expected );
+
+  test.description = 'multiple breaklines';
+  var got = _.strStripEmptyLines( '\n\na\n\nb\n\n\n' );
+  var expected = 'a\nb\n';
   test.identical( got,expected );
 
   /**/
@@ -1645,7 +1599,6 @@ var Proto =
   {
 
     strCapitalize : strCapitalize,
-    strStripEmptyLines : strStripEmptyLines,
     strReplaceAll : strReplaceAll,
     strDropPrefix : strDropPrefix,
     strDropPostfix : strDropPostfix,
