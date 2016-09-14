@@ -1481,6 +1481,59 @@ var strSplit = function( test )
   }
 }
 
+//
+
+var strStrip = function( test )
+{
+
+  test.description = 'simple string, defalut options';
+  var got = _.strStrip( '\nabc  ' );
+  var expected = 'abc';
+  test.identical( got,expected );
+
+  test.description = 'arguments as map';
+  var got = _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } );
+  var expected = 'b';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strStrip( '1', '2', '3' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strStrip( 123 );
+    });
+
+    test.description = 'invalid property type';
+    test.shouldThrowError( function()
+    {
+      _.strStrip( { src : ' word ', splitter : 0 } );
+    });
+
+    test.description = 'invalid property defined';
+    test.shouldThrowError( function()
+    {
+      _.strStrip( { src : ' word ', splitter : ' ', left : 1 } );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strStrip();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1516,6 +1569,7 @@ var Proto =
     strInhalfLeft : strInhalfLeft,
     strInhalfRight : strInhalfRight,
     strSplit : strSplit,
+    strStrip : strStrip,
 
   }
 
