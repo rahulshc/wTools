@@ -2179,10 +2179,10 @@ strStrip.defaults =
 }
 
 //
+
 /**
- * This function removes all whitespaces from the string passed by first argument( src ).
- * If second argument is not equal 'undefined', function replaces whitespaces with( sub )
- * argument value. Else function removes only whitespaces.
+ * Removes whitespaces from source( src ).
+ * If argument( sub ) is defined, function replaces whitespaces with it.
  *
  * @param {string} src - Source string to parse.
  * @param {string} sub - Substring that replaces whitespaces.
@@ -2197,7 +2197,6 @@ strStrip.defaults =
  * _.strRemoveAllSpaces( 'a b c d e','*' );
  *
  * @method strRemoveAllSpaces
-
  * @memberof wTools
  *
 */
