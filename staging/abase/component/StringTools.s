@@ -2419,6 +2419,8 @@ strReplaceAll.defaults =
 
 var strReplaceNames = function( src,ins,sub )
 {
+  _.assert( arguments.length === 3 );
+  _.assert( _.strIs( src ) );
   _.assert( _.arrayIs( ins ) );
   _.assert( _.arrayIs( sub ) );
   _.assert( ins.length === sub.length );
