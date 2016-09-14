@@ -1800,6 +1800,7 @@ strSplitChunks.defaults =
 /**
  * Finds occurrence of splitter( o.splitter ) in source( o.src ) and splits string in finded position by half.
  * If function finds  more then one occurrence, it separates string in the position of the last.
+ *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
@@ -1899,6 +1900,7 @@ _strInhalf.defaults =
 /**
  * Short-cut for _strInhalf function.
  * Finds occurrence of splitter( o.splitter ) from begining of ( o.src ) and splits string in finded position by half.
+ *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
@@ -1954,6 +1956,7 @@ strInhalfLeft.defaults =
 /**
  * Short-cut for _strInhalf function.
  * Finds occurrence of splitter( o.splitter ) from end of ( o.src ) and splits string in finded position by half.
+ *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
@@ -2100,8 +2103,12 @@ strSplit.defaults =
 /**
  * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
  * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass map like ( { src : ' acb ', stripper : ' ' } ).
  *
- * @param {string} [ o.src ]- Source string to strip.
+ * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
+ * @param {string} [ o.src=null ]- Source string to strip.
  * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
  * @returns {string} Returns result of removement in a string.
  *
@@ -2122,6 +2129,7 @@ strSplit.defaults =
  * @throws { Exception } Throw an exception if( o ) is not Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @memberof wTools
  *
 */
