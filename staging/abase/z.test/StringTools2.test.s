@@ -1336,6 +1336,81 @@ var strInhalfLeft = function( test )
 
   }
 }
+
+//
+
+var strInhalfRight = function( test )
+{
+
+  test.description = 'three words with comma';
+  var got = _.strInhalfRight( { src : 'ab,bc,cd', splitter : ',' } );
+  var expected = [ "ab,bc","cd" ];
+  test.identical( got,expected );
+
+  test.description = 'array of splitters';
+  var got = _.strInhalfRight( { src : 'one word,two words,three words', splitter : [ ',',' ' ] } );
+  var expected = [ "one word,two words,three", "words" ];
+  test.identical( got,expected );
+
+  test.description = 'zero splitter length';
+  var got = _.strInhalfRight( { src : 'word,word', splitter : '' } );
+  var expected = ["word,word", ""]
+  test.identical( got,expected );
+
+  test.description = 'two arguments';
+  var got = _.strInhalfRight( 'word,word_word', '_' );
+  var expected = [ "word,word", "word" ];
+  test.identical( got,expected );
+
+  test.description = 'if string - allows one arg but takes two ';
+  var got = _.strInhalfRight( 'a b c' );
+  var expected = [ "a b", "c" ];
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfRight( '1', '2', '3' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfRight( 123, ' ' );
+    });
+
+    test.description = 'splitter not defined';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfRight( { src : 1 } );
+    });
+
+    test.description = 'invalid property type';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfRight( { src : 'word', splitter : 0 } );
+    });
+
+    test.description = 'invalid property defined';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfRight( { src : 'word', splitter : 0, left : 1 } );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfRight();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1369,6 +1444,7 @@ var Proto =
     strLineCount : strLineCount,
     _strInhalf : _strInhalf,
     strInhalfLeft : strInhalfLeft,
+    strInhalfRight : strInhalfRight,
 
   }
 
