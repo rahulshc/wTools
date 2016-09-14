@@ -2006,27 +2006,36 @@ strInhalfRight.defaults =
 
 //
 /**
- * This function splits a string at each position where the separator (o.splitter)
- * occurs in the string (o.src) into substrings and appends them to the array of strings.
- * Splitter can be set by using( strSplit.defaults.splitter ) property.
- * Expects one object: the string to be processed.
+ * Divides source string( o.src ) into parts using splitter provided by argument( o.splitter ).
+ * If( o.strip ) is true - removes leading and trailing whitespace characters.
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass map like ( { src : 'a,b,c', splitter : ',', strip : 1 } ).
+ * Returns result as array of strings.
  *
- * @param {string} o - Source string to split.
- * @returns {object} Returns an array of strings split by separator( o.splitter ).
+ * @param {string|object} o - Source string to split or map with source( o.src ) and options.
+ * @param {string} [ o.src=null ] - Source string.
+ * @param {string|array} [ o.splitter=' ' ] - Word divider in source string.
+ * @param {boolean} [ o.strip=true ] - Removes leading and trailing whitespace characters occurrences from source string.
+ * @returns {object} Returns an array of strings separated by( o.splitter ).
  *
  * @example
  * //returns [ 'first', 'second', 'third' ]
  * _.strSplit( ' first second third ' );
  *
  * @example
- * //returns [ 'first', 'second', 'third' ]
- * _.strSplit.defaults.splitter= '..';
- * _.strSplit( ' first..second..third ' );
+ * //returns [ "a", "b", "c", "d" ]
+ * _.strSplit( { src : 'a,b,c,d', splitter : ','  } );
+ *
+ * @example
+ * //returns [ "    a", "b", "c", "d   " ]
+ * _.strSplit( { src : '    a,b,c,d   ', splitter : [ ',' ], strip : 0  } );
  *
  * @method strSplit
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.splitter ) is not a String or an Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @memberof wTools
  *
 */
