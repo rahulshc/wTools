@@ -1288,11 +1288,6 @@ var strInhalfLeft = function( test )
   var expected = [ "word,word", "word" ];
   test.identical( got,expected );
 
-  test.description = 'if string - allows one arg but takes two ';
-  var got = _.strInhalfLeft( 'a b c' );
-  var expected = [ "a", "b c" ];
-  test.identical( got,expected );
-
   /**/
 
   if( Config.debug )
@@ -1326,6 +1321,12 @@ var strInhalfLeft = function( test )
     test.shouldThrowError( function()
     {
       _.strInhalfLeft( { src : 'word', splitter : 0, left : 0 } );
+    });
+
+    test.description = 'only one argument provided';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfLeft('one two three ');
     });
 
     test.description = 'no arguments';
@@ -1362,11 +1363,6 @@ var strInhalfRight = function( test )
   var expected = [ "word,word", "word" ];
   test.identical( got,expected );
 
-  test.description = 'if string - allows one arg but takes two ';
-  var got = _.strInhalfRight( 'a b c' );
-  var expected = [ "a b", "c" ];
-  test.identical( got,expected );
-
   /**/
 
   if( Config.debug )
@@ -1400,6 +1396,12 @@ var strInhalfRight = function( test )
     test.shouldThrowError( function()
     {
       _.strInhalfRight( { src : 'word', splitter : 0, left : 1 } );
+    });
+
+    test.description = 'only one argument provided';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfRight('one two three ');
     });
 
     test.description = 'no arguments';
