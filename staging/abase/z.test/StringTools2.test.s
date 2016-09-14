@@ -1117,7 +1117,7 @@ var strTimes = function( test )
 
   test.description = 'invalid times value';
   var got = _.strTimes( 'a', -2 );
-  var expected = 'a';
+  var expected = '';
   test.identical( got,expected );
 
 
@@ -1194,6 +1194,7 @@ var strLineCount = function( test )
 
   }
 }
+
 //
 
 var _strInhalf = function( test )
@@ -1262,6 +1263,79 @@ var _strInhalf = function( test )
   }
 }
 
+//
+
+var strInhalfLeft = function( test )
+{
+
+  test.description = 'three words with comma';
+  var got = _.strInhalfLeft( { src : 'ab,bc,cd', splitter : ',' } );
+  var expected = [ "ab", "bc,cd" ];
+  test.identical( got,expected );
+
+  test.description = 'array of splitters';
+  var got = _.strInhalfLeft( { src : 'one word,two words,three words', splitter : [ ',',' ' ] } );
+  var expected = [ "one", "word,two words,three words" ];
+  test.identical( got,expected );
+
+  test.description = 'zero splitter length';
+  var got = _.strInhalfLeft( { src : 'word,word', splitter : '' } );
+  var expected = [ "", "word,word" ];
+  test.identical( got,expected );
+
+  test.description = 'two arguments';
+  var got = _.strInhalfLeft( 'word,word_word', '_' );
+  var expected = [ "word,word", "word" ];
+  test.identical( got,expected );
+
+  test.description = 'if string - allows one arg but takes two ';
+  var got = _.strInhalfLeft( 'a b c' );
+  var expected = [ "a", "b c" ];
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfLeft( '1', '2', '3' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfLeft( 123, ' ' );
+    });
+
+    test.description = 'splitter not defined';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfLeft( { src : 1 } );
+    });
+
+    test.description = 'invalid property type';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfLeft( { src : 'word', splitter : 0 } );
+    });
+
+    test.description = 'invalid property defined';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfLeft( { src : 'word', splitter : 0, left : 0 } );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strInhalfLeft();
+    });
+
+  }
+}
 var Proto =
 {
 
@@ -1294,6 +1368,7 @@ var Proto =
     strTimes : strTimes,
     strLineCount : strLineCount,
     _strInhalf : _strInhalf,
+    strInhalfLeft : strInhalfLeft,
 
   }
 
