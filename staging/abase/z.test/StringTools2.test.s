@@ -1413,6 +1413,74 @@ var strInhalfRight = function( test )
   }
 }
 
+//
+
+var strSplit = function( test )
+{
+
+  test.description = 'simple string, defalut options';
+  var got = _.strSplit( 'a b c d' );
+  var expected = [ "a", "b", "c", "d" ];
+  test.identical( got,expected );
+
+  test.description = 'arguments as map';
+  var got = _.strSplit( { src : 'a,b,c,d', splitter : ','  } );
+  var expected = [ "a", "b", "c", "d" ];
+  test.identical( got,expected );
+
+  test.description = 'splitter as array';
+  var got = _.strSplit( { src : 'a,b.c.d', splitter : [ ',', '.' ]  } );
+  var expected = [ "a", "b", "c", "d" ];
+  test.identical( got,expected );
+
+  test.description = 'zero splitter length';
+  var got = _.strSplit( { src : 'a,b.c.d', splitter : []  } );
+  var expected = [ "a,b.c.d" ];
+  test.identical( got,expected );
+
+  test.description = 'strip false';
+  var got = _.strSplit( { src : '    a,b,c,d   ', splitter : [ ',' ], strip : 0  } );
+  var expected = [ "    a", "b", "c", "d   " ];
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strSplit( '1', '2', '3' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strSplit( 123 );
+    });
+
+    test.description = 'invalid property type';
+    test.shouldThrowError( function()
+    {
+      _.strSplit( { src : 'word', splitter : 0 } );
+    });
+
+    test.description = 'invalid property defined';
+    test.shouldThrowError( function()
+    {
+      _.strSplit( { src : 'word', splitter : 0, left : 1 } );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strSplit();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1447,6 +1515,7 @@ var Proto =
     _strInhalf : _strInhalf,
     strInhalfLeft : strInhalfLeft,
     strInhalfRight : strInhalfRight,
+    strSplit : strSplit,
 
   }
 
