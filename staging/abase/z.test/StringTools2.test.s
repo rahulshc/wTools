@@ -1622,7 +1622,7 @@ var strReplaceNames = function( test )
       _.strReplaceNames( 123,[],[] );
     });
 
-    test.description = 'invalid arrays length type';
+    test.description = 'invalid arrays length';
     test.shouldThrowError( function()
     {
       _.strReplaceNames( 'one two',[ 'one' ],[ 'one', 'two' ] );
@@ -1692,6 +1692,64 @@ var strJoin = function( test )
   }
 }
 
+//
+
+var strUnjoin = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] );
+  var expected = [ "prefix", "_something_", "postfix" ];
+  test.identical( got,expected );
+
+  test.description = 'escaping string';
+  var got = _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'something', 'postfix' ] );
+  var expected = [ "prefix_", "something", "postfix" ];
+  test.identical( got,expected );
+
+  test.description = 'escaping string';
+  var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', _.strUnjoin.any, 'postfix' ] );
+  var expected = [ "something", "_", "postfix" ];
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strUnjoin( '1', '2', '3' );
+    });
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _.strUnjoin( 123, [] );
+    });
+
+    test.description = 'invalid second arg type';
+    test.shouldThrowError( function()
+    {
+      _.strUnjoin( 'one two', 123 );
+    });
+
+    test.description = 'invalid array element type';
+    test.shouldThrowError( function()
+    {
+      _.strUnjoin( 'one two', [ 1, 'two' ] );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strUnjoin();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1731,6 +1789,7 @@ var Proto =
     strStripEmptyLines : strStripEmptyLines,
     strReplaceNames : strReplaceNames,
     strJoin : strJoin,
+    strUnjoin : strUnjoin,
 
   }
 
