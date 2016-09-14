@@ -1697,19 +1697,19 @@ var strJoin = function( test )
 var strUnjoin = function( test )
 {
 
-  test.description = 'simple string';
+  test.description = 'case 1';
   var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] );
   var expected = [ "prefix", "_something_", "postfix" ];
   test.identical( got,expected );
 
-  test.description = 'escaping string';
+  test.description = 'case 2';
   var got = _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'something', 'postfix' ] );
   var expected = [ "prefix_", "something", "postfix" ];
   test.identical( got,expected );
 
-  test.description = 'escaping string';
-  var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', _.strUnjoin.any, 'postfix' ] );
-  var expected = [ "something", "_", "postfix" ];
+  test.description = 'case 3';
+  var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', 'postfix', _.strUnjoin.any ] );
+  var expected = [ "something", "postfix", "" ];
   test.identical( got,expected );
 
   /**/
@@ -1745,6 +1745,54 @@ var strUnjoin = function( test )
     test.shouldThrowError( function()
     {
       _.strUnjoin();
+    });
+
+  }
+}
+
+//
+
+var strUnicodeEscape = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strUnicodeEscape( 'prefix' );
+  var expected = "\\u0070\\u0072\\u0065\\u0066\\u0069\\u0078";
+  test.identical( got,expected );
+
+  test.description = 'escaping';
+  var got = _.strUnicodeEscape( '\npostfix//' );
+  var expected = "\\u000a\\u0070\\u006f\\u0073\\u0074\\u0066\\u0069\\u0078\\u002f\\u002f";
+  test.identical( got,expected );
+
+  test.description = 'empty string';
+  var got = _.strUnicodeEscape( '' );
+  var expected = "";
+  test.identical( got,expected );
+
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strUnicodeEscape( '1', '2', '3' );
+    });
+
+    test.description = 'invalid  argument type';
+    test.shouldThrowError( function()
+    {
+      _.strUnicodeEscape( 123 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strUnicodeEscape();
     });
 
   }
@@ -1790,6 +1838,7 @@ var Proto =
     strReplaceNames : strReplaceNames,
     strJoin : strJoin,
     strUnjoin : strUnjoin,
+    strUnicodeEscape : strUnicodeEscape,
 
   }
 
