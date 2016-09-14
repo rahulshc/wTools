@@ -2930,7 +2930,8 @@ var strIndentation = function( src,tab )
 */
 var strNumberLines = function( srcStr )
 {
-
+  _assert( arguments.length === 1 );
+  _assert( _.strIs( srcStr ),'strNumberLines : expects string srcStr' );
   var lines = srcStr.split( '\n' );
 
   for( var l = 0; l < lines.length; l += 1 )
