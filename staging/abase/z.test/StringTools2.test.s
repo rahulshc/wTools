@@ -1798,6 +1798,51 @@ var strUnicodeEscape = function( test )
   }
 }
 
+//
+
+var strNumberLines = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strNumberLines( 'line1\nline2\nline3' );
+  var expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+  test.identical( got,expected );
+
+  test.description = 'empty string with escaping';
+  var got = _.strNumberLines( '\n\n' );
+  var expected =
+  [
+    '1 : ',
+    '2 : ',
+    '3 : ',
+  ].join( '\n' );
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid  argument type';
+    test.shouldThrowError( function()
+    {
+      _.strNumberLines( 123 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strNumberLines();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1839,6 +1884,7 @@ var Proto =
     strJoin : strJoin,
     strUnjoin : strUnjoin,
     strUnicodeEscape : strUnicodeEscape,
+    strNumberLines : strNumberLines,
 
   }
 
