@@ -1642,6 +1642,56 @@ var strReplaceNames = function( test )
 
   }
 }
+
+//
+
+var strJoin = function( test )
+{
+
+  test.description = 'join numbers';
+  var got = _.strJoin( 1, 2, 3 );
+  var expected = '123';
+  test.identical( got,expected );
+
+  test.description = 'join array + string';
+  var got = _.strJoin( [ 1, 2 ], '3' );
+  var expected = [ '13', '23' ];
+  test.identical( got,expected );
+
+  test.description = 'join two arrays';
+  var got = _.strJoin( [ 'b', 'c' ], [ 'x', 'y' ] );
+  var expected = [ 'bx', 'cy' ];
+  test.identical( got,expected );
+
+  test.description = 'no arguments';
+  var got = _.strJoin( );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.description = 'one argument';
+  var got = _.strJoin( '1' );
+  var expected = '1';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
+    });
+
+    // test.description = 'different length of arrays';
+    // test.shouldThrowError( function()
+    // {
+    //   _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
+    // });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1680,6 +1730,7 @@ var Proto =
     strRemoveAllSpaces : strRemoveAllSpaces,
     strStripEmptyLines : strStripEmptyLines,
     strReplaceNames : strReplaceNames,
+    strJoin : strJoin,
 
   }
 
