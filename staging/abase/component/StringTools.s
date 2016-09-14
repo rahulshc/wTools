@@ -1927,7 +1927,7 @@ var strInhalfLeft = function( o )
 
   if( _.strIs( o ) )
   {
-    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( arguments.length === 2 );
     o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
   }
   else
@@ -1982,7 +1982,7 @@ var strInhalfRight = function( o )
 
   if( _.strIs( o ) )
   {
-    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( arguments.length === 2 );
     o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
   }
   else
