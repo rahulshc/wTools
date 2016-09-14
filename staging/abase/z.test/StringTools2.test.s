@@ -1534,6 +1534,62 @@ var strStrip = function( test )
   }
 }
 
+//
+
+var strRemoveAllSpaces = function( test )
+{
+
+  test.description = 'simple string, defalut options';
+  var got = _.strRemoveAllSpaces( 'a b c d e' );
+  var expected = 'abcde';
+  test.identical( got,expected );
+
+  test.description = 'sub defined';
+  var got = _.strRemoveAllSpaces( 'a b c d e', ', ' );
+  var expected = 'a, b, c, d, e';
+  test.identical( got,expected );
+
+  test.description = 'empty string';
+  var got = _.strRemoveAllSpaces( ' ' );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.description = 'sub as number';
+  var got = _.strRemoveAllSpaces( 'a b c', 0 );
+  var expected = 'a0b0c';
+  test.identical( got,expected );
+
+  test.description = 'sub as array';
+  var got = _.strRemoveAllSpaces( 'a b c d e', [ 5, 6 ] );
+  var expected = 'a5,6b5,6c5,6d5,6e';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveAllSpaces( '1', '2', '3' );
+    });
+
+    test.description = 'invalid argument type';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveAllSpaces( 123 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveAllSpaces();
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -1570,6 +1626,7 @@ var Proto =
     strInhalfRight : strInhalfRight,
     strSplit : strSplit,
     strStrip : strStrip,
+    strRemoveAllSpaces : strRemoveAllSpaces,
 
   }
 
