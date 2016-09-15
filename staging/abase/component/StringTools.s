@@ -2932,6 +2932,8 @@ var strIndentation = function( src,tab )
  * _.strNumberLines( 'sigle line example' );
  *
  * @method strNumberLines
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
  * @memberof wTools
  *
 */
