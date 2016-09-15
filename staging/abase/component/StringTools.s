@@ -2947,8 +2947,9 @@ var strNumberLines = function( srcStr )
 //
 
 /**
- * This function returns  count of occurrences of a substring in a string,
+ * Returns number of occurrences of a substring( ins ) in a string( src ),
  * Expects two objects in order: source string, substring.
+ * Returns zero if one of arguments is empty string.
  *
  * @param {string} src - Source string.
  * @param {string} ins - Substring.
@@ -2957,6 +2958,10 @@ var strNumberLines = function( srcStr )
  * @example
  * //returns 2
  * _.strCount( "aaaabab","ab" );
+ *
+ * @example
+ * //returns 0
+ * _.strCount( "aaaabab","" );
  *
  * @method strCount
  * @throws { Exception } Throw an exception if( src ) is not a String.
