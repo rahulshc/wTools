@@ -1998,6 +1998,96 @@ var strToBytes = function( test )
   }
 }
 
+//
+
+var strMetricFormat = function( test )
+{
+
+  test.description = 'default options';
+  var got = _.strMetricFormat( "100m", { } );
+  var expected = "100.0 ";
+  test.identical( got,expected );
+
+  test.description = 'default options';
+  var got = _.strMetricFormat( 0.005 );
+  var expected = "5.0 m";
+  test.identical( got,expected );
+
+  test.description = 'number to million';
+  var got = _.strMetricFormat( 1, { metric : 6 } );
+  var expected = "1.0 M";
+  test.identical( got,expected );
+
+  test.description = 'metric out of range';
+  var got = _.strMetricFormat( 1, { metric : 25 } );
+  var expected = "1.0 ";
+  test.identical( got,expected );
+
+  test.description = 'fixed : 0';
+  var got = _.strMetricFormat( "1300", { fixed : 0 } );
+  var expected = "1 k";
+  test.identical( got,expected );
+
+  test.description = 'divisor, thousand test';
+  var got = _.strMetricFormat( "1000000",{ divisor : 2, thousand:100 } );
+  var expected = "1.0 M";
+  test.identical( got,expected );
+
+  test.description = 'divisor, thousand,dimensions,metric test';
+  var got = _.strMetricFormat( "10000", { divisor : 2, thousand : 10, dimensions : 3,metric: 1 } );
+  var expected = '10.0 k'
+  test.identical( got,expected );
+
+  test.description = 'divisor, thousand,dimensions test';
+  var got = _.strMetricFormat( "10000", { divisor : 2, thousand : 10, dimensions : 3 } );
+  var expected = "10.0 h";
+  test.identical( got,expected );
+
+  test.description = 'divisor, thousand,dimensions,fixed test';
+  var got = _.strMetricFormat( "10000", { divisor : 2, thousand : 10, dimensions : 3, fixed : 0 } );
+  var expected = "10 h";
+  test.identical( got,expected );
+
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strMetricFormat( '1', { fixed : 0 }, '3' );
+    });
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _.strMetricFormat( [ 1, 2, 3 ] );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _.strMetricFormat( 11, '0' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strMetricFormat();
+    });
+
+    test.description = 'fixed out of range';
+    test.shouldThrowError( function()
+    {
+      _.strMetricFormat( "1300", { fixed : 22 } );
+    });
+
+  }
+}
+
 var Proto =
 {
 
@@ -2043,6 +2133,7 @@ var Proto =
     strCount : strCount,
     strDup : strDup,
     strToBytes : strToBytes,
+    strMetricFormat : strMetricFormat,
 
   }
 
