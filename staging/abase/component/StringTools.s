@@ -2978,6 +2978,8 @@ var strCount = function( src,ins )
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
+  if( !ins.length ) { result = 0; return result; }
+
   var i = -1;
   do
   {
