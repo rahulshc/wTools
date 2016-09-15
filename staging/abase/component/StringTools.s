@@ -2973,6 +2973,7 @@ var strNumberLines = function( srcStr )
  * @method strCount
  * @throws { Exception } Throw an exception if( src ) is not a String.
  * @throws { Exception } Throw an exception if( ins ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
  *
  */
