@@ -609,6 +609,9 @@ var _toStr = function _toStr( src,o )
 
 var _toStrShort = function( src,o )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectIs( o ),'expects map ( o )' );
+
   var result = '';
 
   if( _.rowIs( src ) )
