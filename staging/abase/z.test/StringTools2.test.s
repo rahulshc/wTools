@@ -1897,6 +1897,60 @@ var strCount = function( test )
   }
 }
 
+//
+
+var strDup = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strDup( 'a', 5 );
+  var expected = 'aaaaa';
+  test.identical( got,expected );
+
+  test.description = 'one space';
+  var got = _.strDup( ' ', 2 );
+  var expected = '  ';
+  test.identical( got,expected );
+
+  test.description = 'zero times';
+  var got = _.strDup( 'a', 0 );
+  var expected = '';
+  test.identical( got,expected );
+
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strDup( '1', '2', '3' );
+    });
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _.strDup( 123, 1 );
+    });
+
+    test.description = 'invalid second arg type';
+    test.shouldThrowError( function()
+    {
+      _.strDup( 'one', 'two'  );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strDup();
+    });
+
+  }
+}
+
 
 var Proto =
 {
@@ -1941,6 +1995,7 @@ var Proto =
     strUnicodeEscape : strUnicodeEscape,
     strNumberLines : strNumberLines,
     strCount : strCount,
+    strDup : strDup,
 
   }
 
