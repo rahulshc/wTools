@@ -2371,6 +2371,8 @@ var strReplaceAll = function( dst, ins, sub )
   var l = Object.keys( o.dictionary );
   for( var ins in o.dictionary )
   {
+    if( !ins.length ) continue;
+    _.assert( _.strIs( o.dictionary[ ins ] ), 'strReplaceAll : expects dictionary values only as strings' );
 
     var index = -1;
     var sub = o.dictionary[ ins ];
