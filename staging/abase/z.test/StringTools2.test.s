@@ -514,17 +514,17 @@ var toStrFields = function( test )
 var _toStrShort = function( test )
 {
   test.description = 'Array length test';
-  var got = _._toStrShort( [ 1, 2, 'text', undefined ] );
+  var got = _._toStrShort( [ 1, 2, 'text', undefined ], { } );
   var expected = '[ Array with 4 elements ]';
   test.identical( got,expected );
 
   test.description = 'date to string';
-  var got = _._toStrShort( new Date( Date.UTC( 1993, 12, 12 ) ) );
+  var got = _._toStrShort( new Date( Date.UTC( 1993, 12, 12 ) ), { }  );
   var expected = '1994-01-12T00:00:00.000Z';
   test.identical( got,expected );
 
   test.description = 'string length > 40';
-  var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', {} );
+  var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', { } );
   var expected = 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyr...';
   test.identical( got,expected );
 
@@ -534,13 +534,8 @@ var _toStrShort = function( test )
   test.identical( got,expected );
 
   test.description = 'error to string ';
-  var got = _._toStrShort( new Error( 'err' ) );
+  var got = _._toStrShort( new Error( 'err' ), { } );
   var expected = '[object Error]';
-  test.identical( got,expected );
-
-  test.description = 'no arguments ';
-  var got = _._toStrShort();
-  var expected = 'undefined';
   test.identical( got,expected );
 
   /**/
@@ -554,10 +549,16 @@ var _toStrShort = function( test )
       _._toStrShort( '1', 2 );
     });
 
-    test.description = 'if string and no options provided';
+    test.description = 'only one argument provided';
     test.shouldThrowError( function()
     {
       _._toStrShort( '1' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._toStrShort( );
     });
 
   }
