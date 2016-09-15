@@ -3363,15 +3363,15 @@ var strMetricFormatBytes = function( number,o )
  *
  * @example
  * //returns "1.000 s"
- * _.strMetricFormatBytes( 1000 );
+ * _.strTimeFormat( 1000 );
  *
  * @example
  * //returns "10.000 ks"
- * _.strTimeFormat(Math.pow(10,7));
+ * _.strTimeFormat( Math.pow( 10, 7 ) );
  *
  * @example
  * //returns "78.125 s"
- * _.strTimeFormat(Math.pow(5,7));
+ * _.strTimeFormat( Math.pow( 5, 7 ) );
  *
  * @method strTimeFormat
  * @memberof wTools
