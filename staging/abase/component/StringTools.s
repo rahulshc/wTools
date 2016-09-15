@@ -2501,6 +2501,7 @@ var strJoin = function()
       result[ s ] = result[ 0 ];
 
       _.assert( arrayLength === undefined || arrayLength === src.length, 'strJoin : all arrays should has same length' );
+      arrayLength = src.length;
 
       arrayEncountered = 1;
       for( var s = 0 ; s < src.length ; s++ )
