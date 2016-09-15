@@ -2455,6 +2455,7 @@ var strReplaceNames = function( src,ins,sub )
  * Concatenates objects provided to function in orded that they are specified.
  * If one of arguments is array-like, function concatenates other arguments with
  * each element in the array.
+ * If all arguments are array-like, they must have same length.
  * Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
  *
  * @param {array-like} arguments - Contains provided objects.
