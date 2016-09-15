@@ -2150,6 +2150,49 @@ var strMetricFormatBytes = function( test )
   }
 }
 
+//
+
+var strTimeFormat = function( test )
+{
+
+  test.description = 'simple number';
+  var got = _.strTimeFormat( 1000 );
+  var expected = '1.000 s';
+  test.identical( got,expected );
+
+  test.description = 'simple number';
+  var got = _.strTimeFormat( 1);
+  var expected = '1.000 ms';
+  test.identical( got,expected );
+
+  test.description = 'number as string';
+  var got = _.strTimeFormat( '1.5' );
+  var expected = '1.500 ms';
+  test.identical( got,expected );
+
+  test.description = 'big number';
+  var got = _.strTimeFormat( Math.pow( 4,7 ) );
+  var expected = '16.384 s';
+  test.identical( got,expected );
+
+  test.description = 'zero';
+  var got = _.strTimeFormat( 0 );
+  var expected = '0.000 ys';
+  test.identical( got,expected );
+
+  test.description = 'empty call';
+  var got = _.strTimeFormat(  );
+  var expected = 'NaN s';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+  }
+}
+
 var Proto =
 {
 
@@ -2197,6 +2240,7 @@ var Proto =
     strToBytes : strToBytes,
     strMetricFormat : strMetricFormat,
     strMetricFormatBytes : strMetricFormatBytes,
+    strTimeFormat : strTimeFormat,
 
   }
 
