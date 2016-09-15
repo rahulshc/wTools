@@ -78,24 +78,34 @@ var strReplaceAll = function( test )
   var expected = 'aacaa';
   test.identical( got,expected );
 
-  // test.description = 'first two args empty strings';
-  // var got = _.strReplaceAll( '', '', 'c' );
-  // var expected = 'c';
-  // test.identical( got,expected );
+  test.description = 'first two args empty strings';
+  var got = _.strReplaceAll( '', '', 'c' );
+  var expected = '';
+  test.identical( got,expected );
 
-  // test.description = 'secong argument is empty string';
-  // var got = _.strReplaceAll( 'a', '', 'c' );
-  // var expected = 'a';
-  // test.identical( got,expected );
+  test.description = 'secong argument is empty string';
+  var got = _.strReplaceAll( 'a', '', 'c' );
+  var expected = 'a';
+  test.identical( got,expected );
 
-  // test.description = 'all three args empty strings';
-  // var got = _.strReplaceAll( '', '', '' );
-  // var expected = '';
-  // test.identical( got,expected );
+  test.description = 'all three args empty strings';
+  var got = _.strReplaceAll( '', '', '' );
+  var expected = '';
+  test.identical( got,expected );
 
   test.description = 'third arg is empty string ';
   var got = _.strReplaceAll( 'a', 'a', '' );
   var expected = '';
+  test.identical( got,expected );
+
+  test.description = 'one argument call';
+  var got = _.strReplaceAll( { dst : 'aaax', dictionary : { 'x' : 'a' } } );
+  var expected = 'aaaa';
+  test.identical( got,expected );
+
+  test.description = 'two arguments call';
+  var got = _.strReplaceAll( 'hello', { 'l' : 'y' } );
+  var expected = 'heyyo';
   test.identical( got,expected );
 
   /**/
@@ -106,7 +116,7 @@ var strReplaceAll = function( test )
     test.description = 'invalid arguments count';
     test.shouldThrowError( function()
     {
-      _.strReplaceAll( '1','2','3','4' );
+      _.strReplaceAll( '1', '2', '3', '4' );
     });
 
     test.description = 'no arguments';
@@ -118,19 +128,37 @@ var strReplaceAll = function( test )
     test.description = 'first argument is wrong';
     test.shouldThrowError( function()
     {
-      _.strReplaceAll( 1,'2','3');
+      _.strReplaceAll( 1, '2','3');
     });
 
     test.description = 'second argument is wrong';
     test.shouldThrowError( function()
     {
-      _.strReplaceAll( '1',2,'3');
+      _.strReplaceAll( '1', 2, '3');
     });
 
     test.description = 'third argument is wrong';
     test.shouldThrowError( function()
     {
-      _.strReplaceAll( '1','2',3);
+      _.strReplaceAll( '1','2', 3);
+    });
+
+    test.description = 'second arg is not a Object';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( '1', 2);
+    });
+
+    test.description = 'argument is not a Object';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( '1' );
+    });
+
+    test.description = 'wrong type of dictionary value';
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( { dst : 'aaax', dictionary : { 'a' : [ 1, 2 ] } } )
     });
 
   }
