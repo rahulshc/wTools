@@ -1565,6 +1565,7 @@ var strTimes = function( s,times )
   var result = '';
 
   _.assert( arguments.length === 2 );
+  _.assert( _.strIs( s ) );
   _.assert( _.numberIs( times ) );
 
   for( var t = 0 ; t < times ; t++ )
