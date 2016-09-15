@@ -2871,8 +2871,8 @@ var strUnicodeEscape = function( src )
 //
 
 /**
- * This function appends indentation character passed by the second argument( tab )
- * before first and every next new line in a source string( src ).
+ * Appends indentation character passed by the second argument( tab ) before first
+ * and every next new line in a source string( src ).
  * If( src ) represents single line, function puts indentation at the begining of the string.
  *
  * @param {string} src - Source string to parse.
@@ -2893,6 +2893,7 @@ var strUnicodeEscape = function( src )
  * @method strIndentation
  * @throws { Exception } Throw an exception if( src ) is not a String.
  * @throws { Exception } Throw an exception if( tab ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not a equal 2.
  * @memberof wTools
  *
 */
