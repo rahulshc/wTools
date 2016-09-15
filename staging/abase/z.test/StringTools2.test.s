@@ -1951,54 +1951,6 @@ var strDup = function( test )
   }
 }
 
-//
-
-var strToBytes = function( test )
-{
-
-  test.description = 'simple string';
-  var got = _.strToBytes( 'abcd' );
-  var expected = [ 97, 98, 99, 100 ];
-  test.identical( got,expected );
-
-  test.description = 'escaping';
-  var got = _.strToBytes( '\u001bABC\n\t' );
-  var expected = [ 27, 65, 66, 67, 10, 9 ];
-  test.identical( got,expected );
-
-  test.description = 'zero length';
-  var got = _.strToBytes( '' );
-  var expected = [ ];
-  test.identical( got,expected );
-
-
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strToBytes( '1', '2' );
-    });
-
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strToBytes( 0 );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strToBytes();
-    });
-
-  }
-}
-
 
 var Proto =
 {
@@ -2044,7 +1996,6 @@ var Proto =
     strNumberLines : strNumberLines,
     strCount : strCount,
     strDup : strDup,
-    strToBytes : strToBytes,
 
   }
 
