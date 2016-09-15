@@ -1610,15 +1610,13 @@ var strLineCount = function( src )
 //
 
 /**
- * This function parses a string and separates numbers and string values
- * in to object that contains two properties,representing the values of string
- * and number parsed from the given string.
- * Expects one object: the string to be processed.
+ * Parses a source string( src ) and separates numbers and string values
+ * in to object with two properties: 'str' and 'number', example of result: ( { str: 'bd', number: 1 } ).
  *
  * @param {string} src - Source string.
  * @returns {object} Returns the object with two properties:( str ) and ( number ),
  * with values parsed from source string. If a string( src ) doesn't contain number( s ),
- * it returns the object with value of string( src ).
+ * function returns the object with value of string( src ).
  *
  * @example
  * //returns { str: 'bd', number: 1 }
@@ -1629,6 +1627,8 @@ var strLineCount = function( src )
  * _.strSplitStrNumber( 'bdxf' );
  *
  * @method strSplitStrNumber
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if no argument provided.
  * @memberof wTools
  *
  */
