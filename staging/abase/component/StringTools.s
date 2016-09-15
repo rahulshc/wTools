@@ -3196,11 +3196,11 @@ var strToBytes = function( src )
  *
  * @example
  * //returns "1.0 M"
- * _.strMetricFormat( "1000000",{ divisor:2, thousand:100 } );
+ * _.strMetricFormat( "1000000",{ divisor : 2, thousand : 100 } );
  *
  * @example
  * //returns "10.0 h"
- * _.strMetricFormat( "10000", { divisor:2, thousand:10, dimensions:3 } );
+ * _.strMetricFormat( "10000", { divisor : 2, thousand : 10, dimensions : 3 } );
  *
  * @method strMetricFormat
  * @memberof wTools
