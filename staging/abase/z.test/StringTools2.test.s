@@ -1683,11 +1683,11 @@ var strJoin = function( test )
       _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
     });
 
-    // test.description = 'different length of arrays';
-    // test.shouldThrowError( function()
-    // {
-    //   _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
-    // });
+    test.description = 'arrays with different length';
+    test.shouldThrowError( function()
+    {
+      _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
+    });
 
   }
 }
