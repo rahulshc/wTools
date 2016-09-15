@@ -222,7 +222,7 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns 1 , 2 , 3 , 4
- * _.toStr( [ 1,2,3,4 ], { wrap : 0, comma : ' , ' } );
+ * _.toStr( [ 1, 2, 3, 4 ], { wrap : 0, comma : ' , ' } );
  *
  * @example
  * //returns [ 0.11, 40 ]
@@ -306,7 +306,7 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns { stack : "Error: my message2"..., message : "my message2" }
- * _.toStr( new Error('my message2'), { onlyEnumerable : 0,errorAsMap : 1 } );
+ * _.toStr( new Error('my message2'), { onlyEnumerable : 0, errorAsMap : 1 } );
  *
  * @example
  * //returns
@@ -589,7 +589,7 @@ var _toStr = function _toStr( src,o )
 //
 
 /**
- * Converts object passed by argument( src ) to string representation.Using
+ * Converts object passed by argument( src ) to string representation using
  * options provided by argument( o ) for string and number types.
  * Returns string with object type for routines and errors, iso format for date, string representation for atomic.
  * For object,array and row returns count of elemets, example: '[ Row with 3 elements ]'.
@@ -1077,6 +1077,8 @@ var _toStrFromStr = function( src,o )
  *
  * @method _toStrFromArray
  * @throws { Exception } Throw an exception if( src ) is undefined.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @memberof wTools
  *
 */
@@ -1190,6 +1192,8 @@ var _toStrFromArray = function( src,o )
  *
  * @method _toStrFromObject
  * @throws { Exception } Throw an exception if( src ) is not a object-like.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @memberof wTools
  *
 */
@@ -1309,13 +1313,12 @@ var _toStrFromObject = function( src,o )
  * @param {string} [ o.prefix ] - Denotes begin of container.
  * @param {string} [ o.postfix ] - Denotes end of container.
  * @param {wTools~toStrOptions} o.optionsContainer - Options for container {@link wTools~toStrOptions}.
- * @param {object} [ o.optionsItem ] - Options for items that object contains.
- * @param {string} [ o.optionsItem.tab ] - Prepended before each line tab.
- * @param {number} [ o.optionsItem.level ] - Sets the min depth of looking into source object. Function starts from zero level by default.
+ * @param {wTools~toStrOptions} o.optionsItem - Options for item {@link wTools~toStrOptions}.
  * @returns {String} Returns string representation of container.
  *
  * @method _toStrFromContainer
  * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @memberof wTools
  *
 */
