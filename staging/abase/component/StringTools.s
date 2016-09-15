@@ -2419,6 +2419,7 @@ strReplaceAll.defaults =
  * @throws { Exception } Throws a exception if( ins ) is not a Array.
  * @throws { Exception } Throws a exception if( sub ) is not a Array.
  * @throws { TypeError } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 3.
  * @memberof wTools
  *
  */
