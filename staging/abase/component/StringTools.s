@@ -1580,11 +1580,11 @@ var strTimes = function( s,times )
 //
 
 /**
- * This function calculates a count of lines in a string.
- * Expects one object: the string to be processed.
+ * Returns a count of lines in a string.
+ * Expects one object: the string( src ) to be processed.
  *
  * @param {string} src - Source string.
- * @returns {number} Returns a number of lines in string
+ * @returns {number} Returns a number of lines in string.
  *
  * @example
  * //returns 2
@@ -1595,6 +1595,8 @@ var strTimes = function( s,times )
  * _.strLineCount( 'first\nsecond\nthird\n' );
  *
  * @method strLineCount
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if no argument provided.
  * @memberof wTools
  *
 */
