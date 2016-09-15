@@ -1081,6 +1081,12 @@ var strTimes = function( test )
       _.strTimes( '1' );
     });
 
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _.strTimes( 1,2 );
+    });
+
     test.description = 'invalid second argument type';
     test.shouldThrowError( function()
     {
