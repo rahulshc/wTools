@@ -1843,6 +1843,61 @@ var strNumberLines = function( test )
   }
 }
 
+//
+
+var strCount = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strCount( 'abaac','a' );
+  var expected = 3;
+  test.identical( got,expected );
+
+  test.description = 'empty src';
+  var got = _.strCount( '', 'a' );
+  var expected = 0;
+  test.identical( got,expected );
+
+  test.description = 'empty substring';
+  var got = _.strCount( 'a', '' );
+  var expected = 0;
+  test.identical( got,expected );
+
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strCount( '1', '2', '3' );
+    });
+
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _.strCount( 123, '1' );
+    });
+
+    test.description = 'invalid second arg type';
+    test.shouldThrowError( function()
+    {
+      _.strCount( 'one two', 123 );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strCount();
+    });
+
+  }
+}
+
+
 var Proto =
 {
 
@@ -1885,6 +1940,7 @@ var Proto =
     strUnjoin : strUnjoin,
     strUnicodeEscape : strUnicodeEscape,
     strNumberLines : strNumberLines,
+    strCount : strCount,
 
   }
 
