@@ -2654,6 +2654,9 @@ strUnjoin.any = function( src )
  * _.strDropPrefix( 'example','abc' );
  *
  * @method strDropPrefix
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( prefix ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
  * @memberof wTools
  *
 */
