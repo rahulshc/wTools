@@ -1541,11 +1541,11 @@ var strCapitalize = function( src )
 //
 
 /**
- * This function returns a string concatenated with itself n-times.
- * Expects two object: the string to be concatenated and count of concatenations.
+ * Appends string to it itself n-times.
+ * Expects two object: source string( s ) and number of concatenations( times ).
  *
  * @param {string} s - Source string.
- * @param {number} times - An count of concatenation cycles.
+ * @param {number} times - Number of concatenation cycles.
  * @returns {String} Returns a string concatenated n-times.
  *
  * @example
@@ -1557,6 +1557,7 @@ var strCapitalize = function( src )
  * _.strTimes( '1 '+'2',2 );
  *
  * @method strTimes
+ * @throws { Exception } Throw an exception if( s ) is not a String.
  * @throws { Exception } Throw an exception if( times ) is not a Number.
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
