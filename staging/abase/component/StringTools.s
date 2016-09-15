@@ -1503,7 +1503,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,o )
 //
 
 /**
- * This function returns  string that starts from capital letter.
+ * Returns string with first letter converted to upper case.
  * Expects one object: the string to be formatted.
  *
  * @param {string} src - Source string.
