@@ -2773,8 +2773,8 @@ var lattersSpectreComparison = function( src1,src2 )
 
 //
 /**
- * This function finds all occurrences of html escape symbols from( _strHtmlEscapeMap )
- * in source( str ) and replaces them with code equivalent like( '&' -> '&amp;' ).
+ * Replaces all occurrences of html escape symbols from( _strHtmlEscapeMap )
+ * in source( str ) with their code equivalent like( '&' -> '&amp;' ).
  *
  * @param {string} str - Source string to parse.
  * @global {object} _strHtmlEscapeMap - Html escape symbols map.
