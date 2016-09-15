@@ -3240,6 +3240,8 @@ var _metrics =
 
 var strMetricFormat = function( number,o )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
   var o = o || {};
 
