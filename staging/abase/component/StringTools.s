@@ -375,6 +375,7 @@ var toStrFine_gen = function()
     dtab : '  ',
     colon : ' : ',
     usingMultilineStringWrapper : 0,
+    limitElementsNumber : 0,
 
   }
 
@@ -1353,7 +1354,15 @@ var _toStrFromContainer = function( o )
   var simple = o.simple;
   var prefix = o.prefix;
   var postfix = o.postfix;
+  var limit = optionsContainer.limitElementsNumber;
+
   var l = ( names ? names.length : values.length )
+
+  if( limit > 0 && limit < l )
+  {
+    l = limit;
+    optionsContainer.limitElementsNumber = 0;
+  }
 
   // line postfix
 
@@ -1450,6 +1459,17 @@ var _toStrFromContainer = function( o )
     written += 1;
 
   }
+
+  var other = function( length )
+  {
+    return linePostfix + prefix + ' other '+ ( length - l ) +' element(s) ' + postfix;
+  }
+
+  if ( names && l < names.length )
+  result +=  other( names.length );
+
+  else if( l < values.length )
+  result +=  other( values.length );
 
   // wrap
 
