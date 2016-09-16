@@ -1462,7 +1462,7 @@ var _toStrFromContainer = function( o )
 
   var other = function( length )
   {
-    return linePostfix + prefix + ' other '+ ( length - l ) +' element(s) ' + postfix;
+    return linePostfix + '[ other '+ ( length - l ) +' element(s) ]';
   }
 
   if ( names && l < names.length )
