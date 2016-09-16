@@ -1582,7 +1582,7 @@ var toStrObject = function( test )
 
     ].join( '\n' ),
 
-    /*67*/
+    /*66*/
     [
 
       '{',
@@ -2384,6 +2384,7 @@ var toStrDate = function( test )
   testFunction( test,desc,src,options,expected );
 }
 toStrDate.cover = [ _.toStr ];
+
 //
 
 var toStrRoutine = function( test )
@@ -2411,6 +2412,7 @@ var toStrRoutine = function( test )
   testFunction( test,desc,src,options,expected );
 }
 toStrRoutine.cover = [ _.toStr ];
+
 //
 
 var toStrThrow = function( test )
@@ -2452,17 +2454,139 @@ var toStrThrow = function( test )
     {
       _.toStr( { a : 1, b : "text" }, { json : 1, usingMultilineStringWrapper : 1 } );
     });
-    
+
     test.description = 'onlyRoutines & noRoutine both true';
     test.shouldThrowError( function()
     {
       _.toStr( { a : function f(){}, b : "text" }, { onlyRoutines : 1, noRoutine : 1 } );
     });
-    
-    
+
+
   }
 }
 toStrThrow.cover = [ _.toStr ];
+
+//
+
+var toStrLimitElements = function( test )
+{
+  var desc =  'limitElementsNumber options test',
+  src =
+  [
+  //Arrays
+    [ 1, 2 ,3, 4, 5 ],
+    [ 1, 2 ,'3', 4, 5 ],
+    [ 1, 2 ,'3', 4, 5 ],
+    [ 1, 2 ,'3', 4, 5 ],
+    [ 1, 2 ,'3', 4, 5 ],
+    [ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
+    [ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
+
+  //Objects
+    { a : 1, b : 2, c : 3, d : 4 },
+    { a : 1, b : function n(){ }, c : { a : '1' }, d : 4 },
+    { a : 1, b : undefined, c : { a : '1' }, d : 4 },
+    { a : 1, b : 2, c : { a : 1, b : '2' }, d : 3 },
+
+
+  ],
+  options =
+  [
+    //Arrays
+    { limitElementsNumber : 2 },
+    { limitElementsNumber : 3, noString : 1 },
+    { limitElementsNumber : 2, noNumber : 1 },
+    { limitElementsNumber : 5, noArray : 1 },
+    { limitElementsNumber : 2, multiline : 1 },
+    { levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1 },
+    { levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1, wrap : 0, comma : ', '  },
+
+    //Objects
+    { limitElementsNumber : 2 },
+    { limitElementsNumber : 2, levels : 2,  noRoutine : 1, noString : 1 },
+    { limitElementsNumber : 2, multiline : 1, noString : 1 },
+    { limitElementsNumber : 4, wrap : 0, comma : ', ' },
+
+
+
+
+  ],
+  expected =
+  [
+    //Arrays
+    '[ 1, 2, [ other 3 element(s) ] ]',
+    '[ 1, 2, 4, [ other 1 element(s) ] ]',
+    '[ "3" ]',
+    '',
+    [
+      '[',
+      '  1, ',
+      '  2, ',
+      '  [ other 3 element(s) ]',
+      ']',
+    ].join( '\n' ),
+
+    [
+      '[',
+      '  "3", ',
+      '  {',
+      '    a : "1"',
+      '  }, ',
+      '  "5", ',
+      '  [ other 1 element(s) ]',
+      ']',
+    ].join( '\n' ),
+
+    [
+      ' "3", ',
+      '    a : "1", ',
+      '  "5", ',
+      '  [ other 1 element(s) ]',
+
+    ].join( '\n' ),
+
+    //Objects
+    [
+      '{',
+      '  a : 1, ',
+      '  b : 2, ',
+      '  { other 2 element(s) }',
+      '}',
+
+    ].join( '\n' ),
+
+    [
+      '{',
+      '  a : 1, ',
+      '  c : {}, ',
+      '  { other 1 element(s) }',
+      '}',
+
+    ].join( '\n' ),
+
+    [
+      '{',
+      '  a : 1, ',
+      '  b : undefined, ',
+      '  { other 2 element(s) }',
+      '}',
+
+    ].join( '\n' ),
+
+    [
+      '  a : 1, ',
+      '  b : 2, ',
+      '  c : [ Object with 2 elements ], ',
+      '  d : 3',
+
+    ].join( '\n' ),
+
+
+
+  ]
+  testFunction( test,desc,src,options,expected );
+}
+toStrRoutine.cover = [ _.toStr ];
 
 //
 
@@ -2490,6 +2614,7 @@ var Proto =
     toStrDate : toStrDate,
     toStrRoutine : toStrRoutine,
     toStrThrow : toStrThrow,
+    toStrLimitElements : toStrLimitElements,
   }
 
 };

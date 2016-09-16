@@ -103,6 +103,7 @@ var toStrFields = function( src,o )
 * @property {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
 * @property {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
 * @property {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+* @property {number} [ o.limitElementsNumber=0 ] - Outputs limited number of elements from object or array.
 * @property {boolean} [ o.prependTab=true ] - Prepend tab before first line.
 * @property {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
 * @property {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
@@ -246,6 +247,10 @@ var toStrFields = function( src,o )
  * _.toStr( [ 0, [ 1,2,3 ], 4 ], { levels : 2, multiline : 1 } );
  *
  * @example
+ * //returns [ 1, 2, [ other 3 element(s) ] ]
+ * _.toStr( [ 1, 2 ,3, 4, 5 ], { limitElementsNumber : 2 } );
+ *
+ * @example
  * //returns [ routine sample ]
  * _.toStr( function sample( ){ });
  *
@@ -305,6 +310,15 @@ var toStrFields = function( src,o )
  * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
  *
  * @example
+ * //returns
+ * // '{',
+ * // '  a : 1, ',
+ * // ' b : 2, ',
+ * // '{ other 2 element(s) }',
+ * // '}',
+ * _.toStr( { a : 1, b : 2, c : 3, d : 4 }, { limitElementsNumber : 2 } );
+ *
+ * @example
  * //returns { stack : "Error: my message2"..., message : "my message2" }
  * _.toStr( new Error('my message2'), { onlyEnumerable : 0, errorAsMap : 1 } );
  *
@@ -361,6 +375,7 @@ var toStrFine_gen = function()
     dtab : '  ',
     colon : ' : ',
     usingMultilineStringWrapper : 0,
+    limitElementsNumber : 0,
 
   }
 
@@ -1339,7 +1354,15 @@ var _toStrFromContainer = function( o )
   var simple = o.simple;
   var prefix = o.prefix;
   var postfix = o.postfix;
+  var limit = optionsContainer.limitElementsNumber;
+
   var l = ( names ? names.length : values.length )
+
+  if( limit > 0 && limit < l )
+  {
+    l = limit;
+    optionsContainer.limitElementsNumber = 0;
+  }
 
   // line postfix
 
@@ -1436,6 +1459,17 @@ var _toStrFromContainer = function( o )
     written += 1;
 
   }
+
+  var other = function( length )
+  {
+    return linePostfix + prefix + ' other '+ ( length - l ) +' element(s) ' + postfix;
+  }
+
+  if ( names && l < names.length )
+  result +=  other( names.length );
+
+  else if( l < values.length )
+  result +=  other( values.length );
 
   // wrap
 
