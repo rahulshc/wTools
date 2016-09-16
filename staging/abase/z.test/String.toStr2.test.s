@@ -2474,38 +2474,38 @@ var toStrLimitElements = function( test )
   src =
   [
   //Arrays
-    [ 1, 2 ,3, 4, 5 ],
-    [ 1, 2 ,'3', 4, 5 ],
-    [ 1, 2 ,'3', 4, 5 ],
-    [ 1, 2 ,'3', 4, 5 ],
-    [ 1, 2 ,'3', 4, 5 ],
-    [ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
-    [ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
+  /*01*/[ 1, 2 ,3, 4, 5 ],
+  /*02*/[ 1, 2 ,'3', 4, 5 ],
+  /*03*/[ 1, 2 ,'3', 4, 5 ],
+  /*04*/[ 1, 2 ,'3', 4, 5 ],
+  /*05*/[ 1, 2 ,'3', 4, 5 ],
+  /*06*/[ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
+  /*07*/[ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
 
   //Objects
-    { a : 1, b : 2, c : 3, d : 4 },
-    { a : 1, b : function n(){ }, c : { a : '1' }, d : 4 },
-    { a : 1, b : undefined, c : { a : '1' }, d : 4 },
-    { a : 1, b : 2, c : { a : 1, b : '2' }, d : 3 },
+  /*08*/{ a : 1, b : 2, c : 3, d : 4 },
+  /*09*/{ a : 1, b : function n(){ }, c : { a : '1' }, d : 4 },
+  /*10*/{ a : 1, b : undefined, c : { a : '1' }, d : 4 },
+  /*11*/{ a : 1, b : 2, c : { a : 1, b : '2' }, d : 3 },
 
 
   ],
   options =
   [
-    //Arrays
-    { limitElementsNumber : 2 },
-    { limitElementsNumber : 3, noString : 1 },
-    { limitElementsNumber : 2, noNumber : 1 },
-    { limitElementsNumber : 5, noArray : 1 },
-    { limitElementsNumber : 2, multiline : 1 },
-    { levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1 },
-    { levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1, wrap : 0, comma : ', '  },
+  //Arrays
+  /*01*/{ limitElementsNumber : 2 },
+  /*02*/{ limitElementsNumber : 3, noString : 1 },
+  /*03*/{ limitElementsNumber : 2, noNumber : 1 },
+  /*04*/{ limitElementsNumber : 5, noArray : 1 },
+  /*05*/{ limitElementsNumber : 2, multiline : 1 },
+  /*06*/{ levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1 },
+  /*07*/{ levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1, wrap : 0, comma : ', '  },
 
-    //Objects
-    { limitElementsNumber : 2 },
-    { limitElementsNumber : 2, levels : 2,  noRoutine : 1, noString : 1 },
-    { limitElementsNumber : 2, multiline : 1, noString : 1 },
-    { limitElementsNumber : 4, wrap : 0, comma : ', ' },
+  //Objects
+  /*08*/{ limitElementsNumber : 2 },
+  /*09*/{ limitElementsNumber : 2, levels : 2,  noRoutine : 1, noString : 1 },
+  /*10*/{ limitElementsNumber : 2, multiline : 1, noString : 1 },
+  /*11*/{ limitElementsNumber : 4, wrap : 0, comma : ', ' },
 
 
 
@@ -2513,73 +2513,80 @@ var toStrLimitElements = function( test )
   ],
   expected =
   [
-    //Arrays
-    '[ 1, 2, [ other 3 element(s) ] ]',
-    '[ 1, 2, 4, [ other 1 element(s) ] ]',
-    '[ "3" ]',
-    '',
-    [
-      '[',
-      '  1, ',
-      '  2, ',
-      '  [ other 3 element(s) ]',
-      ']',
-    ].join( '\n' ),
+  //Arrays
+  /*01*/'[ 1, 2, [ other 3 element(s) ] ]',
+  /*02*/'[ 1, 2, 4, [ other 1 element(s) ] ]',
+  /*03*/'[ "3" ]',
+  /*04*/'',
+  /*05*/
+  [
+    '[',
+    '  1, ',
+    '  2, ',
+    '  [ other 3 element(s) ]',
+    ']',
+  ].join( '\n' ),
 
-    [
-      '[',
-      '  "3", ',
-      '  {',
-      '    a : "1"',
-      '  }, ',
-      '  "5", ',
-      '  [ other 1 element(s) ]',
-      ']',
-    ].join( '\n' ),
+  /*06*/
+  [
+    '[',
+    '  "3", ',
+    '  {',
+    '    a : "1"',
+    '  }, ',
+    '  "5", ',
+    '  [ other 1 element(s) ]',
+    ']',
+  ].join( '\n' ),
 
-    [
-      ' "3", ',
-      '    a : "1", ',
-      '  "5", ',
-      '  [ other 1 element(s) ]',
+  /*07*/
+  [
+    ' "3", ',
+    '    a : "1", ',
+    '  "5", ',
+    '  [ other 1 element(s) ]',
 
-    ].join( '\n' ),
+  ].join( '\n' ),
 
-    //Objects
-    [
-      '{',
-      '  a : 1, ',
-      '  b : 2, ',
-      '  { other 2 element(s) }',
-      '}',
+  //Objects
+  /*08*/
+  [
+    '{',
+    '  a : 1, ',
+    '  b : 2, ',
+    '  [ other 2 element(s) ]',
+    '}',
 
-    ].join( '\n' ),
+  ].join( '\n' ),
 
-    [
-      '{',
-      '  a : 1, ',
-      '  c : {}, ',
-      '  { other 1 element(s) }',
-      '}',
+  /*09*/
+  [
+    '{',
+    '  a : 1, ',
+    '  c : {}, ',
+    '  [ other 1 element(s) ]',
+    '}',
 
-    ].join( '\n' ),
+  ].join( '\n' ),
 
-    [
-      '{',
-      '  a : 1, ',
-      '  b : undefined, ',
-      '  { other 2 element(s) }',
-      '}',
+  /*10*/
+  [
+    '{',
+    '  a : 1, ',
+    '  b : undefined, ',
+    '  [ other 2 element(s) ]',
+    '}',
 
-    ].join( '\n' ),
+  ].join( '\n' ),
 
-    [
-      '  a : 1, ',
-      '  b : 2, ',
-      '  c : [ Object with 2 elements ], ',
-      '  d : 3',
+  /*11*/
+  [
+    '  a : 1, ',
+    '  b : 2, ',
+    '  c : [ Object with 2 elements ], ',
+    '  d : 3',
 
-    ].join( '\n' ),
+  ].join( '\n' ),
 
 
 
