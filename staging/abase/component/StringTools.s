@@ -103,6 +103,7 @@ var toStrFields = function( src,o )
 * @property {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
 * @property {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
 * @property {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
+* @property {number} [ o.limitElementsNumber=0 ] - Outputs limited number of elements from object or array.
 * @property {boolean} [ o.prependTab=true ] - Prepend tab before first line.
 * @property {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
 * @property {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
@@ -246,6 +247,10 @@ var toStrFields = function( src,o )
  * _.toStr( [ 0, [ 1,2,3 ], 4 ], { levels : 2, multiline : 1 } );
  *
  * @example
+ * //returns [ 1, 2, [ other 3 element(s) ] ]
+ * _.toStr( [ 1, 2 ,3, 4, 5 ], { limitElementsNumber : 2 } );
+ *
+ * @example
  * //returns [ routine sample ]
  * _.toStr( function sample( ){ });
  *
@@ -303,6 +308,15 @@ var toStrFields = function( src,o )
  * @example
  * //returns { "a" : "string", "b" : 1, "c" : 2 }
  * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
+ *
+ * @example
+ * //returns
+ * // '{',
+ * // '  a : 1, ',
+ * // ' b : 2, ',
+ * // '{ other 2 element(s) }',
+ * // '}',
+ * _.toStr( { a : 1, b : 2, c : 3, d : 4 }, { limitElementsNumber : 2 } );
  *
  * @example
  * //returns { stack : "Error: my message2"..., message : "my message2" }
