@@ -2,6 +2,12 @@
 
 'use strict';
 
+/*
+- remove old code
+- off \u coding for big chars
+- explain wrap mode in details
+*/
+
 //
 
 if( typeof module !== 'undefined' )
