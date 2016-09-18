@@ -304,7 +304,6 @@ var toStrArray = function( test )
     /*76*/ [ [ 'a', 1 ], new Error( 'err msg' ), new Date(1990, 0, 0) ],
     /*77*/ [ [ 'a', 1 ], new Date(1999, 1, 1) ],
     /*78*/ [ [ 1, 2, 3 ], 'a' ],
-    /*79*/ [ function routine( ){ }, 'a' ],
 
   ],
   options =
@@ -390,7 +389,6 @@ var toStrArray = function( test )
     /*76*/  { levels : 2, noString : 1, noNumber : 1, noError : 1 },
     /*77*/  { levels : 2, noString : 1, noNumber : 1, tab : '|', prependTab : 0 },
     /*78*/  { levels : 3, noAtomic : 1, noNumber : 0 },
-    /*79*/  { levels : 2, onlyRoutines : 1, noRoutine : 1 },
 
 
   ],
@@ -882,8 +880,6 @@ var toStrArray = function( test )
       ']'
     ].join( '\n' ),
 
-    /*79*/
-     '',
 
   ];
 
@@ -962,9 +958,7 @@ var toStrObject = function( test )
     /*60*/  { a : 1000, b : 'text', c : 1.500 },
     /*61*/  { a : 1000, b : 'text', c : false, d : undefined, e : null},
     /*62*/  { a : 1001, b : 'text', c : false, d : undefined, e : null},
-    /*63*/  { a : function routine( ){ }, b : 'a'},
-
-    /*64*/  ( function( ) //own:0 option test
+    /*63*/  ( function( ) //own:0 option test
             {
               var x = { a : 1, b : 2 },
               y = Object.create( x );
@@ -972,7 +966,7 @@ var toStrObject = function( test )
               return y;
             } )( ),
 
-    /*65*/  ( function( ) //own:1 option test
+    /*64*/  ( function( ) //own:1 option test
             {
               var x = { a : '0', b : '1' },
               y = Object.create( x );
@@ -980,7 +974,7 @@ var toStrObject = function( test )
               return y;
             } )( ),
 
-    /*66*/  ( function( )
+    /*65*/  ( function( )
             {
               var structure =
               [
@@ -1003,7 +997,7 @@ var toStrObject = function( test )
               ];
               return structure;
             } )( ),
-    /*67*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
+    /*66*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
   ],
   options =
   [
@@ -1076,11 +1070,10 @@ var toStrObject = function( test )
     /*60*/  { levels : 2, noString : 1, precision : 1},
     /*61*/  { levels : 2, noString : 1, noNumber :1, tab : '-', prependTab : 0 },
     /*62*/  { levels : 2, noAtomic : 1, noNumber : 0 },
-    /*63*/  { levels : 2, onlyRoutines : 1, noRoutine : 1 },
-    /*64*/  { own : 0},
-    /*65*/  {  },
-    /*66*/  { levels : 3,wrap : 0 },
-    /*67*/  {  },
+    /*63*/  { own : 0},
+    /*64*/  {  },
+    /*65*/  { levels : 3,wrap : 0 },
+    /*66*/  {  },
 
   ],
   expected =
@@ -1561,23 +1554,17 @@ var toStrObject = function( test )
 
     /*63*/
     [
-      '',
+      '{ c : 3, a : 1, b : 2 }',
 
     ].join( '\n' ),
 
     /*64*/
     [
-      '{ c : 3, a : 1, b : 2 }',
-
-    ].join( '\n' ),
-
-    /*65*/
-    [
       '{ c : "3" }',
 
     ].join( '\n' ),
 
-    /*66*/
+    /*65*/
     [
       '   nameLong : "abc" ',
       '    description : "edf" ',
@@ -1595,7 +1582,7 @@ var toStrObject = function( test )
 
     ].join( '\n' ),
 
-    /*67*/
+    /*66*/
     [
 
       '{',
@@ -2397,6 +2384,7 @@ var toStrDate = function( test )
   testFunction( test,desc,src,options,expected );
 }
 toStrDate.cover = [ _.toStr ];
+
 //
 
 var toStrRoutine = function( test )
@@ -2424,6 +2412,7 @@ var toStrRoutine = function( test )
   testFunction( test,desc,src,options,expected );
 }
 toStrRoutine.cover = [ _.toStr ];
+
 //
 
 var toStrThrow = function( test )
@@ -2465,9 +2454,146 @@ var toStrThrow = function( test )
     {
       _.toStr( { a : 1, b : "text" }, { json : 1, usingMultilineStringWrapper : 1 } );
     });
+
+    test.description = 'onlyRoutines & noRoutine both true';
+    test.shouldThrowError( function()
+    {
+      _.toStr( { a : function f(){}, b : "text" }, { onlyRoutines : 1, noRoutine : 1 } );
+    });
+
+
   }
 }
 toStrThrow.cover = [ _.toStr ];
+
+//
+
+var toStrLimitElements = function( test )
+{
+  var desc =  'limitElementsNumber options test',
+  src =
+  [
+  //Arrays
+  /*01*/[ 1, 2 ,3, 4, 5 ],
+  /*02*/[ 1, 2 ,'3', 4, 5 ],
+  /*03*/[ 1, 2 ,'3', 4, 5 ],
+  /*04*/[ 1, 2 ,'3', 4, 5 ],
+  /*05*/[ 1, 2 ,'3', 4, 5 ],
+  /*06*/[ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
+  /*07*/[ 1, 2 ,'3', 4, { a : '1'  }, '5', '6' ],
+
+  //Objects
+  /*08*/{ a : 1, b : 2, c : 3, d : 4 },
+  /*09*/{ a : 1, b : function n(){ }, c : { a : '1' }, d : 4 },
+  /*10*/{ a : 1, b : undefined, c : { a : '1' }, d : 4 },
+  /*11*/{ a : 1, b : 2, c : { a : 1, b : '2' }, d : 3 },
+
+
+  ],
+  options =
+  [
+  //Arrays
+  /*01*/{ limitElementsNumber : 2 },
+  /*02*/{ limitElementsNumber : 3, noString : 1 },
+  /*03*/{ limitElementsNumber : 2, noNumber : 1 },
+  /*04*/{ limitElementsNumber : 5, noArray : 1 },
+  /*05*/{ limitElementsNumber : 2, multiline : 1 },
+  /*06*/{ levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1 },
+  /*07*/{ levels : 2, limitElementsNumber : 3, noNumber : 1, multiline : 1, wrap : 0, comma : ', '  },
+
+  //Objects
+  /*08*/{ limitElementsNumber : 2 },
+  /*09*/{ limitElementsNumber : 2, levels : 2,  noRoutine : 1, noString : 1 },
+  /*10*/{ limitElementsNumber : 2, multiline : 1, noString : 1 },
+  /*11*/{ limitElementsNumber : 4, wrap : 0, comma : ', ' },
+
+
+
+
+  ],
+  expected =
+  [
+  //Arrays
+  /*01*/'[ 1, 2, [ other 3 element(s) ] ]',
+  /*02*/'[ 1, 2, 4, [ other 1 element(s) ] ]',
+  /*03*/'[ "3" ]',
+  /*04*/'',
+  /*05*/
+  [
+    '[',
+    '  1, ',
+    '  2, ',
+    '  [ other 3 element(s) ]',
+    ']',
+  ].join( '\n' ),
+
+  /*06*/
+  [
+    '[',
+    '  "3", ',
+    '  {',
+    '    a : "1"',
+    '  }, ',
+    '  "5", ',
+    '  [ other 1 element(s) ]',
+    ']',
+  ].join( '\n' ),
+
+  /*07*/
+  [
+    ' "3", ',
+    '    a : "1", ',
+    '  "5", ',
+    '  [ other 1 element(s) ]',
+
+  ].join( '\n' ),
+
+  //Objects
+  /*08*/
+  [
+    '{',
+    '  a : 1, ',
+    '  b : 2, ',
+    '  [ other 2 element(s) ]',
+    '}',
+
+  ].join( '\n' ),
+
+  /*09*/
+  [
+    '{',
+    '  a : 1, ',
+    '  c : {}, ',
+    '  [ other 1 element(s) ]',
+    '}',
+
+  ].join( '\n' ),
+
+  /*10*/
+  [
+    '{',
+    '  a : 1, ',
+    '  b : undefined, ',
+    '  [ other 2 element(s) ]',
+    '}',
+
+  ].join( '\n' ),
+
+  /*11*/
+  [
+    '  a : 1, ',
+    '  b : 2, ',
+    '  c : [ Object with 2 elements ], ',
+    '  d : 3',
+
+  ].join( '\n' ),
+
+
+
+  ]
+  testFunction( test,desc,src,options,expected );
+}
+toStrRoutine.cover = [ _.toStr ];
 
 //
 
@@ -2495,6 +2621,7 @@ var Proto =
     toStrDate : toStrDate,
     toStrRoutine : toStrRoutine,
     toStrThrow : toStrThrow,
+    toStrLimitElements : toStrLimitElements,
   }
 
 };
