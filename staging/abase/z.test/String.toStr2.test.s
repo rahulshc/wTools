@@ -18,12 +18,12 @@ if( typeof module !== 'undefined' )
   require( '../wTools.s' );
   require( '../component/StringTools.s' );
 
-  require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
+  //require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
 
-  // if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
-  //   require( '../object/Testing.debug.s' );
-  // else
-  //   require( 'wTesting' );
+  if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
+    require( '../object/Testing.debug.s' );
+  else
+    require( 'wTesting' );
 
 }
 
@@ -79,10 +79,14 @@ var reportChars = function()
 
 //
 
-var stringFromFile = function ( path, encoding, begin, end )
+var stringFromFile = function( name, encoding, begin, end )
 {
-  var str = fs.readFileSync( path, encoding );
+  var str = fs.readFileSync( __dirname + '/../../../file.test/' + name, encoding );
   str = str.slice( begin, end );
+
+  //if( name === 'file1' )
+  //str = str.substring( 0,10 ) + str.substring( 14 );
+
   return str;
 }
 
@@ -97,10 +101,12 @@ var testFunction = function( test, desc, src, options, expected )
   for( var k = 0; k < src.length; ++k  )
   {
     test.description = desc ;
-    got = _.toStr( src[ k ], options[ k ] || options[ 0 ]);
+    var optionsTest = options[ k ] || options[ 0 ];
+    got = _.toStr( src[ k ],optionsTest );
 
-    if( test.description.slice( 0,4 ) === 'json' && options[ k ].json )
+    if( test.description.slice( 0,4 ) === 'json' && optionsTest.json )
     {
+
       // good
       // if JSON.parse is OK,compare source vs parse result
       // else throws error
@@ -112,17 +118,208 @@ var testFunction = function( test, desc, src, options, expected )
       catch( err )
       {
         //  throw err;
-        _.errLog( err );
+        logger.log( '1510 : ' + got.charCodeAt( 1510 ) );
+        logger.log( '1511 : ' + got.charCodeAt( 1511 ) );
+        logger.log( '1512 : ' + got.charCodeAt( 1512 ) );
+        logger.log( 'JSON :' );
+        logger.log( got );
+        throw _.err( err );
         //test fail call when JSON.parse throws error
-        test.identical( 0,1 );
+        //test.identical( 0,1 );
       }
+
+    }
+    else
+    {
+      test.identical( got, expected[ k ] );
     }
 
-    else
-    test.identical( got, expected[ k ] );
   }
+
+  // test.onError = function()
+  // {
+  //   debugger;
+  //   console.log( 'onError' );
+  // }
+
   debugger;
 }
+
+//
+
+var toStrUnwrapped = function ( test )
+{
+  var desc =  'Error test',
+  src =
+  [
+
+    /*01*/
+    [
+      [
+        "abc",
+        "edf",
+        { a : 1 },
+      ],
+    ],
+
+    /*02*/
+    [
+      {
+        nameLong : "abc",
+        description : "edf",
+        rewardForVisitor : { a : 1 },
+      },
+    ],
+
+    /*03*/
+    {
+      a :
+      {
+        nameLong : "abc",
+        description : "edf",
+        rewardForVisitor : { a : 1 },
+      },
+    },
+
+    /*04*/
+    {
+      a :
+      [
+        "abc",
+        "edf",
+        { a : 1 },
+      ],
+    },
+
+    /*05*/
+    [
+      [
+        "abc",
+        "edf",
+        { a : 1 },
+      ],
+      1,
+      2,
+    ],
+
+    /*06*/
+    [ 'a', 7, [ 1 ], 8, 'b' ],
+
+    /*07*/
+    [ 'a', 7, { u : 1 }, 8, 'b' ],
+
+    /*08*/
+    [ [ 5, 4 ],[ 2, 1, 0 ] ],
+
+    /*09*/
+    [ [ 5, 4, [ 3 ] ],[ 2, 1, 0 ] ],
+
+  ],
+  options =
+  [
+
+    /*01*/  { wrap : 0, levels : 4 },
+    /*02*/  { wrap : 0, levels : 4 },
+    /*03*/  { wrap : 0, levels : 4 },
+    /*04*/  { wrap : 0, levels : 4 },
+    /*05*/  { wrap : 0, levels : 4 },
+    /*06*/  { wrap : 0, levels : 4 },
+    /*07*/  { wrap : 0, levels : 4 },
+    /*08*/  { wrap : 0, levels : 4 },
+    /*09*/  { wrap : 0, levels : 4 },
+
+  ],
+  expected =
+  [
+
+    /*01*/
+
+    [
+      '    "abc" ',
+      '    "edf" ',
+      '    a : 1',
+    ].join( '\n' ),
+
+    /*02*/
+
+    [
+      '    nameLong : "abc" ',
+      '    description : "edf" ',
+      '    rewardForVisitor : a : 1',
+    ].join( '\n' ),
+
+    /*03*/
+
+    [
+      '  a : ',
+      '    nameLong : "abc" ',
+      '    description : "edf" ',
+      '    rewardForVisitor : a : 1',
+    ].join( '\n' ),
+
+    /*04*/
+
+    [
+      '  a : ',
+      '    "abc" ',
+      '    "edf" ',
+      '    a : 1',
+    ].join( '\n' ),
+
+    /*05*/
+
+    [
+      '    "abc" ',
+      '    "edf" ',
+      '    a : 1 ',
+      '  1 ',
+      '  2',
+    ].join( '\n' ),
+
+    /*06*/
+
+    [
+      '  "a" ',
+      '  7 ',
+      '    1 ',
+      '  8 ',
+      '  "b"',
+    ].join( '\n' ),
+
+    /*07*/
+
+    [
+      '  "a" ',
+      '  7 ',
+      '  u : 1 ',
+      '  8 ',
+      '  "b"',
+    ].join( '\n' ),
+
+    /*08*/
+    [
+      '    5 ',
+      '    4 ',
+      '',
+      '    2 1 0',
+    ].join( '\n' ),
+
+    /*09*/
+    [
+      '    5 ',
+      '    4 ',
+      '      3 ',
+      '',
+      '    2 1 0',
+    ].join( '\n' ),
+
+  ];
+
+  testFunction( test,desc,src,options,expected );
+
+}
+
+toStrUnwrapped.cover = [ _.toStr ];
 
 //
 
@@ -132,14 +329,14 @@ var toStrError = function ( test )
   src =
   [
     /*01*/  new Error(),
-    /*02*/  new Error('msg'),
-    /*03*/  new Error('msg2'),
-    /*04*/  new Error('message'),
-    /*05*/  new Error('message2'),
-    /*06*/  new Error('err message'),
-    /*07*/  new Error('my message'),
-    /*08*/  new Error('my message2'),
-    /*09*/  new Error('my message3'),
+    /*02*/  new Error( 'msg' ),
+    /*03*/  new Error( 'msg2' ),
+    /*04*/  new Error( 'message' ),
+    /*05*/  new Error( 'message2' ),
+    /*06*/  new Error( 'err message' ),
+    /*07*/  new Error( 'my message' ),
+    /*08*/  new Error( 'my message2' ),
+    /*09*/  new Error( 'my message3' ),
     /*10*/  ( function()
               {
                 var err = new Error( 'my message4' );
@@ -530,17 +727,14 @@ var toStrArray = function( test )
 
     /*26*/
     [
-      '  [ Array with 3 elements ], ',
-      '  [ Array with 1 elements ], ',
-      '  undefined, ',
-      '  false',
+      '  undefined, false',
     ].join( '\n' ),
 
     /*27*/
     '  "e" "e" "e"',
 
     /*28*/
-    '"a", "b", "c", 1, 2, 3',
+    '  "a", "b", "c", 1, 2, 3',
     /*29*/
     '| 15. 16. 17. 18',
     /*30*/
@@ -570,14 +764,14 @@ var toStrArray = function( test )
     /*38*/
     [
       '  0- ',
-      '  1- 2- 3- 4- ',
+      '    1- 2- 3- 4- ',
       '  5- ',
       '  a : 6',
     ].join( '\n' ),
 
     /*39*/
     [
-      '  "a". "b". "c". ',
+      '    "a". "b". "c". ',
       '  "d". ',
       '  "e"'
     ].join( '\n' ),
@@ -596,7 +790,7 @@ var toStrArray = function( test )
 
     /*42*/
     [
-      '"a", ',
+      '  "a", ',
       '  7, ',
       '  u : 2, ',
       '  8, ',
@@ -616,25 +810,25 @@ var toStrArray = function( test )
     /*45*/
     [
       '  0| ',
-      '  b : 1| ',
+      '    b : 1| ',
       '  3',
     ].join( '\n' ),
 
     /*46*/
     [
-      '  a : "\\na". ',
+      '    a : "\\na". ',
       '    b : d : ""...',
     ].join( '\n' ),
 
     /*47*/
     [
-      '  x : "\\na", ',
+      '    x : "\\na", ',
       '    y : z : "\\ntrue"',
     ].join( '\n' ),
 
     /*48*/
     [
-      '  ',
+      '',
     ].join( '\n' ),
 
     /*49*/
@@ -644,23 +838,26 @@ var toStrArray = function( test )
 
     /*50*/
     [
-      '',
-      '  true'
+      '    true'
     ].join( '\n' ),
+
+//[ { a : 'string' }, [ true ], 1 ],
+//{ levels : 2, wrap : 0, noString : 1, noNumber : 1, comma : '/ ' },
 
     /*51*/
     [
-      '  5||',
+      '    5||',
       '    4||',
-      '    3||',
-      '  2||1||0',
+      '      3||',
+      '',
+      '    2||1||0',
     ].join( '\n' ),
 
     /*52*/
     [
       '  |  a->0,, ',
       '  |  b->1,, ',
-      '  |  2,, 3',
+      '  |    2,, 3',
     ].join( '\n' ),
 
     /*53*/
@@ -1152,11 +1349,11 @@ var toStrObject = function( test )
     /*10*/  '',
 
 
-    /*11*/  '  a : 6 | b : 7 | c : 1',
+    /*11*/  'a : 6 | b : 7 | c : 1',
 
     /*12*/
     [
-      '  a : true, d : undefined'
+      'a : true, d : undefined'
 
     ].join( '\n' ),
 
@@ -1173,7 +1370,7 @@ var toStrObject = function( test )
 
     /*14*/
     [
-      'a : "true"-> ',
+      '  a : "true"-> ',
       '  b : 2-> ',
       '  c : false-> ',
       '  d : undefined'
@@ -1186,7 +1383,7 @@ var toStrObject = function( test )
 
     /*16*/
 
-      '  f1 g[object Function]',
+      'f1 g[object Function]',
 
     /*17*/
 
@@ -1232,7 +1429,7 @@ var toStrObject = function( test )
 
     /*23*/
 
-    '  x : ""...| z : "\\\\11"',
+    'x : ""...| z : "\\\\11"',
 
     /*24*/
     [
@@ -1268,7 +1465,7 @@ var toStrObject = function( test )
 
     /*28*/
     [
-      'a : 9, ',
+      '  a : 9, ',
       '  b : d : 8, ',
       '  c : 7'
 
@@ -1287,16 +1484,14 @@ var toStrObject = function( test )
       '  a : 1e+1/ ',
       '  b : d : 2e+1/ ',
       '  c : 3e+1'
-
     ].join( '\n' ),
 
     /*31*/
     [
       '  a : "a",, ',
       '  b : ',
-      '  d : false,, ',
+      '    d : false,, ',
       '  c : 3'
-
     ].join( '\n' ),
 
     /*32*/
@@ -1308,19 +1503,17 @@ var toStrObject = function( test )
     ].join( '\n' ),
 
     /*33*/
-    '  b : ',
+    '',
 
     /*34*/
-    '  b : ',
+    '',
 
     /*35*/
     '  c : 1',
 
     /*36*/
     [
-      '  a : . ',
-      '  b : '
-
+      '',
     ].join( '\n' ),
 
     /*37*/
@@ -1566,7 +1759,7 @@ var toStrObject = function( test )
 
     /*65*/
     [
-      '   nameLong : "abc" ',
+      '    nameLong : "abc" ',
       '    description : "edf" ',
       '    rewardForVisitor : a : 1 ',
       '    stationary : 1 ',
@@ -1615,12 +1808,13 @@ var toStrJson = function( test )
      /*01*/ { "a" : 100, "b" : "c", "c" : { "d" : true, "e" : null } },
      /*02*/ { "b" : "a", "c" : 50, "d" : { "a" : "undefined", "e" : null } },
      /*03*/ [ { "a" : 100, "b" : "x", "c" : { "d" : true, "e" : null } } ],
-     /*04*/ { a : "aa", b : [ 1,2,3 ], c : function r( ){ } },
-     /*05*/ [ { a : 1, b : 2, c : { d : [ null,undefined ] } } ],
-     /*06*/ { a : new Date( Date.UTC( 1993, 12, 12 ) ) },
-     /*07*/ { a : new Error( "r" ) },
-     /*08*/ { a : Symbol('sm') },
-     /*09*/ { a : '\n\nABC' },
+     /*04*/ { a : '\n\nABC' },
+
+     ///*04*/ { a : "aa", b : [ 1,2,3 ], c : function r( ){ } },
+     ///*05*/ [ { a : 1, b : 2, c : { d : [ null,undefined ] } } ],
+     ///*06*/ { a : new Date( Date.UTC( 1993, 12, 12 ) ) },
+     ///*07*/ { a : new Error( "r" ) },
+     ///*08*/ { a : Symbol( 'sm' ) },
 
    ],
 
@@ -1630,11 +1824,12 @@ var toStrJson = function( test )
      /*02*/ { json : 1 },
      /*03*/ { json : 1 },
      /*04*/ { json : 1 },
-     /*05*/ { json : 1 },
-     /*06*/ { json : 1 },
-     /*07*/ { json : 1 },
-     /*08*/ { json : 1 },
-     /*09*/ { json : 1 },
+
+     ///*04*/ { json : 1, noRoutine : 1 },
+     ///*05*/ { json : 1 },
+     ///*06*/ { json : 1 },
+     ///*07*/ { json : 1 },
+     ///*08*/ { json : 1 },
 
    ]
 
@@ -1793,72 +1988,68 @@ var toStrJson = function( test )
    //
   //  ]
 
-  testFunction( test, desc, src, options);
+  testFunction( test, desc, src, options );
 
 }
 
 toStrJson.cover = [ _.toStr ];
 
 //
+
+var _toStrJsonFromFile = function( test,encoding )
+{
+  var desc =  'json from file as utf8',
+
+  src =
+  [
+
+    stringFromFile( 'file1', encoding ),
+    stringFromFile( 'file4.pdf', encoding ),
+    stringFromFile( 'test.exe', encoding ),
+    stringFromFile( 'small', encoding ),
+    stringFromFile( 'small2', encoding ),
+    stringFromFile( 'small3', encoding ),
+    stringFromFile( 'small4', encoding ),
+    stringFromFile( 'small5', encoding ),
+    stringFromFile( 'small6', encoding ),
+    stringFromFile( 'small7', encoding ),
+    stringFromFile( 'small5', encoding ),
+
+    { a : stringFromFile( 'file1', encoding ), b : stringFromFile( 'file2', encoding ), c : 1 },
+    { a : stringFromFile( 'file3', encoding ), b : stringFromFile( 'file4.pdf', encoding ), c : 1 },
+    { a : [ stringFromFile( 'test.exe', encoding ) ], b : stringFromFile( 'small', encoding ) },
+    { a : stringFromFile( 'small2', encoding ), b : stringFromFile( 'small3', encoding ) },
+    { a : stringFromFile( 'small4', encoding ), b : stringFromFile( 'small5', encoding ) },
+    { a : stringFromFile( 'small6', encoding ), b : stringFromFile( 'small7', encoding ) },
+
+  ],
+
+  options =
+  [
+    { json : 1 },
+  ]
+
+  testFunction( test, desc, src, options );
+
+}
+
+//
+
 var toStrJsonFromFileU = function( test )
 {
-   var desc =  'json from file as utf8',
 
-   src =
-   [
-     /*01*/ { a : stringFromFile( './file/file1', 'utf8' ), b : stringFromFile( './file/file2', 'utf8' ), c : 1 },
-     /*02*/ { a : stringFromFile( './file/file3', 'utf8' ), b : stringFromFile( './file/file4.pdf', 'utf8' ), c : 1 },
-     /*03*/ { a : [ stringFromFile( './file/test.exe', 'utf8' ) ], b : stringFromFile( './file/small', 'utf8' ) },
-     /*04*/ { a : stringFromFile( './file/small2', 'utf8' ), b : stringFromFile( './file/small3', 'utf8' ) },
-     /*05*/ { a : stringFromFile( './file/small4', 'utf8' ), b : stringFromFile( './file/small5', 'utf8' ) },
-     /*06*/ { a : stringFromFile( './file/small6', 'utf8' ), b : stringFromFile( './file/small7', 'utf8' ) },
-
-   ],
-
-   options =
-   [
-     /*01*/ { json : 1 },
-     /*02*/ { json : 1 },
-     /*03*/ { json : 1 },
-     /*04*/ { json : 1 },
-     /*05*/ { json : 1 },
-     /*06*/ { json : 1 },
-
-   ]
-
-  testFunction( test, desc, src, options);
+  return _toStrJsonFromFile( test,'utf8' );
 
 }
 
 toStrJsonFromFileU.cover = [ _.toStr ];
 
 //
+
 var toStrJsonFromFileA = function( test )
 {
-   var desc =  'json from file as ascii',
 
-   src =
-   [
-     /*01*/ { a : stringFromFile( './file/file1', 'ascii' ), b : stringFromFile( './file/file2', 'ascii' ), c : 1 },
-     /*02*/ { a : stringFromFile( './file/file3', 'ascii' ), b : stringFromFile( './file/file4.pdf', 'ascii' ), c : 1 },
-     /*03*/ { a : [ stringFromFile( './file/test.exe', 'ascii' ) ], b : stringFromFile( './file/small', 'ascii' ) },
-     /*04*/ { a : stringFromFile( './file/small2', 'ascii' ), b : stringFromFile( './file/small3', 'ascii' ) },
-     /*05*/ { a : stringFromFile( './file/small4', 'ascii' ), b : stringFromFile( './file/small5', 'ascii' ) },
-     /*06*/ { a : stringFromFile( './file/small6', 'ascii' ), b : stringFromFile( './file/small7', 'ascii' ) },
-   ],
-
-   options =
-   [
-     /*01*/ { json : 1 },
-     /*02*/ { json : 1 },
-     /*03*/ { json : 1 },
-     /*04*/ { json : 1 },
-     /*05*/ { json : 1 },
-     /*06*/ { json : 1 },
-
-   ]
-
-  testFunction( test, desc, src, options);
+  return _toStrJsonFromFile( test,'ascii' );
 
 }
 
@@ -2514,8 +2705,8 @@ var toStrLimitElements = function( test )
   expected =
   [
   //Arrays
-  /*01*/'[ 1, 2, [ other 3 element(s) ] ]',
-  /*02*/'[ 1, 2, 4, [ other 1 element(s) ] ]',
+  /*01*/'[ 1, 2, [ ... other 3 element(s) ] ]',
+  /*02*/'[ 1, 2, 4, [ ... other 1 element(s) ] ]',
   /*03*/'[ "3" ]',
   /*04*/'',
   /*05*/
@@ -2523,7 +2714,7 @@ var toStrLimitElements = function( test )
     '[',
     '  1, ',
     '  2, ',
-    '  [ other 3 element(s) ]',
+    '  [ ... other 3 element(s) ]',
     ']',
   ].join( '\n' ),
 
@@ -2535,16 +2726,16 @@ var toStrLimitElements = function( test )
     '    a : "1"',
     '  }, ',
     '  "5", ',
-    '  [ other 1 element(s) ]',
+    '  [ ... other 1 element(s) ]',
     ']',
   ].join( '\n' ),
 
   /*07*/
   [
-    ' "3", ',
+    '  "3", ',
     '    a : "1", ',
     '  "5", ',
-    '  [ other 1 element(s) ]',
+    '  [ ... other 1 element(s) ]',
 
   ].join( '\n' ),
 
@@ -2554,7 +2745,7 @@ var toStrLimitElements = function( test )
     '{',
     '  a : 1, ',
     '  b : 2, ',
-    '  [ other 2 element(s) ]',
+    '  [ ... other 2 element(s) ]',
     '}',
 
   ].join( '\n' ),
@@ -2564,7 +2755,7 @@ var toStrLimitElements = function( test )
     '{',
     '  a : 1, ',
     '  c : {}, ',
-    '  [ other 1 element(s) ]',
+    '  [ ... other 1 element(s) ]',
     '}',
 
   ].join( '\n' ),
@@ -2574,7 +2765,7 @@ var toStrLimitElements = function( test )
     '{',
     '  a : 1, ',
     '  b : undefined, ',
-    '  [ other 2 element(s) ]',
+    '  [ ... other 2 element(s) ]',
     '}',
 
   ].join( '\n' ),
@@ -2604,9 +2795,10 @@ var Proto =
 
   tests :
   {
-    toStrError : toStrError,
-    toStrArray : toStrArray,
-    toStrObject : toStrObject,
+    // toStrUnwrapped : toStrUnwrapped,
+    // toStrError : toStrError,
+    // toStrArray : toStrArray,
+    // toStrObject : toStrObject,
     toStrJson : toStrJson,
     toStrJsonFromFileU : toStrJsonFromFileU,
     toStrJsonFromFileA : toStrJsonFromFileA,

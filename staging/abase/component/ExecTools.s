@@ -148,7 +148,7 @@ var execStages = function( stages,o )
   // o
 
   var o = o || {};
-  _.assertMapOnly( o,execStages.defaults );
+  _.assertMapHasOnly( o,execStages.defaults );
   _.mapComplement( o,execStages.defaults );
 
   if( o.context === null )
@@ -442,7 +442,7 @@ var execInRange = function execInRange( o )
 var execInRanges = function( o )
 {
 
-  _.assertMapOnly( o,execInRanges.defaults );
+  _.assertMapHasOnly( o,execInRanges.defaults );
   _assert( _.objectIs( o ) )
   _assert( _.arrayIs( o.ranges ) || _.objectIs( o.ranges ),'execInRanges :','expects o.ranges as array or object' )
   _assert( _.routineIs( o.onEach ),'execInRanges :','expects o.onEach as routine' )
