@@ -1407,6 +1407,7 @@ var _toStrFromContainer = function( o )
 
   var l = ( names ? names.length : values.length )
 
+  debugger;
   if( limit > 0 && limit < l )
   {
     l = limit;
@@ -1516,7 +1517,6 @@ var _toStrFromContainer = function( o )
 
   if ( names && l < names.length )
   result +=  other( names.length );
-
   else if( l < values.length )
   result +=  other( values.length );
 
