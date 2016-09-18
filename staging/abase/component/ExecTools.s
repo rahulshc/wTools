@@ -33,7 +33,6 @@ var read = function( data )
 
 */
 
-
 // --
 // exec
 // --
@@ -47,6 +46,8 @@ var shell = ( function( o )
   {
     var con = new wConsequence();
 
+    debugger;
+
     if( _.strIs( o ) )
     o = { code : o };
 
@@ -58,6 +59,7 @@ var shell = ( function( o )
     if( !ChildProcess )
     ChildProcess = require( 'child_process' );
 
+    if( o.usingColoring )
     if( Chalk === undefined && typeof module !== 'undefined' )
     try
     {
@@ -83,8 +85,8 @@ var shell = ( function( o )
     if( o.child.stdout )
     o.child.stdout.on( 'data', function( data )
     {
-      data = 'Output :' + _.strIndentation( data,'  ' );
-      if( Chalk )
+      data = 'Output :\n' + _.strIndentation( data,'  ' );
+      if( Chalk && o.usingColoring )
       data = Chalk.bgYellow( Chalk.black( data ) );
       logger.log( data );
     });
@@ -92,8 +94,8 @@ var shell = ( function( o )
     if( o.child.stderr )
     o.child.stderr.on( 'data', function( data )
     {
-      data = 'Error :' + _.strIndentation( data,'  ' );
-      if( Chalk )
+      data = 'Error :\n' + _.strIndentation( data,'  ' );
+      if( Chalk && o.usingColoring )
       data = Chalk.bgYellow( Chalk.red( data ) );
       logger.log( data );
     });
@@ -117,6 +119,7 @@ shell.defaults =
   code : null,
   usingLogging : 1,
   usingFork : 0,
+  usingColoring : 1,
 }
 
 //

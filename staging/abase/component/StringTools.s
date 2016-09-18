@@ -564,6 +564,12 @@ var _toStr = function _toStr( src,o )
     result += r.text;
     simple = r.simple;
   }
+  else if( src instanceof Map )
+  {
+    var r = _toStrFromHashMap( src,o );
+    result += r.text;
+    simple = r.simple;
+  }
   else if( !isAtomic && _.routineIs( src.toString ) )
   {
     result += src.toString();
@@ -1194,7 +1200,6 @@ var _toStrFromArray = function( src,o )
  *
 */
 
-
 var _toStrFromObject = function( src,o )
 {
   var result = '';
@@ -1212,7 +1217,7 @@ var _toStrFromObject = function( src,o )
   /* item options */
 
   var optionsItem = _.mapExtend( {},o );
-  optionsItem.noObject = o.noSubObject ? 1 : 0;
+  optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
   optionsItem.tab = o.tab + o.dtab;
   optionsItem.level = o.level + 1;
   optionsItem.prependTab = 0;
@@ -1283,6 +1288,50 @@ var _toStrFromObject = function( src,o )
   result += _toStrFromContainer
   ({
     values : src,
+    names : names,
+    optionsContainer : o,
+    optionsItem : optionsItem,
+    simple : simple,
+    prefix : '{',
+    postfix : '}',
+  });
+
+  return { text : result, simple : simple };
+}
+
+//
+
+var _toStrFromHashMap = function( src,o )
+{
+  var result = '';
+  var simple = 0;
+
+  _assert( src instanceof Map );
+
+  /* */
+
+  debugger;
+  var names = [];
+  var values = {};
+  for( var s of src )
+  {
+    names.push( s[ 0 ] );
+    values[ s[ 0 ] ] = s[ 1 ];
+  }
+
+  /* */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
+
+  /* */
+
+  result += _toStrFromContainer
+  ({
+    values : values,
     names : names,
     optionsContainer : o,
     optionsItem : optionsItem,
@@ -3415,6 +3464,7 @@ var Proto =
   _toStrFromStr : _toStrFromStr,
   _toStrFromArray : _toStrFromArray,
   _toStrFromObject : _toStrFromObject,
+  _toStrFromHashMap : _toStrFromHashMap,
   _toStrFromContainer : _toStrFromContainer,
 
   //

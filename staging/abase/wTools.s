@@ -2836,7 +2836,9 @@ var err = function err()
 var errLog = function errLog()
 {
 
-  var c = _global_.logger || console;
+  debugger;
+
+  var c = _global_.logger || _global_.console;
   var err = _err
   ({
     args : arguments,
@@ -5207,12 +5209,14 @@ var timePeriodic = function( delay,onReady )
   var con = new wConsequence();
   var id;
 
-  if( arguments.length > 2 )
-  {
-    throw _.err( 'Not tested' );
-    _assert( arguments.length <= 4 );
-    onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
-  }
+  _.assert( arguments.length === 2 );
+
+  // if( arguments.length > 2 )
+  // {
+  //   throw _.err( 'Not tested' );
+  //   _assert( arguments.length <= 4 );
+  //   onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
+  // }
 
   _assert( _.numberIs( delay ) );
 
@@ -5229,7 +5233,7 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con );
+    wConsequence.give( con,null );
     con.then_( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
@@ -5238,13 +5242,13 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.ping();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con );
+    wConsequence.give( con,null );
     con.then_( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
-    wConsequence.give( con );
+    wConsequence.give( con,null );
     con.then_( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
@@ -6782,7 +6786,7 @@ var arrayFrom = function( src )
 
   if( _.strIs( src ) )
   {
-    var sep = ( src.indexOf( ',' ) !== -1 )?( ',' ) :' '; //???
+    var sep = ( src.indexOf( ',' ) !== -1 ) ? ',' : ' '; //???
     return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
   }
 
@@ -9408,7 +9412,7 @@ var mapClone = function( srcObject,o )
 }
 
   // /**
-  //  * @callback _.filter.supplementary()
+  //  * @callback _.filter.dstNotHas()
   //  * @param { objectLike } dstObject - The target object.
   //  * @param { objectLike } argument - The next object.
   //  * @param { string } key - The key of the (argument) object.
@@ -9429,7 +9433,7 @@ var mapClone = function( srcObject,o )
    *
    * @example
    * // returns { a : 1, b : 2, c : 3 }
-   * _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+   * _.mapExtendFiltering( _.filter.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
    *
    * @returns { objectLike } Returns the unique [ key, value ].
    * @method mapExtendFiltering
@@ -9494,6 +9498,8 @@ var mapExtendFiltering = function( filter,dstObject )
  * @memberof wTools
  */
 
+/* !!! need to explain how undefined handled */
+
 var mapExtend = function mapExtend( dstObject )
 {
   var result = dstObject;
@@ -9520,67 +9526,43 @@ var mapExtend = function mapExtend( dstObject )
   //
 
   // /**
-  //  * @callback  _.filter.supplementary()
+  //  * @callback  _.filter.dstNotHas()
   //  * @param { objectLike } dstObject - The target object.
   //  * @param { objectLike } argument - The next object.
   //  * @param { string } key - The key of the (argument) object.
   //  */
 
-  /**
-   * The mapSupplement() method returns an object with unique [ key, value ].
-   *
-   * It creates the variable (args), assign to a copy of pseudo array (arguments),
-   * adds a callback function ( _.filter.supplementary() ) to the beginning of the (args)
-   * and returns an object with unique [ key, value ].
-   *
-   * @param { ...objectLike } arguments[] - The source object(s).
-   *
-   * @example
-   * // returns { a : 1, b : 2, c : 3 }
-   * mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
-   *
-   * @returns { objectLike } Returns an object with unique [ key, value ].
-   * @method mapSupplement
-   * @memberof wTools
-   */
+/**
+ * The mapSupplement() method returns an object with unique [ key, value ].
+ *
+ * It creates the variable (args), assign to a copy of pseudo array (arguments),
+ * adds a callback function ( _.filter.dstNotHas() ) to the beginning of the (args)
+ * and returns an object with unique [ key, value ].
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 1, b : 2, c : 3 }
+ * mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+ *
+ * @returns { objectLike } Returns an object with unique [ key, value ].
+ * @method mapSupplement
+ * @memberof wTools
+ */
+
+/* !!! need to explain how undefined handled */
 
 var mapSupplement = function( dst )
 {
-
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.supplementary() );
+  args.unshift( _.filter.dstNotHas() );
   return mapExtendFiltering.apply( this,args );
-
-/*
-  var result = dst;
-
-  if( result === null ) result = {};
-
-  _assert( arguments.length >= 2 );
-  _assert( _.objectLike( result ),'mapSupplement :','expects object as argument' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-
-    var argument = arguments[ a ];
-
-    for( var k in argument )
-    {
-      if( k in result )
-      continue;
-      result[ k ] = argument[ k ];
-    }
-
-  }
-
-  return result;
-*/
 }
 
 //
 
 // /**
-//  * @callback  _.filter.supplementaryCloning()
+//  * @callback  _.filter.dstNotHasCloning()
 //  * @param { objectLike } dstContainer - The target object.
 //  * @param { objectLike } srcContainer - The next object.
 //  * @param { string } key - The key of the (srcContainer) object.
@@ -9591,7 +9573,7 @@ var mapSupplement = function( dst )
  * filled by all unique, clone [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
- * adds a specific callback function (_.filter.supplementaryCloning())
+ * adds a specific callback function (_.filter.dstNotHasCloning())
  * to the beginning of the (args)
  * and returns an object filled by all unique clone [key, value].
  *
@@ -9606,30 +9588,32 @@ var mapSupplement = function( dst )
  * @memberof wTools
  */
 
+/* !!! need to explain how undefined handled */
+
 var mapComplement = function( dst )
 {
 
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.supplementaryCloning() ); // ??? own
+  args.unshift( _.filter.dstNotOwnCloning() );
   return mapExtendFiltering.apply( this,args );
 
 }
 
-  /**
-   * The mapCopy() method is used to copy the values of all properties
-   * from one or more source objects to the new object.
-   *
-   * @param { ...objectLike } arguments[] - The source object(s).
-   *
-   * @example
-   * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
-   * _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
-   *
-   * @returns { objectLike } It will return the new object filled by [ key, value ]
-   * from one or more source objects.
-   * @method mapCopy
-   * @memberof wTools
-   */
+/**
+ * The mapCopy() method is used to copy the values of all properties
+ * from one or more source objects to the new object.
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+ * _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+ *
+ * @returns { objectLike } It will return the new object filled by [ key, value ]
+ * from one or more source objects.
+ * @method mapCopy
+ * @memberof wTools
+ */
 
 var mapCopy = function mapCopy()
 {
@@ -10778,10 +10762,10 @@ var srcOwnRoutines = function()
 
 //
 
-var supplementarySrcOwnRoutines = function()
+var dstNotHasSrcOwnRoutines = function()
 {
 
-  var routine = function supplementarySrcOwnRoutines( dstContainer,srcContainer,key )
+  var routine = function dstNotHasSrcOwnRoutines( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -10800,15 +10784,18 @@ var supplementarySrcOwnRoutines = function()
 
 //
 
-var supplementary = function()
+var dstNotHas = function()
 {
 
-  var routine = function supplementary( dstContainer,srcContainer,key )
+  var routine = function dstNotHas( dstContainer,srcContainer,key )
   {
-    if( dstContainer[ key ] !== undefined )
+
+    // if( dstContainer[ key ] !== undefined )
+    // return false;
+
+    if( key in dstContainer )
     return false;
 
-    /*dstContainer[ key ] = srcContainer[ key ];*/
     return true;
   }
 
@@ -10818,10 +10805,10 @@ var supplementary = function()
 
 //
 
-var supplementaryCloning = function()
+var dstNotHasCloning = function()
 {
 
-  var routine = function supplementaryCloning( dstContainer,srcContainer,key )
+  var routine = function dstNotHasCloning( dstContainer,srcContainer,key )
   {
     if( dstContainer[ key ] !== undefined )
     return;
@@ -10835,10 +10822,10 @@ var supplementaryCloning = function()
 
 //
 
-var supplementarySrcOwn = function()
+var dstNotHasSrcOwn = function()
 {
 
-  var routine = function supplementarySrcOwn( dstContainer,srcContainer,key )
+  var routine = function dstNotHasSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -10855,10 +10842,10 @@ var supplementarySrcOwn = function()
 
 //
 
-var supplementaryCloningSrcOwn = function()
+var dstNotHasSrcOwnCloning = function()
 {
 
-  var routine = function supplementaryCloningSrcOwn( dstContainer,srcContainer,key )
+  var routine = function dstNotHasSrcOwnCloning( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -10874,13 +10861,31 @@ var supplementaryCloningSrcOwn = function()
 
 //
 
-var cloningSrcOwnDstNotOwn = function()
+var dstNotOwnSrcOwnCloning = function()
 {
 
-  var routine = function cloningSrcOwnDstNotOwn( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnSrcOwnCloning( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return;
+
+    _.entityCopyField( dstContainer,srcContainer,key );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
+var dstNotOwnCloning = function()
+{
+
+  var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
+  {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
@@ -11159,13 +11164,14 @@ var filter =
 
   srcOwn : srcOwn,
   srcOwnRoutines : srcOwnRoutines,
-  supplementarySrcOwnRoutines : supplementarySrcOwnRoutines,
+  dstNotHasSrcOwnRoutines : dstNotHasSrcOwnRoutines,
 
-  supplementary : supplementary,
-  supplementaryCloning : supplementaryCloning,
-  supplementarySrcOwn : supplementarySrcOwn,
-  supplementaryCloningSrcOwn : supplementaryCloningSrcOwn,
-  cloningSrcOwnDstNotOwn : cloningSrcOwnDstNotOwn,
+  dstNotHas : dstNotHas,
+  dstNotHasCloning : dstNotHasCloning,
+  dstNotHasSrcOwn : dstNotHasSrcOwn,
+  dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
+  dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
+  dstNotOwnCloning : dstNotOwnCloning,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,
