@@ -1402,7 +1402,7 @@ var _toStrFromObject = function( src,o )
  * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @memberof wTools
  *
-*/
+ */
 
 var _toStrFromContainer = function( o )
 {
@@ -1429,7 +1429,7 @@ var _toStrFromContainer = function( o )
     optionsContainer.limitElementsNumber = 0;
   }
 
-  // line postfix
+  /* line postfix */
 
   var linePostfix = '';
   if( optionsContainer.comma )
@@ -1440,19 +1440,17 @@ var _toStrFromContainer = function( o )
     linePostfix += '\n' + optionsItem.tab;
   }
 
-  // prepend
+  /* prepend */
 
   if( optionsContainer.prependTab  )
   {
     if( optionsContainer.wrap )
     {
-      //if( !simple )
-      //result += '\n';
       result += optionsContainer.tab;
     }
   }
 
-  // wrap
+  /* wrap */
 
   if( optionsContainer.wrap )
   {
@@ -1472,20 +1470,17 @@ var _toStrFromContainer = function( o )
     /*result += '\n' + optionsItem.tab;*/
   }
 
-  // prepend
+  /* prepend */
 
   if( optionsContainer.prependTab  )
   {
     if( !optionsContainer.wrap )
     {
       result += optionsContainer.tab;
-      //if( !simple )
-      //result += '\n';
-      //result += optionsItem.tab;
     }
   }
 
-  //
+  /* exec */
 
   var r;
   var written = 0;
