@@ -261,7 +261,7 @@ var toStrFields = function( src,o )
  * _.toStr( function sample( ){ });
  *
  * @example
- * //returns [object Function]
+ * //returns [ rotuine without name ]
  * _.toStr( function add( ){ }, { levels : 0 } );
  *
  * @example
@@ -487,6 +487,7 @@ var _toStr = function _toStr( src,o )
 {
   var result = '';
   var simple = 1;
+  var type = _.strPrimitiveTypeOf( src );
 
   if( o.level >= o.levels )
   {
@@ -505,11 +506,6 @@ var _toStr = function _toStr( src,o )
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
 
-    // if( isObject && o.noObject )
-    // return;
-    // if( isArray && o.noArray )
-    // return;
-
     var r = src.toStr( o );
     if( _.objectIs( r ) )
     {
@@ -527,68 +523,54 @@ var _toStr = function _toStr( src,o )
   }
   else if( _.rowIs( src ) )
   {
-    // if( o.noRow )
-    // return;
     result += _.row.toStr( src,o );
   }
-  else if( _.errorIs( src ) && !o.errorAsMap )
+  else if( _.errorIs( src ) )
   {
-    // if( o.noError )
-    // return;
-    result += src.toString();
-    /*result += src.message;*/
+
+    if( !o.errorAsMap )
+    {
+      result += src.toString();
+    }
+    else
+    {
+      if( o.onlyEnumerable === undefined )
+      o.onlyEnumerable = 0;
+      var r = _toStrFromObject( src,o );
+      result += r.text;
+      simple = r.simple;
+    }
+
   }
-  else if( _.errorIs( src ) && o.errorAsMap )
+  else if( type === 'Function' )
   {
-    // if( o.noError )
-    // return;
-    if( o.onlyEnumerable === undefined )
-    o.onlyEnumerable = 0;
-    var r = _toStrFromObject( src,o );
-    result += r.text;
-    simple = r.simple;
-  }
-  else if( _.routineIs( src ) )
-  {
-    //if( o.noRoutine )
-    //return;
     result += _toStrFromRoutine( src,o );
   }
-  else if( _.numberIs( src ) )
+  else if( type === 'Number' )
   {
-    //if( o.noNumber || o.noAtomic )
-    //return;
     result += _toStrFromNumber( src,o );
   }
-  else if( _.strIs( src ) )
+  else if( type === 'String' )
   {
-    //if( o.noString || o.noAtomic  )
-    //return;
     result += _toStrFromStr( src,o );
   }
-  else if( src instanceof Date )
+  else if( type === 'Date' )
   {
-    //if( o.noDate )
-    //return;
     result += src.toISOString();
   }
   else if( isArray )
   {
-    //if( o.noArray )
-    //return;
     var r = _toStrFromArray( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( isObject )
   {
-    // if( o.noObject )
-    // return;
     var r = _toStrFromObject( src,o );
     result += r.text;
     simple = r.simple;
   }
-  else if( src instanceof Map )
+  else if( type === 'Map' )
   {
     var r = _toStrFromHashMap( src,o );
     result += r.text;
@@ -600,8 +582,6 @@ var _toStr = function _toStr( src,o )
   }
   else
   {
-    // if( o.noAtomic )
-    // return;
     if( o.json && src === undefined )
     result += 'null';
     else
@@ -650,7 +630,7 @@ var _toStrShort = function( src,o )
   }
   else if( _.routineIs( src ) )
   {
-    result += _ObjectToString.call( src );
+    result += _toStrFromRoutine( src );
   }
   else if( _.numberIs( src ) )
   {
@@ -666,15 +646,11 @@ var _toStrShort = function( src,o )
     {
       src = src.substr( 0,Math.min( maxStringLength,nl ) );
       src = _toStrFromStr( src,o );
-      //if( o.wrapString )
-      //result = '"' + src + '"';
-      result += src + '...';
+      result += '[ ' + src + ' ...' + ' ]';
     }
     else
     {
       src = _toStrFromStr( src,o );
-      //if( o.wrapString )
-      //src = '"' + src + '"';
       result += src;
     }
 
@@ -1004,7 +980,7 @@ var _toStrFromStr = function( src,o )
       _.assert( c.length === 1 );
 
       //if( 127 <= code && code <= 159 || code === 173 )
-      if( 0x007f <= code && code <= 0x009f || code === 0x00ad || code >= 65533 )
+      if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
       {
         debugger;
         result += _.strUnicodeEscape( c );

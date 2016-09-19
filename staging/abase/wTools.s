@@ -1466,6 +1466,7 @@ _entitySelectOptions.defaults =
 {
   container : null,
   query : null,
+  set : null,
   delimeter : [ '.','[',']' ],
   undefinedForNone : 1,
 }

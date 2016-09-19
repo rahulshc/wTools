@@ -373,10 +373,10 @@ var toStrError = function ( test )
     /*02*/  'Error: msg',
     /*03*/  '[object Error]',
     /*04*/  '',
-    /*05*/  '{ stack : "Error: message2"..., message : "message2" }',
+    /*05*/  '{ stack : [ "Error: message2" ... ], message : "message2" }',
     /*06*/  '{}',
     /*07*/  '{}',
-    /*08*/  '{ stack : "Error: my message2"..., message : "my message2" }',
+    /*08*/  '{ stack : [ "Error: my message2" ... ], message : "my message2" }',
     /*09*/
       [
         '{',
@@ -600,7 +600,7 @@ var toStrArray = function( test )
       ']'
     ].join( '\n' ),
 
-    /*03*/ '[ [object Function], [object Function] ]',
+    /*03*/ '[ [ routine wothout name ], [object Function] ]',
     /*04*/
     [
       '[',
@@ -2339,25 +2339,25 @@ var toStrEnumerable = function( test )
 
     /*03*/
       [
-       '{ getFoo : [object Function], foo : 1 }'
+       '{ getFoo : [ routine without name ], foo : 1 }'
       ].join( '\n' ),
 
     /*04*/
       [
         '{',
-        '  constructor : [object Function], ',
-        '  toString : [object Function], ',
-        '  toLocaleString : [object Function], ',
-        '  valueOf : [object Function], ',
-        '  hasOwnProperty : [object Function], ',
-        '  isPrototypeOf : [object Function], ',
-        '  propertyIsEnumerable : [object Function], ',
-        '  __defineGetter__ : [object Function], ',
-        '  __lookupGetter__ : [object Function], ',
-        '  __defineSetter__ : [object Function], ',
-        '  __lookupSetter__ : [object Function], ',
+        '  constructor : [ routine Object ], ',
+        '  toString : [ routine toString ], ',
+        '  toLocaleString : [ routine toLocaleString ], ',
+        '  valueOf : [ routine valueOf ], ',
+        '  hasOwnProperty : [ routine hasOwnProperty ], ',
+        '  isPrototypeOf : [ routine isPrototypeOf ], ',
+        '  propertyIsEnumerable : [ routine propertyIsEnumerable ], ',
+        '  __defineGetter__ : [ routine __defineGetter__ ], ',
+        '  __lookupGetter__ : [ routine __lookupGetter__ ], ',
+        '  __defineSetter__ : [ routine __defineSetter__ ], ',
+        '  __lookupSetter__ : [ routine __lookupSetter__ ], ',
         '  __proto__ : [ Object with 1 elements ], ',
-        '  getFoo : [object Function], ',
+        '  getFoo : [ routine without name ], ',
         '  foo : 1, ',
         '  a : "string"',
         '}',
@@ -2795,10 +2795,10 @@ var Proto =
 
   tests :
   {
-    // toStrUnwrapped : toStrUnwrapped,
-    // toStrError : toStrError,
-    // toStrArray : toStrArray,
-    // toStrObject : toStrObject,
+    toStrUnwrapped : toStrUnwrapped,
+    toStrError : toStrError,
+    toStrArray : toStrArray,
+    toStrObject : toStrObject,
     toStrJson : toStrJson,
     toStrJsonFromFileU : toStrJsonFromFileU,
     toStrJsonFromFileA : toStrJsonFromFileA,
