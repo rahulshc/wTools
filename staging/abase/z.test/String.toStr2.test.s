@@ -380,20 +380,20 @@ var toStrError = function ( test )
     /*09*/
       [
         '{',
-        '  toLocaleString : [object Function], ',
-        '  valueOf : [object Function], ',
-        '  hasOwnProperty : [object Function], ',
-        '  isPrototypeOf : [object Function], ',
-        '  propertyIsEnumerable : [object Function], ',
-        '  __defineGetter__ : [object Function], ',
-        '  __lookupGetter__ : [object Function], ',
-        '  __defineSetter__ : [object Function], ',
-        '  __lookupSetter__ : [object Function], ',
+        '  toLocaleString : [ routine toLocaleString ], ',
+        '  valueOf : [ routine valueOf ], ',
+        '  hasOwnProperty : [ routine hasOwnProperty ], ',
+        '  isPrototypeOf : [ routine isPrototypeOf ], ',
+        '  propertyIsEnumerable : [ routine propertyIsEnumerable ], ',
+        '  __defineGetter__ : [ routine __defineGetter__ ], ',
+        '  __lookupGetter__ : [ routine __lookupGetter__ ], ',
+        '  __defineSetter__ : [ routine __defineSetter__ ], ',
+        '  __lookupSetter__ : [ routine __lookupSetter__ ], ',
         '  __proto__ : [ Error with 0 elements ], ',
         '  name : "Error", ',
-        '  constructor : [object Function], ',
-        '  toString : [object Function], ',
-        '  stack : "Error: my message3"..., ',
+        '  constructor : [ routine Error ], ',
+        '  toString : [ routine toString ], ',
+        '  stack : [ "Error: my message3" ... ], ',
         '  message : "my message3"',
         '}',
       ].join( '\n' ),
@@ -600,7 +600,7 @@ var toStrArray = function( test )
       ']'
     ].join( '\n' ),
 
-    /*03*/ '[ [ routine wothout name ], [object Function] ]',
+    /*03*/ '[ [ routine without name ], [ routine add ] ]',
     /*04*/
     [
       '[',
@@ -742,7 +742,7 @@ var toStrArray = function( test )
     /*31*/
     '  "a". 1. false',
     /*32*/
-    '  [object Function]',
+    '  [ routine without name ]',
     /*33*/
     '',
     /*34*/
@@ -759,7 +759,7 @@ var toStrArray = function( test )
     ].join( '\n' ),
 
     /*37*/
-    '  ""...',
+    '  [ "" ... ]',
 
     /*38*/
     [
@@ -817,7 +817,7 @@ var toStrArray = function( test )
     /*46*/
     [
       '    a : "\\na". ',
-      '    b : d : ""...',
+      '    b : d : [ "" ... ]',
     ].join( '\n' ),
 
     /*47*/
@@ -884,7 +884,7 @@ var toStrArray = function( test )
       '    a : "\\\\test"',
       '  }, ',
       '  {',
-      '    b : ""...',
+      '    b : [ "" ... ]',
       '  }, ',
       '  {',
       '    c : "test"',
@@ -1383,7 +1383,7 @@ var toStrObject = function( test )
 
     /*16*/
 
-      'f1 g[object Function]',
+      'f1 g[ routine f ]',
 
     /*17*/
 
@@ -1429,7 +1429,7 @@ var toStrObject = function( test )
 
     /*23*/
 
-    'x : ""...| z : "\\\\11"',
+    'x : [ "" ... ]| z : "\\\\11"',
 
     /*24*/
     [
@@ -1556,7 +1556,7 @@ var toStrObject = function( test )
       '  a : "\\na", ',
       '  b : ',
       '  {',
-      '    d : ""...',
+      '    d : [ "" ... ]',
       '  }',
       '}'
 
@@ -1687,7 +1687,7 @@ var toStrObject = function( test )
 
     /*55*/
     [
-      '{ sequence : "\\vsample" }'
+      '{ sequence : "\\u000bsample" }'
 
     ].join( '\n' ),
 
