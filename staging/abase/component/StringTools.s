@@ -2372,6 +2372,7 @@ var strStripEmptyLines = function( srcStr )
     result += line + '\n';
   }
 
+  result = result.substring( 0, result.length - 1 );
   return result;
 }
 
