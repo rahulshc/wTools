@@ -2,6 +2,12 @@
 
 'use strict';
 
+/*
+- remove old code
+- off \u coding for big chars
+- explain wrap mode in details
+*/
+
 //
 
 if( typeof module !== 'undefined' )
@@ -255,7 +261,7 @@ var toStrFields = function( src,o )
  * _.toStr( function sample( ){ });
  *
  * @example
- * //returns [object Function]
+ * //returns [ rotuine without name ]
  * _.toStr( function add( ){ }, { levels : 0 } );
  *
  * @example
@@ -438,18 +444,18 @@ var toStrFine_gen = function()
       o.escaping = 1;
     }
 
-    _.assertMapOnly( o,composes,primeFilter,optional );
+    _.assertMapHasOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
 
     if( o.json === 1 )
     {
-      _.assert( o.wrapString,'expects ( o.wrapString ) true if ( o.json ) is true' );
-      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if ( o.json ) is true to make valid JSON' );
+      _.assert( o.wrapString,'expects ( o.wrapString ) true if( o.json ) is true' );
+      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if( o.json ) is true to make valid JSON' );
     }
 
     if( o.onlyRoutines )
     {
-      _.assert( !o.noRoutine,'expects ( o.noRoutine ) false if ( o.onlyRoutines ) is true' );
+      _.assert( !o.noRoutine,'expects ( o.noRoutine ) false if( o.onlyRoutines ) is true' );
       for( var f in primeFilter )
       o[ f ] = 1;
       o.noRoutine = 0;
@@ -457,7 +463,6 @@ var toStrFine_gen = function()
 
     if( o.comma === undefined )
     o.comma = o.wrap ? optional.comma : ' ';
-    //o.comma = optional.comma;
 
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
@@ -482,6 +487,7 @@ var _toStr = function _toStr( src,o )
 {
   var result = '';
   var simple = 1;
+  var type = _.strPrimitiveTypeOf( src );
 
   if( o.level >= o.levels )
   {
@@ -500,11 +506,6 @@ var _toStr = function _toStr( src,o )
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
 
-    // if( isObject && o.noObject )
-    // return;
-    // if( isArray && o.noArray )
-    // return;
-
     var r = src.toStr( o );
     if( _.objectIs( r ) )
     {
@@ -522,64 +523,56 @@ var _toStr = function _toStr( src,o )
   }
   else if( _.rowIs( src ) )
   {
-    // if( o.noRow )
-    // return;
     result += _.row.toStr( src,o );
   }
-  else if( _.errorIs( src ) && !o.errorAsMap )
+  else if( _.errorIs( src ) )
   {
-    // if( o.noError )
-    // return;
-    result += src.toString();
-    /*result += src.message;*/
+
+    if( !o.errorAsMap )
+    {
+      result += src.toString();
+    }
+    else
+    {
+      if( o.onlyEnumerable === undefined )
+      o.onlyEnumerable = 0;
+      var r = _toStrFromObject( src,o );
+      result += r.text;
+      simple = r.simple;
+    }
+
   }
-  else if( _.errorIs( src ) && o.errorAsMap )
+  else if( type === 'Function' )
   {
-    // if( o.noError )
-    // return;
-    if( o.onlyEnumerable === undefined )
-    o.onlyEnumerable = 0;
-    var r = _toStrFromObject( src,o );
-    result += r.text;
-    simple = r.simple;
-  }
-  else if( _.routineIs( src ) )
-  {
-    //if( o.noRoutine )
-    //return;
     result += _toStrFromRoutine( src,o );
   }
-  else if( _.numberIs( src ) )
+  else if( type === 'Number' )
   {
-    //if( o.noNumber || o.noAtomic )
-    //return;
     result += _toStrFromNumber( src,o );
   }
-  else if( _.strIs( src ) )
+  else if( type === 'String' )
   {
-    //if( o.noString || o.noAtomic  )
-    //return;
     result += _toStrFromStr( src,o );
   }
-  else if( src instanceof Date )
+  else if( type === 'Date' )
   {
-    //if( o.noDate )
-    //return;
     result += src.toISOString();
   }
   else if( isArray )
   {
-    //if( o.noArray )
-    //return;
     var r = _toStrFromArray( src,o );
     result += r.text;
     simple = r.simple;
   }
   else if( isObject )
   {
-    // if( o.noObject )
-    // return;
     var r = _toStrFromObject( src,o );
+    result += r.text;
+    simple = r.simple;
+  }
+  else if( type === 'Map' )
+  {
+    var r = _toStrFromHashMap( src,o );
     result += r.text;
     simple = r.simple;
   }
@@ -589,8 +582,6 @@ var _toStr = function _toStr( src,o )
   }
   else
   {
-    // if( o.noAtomic )
-    // return;
     if( o.json && src === undefined )
     result += 'null';
     else
@@ -639,7 +630,7 @@ var _toStrShort = function( src,o )
   }
   else if( _.routineIs( src ) )
   {
-    result += _ObjectToString.call( src );
+    result += _toStrFromRoutine( src );
   }
   else if( _.numberIs( src ) )
   {
@@ -655,15 +646,11 @@ var _toStrShort = function( src,o )
     {
       src = src.substr( 0,Math.min( maxStringLength,nl ) );
       src = _toStrFromStr( src,o );
-      //if( o.wrapString )
-      //result = '"' + src + '"';
-      result += src + '...';
+      result += '[ ' + src + ' ...' + ' ]';
     }
     else
     {
       src = _toStrFromStr( src,o );
-      //if( o.wrapString )
-      //src = '"' + src + '"';
       result += src;
     }
 
@@ -718,8 +705,7 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectLike( src );
-
-  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+  var type = _.strPrimitiveTypeOf( src );
 
   /* */
 
@@ -738,37 +724,31 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
     return false;
     return true;
   }
-  else if( _.errorIs( src ) && !o.errorAsMap )
+  else if( _.errorIs( src ) )
   {
     if( o.noError )
     return false;
     return true;
   }
-  else if( _.errorIs( src ) && o.errorAsMap )
-  {
-    if( o.noError )
-    return false;
-    return true;
-  }
-  else if( _.routineIs( src ) )
+  else if( type === 'Function' )
   {
     if( o.noRoutine )
     return false;
     return true;
   }
-  else if( _.numberIs( src ) )
+  else if( type === 'Number' )
   {
     if( o.noNumber || o.noAtomic )
     return false;
     return true;
   }
-  else if( _.strIs( src ) )
+  else if( type === 'String' )
   {
     if( o.noString || o.noAtomic  )
     return false;
     return true;
   }
-  else if( src instanceof Date )
+  else if( type === 'Date' )
   {
     if( o.noDate )
     return false;
@@ -778,12 +758,28 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
   {
     if( o.noArray )
     return false;
+
+    if( !o.wrap )
+    {
+      src = _toStrFromArrayFiltered( src,o );
+      if( !src.length )
+      return false;
+    }
+
     return true;
   }
   else if( isObject )
   {
     if( o.noObject )
     return false;
+
+    if( !o.wrap )
+    {
+      var keys = _toStrFromObjectKeysFiltered( src,o );
+      if( !keys.length )
+      return false;
+    }
+
     return true;
   }
   else if( !isAtomic && _.routineIs( src.toString ) )
@@ -835,7 +831,6 @@ var _toStrIsSimpleElement = function( element,o )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
-
 
   if( _.strIs( element ) )
   {
@@ -924,8 +919,8 @@ var _toStrFromNumber = function( src,o )
 
 /**
  * Function wraps string( src ) in to( "" ) using options provided
- * by argument( o ).Disables escape characters if ( o.escaping ) is true.
- * Also string can be wrapped in to backtick( `` ) if ( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true.
+ * by argument( o ).Disables escape characters if( o.escaping ) is true.
+ * Also string can be wrapped in to backtick( `` ) if( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true.
  *
  * @param {object} src - String to parse.
  * @param {wTools~toStrOptions} o - Contains conversion  options {@link wTools~toStrOptions}.
@@ -976,12 +971,16 @@ var _toStrFromStr = function( src,o )
   if( o.escaping )
   {
 
+    debugger;
     for( var s = 0 ; s < src.length ; s++ )
     {
       var c = src[ s ];
       var code = c.charCodeAt( 0 );
 
-      if( 0x007f <= code && code <= 0x009f || code === 0x00ad )
+      _.assert( c.length === 1 );
+
+      //if( 127 <= code && code <= 159 || code === 173 )
+      if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
       {
         debugger;
         result += _.strUnicodeEscape( c );
@@ -998,9 +997,9 @@ var _toStrFromStr = function( src,o )
           result += '\\"';
           break;
 
-        case '\'' :
-          result += "\\'";
-          break;
+        // case '\'' :
+        //   result += "\\'";
+        //   break;
 
         // case '\`' :
         //   result += "\\`";
@@ -1026,12 +1025,14 @@ var _toStrFromStr = function( src,o )
           result += '\\t';
           break;
 
-        case '\v' :
-          result += '\\v';
-          break;
+        // case '\v' :
+        //   xxx
+        //   result += '\\v';
+        //   break;
 
         default :
 
+          _.assert( code !== 92 );
           if( code < 32 )
           {
             debugger;
@@ -1057,6 +1058,93 @@ var _toStrFromStr = function( src,o )
   }
 
   return result;
+}
+
+//
+
+var _toStrFromHashMap = function( src,o )
+{
+  var result = '';
+  var simple = 0;
+
+  _assert( src instanceof Map );
+
+  /* */
+
+  debugger;
+  var names = [];
+  var values = {};
+  for( var s of src )
+  {
+    names.push( s[ 0 ] );
+    values[ s[ 0 ] ] = s[ 1 ];
+  }
+
+  /* */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
+
+  /* */
+
+  result += _toStrFromContainer
+  ({
+    values : values,
+    names : names,
+    optionsContainer : o,
+    optionsItem : optionsItem,
+    simple : simple,
+    prefix : '{',
+    postfix : '}',
+  });
+
+  return { text : result, simple : simple };
+}
+
+//
+
+var _toStrFromArrayFiltered = function( src,o )
+{
+  var result = '';
+
+  _assert( arguments.length === 2 );
+
+  /* item options */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.level = o.level + 1;
+
+  /* filter */
+
+  var v = 0;
+  var length = src.length;
+  for( var i = 0 ; i < length ; i++ )
+  {
+    v += !!_toStrIsVisibleElement( src[ i ],optionsItem );
+  }
+
+  if( v !== length )
+  {
+    var i2 = 0;
+    var i = 0;
+    var src2 = _.arrayNew( src,v );
+    while( i < length )
+    {
+      if( _toStrIsVisibleElement( src[ i ],optionsItem ) )
+      {
+        src2[ i2 ] = src[ i ];
+        i2 += 1;
+      }
+      i += 1;
+    }
+    src = src2;
+    length = src.length;
+  }
+
+  return src;
 }
 
 //
@@ -1096,7 +1184,7 @@ var _toStrFromStr = function( src,o )
  * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @memberof wTools
  *
-*/
+ */
 
 var _toStrFromArray = function( src,o )
 {
@@ -1130,30 +1218,7 @@ var _toStrFromArray = function( src,o )
 
   /* filter */
 
-  var v = 0;
-  var length = src.length;
-  for( var i = 0 ; i < length ; i++ )
-  {
-    v += !!_toStrIsVisibleElement( src[ i ],optionsItem );
-  }
-
-  if( v !== length )
-  {
-    var i2 = 0;
-    var i = 0;
-    var src2 = _.arrayNew( src,v );
-    while( i < length )
-    {
-      if( _toStrIsVisibleElement( src[ i ],optionsItem ) )
-      {
-        src2[ i2 ] = src[ i ];
-        i2 += 1;
-      }
-      i += 1;
-    }
-    src = src2;
-    length = src.length;
-  }
+  src = _toStrFromArrayFiltered( src,o );
 
   /* is simple */
 
@@ -1180,6 +1245,42 @@ var _toStrFromArray = function( src,o )
   });
 
   return { text : result, simple : simple };
+}
+
+//
+
+var _toStrFromObjectKeysFiltered = function( src,o )
+{
+  var result = '';
+
+  _assert( arguments.length === 2 );
+
+  /* item options */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
+
+  /* get keys */
+
+  var keys = _.mapKeysCustom
+  ({
+    src : src,
+    own : o.own,
+    enumerable : o.onlyEnumerable || o.onlyEnumerable === undefined || false,
+  });
+
+  /* filter */
+
+  for( var n = 0 ; n < keys.length ; n++ )
+  {
+    if( !_toStrIsVisibleElement( src[ keys[ n ] ],optionsItem ) )
+    {
+      keys.splice( n,1 );
+      n -= 1;
+    }
+  }
+
+  return keys;
 }
 
 //
@@ -1213,7 +1314,6 @@ var _toStrFromArray = function( src,o )
  *
 */
 
-
 var _toStrFromObject = function( src,o )
 {
   var result = '';
@@ -1234,52 +1334,18 @@ var _toStrFromObject = function( src,o )
   /* item options */
 
   var optionsItem = _.mapExtend( {},o );
-  optionsItem.noObject = o.noSubObject ? 1 : 0;
+  optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
   optionsItem.tab = o.tab + o.dtab;
   optionsItem.level = o.level + 1;
   optionsItem.prependTab = 0;
 
   /* get names */
 
-  var names;
-  if( o.onlyEnumerable === 0  )
-  {
-    if( o.own  )
-    {
-      names = Object.getOwnPropertyNames( src );
-    }
-    else
-    {
-      var proto = src;
-      names = [];
-      do
-      {
-        names = _.arrayPrependOnceMerging( names,Object.getOwnPropertyNames( proto ) );
-        proto = Object.getPrototypeOf( proto );
-      }
-      while( proto )
-    }
-
-  }
-  else
-  {
-    names = o.own ? _.mapOwnKeys( src ) : _.mapKeys( src );
-  }
-
-  /* filter */
-
-  for( var n = 0 ; n < names.length ; n++ )
-  {
-    if( !_toStrIsVisibleElement( src[ names[ n ] ],optionsItem ) )
-    {
-      names.splice( n,1 );
-      n -= 1;
-    }
-  }
+  var keys = _toStrFromObjectKeysFiltered( src,o );
 
   /* empty case */
 
-  var length = names.length;
+  var length = keys.length;
   if( length === 0 )
   {
     if( !o.wrap )
@@ -1305,7 +1371,7 @@ var _toStrFromObject = function( src,o )
   result += _toStrFromContainer
   ({
     values : src,
-    names : names,
+    names : keys,
     optionsContainer : o,
     optionsItem : optionsItem,
     simple : simple,
@@ -1345,7 +1411,6 @@ var _toStrFromContainer = function( o )
   _.assert( arguments.length );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
-
   var values = o.values;
   var names = o.names;
   var optionsContainer = o.optionsContainer;
@@ -1355,11 +1420,11 @@ var _toStrFromContainer = function( o )
   var prefix = o.prefix;
   var postfix = o.postfix;
   var limit = optionsContainer.limitElementsNumber;
-
   var l = ( names ? names.length : values.length )
 
   if( limit > 0 && limit < l )
   {
+    debugger;
     l = limit;
     optionsContainer.limitElementsNumber = 0;
   }
@@ -1369,8 +1434,11 @@ var _toStrFromContainer = function( o )
   var linePostfix = '';
   if( optionsContainer.comma )
   linePostfix += optionsContainer.comma;
+
   if( !simple )
-  linePostfix += '\n' + optionsItem.tab;
+  {
+    linePostfix += '\n' + optionsItem.tab;
+  }
 
   // prepend
 
@@ -1410,9 +1478,10 @@ var _toStrFromContainer = function( o )
   {
     if( !optionsContainer.wrap )
     {
+      result += optionsContainer.tab;
       //if( !simple )
       //result += '\n';
-      result += optionsItem.tab;
+      //result += optionsItem.tab;
     }
   }
 
@@ -1431,18 +1500,18 @@ var _toStrFromContainer = function( o )
     else
     r = _toStr( values[ n ],optionsItem );
 
-    _.assert( _.objectIs( r ) && _.strIs( r.text ) );
-
-    // if( r === undefined )
-    // continue;
-    //
-    // if( r.text === undefined )
-    // continue;
-
+    _assert( _.objectIs( r ) && _.strIs( r.text ) );
     _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
 
     if( written > 0 )
-    result += linePostfix;
+    {
+      result += linePostfix;
+    }
+    else if( !optionsContainer.wrap )
+    if( !names || !simple )
+    {
+      result += optionsItem.dtab;
+    }
 
     if( names )
     {
@@ -1455,23 +1524,27 @@ var _toStrFromContainer = function( o )
       result += '\n' + optionsItem.tab;
     }
 
-    result += r.text;
-    written += 1;
+    if( r.text )
+    {
+      result += r.text;
+      written += 1;
+    }
 
   }
+
+  /* other */
 
   var other = function( length )
   {
-    return linePostfix + '[ other '+ ( length - l ) +' element(s) ]';
+    return linePostfix + '[ ... other '+ ( length - l ) +' element(s) ]';
   }
 
-  if ( names && l < names.length )
+  if( names && l < names.length )
   result +=  other( names.length );
-
   else if( l < values.length )
   result +=  other( values.length );
 
-  // wrap
+  /* wrap */
 
   if( optionsContainer.wrap )
   {
@@ -1715,7 +1788,7 @@ var strSplitChunks = function( o )
   }
 
   _.mapSupplement( o,strSplitChunks.defaults );
-  _.assertMapOnly( o,strSplitChunks.defaults );
+  _.assertMapHasOnly( o,strSplitChunks.defaults );
   _.assert( _.strIs( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
@@ -1874,7 +1947,7 @@ var _strInhalf = function( o )
 {
   var result = [];
 
-  _.assertMapOnly( o,_strInhalf.defaults );
+  _.assertMapHasOnly( o,_strInhalf.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
@@ -1982,7 +2055,7 @@ var strInhalfLeft = function( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapOnly( o,strInhalfLeft.defaults );
+  _.assertMapHasOnly( o,strInhalfLeft.defaults );
 
   o.left = 1;
 
@@ -2038,7 +2111,7 @@ var strInhalfRight = function( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapOnly( o,strInhalfRight.defaults );
+  _.assertMapHasOnly( o,strInhalfRight.defaults );
 
   o.left = 0;
 
@@ -2094,7 +2167,7 @@ var strSplit = function( o )
   o = { src : o };
 
   _.mapSupplement( o,strSplit.defaults );
-  _.assertMapOnly( o,strSplit.defaults );
+  _.assertMapHasOnly( o,strSplit.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
@@ -2186,7 +2259,7 @@ var strStrip = function( o )
   o = { src : o };
 
   _.mapSupplement( o,strStrip.defaults );
-  _.assertMapOnly( o,strStrip.defaults );
+  _.assertMapHasOnly( o,strStrip.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ),'expects string or array o.stripper' );
@@ -2890,7 +2963,7 @@ var strHtmlEscape = function( str )
  *
  * @method strUnicodeEscape
  * @throws { Exception } Throws a exception if no argument provided.
- * @throws { Exception } Throws a exception if ( src ) is not a String.
+ * @throws { Exception } Throws a exception if( src ) is not a String.
  * @memberof wTools
  *
  */
@@ -3516,7 +3589,7 @@ var strToDom = function( xmlStr )
 
   if( xmlStr === undefined ) return xmlDoc;
 
-  if ( window.DOMParser )
+  if( window.DOMParser )
   {
 
     var parser = new window.DOMParser();
@@ -3613,8 +3686,15 @@ var Proto =
   _toStrFromRoutine : _toStrFromRoutine,
   _toStrFromNumber : _toStrFromNumber,
   _toStrFromStr : _toStrFromStr,
+
+  _toStrFromHashMap : _toStrFromHashMap,
+
+  _toStrFromArrayFiltered : _toStrFromArrayFiltered,
   _toStrFromArray : _toStrFromArray,
+
+  _toStrFromObjectKeysFiltered : _toStrFromObjectKeysFiltered,
   _toStrFromObject : _toStrFromObject,
+
   _toStrFromContainer : _toStrFromContainer,
 
   //

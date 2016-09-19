@@ -403,7 +403,7 @@ var _entityClone = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,_entityClone.defaults );
+  _.assertMapHasOnly( o,_entityClone.defaults );
   _.mapComplement( o,_entityClone.defaults );
 
   return _entityCloneAct( o );
@@ -443,7 +443,7 @@ var entityCloneObject = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneObject.defaults );
+  _.assertMapHasOnly( o,entityCloneObject.defaults );
   _.mapSupplement( o,entityCloneObject.defaults );
 
   var result = _entityClone( o );
@@ -472,7 +472,7 @@ var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( 
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneObjectMergingBuffers.defaults );
+  _.assertMapHasOnly( o,entityCloneObjectMergingBuffers.defaults );
   _.mapSupplement( o,entityCloneObjectMergingBuffers.defaults );
 
   _.assert( _.objectIs( o.src.descriptorsMap ) );
@@ -530,7 +530,7 @@ var entityCloneData = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneData.defaults );
+  _.assertMapHasOnly( o,entityCloneData.defaults );
   _.mapSupplement( o,entityCloneData.defaults );
 
   var result = _entityClone( o );
@@ -560,7 +560,7 @@ var entityCloneDataSeparatingBuffers = function entityCloneDataSeparatingBuffers
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneDataSeparatingBuffers.defaults );
+  _.assertMapHasOnly( o,entityCloneDataSeparatingBuffers.defaults );
   _.mapSupplement( o,entityCloneDataSeparatingBuffers.defaults );
 
   /* onBuffer */
@@ -1064,7 +1064,7 @@ var entitySame = function entitySame()
     _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
     var o = o || {};
 
-    _.assertMapOnly( o,def );
+    _.assertMapHasOnly( o,def );
     _.mapSupplement( o,def );
 
     return _entitySame( src1,src2,o );
@@ -1466,6 +1466,7 @@ _entitySelectOptions.defaults =
 {
   container : null,
   query : null,
+  set : null,
   delimeter : [ '.','[',']' ],
   undefinedForNone : 1,
 }
@@ -2452,7 +2453,7 @@ var eachSample = function( o )
     }
   }
 
-  _.assertMapOnly( o,eachSample.defaults );
+  _.assertMapHasOnly( o,eachSample.defaults );
   if( o.direct === undefined )
   o.direct = true;
 
@@ -2836,7 +2837,9 @@ var err = function err()
 var errLog = function errLog()
 {
 
-  var c = _global_.logger || console;
+  debugger;
+
+  var c = _global_.logger || _global_.console;
   var err = _err
   ({
     args : arguments,
@@ -2935,7 +2938,7 @@ var assert = function assert( condition )
 
 //
 
-var assertMapNoUndefine = function assertMapNoUndefine( src )
+var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
 {
 
   if( DEBUG === false )
@@ -2961,7 +2964,7 @@ var assertMapNoUndefine = function assertMapNoUndefine( src )
 
 //
 
-var assertMapOnly = function assertMapOnly( src )
+var assertMapHasOnly = function assertMapHasOnly( src )
 {
 
   if( DEBUG === false )
@@ -3015,7 +3018,7 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
 
 //
 
-var assertMapAll = function( src,all,msg )
+var assertMapHasAll = function( src,all,msg )
 {
 
   if( DEBUG === false )
@@ -3079,7 +3082,7 @@ var assertNotTested = function( src )
 
 //
 
-var assertMapNone = function( src )
+var assertMapHasNone = function( src )
 {
 
   if( DEBUG === false )
@@ -3150,21 +3153,21 @@ var assertMapOwnNone = function( src,none )
 
 //
 
-  /**
-   * If condition failed, method prints warning messages passed after condition argument
-   * @example
-    function checkAngles( a, b, c )
-    {
-       wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
-    };
-    checkAngles( 120, 23, 130 );
+/**
+ * If condition failed, method prints warning messages passed after condition argument
+ * @example
+  function checkAngles( a, b, c )
+  {
+     wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+  };
+  checkAngles( 120, 23, 130 );
 
-   // triangle with that angles does not exists
-   * @param condition Condition to check.
-   * @param messages messages to print.
-   * @method assertWarn
-   * @memberof wTools
-   */
+ // triangle with that angles does not exists
+ * @param condition Condition to check.
+ * @param messages messages to print.
+ * @method assertWarn
+ * @memberof wTools
+ */
 
 var assertWarn = function( condition )
 {
@@ -3352,7 +3355,7 @@ var diagnosticWatchFields = function( o )
   o.names = o.dst;
 
   _assert( arguments.length === 1 );
-  _.assertMapOnly( o,diagnosticWatchFields.defaults );
+  _.assertMapHasOnly( o,diagnosticWatchFields.defaults );
   _.mapComplement( o,diagnosticWatchFields.defaults );
   _assert( o.dst );
   _assert( o.names );
@@ -4466,7 +4469,7 @@ var regexpBut_ = function( options )
   var atLeastOnce = regexpBut_.defaults.atLeastOnce;
   if( arguments.length === 1 && _.objectIs( options ) )
   {
-    _.assertMapOnly( options,regexpBut_.defaults );
+    _.assertMapHasOnly( options,regexpBut_.defaults );
     _.mapComplement( options,regexpBut_.defaults );
     args = options.but;
     atLeastOnce = options.atLeastOnce;
@@ -5046,8 +5049,8 @@ var routineOptions = function routineOptions( routine,options )
   _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
   _.assert( _.objectIs( options ),'routineOptions : expects object' );
 
-  _.assertMapNoUndefine( options );
-  _.assertMapOnly( options,routine.defaults );
+  _.assertMapHasNoUndefine( options );
+  _.assertMapHasOnly( options,routine.defaults );
   _.mapComplement( options,routine.defaults );
 
   return options;
@@ -5092,7 +5095,7 @@ var timeOnce = function( delay,onBegin,onEnd )
   {
     options = delay;
     _assert( arguments.length === 1 );
-    _.assertMapOnly( options,optionsDefault );
+    _.assertMapHasOnly( options,optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;
     onEnd = options.onEnd;
@@ -5207,12 +5210,14 @@ var timePeriodic = function( delay,onReady )
   var con = new wConsequence();
   var id;
 
-  if( arguments.length > 2 )
-  {
-    throw _.err( 'Not tested' );
-    _assert( arguments.length <= 4 );
-    onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
-  }
+  _.assert( arguments.length === 2 );
+
+  // if( arguments.length > 2 )
+  // {
+  //   throw _.err( 'Not tested' );
+  //   _assert( arguments.length <= 4 );
+  //   onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
+  // }
 
   _assert( _.numberIs( delay ) );
 
@@ -5229,7 +5234,7 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con );
+    wConsequence.give( con,null );
     con.then_( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
@@ -5238,13 +5243,13 @@ var timePeriodic = function( delay,onReady )
     var result = onReady.ping();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con );
+    wConsequence.give( con,null );
     con.then_( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
-    wConsequence.give( con );
+    wConsequence.give( con,null );
     con.then_( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
@@ -5484,7 +5489,7 @@ var bufferMove = function( dst,src )
   {
 
     var options = arguments[ 0 ];
-    _.assertMapOnly( options,bufferMove.defaults );
+    _.assertMapHasOnly( options,bufferMove.defaults );
 
     var src = options.src;
     var dst = options.dst;
@@ -5669,7 +5674,7 @@ var bufferFrom = function( o )
   _assert( arguments.length === 1 );
   _assert( _.objectIs( o ) );
   _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
-  _.assertMapOnly( o,bufferFrom.defaults );
+  _.assertMapHasOnly( o,bufferFrom.defaults );
 
   /* buffer */
 
@@ -5828,8 +5833,8 @@ var buffersSerialize = function buffersSerialize( o )
   var size = 0;
   var o = o || {};
 
-  _.assertMapNoUndefine( o );
-  _.assertMapOnly( o,buffersSerialize.defaults );
+  _.assertMapHasNoUndefine( o );
+  _.assertMapHasOnly( o,buffersSerialize.defaults );
   _.mapComplement( o,buffersSerialize.defaults );
   _.assert( _.objectIs( o.store ) );
 
@@ -5962,8 +5967,8 @@ var buffersDeserialize = function( o )
   var store = o.store;
   var commonBuffer = store[ 'buffer' ];
 
-  _.assertMapNoUndefine( o );
-  _.assertMapOnly( o,buffersDeserialize.defaults );
+  _.assertMapHasNoUndefine( o );
+  _.assertMapHasOnly( o,buffersDeserialize.defaults );
   _.mapComplement( o,buffersDeserialize.defaults );
   _.assert( _.objectIs( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferIs( commonBuffer ) );
@@ -6386,7 +6391,7 @@ var arrayFlattenToMapUnique = function()
 
   var extend = function( r,s )
   {
-    _.assertMapNone( r,s );
+    _.assertMapHasNone( r,s );
     _.mapExtend( r,s );
   }
 
@@ -6782,7 +6787,7 @@ var arrayFrom = function( src )
 
   if( _.strIs( src ) )
   {
-    var sep = ( src.indexOf( ',' ) !== -1 )?( ',' ) :' '; //???
+    var sep = ( src.indexOf( ',' ) !== -1 ) ? ',' : ' '; //???
     return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
   }
 
@@ -7556,7 +7561,7 @@ var arrayUniqueIs = function arrayUniqueIs( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( o.src ) );
-  _.assertMapOnly( o,arrayUniqueIs.defaults );
+  _.assertMapHasOnly( o,arrayUniqueIs.defaults );
 
   /**/
 
@@ -7856,7 +7861,7 @@ var arrayUnmask = function arrayUnmask( o )
     mask : arguments[ 1 ],
   }
 
-  _.assertMapOnly( o,arrayUnmask.defaults );
+  _.assertMapHasOnly( o,arrayUnmask.defaults );
   _.assert( _.arrayLike( o.src ),'arrayUnmask : expects o.src as ArrayLike' );
 
   debugger;
@@ -7963,7 +7968,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
   if( options.numberOfAtomsPerElement === undefined ) options.numberOfAtomsPerElement = 1;
   if( options.numberOfDuplicatesPerElement === undefined ) options.numberOfDuplicatesPerElement = 2;
 
-  _.assertMapOnly( options,
+  _.assertMapHasOnly( options,
   {
     src : 'src',
     result : 'result',
@@ -8045,7 +8050,7 @@ var arrayFill = function arrayFill( o )
   }
 
   _assert( arguments.length === 1 || arguments.length === 2 );
-  _.assertMapOnly( o,arrayFill.defaults );
+  _.assertMapHasOnly( o,arrayFill.defaults );
   _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
   var result = o.result || [];
@@ -9408,7 +9413,7 @@ var mapClone = function( srcObject,o )
 }
 
   // /**
-  //  * @callback _.filter.supplementary()
+  //  * @callback _.filter.dstNotHas()
   //  * @param { objectLike } dstObject - The target object.
   //  * @param { objectLike } argument - The next object.
   //  * @param { string } key - The key of the (argument) object.
@@ -9429,7 +9434,7 @@ var mapClone = function( srcObject,o )
    *
    * @example
    * // returns { a : 1, b : 2, c : 3 }
-   * _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+   * _.mapExtendFiltering( _.filter.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
    *
    * @returns { objectLike } Returns the unique [ key, value ].
    * @method mapExtendFiltering
@@ -9494,6 +9499,8 @@ var mapExtendFiltering = function( filter,dstObject )
  * @memberof wTools
  */
 
+/* !!! need to explain how undefined handled */
+
 var mapExtend = function mapExtend( dstObject )
 {
   var result = dstObject;
@@ -9520,67 +9527,43 @@ var mapExtend = function mapExtend( dstObject )
   //
 
   // /**
-  //  * @callback  _.filter.supplementary()
+  //  * @callback  _.filter.dstNotHas()
   //  * @param { objectLike } dstObject - The target object.
   //  * @param { objectLike } argument - The next object.
   //  * @param { string } key - The key of the (argument) object.
   //  */
 
-  /**
-   * The mapSupplement() method returns an object with unique [ key, value ].
-   *
-   * It creates the variable (args), assign to a copy of pseudo array (arguments),
-   * adds a callback function ( _.filter.supplementary() ) to the beginning of the (args)
-   * and returns an object with unique [ key, value ].
-   *
-   * @param { ...objectLike } arguments[] - The source object(s).
-   *
-   * @example
-   * // returns { a : 1, b : 2, c : 3 }
-   * mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
-   *
-   * @returns { objectLike } Returns an object with unique [ key, value ].
-   * @method mapSupplement
-   * @memberof wTools
-   */
+/**
+ * The mapSupplement() method returns an object with unique [ key, value ].
+ *
+ * It creates the variable (args), assign to a copy of pseudo array (arguments),
+ * adds a callback function ( _.filter.dstNotHas() ) to the beginning of the (args)
+ * and returns an object with unique [ key, value ].
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 1, b : 2, c : 3 }
+ * mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+ *
+ * @returns { objectLike } Returns an object with unique [ key, value ].
+ * @method mapSupplement
+ * @memberof wTools
+ */
+
+/* !!! need to explain how undefined handled */
 
 var mapSupplement = function( dst )
 {
-
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.supplementary() );
+  args.unshift( _.filter.dstNotHas() );
   return mapExtendFiltering.apply( this,args );
-
-/*
-  var result = dst;
-
-  if( result === null ) result = {};
-
-  _assert( arguments.length >= 2 );
-  _assert( _.objectLike( result ),'mapSupplement :','expects object as argument' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-
-    var argument = arguments[ a ];
-
-    for( var k in argument )
-    {
-      if( k in result )
-      continue;
-      result[ k ] = argument[ k ];
-    }
-
-  }
-
-  return result;
-*/
 }
 
 //
 
 // /**
-//  * @callback  _.filter.supplementaryCloning()
+//  * @callback  _.filter.dstNotHasCloning()
 //  * @param { objectLike } dstContainer - The target object.
 //  * @param { objectLike } srcContainer - The next object.
 //  * @param { string } key - The key of the (srcContainer) object.
@@ -9591,7 +9574,7 @@ var mapSupplement = function( dst )
  * filled by all unique, clone [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
- * adds a specific callback function (_.filter.supplementaryCloning())
+ * adds a specific callback function (_.filter.dstNotHasCloning())
  * to the beginning of the (args)
  * and returns an object filled by all unique clone [key, value].
  *
@@ -9606,30 +9589,32 @@ var mapSupplement = function( dst )
  * @memberof wTools
  */
 
+/* !!! need to explain how undefined handled */
+
 var mapComplement = function( dst )
 {
 
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.supplementaryCloning() ); // ??? own
+  args.unshift( _.filter.dstNotOwnCloning() );
   return mapExtendFiltering.apply( this,args );
 
 }
 
-  /**
-   * The mapCopy() method is used to copy the values of all properties
-   * from one or more source objects to the new object.
-   *
-   * @param { ...objectLike } arguments[] - The source object(s).
-   *
-   * @example
-   * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
-   * _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
-   *
-   * @returns { objectLike } It will return the new object filled by [ key, value ]
-   * from one or more source objects.
-   * @method mapCopy
-   * @memberof wTools
-   */
+/**
+ * The mapCopy() method is used to copy the values of all properties
+ * from one or more source objects to the new object.
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+ * _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+ *
+ * @returns { objectLike } It will return the new object filled by [ key, value ]
+ * from one or more source objects.
+ * @method mapCopy
+ * @memberof wTools
+ */
 
 var mapCopy = function mapCopy()
 {
@@ -9895,6 +9880,58 @@ var mapToString = function( src,keyValSep,tupleSep )
   result = result.substr( 0,result.length-tupleSep.length );
 
   return result
+}
+
+//
+
+var mapKeysCustom = function mapKeysCustom( o )
+{
+
+  _.assertMapHasOnly( o,mapKeysCustom.defaults );
+  _.mapSupplement( o,mapKeysCustom.defaults );
+  _.assert( arguments.length === 1 );
+
+  if( o.src instanceof Map )
+  throw _.err( 'not implemented' );
+
+  /* */
+
+  var keys;
+  if( !o.enumerable )
+  {
+
+    if( o.own  )
+    {
+      keys = Object.getOwnPropertyNames( o.src );
+    }
+    else
+    {
+      var proto = o.src;
+      keys = [];
+      do
+      {
+        keys = _.arrayPrependOnceMerging( keys,Object.getOwnPropertyNames( proto ) );
+        proto = Object.getPrototypeOf( proto );
+      }
+      while( proto );
+    }
+
+  }
+  else
+  {
+    keys = o.own ? _.mapOwnKeys( o.src ) : _.mapKeys( o.src );
+  }
+
+  /* */
+
+  return keys;
+}
+
+mapKeysCustom.defaults =
+{
+  src : null,
+  own : 1,
+  enumerable : 1,
 }
 
 //
@@ -10668,7 +10705,7 @@ var _mapScreen = function( options )
   _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as argument' );
   _assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
-  _.assertMapOnly( options,_mapScreen.defaults );
+  _.assertMapHasOnly( options,_mapScreen.defaults );
 
   for( a = srcObjects.length-1 ; a >= 0 ; a-- )
   _assert( _.objectLike( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
@@ -10778,10 +10815,10 @@ var srcOwnRoutines = function()
 
 //
 
-var supplementarySrcOwnRoutines = function()
+var dstNotHasSrcOwnRoutines = function()
 {
 
-  var routine = function supplementarySrcOwnRoutines( dstContainer,srcContainer,key )
+  var routine = function dstNotHasSrcOwnRoutines( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -10800,15 +10837,18 @@ var supplementarySrcOwnRoutines = function()
 
 //
 
-var supplementary = function()
+var dstNotHas = function()
 {
 
-  var routine = function supplementary( dstContainer,srcContainer,key )
+  var routine = function dstNotHas( dstContainer,srcContainer,key )
   {
-    if( dstContainer[ key ] !== undefined )
+
+    // if( dstContainer[ key ] !== undefined )
+    // return false;
+
+    if( key in dstContainer )
     return false;
 
-    /*dstContainer[ key ] = srcContainer[ key ];*/
     return true;
   }
 
@@ -10818,10 +10858,10 @@ var supplementary = function()
 
 //
 
-var supplementaryCloning = function()
+var dstNotHasCloning = function()
 {
 
-  var routine = function supplementaryCloning( dstContainer,srcContainer,key )
+  var routine = function dstNotHasCloning( dstContainer,srcContainer,key )
   {
     if( dstContainer[ key ] !== undefined )
     return;
@@ -10835,10 +10875,10 @@ var supplementaryCloning = function()
 
 //
 
-var supplementarySrcOwn = function()
+var dstNotHasSrcOwn = function()
 {
 
-  var routine = function supplementarySrcOwn( dstContainer,srcContainer,key )
+  var routine = function dstNotHasSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -10855,10 +10895,10 @@ var supplementarySrcOwn = function()
 
 //
 
-var supplementaryCloningSrcOwn = function()
+var dstNotHasSrcOwnCloning = function()
 {
 
-  var routine = function supplementaryCloningSrcOwn( dstContainer,srcContainer,key )
+  var routine = function dstNotHasSrcOwnCloning( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -10874,13 +10914,31 @@ var supplementaryCloningSrcOwn = function()
 
 //
 
-var cloningSrcOwnDstNotOwn = function()
+var dstNotOwnSrcOwnCloning = function()
 {
 
-  var routine = function cloningSrcOwnDstNotOwn( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnSrcOwnCloning( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return;
+
+    _.entityCopyField( dstContainer,srcContainer,key );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
+var dstNotOwnCloning = function()
+{
+
+  var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
+  {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
@@ -11159,13 +11217,14 @@ var filter =
 
   srcOwn : srcOwn,
   srcOwnRoutines : srcOwnRoutines,
-  supplementarySrcOwnRoutines : supplementarySrcOwnRoutines,
+  dstNotHasSrcOwnRoutines : dstNotHasSrcOwnRoutines,
 
-  supplementary : supplementary,
-  supplementaryCloning : supplementaryCloning,
-  supplementarySrcOwn : supplementarySrcOwn,
-  supplementaryCloningSrcOwn : supplementaryCloningSrcOwn,
-  cloningSrcOwnDstNotOwn : cloningSrcOwnDstNotOwn,
+  dstNotHas : dstNotHas,
+  dstNotHasCloning : dstNotHasCloning,
+  dstNotHasSrcOwn : dstNotHasSrcOwn,
+  dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
+  dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
+  dstNotOwnCloning : dstNotOwnCloning,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,
@@ -11317,12 +11376,12 @@ var Proto =
   errLog : errLog,
 
   assert : assert,
-  assertMapNoUndefine : assertMapNoUndefine,
-  assertMapOnly : assertMapOnly,
+  assertMapHasNoUndefine : assertMapHasNoUndefine,
+  assertMapHasOnly : assertMapHasOnly,
   assertMapOwnOnly : assertMapOwnOnly,
-  assertMapNone : assertMapNone,
+  assertMapHasNone : assertMapHasNone,
   assertMapOwnNone : assertMapOwnNone,
-  assertMapAll : assertMapAll,
+  assertMapHasAll : assertMapHasAll,
   assertMapOwnAll : assertMapOwnAll,
   assertNotTested : assertNotTested,
 
@@ -11611,6 +11670,7 @@ var Proto =
   mapKeyWithIndex : mapKeyWithIndex,
   mapToString : mapToString, /* deprecated */
 
+  mapKeysCustom : mapKeysCustom,
   mapOwnKeys : mapOwnKeys,
   mapKeys : mapKeys,
   mapOwnValues : mapOwnValues,
@@ -11692,6 +11752,9 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/NameTools.s' );
   require( './component/ExecTools.s' );
   require( './component/StringTools.s' );
+
+  require( './object/printer/Logger.s' );
+
   //require( './object/RegexpObject.s' );
 
 }

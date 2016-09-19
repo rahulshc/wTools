@@ -424,7 +424,7 @@ var _entityClone = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,_entityClone.defaults );
+  _.assertMapHasOnly( o,_entityClone.defaults );
 
   return _entityCloneAct( o );
 }
@@ -463,7 +463,7 @@ var entityCloneObject = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneObject.defaults );
+  _.assertMapHasOnly( o,entityCloneObject.defaults );
   _.mapSupplement( o,entityCloneObject.defaults );
 
   var result = _entityClone( o );
@@ -492,7 +492,7 @@ var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( 
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneObjectMergingBuffers.defaults );
+  _.assertMapHasOnly( o,entityCloneObjectMergingBuffers.defaults );
   _.mapSupplement( o,entityCloneObjectMergingBuffers.defaults );
 
   _.assert( _.objectIs( o.src.descriptorsMap ) );
@@ -550,7 +550,7 @@ var entityCloneData = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneData.defaults );
+  _.assertMapHasOnly( o,entityCloneData.defaults );
   _.mapSupplement( o,entityCloneData.defaults );
 
   var result = _entityClone( o );
@@ -580,7 +580,7 @@ var entityCloneDataSeparatingBuffers = function entityCloneDataSeparatingBuffers
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
-  _.assertMapOnly( o,entityCloneDataSeparatingBuffers.defaults );
+  _.assertMapHasOnly( o,entityCloneDataSeparatingBuffers.defaults );
   _.mapSupplement( o,entityCloneDataSeparatingBuffers.defaults );
 
   /* onBuffer */
@@ -981,7 +981,7 @@ var entitySame = function entitySame()
     _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
     var o = o || {};
 
-    _.assertMapOnly( o,def );
+    _.assertMapHasOnly( o,def );
     _.mapSupplement( o,def );
 
     return _entitySame( src1,src2,o );
@@ -2247,7 +2247,7 @@ var eachSample = function( o )
     }
   }
 
-  _.assertMapOnly( o,eachSample.defaults );
+  _.assertMapHasOnly( o,eachSample.defaults );
   if( o.direct === undefined )
   o.direct = true;
 
@@ -2750,7 +2750,7 @@ var assertMapNoUndefine = function assertMapNoUndefine( src )
 
 //
 
-var assertMapOnly = function assertMapOnly( src )
+var assertMapHasOnly = function assertMapHasOnly( src )
 {
 
   if( DEBUG === false )
@@ -3089,7 +3089,7 @@ var diagnosticWatchFields = function( options )
   options.names = options.dst;
 
   _assert( arguments.length === 1 );
-  _.assertMapOnly( options,diagnosticWatchFields.defaults );
+  _.assertMapHasOnly( options,diagnosticWatchFields.defaults );
   _.mapComplement( options,diagnosticWatchFields.defaults );
   _assert( options.dst );
   _assert( options.names );
@@ -4200,7 +4200,7 @@ var regexpBut_ = function( options )
   var atLeastOnce = regexpBut_.defaults.atLeastOnce;
   if( arguments.length === 1 &amp;&amp; _.objectIs( options ) )
   {
-    _.assertMapOnly( options,regexpBut_.defaults );
+    _.assertMapHasOnly( options,regexpBut_.defaults );
     _.mapComplement( options,regexpBut_.defaults );
     args = options.but;
     atLeastOnce = options.atLeastOnce;
@@ -4781,7 +4781,7 @@ var routineOptions = function routineOptions( routine,options )
   _.assert( _.objectIs( options ),'routineOptions : expects object' );
 
   _.assertMapNoUndefine( options );
-  _.assertMapOnly( options,routine.defaults );
+  _.assertMapHasOnly( options,routine.defaults );
   _.mapComplement( options,routine.defaults );
 
   return options;
@@ -4826,7 +4826,7 @@ var timeOnce = function( delay,onBegin,onEnd )
   {
     options = delay;
     _assert( arguments.length === 1 );
-    _.assertMapOnly( options,optionsDefault );
+    _.assertMapHasOnly( options,optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;
     onEnd = options.onEnd;
@@ -5218,7 +5218,7 @@ var bufferMove = function( dst,src )
   {
 
     var options = arguments[ 0 ];
-    _.assertMapOnly( options,bufferMove.defaults );
+    _.assertMapHasOnly( options,bufferMove.defaults );
 
     var src = options.src;
     var dst = options.dst;
@@ -5403,7 +5403,7 @@ var bufferFrom = function( o )
   _assert( arguments.length === 1 );
   _assert( _.objectIs( o ) );
   _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
-  _.assertMapOnly( o,bufferFrom.defaults );
+  _.assertMapHasOnly( o,bufferFrom.defaults );
 
   /* buffer */
 
@@ -5563,7 +5563,7 @@ var buffersSerialize = function buffersSerialize( o )
   var o = o || {};
 
   _.assertMapNoUndefine( o );
-  _.assertMapOnly( o,buffersSerialize.defaults );
+  _.assertMapHasOnly( o,buffersSerialize.defaults );
   _.mapComplement( o,buffersSerialize.defaults );
   _.assert( _.objectIs( o.store ) );
 
@@ -5697,7 +5697,7 @@ var buffersDeserialize = function( o )
   var commonBuffer = store[ 'buffer' ];
 
   _.assertMapNoUndefine( o );
-  _.assertMapOnly( o,buffersDeserialize.defaults );
+  _.assertMapHasOnly( o,buffersDeserialize.defaults );
   _.mapComplement( o,buffersDeserialize.defaults );
   _.assert( _.objectIs( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferIs( commonBuffer ) );
@@ -7293,7 +7293,7 @@ var arrayUniqueIs = function arrayUniqueIs( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( o.src ) );
-  _.assertMapOnly( o,arrayUniqueIs.defaults );
+  _.assertMapHasOnly( o,arrayUniqueIs.defaults );
 
   /**/
 
@@ -7593,7 +7593,7 @@ var arrayUnmask = function arrayUnmask( o )
     mask : arguments[ 1 ],
   }
 
-  _.assertMapOnly( o,arrayUnmask.defaults );
+  _.assertMapHasOnly( o,arrayUnmask.defaults );
   _.assert( _.arrayLike( o.src ),'arrayUnmask : expects o.src as ArrayLike' );
 
   debugger;
@@ -7700,7 +7700,7 @@ var arrayDuplicate = function arrayDuplicate( srcArray, options )
   if( options.numberOfAtomsPerElement === undefined ) options.numberOfAtomsPerElement = 1;
   if( options.numberOfDuplicatesPerElement === undefined ) options.numberOfDuplicatesPerElement = 2;
 
-  _.assertMapOnly( options,
+  _.assertMapHasOnly( options,
   {
     src : 'src',
     result : 'result',
@@ -7782,7 +7782,7 @@ var arrayFill = function arrayFill( o )
   }
 
   _assert( arguments.length === 1 || arguments.length === 2 );
-  _.assertMapOnly( o,arrayFill.defaults );
+  _.assertMapHasOnly( o,arrayFill.defaults );
   _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
   var result = o.result || [];
@@ -10351,7 +10351,7 @@ var _mapScreen = function( options )
   _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as argument' );
   _assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
-  _.assertMapOnly( options,_mapScreen.defaults );
+  _.assertMapHasOnly( options,_mapScreen.defaults );
 
   for( a = srcObjects.length-1 ; a >= 0 ; a-- )
   _assert( _.objectLike( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
@@ -10956,7 +10956,7 @@ var Proto =
 
   assert : assert,
   assertMapNoUndefine : assertMapNoUndefine,
-  assertMapOnly : assertMapOnly,
+  assertMapHasOnly : assertMapHasOnly,
   assertMapOwnOnly : assertMapOwnOnly,
   assertMapNone : assertMapNone,
   assertMapOwnNone : assertMapOwnNone,

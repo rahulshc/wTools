@@ -213,7 +213,7 @@ var toStrFine_gen = function()
 
     var options = options || {};
 
-    _.assertMapOnly( options,composes,primeFilter,optional );
+    _.assertMapHasOnly( options,composes,primeFilter,optional );
     options = _.mapSupplement( {},options,composes,restricts );
 
     if( options.onlyRoutines )
@@ -950,7 +950,7 @@ var strSplitChunks = function( o )
   }
 
   _.mapSupplement( o,strSplitChunks.defaults );
-  _.assertMapOnly( o,strSplitChunks.defaults );
+  _.assertMapHasOnly( o,strSplitChunks.defaults );
   _.assert( _.strIs( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
@@ -1073,7 +1073,7 @@ var _strInhalf = function( o )
 {
   var result = [];
 
-  _.assertMapOnly( o,_strInhalf.defaults );
+  _.assertMapHasOnly( o,_strInhalf.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
@@ -1154,7 +1154,7 @@ var strInhalfLeft = function( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapOnly( o,strInhalfLeft.defaults );
+  _.assertMapHasOnly( o,strInhalfLeft.defaults );
 
   o.left = 1;
 
@@ -1183,7 +1183,7 @@ var strInhalfRight = function( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapOnly( o,strInhalfRight.defaults );
+  _.assertMapHasOnly( o,strInhalfRight.defaults );
 
   o.left = 0;
 
@@ -1230,7 +1230,7 @@ var strSplit = function( o )
   o = { src : o };
 
   _.mapSupplement( o,strSplit.defaults );
-  _.assertMapOnly( o,strSplit.defaults );
+  _.assertMapHasOnly( o,strSplit.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
@@ -1288,7 +1288,7 @@ var strStrip = function( o )
   o = { src : o };
 
   _.mapSupplement( o,strStrip.defaults );
-  _.assertMapOnly( o,strStrip.defaults );
+  _.assertMapHasOnly( o,strStrip.defaults );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ),'expects string or array o.stripper' );
