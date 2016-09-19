@@ -453,7 +453,7 @@ var toStrMethods = function( test )
 
   test.description = 'converts routine to string, levels:0';
   var got = _.toStrMethods( function route() {}, { levels : 0 } );
-  var expected = '[object Function]';
+  var expected = '[ routine route ]';
   test.identical( got,expected );
 
   test.description = 'different input data types';
@@ -553,7 +553,7 @@ var _toStrShort = function( test )
 
   test.description = 'string length > 40';
   var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', { } );
-  var expected = 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyr...';
+  var expected = '[ toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyr ... ]';
   test.identical( got,expected );
 
   test.description = 'string with options';
@@ -622,11 +622,11 @@ var _toStrIsVisibleElement = function( test )
       _._toStrIsVisibleElement( '1' );
     });
 
-    test.description = 'second argument is not a object';
-    test.shouldThrowError( function()
-    {
-      _._toStrIsVisibleElement( '1', 2 );
-    });
+    // test.description = 'second argument is not a object';
+    // test.shouldThrowError( function()
+    // {
+    //   _._toStrIsVisibleElement( '1', 2 );
+    // });
 
     test.description = 'no arguments';
     test.shouldThrowError( function()
@@ -1581,7 +1581,7 @@ var strStripEmptyLines = function( test )
 
   test.description = 'simple string';
   var got = _.strStripEmptyLines( 'line_one\n\nline_two' );
-  var expected = 'line_one\nline_two\n';
+  var expected = 'line_one\nline_two';
   test.identical( got,expected );
 
   test.description = 'empty string';
@@ -1596,7 +1596,7 @@ var strStripEmptyLines = function( test )
 
   test.description = 'multiple breaklines';
   var got = _.strStripEmptyLines( '\n\na\n\nb\n\n\n' );
-  var expected = 'a\nb\n';
+  var expected = 'a\nb';
   test.identical( got,expected );
 
   /**/
