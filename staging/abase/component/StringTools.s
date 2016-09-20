@@ -595,6 +595,65 @@ var _toStr = function _toStr( src,o )
 //
 
 
+var strShort = function( src,limit )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  var o;
+
+  if( arguments.length === 2 )
+  o = { src : src, limit : limit };
+
+  else if( arguments.length === 1 )
+  o = arguments[ 0 ];
+
+  _.mapSupplement( o,strShort.defaults );
+  _.assertMapHasOnly( o,strShort.defaults );
+  _.assert( _.objectIs( o ) );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.numberIs( o.limit ) );
+
+  var str = o.src;
+  str = strStrip( str );
+
+  if( str.length > o.limit && o.limit > 1  )
+  {
+    //
+    var b = Math.ceil( o.limit / 2 );
+    var e = o.limit - b;
+
+    if( o.escaping )
+    str= strEscape(str);
+
+    var begin = str.substr( 0, b );
+    var end = str.slice( -e );
+
+    if( o.wrap )
+    {
+      _.assert( _.strIs( o.wrap ) );
+      str = o.wrap + begin + o.wrap + '...' + o.wrap + end + o.wrap;
+    }
+    else
+    {
+     str =  begin  + '...'  + end;
+    }
+
+  }
+
+ if( o.limit === 1 )
+ str = str.substr( 0, 1 );
+
+ return str;
+}
+
+strShort.defaults =
+{
+  src : null,
+  limit : 40,
+  wrap : '"',
+  escaping : 1
+}
+
 //
 
 /**
@@ -3703,6 +3762,7 @@ var Proto =
 
   _toStr : _toStr,
   _toStrShort : _toStrShort,
+  strShort : strShort,
   strEscape : strEscape,
 
   _toStrIsVisibleElement : _toStrIsVisibleElement,
