@@ -594,6 +594,55 @@ var _toStr = function _toStr( src,o )
 
 //
 
+/**
+ * Returns source string( src ) with limited number( limit ) of characters.
+ * For example: src : 'string', limit : 4, result -> '"st"..."ng"'.
+ * * Function can be called in two ways:
+ * - First to pass only source string and limit;
+ * - Second to pass map like ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
+ *
+ * @param {string|object} src - String to parse or object with options.
+ * @param {string} [ o.src=null ] - Source string.
+ * @param {number} [ o.limit=40 ] - Limit of characters in output.
+ * @param {string} [ o.wrap='"' ] - String wrapper. Use zero or false to disable.
+ * @param {string} [ o.escaping=1 ] - Escaping characters appears in output.
+ * @returns {string} Returns simplified source string.
+ *
+ * @example
+ * //returns '"st"..."ng"'
+ * _.strShort( 'string', 4 );
+ *
+ * @example
+ * //returns '"s\\"..."ng"'
+ * _.strShort( 's\ntring', 4 );
+ *
+ * @example
+ * //returns 'string'
+ * _.strShort( 'string', 0 );
+ *
+ * @example
+ * //returns "'st'...'ng'"
+ * _.strShort( { src : 'string', limit : 4, wrap : "'" } );
+ *
+ * @example
+ * //returns "si...le"
+ *  _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
+ *
+ * @example
+ * //returns '"si\"..."le"'
+ *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"' } );
+ *
+ * @method strShort
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } Throw an exception if( o ) is extended with uknown property.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.limit ) is not a Number.
+ * @throws { Exception } Throw an exception if( o.wrap ) is not a String.
+ *
+ * @memberof wTools
+ *
+*/
 
 var strShort = function( src,limit )
 {
