@@ -594,6 +594,123 @@ var _toStr = function _toStr( src,o )
 
 //
 
+
+//
+
+/**
+ * Disables escaped characters in source string( src ).
+ * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
+ * @param {string} src - Source string.
+ * @returns {string} Returns string with disabled escaped characters.
+ *
+ * @example
+ * //returns "\nhello\u001bworld\n"
+ * _.strEscape( '\nhello\u001bworld\n' );
+ *
+ * @method strEscape
+ * @memberof wTools
+ *
+ */
+var strEscape =  function( src )
+{
+    // 007f : ""
+    // . . .
+    // 009f : ""
+
+    // 00ad : "­"
+
+    // \' 	single quote 	byte 0x27 in ASCII encoding
+    // \" 	double quote 	byte 0x22 in ASCII encoding
+    // \\ 	backslash 	byte 0x5c in ASCII encoding
+    // \b 	backspace 	byte 0x08 in ASCII encoding
+    // \f 	form feed - new page 	byte 0x0c in ASCII encoding
+    // \n 	line feed - new line 	byte 0x0a in ASCII encoding
+    // \r 	carriage return 	byte 0x0d in ASCII encoding
+    // \t 	horizontal tab 	byte 0x09 in ASCII encoding
+    // \v 	vertical tab 	byte 0x0b in ASCII encoding
+    // source : http://en.cppreference.com/w/cpp/language/escape
+
+  _.assert( _.strIs( src ) );
+
+  debugger;
+  var result = '';
+  for( var s = 0 ; s < src.length ; s++ )
+  {
+    var c = src[ s ];
+    var code = c.charCodeAt( 0 );
+
+    _.assert( c.length === 1 );
+
+    //if( 127 <= code && code <= 159 || code === 173 )
+    if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
+    {
+      debugger;
+      result += _.strUnicodeEscape( c );
+    }
+    else switch( c )
+    {
+
+      case '\\' :
+        debugger;
+        result += '\\\\';
+        break;
+
+      case '\"' :
+        result += '\\"';
+        break;
+
+      // case '\'' :
+      //   result += "\\'";
+      //   break;
+
+      // case '\`' :
+      //   result += "\\`";
+      //   break;
+
+      case '\b' :
+        result += '\\b';
+        break;
+
+      case '\f' :
+        result += '\\f';
+        break;
+
+      case '\n' :
+        result += '\\n';
+        break;
+
+      case '\r' :
+        result += '\\r';
+        break;
+
+      case '\t' :
+        result += '\\t';
+        break;
+
+      // case '\v' :
+      //   xxx
+      //   result += '\\v';
+      //   break;
+
+      default :
+
+        _.assert( code !== 92 );
+        if( code < 32 )
+        {
+          debugger;
+          result += _.strUnicodeEscape( c );
+        }
+        else
+        result += c;
+
+    }
+  }
+
+  return result;
+}
+
+//
+
 /**
  * Converts object passed by argument( src ) to string representation using
  * options provided by argument( o ) for string and number types.
@@ -951,98 +1068,9 @@ var _toStrFromStr = function( src,o )
   _.assert( _.strIs( src ), 'expects string ( src )'  );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
-  // 007f : ""
-  // . . .
-  // 009f : ""
-
-  // 00ad : "­"
-
-  // \' 	single quote 	byte 0x27 in ASCII encoding
-  // \" 	double quote 	byte 0x22 in ASCII encoding
-  // \\ 	backslash 	byte 0x5c in ASCII encoding
-  // \b 	backspace 	byte 0x08 in ASCII encoding
-  // \f 	form feed - new page 	byte 0x0c in ASCII encoding
-  // \n 	line feed - new line 	byte 0x0a in ASCII encoding
-  // \r 	carriage return 	byte 0x0d in ASCII encoding
-  // \t 	horizontal tab 	byte 0x09 in ASCII encoding
-  // \v 	vertical tab 	byte 0x0b in ASCII encoding
-  // source : http://en.cppreference.com/w/cpp/language/escape
-
   if( o.escaping )
   {
-
-    debugger;
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      var c = src[ s ];
-      var code = c.charCodeAt( 0 );
-
-      _.assert( c.length === 1 );
-
-      //if( 127 <= code && code <= 159 || code === 173 )
-      if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
-      {
-        debugger;
-        result += _.strUnicodeEscape( c );
-      }
-      else switch( c )
-      {
-
-        case '\\' :
-          debugger;
-          result += '\\\\';
-          break;
-
-        case '\"' :
-          result += '\\"';
-          break;
-
-        // case '\'' :
-        //   result += "\\'";
-        //   break;
-
-        // case '\`' :
-        //   result += "\\`";
-        //   break;
-
-        case '\b' :
-          result += '\\b';
-          break;
-
-        case '\f' :
-          result += '\\f';
-          break;
-
-        case '\n' :
-          result += '\\n';
-          break;
-
-        case '\r' :
-          result += '\\r';
-          break;
-
-        case '\t' :
-          result += '\\t';
-          break;
-
-        // case '\v' :
-        //   xxx
-        //   result += '\\v';
-        //   break;
-
-        default :
-
-          _.assert( code !== 92 );
-          if( code < 32 )
-          {
-            debugger;
-            result += _.strUnicodeEscape( c );
-          }
-          else
-          result += c;
-
-      }
-    }
+    result = strEscape( src );
   }
   else
   {
@@ -3675,6 +3703,7 @@ var Proto =
 
   _toStr : _toStr,
   _toStrShort : _toStrShort,
+  strEscape : strEscape,
 
   _toStrIsVisibleElement : _toStrIsVisibleElement,
   _toStrIsSimpleElement : _toStrIsSimpleElement,
