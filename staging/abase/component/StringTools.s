@@ -686,6 +686,7 @@ var strShort = function( src,limit )
         for( var i = s.length - 1; i >= 0 ; --i )
         {
           if(temp.length <= l ) break;
+          temp = temp.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
         }
 
         return temp;
