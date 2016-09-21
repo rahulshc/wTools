@@ -2240,7 +2240,7 @@ var strShort = function( test )
 
   test.description = 'string with escaping';
   var got = _.strShort( 's\ntring', 4 );
-  var expected = '"s\\"..."ng"';
+  var expected = '"s"..."ng"';
   test.identical( got,expected );
 
   test.description = 'limit 0';
@@ -2279,8 +2279,8 @@ var strShort = function( test )
   test.identical( got,expected );
 
   test.description = 'escaping 1';
-  var got = _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"' } );
-  var expected = '"si\\"..."le"';
+  var got = _.strShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
+  var expected = '"s"..."ng"';
   test.identical( got,expected );
 
   /**/
