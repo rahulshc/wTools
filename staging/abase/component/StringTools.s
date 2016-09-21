@@ -110,6 +110,7 @@ var toStrFields = function( src,o )
 * @property {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
 * @property {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
 * @property {number} [ o.limitElementsNumber=0 ] - Outputs limited number of elements from object or array.
+* @property {number} [ o.limitStringLength=0 ] - Outputs limited number of characters from source string.
 * @property {boolean} [ o.prependTab=true ] - Prepend tab before first line.
 * @property {boolean} [ o.errorAsMap=false ] - Interprets Error as Map if true.
 * @property {boolean} [ o.own=true ] - Use only own properties of ( src ), ignore properties of ( src ) prototype.
