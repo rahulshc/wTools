@@ -680,12 +680,15 @@ var strShort = function( src,limit )
     {
       var check = function( s, l )
       {
-        s = _.strEscape( s );
+        var temp = _.strEscape( s );
 
-        if( s.length > l )
-        s = s.substr( 0, l );
+        if( temp.length > l )
+        for( var i = s.length - 1; i >= 0 ; --i )
+        {
+          if(temp.length <= l ) break;
+        }
 
-        return s;
+        return temp;
       }
 
       begin = check( begin, b );
