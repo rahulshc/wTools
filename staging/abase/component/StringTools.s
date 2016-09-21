@@ -382,6 +382,7 @@ var toStrFine_gen = function()
     colon : ' : ',
     usingMultilineStringWrapper : 0,
     limitElementsNumber : 0,
+    limitStringLength : 0,
 
   }
 
@@ -552,6 +553,9 @@ var _toStr = function _toStr( src,o )
   }
   else if( type === 'String' )
   {
+    if( o.limitStringLength )
+    result += strShort( { src : src, limit : o.limitStringLength, wrap : '"', escaping : 1 } );
+    else
     result += _toStrFromStr( src,o );
   }
   else if( type === 'Date' )
