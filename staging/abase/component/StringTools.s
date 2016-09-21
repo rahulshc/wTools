@@ -618,7 +618,7 @@ var _toStr = function _toStr( src,o )
  * _.strShort( 'string', 4 );
  *
  * @example
- * //returns '"s\\"..."ng"'
+ * //returns '"s"..."ng"'
  * _.strShort( 's\ntring', 4 );
  *
  * @example
@@ -634,8 +634,12 @@ var _toStr = function _toStr( src,o )
  *  _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
  *
  * @example
- * //returns '"si\"..."le"'
+ * //returns '"si"..."le"'
  *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"' } );
+ *
+ * @example
+ * //returns '"s\u0001"..." string"'
+ *  _.strShort( 's\x01t\x01ing string string', 14 );
  *
  * @method strShort
  * @throws { Exception } Throw an exception if no argument provided.
