@@ -662,7 +662,6 @@ var strShort = function( src,limit )
   _.assert( _.numberIs( o.limit ) );
 
   var str = o.src;
-  str = strStrip( str );
 
   if( str.length > o.limit && o.limit > 0  )
   {
