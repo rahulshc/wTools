@@ -658,39 +658,51 @@ var strShort = function( src,limit )
 
   _.mapSupplement( o,strShort.defaults );
   _.assertMapHasOnly( o,strShort.defaults );
-  _.assert( _.objectIs( o ) );
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
 
   var str = o.src;
   str = strStrip( str );
 
-  if( str.length > o.limit && o.limit > 1  )
+  if( str.length > o.limit && o.limit > 0  )
   {
-    //
     var b = Math.ceil( o.limit / 2 );
     var e = o.limit - b;
-
-    if( o.escaping )
-    str= strEscape(str);
 
     var begin = str.substr( 0, b );
     var end = str.slice( -e );
 
+    if( o.escaping )
+    {
+      var check = function( s, l )
+      {
+        s = _.strEscape( s );
+
+        if( s.length > l )
+        s = s.substr( 0, l );
+
+        return s;
+      }
+
+      begin = check( begin, b );
+      end = check( end, e );
+
+    }
+
     if( o.wrap )
     {
       _.assert( _.strIs( o.wrap ) );
-      str = o.wrap + begin + o.wrap + '...' + o.wrap + end + o.wrap;
+
+      begin = o.wrap + begin + o.wrap;
+      end = o.wrap + end + o.wrap;
     }
+
+    if( o.limit === 1 )
+    str = begin;
     else
-    {
-     str =  begin  + '...'  + end;
-    }
+    str = begin + '...' +  end ;
 
   }
-
- if( o.limit === 1 )
- str = str.substr( 0, 1 );
 
  return str;
 }
