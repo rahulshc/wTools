@@ -2265,7 +2265,7 @@ var strShort = function( test )
 
   test.description = 'string with whitespaces';
   var got = _.strShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
-  var expected = "'si'...'ng'";
+  var expected = "'  '...'  '";
   test.identical( got,expected );
 
   test.description = 'wrap 0';
