@@ -2250,7 +2250,7 @@ var strShort = function( test )
 
   test.description = 'limit 1';
   var got = _.strShort( 'string', 1 );
-  var expected = 's';
+  var expected = '"s"';
   test.identical( got,expected );
 
   test.description = 'string wih spaces';
@@ -2297,6 +2297,12 @@ var strShort = function( test )
     test.shouldThrowError( function()
     {
       _.strShort( 'string', '0' );
+    });
+
+    test.description = 'invalid argument type( not a Object )';
+    test.shouldThrowError( function()
+    {
+      _.strShort( 'src' );
     });
 
     test.description = 'no arguments';
