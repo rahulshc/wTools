@@ -641,6 +641,44 @@ entityCloneDataSeparatingBuffers.defaults.__proto__ = entityCloneData.defaults;
 
 //
 
+/**
+ * Copies entity( src ) into( dst ) or returns own copy of( src ).Result depends on several moments:
+ * -If( src ) is a Object - returns clone of( src ) using ( onRecursive ) callback function if its provided;
+ * -If( dst ) has own 'copy' method - copies( src ) into( dst ) using this method;
+ * -If( dst ) has own 'set' method - sets the fields of( dst ) using( src ) passed to( dst.set );
+ * -If( src ) has own 'clone' method - returns clone of( src ) using ( src.clone ) method;
+ * -If( src ) has own 'slice' method - returns result of( src.slice ) call;
+ * -Else returns a copy of entity( src ).
+ *
+ * @param {object} dst - Destination object.
+ * @param {object} src - Source object.
+ * @param {routine} onRecursive - The callback function to copy each [ key, value ].
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @returns {object} Returns result of entities copy operation.
+ *
+ * @example
+ * var dst = { set : function( src ) { this.str = src.src } };
+ * var src = { src : 'string' };
+ *  _.entityCopy( dst, src );
+ * console.log( dst.str )
+ * //returns "string"
+ *
+ * @example
+ * var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } }
+ * var src = { src : 'string', num : 123 }
+ *  _.entityCopy( dst, src );
+ * console.log( dst )
+ * //returns Object {src: "string", num: 123}
+ *
+ * @example
+ * //returns 'string'
+ *  _.entityCopy( null, new String( 'string' ) );
+ *
+ * @method entityCopy
+ * @memberof wTools
+ *
+ */
+
 var entityCopy = function( dst,src,onRecursive )
 {
   var result;
