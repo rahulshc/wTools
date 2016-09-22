@@ -1021,6 +1021,7 @@ var entityHasNan = function( src )
 
 var entityHasUndef = function( src )
 {
+  _.assert( arguments.length === 1 );
 
   var result = false;
   if( src === undefined )
