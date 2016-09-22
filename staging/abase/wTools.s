@@ -1019,6 +1019,27 @@ var entityHasNan = function( src )
 
 //
 
+/**
+ * Checks if object( src ) or array has undefined property.
+ *
+ * @param {object} src - Source object.
+ * @returns {boolean} Returns result of check for undefined.
+ *
+ * @example
+ * //returns true
+ * _.entityHasUndef( undefined )
+ *
+ * @example
+ * //returns true
+ * var arr = [ undefined, 1, 2 ];
+ * _.entityHasUndef( arr );
+ *
+ * @method entityHasUndef
+ * @throws {exception} If no argument provided.
+ * @memberof wTools
+ *
+ */
+
 var entityHasUndef = function( src )
 {
   _.assert( arguments.length === 1 );
