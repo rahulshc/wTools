@@ -799,6 +799,7 @@ var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
  *
  *
  * @method entityAssignField
+ * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
  * @memberof wTools
  *
  */
