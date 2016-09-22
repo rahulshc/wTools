@@ -962,6 +962,27 @@ entityWrap.defaults =
 // entity checker
 // --
 
+/**
+ * Checks if object( src ) is NaN. Also works with arrays and maps.
+ *
+ * @param {object} src - Source object.
+ * @returns {boolean} Returns result of check for NaN.
+ *
+ * @example
+ * //returns true
+ * _.entityHasNan( NaN )
+ *
+ * @example
+ * //returns true
+ * var arr = [ NaN, 1, 2 ];
+ * _.entityHasNan( arr );
+ *
+ * @method entityHasNan
+ * @memberof wTools
+ *
+ */
+
+
 var entityHasNan = function( src )
 {
   _.assert( arguments.length === 1 );
