@@ -826,6 +826,32 @@ var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
 
 //
 
+/**
+ * Returns atomic entity( src ) casted into type of entity( ins ) to avoid unexpected implicit type casts.
+ *
+ * @param {object} src - Source object.
+ * @param {object} ins - Type of( src ) depends on type of this object.
+ * @returns {object} Returns object( src ) with  type of( ins ).
+ *
+ * @example
+ * //returns "string"
+ * typeof _.entityCoerceTo( 1, '1' )
+ *
+ * @example
+ * //returns "number"
+ * typeof _.entityCoerceTo( "1" , 1 )
+ *
+ * @example
+ * //returns "boolean"
+ * typeof _.entityCoerceTo( "1" , true )
+ *
+ * @method entityCoerceTo
+ * @throws {exception} If only one or no arguments provided.
+ * @throws {exception} If type of( ins ) is not supported.
+ * @memberof wTools
+ *
+ */
+
 var entityCoerceTo = function( src,ins )
 {
 
