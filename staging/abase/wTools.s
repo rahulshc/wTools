@@ -675,6 +675,8 @@ entityCloneDataSeparatingBuffers.defaults.__proto__ = entityCloneData.defaults;
  *  _.entityCopy( null, new String( 'string' ) );
  *
  * @method entityCopy
+ * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
+ * @throws {exception} If( onRecursive ) is not a Routine.
  * @memberof wTools
  *
  */
