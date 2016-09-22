@@ -978,6 +978,7 @@ entityWrap.defaults =
  * _.entityHasNan( arr );
  *
  * @method entityHasNan
+ * @throws {exception} If no argument provided.
  * @memberof wTools
  *
  */
