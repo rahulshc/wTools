@@ -761,6 +761,8 @@ var entityCopy = function( dst,src,onRecursive )
  *
  *
  * @method entityCopyField
+ * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
+ *
  * @memberof wTools
  *
  */
