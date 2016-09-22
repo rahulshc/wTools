@@ -785,6 +785,24 @@ var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
 
 //
 
+/**
+ * Short-cut for entityCopy function.Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
+ *
+ * @param {object} dstContainer - Destination object.
+ * @param {object} srcValue - Source value.
+ * @param {string} name - Field name.
+ * @param {routine} onRecursive - The callback function to copy each [ key, value ].
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @returns {object} Returns result of entity field assignment operation.
+ *
+ * @example
+ *
+ *
+ * @method entityAssignField
+ * @memberof wTools
+ *
+ */
+
 var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
 {
   var result;
