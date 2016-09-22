@@ -964,6 +964,7 @@ entityWrap.defaults =
 
 var entityHasNan = function( src )
 {
+  _.assert( arguments.length === 1 );
 
   var result = false;
   if( src === undefined )
