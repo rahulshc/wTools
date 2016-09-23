@@ -1402,7 +1402,7 @@ var entityIdentical = function entityIdentical( src1,src2,options )
  * @param {*} src2 - Entity for comparison.
  * @param {wTools~entitySameOptions} options - Comparsion options {@link wTools~entitySameOptions}.
  * @param {boolean} [ options.strict = false ] - Method uses( '==' ) equality mode .
- * @param {number} [ options.eps = 1e-5 ] - Minimal distance between two numbers.
+ * @param {number} [ options.eps = 1e-5 ] - Maximal distance between two numbers.
  * Example: If( options.eps ) is '1e-5' then 0.99999 and 1.0 are equivalent.
  * @returns {boolean} Returns true if entities are equivalent.
  *
