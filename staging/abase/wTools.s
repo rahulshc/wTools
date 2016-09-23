@@ -1539,6 +1539,36 @@ var entityLength = function entityLength( src )
 
 //
 
+/**
+ * Returns "size" of entity( src ). Representation of "size" depends on type of( src ):
+ *  - For string returns value of it own length property;
+ *  - For array-like entity returns value of it own byteLength property for( ArrayBuffer, TypedArray, etc )
+ *    or length property for other;
+ *  - In other cases returns null.
+ *
+ * @param {*} src - Source entity.
+ * @returns {number} Returns "size" of entity.
+ *
+ * @example
+ * //returns 6
+ * _.entitySize( "string" );
+ *
+ * @example
+ * //returns 3
+ * _.entitySize( [ 1, 2, 3 ] );
+ *
+ * @example
+ * //returns 8
+ * _.entitySize( new ArrayBuffer(8) );
+ *
+ * @example
+ * //returns null
+ * _.entitySize( 123 );
+ *
+ * @method entitySize
+ * @memberof wTools
+*/
+
 var entitySize = function entitySize( src )
 {
   if( _.strIs( src ) )
