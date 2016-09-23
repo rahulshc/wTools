@@ -1093,6 +1093,31 @@ var entityHasUndef = function( src )
  * @param {*} src2 - Entity for comparison.
  * @param {wTools~entitySameOptions} o - Comparison criteria.
  * @returns {boolean} result - Returns true for same entities.
+ *
+ * @example
+ * //returns false
+ * var o = { onSameNumbers : function( a, b ){ return a === b } };
+ * _._entitySame( 5, 6, o );
+ *
+ * @example
+ * //returns true
+ * _._entitySame( 'a', 'a', {} );
+ *
+ * @example
+ * //returns false
+ * var o = { onSameNumbers : function( a, b ){ return a === b } };
+ * _._entitySame( [ 1, 2, 3 ], [ 1, 2, 4 ], o );
+ *
+ * @example
+ * //returns false
+ * var o = { onSameNumbers : function( a, b ){ return a === b } };
+ * _._entitySame( { a : 1, b : 2 }, { a : 1, b : 2, c: 1 }, o );
+ *
+ * @example
+ * //returns true
+ * var o = { onSameNumbers : function( a, b ){ return a === b }, strict : 0 };
+ * _._entitySame( { a : '1', b : '2' },{ a : 1, b : 2 }, o );
+ *
  * @private
  * @method _entitySame
  * @throws {exception} If ( arguments.length ) is not equal 3.
