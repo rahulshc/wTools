@@ -1639,7 +1639,6 @@ var entityWithKeyRecursive = function( src,key,onEach )
  * @memberof wTools
 */
 
-
 var entityValueWithIndex = function( src,index )
 {
 
@@ -1664,6 +1663,30 @@ var entityValueWithIndex = function( src,index )
 }
 
 //
+
+/**
+ * Searchs value( value ) in entity( src ) and returns index/key that represent that value or
+ * null if nothing finded.
+ *
+ * @param {*} src - Source entity.
+ * @param {*} value - Specifies value to search.
+ * @returns {*} Returns specific index/key or null.
+ *
+ * @example
+ * //returns 2
+ * _.entityKeyWithValue( [ 1, 2, 3 ], 3);
+ *
+ * @example
+ * //returns null
+ * _.entityKeyWithValue( { a : 'str', b : 123 }, 1 )
+ *
+ * @example
+ * //returns "b"
+ * _.entityKeyWithValue( { a : 'str', b : 123 }, 123 )
+ *
+ * @method entityKeyWithValue
+ * @memberof wTools
+*/
 
 var entityKeyWithValue = function( src,value )
 {
