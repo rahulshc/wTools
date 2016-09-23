@@ -1281,15 +1281,41 @@ var entitySame = function entitySame()
 
 //
 
-/**
- * Deep equaliser of 2 entities.
- * Return string refering first found difference or false if entities are sames.
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} o - options.
- * @method entityDiff
- * @memberof wTools
- */
+ /**
+  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+  * Returns string refering to first found difference or false if entities are sames.
+  *
+  * @param {*} src1 - Entity for comparison.
+  * @param {*} src2 - Entity for comparison.
+  * @param {wTools~entitySameOptions} o - comparsion options {@link wTools~entitySameOptions}.
+  * @returns {boolean} result - Returns false for same entities or difference as a string.
+  *
+  * @example
+  * //returns
+  * //"at :
+  * //src1 :
+  * //1
+  * //src2 :
+  * //1 "
+  * _.entityDiff( '1', 1 );
+  *
+  * @example
+  * //returns
+  * //"at : .2
+  * //src1 :
+  * //3
+  * //src2 :
+  * //4
+  * //difference :
+  * //*"
+  * _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+  *
+  * @method entityDiff
+  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+  * @throws {exception} If( o ) is not a Object.
+  * @throws {exception} If( o ) is extended by unknown property.
+  * @memberof wTools
+  */
 
 var entityDiff = function entityDiff( src1,src2,o )
 {
