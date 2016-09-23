@@ -1211,11 +1211,37 @@ var _entitySame = function _entitySame( src1,src2,o )
 //
 
 /**
- * Deep equaliser of 2 entities.
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
+ * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * Returns false if finds difference in two entities, else returns true. By default method uses it own
+ * ( onSameNumbers ) routine to compare numbers.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} o - comparsion options {@link wTools~entitySameOptions}.
+ * @returns {boolean} result - Returns true for same entities.
+ *
+ * @example
+ * //returns false
+ * _.entitySame( '1', 1 );
+ *
+ * @example
+ * //returns true
+ * _.entitySame( '1', 1, { strict : 0 } );
+ *
+ * @example
+ * //returns true
+ * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { contain : 1 } );
+ *
+ * @example
+ * //returns ".a.b"
+ * var o = { contain : 1 };
+ * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
+ * console.log( o.lastPath );
+ *
  * @method entitySame
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( o ) is not a Object.
+ * @throws {exception} If( o ) is extended by unknown property.
  * @memberof wTools
  */
 
