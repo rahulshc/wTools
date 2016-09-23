@@ -1394,22 +1394,31 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 //
 
 /**
- * Deep soft equaliser of 2 entities.
+ * Deep soft comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * By default uses own( onSameNumbers ) routine to compare numbers using( options.eps ). Returns true if two numbers are NaN, strict equal or
+ * ( a - b ) <= ( options.eps ). For example: '_.entityEquivalent( 1, 1.5, { eps : .5 } )' returns true.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} options - Comparsion options {@link wTools~entitySameOptions}.
+ * @param {boolean} [ options.strict = false ] - Method uses( '==' ) equality mode .
+ * @param {number} [ options.eps = 1e-5 ] - Minimal distance between two numbers.
+ * Example: If( options.eps ) is '1e-5' then 0.99999 and 1.0 are equivalent.
+ * @returns {boolean} Returns true if entities are equivalent.
+ *
  * @example
-   var eps = 1e-5,
-   x = 1,
-   y = 1 + eps / 2
-
-   wTools.entityEquivalent( x, y );
-   // true
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
- * @throws {Error} Missed arguments.
- * @throws {Error} Extra arguments.
+ * //returns true
+ * _.entityEquivalent( 2, 2.1, { eps : .2 } )
+ *
+ * @example
+ * //returns true
+ * _.entityEquivalent( [ 1, 2, 3 ], [ 1.9, 2.9, 3.9 ], { eps : 0.9 } ) ;
+ *
  * @method entityEquivalent
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
- */
+*/
 
 var entityEquivalent = function entityEquivalent( src1,src2,options )
 {
