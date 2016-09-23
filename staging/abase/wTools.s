@@ -1287,7 +1287,7 @@ var entitySame = function entitySame()
   *
   * @param {*} src1 - Entity for comparison.
   * @param {*} src2 - Entity for comparison.
-  * @param {wTools~entitySameOptions} o - comparsion options {@link wTools~entitySameOptions}.
+  * @param {wTools~entitySameOptions} o - Comparsion options {@link wTools~entitySameOptions}.
   * @returns {boolean} result - Returns false for same entities or difference as a string.
   *
   * @example
@@ -1351,22 +1351,32 @@ var entityDiff = function entityDiff( src1,src2,o )
 //
 
 /**
- * Deep strict equaliser of 2 entities.
+ * Deep strict comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * Returns true if entities are identical.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} options - Comparsion options {@link wTools~entitySameOptions}.
+ * @param {boolean} [ options.strict = true ] - Method uses strict equality mode( '===' ).
+ * @returns {boolean} result - Returns true for identical entities.
+ *
  * @example
-    var obj1 = { a: 0, b: 1, e: { c: 2, d: 3 } },
-    obj2 = { a: 0, b: 1, e: { c: 2, d: 3 } };
-
-    wTools.entityIdentical( obj1, obj2 );
-
-    // returns true
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
- * @throws {Error} Missed arguments.
- * @throws {Error} Extra arguments.
+ * //returns true
+ * var src1 = { a : 1, b : { a : 1, b : 2 } };
+ * var src2 = { a : 1, b : { a : 1, b : 2 } };
+ * _.entityIdentical( src1, src2 ) ;
+ *
+ * @example
+ * //returns false
+ * var src1 = { a : '1', b : { a : 1, b : '2' } };
+ * var src2 = { a : 1, b : { a : 1, b : 2 } };
+ * _.entityIdentical( src1, src2 ) ;
+ *
  * @method entityIdentical
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
- */
+*/
 
 var entityIdentical = function entityIdentical( src1,src2,options )
 {
