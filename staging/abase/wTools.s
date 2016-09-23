@@ -9985,6 +9985,35 @@ var mapCopy = function mapCopy()
 // map test
 // --
 
+/**
+ * Short-cut for _mapSatisfy() method.
+ * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
+ * Also works with ( o.template ) as routine that check( o.src ) with own rules.
+ * @param {wTools~mapSatisfyOptions} o - Default options {@link wTools~mapSatisfyOptions}.
+ * @returns {boolean} Returns true if( o.src ) has same key/value pair(s) with( o.template )
+ * or result if ( o.template ) routine call is true.
+ *
+ * @example
+ * //returns true
+ * _.mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns true
+ * _.mapSatisfy( { template : {a : 1, b : 1, c : 1 }, src : { a : 1, b : 2 } } );
+ *
+ * @example
+ * //returns false
+ * var routine = function( src ){ return src.a === 12 }
+ * _.mapSatisfy( { template : routine, src : { a : 1, b : 2 } } );
+ *
+ * @method mapSatisfy
+ * @throws {exception} If( arguments.length ) is not equal to 1 or 2.
+ * @throws {exception} If( o.template ) is not a Object.
+ * @throws {exception} If( o.template ) is not a Routine.
+ * @throws {exception} If( o.src ) is undefined.
+ * @memberof wTools
+*/
+
 var mapSatisfy = function mapSatisfy( o )
 {
 
