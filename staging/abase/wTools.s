@@ -1408,11 +1408,11 @@ var entityIdentical = function entityIdentical( src1,src2,options )
  *
  * @example
  * //returns true
- * _.entityEquivalent( 2, 2.1, { eps : .2 } )
+ * _.entityEquivalent( 2, 2.1, { eps : .2 } );
  *
  * @example
  * //returns true
- * _.entityEquivalent( [ 1, 2, 3 ], [ 1.9, 2.9, 3.9 ], { eps : 0.9 } ) ;
+ * _.entityEquivalent( [ 1, 2, 3 ], [ 1.9, 2.9, 3.9 ], { eps : 0.9 } );
  *
  * @method entityEquivalent
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
