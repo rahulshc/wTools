@@ -10009,6 +10009,39 @@ mapSatisfy.defaults =
 
 //
 
+/**
+ * Default options for _mapSatisfy() method.
+ * @typedef {object} wTools~mapSatisfyOptions
+ * @property {object|function} [ template=null ] - Map to compare with( src ) or routine that checks each value of( src ).
+ * @property {object} [ src=null ] - Source map.
+ * @property {number} [ levels=256 ] - Number of levels in map structure.
+ *
+*/
+
+/**
+ * Checks if object( src ) has at least one key/value pair that is represented in( template ).
+ * Returns true if( template ) has one or more indentical key/value pair with( src ).
+ * If( template ) is provided as routine, method uses it to check( src ).
+ * @param {wTools~mapSatisfyOptions} args - Arguments list {@link wTools~mapSatisfyOptions}.
+ * @returns {boolean} Returns true if( src ) has same key/value pair(s) with( template ).
+ *
+ * @example
+ * //returns true
+ * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns false
+ * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { y : 1 , j : 1 } );
+ *
+ * @example
+ * //returns true
+ * var template = function( src ){ return src.y === 1 }
+ * _._mapSatisfy( template, { y : 1 , j : 1 } );
+ *
+ * @method _mapSatisfy
+ * @memberof wTools
+*/
+
 var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
 {
 
