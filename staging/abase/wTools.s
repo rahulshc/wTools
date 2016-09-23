@@ -1071,28 +1071,33 @@ var entityHasUndef = function( src )
 
 //
 
-  /**
-   * Compare two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
-      in the `options`. If in some moment method finds different values in two entities, then it returns false.
-   * @param {*} src1 entity for comparison
-   * @param {*} src2 entity for comparison
-   * @param {Object} options Comparison criteria
-   * @param {Function} options.onSameNumbers Function that uses for comparison two numbers. If function returned true,
-      the passed numbers is considered equal.
-   * @param {boolean} options.contain If this parameter sets to true, two entities will be considered the same,
-      if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
-      types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
-      the same lengths, same keys/indexes and same appropriates values.
-   * @param {boolean} options.strict Specify equality comparison. When it set to true, then the Strict equality
-      using (===), else the Loose equality using (==).
-   * @param {String} options.lastPath This parameters is modified during the execution of method. Specified on path to
-      value, that composite from keys/indexes separated by '.'
-   * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
-   * @returns {boolean} result - true for same entities.
-   * @private
-   * @method _entitySame
-   * @memberof wTools
-   */
+/**
+ * Options for _entitySame() function.
+ * @typedef {Object} wTools~entitySameOptions
+ * @property {routine} [ onSameNumbers ] - Routine to compare two numbers.Returns true if numbers are equal.
+ * @property {boolean} [ contain=0 ] - If this parameter sets to true, two entities will be considered the same,
+ * if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
+ * types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
+ * the same lengths, same keys/indexes and same appropriates values.
+ * @property {boolean} [ strict=1 ] - Specify equality comparison. When it set to true, then the Strict equality
+ * using (===), else the Loose equality using (==).
+ * @property {string} [ lastPath='' ] - This parameters is modified during the execution of method. Specified on path to
+ * value, that composite from keys/indexes separated by '.'
+ * @property {string} [ path='' ] - For non primitive entities indicates the current path for elements that is compared now.
+ */
+
+/**
+ * Compares two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
+ * in the `options`. If in some moment method finds different values in two entities, then it returns false.
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} o - Comparison criteria.
+ * @returns {boolean} result - Returns true for same entities.
+ * @private
+ * @method _entitySame
+ * @throws {exception} If ( arguments.length ) is not equal 3.
+ * @memberof wTools
+ */
 
 var _entitySame = function _entitySame( src1,src2,o )
 {
