@@ -1615,6 +1615,31 @@ var entityWithKeyRecursive = function( src,key,onEach )
 
 //
 
+/**
+ * Returns value from entity( src ) using position provided by argument( index ).
+ * For object method iterates over all properties and returns value when counter reaches( index ).
+ *
+ * @param {*} src - Source entity.
+ * @param {number} index - Specifies position of needed value.
+ * @returns {*} Returns value at specified position.
+ *
+ * @example
+ * //returns 1
+ * _.entityValueWithIndex( [ 1, 2, 3 ], 0);
+ *
+ * @example
+ * //returns 123
+ * _.entityValueWithIndex( { a : 'str', b : 123 }, 1 )
+ *
+ * @example
+ * //returns undefined
+ * _.entityValueWithIndex( { a : 'str', b : 123 }, 2 )
+ *
+ * @method entityValueWithIndex
+ * @memberof wTools
+*/
+
+
 var entityValueWithIndex = function( src,index )
 {
 
