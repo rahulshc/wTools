@@ -1450,20 +1450,33 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
 //
 
 /**
- * Deep contain equaliser of 2 entities.
+ * Deep contain comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * Returns true if entity( src1 ) contains keys/values from entity( src2 ) or they are indentical.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} options - Comparsion options {@link wTools~entitySameOptions}.
+ * @param {boolean} [ options.strict = true ] - Method uses strict( '===' ) equality mode .
+ * @param {boolean} [ options.contain = true ] - Check if( src1 ) contains  keys/indexes and same appropriates values from( src2 ).
+ * @returns {boolean} Returns boolean result of comparison.
+ *
  * @example
-   var arr1 = [ 0, 1, 2, 3, 9 ],
-   arr2 = [ 0, 1, 2 ];
-   wTools.entityContain( arr1, arr2 );
-   // true
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
- * @throws {Error} Missed arguments.
- * @throws {Error} Extra arguments.
+ * //returns true
+ * _.entityContain( [ 1, 2, 3 ], [ 1 ] );
+ *
+ * @example
+ * //returns false
+ * _.entityContain( [ 1, 2, 3 ], [ 1, 4 ] );
+ *
+ * @example
+ * //returns true
+ * _.entityContain( { a : 1, b : 2 }, { a : 1 , b : 2 }  );
+ *
  * @method entityContain
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
- */
+*/
 
 var entityContain = function entityContain( src1,src2,options )
 {
