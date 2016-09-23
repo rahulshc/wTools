@@ -1497,19 +1497,35 @@ var entityContain = function entityContain( src1,src2,options )
 // --
 
 /**
- * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
-    properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
- * @example
+ * Returns "length" of entity( src ). Representation of "length" depends on type of( src ):
+ *  - For object returns number of it own enumerable properties;
+ *  - For array or array-like object returns value of length property;
+ *  - For undefined returns 0;
+ *  - In other cases returns 1.
  *
-   var obj =
-   {
-     a: 1,
-     b: { e: 2, c: 3 }
-   };
-   wTools.entityLength(obj); // 2
- * @param {*} src Input entity
- * @returns {number} Length of entity.
- */
+ * @param {*} src - Source entity.
+ * @returns {number} Returns "length" of entity.
+ *
+ * @example
+ * //returns 3
+ * _.entityLength( [ 1, 2, 3 ] );
+ *
+ * @example
+ * //returns 1
+ * _.entityLength( 'string' );
+ *
+ * @example
+ * //returns 2
+ * _.entityLength( { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns 0
+ * var src = undefined;
+ * _.entityLength( src );
+ *
+ * @method entityLength
+ * @memberof wTools
+*/
 
 var entityLength = function entityLength( src )
 {
