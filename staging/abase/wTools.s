@@ -641,6 +641,46 @@ entityCloneDataSeparatingBuffers.defaults.__proto__ = entityCloneData.defaults;
 
 //
 
+/**
+ * Copies entity( src ) into( dst ) or returns own copy of( src ).Result depends on several moments:
+ * -If( src ) is a Object - returns clone of( src ) using ( onRecursive ) callback function if its provided;
+ * -If( dst ) has own 'copy' method - copies( src ) into( dst ) using this method;
+ * -If( dst ) has own 'set' method - sets the fields of( dst ) using( src ) passed to( dst.set );
+ * -If( src ) has own 'clone' method - returns clone of( src ) using ( src.clone ) method;
+ * -If( src ) has own 'slice' method - returns result of( src.slice ) call;
+ * -Else returns a copy of entity( src ).
+ *
+ * @param {object} dst - Destination object.
+ * @param {object} src - Source object.
+ * @param {routine} onRecursive - The callback function to copy each [ key, value ].
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @returns {object} Returns result of entities copy operation.
+ *
+ * @example
+ * var dst = { set : function( src ) { this.str = src.src } };
+ * var src = { src : 'string' };
+ *  _.entityCopy( dst, src );
+ * console.log( dst.str )
+ * //returns "string"
+ *
+ * @example
+ * var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } }
+ * var src = { src : 'string', num : 123 }
+ *  _.entityCopy( dst, src );
+ * console.log( dst )
+ * //returns Object {src: "string", num: 123}
+ *
+ * @example
+ * //returns 'string'
+ *  _.entityCopy( null, new String( 'string' ) );
+ *
+ * @method entityCopy
+ * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
+ * @throws {exception} If( onRecursive ) is not a Routine.
+ * @memberof wTools
+ *
+ */
+
 var entityCopy = function( dst,src,onRecursive )
 {
   var result;
@@ -708,6 +748,27 @@ var entityCopy = function( dst,src,onRecursive )
 
 //
 
+/**
+ * Short-cut for entityCopy function.Copies specified( name ) field from
+ * source container( srcContainer ) into( dstContainer ).
+ *
+ * @param {object} dstContainer - Destination object.
+ * @param {object} srcContainer - Source object.
+ * @param {string} name - Field name.
+ * @param {routine} onRecursive - The callback function to copy each [ key, value ].
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @returns {object} Returns result of entities copy operation.
+ *
+ * @example
+ *
+ *
+ * @method entityCopyField
+ * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
+ *
+ * @memberof wTools
+ *
+ */
+
 var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
 {
   var result;
@@ -727,6 +788,25 @@ var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
 }
 
 //
+
+/**
+ * Short-cut for entityCopy function.Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
+ *
+ * @param {object} dstContainer - Destination object.
+ * @param {object} srcValue - Source value.
+ * @param {string} name - Field name.
+ * @param {routine} onRecursive - The callback function to copy each [ key, value ].
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @returns {object} Returns result of entity field assignment operation.
+ *
+ * @example
+ *
+ *
+ * @method entityAssignField
+ * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
+ * @memberof wTools
+ *
+ */
 
 var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
 {
@@ -750,6 +830,32 @@ var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
 }
 
 //
+
+/**
+ * Returns atomic entity( src ) casted into type of entity( ins ) to avoid unexpected implicit type casts.
+ *
+ * @param {object} src - Source object.
+ * @param {object} ins - Type of( src ) depends on type of this object.
+ * @returns {object} Returns object( src ) with  type of( ins ).
+ *
+ * @example
+ * //returns "string"
+ * typeof _.entityCoerceTo( 1, '1' )
+ *
+ * @example
+ * //returns "number"
+ * typeof _.entityCoerceTo( "1" , 1 )
+ *
+ * @example
+ * //returns "boolean"
+ * typeof _.entityCoerceTo( "1" , true )
+ *
+ * @method entityCoerceTo
+ * @throws {exception} If only one or no arguments provided.
+ * @throws {exception} If type of( ins ) is not supported.
+ * @memberof wTools
+ *
+ */
 
 var entityCoerceTo = function( src,ins )
 {
@@ -856,8 +962,31 @@ entityWrap.defaults =
 // entity checker
 // --
 
+/**
+ * Checks if object( src ) is NaN. Also works with arrays and maps.
+ *
+ * @param {object} src - Source object.
+ * @returns {boolean} Returns result of check for NaN.
+ *
+ * @example
+ * //returns true
+ * _.entityHasNan( NaN )
+ *
+ * @example
+ * //returns true
+ * var arr = [ NaN, 1, 2 ];
+ * _.entityHasNan( arr );
+ *
+ * @method entityHasNan
+ * @throws {exception} If no argument provided.
+ * @memberof wTools
+ *
+ */
+
+
 var entityHasNan = function( src )
 {
+  _.assert( arguments.length === 1 );
 
   var result = false;
   if( src === undefined )
@@ -890,8 +1019,30 @@ var entityHasNan = function( src )
 
 //
 
+/**
+ * Checks if object( src ) or array has undefined property.
+ *
+ * @param {object} src - Source object.
+ * @returns {boolean} Returns result of check for undefined.
+ *
+ * @example
+ * //returns true
+ * _.entityHasUndef( undefined )
+ *
+ * @example
+ * //returns true
+ * var arr = [ undefined, 1, 2 ];
+ * _.entityHasUndef( arr );
+ *
+ * @method entityHasUndef
+ * @throws {exception} If no argument provided.
+ * @memberof wTools
+ *
+ */
+
 var entityHasUndef = function( src )
 {
+  _.assert( arguments.length === 1 );
 
   var result = false;
   if( src === undefined )
@@ -920,28 +1071,58 @@ var entityHasUndef = function( src )
 
 //
 
-  /**
-   * Compare two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
-      in the `options`. If in some moment method finds different values in two entities, then it returns false.
-   * @param {*} src1 entity for comparison
-   * @param {*} src2 entity for comparison
-   * @param {Object} options Comparison criteria
-   * @param {Function} options.onSameNumbers Function that uses for comparison two numbers. If function returned true,
-      the passed numbers is considered equal.
-   * @param {boolean} options.contain If this parameter sets to true, two entities will be considered the same,
-      if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
-      types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
-      the same lengths, same keys/indexes and same appropriates values.
-   * @param {boolean} options.strict Specify equality comparison. When it set to true, then the Strict equality
-      using (===), else the Loose equality using (==).
-   * @param {String} options.lastPath This parameters is modified during the execution of method. Specified on path to
-      value, that composite from keys/indexes separated by '.'
-   * @param {String} path For non primitive entities indicates the current path for elements that is compared now.
-   * @returns {boolean} result - true for same entities.
-   * @private
-   * @method _entitySame
-   * @memberof wTools
-   */
+/**
+ * Options for _entitySame() function.
+ * @typedef {Object} wTools~entitySameOptions
+ * @property {routine} [ onSameNumbers ] - Routine to compare two numbers.Returns true if numbers are equal.
+ * @property {boolean} [ contain=0 ] - If this parameter sets to true, two entities will be considered the same,
+ * if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
+ * types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
+ * the same lengths, same keys/indexes and same appropriates values.
+ * @property {boolean} [ strict=1 ] - Specify equality comparison. When it set to true, then the Strict equality
+ * using (===), else the Loose equality using (==).
+ * @property {string} [ lastPath='' ] - This parameters is modified during the execution of method. Specified on path to
+ * value, that composite from keys/indexes separated by '.'
+ * @property {string} [ path='' ] - For non primitive entities indicates the current path for elements that is compared now.
+ */
+
+/**
+ * Compares two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
+ * in the `options`. If in some moment method finds different values in two entities, then it returns false.
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} o - Comparison criteria.
+ * @returns {boolean} result - Returns true for same entities.
+ *
+ * @example
+ * //returns false
+ * var o = { onSameNumbers : function( a, b ){ return a === b } };
+ * _._entitySame( 5, 6, o );
+ *
+ * @example
+ * //returns true
+ * _._entitySame( 'a', 'a', {} );
+ *
+ * @example
+ * //returns false
+ * var o = { onSameNumbers : function( a, b ){ return a === b } };
+ * _._entitySame( [ 1, 2, 3 ], [ 1, 2, 4 ], o );
+ *
+ * @example
+ * //returns false
+ * var o = { onSameNumbers : function( a, b ){ return a === b } };
+ * _._entitySame( { a : 1, b : 2 }, { a : 1, b : 2, c: 1 }, o );
+ *
+ * @example
+ * //returns true
+ * var o = { onSameNumbers : function( a, b ){ return a === b }, strict : 0 };
+ * _._entitySame( { a : '1', b : '2' },{ a : 1, b : 2 }, o );
+ *
+ * @private
+ * @method _entitySame
+ * @throws {exception} If ( arguments.length ) is not equal 3.
+ * @memberof wTools
+ */
 
 var _entitySame = function _entitySame( src1,src2,o )
 {
@@ -1030,11 +1211,37 @@ var _entitySame = function _entitySame( src1,src2,o )
 //
 
 /**
- * Deep equaliser of 2 entities.
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
+ * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * Returns false if finds difference in two entities, else returns true. By default method uses it own
+ * ( onSameNumbers ) routine to compare numbers.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} o - comparsion options {@link wTools~entitySameOptions}.
+ * @returns {boolean} result - Returns true for same entities.
+ *
+ * @example
+ * //returns false
+ * _.entitySame( '1', 1 );
+ *
+ * @example
+ * //returns true
+ * _.entitySame( '1', 1, { strict : 0 } );
+ *
+ * @example
+ * //returns true
+ * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { contain : 1 } );
+ *
+ * @example
+ * //returns ".a.b"
+ * var o = { contain : 1 };
+ * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
+ * console.log( o.lastPath );
+ *
  * @method entitySame
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( o ) is not a Object.
+ * @throws {exception} If( o ) is extended by unknown property.
  * @memberof wTools
  */
 
@@ -1074,15 +1281,41 @@ var entitySame = function entitySame()
 
 //
 
-/**
- * Deep equaliser of 2 entities.
- * Return string refering first found difference or false if entities are sames.
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} o - options.
- * @method entityDiff
- * @memberof wTools
- */
+ /**
+  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+  * Returns string refering to first found difference or false if entities are sames.
+  *
+  * @param {*} src1 - Entity for comparison.
+  * @param {*} src2 - Entity for comparison.
+  * @param {wTools~entitySameOptions} o - Comparsion options {@link wTools~entitySameOptions}.
+  * @returns {boolean} result - Returns false for same entities or difference as a string.
+  *
+  * @example
+  * //returns
+  * //"at :
+  * //src1 :
+  * //1
+  * //src2 :
+  * //1 "
+  * _.entityDiff( '1', 1 );
+  *
+  * @example
+  * //returns
+  * //"at : .2
+  * //src1 :
+  * //3
+  * //src2 :
+  * //4
+  * //difference :
+  * //*"
+  * _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+  *
+  * @method entityDiff
+  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+  * @throws {exception} If( o ) is not a Object.
+  * @throws {exception} If( o ) is extended by unknown property.
+  * @memberof wTools
+  */
 
 var entityDiff = function entityDiff( src1,src2,o )
 {
@@ -1118,22 +1351,32 @@ var entityDiff = function entityDiff( src1,src2,o )
 //
 
 /**
- * Deep strict equaliser of 2 entities.
+ * Deep strict comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * Returns true if entities are identical.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} options - Comparsion options {@link wTools~entitySameOptions}.
+ * @param {boolean} [ options.strict = true ] - Method uses strict equality mode( '===' ).
+ * @returns {boolean} result - Returns true for identical entities.
+ *
  * @example
-    var obj1 = { a: 0, b: 1, e: { c: 2, d: 3 } },
-    obj2 = { a: 0, b: 1, e: { c: 2, d: 3 } };
-
-    wTools.entityIdentical( obj1, obj2 );
-
-    // returns true
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
- * @throws {Error} Missed arguments.
- * @throws {Error} Extra arguments.
+ * //returns true
+ * var src1 = { a : 1, b : { a : 1, b : 2 } };
+ * var src2 = { a : 1, b : { a : 1, b : 2 } };
+ * _.entityIdentical( src1, src2 ) ;
+ *
+ * @example
+ * //returns false
+ * var src1 = { a : '1', b : { a : 1, b : '2' } };
+ * var src2 = { a : 1, b : { a : 1, b : 2 } };
+ * _.entityIdentical( src1, src2 ) ;
+ *
  * @method entityIdentical
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
- */
+*/
 
 var entityIdentical = function entityIdentical( src1,src2,options )
 {
@@ -1151,22 +1394,31 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 //
 
 /**
- * Deep soft equaliser of 2 entities.
+ * Deep soft comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * By default uses own( onSameNumbers ) routine to compare numbers using( options.eps ). Returns true if two numbers are NaN, strict equal or
+ * ( a - b ) <= ( options.eps ). For example: '_.entityEquivalent( 1, 1.5, { eps : .5 } )' returns true.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} options - Comparsion options {@link wTools~entitySameOptions}.
+ * @param {boolean} [ options.strict = false ] - Method uses( '==' ) equality mode .
+ * @param {number} [ options.eps = 1e-5 ] - Maximal distance between two numbers.
+ * Example: If( options.eps ) is '1e-5' then 0.99999 and 1.0 are equivalent.
+ * @returns {boolean} Returns true if entities are equivalent.
+ *
  * @example
-   var eps = 1e-5,
-   x = 1,
-   y = 1 + eps / 2
-
-   wTools.entityEquivalent( x, y );
-   // true
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
- * @throws {Error} Missed arguments.
- * @throws {Error} Extra arguments.
+ * //returns true
+ * _.entityEquivalent( 2, 2.1, { eps : .2 } );
+ *
+ * @example
+ * //returns true
+ * _.entityEquivalent( [ 1, 2, 3 ], [ 1.9, 2.9, 3.9 ], { eps : 0.9 } );
+ *
  * @method entityEquivalent
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
- */
+*/
 
 var entityEquivalent = function entityEquivalent( src1,src2,options )
 {
@@ -1198,20 +1450,33 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
 //
 
 /**
- * Deep contain equaliser of 2 entities.
+ * Deep contain comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * Returns true if entity( src1 ) contains keys/values from entity( src2 ) or they are indentical.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} options - Comparsion options {@link wTools~entitySameOptions}.
+ * @param {boolean} [ options.strict = true ] - Method uses strict( '===' ) equality mode .
+ * @param {boolean} [ options.contain = true ] - Check if( src1 ) contains  keys/indexes and same appropriates values from( src2 ).
+ * @returns {boolean} Returns boolean result of comparison.
+ *
  * @example
-   var arr1 = [ 0, 1, 2, 3, 9 ],
-   arr2 = [ 0, 1, 2 ];
-   wTools.entityContain( arr1, arr2 );
-   // true
- * @param {object} src1 - entity to compare.
- * @param {object} src2 - entity to compare.
- * @param {object} options - options.
- * @throws {Error} Missed arguments.
- * @throws {Error} Extra arguments.
+ * //returns true
+ * _.entityContain( [ 1, 2, 3 ], [ 1 ] );
+ *
+ * @example
+ * //returns false
+ * _.entityContain( [ 1, 2, 3 ], [ 1, 4 ] );
+ *
+ * @example
+ * //returns true
+ * _.entityContain( { a : 1, b : 2 }, { a : 1 , b : 2 }  );
+ *
  * @method entityContain
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
- */
+*/
 
 var entityContain = function entityContain( src1,src2,options )
 {
@@ -1232,19 +1497,35 @@ var entityContain = function entityContain( src1,src2,options )
 // --
 
 /**
- * On depend form `src` type, returns length if `src` is array ar array like object, count of own enumerable
-    properties if `src` is object, 0 if `src` is undefined, 1 in all other cases.
- * @example
+ * Returns "length" of entity( src ). Representation of "length" depends on type of( src ):
+ *  - For object returns number of it own enumerable properties;
+ *  - For array or array-like object returns value of length property;
+ *  - For undefined returns 0;
+ *  - In other cases returns 1.
  *
-   var obj =
-   {
-     a: 1,
-     b: { e: 2, c: 3 }
-   };
-   wTools.entityLength(obj); // 2
- * @param {*} src Input entity
- * @returns {number} Length of entity.
- */
+ * @param {*} src - Source entity.
+ * @returns {number} Returns "length" of entity.
+ *
+ * @example
+ * //returns 3
+ * _.entityLength( [ 1, 2, 3 ] );
+ *
+ * @example
+ * //returns 1
+ * _.entityLength( 'string' );
+ *
+ * @example
+ * //returns 2
+ * _.entityLength( { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns 0
+ * var src = undefined;
+ * _.entityLength( src );
+ *
+ * @method entityLength
+ * @memberof wTools
+*/
 
 var entityLength = function entityLength( src )
 {
@@ -1257,6 +1538,36 @@ var entityLength = function entityLength( src )
 }
 
 //
+
+/**
+ * Returns "size" of entity( src ). Representation of "size" depends on type of( src ):
+ *  - For string returns value of it own length property;
+ *  - For array-like entity returns value of it own byteLength property for( ArrayBuffer, TypedArray, etc )
+ *    or length property for other;
+ *  - In other cases returns null.
+ *
+ * @param {*} src - Source entity.
+ * @returns {number} Returns "size" of entity.
+ *
+ * @example
+ * //returns 6
+ * _.entitySize( "string" );
+ *
+ * @example
+ * //returns 3
+ * _.entitySize( [ 1, 2, 3 ] );
+ *
+ * @example
+ * //returns 8
+ * _.entitySize( new ArrayBuffer(8) );
+ *
+ * @example
+ * //returns null
+ * _.entitySize( 123 );
+ *
+ * @method entitySize
+ * @memberof wTools
+*/
 
 var entitySize = function entitySize( src )
 {
@@ -1304,6 +1615,30 @@ var entityWithKeyRecursive = function( src,key,onEach )
 
 //
 
+/**
+ * Returns value from entity( src ) using position provided by argument( index ).
+ * For object method iterates over all properties and returns value when counter reaches( index ).
+ *
+ * @param {*} src - Source entity.
+ * @param {number} index - Specifies position of needed value.
+ * @returns {*} Returns value at specified position.
+ *
+ * @example
+ * //returns 1
+ * _.entityValueWithIndex( [ 1, 2, 3 ], 0);
+ *
+ * @example
+ * //returns 123
+ * _.entityValueWithIndex( { a : 'str', b : 123 }, 1 )
+ *
+ * @example
+ * //returns undefined
+ * _.entityValueWithIndex( { a : 'str', b : 123 }, 2 )
+ *
+ * @method entityValueWithIndex
+ * @memberof wTools
+*/
+
 var entityValueWithIndex = function( src,index )
 {
 
@@ -1328,6 +1663,30 @@ var entityValueWithIndex = function( src,index )
 }
 
 //
+
+/**
+ * Searchs value( value ) in entity( src ) and returns index/key that represent that value or
+ * null if nothing finded.
+ *
+ * @param {*} src - Source entity.
+ * @param {*} value - Specifies value to search.
+ * @returns {*} Returns specific index/key or null.
+ *
+ * @example
+ * //returns 2
+ * _.entityKeyWithValue( [ 1, 2, 3 ], 3);
+ *
+ * @example
+ * //returns null
+ * _.entityKeyWithValue( { a : 'str', b : 123 }, 1 )
+ *
+ * @example
+ * //returns "b"
+ * _.entityKeyWithValue( { a : 'str', b : 123 }, 123 )
+ *
+ * @method entityKeyWithValue
+ * @memberof wTools
+*/
 
 var entityKeyWithValue = function( src,value )
 {
@@ -9626,6 +9985,35 @@ var mapCopy = function mapCopy()
 // map test
 // --
 
+/**
+ * Short-cut for _mapSatisfy() method.
+ * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
+ * Also works with ( o.template ) as routine that check( o.src ) with own rules.
+ * @param {wTools~mapSatisfyOptions} o - Default options {@link wTools~mapSatisfyOptions}.
+ * @returns {boolean} Returns true if( o.src ) has same key/value pair(s) with( o.template )
+ * or result if ( o.template ) routine call is true.
+ *
+ * @example
+ * //returns true
+ * _.mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns true
+ * _.mapSatisfy( { template : {a : 1, b : 1, c : 1 }, src : { a : 1, b : 2 } } );
+ *
+ * @example
+ * //returns false
+ * var routine = function( src ){ return src.a === 12 }
+ * _.mapSatisfy( { template : routine, src : { a : 1, b : 2 } } );
+ *
+ * @method mapSatisfy
+ * @throws {exception} If( arguments.length ) is not equal to 1 or 2.
+ * @throws {exception} If( o.template ) is not a Object.
+ * @throws {exception} If( o.template ) is not a Routine.
+ * @throws {exception} If( o.src ) is undefined.
+ * @memberof wTools
+*/
+
 var mapSatisfy = function mapSatisfy( o )
 {
 
@@ -9649,6 +10037,39 @@ mapSatisfy.defaults =
 }
 
 //
+
+/**
+ * Default options for _mapSatisfy() method.
+ * @typedef {object} wTools~mapSatisfyOptions
+ * @property {object|function} [ template=null ] - Map to compare with( src ) or routine that checks each value of( src ).
+ * @property {object} [ src=null ] - Source map.
+ * @property {number} [ levels=256 ] - Number of levels in map structure.
+ *
+*/
+
+/**
+ * Checks if object( src ) has at least one key/value pair that is represented in( template ).
+ * Returns true if( template ) has one or more indentical key/value pair with( src ).
+ * If( template ) is provided as routine, method uses it to check( src ).
+ * @param {wTools~mapSatisfyOptions} args - Arguments list {@link wTools~mapSatisfyOptions}.
+ * @returns {boolean} Returns true if( src ) has same key/value pair(s) with( template ).
+ *
+ * @example
+ * //returns true
+ * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns false
+ * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { y : 1 , j : 1 } );
+ *
+ * @example
+ * //returns true
+ * var template = function( src ){ return src.y === 1 }
+ * _._mapSatisfy( template, { y : 1 , j : 1 } );
+ *
+ * @method _mapSatisfy
+ * @memberof wTools
+*/
 
 var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
 {
