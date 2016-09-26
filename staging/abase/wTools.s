@@ -1986,13 +1986,13 @@ var _entityConditionMake = function( condition )
   /**
    * Function that produces an elements for entityMap result
    * @callback wTools~onEach
-   * @param {*} val The current element being processed in the entity.
-   * @param {string|number} key The index (if entity is array) or key of processed element.
-   * @param {Array|Object} src The src passed to entityMap
+   * @param {*} val - The current element being processed in the entity.
+   * @param {string|number} key - The index (if entity is array) or key of processed element.
+   * @param {Array|Object} src - The src passed to entityMap.
    */
 
   /**
-   * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
+   * Creates new instance with same as( src ) type. Elements of new instance results of calling a provided ( onEach )
    * function on every element of src. If entity is array, the new array has the same length as source.
    *
    * @example
@@ -2024,12 +2024,12 @@ var _entityConditionMake = function( condition )
     var res = wTools.entityMap( numbers, checkSidesOfTriangle );
    // [ true, true, true ]
    *
-   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
-   * @param {wTools~onEach} onEach Function that produces an element of the new entity;
+   * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
+   * @param {wTools~onEach} onEach - Function that produces an element of the new entity.
    * @returns {ArrayLike|ObjectLike} New entity.
-   * @thorws {Error} If number of arguments less or more than 2;
-   * @thorws {Error} If `src` is not Array or ObjectLike;
-   * @thorws {Error} If `onEach` is not function;
+   * @thorws {Error} If number of arguments less or more than 2.
+   * @thorws {Error} If( src ) is not Array or ObjectLike.
+   * @thorws {Error} If( onEach ) is not function.
    * @method entityMap
    * @memberof wTools
    */
