@@ -2361,24 +2361,22 @@ var _entityMost = function( src,onElement,returnMax )
 //
 
   /**
-   * Method returns minimum of results `onEach` function.
-   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
-      minimum of passed `src` elements.
-   * @example
+   * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with smallest value from( src ).
    *
-     var obj = { a: 25, b: 16, c: 9 };
-
-     var min = wTools.entityMin( obj, Math.sqrt );
-     // expected4 = { index : 2, key : 'c', value 3: , element : 9  };
-
-   * @param {ArrayLike|Object} src
-   * @param {onEach} onElement onElement `onEach` function calls for every element of `src`.
-   * @returns {wTools~entityMostResult}
-   * @throws {Error} If missed arguments.
-   * @throws {Error} If passed extra arguments.
+   * @param {ArrayLike|Object} src - Source entity.
+   * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+   * @returns {wTools~entityMostResult} Object with result of search.
+   *
+   * @example
+   *  //returns { index : 2, key : 'c', value 3: , element : 9  };
+   *  var obj = { a: 25, b: 16, c: 9 };
+   *  var min = wTools.entityMin( obj, Math.sqrt );
+   *
    * @see wTools~onEach
    * @see wTools~entityMostResult
    * @method entityMin
+   * @throws {Exception} If missed arguments.
+   * @throws {Exception} If passed extra arguments.
    * @memberof wTools
    */
 
