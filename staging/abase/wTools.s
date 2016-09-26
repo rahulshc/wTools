@@ -1933,6 +1933,32 @@ var __entitySelectAct = function __entitySelectAct( o )
 
 //
 
+/**
+ * Returns generated function that takes single argument( e ) and can be called to check if object( e )
+ * has at least one key/value pair that is represented in( condition ).
+ * If( condition ) is provided as routine, method uses it to check condition.
+ * Generated function returns origin( e ) if conditions is true, else undefined.
+ *
+ * @param {object|function} condition - Map to compare with( e ) or custom function.
+ * @returns {function} Returns condition check function.
+ *
+ * @example
+ * //returns Object {a: 1}
+ * var check = _._entityConditionMake( { a : 1, b : 1, c : 1 } );
+ * check( { a : 1 } );
+ *
+ * @example
+ * //returns false
+ * var condition = function( src ){ return src.y === 1 }
+ * var check = _._entityConditionMake( condition );
+ * check( { a : 2 } );
+ *
+ * @method _entityConditionMake
+ * @throws {exception} If no argument provided.
+ * @throws {exception} If( condition ) is not a Routine or Object.
+ * @memberof wTools
+*/
+
 var _entityConditionMake = function( condition )
 {
   var result;
