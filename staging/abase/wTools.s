@@ -2246,23 +2246,37 @@ entityGroup.defaults =
   /**
    * The result of _entityMost method object.
    * @typedef {Object} wTools~entityMostResult
-   * @property {number} index - Index of found element;
-   * @property {string|number} key - If the search was on map, the value of this property sets to key of found element;
+   * @property {Number} index - Index of found element.
+   * @property {String|Number} key - If the search was on map, the value of this property sets to key of found element.
    * Else if search was on array - to index of found element.
-   * @property {number} value - The found result of onElement, if onElement don't set, this value will be same as element.
-   * @property {number} element - The appropriate element for found value.
+   * @property {Number} value - The found result of onElement, if onElement don't set, this value will be same as element.
+   * @property {Number} element - The appropriate element for found value.
    */
 
   /**
-   * On depend from passed `returnMax` argument, method returns maximum or minimum of results `onEach` function.
-   * `onEach` function calls for every element of passed `src` entity. If `onElement` is undefined, method return
-   maximum or minimum of passed `src` elements.
-   * @param {ArrayLike|Object} src Input entity with elements.
-   * @param {onEach} onElement `onEach` function calls for every element of `src`.
-   * @param {boolean} returnMax If true - method returns maximum, else method returns minimum of values.
-   * @returns {wTools~entityMostResult} Object with results of search.
+   * Returns object( wTools~entityMostResult ) that contains min or max element of entity, it depends on( returnMax ).
+   *
+   * @param {ArrayLike|Object} src - Source entity.
+   * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+   * @param {Boolean} returnMax  - If true - method returns maximum, else method returns minimum value from entity.
+   * @returns {wTools~entityMostResult} Object with result of search.
+   *
+   * @example
+   * //returns { index: 0, key: 0, value: 1, element: 1 }
+   * _._entityMost([ 1, 3, 3, 9, 10 ], undefined, 0 );
+   *
+   * @example
+   * //returns { index: 4, key: 4, value: 10, element: 10 }
+   * _._entityMost( [ 1, 3, 3, 9, 10 ], undefined, 1 );
+   *
+   * @example
+   * //returns { index: 4, key: 4, value: 10, element: 10 }
+   * _._entityMost( { a : 1, b : 2, c : 3 }, undefined, 0 );
+   *
    * @private
    * @method _entityMost
+   * @throws {Exception} If( arguments.length ) is not equal 3.
+   * @throws {Exception} If( onElement ) function is not implemented.
    * @memberof wTools
    */
 
