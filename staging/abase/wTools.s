@@ -2389,28 +2389,22 @@ var entityMin = function( src,onElement )
 //
 
   /**
-   * Method returns maximum of results `onEach` function.
-   * Function `onEach` calls for every element of passed `src` entity. If `onElement` is undefined, method returns
-      maximum of passed `src` elements.
-   * @example
+   * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with biggest value from( src ).
    *
-     var args = [3, -4, 9, -16, 5, -2];
-
-     var sqr = function( v )
-     {
-       return v * v;
-     };
-     var max = wTools.entityMax( args, sqr );
-     // { index : 3, key : 3, value : 256, element : -16 }
-
-   * @param {ArrayLike|Object} src
-   * @param {wTools~onEach} onElement `onEach` function calls for every element of `src`.
-   * @returns {wTools~entityMostResult}
-   * @throws {Error} If missed arguments.
-   * @throws {Error} If passed extra arguments.
+   * @param {ArrayLike|Object} src - Source entity.
+   * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+   * @returns {wTools~entityMostResult} Object with result of search.
+   *
+   * @example
+   *  //returns { index: 0, key: "a", value: 25, element: 25 };
+   *  var obj = { a: 25, b: 16, c: 9 };
+   *  var max = wTools.entityMax( obj );
+   *
    * @see wTools~onEach
    * @see wTools~entityMostResult
-   * @method entityMax
+   * @method entityMin
+   * @throws {Exception} If missed arguments.
+   * @throws {Exception} If passed extra arguments.
    * @memberof wTools
    */
 
