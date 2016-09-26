@@ -2062,9 +2062,9 @@ var entityMap = function( src,onEach )
 //
 
   /**
-   * Creates new instance with same as `src` type. Elements of new instance results of calling a provided `onEach`
-   * function on every element of src. If `onEach` returns undefined, then this result is not included into the new
-   * entity.
+
+   * Filters elements of entity( src ) by calling( onEach ) function for each item.
+   * Returns result of filtering as new instance of type( src ) with items that succesfully passed ( onEach ) function.
    * @see wTools.entityMap
    *
    * @example
@@ -2075,16 +2075,16 @@ var entityMap = function( src,onEach )
         return ( v > 0 ) ? Math.sqrt( v ) : undefined;
      };
 
-     var res = wTools.entityMap( numbers, sqr );
+     var res = wTools.entityMap( numbers, sqrt );
    // [ 6, 7, 8 ]
-   // numbers is still [ 36, -25, 49, 64, -16 ];
+   // numbers are still [ 36, -25, 49, 64, -16 ];
    *
-   * @param {ArrayLike|ObjectLike} src Entity, on each elements of which will be called `onEach` function.
-   * @param {wTools~onEach} onEach Function that produces an element of the new entity;
-   * @returns {ArrayLike|ObjectLike} New entity.
-   * @thorws {Error} If number of arguments less or more than 2;
-   * @thorws {Error} If `src` is not Array or ObjectLike;
-   * @thorws {Error} If `onEach` is not function;
+   * @param {ArrayLike|ObjectLike} src - Source entity.
+   * @param {wTools~onEach} onEach - Conditional function called for each entities element.
+   * @returns {ArrayLike|ObjectLike} Returns new entity that contais filtered items.
+   * @thorws {Error} If( arguments.length ) less or more than 2.
+   * @thorws {Error} If( src ) is not Array or ObjectLike.
+   * @thorws {Error} If( onEach ) is not a function.
    * @method entityFilter
    * @memberof wTools
    */
