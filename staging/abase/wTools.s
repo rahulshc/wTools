@@ -2132,24 +2132,28 @@ var entityFilter = function( src,onEach )
 //
 
   /**
-   * The entityGroup() group input data structure by one or several keys.
+   * Groups elements of entities from array( src ) into the object with key( o.key )
+   * that contains array of values that corresponds to key( o.key ) from that entities.
+   * If function cant find key( o.key ) it replaces key value with undefined.
    *
-   * It creates an empty (result) object, iterate over array (src),
-   * checks if (result) object has certain value.
-   * If undefined, it creates (value) with an empty array.
-   * Otherwise, it adds to certain (value) the object with target key.
-   *
-   * @param { array } src - The target array.
+   * @param { array } [ o.src=null ] - The target array.
+   * @param { array|string } [ o.key=null ] - Array of keys to search or one key as string.
+   * @param { array|string } [ o.usingOriginal=1 ] - Uses keys from entities to represent elements values.
    * @param { objectLike | string } o - Options.
+   * @returns { object } Returns an object with values grouped by key( o.key ).
    *
    * @example
-   * // returns { 33 : [ { key1 : 33 } ], 44 : [ { key1 : 44 }, { key2 : 77 } ] }
-   * _.entityGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], 'key1');
+   * // returns
+   * //{
+   * //  key1 : [ 1, 2, 3 ],
+   * //  key3 : [ undefined, undefined, undefined ]
+   * //}
+   * _.entityGroup( { src : [ {key1 : 1, key2 : 2 },{key1 : 2 },{key1 : 3 }], usingOriginal : 0, key : ['key1','key3']} );
    *
-   * @returns { object } Returns an object with certain group of key.
    * @method entityGroup
-   * @throws { Error } Will throw an Error if (o.key) is not a string,
-   * if (src) is not an object, if (o) is not an object.
+   * @throws {exception} If( arguments.length ) is not equal 1.
+   * @throws {exception} If( o.key ) is not a Array or String.
+   * @throws {exception} If( o.src ) is not a Array-like or Object-like.
    * @memberof wTools
    */
 
