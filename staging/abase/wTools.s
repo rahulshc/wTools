@@ -1857,6 +1857,35 @@ var _entitySelect = function _entitySelect( o )
 
 //
 
+/**
+ * Returns value from entity that corresponds to index/key( o.qarrey ) from entity( o.container ).
+ * If( o.set ) is defined also replaces selected index/key with that value.
+ *
+ * @param {Array} [ o.qarrey=null ] - Specifies key/index to select or path to element.
+ * Example path to element [ 1 ][ 1 ]: { container : [ 0, [ 1, 2 ] ],qarrey : [ 1, 1 ] }.
+ * @param {*} [ o.set=null ] - Specifies value that replaces selected.
+ * @param {Boolean} [ o.undefinedForNone=false ] - If true returns undefined for Atomic type of( o.container ).
+ * @returns {*} Returns value finded by index/key or path.
+ *
+ * @example
+ * //returns 'b'
+ * var arr = ['a',['a','b' ] ];
+ * var a = _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ] } );
+ *
+ * @example
+ * var arr = ['a',['a','b' ] ];
+ * var a = _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ], set : 1  } );
+ * //arr ['a',['a', 1 ] ]
+ *
+ * @example
+ * // returns undefined
+ * var a = _.__entitySelectAct( { container : 5, qarrey : [ 1, 1 ], set : 1  } );
+ *
+ * @method __entitySelectAct
+ * @throws {Exception} If container is Atomic type.
+ * @memberof wTools
+*/
+
 var __entitySelectAct = function __entitySelectAct( o )
 {
 
