@@ -1020,6 +1020,53 @@
     }
   };
 
+  //
+
+  var entityCopyField = function( test )
+  {
+
+    test.description = 'non recursive';
+    var dst ={};
+    var src = { a : 'string' };
+    var name = 'a';
+    var got = _.entityCopyField(dst, src, name );
+    var expected = dst[ name ];
+    test.identical( got, expected );
+
+    test.description = 'undefined';
+    var dst ={};
+    var src = { a : undefined };
+    var name = 'a';
+    var got = _.entityCopyField(dst, src, name );
+    var expected = undefined;
+    test.identical( got, expected );
+
+    test.description = 'recursive';
+    var dst ={};
+    var src = { a : 'string' };
+    var name = 'a';
+    var onRecursive = function( dstContainer,srcContainer,key )
+    {
+      _.assert( _.strIs( key ) );
+      dstContainer[ key ] = srcContainer[ key ];
+    };
+    var got = _.entityCopyField(dst, src, name,onRecursive );
+    var expected = dst[ name ];
+    test.identical( got, expected );
+
+
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityCopyField( );
+      });
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1041,6 +1088,7 @@
       entityContain: entityContain,
       entityLength : entityLength,
       entityCopy : entityCopy,
+      entityCopyField : entityCopyField,
 
     }
 
