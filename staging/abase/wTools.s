@@ -2431,7 +2431,7 @@ var entityMin = function( src,onElement )
    *
    * @see wTools~onEach
    * @see wTools~entityMostResult
-   * @method entityMin
+   * @method entityMax
    * @throws {Exception} If missed arguments.
    * @throws {Exception} If passed extra arguments.
    * @memberof wTools
