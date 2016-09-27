@@ -1861,6 +1861,7 @@ var _entitySelect = function _entitySelect( o )
  * Returns value from entity that corresponds to index/key( o.qarrey ) from entity( o.container ).
  * If( o.set ) is defined also replaces selected index/key with that value.
  *
+ * @param {Object|Array} [ o.container=null ] - Source entity.
  * @param {Array} [ o.qarrey=null ] - Specifies key/index to select or path to element.
  * Example path to element [ 1 ][ 1 ]: { container : [ 0, [ 1, 2 ] ],qarrey : [ 1, 1 ] }.
  * @param {*} [ o.set=null ] - Specifies value that replaces selected.
