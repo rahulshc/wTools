@@ -760,11 +760,28 @@ var entityCopy = function( dst,src,onRecursive )
  * @returns {object} Returns result of entities copy operation.
  *
  * @example
+ * var dst ={};
+ * var src = { a : 'string' };
+ * var name = 'a';
+ * _.entityCopyField(dst, src, name );
+ * console.log( dst.a === src.a );
+ * //returns true
  *
+ * @example
+ * var dst ={};
+ * var src = { a : 'string' };
+ * var name = 'a';
+ * var onRecursive = function( dstContainer,srcContainer,key )
+ * {
+ *   _.assert( _.strIs( key ) );
+ *   dstContainer[ key ] = srcContainer[ key ];
+ * };
+ * _.entityCopyField(dst, src, name, onRecursive );
+ * console.log( dst.a === src.a );
+ * //returns true
  *
  * @method entityCopyField
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
- *
  * @memberof wTools
  *
  */
