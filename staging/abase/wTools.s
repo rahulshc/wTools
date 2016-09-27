@@ -1773,6 +1773,28 @@ var entitySelectSet = function( container,query,value )
 
 //
 
+/**
+ * Returns generated options object( o ) that can be used in other methods.
+ * Query( o.query ) can be represented as string or array of strings divided by one of( o.delimeter ).
+ * Function parses( o.query ) in to array( o.qarrey ) by splitting string using( o.delimeter ).
+ *
+ * @param {Object|Array} [ o.container=null ] - Source entity.
+ * @param {Array|String} [ o.query=null ] - Source query.
+ * @param {*} [ o.set=null ] - Specifies value that replaces selected.
+ * @param {Array} [ o.delimeter=[ '.','[',']' ] ] - Specifies array of delimeters for( o.query ) values.
+ * @param {Boolean} [ o.undefinedForNone=false ] - If true returns undefined for Atomic type of( o.container ).
+ * @returns {Object} Returns generated options object.
+ *
+ * @example
+ * //returns { container: [ 0, 1, 2, 3 ], qarrey : [ '0', '1', '2' ], query: "0.1.2", set: 1, delimeter: [ '.','[',']' ], undefinedForNone: 1 }
+ * _._entitySelectOptions( { container : [ 0, 1, 2, 3 ], query : '0.1.2', set : 1 } );
+ *
+ * @method _entitySelectOptions
+ * @throws {Exception} If( arguments.length ) is not equal 1 or 2.
+ * @throws {Exception} If( o.query ) is not a String or Array.
+ * @memberof wTools
+*/
+
 var _entitySelectOptions = function( o )
 {
 
