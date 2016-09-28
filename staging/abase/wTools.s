@@ -1074,7 +1074,7 @@ var entityHasUndef = function( src )
   else if( _.arrayIs( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
-    if( _.hasUndef( src[s] ) )
+    if( entityHasUndef( src[s] ) )
     {
       return true;
     }
@@ -1082,7 +1082,7 @@ var entityHasUndef = function( src )
   else if( _.objectIs( src ) )
   {
     for( s in src )
-    if( _.hasUndef( src[s] ) )
+    if( entityHasUndef( src[s] ) )
     {
       return true;
     }
