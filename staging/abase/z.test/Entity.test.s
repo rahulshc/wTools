@@ -1203,6 +1203,90 @@
 
   };
 
+  //
+
+  var entitySame = function( test )
+  {
+    //default options
+    test.description = 'default options, number';
+    var got = _.entitySame( 1, 1 );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'default options, string';
+    var got = _.entitySame( '123', '123' );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'default options, boolean';
+    var got = _.entitySame( 0, false );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'default options, array';
+    var got = _.entitySame( [ 1, 2 ,'3'], [ 1, 2, 3 ] );
+    var expected = false ;
+    test.identical( got, expected );
+
+    test.description = 'default options, object';
+    var src1 = { a : 1, b : 2 , c : { d : 3  }  };
+    var src2 = { a : 1, b : 2 , c : { d : 3  }  };
+    var got = _.entitySame( src1, src2 );
+    var expected = true ;
+    test.identical( got, expected );
+
+    //custom options
+
+    test.description = 'number & string, strict : 0';
+    var got = _.entitySame( '123', 123, { strict : 0 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'number & boolean, strict : 0';
+    var got = _.entitySame( false, 0, { strict : 0 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'src1 constains elem from src2 ';
+    var got = _.entitySame( { a : 1, b : 2 }, { b : 2 }, { contain : 1 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'src1 constains elem from src2, strict : 0 ';
+    var got = _.entitySame( { a : 1, b : '2' }, { b : 2 }, { contain : 1, strict : 0 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'onSameNumbers';
+    var onSameNumbers = function( a, b ){ return _.entityEquivalent( a, b, { eps : 1 } ) };
+    var got = _.entitySame( { a : 1, b : 2 }, { a : 2, b : 2 }, { onSameNumbers : onSameNumbers } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entitySame( );
+      });
+
+      test.description = 'options is not a Object';
+      test.shouldThrowError( function()
+      {
+        _.entitySame( 1, 2, 3 );
+      });
+
+      test.description = 'extendet options';
+      test.shouldThrowError( function()
+      {
+        _.entitySame( 1, 2, { fixed : 1 } );
+      });
+
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1228,6 +1312,7 @@
       entityCoerceTo : entityCoerceTo,
       entityHasNan : entityHasNan,
       entityHasUndef : entityHasUndef,
+      entitySame : entitySame,
 
     }
 
