@@ -1022,7 +1022,7 @@ var entityHasNan = function( src )
   else if( _.arrayIs( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
-    if( _.numberHasNan( src[s] ) )
+    if( entityHasNan( src[s] ) )
     {
       return true;
     }
@@ -1030,7 +1030,7 @@ var entityHasNan = function( src )
   else if( _.objectIs( src ) )
   {
     for( s in src )
-    if( _.numberHasNan( src[s] ) )
+    if( entityHasNan( src[s] ) )
     {
       return true;
     }
