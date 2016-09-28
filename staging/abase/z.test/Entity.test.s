@@ -1351,12 +1351,53 @@
         _.entityDiff( );
       });
 
-      test.description = 'argument missed';
+      test.description = 'invalid options type';
       test.shouldThrowError( function()
       {
         _.entityDiff( 1, 2, 3 );
       });
     }
+
+  };
+
+  //
+
+  var entitySize = function( test )
+  {
+    test.description = 'string';
+    var got = _.entitySize( "str" );
+    var expected = 3 ;
+    test.identical( got, expected );
+
+    test.description = 'atomic type';
+    var got = _.entitySize( 6 );
+    var expected = null;
+    test.identical( got, expected );
+
+    test.description = 'buffer';
+    var got = _.entitySize( new ArrayBuffer( 10 ) );
+    var expected = 10;
+    test.identical( got, expected );
+
+    test.description = 'arraylike';
+    var got = _.entitySize( [ 1, 2, 3 ] );
+    var expected = 3;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entitySize( { a : 1, b : 2 } );
+    var expected = null;
+    test.identical( got, expected );
+
+    test.description = 'empty call';
+    var got = _.entitySize( );
+    var expected = null;
+    test.identical( got, expected );
+
+    // if( Config.debug )
+    // {
+    //
+    // }
 
   };
 
@@ -1387,6 +1428,7 @@
       entityHasUndef : entityHasUndef,
       entitySame : entitySame,
       entityDiff : entityDiff,
+      entitySize : entitySize,
 
     }
 
