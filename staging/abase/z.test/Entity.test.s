@@ -1442,6 +1442,43 @@
 
   };
 
+  //
+
+  var entityKeyWithValue = function( test )
+  {
+    test.description = 'array';
+    var got = _.entityKeyWithValue( [ 1, 2, 3 ], 3 );
+    var expected =  2;
+    test.identical( got, expected );
+
+    test.description = 'array#2';
+    var got = _.entityKeyWithValue( [ 1, 2, 3 ], 'a' );
+    var expected =  null;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityKeyWithValue( { a : 1, b : 'a' }, 'a' );
+    var expected =  'b';
+    test.identical( got, expected );
+
+    test.description = 'empty call';
+    var got = _.entityKeyWithValue( );
+    var expected =  null;
+    test.identical( got, expected );
+
+    test.description = 'value undefined';
+    var got = _.entityKeyWithValue( [ 1, 2, 3 ] );
+    var expected =  null;
+    test.identical( got, expected );
+
+
+    // if( Config.debug )
+    // {
+    //
+    // }
+
+  };
+
   var Proto =
   {
 
@@ -1471,6 +1508,7 @@
       entityDiff : entityDiff,
       entitySize : entitySize,
       entityValueWithIndex : entityValueWithIndex,
+      entityKeyWithValue : entityKeyWithValue,
 
     }
 
