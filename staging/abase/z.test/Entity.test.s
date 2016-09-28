@@ -1124,6 +1124,51 @@
 
   };
 
+  //
+
+  var entityHasNan = function( test )
+  {
+
+    test.description = 'undefined';
+    var got = _.entityHasNan( undefined );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'number';
+    var got = _.entityHasNan( 150 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'null';
+    var got = _.entityHasNan( null );
+    var expected = false;
+    test.identical( got, expected );
+
+    /*
+    TODO : check why numberHasNan not working
+    test.description = 'array';
+    var got = _.entityHasNan( [ 1,'2',3 ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityHasNan( { a : 1, b : 2 } );
+    var expected = false;
+    test.identical( got, expected );
+    */
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityHasNan( );
+      });
+
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1147,6 +1192,7 @@
       entityCopy : entityCopy,
       entityCopyField : entityCopyField,
       entityCoerceTo : entityCoerceTo,
+      entityHasNan : entityHasNan,
 
     }
 
