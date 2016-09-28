@@ -1401,6 +1401,47 @@
 
   };
 
+  //
+
+  var entityValueWithIndex = function( test )
+  {
+    test.description = 'array';
+    var got = _.entityValueWithIndex( [ [ 1, 2, 3 ] ], 0 );
+    var expected = [ 1, 2, 3 ] ;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityValueWithIndex( { a : 1, b : [ 1, 2, 3 ] }, 1 );
+    var expected = [ 1, 2, 3 ] ;
+    test.identical( got, expected );
+
+    test.description = 'string';
+    var got = _.entityValueWithIndex( 'simple string', 5 );
+    var expected = 'e' ;
+    test.identical( got, expected );
+
+    test.description = 'empty call';
+    var got = _.entityValueWithIndex( );
+    var expected = undefined ;
+    test.identical( got, expected );
+
+    test.description = 'other type';
+    var got = _.entityValueWithIndex( true , 1);
+    var expected = undefined ;
+    test.identical( got, expected );
+
+    test.description = 'index undefined';
+    var got = _.entityValueWithIndex( 'str' );
+    var expected = undefined ;
+    test.identical( got, expected );
+
+    // if( Config.debug )
+    // {
+    //
+    // }
+
+  };
+
   var Proto =
   {
 
@@ -1429,6 +1470,7 @@
       entitySame : entitySame,
       entityDiff : entityDiff,
       entitySize : entitySize,
+      entityValueWithIndex : entityValueWithIndex,
 
     }
 
