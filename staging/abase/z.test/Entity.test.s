@@ -1169,6 +1169,43 @@
 
   };
 
+  //
+
+  var entityHasUndef = function( test )
+  {
+
+    test.description = 'undefined';
+    var got = _.entityHasUndef( undefined );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'number';
+    var got = _.entityHasUndef( 150 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'array';
+    var got = _.entityHasUndef( [ 1,'2',3 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityHasUndef( { a : 1, b : 2 } );
+    var expected = false;
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityHasUndef( );
+      });
+
+    }
+
+  };
+
   var Proto =
   {
 
