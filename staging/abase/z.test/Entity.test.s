@@ -1144,18 +1144,15 @@
     var expected = false;
     test.identical( got, expected );
 
-    /*
-    TODO : check why numberHasNan not working
     test.description = 'array';
-    var got = _.entityHasNan( [ 1,'2',3 ] );
-    var expected = true;
+    var got = _.entityHasNan( [ 1,'A2',3 ] );
+    var expected = false;
     test.identical( got, expected );
 
     test.description = 'object';
     var got = _.entityHasNan( { a : 1, b : 2 } );
     var expected = false;
     test.identical( got, expected );
-    */
 
     if( Config.debug )
     {
