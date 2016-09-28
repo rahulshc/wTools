@@ -812,12 +812,17 @@ var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
  * @param {object} dstContainer - Destination object.
  * @param {object} srcValue - Source value.
  * @param {string} name - Field name.
- * @param {routine} onRecursive - The callback function to copy each [ key, value ].
+ * @param {mapClone~onCopyField} onRecursive - The callback function to copy each [ key, value ].
  * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entity field assignment operation.
  *
  * @example
- *
+ * var dstContainer = { a : 1 };
+ * var srcValue = 15;
+ * var name = 'a';
+ * _.entityAssignField( dstContainer, srcValue, name );
+ * console.log( dstContainer.a );
+ * //returns 15
  *
  * @method entityAssignField
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
