@@ -1067,6 +1067,63 @@
 
   };
 
+  //
+
+  var entityCoerceTo = function( test )
+  {
+
+    test.description = 'string & num';
+    var src = '5';
+    var ins =  1
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'num to string';
+    var src = 1;
+    var ins =  '5';
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'to boolean';
+    var src = 1;
+    var ins =  true;
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'object and num';
+    var src = { a : 1 };
+    var ins =  1;
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'array and string';
+    var src = [ 1, 2, 3 ];
+    var ins =  'str';
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityCoerceTo( );
+      });
+
+      test.description = 'unknown type';
+      test.shouldThrowError( function()
+      {
+        _.entityCoerceTo( 1, { a : 1 }  );
+      });
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1089,6 +1146,7 @@
       entityLength : entityLength,
       entityCopy : entityCopy,
       entityCopyField : entityCopyField,
+      entityCoerceTo : entityCoerceTo,
 
     }
 
