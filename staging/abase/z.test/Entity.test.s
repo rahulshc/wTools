@@ -1227,6 +1227,7 @@
       entityCopyField : entityCopyField,
       entityCoerceTo : entityCoerceTo,
       entityHasNan : entityHasNan,
+      entityHasUndef : entityHasUndef,
 
     }
 
