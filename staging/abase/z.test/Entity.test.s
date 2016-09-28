@@ -1287,6 +1287,79 @@
 
   };
 
+  //
+
+  var entityDiff = function( test )
+  {
+    //returns false if same
+
+    test.description = 'number';
+    var got = _.entityDiff( 1, 1 );
+    var expected = false ;
+    test.identical( got, expected );
+
+    test.description = 'strings';
+    var got = _.entityDiff( 'abc', 'abd' );
+    var expected =
+    [
+      'at : ',
+      'src1 :',
+      'abc',
+      'src2 :',
+      'abd ',
+      'difference :',
+      'ab*'
+    ].join('\n');
+    test.identical( got, expected );
+
+    test.description = 'arrays';
+    var got = _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+    var expected =
+    [
+      'at : .2',
+      'src1 :',
+      '3',
+      'src2 :',
+      '4 ',
+      'difference :',
+      '*'
+    ].join('\n');
+    test.identical( got, expected );
+
+    test.description = 'objects,custom path';
+    var src1 = { a : { a : 1, b : '2' }, b : [ 1,2 ] };
+    var src2 = { a : { a : 1, b : '2' } };
+    var got = _.entityDiff( src1, src2, { path : 'a.b' } );
+    var expected =
+    [
+      'at : a.b',
+      'src1 :',
+      '"2"',
+      'src2 :',
+      '"2" ',
+      'difference :',
+      'false'
+    ].join('\n');
+    test.identical( got, expected );
+
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityDiff( );
+      });
+
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityDiff( 1, 2, 3 );
+      });
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1313,6 +1386,7 @@
       entityHasNan : entityHasNan,
       entityHasUndef : entityHasUndef,
       entitySame : entitySame,
+      entityDiff : entityDiff,
 
     }
 
