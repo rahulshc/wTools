@@ -1479,6 +1479,122 @@
 
   };
 
+  //
+
+  var _entitySelectOptions = function( test )
+  {
+    test.description = 'two args call';
+    var container = [ 1, 2, 3, 4 ];
+    var query = '0.1.2';
+    var got = _._entitySelectOptions( container, query );
+    var expected =
+    {
+      container: container,
+      query: query,
+      set: null,
+      delimeter: [ '.','[',']' ],
+      qarrey : [ "0", "1", "2" ],
+      undefinedForNone: 1
+    };
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'query as string, options in object';
+    var o =
+    {
+      container : [ 1, 2, 3, 4 ],
+      query : '0.1.2',
+    };
+
+    var got = _._entitySelectOptions( o );
+    var expected =
+    {
+      container: o.container,
+      query: o.query,
+      set: null,
+      delimeter: [ '.','[',']' ],
+      qarrey : [ "0", "1", "2" ],
+      undefinedForNone: 1
+    };
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'query as array';
+    var o =
+    {
+      container : [ 1, [ 2, 3, 4 ], 5 ],
+      query : [ '1','1'],
+      set : 12,
+    };
+
+    var got = _._entitySelectOptions( o );
+    var expected =
+    {
+      container: o.container,
+      query: o.query,
+      set: o.set,
+      delimeter: [ '.','[',']' ],
+      qarrey : [ [ "1" ], [ "1" ] ],
+      undefinedForNone: 1
+    };
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'object,set,delimeter,undefinedForNone';
+    var o =
+    {
+      container : { a : { b : { c : 1 } } },
+      query : 'a->b->c',
+      set : '0',
+      delimeter : [ '->' ],
+      undefinedForNone : 0
+    };
+
+    var got = _._entitySelectOptions( o );
+    var expected =
+    {
+      container: o.container,
+      query: o.query,
+      set: o.set,
+      delimeter: o.delimeter,
+      qarrey : [ "a", "b", "c" ],
+      undefinedForNone: o.undefinedForNone
+    };
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( );
+      });
+
+      test.description = 'extended by unknown property';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( { fff : 0 } );
+      });
+
+      test.description = 'query is not String or Array';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( [ 1, 2, 3 ], 1 );
+      });
+
+      test.description = 'options are not in Object';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( [ [ 0,1,2 ], '0' ] );
+      });
+
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1509,6 +1625,7 @@
       entitySize : entitySize,
       entityValueWithIndex : entityValueWithIndex,
       entityKeyWithValue : entityKeyWithValue,
+      _entitySelectOptions : _entitySelectOptions,
 
     }
 
