@@ -1902,29 +1902,40 @@ var _entitySelect = function _entitySelect( o )
 //
 
 /**
- * Returns value from entity that corresponds to index/key( o.qarrey ) from entity( o.container ).
- * If( o.set ) is defined also replaces selected index/key with that value.
+ * Returns value from entity that corresponds to index/key or path provided by( o.qarrey ) from entity( o.container ).
  *
  * @param {Object|Array} [ o.container=null ] - Source entity.
- * @param {Array} [ o.qarrey=null ] - Specifies key/index to select or path to element.
+ * @param {Array} [ o.qarrey=null ] - Specifies key/index to select or path to element. If has '*' method processes each element of container.
+ * Example process each element at [ 0 ]: { container : [ [ 1, 2, 3 ] ], qarrey : [ 0, '*' ] }.
  * Example path to element [ 1 ][ 1 ]: { container : [ 0, [ 1, 2 ] ],qarrey : [ 1, 1 ] }.
- * @param {*} [ o.set=null ] - Specifies value that replaces selected.
+ * @param {*} [ o.set=null ] - Replaces selected index/key value with this. If defined and specified index/key not exists, method inserts it.
  * @param {Boolean} [ o.undefinedForNone=false ] - If true returns undefined for Atomic type of( o.container ).
  * @returns {*} Returns value finded by index/key or path.
  *
  * @example
  * //returns 'b'
- * var arr = ['a',['a','b' ] ];
- * var a = _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ] } );
+ * var arr = [ 'a', [ 'a', 'b' ] ];
+ * _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ] } );
  *
  * @example
- * var arr = ['a',['a','b' ] ];
- * var a = _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ], set : 1  } );
- * //arr ['a',['a', 1 ] ]
+ * //returns 1
+ * var arr = [ 'a', [ 'a', 'b' ] ];
+ * _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ], set : 1  } );
+ * //arr [ 'a', [ 'a', 1 ] ]
  *
  * @example
  * // returns undefined
- * var a = _.__entitySelectAct( { container : 5, qarrey : [ 1, 1 ], set : 1  } );
+ * _.__entitySelectAct( { container : 5, qarrey : [ 1, 1 ], set : 1, undefinedForNone : 1  } );
+ *
+ * @example
+ * // returns [ 1, 1, 1 ]
+ * _.__entitySelectAct( { container : [ 1, [ 2, 3, 4 ], 5], qarrey : [ "*" ], set : 1  } );
+ *
+ * @example
+ * // returns { a : { b : 1 } }
+ * var o = { container : { a : 1 }, qarrey : [ "a" ], set : { b : 1 }  };
+ * _.__entitySelectAct( o );
+ * console.log( o.container );
  *
  * @method __entitySelectAct
  * @throws {Exception} If container is Atomic type.
