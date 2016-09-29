@@ -1595,6 +1595,109 @@
 
   };
 
+  //
+
+  var __entitySelectAct = function( test )
+  {
+    test.description = 'qarrey is empty';
+    var o =
+    {
+      container: [ 1, 2, 3 ],
+      set: 'x',
+      qarrey : [ ],
+      undefinedForNone: 1
+    };
+    var got = _.__entitySelectAct( o );
+    var expected = o.container;
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'atomic';
+    var o =
+    {
+      container: 1,
+      set: 'x',
+      qarrey : [ "0" ],
+      undefinedForNone: 1
+    };
+    var got = _.__entitySelectAct( o );
+    var expected = undefined;
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'qarrey has "*"';
+    var o =
+    {
+      container: [ 1, [ 2, 3, 4 ], 5],
+      qarrey : [ "*" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    var got = _.__entitySelectAct( o );
+    var expected = ["x", "x", "x"];
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'replace all in arr inside container';
+    var o =
+    {
+      container: [ 1, [ 2, 3, 4 ], 5],
+      qarrey : [ "1","*" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    _.__entitySelectAct( o );
+    var got = o.container[ 1 ];
+    var expected = ["x", "x", "x"];
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'index values is undefined';
+    var o =
+    {
+      container: [ 1, [ 2, 3, 4 ], 5],
+      qarrey : [ "3" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    _.__entitySelectAct( o );
+    var got = o.container[ 3 ];
+    var expected = o.set;
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'object';
+    var o =
+    {
+      container: { a : { b : { c : 0 } } },
+      qarrey : [ "a", "b" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    _.__entitySelectAct( o );
+    var got = o.container;
+    var expected = { a : { b : 'x' } };
+    test.identical( got, expected );
+
+    //
+
+    if( Config.debug )
+    {
+      test.description = 'atomic, undefinedForNone false';
+      test.shouldThrowError( function()
+      {
+        _.__entitySelectAct( { container : 1, qarrey : [ "0" ], undefinedForNone : 0 } );
+      });
+
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1626,6 +1729,7 @@
       entityValueWithIndex : entityValueWithIndex,
       entityKeyWithValue : entityKeyWithValue,
       _entitySelectOptions : _entitySelectOptions,
+      __entitySelectAct : __entitySelectAct,
 
     }
 
