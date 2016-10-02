@@ -453,7 +453,7 @@ var toStrMethods = function( test )
 
   test.description = 'converts routine to string, levels:0';
   var got = _.toStrMethods( function route() {}, { levels : 0 } );
-  var expected = '[object Function]';
+  var expected = '[ routine route ]';
   test.identical( got,expected );
 
   test.description = 'different input data types';
@@ -553,7 +553,7 @@ var _toStrShort = function( test )
 
   test.description = 'string length > 40';
   var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', { } );
-  var expected = 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyr...';
+  var expected = '[ toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyr ... ]';
   test.identical( got,expected );
 
   test.description = 'string with options';
@@ -622,11 +622,11 @@ var _toStrIsVisibleElement = function( test )
       _._toStrIsVisibleElement( '1' );
     });
 
-    test.description = 'second argument is not a object';
-    test.shouldThrowError( function()
-    {
-      _._toStrIsVisibleElement( '1', 2 );
-    });
+    // test.description = 'second argument is not a object';
+    // test.shouldThrowError( function()
+    // {
+    //   _._toStrIsVisibleElement( '1', 2 );
+    // });
 
     test.description = 'no arguments';
     test.shouldThrowError( function()
@@ -1581,7 +1581,7 @@ var strStripEmptyLines = function( test )
 
   test.description = 'simple string';
   var got = _.strStripEmptyLines( 'line_one\n\nline_two' );
-  var expected = 'line_one\nline_two\n';
+  var expected = 'line_one\nline_two';
   test.identical( got,expected );
 
   test.description = 'empty string';
@@ -1596,7 +1596,7 @@ var strStripEmptyLines = function( test )
 
   test.description = 'multiple breaklines';
   var got = _.strStripEmptyLines( '\n\na\n\nb\n\n\n' );
-  var expected = 'a\nb\n';
+  var expected = 'a\nb';
   test.identical( got,expected );
 
   /**/
@@ -2228,6 +2228,99 @@ var strTimeFormat = function( test )
   }
 }
 
+//
+
+var strShort = function( test )
+{
+
+  test.description = 'simple string';
+  var got = _.strShort( 'string', 4 );
+  var expected = '"st"..."ng"';
+  test.identical( got,expected );
+
+  test.description = 'string with escaping';
+  var got = _.strShort( 's\ntring', 4 );
+  var expected = '"s"..."ng"';
+  test.identical( got,expected );
+
+  test.description = 'limit 0';
+  var got = _.strShort( 'string', 0 );
+  var expected = 'string';
+  test.identical( got,expected );
+
+  test.description = 'limit 1';
+  var got = _.strShort( 'string', 1 );
+  var expected = '"s"';
+  test.identical( got,expected );
+
+  test.description = 'string wih spaces';
+  var got = _.strShort( 'str  and', 5 );
+  var expected = '"str"..."nd"';
+  test.identical( got,expected );
+
+  test.description = 'one argument call';
+  var got = _.strShort( { src : 'string', limit : 4, wrap : "'" } );
+  var expected = "'st'...'ng'";
+  test.identical( got,expected );
+
+  test.description = 'string with whitespaces';
+  var got = _.strShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
+  var expected = "'  '...'  '";
+  test.identical( got,expected );
+
+  test.description = 'wrap 0';
+  var got = _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
+  var expected = "si...le";
+  test.identical( got,expected );
+
+  test.description = 'escaping 0';
+  var got = _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
+  var expected = '"si\x01"..."le"';
+  test.identical( got,expected );
+
+  test.description = 'escaping 1';
+  var got = _.strShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
+  var expected = '"s"..."ng"';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _.strShort( 1, 5 );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _.strShort( 'string', '0' );
+    });
+
+    test.description = 'invalid argument type( not a Object )';
+    test.shouldThrowError( function()
+    {
+      _.strShort( 'src' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strShort();
+    });
+
+    test.description = 'unknown property provided';
+    test.shouldThrowError( function()
+    {
+      _.strShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
+    });
+
+  }
+}
+
+
 var Proto =
 {
 
@@ -2276,6 +2369,7 @@ var Proto =
     strMetricFormat : strMetricFormat,
     strMetricFormatBytes : strMetricFormatBytes,
     strTimeFormat : strTimeFormat,
+    strShort : strShort,
 
   }
 
