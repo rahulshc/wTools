@@ -554,9 +554,6 @@ var _toStr = function _toStr( src,o )
   }
   else if( type === 'String' )
   {
-    if( o.limitStringLength )
-    result += strShort( { src : src, limit : o.limitStringLength, wrap : '"', escaping : 1 } );
-    else
     result += _toStrFromStr( src,o );
   }
   else if( type === 'Date' )
@@ -614,11 +611,11 @@ var _toStr = function _toStr( src,o )
  * @returns {string} Returns simplified source string.
  *
  * @example
- * //returns '"st"..."ng"'
+ * //returns '"st" ... "ng"'
  * _.strShort( 'string', 4 );
  *
  * @example
- * //returns '"s"..."ng"'
+ * //returns '"s" ... "ng"'
  * _.strShort( 's\ntring', 4 );
  *
  * @example
@@ -626,19 +623,19 @@ var _toStr = function _toStr( src,o )
  * _.strShort( 'string', 0 );
  *
  * @example
- * //returns "'st'...'ng'"
+ * //returns "'st' ... 'ng'"
  * _.strShort( { src : 'string', limit : 4, wrap : "'" } );
  *
  * @example
- * //returns "si...le"
+ * //returns "si ... le"
  *  _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
  *
  * @example
- * //returns '"si"..."le"'
+ * //returns '"si" ... "le"'
  *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"' } );
  *
  * @example
- * //returns '"s\u0001"..." string"'
+ * //returns '"s\u0001" ... " string"'
  *  _.strShort( 's\x01t\x01ing string string', 14 );
  *
  * @method strShort
@@ -651,19 +648,17 @@ var _toStr = function _toStr( src,o )
  *
  * @memberof wTools
  *
-*/
+ */
 
-var strShort = function( src,limit )
+var strShort = function( o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var o;
-
   if( arguments.length === 2 )
-  o = { src : src, limit : limit };
-
+  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
   else if( arguments.length === 1 )
-  o = arguments[ 0 ];
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
 
   _.mapSupplement( o,strShort.defaults );
   _.assertMapHasOnly( o,strShort.defaults );
@@ -689,7 +684,8 @@ var strShort = function( src,limit )
         if( temp.length > l )
         for( var i = s.length - 1; i >= 0 ; --i )
         {
-          if(temp.length <= l ) break;
+          if( temp.length <= l )
+          break;
           temp = temp.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
         }
 
@@ -712,7 +708,7 @@ var strShort = function( src,limit )
     if( o.limit === 1 )
     str = begin;
     else
-    str = begin + '...' +  end ;
+    str = begin + ' ... ' +  end ;
 
   }
 
@@ -764,7 +760,6 @@ var strEscape =  function( src )
 
   _.assert( _.strIs( src ) );
 
-  debugger;
   var result = '';
   for( var s = 0 ; s < src.length ; s++ )
   {
@@ -888,20 +883,28 @@ var _toStrShort = function( src,o )
   else if( _.strIs( src ) )
   {
 
-    var maxStringLength = 40;
-    var nl = src.substr( 0,Math.min( src.length,maxStringLength ) ).indexOf( '\n' );
-    if( nl === -1 ) nl = src.length;
-    if( src.length > maxStringLength || nl !== src.length )
+    var optionsStr =
     {
-      src = src.substr( 0,Math.min( maxStringLength,nl ) );
-      src = _toStrFromStr( src,o );
-      result += '[ ' + src + ' ...' + ' ]';
+      limitStringLength : Math.min( o.limitStringLength,40 ),
+      usingMultilineStringWrapper : o.usingMultilineStringWrapper,
     }
-    else
-    {
-      src = _toStrFromStr( src,o );
-      result += src;
-    }
+
+    src = _toStrFromStr( src,optionsStr );
+
+    // var maxStringLength = 40;
+    // var nl = src.substr( 0,Math.min( src.length,maxStringLength ) ).indexOf( '\n' );
+    // if( nl === -1 ) nl = src.length;
+    // if( src.length > maxStringLength || nl !== src.length )
+    // {
+    //   src = src.substr( 0,Math.min( maxStringLength,nl ) );
+    //   src = _toStrFromStr( src,o );
+    //   result += '[ ' + src + ' ...' + ' ]';
+    // }
+    // else
+    // {
+    //   src = _toStrFromStr( src,o );
+    //   result += src;
+    // }
 
   }
   else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
@@ -1200,7 +1203,13 @@ var _toStrFromStr = function( src,o )
   _.assert( _.strIs( src ), 'expects string ( src )'  );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
-  if( o.escaping )
+  var q = o.usingMultilineStringWrapper ? '`' : '"';
+
+  if( o.limitStringLength )
+  {
+    result = strShort({ src : src, limit : o.limitStringLength, wrap : q, escaping : 1 });
+  }
+  else if( o.escaping )
   {
     result = strEscape( src );
   }
@@ -1211,10 +1220,7 @@ var _toStrFromStr = function( src,o )
 
   if( o.wrapString )
   {
-    if( o.usingMultilineStringWrapper )
-    result = '`' + result + '`';
-    else
-    result = '"' + result + '"';
+    result = q + result + q;
   }
 
   return result;
