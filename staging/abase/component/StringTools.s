@@ -711,8 +711,13 @@ var strShort = function( o )
     str = begin + ' ... ' +  end ;
 
   }
+  else
+  {
+    if( o.escaping )
+    str = _.strEscape( str );
+  }
 
- return str;
+  return str;
 }
 
 strShort.defaults =
@@ -888,6 +893,7 @@ var _toStrShort = function( src,o )
       limitStringLength : o.limitStringLength ? Math.min( o.limitStringLength,40 ) : 40,
       usingMultilineStringWrapper : o.usingMultilineStringWrapper,
       wrapString : o.wrapString,
+      escaping : 1,
     }
 
     result = _toStrFromStr( src,optionsStr );
