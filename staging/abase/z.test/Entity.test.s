@@ -934,6 +934,770 @@
 
   //
 
+  var entityCopy = function( test )
+  {
+    test.description = 'src null';
+    var dst = new String( 'string' );
+    var src = null;
+    var got = _.entityCopy( dst, src  );
+    var expected = null;
+    test.identical( got, expected );
+
+    test.description = 'dst.copy';
+    var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } };
+    var src = { src : 'string', num : 123 }
+    _.entityCopy( dst, src  );
+    var got = dst;
+    var expected =
+    {
+      copy : dst.copy,
+      src : 'string',
+      num : 123
+
+    };
+    test.identical( got, expected );
+
+    test.description = 'src.clone';
+    var dst = 1;
+    var src = { src : 'string', num : 123, clone : function() { var clone = _.entityCloneObject( { src : this } ); return clone; } }
+    var got = _.entityCopy( dst, src  );
+    var expected = src;
+    test.identical( got, expected );
+
+    test.description = 'src.slice returns copy of array';
+    var dst = [ ];
+    var src = [ 1, 2 ,3 ];
+    var got = _.entityCopy( dst, src  );
+    var expected = src;
+    test.identical( got, expected );
+
+    test.description = 'dst.set ';
+    var dst = { set : function( src ){ this.value = src[ 'value' ]; } };
+    var src = { value : 100 };
+    _.entityCopy( dst, src  );
+    var got = dst;
+    var expected = { set : dst.set, value : 100 };
+    test.identical( got, expected );
+
+    test.description = 'onRecursive ';
+    var dst = { };
+    var src = { value : 100, a : {  b : 101 } };
+    var onRecursive = function( dstContainer,srcContainer,key )
+    {
+      _.assert( _.strIs( key ) );
+      dstContainer[ key ] = srcContainer[ key ];
+    };
+    _.entityCopy( dst, src, onRecursive  );
+    var got = dst;
+    var expected = src;
+    test.identical( got, expected );
+
+    test.description = 'atomic ';
+    var src = 2;
+    var got = _.entityCopy( null, src );
+    var expected = src;
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+
+      test.description = 'missed arguments';
+      test.shouldThrowError( function()
+      {
+        _.entityCopy( );
+      });
+
+      test.description = 'src.clone throws "unexpected"';
+      test.shouldThrowError( function()
+      {
+        var dst = {};
+        var src = { src : 'string', num : 123, clone : function() { var clone = _.entityCloneObject( { src : this } ); return clone; } }
+        _.entityCopy( dst, src  );
+      });
+
+
+
+    }
+  };
+
+  //
+
+  var entityCopyField = function( test )
+  {
+
+    test.description = 'non recursive';
+    var dst ={};
+    var src = { a : 'string' };
+    var name = 'a';
+    var got = _.entityCopyField(dst, src, name );
+    var expected = dst[ name ];
+    test.identical( got, expected );
+
+    test.description = 'undefined';
+    var dst ={};
+    var src = { a : undefined };
+    var name = 'a';
+    var got = _.entityCopyField(dst, src, name );
+    var expected = undefined;
+    test.identical( got, expected );
+
+    test.description = 'recursive';
+    var dst ={};
+    var src = { a : 'string' };
+    var name = 'a';
+    var onRecursive = function( dstContainer,srcContainer,key )
+    {
+      _.assert( _.strIs( key ) );
+      dstContainer[ key ] = srcContainer[ key ];
+    };
+    var got = _.entityCopyField(dst, src, name,onRecursive );
+    var expected = dst[ name ];
+    test.identical( got, expected );
+
+
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityCopyField( );
+      });
+    }
+
+  };
+
+  //
+
+  var entityCoerceTo = function( test )
+  {
+
+    test.description = 'string & num';
+    var src = '5';
+    var ins =  1
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'num to string';
+    var src = 1;
+    var ins =  '5';
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'to boolean';
+    var src = 1;
+    var ins =  true;
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'object and num';
+    var src = { a : 1 };
+    var ins =  1;
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    test.description = 'array and string';
+    var src = [ 1, 2, 3 ];
+    var ins =  'str';
+    var got = typeof( _.entityCoerceTo( src, ins ) );
+    var expected = typeof( ins );
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityCoerceTo( );
+      });
+
+      test.description = 'unknown type';
+      test.shouldThrowError( function()
+      {
+        _.entityCoerceTo( 1, { a : 1 }  );
+      });
+    }
+
+  };
+
+  //
+
+  var entityHasNan = function( test )
+  {
+
+    test.description = 'undefined';
+    var got = _.entityHasNan( undefined );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'number';
+    var got = _.entityHasNan( 150 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'null';
+    var got = _.entityHasNan( null );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'array';
+    var got = _.entityHasNan( [ 1,'A2',3 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityHasNan( { a : 1, b : 2 } );
+    var expected = false;
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityHasNan( );
+      });
+
+    }
+
+  };
+
+  //
+
+  var entityHasUndef = function( test )
+  {
+
+    test.description = 'undefined';
+    var got = _.entityHasUndef( undefined );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.description = 'number';
+    var got = _.entityHasUndef( 150 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'array';
+    var got = _.entityHasUndef( [ 1,'2',3 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityHasUndef( { a : 1, b : 2 } );
+    var expected = false;
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityHasUndef( );
+      });
+
+    }
+
+  };
+
+  //
+
+  var entitySame = function( test )
+  {
+    //default options
+    test.description = 'default options, number';
+    var got = _.entitySame( 1, 1 );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'default options, string';
+    var got = _.entitySame( '123', '123' );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'default options, boolean';
+    var got = _.entitySame( 0, false );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.description = 'default options, array';
+    var got = _.entitySame( [ 1, 2 ,'3'], [ 1, 2, 3 ] );
+    var expected = false ;
+    test.identical( got, expected );
+
+    test.description = 'default options, object';
+    var src1 = { a : 1, b : 2 , c : { d : 3  }  };
+    var src2 = { a : 1, b : 2 , c : { d : 3  }  };
+    var got = _.entitySame( src1, src2 );
+    var expected = true ;
+    test.identical( got, expected );
+
+    //custom options
+
+    test.description = 'number & string, strict : 0';
+    var got = _.entitySame( '123', 123, { strict : 0 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'number & boolean, strict : 0';
+    var got = _.entitySame( false, 0, { strict : 0 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'src1 constains elem from src2 ';
+    var got = _.entitySame( { a : 1, b : 2 }, { b : 2 }, { contain : 1 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'src1 constains elem from src2, strict : 0 ';
+    var got = _.entitySame( { a : 1, b : '2' }, { b : 2 }, { contain : 1, strict : 0 } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    test.description = 'onSameNumbers';
+    var onSameNumbers = function( a, b ){ return _.entityEquivalent( a, b, { eps : 1 } ) };
+    var got = _.entitySame( { a : 1, b : 2 }, { a : 2, b : 2 }, { onSameNumbers : onSameNumbers } );
+    var expected = true ;
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entitySame( );
+      });
+
+      test.description = 'options is not a Object';
+      test.shouldThrowError( function()
+      {
+        _.entitySame( 1, 2, 3 );
+      });
+
+      test.description = 'extendet options';
+      test.shouldThrowError( function()
+      {
+        _.entitySame( 1, 2, { fixed : 1 } );
+      });
+
+    }
+
+  };
+
+  //
+
+  var entityDiff = function( test )
+  {
+    //returns false if same
+
+    test.description = 'number';
+    var got = _.entityDiff( 1, 1 );
+    var expected = false ;
+    test.identical( got, expected );
+
+    test.description = 'strings';
+    var got = _.entityDiff( 'abc', 'abd' );
+    var expected =
+    [
+      'at : ',
+      'src1 :',
+      'abc',
+      'src2 :',
+      'abd ',
+      'difference :',
+      'ab*'
+    ].join('\n');
+    test.identical( got, expected );
+
+    test.description = 'arrays';
+    var got = _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+    var expected =
+    [
+      'at : .2',
+      'src1 :',
+      '3',
+      'src2 :',
+      '4 ',
+      'difference :',
+      '*'
+    ].join('\n');
+    test.identical( got, expected );
+
+    test.description = 'objects,custom path';
+    var src1 = { a : { a : 1, b : '2' }, b : [ 1,2 ] };
+    var src2 = { a : { a : 1, b : '2' } };
+    var got = _.entityDiff( src1, src2, { path : 'a.b' } );
+    var expected =
+    [
+      'at : a.b',
+      'src1 :',
+      '"2"',
+      'src2 :',
+      '"2" ',
+      'difference :',
+      'false'
+    ].join('\n');
+    test.identical( got, expected );
+
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _.entityDiff( );
+      });
+
+      test.description = 'invalid options type';
+      test.shouldThrowError( function()
+      {
+        _.entityDiff( 1, 2, 3 );
+      });
+    }
+
+  };
+
+  //
+
+  var entitySize = function( test )
+  {
+    test.description = 'string';
+    var got = _.entitySize( "str" );
+    var expected = 3 ;
+    test.identical( got, expected );
+
+    test.description = 'atomic type';
+    var got = _.entitySize( 6 );
+    var expected = null;
+    test.identical( got, expected );
+
+    test.description = 'buffer';
+    var got = _.entitySize( new ArrayBuffer( 10 ) );
+    var expected = 10;
+    test.identical( got, expected );
+
+    test.description = 'arraylike';
+    var got = _.entitySize( [ 1, 2, 3 ] );
+    var expected = 3;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entitySize( { a : 1, b : 2 } );
+    var expected = null;
+    test.identical( got, expected );
+
+    test.description = 'empty call';
+    var got = _.entitySize( );
+    var expected = null;
+    test.identical( got, expected );
+
+    // if( Config.debug )
+    // {
+    //
+    // }
+
+  };
+
+  //
+
+  var entityValueWithIndex = function( test )
+  {
+    test.description = 'array';
+    var got = _.entityValueWithIndex( [ [ 1, 2, 3 ] ], 0 );
+    var expected = [ 1, 2, 3 ] ;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityValueWithIndex( { a : 1, b : [ 1, 2, 3 ] }, 1 );
+    var expected = [ 1, 2, 3 ] ;
+    test.identical( got, expected );
+
+    test.description = 'string';
+    var got = _.entityValueWithIndex( 'simple string', 5 );
+    var expected = 'e' ;
+    test.identical( got, expected );
+
+    test.description = 'empty call';
+    var got = _.entityValueWithIndex( );
+    var expected = undefined ;
+    test.identical( got, expected );
+
+    test.description = 'other type';
+    var got = _.entityValueWithIndex( true , 1);
+    var expected = undefined ;
+    test.identical( got, expected );
+
+    test.description = 'index undefined';
+    var got = _.entityValueWithIndex( 'str' );
+    var expected = undefined ;
+    test.identical( got, expected );
+
+    // if( Config.debug )
+    // {
+    //
+    // }
+
+  };
+
+  //
+
+  var entityKeyWithValue = function( test )
+  {
+    test.description = 'array';
+    var got = _.entityKeyWithValue( [ 1, 2, 3 ], 3 );
+    var expected =  2;
+    test.identical( got, expected );
+
+    test.description = 'array#2';
+    var got = _.entityKeyWithValue( [ 1, 2, 3 ], 'a' );
+    var expected =  null;
+    test.identical( got, expected );
+
+    test.description = 'object';
+    var got = _.entityKeyWithValue( { a : 1, b : 'a' }, 'a' );
+    var expected =  'b';
+    test.identical( got, expected );
+
+    test.description = 'empty call';
+    var got = _.entityKeyWithValue( );
+    var expected =  null;
+    test.identical( got, expected );
+
+    test.description = 'value undefined';
+    var got = _.entityKeyWithValue( [ 1, 2, 3 ] );
+    var expected =  null;
+    test.identical( got, expected );
+
+
+    // if( Config.debug )
+    // {
+    //
+    // }
+
+  };
+
+  //
+
+  var _entitySelectOptions = function( test )
+  {
+    test.description = 'two args call';
+    var container = [ 1, 2, 3, 4 ];
+    var query = '0.1.2';
+    var got = _._entitySelectOptions( container, query );
+    var expected =
+    {
+      container: container,
+      query: query,
+      set: null,
+      delimeter: [ '.','[',']' ],
+      qarrey : [ "0", "1", "2" ],
+      undefinedForNone: 1
+    };
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'query as string, options in object';
+    var o =
+    {
+      container : [ 1, 2, 3, 4 ],
+      query : '0.1.2',
+    };
+
+    var got = _._entitySelectOptions( o );
+    var expected =
+    {
+      container: o.container,
+      query: o.query,
+      set: null,
+      delimeter: [ '.','[',']' ],
+      qarrey : [ "0", "1", "2" ],
+      undefinedForNone: 1
+    };
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'query as array';
+    var o =
+    {
+      container : [ 1, [ 2, 3, 4 ], 5 ],
+      query : [ '1','1'],
+      set : 12,
+    };
+
+    var got = _._entitySelectOptions( o );
+    var expected =
+    {
+      container: o.container,
+      query: o.query,
+      set: o.set,
+      delimeter: [ '.','[',']' ],
+      qarrey : [ [ "1" ], [ "1" ] ],
+      undefinedForNone: 1
+    };
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'object,set,delimeter,undefinedForNone';
+    var o =
+    {
+      container : { a : { b : { c : 1 } } },
+      query : 'a->b->c',
+      set : '0',
+      delimeter : [ '->' ],
+      undefinedForNone : 0
+    };
+
+    var got = _._entitySelectOptions( o );
+    var expected =
+    {
+      container: o.container,
+      query: o.query,
+      set: o.set,
+      delimeter: o.delimeter,
+      qarrey : [ "a", "b", "c" ],
+      undefinedForNone: o.undefinedForNone
+    };
+    test.identical( got, expected );
+
+    if( Config.debug )
+    {
+      test.description = 'argument missed';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( );
+      });
+
+      test.description = 'extended by unknown property';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( { fff : 0 } );
+      });
+
+      test.description = 'query is not String or Array';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( [ 1, 2, 3 ], 1 );
+      });
+
+      test.description = 'options are not in Object';
+      test.shouldThrowError( function()
+      {
+        _._entitySelectOptions( [ [ 0,1,2 ], '0' ] );
+      });
+
+    }
+
+  };
+
+  //
+
+  var __entitySelectAct = function( test )
+  {
+    test.description = 'qarrey is empty';
+    var o =
+    {
+      container: [ 1, 2, 3 ],
+      set: 'x',
+      qarrey : [ ],
+      undefinedForNone: 1
+    };
+    var got = _.__entitySelectAct( o );
+    var expected = o.container;
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'atomic';
+    var o =
+    {
+      container: 1,
+      set: 'x',
+      qarrey : [ "0" ],
+      undefinedForNone: 1
+    };
+    var got = _.__entitySelectAct( o );
+    var expected = undefined;
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'qarrey has "*"';
+    var o =
+    {
+      container: [ 1, [ 2, 3, 4 ], 5],
+      qarrey : [ "*" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    var got = _.__entitySelectAct( o );
+    var expected = ["x", "x", "x"];
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'replace all in arr inside container';
+    var o =
+    {
+      container: [ 1, [ 2, 3, 4 ], 5],
+      qarrey : [ "1","*" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    _.__entitySelectAct( o );
+    var got = o.container[ 1 ];
+    var expected = ["x", "x", "x"];
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'index values is undefined';
+    var o =
+    {
+      container: [ 1, [ 2, 3, 4 ], 5],
+      qarrey : [ "3" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    _.__entitySelectAct( o );
+    var got = o.container[ 3 ];
+    var expected = o.set;
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'object';
+    var o =
+    {
+      container: { a : { b : { c : 0 } } },
+      qarrey : [ "a", "b" ],
+      set: 'x',
+      undefinedForNone: 1
+    };
+    _.__entitySelectAct( o );
+    var got = o.container;
+    var expected = { a : { b : 'x' } };
+    test.identical( got, expected );
+
+    //
+
+    if( Config.debug )
+    {
+      test.description = 'atomic, undefinedForNone false';
+      test.shouldThrowError( function()
+      {
+        _.__entitySelectAct( { container : 1, qarrey : [ "0" ], undefinedForNone : 0 } );
+      });
+
+    }
+
+  };
+
   var Proto =
   {
 
@@ -953,7 +1717,19 @@
       entityIdentical: entityIdentical,
       entityEquivalent: entityEquivalent,
       entityContain: entityContain,
-      entityLength : entityLength
+      entityLength : entityLength,
+      entityCopy : entityCopy,
+      entityCopyField : entityCopyField,
+      entityCoerceTo : entityCoerceTo,
+      entityHasNan : entityHasNan,
+      entityHasUndef : entityHasUndef,
+      entitySame : entitySame,
+      entityDiff : entityDiff,
+      entitySize : entitySize,
+      entityValueWithIndex : entityValueWithIndex,
+      entityKeyWithValue : entityKeyWithValue,
+      _entitySelectOptions : _entitySelectOptions,
+      __entitySelectAct : __entitySelectAct,
 
     }
 
