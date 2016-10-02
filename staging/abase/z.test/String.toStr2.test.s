@@ -214,19 +214,45 @@ var toStrUnwrapped = function ( test )
     /*09*/
     [ [ 5, 4, [ 3 ] ],[ 2, 1, 0 ] ],
 
+    /*10*/
+    ( function( )
+    {
+      var structure =
+      [
+        {
+          nameLong : "abc",
+          description : "edf",
+          rewardForVisitor : { a : 1 },
+          stationary : 1,
+          f : "f",
+          quantity : 1
+        },
+        {
+          nameLong : "abc2",
+          description : "edf2",
+          rewardForVisitor : { a : 1 },
+          stationary : 1,
+          f : "f",
+          quantity : 1
+        },
+      ];
+      return structure;
+    } )( ),
+
+    /*11*/
+    {
+      1 : 'a',
+      2 : [ 10, 20, 30 ],
+      3 : { 21 : 'aa', 22 : 'bb' },
+      4 : [ 10, 20, 30 ],
+      13 : [ 10, 20, 30 ],
+    },
+
   ],
   options =
   [
 
     /*01*/  { wrap : 0, levels : 4 },
-    /*02*/  { wrap : 0, levels : 4 },
-    /*03*/  { wrap : 0, levels : 4 },
-    /*04*/  { wrap : 0, levels : 4 },
-    /*05*/  { wrap : 0, levels : 4 },
-    /*06*/  { wrap : 0, levels : 4 },
-    /*07*/  { wrap : 0, levels : 4 },
-    /*08*/  { wrap : 0, levels : 4 },
-    /*09*/  { wrap : 0, levels : 4 },
 
   ],
   expected =
@@ -311,6 +337,34 @@ var toStrUnwrapped = function ( test )
       '    2 1 0',
     ].join( '\n' ),
 
+    /*10*/
+    [
+      '    nameLong : "abc" ',
+      '    description : "edf" ',
+      '    rewardForVisitor : a : 1 ',
+      '    stationary : 1 ',
+      '    f : "f" ',
+      '    quantity : 1 ',
+      '',
+      '    nameLong : "abc2" ',
+      '    description : "edf2',
+      '    rewardForVisitor : a : 1 ',
+      '    stationary : 1 ',
+      '    f : "f" ',
+      '    quantity : 1',
+
+    ].join( '\n' ),
+
+    /*11*/
+
+    [
+      '-  1 : "a" ',
+      '-  2 : 10 20 30 ',
+      '-  3 : 21 : "aa" 22 : "bb" ',
+      '-  4 : 10 20 30 ',
+      '-  13 : 10 20 30',
+    ].join( '\n' ),
+
   ];
 
   testFunction( test,desc,src,options,expected );
@@ -371,10 +425,10 @@ var toStrError = function ( test )
     /*02*/  'Error: msg',
     /*03*/  '[object Error]',
     /*04*/  '',
-    /*05*/  '{ stack : [ "Error: message2" ... ], message : "message2" }',
+    /*05*/  '{ stack : [ "Error: message2\\n   " ... "ut (timers.js:198:5)" ], message : "message2" }',
     /*06*/  '{}',
     /*07*/  '{}',
-    /*08*/  '{ stack : [ "Error: my message2" ... ], message : "my message2" }',
+    /*08*/  '{ stack : [ "Error: my message2\\n" ... "ut (timers.js:198:5)" ], message : "my message2" }',
     /*09*/
       [
         '{',
@@ -391,7 +445,7 @@ var toStrError = function ( test )
         '  name : "Error", ',
         '  constructor : [ routine Error ], ',
         '  toString : [ routine toString ], ',
-        '  stack : [ "Error: my message3" ... ], ',
+        '  stack : [ "Error: my message3\\n" ... "ut (timers.js:198:5)" ], ',
         '  message : "my message3"',
         '}',
       ].join( '\n' ),
@@ -757,7 +811,7 @@ var toStrArray = function( test )
     ].join( '\n' ),
 
     /*37*/
-    '  [ "" ... ]',
+    '  "\\n\\nEscaping & wrap test"',
 
     /*38*/
     [
@@ -815,7 +869,7 @@ var toStrArray = function( test )
     /*46*/
     [
       '    a : "\\na". ',
-      '    b : d : [ "" ... ]',
+      '    b : d : "\\ntrue"',
     ].join( '\n' ),
 
     /*47*/
@@ -842,7 +896,7 @@ var toStrArray = function( test )
 //[ { a : 'string' }, [ true ], 1 ],
 //{ levels : 2, wrap : 0, noString : 1, noNumber : 1, comma : '/ ' },
 
-    /*51*/
+    /*51*/ // !!! please move to toStrUnwrapped
     [
       '    5||',
       '    4||',
@@ -882,7 +936,7 @@ var toStrArray = function( test )
       '    a : "\\\\test"',
       '  }, ',
       '  {',
-      '    b : [ "" ... ]',
+      '    b : "\\ntest"',
       '  }, ',
       '  {',
       '    c : "test"',
@@ -1169,30 +1223,8 @@ var toStrObject = function( test )
               return y;
             } )( ),
 
-    /*65*/  ( function( )
-            {
-              var structure =
-              [
-                {
-                  nameLong : "abc",
-                  description : "edf",
-                  rewardForVisitor : { a : 1 },
-                  stationary : 1,
-                  f : "f",
-                  quantity : 1
-                },
-                {
-                  nameLong : "abc2",
-                  description : "edf2",
-                  rewardForVisitor : { a : 1 },
-                  stationary : 1,
-                  f : "f",
-                  quantity : 1
-                },
-              ];
-              return structure;
-            } )( ),
-    /*66*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
+    /*65*/  { "sequence" : "\u001b[A", "name" : "undefined", "shift" : false, "code" : "[A"  },
+
   ],
   options =
   [
@@ -1267,8 +1299,7 @@ var toStrObject = function( test )
     /*62*/  { levels : 2, noAtomic : 1, noNumber : 0 },
     /*63*/  { own : 0},
     /*64*/  {  },
-    /*65*/  { levels : 3,wrap : 0 },
-    /*66*/  {  },
+    /*65*/  {  },
 
   ],
   expected =
@@ -1427,7 +1458,7 @@ var toStrObject = function( test )
 
     /*23*/
 
-    'x : [ "" ... ]| z : "\\\\11"',
+    'x : "\\n10"| z : "\\\\11"',
 
     /*24*/
     [
@@ -1554,7 +1585,7 @@ var toStrObject = function( test )
       '  a : "\\na", ',
       '  b : ',
       '  {',
-      '    d : [ "" ... ]',
+      '    d : "\\ntrue"',
       '  }',
       '}'
 
@@ -1602,7 +1633,7 @@ var toStrObject = function( test )
     /*46*/
     [
       '{',
-      '  sequence : "\x7f[A", ',
+      '  sequence : "\\u007f[A", ',
       '  name : "undefined", ',
       '  shift : false, ',
       '  code : "[A"',
@@ -1613,7 +1644,7 @@ var toStrObject = function( test )
     /*47*/
     [
       '{',
-      '  sequence : "<\u001cb>text<\u001cb>", ',
+      '  sequence : "<\\u001cb>text<\\u001cb>", ',
       '  data : [ Object with 2 elements ], ',
       '  shift : false, ',
       '  code : "<b>text<b>"',
@@ -1757,27 +1788,9 @@ var toStrObject = function( test )
 
     /*65*/
     [
-      '    nameLong : "abc" ',
-      '    description : "edf" ',
-      '    rewardForVisitor : a : 1 ',
-      '    stationary : 1 ',
-      '    f : "f" ',
-      '    quantity : 1 ',
-      '',
-      '    nameLong : "abc2" ',
-      '    description : "edf2',
-      '    rewardForVisitor : a : 1 ',
-      '    stationary : 1 ',
-      '    f : "f" ',
-      '    quantity : 1',
-
-    ].join( '\n' ),
-
-    /*66*/
-    [
 
       '{',
-      '  sequence : "[A", ',
+      '  sequence : "\\u001b[A", ',
       '  name : "undefined", ',
       '  shift : false, ',
       '  code : "[A"',
