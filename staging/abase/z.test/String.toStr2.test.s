@@ -298,9 +298,7 @@ var toStrUnwrapped = function ( test )
 
     /*08*/
     [
-      '    5 ',
-      '    4 ',
-      '',
+      '    5 4 ',
       '    2 1 0',
     ].join( '\n' ),
 

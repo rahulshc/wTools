@@ -885,11 +885,12 @@ var _toStrShort = function( src,o )
 
     var optionsStr =
     {
-      limitStringLength : Math.min( o.limitStringLength,40 ),
+      limitStringLength : o.limitStringLength ? Math.min( o.limitStringLength,40 ) : 40,
       usingMultilineStringWrapper : o.usingMultilineStringWrapper,
+      wrapString : o.wrapString,
     }
 
-    src = _toStrFromStr( src,optionsStr );
+    result = _toStrFromStr( src,optionsStr );
 
     // var maxStringLength = 40;
     // var nl = src.substr( 0,Math.min( src.length,maxStringLength ) ).indexOf( '\n' );
@@ -1208,6 +1209,11 @@ var _toStrFromStr = function( src,o )
   if( o.limitStringLength )
   {
     result = strShort({ src : src, limit : o.limitStringLength, wrap : q, escaping : 1 });
+    if( result.length > o.limitStringLength )
+    {
+      result = '[ ' + result + ' ]';
+      q = '';
+    }
   }
   else if( o.escaping )
   {
