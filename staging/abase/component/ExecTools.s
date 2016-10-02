@@ -2,6 +2,20 @@
 
 'use strict';
 
+
+if( typeof module !== 'undefined' )
+{
+
+  try
+  {
+    _global_.Esprima = require( 'esprima' );
+  }
+  catch( err )
+  {
+  }
+
+}
+
 var Self = wTools;
 var _ = wTools;
 
@@ -124,21 +138,151 @@ shell.defaults =
 
 //
 
-var execAsyn = function( routine,onEnd,context )
+var exec = function( o )
 {
-  _assert( arguments.length >= 3,'execAsyn :','expects 3 arguments or more' );
+  var result;
 
-  var args = arraySlice( arguments,3 ); throw _.err( 'not tested' );
+  if( _.strIs( o ) )
+  o = { code : o };
+  _.assert( arguments.length === 1 );
+  _.routineOptions( makeFunction,o );
 
-  _.timeOut( 0,function()
+  var f = makeFunction({ code : o.code });
+  try
+  {
+    result = f.call();
+  }
+  catch( err )
+  {
+    throw _.err( err );
+  }
+
+  return result;
+}
+
+exec.defaults =
+{
+  code : null,
+}
+
+//
+
+var makeFunction = function( o )
+{
+  var result;
+
+  if( _.strIs( o ) )
+  o = { code : o };
+  _.assert( arguments.length === 1 );
+  _.routineOptions( makeFunction,o );
+
+  var code = 'return' + o.code + '';
+
+  try
   {
 
-    routine.apply( context,args );
-    onEnd();
+    //result = eval( code );
+    result = new Function( code );
 
-  });
+  }
+  catch( err )
+  {
+
+    console.error( 'Cant execute code :' );
+    console.error( code );
+
+    if( _global_.document )
+    {
+      var e = document.createElement( 'script' );
+      e.type = 'text/javascript';
+      e.src = 'data:text/javascript;charset=utf-8,' + escape( o.code );
+      document.head.appendChild( e );
+    }
+    else
+    if( _global_.Blob && _global_.Worker )
+    {
+      var worker = _.makeWorker( code )
+    }
+    else if( _global_.Esprima || _global_.esprima )
+    {
+      var Esprima = _global_.Esprima || _global_.esprima;
+      var parsed = Esprima.parse( '(function(){\n' + code + '\n})();' );
+    }
+
+    throw _.err( 'More information about error is comming asynchronously.\n',err );
+    return null;
+  }
+
+  return result;
+}
+
+makeFunction.defaults =
+{
+  code : null,
+}
+
+//
+
+var execInWorker = function( o )
+{
+  var result;
+
+  if( _.strIs( o ) )
+  o = { code : o };
+  _.assert( arguments.length === 1 );
+  _.routineOptions( execInWorker,o );
+
+  var blob = new Blob( [ o.code ], { type : 'text/javascript' } );
+  var worker = new Worker( URL.createObjectURL( blob ) );
+
+  throw _.err( 'not implemented' );
 
 }
+
+execInWorker.defaults =
+{
+  code : null,
+}
+
+//
+
+var makeWorker = function( o )
+{
+  var result;
+
+  if( _.strIs( o ) )
+  o = { code : o };
+  _.assert( arguments.length === 1 );
+  _.routineOptions( makeWorker,o );
+
+  var blob = new Blob( [ o.code ], { type : 'text/javascript' } );
+  var worker = new Worker( URL.createObjectURL( blob ) );
+
+  return worker;
+}
+
+makeWorker.defaults =
+{
+  code : null,
+}
+
+//
+
+// var execAsyn = function( routine,onEnd,context )
+// {
+//   _assert( arguments.length >= 3,'execAsyn :','expects 3 arguments or more' );
+//
+//   var args = arraySlice( arguments,3 ); throw _.err( 'not tested' );
+//
+//   _.timeOut( 0,function()
+//   {
+//
+//     routine.apply( context,args );
+//     onEnd();
+//
+//   });
+//
+// }
 
 //
 
@@ -594,7 +738,15 @@ var Proto =
   // exec
 
   shell : shell,
-  execAsyn : execAsyn,
+
+  exec : exec,
+  makeFunction : makeFunction,
+
+  execInWorker : execInWorker,
+  makeWorker : makeWorker,
+
+  //execAsyn : execAsyn,
+
   execStages : execStages,
   execInRange : execInRange,
   execInRanges : execInRanges,

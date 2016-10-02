@@ -971,7 +971,6 @@ var _toStrFromStr = function( src,o )
   if( o.escaping )
   {
 
-    debugger;
     for( var s = 0 ; s < src.length ; s++ )
     {
       var c = src[ s ];
@@ -2677,6 +2676,23 @@ var strUnjoin = function( srcStr,maskArray )
   var result = [];
   var index = 0;
   var rindex = -1;
+
+  // if( 1 )
+  // {
+  //
+  //   function experiment()
+  //   {
+  //     console.log( 'experiment 1' );
+  //   }
+  //
+  //   var experiment = function experiment()
+  //   {
+  //     console.log( 'experiment 2' );
+  //   }
+  //
+  // }
+  //
+  // experiment();
 
   /**/
 

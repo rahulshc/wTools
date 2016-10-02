@@ -1899,6 +1899,8 @@ var _entityMost = function( src,onElement,returnMax )
     return b-a;
   }
 
+  _.assert( onCompare.length === 1 || onCompare.length === 2 ); // xxx
+
   var result = { index : -1, key : undefined, value : undefined, element : undefined };
 
   if( _.arrayLike( src ) )
@@ -2687,7 +2689,7 @@ var _err = function _err( o )
     {
 
       if( _.routineIs( argument.toStr ) ) str = argument.toStr();
-      else if( _.errorIs( argument ) )
+      else if( _.errorIs( argument ) || _.strIs( argument.message ) )
       {
         if( _.strIs( argument.originalMessage ) ) str = argument.originalMessage;
         else if( _.strIs( argument.message ) ) str = argument.message;
@@ -2719,6 +2721,14 @@ var _err = function _err( o )
     originalMessage += str;
     else originalMessage += str + ' ';
   }
+
+  /* location */
+
+  if( lineNumber !== undefined )
+  originalMessage += '\n' + 'Line : ' + lineNumber;
+
+  if( fileName !== undefined )
+  originalMessage += '\n' + 'File : ' + fileName;
 
   /* */
 
@@ -2837,8 +2847,6 @@ var err = function err()
 var errLog = function errLog()
 {
 
-  debugger;
-
   var c = _global_.logger || _global_.console;
   var err = _err
   ({
@@ -2852,14 +2860,7 @@ var errLog = function errLog()
   if( _.routineIs( err.toString ) )
   {
 
-    var messageWas = err.message;
-
-    //if( err.originalMessage )
-    //err.message = err.originalMessage
-
     c.error( err.toString() );
-
-    //err.message = messageWas;
 
   }
   else
@@ -3299,19 +3300,37 @@ var includeAny = function()
 
 //
 
-var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
-{
-  var options = options || {};
-  if( options.fieldName )
-  options.fieldNames = _.nameFielded( options.fieldNames );
+/*
+_.diagnosticWatchObject
+({
+  dst : self,
+  names : 'wells',
+});
+*/
 
-  Object.observe( dst,function( changes )
+//var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
+var diagnosticWatchObject = function diagnosticWatchObject( o )
+{
+
+  if( arguments.length === 2 )
+  {
+    o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
+
+  debugger;
+  if( o.names )
+  o.names = _.nameFielded( o.names );
+
+  Object.observe( o.dst,function( changes )
   {
     for( var c in changes )
     {
       var change = changes[ c ];
-      if( options.fieldNames )
-      if( !options.fieldNames[ change.name ] ) return;
+      if( o.names )
+      if( !o.names[ change.name ] ) return;
       console.log( change.type,change.name,change.object[ change.name ] );
       //if( !change.object[ change.name ] )
       //console.log( change.name,change.object[ change.name ] );
@@ -3319,6 +3338,12 @@ var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
     //debugger;
   });
 
+}
+
+diagnosticWatchObject.defaults =
+{
+  dst : null,
+  names : null,
 }
 
 //
@@ -3365,13 +3390,15 @@ var diagnosticWatchFields = function( o )
 
     var fieldName = f;
     var fieldSymbol = Symbol.for( f );
-    o.dst[ fieldSymbol ] = o.dst[ f ];
+    //o.dst[ fieldSymbol ] = o.dst[ f ];
+    var val = o.dst[ f ];
 
     /* */
 
     var read = function read()
     {
-      var result = o.dst[ fieldSymbol ];
+      //var result = o.dst[ fieldSymbol ];
+      var result = val;
       if( o.printValue )
       console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
       else
@@ -3383,12 +3410,14 @@ var diagnosticWatchFields = function( o )
 
     var write = function write( src )
     {
+      debugger;
       if( o.printValue )
       console.log( 'writing ' + fieldName + ' ' + _.toStr( src ) );
       else
       console.log( 'writing ' + fieldName );
       debugger;
-      o.dst[ fieldSymbol ] = src;
+      //o.dst[ fieldSymbol ] = src;
+      val = src;
     }
 
     /* */
@@ -3730,6 +3759,17 @@ var numbersAreInt = function numbersAreInt( src )
 
 //
 
+var numberIsInt = function numberIsInt( src )
+{
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return Math.floor( src ) === src;
+}
+
+//
+
 var dateIs = function( src )
 {
   return _ObjectToString.call( src ) === '[object Date]';
@@ -3901,8 +3941,9 @@ var domableIs = function( src )
 
 var errorIs = function( src )
 {
-  return src instanceof Error;
-  //return _ObjectToString.call( src ) === '[object Error]';
+  //return src instanceof Error;
+  //debugger;
+  return _ObjectToString.call( src ) === '[object Error]';
 }
 
 //
@@ -4410,7 +4451,6 @@ var regexpForGlob = function( glob )
 
 //
 
-
 /**
  * Make regexp from string.
  *
@@ -4423,6 +4463,7 @@ var regexpForGlob = function( glob )
  * @method regexpMakeExpression
  * @memberof wTools
  */
+
 var regexpMakeExpression = function( src )
 {
 
@@ -4523,12 +4564,19 @@ var regexpArrayMake = function( src )
 
   src = _.arrayFlatten( src );
 
-  _.each( src,function( e,k,i )
+  for( var k = src.length-1 ; k >= 0 ; k-- )
   {
+    var e = src[ k ]
+
+    if( e === null )
+    {
+      src.splice( k,1 );
+      continue;
+    }
 
     src[ k ] = _.regexpMakeExpression( e );
 
-  });
+  }
 
   return src;
 }
@@ -7814,11 +7862,8 @@ var arrayMask = function arrayMask( srcArray, mask )
 {
 
   _.assert( arguments.length === 2 );
-
-  if( !_.arrayLike( srcArray ) )
-  throw _.err( 'arrayMask :','expects array-like as srcArray' );
-  if( !_.arrayLike( mask )  )
-  throw _.err( 'arrayMask :','expects array-like as mask' );
+  _.assert( _.arrayLike( srcArray ),'arrayMask :','expects array-like as srcArray' );
+  _.assert( _.arrayLike( mask ),'arrayMask :','expects array-like as mask' );
 
   var atomsPerElement = mask.length;
   var length = srcArray.length / atomsPerElement;
@@ -7913,94 +7958,99 @@ arrayUnmask.defaults =
 }
 
 //
-  /**
-   * The arrayDuplicate() method returns an array with duplicate values of a certain number of times.
-   *
-   * @param { ( Array | Object ) } srcArray - The initial array or object.
-   * @param { objectLike } [ options = {  } ] options - The set of arguments.
-   * @param { arrayLike } options.src - The given initial array.
-   * @param { arrayLike } options.result - To collect all data.
-   * @param { Number } [ options.numberOfAtomsPerElement = 1 ] options.numberOfAtomsPerElement - The certain number of times
-   * to append the next value from (srcArray or options.src) to the (options.result).
-   * If (options.numberOfAtomsPerElement) is greater that length of a (srcArray or options.src) it appends the 'undefined'.
-   * @param { Number } [ options.numberOfDuplicatesPerElement = 2 ] options.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
-   *
-   * @example
-   * // returns [ 'a', 'a', 'b', 'b', 'c', 'c' ]
-   * _.arrayDuplicate( [ 'a', 'b', 'c' ] );
-   *
-   * @example
-   * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
-   * var options = {
-   *   src : [ 'abc', 'def' ],
-   *   result : [  ],
-   *   numberOfAtomsPerElement : 2,
-   *   numberOfDuplicatesPerElement : 3
-   * };
-   * _.arrayDuplicate( options, {} );
-   *
-   * @example
-   * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
-   * var options = {
-   *   src : [ 'abc', 'def' ],
-   *   result : [  ],
-   *   numberOfAtomsPerElement : 3,
-   *   numberOfDuplicatesPerElement : 3
-   * };
-   * _.arrayDuplicate( options, { a : 7, b : 13 } );
-   *
-   * @returns { Array } Returns an array with duplicate values of a certain number of times.
-   * @method arrayDuplicate
-   * @throws { Error } Will throw an Error if (options) is not an objectLike.
-   * @memberof wTools
-   */
 
-var arrayDuplicate = function arrayDuplicate( srcArray, options )
+/**
+ * The arrayDuplicate() method returns an array with duplicate values of a certain number of times.
+ *
+ * @param { objectLike } [ o = {  } ] o - The set of arguments.
+ * @param { arrayLike } o.src - The given initial array.
+ * @param { arrayLike } o.result - To collect all data.
+ * @param { Number } [ o.numberOfAtomsPerElement = 1 ] o.numberOfAtomsPerElement - The certain number of times
+ * to append the next value from (srcArray or o.src) to the (o.result).
+ * If (o.numberOfAtomsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
+ * @param { Number } [ o.numberOfDuplicatesPerElement = 2 ] o.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
+ *
+ * @example
+ * // returns [ 'a', 'a', 'b', 'b', 'c', 'c' ]
+ * _.arrayDuplicate( [ 'a', 'b', 'c' ] );
+ *
+ * @example
+ * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
+ * var options = {
+ *   src : [ 'abc', 'def' ],
+ *   result : [  ],
+ *   numberOfAtomsPerElement : 2,
+ *   numberOfDuplicatesPerElement : 3
+ * };
+ * _.arrayDuplicate( options, {} );
+ *
+ * @example
+ * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
+ * var options = {
+ *   src : [ 'abc', 'def' ],
+ *   result : [  ],
+ *   numberOfAtomsPerElement : 3,
+ *   numberOfDuplicatesPerElement : 3
+ * };
+ * _.arrayDuplicate( options, { a : 7, b : 13 } );
+ *
+ * @returns { Array } Returns an array with duplicate values of a certain number of times.
+ * @method arrayDuplicate
+ * @throws { Error } Will throw an Error if ( o ) is not an objectLike.
+ * @memberof wTools
+ */
+
+var arrayDuplicate = function arrayDuplicate( o )
 {
 
-  if( _.objectIs( srcArray ) )
+  if( arguments.length === 2 )
   {
-    options = srcArray;
-    srcArray = options.src;
+    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 0 ] };
   }
 
-  var options = options || {};
-  if( options.numberOfAtomsPerElement === undefined ) options.numberOfAtomsPerElement = 1;
-  if( options.numberOfDuplicatesPerElement === undefined ) options.numberOfDuplicatesPerElement = 2;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
+  _.routineOptions( arrayDuplicate,o );
+  _.assert( _.numberIsInt( o.src.length / o.numberOfAtomsPerElement ) );
 
-  _.assertMapHasOnly( options,
+  if( o.numberOfDuplicatesPerElement === 1 )
   {
-    src : 'src',
-    result : 'result',
-    numberOfAtomsPerElement : 'numberOfAtomsPerElement',
-    numberOfDuplicatesPerElement : 'numberOfDuplicatesPerElement',
-  });
+    if( o.result )
+    throw _.err( 'not implemented' );
+    o.result = o.src;
+    return o.result;
+  }
 
-  //if( options.numberOfAtomsPerElement !== 1 )
-  //throw _.err( 'not tested' );
-
-  var length = srcArray.length * options.numberOfDuplicatesPerElement;
-  var result = options.result || arrayNew( srcArray,length );
-  var numberOfElements = srcArray.length / options.numberOfAtomsPerElement;
+  var length = o.src.length * o.numberOfDuplicatesPerElement;
+  var numberOfElements = o.src.length / o.numberOfAtomsPerElement;
+  o.result = o.result || arrayNew( o.src,length );
 
   for( var c = 0, cl = numberOfElements ; c < cl ; c++ )
   {
 
-    for( var d = 0, dl = options.numberOfDuplicatesPerElement ; d < dl ; d++ )
+    for( var d = 0, dl = o.numberOfDuplicatesPerElement ; d < dl ; d++ )
     {
 
-      for( var e = 0, el = options.numberOfAtomsPerElement ; e < el ; e++ )
+      for( var e = 0, el = o.numberOfAtomsPerElement ; e < el ; e++ )
       {
-        var indexDst = c*options.numberOfAtomsPerElement*options.numberOfDuplicatesPerElement + d*options.numberOfAtomsPerElement + e;
-        var indexSrc = c*options.numberOfAtomsPerElement+e;
-        result[ indexDst ] = srcArray[ indexSrc ];
+        var indexDst = c*o.numberOfAtomsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfAtomsPerElement + e;
+        var indexSrc = c*o.numberOfAtomsPerElement+e;
+        o.result[ indexDst ] = o.src[ indexSrc ];
       }
 
     }
 
   }
 
-  return result;
+  return o.result;
+}
+
+arrayDuplicate.defaults =
+{
+  src : null,
+  result : null,
+  numberOfAtomsPerElement : 1,
+  numberOfDuplicatesPerElement : 2,
 }
 
 //
@@ -8177,59 +8227,70 @@ var arraySameSet = function( src1,src2 )
 }
 
 //
-  /**
-   * The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
-   * that corresponds to the condition in the callback function.
-   *
-   * It iterates over an array (arr) from the left to the right,
-   * and checks by callback function (equalizer(arr[a], ins)).
-   * If callback function returns true, it returns corresponding index.
-   * Otherwise, it returns -1.
-   *
-   * @param { arrayLike } arr - The target array.
-   * @param { * } ins - The value to compare.
-   * @param { wTools~compareCallback } [equalizer] equalizer - A callback function.
-   * By default, it checks the equality of two arguments.
-   *
-   * @example
-   * // returns 0
-   * _.arrayLeftIndexOf( [ 1, 2, 3 ], 1 );
-   *
-   * @example
-   * // returns -1
-   * _.arrayLeftIndexOf( [ 1, 2, 3 ], 4 );
-   *
-   * @example
-   * // returns 3
-   * _.arrayLeftIndexOf( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
-   *
-   * @example
-   * // returns 3
-   * _.arrayLeftIndexOf( 'abcdef', 'd' );
-   *
-   * @example
-   * // returns 2
-   * var arr = function() {
-   *   return arguments;
-   * }( 3, 7, 13 );
-   * _.arrayLeftIndexOf( arr, 13 );
-   *
-   * @returns { Number } Returns the corresponding index, if a callback function (equalizer) returns true.
-   * Otherwise, it returns -1.
-   * @method arrayLeftIndexOf
-   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
-   * @throws { Error } Will throw an Error if (equalizer.length) is not equal to the 1 or 2.
-   * @throws { Error } Will throw an Error if (equalizer) is not a Function.
-   * @memberof wTools
-   */
+
+/**
+ * The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
+ * that corresponds to the condition in the callback function.
+ *
+ * It iterates over an array (arr) from the left to the right,
+ * and checks by callback function (equalizer(arr[a], ins)).
+ * If callback function returns true, it returns corresponding index.
+ * Otherwise, it returns -1.
+ *
+ * @param { arrayLike } arr - The target array.
+ * @param { * } ins - The value to compare.
+ * @param { wTools~compareCallback } [equalizer] equalizer - A callback function.
+ * By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns 0
+ * _.arrayLeftIndexOf( [ 1, 2, 3 ], 1 );
+ *
+ * @example
+ * // returns -1
+ * _.arrayLeftIndexOf( [ 1, 2, 3 ], 4 );
+ *
+ * @example
+ * // returns 3
+ * _.arrayLeftIndexOf( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
+ *
+ * @example
+ * // returns 3
+ * _.arrayLeftIndexOf( 'abcdef', 'd' );
+ *
+ * @example
+ * // returns 2
+ * var arr = function() {
+ *   return arguments;
+ * }( 3, 7, 13 );
+ * _.arrayLeftIndexOf( arr, 13 );
+ *
+ * @returns { Number } Returns the corresponding index, if a callback function (equalizer) returns true.
+ * Otherwise, it returns -1.
+ * @method arrayLeftIndexOf
+ * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
+ * @throws { Error } Will throw an Error if (equalizer.length) is not equal to the 1 or 2.
+ * @throws { Error } Will throw an Error if (equalizer) is not a Function.
+ * @memberof wTools
+ */
 
 var arrayLeftIndexOf = function( arr,ins,equalizer )
 {
 
   if( !equalizer )
-  equalizer = function( a,b ){ return a === b };
+  {
+    if( ins === undefined )
+    {
+      ins = true;
+      equalizer = function( a ){ return !!a; };
+    }
+    else
+    {
+      equalizer = function( a ){ return a; };
+    }
+  }
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( equalizer.length === 1 || equalizer.length === 2 );
   _.assert( _.routineIs( equalizer ) );
 
@@ -8263,9 +8324,19 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
 {
 
   if( !equalizer )
-  equalizer = function( a,b ){ return a === b };
+  {
+    if( ins === undefined )
+    {
+      ins = true;
+      equalizer = function( a ){ return !!a; };
+    }
+    else
+    {
+      equalizer = function( a ){ return a; };
+    }
+  }
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( equalizer.length === 1 || equalizer.length === 2 );
 
   if( equalizer.length === 2 )
@@ -8294,37 +8365,37 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
 
 //
 
-  /**
-   * The arrayLeft() method returns a new object containing the properties, (index, element),
-   * corresponding to a found value (ins) from an array (arr).
-   *
-   * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
-   * that returns the index of the value (ins) in the array (arr).
-   * [wTools.arrayLeftIndexOf()]{@link wTools.arrayLeftIndexOf}
-   * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
-   * Otherwise, it returns the empty object.
-   *
-   * @see {@link wTools.arrayLeftIndexOf} - See for more information.
-   *
-   * @param { arrayLike } arr - Entity to check.
-   * @param { * } ins - Element to locate in the array.
-   * @param { wTools~compareCallback } equalizer - A callback function.
-   *
-   * @example
-   * // returns { index : 3, element : 'str' }
-   * _.arrayLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
-   *
-   * @example
-   * // returns {  }
-   * _.arrayLeft( [ 1, 2, 3, 4, 5 ], 6 );
-   *
-   * @returns { Object } Returns a new object containing the properties, (index, element),
-   * corresponding to the found value (ins) from the array (arr).
-   * Otherwise, it returns the empty object.
-   * @method arrayLeft
-   * @throws { Error } Will throw an Error if (equalizer) is not a Function.
-   * @memberof wTools
-   */
+/**
+ * The arrayLeft() method returns a new object containing the properties, (index, element),
+ * corresponding to a found value (ins) from an array (arr).
+ *
+ * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
+ * that returns the index of the value (ins) in the array (arr).
+ * [wTools.arrayLeftIndexOf()]{@link wTools.arrayLeftIndexOf}
+ * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
+ * Otherwise, it returns the empty object.
+ *
+ * @see {@link wTools.arrayLeftIndexOf} - See for more information.
+ *
+ * @param { arrayLike } arr - Entity to check.
+ * @param { * } ins - Element to locate in the array.
+ * @param { wTools~compareCallback } equalizer - A callback function.
+ *
+ * @example
+ * // returns { index : 3, element : 'str' }
+ * _.arrayLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
+ *
+ * @example
+ * // returns {  }
+ * _.arrayLeft( [ 1, 2, 3, 4, 5 ], 6 );
+ *
+ * @returns { Object } Returns a new object containing the properties, (index, element),
+ * corresponding to the found value (ins) from the array (arr).
+ * Otherwise, it returns the empty object.
+ * @method arrayLeft
+ * @throws { Error } Will throw an Error if (equalizer) is not a Function.
+ * @memberof wTools
+ */
 
 var arrayLeft = function( arr,ins,equalizer )
 {
@@ -9347,9 +9418,10 @@ var arraySortedAddArray = function( dst,src,comparator )
 
   /**
    * @callback mapClone~onCopyField
-   * @param { objectLike } dstContainer - The target object.
-   * @param { objectLike } srcContainer - The source object.
-   * @param { string } key - The key of the (srcObject) target object.
+   * @param { objectLike } dstContainer - destination object.
+   * @param { objectLike } srcContainer - source object.
+   * @param { string } key - key to coping from one object to another.
+   * @param { function } onCopyField - handler of fields.
    */
 
   /**
@@ -9450,9 +9522,9 @@ var mapExtendFiltering = function( filter,dstObject )
 
   if( result === null ) result = {};
 
-  _assert( arguments.length >= 3 );
-  _assert( _.routineIs( filter ) );
-  _assert( _.objectLike( result ),'mapExtendFiltering :','expects object as argument' );
+  _assert( arguments.length >= 3,'expects more arguments' );
+  _assert( _.routineIs( filter ),'expects filter' );
+  _assert( _.objectLike( result ),'expects objectLike as argument' );
 
   for( var a = 2 ; a < arguments.length ; a++ )
   {
@@ -11299,13 +11371,13 @@ var Proto =
   _entityCloneAct : _entityCloneAct,
   _entityClone : _entityClone,
   entityCloneObject : entityCloneObject,
-  entityCloneObjectMergingBuffers : entityCloneObjectMergingBuffers,
+  entityCloneObjectMergingBuffers : entityCloneObjectMergingBuffers, /* experimental */
   entityCloneData : entityCloneData,
-  entityCloneDataSeparatingBuffers : entityCloneDataSeparatingBuffers,
+  entityCloneDataSeparatingBuffers : entityCloneDataSeparatingBuffers, /* experimental */
 
-  entityCopy : entityCopy,
-  entityCopyField : entityCopyField,
-  entityAssignField : entityAssignField,
+  entityCopy : entityCopy, /* experimental */
+  entityCopyField : entityCopyField, /* experimental */
+  entityAssignField : entityAssignField, /* experimental */
 
   entityCoerceTo : entityCoerceTo,
 
@@ -11345,7 +11417,7 @@ var Proto =
   _entityConditionMake : _entityConditionMake,
   entityMap : entityMap,
   entityFilter : entityFilter,
-  entityGroup : entityGroup,
+  entityGroup : entityGroup, /* experimental */
 
   _entityMost : _entityMost,
   entityMin : entityMin,
@@ -11422,6 +11494,7 @@ var Proto =
   numberIs : numberIs,
   numberIsRegular : numberIsRegular,
   numbersAreInt : numbersAreInt,
+  numberIsInt : numberIsInt,
 
   dateIs : dateIs,
   boolIs : boolIs,
@@ -11704,6 +11777,7 @@ var Proto =
   // map filter
 
   filter : filter,
+
 
   // var
 
