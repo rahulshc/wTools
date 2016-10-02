@@ -1622,10 +1622,7 @@ var _toStrFromContainer = function( o )
 
   if( optionsContainer.prependTab  )
   {
-    if( optionsContainer.wrap )
-    {
-      result += optionsContainer.tab;
-    }
+    result += optionsContainer.tab;
   }
 
   /* wrap */
@@ -1646,16 +1643,6 @@ var _toStrFromContainer = function( o )
   else if( !simple )
   {
     /*result += '\n' + optionsItem.tab;*/
-  }
-
-  /* prepend */
-
-  if( optionsContainer.prependTab  )
-  {
-    if( !optionsContainer.wrap )
-    {
-      result += optionsContainer.tab;
-    }
   }
 
   /* exec */
