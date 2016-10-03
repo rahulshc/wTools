@@ -749,7 +749,7 @@ var entityCopy = function( dst,src,onRecursive )
 //
 
 /**
- * Short-cut for entityCopy function.Copies specified( name ) field from
+ * Short-cut for entityCopy function. Copies specified( name ) field from
  * source container( srcContainer ) into( dstContainer ).
  *
  * @param {object} dstContainer - Destination object.
@@ -807,7 +807,7 @@ var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
 //
 
 /**
- * Short-cut for entityCopy function.Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
+ * Short-cut for entityCopy function. Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
  *
  * @param {object} dstContainer - Destination object.
  * @param {object} srcValue - Source value.
@@ -985,7 +985,7 @@ entityWrap.defaults =
 // --
 
 /**
- * Checks if object( src ) is NaN. Also works with arrays and maps.
+ * Checks if object( src ) has any NaN. Also works with arrays and maps. Works recursively.
  *
  * @param {object} src - Source object.
  * @returns {boolean} Returns result of check for NaN.
@@ -1005,7 +1005,6 @@ entityWrap.defaults =
  *
  */
 
-
 var entityHasNan = function( src )
 {
   _.assert( arguments.length === 1 );
@@ -1022,7 +1021,7 @@ var entityHasNan = function( src )
   else if( _.arrayIs( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
-    if( entityHasNan( src[s] ) )
+    if( entityHasNan( src[ s ] ) )
     {
       return true;
     }
@@ -1030,7 +1029,7 @@ var entityHasNan = function( src )
   else if( _.objectIs( src ) )
   {
     for( s in src )
-    if( entityHasNan( src[s] ) )
+    if( entityHasNan( src[ s ] ) )
     {
       return true;
     }
@@ -1042,7 +1041,7 @@ var entityHasNan = function( src )
 //
 
 /**
- * Checks if object( src ) or array has undefined property.
+ * Checks if object( src ) or array has any undefined property. Works recursively.
  *
  * @param {object} src - Source object.
  * @returns {boolean} Returns result of check for undefined.
@@ -1074,7 +1073,7 @@ var entityHasUndef = function( src )
   else if( _.arrayIs( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
-    if( entityHasUndef( src[s] ) )
+    if( entityHasUndef( src[ s ] ) )
     {
       return true;
     }
@@ -1082,7 +1081,7 @@ var entityHasUndef = function( src )
   else if( _.objectIs( src ) )
   {
     for( s in src )
-    if( entityHasUndef( src[s] ) )
+    if( entityHasUndef( src[ s ] ) )
     {
       return true;
     }
@@ -1796,7 +1795,7 @@ var entitySelectSet = function( container,query,value )
 //
 
 /**
- * Returns generated options object( o ) that can be used in other methods.
+ * Returns generated options object( o ) for ( entitySelect ) routine.
  * Query( o.query ) can be represented as string or array of strings divided by one of( o.delimeter ).
  * Function parses( o.query ) in to array( o.qarrey ) by splitting string using( o.delimeter ).
  *
@@ -1902,7 +1901,7 @@ var _entitySelect = function _entitySelect( o )
 //
 
 /**
- * Returns value from entity that corresponds to index/key or path provided by( o.qarrey ) from entity( o.container ).
+ * Returns value from entity that corresponds to index / key or path provided by( o.qarrey ) from entity( o.container ).
  *
  * @param {Object|Array} [ o.container=null ] - Source entity.
  * @param {Array} [ o.qarrey=null ] - Specifies key/index to select or path to element. If has '*' method processes each element of container.
@@ -2328,42 +2327,42 @@ entityGroup.defaults =
 
 //
 
-  /**
-   * The result of _entityMost method object.
-   * @typedef {Object} wTools~entityMostResult
-   * @property {Number} index - Index of found element.
-   * @property {String|Number} key - If the search was on map, the value of this property sets to key of found element.
-   * Else if search was on array - to index of found element.
-   * @property {Number} value - The found result of onElement, if onElement don't set, this value will be same as element.
-   * @property {Number} element - The appropriate element for found value.
-   */
+/**
+ * The result of _entityMost method object.
+ * @typedef {Object} wTools~entityMostResult
+ * @property {Number} index - Index of found element.
+ * @property {String|Number} key - If the search was on map, the value of this property sets to key of found element.
+ * Else if search was on array - to index of found element.
+ * @property {Number} value - The found result of onElement, if onElement don't set, this value will be same as element.
+ * @property {Number} element - The appropriate element for found value.
+ */
 
-  /**
-   * Returns object( wTools~entityMostResult ) that contains min or max element of entity, it depends on( returnMax ).
-   *
-   * @param {ArrayLike|Object} src - Source entity.
-   * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
-   * @param {Boolean} returnMax  - If true - method returns maximum, else method returns minimum value from entity.
-   * @returns {wTools~entityMostResult} Object with result of search.
-   *
-   * @example
-   * //returns { index: 0, key: 0, value: 1, element: 1 }
-   * _._entityMost([ 1, 3, 3, 9, 10 ], undefined, 0 );
-   *
-   * @example
-   * //returns { index: 4, key: 4, value: 10, element: 10 }
-   * _._entityMost( [ 1, 3, 3, 9, 10 ], undefined, 1 );
-   *
-   * @example
-   * //returns { index: 4, key: 4, value: 10, element: 10 }
-   * _._entityMost( { a : 1, b : 2, c : 3 }, undefined, 0 );
-   *
-   * @private
-   * @method _entityMost
-   * @throws {Exception} If( arguments.length ) is not equal 3.
-   * @throws {Exception} If( onElement ) function is not implemented.
-   * @memberof wTools
-   */
+/**
+ * Returns object( wTools~entityMostResult ) that contains min or max element of entity, it depends on( returnMax ).
+ *
+ * @param {ArrayLike|Object} src - Source entity.
+ * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+ * @param {Boolean} returnMax  - If true - method returns maximum, else method returns minimum value from entity.
+ * @returns {wTools~entityMostResult} Object with result of search.
+ *
+ * @example
+ * //returns { index: 0, key: 0, value: 1, element: 1 }
+ * _._entityMost([ 1, 3, 3, 9, 10 ], undefined, 0 );
+ *
+ * @example
+ * //returns { index: 4, key: 4, value: 10, element: 10 }
+ * _._entityMost( [ 1, 3, 3, 9, 10 ], undefined, 1 );
+ *
+ * @example
+ * //returns { index: 4, key: 4, value: 10, element: 10 }
+ * _._entityMost( { a : 1, b : 2, c : 3 }, undefined, 0 );
+ *
+ * @private
+ * @method _entityMost
+ * @throws {Exception} If( arguments.length ) is not equal 3.
+ * @throws {Exception} If( onElement ) function is not implemented.
+ * @memberof wTools
+ */
 
 var _entityMost = function( src,onElement,returnMax )
 {
@@ -2447,25 +2446,25 @@ var _entityMost = function( src,onElement,returnMax )
 
 //
 
-  /**
-   * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with smallest value from( src ).
-   *
-   * @param {ArrayLike|Object} src - Source entity.
-   * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
-   * @returns {wTools~entityMostResult} Object with result of search.
-   *
-   * @example
-   *  //returns { index : 2, key : 'c', value 3: , element : 9  };
-   *  var obj = { a: 25, b: 16, c: 9 };
-   *  var min = wTools.entityMin( obj, Math.sqrt );
-   *
-   * @see wTools~onEach
-   * @see wTools~entityMostResult
-   * @method entityMin
-   * @throws {Exception} If missed arguments.
-   * @throws {Exception} If passed extra arguments.
-   * @memberof wTools
-   */
+/**
+ * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with smallest value from( src ).
+ *
+ * @param {ArrayLike|Object} src - Source entity.
+ * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+ * @returns {wTools~entityMostResult} Object with result of search.
+ *
+ * @example
+ *  //returns { index : 2, key : 'c', value 3: , element : 9  };
+ *  var obj = { a: 25, b: 16, c: 9 };
+ *  var min = wTools.entityMin( obj, Math.sqrt );
+ *
+ * @see wTools~onEach
+ * @see wTools~entityMostResult
+ * @method entityMin
+ * @throws {Exception} If missed arguments.
+ * @throws {Exception} If passed extra arguments.
+ * @memberof wTools
+ */
 
 var entityMin = function( src,onElement )
 {
@@ -2475,25 +2474,25 @@ var entityMin = function( src,onElement )
 
 //
 
-  /**
-   * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with biggest value from( src ).
-   *
-   * @param {ArrayLike|Object} src - Source entity.
-   * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
-   * @returns {wTools~entityMostResult} Object with result of search.
-   *
-   * @example
-   *  //returns { index: 0, key: "a", value: 25, element: 25 };
-   *  var obj = { a: 25, b: 16, c: 9 };
-   *  var max = wTools.entityMax( obj );
-   *
-   * @see wTools~onEach
-   * @see wTools~entityMostResult
-   * @method entityMax
-   * @throws {Exception} If missed arguments.
-   * @throws {Exception} If passed extra arguments.
-   * @memberof wTools
-   */
+/**
+ * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with biggest value from( src ).
+ *
+ * @param {ArrayLike|Object} src - Source entity.
+ * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+ * @returns {wTools~entityMostResult} Object with result of search.
+ *
+ * @example
+ *  //returns { index: 0, key: "a", value: 25, element: 25 };
+ *  var obj = { a: 25, b: 16, c: 9 };
+ *  var max = wTools.entityMax( obj );
+ *
+ * @see wTools~onEach
+ * @see wTools~entityMostResult
+ * @method entityMax
+ * @throws {Exception} If missed arguments.
+ * @throws {Exception} If passed extra arguments.
+ * @memberof wTools
+ */
 
 var entityMax = function( src,onElement )
 {
