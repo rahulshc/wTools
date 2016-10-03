@@ -1698,6 +1698,145 @@
 
   };
 
+  //
+
+  var entityGroup = function( test )
+  {
+    test.description = 'default options';
+    var o =
+    {
+      src : [ { a : 1, b : 1 }, { a : 2, b : 2 } ],
+    };
+    var got = _.entityGroup( o );
+    var expected =
+    {
+      a : [ 1, 2 ],
+      b : [ 1, 2 ]
+    }
+    test.identical( got, expected );
+
+
+    //
+
+    test.description = 'one key';
+      var o =
+      {
+        src : [ { a : 1, b : 1 }, { a : 2, b : 2 } ],
+        key : [ 'a' ]
+      };
+      var got = _.entityGroup( o );
+    var expected =
+    {
+      a : { 1 : [ o.src[ 0 ] ], 2 : [ o.src[ 1 ] ] }
+    }
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'one key, usingOriginal false';
+      var o =
+      {
+        src : [ { a : 1, b : 1 }, { a : 2, b : 2 } ],
+        key : [ 'a' ],
+        usingOriginal : 0
+      };
+      var got = _.entityGroup( o );
+    var expected =
+    {
+      a : [ 1, 2 ]
+    }
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'key as string';
+    var o =
+    {
+      src : [ { a : 1, b : 1 }, { b : 1 }, { a : 2, b : 2 } ],
+      key : 'b',
+    };
+    var got = _.entityGroup( o );
+    var expected =
+    {
+      "1" : [ { a : 1, b : 1 }, { b : 1 } ],
+      "2" : [ { a : 2, b : 2 } ],
+    }
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'src objectLike, key as string';
+    var o =
+    {
+      src : { a : { b : 1 }, b : { b : 1 }, c : { b : 2 } },
+      key : 'b',
+    };
+    var got = _.entityGroup( o );
+    var expected =
+    {
+      "1" : [ { b : 1 }, { b : 1 } ],
+      "2" : [ { b : 2 } ]
+    }
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'array';
+    var o =
+    {
+      src : [ [ 0, 1, 1 ],[ 0, 2, 2 ] ],
+      key : [ 0],
+    };
+    var got = _.entityGroup( o );
+    var expected =
+    {
+      "0" :
+      {
+        "0" :
+        [
+          [ 0, 1, 1 ],
+          [ 0, 2, 2 ]
+        ],
+      }
+    }
+    test.identical( got, expected );
+
+    //
+
+    if( Config.debug )
+    {
+      test.description = 'no arguments';
+      test.shouldThrowError( function()
+      {
+         _.entityGroup();
+      });
+
+      test.description = 'invalid key type';
+      test.shouldThrowError( function()
+      {
+        var o =
+        {
+          src : [ { a : 1, b : 1 }, { b : 1 } ],
+          key : { a : 1 },
+        };
+         _.entityGroup( o );
+      });
+
+      test.description = 'invalid src type';
+      test.shouldThrowError( function()
+      {
+        var o =
+        {
+          src : 12,
+          key : 'a',
+        };
+         _.entityGroup( o );
+      });
+
+    }
+
+  };
+
   var Proto =
   {
 
@@ -1730,6 +1869,8 @@
       entityKeyWithValue : entityKeyWithValue,
       _entitySelectOptions : _entitySelectOptions,
       __entitySelectAct : __entitySelectAct,
+      entityGroup : entityGroup,
+
 
     }
 
