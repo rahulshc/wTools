@@ -2234,6 +2234,18 @@ var entityFilter = function( src,onEach )
    * //}
    * _.entityGroup( { src : [ {key1 : 1, key2 : 2 },{key1 : 2 },{key1 : 3 }], usingOriginal : 0, key : ['key1','key3']} );
    *
+   * @example
+   * // returns
+   * // {
+   * //   a :
+   * //   {
+   * //     1 : [ { a : 1, b : 2 } ],
+   * //     2 : [ { a : 2, b : 3 } ],
+   * //     undefined : [ { c : 4 } ]
+   * //   }
+   * // }
+   * _.entityGroup( { src : [ { a : 1, b : 2 }, { a : 2, b : 3}, {  c : 4 }  ], key : ['a'] }  );
+   *
    * @method entityGroup
    * @throws {exception} If( arguments.length ) is not equal 1.
    * @throws {exception} If( o.key ) is not a Array or String.
