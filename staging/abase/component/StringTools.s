@@ -597,253 +597,6 @@ var _toStr = function _toStr( src,o )
 //
 
 /**
- * Returns source string( src ) with limited number( limit ) of characters.
- * For example: src : 'string', limit : 4, result -> '"st"..."ng"'.
- * * Function can be called in two ways:
- * - First to pass only source string and limit;
- * - Second to pass map like ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
- *
- * @param {string|object} src - String to parse or object with options.
- * @param {string} [ o.src=null ] - Source string.
- * @param {number} [ o.limit=40 ] - Limit of characters in output.
- * @param {string} [ o.wrap='"' ] - String wrapper. Use zero or false to disable.
- * @param {string} [ o.escaping=1 ] - Escaping characters appears in output.
- * @returns {string} Returns simplified source string.
- *
- * @example
- * //returns '"st" ... "ng"'
- * _.strShort( 'string', 4 );
- *
- * @example
- * //returns '"s" ... "ng"'
- * _.strShort( 's\ntring', 4 );
- *
- * @example
- * //returns 'string'
- * _.strShort( 'string', 0 );
- *
- * @example
- * //returns "'st' ... 'ng'"
- * _.strShort( { src : 'string', limit : 4, wrap : "'" } );
- *
- * @example
- * //returns "si ... le"
- *  _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
- *
- * @example
- * //returns '"si" ... "le"'
- *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"' } );
- *
- * @example
- * //returns '"s\u0001" ... " string"'
- *  _.strShort( 's\x01t\x01ing string string', 14 );
- *
- * @method strShort
- * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o ) is extended with uknown property.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.limit ) is not a Number.
- * @throws { Exception } Throw an exception if( o.wrap ) is not a String.
- *
- * @memberof wTools
- *
- */
-
-var strShort = function( o )
-{
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
-  else if( arguments.length === 1 )
-  if( _.strIs( o ) )
-  o = { src : arguments[ 0 ] };
-
-  _.mapSupplement( o,strShort.defaults );
-  _.assertMapHasOnly( o,strShort.defaults );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.numberIs( o.limit ) );
-
-  var str = o.src;
-
-  if( str.length > o.limit && o.limit > 0  )
-  {
-    var b = Math.ceil( o.limit / 2 );
-    var e = o.limit - b;
-
-    var begin = str.substr( 0, b );
-    var end = str.slice( -e );
-
-    if( o.escaping )
-    {
-      var check = function( s, l )
-      {
-        var temp = _.strEscape( s );
-
-        if( temp.length > l )
-        for( var i = s.length - 1; i >= 0 ; --i )
-        {
-          if( temp.length <= l )
-          break;
-          temp = temp.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
-        }
-
-        return temp;
-      }
-
-      begin = check( begin, b );
-      end = check( end, e );
-
-    }
-
-    if( o.wrap )
-    {
-      _.assert( _.strIs( o.wrap ) );
-
-      begin = o.wrap + begin + o.wrap;
-      end = o.wrap + end + o.wrap;
-    }
-
-    if( o.limit === 1 )
-    str = begin;
-    else
-    str = begin + ' ... ' +  end ;
-
-  }
-  else
-  {
-    if( o.escaping )
-    str = _.strEscape( str );
-  }
-
-  return str;
-}
-
-strShort.defaults =
-{
-  src : null,
-  limit : 40,
-  wrap : '"',
-  escaping : 1
-}
-
-//
-
-/**
- * Disables escaped characters in source string( src ).
- * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
- * @param {string} src - Source string.
- * @returns {string} Returns string with disabled escaped characters.
- *
- * @example
- * //returns "\nhello\u001bworld\n"
- * _.strEscape( '\nhello\u001bworld\n' );
- *
- * @method strEscape
- * @memberof wTools
- *
- */
-var strEscape =  function( src )
-{
-    // 007f : ""
-    // . . .
-    // 009f : ""
-
-    // 00ad : "­"
-
-    // \' 	single quote 	byte 0x27 in ASCII encoding
-    // \" 	double quote 	byte 0x22 in ASCII encoding
-    // \\ 	backslash 	byte 0x5c in ASCII encoding
-    // \b 	backspace 	byte 0x08 in ASCII encoding
-    // \f 	form feed - new page 	byte 0x0c in ASCII encoding
-    // \n 	line feed - new line 	byte 0x0a in ASCII encoding
-    // \r 	carriage return 	byte 0x0d in ASCII encoding
-    // \t 	horizontal tab 	byte 0x09 in ASCII encoding
-    // \v 	vertical tab 	byte 0x0b in ASCII encoding
-    // source : http://en.cppreference.com/w/cpp/language/escape
-
-  _.assert( _.strIs( src ) );
-
-  var result = '';
-  for( var s = 0 ; s < src.length ; s++ )
-  {
-    var c = src[ s ];
-    var code = c.charCodeAt( 0 );
-
-    _.assert( c.length === 1 );
-
-    //if( 127 <= code && code <= 159 || code === 173 )
-    if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
-    {
-      debugger;
-      result += _.strUnicodeEscape( c );
-    }
-    else switch( c )
-    {
-
-      case '\\' :
-        debugger;
-        result += '\\\\';
-        break;
-
-      case '\"' :
-        result += '\\"';
-        break;
-
-      // case '\'' :
-      //   result += "\\'";
-      //   break;
-
-      // case '\`' :
-      //   result += "\\`";
-      //   break;
-
-      case '\b' :
-        result += '\\b';
-        break;
-
-      case '\f' :
-        result += '\\f';
-        break;
-
-      case '\n' :
-        result += '\\n';
-        break;
-
-      case '\r' :
-        result += '\\r';
-        break;
-
-      case '\t' :
-        result += '\\t';
-        break;
-
-      // case '\v' :
-      //   xxx
-      //   result += '\\v';
-      //   break;
-
-      default :
-
-        _.assert( code !== 92 );
-        if( code < 32 )
-        {
-          debugger;
-          result += _.strUnicodeEscape( c );
-        }
-        else
-        result += c;
-
-    }
-  }
-
-  return result;
-}
-
-//
-
-/**
  * Converts object passed by argument( src ) to string representation using
  * options provided by argument( o ) for string and number types.
  * Returns string with object type for routines and errors, iso format for date, string representation for atomic.
@@ -1669,7 +1422,9 @@ var _toStrFromContainer = function( o )
     }
     else if( !optionsContainer.wrap )
     if( !names || !simple )
+    //if( !simple )
     {
+      debugger;
       result += optionsItem.dtab;
     }
 
@@ -1718,6 +1473,256 @@ var _toStrFromContainer = function( o )
       result += '\n' + optionsContainer.tab;
     }
     result += postfix;
+  }
+
+  return result;
+}
+
+// --
+//
+// --
+
+/**
+ * Returns source string( src ) with limited number( limit ) of characters.
+ * For example: src : 'string', limit : 4, result -> '"st"..."ng"'.
+ * * Function can be called in two ways:
+ * - First to pass only source string and limit;
+ * - Second to pass map like ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
+ *
+ * @param {string|object} src - String to parse or object with options.
+ * @param {string} [ o.src=null ] - Source string.
+ * @param {number} [ o.limit=40 ] - Limit of characters in output.
+ * @param {string} [ o.wrap='"' ] - String wrapper. Use zero or false to disable.
+ * @param {string} [ o.escaping=1 ] - Escaping characters appears in output.
+ * @returns {string} Returns simplified source string.
+ *
+ * @example
+ * //returns '"st" ... "ng"'
+ * _.strShort( 'string', 4 );
+ *
+ * @example
+ * //returns '"s" ... "ng"'
+ * _.strShort( 's\ntring', 4 );
+ *
+ * @example
+ * //returns 'string'
+ * _.strShort( 'string', 0 );
+ *
+ * @example
+ * //returns "'st' ... 'ng'"
+ * _.strShort( { src : 'string', limit : 4, wrap : "'" } );
+ *
+ * @example
+ * //returns "si ... le"
+ *  _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
+ *
+ * @example
+ * //returns '"si" ... "le"'
+ *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"' } );
+ *
+ * @example
+ * //returns '"s\u0001" ... " string"'
+ *  _.strShort( 's\x01t\x01ing string string', 14 );
+ *
+ * @method strShort
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } Throw an exception if( o ) is extended with uknown property.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.limit ) is not a Number.
+ * @throws { Exception } Throw an exception if( o.wrap ) is not a String.
+ *
+ * @memberof wTools
+ *
+ */
+
+var strShort = function( o )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
+  else if( arguments.length === 1 )
+  if( _.strIs( o ) )
+  o = { src : arguments[ 0 ] };
+
+  _.mapSupplement( o,strShort.defaults );
+  _.assertMapHasOnly( o,strShort.defaults );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.numberIs( o.limit ) );
+
+  var str = o.src;
+
+  if( str.length > o.limit && o.limit > 0  )
+  {
+    var b = Math.ceil( o.limit / 2 );
+    var e = o.limit - b;
+
+    var begin = str.substr( 0, b );
+    var end = str.slice( -e );
+
+    if( o.escaping )
+    {
+      var check = function( s, l )
+      {
+        var temp = _.strEscape( s );
+
+        if( temp.length > l )
+        for( var i = s.length - 1; i >= 0 ; --i )
+        {
+          if( temp.length <= l )
+          break;
+          temp = temp.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
+        }
+
+        return temp;
+      }
+
+      begin = check( begin, b );
+      end = check( end, e );
+
+    }
+
+    if( o.wrap )
+    {
+      _.assert( _.strIs( o.wrap ) );
+
+      begin = o.wrap + begin + o.wrap;
+      end = o.wrap + end + o.wrap;
+    }
+
+    if( o.limit === 1 )
+    str = begin;
+    else
+    str = begin + ' ... ' +  end ;
+
+  }
+  else
+  {
+    if( o.escaping )
+    str = _.strEscape( str );
+  }
+
+  return str;
+}
+
+strShort.defaults =
+{
+  src : null,
+  limit : 40,
+  wrap : '"',
+  escaping : 1
+}
+
+//
+
+/**
+ * Disables escaped characters in source string( src ).
+ * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
+ * @param {string} src - Source string.
+ * @returns {string} Returns string with disabled escaped characters.
+ *
+ * @example
+ * //returns "\nhello\u001bworld\n"
+ * _.strEscape( '\nhello\u001bworld\n' );
+ *
+ * @method strEscape
+ * @memberof wTools
+ *
+ */
+
+var strEscape =  function( src )
+{
+    // 007f : ""
+    // . . .
+    // 009f : ""
+
+    // 00ad : "­"
+
+    // \' 	single quote 	byte 0x27 in ASCII encoding
+    // \" 	double quote 	byte 0x22 in ASCII encoding
+    // \\ 	backslash 	byte 0x5c in ASCII encoding
+    // \b 	backspace 	byte 0x08 in ASCII encoding
+    // \f 	form feed - new page 	byte 0x0c in ASCII encoding
+    // \n 	line feed - new line 	byte 0x0a in ASCII encoding
+    // \r 	carriage return 	byte 0x0d in ASCII encoding
+    // \t 	horizontal tab 	byte 0x09 in ASCII encoding
+    // \v 	vertical tab 	byte 0x0b in ASCII encoding
+    // source : http://en.cppreference.com/w/cpp/language/escape
+
+  _.assert( _.strIs( src ) );
+
+  var result = '';
+  for( var s = 0 ; s < src.length ; s++ )
+  {
+    var c = src[ s ];
+    var code = c.charCodeAt( 0 );
+
+    _.assert( c.length === 1 );
+
+    //if( 127 <= code && code <= 159 || code === 173 )
+    if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
+    {
+      debugger;
+      result += _.strUnicodeEscape( c );
+    }
+    else switch( c )
+    {
+
+      case '\\' :
+        debugger;
+        result += '\\\\';
+        break;
+
+      case '\"' :
+        result += '\\"';
+        break;
+
+      // case '\'' :
+      //   result += "\\'";
+      //   break;
+
+      // case '\`' :
+      //   result += "\\`";
+      //   break;
+
+      case '\b' :
+        result += '\\b';
+        break;
+
+      case '\f' :
+        result += '\\f';
+        break;
+
+      case '\n' :
+        result += '\\n';
+        break;
+
+      case '\r' :
+        result += '\\r';
+        break;
+
+      case '\t' :
+        result += '\\t';
+        break;
+
+      // case '\v' :
+      //   xxx
+      //   result += '\\v';
+      //   break;
+
+      default :
+
+        _.assert( code !== 92 );
+        if( code < 32 )
+        {
+          debugger;
+          result += _.strUnicodeEscape( c );
+        }
+        else
+        result += c;
+
+    }
   }
 
   return result;
@@ -3857,8 +3862,6 @@ var Proto =
 
   _toStr : _toStr,
   _toStrShort : _toStrShort,
-  strShort : strShort,
-  strEscape : strEscape,
 
   _toStrIsVisibleElement : _toStrIsVisibleElement,
   _toStrIsSimpleElement : _toStrIsSimpleElement,
@@ -3878,6 +3881,9 @@ var Proto =
   _toStrFromContainer : _toStrFromContainer,
 
   //
+
+  strShort : strShort,
+  strEscape : strEscape,
 
   toStrForRange : toStrForRange, /* exmperimental */
   toStrForCall : toStrForCall, /* exmperimental */
