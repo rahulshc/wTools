@@ -5583,6 +5583,31 @@ var routineOptions = function routineOptions( routine,options )
   return options;
 }
 
+//
+
+var routines = function( src )
+{
+  var result = {};
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( src ) );
+
+  var keys = _.mapKeysCustom
+  ({
+    src : src,
+    own : 0,
+    enumerable : 1,
+  });
+
+  for( var k = 0 ; k < keys.length ; k++ )
+  {
+    if( _.routineIs( src[ keys[ k ] ] ) )
+    result[ keys[ k ] ] = src[ keys[ k ] ];
+  }
+
+  return result;
+}
+
 // --
 // time
 // --
@@ -5702,13 +5727,13 @@ var timeOut = function( delay,onReady )
     {
       result = onReady();
       if( result instanceof wConsequence )
-      result.then_( con );
+      result.thenDo( con );
       else
       con.give( result );
     }
     else if( onReady instanceof wConsequence )
     {
-      onReady.then_( con );
+      onReady.thenDo( con );
       onReady.give();
     }
     else
@@ -5762,7 +5787,7 @@ var timePeriodic = function( delay,onReady )
     if( result === false )
     clearInterval( id );
     wConsequence.give( con,null );
-    con.then_( handlePeriodicCon );
+    con.thenDo( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
   _onReady = function()
@@ -5771,13 +5796,13 @@ var timePeriodic = function( delay,onReady )
     if( result === false )
     clearInterval( id );
     wConsequence.give( con,null );
-    con.then_( handlePeriodicCon );
+    con.thenDo( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
     wConsequence.give( con,null );
-    con.then_( handlePeriodicCon );
+    con.thenDo( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
 
@@ -7975,18 +8000,18 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
 
 /**
  * The arraySlice() returns a shallow copy of a portion of an array
- * into a new array.
+ * into f new array.
  *
- * It takes three arguments (array, a, b)
- * checks if (array) is an Array, if (a) and (b) are numbers.
- * Creates variables (result, a, b) and assigns them values.
- * The arraySlice() creates a new array (result) from (a) to but not including (b),
+ * It takes three arguments (array, f, l)
+ * checks if (array) is an Array, if (f) and (l) are numbers.
+ * Creates variables (result, f, l) and assigns them values.
+ * The arraySlice() creates a new array (result) from (f) to but not including (l),
  * and returns (result).
  *
  * @param { Array } array - An array to return a new array from begin to but not including end.
- * @param { Number } [ a = 0 ] a - begin zero-based index at which to begin extraction.
- * @param { Number } [ b = array.length ] b - end zero-based index at which to end extraction.
- * If (b) is omitted, arraySlice extracts through the end of the sequence (array.length).
+ * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
+ * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
+ * If (l) is omitted, arraySlice extracts through the end of the sequence (array.length).
  *
  * @example
  * // returns [ 3, 4, 5, 6 ]
@@ -7995,32 +8020,84 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
  * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
  * @throws { Error } Will throw an Error if (array) is not an Array.
- * @throws { Error } Will throw an Error if (a) is not a Number.
- * @throws { Error } Will throw an Error if (b) is not a Number.
+ * @throws { Error } Will throw an Error if (f) is not a Number.
+ * @throws { Error } Will throw an Error if (l) is not a Number.
  * @memberof wTools
 */
 
-var arraySlice = function arraySlice( array,a,b )
+var arraySlice = function arraySlice( array,f,l )
 {
   _.assert( _.arrayLike( array ) );
 
   var result;
-  var a = a !== undefined ? a : 0;
-  var b = b !== undefined ? b : array.length;
+  var f = f !== undefined ? f : 0;
+  var l = l !== undefined ? l : array.length;
 
-  _.assert( _.numberIs( a ) );
-  _.assert( _.numberIs( b ) );
+  _.assert( _.numberIs( f ) );
+  _.assert( _.numberIs( l ) );
 
-  if( b < a )
-  b = a;
+  if( l < f )
+  l = f;
 
   if( _.bufferIs( array ) )
-  result = new array.constructor( b-a );
+  result = new array.constructor( l-f );
   else
-  result = new Array( b-a );
+  result = new Array( l-f );
 
-  for( var r = a ; r < b ; r++ )
-  result[ r-a ] = array[ r ];
+  for( var r = f ; r < l ; r++ )
+  result[ r-f ] = array[ r ];
+
+  return result;
+}
+
+//
+
+/* srcBuffer = _.arrayMultislice( [ originalBuffer,f ],[ originalBuffer,0,srcAttribute.atomsPerElement ] ); */
+
+var arrayMultislice = function arrayMultislice()
+{
+  var length = 0;
+
+  if( arguments.length === 0 )
+  return [];
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+
+    var src = arguments[ a ];
+    var f = src[ 1 ];
+    var l = src[ 2 ];
+
+    _.assert( _.arrayLike( src ) && _.arrayLike( src[ 0 ] ),'expects array of array' );
+    var f = f !== undefined ? f : 0;
+    var l = l !== undefined ? l : src[ 0 ].length;
+    if( l < f )
+    l = f;
+
+    _.assert( _.numberIs( f ) );
+    _.assert( _.numberIs( l ) );
+
+    src[ 1 ] = f;
+    src[ 2 ] = l;
+
+    length += l-f;
+
+  }
+
+  var result = new arguments[ 0 ][ 0 ].constructor( length );
+  var r = 0;
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+
+    var src = arguments[ a ];
+    var f = src[ 1 ];
+    var l = src[ 2 ];
+
+    for( var i = f ; i < l ; i++, r++ )
+    result[ r ] = src[ 0 ][ i ];
+
+  }
 
   return result;
 }
@@ -12118,6 +12195,8 @@ var Proto =
   routinesCall : routinesCall,
   routineOptions : routineOptions,
 
+  routines : routines,
+
   bind : null,
 
 
@@ -12200,7 +12279,8 @@ var Proto =
   arraySpliceArray : arraySpliceArray,
 
   arraySlice : arraySlice,
-  arraySplice : arraySplice,
+  arrayMultislice : arrayMultislice,
+  arraySplice : arraySplice, /* experimental */
   arrayAs : arrayAs,
 
   arrayUniqueIs : arrayUniqueIs,
@@ -12208,7 +12288,7 @@ var Proto =
 
   arrayToStr : arrayToStr,
 
-  arrayPut : arrayPut, /* experimental */
+  arrayPut : arrayPut,
 
   arrayMask : arrayMask,
   arrayUnmask : arrayUnmask,

@@ -353,7 +353,7 @@ var execStages = function( stages,o )
 
     if( _.routineIs( o.onEnd ) )
     {
-      debugger;
+      //debugger;
       o.onEnd = _.routineJoin( o.context,o.onEnd );
     }
 
@@ -429,7 +429,7 @@ var execStages = function( stages,o )
       if( !isSyn || ret instanceof wConsequence )
       {
         if( ret instanceof wConsequence )
-        ret.then_( handleNext );
+        ret.thenDo( handleNext );
         else
         handleNext( null );
       }
@@ -456,11 +456,11 @@ var execStages = function( stages,o )
 
       if( !o.manual )
       //if( ret instanceof wConsequence )
-      ret.then_( _.routineJoin( o.context,routine,args ) );
+      ret.thenDo( _.routineJoin( o.context,routine,args ) );
       //else
       //ret = routine.apply( o.context,args );
 
-      ret.then_( handleStageEnd );
+      ret.thenDo( handleStageEnd );
 
     }
     catch( err )

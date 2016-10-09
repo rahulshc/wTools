@@ -505,7 +505,10 @@ var _toStr = function _toStr( src,o )
 
   /* */
 
-  if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
+  if( src && src.toStr && src.toStr.notMethod )
+  debugger;
+
+  if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod && !_ObjectHasOwnProperty.call( src,'constructor' ) )
   {
 
     var r = src.toStr( o );
@@ -1424,7 +1427,6 @@ var _toStrFromContainer = function( o )
     if( !names || !simple )
     //if( !simple )
     {
-      debugger;
       result += optionsItem.dtab;
     }
 
