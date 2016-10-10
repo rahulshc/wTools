@@ -6949,46 +6949,6 @@ var arrayFlatten = function()
 
 //
 
-var arrayFlattenToMapUnique = function()
-{
-  var result = _.arrayIs( this ) ? this : {};
-
-  var extend = function( r,s )
-  {
-    _.assertMapHasNone( r,s );
-    _.mapExtend( r,s );
-  }
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-
-    var src = arguments[ a ];
-
-    if( !_.arrayLike( src ) )
-    {
-      _.assert( _.objectIs( src ) );
-      if( src !== undefined )
-      extend( result, src );
-      continue;
-    }
-
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      if( _.arrayIs( src[ s ] ) )
-      _.arrayFlattenToMapUnique.call( result,src[ s ] );
-      else if( _.objectIs( src[ s ] ) )
-      extend( result, src );
-      else
-      throw _.err( 'array should have only maps' );
-    }
-
-  }
-
-  return result;
-}
-
-//
-
 var arrayCopy = function arrayCopy()
 {
   var result;
@@ -10838,6 +10798,64 @@ var mapInvertKeyValue = function( src )
 }
 
 //
+
+var mapsFlatten = function mapsFlatten( o )
+{
+
+  _.assert( arguments.length === 1 );
+  _.routineOptions( mapsFlatten,o );
+  _.assert( _.arrayIs( o.maps ) )
+
+  o.result = o.result || {};
+
+  var extend = function( r,s )
+  {
+    if( o.assertUniqueness )
+    _.assertMapHasNone( r,s );
+    _.mapExtend( r,s );
+  }
+
+  for( var a = 0 ; a < o.maps.length ; a++ )
+  {
+
+    var src = o.maps[ a ];
+
+    if( !_.arrayLike( src ) )
+    {
+      _.assert( _.objectIs( src ) );
+      if( src !== undefined )
+      extend( o.result, src );
+      continue;
+    }
+
+    for( var s = 0 ; s < src.length ; s++ )
+    {
+      if( _.arrayIs( src[ s ] ) )
+      mapsFlatten
+      ({
+        maps : src[ s ],
+        result : o.result,
+        assertUniqueness : o.assertUniqueness,
+      });
+      else if( _.objectIs( src[ s ] ) )
+      extend( o.result, src );
+      else
+      throw _.err( 'array should have only maps' );
+    }
+
+  }
+
+  return o.result;
+}
+
+mapsFlatten.defaults =
+{
+  maps : null,
+  result : null,
+  assertUniqueness : 1,
+}
+
+//
 /*
 var mapsPluck = function( srcMaps,filterName )
 {
@@ -11273,12 +11291,7 @@ var mapScreens = function( srcObject,screenObject )
 
   if( arguments.length > 2 )
   {
-    //debugger;
     screenObject =_ArraySlice.call( arguments,1 );
-/*
-    var args =_ArraySlice.call( arguments,1 );
-    screenObject = _.mapCopy.apply( this,args );
-*/
   }
 
   var dstObject = _mapScreen
@@ -12260,7 +12273,6 @@ var Proto =
   arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
 
   arrayFlatten : arrayFlatten,
-  arrayFlattenToMapUnique : arrayFlattenToMapUnique,
 
   arrayCopy : arrayCopy,
   arrayAppendMerging : arrayAppendMerging,
@@ -12384,6 +12396,7 @@ var Proto =
   mapPairs : mapPairs,
 
   mapInvertKeyValue : mapInvertKeyValue,
+  mapsFlatten : mapsFlatten,
 
   /* mapsPluck : mapsPluck, */
 
