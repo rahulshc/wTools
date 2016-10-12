@@ -2260,12 +2260,12 @@ var strShort = function( test )
 
   test.description = 'simple string';
   var got = _.strShort( 'string', 4 );
-  var expected = '"st"..."ng"';
+  var expected = '"st" ... "ng"';
   test.identical( got,expected );
 
   test.description = 'string with escaping';
   var got = _.strShort( 's\ntring', 4 );
-  var expected = '"s"..."ng"';
+  var expected = '"s" ... "ng"';
   test.identical( got,expected );
 
   test.description = 'limit 0';
@@ -2280,32 +2280,32 @@ var strShort = function( test )
 
   test.description = 'string wih spaces';
   var got = _.strShort( 'str  and', 5 );
-  var expected = '"str"..."nd"';
+  var expected = '"str" ... "nd"';
   test.identical( got,expected );
 
   test.description = 'one argument call';
   var got = _.strShort( { src : 'string', limit : 4, wrap : "'" } );
-  var expected = "'st'...'ng'";
+  var expected = "'st' ... 'ng'";
   test.identical( got,expected );
 
   test.description = 'string with whitespaces';
   var got = _.strShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
-  var expected = "'  '...'  '";
+  var expected = "'  ' ... '  '";
   test.identical( got,expected );
 
   test.description = 'wrap 0';
   var got = _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
-  var expected = "si...le";
+  var expected = "si ... le";
   test.identical( got,expected );
 
   test.description = 'escaping 0';
   var got = _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
-  var expected = '"si\x01"..."le"';
+  var expected = '"si\x01" ... "le"';
   test.identical( got,expected );
 
   test.description = 'escaping 1';
   var got = _.strShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
-  var expected = '"s"..."ng"';
+  var expected = '"s" ... "ng"';
   test.identical( got,expected );
 
   /**/
@@ -2323,12 +2323,11 @@ var strShort = function( test )
     {
       _.strShort( 'string', '0' );
     });
-
-    test.description = 'invalid argument type( not a Object )';
-    test.shouldThrowError( function()
-    {
-      _.strShort( 'src' );
-    });
+    // test.description = 'invalid argument type( not a Object )';
+    // test.shouldThrowError( function()
+    // {
+    //   _.strShort( 'src' );
+    // });
 
     test.description = 'no arguments';
     test.shouldThrowError( function()
