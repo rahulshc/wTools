@@ -1747,6 +1747,31 @@ var strUnjoin = function( test )
   var expected = [ "something", "postfix", "" ];
   test.identical( got,expected );
 
+  test.description = 'case 4';
+  var got = _.strUnjoin( 'abc', [ strUnjoin.any ] );
+  var expected = [ "abc" ];
+  test.identical( got,expected );
+
+  test.description = 'case 5';
+  var got = _.strUnjoin( 'abc', [ 'a', strUnjoin.any ] );
+  var expected = [ "a", "bc" ];
+  test.identical( got,expected );
+
+  test.description = 'case 6';
+  var got = _.strUnjoin( 'abc', [ 'b', strUnjoin.any ] );
+  var expected = undefined;
+  test.identical( got,expected );
+
+  test.description = 'case 7';
+  var got = _.strUnjoin( 'abc', [ strUnjoin.any, 'b' ] );
+  var expected = undefined;
+  test.identical( got,expected );
+
+  test.description = 'case 7';
+  var got = _.strUnjoin( 'abc', [ strUnjoin.any, 'c' ] );
+  var expected = [ "ab", "c" ];
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
