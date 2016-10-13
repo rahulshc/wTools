@@ -3246,27 +3246,35 @@ var strIndentation = function( src,tab )
 // !!! pelase update description
 
 /**
- * Puts line counter before each line in the string provided by argument( srcStr ).
+ * Puts line counter before each line in the string provided by( o.src ).
+ * Initial value of a counter can be changed by defining( o.first ) options( o ) property.
+ * Can be called in two ways:
+ * - First by passing all options in one object;
+ * - Second by passing source string only.
  *
- * @param {string} srcStr - Source string to parse.
+ * @param {object} o - options.
+ * @param {string} [ o.src=null ] - source string.
+ * @param {number} [ o.first=1 ] - sets initial value of a counter.
  * @returns {string} Returns string with line enumeration.
  *
  * @example
  * //returns
- * 1: line1
- * 2: line2
- * 3: line3
+ * // 1: line1
+ * // 2: line2
+ * // 3: line3
  * _.strLinesNumber( 'line1\nline2\nline3' );
  *
  * @example
- * //returns 1: sigle line example
- * _.strLinesNumber( 'sigle line example' );
+ * //returns
+ * // 2: line1
+ * // 3: line2
+ * // 4: line3
+ * _.strLinesNumber( { src:'line1\nline2\nline3', first : 2 } );
  *
  * @method strLinesNumber
  * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @memberof wTools
- *
  */
 
 var strLinesNumber = function( o )
