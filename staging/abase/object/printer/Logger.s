@@ -1,4 +1,4 @@
-(function(){
+(function _Logger_s_() {
 
 'use strict';
 
@@ -158,11 +158,12 @@ var _hookConsoleToFileHandler = function( wasMethod, methodName, fileName )
 
     wasMethod.apply( console,args );
 
-    if( _.fileWrite )
+    var fileProvider = _.FileProvider.def();
+    if( fileProvider.fileWrite )
     {
 
       var strOptions = { levels : 7 };
-      _.fileWrite
+      fileProvider.fileWrite
       ({
         path : fileName,
         data : _.toStr( args,strOptions ) + '\n',
@@ -503,12 +504,7 @@ else if (typeof window !== 'undefined' && window !== null)
 
 _global_.wLogger = wTools.Logger = Self;
 
-return Self;
-
-})();
-
-var logger = _global_.logger = new wLogger();
-_global_[ 'logger' ] = logger;
+var logger = _global_.logger = _global_[ 'logger' ] = new wLogger();
 logger.log = logger[ 'log' ];
 logger.logUp = logger[ 'logUp' ];
 logger.logDown = logger[ 'logDown' ];
@@ -520,3 +516,7 @@ logger.logDown = logger[ 'logDown' ];
 //logger.hookConsoleToAlert(); // xxx
 
 //logger.hookConsoleToDom();
+
+return Self;
+
+})();

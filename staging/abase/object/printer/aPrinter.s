@@ -1,4 +1,4 @@
-(function(){
+(function _aPrinter_s_(){
 
 'use strict';
 

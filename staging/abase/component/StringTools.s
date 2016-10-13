@@ -1001,41 +1001,43 @@ var _toStrFromHashMap = function( src,o )
   var result = '';
   var simple = 0;
 
-  _assert( src instanceof Map );
+  throw _.err( 'not implemented' );
 
-  /* */
-
-  debugger;
-  var names = [];
-  var values = {};
-  for( var s of src )
-  {
-    names.push( s[ 0 ] );
-    values[ s[ 0 ] ] = s[ 1 ];
-  }
-
-  /* */
-
-  var optionsItem = _.mapExtend( {},o );
-  optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
-  optionsItem.tab = o.tab + o.dtab;
-  optionsItem.level = o.level + 1;
-  optionsItem.prependTab = 0;
-
-  /* */
-
-  result += _toStrFromContainer
-  ({
-    values : values,
-    names : names,
-    optionsContainer : o,
-    optionsItem : optionsItem,
-    simple : simple,
-    prefix : '{',
-    postfix : '}',
-  });
-
-  return { text : result, simple : simple };
+  // _assert( src instanceof Map );
+  //
+  // /* */
+  //
+  // debugger;
+  // var names = [];
+  // var values = {};
+  // for( var s of src )
+  // {
+  //   names.push( s[ 0 ] );
+  //   values[ s[ 0 ] ] = s[ 1 ];
+  // }
+  //
+  // /* */
+  //
+  // var optionsItem = _.mapExtend( {},o );
+  // optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
+  // optionsItem.tab = o.tab + o.dtab;
+  // optionsItem.level = o.level + 1;
+  // optionsItem.prependTab = 0;
+  //
+  // /* */
+  //
+  // result += _toStrFromContainer
+  // ({
+  //   values : values,
+  //   names : names,
+  //   optionsContainer : o,
+  //   optionsItem : optionsItem,
+  //   simple : simple,
+  //   prefix : '{',
+  //   postfix : '}',
+  // });
+  //
+  // return { text : result, simple : simple };
 }
 
 //
@@ -2870,7 +2872,7 @@ var strUnjoin = function( srcStr,maskArray )
 
   /**/
 
-  var checkRoutine = function()
+  var checkToken = function()
   {
 
     if( rindex !== -1 )
@@ -2898,16 +2900,20 @@ var strUnjoin = function( srcStr,maskArray )
       if( index === -1 )
       return false;
 
-      checkRoutine();
+      if( rindex === -1 && index !== 0 )
+      return false;
+
+      checkToken();
 
       result.push( mask );
       index += mask.length;
 
     }
-    else if( _.routineIs( mask ) )
+    else if( mask === strUnjoin.any )
     {
       rindex = index;
     }
+    else throw _.err( 'strUnjoin : unexpected mask' );
 
     return true;
   }
@@ -2924,18 +2930,35 @@ var strUnjoin = function( srcStr,maskArray )
 
   }
 
-  if( checkRoutine() )
-  debugger;
+  if( rindex !== -1 )
+  {
+    index = srcStr.length;
+    if( !checkToken() )
+    return;
+  }
+
+  if( index !== srcStr.length )
+  return;
 
   /**/
 
   return result;
 }
 
-strUnjoin.any = function( src )
-{
-  return src;
-}
+strUnjoin.any = function any(){}
+
+// debugger;
+// var got = strUnjoin( 'abc',[ strUnjoin.any ] );
+// console.log( got );
+// var got = strUnjoin( 'abc',[ 'a',strUnjoin.any ] );
+// console.log( got );
+// var got = strUnjoin( 'abc',[ 'b',strUnjoin.any ] );
+// console.log( got );
+// var got = strUnjoin( 'abc',[ strUnjoin.any,'b' ] );
+// console.log( got );
+// var got = strUnjoin( 'abc',[ strUnjoin.any,'c' ] );
+// console.log( got );
+// debugger;
 
 //
 /**
@@ -3219,6 +3242,9 @@ var strIndentation = function( src,tab )
 }
 
 //
+
+// !!! pelase update description
+
 /**
  * Puts line counter before each line in the string provided by argument( srcStr ).
  *
@@ -3230,32 +3256,116 @@ var strIndentation = function( src,tab )
  * 1: line1
  * 2: line2
  * 3: line3
- * _.strNumberLines( 'line1\nline2\nline3' );
+ * _.strLinesNumber( 'line1\nline2\nline3' );
  *
  * @example
  * //returns 1: sigle line example
- * _.strNumberLines( 'sigle line example' );
+ * _.strLinesNumber( 'sigle line example' );
  *
- * @method strNumberLines
+ * @method strLinesNumber
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( srcStr ) is not a String.
  * @memberof wTools
  *
-*/
-var strNumberLines = function( srcStr )
+ */
+
+var strLinesNumber = function( o )
 {
+
+  if( _.strIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strLinesNumber,o );
   _assert( arguments.length === 1 );
-  _assert( _.strIs( srcStr ),'strNumberLines : expects string srcStr' );
-  var lines = srcStr.split( '\n' );
+  _assert( _.strIs( o.src ),'strLinesNumber : expects string o.src' );
+
+  var lines = o.src.split( '\n' );
 
   for( var l = 0; l < lines.length; l += 1 )
   {
 
-    lines[ l ] = ( l + 1 ) + ' : ' + lines[ l ];
+    lines[ l ] = ( l + o.first ) + ' : ' + lines[ l ];
 
   }
 
   return lines.join( '\n' );
+}
+
+strLinesNumber.defaults =
+{
+  src : null,
+  first : 1,
+}
+
+//
+
+var strLinesSelect = function( o )
+{
+
+  if( arguments.length === 2 )
+  {
+
+    if( _.arrayIs( arguments[ 1 ] ) )
+    o = { src : arguments[ 0 ], range : arguments[ 1 ] };
+    else if( _.numberIs( arguments[ 1 ] ) )
+    o = { src : arguments[ 0 ], range : [ arguments[ 1 ],arguments[ 1 ]+1 ] };
+    else throw _.err( 'unexpected argument',_.strTypeOf( range ) );
+
+  }
+  else if( arguments.length === 3 )
+  {
+    o = { src : arguments[ 0 ], range : [ arguments[ 1 ],arguments[ 2 ] ] };
+  }
+
+  _.assert( arguments.length <= 3 );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.arrayIs( o.range ) );
+  _.routineOptions( strLinesSelect,o );
+
+  debugger;
+
+  var i1 = -1;
+  var l = 0;
+  while( l < o.range[ 0 ] )
+  {
+    i1 = o.src.indexOf( o.nl,i1+1 );
+    if( i1 === -1 )
+    return;
+    l += 1;
+  }
+
+  debugger;
+
+  var i2 = i1;
+  while( l < o.range[ 1 ] )
+  {
+    i2 = o.src.indexOf( o.nl,i2+1 );
+    if( i2 === -1 )
+    {
+      if( l === o.range[ 1 ] - 1 )
+      {
+        i2 = o.src.length;
+        break;
+      }
+      else return;
+    }
+    l += 1;
+  }
+
+  debugger;
+
+  var result = o.src.substring( i1,i2 );
+
+  debugger;
+
+  return result;
+}
+
+strLinesSelect.defaults =
+{
+  src : null,
+  range : null,
+  nl : '\n',
 }
 
 //
@@ -3926,7 +4036,8 @@ var Proto =
   strUnicodeEscape : strUnicodeEscape, /* document me */
 
   strIndentation : strIndentation,
-  strNumberLines : strNumberLines,
+  strLinesNumber : strLinesNumber,
+  strLinesSelect : strLinesSelect,
 
   strCount : strCount,
   strDup : strDup, /* document me */

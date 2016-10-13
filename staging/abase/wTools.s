@@ -97,6 +97,500 @@ var _initConfig = function _initConfig()
 }
 
 // --
+// iterator
+// --
+
+var __eachAct = function( o )
+{
+
+  var i = 0;
+  var src = o.src;
+
+  /* usingVisits */
+
+  if( o.usingVisits )
+  {
+    if( o.visited.indexOf( o.src ) !== -1 )
+    return i;
+    o.visited.push( o.src );
+  }
+
+  var end = function()
+  {
+
+    if( o.root !== src )
+    o.onDown.call( o,src,o.key,o.index );
+    else if( o.usingRootVisit )
+    {
+      o.onDown.call( o,src,o.key,o.index );
+    }
+
+    if( o.usingVisits )
+    {
+      _.assert( o.visited[ o.visited.length-1 ] === o.src );
+      o.visited.pop();
+    }
+
+    return i;
+  }
+
+  /* on up */
+
+  o.counter += 1;
+  var c = true;
+  if( o.root !== src )
+  {
+    c = o.onUp.call( o,src,o.key,o.index );
+  }
+  else if( o.usingRootVisit )
+  {
+    c = o.onUp.call( o,src,o.key,o.index );
+  }
+
+  if( c === false )
+  return end();
+
+  /* element */
+
+  var __onElement = function( k )
+  {
+
+    //o.onUp.call( o,src[ k ],k,i );
+    //o.counter += 1;
+    i += 1;
+
+    if( o.recursive || o.root === o.src )
+    {
+
+      __eachAct
+      ({
+        src : src[ k ],
+        root : o.root,
+        onUp : o.onUp,
+        onDown : o.onDown,
+        own : o.own,
+        recursive : o.recursive,
+        usingVisits : o.usingVisits,
+        counter : o.counter,
+        visited : o.visited,
+        levels : o.levels-1,
+        path : o.path + k + '.',
+        key : k,
+        index : i,
+        down : o,
+      });
+
+    }
+
+    //o.onDown.call( o,src[ k ],k,i );
+
+  }
+
+  /* */
+
+  if( _.arrayLike( src ) )
+  {
+
+    for( var k = 0 ; k < src.length ; k++ )
+    {
+
+      __onElement( k );
+
+    }
+
+  }
+  else if( _.objectLike( src ) )
+  {
+
+    for( var k in src )
+    {
+
+      if( o.own )
+      if( !Object.hasOwnProperty.call( src,k ) )
+      continue;
+
+      __onElement( k );
+
+    }
+
+  }
+  else
+  {
+
+    // if( o.src !== o.root )
+    // {
+    //   end();
+    //   return i;
+    // }
+    //
+    // debugger;
+    //
+    // o.onUp.call( o,src[ k ],k,i );
+    // o.onDown.call( o,src[ k ],k,i );
+    // o.counter += 1;
+    // i++;
+
+  }
+
+  /* end */
+
+  return end();
+}
+
+//
+
+var _each = function( o )
+{
+
+  if( o.root === undefined )
+  o.root = o.src;
+
+  _.routineOptions( _each,o );
+  _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
+
+  o.onUp = o.onUp || function(){};
+  o.onDown = o.onDown || function(){};
+
+  return __eachAct( o );
+}
+
+_each.defaults =
+{
+  src : null,
+  root : null,
+  onUp : null,
+  onDown : null,
+  own : 0,
+  recursive : 0,
+  usingVisits : 1,
+  usingRootVisit : 1,
+  counter : 0,
+  visited : [],
+  levels : 256,
+  path : '.',
+  key : null,
+  index : 0,
+}
+
+//
+
+var each = function( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+
+  if( o.own === undefined )
+  o.own = 0;
+
+  if( o.usingVisits === undefined )
+  o.usingVisits = 0;
+
+  if( o.recursive === undefined )
+  o.recursive = 0;
+
+  if( o.usingRootVisit === undefined )
+  o.usingRootVisit = 0;
+
+  return _each( o );
+}
+
+//
+
+var eachOwn = function( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  o.own = 1;
+
+  if( o.usingVisits === undefined )
+  o.usingVisits = 0;
+
+  if( o.recursive === undefined )
+  o.recursive = 0;
+
+  if( o.usingRootVisit === undefined )
+  o.usingRootVisit = 0;
+
+  return _each( o );
+}
+
+//
+
+var eachRecursive = function( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+
+  o.recursive = 1;
+
+  if( o.own === undefined )
+  o.own = 0;
+
+  return _each( o );
+}
+
+//
+
+var eachOwnRecursive = function( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onEach : arguments[ 1 ] }
+  o.own = 1;
+  o.recursive = 1;
+
+  return _each( o );
+}
+
+//
+/*
+var until = function()
+{
+
+  var i = 0;
+  var found = 0;
+
+  var onEach = arguments[ arguments.length-1 ];
+  if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
+
+  for( var arg = 0, l = arguments.length-1 ; arg < l ; arg++ )
+  {
+
+    var src = arguments[ arg ];
+
+    if( _.arrayIs( src ) )
+    {
+
+      for( var a = 0 ; a < src.length ; a++ )
+      {
+        found = onEach.call( src,src[a],a,i );
+        i++;
+      }
+
+    }
+    else if( _.objectIs( src ) )
+    {
+
+      for( var a in src )
+      {
+        found = onEach.call( src,src[a],a,i );
+        i++;
+      }
+
+    }
+    else if( src !== undefined )
+    {
+
+      found = onEach.call( src,src );
+      i++;
+
+    }
+
+    if( found ) return i;
+  }
+
+  return i;
+}
+*/
+
+//
+
+var eachSample = function( o )
+{
+
+  if( arguments.length === 2 )
+  {
+    o =
+    {
+      elementArrays : arguments[ 0 ],
+      onEach : arguments[ 1 ],
+    }
+  }
+
+  _.assertMapHasOnly( o,eachSample.defaults );
+  if( o.direct === undefined )
+  o.direct = true;
+
+  /**/
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.routineIs( o.onEach ) || o.onEach === undefined );
+  _.assert( _.arrayIs( o.elementArrays ) || o.base !== undefined || o.add !== undefined );
+
+  /**/
+
+  if( o.base !== undefined || o.add !== undefined )
+  {
+
+    var l = 1;
+    if( _.arrayLike( o.base ) )
+    l = o.base.length;
+    else if( _.arrayLike( o.add ) )
+    l = o.add.length;
+
+    if( !o.base )
+    o.base = 0;
+    o.base = _.arrayOrNumber( o.base,l );
+    o.add = _.arrayOrNumber( o.add,l );
+
+    _.assert( o.base.length === o.add.length );
+    _.assert( !o.elementArrays );
+
+    o.elementArrays = [];
+
+    for( var b = 0 ; b < o.base.length ; b++ )
+    {
+      var e = [ o.base[ b ], o.base[ b ] + o.add[ b ] ];
+      o.elementArrays.push( e );
+    }
+
+  }
+
+  /* elementArrays */
+
+  if( !o.base )
+  for( var i = 0 ; i < o.elementArrays.length ; i++ )
+  {
+    _.assert( _.arrayLike( o.elementArrays[ i ] ) || _.atomicIs( o.elementArrays[ i ] ) );
+    if( _.atomicIs( o.elementArrays[ i ] ) )
+    o.elementArrays[ i ] = [ o.elementArrays[ i ] ];
+  }
+
+  /**/
+
+  var result = [];
+  var sample = [];
+  var counter = [];
+  var len = [];
+  var index = 0;
+
+  /**/
+
+  var firstSample = function()
+  {
+
+    for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
+    {
+      len[ s ] = o.elementArrays[ s ].length;
+      counter[ s ] = 0;
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
+      if( !len[ s ] )
+      return 0;
+    }
+
+    result.push( sample.slice() );
+
+    return 1;
+  }
+
+  /**/
+
+  var _nextSample = function( s )
+  {
+
+    counter[ s ]++;
+    if( counter[ s ] >= len[ s ] )
+    {
+      counter[ s ] = 0;
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
+    }
+    else
+    {
+      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
+      index += 1;
+      result.push( sample.slice() );
+      return 1;
+    }
+
+    return 0;
+  }
+
+  /**/
+
+  var nextSample = function()
+  {
+
+    if( o.direct ) for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
+    {
+      if( _nextSample( s ) )
+      return 1;
+    }
+    else for( var s = o.elementArrays.length - 1, l = o.elementArrays.length; s >= 0 ; s-- )
+    {
+      if( _nextSample( s ) )
+      return 1;
+    }
+
+    return 0;
+  }
+
+  /**/
+
+  if( !_.arrayIs( o.elementArrays ) )
+  throw _.err( 'eachSample :','array only supported' );
+
+  if( !firstSample() )
+  return result;
+
+  do
+  {
+    if( o.onEach )
+    o.onEach.call( sample,sample,index );
+  }
+  while( nextSample() );
+
+  return result;
+}
+
+eachSample.defaults =
+{
+
+  direct : 1,
+  onEach : null,
+
+  elementArrays : null,
+  base : null,
+  add : null,
+
+}
+
+//
+
+var dup = function( times,ins,result )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.numberIs( times ) || _.arrayLike( times ),'dup expects times as number or array' );
+
+  if( _.numberIs( times ) )
+  {
+    if( !result )
+    result = new Array( times );
+    for( var t = 0 ; t < times ; t++ )
+    result[ t ] = ins;
+    return result;
+  }
+  else if( _.arrayLike( times ) )
+  {
+    _.assert( times.length === 2 );
+    var l = times[ 1 ] - times[ 0 ];
+    if( !result )
+    result = new Array( times[ 1 ] );
+    for( var t = 0 ; t < l ; t++ )
+    result[ times[ 0 ] + t ] = ins;
+    return result;
+  }
+
+}
+
+// --
 // entity modifier
 // --
 
@@ -2597,10 +3091,11 @@ var entitySearch = function( o )
 
   /* */
 
-  _.eachRecursive
+  _._each
   ({
     src : o.src,
     own : o.own,
+    recursive : o.recursive,
     onUp : handleUp,
     onDown : o.onDown,
   });
@@ -2619,6 +3114,8 @@ entitySearch.defaults =
   onDown : null,
 
   own : 1,
+  recursive : 1,
+
   pathOfParent : 1,
   returnParent : 0,
 
@@ -2629,496 +3126,7 @@ entitySearch.defaults =
 
 }
 
-// --
-// iterator
-// --
-
-var __eachAct = function( o )
-{
-
-  var i = 0;
-  var src = o.src;
-
-  /* usingVisits */
-
-  if( o.usingVisits )
-  {
-    if( o.visited.indexOf( o.src ) !== -1 )
-    return i;
-    o.visited.push( o.src );
-  }
-
-  var end = function()
-  {
-
-    if( o.root !== src )
-    o.onDown.call( o,src,o.key,o.index );
-    else if( o.usingRootVisit )
-    {
-      o.onDown.call( o,src,o.key,o.index );
-    }
-
-    if( o.usingVisits )
-    {
-      _.assert( o.visited[ o.visited.length-1 ] === o.src );
-      o.visited.pop();
-    }
-
-    return i;
-  }
-
-  /* on up */
-
-  o.counter += 1;
-  var c = true;
-  if( o.root !== src )
-  {
-    c = o.onUp.call( o,src,o.key,o.index );
-  }
-  else if( o.usingRootVisit )
-  {
-    c = o.onUp.call( o,src,o.key,o.index );
-  }
-
-  if( c === false )
-  return end();
-
-  /* element */
-
-  var __onElement = function( k )
-  {
-
-    //o.onUp.call( o,src[ k ],k,i );
-    //o.counter += 1;
-    i += 1;
-
-    if( o.recursive || o.root === o.src )
-    {
-
-      __eachAct
-      ({
-        src : src[ k ],
-        root : o.root,
-        onUp : o.onUp,
-        onDown : o.onDown,
-        own : o.own,
-        recursive : o.recursive,
-        usingVisits : o.usingVisits,
-        counter : o.counter,
-        visited : o.visited,
-        levels : o.levels-1,
-        path : o.path + k + '.',
-        key : k,
-        index : i,
-        down : o,
-      });
-
-    }
-
-    //o.onDown.call( o,src[ k ],k,i );
-
-  }
-
-  /* */
-
-  if( _.arrayLike( src ) )
-  {
-
-    for( var k = 0 ; k < src.length ; k++ )
-    {
-
-      __onElement( k );
-
-    }
-
-  }
-  else if( _.objectLike( src ) )
-  {
-
-    for( var k in src )
-    {
-
-      if( o.own )
-      if( !Object.hasOwnProperty.call( src,k ) )
-      continue;
-
-      __onElement( k );
-
-    }
-
-  }
-  else
-  {
-
-    // if( o.src !== o.root )
-    // {
-    //   end();
-    //   return i;
-    // }
-    //
-    // debugger;
-    //
-    // o.onUp.call( o,src[ k ],k,i );
-    // o.onDown.call( o,src[ k ],k,i );
-    // o.counter += 1;
-    // i++;
-
-  }
-
-  /* end */
-
-  return end();
-}
-
-//
-
-var _each = function( o )
-{
-
-  if( o.root === undefined )
-  o.root = o.src;
-
-  _.routineOptions( _each,o );
-  _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
-
-  o.onUp = o.onUp || function(){};
-  o.onDown = o.onDown || function(){};
-
-  return __eachAct( o );
-}
-
-_each.defaults =
-{
-  src : null,
-  root : null,
-  onUp : null,
-  onDown : null,
-  own : 0,
-  recursive : 0,
-  usingVisits : 1,
-  usingRootVisit : 1,
-  counter : 0,
-  visited : [],
-  levels : 256,
-  path : '.',
-  key : null,
-  index : 0,
-}
-
-//
-
-var each = function( o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-
-  if( o.own === undefined )
-  o.own = 0;
-
-  if( o.usingVisits === undefined )
-  o.usingVisits = 0;
-
-  if( o.recursive === undefined )
-  o.recursive = 0;
-
-  if( o.usingRootVisit === undefined )
-  o.usingRootVisit = 0;
-
-  return _each( o );
-}
-
-//
-
-var eachOwn = function( o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-  o.own = 1;
-
-  if( o.usingVisits === undefined )
-  o.usingVisits = 0;
-
-  if( o.recursive === undefined )
-  o.recursive = 0;
-
-  if( o.usingRootVisit === undefined )
-  o.usingRootVisit = 0;
-
-  return _each( o );
-}
-
-//
-
-var eachRecursive = function( o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-  o.recursive = 1;
-
-  if( o.own === undefined )
-  o.own = 0;
-
-  return _each( o );
-}
-
-//
-
-var eachOwnRecursive = function( o )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onEach : arguments[ 1 ] }
-  o.own = 1;
-  o.recursive = 1;
-
-  return _each( o );
-}
-
-//
-/*
-var until = function()
-{
-
-  var i = 0;
-  var found = 0;
-
-  var onEach = arguments[ arguments.length-1 ];
-  if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
-
-  for( var arg = 0, l = arguments.length-1 ; arg < l ; arg++ )
-  {
-
-    var src = arguments[ arg ];
-
-    if( _.arrayIs( src ) )
-    {
-
-      for( var a = 0 ; a < src.length ; a++ )
-      {
-        found = onEach.call( src,src[a],a,i );
-        i++;
-      }
-
-    }
-    else if( _.objectIs( src ) )
-    {
-
-      for( var a in src )
-      {
-        found = onEach.call( src,src[a],a,i );
-        i++;
-      }
-
-    }
-    else if( src !== undefined )
-    {
-
-      found = onEach.call( src,src );
-      i++;
-
-    }
-
-    if( found ) return i;
-  }
-
-  return i;
-}
-*/
-
-//
-
-var eachSample = function( o )
-{
-
-  if( arguments.length === 2 )
-  {
-    o =
-    {
-      elementArrays : arguments[ 0 ],
-      onEach : arguments[ 1 ],
-    }
-  }
-
-  _.assertMapHasOnly( o,eachSample.defaults );
-  if( o.direct === undefined )
-  o.direct = true;
-
-  /**/
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( o.onEach ) || o.onEach === undefined );
-  _.assert( _.arrayIs( o.elementArrays ) || o.base !== undefined || o.add !== undefined );
-
-  /**/
-
-  if( o.base !== undefined || o.add !== undefined )
-  {
-
-    var l = 1;
-    if( _.arrayLike( o.base ) )
-    l = o.base.length;
-    else if( _.arrayLike( o.add ) )
-    l = o.add.length;
-
-    if( !o.base )
-    o.base = 0;
-    o.base = _.arrayOrNumber( o.base,l );
-    o.add = _.arrayOrNumber( o.add,l );
-
-    _.assert( o.base.length === o.add.length );
-    _.assert( !o.elementArrays );
-
-    o.elementArrays = [];
-
-    for( var b = 0 ; b < o.base.length ; b++ )
-    {
-      var e = [ o.base[ b ], o.base[ b ] + o.add[ b ] ];
-      o.elementArrays.push( e );
-    }
-
-  }
-
-  /* elementArrays */
-
-  if( !o.base )
-  for( var i = 0 ; i < o.elementArrays.length ; i++ )
-  {
-    _.assert( _.arrayLike( o.elementArrays[ i ] ) || _.atomicIs( o.elementArrays[ i ] ) );
-    if( _.atomicIs( o.elementArrays[ i ] ) )
-    o.elementArrays[ i ] = [ o.elementArrays[ i ] ];
-  }
-
-  /**/
-
-  var result = [];
-  var sample = [];
-  var counter = [];
-  var len = [];
-  var index = 0;
-
-  /**/
-
-  var firstSample = function()
-  {
-
-    for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
-    {
-      len[ s ] = o.elementArrays[ s ].length;
-      counter[ s ] = 0;
-      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
-      if( !len[ s ] )
-      return 0;
-    }
-
-    result.push( sample.slice() );
-
-    return 1;
-  }
-
-  /**/
-
-  var _nextSample = function( s )
-  {
-
-    counter[ s ]++;
-    if( counter[ s ] >= len[ s ] )
-    {
-      counter[ s ] = 0;
-      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
-    }
-    else
-    {
-      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
-      index += 1;
-      result.push( sample.slice() );
-      return 1;
-    }
-
-    return 0;
-  }
-
-  /**/
-
-  var nextSample = function()
-  {
-
-    if( o.direct ) for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
-    {
-      if( _nextSample( s ) )
-      return 1;
-    }
-    else for( var s = o.elementArrays.length - 1, l = o.elementArrays.length; s >= 0 ; s-- )
-    {
-      if( _nextSample( s ) )
-      return 1;
-    }
-
-    return 0;
-  }
-
-  /**/
-
-  if( !_.arrayIs( o.elementArrays ) )
-  throw _.err( 'eachSample :','array only supported' );
-
-  if( !firstSample() )
-  return result;
-
-  do
-  {
-    if( o.onEach )
-    o.onEach.call( sample,sample,index );
-  }
-  while( nextSample() );
-
-  return result;
-}
-
-eachSample.defaults =
-{
-
-  direct : 1,
-  onEach : null,
-
-  elementArrays : null,
-  base : null,
-  add : null,
-
-}
-//
-
-var dup = function( times,ins,result )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.numberIs( times ) || _.arrayLike( times ),'dup expects times as number or array' );
-
-  if( _.numberIs( times ) )
-  {
-    if( !result )
-    result = new Array( times );
-    for( var t = 0 ; t < times ; t++ )
-    result[ t ] = ins;
-    return result;
-  }
-  else if( _.arrayLike( times ) )
-  {
-    _.assert( times.length === 2 );
-    var l = times[ 1 ] - times[ 0 ];
-    if( !result )
-    result = new Array( times[ 1 ] );
-    for( var t = 0 ; t < l ; t++ )
-    result[ times[ 0 ] + t ] = ins;
-    return result;
-  }
-
-}
+entitySearch.defaults.__proto__ = _each.defaults;
 
 // --
 // diagnostics
@@ -3799,6 +3807,14 @@ _.diagnosticWatchObject
 });
 */
 
+/*
+_.diagnosticWatchObject
+({
+  dst : _global_,
+  names : 'logger',
+});
+*/
+
 //var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
 var diagnosticWatchObject = function diagnosticWatchObject( o )
 {
@@ -3857,6 +3873,12 @@ _.diagnosticWatchFields
 ({
   dst : _global_,
   names : 'Config',
+});
+
+_.diagnosticWatchFields
+({
+  dst : _global_,
+  names : 'logger',
 });
 
 */
@@ -12006,6 +12028,21 @@ var Proto =
   _initConfig : _initConfig,
 
 
+  // iterator
+
+  __eachAct : __eachAct,
+  _each : _each,
+
+  each : each,
+  eachOwn : eachOwn,
+  eachRecursive : eachRecursive,
+  eachOwnRecursive : eachOwnRecursive,
+
+  eachSample : eachSample, /* experimental */
+
+  dup : dup,
+
+
   // entity modifier
 
   enityExtend : enityExtend, /* deprecated */
@@ -12067,21 +12104,6 @@ var Proto =
   entityMax : entityMax,
 
   entitySearch : entitySearch,
-
-
-  // iterator
-
-  __eachAct : __eachAct,
-  _each : _each,
-
-  each : each,
-  eachOwn : eachOwn,
-  eachRecursive : eachRecursive,
-  eachOwnRecursive : eachOwnRecursive,
-
-  eachSample : eachSample, /* experimental */
-
-  dup : dup,
 
 
   // diagnostics
