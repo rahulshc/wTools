@@ -609,11 +609,11 @@ var strLattersSpectre = function( test )
 };
 
 
-var strNumberLines = function( test )
+var strLinesNumber = function( test )
 {
 
   test.description = 'returns the object';
-  var got = _.strNumberLines( 'abc\ndef\nghi' );
+  var got = _.strLinesNumber( 'abc\ndef\nghi' );
   var expected = got;
   test.identical( got, expected );
 
@@ -625,19 +625,19 @@ var strNumberLines = function( test )
     test.description = 'no arguments';
     test.shouldThrowError( function( )
     {
-      _.strNumberLines( );
+      _.strLinesNumber( );
     } );
 
     test.description = 'argument is wrong';
     test.shouldThrowError( function( )
     {
-      _.strNumberLines( [  ] );
+      _.strLinesNumber( [  ] );
     } );
 
     test.description = 'argument is wrong';
     test.shouldThrowError( function( )
     {
-      _.strNumberLines( 13 );
+      _.strLinesNumber( 13 );
     } );
 
   }
@@ -749,7 +749,7 @@ var Proto =
     strRemoveAllSpaces : strRemoveAllSpaces,
     strDifference : strDifference,
     strLattersSpectre : strLattersSpectre,
-    strNumberLines : strNumberLines,
+    strLinesNumber : strLinesNumber,
     strCount : strCount,
     strToBytes : strToBytes,
 
