@@ -2891,7 +2891,7 @@ var strUnjoin = function( srcStr,maskArray )
   var checkMask = function( mask )
   {
 
-    _.assert( _.strIs( mask ) || _.routineIs( mask ) )
+    _.assert( _.strIs( mask ) || _.routineIs( mask ),'expects string or strUnjoin.any, got',_.strTypeOf( mask ) );
 
     if( _.strIs( mask ) )
     {
@@ -2961,6 +2961,7 @@ strUnjoin.any = function any(){}
 // debugger;
 
 //
+
 /**
  * Finds substring( prefix ) occurrence from the begining of the source( src ) and removes it.
  * Returns original string if source( src ) does not have occurrence of ( prefix ).

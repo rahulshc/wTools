@@ -553,7 +553,7 @@ var _toStrShort = function( test )
 
   test.description = 'string length > 40';
   var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', { } );
-  var expected = '[ toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyr ... ]';
+  var expected = '[ "toxtndmtmdbmmlzoirmf" ... "pyhnrrqfuvybuuvixyrx" ]';
   test.identical( got,expected );
 
   test.description = 'string with options';
@@ -843,6 +843,7 @@ var _toStrFromStr = function( test )
 
 var _toStrFromArray = function( test )
 {
+
   test.description = 'default options';
   var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 1, comma : ', ', wrap : 1 } ).text;
   var expected = '[ 1, 2, 3 ]';
@@ -850,7 +851,7 @@ var _toStrFromArray = function( test )
 
   test.description = 'wrap test';
   var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 1, comma : ', ', wrap : 0 } ).text;
-  var expected = '1, 2, 3';
+  var expected = '   1, 2, 3';
   test.identical( got,expected );
 
   test.description = 'levels 0 test';
@@ -1731,44 +1732,55 @@ var strJoin = function( test )
 
 var strUnjoin = function( test )
 {
+  var any = _.strUnjoin.any;
 
   test.description = 'case 1';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] );
+  var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', any, 'postfix' ] );
   var expected = [ "prefix", "_something_", "postfix" ];
   test.identical( got,expected );
 
-  test.description = 'case 2';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'something', 'postfix' ] );
-  var expected = [ "prefix_", "something", "postfix" ];
+  test.description = 'case 2a';
+  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', 'postfix' ] );
+  var expected = undefined;
   test.identical( got,expected );
 
-  test.description = 'case 3';
-  var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', 'postfix', _.strUnjoin.any ] );
-  var expected = [ "something", "postfix", "" ];
+  test.description = 'case 2b';
+  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', any, 'postfix' ] );
+  var expected = [ "prefix_", "something", '_', "postfix" ];
+  test.identical( got,expected );
+
+  test.description = 'case 3a';
+  var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', 'postfix', any ] );
+  var expected = undefined;
+  test.identical( got,expected );
+
+  test.description = 'case 3b';
+  var got = _.strUnjoin( 'prefix_something_postfix', [ any, 'something', any, 'postfix', any ] );
+  var expected = [ "prefix_","something","_", "postfix", "" ];
   test.identical( got,expected );
 
   test.description = 'case 4';
-  var got = _.strUnjoin( 'abc', [ strUnjoin.any ] );
+  var got = _.strUnjoin( 'abc', [ any ] );
   var expected = [ "abc" ];
   test.identical( got,expected );
 
   test.description = 'case 5';
-  var got = _.strUnjoin( 'abc', [ 'a', strUnjoin.any ] );
+  var got = _.strUnjoin( 'abc', [ 'a', any ] );
   var expected = [ "a", "bc" ];
   test.identical( got,expected );
 
   test.description = 'case 6';
-  var got = _.strUnjoin( 'abc', [ 'b', strUnjoin.any ] );
+  var got = _.strUnjoin( 'abc', [ 'b', any ] );
   var expected = undefined;
   test.identical( got,expected );
 
   test.description = 'case 7';
-  var got = _.strUnjoin( 'abc', [ strUnjoin.any, 'b' ] );
+  var got = _.strUnjoin( 'abc', [ any, 'b' ] );
   var expected = undefined;
   test.identical( got,expected );
 
   test.description = 'case 7';
-  var got = _.strUnjoin( 'abc', [ strUnjoin.any, 'c' ] );
+  var got = _.strUnjoin( 'abc', [ any, 'c' ] );
   var expected = [ "ab", "c" ];
   test.identical( got,expected );
 
@@ -1860,11 +1872,11 @@ var strUnicodeEscape = function( test )
 
 //
 
-var strNumberLines = function( test )
+var strLinesNumber = function( test )
 {
 
   test.description = 'simple string';
-  var got = _.strNumberLines( 'line1\nline2\nline3' );
+  var got = _.strLinesNumber( 'line1\nline2\nline3' );
   var expected =
   [
     '1 : line1',
@@ -1874,7 +1886,7 @@ var strNumberLines = function( test )
   test.identical( got,expected );
 
   test.description = 'empty string with escaping';
-  var got = _.strNumberLines( '\n\n' );
+  var got = _.strLinesNumber( '\n\n' );
   var expected =
   [
     '1 : ',
@@ -1891,13 +1903,13 @@ var strNumberLines = function( test )
     test.description = 'invalid  argument type';
     test.shouldThrowError( function()
     {
-      _.strNumberLines( 123 );
+      _.strLinesNumber( 123 );
     });
 
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
-      _.strNumberLines();
+      _.strLinesNumber();
     });
 
   }
@@ -2445,6 +2457,7 @@ var Proto =
     strFilenameFor : strFilenameFor,
     toStrMethods : toStrMethods,
     toStrFields : toStrFields,
+
     _toStrShort : _toStrShort,
     _toStrIsVisibleElement : _toStrIsVisibleElement,
     _toStrIsSimpleElement : _toStrIsSimpleElement,
@@ -2455,6 +2468,7 @@ var Proto =
     _toStrFromObject : _toStrFromObject,
     _toStrFromContainer : _toStrFromContainer,
     _toStrFromContainer : _toStrFromContainer,
+
     strTimes : strTimes,
     strLineCount : strLineCount,
     _strInhalf : _strInhalf,
@@ -2468,7 +2482,7 @@ var Proto =
     strJoin : strJoin,
     strUnjoin : strUnjoin,
     strUnicodeEscape : strUnicodeEscape,
-    strNumberLines : strNumberLines,
+    strLinesNumber : strLinesNumber,
     strCount : strCount,
     strDup : strDup,
     strToBytes : strToBytes,

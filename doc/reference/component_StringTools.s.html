@@ -1938,17 +1938,17 @@ var strIndentation = function( src,tab )
  * 1: line1
  * 2: line2
  * 3: line3
- * _.strNumberLines( 'line1\nline2\nline3' );
+ * _.strLinesNumber( 'line1\nline2\nline3' );
  *
  * @example
  * //returns 1: sigle line example
- * _.strNumberLines( 'sigle line example' );
+ * _.strLinesNumber( 'sigle line example' );
  *
- * @method strNumberLines
+ * @method strLinesNumber
  * @memberof wTools
  *
 */
-var strNumberLines = function( srcStr )
+var strLinesNumber = function( srcStr )
 {
 
   var lines = srcStr.split( '\n' );
@@ -2369,7 +2369,7 @@ var Proto =
   strToConfig : strToConfig, /* exmperimental */
 
   strIndentation : strIndentation,
-  strNumberLines : strNumberLines,
+  strLinesNumber : strLinesNumber,
 
   strCount : strCount,
 
