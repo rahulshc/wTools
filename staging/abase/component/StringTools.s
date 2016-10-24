@@ -3247,27 +3247,35 @@ var strIndentation = function( src,tab )
 // !!! pelase update description
 
 /**
- * Puts line counter before each line in the string provided by argument( srcStr ).
+ * Puts line counter before each line in the string provided by( o.src ).
+ * Initial value of a counter can be changed by defining( o.first ) options( o ) property.
+ * Can be called in two ways:
+ * - First by passing all options in one object;
+ * - Second by passing source string only.
  *
- * @param {string} srcStr - Source string to parse.
+ * @param {object} o - options.
+ * @param {string} [ o.src=null ] - source string.
+ * @param {number} [ o.first=1 ] - sets initial value of a counter.
  * @returns {string} Returns string with line enumeration.
  *
  * @example
  * //returns
- * 1: line1
- * 2: line2
- * 3: line3
+ * // 1: line1
+ * // 2: line2
+ * // 3: line3
  * _.strLinesNumber( 'line1\nline2\nline3' );
  *
  * @example
- * //returns 1: sigle line example
- * _.strLinesNumber( 'sigle line example' );
+ * //returns
+ * // 2: line1
+ * // 3: line2
+ * // 4: line3
+ * _.strLinesNumber( { src:'line1\nline2\nline3', first : 2 } );
  *
  * @method strLinesNumber
  * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @memberof wTools
- *
  */
 
 var strLinesNumber = function( o )
@@ -3299,6 +3307,45 @@ strLinesNumber.defaults =
 }
 
 //
+
+/**
+ * Selects range( o.range ) of lines from source string( o.src ).
+ * Custom new line character can be defined by option( o.nl ).
+ * Returns selected lines range as string or undefined.
+ * Can be called in three ways:
+ * - First by passing all parameters in one options object( o ) ;
+ * - Second by passing source string( o.src ) and range( o.range ) as array or number;
+ * - Third by passing source string( o.src ), range start and end position.
+ *
+ * @param {object} o - options.
+ * @param {string} [ o.src=null ] - source string.
+ * @param {array|number} [ o.range=null ] - sets range of lines to select from( o.src ) or single line number.
+ * @param {string} [ o.nl='\n' ] - sets new line character.
+ * @returns {string} Returns selected lines as new string.
+ *
+ * @example
+ * //returns
+ * // line1
+ * // line2
+ * _.strLinesSelect( 'line1\nline2\nline3', 0, 2 );
+ *
+ * @example
+ * //returns
+ * // line2
+ * _.strLinesSelect( 'line1\nline2\nline3', 1 );
+ *
+ * @example
+ * //returns
+ * // line1
+ * _.strLinesSelect( { src : 'line1\nline2\nline3', range : [ 0,1 ] } )
+ *
+ * @method strLinesSelect
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.range ) is not a Array.
+ * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
+ * @memberof wTools
+ */
 
 var strLinesSelect = function( o )
 {
