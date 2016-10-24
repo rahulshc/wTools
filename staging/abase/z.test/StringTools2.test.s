@@ -2356,6 +2356,89 @@ var strShort = function( test )
   }
 }
 
+//
+
+var strLinesSelect = function( test )
+{
+  var src =
+  `Lorem
+  ipsum dolor
+  sit amet,
+  consectetur
+  adipisicing
+  elit`;
+
+  test.description = 'first line';
+  var got = _.strLinesSelect( src, 0 );
+  var expected = 'Lorem';
+  test.identical( got,expected );
+
+  test.description = 'first two lines';
+  var got = _.strLinesSelect( src, 0, 2 );
+  var expected =
+  `Lorem
+  ipsum dolor`;
+  test.identical( got,expected );
+
+  test.description = 'range as array';
+  var got = _.strLinesSelect( src, [ 0, 2 ] );
+  var expected =
+  `Lorem
+  ipsum dolor`;
+  test.identical( got,expected );
+
+  test.description = 'custom new line';
+  var src2 ='Lorem||ipsum dolor||sit amet||consectetur'
+  var got = _.strLinesSelect( { src :  src2, range : [ 2, 4 ], nl : '||' } );
+  var expected = `||sit amet||consectetur`;
+  test.identical( got,expected );
+
+  test.description = 'empty line, out of range';
+  var got = _.strLinesSelect( { src :  '', range : [ 1, 1 ] } );
+  var expected = undefined;
+  test.identical( got,expected );
+
+  test.description = 'empty line';
+  var got = _.strLinesSelect( { src :  '', range : [ 0, 1 ] } );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.description = 'incorrect range';
+  var got = _.strLinesSelect( { src :  src, range : [ 2, 1 ] } );
+  var expected = '';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+    test.description = 'invalid first argument type';
+    test.shouldThrowError( function()
+    {
+      _.strLinesSelect( 1, 1 );
+    });
+
+    test.description = 'invalid second argument type';
+    test.shouldThrowError( function()
+    {
+      _.strLinesSelect( 'lorem\nipsum\n', 'second'  );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strLinesSelect( );
+    });
+
+    test.description = 'unknown property provided';
+    test.shouldThrowError( function()
+    {
+      _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], x : 1 } );
+    });
+
+  }
+}
+
 
 var Proto =
 {
@@ -2364,7 +2447,6 @@ var Proto =
 
   tests:
   {
-
     strCapitalize : strCapitalize,
     strReplaceAll : strReplaceAll,
     strDropPrefix : strDropPrefix,
@@ -2408,7 +2490,7 @@ var Proto =
     strMetricFormatBytes : strMetricFormatBytes,
     strTimeFormat : strTimeFormat,
     strShort : strShort,
-
+    strLinesSelect : strLinesSelect
   }
 
 }
