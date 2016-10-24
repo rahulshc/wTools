@@ -11545,6 +11545,7 @@ var mapBut = function( srcMap )
       _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
+      if( argument[ k ] !== undefined ) // xxx
       break;
 
     }

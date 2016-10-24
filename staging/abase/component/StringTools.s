@@ -505,8 +505,8 @@ var _toStr = function _toStr( src,o )
 
   /* */
 
-  if( src && src.toStr && src.toStr.notMethod )
-  debugger;
+  // if( src && src.toStr && src.toStr.notMethod )
+  // debugger;
 
   if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod && !_ObjectHasOwnProperty.call( src,'constructor' ) )
   {
@@ -2947,18 +2947,63 @@ var strUnjoin = function( srcStr,maskArray )
 
 strUnjoin.any = function any(){}
 
-// debugger;
-// var got = strUnjoin( 'abc',[ strUnjoin.any ] );
-// console.log( got );
-// var got = strUnjoin( 'abc',[ 'a',strUnjoin.any ] );
-// console.log( got );
-// var got = strUnjoin( 'abc',[ 'b',strUnjoin.any ] );
-// console.log( got );
-// var got = strUnjoin( 'abc',[ strUnjoin.any,'b' ] );
-// console.log( got );
-// var got = strUnjoin( 'abc',[ strUnjoin.any,'c' ] );
-// console.log( got );
-// debugger;
+//
+
+var strCommonLeft = function strCommonLeft( ins )
+{
+
+  if( arguments.length === 0 )
+  return '';
+  if( arguments.length === 1 )
+  return ins;
+
+  var length = +Infinity;
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    length = Math.min( length,src.length );
+  }
+
+  for( var i = 0 ; i < length ; i++ )
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    if( src[ i ] !== ins[ i ] )
+    return ins.substring( 0,i );
+  }
+
+  return ins.substring( 0,i );
+}
+
+//
+
+var strCommonRight = function strCommonRight( ins )
+{
+
+  if( arguments.length === 0 )
+  return '';
+  if( arguments.length === 1 )
+  return ins;
+
+  var length = +Infinity;
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    length = Math.min( length,src.length );
+  }
+
+  for( var i = 0 ; i < length ; i++ )
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    if( src[ src.length - i - 1 ] !== ins[ ins.length - i - 1 ] )
+    return ins.substring( ins.length-i );
+  }
+
+  return ins.substring( ins.length-i );
+}
 
 //
 
@@ -4024,6 +4069,9 @@ var Proto =
 
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
+
+  strCommonLeft : strCommonLeft, /* document me */
+  strCommonRight : strCommonRight, /* document me */
 
   strDropPrefix : strDropPrefix,
   strDropPostfix : strDropPostfix,
