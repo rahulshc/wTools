@@ -2738,15 +2738,14 @@ var strReplaceNames = function( src,ins,sub )
 //
 
 /**
- * Concatenates objects provided to function in orded that they are specified.
- * If one of arguments is array-like, function concatenates other arguments with
- * each element in the array.
- * If all arguments are array-like, they must have same length.
- * Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
+ * Joins objects from arguments list together by concatenating their values in orded that they are specified.
+ * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
+ * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ "13", "23" ] ),
+ * ( [ 1, 2 ], [ 1, 2] ) -> ( [ "11", "23" ] ).
  *
  * @param {array-like} arguments - Contains provided objects.
- * @returns {object} Returns concatenated objects as string or array.Return type depends
- * from arguments type.
+ * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
  *
  * @example
  * //returns "123"
@@ -2754,15 +2753,19 @@ var strReplaceNames = function( src,ins,sub )
  *
  * @example
  * //returns [ "12", "22", "32" ]
- * _.strJoin( [ 1, 2, 3 ], 2)
+ * _.strJoin( [ 1, 2, 3 ], 2 );
  *
  * @example
  * //returns [ "11", "23" ]
- * _.strJoin( [ 1, 2 ], [ 1, 3 ] )
+ * _.strJoin( [ 1, 2 ], [ 1, 3 ] );
+ *
+ * @example
+ * //returns [ "1236", "1247", "1258" ]
+ * _.strJoin( 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] );
  *
  * @method strJoin
- * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array, String or Number.
- * @throws { Exception } Throws a exception if length of arrays passed as arguments is different.
+ * @throws { Exception } If some object from( arguments ) is not a Array, String or Number.
+ * @throws { Exception } If length of arrays passed as arguments is different.
  * @memberof wTools
  *
  */
