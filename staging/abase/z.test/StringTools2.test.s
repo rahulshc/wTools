@@ -108,6 +108,16 @@ var strReplaceAll = function( test )
   var expected = 'heyyo';
   test.identical( got,expected );
 
+  test.description = 'no occurrences returns origin';
+  var got = _.strReplaceAll( 'hello', 'x', 'y' );
+  var expected = 'hello';
+  test.identical( got,expected );
+
+  test.description = 'empty dictionary';
+  var got = _.strReplaceAll( 'hello', { } );
+  var expected = 'hello';
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
