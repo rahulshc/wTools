@@ -2585,16 +2585,16 @@ var strIron = function()
 //
 
 /**
- * Replaces each occurrence of ( ins ) in string ( dst ) with ( sub ).
- * If the function can not find any occurrence in source ( dst ) it returns the original string.
+ * Replaces each occurrence of string( ins ) in source( dst ) with string( sub ).
+ * Returns result of replacements as new string or original string if no matches finded in source( dst ).
  * Function can be called in three different ways:
- *  One argument: object that contains properties: map ( o ) with options.
- *  Two arguments: string ( dst ), map ( dictionary ).
- *  Three arguments: string ( dst ), string ( ins ), string ( sub )
+ * - One argument: object that contains options: source( dst ) and dictionary.
+ * - Two arguments: source string( dst ), map( dictionary ).
+ * - Three arguments: source string( dst ), pattern string( ins ), replacement( sub ).
  * @param {string} dst - Source string to parse.
- * @param {string} ins - String that is to be replaced by( sub ).
- * @param {string} sub - String that replaces finded occurrence.
- * @param {object} dictionary - Object with properties like ( { 'ins' : 'sub' } ).
+ * @param {string} ins - String to find in source( dst ).
+ * @param {string} sub - String that replaces finded occurrence( ins ).
+ * @param {object} dictionary - Map that contains pattern/replacement pairs like ( { 'ins' : 'sub' } ).
  * @returns {string} Returns string with result of replacements.
  *
  * @example
@@ -2618,6 +2618,7 @@ var strIron = function()
  * @throws { Exception } Throws a exception if( ins ) is not a String.
  * @throws { Exception } Throws a exception if( sub ) is not a String.
  * @throws { Exception } Throws a exception if( dictionary ) is not a Object.
+ * @throws { Exception } Throws a exception if( dictionary ) key value is not a String.
  * @memberof wTools
  *
  */
