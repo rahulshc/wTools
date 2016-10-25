@@ -2824,24 +2824,43 @@ var strJoin = function()
 //
 
 /**
- * Separates parts of string( srcStr ) using array( maskArray ) as mask and returns them as array.
+ * Splits string( srcStr ) into parts using array( maskArray ) as mask and returns them as array.
+ * Mask( maskArray ) contains string(s) separated by marker( strUnjoin.any ). Mask must starts/ends with first/last letter from source
+ * or can be replaced with marker( strUnjoin.any ). Position of( strUnjoin.any ) determines which part of source string will be splited:
+ * - If( strUnjoin.any ) is before string it marks everything before that string. Example: ( [ _.strUnjoin.any, 'postfix' ] ).
+ * - If( strUnjoin.any ) is after string it marks everything after that string. Example: ( [ 'prefix', _.strUnjoin.any ] ).
+ * - If( strUnjoin.any ) is between two strings it marks everything between them. Example: ( [ 'prefix', _.strUnjoin.any, 'postfix' ] ).
+ * - If( strUnjoin.any ) is before and after string it marks all except that string. Example: ( [ '_.strUnjoin.any', something, '_.strUnjoin.any' ] ).
+ *
  * @param {string} srcStr - Source string.
  * @param {array} maskArray - Contains mask for source string.
  * @returns {array} Returns array with unjoined string part.
  *
  * @example
  * //returns [ "prefix", "_something_", "postfix" ]
- * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] )
+ * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] );
  *
  * @example
- * //returns [ "prefix_", "something", "postfix" ]
- * _.strUnjoin( 'prefix_something_postfix',[_.strUnjoin.any,'something','postfix'] )
+ * //returns [ "prefix_", "something", "_", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'something', _.strUnjoin.any, 'postfix' ] );
  *
+ * @example
+ * //returns [ "prefix_something_", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'postfix' ] );
+ *
+ * @example
+ * //returns [ "prefix", "_something_postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix', [ 'prefix', _.strUnjoin.any ] );
+ *
+ * @example
+ * //returns [ "prefi", "x", "_something_", "p", "ostfix" ]
+ * _.strUnjoin( 'prefix_something_postfix', [ _.strUnjoin.any, 'x', _.strUnjoin.any, 'p', _.strUnjoin.any ] );
  *
  * @method strUnjoin
- * @throws { Exception } Throws a exception if no arguments provided.
- * @throws { Exception } Throws a exception if( srcStr ) is not a String.
- * @throws { Exception } Throws a exception if( maskArray ) is not a Array.
+ * @throws { Exception } If no arguments provided.
+ * @throws { Exception } If( srcStr ) is not a String.
+ * @throws { Exception } If( maskArray ) is not a Array.
+ * @throws { Exception } If( maskArray ) value is not String or strUnjoin.any.
  * @memberof wTools
  *
  */
