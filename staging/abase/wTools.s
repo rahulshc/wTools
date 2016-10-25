@@ -63,6 +63,8 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 var _initConfig = function _initConfig()
 {
 
+  //debugger;
+
   /* config */
 
   if( !_global_.Config )
@@ -106,6 +108,13 @@ var __eachAct = function( o )
   var i = 0;
   var src = o.src;
 
+  /* levels */
+
+  if( o.levels <= 0 )
+  {
+    return i;
+  }
+
   /* usingVisits */
 
   if( o.usingVisits )
@@ -114,6 +123,8 @@ var __eachAct = function( o )
     return i;
     o.visited.push( o.src );
   }
+
+  /* end */
 
   var end = function()
   {
@@ -216,20 +227,6 @@ var __eachAct = function( o )
   }
   else
   {
-
-    // if( o.src !== o.root )
-    // {
-    //   end();
-    //   return i;
-    // }
-    //
-    // debugger;
-    //
-    // o.onUp.call( o,src[ k ],k,i );
-    // o.onDown.call( o,src[ k ],k,i );
-    // o.counter += 1;
-    // i++;
-
   }
 
   /* end */
@@ -561,6 +558,305 @@ eachSample.defaults =
   add : null,
 
 }
+//
+
+var eachInRange = function eachInRange( o )
+{
+
+  if( _.arrayIs( o ) )
+  o = { range : o };
+
+  _.routineOptions( eachInRange,o );
+  if( _.numberIs( o.range ) )
+  o.range = [ 0,o.range ];
+
+  _.assert( arguments.length === 1 );
+  _.assert( o.range.length === 2 );
+  _.assert( o.increment >= 0 );
+
+  var increment = o.increment;
+  var range = o.range;
+  var len = _.rangeLengthGet( range,o.increment );
+  var value = range[ 0 ];
+
+  if( o.estimate )
+  {
+    return { length : len };
+  }
+
+  if( o.result === null )
+  o.result = new Float32Array( len );
+
+  // if( o.batch === 0 )
+  // o.batch = o.range[ 1 ] - o.range[ 0 ];
+
+  /* begin */
+
+  if( o.onBegin )
+  o.onBegin.call( o );
+
+  /* exec */
+
+  var exec = function()
+  {
+
+    while( value < range[ 1 ] )
+    {
+
+      if( o.onEach )
+      o.onEach.call( o,value,o.resultIndex );
+      if( o.result )
+      o.result[ o.resultIndex ] = value;
+
+      value += increment;
+      o.resultIndex += 1;
+    }
+
+  }
+
+  if( len )
+  exec();
+
+  /* end */
+
+  if( value > range[ 1 ] )
+  if( o.onEnd )
+  o.onEnd.call( o,o.result );
+
+  /* return */
+
+  if( o.result )
+  return o.result;
+  else
+  return o.resultIndex;
+}
+
+eachInRange.defaults =
+{
+  result : null,
+  resultIndex : 0,
+  range : null,
+  onBegin : null,
+  onEnd : null,
+  onEach : null,
+  increment : 1,
+  delay : 0,
+  estimate : 0,
+}
+
+//
+
+var eachInManyRanges = function eachInManyRanges( o )
+{
+
+  var len = 0;
+
+  if( _.arrayIs( o ) )
+  o = { range : o };
+
+  _.routineOptions( eachInRange,o );
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( o.range ) );
+
+  /* estimate */
+
+  for( var r = 0 ; r < o.range.length ; r++ )
+  {
+    var range = o.range[ r ];
+    if( _.numberIs( o.range ) )
+    range = o.range[ r ] = [ 0,o.range ];
+    len += _.rangeLengthGet( range,o.increment );
+  }
+
+  if( o.estimate )
+  return { length : len };
+
+  /* exec */
+
+  if( o.result === null )
+  o.result = new Float32Array( len );
+
+  var ranges = o.range;
+  for( var r = 0 ; r < ranges.length ; r++ )
+  {
+    o.range = ranges[ r ];
+    _.eachInRange( o );
+  }
+
+  /* return */
+
+  if( o.result )
+  return o.result;
+  else
+  return o.resultIndex;
+
+}
+
+eachInManyRanges.defaults =
+{
+}
+
+eachInManyRanges.defaults.__proto__ = eachInRange.defaults;
+
+//
+
+var eachInMultiRange = function( o )
+{
+
+  if( !o.onEach )
+  o.onEach = function( e )
+  {
+    console.log( e );
+  }
+
+  _.routineOptions( eachInMultiRange,o );
+  _assert( _.objectIs( o ) )
+  _assert( _.arrayIs( o.ranges ) || _.objectIs( o.ranges ),'eachInMultiRange :','expects o.ranges as array or object' )
+  _assert( _.routineIs( o.onEach ),'eachInMultiRange :','expects o.onEach as routine' )
+  _assert( !o.delta || o.delta.length === o.ranges.length,'eachInMultiRange :','o.delta must be same length as ranges' );
+
+  /* */
+
+  var iterationNumber = 1;
+  var l = 0;
+  var delta = _.objectIs( o.delta ) ? [] : null;
+  var ranges = [];
+  var names = null;
+  if( _.objectIs( o.ranges ) )
+  {
+    _assert( _.objectIs( o.delta ) || !o.delta );
+
+    names = [];
+    var i = 0;
+    for( var r in o.ranges )
+    {
+      names[ i ] = r;
+      ranges[ i ] = o.ranges[ r ];
+      if( delta )
+      {
+        if( !o.delta[ r ] )
+        throw _.err( 'no delta for',r );
+        delta[ i ] = o.delta[ r ];
+      }
+    }
+
+    l = names.length;
+
+  }
+  else
+  {
+    ranges = o.ranges.slice();
+    delta = _.arrayLike( o.delta ) ? o.delta.slice() : null;
+    l = o.ranges.length;
+  }
+
+  var last = ranges.length-1;
+
+  /* adjust range */
+
+  var adjustRange = function( r )
+  {
+
+    if( _.numberIs( ranges[ r ] ) )
+    ranges[ r ] = [ 0,ranges[ r ] ];
+
+    if( !_.arrayLike( ranges[ r ] ) )
+    throw _.err( 'expects range as array :',ranges[ r ] );
+
+    _assert( ranges[ r ].length === 2 );
+    _assert( _.numberIs( ranges[ r ][ 0 ] ) );
+    _assert( _.numberIs( ranges[ r ][ 1 ] ) );
+
+    iterationNumber *= ranges[ r ][ 1 ] - ranges[ r ][ 0 ];
+
+  }
+
+  if( _.objectIs( ranges ) )
+  for( var r in ranges )
+  adjustRange( r );
+  else
+  for( var r = 0 ; r < ranges.length ; r++ )
+  adjustRange( r );
+
+  /* estimate */
+
+  if( o.estimate )
+  {
+
+    if( !ranges.length )
+    return 0;
+
+    return { length : iterationNumber };
+
+  }
+
+  /* */
+
+  var getValue = function( arg ){ return arg.slice(); };
+  if( names )
+  getValue = function( arg )
+  {
+    var result = {};
+    for( var i = 0 ; i < names.length ; i++ )
+    result[ names[ i ] ] = arg[ i ];
+    return result;
+  }
+
+  /* */
+
+  var counter = [];
+  for( var r = 0 ; r < ranges.length ; r++ )
+  counter[ r ] = ranges[ r ][ 0 ];
+
+  /* */
+
+  var i = 0;
+  while( counter[ last ] < ranges[ last ][ 1 ] )
+  {
+
+    var r = getValue( counter );
+    if( o.result )
+    o.result[ i ] = r;
+    var res = o.onEach.call( o,r,i );
+
+    if( res === false )
+    break;
+
+    i += 1;
+
+    var c = 0;
+    do
+    {
+      if( c >= ranges.length )
+      break;
+      if( c > 0 )
+      counter[ c-1 ] = ranges[ c-1 ][ 0 ];
+      if( delta )
+      counter[ c ] += delta[ c ];
+      else
+      counter[ c ] += 1;
+      c += 1;
+    }
+    while( counter[ c-1 ] >= ranges[ c-1 ][ 1 ] );
+
+  }
+
+  /* */
+
+  if( o.result )
+  return o.result
+  else
+  return i;
+}
+
+eachInMultiRange.defaults =
+{
+  result : null,
+  ranges : null,
+  delta : null,
+  onEach : null,
+  estimate : 0,
+}
 
 //
 
@@ -587,6 +883,86 @@ var dup = function( times,ins,result )
     result[ times[ 0 ] + t ] = ins;
     return result;
   }
+
+}
+
+// --
+// range
+// --
+
+var rangeLengthGet = function rangeLengthGet( range,options )
+{
+
+  var options = options || {};
+  var rangeWithIncrementDefaults =
+  {
+    first : null,
+    last : null,
+    increment : null,
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( options.increment === undefined )
+  options.increment = 1;
+
+  if( _.arrayIs( range ) )
+  {
+    _.assert( range.length === 2 );
+    return options.increment ? ( range[ 1 ]-range[ 0 ] ) / options.increment : 0;
+  }
+  else if( _.mapIs( range ) )
+  {
+    _.assertMapHasAll( range,rangeWithIncrementDefaults );
+    return ( range.last - range.first ) / range.increment;
+  }
+  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
+
+}
+
+//
+
+var rangeFirstGet = function rangeFirstGet( range,options )
+{
+
+  var options = options || {};
+  if( options.increment === undefined )
+  options.increment = 1;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( _.arrayIs( range ) )
+  {
+    return range[ 0 ];
+  }
+  else if( _.mapIs( range ) )
+  {
+    return range.first
+  }
+  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
+
+}
+
+//
+
+var rangeLastGet = function rangeLastGet( range,options )
+{
+
+  var options = options || {};
+  if( options.increment === undefined )
+  options.increment = 1;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( _.arrayIs( range ) )
+  {
+    return range[ 1 ];
+  }
+  else if( _.mapIs( range ) )
+  {
+    return range.last
+  }
+  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
 
 }
 
@@ -1768,17 +2144,6 @@ var entitySame = function entitySame()
     return a === b;
   }
 
-  var def =
-  {
-    onSameNumbers : sameNumbers,
-    contain : 0,
-    strict : 1,
-    lastPath : '',
-    path : '',
-  }
-
-  Object.freeze( def );
-
   return function entitySame( src1,src2,o )
   {
 
@@ -1786,13 +2151,26 @@ var entitySame = function entitySame()
     _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
     var o = o || {};
 
-    _.assertMapHasOnly( o,def );
-    _.mapSupplement( o,def );
+    _.assertMapHasOnly( o,entitySame.defaults );
+    _.mapSupplement( o,entitySame.defaults );
+
+    if( o.onSameNumbers === null )
+    o.onSameNumbers = sameNumbers;
 
     return _entitySame( src1,src2,o );
   }
 
 }();
+
+entitySame.defaults =
+{
+  onSameNumbers : null,
+  contain : 0,
+  strict : 1,
+  lastPath : '',
+  path : '',
+  eps : 1e-7,
+}
 
 //
 
@@ -1937,9 +2315,9 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 
 var entityEquivalent = function entityEquivalent( src1,src2,options )
 {
-  var EPS = options.eps;
-  if( EPS === undefined )
-  EPS = 1e-5;
+  var eps = options.eps;
+  if( eps === undefined )
+  eps = 1e-5;
   delete options.eps;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -1950,7 +2328,7 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
     return true;
     if( isNaN( a ) === true && isNaN( b ) === true )
     return true;
-    return Math.abs( a-b ) <= EPS;
+    return Math.abs( a-b ) <= eps;
   }
 
   var options = _.mapSupplement( options || {},
@@ -3019,11 +3397,15 @@ var entitySearch = function( o )
 
   _.routineOptions( entitySearch,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( !o.searchingCaseInsensitive,'not implemented' );
+  //_.assert( !o.searchingCaseInsensitive,'not implemented' );
 
   var strIns,regexpIns;
   strIns = String( o.ins );
-  if( o.searchingCaseInsensitive )
+
+  // if( o.searchingCaseInsensitive )
+  // debugger;
+
+  if( o.searchingCaseInsensitive && _.strIs( o.ins ) )
   regexpIns = new RegExp( ( o.searchingSubstring ? '' : '^' ) + strIns + ( o.searchingSubstring ? '' : '$' ),'i' );
 
   if( o.condition )
@@ -3045,6 +3427,11 @@ var entitySearch = function( o )
     {
       result[ path ] = r;
     }
+    else if( regexpIns )
+    {
+      if( regexpIns.test( e ) )
+      result[ path ] = r;
+    }
     else if( o.searchingSubstring && _.strIs( e ) && e.indexOf( strIns ) !== -1 )
     {
       result[ path ] = r;
@@ -3054,11 +3441,12 @@ var entitySearch = function( o )
 
   /* */
 
+  var onUp = o.onUp;
   var handleUp = function( e,k,i )
   {
 
-    if( o.onUp )
-    if( o.onUp.call( this,e,k,i ) === false )
+    if( onUp )
+    if( onUp.call( this,e,k,i ) === false )
     return false;
 
     var path;
@@ -3091,14 +3479,10 @@ var entitySearch = function( o )
 
   /* */
 
-  _._each
-  ({
-    src : o.src,
-    own : o.own,
-    recursive : o.recursive,
-    onUp : handleUp,
-    onDown : o.onDown,
-  });
+  var optionsEach = _.mapScreen( _._each.defaults,o )
+  optionsEach.onUp = handleUp;
+
+  _._each( optionsEach );
 
   return result;
 }
@@ -3859,7 +4243,7 @@ diagnosticWatchObject.defaults =
 
 _.diagnosticWatchFields
 ({
-  dst : _global_,`
+  dst : _global_,
   names : 'Uniforms',
 });
 
@@ -4008,31 +4392,31 @@ var objectLike = function( src )
 
 //
 
-  /**
-   * The mapIs() method determines whether the passed value is an Object,
-   * and not inherits through the prototype chain.
-   *
-   * If the (src) is an Object, true is returned,
-   * otherwise false is.
-   *
-   * @param { * } src - Entity to check.
-   *
-   * @example
-   * // returns true
-   * mapIs( { a : 7, b : 13 } );
-   *
-   * @example
-   * // returns false
-   * mapIs( 13 );
-   *
-   * @example
-   * // returns false
-   * mapIs( [ 3, 7, 13 ] );
-   *
-   * @returns { Boolean } Returns true if (src) is an Object, and not inherits through the prototype chain.
-   * @method mapIs
-   * @memberof wTools
-   */
+/**
+ * The mapIs() method determines whether the passed value is an Object,
+ * and not inherits through the prototype chain.
+ *
+ * If the (src) is an Object, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - Entity to check.
+ *
+ * @example
+ * // returns true
+ * mapIs( { a : 7, b : 13 } );
+ *
+ * @example
+ * // returns false
+ * mapIs( 13 );
+ *
+ * @example
+ * // returns false
+ * mapIs( [ 3, 7, 13 ] );
+ *
+ * @returns { Boolean } Returns true if (src) is an Object, and not inherits through the prototype chain.
+ * @method mapIs
+ * @memberof wTools
+ */
 
 var mapIs = function( src )
 {
@@ -5618,29 +6002,29 @@ var routineOptions = function routineOptions( routine,options )
 }
 
 //
-
-var routines = function( src )
-{
-  var result = {};
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( src ) );
-
-  var keys = _.mapKeysCustom
-  ({
-    src : src,
-    own : 0,
-    enumerable : 1,
-  });
-
-  for( var k = 0 ; k < keys.length ; k++ )
-  {
-    if( _.routineIs( src[ keys[ k ] ] ) )
-    result[ keys[ k ] ] = src[ keys[ k ] ];
-  }
-
-  return result;
-}
+//
+// var routines = function( src )
+// {
+//   var result = {};
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.objectLike( src ) );
+//
+//   var keys = _.mapKeysCustom
+//   ({
+//     src : src,
+//     own : 0,
+//     enumerable : 1,
+//   });
+//
+//   for( var k = 0 ; k < keys.length ; k++ )
+//   {
+//     if( _.routineIs( src[ keys[ k ] ] ) )
+//     result[ keys[ k ] ] = src[ keys[ k ] ];
+//   }
+//
+//   return result;
+// }
 
 // --
 // time
@@ -10878,6 +11262,56 @@ mapsFlatten.defaults =
 }
 
 //
+
+var mapRoutines = function mapRoutines( src )
+{
+  var result = {};
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( src ) );
+
+  var keys = _.mapKeysCustom
+  ({
+    src : src,
+    own : 0,
+    enumerable : 1,
+  });
+
+  for( var k = 0 ; k < keys.length ; k++ )
+  {
+    if( _.routineIs( src[ keys[ k ] ] ) )
+    result[ keys[ k ] ] = src[ keys[ k ] ];
+  }
+
+  return result;
+}
+
+//
+
+var mapFields = function mapFields( src )
+{
+  var result = {};
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( src ) );
+
+  var keys = _.mapKeysCustom
+  ({
+    src : src,
+    own : 0,
+    enumerable : 1,
+  });
+
+  for( var k = 0 ; k < keys.length ; k++ )
+  {
+    if( !_.routineIs( src[ keys[ k ] ] ) )
+    result[ keys[ k ] ] = src[ keys[ k ] ];
+  }
+
+  return result;
+}
+
+//
 /*
 var mapsPluck = function( srcMaps,filterName )
 {
@@ -11111,6 +11545,7 @@ var mapBut = function( srcMap )
       _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
+      if( argument[ k ] !== undefined ) // xxx
       break;
 
     }
@@ -11180,6 +11615,23 @@ var mapOwnBut = function mapOwnBut( srcMap )
   }
 
   return result;
+}
+
+//
+
+var mapDelete = function( dst,ins )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( dst ) );
+  _.assert( _.objectLike( ins ) );
+
+  for( var i in ins )
+  {
+    delete dst[ i ];
+  }
+
+  return dst;
 }
 
   // /**
@@ -11361,7 +11813,6 @@ var mapScreens = function( srcObject,screenObject )
 var mapScreen = function( screenObject )
 {
 
-  _.assert( arguments.length >= 2 );
   _.assert( arguments.length === 2 );
 
   return _mapScreen
@@ -11369,6 +11820,23 @@ var mapScreen = function( screenObject )
     screenObjects : screenObject,
     srcObjects : _.arraySlice( arguments,1 ),
     dstObject : {},
+  });
+
+}
+
+//
+
+var mapScreenOwn = function( screenObject )
+{
+
+  _.assert( arguments.length === 2 );
+
+  return _mapScreen
+  ({
+    screenObjects : screenObject,
+    srcObjects : _.arraySlice( arguments,1 ),
+    dstObject : {},
+    filter : filter.srcOwn(),
   });
 
 }
@@ -11438,7 +11906,7 @@ var _mapScreen = function( options )
   options.filter = filter.bypass();
   options.filter = _.filter.makeMapper( options.filter );
 
-  _.assert( arguments.length === 1 );
+  _assert( arguments.length === 1 );
   _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as argument' );
   _assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
@@ -12039,8 +12507,18 @@ var Proto =
   eachOwnRecursive : eachOwnRecursive,
 
   eachSample : eachSample, /* experimental */
+  eachInRange : eachInRange,
+  eachInManyRanges : eachInManyRanges,
+  eachInMultiRange : eachInMultiRange, /* exprerimental */
 
   dup : dup,
+
+
+  // range
+
+  rangeLengthGet : rangeLengthGet, /* exprerimental */
+  rangeFirstGet : rangeFirstGet, /* exprerimental */
+  rangeLastGet : rangeLastGet, /* exprerimental */
 
 
   // entity modifier
@@ -12242,7 +12720,7 @@ var Proto =
   routinesCall : routinesCall,
   routineOptions : routineOptions,
 
-  routines : routines,
+  //routines : routines,
 
   bind : null,
 
@@ -12422,6 +12900,11 @@ var Proto =
 
   /* mapsPluck : mapsPluck, */
 
+  mapRoutines : mapRoutines,
+  routines : mapRoutines,
+  mapFields : mapFields,
+  fields : mapFields,
+
 
   // map logic
 
@@ -12434,11 +12917,14 @@ var Proto =
   mapBut : mapBut,
   mapOwnBut : mapOwnBut,
 
+  mapDelete : mapDelete,
+
   mapButFiltering : mapButFiltering,
   mapOwnButFiltering : mapOwnButFiltering,
 
   mapScreens : mapScreens,
   mapScreen : mapScreen,
+  mapScreenOwn : mapScreenOwn,
   _mapScreen : _mapScreen,
 
 

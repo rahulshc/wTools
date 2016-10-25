@@ -4906,13 +4906,13 @@ var timeOut = function( delay,onReady )
     {
       result = onReady();
       if( result instanceof wConsequence )
-      result.then_( con );
+      result.thenDo( con );
       else
       con.give( result );
     }
     else if( onReady instanceof wConsequence )
     {
-      onReady.then_( con );
+      onReady.thenDo( con );
       onReady.give();
     }
     else
@@ -4964,7 +4964,7 @@ var timePeriodic = function( delay,onReady )
     if( result === false )
     clearInterval( id );
     wConsequence.give( con );
-    con.then_( handlePeriodicCon );
+    con.thenDo( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
   _onReady = function()
@@ -4973,13 +4973,13 @@ var timePeriodic = function( delay,onReady )
     if( result === false )
     clearInterval( id );
     wConsequence.give( con );
-    con.then_( handlePeriodicCon );
+    con.thenDo( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
     wConsequence.give( con );
-    con.then_( handlePeriodicCon );
+    con.thenDo( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
 
