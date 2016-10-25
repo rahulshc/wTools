@@ -1719,6 +1719,11 @@ var strJoin = function( test )
   var expected = '1';
   test.identical( got,expected );
 
+  test.description = 'different types';
+  var got = _.strJoin( 1, '2', [ '3', 4 ], 5, '6' );
+  var expected = [ "12356", "12456" ];
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
