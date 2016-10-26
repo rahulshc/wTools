@@ -2454,6 +2454,83 @@ var strLinesSelect = function( test )
   }
 }
 
+//
+
+var strCommonLeft = function( test )
+{
+  test.description = 'no args';
+  var got = _.strCommonLeft( );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.description = 'one argument';
+  var got = _.strCommonLeft( 'abc' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.description = 'ins is empty string';
+  var got = _.strCommonLeft( '', 'a', 'b' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.description = 'several strings';
+  var got = _.strCommonLeft( 'abc', 'abd', 'abc', 'ada' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.description = 'one string is empty';
+  var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
+  var expected = '';
+  test.identical( got, expected );
+
+  if( Config.debug )
+  {
+    test.description = 'ins is array';
+    test.shouldThrowError( function( )
+    {
+      _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
+    });
+  }
+}
+
+//
+
+var strCommonRight = function( test )
+{
+  test.description = 'no args';
+  var got = _.strCommonRight( );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.description = 'one argument';
+  var got = _.strCommonRight( 'abc' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.description = 'ins is empty string';
+  var got = _.strCommonRight( '', 'a', 'b' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.description = 'several strings';
+  var got = _.strCommonRight( 'a', 'cba', 'dba', 'ada' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.description = 'one string is empty';
+  var got = _.strCommonRight( 'abc', '', 'abc', 'ada' );
+  var expected = '';
+  test.identical( got, expected );
+
+  if( Config.debug )
+  {
+    test.description = 'ins is array';
+    test.shouldThrowError( function( )
+    {
+      _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
+    });
+  }
+}
 
 var Proto =
 {
@@ -2505,7 +2582,9 @@ var Proto =
     strMetricFormatBytes : strMetricFormatBytes,
     strTimeFormat : strTimeFormat,
     strShort : strShort,
-    strLinesSelect : strLinesSelect
+    strLinesSelect : strLinesSelect,
+    strCommonLeft : strCommonLeft,
+    strCommonRight : strCommonRight
   }
 
 }
