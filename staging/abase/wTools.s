@@ -1178,8 +1178,9 @@ var _entityCloneAct = function( o )
       (
         'Complex objets should have ' +
         ( o.technique === 'data' ? 'cloneData' : 'cloneObject' ) +
-        ', but object ' + _.strTypeOf( o.src ) + ' \n' +
-        'at ' + ( o.path || '.' ) + '\ndoes not have ',o.src
+        ', but object ' + _.strTypeOf( o.src ) + 'at ' + ( o.path || '.' ), 'does not have such method','\n',
+        o.src,'\n',
+        'try to mixin wCopyable'
       );
     }
 
@@ -2053,6 +2054,12 @@ var _entitySame = function _entitySame( src1,src2,o )
       o.path = path;
     }
   }
+  else if( _.rowIs( src1 ) )
+  {
+
+    return _.row.isIdentical( src1,src2 );
+
+  }
   else if( _.objectLike( src1 ) )
   {
 
@@ -2097,79 +2104,6 @@ var _entitySame = function _entitySame( src1,src2,o )
   }
 
   return true;
-}
-
-//
-
-/**
- * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
- * Returns false if finds difference in two entities, else returns true. By default method uses it own
- * ( onSameNumbers ) routine to compare numbers.
- *
- * @param {*} src1 - Entity for comparison.
- * @param {*} src2 - Entity for comparison.
- * @param {wTools~entitySameOptions} o - comparsion options {@link wTools~entitySameOptions}.
- * @returns {boolean} result - Returns true for same entities.
- *
- * @example
- * //returns false
- * _.entitySame( '1', 1 );
- *
- * @example
- * //returns true
- * _.entitySame( '1', 1, { strict : 0 } );
- *
- * @example
- * //returns true
- * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { contain : 1 } );
- *
- * @example
- * //returns ".a.b"
- * var o = { contain : 1 };
- * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
- * console.log( o.lastPath );
- *
- * @method entitySame
- * @throws {exception} If( arguments.length ) is not equal 2 or 3.
- * @throws {exception} If( o ) is not a Object.
- * @throws {exception} If( o ) is extended by unknown property.
- * @memberof wTools
- */
-
-var entitySame = function entitySame()
-{
-
-  var sameNumbers = function( a,b )
-  {
-    return a === b;
-  }
-
-  return function entitySame( src1,src2,o )
-  {
-
-    _assert( arguments.length === 2 || arguments.length === 3 );
-    _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
-    var o = o || {};
-
-    _.assertMapHasOnly( o,entitySame.defaults );
-    _.mapSupplement( o,entitySame.defaults );
-
-    if( o.onSameNumbers === null )
-    o.onSameNumbers = sameNumbers;
-
-    return _entitySame( src1,src2,o );
-  }
-
-}();
-
-entitySame.defaults =
-{
-  onSameNumbers : null,
-  contain : 0,
-  strict : 1,
-  lastPath : '',
-  path : '',
-  eps : 1e-7,
 }
 
 //
@@ -2244,6 +2178,80 @@ var entityDiff = function entityDiff( src1,src2,o )
 //
 
 /**
+ * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+ * Returns false if finds difference in two entities, else returns true. By default method uses it own
+ * ( onSameNumbers ) routine to compare numbers.
+ *
+ * @param {*} src1 - Entity for comparison.
+ * @param {*} src2 - Entity for comparison.
+ * @param {wTools~entitySameOptions} o - comparsion options {@link wTools~entitySameOptions}.
+ * @returns {boolean} result - Returns true for same entities.
+ *
+ * @example
+ * //returns false
+ * _.entitySame( '1', 1 );
+ *
+ * @example
+ * //returns true
+ * _.entitySame( '1', 1, { strict : 0 } );
+ *
+ * @example
+ * //returns true
+ * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { contain : 1 } );
+ *
+ * @example
+ * //returns ".a.b"
+ * var o = { contain : 1 };
+ * _.entitySame( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
+ * console.log( o.lastPath );
+ *
+ * @method entitySame
+ * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+ * @throws {exception} If( o ) is not a Object.
+ * @throws {exception} If( o ) is extended by unknown property.
+ * @memberof wTools
+ */
+
+var entitySame = function entitySame()
+{
+
+  var sameNumbers = function( a,b )
+  {
+    return Object.is( a,b );
+    //return a === b;
+  }
+
+  return function entitySame( src1,src2,o )
+  {
+
+    _assert( arguments.length === 2 || arguments.length === 3 );
+    _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+    var o = o || {};
+
+    _.assertMapHasOnly( o,entitySame.defaults );
+    _.mapSupplement( o,entitySame.defaults );
+
+    if( o.onSameNumbers === null )
+    o.onSameNumbers = sameNumbers;
+
+    return _entitySame( src1,src2,o );
+  }
+
+}();
+
+entitySame.defaults =
+{
+  onSameNumbers : null,
+  contain : 0,
+  strict : 1,
+  lastPath : '',
+  path : '',
+  eps : 1e-7,
+}
+
+//
+
+/**
  * Deep strict comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
  * Returns true if entities are identical.
  *
@@ -2276,9 +2284,16 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
+  var sameNumbers = function( a,b )
+  {
+    return Object.is( a,b );
+    //return a === b;
+  }
+
   var options = _.mapSupplement( options || {},
   {
     strict : 1,
+    onSameNumbers : sameNumbers,
   });
 
   return _.entitySame( src1,src2,options );
@@ -2315,6 +2330,7 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 
 var entityEquivalent = function entityEquivalent( src1,src2,options )
 {
+  var options = options || {};
   var eps = options.eps;
   if( eps === undefined )
   eps = 1e-5;
@@ -2324,9 +2340,7 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
 
   var _sameNumbers = function( a,b )
   {
-    if( a === b )
-    return true;
-    if( isNaN( a ) === true && isNaN( b ) === true )
+    if( Object.is( a,b ) )
     return true;
     return Math.abs( a-b ) <= eps;
   }
@@ -3571,7 +3585,8 @@ var _err = function _err( o )
     if( argument && !_.atomicIs( argument ) )
     {
 
-      if( _.routineIs( argument.toStr ) ) str = argument.toStr();
+      if( _.atomicIs( argument ) ) str = String( argument );
+      else if( _.routineIs( argument.toStr ) ) str = argument.toStr();
       else if( _.errorIs( argument ) || _.strIs( argument.message ) )
       {
         if( _.strIs( argument.originalMessage ) ) str = argument.originalMessage;
@@ -3579,7 +3594,8 @@ var _err = function _err( o )
         else str = _.toStr( argument );
       }
       else if( _.routineIs( argument.toString ) ) str = argument.toString();
-      else str = String( argument );
+      else str = '[ ' + _.strTypeOf( argument ) + ' ]';
+
     }
     else str = String( argument );
 
@@ -12547,10 +12563,9 @@ var Proto =
   entityHasNan : entityHasNan,
   entityHasUndef : entityHasUndef,
 
+  entityDiff : entityDiff,
   _entitySame : _entitySame,
   entitySame : entitySame,
-  entityDiff : entityDiff,
-
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
   entityContain : entityContain,
