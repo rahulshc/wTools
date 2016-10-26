@@ -108,6 +108,16 @@ var strReplaceAll = function( test )
   var expected = 'heyyo';
   test.identical( got,expected );
 
+  test.description = 'no occurrences returns origin';
+  var got = _.strReplaceAll( 'hello', 'x', 'y' );
+  var expected = 'hello';
+  test.identical( got,expected );
+
+  test.description = 'empty dictionary';
+  var got = _.strReplaceAll( 'hello', { } );
+  var expected = 'hello';
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
@@ -1707,6 +1717,11 @@ var strJoin = function( test )
   test.description = 'one argument';
   var got = _.strJoin( '1' );
   var expected = '1';
+  test.identical( got,expected );
+
+  test.description = 'different types';
+  var got = _.strJoin( 1, '2', [ '3', 4 ], 5, '6' );
+  var expected = [ "12356", "12456" ];
   test.identical( got,expected );
 
   /**/

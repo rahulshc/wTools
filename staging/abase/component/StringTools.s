@@ -2585,16 +2585,16 @@ var strIron = function()
 //
 
 /**
- * Replaces each occurrence of ( ins ) in string ( dst ) with ( sub ).
- * If the function can not find any occurrence in source ( dst ) it returns the original string.
+ * Replaces each occurrence of string( ins ) in source( dst ) with string( sub ).
+ * Returns result of replacements as new string or original string if no matches finded in source( dst ).
  * Function can be called in three different ways:
- *  One argument: object that contains properties: map ( o ) with options.
- *  Two arguments: string ( dst ), map ( dictionary ).
- *  Three arguments: string ( dst ), string ( ins ), string ( sub )
+ * - One argument: object that contains options: source( dst ) and dictionary.
+ * - Two arguments: source string( dst ), map( dictionary ).
+ * - Three arguments: source string( dst ), pattern string( ins ), replacement( sub ).
  * @param {string} dst - Source string to parse.
- * @param {string} ins - String that is to be replaced by( sub ).
- * @param {string} sub - String that replaces finded occurrence.
- * @param {object} dictionary - Object with properties like ( { 'ins' : 'sub' } ).
+ * @param {string} ins - String to find in source( dst ).
+ * @param {string} sub - String that replaces finded occurrence( ins ).
+ * @param {object} dictionary - Map that contains pattern/replacement pairs like ( { 'ins' : 'sub' } ).
  * @returns {string} Returns string with result of replacements.
  *
  * @example
@@ -2618,6 +2618,7 @@ var strIron = function()
  * @throws { Exception } Throws a exception if( ins ) is not a String.
  * @throws { Exception } Throws a exception if( sub ) is not a String.
  * @throws { Exception } Throws a exception if( dictionary ) is not a Object.
+ * @throws { Exception } Throws a exception if( dictionary ) key value is not a String.
  * @memberof wTools
  *
  */
@@ -2737,15 +2738,14 @@ var strReplaceNames = function( src,ins,sub )
 //
 
 /**
- * Concatenates objects provided to function in orded that they are specified.
- * If one of arguments is array-like, function concatenates other arguments with
- * each element in the array.
- * If all arguments are array-like, they must have same length.
- * Example: ( [ 1,2 ], 3 ) -> ( [ "13", "23" ] ).
+ * Joins objects from arguments list together by concatenating their values in orded that they are specified.
+ * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
+ * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ "13", "23" ] ),
+ * ( [ 1, 2 ], [ 1, 2] ) -> ( [ "11", "23" ] ).
  *
  * @param {array-like} arguments - Contains provided objects.
- * @returns {object} Returns concatenated objects as string or array.Return type depends
- * from arguments type.
+ * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
  *
  * @example
  * //returns "123"
@@ -2753,15 +2753,19 @@ var strReplaceNames = function( src,ins,sub )
  *
  * @example
  * //returns [ "12", "22", "32" ]
- * _.strJoin( [ 1, 2, 3 ], 2)
+ * _.strJoin( [ 1, 2, 3 ], 2 );
  *
  * @example
  * //returns [ "11", "23" ]
- * _.strJoin( [ 1, 2 ], [ 1, 3 ] )
+ * _.strJoin( [ 1, 2 ], [ 1, 3 ] );
+ *
+ * @example
+ * //returns [ "1236", "1247", "1258" ]
+ * _.strJoin( 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] );
  *
  * @method strJoin
- * @throws { Exception } Throws a exception if some object from( arguments ) is not a Array, String or Number.
- * @throws { Exception } Throws a exception if length of arrays passed as arguments is different.
+ * @throws { Exception } If some object from( arguments ) is not a Array, String or Number.
+ * @throws { Exception } If length of arrays passed as arguments is different.
  * @memberof wTools
  *
  */
@@ -2820,24 +2824,43 @@ var strJoin = function()
 //
 
 /**
- * Separates parts of string( srcStr ) using array( maskArray ) as mask and returns them as array.
+ * Splits string( srcStr ) into parts using array( maskArray ) as mask and returns them as array.
+ * Mask( maskArray ) contains string(s) separated by marker( strUnjoin.any ). Mask must starts/ends with first/last letter from source
+ * or can be replaced with marker( strUnjoin.any ). Position of( strUnjoin.any ) determines which part of source string will be splited:
+ * - If( strUnjoin.any ) is before string it marks everything before that string. Example: ( [ _.strUnjoin.any, 'postfix' ] ).
+ * - If( strUnjoin.any ) is after string it marks everything after that string. Example: ( [ 'prefix', _.strUnjoin.any ] ).
+ * - If( strUnjoin.any ) is between two strings it marks everything between them. Example: ( [ 'prefix', _.strUnjoin.any, 'postfix' ] ).
+ * - If( strUnjoin.any ) is before and after string it marks all except that string. Example: ( [ '_.strUnjoin.any', something, '_.strUnjoin.any' ] ).
+ *
  * @param {string} srcStr - Source string.
  * @param {array} maskArray - Contains mask for source string.
  * @returns {array} Returns array with unjoined string part.
  *
  * @example
  * //returns [ "prefix", "_something_", "postfix" ]
- * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] )
+ * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] );
  *
  * @example
- * //returns [ "prefix_", "something", "postfix" ]
- * _.strUnjoin( 'prefix_something_postfix',[_.strUnjoin.any,'something','postfix'] )
+ * //returns [ "prefix_", "something", "_", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'something', _.strUnjoin.any, 'postfix' ] );
  *
+ * @example
+ * //returns [ "prefix_something_", "postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'postfix' ] );
+ *
+ * @example
+ * //returns [ "prefix", "_something_postfix" ]
+ * _.strUnjoin( 'prefix_something_postfix', [ 'prefix', _.strUnjoin.any ] );
+ *
+ * @example
+ * //returns [ "prefi", "x", "_something_", "p", "ostfix" ]
+ * _.strUnjoin( 'prefix_something_postfix', [ _.strUnjoin.any, 'x', _.strUnjoin.any, 'p', _.strUnjoin.any ] );
  *
  * @method strUnjoin
- * @throws { Exception } Throws a exception if no arguments provided.
- * @throws { Exception } Throws a exception if( srcStr ) is not a String.
- * @throws { Exception } Throws a exception if( maskArray ) is not a Array.
+ * @throws { Exception } If no arguments provided.
+ * @throws { Exception } If( srcStr ) is not a String.
+ * @throws { Exception } If( maskArray ) is not a Array.
+ * @throws { Exception } If( maskArray ) value is not String or strUnjoin.any.
  * @memberof wTools
  *
  */
