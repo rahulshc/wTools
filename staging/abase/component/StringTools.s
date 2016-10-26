@@ -2972,6 +2972,29 @@ strUnjoin.any = function any(){}
 
 //
 
+/**
+ * Finds common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have same first symbol with pattern( ins ) function returns empty string.
+ * Otherwise returns symbol sequence that appears from the start of each string.
+ *
+ * @param {string} ins - Sequence of possible symbols.
+ * @returns {string} Returns found common symbols.
+ *
+ * @example "a"
+ * _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
+ *
+ * @example "abc"
+ * _.strCommonLeft( 'abcd', 'abc', 'abcd' );
+ *
+ * @example ""
+ * _.strCommonLeft( 'abcd', 'abc', 'd' )
+ *
+ * @method strCommonLeft
+ * @throws {exception} If( ins ) is not a String.
+ * @memberof wTools
+ *
+ */
+
 var strCommonLeft = function strCommonLeft( ins )
 {
 
@@ -3002,6 +3025,29 @@ var strCommonLeft = function strCommonLeft( ins )
 }
 
 //
+
+/**
+ * Finds common symbols from the end of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have same last symbol with pattern( ins ) function returns empty string.
+ * Otherwise returns symbol sequence that appears from the end of each string.
+ *
+ * @param {string} ins - Sequence of possible symbols.
+ * @returns {string} Returns found common symbols.
+ *
+ * @example "ame"
+ * _.strCommonRight( 'ame', 'same', 'name' );
+ *
+ * @example "c"
+ * _.strCommonRight( 'abc', 'dbc', 'ddc', 'aac' );
+ *
+ * @example ""
+ * _.strCommonRight( 'abc', 'dba', 'abc' );
+ *
+ * @method strCommonRight
+ * @throws {exception} If( ins ) is not a String.
+ * @memberof wTools
+ *
+ */
 
 var strCommonRight = function strCommonRight( ins )
 {
