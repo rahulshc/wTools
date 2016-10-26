@@ -2980,6 +2980,8 @@ var strCommonLeft = function strCommonLeft( ins )
   if( arguments.length === 1 )
   return ins;
 
+  _.assert( _.strIs( ins ) );
+
   var length = +Infinity;
 
   for( var a = 0 ; a < arguments.length ; a++ )
@@ -3008,6 +3010,8 @@ var strCommonRight = function strCommonRight( ins )
   return '';
   if( arguments.length === 1 )
   return ins;
+
+  _.assert( _.strIs( ins ) );
 
   var length = +Infinity;
 
