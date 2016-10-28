@@ -286,6 +286,16 @@ var strHtmlEscape = function( test )
   var expected = '[object Object]';
   test.identical( got,expected );
 
+  test.description = 'empty string';
+  var got = _.strHtmlEscape( '' );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.description = 'nothin replaced';
+  var got = _.strHtmlEscape( 'text' );
+  var expected = 'text';
+  test.identical( got,expected );
+
   /**/
 
   if( Config.debug )
