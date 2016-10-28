@@ -3590,7 +3590,8 @@ var strCount = function( src,ins )
 //
 
 /**
- * Returns n( times ) duplicates of string( src ) .
+ * Returns source string( src ) repeated specified number( times ) of times.
+ * If source( src ) has zero length or ( times <= 0 ) returns empty string.
  *
  * @param {string} src - Source string.
  * @param {number} times - Number of duplicates.
@@ -3604,10 +3605,14 @@ var strCount = function( src,ins )
  * //returns abcabc
  * _.strDup( "abc", 2 );
  *
+ * @example
+ * //returns ''
+ * _.strDup( "abc", 0 );
+ *
  * @method strDup
- * @throws { Exception } Throw an exception if( src ) is not a String.
- * @throws { Exception } Throw an exception if( times ) is not a Number.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @throws { Exception } If( src ) is not a String.
+ * @throws { Exception } If( times ) is not a Number.
+ * @throws { Exception } If( arguments.length ) is not equal 2.
  * @memberof wTools
  *
  */
