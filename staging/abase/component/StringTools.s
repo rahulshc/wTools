@@ -3276,8 +3276,8 @@ var strHtmlEscape = function( str )
 //
 
 /**
- * Returns string with escaped unicode sequence based on string( src ).
- *
+ * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
+ * Example: ( 't' -> '\u0074' ). Returns result of conversion as new string or empty string if source has zero length.
  * @param {string} str - Source string to parse.
  * @returns {string} Returns string with result of conversion.
  *
