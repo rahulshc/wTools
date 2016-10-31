@@ -2854,6 +2854,73 @@ var strJoin = function()
 
 //
 
+var strConcat = function strConcat()
+{
+  var o = this;
+
+  if( Object.isPrototypeOf.call( Self,this ) )
+  o = {};
+
+  _.routineOptions( strConcat,o );
+
+  o.optionsForToStr = _.mapSupplement( {},o.optionsForToStr,strConcat.defaults.optionsForToStr );
+
+  var result = '';
+  if( !arguments.length )
+  return result;
+
+  /* */
+
+  var nl = 1;
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    src = _.toStr( src,o.optionsForToStr );
+    if( !nl )
+    {
+      var i = src.lastIndexOf( o.lineDelimter );
+      if( i === -1 )
+      {
+        result += o.delimeter;
+      }
+      else
+      {
+        if( i !== src.length-1 )
+        result += o.lineDelimter;
+      }
+    }
+    if( !src.length )
+    nl = src[ src.length-1 ] === o.lineDelimter;
+    result += src;
+  }
+
+  /* */
+
+  if( o.linePrefix || o.linePostfix )
+  {
+    result = result.split( o.lineDelimter );
+    result = o.linePrefix + result.join( o.linePostfix + o.lineDelimter + o.linePrefix ) + o.linePostfix;
+  }
+
+  /* */
+
+  return result;
+}
+
+strConcat.defaults =
+{
+  linePrefix : '',
+  linePostfix : '',
+  lineDelimter : '\n',
+  delimeter : ' ',
+  optionsForToStr :
+  {
+    wrapString : 0,
+  },
+}
+
+//
+
 /**
  * Splits string( srcStr ) into parts using array( maskArray ) as mask and returns them as array.
  * Mask( maskArray ) contains string(s) separated by marker( strUnjoin.any ). Mask must starts/ends with first/last letter from source
@@ -4230,6 +4297,7 @@ var Proto =
 
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
+  strConcat : strConcat, /* me too */
 
   strCommonLeft : strCommonLeft, /* document me */
   strCommonRight : strCommonRight, /* document me */
