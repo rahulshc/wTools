@@ -2877,14 +2877,20 @@ var strConcat = function strConcat()
     var src = arguments[ a ];
     src = _.toStr( src,o.optionsForToStr );
     if( !nl )
-    if( src.indexOf( o.lineDelimter ) === -1 )
     {
-      result += o.delimeter;
+      var i = src.lastIndexOf( o.lineDelimter );
+      if( i === -1 )
+      {
+        result += o.delimeter;
+      }
+      else
+      {
+        if( i !== src.length-1 )
+        result += o.lineDelimter;
+      }
     }
-    else
-    {
-      result += o.lineDelimter;
-    }
+    if( !src.length )
+    nl = src[ src.length-1 ] === o.lineDelimter;
     result += src;
   }
 
