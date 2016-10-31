@@ -1337,8 +1337,9 @@ var _toStrFromObject = function( src,o )
 //
 
 /**
- * Function builds string that represents  container structure like object or array using keys and values from
- * argument( o ).Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
+ * Builds string representation of container structure using options from
+ * argument( o ). Takes keys from option( o.names ) and values from option( o.values ).
+ * Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
  *
  * @param {object} o - Contains data and options.
  * @param {object} [ o.values ] - Source object that contains values.
@@ -1350,8 +1351,8 @@ var _toStrFromObject = function( src,o )
  * @returns {String} Returns string representation of container.
  *
  * @method _toStrFromContainer
- * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } If no argument provided.
+ * @throws { Exception } If( o ) is not a Object.
  * @memberof wTools
  *
  */
