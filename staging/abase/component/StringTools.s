@@ -895,9 +895,10 @@ var _toStrFromRoutine = function( src,o )
 //
 
 /**
- * This function converts Number to String with options.
+ * Converts Number( src ) to String using one of two possible options: precision or fixed.
+ * If no option specified returns source( src ) as simple string.
  *
- * @param {Number} src - Number for conversion.
+ * @param {Number} src - Number to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
  * @returns {String} Returns number converted to the string.
  *
@@ -909,7 +910,16 @@ var _toStrFromRoutine = function( src,o )
  * //returns 8.9240
  * _._toStrFromNumber( 8.923964453, { fixed : 4 } );
  *
+ * @example
+ * //returns 8.92
+ * _._toStrFromNumber( 8.92, { } );
+ *
  * @method _toStrFromNumber
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If( src ) is not a Number.
+ * @throws {Exception} If( o ) is not a Object.
+ * @throws {RangeError} If( o.precision ) is not between 1 and 21.
+ * @throws {RangeError} If( o.fixed ) is not between 0 and 20.
  * @memberof wTools
  *
 */
@@ -933,27 +943,35 @@ var _toStrFromNumber = function( src,o )
 //
 
 /**
- * Function wraps string( src ) in to( "" ) using options provided
- * by argument( o ).Disables escape characters if( o.escaping ) is true.
- * Also string can be wrapped in to backtick( `` ) if( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true.
+ * Adjusts source string. Takes string from argument( src ) and options from argument( o ).
+ * Limits string length using option( o.limitStringLength ), disables escaping characters using option( o.escaping ),
+ * wraps string into double quotes using( o.wrapString ) or into backtick( `` ) if( o.usingMultilineStringWrapper ) also is true.
+ * Returns result as new string or source string if no changes maded.
  *
  * @param {object} src - String to parse.
  * @param {wTools~toStrOptions} o - Contains conversion  options {@link wTools~toStrOptions}.
- * @returns {String} Returns wrapped string.
+ * @returns {String} Returns result of adjustments as new string.
  *
  * @example
  * //returns "hello"
- * _.toStrFromStr( 'hello', {} );
+ * _._toStrFromStr( 'hello', {} );
  *
  * @example
  * //returns "test\n"
- * _.toStrFromStr( 'test\n', { escaping : 1 } );
+ * _._toStrFromStr( 'test\n', { escaping : 1 } );
+ *
+ * @example
+ * //returns [ "t" ... "t" ]
+ * _._toStrFromStr( 'test', { limitStringLength: 2 } );
  *
  * @example
  * //returns `test`
- * _.toStrFromStr( 'test', { usingMultilineStringWrapper : 1 } );
+ * _._toStrFromStr( 'test', { usingMultilineStringWrapper : 1, wrapString : 1 } );
  *
  * @method _toStrFromStr
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If( src ) is not a String.
+ * @throws {Exception} If( o ) is not a Object.
  * @memberof wTools
  *
 */
@@ -1086,8 +1104,7 @@ var _toStrFromArrayFiltered = function( src,o )
 //
 
 /**
- * Function converts array provided by argument( src ) to string representation
- * using options provided by argument( o ).
+ * Converts array provided by argument( src ) into string representation using options provided by argument( o ).
  *
  * @param {object} src - Array to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
@@ -1115,9 +1132,9 @@ var _toStrFromArrayFiltered = function( src,o )
  * _.toStrFromArray( [ 1, [ 2, 3, 4 ], 5 ], { levels : 2, multiline : 1 } );
  *
  * @method _toStrFromArray
- * @throws { Exception } Throw an exception if( src ) is undefined.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } If( src ) is undefined.
+ * @throws { Exception } If no arguments provided.
+ * @throws { Exception } If( o ) is not a Object.
  * @memberof wTools
  *
  */
@@ -1222,8 +1239,7 @@ var _toStrFromObjectKeysFiltered = function( src,o )
 //
 
 /**
- * Function converts object provided by argument( src ) to string representation
- * using options provided by argument( o ).
+ * Converts object provided by argument( src ) into string representation using options provided by argument( o ).
  *
  * @param {object} src - Object to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
@@ -1243,9 +1259,9 @@ var _toStrFromObjectKeysFiltered = function( src,o )
  * _.toStrFromObject( { h : { d : 1 }, g : 'c', c : [2] }, { levels : 2, noObject : 1 } );
  *
  * @method _toStrFromObject
- * @throws { Exception } Throw an exception if( src ) is not a object-like.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } If( src ) is not a object-like.
+ * @throws { Exception } If not all arguments provided.
+ * @throws { Exception } If( o ) is not a Object.
  * @memberof wTools
  *
 */
@@ -1321,8 +1337,9 @@ var _toStrFromObject = function( src,o )
 //
 
 /**
- * Function builds string that represents  container structure like object or array using keys and values from
- * argument( o ).Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
+ * Builds string representation of container structure using options from
+ * argument( o ). Takes keys from option( o.names ) and values from option( o.values ).
+ * Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
  *
  * @param {object} o - Contains data and options.
  * @param {object} [ o.values ] - Source object that contains values.
@@ -1334,8 +1351,8 @@ var _toStrFromObject = function( src,o )
  * @returns {String} Returns string representation of container.
  *
  * @method _toStrFromContainer
- * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } If no argument provided.
+ * @throws { Exception } If( o ) is not a Object.
  * @memberof wTools
  *
  */
@@ -1489,11 +1506,11 @@ var _toStrFromContainer = function( o )
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
  * For example: src : 'string', limit : 4, result -> '"st"..."ng"'.
- * * Function can be called in two ways:
+ * Function can be called in two ways:
  * - First to pass only source string and limit;
- * - Second to pass map like ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
+ * - Second to pass all options map. Example: ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
  *
- * @param {string|object} src - String to parse or object with options.
+ * @param {string|object} o - String to parse or object with options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {number} [ o.limit=40 ] - Limit of characters in output.
  * @param {string} [ o.wrap='"' ] - String wrapper. Use zero or false to disable.
@@ -1529,12 +1546,12 @@ var _toStrFromContainer = function( o )
  *  _.strShort( 's\x01t\x01ing string string', 14 );
  *
  * @method strShort
- * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o ) is extended with uknown property.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.limit ) is not a Number.
- * @throws { Exception } Throw an exception if( o.wrap ) is not a String.
+ * @throws { Exception } If no argument provided.
+ * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } If( o ) is extended with unknown property.
+ * @throws { Exception } If( o.src ) is not a String.
+ * @throws { Exception } If( o.limit ) is not a Number.
+ * @throws { Exception } If( o.wrap ) is not a String.
  *
  * @memberof wTools
  *
@@ -1623,6 +1640,7 @@ strShort.defaults =
 /**
  * Disables escaped characters in source string( src ).
  * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
+ * Returns string with disabled escaped characters, source string if nothing changed or  empty string if source is zero length.
  * @param {string} src - Source string.
  * @returns {string} Returns string with disabled escaped characters.
  *
@@ -1630,7 +1648,20 @@ strShort.defaults =
  * //returns "\nhello\u001bworld\n"
  * _.strEscape( '\nhello\u001bworld\n' );
  *
+ * @example
+ * //returns "string"
+ * _.strEscape( 'string' );
+ *
+ * @example
+ * //returns "str\""
+ * _.strEscape( 'str"' );
+ *
+ * @example
+ * //returns ""
+ * _.strEscape( '' );
+ *
  * @method strEscape
+ * @throw { Exception } If( src ) is not a String.
  * @memberof wTools
  *
  */
@@ -2972,6 +3003,29 @@ strUnjoin.any = function any(){}
 
 //
 
+/**
+ * Finds common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have same first symbol with pattern( ins ) function returns empty string.
+ * Otherwise returns symbol sequence that appears from the start of each string.
+ *
+ * @param {string} ins - Sequence of possible symbols.
+ * @returns {string} Returns found common symbols.
+ *
+ * @example "a"
+ * _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
+ *
+ * @example "abc"
+ * _.strCommonLeft( 'abcd', 'abc', 'abcd' );
+ *
+ * @example ""
+ * _.strCommonLeft( 'abcd', 'abc', 'd' )
+ *
+ * @method strCommonLeft
+ * @throws {exception} If( ins ) is not a String.
+ * @memberof wTools
+ *
+ */
+
 var strCommonLeft = function strCommonLeft( ins )
 {
 
@@ -2979,6 +3033,8 @@ var strCommonLeft = function strCommonLeft( ins )
   return '';
   if( arguments.length === 1 )
   return ins;
+
+  _.assert( _.strIs( ins ) );
 
   var length = +Infinity;
 
@@ -3001,6 +3057,29 @@ var strCommonLeft = function strCommonLeft( ins )
 
 //
 
+/**
+ * Finds common symbols from the end of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have same last symbol with pattern( ins ) function returns empty string.
+ * Otherwise returns symbol sequence that appears from the end of each string.
+ *
+ * @param {string} ins - Sequence of possible symbols.
+ * @returns {string} Returns found common symbols.
+ *
+ * @example "ame"
+ * _.strCommonRight( 'ame', 'same', 'name' );
+ *
+ * @example "c"
+ * _.strCommonRight( 'abc', 'dbc', 'ddc', 'aac' );
+ *
+ * @example ""
+ * _.strCommonRight( 'abc', 'dba', 'abc' );
+ *
+ * @method strCommonRight
+ * @throws {exception} If( ins ) is not a String.
+ * @memberof wTools
+ *
+ */
+
 var strCommonRight = function strCommonRight( ins )
 {
 
@@ -3008,6 +3087,8 @@ var strCommonRight = function strCommonRight( ins )
   return '';
   if( arguments.length === 1 )
   return ins;
+
+  _.assert( _.strIs( ins ) );
 
   var length = +Infinity;
 
@@ -3169,8 +3250,9 @@ var lattersSpectreComparison = function( src1,src2 )
 
 //
 /**
- * Replaces all occurrences of html escape symbols from( _strHtmlEscapeMap )
+ * Replaces all occurrences of html escape symbols from map( _strHtmlEscapeMap )
  * in source( str ) with their code equivalent like( '&' -> '&amp;' ).
+ * Returns result of replacements as new string or original if nothing replaced.
  *
  * @param {string} str - Source string to parse.
  * @global {object} _strHtmlEscapeMap - Html escape symbols map.
@@ -3187,6 +3269,10 @@ var lattersSpectreComparison = function( src1,src2 )
  * @example
  * //returns &#x2F;&#x2F;test&#x2F;&#x2F;
  * _.strHtmlEscape( '//test//' );
+ *
+ * @example
+ * //returns &amp;,&lt;
+ * _.strHtmlEscape( ['&','<'] );
  *
  * @example
  * //returns &lt;div class=&quot;cls&quot;&gt;&lt;&#x2F;div&gt;
@@ -3221,8 +3307,8 @@ var strHtmlEscape = function( str )
 //
 
 /**
- * Returns string with escaped unicode sequence based on string( src ).
- *
+ * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
+ * Example: ( 't' -> '\u0074' ). Returns result of conversion as new string or empty string if source has zero length.
  * @param {string} str - Source string to parse.
  * @returns {string} Returns string with result of conversion.
  *
@@ -3535,7 +3621,8 @@ var strCount = function( src,ins )
 //
 
 /**
- * Returns n( times ) duplicates of string( src ) .
+ * Returns source string( src ) repeated specified number( times ) of times.
+ * If source( src ) has zero length or ( times <= 0 ) returns empty string.
  *
  * @param {string} src - Source string.
  * @param {number} times - Number of duplicates.
@@ -3549,10 +3636,14 @@ var strCount = function( src,ins )
  * //returns abcabc
  * _.strDup( "abc", 2 );
  *
+ * @example
+ * //returns ''
+ * _.strDup( "abc", 0 );
+ *
  * @method strDup
- * @throws { Exception } Throw an exception if( src ) is not a String.
- * @throws { Exception } Throw an exception if( times ) is not a Number.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @throws { Exception } If( src ) is not a String.
+ * @throws { Exception } If( times ) is not a Number.
+ * @throws { Exception } If( arguments.length ) is not equal 2.
  * @memberof wTools
  *
  */
