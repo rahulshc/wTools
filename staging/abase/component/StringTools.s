@@ -895,9 +895,10 @@ var _toStrFromRoutine = function( src,o )
 //
 
 /**
- * This function converts Number to String with options.
+ * Converts Number( src ) to String using one of two possible options: precision or fixed.
+ * If no option specified returns source( src ) as simple string.
  *
- * @param {Number} src - Number for conversion.
+ * @param {Number} src - Number to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
  * @returns {String} Returns number converted to the string.
  *
@@ -909,7 +910,16 @@ var _toStrFromRoutine = function( src,o )
  * //returns 8.9240
  * _._toStrFromNumber( 8.923964453, { fixed : 4 } );
  *
+ * @example
+ * //returns 8.92
+ * _._toStrFromNumber( 8.92, { } );
+ *
  * @method _toStrFromNumber
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If( src ) is not a Number.
+ * @throws {Exception} If( o ) is not a Object.
+ * @throws {RangeError} If( o.precision ) is not between 1 and 21.
+ * @throws {RangeError} If( o.fixed ) is not between 0 and 20.
  * @memberof wTools
  *
 */
