@@ -2885,11 +2885,10 @@ var strConcat = function strConcat()
       }
       else
       {
-        if( i !== src.length-1 )
         result += o.lineDelimter;
       }
     }
-    if( !src.length )
+    if( src.length )
     nl = src[ src.length-1 ] === o.lineDelimter;
     result += src;
   }
