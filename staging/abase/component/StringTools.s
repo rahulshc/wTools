@@ -1239,8 +1239,7 @@ var _toStrFromObjectKeysFiltered = function( src,o )
 //
 
 /**
- * Function converts object provided by argument( src ) to string representation
- * using options provided by argument( o ).
+ * Converts object provided by argument( src ) into string representation using options provided by argument( o ).
  *
  * @param {object} src - Object to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
@@ -1260,9 +1259,9 @@ var _toStrFromObjectKeysFiltered = function( src,o )
  * _.toStrFromObject( { h : { d : 1 }, g : 'c', c : [2] }, { levels : 2, noObject : 1 } );
  *
  * @method _toStrFromObject
- * @throws { Exception } Throw an exception if( src ) is not a object-like.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } If( src ) is not a object-like.
+ * @throws { Exception } If not all arguments provided.
+ * @throws { Exception } If( o ) is not a Object.
  * @memberof wTools
  *
 */
