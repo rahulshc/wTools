@@ -943,27 +943,35 @@ var _toStrFromNumber = function( src,o )
 //
 
 /**
- * Function wraps string( src ) in to( "" ) using options provided
- * by argument( o ).Disables escape characters if( o.escaping ) is true.
- * Also string can be wrapped in to backtick( `` ) if( o.usingMultilineStringWrapper ) and ( o.wrapString ) are true.
+ * Adjusts source string. Takes string from argument( src ) and options from argument( o ).
+ * Limits string length using option( o.limitStringLength ), disables escaping characters using option( o.escaping ),
+ * wraps string into double quotes using( o.wrapString ) or into backtick( `` ) if( o.usingMultilineStringWrapper ) also is true.
+ * Returns result as new string or source string if no changes maded.
  *
  * @param {object} src - String to parse.
  * @param {wTools~toStrOptions} o - Contains conversion  options {@link wTools~toStrOptions}.
- * @returns {String} Returns wrapped string.
+ * @returns {String} Returns result of adjustments as new string.
  *
  * @example
  * //returns "hello"
- * _.toStrFromStr( 'hello', {} );
+ * _._toStrFromStr( 'hello', {} );
  *
  * @example
  * //returns "test\n"
- * _.toStrFromStr( 'test\n', { escaping : 1 } );
+ * _._toStrFromStr( 'test\n', { escaping : 1 } );
+ *
+ * @example
+ * //returns [ "t" ... "t" ]
+ * _._toStrFromStr( 'test', { limitStringLength: 2 } );
  *
  * @example
  * //returns `test`
- * _.toStrFromStr( 'test', { usingMultilineStringWrapper : 1 } );
+ * _._toStrFromStr( 'test', { usingMultilineStringWrapper : 1, wrapString : 1 } );
  *
  * @method _toStrFromStr
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If( src ) is not a String.
+ * @throws {Exception} If( o ) is not a Object.
  * @memberof wTools
  *
 */
