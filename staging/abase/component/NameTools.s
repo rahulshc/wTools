@@ -38,7 +38,7 @@ var nameFielded = function nameFielded( nameString )
     name[ nameString ] = nameString;
     return name;
   }
-  else throw _.err( 'nameFielded :','unknown arguments' );
+  else throw _.err( 'nameFielded :','expects string or ' );
 
 }
 

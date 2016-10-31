@@ -138,7 +138,7 @@ var __eachAct = function( o )
 
     if( o.usingVisits )
     {
-      _.assert( o.visited[ o.visited.length-1 ] === o.src );
+      _.assert( Object.is( o.visited[ o.visited.length-1 ], o.src ) );
       o.visited.pop();
     }
 
@@ -5116,7 +5116,7 @@ var strPrimitiveTypeOf = function( src )
   * @memberof wTools
   */
 
-var str = function()
+var str = function str()
 {
 
   var result = '';
@@ -5125,8 +5125,10 @@ var str = function()
 
   for( var a = 0 ; a < arguments.length ; a++ )
   {
-    if( arguments[ a ] && arguments[ a ].toStr ) result += arguments[ a ].toStr() + ' ';
-    else result += String( arguments[ a ] ) + ' ';
+    if( arguments[ a ] && arguments[ a ].toStr )
+    result += arguments[ a ].toStr() + ' ';
+    else
+    result += String( arguments[ a ] ) + ' ';
   }
 
   return result;
@@ -12966,6 +12968,17 @@ var _assert = _.assert;
 var _arraySlice = _.arraySlice;
 var timeNow = Self.timeNow = Self._timeNow_gen();
 
+if( !_global_.logger )
+_global_.logger =
+{
+  log : _.routineJoin( console,console.log ),
+  logUp : _.routineJoin( console,console.log ),
+  logDown : _.routineJoin( console,console.log ),
+  error : _.routineJoin( console,console.error ),
+  errorUp : _.routineJoin( console,console.error ),
+  errorDown : _.routineJoin( console,console.error ),
+}
+
 //
 
 _global_[ 'wTools' ] = Self;
@@ -12996,8 +13009,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/ExecTools.s' );
   require( './component/StringTools.s' );
 
-  require( './object/printer/Logger.s' );
-
+  //require( './object/printer/printer/Logger.s' );
   //require( './object/RegexpObject.s' );
 
 }
