@@ -1640,6 +1640,7 @@ strShort.defaults =
 /**
  * Disables escaped characters in source string( src ).
  * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
+ * Returns string with disabled escaped characters, source string if nothing changed or  empty string if source is zero length.
  * @param {string} src - Source string.
  * @returns {string} Returns string with disabled escaped characters.
  *
@@ -1647,7 +1648,20 @@ strShort.defaults =
  * //returns "\nhello\u001bworld\n"
  * _.strEscape( '\nhello\u001bworld\n' );
  *
+ * @example
+ * //returns "string"
+ * _.strEscape( 'string' );
+ *
+ * @example
+ * //returns "str\""
+ * _.strEscape( 'str"' );
+ *
+ * @example
+ * //returns ""
+ * _.strEscape( '' );
+ *
  * @method strEscape
+ * @throw { Exception } If( src ) is not a String.
  * @memberof wTools
  *
  */
