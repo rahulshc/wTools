@@ -1506,11 +1506,11 @@ var _toStrFromContainer = function( o )
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
  * For example: src : 'string', limit : 4, result -> '"st"..."ng"'.
- * * Function can be called in two ways:
+ * Function can be called in two ways:
  * - First to pass only source string and limit;
- * - Second to pass map like ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
+ * - Second to pass all options map. Example: ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
  *
- * @param {string|object} src - String to parse or object with options.
+ * @param {string|object} o - String to parse or object with options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {number} [ o.limit=40 ] - Limit of characters in output.
  * @param {string} [ o.wrap='"' ] - String wrapper. Use zero or false to disable.
@@ -1546,12 +1546,12 @@ var _toStrFromContainer = function( o )
  *  _.strShort( 's\x01t\x01ing string string', 14 );
  *
  * @method strShort
- * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o ) is extended with uknown property.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.limit ) is not a Number.
- * @throws { Exception } Throw an exception if( o.wrap ) is not a String.
+ * @throws { Exception } If no argument provided.
+ * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } If( o ) is extended with unknown property.
+ * @throws { Exception } If( o.src ) is not a String.
+ * @throws { Exception } If( o.limit ) is not a Number.
+ * @throws { Exception } If( o.wrap ) is not a String.
  *
  * @memberof wTools
  *
