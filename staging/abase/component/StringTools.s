@@ -1104,8 +1104,7 @@ var _toStrFromArrayFiltered = function( src,o )
 //
 
 /**
- * Function converts array provided by argument( src ) to string representation
- * using options provided by argument( o ).
+ * Converts array provided by argument( src ) into string representation using options provided by argument( o ).
  *
  * @param {object} src - Array to convert.
  * @param {wTools~toStrOptions} o - Contains conversion options {@link wTools~toStrOptions}.
@@ -1133,9 +1132,9 @@ var _toStrFromArrayFiltered = function( src,o )
  * _.toStrFromArray( [ 1, [ 2, 3, 4 ], 5 ], { levels : 2, multiline : 1 } );
  *
  * @method _toStrFromArray
- * @throws { Exception } Throw an exception if( src ) is undefined.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @throws { Exception } Throw an exception if( o ) is not a Object.
+ * @throws { Exception } If( src ) is undefined.
+ * @throws { Exception } If no arguments provided.
+ * @throws { Exception } If( o ) is not a Object.
  * @memberof wTools
  *
  */
