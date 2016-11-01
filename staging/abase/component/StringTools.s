@@ -446,7 +446,7 @@ var toStrFine_gen = function()
     }
 
     _.assertMapHasOnly( o,composes,primeFilter,optional );
-    o = _.mapSupplement( {},o,toStrDefaults,composes,primeFilter,optional );
+    o = _.mapSupplement( {},o,toStrDefaults,composes,primeFilter );
 
     if( o.onlyRoutines )
     {
