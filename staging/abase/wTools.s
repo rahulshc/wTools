@@ -6020,6 +6020,20 @@ var routineOptions = function routineOptions( routine,options )
 }
 
 //
+
+var routineOptionsFromThis = function routineOptionsFromThis( routine,that,constructor )
+{
+
+  _.assert( arguments.length === 3,'routineOptionsFromThis : expects 3 arguments' );
+
+  var options = that || {};
+  if( Object.isPrototypeOf.call( constructor,that ) || constructor === that )
+  options = {};
+
+  return _.routineOptions( routine,options );
+}
+
+//
 //
 // var routines = function( src )
 // {
@@ -12736,6 +12750,7 @@ var Proto =
 
   routinesCall : routinesCall,
   routineOptions : routineOptions,
+  routineOptionsFromThis : routineOptionsFromThis,
 
   //routines : routines,
 

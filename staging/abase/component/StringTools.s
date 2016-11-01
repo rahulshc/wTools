@@ -2863,12 +2863,13 @@ var strJoin = function()
 
 var strConcat = function strConcat()
 {
-  var o = this;
 
-  if( Object.isPrototypeOf.call( Self,this ) )
-  o = {};
+  var o = _.routineOptionsFromThis( strConcat,this,Self );
 
-  _.routineOptions( strConcat,o );
+  // var o = this || {};
+  // if( Object.isPrototypeOf.call( Self,this ) || Self === this )
+  // o = {};
+  // _.routineOptions( strConcat,o );
 
   o.optionsForToStr = _.mapSupplement( {},o.optionsForToStr,strConcat.defaults.optionsForToStr );
 
