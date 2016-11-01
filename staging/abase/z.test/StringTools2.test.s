@@ -822,13 +822,13 @@ var _toStrFromStr = function( test )
   var expected = '\\n123\\u001b';
   test.identical( got,expected );
 
-  test.description = 'wrapString';
+  test.description = 'stringWrapper';
   var got = _._toStrFromStr( 'string', { stringWrapper : '"' } );
   var expected = '"string"';
   test.identical( got,expected );
 
-  test.description = 'usingMultilineStringWrapper';
-  var got = _._toStrFromStr( 'string\nstring2', { stringWrapper : "`" } );
+  test.description = 'multilinedString';
+  var got = _._toStrFromStr( 'string\nstring2', { multilinedString : 1 } );
   var expected = "`string\nstring2`";
   test.identical( got,expected );
 
