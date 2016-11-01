@@ -823,12 +823,12 @@ var _toStrFromStr = function( test )
   test.identical( got,expected );
 
   test.description = 'wrapString';
-  var got = _._toStrFromStr( 'string', { wrapString : 1 } );
+  var got = _._toStrFromStr( 'string', { stringWrapper : '"' } );
   var expected = '"string"';
   test.identical( got,expected );
 
   test.description = 'usingMultilineStringWrapper';
-  var got = _._toStrFromStr( 'string\nstring2', { wrapString : 1, usingMultilineStringWrapper : 1 } );
+  var got = _._toStrFromStr( 'string\nstring2', { stringWrapper : "`" } );
   var expected = "`string\nstring2`";
   test.identical( got,expected );
 
@@ -997,7 +997,7 @@ var _toStrFromObject = function( test )
 
 var _toStrFromContainer = function( test )
 {
-  var o = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0, noSubObject : 0, prependTab : 1, json : 0, wrapString : 1};
+  var o = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0, noSubObject : 0, prependTab : 1, json : 0, stringWrapper : '"' };
   var src = { a : 1, b : 2, c : 'text' };
   var names = _.mapOwnKeys( src );
   var optionsItem = null;
