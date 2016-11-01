@@ -4092,6 +4092,26 @@ var strTimeFormat = function( time )
 
 //
 
+var strColorBackground = function ( str, color )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( str ) );
+
+  return `#background : ${color}#${str}`;
+}
+
+//
+
+var strColorForeground = function ( str, color )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( str ) );
+
+  return `#foreground : ${color}#${str}`;
+}
+
+//
+
 var strCsvFrom = function( src,o )
 {
 
@@ -4337,6 +4357,8 @@ var Proto =
   strMetricFormatBytes : strMetricFormatBytes,
 
   strTimeFormat : strTimeFormat,
+  strColorBackground : strColorBackground,
+  strColorForeground: strColorForeground,
 
   strCsvFrom : strCsvFrom, /* exmperimental */
   strToDom : strToDom, /* exmperimental */
