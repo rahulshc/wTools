@@ -341,7 +341,7 @@ var toStrFields = function( src,o )
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
  * @throws { Exception } Throw an exception if( o.stringWrapper ) is not equal true when ( o.json ) is true.
- * @throws { Exception } Throw an exception if( o.usingMultilineStringWrapper ) is not equal false when ( o.json ) is true.
+ * @throws { Exception } Throw an exception if( o.multilinedString ) is not equal false when ( o.json ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
  * @memberof wTools
@@ -444,6 +444,9 @@ var toStrFine_gen = function()
       if( o.escaping === undefined )
       o.escaping = 1;
     }
+
+    if( o.stringWrapper === undefined && o.multilinedString )
+    o.stringWrapper = '`';
 
     _.assertMapHasOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,primeFilter );
@@ -948,7 +951,7 @@ var _toStrFromNumber = function( src,o )
 /**
  * Adjusts source string. Takes string from argument( src ) and options from argument( o ).
  * Limits string length using option( o.limitStringLength ), disables escaping characters using option( o.escaping ),
- * wraps string into double quotes using( o.stringWrapper ) or into backtick( `` ) if( o.usingMultilineStringWrapper ) also is true.
+ * wraps string into double quotes using( o.stringWrapper ) or into backtick( `` ) if( o.multilinedString ) also is true.
  * Returns result as new string or source string if no changes maded.
  *
  * @param {object} src - String to parse.
@@ -969,7 +972,7 @@ var _toStrFromNumber = function( src,o )
  *
  * @example
  * //returns `test`
- * _._toStrFromStr( 'test', { usingMultilineStringWrapper : 1, stringWrapper : '"' } );
+ * _._toStrFromStr( 'test', { multilinedString : 1, stringWrapper : '"' } );
  *
  * @method _toStrFromStr
  * @throws {Exception} If no arguments provided.
@@ -986,7 +989,9 @@ var _toStrFromStr = function( src,o )
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( src ), 'expects string ( src )'  );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
-  var q = o.multilinedString ? '`' : o.stringWrapper;
+
+  //var q = o.multilinedString ? '`' : o.stringWrapper;
+  var q = o.stringWrapper;
 
   if( o.limitStringLength )
   {

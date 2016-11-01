@@ -2091,7 +2091,7 @@ var toStrstringWrapper = function( test )
      /*05*/ { stringWrapper: '', levels : 1 },
      /*06*/ { stringWrapper: '', levels : 2 },
      /*07*/ { levels : 2, multilinedString : 1 },
-     /*08*/ { levels : 2, multilinedString : 1 },1
+     /*08*/ { levels : 2, multilinedString : 1 },
    ],
 
    expected =
@@ -2151,7 +2151,7 @@ var toStrstringWrapper = function( test )
      ].join( '\n' ),
 
     /*06*/
-      [
+    [
 
        '{',
        '  a : { h : a }, ',
@@ -2162,7 +2162,7 @@ var toStrstringWrapper = function( test )
      ].join( '\n' ),
 
     /*07*/
-      [
+    [
 
        '{',
        '  a : `line1',
@@ -2172,13 +2172,12 @@ var toStrstringWrapper = function( test )
 
      ].join( '\n' ),
 
-    /*07*/
-      [
+    /*08*/
+    [
 
-       '{ a : line1 }',
+       '{ a : `line1` }',
 
       ].join( '\n' ),
-
 
    ]
 
