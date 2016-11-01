@@ -2084,14 +2084,14 @@ var toStrstringWrapper = function( test )
    ],
    options =
    [
-     /*01*/ { stringWrapper : 0 },
-     /*02*/ { levels : 2, stringWrapper : 0 },
-     /*03*/ { levels : 3, stringWrapper : 0 },
+     /*01*/ { stringWrapper : '' },
+     /*02*/ { levels : 2, stringWrapper : '' },
+     /*03*/ { levels : 3, stringWrapper : '' },
      /*04*/ { levels : 2 },
-     /*05*/ { stringWrapper: 0, levels : 1 },
-     /*06*/ { stringWrapper: 0, levels : 2 },
-     /*07*/ { levels : 2, stringWrapper : '`' },
-     /*08*/ { levels : 2, stringWrapper : '`' },
+     /*05*/ { stringWrapper: '', levels : 1 },
+     /*06*/ { stringWrapper: '', levels : 2 },
+     /*07*/ { levels : 2, multilinedString : 1 },
+     /*08*/ { levels : 2, multilinedString : 1 },1
    ],
 
    expected =
@@ -2639,10 +2639,10 @@ var toStrThrow = function( test )
       _.toStr( { a : 1 }, { fixed : 22 } );
     });
 
-    test.description = 'if json : 1, stringWrapper must be equal to " ';
+    test.description = 'if json : 1, multilinedString 1 " ';
     test.shouldThrowError( function()
     {
-      _.toStr( { a : 1 }, { json : 1, stringWrapper : '`' } );
+      _.toStr( { a : 1 }, { json : 1, multilinedString : 1 } );
     });
 
     test.description = 'wrong arguments count';
@@ -2651,10 +2651,10 @@ var toStrThrow = function( test )
       _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
     });
 
-    test.description = 'invalid json if ( o.stringWrapper ) is `';
+    test.description = 'invalid json if multilinedString is true`';
     test.shouldThrowError( function()
     {
-      _.toStr( { a : 1, b : "text" }, { json : 1, stringWrapper : '`' } );
+      _.toStr( { a : 1, b : "text" }, { json : 1, multilinedString : 1 } );
     });
 
     test.description = 'onlyRoutines & noRoutine both true';
