@@ -433,7 +433,6 @@ var toStrFine_gen = function()
 
     var o = o || {};
     var toStrDefaults = {};
-
     if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
     toStrDefaults = src.toStr.defaults;
 
@@ -446,14 +445,10 @@ var toStrFine_gen = function()
       o.escaping = 1;
     }
 
-    _.assertMapHasOnly( o,composes,primeFilter,optional );
-    o = _.mapSupplement( {},o,toStrDefaults,composes,restricts );
+    var multilinedString = o.multilinedString;
 
-    if( o.json === 1 )
-    {
-      _.assert( o.stringWrapper === '"','expects double quote ( o.stringWrapper ) true if( o.json ) is true' );
-      _.assert( !o.multilinedString,'expects ( o.multilinedString ) false if( o.json ) is true to make valid JSON' );
-    }
+    _.assertMapHasOnly( o,composes,primeFilter,optional );
+    o = _.mapSupplement( {},o,toStrDefaults,composes,primeFilter,optional );
 
     if( o.onlyRoutines )
     {
@@ -469,13 +464,16 @@ var toStrFine_gen = function()
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
 
-    if( o.stringWrapper === undefined )
-    o.stringWrapper = '"';
-
-    _.assert( _.strIs( o.stringWrapper ) );
-
-    if( o.stringWrapper === '`' && o.multilinedString === undefined )
+    if( o.stringWrapper === '`' && multilinedString === undefined )
     o.multilinedString = 1;
+
+    _.assert( _.strIs( o.stringWrapper ),'expects string ( o.stringWrapper )' );
+
+    if( o.json === 1 )
+    {
+      _.assert( o.stringWrapper === '"','expects double quote ( o.stringWrapper ) true if( o.json ) is true' );
+      _.assert( !o.multilinedString,'expects ( o.multilinedString ) false if( o.json ) is true to make valid JSON' );
+    }
 
     var r = _toStr( src,o );
 
@@ -973,7 +971,7 @@ var _toStrFromNumber = function( src,o )
  *
  * @example
  * //returns `test`
- * _._toStrFromStr( 'test', { usingMultilineStringWrapper : 1, stringWrapper : 1 } );
+ * _._toStrFromStr( 'test', { usingMultilineStringWrapper : 1, stringWrapper : '"' } );
  *
  * @method _toStrFromStr
  * @throws {Exception} If no arguments provided.
@@ -2920,7 +2918,7 @@ strConcat.defaults =
   delimeter : ' ',
   optionsForToStr :
   {
-    stringWrapper : 0,
+    stringWrapper : '',
   },
 }
 
@@ -4344,7 +4342,7 @@ var Proto =
 
 _.mapExtend( Self, Proto );
 
-//
+4//
 
 var toStrFine = Self.toStrFine = Self.toStrFine_gen();
 var toStr = Self.toStr = Self.strFrom = toStrFine;
