@@ -375,7 +375,6 @@ var toStrFine_gen = function()
 
     wrap : 1,
     stringWrapper : '"',
-    multilinedString : 0,
     prependTab : 1,
     errorAsMap : 0,
     own : 1,
@@ -404,6 +403,7 @@ var toStrFine_gen = function()
     fixed : null,
     comma : ', ',
     multiline : 0,
+    multilinedString : 0,
     escaping : 0,
     json : 0,
 
@@ -468,9 +468,6 @@ var toStrFine_gen = function()
 
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
-
-    if( o.stringWrapper === undefined )
-    o.stringWrapper = '"';
 
     _.assert( _.strIs( o.stringWrapper ) );
 
