@@ -375,7 +375,6 @@ var toStrFine_gen = function()
 
     wrap : 1,
     stringWrapper : '"',
-    multilinedString : 0,
     prependTab : 1,
     errorAsMap : 0,
     own : 1,
@@ -404,6 +403,7 @@ var toStrFine_gen = function()
     fixed : null,
     comma : ', ',
     multiline : 0,
+    multilinedString : 0,
     escaping : 0,
     json : 0,
 
@@ -445,8 +445,6 @@ var toStrFine_gen = function()
       o.escaping = 1;
     }
 
-    var multilinedString = o.multilinedString;
-
     _.assertMapHasOnly( o,composes,primeFilter,optional );
     o = _.mapSupplement( {},o,toStrDefaults,composes,primeFilter,optional );
 
@@ -464,7 +462,7 @@ var toStrFine_gen = function()
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
 
-    if( o.stringWrapper === '`' && multilinedString === undefined )
+    if( o.stringWrapper === '`' && o.multilinedString === undefined )
     o.multilinedString = 1;
 
     _.assert( _.strIs( o.stringWrapper ),'expects string ( o.stringWrapper )' );
