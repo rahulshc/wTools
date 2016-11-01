@@ -2068,9 +2068,9 @@ toStrJsonFromFileA.cover = [ _.toStr ];
 
 //
 
-var toStrWrapString = function( test )
+var toStrstringWrapper = function( test )
 {
-   var desc =  'wrapString test',
+   var desc =  'stringWrapper test',
    src =
    [
      /*01*/ { a : "string",b : 1, c : null , d : undefined },
@@ -2084,14 +2084,14 @@ var toStrWrapString = function( test )
    ],
    options =
    [
-     /*01*/ { wrapString : 0 },
-     /*02*/ { levels : 2, wrapString : 0 },
-     /*03*/ { levels : 3, wrapString : 0 },
+     /*01*/ { stringWrapper : 0 },
+     /*02*/ { levels : 2, stringWrapper : 0 },
+     /*03*/ { levels : 3, stringWrapper : 0 },
      /*04*/ { levels : 2 },
-     /*05*/ { wrapString: 0, levels : 1 },
-     /*06*/ { wrapString: 0, levels : 2 },
-     /*07*/ { levels : 2, usingMultilineStringWrapper : 1 },
-     /*08*/ { levels : 2, wrapString : 0, usingMultilineStringWrapper : 1 },
+     /*05*/ { stringWrapper: 0, levels : 1 },
+     /*06*/ { stringWrapper: 0, levels : 2 },
+     /*07*/ { levels : 2, stringWrapper : '`' },
+     /*08*/ { levels : 2, stringWrapper : '`' },
    ],
 
    expected =
@@ -2185,7 +2185,7 @@ var toStrWrapString = function( test )
   testFunction( test,desc,src,options,expected );
 
 }
-toStrWrapString.cover = [ _.toStr ];
+toStrstringWrapper.cover = [ _.toStr ];
 
 //
 
@@ -2639,10 +2639,10 @@ var toStrThrow = function( test )
       _.toStr( { a : 1 }, { fixed : 22 } );
     });
 
-    test.description = 'if json : 1, wrapString must be equal to 1';
+    test.description = 'if json : 1, stringWrapper must be equal to " ';
     test.shouldThrowError( function()
     {
-      _.toStr( { a : 1 }, { json : 1, wrapString : 0 } );
+      _.toStr( { a : 1 }, { json : 1, stringWrapper : '`' } );
     });
 
     test.description = 'wrong arguments count';
@@ -2651,10 +2651,10 @@ var toStrThrow = function( test )
       _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
     });
 
-    test.description = 'invalid json if ( o.usingMultilineStringWrapper ) is true';
+    test.description = 'invalid json if ( o.stringWrapper ) is `';
     test.shouldThrowError( function()
     {
-      _.toStr( { a : 1, b : "text" }, { json : 1, usingMultilineStringWrapper : 1 } );
+      _.toStr( { a : 1, b : "text" }, { json : 1, stringWrapper : '`' } );
     });
 
     test.description = 'onlyRoutines & noRoutine both true';
@@ -2813,7 +2813,7 @@ var Proto =
     toStrJson : toStrJson,
     toStrJsonFromFileU : toStrJsonFromFileU,
     toStrJsonFromFileA : toStrJsonFromFileA,
-    toStrWrapString : toStrWrapString,
+    toStrstringWrapper : toStrstringWrapper,
     toStrLevel : toStrLevel,
     toStrEnumerable : toStrEnumerable,
     toStrEmptyArgs : toStrEmptyArgs,
