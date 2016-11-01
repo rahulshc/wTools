@@ -105,7 +105,8 @@ var toStrFields = function( src,o )
 * @typedef {Object} wTools~toStrOptions
 * @property {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
 * into "[ .. ]" / "{ .. }" respecitvely.
-* @property {boolean} [ o.stringWrapper=true ] - Wrap string into quotes: double( "" ), single( '' ) or backtick( `` ).
+* @property {boolean} [ o.stringWrapper='"' ] - Wrap string into specified string.
+* @property {boolean} [ o.multilinedString=false ] - Wrap string into backtick ( `` ).
 * @property {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
 * @property {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
 * @property {number} [ o.limitElementsNumber=0 ] - Outputs limited number of elements from object or array.
@@ -309,7 +310,7 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns { a : string, b : str, c : 2 }
- * _.toStr( { a : 'string', b : "str" , c : 2  }, { levels : 2 , stringWrapper : 0 } );
+ * _.toStr( { a : 'string', b : "str" , c : 2  }, { levels : 2 , stringWrapper : '' } );
  *
  * @example
  * //returns { "a" : "string", "b" : 1, "c" : 2 }
@@ -335,7 +336,7 @@ var toStrFields = function( src,o )
  * // line2
  * // line3`
  * // }"
- * _.toStr( { a : "line1\nline2\nline3" }, { levels: 2, usingMultilineStringWrapper : 1 } );
+ * _.toStr( { a : "line1\nline2\nline3" }, { levels: 2, multilinedString : 1 } );
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
@@ -374,6 +375,7 @@ var toStrFine_gen = function()
 
     wrap : 1,
     stringWrapper : '"',
+    multilinedString : 0,
     prependTab : 1,
     errorAsMap : 0,
     own : 1,
@@ -450,6 +452,7 @@ var toStrFine_gen = function()
     if( o.json === 1 )
     {
       _.assert( o.stringWrapper === '"','expects double quote ( o.stringWrapper ) true if( o.json ) is true' );
+      _.assert( !o.multilinedString,'expects ( o.multilinedString ) false if( o.json ) is true to make valid JSON' );
     }
 
     if( o.onlyRoutines )
@@ -469,8 +472,10 @@ var toStrFine_gen = function()
     if( o.stringWrapper === undefined )
     o.stringWrapper = '"';
 
-    if( o.stringWrapper )
-    _.assert( o.stringWrapper  === "'" || o.stringWrapper  === "`" || o.stringWrapper  === '"' );
+    _.assert( _.strIs( o.stringWrapper ) );
+
+    if( o.stringWrapper === '`' && o.multilinedString === undefined )
+    o.multilinedString = 1;
 
     var r = _toStr( src,o );
 
@@ -985,7 +990,7 @@ var _toStrFromStr = function( src,o )
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( src ), 'expects string ( src )'  );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
-  var q = o.stringWrapper ? o.stringWrapper : '';
+  var q = o.multilinedString ? '`' : o.stringWrapper;
 
   if( o.limitStringLength )
   {
