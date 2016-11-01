@@ -105,8 +105,8 @@ var toStrFields = function( src,o )
 * @typedef {Object} wTools~toStrOptions
 * @property {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
 * into "[ .. ]" / "{ .. }" respecitvely.
-* @property {boolean} [ o.wrapString=true ] - Wrap string into ( "" ).
-* @property {boolean} [ o.usingMultilineStringWrapper=false ] - WrapString uses backtick ( `` ) to wrap string.
+* @property {boolean} [ o.stringWrapper='"' ] - Wrap string into specified string.
+* @property {boolean} [ o.multilinedString=false ] - Wrap string into backtick ( `` ).
 * @property {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
 * @property {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
 * @property {number} [ o.limitElementsNumber=0 ] - Outputs limited number of elements from object or array.
@@ -310,7 +310,7 @@ var toStrFields = function( src,o )
  *
  * @example
  * //returns { a : string, b : str, c : 2 }
- * _.toStr( { a : 'string', b : "str" , c : 2  }, { levels : 2 , wrapString : 0 } );
+ * _.toStr( { a : 'string', b : "str" , c : 2  }, { levels : 2 , stringWrapper : '' } );
  *
  * @example
  * //returns { "a" : "string", "b" : 1, "c" : 2 }
@@ -336,11 +336,11 @@ var toStrFields = function( src,o )
  * // line2
  * // line3`
  * // }"
- * _.toStr( { a : "line1\nline2\nline3" }, { levels: 2, usingMultilineStringWrapper : 1 } );
+ * _.toStr( { a : "line1\nline2\nline3" }, { levels: 2, multilinedString : 1 } );
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
- * @throws { Exception } Throw an exception if( o.wrapString ) is not equal true when ( o.json ) is true.
+ * @throws { Exception } Throw an exception if( o.stringWrapper ) is not equal true when ( o.json ) is true.
  * @throws { Exception } Throw an exception if( o.usingMultilineStringWrapper ) is not equal false when ( o.json ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
@@ -374,14 +374,14 @@ var toStrFine_gen = function()
     level : 0,
 
     wrap : 1,
-    wrapString : 1,
+    stringWrapper : '"',
+    multilinedString : 0,
     prependTab : 1,
     errorAsMap : 0,
     own : 1,
     tab : '',
     dtab : '  ',
     colon : ' : ',
-    usingMultilineStringWrapper : 0,
     limitElementsNumber : 0,
     limitStringLength : 0,
 
@@ -451,8 +451,8 @@ var toStrFine_gen = function()
 
     if( o.json === 1 )
     {
-      _.assert( o.wrapString,'expects ( o.wrapString ) true if( o.json ) is true' );
-      _.assert( !o.usingMultilineStringWrapper,'expects ( o.usingMultilineStringWrapper ) false if( o.json ) is true to make valid JSON' );
+      _.assert( o.stringWrapper === '"','expects double quote ( o.stringWrapper ) true if( o.json ) is true' );
+      _.assert( !o.multilinedString,'expects ( o.multilinedString ) false if( o.json ) is true to make valid JSON' );
     }
 
     if( o.onlyRoutines )
@@ -468,6 +468,14 @@ var toStrFine_gen = function()
 
     if( o.comma && !_.strIs( o.comma ) )
     o.comma = optional.comma;
+
+    if( o.stringWrapper === undefined )
+    o.stringWrapper = '"';
+
+    _.assert( _.strIs( o.stringWrapper ) );
+
+    if( o.stringWrapper === '`' && o.multilinedString === undefined )
+    o.multilinedString = 1;
 
     var r = _toStr( src,o );
 
@@ -647,8 +655,7 @@ var _toStrShort = function( src,o )
     var optionsStr =
     {
       limitStringLength : o.limitStringLength ? Math.min( o.limitStringLength,40 ) : 40,
-      usingMultilineStringWrapper : o.usingMultilineStringWrapper,
-      wrapString : o.wrapString,
+      stringWrapper : o.stringWrapper,
       escaping : 1,
     }
 
@@ -945,7 +952,7 @@ var _toStrFromNumber = function( src,o )
 /**
  * Adjusts source string. Takes string from argument( src ) and options from argument( o ).
  * Limits string length using option( o.limitStringLength ), disables escaping characters using option( o.escaping ),
- * wraps string into double quotes using( o.wrapString ) or into backtick( `` ) if( o.usingMultilineStringWrapper ) also is true.
+ * wraps string into double quotes using( o.stringWrapper ) or into backtick( `` ) if( o.usingMultilineStringWrapper ) also is true.
  * Returns result as new string or source string if no changes maded.
  *
  * @param {object} src - String to parse.
@@ -966,7 +973,7 @@ var _toStrFromNumber = function( src,o )
  *
  * @example
  * //returns `test`
- * _._toStrFromStr( 'test', { usingMultilineStringWrapper : 1, wrapString : 1 } );
+ * _._toStrFromStr( 'test', { usingMultilineStringWrapper : 1, stringWrapper : 1 } );
  *
  * @method _toStrFromStr
  * @throws {Exception} If no arguments provided.
@@ -983,8 +990,7 @@ var _toStrFromStr = function( src,o )
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( src ), 'expects string ( src )'  );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
-
-  var q = o.usingMultilineStringWrapper ? '`' : '"';
+  var q = o.multilinedString ? '`' : o.stringWrapper;
 
   if( o.limitStringLength )
   {
@@ -1004,7 +1010,7 @@ var _toStrFromStr = function( src,o )
     result = src;
   }
 
-  if( o.wrapString )
+  if( o.stringWrapper )
   {
     result = q + result + q;
   }
@@ -2914,7 +2920,7 @@ strConcat.defaults =
   delimeter : ' ',
   optionsForToStr :
   {
-    wrapString : 0,
+    stringWrapper : 0,
   },
 }
 
