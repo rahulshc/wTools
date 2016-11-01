@@ -4340,7 +4340,7 @@ var Proto =
 
 _.mapExtend( Self, Proto );
 
-4//
+//
 
 var toStrFine = Self.toStrFine = Self.toStrFine_gen();
 var toStr = Self.toStr = Self.strFrom = toStrFine;
