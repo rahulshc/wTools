@@ -63,7 +63,7 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 var _initConfig = function _initConfig()
 {
 
-  //debugger;
+  // debugger;
 
   /* config */
 
@@ -95,6 +95,8 @@ var _initConfig = function _initConfig()
     enumerable : true,
     writable : false,
   });
+
+  // debugger;
 
 }
 
