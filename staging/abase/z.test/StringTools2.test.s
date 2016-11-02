@@ -572,7 +572,7 @@ var _toStrShort = function( test )
   test.identical( got,expected );
 
   test.description = 'string length > 40';
-  var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', { } );
+  var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', { stringWrapper : '"' } );
   var expected = '[ "toxtndmtmdbmmlzoirmf" ... "pyhnrrqfuvybuuvixyrx" ]';
   test.identical( got,expected );
 
@@ -828,7 +828,7 @@ var _toStrFromStr = function( test )
   test.identical( got,expected );
 
   test.description = 'multilinedString';
-  var got = _._toStrFromStr( 'string\nstring2', { multilinedString : 1 } );
+  var got = _._toStrFromStr( 'string\nstring2', { stringWrapper : '`' } );
   var expected = "`string\nstring2`";
   test.identical( got,expected );
 
