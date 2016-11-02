@@ -4357,12 +4357,20 @@ var Proto =
   strMetricFormatBytes : strMetricFormatBytes,
 
   strTimeFormat : strTimeFormat,
-  strColorBackground : strColorBackground,
-  strColorForeground: strColorForeground,
 
   strCsvFrom : strCsvFrom, /* exmperimental */
   strToDom : strToDom, /* exmperimental */
   strToConfig : strToConfig, /* exmperimental */
+
+  //
+
+  strColor :
+  {
+    bg : strColorBackground,
+    background : strColorBackground,
+    fg : strColorForeground,
+    foreground : strColorForeground,
+  }
 
 }
 
