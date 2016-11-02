@@ -4097,7 +4097,7 @@ var strColorBackground = function ( str, color )
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
 
-  return `#background : ${color}#${str}`;
+  return `#background : ${color}#${str}#background : default#`;
 }
 
 //
@@ -4107,7 +4107,7 @@ var strColorForeground = function ( str, color )
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
 
-  return `#foreground : ${color}#${str}`;
+  return `#foreground : ${color}#${str}#foreground : default#`;
 }
 
 //
