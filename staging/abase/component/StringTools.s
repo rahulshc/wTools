@@ -951,7 +951,7 @@ var _toStrFromNumber = function( src,o )
 /**
  * Adjusts source string. Takes string from argument( src ) and options from argument( o ).
  * Limits string length using option( o.limitStringLength ), disables escaping characters using option( o.escaping ),
- * wraps string into double quotes using( o.stringWrapper ) or into backtick( `` ) if( o.multilinedString ) also is true.
+ * wraps source into specified string using( o.stringWrapper ).
  * Returns result as new string or source string if no changes maded.
  *
  * @param {object} src - String to parse.
@@ -972,7 +972,7 @@ var _toStrFromNumber = function( src,o )
  *
  * @example
  * //returns `test`
- * _._toStrFromStr( 'test', { multilinedString : 1, stringWrapper : '"' } );
+ * _._toStrFromStr( 'test', { stringWrapper : '`' } );
  *
  * @method _toStrFromStr
  * @throws {Exception} If no arguments provided.
@@ -4092,6 +4092,26 @@ var strTimeFormat = function( time )
 
 //
 
+var strColorBackground = function ( str, color )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( str ) );
+
+  return `#background : ${color}#${str}#background : default#`;
+}
+
+//
+
+var strColorForeground = function ( str, color )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( str ) );
+
+  return `#foreground : ${color}#${str}#foreground : default#`;
+}
+
+//
+
 var strCsvFrom = function( src,o )
 {
 
@@ -4337,6 +4357,8 @@ var Proto =
   strMetricFormatBytes : strMetricFormatBytes,
 
   strTimeFormat : strTimeFormat,
+  strColorBackground : strColorBackground,
+  strColorForeground: strColorForeground,
 
   strCsvFrom : strCsvFrom, /* exmperimental */
   strToDom : strToDom, /* exmperimental */
