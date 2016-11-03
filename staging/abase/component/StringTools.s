@@ -4122,7 +4122,8 @@ var strExtractStrips = function( src, o)
 
   }
 
-  console.log( result );
+  // console.log( result );
+  return result;
 }
 
 strExtractStrips.defaults =
