@@ -4092,6 +4092,27 @@ var strTimeFormat = function( time )
 
 //
 
+var strExtractStrips = function( src )
+{
+  _.assert(_.strIs( src ) );
+
+  var result;
+
+  result = src.split( '#' );
+
+  for( var i = 0; i < result.length; ++i )
+  {
+    var temp = result[ i ].split( ':' )
+    if( temp.length === 2 )
+    {
+      result[ i ] = temp;
+    }
+  }
+  console.log(result);
+}
+
+//
+
 var strColorBackground = function ( str, color )
 {
   _.assert( arguments.length === 2 );
@@ -4363,6 +4384,8 @@ var Proto =
   strToConfig : strToConfig, /* exmperimental */
 
   //
+
+  strExtractStrips : strExtractStrips,
 
   strColor :
   {
