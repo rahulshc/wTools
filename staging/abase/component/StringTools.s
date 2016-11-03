@@ -4092,6 +4092,48 @@ var strTimeFormat = function( time )
 
 //
 
+var strExtractStrips = function( src, o)
+{
+  _.assert(_.strIs( src ) );
+  _.assert(_.objectIs( o ) );
+
+  _.routineOptions( strExtractStrips, o );
+
+  var result;
+
+  result = src.split( o.delimeter );
+
+  for( var i = 0; i < result.length; i++ )
+  {
+    var part = o.onStrip( result[ i ] );
+    if( part )
+    {
+      result[ i ] = part;
+    }
+    else
+    {
+      if( _.strIs( result[ i - 1 ] ) )
+      {
+        result[ i - 1 ] += o.delimeter + result[ i ];
+        delete result[ i ];
+      }
+    }
+
+
+  }
+
+  // console.log( result );
+  return result;
+}
+
+strExtractStrips.defaults =
+{
+  delimeter : '#',
+  onStrip : null
+}
+
+//
+
 var strColorBackground = function ( str, color )
 {
   _.assert( arguments.length === 2 );
@@ -4363,6 +4405,8 @@ var Proto =
   strToConfig : strToConfig, /* exmperimental */
 
   //
+
+  strExtractStrips : strExtractStrips,
 
   strColor :
   {

@@ -2542,6 +2542,48 @@ var strCommonRight = function( test )
   }
 }
 
+//
+
+var strExtractStrips = function( test )
+{
+  var onStrip = function ( part )
+  {
+    var temp = part.split( ':' )
+    if( temp.length === 2 )
+    {
+      return temp;
+    }
+    return undefined;
+  }
+
+  test.description = 'case 1';
+  var str = 'this #background:red#is#background:default# text and # is not';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not'
+  ];
+  test.identical( got, expected );
+
+  test.description = 'case 2';
+  var str = '#simple # text #background:red#is#background:default# text and # is not#';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    '#simple # text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not#'
+  ];
+  test.identical( got, expected );
+
+  test.description = 'case 3';
+  var str = '#background:red#i#s#background:default##text';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], '#text'
+  ];
+  test.identical( got, expected );
+}
+
 var Proto =
 {
 
@@ -2594,7 +2636,8 @@ var Proto =
     strShort : strShort,
     strLinesSelect : strLinesSelect,
     strCommonLeft : strCommonLeft,
-    strCommonRight : strCommonRight
+    strCommonRight : strCommonRight,
+    strExtractStrips : strExtractStrips
   }
 
 }
