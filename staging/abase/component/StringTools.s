@@ -4108,7 +4108,8 @@ var strExtractStrips = function( src )
       result[ i ] = temp;
     }
   }
-  console.log(result);
+
+  return result;
 }
 
 //
