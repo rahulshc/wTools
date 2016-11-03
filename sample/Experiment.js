@@ -1,8 +1,6 @@
 if( typeof module !== 'undefined' )
   require( '../staging/abase/wTools.s' )
 
-
-
 var _ = wTools;
 
 var onStrip = function ( part )
