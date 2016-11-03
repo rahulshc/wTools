@@ -2546,6 +2546,7 @@ var strCommonRight = function( test )
 
 var strExtractStrips = function( test )
 {
+
   var onStrip = function ( part )
   {
     var temp = part.split( ':' )
@@ -2582,6 +2583,16 @@ var strExtractStrips = function( test )
     [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], '#text'
   ];
   test.identical( got, expected );
+
+  test.description = 'warapped by strips';
+  var str = '#background:red#text#background:default#';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    [ 'background', 'red' ], 'text', [ 'background', 'default' ]
+  ];
+  test.identical( got, expected );
+
 }
 
 var Proto =
@@ -2637,7 +2648,7 @@ var Proto =
     strLinesSelect : strLinesSelect,
     strCommonLeft : strCommonLeft,
     strCommonRight : strCommonRight,
-    strExtractStrips : strExtractStrips
+    strExtractStrips : strExtractStrips,
   }
 
 }

@@ -1,25 +1,36 @@
 if( typeof module !== 'undefined' )
   require( '../staging/abase/wTools.s' )
 
-
-
 var _ = wTools;
 
-var onStrip = function ( part )
+var onStrip = function( strip )
 {
-  var temp = part.split( ':' )
-  if( temp.length === 2 )
+  var allowedKeys = [ 'bg','background','fg','foreground' ];
+  var parts = strip.split( ' : ' )
+  if( parts.length === 2 )
   {
-    return temp;
+    if( allowedKeys.indexOf( parts[ 0 ] ) === -1 )
+    return;
+    return parts;
   }
-  return undefined;
 }
 
-var src = "this #background:red#is#background:default# text1 and # text2 # and text3";
-var result = _.strExtractStrips( src, {  onStrip : onStrip } );
+var src = "this #background : red#is#background : default# text1 and # text2 # and text3";
+var got = _.strExtractStrips( src, { onStrip : onStrip } );
+console.log( src );
+console.log( _.toStr( got,{ levels : 2 } ) );
 
-var src1 = "this #background:red#is#background:default# #text1";
-var result2 = _.strExtractStrips( src1, {  onStrip : onStrip } );
+var src = "this #background : red#is#background : default# #text1";
+var got = _.strExtractStrips( src, { onStrip : onStrip } );
+console.log( src );
+console.log( _.toStr( got,{ levels : 2 } ) );
 
-console.log( result );
-console.log( result2 );
+var src = '#background : red#text#background : default#';
+var got = _.strExtractStrips( src, { onStrip : onStrip } );
+console.log( src );
+console.log( _.toStr( got,{ levels : 2 } ) );
+
+var src = '#background : red#i#s#background : default##text';
+var got = _.strExtractStrips( src, { onStrip : onStrip } );
+console.log( src );
+console.log( _.toStr( got,{ levels : 2 } ) );

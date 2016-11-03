@@ -4092,37 +4092,51 @@ var strTimeFormat = function( time )
 
 //
 
-var strExtractStrips = function( src, o)
+var strExtractStrips = function( src, o )
 {
-  _.assert(_.strIs( src ) );
-  _.assert(_.objectIs( o ) );
-
+  _.assert( _.strIs( src ) );
+  _.assert( _.objectIs( o ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.routineOptions( strExtractStrips, o );
 
-  var result;
+  var result = [];
+  var splitted = src.split( o.delimeter );
+  var isNextStrip = 0;
+  var isPrevStrip = 0;
 
-  result = src.split( o.delimeter );
-
-  for( var i = 0; i < result.length; i++ )
+  for( var i = 0; i < splitted.length; i++ )
   {
-    var part = o.onStrip( result[ i ] );
-    if( part )
+
+    if( !isNextStrip )
     {
-      result[ i ] = part;
+      isNextStrip = 1;
+      if( splitted[ i ] )
+      {
+        isPrevStrip = 0;
+        result.push( splitted[ i ] );
+      }
+      continue;
+    }
+
+    var strip = o.onStrip( splitted[ i ] );
+    if( strip !== undefined )
+    {
+      isNextStrip = 0;
+      isPrevStrip = 1;
+      result.push( strip );
     }
     else
     {
-      if( _.strIs( result[ i - 1 ] ) )
-      {
-        result[ i - 1 ] += o.delimeter + result[ i ];
-        delete result[ i ];
-      }
+      if( !isPrevStrip && result.length > 0 )
+      result[ result.length-1 ] += o.delimeter + splitted[ i ];
+      else
+      result.push( o.delimeter + splitted[ i ] );
+      isNextStrip = 1;
+      isPrevStrip = 0;
     }
-
 
   }
 
-  // console.log( result );
   return result;
 }
 
