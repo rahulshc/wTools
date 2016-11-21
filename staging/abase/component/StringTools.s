@@ -348,7 +348,7 @@ var toStrFields = function( src,o )
  *
  */
 
-var toStrFine_gen = function()
+var toStrFine_functor = function()
 {
 
   var primeFilter =
@@ -508,7 +508,8 @@ var _toStr = function _toStr( src,o )
 
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
-  var isObject = !isArray && _.objectLike( src );
+  var isObject = !isArray && _.objectIs( src );
+  var isObjectLike = !isArray && _.objectLike( src ) && !_.routineIs( src.toString );
 
   /* */
 
@@ -4104,6 +4105,8 @@ var strExtractStrips = function( src, o )
   var isNextStrip = 0;
   var isPrevStrip = 0;
 
+  /* */
+
   for( var i = 0; i < splitted.length; i++ )
   {
 
@@ -4118,7 +4121,7 @@ var strExtractStrips = function( src, o )
       continue;
     }
 
-    var strip = o.onStrip( splitted[ i ] );
+    var strip = o.onStrip ? o.onStrip( splitted[ i ] ) : splitted[ i ];
     if( strip !== undefined )
     {
       isNextStrip = 0;
@@ -4143,6 +4146,54 @@ var strExtractStrips = function( src, o )
 strExtractStrips.defaults =
 {
   delimeter : '#',
+  onStrip : null
+}
+
+//
+
+var strExtractStereoStrips = function( src, o )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( _.objectIs( o ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.routineOptions( strExtractStereoStrips, o );
+
+  var result = [];
+  var splitted = src.split( o.prefix );
+
+  /* */
+
+  if( splitted[ 0 ] )
+  result.push( splitted[ 0 ] );
+
+  /* */
+
+  for( var i = 1; i < splitted.length; i++ )
+  {
+
+    var halfs = strInhalfLeft( splitted[ i ],o.postfix );
+    var strip = o.onStrip ? o.onStrip( halfs[ 0 ] ) : halfs[ 0 ];
+
+    if( strip !== undefined )
+    {
+      result.push( strip );
+      if( halfs[ 1 ] )
+      result.push( halfs[ 1 ] );
+    }
+    else
+    {
+      result[ result.length-1 ] += o.prefix + splitted[ i ];
+    }
+
+  }
+
+  return result;
+}
+
+strExtractStereoStrips.defaults =
+{
+  prefix : '#',
+  postfix : '#',
   onStrip : null
 }
 
@@ -4327,7 +4378,7 @@ var Proto =
   toStrMethods : toStrMethods,
   toStrFields : toStrFields,
 
-  toStrFine_gen : toStrFine_gen,
+  toStrFine_functor : toStrFine_functor,
 
   _toStr : _toStr,
   _toStrShort : _toStrShort,
@@ -4421,6 +4472,7 @@ var Proto =
   //
 
   strExtractStrips : strExtractStrips,
+  strExtractStereoStrips : strExtractStereoStrips,
 
   strColor :
   {
@@ -4436,7 +4488,7 @@ _.mapExtend( Self, Proto );
 
 //
 
-var toStrFine = Self.toStrFine = Self.toStrFine_gen();
+var toStrFine = Self.toStrFine = Self.toStrFine_functor();
 var toStr = Self.toStr = Self.strFrom = toStrFine;
 
 //
