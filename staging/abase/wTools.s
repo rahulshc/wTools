@@ -16,17 +16,15 @@ if( !_global_ && typeof global !== 'undefined' && global.global === global ) _gl
 if( !_global_ && typeof window !== 'undefined' && window.window === window ) _global_ = window;
 if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ = self;
 
-// name
-
-if( _global_.wBase )
-throw new Error( 'wTools included several times' );
-
 _global_[ '_global_' ] = _global_;
 _global_._global_ = _global_;
 
 _global_.DEBUG = true;
 
 // parent
+
+if( _global_.wBase )
+throw new Error( 'wTools included several times' );
 
 if( typeof module !== 'undefined' && module !== null )
 {
@@ -36,9 +34,12 @@ if( typeof module !== 'undefined' && module !== null )
 
 if( typeof wTools === 'undefined' )
 {
-  if( _global_.Underscore !== undefined ) _global_.wTools = Object.create( _global_.Underscore );
-  else if( _global_._ !== undefined ) _global_.wTools = Object.create( _global_._ );
-  else _global_.wTools = Object.create( null );
+  if( _global_.Underscore !== undefined )
+  _global_.wTools = Object.create( _global_.Underscore );
+  else if( _global_._ !== undefined )
+  _global_.wTools = Object.create( _global_._ );
+  else
+  _global_.wTools = Object.create( null );
 }
 
 //
@@ -1666,10 +1667,12 @@ var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
 
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
+  var dstValue = Object.hasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
+
   if( onRecursive )
-  result = entityCopy( dstContainer[ name ],srcContainer[ name ],onRecursive );
+  result = entityCopy( dstValue,srcContainer[ name ],onRecursive );
   else
-  result = entityCopy( dstContainer[ name ],srcContainer[ name ] );
+  result = entityCopy( dstValue,srcContainer[ name ] );
 
   if( result !== undefined )
   dstContainer[ name ] = result;
@@ -1789,7 +1792,7 @@ var entityWrap = function( o )
   _.assert( arguments.length === 1 );
 
   if( o.onCondition )
-  o.onCondition = _entityConditionMake( o.onCondition );
+  o.onCondition = _entityConditionMake( o.onCondition,1 );
 
   /* */
 
@@ -2026,6 +2029,9 @@ var _entitySame = function _entitySame( src1,src2,o )
 
   _.assert( arguments.length === 3 );
 
+  if( src1 === src2 )
+  return true;
+
   if( o.strict )
   {
     if( _ObjectToString.call( src1 ) !== _ObjectToString.call( src2 ) )
@@ -2041,6 +2047,7 @@ var _entitySame = function _entitySame( src1,src2,o )
 
   if( _.arrayLike( src1 ) )
   {
+
     if( !src2 )
     return false;
     if( src1.constructor !== src2.constructor )
@@ -2055,6 +2062,7 @@ var _entitySame = function _entitySame( src1,src2,o )
       return false;
       o.path = path;
     }
+
   }
   else if( _.rowIs( src1 ) )
   {
@@ -2071,6 +2079,10 @@ var _entitySame = function _entitySame( src1,src2,o )
       if( !src1.isSame( src1,src2,o ) )
       return false;
     }
+    else if( _.regexpIs( src1 ) )
+    {
+      return _.regexpIdentical( src1,src2 );
+    }
     else
     {
 
@@ -2086,6 +2098,7 @@ var _entitySame = function _entitySame( src1,src2,o )
       }
 
     }
+
   }
   else if( _.numberIs( src1 ) )
   {
@@ -2931,11 +2944,11 @@ var __entitySelectAct = function __entitySelectAct( o )
  * @memberof wTools
 */
 
-var _entityConditionMake = function( condition )
+var _entityConditionMake = function( condition,levels )
 {
   var result;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 2 );
   _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
 
   if( _.objectIs( condition ) )
@@ -2943,9 +2956,17 @@ var _entityConditionMake = function( condition )
     var template = condition;
     condition = function( e )
     {
+      if( e === template )
+      return e;
       if( !_.objectLike( e ) )
       return;
-      if( _.mapSatisfy( template,e ) )
+      var satisfied = _.mapSatisfy
+      ({
+        template : template,
+        src : e,
+        levels : levels
+      });
+      if( satisfied )
       return e;
     };
   }
@@ -3061,24 +3082,24 @@ var entityMap = function( src,onEach )
    * @memberof wTools
    */
 
-var entityFilter = function( src,onEach )
+var _entityFilter = function( o )
 {
 
   var result;
-  var onEach = _entityConditionMake( onEach );
+  var onEach = _entityConditionMake( o.onEach,o.conditionLevels );
 
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.arrayLike( src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( src ) );
-  _.assert( _.routineIs( onEach ) || _.objectIs( onEach ) );
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( o.src ) );
+  _.assert( _.routineIs( onEach ) );
 
-  /**/
+  /* */
 
-  if( _.arrayLike( src ) )
+  if( _.arrayLike( o.src ) )
   {
-    result = _.arrayNew( src,0 );
-    for( var s = 0, d = 0 ; s < src.length ; s++, d++ )
+    result = _.arrayNew( o.src,0 );
+    for( var s = 0, d = 0 ; s < o.src.length ; s++, d++ )
     {
-      var r = onEach( src[ s ],s,src );
+      var r = onEach.call( o.src,o.src[ s ],s,o.src );
       if( r === undefined )
       d--;
       else
@@ -3087,18 +3108,51 @@ var entityFilter = function( src,onEach )
   }
   else
   {
-    result = new src.constructor()
-    for( var s in src )
+    result = new o.src.constructor()
+    for( var s in o.src )
     {
-      r = onEach( src[ s ],s,src );
+      r = onEach.call( o.src,o.src[ s ],s,o.src );
       if( r !== undefined )
       result[ s ] = r;
     }
   }
 
-  /**/
+  /* */
 
   return result;
+}
+
+_entityFilter.defaults =
+{
+  src : null,
+  onEach : null,
+  conditionLevels : 1,
+}
+
+//
+
+var entityFilter = function( src,onEach )
+{
+  _.assert( arguments.length === 2 );
+  return _entityFilter
+  ({
+    src : src,
+    onEach : onEach,
+    conditionLevels : 1,
+  });
+}
+
+//
+
+var entityFilterDeep = function( src,onEach )
+{
+  _.assert( arguments.length === 2 );
+  return _entityFilter
+  ({
+    src : src,
+    onEach : onEach,
+    conditionLevels : 1024,
+  });
 }
 
 //
@@ -3425,7 +3479,7 @@ var entitySearch = function( o )
   regexpIns = new RegExp( ( o.searchingSubstring ? '' : '^' ) + strIns + ( o.searchingSubstring ? '' : '$' ),'i' );
 
   if( o.condition )
-  o.condition = _entityConditionMake( o.condition );
+  o.condition = _entityConditionMake( o.condition,1 );
 
   /* */
 
@@ -3570,14 +3624,63 @@ var _err = function _err( o )
     {
       result = o.args[ a ];
       if( result.attentionNeeded !== undefined )
-      result.attentionNeeded = 0;
-      o.args[ a ] = result.originalMessage || result.message || result.msg || result.constructor.name || 'unknown error';
+      {
+        Object.defineProperty( result, 'attentionNeeded',
+        {
+          enumerable : false,
+          configurable : true,
+          writable : true,
+          value : 0,
+        });
+        //result.attentionNeeded = 0;
+      }
+      if( result.originalMessage )
+      o.args[ a ] = result.originalMessage
+      else
+      {
+        o.args[ a ] = result.message || result.msg || result.constructor.name || 'unknown error';
+        var fields = _.mapFields( result );
+        if( Object.keys( fields ).length )
+        o.args[ a ] += '\n' + _.toStr( fields,{ wrap : 0, multiline : 1 } );
+      }
       break;
     }
   }
 
+  /* */
+
   var originalMessage = '';
   var fileName,lineNumber;
+
+  if( !result )
+  {
+    debugger;
+    var stack = _.stack( o.level,-1 );
+    result = new Error( originalMessage + '\n' + stack + '\n' );
+    debugger;
+    Object.defineProperty( result, 'stack',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : stack,
+    });
+    //result.originalStack = stack;
+  }
+
+  if( !result.stack )
+  {
+    var stack = _.stack( o.level,-1 );
+    Object.defineProperty( result, 'stack',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : stack,
+    });
+  }
+
+  /* */
 
   for( var a = 0 ; a < o.args.length ; a++ )
   {
@@ -3620,16 +3723,23 @@ var _err = function _err( o )
 
     if( _.strIs( str ) && str[ str.length-1 ] === '\n' )
     originalMessage += str;
-    else originalMessage += str + ' ';
+    else
+    originalMessage += str + ' ';
   }
 
   /* location */
 
   if( lineNumber !== undefined )
-  originalMessage += '\n' + 'Line : ' + lineNumber;
+  {
+    debugger;
+    originalMessage += '\n' + 'Line : ' + lineNumber;
+  }
 
   if( fileName !== undefined )
-  originalMessage += '\n' + 'File : ' + fileName;
+  {
+    debugger;
+    originalMessage += '\n' + 'File : ' + fileName;
+  }
 
   /* */
 
@@ -3641,10 +3751,12 @@ var _err = function _err( o )
 
   if( !result )
   {
+    throw _.err( 'not expected' );
+
     var stack = _.stack( o.level,-1 );
     result = new Error( originalMessage + '\n' + stack + '\n' );
     result.stack = stack;
-    result.originalStack = stack;
+    //result.originalStack = stack;
   }
   else try
   {
@@ -3657,7 +3769,7 @@ var _err = function _err( o )
     var stack = result.stack || new Error().stack;
     result = new Error( originalMessage + '\n' + stack + '\n' );
     result.stack = stack;
-    result.originalStack = stack;
+    //result.originalStack = stack;
   }
 
   result.originalMessage = originalMessage;
@@ -3755,8 +3867,24 @@ var errLog = function errLog()
     level : 2,
   });
 
-  err.attentionNeeded = 0;
-  err.attentionGiven = 1;
+  Object.defineProperty( err, 'attentionNeeded',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : 0,
+  });
+
+  Object.defineProperty( err, 'attentionGiven',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : 1,
+  });
+
+  // err.attentionNeeded = 0;
+  // err.attentionGiven = 1;
 
   if( _.routineIs( err.toString ) )
   {
@@ -4036,7 +4164,7 @@ var assertMapOwnNone = function( src,none )
 
   var has = Object.keys( _._mapScreen
   ({
-    filter : filter.srcOwn(),
+    filter : _.filter.srcOwn(),
     screenObjects : none,
     srcObjects : src,
   }));
@@ -4134,9 +4262,12 @@ var stack = function stack( first,extent )
   if( first < 0 )
   result.length + first;
 
+  // if( _.numberIs( extent ) )
+  // debugger;
+
   if( _.numberIs( extent ) )
   if( extent < 0 )
-  result.length + extent;
+  result.length + extent + 1;
 
   /* */
 
@@ -5278,6 +5409,7 @@ var strAppendOnce = function( src,end )
 // --
 // regexp
 // --
+
 /*
 var regexpModeNames = namesCoded
 ({
@@ -5300,6 +5432,20 @@ var regexpModeNamesToReplace = namesCoded
 });
 */
 
+//
+
+var regexpIdentical = function regexpIdentical( src1,src2 )
+{
+  _.assert( arguments.length === 2 );
+
+  if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
+  return false;
+
+  return src1.source === src2.source && src1.flags === src2.flags;
+}
+
+//
+
 /**
  * Escapes special characters with a slash (\). Supports next set of characters : .*+?^=! :${}()|[]/\
  *
@@ -5311,7 +5457,7 @@ var regexpModeNamesToReplace = namesCoded
  * @memberof wTools
  */
 
-var regexpEscape = function( src )
+var regexpEscape = function regexpEscape( src )
 {
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
@@ -6023,13 +6169,13 @@ var routineOptions = function routineOptions( routine,options )
 
 //
 
-var routineOptionsFromThis = function routineOptionsFromThis( routine,that,constructor )
+var routineOptionsFromThis = function routineOptionsFromThis( routine,_this,constructor )
 {
 
   _.assert( arguments.length === 3,'routineOptionsFromThis : expects 3 arguments' );
 
-  var options = that || {};
-  if( Object.isPrototypeOf.call( constructor,that ) || constructor === that )
+  var options = _this || {};
+  if( Object.isPrototypeOf.call( constructor,_this ) || constructor === _this )
   options = {};
 
   return _.routineOptions( routine,options );
@@ -6265,7 +6411,7 @@ var timePeriodic = function( delay,onReady )
 
 //
 
-var _timeNow_gen = function()
+var _timeNow_functor = function()
 {
   var now;
 
@@ -10564,6 +10710,7 @@ var mapExtend = function mapExtend( dstObject )
 
   return result;
 }
+
   //
 
   // /**
@@ -10663,6 +10810,125 @@ var mapCopy = function mapCopy()
 }
 
 // --
+// recursive
+// --
+
+var mapSupplementRecursive = function mapSupplementRecursive()
+{
+  _.assert( this === Self );
+  return _.mapExtendRecursive.apply( { filterField : _.fieldFilter.dstNotHas(), filterUp : true },arguments );
+}
+
+//
+
+var mapExtendRecursive = function mapExtendRecursive( dst,src )
+{
+  var filter = this;
+
+  _.assert( arguments.length >= 2 );
+
+  if( filter === Self )
+  filter = null;
+
+  if( filter )
+  {
+    filter = _mapFieldFilterMake( filter );
+    for( var a = 1 ; a < arguments.length ; a++ )
+    {
+      src = arguments[ a ];
+      _mapExtendRecursiveFiltering( filter,dst,src );
+    }
+  }
+  else
+  {
+    for( var a = 1 ; a < arguments.length ; a++ )
+    {
+      src = arguments[ a ];
+      _mapExtendRecursive( dst,src );
+    }
+  }
+
+  return dst;
+}
+
+//
+
+var _filterTrue = function(){ return true };
+_filterTrue.functionKind = 'field-filter';
+var _filterFalse = function(){ return true };
+_filterFalse.functionKind = 'field-filter';
+
+var _mapFieldFilterMake = function _mapFieldFilterMake( filter )
+{
+
+  _.assert( arguments.length === 1 );
+
+  if( _.routineIs( filter ) )
+  filter = { filterUp : filter, filterField : filter }
+
+  if( filter.filterUp === undefined )
+  filter.filterUp = filter.filterField;
+  else if( filter.filterUp === true )
+  filter.filterUp = _filterTrue;
+  else if( filter.filterUp === false )
+  filter.filterUp = _filterFalse;
+
+  if( filter.filterField === true )
+  filter.filterField = _filterTrue;
+  else if( filter.filterField === false )
+  filter.filterField = _filterFalse;
+
+  _.assert( _.routineIs( filter.filterUp ) );
+  _.assert( _.routineIs( filter.filterField ) );
+
+  _.assert( filter.filterUp.functionKind === 'field-filter' );
+  _.assert( filter.filterField.functionKind === 'field-filter' );
+
+  return filter;
+}
+
+//
+
+var _mapExtendRecursiveFiltering = function _mapExtendRecursiveFiltering( filter,dst,src )
+{
+
+  _.assert( _.objectIs( src ) );
+
+  for( var s in src )
+  {
+
+    if( _.objectIs( src[ s ] ) )
+    {
+
+      if( filter.filterUp( dst,src,s ) === true )
+      {
+        if( !_.objectIs( dst[ s ] ) )
+        dst[ s ] = {};
+        _mapExtendRecursiveFiltering( filter,dst[ s ],src[ s ] );
+      }
+
+    }
+    else
+    {
+
+      if( filter.filterField( dst,src,s ) === true )
+      dst[ s ] = src[ s ];
+
+    }
+
+  }
+
+}
+
+//
+
+var _mapExtendRecursive = function _mapExtendRecursive( dst,src )
+{
+
+  throw _.err( 'not implemented' );
+
+}
+// --
 // map test
 // --
 
@@ -10714,7 +10980,7 @@ mapSatisfy.defaults =
 {
   template : null,
   src : null,
-  levels : 256,
+  levels : 1,
 }
 
 //
@@ -10755,8 +11021,12 @@ mapSatisfy.defaults =
 var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
 {
 
+  if( template === src )
+  return true;
+
   if( levels <= 0 )
-  throw _.err( '_mapSatisfy : too deep structure' );
+  return false;
+  //throw _.err( '_mapSatisfy : too deep structure' );
 
   if( _.routineIs( template ) )
   return template( src );
@@ -10764,10 +11034,14 @@ var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
   if( objectIs( template ) )
   {
     for( var t in template )
-    return _mapSatisfy( template[ t ],src[ t ],root,levels-1 );
+    if( !_mapSatisfy( template[ t ],src[ t ],root,levels-1 ) )
+    return false;
+    return true;
   }
 
-  return template === src;
+  debugger;
+
+  return false;
 }
 
 // --
@@ -11301,6 +11575,7 @@ var mapRoutines = function mapRoutines( src )
 {
   var result = {};
 
+  _.routineOptions( mapRoutines,o );
   _.assert( arguments.length === 1 );
   _.assert( _.objectLike( src ) );
 
@@ -11320,12 +11595,20 @@ var mapRoutines = function mapRoutines( src )
   return result;
 }
 
+mapRoutines.defaults =
+{
+  own : 0,
+  enumerable : 1,
+}
+
 //
 
 var mapFields = function mapFields( src )
 {
   var result = {};
+  var o = this === Self ? {} : this;
 
+  _.routineOptions( mapFields,o );
   _.assert( arguments.length === 1 );
   _.assert( _.objectLike( src ) );
 
@@ -11343,6 +11626,12 @@ var mapFields = function mapFields( src )
   }
 
   return result;
+}
+
+mapFields.defaults =
+{
+  own : 0,
+  enumerable : 1,
 }
 
 //
@@ -11870,7 +12159,7 @@ var mapScreenOwn = function( screenObject )
     screenObjects : screenObject,
     srcObjects : _.arraySlice( arguments,1 ),
     dstObject : {},
-    filter : filter.srcOwn(),
+    filter : _.filter.srcOwn(),
   });
 
 }
@@ -11937,7 +12226,7 @@ var _mapScreen = function( options )
   srcObjects = [ srcObjects ];
 
   if( !options.filter )
-  options.filter = filter.bypass();
+  options.filter = _.filter.bypass();
   options.filter = _.filter.makeMapper( options.filter );
 
   _assert( arguments.length === 1 );
@@ -11976,513 +12265,6 @@ _mapScreen.defaults =
   screenObjects : null,
   srcObjects : null,
   dstObject : null,
-}
-
-// --
-// map filter
-// --
-
-var bypass = function()
-{
-
-  var routine = function bypass( dstContainer,srcContainer,key )
-  {
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var srcAndDstOwn = function()
-{
-
-  var routine = function srcAndDstOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_ObjectHasOwnProperty.call( dstContainer, key ) )
-    return false;
-
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var srcOwn = function()
-{
-
-  var routine = function srcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var srcOwnRoutines = function()
-{
-
-  var routine = function srcOwnRoutines( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter'; ;
-  return routine;
-}
-
-//
-
-var dstNotHasSrcOwnRoutines = function()
-{
-
-  var routine = function dstNotHasSrcOwnRoutines( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
-    return false;
-    if( !dstContainer[ key ] !== undefined )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var dstNotHas = function()
-{
-
-  var routine = function dstNotHas( dstContainer,srcContainer,key )
-  {
-
-    // if( dstContainer[ key ] !== undefined )
-    // return false;
-
-    if( key in dstContainer )
-    return false;
-
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var dstNotHasCloning = function()
-{
-
-  var routine = function dstNotHasCloning( dstContainer,srcContainer,key )
-  {
-    if( dstContainer[ key ] !== undefined )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var dstNotHasSrcOwn = function()
-{
-
-  var routine = function dstNotHasSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( dstContainer[ key ] !== undefined )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var dstNotHasSrcOwnCloning = function()
-{
-
-  var routine = function dstNotHasSrcOwnCloning( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-    if( dstContainer[ key ] !== undefined )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var dstNotOwnSrcOwnCloning = function()
-{
-
-  var routine = function dstNotOwnSrcOwnCloning( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var dstNotOwnCloning = function()
-{
-
-  var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
-  {
-
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var cloning = function()
-{
-
-  var routine = function cloning( dstContainer,srcContainer,key )
-  {
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var cloningSrcOwn = function()
-{
-
-  var routine = function cloning( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var atomic = function()
-{
-
-  var routine = function atomic( dstContainer,srcContainer,key )
-  {
-    if( !_.atomicIs( srcContainer[ key ] ) )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var atomicSrcOwn = function()
-{
-
-  var routine = function atomicSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_.atomicIs( srcContainer[ key ] ) )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var notAtomicCloning = function()
-{
-
-  var routine = function notAtomicCloning( dstContainer,srcContainer,key )
-  {
-    if( _.atomicIs( srcContainer[ key ] ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var notAtomicCloningSrcOwn = function()
-{
-
-  var routine = function notAtomicCloningSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-    if( _.atomicIs( srcContainer[ key ] ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var notAtomicCloningRecursiveSrcOwn = function()
-{
-
-  var routine = function notAtomicCloningRecursiveSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-    if( _.atomicIs( srcContainer[ key ] ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var recursiveClonning = function()
-{
-
-  var routine = function recursiveClonning( dstContainer,srcContainer,key )
-  {
-    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var recursiveCloningSrcOwn = function()
-{
-
-  var routine = function recursiveCloningSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-var drop = function( dropContainer )
-{
-
-  _.assert( _.objectIs( dropContainer ) );
-
-  var routine = function drop( dstContainer,srcContainer,key )
-  {
-    if( dropContainer[ key ] !== undefined )
-    return false
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-var and = function()
-{
-
-  var filters = [];
-  var mappers = [];
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-    var routine = arguments[ a ];
-    _.assert( _.routineIs( routine ) );
-    _.assert( _.strIs( routine.functionKind ) );
-    if( routine.functionKind === 'field-filter' )
-    filters.push( routine );
-    else if( routine.functionKind === 'field-mapper' )
-    mappers.push( routine );
-    else throw _.err( 'expects routine.functionKind' );
-  }
-
-  if( mappers.length > 1 )
-  throw _.err( 'can combine only one mapper with any number of filters' );
-
-  var routine = function and( dstContainer,srcContainer,key )
-  {
-
-    for( var f = 0 ; f < filters.length ; f++ )
-    {
-      var filter = filters[ f ];
-
-      var result = filter( dstContainer,srcContainer,key );
-      _.assert( _.boolIs( result ) );
-      if( result === false )
-      return mappers.length ? undefined : false;
-    }
-
-    for( var m = 0 ; m < mappers.length ; m++ )
-    {
-      var mapper = mappers[ m ];
-
-      var result = mapper( dstContainer,srcContainer,key );
-      _.assert( result === undefined );
-      return;
-    }
-
-    return mappers.length ? undefined : true;
-  }
-
-  routine.functionKind = mappers.length ? 'field-mapper' : 'field-filter';
-  return routine;
-}
-
-//
-
-var makeMapper = function( routine )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) );
-  _.assert( _.strIs( routine.functionKind ) );
-
-  if( routine.functionKind === 'field-filter' )
-  {
-    var r = function( dstContainer,srcContainer,key )
-    {
-      var result = routine( dstContainer,srcContainer,key );
-      _.assert( _.boolIs( result ) );
-      if( result === false )
-      return;
-      dstContainer[ key ] = srcContainer[ key ];
-    }
-    r.functionKind = 'field-mapper';
-    return r;
-  }
-  else if( routine.functionKind === 'field-mapper' )
-  {
-    return routine;
-  }
-  else throw _.err( 'expects routine.functionKind' );
-
-}
-
-//
-
-var filter =
-{
-
-  bypass : bypass,
-
-  srcAndDstOwn : srcAndDstOwn,
-
-  srcOwn : srcOwn,
-  srcOwnRoutines : srcOwnRoutines,
-  dstNotHasSrcOwnRoutines : dstNotHasSrcOwnRoutines,
-
-  dstNotHas : dstNotHas,
-  dstNotHasCloning : dstNotHasCloning,
-  dstNotHasSrcOwn : dstNotHasSrcOwn,
-  dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
-  dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
-  dstNotOwnCloning : dstNotOwnCloning,
-
-  cloning : cloning,
-  cloningSrcOwn : cloningSrcOwn,
-
-  atomic : atomic,
-  atomicSrcOwn : atomicSrcOwn,
-
-  notAtomicCloning : notAtomicCloning,
-  notAtomicCloningSrcOwn : notAtomicCloningSrcOwn,
-  notAtomicCloningRecursiveSrcOwn : notAtomicCloningRecursiveSrcOwn,
-
-  recursiveClonning : recursiveClonning,
-  recursiveCloningSrcOwn : recursiveCloningSrcOwn,
-
-  drop : drop,
-
-  and : and,
-  makeMapper : makeMapper,
-
 }
 
 // --
@@ -12607,7 +12389,11 @@ var Proto =
 
   _entityConditionMake : _entityConditionMake,
   entityMap : entityMap,
+
+  _entityFilter : _entityFilter,
   entityFilter : entityFilter,
+  entityFilterDeep : entityFilterDeep,
+
   entityGroup : entityGroup, /* experimental */
 
   _entityMost : _entityMost,
@@ -12727,6 +12513,7 @@ var Proto =
 
   // regexp
 
+  regexpIdentical : regexpIdentical,
   regexpEscape : regexpEscape,
   regexpForGlob : regexpForGlob,
 
@@ -12767,7 +12554,7 @@ var Proto =
 
   timePeriodic : timePeriodic,
 
-  _timeNow_gen : _timeNow_gen,
+  _timeNow_functor : _timeNow_functor,
   timeSpent : timeSpent,
   dateToStr : dateToStr,
 
@@ -12907,6 +12694,15 @@ var Proto =
   mapCopy : mapCopy,
 
 
+  // recursive
+
+  mapSupplementRecursive : mapSupplementRecursive,
+  mapExtendRecursive : mapExtendRecursive,
+  _mapFieldFilterMake : _mapFieldFilterMake,
+  _mapExtendRecursiveFiltering : _mapExtendRecursiveFiltering,
+  _mapExtendRecursive : _mapExtendRecursive,
+
+
   // map test
 
   mapSatisfy : mapSatisfy,
@@ -12962,11 +12758,6 @@ var Proto =
   _mapScreen : _mapScreen,
 
 
-  // map filter
-
-  filter : filter,
-
-
   // var
 
   error : error,
@@ -12983,7 +12774,7 @@ mapExtend( Self, Proto );
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
-var timeNow = Self.timeNow = Self._timeNow_gen();
+var timeNow = Self.timeNow = Self._timeNow_functor();
 
 if( !_global_.logger )
 _global_.logger =
@@ -13006,7 +12797,12 @@ _global_.wTools = Self;
 if( typeof module !== 'undefined' && module !== null )
 try
 {
+
+  require( './abase/FieldFilter.s' );
+  require( './abase/FieldMapper.s' );
+
   require( '../ServerTools.ss' );
+
 }
 catch( err )
 {
