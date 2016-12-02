@@ -303,7 +303,7 @@ var execStages = function( stages,o )
   if( o.onUpdate )
   throw _.err( 'execStages :','onUpdate is deprecated, please use onEach' );
 
-  _.assert( _.objectIs( stages ) || _.arrayLike( stages ) )
+  _.assert( _.objectIs( stages ) || _.arrayLike( stages ),'expects array or object ( stages ), but got',_.strTypeOf( stages ) );
 
   for( var s in stages )
   {
