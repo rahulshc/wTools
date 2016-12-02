@@ -8716,7 +8716,6 @@ var arrayGrow = function arrayGrow( array,f,l,val )
     }
     for( var r = lsrc-f ; r < result.length ; r++ )
     {
-      debugger;
       result[ r ] = val;
     }
   }
@@ -10954,6 +10953,15 @@ var mapSupplement = function( dst )
 
 //
 
+var mapSupplementOwn = function( dst )
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( _.filter.dstNotOwn() );
+  return mapExtendFiltering.apply( this,args );
+}
+
+//
+
 // /**
 //  * @callback  _.filter.dstNotHasCloning()
 //  * @param { objectLike } dstContainer - The target object.
@@ -12902,6 +12910,7 @@ var Proto =
   mapExtendFiltering : mapExtendFiltering,
   mapExtend : mapExtend,
   mapSupplement : mapSupplement,
+  mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
   mapCopy : mapCopy,
 

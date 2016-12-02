@@ -186,6 +186,24 @@ var dstNotHasSrcOwnCloning = function()
 
 //
 
+var dstNotOwn = function()
+{
+
+  var routine = function dstNotOwn( dstContainer,srcContainer,key )
+  {
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return false;
+
+    return true;
+  }
+
+  routine.functionKind = 'field-filter';
+  return routine;
+}
+
+//
+
 var dstNotOwnSrcOwnCloning = function()
 {
 
@@ -545,6 +563,8 @@ var filter =
   dstNotHasCloning : dstNotHasCloning,
   dstNotHasSrcOwn : dstNotHasSrcOwn,
   dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
+
+  dstNotOwn : dstNotOwn,
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
   dstNotOwnCloning : dstNotOwnCloning,
 
@@ -577,7 +597,6 @@ var Proto =
 {
 
   filter : filter,
-
 
 }
 

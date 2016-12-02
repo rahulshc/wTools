@@ -115,16 +115,6 @@ var dstNotHas = function()
   var routine = function dstNotHas( dstContainer,srcContainer,key )
   {
 
-    // try
-    // {
-    //   if( key in dstContainer )
-    //   console.log();
-    // }
-    // catch( err )
-    // {
-    //   debugger;
-    // }
-
     if( key in dstContainer )
     return false;
 
@@ -188,6 +178,24 @@ var dstNotHasSrcOwnCloning = function()
   }
 
   routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
+var dstNotOwn = function()
+{
+
+  var routine = function dstNotOwn( dstContainer,srcContainer,key )
+  {
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return false;
+
+    return true;
+  }
+
+  routine.functionKind = 'field-filter';
   return routine;
 }
 
@@ -552,6 +560,8 @@ var fieldFilter =
   dstNotHasCloning : dstNotHasCloning,
   dstNotHasSrcOwn : dstNotHasSrcOwn,
   dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
+
+  dstNotOwn : dstNotOwn,
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
   dstNotOwnCloning : dstNotOwnCloning,
 
