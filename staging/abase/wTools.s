@@ -8712,12 +8712,12 @@ var arrayGrow = function arrayGrow( array,f,l,val )
     for( var r = 0 ; r < -f ; f++ )
     {
       debugger;
-      result[ r ] = value;
+      result[ r ] = val;
     }
     for( var l = lsrc-f ; r < result.length ; f++ )
     {
       debugger;
-      result[ r ] = value;
+      result[ r ] = val;
     }
   }
 
