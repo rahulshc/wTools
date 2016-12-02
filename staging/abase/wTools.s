@@ -4664,41 +4664,41 @@ var arrayLike = function( src )
 
 //
 
-  /**
-   * The hasLength() method determines whether the passed value has the property (length).
-   *
-   * If (src) is equal to the (undefined) or (null) false is returned.
-   * If (src) has the property (length) true is returned.
-   * Otherwise false is.
-   *
-   * @param { * } src - The object to be checked.
-   *
-   * @example
-   * // returns true
-   * hasLength( [ 1, 2 ] );
-   *
-   * @example
-   * // returns true
-   * hasLength( 'Hello there!' );
-   *
-   * @example
-   * // returns true
-   * var isLength = ( function() {
-   *   return _.hasLength( arguments );
-   * } )('Hello there!');
-   *
-   * @example
-   * // returns false
-   * hasLength( 10 );
-   *
-   * @example
-   * // returns false
-   * hasLength( { } );
-   *
-   * @returns { boolean } Returns true if (src) has the property (length).
-   * @method hasLength
-   * @memberof wTools
-   */
+/**
+ * The hasLength() method determines whether the passed value has the property (length).
+ *
+ * If (src) is equal to the (undefined) or (null) false is returned.
+ * If (src) has the property (length) true is returned.
+ * Otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * hasLength( [ 1, 2 ] );
+ *
+ * @example
+ * // returns true
+ * hasLength( 'Hello there!' );
+ *
+ * @example
+ * // returns true
+ * var isLength = ( function() {
+ *   return _.hasLength( arguments );
+ * } )('Hello there!');
+ *
+ * @example
+ * // returns false
+ * hasLength( 10 );
+ *
+ * @example
+ * // returns false
+ * hasLength( { } );
+ *
+ * @returns { boolean } Returns true if (src) has the property (length).
+ * @method hasLength
+ * @memberof wTools
+ */
 
 var hasLength = function( src )
 {
@@ -8679,7 +8679,7 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
 
 //
 
-var arrayGrow = function arrayGrow( array,f,l )
+var arrayGrow = function arrayGrow( array,f,l,val )
 {
   _.assert( _.arrayLike( array ) );
 
@@ -8689,7 +8689,7 @@ var arrayGrow = function arrayGrow( array,f,l )
 
   _.assert( _.numberIs( f ) );
   _.assert( _.numberIs( l ) );
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( l < f )
   l = f;
@@ -8699,8 +8699,27 @@ var arrayGrow = function arrayGrow( array,f,l )
   else
   result = new Array( l-f );
 
-  for( var r = Math.max( f,0 ) ; r < l ; r++ )
+  /* */
+
+  var lsrc = Math.min( array.length,l );
+  for( var r = Math.max( f,0 ) ; r < lsrc ; r++ )
   result[ r-f ] = array[ r ];
+
+  /* */
+
+  if( val !== undefined )
+  {
+    for( var r = 0 ; r < -f ; f++ )
+    {
+      debugger;
+      result[ r ] = value;
+    }
+    for( var l = lsrc-f ; r < result.length ; f++ )
+    {
+      debugger;
+      result[ r ] = value;
+    }
+  }
 
   return result;
 }
