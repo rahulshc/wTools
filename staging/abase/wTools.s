@@ -32,14 +32,19 @@ if( typeof module !== 'undefined' && module !== null )
   _global_.Underscore = require( 'underscore' );
 }
 
+if( !_global_.Underscore && _global_._ )
+_global_.Underscore = _global_._;
+
 if( typeof wTools === 'undefined' )
 {
-  if( _global_.Underscore !== undefined )
-  _global_.wTools = Object.create( _global_.Underscore );
-  else if( _global_._ !== undefined )
-  _global_.wTools = Object.create( _global_._ );
-  else
+  // if( _global_.Underscore !== undefined )
+  // _global_.wTools = Object.create( _global_.Underscore );
+  // else if( _global_._ !== undefined )
+  // _global_.wTools = Object.create( _global_._ );
+  // else
   _global_.wTools = Object.create( null );
+  // delete _global_.wTools.length;
+  // _.assert( _global_.wTools.length === undefined );
 }
 
 //
@@ -438,8 +443,8 @@ var eachSample = function( o )
 
     if( !o.base )
     o.base = 0;
-    o.base = _.arrayOrNumber( o.base,l );
-    o.add = _.arrayOrNumber( o.add,l );
+    o.base = _.arrayFromNumber( o.base,l );
+    o.add = _.arrayFromNumber( o.add,l );
 
     _.assert( o.base.length === o.add.length );
     _.assert( !o.elementArrays );
@@ -863,7 +868,7 @@ eachInMultiRange.defaults =
 
 //
 
-var dup = function( times,ins,result )
+var dup = function dup( ins,times,result )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.numberIs( times ) || _.arrayLike( times ),'dup expects times as number or array' );
@@ -886,6 +891,7 @@ var dup = function( times,ins,result )
     result[ times[ 0 ] + t ] = ins;
     return result;
   }
+  else throw _.err( 'unexpected' );
 
 }
 
@@ -3654,10 +3660,8 @@ var _err = function _err( o )
 
   if( !result )
   {
-    debugger;
     var stack = _.stack( o.level,-1 );
     result = new Error( originalMessage + '\n' + stack + '\n' );
-    debugger;
     Object.defineProperty( result, 'stack',
     {
       enumerable : false,
@@ -4996,7 +5000,11 @@ var errorIs = function( src )
 
 var atomicIs = function atomicIs( src )
 {
-  return symbolIs( src ) || numberIs( src ) || boolIs( src ) || strIs( src ) || src === null || src === undefined;
+  if( src === null || src === undefined )
+  return true;
+  var t = _ObjectToString.call( src );
+  return t === '[object Symbol]' || t === '[object Number]' || t === '[object Boolean]' || t === '[object String]';
+  //return symbolIs( src ) || numberIs( src ) || boolIs( src ) || strIs( src ) || src === null || src === undefined;
 }
 
 //
@@ -6071,49 +6079,137 @@ var routineDelayed = function routineDelayed( delay,routine )
   }
 
 }
+
 //
 
-  /**
-   * Call each routines in array with passed context and arguments.
-      The context and arguments are same for each called functions.
-      Can accept only routines without context and args.
-      Can accept single routine instead array.
-   * @example
-      var x = 2, y = 3,
-          o { z : 6 };
-
-      var sum = function( x, y )
-      {
-          return x + y + this.z;
-      },
-      prod = function( x, y )
-      {
-          return x * y * this.z;
-      },
-      routines = [ sum, prod ];
-      var res = wTools.routinesCall( o, routines, [ x, y ] );
-   // [ 11, 36 ]
-   * @param {Object} [context] Context in which calls each function.
-   * @param {Function[]} routines Array of called function
-   * @param {Array<*>} [args] Arguments that will be passed to each functions.
-   * @returns {Array<*>} Array with results of functions invocation.
-   * @method routinesCall
-   * @memberof wTools
-   */
-
-var routinesCall = function routinesCall()
+var routinesJoin = function routinesJoin()
 {
-  var result = [];
+  var result,routines,index;
+  var args = _.arraySlice( arguments );
 
   _.assert( arguments.length >= 1 && arguments.length <= 3  );
 
-  if( arguments.length === 1 )
+  /* */
+
+  var makeResult = function()
   {
 
+    _.assert( _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ) );
+
+    if( _.routineIs( routines ) )
+    routines = [ routines ];
+
+    result = _.arrayLike( routines ) ? _.arrayNewOfSameLength( routines ) : {};
+
+  }
+
+  /* */
+
+  if( arguments.length === 1 )
+  {
+    routines = arguments[ 0 ];
+    index = 0;
+    makeResult();
+  }
+  else if( arguments.length === 2 )
+  {
+    routines = arguments[ 1 ];
+    index = 1;
+    makeResult();
+  }
+  else if( arguments.length === 3 )
+  {
+    routines = arguments[ 1 ];
+    index = 1;
+    makeResult();
+  }
+  else throw _.err( 'unexpected' );
+
+  /* */
+
+  if( _.arrayIs( routines ) )
+  for( var r = 0 ; r < routines.length ; r++ )
+  {
+    args[ index ] = routines[ r ];
+    result[ r ] = _.routineJoin.apply( this,args );
+  }
+  else
+  for( var r in routines )
+  {
+    args[ index ] = routines[ r ];
+    result[ r ] = _.routineJoin.apply( this,args );
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+/**
+ * Call each routines in array with passed context and arguments.
+    The context and arguments are same for each called functions.
+    Can accept only routines without context and args.
+    Can accept single routine instead array.
+ * @example
+    var x = 2, y = 3,
+        o { z : 6 };
+
+    var sum = function( x, y )
+    {
+        return x + y + this.z;
+    },
+    prod = function( x, y )
+    {
+        return x * y * this.z;
+    },
+    routines = [ sum, prod ];
+    var res = wTools.routinesCall( o, routines, [ x, y ] );
+ // [ 11, 36 ]
+ * @param {Object} [context] Context in which calls each function.
+ * @param {Function[]} routines Array of called function
+ * @param {Array<*>} [args] Arguments that will be passed to each functions.
+ * @returns {Array<*>} Array with results of functions invocation.
+ * @method routinesCall
+ * @memberof wTools
+ */
+
+var routinesCall = function routinesCall()
+{
+  var result;
+
+  _.assert( arguments.length >= 1 && arguments.length <= 3 );
+
+  /* */
+
+  var makeResult = function()
+  {
+
+    _.assert( _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ) );
+
+    if( _.routineIs( routines ) )
+    routines = [ routines ];
+
+    result = _.arrayLike( routines ) ? _.arrayNewOfSameLength( routines ) : {};
+
+  }
+
+  /* */
+
+  if( arguments.length === 1 )
+  {
     var routines = arguments[ 0 ];
-    _.assert( _.arrayIs( routines ) || _.routineIs( routines ) );
-    var routines = _.arrayAs( routines );
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
     for( var r = 0 ; r < routines.length ; r++ )
+    {
+      result[ r ] = routines[ r ]();
+    }
+    else
+    for( var r in routines )
     {
       result[ r ] = routines[ r ]();
     }
@@ -6123,26 +6219,44 @@ var routinesCall = function routinesCall()
   {
     var context = arguments[ 0 ];
     var routines = arguments[ 1 ];
-    _.assert( _.arrayIs( routines ) || _.routineIs( routines ) );
-    var routines = _.arrayAs( routines );
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
     for( var r = 0 ; r < routines.length ; r++ )
     {
       result[ r ] = routines[ r ].call( context );
     }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ].call( context );
+    }
+
   }
   else if( arguments.length === 3 )
   {
     var context = arguments[ 0 ];
     var routines = arguments[ 1 ];
     var args = arguments[ 2 ];
-    _.assert( _.arrayIs( routines ) || _.routineIs( routines ) );
+
     _.assert( _.arrayLike( args ) );
-    var routines = _.arrayAs( routines );
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
     for( var r = 0 ; r < routines.length ; r++ )
     {
       result[ r ] = routines[ r ].apply( context,args );
     }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ].apply( context,args );
+    }
+
   }
+  else throw _.err( 'unexpected' );
 
   return result;
 }
@@ -7338,7 +7452,7 @@ var arrayNewOfSameLength = function( ins )
 //
 
 /**
- * The arrayOrNumber() method returns a new array
+ * The arrayFromNumber() method returns a new array
  * which containing the static elements only type of Number.
  *
  * It takes two argument (dst) and (length)
@@ -7354,14 +7468,14 @@ var arrayNewOfSameLength = function( ins )
  *
  * @example
  * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
- * var arr = _.arrayOrNumber( 3, 7 );
+ * var arr = _.arrayFromNumber( 3, 7 );
  *
  * @example
  * // returns [ 3, 7, 13 ]
- * var arr = _.arrayOrNumber( [ 3, 7, 13 ], 3 );
+ * var arr = _.arrayFromNumber( [ 3, 7, 13 ], 3 );
  *
  * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
- * @method arrayOrNumber
+ * @method arrayFromNumber
  * @throws { Error } If missed argument, or got less or more than two argument.
  * @throws { Error } If type of the first argument is not a number or array.
  * @throws { Error } If the second argument is less than 0.
@@ -7369,7 +7483,7 @@ var arrayNewOfSameLength = function( ins )
  * @memberof wTools
  */
 
-var arrayOrNumber = function( dst,length )
+var arrayFromNumber = function( dst,length )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
@@ -7819,7 +7933,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
 //
 
 /**
- * The arrayElementsSwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
+ * The arraySwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
  *
  * @param { Array } dst - The initial array.
  * @param { Number } index1 - The first index.
@@ -7827,23 +7941,29 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
  *
  * @example
  * // returns [ 5, 2, 3, 4, 1 ]
- * var arr = _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], 0, 4 );
+ * var arr = _.arraySwap( [ 1, 2, 3, 4, 5 ], 0, 4 );
  *
  * @returns { Array } - Returns the (dst) array that has been modified in place by indexes (index1) and (index2).
- * @method arrayElementsSwap
+ * @method arraySwap
  * @throws { Error } If the first argument in not an array.
  * @throws { Error } If the second argument is less than 0 and more than a length initial array.
  * @throws { Error } If the third argument is less than 0 and more than a length initial array.
  * @memberof wTools
  */
 
-var arrayElementsSwap = function( dst,index1,index2 )
+var arraySwap = function( dst,index1,index2 )
 {
 
-  _ssert( arguments.length === 3 );
-  _assert( _.arrayLike( dst ),'arrayElementsSwap :','argument must be array' );
-  _assert( 0 <= index1 && index1 < dst.length,'arrayElementsSwap :','index1 is out of bound' );
-  _assert( 0 <= index2 && index2 < dst.length,'arrayElementsSwap :','index2 is out of bound' );
+  if( arguments.length === 3 )
+  {
+    index1 = 0;
+    index2 = 1;
+  }
+
+  _assert( arguments.length === 1 || arguments.length === 3 );
+  _assert( _.arrayLike( dst ),'arraySwap :','argument must be array' );
+  _assert( 0 <= index1 && index1 < dst.length,'arraySwap :','index1 is out of bound' );
+  _assert( 0 <= index2 && index2 < dst.length,'arraySwap :','index2 is out of bound' );
 
   var e = dst[ index1 ];
   dst[ index1 ] = dst[ index2 ];
@@ -8493,52 +8613,53 @@ var arrayPrependOnce = function( dst,src )
 }
 
 //
-  /**
-   * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
-   * and/or adding new elements from an array (srcArray).
-   *
-   * @param { Array } dstArray - The target array.
-   * @param { Array } srcArray - The source array.
-   * @param { Number } first - The index at which to start changing the (dstArray) array.
-   * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
-   * If (first) is negative, will begin that many elements from the end.
-   * @param { Number } replace - The number of old array (dstArray) elements to remove.
-   * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
-   * then all of the elements through the end of the array will be deleted.
-   *
-   * @example
-   * // returns [ 1, 2, 3, 4, 5 ]
-   * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
-   *
-   * @example
-   * // returns [ 1, 'a', 2, 3, 4, 'd' ]
-   * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
-   *
-   * @example
-   * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
-   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
-   *
-   * @example
-   * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
-   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
-   *
-   * @example
-   * // returns [ 1, 'a', 'b', 'c' ]
-   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
-   *
-   * @example
-   * // returns [ 1, 4, 5 ]
-   * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
-   *
-   * @returns { Array } Returns the modified array (dstArray) with the new length.
-   * @method arraySpliceArray
-   * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
-   * @throws { Error } Will throw an Error if (dstArray) is not an Array.
-   * @throws { Error } Will throw an Error if (srcArray) is not an Array.
-   * @throws { Error } Will throw an Error if (first) is not a Number.
-   * @throws { Error } Will throw an Error if (replace) is not a Number.
-   * @memberof wTools
-   */
+
+/**
+ * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
+ * and/or adding new elements from an array (srcArray).
+ *
+ * @param { Array } dstArray - The target array.
+ * @param { Array } srcArray - The source array.
+ * @param { Number } first - The index at which to start changing the (dstArray) array.
+ * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
+ * If (first) is negative, will begin that many elements from the end.
+ * @param { Number } replace - The number of old array (dstArray) elements to remove.
+ * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
+ * then all of the elements through the end of the array will be deleted.
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4, 5 ]
+ * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
+ *
+ * @example
+ * // returns [ 1, 'a', 2, 3, 4, 'd' ]
+ * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
+ *
+ * @example
+ * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
+ *
+ * @example
+ * // returns [ 1, 'a', 'b', 'c' ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
+ *
+ * @example
+ * // returns [ 1, 4, 5 ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
+ *
+ * @returns { Array } Returns the modified array (dstArray) with the new length.
+ * @method arraySpliceArray
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
+ * @throws { Error } Will throw an Error if (dstArray) is not an Array.
+ * @throws { Error } Will throw an Error if (srcArray) is not an Array.
+ * @throws { Error } Will throw an Error if (first) is not a Number.
+ * @throws { Error } Will throw an Error if (replace) is not a Number.
+ * @memberof wTools
+ */
 
 var arraySpliceArray = function( dstArray,srcArray,first,replace )
 {
@@ -8555,6 +8676,36 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
 
   return dstArray;
 }
+
+//
+
+var arrayGrow = function arrayGrow( array,f,l )
+{
+  _.assert( _.arrayLike( array ) );
+
+  var result;
+  var f = f !== undefined ? f : 0;
+  var l = l !== undefined ? l : array.length;
+
+  _.assert( _.numberIs( f ) );
+  _.assert( _.numberIs( l ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( l < f )
+  l = f;
+
+  if( _.bufferIs( array ) )
+  result = new array.constructor( l-f );
+  else
+  result = new Array( l-f );
+
+  for( var r = Math.max( f,0 ) ; r < l ; r++ )
+  result[ r-f ] = array[ r ];
+
+  return result;
+}
+
+//
 
 /**
  * The arraySlice() returns a shallow copy of a portion of an array
@@ -8594,6 +8745,10 @@ var arraySlice = function arraySlice( array,f,l )
   _.assert( _.numberIs( f ) );
   _.assert( _.numberIs( l ) );
 
+  if( f < 0 )
+  f = 0;
+  if( l > array.length )
+  l = array.length;
   if( l < f )
   l = f;
 
@@ -10480,33 +10635,34 @@ var arraySortedAdd = function( arr,ins,comparator )
   }
 
 //
-  /**
-   * The arraySortedAddArray() method returns the sum of the added indexes from an array (src) to an array (dst).
-   *
-   * It creates variable (result = 0), iterates over an array (src),
-   * adds to the (result +=) each call the function (arraySortedAdd( dst, src[ s ], comparator ))
-   * that returns the new added or the updated index.
-   *
-   * @see {@link wTools_.arraySortedAdd} - See for more information.
-   *
-   * @param { arrayLike } dst - Entity to check.
-   * @param { arrayLike } src - Entity to check.
-   * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
-   *
-   * @example
-   * // returns 19
-   * arraySortedAddArray( [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 2 ], function( a, b ) { return a - b } ); // => [ 1, 2, 2, 3, 4, 5, 6, 7, 8 ]
-   *
-   * @example
-   * // returns 3
-   * arraySortedAddArray( [  ], [ 1, 2, 3 ], function( a, b ) { return a - b } ); // => [ 1, 2, 3 ]
-   *
-   * @returns { Number } Returns the sum of the added indexes from an array (src) to an array (dst).
-   * @method arraySortedAddArray
-   * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
-   * @throws { Error } Will throw an Error if (dst and src) are not an array-like.
-   * @memberof wTools
-   */
+
+/**
+ * The arraySortedAddArray() method returns the sum of the added indexes from an array (src) to an array (dst).
+ *
+ * It creates variable (result = 0), iterates over an array (src),
+ * adds to the (result +=) each call the function (arraySortedAdd( dst, src[ s ], comparator ))
+ * that returns the new added or the updated index.
+ *
+ * @see {@link wTools_.arraySortedAdd} - See for more information.
+ *
+ * @param { arrayLike } dst - Entity to check.
+ * @param { arrayLike } src - Entity to check.
+ * @param { wTools~compareCallback } [ comparator = function( a, b ) { return a - b } ] comparator - A callback function.
+ *
+ * @example
+ * // returns 19
+ * arraySortedAddArray( [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 2 ], function( a, b ) { return a - b } ); // => [ 1, 2, 2, 3, 4, 5, 6, 7, 8 ]
+ *
+ * @example
+ * // returns 3
+ * arraySortedAddArray( [  ], [ 1, 2, 3 ], function( a, b ) { return a - b } ); // => [ 1, 2, 3 ]
+ *
+ * @returns { Number } Returns the sum of the added indexes from an array (src) to an array (dst).
+ * @method arraySortedAddArray
+ * @throws { Error } Will throw an Error if (arguments.length) is less than two or more than three.
+ * @throws { Error } Will throw an Error if (dst and src) are not an array-like.
+ * @memberof wTools
+ */
 
 var arraySortedAddArray = function( dst,src,comparator )
 {
@@ -10522,6 +10678,36 @@ var arraySortedAddArray = function( dst,src,comparator )
 
   for( var s = 0 ; s < src.length ; s++ )
   result += arraySortedAdd( dst,src[ s ],comparator );
+
+  return result;
+}
+
+// --
+// array constructor
+// --
+
+var _makeArrayOfLength = function _makeArrayOfLength( length )
+{
+  if( length === undefined )
+  length = 0;
+
+  var result = new this.ArrayType( length );
+
+  return result;
+}
+
+//
+
+var _makeZeroedArrayOfLength = function _makeZeroedArrayOfLength( length )
+{
+  if( length === undefined )
+  length = 0;
+
+  var result = new this.ArrayType( length );
+
+  if( this.ArrayType === Array )
+  for( var i = 0 ; i < length ; i++ )
+  result[ i ] = 0;
 
   return result;
 }
@@ -11042,6 +11228,22 @@ var _mapSatisfy = function _mapSatisfy( template,src,root,levels )
   debugger;
 
   return false;
+}
+
+// --
+// map search
+// --
+
+var mapIndexForValue = function mapIndexForValue( src,ins )
+{
+
+  for( var s in src )
+  {
+    if( src[ s ] === ins )
+    return s;
+  }
+
+  return;
 }
 
 // --
@@ -11633,26 +11835,6 @@ mapFields.defaults =
   own : 0,
   enumerable : 1,
 }
-
-//
-/*
-var mapsPluck = function( srcMaps,filterName )
-{
-  var result = new srcMaps.constructor();
-  var filterName = _.nameUnfielded( filterName ).coded;
-
-  _assert( _.arrayIs( srcMaps ) || _.objectIs( srcMaps ) );
-
-  _.each( srcMaps,function( e,k )
-  {
-
-    result[ k ] = e[ filterName ];
-
-  });
-
-  return result;
-}
-*/
 
 // --
 // map filter
@@ -12537,6 +12719,7 @@ var Proto =
   routineSeal : routineSeal,
   routineDelayed : routineDelayed,
 
+  routinesJoin : routinesJoin,
   routinesCall : routinesCall,
   routineOptions : routineOptions,
   routineOptionsFromThis : routineOptionsFromThis,
@@ -12588,7 +12771,7 @@ var Proto =
   arraySub : arraySub,
   arrayNew : arrayNew,
   arrayNewOfSameLength : arrayNewOfSameLength,
-  arrayOrNumber : arrayOrNumber,
+  arrayFromNumber : arrayFromNumber,
 
   arraySelect : arraySelect,
   arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
@@ -12605,7 +12788,7 @@ var Proto =
   arrayAppendOnce : arrayAppendOnce,
   arrayPrependOnce : arrayPrependOnce,
 
-  arrayElementsSwap : arrayElementsSwap,
+  arraySwap : arraySwap,
 
   arrayRemoveArrayOnce : arrayRemoveArrayOnce,
 
@@ -12623,6 +12806,7 @@ var Proto =
 
   arraySpliceArray : arraySpliceArray,
 
+  arrayGrow : arrayGrow,
   arraySlice : arraySlice,
   arrayMultislice : arrayMultislice,
   arraySplice : arraySplice, /* experimental */
@@ -12683,6 +12867,15 @@ var Proto =
   arraySortedAddArray : arraySortedAddArray,
 
 
+  // array constructor
+
+  _makeArrayOfLength : _makeArrayOfLength,
+  makeArrayOfLength : _makeArrayOfLength,
+
+  _makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
+  makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
+
+
   // map extend
 
   mapClone : mapClone, /* experimental */
@@ -12709,6 +12902,11 @@ var Proto =
   _mapSatisfy : _mapSatisfy,
 
 
+  // map search
+
+  mapIndexForValue : mapIndexForValue,
+
+
   // map converter
 
   mapFirstPair : mapFirstPair,
@@ -12727,8 +12925,6 @@ var Proto =
 
   mapInvertKeyValue : mapInvertKeyValue,
   mapsFlatten : mapsFlatten,
-
-  /* mapsPluck : mapsPluck, */
 
   mapRoutines : mapRoutines,
   routines : mapRoutines,
@@ -12760,6 +12956,7 @@ var Proto =
 
   // var
 
+  ArrayType : Array,
   error : error,
 
 }
