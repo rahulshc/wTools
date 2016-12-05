@@ -244,7 +244,7 @@ var __eachAct = function( o )
 
 //
 
-var _each = function( o )
+var _each = function _each( o )
 {
 
   if( o.root === undefined )
@@ -566,6 +566,7 @@ eachSample.defaults =
   add : null,
 
 }
+
 //
 
 var eachInRange = function eachInRange( o )
@@ -812,25 +813,26 @@ var eachInMultiRange = function( o )
 
   /* */
 
-  var counter = [];
+  var indexNd = [];
   for( var r = 0 ; r < ranges.length ; r++ )
-  counter[ r ] = ranges[ r ][ 0 ];
+  indexNd[ r ] = ranges[ r ][ 0 ];
 
   /* */
 
-  var i = 0;
-  while( counter[ last ] < ranges[ last ][ 1 ] )
+  var indexFlat = 0;
+  while( indexNd[ last ] < ranges[ last ][ 1 ] )
   {
 
-    var r = getValue( counter );
+    var r = getValue( indexNd );
     if( o.result )
-    o.result[ i ] = r;
-    var res = o.onEach.call( o,r,i );
+    o.result[ indexFlat ] = r;
+
+    var res = o.onEach.call( o,r,indexFlat );
 
     if( res === false )
     break;
 
-    i += 1;
+    indexFlat += 1;
 
     var c = 0;
     do
@@ -838,14 +840,14 @@ var eachInMultiRange = function( o )
       if( c >= ranges.length )
       break;
       if( c > 0 )
-      counter[ c-1 ] = ranges[ c-1 ][ 0 ];
+      indexNd[ c-1 ] = ranges[ c-1 ][ 0 ];
       if( delta )
-      counter[ c ] += delta[ c ];
+      indexNd[ c ] += delta[ c ];
       else
-      counter[ c ] += 1;
+      indexNd[ c ] += 1;
       c += 1;
     }
-    while( counter[ c-1 ] >= ranges[ c-1 ][ 1 ] );
+    while( indexNd[ c-1 ] >= ranges[ c-1 ][ 1 ] );
 
   }
 
@@ -854,7 +856,7 @@ var eachInMultiRange = function( o )
   if( o.result )
   return o.result
   else
-  return i;
+  return indexFlat;
 }
 
 eachInMultiRange.defaults =
@@ -1974,6 +1976,75 @@ var entityHasUndef = function( src )
 
 //
 
+ /**
+  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+  * Returns string refering to first found difference or false if entities are sames.
+  *
+  * @param {*} src1 - Entity for comparison.
+  * @param {*} src2 - Entity for comparison.
+  * @param {wTools~entitySameOptions} o - Comparsion options {@link wTools~entitySameOptions}.
+  * @returns {boolean} result - Returns false for same entities or difference as a string.
+  *
+  * @example
+  * //returns
+  * //"at :
+  * //src1 :
+  * //1
+  * //src2 :
+  * //1 "
+  * _.entityDiff( '1', 1 );
+  *
+  * @example
+  * //returns
+  * //"at : .2
+  * //src1 :
+  * //3
+  * //src2 :
+  * //4
+  * //difference :
+  * //*"
+  * _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+  *
+  * @method entityDiff
+  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+  * @throws {exception} If( o ) is not a Object.
+  * @throws {exception} If( o ) is extended by unknown property.
+  * @memberof wTools
+  */
+
+var entityDiff = function entityDiff( src1,src2,o )
+{
+
+  var o = o || {};
+  _assert( arguments.length === 2 || arguments.length === 3 );
+  var same = _.entitySame( src1,src2,o );
+
+  if( same )
+  return false;
+
+  var result = '';
+
+  if( !_.atomicIs( src1 ) )
+  src1 = _.toStr( _.entitySelect( src1,o.path ) );
+
+  if( !_.atomicIs( src2 ) )
+  src2 = _.toStr( _.entitySelect( src2,o.path ) );
+
+  result += _.str
+  (
+    'at : ' + o.path +
+    '\nsrc1 :\n' + src1 +
+    '\nsrc2 :\n' + src2
+  );
+
+  if( _.strIs( src1 ) && _.strIs( src2 ) )
+  result += ( '\ndifference :\n' + _.strDifference( src1,src2 ) );
+
+  return result;
+}
+
+//
+
 /**
  * Options for _entitySame() function.
  * @typedef {Object} wTools~entitySameOptions
@@ -2051,7 +2122,13 @@ var _entitySame = function _entitySame( src1,src2,o )
 
   /**/
 
-  if( _.arrayLike( src1 ) )
+  if( _.objectIs( src1 ) && _.routineIs( src1._isSame ) )
+  {
+    if( _.strTypeOf( src1 ) !== 'wSpace' )
+    debugger;
+    return src1._isSame( src1,src2,o );
+  }
+  else if( _.arrayLike( src1 ) )
   {
 
     if( !src2 )
@@ -2129,71 +2206,45 @@ var _entitySame = function _entitySame( src1,src2,o )
 
 //
 
- /**
-  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
-  * Returns string refering to first found difference or false if entities are sames.
-  *
-  * @param {*} src1 - Entity for comparison.
-  * @param {*} src2 - Entity for comparison.
-  * @param {wTools~entitySameOptions} o - Comparsion options {@link wTools~entitySameOptions}.
-  * @returns {boolean} result - Returns false for same entities or difference as a string.
-  *
-  * @example
-  * //returns
-  * //"at :
-  * //src1 :
-  * //1
-  * //src2 :
-  * //1 "
-  * _.entityDiff( '1', 1 );
-  *
-  * @example
-  * //returns
-  * //"at : .2
-  * //src1 :
-  * //3
-  * //src2 :
-  * //4
-  * //difference :
-  * //*"
-  * _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
-  *
-  * @method entityDiff
-  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
-  * @throws {exception} If( o ) is not a Object.
-  * @throws {exception} If( o ) is extended by unknown property.
-  * @memberof wTools
-  */
-
-var entityDiff = function entityDiff( src1,src2,o )
+var _entitySameOptions = function _entitySameOptions( o )
 {
 
+  var _sameNumbersStrict = function( a,b )
+  {
+    return Object.is( a,b );
+  }
+
+  var _sameNumbersNotStrict = function( a,b )
+  {
+    if( Object.is( a,b ) )
+    return true;
+    return Math.abs( a-b ) <= eps;
+  }
+
+  _assert( arguments.length === 1 );
+  _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+
   var o = o || {};
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  var same = _.entitySame( src1,src2,o );
 
-  if( same )
-  return false;
+  _.assertMapHasOnly( o,_entitySameOptions.defaults );
+  _.mapSupplement( o,_entitySameOptions.defaults );
 
-  var result = '';
+  if( o.onSameNumbers === null )
+  o.onSameNumbers = o.strict ? _sameNumbersStrict : _sameNumbersNotStrict;
 
-  if( !_.atomicIs( src1 ) )
-  src1 = _.toStr( _.entitySelect( src1,o.path ) );
+  var eps = o.eps;
 
-  if( !_.atomicIs( src2 ) )
-  src2 = _.toStr( _.entitySelect( src2,o.path ) );
+  return o;
+}
 
-  result += _.str
-  (
-    'at : ' + o.path +
-    '\nsrc1 :\n' + src1 +
-    '\nsrc2 :\n' + src2
-  );
-
-  if( _.strIs( src1 ) && _.strIs( src2 ) )
-  result += ( '\ndifference :\n' + _.strDifference( src1,src2 ) );
-
-  return result;
+_entitySameOptions.defaults =
+{
+  onSameNumbers : null,
+  contain : 0,
+  strict : 1,
+  lastPath : '',
+  path : '',
+  eps : 1e-7,
 }
 
 //
@@ -2233,42 +2284,21 @@ var entityDiff = function entityDiff( src1,src2,o )
  * @memberof wTools
  */
 
-var entitySame = function entitySame()
+var entitySame = function entitySame( src1,src2,o )
 {
 
-  var sameNumbers = function( a,b )
-  {
-    return Object.is( a,b );
-    //return a === b;
-  }
+  _assert( arguments.length === 2 || arguments.length === 3 );
 
-  return function entitySame( src1,src2,o )
-  {
+  var o = _entitySameOptions( o );
 
-    _assert( arguments.length === 2 || arguments.length === 3 );
-    _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
-    var o = o || {};
-
-    _.assertMapHasOnly( o,entitySame.defaults );
-    _.mapSupplement( o,entitySame.defaults );
-
-    if( o.onSameNumbers === null )
-    o.onSameNumbers = sameNumbers;
-
-    return _entitySame( src1,src2,o );
-  }
-
-}();
+  return _entitySame( src1,src2,o );
+}
 
 entitySame.defaults =
 {
-  onSameNumbers : null,
-  contain : 0,
-  strict : 1,
-  lastPath : '',
-  path : '',
-  eps : 1e-7,
 }
+
+entitySame.defaults.__proto__ = _entitySameOptions.defaults;
 
 //
 
@@ -2308,7 +2338,6 @@ var entityIdentical = function entityIdentical( src1,src2,options )
   var sameNumbers = function( a,b )
   {
     return Object.is( a,b );
-    //return a === b;
   }
 
   var options = _.mapSupplement( options || {},
@@ -4101,6 +4130,22 @@ var assertMapOwnAll = function( src,all,msg )
       level : 2,
     });
   }
+
+}
+
+//
+
+var assertInstanceOrClass = function assertInstanceOrClass( _Self,_this )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert
+  (
+    _this === _Self ||
+    _this instanceof _Self ||
+    Object.isPrototypeOf.call( _Self,_this ) ||
+    Object.isPrototypeOf.call( _Self,_this.prototype )
+  );
 
 }
 
@@ -8711,7 +8756,6 @@ var arrayGrow = function arrayGrow( array,f,l,val )
   {
     for( var r = 0 ; r < -f ; r++ )
     {
-      debugger;
       result[ r ] = val;
     }
     for( var r = lsrc-f ; r < result.length ; r++ )
@@ -9457,22 +9501,22 @@ var arrayCompare = function( src1,src2 )
 //
 
 /**
- * The arraySame() method checks the equality of two arrays.
+ * The arrayIdentical() method checks the equality of two arrays.
  *
  * @param { arrayLike } src1 - The first array.
  * @param { arrayLike } src2 - The second array.
  *
  * @example
  * // returns true
- * var arr = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * var arr = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @method arraySame
+ * @method arrayIdentical
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools
  */
 
-var arraySame = function( src1,src2 )
+var arrayIdentical = function arrayIdentical( src1,src2 )
 {
   _.assert( arguments.length === 2 );
 
@@ -10704,31 +10748,31 @@ var arraySortedAddArray = function( dst,src,comparator )
 // array constructor
 // --
 
-var _makeArrayOfLength = function _makeArrayOfLength( length )
-{
-  if( length === undefined )
-  length = 0;
-
-  var result = new this.ArrayType( length );
-
-  return result;
-}
-
+// var _makeArrayOfLength = function _makeArrayOfLength( length )
+// {
+//   if( length === undefined )
+//   length = 0;
 //
-
-var _makeZeroedArrayOfLength = function _makeZeroedArrayOfLength( length )
-{
-  if( length === undefined )
-  length = 0;
-
-  var result = new this.ArrayType( length );
-
-  if( this.ArrayType === Array )
-  for( var i = 0 ; i < length ; i++ )
-  result[ i ] = 0;
-
-  return result;
-}
+//   var result = new this.ArrayType( length );
+//
+//   return result;
+// }
+//
+// //
+//
+// var _makeZeroedArrayOfLength = function _makeZeroedArrayOfLength( length )
+// {
+//   if( length === undefined )
+//   length = 0;
+//
+//   var result = new this.ArrayType( length );
+//
+//   if( this.ArrayType === Array )
+//   for( var i = 0 ; i < length ; i++ )
+//   result[ i ] = 0;
+//
+//   return result;
+// }
 
 // --
 // map
@@ -12573,7 +12617,9 @@ var Proto =
   entityHasUndef : entityHasUndef,
 
   entityDiff : entityDiff,
+
   _entitySame : _entitySame,
+  _entitySameOptions : _entitySameOptions,
   entitySame : entitySame,
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
@@ -12626,6 +12672,8 @@ var Proto =
   assertMapOwnNone : assertMapOwnNone,
   assertMapHasAll : assertMapHasAll,
   assertMapOwnAll : assertMapOwnAll,
+
+  assertInstanceOrClass : assertInstanceOrClass,
   assertNotTested : assertNotTested,
 
   assertWarn : assertWarn,
@@ -12853,7 +12901,7 @@ var Proto =
   arrayFill : arrayFill,
 
   arrayCompare : arrayCompare,
-  arraySame : arraySame,
+  arrayIdentical : arrayIdentical,
   arraySameSet : arraySameSet,
 
   arrayLeftIndexOf : arrayLeftIndexOf,
@@ -12896,11 +12944,11 @@ var Proto =
 
   // array constructor
 
-  _makeArrayOfLength : _makeArrayOfLength,
-  makeArrayOfLength : _makeArrayOfLength,
-
-  _makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
-  makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
+  // _makeArrayOfLength : _makeArrayOfLength,
+  // makeArrayOfLength : _makeArrayOfLength,
+  //
+  // _makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
+  // makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
 
 
   // map extend
@@ -12956,6 +13004,7 @@ var Proto =
 
   mapRoutines : mapRoutines,
   routines : mapRoutines,
+
   mapFields : mapFields,
   fields : mapFields,
 
@@ -13046,9 +13095,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/NameTools.s' );
   require( './component/ExecTools.s' );
   require( './component/StringTools.s' );
-
-  //require( './object/printer/printer/Logger.s' );
-  //require( './object/RegexpObject.s' );
+  require( './component/ArrayDescriptor.s' );
 
 }
 
