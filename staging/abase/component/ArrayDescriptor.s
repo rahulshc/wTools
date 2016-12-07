@@ -47,7 +47,7 @@ var makeArrayOfLength = function makeArrayOfLength( length )
 
 //
 
-var makeZeroedArrayOfLength = function makeZeroedArrayOfLength( length )
+var makeArrayOfLengthZeroed = function makeArrayOfLengthZeroed( length )
 {
   if( length === undefined )
   length = 0;
@@ -88,7 +88,7 @@ var Extend =
   mixinArrayDescriptor : mixinArrayDescriptor,
 
   makeArrayOfLength : makeArrayOfLength,
-  makeZeroedArrayOfLength : makeZeroedArrayOfLength,
+  makeArrayOfLengthZeroed : makeArrayOfLengthZeroed,
   makeArrayCoercing : makeArrayCoercing,
 
   ArrayType : ArrayType,
@@ -117,6 +117,9 @@ var Types =
   { ArrayType : Int32Array, ArrayName : 'Int32' },
   { ArrayType : Array, ArrayName : 'Array' },
 ]
+
+if( wTools.ArrayDescriptors )
+return;
 
 wTools.ArrayDescriptors = wTools.ArrayDescriptors || {};
 

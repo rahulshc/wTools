@@ -2124,8 +2124,6 @@ var _entitySame = function _entitySame( src1,src2,o )
 
   if( _.objectIs( src1 ) && _.routineIs( src1._isSame ) )
   {
-    if( _.strTypeOf( src1 ) !== 'wSpace' )
-    debugger;
     return src1._isSame( src1,src2,o );
   }
   else if( _.arrayLike( src1 ) )
@@ -2145,12 +2143,6 @@ var _entitySame = function _entitySame( src1,src2,o )
       return false;
       o.path = path;
     }
-
-  }
-  else if( _.rowIs( src1 ) )
-  {
-
-    return _.row.isIdentical( src1,src2 );
 
   }
   else if( _.objectLike( src1 ) )
@@ -10760,7 +10752,7 @@ var arraySortedAddArray = function( dst,src,comparator )
 //
 // //
 //
-// var _makeZeroedArrayOfLength = function _makeZeroedArrayOfLength( length )
+// var _makeArrayOfLengthZeroed = function _makeArrayOfLengthZeroed( length )
 // {
 //   if( length === undefined )
 //   length = 0;
@@ -12947,8 +12939,8 @@ var Proto =
   // _makeArrayOfLength : _makeArrayOfLength,
   // makeArrayOfLength : _makeArrayOfLength,
   //
-  // _makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
-  // makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
+  // _makeArrayOfLengthZeroed : _makeArrayOfLengthZeroed,
+  // makeArrayOfLengthZeroed : _makeArrayOfLengthZeroed,
 
 
   // map extend
