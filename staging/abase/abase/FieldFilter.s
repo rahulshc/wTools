@@ -221,14 +221,19 @@ var dstNotOwnSrcOwnCloning = function()
 
 //
 
-var dstNotOwnCloning = function()
+var dstNotOwnNotUndefinedCloning = function()
 {
 
-  var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnNotUndefinedCloning( dstContainer,srcContainer,key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
-    return;
+    {
+
+      if( dstContainer[ key ] !== undefined )
+      return;
+
+    }
 
     _.entityCopyField( dstContainer,srcContainer,key );
   }
@@ -563,7 +568,7 @@ var fieldFilter =
 
   dstNotOwn : dstNotOwn,
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
-  dstNotOwnCloning : dstNotOwnCloning,
+  dstNotOwnNotUndefinedCloning : dstNotOwnNotUndefinedCloning,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,

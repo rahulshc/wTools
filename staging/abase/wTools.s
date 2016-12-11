@@ -1285,6 +1285,12 @@ var _entityClone = function( o )
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
 
+  if( o.src === undefined )
+  {
+    console.warn( 'REMINDER:','experimental' );
+    o.src = null;
+  }
+
   _.assertMapHasOnly( o,_entityClone.defaults );
   _.mapComplement( o,_entityClone.defaults );
 
@@ -1862,6 +1868,22 @@ entityWrap.defaults =
   own : 1,
   levels : 256,
 
+}
+
+//
+
+var entityFreeze = function entityFreeze( src )
+{
+  var _src = src;
+
+  if( _.bufferIs( src ) )
+  {
+    src = src.buffer;
+  }
+
+  Object.freeze( src );
+
+  return _src;
 }
 
 // --
@@ -3851,36 +3873,36 @@ var err = function err()
 
 //
 
-  /**
-   * Creates error object, with message created from passed `msg` parameters and contains error trace.
-   * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
-   concatenating them. Prints the created error.
-   * If _global_.logger defined, method will use it to print error, else uses console
-   * @see wTools.err
-   *
-   *@example
-     function divide( x, y )
-     {
-        if( y == 0 )
-          throw wTools.errLog('divide by zero')
-        return x / y;
-     }
-     divide (3, 0);
+/**
+ * Creates error object, with message created from passed `msg` parameters and contains error trace.
+ * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
+ concatenating them. Prints the created error.
+ * If _global_.logger defined, method will use it to print error, else uses console
+ * @see wTools.err
+ *
+ *@example
+   function divide( x, y )
+   {
+      if( y == 0 )
+        throw wTools.errLog('divide by zero')
+      return x / y;
+   }
+   divide (3, 0);
 
-     // Error:
-     // caught     at divide (<anonymous>:2:29)
-     // divide by zero
-     // Error
-     //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
-     //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
-     //   at divide (<anonymous>:2:29)
-     //   at <anonymous>:1:1
-   *
-   * @param {...String|Error} msg Accepts list of messeges/errors.
-   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
-   * @method errLog
-   * @memberof wTools
-   */
+   // Error:
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+ *
+ * @param {...String|Error} msg Accepts list of messeges/errors.
+ * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+ * @method errLog
+ * @memberof wTools
+ */
 
 var errLog = function errLog()
 {
@@ -3892,40 +3914,65 @@ var errLog = function errLog()
     level : 2,
   });
 
-  Object.defineProperty( err, 'attentionNeeded',
-  {
-    enumerable : false,
-    configurable : true,
-    writable : true,
-    value : 0,
-  });
-
-  Object.defineProperty( err, 'attentionGiven',
-  {
-    enumerable : false,
-    configurable : true,
-    writable : true,
-    value : 1,
-  });
-
-  // err.attentionNeeded = 0;
-  // err.attentionGiven = 1;
+  /* */
 
   if( _.routineIs( err.toString ) )
   {
-
     c.error( err.toString() );
-
   }
   else
   {
-
     c.error( err );
+  }
+
+  /* */
+
+  try
+  {
+
+    Object.defineProperty( err, 'attentionNeeded',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : 0,
+    });
+
+    Object.defineProperty( err, 'attentionGiven',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : 1,
+    });
 
   }
+  catch( err )
+  {
+    c.warn( 'cant assign attentionNeeded/attentionGiven properties' );
+  }
+
+  /* */
 
   debugger;
   return err;
+}
+
+//
+
+var errLogOnce = function errLogOnce( err )
+{
+
+  var err = _err
+  ({
+    args : arguments,
+    level : 2,
+  });
+
+  if( err.attentionGiven )
+  return err;
+
+  return errLog( err );
 }
 
 //
@@ -4827,6 +4874,44 @@ var numberIsRegular = function( src )
 
 //
 
+var numbersAreFinite = function numbersAreFinite( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersAreFinite( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return isFinite( src );
+}
+
+//
+
+var numbersArePositive = function numbersArePositive( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersArePositive( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return src >= 0;
+}
+
+//
+
 var numbersAreInt = function numbersAreInt( src )
 {
 
@@ -4998,7 +5083,7 @@ var jqueryIs = function( src )
 
 //
 
-var canvasIs = function( src )
+var canvasIs = function canvasIs( src )
 {
   if( _.jqueryIs( src ) )
   src = src[ 0 ];
@@ -5009,7 +5094,7 @@ var canvasIs = function( src )
 
 //
 
-var domIs = function( src )
+var domIs = function domIs( src )
 {
   if( !_global_.Node )
   return false;
@@ -5019,17 +5104,22 @@ var domIs = function( src )
 
 //
 
-var domableIs = function( src )
+var domableIs = function domableIs( src )
 {
   return strIs( src ) || domIs( src ) || jqueryIs( src );
 }
 
 //
 
-var errorIs = function( src )
+var consequenceIs = function consequenceIs( src )
 {
-  //return src instanceof Error;
-  //debugger;
+  return src instanceof wConsequence;
+}
+
+//
+
+var errorIs = function errorIs( src )
+{
   return _ObjectToString.call( src ) === '[object Error]';
 }
 
@@ -5041,7 +5131,6 @@ var atomicIs = function atomicIs( src )
   return true;
   var t = _ObjectToString.call( src );
   return t === '[object Symbol]' || t === '[object Number]' || t === '[object Boolean]' || t === '[object String]';
-  //return symbolIs( src ) || numberIs( src ) || boolIs( src ) || strIs( src ) || src === null || src === undefined;
 }
 
 //
@@ -5939,41 +6028,41 @@ var _routineBind = function _routineBind( options )
 
 //
 
-  /**
-   * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
-   value. Unlike Function.prototype.bind() method if `context` is undefined`, in new function 'this' context will not be
-   sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
-   target function.
-   * Besides the aforementioned difference, routineBind method accepts function as argument, that makes it more useful
-      than Function.prototype.bind().
-   * @example
-      var o = {
-          z: 5
-      };
+/**
+ * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
+ value. Unlike Function.prototype.bind() method if `context` is undefined`, in new function 'this' context will not be
+ sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
+ target function.
+ * Besides the aforementioned difference, routineBind method accepts function as argument, that makes it more useful
+    than Function.prototype.bind().
+ * @example
+    var o = {
+        z: 5
+    };
 
-      var y = 4;
+    var y = 4;
 
-      function sum(x, y) {
-         return x + y + this.z;
-      }
-      var newSum = wTools.routineBind(sum, o, [3]);
-      newSum(y); // 12
+    function sum(x, y) {
+       return x + y + this.z;
+    }
+    var newSum = wTools.routineBind(sum, o, [3]);
+    newSum(y); // 12
 
-     var f1 = function(){ console.log( this ) };
-     var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
-     f2.call( o ); // try to call new function with context set to { z: 5 }
-     var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
-     f3.call( o ) // print  { z: 5 }
-   * @param {Function} routine Function which will be used as base for result function.
-   * @param {Object} context The value that will be set as 'this' keyword in new function
-   * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
-   function. Must be wraped into array.
-   * @returns {Function} New created function with preceding this, and args.
-   * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
-   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
-   * @method routineBind
-   * @memberof wTools
-   */
+   var f1 = function(){ console.log( this ) };
+   var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+   f2.call( o ); // try to call new function with context set to { z: 5 }
+   var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
+   f3.call( o ) // print  { z: 5 }
+ * @param {Function} routine Function which will be used as base for result function.
+ * @param {Object} context The value that will be set as 'this' keyword in new function
+ * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
+ function. Must be wraped into array.
+ * @returns {Function} New created function with preceding this, and args.
+ * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
+ * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+ * @method routineBind
+ * @memberof wTools
+ */
 
 var routineBind = function routineBind( routine, context, args )
 {
@@ -5993,40 +6082,40 @@ var routineBind = function routineBind( routine, context, args )
 
 //
 
-  /**
-   * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
-   value. Argumetns `args` of target function which are passed before arguments of binded function during
-   calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
-   * @example
-     var o = {
-          z: 5
-      };
+/**
+ * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
+ value. Argumetns `args` of target function which are passed before arguments of binded function during
+ calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
+ * @example
+   var o = {
+        z: 5
+    };
 
-     var y = 4;
+   var y = 4;
 
-     function sum(x, y) {
-         return x + y + this.z;
-      }
-     var newSum = wTools.routineJoin(o, sum, [3]);
-     newSum(y); // 12
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineJoin(o, sum, [3]);
+   newSum(y); // 12
 
-     var f1 = function(){ console.log( this ) };
-     var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
-     f2.call( o ); // try to call new function with context set to { z: 5 }
-     var f3 = _.routineJoin( undefined,f1 ); // new function.
-     f3.call( o ) // print  { z: 5 }
+   var f1 = function(){ console.log( this ) };
+   var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+   f2.call( o ); // try to call new function with context set to { z: 5 }
+   var f3 = _.routineJoin( undefined,f1 ); // new function.
+   f3.call( o ) // print  { z: 5 }
 
-   * @param {Object} context The value that will be set as 'this' keyword in new function
-   * @param {Function} routine Function which will be used as base for result function.
-   * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
-   calling of target function. Must be wraped into array.
-   * @returns {Function} New created function with preceding this, and args.
-   * @see wTools.routineBind
-   * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
-   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
-   * @method routineJoin
-   * @memberof wTools
-   */
+ * @param {Object} context The value that will be set as 'this' keyword in new function
+ * @param {Function} routine Function which will be used as base for result function.
+ * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
+ calling of target function. Must be wraped into array.
+ * @returns {Function} New created function with preceding this, and args.
+ * @see wTools.routineBind
+ * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
+ * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+ * @method routineJoin
+ * @memberof wTools
+ */
 
 var routineJoin = function routineJoin( context, routine, args )
 {
@@ -6311,9 +6400,9 @@ var routineOptions = function routineOptions( routine,options )
   _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
   _.assert( _.objectIs( options ),'routineOptions : expects object' );
 
-  _.assertMapHasNoUndefine( options );
   _.assertMapHasOnly( options,routine.defaults );
   _.mapComplement( options,routine.defaults );
+  _.assertMapHasNoUndefine( options );
 
   return options;
 }
@@ -11031,7 +11120,7 @@ var mapComplement = function( dst )
 {
 
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.dstNotOwnCloning() );
+  args.unshift( _.filter.dstNotOwnNotUndefinedCloning() );
   return mapExtendFiltering.apply( this,args );
 
 }
@@ -12601,6 +12690,7 @@ var Proto =
   entityCoerceTo : entityCoerceTo,
 
   entityWrap : entityWrap,
+  entityFreeze : entityFreeze,
 
 
   // entity checker
@@ -12655,6 +12745,7 @@ var Proto =
   _err : _err,
   err : err,
   errLog : errLog,
+  errLogOnce : errLogOnce,
 
   assert : assert,
   assertMapHasNoUndefine : assertMapHasNoUndefine,
@@ -12704,6 +12795,8 @@ var Proto =
 
   numberIs : numberIs,
   numberIsRegular : numberIsRegular,
+  numbersAreFinite : numbersAreFinite,
+  numbersArePositive : numbersArePositive,
   numbersAreInt : numbersAreInt,
   numberIsInt : numberIsInt,
 
@@ -12720,6 +12813,7 @@ var Proto =
   canvasIs : canvasIs,
   domIs : domIs,
   domableIs : domableIs,
+  consequenceIs : consequenceIs,
 
   errorIs : errorIs,
 
