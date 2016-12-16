@@ -3978,28 +3978,57 @@ var errLogOnce = function errLogOnce( err )
 //
 
   /**
-   * Checks condition. If condition converts to true method returns without exceptions.
-   * Else If condition is false, method generates and throws exception. By default generates error with
-   * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
+   * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+   * If condition is true method returns without exceptions, otherwise method generates and throws exception. By default generates error with message 'Assertion failed'.
+   * Also generates error using message(s) or existing error object(s) passed after first argument.
+   *
+   * @param {*} condition - condition to check.
+   * @param {String|Error} [ msgs ] - error messages for generated exception.
    *
    * @example
-     function divide ( x, y )
-     {
-        wTools.assert( y != 0, 'divide by zero' );
-        return x / y;
-     }
-     divide (3, 0);
-
-   // caught     at divide (<anonymous>:2:29)
-   // divide by zero
-   // Error
-   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
-   //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
-   //   at divide (<anonymous>:2:29)
-   //   at <anonymous>:1:1
-   * @param {*} condition
-   * @param {...String|Error} msgs error messages for generated exception.
-   * @throws {Error} If passed condition failed, Method throws an error.
+   * var x = 1;
+   * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
+   *
+   * // caught eval (<anonymous>:2:8)
+   * // incorrect variable type-> number expects string
+   * // Error
+   * //   at _err (file:///.../wTools/staging/wTools.s:3707)
+   * //   at assert (file://.../wTools/staging/wTools.s:4041)
+   * //   at add (<anonymous>:2)
+   * //   at <anonymous>:1
+   *
+   * @example
+   * function add( x, y )
+   * {
+   *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
+   *   return x + y;
+   * }
+   * add();
+   *
+   * // caught add (<anonymous>:3:14)
+   * // incorrect arguments count
+   * // Error
+   * //   at _err (file:///.../wTools/staging/wTools.s:3707)
+   * //   at assert (file://.../wTools/staging/wTools.s:4035)
+   * //   at add (<anonymous>:3:14)
+   * //   at <anonymous>:6
+   *
+   * @example
+   *   function divide ( x, y )
+   *   {
+   *      wTools.assert( y != 0, 'divide by zero' );
+   *      return x / y;
+   *   }
+   *   divide (3, 0);
+   *
+   * // caught     at divide (<anonymous>:2:29)
+   * // divide by zero
+   * // Error
+   * //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   * //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
+   * //   at divide (<anonymous>:2:29)
+   * //   at <anonymous>:1:1
+   * @throws {Error} If passed condition( condition ) fails.
    * @method assert
    * @memberof wTools
    */
