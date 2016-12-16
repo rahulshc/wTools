@@ -244,7 +244,7 @@ var __eachAct = function( o )
 
 //
 
-var _each = function( o )
+var _each = function _each( o )
 {
 
   if( o.root === undefined )
@@ -566,6 +566,7 @@ eachSample.defaults =
   add : null,
 
 }
+
 //
 
 var eachInRange = function eachInRange( o )
@@ -812,25 +813,26 @@ var eachInMultiRange = function( o )
 
   /* */
 
-  var counter = [];
+  var indexNd = [];
   for( var r = 0 ; r < ranges.length ; r++ )
-  counter[ r ] = ranges[ r ][ 0 ];
+  indexNd[ r ] = ranges[ r ][ 0 ];
 
   /* */
 
-  var i = 0;
-  while( counter[ last ] < ranges[ last ][ 1 ] )
+  var indexFlat = 0;
+  while( indexNd[ last ] < ranges[ last ][ 1 ] )
   {
 
-    var r = getValue( counter );
+    var r = getValue( indexNd );
     if( o.result )
-    o.result[ i ] = r;
-    var res = o.onEach.call( o,r,i );
+    o.result[ indexFlat ] = r;
+
+    var res = o.onEach.call( o,r,indexFlat );
 
     if( res === false )
     break;
 
-    i += 1;
+    indexFlat += 1;
 
     var c = 0;
     do
@@ -838,14 +840,14 @@ var eachInMultiRange = function( o )
       if( c >= ranges.length )
       break;
       if( c > 0 )
-      counter[ c-1 ] = ranges[ c-1 ][ 0 ];
+      indexNd[ c-1 ] = ranges[ c-1 ][ 0 ];
       if( delta )
-      counter[ c ] += delta[ c ];
+      indexNd[ c ] += delta[ c ];
       else
-      counter[ c ] += 1;
+      indexNd[ c ] += 1;
       c += 1;
     }
-    while( counter[ c-1 ] >= ranges[ c-1 ][ 1 ] );
+    while( indexNd[ c-1 ] >= ranges[ c-1 ][ 1 ] );
 
   }
 
@@ -854,7 +856,7 @@ var eachInMultiRange = function( o )
   if( o.result )
   return o.result
   else
-  return i;
+  return indexFlat;
 }
 
 eachInMultiRange.defaults =
@@ -1282,6 +1284,12 @@ var _entityClone = function( o )
 
   if( o.rootSrc === undefined )
   o.rootSrc = o.src;
+
+  if( o.src === undefined )
+  {
+    console.warn( 'REMINDER:','experimental' );
+    o.src = null;
+  }
 
   _.assertMapHasOnly( o,_entityClone.defaults );
   _.mapComplement( o,_entityClone.defaults );
@@ -1862,6 +1870,22 @@ entityWrap.defaults =
 
 }
 
+//
+
+var entityFreeze = function entityFreeze( src )
+{
+  var _src = src;
+
+  if( _.bufferIs( src ) )
+  {
+    src = src.buffer;
+  }
+
+  Object.freeze( src );
+
+  return _src;
+}
+
 // --
 // entity checker
 // --
@@ -1974,6 +1998,75 @@ var entityHasUndef = function( src )
 
 //
 
+ /**
+  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
+  * Returns string refering to first found difference or false if entities are sames.
+  *
+  * @param {*} src1 - Entity for comparison.
+  * @param {*} src2 - Entity for comparison.
+  * @param {wTools~entitySameOptions} o - Comparsion options {@link wTools~entitySameOptions}.
+  * @returns {boolean} result - Returns false for same entities or difference as a string.
+  *
+  * @example
+  * //returns
+  * //"at :
+  * //src1 :
+  * //1
+  * //src2 :
+  * //1 "
+  * _.entityDiff( '1', 1 );
+  *
+  * @example
+  * //returns
+  * //"at : .2
+  * //src1 :
+  * //3
+  * //src2 :
+  * //4
+  * //difference :
+  * //*"
+  * _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+  *
+  * @method entityDiff
+  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
+  * @throws {exception} If( o ) is not a Object.
+  * @throws {exception} If( o ) is extended by unknown property.
+  * @memberof wTools
+  */
+
+var entityDiff = function entityDiff( src1,src2,o )
+{
+
+  var o = o || {};
+  _assert( arguments.length === 2 || arguments.length === 3 );
+  var same = _.entitySame( src1,src2,o );
+
+  if( same )
+  return false;
+
+  var result = '';
+
+  if( !_.atomicIs( src1 ) )
+  src1 = _.toStr( _.entitySelect( src1,o.path ) );
+
+  if( !_.atomicIs( src2 ) )
+  src2 = _.toStr( _.entitySelect( src2,o.path ) );
+
+  result += _.str
+  (
+    'at : ' + o.path +
+    '\nsrc1 :\n' + src1 +
+    '\nsrc2 :\n' + src2
+  );
+
+  if( _.strIs( src1 ) && _.strIs( src2 ) )
+  result += ( '\ndifference :\n' + _.strDifference( src1,src2 ) );
+
+  return result;
+}
+
+//
+
 /**
  * Options for _entitySame() function.
  * @typedef {Object} wTools~entitySameOptions
@@ -2051,7 +2144,11 @@ var _entitySame = function _entitySame( src1,src2,o )
 
   /**/
 
-  if( _.arrayLike( src1 ) )
+  if( _.objectIs( src1 ) && _.routineIs( src1._isSame ) )
+  {
+    return src1._isSame( src1,src2,o );
+  }
+  else if( _.arrayLike( src1 ) )
   {
 
     if( !src2 )
@@ -2068,12 +2165,6 @@ var _entitySame = function _entitySame( src1,src2,o )
       return false;
       o.path = path;
     }
-
-  }
-  else if( _.rowIs( src1 ) )
-  {
-
-    return _.row.isIdentical( src1,src2 );
 
   }
   else if( _.objectLike( src1 ) )
@@ -2129,71 +2220,45 @@ var _entitySame = function _entitySame( src1,src2,o )
 
 //
 
- /**
-  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
-  * Returns string refering to first found difference or false if entities are sames.
-  *
-  * @param {*} src1 - Entity for comparison.
-  * @param {*} src2 - Entity for comparison.
-  * @param {wTools~entitySameOptions} o - Comparsion options {@link wTools~entitySameOptions}.
-  * @returns {boolean} result - Returns false for same entities or difference as a string.
-  *
-  * @example
-  * //returns
-  * //"at :
-  * //src1 :
-  * //1
-  * //src2 :
-  * //1 "
-  * _.entityDiff( '1', 1 );
-  *
-  * @example
-  * //returns
-  * //"at : .2
-  * //src1 :
-  * //3
-  * //src2 :
-  * //4
-  * //difference :
-  * //*"
-  * _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
-  *
-  * @method entityDiff
-  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
-  * @throws {exception} If( o ) is not a Object.
-  * @throws {exception} If( o ) is extended by unknown property.
-  * @memberof wTools
-  */
-
-var entityDiff = function entityDiff( src1,src2,o )
+var _entitySameOptions = function _entitySameOptions( o )
 {
 
+  var _sameNumbersStrict = function( a,b )
+  {
+    return Object.is( a,b );
+  }
+
+  var _sameNumbersNotStrict = function( a,b )
+  {
+    if( Object.is( a,b ) )
+    return true;
+    return Math.abs( a-b ) <= eps;
+  }
+
+  _assert( arguments.length === 1 );
+  _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+
   var o = o || {};
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  var same = _.entitySame( src1,src2,o );
 
-  if( same )
-  return false;
+  _.assertMapHasOnly( o,_entitySameOptions.defaults );
+  _.mapSupplement( o,_entitySameOptions.defaults );
 
-  var result = '';
+  if( o.onSameNumbers === null )
+  o.onSameNumbers = o.strict ? _sameNumbersStrict : _sameNumbersNotStrict;
 
-  if( !_.atomicIs( src1 ) )
-  src1 = _.toStr( _.entitySelect( src1,o.path ) );
+  var eps = o.eps;
 
-  if( !_.atomicIs( src2 ) )
-  src2 = _.toStr( _.entitySelect( src2,o.path ) );
+  return o;
+}
 
-  result += _.str
-  (
-    'at : ' + o.path +
-    '\nsrc1 :\n' + src1 +
-    '\nsrc2 :\n' + src2
-  );
-
-  if( _.strIs( src1 ) && _.strIs( src2 ) )
-  result += ( '\ndifference :\n' + _.strDifference( src1,src2 ) );
-
-  return result;
+_entitySameOptions.defaults =
+{
+  onSameNumbers : null,
+  contain : 0,
+  strict : 1,
+  lastPath : '',
+  path : '',
+  eps : 1e-7,
 }
 
 //
@@ -2233,42 +2298,21 @@ var entityDiff = function entityDiff( src1,src2,o )
  * @memberof wTools
  */
 
-var entitySame = function entitySame()
+var entitySame = function entitySame( src1,src2,o )
 {
 
-  var sameNumbers = function( a,b )
-  {
-    return Object.is( a,b );
-    //return a === b;
-  }
+  _assert( arguments.length === 2 || arguments.length === 3 );
 
-  return function entitySame( src1,src2,o )
-  {
+  var o = _entitySameOptions( o );
 
-    _assert( arguments.length === 2 || arguments.length === 3 );
-    _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
-    var o = o || {};
-
-    _.assertMapHasOnly( o,entitySame.defaults );
-    _.mapSupplement( o,entitySame.defaults );
-
-    if( o.onSameNumbers === null )
-    o.onSameNumbers = sameNumbers;
-
-    return _entitySame( src1,src2,o );
-  }
-
-}();
+  return _entitySame( src1,src2,o );
+}
 
 entitySame.defaults =
 {
-  onSameNumbers : null,
-  contain : 0,
-  strict : 1,
-  lastPath : '',
-  path : '',
-  eps : 1e-7,
 }
+
+entitySame.defaults.__proto__ = _entitySameOptions.defaults;
 
 //
 
@@ -2308,7 +2352,6 @@ var entityIdentical = function entityIdentical( src1,src2,options )
   var sameNumbers = function( a,b )
   {
     return Object.is( a,b );
-    //return a === b;
   }
 
   var options = _.mapSupplement( options || {},
@@ -3830,36 +3873,36 @@ var err = function err()
 
 //
 
-  /**
-   * Creates error object, with message created from passed `msg` parameters and contains error trace.
-   * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
-   concatenating them. Prints the created error.
-   * If _global_.logger defined, method will use it to print error, else uses console
-   * @see wTools.err
-   *
-   *@example
-     function divide( x, y )
-     {
-        if( y == 0 )
-          throw wTools.errLog('divide by zero')
-        return x / y;
-     }
-     divide (3, 0);
+/**
+ * Creates error object, with message created from passed `msg` parameters and contains error trace.
+ * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
+ concatenating them. Prints the created error.
+ * If _global_.logger defined, method will use it to print error, else uses console
+ * @see wTools.err
+ *
+ *@example
+   function divide( x, y )
+   {
+      if( y == 0 )
+        throw wTools.errLog('divide by zero')
+      return x / y;
+   }
+   divide (3, 0);
 
-     // Error:
-     // caught     at divide (<anonymous>:2:29)
-     // divide by zero
-     // Error
-     //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
-     //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
-     //   at divide (<anonymous>:2:29)
-     //   at <anonymous>:1:1
-   *
-   * @param {...String|Error} msg Accepts list of messeges/errors.
-   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
-   * @method errLog
-   * @memberof wTools
-   */
+   // Error:
+   // caught     at divide (<anonymous>:2:29)
+   // divide by zero
+   // Error
+   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
+   //   at divide (<anonymous>:2:29)
+   //   at <anonymous>:1:1
+ *
+ * @param {...String|Error} msg Accepts list of messeges/errors.
+ * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+ * @method errLog
+ * @memberof wTools
+ */
 
 var errLog = function errLog()
 {
@@ -3871,40 +3914,65 @@ var errLog = function errLog()
     level : 2,
   });
 
-  Object.defineProperty( err, 'attentionNeeded',
-  {
-    enumerable : false,
-    configurable : true,
-    writable : true,
-    value : 0,
-  });
-
-  Object.defineProperty( err, 'attentionGiven',
-  {
-    enumerable : false,
-    configurable : true,
-    writable : true,
-    value : 1,
-  });
-
-  // err.attentionNeeded = 0;
-  // err.attentionGiven = 1;
+  /* */
 
   if( _.routineIs( err.toString ) )
   {
-
     c.error( err.toString() );
-
   }
   else
   {
-
     c.error( err );
+  }
+
+  /* */
+
+  try
+  {
+
+    Object.defineProperty( err, 'attentionNeeded',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : 0,
+    });
+
+    Object.defineProperty( err, 'attentionGiven',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : 1,
+    });
 
   }
+  catch( err )
+  {
+    c.warn( 'cant assign attentionNeeded/attentionGiven properties' );
+  }
+
+  /* */
 
   debugger;
   return err;
+}
+
+//
+
+var errLogOnce = function errLogOnce( err )
+{
+
+  var err = _err
+  ({
+    args : arguments,
+    level : 2,
+  });
+
+  if( err.attentionGiven )
+  return err;
+
+  return errLog( err );
 }
 
 //
@@ -4101,6 +4169,22 @@ var assertMapOwnAll = function( src,all,msg )
       level : 2,
     });
   }
+
+}
+
+//
+
+var assertInstanceOrClass = function assertInstanceOrClass( _Self,_this )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert
+  (
+    _this === _Self ||
+    _this instanceof _Self ||
+    Object.isPrototypeOf.call( _Self,_this ) ||
+    Object.isPrototypeOf.call( _Self,_this.prototype )
+  );
 
 }
 
@@ -4664,41 +4748,41 @@ var arrayLike = function( src )
 
 //
 
-  /**
-   * The hasLength() method determines whether the passed value has the property (length).
-   *
-   * If (src) is equal to the (undefined) or (null) false is returned.
-   * If (src) has the property (length) true is returned.
-   * Otherwise false is.
-   *
-   * @param { * } src - The object to be checked.
-   *
-   * @example
-   * // returns true
-   * hasLength( [ 1, 2 ] );
-   *
-   * @example
-   * // returns true
-   * hasLength( 'Hello there!' );
-   *
-   * @example
-   * // returns true
-   * var isLength = ( function() {
-   *   return _.hasLength( arguments );
-   * } )('Hello there!');
-   *
-   * @example
-   * // returns false
-   * hasLength( 10 );
-   *
-   * @example
-   * // returns false
-   * hasLength( { } );
-   *
-   * @returns { boolean } Returns true if (src) has the property (length).
-   * @method hasLength
-   * @memberof wTools
-   */
+/**
+ * The hasLength() method determines whether the passed value has the property (length).
+ *
+ * If (src) is equal to the (undefined) or (null) false is returned.
+ * If (src) has the property (length) true is returned.
+ * Otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * hasLength( [ 1, 2 ] );
+ *
+ * @example
+ * // returns true
+ * hasLength( 'Hello there!' );
+ *
+ * @example
+ * // returns true
+ * var isLength = ( function() {
+ *   return _.hasLength( arguments );
+ * } )('Hello there!');
+ *
+ * @example
+ * // returns false
+ * hasLength( 10 );
+ *
+ * @example
+ * // returns false
+ * hasLength( { } );
+ *
+ * @returns { boolean } Returns true if (src) has the property (length).
+ * @method hasLength
+ * @memberof wTools
+ */
 
 var hasLength = function( src )
 {
@@ -4786,6 +4870,44 @@ var boolIs = function( src )
 var numberIsRegular = function( src )
 {
   return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
+}
+
+//
+
+var numbersAreFinite = function numbersAreFinite( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersAreFinite( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return isFinite( src );
+}
+
+//
+
+var numbersArePositive = function numbersArePositive( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersArePositive( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return src >= 0;
 }
 
 //
@@ -4961,7 +5083,7 @@ var jqueryIs = function( src )
 
 //
 
-var canvasIs = function( src )
+var canvasIs = function canvasIs( src )
 {
   if( _.jqueryIs( src ) )
   src = src[ 0 ];
@@ -4972,7 +5094,7 @@ var canvasIs = function( src )
 
 //
 
-var domIs = function( src )
+var domIs = function domIs( src )
 {
   if( !_global_.Node )
   return false;
@@ -4982,17 +5104,22 @@ var domIs = function( src )
 
 //
 
-var domableIs = function( src )
+var domableIs = function domableIs( src )
 {
   return strIs( src ) || domIs( src ) || jqueryIs( src );
 }
 
 //
 
-var errorIs = function( src )
+var consequenceIs = function consequenceIs( src )
 {
-  //return src instanceof Error;
-  //debugger;
+  return src instanceof wConsequence;
+}
+
+//
+
+var errorIs = function errorIs( src )
+{
   return _ObjectToString.call( src ) === '[object Error]';
 }
 
@@ -5004,7 +5131,6 @@ var atomicIs = function atomicIs( src )
   return true;
   var t = _ObjectToString.call( src );
   return t === '[object Symbol]' || t === '[object Number]' || t === '[object Boolean]' || t === '[object String]';
-  //return symbolIs( src ) || numberIs( src ) || boolIs( src ) || strIs( src ) || src === null || src === undefined;
 }
 
 //
@@ -5902,41 +6028,41 @@ var _routineBind = function _routineBind( options )
 
 //
 
-  /**
-   * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
-   value. Unlike Function.prototype.bind() method if `context` is undefined`, in new function 'this' context will not be
-   sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
-   target function.
-   * Besides the aforementioned difference, routineBind method accepts function as argument, that makes it more useful
-      than Function.prototype.bind().
-   * @example
-      var o = {
-          z: 5
-      };
+/**
+ * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
+ value. Unlike Function.prototype.bind() method if `context` is undefined`, in new function 'this' context will not be
+ sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
+ target function.
+ * Besides the aforementioned difference, routineBind method accepts function as argument, that makes it more useful
+    than Function.prototype.bind().
+ * @example
+    var o = {
+        z: 5
+    };
 
-      var y = 4;
+    var y = 4;
 
-      function sum(x, y) {
-         return x + y + this.z;
-      }
-      var newSum = wTools.routineBind(sum, o, [3]);
-      newSum(y); // 12
+    function sum(x, y) {
+       return x + y + this.z;
+    }
+    var newSum = wTools.routineBind(sum, o, [3]);
+    newSum(y); // 12
 
-     var f1 = function(){ console.log( this ) };
-     var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
-     f2.call( o ); // try to call new function with context set to { z: 5 }
-     var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
-     f3.call( o ) // print  { z: 5 }
-   * @param {Function} routine Function which will be used as base for result function.
-   * @param {Object} context The value that will be set as 'this' keyword in new function
-   * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
-   function. Must be wraped into array.
-   * @returns {Function} New created function with preceding this, and args.
-   * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
-   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
-   * @method routineBind
-   * @memberof wTools
-   */
+   var f1 = function(){ console.log( this ) };
+   var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+   f2.call( o ); // try to call new function with context set to { z: 5 }
+   var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
+   f3.call( o ) // print  { z: 5 }
+ * @param {Function} routine Function which will be used as base for result function.
+ * @param {Object} context The value that will be set as 'this' keyword in new function
+ * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
+ function. Must be wraped into array.
+ * @returns {Function} New created function with preceding this, and args.
+ * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
+ * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+ * @method routineBind
+ * @memberof wTools
+ */
 
 var routineBind = function routineBind( routine, context, args )
 {
@@ -5956,40 +6082,40 @@ var routineBind = function routineBind( routine, context, args )
 
 //
 
-  /**
-   * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
-   value. Argumetns `args` of target function which are passed before arguments of binded function during
-   calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
-   * @example
-     var o = {
-          z: 5
-      };
+/**
+ * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
+ value. Argumetns `args` of target function which are passed before arguments of binded function during
+ calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
+ * @example
+   var o = {
+        z: 5
+    };
 
-     var y = 4;
+   var y = 4;
 
-     function sum(x, y) {
-         return x + y + this.z;
-      }
-     var newSum = wTools.routineJoin(o, sum, [3]);
-     newSum(y); // 12
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineJoin(o, sum, [3]);
+   newSum(y); // 12
 
-     var f1 = function(){ console.log( this ) };
-     var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
-     f2.call( o ); // try to call new function with context set to { z: 5 }
-     var f3 = _.routineJoin( undefined,f1 ); // new function.
-     f3.call( o ) // print  { z: 5 }
+   var f1 = function(){ console.log( this ) };
+   var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+   f2.call( o ); // try to call new function with context set to { z: 5 }
+   var f3 = _.routineJoin( undefined,f1 ); // new function.
+   f3.call( o ) // print  { z: 5 }
 
-   * @param {Object} context The value that will be set as 'this' keyword in new function
-   * @param {Function} routine Function which will be used as base for result function.
-   * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
-   calling of target function. Must be wraped into array.
-   * @returns {Function} New created function with preceding this, and args.
-   * @see wTools.routineBind
-   * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
-   * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
-   * @method routineJoin
-   * @memberof wTools
-   */
+ * @param {Object} context The value that will be set as 'this' keyword in new function
+ * @param {Function} routine Function which will be used as base for result function.
+ * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
+ calling of target function. Must be wraped into array.
+ * @returns {Function} New created function with preceding this, and args.
+ * @see wTools.routineBind
+ * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
+ * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+ * @method routineJoin
+ * @memberof wTools
+ */
 
 var routineJoin = function routineJoin( context, routine, args )
 {
@@ -6274,9 +6400,9 @@ var routineOptions = function routineOptions( routine,options )
   _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
   _.assert( _.objectIs( options ),'routineOptions : expects object' );
 
-  _.assertMapHasNoUndefine( options );
   _.assertMapHasOnly( options,routine.defaults );
   _.mapComplement( options,routine.defaults );
+  _.assertMapHasNoUndefine( options );
 
   return options;
 }
@@ -8679,7 +8805,7 @@ var arraySpliceArray = function( dstArray,srcArray,first,replace )
 
 //
 
-var arrayGrow = function arrayGrow( array,f,l )
+var arrayGrow = function arrayGrow( array,f,l,val )
 {
   _.assert( _.arrayLike( array ) );
 
@@ -8689,7 +8815,7 @@ var arrayGrow = function arrayGrow( array,f,l )
 
   _.assert( _.numberIs( f ) );
   _.assert( _.numberIs( l ) );
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( l < f )
   l = f;
@@ -8699,8 +8825,25 @@ var arrayGrow = function arrayGrow( array,f,l )
   else
   result = new Array( l-f );
 
-  for( var r = Math.max( f,0 ) ; r < l ; r++ )
+  /* */
+
+  var lsrc = Math.min( array.length,l );
+  for( var r = Math.max( f,0 ) ; r < lsrc ; r++ )
   result[ r-f ] = array[ r ];
+
+  /* */
+
+  if( val !== undefined )
+  {
+    for( var r = 0 ; r < -f ; r++ )
+    {
+      result[ r ] = val;
+    }
+    for( var r = lsrc-f ; r < result.length ; r++ )
+    {
+      result[ r ] = val;
+    }
+  }
 
   return result;
 }
@@ -9439,22 +9582,22 @@ var arrayCompare = function( src1,src2 )
 //
 
 /**
- * The arraySame() method checks the equality of two arrays.
+ * The arrayIdentical() method checks the equality of two arrays.
  *
  * @param { arrayLike } src1 - The first array.
  * @param { arrayLike } src2 - The second array.
  *
  * @example
  * // returns true
- * var arr = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * var arr = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @method arraySame
+ * @method arrayIdentical
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools
  */
 
-var arraySame = function( src1,src2 )
+var arrayIdentical = function arrayIdentical( src1,src2 )
 {
   _.assert( arguments.length === 2 );
 
@@ -10686,31 +10829,31 @@ var arraySortedAddArray = function( dst,src,comparator )
 // array constructor
 // --
 
-var _makeArrayOfLength = function _makeArrayOfLength( length )
-{
-  if( length === undefined )
-  length = 0;
-
-  var result = new this.ArrayType( length );
-
-  return result;
-}
-
+// var _makeArrayOfLength = function _makeArrayOfLength( length )
+// {
+//   if( length === undefined )
+//   length = 0;
 //
-
-var _makeZeroedArrayOfLength = function _makeZeroedArrayOfLength( length )
-{
-  if( length === undefined )
-  length = 0;
-
-  var result = new this.ArrayType( length );
-
-  if( this.ArrayType === Array )
-  for( var i = 0 ; i < length ; i++ )
-  result[ i ] = 0;
-
-  return result;
-}
+//   var result = new this.ArrayType( length );
+//
+//   return result;
+// }
+//
+// //
+//
+// var _makeArrayOfLengthZeroed = function _makeArrayOfLengthZeroed( length )
+// {
+//   if( length === undefined )
+//   length = 0;
+//
+//   var result = new this.ArrayType( length );
+//
+//   if( this.ArrayType === Array )
+//   for( var i = 0 ; i < length ; i++ )
+//   result[ i ] = 0;
+//
+//   return result;
+// }
 
 // --
 // map
@@ -10935,6 +11078,15 @@ var mapSupplement = function( dst )
 
 //
 
+var mapSupplementOwn = function( dst )
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( _.filter.dstNotOwn() );
+  return mapExtendFiltering.apply( this,args );
+}
+
+//
+
 // /**
 //  * @callback  _.filter.dstNotHasCloning()
 //  * @param { objectLike } dstContainer - The target object.
@@ -10968,7 +11120,7 @@ var mapComplement = function( dst )
 {
 
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.dstNotOwnCloning() );
+  args.unshift( _.filter.dstNotOwnNotUndefinedCloning() );
   return mapExtendFiltering.apply( this,args );
 
 }
@@ -12538,6 +12690,7 @@ var Proto =
   entityCoerceTo : entityCoerceTo,
 
   entityWrap : entityWrap,
+  entityFreeze : entityFreeze,
 
 
   // entity checker
@@ -12546,7 +12699,9 @@ var Proto =
   entityHasUndef : entityHasUndef,
 
   entityDiff : entityDiff,
+
   _entitySame : _entitySame,
+  _entitySameOptions : _entitySameOptions,
   entitySame : entitySame,
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
@@ -12590,6 +12745,7 @@ var Proto =
   _err : _err,
   err : err,
   errLog : errLog,
+  errLogOnce : errLogOnce,
 
   assert : assert,
   assertMapHasNoUndefine : assertMapHasNoUndefine,
@@ -12599,6 +12755,8 @@ var Proto =
   assertMapOwnNone : assertMapOwnNone,
   assertMapHasAll : assertMapHasAll,
   assertMapOwnAll : assertMapOwnAll,
+
+  assertInstanceOrClass : assertInstanceOrClass,
   assertNotTested : assertNotTested,
 
   assertWarn : assertWarn,
@@ -12637,6 +12795,8 @@ var Proto =
 
   numberIs : numberIs,
   numberIsRegular : numberIsRegular,
+  numbersAreFinite : numbersAreFinite,
+  numbersArePositive : numbersArePositive,
   numbersAreInt : numbersAreInt,
   numberIsInt : numberIsInt,
 
@@ -12653,6 +12813,7 @@ var Proto =
   canvasIs : canvasIs,
   domIs : domIs,
   domableIs : domableIs,
+  consequenceIs : consequenceIs,
 
   errorIs : errorIs,
 
@@ -12826,7 +12987,7 @@ var Proto =
   arrayFill : arrayFill,
 
   arrayCompare : arrayCompare,
-  arraySame : arraySame,
+  arrayIdentical : arrayIdentical,
   arraySameSet : arraySameSet,
 
   arrayLeftIndexOf : arrayLeftIndexOf,
@@ -12869,11 +13030,11 @@ var Proto =
 
   // array constructor
 
-  _makeArrayOfLength : _makeArrayOfLength,
-  makeArrayOfLength : _makeArrayOfLength,
-
-  _makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
-  makeZeroedArrayOfLength : _makeZeroedArrayOfLength,
+  // _makeArrayOfLength : _makeArrayOfLength,
+  // makeArrayOfLength : _makeArrayOfLength,
+  //
+  // _makeArrayOfLengthZeroed : _makeArrayOfLengthZeroed,
+  // makeArrayOfLengthZeroed : _makeArrayOfLengthZeroed,
 
 
   // map extend
@@ -12883,6 +13044,7 @@ var Proto =
   mapExtendFiltering : mapExtendFiltering,
   mapExtend : mapExtend,
   mapSupplement : mapSupplement,
+  mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
   mapCopy : mapCopy,
 
@@ -12928,6 +13090,7 @@ var Proto =
 
   mapRoutines : mapRoutines,
   routines : mapRoutines,
+
   mapFields : mapFields,
   fields : mapFields,
 
@@ -13018,9 +13181,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/NameTools.s' );
   require( './component/ExecTools.s' );
   require( './component/StringTools.s' );
-
-  //require( './object/printer/printer/Logger.s' );
-  //require( './object/RegexpObject.s' );
+  require( './component/ArrayDescriptor.s' );
 
 }
 
