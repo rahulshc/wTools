@@ -4069,6 +4069,43 @@ var assert = function assert( condition )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) not contains undefined properties. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found undefined property it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed after first argument.
+ *
+ * @param {Object} src - source map.
+ * @param {String} [ msgs ] - error message for generated exception.
+ *
+ * @example
+ * var map = { a : '1', b : undefined }
+ * wTools.assertMapHasNoUndefine( map );
+ *
+ * // caught <anonymous>:2:8
+ * // Object  should have no undefines, but has : b
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/wTools.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * var map = { a : undefined, b : '1' }
+ * wTools.assertMapHasNoUndefine( map, '"map"');
+ *
+ * // caught <anonymous>:2:8
+ * // Object "map" should have no undefines, but has : a
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/wTools.s:4087)
+ * // at <anonymous>:2
+ *
+ * @method assertMapHasNoUndefine
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If map( src ) contains undefined property.
+ * @memberof wTools
+ *
+ */
+
 var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
 {
 
