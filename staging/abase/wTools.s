@@ -4132,6 +4132,43 @@ var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) has properties only from object(s) passed after first argument. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found some unique properties it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ *
+ * @example
+ * var a = { a : 1, c : 3 }
+ * var b = { a : 2, b : 3 }
+ * wTools.assertMapHasOnly( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have no fields : c
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4114)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var map = { a : undefined, b : '1' }
+ * wTools.assertMapHasNoUndefine( map, '"map"');
+ *
+ * // caught <anonymous>:2:8
+ * // Object "map" should have no undefines, but has : a
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4087)
+ * // at <anonymous>:2
+ *
+ * @method assertMapHasOnly
+ * @throws {Exception} If map( src ) contains undefined property.
+ * @memberof wTools
+ *
+ */
+
 var assertMapHasOnly = function assertMapHasOnly( src )
 {
 
