@@ -4133,12 +4133,14 @@ var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
 //
 
 /**
- * Checks if map passed by argument( src ) has properties only from object(s) passed after first argument. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If method found some unique properties it generates and throws exception, otherwise returns without exception.
+ * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
  * @param {Object} src - source map.
  * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
  *
  * @example
  * var a = { a : 1, c : 3 }
@@ -4149,22 +4151,24 @@ var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
  * // Object should have no fields : c
  * //
  * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4114)
+ * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4188)
  * // at <anonymous>:3
  *
  * @example
- * var map = { a : undefined, b : '1' }
- * wTools.assertMapHasNoUndefine( map, '"map"');
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 1 }
+ * wTools.assertMapHasOnly( a, b, 'message' )
  *
- * // caught <anonymous>:2:8
- * // Object "map" should have no undefines, but has : a
+ * // caught <anonymous>:4:8
+ * // message Object should have no fields : d
  * //
  * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4087)
- * // at <anonymous>:2
+ * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4188)
+ * // at <anonymous>:4
  *
  * @method assertMapHasOnly
- * @throws {Exception} If map( src ) contains undefined property.
+ * @throws {Exception} If map( src ) contains unique property.
  * @memberof wTools
  *
  */
