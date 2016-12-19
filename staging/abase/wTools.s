@@ -4143,8 +4143,8 @@ var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
  * @param {String} [ msgs ] - error message as last argument.
  *
  * @example
- * var a = { a : 1, c : 3 }
- * var b = { a : 2, b : 3 }
+ * var a = { a : 1, c : 3 };
+ * var b = { a : 2, b : 3 };
  * wTools.assertMapHasOnly( a, b );
  *
  * // caught <anonymous>:3:8
@@ -4157,7 +4157,7 @@ var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
  * @example
  * var x = { d : 1 };
  * var a = Object.create( x );
- * var b = { a : 1 }
+ * var b = { a : 1 };
  * wTools.assertMapHasOnly( a, b, 'message' )
  *
  * // caught <anonymous>:4:8
