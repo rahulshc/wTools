@@ -4511,13 +4511,13 @@ var assertMapHasNone = function( src )
     if( a === arguments.length )
     delete none[ n ];
   }
-
-  if( Object.keys( none ).length )
+  var keys = Object.keys( none );
+  if( keys.length )
   {
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',none.join( ',' ) ],
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
       level : 2,
     });
   }
