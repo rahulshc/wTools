@@ -4200,6 +4200,54 @@ var assertMapHasOnly = function assertMapHasOnly( src )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only objects own properties.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
+ *
+ * @example
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * a.a = 5;
+ * var b = { a : 2 }
+ * wTools.assertMapOwnOnly( a, b ); //no exception
+ *
+ * @example
+ * var a = { d : 1 };
+ * var b = { a : 2 }
+ * wTools.assertMapOwnOnly( a, b );
+ *
+ * // caught <anonymous>:3:10
+ * // Object should have no own fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnOnly (file:///.../wTools/staging/wTools.s:4215)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0, y : 2 };
+ * var b = { c : 0, d : 3};
+ * var c = { a : 1 }
+ * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
+ *
+ * // caught <anonymous>:4:8
+ * // error msg Object should have no own fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnOnly (file:///.../wTools/staging/wTools.s:4215)
+ * // at <anonymous>:4
+ *
+ * @method assertMapOwnOnly
+ * @throws {Exception} If map( src ) contains unique property.
+ * @memberof wTools
+ *
+ */
+
 var assertMapOwnOnly = function assertMapOwnOnly( src )
 {
 
