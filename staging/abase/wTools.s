@@ -4078,7 +4078,7 @@ var assert = function assert( condition )
  * @param {String} [ msgs ] - error message for generated exception.
  *
  * @example
- * var map = { a : '1', b : undefined }
+ * var map = { a : '1', b : undefined };
  * wTools.assertMapHasNoUndefine( map );
  *
  * // caught <anonymous>:2:8
@@ -4089,7 +4089,7 @@ var assert = function assert( condition )
  * // at <anonymous>:2
  *
  * @example
- * var map = { a : undefined, b : '1' }
+ * var map = { a : undefined, b : '1' };
  * wTools.assertMapHasNoUndefine( map, '"map"');
  *
  * // caught <anonymous>:2:8
