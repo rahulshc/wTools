@@ -4201,7 +4201,7 @@ var assertMapHasOnly = function assertMapHasOnly( src )
 //
 
 /**
- * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only objects own properties.
+ * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
  * If method found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
@@ -4214,12 +4214,12 @@ var assertMapHasOnly = function assertMapHasOnly( src )
  * var x = { d : 1 };
  * var a = Object.create( x );
  * a.a = 5;
- * var b = { a : 2 }
+ * var b = { a : 2 };
  * wTools.assertMapOwnOnly( a, b ); //no exception
  *
  * @example
  * var a = { d : 1 };
- * var b = { a : 2 }
+ * var b = { a : 2 };
  * wTools.assertMapOwnOnly( a, b );
  *
  * // caught <anonymous>:3:10
@@ -4232,7 +4232,7 @@ var assertMapHasOnly = function assertMapHasOnly( src )
  * @example
  * var a = { x : 0, y : 2 };
  * var b = { c : 0, d : 3};
- * var c = { a : 1 }
+ * var c = { a : 1 };
  * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
  *
  * // caught <anonymous>:4:8
