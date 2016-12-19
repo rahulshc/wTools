@@ -4446,6 +4446,52 @@ var assertNotTested = function( src )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msg ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * wTools.assertMapHasNone( a, b );// no exception
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2, b : 2 }
+ * wTools.assertMapHasNone( a, b );
+ *
+ * // caught <anonymous>:4:8
+ * // Object should have no fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4518)
+ * // at <anonymous>:4
+ *
+ * @example
+ * var a = { x : 0, y : 1 };
+ * var b = { x : 1, y : 0 };
+ * wTools.assertMapHasNone( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:3:9
+ * // error msg Object should have no fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4518)
+ * // at <anonymous>:3
+ *
+ * @method assertMapHasNone
+ * @throws {Exception} If map( src ) contains some properties from other map(s).
+ * @memberof wTools
+ *
+ */
+
 var assertMapHasNone = function( src )
 {
 
