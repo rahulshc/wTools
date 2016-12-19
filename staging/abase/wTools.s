@@ -4348,6 +4348,51 @@ var assertMapHasAll = function( src,all,msg )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {Object} all - object to compare with.
+ * @param {String} [ msgs ] - error message.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2 };
+ * wTools.assertMapOwnAll( a, b );// no exception
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2, b : 2 }
+ * wTools.assertMapOwnAll( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have own fields : b
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4269)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0 };
+ * var b = { x : 1, y : 0};
+ * wTools.assertMapHasAll( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg Object should have fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4269)
+ * // at <anonymous>:3
+ *
+ * @method assertMapOwnAll
+ * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+ * @memberof wTools
+ *
+ */
+
 var assertMapOwnAll = function( src,all,msg )
 {
 
