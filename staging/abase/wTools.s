@@ -1109,6 +1109,34 @@ var entityClone = function( src,options )
 
 //
 
+var entityNew = function entityNew( src )
+{
+
+  if( _.arrayIs( src ) )
+  {
+    return new src.constructor( src.length );
+  }
+  else if( _.mapIs( src ) )
+  {
+    return Object.create( null );
+  }
+  else if( _.objectIs( src ) )
+  {
+    return new src.constructor()
+  }
+  else if( _.arrayLike( src ) )
+  {
+    if( _.argumentsIs( src ) )
+    return new Array( src.length );
+    else
+    return new src.constructor( src.length );
+  }
+  else throw _.err( 'unexpected' );
+
+}
+
+//
+
 var _entityCloneAct = function( o )
 {
 
@@ -2687,7 +2715,7 @@ var entityKeyWithValue = function( src,value )
 
 //
 
-var entitySelectUnique = function( o )
+var entitySelectUnique = function entitySelectUnique( o )
 {
 
   o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
@@ -2707,7 +2735,7 @@ var entitySelectUnique = function( o )
 
 //
 
-var entitySelect = function( o )
+var entitySelect = function entitySelect( o )
 {
 
   o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
@@ -2721,7 +2749,7 @@ var entitySelect = function( o )
 
 //
 
-var entitySelectSet = function( container,query,value )
+var entitySelectSet = function entitySelectSet( container,query,value )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 3 );
@@ -2729,11 +2757,13 @@ var entitySelectSet = function( container,query,value )
   if( arguments.length === 3 )
   {
     var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+    o.usingSet = 1;
     o.set = value;
   }
   else
   {
     var o = _entitySelectOptions( arguments[ 0 ] );
+    o.usingSet = 1;
     _.assert( _.mapOwn( o,{ set : 'set' } ) );
   }
 
@@ -2753,11 +2783,11 @@ var entitySelectSet = function( container,query,value )
  * @param {Array|String} [ o.query=null ] - Source query.
  * @param {*} [ o.set=null ] - Specifies value that replaces selected.
  * @param {Array} [ o.delimeter=[ '.','[',']' ] ] - Specifies array of delimeters for( o.query ) values.
- * @param {Boolean} [ o.undefinedForNone=false ] - If true returns undefined for Atomic type of( o.container ).
+ * @param {Boolean} [ o.usingUndefinedForMissing=false ] - If true returns undefined for Atomic type of( o.container ).
  * @returns {Object} Returns generated options object.
  *
  * @example
- * //returns { container: [ 0, 1, 2, 3 ], qarrey : [ '0', '1', '2' ], query: "0.1.2", set: 1, delimeter: [ '.','[',']' ], undefinedForNone: 1 }
+ * //returns { container: [ 0, 1, 2, 3 ], qarrey : [ '0', '1', '2' ], query: "0.1.2", set: 1, delimeter: [ '.','[',']' ], usingUndefinedForMissing: 1 }
  * _._entitySelectOptions( { container : [ 0, 1, 2, 3 ], query : '0.1.2', set : 1 } );
  *
  * @method _entitySelectOptions
@@ -2766,10 +2796,10 @@ var entitySelectSet = function( container,query,value )
  * @memberof wTools
 */
 
-var _entitySelectOptions = function( o )
+var _entitySelectOptions = function _entitySelectOptions( o )
 {
 
-  if( arguments.length === 2 && arguments[ 1 ] !== undefined )
+  if( arguments[ 1 ] !== undefined )
   {
     var o = {};
     o.container = arguments[ 0 ];
@@ -2778,14 +2808,18 @@ var _entitySelectOptions = function( o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.routineOptions( _entitySelectOptions,o );
-  _.assert( _.strIs( o.query ) || _.arrayIs( o.query ) );
+  _.assert( _.strIs( o.query ) || _.numberIs( o.query ) || _.arrayIs( o.query ) );
 
   /* makeQarrey */
 
   var makeQarrey = function( query )
   {
+    var qarrey;
 
-    var qarrey = _.strSplit
+    if( _.numberIs( query ) )
+    qarrey = [ query ];
+    else
+    qarrey = _.strSplit
     ({
       src : query,
       splitter : o.delimeter,
@@ -2798,7 +2832,7 @@ var _entitySelectOptions = function( o )
     return qarrey;
   }
 
-  /**/
+  /* */
 
   if( _.arrayIs( o.query ) )
   {
@@ -2820,7 +2854,9 @@ _entitySelectOptions.defaults =
   query : null,
   set : null,
   delimeter : [ '.','[',']' ],
-  undefinedForNone : 1,
+  usingUndefinedForMissing : 1,
+  usingMapIndexedAccess : 1,
+  usingSet : 0,
 }
 
 //
@@ -2858,7 +2894,7 @@ var _entitySelect = function _entitySelect( o )
  * Example process each element at [ 0 ]: { container : [ [ 1, 2, 3 ] ], qarrey : [ 0, '*' ] }.
  * Example path to element [ 1 ][ 1 ]: { container : [ 0, [ 1, 2 ] ],qarrey : [ 1, 1 ] }.
  * @param {*} [ o.set=null ] - Replaces selected index/key value with this. If defined and specified index/key not exists, method inserts it.
- * @param {Boolean} [ o.undefinedForNone=false ] - If true returns undefined for Atomic type of( o.container ).
+ * @param {Boolean} [ o.usingUndefinedForMissing=false ] - If true returns undefined for Atomic type of( o.container ).
  * @returns {*} Returns value finded by index/key or path.
  *
  * @example
@@ -2874,7 +2910,7 @@ var _entitySelect = function _entitySelect( o )
  *
  * @example
  * // returns undefined
- * _.__entitySelectAct( { container : 5, qarrey : [ 1, 1 ], set : 1, undefinedForNone : 1  } );
+ * _.__entitySelectAct( { container : 5, qarrey : [ 1, 1 ], set : 1, usingUndefinedForMissing : 1  } );
  *
  * @example
  * // returns [ 1, 1, 1 ]
@@ -2894,72 +2930,82 @@ var _entitySelect = function _entitySelect( o )
 var __entitySelectAct = function __entitySelectAct( o )
 {
 
-  var hasSet = !!o.set;
   var result;
+  //var hasSet = !!o.set;
   var container = o.container;
 
-  var name = o.qarrey[ 0 ];
-  var name2 = o.qarrey[ 1 ];
+  var key = o.qarrey[ 0 ];
+  var key2 = o.qarrey[ 1 ];
 
   if( !o.qarrey.length )
   return container;
 
   if( _.atomicIs( container ) )
   {
-    if( o.undefinedForNone )
+    if( o.usingUndefinedForMissing )
     return undefined;
     else
     throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
   }
 
-  var o = _.mapExtend( {},o );
-  o.qarrey = o.qarrey.slice( 1 );
+  // var o = _.mapExtend( {},o );
+  // o.qarrey = o.qarrey.slice( 1 );
+  var qarrey = o.qarrey.slice( 1 );
 
-  if( hasSet )
-  o.set = o.set;
+  /* */
 
-  //
-
-  var _select = function( name )
+  var _select = function( key )
   {
 
-    if( !o.qarrey.length && hasSet )
-    container[ name ] = o.set;
-
-    var field = container[ name ];
-
-    if( field === undefined && hasSet )
+    if( !qarrey.length && o.usingSet )
     {
-      if( !isNaN( name2 ) )
+      if( o.set === undefined )
+      delete container[ key ];
+      else
+      container[ key ] = o.set;
+    }
+
+    var field;
+    if( o.usingMapIndexedAccess && _.numberIs( key ) && _.objectIs( container ) )
+    field = _.mapValWithIndex( container, key );
+    else
+    field = container[ key ];
+
+    if( field === undefined && o.usingSet )
+    {
+      debugger;
+      if( !isNaN( key2 ) )
       {
-        container[ name ] = field = [];
+        container[ key ] = field = [];
       }
       else
       {
-        container[ name ] = field = {};
+        container[ key ] = field = {};
       }
     }
 
     var selectOptions = _.mapExtend( {},o );
     selectOptions.container = field;
+    selectOptions.qarrey = qarrey;
+
     return __entitySelectAct( selectOptions );
   }
 
-  //
+  /* */
 
-  if( name === '*' )
+  if( key === '*' )
   {
 
     result = new container.constructor();
-    _.each( container,function( e,name,c )
+    _.each( container,function( e,key,c )
     {
-      result[ name ] = _select( name );
+      result[ key ] = _select( key );
     });
 
   }
   else
   {
-    result = _select( name );
+    result = _select( key );
   }
 
   return result;
@@ -3505,7 +3551,7 @@ var entityMax = function( src,onElement )
 
 //
 
-var entitySearch = function( o )
+var entitySearch = function entitySearch( o )
 {
   var result = {};
 
@@ -3513,6 +3559,8 @@ var entitySearch = function( o )
   {
     o = { src : arguments[ 0 ], ins : arguments[ 1 ] };
   }
+
+  logger.log( 'entitySearch',o );
 
   _.routineOptions( entitySearch,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -5077,7 +5125,7 @@ var htmlIs = function( src )
 var jqueryIs = function( src )
 {
   if( typeof jQuery === 'undefined' )
-  return;1
+  return;
   return src instanceof jQuery;
 }
 
@@ -5099,7 +5147,17 @@ var domIs = function domIs( src )
   if( !_global_.Node )
   return false;
   return src instanceof Node;
-  /*return src instanceof Element;*/
+}
+
+//
+
+var domLike = function domLike( src )
+{
+  if( !_global_.Node )
+  return false;
+  if( src instanceof Node )
+  return true;
+  return jqueryIs( s );
 }
 
 //
@@ -6450,18 +6508,27 @@ var routineOptionsFromThis = function routineOptionsFromThis( routine,_this,cons
 // time
 // --
 
-var timeReady = function( onReady )
+var timeReady = function timeReady( onReady )
 {
-  _assert( arguments.length === 1 );
-  _assert( _.routineIs( onReady ) );
+
+  _assert( arguments.length === 0 || arguments.length === 1 );
+  _assert( _.routineIs( onReady ) || onReady === undefined );
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
-    window.addEventListener( 'load',onReady );
+    var con = new wConsequence();
+    var handleReady = function()
+    {
+      con.give();
+      if( onReady )
+      onReady();
+    }
+    window.addEventListener( 'load',handleReady );
+    return con;
   }
   else
   {
-    _.timeOut( 1,onReady );
+    return _.timeOut( 1,onReady );
   }
 
 }
@@ -6536,7 +6603,7 @@ var timeOnce = function( delay,onBegin,onEnd )
 
 //
 
-var timeOut = function( delay,onReady )
+var timeOut = function timeOut( delay,onReady )
 {
   var con = new wConsequence();
 
@@ -6559,26 +6626,6 @@ var timeOut = function( delay,onReady )
     con.first( onReady );
     else
     con.give();
-
-/*
-    if( _.routineIs( onReady ) )
-    {
-      result = onReady();
-      if( result instanceof wConsequence )
-      result.thenDo( con );
-      else
-      con.give( result );
-    }
-    else if( onReady instanceof wConsequence )
-    {
-      onReady.thenDo( con );
-      onReady.give();
-    }
-    else
-    {
-      con.give();
-    }
-*/
 
   }
 
@@ -7882,8 +7929,10 @@ var arrayAppendMerging = function arrayAppendMerging( dst )
     if( argument === undefined )
     throw _.err( 'arrayAppendMerging','argument is not defined' );
 
-    if( _.arrayLike( argument ) ) result.push.apply( result,argument );
-    else result.push( argument );
+    if( _.arrayLike( argument ) )
+    result.push.apply( result,argument );
+    else
+    result.push( argument );
   }
 
   return result;
@@ -11399,7 +11448,7 @@ var mapIndexForValue = function mapIndexForValue( src,ins )
 }
 
 // --
-// map converter
+// map getter
 // --
 
   /**
@@ -12676,6 +12725,8 @@ var Proto =
   enityExtend : enityExtend, /* deprecated */
   entityClone : entityClone, /* deprecated */
 
+  entityNew : entityNew,
+
   _entityCloneAct : _entityCloneAct,
   _entityClone : _entityClone,
   entityCloneObject : entityCloneObject,
@@ -12812,6 +12863,7 @@ var Proto =
   jqueryIs : jqueryIs,
   canvasIs : canvasIs,
   domIs : domIs,
+  domLike : domLike,
   domableIs : domableIs,
   consequenceIs : consequenceIs,
 
@@ -13069,7 +13121,7 @@ var Proto =
   mapIndexForValue : mapIndexForValue,
 
 
-  // map converter
+  // map getter
 
   mapFirstPair : mapFirstPair,
 
@@ -13161,7 +13213,7 @@ try
   require( './abase/FieldFilter.s' );
   require( './abase/FieldMapper.s' );
 
-  require( '../ServerTools.ss' );
+  require( '../BackTools.ss' );
 
 }
 catch( err )
