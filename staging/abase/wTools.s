@@ -106,11 +106,40 @@ var _initConfig = function _initConfig()
 
 }
 
+//
+
+var _initUnhandledErrorHandler = function _initUnhandledErrorHandler()
+{
+
+  if( typeof process !== 'undefined' && _.routineIs( process.on ) )
+  process.on( 'uncaughtException', function( err )
+  {
+
+    console.error( '------------------------------------------------------------------------' );
+
+    if( !err.originalMessage )
+    {
+      if( _.objectLike( err ) )
+      console.error( _.toStr.fields( err,{ errorAsMap : 1 } ) );
+      _.errLog( 'Uncaught exception :',err );
+    }
+    else
+    {
+      _.errLog( err );
+    }
+
+    console.error( '------------------------------------------------------------------------' );
+    debugger;
+
+  });
+
+}
+
 // --
 // iterator
 // --
 
-var __eachAct = function( o )
+var __eachAct = function __eachAct( o )
 {
 
   var i = 0;
@@ -174,8 +203,6 @@ var __eachAct = function( o )
   var __onElement = function( k )
   {
 
-    //o.onUp.call( o,src[ k ],k,i );
-    //o.counter += 1;
     i += 1;
 
     if( o.recursive || o.root === o.src )
@@ -193,15 +220,13 @@ var __eachAct = function( o )
         counter : o.counter,
         visited : o.visited,
         levels : o.levels-1,
-        path : o.path + k + '.',
+        path : o.path !== '.' ? o.path + '.' + k : o.path + k,
         key : k,
         index : i,
         down : o,
       });
 
     }
-
-    //o.onDown.call( o,src[ k ],k,i );
 
   }
 
@@ -2931,7 +2956,6 @@ var __entitySelectAct = function __entitySelectAct( o )
 {
 
   var result;
-  //var hasSet = !!o.set;
   var container = o.container;
 
   var key = o.qarrey[ 0 ];
@@ -2948,8 +2972,6 @@ var __entitySelectAct = function __entitySelectAct( o )
     throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
   }
 
-  // var o = _.mapExtend( {},o );
-  // o.qarrey = o.qarrey.slice( 1 );
   var qarrey = o.qarrey.slice( 1 );
 
   /* */
@@ -3620,7 +3642,7 @@ var entitySearch = function entitySearch( o )
     if( o.pathOfParent )
     path = this.path;
     else
-    path = this.path + k;
+    path = this.path + '.' + k;
 
     var r;
     if( o.returnParent && this.down )
@@ -5291,7 +5313,7 @@ var toStrFast = function( src ) {
 // number
 // --
 
-var numberFrom = function( src )
+var numberFrom = function numberFrom( src )
 {
   if( strIs( src ) )
   {
@@ -5302,7 +5324,30 @@ var numberFrom = function( src )
 
 //
 
-var numberRandomInRange = function( range )
+var numbersFrom = function numbersFrom( src )
+{
+  if( _.strIs( src ) )
+  return _.numberFrom( src );
+
+  if( _.arrayLike( src ) )
+  {
+    var result = [];
+    for( var s = 0 ; s < src.length ; s++ )
+    result[ s ] = _.numberFrom( src[ s ] );
+  }
+  else if( _.objectIs( src ) )
+  {
+    var result = {};
+    for( var s in src )
+    result[ s ] = _.numberFrom( src[ s ] );
+  }
+
+  return result;
+}
+
+//
+
+var numberRandomInRange = function numberRandomInRange( range )
 {
 
   _assert( arguments.length === 1 && _.arrayIs( range ),'numberRandomInRange :','expects range( array ) as argument' );
@@ -5314,7 +5359,7 @@ var numberRandomInRange = function( range )
 
 //
 
-var numberRandomInt = function( range )
+var numberRandomInt = function numberRandomInt( range )
 {
 
   _assert( _.arrayIs( range ) || _.numberIs( range ) );
@@ -5333,7 +5378,7 @@ var numberRandomInt = function( range )
 
 //
 
-var numberRandomIntBut = function( range )
+var numberRandomIntBut = function numberRandomIntBut( range )
 {
   var result;
   var attempts = 10;
@@ -5461,19 +5506,19 @@ var str = function str()
 
 //
 
-  /**
-    * Compares two strings.
-    * @param {string} src - source string
-    * @param {string} begin
-    * @example
-        var scr = ._strBegins("abc","a");
-    * @return {Boolean}
-    * If param begin is match with param src first chars than return true
-    * @method strBegins
-    * @memberof wTools
-    */
+/**
+  * Compares two strings.
+  * @param {string} src - source string
+  * @param {string} begin
+  * @example
+      var scr = ._strBegins("abc","a");
+  * @return {Boolean}
+  * If param begin is match with param src first chars than return true
+  * @method strBegins
+  * @memberof wTools
+  */
 
-var strBegins = function( src,begin )
+var strBegins = function strBegins( src,begin )
 {
 
   _.assert( _.strIs( src ),'expects string' );
@@ -5485,19 +5530,19 @@ var strBegins = function( src,begin )
 
 //
 
-  /**
-    * Compares two strings.
-    * @param {string} src - source string
-    * @param {string} end
-    * @example
-        var scr = ._strEnds("abc","c");
-    * @return {Boolean}
-    * If param end is match with param src last chars than return true
-    * @method strEnds
-    * @memberof wTools
-    */
+/**
+  * Compares two strings.
+  * @param {string} src - source string
+  * @param {string} end
+  * @example
+      var scr = ._strEnds("abc","c");
+  * @return {Boolean}
+  * If param end is match with param src last chars than return true
+  * @method strEnds
+  * @memberof wTools
+  */
 
-var strEnds = function( src,end )
+var strEnds = function strEnds( src,end )
 {
 
   _.assert( _.strIs( src ),'expects string' );
@@ -5505,6 +5550,44 @@ var strEnds = function( src,end )
   _.assert( arguments.length === 2 );
 
   return src.indexOf( end,src.length - end.length ) !== -1;
+}
+
+//
+
+var strBeginOf = function strBeginOf( src,end )
+{
+
+  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( end ),'expects string ( end )' );
+  _.assert( arguments.length === 2 );
+
+  var i = src.indexOf( end,src.length - end.length );
+  var result = i >= 0 ? src.substr( 0,i ) : undefined;
+
+  if( i === -1 )
+  debugger;
+
+  return result;
+}
+
+//
+
+var strEndOf = function strEndOf( src,begin )
+{
+
+  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( begin ),'expects string ( begin )' );
+  _.assert( arguments.length === 2 );
+
+  var i = src.lastIndexOf( begin,0 );
+  var result = i >= 0 ? src.substr( i ) : undefined;
+
+  if( i >= 0 )
+  debugger;
+  else
+  debugger;
+
+  return result;
 }
 
 //
@@ -6900,7 +6983,7 @@ var bufferRetype = function( src,bufferType )
 
 //
 
-var bufferMove = function( dst,src )
+var bufferMove = function bufferMove( dst,src )
 {
 
   if( arguments.length === 2 )
@@ -7104,7 +7187,7 @@ var bufferFromArrayOfArray = function( array,options ){
 
 //
 
-var bufferFrom = function( o )
+var bufferFrom = function bufferFrom( o )
 {
   var result;
 
@@ -7131,7 +7214,7 @@ var bufferFrom = function( o )
   if( _.numberIs( o.src ) )
   o.src = [ o.src ];
 
-  /* midverification */
+  /* verification */
 
   _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'bufferFrom expects object-like or array-like as o.src' );
 
@@ -7220,7 +7303,7 @@ var bufferRawFromBuffer = function( buffer )
 
 //
 
-var bufferRawFrom = function( buffer )
+var bufferRawFrom = function bufferRawFrom( buffer )
 {
   var result;
 
@@ -9649,6 +9732,8 @@ var arrayCompare = function( src1,src2 )
 var arrayIdentical = function arrayIdentical( src1,src2 )
 {
   _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) );
+  _.assert( _.arrayLike( src2 ) );
 
   var result = true;
 
@@ -12693,6 +12778,7 @@ var Proto =
   // init
 
   _initConfig : _initConfig,
+  _initUnhandledErrorHandler : _initUnhandledErrorHandler,
 
 
   // iterator
@@ -12884,6 +12970,7 @@ var Proto =
   // number
 
   numberFrom : numberFrom,
+  numbersFrom : numbersFrom,
 
   numberRandomInRange : numberRandomInRange,
   numberRandomInt : numberRandomInt,
@@ -12899,6 +12986,10 @@ var Proto =
 
   strBegins : strBegins,
   strEnds : strEnds,
+
+  strBeginOf : strBeginOf,
+  strEndOf : strEndOf,
+
   strBeginRemove : strBeginRemove,
   strEndRemove : strEndRemove,
 
@@ -13223,7 +13314,10 @@ catch( err )
 //debugger;
 
 if( _global_.wToolsInitConfigExpected !== false )
-_._initConfig();
+{
+  _._initConfig();
+  _._initUnhandledErrorHandler();
+}
 
 if( typeof module !== 'undefined' && module !== null )
 {
