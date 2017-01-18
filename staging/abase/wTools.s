@@ -139,60 +139,69 @@ var _initUnhandledErrorHandler = function _initUnhandledErrorHandler()
 // iterator
 // --
 
-var __eachAct = function __eachAct( o )
+var __eachAct = function __eachAct( iteration )
 {
 
+  var iterator = this;
+  var src = iteration.src;
   var i = 0;
-  var src = o.src;
 
-  /* levels */
+  _.assert( Object.keys( iterator ).length === 11 );
+  _.assert( Object.keys( iteration ).length === 6 );
+  _.assert( iteration.level >= 0 );
+  _.assert( arguments.length === 1 );
 
-  if( o.levels <= 0 )
+  /* level */
+
+  if( !( iteration.level < iterator.levelLimit ) )
   {
+    debugger;
     return i;
   }
 
   /* usingVisits */
 
-  if( o.usingVisits )
+  if( iterator.usingVisits )
   {
-    if( o.visited.indexOf( o.src ) !== -1 )
+    if( iterator.visited.indexOf( src ) !== -1 )
     return i;
-    o.visited.push( o.src );
+    iterator.visited.push( src );
   }
 
-  /* end */
+  /* up */
+
+  iterator.counter += 1;
+  var c = true;
+  if( iterator.root !== src )
+  {
+    c = iterator.onUp.call( iterator,src,iteration.key,iteration );
+  }
+  else if( iterator.usingRootVisit )
+  {
+    c = iterator.onUp.call( iterator,src,iteration.key,iteration );
+  }
+
+  /* down */
 
   var end = function()
   {
 
-    if( o.root !== src )
-    o.onDown.call( o,src,o.key,o.index );
-    else if( o.usingRootVisit )
+    if( iterator.root !== src )
     {
-      o.onDown.call( o,src,o.key,o.index );
+      iterator.onDown.call( iterator,src,iteration.key,iteration );
+    }
+    else if( iterator.usingRootVisit )
+    {
+      iterator.onDown.call( iterator,src,iteration.key,iteration );
     }
 
-    if( o.usingVisits )
+    if( iterator.usingVisits )
     {
-      _.assert( Object.is( o.visited[ o.visited.length-1 ], o.src ) );
-      o.visited.pop();
+      _.assert( Object.is( iterator.visited[ iterator.visited.length-1 ], src ) );
+      iterator.visited.pop();
     }
 
     return i;
-  }
-
-  /* on up */
-
-  o.counter += 1;
-  var c = true;
-  if( o.root !== src )
-  {
-    c = o.onUp.call( o,src,o.key,o.index );
-  }
-  else if( o.usingRootVisit )
-  {
-    c = o.onUp.call( o,src,o.key,o.index );
   }
 
   if( c === false )
@@ -205,32 +214,26 @@ var __eachAct = function __eachAct( o )
 
     i += 1;
 
-    if( o.recursive || o.root === o.src )
+    if( iterator.recursive || iterator.root === src )
     {
 
-      __eachAct
-      ({
-        src : src[ k ],
-        root : o.root,
-        onUp : o.onUp,
-        onDown : o.onDown,
-        own : o.own,
-        recursive : o.recursive,
-        usingVisits : o.usingVisits,
-        counter : o.counter,
-        visited : o.visited,
-        levels : o.levels-1,
-        path : o.path !== '.' ? o.path + '.' + k : o.path + k,
+      var newIteration =
+      {
+        level : iteration.level+1,
+        path : iteration.path !== iterator.pathDelimteter ? iteration.path + iterator.pathDelimteter + k : iteration.path + k,
         key : k,
         index : i,
-        down : o,
-      });
+        down : iteration,
+        src : src[ k ],
+      }
+
+      __eachAct.call( iterator,newIteration );
 
     }
 
   }
 
-  /* */
+  /* iterate */
 
   if( _.arrayLike( src ) )
   {
@@ -249,7 +252,7 @@ var __eachAct = function __eachAct( o )
     for( var k in src )
     {
 
-      if( o.own )
+      if( iterator.own )
       if( !Object.hasOwnProperty.call( src,k ) )
       continue;
 
@@ -277,58 +280,109 @@ var _each = function _each( o )
 
   _.routineOptions( _each,o );
   _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
+  _.assert( o.onUp.length === 0 || o.onUp.length === 3 );
+  _.assert( o.onDown.length === 0 || o.onDown.length === 3 );
 
-  o.onUp = o.onUp || function(){};
-  o.onDown = o.onDown || function(){};
+  if( o.path === null )
+  o.path = o.pathDelimteter;
 
-  return __eachAct( o );
+  var iterator =
+  {
+    root : o.root,
+    onUp : o.onUp,
+    onDown : o.onDown,
+    own : o.own,
+    recursive : o.recursive,
+    usingVisits : o.usingVisits,
+    usingRootVisit : o.usingRootVisit,
+    counter : o.counter,
+    visited : o.visited,
+    levelLimit : o.levelLimit,
+    pathDelimteter : o.pathDelimteter,
+  }
+
+  var iteration =
+  {
+    level : o.level,
+    path : o.path,
+    key : o.key,
+    index : o.index,
+    src : o.src,
+    down : o.down,
+  }
+
+  _.accessorForbid
+  ({
+    object : iterator,
+    prime : 0,
+    names :
+    {
+      levels : 'levels',
+      level : 'level',
+      path : 'path',
+      key : 'key',
+      index : 'index',
+      src : 'src',
+      down : 'down',
+    }
+  })
+
+  return __eachAct.call( iterator,iteration );
 }
 
 _each.defaults =
 {
-  src : null,
+
   root : null,
-  onUp : null,
-  onDown : null,
+  onUp : function( e,k,iteration ){},
+  onDown : function( e,k,iteration ){},
   own : 0,
   recursive : 0,
   usingVisits : 1,
   usingRootVisit : 1,
   counter : 0,
   visited : [],
-  levels : 256,
-  path : '.',
+  levelLimit : 256,
+  pathDelimteter : '/',
+
+  //levels : 256,
+  level : 0,
+  path : null,
   key : null,
   index : 0,
+  src : null,
+  down : null,
+
 }
 
 //
 
-var each = function( o )
+var each = function each( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
+
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 
-  if( o.own === undefined )
-  o.own = 0;
-
-  if( o.usingVisits === undefined )
-  o.usingVisits = 0;
-
-  if( o.recursive === undefined )
-  o.recursive = 0;
-
-  if( o.usingRootVisit === undefined )
-  o.usingRootVisit = 0;
+  _.mapExtendFiltering( _.filter.dstNotHasSrcOwn(),o,each.defaults );
 
   return _each( o );
 }
 
+each.defaults =
+{
+  own : 0,
+  usingVisits : 0,
+  recursive : 0,
+  usingRootVisit : 0,
+}
+
+each.defaults.__proto__ = _each.defaults;
+
 //
 
-var eachOwn = function( o )
+var eachOwn = function eachOwn( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -336,21 +390,24 @@ var eachOwn = function( o )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
   o.own = 1;
 
-  if( o.usingVisits === undefined )
-  o.usingVisits = 0;
-
-  if( o.recursive === undefined )
-  o.recursive = 0;
-
-  if( o.usingRootVisit === undefined )
-  o.usingRootVisit = 0;
+  _.mapExtendFiltering( _.filter.dstNotHasSrcOwn(),o,eachOwn.defaults );
 
   return _each( o );
 }
 
+eachOwn.defaults =
+{
+  own : 1,
+  usingVisits : 0,
+  recursive : 0,
+  usingRootVisit : 0,
+}
+
+eachOwn.defaults.__proto__ = _each.defaults;
+
 //
 
-var eachRecursive = function( o )
+var eachRecursive = function eachRecursive( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -360,15 +417,22 @@ var eachRecursive = function( o )
 
   o.recursive = 1;
 
-  if( o.own === undefined )
-  o.own = 0;
+  _.mapExtendFiltering( _.filter.dstNotHasSrcOwn(),o,eachRecursive.defaults );
 
   return _each( o );
 }
 
+eachRecursive.defaults =
+{
+  own : 0,
+  recursive : 1,
+}
+
+eachRecursive.defaults.__proto__ = _each.defaults;
+
 //
 
-var eachOwnRecursive = function( o )
+var eachOwnRecursive = function eachOwnRecursive( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -380,56 +444,13 @@ var eachOwnRecursive = function( o )
   return _each( o );
 }
 
-//
-/*
-var until = function()
+eachOwnRecursive.defaults =
 {
-
-  var i = 0;
-  var found = 0;
-
-  var onEach = arguments[ arguments.length-1 ];
-  if( !_.routineIs( onEach ) ) throw '_.each : onEach is not routine';
-
-  for( var arg = 0, l = arguments.length-1 ; arg < l ; arg++ )
-  {
-
-    var src = arguments[ arg ];
-
-    if( _.arrayIs( src ) )
-    {
-
-      for( var a = 0 ; a < src.length ; a++ )
-      {
-        found = onEach.call( src,src[a],a,i );
-        i++;
-      }
-
-    }
-    else if( _.objectIs( src ) )
-    {
-
-      for( var a in src )
-      {
-        found = onEach.call( src,src[a],a,i );
-        i++;
-      }
-
-    }
-    else if( src !== undefined )
-    {
-
-      found = onEach.call( src,src );
-      i++;
-
-    }
-
-    if( found ) return i;
-  }
-
-  return i;
+  own : 1,
+  recursive : 1,
 }
-*/
+
+eachOwnRecursive.defaults.__proto__ = _each.defaults;
 
 //
 
@@ -1006,19 +1027,14 @@ var rangeLastGet = function rangeLastGet( range,options )
 // entity modifier
 // --
 
-var enityExtend = function( dst,src )
+var enityExtend = function enityExtend( dst,src )
 {
 
-  if( _.strIs( src ) )
+  if( _.objectIs( src ) || _.arrayLike( src ) )
   {
 
-    dst = src;
-
-  }
-  else if( _.objectIs( src ) || _.hasLength( src ) )
-  {
-
-    _.each( src,function( e,k,i ){
+    _.each( src,function( e,k,iteration )
+    {
       dst[ k ] = e;
     });
 
@@ -1253,7 +1269,10 @@ var _entityCloneAct = function( o )
     else if( o.proto )
     result = new o.proto();
     else
-    result = new o.src.constructor();
+    {
+      result = _.entityNew( o.src );
+      //result = new o.src.constructor();
+    }
 
     for( var s in o.src )
     {
@@ -1305,9 +1324,14 @@ var _entityCloneAct = function( o )
     if( o.dst )
     result = o.dst;
     else if( o.proto )
-    result = new o.proto( o.src.length );
+    {
+      debugger;
+      result = new o.proto( o.src.length );
+    }
     else
-    result = _.arrayNewOfSameLength( o.src );
+    {
+      result = _.arrayNew( o.src );
+    }
 
     /**/
 
@@ -1851,9 +1875,11 @@ var entityCoerceTo = function( src,ins )
 
 //
 
-var entityWrap = function( o )
+var entityWrap = function entityWrap( o )
 {
   var result = o.dst;
+
+  debugger;
 
   _.routineOptions( entityWrap,o );
   _.assert( arguments.length === 1 );
@@ -1863,26 +1889,25 @@ var entityWrap = function( o )
 
   /* */
 
-  var handleDown = function( e,k,i )
+  var handleDown = function( e,k,iteration )
   {
 
-    //debugger;
-    //if( o.condition )
+    debugger;
 
     if( o.onCondition )
-    if( !o.onCondition.call( this,e,k,i ) )
+    if( !o.onCondition.call( this,e,k,iteration ) )
     return
 
     if( o.onWrap )
     {
-      var newElement = o.onWrap.call( this,e,k,i );
+      var newElement = o.onWrap.call( this,e,k,iteration );
 
       if( newElement !== e )
       {
         if( e === result )
         result = newElement;
-        if( this.down && this.down.src )
-        this.down.src[ k ] = newElement;
+        if( iteration.down && iteration.down.src )
+        iteration.down.src[ iteration.key ] = newElement;
       }
 
     }
@@ -1893,7 +1918,7 @@ var entityWrap = function( o )
       if( e === result )
       result = newElement;
       else
-      this.down.src[ k ] = newElement;
+      iteration.down.src[ iteration.key ] = newElement;
 
     }
 
@@ -2611,31 +2636,33 @@ var entitySize = function entitySize( src )
 
 //
 
-var entityWithKeyRecursive = function( src,key,onEach )
-{
-  var i = 0;
-
-  debugger;
-  throw _.err( 'deprecated' );
-
-  if( key in src )
-  {
-    if( onEach )
-    onEach.call( src,src[ key ],key,i );
-    return src[ key ];
-  }
-
-  _.eachRecursive( src,function( e,k,i )
-  {
-
-    if( k === key )
-    {
-      if( onEach ) onEach( e,k,i );
-      return { value : src[ key ], key : key, index : i, container : src };
-    }
-
-  });
-}
+// var entityWithKeyRecursive = function( src,key,onEach )
+// {
+//   var i = 0;
+//
+//   debugger;
+//   throw _.err( 'deprecated' );
+//
+//   if( key in src )
+//   {
+//     if( onEach )
+//     onEach.call( src,src[ key ],key,i );
+//     return src[ key ];
+//   }
+//
+//   debugger;
+//   _.eachRecursive( src,function( e,iteration )
+//   {
+//
+//     debugger;
+//     if( k === key )
+//     {
+//       if( onEach ) onEach( e,iteration );
+//       return { value : src[ key ], key : key, index : iteration.index, container : src };
+//     }
+//
+//   });
+// }
 
 //
 
@@ -2740,65 +2767,6 @@ var entityKeyWithValue = function( src,value )
 
 //
 
-var entitySelectUnique = function entitySelectUnique( o )
-{
-
-  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
-  debugger;
-
-  var result = _entitySelect( o );
-
-  if( o.qarrey.indexOf( '*' ) !== -1 )
-  if( _.arrayLike( result ) )
-  result = _.arrayUnique( result );
-
-  return result;
-}
-
-//
-
-var entitySelect = function entitySelect( o )
-{
-
-  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  var result = _entitySelect( o );
-
-  return result;
-}
-
-//
-
-var entitySelectSet = function entitySelectSet( container,query,value )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 3 );
-
-  if( arguments.length === 3 )
-  {
-    var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
-    o.usingSet = 1;
-    o.set = value;
-  }
-  else
-  {
-    var o = _entitySelectOptions( arguments[ 0 ] );
-    o.usingSet = 1;
-    _.assert( _.mapOwn( o,{ set : 'set' } ) );
-  }
-
-  var result = _entitySelect( o );
-
-  return result;
-}
-
-//
-
 /**
  * Returns generated options object( o ) for ( entitySelect ) routine.
  * Query( o.query ) can be represented as string or array of strings divided by one of( o.delimeter ).
@@ -2878,7 +2846,7 @@ _entitySelectOptions.defaults =
   container : null,
   query : null,
   set : null,
-  delimeter : [ '.','[',']' ],
+  delimeter : [ '.','/','[',']' ],
   usingUndefinedForMissing : 1,
   usingMapIndexedAccess : 1,
   usingSet : 0,
@@ -2890,20 +2858,41 @@ var _entitySelect = function _entitySelect( o )
 {
   var result;
 
+  var iterator = {};
+  iterator.set = o.set;
+  iterator.delimeter = o.delimeter;
+  iterator.usingUndefinedForMissing = o.usingUndefinedForMissing;
+  iterator.usingMapIndexedAccess = o.usingMapIndexedAccess;
+  iterator.usingSet = o.usingSet;
+
+  // container : null,
+  // query : null,
+
   if( _.arrayIs( o.query ) )
   {
     result = {};
     for( var i = 0 ; i < o.query.length ; i++ )
     {
-      var selectOptions = _.mapExtend( {},o );
-      selectOptions.query = o.query[ i ];
-      selectOptions.qarrey = o.qarrey[ i ];
-      result[ selectOptions.query ] = __entitySelectAct( selectOptions );
+
+      var iteration = {};
+      iteration.qarrey = o.qarrey[ i ];
+      iteration.container = o.container;
+
+      iterator.query = o.query[ i ];
+
+      result[ iterator.query ] = __entitySelectAct.call( iterator,iteration );
+
     }
   }
   else
   {
-    result = __entitySelectAct( o );
+    iterator.query = o.query;
+
+    var iteration = {};
+    iteration.qarrey = o.qarrey;
+    iteration.container = o.container;
+
+    result = __entitySelectAct.call( iterator,iteration );
   }
 
   return result;
@@ -2952,48 +2941,53 @@ var _entitySelect = function _entitySelect( o )
  * @memberof wTools
 */
 
-var __entitySelectAct = function __entitySelectAct( o )
+var __entitySelectAct = function __entitySelectAct( iteration )
 {
 
   var result;
-  var container = o.container;
+  var iterator = this;
+  var container = iteration.container;
 
-  var key = o.qarrey[ 0 ];
-  var key2 = o.qarrey[ 1 ];
+  var key = iteration.qarrey[ 0 ];
+  var key2 = iteration.qarrey[ 1 ];
 
-  if( !o.qarrey.length )
+  if( !iteration.qarrey.length )
   return container;
+
+  _.assert( Object.keys( iterator ).length === 6 );
+  _.assert( Object.keys( iteration ).length === 2 );
+  _.assert( arguments.length === 1 );
 
   if( _.atomicIs( container ) )
   {
-    if( o.usingUndefinedForMissing )
+    if( iterator.usingUndefinedForMissing )
     return undefined;
     else
-    throw _.err( 'cant select',o.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
+    throw _.err( 'cant select',iteration.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
   }
 
-  var qarrey = o.qarrey.slice( 1 );
+  var qarrey = iteration.qarrey.slice( 1 );
 
   /* */
 
   var _select = function( key )
   {
 
-    if( !qarrey.length && o.usingSet )
+    if( !qarrey.length && iterator.usingSet )
     {
-      if( o.set === undefined )
+      if( iterator.set === undefined )
       delete container[ key ];
       else
-      container[ key ] = o.set;
+      container[ key ] = iterator.set;
     }
 
     var field;
-    if( o.usingMapIndexedAccess && _.numberIs( key ) && _.objectIs( container ) )
+    if( iterator.usingMapIndexedAccess && _.numberIs( key ) && _.objectIs( container ) )
     field = _.mapValWithIndex( container, key );
     else
     field = container[ key ];
 
-    if( field === undefined && o.usingSet )
+    if( field === undefined && iterator.usingSet )
     {
       debugger;
       if( !isNaN( key2 ) )
@@ -3006,11 +3000,11 @@ var __entitySelectAct = function __entitySelectAct( o )
       }
     }
 
-    var selectOptions = _.mapExtend( {},o );
-    selectOptions.container = field;
-    selectOptions.qarrey = qarrey;
+    var newIteration = {};
+    newIteration.container = field;
+    newIteration.qarrey = qarrey;
 
-    return __entitySelectAct( selectOptions );
+    return __entitySelectAct.call( iterator,newIteration );
   }
 
   /* */
@@ -3018,10 +3012,11 @@ var __entitySelectAct = function __entitySelectAct( o )
   if( key === '*' )
   {
 
-    result = new container.constructor();
-    _.each( container,function( e,key,c )
+    //result = new container.constructor();
+    result = _.entityNew( container );
+    _.each( container,function( e,k,iteration )
     {
-      result[ key ] = _select( key );
+      result[ k ] = _select( k );
     });
 
   }
@@ -3032,6 +3027,85 @@ var __entitySelectAct = function __entitySelectAct( o )
 
   return result;
 }
+
+//
+
+var entitySelect = function entitySelect( o )
+{
+
+  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  var result = _entitySelect( o );
+
+  return result;
+}
+
+entitySelect.defaults =
+{
+}
+
+entitySelect.defaults.__proto__ = _entitySelectOptions.defaults;
+
+//
+
+var entitySelectSet = function entitySelectSet( container,query,value )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 3 );
+
+  if( arguments.length === 3 )
+  {
+    var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+    o.usingSet = 1;
+    o.set = value;
+  }
+  else
+  {
+    var o = _entitySelectOptions( arguments[ 0 ] );
+    o.usingSet = 1;
+    _.assert( _.mapOwn( o,{ set : 'set' } ) );
+  }
+
+  var result = _entitySelect( o );
+
+  return result;
+}
+
+entitySelectSet.defaults =
+{
+  set : null,
+  usingSet : 1,
+}
+
+entitySelectSet.defaults.__proto__ = _entitySelectOptions.defaults;
+
+//
+
+var entitySelectUnique = function entitySelectUnique( o )
+{
+
+  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
+  debugger;
+
+  var result = _entitySelect( o );
+
+  if( o.qarrey.indexOf( '*' ) !== -1 )
+  if( _.arrayLike( result ) )
+  result = _.arrayUnique( result );
+
+  return result;
+}
+
+entitySelectUnique.defaults =
+{
+}
+
+entitySelectUnique.defaults.__proto__ = _entitySelectOptions.defaults;
 
 //
 
@@ -3093,78 +3167,81 @@ var _entityConditionMake = function( condition,levels )
 
 //
 
-  /**
-   * Function that produces an elements for entityMap result
-   * @callback wTools~onEach
-   * @param {*} val - The current element being processed in the entity.
-   * @param {string|number} key - The index (if entity is array) or key of processed element.
-   * @param {Array|Object} src - The src passed to entityMap.
-   */
+/**
+ * Function that produces an elements for entityMap result
+ * @callback wTools~onEach
+ * @param {*} val - The current element being processed in the entity.
+ * @param {string|number} key - The index (if entity is array) or key of processed element.
+ * @param {Array|Object} src - The src passed to entityMap.
+ */
 
-  /**
-   * Creates new instance with same as( src ) type. Elements of new instance results of calling a provided ( onEach )
-   * function on every element of src. If entity is array, the new array has the same length as source.
-   *
-   * @example
-    var numbers = [ 3, 4, 6 ];
+/**
+ * Creates new instance with same as( src ) type. Elements of new instance results of calling a provided ( onEach )
+ * function on every element of src. If entity is array, the new array has the same length as source.
+ *
+ * @example
+  var numbers = [ 3, 4, 6 ];
 
-    function sqr( v )
+  function sqr( v )
+  {
+    return v * v
+  };
+
+  var res = wTools.entityMap(numbers, sqr);
+  // [ 9, 16, 36 ]
+  // numbers is still [ 3, 4, 6 ]
+
+  function checkSidesOfTriangle( v, i, src )
+  {
+    var sumOthers = 0,
+      l = src.length,
+      j;
+
+    for ( j = 0; j < l; j++ )
     {
-      return v * v
-    };
-
-    var res = wTools.entityMap(numbers, sqr);
-    // [ 9, 16, 36 ]
-    // numbers is still [ 3, 4, 6 ]
-
-    function checkSidesOfTriangle( v, i, src )
-    {
-      var sumOthers = 0,
-        l = src.length,
-        j;
-
-      for ( j = 0; j < l; j++ )
-      {
-        if ( i === j ) continue;
-        sumOthers += src[ j ];
-      }
-      return v < sumOthers;
+      if ( i === j ) continue;
+      sumOthers += src[ j ];
     }
+    return v < sumOthers;
+  }
 
-    var res = wTools.entityMap( numbers, checkSidesOfTriangle );
-   // [ true, true, true ]
-   *
-   * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
-   * @param {wTools~onEach} onEach - Function that produces an element of the new entity.
-   * @returns {ArrayLike|ObjectLike} New entity.
-   * @thorws {Error} If number of arguments less or more than 2.
-   * @thorws {Error} If( src ) is not Array or ObjectLike.
-   * @thorws {Error} If( onEach ) is not function.
-   * @method entityMap
-   * @memberof wTools
-   */
+  var res = wTools.entityMap( numbers, checkSidesOfTriangle );
+ // [ true, true, true ]
+ *
+ * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
+ * @param {wTools~onEach} onEach - Function that produces an element of the new entity.
+ * @returns {ArrayLike|ObjectLike} New entity.
+ * @thorws {Error} If number of arguments less or more than 2.
+ * @thorws {Error} If( src ) is not Array or ObjectLike.
+ * @thorws {Error} If( onEach ) is not function.
+ * @method entityMap
+ * @memberof wTools
+ */
 
-var entityMap = function( src,onEach )
+var entityMap = function entityMap( src,onEach )
 {
 
   _.assert( arguments.length === 2 );
   _.assert( _.objectLike( src ) || _.arrayLike( src ) );
   _.assert( _.routineIs( onEach ) );
 
-  var result;
+  var result = _.entityNew( src );
 
   if( _.arrayLike( src ) )
   {
-    result = _.arrayNewOfSameLength( src );
     for( var s = 0 ; s < src.length ; s++ )
     result[ s ] = onEach( src[ s ],s,src );
   }
-  else
+  else if( _.objectLike( src ) )
   {
-    result = new src.constructor()
     for( var s in src )
-    result[ s ] = onEach( src[ s ],s,src );
+    {
+      result[ s ] = onEach( src[ s ],s,src );
+      if( result[ s ] === undefined )
+      delete result[ s ];
+    }
   }
+  else throw _.err( 'unexpected' );
 
   return result;
 }
@@ -3225,7 +3302,10 @@ var _entityFilter = function( o )
   }
   else
   {
-    result = new o.src.constructor()
+    // result = new o.src.constructor()
+    result = _.entityNew( o.src );
+    debugger;
+
     for( var s in o.src )
     {
       r = onEach.call( o.src,o.src[ s ],s,o.src );
@@ -3345,11 +3425,11 @@ var entityGroup = function( o )
   var groupForKey = function( key,result )
   {
 
-    _.each( o.src, function( e,k )
+    _.each( o.src, function( e,k,iteration )
     {
 
-      var value = o.usingOriginal ? o.src[ k ] : o.src[ k ][ key ];
-      var dstKey = o.usingOriginal ? o.src[ k ][ key ] : k;
+      var value = o.usingOriginal ? o.src[ iteration.key ] : o.src[ iteration.key ][ key ];
+      var dstKey = o.usingOriginal ? o.src[ iteration.key ][ key ] : iteration.key;
 
       if( o.usingOriginal )
       {
@@ -3375,7 +3455,11 @@ var entityGroup = function( o )
 
     result = {};
     for( var k = 0 ; k < o.key.length ; k++ )
-    result[ o.key[ k ] ] = groupForKey( o.key[ k ],o.usingOriginal ? {} : new o.src.constructor() );
+    {
+      debugger;
+      var r = o.usingOriginal ? Object.create( null ) : _.entityNew( o.src );
+      result[ o.key[ k ] ] = groupForKey( o.key[ k ],r );
+    }
 
   }
   else
@@ -3526,7 +3610,7 @@ var _entityMost = function( src,onElement,returnMax )
  *
  * @example
  *  //returns { index : 2, key : 'c', value 3: , element : 9  };
- *  var obj = { a: 25, b: 16, c: 9 };
+ *  var obj = { a : 25, b : 16, c : 9 };
  *  var min = wTools.entityMin( obj, Math.sqrt );
  *
  * @see wTools~onEach
@@ -3586,28 +3670,32 @@ var entitySearch = function entitySearch( o )
 
   _.routineOptions( entitySearch,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  //_.assert( !o.searchingCaseInsensitive,'not implemented' );
+
+  _.assert( o.onDown.length === 0 || o.onDown.length === 3 );
+  _.assert( o.onUp.length === 0 || o.onUp.length === 3 );
 
   var strIns,regexpIns;
   strIns = String( o.ins );
-
-  // if( o.searchingCaseInsensitive )
-  // debugger;
 
   if( o.searchingCaseInsensitive && _.strIs( o.ins ) )
   regexpIns = new RegExp( ( o.searchingSubstring ? '' : '^' ) + strIns + ( o.searchingSubstring ? '' : '$' ),'i' );
 
   if( o.condition )
-  o.condition = _entityConditionMake( o.condition,1 );
+  {
+    o.condition = _entityConditionMake( o.condition,1 );
+    _.assert( o.condition.length === 0 || o.condition.length === 3 );
+  }
 
   /* */
 
-  var checkCandidate = function( e,k,i,r,path )
+  var checkCandidate = function( e,k,iteration,r,path )
   {
 
     var c = true;
     if( o.condition )
-    c = o.condition.call( this,e,k,i );
+    {
+      c = o.condition.call( this,e,k,iteration );
+    }
 
     if( !c )
     return c;
@@ -3631,37 +3719,38 @@ var entitySearch = function entitySearch( o )
   /* */
 
   var onUp = o.onUp;
-  var handleUp = function( e,k,i )
+  var handleUp = function handleUp( e,k,iteration )
   {
 
     if( onUp )
-    if( onUp.call( this,e,k,i ) === false )
+    if( onUp.call( this,e,k,iteration ) === false )
     return false;
 
     var path;
-    if( o.pathOfParent )
-    path = this.path;
-    else
-    path = this.path + '.' + k;
+    // if( o.pathOfParent )
+    path = iteration.path;
+    // else
+    // path = iteration.path + '.' + iteration.key;
+
+    // if( path === '.0.expression.callee.type' )
+    // debugger;
+    // if( path === '/0/expression/callee/type' )
+    // debugger;
 
     var r;
-    if( o.returnParent && this.down )
-    r = this.down.src;
+    if( o.returnParent && iteration.down )
+    r = iteration.down.src;
     else
     r = e;
 
     if( o.searchingValue )
     {
-
-      checkCandidate.call( this,e,k,i,r,path );
-
+      checkCandidate.call( this,e,k,iteration,r,path );
     }
 
     if( o.searchingKey )
     {
-
-      checkCandidate.call( this,k,k,i,r,path );
-
+      checkCandidate.call( this,iteration.key,k,iteration,r,path );
     }
 
   }
@@ -3683,13 +3772,13 @@ entitySearch.defaults =
   ins : null,
   condition : null,
 
-  onUp : null,
-  onDown : null,
+  onUp : function(){},
+  onDown : function(){},
 
   own : 1,
   recursive : 1,
 
-  pathOfParent : 1,
+  // pathOfParent : 1,
   returnParent : 0,
 
   searchingKey : 1,
@@ -5444,8 +5533,12 @@ var strTypeOf = function( src )
   var result = _.strPrimitiveTypeOf( src );
 
   if( result === 'Object' )
-  if( src.__proto__ !== Object.__proto__ )
-  result = 'Object:Fake';
+  {
+    if( Object.getPrototypeOf( src ) === null )
+    result = 'Map:Pure';
+    else if( src.__proto__ !== Object.__proto__ )
+    result = 'Object:Fake';
+  }
 
   return result;
 }
@@ -6366,7 +6459,7 @@ var routinesJoin = function routinesJoin()
     if( _.routineIs( routines ) )
     routines = [ routines ];
 
-    result = _.arrayLike( routines ) ? _.arrayNewOfSameLength( routines ) : {};
+    result = _.entityNew( routines );
 
   }
 
@@ -6458,7 +6551,7 @@ var routinesCall = function routinesCall()
     if( _.routineIs( routines ) )
     routines = [ routines ];
 
-    result = _.arrayLike( routines ) ? _.arrayNewOfSameLength( routines ) : {};
+    result = _.entityNew( routines );
 
   }
 
@@ -6872,7 +6965,7 @@ var dateToStr = function dateToStr( date )
    * @memberof wTools
    */
 
-var bufferRelen = function( src,len )
+var bufferRelen = function bufferRelen( src,len )
 {
 
   _.assert( _.bufferIs( src ) );
@@ -7655,20 +7748,24 @@ var arraySub = function( src,begin,end )
  * @memberof wTools
  */
 
-var arrayNew = function( ins,length )
+var arrayNew = function arrayNew( ins,length )
 {
   var result;
 
-  _.assert( arguments.length <= 2); // _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( length ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  // if( ins instanceof ArrayBuffer )
+  // debugger;
 
   if( length === undefined )
   {
-    _assert( _.numberIs( ins.length ) );
+    _.assert( _.numberIs( ins.length ) );
     length = ins.length;
   }
 
-  if( _.arrayIs( ins ) || _.bufferIs( ins ) || ins instanceof ArrayBuffer )
+  if( _.argumentsIs() || _.arrayIs( ins ) )
+  result = new Array( length );
+  else if( _.bufferIs( ins ) || ins instanceof ArrayBuffer )
   result = new ins.constructor( length );
   else throw _.err( 'arrayNew :','unknown type of instance' );
 
@@ -7694,16 +7791,16 @@ var arrayNew = function( ins,length )
  * @memberof wTools
  */
 
-var arrayNewOfSameLength = function( ins )
-{
-
-  _.assert( arguments.length === 1 );
-
-  if( _.atomicIs( ins ) ) return;
-  if( !_.arrayIs( ins ) && !_.bufferIs( ins ) ) return;
-  var result = arrayNew( ins,ins.length );
-  return result;
-}
+// var arrayNewOfSameLength = function( ins )
+// {
+//
+//   _.assert( arguments.length === 1 );
+//
+//   if( _.atomicIs( ins ) ) return;
+//   if( !_.arrayIs( ins ) && !_.bufferIs( ins ) ) return;
+//   var result = arrayNew( ins,ins.length );
+//   return result;
+// }
 
 //
 
@@ -8804,21 +8901,24 @@ var arrayUpdate = function( dstArray,ins,sub )
    * @memberof wTools
    */
 
-var arrayAppendOnce = function( dst,src )
+var arrayAppendOnce = function arrayAppendOnce( dst,src )
 {
 
-  _.assert( _.arrayIs( dst ) || dst === undefined );
+  _.assert( _.arrayIs( dst ) );
   _.assert( arguments.length === 2 );
 
-  if( !dst )
-  return [ src ];
+  // if( !dst )
+  // return [ src ];
 
   var i = dst.indexOf( src );
 
   if( i === -1 )
-  dst.push( src );
+  {
+    dst.push( src );
+    return dst.length-1;
+  }
 
-  return dst;
+  return i;
 }
 
 //
@@ -8853,21 +8953,24 @@ var arrayAppendOnce = function( dst,src )
    * @memberof wTools
    */
 
-var arrayPrependOnce = function( dst,src )
+var arrayPrependOnce = function arrayPrependOnce( dst,src )
 {
 
-  _.assert( _.arrayIs( dst ) || dst === undefined );
+  _.assert( _.arrayIs( dst ) );
   _.assert( arguments.length === 2 );
 
-  if( !dst )
-  return [ src ];
+  // if( !dst )
+  // return [ src ];
 
   var i = dst.indexOf( src );
 
   if( i === -1 )
-  dst.unshift( src );
+  {
+    dst.unshift( src );
+    return dst.length - 1;
+  }
 
-  return dst;
+  return i;
 }
 
 //
@@ -9166,7 +9269,7 @@ var arrayUniqueIs = function arrayUniqueIs( o )
   /**/
 
   var number = o.src.length;
-  var isUnique = arrayNewOfSameLength( o.src );
+  var isUnique = _.arrayNew( o.src );
   var index;
 
   for( var i = 0 ; i < o.src.length ; i++ )
@@ -12227,8 +12330,6 @@ var mapContain = function( src,ins )
 
 //
 
-// !!! update documentation
-
 /**
  * The mapOwn() returns true if (object) has own property.
  *
@@ -12253,7 +12354,7 @@ var mapContain = function( src,ins )
  * @memberof wTools
  */
 
-var mapOwn = function( object,name )
+var mapOwn = function mapOwn( object,name )
 {
 
   if( arguments.length === 1 )
@@ -12276,20 +12377,20 @@ var mapOwn = function( object,name )
 
 //
 
-var mapHas = function mapHas( object,name )
-{
-  var name = _.nameUnfielded( name ).coded;
-
-  var descriptor = Object.getOwnPropertyDescriptor( object,name );
-
-  if( !descriptor )
-  return false;
-
-  if( descriptor.set && descriptor.set.forbid )
-  return false;
-
-  return true;
-}
+// var mapHas = function mapHas( object,name )
+// {
+//   var name = _.nameUnfielded( name ).coded;
+//
+//   var descriptor = Object.getOwnPropertyDescriptor( object,name );
+//
+//   if( !descriptor )
+//   return false;
+//
+//   if( descriptor.set && descriptor.set.forbid )
+//   return false;
+//
+//   return true;
+// }
 
 //
 
@@ -12410,7 +12511,7 @@ var mapOwnBut = function mapOwnBut( srcMap )
 
 //
 
-var mapDelete = function( dst,ins )
+var mapDelete = function mapDelete( dst,ins )
 {
 
   _.assert( arguments.length === 2 );
@@ -12808,7 +12909,8 @@ var Proto =
 
   // entity modifier
 
-  enityExtend : enityExtend, /* deprecated */
+  enityExtend : enityExtend, /* experimental */
+
   entityClone : entityClone, /* deprecated */
 
   entityNew : entityNew,
@@ -12850,16 +12952,17 @@ var Proto =
   entityLength : entityLength,
   entitySize : entitySize,
 
-  entityWithKeyRecursive : entityWithKeyRecursive, /* deprecated */
+  // entityWithKeyRecursive : entityWithKeyRecursive, /* deprecated */
   entityValueWithIndex : entityValueWithIndex,
   entityKeyWithValue : entityKeyWithValue,
 
-  entitySelectUnique : entitySelectUnique,
-  entitySelect : entitySelect,
-  entitySelectSet : entitySelectSet,
   _entitySelectOptions : _entitySelectOptions,
   _entitySelect : _entitySelect,
   __entitySelectAct : __entitySelectAct,
+
+  entitySelect : entitySelect,
+  entitySelectSet : entitySelectSet,
+  entitySelectUnique : entitySelectUnique,
 
   _entityConditionMake : _entityConditionMake,
   entityMap : entityMap,
@@ -13074,7 +13177,7 @@ var Proto =
 
   arraySub : arraySub,
   arrayNew : arrayNew,
-  arrayNewOfSameLength : arrayNewOfSameLength,
+  // arrayNewOfSameLength : arrayNewOfSameLength,
   arrayFromNumber : arrayFromNumber,
 
   arraySelect : arraySelect,
@@ -13241,7 +13344,7 @@ var Proto =
   // map logic
 
   mapOwn : mapOwn,
-  mapHas : mapHas,
+  // mapHas : mapHas,
 
   mapSame : mapSame,
   mapContain : mapContain,
@@ -13305,6 +13408,7 @@ try
   require( './abase/FieldMapper.s' );
 
   require( '../BackTools.ss' );
+  //require( '../BackToolsWithConfig.ss' );
 
 }
 catch( err )
@@ -13313,7 +13417,7 @@ catch( err )
 
 //debugger;
 
-if( _global_.wToolsInitConfigExpected !== false )
+if( _global_._wToolsInitConfigExpected !== false )
 {
   _._initConfig();
   _._initUnhandledErrorHandler();

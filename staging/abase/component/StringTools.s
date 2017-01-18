@@ -2367,38 +2367,83 @@ strInhalfRight.defaults =
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @memberof wTools
  *
-*/
-var strSplit = function( o )
+ */
+
+var strSplit = function strSplit( o )
 {
+
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], splitter : arguments[ 1 ] }
 
   if( _.strIs( o ) )
   o = { src : o };
 
   _.mapSupplement( o,strSplit.defaults );
   _.assertMapHasOnly( o,strSplit.defaults );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
 
-  var splitter = _.arrayIs( o.splitter ) ? o.splitter.slice() : [ o.splitter ];
-  var result = o.src.split( splitter[ 0 ] );
-  splitter.splice( 0,1 );
+  var splitter = _.arrayIs( o.splitter ) ? o.splitter : [ o.splitter ];
 
   /**/
 
-  while( splitter.length )
+  if( o.preserveSplitter )
   {
 
-    for( var r = result.length-1 ; r >= 0 ; r-- )
-    {
+    var result = [];
+    var right = [];
+    var prevPosition = o.src.length;
 
-      var sub = result[ r ].split( splitter[ 0 ] );
-      if( sub.length > 1 )
-      _.arraySplice( result,r,r+1,sub );
+    for( var s = 0 ; s < splitter.length ; s++ )
+    right[ s ] = o.src.lastIndexOf( splitter[ s ] );
+
+    while( true )
+    {
+      var splitterIndex = -1;
+      var position = -1;
+      for( var s = 0 ; s < splitter.length ; s++ )
+      if( right[ s ] >= position )
+      {
+        splitterIndex = s;
+        position = right[ s ];
+      }
+
+      if( position === -1 )
+      break;
+
+      if( right[ splitterIndex ] > 0 )
+      right[ splitterIndex ] = o.src.lastIndexOf( splitter[ splitterIndex ],right[ splitterIndex ]-splitter[ splitterIndex ].length );
+      else
+      right[ splitterIndex ] = -1;
+
+      result.unshift( o.src.substring( position+splitter[ splitterIndex ].length,prevPosition ) );
+      result.unshift( o.splitter[ splitterIndex ] );
+
+      prevPosition = position;
 
     }
 
-    splitter.splice( 0,1 );
+    result.unshift( o.src.substring( 0,prevPosition ) );
+
+  }
+  else
+  {
+
+    var result = o.src.split( splitter[ 0 ] );
+    for( var s = 1 ; s < splitter.length ; s++ )
+    {
+
+      for( var r = result.length-1 ; r >= 0 ; r-- )
+      {
+
+        var sub = result[ r ].split( splitter[ s ] );
+        if( sub.length > 1 )
+        result.splice( r,r+1,sub );
+
+      }
+
+    }
 
   }
 
@@ -2422,6 +2467,7 @@ strSplit.defaults =
   src : null,
   splitter : ' ',
   strip : 1,
+  preserveSplitter : 0,
 }
 
 //
@@ -2527,7 +2573,7 @@ strStrip.defaults =
  *
 */
 
-var strRemoveAllSpaces = function( src,sub )
+var strRemoveAllSpaces = function strRemoveAllSpaces( src,sub )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -4151,11 +4197,15 @@ strExtractStrips.defaults =
 
 //
 
-var strExtractStereoStrips = function( src, o )
+var strExtractStereoStrips = function strExtractStereoStrips( src, o )
 {
+
+  var o = this !== Self ? this : {};
+
   _.assert( _.strIs( src ) );
   _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1 );
+  //_.assert( arguments.length === 1 || arguments.length === 2 );
   _.routineOptions( strExtractStereoStrips, o );
 
   var result = [];
