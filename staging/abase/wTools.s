@@ -7153,6 +7153,9 @@ var bufferToStr = function bufferToStr( src )
   _.assert( arguments.length === 1 );
   _.assert( _.bufferAnyIs( src ) );
 
+  if( bufferNodeIs( src ) )
+  return src.toString( 'utf8' );
+
   try
   {
     result = String.fromCharCode.apply( null, src );
