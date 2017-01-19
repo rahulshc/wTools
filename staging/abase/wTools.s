@@ -5151,7 +5151,7 @@ var bufferNodeIs = function( src )
 
 //
 
-var bufferSomeIs = function( src )
+var bufferAnyIs = function bufferAnyIs( src )
 {
   return bufferIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
 }
@@ -7143,13 +7143,15 @@ bufferMove.defaults =
 
 //
 
-var bufferToStr = function( src,options )
+var bufferToStr = function bufferToStr( src )
 {
-
   var result = '';
-  var options = options || {};
 
-  if( src instanceof ArrayBuffer ) src = new Uint8Array( src,0,src.byteLength );
+  if( src instanceof ArrayBuffer )
+  src = new Uint8Array( src,0,src.byteLength );
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.bufferAnyIs( src ) );
 
   try
   {
@@ -9237,7 +9239,7 @@ var arraySplice = function arraySplice( dstArray,a,b,srcArray )
  * @memberof wTools
  */
 
-var arrayAs = function( src )
+var arrayAs = function arrayAs( src )
 {
 
   if( src === null || src === undefined ) return [];
@@ -13027,7 +13029,7 @@ var Proto =
   bufferViewIs : bufferViewIs,
   bufferRawIs : bufferRawIs,
   bufferNodeIs : bufferNodeIs,
-  bufferSomeIs : bufferSomeIs,
+  bufferAnyIs : bufferAnyIs,
 
   argumentsIs : argumentsIs,
 

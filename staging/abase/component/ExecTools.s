@@ -99,6 +99,11 @@ var shell = ( function( o )
     if( o.child.stdout )
     o.child.stdout.on( 'data', function( data )
     {
+      logger.log( 'stdout',_.strTypeOf( data ),arguments.length );
+
+      if( _.bufferIs( data ) )
+      data = _.bufferToStr( data );
+
       data = 'Output :\n' + _.strIndentation( data,'  ' );
       if( Chalk && o.usingColoring )
       data = Chalk.bgYellow( Chalk.black( data ) );
@@ -108,6 +113,11 @@ var shell = ( function( o )
     if( o.child.stderr )
     o.child.stderr.on( 'data', function( data )
     {
+      logger.log( 'stderr',_.strTypeOf( data ),arguments.length );
+
+      if( _.bufferIs( data ) )
+      data = _.bufferToStr( data );
+
       data = 'Error :\n' + _.strIndentation( data,'  ' );
       if( Chalk && o.usingColoring )
       data = Chalk.bgYellow( Chalk.red( data ) );

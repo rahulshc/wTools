@@ -4131,7 +4131,7 @@ var strMetricFormatBytes = function( number,o )
  *
  */
 
-var strTimeFormat = function( time )
+var strTimeFormat = function strTimeFormat( time )
 {
   var result = strMetricFormat( time*0.001,{ fixed : 3 } ) + 's';
   return result;
@@ -4139,7 +4139,7 @@ var strTimeFormat = function( time )
 
 //
 
-var strExtractStrips = function( src, o )
+var strExtractStrips = function strExtractStrips( src, o )
 {
   _.assert( _.strIs( src ) );
   _.assert( _.objectIs( o ) );
@@ -4249,7 +4249,7 @@ strExtractStereoStrips.defaults =
 
 //
 
-var strColorBackground = function ( str, color )
+var strColorBackground = function( str, color )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
@@ -4259,7 +4259,7 @@ var strColorBackground = function ( str, color )
 
 //
 
-var strColorForeground = function ( str, color )
+var strColorForeground = function( str, color )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
