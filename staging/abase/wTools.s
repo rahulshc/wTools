@@ -4137,28 +4137,57 @@ var errLogOnce = function errLogOnce( err )
 //
 
   /**
-   * Checks condition. If condition converts to true method returns without exceptions.
-   * Else If condition is false, method generates and throws exception. By default generates error with
-   * message 'Assertion failed'. But method can accept messages for generate error, or even existing error objects.
+   * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+   * If condition is true method returns without exceptions, otherwise method generates and throws exception. By default generates error with message 'Assertion failed'.
+   * Also generates error using message(s) or existing error object(s) passed after first argument.
+   *
+   * @param {*} condition - condition to check.
+   * @param {String|Error} [ msgs ] - error messages for generated exception.
    *
    * @example
-     function divide ( x, y )
-     {
-        wTools.assert( y != 0, 'divide by zero' );
-        return x / y;
-     }
-     divide (3, 0);
-
-   // caught     at divide (<anonymous>:2:29)
-   // divide by zero
-   // Error
-   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
-   //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
-   //   at divide (<anonymous>:2:29)
-   //   at <anonymous>:1:1
-   * @param {*} condition
-   * @param {...String|Error} msgs error messages for generated exception.
-   * @throws {Error} If passed condition failed, Method throws an error.
+   * var x = 1;
+   * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
+   *
+   * // caught eval (<anonymous>:2:8)
+   * // incorrect variable type-> number expects string
+   * // Error
+   * //   at _err (file:///.../wTools/staging/wTools.s:3707)
+   * //   at assert (file://.../wTools/staging/wTools.s:4041)
+   * //   at add (<anonymous>:2)
+   * //   at <anonymous>:1
+   *
+   * @example
+   * function add( x, y )
+   * {
+   *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
+   *   return x + y;
+   * }
+   * add();
+   *
+   * // caught add (<anonymous>:3:14)
+   * // incorrect arguments count
+   * // Error
+   * //   at _err (file:///.../wTools/staging/wTools.s:3707)
+   * //   at assert (file://.../wTools/staging/wTools.s:4035)
+   * //   at add (<anonymous>:3:14)
+   * //   at <anonymous>:6
+   *
+   * @example
+   *   function divide ( x, y )
+   *   {
+   *      wTools.assert( y != 0, 'divide by zero' );
+   *      return x / y;
+   *   }
+   *   divide (3, 0);
+   *
+   * // caught     at divide (<anonymous>:2:29)
+   * // divide by zero
+   * // Error
+   * //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+   * //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
+   * //   at divide (<anonymous>:2:29)
+   * //   at <anonymous>:1:1
+   * @throws {Error} If passed condition( condition ) fails.
    * @method assert
    * @memberof wTools
    */
@@ -4199,6 +4228,43 @@ var assert = function assert( condition )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) not contains undefined properties. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found undefined property it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed after first argument.
+ *
+ * @param {Object} src - source map.
+ * @param {String} [ msgs ] - error message for generated exception.
+ *
+ * @example
+ * var map = { a : '1', b : undefined };
+ * wTools.assertMapHasNoUndefine( map );
+ *
+ * // caught <anonymous>:2:8
+ * // Object  should have no undefines, but has : b
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/wTools.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * var map = { a : undefined, b : '1' };
+ * wTools.assertMapHasNoUndefine( map, '"map"');
+ *
+ * // caught <anonymous>:2:8
+ * // Object "map" should have no undefines, but has : a
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/wTools.s:4087)
+ * // at <anonymous>:2
+ *
+ * @method assertMapHasNoUndefine
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If map( src ) contains undefined property.
+ * @memberof wTools
+ *
+ */
+
 var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
 {
 
@@ -4224,6 +4290,47 @@ var assertMapHasNoUndefine = function assertMapHasNoUndefine( src )
 }
 
 //
+
+/**
+ * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1, c : 3 };
+ * var b = { a : 2, b : 3 };
+ * wTools.assertMapHasOnly( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have no fields : c
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4188)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 1 };
+ * wTools.assertMapHasOnly( a, b, 'message' )
+ *
+ * // caught <anonymous>:4:8
+ * // message Object should have no fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4188)
+ * // at <anonymous>:4
+ *
+ * @method assertMapHasOnly
+ * @throws {Exception} If map( src ) contains unique property.
+ * @memberof wTools
+ *
+ */
 
 var assertMapHasOnly = function assertMapHasOnly( src )
 {
@@ -4252,6 +4359,54 @@ var assertMapHasOnly = function assertMapHasOnly( src )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
+ *
+ * @example
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * a.a = 5;
+ * var b = { a : 2 };
+ * wTools.assertMapOwnOnly( a, b ); //no exception
+ *
+ * @example
+ * var a = { d : 1 };
+ * var b = { a : 2 };
+ * wTools.assertMapOwnOnly( a, b );
+ *
+ * // caught <anonymous>:3:10
+ * // Object should have no own fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnOnly (file:///.../wTools/staging/wTools.s:4215)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0, y : 2 };
+ * var b = { c : 0, d : 3};
+ * var c = { a : 1 };
+ * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
+ *
+ * // caught <anonymous>:4:8
+ * // error msg Object should have no own fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnOnly (file:///.../wTools/staging/wTools.s:4215)
+ * // at <anonymous>:4
+ *
+ * @method assertMapOwnOnly
+ * @throws {Exception} If map( src ) contains unique property.
+ * @memberof wTools
+ *
+ */
+
 var assertMapOwnOnly = function assertMapOwnOnly( src )
 {
 
@@ -4279,6 +4434,52 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {Object} all - object to compare with.
+ * @param {String} [ msgs ] - error message.
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2 };
+ * wTools.assertMapHasAll( a, b );// no exception
+ *
+ * @example
+ * var a = { d : 1 };
+ * var b = { a : 2 };
+ * wTools.assertMapHasAll( a, b );
+ *
+ * // caught <anonymous>:3:10
+ * // Object should have fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4242)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0, y : 2 };
+ * var b = { x : 0, d : 3};
+ * wTools.assertMapHasAll( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg Object should have fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4242)
+ * // at <anonymous>:3
+ *
+ * @method assertMapHasAll
+ * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+ * @memberof wTools
+ *
+ */
+
 var assertMapHasAll = function( src,all,msg )
 {
 
@@ -4305,6 +4506,51 @@ var assertMapHasAll = function( src,all,msg )
 }
 
 //
+
+/**
+ * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {Object} all - object to compare with.
+ * @param {String} [ msgs ] - error message.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2 };
+ * wTools.assertMapOwnAll( a, b );// no exception
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2, b : 2 }
+ * wTools.assertMapOwnAll( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have own fields : b
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4269)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0 };
+ * var b = { x : 1, y : 0};
+ * wTools.assertMapHasAll( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg Object should have fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4269)
+ * // at <anonymous>:3
+ *
+ * @method assertMapOwnAll
+ * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+ * @memberof wTools
+ *
+ */
 
 var assertMapOwnAll = function( src,all,msg )
 {
@@ -4359,6 +4605,52 @@ var assertNotTested = function( src )
 
 //
 
+/**
+ * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If method found some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msg ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * wTools.assertMapHasNone( a, b );// no exception
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2, b : 2 }
+ * wTools.assertMapHasNone( a, b );
+ *
+ * // caught <anonymous>:4:8
+ * // Object should have no fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4518)
+ * // at <anonymous>:4
+ *
+ * @example
+ * var a = { x : 0, y : 1 };
+ * var b = { x : 1, y : 0 };
+ * wTools.assertMapHasNone( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:3:9
+ * // error msg Object should have no fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/wTools.s:3707)
+ * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4518)
+ * // at <anonymous>:3
+ *
+ * @method assertMapHasNone
+ * @throws {Exception} If map( src ) contains some properties from other map(s).
+ * @memberof wTools
+ *
+ */
+
 var assertMapHasNone = function( src )
 {
 
@@ -4378,13 +4670,13 @@ var assertMapHasNone = function( src )
     if( a === arguments.length )
     delete none[ n ];
   }
-
-  if( Object.keys( none ).length )
+  var keys = Object.keys( none );
+  if( keys.length )
   {
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',none.join( ',' ) ],
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
       level : 2,
     });
   }
