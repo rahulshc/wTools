@@ -101,7 +101,7 @@ var shell = ( function( o )
     {
       logger.log( 'stdout',_.strTypeOf( data ),arguments.length );
 
-      if( _.bufferIs( data ) )
+      if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
       data = 'Output :\n' + _.strIndentation( data,'  ' );
@@ -115,7 +115,7 @@ var shell = ( function( o )
     {
       logger.log( 'stderr',_.strTypeOf( data ),arguments.length );
 
-      if( _.bufferIs( data ) )
+      if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
       data = 'Error :\n' + _.strIndentation( data,'  ' );
