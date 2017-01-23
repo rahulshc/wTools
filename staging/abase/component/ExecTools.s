@@ -134,6 +134,9 @@ var shell = ( function( o )
     {
       // logger.log( 'stderr',_.strTypeOf( data ),arguments.length );
 
+      // console.log( '_',_ );
+      console.log( '_.bufferAnyIs',_.bufferAnyIs );
+
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 

@@ -13828,6 +13828,9 @@ if( _global_._wToolsInitConfigExpected !== false )
   _._initUnhandledErrorHandler();
 }
 
+if( typeof __dirname !== 'undefined' )
+console.log( 'wTools',__dirname );
+
 if( typeof module !== 'undefined' && module !== null )
 {
 
