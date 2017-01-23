@@ -1,4 +1,4 @@
-( function Sample_test_s( ) {
+( function _Sample_test_s_( ) {
 
 'use strict';
 
@@ -15,10 +15,14 @@ node ./staging/z.test/Sample.test.s
 if( typeof module !== 'undefined' )
 {
 
-  if( require( 'fs' ).existsSync( __dirname + '/../../amid/diagnostic/Testing.debug.s' ) )
-  require( '../../amid/diagnostic/Testing.debug.s' );
-  else
-  require( 'wTesting' );
+  try
+  {
+    require( '../../amid/diagnostic/Testing.debug.s' );
+  }
+  catch( err )
+  {
+    require( 'wTesting' );
+  }
 
 }
 
