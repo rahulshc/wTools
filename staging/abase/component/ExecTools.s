@@ -74,7 +74,7 @@ var shell = ( function( o )
     if( !ChildProcess )
     ChildProcess = require( 'child_process' );
 
-    // if( o.usingColoring )
+    if( o.usingColoring )
     if( Color === undefined && typeof module !== 'undefined' )
     try
     {
@@ -116,7 +116,7 @@ var shell = ( function( o )
       data = _.bufferToStr( data );
 
       data = 'Output :\n' + _.strIndentation( data,'  ' );
-      if( Color /*&& o.usingColoring*/ )
+      if( Color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
       logger.log( data );
     });
@@ -130,7 +130,7 @@ var shell = ( function( o )
       data = _.bufferToStr( data );
 
       data = 'Error :\n' + _.strIndentation( data,'  ' );
-      if( Color /*&& o.usingColoring*/ )
+      if( Color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
       logger.log( data );
     });
