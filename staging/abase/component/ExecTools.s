@@ -54,7 +54,8 @@ var read = function( data )
 var shell = ( function( o )
 {
 
-  var ChildProcess,Color;
+  var ChildProcess;
+  var Color = _.color;
 
   return function shell( o )
   {
@@ -73,7 +74,7 @@ var shell = ( function( o )
     if( !ChildProcess )
     ChildProcess = require( 'child_process' );
 
-    if( o.usingColoring )
+    // if( o.usingColoring )
     if( Color === undefined && typeof module !== 'undefined' )
     try
     {
@@ -87,13 +88,23 @@ var shell = ( function( o )
 
     /* */
 
-    if( o.usingLogging )
+    // if( o.usingLogging )
     logger.log( o.code );
 
     if( o.usingFork )
-    o.child = ChildProcess.fork( o.code,'',{ silent : false } );
-    else
-    o.child = ChildProcess.exec( o.code );
+    {
+      o.child = ChildProcess.fork( o.code,'',{ silent : false } );
+    }
+    else if( o.mode === 'spawn' )
+    {
+      var args = _.strSplit( o.code );
+      var command = args.shift();
+      o.child = ChildProcess.spawn( command, args );
+    }
+    else if( o.mode === 'exec' )
+    {
+      o.child = ChildProcess.exec( o.code );
+    }
 
     debugger;
     if( o.child.stdout )
@@ -105,7 +116,7 @@ var shell = ( function( o )
       data = _.bufferToStr( data );
 
       data = 'Output :\n' + _.strIndentation( data,'  ' );
-      if( Color && o.usingColoring )
+      if( Color /*&& o.usingColoring*/ )
       data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
       logger.log( data );
     });
@@ -119,7 +130,7 @@ var shell = ( function( o )
       data = _.bufferToStr( data );
 
       data = 'Error :\n' + _.strIndentation( data,'  ' );
-      if( Color && o.usingColoring )
+      if( Color /*&& o.usingColoring*/ )
       data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
       logger.log( data );
     });
@@ -141,7 +152,7 @@ var shell = ( function( o )
 shell.defaults =
 {
   code : null,
-  usingLogging : 1,
+  mode : 'spawn',
   usingFork : 0,
   usingColoring : 1,
 }
