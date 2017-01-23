@@ -54,7 +54,7 @@ var read = function( data )
 var shell = ( function( o )
 {
 
-  var ChildProcess,Chalk;
+  var ChildProcess,Color;
 
   return function shell( o )
   {
@@ -74,14 +74,15 @@ var shell = ( function( o )
     ChildProcess = require( 'child_process' );
 
     if( o.usingColoring )
-    if( Chalk === undefined && typeof module !== 'undefined' )
+    if( Color === undefined && typeof module !== 'undefined' )
     try
     {
-      Chalk = require( 'chalk' );
+      require('wLogger');
+      Color = require( 'wColor' );
     }
     catch( err ) 
     {
-      Chalk = null;
+      Color = null;
     }
 
     /* */
@@ -95,32 +96,31 @@ var shell = ( function( o )
     o.child = ChildProcess.exec( o.code );
 
     debugger;
-
     if( o.child.stdout )
     o.child.stdout.on( 'data', function( data )
     {
-      logger.log( 'stdout',_.strTypeOf( data ),arguments.length );
+      // logger.log( 'stdout',_.strTypeOf( data ),arguments.length );
 
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
       data = 'Output :\n' + _.strIndentation( data,'  ' );
-      if( Chalk && o.usingColoring )
-      data = Chalk.bgYellow( Chalk.black( data ) );
+      if( Color && o.usingColoring )
+      data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
       logger.log( data );
     });
 
     if( o.child.stderr )
     o.child.stderr.on( 'data', function( data )
     {
-      logger.log( 'stderr',_.strTypeOf( data ),arguments.length );
+      // logger.log( 'stderr',_.strTypeOf( data ),arguments.length );
 
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
       data = 'Error :\n' + _.strIndentation( data,'  ' );
-      if( Chalk && o.usingColoring )
-      data = Chalk.bgYellow( Chalk.red( data ) );
+      if( Color && o.usingColoring )
+      data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
       logger.log( data );
     });
 
