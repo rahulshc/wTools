@@ -135,12 +135,20 @@ var shell = ( function( o )
       logger.log( data );
     });
 
+    var errorFlag = false;
+    o.child.on( 'error', function( err )
+    {
+      debugger;
+      errorFlag = 1;
+      con.error( _.err( err ) );
+    });
+
     o.child.on( 'close', function( errCode )
     {
       debugger;
-      if( errCode !== 0 )
+      if( !errorFlag && errCode !== 0 )
       con.error( _.err( 'error code',errCode ) );
-      else
+      else if( !errorFlag && !errCode )
       con.give( errCode );
     });
 
