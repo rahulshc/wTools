@@ -15,6 +15,9 @@ node ./staging/z.test/ExecTools.test.s
 if( typeof module !== 'undefined' )
 {
 
+  require( '../wTools.s' );
+  require( '../component/ExecTools.s' );
+
   require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
 
   // try
@@ -25,8 +28,6 @@ if( typeof module !== 'undefined' )
   // {
   //   require( 'wTesting' );
   // }
-
-  require( '../component/ExecTools.s' );
 
 }
 
@@ -43,26 +44,26 @@ var shell = function shell( test )
   // .ifNoErrorThen( function()
   // {
   //   test.description = 'simple command';
-  //   var con = _.shell( 'cd .' );
+  //   var con = _.shell( 'sh exit' );
   //   return test.shouldMessageOnlyOnce( con );
   // })
-  // .ifNoErrorThen( function( data )
+  // // .ifNoErrorThen( function( data )
+  // // {
+  // //   test.identical( data, 0 );
+  // // })
+  // .ifNoErrorThen( function()
   // {
-  //   test.identical( data, 0 );
+  //   test.description = 'incorrect command, error from error event';
+  //   var con = _.shell( 'xxx' );
+  //   con = test.shouldMessageOnlyOnce( con );
+  //   return test.shouldThrowError( con );
   // })
   .ifNoErrorThen( function()
   {
-    test.description = 'incorrect command, error from error event';
-    var con = _.shell( 'xxx' );
-    // con = test.shouldMessageOnlyOnce( con );
-    return test.shouldThrowError( con );
-  })
-  // .ifNoErrorThen( function()
-  // {
-  //   test.description = 'incorrect argument, error from close event';
-  //   var con = _.shell( 'cd ..' );
-  //   con = test.shouldMessageOnlyOnce( con );
-  // });
+    test.description = 'several arguments';
+    var con = _.shell( 'sh ls -al' );
+    con = test.shouldMessageOnlyOnce( con );
+  });
 
   return con;
 }
@@ -73,6 +74,7 @@ var Proto =
 {
 
   name : 'ExecTools',
+  verbose : 1,
 
   tests :
   {
