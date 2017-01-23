@@ -55,7 +55,7 @@ var shell = ( function( o )
 {
 
   var ChildProcess;
-  var Color = _.color;
+  // var Color = _.color;
 
   return function shell( o )
   {
@@ -75,36 +75,42 @@ var shell = ( function( o )
     ChildProcess = require( 'child_process' );
 
     if( o.usingColoring )
-    if( Color === undefined && typeof module !== 'undefined' )
+    if( _.color === undefined && typeof module !== 'undefined' )
     try
     {
-      require('wLogger');
-      Color = require( 'wColor' );
+      require( 'wLogger' );
+      require( 'wColor' );
     }
     catch( err ) 
     {
-      Color = null;
+      _.color = null;
     }
 
     /* */
 
-    // if( o.usingLogging )
+    if( o.usingLogging )
     logger.log( o.code );
 
-    if( o.usingFork )
+    /* */
+
+    if( o.mode === 'fork')
     {
       o.child = ChildProcess.fork( o.code,'',{ silent : false } );
     }
     else if( o.mode === 'spawn' )
     {
-      var args = _.strSplit( o.code );
-      var command = args.shift();
-      o.child = ChildProcess.spawn( command, args );
+      // var args = _.strSplit( o.code );
+      // var command = args.shift();
+      // o.child = ChildProcess.spawn( command, args );
+      var i = command.indexOf( ' ' );
+      o.child = ChildProcess.spawn( command, [ o.code.substring( i+1 ) ] );
     }
     else if( o.mode === 'exec' )
     {
       o.child = ChildProcess.exec( o.code );
     }
+
+    /* */
 
     debugger;
     if( o.child.stdout )
@@ -115,11 +121,13 @@ var shell = ( function( o )
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
-      data = 'Output :\n' + _.strIndentation( data,'  ' );
-      if( Color && o.usingColoring )
+      data = 'stdout :\n' + _.strIndentation( data,'  ' );
+      if( _.color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
       logger.log( data );
     });
+
+    /* */
 
     if( o.child.stderr )
     o.child.stderr.on( 'data', function( data )
@@ -129,27 +137,38 @@ var shell = ( function( o )
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
-      data = 'Error :\n' + _.strIndentation( data,'  ' );
-      if( Color && o.usingColoring )
+      data = 'stderr :\n' + _.strIndentation( data,'  ' );
+      if( _.color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
       logger.log( data );
     });
 
-    var errorFlag = false;
+    /* */
+
+    var done = false;
     o.child.on( 'error', function( err )
     {
-      debugger;
-      errorFlag = 1;
-      con.error( _.err( err ) );
+      if( done )
+      return;
+
+      done = true;
+      con.error( _.err( 'xxx',err ) );
     });
+
+    /* */
 
     o.child.on( 'close', function( errCode )
     {
-      debugger;
-      if( !errorFlag && errCode !== 0 )
-      con.error( _.err( 'error code',errCode ) );
-      else if( !errorFlag && !errCode )
+      if( done )
+      return;
+
+      done = true;
+
+      if( errCode !== 0 )
+      con.error( _.err( 'Process returned error code :',errCode,'\nLaunched as :',o.code ) );
+      else if( !errCode )
       con.give( errCode );
+
     });
 
     return con;
@@ -160,9 +179,9 @@ var shell = ( function( o )
 shell.defaults =
 {
   code : null,
-  mode : 'spawn',
-  usingFork : 0,
+  mode : 'exec',
   usingColoring : 1,
+  usingLogging : 1,
 }
 
 //
