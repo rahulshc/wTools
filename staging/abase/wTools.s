@@ -5306,21 +5306,29 @@ var symbolIs = function( src )
  * @memberof wTools
  */
 
-var numberIs = function( src )
+var numberIs = function numberIs( src )
 {
   return _ObjectToString.call( src ) === '[object Number]';
 }
 
 //
 
-var boolIs = function( src )
+var boolIs = function boolIs( src )
 {
   return _ObjectToString.call( src ) === '[object Boolean]';
 }
 
 //
 
-var numberIsRegular = function( src )
+var boolLike = function boolLike( src )
+{
+  var type = _ObjectToString.call( src );
+  return type === '[object Boolean]' || type === '[object Number]';
+}
+
+//
+
+var numberIsRegular = function numberIsRegular( src )
 {
   return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
 }
@@ -5875,17 +5883,24 @@ var strPrimitiveTypeOf = function( src )
 
 var str = function str()
 {
-
   var result = '';
+  var line;
+
   if( !arguments.length )
   return result;
 
   for( var a = 0 ; a < arguments.length ; a++ )
   {
-    if( arguments[ a ] && arguments[ a ].toStr )
-    result += arguments[ a ].toStr() + ' ';
+    var src = arguments[ a ];
+
+    if( _.str )
+    line = _.toStr( src );
+    else if( src && src.toStr )
+    line = src.toStr() + ' ';
     else
-    result += String( arguments[ a ] ) + ' ';
+    line = String( src ) + ' ';
+
+    result += line;
   }
 
   return result;
@@ -13436,6 +13451,7 @@ var Proto =
 
   dateIs : dateIs,
   boolIs : boolIs,
+  boolLike : boolLike,
   routineIs : routineIs,
   routineWithNameIs : routineWithNameIs,
   regexpIs : regexpIs,

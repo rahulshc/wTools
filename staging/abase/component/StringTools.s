@@ -2913,11 +2913,6 @@ var strConcat = function strConcat()
 
   var o = _.routineOptionsFromThis( strConcat,this,Self );
 
-  // var o = this || {};
-  // if( Object.isPrototypeOf.call( Self,this ) || Self === this )
-  // o = {};
-  // _.routineOptions( strConcat,o );
-
   o.optionsForToStr = _.mapSupplement( {},o.optionsForToStr,strConcat.defaults.optionsForToStr );
 
   var result = '';
@@ -2940,6 +2935,7 @@ var strConcat = function strConcat()
       }
       else
       {
+        if( i !== 0 )
         result += o.lineDelimter;
       }
     }
@@ -4249,26 +4245,6 @@ strExtractStereoStrips.defaults =
 
 //
 
-var strColorBackground = function( str, color )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.strIs( str ) );
-
-  return `#background : ${color}#${str}#background : default#`;
-}
-
-//
-
-var strColorForeground = function( str, color )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.strIs( str ) );
-
-  return `#foreground : ${color}#${str}#foreground : default#`;
-}
-
-//
-
 var strCsvFrom = function( src,o )
 {
 
@@ -4419,6 +4395,72 @@ function strToConfig( src,o )
 }
 
 // --
+// str color
+// --
+
+var strColorBackground = function strColorBackground( str, color )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( str ) );
+
+  return `#background : ${color}#${str}#background : default#`;
+}
+
+//
+
+var strColorForeground = function strColorForeground( str, color )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( str ) );
+
+  return `#foreground : ${color}#${str}#foreground : default#`;
+}
+
+//
+
+var strColorStyle = function strColorStyle( str, style )
+{
+  var result = str;
+
+  if( _.arrayIs( result ) )
+  result = _.strConcat.apply( _,result );
+
+  if( _.arrayIs( style ) )
+  {
+    _.assert( arguments.length === 2 );
+    for( var s = 0 ; s < style.length ; s++ )
+    result = strColorStyle( result,style[ s ] );
+    return result;
+  }
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( result ),'expects string got',_.strTypeOf( result ) );
+  _.assert( _.strIs( style ),'expects string ( style )' );
+
+  switch( style )
+  {
+
+    case 'good' :
+      result = _.strColor.fg( result, 'green' ); break;
+
+    case 'bad' :
+      result = _.strColor.fg( result, 'red' ); break;
+
+    case 'topic' :
+      result = _.strColor.bg( result, 'dim' ); break;
+
+    case 'neutral' :
+      result = _.strColor.bg( _.strColor.fg( result, 'white' ), 'dim' ); break;
+
+    default :
+      throw _.err( 'strFontStyle : unknown style : ' + style );
+
+  }
+
+  return result;
+}
+
+// --
 // prototype
 // --
 
@@ -4530,6 +4572,7 @@ var Proto =
     background : strColorBackground,
     fg : strColorForeground,
     foreground : strColorForeground,
+    style : strColorStyle,
   }
 
 }
