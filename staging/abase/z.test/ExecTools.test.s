@@ -20,16 +20,14 @@ if( typeof module !== 'undefined' )
 
   // require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
 
-  require( '../../amid/diagnostic/Testing.debug.s' );
-
-  // try
-  // {
-  //   require( '../../amid/diagnostic/Testing.debug.s' );
-  // }
-  // catch( err )
-  // {
-  //   require( 'wTesting' );
-  // }
+  try
+  {
+    require( '../../amid/diagnostic/Testing.debug.s' );
+  }
+  catch( err )
+  {
+    require( 'wTesting' );
+  }
 
 }
 
