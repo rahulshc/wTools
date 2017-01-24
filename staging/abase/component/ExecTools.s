@@ -93,21 +93,31 @@ var shell = ( function( o )
 
     /* */
 
-    if( o.mode === 'fork')
+    try
     {
-      o.child = ChildProcess.fork( o.code,'',{ silent : false } );
+
+      if( o.mode === 'fork')
+      {
+        o.child = ChildProcess.fork( o.code,'',{ silent : false } );
+      }
+      else if( o.mode === 'spawn' )
+      {
+        var args = _.strSplit( o.code );
+        var command = args.shift();
+        console.log( 'spawn :',command,args )
+        o.child = ChildProcess.spawn( command, args );
+        // var i = o.code.indexOf( ' ' );
+        // o.child = ChildProcess.spawn( o.code.substring( 0,i ),[ o.code.substring( i+1 ) ] );
+      }
+      else if( o.mode === 'exec' )
+      {
+        o.child = ChildProcess.exec( o.code );
+      }
+
     }
-    else if( o.mode === 'spawn' )
+    catch( err )
     {
-      // var args = _.strSplit( o.code );
-      // var command = args.shift();
-      // o.child = ChildProcess.spawn( command, args );
-      var i = command.indexOf( ' ' );
-      o.child = ChildProcess.spawn( command, [ o.code.substring( i+1 ) ] );
-    }
-    else if( o.mode === 'exec' )
-    {
-      o.child = ChildProcess.exec( o.code );
+      return con.error( err );
     }
 
     /* */
@@ -134,13 +144,10 @@ var shell = ( function( o )
     {
       // logger.log( 'stderr',_.strTypeOf( data ),arguments.length );
 
-      // console.log( '_',_ );
-      console.log( '_.bufferAnyIs',_.bufferAnyIs );
-
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
-      data = 'stderr :\n' + _.strIndentation( data,'  ' );
+      data = 'stder :\n' + _.strIndentation( data,'  ' );
       if( _.color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
       logger.log( data );
@@ -155,7 +162,7 @@ var shell = ( function( o )
       return;
 
       done = true;
-      con.error( _.err( 'xxx',err ) );
+      con.error( _.err( err ) );
     });
 
     /* */
@@ -167,9 +174,9 @@ var shell = ( function( o )
 
       done = true;
 
-      if( errCode !== 0 )
+      if( errCode !== 0 && o.throwingNotZeroReturn )
       con.error( _.err( 'Process returned error code :',errCode,'\nLaunched as :',o.code ) );
-      else if( !errCode )
+      else
       con.give( errCode );
 
     });
@@ -182,7 +189,8 @@ var shell = ( function( o )
 shell.defaults =
 {
   code : null,
-  mode : 'exec',
+  mode : 'spawn',
+  throwingNotZeroReturn : 0,
   usingColoring : 1,
   usingLogging : 1,
 }
