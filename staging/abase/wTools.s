@@ -16,6 +16,8 @@ if( !_global_ && typeof global !== 'undefined' && global.global === global ) _gl
 if( !_global_ && typeof window !== 'undefined' && window.window === window ) _global_ = window;
 if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ = self;
 
+// global var
+
 _global_[ '_global_' ] = _global_;
 _global_._global_ = _global_;
 
@@ -1057,7 +1059,7 @@ var entityClone = function( src,options )
 {
   var result;
 
-  //throw 'not stable';
+  //throw Error( 'not stable' );
 
   if( options !== undefined && !_.objectIs( options ) )
   throw _.err( 'wTools.entityClone :','need options' );
@@ -3796,29 +3798,29 @@ entitySearch.defaults.__proto__ = _each.defaults;
 // diagnostics
 // --
 
-  /**
-   * Creates Error object based on passed options.
-   * Result error contains in message detailed stack trace and error description.
-   * @param {Object} o Options for creating error.
-   * @param {String[]|Error[]} o.args array with messages or errors objects, from which will be created Error obj.
-   * @param {number} [o.level] using for specifying in error message on which level of stack trace was caught error.
-   * @returns {Error} Result Error. If in `o.args` passed Error object, result will be reference to it.
-   * @private
-   * @throws {Error} Expects single argument if pass les or more than one argument
-   * @throws {Error} o.args should be array like, if o.args is not array.
-   * @method _err
-   * @memberof wTools
-   */
+/**
+ * Creates Error object based on passed options.
+ * Result error contains in message detailed stack trace and error description.
+ * @param {Object} o Options for creating error.
+ * @param {String[]|Error[]} o.args array with messages or errors objects, from which will be created Error obj.
+ * @param {number} [o.level] using for specifying in error message on which level of stack trace was caught error.
+ * @returns {Error} Result Error. If in `o.args` passed Error object, result will be reference to it.
+ * @private
+ * @throws {Error} Expects single argument if pass les or more than one argument
+ * @throws {Error} o.args should be array like, if o.args is not array.
+ * @method _err
+ * @memberof wTools
+ */
 
 var _err = function _err( o )
 {
   var result;
 
   if( arguments.length !== 1 )
-  throw '_err : expects single argument';
+  throw Error( '_err : expects single argument' );
 
   if( !_.arrayLike( o.args ) )
-  throw '_err : o.args should be array like';
+  throw Error( '_err : o.args should be array like' );
 
   if( !_.numberIs( o.level ) )
   o.level = _err.defaults.level;
@@ -3826,7 +3828,14 @@ var _err = function _err( o )
   if( o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
 
-  /*Error.stackTraceLimit = 99;*/
+  /* var */
+
+  var originalMessage = '';
+  var fileName,lineNumber;
+
+  /* Error.stackTraceLimit = 99; */
+
+  /* find error in arguments */
 
   for( var a = 0 ; a < o.args.length ; a++ )
   {
@@ -3842,7 +3851,6 @@ var _err = function _err( o )
           writable : true,
           value : 0,
         });
-        //result.attentionNeeded = 0;
       }
       if( result.originalMessage )
       o.args[ a ] = result.originalMessage
@@ -3857,14 +3865,11 @@ var _err = function _err( o )
     }
   }
 
-  /* */
-
-  var originalMessage = '';
-  var fileName,lineNumber;
+  /* no error in arguments, make new one */
 
   if( !result )
   {
-    var stack = _.stack( o.level,-1 );
+    var stack = _.diagnosticStack( o.level,-1 );
     result = new Error( originalMessage + '\n' + stack + '\n' );
     Object.defineProperty( result, 'stack',
     {
@@ -3873,12 +3878,14 @@ var _err = function _err( o )
       writable : true,
       value : stack,
     });
-    //result.originalStack = stack;
   }
+
+  /* error does not have stack */
 
   if( !result.stack )
   {
-    var stack = _.stack( o.level,-1 );
+    debugger;
+    var stack = _.diagnosticStack( o.level,-1 );
     Object.defineProperty( result, 'stack',
     {
       enumerable : false,
@@ -3888,7 +3895,7 @@ var _err = function _err( o )
     });
   }
 
-  /* */
+  /* collect data */
 
   for( var a = 0 ; a < o.args.length ; a++ )
   {
@@ -3939,48 +3946,98 @@ var _err = function _err( o )
 
   if( lineNumber !== undefined )
   {
-    debugger;
-    originalMessage += '\n' + 'Line : ' + lineNumber;
+    // originalMessage += '\n' + 'Line : ' + lineNumber;
+    Object.defineProperty( result, 'lineNumber',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : lineNumber,
+    });
   }
 
   if( fileName !== undefined )
   {
-    debugger;
+    if( lineNumber !== undefined )
+    originalMessage += '\n' + 'File : ' + fileName + ':' + lineNumber;
+    else
     originalMessage += '\n' + 'File : ' + fileName;
+    Object.defineProperty( result, 'fileName',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : fileName,
+    });
   }
 
-  /* */
+  /* where it was caught */
 
   if( originalMessage[ 0 ] !== '\n' )
   originalMessage = '\n' + originalMessage;
-  originalMessage = '\n' + 'caught ' + _.stack( o.level ).split( '\n' ) + originalMessage;
+  originalMessage = '\n' + 'caught ' + _.diagnosticStack( o.level,o.level+1 ) + originalMessage;
+
+  /*  */
+
+  if( !result.caughtCounter )
+  {
+    debugger;
+    var code = '';
+    code = _.diagnosticCode({ error : result }); /* wrap by try */
+    if( code && code.length < 400 )
+    {
+      originalMessage += '\n \n';
+      originalMessage += code;
+      originalMessage += '\n ';
+    }
+  }
 
   /* */
 
-  if( !result )
+  try
   {
-    throw _.err( 'not expected' );
-
-    var stack = _.stack( o.level,-1 );
-    result = new Error( originalMessage + '\n' + stack + '\n' );
-    result.stack = stack;
-    //result.originalStack = stack;
-  }
-  else try
-  {
-    result.message = '';
-    result.message = originalMessage + '\n' + ( result.originalStack || result.stack || '' ) + '\n';
+    Object.defineProperty( result, 'message',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : originalMessage + '\n' + ( result.originalStack || result.stack || '' ) + '\n',
+    });
   }
   catch( e )
   {
     debugger;
     var stack = result.stack || new Error().stack;
     result = new Error( originalMessage + '\n' + stack + '\n' );
-    result.stack = stack;
-    //result.originalStack = stack;
+    try
+    {
+      Object.defineProperty( result, 'stack',
+      {
+        enumerable : false,
+        configurable : true,
+        writable : true,
+        value : stack,
+      });
+    }
+    catch( err )
+    {}
   }
 
-  result.originalMessage = originalMessage;
+  Object.defineProperty( result, 'originalMessage',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : originalMessage,
+  });
+
+  Object.defineProperty( result, 'caughtCounter',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : result.caughtCounter ? result.caughtCounter+1 : 1,
+  });
 
   return result;
 }
@@ -3993,35 +4050,35 @@ _err.defaults =
 
 //
 
-  /**
-   * Creates error object, with message created from passed `msg` parameters and contains error trace.
-   * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
-   concatenating them.
-   *
-   * @example
-    function divide( x, y )
-    {
-      if( y == 0 )
-        throw wTools.err( 'divide by zero' )
-      return x / y;
-    }
-    divide( 3, 0 );
+/**
+ * Creates error object, with message created from passed `msg` parameters and contains error trace.
+ * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
+ concatenating them.
+ *
+ * @example
+  function divide( x, y )
+  {
+    if( y == 0 )
+      throw wTools.err( 'divide by zero' )
+    return x / y;
+  }
+  divide( 3, 0 );
 
-   // Error:
-   // caught     at divide (<anonymous>:2:29)
-   // divide by zero
-   // Error
-   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
-   //   at wTools.err (file:///.../wTools/staging/wTools.s:1449:10)
-   //   at divide (<anonymous>:2:29)
-   //   at <anonymous>:1:1
-   *
-   * @param {...String|Error} msg Accepts list of messeges/errors.
-   * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
-   * reference.
-   * @method err
-   * @memberof wTools
-   */
+ // Error:
+ // caught     at divide (<anonymous>:2:29)
+ // divide by zero
+ // Error
+ //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+ //   at wTools.err (file:///.../wTools/staging/wTools.s:1449:10)
+ //   at divide (<anonymous>:2:29)
+ //   at <anonymous>:1:1
+ *
+ * @param {...String|Error} msg Accepts list of messeges/errors.
+ * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+ * reference.
+ * @method err
+ * @memberof wTools
+ */
 
 var err = function err()
 {
@@ -4138,61 +4195,554 @@ var errLogOnce = function errLogOnce( err )
 
 //
 
-  /**
-   * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
-   * If condition is true method returns without exceptions, otherwise method generates and throws exception. By default generates error with message 'Assertion failed'.
-   * Also generates error using message(s) or existing error object(s) passed after first argument.
-   *
-   * @param {*} condition - condition to check.
-   * @param {String|Error} [ msgs ] - error messages for generated exception.
-   *
-   * @example
-   * var x = 1;
-   * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
-   *
-   * // caught eval (<anonymous>:2:8)
-   * // incorrect variable type-> number expects string
-   * // Error
-   * //   at _err (file:///.../wTools/staging/wTools.s:3707)
-   * //   at assert (file://.../wTools/staging/wTools.s:4041)
-   * //   at add (<anonymous>:2)
-   * //   at <anonymous>:1
-   *
-   * @example
-   * function add( x, y )
-   * {
-   *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
-   *   return x + y;
-   * }
-   * add();
-   *
-   * // caught add (<anonymous>:3:14)
-   * // incorrect arguments count
-   * // Error
-   * //   at _err (file:///.../wTools/staging/wTools.s:3707)
-   * //   at assert (file://.../wTools/staging/wTools.s:4035)
-   * //   at add (<anonymous>:3:14)
-   * //   at <anonymous>:6
-   *
-   * @example
-   *   function divide ( x, y )
-   *   {
-   *      wTools.assert( y != 0, 'divide by zero' );
-   *      return x / y;
-   *   }
-   *   divide (3, 0);
-   *
-   * // caught     at divide (<anonymous>:2:29)
-   * // divide by zero
-   * // Error
-   * //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
-   * //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
-   * //   at divide (<anonymous>:2:29)
-   * //   at <anonymous>:1:1
-   * @throws {Error} If passed condition( condition ) fails.
-   * @method assert
-   * @memberof wTools
-   */
+var _diagnosticStripPath = function _diagnosticStripPath( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( _.strIs( src ) )
+  {
+    src = src.replace( /^\s+/,'' );
+    // src = src.replace( /^at/,'' );
+    // src = src.replace( /^\s+/,'' );
+  }
+
+  return src;
+}
+
+//
+
+var diagnosticScript = function diagnosticScript( path )
+{
+
+  if( typeof document !== 'undefined' && document.scripts )
+  {
+    var scripts = document.scripts;
+    for( var s = 0 ; s < scripts.length ; s++ )
+    if( scripts[ s ].src === path )
+    return scripts[ s ];
+  }
+  else
+  {
+    debugger;
+  }
+
+}
+
+//
+
+var diagnosticLocation = function diagnosticLocation( o )
+{
+
+  if( _.numberIs( o ) )
+  o = { level : o }
+  else if( _.strIs( o ) )
+  o = { stack : o, level : 0 }
+  else if( _.errorIs( o ) )
+  o = { error : o, level : 0 }
+
+  _.routineOptions( diagnosticLocation,o );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
+
+  var fileName,lineNumber;
+
+  debugger;
+
+  if( o.error && _.strIs( o.error.fileName ) && _.numberIs( o.error.lineNumber ) )
+  {
+    debugger;
+    var result = { path : o.error.fileName, line : o.error.lineNumber, col : o.error.colNumber }
+    return result;
+  }
+
+  if( !o.stack )
+  {
+    debugger;
+    o.stack = _.diagnosticStack( o.error || undefined );
+  }
+
+  if( _.strIs( o.stack ) )
+  o.stack = o.stack.split( '\n' );
+  var path = o.stack[ o.level ];
+
+  if( !_.strIs( path ) )
+  return;
+
+  /* path = _._diagnosticStripPath( path ); */
+
+  path = path.replace( /^\s+/,'' );
+  path = path.replace( /^at/,'' );
+  path = path.replace( /^\s+/,'' );
+
+  if( path.indexOf( '(' ) !== -1 )
+  path = _.strInbetweenOf( path,'(',')' );
+
+  if( !path )
+  return;
+
+  var halfs = _.strInhalfRight( path,':' );
+
+  path = halfs[ 0 ];
+
+  if( !halfs[ 1 ] )
+  return { path : path };
+
+  var colNumber = halfs[ 1 ];
+  var halfs = _.strInhalfRight( path,':' );
+  var lineNumber = halfs[ 1 ];
+  path = halfs[ 0 ];
+
+  lineNumber = Number( lineNumber );
+  colNumber = Number( colNumber );
+
+  var result = { path : path };
+
+  if( !isNaN( lineNumber ) )
+  result.line = lineNumber;
+
+  if( !isNaN( colNumber ) )
+  result.col = colNumber;
+
+  return result;
+}
+
+diagnosticLocation.defaults =
+{
+  level : 0,
+  stack : null,
+  error : null,
+}
+
+//
+
+var diagnosticCode = function diagnosticCode( o )
+{
+
+  // if( _.numberIs( o ) )
+  // o = { level : o }
+  // else if( _.strIs( o ) )
+  // o = { stack : o, level : 0 }
+  // else if( _.errorIs( o ) )
+  // o = { error : o, level : 0 }
+
+  _.routineOptions( diagnosticCode,o );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+
+  if( !o.location )
+  {
+    if( o.error )
+    o.location = _.diagnosticLocation({ error : o.error, level : o.level });
+    else
+    o.location = _.diagnosticLocation({ stack : o.stack, level : o.stack ? o.level : o.level+1 });
+  }
+
+  if( !o.location.path || o.location.line === undefined )
+  return;
+
+  // var script = _.diagnosticScript( o.location.path );
+  // if( !script )
+  // return;
+
+  if( !_.fileProvider )
+  return;
+
+  try
+  {
+    var code = _.fileProvider.fileRead
+    ({
+      sync : 1,
+      pathFile : o.location.path,
+    })
+  }
+  catch( err )
+  {
+    return;
+  }
+
+  if( !code )
+  return;
+
+  var result = _.strLinesSelect
+  ({
+    src : code,
+    line : o.location.line,
+    radius : o.radius,
+    zero : 1,
+    number : 1,
+  });
+
+  return result;
+}
+
+diagnosticCode.defaults =
+{
+  level : 0,
+  radius : 2,
+  stack : null,
+  error : null,
+  location : null,
+}
+
+//
+
+/**
+ * Return stack trace as string.
+ * @example
+  var stack;
+  function function1()
+  {
+    function2();
+  }
+
+  function function2()
+  {
+    function3();
+  }
+
+  function function3()
+  {
+    stack = wTools.diagnosticStack();
+  }
+
+  function1();
+  console.log( stack );
+ //"    at function3 (<anonymous>:10:17)
+ // at function2 (<anonymous>:6:2)
+ // at function1 (<anonymous>:2:2)
+ // at <anonymous>:1:1"
+ *
+ * @returns {String} Return stack trace from call point.
+ * @method stack
+ * @memberof wTools
+ */
+
+var diagnosticStack = function diagnosticStack( stack,first,last )
+{
+
+  // if( stack && !_.errorIs( stack ) )
+  // {
+  //   debugger;
+  //   var x = _.errorIs( stack );
+  // }
+
+  if( _.numberIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined )
+  {
+
+    // if( arguments.length !== 0 && arguments.length !== 2 )
+    // {
+    //   debugger;
+    //   throw Error( 'diagnosticStack : expects zero or two arguments if no error provided' );
+    // }
+
+    var first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
+    var last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
+
+    return diagnosticStack( new Error(),first,last );
+  }
+
+  if( arguments.length !== 1 && arguments.length !== 2 && arguments.length !== 3 )
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects one, two or three arguments if error provided' );
+  }
+
+  if( !_.numberIs( first ) && first !== undefined )
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects number ( first ), got ' + _.strTypeOf( first ) );
+  }
+
+  if( !_.numberIs( last ) && last !== undefined )
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects number ( last ), got' + _.strTypeOf( last ) );
+  }
+
+  var errorIs = 0;
+  if( _.errorIs( stack ) )
+  {
+    stack = stack.stack;
+    errorIs = 1;
+  }
+
+  if( !stack )
+  return '';
+
+  if( !_.arrayIs( stack ) )
+  stack = stack.split( '\n' );
+
+  /* remove redundant lines */
+
+  if( !errorIs )
+  debugger;
+
+  if( errorIs )
+  if( stack.length && stack[ 0 ].indexOf( 'at ' ) === -1 )
+  stack.splice( 0,1 );
+
+  if( stack[ 0 ].indexOf( 'at ' ) === -1 )
+  throw Error( 'diagnosticStack : cant parse stack ' + stack );
+
+  /* */
+
+  var first = first === undefined ? 0 : first;
+  var last = last === undefined ? stack.length : last;
+
+  if( _.numberIs( first ) )
+  if( first < 0 )
+  first = stack.length + first;
+
+  if( _.numberIs( last ) )
+  if( last < 0 )
+  last = stack.length + last + 1;
+
+  /* */
+
+  if( last-first === 1 )
+  {
+    stack = stack[ first ];
+
+    if( _.strIs( stack ) )
+    {
+      stack = _._diagnosticStripPath( stack );
+    }
+
+    return stack;
+  }
+  else if( first !== 0 || last !== stack.length )
+  {
+    stack = stack.slice( first || 0,last );
+  }
+
+  /* */
+
+  stack = String( stack.join( '\n' ) );
+
+  return stack;
+}
+
+//
+
+/*
+_.diagnosticWatchObject
+({
+  dst : self,
+  names : 'wells',
+});
+*/
+
+/*
+_.diagnosticWatchObject
+({
+  dst : _global_,
+  names : 'logger',
+});
+*/
+
+//var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
+var diagnosticWatchObject = function diagnosticWatchObject( o )
+{
+
+  if( arguments.length === 2 )
+  {
+    o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
+
+  debugger;
+  if( o.names )
+  o.names = _.nameFielded( o.names );
+
+  Object.observe( o.dst,function( changes )
+  {
+    for( var c in changes )
+    {
+      var change = changes[ c ];
+      if( o.names )
+      if( !o.names[ change.name ] ) return;
+      console.log( change.type,change.name,change.object[ change.name ] );
+      //if( !change.object[ change.name ] )
+      //console.log( change.name,change.object[ change.name ] );
+    }
+    //debugger;
+  });
+
+}
+
+diagnosticWatchObject.defaults =
+{
+  dst : null,
+  names : null,
+}
+
+//
+
+/*
+
+_.diagnosticWatchFields
+({
+  dst : _global_,
+  names : 'Uniforms',
+});
+
+_.diagnosticWatchFields
+({
+  dst : state,
+  names : 'filterColor',
+});
+
+_.diagnosticWatchFields
+({
+  dst : _global_,
+  names : 'Config',
+});
+
+_.diagnosticWatchFields
+({
+  dst : _global_,
+  names : 'logger',
+});
+
+*/
+
+var diagnosticWatchFields = function diagnosticWatchFields( o )
+{
+  var o = o || {};
+
+  if( o.names )
+  o.names = _.nameFielded( o.names );
+  else
+  o.names = o.dst;
+
+  _assert( arguments.length === 1 );
+  _.assertMapHasOnly( o,diagnosticWatchFields.defaults );
+  _.mapComplement( o,diagnosticWatchFields.defaults );
+  _assert( o.dst );
+  _assert( o.names );
+
+  for( var f in o.names ) ( function()
+  {
+
+    var fieldName = f;
+    var fieldSymbol = Symbol.for( f );
+    //o.dst[ fieldSymbol ] = o.dst[ f ];
+    var val = o.dst[ f ];
+
+    /* */
+
+    var read = function read()
+    {
+      //var result = o.dst[ fieldSymbol ];
+      var result = val;
+      if( o.printValue )
+      console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
+      else
+      console.log( 'reading ' + fieldName );
+      return result;
+    }
+
+    /* */
+
+    var write = function write( src )
+    {
+      debugger;
+      if( o.printValue )
+      console.log( 'writing ' + fieldName + ' ' + _.toStr( src ) );
+      else
+      console.log( 'writing ' + fieldName );
+      debugger;
+      //o.dst[ fieldSymbol ] = src;
+      val = src;
+    }
+
+    /* */
+
+    debugger;
+    Object.defineProperty( o.dst, fieldName,
+    {
+      enumerable : true,
+      configurable : true,
+      get : read,
+      set : write,
+    });
+
+  })();
+
+}
+
+diagnosticWatchFields.defaults =
+{
+  printValue : true,
+  names : null,
+  dst : null,
+}
+
+//
+
+var diagnosticBeep = function diagnosticBeep()
+{
+  console.log( '\x07' );
+}
+
+//
+
+/**
+ * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * If condition is true method returns without exceptions, otherwise method generates and throws exception. By default generates error with message 'Assertion failed'.
+ * Also generates error using message(s) or existing error object(s) passed after first argument.
+ *
+ * @param {*} condition - condition to check.
+ * @param {String|Error} [ msgs ] - error messages for generated exception.
+ *
+ * @example
+ * var x = 1;
+ * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
+ *
+ * // caught eval (<anonymous>:2:8)
+ * // incorrect variable type-> number expects string
+ * // Error
+ * //   at _err (file:///.../wTools/staging/wTools.s:3707)
+ * //   at assert (file://.../wTools/staging/wTools.s:4041)
+ * //   at add (<anonymous>:2)
+ * //   at <anonymous>:1
+ *
+ * @example
+ * function add( x, y )
+ * {
+ *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
+ *   return x + y;
+ * }
+ * add();
+ *
+ * // caught add (<anonymous>:3:14)
+ * // incorrect arguments count
+ * // Error
+ * //   at _err (file:///.../wTools/staging/wTools.s:3707)
+ * //   at assert (file://.../wTools/staging/wTools.s:4035)
+ * //   at add (<anonymous>:3:14)
+ * //   at <anonymous>:6
+ *
+ * @example
+ *   function divide ( x, y )
+ *   {
+ *      wTools.assert( y != 0, 'divide by zero' );
+ *      return x / y;
+ *   }
+ *   divide (3, 0);
+ *
+ * // caught     at divide (<anonymous>:2:29)
+ * // divide by zero
+ * // Error
+ * //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
+ * //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
+ * //   at divide (<anonymous>:2:29)
+ * //   at <anonymous>:1:1
+ * @throws {Error} If passed condition( condition ) fails.
+ * @method assert
+ * @memberof wTools
+ */
 
 var assert = function assert( condition )
 {
@@ -4344,6 +4894,33 @@ var assertMapHasOnly = function assertMapHasOnly( src )
   var hasMsg = _.strIs( arguments[ l-1 ] );
   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
   var but = Object.keys( _.mapBut.apply( this,args ) );
+
+  if( but.length > 0 )
+  {
+    if( _.strJoin )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+var assertMapHasOnlyWithUndefines = function assertMapHasOnlyWithUndefines( src )
+{
+
+  if( DEBUG === false )
+  return;
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+  var but = Object.keys( _.mapButWithUndefines.apply( this,args ) );
 
   if( but.length > 0 )
   {
@@ -4755,95 +5332,7 @@ var assertWarn = function( condition )
 
 //
 
-  /**
-   * Return stack trace as string.
-   * @example
-    var stack;
-    function function1()
-    {
-      function2();
-    }
-
-    function function2()
-    {
-      function3();
-    }
-
-    function function3()
-    {
-      stack = wTools.stack();
-    }
-
-    function1();
-    stack
-   //"    at function3 (<anonymous>:10:17)
-   // at function2 (<anonymous>:6:2)
-   // at function1 (<anonymous>:2:2)
-   // at <anonymous>:1:1"
-   *
-   * @returns {String} Return stack trace from call point.
-   * @method stack
-   * @memberof wTools
-   */
-
-var stack = function stack( first,extent )
-{
-  var e = new Error();
-  var result = e.stack;
-
-  /*_.assert( arguments.length === 0 && arguments.length === 1 );*/
-
-  result = result.split( '\n' );
-
-  result.splice( 0,2 );
-
-  /* */
-
-  if( _.numberIs( first ) )
-  if( first < 0 )
-  result.length + first;
-
-  // if( _.numberIs( extent ) )
-  // debugger;
-
-  if( _.numberIs( extent ) )
-  if( extent < 0 )
-  result.length + extent + 1;
-
-  /* */
-
-  if( arguments.length === 0 )
-  {
-  }
-  else if( arguments.length === 1 )
-  {
-    result = result[ first ];
-
-    if( _.strIs( result ) )
-    {
-      result = result.replace( /^\s+/,'' );
-      result = result.replace( /^at/,'' );
-      result = result.replace( /^\s+/,'' );
-    }
-
-    return result;
-  }
-  else if( arguments.length === 2 )
-  {
-    result = result.slice( first,extent );
-  }
-  else throw new Error( '( stack ) expects zero, one or two arguments' );
-
-  /* */
-
-  result = String( result.join( '\n' ) );
-
-  return result;
-}
-
-//
-
-var includeAny = function()
+var requireAny = function requireAny()
 {
 
   for( var a = 0 ; a < arguments.length ; a++ )
@@ -4869,171 +5358,6 @@ var includeAny = function()
 
   }
 
-}
-
-//
-
-/*
-_.diagnosticWatchObject
-({
-  dst : self,
-  names : 'wells',
-});
-*/
-
-/*
-_.diagnosticWatchObject
-({
-  dst : _global_,
-  names : 'logger',
-});
-*/
-
-//var diagnosticWatchObject = function diagnosticWatchObject( dst,options )
-var diagnosticWatchObject = function diagnosticWatchObject( o )
-{
-
-  if( arguments.length === 2 )
-  {
-    o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
-  }
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
-
-  debugger;
-  if( o.names )
-  o.names = _.nameFielded( o.names );
-
-  Object.observe( o.dst,function( changes )
-  {
-    for( var c in changes )
-    {
-      var change = changes[ c ];
-      if( o.names )
-      if( !o.names[ change.name ] ) return;
-      console.log( change.type,change.name,change.object[ change.name ] );
-      //if( !change.object[ change.name ] )
-      //console.log( change.name,change.object[ change.name ] );
-    }
-    //debugger;
-  });
-
-}
-
-diagnosticWatchObject.defaults =
-{
-  dst : null,
-  names : null,
-}
-
-//
-
-/*
-
-_.diagnosticWatchFields
-({
-  dst : _global_,
-  names : 'Uniforms',
-});
-
-_.diagnosticWatchFields
-({
-  dst : state,
-  names : 'filterColor',
-});
-
-_.diagnosticWatchFields
-({
-  dst : _global_,
-  names : 'Config',
-});
-
-_.diagnosticWatchFields
-({
-  dst : _global_,
-  names : 'logger',
-});
-
-*/
-
-var diagnosticWatchFields = function( o )
-{
-  var o = o || {};
-
-  if( o.names )
-  o.names = _.nameFielded( o.names );
-  else
-  o.names = o.dst;
-
-  _assert( arguments.length === 1 );
-  _.assertMapHasOnly( o,diagnosticWatchFields.defaults );
-  _.mapComplement( o,diagnosticWatchFields.defaults );
-  _assert( o.dst );
-  _assert( o.names );
-
-  for( var f in o.names ) ( function()
-  {
-
-    var fieldName = f;
-    var fieldSymbol = Symbol.for( f );
-    //o.dst[ fieldSymbol ] = o.dst[ f ];
-    var val = o.dst[ f ];
-
-    /* */
-
-    var read = function read()
-    {
-      //var result = o.dst[ fieldSymbol ];
-      var result = val;
-      if( o.printValue )
-      console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
-      else
-      console.log( 'reading ' + fieldName );
-      return result;
-    }
-
-    /* */
-
-    var write = function write( src )
-    {
-      debugger;
-      if( o.printValue )
-      console.log( 'writing ' + fieldName + ' ' + _.toStr( src ) );
-      else
-      console.log( 'writing ' + fieldName );
-      debugger;
-      //o.dst[ fieldSymbol ] = src;
-      val = src;
-    }
-
-    /* */
-
-    debugger;
-    Object.defineProperty( o.dst, fieldName,
-    {
-      enumerable : true,
-      configurable : true,
-      get : read,
-      set : write,
-    });
-
-  })();
-
-}
-
-diagnosticWatchFields.defaults =
-{
-  printValue : true,
-  names : null,
-  dst : null,
-}
-
-//
-
-var diagnosticBeep = function()
-{
-  console.log( '\x07' );
 }
 
 // --
@@ -5306,21 +5630,29 @@ var symbolIs = function( src )
  * @memberof wTools
  */
 
-var numberIs = function( src )
+var numberIs = function numberIs( src )
 {
   return _ObjectToString.call( src ) === '[object Number]';
 }
 
 //
 
-var boolIs = function( src )
+var boolIs = function boolIs( src )
 {
   return _ObjectToString.call( src ) === '[object Boolean]';
 }
 
 //
 
-var numberIsRegular = function( src )
+var boolLike = function boolLike( src )
+{
+  var type = _ObjectToString.call( src );
+  return type === '[object Boolean]' || type === '[object Number]';
+}
+
+//
+
+var numberIsRegular = function numberIsRegular( src )
 {
   return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
 }
@@ -5583,7 +5915,7 @@ var consequenceIs = function consequenceIs( src )
 
 var errorIs = function errorIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Error]';
+  return src instanceof Error || _ObjectToString.call( src ) === '[object Error]';
 }
 
 //
@@ -5875,17 +6207,24 @@ var strPrimitiveTypeOf = function( src )
 
 var str = function str()
 {
-
   var result = '';
+  var line;
+
   if( !arguments.length )
   return result;
 
   for( var a = 0 ; a < arguments.length ; a++ )
   {
-    if( arguments[ a ] && arguments[ a ].toStr )
-    result += arguments[ a ].toStr() + ' ';
+    var src = arguments[ a ];
+
+    if( _.str )
+    line = _.toStr( src,{ stringWrapper : '' } );
+    else if( src && src.toStr )
+    line = src.toStr();
     else
-    result += String( arguments[ a ] ) + ' ';
+    line = String( src );
+
+    result += line + ' ';
   }
 
   return result;
@@ -5979,20 +6318,43 @@ var strEndOf = function strEndOf( src,begin )
 
 //
 
+var strInbetweenOf = function strInbetweenOf( src,begin,end )
+{
+
+  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( begin ),'expects string ( begin )' );
+  _.assert( _.strIs( end ),'expects string ( end )' );
+  _.assert( arguments.length === 3 );
+
+  var f = src.indexOf( begin );
+  if( f === -1 )
+  return;
+
+  var l = src.lastIndexOf( end );
+  if( l === -1 || l <= f )
+  return;
+
+  var result = src.substring( f+1,l );
+
+  return result;
+}
+
+//
+
  /**
    * Cut begin of the string.
    * @param {string} src
    * @param {string} begin
    * @example
-     var scr = _.strBeginRemove( "abc","a" );
+     var scr = _.strRemoveBegin( "abc","a" );
    * @return {string}
    * If result of method strBegins - false, than return src
    * else cut begin of param src
-   * @method strBeginRemove
+   * @method strRemoveBegin
    * @memberof wTools
    */
 
-var strBeginRemove = function( src,begin )
+var strRemoveBegin = function strRemoveBegin( src,begin )
 {
   if( !strBegins( src,begin ) )
   return src;
@@ -6006,15 +6368,15 @@ var strBeginRemove = function( src,begin )
    * @param {string} src
    * @param {string} end
    * @example
-     var scr = _.strEndRemove( "abc","c" );
+     var scr = _.strRemoveEnd( "abc","c" );
    * @return {string}
    * If result of method strEnds - false, than return src
    * Else cut end of param src
-   * @method strEndRemove
+   * @method strRemoveEnd
    * @memberof wTools
    */
 
-var strEndRemove = function( src,end )
+var strRemoveEnd = function strRemoveEnd( src,end )
 {
   if( !strEnds( src,end ) )
   return src;
@@ -6489,30 +6851,30 @@ var regexpMakeObject = function( src,defaultMode )
  * @memberof wTools
  */
 
-var _routineBind = function _routineBind( options )
+var _routineBind = function _routineBind( o )
 {
 
   _assert( arguments.length === 1 );
-  _assert( _.boolIs( options.seal ) );
-  _assert( _.routineIs( options.routine ),'_routineBind :','expects routine' );
-  _assert( _.arrayIs( options.args ) || _.argumentsIs( options.args ) || options.args === undefined );
+  _assert( _.boolIs( o.seal ) );
+  _assert( _.routineIs( o.routine ),'_routineBind :','expects routine' );
+  _assert( _.arrayIs( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
 
-  var routine = options.routine;
-  var args = options.args;
-  var context = options.context;
+  var routine = o.routine;
+  var args = o.args;
+  var context = o.context;
 
   if( _FunctionBind )
   {
 
     if( context !== undefined && args === undefined )
     {
-      if( options.seal === true )
+      if( o.seal === true )
       throw _.err( 'not tested, not clear what convetion was meant. use [] as third argument or rotineJoin' );
       return _FunctionBind.call( routine, context );
     }
     else if( context !== undefined )
     {
-      if( options.seal === true )
+      if( o.seal === true )
       {
         return function sealedContextAndArguments()
         {
@@ -6525,19 +6887,22 @@ var _routineBind = function _routineBind( options )
         return _FunctionBind.apply( routine, a );
       }
     }
+    else if( args === undefined && !o.seal )
+    {
+      return routine;
+    }
     else
     {
       if( !args )
       args = [];
 
-      if( options.seal === true )
+      if( o.seal === true )
       return function sealedArguments()
       {
-        /*throw _.err( 'not tested' );*/
         return routine.apply( undefined, args );
       }
       else
-      return function boundArguments()
+      return function joinedArguments()
       {
         var a = args.slice();
         _.arrayAppendMerging( a,arguments );
@@ -6937,6 +7302,25 @@ var routineOptions = function routineOptions( routine,options )
 
 //
 
+var routineOptionsWithUndefines = function routineOptionsWithUndefines( routine,options )
+{
+
+  if( options === undefined )
+  options = {};
+
+  _.assert( arguments.length === 2,'routineOptionsWithUndefines : expects 2 arguments' );
+  _.assert( _.routineIs( routine ),'routineOptionsWithUndefines : expects routine' );
+  _.assert( _.objectIs( routine.defaults ),'routineOptionsWithUndefines : expects routine with defined defaults' );
+  _.assert( _.objectIs( options ),'routineOptionsWithUndefines : expects object' );
+
+  _.assertMapHasOnlyWithUndefines( options,routine.defaults );
+  _.mapComplementWithUndefines( options,routine.defaults );
+
+  return options;
+}
+
+//
+
 var routineOptionsFromThis = function routineOptionsFromThis( routine,_this,constructor )
 {
 
@@ -6987,11 +7371,18 @@ var timeReady = function timeReady( onReady )
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
     var con = new wConsequence();
-    var handleReady = function()
+    function handleReady()
     {
-      con.give();
+
       if( onReady )
-      onReady();
+      con.first( onReady );
+      else
+      con.give();
+
+      // con.give();
+      // if( onReady )
+      // onReady();
+
     }
     window.addEventListener( 'load',handleReady );
     return con;
@@ -8062,7 +8453,7 @@ var arrayNew = function arrayNew( ins,length )
     length = ins.length;
   }
 
-  if( _.argumentsIs() || _.arrayIs( ins ) )
+  if( _.argumentsIs( ins ) || _.arrayIs( ins ) )
   result = new Array( length );
   else if( _.bufferIs( ins ) || ins instanceof ArrayBuffer )
   result = new ins.constructor( length );
@@ -9687,7 +10078,7 @@ var arrayToStr = function( src,options )
   }
   else
   {
-    throw '_.arrayToStr : not tested';
+    throw Error( '_.arrayToStr : not tested' );
     for( var s = 0 ; s < src.length-1 ; s++ )
     {
       result += String( src[ s ] ) + ' ';
@@ -10746,31 +11137,40 @@ var arrayShuffle = function arrayShuffle( dst,times )
  * @memberof wTools
  */
 
-var arrayRandom = function( o )
+var arrayRandom = function arrayRandom( o )
 {
   var result = [];
-
-  _.assert( arguments.length === 1 );
 
   if( _.numberIs( o ) )
   {
     o = { length : o };
   }
 
-  if( o.int === undefined )
-  o.int = false;
+  _.assert( arguments.length === 1 );
+  _.routineOptions( arrayRandom,o );
 
-  if( o.range === undefined )
-  o.range = [ 0,1 ];
+  debugger;
+
+  // if( o.int === undefined )
+  // o.int = false;
+  //
+  // if( o.range === undefined )
+  // o.range = [ 0,1 ];
 
   for( var i = 0 ; i < o.length ; i++ )
   {
     result[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
     if( o.int )
-    result[ i ] = Math.floor(  result[ i ] );
+    result[ i ] = Math.floor( result[ i ] );
   }
 
   return result;
+}
+
+arrayRandom.defaults =
+{
+  int : 0,
+  range : [ 0,1 ],
 }
 
 //
@@ -11020,8 +11420,12 @@ var _comparatorFromTransformer = function _comparatorFromTransformer( transforme
 //
 
 /**
- * The _arraySortedLookUpAct() method returns the first index at which a given element (ins)
- * can be found in the array (arr).
+ * Bin search of element ( ins ) in array ( arr ). Find element with closest value.
+ * If array does not have such element then return index of smallest possible greater element.
+ * If array does not have such element then element previous to returned is samller.
+ * Could return index of the next ( non-existent ) after the last one element.
+ * Zero is the least possible returned index.
+ * Could return index of any element if there are several elements with such value.
  *
  * @param { arrayLike } arr - Entity to check.
  * @param { Number } ins - Element to locate in the array.
@@ -11047,11 +11451,16 @@ var _comparatorFromTransformer = function _comparatorFromTransformer( transforme
 var _arraySortedLookUpAct = function _arraySortedLookUpAct( arr,ins,comparator,left,right )
 {
 
+  _.assert( right >= 0 );
+  _.assert( left <= arr.length );
+
   var oleft = left;
   var oright = right;
 
   var d = 0;
-  var current = _floor( ( left + right + 1 ) / 2 );
+  var current = ( left + right ) >> 1;
+
+  /* */
 
   while( left < right )
   {
@@ -11061,33 +11470,49 @@ var _arraySortedLookUpAct = function _arraySortedLookUpAct( arr,ins,comparator,l
     if( d < 0 )
     {
       left = current + 1;
-      current = _floor( ( left + right ) / 2 );
+      current = ( left + right ) >> 1;
     }
     else if( d > 0 )
     {
-      right = current - 1;
-      current = _ceil( ( left + right ) / 2 );
+      right = current;
+      current = ( left + right ) >> 1;
     }
     else return current;
 
   }
 
+  /* */
+
   if( current < arr.length )
   {
     var d = comparator( arr[ current ],ins );
-    // if( d < 0 && _.numberIs( ins ) && current+1 < arr.length )
-    // debugger;
+    if( d === 0 )
+    return current;
     if( d < 0 )
     current += 1;
   }
 
-  if( _.numberIs( ins ) && current > oleft )
-  if( current <= oright )
-  _.assert( comparator( arr[ current ],ins ) <= 0 );
+  /*  */
 
-  if( _.numberIs( ins ) )
-  if( current+1 <= oright )
-  _.assert( comparator( ins,arr[ current+1 ] ) < 0 );
+  if( Config.debug )
+  {
+
+    /* current element is greater */
+    if( _.numberIs( ins ) && current > oleft )
+    if( current < oright )
+    _.assert( comparator( arr[ current ],ins ) > 0 );
+
+    /* next element is greater */
+    if( _.numberIs( ins ) )
+    if( current+1 < oright )
+    _.assert( comparator( arr[ current+1 ],ins ) > 0 );
+
+    /* prev element is smaller */
+    if( _.numberIs( ins ) )
+    if( current-1 >= oleft )
+    _.assert( comparator( arr[ current-1 ],ins ) < 0 );
+
+  }
 
   return current;
 }
@@ -11101,7 +11526,7 @@ var arraySortedLookUpIndex = function arraySortedLookUpIndex( arr,ins,comparator
   _.assert( _.arrayLike( arr ) );
 
   var comparator = _._comparatorFromTransformer( comparator );
-  var index = _arraySortedLookUpAct( arr,ins,comparator,0,arr.length-1 );
+  var index = _arraySortedLookUpAct( arr,ins,comparator,0,arr.length );
 
   return index;
 }
@@ -11118,7 +11543,7 @@ var arraySortedLookUpValue = function arraySortedLookUpValue( arr,ins,comparator
   debugger;
 
   var comparator = _._comparatorFromTransformer( comparator );
-  var index = _arraySortedLookUpAct( arr,ins,comparator,0,arr.length-1 );
+  var index = _arraySortedLookUpAct( arr,ins,comparator,0,arr.length );
 
   return arr[ index ];
 }
@@ -11161,7 +11586,7 @@ var arraySortedLookUp = function arraySortedLookUp( arr,ins,comparator )
   var comparator = _._comparatorFromTransformer( comparator );
 
   var l = arr.length;
-  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
+  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l );
 
   if( index === l )
   return;
@@ -11174,27 +11599,78 @@ var arraySortedLookUp = function arraySortedLookUp( arr,ins,comparator )
 
 //
 
-var arraySortedLookUpDomain = function arraySortedLookUpDomain( arr,domain,comparator )
+var arraySortedLookUpInterval = function arraySortedLookUpInterval( arr,interval,comparator )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayLike( arr ) );
 
-  debugger;
-
   var comparator = _._comparatorFromTransformer( comparator );
   var l = arr.length;
-  var b = _._arraySortedLookUpAct( arr,domain[ 0 ],comparator,0,l-1 );
-  var e = _._arraySortedLookUpAct( arr,domain[ 1 ],comparator,b+1,l-1 );
+  var b = _._arraySortedLeftMostIndex( arr,interval[ 0 ],comparator,0,l );
 
-  if( e > b )
+  if( b === l || comparator( arr[ b ],interval[ 1 ] ) > 0 )
+  return [ b,b ];
+
+  var e = _._arraySortedRightMostIndex( arr,interval[ 1 ],comparator,b+1,l );
+
+  if( comparator( arr[ e ],interval[ 1 ] ) <= 0 )
   e += 1;
+
+  if( Config.debug )
+  {
+
+    if( b < l )
+    _.assert( arr[ b ] >= interval[ 0 ] );
+
+    if( b > 0 )
+    _.assert( arr[ b-1 ] < interval[ 0 ] );
+
+    if( e < l )
+    _.assert( arr[ e ] > interval[ 1 ] );
+
+    if( e > 0 )
+    _.assert( arr[ e-1 ] <= interval[ 1 ] );
+
+  }
 
   return [ b,e ]
 }
 
 //
 
-var arraySortedClosestIndex = function arraySortedClosestIndex( arr,ins,comparator )
+var _arraySortedLeftMostIndex = function _arraySortedLeftMostIndex( arr,ins,comparator,left,right )
+{
+
+  _.assert( arguments.length === 5 );
+
+  var comparator = _._comparatorFromTransformer( comparator );
+  var index = _._arraySortedLookUpAct( arr,ins,comparator,left,right );
+
+  if( index === right )
+  return right;
+
+  var val = arr[ index ];
+  var c = comparator( val,ins );
+
+  if( c !== 0 )
+  return index;
+
+  var i = index-1;
+  while( i > -1 )
+  {
+    if( arr[ i ] !== val )
+    break;
+    i -= 1;
+  }
+
+  index = i + 1;
+
+  return index;
+}
+
+//
+
+var arraySortedLeftMostIndex = function arraySortedLeftMostIndex( arr,ins,comparator )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -11205,47 +11681,19 @@ var arraySortedClosestIndex = function arraySortedClosestIndex( arr,ins,comparat
 
   var l = arr.length;
   var comparator = _._comparatorFromTransformer( comparator );
-  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
+  var index = _._arraySortedLeftMostIndex( arr,ins,comparator,0,l );
 
-  if( index === l )
-  return l-1;
-
-  var c = comparator( arr[ index ],ins );
-
-  if( c  === 0 )
   return index;
-
-  if( c < 0 )
-  {
-    throw _.err( 'redundant branch?' );
-    if( ( arr.length-1 ) === index )
-    return index;
-    else if( Math.abs( comparator( arr[ index + 1 ],ins ) ) < Math.abs( c ) )
-    return index+1;
-    else
-    return index;
-  }
-
-  if( c > 0 )
-  {
-    if( 0 === index )
-    return index;
-    else if( Math.abs( comparator( arr[ index - 1 ],ins ) ) < Math.abs( c ) )
-    return index-1;
-    else
-    return index;
-  }
-
 }
 
 //
 
-var arraySortedClosestValue = function arraySortedClosestValue( arr,ins,comparator )
+var arraySortedLeftMostValue = function arraySortedLeftMostValue( arr,ins,comparator )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  var index = _.arraySortedClosestIndex( arr,ins,comparator );
+  var index = _.arraySortedLeftMostIndex( arr,ins,comparator );
   var result = arr[ index ];
 
   return result;
@@ -11253,16 +11701,164 @@ var arraySortedClosestValue = function arraySortedClosestValue( arr,ins,comparat
 
 //
 
-var arraySortedClosest = function arraySortedClosest( arr,ins,comparator )
+var arraySortedLeftMost = function arraySortedLeftMost( arr,ins,comparator )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  var index = _.arraySortedClosestIndex( arr,ins,comparator );
+  var index = _.arraySortedLeftMostIndex( arr,ins,comparator );
   var result = { index : index, value : arr[ index ] };
 
   return result;
 }
+
+//
+
+var _arraySortedRightMostIndex = function _arraySortedRightMostIndex( arr,ins,comparator,left,right )
+{
+
+  _.assert( arguments.length === 5 );
+
+  var comparator = _._comparatorFromTransformer( comparator );
+  var index = _._arraySortedLookUpAct( arr,ins,comparator,left,right );
+
+  if( index === right )
+  return right;
+
+  var val = arr[ index ];
+  var c = comparator( val,ins );
+
+  if( c !== 0 )
+  return index;
+
+  var i = index+1;
+  while( i < right )
+  {
+    if( arr[ i ] !== val )
+    break;
+    i += 1;
+  }
+
+  index = i - 1;
+
+  return index;
+}
+
+//
+
+var arraySortedRightMostIndex = function arraySortedRightMostIndex( arr,ins,comparator )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
+
+  if( !arr.length )
+  return 0;
+
+  var l = arr.length;
+  var comparator = _._comparatorFromTransformer( comparator );
+  var index = _._arraySortedRightMostIndex( arr,ins,comparator,0,l );
+
+  return index;
+}
+
+//
+
+var arraySortedRightMostValue = function arraySortedRightMostValue( arr,ins,comparator )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  var index = _.arraySortedRightMostIndex( arr,ins,comparator );
+  var result = arr[ index ];
+
+  return result;
+}
+
+//
+
+var arraySortedRightMost = function arraySortedRightMost( arr,ins,comparator )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  var index = _.arraySortedRightMostIndex( arr,ins,comparator );
+  var result = { index : index, value : arr[ index ] };
+
+  return result;
+}
+
+// //
+//
+// var arraySortedClosestIndex = function arraySortedClosestIndex( arr,ins,comparator )
+// {
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   _.assert( _.arrayLike( arr ) );
+//
+//   if( !arr.length )
+//   return 0;
+//
+//   var l = arr.length;
+//   var comparator = _._comparatorFromTransformer( comparator );
+//   var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l );
+//
+//   if( index === l )
+//   return l-1;
+//
+//   var c = comparator( arr[ index ],ins );
+//
+//   if( c  === 0 )
+//   return index;
+//
+//   if( c < 0 )
+//   {
+//     throw _.err( 'redundant branch?' );
+//     if( ( arr.length-1 ) === index )
+//     return index;
+//     else if( Math.abs( comparator( arr[ index + 1 ],ins ) ) < Math.abs( c ) )
+//     return index+1;
+//     else
+//     return index;
+//   }
+//
+//   if( c > 0 )
+//   {
+//     if( 0 === index )
+//     return index;
+//     else if( Math.abs( comparator( arr[ index - 1 ],ins ) ) < Math.abs( c ) )
+//     return index-1;
+//     else
+//     return index;
+//   }
+//
+// }
+//
+// //
+//
+// var arraySortedClosestValue = function arraySortedClosestValue( arr,ins,comparator )
+// {
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   var index = _.arraySortedClosestIndex( arr,ins,comparator );
+//   var result = arr[ index ];
+//
+//   return result;
+// }
+//
+// //
+//
+// var arraySortedClosest = function arraySortedClosest( arr,ins,comparator )
+// {
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   var index = _.arraySortedClosestIndex( arr,ins,comparator );
+//   var result = { index : index, value : arr[ index ] };
+//
+//   return result;
+// }
 
 //
 
@@ -11300,7 +11896,7 @@ var arraySortedRemove = function( arr,ins,comparator )
 
   var comparator = _._comparatorFromTransformer( comparator );
   var l = arr.length;
-  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
+  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l );
 
   var remove = index !== l && comparator( ins,arr[ index ] ) === 0;
 
@@ -11352,7 +11948,7 @@ var arraySortedAddOnce = function( arr,ins,comparator )
 
   var comparator = _._comparatorFromTransformer( comparator );
   var l = arr.length;
-  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
+  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l );
 
   var add = index === l || comparator( ins,arr[ index ] ) !== 0;
 
@@ -11402,7 +11998,7 @@ var arraySortedAdd = function arraySortedAdd( arr,ins,comparator )
 
   var comparator = _._comparatorFromTransformer( comparator );
   var l = arr.length;
-  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l-1 );
+  var index = _._arraySortedLookUpAct( arr,ins,comparator,0,l );
 
   arr.splice( index,0,ins );
 
@@ -11747,7 +12343,7 @@ var mapSupplementOwn = function( dst )
 
 /* !!! need to explain how undefined handled */
 
-var mapComplement = function( dst )
+var mapComplement = function mapComplement( dst )
 {
 
   var args = _.arraySlice( arguments );
@@ -11755,6 +12351,19 @@ var mapComplement = function( dst )
   return mapExtendFiltering.apply( this,args );
 
 }
+
+//
+
+var mapComplementWithUndefines = function mapComplementWithUndefines( dst )
+{
+
+  var args = _.arraySlice( arguments );
+  args.unshift( _.filter.dstNotOwnCloning() );
+  return mapExtendFiltering.apply( this,args );
+
+}
+
+//
 
 /**
  * The mapCopy() method is used to copy the values of all properties
@@ -12788,34 +13397,34 @@ var mapOwn = function mapOwn( object,name )
 
 //
 
-  /**
-   * Returns new object with unique keys.
-   *
-   * Takes any number of objects.
-   * Returns new object filled by unique keys
-   * from the first (srcMap) original object.
-   * Values for result object come from original object (srcMap)
-   * not from second or other one.
-   * If the first object has same key any other object has
-   * then this pair( key/value ) will not be included into result object.
-   * Otherwise pair( key/value ) from the first object goes into result object.
-   *
-   * @param{ objectLike } srcMap - original object.
-   * @param{ ...objectLike } arguments[] - one or more objects.
-   * Objects to return an object without repeating keys.
-   *
-   * @example
-   * // returns { c : 3 }
-   * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
-   *
-   * @throws { Error }
-   *  In debug mode it throws an error if any argument is not object like.
-   * @returns { object } Returns new object made by unique keys.
-   * @method mapBut
-   * @memberof wTools
-   */
+/**
+ * Returns new object with unique keys.
+ *
+ * Takes any number of objects.
+ * Returns new object filled by unique keys
+ * from the first (srcMap) original object.
+ * Values for result object come from original object (srcMap)
+ * not from second or other one.
+ * If the first object has same key any other object has
+ * then this pair( key/value ) will not be included into result object.
+ * Otherwise pair( key/value ) from the first object goes into result object.
+ *
+ * @param{ objectLike } srcMap - original object.
+ * @param{ ...objectLike } arguments[] - one or more objects.
+ * Objects to return an object without repeating keys.
+ *
+ * @example
+ * // returns { c : 3 }
+ * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+ *
+ * @throws { Error }
+ *  In debug mode it throws an error if any argument is not object like.
+ * @returns { object } Returns new object made by unique keys.
+ * @method mapBut
+ * @memberof wTools
+ */
 
-var mapBut = function( srcMap )
+var mapBut = function mapBut( srcMap )
 {
   var result = {};
   var a,k;
@@ -12832,6 +13441,36 @@ var mapBut = function( srcMap )
 
       if( k in argument )
       if( argument[ k ] !== undefined ) // xxx
+      break;
+
+    }
+    if( a === arguments.length )
+    {
+      result[ k ] = srcMap[ k ];
+    }
+  }
+
+  return result;
+}
+
+//
+
+var mapButWithUndefines = function mapButWithUndefines( srcMap )
+{
+  var result = {};
+  var a,k;
+
+  _assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
+
+  for( k in srcMap )
+  {
+    for( a = 1 ; a < arguments.length ; a++ )
+    {
+      var argument = arguments[ a ];
+
+      _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
+
+      if( k in argument )
       break;
 
     }
@@ -13381,26 +14020,29 @@ var Proto =
   errLog : errLog,
   errLogOnce : errLogOnce,
 
+  _diagnosticStripPath : _diagnosticStripPath,
+  diagnosticScript : diagnosticScript,
+  diagnosticLocation : diagnosticLocation,
+  diagnosticCode : diagnosticCode,
+  diagnosticStack : diagnosticStack,
+  diagnosticWatchObject : diagnosticWatchObject, /* experimental */
+  diagnosticWatchFields : diagnosticWatchFields, /* experimental */
+  diagnosticBeep : diagnosticBeep,
+
   assert : assert,
   assertMapHasNoUndefine : assertMapHasNoUndefine,
   assertMapHasOnly : assertMapHasOnly,
+  assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
   assertMapOwnOnly : assertMapOwnOnly,
   assertMapHasNone : assertMapHasNone,
   assertMapOwnNone : assertMapOwnNone,
   assertMapHasAll : assertMapHasAll,
   assertMapOwnAll : assertMapOwnAll,
-
   assertInstanceOrClass : assertInstanceOrClass,
   assertNotTested : assertNotTested,
-
   assertWarn : assertWarn,
-  stack : stack,
 
-  includeAny : includeAny,  /* experimental */
-
-  diagnosticWatchObject : diagnosticWatchObject, /* experimental */
-  diagnosticWatchFields : diagnosticWatchFields, /* experimental */
-  diagnosticBeep : diagnosticBeep,
+  requireAny : requireAny,  /* experimental */
 
 
   // type test
@@ -13436,6 +14078,7 @@ var Proto =
 
   dateIs : dateIs,
   boolIs : boolIs,
+  boolLike : boolLike,
   routineIs : routineIs,
   routineWithNameIs : routineWithNameIs,
   regexpIs : regexpIs,
@@ -13486,9 +14129,10 @@ var Proto =
 
   strBeginOf : strBeginOf,
   strEndOf : strEndOf,
+  strInbetweenOf : strInbetweenOf,
 
-  strBeginRemove : strBeginRemove,
-  strEndRemove : strEndRemove,
+  strRemoveBegin : strRemoveBegin,
+  strRemoveEnd : strRemoveEnd,
 
   strPrependOnce : strPrependOnce,
   strAppendOnce : strAppendOnce,
@@ -13523,6 +14167,7 @@ var Proto =
   routinesJoin : routinesJoin,
   routinesCall : routinesCall,
   routineOptions : routineOptions,
+  routineOptionsWithUndefines : routineOptionsWithUndefines,
   routineOptionsFromThis : routineOptionsFromThis,
 
   //routines : routines,
@@ -13667,11 +14312,21 @@ var Proto =
   arraySortedLookUpValue : arraySortedLookUpValue,
   arraySortedLookUp : arraySortedLookUp,
 
-  arraySortedLookUpDomain : arraySortedLookUpDomain,
+  arraySortedLookUpInterval : arraySortedLookUpInterval,
 
-  arraySortedClosestIndex : arraySortedClosestIndex,
-  arraySortedClosestValue : arraySortedClosestValue,
-  arraySortedClosest : arraySortedClosest,
+  _arraySortedLeftMostIndex : _arraySortedLeftMostIndex,
+  arraySortedLeftMostIndex : arraySortedLeftMostIndex,
+  arraySortedLeftMostValue : arraySortedLeftMostValue,
+  arraySortedLeftMost : arraySortedLeftMost,
+
+  _arraySortedRightMostIndex : _arraySortedRightMostIndex,
+  arraySortedRightMostIndex : arraySortedRightMostIndex,
+  arraySortedRightMostValue : arraySortedRightMostValue,
+  arraySortedRightMost : arraySortedRightMost,
+
+  // arraySortedClosestIndex : arraySortedClosestIndex,
+  // arraySortedClosestValue : arraySortedClosestValue,
+  // arraySortedClosest : arraySortedClosest,
 
   arraySortedRemove : arraySortedRemove,
   arraySortedAdd : arraySortedAdd,
@@ -13697,6 +14352,7 @@ var Proto =
   mapSupplement : mapSupplement,
   mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
+  mapComplementWithUndefines : mapComplementWithUndefines,
   mapCopy : mapCopy,
 
 
@@ -13755,6 +14411,7 @@ var Proto =
   mapContain : mapContain,
 
   mapBut : mapBut,
+  mapButWithUndefines : mapButWithUndefines,
   mapOwnBut : mapOwnBut,
 
   mapDelete : mapDelete,

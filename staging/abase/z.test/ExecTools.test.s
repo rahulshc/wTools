@@ -4,8 +4,7 @@
 
 /*
 
-to run this test
-from the project directory run
+to run this test from the project directory, pelase run
 
 npm install
 node ./staging/z.test/ExecTools.test.s
@@ -18,16 +17,25 @@ if( typeof module !== 'undefined' )
   require( '../wTools.s' );
   require( '../component/ExecTools.s' );
 
-  require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
+  // require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
 
-  // try
-  // {
-  //   require( '../../amid/diagnostic/Testing.debug.s' );
-  // }
-  // catch( err )
-  // {
-  //   require( 'wTesting' );
-  // }
+  try
+  {
+    require( '../../amid/diagnostic/Testing.debug.s' );
+  }
+  catch( err )
+  {
+    require( 'wTesting' );
+  }
+
+  try
+  {
+    require( '../../abase/object/printer/printer/LoggerToJstructure.s' );
+  }
+  catch( err )
+  {
+    require( 'wLoggerToJstructure' );
+  }
 
 }
 
@@ -40,30 +48,35 @@ var shell = function shell( test )
 {
   var con = new wConsequence().give();
 
-  con
+  test.description = 'test';
+  test.identical( 0, 0 );
+
+  // con
   // .ifNoErrorThen( function()
   // {
   //   test.description = 'simple command';
-  //   var con = _.shell( 'sh exit' );
+  //   var con = _.shell( 'exit' );
   //   return test.shouldMessageOnlyOnce( con );
   // })
-  // // .ifNoErrorThen( function( data )
-  // // {
-  // //   test.identical( data, 0 );
-  // // })
   // .ifNoErrorThen( function()
   // {
-  //   test.description = 'incorrect command, error from error event';
-  //   var con = _.shell( 'xxx' );
-  //   con = test.shouldMessageOnlyOnce( con );
+  //   test.description = 'bad command, shell';
+  //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'shell' });
   //   return test.shouldThrowError( con );
   // })
-  .ifNoErrorThen( function()
-  {
-    test.description = 'several arguments';
-    var con = _.shell( 'sh ls -al' );
-    con = test.shouldMessageOnlyOnce( con );
-  });
+  // .ifNoErrorThen( function()
+  // {
+  //   test.description = 'bad command, spawn';
+  //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'spawn' });
+  //   return test.shouldThrowError( con );
+  // })
+  // .ifNoErrorThen( function()
+  // {
+  //   test.description = 'several arguments';
+  //   var con = _.shell( 'echo echo something' );
+  //   return test.mustNotThrowError( con );
+  // })
+  // ;
 
   return con;
 }
@@ -75,6 +88,7 @@ var Proto =
 
   name : 'ExecTools',
   verbose : 1,
+  logger : wLoggerToJstructure(),
 
   tests :
   {
@@ -85,7 +99,17 @@ var Proto =
 
 _.mapExtend( Self,Proto );
 
+//
+
+debugger;
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self );
+_.Testing.test( Self )
+.thenDo( function( err,suit )
+{
+  debugger;
+  console.log( 'done!' );
+  console.log( 'err',err );
+  console.log( 'suit',suit );
+});
 
 } )( );

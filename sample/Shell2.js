@@ -12,12 +12,16 @@ var _ = wTools;
 
 var con = new wConsequence().give();
 con.seal( _,_.shell )
-.thenDo( 'invalid command' )
+.thenDo( 'echo shelling ping' )
 .thenDo( 'ping www.google.com' )
-/*wConsequence returned as 'consequence' property by con.seal method used to end 'shell' calls chain */
+/*wConsequence returned as 'consequence' property */
 .consequence
-.thenDo(function ()
+.thenDo( function( err,data )
 {
-  console.log( "End of shell calls chain" );
+  /* handle error if any */
+  if( err )
+  console.error( err.toString() );
+  else
+  console.log( "Complete without errors" );
 })
 ;
