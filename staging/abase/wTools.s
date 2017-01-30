@@ -1059,7 +1059,7 @@ var entityClone = function( src,options )
 {
   var result;
 
-  //throw 'not stable';
+  //throw Error( 'not stable' );
 
   if( options !== undefined && !_.objectIs( options ) )
   throw _.err( 'wTools.entityClone :','need options' );
@@ -3817,10 +3817,10 @@ var _err = function _err( o )
   var result;
 
   if( arguments.length !== 1 )
-  throw '_err : expects single argument';
+  throw Error( '_err : expects single argument' );
 
   if( !_.arrayLike( o.args ) )
-  throw '_err : o.args should be array like';
+  throw Error( '_err : o.args should be array like' );
 
   if( !_.numberIs( o.level ) )
   o.level = _err.defaults.level;
@@ -3983,7 +3983,7 @@ var _err = function _err( o )
   {
     debugger;
     var code = '';
-    code = _.diagnosticCode( result ); /* wrap by try */
+    code = _.diagnosticCode({ error : result }); /* wrap by try */
     if( code && code.length < 400 )
     {
       originalMessage += '\n \n';
@@ -4318,12 +4318,12 @@ diagnosticLocation.defaults =
 var diagnosticCode = function diagnosticCode( o )
 {
 
-  if( _.numberIs( o ) )
-  o = { level : o }
-  else if( _.strIs( o ) )
-  o = { stack : o, level : 0 }
-  else if( _.errorIs( o ) )
-  o = { error : o, level : 0 }
+  // if( _.numberIs( o ) )
+  // o = { level : o }
+  // else if( _.strIs( o ) )
+  // o = { stack : o, level : 0 }
+  // else if( _.errorIs( o ) )
+  // o = { error : o, level : 0 }
 
   _.routineOptions( diagnosticCode,o );
   _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -4376,7 +4376,7 @@ var diagnosticCode = function diagnosticCode( o )
 
 diagnosticCode.defaults =
 {
-  level : 1,
+  level : 0,
   radius : 2,
   stack : null,
   error : null,
@@ -4419,10 +4419,20 @@ diagnosticCode.defaults =
 var diagnosticStack = function diagnosticStack( stack,first,last )
 {
 
-  if( !_.errorIs( stack ) && !_.arrayIs( stack ) && !_.strIs( stack ) )
+  // if( stack && !_.errorIs( stack ) )
+  // {
+  //   debugger;
+  //   var x = _.errorIs( stack );
+  // }
+
+  if( _.numberIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined )
   {
-    if( arguments.length !== 0 && arguments.length !== 2 )
-    throw 'diagnosticStack : expects zero or two arguments if no error provided';
+
+    // if( arguments.length !== 0 && arguments.length !== 2 )
+    // {
+    //   debugger;
+    //   throw Error( 'diagnosticStack : expects zero or two arguments if no error provided' );
+    // }
 
     var first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
     var last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
@@ -4431,13 +4441,22 @@ var diagnosticStack = function diagnosticStack( stack,first,last )
   }
 
   if( arguments.length !== 1 && arguments.length !== 2 && arguments.length !== 3 )
-  throw 'diagnosticStack : expects one, two or three arguments if error provided';
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects one, two or three arguments if error provided' );
+  }
 
   if( !_.numberIs( first ) && first !== undefined )
-  throw 'diagnosticStack : expects number ( first )';
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects number ( first ), got ' + _.strTypeOf( first ) );
+  }
 
   if( !_.numberIs( last ) && last !== undefined )
-  throw 'diagnosticStack : expects number ( last )';
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects number ( last ), got' + _.strTypeOf( last ) );
+  }
 
   var errorIs = 0;
   if( _.errorIs( stack ) )
@@ -4462,7 +4481,7 @@ var diagnosticStack = function diagnosticStack( stack,first,last )
   stack.splice( 0,1 );
 
   if( stack[ 0 ].indexOf( 'at ' ) === -1 )
-  throw 'diagnosticStack : cant parse stack ' + stack;
+  throw Error( 'diagnosticStack : cant parse stack ' + stack );
 
   /* */
 
@@ -5896,7 +5915,7 @@ var consequenceIs = function consequenceIs( src )
 
 var errorIs = function errorIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Error]';
+  return src instanceof Error || _ObjectToString.call( src ) === '[object Error]';
 }
 
 //
@@ -10059,7 +10078,7 @@ var arrayToStr = function( src,options )
   }
   else
   {
-    throw '_.arrayToStr : not tested';
+    throw Error( '_.arrayToStr : not tested' );
     for( var s = 0 ; s < src.length-1 ; s++ )
     {
       result += String( src[ s ] ) + ' ';

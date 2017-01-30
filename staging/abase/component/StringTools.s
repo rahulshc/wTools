@@ -1795,7 +1795,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,o )
   _assert( _.arrayIs( args ) || _.objectIs( args ) );
   _assert( arguments.length <= 4 );
 
-  _.each( args,function( e,k )
+  _.each( args,function( e,k,iteration )
   {
 
     if( first === false )
@@ -2154,8 +2154,6 @@ strSplitChunks.defaults =
 var _strInhalf = function _strInhalf( o )
 {
   var result = [];
-
-  debugger;
 
   _.routineOptions( _strInhalf,o );
   _.assert( arguments.length === 1 );
@@ -4664,4 +4662,4 @@ if( typeof module !== 'undefined' && module !== null )
   module[ 'exports' ] = Self;
 }
 
-}).call( this );
+})();
