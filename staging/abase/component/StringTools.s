@@ -13,7 +13,7 @@
 if( typeof module !== 'undefined' )
 {
 
-  wTools.includeAny( __dirname + '/Proto.s','wProto','' );
+  wTools.requireAny( __dirname + '/Proto.s','wProto','' );
 
 }
 
@@ -2151,62 +2151,77 @@ strSplitChunks.defaults =
  *
  */
 
-var _strInhalf = function( o )
+var _strInhalf = function _strInhalf( o )
 {
   var result = [];
 
-  _.assertMapHasOnly( o,_strInhalf.defaults );
+  debugger;
+
+  _.routineOptions( _strInhalf,o );
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.src ) );
+  _.assert( _.strIs( o.src ),'_strInhalf expects string ( o.src ), got',_.strTypeOf( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
+  _.assert( _.numberIs( o.number ) );
 
-  /**/
+  var number = o.number;
+  var splitter
+  var index = o.left ? -1 : o.src.length;
 
-  var splitter,index;
-  if( _.arrayIs( o.splitter ) )
+  /* */
+
+  while( number > 0 )
   {
 
-    if( !o.splitter.length )
-    return [ o.src,'' ];
-    var s
+    index += o.left ? +1 : -1;
 
-    if( o.left )
-    s = _.entityMin( o.splitter,function( a )
+    if( _.arrayIs( o.splitter ) )
     {
 
-      var index = o.src.indexOf( a );
-      if( index === -1 )
-      return o.src.length;
+      if( !o.splitter.length )
+      return [ o.src,'' ];
+      var s
 
-      return index;
-    });
+      if( o.left )
+      s = _.entityMin( o.splitter,function( a )
+      {
+
+        var i = o.src.indexOf( a,index );
+        if( i === -1 )
+        return o.src.length;
+
+        return i;
+      });
+      else
+      s = _.entityMax( o.splitter,function( a )
+      {
+
+        var i = o.src.lastIndexOf( a,index );
+        if( i === -1 )
+        return o.src.length;
+
+        return i;
+      });
+
+      splitter = s.element;
+      index = s.value;
+
+    }
     else
-    s = _.entityMax( o.splitter,function( a )
     {
+      splitter = o.splitter;
+      index = o.left ? o.src.indexOf( splitter,index ) : o.src.lastIndexOf( splitter,index );
+    }
 
-      var index = o.src.lastIndexOf( a );
-      if( index === -1 )
-      return o.src.length;
+    /* */
 
-      return index;
-    });
+    if( !( index >= 0 ) )
+    return o.left ? [ '',o.src ] : [ o.src,'' ];
 
-    splitter = s.element;
-    index = s.value;
+    number -= 1;
 
   }
-  else
-  {
-    splitter = o.splitter;
-    index = o.left ? o.src.indexOf( splitter ) : o.src.lastIndexOf( splitter );
-  }
 
-  /**/
-
-  if( !( index >= 0 ) )
-  return o.left ? [ '',o.src ] : [ o.src,'' ];
-
-  /**/
+  /* */
 
   result[ 0 ] = o.src.substring( 0,index );
   result[ 1 ] = o.src.substring( index + splitter.length );
@@ -2219,6 +2234,7 @@ _strInhalf.defaults =
   src : null,
   splitter : ' ',
   left : 1,
+  number : 1,
 }
 
 //
@@ -2250,13 +2266,14 @@ _strInhalf.defaults =
  *
  */
 
-var strInhalfLeft = function( o )
+var strInhalfLeft = function strInhalfLeft( o )
 {
 
-  if( _.strIs( o ) )
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length > 1 )
   {
-    _.assert( arguments.length === 2 );
-    o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
+    o = { src : arguments[ 0 ], splitter : arguments[ 1 ], number : arguments[ 2 ] };
   }
   else
   {
@@ -2275,6 +2292,7 @@ strInhalfLeft.defaults =
 {
   src : null,
   splitter : ' ',
+  number : 1,
 }
 
 //
@@ -2306,13 +2324,14 @@ strInhalfLeft.defaults =
  *
  */
 
-var strInhalfRight = function( o )
+var strInhalfRight = function strInhalfRight( o )
 {
 
-  if( _.strIs( o ) )
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length > 1 )
   {
-    _.assert( arguments.length === 2 );
-    o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
+    o = { src : arguments[ 0 ], splitter : arguments[ 1 ], number : arguments[ 2 ] };
   }
   else
   {
@@ -2331,6 +2350,7 @@ strInhalfRight.defaults =
 {
   src : null,
   splitter : ' ',
+  number : 1,
 }
 
 //
@@ -3495,20 +3515,26 @@ var strUnicodeEscape = function( src )
  * @throws { Exception } Throw an exception if( arguments.length ) is not a equal 2.
  * @memberof wTools
  *
-*/
-var strIndentation = function( src,tab )
+ */
+
+var strIndentation = function strIndentation( src,tab )
 {
 
-  _assert( _.strIs( src ),'strIndentation : expects string src' );
+  _assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects string src' );
   _assert( _.strIs( tab ),'strIndentation : expects string tab' );
   _assert( arguments.length === 2,'strIndentation : expects two arguments' );
 
+  if( _.strIs( src ) )
+  {
 
-  if( src.indexOf( '\n' ) === -1 )
-  return tab + src;
+    if( src.indexOf( '\n' ) === -1 )
+    return tab + src;
 
-  var result = src.split( '\n' );
-  result = tab + result.join( '\n' + tab );
+    src = src.split( '\n' );
+
+  }
+
+  var result = tab + src.join( '\n' + tab );
 
   return result;
 }
@@ -3549,17 +3575,17 @@ var strIndentation = function( src,tab )
  * @memberof wTools
  */
 
-var strLinesNumber = function( o )
+var strLinesNumber = function strLinesNumber( o )
 {
 
-  if( _.strIs( o ) )
-  o = { src : o };
+  if( !_.objectIs( o ) )
+  o = { src : arguments[ 0 ], first : arguments[ 1 ] };
 
   _.routineOptions( strLinesNumber,o );
-  _assert( arguments.length === 1 );
-  _assert( _.strIs( o.src ),'strLinesNumber : expects string o.src' );
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.strIs( o.src ) || _.arrayIs( o.src ),'strLinesNumber : expects string o.src' );
 
-  var lines = o.src.split( '\n' );
+  var lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
 
   for( var l = 0; l < lines.length; l += 1 )
   {
@@ -3576,6 +3602,26 @@ strLinesNumber.defaults =
   src : null,
   first : 1,
 }
+
+//
+
+// var strLinesAt = function strLinesAt( code,line,radius )
+// {
+//   _.assert( arguments.length === 3 );
+//   _.assert( _.strIs( code ) || _.arrayIs( code ) );
+//   _.assert( _.numberIs( line ) );
+//
+//   if( radius === undefined )
+//   radius = 2;
+//
+//   debugger;
+//
+//   var lines = code.split( '\n' );
+//   var result = lines.slice( line-radius,line+radius-1 );
+//   result = _.strLinesNumber( result,line-radius+1 );
+//
+//   return result;
+// }
 
 //
 
@@ -3618,7 +3664,7 @@ strLinesNumber.defaults =
  * @memberof wTools
  */
 
-var strLinesSelect = function( o )
+var strLinesSelect = function strLinesSelect( o )
 {
 
   if( arguments.length === 2 )
@@ -3636,46 +3682,50 @@ var strLinesSelect = function( o )
     o = { src : arguments[ 0 ], range : [ arguments[ 1 ],arguments[ 2 ] ] };
   }
 
+  if( !o.range )
+  o.range = [ o.line - o.radius+1,o.line+o.radius ];
+
   _.assert( arguments.length <= 3 );
   _.assert( _.strIs( o.src ) );
   _.assert( _.arrayIs( o.range ) );
   _.routineOptions( strLinesSelect,o );
 
-  debugger;
+  /* */
 
-  var i1 = -1;
-  var l = 0;
-  while( l < o.range[ 0 ] )
+  var f = 0;
+  var counter = o.zero;
+  while( counter < o.range[ 0 ] )
   {
-    i1 = o.src.indexOf( o.nl,i1+1 );
-    if( i1 === -1 )
-    return;
-    l += 1;
+    f = o.src.indexOf( o.nl,f );
+    if( f === -1 )
+    return '';
+    f += 1;
+    counter += 1;
   }
 
-  debugger;
+  /* */
 
-  var i2 = i1;
-  while( l < o.range[ 1 ] )
+  var l = f-1;
+  while( counter < o.range[ 1 ] )
   {
-    i2 = o.src.indexOf( o.nl,i2+1 );
-    if( i2 === -1 )
+    l += 1;
+    l = o.src.indexOf( o.nl,l );
+    if( l === -1 )
     {
-      if( l === o.range[ 1 ] - 1 )
-      {
-        i2 = o.src.length;
-        break;
-      }
-      else return;
+      l = o.src.length;
+      break;
     }
-    l += 1;
+    counter += 1;
   }
 
-  debugger;
+  /* */
 
-  var result = o.src.substring( i1,i2 );
+  var result = o.src.substring( f,l );
 
-  debugger;
+  /* number */
+
+  if( o.number )
+  result = _.strLinesNumber( result,( o.line !== null ? o.line - o.radius : 0 ) + o.zero );
 
   return result;
 }
@@ -3684,8 +3734,32 @@ strLinesSelect.defaults =
 {
   src : null,
   range : null,
+  line : null,
+  number : 0,
+  radius : 2,
+  zero : 0,
   nl : '\n',
 }
+
+// debugger;
+// var a = '1\n\n3\n4';
+// var l = strLinesSelect( a,[ 0,1 ] );
+// var l = strLinesSelect( a,[ 1,2 ] );
+// var l = strLinesSelect( a,[ 2,3 ] );
+// var l = strLinesSelect( a,[ 3,4 ] );
+// debugger;
+//
+// var l = strLinesSelect( a,[ 4,5 ] );
+// var l = strLinesSelect( a,[ -1,0 ] );
+// var l = strLinesSelect( a,[ -1,1 ] );
+// var l = strLinesSelect( a,[ -1,2 ] );
+//
+// var l = strLinesSelect( a,[ 0,2 ] );
+// var l = strLinesSelect( a,[ 1,3 ] );
+// var l = strLinesSelect( a,[ 2,4 ] );
+// var l = strLinesSelect( a,[ 2,5 ] );
+// var l = strLinesSelect( a,[ 3,5 ] );
+// debugger;
 
 //
 
@@ -4507,7 +4581,6 @@ var Proto =
   strSplitChunks : strSplitChunks, /* exmperimental */
 
   _strInhalf : _strInhalf,
-  strInhalf : strInhalfLeft,
   strInhalfLeft : strInhalfLeft,
   strInhalfRight : strInhalfRight,
 

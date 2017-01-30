@@ -361,206 +361,133 @@ makeWorker.defaults =
 
 //
 
-var execStages = function( stages,o )
+var execStages = function execStages( stages,o )
 {
-
-  // options
-
   var o = o || {};
-  _.assertMapHasOnly( o,execStages.defaults );
-  _.mapComplement( o,execStages.defaults );
 
-  if( o.context === null )
-  o.context = this;
+  _.routineOptionsWithUndefines( execStages,o );
+
+  o.stages = stages;
+
+  Object.preventExtensions( o );
 
   // validation
-
-  if( o.onUpdate )
-  throw _.err( 'execStages :','onUpdate is deprecated, please use onEach' );
 
   _.assert( _.objectIs( stages ) || _.arrayLike( stages ),'expects array or object ( stages ), but got',_.strTypeOf( stages ) );
 
   for( var s in stages )
   {
 
-    if( !stages[ s ] )
-    throw _.err( 'execStages :','#'+s,'stage is not defined' );
+    _.assert( stages[ s ],'execStages :','#'+s,'stage is not defined' );
 
     var routine = stages[ s ];
 
-    if( !_.routineIs( routine ) )
-    routine = stages[ s ].syn || stages[ s ].asyn;
+    // if( !_.routineIs( routine ) )
+    // routine = stages[ s ].syn || stages[ s ].asyn;
 
-    if( !_.routineIs( routine ) )
-    throw _.err( 'execStages :','stage','#'+s,'does not have routine to execute' );
+    _.assert( _.routineIs( routine ),'execStages :','stage','#'+s,'does not have routine to execute' );
 
   }
 
   //  var
 
-  var conEnd = new wConsequence();
-  var arrayLike = _.arrayLike( stages );
+  var con = _.timeOut( 1 );
   var keys = Object.keys( stages );
   var s = 0;
 
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
   // begin
 
-  if( _.routineIs( o.onBegin ) )
-  {
-    o.onBegin = _.routineJoin( o.context,o.onBegin );
-  }
-
   if( o.onBegin )
-  wConsequence.give( o.onBegin,o );
-  //wConsequence.giveWithContextAndErrorTo( o.onBegin,o.context,null,o );
+  con.thenDo( o.onBegin );
 
   // end
 
-  var handleEnd = function( err )
+  function handleEnd()
   {
 
-    if( err )
+    con.thenDo( function( err,data )
     {
-      debugger;
-      err = _.errLog( err );
-    }
 
-    if( _.routineIs( o.onEnd ) )
-    {
-      //debugger;
-      o.onEnd = _.routineJoin( o.context,o.onEnd );
-    }
+      if( err )
+      throw _.errLogOnce( err );
+      else
+      return data;
+
+    });
+
+    // if( o.onEnd )
+    // debugger;
 
     if( o.onEnd )
-    wConsequence.give( o.onEnd,o );
-    //wConsequence.giveWithContextAndErrorTo( o.onEnd,o.context,err,o );
+    con.thenDo( o.onEnd );
 
-    conEnd._giveWithError( err,null );
-
-  }
-
-  // next
-
-  var handleNext = function( err )
-  {
-
-    if( err )
-    return handleEnd( err );
-
-    _.timeOut( o.delay,handleStage );
-
-    return true;
   }
 
   // staging
 
-  var handleStage = function()
+  function handleStage()
   {
 
     var stage = stages[ keys[ s ] ];
-    o.index = s;
-    o.key = keys[ s ];
+    var iteration = {};
+
+    iteration.index = s;
+    iteration.key = keys[ s ];
+
     s += 1;
 
     if( !stage )
-    return handleEnd( null );
+    return handleEnd();
 
     // arguments
 
-    handleNext.staging = 1;
-    var routine = stage;
-    var args;
+    iteration.routine = stage;
+    iteration.routine = _.routineJoin( o.context,iteration.routine,o.args );
 
-    if( !_.routineIs( routine ) )
+    function routineCall()
     {
-      routine = stage.syn || stage.asyn;
-      if( stage.args )
-      args = _.arraySlice( stage.args );
-    }
-
-    if( !args )
-    args = o.args ? _.arraySlice( o.args ) : [];
-
-    /*args.push( handleNext ); */
-
-    // next
-
-    var handleStageEnd = function( err,ret )
-    {
-
-      if( err )
-      return handleEnd( _.err( err ) );
-
-      var isSyn = stage.syn || ( o.syn && !stage.asyn );
-
-      if( !isSyn && !( ret instanceof wConsequence ) )
-      {
-        isSyn = false;
-      }
-      else if( isSyn && ( ret instanceof wConsequence ) )
-      throw _.err( 'Synchronous stage should not return wConsequence' );
-
-      if( !isSyn || ret instanceof wConsequence )
-      {
-        if( ret instanceof wConsequence )
-        ret.thenDo( handleNext );
-        else
-        handleNext( null );
-      }
-      else
-      {
-        handleNext();
-      }
-
+      var ret = iteration.routine();
+      return ret;
     }
 
     // exec
 
-    try
+    if( o.onEachRoutine )
     {
-
-      var ret;
-      if( o.onEach )
-      {
-        ret = o.onEach.call( o.context,o,stage );
-      }
-
-      if( !( ret instanceof wConsequence ) )
-      ret = new wConsequence().give( ret );
-
-      if( !o.manual )
-      //if( ret instanceof wConsequence )
-      ret.thenDo( _.routineJoin( o.context,routine,args ) );
-      //else
-      //ret = routine.apply( o.context,args );
-
-      ret.thenDo( handleStageEnd );
-
+      con.ifNoErrorThen( _.routineSeal( o.context,o.onEachRoutine,[ iteration.routine,iteration,o ] ) );
     }
-    catch( err )
-    {
-      handleEnd( _.err( err ) );
-    }
+
+    if( !o.manual )
+    con.ifNoErrorThen( routineCall );
+
+    con.thenTimeOut( o.delay );
+
+    handleStage();
 
   }
 
   //
 
-  _.timeOut( o.delay,handleStage );
+  handleStage();
 
-  return conEnd;
+  return con;
 }
 
 execStages.defaults =
 {
-  syn : 0,
+  // syn : 0,
   delay : 1,
-  args : [],
-  context : null,
-  manual : false,
-  stages : null,
 
-  onEach : null,
+  args : undefined,
+  context : undefined,
+  // result : null,
+
+  manual : false,
+  // stages : null,
+
+  onEachRoutine : null,
   onBegin : null,
   onEnd : null,
 }

@@ -247,6 +247,29 @@ var dstNotOwnNotUndefinedCloning = function()
 
 //
 
+var dstNotOwnCloning = function()
+{
+
+  var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
+  {
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    {
+
+      if( key in dstContainer )
+      return;
+
+    }
+
+    _.entityCopyField( dstContainer,srcContainer,key );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
 var cloning = function()
 {
 
@@ -572,6 +595,7 @@ var filter =
   dstNotOwn : dstNotOwn,
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
   dstNotOwnNotUndefinedCloning : dstNotOwnNotUndefinedCloning,
+  dstNotOwnCloning : dstNotOwnCloning,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,
