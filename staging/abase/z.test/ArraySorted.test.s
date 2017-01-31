@@ -220,28 +220,28 @@ var arraySortedLookUpInterval = function arraySortedLookUpInterval( test )
   var arr = [ 0,0,0,0,1,1,1,1 ];
 
   var range = _.arraySortedLookUpInterval( arr,[ 1,1 ] );
-  test.identical( [ 4,8 ],range );
+  test.identical( range, [ 4,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 1,2 ] );
-  test.identical( [ 4,8 ],range );
+  test.identical( range, [ 4,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 0,0 ] );
-  test.identical( [ 0,4 ],range );
+  test.identical( range, [ 0,4 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ -1,0 ] );
-  test.identical( [ 0,4 ],range );
+  test.identical( range, [ 0,4 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 0,1 ] );
-  test.identical( [ 0,8 ],range );
+  test.identical( range, [ 0,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ -1,3 ] );
-  test.identical( [ 0,8 ],range );
+  test.identical( range, [ 0,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ -2,-1 ] );
-  test.identical( [ 0,0 ],range );
+  test.identical( range, [ 0,0 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 2,3 ] );
-  test.identical( [ 8,8 ],range );
+  test.identical( range, [ 8,8 ] );
 
   /* */
 
