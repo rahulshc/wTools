@@ -4244,21 +4244,40 @@ var diagnosticLocation = function diagnosticLocation( o )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
 
-  var fileName,lineNumber;
+  function end( location )
+  {
+    if( location )
+    {
+      if( location.path )
+      {
+        location.full = location.path;
+        if( location.line )
+        location.full += ':' + location.line;
+      }
+    }
+    return location || {};
+  }
 
-  debugger;
+  var fileName,lineNumber;
 
   if( o.error && _.strIs( o.error.fileName ) && _.numberIs( o.error.lineNumber ) )
   {
     debugger;
     var result = { path : o.error.fileName, line : o.error.lineNumber, col : o.error.colNumber }
-    return result;
+    return end( result );
   }
 
   if( !o.stack )
   {
-    debugger;
-    o.stack = _.diagnosticStack( o.error || undefined );
+    if( o.error )
+    {
+      o.stack = _.diagnosticStack( o.error );
+    }
+    else
+    {
+      o.stack = _.diagnosticStack();
+      o.level += 1;
+    }
   }
 
   if( _.strIs( o.stack ) )
@@ -4266,7 +4285,7 @@ var diagnosticLocation = function diagnosticLocation( o )
   var path = o.stack[ o.level ];
 
   if( !_.strIs( path ) )
-  return;
+  return end();
 
   /* path = _._diagnosticStripPath( path ); */
 
@@ -4278,14 +4297,14 @@ var diagnosticLocation = function diagnosticLocation( o )
   path = _.strInbetweenOf( path,'(',')' );
 
   if( !path )
-  return;
+  return end();
 
   var halfs = _.strInhalfRight( path,':' );
 
   path = halfs[ 0 ];
 
   if( !halfs[ 1 ] )
-  return { path : path };
+  return end({ path : path });
 
   var colNumber = halfs[ 1 ];
   var halfs = _.strInhalfRight( path,':' );
@@ -4303,7 +4322,7 @@ var diagnosticLocation = function diagnosticLocation( o )
   if( !isNaN( colNumber ) )
   result.col = colNumber;
 
-  return result;
+  return end( result );
 }
 
 diagnosticLocation.defaults =
@@ -11638,6 +11657,45 @@ var arraySortedLookUpInterval = function arraySortedLookUpInterval( arr,interval
 
 //
 
+var arraySortedLookUpIntervalNarrowest = function arraySortedLookUpIntervalNarrowest( arr,interval,comparator )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( arr ) );
+
+  var comparator = _._comparatorFromTransformer( comparator );
+  var l = arr.length;
+  var b = _._arraySortedRightMostIndex( arr,interval[ 0 ],comparator,0,l );
+
+  if( b === l || comparator( arr[ b ],interval[ 1 ] ) > 0 )
+  return [ b,b ];
+
+  var e = _._arraySortedLeftMostIndex( arr,interval[ 1 ],comparator,b+1,l );
+
+  if( comparator( arr[ e ],interval[ 1 ] ) <= 0 )
+  e += 1;
+
+  if( Config.debug )
+  {
+
+    if( b < l )
+    _.assert( arr[ b ] >= interval[ 0 ] );
+
+    if( b > 0 )
+    _.assert( arr[ b-1 ] <= interval[ 0 ] );
+
+    if( e < l )
+    _.assert( arr[ e ] >= interval[ 1 ] );
+
+    if( e > 0 )
+    _.assert( arr[ e-1 ] <= interval[ 1 ] );
+
+  }
+
+  return [ b,e ]
+}
+
+//
+
 var _arraySortedLeftMostIndex = function _arraySortedLeftMostIndex( arr,ins,comparator,left,right )
 {
 
@@ -14313,6 +14371,7 @@ var Proto =
   arraySortedLookUp : arraySortedLookUp,
 
   arraySortedLookUpInterval : arraySortedLookUpInterval,
+  arraySortedLookUpIntervalNarrowest : arraySortedLookUpIntervalNarrowest,
 
   _arraySortedLeftMostIndex : _arraySortedLeftMostIndex,
   arraySortedLeftMostIndex : arraySortedLeftMostIndex,

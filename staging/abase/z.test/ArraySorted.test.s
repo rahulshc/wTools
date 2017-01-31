@@ -220,36 +220,34 @@ var arraySortedLookUpInterval = function arraySortedLookUpInterval( test )
   var arr = [ 0,0,0,0,1,1,1,1 ];
 
   var range = _.arraySortedLookUpInterval( arr,[ 1,1 ] );
-  test.identical( [ 4,8 ],range );
+  test.identical( range,[ 4,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 1,2 ] );
-  test.identical( [ 4,8 ],range );
+  test.identical( range,[ 4,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 0,0 ] );
-  test.identical( [ 0,4 ],range );
+  test.identical( range,[ 0,4 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ -1,0 ] );
-  test.identical( [ 0,4 ],range );
+  test.identical( range,[ 0,4 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 0,1 ] );
-  test.identical( [ 0,8 ],range );
+  test.identical( range,[ 0,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ -1,3 ] );
-  test.identical( [ 0,8 ],range );
+  test.identical( range,[ 0,8 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ -2,-1 ] );
-  test.identical( [ 0,0 ],range );
+  test.identical( range,[ 0,0 ] );
 
   var range = _.arraySortedLookUpInterval( arr,[ 2,3 ] );
-  test.identical( [ 8,8 ],range );
+  test.identical( range,[ 8,8 ] );
 
   /* */
 
   var arr = [ 2, 2, 4, 18, 25, 25, 25, 26, 33, 36 ];
-
-  debugger;
   var range = _.arraySortedLookUpInterval( arr,[ 7,28 ] );
-  test.identical( [ 3,8 ],range );
+  test.identical( range,[ 3,8 ] );
 
   /* */
 
@@ -280,6 +278,103 @@ var arraySortedLookUpInterval = function arraySortedLookUpInterval( test )
 
         if( range[ 1 ] < arr.length )
         test.shouldBe( arr[ range[ 1 ] ] > interval[ 1 ] );
+
+      }
+
+    }
+
+  }
+
+  /* */
+
+  for( var c = 10 ; c <= 100 ; c *= 10 )
+  {
+    var arr = makeArray( c,5 );
+    testArray( arr,c/5 );
+  }
+
+  for( var c = 10 ; c <= 100 ; c *= 10 )
+  {
+    var arr = makeArray( c,0.2 );
+    testArray( arr,c/0.2 );
+  }
+
+  /* */
+
+  test.identical( true,true );
+}
+
+//
+
+var arraySortedLookUpIntervalNarrowest = function arraySortedLookUpIntervalNarrowest( test )
+{
+  var self = this;
+  debugger;
+
+  /* */
+
+  var arr = [ 0,0,0,0,1,1,1,1 ];
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ 1,1 ] );
+  test.identical( range,[ 7,8 ] );
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ 1,2 ] );
+  test.identical( range,[ 7,8 ] );
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ 0,0 ] );
+  test.identical( range,[ 3,4 ] );
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ -1,0 ] );
+  test.identical( range,[ 0,1 ] );
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ 0,1 ] );
+  test.identical( range,[ 3,5 ] );
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ -1,3 ] );
+  test.identical( range,[ 0,8 ] );
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ -2,-1 ] );
+  test.identical( range,[ 0,0 ] );
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ 2,3 ] );
+  test.identical( range,[ 8,8 ] );
+
+  /* */
+
+  var arr = [ 2, 2, 4, 18, 25, 25, 25, 26, 33, 36 ];
+
+  var range = _.arraySortedLookUpIntervalNarrowest( arr,[ 7,28 ] );
+  test.identical( range,[ 3,8 ] );
+
+  /* */
+
+  function testArray( arr,top )
+  {
+
+    for( var val = 0 ; val < top ; val++ )
+    {
+      var interval = [ Math.round( Math.random()*( top+2 )-1 ) ];
+      interval[ 1 ] = interval[ 0 ] + Math.round( Math.random()*( top+2 - interval[ 0 ] ) );
+
+      // debugger;
+      var range = _.arraySortedLookUpIntervalNarrowest( arr,interval );
+
+      if( range[ 0 ] < arr.length )
+      test.shouldBe( arr[ range[ 0 ] ] >= interval[ 0 ] );
+
+      test.shouldBe( range[ 0 ] >= 0 );
+      test.shouldBe( range[ 1 ] <= arr.length );
+
+      if( range[ 0 ] < range[ 1 ] )
+      {
+        test.shouldBe( arr[ range[ 0 ] ] >= interval[ 0 ] );
+        test.shouldBe( arr[ range[ 1 ]-1 ] <= interval[ 1 ] );
+
+        if( range[ 0 ] > 0 )
+        test.shouldBe( arr[ range[ 0 ]-1 ] <= interval[ 0 ] );
+
+        if( range[ 1 ] < arr.length )
+        test.shouldBe( arr[ range[ 1 ] ] >= interval[ 1 ] );
 
       }
 
@@ -323,6 +418,7 @@ var Proto =
     arraySortedAdd : arraySortedAdd,
     // arraySortedClosest : arraySortedClosest,
     arraySortedLookUpInterval : arraySortedLookUpInterval,
+    arraySortedLookUpIntervalNarrowest : arraySortedLookUpIntervalNarrowest,
 
   },
 
