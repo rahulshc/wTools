@@ -7,11 +7,20 @@ if( typeof module !== 'undefined' )
 
   try
   {
-    require( '../../amid/diagnostic/Testing.debug.s' );
+    require( '../../abase/xTesting/Testing.debug.s' );
   }
   catch( err )
   {
     require( 'wTesting' );
+  }
+
+  try
+  {
+    require( '../../abase/component/ArraySorted.s' );
+  }
+  catch( err )
+  {
+    require( 'wArraySorted.s' );
   }
 
 }
@@ -404,6 +413,128 @@ var arraySortedLookUpIntervalNarrowest = function arraySortedLookUpIntervalNarro
   debugger;
 }
 
+//
+
+var arraySortedLookUpEmbrace = function arraySortedLookUpEmbrace( test )
+{
+  var self = this;
+
+  /* */
+
+  var arr = [ 0,0,5,5,9,9 ];
+
+  debugger;
+  var range = _.arraySortedLookUpEmbrace( arr,[ 5,9 ] );
+  test.identical( range,[ 3,5 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 0,5 ] );
+  test.identical( range,[ 1,3 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 0,3 ] );
+  test.identical( range,[ 1,3 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 2,5 ] );
+  test.identical( range,[ 1,3 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 2,3 ] );
+  test.identical( range,[ 1,3 ] );
+
+  // debugger;
+  // return;
+
+  /* */
+
+  var arr = [ 0,0,0,0,1,1,1,1 ];
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 1,1 ] );
+  test.identical( range,[ 7,8 ] );
+
+  debugger;
+  var range = _.arraySortedLookUpEmbrace( arr,[ 1,2 ] );
+  test.identical( range,[ 7,8 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 0,0 ] );
+  test.identical( range,[ 3,4 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ -1,0 ] );
+  test.identical( range,[ 0,1 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 0,1 ] );
+  test.identical( range,[ 3,5 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ -1,3 ] );
+  test.identical( range,[ 0,8 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ -2,-1 ] );
+  test.identical( range,[ 0,0 ] );
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 2,3 ] );
+  test.identical( range,[ 8,8 ] );
+
+  /* */
+
+  var arr = [ 2, 2, 4, 18, 25, 25, 25, 26, 33, 36 ];
+
+  var range = _.arraySortedLookUpEmbrace( arr,[ 7,28 ] );
+  test.identical( range,[ 2,9 ] );
+
+  /* */
+
+  function testArray( arr,top )
+  {
+
+    for( var val = 0 ; val < top ; val++ )
+    {
+      var interval = [ Math.round( Math.random()*( top+2 )-1 ) ];
+      interval[ 1 ] = interval[ 0 ] + Math.round( Math.random()*( top+2 - interval[ 0 ] ) );
+
+      // debugger;
+      var range = _.arraySortedLookUpEmbrace( arr,interval );
+
+      if( range[ 0 ] > 0 )
+      test.shouldBe( arr[ range[ 0 ]-1 ] <= interval[ 0 ] );
+
+      test.shouldBe( range[ 0 ] >= 0 );
+      test.shouldBe( range[ 1 ] <= arr.length );
+
+      if( range[ 0 ] < range[ 1 ] )
+      {
+        // test.shouldBe( arr[ range[ 0 ] ] >= interval[ 0 ] );
+        // test.shouldBe( arr[ range[ 1 ]-1 ] <= interval[ 1 ] );
+
+        if( range[ 0 ] > 0 )
+        test.shouldBe( arr[ range[ 0 ]-1 ] <= interval[ 0 ] );
+
+        if( range[ 1 ] < arr.length )
+        test.shouldBe( arr[ range[ 1 ] ] >= interval[ 1 ] );
+      }
+
+    }
+
+  }
+
+  /* */
+
+  debugger;
+
+  for( var c = 10 ; c <= 100 ; c *= 10 )
+  {
+    var arr = makeArray( c,5 );
+    testArray( arr,c/5 );
+  }
+
+  for( var c = 10 ; c <= 100 ; c *= 10 )
+  {
+    var arr = makeArray( c,0.2 );
+    testArray( arr,c/0.2 );
+  }
+
+  /* */
+
+  test.identical( true,true );
+  debugger;
+}
+
 // --
 // proto
 // --
@@ -417,8 +548,10 @@ var Proto =
     arraySortedLookUpIndex : arraySortedLookUpIndex,
     arraySortedAdd : arraySortedAdd,
     // arraySortedClosest : arraySortedClosest,
+
     arraySortedLookUpInterval : arraySortedLookUpInterval,
-    arraySortedLookUpIntervalNarrowest : arraySortedLookUpIntervalNarrowest,
+    // arraySortedLookUpIntervalNarrowest : arraySortedLookUpIntervalNarrowest,
+    arraySortedLookUpEmbrace : arraySortedLookUpEmbrace,
 
   },
 

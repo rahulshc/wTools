@@ -17,7 +17,7 @@ if( typeof module !== 'undefined' )
   require( '../wTools.s' );
   require( '../component/ExecTools.s' );
 
-  // require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
+  // require( '../../../../wTesting/staging/abase/xTesting/Testing.debug.s' );
 
   try
   {
