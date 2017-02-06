@@ -13,7 +13,7 @@
 if( typeof module !== 'undefined' )
 {
 
-  wTools.requireAny( __dirname + '/Proto.s','wProto','' );
+  wTools.includeAny( __dirname + '/Proto.s','wProto','' );
 
 }
 

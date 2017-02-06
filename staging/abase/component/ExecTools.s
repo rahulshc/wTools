@@ -2,7 +2,6 @@
 
 'use strict';
 
-
 if( typeof module !== 'undefined' )
 {
 
@@ -213,7 +212,7 @@ shell.defaults =
 
 //
 
-var exec = function( o )
+var exec = function exec( o )
 {
   var result;
 

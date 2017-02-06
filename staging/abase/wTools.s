@@ -4496,8 +4496,21 @@ var diagnosticStack = function diagnosticStack( stack,first,last )
   debugger;
 
   if( errorIs )
-  if( stack.length && stack[ 0 ].indexOf( 'at ' ) === -1 )
-  stack.splice( 0,1 );
+  {
+    // debugger;
+    while( stack.length )
+    {
+      var splice = 0;
+      splice |= stack[ 0 ].indexOf( 'at ' ) === -1;
+      splice |= stack[ 0 ].indexOf( '(vm.js:' ) !== -1;
+      splice |= stack[ 0 ].indexOf( '(module.js:' ) !== -1;
+      splice |= stack[ 0 ].indexOf( '(internal/module.js:' ) !== -1;
+      if( splice )
+      stack.splice( 0,1 );
+      else break;
+    }
+    // debugger;
+  }
 
   if( stack[ 0 ].indexOf( 'at ' ) === -1 )
   throw Error( 'diagnosticStack : cant parse stack ' + stack );
@@ -5349,36 +5362,6 @@ var assertWarn = function( condition )
 
 }
 
-//
-
-var requireAny = function requireAny()
-{
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-    var src = arguments[ a ];
-
-    if( a === arguments.length-1 )
-    {
-      if( src !== '' )
-      return require( src );
-    }
-    else try
-    {
-
-      var result = require( src );
-      return result;
-
-    }
-    catch( err )
-    {
-      //_.errLog( err );
-    }
-
-  }
-
-}
-
 // --
 // type test
 // --
@@ -5606,7 +5589,7 @@ var hasLength = function( src )
  * @memberof wTools
  */
 
-var strIs = function( src )
+var strIs = function strIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object String]';
   return result;
@@ -13435,8 +13418,6 @@ var Proto =
   assertNotTested : assertNotTested,
   assertWarn : assertWarn,
 
-  requireAny : requireAny,  /* experimental */
-
 
   // type test
 
@@ -13812,17 +13793,25 @@ _global_.logger =
 _global_[ 'wTools' ] = Self;
 _global_.wTools = Self;
 
-//debugger;
+//
 
 if( typeof module !== 'undefined' && module !== null )
 try
 {
 
+  module[ 'exports' ] = Self;
+
   require( './abase/FieldFilter.s' );
   require( './abase/FieldMapper.s' );
 
+  require( './component/Include.s' );
+  require( './component/NameTools.s' );
+
+  require( './component/ExecTools.s' );
+  require( './component/StringTools.s' );
+  require( './component/ArrayDescriptor.s' );
+
   require( '../BackTools.ss' );
-  //require( '../BackToolsWithConfig.ss' );
 
 }
 catch( err )
@@ -13836,20 +13825,21 @@ if( _global_._wToolsInitConfigExpected !== false )
   _._initConfig();
   _._initUnhandledErrorHandler();
 }
+else debugger;
 
-// if( typeof __dirname !== 'undefined' )
-// console.log( 'wTools',__dirname );
-
-if( typeof module !== 'undefined' && module !== null )
-{
-
-  module[ 'exports' ] = Self;
-
-  require( './component/NameTools.s' );
-  require( './component/ExecTools.s' );
-  require( './component/StringTools.s' );
-  require( './component/ArrayDescriptor.s' );
-
-}
+// // if( typeof __dirname !== 'undefined' )
+// // console.log( 'wTools',__dirname );
+//
+// if( typeof module !== 'undefined' && module !== null )
+// {
+//
+//   // module[ 'exports' ] = Self;
+//   //
+//   // require( './component/NameTools.s' );
+//   // require( './component/ExecTools.s' );
+//   // require( './component/StringTools.s' );
+//   // require( './component/ArrayDescriptor.s' );
+//
+// }
 
 })();
