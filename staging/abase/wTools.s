@@ -13799,19 +13799,8 @@ if( typeof module !== 'undefined' && module !== null )
 try
 {
 
-  module[ 'exports' ] = Self;
-
   require( './abase/FieldFilter.s' );
   require( './abase/FieldMapper.s' );
-
-  require( './component/Include.s' );
-  require( './component/NameTools.s' );
-
-  require( './component/ExecTools.s' );
-  require( './component/StringTools.s' );
-  require( './component/ArrayDescriptor.s' );
-
-  require( '../BackTools.ss' );
 
 }
 catch( err )
@@ -13827,19 +13816,20 @@ if( _global_._wToolsInitConfigExpected !== false )
 }
 else debugger;
 
-// // if( typeof __dirname !== 'undefined' )
-// // console.log( 'wTools',__dirname );
-//
-// if( typeof module !== 'undefined' && module !== null )
-// {
-//
-//   // module[ 'exports' ] = Self;
-//   //
-//   // require( './component/NameTools.s' );
-//   // require( './component/ExecTools.s' );
-//   // require( './component/StringTools.s' );
-//   // require( './component/ArrayDescriptor.s' );
-//
-// }
+if( typeof module !== 'undefined' && module !== null )
+{
+
+  module[ 'exports' ] = Self;
+
+  require( './component/Include.s' );
+  require( './component/NameTools.s' );
+
+  require( './component/ExecTools.s' );
+  require( './component/StringTools.s' );
+  require( './component/ArrayDescriptor.s' );
+
+  require( '../BackTools.ss' );
+
+}
 
 })();

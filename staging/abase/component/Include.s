@@ -221,6 +221,12 @@ _includeHandlerMap[ 'wPath' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.pathDir },
 }
 
+_includeHandlerMap[ 'wFiles' ] =
+{
+  includeAny : [ '../../amid/file/Files.ss','wFiles' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.FileRecord },
+}
+
 // --
 // prototype
 // --
