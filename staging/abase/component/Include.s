@@ -42,12 +42,18 @@ function _includeAct( src )
   if( _includeHandlerMap[ src ] )
   handler = _includeHandlerMap[ src ];
 
+  if( !handler )
+  {
+    return _includePureAny( src );
+  }
+
+  /* */
+
   if( handler.isIncluded )
   if( handler.isIncluded() )
   return handler.returned;
 
   var result;
-
   if( handler.include )
   result = _includePure( handler.include );
   else if( handler.includeAny )
