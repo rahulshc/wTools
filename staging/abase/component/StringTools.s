@@ -10,12 +10,10 @@
 
 //
 
-if( typeof module !== 'undefined' )
-{
-
-  wTools.includeAny( __dirname + '/Proto.s','wProto','' );
-
-}
+// if( typeof module !== 'undefined' )
+// {
+//   wTools.includeAny( __dirname + '/Proto.s','wProto','' );
+// }
 
 //
 

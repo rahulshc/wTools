@@ -284,8 +284,8 @@ var _each = function _each( o )
 
   _.routineOptions( _each,o );
   _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
-  _.assert( o.onUp.length === 0 || o.onUp.length === 3 );
-  _.assert( o.onDown.length === 0 || o.onDown.length === 3 );
+  _.assert( o.onUp.length === 0 || o.onUp.length === 1 || o.onUp.length === 3 );
+  _.assert( o.onDown.length === 0 || o.onUp.length === 1 || o.onDown.length === 3 );
 
   if( o.path === null )
   o.path = o.pathDelimteter;

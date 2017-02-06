@@ -221,8 +221,6 @@ _includeHandlerMap[ 'wPath' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.pathDir },
 }
 
-//   require( '../../abase/object/RegexpObject.s' );
-
 // --
 // prototype
 // --
@@ -238,11 +236,6 @@ var Proto =
 
   _includePureAny : _includePureAny,
   includeAny : includeAny,
-
-  // _include : _include,
-  // include : include,
-  // includeAny : includeAny,  /* experimental */
-
 
 }
 
