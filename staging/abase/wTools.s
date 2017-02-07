@@ -13814,7 +13814,7 @@ if( _global_._wToolsInitConfigExpected !== false )
   _._initConfig();
   _._initUnhandledErrorHandler();
 }
-else debugger;
+// else debugger;
 
 if( typeof module !== 'undefined' && module !== null )
 {

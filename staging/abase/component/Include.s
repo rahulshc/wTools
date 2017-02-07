@@ -92,7 +92,7 @@ function _includePure( src )
 function include( src )
 {
   if( arguments.length !== 1 )
-  return _includePure( arguments );
+  return _includeAct( arguments );
 
   if( _.arrayLike( src ) )
   {
@@ -195,7 +195,7 @@ _includeHandlerMap[ 'wConsequence' ] =
 {
   includeAny : [ '../../abase/syn/Consequence.s','wConsequence' ],
   isIncluded : function(){ return typeof wConsequence !== 'undefined'; },
-}
+} 
 
 _includeHandlerMap[ 'wNameTools' ] =
 {
@@ -217,7 +217,7 @@ _includeHandlerMap[ 'wProto' ] =
 
 _includeHandlerMap[ 'wPath' ] =
 {
-  includeAny : [ '../../abase/component/Proto.s','wPath' ],
+  includeAny : [ '../../abase/component/Path.s','wPath' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.pathDir },
 }
 
