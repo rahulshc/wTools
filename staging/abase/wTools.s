@@ -13828,7 +13828,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/StringTools.s' );
   require( './component/ArrayDescriptor.s' );
 
-  require( '../BackTools.ss' );
+  _.includeAny( '../BackTools.ss','' );
 
 }
 
