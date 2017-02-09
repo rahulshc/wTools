@@ -11623,16 +11623,43 @@ var mapExtend = function mapExtend( dstObject )
 {
   var result = dstObject;
 
-  if( result === null ) result = {};
+  if( result === null )
+  result = {};
 
   assert( arguments.length >= 2 );
-  assert( objectLike( result ),'mapExtend :','expects object as argument' );
+  assert( objectLike( result ),'mapExtend :','expects object as the first argument' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
 
     var argument = arguments[ a ];
 
+    for( var k in argument )
+    {
+      result[ k ] = argument[ k ];
+    }
+
+  }
+
+  return result;
+}
+
+//
+
+var mapExtendToThis = function mapExtendToThis()
+{
+  var result = this;
+
+  if( !result )
+  result = {};
+
+  assert( arguments.length >= 1 );
+  assert( objectLike( result ),'mapExtendToThis :','expects object as this' );
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+
+    var argument = arguments[ a ];
     for( var k in argument )
     {
       result[ k ] = argument[ k ];
@@ -12466,19 +12493,50 @@ var mapPairs = function( src )
 
 //
 
-var mapInvertKeyValue = function( src )
+var mapInvert = function mapInvert( src,dst )
 {
-  var result = {};
+  var dst = dst || Object.create( null );
 
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectLike( src ) );
 
   for( var s in src )
   {
-    _.assert( result[ src[ s ] ] === undefined,'cant invert key value of the map' );
-    result[ src[ s ] ] = s;
+    _.assert( dst[ src[ s ] ] === undefined,'Cant invert the map, it has several keys with value',src[ s ] );
+    dst[ src[ s ] ] = s;
   }
 
-  return result;
+  return dst;
+}
+
+//
+
+var mapInvertDroppingDuplicates = function mapInvertDroppingDuplicates( src,dst )
+{
+  var dst = dst || Object.create( null );
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.objectLike( src ) );
+
+  var drop;
+
+  for( var s in src )
+  {
+    if( dst[ src[ s ] ] !== undefined )
+    {
+      drop = drop || Object.create( null );
+      drop[ src[ s ] ] = true;
+    }
+    dst[ src[ s ] ] = s;
+  }
+
+  if( drop )
+  for( var d in drop )
+  {
+    delete dst[ d ];
+  }
+
+  return dst;
 }
 
 //
@@ -13682,6 +13740,7 @@ var Proto =
 
   mapExtendFiltering : mapExtendFiltering,
   mapExtend : mapExtend,
+  mapExtendToThis : mapExtendToThis,
   mapSupplement : mapSupplement,
   mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
@@ -13709,7 +13768,7 @@ var Proto =
   mapIndexForValue : mapIndexForValue,
 
 
-  // map getter
+  // map convert
 
   mapFirstPair : mapFirstPair,
 
@@ -13725,7 +13784,8 @@ var Proto =
   mapValues : mapValues,
   mapPairs : mapPairs,
 
-  mapInvertKeyValue : mapInvertKeyValue,
+  mapInvert : mapInvert,
+  mapInvertDroppingDuplicates : mapInvertDroppingDuplicates,
   mapsFlatten : mapsFlatten,
 
   mapRoutines : mapRoutines,
