@@ -110,8 +110,9 @@ var shell = ( function( o )
         // var i = o.code.indexOf( ' ' );
         // o.child = ChildProcess.spawn( o.code.substring( 0,i ),[ o.code.substring( i+1 ) ] );
         var app = process.platform === 'win32' ? 'cmd' : 'sh';
+        var appParam = process.platform === 'win32' ? '/c' : '-c';
         // logger.log( app,'-c',o.code );
-        o.child = ChildProcess.spawn( app,[ '-c',o.code ] );
+        o.child = ChildProcess.spawn( app,[ appParam,o.code ] );
       }
       else if( o.mode === 'exec' )
       {
