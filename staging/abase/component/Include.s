@@ -191,11 +191,35 @@ _includeHandlerMap[ 'wLogger' ] =
   isIncluded : function(){ return typeof wLogger !== 'undefined'; },
 }
 
+_includeHandlerMap[ 'wColor' ] =
+{
+  includeAny : [ '../../amid/color/Color.s','wColor' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap },
+}
+
+_includeHandlerMap[ 'wColor256' ] =
+{
+  includeAny : [ '../../amid/color/Color256.s','wColor256' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap && Object.keys( wTools.ColorMap ).length > 100 },
+}
+
+_includeHandlerMap[ 'wLoggeToFile' ] =
+{
+  includeAny : [ '../../abase/object/printer/printer/LoggerToFile.s','wloggetofile' ],
+  isIncluded : function(){ return typeof wLoggerToFile !== 'undefined'; },
+}
+
+_includeHandlerMap[ 'wLoggeToJstructure' ] =
+{
+  includeAny : [ '../../abase/object/printer/printer/LoggerToJstructure.s','wloggetojstructure' ],
+  isIncluded : function(){ return typeof wLoggeToJstructure !== 'undefined'; },
+}
+
 _includeHandlerMap[ 'wConsequence' ] =
 {
   includeAny : [ '../../abase/syn/Consequence.s','wConsequence' ],
   isIncluded : function(){ return typeof wConsequence !== 'undefined'; },
-} 
+}
 
 _includeHandlerMap[ 'wNameTools' ] =
 {
@@ -225,6 +249,24 @@ _includeHandlerMap[ 'wFiles' ] =
 {
   includeAny : [ '../../amid/file/Files.ss','wFiles' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.FileRecord },
+}
+
+_includeHandlerMap[ 'wTemplateTree' ] =
+{
+  includeAny : [ '../../amid/mapping/TemplateTree.s','wtemplatetree' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateTree },
+}
+
+_includeHandlerMap[ 'wNameMapper' ] =
+{
+  includeAny : [ '../../amid/mapping/NameMapper.s','wnamemapper' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.NameMapper },
+}
+
+_includeHandlerMap[ 'wArraySorted' ] =
+{
+  includeAny : [ '../../abase/component/ArraySorted.s','warraysorted' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.arraySortedLookUp },
 }
 
 // --
