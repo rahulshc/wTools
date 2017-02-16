@@ -15,7 +15,7 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 // map filter
 // --
 
-var bypass = function()
+function bypass()
 {
 
   var routine = function bypass( dstContainer,srcContainer,key )
@@ -30,7 +30,7 @@ var bypass = function()
 
 //
 
-var srcAndDstOwn = function()
+function srcAndDstOwn()
 {
 
   var routine = function srcAndDstOwn( dstContainer,srcContainer,key )
@@ -49,7 +49,7 @@ var srcAndDstOwn = function()
 
 //
 
-var srcOwn = function()
+function srcOwn()
 {
 
   var routine = function srcOwn( dstContainer,srcContainer,key )
@@ -67,7 +67,7 @@ var srcOwn = function()
 
 //
 
-var srcOwnRoutines = function()
+function srcOwnRoutines()
 {
 
   var routine = function srcOwnRoutines( dstContainer,srcContainer,key )
@@ -87,7 +87,7 @@ var srcOwnRoutines = function()
 
 //
 
-var dstNotHasSrcOwnRoutines = function()
+function dstNotHasSrcOwnRoutines()
 {
 
   var routine = function dstNotHasSrcOwnRoutines( dstContainer,srcContainer,key )
@@ -109,7 +109,7 @@ var dstNotHasSrcOwnRoutines = function()
 
 //
 
-var dstNotHas = function()
+function dstNotHas()
 {
 
   var routine = function dstNotHas( dstContainer,srcContainer,key )
@@ -130,7 +130,7 @@ var dstNotHas = function()
 
 //
 
-var dstNotHasCloning = function()
+function dstNotHasCloning()
 {
 
   var routine = function dstNotHasCloning( dstContainer,srcContainer,key )
@@ -147,7 +147,7 @@ var dstNotHasCloning = function()
 
 //
 
-var dstNotHasSrcOwn = function()
+function dstNotHasSrcOwn()
 {
 
   var routine = function dstNotHasSrcOwn( dstContainer,srcContainer,key )
@@ -167,7 +167,7 @@ var dstNotHasSrcOwn = function()
 
 //
 
-var dstNotHasSrcOwnCloning = function()
+function dstNotHasSrcOwnCloning()
 {
 
   var routine = function dstNotHasSrcOwnCloning( dstContainer,srcContainer,key )
@@ -186,7 +186,7 @@ var dstNotHasSrcOwnCloning = function()
 
 //
 
-var dstNotOwn = function()
+function dstNotOwn()
 {
 
   var routine = function dstNotOwn( dstContainer,srcContainer,key )
@@ -204,7 +204,7 @@ var dstNotOwn = function()
 
 //
 
-var dstNotOwnSrcOwnCloning = function()
+function dstNotOwnSrcOwnCloning()
 {
 
   var routine = function dstNotOwnSrcOwnCloning( dstContainer,srcContainer,key )
@@ -224,7 +224,7 @@ var dstNotOwnSrcOwnCloning = function()
 
 //
 
-var dstNotOwnNotUndefinedCloning = function()
+function dstNotOwnNotUndefinedCloning()
 {
 
   var routine = function dstNotOwnNotUndefinedCloning( dstContainer,srcContainer,key )
@@ -247,7 +247,7 @@ var dstNotOwnNotUndefinedCloning = function()
 
 //
 
-var dstNotOwnCloning = function()
+function dstNotOwnCloning()
 {
 
   var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
@@ -270,7 +270,7 @@ var dstNotOwnCloning = function()
 
 //
 
-var cloning = function()
+function cloning()
 {
 
   var routine = function cloning( dstContainer,srcContainer,key )
@@ -284,7 +284,7 @@ var cloning = function()
 
 //
 
-var cloningSrcOwn = function()
+function cloningSrcOwn()
 {
 
   var routine = function cloning( dstContainer,srcContainer,key )
@@ -301,7 +301,7 @@ var cloningSrcOwn = function()
 
 //
 
-var atomic = function()
+function atomic()
 {
 
   var routine = function atomic( dstContainer,srcContainer,key )
@@ -319,7 +319,7 @@ var atomic = function()
 
 //
 
-var atomicSrcOwn = function()
+function atomicSrcOwn()
 {
 
   var routine = function atomicSrcOwn( dstContainer,srcContainer,key )
@@ -339,7 +339,7 @@ var atomicSrcOwn = function()
 
 //
 
-var notAtomicCloning = function()
+function notAtomicCloning()
 {
 
   var routine = function notAtomicCloning( dstContainer,srcContainer,key )
@@ -356,7 +356,7 @@ var notAtomicCloning = function()
 
 //
 
-var notAtomicCloningSrcOwn = function()
+function notAtomicCloningSrcOwn()
 {
 
   var routine = function notAtomicCloningSrcOwn( dstContainer,srcContainer,key )
@@ -375,7 +375,7 @@ var notAtomicCloningSrcOwn = function()
 
 //
 
-var notAtomicCloningRecursiveSrcOwn = function()
+function notAtomicCloningRecursiveSrcOwn()
 {
 
   var routine = function notAtomicCloningRecursiveSrcOwn( dstContainer,srcContainer,key )
@@ -394,7 +394,7 @@ var notAtomicCloningRecursiveSrcOwn = function()
 
 //
 
-var recursiveClonning = function()
+function recursiveClonning()
 {
 
   var routine = function recursiveClonning( dstContainer,srcContainer,key )
@@ -408,7 +408,7 @@ var recursiveClonning = function()
 
 //
 
-var recursiveCloningSrcOwn = function()
+function recursiveCloningSrcOwn()
 {
 
   var routine = function recursiveCloningSrcOwn( dstContainer,srcContainer,key )
@@ -425,7 +425,7 @@ var recursiveCloningSrcOwn = function()
 
 //
 
-var dstNotHasRecursiveClonning = function()
+function dstNotHasRecursiveClonning()
 {
 
   var routine = function dstNotHasRecursiveClonning( dstContainer,srcContainer,key )
@@ -442,7 +442,7 @@ var dstNotHasRecursiveClonning = function()
 
 //
 
-var drop = function( dropContainer )
+function drop( dropContainer )
 {
 
   _.assert( _.objectIs( dropContainer ) );
@@ -462,7 +462,7 @@ var drop = function( dropContainer )
 
 //
 
-var and = function()
+function and()
 {
 
   var filters = [];
@@ -513,7 +513,7 @@ var and = function()
 
 //
 
-var makeMapper = function( routine )
+function makeMapper( routine )
 {
 
   _.assert( arguments.length === 1 );
@@ -522,7 +522,7 @@ var makeMapper = function( routine )
 
   if( routine.functionKind === 'field-filter' )
   {
-    var r = function( dstContainer,srcContainer,key )
+    function r( dstContainer,srcContainer,key )
     {
       var result = routine( dstContainer,srcContainer,key );
       _.assert( _.boolIs( result ) );
@@ -554,7 +554,7 @@ var makeMapper = function( routine )
 //
 //   if( routine.functionKind === 'field-filter' )
 //   {
-//     var r = function( dstContainer,srcContainer,key )
+//     function r( dstContainer,srcContainer,key )
 //     {
 //       debugger;
 //       var result = routine( dstContainer,srcContainer,key );

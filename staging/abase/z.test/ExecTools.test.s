@@ -17,25 +17,10 @@ if( typeof module !== 'undefined' )
   require( '../wTools.s' );
   require( '../component/ExecTools.s' );
 
-  // require( '../../../../wTesting/staging/abase/xTesting/Testing.debug.s' );
+  var _ = wTools
 
-  try
-  {
-    require( '../../amid/diagnostic/Testing.debug.s' );
-  }
-  catch( err )
-  {
-    require( 'wTesting' );
-  }
-
-  try
-  {
-    require( '../../abase/object/printer/printer/LoggerToJstructure.s' );
-  }
-  catch( err )
-  {
-    require( 'wLoggerToJstructure' );
-  }
+  _.include( 'wLoggerToJstructure' );
+  _.include( 'wTesting' );
 
 }
 

@@ -28,7 +28,7 @@ var Self = {};
 // test
 // --
 
-var toStr = function( test )
+function toStr( test )
 {
   var self = this;
 

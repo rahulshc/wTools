@@ -187,8 +187,20 @@ _includeHandlerMap[ 'wEventHandler' ] =
 
 _includeHandlerMap[ 'wLogger' ] =
 {
-  includeAny : [ '../../abase/object/printer/printer/Logger.s','wLogger' ],
+  includeAny : [ '../../abase/printer/printer/Logger.s','wLogger' ],
   isIncluded : function(){ return typeof wLogger !== 'undefined'; },
+}
+
+_includeHandlerMap[ 'wLoggeToFile' ] =
+{
+  includeAny : [ '../../abase/printer/printer/LoggerToFile.s','wloggetofile' ],
+  isIncluded : function(){ return typeof wLoggerToFile !== 'undefined'; },
+}
+
+_includeHandlerMap[ 'wLoggeToJstructure' ] =
+{
+  includeAny : [ '../../abase/printer/printer/LoggerToJstructure.s','wloggetojstructure' ],
+  isIncluded : function(){ return typeof wLoggeToJstructure !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wColor' ] =
@@ -201,18 +213,6 @@ _includeHandlerMap[ 'wColor256' ] =
 {
   includeAny : [ '../../amid/color/Color256.s','wColor256' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap && Object.keys( wTools.ColorMap ).length > 100 },
-}
-
-_includeHandlerMap[ 'wLoggeToFile' ] =
-{
-  includeAny : [ '../../abase/object/printer/printer/LoggerToFile.s','wloggetofile' ],
-  isIncluded : function(){ return typeof wLoggerToFile !== 'undefined'; },
-}
-
-_includeHandlerMap[ 'wLoggeToJstructure' ] =
-{
-  includeAny : [ '../../abase/object/printer/printer/LoggerToJstructure.s','wloggetojstructure' ],
-  isIncluded : function(){ return typeof wLoggeToJstructure !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wConsequence' ] =

@@ -111,7 +111,7 @@ var namesCoded = function namesCoded( namesMap )
 // id
 // --
 
-var idGenerateDate = function( prefix,postfix,fast )
+function idGenerateDate( prefix,postfix,fast )
 {
 
   var date = new Date;

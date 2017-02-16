@@ -37,7 +37,7 @@ var _arraySlice = _.arraySlice;
 
 !!!
 
-var read = function( data )
+function read( data )
 {
   var vm = VirtualMachine.createContext({});
   var script = VirtualMachine.createScript( '(' + s + ')' );
@@ -242,7 +242,7 @@ exec.defaults =
 
 //
 
-var makeFunction = function( o )
+function makeFunction( o )
 {
   var result;
 
@@ -298,7 +298,7 @@ makeFunction.defaults =
 
 //
 
-var execInWorker = function( o )
+function execInWorker( o )
 {
   var result;
 
@@ -321,7 +321,7 @@ execInWorker.defaults =
 
 //
 
-var makeWorker = function( o )
+function makeWorker( o )
 {
   var result;
 
@@ -343,7 +343,7 @@ makeWorker.defaults =
 
 //
 
-// var execAsyn = function( routine,onEnd,context )
+// function execAsyn( routine,onEnd,context )
 // {
 //   _assert( arguments.length >= 3,'execAsyn :','expects 3 arguments or more' );
 //
@@ -518,7 +518,7 @@ var execForEach = function execForEach( elements,o )
 
   var range = o.range.slice();
 
-  var exec = function()
+  function exec()
   {
 
     for( var l = Math.min( range[ 1 ],r+o.batch ) ; r < l ; r++ )

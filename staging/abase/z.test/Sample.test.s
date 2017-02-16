@@ -31,7 +31,7 @@ var Self = {};
 
 //
 
-var arrayRange = function( test )
+function arrayRange( test )
 {
 
   test.description = 'single zero';

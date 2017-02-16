@@ -55,7 +55,7 @@ var strTypeOf = _.strTypeOf;
  *
  */
 
-var toStrMethods = function( src,o )
+function toStrMethods( src,o )
 {
   var o = o || {};
   o.onlyRoutines = 1;
@@ -89,7 +89,7 @@ var toStrMethods = function( src,o )
  *
  */
 
-var toStrFields = function( src,o )
+function toStrFields( src,o )
 {
   var o = o || {};
   o.noRoutine = 1;
@@ -346,7 +346,7 @@ var toStrFields = function( src,o )
  *
  */
 
-var toStrFine_functor = function()
+function toStrFine_functor()
 {
 
   var primeFilter =
@@ -624,7 +624,7 @@ var _toStr = function _toStr( src,o )
  *
  */
 
-var _toStrShort = function( src,o )
+function _toStrShort( src,o )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.objectIs( o ),'expects map ( o )' );
@@ -847,7 +847,7 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
  *
  */
 
-var _toStrIsSimpleElement = function( element,o )
+function _toStrIsSimpleElement( element,o )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
@@ -888,7 +888,7 @@ var _toStrIsSimpleElement = function( element,o )
  *
  */
 
-var _toStrFromRoutine = function( src,o )
+function _toStrFromRoutine( src,o )
 {
   _.assert( _.routineIs( src ),'expects routine ( src )' );
   var result = '';
@@ -929,7 +929,7 @@ var _toStrFromRoutine = function( src,o )
  *
 */
 
-var _toStrFromNumber = function( src,o )
+function _toStrFromNumber( src,o )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( src ) && _.objectIs( o ) );
@@ -981,7 +981,7 @@ var _toStrFromNumber = function( src,o )
  *
 */
 
-var _toStrFromStr = function( src,o )
+function _toStrFromStr( src,o )
 {
   var result = '';
 
@@ -1020,7 +1020,7 @@ var _toStrFromStr = function( src,o )
 
 //
 
-var _toStrFromHashMap = function( src,o )
+function _toStrFromHashMap( src,o )
 {
   var result = '';
   var simple = 0;
@@ -1066,7 +1066,7 @@ var _toStrFromHashMap = function( src,o )
 
 //
 
-var _toStrFromArrayFiltered = function( src,o )
+function _toStrFromArrayFiltered( src,o )
 {
   var result = '';
 
@@ -1145,7 +1145,7 @@ var _toStrFromArrayFiltered = function( src,o )
  *
  */
 
-var _toStrFromArray = function( src,o )
+function _toStrFromArray( src,o )
 {
   var result = '';
 
@@ -1208,7 +1208,7 @@ var _toStrFromArray = function( src,o )
 
 //
 
-var _toStrFromObjectKeysFiltered = function( src,o )
+function _toStrFromObjectKeysFiltered( src,o )
 {
   var result = '';
 
@@ -1272,7 +1272,7 @@ var _toStrFromObjectKeysFiltered = function( src,o )
  *
 */
 
-var _toStrFromObject = function( src,o )
+function _toStrFromObject( src,o )
 {
   var result = '';
 
@@ -1363,7 +1363,7 @@ var _toStrFromObject = function( src,o )
  *
  */
 
-var _toStrFromContainer = function( o )
+function _toStrFromContainer( o )
 {
   var result = '';
 
@@ -1476,7 +1476,7 @@ var _toStrFromContainer = function( o )
 
   /* other */
 
-  var other = function( length )
+  function other( length )
   {
     return linePostfix + '[ ... other '+ ( length - l ) +' element(s) ]';
   }
@@ -1563,7 +1563,7 @@ var _toStrFromContainer = function( o )
  *
  */
 
-var strShort = function( o )
+function strShort( o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
@@ -1590,7 +1590,7 @@ var strShort = function( o )
 
     if( o.escaping )
     {
-      var check = function( s, l )
+      function check( s, l )
       {
         var temp = _.strEscape( s );
 
@@ -1771,7 +1771,7 @@ var strEscape =  function( src )
 
 //
 
-var toStrForRange = function( range )
+function toStrForRange( range )
 {
   var result;
 
@@ -1785,7 +1785,7 @@ var toStrForRange = function( range )
 
 //
 
-var toStrForCall = function( nameOfRoutine,args,ret,o )
+function toStrForCall( nameOfRoutine,args,ret,o )
 {
   var result = nameOfRoutine + '( ';
   var first = true;
@@ -1840,7 +1840,7 @@ var toStrForCall = function( nameOfRoutine,args,ret,o )
  *
  */
 
-var strCapitalize = function( src )
+function strCapitalize( src )
 {
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1 );
@@ -1880,7 +1880,7 @@ var strCapitalize = function( src )
  *
  */
 
-var strTimes = function( s,times )
+function strTimes( s,times )
 {
   var result = '';
 
@@ -1918,7 +1918,7 @@ var strTimes = function( s,times )
  *
 */
 
-var strLineCount = function( src )
+function strLineCount( src )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ) );
@@ -1952,7 +1952,7 @@ var strLineCount = function( src )
  *
  */
 
-var strSplitStrNumber = function( src )
+function strSplitStrNumber( src )
 {
   var result = {};
 
@@ -1975,7 +1975,7 @@ var strSplitStrNumber = function( src )
 
 //
 
-var strSplitChunks = function( o )
+function strSplitChunks( o )
 {
 
   var result = { chunks : [] };
@@ -2007,7 +2007,7 @@ var strSplitChunks = function( o )
 
   //
 
-  var columnEval = function( text )
+  function columnEval( text )
   {
     var i = text.lastIndexOf( '\n' );
 
@@ -2522,7 +2522,7 @@ strSplit.defaults =
  *
 */
 
-var strStrip = function( o )
+function strStrip( o )
 {
 
   if( _.strIs( o ) )
@@ -2629,7 +2629,7 @@ var strRemoveAllSpaces = function strRemoveAllSpaces( src,sub )
  *
  */
 
-var strStripEmptyLines = function( srcStr )
+function strStripEmptyLines( srcStr )
 {
   var result = '';
   var lines = srcStr.split( '\n' );
@@ -2653,7 +2653,7 @@ var strStripEmptyLines = function( srcStr )
 
 //
 
-var strIron = function()
+function strIron()
 {
 
   throw _.err( 'not tested' );
@@ -2724,7 +2724,7 @@ var strIron = function()
  *
  */
 
-var strReplaceAll = function( dst, ins, sub )
+function strReplaceAll( dst, ins, sub )
 {
   var o;
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -2810,7 +2810,7 @@ strReplaceAll.defaults =
  *
  */
 
-var strReplaceNames = function( src,ins,sub )
+function strReplaceNames( src,ins,sub )
 {
   _.assert( arguments.length === 3 );
   _.assert( _.strIs( src ) );
@@ -2871,13 +2871,13 @@ var strReplaceNames = function( src,ins,sub )
  *
  */
 
-var strJoin = function()
+function strJoin()
 {
   var result = [ '' ];
   var arrayEncountered = 0;
   var arrayLength;
 
-  var join = function( s,src )
+  function join( s,src )
   {
     result[ s ] += src;
   }
@@ -3029,7 +3029,7 @@ strConcat.defaults =
  *
  */
 
-var strUnjoin = function( srcStr,maskArray )
+function strUnjoin( srcStr,maskArray )
 {
 
   _.assert( arguments.length === 2 );
@@ -3059,7 +3059,7 @@ var strUnjoin = function( srcStr,maskArray )
 
   /**/
 
-  var checkToken = function()
+  function checkToken()
   {
 
     if( rindex !== -1 )
@@ -3075,7 +3075,7 @@ var strUnjoin = function( srcStr,maskArray )
 
   /**/
 
-  var checkMask = function( mask )
+  function checkMask( mask )
   {
 
     _.assert( _.strIs( mask ) || _.routineIs( mask ),'expects string or strUnjoin.any, got',_.strTypeOf( mask ) );
@@ -3267,7 +3267,7 @@ var strCommonRight = function strCommonRight( ins )
  * @memberof wTools
  *
 */
-var strDropPrefix = function( src,prefix )
+function strDropPrefix( src,prefix )
 {
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( prefix ) );
@@ -3303,7 +3303,7 @@ var strDropPrefix = function( src,prefix )
  *
 */
 
-var strDropPostfix = function( src,postfix )
+function strDropPostfix( src,postfix )
 {
 
   _.assert( _.strIs( src ) );
@@ -3319,7 +3319,7 @@ var strDropPostfix = function( src,postfix )
 
 //
 
-var strDifference = function( src1,src2,o )
+function strDifference( src1,src2,o )
 {
   _assert( _.strIs( src1 ) );
   _assert( _.strIs( src2 ) );
@@ -3336,7 +3336,7 @@ var strDifference = function( src1,src2,o )
 
 //
 
-var strSimilarity = function( src1,src2,o )
+function strSimilarity( src1,src2,o )
 {
   _assert( _.strIs( src1 ) );
   _assert( _.strIs( src2 ) );
@@ -3348,7 +3348,7 @@ var strSimilarity = function( src1,src2,o )
 
 //
 
-var strLattersSpectre = function( src )
+function strLattersSpectre( src )
 {
 
   var result = {};
@@ -3365,7 +3365,7 @@ var strLattersSpectre = function( src )
 
 //
 
-var lattersSpectreComparison = function( src1,src2 )
+function lattersSpectreComparison( src1,src2 )
 {
 
   var same = 0;
@@ -3427,7 +3427,7 @@ var _strHtmlEscapeMap =
   '/' : '&#x2F;'
 }
 
-var strHtmlEscape = function( str )
+function strHtmlEscape( str )
 {
   _.assert( arguments.length === 1 );
 
@@ -3464,7 +3464,7 @@ var strHtmlEscape = function( str )
  *
  */
 
-var strUnicodeEscape = function( src )
+function strUnicodeEscape( src )
 {
   var result = '';
 
@@ -3784,7 +3784,7 @@ strLinesSelect.defaults =
  *
  */
 
-var strCount = function( src,ins )
+function strCount( src,ins )
 {
   var result = -1;
 
@@ -3875,7 +3875,7 @@ var strDup = function strDup( src,times )
  *
  */
 
-var strCamelize = function( srcStr )
+function strCamelize( srcStr )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( srcStr ) );
@@ -3919,7 +3919,7 @@ var strCamelize = function( srcStr )
  *
  */
 
-var strFilenameFor = function( srcStr,o )
+function strFilenameFor( srcStr,o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( srcStr ) );
@@ -3963,7 +3963,7 @@ var strFilenameFor = function( srcStr,o )
  *
  */
 
-var strToBytes = function( src )
+function strToBytes( src )
 {
 
   _.assert( arguments.length === 1 );
@@ -4057,7 +4057,7 @@ var _metrics =
 
 }
 
-var strMetricFormat = function( number,o )
+function strMetricFormat( number,o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
@@ -4152,7 +4152,7 @@ var strMetricFormat = function( number,o )
  *
  */
 
-var strMetricFormatBytes = function( number,o )
+function strMetricFormatBytes( number,o )
 {
 
   var o = o || {};
@@ -4315,7 +4315,7 @@ strExtractStereoStrips.defaults =
 
 //
 
-var strCsvFrom = function( src,o )
+function strCsvFrom( src,o )
 {
 
   var result = '';
@@ -4380,7 +4380,7 @@ var strCsvFrom = function( src,o )
 
 //
 
-var strToDom = function( xmlStr )
+function strToDom( xmlStr )
 {
 
   var xmlDoc = null;

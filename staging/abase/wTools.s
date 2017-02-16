@@ -187,7 +187,7 @@ var __eachAct = function __eachAct( iteration )
 
   /* down */
 
-  var end = function()
+  function end()
   {
 
     if( iterator.root !== src )
@@ -213,7 +213,7 @@ var __eachAct = function __eachAct( iteration )
 
   /* element */
 
-  var __onElement = function( k )
+  function __onElement( k )
   {
 
     i += 1;
@@ -458,7 +458,7 @@ eachOwnRecursive.defaults.__proto__ = _each.defaults;
 
 //
 
-var eachSample = function( o )
+function eachSample( o )
 {
 
   if( arguments.length === 2 )
@@ -529,7 +529,7 @@ var eachSample = function( o )
 
   /**/
 
-  var firstSample = function()
+  function firstSample()
   {
 
     for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
@@ -548,7 +548,7 @@ var eachSample = function( o )
 
   /**/
 
-  var _nextSample = function( s )
+  function _nextSample( s )
   {
 
     counter[ s ]++;
@@ -570,7 +570,7 @@ var eachSample = function( o )
 
   /**/
 
-  var nextSample = function()
+  function nextSample()
   {
 
     if( o.direct ) for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
@@ -656,7 +656,7 @@ var eachInRange = function eachInRange( o )
 
   /* exec */
 
-  var exec = function()
+  function exec()
   {
 
     while( value < range[ 1 ] )
@@ -759,7 +759,7 @@ eachInManyRanges.defaults.__proto__ = eachInRange.defaults;
 
 //
 
-var eachInMultiRange = function( o )
+function eachInMultiRange( o )
 {
 
   if( !o.onEach )
@@ -813,7 +813,7 @@ var eachInMultiRange = function( o )
 
   /* adjust range */
 
-  var adjustRange = function( r )
+  function adjustRange( r )
   {
 
     if( _.numberIs( ranges[ r ] ) )
@@ -851,7 +851,7 @@ var eachInMultiRange = function( o )
 
   /* */
 
-  var getValue = function( arg ){ return arg.slice(); };
+  function getValue( arg ){ return arg.slice(); };
   if( names )
   getValue = function( arg )
   {
@@ -1055,7 +1055,7 @@ var enityExtend = function enityExtend( dst,src )
 
 //
 
-var entityClone = function( src,options )
+function entityClone( src,options )
 {
   var result;
 
@@ -1182,7 +1182,7 @@ var entityNew = function entityNew( src )
 
 //
 
-var _entityCloneAct = function( o )
+function _entityCloneAct( o )
 {
 
   var result;
@@ -1360,7 +1360,7 @@ var _entityCloneAct = function( o )
 
 //
 
-var _entityClone = function( o )
+function _entityClone( o )
 {
 
   if( o.rootSrc === undefined )
@@ -1406,7 +1406,7 @@ _entityClone.defaults =
 
 //
 
-var entityCloneObject = function( o )
+function entityCloneObject( o )
 {
 
   if( o.rootSrc === undefined )
@@ -1493,7 +1493,7 @@ entityCloneObjectMergingBuffers.defaults.__proto__ = entityCloneObject.defaults;
 
 //
 
-var entityCloneData = function( o )
+function entityCloneData( o )
 {
 
   if( o.rootSrc === undefined )
@@ -1650,7 +1650,7 @@ entityCloneDataSeparatingBuffers.defaults.__proto__ = entityCloneData.defaults;
  *
  */
 
-var entityCopy = function( dst,src,onRecursive )
+function entityCopy( dst,src,onRecursive )
 {
   var result;
 
@@ -1740,7 +1740,7 @@ var entityCopy = function( dst,src,onRecursive )
  * var dst ={};
  * var src = { a : 'string' };
  * var name = 'a';
- * var onRecursive = function( dstContainer,srcContainer,key )
+ * function onRecursive( dstContainer,srcContainer,key )
  * {
  *   _.assert( _.strIs( key ) );
  *   dstContainer[ key ] = srcContainer[ key ];
@@ -1755,7 +1755,7 @@ var entityCopy = function( dst,src,onRecursive )
  *
  */
 
-var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
+function entityCopyField( dstContainer,srcContainer,name,onRecursive )
 {
   var result;
   var name = _.nameUnfielded( name ).coded;
@@ -1801,7 +1801,7 @@ var entityCopyField = function( dstContainer,srcContainer,name,onRecursive )
  *
  */
 
-var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
+function entityAssignField( dstContainer,srcValue,name,onRecursive )
 {
   var result;
   var name = _.nameUnfielded( name ).coded;
@@ -1850,7 +1850,7 @@ var entityAssignField = function( dstContainer,srcValue,name,onRecursive )
  *
  */
 
-var entityCoerceTo = function( src,ins )
+function entityCoerceTo( src,ins )
 {
 
   _.assert( arguments.length === 2 );
@@ -1893,7 +1893,7 @@ var entityWrap = function entityWrap( o )
 
   /* */
 
-  var handleDown = function( e,k,iteration )
+  function handleDown( e,k,iteration )
   {
 
     debugger;
@@ -1993,7 +1993,7 @@ var entityFreeze = function entityFreeze( src )
  *
  */
 
-var entityHasNan = function( src )
+function entityHasNan( src )
 {
   _.assert( arguments.length === 1 );
 
@@ -2049,7 +2049,7 @@ var entityHasNan = function( src )
  *
  */
 
-var entityHasUndef = function( src )
+function entityHasUndef( src )
 {
   _.assert( arguments.length === 1 );
 
@@ -2305,12 +2305,12 @@ var _entitySame = function _entitySame( src1,src2,o )
 var _entitySameOptions = function _entitySameOptions( o )
 {
 
-  var _sameNumbersStrict = function( a,b )
+  function _sameNumbersStrict( a,b )
   {
     return Object.is( a,b );
   }
 
-  var _sameNumbersNotStrict = function( a,b )
+  function _sameNumbersNotStrict( a,b )
   {
     if( Object.is( a,b ) )
     return true;
@@ -2431,7 +2431,7 @@ var entityIdentical = function entityIdentical( src1,src2,options )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  var sameNumbers = function( a,b )
+  function sameNumbers( a,b )
   {
     return Object.is( a,b );
   }
@@ -2484,7 +2484,7 @@ var entityEquivalent = function entityEquivalent( src1,src2,options )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  var _sameNumbers = function( a,b )
+  function _sameNumbers( a,b )
   {
     if( Object.is( a,b ) )
     return true;
@@ -2640,7 +2640,7 @@ var entitySize = function entitySize( src )
 
 //
 
-// var entityWithKeyRecursive = function( src,key,onEach )
+// function entityWithKeyRecursive( src,key,onEach )
 // {
 //   var i = 0;
 //
@@ -2694,7 +2694,7 @@ var entitySize = function entitySize( src )
  * @memberof wTools
 */
 
-var entityValueWithIndex = function( src,index )
+function entityValueWithIndex( src,index )
 {
 
   if( _.arrayIs( src ) )
@@ -2743,7 +2743,7 @@ var entityValueWithIndex = function( src,index )
  * @memberof wTools
 */
 
-var entityKeyWithValue = function( src,value )
+function entityKeyWithValue( src,value )
 {
 
   var result = null;
@@ -2809,7 +2809,7 @@ var _entitySelectOptions = function _entitySelectOptions( o )
 
   /* makeQarrey */
 
-  var makeQarrey = function( query )
+  function makeQarrey( query )
   {
     var qarrey;
 
@@ -2974,7 +2974,7 @@ var __entitySelectAct = function __entitySelectAct( iteration )
 
   /* */
 
-  var _select = function( key )
+  function _select( key )
   {
 
     if( !qarrey.length && iterator.usingSet )
@@ -3129,7 +3129,7 @@ entitySelectUnique.defaults.__proto__ = _entitySelectOptions.defaults;
  *
  * @example
  * //returns false
- * var condition = function( src ){ return src.y === 1 }
+ * function condition( src ){ return src.y === 1 }
  * var check = _._entityConditionMake( condition );
  * check( { a : 2 } );
  *
@@ -3139,7 +3139,7 @@ entitySelectUnique.defaults.__proto__ = _entitySelectOptions.defaults;
  * @memberof wTools
 */
 
-var _entityConditionMake = function( condition,levels )
+function _entityConditionMake( condition,levels )
 {
   var result;
 
@@ -3280,7 +3280,7 @@ var entityMap = function entityMap( src,onEach )
    * @memberof wTools
    */
 
-var _entityFilter = function( o )
+function _entityFilter( o )
 {
 
   var result;
@@ -3332,7 +3332,7 @@ _entityFilter.defaults =
 
 //
 
-var entityFilter = function( src,onEach )
+function entityFilter( src,onEach )
 {
   _.assert( arguments.length === 2 );
   return _entityFilter
@@ -3345,7 +3345,7 @@ var entityFilter = function( src,onEach )
 
 //
 
-var entityFilterDeep = function( src,onEach )
+function entityFilterDeep( src,onEach )
 {
   _.assert( arguments.length === 2 );
   return _entityFilter
@@ -3396,7 +3396,7 @@ var entityFilterDeep = function( src,onEach )
    * @memberof wTools
    */
 
-var entityGroup = function( o )
+function entityGroup( o )
 {
   var o = o || {};
 
@@ -3426,7 +3426,7 @@ var entityGroup = function( o )
 
   /* */
 
-  var groupForKey = function( key,result )
+  function groupForKey( key,result )
   {
 
     _.each( o.src, function( e,k,iteration )
@@ -3523,7 +3523,7 @@ entityGroup.defaults =
  * @memberof wTools
  */
 
-var _entityMost = function( src,onElement,returnMax )
+function _entityMost( src,onElement,returnMax )
 {
 
   if( onElement === undefined )
@@ -3625,7 +3625,7 @@ var _entityMost = function( src,onElement,returnMax )
  * @memberof wTools
  */
 
-var entityMin = function( src,onElement )
+function entityMin( src,onElement )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   return _entityMost( src,onElement,0 );
@@ -3653,7 +3653,7 @@ var entityMin = function( src,onElement )
  * @memberof wTools
  */
 
-var entityMax = function( src,onElement )
+function entityMax( src,onElement )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   return _entityMost( src,onElement,1 );
@@ -3692,7 +3692,7 @@ var entitySearch = function entitySearch( o )
 
   /* */
 
-  var checkCandidate = function( e,k,iteration,r,path )
+  function checkCandidate( e,k,iteration,r,path )
   {
 
     var c = true;
@@ -5091,7 +5091,7 @@ var assertMapOwnOnly = function assertMapOwnOnly( src )
  *
  */
 
-var assertMapHasAll = function( src,all,msg )
+function assertMapHasAll( src,all,msg )
 {
 
   if( DEBUG === false )
@@ -5163,7 +5163,7 @@ var assertMapHasAll = function( src,all,msg )
  *
  */
 
-var assertMapOwnAll = function( src,all,msg )
+function assertMapOwnAll( src,all,msg )
 {
 
   if( DEBUG === false )
@@ -5206,7 +5206,7 @@ var assertInstanceOrClass = function assertInstanceOrClass( _Self,_this )
 
 //
 
-var assertNotTested = function( src )
+function assertNotTested( src )
 {
 
   debugger;
@@ -5262,7 +5262,7 @@ var assertNotTested = function( src )
  *
  */
 
-var assertMapHasNone = function( src )
+function assertMapHasNone( src )
 {
 
   if( DEBUG === false )
@@ -5296,7 +5296,7 @@ var assertMapHasNone = function( src )
 
 //
 
-var assertMapOwnNone = function( src,none )
+function assertMapOwnNone( src,none )
 {
 
   if( DEBUG === false )
@@ -5349,7 +5349,7 @@ var assertMapOwnNone = function( src,none )
  * @memberof wTools
  */
 
-var assertWarn = function( condition )
+function assertWarn( condition )
 {
 
   if( DEBUG )
@@ -5384,14 +5384,14 @@ var assertWarn = function( condition )
  * @memberof wTools
  */
 
-var objectIs = function( src )
+function objectIs( src )
 {
   return _ObjectToString.call( src ) === '[object Object]';
 }
 
 //
 
-var objectLike = function( src )
+function objectLike( src )
 {
   if( objectIs( src ) ) return true;
   if( routineIs( src ) ) return true;
@@ -5434,7 +5434,7 @@ var objectLike = function( src )
  * @memberof wTools
  */
 
-var mapIs = function( src )
+function mapIs( src )
 {
 
   if( !_.objectIs( src ) )
@@ -5477,7 +5477,7 @@ var mapIs = function( src )
  * @memberof wTools
  */
 
-var arrayIs = function( src )
+function arrayIs( src )
 {
   return _ObjectToString.call( src ) === '[object Array]';
 }
@@ -5512,7 +5512,7 @@ var arrayIs = function( src )
    * @memberof wTools
    */
 
-var arrayLike = function( src )
+function arrayLike( src )
 {
   if( atomicIs( src ) ) return false;
 
@@ -5563,7 +5563,7 @@ var arrayLike = function( src )
  * @memberof wTools
  */
 
-var hasLength = function( src )
+function hasLength( src )
 {
   if( src === undefined || src === null ) return false;
   if( _.numberIs( src.length ) ) return true;
@@ -5597,7 +5597,7 @@ var strIs = function strIs( src )
 
 //
 
-var strIsNotEmpty = function( src )
+function strIsNotEmpty( src )
 {
   if( !src )
   return false;
@@ -5607,7 +5607,7 @@ var strIsNotEmpty = function( src )
 
 //
 
-var symbolIs = function( src )
+function symbolIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object Symbol]';
   return result;
@@ -5729,14 +5729,14 @@ var numberIsInt = function numberIsInt( src )
 
 //
 
-var dateIs = function( src )
+function dateIs( src )
 {
   return _ObjectToString.call( src ) === '[object Date]';
 }
 
 //
 
-var bufferIs = function( src )
+function bufferIs( src )
 {
   var type = _ObjectToString.call( src );
 
@@ -5752,7 +5752,7 @@ var bufferIs = function( src )
 
 //
 
-var bufferViewIs = function( src )
+function bufferViewIs( src )
 {
   var type = _ObjectToString.call( src );
   var result = type === '[object DataView]';
@@ -5761,7 +5761,7 @@ var bufferViewIs = function( src )
 
 //
 
-var bufferRawIs = function( src )
+function bufferRawIs( src )
 {
   var type = _ObjectToString.call( src );
   var result = type === '[object ArrayBuffer]';
@@ -5770,7 +5770,7 @@ var bufferRawIs = function( src )
 
 //
 
-var bufferNodeIs = function( src )
+function bufferNodeIs( src )
 {
   if( typeof Buffer !== 'undefined' )
   return src instanceof Buffer;
@@ -5786,14 +5786,14 @@ var bufferAnyIs = function bufferAnyIs( src )
 
 //
 
-var argumentsIs = function( src )
+function argumentsIs( src )
 {
   return _ObjectToString.call( src ) === '[object Arguments]';
 }
 
 //
 
-var rowIs = function( src )
+function rowIs( src )
 {
   if( src && src._rowArray )
   return true;
@@ -5802,21 +5802,21 @@ var rowIs = function( src )
 
 //
 
-var boolIs = function( src )
+function boolIs( src )
 {
   return _ObjectToString.call( src ) === '[object Boolean]';
 }
 
 //
 
-var routineIs = function( src )
+function routineIs( src )
 {
   return _ObjectToString.call( src ) === '[object Function]';
 }
 
 //
 
-var routineWithNameIs = function( src )
+function routineWithNameIs( src )
 {
   if( _ObjectToString.call( src ) !== '[object Function]' )
   return false;
@@ -5827,21 +5827,21 @@ var routineWithNameIs = function( src )
 
 //
 
-var regexpIs = function( src )
+function regexpIs( src )
 {
   return _ObjectToString.call( src ) === '[object RegExp]';
 }
 
 //
 
-var definedIs = function( src )
+function definedIs( src )
 {
   return src !== undefined && src !== null && src !== NaN;
 }
 
 //
 
-var eventIs = function( src )
+function eventIs( src )
 {
   if( src instanceof Event )
   return true;
@@ -5854,14 +5854,14 @@ var eventIs = function( src )
 
 //
 
-var htmlIs = function( src )
+function htmlIs( src )
 {
   return _ObjectToString.call( src ).indexOf( '[object HTML' ) !== -1;
 }
 
 //
 
-var jqueryIs = function( src )
+function jqueryIs( src )
 {
   if( typeof jQuery === 'undefined' )
   return;
@@ -5932,7 +5932,7 @@ var atomicIs = function atomicIs( src )
 
 //
 
-var typeOf = function( src )
+function typeOf( src )
 {
   if( src === null || src === undefined )
   return null
@@ -5947,7 +5947,7 @@ var typeOf = function( src )
 
 //
 
-var typeIsBuffer = function( src )
+function typeIsBuffer( src )
 {
   if( !src ) return false;
   if( !_.numberIs( src.BYTES_PER_ELEMENT ) ) return false;
@@ -5971,7 +5971,7 @@ var typeIsBuffer = function( src )
 // bool
 // --
 
-var boolFrom = function( src )
+function boolFrom( src )
 {
   if( strIs( src ) )
   {
@@ -5991,7 +5991,7 @@ var boolFrom = function( src )
 // --
 
 /*
-var toStrFast = function( src ) {
+function toStrFast( src ) {
 
   var result = '';
   if( arrayIs( src ) )
@@ -6149,7 +6149,7 @@ var numberRandomIntBut = function numberRandomIntBut( range )
   * @memberof wTools
   */
 
-var strTypeOf = function( src )
+function strTypeOf( src )
 {
 
   _.assert( arguments.length === 1 );
@@ -6184,7 +6184,7 @@ var strTypeOf = function( src )
   * @memberof wTools
   */
 
-var strPrimitiveTypeOf = function( src )
+function strPrimitiveTypeOf( src )
 {
 
   var name = _ObjectToString.call( src );
@@ -6401,7 +6401,7 @@ var strRemoveEnd = function strRemoveEnd( src,end )
     * @memberof wTools
     */
 
-var strPrependOnce = function( src,begin )
+function strPrependOnce( src,begin )
 {
   if( src.lastIndexOf( begin,0 ) === 0 )
   return src;
@@ -6424,7 +6424,7 @@ var strPrependOnce = function( src,begin )
     * @memberof wTools
   */
 
-var strAppendOnce = function( src,end )
+function strAppendOnce( src,end )
 {
   if( src.indexOf( end,src.length - end.length ) !== -1 )
   return src;
@@ -6504,7 +6504,7 @@ var regexpEscape = function regexpEscape( src )
  * @memberof wTools
  */
 
-var regexpForGlob = function( glob )
+function regexpForGlob( glob )
 {
   var result = '';
   _.assert( arguments.length === 1 );
@@ -6553,7 +6553,7 @@ var regexpForGlob = function( glob )
  * @memberof wTools
  */
 
-var regexpMakeExpression = function( src )
+function regexpMakeExpression( src )
 {
 
   if( _.regexpIs( src ) )
@@ -6593,7 +6593,7 @@ var regexpMakeExpression = function( src )
    * @memberof wTools
    */
 
-var regexpBut_ = function( options )
+function regexpBut_( options )
 {
   var args = arguments;
   var atLeastOnce = regexpBut_.defaults.atLeastOnce;
@@ -6646,7 +6646,7 @@ regexpBut_.defaults =
  * @memberof wTools
  */
 
-var regexpArrayMake = function( src )
+function regexpArrayMake( src )
 {
 
   _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
@@ -6732,7 +6732,7 @@ var regexpArrayIndex = function regexpArrayIndex( arr,ins )
  * @memberof wTools
  */
 
-var _regexpArrayAny = function( arr,ins,none )
+function _regexpArrayAny( arr,ins,none )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -6773,7 +6773,7 @@ var _regexpArrayAny = function( arr,ins,none )
  * @memberof wTools
  */
 
-var _regexpArrayAll = function( arr,ins,none )
+function _regexpArrayAll( arr,ins,none )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
   _.assert( arguments.length === 3 );
@@ -6834,7 +6834,7 @@ var _regexpArrayAll = function( arr,ins,none )
    * @memberof wTools
    */
 
-var regexpMakeObject = function( src,defaultMode )
+function regexpMakeObject( src,defaultMode )
 {
 
   return _.RegexpObject( src,defaultMode );
@@ -6953,7 +6953,7 @@ var _routineBind = function _routineBind( o )
     var newSum = wTools.routineBind(sum, o, [3]);
     newSum(y); // 12
 
-   var f1 = function(){ console.log( this ) };
+   function f1(){ console.log( this ) };
    var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
    f2.call( o ); // try to call new function with context set to { z: 5 }
    var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
@@ -7004,7 +7004,7 @@ var routineBind = function routineBind( routine, context, args )
    var newSum = wTools.routineJoin(o, sum, [3]);
    newSum(y); // 12
 
-   var f1 = function(){ console.log( this ) };
+   function f1(){ console.log( this ) };
    var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
    f2.call( o ); // try to call new function with context set to { z: 5 }
    var f3 = _.routineJoin( undefined,f1 ); // new function.
@@ -7122,7 +7122,7 @@ var routinesJoin = function routinesJoin()
 
   /* */
 
-  var makeResult = function()
+  function makeResult()
   {
 
     _.assert( _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ) );
@@ -7187,7 +7187,7 @@ var routinesJoin = function routinesJoin()
     var x = 2, y = 3,
         o { z : 6 };
 
-    var sum = function( x, y )
+    function sum( x, y )
     {
         return x + y + this.z;
     },
@@ -7214,7 +7214,7 @@ var routinesCall = function routinesCall()
 
   /* */
 
-  var makeResult = function()
+  function makeResult()
   {
 
     _.assert( _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ) );
@@ -7370,7 +7370,7 @@ var _comparatorFromTransformer = function _comparatorFromTransformer( transforme
 
 //
 //
-// var routines = function( src )
+// function routines( src )
 // {
 //   var result = {};
 //
@@ -7431,7 +7431,7 @@ var timeReady = function timeReady( onReady )
 
 //
 
-var timeOnce = function( delay,onBegin,onEnd )
+function timeOnce( delay,onBegin,onEnd )
 {
 
   var con = new wConsequence();
@@ -7514,7 +7514,7 @@ var timeOut = function timeOut( delay,onReady )
   else if( arguments.length > 2 )
   _assert( _.routineIs( arguments[ 2 ] ) );
 
-  var onEnd = function()
+  function onEnd()
   {
     var result;
 
@@ -7538,7 +7538,7 @@ var timeOut = function timeOut( delay,onReady )
 
 //
 
-var timePeriodic = function( delay,onReady )
+function timePeriodic( delay,onReady )
 {
   var con = new wConsequence();
   var id;
@@ -7554,7 +7554,7 @@ var timePeriodic = function( delay,onReady )
 
   _assert( _.numberIs( delay ) );
 
-  var handlePeriodicCon = function( err )
+  function handlePeriodicCon( err )
   {
     if( err ) clearInterval( id );
   }
@@ -7594,7 +7594,7 @@ var timePeriodic = function( delay,onReady )
 
 //
 
-var _timeNow_functor = function()
+function _timeNow_functor()
 {
   var now;
 
@@ -7612,7 +7612,7 @@ var _timeNow_functor = function()
 
 //
 
-var timeSpent = function( description,time )
+function timeSpent( description,time )
 {
   var now = timeNow();
 
@@ -7733,7 +7733,7 @@ var bufferResize = function bufferResize( src,size )
 
 //
 
-var bufferBytesGet = function( src )
+function bufferBytesGet( src )
 {
 
   if( src instanceof ArrayBuffer )
@@ -7781,7 +7781,7 @@ var bufferBytesGet = function( src )
    * @memberof wTools
    */
 
-var bufferRetype = function( src,bufferType )
+function bufferRetype( src,bufferType )
 {
 
   _.assert( _.bufferIs( src ) );
@@ -7893,7 +7893,7 @@ var bufferToStr = function bufferToStr( src )
 
 //
 
-var bufferToDom = function( xmlBuffer ) {
+function bufferToDom( xmlBuffer ) {
 
   var result;
 
@@ -7918,7 +7918,7 @@ var bufferToDom = function( xmlBuffer ) {
 
 //
 
-var bufferLeftBufferIndex = function( src,ins )
+function bufferLeftBufferIndex( src,ins )
 {
 
   if( !_.bufferIs( src ) )
@@ -7958,7 +7958,7 @@ var bufferLeftBufferIndex = function( src,ins )
 
 //
 
-var bufferFromArrayOfArray = function( array,options ){
+function bufferFromArrayOfArray( array,options ){
 
   if( _.objectIs( array ) )
   {
@@ -8100,7 +8100,7 @@ bufferFrom.defaults =
    * @memberof wTools
    */
 
-var bufferRawFromBuffer = function( buffer )
+function bufferRawFromBuffer( buffer )
 {
 
   _.assert( arguments.length === 1 );
@@ -8299,7 +8299,7 @@ buffersSerialize.defaults =
 
 //
 
-var buffersDeserialize = function( o )
+function buffersDeserialize( o )
 {
   var o = o || {};
   var store = o.store;
@@ -8430,7 +8430,7 @@ var bufferToNodeBuffer = ( function( buffer )
  * @memberof wTools
  */
 
-var arraySub = function( src,begin,end )
+function arraySub( src,begin,end )
 {
 
   _.assert( arguments.length <= 3 );
@@ -8516,7 +8516,7 @@ var arrayNew = function arrayNew( ins,length )
  * @memberof wTools
  */
 
-// var arrayNewOfSameLength = function( ins )
+// function arrayNewOfSameLength( ins )
 // {
 //
 //   _.assert( arguments.length === 1 );
@@ -8561,7 +8561,7 @@ var arrayNew = function arrayNew( ins,length )
  * @memberof wTools
  */
 
-var arrayFromNumber = function( dst,length )
+function arrayFromNumber( dst,length )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
@@ -8599,7 +8599,7 @@ var arrayFromNumber = function( dst,length )
  * @memberof wTools
  */
 
-var arraySelect = function( srcArray,indicesArray )
+function arraySelect( srcArray,indicesArray )
 {
   var atomsPerElement = 1;
 
@@ -8642,7 +8642,7 @@ var arrayIndicesOfGreatest = function arrayIndicesOfGreatest( srcArray,numberOfE
 
   comparator = _._comparatorFromTransformer( comparator );
 
-  var rcomparator = function( a,b )
+  function rcomparator( a,b )
   {
     return comparator( srcArray[ a ],srcArray[ b ] );
   };
@@ -8689,7 +8689,7 @@ var arrayIndicesOfGreatest = function arrayIndicesOfGreatest( srcArray,numberOfE
  * @memberof wTools
  */
 
-var arrayFlatten = function()
+function arrayFlatten()
 {
   var result = _.arrayIs( this ) ? this : [];
 
@@ -9025,7 +9025,7 @@ var arrayPrependOnceMerging = function arrayPrependOnceMerging( dst )
  * @memberof wTools
  */
 
-var arraySwap = function( dst,index1,index2 )
+function arraySwap( dst,index1,index2 )
 {
 
   if( arguments.length === 3 )
@@ -9078,7 +9078,7 @@ var arraySwap = function( dst,index1,index2 )
    * @memberof wTools
    */
 
-var arrayFrom = function( src )
+function arrayFrom( src )
 {
 
   _.assert( arguments.length === 1 );
@@ -9129,7 +9129,7 @@ var arrayFrom = function( src )
    * @memberof wTools
    */
 
-var arrayToMap = function( array )
+function arrayToMap( array )
 {
   var result = {};
 
@@ -9193,7 +9193,7 @@ var arrayToMap = function( array )
    * @memberof wTools
    */
 
-var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
+function arrayRemoveArrayOnce( dstArray,insArray,onEqual )
 {
   _.assert( _.arrayLike( dstArray ) );
   _.assert( _.arrayLike( insArray ) );
@@ -9280,7 +9280,7 @@ var arrayRemoveArrayOnce = function( dstArray,insArray,onEqual )
  * @memberof wTools
  */
 
-var arrayRemovedOnce = function( dstArray,ins,onEqual )
+function arrayRemovedOnce( dstArray,ins,onEqual )
 {
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -9344,7 +9344,7 @@ var arrayRemovedOnce = function( dstArray,ins,onEqual )
  * @memberof wTools
  */
 
-var arrayRemoveOnce = function( dstArray,ins,onEqual )
+function arrayRemoveOnce( dstArray,ins,onEqual )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
@@ -9400,7 +9400,7 @@ var arrayRemoveOnce = function( dstArray,ins,onEqual )
  * @memberof wTools
  */
 
-var arrayRemovedAll = function( dstArray,ins,onEqual )
+function arrayRemovedAll( dstArray,ins,onEqual )
 {
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -9468,7 +9468,7 @@ var arrayRemovedAll = function( dstArray,ins,onEqual )
  * @memberof wTools
  */
 
-var arrayRemoveAll = function( dstArray,ins,onEqual )
+function arrayRemoveAll( dstArray,ins,onEqual )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
@@ -9518,7 +9518,7 @@ var arrayRemoveAll = function( dstArray,ins,onEqual )
    * @memberof wTools
    */
 
-var arrayReplaceOnce = function( dstArray,ins,sub )
+function arrayReplaceOnce( dstArray,ins,sub )
 {
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 3 );
@@ -9572,7 +9572,7 @@ var arrayReplaceOnce = function( dstArray,ins,sub )
    * @memberof wTools
    */
 
-var arrayUpdate = function( dstArray,ins,sub )
+function arrayUpdate( dstArray,ins,sub )
 {
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 3 );
@@ -9620,20 +9620,32 @@ var arrayUpdate = function( dstArray,ins,sub )
    * @memberof wTools
    */
 
-var arrayAppendOnce = function arrayAppendOnce( dst,src )
+var arrayAppendOnce = function arrayAppendOnce( dst,ins,onElement )
 {
 
   _.assert( _.arrayIs( dst ) );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( !onElement || _.routineIs( onElement ) );
 
   // if( !dst )
-  // return [ src ];
+  // return [ ins ];
 
-  var i = dst.indexOf( src );
+  var i;
+
+  if( !onElement )
+  i = dst.indexOf( ins );
+  else
+  {
+    for( i = 0 ; i < dst.length ; i++ )
+    if( onElement( dst[ i ],i,dst ) === ins )
+    break;
+    if( i === dst.length )
+    i = -1;
+  }
 
   if( i === -1 )
   {
-    dst.push( src );
+    dst.push( ins );
     return dst.length-1;
   }
 
@@ -9690,71 +9702,6 @@ var arrayPrependOnce = function arrayPrependOnce( dst,src )
   }
 
   return i;
-}
-
-//
-
-/**
- * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
- * and/or adding new elements from an array (srcArray).
- *
- * @param { Array } dstArray - The target array.
- * @param { Array } srcArray - The source array.
- * @param { Number } first - The index at which to start changing the (dstArray) array.
- * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
- * If (first) is negative, will begin that many elements from the end.
- * @param { Number } replace - The number of old array (dstArray) elements to remove.
- * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
- * then all of the elements through the end of the array will be deleted.
- *
- * @example
- * // returns [ 1, 2, 3, 4, 5 ]
- * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
- *
- * @example
- * // returns [ 1, 'a', 2, 3, 4, 'd' ]
- * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
- *
- * @example
- * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
- *
- * @example
- * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
- *
- * @example
- * // returns [ 1, 'a', 'b', 'c' ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
- *
- * @example
- * // returns [ 1, 4, 5 ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
- *
- * @returns { Array } Returns the modified array (dstArray) with the new length.
- * @method arraySpliceArray
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
- * @throws { Error } Will throw an Error if (dstArray) is not an Array.
- * @throws { Error } Will throw an Error if (srcArray) is not an Array.
- * @throws { Error } Will throw an Error if (first) is not a Number.
- * @throws { Error } Will throw an Error if (replace) is not a Number.
- * @memberof wTools
- */
-
-var arraySpliceArray = function( dstArray,srcArray,first,replace )
-{
-  _.assert( arguments.length === 4 );
-  _.assert( _.arrayIs( dstArray ) );
-  _.assert( _.arrayIs( srcArray ) );
-  _.assert( _.numberIs( first ) );
-  _.assert( _.numberIs( replace ) );
-
-  var args = [ first,replace ];
-  args.push.apply( args,srcArray );
-
-  dstArray.splice.apply( dstArray,args );
-
-  return dstArray;
 }
 
 //
@@ -9914,21 +9861,86 @@ var arrayMultislice = function arrayMultislice()
 
 //
 
-var arraySplice = function arraySplice( dstArray,a,b,srcArray )
+/**
+ * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
+ * and/or adding new elements from an array (srcArray).
+ *
+ * @param { Array } dstArray - The target array.
+ * @param { Array } srcArray - The source array.
+ * @param { Number } first - The index at which to start changing the (dstArray) array.
+ * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
+ * If (first) is negative, will begin that many elements from the end.
+ * @param { Number } replace - The number of old array (dstArray) elements to remove.
+ * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
+ * then all of the elements through the end of the array will be deleted.
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4, 5 ]
+ * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
+ *
+ * @example
+ * // returns [ 1, 'a', 2, 3, 4, 'd' ]
+ * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
+ *
+ * @example
+ * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
+ *
+ * @example
+ * // returns [ 1, 'a', 'b', 'c' ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
+ *
+ * @example
+ * // returns [ 1, 4, 5 ]
+ * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
+ *
+ * @returns { Array } Returns the modified array (dstArray) with the new length.
+ * @method arraySpliceArray
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
+ * @throws { Error } Will throw an Error if (dstArray) is not an Array.
+ * @throws { Error } Will throw an Error if (srcArray) is not an Array.
+ * @throws { Error } Will throw an Error if (first) is not a Number.
+ * @throws { Error } Will throw an Error if (replace) is not a Number.
+ * @memberof wTools
+ */
+
+// var arraySpliceArray = function arraySpliceArray( dstArray,srcArray,first,replace )
+// {
+//   debugger;
+//
+//   _.assert( arguments.length === 4 );
+//   _.assert( _.arrayIs( dstArray ) );
+//   _.assert( _.arrayIs( srcArray ) );
+//   _.assert( _.numberIs( first ) );
+//   _.assert( _.numberIs( replace ) );
+//
+//   var args = [ first,replace ];
+//   args.push.apply( args,srcArray );
+//
+//   dstArray.splice.apply( dstArray,args );
+//
+//   return dstArray;
+// }
+
+//
+
+var arraySplice = function arraySplice( dstArray,first,replace,srcArray )
 {
 
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayIs( srcArray ) );
 
-  var result;
-  var a = a !== undefined ? a : 0;
-  var b = b !== undefined ? b : dstArray.length;
-  if( b < a )
-  b = a;
+  var first = first !== undefined ? first : 0;
+  var replace = replace !== undefined ? replace : dstArray.length;
+  var result = dstArray.slice( first,first+replace );
 
   var srcArray = srcArray.slice();
-  srcArray.unshift( b-a );
-  srcArray.unshift( a );
+  srcArray.unshift( replace );
+  srcArray.unshift( first );
 
   dstArray.splice.apply( dstArray,srcArray );
 
@@ -10084,7 +10096,7 @@ var arrayUnique = function arrayUnique( src,onElement )
    * @memberof wTools
    */
 
-var arrayToStr = function( src,options )
+function arrayToStr( src,options )
 {
 
   var result = '';
@@ -10514,7 +10526,7 @@ arrayFill.defaults =
  * @memberof wTools
  */
 
-var arrayCompare = function( src1,src2 )
+function arrayCompare( src1,src2 )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
@@ -10577,7 +10589,7 @@ var arrayIdentical = function arrayIdentical( src1,src2 )
 
 //
 
-var arraySameSet = function( src1,src2 )
+function arraySameSet( src1,src2 )
 {
   if( src1.length !== src2.length ) return false;
   var src = src1.slice();
@@ -10628,7 +10640,7 @@ var arraySameSet = function( src1,src2 )
  *
  * @example
  * // returns 2
- * var arr = function() {
+ * function arr() {
  *   return arguments;
  * }( 3, 7, 13 );
  * _.arrayLeftIndexOf( arr, 13 );
@@ -10642,7 +10654,7 @@ var arraySameSet = function( src1,src2 )
  * @memberof wTools
  */
 
-var arrayLeftIndexOf = function( arr,ins,equalizer )
+function arrayLeftIndexOf( arr,ins,equalizer )
 {
 
   if( !equalizer )
@@ -10688,7 +10700,7 @@ var arrayLeftIndexOf = function( arr,ins,equalizer )
 
 //
 
-var arrayRightIndexOf = function( arr,ins,equalizer )
+function arrayRightIndexOf( arr,ins,equalizer )
 {
 
   if( !equalizer )
@@ -10765,7 +10777,7 @@ var arrayRightIndexOf = function( arr,ins,equalizer )
  * @memberof wTools
  */
 
-var arrayLeft = function( arr,ins,equalizer )
+function arrayLeft( arr,ins,equalizer )
 {
 
   var result = {};
@@ -10782,7 +10794,7 @@ var arrayLeft = function( arr,ins,equalizer )
 
 //
 
-var arrayRight = function( arr,ins,equalizer )
+function arrayRight( arr,ins,equalizer )
 {
   var result = {};
   var i = _.arrayRightIndexOf( arr,ins,equalizer );
@@ -10822,7 +10834,7 @@ var arrayRight = function( arr,ins,equalizer )
  * @memberof wTools
  */
 
-var arrayHasAny = function( src )
+function arrayHasAny( src )
 {
   _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayHasAny :','array expected' );
 
@@ -10859,7 +10871,7 @@ var arrayHasAny = function( src )
  * @memberof wTools
  */
 
-var arrayCount = function( src,instance )
+function arrayCount( src,instance )
 {
   var result = 0;
 
@@ -10899,7 +10911,7 @@ var arrayCount = function( src,instance )
    * @memberof wTools
    */
 
-var arrayCountSame = function( src,onElement )
+function arrayCountSame( src,onElement )
 {
   var result = 0;
   var found = [];
@@ -10961,7 +10973,7 @@ var arrayCountSame = function( src,onElement )
    */
 
 
-var arraySum = function( src,onElement )
+function arraySum( src,onElement )
 {
   var result = 0;
 
@@ -11236,7 +11248,7 @@ arrayRandom.defaults =
  * @memberof wTools
  */
 
-var arrayRange = function( range )
+function arrayRange( range )
 {
 
   if( _.numberIs( range ) )
@@ -11260,7 +11272,7 @@ var arrayRange = function( range )
 // array set
 // --
 
-var arraySetIntersection = function( src )
+function arraySetIntersection( src )
 {
   var result = [];
 
@@ -11292,7 +11304,7 @@ var arraySetIntersection = function( src )
 
 //
 /*
-var arraySetContainAll = function( src )
+function arraySetContainAll( src )
 {
   var result = [];
 
@@ -11349,7 +11361,7 @@ var arraySetContainAll = function( src )
    * @memberof wTools
    */
 
-var arraySetContainAll = function( src )
+function arraySetContainAll( src )
 {
   _.assert( _.arrayLike( src ) );
 
@@ -11404,7 +11416,7 @@ var arraySetContainAll = function( src )
  * @memberof wTools
  */
 
-var arraySetContainSomething = function( src )
+function arraySetContainSomething( src )
 {
   _.assert( _.arrayLike( src ) );
 
@@ -11489,7 +11501,7 @@ var arraySetContainSomething = function( src )
    *
    * @example
    * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
-   * var Example = function() {
+   * function Example() {
    *   this.name = 'Peter';
    *   this.age = 27;
    * }
@@ -11503,7 +11515,7 @@ var arraySetContainSomething = function( src )
    * @memberof wTools
    */
 
-var mapClone = function( srcObject,o )
+function mapClone( srcObject,o )
 {
   var o = o || {};
   var result = o.dst || {};
@@ -11561,7 +11573,7 @@ var mapClone = function( srcObject,o )
    * @memberof wTools
    */
 
-var mapExtendFiltering = function( filter,dstObject )
+function mapExtendFiltering( filter,dstObject )
 {
   var result = dstObject;
   var filter = _.filter.makeMapper( filter );
@@ -11699,7 +11711,7 @@ var mapExtendToThis = function mapExtendToThis()
 
 /* !!! need to explain how undefined handled */
 
-var mapSupplement = function( dst )
+function mapSupplement( dst )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.filter.dstNotHas() );
@@ -11708,7 +11720,7 @@ var mapSupplement = function( dst )
 
 //
 
-var mapSupplementOwn = function( dst )
+function mapSupplementOwn( dst )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.filter.dstNotOwn() );
@@ -11834,9 +11846,9 @@ var mapExtendRecursive = function mapExtendRecursive( dst,src )
 
 //
 
-var _filterTrue = function(){ return true };
+function _filterTrue(){ return true };
 _filterTrue.functionKind = 'field-filter';
-var _filterFalse = function(){ return true };
+function _filterFalse(){ return true };
 _filterFalse.functionKind = 'field-filter';
 
 var _mapFieldFilterMake = function _mapFieldFilterMake( filter )
@@ -11931,7 +11943,7 @@ var _mapExtendRecursive = function _mapExtendRecursive( dst,src )
  *
  * @example
  * //returns false
- * var routine = function( src ){ return src.a === 12 }
+ * function routine( src ){ return src.a === 12 }
  * _.mapSatisfy( { template : routine, src : { a : 1, b : 2 } } );
  *
  * @method mapSatisfy
@@ -11992,7 +12004,7 @@ mapSatisfy.defaults =
  *
  * @example
  * //returns true
- * var template = function( src ){ return src.y === 1 }
+ * function template( src ){ return src.y === 1 }
  * _._mapSatisfy( template, { y : 1 , j : 1 } );
  *
  * @method _mapSatisfy
@@ -12103,7 +12115,7 @@ var mapFirstPair = function mapFirstPair( srcObject )
    * @memberof wTools
    */
 
-var mapToArray = function( src )
+function mapToArray( src )
 {
   var result = [];
 
@@ -12145,7 +12157,7 @@ var mapToArray = function( src )
    * @memberof wTools
    */
 
-var mapValWithIndex = function( src,index )
+function mapValWithIndex( src,index )
 {
 
   _.assert( arguments.length === 2 );
@@ -12186,7 +12198,7 @@ var mapValWithIndex = function( src,index )
    * @memberof wTools
    */
 
-var mapKeyWithIndex = function( src,index )
+function mapKeyWithIndex( src,index )
 {
 
    _.assert( arguments.length === 2 );
@@ -12235,7 +12247,7 @@ var mapKeyWithIndex = function( src,index )
    * @memberof wTools
    */
 
-var mapToString = function( src,keyValSep,tupleSep )
+function mapToString( src,keyValSep,tupleSep )
 {
 
   if( !_.strIs( keyValSep ) )
@@ -12403,7 +12415,7 @@ var mapKeys = function mapKeys( src )
 
 //
 
-var mapOwnValues = function( src )
+function mapOwnValues( src )
 {
   var result = [];
 
@@ -12444,7 +12456,7 @@ var mapOwnValues = function( src )
  * @memberof wTools
 */
 
-var mapValues = function( src )
+function mapValues( src )
 {
   var result = [];
 
@@ -12479,7 +12491,7 @@ var mapValues = function( src )
  * @memberof wTools
 */
 
-var mapPairs = function( src )
+function mapPairs( src )
 {
   var result = [];
 
@@ -12550,7 +12562,7 @@ var mapsFlatten = function mapsFlatten( o )
 
   o.result = o.result || {};
 
-  var extend = function( r,s )
+  function extend( r,s )
   {
     if( o.assertUniqueness )
     _.assertMapHasNone( r,s );
@@ -12697,7 +12709,7 @@ mapFields.defaults =
  * @memberof wTools
  */
 
-var mapSame = function( src1,src2 ){
+function mapSame( src1,src2 ){
 
   _.assert( arguments.length === 2 );
 
@@ -12742,7 +12754,7 @@ var mapSame = function( src1,src2 ){
  * @memberof wTools
  */
 
-var mapContain = function( src,ins )
+function mapContain( src,ins )
 {
   _.assert( arguments.length === 2 );
 
@@ -13027,7 +13039,7 @@ var mapDelete = function mapDelete( dst,ins )
    * @memberof wTools
    */
 
-var mapButFiltering = function( filter,srcMap )
+function mapButFiltering( filter,srcMap )
 {
   var result = {};
   var filter = _.filter.makeMapper( filter );
@@ -13056,7 +13068,7 @@ var mapButFiltering = function( filter,srcMap )
 
 //
 
-var mapOwnButFiltering = function( filter,srcMap )
+function mapOwnButFiltering( filter,srcMap )
 {
   var result = {};
   var filter = _.filter.makeMapper( filter );
@@ -13115,7 +13127,7 @@ var mapOwnButFiltering = function( filter,srcMap )
  * @memberof wTools
  */
 
-var mapScreens = function( srcObject,screenObject )
+function mapScreens( srcObject,screenObject )
 {
 
   _assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
@@ -13169,7 +13181,7 @@ var mapScreens = function( srcObject,screenObject )
    * @memberof wTools
    */
 
-var mapScreen = function( screenObject )
+function mapScreen( screenObject )
 {
 
   _.assert( arguments.length === 2 );
@@ -13185,7 +13197,7 @@ var mapScreen = function( screenObject )
 
 //
 
-var mapScreenOwn = function( screenObject )
+function mapScreenOwn( screenObject )
 {
 
   _.assert( arguments.length === 2 );
@@ -13248,7 +13260,7 @@ var mapScreenOwn = function( screenObject )
    * @memberof wTools
    */
 
-var _mapScreen = function( options )
+function _mapScreen( options )
 {
 
   var dstObject = options.dstObject || {};
@@ -13682,12 +13694,13 @@ var Proto =
   arrayFrom : arrayFrom,
   arrayToMap : arrayToMap,
 
-  arraySpliceArray : arraySpliceArray,
-
   arrayGrow : arrayGrow,
   arraySlice : arraySlice,
   arrayMultislice : arrayMultislice,
+
+  // arraySpliceArray : arraySpliceArray,
   arraySplice : arraySplice, /* experimental */
+
   arrayAs : arrayAs,
 
   arrayUniqueIs : arrayUniqueIs,
