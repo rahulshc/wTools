@@ -1757,7 +1757,6 @@ var strEscape =  function( src )
         _.assert( code !== 92 );
         if( code < 32 )
         {
-          debugger;
           result += _.strUnicodeEscape( c );
         }
         else
@@ -2455,7 +2454,7 @@ var strSplit = function strSplit( o )
 
         var sub = result[ r ].split( splitter[ s ] );
         if( sub.length > 1 )
-        result.splice( r,r+1,sub );
+        _.arraySplice( result,r,r+1,sub );
 
       }
 
@@ -2520,17 +2519,29 @@ strSplit.defaults =
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @memberof wTools
  *
-*/
+ */
 
 function strStrip( o )
 {
 
-  if( _.strIs( o ) )
+  if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.mapSupplement( o,strStrip.defaults );
-  _.assertMapHasOnly( o,strStrip.defaults );
+  _.routineOptions( strStrip,o );
   _.assert( arguments.length === 1 );
+
+  if( _.arrayIs( o.src ) )
+  {
+    var result = [];
+    for( var s = 0 ; s < o.src.length ; s++ )
+    {
+      var optionsForStrip = _.mapExtend( {},o );
+      optionsForStrip.src = optionsForStrip.src[ s ];
+      result[ s ] = strStrip( optionsForStrip );
+    }
+    return result;
+  }
+
   _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ),'expects string or array o.stripper' );
 

@@ -2868,6 +2868,32 @@ var _entitySelect = function _entitySelect( o )
 {
   var result;
 
+  if( _.arrayIs( o.query ) )
+  {
+    debugger;
+
+    result = {};
+    for( var i = 0 ; i < o.query.length ; i++ )
+    {
+
+      // var iteration = {};
+      // iteration.qarrey = o.qarrey[ i ];
+      // iteration.container = o.container;
+      // iterator.query = o.query[ i ];
+
+      var optionsForSelect = _.mapExtend( Object.create( null ),o );
+      optionsForSelect.query = optionsForSelect.query[ i ];
+
+      // iteration.qarrey = o.qarrey[ i ];
+      // iteration.container = o.container;
+      // iterator.query = o.query[ i ];
+
+      result[ iterator.query ] = __entitySelectAct.call( iterator,iteration );
+    }
+
+    return result;
+  }
+
   var iterator = {};
   iterator.set = o.set;
   iterator.delimeter = o.delimeter;
@@ -2875,35 +2901,13 @@ var _entitySelect = function _entitySelect( o )
   iterator.usingMapIndexedAccess = o.usingMapIndexedAccess;
   iterator.usingSet = o.usingSet;
 
-  // container : null,
-  // query : null,
+  iterator.query = o.query;
 
-  if( _.arrayIs( o.query ) )
-  {
-    result = {};
-    for( var i = 0 ; i < o.query.length ; i++ )
-    {
+  var iteration = {};
+  iteration.qarrey = o.qarrey;
+  iteration.container = o.container;
 
-      var iteration = {};
-      iteration.qarrey = o.qarrey[ i ];
-      iteration.container = o.container;
-
-      iterator.query = o.query[ i ];
-
-      result[ iterator.query ] = __entitySelectAct.call( iterator,iteration );
-
-    }
-  }
-  else
-  {
-    iterator.query = o.query;
-
-    var iteration = {};
-    iteration.qarrey = o.qarrey;
-    iteration.container = o.container;
-
-    result = __entitySelectAct.call( iterator,iteration );
-  }
+  result = __entitySelectAct.call( iterator,iteration );
 
   return result;
 }
@@ -3009,6 +3013,9 @@ var __entitySelectAct = function __entitySelectAct( iteration )
         container[ key ] = field = {};
       }
     }
+
+    if( field === undefined )
+    return;
 
     var newIteration = {};
     newIteration.container = field;
@@ -7561,15 +7568,12 @@ var timeOut = function timeOut( delay,onReady )
 {
   var con = new wConsequence();
 
-  if( arguments.length > 2 )
-  if( !_.routineIs( arguments[ 2 ] ) )
-  debugger;
-
+  _assert( arguments.length <= 4 );
   _assert( _.numberIs( delay ) );
 
-  if( arguments.length === 2 )
+  if( arguments[ 1 ] !== undefined && arguments[ 2 ] === undefined && arguments[ 3 ] === undefined )
   _assert( _.routineIs( onReady ) || onReady instanceof wConsequence );
-  else if( arguments.length > 2 )
+  else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   _assert( _.routineIs( arguments[ 2 ] ) );
 
   function onEnd()
@@ -7583,9 +7587,9 @@ var timeOut = function timeOut( delay,onReady )
 
   }
 
-  if( arguments.length > 2 )
+  // if( arguments.length > 2 )
+  if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   {
-    _assert( arguments.length <= 4 );
     onReady = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
   }
 

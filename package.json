@@ -4,7 +4,8 @@
   "description": "Generic purpose tools of base level for solving problems in Java Script.",
   "license": "MIT",
   "author": "Kostiantyn Wandalen <wtory.net@domainsbyproxy.com>",
-  "contributors": [
+  "contributors":
+  [
     {
       "name": "Kostiantyn Wandalen",
       "email": "wtory.net@domainsbyproxy.com>"
