@@ -30,8 +30,14 @@ throw new Error( 'wTools included several times' );
 
 if( typeof module !== 'undefined' && module !== null )
 {
-  if( !_global_.Underscore )
-  _global_.Underscore = require( 'underscore' );
+  try
+  {
+    if( !_global_.Underscore )
+    _global_.Underscore = require( 'underscore' );
+  }
+  catch( err )
+  {
+  }
 }
 
 if( !_global_.Underscore && _global_._ )
@@ -3981,7 +3987,6 @@ var _err = function _err( o )
 
   if( !result.caughtCounter )
   {
-    debugger;
     var code = '';
     code = _.diagnosticCode({ error : result }); /* wrap by try */
     if( code && code.length < 400 )
@@ -4787,6 +4792,41 @@ var assert = function assert( condition )
   if( !condition )
   {
     debugger;
+    if( arguments.length === 1 )
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+    });
+    else if( arguments.length === 2 )
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+    });
+    else
+    throw _err
+    ({
+      args : _arraySlice( arguments,1 ),
+      level : 2,
+    });
+  }
+
+  return;
+}
+
+//
+
+var assertNoDebugger = function assertNoDebugger( condition )
+{
+
+  /*return;*/
+
+  if( DEBUG === false )
+  return;
+
+  if( !condition )
+  {
     if( arguments.length === 1 )
     throw _err
     ({
@@ -5965,6 +6005,25 @@ function typeIsBuffer( src )
   return false;
 */
 
+}
+
+//
+
+function workerIs( src )
+{
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  if( arguments.length === 1 )
+  {
+    if( typeof WorkerGlobalScope !== 'undefined' && src instanceof WorkerGlobalScope )
+    return true;
+    if( typeof Worker !== 'undefined' && src instanceof Worker )
+    return true;
+    return false;
+  }
+  else
+  {
+    return typeof WorkerGlobalScope !== 'undefined';
+  }
 }
 
 // --
@@ -7405,26 +7464,25 @@ var timeReady = function timeReady( onReady )
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
-    var con = new wConsequence();
+    var con = typeof wConsequence !== 'undefined' ? new wConsequence() : null;
     function handleReady()
     {
-
-      if( onReady )
+      if( !con && onReady )
+      onReady();
+      else if( onReady )
       con.first( onReady );
       else
       con.give();
-
-      // con.give();
-      // if( onReady )
-      // onReady();
-
     }
     window.addEventListener( 'load',handleReady );
     return con;
   }
   else
   {
+    if( typeof wConsequence !== 'undefined' )
     return _.timeOut( 1,onReady );
+    else
+    setTimeout( onReady,1 );
   }
 
 }
@@ -13476,6 +13534,7 @@ var Proto =
   diagnosticBeep : diagnosticBeep,
 
   assert : assert,
+  assertNoDebugger : assertNoDebugger,
   assertMapHasNoUndefine : assertMapHasNoUndefine,
   assertMapHasOnly : assertMapHasOnly,
   assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
@@ -13544,6 +13603,8 @@ var Proto =
 
   typeOf : typeOf,
   typeIsBuffer : typeIsBuffer,
+
+  workerIs : workerIs,
 
 
   // bool
@@ -13831,6 +13892,11 @@ var Proto =
   _mapScreen : _mapScreen,
 
 
+  // etc
+
+  workerIs : workerIs,
+
+
   // var
 
   ArrayType : Array,
@@ -13850,6 +13916,8 @@ var _assert = _.assert;
 var _arraySlice = _.arraySlice;
 var timeNow = Self.timeNow = Self._timeNow_functor();
 
+//
+
 if( !_global_.logger )
 _global_.logger =
 {
@@ -13859,6 +13927,44 @@ _global_.logger =
   error : _.routineJoin( console,console.error ),
   errorUp : _.routineJoin( console,console.error ),
   errorDown : _.routineJoin( console,console.error ),
+}
+
+//
+
+if( !_global_.wTestSuite )
+_global_.wTestSuite = function wTestSuite( testSuite )
+{
+
+  if( !_global_.wTests )
+  _global_.wTests = Object.create( null );
+
+  _.assert( _.strIsNotEmpty( testSuite.name ),'Test suite should have name' );
+  _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name',testSuite.name,'already registered!' );
+  _.assert( _.objectIs( testSuite ) );
+
+  _global_.wTests[ testSuite.name ] = testSuite;
+
+  return testSuite;
+}
+
+//
+
+if( !_.Testing )
+{
+  _.Testing = Object.create( null );
+  _.Testing.test = function test( testSuiteName )
+  {
+    if( _.workerIs() )
+    return;
+    _.assert( arguments.length === 0 || arguments.length === 1 );
+    _.assert( _.strIs( testSuiteName ) || testSuiteName === undefined,'test : expects string ( testSuiteName )' );
+    _.timeReady( function()
+    {
+      if( _.Testing.test === test )
+      throw _.err( 'Cant wTesting.test, missing wTesting package' );
+      _.Testing.test.call( _.Testing,testSuiteName );
+    });
+  }
 }
 
 //

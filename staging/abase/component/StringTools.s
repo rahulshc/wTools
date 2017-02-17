@@ -4519,6 +4519,12 @@ var strColorStyle = function strColorStyle( str, style )
     case 'topic' :
       result = _.strColor.bg( result, 'dim' ); break;
 
+    case 'head' :
+      result = _.strColor.fg( _.strColor.bg( result, 'white' ),'dim' ); break;
+
+    case 'tail' :
+      result = _.strColor.fg( _.strColor.bg( result, 'dim' ),'white' ); break;
+
     case 'neutral' :
       result = _.strColor.bg( _.strColor.fg( result, 'white' ), 'dim' ); break;
 

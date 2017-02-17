@@ -179,10 +179,22 @@ _includeHandlerMap[ 'wCopyable' ] =
   isIncluded : function(){ return typeof wCopyable !== 'undefined'; },
 }
 
+_includeHandlerMap[ 'wInstancing' ] =
+{
+  includeAny : [ '../../abase/mixin/Instancing.s','wInstancing' ],
+  isIncluded : function(){ return typeof wInstancing !== 'undefined'; },
+}
+
 _includeHandlerMap[ 'wEventHandler' ] =
 {
   includeAny : [ '../../abase/mixin/EventHandler.s','wEventHandler' ],
   isIncluded : function(){ return typeof wEventHandler !== 'undefined'; },
+}
+
+_includeHandlerMap[ 'wTesting' ] =
+{
+  includeAny : [ '../../abase/xTesting/Testing.debug.s','wTesting' ],
+  isIncluded : function(){ return typeof wTesting !== 'undefined' && wTesting._full; },
 }
 
 _includeHandlerMap[ 'wLogger' ] =

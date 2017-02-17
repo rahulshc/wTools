@@ -204,6 +204,26 @@ function dstNotOwn()
 
 //
 
+function dstNotOwnSrcOwn()
+{
+
+  var routine = function dstNotOwnSrcOwn( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return;
+
+    dstContainer[ key ] = srcContainer[ key ];
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
 function dstNotOwnSrcOwnCloning()
 {
 
@@ -593,6 +613,7 @@ var filter =
   dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
 
   dstNotOwn : dstNotOwn,
+  dstNotOwnSrcOwn : dstNotOwnSrcOwn,
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
   dstNotOwnNotUndefinedCloning : dstNotOwnNotUndefinedCloning,
   dstNotOwnCloning : dstNotOwnCloning,
