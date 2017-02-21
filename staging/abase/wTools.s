@@ -16,6 +16,20 @@ if( !_global_ && typeof global !== 'undefined' && global.global === global ) _gl
 if( !_global_ && typeof window !== 'undefined' && window.window === window ) _global_ = window;
 if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ = self;
 
+// veification
+
+if( _global_.wBase )
+{
+  if( _global_.wBase !== _global_.wTools )
+  throw new Error( '_global_.wBase !== _global_.wTools' );
+  module[ 'exports' ] = _global_.wBase;
+  return;
+}
+if( _global_.wBase )
+{
+  throw new Error( 'wTools included several times' );
+}
+
 // global var
 
 _global_[ '_global_' ] = _global_;
@@ -24,9 +38,6 @@ _global_._global_ = _global_;
 _global_.DEBUG = true;
 
 // parent
-
-if( _global_.wBase )
-throw new Error( 'wTools included several times' );
 
 if( typeof module !== 'undefined' && module !== null )
 {
@@ -85,7 +96,7 @@ var _initConfig = function _initConfig()
 
   if( !_global_.Config )
   {
-    _global_.Config = {};
+    _global_.Config = Object.create( null );
   }
 
   if( _global_.Config.debug === undefined )
@@ -861,7 +872,7 @@ function eachInMultiRange( o )
   if( names )
   getValue = function( arg )
   {
-    var result = {};
+    var result = Object.create( null );
     for( var i = 0 ; i < names.length ; i++ )
     result[ names[ i ] ] = arg[ i ];
     return result;
@@ -1106,7 +1117,7 @@ function entityClone( src,options )
   else if( _.objectIs( src ) )
   {
 
-    result = {};
+    result = Object.create( null );
     var proto = Object.getPrototypeOf( src );
     var result = Object.create( proto );
     for( var s in src )
@@ -1438,7 +1449,7 @@ entityCloneObject.defaults.__proto__ = _entityClone.defaults;
 
 var entityCloneObjectMergingBuffers = function entityCloneObjectMergingBuffers( o )
 {
-  var result = {};
+  var result = Object.create( null );
   var src = o.src;
   var descriptorsMap = o.src.descriptorsMap;
   var buffer = o.src.buffer;
@@ -1525,10 +1536,10 @@ entityCloneData.defaults.__proto__ = _entityClone.defaults;
 
 var entityCloneDataSeparatingBuffers = function entityCloneDataSeparatingBuffers( o )
 {
-  var result = {};
+  var result = Object.create( null );
   var buffers = [];
   var descriptorsArray = [];
-  var descriptorsMap = {};
+  var descriptorsMap = Object.create( null );
   var size = 0;
   var offset = 0;
 
@@ -2804,10 +2815,13 @@ var _entitySelectOptions = function _entitySelectOptions( o )
 
   if( arguments[ 1 ] !== undefined )
   {
-    var o = {};
+    var o = Object.create( null );
     o.container = arguments[ 0 ];
     o.query = arguments[ 1 ];
   }
+
+  if( o.usingSet === undefined && o.set )
+  o.usingSet = 1;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.routineOptions( _entitySelectOptions,o );
@@ -2872,11 +2886,11 @@ var _entitySelect = function _entitySelect( o )
   {
     debugger;
 
-    result = {};
+    result = Object.create( null );
     for( var i = 0 ; i < o.query.length ; i++ )
     {
 
-      // var iteration = {};
+      // var iteration = Object.create( null );
       // iteration.qarrey = o.qarrey[ i ];
       // iteration.container = o.container;
       // iterator.query = o.query[ i ];
@@ -2888,13 +2902,16 @@ var _entitySelect = function _entitySelect( o )
       // iteration.container = o.container;
       // iterator.query = o.query[ i ];
 
-      result[ iterator.query ] = __entitySelectAct.call( iterator,iteration );
+      result[ iterator.query ] = __entitySelectAct( iteration,iterator );
     }
 
     return result;
   }
 
-  var iterator = {};
+  // debugger;
+  o = _entitySelectOptions( o );
+
+  var iterator = Object.create( null );
   iterator.set = o.set;
   iterator.delimeter = o.delimeter;
   iterator.usingUndefinedForMissing = o.usingUndefinedForMissing;
@@ -2903,11 +2920,11 @@ var _entitySelect = function _entitySelect( o )
 
   iterator.query = o.query;
 
-  var iteration = {};
+  var iteration = Object.create( null );
   iteration.qarrey = o.qarrey;
   iteration.container = o.container;
 
-  result = __entitySelectAct.call( iterator,iteration );
+  result = __entitySelectAct( iteration,iterator );
 
   return result;
 }
@@ -2925,41 +2942,15 @@ var _entitySelect = function _entitySelect( o )
  * @param {Boolean} [ o.usingUndefinedForMissing=false ] - If true returns undefined for Atomic type of( o.container ).
  * @returns {*} Returns value finded by index/key or path.
  *
- * @example
- * //returns 'b'
- * var arr = [ 'a', [ 'a', 'b' ] ];
- * _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ] } );
- *
- * @example
- * //returns 1
- * var arr = [ 'a', [ 'a', 'b' ] ];
- * _.__entitySelectAct( { container : arr, qarrey : [ 1, 1 ], set : 1  } );
- * //arr [ 'a', [ 'a', 1 ] ]
- *
- * @example
- * // returns undefined
- * _.__entitySelectAct( { container : 5, qarrey : [ 1, 1 ], set : 1, usingUndefinedForMissing : 1  } );
- *
- * @example
- * // returns [ 1, 1, 1 ]
- * _.__entitySelectAct( { container : [ 1, [ 2, 3, 4 ], 5], qarrey : [ "*" ], set : 1  } );
- *
- * @example
- * // returns { a : { b : 1 } }
- * var o = { container : { a : 1 }, qarrey : [ "a" ], set : { b : 1 }  };
- * _.__entitySelectAct( o );
- * console.log( o.container );
- *
  * @method __entitySelectAct
  * @throws {Exception} If container is Atomic type.
  * @memberof wTools
 */
 
-var __entitySelectAct = function __entitySelectAct( iteration )
+var __entitySelectAct = function __entitySelectAct( iteration,iterator )
 {
 
   var result;
-  var iterator = this;
   var container = iteration.container;
 
   var key = iteration.qarrey[ 0 ];
@@ -2970,7 +2961,7 @@ var __entitySelectAct = function __entitySelectAct( iteration )
 
   _.assert( Object.keys( iterator ).length === 6 );
   _.assert( Object.keys( iteration ).length === 2 );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 2 );
 
   if( _.atomicIs( container ) )
   {
@@ -3010,18 +3001,18 @@ var __entitySelectAct = function __entitySelectAct( iteration )
       }
       else
       {
-        container[ key ] = field = {};
+        container[ key ] = field = Object.create( null );
       }
     }
 
     if( field === undefined )
     return;
 
-    var newIteration = {};
+    var newIteration = Object.create( null );
     newIteration.container = field;
     newIteration.qarrey = qarrey;
 
-    return __entitySelectAct.call( iterator,newIteration );
+    return __entitySelectAct( newIteration,iterator );
   }
 
   /* */
@@ -3050,7 +3041,14 @@ var __entitySelectAct = function __entitySelectAct( iteration )
 var entitySelect = function entitySelect( o )
 {
 
-  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+  // o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+
+  if( arguments[ 1 ] !== undefined )
+  {
+    var o = Object.create( null );
+    o.container = arguments[ 0 ];
+    o.query = arguments[ 1 ];
+  }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
@@ -3072,18 +3070,22 @@ var entitySelectSet = function entitySelectSet( container,query,value )
 
   _.assert( arguments.length === 1 || arguments.length === 3 );
 
-  if( arguments.length === 3 )
+  if( query !== undefined || value !== undefined )
   {
-    var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
-    o.usingSet = 1;
-    o.set = value;
+    var o = Object.create( null );
+    o.container = arguments[ 0 ];
+    o.query = arguments[ 1 ];
+    o.set = arguments[ 2 ];
+    // var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+    // o.set = value;
   }
   else
   {
-    var o = _entitySelectOptions( arguments[ 0 ] );
-    o.usingSet = 1;
+    // var o = _entitySelectOptions( arguments[ 0 ] );
     _.assert( _.mapOwn( o,{ set : 'set' } ) );
   }
+
+  o.usingSet = 1;
 
   var result = _entitySelect( o );
 
@@ -3103,7 +3105,14 @@ entitySelectSet.defaults.__proto__ = _entitySelectOptions.defaults;
 var entitySelectUnique = function entitySelectUnique( o )
 {
 
-  o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+  if( arguments[ 1 ] !== undefined )
+  {
+    var o = Object.create( null );
+    o.container = arguments[ 0 ];
+    o.query = arguments[ 1 ];
+  }
+
+  // o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
@@ -3470,7 +3479,7 @@ function entityGroup( o )
   if( _.arrayIs( o.key ) )
   {
 
-    result = {};
+    result = Object.create( null );
     for( var k = 0 ; k < o.key.length ; k++ )
     {
       debugger;
@@ -3481,7 +3490,7 @@ function entityGroup( o )
   }
   else
   {
-    result = {};
+    result = Object.create( null );
     groupForKey( o.key,result );
   }
 
@@ -3676,7 +3685,7 @@ function entityMax( src,onElement )
 
 var entitySearch = function entitySearch( o )
 {
-  var result = {};
+  var result = Object.create( null );
 
   if( arguments.length === 2 )
   {
@@ -4311,20 +4320,25 @@ var diagnosticLocation = function diagnosticLocation( o )
   if( !path )
   return end();
 
-  var halfs = _.strInhalfRight( path,':' );
-
+  var halfs = _.strCutOffRight( path,':' );
   path = halfs[ 0 ];
 
-  if( !halfs[ 1 ] )
+  if( halfs[ 1 ] === '' )
   return end({ path : path });
 
   var colNumber = halfs[ 1 ];
-  var halfs = _.strInhalfRight( path,':' );
+  var halfs = _.strCutOffRight( path,':' );
   var lineNumber = halfs[ 1 ];
   path = halfs[ 0 ];
 
-  lineNumber = Number( lineNumber );
-  colNumber = Number( colNumber );
+  if( lineNumber === '' )
+  {
+    lineNumber = colNumber;
+    colNumber = '';
+  }
+
+  lineNumber = parseInt( lineNumber );
+  colNumber = parseInt( colNumber );
 
   var result = { path : path };
 
@@ -5943,7 +5957,7 @@ var domLike = function domLike( src )
   return false;
   if( src instanceof Node )
   return true;
-  return jqueryIs( s );
+  return jqueryIs( src );
 }
 
 //
@@ -6120,7 +6134,7 @@ var numbersFrom = function numbersFrom( src )
   }
   else if( _.objectIs( src ) )
   {
-    var result = {};
+    var result = Object.create( null );
     for( var s in src )
     result[ s ] = _.numberFrom( src[ s ] );
   }
@@ -6300,6 +6314,67 @@ var str = function str()
 
 //
 
+var strBeginOf = function strBeginOf( src,end )
+{
+
+  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( end ),'expects string ( end )' );
+  _.assert( arguments.length === 2 );
+
+  var i = src.indexOf( end,src.length - end.length );
+  var result = i >= 0 ? src.substr( 0,i ) : undefined;
+
+  if( i === -1 )
+  debugger;
+
+  return result;
+}
+
+//
+
+var strEndOf = function strEndOf( src,begin )
+{
+
+  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( begin ),'expects string ( begin )' );
+  _.assert( arguments.length === 2 );
+
+  var i = src.lastIndexOf( begin,0 );
+  var result = i >= 0 ? src.substr( i+begin.length ) : undefined;
+
+  // if( i >= 0 )
+  // debugger;
+  // else
+  // debugger;
+
+  return result;
+}
+
+//
+
+var strInbetweenOf = function strInbetweenOf( src,begin,end )
+{
+
+  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( begin ),'expects string ( begin )' );
+  _.assert( _.strIs( end ),'expects string ( end )' );
+  _.assert( arguments.length === 3 );
+
+  var f = src.indexOf( begin );
+  if( f === -1 )
+  return;
+
+  var l = src.lastIndexOf( end );
+  if( l === -1 || l <= f )
+  return;
+
+  var result = src.substring( f+1,l );
+
+  return result;
+}
+
+//
+
 /**
   * Compares two strings.
   * @param {string} src - source string
@@ -6348,79 +6423,29 @@ var strEnds = function strEnds( src,end )
 
 //
 
-var strBeginOf = function strBeginOf( src,end )
-{
-
-  _.assert( _.strIs( src ),'expects string ( src )' );
-  _.assert( _.strIs( end ),'expects string ( end )' );
-  _.assert( arguments.length === 2 );
-
-  var i = src.indexOf( end,src.length - end.length );
-  var result = i >= 0 ? src.substr( 0,i ) : undefined;
-
-  if( i === -1 )
-  debugger;
-
-  return result;
-}
-
-//
-
-var strEndOf = function strEndOf( src,begin )
-{
-
-  _.assert( _.strIs( src ),'expects string ( src )' );
-  _.assert( _.strIs( begin ),'expects string ( begin )' );
-  _.assert( arguments.length === 2 );
-
-  var i = src.lastIndexOf( begin,0 );
-  var result = i >= 0 ? src.substr( i ) : undefined;
-
-  if( i >= 0 )
-  debugger;
-  else
-  debugger;
-
-  return result;
-}
-
-//
-
-var strInbetweenOf = function strInbetweenOf( src,begin,end )
-{
-
-  _.assert( _.strIs( src ),'expects string ( src )' );
-  _.assert( _.strIs( begin ),'expects string ( begin )' );
-  _.assert( _.strIs( end ),'expects string ( end )' );
-  _.assert( arguments.length === 3 );
-
-  var f = src.indexOf( begin );
-  if( f === -1 )
-  return;
-
-  var l = src.lastIndexOf( end );
-  if( l === -1 || l <= f )
-  return;
-
-  var result = src.substring( f+1,l );
-
-  return result;
-}
-
-//
-
- /**
-   * Cut begin of the string.
-   * @param {string} src
-   * @param {string} begin
-   * @example
-     var scr = _.strRemoveBegin( "abc","a" );
-   * @return {string}
-   * If result of method strBegins - false, than return src
-   * else cut begin of param src
-   * @method strRemoveBegin
-   * @memberof wTools
-   */
+/**
+ * Finds substring prefix ( begin ) occurrence from the very begining of source ( src ) and removes it.
+ * Returns original string if source( src ) does not have occurrence of ( prefix ).
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} prefix - String that is to be dropped.
+ * @returns {string} Returns string with result of prefix removement.
+ *
+ * @example
+ * //returns mple
+ * _.strRemoveBegin( 'example','exa' );
+ *
+ * @example
+ * //returns example
+ * _.strRemoveBegin( 'example','abc' );
+ *
+ * @method strRemoveBegin
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( prefix ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
 
 var strRemoveBegin = function strRemoveBegin( src,begin )
 {
@@ -6431,25 +6456,34 @@ var strRemoveBegin = function strRemoveBegin( src,begin )
 
 //
 
-  /**
-   * Cut end of the string.
-   * @param {string} src
-   * @param {string} end
-   * @example
-     var scr = _.strRemoveEnd( "abc","c" );
-   * @return {string}
-   * If result of method strEnds - false, than return src
-   * Else cut end of param src
-   * @method strRemoveEnd
-   * @memberof wTools
-   */
+/**
+ * Removes occurrence of postfix ( end ) from the very end of string( src ).
+ * Returns original string if no occurrence finded.
+ * @param {string} src - Source string to parse.
+ * @param {string} postfix - String that is to be dropped.
+ * @returns {string} Returns string with result of postfix removement.
+ *
+ * @example
+ * //returns examp
+ * _.strRemoveEnd( 'example','le' );
+ *
+ * @example
+ * //returns example
+ * _.strRemoveEnd( 'example','abc' );
+ *
+ * @method strRemoveEnd
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( postfix ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
 
 var strRemoveEnd = function strRemoveEnd( src,end )
 {
   if( !strEnds( src,end ) )
   return src;
-  debugger;
-  return src.substr( src.length-end.length,src.length );
+  return src.substring( 0,src.length-end.length );
 }
 
 //
@@ -6551,6 +6585,8 @@ var regexpIdentical = function regexpIdentical( src1,src2 )
 
 var regexpEscape = function regexpEscape( src )
 {
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1 );
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
 
@@ -6619,17 +6655,21 @@ function regexpForGlob( glob )
  * @memberof wTools
  */
 
-function regexpMakeExpression( src )
+function regexpMakeExpression( src,flags )
 {
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.regexpIs( src ) )
   return src;
 
+  _.assert( flags === undefined || _.strIs( flags ) );
+
   if( _.strIs( src ) )
-  return new RegExp( _.regexpEscape( src ) );
+  return new RegExp( _.regexpEscape( src ),flags );
 
   debugger;
-  throw _.err( 'regexpMakeExpression :','unknown type of expression, expects regexp or string, but got',src );
+  throw _.err( 'regexpMakeExpression :','unknown type of expression, expects regexp or string, but got',_.strTypeOf( src ) );
 }
 
 //
@@ -7364,7 +7404,7 @@ var routineOptions = function routineOptions( routine,options )
 {
 
   if( options === undefined )
-  options = {};
+  options = Object.create( null );
 
   _.assert( arguments.length === 2,'routineOptions : expects 2 arguments' );
   _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
@@ -7384,7 +7424,7 @@ var routineOptionsWithUndefines = function routineOptionsWithUndefines( routine,
 {
 
   if( options === undefined )
-  options = {};
+  options = Object.create( null );
 
   _.assert( arguments.length === 2,'routineOptionsWithUndefines : expects 2 arguments' );
   _.assert( _.routineIs( routine ),'routineOptionsWithUndefines : expects routine' );
@@ -7406,7 +7446,7 @@ var routineOptionsFromThis = function routineOptionsFromThis( routine,_this,cons
 
   var options = _this || {};
   if( Object.isPrototypeOf.call( constructor,_this ) || constructor === _this )
-  options = {};
+  options = Object.create( null );
 
   return _.routineOptions( routine,options );
 }
@@ -7438,7 +7478,7 @@ var _comparatorFromTransformer = function _comparatorFromTransformer( transforme
 //
 // function routines( src )
 // {
-//   var result = {};
+//   var result = Object.create( null );
 //
 //   _.assert( arguments.length === 1 );
 //   _.assert( _.objectLike( src ) );
@@ -7466,30 +7506,47 @@ var _comparatorFromTransformer = function _comparatorFromTransformer( transforme
 var timeReady = function timeReady( onReady )
 {
 
-  _assert( arguments.length === 0 || arguments.length === 1 );
-  _assert( _.routineIs( onReady ) || onReady === undefined );
+  _assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  _assert( _.numberIs( arguments[ 0 ] ) || _.routineIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined );
+
+  var timeOut = 0;
+  if( _.numberIs( arguments[ 0 ] ) )
+  {
+    timeOut = arguments[ 0 ];
+    onReady = arguments[ 1 ];
+  }
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
     var con = typeof wConsequence !== 'undefined' ? new wConsequence() : null;
+
+    // function handleTimeOut()
+    // {
+    //   if( !con && onReady )
+    //   onReady();
+    //   else if( onReady )
+    //   con.first( onReady );
+    //   else
+    //   con.give();
+    // }
+
     function handleReady()
     {
-      if( !con && onReady )
-      onReady();
-      else if( onReady )
-      con.first( onReady );
+      if( typeof wConsequence !== 'undefined' )
+      return _.timeOut( timeOut,onReady ).doThen( con );
       else
-      con.give();
+      setTimeout( onReady,timeOut );
     }
+
     window.addEventListener( 'load',handleReady );
     return con;
   }
   else
   {
     if( typeof wConsequence !== 'undefined' )
-    return _.timeOut( 1,onReady );
+    return _.timeOut( timeOut,onReady );
     else
-    setTimeout( onReady,1 );
+    setTimeout( onReady,timeOut );
   }
 
 }
@@ -7630,7 +7687,7 @@ function timePeriodic( delay,onReady )
     if( result === false )
     clearInterval( id );
     wConsequence.give( con,null );
-    con.thenDo( handlePeriodicCon );
+    con.doThen( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
   _onReady = function()
@@ -7639,13 +7696,13 @@ function timePeriodic( delay,onReady )
     if( result === false )
     clearInterval( id );
     wConsequence.give( con,null );
-    con.thenDo( handlePeriodicCon );
+    con.doThen( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
     wConsequence.give( con,null );
-    con.thenDo( handlePeriodicCon );
+    con.doThen( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
 
@@ -8259,7 +8316,7 @@ var buffersSerialize = function buffersSerialize( o )
     if( o.dropAttribute && o.dropAttribute[ name ] )
     continue;
 
-    var descriptor = {};
+    var descriptor = Object.create( null );
     descriptor.attribute = attribute;
     descriptor.name = name;
     descriptor.buffer = buffer;
@@ -9193,7 +9250,7 @@ function arrayFrom( src )
 
 function arrayToMap( array )
 {
-  var result = {};
+  var result = Object.create( null );
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( array ) );
@@ -10655,7 +10712,7 @@ function arraySameSet( src1,src2 )
 {
   if( src1.length !== src2.length ) return false;
   var src = src1.slice();
-  var nil = {};
+  var nil = Object.create( null );
 
   for( var s = 0 ; s < src2.length ; s++ )
   {
@@ -10842,7 +10899,7 @@ function arrayRightIndexOf( arr,ins,equalizer )
 function arrayLeft( arr,ins,equalizer )
 {
 
-  var result = {};
+  var result = Object.create( null );
   var i = _.arrayLeftIndexOf( arr,ins,equalizer );
 
   if( i >= 0 )
@@ -10858,7 +10915,7 @@ function arrayLeft( arr,ins,equalizer )
 
 function arrayRight( arr,ins,equalizer )
 {
-  var result = {};
+  var result = Object.create( null );
   var i = _.arrayRightIndexOf( arr,ins,equalizer );
 
   if( i >= 0 )
@@ -11557,7 +11614,7 @@ function arraySetContainSomething( src )
    *
    * @param { objectLike } srcObject - The source object.
    * @param { Object } o - The options.
-   * @param { objectLike } [options.dst = {}] - The target object.
+   * @param { objectLike } [options.dst = Object.create( null )] - The target object.
    * @param { mapClone~onCopyField } [options.onCopyField()] - The callback function to copy each [ key, value ]
    * of the (srcObject) to the (result).
    *
@@ -11640,7 +11697,7 @@ function mapExtendFiltering( filter,dstObject )
   var result = dstObject;
   var filter = _.filter.makeMapper( filter );
 
-  if( result === null ) result = {};
+  if( result === null ) result = Object.create( null );
 
   _assert( arguments.length >= 3,'expects more arguments' );
   _assert( _.routineIs( filter ),'expects filter' );
@@ -11698,7 +11755,7 @@ var mapExtend = function mapExtend( dstObject )
   var result = dstObject;
 
   if( result === null )
-  result = {};
+  result = Object.create( null );
 
   assert( arguments.length >= 2 );
   assert( objectLike( result ),'mapExtend :','expects object as the first argument' );
@@ -11725,7 +11782,7 @@ var mapExtendToThis = function mapExtendToThis()
   var result = this;
 
   if( !result )
-  result = {};
+  result = Object.create( null );
 
   assert( arguments.length >= 1 );
   assert( objectLike( result ),'mapExtendToThis :','expects object as this' );
@@ -11958,7 +12015,7 @@ var _mapExtendRecursiveFiltering = function _mapExtendRecursiveFiltering( filter
       if( filter.filterUp( dst,src,s ) === true )
       {
         if( !_.objectIs( dst[ s ] ) )
-        dst[ s ] = {};
+        dst[ s ] = Object.create( null );
         _mapExtendRecursiveFiltering( filter,dst[ s ],src[ s ] );
       }
 
@@ -12675,7 +12732,7 @@ mapsFlatten.defaults =
 
 var mapRoutines = function mapRoutines( src )
 {
-  var result = {};
+  var result = Object.create( null );
 
   _.routineOptions( mapRoutines,o );
   _.assert( arguments.length === 1 );
@@ -12707,7 +12764,7 @@ mapRoutines.defaults =
 
 var mapFields = function mapFields( src )
 {
-  var result = {};
+  var result = Object.create( null );
   var o = this === Self ? {} : this;
 
   _.routineOptions( mapFields,o );
@@ -12934,7 +12991,7 @@ var mapOwn = function mapOwn( object,name )
 
 var mapBut = function mapBut( srcMap )
 {
-  var result = {};
+  var result = Object.create( null );
   var a,k;
 
   _assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
@@ -12965,7 +13022,7 @@ var mapBut = function mapBut( srcMap )
 
 var mapButWithUndefines = function mapButWithUndefines( srcMap )
 {
-  var result = {};
+  var result = Object.create( null );
   var a,k;
 
   _assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
@@ -13021,7 +13078,7 @@ var mapButWithUndefines = function mapButWithUndefines( srcMap )
 
 var mapOwnBut = function mapOwnBut( srcMap )
 {
-  var result = {};
+  var result = Object.create( null );
   var a,k;
 
   /*console.warn( 'fuzzy!' ); debugger;*/
@@ -13103,7 +13160,7 @@ var mapDelete = function mapDelete( dst,ins )
 
 function mapButFiltering( filter,srcMap )
 {
-  var result = {};
+  var result = Object.create( null );
   var filter = _.filter.makeMapper( filter );
   var a,k;
 
@@ -13132,7 +13189,7 @@ function mapButFiltering( filter,srcMap )
 
 function mapOwnButFiltering( filter,srcMap )
 {
-  var result = {};
+  var result = Object.create( null );
   var filter = _.filter.makeMapper( filter );
   var a,k;
 
@@ -13296,20 +13353,20 @@ function mapScreenOwn( screenObject )
    * @param { function } [options.filter = filter.bypass()] options.filter - The callback function.
    * @param { objectLike } options.srcObjects - The target object.
    * @param { objectLike } options.screenObjects - The source object.
-   * @param { Object } [options.dstObject = {}] options.dstObject - The empty object.
+   * @param { Object } [options.dstObject = Object.create( null )] options.dstObject - The empty object.
    *
    * @example
    * // returns { a : 33, c : 33, name : "Mikle" };
-   * var options = {};
-   * options.dstObject = {};
+   * var options = Object.create( null );
+   * options.dstObject = Object.create( null );
    * options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
    * options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
    * _mapScreen( options );
    *
    * @example
    * // returns { a : "abc", c : 33, d : "name" };
-   * var options = {};
-   * options.dstObject = {};
+   * var options = Object.create( null );
+   * options.dstObject = Object.create( null );
    * options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
    * options.srcObjects = { d : 'name', c : 33, a : 'abc' };
    * _mapScreen( options );
@@ -13633,12 +13690,12 @@ var Proto =
 
   str : str,
 
-  strBegins : strBegins,
-  strEnds : strEnds,
-
   strBeginOf : strBeginOf,
   strEndOf : strEndOf,
   strInbetweenOf : strInbetweenOf,
+
+  strBegins : strBegins,
+  strEnds : strEnds,
 
   strRemoveBegin : strRemoveBegin,
   strRemoveEnd : strRemoveEnd,
@@ -13908,8 +13965,6 @@ var Proto =
 
 }
 
-_global_.wBase = Proto;
-
 mapExtend( Self, Proto );
 
 /*Self.constructor = function wTools() {};*/
@@ -13942,10 +13997,13 @@ _global_.wTestSuite = function wTestSuite( testSuite )
   if( !_global_.wTests )
   _global_.wTests = Object.create( null );
 
+  // debugger;
+
   _.assert( _.strIsNotEmpty( testSuite.name ),'Test suite should have name' );
-  _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name',testSuite.name,'already registered!' );
   _.assert( _.objectIs( testSuite ) );
 
+  if( !testSuite.abstract )
+  _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name',testSuite.name,'already registered!' );
   _global_.wTests[ testSuite.name ] = testSuite;
 
   return testSuite;
@@ -13975,6 +14033,7 @@ if( !_.Testing )
 
 _global_[ 'wTools' ] = Self;
 _global_.wTools = Self;
+_global_.wBase = Self;
 
 //
 
@@ -14011,7 +14070,13 @@ if( typeof module !== 'undefined' && module !== null )
   require( './component/StringTools.s' );
   require( './component/ArrayDescriptor.s' );
 
-  _.includeAny( '../BackTools.ss','' );
+  try
+  {
+    require( '../BackTools.ss' );
+  }
+  catch( err )
+  {
+  }
 
 }
 

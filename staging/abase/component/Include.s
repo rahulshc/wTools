@@ -13,6 +13,7 @@ if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
 
 var Self = wTools;
 var _ = wTools;
+var usingSinglePath = 0;
 
 // --
 // routines
@@ -115,7 +116,7 @@ function _includePureAny( src )
   {
     var src = arguments[ a ];
 
-    if( a === arguments.length-1 )
+    if( a === arguments.length-1 || usingSinglePath )
     {
       if( src !== '' )
       return _includePureAct( src );
@@ -144,7 +145,7 @@ function includeAny()
   {
     var src = arguments[ a ];
 
-    if( a === arguments.length-1 )
+    if( a === arguments.length-1 || usingSinglePath )
     {
       if( src !== '' )
       return _includeAct( src );

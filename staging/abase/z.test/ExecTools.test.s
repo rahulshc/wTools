@@ -89,7 +89,7 @@ _.mapExtend( Self,Proto );
 debugger;
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self )
-.thenDo( function( err,suit )
+.doThen( function( err,suit )
 {
   debugger;
   console.log( 'done!' );

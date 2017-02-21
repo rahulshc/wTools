@@ -400,14 +400,14 @@ var execStages = function execStages( stages,o )
   // begin
 
   if( o.onBegin )
-  con.thenDo( o.onBegin );
+  con.doThen( o.onBegin );
 
   // end
 
   function handleEnd()
   {
 
-    con.thenDo( function( err,data )
+    con.doThen( function( err,data )
     {
 
       if( err )
@@ -421,7 +421,7 @@ var execStages = function execStages( stages,o )
     // debugger;
 
     if( o.onEnd )
-    con.thenDo( o.onEnd );
+    con.doThen( o.onEnd );
 
   }
 
@@ -462,7 +462,7 @@ var execStages = function execStages( stages,o )
     if( !o.manual )
     con.ifNoErrorThen( routineCall );
 
-    con.thenTimeOut( o.delay );
+    con.timeOutThen( o.delay );
 
     handleStage();
 

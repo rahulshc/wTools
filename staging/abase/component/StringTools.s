@@ -2128,17 +2128,17 @@ strSplitChunks.defaults =
  *
  * @example
  * //returns [ "sample", "string" ]
- * _._strInhalf( { src : 'sample,string', splitter : [ ',' ] } );
+ * _._strCutOff( { src : 'sample,string', splitter : [ ',' ] } );
  *
  * @example
  * //returns [ "sample", "string" ]
- *_._strInhalf( { src : 'sample string', splitter : ' ' } )
+ *_._strCutOff( { src : 'sample string', splitter : ' ' } )
  *
  * @example
  * //returns [ "sample string,name", "string" ]
- * _._strInhalf( { src : 'sample string,name string', splitter : [ ',', ' ' ] } )
+ * _._strCutOff( { src : 'sample string,name string', splitter : [ ',', ' ' ] } )
  *
- * @method _strInhalf
+ * @method _strCutOff
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o ) is not a Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
@@ -2148,13 +2148,13 @@ strSplitChunks.defaults =
  *
  */
 
-var _strInhalf = function _strInhalf( o )
+var _strCutOff = function _strCutOff( o )
 {
   var result = [];
 
-  _.routineOptions( _strInhalf,o );
+  _.routineOptions( _strCutOff,o );
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.src ),'_strInhalf expects string ( o.src ), got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'_strCutOff expects string ( o.src ), got',_.strTypeOf( o.src ) );
   _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
   _.assert( _.numberIs( o.number ) );
 
@@ -2224,7 +2224,7 @@ var _strInhalf = function _strInhalf( o )
   return result;
 }
 
-_strInhalf.defaults =
+_strCutOff.defaults =
 {
   src : null,
   splitter : ' ',
@@ -2235,7 +2235,7 @@ _strInhalf.defaults =
 //
 
 /**
- * Short-cut for _strInhalf function.
+ * Short-cut for _strCutOff function.
  * Finds occurrence of splitter( o.splitter ) from begining of ( o.src ) and splits string in finded position by half.
  *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
@@ -2243,17 +2243,17 @@ _strInhalf.defaults =
  *
  * @example
  * //returns [ "sample", "string" ]
- * _.strInhalfLeft( { src : 'sample,string', splitter : [ ',' ] } );
+ * _.strCutOffLeft( { src : 'sample,string', splitter : [ ',' ] } );
  *
  * @example
  * //returns [ "sample", "string" ]
- *_.strInhalfLeft( { src : 'sample string', splitter : ' ' } )
+ *_.strCutOffLeft( { src : 'sample string', splitter : ' ' } )
  *
  * @example
  * //returns [ "sample string,name", "string" ]
- * _.strInhalfLeft( 'sample string,name string', ',' )
+ * _.strCutOffLeft( 'sample string,name string', ',' )
  *
- * @method strInhalfLeft
+ * @method strCutOffLeft
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o ) is not a Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
@@ -2261,7 +2261,7 @@ _strInhalf.defaults =
  *
  */
 
-var strInhalfLeft = function strInhalfLeft( o )
+var strCutOffLeft = function strCutOffLeft( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -2275,15 +2275,15 @@ var strInhalfLeft = function strInhalfLeft( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapHasOnly( o,strInhalfLeft.defaults );
+  _.assertMapHasOnly( o,strCutOffLeft.defaults );
 
   o.left = 1;
 
-  var result = _strInhalf( o );
+  var result = _strCutOff( o );
   return result;
 }
 
-strInhalfLeft.defaults =
+strCutOffLeft.defaults =
 {
   src : null,
   splitter : ' ',
@@ -2293,7 +2293,7 @@ strInhalfLeft.defaults =
 //
 
 /**
- * Short-cut for _strInhalf function.
+ * Short-cut for _strCutOff function.
  * Finds occurrence of splitter( o.splitter ) from end of ( o.src ) and splits string in finded position by half.
  *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
@@ -2301,17 +2301,17 @@ strInhalfLeft.defaults =
  *
  * @example
  * //returns [ "sample", "string" ]
- * _.strInhalfRight( { src : 'sample,string', splitter : [ ',' ] } );
+ * _.strCutOffRight( { src : 'sample,string', splitter : [ ',' ] } );
  *
  * @example
  * //returns [ "sample", "string" ]
- *_.strInhalfRight( { src : 'sample string', splitter : ' ' } )
+ *_.strCutOffRight( { src : 'sample string', splitter : ' ' } )
  *
  * @example
  * //returns [ "sample, ", "string" ]
- * _.strInhalfRight( { src : 'sample,  string', splitter : [ ',', ' ' ] } )
+ * _.strCutOffRight( { src : 'sample,  string', splitter : [ ',', ' ' ] } )
  *
- * @method strInhalfRight
+ * @method strCutOffRight
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o ) is not a Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
@@ -2319,7 +2319,7 @@ strInhalfLeft.defaults =
  *
  */
 
-var strInhalfRight = function strInhalfRight( o )
+var strCutOffRight = function strCutOffRight( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -2333,15 +2333,15 @@ var strInhalfRight = function strInhalfRight( o )
     _.assert( arguments.length === 1 );
   }
 
-  _.assertMapHasOnly( o,strInhalfRight.defaults );
+  _.assertMapHasOnly( o,strCutOffRight.defaults );
 
   o.left = 0;
 
-  var result = _strInhalf( o );
+  var result = _strCutOff( o );
   return result;
 }
 
-strInhalfRight.defaults =
+strCutOffRight.defaults =
 {
   src : null,
   splitter : ' ',
@@ -2349,6 +2349,79 @@ strInhalfRight.defaults =
 }
 
 //
+
+var strCutOffAllLeft = function strCutOffAllLeft( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( arguments.length > 1 )
+  {
+    o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
+  }
+  else
+  {
+    _.assert( arguments.length === 1 );
+  }
+
+  _.assertMapHasOnly( o,strCutOffAllLeft.defaults );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.strIs( o.splitter ) );
+
+  var i = o.src.lastIndexOf( o.splitter );
+
+  if( i === -1 )
+  return [ '',o.src ];
+
+  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.splitter.length,o.src.length ) ];
+
+  return result;
+}
+
+strCutOffAllLeft.defaults =
+{
+  src : null,
+  splitter : ' ',
+}
+
+//
+
+var strCutOffAllRight = function strCutOffAllRight( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( arguments.length > 1 )
+  {
+    o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
+  }
+  else
+  {
+    _.assert( arguments.length === 1 );
+  }
+
+  _.assertMapHasOnly( o,strCutOffAllRight.defaults );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.strIs( o.splitter ) );
+
+  var i = o.src.indexOf( o.splitter );
+
+  if( i === -1 )
+  return [ o.src,'' ];
+
+  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.splitter.length,o.src.length ) ];
+
+  return result;
+}
+
+strCutOffAllRight.defaults =
+{
+  src : null,
+  splitter : ' ',
+}
+
+//
+
 /**
  * Divides source string( o.src ) into parts using splitter provided by argument( o.splitter ).
  * If( o.strip ) is true - removes leading and trailing whitespace characters.
@@ -3255,78 +3328,79 @@ var strCommonRight = function strCommonRight( ins )
 
 //
 
-/**
- * Finds substring( prefix ) occurrence from the begining of the source( src ) and removes it.
- * Returns original string if source( src ) does not have occurrence of ( prefix ).
- *
- * @param {string} src - Source string to parse.
- * @param {string} prefix - String that is to be dropped.
- * @returns {string} Returns string with result of prefix removement.
- *
- * @example
- * //returns mple
- * _.strDropPrefix( 'example','exa' );
- *
- * @example
- * //returns example
- * _.strDropPrefix( 'example','abc' );
- *
- * @method strDropPrefix
- * @throws { Exception } Throws a exception if( src ) is not a String.
- * @throws { Exception } Throws a exception if( prefix ) is not a String.
- * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
- * @memberof wTools
- *
-*/
-function strDropPrefix( src,prefix )
-{
-  _.assert( _.strIs( src ) );
-  _.assert( _.strIs( prefix ) );
-  _.assert( arguments.length === 2 );
-
-  if( src.indexOf( prefix ) !== -1 )
-  return src.substr( prefix.length,src.length-prefix.length );
-  else return src;
-}
-
+// /**
+//  * Finds substring( prefix ) occurrence from the begining of the source( src ) and removes it.
+//  * Returns original string if source( src ) does not have occurrence of ( prefix ).
+//  *
+//  * @param {string} src - Source string to parse.
+//  * @param {string} prefix - String that is to be dropped.
+//  * @returns {string} Returns string with result of prefix removement.
+//  *
+//  * @example
+//  * //returns mple
+//  * _.strRemoveBegin( 'example','exa' );
+//  *
+//  * @example
+//  * //returns example
+//  * _.strRemoveBegin( 'example','abc' );
+//  *
+//  * @method strRemoveBegin
+//  * @throws { Exception } Throws a exception if( src ) is not a String.
+//  * @throws { Exception } Throws a exception if( prefix ) is not a String.
+//  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+//  * @memberof wTools
+//  *
+//  */
 //
-
-/**
- * Removes occurrence of( postfix ) from the end of string( src ).
- * Returns original string if no occurrence finded.
- * @param {string} src - Source string to parse.
- * @param {string} postfix - String that is to be dropped.
- * @returns {string} Returns string with result of postfix removement.
- *
- * @example
- * //returns examp
- * _.strDropPostfix( 'example','le' );
- *
- * @example
- * //returns example
- * _.strDropPostfix( 'example','abc' );
- *
- * @method strDropPostfix
- * @throws { Exception } Throws a exception if( src ) is not a String.
- * @throws { Exception } Throws a exception if( postfix ) is not a String.
- * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
- * @memberof wTools
- *
-*/
-
-function strDropPostfix( src,postfix )
-{
-
-  _.assert( _.strIs( src ) );
-  _.assert( _.strIs( postfix ) );
-  _.assert( arguments.length === 2 );
-
-  var l = src.length - postfix.length;
-
-  if( src.length > postfix.length && src.lastIndexOf( postfix ) === l )
-  return src.substr( 0,l );
-  else return src;
-}
+// function strRemoveBegin( src,prefix )
+// {
+//   _.assert( _.strIs( src ) );
+//   _.assert( _.strIs( prefix ) );
+//   _.assert( arguments.length === 2 );
+//
+//   if( src.indexOf( prefix ) !== -1 )
+//   return src.substr( prefix.length,src.length-prefix.length );
+//   else return src;
+// }
+//
+// //
+//
+// /**
+//  * Removes occurrence of( postfix ) from the end of string( src ).
+//  * Returns original string if no occurrence finded.
+//  * @param {string} src - Source string to parse.
+//  * @param {string} postfix - String that is to be dropped.
+//  * @returns {string} Returns string with result of postfix removement.
+//  *
+//  * @example
+//  * //returns examp
+//  * _.strRemoveEnd( 'example','le' );
+//  *
+//  * @example
+//  * //returns example
+//  * _.strRemoveEnd( 'example','abc' );
+//  *
+//  * @method strRemoveEnd
+//  * @throws { Exception } Throws a exception if( src ) is not a String.
+//  * @throws { Exception } Throws a exception if( postfix ) is not a String.
+//  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+//  * @memberof wTools
+//  *
+//  */
+//
+// function strRemoveEnd( src,postfix )
+// {
+//
+//   _.assert( _.strIs( src ) );
+//   _.assert( _.strIs( postfix ) );
+//   _.assert( arguments.length === 2 );
+//
+//   var l = src.length - postfix.length;
+//
+//   if( src.length > postfix.length && src.lastIndexOf( postfix ) === l )
+//   return src.substr( 0,l );
+//   else return src;
+// }
 
 //
 
@@ -3803,7 +3877,8 @@ function strCount( src,ins )
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
-  if( !ins.length ) { result = 0; return result; }
+  if( !ins.length )
+  return 0;
 
   var i = -1;
   do
@@ -4298,7 +4373,7 @@ var strExtractStereoStrips = function strExtractStereoStrips( src, o )
   for( var i = 1; i < splitted.length; i++ )
   {
 
-    var halfs = strInhalfLeft( splitted[ i ],o.postfix );
+    var halfs = strCutOffLeft( splitted[ i ],o.postfix );
     var strip = o.onStrip ? o.onStrip( halfs[ 0 ] ) : halfs[ 0 ];
 
     if( strip !== undefined )
@@ -4584,25 +4659,28 @@ var Proto =
   strShort : strShort,
   strEscape : strEscape,
 
-  toStrForRange : toStrForRange, /* exmperimental */
-  toStrForCall : toStrForCall, /* exmperimental */
+  toStrForRange : toStrForRange, /* experimental */
+  toStrForCall : toStrForCall, /* experimental */
 
   strCapitalize : strCapitalize,
   strTimes : strTimes,
   strLineCount : strLineCount,
-  strSplitStrNumber : strSplitStrNumber, /* exmperimental */
-  strSplitChunks : strSplitChunks, /* exmperimental */
+  strSplitStrNumber : strSplitStrNumber, /* experimental */
+  strSplitChunks : strSplitChunks, /* experimental */
 
-  _strInhalf : _strInhalf,
-  strInhalfLeft : strInhalfLeft,
-  strInhalfRight : strInhalfRight,
+  _strCutOff : _strCutOff,
+  strCutOffLeft : strCutOffLeft,
+  strCutOffRight : strCutOffRight,
+
+  strCutOffAllLeft : strCutOffAllLeft,
+  strCutOffAllRight : strCutOffAllRight,
 
   strSplit : strSplit,
   strStrip : strStrip,
   strRemoveAllSpaces : strRemoveAllSpaces,
   strStripEmptyLines : strStripEmptyLines,
 
-  strIron : strIron, /* exmperimental */
+  strIron : strIron, /* experimental */
 
   strReplaceAll : strReplaceAll, /* document me */
   strReplaceNames : strReplaceNames,
@@ -4614,13 +4692,10 @@ var Proto =
   strCommonLeft : strCommonLeft, /* document me */
   strCommonRight : strCommonRight, /* document me */
 
-  strDropPrefix : strDropPrefix,
-  strDropPostfix : strDropPostfix,
-
-  strDifference : strDifference, /* exmperimental */
-  strSimilarity : strSimilarity, /* exmperimental */
-  strLattersSpectre : strLattersSpectre, /* exmperimental */
-  lattersSpectreComparison : lattersSpectreComparison, /* exmperimental */
+  strDifference : strDifference, /* experimental */
+  strSimilarity : strSimilarity, /* experimental */
+  strLattersSpectre : strLattersSpectre, /* experimental */
+  lattersSpectreComparison : lattersSpectreComparison, /* experimental */
 
   strHtmlEscape : strHtmlEscape, /* improve my document */
   strUnicodeEscape : strUnicodeEscape, /* document me */
@@ -4635,6 +4710,7 @@ var Proto =
   strCamelize : strCamelize,
   strFilenameFor : strFilenameFor,
 
+
   // format
 
   strToBytes : strToBytes,
@@ -4643,9 +4719,10 @@ var Proto =
 
   strTimeFormat : strTimeFormat,
 
-  strCsvFrom : strCsvFrom, /* exmperimental */
-  strToDom : strToDom, /* exmperimental */
-  strToConfig : strToConfig, /* exmperimental */
+  strCsvFrom : strCsvFrom, /* experimental */
+  strToDom : strToDom, /* experimental */
+  strToConfig : strToConfig, /* experimental */
+
 
   //
 
