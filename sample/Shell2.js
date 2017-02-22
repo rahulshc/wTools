@@ -12,11 +12,11 @@ var _ = wTools;
 
 var con = new wConsequence().give();
 con.seal( _,_.shell )
-.thenDo( 'echo shelling ping' )
-.thenDo( 'ping www.google.com' )
+.doThen( 'echo shelling ping' )
+.doThen( 'ping www.google.com' )
 /*wConsequence returned as 'consequence' property */
 .consequence
-.thenDo( function( err,data )
+.doThen( function( err,data )
 {
   /* handle error if any */
   if( err )

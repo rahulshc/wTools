@@ -8,7 +8,7 @@ if( typeof module !== 'undefined' )
 var _ = wTools;
 
 _.shell( 'mkdir -p sample/temp_dir' )
-.thenDo( function( err,code )
+.doThen( function( err,code )
 {
   if( err )
   throw _.errLogOnce( err );
