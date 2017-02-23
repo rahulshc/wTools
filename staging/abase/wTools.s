@@ -4030,7 +4030,7 @@ function _err( o )
   if( !result.sourceCode )
   {
     var c = '';
-    c = _.diagnosticCode({ error : result }); /* wrap by try */
+    c = _.diagnosticCode({ stack : stack });
     if( c && c.length < 400 )
     {
       sourceCode += '\n';
