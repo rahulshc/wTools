@@ -3834,7 +3834,7 @@ entitySearch.defaults.__proto__ = _each.defaults;
  * @memberof wTools
  */
 
-var _err = function _err( o )
+function _err( o )
 {
   var result;
 
@@ -3847,12 +3847,18 @@ var _err = function _err( o )
   if( !_.numberIs( o.level ) )
   o.level = _err.defaults.level;
 
+  if( o.usingSourceCode === undefined )
+  o.usingSourceCode = _err.defaults.usingSourceCode;
+
   if( o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
 
   /* var */
 
   var originalMessage = '';
+  var catches = '';
+  var sourceCode = '';
+  var stack = '';
   var fileName,lineNumber;
 
   /* Error.stackTraceLimit = 99; */
@@ -3863,10 +3869,18 @@ var _err = function _err( o )
   {
     if( o.args[ a ] instanceof Error )
     {
-      result = o.args[ a ];
-      if( result.attentionNeeded !== undefined )
+      var arg = o.args[ a ];
+
+      if( !result )
       {
-        Object.defineProperty( result, 'attentionNeeded',
+        result = o.args[ a ];
+        catches = result.catches || '';
+        sourceCode = result.sourceCode || '';
+      }
+
+      if( arg.attentionNeeded === undefined )
+      {
+        Object.defineProperty( arg, 'attentionNeeded',
         {
           enumerable : false,
           configurable : true,
@@ -3874,47 +3888,61 @@ var _err = function _err( o )
           value : 0,
         });
       }
-      if( result.originalMessage )
-      o.args[ a ] = result.originalMessage
+
+      if( arg.originalMessage !== undefined )
+      {
+        o.args[ a ] = arg.originalMessage;
+      }
       else
       {
-        o.args[ a ] = result.message || result.msg || result.constructor.name || 'unknown error';
-        var fields = _.mapFields( result );
+        // o.args[ a ] = '! Error :\n';
+        o.args[ a ] = arg.message || arg.msg || arg.constructor.name || 'unknown error';
+        var fields = _.mapFields( arg );
         if( Object.keys( fields ).length )
-        o.args[ a ] += '\n' + _.toStr( fields,{ wrap : 0, multiline : 1 } );
+        o.args[ a ] += '\n' + _.toStr( fields,{ wrap : 0, multiline : 1, levels : 2 } );
       }
-      break;
+
+      // break;
+      // if( _.objectLike( argument ) )
+
+      {
+
+        if( !fileName )
+        fileName = arg.fileName || arg.filename;
+
+        if( lineNumber === undefined )
+        lineNumber = arg.linenumber;
+
+        if( lineNumber === undefined )
+        lineNumber = arg.lineNumber;
+
+        if( lineNumber === undefined )
+        lineNumber = arg.lineno;
+
+      }
+
     }
+
   }
 
-  /* no error in arguments, make new one */
+  /* make new one if no error in arguments */
 
+  debugger;
   if( !result )
   {
-    var stack = _.diagnosticStack( o.level,-1 );
-    result = new Error( originalMessage + '\n' + stack + '\n' );
-    Object.defineProperty( result, 'stack',
-    {
-      enumerable : false,
-      configurable : true,
-      writable : true,
-      value : stack,
-    });
+    // var stack = _.diagnosticStack( o.level,-1 );
+    // result = new Error( originalMessage + '\n' + stack + '\n' );
+    result = new Error( originalMessage + '\n' );
+    stack = _.diagnosticStack( result );
   }
-
-  /* error does not have stack */
-
-  if( !result.stack )
+  else
   {
-    debugger;
-    var stack = _.diagnosticStack( o.level,-1 );
-    Object.defineProperty( result, 'stack',
-    {
-      enumerable : false,
-      configurable : true,
-      writable : true,
-      value : stack,
-    });
+    if( result.originalStack !== undefined )
+    stack = result.originalStack;
+    if( result.stack !== undefined )
+    stack = result.stack;
+    else
+    stack = _.diagnosticStack( o.level,-1 );
   }
 
   /* collect data */
@@ -3941,34 +3969,20 @@ var _err = function _err( o )
     }
     else str = String( argument );
 
-    if( _.objectLike( argument ) && !fileName )
-    {
-
-      if( !fileName )
-      fileName = argument.fileName || argument.filename;
-
-      if( lineNumber === undefined )
-      lineNumber = argument.linenumber;
-
-      if( lineNumber === undefined )
-      lineNumber = argument.lineNumber;
-
-      if( lineNumber === undefined )
-      lineNumber = argument.lineno;
-
-    }
-
     if( _.strIs( str ) && str[ str.length-1 ] === '\n' )
     originalMessage += str;
     else
     originalMessage += str + ' ';
+
+    if( originalMessage.indexOf( 'caught at' ) !== -1 )
+    debugger;
+
   }
 
-  /* location */
+  /* line number */
 
   if( lineNumber !== undefined )
   {
-    // originalMessage += '\n' + 'Line : ' + lineNumber;
     Object.defineProperty( result, 'lineNumber',
     {
       enumerable : false,
@@ -3977,6 +3991,8 @@ var _err = function _err( o )
       value : lineNumber,
     });
   }
+
+  /* file name */
 
   if( fileName !== undefined )
   {
@@ -3995,26 +4011,32 @@ var _err = function _err( o )
 
   /* where it was caught */
 
-  if( originalMessage[ 0 ] !== '\n' )
-  originalMessage = '\n' + originalMessage;
-  originalMessage = '\n' + 'caught ' + _.diagnosticStack( o.level,o.level+1 ) + originalMessage;
+  // if( originalMessage[ 0 ] !== '\n' )
+  // originalMessage = '\n' + originalMessage;
+  // originalMessage = '\n' + 'caught ' + _.diagnosticStack( o.level,o.level+1 ) + originalMessage;
 
-  /*  */
+  catches = '    caught ' + _.diagnosticStack( o.level,o.level+1 ) + '\n' + catches;
 
-  if( !result.caughtCounter )
+  /* source code */
+
+  if( o.usingSourceCode )
+  if( !result.sourceCode )
   {
-    var code = '';
-    code = _.diagnosticCode({ error : result }); /* wrap by try */
-    if( code && code.length < 400 )
+    var c = '';
+    c = _.diagnosticCode({ error : result }); /* wrap by try */
+    if( c && c.length < 400 )
     {
-      originalMessage += '\n \n';
-      originalMessage += code;
-      originalMessage += '\n ';
+      sourceCode += '\n';
+      sourceCode += c;
+      sourceCode += '\n ';
     }
   }
 
-  /* */
+  /* join */
 
+  var message = '\n* Catches :\n' + catches + '\n* Message :\n' + originalMessage + '\n\n* Stack :\n' + stack + '\n';
+  if( sourceCode )
+  message += '\n' + sourceCode;
   try
   {
     Object.defineProperty( result, 'message',
@@ -4022,27 +4044,43 @@ var _err = function _err( o )
       enumerable : false,
       configurable : true,
       writable : true,
-      value : originalMessage + '\n' + ( result.originalStack || result.stack || '' ) + '\n',
+      value : message,
     });
   }
   catch( e )
   {
     debugger;
-    var stack = result.stack || new Error().stack;
-    result = new Error( originalMessage + '\n' + stack + '\n' );
-    try
-    {
-      Object.defineProperty( result, 'stack',
-      {
-        enumerable : false,
-        configurable : true,
-        writable : true,
-        value : stack,
-      });
-    }
-    catch( err )
-    {}
+    result = new Error( message );
   }
+
+  /* stack */
+
+  try
+  {
+    Object.defineProperty( result, 'stack',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : stack,
+    });
+  }
+  catch( err )
+  {
+  }
+
+  /* source code */
+
+  if( sourceCode )
+  Object.defineProperty( result, 'sourceCode',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : sourceCode,
+  });
+
+  /* original message */
 
   Object.defineProperty( result, 'originalMessage',
   {
@@ -4052,13 +4090,34 @@ var _err = function _err( o )
     value : originalMessage,
   });
 
-  Object.defineProperty( result, 'caughtCounter',
+  /* catches */
+
+  Object.defineProperty( result, 'catches',
   {
     enumerable : false,
     configurable : true,
     writable : true,
-    value : result.caughtCounter ? result.caughtCounter+1 : 1,
+    value : catches,
   });
+
+  /* catch count */
+
+  Object.defineProperty( result, 'catchCounter',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : result.catchCounter ? result.catchCounter+1 : 1,
+  });
+
+  if( originalMessage.indexOf( 'caught at' ) !== -1 )
+  {
+    debugger;
+    console.log( '-' );
+    console.log( result.toString() );
+    console.log( '-' );
+    throw Error( 'err : originalMessage should have no "caught at"' );
+  }
 
   return result;
 }
@@ -4066,6 +4125,7 @@ var _err = function _err( o )
 _err.defaults =
 {
   level : 0,
+  usingSourceCode : 1,
   args : null,
 }
 
@@ -4101,7 +4161,7 @@ _err.defaults =
  * @memberof wTools
  */
 
-var err = function err()
+function err()
 {
   return _err
   ({
@@ -4119,7 +4179,7 @@ var err = function err()
  * If _global_.logger defined, method will use it to print error, else uses console
  * @see wTools.err
  *
- *@example
+ * @example
    function divide( x, y )
    {
       if( y == 0 )
@@ -4143,7 +4203,7 @@ var err = function err()
  * @memberof wTools
  */
 
-var errLog = function errLog()
+function errLog()
 {
 
   var c = _global_.logger || _global_.console;
@@ -4199,7 +4259,7 @@ var errLog = function errLog()
 
 //
 
-var errLogOnce = function errLogOnce( err )
+function errLogOnce( err )
 {
 
   var err = _err
@@ -4216,7 +4276,7 @@ var errLogOnce = function errLogOnce( err )
 
 //
 
-var _diagnosticStripPath = function _diagnosticStripPath( src )
+function _diagnosticStripPath( src )
 {
   _.assert( arguments.length === 1 );
 
@@ -4232,7 +4292,7 @@ var _diagnosticStripPath = function _diagnosticStripPath( src )
 
 //
 
-var diagnosticScript = function diagnosticScript( path )
+function diagnosticScript( path )
 {
 
   if( typeof document !== 'undefined' && document.scripts )
