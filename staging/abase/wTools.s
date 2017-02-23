@@ -3933,14 +3933,21 @@ function _err( o )
     // var stack = _.diagnosticStack( o.level,-1 );
     // result = new Error( originalMessage + '\n' + stack + '\n' );
     result = new Error( originalMessage + '\n' );
-    stack = _.diagnosticStack( result );
+    stack = _.diagnosticStack( result,o.level,-1 );
   }
   else
   {
-    if( result.originalStack !== undefined )
-    stack = result.originalStack;
     if( result.stack !== undefined )
-    stack = result.stack;
+    {
+      if( result.originalMessage !== undefined )
+      stack = result.stack;
+      else
+      stack = _.diagnosticStack( result );
+
+      // console.log( 'result.originalMessage !== undefined',result.originalMessage !== undefined );
+      // console.log( 'stack :',stack );
+
+    }
     else
     stack = _.diagnosticStack( o.level,-1 );
   }
