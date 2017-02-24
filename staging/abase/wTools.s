@@ -4317,7 +4317,7 @@ function diagnosticScript( path )
 
 //
 
-var diagnosticLocation = function diagnosticLocation( o )
+function diagnosticLocation( o )
 {
 
   if( _.numberIs( o ) )
@@ -4326,6 +4326,11 @@ var diagnosticLocation = function diagnosticLocation( o )
   o = { stack : o, level : 0 }
   else if( _.errorIs( o ) )
   o = { error : o, level : 0 }
+  else if( o === undefined )
+  {
+    o = { stack : _.diagnosticStack( 1 ) };
+    // debugger;
+  }
 
   _.routineOptions( diagnosticLocation,o );
   _.assert( arguments.length === 0 || arguments.length === 1 );
