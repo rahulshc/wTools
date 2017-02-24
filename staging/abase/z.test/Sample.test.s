@@ -27,7 +27,7 @@ if( typeof module !== 'undefined' )
 }
 
 var _ = wTools;
-var Self = {};
+var sourceFilePath = typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
@@ -99,12 +99,13 @@ function arrayRange( test )
 
 //
 
-var Proto =
+var Self =
 {
 
   name : 'simple1',
+  sourceFilePath : sourceFilePath,
 
-  tests:
+  tests :
   {
 
     arrayRange : arrayRange,
@@ -113,7 +114,7 @@ var Proto =
 
 }
 
-_.mapExtend( Self,Proto );
+Self = wTestSuite( Self );
 
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self.name );

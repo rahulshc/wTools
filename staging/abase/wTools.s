@@ -3927,7 +3927,6 @@ function _err( o )
 
   /* make new one if no error in arguments */
 
-  debugger;
   if( !result )
   {
     // var stack = _.diagnosticStack( o.level,-1 );
@@ -14066,6 +14065,7 @@ _global_.wTestSuite = function wTestSuite( testSuite )
 
   // debugger;
 
+  _.assert( _.strIs( testSuite.sourceFilePath ),'Test suite expects a mandatory option ( sourceFilePath )' );
   _.assert( _.strIsNotEmpty( testSuite.name ),'Test suite should have name' );
   _.assert( _.objectIs( testSuite ) );
 
