@@ -132,11 +132,16 @@ var _initConfig = function _initConfig()
 var _initUnhandledErrorHandler = function _initUnhandledErrorHandler()
 {
 
+  if( _global_._initUnhandledErrorHandlerDone )
+  return;
+
+  _global_._initUnhandledErrorHandlerDone = true;
+
   if( typeof process !== 'undefined' && _.routineIs( process.on ) )
   process.on( 'uncaughtException', function( err )
   {
 
-    console.error( '------------------------------------------------------------------------' );
+    console.error( '------------------------------- unhandled errorr -------------------------------' );
 
     if( !err.originalMessage )
     {
@@ -149,7 +154,7 @@ var _initUnhandledErrorHandler = function _initUnhandledErrorHandler()
       _.errLog( err );
     }
 
-    console.error( '------------------------------------------------------------------------' );
+    console.error( '------------------------------- unhandled errorr -------------------------------' );
     debugger;
 
   });
@@ -2902,7 +2907,7 @@ var _entitySelect = function _entitySelect( o )
       // iteration.container = o.container;
       // iterator.query = o.query[ i ];
 
-      result[ iterator.query ] = __entitySelectAct( iteration,iterator );
+      result[ iterator.query ] = _entitySelectAct( iteration,iterator );
     }
 
     return result;
@@ -2924,7 +2929,7 @@ var _entitySelect = function _entitySelect( o )
   iteration.qarrey = o.qarrey;
   iteration.container = o.container;
 
-  result = __entitySelectAct( iteration,iterator );
+  result = _entitySelectAct( iteration,iterator );
 
   return result;
 }
@@ -2942,12 +2947,12 @@ var _entitySelect = function _entitySelect( o )
  * @param {Boolean} [ o.usingUndefinedForMissing=false ] - If true returns undefined for Atomic type of( o.container ).
  * @returns {*} Returns value finded by index/key or path.
  *
- * @method __entitySelectAct
+ * @method _entitySelectAct
  * @throws {Exception} If container is Atomic type.
  * @memberof wTools
 */
 
-var __entitySelectAct = function __entitySelectAct( iteration,iterator )
+function _entitySelectAct( iteration,iterator )
 {
 
   var result;
@@ -3012,7 +3017,7 @@ var __entitySelectAct = function __entitySelectAct( iteration,iterator )
     newIteration.container = field;
     newIteration.qarrey = qarrey;
 
-    return __entitySelectAct( newIteration,iterator );
+    return _entitySelectAct( newIteration,iterator );
   }
 
   /* */
@@ -3683,7 +3688,7 @@ function entityMax( src,onElement )
 
 //
 
-var entitySearch = function entitySearch( o )
+function entitySearch( o )
 {
   var result = Object.create( null );
 
@@ -3752,22 +3757,19 @@ var entitySearch = function entitySearch( o )
     if( onUp.call( this,e,k,iteration ) === false )
     return false;
 
-    var path;
-    // if( o.pathOfParent )
-    path = iteration.path;
-    // else
-    // path = iteration.path + '.' + iteration.key;
-
-    // if( path === '.0.expression.callee.type' )
-    // debugger;
-    // if( path === '/0/expression/callee/type' )
-    // debugger;
+    var path = iteration.path;
 
     var r;
     if( o.returnParent && iteration.down )
-    r = iteration.down.src;
+    {
+      r = iteration.down.src;
+      if( o.usingExactPath )
+      path = iteration.down.path;
+    }
     else
-    r = e;
+    {
+      r = e;
+    }
 
     if( o.searchingValue )
     {
@@ -3806,6 +3808,7 @@ entitySearch.defaults =
 
   // pathOfParent : 1,
   returnParent : 0,
+  usingExactPath : 0,
 
   searchingKey : 1,
   searchingValue : 1,
@@ -4026,7 +4029,7 @@ function _err( o )
   /* source code */
 
   if( o.usingSourceCode )
-  if( !result.sourceCode )
+  if( result.sourceCode === undefined )
   {
     var c = '';
     c = _.diagnosticCode({ stack : stack });
@@ -4077,13 +4080,12 @@ function _err( o )
 
   /* source code */
 
-  if( sourceCode )
   Object.defineProperty( result, 'sourceCode',
   {
     enumerable : false,
     configurable : true,
     writable : true,
-    value : sourceCode,
+    value : sourceCode || null,
   });
 
   /* original message */
@@ -7574,7 +7576,7 @@ var _comparatorFromTransformer = function _comparatorFromTransformer( transforme
 // time
 // --
 
-var timeReady = function timeReady( onReady )
+function timeReady( onReady )
 {
 
   _assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
@@ -7620,6 +7622,25 @@ var timeReady = function timeReady( onReady )
     setTimeout( onReady,timeOut );
   }
 
+}
+
+//
+
+function timeReadyJoin( context,routine,args )
+{
+
+  routine = _.routineJoin( context,routine,args );
+
+  var result = _.routineJoin( undefined,_.timeReady,[ routine ] );
+
+  function _timeReady()
+  {
+    var args = arguments;
+    routine = _.routineJoin( context === undefined ? this : this,routine,args );
+    return _.timeReady( routine );
+  }
+
+  return _timeReady;
 }
 
 //
@@ -7692,7 +7713,7 @@ function timeOnce( delay,onBegin,onEnd )
 
 //
 
-var timeOut = function timeOut( delay,onReady )
+function timeOut( delay,onReady )
 {
   var con = new wConsequence();
 
@@ -7711,11 +7732,10 @@ var timeOut = function timeOut( delay,onReady )
     if( onReady )
     con.first( onReady );
     else
-    con.give();
+    con.give( timeOut );
 
   }
 
-  // if( arguments.length > 2 )
   if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   {
     onReady = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
@@ -13180,7 +13200,7 @@ var mapOwnBut = function mapOwnBut( srcMap )
 
 //
 
-var mapDelete = function mapDelete( dst,ins )
+function mapDelete( dst,ins )
 {
 
   _.assert( arguments.length === 2 );
@@ -13627,7 +13647,7 @@ var Proto =
 
   _entitySelectOptions : _entitySelectOptions,
   _entitySelect : _entitySelect,
-  __entitySelectAct : __entitySelectAct,
+  _entitySelectAct : _entitySelectAct,
 
   entitySelect : entitySelect,
   entitySelectSet : entitySelectSet,
@@ -13815,6 +13835,7 @@ var Proto =
   // time
 
   timeReady : timeReady,
+  timeReadyJoin : timeReadyJoin,
   timeOnce : timeOnce,
   timeOut : timeOut,
 
@@ -14128,6 +14149,7 @@ if( _global_._wToolsInitConfigExpected !== false )
   _._initConfig();
   _._initUnhandledErrorHandler();
 }
+
 // else debugger;
 
 if( typeof module !== 'undefined' && module !== null )
