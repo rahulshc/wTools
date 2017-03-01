@@ -19,6 +19,7 @@ if( typeof module !== 'undefined' )
 
   var _ = wTools
 
+  debugger; 
   _.include( 'wLoggerToJstructure' );
   _.include( 'wTesting' );
 

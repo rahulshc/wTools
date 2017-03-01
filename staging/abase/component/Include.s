@@ -168,6 +168,91 @@ function includeAny()
 
 }
 
+//
+
+// function includeTestsFrom( path )
+// {
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.strIs( path ) );
+//
+//   var files = _.fileProvider.filesFind({ pathFile : path, ends : [ '.test.s','.test.ss' ] });
+//
+//   console.log( 'files',_.entitySelect( files,'*.absolute' ) );
+//
+//   for( var f = 0 ; f < files.length ; f++ )
+//   if( files[ f ].stat.isFile() )
+//   require( _.fileProvider.pathNativize( files[ f ].absolute ) );
+//
+// }
+
+//
+
+var _appArgsInSubjectAndMapFormatResult;
+function appArgsInSubjectAndMapFormat( o )
+{
+
+  o = _.routineOptions( appArgsInSubjectAndMapFormat,o );
+
+  if( _appArgsInSubjectAndMapFormatResult && o.delimeter === _appArgsInSubjectAndMapFormatResult.delimeter )
+  return _appArgsInSubjectAndMapFormatResult;
+  var result = Object.create( null );
+
+  if( _global_.process )
+  {
+
+    result.interpreterPath = process.argv[ 0 ];
+    result.mainPath = process.argv[ 1 ];
+    result.interpreterArgs = process.execArgv;
+    result.delimter = o.delimeter;
+    result.map = null;
+    result.subject = process.argv[ 2 ];
+
+    var args = process.argv.slice( 2 ).join( ' ' );
+    args = args.trim();
+
+    if( !args )
+    return result;
+
+    args = _.strSplit({ src : args, delimeter : o.delimeter, stripping : 1 });
+
+    if( args.length === 1 )
+    return result;
+
+    args[ 0 ] = _.strCutOffAllLeft( args[ 0 ],' ' )[ 1 ];
+
+    result.map = Object.create( null );
+    for( var a = 1 ; a < args.length ; a++ )
+    {
+      var left = args[ a-1 ];
+      var right = args[ a+0 ];
+      var val = right;
+
+      if( a < args.length - 1 )
+      {
+        var cuts = _.strCutOffAllLeft( right,' ' );
+        var val = cuts[ 0 ];
+        args[ a+0 ] = cuts[ 1 ];
+      }
+
+      if( !isNaN( parseFloat( val ) ) )
+      val = parseFloat( val );
+
+      result.map[ left ] = val;
+    }
+
+    // console.log( 'appArgsInSubjectAndMapFormat',result );
+
+  }
+
+  return result;
+}
+
+appArgsInSubjectAndMapFormat.defaults =
+{
+  delimeter : ':'
+}
+
 // --
 // var
 // --
@@ -204,16 +289,16 @@ _includeHandlerMap[ 'wLogger' ] =
   isIncluded : function(){ return typeof wLogger !== 'undefined'; },
 }
 
-_includeHandlerMap[ 'wLoggeToFile' ] =
+_includeHandlerMap[ 'wLoggerToFile' ] =
 {
-  includeAny : [ '../../abase/printer/printer/LoggerToFile.s','wloggetofile' ],
+  includeAny : [ '../../abase/printer/printer/LoggerToFile.s','wloggertofile' ],
   isIncluded : function(){ return typeof wLoggerToFile !== 'undefined'; },
 }
 
-_includeHandlerMap[ 'wLoggeToJstructure' ] =
+_includeHandlerMap[ 'wLoggerToJstructure' ] =
 {
-  includeAny : [ '../../abase/printer/printer/LoggerToJstructure.s','wloggetojstructure' ],
-  isIncluded : function(){ return typeof wLoggeToJstructure !== 'undefined'; },
+  includeAny : [ '../../abase/printer/printer/LoggerToJstructure.s','wloggertojstructure' ],
+  isIncluded : function(){ return typeof wLoggerToJstructure !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wColor' ] =
@@ -297,6 +382,9 @@ var Proto =
 
   _includePureAny : _includePureAny,
   includeAny : includeAny,
+
+  // includeTestsFrom : includeTestsFrom,
+  appArgsInSubjectAndMapFormat : appArgsInSubjectAndMapFormat,
 
 }
 

@@ -2844,8 +2844,8 @@ var _entitySelectOptions = function _entitySelectOptions( o )
     qarrey = _.strSplit
     ({
       src : query,
-      splitter : o.delimeter,
-      strip : 1,
+      delimeter : o.delimeter,
+      stripping : 1,
     });
 
     if( qarrey[ 0 ] === '' )
@@ -6656,10 +6656,20 @@ var regexpIdentical = function regexpIdentical( src1,src2 )
  * @memberof wTools
  */
 
-var regexpEscape = function regexpEscape( src )
+function regexpEscape( src )
 {
-  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1 );
+  if( _.arrayIs( src ) )
+  {
+    var result = [];
+    for( var s = 0 ; s < src.length ; s++ )
+    {
+      _.assert( _.strIs( src[ s ] ) )
+      result[ s ] = regexpEscape( src[ s ] );
+    }
+    return result;
+  }
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
 
@@ -7733,7 +7743,6 @@ function timeOut( delay,onReady )
     con.first( onReady );
     else
     con.give( timeOut );
-
   }
 
   if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
@@ -7741,10 +7750,15 @@ function timeOut( delay,onReady )
     onReady = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
   }
 
+  if( delay > 0 )
   setTimeout( onEnd,delay );
+  else
+  _fastTimeOut( onEnd );
 
   return con;
 }
+
+var _fastTimeOut = typeof module === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
 
 //
 

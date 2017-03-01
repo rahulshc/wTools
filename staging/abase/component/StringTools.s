@@ -1672,7 +1672,7 @@ strShort.defaults =
  *
  */
 
-var strEscape =  function( src )
+function strEscape( src )
 {
     // 007f : ""
     // . . .
@@ -2115,12 +2115,12 @@ strSplitChunks.defaults =
 /**
 * @typedef {object} wTools~toStrInhalfOptions
 * @property {string} [ o.src=null ] - Source string.
-* @property {string | array} [ o.splitter=' ' ] - Splitter of the string.
+* @property {string | array} [ o.delimeter=' ' ] - Splitter of the string.
 * @property {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
 */
 
 /**
- * Finds occurrence of splitter( o.splitter ) in source( o.src ) and splits string in finded position by half.
+ * Finds occurrence of delimeter( o.delimeter ) in source( o.src ) and splits string in finded position by half.
  * If function finds  more then one occurrence, it separates string in the position of the last.
  *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
@@ -2128,21 +2128,21 @@ strSplitChunks.defaults =
  *
  * @example
  * //returns [ "sample", "string" ]
- * _._strCutOff( { src : 'sample,string', splitter : [ ',' ] } );
+ * _._strCutOff( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ "sample", "string" ]
- *_._strCutOff( { src : 'sample string', splitter : ' ' } )
+ *_._strCutOff( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
  * //returns [ "sample string,name", "string" ]
- * _._strCutOff( { src : 'sample string,name string', splitter : [ ',', ' ' ] } )
+ * _._strCutOff( { src : 'sample string,name string', delimeter : [ ',', ' ' ] } )
  *
  * @method _strCutOff
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o ) is not a Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.splitter ) is not a Array or String.
+ * @throws { Exception } Throw an exception if( o.delimeter ) is not a Array or String.
  * @throws { Exception } Throw an exception if( o ) is extended by uknown property.
  * @memberof wTools
  *
@@ -2155,11 +2155,11 @@ var _strCutOff = function _strCutOff( o )
   _.routineOptions( _strCutOff,o );
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( o.src ),'_strCutOff expects string ( o.src ), got',_.strTypeOf( o.src ) );
-  _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
+  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
   _.assert( _.numberIs( o.number ) );
 
   var number = o.number;
-  var splitter
+  var delimeter
   var index = o.left ? -1 : o.src.length;
 
   /* */
@@ -2169,15 +2169,15 @@ var _strCutOff = function _strCutOff( o )
 
     index += o.left ? +1 : -1;
 
-    if( _.arrayIs( o.splitter ) )
+    if( _.arrayIs( o.delimeter ) )
     {
 
-      if( !o.splitter.length )
+      if( !o.delimeter.length )
       return [ o.src,'' ];
       var s
 
       if( o.left )
-      s = _.entityMin( o.splitter,function( a )
+      s = _.entityMin( o.delimeter,function( a )
       {
 
         var i = o.src.indexOf( a,index );
@@ -2187,7 +2187,7 @@ var _strCutOff = function _strCutOff( o )
         return i;
       });
       else
-      s = _.entityMax( o.splitter,function( a )
+      s = _.entityMax( o.delimeter,function( a )
       {
 
         var i = o.src.lastIndexOf( a,index );
@@ -2197,14 +2197,14 @@ var _strCutOff = function _strCutOff( o )
         return i;
       });
 
-      splitter = s.element;
+      delimeter = s.element;
       index = s.value;
 
     }
     else
     {
-      splitter = o.splitter;
-      index = o.left ? o.src.indexOf( splitter,index ) : o.src.lastIndexOf( splitter,index );
+      delimeter = o.delimeter;
+      index = o.left ? o.src.indexOf( delimeter,index ) : o.src.lastIndexOf( delimeter,index );
     }
 
     /* */
@@ -2219,7 +2219,7 @@ var _strCutOff = function _strCutOff( o )
   /* */
 
   result[ 0 ] = o.src.substring( 0,index );
-  result[ 1 ] = o.src.substring( index + splitter.length );
+  result[ 1 ] = o.src.substring( index + delimeter.length );
 
   return result;
 }
@@ -2227,7 +2227,7 @@ var _strCutOff = function _strCutOff( o )
 _strCutOff.defaults =
 {
   src : null,
-  splitter : ' ',
+  delimeter : ' ',
   left : 1,
   number : 1,
 }
@@ -2236,18 +2236,18 @@ _strCutOff.defaults =
 
 /**
  * Short-cut for _strCutOff function.
- * Finds occurrence of splitter( o.splitter ) from begining of ( o.src ) and splits string in finded position by half.
+ * Finds occurrence of delimeter( o.delimeter ) from begining of ( o.src ) and splits string in finded position by half.
  *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
  * //returns [ "sample", "string" ]
- * _.strCutOffLeft( { src : 'sample,string', splitter : [ ',' ] } );
+ * _.strCutOffLeft( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ "sample", "string" ]
- *_.strCutOffLeft( { src : 'sample string', splitter : ' ' } )
+ *_.strCutOffLeft( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
  * //returns [ "sample string,name", "string" ]
@@ -2268,7 +2268,7 @@ var strCutOffLeft = function strCutOffLeft( o )
 
   if( arguments.length > 1 )
   {
-    o = { src : arguments[ 0 ], splitter : arguments[ 1 ], number : arguments[ 2 ] };
+    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ], number : arguments[ 2 ] };
   }
   else
   {
@@ -2286,7 +2286,7 @@ var strCutOffLeft = function strCutOffLeft( o )
 strCutOffLeft.defaults =
 {
   src : null,
-  splitter : ' ',
+  delimeter : ' ',
   number : 1,
 }
 
@@ -2294,22 +2294,22 @@ strCutOffLeft.defaults =
 
 /**
  * Short-cut for _strCutOff function.
- * Finds occurrence of splitter( o.splitter ) from end of ( o.src ) and splits string in finded position by half.
+ * Finds occurrence of delimeter( o.delimeter ) from end of ( o.src ) and splits string in finded position by half.
  *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
  * //returns [ "sample", "string" ]
- * _.strCutOffRight( { src : 'sample,string', splitter : [ ',' ] } );
+ * _.strCutOffRight( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ "sample", "string" ]
- *_.strCutOffRight( { src : 'sample string', splitter : ' ' } )
+ *_.strCutOffRight( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
  * //returns [ "sample, ", "string" ]
- * _.strCutOffRight( { src : 'sample,  string', splitter : [ ',', ' ' ] } )
+ * _.strCutOffRight( { src : 'sample,  string', delimeter : [ ',', ' ' ] } )
  *
  * @method strCutOffRight
  * @throws { Exception } Throw an exception if no argument provided.
@@ -2319,14 +2319,14 @@ strCutOffLeft.defaults =
  *
  */
 
-var strCutOffRight = function strCutOffRight( o )
+function strCutOffRight( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
 
   if( arguments.length > 1 )
   {
-    o = { src : arguments[ 0 ], splitter : arguments[ 1 ], number : arguments[ 2 ] };
+    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ], number : arguments[ 2 ] };
   }
   else
   {
@@ -2344,20 +2344,20 @@ var strCutOffRight = function strCutOffRight( o )
 strCutOffRight.defaults =
 {
   src : null,
-  splitter : ' ',
+  delimeter : ' ',
   number : 1,
 }
 
 //
 
-var strCutOffAllLeft = function strCutOffAllLeft( o )
+function strCutOffAllLeft( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( arguments.length > 1 )
   {
-    o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
+    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] };
   }
   else
   {
@@ -2366,14 +2366,14 @@ var strCutOffAllLeft = function strCutOffAllLeft( o )
 
   _.assertMapHasOnly( o,strCutOffAllLeft.defaults );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.splitter ) );
+  _.assert( _.strIs( o.delimeter ) );
 
-  var i = o.src.lastIndexOf( o.splitter );
+  var i = o.src.lastIndexOf( o.delimeter );
 
   if( i === -1 )
   return [ '',o.src ];
 
-  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.splitter.length,o.src.length ) ];
+  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.delimeter.length,o.src.length ) ];
 
   return result;
 }
@@ -2381,19 +2381,19 @@ var strCutOffAllLeft = function strCutOffAllLeft( o )
 strCutOffAllLeft.defaults =
 {
   src : null,
-  splitter : ' ',
+  delimeter : ' ',
 }
 
 //
 
-var strCutOffAllRight = function strCutOffAllRight( o )
+function strCutOffAllRight( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( arguments.length > 1 )
   {
-    o = { src : arguments[ 0 ], splitter : arguments[ 1 ] };
+    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] };
   }
   else
   {
@@ -2402,14 +2402,14 @@ var strCutOffAllRight = function strCutOffAllRight( o )
 
   _.assertMapHasOnly( o,strCutOffAllRight.defaults );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.splitter ) );
+  _.assert( _.strIs( o.delimeter ) );
 
-  var i = o.src.indexOf( o.splitter );
+  var i = o.src.indexOf( o.delimeter ); 
 
   if( i === -1 )
   return [ o.src,'' ];
 
-  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.splitter.length,o.src.length ) ];
+  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.delimeter.length,o.src.length ) ];
 
   return result;
 }
@@ -2417,24 +2417,24 @@ var strCutOffAllRight = function strCutOffAllRight( o )
 strCutOffAllRight.defaults =
 {
   src : null,
-  splitter : ' ',
+  delimeter : ' ',
 }
 
 //
 
 /**
- * Divides source string( o.src ) into parts using splitter provided by argument( o.splitter ).
- * If( o.strip ) is true - removes leading and trailing whitespace characters.
+ * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
+ * If( o.stripping ) is true - removes leading and trailing whitespace characters.
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
- * - Second to pass map like ( { src : 'a,b,c', splitter : ',', strip : 1 } ).
+ * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
  * Returns result as array of strings.
  *
  * @param {string|object} o - Source string to split or map with source( o.src ) and options.
  * @param {string} [ o.src=null ] - Source string.
- * @param {string|array} [ o.splitter=' ' ] - Word divider in source string.
- * @param {boolean} [ o.strip=true ] - Removes leading and trailing whitespace characters occurrences from source string.
- * @returns {object} Returns an array of strings separated by( o.splitter ).
+ * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
+ * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
+ * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
  * @example
  * //returns [ 'first', 'second', 'third' ]
@@ -2442,26 +2442,26 @@ strCutOffAllRight.defaults =
  *
  * @example
  * //returns [ "a", "b", "c", "d" ]
- * _.strSplit( { src : 'a,b,c,d', splitter : ','  } );
+ * _.strSplit( { src : 'a,b,c,d', delimeter : ','  } );
  *
  * @example
  * //returns [ "    a", "b", "c", "d   " ]
- * _.strSplit( { src : '    a,b,c,d   ', splitter : [ ',' ], strip : 0  } );
+ * _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
  *
  * @method strSplit
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.splitter ) is not a String or an Array.
+ * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @memberof wTools
  *
  */
 
-var strSplit = function strSplit( o )
+function strSplit( o )
 {
 
   if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], splitter : arguments[ 1 ] }
+  o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] }
 
   if( _.strIs( o ) )
   o = { src : o };
@@ -2470,27 +2470,27 @@ var strSplit = function strSplit( o )
   _.assertMapHasOnly( o,strSplit.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.splitter ) || _.arrayIs( o.splitter ) );
+  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
 
-  var splitter = _.arrayIs( o.splitter ) ? o.splitter : [ o.splitter ];
+  var delimeter = _.arrayIs( o.delimeter ) ? o.delimeter : [ o.delimeter ];
 
   /**/
 
-  if( o.preserveSplitter )
+  if( o.preserveDelimeters )
   {
 
     var result = [];
     var right = [];
     var prevPosition = o.src.length;
 
-    for( var s = 0 ; s < splitter.length ; s++ )
-    right[ s ] = o.src.lastIndexOf( splitter[ s ] );
+    for( var s = 0 ; s < delimeter.length ; s++ )
+    right[ s ] = o.src.lastIndexOf( delimeter[ s ] );
 
     while( true )
     {
       var splitterIndex = -1;
       var position = -1;
-      for( var s = 0 ; s < splitter.length ; s++ )
+      for( var s = 0 ; s < delimeter.length ; s++ )
       if( right[ s ] >= position )
       {
         splitterIndex = s;
@@ -2501,12 +2501,12 @@ var strSplit = function strSplit( o )
       break;
 
       if( right[ splitterIndex ] > 0 )
-      right[ splitterIndex ] = o.src.lastIndexOf( splitter[ splitterIndex ],right[ splitterIndex ]-splitter[ splitterIndex ].length );
+      right[ splitterIndex ] = o.src.lastIndexOf( delimeter[ splitterIndex ],right[ splitterIndex ]-delimeter[ splitterIndex ].length );
       else
       right[ splitterIndex ] = -1;
 
-      result.unshift( o.src.substring( position+splitter[ splitterIndex ].length,prevPosition ) );
-      result.unshift( o.splitter[ splitterIndex ] );
+      result.unshift( o.src.substring( position+delimeter[ splitterIndex ].length,prevPosition ) );
+      result.unshift( o.delimeter[ splitterIndex ] );
 
       prevPosition = position;
 
@@ -2518,14 +2518,14 @@ var strSplit = function strSplit( o )
   else
   {
 
-    var result = o.src.split( splitter[ 0 ] );
-    for( var s = 1 ; s < splitter.length ; s++ )
+    var result = o.src.split( delimeter[ 0 ] );
+    for( var s = 1 ; s < delimeter.length ; s++ )
     {
 
       for( var r = result.length-1 ; r >= 0 ; r-- )
       {
 
-        var sub = result[ r ].split( splitter[ s ] );
+        var sub = result[ r ].split( delimeter[ s ] );
         if( sub.length > 1 )
         _.arraySplice( result,r,r+1,sub );
 
@@ -2540,7 +2540,7 @@ var strSplit = function strSplit( o )
   for( var r = result.length-1 ; r >= 0 ; r-- )
   {
 
-    if( o.strip )
+    if( o.stripping )
     result[ r ] = strStrip( result[ r ] );
     if( !result[ r ] )
     result.splice( r,1 );
@@ -2553,9 +2553,9 @@ var strSplit = function strSplit( o )
 strSplit.defaults =
 {
   src : null,
-  splitter : ' ',
-  strip : 1,
-  preserveSplitter : 0,
+  delimeter : ' ',
+  stripping : 1,
+  preserveDelimeters : 0,
 }
 
 //
