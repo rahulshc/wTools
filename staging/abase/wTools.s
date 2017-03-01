@@ -129,7 +129,7 @@ var _initConfig = function _initConfig()
 
 //
 
-var _initUnhandledErrorHandler = function _initUnhandledErrorHandler()
+function _initUnhandledErrorHandler()
 {
 
   if( _global_._initUnhandledErrorHandlerDone )
@@ -157,6 +157,8 @@ var _initUnhandledErrorHandler = function _initUnhandledErrorHandler()
     console.error( '------------------------------- unhandled errorr -------------------------------' );
     debugger;
 
+    if( _global_.process && !process.exitCode )
+    process.exitCode = -1;
   });
 
 }
@@ -5723,7 +5725,7 @@ function hasLength( src )
  * @memberof wTools
  */
 
-var strIs = function strIs( src )
+function strIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object String]';
   return result;

@@ -70,25 +70,25 @@ function arrayRange( test )
   {
 
     test.description = 'extra argument';
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange( [ 1,3 ],'wrong arguments' );
     });
 
     test.description = 'argument not wrapped into array';
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange( 1,3 );
     });
 
     test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange( 'wrong arguments' );
     });
 
     test.description = 'no arguments'
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange();
     });

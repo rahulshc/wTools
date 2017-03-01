@@ -84,7 +84,7 @@ var shell = ( function( o )
 
     /* */
 
-    if( o.usingLogging )
+    if( o.verbosity )
     logger.log( o.code );
 
     /* */
@@ -165,7 +165,7 @@ var shell = ( function( o )
     o.child.on( 'error', function( err )
     {
 
-      if( o.usingLogging > 1 )
+      if( o.verbosity > 1 )
       _.errLog( err );
 
       if( done )
@@ -180,7 +180,7 @@ var shell = ( function( o )
     o.child.on( 'close', function( errCode )
     {
 
-      if( o.usingLogging > 1 )
+      if( o.verbosity > 1 )
       {
         logger.log( 'Process returned error code :',errCode,'\nLaunched as :',o.code );
       }
@@ -208,7 +208,7 @@ shell.defaults =
   mode : 'shell',
   throwingBadReturnCode : 0,
   usingColoring : 1,
-  usingLogging : 1,
+  verbosity : 1,
 }
 
 //

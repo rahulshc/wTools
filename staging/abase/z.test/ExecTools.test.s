@@ -19,7 +19,6 @@ if( typeof module !== 'undefined' )
 
   var _ = wTools
 
-  debugger; 
   _.include( 'wLoggerToJstructure' );
   _.include( 'wTesting' );
 
@@ -27,6 +26,7 @@ if( typeof module !== 'undefined' )
 
 var _ = wTools;
 var Self = {};
+var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
@@ -48,13 +48,13 @@ var shell = function shell( test )
   // {
   //   test.description = 'bad command, shell';
   //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'shell' });
-  //   return test.shouldThrowError( con );
+  //   return test.shouldThrowErrorSync( con );
   // })
   // .ifNoErrorThen( function()
   // {
   //   test.description = 'bad command, spawn';
   //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'spawn' });
-  //   return test.shouldThrowError( con );
+  //   return test.shouldThrowErrorSync( con );
   // })
   // .ifNoErrorThen( function()
   // {
@@ -73,8 +73,9 @@ var Proto =
 {
 
   name : 'ExecTools',
-  verbose : 1,
-  logger : wLoggerToJstructure(),
+  verbosity : 1,
+  sourceFilePath : sourceFilePath,
+  // logger : wLoggerToJstructure(),
 
   tests :
   {
@@ -87,15 +88,16 @@ _.mapExtend( Self,Proto );
 
 //
 
-debugger;
+Self = wTestSuite( Self );
+
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self )
-.doThen( function( err,suit )
-{
-  debugger;
-  console.log( 'done!' );
-  console.log( 'err',err );
-  console.log( 'suit',suit );
-});
+// .doThen( function( err,suit )
+// {
+//   debugger;
+//   console.log( 'done!' );
+//   console.log( 'err',err );
+//   console.log( 'suit',suit );
+// });
 
 } )( );

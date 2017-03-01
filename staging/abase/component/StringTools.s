@@ -2404,7 +2404,7 @@ function strCutOffAllRight( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.strIs( o.delimeter ) );
 
-  var i = o.src.indexOf( o.delimeter ); 
+  var i = o.src.indexOf( o.delimeter );
 
   if( i === -1 )
   return [ o.src,'' ];
@@ -4554,7 +4554,7 @@ function strToConfig( src,o )
 // str color
 // --
 
-var strColorBackground = function strColorBackground( str, color )
+function strColorBackground( str, color )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
@@ -4564,7 +4564,7 @@ var strColorBackground = function strColorBackground( str, color )
 
 //
 
-var strColorForeground = function strColorForeground( str, color )
+function strColorForeground( str, color )
 {
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
@@ -4574,7 +4574,7 @@ var strColorForeground = function strColorForeground( str, color )
 
 //
 
-var strColorStyle = function strColorStyle( str, style )
+function strColorStyle( str, style )
 {
   var result = str;
 
@@ -4610,6 +4610,9 @@ var strColorStyle = function strColorStyle( str, style )
 
     case 'tail' :
       result = _.strColor.fg( _.strColor.bg( result, 'dim' ),'white' ); break;
+
+    case 'selected' :
+      result = _.strColor.fg( _.strColor.bg( result, 'blue' ),'yellow' ); break;
 
     case 'neutral' :
       result = _.strColor.bg( _.strColor.fg( result, 'white' ), 'dim' ); break;
