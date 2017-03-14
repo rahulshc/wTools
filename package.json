@@ -20,8 +20,9 @@
   ],
   "main": "staging/abase/wTools.s",
   "files": [
-    "staging/abase",
-    "production"
+    "staging/abase/akernel",
+    "staging/abase/object",
+    "staging/abase/wTools.s"
   ],
   "scripts": {
     "test": "node ./staging/abase/z.test/All.s",
