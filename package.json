@@ -20,10 +20,7 @@
   ],
   "main": "staging/abase/wTools.s",
   "files": [
-    "staging/abase/wTools.s",
-    "staging/abase/abase",
-    "staging/abase/component",
-    "staging/abase/object",
+    "staging/abase",
     "production"
   ],
   "scripts": {
