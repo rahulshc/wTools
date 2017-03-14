@@ -15,7 +15,7 @@ if( typeof module !== 'undefined' )
 {
 
   require( '../wTools.s' );
-  require( '../component/ExecTools.s' );
+  // require( '../component/ExecTools.s' );
 
   var _ = wTools
 

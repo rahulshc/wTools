@@ -1,5 +1,4 @@
-//#! /usr/bin/env NODE
-( function _FieldFilter_s_() {
+( function _FieldMapper_s_() {
 
 'use strict';
 
@@ -115,6 +114,9 @@ function dstNotHas()
   var routine = function dstNotHas( dstContainer,srcContainer,key )
   {
 
+    // if( dstContainer[ key ] !== undefined )
+    // return false;
+
     if( key in dstContainer )
     return false;
 
@@ -201,6 +203,26 @@ function dstNotOwn()
 
 //
 
+function dstNotOwnSrcOwn()
+{
+
+  var routine = function dstNotOwnSrcOwn( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return;
+
+    dstContainer[ key ] = srcContainer[ key ];
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
 function dstNotOwnSrcOwnCloning()
 {
 
@@ -231,6 +253,29 @@ function dstNotOwnNotUndefinedCloning()
     {
 
       if( dstContainer[ key ] !== undefined )
+      return;
+
+    }
+
+    _.entityCopyField( dstContainer,srcContainer,key );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
+function dstNotOwnCloning()
+{
+
+  var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
+  {
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    {
+
+      if( key in dstContainer )
       return;
 
     }
@@ -487,37 +532,37 @@ function and()
 
 //
 
-// function makeMapper( routine )
-// {
+function makeMapper( routine )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.routineIs( routine ) );
+  _.assert( _.strIs( routine.functionKind ) );
+
+  if( routine.functionKind === 'field-filter' )
+  {
+    function r( dstContainer,srcContainer,key )
+    {
+      var result = routine( dstContainer,srcContainer,key );
+      _.assert( _.boolIs( result ) );
+      if( result === false )
+      return;
+      dstContainer[ key ] = srcContainer[ key ];
+    }
+    r.functionKind = 'field-mapper';
+    return r;
+  }
+  else if( routine.functionKind === 'field-mapper' )
+  {
+    return routine;
+  }
+  else throw _.err( 'expects routine.functionKind' );
+
+}
+
 //
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.routineIs( routine ) );
-//   _.assert( _.strIs( routine.functionKind ) );
-//
-//   if( routine.functionKind === 'field-filter' )
-//   {
-//     function r( dstContainer,srcContainer,key )
-//     {
-//       var result = routine( dstContainer,srcContainer,key );
-//       _.assert( _.boolIs( result ) );
-//       if( result === false )
-//       return;
-//       dstContainer[ key ] = srcContainer[ key ];
-//     }
-//     r.functionKind = 'field-mapper';
-//     return r;
-//   }
-//   else if( routine.functionKind === 'field-mapper' )
-//   {
-//     return routine;
-//   }
-//   else throw _.err( 'expects routine.functionKind' );
-//
-// }
-//
-// //
-//
-// var makeMapperRecursive = function makeMapperRecursive( routine )
+
+// function makeMapperRecursive( routine )
 // {
 //
 //   _.assert( arguments.length === 1 );
@@ -550,7 +595,7 @@ function and()
 
 //
 
-var fieldFilter =
+var filter =
 {
 
   bypass : bypass,
@@ -567,8 +612,10 @@ var fieldFilter =
   dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
 
   dstNotOwn : dstNotOwn,
+  dstNotOwnSrcOwn : dstNotOwnSrcOwn,
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
   dstNotOwnNotUndefinedCloning : dstNotOwnNotUndefinedCloning,
+  dstNotOwnCloning : dstNotOwnCloning,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,
@@ -587,13 +634,8 @@ var fieldFilter =
   drop : drop,
 
   and : and,
+  makeMapper : makeMapper,
 
-}
-
-if( 0 )
-for( var f in fieldFilter )
-{
-  _.assert( fieldFilter[ f ].functionKind === 'field-filter','field filter',f,'is not so' )
 }
 
 // --
@@ -603,7 +645,7 @@ for( var f in fieldFilter )
 var Proto =
 {
 
-  fieldFilter : fieldFilter,
+  filter : filter,
 
 }
 

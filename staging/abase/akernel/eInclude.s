@@ -111,6 +111,7 @@ function include( src )
 
 function _includePureAny( src )
 {
+  var errors = [];
 
   for( var a = 0 ; a < arguments.length ; a++ )
   {
@@ -118,8 +119,16 @@ function _includePureAny( src )
 
     if( a === arguments.length-1 || usingSinglePath )
     {
-      if( src !== '' )
-      return _includePureAct( src );
+      try
+      {
+        return _includePureAct( src );
+      }
+      catch( err )
+      {
+        errors.push( err );
+        debugger;
+        throw _.err.apply( _,errors );
+      }
     }
     else try
     {
@@ -130,16 +139,18 @@ function _includePureAny( src )
     }
     catch( err )
     {
-      //_.errLog( err );
+      errors.push( err );
     }
 
   }
+
 }
 
 //
 
 function includeAny()
 {
+  var errors = [];
 
   for( var a = 0 ; a < arguments.length ; a++ )
   {
@@ -147,8 +158,16 @@ function includeAny()
 
     if( a === arguments.length-1 || usingSinglePath )
     {
-      if( src !== '' )
-      return _includeAct( src );
+      try
+      {
+        if( src !== '' )
+        return _includeAct( src );
+      }
+      catch( err )
+      {
+        errors.push( err );
+        throw _.err.apply( _,errors );
+      }
     }
     else try
     {
@@ -159,7 +178,7 @@ function includeAny()
     }
     catch( err )
     {
-      //_.errLog( err );
+      errors.push( err );
     }
 
   }
@@ -253,6 +272,27 @@ appArgsInSubjectAndMapFormat.defaults =
   delimeter : ':'
 }
 
+//
+
+function appReturnCode( status )
+{
+  var result;
+
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( status === undefined || _.numberIs( status ) );
+
+  // debugger;
+
+  if( typeof process !== 'undefined' )
+  {
+    result = process.exitCode;
+    if( status !== undefined )
+    process.exitCode = status;
+  }
+
+  return result;
+}
+
 // --
 // var
 // --
@@ -267,7 +307,7 @@ _includeHandlerMap[ 'wCopyable' ] =
 
 _includeHandlerMap[ 'wInstancing' ] =
 {
-  includeAny : [ '../../abase/mixin/Instancing.s','wInstancing' ],
+  includeAny : [ '../../abase/mixin/Instancing.s','winstancing' ],
   isIncluded : function(){ return typeof wInstancing !== 'undefined'; },
 }
 
@@ -385,6 +425,9 @@ var Proto =
 
   // includeTestsFrom : includeTestsFrom,
   appArgsInSubjectAndMapFormat : appArgsInSubjectAndMapFormat,
+  appArgs : appArgsInSubjectAndMapFormat,
+
+  appReturnCode : appReturnCode,
 
 }
 

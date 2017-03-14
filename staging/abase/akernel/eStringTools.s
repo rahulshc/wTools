@@ -490,7 +490,7 @@ function toStrFine_functor()
 
 //
 
-var _toStr = function _toStr( src,o )
+function _toStr( src,o )
 {
   var result = '';
   var simple = 1;
@@ -536,7 +536,7 @@ var _toStr = function _toStr( src,o )
   {
     result += _.row.toStr( src,o );
   }
-  else if( _.errorIs( src ) )
+  else if( _.errIs( src ) )
   {
 
     if( !o.errorAsMap )
@@ -635,7 +635,7 @@ function _toStrShort( src,o )
   {
     result += '[ Row with ' + src.length + ' elements' + ' ]';
   }
-  else if( _.errorIs( src ) )
+  else if( _.errIs( src ) )
   {
     result += _ObjectToString.call( src );
   }
@@ -719,7 +719,7 @@ function _toStrShort( src,o )
  *
  */
 
-var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
+function _toStrIsVisibleElement( src,o )
 {
 
   var isAtomic = _.atomicIs( src );
@@ -744,7 +744,7 @@ var _toStrIsVisibleElement = function _toStrIsVisibleElement( src,o )
     return false;
     return true;
   }
-  else if( _.errorIs( src ) )
+  else if( _.errIs( src ) )
   {
     if( o.noError )
     return false;
@@ -2148,7 +2148,7 @@ strSplitChunks.defaults =
  *
  */
 
-var _strCutOff = function _strCutOff( o )
+function _strCutOff( o )
 {
   var result = [];
 
@@ -2261,7 +2261,7 @@ _strCutOff.defaults =
  *
  */
 
-var strCutOffLeft = function strCutOffLeft( o )
+function strCutOffLeft( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -2673,7 +2673,7 @@ strStrip.defaults =
  *
 */
 
-var strRemoveAllSpaces = function strRemoveAllSpaces( src,sub )
+function strRemoveAllSpaces( src,sub )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -3008,7 +3008,7 @@ function strJoin()
 
 //
 
-var strConcat = function strConcat()
+function strConcat()
 {
 
   var o = _.routineOptionsFromThis( strConcat,this,Self );
@@ -3132,7 +3132,7 @@ function strUnjoin( srcStr,maskArray )
   //     console.log( 'experiment 1' );
   //   }
   //
-  //   var experiment = function experiment()
+  //   function experiment()
   //   {
   //     console.log( 'experiment 2' );
   //   }
@@ -3243,7 +3243,7 @@ strUnjoin.any = function any(){}
  *
  */
 
-var strCommonLeft = function strCommonLeft( ins )
+function strCommonLeft( ins )
 {
 
   if( arguments.length === 0 )
@@ -3297,7 +3297,7 @@ var strCommonLeft = function strCommonLeft( ins )
  *
  */
 
-var strCommonRight = function strCommonRight( ins )
+function strCommonRight( ins )
 {
 
   if( arguments.length === 0 )
@@ -3598,7 +3598,7 @@ function strUnicodeEscape( src )
  *
  */
 
-var strIndentation = function strIndentation( src,tab )
+function strIndentation( src,tab )
 {
 
   _assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects string src' );
@@ -3656,7 +3656,7 @@ var strIndentation = function strIndentation( src,tab )
  * @memberof wTools
  */
 
-var strLinesNumber = function strLinesNumber( o )
+function strLinesNumber( o )
 {
 
   if( !_.objectIs( o ) )
@@ -3686,7 +3686,7 @@ strLinesNumber.defaults =
 
 //
 
-// var strLinesAt = function strLinesAt( code,line,radius )
+// function strLinesAt( code,line,radius )
 // {
 //   _.assert( arguments.length === 3 );
 //   _.assert( _.strIs( code ) || _.arrayIs( code ) );
@@ -3745,7 +3745,7 @@ strLinesNumber.defaults =
  * @memberof wTools
  */
 
-var strLinesSelect = function strLinesSelect( o )
+function strLinesSelect( o )
 {
 
   if( arguments.length === 2 )
@@ -3763,13 +3763,30 @@ var strLinesSelect = function strLinesSelect( o )
     o = { src : arguments[ 0 ], range : [ arguments[ 1 ],arguments[ 2 ] ] };
   }
 
-  if( !o.range )
-  o.range = [ o.line - o.radius+1,o.line+o.radius ];
-
   _.assert( arguments.length <= 3 );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.arrayIs( o.range ) );
   _.routineOptions( strLinesSelect,o );
+
+  /* range */
+
+  if( !o.range )
+  {
+    if( o.line )
+    {
+      if( o.selectMode === 'center' )
+      o.range = [ o.line - Math.ceil( ( o.numberOfLines + 1 ) / 2 ) + 1,o.line + Math.floor( ( o.numberOfLines - 1 ) / 2 ) + 1 ];
+      else if( o.selectMode === 'begin' )
+      o.range = [ o.line,o.line + o.numberOfLines ];
+      else if( o.selectMode === 'end' )
+      o.range = [ o.line - o.numberOfLines+1,o.line+1 ];
+    }
+    else
+    {
+      o.range = [ 0,_.strCount( o.src,o.nl )+1 ];
+    }
+  }
+
+  _.assert( _.arrayLike( o.range ) );
 
   /* */
 
@@ -3806,7 +3823,7 @@ var strLinesSelect = function strLinesSelect( o )
   /* number */
 
   if( o.number )
-  result = _.strLinesNumber( result,( o.line !== null ? o.line - o.radius : 0 ) + o.zero );
+  result = _.strLinesNumber( result,o.range[ 0 ] );
 
   return result;
 }
@@ -3815,10 +3832,13 @@ strLinesSelect.defaults =
 {
   src : null,
   range : null,
+
   line : null,
+  numberOfLines : 3,
+  selectMode : 'center',
+
   number : 0,
-  radius : 2,
-  zero : 0,
+  zero : 1,
   nl : '\n',
 }
 
@@ -3921,7 +3941,7 @@ function strCount( src,ins )
  *
  */
 
-var strDup = function strDup( src,times )
+function strDup( src,times )
 {
   var result = '';
 
@@ -4283,7 +4303,7 @@ function strMetricFormatBytes( number,o )
  *
  */
 
-var strTimeFormat = function strTimeFormat( time )
+function strTimeFormat( time )
 {
   var result = strMetricFormat( time*0.001,{ fixed : 3 } ) + 's';
   return result;
@@ -4291,7 +4311,7 @@ var strTimeFormat = function strTimeFormat( time )
 
 //
 
-var strExtractStrips = function strExtractStrips( src, o )
+function strExtractStrips( src, o )
 {
   _.assert( _.strIs( src ) );
   _.assert( _.objectIs( o ) );
@@ -4349,7 +4369,7 @@ strExtractStrips.defaults =
 
 //
 
-var strExtractStereoStrips = function strExtractStereoStrips( src, o )
+function strExtractStereoStrips( src, o )
 {
 
   var o = this !== Self ? this : {};
@@ -4556,8 +4576,35 @@ function strToConfig( src,o )
 
 function strColorBackground( str, color )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments[ 1 ] === undefined )
+  return _strColorBackgroundFor( arguments[ 0 ] );
+  else
+  return _strColorBackgroundFormat( arguments[ 0 ],arguments[ 1 ] );
+}
+
+//
+
+function _strColorBackgroundFor( color )
+{
+  var result = Object.create( null );
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( color ) );
+
+  result.pre = `#background : ${color}#`;
+  result.post = `#background : default#`;
+
+  return result;
+}
+
+//
+
+function _strColorBackgroundFormat( str, color )
+{
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
+  _.assert( _.strIs( color ) );
 
   return `#background : ${color}#${str}#background : default#`;
 }
@@ -4566,8 +4613,35 @@ function strColorBackground( str, color )
 
 function strColorForeground( str, color )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments[ 1 ] === undefined )
+  return _strColorForegroundFor( arguments[ 0 ] );
+  else
+  return _strColorForegroundFormat( arguments[ 0 ],arguments[ 1 ] );
+}
+
+//
+
+function _strColorForegroundFor( color )
+{
+  var result = Object.create( null );
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( color ) );
+
+  result.pre = `#foreground : ${color}#`;
+  result.post = `#foreground : default#`;
+
+  return result;
+}
+
+//
+
+function _strColorForegroundFormat( str, color )
+{
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
+  _.assert( _.strIs( color ) );
 
   return `#foreground : ${color}#${str}#foreground : default#`;
 }
@@ -4576,49 +4650,112 @@ function strColorForeground( str, color )
 
 function strColorStyle( str, style )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( arguments[ 1 ] === undefined )
+  return _strColorStyleFor( arguments[ 0 ] );
+  else
+  return _strColorStyleFormat( arguments[ 0 ],arguments[ 1 ] );
+}
+
+//
+
+function _strColorStyleFormat( str, style )
+{
   var result = str;
 
   if( _.arrayIs( result ) )
   result = _.strConcat.apply( _,result );
 
-  if( _.arrayIs( style ) )
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( result ),'expects string got',_.strTypeOf( result ) );
+
+  var r = _strColorStyleFor( style );
+
+  result = r.pre + result + r.post;
+
+  return result;
+}
+
+//
+
+function _strColorStyleFor( style )
+{
+  var result = Object.create( null );
+  result.pre = '';
+  result.post = '';
+
+  var StyleObjectOptions =
   {
-    _.assert( arguments.length === 2 );
-    for( var s = 0 ; s < style.length ; s++ )
-    result = strColorStyle( result,style[ s ] );
-    return result;
+    fg : null,
+    bg : null,
   }
 
-  _.assert( arguments.length === 2 );
-  _.assert( _.strIs( result ),'expects string got',_.strTypeOf( result ) );
-  _.assert( _.strIs( style ),'expects string ( style )' );
+  var style = _.arrayAs( style );
 
-  switch( style )
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( style ) ,'expects string or array of strings ( style )' );
+
+  function join()
+  {
+    for( var a = 1 ; a < arguments.length ; a++ )
+    {
+      arguments[ 0 ].pre = arguments[ a ].pre + arguments[ 0 ].pre;
+      arguments[ 0 ].post = arguments[ 0 ].post + arguments[ a ].post;
+    }
+    return arguments[ 0 ];
+  }
+
+  for( var s = 0 ; s < style.length ; s++ )
   {
 
-    case 'good' :
-      result = _.strColor.fg( result, 'green' ); break;
+    if( _.objectIs( style[ s ] ) )
+    {
+      var obj = style[ s ];
+      _.assertMapHasOnly( obj,StyleObjectOptions );
+      if( obj.fg )
+      result = join( result,_.strColor.fg( obj.fg ) );
+      if( obj.bg )
+      result = join( result,_.strColor.bg( obj.bg ) );
 
-    case 'bad' :
-      result = _.strColor.fg( result, 'red' ); break;
+      continue;
+    }
 
-    case 'topic' :
-      result = _.strColor.bg( result, 'dim' ); break;
+    _.assert( _.strIs( style[ s ] ) ,'expects string or array of strings ( style )' );
+    switch( style[ s ] )
+    {
 
-    case 'head' :
-      result = _.strColor.fg( _.strColor.bg( result, 'white' ),'dim' ); break;
+      case 'positive' :
+        result = join( result,_.strColor.fg( 'green' ) );
+        break;
 
-    case 'tail' :
-      result = _.strColor.fg( _.strColor.bg( result, 'dim' ),'white' ); break;
+      case 'negative' :
+        result = join( result,_.strColor.fg( 'red' ) );
+        break;
 
-    case 'selected' :
-      result = _.strColor.fg( _.strColor.bg( result, 'blue' ),'yellow' ); break;
+      case 'topic' :
+        result = join( result,_.strColor.fg( 'dim' ) );
+        break;
 
-    case 'neutral' :
-      result = _.strColor.bg( _.strColor.fg( result, 'white' ), 'dim' ); break;
+      case 'head' :
+        result = join( result,_.strColor.fg( 'dim' ),_.strColor.bg( 'smoke' ) );
+        break;
 
-    default :
-      throw _.err( 'strFontStyle : unknown style : ' + style );
+      case 'tail' :
+        result = join( result,_.strColor.fg( 'smoke' ),_.strColor.bg( 'dim' ) );
+        break;
+
+      case 'selected' :
+        result = join( result,_.strColor.fg( 'yellow' ),_.strColor.bg( 'blue' ) );
+        break;
+
+      case 'neutral' :
+        result = join( result,_.strColor.fg( 'smoke' ),_.strColor.bg( 'dim' ) );
+        break;
+
+      default :
+        throw _.err( '_strColorStyleFor : unknown style : ' + style );
+
+    }
 
   }
 

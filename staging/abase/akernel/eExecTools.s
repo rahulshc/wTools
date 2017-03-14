@@ -100,23 +100,17 @@ var shell = ( function( o )
       {
         var args = _.strSplit( o.code );
         var app = args.shift();
-        // logger.log( 'spawn :',app,args );
         o.child = ChildProcess.spawn( app, args );
-        // var i = o.code.indexOf( ' ' );
-        // o.child = ChildProcess.spawn( o.code.substring( 0,i ),[ o.code.substring( i+1 ) ] );
       }
       else if( o.mode === 'shell' )
       {
-        // var i = o.code.indexOf( ' ' );
-        // o.child = ChildProcess.spawn( o.code.substring( 0,i ),[ o.code.substring( i+1 ) ] );
         var app = process.platform === 'win32' ? 'cmd' : 'sh';
         var appParam = process.platform === 'win32' ? '/c' : '-c';
-        // logger.log( app,'-c',o.code );
         o.child = ChildProcess.spawn( app,[ appParam,o.code ] );
       }
       else if( o.mode === 'exec' )
       {
-        logger.warn( 'shell.mode "exec" is deprecated' );
+        logger.warn( '( shell.mode ) "exec" is deprecated' );
         o.child = ChildProcess.exec( o.code );
       }
       else throw _.err( 'unknown mode',o.mode );
@@ -129,34 +123,50 @@ var shell = ( function( o )
 
     /* */
 
+    if( o.outputPiping )
     if( o.child.stdout )
     o.child.stdout.on( 'data', function( data )
     {
-      // logger.log( 'stdout',_.strTypeOf( data ),arguments.length );
 
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
+      if( _.strEnds( data,'\n' ) )
+      data = _.strRemoveEnd( data,'\n' );
+
+      if( !o.outputRaw )
       data = 'stdout :\n' + _.strIndentation( data,'  ' );
+
+      if( !o.outputRaw )
       if( _.color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
+
       logger.log( data );
     });
 
     /* */
 
+    if( o.outputPiping )
     if( o.child.stderr )
     o.child.stderr.on( 'data', function( data )
     {
-      // logger.log( 'stderr',_.strTypeOf( data ),arguments.length );
 
       if( _.bufferAnyIs( data ) )
       data = _.bufferToStr( data );
 
+      if( _.strEnds( data,'\n' ) )
+      data = _.strRemoveEnd( data,'\n' );
+
+      if( !o.outputRaw )
       data = 'stder :\n' + _.strIndentation( data,'  ' );
+
+      if( !o.outputRaw )
       if( _.color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
-      logger.log( data );
+
+      debugger;
+
+      logger.warn( data );
     });
 
     /* */
@@ -165,7 +175,7 @@ var shell = ( function( o )
     o.child.on( 'error', function( err )
     {
 
-      if( o.verbosity > 1 )
+      if( o.verbosity >= 1 )
       _.errLog( err );
 
       if( done )
@@ -177,12 +187,14 @@ var shell = ( function( o )
 
     /* */
 
-    o.child.on( 'close', function( errCode )
+    o.child.on( 'close', function( returnCode )
     {
 
       if( o.verbosity > 1 )
       {
-        logger.log( 'Process returned error code :',errCode,'\nLaunched as :',o.code );
+        logger.log( 'Process returned error code :',returnCode );
+        if( returnCode )
+        logger.log( 'Launched as :',o.code );
       }
 
       if( done )
@@ -190,10 +202,13 @@ var shell = ( function( o )
 
       done = true;
 
-      if( errCode !== 0 && o.throwingBadReturnCode )
-      con.error( _.err( 'Process returned error code :',errCode,'\nLaunched as :',o.code ) );
+      if( returnCode !== 0 && o.applyingReturnCode )
+      _.appReturnCode( returnCode );
+
+      if( returnCode !== 0 && o.throwingBadReturnCode )
+      con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.code ) );
       else
-      con.give( errCode );
+      con.give( returnCode );
 
     });
 
@@ -207,13 +222,16 @@ shell.defaults =
   code : null,
   mode : 'shell',
   throwingBadReturnCode : 0,
+  applyingReturnCode : 0,
   usingColoring : 1,
+  outputRaw : 0,
+  outputPiping : 1,
   verbosity : 1,
 }
 
 //
 
-var exec = function exec( o )
+function exec( o )
 {
   var result;
 
@@ -251,7 +269,9 @@ function makeFunction( o )
   _.assert( arguments.length === 1 );
   _.routineOptions( makeFunction,o );
 
-  var code = 'return' + o.code + '';
+  // debugger;
+  var code = 'return ' + o.code + ''; // zzz : var code = 'return' + o.code + '';
+  // debugger;
 
   try
   {
@@ -361,7 +381,7 @@ makeWorker.defaults =
 
 //
 
-var execStages = function execStages( stages,o )
+function execStages( stages,o )
 {
   var o = o || {};
 
@@ -494,7 +514,7 @@ execStages.defaults =
 
 //
 /*
-var execForEach = function execForEach( elements,o )
+function execForEach( elements,o )
 {
 
   // validation

@@ -5,17 +5,19 @@
 if( typeof module !== 'undefined' )
 {
 
+  if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/xTesting/Testing.debug.s' );
+    require( '../abase/wTools.s' );
   }
   catch( err )
   {
-    require( 'wTesting' );
+    require( 'wTools' );
   }
 
   var _ = wTools;
 
+  _.include( 'wTesting' );
   _.include( 'wArraySorted' );
 
 }
@@ -30,7 +32,7 @@ var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefine
 // test
 // --
 
-var makeArray = function makeArray( length,density )
+function makeArray( length,density )
 {
   var top = length / density;
 
@@ -47,7 +49,7 @@ var makeArray = function makeArray( length,density )
 
 //
 
-var arraySortedLookUpIndex = function arraySortedLookUpIndex( test )
+function arraySortedLookUpIndex( test )
 {
 
   test.description = 'simples';
@@ -120,7 +122,7 @@ var arraySortedLookUpIndex = function arraySortedLookUpIndex( test )
 
 //
 
-var arraySortedLookUpClosestIndex = function arraySortedLookUpClosestIndex( test )
+function arraySortedLookUpClosestIndex( test )
 {
 
   test.description = 'simples';
@@ -193,7 +195,7 @@ var arraySortedLookUpClosestIndex = function arraySortedLookUpClosestIndex( test
 
 //
 
-var arraySortedLookUpInterval = function arraySortedLookUpInterval( test )
+function arraySortedLookUpInterval( test )
 {
   var self = this;
 
@@ -288,7 +290,7 @@ var arraySortedLookUpInterval = function arraySortedLookUpInterval( test )
 
 //
 
-// var arraySortedLookUpIntervalNarrowest = function arraySortedLookUpIntervalNarrowest( test )
+// function arraySortedLookUpIntervalNarrowest( test )
 // {
 //   var self = this;
 //   debugger;
@@ -388,7 +390,7 @@ var arraySortedLookUpInterval = function arraySortedLookUpInterval( test )
 
 //
 
-var arraySortedLookUpEmbrace = function arraySortedLookUpEmbrace( test )
+function arraySortedLookUpEmbrace( test )
 {
   var self = this;
 
@@ -510,7 +512,7 @@ var arraySortedLookUpEmbrace = function arraySortedLookUpEmbrace( test )
 
 //
 
-var arraySortedAdd = function arraySortedAdd( test )
+function arraySortedAdd( test )
 {
   var self = this;
 
