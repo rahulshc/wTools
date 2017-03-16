@@ -5,10 +5,10 @@
 if( typeof module !== 'undefined' )
 {
 
-  if( typeof wBase === 'undefined' )
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../abase/wTools.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
@@ -22,7 +22,6 @@ if( typeof module !== 'undefined' )
 }
 
 var _ = wTools;
-var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 // --
 // test
@@ -525,8 +524,7 @@ function toStr( test )
 var Self =
 {
 
-  name : 'toStr',
-  sourceFilePath : sourceFilePath,
+  name : 'wTools.toStr',
 
   tests :
   {
@@ -538,7 +536,6 @@ var Self =
 };
 
 Self = wTestSuite( Self );
-
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self.name );
 

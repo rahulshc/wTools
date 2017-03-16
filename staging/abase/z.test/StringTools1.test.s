@@ -15,13 +15,19 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( '../wTools.s' );
-  require( '../component/StringTools.s' );
+  //if( typeof wBase === 'undefined' )
+  try
+  {
+    require( '../../abase/wTools.s' );
+  }
+  catch( err )
+  {
+    require( 'wTools' );
+  }
 
-  if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
-    require( '../object/Testing.debug.s' );
-  else
-    require( 'wTesting' );
+  var _ = wTools;
+
+  _.include( 'wTesting' );
 
 }
 
@@ -729,12 +735,12 @@ var strToBytes = function( test )
 
 //
 
-var Proto =
+var Self =
 {
 
   name : 'StringTools',
 
-  tests:
+  tests :
   {
 
     _toStrFromNumber : _toStrFromNumber,
@@ -757,9 +763,8 @@ var Proto =
 
 };
 
-_.mapExtend( Self,Proto );
-
+Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-  _.Testing.test( Self );
+_.Testing.test( Self.name );
 
 } )( );

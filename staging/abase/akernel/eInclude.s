@@ -15,18 +15,70 @@ var Self = wTools;
 var _ = wTools;
 var usingSinglePath = 0;
 
+if( typeof module !== 'undefined' )
+var Module = require( 'module' );
+
 // --
 // routines
 // --
 
-function _includePureAct( src )
+if( 0 )
+if( Module )
+{
+  var _resolveLookupPathsOriginal = Module._resolveLookupPaths;
+  Module._resolveLookupPaths = function( request, parent )
+  {
+    var debug = 0;
+    if( request.indexOf( 'abase/component/ArraySorted.s' ) !== -1 )
+    {
+      debugger;
+      debug = 1;
+    }
+    var result = _resolveLookupPathsOriginal.apply( this,arguments );
+    if( debug )
+    console.log( '_resolveLookupPaths',result );
+    return result;
+  }
+}
+
+//
+
+function includePathUse( src )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) );
+
+  // console.log( 'includePathUse',src );
+
+  module.paths.push( src );
+  // Module.globalPaths.push( src );
+
+}
+
+//
+
+function _includeSimplyAct( src )
 {
 
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ),'include expects string' );
 
+  if( src.indexOf( 'Testing' ) !== -1 )
+  debugger;
+
+  // console.log( src );
+
   if( typeof module !== 'undefined' )
-  return require( src );
+  try
+  {
+    return require( src );
+  }
+  catch( err )
+  {
+    throw err;
+    throw _.err( err,'\nLooked at\n',_.toStr( Module.globalPaths,{ levels : 2 } ),'\n',_.toStr( module.paths,{ levels : 2 } ) );
+  }
   else
   throw _.err( 'Can make include only on Nodejs.' );
 
@@ -45,7 +97,7 @@ function _includeAct( src )
 
   if( !handler )
   {
-    return _includePureAny( src );
+    return _includeSimplyAny( src );
   }
 
   /* */
@@ -56,11 +108,11 @@ function _includeAct( src )
 
   var result;
   if( handler.include )
-  result = _includePure( handler.include );
+  result = _includeSimply( handler.include );
   else if( handler.includeAny )
   {
     _.assert( _.arrayIs( handler.includeAny ),'include handler expect an array ( includeAny ) if present' );
-    result = _includePureAny.apply( _,handler.includeAny );
+    result = _includeSimplyAny.apply( _,handler.includeAny );
   }
   else throw _.err( 'Handler does not has ( include ) neither ( includeAny ).\nCant include',src );
 
@@ -71,21 +123,21 @@ function _includeAct( src )
 
 //
 
-function _includePure( src )
+function _includeSimply( src )
 {
   if( arguments.length !== 1 )
-  return _includePure( arguments );
+  return _includeSimply( arguments );
 
   if( _.arrayLike( src ) )
   {
     var result = [];
     src = _.arrayFlatten( src );
     for( var a = 0 ; a < src.length ; a++ )
-    result[ a ] = _includePureAct( src[ a ] );
+    result[ a ] = _includeSimplyAct( src[ a ] );
     return result;
   }
 
-  return _includePureAct( src );
+  return _includeSimplyAct( src );
 }
 
 //
@@ -109,7 +161,7 @@ function include( src )
 
 //
 
-function _includePureAny( src )
+function _includeSimplyAny( src )
 {
   var errors = [];
 
@@ -121,24 +173,24 @@ function _includePureAny( src )
     {
       try
       {
-        return _includePureAct( src );
+        return _includeSimplyAct( src );
       }
       catch( err )
       {
         errors.push( err );
-        debugger;
         throw _.err.apply( _,errors );
       }
     }
     else try
     {
 
-      var result = _includePureAct( src );
+      var result = _includeSimplyAct( src );
       return result;
 
     }
     catch( err )
     {
+      // _.errLog( err );
       errors.push( err );
     }
 
@@ -301,109 +353,109 @@ var _includeHandlerMap = {};
 
 _includeHandlerMap[ 'wCopyable' ] =
 {
-  includeAny : [ '../../abase/mixin/Copyable.s','wCopyable' ],
+  includeAny : [ '../../abase/mixin/Copyable.s','abase/mixin/Copyable.s','wCopyable' ],
   isIncluded : function(){ return typeof wCopyable !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wInstancing' ] =
 {
-  includeAny : [ '../../abase/mixin/Instancing.s','winstancing' ],
+  includeAny : [ '../../abase/mixin/Instancing.s','abase/mixin/Instancing.s','winstancing' ],
   isIncluded : function(){ return typeof wInstancing !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wEventHandler' ] =
 {
-  includeAny : [ '../../abase/mixin/EventHandler.s','wEventHandler' ],
+  includeAny : [ '../../abase/mixin/EventHandler.s','abase/mixin/EventHandler.s','wEventHandler' ],
   isIncluded : function(){ return typeof wEventHandler !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wTesting' ] =
 {
-  includeAny : [ '../../abase/xTesting/Testing.debug.s','wTesting' ],
-  isIncluded : function(){ return typeof wTesting !== 'undefined' && wTesting._full; },
+  includeAny : [ '../../abase/xTesting/Testing.debug.s','abase/xTesting/Testing.debug.s','wTesting' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Testing && wTools.Testing._isFullImplementation; },
 }
 
 _includeHandlerMap[ 'wLogger' ] =
 {
-  includeAny : [ '../../abase/printer/printer/Logger.s','wLogger' ],
+  includeAny : [ '../../abase/printer/printer/Logger.s','abase/printer/printer/Logger.s','wLogger' ],
   isIncluded : function(){ return typeof wLogger !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wLoggerToFile' ] =
 {
-  includeAny : [ '../../abase/printer/printer/LoggerToFile.s','wloggertofile' ],
+  includeAny : [ '../../abase/printer/printer/LoggerToFile.s','abase/printer/printer/LoggerToFile.s','wloggertofile' ],
   isIncluded : function(){ return typeof wLoggerToFile !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wLoggerToJstructure' ] =
 {
-  includeAny : [ '../../abase/printer/printer/LoggerToJstructure.s','wloggertojstructure' ],
+  includeAny : [ '../../abase/printer/printer/LoggerToJstructure.s','abase/printer/printer/LoggerToJstructure.s','wloggertojstructure' ],
   isIncluded : function(){ return typeof wLoggerToJstructure !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wColor' ] =
 {
-  includeAny : [ '../../amid/color/Color.s','wColor' ],
+  includeAny : [ '../../amid/color/Color.s','amid/color/Color.s','wColor' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap },
 }
 
 _includeHandlerMap[ 'wColor256' ] =
 {
-  includeAny : [ '../../amid/color/Color256.s','wColor256' ],
+  includeAny : [ '../../amid/color/Color256.s','amid/color/Color256.s','wColor256' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap && Object.keys( wTools.ColorMap ).length > 100 },
 }
 
 _includeHandlerMap[ 'wConsequence' ] =
 {
-  includeAny : [ '../../abase/syn/Consequence.s','wConsequence' ],
+  includeAny : [ '../../abase/syn/Consequence.s','abase/syn/Consequence.s','wConsequence' ],
   isIncluded : function(){ return typeof wConsequence !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wNameTools' ] =
 {
-  includeAny : [ '../../abase/component//NameTools.s','wNameTools' ],
+  includeAny : [ '../../abase/component//NameTools.s','abase/component//NameTools.s','wNameTools' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.idNumber; },
 }
 
 _includeHandlerMap[ 'wRegexpObject' ] =
 {
-  includeAny : [ '../../abase/object/RegexpObject.s','wRegexpObject' ],
+  includeAny : [ '../../abase/object/RegexpObject.s','abase/object/RegexpObject.s','wRegexpObject' ],
   isIncluded : function(){ return typeof wRegexpObject !== 'undefined' },
 }
 
 _includeHandlerMap[ 'wProto' ] =
 {
-  includeAny : [ '../../abase/component/Proto.s','wProto' ],
+  includeAny : [ '../../abase/component/Proto.s','abase/component/Proto.s','wProto' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.mixin },
 }
 
 _includeHandlerMap[ 'wPath' ] =
 {
-  includeAny : [ '../../abase/component/Path.s','wPath' ],
+  includeAny : [ '../../abase/component/Path.s','abase/component/Path.s','wPath' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.pathDir },
 }
 
 _includeHandlerMap[ 'wFiles' ] =
 {
-  includeAny : [ '../../amid/file/Files.ss','wFiles' ],
+  includeAny : [ '../../amid/file/Files.ss','amid/file/Files.ss','wFiles' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.FileRecord },
 }
 
 _includeHandlerMap[ 'wTemplateTree' ] =
 {
-  includeAny : [ '../../amid/mapping/TemplateTree.s','wtemplatetree' ],
+  includeAny : [ '../../amid/mapping/TemplateTree.s','amid/mapping/TemplateTree.s','wtemplatetree' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateTree },
 }
 
 _includeHandlerMap[ 'wNameMapper' ] =
 {
-  includeAny : [ '../../amid/mapping/NameMapper.s','wnamemapper' ],
+  includeAny : [ '../../amid/mapping/NameMapper.s','amid/mapping/NameMapper.s','wnamemapper' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.NameMapper },
 }
 
 _includeHandlerMap[ 'wArraySorted' ] =
 {
-  includeAny : [ '../../abase/component/ArraySorted.s','warraysorted' ],
+  includeAny : [ '../../abase/component/ArraySorted.s','abase/component/ArraySorted.s','warraysorted' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.arraySortedLookUp },
 }
 
@@ -414,13 +466,15 @@ _includeHandlerMap[ 'wArraySorted' ] =
 var Proto =
 {
 
-  _includePureAct : _includePureAct,
+  includePathUse : includePathUse,
+
+  _includeSimplyAct : _includeSimplyAct,
   _includeAct : _includeAct,
 
-  _includePure : _includePure,
+  _includeSimply : _includeSimply,
   include : include,
 
-  _includePureAny : _includePureAny,
+  _includeSimplyAny : _includeSimplyAny,
   includeAny : includeAny,
 
   // includeTestsFrom : includeTestsFrom,

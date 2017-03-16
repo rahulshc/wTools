@@ -15,22 +15,25 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( '../wTools.s' );
-  require( '../component/StringTools.s' );
+  //if( typeof wBase === 'undefined' )
+  try
+  {
+    require( '../../abase/wTools.s' );
+  }
+  catch( err )
+  {
+    require( 'wTools' );
+  }
 
-  //require( '../../../../wTesting/staging/abase/object/Testing.debug.s' );
+  var _ = wTools;
 
-  if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
-    require( '../object/Testing.debug.s' );
-  else
-    require( 'wTesting' );
+  _.include( 'wTesting' );
+
+  var File = require( 'fs' );
 
 }
 
 var _ = wTools;
-var Self = {};
-var fs = require('fs');
-
 
 //
 /*
@@ -81,7 +84,7 @@ var reportChars = function()
 
 var stringFromFile = function( name, encoding, begin, end )
 {
-  var str = fs.readFileSync( __dirname + '/../../../file.test/' + name, encoding );
+  var str = File.readFileSync( __dirname + '/../../../file.test/' + name, encoding );
   str = str.slice( begin, end );
 
   //if( name === 'file1' )
@@ -2794,14 +2797,15 @@ var toStrLimitElements = function( test )
   ]
   testFunction( test,desc,src,options,expected );
 }
+
 toStrRoutine.cover = [ _.toStr ];
 
 //
 
-var Proto =
+var Self =
 {
 
-  name : 'toStr',
+  name : 'wTools.toStr2',
 
   tests :
   {
@@ -2828,9 +2832,8 @@ var Proto =
 
 };
 
-_.mapExtend( Self,Proto );
-
-if( typeof module === 'undefined' || !module.parent )
-_.Testing.test( Self );
+Self = wTestSuite( Self );
+if( typeof module !== 'undefined' && !module.parent )
+_.Testing.test( Self.name );
 
 } )( );

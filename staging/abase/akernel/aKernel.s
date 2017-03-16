@@ -18,13 +18,17 @@ if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ 
 
 // veification
 
+if( 1 )
 if( _global_.wBase )
 {
-  if( _global_.wBase !== _global_.wTools )
-  throw new Error( '_global_.wBase !== _global_.wTools' );
+  if( typeof __dirname !== 'undefined' )
+  wTools.includePathUse( __dirname + '/../..' );
+  // if( _global_.wBase !== _global_.wTools )
+  // throw new Error( '_global_.wBase !== _global_.wTools' );
   module[ 'exports' ] = _global_.wBase;
   return;
 }
+
 if( _global_.wBase )
 {
   throw new Error( 'wTools included several times' );
@@ -1281,7 +1285,7 @@ function _entityCloneAct( o )
     if( !mapIs )
     if( o.src.constructor !== Object && o.src.constructor !== null )
     {
-      //debugger;
+      debugger;
       throw _.err
       (
         'Complex objets should have ' +
@@ -7190,6 +7194,10 @@ function _routineBind( o )
   _assert( _.routineIs( o.routine ),'_routineBind :','expects routine' );
   _assert( _.arrayIs( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
 
+  // if( _global_.wConsequence )
+  // if( wConsequence.prototype.got === o.routine )
+  // debugger;
+
   var routine = o.routine;
   var args = o.args;
   var context = o.context;
@@ -7910,7 +7918,7 @@ function timeOutError( delay,onReady )
   {
     if( err )
     throw err;
-    debugger;
+
     var err = _.err( 'Time out!' );
 
     Object.defineProperty( err, 'timeOut',
@@ -14263,6 +14271,8 @@ var Proto =
   ArrayType : Array,
   error : error,
 
+  _sourceDirPath : typeof __dirname !== 'undefined' ? __dirname : null,
+
 }
 
 mapExtend( Self, Proto );
@@ -14347,12 +14357,6 @@ try
   require( './cFieldFilter.s' );
   require( './cFieldMapper.s' );
 
-  require( './eInclude.s' );
-  require( './eNameTools.s' );
-  require( './eExecTools.s' );
-  require( './eStringTools.s' );
-  require( './eArrayDescriptor.s' );
-
 }
 catch( err )
 {
@@ -14368,17 +14372,17 @@ if( _global_._wToolsInitConfigExpected !== false )
 
 //
 
-// if( typeof module !== 'undefined' && module !== null )
-// {
-//
-//   module[ 'exports' ] = Self;
-//
-//   require( './eInclude.s' );
-//   require( './eNameTools.s' );
-//   require( './eExecTools.s' );
-//   require( './eStringTools.s' );
-//   require( './eArrayDescriptor.s' );
-//
-// }
+if( typeof module !== 'undefined' && module !== null )
+{
+
+  require( './eInclude.s' );
+  require( './eNameTools.s' );
+  require( './eExecTools.s' );
+  require( './eStringTools.s' );
+  require( './eArrayDescriptor.s' );
+
+  _.includePathUse( __dirname + '/../..' );
+
+}
 
 })();

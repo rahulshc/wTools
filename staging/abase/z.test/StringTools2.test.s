@@ -15,22 +15,23 @@ node ./staging/z.test/Sample.test.s
 if( typeof module !== 'undefined' )
 {
 
-  require( '../wTools.s' );
-  require( '../component/StringTools.s' );
-
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../amid/diagnostic/Testing.debug.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
-    require( 'wTesting' );
+    require( 'wTools' );
   }
+
+  var _ = wTools;
+
+  _.include( 'wTesting' );
 
 }
 
 var _ = wTools;
-var Self = {};
 
 //
 
@@ -2599,7 +2600,9 @@ var strExtractStrips = function( test )
 
 }
 
-var Proto =
+//
+
+var Self =
 {
 
   name : 'StringTools2 test',
@@ -2657,9 +2660,8 @@ var Proto =
 
 }
 
-_.mapExtend( Self,Proto );
-
+Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self );
+_.Testing.test( Self.name );
 
 } )( );

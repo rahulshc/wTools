@@ -5,10 +5,10 @@
 if( typeof module !== 'undefined' )
 {
 
-  if( typeof wBase === 'undefined' )
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../abase/wTools.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
@@ -26,7 +26,6 @@ if( typeof module !== 'undefined' )
 
 var _ = wTools;
 var Parent = wTools.Testing;
-var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 // --
 // test
@@ -568,8 +567,6 @@ var Self =
 {
 
   name : 'ArraySorted',
-  sourceFilePath : sourceFilePath,
-  verbosity : 0,
 
   tests :
   {
