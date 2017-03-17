@@ -35,7 +35,7 @@ var _ = wTools;
 
 //
 
-var mapKeys = function( test )
+function mapKeys( test )
 {
 
   test.description = 'two keys';
@@ -77,7 +77,7 @@ var mapKeys = function( test )
 
 //
 
-var mapValues = function( test )
+function mapValues( test )
 {
 
   test.description = 'two values';
@@ -119,7 +119,7 @@ var mapValues = function( test )
 
 //
 
-var mapExtend = function( test )
+function mapExtend( test )
 {
 
   test.description = 'first argument is null';
@@ -189,7 +189,7 @@ var mapExtend = function( test )
 
 //
 
-var mapPairs = function( test )
+function mapPairs( test )
 {
 
   test.description = 'a list of [ key, value ] pairs';
@@ -226,7 +226,7 @@ var mapPairs = function( test )
 
 //
 
-var mapOwn = function( test )
+function mapOwn( test )
 {
 
   test.description = 'second argument is string';
@@ -291,7 +291,7 @@ var mapOwn = function( test )
 
 //
 
-var mapSame = function( test )
+function mapSame( test )
 {
 
   test.description = 'same [ key, value ]';
@@ -333,7 +333,7 @@ var mapSame = function( test )
 
 //
 
-var mapContain = function( test )
+function mapContain( test )
 {
 
   test.description = 'first has same keys like second';
@@ -380,7 +380,7 @@ var mapContain = function( test )
 
 //
 
-var mapBut = function( test )
+function mapBut( test )
 {
 
   test.description = 'a unique object';
@@ -416,7 +416,7 @@ var mapBut = function( test )
 };
 
 
-var mapToArray = function( test )
+function mapToArray( test )
 {
 
   test.description = 'a list of [ key, value ] pairs'
@@ -458,7 +458,7 @@ var mapToArray = function( test )
 };
 
 
-var mapValWithIndex = function( test )
+function mapValWithIndex( test )
 {
 
   test.description = 'second index';
@@ -520,7 +520,7 @@ var mapValWithIndex = function( test )
 }
 
 
-var mapKeyWithIndex = function( test )
+function mapKeyWithIndex( test )
 {
 
   test.description = 'last key';
@@ -567,7 +567,7 @@ var mapKeyWithIndex = function( test )
 };
 
 
-var mapIs = function( test )
+function mapIs( test )
 {
 
   test.description = 'an empty object';
@@ -631,11 +631,11 @@ var mapIs = function( test )
 };
 
 
-var mapClone = function( test )
+function mapClone( test )
 {
 
   test.description = 'an Example';
-  var Example = function() {
+  function Example() {
     this.name = 'Peter';
     this.age = 27;
   };
@@ -677,7 +677,7 @@ var mapClone = function( test )
 };
 
 
-var mapExtendFiltering = function( test )
+function mapExtendFiltering( test )
 {
 
   test.description = 'an unique object';
@@ -719,7 +719,7 @@ var mapExtendFiltering = function( test )
 };
 
 
-var mapSupplement = function( test )
+function mapSupplement( test )
 {
 
   test.description = 'an object';
@@ -755,7 +755,7 @@ var mapSupplement = function( test )
 };
 
 
-var mapCopy = function( test )
+function mapCopy( test )
 {
 
   test.description = 'an object';
@@ -779,7 +779,7 @@ var mapCopy = function( test )
 };
 
 
-var mapFirstPair = function( test )
+function mapFirstPair( test )
 {
 
   test.description = 'first pair [ key, value ]';
@@ -819,7 +819,7 @@ var mapFirstPair = function( test )
 };
 
 
-var mapToString = function( test )
+function mapToString( test )
 {
 
   test.description = 'returns an empty string';
@@ -838,7 +838,7 @@ var mapToString = function( test )
   test.identical( got, expected );
 
   test.description = 'returns a string representing an array-like object';
-  var args = function() { return arguments }( 1, 2, 3, 4, 5 );
+  function args() { return arguments }( 1, 2, 3, 4, 5 );
   var got = _.mapToString( args, ' : ', '; ' );
   var expected = '0 : 1; 1 : 2; 2 : 3; 3 : 4; 4 : 5';
   test.identical( got, expected );
@@ -877,7 +877,7 @@ var mapToString = function( test )
 };
 
 
-var mapGroup = function( test )
+function mapGroup( test )
 {
 
   test.description = 'an empty object';
@@ -930,7 +930,7 @@ var mapGroup = function( test )
 };
 
 
-var mapButFiltering = function( test )
+function mapButFiltering( test )
 {
 
   test.description = 'an object';
@@ -972,7 +972,7 @@ var mapButFiltering = function( test )
 };
 
 
-var mapComplement = function( test )
+function mapComplement( test )
 {
 
   test.description = 'an object';
@@ -1008,7 +1008,7 @@ var mapComplement = function( test )
 };
 
 
-var mapOwnBut = function( test )
+function mapOwnBut( test )
 {
 
   test.description = 'an empty object';
@@ -1055,7 +1055,7 @@ var mapOwnBut = function( test )
 
 
 
-var _mapScreen = function( test )
+function _mapScreen( test )
 {
 
   test.description = 'an object';
@@ -1108,7 +1108,7 @@ var _mapScreen = function( test )
 };
 
 
-var mapScreen = function( test )
+function mapScreen( test )
 {
 
 
@@ -1152,7 +1152,7 @@ var mapScreen = function( test )
 
 //
 
-var mapScreens = function( test )
+function mapScreens( test )
 {
 
 

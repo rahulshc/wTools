@@ -1214,7 +1214,7 @@ function _entityCloneAct( o )
 {
 
   var result;
-  var o = o || Object.create( null ); // xxx
+  var o = o || Object.create( null );
 
   if( !( o.levels > 0 ) )
   throw _.err
@@ -1271,7 +1271,6 @@ function _entityCloneAct( o )
   }
   else
   {
-    //debugger;
     throw _.err( 'unexpected clone technique : ' + o.technique );
   }
 
@@ -1383,6 +1382,7 @@ function _entityCloneAct( o )
     return result;
   }
 
+  debugger;
   throw _.err( 'unexpected type of src : ' + _.strTypeOf( o.src ) );
 }
 
@@ -14322,7 +14322,7 @@ _global_.wTestSuite = function wTestSuite( testSuite )
   _.assert( _.objectIs( testSuite ) );
 
   if( !testSuite.abstract )
-  _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name',testSuite.name,'already registered!' );
+  _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name "' + testSuite.name + '" already registered!' );
   _global_.wTests[ testSuite.name ] = testSuite;
 
   return testSuite;

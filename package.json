@@ -25,7 +25,7 @@
     "staging/abase/wTools.s"
   ],
   "scripts": {
-    "test": "node ./staging/abase/z.test/All.s",
+    "test": "wtest staging",
     "make_doc": "./doc.sh"
   },
   "repository": {

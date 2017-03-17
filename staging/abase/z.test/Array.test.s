@@ -35,7 +35,7 @@ var _ = wTools;
 
 //
 
-/*var arrayPrependOnceMerging = function( test )
+/*function arrayPrependOnceMerging( test )
 {
 
   test.description = 'array';
@@ -97,7 +97,7 @@ var _ = wTools;
 
 //
 
-var arrayIs = function( test )
+function arrayIs( test )
 {
 
   test.description = 'an empty array';
@@ -166,7 +166,7 @@ var arrayIs = function( test )
 
 //
 
-var arrayLike = function( test )
+function arrayLike( test )
 {
 
   test.description = 'an empty array';
@@ -233,7 +233,7 @@ var arrayLike = function( test )
 };
 
 
-var hasLength = function( test )
+function hasLength( test )
 {
 
   test.description = 'an empty array';
@@ -259,7 +259,7 @@ var hasLength = function( test )
   test.identical( got, expected );
 
   test.description = 'a Function.length';
-  var fn = function( a, b, c ) { };
+  function fn( a, b, c ) { };
   var got = _.hasLength( fn );
   var expected = true;
   test.identical( got, expected );
@@ -292,7 +292,7 @@ var hasLength = function( test )
 
 //
 
-var arraySub = function( test )
+function arraySub( test )
 {
 
   test.description = 'nothing';
@@ -370,7 +370,7 @@ var arraySub = function( test )
 
 //
 
-var arrayNew = function( test )
+function arrayNew( test )
 {
 
   test.description = 'an empty array';
@@ -434,7 +434,7 @@ var arrayNew = function( test )
 
 //
 
-var arrayNewOfSameLength = function( test )
+function arrayNewOfSameLength( test )
 {
 
   test.description = 'nothing';
@@ -476,7 +476,7 @@ var arrayNewOfSameLength = function( test )
 
 //
 
-var arrayOrNumber = function( test )
+function arrayOrNumber( test )
 {
 
   test.description = 'nothing';
@@ -541,7 +541,7 @@ var arrayOrNumber = function( test )
 
 //
 
-var arraySelect = function( test )
+function arraySelect( test )
 {
 
   test.description = 'nothing';
@@ -594,7 +594,7 @@ var arraySelect = function( test )
 
 //
 
-var arrayIron = function( test )
+function arrayIron( test )
 {
 
   test.description = 'nothing';
@@ -629,7 +629,7 @@ var arrayIron = function( test )
 
 //
 
-var arrayAppendMerging = function( test )
+function arrayAppendMerging( test )
 {
 
   test.description = 'nothing';
@@ -676,7 +676,7 @@ var arrayAppendMerging = function( test )
 
 //
 
-var arrayPrependMerging = function( test )
+function arrayPrependMerging( test )
 {
 
   test.description = 'nothing';
@@ -723,7 +723,7 @@ var arrayPrependMerging = function( test )
 
 //
 
-var arrayAppendOnceMerging = function( test )
+function arrayAppendOnceMerging( test )
 {
 
   test.description = 'nothing';
@@ -770,7 +770,7 @@ var arrayAppendOnceMerging = function( test )
 
 //
 
-var arrayPrependOnceMerging = function( test )
+function arrayPrependOnceMerging( test )
 {
 
   test.description = 'nothing';
@@ -817,7 +817,7 @@ var arrayPrependOnceMerging = function( test )
 
 //
 
-var arrayElementsSwap = function( test )
+function arrayElementsSwap( test )
 {
 
   test.description = 'an element';
@@ -870,7 +870,7 @@ var arrayElementsSwap = function( test )
 };
 
 
-var arrayFrom = function( test )
+function arrayFrom( test )
 {
 
   test.description = 'an array';
@@ -924,7 +924,7 @@ var arrayFrom = function( test )
 };
 
 
-var arrayToMap = function( test )
+function arrayToMap( test )
 {
 
   test.description = 'an empty object';
@@ -967,7 +967,7 @@ var arrayToMap = function( test )
 };
 
 
-var arrayRemoveArrayOnce = function( test )
+function arrayRemoveArrayOnce( test )
 {
 
   test.description = 'nothing';
@@ -1021,7 +1021,7 @@ var arrayRemoveArrayOnce = function( test )
 };
 
 
-var arrayRemovedOnce = function( test )
+function arrayRemovedOnce( test )
 {
 
   test.description = 'nothing';
@@ -1079,7 +1079,7 @@ var arrayRemovedOnce = function( test )
 };
 
 
-var arrayRemoveOnce = function( test ) {
+function arrayRemoveOnce( test ) {
 
   test.description = 'nothing';
   var got = _.arrayRemoveOnce( [  ], 2 );
@@ -1136,7 +1136,7 @@ var arrayRemoveOnce = function( test ) {
 };
 
 
-var arrayRemovedAll = function( test )
+function arrayRemovedAll( test )
 {
 
   test.description = 'nothing';
@@ -1201,7 +1201,7 @@ var arrayRemovedAll = function( test )
 };
 
 
-var arrayRemoveAll = function( test ) {
+function arrayRemoveAll( test ) {
 
   test.description = 'nothing';
   var got = _.arrayRemoveAll( [  ], 2 );
@@ -1264,7 +1264,7 @@ var arrayRemoveAll = function( test ) {
 
 };
 
-var arrayReplaceOnce = function( test )
+function arrayReplaceOnce( test )
 {
 
   test.description = 'nothing';
@@ -1321,7 +1321,7 @@ var arrayReplaceOnce = function( test )
 };
 
 
-var arrayUpdate = function( test )
+function arrayUpdate( test )
 {
 
   test.description = 'add a new element';
@@ -1378,7 +1378,7 @@ var arrayUpdate = function( test )
 };
 
 
-var arrayAppendOnce = function( test )
+function arrayAppendOnce( test )
 {
 
   test.description = 'add a new element';
@@ -1440,7 +1440,7 @@ var arrayAppendOnce = function( test )
 };
 
 
-var arrayPrependOnce = function( test )
+function arrayPrependOnce( test )
 {
 
   test.description = 'add a new element';
@@ -1502,7 +1502,7 @@ var arrayPrependOnce = function( test )
 };
 
 
-var arraySpliceArray = function( test )
+function arraySpliceArray( test )
 {
 
   test.description = 'remove two elements';
@@ -1569,7 +1569,7 @@ var arraySpliceArray = function( test )
 };
 
 
-var arraySlice = function( test )
+function arraySlice( test )
 {
 
   test.description = 'nothing';
@@ -1619,7 +1619,7 @@ var arraySlice = function( test )
 };
 
 
-var arrayAs = function( test )
+function arrayAs( test )
 {
 
   test.description = 'nothing';
@@ -1663,7 +1663,7 @@ var arrayAs = function( test )
 
 };
 
-var arrayToStr = function( test )
+function arrayToStr( test )
 {
 
   test.description = 'nothing';
@@ -1720,7 +1720,7 @@ var arrayToStr = function( test )
 };
 
 
-var arrayPut = function( test )
+function arrayPut( test )
 {
 
   test.description = 'adds after second element';
@@ -1755,7 +1755,7 @@ var arrayPut = function( test )
 };
 
 
-var arrayMask = function( test )
+function arrayMask( test )
 {
 
   test.description = 'nothing';
@@ -1826,7 +1826,7 @@ var arrayMask = function( test )
 };
 
 
-var arrayDuplicate = function( test )
+function arrayDuplicate( test )
 {
 
   test.description = 'couple of repeats';
@@ -1890,7 +1890,7 @@ var arrayDuplicate = function( test )
 };
 
 
-var arrayFill = function( test )
+function arrayFill( test )
 {
 
   test.description = 'an element';
@@ -1941,7 +1941,7 @@ var arrayFill = function( test )
 };
 
 
-var arrayCompare = function( test )
+function arrayCompare( test )
 {
 
   test.description = 'empty arrays';
@@ -1975,10 +1975,10 @@ var arrayCompare = function( test )
   test.identical( got, expected );
 
   test.description = 'array-like arguments';
-  var src1 = function() {
+  function src1() {
     return arguments;
   }( 1, 5 );
-  var src2 = function() {
+  function src2() {
     return arguments;
   }( 1, 2 );
   var got = _.arrayCompare( src1, src2 );
@@ -2031,7 +2031,7 @@ var arrayCompare = function( test )
 };
 
 
-var arraySame = function( test )
+function arraySame( test )
 {
 
   test.description = 'empty arrays';
@@ -2045,10 +2045,10 @@ var arraySame = function( test )
   test.identical( got, expected );
 
   test.description = 'array-like arguments';
-  var src1 = function() {
+  function src1() {
     return arguments;
   }( 3, 7, 13 );
-  var src2 = function() {
+  function src2() {
     return arguments;
   }( 3, 7, 33 );
   var got = _.arraySame( src1, src2 );
@@ -2093,7 +2093,7 @@ var arraySame = function( test )
 };
 
 
-var arrayLeftIndexOf = function( test )
+function arrayLeftIndexOf( test )
 {
 
   test.description = 'nothing';
@@ -2122,7 +2122,7 @@ var arrayLeftIndexOf = function( test )
   test.identical( got, expected );
 
   test.description = 'array-like arguments';
-  var arr = function() {
+  function arr() {
     return arguments;
   }( 3, 7, 13 );
   var got = _.arrayLeftIndexOf( arr, 13 );
@@ -2172,7 +2172,7 @@ var arrayLeftIndexOf = function( test )
 };
 
 
-var arrayLeft = function( test )
+function arrayLeft( test )
 {
 
   test.description = 'nothing';
@@ -2217,7 +2217,7 @@ var arrayLeft = function( test )
 };
 
 
-var arrayHasAny = function( test )
+function arrayHasAny( test )
 {
 
   test.description = 'false';
@@ -2257,7 +2257,7 @@ var arrayHasAny = function( test )
 };
 
 
-var arrayCount = function( test )
+function arrayCount( test )
 {
 
   test.description = 'nothing';
@@ -2304,7 +2304,7 @@ var arrayCount = function( test )
 };
 
 
-var arrayCountSame = function( test )
+function arrayCountSame( test )
 {
 
   test.description = 'nothing';
@@ -2356,7 +2356,7 @@ var arrayCountSame = function( test )
 };
 
 
-var arraySum = function( test )
+function arraySum( test )
 {
 
   test.description = 'nothing';
@@ -2413,7 +2413,7 @@ var arraySum = function( test )
 };
 
 
-var arrayExtendScreening = function( test )
+function arrayExtendScreening( test )
 {
 
   test.description = 'returns an empty array';
@@ -2475,7 +2475,7 @@ var arrayExtendScreening = function( test )
 };
 
 
-var arrayRandom = function( test )
+function arrayRandom( test )
 {
 
   test.description = 'an array';
@@ -2529,7 +2529,7 @@ var arrayRandom = function( test )
 };
 
 
-var arraySetContainAll = function( test )
+function arraySetContainAll( test )
 {
 
   test.description = 'returns true';
@@ -2569,7 +2569,7 @@ var arraySetContainAll = function( test )
 };
 
 
-var arraySetContainSomething = function( test )
+function arraySetContainSomething( test )
 {
 
   test.description = 'returns false';
@@ -2619,7 +2619,7 @@ var arraySetContainSomething = function( test )
 };
 
 
-var _arraySortedLookUpAct = function( test )
+function _arraySortedLookUpAct( test )
 {
 
   test.description = 'first argument is empty, so it returns the index from which it ended search at';
@@ -2653,7 +2653,7 @@ var _arraySortedLookUpAct = function( test )
 };
 
 
-var arraySortedLookUp = function( test )
+function arraySortedLookUp( test )
 {
 
   test.description = 'returns an object that containing the found value';
@@ -2704,7 +2704,7 @@ var arraySortedLookUp = function( test )
 };
 
 
-var arraySortedRemove = function( test )
+function arraySortedRemove( test )
 {
 
   test.description = 'nothing to remove';
@@ -2756,7 +2756,7 @@ var arraySortedRemove = function( test )
 };
 
 
-var arraySortedAddOnce = function( test )
+function arraySortedAddOnce( test )
 {
 
   test.description = 'add an element';
@@ -2808,7 +2808,7 @@ var arraySortedAddOnce = function( test )
 };
 
 
-var arraySortedAdd = function( test )
+function arraySortedAdd( test )
 {
 
   test.description = 'add an element';
@@ -2860,7 +2860,7 @@ var arraySortedAdd = function( test )
 };
 
 
-var arraySortedAddArray = function( test )
+function arraySortedAddArray( test )
 {
 
   test.description = 'returns sum equal to the 3';
@@ -2913,7 +2913,7 @@ var arraySortedAddArray = function( test )
 };
 
 
-var arrayRange = function( test )
+function arrayRange( test )
 {
 
   test.description = 'single zero';
@@ -2980,7 +2980,7 @@ var arrayRange = function( test )
 };
 
 
-var arraySupplement = function( test )
+function arraySupplement( test )
 {
 
   test.description = 'nothing';
@@ -3027,7 +3027,7 @@ var arraySupplement = function( test )
 
 
 
-var bufferRelen = function( test )
+function bufferRelen( test )
 {
 
   test.description = 'second argument is more than ints.length';
@@ -3070,7 +3070,7 @@ var bufferRelen = function( test )
 };
 
 
-var bufferRetype = function( test )
+function bufferRetype( test )
 {
 
   test.desscription = 'converts and returns the new type of Int16Array';
@@ -3108,7 +3108,7 @@ var bufferRetype = function( test )
 
 //
 
-var bufferRawFromBuffer = function( test )
+function bufferRawFromBuffer( test )
 {
 
   var buffer1 = new ArrayBuffer(10);

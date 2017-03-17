@@ -35,33 +35,36 @@ var _ = wTools;
 
 //
 
-var testFunction1 = function( x, y )
+function testFunction1( x, y )
 {
   return x + y
-},
+}
 
-testFunction2 = function( x, y )
+function testFunction2( x, y )
 {
   return this;
-},
-testFunction3 = function( x, y )
+}
+
+function testFunction3( x, y )
 {
   return x + y + this.k;
-},
-testFunction4 = function( x, y )
+}
+
+function testFunction4( x, y )
 {
   return this;
-};
+}
 
-var contextConstructor3 = function()
+function contextConstructor3()
 {
   this.k = 15
-},
-context3 = new contextConstructor3();
+}
+
+var context3 = new contextConstructor3();
 
 //
 
-var _routineBind = function( test )
+function _routineBind( test )
 {
 
   var testParam1 = 2,
@@ -181,8 +184,9 @@ var _routineBind = function( test )
 
 //
 
-var routineBind = function( test )
+function routineBind( test )
 {
+
   var testParam1 = 2,
     testParam2 = 4,
     expected1 = 6,
@@ -241,8 +245,9 @@ var routineBind = function( test )
 
 //
 
-var routineJoin = function( test )
+function routineJoin( test )
 {
+
   var testParam1 = 2,
     testParam2 = 4,
     expected1 = 6,
@@ -301,8 +306,9 @@ var routineJoin = function( test )
 
 //
 
-var routineSeal = function(test)
+function routineSeal(test)
 {
+
   var testParam1 = 2,
     testParam2 = 4,
     expected1 = 6,
@@ -361,29 +367,35 @@ var routineSeal = function(test)
 
 //
 
-var routinesCall = function( test )
+function routinesCall( test )
 {
-  var value1 = 'result1',
-    value2 = 4,
-    value3 = 5;
-  var function1 = function()
-    {
-      return value1;
-    },
-    function2 = function()
-    {
-      return value2;
-    },
-    function3 = function()
-    {
-      return value3;
-    },
-    function4 = testFunction3,
-    function5 = function(x, y)
-    {
-      return x + y * this.k;
-    },
-    function6 = testFunction4;
+
+  var value1 = 'result1';
+  var value2 = 4;
+  var value3 = 5;
+
+  function function1()
+  {
+    return value1;
+  }
+
+  function function2()
+  {
+    return value2;
+  }
+
+  function function3()
+  {
+    return value3;
+  }
+
+  function function5(x, y)
+  {
+    return x + y * this.k;
+  }
+
+  var function4 = testFunction3
+  var function6 = testFunction4;
 
   var expected1 = [ value1 ],
     expected2 = [ value2 + value3 + context3.k ],
@@ -444,7 +456,7 @@ var routinesCall = function( test )
     });
 
   }
-};
+}
 
 //
 
@@ -462,6 +474,7 @@ var Self =
     routinesCall : routinesCall
 
   }
+
 };
 
 Self = wTestSuite( Self );

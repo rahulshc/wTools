@@ -61,7 +61,7 @@ source : http://en.cppreference.com/w/cpp/language/escape
 */
 //
 
-var reportChars = function()
+function reportChars()
 {
 
   debugger;
@@ -82,7 +82,7 @@ var reportChars = function()
 
 //
 
-var stringFromFile = function( name, encoding, begin, end )
+function stringFromFile( name, encoding, begin, end )
 {
   var str = File.readFileSync( __dirname + '/../../../file.test/' + name, encoding );
   str = str.slice( begin, end );
@@ -95,7 +95,7 @@ var stringFromFile = function( name, encoding, begin, end )
 
 //
 
-var testFunction = function( test, desc, src, options, expected )
+function testFunction( test, desc, src, options, expected )
 {
   debugger;
   var got = null;
@@ -473,7 +473,7 @@ toStrError.cover = [ _.toStr ];
 
 //
 
-var toStrArray = function( test )
+function toStrArray( test )
 {
   var  desc = 'Array test',
   src =
@@ -1141,7 +1141,7 @@ toStrArray.cover = [ _.toStr ];
 
 //
 
-var toStrObject = function( test )
+function toStrObject( test )
 {
   var desc =  'Object test',
   src =
@@ -1812,7 +1812,7 @@ toStrObject.cover = [ _.toStr ];
 
 //
 
-var toStrJson = function( test )
+function toStrJson( test )
 {
    var desc =  'json test',
 
@@ -2010,7 +2010,7 @@ toStrJson.cover = [ _.toStr ];
 
 //
 
-var _toStrJsonFromFile = function( test,encoding )
+function _toStrJsonFromFile( test,encoding )
 {
   var desc =  'json from file as utf8',
 
@@ -2049,7 +2049,7 @@ var _toStrJsonFromFile = function( test,encoding )
 
 //
 
-var toStrJsonFromFileU = function( test )
+function toStrJsonFromFileU( test )
 {
 
   return _toStrJsonFromFile( test,'utf8' );
@@ -2060,7 +2060,7 @@ toStrJsonFromFileU.cover = [ _.toStr ];
 
 //
 
-var toStrJsonFromFileA = function( test )
+function toStrJsonFromFileA( test )
 {
 
   return _toStrJsonFromFile( test,'ascii' );
@@ -2071,7 +2071,7 @@ toStrJsonFromFileA.cover = [ _.toStr ];
 
 //
 
-var toStrstringWrapper = function( test )
+function toStrstringWrapper( test )
 {
    var desc =  'stringWrapper test',
    src =
@@ -2191,7 +2191,7 @@ toStrstringWrapper.cover = [ _.toStr ];
 
 //
 
-var toStrLevel = function( test )
+function toStrLevel( test )
 {
    var desc =  'level test',
    src =
@@ -2248,7 +2248,7 @@ toStrLevel.cover = [ _.toStr ];
 
 //
 
-var toStrEnumerable = function( test )
+function toStrEnumerable( test )
 {
    var desc =  'onlyEnumerable test',
    src =
@@ -2381,7 +2381,7 @@ var toStrEnumerable = function( test )
 toStrEnumerable.cover = [ _.toStr ];
 //
 
-var toStrEmptyArgs = function( test )
+function toStrEmptyArgs( test )
 {
   var desc = 'empty arguments',
   src = [ {}, '', [] ],
@@ -2393,7 +2393,7 @@ var toStrEmptyArgs = function( test )
 toStrEmptyArgs.cover = [ _.toStr ];
 //
 
-var toStrSymbol = function( test )
+function toStrSymbol( test )
 {
   var desc =  'Symbol test',
   src =
@@ -2424,7 +2424,7 @@ var toStrSymbol = function( test )
 toStrSymbol.cover = [ _.toStr ];
 //
 
-var toStrNumber = function( test )
+function toStrNumber( test )
 {
   var desc = 'Number test',
   src =
@@ -2469,7 +2469,7 @@ var toStrNumber = function( test )
 toStrNumber.cover = [ _.toStr ];
 //
 
-var toStrString = function( test )
+function toStrString( test )
 {
   var desc =  'String test',
   src =
@@ -2512,7 +2512,7 @@ var toStrString = function( test )
 toStrString.cover = [ _.toStr ];
 //
 
-var toStrAtomic = function( test )
+function toStrAtomic( test )
 {
   var desc = 'boolean, null, undefined test',
   src =
@@ -2561,7 +2561,7 @@ toStrAtomic.cover = [ _.toStr ];
 
 //
 
-var toStrDate = function( test )
+function toStrDate( test )
 {
   var desc =  'Date test',
   src =
@@ -2591,7 +2591,7 @@ toStrDate.cover = [ _.toStr ];
 
 //
 
-var toStrRoutine = function( test )
+function toStrRoutine( test )
 {
   var desc =  'Routine test',
   src =
@@ -2619,7 +2619,7 @@ toStrRoutine.cover = [ _.toStr ];
 
 //
 
-var toStrThrow = function( test )
+function toStrThrow( test )
 {
   if( Config.debug )
   {
@@ -2672,7 +2672,7 @@ toStrThrow.cover = [ _.toStr ];
 
 //
 
-var toStrLimitElements = function( test )
+function toStrLimitElements( test )
 {
   var desc =  'limitElementsNumber options test',
   src =

@@ -36,7 +36,7 @@ var Self = {};
 
 //
 
-var entityMap = function( test )
+function entityMap( test )
 {
 
   var entity1 = [ 3, 4, 5 ],
@@ -45,7 +45,7 @@ var entityMap = function( test )
     expected2 = { '3': 9, '4': 16, '5': 25 },
     expected3 = entity1.slice();
 
-  var constr1 = function()
+  function constr1()
   {
     this.a = 1;
     this.b = 3;
@@ -60,12 +60,12 @@ var entityMap = function( test )
     return v * v;
   };
 
-  var callback2 = function( v, i, ent )
+  function callback2( v, i, ent )
   {
     return v * v + i;
   };
 
-  var callback3 = function( v, i, ent )
+  function callback3( v, i, ent )
   {
     if( externEnt ) externEnt = ent;
     return v * v + i;
@@ -136,7 +136,7 @@ var entityMap = function( test )
 
 //
 
-var entityFilter = function( test )
+function entityFilter( test )
 {
   var entity1 = [ 9, -16, 25, 36, -49 ],
     entity2 = { '3': 9, '4': 16, '5': 25 },
@@ -144,13 +144,13 @@ var entityFilter = function( test )
     expected2 = { '3': 3, '4': 4, '5': 5 },
     expected3 = entity1.slice();
 
-  var callback1 = function( v, i, ent )
+  function callback1( v, i, ent )
   {
     if( v < 0 ) return;
     return Math.sqrt( v );
   };
 
-  var testFn1 = function()
+  function testFn1()
   {
     return _.entityFilter( arguments, callback1 );
   }
@@ -226,7 +226,7 @@ var entityFilter = function( test )
 
 //
 
-var _entityMost = function( test )
+function _entityMost( test )
 {
 
   var args1 = [ 3, 1, 9, 0, 5 ],
@@ -240,7 +240,7 @@ var _entityMost = function( test )
     expected6 = { index : 0, key : 'a', value : 25, element : 25  },
     expected7 = { index : 2, key : 'c', value : 3, element : 9  };
 
-  var sqr = function( v )
+  function sqr( v )
   {
     return v * v;
   };
@@ -297,7 +297,7 @@ var _entityMost = function( test )
 
 //
 
-var entityMin = function( test )
+function entityMin( test )
 {
   var args1 = [ 3, 1, 9, 0, 5 ],
     args2 = [ 3, -4, 9, -16, 5, -2 ],
@@ -307,7 +307,7 @@ var entityMin = function( test )
     expected3 = args2.slice(),
     expected4 = { index : 2, key : 'c', value : 9, element : 9  };
 
-  var sqr = function(v)
+  function sqr(v)
   {
     return v * v;
   };
@@ -357,7 +357,7 @@ var entityMin = function( test )
 
 //
 
-var entityMax = function( test )
+function entityMax( test )
 {
 
   var args1 = [ 3, 1, 9, 0, 5 ],
@@ -368,7 +368,7 @@ var entityMax = function( test )
     expected3 = { index : 3, key : 3, value : 256, element : -16 },
     expected4 = { index : 0, key : 'a', value : 5, element : 25 };
 
-  var sqr = function( v )
+  function sqr( v )
   {
     return v * v;
   };
@@ -416,7 +416,7 @@ var  _entitySame = function( test )
 {
   // number values
 
-  var sameNumbers1 = function( a,b )
+  function sameNumbers1( a,b )
   {
     return a === b;
   };
@@ -458,13 +458,13 @@ var  _entitySame = function( test )
 
   // object values
 
-  var constructor1 = function()
+  function constructor1()
   {
     this.a = 1;
     this.b = 2;
   };
 
-  var constructor2 = function()
+  function constructor2()
   {
     this['a'] = 1;
     this['b'] = 2;
@@ -597,7 +597,7 @@ var  _entitySame = function( test )
 
 //
 
-var entityIdentical = function( test )
+function entityIdentical( test )
 {
 
   var options =
@@ -706,7 +706,7 @@ var entityIdentical = function( test )
 
 //
 
-var entityEquivalent = function( test )
+function entityEquivalent( test )
 {
   var defaultEPS = 1e-5;
 
@@ -755,7 +755,7 @@ var entityEquivalent = function( test )
 
 //
 
-var entityContain = function( test )
+function entityContain( test )
 {
   // array values
 
@@ -833,7 +833,7 @@ var entityContain = function( test )
 
 //
 
-var entityLength = function( test )
+function entityLength( test )
 {
 
   var x1 = undefined,
@@ -845,7 +845,7 @@ var entityLength = function( test )
     x7 = { a: 1, b: { e: 2, c: 3} },
     x8 = ( function(){ return arguments } )( 0, 1, 2, 4 ); // array like entity
 
-  var Constr1 = function()
+  function Constr1()
   {
     this.a = 34;
     this.b = 's';
@@ -940,7 +940,7 @@ var entityLength = function( test )
 
 //
 
-var entityCopy = function( test )
+function entityCopy( test )
 {
   test.description = 'src null';
   var dst = new String( 'string' );
@@ -988,7 +988,7 @@ var entityCopy = function( test )
   test.description = 'onRecursive ';
   var dst = { };
   var src = { value : 100, a : {  b : 101 } };
-  var onRecursive = function( dstContainer,srcContainer,key )
+  function onRecursive( dstContainer,srcContainer,key )
   {
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
@@ -1028,7 +1028,7 @@ var entityCopy = function( test )
 
 //
 
-var entityCopyField = function( test )
+function entityCopyField( test )
 {
 
   test.description = 'non recursive';
@@ -1051,7 +1051,7 @@ var entityCopyField = function( test )
   var dst ={};
   var src = { a : 'string' };
   var name = 'a';
-  var onRecursive = function( dstContainer,srcContainer,key )
+  function onRecursive( dstContainer,srcContainer,key )
   {
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
@@ -1075,7 +1075,7 @@ var entityCopyField = function( test )
 
 //
 
-var entityCoerceTo = function( test )
+function entityCoerceTo( test )
 {
 
   test.description = 'string & num';
@@ -1132,7 +1132,7 @@ var entityCoerceTo = function( test )
 
 //
 
-var entityHasNan = function( test )
+function entityHasNan( test )
 {
 
   test.description = 'undefined';
@@ -1174,7 +1174,7 @@ var entityHasNan = function( test )
 
 //
 
-var entityHasUndef = function( test )
+function entityHasUndef( test )
 {
 
   test.description = 'undefined';
@@ -1211,7 +1211,7 @@ var entityHasUndef = function( test )
 
 //
 
-var entitySame = function( test )
+function entitySame( test )
 {
   //default options
   test.description = 'default options, number';
@@ -1264,7 +1264,7 @@ var entitySame = function( test )
   test.identical( got, expected );
 
   test.description = 'onSameNumbers';
-  var onSameNumbers = function( a, b ){ return _.entityEquivalent( a, b, { eps : 1 } ) };
+  function onSameNumbers( a, b ){ return _.entityEquivalent( a, b, { eps : 1 } ) };
   var got = _.entitySame( { a : 1, b : 2 }, { a : 2, b : 2 }, { onSameNumbers : onSameNumbers } );
   var expected = true ;
   test.identical( got, expected );
@@ -1295,7 +1295,7 @@ var entitySame = function( test )
 
 //
 
-var entityDiff = function( test )
+function entityDiff( test )
 {
   //returns false if same
 
@@ -1368,7 +1368,7 @@ var entityDiff = function( test )
 
 //
 
-var entitySize = function( test )
+function entitySize( test )
 {
   test.description = 'string';
   var got = _.entitySize( "str" );
@@ -1409,7 +1409,7 @@ var entitySize = function( test )
 
 //
 
-var entityValueWithIndex = function( test )
+function entityValueWithIndex( test )
 {
   test.description = 'array';
   var got = _.entityValueWithIndex( [ [ 1, 2, 3 ] ], 0 );
@@ -1450,7 +1450,7 @@ var entityValueWithIndex = function( test )
 
 //
 
-var entityKeyWithValue = function( test )
+function entityKeyWithValue( test )
 {
   test.description = 'array';
   var got = _.entityKeyWithValue( [ 1, 2, 3 ], 3 );
@@ -1487,7 +1487,7 @@ var entityKeyWithValue = function( test )
 
 //
 
-var _entitySelectOptions = function( test )
+function _entitySelectOptions( test )
 {
   test.description = 'two args call';
   var container = [ 1, 2, 3, 4 ];
@@ -1603,7 +1603,7 @@ var _entitySelectOptions = function( test )
 
 //
 
-var __entitySelectAct = function( test )
+function __entitySelectAct( test )
 {
   test.description = 'qarrey is empty';
   var o =
@@ -1706,7 +1706,7 @@ var __entitySelectAct = function( test )
 
 //
 
-var entityGroup = function( test )
+function entityGroup( test )
 {
   test.description = 'default options';
   var o =

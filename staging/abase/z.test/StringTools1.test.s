@@ -36,7 +36,7 @@ var Self = {};
 
 //
 
-var _toStrFromNumber = function( test )
+function _toStrFromNumber( test )
 {
 
   test.description = 'returns with precision until 5';
@@ -109,7 +109,7 @@ var _toStrFromNumber = function( test )
 };
 
 
-var _toStrIsSimpleElement = function( test )
+function _toStrIsSimpleElement( test )
 {
 
   test.description = 'argument\'s length is less than 40 symbols';
@@ -169,7 +169,7 @@ var _toStrIsSimpleElement = function( test )
 };
 
 
-var toStrForRange = function( test )
+function toStrForRange( test )
 {
 
   test.description = 'returns string representing the range of numbers';
@@ -211,7 +211,7 @@ var toStrForRange = function( test )
 
 //
 
-var strCapitalize = function( test )
+function strCapitalize( test )
 {
 
   test.description = 'first letter is upper case';
@@ -248,7 +248,7 @@ var strCapitalize = function( test )
 
 //
 
-var strTimes = function( test )
+function strTimes( test )
 {
 
   test.description = 'returns the empty string';
@@ -300,7 +300,7 @@ var strTimes = function( test )
 
 //
 
-var strLineCount = function( test )
+function strLineCount( test )
 {
 
   test.description = 'returns 1';
@@ -350,7 +350,7 @@ var strLineCount = function( test )
 
 //
 
-var strSplitStrNumber = function( test )
+function strSplitStrNumber( test )
 {
 
   test.description = 'returns object with one property';
@@ -398,7 +398,7 @@ var strSplitStrNumber = function( test )
 
 //
 
-var strStrip = function( test )
+function strStrip( test )
 {
 
   test.description = 'nothing to remove';
@@ -445,7 +445,7 @@ var strStrip = function( test )
 };
 
 
-var strSplit = function( test )
+function strSplit( test )
 {
 
   test.description = 'returns an array of strings';
@@ -492,7 +492,7 @@ var strSplit = function( test )
 };
 
 
-var strRemoveAllSpaces = function( test )
+function strRemoveAllSpaces( test )
 {
 
   test.description = 'removes the spaces from the given string';
@@ -539,7 +539,7 @@ var strRemoveAllSpaces = function( test )
 };
 
 
-var strDifference = function( test )
+function strDifference( test )
 {
 
   test.description = 'returns the string';
@@ -591,7 +591,7 @@ var strDifference = function( test )
 };
 
 
-var strLattersSpectre = function( test )
+function strLattersSpectre( test )
 {
 
   test.description = 'returns the object';
@@ -615,7 +615,7 @@ var strLattersSpectre = function( test )
 };
 
 
-var strLinesNumber = function( test )
+function strLinesNumber( test )
 {
 
   test.description = 'returns the object';
@@ -651,7 +651,7 @@ var strLinesNumber = function( test )
 };
 
 
-var strCount = function( test )
+function strCount( test )
 {
 
   test.description = 'returns 2';
@@ -694,7 +694,7 @@ var strCount = function( test )
 
 
 
-var strToBytes = function( test )
+function strToBytes( test )
 {
 
   test.description = 'returns the typed-array';

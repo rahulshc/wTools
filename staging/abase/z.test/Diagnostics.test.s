@@ -35,7 +35,7 @@ var _ = wTools;
 
 //
 
-var _err = function( test )
+function _err( test )
 {
 
   var errMsg1 = 'some error message',
@@ -134,7 +134,7 @@ var _err = function( test )
 
 //
 
-var err = function( test )
+function err( test )
 {
   var errMsg1 = 'some error message',
     fileName = 'Diagnostics.test.s',
@@ -187,7 +187,7 @@ var err = function( test )
 
 //
 
-var errLog = function( test )
+function errLog( test )
 {
   var errMsg1 = 'some error message',
     fileName = 'Diagnostics.test.s',
@@ -222,7 +222,7 @@ var errLog = function( test )
 
 //
 
-var assert = function( test )
+function assert( test )
 {
   var err,
     msg1 = 'short error description',
@@ -257,7 +257,7 @@ var assert = function( test )
 
 //
 
-var stack = function( test )
+function stack( test )
 {
   function function1()
   {
