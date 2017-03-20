@@ -203,7 +203,7 @@ var shell = ( function( o )
       done = true;
 
       if( returnCode !== 0 && o.applyingReturnCode )
-      _.appReturnCode( returnCode );
+      _.appExitCode( returnCode );
 
       if( returnCode !== 0 && o.throwingBadReturnCode )
       con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.code ) );

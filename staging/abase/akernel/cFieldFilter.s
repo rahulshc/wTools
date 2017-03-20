@@ -2,6 +2,13 @@
 
 'use strict';
 
+if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
+{
+
+  require( './aKernel.s' );
+
+}
+
 var Self = wTools;
 var _ = wTools;
 

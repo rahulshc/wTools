@@ -106,12 +106,12 @@ function _initConfig()
   if( _global_.Config.debug === undefined )
   _global_.Config.debug = true;
 
-  Object.defineProperty( _global_, 'Config',
-  {
-    value : _global_.Config,
-    enumerable : true,
-    writable : false,
-  });
+  // Object.defineProperty( _global_, 'Config',
+  // {
+  //   value : _global_.Config,
+  //   enumerable : true,
+  //   writable : false,
+  // });
 
   Object.defineProperty( _global_.Config, 'debug',
   {
@@ -146,6 +146,8 @@ function _initUnhandledErrorHandler()
   {
 
     console.error( '------------------------------- unhandled errorr -------------------------------' );
+
+    // console.log( err.message );
 
     if( !err.originalMessage )
     {
@@ -4533,6 +4535,7 @@ function diagnosticLocation( o )
   /* path = _._diagnosticStripPath( path ); */
 
   path = path.replace( /^\s+/,'' );
+  path = path.replace( /^\w+@/,'' );
   path = path.replace( /^at/,'' );
   path = path.replace( /^\s+/,'' );
   path = path.replace( /\s+$/,'' );
@@ -4731,7 +4734,11 @@ function diagnosticStack( stack,first,last )
     while( stack.length )
     {
       var splice = 0;
-      splice |= stack[ 0 ].indexOf( 'at ' ) === -1;
+      // if( stack[ 0 ].indexOf( '@' ) !== -1 )
+      // debugger;
+      // if( stack[ 0 ].indexOf( '@' ) !== -1 )
+      // return '';
+      splice |= ( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 );
       splice |= stack[ 0 ].indexOf( '(vm.js:' ) !== -1;
       splice |= stack[ 0 ].indexOf( '(module.js:' ) !== -1;
       splice |= stack[ 0 ].indexOf( '(internal/module.js:' ) !== -1;
@@ -4742,7 +4749,11 @@ function diagnosticStack( stack,first,last )
     // debugger;
   }
 
-  if( stack[ 0 ].indexOf( 'at ' ) === -1 )
+  // if( stack[ 0 ].indexOf( '@' ) === -1 )
+  // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
+
+  // debugger;
+  if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
   throw Error( 'diagnosticStack : cant parse stack ' + stack );
 
   /* */
@@ -10261,7 +10272,7 @@ function arrayMultislice()
 //
 
 /**
- * The arraySpliceArray() method changes the content of an array (dstArray) by removing existing elements
+ * The arrayCutin() method changes the content of an array (dstArray) by removing existing elements
  * and/or adding new elements from an array (srcArray).
  *
  * @param { Array } dstArray - The target array.
@@ -10275,30 +10286,30 @@ function arrayMultislice()
  *
  * @example
  * // returns [ 1, 2, 3, 4, 5 ]
- * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
+ * _.arrayCutin( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
  *
  * @example
  * // returns [ 1, 'a', 2, 3, 4, 'd' ]
- * _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
+ * _.arrayCutin( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
  *
  * @example
  * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
+ * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
  *
  * @example
  * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
+ * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
  *
  * @example
  * // returns [ 1, 'a', 'b', 'c' ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
+ * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
  *
  * @example
  * // returns [ 1, 4, 5 ]
- * _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
+ * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
  *
  * @returns { Array } Returns the modified array (dstArray) with the new length.
- * @method arraySpliceArray
+ * @method arrayCutin
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
  * @throws { Error } Will throw an Error if (dstArray) is not an Array.
  * @throws { Error } Will throw an Error if (srcArray) is not an Array.
@@ -10324,24 +10335,57 @@ function arrayMultislice()
 //
 //   return dstArray;
 // }
+//
+// //
+//
+// function arraySplice( dstArray,first,replace,srcArray )
+// {
+//
+//   _.assert( _.arrayIs( dstArray ) );
+//   _.assert( _.arrayIs( srcArray ) );
+//
+//   var first = first !== undefined ? first : 0;
+//   var replace = replace !== undefined ? replace : dstArray.length;
+//   var result = dstArray.slice( first,first+replace );
+//
+//   var srcArray = srcArray.slice();
+//   srcArray.unshift( replace );
+//   srcArray.unshift( first );
+//
+//   dstArray.splice.apply( dstArray,srcArray );
+//
+//   return result;
+// }
 
 //
 
-function arraySplice( dstArray,first,replace,srcArray )
+// function arrayCutin( dstArray,first,replace,srcArray )
+function arrayCutin( dstArray,range,srcArray )
 {
 
+  if( _.numberIs( range ) )
+  range = [ range ]
+
+  var first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayIs( dstArray ) );
-  _.assert( _.arrayIs( srcArray ) );
+  _.assert( _.arrayIs( range ) );
+  _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 
-  var first = first !== undefined ? first : 0;
-  var replace = replace !== undefined ? replace : dstArray.length;
-  var result = dstArray.slice( first,first+replace );
+  if( first < 0 )
+  first = 0;
+  if( first > dstArray.length )
+  first = dstArray.length;
+  if( last < first )
+  last = first;
 
-  var srcArray = srcArray.slice();
-  srcArray.unshift( replace );
-  srcArray.unshift( first );
+  var args = srcArray ? srcArray.slice() : [];
+  args.unshift( last-first );
+  args.unshift( first );
 
-  dstArray.splice.apply( dstArray,srcArray );
+  var result = dstArray.splice.apply( dstArray,args );
 
   return result;
 }
@@ -14127,7 +14171,8 @@ var Proto =
   arrayMultislice : arrayMultislice,
 
   // arraySpliceArray : arraySpliceArray,
-  arraySplice : arraySplice, /* experimental */
+  // arraySplice : arraySplice, /* experimental */
+  arrayCutin : arrayCutin,
 
   arrayAs : arrayAs,
 

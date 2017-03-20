@@ -2526,8 +2526,10 @@ function strSplit( o )
       {
 
         var sub = result[ r ].split( delimeter[ s ] );
+        if( sub.length > 1 ) // maybe error here!!!
+        debugger;
         if( sub.length > 1 )
-        _.arraySplice( result,r,r+1,sub );
+        _.arrayCutin( result,[ r,r+1 ],sub );
 
       }
 
@@ -4602,6 +4604,10 @@ function _strColorBackgroundFor( color )
 
 function _strColorBackgroundFormat( str, color )
 {
+
+  if( _.numberIs( color ) )
+  color = _.color.colorNameNearest( color );
+
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
   _.assert( _.strIs( color ) );
@@ -4639,6 +4645,10 @@ function _strColorForegroundFor( color )
 
 function _strColorForegroundFormat( str, color )
 {
+
+  if( _.numberIs( color ) )
+  color = _.color.colorNameNearest( color );
+
   _.assert( arguments.length === 2 );
   _.assert( _.strIs( str ) );
   _.assert( _.strIs( color ) );

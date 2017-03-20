@@ -1501,41 +1501,122 @@ function arrayPrependOnce( test )
 
 };
 
+//
 
-function arraySpliceArray( test )
+function arrayCutin( test )
 {
 
+  debugger;
+
+  /* */
+
+  test.description = 'empth';
+  var dst = [];
+  var cut = _.arrayCutin( [],[],[] );
+  test.identical( cut, [] );
+  test.identical( dst, [] );
+
+  /* */
+
   test.description = 'remove two elements';
-  var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ 1,3 ], [] );
   var expected = [ 1, 4, 5 ];
-  test.identical( got, expected );
+  test.identical( dst, expected );
+  var expected = [ 2, 3 ];
+  test.identical( cut, expected );
 
-  test.description = 'replace three elements from first index';
-  var got = _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
+  /* */
+
+  test.description = 'remove two elements and incut three';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ 1,3 ], [ 11,22,33 ] );
+  var expected = [ 1, 11, 22, 33, 4, 5 ];
+  test.identical( dst, expected );
+  var expected = [ 2, 3 ];
+  test.identical( cut, expected );
+
+  /* */
+
+  test.description = 'pass only begin of range';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ 1 ], [ 11,22,33 ] );
+  var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
+  test.identical( dst, expected );
+  var expected = [];
+  test.identical( cut, expected );
+
+  /* */
+
+  test.description = 'pass empty range';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [], [ 11,22,33 ] );
+  var expected = [ 11, 22, 33, 1, 2, 3, 4, 5 ];
+  test.identical( dst, expected );
+  var expected = [];
+  test.identical( cut, expected );
+
+  /* */
+
+  test.description = 'pass number instead of range';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, 1, [ 11,22,33 ] );
+  var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
+  test.identical( dst, expected );
+  var expected = [];
+  test.identical( cut, expected );
+
+  /* */
+
+  test.description = 'no source, number istead of range';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, 1 );
   var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( got, expected );
+  test.identical( dst, expected );
+  var expected = [];
+  test.identical( cut, expected );
 
-  test.description = 'replace two elements and add a new one';
-  var got = _.arraySpliceArray( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ], -3, 2  );
-  var expected = [ 1, 'a', 2, 3, 4, 'd' ];
-  test.identical( got, expected );
+  /* */
 
-  test.description = 'replace two and add three elements';
-  var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
-  var expected = [ 1, 1, 2, 3, 'a', 'b', 4, 5 ];
-  test.identical( got, expected );
+  test.description = 'no source';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ 1,3 ] );
+  var expected = [ 1, 4, 5 ];
+  test.identical( dst, expected );
+  var expected = [ 2, 3 ];
+  test.identical( cut, expected );
 
-  test.description = 'add the new elements from arguments[0].length';
-  var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
-  var expected = [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ];
-  test.identical( got, expected );
+  /* */
 
-  test.description = 'remove from first index to the end and add the new elements';
-  var got = _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
-  var expected = [ 1, 'a', 'b', 'c' ];
-  test.identical( got, expected );
+  test.description = 'out of bound, begin';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ -10,2 ],[ 11,22,33 ] );
+  var expected = [ 11, 22, 33, 3, 4, 5 ];
+  test.identical( dst, expected );
+  var expected = [ 1, 2 ];
+  test.identical( cut, expected );
 
-  /**/
+  /* */
+
+  test.description = 'out of bound, end';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ 3,10 ],[ 11,22,33 ] );
+  var expected = [ 1, 2, 3, 11, 22, 33 ];
+  test.identical( dst, expected );
+  var expected = [ 4, 5 ];
+  test.identical( cut, expected );
+
+  /* */
+
+  test.description = 'out of bound, both sides';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ -10,10 ],[ 11,22,33 ] );
+  var expected = [ 11, 22, 33 ];
+  test.identical( dst, expected );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( cut, expected );
+
+  /* */
 
   if( Config.debug )
   {
@@ -1543,31 +1624,38 @@ function arraySpliceArray( test )
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
-      _.arraySpliceArray();
+      _.arrayCutin();
     });
 
     test.description = 'not enough arguments';
     test.shouldThrowError( function()
     {
-      _.arraySpliceArray( [ 1, 2, 3, 4, 5 ] );
+      _.arrayCutin( [ 1, 2, 3, 4, 5 ] );
     });
 
-    test.description = 'extra argument';
+    test.description = 'redundant argument';
     test.shouldThrowError( function()
     {
-      _.arraySpliceArray( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3, 'redundant argument' );
+      _.arrayCutin( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3, 'redundant argument' );
     });
 
     test.description = 'wrong type of arguments';
     test.shouldThrowError( function()
     {
-      _.arraySpliceArray( 'wrong argument', 'wrong argument', 'wrong argument', 'wrong argument' );
+      _.arrayCutin( 'wrong argument', 'wrong argument', 'wrong argument', 'wrong argument' );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.arrayCutin( [],[ 'x' ],3 );
     });
 
   }
 
 };
 
+//
 
 function arraySlice( test )
 {
@@ -1608,7 +1696,7 @@ function arraySlice( test )
       _.arraySlice();
     });
 
-    test.description = 'wrong type of arguments';
+    test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
       _.arraySlice( 'wrong argument', 'wrong argument', 'wrong argument' );
@@ -1618,6 +1706,7 @@ function arraySlice( test )
 
 };
 
+//
 
 function arrayAs( test )
 {
@@ -3153,6 +3242,9 @@ var Self =
 
   name : 'wTools.array',
 
+  verbosity : 9,
+  barringConsole : 0,
+
   tests :
   {
 
@@ -3186,7 +3278,7 @@ var Self =
     arrayUpdate : arrayUpdate,
     arrayAppendOnce : arrayAppendOnce,
     arrayPrependOnce : arrayPrependOnce,
-    arraySpliceArray : arraySpliceArray,
+    arrayCutin : arrayCutin,
     arraySlice : arraySlice,
 
     arrayAs : arrayAs,

@@ -5,7 +5,7 @@
 if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
 {
 
-  require( '../wTools.s' );
+  require( './aKernel.s' );
 
 }
 
@@ -326,20 +326,35 @@ appArgsInSubjectAndMapFormat.defaults =
 
 //
 
-function appReturnCode( status )
+function appExitCode( status )
 {
   var result;
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( status === undefined || _.numberIs( status ) );
 
-  // debugger;
-
-  if( typeof process !== 'undefined' )
+  if( _global_.process )
   {
     result = process.exitCode;
     if( status !== undefined )
     process.exitCode = status;
+  }
+
+  return result;
+}
+
+//
+
+function appExit( status )
+{
+  var result;
+
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( status === undefined || _.numberIs( status ) );
+
+  if( _global_.process )
+  {
+    process.exit( status !== undefined ? status : appExitCode() );
   }
 
   return result;
@@ -481,7 +496,8 @@ var Proto =
   appArgsInSubjectAndMapFormat : appArgsInSubjectAndMapFormat,
   appArgs : appArgsInSubjectAndMapFormat,
 
-  appReturnCode : appReturnCode,
+  appExitCode : appExitCode,
+  appExit : appExit,
 
 }
 
