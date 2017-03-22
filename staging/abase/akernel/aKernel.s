@@ -1,7 +1,7 @@
 //#! /usr/bin/env NODE
 ( function _aKernel_s_() {
 
-'use strict';
+'use strict'; // aaa
 
 /**
  * @file wTools.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -22,7 +22,7 @@ if( 1 )
 if( _global_.wBase )
 {
   if( typeof __dirname !== 'undefined' )
-  wTools.includePathUse( __dirname + '/../..' );
+  wTools.pathUse( __dirname + '/../..' );
   // if( _global_.wBase !== _global_.wTools )
   // throw new Error( '_global_.wBase !== _global_.wTools' );
   module[ 'exports' ] = _global_.wBase;
@@ -112,20 +112,23 @@ function _initConfig()
   //   enumerable : true,
   //   writable : false,
   // });
+  //
+  // Object.defineProperty( _global_.Config, 'debug',
+  // {
+  //   value : !!_global_.Config.debug,
+  //   enumerable : true,
+  //   writable : false,
+  // });
+  //
+  // Object.defineProperty( _global_, 'DEBUG',
+  // {
+  //   value : _global_.Config.debug,
+  //   enumerable : true,
+  //   writable : false,
+  // });
 
-  Object.defineProperty( _global_.Config, 'debug',
-  {
-    value : !!_global_.Config.debug,
-    enumerable : true,
-    writable : false,
-  });
-
-  Object.defineProperty( _global_, 'DEBUG',
-  {
-    value : _global_.Config.debug,
-    enumerable : true,
-    writable : false,
-  });
+  _global_.Config.debug = !!_global_.Config.debug;
+  _global_.DEBUG = _global_.Config.debug;
 
   // debugger;
 
@@ -3931,7 +3934,8 @@ function _err( o )
   var catches = '';
   var sourceCode = '';
   var stack = '';
-  var fileName,lineNumber;
+  // var fileName,lineNumber;
+  var location;
   var errors = [];
 
   /* Error.stackTraceLimit = 99; */
@@ -3940,9 +3944,10 @@ function _err( o )
 
   for( var a = 0 ; a < o.args.length ; a++ )
   {
+    var arg = o.args[ a ];
+
     if( o.args[ a ] instanceof Error )
     {
-      var arg = o.args[ a ];
 
       if( !result )
       {
@@ -3978,26 +3983,27 @@ function _err( o )
       o.args[ a ] = '\n' + o.args[ a ];
       errors.push( arg );
 
-      if( !_.atomicIs( arg ) )
-      {
-
-        if( !fileName )
-        fileName = arg.fileName || arg.filename;
-
-        if( lineNumber === undefined )
-        lineNumber = arg.linenumber;
-
-        if( lineNumber === undefined )
-        lineNumber = arg.lineNumber;
-
-        if( lineNumber === undefined )
-        lineNumber = arg.lineno;
-
-      }
+      location = _.diagnosticLocation({ error : arg, location : location });
 
     }
 
   }
+
+  /* look into non-error arguments to find location */
+
+  if( !result )
+  for( var a = 0 ; a < o.args.length ; a++ )
+  {
+    var arg = o.args[ a ];
+
+    if( !_.atomicIs( arg ) )
+    {
+      location = _.diagnosticLocation({ error : arg, location : location });
+    }
+
+  }
+
+  location = location || Object.create( null );
 
   /* make new one if no error in arguments */
 
@@ -4005,6 +4011,8 @@ function _err( o )
   {
     result = new Error( originalMessage + '\n' );
     stack = _.diagnosticStack( result,o.level,-1 );
+    if( location.full && stack.indexOf( '\n' ) === -1 )
+    stack = location.full;
   }
   else
   {
@@ -4055,31 +4063,29 @@ function _err( o )
 
   /* line number */
 
-  if( lineNumber !== undefined )
+  if( location.line !== undefined )
   {
     Object.defineProperty( result, 'lineNumber',
     {
       enumerable : false,
       configurable : true,
       writable : true,
-      value : lineNumber,
+      value : location.line,
     });
   }
 
   /* file name */
 
-  if( fileName !== undefined )
+  if( location.path !== undefined )
   {
-    if( lineNumber !== undefined )
-    originalMessage += '\n' + 'File : ' + fileName + ':' + lineNumber;
-    else
-    originalMessage += '\n' + 'File : ' + fileName;
+    if( location.full !== undefined )
+    originalMessage += '\n' + 'Location : ' + location.full;
     Object.defineProperty( result, 'fileName',
     {
       enumerable : false,
       configurable : true,
       writable : true,
-      value : fileName,
+      value : location.path,
     });
   }
 
@@ -4094,7 +4100,9 @@ function _err( o )
   if( result.sourceCode === undefined )
   {
     var c = '';
-    c = _.diagnosticCode({ stack : stack });
+    location = _.diagnosticLocation({ stack : stack, location : location });
+    // c = _.diagnosticCode({ stack : stack });
+    c = _.diagnosticCode({ location : location });
     if( c && c.length < 400 )
     {
       sourceCode += '\n';
@@ -4456,21 +4464,23 @@ function diagnosticLocation( o )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
 
-  /* */
+  if( !o.location )
+  o.location = Object.create( null );
 
-  function end( location )
+  /* end */
+
+  function end()
   {
-    if( !location )
-    return Object.create( null );
-    var path = location.path;
+
+    var path = o.location.path;
 
     /* full */
 
     if( path )
     {
-      location.full = path;
-      if( location.line !== undefined )
-      location.full += ':' + location.line;
+      o.location.full = path;
+      if( o.location.line !== undefined )
+      o.location.full += ':' + o.location.line;
     }
 
     /* name */
@@ -4481,36 +4491,44 @@ function diagnosticLocation( o )
       var i = name.lastIndexOf( '/' );
       if( i !== -1 )
       name = name.substr( i+1 );
-      location.name = name;
+      o.location.name = name;
     }
 
     /* name long */
 
     if( path )
     {
-      var nameLong = location.name;
-      if( location.line !== undefined )
+      var nameLong = o.location.name;
+      if( o.location.line !== undefined )
       {
-        nameLong += ':' + location.line;
-        if( location.col !== undefined )
-        nameLong += ':' + location.col;
+        nameLong += ':' + o.location.line;
+        if( o.location.col !== undefined )
+        nameLong += ':' + o.location.col;
       }
-      location.nameLong = nameLong;
+      o.location.nameLong = nameLong;
     }
 
-    return location;
+    return o.location;
   }
 
   /* */
 
-  var fileName,lineNumber;
+  // var fileName,lineNumber;
 
-  if( o.error && _.strIs( o.error.fileName ) && _.numberIs( o.error.lineNumber ) )
+  // if( o.error && _.strIs( o.error.fileName ) && _.numberIs( o.error.lineNumber ) )
+  if( o.error )
   {
-    debugger;
-    var result = { path : o.error.fileName, line : o.error.lineNumber, col : o.error.colNumber }
-    return end( result );
+    // debugger;
+    // var result = { path : o.error.fileName, line : o.error.lineNumber, col : o.error.colNumber }
+
+    o.location.path = _.arrayLeftDefined([ o.location.path, o.error.filename, o.error.fileName ]).element;
+    o.location.line = _.arrayLeftDefined([ o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
+    o.location.col = _.arrayLeftDefined([ o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
+
+    return end();
   }
+
+  /* */
 
   if( !o.stack )
   {
@@ -4527,38 +4545,36 @@ function diagnosticLocation( o )
 
   if( _.strIs( o.stack ) )
   o.stack = o.stack.split( '\n' );
-  var path = o.stack[ o.level ];
+  o.location.path = o.stack[ o.level ];
 
-  if( !_.strIs( path ) )
+  if( !_.strIs( o.location.path ) )
   return end();
 
-  /* path = _._diagnosticStripPath( path ); */
+  o.location.path = o.location.path.replace( /^\s+/,'' );
+  o.location.path = o.location.path.replace( /^\w+@/,'' );
+  o.location.path = o.location.path.replace( /^at/,'' );
+  o.location.path = o.location.path.replace( /^\s+/,'' );
+  o.location.path = o.location.path.replace( /\s+$/,'' );
 
-  path = path.replace( /^\s+/,'' );
-  path = path.replace( /^\w+@/,'' );
-  path = path.replace( /^at/,'' );
-  path = path.replace( /^\s+/,'' );
-  path = path.replace( /\s+$/,'' );
+  if( _.strEnds( o.location.path,')' ) )
+  o.location.path = _.strInbetweenOf( o.location.path,'(',')' );
 
-  if( _.strEnds( path,')' ) )
-  path = _.strInbetweenOf( path,'(',')' );
-
-  if( !path )
+  if( !o.location.path )
   return end();
 
-  /* line / col number */
+  /* line / col number from stack */
 
   var lineNumber,colNumber;
   var postfix = /:(\d+)$/;
-  colNumber = postfix.exec( path );
+  colNumber = postfix.exec( o.location.path );
   if( colNumber )
   {
-    path = _.strRemoveEnd( path,colNumber[ 0 ] );
+    o.location.path = _.strRemoveEnd( o.location.path,colNumber[ 0 ] );
     colNumber = colNumber[ 1 ];
-    lineNumber = postfix.exec( path );
+    lineNumber = postfix.exec( o.location.path );
     if( lineNumber )
     {
-      path = _.strRemoveEnd( path,lineNumber[ 0 ] );
+      o.location.path = _.strRemoveEnd( o.location.path,lineNumber[ 0 ] );
       lineNumber = lineNumber[ 1 ];
     }
     else
@@ -4571,15 +4587,13 @@ function diagnosticLocation( o )
   lineNumber = parseInt( lineNumber );
   colNumber = parseInt( colNumber );
 
-  var result = { path : path };
-
   if( !isNaN( lineNumber ) )
-  result.line = lineNumber;
+  o.location.line = lineNumber;
 
   if( !isNaN( colNumber ) )
-  result.col = colNumber;
+  o.location.col = colNumber;
 
-  return end( result );
+  return end();
 }
 
 diagnosticLocation.defaults =
@@ -4587,6 +4601,7 @@ diagnosticLocation.defaults =
   level : 0,
   stack : null,
   error : null,
+  location : null,
 }
 
 //
@@ -9552,56 +9567,57 @@ function arrayToMap( array )
 }
 
 //
-  /**
-   * The callback function to compare two values.
-   *
-   * @callback arrayRemoveArrayOnce~onEqual
-   * @param { * } el - The element of the (dstArray[n]) array.
-   * @param { * } ins - The value to compare (insArray[n]).
-   */
 
-  /**
-   * The arrayRemoveArrayOnce() determines whether a (dstArray) array has the same values as in a (insArray) array,
-   * and returns amount of the deleted elements from the (dstArray).
-   *
-   * It takes two (dstArray, insArray) or three (dstArray, insArray, onEqual) arguments, creates variable (var result = 0),
-   * checks if (arguments[..]) passed two, it iterates over the (insArray) array and calls for each element built in function (dstArray.indexOf(insArray[i])).
-   * that looking for the value of the (insArray[i]) array in the (dstArray) array.
-   * If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
-   * and incrementing the variable (result++).
-   * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the method
-   *
-   * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray),
-   * and then incrementing the variable (result++).
-   *
-   * @see wTools.arrayLeftIndexOf
-   *
-   * @param { arrayLike } dstArray - The target array.
-   * @param { arrayLike } insArray - The source array.
-   * @param { function } [ onEqual ] onEqual - The callback function.
-   * By default, it checks the equality of two arguments.
-   *
-   * @example
-   * // returns 0
-   * _.arrayRemoveArrayOnce( [  ], [  ] );
-   *
-   * @example
-   * // returns 2
-   * _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
-   *
-   * @example
-   * // returns 4
-   * var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
-   *   return a < b;
-   * } );
-   *
-   * @returns { number }  Returns amount of the deleted elements from the (dstArray).
-   * @method arrayRemoveArrayOnce
-   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
-   * @throws { Error } Will throw an Error if (insArray) is not an array-like.
-   * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
-   * @memberof wTools
-   */
+/**
+ * The callback function to compare two values.
+ *
+ * @callback arrayRemoveArrayOnce~onEqual
+ * @param { * } el - The element of the (dstArray[n]) array.
+ * @param { * } ins - The value to compare (insArray[n]).
+ */
+
+/**
+ * The arrayRemoveArrayOnce() determines whether a (dstArray) array has the same values as in a (insArray) array,
+ * and returns amount of the deleted elements from the (dstArray).
+ *
+ * It takes two (dstArray, insArray) or three (dstArray, insArray, onEqual) arguments, creates variable (var result = 0),
+ * checks if (arguments[..]) passed two, it iterates over the (insArray) array and calls for each element built in function (dstArray.indexOf(insArray[i])).
+ * that looking for the value of the (insArray[i]) array in the (dstArray) array.
+ * If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
+ * and incrementing the variable (result++).
+ * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the method
+ *
+ * If callback function (onEqual) returns true, it returns the index that will be removed from (dstArray),
+ * and then incrementing the variable (result++).
+ *
+ * @see wTools.arrayLeftIndexOf
+ *
+ * @param { arrayLike } dstArray - The target array.
+ * @param { arrayLike } insArray - The source array.
+ * @param { function } [ onEqual ] onEqual - The callback function.
+ * By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns 0
+ * _.arrayRemoveArrayOnce( [  ], [  ] );
+ *
+ * @example
+ * // returns 2
+ * _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
+ *
+ * @example
+ * // returns 4
+ * var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
+ *   return a < b;
+ * } );
+ *
+ * @returns { number }  Returns amount of the deleted elements from the (dstArray).
+ * @method arrayRemoveArrayOnce
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (insArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
+ * @memberof wTools
+ */
 
 function arrayRemoveArrayOnce( dstArray,insArray,onEqual )
 {
@@ -11223,9 +11239,10 @@ function arrayRightIndexOf( arr,ins,equalizer )
 
 function arrayLeft( arr,ins,equalizer )
 {
-
   var result = Object.create( null );
   var i = _.arrayLeftIndexOf( arr,ins,equalizer );
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   if( i >= 0 )
   {
@@ -11243,6 +11260,8 @@ function arrayRight( arr,ins,equalizer )
   var result = Object.create( null );
   var i = _.arrayRightIndexOf( arr,ins,equalizer );
 
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
   if( i >= 0 )
   {
     result.index = i;
@@ -11250,6 +11269,26 @@ function arrayRight( arr,ins,equalizer )
   }
 
   return result;
+}
+
+//
+
+function arrayLeftDefined( arr )
+{
+
+  _.assert( arguments.length === 1 );
+
+  return _.arrayLeft( arr,true,function( e ){ return e !== undefined; } );
+}
+
+//
+
+function arrayRightDefined( arr )
+{
+
+  _.assert( arguments.length === 1 );
+
+  return _.arrayRight( arr,true,function( e ){ return e !== undefined; } );
 }
 
 //
@@ -12079,8 +12118,14 @@ function mapExtend( dstObject )
 {
   var result = dstObject;
 
+  // if( arguments.length === 2 )
+  // debugger;
+
   if( result === null )
   result = Object.create( null );
+
+  if( arguments.length === 2 )
+  return Object.assign( result,arguments[ 1 ] );
 
   assert( arguments.length >= 2 );
   assert( objectLike( result ),'mapExtend :','expects object as the first argument' );
@@ -14199,6 +14244,9 @@ var Proto =
   arrayLeft : arrayLeft,
   arrayRight : arrayRight,
 
+  arrayLeftDefined : arrayLeftDefined,
+  arrayRightDefined : arrayRightDefined,
+
   arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
   arrayCountSame : arrayCountSame,
@@ -14426,7 +14474,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './eStringTools.s' );
   require( './eArrayDescriptor.s' );
 
-  _.includePathUse( __dirname + '/../..' );
+  _.pathUse( __dirname + '/../..' );
 
 }
 

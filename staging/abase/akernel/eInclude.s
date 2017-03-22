@@ -17,6 +17,11 @@ var usingSinglePath = 0;
 
 if( typeof module !== 'undefined' )
 var Module = require( 'module' );
+var __include;
+if( typeof require !== 'undefined' )
+__include = require;
+else if( typeof importScripts !== 'undefined' )
+__include = importScripts;
 
 // --
 // routines
@@ -43,16 +48,105 @@ if( Module )
 
 //
 
-function includePathUse( src )
+function pathUse( src )
 {
 
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ) );
 
-  // console.log( 'includePathUse',src );
+  if( _.pathRefine )
+  src = _.pathRefine( src );
 
+  // console.log( 'pathUse',src );
+
+  if( typeof module !== 'undefined' )
   module.paths.push( src );
+
   // Module.globalPaths.push( src );
+
+}
+
+//
+
+function pathUseGlobally( paths )
+{
+
+  if( _.strIs( paths ) )
+  paths = [ paths ];
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( paths ) );
+
+  if( _.fileProvider && _.pathRefine )
+  {
+    for( var p = 0 ; p < paths.length ; p++ )
+    {
+      paths[ p ] = _.fileProvider.pathNativize( _.pathResolve( paths[ p ] ) );
+      console.log( 'pathUseGlobally',paths[ p ] );
+    }
+  }
+
+  return _pathUseGlobally( module,paths,[] );
+
+  // /* patch parents */
+  //
+  // var parent = module;
+  // while( parent )
+  // {
+  //   [].push.apply( parent.paths,paths );
+  //   parent = parent.parent;
+  // }
+  //
+  // /* patch childrens */
+  //
+  // for( var c = 0 ; c < module.children.length ; c++ )
+  // [].push.apply( module.children[ c ].paths,paths );
+
+}
+
+//
+
+function _pathUseGlobally( _module,paths,visited )
+{
+
+  _.assert( arguments.length === 3 );
+  _.assert( _.arrayIs( paths ) );
+
+  if( visited.indexOf( _module ) !== -1 )
+  return;
+
+  [].push.apply( Module.globalPaths, paths );
+
+  /* patch parents */
+
+  while( _module )
+  {
+    _pathUseGloballyChildren( _module,paths,visited );
+    // [].push.apply( _module.paths,paths );
+    _module = _module.parent;
+  }
+
+}
+
+//
+
+function _pathUseGloballyChildren( _module,paths,visited )
+{
+
+  _.assert( arguments.length === 3 );
+  _.assert( _.arrayIs( paths ) );
+
+  if( visited.indexOf( _module ) !== -1 )
+  return;
+
+  visited.push( _module );
+  [].push.apply( _module.paths, paths );
+
+  /* patch parents */
+
+  for( var c = 0 ; c < _module.children.length ; c++ )
+  _pathUseGloballyChildren( _module.children[ c ],paths,visited );
+  // [].push.apply( _module.children[ c ].paths,paths );
 
 }
 
@@ -64,15 +158,14 @@ function _includeSimplyAct( src )
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ),'include expects string' );
 
-  if( src.indexOf( 'Testing' ) !== -1 )
-  debugger;
-
+  // if( src.indexOf( 'Testing' ) !== -1 )
+  // debugger;
   // console.log( src );
 
   if( typeof module !== 'undefined' )
   try
   {
-    return require( src );
+    return __include( src );
   }
   catch( err )
   {
@@ -481,7 +574,13 @@ _includeHandlerMap[ 'wArraySorted' ] =
 var Proto =
 {
 
-  includePathUse : includePathUse,
+  pathUse : pathUse,
+
+  pathUseGlobally : pathUseGlobally,
+  _pathUseGlobally : _pathUseGlobally,
+  _pathUseGloballyChildren : _pathUseGloballyChildren,
+
+  //
 
   _includeSimplyAct : _includeSimplyAct,
   _includeAct : _includeAct,
@@ -492,7 +591,8 @@ var Proto =
   _includeSimplyAny : _includeSimplyAny,
   includeAny : includeAny,
 
-  // includeTestsFrom : includeTestsFrom,
+  //
+
   appArgsInSubjectAndMapFormat : appArgsInSubjectAndMapFormat,
   appArgs : appArgsInSubjectAndMapFormat,
 
