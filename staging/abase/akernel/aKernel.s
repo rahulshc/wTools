@@ -6145,6 +6145,15 @@ function regexpIs( src )
 
 //
 
+function regexpObjectIs( src )
+{
+  if( !_.RegexpObject )
+  return false;
+  return src instanceof _.RegexpObject;
+}
+
+//
+
 function definedIs( src )
 {
   return src !== undefined && src !== null && src !== NaN;
@@ -14040,7 +14049,10 @@ var Proto =
   boolLike : boolLike,
   routineIs : routineIs,
   routineWithNameIs : routineWithNameIs,
+
   regexpIs : regexpIs,
+  regexpObjectIs : regexpObjectIs,
+
   definedIs : definedIs,
 
   eventIs : eventIs,

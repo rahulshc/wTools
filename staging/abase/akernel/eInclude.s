@@ -11,9 +11,9 @@ if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
 
 //
 
+var usingSinglePath = 0;
 var Self = wTools;
 var _ = wTools;
-var usingSinglePath = 0;
 
 if( typeof module !== 'undefined' )
 var Module = require( 'module' );
