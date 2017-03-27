@@ -4766,6 +4766,9 @@ function diagnosticStack( stack,first,last )
   // if( stack[ 0 ].indexOf( '@' ) === -1 )
   // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
 
+  if( !stack[ 0 ] )
+  return '';
+
   // debugger;
   if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
   throw Error( 'diagnosticStack : cant parse stack ' + stack );
