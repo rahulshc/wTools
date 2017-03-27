@@ -4101,7 +4101,6 @@ function _err( o )
   {
     var c = '';
     location = _.diagnosticLocation({ stack : stack, location : location });
-    // c = _.diagnosticCode({ stack : stack });
     c = _.diagnosticCode({ location : location });
     if( c && c.length < 400 )
     {
@@ -4628,7 +4627,7 @@ function diagnosticCode( o )
 
   var code = _.fileProvider.fileRead
   ({
-    pathFile : o.location.path,
+    filePath : o.location.path,
     sync : 1,
     throwing : 0,
   })
@@ -7715,6 +7714,93 @@ function routineOptionsFromThis( routine,_this,constructor )
   options = Object.create( null );
 
   return _.routineOptions( routine,options );
+}
+
+//
+
+function routineInputMultiplicator_functor( o )
+{
+
+  o = _.routineOptions( routineInputMultiplicator_functor,o );
+
+  var routine = o.routine;
+  var fieldFilter = o.fieldFilter;
+  var bypassFilteredOut = o.bypassFilteredOut;
+
+  /* */
+
+  function inputMultiplicator()
+  {
+
+    _.assert( arguments.length === 1 );
+
+    if( _.arrayIs( src ) )
+    {
+      var result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      result[ r ] = routine( src[ r ] );
+      return result;
+    }
+
+    if( _.mapIs( src ) )
+    {
+      var result = Object.create( null );
+      for( var r in src )
+      result[ r ] = routine( src[ r ] );
+      return result;
+    }
+
+    return routine( src );
+
+    _.assert( 0,'unknown argument',_.strTypeOf( src ) );
+
+  }
+
+  /* */
+
+  function inputMultiplicatorWithFilter( src )
+  {
+
+    _.assert( arguments.length === 1 );
+
+    if( _.arrayIs( src ) )
+    {
+      var result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      if( fieldFilter( src[ r ],r,src ) )
+      result.push( routine( src[ r ] ) );
+      else if( bypassFilteredOut )
+      result.push( src[ r ] );
+      return result;
+    }
+
+    if( _.mapIs( src ) )
+    {
+      var result = Object.create( null );
+      for( var r in src )
+      if( fieldFilter( src[ r ],r,src ) )
+      result[ r ] = routine( src[ r ] );
+      else if( bypassFilteredOut )
+      result[ r ] = src[ r ];
+      return result;
+    }
+
+    return routine( src );
+
+    _.assert( 0,'unknown argument',_.strTypeOf( src ) );
+
+  }
+
+  /* */
+
+  return fieldFilter ? inputMultiplicatorWithFilter : inputMultiplicator;
+}
+
+routineInputMultiplicator_functor.defaults =
+{
+  routine : null,
+  fieldFilter : null,
+  bypassFilteredOut : 1,
 }
 
 //
@@ -14141,6 +14227,8 @@ var Proto =
   routineOptionsWithUndefines : routineOptionsWithUndefines,
   routineOptionsFromThis : routineOptionsFromThis,
 
+  routineInputMultiplicator_functor : routineInputMultiplicator_functor,
+
   _comparatorFromTransformer : _comparatorFromTransformer,
 
   bind : null,
@@ -14344,7 +14432,6 @@ var Proto =
   // map logic
 
   mapOwn : mapOwn,
-  // mapHas : mapHas,
 
   mapSame : mapSame,
   mapContain : mapContain,

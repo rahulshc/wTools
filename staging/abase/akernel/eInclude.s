@@ -340,7 +340,7 @@ function includeAny()
 //   _.assert( arguments.length === 1 );
 //   _.assert( _.strIs( path ) );
 //
-//   var files = _.fileProvider.filesFind({ pathFile : path, ends : [ '.test.s','.test.ss' ] });
+//   var files = _.fileProvider.filesFind({ filePath : path, ends : [ '.test.s','.test.ss' ] });
 //
 //   console.log( 'files',_.entitySelect( files,'*.absolute' ) );
 //
@@ -360,7 +360,8 @@ function appArgsInSubjectAndMapFormat( o )
 
   if( _appArgsInSubjectAndMapFormatResult && o.delimeter === _appArgsInSubjectAndMapFormatResult.delimeter )
   return _appArgsInSubjectAndMapFormatResult;
-  var result = Object.create( null );
+
+  var result = _appArgsInSubjectAndMapFormatResult = Object.create( null );
 
   if( _global_.process )
   {
@@ -378,25 +379,25 @@ function appArgsInSubjectAndMapFormat( o )
     if( !args )
     return result;
 
-    args = _.strSplit({ src : args, delimeter : o.delimeter, stripping : 1 });
+    var splitted = _.strSplit({ src : args, delimeter : o.delimeter, stripping : 1 });
 
-    if( args.length === 1 )
+    if( splitted.length === 1 )
     return result;
 
-    args[ 0 ] = _.strCutOffAllLeft( args[ 0 ],' ' )[ 1 ];
+    splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 1 ];
 
     result.map = Object.create( null );
-    for( var a = 1 ; a < args.length ; a++ )
+    for( var a = 1 ; a < splitted.length ; a++ )
     {
-      var left = args[ a-1 ];
-      var right = args[ a+0 ];
+      var left = splitted[ a-1 ];
+      var right = splitted[ a+0 ];
       var val = right;
 
-      if( a < args.length - 1 )
+      if( a < splitted.length - 1 )
       {
         var cuts = _.strCutOffAllLeft( right,' ' );
         var val = cuts[ 0 ];
-        args[ a+0 ] = cuts[ 1 ];
+        splitted[ a+0 ] = cuts[ 1 ];
       }
 
       if( !isNaN( parseFloat( val ) ) )
@@ -545,8 +546,8 @@ _includeHandlerMap[ 'wPath' ] =
 
 _includeHandlerMap[ 'wFiles' ] =
 {
-  includeAny : [ '../../amid/file/Files.ss','amid/file/Files.ss','wFiles' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.FileRecord },
+  includeAny : [ '../../amid/file/FileMid.s','amid/file/FileMid.s','wFiles' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.fileProvider },
 }
 
 _includeHandlerMap[ 'wTemplateTree' ] =
