@@ -2552,7 +2552,7 @@ function strCommonRight( test )
 function strExtractStrips( test )
 {
 
-  var onStrip = function ( part )
+  function onStrip( part )
   {
     var temp = part.split( ':' )
     if( temp.length === 2 )

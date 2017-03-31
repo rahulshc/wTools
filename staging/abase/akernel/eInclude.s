@@ -144,9 +144,9 @@ function _pathUseGloballyChildren( _module,paths,visited )
 
   /* patch parents */
 
+  if( _module.children )
   for( var c = 0 ; c < _module.children.length ; c++ )
   _pathUseGloballyChildren( _module.children[ c ],paths,visited );
-  // [].push.apply( _module.children[ c ].paths,paths );
 
 }
 
@@ -157,10 +157,6 @@ function _includeSimplyAct( src )
 
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ),'include expects string' );
-
-  // if( src.indexOf( 'Testing' ) !== -1 )
-  // debugger;
-  // console.log( src );
 
   if( typeof module !== 'undefined' )
   try
@@ -382,7 +378,10 @@ function appArgsInSubjectAndMapFormat( o )
     var splitted = _.strSplit({ src : args, delimeter : o.delimeter, stripping : 1 });
 
     if( splitted.length === 1 )
-    return result;
+    {
+      result.subject = splitted[ 0 ];
+      return result;
+    }
 
     splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 1 ];
 
@@ -415,7 +414,7 @@ function appArgsInSubjectAndMapFormat( o )
 
 appArgsInSubjectAndMapFormat.defaults =
 {
-  delimeter : ':'
+  delimeter : ':',
 }
 
 //

@@ -150,7 +150,7 @@ function testFunction( test, desc, src, options, expected )
 
 //
 
-var toStrUnwrapped = function ( test )
+function toStrUnwrapped( test )
 {
   var desc =  'Error test',
   src =
@@ -378,7 +378,7 @@ toStrUnwrapped.cover = [ _.toStr ];
 
 //
 
-var toStrError = function ( test )
+function toStrError( test )
 {
   var desc =  'Error test',
   src =

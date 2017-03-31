@@ -55,7 +55,7 @@ function entityMap( test )
     expected4 = { a: '1a', b: '9b', c: '16c' };
 
 
-  var callback1 = function (v, i, ent )
+  function callback1(v, i, ent )
   {
     return v * v;
   };
@@ -412,7 +412,7 @@ function entityMax( test )
 
 //
 
-var  _entitySame = function( test )
+function _entitySame( test )
 {
   // number values
 

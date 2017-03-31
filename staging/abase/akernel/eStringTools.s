@@ -1025,9 +1025,65 @@ function _toStrFromHashMap( src,o )
   var result = '';
   var simple = 0;
 
-  throw _.err( 'not implemented' );
+  // throw _.err( 'not implemented' );
+  _assert( src instanceof Map ); debugger;
 
-  // _assert( src instanceof Map );
+  src.forEach( function( e,k )
+  {
+    result += '\n' + k + ' : ' + e;
+  });
+
+  return { text : result, simple : 0 };
+
+  /* item options */
+
+  var optionsItem = _.mapExtend( {},o );
+  optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
+  optionsItem.tab = o.tab + o.dtab;
+  optionsItem.level = o.level + 1;
+  optionsItem.prependTab = 0;
+
+  /* get names */
+
+  var keys = _toStrFromObjectKeysFiltered( src,o );
+
+  /* empty case */
+
+  var length = keys.length;
+  if( length === 0 )
+  {
+    if( !o.wrap )
+    return { text : '', simple : 1 };
+    return { text : '{}', simple : 1 };
+  }
+
+  /* is simple */
+
+  var simple = !optionsItem.multiline;
+  if( simple )
+  simple = length < 4;
+  if( simple )
+  for( var k in src )
+  {
+    simple = _toStrIsSimpleElement( src[ k ],optionsItem );
+    if( !simple )
+    break;
+  }
+
+  /* */
+
+  result += _toStrFromContainer
+  ({
+    values : src,
+    names : keys,
+    optionsContainer : o,
+    optionsItem : optionsItem,
+    simple : simple,
+    prefix : '{',
+    postfix : '}',
+  });
+
+  return { text : result, simple : simple };
   //
   // /* */
   //

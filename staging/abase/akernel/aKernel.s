@@ -4767,7 +4767,7 @@ function diagnosticStack( stack,first,last )
   // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
 
   if( !stack[ 0 ] )
-  return '';
+  return '{ stack is empty }';
 
   // debugger;
   if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
@@ -7724,15 +7724,27 @@ function routineOptionsFromThis( routine,_this,constructor )
 function routineInputMultiplicator_functor( o )
 {
 
+  if( _.routineIs( o ) || _.strIs( o ) )
+  o = { routine : o }
+
   o = _.routineOptions( routineInputMultiplicator_functor,o );
 
+  var routineName = o.routine;
   var routine = o.routine;
   var fieldFilter = o.fieldFilter;
   var bypassFilteredOut = o.bypassFilteredOut;
 
+  if( strIs( routine ) )
+  routine = function methodCall()
+  {
+    return this[ routineName ].apply( this,arguments );
+  }
+
+  _.assert( _.routineIs( routine ) );
+
   /* */
 
-  function inputMultiplicator()
+  function inputMultiplicator( src )
   {
 
     _.assert( arguments.length === 1 );
@@ -7741,7 +7753,7 @@ function routineInputMultiplicator_functor( o )
     {
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
-      result[ r ] = routine( src[ r ] );
+      result[ r ] = routine.call( this,src[ r ] );
       return result;
     }
 
@@ -7749,11 +7761,11 @@ function routineInputMultiplicator_functor( o )
     {
       var result = Object.create( null );
       for( var r in src )
-      result[ r ] = routine( src[ r ] );
+      result[ r ] = routine.call( this,src[ r ] );
       return result;
     }
 
-    return routine( src );
+    return routine.call( this,src );
 
     _.assert( 0,'unknown argument',_.strTypeOf( src ) );
 
@@ -7771,7 +7783,7 @@ function routineInputMultiplicator_functor( o )
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       if( fieldFilter( src[ r ],r,src ) )
-      result.push( routine( src[ r ] ) );
+      result.push( routine.call( this,src[ r ] ) );
       else if( bypassFilteredOut )
       result.push( src[ r ] );
       return result;
@@ -7782,13 +7794,13 @@ function routineInputMultiplicator_functor( o )
       var result = Object.create( null );
       for( var r in src )
       if( fieldFilter( src[ r ],r,src ) )
-      result[ r ] = routine( src[ r ] );
+      result[ r ] = routine.call( this,src[ r ] );
       else if( bypassFilteredOut )
       result[ r ] = src[ r ];
       return result;
     }
 
-    return routine( src );
+    return routine.call( this,src );
 
     _.assert( 0,'unknown argument',_.strTypeOf( src ) );
 
@@ -12505,9 +12517,30 @@ function _mapExtendRecursiveFiltering( filter,dst,src )
 function _mapExtendRecursive( dst,src )
 {
 
-  throw _.err( 'not implemented' );
+  _.assert( _.objectIs( src ) ); 
+
+  for( var s in src )
+  {
+
+    if( _.objectIs( src[ s ] ) )
+    {
+
+      if( !_.objectIs( dst[ s ] ) )
+      dst[ s ] = Object.create( null );
+      _mapExtendRecursive( dst[ s ],src[ s ] );
+
+    }
+    else
+    {
+
+      dst[ s ] = src[ s ];
+
+    }
+
+  }
 
 }
+
 // --
 // map test
 // --

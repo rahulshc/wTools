@@ -65,6 +65,9 @@ var shell = ( function( o )
     _.routineOptions( shell,o );
     _.assert( arguments.length === 1 );
 
+    if( o.outputCollecting )
+    o.output = '';
+
     /* */
 
     if( !ChildProcess )
@@ -134,6 +137,9 @@ var shell = ( function( o )
       if( _.strEnds( data,'\n' ) )
       data = _.strRemoveEnd( data,'\n' );
 
+      if( o.outputCollecting )
+      o.output += data;
+
       if( !o.outputRaw )
       data = 'stdout :\n' + _.strIndentation( data,'  ' );
 
@@ -164,7 +170,7 @@ var shell = ( function( o )
       if( _.color && o.usingColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
 
-      debugger;
+      // debugger;
 
       logger.warn( data );
     });
@@ -205,10 +211,13 @@ var shell = ( function( o )
       if( returnCode !== 0 && o.applyingReturnCode )
       _.appExitCode( returnCode );
 
+      o.returnCode = returnCode;
+
       if( returnCode !== 0 && o.throwingBadReturnCode )
       con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.code ) );
       else
-      con.give( returnCode );
+      con.give( o );
+      /*con.give( returnCode );*/
 
     });
 
@@ -226,6 +235,7 @@ shell.defaults =
   usingColoring : 1,
   outputRaw : 0,
   outputPiping : 1,
+  outputCollecting : 1,
   verbosity : 1,
 }
 
