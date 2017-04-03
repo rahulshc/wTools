@@ -10329,29 +10329,36 @@ function arrayGrow( array,f,l,val )
 //
 
 /**
- * The arraySlice() returns a shallow copy of a portion of an array
- * into f new array.
+ * Returns a copy of original array( array ) that contains elements from index( f ) to index( l ),
+ * but not including ( l ).
  *
- * It takes three arguments (array, f, l)
- * checks if (array) is an Array, if (f) and (l) are numbers.
- * Creates variables (result, f, l) and assigns them values.
- * The arraySlice() creates a new array (result) from (f) to but not including (l),
- * and returns (result).
- *
- * @param { Array } array - An array to return a new array from begin to but not including end.
+ * If ( l ) is omitted or ( l ) > ( array.length ), arraySlice extracts through the end of the sequence ( array.length ).
+ * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
+ * If ( f ) < 0, zero is assigned to begin index( f ).
+
+ * @param { Array } array - Source array.
  * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
  * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
- * If (l) is omitted, arraySlice extracts through the end of the sequence (array.length).
  *
  * @example
- * // returns [ 3, 4, 5, 6 ]
  * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
+ * // returns [ 3, 4, 5, 6 ]
+ *
+ * @example
+ * // begin index is less then zero
+ * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * //end index is bigger then length of array
+ * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
+ * // returns [ 6, 7 ]
  *
  * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
- * @throws { Error } Will throw an Error if (array) is not an Array.
- * @throws { Error } Will throw an Error if (f) is not a Number.
- * @throws { Error } Will throw an Error if (l) is not a Number.
+ * @throws { Error } Will throw an Error if ( array ) is not an Array.
+ * @throws { Error } Will throw an Error if ( f ) is not a Number.
+ * @throws { Error } Will throw an Error if ( l ) is not a Number.
  * @memberof wTools
 */
 
