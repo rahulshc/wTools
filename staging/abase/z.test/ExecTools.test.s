@@ -15,32 +15,18 @@ if( typeof module !== 'undefined' )
 {
 
   require( '../wTools.s' );
-  require( '../component/ExecTools.s' );
+  // require( '../component/ExecTools.s' );
 
-  // require( '../../../../wTesting/staging/abase/xTesting/Testing.debug.s' );
+  var _ = wTools
 
-  try
-  {
-    require( '../../amid/diagnostic/Testing.debug.s' );
-  }
-  catch( err )
-  {
-    require( 'wTesting' );
-  }
-
-  try
-  {
-    require( '../../abase/object/printer/printer/LoggerToJstructure.s' );
-  }
-  catch( err )
-  {
-    require( 'wLoggerToJstructure' );
-  }
+  _.include( 'wLoggerToJstructure' );
+  _.include( 'wTesting' );
 
 }
 
 var _ = wTools;
 var Self = {};
+var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
@@ -62,13 +48,13 @@ var shell = function shell( test )
   // {
   //   test.description = 'bad command, shell';
   //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'shell' });
-  //   return test.shouldThrowError( con );
+  //   return test.shouldThrowErrorSync( con );
   // })
   // .ifNoErrorThen( function()
   // {
   //   test.description = 'bad command, spawn';
   //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'spawn' });
-  //   return test.shouldThrowError( con );
+  //   return test.shouldThrowErrorSync( con );
   // })
   // .ifNoErrorThen( function()
   // {
@@ -87,8 +73,9 @@ var Proto =
 {
 
   name : 'ExecTools',
-  verbose : 1,
-  logger : wLoggerToJstructure(),
+  verbosity : 1,
+  sourceFilePath : sourceFilePath,
+  // logger : wLoggerToJstructure(),
 
   tests :
   {
@@ -101,15 +88,16 @@ _.mapExtend( Self,Proto );
 
 //
 
-debugger;
+Self = wTestSuite( Self );
+
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self )
-.thenDo( function( err,suit )
-{
-  debugger;
-  console.log( 'done!' );
-  console.log( 'err',err );
-  console.log( 'suit',suit );
-});
+// .doThen( function( err,suit )
+// {
+//   debugger;
+//   console.log( 'done!' );
+//   console.log( 'err',err );
+//   console.log( 'suit',suit );
+// });
 
 } )( );

@@ -5,10 +5,19 @@
 if( typeof module !== 'undefined' )
 {
 
-  if( require( 'fs' ).existsSync( __dirname + '/../object/Testing.debug.s' ) )
-  require( '../object/Testing.debug.s' );
-  else
-  require( 'wTesting' );
+  //if( typeof wBase === 'undefined' )
+  try
+  {
+    require( '../../abase/wTools.s' );
+  }
+  catch( err )
+  {
+    require( 'wTools' );
+  }
+
+  var _ = wTools;
+
+  _.include( 'wTesting' );
 
   require( './ArraySorted.test.s' );
   require( './Consequence.test.s' );

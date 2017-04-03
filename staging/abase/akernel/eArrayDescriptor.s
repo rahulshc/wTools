@@ -19,7 +19,7 @@ var Self = Object.create( null );
 // routines
 // --
 
-var mixinArrayDescriptor = function mixinArrayDescriptor( dst )
+function mixinArrayDescriptor( dst )
 {
 
   _.assert( _.objectIs( dst ) );
@@ -32,7 +32,7 @@ var mixinArrayDescriptor = function mixinArrayDescriptor( dst )
 
 //
 
-var makeArrayOfLength = function makeArrayOfLength( length )
+function makeArrayOfLength( length )
 {
   if( length === undefined )
   length = 0;
@@ -47,7 +47,7 @@ var makeArrayOfLength = function makeArrayOfLength( length )
 
 //
 
-var makeArrayOfLengthZeroed = function makeArrayOfLengthZeroed( length )
+function makeArrayOfLengthZeroed( length )
 {
   if( length === undefined )
   length = 0;
@@ -66,7 +66,7 @@ var makeArrayOfLengthZeroed = function makeArrayOfLengthZeroed( length )
 
 //
 
-var makeArrayCoercing = function makeArrayCoercing( src )
+function makeArrayCoercing( src )
 {
   _.assert( _.arrayLike( src ) );
   _.assert( arguments.length === 1 );

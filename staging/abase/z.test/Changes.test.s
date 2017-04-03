@@ -5,21 +5,24 @@
 if( typeof module !== 'undefined' )
 {
 
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/xTesting/Testing.debug.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
-    require( 'wTesting' );
+    require( 'wTools' );
   }
+
+  var _ = wTools;
+
+  _.include( 'wTesting' );
 
 }
 
-_global_.wTests = _global_.wTests === undefined ? {} : _global_.wTests;
-
 var _ = wTools;
-var Self = {};
+var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 // --
 // common
@@ -148,7 +151,7 @@ var changesArray =
 // test
 // --
 
-var changesExtend = function( test )
+function changesExtend( test )
 {
   var self = this;
 
@@ -388,7 +391,7 @@ var changesExtend = function( test )
 
 //
 
-var changesSelect = function( test )
+function changesSelect( test )
 {
   var self = this;
 
@@ -461,7 +464,7 @@ var changesSelect = function( test )
 
 //
 
-var changesApply = function( test )
+function changesApply( test )
 {
   var self = this;
 
@@ -576,10 +579,13 @@ var changesApply = function( test )
 // proto
 // --
 
-var Proto =
+var Self =
 {
 
-  tests:
+  name : 'wTools.Changes',
+  sourceFilePath : sourceFilePath,
+
+  tests :
   {
 
     changesExtend: changesExtend,
@@ -588,14 +594,11 @@ var Proto =
 
   },
 
-  name : 'wTools.Changes',
-
 };
 
-Object.setPrototypeOf( Self, Proto );
-wTests[ Self.name ] = Self;
+Self = wTestSuite( Self );
 
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self );
+_.Testing.test( Self.name );
 
 } )( );

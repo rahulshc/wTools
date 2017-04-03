@@ -5,29 +5,31 @@
 if( typeof module !== 'undefined' )
 {
 
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/xTesting/Testing.debug.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
-    require( 'wTesting' );
+    require( 'wTools' );
   }
 
+  var _ = wTools;
 
+  _.include( 'wTesting' );
   require( '../mixin/EventHandler.s' );
+
 }
 
-_global_.wTests = _global_.wTests === undefined ? {} : _global_.wTests;
-
 var _ = wTools;
-var Self = {};
+var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 // --
 // test
 // --
 
-var basic = function( test )
+function basic( test )
 {
   var self = this;
 
@@ -47,9 +49,9 @@ var basic = function( test )
 
   test.description = 'eventHandlerAppend';
 
-  var onEvent1 = function( e ){ return entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; };
-  var onEvent2 = function( e ){ return entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; };
-  var onEvent3 = function( e ){ return entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; };
+  function onEvent1( e ){ return entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; };
+  function onEvent2( e ){ return entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; };
+  function onEvent3( e ){ return entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; };
 
   entity1.on( 'event1',onEvent1 );
   entity1.eventHandlerAppend( 'event2',onEvent2 );
@@ -79,10 +81,10 @@ var basic = function( test )
 
   test.description = 'eventHandleUntil';
 
-  var onUntil0 = function( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 0; };
-  var onUntil1 = function( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 1; };
-  var onUntil2 = function( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 2; };
-  var onUntil3 = function( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 3; };
+  function onUntil0( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 0; };
+  function onUntil1( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 1; };
+  function onUntil2( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 2; };
+  function onUntil3( e ){ entity1[ e.kind ] = ( entity1[ e.kind ] || 0 ) + 1; return 3; };
 
   entity1.on( 'until',onUntil0 );
   entity1.on( 'until',onUntil1 );
@@ -217,23 +219,24 @@ var basic = function( test )
 // proto
 // --
 
-var Proto =
+var Self =
 {
 
-  tests:
+  name : 'EventHandler',
+  sourceFilePath : sourceFilePath,
+
+  tests :
   {
 
-    basic: basic,
-  },
+    basic : basic,
 
-  name : 'EventHandler',
+  },
 
 };
 
-Object.setPrototypeOf( Self, Proto );
-wTests[ Self.name ] = Self;
+Self = wTestSuite( Self );
 
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self );
+_.Testing.test( Self.name );
 
 } )( );

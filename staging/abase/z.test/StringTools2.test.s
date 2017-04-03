@@ -15,26 +15,27 @@ node ./staging/z.test/Sample.test.s
 if( typeof module !== 'undefined' )
 {
 
-  require( '../wTools.s' );
-  require( '../component/StringTools.s' );
-
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../amid/diagnostic/Testing.debug.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
-    require( 'wTesting' );
+    require( 'wTools' );
   }
+
+  var _ = wTools;
+
+  _.include( 'wTesting' );
 
 }
 
 var _ = wTools;
-var Self = {};
 
 //
 
-var strCapitalize = function( test )
+function strCapitalize( test )
 {
 
   test.description = 'single word';
@@ -75,7 +76,7 @@ var strCapitalize = function( test )
 
 //
 
-var strReplaceAll = function( test )
+function strReplaceAll( test )
 {
   test.description = 'simple replace';
   var got = _.strReplaceAll( 'aabaa','b','c' );
@@ -180,7 +181,7 @@ var strReplaceAll = function( test )
 
 //
 
-var strDropPrefix = function( test )
+function strDropPrefix( test )
 {
   test.description = 'returns string with removed occurrence from start';
   var got = _.strDropPrefix( 'example','exa' );
@@ -227,7 +228,7 @@ var strDropPrefix = function( test )
 
 //
 
-var strDropPostfix = function( test )
+function strDropPostfix( test )
 {
   test.description = 'returns string with removed occurrence from end';
   var got = _.strDropPostfix( 'example','mple' );
@@ -273,7 +274,7 @@ var strDropPostfix = function( test )
 
 //
 
-var strHtmlEscape = function( test )
+function strHtmlEscape( test )
 {
   test.description = 'replaces html escape symbols';
   var got = _.strHtmlEscape( '<&test &text &here>' );
@@ -321,7 +322,7 @@ var strHtmlEscape = function( test )
 
 //
 
-var strIndentation = function( test )
+function strIndentation( test )
 {
   test.description = 'returns indented string';
   var got = _.strIndentation( 'a\nb\nc','\t' );
@@ -361,7 +362,7 @@ var strIndentation = function( test )
 
 //
 
-var strCamelize = function( test )
+function strCamelize( test )
 {
   test.description = 'converts string to camelcase';
   var got = _.strCamelize( 'a-b_c/d' );
@@ -417,7 +418,7 @@ var strCamelize = function( test )
 
 //
 
-var strFilenameFor = function( test )
+function strFilenameFor( test )
 {
   test.description = 'converts string to camelcase';
   var got = _.strFilenameFor( "'example\\file?name.txt" );
@@ -468,7 +469,7 @@ var strFilenameFor = function( test )
 
 //
 
-var toStrMethods = function( test )
+function toStrMethods( test )
 {
   test.description = 'converts routine to string default options';
   var got = _.toStrMethods( function route() {} );
@@ -512,7 +513,7 @@ var toStrMethods = function( test )
 
 //
 
-var toStrFields = function( test )
+function toStrFields( test )
 {
   test.description = 'Fields default options';
   var got = _.toStrFields( [ 1, 2, 'text', undefined ] );
@@ -563,7 +564,7 @@ var toStrFields = function( test )
 
 //
 
-var _toStrShort = function( test )
+function _toStrShort( test )
 {
   test.description = 'Array length test';
   var got = _._toStrShort( [ 1, 2, 'text', undefined ], { } );
@@ -618,7 +619,7 @@ var _toStrShort = function( test )
 
 //
 
-var _toStrIsVisibleElement = function( test )
+function _toStrIsVisibleElement( test )
 {
   test.description = 'default options';
   var got = _._toStrIsVisibleElement( 123, {} );
@@ -663,7 +664,7 @@ var _toStrIsVisibleElement = function( test )
 
 //
 
-var _toStrIsSimpleElement = function( test )
+function _toStrIsSimpleElement( test )
 {
   test.description = 'default options';
   var got = _._toStrIsSimpleElement( 123, {} );
@@ -718,7 +719,7 @@ var _toStrIsSimpleElement = function( test )
 
 //
 
-var _toStrFromRoutine = function( test )
+function _toStrFromRoutine( test )
 {
   test.description = 'routine test';
   var got = _._toStrFromRoutine( function a () {} );
@@ -752,7 +753,7 @@ var _toStrFromRoutine = function( test )
 
 //
 
-var _toStrFromNumber = function( test )
+function _toStrFromNumber( test )
 {
   test.description = 'default options';
   var got = _._toStrFromNumber( 123, {} );
@@ -814,7 +815,7 @@ var _toStrFromNumber = function( test )
 
 //
 
-var _toStrFromStr = function( test )
+function _toStrFromStr( test )
 {
   test.description = 'default options';
   var got = _._toStrFromStr( '123', {} );
@@ -865,7 +866,7 @@ var _toStrFromStr = function( test )
 
 //
 
-var _toStrFromArray = function( test )
+function _toStrFromArray( test )
 {
 
   test.description = 'default options';
@@ -923,7 +924,7 @@ var _toStrFromArray = function( test )
 
 //
 
-var _toStrFromObject = function( test )
+function _toStrFromObject( test )
 {
   var def = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0};
 
@@ -999,14 +1000,14 @@ var _toStrFromObject = function( test )
 
 //
 
-var _toStrFromContainer = function( test )
+function _toStrFromContainer( test )
 {
   var o = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0, noSubObject : 0, prependTab : 1, json : 0, stringWrapper : '"' };
   var src = { a : 1, b : 2, c : 'text' };
   var names = _.mapOwnKeys( src );
   var optionsItem = null;
 
-  var item_options = function()
+  function item_options()
   {
   optionsItem = _.mapExtend( {}, o);
   optionsItem.noObject = o.noSubObject ? 1 : 0;
@@ -1111,7 +1112,7 @@ var _toStrFromContainer = function( test )
 
 //
 
-var strTimes = function( test )
+function strTimes( test )
 {
   test.description = 'concatenation test';
   var got = _.strTimes( 'a', 2 );
@@ -1158,7 +1159,7 @@ var strTimes = function( test )
 
 //
 
-var strLineCount = function( test )
+function strLineCount( test )
 {
   test.description = 'one line string test';
   var got = _.strLineCount( 'one line' );
@@ -1206,7 +1207,7 @@ var strLineCount = function( test )
 
 //
 
-var _strInhalf = function( test )
+function _strInhalf( test )
 {
   test.description = 'three words with comma';
   var got = _._strInhalf( { src : 'one,two,three', splitter : ',' } );
@@ -1274,7 +1275,7 @@ var _strInhalf = function( test )
 
 //
 
-var strInhalfLeft = function( test )
+function strInhalfLeft( test )
 {
 
   test.description = 'three words with comma';
@@ -1349,7 +1350,7 @@ var strInhalfLeft = function( test )
 
 //
 
-var strInhalfRight = function( test )
+function strInhalfRight( test )
 {
 
   test.description = 'three words with comma';
@@ -1424,7 +1425,7 @@ var strInhalfRight = function( test )
 
 //
 
-var strSplit = function( test )
+function strSplit( test )
 {
 
   test.description = 'simple string, defalut options';
@@ -1492,7 +1493,7 @@ var strSplit = function( test )
 
 //
 
-var strStrip = function( test )
+function strStrip( test )
 {
 
   test.description = 'simple string, defalut options';
@@ -1545,7 +1546,7 @@ var strStrip = function( test )
 
 //
 
-var strRemoveAllSpaces = function( test )
+function strRemoveAllSpaces( test )
 {
 
   test.description = 'simple string, defalut options';
@@ -1601,7 +1602,7 @@ var strRemoveAllSpaces = function( test )
 
 //
 
-var strStripEmptyLines = function( test )
+function strStripEmptyLines( test )
 {
 
   test.description = 'simple string';
@@ -1652,7 +1653,7 @@ var strStripEmptyLines = function( test )
 
 //
 
-var strReplaceNames = function( test )
+function strReplaceNames( test )
 {
 
   test.description = 'simple string';
@@ -1705,7 +1706,7 @@ var strReplaceNames = function( test )
 
 //
 
-var strJoin = function( test )
+function strJoin( test )
 {
 
   test.description = 'join numbers';
@@ -1759,7 +1760,7 @@ var strJoin = function( test )
 
 //
 
-var strUnjoin = function( test )
+function strUnjoin( test )
 {
   var any = _.strUnjoin.any;
 
@@ -1853,7 +1854,7 @@ var strUnjoin = function( test )
 
 //
 
-var strUnicodeEscape = function( test )
+function strUnicodeEscape( test )
 {
 
   test.description = 'simple string';
@@ -1901,7 +1902,7 @@ var strUnicodeEscape = function( test )
 
 //
 
-var strLinesNumber = function( test )
+function strLinesNumber( test )
 {
 
   test.description = 'simple string';
@@ -1946,7 +1947,7 @@ var strLinesNumber = function( test )
 
 //
 
-var strCount = function( test )
+function strCount( test )
 {
 
   test.description = 'simple string';
@@ -2000,7 +2001,7 @@ var strCount = function( test )
 
 //
 
-var strDup = function( test )
+function strDup( test )
 {
 
   test.description = 'simple string';
@@ -2054,7 +2055,7 @@ var strDup = function( test )
 
 //
 
-var strToBytes = function( test )
+function strToBytes( test )
 {
 
   test.description = 'simple string';
@@ -2101,7 +2102,7 @@ var strToBytes = function( test )
 
 //
 
-var strMetricFormat = function( test )
+function strMetricFormat( test )
 {
 
   test.description = 'default options';
@@ -2191,7 +2192,7 @@ var strMetricFormat = function( test )
 
 //
 
-var strMetricFormatBytes = function( test )
+function strMetricFormatBytes( test )
 {
 
   test.description = 'default options';
@@ -2253,7 +2254,7 @@ var strMetricFormatBytes = function( test )
 
 //
 
-var strTimeFormat = function( test )
+function strTimeFormat( test )
 {
 
   test.description = 'simple number';
@@ -2296,7 +2297,7 @@ var strTimeFormat = function( test )
 
 //
 
-var strShort = function( test )
+function strShort( test )
 {
 
   test.description = 'simple string';
@@ -2387,7 +2388,7 @@ var strShort = function( test )
 
 //
 
-var strLinesSelect = function( test )
+function strLinesSelect( test )
 {
   var src =
   `Lorem
@@ -2470,7 +2471,7 @@ var strLinesSelect = function( test )
 
 //
 
-var strCommonLeft = function( test )
+function strCommonLeft( test )
 {
   test.description = 'no args';
   var got = _.strCommonLeft( );
@@ -2509,7 +2510,7 @@ var strCommonLeft = function( test )
 
 //
 
-var strCommonRight = function( test )
+function strCommonRight( test )
 {
   test.description = 'no args';
   var got = _.strCommonRight( );
@@ -2548,10 +2549,10 @@ var strCommonRight = function( test )
 
 //
 
-var strExtractStrips = function( test )
+function strExtractStrips( test )
 {
 
-  var onStrip = function ( part )
+  function onStrip( part )
   {
     var temp = part.split( ':' )
     if( temp.length === 2 )
@@ -2599,7 +2600,9 @@ var strExtractStrips = function( test )
 
 }
 
-var Proto =
+//
+
+var Self =
 {
 
   name : 'StringTools2 test',
@@ -2657,9 +2660,8 @@ var Proto =
 
 }
 
-_.mapExtend( Self,Proto );
-
+Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self );
+_.Testing.test( Self.name );
 
 } )( );

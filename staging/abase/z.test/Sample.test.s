@@ -15,23 +15,28 @@ node ./staging/z.test/Sample.test.s
 if( typeof module !== 'undefined' )
 {
 
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/xTesting/Testing.debug.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
-    require( 'wTesting' );
+    require( 'wTools' );
   }
+
+  var _ = wTools;
+
+  _.include( 'wTesting' );
 
 }
 
 var _ = wTools;
-var Self = {};
+var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
-var arrayRange = function( test )
+function arrayRange( test )
 {
 
   test.description = 'single zero';
@@ -70,25 +75,25 @@ var arrayRange = function( test )
   {
 
     test.description = 'extra argument';
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange( [ 1,3 ],'wrong arguments' );
     });
 
     test.description = 'argument not wrapped into array';
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange( 1,3 );
     });
 
     test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange( 'wrong arguments' );
     });
 
     test.description = 'no arguments'
-    test.shouldThrowError( function()
+    test.shouldThrowErrorSync( function()
     {
       _.arrayRange();
     });
@@ -99,12 +104,13 @@ var arrayRange = function( test )
 
 //
 
-var Proto =
+var Self =
 {
 
   name : 'simple1',
+  sourceFilePath : sourceFilePath,
 
-  tests:
+  tests :
   {
 
     arrayRange : arrayRange,
@@ -113,9 +119,8 @@ var Proto =
 
 }
 
-_.mapExtend( Self,Proto );
-
+Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self );
+_.Testing.test( Self.name );
 
 } )( );

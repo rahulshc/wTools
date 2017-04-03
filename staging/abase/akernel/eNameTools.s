@@ -25,7 +25,7 @@ var _arraySlice = _.arraySlice;
  * @memberof wTools
  */
 
-var nameFielded = function nameFielded( nameString )
+function nameFielded( nameString )
 {
 
   if( _.objectIs( nameString ) )
@@ -52,7 +52,7 @@ var nameFielded = function nameFielded( nameString )
  * @memberof wTools
  */
 
-var nameUnfielded = function nameUnfielded( nameObject )
+function nameUnfielded( nameObject )
 {
   var name = {};
 
@@ -92,7 +92,7 @@ var nameUnfielded = function nameUnfielded( nameObject )
  * @memberof wTools
  */
 
-var namesCoded = function namesCoded( namesMap )
+function namesCoded( namesMap )
 {
   var result = {}
 
@@ -111,7 +111,7 @@ var namesCoded = function namesCoded( namesMap )
 // id
 // --
 
-var idGenerateDate = function( prefix,postfix,fast )
+function idGenerateDate( prefix,postfix,fast )
 {
 
   var date = new Date;

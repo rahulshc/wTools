@@ -5,30 +5,29 @@
 if( typeof module !== 'undefined' )
 {
 
-  require( '../wTools.s' );
-  require( '../component/StringTools.s' );
-
+  //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/xTesting/Testing.debug.s' );
+    require( '../../abase/wTools.s' );
   }
   catch( err )
   {
-    require( 'wTesting' );
+    require( 'wTools' );
   }
+
+  var _ = wTools;
+
+  _.include( 'wTesting' );
 
 }
 
-_global_.wTests = _global_.wTests === undefined ? {} : _global_.wTests;
-
 var _ = wTools;
-var Self = {};
 
 // --
 // test
 // --
 
-var toStr = function( test )
+function toStr( test )
 {
   var self = this;
 
@@ -522,24 +521,22 @@ var toStr = function( test )
 // proto
 // --
 
-var Proto =
+var Self =
 {
 
-  tests:
+  name : 'wTools.toStr',
+
+  tests :
   {
 
-    toStr: toStr,
+    toStr : toStr,
 
   },
 
-  name : 'Consequence',
-
 };
 
-Object.setPrototypeOf( Self, Proto );
-wTests[ Self.name ] = Self;
-
+Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self );
+_.Testing.test( Self.name );
 
 } )( );
