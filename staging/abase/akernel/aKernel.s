@@ -10242,6 +10242,47 @@ function arrayPrependOnce( dst,src )
 
 //
 
+/**
+ * Changes length of provided array( array ) by copying it elements to newly created array using begin( f ),
+ * end( l ) positions of the original array and value to fill free space after copy( val ). Length of new array is equal to ( l ) - ( f ).
+ * If ( l ) === ( f ) - empty array is returned.
+ * If ( l ) < ( f ) - value of index ( f ) will be assigned to ( l ).
+ * If ( l ) > ( array.length ) - returns array that contains elements with indexies from ( f ) to ( array.length ),
+ * and free space filled by value of ( val ) if it was provided.
+ * If ( l ) < ( array.length ) - returns array that contains elements with indexies from ( f ) to ( l ).
+ *
+ * @param { Number } f - index of a first element to copy into new array, zero by default;
+ * @param { Number } l - index of a last element to copy into new array, equal to ( array.length ) by default;
+ * @param { * } val - value used to fill the space left after copying elements of the original array.
+ *
+ * @example
+ * //Just partial copy of origin array
+ * var arr = [ 1, 2, 3, 4 ]
+ * var result = _.arrayGrow( arr, 0, 2 );
+ * console.log( result );
+ * //[ 1, 2 ]
+ *
+ * @example
+ * //Increase size, fill empty with zeroes
+ * var arr = [ 1 ]
+ * var result = _.arrayGrow( arr, 0, 5, 0 );
+ * console.log( result );
+ * //[ 1, 0, 0, 0, 0 ]
+ *
+ * @example
+ * //Take two last elements from original, other fill with zeroes
+ * var arr = [ 1, 2, 3, 4, 5 ]
+ * var result = _.arrayGrow( arr, 3, 8, 0 );
+ * console.log( result );
+ * //[ 4, 5, 0, 0, 0 ]
+ *
+ * @returns { Array } Returns resized copy of a part of an original array.
+ * @method arrayGrow
+ * @throws { Error } Will throw an Error if( f ) or ( l ) is not a Number.
+ * @throws { Error } Will throw an Error if not enough arguments provided.
+ * @memberof wTools
+ */
+
 function arrayGrow( array,f,l,val )
 {
   _.assert( _.arrayLike( array ) );
@@ -12517,7 +12558,7 @@ function _mapExtendRecursiveFiltering( filter,dst,src )
 function _mapExtendRecursive( dst,src )
 {
 
-  _.assert( _.objectIs( src ) ); 
+  _.assert( _.objectIs( src ) );
 
   for( var s in src )
   {
