@@ -10242,6 +10242,47 @@ function arrayPrependOnce( dst,src )
 
 //
 
+/**
+ * Changes length of provided array( array ) by copying it elements to newly created array using begin( f ),
+ * end( l ) positions of the original array and value to fill free space after copy( val ). Length of new array is equal to ( l ) - ( f ).
+ * If ( l ) === ( f ) - empty array is returned.
+ * If ( l ) < ( f ) - value of index ( f ) will be assigned to ( l ).
+ * If ( l ) > ( array.length ) - returns array that contains elements with indexies from ( f ) to ( array.length ),
+ * and free space filled by value of ( val ) if it was provided.
+ * If ( l ) < ( array.length ) - returns array that contains elements with indexies from ( f ) to ( l ).
+ *
+ * @param { Number } f - index of a first element to copy into new array, zero by default;
+ * @param { Number } l - index of a last element to copy into new array, equal to ( array.length ) by default;
+ * @param { * } val - value used to fill the space left after copying elements of the original array.
+ *
+ * @example
+ * //Just partial copy of origin array
+ * var arr = [ 1, 2, 3, 4 ]
+ * var result = _.arrayGrow( arr, 0, 2 );
+ * console.log( result );
+ * //[ 1, 2 ]
+ *
+ * @example
+ * //Increase size, fill empty with zeroes
+ * var arr = [ 1 ]
+ * var result = _.arrayGrow( arr, 0, 5, 0 );
+ * console.log( result );
+ * //[ 1, 0, 0, 0, 0 ]
+ *
+ * @example
+ * //Take two last elements from original, other fill with zeroes
+ * var arr = [ 1, 2, 3, 4, 5 ]
+ * var result = _.arrayGrow( arr, 3, 8, 0 );
+ * console.log( result );
+ * //[ 4, 5, 0, 0, 0 ]
+ *
+ * @returns { Array } Returns resized copy of a part of an original array.
+ * @method arrayGrow
+ * @throws { Error } Will throw an Error if( f ) or ( l ) is not a Number.
+ * @throws { Error } Will throw an Error if not enough arguments provided.
+ * @memberof wTools
+ */
+
 function arrayGrow( array,f,l,val )
 {
   _.assert( _.arrayLike( array ) );
@@ -10288,29 +10329,36 @@ function arrayGrow( array,f,l,val )
 //
 
 /**
- * The arraySlice() returns a shallow copy of a portion of an array
- * into f new array.
+ * Returns a copy of original array( array ) that contains elements from index( f ) to index( l ),
+ * but not including ( l ).
  *
- * It takes three arguments (array, f, l)
- * checks if (array) is an Array, if (f) and (l) are numbers.
- * Creates variables (result, f, l) and assigns them values.
- * The arraySlice() creates a new array (result) from (f) to but not including (l),
- * and returns (result).
- *
- * @param { Array } array - An array to return a new array from begin to but not including end.
+ * If ( l ) is omitted or ( l ) > ( array.length ), arraySlice extracts through the end of the sequence ( array.length ).
+ * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
+ * If ( f ) < 0, zero is assigned to begin index( f ).
+
+ * @param { Array } array - Source array.
  * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
  * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
- * If (l) is omitted, arraySlice extracts through the end of the sequence (array.length).
  *
  * @example
- * // returns [ 3, 4, 5, 6 ]
  * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
+ * // returns [ 3, 4, 5, 6 ]
+ *
+ * @example
+ * // begin index is less then zero
+ * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * //end index is bigger then length of array
+ * _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
+ * // returns [ 6, 7 ]
  *
  * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
- * @throws { Error } Will throw an Error if (array) is not an Array.
- * @throws { Error } Will throw an Error if (f) is not a Number.
- * @throws { Error } Will throw an Error if (l) is not a Number.
+ * @throws { Error } Will throw an Error if ( array ) is not an Array.
+ * @throws { Error } Will throw an Error if ( f ) is not a Number.
+ * @throws { Error } Will throw an Error if ( l ) is not a Number.
  * @memberof wTools
 */
 
@@ -12517,7 +12565,7 @@ function _mapExtendRecursiveFiltering( filter,dst,src )
 function _mapExtendRecursive( dst,src )
 {
 
-  _.assert( _.objectIs( src ) ); 
+  _.assert( _.objectIs( src ) );
 
   for( var s in src )
   {
