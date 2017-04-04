@@ -2481,6 +2481,7 @@ strCutOffAllRight.defaults =
 /**
  * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
  * If( o.stripping ) is true - removes leading and trailing whitespace characters.
+ * If( o.preserveDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
  * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
@@ -2489,6 +2490,7 @@ strCutOffAllRight.defaults =
  * @param {string|object} o - Source string to split or map with source( o.src ) and options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
+ * @param {boolean} [ o.preserveDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
  * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
  * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
@@ -2497,15 +2499,23 @@ strCutOffAllRight.defaults =
  * _.strSplit( ' first second third ' );
  *
  * @example
- * //returns [ "a", "b", "c", "d" ]
+ * //returns [ 'a', 'b', 'c', 'd' ]
  * _.strSplit( { src : 'a,b,c,d', delimeter : ','  } );
  *
  * @example
- * //returns [ "    a", "b", "c", "d   " ]
- * _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+ * //returns [ 'a', 'b', 'c', 'd' ]
+ * _.strSplit( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
+ *
+ * @example
+ * //returns [ '    a', 'b', 'c', 'd   ' ]
+   * _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+ *
+ * @example
+ * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
+ * _.strSplit( { src : 'a,b,c,d', delimeter : [ ',' ], preserveDelimeters : 1  } );
  *
  * @method strSplit
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
