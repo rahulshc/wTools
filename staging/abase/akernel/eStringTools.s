@@ -4563,7 +4563,7 @@ strExtractStrips.defaults =
  *
  */
 
-function strExtractStereoStrips( src, o )
+function strExtractStereoStrips( src )
 {
 
   var o = this !== Self ? this : {};
