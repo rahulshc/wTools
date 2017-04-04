@@ -6634,7 +6634,7 @@ function strInbetweenOf( src,begin,end )
   * @param {string} src - source string
   * @param {string} begin
   * @example
-      var scr = ._strBegins("abc","a");
+      var scr = ._strBegins( "abc","a" );
   * @return {Boolean}
   * If param begin is match with param src first chars than return true
   * @method strBegins
@@ -12517,7 +12517,7 @@ function _mapExtendRecursiveFiltering( filter,dst,src )
 function _mapExtendRecursive( dst,src )
 {
 
-  _.assert( _.objectIs( src ) ); 
+  _.assert( _.objectIs( src ) );
 
   for( var s in src )
   {

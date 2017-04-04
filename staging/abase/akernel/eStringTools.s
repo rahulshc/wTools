@@ -2517,7 +2517,7 @@ function strSplit( o )
 {
 
   if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] }
+  o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] };
 
   if( _.strIs( o ) )
   o = { src : o };
@@ -2530,9 +2530,21 @@ function strSplit( o )
 
   var delimeter = _.arrayIs( o.delimeter ) ? o.delimeter : [ o.delimeter ];
 
-  /**/
+  /* */
 
-  if( o.preserveDelimeters )
+  function nextDelimeter( d,last )
+  {
+    if( last < 0 )
+    return last;
+    var result = o.src.lastIndexOf( delimeter[ d ],last );
+    if( result >= 0 )
+    result += delimeter[ d ].length;
+    return result;
+  }
+
+  /* */
+
+  if( o.preservingDelimeters )
   {
 
     var result = [];
@@ -2540,31 +2552,43 @@ function strSplit( o )
     var prevPosition = o.src.length;
 
     for( var s = 0 ; s < delimeter.length ; s++ )
-    right[ s ] = o.src.lastIndexOf( delimeter[ s ] );
+    right[ s ] = nextDelimeter( s,o.src.length );
 
     while( true )
     {
       var splitterIndex = -1;
       var position = -1;
       for( var s = 0 ; s < delimeter.length ; s++ )
-      if( right[ s ] >= position )
       {
-        splitterIndex = s;
-        position = right[ s ];
+        /* if one delimeter coontain another one, it's possible right is invalid at this point */
+        if( right[ s ] >= prevPosition )
+        {
+          right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
+        }
+        if( right[ s ] > position )
+        {
+          splitterIndex = s;
+          position = right[ s ];
+        }
       }
 
       if( position === -1 )
       break;
 
       if( right[ splitterIndex ] > 0 )
-      right[ splitterIndex ] = o.src.lastIndexOf( delimeter[ splitterIndex ],right[ splitterIndex ]-delimeter[ splitterIndex ].length );
+      right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
       else
       right[ splitterIndex ] = -1;
 
-      result.unshift( o.src.substring( position+delimeter[ splitterIndex ].length,prevPosition ) );
+      var r = [ position,prevPosition ];
+      if( r[ 0 ] < r[ 1 ] )
+      result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
+      else if( o.preservingEmpty )
+      result.unshift( '' );
+      if( o.delimeter[ splitterIndex ].length || o.preservingEmpty )
       result.unshift( o.delimeter[ splitterIndex ] );
 
-      prevPosition = position;
+      prevPosition = position-o.delimeter[ splitterIndex ].length;
 
     }
 
@@ -2582,8 +2606,6 @@ function strSplit( o )
       {
 
         var sub = result[ r ].split( delimeter[ s ] );
-        if( sub.length > 1 ) // maybe error here!!!
-        debugger;
         if( sub.length > 1 )
         _.arrayCutin( result,[ r,r+1 ],sub );
 
@@ -2600,6 +2622,7 @@ function strSplit( o )
 
     if( o.stripping )
     result[ r ] = strStrip( result[ r ] );
+    if( !o.preservingEmpty )
     if( !result[ r ] )
     result.splice( r,1 );
 
@@ -2613,7 +2636,8 @@ strSplit.defaults =
   src : null,
   delimeter : ' ',
   stripping : 1,
-  preserveDelimeters : 0,
+  preservingEmpty : 0,
+  preservingDelimeters : 0,
 }
 
 //
@@ -3971,6 +3995,60 @@ function strCount( src,ins )
 
 //
 
+function strCountLeft( src,ins )
+{
+  var result = 0;
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+
+  if( !ins.length )
+  return 0;
+
+  var i = 0;
+  do
+  {
+    if( src.substring( i,i+ins.length ) !== ins )
+    break;
+    result += 1;
+    i += ins.length;
+  }
+  while( i < src.length );
+
+  return result;
+}
+
+//
+
+function strCountRight( src,ins )
+{
+  var result = 0;
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+
+  throw _.err( 'not tested' );
+
+  if( !ins.length )
+  return 0;
+
+  var i = src.length;
+  do
+  {
+    if( src.substring( i-ins.length,i ) !== ins )
+    break;
+    result += 1;
+    i -= ins.length;
+  }
+  while( i > 0 );
+
+  return result;
+}
+
+//
+
 /**
  * Returns source string( src ) repeated specified number( times ) of times.
  * If source( src ) has zero length or ( times <= 0 ) returns empty string.
@@ -4628,6 +4706,52 @@ function strToConfig( src,o )
   return result;
 }
 
+//
+
+function strParseMap( o )
+{
+
+  if( _.strIs( o ) )
+  o = { src : o }
+
+  _.routineOptions( strParseMap,o );
+  _.assert( _.strIs( o.entryDelimeter ) );
+
+  var src = o.src;
+
+  if( _.strIs( src ) )
+  src = _.strSplit({ src : src, delimeter : o.valKeyDelimeter, stripping : 1 });
+
+  var result = Object.create( null );
+  for( var a = 1 ; a < src.length ; a++ )
+  {
+    var left = src[ a-1 ];
+    var right = src[ a+0 ];
+    var val = right;
+
+    if( a < src.length - 1 )
+    {
+      var cuts = _.strCutOffAllLeft( right,o.entryDelimeter );
+      var val = cuts[ 0 ];
+      src[ a+0 ] = cuts[ 1 ];
+    }
+
+    if( !isNaN( parseFloat( val ) ) )
+    val = parseFloat( val );
+
+    result[ left ] = val;
+  }
+
+  return result;
+}
+
+strParseMap.defaults =
+{
+  src : null,
+  valKeyDelimeter : ':',
+  entryDelimeter : ' ',
+}
+
 // --
 // str color
 // --
@@ -4911,6 +5035,9 @@ var Proto =
   strLinesSelect : strLinesSelect,
 
   strCount : strCount,
+  strCountLeft : strCountLeft,
+  strCountRight : strCountRight,
+
   strDup : strDup, /* document me */
 
   strCamelize : strCamelize,
@@ -4928,6 +5055,8 @@ var Proto =
   strCsvFrom : strCsvFrom, /* experimental */
   strToDom : strToDom, /* experimental */
   strToConfig : strToConfig, /* experimental */
+
+  strParseMap : strParseMap,
 
 
   //
