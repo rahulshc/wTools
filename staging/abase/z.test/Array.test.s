@@ -1708,6 +1708,114 @@ function arraySlice( test )
 
 //
 
+function arrayGrow( test )
+{
+  var got,expected;
+  var array = [ 1,2,3,4,5 ];
+
+  test.description = 'defaults';
+
+  /* default call returns copy */
+
+  got = _.arrayGrow( array );
+  expected = array;
+  test.identical( got, expected );
+
+  test.description = 'increase size of array';
+
+  /* without setting value */
+
+  got = _.arrayGrow( array, 0, array.length + 2 );
+  expected = array.length + 2;
+  test.identical( got.length, expected );
+
+  /* by setting value */
+
+  got = _.arrayGrow( array, 0, array.length + 2, 0 );
+  expected = [ 1,2,3,4,5,0,0 ];
+  test.identical( got, expected );
+
+  /* by taking only last element of source array */
+
+  got = _.arrayGrow( array, array.length - 1, array.length * 2, 0 );
+  expected = [ 5,0,0,0,0,0 ];
+  test.identical( got, expected );
+
+  test.description = 'decrease size of array';
+
+  /**/
+
+  got = _.arrayGrow( array, 0, 3 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  /* setting value not affects on array */
+
+  got = _.arrayGrow( array, 0, 3, 0 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  /* begin index is negative */
+
+  got = _.arrayGrow( array, -1, 3 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  /* end index is negative */
+
+  got = _.arrayGrow( array, 0, -1 );
+  expected = [];
+  test.identical( got, expected );
+
+  /* begin index negative, set value */
+
+  got = _.arrayGrow( array, -1, 3, 0 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  //
+
+  if( Config.debug )
+  {
+    test.description = 'buffer';
+
+    /**/
+
+    got = _.arrayGrow( new Buffer( '123' ), 0, 5, 0 );
+    expected = [ 49, 50, 51, 0, 0 ];
+    test.identical( got, expected );
+
+    //
+
+    test.description = 'invalid arguments type';
+
+    /**/
+
+    test.shouldThrowErrorSync( function()
+    {
+      _.arrayGrow( 1 );
+    })
+
+    /**/
+
+    test.shouldThrowErrorSync( function()
+    {
+      _.arrayGrow( array, '1', array.length )
+    })
+
+    /**/
+
+    test.shouldThrowErrorSync( function()
+    {
+      _.arrayGrow( array, 0, '1' )
+    })
+
+  }
+
+}
+
+//
+
 function arrayAs( test )
 {
 
@@ -3280,6 +3388,7 @@ var Self =
     arrayPrependOnce : arrayPrependOnce,
     arrayCutin : arrayCutin,
     arraySlice : arraySlice,
+    arrayGrow : arrayGrow,
 
     arrayAs : arrayAs,
     arrayToStr : arrayToStr,
