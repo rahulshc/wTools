@@ -4769,7 +4769,7 @@ function strToConfig( src,o )
 function strParseMap( o )
 {
 
-  if( _.strIs( o ) )
+  if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o }
 
   _.routineOptions( strParseMap,o );

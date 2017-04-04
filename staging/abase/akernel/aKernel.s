@@ -6634,7 +6634,7 @@ function strInbetweenOf( src,begin,end )
   * @param {string} src - source string
   * @param {string} begin
   * @example
-      var scr = ._strBegins( "abc","a" );
+      var scr = _.strBegins( "abc","a" );
   * @return {Boolean}
   * If param begin is match with param src first chars than return true
   * @method strBegins
@@ -10245,14 +10245,16 @@ function arrayPrependOnce( dst,src )
 /**
  * Changes length of provided array( array ) by copying it elements to newly created array using begin( f ),
  * end( l ) positions of the original array and value to fill free space after copy( val ). Length of new array is equal to ( l ) - ( f ).
- * If ( l ) === ( f ) - empty array is returned.
  * If ( l ) < ( f ) - value of index ( f ) will be assigned to ( l ).
+ * If ( l ) === ( f ) - returns empty array.
  * If ( l ) > ( array.length ) - returns array that contains elements with indexies from ( f ) to ( array.length ),
  * and free space filled by value of ( val ) if it was provided.
  * If ( l ) < ( array.length ) - returns array that contains elements with indexies from ( f ) to ( l ).
- *
- * @param { Number } f - index of a first element to copy into new array, zero by default;
- * @param { Number } l - index of a last element to copy into new array, equal to ( array.length ) by default;
+ * If ( l ) < 0 and ( l ) > ( f ) - returns array filled with some amount of elements with value of argument( val ).
+ * If ( f ) < 0 - prepends some number of elements with value of argument( var ) to the result array.
+ * @param { Array/Buffer } array - source array or buffer;
+ * @param { Number } [ f = 0 ] - index of a first element to copy into new array;
+ * @param { Number } [ l = array.length ] - index of a last element to copy into new array;
  * @param { * } val - value used to fill the space left after copying elements of the original array.
  *
  * @example
@@ -10276,8 +10278,30 @@ function arrayPrependOnce( dst,src )
  * console.log( result );
  * //[ 4, 5, 0, 0, 0 ]
  *
+ * @example
+ * //Add two zeroes at the beginning
+ * var arr = [ 1, 2, 3, 4, 5 ]
+ * var result = _.arrayGrow( arr, -2, arr.length, 0 );
+ * console.log( result );
+ * //[ 0, 0, 1, 2, 3, 4, 5 ]
+ *
+ * @example
+ * //Add two zeroes at the beginning and two at end
+ * var arr = [ 1, 2, 3, 4, 5 ]
+ * var result = _.arrayGrow( arr, -2, arr.length + 2, 0 );
+ * console.log( result );
+ * //[ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
+ *
+ * @example
+ * //Source can be also a Buffer
+ * var buffer = new Buffer( '123' );
+ * var result = _.arrayGrow( buffer, 0, buffer.length + 2, 0 );
+ * console.log( result );
+ * //[ 49, 50, 51, 0, 0 ]
+ *
  * @returns { Array } Returns resized copy of a part of an original array.
  * @method arrayGrow
+ * @throws { Error } Will throw an Error if( array ) is not a Array or Buffer.
  * @throws { Error } Will throw an Error if( f ) or ( l ) is not a Number.
  * @throws { Error } Will throw an Error if not enough arguments provided.
  * @memberof wTools
