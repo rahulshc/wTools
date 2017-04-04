@@ -2481,6 +2481,7 @@ strCutOffAllRight.defaults =
 /**
  * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
  * If( o.stripping ) is true - removes leading and trailing whitespace characters.
+ * If( o.preserveDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
  * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
@@ -2489,6 +2490,7 @@ strCutOffAllRight.defaults =
  * @param {string|object} o - Source string to split or map with source( o.src ) and options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
+ * @param {boolean} [ o.preserveDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
  * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
  * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
@@ -2497,15 +2499,23 @@ strCutOffAllRight.defaults =
  * _.strSplit( ' first second third ' );
  *
  * @example
- * //returns [ "a", "b", "c", "d" ]
+ * //returns [ 'a', 'b', 'c', 'd' ]
  * _.strSplit( { src : 'a,b,c,d', delimeter : ','  } );
  *
  * @example
- * //returns [ "    a", "b", "c", "d   " ]
- * _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+ * //returns [ 'a', 'b', 'c', 'd' ]
+ * _.strSplit( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
+ *
+ * @example
+ * //returns [ '    a', 'b', 'c', 'd   ' ]
+   * _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+ *
+ * @example
+ * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
+ * _.strSplit( { src : 'a,b,c,d', delimeter : [ ',' ], preserveDelimeters : 1  } );
  *
  * @method strSplit
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
@@ -4504,6 +4514,54 @@ strExtractStrips.defaults =
 }
 
 //
+
+/**
+ * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) separators
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ).
+ * Returns result as array of strings.
+ *
+ * Function extracts words in two attempts:
+ * First by splitting source string by ( o.prefix ).
+ * Second by splitting each element of the result of first attempt by( o.postfix ).
+ * If splitting by ( o.prefix ) gives only single element then second attempt is skipped,otherwise function
+ * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onStrip ) function on first half.
+ * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
+ * with ( o.prefix ) prepended to the last element of result array.
+ *
+ * @param {string} src - Source string.
+ * @param {object} o - Options map.
+ * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
+ * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
+ * @param {string} [ o.onStrip = null ] - function called on each splitted part of a source string
+ * @returns {object} Returns an array of strings separated by( o.delimeter ).
+ *
+ * @example
+ * _.strExtractStereoStrips( '#abc#' );
+ * //returns [ '', 'abc', '' ]
+ *
+ * @example
+ * _.strExtractStereoStrips( '#abc$', { prefix : '#', postfix : '$' } );
+ * //returns [ 'abc' ]
+ *
+ * @example
+ * function onStrip( strip )
+ * {
+ *   if( strip.length )
+ *   return strip.toUpperCase();
+ * }
+ * _.strExtractStereoStrips( '#abc$',{ postfix : '$', onStrip : onStrip };
+ * //returns [ 'ABC' ]
+ *
+ * @method strExtractStereoStrips
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @memberof wTools
+ *
+ */
 
 function strExtractStereoStrips( src, o )
 {
