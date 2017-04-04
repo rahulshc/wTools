@@ -1758,7 +1758,7 @@ function arrayGrow( test )
   /* begin index is negative */
 
   got = _.arrayGrow( array, -1, 3 );
-  expected = [ 1,2,3 ];
+  expected = [ 0,1,2,3 ];
   test.identical( got, expected );
 
   /* end index is negative */
@@ -1770,7 +1770,7 @@ function arrayGrow( test )
   /* begin index negative, set value */
 
   got = _.arrayGrow( array, -1, 3, 0 );
-  expected = [ 1,2,3 ];
+  expected = [ undefined, 1,2,3 ];
   test.identical( got, expected );
 
   //
