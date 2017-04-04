@@ -385,27 +385,7 @@ function appArgsInSubjectAndMapFormat( o )
 
     splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 1 ];
 
-    result.map = Object.create( null );
-    for( var a = 1 ; a < splitted.length ; a++ )
-    {
-      var left = splitted[ a-1 ];
-      var right = splitted[ a+0 ];
-      var val = right;
-
-      if( a < splitted.length - 1 )
-      {
-        var cuts = _.strCutOffAllLeft( right,' ' );
-        var val = cuts[ 0 ];
-        splitted[ a+0 ] = cuts[ 1 ];
-      }
-
-      if( !isNaN( parseFloat( val ) ) )
-      val = parseFloat( val );
-
-      result.map[ left ] = val;
-    }
-
-    // console.log( 'appArgsInSubjectAndMapFormat',result );
+    result.map = _.strParseMap( splitted );
 
   }
 

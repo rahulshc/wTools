@@ -1210,27 +1210,27 @@ function strLineCount( test )
 function _strInhalf( test )
 {
   test.description = 'three words with comma';
-  var got = _._strInhalf( { src : 'one,two,three', splitter : ',' } );
+  var got = _._strInhalf( { src : 'one,two,three', delimeter : ',' } );
   var expected = [ 'one,two','three' ];
   test.identical( got,expected );
 
   test.description = 'array of splitters';
-  var got = _._strInhalf( { src : 'one word,two words,three words', splitter : [ ',',' ' ] } );
+  var got = _._strInhalf( { src : 'one word,two words,three words', delimeter : [ ',',' ' ] } );
   var expected = [ "one word,two words,three", "words" ]
   test.identical( got,expected );
 
-  test.description = 'zero splitter length';
-  var got = _._strInhalf( { src : 'word,word', splitter : '' } );
+  test.description = 'zero delimeter length';
+  var got = _._strInhalf( { src : 'word,word', delimeter : '' } );
   var expected = [ "word,word", "" ];
   test.identical( got,expected );
 
   test.description = 'left equal zero';
-  var got = _._strInhalf( { src : 'word,word_word', splitter : '_', left : 0 } );
+  var got = _._strInhalf( { src : 'word,word_word', delimeter : '_', left : 0 } );
   var expected = [ "word,word", "word" ];
   test.identical( got,expected );
 
-  test.description = 'left 1 & splitter length equal zero';
-  var got = _._strInhalf( { src : 'word,word_word', splitter : '', left : 1 } );
+  test.description = 'left 1 & delimeter length equal zero';
+  var got = _._strInhalf( { src : 'word,word_word', delimeter : '', left : 1 } );
   var expected = [ "", "word,word_word" ];
   test.identical( got,expected );
 
@@ -1261,7 +1261,7 @@ function _strInhalf( test )
     test.description = 'invalid property type';
     test.shouldThrowError( function()
     {
-      _._strInhalf( { src : 'word', splitter : 0 } );
+      _._strInhalf( { src : 'word', delimeter : 0 } );
     });
 
     test.description = 'no arguments';
@@ -1279,17 +1279,17 @@ function strInhalfLeft( test )
 {
 
   test.description = 'three words with comma';
-  var got = _.strInhalfLeft( { src : 'ab,bc,cd', splitter : ',' } );
+  var got = _.strInhalfLeft( { src : 'ab,bc,cd', delimeter : ',' } );
   var expected = [ "ab", "bc,cd" ];
   test.identical( got,expected );
 
   test.description = 'array of splitters';
-  var got = _.strInhalfLeft( { src : 'one word,two words,three words', splitter : [ ',',' ' ] } );
+  var got = _.strInhalfLeft( { src : 'one word,two words,three words', delimeter : [ ',',' ' ] } );
   var expected = [ "one", "word,two words,three words" ];
   test.identical( got,expected );
 
-  test.description = 'zero splitter length';
-  var got = _.strInhalfLeft( { src : 'word,word', splitter : '' } );
+  test.description = 'zero delimeter length';
+  var got = _.strInhalfLeft( { src : 'word,word', delimeter : '' } );
   var expected = [ "", "word,word" ];
   test.identical( got,expected );
 
@@ -1315,7 +1315,7 @@ function strInhalfLeft( test )
       _.strInhalfLeft( 123, ' ' );
     });
 
-    test.description = 'splitter not defined';
+    test.description = 'delimeter not defined';
     test.shouldThrowError( function()
     {
       _.strInhalfLeft( { src : 1 } );
@@ -1324,13 +1324,13 @@ function strInhalfLeft( test )
     test.description = 'invalid property type';
     test.shouldThrowError( function()
     {
-      _.strInhalfLeft( { src : 'word', splitter : 0 } );
+      _.strInhalfLeft( { src : 'word', delimeter : 0 } );
     });
 
     test.description = 'invalid property defined';
     test.shouldThrowError( function()
     {
-      _.strInhalfLeft( { src : 'word', splitter : 0, left : 0 } );
+      _.strInhalfLeft( { src : 'word', delimeter : 0, left : 0 } );
     });
 
     test.description = 'only one argument provided';
@@ -1354,17 +1354,17 @@ function strInhalfRight( test )
 {
 
   test.description = 'three words with comma';
-  var got = _.strInhalfRight( { src : 'ab,bc,cd', splitter : ',' } );
+  var got = _.strInhalfRight( { src : 'ab,bc,cd', delimeter : ',' } );
   var expected = [ "ab,bc","cd" ];
   test.identical( got,expected );
 
   test.description = 'array of splitters';
-  var got = _.strInhalfRight( { src : 'one word,two words,three words', splitter : [ ',',' ' ] } );
+  var got = _.strInhalfRight( { src : 'one word,two words,three words', delimeter : [ ',',' ' ] } );
   var expected = [ "one word,two words,three", "words" ];
   test.identical( got,expected );
 
-  test.description = 'zero splitter length';
-  var got = _.strInhalfRight( { src : 'word,word', splitter : '' } );
+  test.description = 'zero delimeter length';
+  var got = _.strInhalfRight( { src : 'word,word', delimeter : '' } );
   var expected = ["word,word", ""]
   test.identical( got,expected );
 
@@ -1390,7 +1390,7 @@ function strInhalfRight( test )
       _.strInhalfRight( 123, ' ' );
     });
 
-    test.description = 'splitter not defined';
+    test.description = 'delimeter not defined';
     test.shouldThrowError( function()
     {
       _.strInhalfRight( { src : 1 } );
@@ -1399,13 +1399,13 @@ function strInhalfRight( test )
     test.description = 'invalid property type';
     test.shouldThrowError( function()
     {
-      _.strInhalfRight( { src : 'word', splitter : 0 } );
+      _.strInhalfRight( { src : 'word', delimeter : 0 } );
     });
 
     test.description = 'invalid property defined';
     test.shouldThrowError( function()
     {
-      _.strInhalfRight( { src : 'word', splitter : 0, left : 1 } );
+      _.strInhalfRight( { src : 'word', delimeter : 0, left : 1 } );
     });
 
     test.description = 'only one argument provided';
@@ -1430,27 +1430,96 @@ function strSplit( test )
 
   test.description = 'simple string, defalut options';
   var got = _.strSplit( 'a b c d' );
-  var expected = [ "a", "b", "c", "d" ];
+  var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
   test.description = 'arguments as map';
-  var got = _.strSplit( { src : 'a,b,c,d', splitter : ','  } );
-  var expected = [ "a", "b", "c", "d" ];
+  var got = _.strSplit( { src : 'a,b,c,d', delimeter : ','  } );
+  var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'splitter as array';
-  var got = _.strSplit( { src : 'a,b.c.d', splitter : [ ',', '.' ]  } );
-  var expected = [ "a", "b", "c", "d" ];
+  test.description = 'delimeter as array';
+  var got = _.strSplit( { src : 'a,b.c.d', delimeter : [ ',', '.' ]  } );
+  var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'zero splitter length';
-  var got = _.strSplit( { src : 'a,b.c.d', splitter : []  } );
-  var expected = [ "a,b.c.d" ];
+  test.description = 'zero delimeter length';
+  var got = _.strSplit( { src : 'a,b.c.d', delimeter : []  } );
+  var expected = [ 'a,b.c.d' ];
   test.identical( got,expected );
 
-  test.description = 'strip false';
-  var got = _.strSplit( { src : '    a,b,c,d   ', splitter : [ ',' ], strip : 0  } );
-  var expected = [ "    a", "b", "c", "d   " ];
+  test.description = 'stripping off';
+  var got = _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+  var expected = [ '    a', 'b', 'c', 'd   ' ];
+  test.identical( got,expected );
+
+  /* */
+
+  test.description = 'preserving delimeters, many delimeters, delimeter on the begin';
+  var got = _.strSplit({ src : '.content', preservingDelimeters : 1, delimeter : [ '.','#' ] })
+  var expected = [ '.','content' ];
+  test.identical( got,expected );
+
+  test.description = 'preserving delimeters, many delimeters, delimeter on the end';
+  var got = _.strSplit({ src : 'content.', preservingDelimeters : 1, delimeter : [ '.','#' ] })
+  var expected = [ 'content','.' ];
+  test.identical( got,expected );
+
+  /* */
+
+  test.description = 'many delimeters having common, preserving empty';
+  var src = 'Aa <<! <<- Bb';
+  var expected = [ 'Aa',' ','','<<!','',' ','','<<-','',' ','Bb' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+  });
+  test.identical( got,expected );
+  test.description = 'many delimeters having common, removing empty';
+  var src = 'Aa <<! <<- Bb';
+  var expected = [ 'Aa',' ','<<!',' ','<<-',' ','Bb' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 1,
+    stripping : 0,
+  });
+  test.identical( got,expected );
+
+  /* */
+
+  test.description = 'having long common';
+  var src = 'Aa <<<- Bb';
+  var expected = [ 'Aa',' ','','<<<-','',' ','Bb' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+  });
+  test.identical( got,expected );
+
+  /* */
+
+  test.description = 'having long common 2';
+  var src = 'a1 a2 a3 <<<- Bb';
+  var expected = [ 'a1',' ','a2',' ','a3',' ','','<<<-','',' ','Bb' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+  });
   test.identical( got,expected );
 
   /**/
@@ -1473,13 +1542,13 @@ function strSplit( test )
     test.description = 'invalid property type';
     test.shouldThrowError( function()
     {
-      _.strSplit( { src : 'word', splitter : 0 } );
+      _.strSplit( { src : 'word', delimeter : 0 } );
     });
 
     test.description = 'invalid property defined';
     test.shouldThrowError( function()
     {
-      _.strSplit( { src : 'word', splitter : 0, left : 1 } );
+      _.strSplit( { src : 'word', delimeter : 0, left : 1 } );
     });
 
     test.description = 'no arguments';
@@ -1526,13 +1595,13 @@ function strStrip( test )
     test.description = 'invalid property type';
     test.shouldThrowError( function()
     {
-      _.strStrip( { src : ' word ', splitter : 0 } );
+      _.strStrip( { src : ' word ', delimeter : 0 } );
     });
 
     test.description = 'invalid property defined';
     test.shouldThrowError( function()
     {
-      _.strStrip( { src : ' word ', splitter : ' ', left : 1 } );
+      _.strStrip( { src : ' word ', delimeter : ' ', left : 1 } );
     });
 
     test.description = 'no arguments';
@@ -2605,9 +2674,10 @@ function strExtractStrips( test )
 var Self =
 {
 
-  name : 'StringTools2 test',
+  name : 'StringTools tests 2',
+  verbosity : 6,
 
-  tests:
+  tests :
   {
     strCapitalize : strCapitalize,
     strReplaceAll : strReplaceAll,
@@ -2636,7 +2706,9 @@ var Self =
     _strInhalf : _strInhalf,
     strInhalfLeft : strInhalfLeft,
     strInhalfRight : strInhalfRight,
+
     strSplit : strSplit,
+
     strStrip : strStrip,
     strRemoveAllSpaces : strRemoveAllSpaces,
     strStripEmptyLines : strStripEmptyLines,
@@ -2656,6 +2728,7 @@ var Self =
     strCommonLeft : strCommonLeft,
     strCommonRight : strCommonRight,
     strExtractStrips : strExtractStrips,
+
   }
 
 }
