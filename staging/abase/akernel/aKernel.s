@@ -6634,7 +6634,7 @@ function strInbetweenOf( src,begin,end )
   * @param {string} src - source string
   * @param {string} begin
   * @example
-      var scr = ._strBegins( "abc","a" );
+      var scr = _.strBegins( "abc","a" );
   * @return {Boolean}
   * If param begin is match with param src first chars than return true
   * @method strBegins
