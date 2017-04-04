@@ -4454,8 +4454,8 @@ strExtractStrips.defaults =
  *
  * @param {string} src - Source string.
  * @param {object} o - Options map.
- * @param {string} o.prefix - delimeter that marks begining of enclosed string
- * @param {string} o.postfix - delimeter that marks ending of enclosed string
+ * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
+ * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
  * @param {string} [ o.onStrip = null ] - function called on each splitted part of a source string
  * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
