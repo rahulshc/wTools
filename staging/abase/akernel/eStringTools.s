@@ -2481,7 +2481,8 @@ strCutOffAllRight.defaults =
 /**
  * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
  * If( o.stripping ) is true - removes leading and trailing whitespace characters.
- * If( o.preserveDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
+ * If( o.preservingEmpty ) is true - empty lines are saved in the result array.
+ * If( o.preservingDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
  * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
@@ -2490,7 +2491,8 @@ strCutOffAllRight.defaults =
  * @param {string|object} o - Source string to split or map with source( o.src ) and options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
- * @param {boolean} [ o.preserveDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
+ * @param {boolean} [ o.preservingEmpty=false ] - Leaves empty strings in the result array.
+ * @param {boolean} [ o.preservingDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
  * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
  * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
@@ -2512,7 +2514,11 @@ strCutOffAllRight.defaults =
  *
  * @example
  * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
- * _.strSplit( { src : 'a,b,c,d', delimeter : [ ',' ], preserveDelimeters : 1  } );
+ * _.strSplit( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
+ *
+ * @example
+ * //returns [ 'a', '', 'b', '', 'c', '', 'd' ]
+ * _.strSplit( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
  *
  * @method strSplit
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
