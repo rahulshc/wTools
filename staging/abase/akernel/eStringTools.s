@@ -2220,6 +2220,9 @@ function _strCutOff( o )
 
   /* */
 
+  if( !( number >= 1 ) )
+  return o.left ? [ '',o.src ] : [ o.src,'' ];
+
   while( number > 0 )
   {
 
@@ -2229,7 +2232,7 @@ function _strCutOff( o )
     {
 
       if( !o.delimeter.length )
-      return [ o.src,'' ];
+      return o.left ? [ '',o.src ] : [ o.src,'' ];
       var s
 
       if( o.left )
@@ -2237,7 +2240,7 @@ function _strCutOff( o )
       {
 
         var i = o.src.indexOf( a,index );
-        if( i === -1 )
+        if( i === -1 && number > 1 )
         return o.src.length;
 
         return i;
@@ -2265,7 +2268,7 @@ function _strCutOff( o )
 
     /* */
 
-    if( !( index >= 0 ) )
+    if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
     return o.left ? [ '',o.src ] : [ o.src,'' ];
 
     number -= 1;
@@ -4525,7 +4528,8 @@ strExtractStrips.defaults =
  * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) separators
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
- * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ).
+ * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
+ *
  * Returns result as array of strings.
  *
  * Function extracts words in two attempts:
@@ -4548,7 +4552,7 @@ strExtractStrips.defaults =
  * //returns [ '', 'abc', '' ]
  *
  * @example
- * _.strExtractStereoStrips( '#abc$', { prefix : '#', postfix : '$' } );
+ * _.strExtractStereoStrips.call( { prefix : '#', postfix : '$' }, '#abc$' );
  * //returns [ 'abc' ]
  *
  * @example
@@ -4557,7 +4561,7 @@ strExtractStrips.defaults =
  *   if( strip.length )
  *   return strip.toUpperCase();
  * }
- * _.strExtractStereoStrips( '#abc$',{ postfix : '$', onStrip : onStrip };
+ * _.strExtractStereoStrips.call( { postfix : '$', onStrip : onStrip }, '#abc$' );
  * //returns [ 'ABC' ]
  *
  * @method strExtractStereoStrips
@@ -4604,7 +4608,10 @@ function strExtractStereoStrips( src )
     }
     else
     {
+      if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
+      else
+      result.push( o.prefix + splitted[ i ] );
     }
 
   }
