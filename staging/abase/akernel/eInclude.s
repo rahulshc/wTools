@@ -399,6 +399,40 @@ appArgsInSubjectAndMapFormat.defaults =
 
 //
 
+function appAnchor( o )
+{
+  var o = o || {};
+
+  _.routineOptions( appAnchor,o );
+
+  var a = _.strParseMap
+  ({
+    src : _.strRemoveBegin( window.location.hash,'#' ),
+    valKeyDelimeter : ':',
+    entryDelimeter : ';',
+  });
+
+  if( o.extend )
+  {
+    _.mapExtend( a,o.extend );
+    window.location.hash = _.mapToStr
+    ({
+      src : a,
+      valKeyDelimeter : ':',
+      entryDelimeter : ';',
+    });
+  }
+
+  return a;
+}
+
+appAnchor.defaults =
+{
+  extend : null,
+}
+
+//
+
 function appExitCode( status )
 {
   var result;
@@ -575,6 +609,8 @@ var Proto =
 
   appArgsInSubjectAndMapFormat : appArgsInSubjectAndMapFormat,
   appArgs : appArgsInSubjectAndMapFormat,
+
+  appAnchor : appAnchor,
 
   appExitCode : appExitCode,
   appExit : appExit,
