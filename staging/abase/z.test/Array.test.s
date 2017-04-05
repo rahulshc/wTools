@@ -1659,42 +1659,93 @@ function arrayCutin( test )
 
 function arraySlice( test )
 {
+  var got,expected;
 
-  test.description = 'nothing';
-  var got = _.arraySlice( [  ] );
-  var expected = [  ];
+  //
+
+  test.description = 'defaults';
+  var array = [ 1, 2, 3, 4, 5, 6, 7 ];
+
+  /*nothing*/
+
+  got = _.arraySlice( [  ] );
+  expected = [  ];
   test.identical( got, expected );
 
-  test.description = 'third argument is not provided';
-  var got = _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2 );
-  var expected = [ 3, 4, 5, 6, 7 ];
+  /*just pass array*/
+
+  got = _.arraySlice( array );
+  expected = array;
   test.identical( got, expected );
 
-  test.description = 'second argument is undefined';
-  var got = _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], undefined, 4  );
-  var expected = [ 1, 2, 3, 4 ];
+  //
+
+  test.description = 'make copy of source';
+
+  /* third argument is not provided */
+
+  got = _.arraySlice( array, 2 );
+  expected = [ 3, 4, 5, 6, 7 ];
   test.identical( got, expected );
+
+  /* second argument is undefined */
+
+  got = _.arraySlice( array, undefined, 4  );
+  expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+
+  /* from two to six */
 
   test.description = 'from two to six';
-  var got = _.arraySlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
-  var expected = [ 3, 4, 5, 6 ];
+  got = _.arraySlice( array, 2, 6 );
+  expected = [ 3, 4, 5, 6 ];
   test.identical( got, expected );
 
-  test.description = 'indexes are out of bound';
-  var got = _.arraySlice( [ 3, 4, 5, 6 ], 5, 8 );
-  var expected = [ undefined, undefined, undefined ];
+  /* indexes are out of bound */
+
+  got = _.arraySlice( [ 1,2,3 ], 5, 8 );
+  expected = [];
+  test.identical( got, expected );
+
+  /* left bound is negative */
+
+  got = _.arraySlice( array, -1, array.length );
+  expected = array;
+  test.identical( got, expected );
+
+  /* rigth bound is negative */
+
+  got = _.arraySlice( array, 0, -1 );
+  expected = [];
+  test.identical( got, expected );
+
+  /* rigth bound is out of range */
+
+  got = _.arraySlice( array, 0, array.length + 2 );
+  expected = array;
   test.identical( got, expected );
 
   /**/
 
   if( Config.debug )
   {
+    test.description = 'buffer';
+
+    /**/
+
+    got = _.arraySlice( new Buffer( '123' ), 0, 1 );
+    expected = [ 49 ];
+    test.identical( got, expected );
+
+    //
 
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
       _.arraySlice();
     });
+
+    //
 
     test.description = 'wrong type of argument';
     test.shouldThrowError( function()
@@ -1758,7 +1809,7 @@ function arrayGrow( test )
   /* begin index is negative */
 
   got = _.arrayGrow( array, -1, 3 );
-  expected = [ 0,1,2,3 ];
+  expected = [ undefined,1,2,3 ];
   test.identical( got, expected );
 
   /* end index is negative */
@@ -1770,7 +1821,7 @@ function arrayGrow( test )
   /* begin index negative, set value */
 
   got = _.arrayGrow( array, -1, 3, 0 );
-  expected = [ undefined, 1,2,3 ];
+  expected = [ 0, 1,2,3 ];
   test.identical( got, expected );
 
   //

@@ -10360,7 +10360,7 @@ function arrayGrow( array,f,l,val )
  * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
  * If ( f ) < 0, zero is assigned to begin index( f ).
 
- * @param { Array } array - Source array.
+ * @param { Array/Buffer } array - Source array or buffer.
  * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
  * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
  *
@@ -10380,9 +10380,10 @@ function arrayGrow( array,f,l,val )
  *
  * @returns { Array } Returns a shallow copy of elements from the original array.
  * @method arraySlice
- * @throws { Error } Will throw an Error if ( array ) is not an Array.
+ * @throws { Error } Will throw an Error if ( array ) is not an Array or Buffer.
  * @throws { Error } Will throw an Error if ( f ) is not a Number.
  * @throws { Error } Will throw an Error if ( l ) is not a Number.
+ * @throws { Error } Will throw an Error if no arguments provided.
  * @memberof wTools
 */
 
