@@ -2748,6 +2748,72 @@ function strExtractStrips( test )
 
 //
 
+function strExtractStereoStrips( test )
+{
+  var got,expected;
+
+  test.description = 'default';
+
+  /* nothing */
+
+  got = _.strExtractStereoStrips( '' );
+  expected = [];
+  test.identical( got, expected );
+
+  /* prefix/postfix # by default*/
+
+  got = _.strExtractStereoStrips( '#abc#' );
+  expected = [ '', 'abc', '' ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'with options';
+
+  /* pre/post are same*/
+
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '/' }, '/abc/' );
+  expected = [ '', 'abc', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '/' }, '//abc//' );
+  expected = [ '', '', 'abc', '', '' ];
+  test.identical( got, expected );
+
+  /* different pre/post */
+
+  got = _.strExtractStereoStrips.call( { prefix : '/#', postfix : '#' }, '/#abc#' );
+  expected = [ 'abc' ];
+  test.identical( got, expected );
+
+  /* postfix appears in source two times */
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '#' }, '/ab#c#' );
+  expected = [ 'ab', 'c#' ];
+  test.identical( got, expected );
+
+  /* onStrip #1 */
+  function onStrip1( strip )
+  {
+    if( strip.length )
+    return strip;
+  }
+  got = _.strExtractStereoStrips.call( { onStrip : onStrip1 }, '#abc#' );
+  expected = [ '#abc#' ];
+  test.identical( got, expected );
+
+  /* onStrip #2 */
+  function onStrip2( strip )
+  {
+    return strip + strip;
+  }
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '#', onStrip : onStrip2 }, '/abc#' );
+  expected = [ 'abcabc' ];
+  test.identical( got, expected );
+
+}
+
 var Self =
 {
 
@@ -2805,6 +2871,7 @@ var Self =
     strCommonLeft : strCommonLeft,
     strCommonRight : strCommonRight,
     strExtractStrips : strExtractStrips,
+    strExtractStereoStrips : strExtractStereoStrips,
 
   }
 
