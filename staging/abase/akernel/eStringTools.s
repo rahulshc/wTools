@@ -4525,7 +4525,8 @@ strExtractStrips.defaults =
  * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) separators
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
- * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ).
+ * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
+ *
  * Returns result as array of strings.
  *
  * Function extracts words in two attempts:
@@ -4548,7 +4549,7 @@ strExtractStrips.defaults =
  * //returns [ '', 'abc', '' ]
  *
  * @example
- * _.strExtractStereoStrips( '#abc$', { prefix : '#', postfix : '$' } );
+ * _.strExtractStereoStrips.call( { prefix : '#', postfix : '$' }, '#abc$' );
  * //returns [ 'abc' ]
  *
  * @example
