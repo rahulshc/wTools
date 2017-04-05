@@ -2220,6 +2220,9 @@ function _strCutOff( o )
 
   /* */
 
+  if( !( number >= 1 ) )
+  return o.left ? [ '',o.src ] : [ o.src,'' ];
+
   while( number > 0 )
   {
 
@@ -2229,7 +2232,7 @@ function _strCutOff( o )
     {
 
       if( !o.delimeter.length )
-      return [ o.src,'' ];
+      return o.left ? [ '',o.src ] : [ o.src,'' ];
       var s
 
       if( o.left )
@@ -2237,7 +2240,7 @@ function _strCutOff( o )
       {
 
         var i = o.src.indexOf( a,index );
-        if( i === -1 )
+        if( i === -1 && number > 1 )
         return o.src.length;
 
         return i;
@@ -2265,7 +2268,7 @@ function _strCutOff( o )
 
     /* */
 
-    if( !( index >= 0 ) )
+    if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
     return o.left ? [ '',o.src ] : [ o.src,'' ];
 
     number -= 1;
