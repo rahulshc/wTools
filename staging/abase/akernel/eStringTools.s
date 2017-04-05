@@ -4605,7 +4605,10 @@ function strExtractStereoStrips( src )
     }
     else
     {
+      if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
+      else
+      result.push( o.prefix + splitted[ i ] );
     }
 
   }
