@@ -3280,8 +3280,6 @@ function entityMap( src,onEach )
     {
       result[ s ] = onEach( src[ s ],s,src );
       _.assert( result[ s ] !== undefined,'( entityMap ) onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
-      // if( result[ s ] === undefined )
-      // delete result[ s ];
     }
   }
   else _.assert( 0,'unexpected' );
@@ -3291,33 +3289,33 @@ function entityMap( src,onEach )
 
 //
 
-  /**
+/**
 
-   * Filters elements of entity( src ) by calling( onEach ) function for each item.
-   * Returns result of filtering as new instance of type( src ) with items that succesfully passed ( onEach ) function.
-   * @see wTools.entityMap
-   *
-   * @example
-     var numbers = [ 36, -25, 49, 64, -16 ];
+ * Filters elements of entity( src ) by calling( onEach ) function for each item.
+ * Returns result of filtering as new instance of type( src ) with items that succesfully passed ( onEach ) function.
+ * @see wTools.entityMap
+ *
+ * @example
+   var numbers = [ 36, -25, 49, 64, -16 ];
 
-     function sqrt( v )
-     {
-        return ( v > 0 ) ? Math.sqrt( v ) : undefined;
-     };
+   function sqrt( v )
+   {
+      return ( v > 0 ) ? Math.sqrt( v ) : undefined;
+   };
 
-     var res = wTools.entityMap( numbers, sqrt );
-   // [ 6, 7, 8 ]
-   // numbers are still [ 36, -25, 49, 64, -16 ];
-   *
-   * @param {ArrayLike|ObjectLike} src - Source entity.
-   * @param {wTools~onEach} onEach - Conditional function called for each entities element.
-   * @returns {ArrayLike|ObjectLike} Returns new entity that contais filtered items.
-   * @thorws {Error} If( arguments.length ) less or more than 2.
-   * @thorws {Error} If( src ) is not Array or ObjectLike.
-   * @thorws {Error} If( onEach ) is not a function.
-   * @method entityFilter
-   * @memberof wTools
-   */
+   var res = wTools.entityMap( numbers, sqrt );
+ // [ 6, 7, 8 ]
+ // numbers are still [ 36, -25, 49, 64, -16 ];
+ *
+ * @param {ArrayLike|ObjectLike} src - Source entity.
+ * @param {wTools~onEach} onEach - Conditional function called for each entities element.
+ * @returns {ArrayLike|ObjectLike} Returns new entity that contais filtered items.
+ * @thorws {Error} If( arguments.length ) less or more than 2.
+ * @thorws {Error} If( src ) is not Array or ObjectLike.
+ * @thorws {Error} If( onEach ) is not a function.
+ * @method entityFilter
+ * @memberof wTools
+ */
 
 function _entityFilter( o )
 {

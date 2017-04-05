@@ -415,12 +415,28 @@ function appAnchor( o )
   if( o.extend )
   {
     _.mapExtend( a,o.extend );
-    window.location.hash = _.mapToStr
+  }
+
+  if( o.del )
+  {
+    _.mapDelete( a,o.del );
+  }
+
+  if( o.extend || o.del )
+  {
+
+    var newHash = '#' + _.mapToStr
     ({
       src : a,
       valKeyDelimeter : ':',
       entryDelimeter : ';',
     });
+
+    if( o.replacing )
+    history.replaceState( undefined, undefined, newHash )
+    else
+    window.location.hash = newHash;
+
   }
 
   return a;
@@ -429,6 +445,8 @@ function appAnchor( o )
 appAnchor.defaults =
 {
   extend : null,
+  del : null,
+  replacing : 0,
 }
 
 //
