@@ -819,32 +819,32 @@ function mapFirstPair( test )
 };
 
 
-function mapToString( test )
+function mapToStr( test )
 {
 
   test.description = 'returns an empty string';
-  var got = _.mapToString( [  ], ' : ', '; ' );
+  var got = _.mapToStr( [  ], ' : ', '; ' );
   var expected = '';
   test.identical( got, expected );
 
   test.description = 'returns a string representing an object';
-  var got = _.mapToString( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+  var got = _.mapToStr( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
   var expected = 'a : 1; b : 2; c : 3; d : 4';
   test.identical( got, expected );
 
   test.description = 'returns a string representing an array';
-  var got = _.mapToString( [ 1, 2, 3 ], ' : ', '; ' );
+  var got = _.mapToStr( [ 1, 2, 3 ], ' : ', '; ' );
   var expected = '0 : 1; 1 : 2; 2 : 3';
   test.identical( got, expected );
 
   test.description = 'returns a string representing an array-like object';
   function args() { return arguments }( 1, 2, 3, 4, 5 );
-  var got = _.mapToString( args, ' : ', '; ' );
+  var got = _.mapToStr( args, ' : ', '; ' );
   var expected = '0 : 1; 1 : 2; 2 : 3; 3 : 4; 4 : 5';
   test.identical( got, expected );
 
   test.description = 'returns a string representing a string';
-  var got = _.mapToString( 'abc', ' : ', '; ' );
+  var got = _.mapToStr( 'abc', ' : ', '; ' );
   var expected = '0 : a; 1 : b; 2 : c';
   test.identical( got, expected );
 
@@ -857,19 +857,19 @@ function mapToString( test )
     test.description = 'no argument';
     test.shouldThrowError( function()
     {
-      _.mapToString();
+      _.mapToStr();
     });
 
     test.description = 'wrong type of number';
     test.shouldThrowError( function()
     {
-      _.mapToString( 13 );
+      _.mapToStr( 13 );
     });
 
     test.description = 'wrong type of arguments';
     test.shouldThrowError( function()
     {
-      _.mapToString( true );
+      _.mapToStr( true );
     });
 
   }
@@ -1239,7 +1239,7 @@ var Self =
     mapSupplement : mapSupplement,
     mapCopy : mapCopy,
     mapFirstPair : mapFirstPair,
-    mapToString : mapToString,
+    mapToStr : mapToStr,
     mapGroup : mapGroup,
     mapButFiltering : mapButFiltering,
     mapComplement : mapComplement,
