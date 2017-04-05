@@ -18,7 +18,7 @@ if( typeof module !== 'undefined' )
   //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/wTools.s' );
+    require( '../wTools.s' );
   }
   catch( err )
   {
@@ -1639,6 +1639,132 @@ function strSplit( test )
 
 //
 
+function strCutOffLeft( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'defaults'
+
+  /**/
+
+  got = _.strCutOffLeft( 'a b c', ' ', 1 );
+  expected = [ 'a', 'b c' ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'single delimeter'
+
+  /* cut on first appear */
+
+  got = _.strCutOffLeft( 'abca', 'a', 1 );
+  expected = [ '', 'bca' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffLeft( 'xxx', 'a', 1 );
+  expected = [ '', 'xxx' ];
+  test.identical( got ,expected );
+
+  /* cut on second appear */
+
+  got = _.strCutOffLeft( 'abca', 'a', 2 );
+  expected = [ 'abc', '' ];
+  test.identical( got ,expected );
+
+  /* no more occurrences after second attempt, must return o.src */
+
+  got = _.strCutOffLeft( 'abca', 'a', 5 );
+  expected = [ '', 'abca' ];
+  test.identical( got ,expected );
+
+  //
+
+  test.description = 'multiple delimeter'
+
+  /* first occurrence of one of delimeters */
+
+  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 1 );
+  expected = [ '', 'bca' ];
+  test.identical( got ,expected );
+
+  /* on second occurrence of one of delimeters */
+
+  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 2 );
+  expected = [ 'ab', 'a' ];
+  test.identical( got ,expected );
+
+  /* on third occurrence of one of delimeters */
+
+  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 3 );
+  expected = [ 'abc', '' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffLeft( 'xxx', [ 'a', 'c' ], 1 );
+  expected = [ '', 'xxx' ];
+  test.identical( got ,expected );
+
+  //
+
+  test.description = 'options as map';
+
+  /**/
+
+  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a', number : 1 });
+  expected = [ '', 'bca' ];
+  test.identical( got ,expected );
+
+  /* number option is missing */
+
+  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a' });
+  expected = [ '', 'bca' ];
+  test.identical( got ,expected );
+
+  //
+
+  test.description = 'number option check';
+
+  /* number is zero */
+
+  got = _.strCutOffLeft( 'abca', 'a', 0 );
+  expected = [ 'abca' ];
+  test.identical( got ,expected );
+
+  /* number is negative */
+
+  got = _.strCutOffLeft( 'abca', 'a', -1 );
+  expected = [ 'abca' ];
+  test.identical( got ,expected );
+
+  if( Config.debug )
+  {
+    test.description = 'single argument but object expected';
+    test.shouldThrowErrorSync( function()
+    {
+      _.strCutOffLeft( 'abc' );
+    })
+
+    test.description = 'invalid option';
+    test.shouldThrowErrorSync( function()
+    {
+      _.strCutOffLeft({ src : 'abc', delimeter : 'a', query : 'a' });
+    })
+
+    test.description = 'changing of left option not allowed';
+    test.shouldThrowErrorSync( function()
+    {
+      _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
+    })
+  }
+}
+
+//
+
 function strStrip( test )
 {
 
@@ -2851,6 +2977,8 @@ var Self =
     strInhalfRight : strInhalfRight,
 
     strSplit : strSplit,
+
+    strCutOffLeft : strCutOffLeft,
 
     strStrip : strStrip,
     strRemoveAllSpaces : strRemoveAllSpaces,
