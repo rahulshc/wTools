@@ -4558,7 +4558,7 @@ strExtractStrips.defaults =
  *   if( strip.length )
  *   return strip.toUpperCase();
  * }
- * _.strExtractStereoStrips( '#abc$',{ postfix : '$', onStrip : onStrip };
+ * _.strExtractStereoStrips.call( { postfix : '$', onStrip : onStrip }, '#abc$' );
  * //returns [ 'ABC' ]
  *
  * @method strExtractStereoStrips
