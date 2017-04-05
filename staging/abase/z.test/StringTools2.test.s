@@ -1522,6 +1522,83 @@ function strSplit( test )
   });
   test.identical( got,expected );
 
+  /*delimeter not exist in src*/
+
+  var src = 'a,b,c';
+  var expected = [ 'a,b,c' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : [ '.' ],
+    preservingDelimeters : 1
+  });
+  test.identical( got, expected );
+
+  /*delimeter not exist in src*/
+
+  var src = 'a,b,c';
+  var expected = [ 'a,b,c' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : [ '.' ],
+    preservingDelimeters : 1
+  });
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'preservingEmpty';
+
+  /**/
+
+  var src = 'a ., b ., c ., d';
+  var expected = [ 'a', '', 'b', '', 'c', '', 'd' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : [ ',', '.' ],
+    preservingEmpty : 1
+  });
+  test.identical( got, expected );
+
+  /**/
+
+  var src = 'a , b , c , d';
+  var expected = [ 'a', 'b', 'c', 'd' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : ',',
+    preservingEmpty : 1
+  });
+  test.identical( got, expected );
+
+
+  /**/
+
+  var src = ',';
+  var expected = [ '', '' ];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : ',',
+    preservingEmpty : 1
+  });
+  test.identical( got, expected );
+
+  /**/
+
+  var src = ',,,';
+  var expected = [];
+  var got = _.strSplit
+  ({
+    src : src,
+    delimeter : ',',
+    preservingEmpty : 0
+  });
+  test.identical( got, expected );
+
   /**/
 
   if( Config.debug )
