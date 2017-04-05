@@ -1903,6 +1903,132 @@ function strCutOffRight( test )
 
 //
 
+function strCutOffAllLeft( test )
+{
+  var got, expected;
+
+  test.description = 'cut in most right position';
+
+  /* nothing */
+
+  got = _.strCutOffAllLeft( '', 'b' );
+  expected = [ '', '' ];
+  test.identical( got,expected );
+
+  /* nothing */
+
+  got = _.strCutOffAllLeft( '', '' );
+  expected = [ '', '' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllLeft( 'abbbc', 'b' );
+  expected = [ 'abb', 'c' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllLeft( 'abbbc', 'c' );
+  expected = [ 'abbb', '' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllLeft( 'acccb', 'c' );
+  expected = [ 'acc', 'b' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllLeft( 'xxx', 'a' );
+  expected = [ '', 'xxx' ];
+  test.identical( got,expected );
+
+  //
+
+  if( Config.debug )
+  {
+    test.description = 'delimeter must be a String';
+    test.shouldThrowErrorSync( function()
+    {
+      _.strCutOffAllLeft( 'xxx', 1 );
+    })
+
+    test.description = 'source must be a String';
+    test.shouldThrowErrorSync( function()
+    {
+      _.strCutOffAllLeft( 1, '1' );
+    })
+  }
+
+}
+
+//
+
+function strCutOffAllRight( test )
+{
+  var got, expected;
+
+  test.description = 'cut in most left position';
+
+  /* nothing */
+
+  got = _.strCutOffAllRight( '', 'b' );
+  expected = [ '', '' ];
+  test.identical( got,expected );
+
+  /* nothing */
+
+  got = _.strCutOffAllRight( '', '' );
+  expected = [ '', '' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllRight( 'abbbc', 'b' );
+  expected = [ 'a', 'bbc' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllRight( 'abbbc', 'c' );
+  expected = [ 'abbb', '' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllRight( 'acccb', 'c' );
+  expected = [ 'a', 'ccb' ];
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strCutOffAllRight( 'xxx', 'a' );
+  expected = [ 'xxx', '' ];
+  test.identical( got,expected );
+
+  //
+
+  if( Config.debug )
+  {
+    test.description = 'delimeter must be a String';
+    test.shouldThrowErrorSync( function()
+    {
+      _.strCutOffAllRight( 'xxx', 1 );
+    })
+
+    test.description = 'source must be a String';
+    test.shouldThrowErrorSync( function()
+    {
+      _.strCutOffAllRight( 1, '1' );
+    })
+  }
+
+}
+
+//
+
 function strStrip( test )
 {
 
@@ -3118,6 +3244,8 @@ var Self =
 
     strCutOffLeft : strCutOffLeft,
     strCutOffRight : strCutOffRight,
+    strCutOffAllLeft : strCutOffAllLeft,
+    strCutOffAllRight : strCutOffAllRight,
 
     strStrip : strStrip,
     strRemoveAllSpaces : strRemoveAllSpaces,
