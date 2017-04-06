@@ -2223,6 +2223,11 @@ function _strCutOff( o )
   if( !( number >= 1 ) )
   return o.left ? [ '',o.src ] : [ o.src,'' ];
 
+  if( _.arrayIs( o.delimeter ) && o.delimeter.length === 1 )
+  o.delimeter = o.delimeter[ 0 ];
+
+  /* */
+
   while( number > 0 )
   {
 
@@ -2232,7 +2237,7 @@ function _strCutOff( o )
     {
 
       if( !o.delimeter.length )
-      return o.left ? [ '',o.src ] : [ o.src,'' ];
+      return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
       var s
 
       if( o.left )
@@ -2240,7 +2245,8 @@ function _strCutOff( o )
       {
 
         var i = o.src.indexOf( a,index );
-        if( i === -1 && number > 1 )
+        if( i === -1 )
+        // if( i === -1 && o.number > 1 )
         return o.src.length;
 
         return i;
@@ -2250,8 +2256,8 @@ function _strCutOff( o )
       {
 
         var i = o.src.lastIndexOf( a,index );
-        if( i === -1 )
-        return o.src.length;
+        // if( i === -1 )
+        // return o.src.length;
 
         return i;
       });
@@ -2259,17 +2265,30 @@ function _strCutOff( o )
       delimeter = s.element;
       index = s.value;
 
+      if( o.number === 1 && index === o.src.length && o.left )
+      index = -1;
+
     }
     else
     {
       delimeter = o.delimeter;
       index = o.left ? o.src.indexOf( delimeter,index ) : o.src.lastIndexOf( delimeter,index );
+
+      if( o.left && !( index >= 0 ) && o.number > 1 )
+      {
+        index = o.src.length;
+        break;
+      }
     }
 
     /* */
 
-    if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
-    return o.left ? [ '',o.src ] : [ o.src,'' ];
+    if( !o.left && number > 1 && index === 0  )
+    return  [ '', delimeter, o.src ]
+
+    // if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
+    if( !( index >= 0 ) && o.number === 1 )
+    return o.left ? [ '',delimeter,o.src ] : [ o.src, delimeter, '' ];
 
     number -= 1;
 
@@ -2277,8 +2296,9 @@ function _strCutOff( o )
 
   /* */
 
-  result[ 0 ] = o.src.substring( 0,index );
-  result[ 1 ] = o.src.substring( index + delimeter.length );
+  result.push( o.src.substring( 0,index ) );
+  result.push( delimeter );
+  result.push( o.src.substring( index + delimeter.length ) );
 
   return result;
 }
