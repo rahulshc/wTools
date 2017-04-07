@@ -3720,6 +3720,59 @@ function strEndOf( test )
 
 }
 
+//
+
+function strInbetweenOf( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strInbetweenOf';
+
+  /**/
+
+  got = _.strInbetweenOf( '', '', '' );
+  expected = undefined;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'a', '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'abc', 'a', 'c' );
+  expected = 'b';
+  test.identical( got, expected );
+
+  /*firs of begin, last of end*/
+
+  got = _.strInbetweenOf( 'aaabccc', 'a', 'c' );
+  expected = 'aabcc';
+  test.identical( got, expected );
+
+  /* f > l */
+
+  got = _.strInbetweenOf( 'aaabccc', 'c', 'a' );
+  expected = undefined;
+  test.identical( got, expected );
+
+  /* begin === end, string contains several of it */
+
+  got = _.strInbetweenOf( 'aaabccc', 'a', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /* begin === end, string contains single */
+
+  got = _.strInbetweenOf( 'abc', 'a', 'a' );
+  expected = undefined;
+  test.identical( got, expected );
+}
+
 var Self =
 {
 
@@ -3786,6 +3839,7 @@ var Self =
 
     strBeginOf : strBeginOf,
     strEndOf : strEndOf,
+    strInbetweenOf : strInbetweenOf,
 
   }
 

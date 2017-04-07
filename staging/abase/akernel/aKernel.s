@@ -6582,8 +6582,8 @@ function str()
   * //returns undefined
   *
   * @returns { string } Returns part of source string without tail( end ) or undefined.
-  * @throws { Exception } If ( src ) or ( end ) argumets are not strings;
-  * @throws { Exception } If ( argumets.length ) is not equal 2;
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 2.
   * @method strBeginOf
   * @memberof wTools
   */
@@ -6623,8 +6623,8 @@ function strBeginOf( src,end )
   * //returns undefined
   *
   * @returns { string } Returns part of source string without head( begin ) or undefined.
-  * @throws { Exception } If ( src ) or ( end ) argumets are not strings;
-  * @throws { Exception } If ( argumets.length ) is not equal 2;
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 2.
   * @method strEndOf
   * @memberof wTools
   */
@@ -6648,6 +6648,47 @@ function strEndOf( src,begin )
 }
 
 //
+
+/**
+  * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
+  * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+  * Otherwise returns undefined.
+  *
+  * @param { string } src - The source string.
+  * @param { string } begin - String to find from begin of source.
+  * @param { string } end - String to find from end source.
+  *
+  * @example
+  * _.strInbetweenOf( 'abcd', 'a', 'd' );
+  * //returns 'bc'
+  *
+  * @example
+  * _.strInbetweenOf( 'aaabccc', 'a', 'c' );
+  * //returns 'aabcc'
+  *
+  * @example
+  * _.strInbetweenOf( 'aaabccc', 'a', 'a' );
+  * //returns 'a'
+  *
+  * @example
+  * _.strInbetweenOf( 'abc', 'a', 'a' );
+  * //returns undefined
+  *
+  * @example
+  * _.strInbetweenOf( 'abcd', 'x', 'y' )
+  * //returns undefined
+  *
+  * @example
+  * //index of begin is bigger then index of end
+  * _.strInbetweenOf( 'abcd', 'c', 'a' )
+  * //returns undefined
+  *
+  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 3.
+  * @method strInbetweenOf
+  * @memberof wTools
+  */
 
 function strInbetweenOf( src,begin,end )
 {
