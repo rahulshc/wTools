@@ -3658,10 +3658,10 @@ function strBeginOf( test )
   expected = undefined;
   test.identical( got,expected )
 
-  /* same length, equal */
+  /* equal */
 
-  got = _.strBeginOf( 'abc', 'cba' );
-  expected = undefined;
+  got = _.strBeginOf( 'abc', 'abc' );
+  expected = '';
   test.identical( got,expected )
 
 }
@@ -3706,16 +3706,16 @@ function strEndOf( test )
   expected = undefined;
   test.identical( got,expected )
 
-  /* same length #1 */
+  /* same length */
 
   got = _.strEndOf( 'abc', 'cba' );
   expected = undefined;
   test.identical( got,expected )
 
-  /* same length #2 */
+  /* equal */
 
-  got = _.strEndOf( 'abc', 'cba' );
-  expected = undefined;
+  got = _.strEndOf( 'abc', 'abc' );
+  expected = '';
   test.identical( got,expected )
 
 }
