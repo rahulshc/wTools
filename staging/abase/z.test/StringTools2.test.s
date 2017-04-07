@@ -1645,128 +1645,330 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'defaults'
+  test.description = 'single delimeter';
 
   /**/
 
-  got = _.strCutOffLeft( 'a b c', ' ', 1 );
-  expected = [ 'a', 'b c' ];
+  got = _.strCutOffLeft( '', '' );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( '', [ '' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abc', [ '' ] );
+  expected = [ '', '', 'abc' ];
+  test.identical( got, expected );
+
+  /* empty delimeters array */
+
+  got = _.strCutOffLeft( 'abca', [] );
+  expected = [ '', '', 'abca' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( '', 'a' );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( '', [ 'a' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', 'a' );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'a' ] );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got, expected );
+
+  /* number 1 by default, no cut, just returns src */
+
+  got = _.strCutOffLeft( 'abca', 'd' );
+  expected = [ '', '', 'abca' ];
+  test.identical( got, expected );
+
+  /* number 1 by default, no cut, just returns src */
+
+  got = _.strCutOffLeft( 'abca', [ 'd' ] );
+  expected = [ '', '', 'abca' ];
   test.identical( got, expected );
 
   //
 
-  test.description = 'single delimeter'
+  test.description = 'single delimeter, number';
 
-  /* cut on first appear */
+  /*!!!*/
 
-  got = _.strCutOffLeft( 'abca', 'a', 1 );
-  expected = [ '', 'bca' ];
-  test.identical( got ,expected );
+  got = _.strCutOffLeft( 'abca', '', 2 );
+  expected = [ 'a', '', 'bca' ];
+  test.identical( got, expected );
 
-  /* no occurrences */
-
-  got = _.strCutOffLeft( 'xxx', 'a', 1 );
-  expected = [ '', 'xxx' ];
-  test.identical( got ,expected );
-
-  /* cut on second appear */
+  /* cut on second occurrence */
 
   got = _.strCutOffLeft( 'abca', 'a', 2 );
-  expected = [ 'abc', '' ];
-  test.identical( got ,expected );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got, expected );
 
-  /* 5 attempts */
+  /* cut on second occurrence */
 
-  got = _.strCutOffLeft( 'abca', 'a', 5 );
-  expected = [ '', 'abca' ];
-  test.identical( got ,expected );
+  got = _.strCutOffLeft( 'abca', [ 'a' ], 2 );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got, expected );
 
-  //
+  /* cut on third occurrence */
 
-  test.description = 'multiple delimeter'
+  got = _.strCutOffLeft( 'abcaca', 'a', 3 );
+  expected = [ 'abcac', 'a', '' ];
+  test.identical( got, expected );
+
+  /* cut on third occurrence */
+
+  got = _.strCutOffLeft( 'abcaca', [ 'a' ], 3 );
+  expected = [ 'abcac', 'a', '' ];
+  test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 1 );
-  expected = [ '', 'bca' ];
-  test.identical( got ,expected );
+  got = _.strCutOffLeft( 'abcaca', 'a', 4 );
+  expected = [ 'abcaca', 'a', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abcaca', [ 'a' ], 4 );
+  expected = [ 'abcaca', 'a', '' ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'several delimeters';
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ] );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'c', 'a' ] );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'x', 'y' ] );
+  expected = [ '', '', 'abca'  ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'x', 'y', 'a' ] );
+  expected = [ '', 'a', 'bca'  ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'several delimeters, number';
+
+  /* empty delimeters array */
+
+  got = _.strCutOffLeft( 'abca', [], 2 );
+  expected = [ '', '', 'abca' ];
+  test.identical( got, expected );
 
   /**/
 
   got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 2 );
-  expected = [ 'ab', 'a' ];
-  test.identical( got ,expected );
+  expected = [ 'ab', 'c', 'a' ];
+  test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 3 );
-  expected = [ '', 'abca' ];
-  test.identical( got ,expected );
-
-  /* no occurrences */
-
-  got = _.strCutOffLeft( 'xxx', [ 'a', 'c' ], 1 );
-  expected = [ '', 'xxx' ];
-  test.identical( got ,expected );
-
-  /* no occurrences */
-
-  got = _.strCutOffLeft( 'xxx', [ 'a' ], 1 );
-  expected = [ '', 'xxx' ];
-  test.identical( got ,expected );
-
-  //
-
-  test.description = 'options as map';
+  got = _.strCutOffLeft( 'abcbc', [ 'c', 'a' ], 2 );
+  expected = [ 'ab', 'c', 'bc' ];
+  test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a', number : 1 });
-  expected = [ '', 'bca' ];
-  test.identical( got ,expected );
+  got = _.strCutOffLeft( 'cbcbc', [ 'c', 'a' ], 3 );
+  expected = [ 'cbcb', 'c', '' ];
+  test.identical( got, expected );
 
-  /* number option is missing */
+  /**/
 
-  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a' });
-  expected = [ '', 'bca' ];
-  test.identical( got ,expected );
+  got = _.strCutOffLeft( 'cbcbc', [ 'c', 'a' ], 4 );
+  expected = [ 'cbcbc', 'c', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'xxx', [ 'c', 'a' ], 4 );
+  expected = [ 'xxx', 'c', ''];
+  test.identical( got, expected );
 
   //
 
-  test.description = 'number option check';
+  test.description = 'one of delimeters contains other';
 
-  /* number is zero */
+  //
 
-  got = _.strCutOffLeft( 'abca', 'a', 0 );
-  expected = [ '', 'abca' ];
-  test.identical( got ,expected );
+  got = _.strCutOffLeft( 'ab', [ 'a', 'ab' ] );
+  expected = [ '', 'a', 'b' ];
+  test.identical( got, expected );
 
-  /* number is negative */
+  /**/
 
-  got = _.strCutOffLeft( 'abca', 'a', -1 );
-  expected = [ '', 'abca' ];
-  test.identical( got ,expected );
+  got = _.strCutOffLeft( 'ab', [ 'ab', 'a' ] );
+  expected = [ '', 'ab', '' ];
+  test.identical( got, expected );
 
-  if( Config.debug )
-  {
-    test.description = 'single argument but object expected';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffLeft( 'abc' );
-    })
+  /**/
 
-    test.description = 'invalid option';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffLeft({ src : 'abc', delimeter : 'a', query : 'a' });
-    })
+  got = _.strCutOffLeft( 'ab', [ 'b', 'ab' ] );
+  expected = [ '', 'ab', '' ];
+  test.identical( got, expected );
 
-    test.description = 'changing of left option not allowed';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
-    })
-  }
+  /**/
+
+  got = _.strCutOffLeft( 'ab', [ 'ab', 'b' ] );
+  expected = [ '', 'ab', '' ];
+  test.identical( got, expected );
+
+  // /**/
+  //
+  // got = _.strCutOffLeft( 'a b c', ' ', 1 );
+  // expected = [ 'a', 'b c' ];
+  // test.identical( got, expected );
+  //
+  // //
+  //
+  // test.description = 'single delimeter'
+  //
+  // /* cut on first appear */
+  //
+  // got = _.strCutOffLeft( 'abca', 'a', 1 );
+  // expected = [ '', 'bca' ];
+  // test.identical( got ,expected );
+  //
+  // /* no occurrences */
+  //
+  // got = _.strCutOffLeft( 'xxx', 'a', 1 );
+  // expected = [ '', 'xxx' ];
+  // test.identical( got ,expected );
+  //
+  // /* cut on second appear */
+  //
+  // got = _.strCutOffLeft( 'abca', 'a', 2 );
+  // expected = [ 'abc', '' ];
+  // test.identical( got ,expected );
+  //
+  // /* 5 attempts */
+  //
+  // got = _.strCutOffLeft( 'abca', 'a', 5 );
+  // expected = [ '', 'abca' ];
+  // test.identical( got ,expected );
+  //
+  // //
+  //
+  // test.description = 'multiple delimeter'
+  //
+  // /**/
+  //
+  // got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 1 );
+  // expected = [ '', 'bca' ];
+  // test.identical( got ,expected );
+  //
+  // /**/
+  //
+  // got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 2 );
+  // expected = [ 'ab', 'a' ];
+  // test.identical( got ,expected );
+  //
+  // /**/
+  //
+  // got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 3 );
+  // expected = [ '', 'abca' ];
+  // test.identical( got ,expected );
+  //
+  // /* no occurrences */
+  //
+  // got = _.strCutOffLeft( 'xxx', [ 'a', 'c' ], 1 );
+  // expected = [ '', 'xxx' ];
+  // test.identical( got ,expected );
+  //
+  // /* no occurrences */
+  //
+  // got = _.strCutOffLeft( 'xxx', [ 'a' ], 1 );
+  // expected = [ '', 'xxx' ];
+  // test.identical( got ,expected );
+  //
+  // //
+  //
+  // test.description = 'options as map';
+  //
+  // /**/
+  //
+  // got = _.strCutOffLeft({ src : 'abca', delimeter : 'a', number : 1 });
+  // expected = [ '', 'bca' ];
+  // test.identical( got ,expected );
+  //
+  // /* number option is missing */
+  //
+  // got = _.strCutOffLeft({ src : 'abca', delimeter : 'a' });
+  // expected = [ '', 'bca' ];
+  // test.identical( got ,expected );
+  //
+  // //
+  //
+  // test.description = 'number option check';
+  //
+  // /* number is zero */
+  //
+  // got = _.strCutOffLeft( 'abca', 'a', 0 );
+  // expected = [ '', 'abca' ];
+  // test.identical( got ,expected );
+  //
+  // /* number is negative */
+  //
+  // got = _.strCutOffLeft( 'abca', 'a', -1 );
+  // expected = [ '', 'abca' ];
+  // test.identical( got ,expected );
+  //
+  // if( Config.debug )
+  // {
+  //   test.description = 'single argument but object expected';
+  //   test.shouldThrowErrorSync( function()
+  //   {
+  //     _.strCutOffLeft( 'abc' );
+  //   })
+  //
+  //   test.description = 'invalid option';
+  //   test.shouldThrowErrorSync( function()
+  //   {
+  //     _.strCutOffLeft({ src : 'abc', delimeter : 'a', query : 'a' });
+  //   })
+  //
+  //   test.description = 'changing of left option not allowed';
+  //   test.shouldThrowErrorSync( function()
+  //   {
+  //     _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
+  //   })
+  // }
 }
 
 //
@@ -1777,128 +1979,334 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'defaults'
+  test.description = 'single delimeter';
 
   /**/
 
-  got = _.strCutOffRight( 'a b c', ' ', 1 );
-  expected = [ 'a b', 'c' ];
+  got = _.strCutOffRight( '', '' );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( '', [ '' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /*!!!*/
+
+  got = _.strCutOffRight( 'abc', [ '' ] );
+  expected = [ 'ab', '', 'c' ];
+  test.identical( got, expected );
+
+  /* empty delimeters array */
+
+  got = _.strCutOffRight( 'abca', [] );
+  expected = [ 'abca', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( '', 'a' );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( '', [ 'a' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', 'a' );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', [ 'a' ] );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got, expected );
+
+  /* number 1 by default, no cut, just returns src */
+
+  got = _.strCutOffRight( 'abca', 'd' );
+  expected = [ 'abca', '', '' ];
+  test.identical( got, expected );
+
+  /* number 1 by default, no cut, just returns src */
+
+  got = _.strCutOffRight( 'abca', [ 'd' ] );
+  expected = [ 'abca', '', '' ];
   test.identical( got, expected );
 
   //
 
-  test.description = 'single delimeter'
+  test.description = 'single delimeter, number';
 
-  /* cut on first appear */
+  /*!!!*/
 
-  got = _.strCutOffRight( 'abca', 'a', 1 );
-  expected = [ 'abc', '' ];
-  test.identical( got ,expected );
+  got = _.strCutOffRight( 'abca', '', 2 );
+  expected = [ 'ab', '', 'ca' ];
+  test.identical( got, expected );
 
-  /* no occurrences */
-
-  got = _.strCutOffRight( 'xxx', 'a', 1 );
-  expected = [ 'xxx', '' ];
-  test.identical( got ,expected );
-
-  /* cut on second appear */
+  /* cut on second occurrence */
 
   got = _.strCutOffRight( 'abca', 'a', 2 );
-  expected = [ '', 'bca' ];
-  test.identical( got ,expected );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got, expected );
+
+  /* cut on second occurrence */
+
+  got = _.strCutOffRight( 'abca', [ 'a' ], 2 );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got, expected );
+
+  /* cut on third occurrence */
+
+  got = _.strCutOffRight( 'abcaca', 'a', 3 );
+  expected = [ '', 'a', 'bcaca' ];
+  test.identical( got, expected );
+
+  /* cut on third occurrence */
+
+  got = _.strCutOffRight( 'abcaca', [ 'a' ], 3 );
+  expected = [ '', 'a', 'bcaca' ];
+  test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', 'a', 5 );
-  expected = [ 'abca', '' ];
-  test.identical( got ,expected );
+  got = _.strCutOffRight( 'abcaca', 'a', 4 );
+  expected = [ '', '', 'abcaca' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abcaca', [ 'a' ], 4 );
+  expected = [ '', '', 'abcaca' ];
+  test.identical( got, expected );
 
   //
 
-  test.description = 'multiple delimeter'
+  test.description = 'several delimeters';
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 1 );
-  expected = [ 'abc', '' ];
-  test.identical( got ,expected );
+  got = _.strCutOffRight( 'abca', [ 'a', 'c' ] );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', [ 'c', 'a' ] );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', [ 'x', 'y' ] );
+  expected = [ 'abca', '', ''  ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', [ 'x', 'y', 'a' ] );
+  expected = [ 'abc', 'a', ''  ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'several delimeters, number';
+
+  /* empty delimeters array */
+
+  got = _.strCutOffRight( 'abca', [], 2 );
+  expected = [ 'abca', '', '' ];
+  test.identical( got, expected );
 
   /**/
 
   got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 2 );
-  expected = [ 'ab', 'a' ];
-  test.identical( got ,expected );
+  expected = [ 'ab', 'c', 'a' ];
+  test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 3 );
-  expected = [ 'abca', '' ];
-  test.identical( got ,expected );
-
-  /* no occurrences */
-
-  got = _.strCutOffRight( 'xxx', [ 'a', 'c' ], 1 );
-  expected = [ 'xxx', '' ];
-  test.identical( got ,expected );
-
-  /* no occurrences */
-
-  got = _.strCutOffRight( 'xxx', [ 'a' ], 1 );
-  expected = [ 'xxx', '' ];
-  test.identical( got ,expected );
-
-  //
-
-  test.description = 'options as map';
+  got = _.strCutOffRight( 'abcbc', [ 'c', 'a' ], 2 );
+  expected = [ 'ab', 'c', 'bc' ];
+  test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight({ src : 'abca', delimeter : 'a', number : 1 });
-  expected = [ 'abc', '' ];
-  test.identical( got ,expected );
+  got = _.strCutOffRight( 'cbcbc', [ 'c', 'a' ], 3 );
+  expected = [ '', 'c', 'bcbc' ];
+  test.identical( got, expected );
 
-  /* number option is missing */
+  /**/
 
-  got = _.strCutOffRight({ src : 'abca', delimeter : 'a' });
-  expected = [ 'abc', '' ];
-  test.identical( got ,expected );
+  got = _.strCutOffRight( 'cbcbc', [ 'c', 'a' ], 4 );
+  expected = [ '', '', 'cbcbc' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'xxx', [ 'c', 'a' ], 4 );
+  expected = [ '', 'c', 'xxx' ];
+  test.identical( got, expected );
 
   //
 
-  test.description = 'number option check';
+  test.description = 'one of delimeters contains other';
 
-  /* number is zero */
+  //
 
-  got = _.strCutOffRight( 'abca', 'a', 0 );
-  expected = [ 'abca', '' ];
-  test.identical( got ,expected );
+  got = _.strCutOffRight( 'ab', [ 'a', 'ab' ] );
+  expected = [ '', 'a', 'b' ];
+  test.identical( got, expected );
 
-  /* number is negative */
+  /**/
 
-  got = _.strCutOffRight( 'abca', 'a', -1 );
-  expected = [ 'abca', '' ];
-  test.identical( got ,expected );
+  got = _.strCutOffRight( 'ab', [ 'ab', 'a' ] );
+  expected = [ '', 'ab', '' ];
+  test.identical( got, expected );
 
-  if( Config.debug )
-  {
-    test.description = 'single argument but object expected';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffRight( 'abc' );
-    })
+  /**/
 
-    test.description = 'invalid option';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffRight({ src : 'abc', delimeter : 'a', query : 'a' });
-    })
+  got = _.strCutOffRight( 'ab', [ 'b', 'ab' ] );
+  expected = [ 'a', 'b', '' ];
+  test.identical( got, expected );
 
-    test.description = 'changing of left option not allowed';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffRight({ src : 'abc', delimeter : 'a', left : 0 });
-    })
-  }
+  /**/
+
+  got = _.strCutOffRight( 'ab', [ 'ab', 'b' ] );
+  expected = [ 'a', 'b', '' ];
+  test.identical( got, expected );
+
+  // //
+  //
+  // test.description = 'defaults'
+  //
+  // /**/
+  //
+  // got = _.strCutOffRight( 'a b c', ' ', 1 );
+  // expected = [ 'a b', 'c' ];
+  // test.identical( got, expected );
+  //
+  // //
+  //
+  // test.description = 'single delimeter'
+  //
+  // /* cut on first appear */
+  //
+  // got = _.strCutOffRight( 'abca', 'a', 1 );
+  // expected = [ 'abc', '' ];
+  // test.identical( got ,expected );
+  //
+  // /* no occurrences */
+  //
+  // got = _.strCutOffRight( 'xxx', 'a', 1 );
+  // expected = [ 'xxx', '' ];
+  // test.identical( got ,expected );
+  //
+  // /* cut on second appear */
+  //
+  // got = _.strCutOffRight( 'abca', 'a', 2 );
+  // expected = [ '', 'bca' ];
+  // test.identical( got ,expected );
+  //
+  // /**/
+  //
+  // got = _.strCutOffRight( 'abca', 'a', 5 );
+  // expected = [ 'abca', '' ];
+  // test.identical( got ,expected );
+  //
+  // //
+  //
+  // test.description = 'multiple delimeter'
+  //
+  // /**/
+  //
+  // got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 1 );
+  // expected = [ 'abc', '' ];
+  // test.identical( got ,expected );
+  //
+  // /**/
+  //
+  // got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 2 );
+  // expected = [ 'ab', 'a' ];
+  // test.identical( got ,expected );
+  //
+  // /**/
+  //
+  // got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 3 );
+  // expected = [ 'abca', '' ];
+  // test.identical( got ,expected );
+  //
+  // /* no occurrences */
+  //
+  // got = _.strCutOffRight( 'xxx', [ 'a', 'c' ], 1 );
+  // expected = [ 'xxx', '' ];
+  // test.identical( got ,expected );
+  //
+  // /* no occurrences */
+  //
+  // got = _.strCutOffRight( 'xxx', [ 'a' ], 1 );
+  // expected = [ 'xxx', '' ];
+  // test.identical( got ,expected );
+  //
+  // //
+  //
+  // test.description = 'options as map';
+  //
+  // /**/
+  //
+  // got = _.strCutOffRight({ src : 'abca', delimeter : 'a', number : 1 });
+  // expected = [ 'abc', '' ];
+  // test.identical( got ,expected );
+  //
+  // /* number option is missing */
+  //
+  // got = _.strCutOffRight({ src : 'abca', delimeter : 'a' });
+  // expected = [ 'abc', '' ];
+  // test.identical( got ,expected );
+  //
+  // //
+  //
+  // test.description = 'number option check';
+  //
+  // /* number is zero */
+  //
+  // got = _.strCutOffRight( 'abca', 'a', 0 );
+  // expected = [ 'abca', '' ];
+  // test.identical( got ,expected );
+  //
+  // /* number is negative */
+  //
+  // got = _.strCutOffRight( 'abca', 'a', -1 );
+  // expected = [ 'abca', '' ];
+  // test.identical( got ,expected );
+  //
+  // if( Config.debug )
+  // {
+  //   test.description = 'single argument but object expected';
+  //   test.shouldThrowErrorSync( function()
+  //   {
+  //     _.strCutOffRight( 'abc' );
+  //   })
+  //
+  //   test.description = 'invalid option';
+  //   test.shouldThrowErrorSync( function()
+  //   {
+  //     _.strCutOffRight({ src : 'abc', delimeter : 'a', query : 'a' });
+  //   })
+  //
+  //   test.description = 'changing of left option not allowed';
+  //   test.shouldThrowErrorSync( function()
+  //   {
+  //     _.strCutOffRight({ src : 'abc', delimeter : 'a', left : 0 });
+  //   })
+  // }
 }
 
 //
@@ -3204,6 +3612,114 @@ function strExtractStereoStrips( test )
 
 }
 
+//
+
+function strBeginOf( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strBeginOf';
+
+  /**/
+
+  got = _.strBeginOf( 'abc', '' );
+  expected = 'abc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', 'c' );
+  expected = 'ab';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', 'bc' );
+  expected = 'a';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', ' c' );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /* end.length > src.length */
+
+  got = _.strBeginOf( 'abc', 'abcd' );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /* same length, not equal*/
+
+  got = _.strBeginOf( 'abc', 'cba' );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /* same length, equal */
+
+  got = _.strBeginOf( 'abc', 'cba' );
+  expected = undefined;
+  test.identical( got,expected )
+
+}
+
+//
+
+function strEndOf( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strEndOf';
+
+  /**/
+
+  got = _.strEndOf( 'abc', '' );
+  expected = 'abc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abc', 'a' );
+  expected = 'bc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abc', 'ab' );
+  expected = 'c';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abc', ' a' );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /* end.length > src.length */
+
+  got = _.strEndOf( 'abc', 'abcd' );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /* same length #1 */
+
+  got = _.strEndOf( 'abc', 'cba' );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /* same length #2 */
+
+  got = _.strEndOf( 'abc', 'cba' );
+  expected = undefined;
+  test.identical( got,expected )
+
+}
+
 var Self =
 {
 
@@ -3267,6 +3783,9 @@ var Self =
     strCommonRight : strCommonRight,
     strExtractStrips : strExtractStrips,
     strExtractStereoStrips : strExtractStereoStrips,
+
+    strBeginOf : strBeginOf,
+    strEndOf : strEndOf,
 
   }
 

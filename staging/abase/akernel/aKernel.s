@@ -6566,6 +6566,28 @@ function str()
 
 //
 
+/**
+  * Finds occurrence of( end ) at the end of source( src ) and removes it if exists.
+  * Returns begin part of a source string if occurrence was finded, otherwise returns undefined.
+  *
+  * @param { string } src - The source string.
+  * @param { string } end - String to find.
+  *
+  * @example
+  * _.strBeginOf( 'abc', 'c' );
+  * //returns 'ab'
+  *
+  * @example
+  * _.strBeginOf( 'abc', 'x' );
+  * //returns undefined
+  *
+  * @returns { string } Returns part of source string without tail( end ) or undefined.
+  * @throws { Exception } If ( src ) or ( end ) argumets are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 2;
+  * @method strBeginOf
+  * @memberof wTools
+  */
+
 function strBeginOf( src,end )
 {
 
@@ -6583,6 +6605,29 @@ function strBeginOf( src,end )
 }
 
 //
+
+/**
+  * Finds occurrence of( begin ) at the begining of source( src ) and removes it if exists.
+  * Returns end part of a source string if occurrence was finded, otherwise returns undefined.
+  * otherwise returns undefined.
+  *
+  * @param { string } src - The source string.
+  * @param { string } begin - String to find.
+  *
+  * @example
+  * _.strEndOf( 'abc', 'a' );
+  * //returns 'bc'
+  *
+  * @example
+  * _.strEndOf( 'abc', 'c' );
+  * //returns undefined
+  *
+  * @returns { string } Returns part of source string without head( begin ) or undefined.
+  * @throws { Exception } If ( src ) or ( end ) argumets are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 2;
+  * @method strEndOf
+  * @memberof wTools
+  */
 
 function strEndOf( src,begin )
 {
