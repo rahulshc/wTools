@@ -6715,12 +6715,18 @@ function strInbetweenOf( src,begin,end )
 
 /**
   * Compares two strings.
-  * @param {string} src - source string
-  * @param {string} begin
+  * @param {string} src - Source string.
+  * @param {string} begin - String to find at begin of source.
+  *
   * @example
-      var scr = _.strBegins( "abc","a" );
-  * @return {Boolean}
-  * If param begin is match with param src first chars than return true
+  * var scr = _.strBegins( "abc","a" );
+  * // returns true
+  *
+  * @example
+  * var scr = _.strBegins( "abc","b" );
+  * // returns false
+  *
+  * @returns {Boolean} Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
   * @method strBegins
   * @memberof wTools
   */
@@ -6739,12 +6745,18 @@ function strBegins( src,begin )
 
 /**
   * Compares two strings.
-  * @param {string} src - source string
-  * @param {string} end
+  * @param {string} src - Source string.
+  * @param {string} end - String to find at end of source.
+  *
   * @example
-      var scr = ._strEnds("abc","c");
-  * @return {Boolean}
-  * If param end is match with param src last chars than return true
+  * var scr = _.strEnds( "abc","c" );
+  * // returns true
+  *
+  * @example
+  * var scr = _.strEnds( "abc","b" );
+  * // returns false
+  *
+  * @return {Boolean} Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
   * @method strEnds
   * @memberof wTools
   */

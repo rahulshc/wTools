@@ -3773,6 +3773,88 @@ function strInbetweenOf( test )
   test.identical( got, expected );
 }
 
+//
+
+function strBegins( test )
+{
+  var got, expected;
+
+  //
+
+  test.description = 'strBegins';
+
+  /**/
+
+  got = _.strBegins( '', '' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'a', 'a' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'a', 'b' );
+  expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'abc', 'ab' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'abc', 'abc' );
+  expected = true;
+  test.identical( got, expected );
+}
+
+//
+
+function strEnds( test )
+{
+  var got, expected;
+
+  //
+
+  test.description = 'strEnds';
+
+  /**/
+
+  got = _.strEnds( '', '' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'a', 'a' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'a', 'b' );
+  expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'abc', 'bc' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'abc', 'abc' );
+  expected = true;
+  test.identical( got, expected );
+}
+
 var Self =
 {
 
@@ -3840,6 +3922,9 @@ var Self =
     strBeginOf : strBeginOf,
     strEndOf : strEndOf,
     strInbetweenOf : strInbetweenOf,
+
+    strBegins : strBegins,
+    strEnds : strEnds,
 
   }
 
