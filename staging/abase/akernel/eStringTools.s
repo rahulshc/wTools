@@ -3766,34 +3766,49 @@ function strIndentation( src,tab )
 // !!! pelase update description
 
 /**
- * Puts line counter before each line in the string provided by( o.src ).
+ * Puts line counter before each line/element of provided source( o.src ).
+ * If( o.src ) is a string, function splits it into array using new line as splitter, then puts line counter at the begining of each line( element ).
+ * If( o.src ) is a array, function puts line counter at the begining of each line( element ).
  * Initial value of a counter can be changed by defining( o.first ) options( o ) property.
  * Can be called in two ways:
  * - First by passing all options in one object;
- * - Second by passing source string only.
+ * - Second by passing source only and using default value of( first ).
  *
- * @param {object} o - options.
- * @param {string} [ o.src=null ] - source string.
- * @param {number} [ o.first=1 ] - sets initial value of a counter.
- * @returns {string} Returns string with line enumeration.
+ * @param { Object } o - options.
+ * @param { String/Array } [ o.src=null ] - Source string or array of lines( not array of texts ).
+ * With line we mean it does not have eol. Otherwise please join the array to let the routine to resplit the text,
+ * like that: _.strLinesNumber( array.join( '\n' ) ).
+ * @param { Number} [ o.first=1 ] - Sets initial value of a counter.
+ * @returns { String } Returns string with line enumeration.
  *
  * @example
+ * _.strLinesNumber( 'line' );
+ * //returns '1 : line'
+ *
+ * @example
+ * _.strLinesNumber( 'line1\nline2\nline3' );
  * //returns
  * // 1: line1
  * // 2: line2
  * // 3: line3
- * _.strLinesNumber( 'line1\nline2\nline3' );
  *
  * @example
+ * _.strLinesNumber( [ 'line', 'line', 'line' ] );
+ * //returns
+ * // 1: line1
+ * // 2: line2
+ * // 3: line3
+ *
+ * @example
+ * _.strLinesNumber( { src:'line1\nline2\nline3', first : 2 } );
  * //returns
  * // 2: line1
  * // 3: line2
  * // 4: line3
- * _.strLinesNumber( { src:'line1\nline2\nline3', first : 2 } );
  *
  * @method strLinesNumber
  * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String or Array.
  * @memberof wTools
  */
 
@@ -3805,7 +3820,7 @@ function strLinesNumber( o )
 
   _.routineOptions( strLinesNumber,o );
   _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.strIs( o.src ) || _.arrayIs( o.src ),'strLinesNumber : expects string o.src' );
+  _assert( _.strIs( o.src ) || _.arrayIs( o.src ),'strLinesNumber : expects o.src as string or array' );
 
   var lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
 

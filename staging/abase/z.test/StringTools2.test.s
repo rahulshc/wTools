@@ -2907,10 +2907,40 @@ function strUnicodeEscape( test )
 
 function strLinesNumber( test )
 {
+  var got,expected;
 
-  test.description = 'simple string';
-  var got = _.strLinesNumber( 'line1\nline2\nline3' );
-  var expected =
+  //
+
+  test.description = 'string';
+
+  /**/
+
+  got = _.strLinesNumber( '' );
+  expected = '1 : ';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a' );
+  expected = '1 : a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a\nb' );
+  expected = '1 : a\n2 : b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a\nb', 2 );
+  expected = '2 : a\n3 : b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'line1\nline2\nline3' );
+  expected =
   [
     '1 : line1',
     '2 : line2',
@@ -2918,8 +2948,9 @@ function strLinesNumber( test )
   ].join( '\n' );
   test.identical( got,expected );
 
-  test.description = 'empty string with escaping';
-  var got = _.strLinesNumber( '\n\n' );
+  /**/
+
+  got = _.strLinesNumber( '\n\n' );
   var expected =
   [
     '1 : ',
@@ -2928,7 +2959,41 @@ function strLinesNumber( test )
   ].join( '\n' );
   test.identical( got,expected );
 
+  //
+
+  test.description = 'array';
+
   /**/
+
+  got = _.strLinesNumber( [ 'line1', 'line2', 'line3' ] );
+  expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line', 'line', 'line' ], 2 );
+  expected =
+  [
+    '2 : line',
+    '3 : line',
+    '4 : line',
+  ].join( '\n' );
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line\n', 'line\n', 'line\n' ] );
+  expected =
+  [
+    '1 : line\n',
+    '2 : line\n',
+    '3 : line\n',
+  ].join( '\n' );
+
+  //
 
   if( Config.debug )
   {
