@@ -4618,6 +4618,10 @@ function strExtractStereoStrips( src )
   {
 
     var halfs = strCutOffLeft( splitted[ i ],o.postfix );
+
+    if( halfs.length === 3 )
+    halfs = [ halfs[ 0 ], halfs[ 2 ] ]
+
     var strip = o.onStrip ? o.onStrip( halfs[ 0 ] ) : halfs[ 0 ];
 
     if( strip !== undefined )
