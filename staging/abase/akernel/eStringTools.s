@@ -2284,11 +2284,11 @@ function _strCutOff( o )
     /* */
 
     if( !o.left && number > 1 && index === 0  )
-    return  [ '', delimeter, o.src ]
+    return  [ '', '', o.src ]
 
     // if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
     if( !( index >= 0 ) && o.number === 1 )
-    return o.left ? [ '',delimeter,o.src ] : [ o.src, delimeter, '' ];
+    return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
 
     number -= 1;
 
