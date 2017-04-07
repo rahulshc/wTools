@@ -6570,8 +6570,8 @@ function str()
   * Finds occurrence of( end ) at the end of source( src ) and removes it if exists.
   * Returns begin part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
   *
-  * @param { string } src - The source string.
-  * @param { string } end - String to find.
+  * @param { String } src - The source string.
+  * @param { String } end - String to find.
   *
   * @example
   * _.strBeginOf( 'abc', 'c' );
@@ -6581,7 +6581,7 @@ function str()
   * _.strBeginOf( 'abc', 'x' );
   * //returns undefined
   *
-  * @returns { string } Returns part of source string without tail( end ) or undefined.
+  * @returns { String } Returns part of source string without tail( end ) or undefined.
   * @throws { Exception } If all arguments are not strings;
   * @throws { Exception } If ( argumets.length ) is not equal 2.
   * @method strBeginOf
@@ -6611,8 +6611,8 @@ function strBeginOf( src,end )
   * Returns end part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
   * otherwise returns undefined.
   *
-  * @param { string } src - The source string.
-  * @param { string } begin - String to find.
+  * @param { String } src - The source string.
+  * @param { String } begin - String to find.
   *
   * @example
   * _.strEndOf( 'abc', 'a' );
@@ -6622,7 +6622,7 @@ function strBeginOf( src,end )
   * _.strEndOf( 'abc', 'c' );
   * //returns undefined
   *
-  * @returns { string } Returns part of source string without head( begin ) or undefined.
+  * @returns { String } Returns part of source string without head( begin ) or undefined.
   * @throws { Exception } If all arguments are not strings;
   * @throws { Exception } If ( argumets.length ) is not equal 2.
   * @method strEndOf
@@ -6654,9 +6654,9 @@ function strEndOf( src,begin )
   * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
   * Otherwise returns undefined.
   *
-  * @param { string } src - The source string.
-  * @param { string } begin - String to find from begin of source.
-  * @param { string } end - String to find from end source.
+  * @param { String } src - The source string.
+  * @param { String } begin - String to find from begin of source.
+  * @param { String } end - String to find from end source.
   *
   * @example
   * _.strInbetweenOf( 'abcd', 'a', 'd' );
@@ -6715,8 +6715,8 @@ function strInbetweenOf( src,begin,end )
 
 /**
   * Compares two strings.
-  * @param {string} src - Source string.
-  * @param {string} begin - String to find at begin of source.
+  * @param { String } src - Source string.
+  * @param { String } begin - String to find at begin of source.
   *
   * @example
   * var scr = _.strBegins( "abc","a" );
@@ -6726,8 +6726,10 @@ function strInbetweenOf( src,begin,end )
   * var scr = _.strBegins( "abc","b" );
   * // returns false
   *
-  * @returns {Boolean} Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
+  * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
   * @method strBegins
+  * @throws { Exception } If one of arguments is not a String.
+  * @throws { Exception } If( arguments.length ) is not equal 2.
   * @memberof wTools
   */
 
@@ -6745,8 +6747,8 @@ function strBegins( src,begin )
 
 /**
   * Compares two strings.
-  * @param {string} src - Source string.
-  * @param {string} end - String to find at end of source.
+  * @param { String } src - Source string.
+  * @param { String } end - String to find at end of source.
   *
   * @example
   * var scr = _.strEnds( "abc","c" );
@@ -6756,8 +6758,10 @@ function strBegins( src,begin )
   * var scr = _.strEnds( "abc","b" );
   * // returns false
   *
-  * @return {Boolean} Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
+  * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
   * @method strEnds
+  * @throws { Exception } If one of arguments is not a String.
+  * @throws { Exception } If( arguments.length ) is not equal 2.
   * @memberof wTools
   */
 
