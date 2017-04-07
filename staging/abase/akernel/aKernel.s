@@ -6568,7 +6568,7 @@ function str()
 
 /**
   * Finds occurrence of( end ) at the end of source( src ) and removes it if exists.
-  * Returns begin part of a source string if occurrence was finded, otherwise returns undefined.
+  * Returns begin part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
   *
   * @param { string } src - The source string.
   * @param { string } end - String to find.
@@ -6608,7 +6608,7 @@ function strBeginOf( src,end )
 
 /**
   * Finds occurrence of( begin ) at the begining of source( src ) and removes it if exists.
-  * Returns end part of a source string if occurrence was finded, otherwise returns undefined.
+  * Returns end part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
   * otherwise returns undefined.
   *
   * @param { string } src - The source string.
