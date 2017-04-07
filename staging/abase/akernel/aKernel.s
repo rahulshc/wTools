@@ -6781,9 +6781,9 @@ function strEnds( src,end )
  * Finds substring prefix ( begin ) occurrence from the very begining of source ( src ) and removes it.
  * Returns original string if source( src ) does not have occurrence of ( prefix ).
  *
- * @param {string} src - Source string to parse.
- * @param {string} prefix - String that is to be dropped.
- * @returns {string} Returns string with result of prefix removement.
+ * @param { String } src - Source string to parse.
+ * @param { String } prefix - String that is to be dropped.
+ * @returns { String } Returns string with result of prefix removement.
  *
  * @example
  * //returns mple
@@ -6813,9 +6813,9 @@ function strRemoveBegin( src,begin )
 /**
  * Removes occurrence of postfix ( end ) from the very end of string( src ).
  * Returns original string if no occurrence finded.
- * @param {string} src - Source string to parse.
- * @param {string} postfix - String that is to be dropped.
- * @returns {string} Returns string with result of postfix removement.
+ * @param { String } src - Source string to parse.
+ * @param { String } postfix - String that is to be dropped.
+ * @returns { String } Returns string with result of postfix removement.
  *
  * @example
  * //returns examp
@@ -6842,18 +6842,24 @@ function strRemoveEnd( src,end )
 
 //
 
-  /**
-    * Prepend string to begin of other string.
-    * @param {string} src
-    * @param {string} begin
-    * @example
-      var scr = ._strPrependOnce("test","test");
-    * @return {string}
-    * if begin match with first chars of param src, return src
-    * else add param src to param begin
-    * @method strPrependOnce
-    * @memberof wTools
-    */
+/**
+  * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
+  * otherwise returns original string.
+  * @param { String } src - Source string to parse.
+  * @param { String } begin - String to prepend.
+  *
+  * @example
+  * _.strPrependOnce( 'test', 'test' );
+  * //returns 'test'
+  *
+  * @example
+  * _.strPrependOnce( 'abc', 'x' );
+  * //returns 'xabc'
+  *
+  * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
+  * @method strPrependOnce
+  * @memberof wTools
+  */
 
 function strPrependOnce( src,begin )
 {
@@ -6865,17 +6871,23 @@ function strPrependOnce( src,begin )
 
 //
 
-  /**
-    * Append string to end of other string.
-    * @param {string} src
-    * @param {string} end
-    * example
-      var src = ._strAppendOnce("test","test");
-    * @return {string}
-    * if end match with last chars of param src, return src
-    * else add param end to param src
-    * @method strPrependOnce
-    * @memberof wTools
+/**
+  * Appends string( begin ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
+  * otherwise returns original string.
+  * @param {string} src - Source string to parse.
+  * @param {string} end - String to append.
+  *
+  * @example
+  * _.strAppendOnce( 'test', 'test' );
+  * //returns 'test'
+  *
+  * @example
+  * _.strAppendOnce( 'abc', 'x' );
+  * //returns 'abcx'
+  *
+  * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
+  * @method strAppendOnce
+  * @memberof wTools
   */
 
 function strAppendOnce( src,end )

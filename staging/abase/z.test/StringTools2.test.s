@@ -3855,6 +3855,208 @@ function strEnds( test )
   test.identical( got, expected );
 }
 
+//
+
+function strRemoveBegin( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strRemoveBegin';
+
+  /**/
+
+  got = _.strRemoveBegin( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( '', 'x' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'a' );
+  expected = 'bc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'ab' );
+  expected = 'c';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'x' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'abc' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', '' );
+  expected = 'abc';
+  test.identical( got, expected );
+}
+
+//
+
+function strRemoveEnd( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strRemoveBegin';
+
+  /**/
+
+  got = _.strRemoveEnd( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( '', 'x' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'c' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'bc' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'x' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'abc' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', '' );
+  expected = 'abc';
+  test.identical( got, expected );
+}
+
+//
+
+function strPrependOnce( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strPrependOnce';
+
+  /**/
+
+  got = _.strPrependOnce( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', 'a' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', 'ab' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', 'x' );
+  expected = 'xab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', '' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+}
+
+//
+
+function strAppendOnce( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strAppendOnce';
+
+  /**/
+
+  got = _.strAppendOnce( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', 'a' );
+  expected = 'aba';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', 'ab' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', 'x' );
+  expected = 'abx';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', '' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+}
+
 var Self =
 {
 
@@ -3925,6 +4127,12 @@ var Self =
 
     strBegins : strBegins,
     strEnds : strEnds,
+
+    strRemoveBegin : strRemoveBegin,
+    strRemoveEnd : strRemoveEnd,
+
+    strPrependOnce : strPrependOnce,
+    strAppendOnce : strAppendOnce,
 
   }
 
