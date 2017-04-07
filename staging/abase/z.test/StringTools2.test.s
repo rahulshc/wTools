@@ -324,10 +324,69 @@ function strHtmlEscape( test )
 
 function strIndentation( test )
 {
-  test.description = 'returns indented string';
-  var got = _.strIndentation( 'a\nb\nc','\t' );
-  var expected = '\ta\n\tb\n\tc';
+  var got, expected;
+
+  //
+
+  test.description = 'single line';
+
+  /**/
+
+  got = _.strIndentation( '', '_' );
+  expected = '_';
+  test.identical( got, expected );
+
+  /* no new lines, returns tab + source */
+
+  got = _.strIndentation( 'abc', '_' );
+  expected = '_abc';
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'multiline';
+
+  /**/
+
+  got = _.strIndentation( 'a\nb', '_' );
+  expected = '_a\n_b';
+  test.identical( got, expected );
+
+  /* tab before first and each new line */
+
+  got = _.strIndentation( '\na\nb\nc', '_' );
+  expected = '_\n_a\n_b\n_c';
+  test.identical( got, expected );
+
+  /* tabs count = new lines count + 1 for first line */
+
+  got = _.strIndentation( '\n\n\n', '_' );
+  expected = '_\n_\n_\n_';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strIndentation( 'a\nb\nc','\t' );
+  expected = '\ta\n\tb\n\tc';
   test.identical( got,expected );
+
+  //
+
+  test.description = 'array';
+
+  /**/
+
+  got = _.strIndentation( [ 'a', 'b', 'c' ],'_' );
+  expected = '_a\n_b\n_c';
+  test.identical( got,expected );
+
+  /* join array to string */
+
+  var arr = [ 'a\nb', 'b\nc', 'c\nd' ];
+  got = _.strIndentation( arr.join( '\n' ), '_' );
+  expected = '_a\n_b\n_b\n_c\n_c\n_d';
+  test.identical( got,expected );
+
 
   /**/
 

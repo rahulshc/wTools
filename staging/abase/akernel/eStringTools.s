@@ -3692,27 +3692,47 @@ function strUnicodeEscape( src )
 //
 
 /**
- * Appends indentation character passed by the second argument( tab ) before first
+ * Adds indentation character(s) to passed string.
+ * If( src ) is a multiline string, function puts indentation character( tab ) before first
  * and every next new line in a source string( src ).
  * If( src ) represents single line, function puts indentation at the begining of the string.
+ * If( src ) is a Array, function prepends indentation character( tab ) to each line( element ) of passed array.
  *
- * @param {string} src - Source string to parse.
- * @param {string} tab - Indentation character.
- * @returns {string} Returns indented string.
+ * @param { String/Array } src - Source string to parse or array of lines( not array of texts ).
+ * With line we mean it does not have eol. Otherwise please join the array to let the routine to resplit the text,
+ * like that: _.strIndentation( array.join( '\n' ), '_' ).
+ * @param { String } tab - Indentation character.
+ * @returns { String } Returns indented string.
  *
  * @example
+ *  _.strIndentation( 'abc', '_' )
+ * //returns '_abc'
+ *
+ * @example
+ * _.strIndentation( 'a\nb\nc', '_' )
  * //returns
- *  a
- *  b
- *  c
- * _.strIndentation( 'a\nb\nc','  ' );
+ * _a
+ * _b
+ * _c
  *
  * @example
- * //returns '  single line'
- * _.strIndentation( 'single line','  ' );
+ * _.strIndentation( [ 'a', 'b', 'c' ], '_' )
+ * //returns
+ * _a
+ * _b
+ * _c
+ *
+ * @example
+ * var array = [ 'a\nb', 'c\nd' ];
+ * _.strIndentation( array.join( '\n' ), '_' )
+ * //returns
+ * _a
+ * _b
+ * _c
+ * _d
  *
  * @method strIndentation
- * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( src ) is not a String or Array.
  * @throws { Exception } Throw an exception if( tab ) is not a String.
  * @throws { Exception } Throw an exception if( arguments.length ) is not a equal 2.
  * @memberof wTools
@@ -3722,7 +3742,7 @@ function strUnicodeEscape( src )
 function strIndentation( src,tab )
 {
 
-  _assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects string src' );
+  _assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects src as string or array' );
   _assert( _.strIs( tab ),'strIndentation : expects string tab' );
   _assert( arguments.length === 2,'strIndentation : expects two arguments' );
 
