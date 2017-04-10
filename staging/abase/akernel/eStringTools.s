@@ -3864,39 +3864,76 @@ strLinesNumber.defaults =
 
 /**
  * Selects range( o.range ) of lines from source string( o.src ).
- * Custom new line character can be defined by option( o.nl ).
- * Returns selected lines range as string or undefined.
+ * If( o.range ) is not specified and ( o.line ) is provided function uses it with ( o.selectMode ) option to generate new range.
+ * If( o.range ) and ( o.line ) are both not provided function generates range by formula: [ 0, n + 1 ], where n: number of ( o.nl ) in source( o.src ).
+ * Returns selected lines range as string or empty string if nothing selected.
  * Can be called in three ways:
  * - First by passing all parameters in one options object( o ) ;
  * - Second by passing source string( o.src ) and range( o.range ) as array or number;
  * - Third by passing source string( o.src ), range start and end position.
  *
- * @param {object} o - options.
- * @param {string} [ o.src=null ] - source string.
- * @param {array|number} [ o.range=null ] - sets range of lines to select from( o.src ) or single line number.
- * @param {string} [ o.nl='\n' ] - sets new line character.
- * @returns {string} Returns selected lines as new string.
+ * @param {Object} o - Options.
+ * @param {String} [ o.src=null ] - Source string.
+ * @param {Array|Number} [ o.range=null ] - Sets range of lines to select from( o.src ) or single line number.
+ * @param {Number} [ o.zero=1 ] - Sets base value for a line counter.
+ * @param {Number} [ o.number=0 ] - If true, puts line counter before each line by using o.range[ 0 ] as initial value of a counter.
+ * @param {String} [ o.nl='\n' ] - Sets new line character.
+ * @param {String} [ o.line=null ] - Sets line number from which to start selecting, is used only if ( o.range ) is null.
+ * @param {Number} [ o.numberOfLines=3 ] - Sets maximal number of lines to select, is used only if ( o.range ) is null and ( o.line ) option is specified.
+ * @param {String} [ o.selectMode='center' ] - Determines in what way funtion must select lines, works only if ( o.range ) is null and ( o.line ) option is specified.
+ * Possible values:
+ * - 'center' - uses ( o.line ) index as center point and selects ( o.numberOfLines ) lines in both directions.
+ * - 'begin' - selects ( o.numberOfLines ) lines from start point ( o.line ) in forward direction;
+ * - 'end' - selects ( o.numberOfLines ) lines from start point ( o.line ) in backward direction.
+ * @returns {string} Returns selected lines as new string or empty if nothing selected.
  *
  * @example
- * //returns
- * // line1
- * // line2
- * _.strLinesSelect( 'line1\nline2\nline3', 0, 2 );
+ * //selecting single line
+ * _.strLinesSelect( 'a\nb\nc', 1 );
+ * //returns 'a'
  *
  * @example
+ * //selecting first two lines
+ * _.strLinesSelect( 'a\nb\nc', [ 1, 3 ] );
  * //returns
- * // line2
- * _.strLinesSelect( 'line1\nline2\nline3', 1 );
+ * 'a
+ * b'
  *
  * @example
+ * //selecting first two lines, second way
+ * _.strLinesSelect( 'a\nb\nc', 1, 3 );
  * //returns
- * // line1
- * _.strLinesSelect( { src : 'line1\nline2\nline3', range : [ 0,1 ] } )
+ * 'a
+ * b'
+ *
+ * @example
+ * //custom new line character
+ * _.strLinesSelect({ src : 'a b c', range : [ 1, 3 ], nl : ' ' });
+ * //returns 'a b'
+ *
+ * @example
+ * //setting preffered number of lines to select, line option must be specified
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 1 });
+ * //returns 'b'
+ *
+ * @example
+ * //selecting 2 two next lines starting from second
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 2, selectMode : 'begin' });
+ * //returns
+ * 'b
+ * c'
+ *
+ * @example
+ * //selecting 2 two lines starting from second in backward direction
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 2, selectMode : 'end' });
+ * //returns
+ * 'a
+ * b'
  *
  * @method strLinesSelect
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.range ) is not a Array.
+ * @throws { Exception } Throw an exception if( o.range ) is not a Array or Number.
  * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
  * @memberof wTools
  */
