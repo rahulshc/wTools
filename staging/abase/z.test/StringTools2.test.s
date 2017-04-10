@@ -3458,6 +3458,404 @@ function strShort( test )
 
 function strLinesSelect( test )
 {
+  var got,expected;
+  var src = 'a\nb\nc\nd';
+
+  //
+
+  test.description = 'single line selection';
+
+  /**/
+
+  got = _.strLinesSelect( '', 1 );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( 'abc', 1 );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( 'abc', 0 );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, 1 );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, 2 );
+  expected = 'b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, -1 );
+  expected = '';
+  test.identical( got, expected );
+
+  /* line number bigger then actual count of lines */
+
+  got = _.strLinesSelect( src, 99 );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, 1, 2 );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ 1, 2 ] );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ -1, 2 ] );
+  expected = 'a';
+  test.identical( got, expected );
+
+
+
+  //
+
+  test.description = 'multiline selection';
+
+  /**/
+
+  got = _.strLinesSelect( src, [ -1, -1 ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( '', [ 1, 3 ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ 1, 3 ] );
+  expected = 'a\nb';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ -1, 2 ] );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ 1, 4 ] );
+  expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ 99, 4 ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ 1, 99 ] );
+  expected = src;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect( src, [ 2, 5 ] );
+  expected = 'b\nc\nd';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect({ src : src, range : [ 2, 5 ], zero : 4 });
+  expected = 'a';
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'selection without range provided, selectMode : center';
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 2,
+    numberOfLines : 3,
+    selectMode : 'center',
+    zero : 1
+  });
+  expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 3,
+    selectMode : 'center',
+    zero : 1
+  });
+  expected = 'a\nb';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 1,
+    selectMode : 'center',
+    zero : 1
+  });
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 99,
+    selectMode : 'center',
+    zero : 1
+  });
+  expected = src;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : -1,
+    selectMode : 'center',
+    zero : 1
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 0,//same behavior as null?
+    numberOfLines : 1,
+    selectMode : 'center',
+    zero : 1
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  got = _.strLinesSelect
+  ({
+    src : '',
+    line : 1,
+    numberOfLines : 1,
+    selectMode : 'center',
+    zero : 1
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'selection without range provided, selectMode : begin';
+
+  /*two lines from begining of the string*/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 2,
+    selectMode : 'begin',
+    zero : 1
+  });
+  expected = 'a\nb';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : -1,
+    numberOfLines : 2,
+    selectMode : 'begin',
+    zero : 1
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 0,
+    selectMode : 'begin',
+    zero : 1
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 99,
+    selectMode : 'begin',
+    zero : 1
+  });
+  expected = src;
+  test.identical( got, expected );
+
+  /* zero > range[ 0 ] */
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 5,
+    selectMode : 'begin',
+    zero : 2
+  });
+  expected = src;
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'selection without range provided, selectMode : end';
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 4,
+    numberOfLines : 2,
+    selectMode : 'end'
+  });
+  expected = 'c\nd';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : -1,
+    numberOfLines : 2,
+    selectMode : 'end'
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 0,
+    selectMode : 'end'
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 99,
+    selectMode : 'end'
+  });
+  expected = 'a';
+  test.identical( got, expected );
+
+  /* zero > range[ 0 ] */
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    line : 1,
+    numberOfLines : 5,
+    selectMode : 'end',
+    zero : 2
+  });
+  expected = '';
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'custom new line'
+  var src2 = 'a b c d'
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src2,
+    range : [ 1, 3 ],
+    nl : ' '
+  });
+  expected = 'a b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src2,
+    range : [ 1, 3 ],
+    nl : 'x'
+  });
+  expected = src2;
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'number'
+
+  /**/
+
+  got = _.strLinesSelect
+  ({
+    src : src,
+    range : [ 1, 3 ],
+    number : 1
+  });
+  expected = '1 : a\n2 : b';
+  test.identical( got, expected );
+
+  //
+
   var src =
   `Lorem
   ipsum dolor
@@ -3466,40 +3864,54 @@ function strLinesSelect( test )
   adipisicing
   elit`;
 
+  //
+
   test.description = 'first line';
-  var got = _.strLinesSelect( src, 0 );
+  var got = _.strLinesSelect( src, 1 );
   var expected = 'Lorem';
   test.identical( got,expected );
 
+  //
+
   test.description = 'first two lines';
-  var got = _.strLinesSelect( src, 0, 2 );
+  var got = _.strLinesSelect( src, 1, 3 );
   var expected =
   `Lorem
   ipsum dolor`;
   test.identical( got,expected );
 
+  //
+
   test.description = 'range as array';
-  var got = _.strLinesSelect( src, [ 0, 2 ] );
+  var got = _.strLinesSelect( src, [ 1, 3 ] );
   var expected =
   `Lorem
   ipsum dolor`;
   test.identical( got,expected );
+
+  //
 
   test.description = 'custom new line';
   var src2 ='Lorem||ipsum dolor||sit amet||consectetur'
-  var got = _.strLinesSelect( { src :  src2, range : [ 2, 4 ], nl : '||' } );
-  var expected = `||sit amet||consectetur`;
+  var got = _.strLinesSelect( { src :  src2, range : [ 3, 5 ], nl : '||' } );
+  var expected = `sit amet||consectetur`;
   test.identical( got,expected );
+
+  //
 
   test.description = 'empty line, out of range';
   var got = _.strLinesSelect( { src :  '', range : [ 1, 1 ] } );
-  var expected = undefined;
+  var expected = '';
   test.identical( got,expected );
+
+  //
 
   test.description = 'empty line';
   var got = _.strLinesSelect( { src :  '', range : [ 0, 1 ] } );
   var expected = '';
   test.identical( got,expected );
+
+  //
 
   test.description = 'incorrect range';
   var got = _.strLinesSelect( { src :  src, range : [ 2, 1 ] } );
@@ -3533,7 +3945,6 @@ function strLinesSelect( test )
     {
       _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], x : 1 } );
     });
-
   }
 }
 
