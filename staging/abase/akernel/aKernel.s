@@ -10680,7 +10680,7 @@ function arrayCutin( dstArray,range,srcArray )
   var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
   _.assert( _.arrayIs( range ) );
   _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 
@@ -10695,6 +10695,44 @@ function arrayCutin( dstArray,range,srcArray )
   args.unshift( last-first );
   args.unshift( first );
 
+  if( _.bufferAnyIs( dstArray ) )
+  {
+    var length = dstArray.length;
+    var newLength = dstArray.length - args[ 1 ];
+
+    if( srcArray )
+    {
+      var srcArrayLength = srcArray.length || srcArray.byteLength;
+      newLength += srcArrayLength;
+    }
+
+    if( _.bufferRawIs( dstArray ) )
+    {
+      var result = new ArrayBuffer( newLength );
+      length = dstArray.byteLength;
+    }
+    else if( _.bufferNodeIs( dstArray ) )
+    {
+      var result = new Buffer( newLength );
+      length = dstArray.byteLength;
+    }
+    else
+    var result = arrayNew( dstArray, newLength );
+
+    if( first > 0 )
+    for( var i = 0; i < first; ++i )
+    result[ i ] = dstArray[ i ];
+
+    if( srcArray )
+    for( var i = first, j = 0; j < srcArrayLength; )
+    result[ i++ ] = srcArray[ j++ ];
+
+    for( var j = last, i = first + srcArrayLength; j < length; )
+    result[ i++ ] = dstArray[ j++ ];
+
+    return result;
+  }
+  else
   var result = dstArray.splice.apply( dstArray,args );
 
   return result;
