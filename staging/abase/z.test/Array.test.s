@@ -1508,7 +1508,41 @@ function arrayCutin( test )
 
   debugger;
 
+  test.description = 'range as single number';
+
   /* */
+
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayCutin( dst, 2 );
+  var expected = [ 3 ];
+  test.identical( got, expected );
+  test.identical( dst, [ 1, 2, 4 ] )
+
+  /* */
+
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayCutin( dst, -1 );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( dst, [ 1, 2, 3, 4 ] )
+
+  /* */
+
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayCutin( dst, 0, [ 0 ] );
+  var expected = [ 1 ];
+  test.identical( got, expected );
+  test.identical( dst, [ 0, 2, 3, 4 ] )
+
+  /* */
+
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayCutin( dst, 0, [] );
+  var expected = [ 1 ];
+  test.identical( got, expected );
+  test.identical( dst, [ 2, 3, 4 ] )
+
+
 
   test.description = 'empth';
   var dst = [];
@@ -1561,9 +1595,9 @@ function arrayCutin( test )
   test.description = 'pass number instead of range';
   var dst = [ 1, 2, 3, 4, 5 ];
   var cut = _.arrayCutin( dst, 1, [ 11,22,33 ] );
-  var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
+  var expected = [ 1, 11, 22, 33, 3, 4, 5 ];
   test.identical( dst, expected );
-  var expected = [];
+  var expected = [ 2 ];
   test.identical( cut, expected );
 
   /* */
@@ -1571,9 +1605,9 @@ function arrayCutin( test )
   test.description = 'no source, number istead of range';
   var dst = [ 1, 2, 3, 4, 5 ];
   var cut = _.arrayCutin( dst, 1 );
-  var expected = [ 1, 2, 3, 4, 5 ];
+  var expected = [ 1, 3, 4, 5 ];
   test.identical( dst, expected );
-  var expected = [];
+  var expected = [ 2 ];
   test.identical( cut, expected );
 
   /* */
@@ -1614,6 +1648,36 @@ function arrayCutin( test )
   var expected = [ 11, 22, 33 ];
   test.identical( dst, expected );
   var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( cut, expected );
+
+  /* */
+
+  test.description = 'negative, both sides';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ -1, -1 ],[ 11,22,33 ] );
+  var expected = dst;
+  test.identical( dst, expected );
+  var expected = [ ];
+  test.identical( cut, expected );
+
+  /* */
+
+  test.description = 'zero, both sides';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ 0, 0 ],[ 11,22,33 ] );
+  var expected = dst;
+  test.identical( dst, expected );
+  var expected = [ ];
+  test.identical( cut, expected );
+
+  /* first > last */
+
+  test.description = 'first > last';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var cut = _.arrayCutin( dst, [ 9, 0 ],[ 11,22,33 ] );
+  var expected = dst;
+  test.identical( dst, expected );
+  var expected = [ ];
   test.identical( cut, expected );
 
   /* */
