@@ -10582,52 +10582,7 @@ function arrayMultislice()
 
 //
 
-/**
- * The arrayCutin() method changes the content of an array (dstArray) by removing existing elements
- * and/or adding new elements from an array (srcArray).
- *
- * @param { Array } dstArray - The target array.
- * @param { Array } srcArray - The source array.
- * @param { Number } first - The index at which to start changing the (dstArray) array.
- * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
- * If (first) is negative, will begin that many elements from the end.
- * @param { Number } replace - The number of old array (dstArray) elements to remove.
- * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
- * then all of the elements through the end of the array will be deleted.
- *
- * @example
- * // returns [ 1, 2, 3, 4, 5 ]
- * _.arrayCutin( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
- *
- * @example
- * // returns [ 1, 'a', 2, 3, 4, 'd' ]
- * _.arrayCutin( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
- *
- * @example
- * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
- *
- * @example
- * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
- *
- * @example
- * // returns [ 1, 'a', 'b', 'c' ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
- *
- * @example
- * // returns [ 1, 4, 5 ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
- *
- * @returns { Array } Returns the modified array (dstArray) with the new length.
- * @method arrayCutin
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
- * @throws { Error } Will throw an Error if (dstArray) is not an Array.
- * @throws { Error } Will throw an Error if (srcArray) is not an Array.
- * @throws { Error } Will throw an Error if (first) is not a Number.
- * @throws { Error } Will throw an Error if (replace) is not a Number.
- * @memberof wTools
- */
+
 
 // function arraySpliceArray( dstArray,srcArray,first,replace )
 // {
@@ -10675,7 +10630,7 @@ function arrayCutin( dstArray,range,srcArray )
 {
 
   if( _.numberIs( range ) )
-  range = [ range ]
+  range = [ range, range + 1 ];
 
   var first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
