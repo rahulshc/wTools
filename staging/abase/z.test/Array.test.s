@@ -12,9 +12,11 @@
 
  */
 
+var isBrowser = true;
+
 if( typeof module !== 'undefined' )
 {
-
+  isBrowser = false;
   //if( typeof wBase === 'undefined' )
   try
   {
@@ -1554,7 +1556,7 @@ function arrayCutin( test )
 
   test.description = 'remove two elements';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ 1,3 ], [] );
+  var cut = _.arrayCutin( dst, [ 1, 3 ], [] );
   var expected = [ 1, 4, 5 ];
   test.identical( dst, expected );
   var expected = [ 2, 3 ];
@@ -1564,7 +1566,7 @@ function arrayCutin( test )
 
   test.description = 'remove two elements and incut three';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ 1,3 ], [ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ 1, 3 ], [ 11, 22, 33 ] );
   var expected = [ 1, 11, 22, 33, 4, 5 ];
   test.identical( dst, expected );
   var expected = [ 2, 3 ];
@@ -1574,7 +1576,7 @@ function arrayCutin( test )
 
   test.description = 'pass only begin of range';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ 1 ], [ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ 1 ], [ 11, 22, 33 ] );
   var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
   test.identical( dst, expected );
   var expected = [];
@@ -1584,7 +1586,7 @@ function arrayCutin( test )
 
   test.description = 'pass empty range';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [], [ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [], [ 11, 22, 33 ] );
   var expected = [ 11, 22, 33, 1, 2, 3, 4, 5 ];
   test.identical( dst, expected );
   var expected = [];
@@ -1594,7 +1596,7 @@ function arrayCutin( test )
 
   test.description = 'pass number instead of range';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, 1, [ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, 1, [ 11, 22, 33 ] );
   var expected = [ 1, 11, 22, 33, 3, 4, 5 ];
   test.identical( dst, expected );
   var expected = [ 2 ];
@@ -1614,7 +1616,7 @@ function arrayCutin( test )
 
   test.description = 'no source';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ 1,3 ] );
+  var cut = _.arrayCutin( dst, [ 1, 3 ] );
   var expected = [ 1, 4, 5 ];
   test.identical( dst, expected );
   var expected = [ 2, 3 ];
@@ -1624,7 +1626,7 @@ function arrayCutin( test )
 
   test.description = 'out of bound, begin';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ -10,2 ],[ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ -10,2 ],[ 11, 22, 33 ] );
   var expected = [ 11, 22, 33, 3, 4, 5 ];
   test.identical( dst, expected );
   var expected = [ 1, 2 ];
@@ -1634,7 +1636,7 @@ function arrayCutin( test )
 
   test.description = 'out of bound, end';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ 3,10 ],[ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ 3,10 ],[ 11, 22, 33 ] );
   var expected = [ 1, 2, 3, 11, 22, 33 ];
   test.identical( dst, expected );
   var expected = [ 4, 5 ];
@@ -1644,7 +1646,7 @@ function arrayCutin( test )
 
   test.description = 'out of bound, both sides';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ -10,10 ],[ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ -10,10 ],[ 11, 22, 33 ] );
   var expected = [ 11, 22, 33 ];
   test.identical( dst, expected );
   var expected = [ 1, 2, 3, 4, 5 ];
@@ -1654,7 +1656,7 @@ function arrayCutin( test )
 
   test.description = 'negative, both sides';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ -1, -1 ],[ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ -1, -1 ],[ 11, 22, 33 ] );
   var expected = dst;
   test.identical( dst, expected );
   var expected = [ ];
@@ -1664,7 +1666,7 @@ function arrayCutin( test )
 
   test.description = 'zero, both sides';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ 0, 0 ],[ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ 0, 0 ],[ 11, 22, 33 ] );
   var expected = dst;
   test.identical( dst, expected );
   var expected = [ ];
@@ -1674,13 +1676,135 @@ function arrayCutin( test )
 
   test.description = 'first > last';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var cut = _.arrayCutin( dst, [ 9, 0 ],[ 11,22,33 ] );
+  var cut = _.arrayCutin( dst, [ 9, 0 ],[ 11, 22, 33 ] );
   var expected = dst;
   test.identical( dst, expected );
   var expected = [ ];
   test.identical( cut, expected );
 
-  /* */
+  /* Buffers */
+
+  var list =
+  [
+    Int8Array,
+    Uint8Array,
+    Uint8ClampedArray,
+    Int16Array,
+    Uint16Array,
+    Int32Array,
+    Uint32Array,
+    Float32Array,
+    Float64Array,
+    ArrayBuffer
+  ];
+
+  if( !isBrowser )
+  list.push( Buffer );
+
+  for( var i = 0; i < list.length; i++ )
+  {
+    test.description = 'buffers: ' + list[ i ].name;
+
+    var array = new list[ i ]( 5 );
+    for( var j = 0; j < 5; j++ )
+    array[ j ] = j + 1;
+
+    //array [ 1,2,3,4,5 ]
+
+    /* simple cut */
+
+    var got = _.arrayCutin( array, 0 );
+    var expected = [ 2, 3, 4, 5 ];
+    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    test.identical( got,expected );
+
+    /* simple cut, add one element to begin */
+
+    var got = _.arrayCutin( array, 0, [ 9 ] );
+    var expected = [ 9, 2, 3, 4, 5 ];
+    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    test.identical( got,expected );
+
+    /* simple cut */
+
+    var got = _.arrayCutin( array, 4 );
+    var expected = [ 1, 2, 3, 4 ];
+    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    test.identical( got,expected );
+
+    /* range */
+
+    var got = _.arrayCutin( array, [ 0, 1 ] );
+    var expected = [ 2, 3, 4, 5 ];
+    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    test.identical( got,expected );
+
+    /* range */
+
+    var got = _.arrayCutin( array, [ 2, 5 ] );
+    var expected = [ 1, 2 ];
+    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    test.identical( got,expected );
+
+    /* single, add new elements to end */
+
+    var got = _.arrayCutin( array, 4, [ 6, 7 ] );
+    var expected = [ 1, 2, 3, 4, 6, 7 ];
+    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    test.identical( got,expected );
+
+    /* range, add new elements to end */
+
+    var got = _.arrayCutin( array, [ 4, 5 ], [ 6, 7 ] );
+    var expected = [ 1, 2, 3, 4, 6, 7 ];
+    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    test.identical( got,expected );
+
+    /* out of range, returns original */
+
+    var got = _.arrayCutin( array, 10, [ 6, 7 ] );
+    var expected = array;
+    test.identical( got,expected );
+
+    /* remove all, last index is out of range */
+
+    var got = _.arrayCutin( array, [ 0, 99 ] );
+    var expected = new list[ i ]( 0 );
+    test.identical( got.byteLength,expected.byteLength );
+
+    /* remove all and fill with new values */
+
+    var got = _.arrayCutin( array, [ 0, 99 ], [ 1, 2, 3, 4, 5 ] );
+    var expected = array;
+    test.identical( got,expected );
+
+    /* negative */
+
+    var got = _.arrayCutin( array, [ 0, -1 ] );
+    var expected = array;
+    test.identical( got,expected );
+
+    /* negative */
+
+    var got = _.arrayCutin( array, [ -1, -1 ] );
+    var expected = array;
+    test.identical( got,expected );
+
+    /* zero, returns original */
+
+    var got = _.arrayCutin( array, [ 0, 0 ], [ 1 ] );
+    var expected = array;
+    test.identical( got,expected );
+
+    /* empty */
+
+    var got = _.arrayCutin( array, [], [] );
+    var expected = array;
+    test.identical( got, expected );
+
+  }
+
+
 
   if( Config.debug )
   {

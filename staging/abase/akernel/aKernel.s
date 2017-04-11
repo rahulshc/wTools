@@ -10684,10 +10684,14 @@ function arrayCutin( dstArray,range,srcArray )
   _.assert( _.arrayIs( range ) );
   _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 
+  var length = dstArray.length || dstArray.byteLength;
+
   if( first < 0 )
   first = 0;
-  if( first > dstArray.length )
-  first = dstArray.length;
+  if( first > length)
+  first = length;
+  if( last > length)
+  last = length;
   if( last < first )
   last = first;
 
@@ -10697,24 +10701,27 @@ function arrayCutin( dstArray,range,srcArray )
 
   if( _.bufferAnyIs( dstArray ) )
   {
-    var length = dstArray.length;
-    var newLength = dstArray.length - args[ 1 ];
+    if( first === last )
+    return dstArray;
+
+    var newLength = length - args[ 1 ];
+    var srcArrayLength = 0;
 
     if( srcArray )
     {
-      var srcArrayLength = srcArray.length || srcArray.byteLength;
+      srcArrayLength = srcArray.length || srcArray.byteLength;
       newLength += srcArrayLength;
     }
 
     if( _.bufferRawIs( dstArray ) )
     {
       var result = new ArrayBuffer( newLength );
-      length = dstArray.byteLength;
+      // length = dstArray.byteLength;
     }
     else if( _.bufferNodeIs( dstArray ) )
     {
       var result = new Buffer( newLength );
-      length = dstArray.byteLength;
+      // length = dstArray.byteLength;
     }
     else
     var result = arrayNew( dstArray, newLength );
