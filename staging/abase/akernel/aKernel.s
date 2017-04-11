@@ -10629,8 +10629,9 @@ function arrayMultislice()
  * Removes range( range ) of elements from provided array( dstArray ) and adds elements from array( srcArray )
  * at the start position of provided range( range ) if( srcArray ) was provided.
  * On success returns array with deleted element(s), otherwise returns empty array.
+ * For TypedArray's and buffers returns modified copy of ( dstArray ) or original array if nothing changed.
  *
- * @param { Array } dstArray - The target array.
+ * @param { Array|TypedArray|Buffer } dstArray - The target array, TypedArray( Int8Array,Int16Array,Uint8Array ... etc ) or Buffer( ArrayBuffer, Buffer ).
  * @param { Array|Number } range - The range of elements or index of single element to remove from ( dstArray ).
  * @param { Array } srcArray - The array of elements to add to( dstArray ) at the start position of provided range( range ).
  * If one of ( range ) indexies is not specified it will be setted to zero.
@@ -10660,7 +10661,14 @@ function arrayMultislice()
  * console.log( dst );
  * // returns [ 0, 0, 0, 4 ]
  *
- * @returns { Array } Returns array with deleted element(s), otherwise returns empty array.
+ * @example
+ * var dst = new Int32Array( 4 );
+ * dst.set( [ 1, 2, 3, 4 ] )
+ * _.arrayCutin( dst, 0 );
+ * // returns [ 2, 3, 4 ]
+ *
+ * @returns { Array|TypedArray|Buffer } For array returns array with deleted element(s), otherwise returns empty array.
+ * For other types returns modified copy or origin( dstArray ).
  * @method arrayCutin
  * @throws { Error } If ( arguments.length ) is not equal to two or three.
  * @throws { Error } If ( dstArray ) is not an Array.
