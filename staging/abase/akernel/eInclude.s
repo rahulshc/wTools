@@ -383,7 +383,9 @@ function appArgsInSubjectAndMapFormat( o )
       return result;
     }
 
-    splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 1 ];
+    debugger;
+    _.assert( _.strCutOffAllLeft( splitted[ 0 ],' ' ).length === 3 )
+    splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 2 ];
 
     result.map = _.strParseMap( splitted );
 
