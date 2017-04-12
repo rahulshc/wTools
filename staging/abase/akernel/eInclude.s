@@ -368,8 +368,9 @@ function appArgsInSubjectAndMapFormat( o )
     result.delimter = o.delimeter;
     result.map = null;
     result.subject = process.argv[ 2 ];
+    result.scriptArgs = process.argv.slice( 2 );
 
-    var args = process.argv.slice( 2 ).join( ' ' );
+    var args = result.scriptArgs.join( ' ' );
     args = args.trim();
 
     if( !args )
@@ -383,11 +384,12 @@ function appArgsInSubjectAndMapFormat( o )
       return result;
     }
 
-    debugger;
+    // debugger;
     _.assert( _.strCutOffAllLeft( splitted[ 0 ],' ' ).length === 3 )
     splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 2 ];
 
-    result.map = _.strParseMap( splitted );
+    // debugger;
+    result.map = _.strParseMap( splitted.join( ':' ) );
 
   }
 

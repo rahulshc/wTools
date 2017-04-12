@@ -4900,7 +4900,7 @@ function strParseMap( o )
     {
       var cuts = _.strCutOffAllLeft( right,o.entryDelimeter );
       var val = cuts[ 0 ];
-      src[ a+0 ] = cuts[ 1 ];
+      src[ a+0 ] = cuts[ 2 ];
     }
 
     if( !isNaN( parseFloat( val ) ) )
