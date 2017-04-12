@@ -2379,37 +2379,37 @@ function strCutOffAllLeft( test )
   /* nothing */
 
   got = _.strCutOffAllLeft( '', 'b' );
-  expected = [ '', '' ];
+  expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /* nothing */
 
   got = _.strCutOffAllLeft( '', '' );
-  expected = [ '', '' ];
+  expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllLeft( 'abbbc', 'b' );
-  expected = [ 'abb', 'c' ];
+  expected = [ 'abb', 'b', 'c' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllLeft( 'abbbc', 'c' );
-  expected = [ 'abbb', '' ];
+  expected = [ 'abbb', 'c', '' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllLeft( 'acccb', 'c' );
-  expected = [ 'acc', 'b' ];
+  expected = [ 'acc', 'c', 'b' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllLeft( 'xxx', 'a' );
-  expected = [ '', 'xxx' ];
+  expected = [ '', '', 'xxx' ];
   test.identical( got,expected );
 
   //
@@ -2442,37 +2442,37 @@ function strCutOffAllRight( test )
   /* nothing */
 
   got = _.strCutOffAllRight( '', 'b' );
-  expected = [ '', '' ];
+  expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /* nothing */
 
   got = _.strCutOffAllRight( '', '' );
-  expected = [ '', '' ];
+  expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllRight( 'abbbc', 'b' );
-  expected = [ 'a', 'bbc' ];
+  expected = [ 'a', 'b', 'bbc' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllRight( 'abbbc', 'c' );
-  expected = [ 'abbb', '' ];
+  expected = [ 'abbb', 'c', '' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllRight( 'acccb', 'c' );
-  expected = [ 'a', 'ccb' ];
+  expected = [ 'a', 'c', 'ccb' ];
   test.identical( got,expected );
 
   /**/
 
   got = _.strCutOffAllRight( 'xxx', 'a' );
-  expected = [ 'xxx', '' ];
+  expected = [ 'xxx', '', '' ];
   test.identical( got,expected );
 
   //

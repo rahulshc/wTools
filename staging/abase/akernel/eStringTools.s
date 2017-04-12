@@ -2221,7 +2221,7 @@ function _strCutOff( o )
   /* */
 
   if( !( number >= 1 ) )
-  return o.left ? [ '',o.src ] : [ o.src,'' ];
+  return o.left ? [ '', '', o.src ] : [ o.src, '', '' ];
 
   if( _.arrayIs( o.delimeter ) && o.delimeter.length === 1 )
   o.delimeter = o.delimeter[ 0 ];
@@ -2450,9 +2450,9 @@ function strCutOffAllLeft( o )
   var i = o.src.lastIndexOf( o.delimeter );
 
   if( i === -1 )
-  return [ '',o.src ];
+  return [ '', '', o.src ];
 
-  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
 
   return result;
 }
@@ -2486,9 +2486,9 @@ function strCutOffAllRight( o )
   var i = o.src.indexOf( o.delimeter );
 
   if( i === -1 )
-  return [ o.src,'' ];
+  return [ o.src, '', '' ];
 
-  var result = [ o.src.substring( 0,i ),o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
 
   return result;
 }
