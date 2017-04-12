@@ -2223,6 +2223,11 @@ function _strCutOff( o )
   if( !( number >= 1 ) )
   return o.left ? [ '',o.src ] : [ o.src,'' ];
 
+  if( _.arrayIs( o.delimeter ) && o.delimeter.length === 1 )
+  o.delimeter = o.delimeter[ 0 ];
+
+  /* */
+
   while( number > 0 )
   {
 
@@ -2232,7 +2237,7 @@ function _strCutOff( o )
     {
 
       if( !o.delimeter.length )
-      return o.left ? [ '',o.src ] : [ o.src,'' ];
+      return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
       var s
 
       if( o.left )
@@ -2240,7 +2245,8 @@ function _strCutOff( o )
       {
 
         var i = o.src.indexOf( a,index );
-        if( i === -1 && number > 1 )
+        if( i === -1 )
+        // if( i === -1 && o.number > 1 )
         return o.src.length;
 
         return i;
@@ -2250,8 +2256,8 @@ function _strCutOff( o )
       {
 
         var i = o.src.lastIndexOf( a,index );
-        if( i === -1 )
-        return o.src.length;
+        // if( i === -1 )
+        // return o.src.length;
 
         return i;
       });
@@ -2259,17 +2265,30 @@ function _strCutOff( o )
       delimeter = s.element;
       index = s.value;
 
+      if( o.number === 1 && index === o.src.length && o.left )
+      index = -1;
+
     }
     else
     {
       delimeter = o.delimeter;
       index = o.left ? o.src.indexOf( delimeter,index ) : o.src.lastIndexOf( delimeter,index );
+
+      if( o.left && !( index >= 0 ) && o.number > 1 )
+      {
+        index = o.src.length;
+        break;
+      }
     }
 
     /* */
 
-    if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
-    return o.left ? [ '',o.src ] : [ o.src,'' ];
+    if( !o.left && number > 1 && index === 0  )
+    return  [ '', '', o.src ]
+
+    // if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
+    if( !( index >= 0 ) && o.number === 1 )
+    return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
 
     number -= 1;
 
@@ -2277,8 +2296,9 @@ function _strCutOff( o )
 
   /* */
 
-  result[ 0 ] = o.src.substring( 0,index );
-  result[ 1 ] = o.src.substring( index + delimeter.length );
+  result.push( o.src.substring( 0,index ) );
+  result.push( delimeter );
+  result.push( o.src.substring( index + delimeter.length ) );
 
   return result;
 }
@@ -3672,27 +3692,47 @@ function strUnicodeEscape( src )
 //
 
 /**
- * Appends indentation character passed by the second argument( tab ) before first
+ * Adds indentation character(s) to passed string.
+ * If( src ) is a multiline string, function puts indentation character( tab ) before first
  * and every next new line in a source string( src ).
  * If( src ) represents single line, function puts indentation at the begining of the string.
+ * If( src ) is a Array, function prepends indentation character( tab ) to each line( element ) of passed array.
  *
- * @param {string} src - Source string to parse.
- * @param {string} tab - Indentation character.
- * @returns {string} Returns indented string.
+ * @param { String/Array } src - Source string to parse or array of lines( not array of texts ).
+ * With line we mean it does not have eol. Otherwise please join the array to let the routine to resplit the text,
+ * like that: _.strIndentation( array.join( '\n' ), '_' ).
+ * @param { String } tab - Indentation character.
+ * @returns { String } Returns indented string.
  *
  * @example
+ *  _.strIndentation( 'abc', '_' )
+ * //returns '_abc'
+ *
+ * @example
+ * _.strIndentation( 'a\nb\nc', '_' )
  * //returns
- *  a
- *  b
- *  c
- * _.strIndentation( 'a\nb\nc','  ' );
+ * _a
+ * _b
+ * _c
  *
  * @example
- * //returns '  single line'
- * _.strIndentation( 'single line','  ' );
+ * _.strIndentation( [ 'a', 'b', 'c' ], '_' )
+ * //returns
+ * _a
+ * _b
+ * _c
+ *
+ * @example
+ * var array = [ 'a\nb', 'c\nd' ];
+ * _.strIndentation( array.join( '\n' ), '_' )
+ * //returns
+ * _a
+ * _b
+ * _c
+ * _d
  *
  * @method strIndentation
- * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( src ) is not a String or Array.
  * @throws { Exception } Throw an exception if( tab ) is not a String.
  * @throws { Exception } Throw an exception if( arguments.length ) is not a equal 2.
  * @memberof wTools
@@ -3702,7 +3742,7 @@ function strUnicodeEscape( src )
 function strIndentation( src,tab )
 {
 
-  _assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects string src' );
+  _assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects src as string or array' );
   _assert( _.strIs( tab ),'strIndentation : expects string tab' );
   _assert( arguments.length === 2,'strIndentation : expects two arguments' );
 
@@ -3726,34 +3766,49 @@ function strIndentation( src,tab )
 // !!! pelase update description
 
 /**
- * Puts line counter before each line in the string provided by( o.src ).
+ * Puts line counter before each line/element of provided source( o.src ).
+ * If( o.src ) is a string, function splits it into array using new line as splitter, then puts line counter at the begining of each line( element ).
+ * If( o.src ) is a array, function puts line counter at the begining of each line( element ).
  * Initial value of a counter can be changed by defining( o.first ) options( o ) property.
  * Can be called in two ways:
  * - First by passing all options in one object;
- * - Second by passing source string only.
+ * - Second by passing source only and using default value of( first ).
  *
- * @param {object} o - options.
- * @param {string} [ o.src=null ] - source string.
- * @param {number} [ o.first=1 ] - sets initial value of a counter.
- * @returns {string} Returns string with line enumeration.
+ * @param { Object } o - options.
+ * @param { String/Array } [ o.src=null ] - Source string or array of lines( not array of texts ).
+ * With line we mean it does not have eol. Otherwise please join the array to let the routine to resplit the text,
+ * like that: _.strLinesNumber( array.join( '\n' ) ).
+ * @param { Number} [ o.first=1 ] - Sets initial value of a counter.
+ * @returns { String } Returns string with line enumeration.
  *
  * @example
+ * _.strLinesNumber( 'line' );
+ * //returns '1 : line'
+ *
+ * @example
+ * _.strLinesNumber( 'line1\nline2\nline3' );
  * //returns
  * // 1: line1
  * // 2: line2
  * // 3: line3
- * _.strLinesNumber( 'line1\nline2\nline3' );
  *
  * @example
+ * _.strLinesNumber( [ 'line', 'line', 'line' ] );
+ * //returns
+ * // 1: line1
+ * // 2: line2
+ * // 3: line3
+ *
+ * @example
+ * _.strLinesNumber( { src:'line1\nline2\nline3', first : 2 } );
  * //returns
  * // 2: line1
  * // 3: line2
  * // 4: line3
- * _.strLinesNumber( { src:'line1\nline2\nline3', first : 2 } );
  *
  * @method strLinesNumber
  * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String or Array.
  * @memberof wTools
  */
 
@@ -3765,7 +3820,7 @@ function strLinesNumber( o )
 
   _.routineOptions( strLinesNumber,o );
   _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.strIs( o.src ) || _.arrayIs( o.src ),'strLinesNumber : expects string o.src' );
+  _assert( _.strIs( o.src ) || _.arrayIs( o.src ),'strLinesNumber : expects o.src as string or array' );
 
   var lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
 
@@ -3809,39 +3864,76 @@ strLinesNumber.defaults =
 
 /**
  * Selects range( o.range ) of lines from source string( o.src ).
- * Custom new line character can be defined by option( o.nl ).
- * Returns selected lines range as string or undefined.
+ * If( o.range ) is not specified and ( o.line ) is provided function uses it with ( o.selectMode ) option to generate new range.
+ * If( o.range ) and ( o.line ) are both not provided function generates range by formula: [ 0, n + 1 ], where n: number of ( o.nl ) in source( o.src ).
+ * Returns selected lines range as string or empty string if nothing selected.
  * Can be called in three ways:
  * - First by passing all parameters in one options object( o ) ;
  * - Second by passing source string( o.src ) and range( o.range ) as array or number;
  * - Third by passing source string( o.src ), range start and end position.
  *
- * @param {object} o - options.
- * @param {string} [ o.src=null ] - source string.
- * @param {array|number} [ o.range=null ] - sets range of lines to select from( o.src ) or single line number.
- * @param {string} [ o.nl='\n' ] - sets new line character.
- * @returns {string} Returns selected lines as new string.
+ * @param {Object} o - Options.
+ * @param {String} [ o.src=null ] - Source string.
+ * @param {Array|Number} [ o.range=null ] - Sets range of lines to select from( o.src ) or single line number.
+ * @param {Number} [ o.zero=1 ] - Sets base value for a line counter.
+ * @param {Number} [ o.number=0 ] - If true, puts line counter before each line by using o.range[ 0 ] as initial value of a counter.
+ * @param {String} [ o.nl='\n' ] - Sets new line character.
+ * @param {String} [ o.line=null ] - Sets line number from which to start selecting, is used only if ( o.range ) is null.
+ * @param {Number} [ o.numberOfLines=3 ] - Sets maximal number of lines to select, is used only if ( o.range ) is null and ( o.line ) option is specified.
+ * @param {String} [ o.selectMode='center' ] - Determines in what way funtion must select lines, works only if ( o.range ) is null and ( o.line ) option is specified.
+ * Possible values:
+ * - 'center' - uses ( o.line ) index as center point and selects ( o.numberOfLines ) lines in both directions.
+ * - 'begin' - selects ( o.numberOfLines ) lines from start point ( o.line ) in forward direction;
+ * - 'end' - selects ( o.numberOfLines ) lines from start point ( o.line ) in backward direction.
+ * @returns {string} Returns selected lines as new string or empty if nothing selected.
  *
  * @example
- * //returns
- * // line1
- * // line2
- * _.strLinesSelect( 'line1\nline2\nline3', 0, 2 );
+ * //selecting single line
+ * _.strLinesSelect( 'a\nb\nc', 1 );
+ * //returns 'a'
  *
  * @example
+ * //selecting first two lines
+ * _.strLinesSelect( 'a\nb\nc', [ 1, 3 ] );
  * //returns
- * // line2
- * _.strLinesSelect( 'line1\nline2\nline3', 1 );
+ * 'a
+ * b'
  *
  * @example
+ * //selecting first two lines, second way
+ * _.strLinesSelect( 'a\nb\nc', 1, 3 );
  * //returns
- * // line1
- * _.strLinesSelect( { src : 'line1\nline2\nline3', range : [ 0,1 ] } )
+ * 'a
+ * b'
+ *
+ * @example
+ * //custom new line character
+ * _.strLinesSelect({ src : 'a b c', range : [ 1, 3 ], nl : ' ' });
+ * //returns 'a b'
+ *
+ * @example
+ * //setting preffered number of lines to select, line option must be specified
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 1 });
+ * //returns 'b'
+ *
+ * @example
+ * //selecting 2 two next lines starting from second
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 2, selectMode : 'begin' });
+ * //returns
+ * 'b
+ * c'
+ *
+ * @example
+ * //selecting 2 two lines starting from second in backward direction
+ * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 2, selectMode : 'end' });
+ * //returns
+ * 'a
+ * b'
  *
  * @method strLinesSelect
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.range ) is not a Array.
+ * @throws { Exception } Throw an exception if( o.range ) is not a Array or Number.
  * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
  * @memberof wTools
  */
@@ -4598,6 +4690,10 @@ function strExtractStereoStrips( src )
   {
 
     var halfs = strCutOffLeft( splitted[ i ],o.postfix );
+
+    if( halfs.length === 3 )
+    halfs = [ halfs[ 0 ], halfs[ 2 ] ]
+
     var strip = o.onStrip ? o.onStrip( halfs[ 0 ] ) : halfs[ 0 ];
 
     if( strip !== undefined )
