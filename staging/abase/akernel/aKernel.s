@@ -1,4 +1,4 @@
-//#! /usr/bin/env NODE
+//#! /usr/bin/env node
 ( function _aKernel_s_() {
 
 'use strict'; // aaa
@@ -1154,7 +1154,7 @@ function entityClone( src,options )
 
     if( options.forWorker )
     {
-      var good = _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferIs( src );
+      var good = _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
       if( good )
       {
         return src;
@@ -1333,7 +1333,7 @@ function _entityCloneAct( o )
   if( _.arrayLike( o.src ) )
   {
 
-    if( _.bufferIs( o.src ) )
+    if( _.bufferTypedIs( o.src ) )
     {
 
       if( o.copyBuffers )
@@ -1570,7 +1570,7 @@ function entityCloneDataSeparatingBuffers( o )
   o.onBuffer = function onBuffer( srcBuffer )
   {
 
-    _.assert( _.bufferIs( srcBuffer ),'not tested' );
+    _.assert( _.bufferTypedIs( srcBuffer ),'not tested' );
 
     var index = buffers.length;
     var id = _.strJoin( '--buffer-->',index,'<--buffer--' );
@@ -1991,7 +1991,7 @@ function entityFreeze( src )
 {
   var _src = src;
 
-  if( _.bufferIs( src ) )
+  if( _.bufferTypedIs( src ) )
   {
     src = src.buffer;
   }
@@ -3345,7 +3345,7 @@ function _entityFilter( o )
   {
     // result = new o.src.constructor()
     result = _.entityNew( o.src );
-    debugger;
+    // debugger;
 
     for( var s in o.src )
     {
@@ -4046,6 +4046,10 @@ function _err( o )
       else if( _.routineIs( argument.toString ) ) str = argument.toString();
       else str = '[ ' + _.strTypeOf( argument ) + ' ]';
 
+    }
+    else if( argument === undefined )
+    {
+      str = '\n' + String( argument ) + '\n';
     }
     else str = String( argument );
 
@@ -6047,16 +6051,25 @@ function dateIs( src )
 
 //
 
-function bufferIs( src )
+function bufferRawIs( src )
+{
+  var type = _ObjectToString.call( src );
+  var result = type === '[object ArrayBuffer]';
+  return result;
+}
+
+//
+
+function bufferTypedIs( src )
 {
   var type = _ObjectToString.call( src );
 
   if( !/\wArray/.test( type ) )
   return false;
 
-  if( typeof Buffer !== 'undefined' )
-  if( src instanceof Buffer )
-  return false;
+  // if( typeof Buffer !== 'undefined' )
+  // if( src instanceof Buffer )
+  // return false;
 
   return true;
 }
@@ -6067,15 +6080,6 @@ function bufferViewIs( src )
 {
   var type = _ObjectToString.call( src );
   var result = type === '[object DataView]';
-  return result;
-}
-
-//
-
-function bufferRawIs( src )
-{
-  var type = _ObjectToString.call( src );
-  var result = type === '[object ArrayBuffer]';
   return result;
 }
 
@@ -6092,7 +6096,7 @@ function bufferNodeIs( src )
 
 function bufferAnyIs( src )
 {
-  return bufferIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
+  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
 }
 
 //
@@ -8221,7 +8225,7 @@ function dateToStr( date )
 function bufferRelen( src,len )
 {
 
-  _.assert( _.bufferIs( src ) );
+  _.assert( _.bufferTypedIs( src ) );
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( len ) );
 
@@ -8277,7 +8281,7 @@ function bufferBytesGet( src )
   {
     return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
   }
-  else if( _.bufferIs( src ) )
+  else if( _.bufferTypedIs( src ) )
   {
     return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
   }
@@ -8317,7 +8321,7 @@ function bufferBytesGet( src )
 function bufferRetype( src,bufferType )
 {
 
-  _.assert( _.bufferIs( src ) );
+  _.assert( _.bufferTypedIs( src ) );
   _.assert( _.typeIsBuffer( bufferType ) );
 
   var o = src.byteOffset;
@@ -8363,7 +8367,7 @@ function bufferMove( dst,src )
     if( _.bufferRawIs( dst ) )
     {
       dst = new Uint8Array( dst );
-      if( _.bufferIs( src ) && !( src instanceof Uint8Array ) )
+      if( _.bufferTypedIs( src ) && !( src instanceof Uint8Array ) )
       src = new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
     }
 
@@ -8454,14 +8458,14 @@ function bufferToDom( xmlBuffer ) {
 function bufferLeftBufferIndex( src,ins )
 {
 
-  if( !_.bufferIs( src ) )
+  if( !_.bufferTypedIs( src ) )
   src = _.bufferBytesGet( src );
 
-  if( !_.bufferIs( ins ) )
+  if( !_.bufferTypedIs( ins ) )
   ins = _.bufferBytesGet( ins );
 
-  _.assert( _.bufferIs( src ) );
-  _.assert( _.bufferIs( ins ) );
+  _.assert( _.bufferTypedIs( src ) );
+  _.assert( _.bufferTypedIs( ins ) );
 
 /*
     var srcw = _.bufferRetype( src,Uint32Array );
@@ -8549,7 +8553,7 @@ function bufferFrom( o )
 
   /* buffer */
 
-  if( _.bufferIs( o.src ) )
+  if( _.bufferTypedIs( o.src ) )
   {
     if( o.src.constructor === o.bufferConstructor )
     return o.src;
@@ -8637,7 +8641,7 @@ function bufferRawFromBuffer( buffer )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.bufferIs( buffer ) || _.bufferRawIs( buffer ) );
+  _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) );
 
   if( _.bufferRawIs( buffer ) )
   return buffer;
@@ -8669,7 +8673,7 @@ function bufferRawFrom( buffer )
     result = new Uint8Array( buffer ).buffer;
 
   }
-  else if( _.bufferIs( buffer ) || _.bufferViewIs( buffer ) )
+  else if( _.bufferTypedIs( buffer ) || _.bufferViewIs( buffer ) )
   {
 
     buffer = buffer.buffer;
@@ -8723,7 +8727,7 @@ function buffersSerialize( o )
     var attribute = attributes[ a ][ 1 ];
     var buffer = o.onBufferGet.call( o.context,attribute );
 
-    _.assert( _.bufferIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
 
     var bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
@@ -8842,7 +8846,7 @@ function buffersDeserialize( o )
   _.assertMapHasOnly( o,buffersDeserialize.defaults );
   _.mapComplement( o,buffersDeserialize.defaults );
   _.assert( _.objectIs( o.store ) );
-  _.assert( _.bufferRawIs( commonBuffer ) || _.bufferIs( commonBuffer ) );
+  _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
 
   commonBuffer = _.bufferRawFromBuffer( commonBuffer );
 
@@ -8895,7 +8899,11 @@ var bufferToNodeBuffer = ( function( buffer )
   return function bufferToNodeBuffer( buffer )
   {
 
-    _.assert( _.bufferIs( buffer ) || _.bufferRawIs( buffer ) );
+    _.assert( arguments.length === 1 );
+    _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ),'bufferToNodeBuffer : expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
+
+    if( _.bufferNodeIs( buffer ) )
+    return buffer;
 
     /* */
 
@@ -9023,7 +9031,7 @@ function arrayNew( ins,length )
 
   if( _.argumentsIs( ins ) || _.arrayIs( ins ) )
   result = new Array( length );
-  else if( _.bufferIs( ins ) || ins instanceof ArrayBuffer )
+  else if( _.bufferTypedIs( ins ) || ins instanceof ArrayBuffer )
   result = new ins.constructor( length );
   else throw _.err( 'arrayNew :','unknown type of instance' );
 
@@ -9055,7 +9063,7 @@ function arrayNew( ins,length )
 //   _.assert( arguments.length === 1 );
 //
 //   if( _.atomicIs( ins ) ) return;
-//   if( !_.arrayIs( ins ) && !_.bufferIs( ins ) ) return;
+//   if( !_.arrayIs( ins ) && !_.bufferTypedIs( ins ) ) return;
 //   var result = arrayNew( ins,ins.length );
 //   return result;
 // }
@@ -9142,8 +9150,8 @@ function arraySelect( srcArray,indicesArray )
     indicesArray = indicesArray.indices;
   }
 
-  _assert( _.bufferIs( srcArray ) || _.arrayIs( srcArray ) );
-  _assert( _.bufferIs( indicesArray ) || _.arrayIs( indicesArray ) );
+  _assert( _.bufferTypedIs( srcArray ) || _.arrayIs( srcArray ) );
+  _assert( _.bufferTypedIs( indicesArray ) || _.arrayIs( indicesArray ) );
 
   var result = new srcArray.constructor( indicesArray.length );
 
@@ -9275,7 +9283,7 @@ function arrayCopy()
 
   // make result
 
-  if( _.arrayIs( arguments[ 0 ] ) || _.bufferIs( arguments[ 0 ] ) )
+  if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
   result = arrayNew( arguments[ 0 ],length );
   else if( _.bufferRawIs( arguments[ 0 ] ) )
   result = new ArrayBuffer( length );
@@ -9297,7 +9305,7 @@ function arrayCopy()
       bufferDst.set( new Uint8Array( argument ), offset );
       offset += argument.byteLength;
     }
-    else if( _.bufferIs( arguments[ 0 ] ) )
+    else if( _.bufferTypedIs( arguments[ 0 ] ) )
     {
       result.set( argument, offset );
       offset += argument.length;
@@ -10320,7 +10328,7 @@ function arrayGrow( array,f,l,val )
   if( l < f )
   l = f;
 
-  if( _.bufferIs( array ) )
+  if( _.bufferTypedIs( array ) )
   result = new array.constructor( l-f );
   else
   result = new Array( l-f );
@@ -10403,7 +10411,7 @@ function arraySlice( array,f,l )
   if( l < f )
   l = f;
 
-  if( _.bufferIs( array ) )
+  if( _.bufferTypedIs( array ) )
   result = new array.constructor( l-f );
   else
   result = new Array( l-f );
@@ -10816,9 +10824,9 @@ function arrayPut( dstArray, dstOffset )
   for( var a = 2 ; a < arguments.length ; a++ )
   {
     var argument = arguments[ a ];
-    var aIs = _.arrayIs( argument ) || _.bufferIs( argument );
+    var aIs = _.arrayIs( argument ) || _.bufferTypedIs( argument );
 
-    if( aIs && _.bufferIs( dstArray ) )
+    if( aIs && _.bufferTypedIs( dstArray ) )
     {
       dstArray.set( argument,dstOffset );
       dstOffset += argument.length;
@@ -11500,7 +11508,7 @@ function arrayRightDefined( arr )
 
 function arrayHasAny( src )
 {
-  _assert( _.arrayIs( src ) || _.bufferIs( src ),'arrayHasAny :','array expected' );
+  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -13991,6 +13999,7 @@ function _mapScreen( options )
     var a;
     for( a = srcObjects.length-1 ; a >= 0 ; a-- )
     if( k in srcObjects[ a ] )
+    if( srcObjects[ a ][ k ] !== undefined )
     break;
 
     if( a === -1 )
@@ -14221,9 +14230,9 @@ var Proto =
   strIsNotEmpty : strIsNotEmpty,
   symbolIs : symbolIs,
 
-  bufferIs : bufferIs,
-  bufferViewIs : bufferViewIs,
   bufferRawIs : bufferRawIs,
+  bufferTypedIs : bufferTypedIs,
+  bufferViewIs : bufferViewIs,
   bufferNodeIs : bufferNodeIs,
   bufferAnyIs : bufferAnyIs,
 
