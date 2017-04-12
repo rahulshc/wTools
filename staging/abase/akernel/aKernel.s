@@ -6570,6 +6570,28 @@ function str()
 
 //
 
+/**
+  * Finds occurrence of( end ) at the end of source( src ) and removes it if exists.
+  * Returns begin part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
+  *
+  * @param { String } src - The source string.
+  * @param { String } end - String to find.
+  *
+  * @example
+  * _.strBeginOf( 'abc', 'c' );
+  * //returns 'ab'
+  *
+  * @example
+  * _.strBeginOf( 'abc', 'x' );
+  * //returns undefined
+  *
+  * @returns { String } Returns part of source string without tail( end ) or undefined.
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 2.
+  * @method strBeginOf
+  * @memberof wTools
+  */
+
 function strBeginOf( src,end )
 {
 
@@ -6587,6 +6609,29 @@ function strBeginOf( src,end )
 }
 
 //
+
+/**
+  * Finds occurrence of( begin ) at the begining of source( src ) and removes it if exists.
+  * Returns end part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
+  * otherwise returns undefined.
+  *
+  * @param { String } src - The source string.
+  * @param { String } begin - String to find.
+  *
+  * @example
+  * _.strEndOf( 'abc', 'a' );
+  * //returns 'bc'
+  *
+  * @example
+  * _.strEndOf( 'abc', 'c' );
+  * //returns undefined
+  *
+  * @returns { String } Returns part of source string without head( begin ) or undefined.
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 2.
+  * @method strEndOf
+  * @memberof wTools
+  */
 
 function strEndOf( src,begin )
 {
@@ -6607,6 +6652,47 @@ function strEndOf( src,begin )
 }
 
 //
+
+/**
+  * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
+  * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+  * Otherwise returns undefined.
+  *
+  * @param { String } src - The source string.
+  * @param { String } begin - String to find from begin of source.
+  * @param { String } end - String to find from end source.
+  *
+  * @example
+  * _.strInbetweenOf( 'abcd', 'a', 'd' );
+  * //returns 'bc'
+  *
+  * @example
+  * _.strInbetweenOf( 'aaabccc', 'a', 'c' );
+  * //returns 'aabcc'
+  *
+  * @example
+  * _.strInbetweenOf( 'aaabccc', 'a', 'a' );
+  * //returns 'a'
+  *
+  * @example
+  * _.strInbetweenOf( 'abc', 'a', 'a' );
+  * //returns undefined
+  *
+  * @example
+  * _.strInbetweenOf( 'abcd', 'x', 'y' )
+  * //returns undefined
+  *
+  * @example
+  * //index of begin is bigger then index of end
+  * _.strInbetweenOf( 'abcd', 'c', 'a' )
+  * //returns undefined
+  *
+  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 3.
+  * @method strInbetweenOf
+  * @memberof wTools
+  */
 
 function strInbetweenOf( src,begin,end )
 {
@@ -6633,13 +6719,21 @@ function strInbetweenOf( src,begin,end )
 
 /**
   * Compares two strings.
-  * @param {string} src - source string
-  * @param {string} begin
+  * @param { String } src - Source string.
+  * @param { String } begin - String to find at begin of source.
+  *
   * @example
-      var scr = _.strBegins( "abc","a" );
-  * @return {Boolean}
-  * If param begin is match with param src first chars than return true
+  * var scr = _.strBegins( "abc","a" );
+  * // returns true
+  *
+  * @example
+  * var scr = _.strBegins( "abc","b" );
+  * // returns false
+  *
+  * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
   * @method strBegins
+  * @throws { Exception } If one of arguments is not a String.
+  * @throws { Exception } If( arguments.length ) is not equal 2.
   * @memberof wTools
   */
 
@@ -6657,13 +6751,21 @@ function strBegins( src,begin )
 
 /**
   * Compares two strings.
-  * @param {string} src - source string
-  * @param {string} end
+  * @param { String } src - Source string.
+  * @param { String } end - String to find at end of source.
+  *
   * @example
-      var scr = ._strEnds("abc","c");
-  * @return {Boolean}
-  * If param end is match with param src last chars than return true
+  * var scr = _.strEnds( "abc","c" );
+  * // returns true
+  *
+  * @example
+  * var scr = _.strEnds( "abc","b" );
+  * // returns false
+  *
+  * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
   * @method strEnds
+  * @throws { Exception } If one of arguments is not a String.
+  * @throws { Exception } If( arguments.length ) is not equal 2.
   * @memberof wTools
   */
 
@@ -6683,9 +6785,9 @@ function strEnds( src,end )
  * Finds substring prefix ( begin ) occurrence from the very begining of source ( src ) and removes it.
  * Returns original string if source( src ) does not have occurrence of ( prefix ).
  *
- * @param {string} src - Source string to parse.
- * @param {string} prefix - String that is to be dropped.
- * @returns {string} Returns string with result of prefix removement.
+ * @param { String } src - Source string to parse.
+ * @param { String } prefix - String that is to be dropped.
+ * @returns { String } Returns string with result of prefix removement.
  *
  * @example
  * //returns mple
@@ -6715,9 +6817,9 @@ function strRemoveBegin( src,begin )
 /**
  * Removes occurrence of postfix ( end ) from the very end of string( src ).
  * Returns original string if no occurrence finded.
- * @param {string} src - Source string to parse.
- * @param {string} postfix - String that is to be dropped.
- * @returns {string} Returns string with result of postfix removement.
+ * @param { String } src - Source string to parse.
+ * @param { String } postfix - String that is to be dropped.
+ * @returns { String } Returns string with result of postfix removement.
  *
  * @example
  * //returns examp
@@ -6744,18 +6846,24 @@ function strRemoveEnd( src,end )
 
 //
 
-  /**
-    * Prepend string to begin of other string.
-    * @param {string} src
-    * @param {string} begin
-    * @example
-      var scr = ._strPrependOnce("test","test");
-    * @return {string}
-    * if begin match with first chars of param src, return src
-    * else add param src to param begin
-    * @method strPrependOnce
-    * @memberof wTools
-    */
+/**
+  * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
+  * otherwise returns original string.
+  * @param { String } src - Source string to parse.
+  * @param { String } begin - String to prepend.
+  *
+  * @example
+  * _.strPrependOnce( 'test', 'test' );
+  * //returns 'test'
+  *
+  * @example
+  * _.strPrependOnce( 'abc', 'x' );
+  * //returns 'xabc'
+  *
+  * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
+  * @method strPrependOnce
+  * @memberof wTools
+  */
 
 function strPrependOnce( src,begin )
 {
@@ -6767,17 +6875,23 @@ function strPrependOnce( src,begin )
 
 //
 
-  /**
-    * Append string to end of other string.
-    * @param {string} src
-    * @param {string} end
-    * example
-      var src = ._strAppendOnce("test","test");
-    * @return {string}
-    * if end match with last chars of param src, return src
-    * else add param end to param src
-    * @method strPrependOnce
-    * @memberof wTools
+/**
+  * Appends string( begin ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
+  * otherwise returns original string.
+  * @param {string} src - Source string to parse.
+  * @param {string} end - String to append.
+  *
+  * @example
+  * _.strAppendOnce( 'test', 'test' );
+  * //returns 'test'
+  *
+  * @example
+  * _.strAppendOnce( 'abc', 'x' );
+  * //returns 'abcx'
+  *
+  * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
+  * @method strAppendOnce
+  * @memberof wTools
   */
 
 function strAppendOnce( src,end )
@@ -10476,52 +10590,7 @@ function arrayMultislice()
 
 //
 
-/**
- * The arrayCutin() method changes the content of an array (dstArray) by removing existing elements
- * and/or adding new elements from an array (srcArray).
- *
- * @param { Array } dstArray - The target array.
- * @param { Array } srcArray - The source array.
- * @param { Number } first - The index at which to start changing the (dstArray) array.
- * If (first) is greater than the length of the array (dstArray), actual starting index will be set to the length of the array (dstArray).
- * If (first) is negative, will begin that many elements from the end.
- * @param { Number } replace - The number of old array (dstArray) elements to remove.
- * If (replace) is greater than the number of elements left in the array (dstArray) starting at (first),
- * then all of the elements through the end of the array will be deleted.
- *
- * @example
- * // returns [ 1, 2, 3, 4, 5 ]
- * _.arrayCutin( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3 );
- *
- * @example
- * // returns [ 1, 'a', 2, 3, 4, 'd' ]
- * _.arrayCutin( [ 1, 'a', 'b', 'c', 'd' ], [ 2, 3, 4 ] , -3, 2 )
- *
- * @example
- * // returns [ 1, 1, 2, 3, 'a', 'b', 4, 5 ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 'a', 'b' ], 1, 2 );
- *
- * @example
- * // returns [ 1, 2, 3, 4, 5, 'a', 'b', 'c' ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 7, 2 );
- *
- * @example
- * // returns [ 1, 'a', 'b', 'c' ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [ 'a', 'b', 'c' ], 1, 7 );
- *
- * @example
- * // returns [ 1, 4, 5 ]
- * _.arrayCutin( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );
- *
- * @returns { Array } Returns the modified array (dstArray) with the new length.
- * @method arrayCutin
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than four.
- * @throws { Error } Will throw an Error if (dstArray) is not an Array.
- * @throws { Error } Will throw an Error if (srcArray) is not an Array.
- * @throws { Error } Will throw an Error if (first) is not a Number.
- * @throws { Error } Will throw an Error if (replace) is not a Number.
- * @memberof wTools
- */
+
 
 // function arraySpliceArray( dstArray,srcArray,first,replace )
 // {
@@ -10564,25 +10633,81 @@ function arrayMultislice()
 
 //
 
+/**
+ * Removes range( range ) of elements from provided array( dstArray ) and adds elements from array( srcArray )
+ * at the start position of provided range( range ) if( srcArray ) was provided.
+ * On success returns array with deleted element(s), otherwise returns empty array.
+ * For TypedArray's and buffers returns modified copy of ( dstArray ) or original array if nothing changed.
+ *
+ * @param { Array|TypedArray|Buffer } dstArray - The target array, TypedArray( Int8Array,Int16Array,Uint8Array ... etc ) or Buffer( ArrayBuffer, Buffer ).
+ * @param { Array|Number } range - The range of elements or index of single element to remove from ( dstArray ).
+ * @param { Array } srcArray - The array of elements to add to( dstArray ) at the start position of provided range( range ).
+ * If one of ( range ) indexies is not specified it will be setted to zero.
+ * If ( range ) start index is greater than the length of the array ( dstArray ), actual starting index will be set to the length of the array ( dstArray ).
+ * If ( range ) start index is negative, will be setted to zero.
+ * If ( range ) start index is greater than end index, the last will be setted to value of start index.
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], 2 );
+ * // returns [ 3 ]
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], [ 1, 2 ] );
+ * // returns [ 2 ]
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], [ 0, 5 ] );
+ * // returns [ 1, 2, 3, 4 ]
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], [ -1, 5 ] );
+ * // returns [ 1, 2, 3, 4 ]
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayCutin( dst, [ 0, 3 ], [ 0, 0, 0 ] );
+ * console.log( dst );
+ * // returns [ 0, 0, 0, 4 ]
+ *
+ * @example
+ * var dst = new Int32Array( 4 );
+ * dst.set( [ 1, 2, 3, 4 ] )
+ * _.arrayCutin( dst, 0 );
+ * // returns [ 2, 3, 4 ]
+ *
+ * @returns { Array|TypedArray|Buffer } For array returns array with deleted element(s), otherwise returns empty array.
+ * For other types returns modified copy or origin( dstArray ).
+ * @method arrayCutin
+ * @throws { Error } If ( arguments.length ) is not equal to two or three.
+ * @throws { Error } If ( dstArray ) is not an Array.
+ * @throws { Error } If ( srcArray ) is not an Array.
+ * @throws { Error } If ( range ) is not an Array.
+ * @memberof wTools
+ */
+
 // function arrayCutin( dstArray,first,replace,srcArray )
 function arrayCutin( dstArray,range,srcArray )
 {
 
   if( _.numberIs( range ) )
-  range = [ range ]
+  range = [ range, range + 1 ];
 
   var first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
   _.assert( _.arrayIs( range ) );
   _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 
+  var length = dstArray.length || dstArray.byteLength;
+
   if( first < 0 )
   first = 0;
-  if( first > dstArray.length )
-  first = dstArray.length;
+  if( first > length)
+  first = length;
+  if( last > length)
+  last = length;
   if( last < first )
   last = first;
 
@@ -10590,6 +10715,47 @@ function arrayCutin( dstArray,range,srcArray )
   args.unshift( last-first );
   args.unshift( first );
 
+  if( _.bufferAnyIs( dstArray ) )
+  {
+    if( first === last )
+    return dstArray;
+
+    var newLength = length - args[ 1 ];
+    var srcArrayLength = 0;
+
+    if( srcArray )
+    {
+      srcArrayLength = srcArray.length || srcArray.byteLength;
+      newLength += srcArrayLength;
+    }
+
+    if( _.bufferRawIs( dstArray ) )
+    {
+      var result = new ArrayBuffer( newLength );
+      // length = dstArray.byteLength;
+    }
+    else if( _.bufferNodeIs( dstArray ) )
+    {
+      var result = new Buffer( newLength );
+      // length = dstArray.byteLength;
+    }
+    else
+    var result = arrayNew( dstArray, newLength );
+
+    if( first > 0 )
+    for( var i = 0; i < first; ++i )
+    result[ i ] = dstArray[ i ];
+
+    if( srcArray )
+    for( var i = first, j = 0; j < srcArrayLength; )
+    result[ i++ ] = srcArray[ j++ ];
+
+    for( var j = last, i = first + srcArrayLength; j < length; )
+    result[ i++ ] = dstArray[ j++ ];
+
+    return result;
+  }
+  else
   var result = dstArray.splice.apply( dstArray,args );
 
   return result;
