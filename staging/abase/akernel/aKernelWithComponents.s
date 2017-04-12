@@ -1,4 +1,4 @@
-//#! /usr/bin/env NODE
+//#! /usr/bin/env node
 ( function _aKernelWithComponents_s_() {
 
 'use strict';

@@ -107,9 +107,12 @@ var shell = ( function( o )
       }
       else if( o.mode === 'shell' )
       {
+        var optionsForSpawn = Object.create( null );
+        if( o.stdio )
+        optionsForSpawn.stdio = o.stdio;
         var app = process.platform === 'win32' ? 'cmd' : 'sh';
         var appParam = process.platform === 'win32' ? '/c' : '-c';
-        o.child = ChildProcess.spawn( app,[ appParam,o.code ] );
+        o.child = ChildProcess.spawn( app,[ appParam,o.code ],optionsForSpawn );
       }
       else if( o.mode === 'exec' )
       {
@@ -121,7 +124,7 @@ var shell = ( function( o )
     }
     catch( err )
     {
-      return con.error( err );
+      return con.error( _.errLogOnce( err ) );
     }
 
     /* */
@@ -230,12 +233,74 @@ shell.defaults =
 {
   code : null,
   mode : 'shell',
+  stdio : 'inherit',
   throwingBadReturnCode : 0,
   applyingReturnCode : 0,
   usingColoring : 1,
   outputRaw : 0,
   outputPiping : 1,
   outputCollecting : 1,
+  verbosity : 1,
+}
+
+//
+
+var System;
+function shellNode( o )
+{
+
+  if( !System )
+  System = require( 'os' );
+
+  if( _.strIs( o ) )
+  o = { scriptPath : o }
+
+  _.routineOptions( shellNode,o )
+
+  _.assert( _.strIs( o.scriptPath ) );
+
+  var totalmem = System.totalmem();
+
+  if( o.verbosity )
+  logger.log( 'System.totalmem()',_.strMetricFormatBytes( totalmem ) );
+
+  /*
+  1024*1024 for megabytes
+  1.5 factor found empirically for windows
+      implementation of nodejs for other OSs could use more memory
+  */
+
+  var totalmem = Math.floor( ( totalmem / ( 1024*1024*1.5 ) - 1 ) / 256 ) * 256;
+
+  var argumentsForNode = '--expose-gc --stack-trace-limit=999 --max_old_space_size=' + totalmem + ' --max_executable_size=' + totalmem;
+  var script = _.fileProvider.pathNativize( o.scriptPath );
+  var argumentsManual = process.argv.slice( 2 );
+  var code = _.strConcat( 'node',argumentsForNode,script );
+
+  if( argumentsManual.length )
+  code += ' "' + argumentsManual.join( '" "' ) + '"';
+
+  var shell =
+  {
+    code : code,
+    outputRaw : 1,
+    outputCollecting : 0,
+    applyingReturnCode : 1,
+    throwingBadReturnCode : 1,
+    verbosity : o.verbosity,
+  }
+
+  _.shell( shell );
+
+  //process.stdin.pipe( shell.child.stdin );
+
+  // console.log( 'shell',shell );
+
+}
+
+shellNode.defaults =
+{
+  scriptPath : null,
   verbosity : 1,
 }
 
@@ -580,6 +645,7 @@ var Proto =
 {
 
   shell : shell,
+  shellNode : shellNode,
 
   exec : exec,
   makeFunction : makeFunction,
