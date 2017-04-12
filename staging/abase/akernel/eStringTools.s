@@ -2238,7 +2238,7 @@ function _strCutOff( o )
 
       if( !o.delimeter.length )
       return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
-      var s
+      var s;
 
       if( o.left )
       s = _.entityMin( o.delimeter,function( a )
