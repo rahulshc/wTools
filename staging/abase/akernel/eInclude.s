@@ -573,6 +573,12 @@ _includeHandlerMap[ 'wProto' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.mixin },
 }
 
+_includeHandlerMap[ 'wCloner' ] =
+{
+  includeAny : [ '../../abase/component/Cloner.s','abase/component/Cloner.s','wcloner' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools._clone },
+}
+
 _includeHandlerMap[ 'wPath' ] =
 {
   includeAny : [ '../../abase/component/Path.s','abase/component/Path.s','wPath' ],
