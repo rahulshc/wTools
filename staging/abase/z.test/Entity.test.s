@@ -940,19 +940,19 @@ function entityLength( test )
 
 //
 
-function entityCopy( test )
+function entityCopyTry( test )
 {
   test.description = 'src null';
   var dst = new String( 'string' );
   var src = null;
-  var got = _.entityCopy( dst, src  );
+  var got = _.entityCopyTry( dst, src  );
   var expected = null;
   test.identical( got, expected );
 
   test.description = 'dst.copy';
   var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } };
   var src = { src : 'string', num : 123 }
-  _.entityCopy( dst, src  );
+  _.entityCopyTry( dst, src  );
   var got = dst;
   var expected =
   {
@@ -965,22 +965,22 @@ function entityCopy( test )
 
   test.description = 'src.clone';
   var dst = 1;
-  var src = { src : 'string', num : 123, clone : function() { var clone = _.entityCloneObject( { src : this } ); return clone; } }
-  var got = _.entityCopy( dst, src  );
+  var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
+  var got = _.entityCopyTry( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
   test.description = 'src.slice returns copy of array';
   var dst = [ ];
   var src = [ 1, 2 ,3 ];
-  var got = _.entityCopy( dst, src  );
+  var got = _.entityCopyTry( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
   test.description = 'dst.set ';
   var dst = { set : function( src ){ this.value = src[ 'value' ]; } };
   var src = { value : 100 };
-  _.entityCopy( dst, src  );
+  _.entityCopyTry( dst, src  );
   var got = dst;
   var expected = { set : dst.set, value : 100 };
   test.identical( got, expected );
@@ -993,14 +993,14 @@ function entityCopy( test )
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  _.entityCopy( dst, src, onRecursive  );
+  _.entityCopyTry( dst, src, onRecursive  );
   var got = dst;
   var expected = src;
   test.identical( got, expected );
 
   test.description = 'atomic ';
   var src = 2;
-  var got = _.entityCopy( null, src );
+  var got = _.entityCopyTry( null, src );
   var expected = src;
   test.identical( got, expected );
 
@@ -1010,15 +1010,15 @@ function entityCopy( test )
     test.description = 'missed arguments';
     test.shouldThrowError( function()
     {
-      _.entityCopy( );
+      _.entityCopyTry( );
     });
 
     test.description = 'src.clone throws "unexpected"';
     test.shouldThrowError( function()
     {
       var dst = {};
-      var src = { src : 'string', num : 123, clone : function() { var clone = _.entityCloneObject( { src : this } ); return clone; } }
-      _.entityCopy( dst, src  );
+      var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
+      _.entityCopyTry( dst, src  );
     });
 
 
@@ -1865,7 +1865,7 @@ var Self =
     entityEquivalent: entityEquivalent,
     entityContain: entityContain,
     entityLength : entityLength,
-    entityCopy : entityCopy,
+    entityCopyTry : entityCopyTry,
     entityCopyField : entityCopyField,
     entityCoerceTo : entityCoerceTo,
     entityHasNan : entityHasNan,

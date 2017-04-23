@@ -102,10 +102,11 @@ function dstNotHasSrcOwnRoutines()
     return false;
     if( !_.routineIs( srcContainer[ key ] ) )
     return false;
-    if( !dstContainer[ key ] !== undefined )
+    if( dstContainer[ key ] !== undefined )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
+
     return true;
   }
 

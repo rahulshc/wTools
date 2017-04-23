@@ -453,8 +453,8 @@ function changesSelect( test )
   for( var s = 0 ; s < changesArray.length ; s++ )
   {
     var changes = changesArray[ s ];
-    var expected = _.entityClone( expectedArray[ s ] );
-    var dstData = _.entityClone( _dstData );
+    var expected = _.cloneJust( expectedArray[ s ] );
+    var dstData = _.cloneJust( _dstData );
     var got = _.changesSelect( changes,srcData );
 
     test.identical( got,expected );
@@ -565,9 +565,9 @@ function changesApply( test )
 
   for( var s = 0 ; s < changesArray.length ; s++ )
   {
-    var expected = _.entityClone( expectedArray[ s ] );
+    var expected = _.cloneJust( expectedArray[ s ] );
     var changes = changesArray[ s ];
-    var dstData = _.entityClone( _dstData );
+    var dstData = _.cloneJust( _dstData );
     var got = _.changesApply( changes,dstData,srcData );
 
     test.identical( got,expected );

@@ -102,10 +102,11 @@ function dstNotHasSrcOwnRoutines()
     return false;
     if( !_.routineIs( srcContainer[ key ] ) )
     return false;
-    if( !dstContainer[ key ] !== undefined )
+    if( dstContainer[ key ] !== undefined )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
+
     return true;
   }
 
@@ -543,7 +544,7 @@ function makeMapper( routine )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) );
+  _.assert( _.routineIs( routine ),'expects routine but got',_.strTypeOf( routine ) );
   _.assert( _.strIs( routine.functionKind ) );
 
   if( routine.functionKind === 'field-filter' )

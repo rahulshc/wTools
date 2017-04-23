@@ -77,16 +77,16 @@ function mapKeys( test )
 
 //
 
-function mapValues( test )
+function mapVals( test )
 {
 
   test.description = 'two values';
-  var got = _.mapValues( { a : 7, b : 13 } );
+  var got = _.mapVals( { a : 7, b : 13 } );
   var expected = [ 7, 13 ];
   test.identical( got, expected );
 
   test.description = 'object like array';
-  var got = _.mapValues( { 7 : 'a', 3 : 'b', 13 : 'c' } );
+  var got = _.mapVals( { 7 : 'a', 3 : 'b', 13 : 'c' } );
   var expected = [ 'b', 'a', 'c' ];
   test.identical( got, expected );
 
@@ -98,19 +98,19 @@ function mapValues( test )
     test.description = 'no argument';
     test.shouldThrowError( function()
     {
-      _.mapValues();
+      _.mapVals();
     });
 
     test.description = 'wrong type of array';
     test.shouldThrowError( function()
     {
-      _.mapValues( [] );
+      _.mapVals( [] );
     });
 
     test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
-      _.mapValues( 'wrong argument' );
+      _.mapVals( 'wrong argument' );
     });
 
   }
@@ -1223,7 +1223,7 @@ var Self =
   {
 
     mapKeys : mapKeys,
-    mapValues : mapValues,
+    mapVals : mapVals,
     mapExtend : mapExtend,
     mapPairs : mapPairs,
     mapOwn : mapOwn,

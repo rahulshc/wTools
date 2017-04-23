@@ -1,7 +1,7 @@
 //#! /usr/bin/env node
 ( function _aKernel_s_() {
 
-'use strict'; // aaa
+'use strict';
 
 /**
  * @file wTools.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -317,8 +317,8 @@ function _each( o )
 
   _.routineOptions( _each,o );
   _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
-  _.assert( o.onUp.length === 0 || o.onUp.length === 1 || o.onUp.length === 3 );
-  _.assert( o.onDown.length === 0 || o.onUp.length === 1 || o.onDown.length === 3 );
+  // _.assert( o.onUp.length === 0 || o.onUp.length === 1 || o.onUp.length === 3 );
+  // _.assert( o.onDown.length === 0 || o.onUp.length === 1 || o.onDown.length === 3 );
 
   if( o.path === null )
   o.path = o.pathDelimteter;
@@ -1088,105 +1088,6 @@ function enityExtend( dst,src )
 
 //
 
-function entityClone( src,options )
-{
-  var result;
-
-  //throw Error( 'not stable' );
-
-  if( options !== undefined && !_.objectIs( options ) )
-  throw _.err( 'wTools.entityClone :','need options' );
-
-  var options = options || Object.create( null );
-
-  if( options.forWorker === undefined ) options.forWorker = 0;
-
-  if( options.depth === undefined ) options.depth = 16;
-
-  if( options.useClone === undefined ) options.useClone = 1;
-
-  if( options.depth < 0 )
-  {
-    if( options.silent ) console.log( 'wTools.entityClone : overflow' );
-    else throw _.err( 'wTools.entityClone :','overflow' );
-  }
-
-  _assert( !options.forWorker,'forWorker is deprecated' );
-
-  //
-
-  if( !src ) return src;
-
-  if( options.useClone && _.routineIs( src.clone ) )
-  {
-    result = src.clone();
-  }
-  else if( arrayIs( src ) )
-  {
-
-    result = [];
-    src.forEach(function( child, index, array ) {
-      result[index] = entityClone( child,options );
-    });
-
-  }
-  else if( _.objectIs( src ) )
-  {
-
-    result = Object.create( null );
-    var proto = Object.getPrototypeOf( src );
-    var result = Object.create( proto );
-    for( var s in src )
-    {
-      if( !_ObjectHasOwnProperty.call( src,s ) )
-      continue; // xxx
-      var c = entityClone( src[ s ],{
-        depth : options.depth-1,
-        silent :options.silent,
-        forWorker : options.forWorker,
-      });
-      result[s] = c;
-    }
-
-  }
-  else if( src.constructor )
-  {
-
-    if( options.forWorker )
-    {
-      var good = _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) || _.bufferTypedIs( src );
-      if( good )
-      {
-        return src;
-      }
-      else
-      {
-        return;
-      }
-    }
-    else
-    {
-      if( _.strIs( src ) || _.numberIs( src ) || _.dateIs( src ) || _.boolIs( src ) || _.regexpIs( src ) )
-      result = src.constructor( src );
-      else if( _.routineIs( src ) )
-      result = src;
-      else
-      result = new src.constructor( src );
-    }
-
-  }
-  else
-  {
-
-    result = src;
-
-  }
-
-  return result;
-}
-
-//
-
 function entityNew( src )
 {
 
@@ -1215,434 +1116,6 @@ function entityNew( src )
 
 //
 
-function _entityCloneAct( o )
-{
-
-  var result;
-  var o = o || Object.create( null );
-
-  if( !( o.levels > 0 ) )
-  throw _.err
-  (
-    'failed to clone structure',_.strTypeOf( o.rootSrc ) +
-    '\nat ' + o.path +
-    '\ntoo deep structure' +
-    '\no : ' + _.toStr( o ) +
-    '\no.rootSrc : ' + _.toStr( o.rootSrc )
-  );
-
-  o.levels -= 1;
-
-  /* routine */
-
-  if( _.routineIs( o.src ) )
-  {
-    if( o.onRoutine )
-    return o.onRoutine( o.src );
-    return o.src;
-  }
-
-  /* string */
-
-  if( _.strIs( o.src ) )
-  {
-    if( o.onString )
-    return o.onString( o.src );
-    return o.src;
-  }
-
-  /* atomic */
-
-  if( _.atomicIs( o.src ) )
-  {
-    return o.src;
-  }
-
-  /* class instance */
-
-  if( o.technique === 'data' )
-  {
-    if( o.src.cloneData )
-    {
-      return o.src.cloneData( o );
-    }
-  }
-  else if( o.technique === 'object' )
-  {
-    if( o.src.cloneObject )
-    {
-      return o.src.cloneObject( o );
-    }
-  }
-  else
-  {
-    throw _.err( 'unexpected clone technique : ' + o.technique );
-  }
-
-  /* map */
-
-  if( _.objectIs( o.src ) )
-  {
-
-    var mapIs = _.mapIs( o.src );
-
-    if( !mapIs )
-    if( o.src.constructor !== Object && o.src.constructor !== null )
-    {
-      debugger;
-      throw _.err
-      (
-        'Complex objets should have ' +
-        ( o.technique === 'data' ? 'cloneData' : 'cloneObject' ) +
-        ', but object ' + _.strTypeOf( o.src ) + 'at ' + ( o.path || '.' ), 'does not have such method','\n',
-        o.src,'\n',
-        'try to mixin wCopyable'
-      );
-    }
-
-    if( o.dst )
-    result = o.dst;
-    else if( o.proto )
-    result = new o.proto();
-    else
-    {
-      result = _.entityNew( o.src );
-      //result = new o.src.constructor();
-    }
-
-    for( var s in o.src )
-    {
-
-      if( !mapIs )
-      if( !Object.hasOwnProperty.call( o.src,s ) )
-      continue;
-
-      var elementOptions = _.mapExtend( Object.create( null ),o );
-      elementOptions.src = o.src[ s ];
-      elementOptions.path += '.' + s;
-      delete elementOptions.dst;
-      delete elementOptions.proto;
-      result[ s ] = _entityCloneAct( elementOptions );
-    }
-
-    return result;
-  }
-
-  /* array like */
-
-  if( _.arrayLike( o.src ) )
-  {
-
-    if( _.bufferTypedIs( o.src ) )
-    {
-
-      if( o.copyBuffers )
-      {
-        debugger;
-        result = new o.src.constructor( o.src );
-      }
-      else
-      {
-        result = o.src;
-      }
-
-      if( o.onBuffer )
-      {
-        result = o.onBuffer.call( o,result );
-      }
-
-      return result;
-    }
-
-
-    /**/
-
-    if( o.dst )
-    result = o.dst;
-    else if( o.proto )
-    {
-      debugger;
-      result = new o.proto( o.src.length );
-    }
-    else
-    {
-      result = _.arrayNew( o.src );
-    }
-
-    /**/
-
-    if( _.bufferRawIs( o.src ) )
-    throw _.err( 'not implemented' );
-
-    for( var s = 0 ; s < o.src.length ; s++ )
-    {
-      var elementOptions = _.mapExtend( Object.create( null ),o );
-      elementOptions.src = o.src[ s ];
-      elementOptions.path += '.' + s;
-      delete elementOptions.dst;
-      delete elementOptions.proto;
-      result[ s ] = _entityCloneAct( elementOptions );
-    }
-
-    return result;
-  }
-
-  debugger;
-  throw _.err( 'unexpected type of src : ' + _.strTypeOf( o.src ) );
-}
-
-//
-
-function _entityClone( o )
-{
-
-  if( o.rootSrc === undefined )
-  o.rootSrc = o.src;
-
-  if( o.src === undefined )
-  {
-    console.warn( 'REMINDER:','experimental' );
-    o.src = null;
-  }
-
-  _.assertMapHasOnly( o,_entityClone.defaults );
-  _.mapComplement( o,_entityClone.defaults );
-
-  return _entityCloneAct( o );
-}
-
-_entityClone.defaults =
-{
-
-  src : null,
-  rootSrc : null,
-  key : null,
-
-  dst : null,
-  proto : null,
-
-  copyComposes : true,
-  copyAggregates : true,
-  copyAssociates : true,
-  copyRestricts : false,
-  copyBuffers : false,
-
-  levels : 16,
-  path : '',
-  technique : null,
-
-  onString : null,
-  onRoutine : null,
-  onBuffer : null,
-
-}
-
-//
-
-function entityCloneObject( o )
-{
-
-  if( o.rootSrc === undefined )
-  o.rootSrc = o.src;
-
-  _.assertMapHasOnly( o,entityCloneObject.defaults );
-  _.mapSupplement( o,entityCloneObject.defaults );
-
-  var result = _entityClone( o );
-
-  return result;
-}
-
-entityCloneObject.defaults =
-{
-  copyAssociates : true,
-  technique : 'object',
-}
-
-entityCloneObject.defaults.__proto__ = _entityClone.defaults;
-
-//
-
-function entityCloneObjectMergingBuffers( o )
-{
-  var result = Object.create( null );
-  var src = o.src;
-  var descriptorsMap = o.src.descriptorsMap;
-  var buffer = o.src.buffer;
-  var data = o.src.data;
-
-  if( o.rootSrc === undefined )
-  o.rootSrc = o.src;
-
-  _.assertMapHasOnly( o,entityCloneObjectMergingBuffers.defaults );
-  _.mapSupplement( o,entityCloneObjectMergingBuffers.defaults );
-
-  _.assert( _.objectIs( o.src.descriptorsMap ) );
-  _.assert( _.bufferRawIs( o.src.buffer ) );
-  _.assert( o.src.data !== undefined );
-
-  /**/
-
-  var optionsCloneObject = _.mapScreen( _.entityCloneObject.defaults,o );
-  optionsCloneObject.src = data;
-
-  /* onString */
-
-  optionsCloneObject.onString = function onString( strString )
-  {
-
-    var id = _.strUnjoin( strString,[ '--buffer-->',_.strUnjoin.any,'<--buffer--' ] )
-
-    if( id === undefined )
-    return strString;
-
-    var descriptor = o.src.descriptorsMap[ strString ];
-    _.assert( descriptor !== undefined );
-
-    var bufferConstructor = _global_[ descriptor[ 'bufferConstructorName' ] ];
-    var offset = descriptor[ 'offset' ];
-    var size = descriptor[ 'size' ];
-    var sizeOfAtom = descriptor[ 'sizeOfAtom' ];
-    var result = bufferConstructor ? new bufferConstructor( buffer,offset,size / sizeOfAtom ) : null;
-
-    return result;
-  }
-
-  /* clone object */
-
-  var result = _.entityCloneObject( optionsCloneObject );
-
-  // xxx
-
-  return result;
-}
-
-entityCloneObjectMergingBuffers.defaults =
-{
-  copyBuffers : false,
-}
-
-entityCloneObjectMergingBuffers.defaults.__proto__ = entityCloneObject.defaults;
-
-//
-
-function entityCloneData( o )
-{
-
-  if( o.rootSrc === undefined )
-  o.rootSrc = o.src;
-
-  _.assertMapHasOnly( o,entityCloneData.defaults );
-  _.mapSupplement( o,entityCloneData.defaults );
-
-  var result = _entityClone( o );
-
-  return result;
-}
-
-entityCloneData.defaults =
-{
-  technique : 'data',
-  copyAssociates : false,
-}
-
-entityCloneData.defaults.__proto__ = _entityClone.defaults;
-
-//
-
-function entityCloneDataSeparatingBuffers( o )
-{
-  var result = Object.create( null );
-  var buffers = [];
-  var descriptorsArray = [];
-  var descriptorsMap = Object.create( null );
-  var size = 0;
-  var offset = 0;
-
-  if( o.rootSrc === undefined )
-  o.rootSrc = o.src;
-
-  _.assertMapHasOnly( o,entityCloneDataSeparatingBuffers.defaults );
-  _.mapSupplement( o,entityCloneDataSeparatingBuffers.defaults );
-
-  /* onBuffer */
-
-  o.onBuffer = function onBuffer( srcBuffer )
-  {
-
-    _.assert( _.bufferTypedIs( srcBuffer ),'not tested' );
-
-    var index = buffers.length;
-    var id = _.strJoin( '--buffer-->',index,'<--buffer--' );
-    var bufferSize = srcBuffer ? srcBuffer.length*srcBuffer.BYTES_PER_ELEMENT : 0;
-    size += bufferSize;
-
-    var descriptor =
-    {
-      'bufferConstructorName' : srcBuffer ? srcBuffer.constructor.name : 'null',
-      'sizeOfAtom' : srcBuffer ? srcBuffer.BYTES_PER_ELEMENT : 0,
-      'offset' : -1,
-      'size' : bufferSize,
-      'index' : index,
-      //'id' : id,
-    }
-
-    buffers.push( srcBuffer );
-    descriptorsArray.push( descriptor );
-    descriptorsMap[ id ] = descriptor;
-
-    return id;
-  }
-
-  /* clone data */
-
-  result.data = _entityCloneAct( o );
-  result.descriptorsMap = descriptorsMap;
-
-  /* sort by atom size */
-
-  descriptorsArray.sort( function( a,b )
-  {
-    return b[ 'sizeOfAtom' ] - a[ 'sizeOfAtom' ];
-  });
-
-  /* alloc */
-
-  result.buffer = new ArrayBuffer( size );
-  var dstBuffer = _.bufferBytesGet( result.buffer );
-
-  /* copy buffers */
-
-  for( var b = 0 ; b < descriptorsArray.length ; b++ )
-  {
-
-    var descriptor = descriptorsArray[ b ];
-    var buffer = buffers[ descriptor.index ];
-    var bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
-    var bufferSize = descriptor[ 'size' ];
-
-    descriptor[ 'offset' ] = offset;
-
-    _.bufferMove( dstBuffer.subarray( offset,offset+bufferSize ),bytes );
-
-    offset += bufferSize;
-
-  }
-
-  /**/ // xxx
-
-  return result;
-}
-
-entityCloneDataSeparatingBuffers.defaults =
-{
-  copyBuffers : false,
-}
-
-entityCloneDataSeparatingBuffers.defaults.__proto__ = entityCloneData.defaults;
-
-//
-
 /**
  * Copies entity( src ) into( dst ) or returns own copy of( src ).Result depends on several moments:
  * -If( src ) is a Object - returns clone of( src ) using ( onRecursive ) callback function if its provided;
@@ -1661,29 +1134,29 @@ entityCloneDataSeparatingBuffers.defaults.__proto__ = entityCloneData.defaults;
  * @example
  * var dst = { set : function( src ) { this.str = src.src } };
  * var src = { src : 'string' };
- *  _.entityCopy( dst, src );
+ *  _.entityCopyTry( dst, src );
  * console.log( dst.str )
  * //returns "string"
  *
  * @example
  * var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } }
  * var src = { src : 'string', num : 123 }
- *  _.entityCopy( dst, src );
+ *  _.entityCopyTry( dst, src );
  * console.log( dst )
  * //returns Object {src: "string", num: 123}
  *
  * @example
  * //returns 'string'
- *  _.entityCopy( null, new String( 'string' ) );
+ *  _.entityCopyTry( null, new String( 'string' ) );
  *
- * @method entityCopy
+ * @method entityCopyTry
  * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
  * @throws {exception} If( onRecursive ) is not a Routine.
  * @memberof wTools
  *
  */
 
-function entityCopy( dst,src,onRecursive )
+function entityCopyTry( dst,src,onRecursive )
 {
   var result;
 
@@ -1751,7 +1224,7 @@ function entityCopy( dst,src,onRecursive )
 //
 
 /**
- * Short-cut for entityCopy function. Copies specified( name ) field from
+ * Short-cut for entityCopyTry function. Copies specified( name ) field from
  * source container( srcContainer ) into( dstContainer ).
  *
  * @param {object} dstContainer - Destination object.
@@ -1798,9 +1271,9 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
   var dstValue = Object.hasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
 
   if( onRecursive )
-  result = entityCopy( dstValue,srcContainer[ name ],onRecursive );
+  result = entityCopyTry( dstValue,srcContainer[ name ],onRecursive );
   else
-  result = entityCopy( dstValue,srcContainer[ name ] );
+  result = entityCopyTry( dstValue,srcContainer[ name ] );
 
   if( result !== undefined )
   dstContainer[ name ] = result;
@@ -1811,7 +1284,7 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
 //
 
 /**
- * Short-cut for entityCopy function. Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
+ * Short-cut for entityCopyTry function. Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
  *
  * @param {object} dstContainer - Destination object.
  * @param {object} srcValue - Source value.
@@ -1844,10 +1317,10 @@ function entityAssignField( dstContainer,srcValue,name,onRecursive )
   if( onRecursive )
   {
     throw _.err( 'not tested' );
-    result = entityCopy( dstContainer[ name ],srcValue,onRecursive );
+    result = entityCopyTry( dstContainer[ name ],srcValue,onRecursive );
   }
   else
-  result = entityCopy( dstContainer[ name ],srcValue );
+  result = entityCopyTry( dstContainer[ name ],srcValue );
 
   if( result !== undefined )
   dstContainer[ name ] = result;
@@ -2257,7 +1730,7 @@ function _entitySame( src1,src2,o )
     return false;
   }
 
-  /**/
+  /* */
 
   if( _.objectIs( src1 ) && _.routineIs( src1._isSame ) )
   {
@@ -2315,6 +1788,19 @@ function _entitySame( src1,src2,o )
   else if( _.numberIs( src1 ) )
   {
     return o.onSameNumbers( src1,src2 );
+  }
+  else if( _.bufferViewIs( src1 ) )
+  {
+    if( !_.bufferViewIs( src2 ) )
+    debugger;
+    if( !_.bufferViewIs( src2 ) )
+    return false;
+    if( src1.byteLength !== src2.byteLength )
+    debugger;
+    for( var i = 0 ; i < src1.byteLength ; i++ )
+    if( src1.getUint8( i ) !== src2.getUint8( i ) )
+    return false;
+    return true;
   }
   else
   {
@@ -3448,7 +2934,7 @@ function entityGroup( o )
     if( _.arrayLike( o.key ) )
     o.key = _.mapKeys.apply( _,o.src );
     else
-    o.key = _.mapKeys.apply( _,_.mapValues( o.src ) );
+    o.key = _.mapKeys.apply( _,_.mapVals( o.src ) );
 
   }
 
@@ -3519,6 +3005,24 @@ entityGroup.defaults =
   src : null,
   key : null,
   usingOriginal : 1,
+}
+
+//
+
+function entityVals( src )
+{
+  var result = [];
+
+  _.assert( arguments.length === 1 );
+  _.assert( !_.atomicIs( src ) );
+
+  if( _.arrayLike( src ) )
+  return src;
+
+  for( var s in src )
+  result.push( src[ s ] );
+
+  return result;
 }
 
 //
@@ -5690,17 +5194,30 @@ function objectIs( src )
 
 function objectLike( src )
 {
-  if( objectIs( src ) ) return true;
-  if( routineIs( src ) ) return true;
-  if( atomicIs( src ) ) return false;
+  if( objectIs( src ) )
+  return true;
+
+  if( atomicIs( src ) )
+  return false;
+
+  if( _.arrayLike( src ) )
+  return false;
+
+  if( Object.getPrototypeOf( src ) === Function.__proto__ )
+  return false;
 
   if( Object.getOwnPropertyNames( src ).length )
   return true;
 
-  // for( var s in src )
-  // return true;
-
   return false;
+}
+
+//
+
+function objectLikeOrRoutine( src )
+{
+  if( routineIs( src ) ) return true;
+  return objectLike( src );
 }
 
 //
@@ -5737,21 +5254,37 @@ function mapIs( src )
   if( !_.objectIs( src ) )
   return false;
 
-  _.assert( Object.getPrototypeOf( src ) === null || Object.getPrototypeOf( src ),'unexpected' );
+  var proto = Object.getPrototypeOf( src );
 
-  if( Object.getPrototypeOf( src ) === null )
+  if( proto === null )
   return true;
 
-  if( Object.getPrototypeOf( src ).constructor.name !== 'Object' )
+  if( proto.constructor && proto.constructor.name !== 'Object' )
   return false;
 
-  if( Object.getPrototypeOf( Object.getPrototypeOf( src ) ) === null )
+  if( Object.getPrototypeOf( proto ) === null )
+  return true;
+
+  _.assert( proto === null || proto,'unexpected' );
+
+  return false;
+}
+
+//
+
+function mapLike( src )
+{
+
+  if( mapIs( src ) )
+  return true;
+
+  if( src.constructor === Object || src.constructor === null )
   return true;
 
   return false;
 }
 
-  //
+//
 
 /**
  * The arrayIs() method determines whether the passed value is an Array.
@@ -6235,6 +5768,17 @@ function domableIs( src )
 function consequenceIs( src )
 {
   return src instanceof wConsequence;
+}
+
+//
+
+function describedIs( src )
+{
+  if( _.atomicIs( src ) )
+  return false;
+  if( src.Composes )
+  return true;
+  return false;
 }
 
 //
@@ -8912,9 +8456,9 @@ function buffersSerialize( o )
       dst : Object.create( null ),
       src : attribute,
 
-      copyComposes : true,
-      copyAggregates : true,
-      copyAssociates : false,
+      copyingComposes : 3,
+      copyingAggregates : 3,
+      copyingAssociates : 1,
 
       technique : 'data',
 
@@ -9376,10 +8920,37 @@ function arrayFlatten()
 
 //
 
+function _arrayCopy( src )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) || _.bufferAnyIs( src ) );
+  _.assert( !_.bufferNodeIs( src ),'not tested' );
+
+  if( _.bufferViewIs( src ) )
+  debugger;
+
+  if( _.bufferTypedIs( src ) || _.bufferRawIs( src ) || _.bufferNodeIs( src ) )
+  return new src.constructor( src );
+  else if( _.arrayIs( src ) )
+  return src.slice();
+  else if( _.bufferViewIs( src ) )
+  return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
+
+  _.assert( 0,'unknown kind of buffer',_.strTypeOf( src ) );
+}
+
+//
+
 function arrayCopy()
 {
   var result;
   var length = 0;
+
+  if( arguments.length === 1 )
+  {
+    return _._arrayCopy( arguments[ 0 ] );
+  }
 
   // eval length
 
@@ -12387,44 +11958,44 @@ function mapClone( srcObject,o )
   //  * @param { string } key - The key of the (argument) object.
   //  */
 
-  /**
-   * The mapExtendFiltering() creates a new [ key, value ]
-   * from the next objects if callback function (filter) returns true.
-   *
-   * It calls a provided callback function (filter) once for each key in an (argument),
-   * and adds to the (srcObject) all the [ key, value ] for which callback
-   * function (filter) returns true.
-   *
-   * @param { function } filter - The callback function to test each [ key, value ]
-   * of the (dstObject) object.
-   * @param { objectLike } dstObject - The target object.
-   * @param { ...objectLike } arguments[] - The next object.
-   *
-   * @example
-   * // returns { a : 1, b : 2, c : 3 }
-   * _.mapExtendFiltering( _.filter.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
-   *
-   * @returns { objectLike } Returns the unique [ key, value ].
-   * @method mapExtendFiltering
-   * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
-   * is not a Function, (result) and (argument) are not the objects.
-   * @memberof wTools
-   */
+/**
+ * The mapExtendFiltering() creates a new [ key, value ]
+ * from the next objects if callback function (filter) returns true.
+ *
+ * It calls a provided callback function (filter) once for each key in an (argument),
+ * and adds to the (srcObject) all the [ key, value ] for which callback
+ * function (filter) returns true.
+ *
+ * @param { function } filter - The callback function to test each [ key, value ]
+ * of the (dstObject) object.
+ * @param { objectLike } dstObject - The target object.
+ * @param { ...objectLike } arguments[] - The next object.
+ *
+ * @example
+ * // returns { a : 1, b : 2, c : 3 }
+ * _.mapExtendFiltering( _.filter.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+ *
+ * @returns { objectLike } Returns the unique [ key, value ].
+ * @method mapExtendFiltering
+ * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
+ * is not a Function, (result) and (argument) are not the objects.
+ * @memberof wTools
+ */
 
 function mapExtendFiltering( filter,dstObject )
 {
   var result = dstObject;
   var filter = _.filter.makeMapper( filter );
 
-  if( result === null ) result = Object.create( null );
+  if( result === null )
+  result = Object.create( null );
 
   _assert( arguments.length >= 3,'expects more arguments' );
   _assert( _.routineIs( filter ),'expects filter' );
-  _assert( _.objectLike( result ),'expects objectLike as argument' );
+  _assert( _.objectLikeOrRoutine( result ),'expects objectLikeOrRoutine as argument' );
 
   for( var a = 2 ; a < arguments.length ; a++ )
   {
-
     var argument = arguments[ a ];
 
     _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
@@ -12467,27 +12038,22 @@ function mapExtendFiltering( filter,dstObject )
  * @memberof wTools
  */
 
-/* !!! need to explain how undefined handled */
-
-function mapExtend( dstObject )
+function mapExtend( dstObject,srcObject )
 {
   var result = dstObject;
-
-  // if( arguments.length === 2 )
-  // debugger;
 
   if( result === null )
   result = Object.create( null );
 
-  if( arguments.length === 2 )
-  return Object.assign( result,arguments[ 1 ] );
+  if( arguments.length === 2 && Object.getPrototypeOf( srcObject ) === null )
+  // if( arguments.length === 2 )
+  return Object.assign( result,srcObject );
 
   assert( arguments.length >= 2 );
-  assert( objectLike( result ),'mapExtend :','expects object as the first argument' );
+  assert( objectLikeOrRoutine( result ),'mapExtend :','expects object as the first argument' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
-
     var argument = arguments[ a ];
 
     for( var k in argument )
@@ -12604,22 +12170,18 @@ function mapSupplementOwn( dst )
 
 function mapComplement( dst )
 {
-
   var args = _.arraySlice( arguments );
   args.unshift( _.filter.dstNotOwnNotUndefinedCloning() );
   return mapExtendFiltering.apply( this,args );
-
 }
 
 //
 
 function mapComplementWithUndefines( dst )
 {
-
   var args = _.arraySlice( arguments );
   args.unshift( _.filter.dstNotOwnCloning() );
   return mapExtendFiltering.apply( this,args );
-
 }
 
 //
@@ -13245,7 +12807,7 @@ function mapOwnKeys( src )
  * which accept object only mapKeys accept any object-like entity.
  *
  * @see {@link wTools.mapOwnKeys} - Similar routine taking into account own elements only.
- * @see {@link wTools.mapValues} - Similar routine returning values.
+ * @see {@link wTools.mapVals} - Similar routine returning values.
  *
  * @example
  * // returns [ "a", "b" ]
@@ -13303,7 +12865,7 @@ function mapOwnValues( src )
 //
 
 /**
- * The mapValues() method returns an array of a given object's
+ * The mapVals() method returns an array of a given object's
  * own enumerable property values,
  * in the same order as that provided by a for...in loop.
  *
@@ -13316,16 +12878,16 @@ function mapOwnValues( src )
  *
  * @example
  * // returns [ "7", "13" ]
- * _.mapValues( { a : 7, b : 13 } );
+ * _.mapVals( { a : 7, b : 13 } );
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
- * @method mapValues
+ * @method mapVals
  * @throws { Error } Will throw an Error if (src) is not an Object.
  * @memberof wTools
 */
 
-function mapValues( src )
+function mapVals( src )
 {
   var result = [];
 
@@ -13833,7 +13395,7 @@ function mapOwnBut( srcMap )
 
   /*console.warn( 'fuzzy!' ); debugger;*/
 
-  assert( objectLike( srcMap ),'mapOwnBut :','expects object as argument' );
+  _.assert( _.objectLikeOrRoutine( srcMap ),'mapOwnBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -14154,7 +13716,7 @@ function _mapScreen( options )
   _.assertMapHasOnly( options,_mapScreen.defaults );
 
   for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  _assert( _.objectLike( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
+  _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
 
   for( var k in screenObject )
   {
@@ -14272,18 +13834,23 @@ var Proto =
 
   enityExtend : enityExtend, /* experimental */
 
-  entityClone : entityClone, /* deprecated */
+  // cloneDeep_deprecated : cloneDeep_deprecated, /* deprecated */
 
   entityNew : entityNew,
 
-  _entityCloneAct : _entityCloneAct,
-  _entityClone : _entityClone,
-  entityCloneObject : entityCloneObject,
-  entityCloneObjectMergingBuffers : entityCloneObjectMergingBuffers, /* experimental */
-  entityCloneData : entityCloneData,
-  entityCloneDataSeparatingBuffers : entityCloneDataSeparatingBuffers, /* experimental */
+  // _cloneMap : _cloneMap,
+  // _cloneArray : _cloneArray,
+  // _cloneAct : _cloneAct,
+  //
+  // _cloneIteration : _cloneIteration,
+  // _cloneOptions : _cloneOptions,
+  // clone : clone,
+  // cloneObject : cloneObject,
+  // cloneObjectMergingBuffers : cloneObjectMergingBuffers, /* experimental */
+  // cloneData : cloneData,
+  // cloneDataSeparatingBuffers : cloneDataSeparatingBuffers, /* experimental */
 
-  entityCopy : entityCopy, /* experimental */
+  entityCopyTry : entityCopyTry, /* experimental */
   entityCopyField : entityCopyField, /* experimental */
   entityAssignField : entityAssignField, /* experimental */
 
@@ -14313,7 +13880,6 @@ var Proto =
   entityLength : entityLength,
   entitySize : entitySize,
 
-  // entityWithKeyRecursive : entityWithKeyRecursive, /* deprecated */
   entityValueWithIndex : entityValueWithIndex,
   entityKeyWithValue : entityKeyWithValue,
 
@@ -14333,6 +13899,7 @@ var Proto =
   entityFilterDeep : entityFilterDeep,
 
   entityGroup : entityGroup, /* experimental */
+  entityVals : entityVals,
 
   _entityMost : _entityMost,
   entityMin : entityMin,
@@ -14390,7 +13957,9 @@ var Proto =
 
   objectIs : objectIs,
   objectLike : objectLike,
+  objectLikeOrRoutine : objectLikeOrRoutine,
   mapIs : mapIs,
+  mapLike : mapLike,
 
   strIs : strIs,
   strIsNotEmpty : strIsNotEmpty,
@@ -14436,11 +14005,15 @@ var Proto =
   domableIs : domableIs,
   consequenceIs : consequenceIs,
 
+  describedIs : describedIs,
+
   atomicIs : atomicIs,
   primitiveIs : atomicIs,
 
   typeOf : typeOf,
   typeIsBuffer : typeIsBuffer,
+
+
 
   workerIs : workerIs,
 
@@ -14563,7 +14136,6 @@ var Proto =
 
   arraySub : arraySub,
   arrayNew : arrayNew,
-  // arrayNewOfSameLength : arrayNewOfSameLength,
   arrayFromNumber : arrayFromNumber,
 
   arraySelect : arraySelect,
@@ -14571,6 +14143,7 @@ var Proto =
 
   arrayFlatten : arrayFlatten,
 
+  _arrayCopy : _arrayCopy,
   arrayCopy : arrayCopy,
   arrayAppendMerging : arrayAppendMerging,
   arrayPrependMerging : arrayPrependMerging,
@@ -14701,7 +14274,7 @@ var Proto =
   mapOwnKeys : mapOwnKeys,
   mapKeys : mapKeys,
   mapOwnValues : mapOwnValues,
-  mapValues : mapValues,
+  mapVals : mapVals,
   mapPairs : mapPairs,
 
   mapInvert : mapInvert,

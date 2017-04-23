@@ -4997,8 +4997,8 @@ function _strColorForegroundFormat( str, color )
   color = _.color.colorNameNearest( color );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.strIs( str ) );
-  _.assert( _.strIs( color ) );
+  _.assert( _.strIs( str ),'expects string ( src )' );
+  _.assert( _.strIs( color ),'expects string ( color )' );
 
   return `#foreground : ${color}#${str}#foreground : default#`;
 }
