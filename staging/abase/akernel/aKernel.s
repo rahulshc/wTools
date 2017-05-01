@@ -11681,6 +11681,52 @@ function arrayRange( range )
 // array set
 // --
 
+function arraySetBut( src,but )
+{
+  var result = [];
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src ) );
+  _.assert( _.arrayLike( but ) );
+
+  for( var i = 0 ; i < src.length ; i++ )
+  {
+
+    if( but.indexOf( src[ i ] ) === -1 )
+    result.push( src[ i ] );
+
+  }
+
+  return result;
+}
+
+//
+
+function arraySetDiff( src1,src2 )
+{
+  var result = [];
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) );
+  _.assert( _.arrayLike( src2 ) );
+
+  for( var i = 0 ; i < src1.length ; i++ )
+  {
+    if( src2.indexOf( src1[ i ] ) === -1 )
+    result.push( src1[ i ] );
+  }
+
+  for( var i = 0 ; i < src2.length ; i++ )
+  {
+    if( src1.indexOf( src2[ i ] ) === -1 )
+    result.push( src2[ i ] );
+  }
+
+  return result;
+}
+
+//
+
 function arraySetIntersection( src )
 {
   var result = [];
@@ -14222,6 +14268,8 @@ var Proto =
 
   // array set
 
+  arraySetBut : arraySetBut,
+  arraySetDiff : arraySetDiff,
   arraySetIntersection : arraySetIntersection,
   arraySetContainAll : arraySetContainAll,
   arraySetContainSomething : arraySetContainSomething,

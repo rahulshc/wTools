@@ -19,18 +19,18 @@ if( typeof module !== 'undefined' )
 
   var _ = wTools
 
-  _.include( 'wLoggerToJstructure' );
+  // _.include( 'wLoggerToJstructure' );
   _.include( 'wTesting' );
 
 }
 
 var _ = wTools;
 var Self = {};
-var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
+// var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
-var shell = function shell( test )
+function shell( test )
 {
   var con = new wConsequence().give();
 
@@ -74,7 +74,7 @@ var Proto =
 
   name : 'ExecTools',
   verbosity : 1,
-  sourceFilePath : sourceFilePath,
+  // sourceFilePath : sourceFilePath,
   // logger : wLoggerToJstructure(),
 
   tests :

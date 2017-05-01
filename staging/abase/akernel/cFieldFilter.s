@@ -459,7 +459,7 @@ function and()
   }
 
   if( mappers.length > 1 )
-  throw _.err( 'can combine only one mapper with any number of filters' );
+  throw _.err( 'can combineMethodUniform only one mapper with any number of filters' );
 
   var routine = function and( dstContainer,srcContainer,key )
   {
