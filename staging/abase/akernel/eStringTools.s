@@ -2050,7 +2050,7 @@ function strSplitChunks( o )
 
   _.mapSupplement( o,strSplitChunks.defaults );
   _.assertMapHasOnly( o,strSplitChunks.defaults );
-  _.assert( _.strIs( o.src ) );
+  _.assert( _.strIs( o.src ),'expects string { o.src }, but got',_.strTypeOf( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
   o.prefix = RegExp( _.regexpEscape( o.prefix ),'m' );
@@ -2891,14 +2891,14 @@ function strIron()
 //
 
 /**
- * Replaces each occurrence of string( ins ) in source( dst ) with string( sub ).
- * Returns result of replacements as new string or original string if no matches finded in source( dst ).
+ * Replaces each occurrence of string( ins ) in source( src ) with string( sub ).
+ * Returns result of replacements as new string or original string if no matches finded in source( src ).
  * Function can be called in three different ways:
- * - One argument: object that contains options: source( dst ) and dictionary.
- * - Two arguments: source string( dst ), map( dictionary ).
- * - Three arguments: source string( dst ), pattern string( ins ), replacement( sub ).
- * @param {string} dst - Source string to parse.
- * @param {string} ins - String to find in source( dst ).
+ * - One argument: object that contains options: source( src ) and dictionary.
+ * - Two arguments: source string( src ), map( dictionary ).
+ * - Three arguments: source string( src ), pattern string( ins ), replacement( sub ).
+ * @param {string} src - Source string to parse.
+ * @param {string} ins - String to find in source( src ).
  * @param {string} sub - String that replaces finded occurrence( ins ).
  * @param {object} dictionary - Map that contains pattern/replacement pairs like ( { 'ins' : 'sub' } ).
  * @returns {string} Returns string with result of replacements.
@@ -2906,7 +2906,7 @@ function strIron()
  * @example
  * //one argument
  * //returns xbc
- * _.strReplaceAll( { dst : 'abc', dictionary : { 'a' : 'x' } } );
+ * _.strReplaceAll( { src : 'abc', dictionary : { 'a' : 'x' } } );
  *
  * @example
  * //two arguments
@@ -2920,7 +2920,7 @@ function strIron()
  *
  * @method strReplaceAll
  * @throws { Exception } Throws a exception if no arguments provided.
- * @throws { Exception } Throws a exception if( dst ) is not a String.
+ * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( ins ) is not a String.
  * @throws { Exception } Throws a exception if( sub ) is not a String.
  * @throws { Exception } Throws a exception if( dictionary ) is not a Object.
@@ -2929,7 +2929,7 @@ function strIron()
  *
  */
 
-function strReplaceAll( dst, ins, sub )
+function strReplaceAll( src, ins, sub )
 {
   var o;
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -2938,13 +2938,13 @@ function strReplaceAll( dst, ins, sub )
   {
     _.assert( _.strIs( ins ) );
     _.assert( _.strIs( sub ) );
-    o = { dst : dst };
+    o = { src : src };
     o.dictionary = {};
     o.dictionary[ ins ] = sub;
   }
   else if( arguments.length === 2 )
   {
-    o = { dst : dst , dictionary : arguments[ 1 ] };
+    o = { src : src , dictionary : arguments[ 1 ] };
   }
   else if( arguments.length === 1 )
   {
@@ -2953,27 +2953,30 @@ function strReplaceAll( dst, ins, sub )
 
   /**/
 
-  _.assert( _.strIs( o.dst ) );
+  _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o.dictionary ) );
 
   /**/
 
-  var dst = o.dst;
+  var src = o.src;
   var l = Object.keys( o.dictionary );
   for( var ins in o.dictionary )
   {
     if( !ins.length ) continue;
     _.assert( _.strIs( o.dictionary[ ins ] ), 'strReplaceAll : expects dictionary values only as strings' );
 
-    var index = -1;
+    var index = 0;
     var sub = o.dictionary[ ins ];
 
     do
     {
 
-      var index = dst.indexOf( ins,index+1 );
+      var index = src.indexOf( ins,index );
       if( index >= 0 )
-      dst = dst.substring( 0,index ) + sub + dst.substring( index+ins.length );
+      {
+        src = src.substring( 0,index ) + sub + src.substring( index+ins.length );
+        index += sub.length; 
+      }
       else
       break;
 
@@ -2982,13 +2985,13 @@ function strReplaceAll( dst, ins, sub )
 
   }
 
-  return dst;
-  //return dst.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
+  return src;
+  //return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
 }
 
 strReplaceAll.defaults =
 {
-  dst : null,
+  src : null,
   dictionary : null,
 }
 

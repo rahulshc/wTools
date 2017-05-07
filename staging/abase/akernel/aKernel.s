@@ -10378,8 +10378,8 @@ function arrayUniqueIs( o )
 
   if( o.onElement )
   {
-    throw _.err( 'not tested' );
-    o.src = _.enityMap( o.src,function( e ){ return o.onElement( e ) } );
+    // throw _.err( 'not tested' );
+    o.src = _.entityMap( o.src,( e ) => o.onElement( e ) );
   }
 
   /**/
@@ -12250,8 +12250,36 @@ function mapComplementWithUndefines( dst )
 
 function mapCopy()
 {
-  var args = _.arrayAppendMerging( [],Object.create( null ),arguments );
+  var args = _.arraySlice( arguments );
+  args.unshift( Object.create( null ) );
   return _.mapExtend.apply( _,args );
+}
+
+//
+
+// function mapCopyFiltering( filter )
+// {
+//   var args = _.arraySlice( arguments,1 );
+//   args.unshift( Object.create( null ) );
+//
+//   debugger;
+//
+//   var args = _.arrayAppendMerging( [],Object.create( null ),arguments );
+//   return _.mapExtend.apply( _,args );
+// }
+
+//
+
+function mapExtendByArray( dst,src,val )
+{
+
+  _.assert( _.objectIs( dst ) );
+  _.assert( _.arrayIs( src ) );
+  _.assert( arguments.length === 3 );
+
+  for( var s = 0 ; s < src.length ; s++ )
+  dst[ src[ s ] ] = val;
+
 }
 
 // --
@@ -13356,6 +13384,10 @@ function mapBut( srcMap )
 
   for( k in srcMap )
   {
+
+    // if( k === 'toString' )
+    // debugger;
+
     for( a = 1 ; a < arguments.length ; a++ )
     {
       var argument = arguments[ a ];
@@ -14286,7 +14318,11 @@ var Proto =
   mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
   mapComplementWithUndefines : mapComplementWithUndefines,
+
   mapCopy : mapCopy,
+  mapCopyFiltering : mapCopyFiltering,
+
+  mapExtendByArray : mapExtendByArray,
 
 
   // recursive
