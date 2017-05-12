@@ -7484,13 +7484,7 @@ function _comparatorFromTransformer( transformer )
 {
 
   if( transformer === undefined )
-  transformer = function transformer( a,b )
-  {
-    var result = a - b;
-    if( a && b )
-    _.assert( _.numberIsRegular( result ) );
-    return result;
-  };
+  transformer = function transformer( a,b ){ return a-b };
 
   _.assert( arguments.length === 1 );
   _.assert( transformer.length === 1 || transformer.length === 2 );
