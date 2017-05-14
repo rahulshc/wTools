@@ -133,7 +133,7 @@ function mapExtend( test )
   test.identical( got, expected );
 
   test.description = 'object like array';
-  var got = _.mapExtend( {}, [ 3, 7, 13, 73 ] );
+  var got = _.mapExtend( null, [ 3, 7, 13, 73 ] );
   var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
   test.identical( got, expected );
 
@@ -226,27 +226,27 @@ function mapPairs( test )
 
 //
 
-function mapOwn( test )
+function mapOwnKey( test )
 {
 
   test.description = 'second argument is string';
-  var got = _.mapOwn( { a : 7, b : 13 }, 'a' );
+  var got = _.mapOwnKey( { a : 7, b : 13 }, 'a' );
   var expected = true;
   test.identical( got, expected );
 
   test.description = 'second argument is object';
-  var got = _.mapOwn( { a : 7, b : 13 }, Object.create( null ).a = 'a' );
+  var got = _.mapOwnKey( { a : 7, b : 13 }, Object.create( null ).a = 'a' );
   var expected = true;
   test.identical( got, expected );
 
   test.description = 'second argument is symbol';
   var symbol = Symbol( 'b' ), obj = { a : 7, [ symbol ] : 13 };
-  var got = _.mapOwn( obj, symbol );
+  var got = _.mapOwnKey( obj, symbol );
   var expected = true;
   test.identical( got, expected );
 
   test.description = 'false';
-  var got = _.mapOwn( Object.create( { a : 7, b : 13 } ), 'a' );
+  var got = _.mapOwnKey( Object.create( { a : 7, b : 13 } ), 'a' );
   var expected = false;
   test.identical( got, expected );
 
@@ -258,31 +258,31 @@ function mapOwn( test )
     test.description = 'no argument';
     test.shouldThrowError( function()
     {
-      _.mapOwn();
+      _.mapOwnKey();
     });
 
     test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapOwn( {} );
+      _.mapOwnKey( {} );
     });
 
     test.description = 'wrong type of array';
     test.shouldThrowError( function()
     {
-      _.mapOwn( [] );
+      _.mapOwnKey( [] );
     });
 
     test.description = 'wrong type of second argument';
     test.shouldThrowError( function()
     {
-      _.mapOwn( {}, 13 );
+      _.mapOwnKey( {}, 13 );
     });
 
     test.description = 'wrong type of arguments';
     test.shouldThrowError( function()
     {
-      _.mapOwn( '', 7 );
+      _.mapOwnKey( '', 7 );
     });
 
   }
@@ -291,16 +291,16 @@ function mapOwn( test )
 
 //
 
-function mapSame( test )
+function mapIdentical( test )
 {
 
   test.description = 'same [ key, value ]';
-  var got = _.mapSame( { a : 7, b : 13 }, { a : 7, b : 13 } );
+  var got = _.mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
   var expected = true;
   test.identical( got, expected );
 
   test.description = 'same [ key, value ] in the arrays';
-  var got = _.mapSame( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 13 ] );
+  var got = _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 13 ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -312,19 +312,19 @@ function mapSame( test )
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
-      _.mapSame();
+      _.mapIdentical();
     });
 
     test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapSame( {} );
+      _.mapIdentical( {} );
     });
 
     test.description = 'too much arguments';
     test.shouldThrowError( function()
     {
-      _.mapSame( {}, {}, 'redundant argument' );
+      _.mapIdentical( {}, {}, 'redundant argument' );
     });
 
   }
@@ -1226,8 +1226,8 @@ var Self =
     mapVals : mapVals,
     mapExtend : mapExtend,
     mapPairs : mapPairs,
-    mapOwn : mapOwn,
-    mapSame : mapSame,
+    mapOwnKey : mapOwnKey,
+    mapIdentical : mapIdentical,
     mapContain : mapContain,
     mapBut : mapBut,
     mapToArray : mapToArray,

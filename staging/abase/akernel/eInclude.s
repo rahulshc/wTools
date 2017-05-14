@@ -525,16 +525,16 @@ _includeHandlerMap[ 'wLogger' ] =
   isIncluded : function(){ return typeof wLogger !== 'undefined'; },
 }
 
-_includeHandlerMap[ 'wLoggerToFile' ] =
+_includeHandlerMap[ 'wPrinterToFile' ] =
 {
-  includeAny : [ '../../abase/printer/printer/LoggerToFile.s','abase/printer/printer/LoggerToFile.s','wloggertofile' ],
-  isIncluded : function(){ return typeof wLoggerToFile !== 'undefined'; },
+  includeAny : [ '../../abase/printer/printer/PrinterToFile.s','abase/printer/printer/PrinterToFile.s','wloggertofile' ],
+  isIncluded : function(){ return typeof wPrinterToFile !== 'undefined'; },
 }
 
-_includeHandlerMap[ 'wLoggerToJstructure' ] =
+_includeHandlerMap[ 'wPrinterToJstructure' ] =
 {
-  includeAny : [ '../../abase/printer/printer/LoggerToJstructure.s','abase/printer/printer/LoggerToJstructure.s','wloggertojstructure' ],
-  isIncluded : function(){ return typeof wLoggerToJstructure !== 'undefined'; },
+  includeAny : [ '../../abase/printer/printer/PrinterToJstructure.s','abase/printer/printer/PrinterToJstructure.s','wloggertojstructure' ],
+  isIncluded : function(){ return typeof wPrinterToJstructure !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wColor' ] =

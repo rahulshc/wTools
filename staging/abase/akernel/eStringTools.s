@@ -421,7 +421,7 @@ function toStrFine_functor()
   if( _.protoUnitedInterface )
   def = _.protoUnitedInterface([ primeFilter,composes,optional ]);
   else
-  def = _.mapExtend( {},primeFilter,composes,optional );
+  def = _.mapExtend( null,primeFilter,composes,optional );
 
   var routine = function toStrFine( src,o )
   {
@@ -1037,7 +1037,7 @@ function _toStrFromHashMap( src,o )
 
   /* item options */
 
-  var optionsItem = _.mapExtend( {},o );
+  var optionsItem = _.mapExtend( null,o );
   optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
   optionsItem.tab = o.tab + o.dtab;
   optionsItem.level = o.level + 1;
@@ -1098,7 +1098,7 @@ function _toStrFromHashMap( src,o )
   //
   // /* */
   //
-  // var optionsItem = _.mapExtend( {},o );
+  // var optionsItem = _.mapExtend( null,o );
   // optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
   // optionsItem.tab = o.tab + o.dtab;
   // optionsItem.level = o.level + 1;
@@ -1130,7 +1130,7 @@ function _toStrFromArrayFiltered( src,o )
 
   /* item options */
 
-  var optionsItem = _.mapExtend( {},o );
+  var optionsItem = _.mapExtend( null,o );
   optionsItem.level = o.level + 1;
 
   /* filter */
@@ -1217,7 +1217,7 @@ function _toStrFromArray( src,o )
 
   /* item options */
 
-  var optionsItem = _.mapExtend( {},o );
+  var optionsItem = _.mapExtend( null,o );
   optionsItem.tab = o.tab + o.dtab;
   optionsItem.level = o.level + 1;
   optionsItem.prependTab = 0;
@@ -1272,12 +1272,12 @@ function _toStrFromObjectKeysFiltered( src,o )
 
   /* item options */
 
-  var optionsItem = _.mapExtend( {},o );
+  var optionsItem = _.mapExtend( null,o );
   optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
 
   /* get keys */
 
-  var keys = _.mapKeysCustom
+  var keys = _._mapKeys
   ({
     src : src,
     own : o.own,
@@ -1347,7 +1347,7 @@ function _toStrFromObject( src,o )
 
   /* item options */
 
-  var optionsItem = _.mapExtend( {},o );
+  var optionsItem = _.mapExtend( null,o );
   optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
   optionsItem.tab = o.tab + o.dtab;
   optionsItem.level = o.level + 1;
@@ -2729,7 +2729,7 @@ function strStrip( o )
     var result = [];
     for( var s = 0 ; s < o.src.length ; s++ )
     {
-      var optionsForStrip = _.mapExtend( {},o );
+      var optionsForStrip = _.mapExtend( null,o );
       optionsForStrip.src = optionsForStrip.src[ s ];
       result[ s ] = strStrip( optionsForStrip );
     }
@@ -2975,7 +2975,7 @@ function strReplaceAll( src, ins, sub )
       if( index >= 0 )
       {
         src = src.substring( 0,index ) + sub + src.substring( index+ins.length );
-        index += sub.length; 
+        index += sub.length;
       }
       else
       break;
@@ -5255,8 +5255,6 @@ var toStr = Self.toStr = Self.strFrom = toStrFine;
 //
 
 if( typeof module !== 'undefined' && module !== null )
-{
-  module[ 'exports' ] = Self;
-}
+module[ 'exports' ] = Self;
 
 })();

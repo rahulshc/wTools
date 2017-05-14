@@ -19,7 +19,7 @@ if( typeof module !== 'undefined' )
 
   var _ = wTools
 
-  // _.include( 'wLoggerToJstructure' );
+  // _.include( 'wPrinterToJstructure' );
   _.include( 'wTesting' );
 
 }
@@ -75,7 +75,7 @@ var Proto =
   name : 'ExecTools',
   verbosity : 1,
   // sourceFilePath : sourceFilePath,
-  // logger : wLoggerToJstructure(),
+  // logger : wPrinterToJstructure(),
 
   tests :
   {

@@ -381,7 +381,7 @@ function changesExtend( test )
     var sample = samples[ s ];
     var expected = sample.expected;
     var exts = _.arraySelect( changesArray,sample.extend )
-    var args = _.arrayAppendMerging( [ {} ],exts );
+    var args = _.arrayAppendArray( [ {} ],exts );
     var got = _.changesExtend.apply( _,args );
 
     test.identical( got,expected );
