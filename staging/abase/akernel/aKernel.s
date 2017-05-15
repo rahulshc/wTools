@@ -13210,7 +13210,7 @@ _mapKeys.defaults =
 /**
  * This routine returns an array of a given objects enumerable properties,
  * in the same order as that provided by a for...in loop.
- * Accept several objects or single. Each element of result array is unique.
+ * Accept single object. Each element of result array is unique.
  * Unlike standard [Object.keys]{@https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
  * which accept object only mapKeys accept any object-like entity.
  *
@@ -13221,11 +13221,20 @@ _mapKeys.defaults =
  * // returns [ "a", "b" ]
  * _.mapKeys({ a : 7, b : 13 });
  *
- * @param { ...objectLike } src - objects of interest to extract keys.
+ * @example
+ * // returns [ "a" ]
+ * var o = { own : 1, enumerable : 0 };
+ * _.mapKeys.call( o, { a : 1 } );
+ *
+ * @param { objectLike } src - object of interest to extract keys.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.own = false ] - count only object`s own properties.
+ * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
  * @return { array } Returns an array with unique string elements.
- * corresponding to the enumerable properties found directly upon object.
+ * corresponding to the enumerable properties found directly upon object or empty array
+ * if nothing found.
  * @method mapKeys
- * @throws { Exception } Throw an exception if (src) is not an object-like entity.
+ * @throws { Exception } Throw an exception if (src) is not an objectLike entity.
  * @memberof wTools
  */
 
@@ -13257,19 +13266,27 @@ mapKeys.defaults =
 //
 
 /**
- * The mapOwnKeys() returns an array of a given objects own enumerable properties,
- * in the same order as that provided by a for...in loop.
+ * The mapOwnKeys() returns an array of a given object`s own enumerable properties,
+ * in the same order as that provided by a for...in loop. Each element of result array is unique.
  *
- * @param { ...objectLike } src - The object whose properties are to be returned.
+ * @param { objectLike } src - The object whose properties are to be returned.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
  *
  * @example
  * // returns [ "a", "b" ]
  * _.mapOwnKeys({ a : 7, b : 13 });
  *
+ * * @example
+ * // returns [ "a" ]
+ * var o = { enumerable : 0 };
+ * _.mapOwnKeys.call( o, { a : 1 } );
+ *
  * @return { array } Returns an array whose elements are strings
- * corresponding to the enumerable properties found directly upon object.
+ * corresponding to the own enumerable properties found directly upon object or empty
+ * array if nothing found.
  * @method mapOwnKeys
- * @throws { Error } Will throw an Error if (src) is not an Object.
+ * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @memberof wTools
 */
 
@@ -13302,6 +13319,26 @@ mapOwnKeys.defaults =
 }
 
 //
+
+/**
+ * The mapAllKeys() returns all properties of provided object as array,
+ * in the same order as that provided by a for...in loop. Each element of result array is unique.
+ *
+ * @param { objectLike } src - The object whose properties are to be returned.
+ *
+ * @example
+ * // returns [ "a", "b", "__defineGetter__", ... "isPrototypeOf" ]
+ * var x = { a : 1 };
+ * var y = { b : 2 };
+ * Object.setPrototypeOf( x, y );
+ * _.mapAllKeys( x );
+ *
+ * @return { array } Returns an array whose elements are strings
+ * corresponding to the all properties found on the object.
+ * @method mapAllKeys
+ * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @memberof wTools
+*/
 
 function mapAllKeys( src )
 {
@@ -13437,8 +13474,7 @@ _mapVals.defaults =
 
 /**
  * The mapVals() method returns an array of a given object's
- * own enumerable property values,
- * in the same order as that provided by a for...in loop.
+ * enumerable property values, in the same order as that provided by a for...in loop.
  *
  * It takes an object (src) creates an empty array,
  * checks if (src) is an object.
@@ -13446,15 +13482,26 @@ _mapVals.defaults =
  * otherwise it returns an empty array.
  *
  * @param { objectLike } src - The object whose property values are to be returned.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.own = false ] - count only object`s own properties.
+ * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
  *
  * @example
  * // returns [ "7", "13" ]
  * _.mapVals( { a : 7, b : 13 } );
  *
+ * @example
+ * var o = { own : 1 };
+ * var a = { a : 7 };
+ * var b = { b : 13 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapVals.call( o, a )
+ * // returns [ 7 ]
+ *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @method mapVals
- * @throws { Error } Will throw an Error if (src) is not an Object.
+ * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @memberof wTools
  */
 
@@ -13481,6 +13528,38 @@ mapVals.defaults =
 
 //
 
+/**
+ * The mapOwnVals() method returns an array of a given object's
+ * own enumerable property values,
+ * in the same order as that provided by a for...in loop.
+ *
+ * It takes an object (src) creates an empty array,
+ * checks if (src) is an object.
+ * If true, it returns an array of values,
+ * otherwise it returns an empty array.
+ *
+ * @param { objectLike } src - The object whose property values are to be returned.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ *
+ * @example
+ * // returns [ "7", "13" ]
+ * _.mapOwnVals( { a : 7, b : 13 } );
+ *
+ * @example
+ * var o = { enumerable : 0 };
+ * var a = { a : 7 };
+ * Object.defineProperty( a, 'x', { enumerable : 0, value : 1 } )
+ * _.mapOwnVals.call( o, a )
+ * // returns [ 7, 1 ]
+ *
+ * @returns { array } Returns an array whose elements are strings.
+ * corresponding to the enumerable property values found directly upon object.
+ * @method mapOwnVals
+ * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @memberof wTools
+ */
+
 function mapOwnVals( src )
 {
   var o = this === Self ? Object.create( null ) : this;
@@ -13504,6 +13583,28 @@ mapOwnVals.defaults =
 }
 
 //
+
+/**
+ * The mapAllVals() returns values of all properties of provided object as array,
+ * in the same order as that provided by a for...in loop.
+ *
+ * It takes an object (src) creates an empty array,
+ * checks if (src) is an object.
+ * If true, it returns an array of values,
+ * otherwise it returns an empty array.
+ *
+ * @param { objectLike } src - The object whose property values are to be returned.
+ *
+ * @example
+ * // returns [ "7", "13", function __defineGetter__(), ... function isPrototypeOf() ]
+ * _.mapAllVals( { a : 7, b : 13 } );
+ *
+ * @returns { array } Returns an array whose elements are strings.
+ * corresponding to the enumerable property values found directly upon object.
+ * @method mapAllVals
+ * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @memberof wTools
+ */
 
 function mapAllVals( src )
 {
