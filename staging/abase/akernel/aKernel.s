@@ -11729,71 +11729,48 @@ function arraySum( src,onElement )
  * @memberof wTools
  */
 
-// function arraySupplement( dstArray )
-// {
-//
-//   if( dstArray === null )
-//   dstArray = [];
-//
-//   _.assert( _.arrayIs( dstArray ) );
-//
-//   for( var a = 1 ; a < arguments.length ; a++ )
-//   {
-//     var src = arguments[ 0 ];
-//     _.assert( _.arrayIs( src ) );
-//
-//     for( var s = 0 ; s < src.length ; s++ )
-//     {
-//       if( dstArray.indexOf( src[ s ] ) === -1 )
-//       dstArray.push( src[ s ] );
-//     }
-//   }
-//
-//   return dstArray;
-// }
+function arraySupplement( dstArray )
+{
+  var result = dstArray;
+  if( result === null )
+  result = [];
 
-// function arraySupplement( dstArray )
-// {
-//   var result = dstArray;
-//   if( result === null )
-//   result = [];
-//
-//   var length = result.length;
-//   _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
-//
-//   for( a = arguments.length-1 ; a >= 1 ; a-- )
-//   {
-//     _assert( _.arrayLike( arguments[ a ] ),'argument is not defined :',a );
-//     length = Math.max( length,arguments[ a ].length );
-//   }
-//
-//   if( _.numberIs( result ) )
-//   result = arrayFill
-//   ({
-//     value : result,
-//     times : length,
-//   });
-//
-//   for( var k = 0 ; k < length ; k++ )
-//   {
-//
-//     if( k in dstArray && isFinite( dstArray[ k ] ) )
-//     continue;
-//
-//     var a;
-//     for( a = arguments.length-1 ; a >= 1 ; a-- )
-//     if( k in arguments[ a ] && !isNaN( arguments[ a ][ k ] ) )
-//     break;
-//
-//     if( a === 0 )
-//     continue;
-//
-//     result[ k ] = arguments[ a ][ k ];
-//
-//   }
-//
-//   return result;
-// }
+  var length = result.length;
+  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
+
+  for( a = arguments.length-1 ; a >= 1 ; a-- )
+  {
+    _assert( _.arrayLike( arguments[ a ] ),'argument is not defined :',a );
+    length = Math.max( length,arguments[ a ].length );
+  }
+
+  if( _.numberIs( result ) )
+  result = arrayFill
+  ({
+    value : result,
+    times : length,
+  });
+
+  for( var k = 0 ; k < length ; k++ )
+  {
+
+    if( k in dstArray && isFinite( dstArray[ k ] ) )
+    continue;
+
+    var a;
+    for( a = arguments.length-1 ; a >= 1 ; a-- )
+    if( k in arguments[ a ] && !isNaN( arguments[ a ][ k ] ) )
+    break;
+
+    if( a === 0 )
+    continue;
+
+    result[ k ] = arguments[ a ][ k ];
+
+  }
+
+  return result;
+}
 
 //
   /**
@@ -11946,7 +11923,7 @@ arrayRandom.defaults =
 //
 
 /**
- * The arrayRange() method generate array of arithmetic progression series,
+ * The arrayForRange() method generate array of arithmetic progression series,
  * from the range[ 0 ] to the range[ 1 ] with increment 1.
  *
  * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
@@ -11956,22 +11933,22 @@ arrayRandom.defaults =
  *
  * @example
  * // returns [ 1, 2, 3, 4 ]
- * var range = _.arrayRange( [ 1, 5 ] );
+ * var range = _.arrayForRange( [ 1, 5 ] );
  *
  * @example
  * // returns [ 0, 1, 2, 3, 4 ]
- * var range = _.arrayRange( 5 );
+ * var range = _.arrayForRange( 5 );
  *
  * @returns { array } Returns an array of numbers for the requested range with increment 1.
  * May be an empty array if adding the step would not converge toward the end value.
- * @method arrayRange
+ * @method arrayForRange
  * @throws { Error } If passed arguments is less than one or more than one.
  * @throws { Error } If the first argument is not an array-like object.
  * @throws { Error } If the length of the (range) is not equal to the two.
  * @memberof wTools
  */
 
-function arrayRange( range )
+function arrayForRange( range )
 {
 
   if( _.numberIs( range ) )
@@ -11989,6 +11966,13 @@ function arrayRange( range )
   result[ i ] = first + i;
 
   return result;
+}
+
+//
+
+function arrayHas( insArray, element )
+{
+  return insArray.indexOf( element ) !== -1;
 }
 
 // --
@@ -13898,7 +13882,6 @@ function mapFields( src )
   o.src = src;
   o.selectFilter = function selectRoutine( src,k )
   {
-    debugger;
     if( !_.routineIs( src[ k ] ) )
     return k;
     debugger;
@@ -13956,7 +13939,8 @@ function mapAllFields( src )
   {
     debugger;
     if( !_.routineIs( src[ k ] ) )
-    return src[ k ];
+    return k;
+    // return src[ k ]; // xxx
     debugger;
   }
 
@@ -14796,12 +14780,9 @@ function mapHasAll( src,screen )
   for( var k in screen )
   {
     if( !( k in src ) )
-    debugger;
-    if( !( k in src ) )
     return false;
   }
 
-  debugger;
   return true;
 }
 
@@ -15373,12 +15354,14 @@ var Proto =
 
   arraySum : arraySum,
 
-  // arraySupplement : arraySupplement,
+  arraySupplement : arraySupplement,
   arrayExtendScreening : arrayExtendScreening,
 
   arrayShuffle : arrayShuffle,
   arrayRandom : arrayRandom,
-  arrayRange : arrayRange,
+  arrayForRange : arrayForRange,
+
+  arrayHas : arrayHas,
 
 
   // array set
@@ -15508,11 +15491,6 @@ var Proto =
   mapOwnAll : mapOwnAll,
   mapOwnAny : mapOwnAny,
   mapOwnNone : mapOwnNone,
-
-
-  // etc
-
-  workerIs : workerIs,
 
 
   // var
