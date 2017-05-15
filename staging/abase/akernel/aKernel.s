@@ -13709,18 +13709,28 @@ _mapPairs.defaults =
  *
  * It takes an object (src) creates an empty array,
  * checks if (src) is an object.
- * If true, it returns a list of [ key, value ] pairs,
+ * If true, it returns a list of [ key, value ] pairs if they exist,
  * otherwise it returns an empty array.
  *
  * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.own = false ] - count only object`s own properties.
+ * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
  *
  * @example
  * // returns [ [ "a", 7 ], [ "b", 13 ] ]
  * _.mapPairs( { a : 7, b : 13 } );
  *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapPairs.call( { own : 1 }, a );
+ * //returns [ [ "a", 1 ] ]
+ *
  * @returns { array } A list of [ key, value ] pairs.
  * @method mapPairs
- * @throws { Error } Will throw an Error if (src) is not an Object.
+ * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @memberof wTools
  */
 
@@ -13747,6 +13757,40 @@ mapPairs.defaults =
 
 //
 
+/**
+ * The mapOwnPairs() converts an object's own properties into a list of [ key, value ] pairs.
+ *
+ *
+ * It takes an object ( src ) creates an empty array,
+ * checks if ( src ) is an object.
+ * If true, it returns a list of [ key, value ] pairs of object`s own properties if they exist,
+ * otherwise it returns an empty array.
+ *
+ * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ *
+ * @example
+ * // returns [ [ "a", 7 ], [ "b", 13 ] ]
+ * _.mapOwnPairs( { a : 7, b : 13 } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapOwnPairs( a );
+ * //returns [ [ "a", 1 ] ]
+ *
+ * @example
+ * var a = { a : 1 };
+ * _.mapOwnPairs.call( { enumerable : 0 }, a );
+ *
+ * @returns { array } A list of [ key, value ] pairs.
+ * @method mapOwnPairs
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @memberof wTools
+ */
+
 function mapOwnPairs( src )
 {
   var o = this === Self ? Object.create( null ) : this;
@@ -13769,6 +13813,33 @@ mapOwnPairs.defaults =
 }
 
 //
+
+/**
+ * The mapAllPairs() converts all properties of the object( src ) into a list of [ key, value ] pairs.
+ *
+ * It takes an object ( src ) creates an empty array,
+ * checks if ( src ) is an object.
+ * If true, it returns a list of [ key, value ] pairs that repesents all properties of provided object( src ),
+ * otherwise it returns an empty array.
+ *
+ * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
+ *
+ * @example
+ * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function isPrototypeOf() ] ]
+ * _.mapAllPairs( { a : 7, b : 13 } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapAllPairs( a );
+ * //returns [ [ "a", 1 ],[ "b", 2 ], ... [ "isPrototypeOf", function isPrototypeOf() ]  ]
+ *
+ * @returns { array } A list of [ key, value ] pairs.
+ * @method mapAllPairs
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @memberof wTools
+ */
 
 function mapAllPairs( src )
 {
