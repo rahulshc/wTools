@@ -36,36 +36,36 @@ var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefine
 
 //
 
-function arrayRange( test )
+function arrayForRange( test )
 {
 
   test.description = 'single zero';
-  var got = _.arrayRange([ 0,1 ]);
+  var got = _.arrayForRange([ 0,1 ]);
   var expected = [ 0 ];
   test.identical( got,expected );
 
   test.description = 'nothing';
-  var got = _.arrayRange([ 1,1 ]);
+  var got = _.arrayForRange([ 1,1 ]);
   var expected = [];
   test.identical( got,expected );
 
   test.description = 'single not zero';
-  var got = _.arrayRange([ 1,2 ]);
+  var got = _.arrayForRange([ 1,2 ]);
   var expected = [ 1 ];
   test.identical( got,expected );
 
   test.description = 'couple of elements';
-  var got = _.arrayRange([ 1,3 ]);
+  var got = _.arrayForRange([ 1,3 ]);
   var expected = [ 1,2 ];
   test.identical( got,expected );
 
   test.description = 'single number as argument';
-  var got = _.arrayRange( 3 );
+  var got = _.arrayForRange( 3 );
   var expected = [ 0,1,2 ];
   test.identical( got,expected );
 
   test.description = 'complex case';
-  var got = _.arrayRange([ 3,9 ]);
+  var got = _.arrayForRange([ 3,9 ]);
   var expected = [ 3,4,5,6,7,8 ];
   test.identical( got,expected );
 
@@ -77,25 +77,25 @@ function arrayRange( test )
     test.description = 'extra argument';
     test.shouldThrowErrorSync( function()
     {
-      _.arrayRange( [ 1,3 ],'wrong arguments' );
+      _.arrayForRange( [ 1,3 ],'wrong arguments' );
     });
 
     test.description = 'argument not wrapped into array';
     test.shouldThrowErrorSync( function()
     {
-      _.arrayRange( 1,3 );
+      _.arrayForRange( 1,3 );
     });
 
     test.description = 'wrong type of argument';
     test.shouldThrowErrorSync( function()
     {
-      _.arrayRange( 'wrong arguments' );
+      _.arrayForRange( 'wrong arguments' );
     });
 
     test.description = 'no arguments'
     test.shouldThrowErrorSync( function()
     {
-      _.arrayRange();
+      _.arrayForRange();
     });
 
   }
@@ -113,7 +113,7 @@ var Self =
   tests :
   {
 
-    arrayRange : arrayRange,
+    arrayForRange : arrayForRange,
 
   }
 
