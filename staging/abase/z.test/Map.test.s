@@ -26,7 +26,6 @@ if( typeof module !== 'undefined' )
   }
 
   var _ = wTools;
-
   _.include( 'wTesting' );
 
 }
@@ -37,18 +36,67 @@ var _ = wTools;
 
 function mapKeys( test )
 {
+  test.description = 'simple';
 
-  test.description = 'two keys';
+  var got = _.mapKeys( {} );
+  var expected = [];
+
   var got = _.mapKeys( { a : 7, b : 13 } );
   var expected = [ 'a', 'b' ];
   test.identical( got, expected );
 
-  test.description = 'object like array';
   var got = _.mapKeys( { 7 : 'a', 3 : 'b', 13 : 'c' } );
   var expected = [ '3', '7', '13' ];
   test.identical( got, expected );
 
-  /**/
+  var f = function(){};
+  Object.setPrototypeOf( f, String );
+  f.a = 1;
+  var got = _.mapKeys( f );
+  var expected = [ 'a' ];
+  test.identical( got, expected );
+
+  var got = _.mapKeys( new Date );
+  var expected = [ ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'options';
+  var a = { a : 1 }
+  var b = { b : 2 }
+  Object.setPrototypeOf( a, b );
+
+  /* own off */
+
+  var got = _.mapKeys( a );
+  var expected = [ 'a', 'b' ];
+  test.identical( got, expected );
+
+  /* own on */
+
+  var o = { own : 1 };
+  var got = _.mapKeys.call( o, a );
+  var expected = [ 'a' ];
+  test.identical( got, expected );
+
+  /* enumerable/own off */
+
+  var o = { enumerable : 0, own : 0 };
+  Object.defineProperty( b, 'x', { enumerable : 0 } );
+  var got = _.mapKeys.call( o, a );
+  var expected = _.mapAllKeys( a );
+  test.identical( got, expected );
+
+  /* enumerable off, own on */
+
+  var o = { enumerable : 0, own : 1 };
+  Object.defineProperty( a, 'x', { enumerable : 0 } );
+  var got = _.mapKeys.call( o, a );
+  var expected = [ 'a', 'x' ]
+  test.identical( got, expected );
+
+  //
 
   if( Config.debug )
   {
@@ -59,38 +107,260 @@ function mapKeys( test )
       _.mapKeys();
     });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapKeys( [] );
-    });
-
     test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
       _.mapKeys( 'wrong arguments' );
     });
 
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapKeys.call( { x : 1 }, {} )
+    });
   }
 
 };
 
 //
 
+function mapOwnKeys( test )
+{
+  test.description = 'empty'
+  var got = _.mapOwnKeys( {} );
+  var expected = [];
+  test.identical( got, expected )
+
+  //
+
+  test.description = 'simplest'
+
+  var got = _.mapOwnKeys( { a : '1', b : '2' } );
+  var expected = [ 'a', 'b' ];
+  test.identical( got, expected )
+
+  var got = _.mapOwnKeys( new Date );
+  var expected = [ ];
+  test.identical( got, expected )
+
+  //
+
+  test.description = ''
+
+  var a = { a : 1 };
+  var b = { b : 2 };
+  var c = { c : 3 };
+  Object.setPrototypeOf( a, b );
+  Object.setPrototypeOf( b, c );
+
+  var got = _.mapOwnKeys( a );
+  var expected = [ 'a' ];
+  test.identical( got, expected )
+
+  var got = _.mapOwnKeys( b );
+  var expected = [ 'b' ];
+  test.identical( got, expected )
+
+  var got = _.mapOwnKeys( c );
+  var expected = [ 'c' ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'enumerable on/off';
+  var a = { a : '1' };
+
+  var got = _.mapOwnKeys( a );
+  var expected = [ 'a' ]
+  test.identical( got, expected );
+
+  Object.defineProperty( a, 'x', { enumerable : false } );
+  var o = { enumerable : 0 };
+  var got = _.mapOwnKeys.call( o, a );
+  var expected = [ 'a', 'x' ]
+  test.identical( got, expected );
+
+  //
+
+  if( Config.debug )
+  {
+    test.description = 'no args';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnKeys();
+    })
+
+    test.description = 'invalid type';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnKeys( 1 );
+    })
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnKeys.call( { own : 0 }, {} );
+    })
+  }
+
+}
+
+//
+
+function mapAllKeys( test )
+{
+  var _expected =
+  [
+    "__defineGetter__",
+    "__defineSetter__",
+    "hasOwnProperty",
+    "__lookupGetter__",
+    "__lookupSetter__",
+    "propertyIsEnumerable",
+    "__proto__",
+    "constructor",
+    "toString",
+    "toLocaleString",
+    "valueOf",
+    "isPrototypeOf"
+  ]
+
+  //
+
+  test.description = 'empty'
+  var got = _.mapAllKeys( {} );
+  test.identical( got.sort(), _expected.sort() )
+
+  //
+
+  test.description = 'one own property'
+  var got = _.mapAllKeys( { a : 1 } );
+  var expected = _expected.slice();
+  expected.push( 'a' );
+  test.identical( got.sort(), expected.sort() )
+
+  //
+
+  test.description = 'date'
+  var got = _.mapAllKeys( new Date );
+  test.identical( got.length, 55 );
+
+  //
+
+  test.description = 'not enumerable'
+  var a = { };
+  Object.defineProperty( a, 'x', { enumerable : 0 })
+  var got = _.mapAllKeys( a );
+  var expected = _expected.slice();
+  expected.push( 'x' );
+  test.identical( got.sort(), expected.sort() );
+
+  //
+
+  test.description = 'from prototype'
+  var a = { a : 1 };
+  var b = { b : 1 };
+  Object.setPrototypeOf( a, b );
+  Object.defineProperty( a, 'x', { enumerable : 0 } );
+  Object.defineProperty( b, 'y', { enumerable : 0 } );
+  var got = _.mapAllKeys( a );
+  var expected = _expected.slice();
+  expected = expected.concat( [ 'a','b','x','y' ] );
+  test.identical( got.sort(), expected.sort() );
+
+  //
+
+  if( Config.debug )
+  {
+    test.description = 'no args';
+    test.shouldThrowError( function ()
+    {
+      _.mapAllKeys();
+    })
+
+    test.description = 'invalid argument';
+    test.shouldThrowError( function ()
+    {
+      _.mapAllKeys();
+    })
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function ()
+    {
+      _.mapAllKeys.call( { own : 0 }, {} );
+    })
+  }
+
+}
+
+
+//
+
 function mapVals( test )
 {
 
-  test.description = 'two values';
+  test.description = 'simple';
+
+  var got = _.mapVals( {} );
+  var expected = [];
+  test.identical( got, expected );
+
   var got = _.mapVals( { a : 7, b : 13 } );
   var expected = [ 7, 13 ];
   test.identical( got, expected );
 
-  test.description = 'object like array';
   var got = _.mapVals( { 7 : 'a', 3 : 'b', 13 : 'c' } );
   var expected = [ 'b', 'a', 'c' ];
   test.identical( got, expected );
 
+  var got = _.mapVals( new Date );
+  var expected = [ ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'own'
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
   /**/
+
+  var got = _.mapVals.call( { own : 0, enumerable : 1 }, a );
+  var expected = [ 1, 2 ]
+  test.identical( got, expected );
+
+  /**/
+
+  var got = _.mapVals.call( { own : 1, enumerable : 1 }, a );
+  var expected = [ 1 ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'enumerable'
+  var a = { a : 1 };
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 2 } );
+
+  /**/
+
+  var got = _.mapVals.call( { enumerable : 1, own : 0 }, a );
+  var expected = [ 1 ];
+  test.identical( got, expected );
+
+  /**/
+
+  var got = _.mapVals.call( { enumerable : 0, own : 0 }, a );
+  var contains = false;
+  for( var i = 0; i < got.length; i++ )
+  {
+    contains = _.mapContain( a, got[ i ] )
+    if( !contains )
+    break;
+  }
+  test.shouldBe( contains );
+
+  //
 
   if( Config.debug )
   {
@@ -101,16 +371,148 @@ function mapVals( test )
       _.mapVals();
     });
 
-    test.description = 'wrong type of array';
+    test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
-      _.mapVals( [] );
+      _.mapVals( 'wrong argument' );
+    });
+
+    test.description = 'wrong option';
+    test.shouldThrowError( function()
+    {
+      _.mapVals.call( { a : 1 }, {} );
+    });
+  }
+};
+
+//
+
+function mapOwnVals( test )
+{
+
+  test.description = 'simple';
+
+  var got = _.mapOwnVals( {} );
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.mapOwnVals( { a : 7, b : 13 } );
+  var expected = [ 7, 13 ];
+  test.identical( got, expected );
+
+  var got = _.mapOwnVals( { 7 : 'a', 3 : 'b', 13 : 'c' } );
+  var expected = [ 'b', 'a', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.mapOwnVals( new Date );
+  var expected = [ ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = ' only own values'
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapOwnVals( a );
+  var expected = [ 1 ];
+  test.identical( got, expected );
+
+  /* enumerable off */
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'y', { enumerable : 0, value : 4 } );
+  var got = _.mapOwnVals.call({ enumerable : 0 }, a );
+  var expected = [ 1, 3 ];
+  test.identical( got, expected );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnVals();
     });
 
     test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
-      _.mapVals( 'wrong argument' );
+      _.mapOwnVals( 'wrong argument' );
+    });
+
+    test.description = 'wrong option';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnVals.call( { a : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapAllVals( test )
+{
+  test.description = 'simple';
+
+  var got = _.mapAllVals( {} );
+  test.shouldBe( got.length );
+
+  /**/
+
+  var got = _.mapAllVals( { a : 7, b : 13 } );
+  test.shouldBe( got.length );
+  test.shouldBe( got.indexOf( 7 ) !== -1 );
+  test.shouldBe( got.indexOf( 13 ) !== -1 );
+
+  /**/
+
+  var got = _.mapAllVals( new Date );
+  test.shouldBe( got.length > _.mapAllVals( {} ).length );
+
+  //
+
+  test.description = 'from prototype'
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapAllVals( a );
+  var expected = [ 1 ];
+  test.shouldBe( got.length > _.mapAllVals( {} ).length );
+  test.shouldBe( got.indexOf( 1 ) !== -1 );
+  test.shouldBe( got.indexOf( 2 ) !== -1 );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllVals();
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllVals( 'wrong argument' );
+    });
+
+    test.description = 'wrong option';
+    test.shouldThrowError( function()
+    {
+      _.mapAllVals.call( { a : 1 }, {} );
     });
 
   }
@@ -1223,7 +1625,11 @@ var Self =
   {
 
     mapKeys : mapKeys,
+    mapOwnKeys : mapOwnKeys,
+    mapAllKeys : mapAllKeys,
     mapVals : mapVals,
+    mapAllVals : mapAllVals,
+    mapOwnVals : mapOwnVals,
     mapExtend : mapExtend,
     mapPairs : mapPairs,
     mapOwnKey : mapOwnKey,
