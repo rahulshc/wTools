@@ -13110,7 +13110,7 @@ function _mapEnumerableKeys( src,own )
   var result = [];
 
   _.assert( arguments.length === 2 );
-  _.objectLike( src );
+  // _.objectLike( src );
 
   if( own )
   {
@@ -13236,7 +13236,7 @@ function mapKeys( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapKeys.defaults );
-  _.objectLike( o.src );
+  _.assert( !_.atomicIs( src ) );
 
   o.src = src;
 
@@ -13280,6 +13280,7 @@ function mapOwnKeys( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapOwnKeys.defaults );
+  _.assert( !_.atomicIs( src ) );
 
   o.src = src;
   o.own = 1;
@@ -13308,6 +13309,7 @@ function mapAllKeys( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapAllKeys.defaults );
+  _.assert( !_.atomicIs( src ) );
 
   o.src = src;
   o.own = 0;
@@ -13319,7 +13321,7 @@ function mapAllKeys( src )
   return result;
 }
 
-mapOwnKeys.defaults =
+mapAllKeys.defaults =
 {
 }
 
@@ -13462,6 +13464,7 @@ function mapVals( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapVals.defaults );
+  _.assert( !_.atomicIs( src ) );
 
   o.src = src;
 
@@ -13484,6 +13487,7 @@ function mapOwnVals( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapVals.defaults );
+  _.assert( !_.atomicIs( src ) );
 
   o.src = src;
   o.own = 1;
@@ -13507,6 +13511,7 @@ function mapAllVals( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapAllVals.defaults );
+  _.assert( !_.atomicIs( src ) );
 
   o.src = src;
   o.own = 0;
