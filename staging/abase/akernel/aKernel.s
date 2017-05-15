@@ -13674,6 +13674,7 @@ function _mapPairs( o )
   _.routineOptions( _mapPairs,o );
   _.assert( arguments.length === 1 );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
+  _.assert( !_.atomicIs( o.src ) );
 
   var selectFilter = o.selectFilter;
 
