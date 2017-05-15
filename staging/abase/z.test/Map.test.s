@@ -593,13 +593,66 @@ function mapExtend( test )
 
 function mapPairs( test )
 {
+  test.description = 'empty';
+  var got = _.mapPairs( {} );
+  var expected = [];
+  test.identical( got, expected );
+
+  //
 
   test.description = 'a list of [ key, value ] pairs';
+
   var got = _.mapPairs( { a : 7, b : 13 } );
   var expected = [ [ "a", 7 ], [ "b", 13 ] ];
   test.identical( got, expected );
 
   /**/
+
+  var arrObj = [];
+  arrObj[ 'x' ] = 1;
+  var got = _.mapPairs( arrObj );
+  var expected = [ [ 'x', 1 ] ];
+  test.identical( got, expected );
+
+  /**/
+
+  var got = _.mapPairs( new Date );
+  var expected = [];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'from prototype';
+
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapPairs( a );
+  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  test.identical( got, expected );
+
+  /* using own */
+
+  var got = _.mapPairs.call( { own : 1 }, a );
+  var expected = [ [ 'a', 1 ] ];
+  test.identical( got, expected );
+
+  /* using enumerable off, own on */
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapPairs.call( { enumerable : 0, own : 1 }, a );
+  var expected = [ [ 'a', 1 ], [ 'x', 3 ] ];
+  test.identical( got, expected );
+
+  /* using enumerable off, own off */
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapPairs.call( { enumerable : 0, own : 0 }, a );
+  test.shouldBe( got.length > 2 );
+  test.identical( got[ 0 ], [ 'a', 1 ] );
+  test.identical( got[ 1 ], [ 'x', 3 ] );
+
+  //
 
   if( Config.debug )
   {
@@ -610,16 +663,166 @@ function mapPairs( test )
       _.mapPairs();
     });
 
-    test.description = 'wrong type of array';
+    test.description = 'atomic';
     test.shouldThrowError( function()
     {
-      _.mapPairs( [] );
+      _.mapPairs( 1 );
     });
 
     test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
       _.mapPairs( 'wrong argument' );
+    });
+
+  }
+
+};
+
+//
+
+function mapOwnPairs( test )
+{
+  test.description = 'empty';
+  var got = _.mapOwnPairs( {} );
+  var expected = [];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'a list of [ key, value ] pairs';
+
+  var got = _.mapOwnPairs( { a : 7, b : 13 } );
+  var expected = [ [ "a", 7 ], [ "b", 13 ] ];
+  test.identical( got, expected );
+
+  /**/
+
+  var arrObj = [];
+  arrObj[ 'x' ] = 1;
+  var got = _.mapOwnPairs( arrObj );
+  var expected = [ [ 'x', 1 ] ];
+  test.identical( got, expected );
+
+  /**/
+
+  var got = _.mapOwnPairs( new Date );
+  var expected = [];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'from prototype';
+
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapOwnPairs( a );
+  var expected = [ [ 'a', 1 ] ];
+  test.identical( got, expected );
+
+  /* using enumerable off */
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapOwnPairs.call( { enumerable : 0 }, a );
+  var expected = [ [ 'a', 1 ], [ 'x', 3 ] ];
+  test.identical( got, expected );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnPairs();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnPairs( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnPairs( 'wrong argument' );
+    });
+
+  }
+
+};
+
+//
+
+function mapAllPairs( test )
+{
+  test.description = 'empty';
+  var got = _.mapAllPairs( {} );
+  test.shouldBe( got.length );
+
+  //
+
+  test.description = 'a list of [ key, value ] pairs';
+
+  var got = _.mapAllPairs( { a : 7, b : 13 } );
+  test.shouldBe( got.length > 2 );
+  test.identical( got[ 0 ], [ "a", 7 ] );
+  test.identical( got[ 1 ], [ "b", 13 ] );
+
+  /**/
+
+  var arrObj = [];
+  arrObj[ 'x' ] = 1;
+  var got = _.mapAllPairs( arrObj );
+  test.shouldBe( got.length > 1 );
+  got = _.arrayFlatten( got );
+  test.shouldBe( got.indexOf( 'x' ) !== -1 );
+  test.identical( got[ got.indexOf( 'x' ) + 1 ], 1 );
+
+  /**/
+
+  var got = _.mapAllPairs( new Date );
+  test.shouldBe( got.length > 1 );
+  got = _.arrayFlatten( got );
+  test.shouldBe( got.indexOf( 'constructor' ) !== -1 );
+  test.identical( got[ got.indexOf( 'constructor' ) + 1 ].name, 'Date' );
+
+  //
+
+  test.description = 'from prototype';
+
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapAllPairs( a );
+  test.shouldBe( got.length > 2 );
+  test.identical( got[ 0 ], [ "a", 1 ] );
+  test.identical( got[ 1 ], [ "b", 2 ] );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllPairs();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapAllPairs( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllPairs( 'wrong argument' );
     });
 
   }
@@ -1632,6 +1835,8 @@ var Self =
     mapOwnVals : mapOwnVals,
     mapExtend : mapExtend,
     mapPairs : mapPairs,
+    mapOwnPairs : mapOwnPairs,
+    mapAllPairs : mapAllPairs,
     mapOwnKey : mapOwnKey,
     mapIdentical : mapIdentical,
     mapContain : mapContain,
