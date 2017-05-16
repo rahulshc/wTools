@@ -2025,6 +2025,623 @@ function mapBut( test )
 
 };
 
+//
+
+function mapHasAll( test )
+{
+  test.description = 'empty';
+  var got = _.mapHasAll( {}, {} );
+  test.shouldBe( got );
+
+  test.description = 'screen empty';
+  var got = _.mapHasAll( { a : 1 }, {} );
+  test.shouldBe( got );
+
+  test.description = 'same keys';
+  var got = _.mapHasAll( { a : 1 }, { a : 2 } );
+  test.shouldBe( got );
+
+  test.description = 'has only one';
+  var got = _.mapHasAll( { a : 1, b : 2, c :  3 }, { b : 2 } );
+  test.shouldBe( got );
+
+  test.description = 'has all';
+  var got = _.mapHasAll( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  test.shouldBe( got );
+
+  test.description = 'one is mising';
+  var got = _.mapHasAll( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'src has enumerable';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapHasAll( a, { a : 1 } );
+  test.shouldBe( got );
+
+  var got = _.mapHasAll( a, a );
+  test.shouldBe( got );
+
+  test.description = 'screen has enumerable';
+
+  /* for..in skips enumerable */
+  var src = { a : 1 };
+  var screen = {};
+  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  var got = _.mapHasAll( src, screen );
+  test.shouldBe( got );
+
+  test.description = 'screen has undefined';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapHasAll( a, { a : undefined } );
+  test.shouldBe( got );
+
+  var got = _.mapHasAll( { a : undefined }, { a : undefined } );
+  test.shouldBe( got );
+
+  test.description = 'src has toString on proto';
+  var got = _.mapHasAll( {}, { toString : 1 } );
+  test.shouldBe( got );
+
+  test.description = 'map has on proto';
+  var a = {};
+  var b = { a : 1 };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapHasAll( a, { a : 1 } );
+  test.shouldBe( got );
+
+  //
+
+  if( Config.degub )
+  {
+    test.description = 'src is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasAll( 1, {} );
+    });
+
+    test.description = 'screen is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasAll( {}, 1 );
+    });
+
+    test.description = 'too much args';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasAll( {}, {}, {} );
+    });
+  }
+
+}
+
+//
+
+function mapHasAny( test )
+{
+  test.description = 'empty';
+  var got = _.mapHasAny( {}, {} );
+  test.shouldBe( !got );
+
+  test.description = 'screen empty';
+  var got = _.mapHasAny( { a : 1 }, {} );
+  test.shouldBe( !got );
+
+  test.description = 'same keys';
+  var got = _.mapHasAny( { a : 1 }, { a : 2 } );
+  test.shouldBe( got );
+
+  test.description = 'has only one';
+  var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  test.shouldBe( got );
+
+  test.description = 'has all';
+  var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  test.shouldBe( got );
+
+  test.description = 'one is mising';
+  var got = _.mapHasAny( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  test.shouldBe( got );
+
+  test.description = 'has no one';
+  var got = _.mapHasAny( { a : 1, b : 2 }, { x : 1, y : 1} );
+  test.shouldBe( !got );
+
+  test.description = 'src has enumerable';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapHasAny( a, { a : 1 } );
+  test.shouldBe( got );
+
+  var got = _.mapHasAny( a, a );
+  test.shouldBe( !got );
+
+  test.description = 'screen has enumerable';
+
+  /* for..in skips enumerable */
+  var src = { a : 1 };
+  var screen = {};
+  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  var got = _.mapHasAny( src, screen );
+  test.shouldBe( !got );
+
+  test.description = 'screen has undefined';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapHasAny( a, { a : undefined } );
+  test.shouldBe( got );
+
+  var got = _.mapHasAny( { a : undefined }, { a : undefined } );
+  test.shouldBe( got );
+
+  test.description = 'src has toString on proto';
+  var got = _.mapHasAny( {}, { x : 1, toString : 1 } );
+  test.shouldBe( got );
+
+  test.description = 'map has on proto';
+  var a = {};
+  var b = { a : 1 };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapHasAny( a, { a : 1, x : 1 } );
+  test.shouldBe( got );
+
+  //
+
+  if( Config.degub )
+  {
+    test.description = 'src is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasAny( 1, {} );
+    });
+
+    test.description = 'screen is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasAny( {}, 1 );
+    });
+
+    test.description = 'too much args';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasAny( {}, {}, {} );
+    });
+  }
+
+}
+
+//
+
+function mapHasNone( test )
+{
+  test.description = 'empty';
+  var got = _.mapHasNone( {}, {} );
+  test.shouldBe( got );
+
+  test.description = 'screen empty';
+  var got = _.mapHasNone( { a : 1 }, {} );
+  test.shouldBe( got );
+
+  test.description = 'same keys';
+  var got = _.mapHasNone( { a : 1 }, { a : 2 } );
+  test.shouldBe( !got );
+
+  test.description = 'has only one';
+  var got = _.mapHasNone( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'has all';
+  var got = _.mapHasNone( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  test.shouldBe( !got );
+
+  test.description = 'one is mising';
+  var got = _.mapHasNone( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'has no one';
+  var got = _.mapHasNone( { a : 1, b : 2 }, { x : 1, y : 1} );
+  test.shouldBe( got );
+
+  test.description = 'src has enumerable';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapHasNone( a, { a : 1 } );
+  test.shouldBe( !got );
+
+  var got = _.mapHasNone( a, a );
+  test.shouldBe( got );
+
+  test.description = 'screen has enumerable';
+
+  /* for..in skips enumerable */
+  var src = { a : 1 };
+  var screen = {};
+  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  var got = _.mapHasNone( src, screen );
+  test.shouldBe( got );
+
+  test.description = 'screen has undefined';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapHasNone( a, { a : undefined } );
+  test.shouldBe( !got );
+
+  var got = _.mapHasNone( { a : undefined }, { a : undefined } );
+  test.shouldBe( !got );
+
+  test.description = 'src has toString on proto';
+  var got = _.mapHasNone( {}, { x : 1, toString : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'map has on proto';
+  var a = {};
+  var b = { a : 1 };
+  Object.setPrototypeOf( a, b );
+
+  var got = _.mapHasNone( a, { x : 1 } );
+  test.shouldBe( got );
+
+  var got = _.mapHasNone( a, { a : 1 } );
+  test.shouldBe( !got );
+
+  //
+
+  if( Config.degub )
+  {
+    test.description = 'src is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasNone( 1, {} );
+    });
+
+    test.description = 'screen is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasNone( {}, 1 );
+    });
+
+    test.description = 'too much args';
+    test.shouldThrowError( function ()
+    {
+      _.mapHasNone( {}, {}, {} );
+    });
+  }
+
+}
+
+//
+
+function mapOwnAll( test )
+{
+  test.description = 'empty';
+  var got = _.mapOwnAll( {}, {} );
+  test.shouldBe( got );
+
+  test.description = 'screen empty';
+  var got = _.mapOwnAll( { a : 1 }, {} );
+  test.shouldBe( got );
+
+  test.description = 'same keys';
+  var got = _.mapOwnAll( { a : 1 }, { a : 2 } );
+  test.shouldBe( got );
+
+  test.description = 'has only one';
+  var got = _.mapOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'has all';
+  var got = _.mapOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  test.shouldBe( got );
+
+  test.description = 'one is mising';
+  var got = _.mapOwnAll( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'has no one';
+  var got = _.mapOwnAll( { a : 1, b : 2 }, { x : 1, y : 1} );
+  test.shouldBe( !got );
+
+  test.description = 'src has enumerable';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapOwnAll( a, { a : 1 } );
+  test.shouldBe( got );
+
+  var got = _.mapOwnAll( a, a );
+  test.shouldBe( got );
+
+  test.description = 'screen has enumerable';
+
+  /* for..in skips enumerable */
+  var src = { a : 1 };
+  var screen = {};
+  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  var got = _.mapOwnAll( src, screen );
+  test.shouldBe( got );
+
+  test.description = 'screen has undefined';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapOwnAll( a, { a : undefined } );
+  test.shouldBe( got );
+
+  var got = _.mapOwnAll( { a : undefined }, { a : undefined } );
+  test.shouldBe( got );
+
+  test.description = 'src has toString on proto';
+  var got = _.mapOwnAll( {}, { x : 1, toString : 1 } );
+  test.shouldBe( !got );
+
+  //
+
+  if( Config.degub )
+  {
+    test.description = 'src is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnAll( 1, {} );
+    });
+
+    test.description = 'screen is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnAll( {}, 1 );
+    });
+
+    test.description = 'too much args';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnAll( {}, {}, {} );
+    });
+
+    test.description = 'src is not a map';
+    test.shouldThrowError( function ()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOwnAll( a,{ a : 1 } );
+    });
+
+    test.description = 'screen is not a map';
+    test.shouldThrowError( function ()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOwnAll( { a : 1 }, a );
+    });
+  }
+
+}
+
+//
+
+function mapOwnAny( test )
+{
+  test.description = 'empty';
+  var got = _.mapOwnAny( {}, {} );
+  test.shouldBe( !got );
+
+  test.description = 'screen empty';
+  var got = _.mapOwnAny( { a : 1 }, {} );
+  test.shouldBe( !got );
+
+  test.description = 'same keys';
+  var got = _.mapOwnAny( { a : 1 }, { a : 2 } );
+  test.shouldBe( got );
+
+  test.description = 'has only one';
+  var got = _.mapOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  test.shouldBe( got );
+
+  test.description = 'has all';
+  var got = _.mapOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  test.shouldBe( got );
+
+  test.description = 'one is mising';
+  var got = _.mapOwnAny( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  test.shouldBe( got );
+
+  test.description = 'has no one';
+  var got = _.mapOwnAny( { a : 1, b : 2 }, { x : 1, y : 1} );
+  test.shouldBe( !got );
+
+  test.description = 'src has enumerable';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapOwnAny( a, { a : 1 } );
+  test.shouldBe( got );
+
+  var got = _.mapOwnAny( a, a );
+  test.shouldBe( !got );
+
+  test.description = 'screen has enumerable';
+
+  /* for..in skips enumerable */
+  var src = { a : 1 };
+  var screen = {};
+  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  var got = _.mapOwnAny( src, screen );
+  test.shouldBe( !got );
+
+  test.description = 'screen has undefined';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapOwnAny( a, { a : undefined } );
+  test.shouldBe( got );
+
+  var got = _.mapOwnAny( { a : undefined }, { a : undefined } );
+  test.shouldBe( got );
+
+  test.description = 'src has toString on proto';
+  var got = _.mapOwnAny( {}, { x : 1, toString : 1 } );
+  test.shouldBe( !got );
+
+  //
+
+  if( Config.degub )
+  {
+    test.description = 'src is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnAny( 1, {} );
+    });
+
+    test.description = 'screen is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnAny( {}, 1 );
+    });
+
+    test.description = 'too much args';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnAny( {}, {}, {} );
+    });
+
+    test.description = 'src is not a map';
+    test.shouldThrowError( function ()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOwnAny( a,{ a : 1 } );
+    });
+
+    test.description = 'screen is not a map';
+    test.shouldThrowError( function ()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOwnAny( { a : 1 }, a );
+    });
+  }
+
+}
+
+//
+
+function mapOwnNone( test )
+{
+  test.description = 'empty';
+  var got = _.mapOwnNone( {}, {} );
+  test.shouldBe( got );
+
+  test.description = 'screen empty';
+  var got = _.mapOwnNone( { a : 1 }, {} );
+  test.shouldBe( got );
+
+  test.description = 'same keys';
+  var got = _.mapOwnNone( { a : 1 }, { a : 2 } );
+  test.shouldBe( !got );
+
+  test.description = 'has only one';
+  var got = _.mapOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'has all';
+  var got = _.mapOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
+  test.shouldBe( !got );
+
+  test.description = 'one is mising';
+  var got = _.mapOwnNone( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
+  test.shouldBe( !got );
+
+  test.description = 'has no one';
+  var got = _.mapOwnNone( { a : 1, b : 2 }, { x : 1, y : 1} );
+  test.shouldBe( got );
+
+  test.description = 'src has enumerable';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapOwnNone( a, { a : 1 } );
+  test.shouldBe( !got );
+
+  var got = _.mapOwnNone( a, a );
+  test.shouldBe( got );
+
+  test.description = 'screen has enumerable';
+
+  /* for..in skips enumerable */
+  var src = { a : 1 };
+  var screen = {};
+  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  var got = _.mapOwnNone( src, screen );
+  test.shouldBe( got );
+
+  test.description = 'screen has undefined';
+  var a = {};
+  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+
+  var got = _.mapOwnNone( a, { a : undefined } );
+  test.shouldBe( !got );
+
+  var got = _.mapOwnNone( { a : undefined }, { a : undefined } );
+  test.shouldBe( !got );
+
+  test.description = 'src has toString on proto';
+  var got = _.mapOwnNone( {}, { x : 1, toString : 1 } );
+  test.shouldBe( got );
+
+  //
+
+  if( Config.degub )
+  {
+    test.description = 'src is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnNone( 1, {} );
+    });
+
+    test.description = 'screen is no object like';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnNone( {}, 1 );
+    });
+
+    test.description = 'too much args';
+    test.shouldThrowError( function ()
+    {
+      _.mapOwnNone( {}, {}, {} );
+    });
+
+    test.description = 'src is not a map';
+    test.shouldThrowError( function ()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOwnNone( a,{ a : 1 } );
+    });
+
+    test.description = 'screen is not a map';
+    test.shouldThrowError( function ()
+    {
+      var a = {};
+      var b = { a : 1 };
+      Object.setPrototypeOf( a, b )
+      _.mapOwnNone( { a : 1 }, a );
+    });
+  }
+
+}
+
+//
+
 
 function mapToArray( test )
 {
@@ -2856,6 +3473,12 @@ var Self =
     mapIdentical : mapIdentical,
     mapContain : mapContain,
     mapBut : mapBut,
+    mapHasAll : mapHasAll,
+    mapHasAny : mapHasAny,
+    mapHasNone : mapHasNone,
+    mapOwnAll : mapOwnAll,
+    mapOwnAny : mapOwnAny,
+    mapOwnNone : mapOwnNone,
     mapToArray : mapToArray,
     mapValWithIndex : mapValWithIndex,
     mapKeyWithIndex : mapKeyWithIndex,

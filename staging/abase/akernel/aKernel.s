@@ -15366,8 +15366,8 @@ function mapHasNone( src,screen )
 function mapOwnAll( src,screen )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
-  _.assert( _.objectLike( screen ) );
+  _.assert( _.mapIs( src ) );
+  _.assert( _.mapIs( screen ) );
 
   for( var k in screen )
   {
