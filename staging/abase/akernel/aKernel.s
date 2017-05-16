@@ -15979,27 +15979,7 @@ var Proto =
   _arrayCopy : _arrayCopy,
   arrayCopy : arrayCopy,
 
-  arrayAppendArray : arrayAppendArray,
-  arrayPrependArray : arrayPrependArray,
-
-  _arrayAppendArrayOnce : _arrayAppendArrayOnce,
-  _arrayPrependArrayOnce : _arrayPrependArrayOnce,
-
-  arrayAppendOnceStrictly : arrayAppendOnceStrictly,
-  _arrayAppendOnce : _arrayAppendOnce,
-  _arrayPrependOnce : _arrayPrependOnce,
-
   arraySwap : arraySwap,
-
-  arrayRemoveArrayOnce : arrayRemoveArrayOnce,
-  arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
-
-  arrayRemovedOnce : arrayRemovedOnce,
-  arrayRemoveOnce : arrayRemoveOnce,
-  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
-
-  arrayRemovedAll : arrayRemovedAll,
-  arrayRemoveAll : arrayRemoveAll,
 
   arrayReplaceOnce : arrayReplaceOnce,
   arrayUpdate : arrayUpdate,
@@ -16058,6 +16038,24 @@ var Proto =
 
   arrayHas : arrayHas,
 
+  // array manipulation
+
+  _arrayPrependOnce : _arrayPrependOnce,
+  _arrayPrependArrayOnce : _arrayPrependArrayOnce,
+  arrayPrependArray : arrayPrependArray,
+
+  _arrayAppendArrayOnce : _arrayAppendArrayOnce,
+  arrayAppendArray : arrayAppendArray,
+  _arrayAppendOnce : _arrayAppendOnce,
+  arrayAppendOnceStrictly : arrayAppendOnceStrictly,
+
+  arrayRemoveArrayOnce : arrayRemoveArrayOnce,
+  arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
+  arrayRemovedOnce : arrayRemovedOnce,
+  arrayRemoveOnce : arrayRemoveOnce,
+  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
+  arrayRemovedAll : arrayRemovedAll,
+  arrayRemoveAll : arrayRemoveAll,
 
   // array set
 
