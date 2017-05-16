@@ -13254,7 +13254,7 @@ mapKeys.defaults =
  * The mapOwnKeys() returns an array of a given object`s own enumerable properties,
  * in the same order as that provided by a for...in loop. Each element of result array is unique.
  *
- * @param { objectLike } src - The object whose properties are to be returned.
+ * @param { objectLike } src - The object whose properties keys are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
@@ -13310,7 +13310,7 @@ mapOwnKeys.defaults =
  * The mapAllKeys() returns all properties of provided object as array,
  * in the same order as that provided by a for...in loop. Each element of result array is unique.
  *
- * @param { objectLike } src - The object whose properties are to be returned.
+ * @param { objectLike } src - The object whose properties keys are to be returned.
  *
  * @example
  * // returns [ "a", "b", "__defineGetter__", ... "isPrototypeOf" ]
@@ -15307,6 +15307,30 @@ function mapOwnKey( object,key )
 
 //
 
+/**
+ * The mapHasAll() returns true if object( src ) has all enumerable keys from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has property with same name.
+ * Returns true if all keys from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
+ * @param { ObjectLike } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapHasAll( {}, {} );
+ *
+ * // returns false
+ * _.mapHasAll( {}, { a : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has all enumerable keys from( screen ).
+ * @method mapHasAll
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
+
 function mapHasAll( src,screen )
 {
   _.assert( arguments.length === 2 );
@@ -15323,6 +15347,33 @@ function mapHasAll( src,screen )
 }
 
 //
+
+/**
+ * The mapHasAny() returns true if object( src ) has at least one enumerable key from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has at least one property with same name.
+ * Returns true if any key from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
+ * @param { ObjectLike } screen - Map that hold keys.
+ *
+ * @example
+ * // returns false
+ * _.mapHasAny( {}, {} );
+ *
+ * // returns true
+ * _.mapHasAny( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns false
+ * _.mapHasAny( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
+ * @method mapHasAny
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
 
 function mapHasAny( src,screen )
 {
@@ -15344,6 +15395,33 @@ function mapHasAny( src,screen )
 
 //
 
+/**
+ * The mapHasAny() returns true if object( src ) has no one enumerable key from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has no one property with same name.
+ * Returns true if all keys from( screen ) not exists on object( src ), otherwise returns false.
+ *
+ * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
+ * @param { ObjectLike } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapHasNone( {}, {} );
+ *
+ * // returns false
+ * _.mapHasNone( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns true
+ * _.mapHasNone( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
+ * @method mapHasNone
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
+
 function mapHasNone( src,screen )
 {
   _.assert( arguments.length === 2 );
@@ -15362,6 +15440,33 @@ function mapHasNone( src,screen )
 }
 
 //
+
+/**
+ * The mapOwnAll() returns true if object( src ) has all own keys from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
+ * Returns true if all keys from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { Object } src - Map that will be checked for keys from( screen ).
+ * @param { Object } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapOwnAll( {}, {} );
+ *
+ * // returns true
+ * _.mapOwnAll( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns false
+ * _.mapOwnAll( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
+ * @method mapOwnAll
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
 
 function mapOwnAll( src,screen )
 {
@@ -15383,6 +15488,33 @@ function mapOwnAll( src,screen )
 
 //
 
+/**
+ * The mapOwnAny() returns true if map( src ) has at least one own property from map( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from map( screen ) and checks if source( src ) has at least one property with that key name.
+ * Returns true if one of keys from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { Object } src - Map that will be checked for keys from( screen ).
+ * @param { Object } screen - Map that hold keys.
+ *
+ * @example
+ * // returns false
+ * _.mapOwnAny( {}, {} );
+ *
+ * // returns true
+ * _.mapOwnAny( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns false
+ * _.mapOwnAny( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
+ * @method mapOwnAny
+ * @throws { Exception } Will throw an error if the ( src ) is not a map.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a map.
+ * @memberof wTools
+ */
+
 function mapOwnAny( src,screen )
 {
   _.assert( arguments.length === 2 );
@@ -15402,6 +15534,33 @@ function mapOwnAny( src,screen )
 }
 
 //
+
+/**
+ * The mapOwnNone() returns true if map( src ) not owns properties from map( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
+ * Returns true if no one key from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { Object } src - Map that will be checked for keys from( screen ).
+ * @param { Object } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapOwnNone( {}, {} );
+ *
+ * // returns false
+ * _.mapOwnNone( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns true
+ * _.mapOwnNone( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if map( src ) not owns properties from( screen ).
+ * @method mapOwnNone
+ * @throws { Exception } Will throw an error if the ( src ) is not a map.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a map.
+ * @memberof wTools
+ */
 
 function mapOwnNone( src,screen )
 {
