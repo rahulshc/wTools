@@ -13213,12 +13213,13 @@ _mapKeys.defaults =
  * @param { objectLike } src - object of interest to extract keys.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  * @return { array } Returns an array with unique string elements.
  * corresponding to the enumerable properties found directly upon object or empty array
  * if nothing found.
  * @method mapKeys
  * @throws { Exception } Throw an exception if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
@@ -13255,7 +13256,7 @@ mapKeys.defaults =
  *
  * @param { objectLike } src - The object whose properties are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
  * // returns [ "a", "b" ]
@@ -13271,6 +13272,7 @@ mapKeys.defaults =
  * array if nothing found.
  * @method mapOwnKeys
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
 */
 
@@ -13468,7 +13470,7 @@ _mapVals.defaults =
  * @param { objectLike } src - The object whose property values are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
  * // returns [ "7", "13" ]
@@ -13486,6 +13488,7 @@ _mapVals.defaults =
  * corresponding to the enumerable property values found directly upon object.
  * @method mapVals
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
@@ -13524,7 +13527,7 @@ mapVals.defaults =
  *
  * @param { objectLike } src - The object whose property values are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
  * // returns [ "7", "13" ]
@@ -13541,6 +13544,7 @@ mapVals.defaults =
  * corresponding to the enumerable property values found directly upon object.
  * @method mapOwnVals
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
@@ -13705,7 +13709,7 @@ _mapPairs.defaults =
 //
 
 /**
- * The mapPairs() converts an object into a list of [ key, value ] pairs.
+ * The mapPairs() converts an object into a list of unique [ key, value ] pairs.
  *
  * It takes an object (src) creates an empty array,
  * checks if (src) is an object.
@@ -13715,7 +13719,7 @@ _mapPairs.defaults =
  * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
- * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
  * // returns [ [ "a", 7 ], [ "b", 13 ] ]
@@ -13731,6 +13735,7 @@ _mapPairs.defaults =
  * @returns { array } A list of [ key, value ] pairs.
  * @method mapPairs
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
@@ -13768,7 +13773,7 @@ mapPairs.defaults =
  *
  * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
  * @param { objectLike } o - routine options can be provided through routine`s context.
- * @param { boolean } [ o.enumerable = true ] - count object`s enumerable properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
  * // returns [ [ "a", 7 ], [ "b", 13 ] ]
@@ -13788,6 +13793,7 @@ mapPairs.defaults =
  * @returns { array } A list of [ key, value ] pairs.
  * @method mapOwnPairs
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
@@ -13815,7 +13821,7 @@ mapOwnPairs.defaults =
 //
 
 /**
- * The mapAllPairs() converts all properties of the object( src ) into a list of [ key, value ] pairs.
+ * The mapAllPairs() converts all properties of the object( src ) into a list of unique [ key, value ] pairs.
  *
  * It takes an object ( src ) creates an empty array,
  * checks if ( src ) is an object.
@@ -13904,6 +13910,45 @@ _mapProperties.defaults =
 
 //
 
+/**
+ * The mapProperties() gets enumerable properties of the object( src ) and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies unique enumerable properties of the provided object to the new map using
+ * their original name/value and returns the result,
+ * otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Object to get a map of enumerable properties.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.own = false ] - count only object`s own properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ *
+ * @example
+ * // returns { a : 7, b : 13 }
+ * _.mapProperties( { a : 7, b : 13 } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapProperties( a );
+ * //returns { a : 1, b : 2 }
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapProperties.call( { own : 1 }, a )
+ * //returns { a : 1 }
+ *
+ * @returns { object } A new map with unique enumerable properties from source( src ).
+ * @method mapProperties
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
+
 function mapProperties( src )
 {
   var o = this === Self ? Object.create( null ) : this;
@@ -13924,6 +13969,43 @@ mapProperties.defaults =
 }
 
 //
+
+/**
+ * The mapOwnProperties() gets the object's( src ) own enumerable properties and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies object's own enumerable properties to the new map using
+ * their original name/value and returns the result,
+ * otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Source to get a map of object`s own enumerable properties.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ *
+ * @example
+ * // returns { a : 7, b : 13 }
+ * _.mapOwnProperties( { a : 7, b : 13 } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapOwnProperties( a );
+ * //returns { a : 1 }
+ *
+ * @example
+ * var a = { a : 1 };
+ * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } );
+ * _.mapOwnProperties.call( { enumerable : 0 }, a )
+ * //returns { a : 1, b : 2 }
+ *
+ * @returns { object } A new map with source( src ) own enumerable properties.
+ * @method mapOwnProperties
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
 
 function mapOwnProperties( src )
 {
@@ -13946,6 +14028,35 @@ mapOwnProperties.defaults =
 
 //
 
+/**
+ * The mapAllProperties() gets all properties from provided object( src ) and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies all unique object's properties to the new map using
+ * their original name/value and returns the result,
+ * otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Source to get a map of all object`s properties.
+ *
+ * @example
+ * // returns { a : 7, b : 13, __defineGetter__ : function...}
+ * _.mapAllProperties( { a : 7, b : 13 } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapAllProperties( a );
+ * //returns { a : 1, b : 2, __defineGetter__ : function...}
+ *
+ * @returns { object } A new map with all unique properties from source( src ).
+ * @method mapAllProperties
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
+
 function mapAllProperties( src )
 {
   var o = this === Self ? Object.create( null ) : this;
@@ -13966,6 +14077,45 @@ mapAllProperties.defaults =
 }
 
 //
+
+/**
+ * The mapRoutines() gets enumerable properties that contains routines as value from the object( src ) and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies unique enumerable properties that holds routines from source( src ) to the new map using
+ * original name/value of the property and returns the result, otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Source to get a map of object`s properties.
+ * @param { objectLike } o - routine options, can be provided through routine`s context.
+ * @param { boolean } [ o.own = false ] - count only object`s own properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ *
+ * @example
+ * // returns { f : function(){} }
+ * _.mapRoutines( { a : 7, b : 13, f : function(){} } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, f : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapRoutines( a )
+ * //returns { f : function(){} }
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, f : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapRoutines.call( { own : 1 }, a )
+ * //returns {}
+ *
+ * @returns { object } A new map with unique enumerable routine properties from source( src ).
+ * @method mapRoutines
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
+
 
 function mapRoutines( src )
 {
@@ -13996,6 +14146,42 @@ mapRoutines.defaults =
 
 //
 
+/**
+ * The mapOwnRoutines() gets object`s( src ) own enumerable properties that contains routines as value and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies object`s( src ) own unique enumerable properties that holds routines to the new map using
+ * original name/value of the property and returns the result, otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Source to get a map of object`s properties.
+ * @param { objectLike } o - routine options, can be provided through routine`s context.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ *
+ * @example
+ * // returns { f : function(){} }
+ * _.mapOwnRoutines( { a : 7, b : 13, f : function(){} } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, f : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapOwnRoutines( a )
+ * //returns {}
+ *
+ * @example
+ * var a = { a : 1 };
+ * Object.defineProperty( a, 'b', { enumerable : 0, value : function(){} } );
+ * _.mapOwnRoutines.call( { enumerable : 0 }, a )
+ * //returns { b : function(){} }
+ *
+ * @returns { object } A new map with unique object`s own enumerable routine properties from source( src ).
+ * @method mapOwnRoutines
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
+
 function mapOwnRoutines( src )
 {
   var o = this === Self ? Object.create( null ) : this;
@@ -14025,6 +14211,35 @@ mapOwnRoutines.defaults =
 
 //
 
+/**
+ * The mapAllRoutines() gets all properties of object( src ) that contains routines as value and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies all unique properties of source( src ) that holds routines to the new map using
+ * original name/value of the property and returns the result, otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Source to get a map of object`s properties.
+ *
+ * @example
+ * // returns { f : function, __defineGetter__ : function...}
+ * _.mapAllRoutines( { a : 7, b : 13, f : function(){} } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, f : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapAllRoutines( a )
+ * // returns { f : function, __defineGetter__ : function...}
+ *
+ *
+ * @returns { object } A new map with all unique object`s( src ) properties that are routines.
+ * @method mapAllRoutines
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
+
 function mapAllRoutines( src )
 {
   var o = this === Self ? Object.create( null ) : this;
@@ -14053,6 +14268,44 @@ mapAllRoutines.defaults =
 
 //
 
+/**
+ * The mapFields() gets enumerable fields( all properties except routines ) of the object( src ) and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies unique enumerable properties of the provided object( src ) that are not routines to the new map using
+ * their original name/value and returns the result, otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Object to get a map of enumerable properties.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.own = false ] - count only object`s own properties.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ *
+ * @example
+ * // returns { a : 7, b : 13 }
+ * _.mapFields( { a : 7, b : 13, c : function(){} } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, c : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapFields( a );
+ * //returns { a : 1, b : 2 }
+ *
+ * @example
+ * var a = { a : 1, x : function(){} };
+ * var b = { b : 2 };
+ * Object.setPrototypeOf( a, b );
+ * _.mapFields.call( { own : 1 }, a )
+ * //returns { a : 1 }
+ *
+ * @returns { object } A new map with unique enumerable fields( all properties except routines ) from source( src ).
+ * @method mapFields
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
+
 function mapFields( src )
 {
   var o = this === Self ? Object.create( null ) : this;
@@ -14079,6 +14332,42 @@ mapFields.defaults =
 }
 
 //
+
+/**
+ * The mapOwnFields() gets object`s( src ) own enumerable fields( all properties except routines ) and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies object`s own enumerable properties that are not routines to the new map using
+ * their original name/value and returns the result, otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Object to get a map of enumerable properties.
+ * @param { objectLike } o - routine options can be provided through routine`s context.
+ * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
+ *
+ * @example
+ * // returns { a : 7, b : 13 }
+ * _.mapOwnFields( { a : 7, b : 13, c : function(){} } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, c : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapOwnFields( a );
+ * //returns { a : 1 }
+ *
+ * @example
+ * var a = { a : 1, x : function(){} };
+ * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } )
+ * _.mapFields.call( { enumerable : 0 }, a )
+ * //returns { a : 1, b : 2 }
+ *
+ * @returns { object } A new map with object`s( src ) own enumerable fields( all properties except routines ).
+ * @method mapOwnFields
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
 
 function mapOwnFields( src )
 {
@@ -14108,6 +14397,40 @@ mapOwnFields.defaults =
 }
 
 //
+
+/**
+ * The mapAllFields() gets all object`s( src ) fields( properties except routines ) and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies all object`s properties that are not routines to the new map using
+ * their original name/value and returns the result, otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Object to get a map of all properties.
+ *
+ * @example
+ * // returns { a : 7, b : 13, __proto__ : Object }
+ * _.mapAllFields( { a : 7, b : 13, c : function(){} } );
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, c : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapAllFields( a );
+ * //returns { a : 1, b : 2, __proto__ : Object }
+ *
+ * @example
+ * var a = { a : 1, x : function(){} };
+ * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } )
+ * _.mapAllFields( a );
+ * //returns { a : 1, b : 2, __proto__ : Object }
+ *
+ * @returns { object } A new map with all fields( properties except routines ) from source( src ).
+ * @method mapAllFields
+ * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if unknown option is provided.
+ * @memberof wTools
+ */
 
 function mapAllFields( src )
 {
@@ -14190,6 +14513,35 @@ mapAllFields.defaults =
 // }
 
 //
+
+/**
+ * The mapOnlyAtomics() gets all object`s( src ) enumerable atomic fields( null,undef,number,string,symbol ) and returns them as new map.
+ *
+ * It takes an object ( src ) creates an empty map,
+ * checks if ( src ) is an object.
+ * If true, it copies object`s( src ) enumerable atomic properties to the new map using
+ * their original name/value and returns the result, otherwise it returns empty map.
+ *
+ * @param { objectLike } src - Object to get a map of atomic properties.
+ *
+ * @example
+ * var a = {};
+ * Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } )
+ * _.mapOnlyAtomics( a );
+ * // returns { }
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2, c : function(){} };
+ * Object.setPrototypeOf( a, b );
+ * _.mapOnlyAtomics( a );
+ * //returns { a : 1, b : 2 }
+ *
+ * @returns { object } A new map with all atomic fields from source( src ).
+ * @method mapOnlyAtomics
+ * @throws { Error } Will throw an Error if ( src ) is not an Object.
+ * @memberof wTools
+ */
 
 function mapOnlyAtomics( src )
 {
