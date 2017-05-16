@@ -14004,6 +14004,7 @@ function mapOwnRoutines( src )
   _.routineOptions( mapOwnRoutines,o );
 
   o.src = src;
+  o.own = 1;
   o.selectFilter = function selectRoutine( src,k )
   {
     debugger;
@@ -15626,7 +15627,7 @@ var Proto =
 
   routines : mapRoutines,
   mapRoutines : mapRoutines,
-  mapOwnRoutines : mapAllRoutines,
+  mapOwnRoutines : mapOwnRoutines,
   mapAllRoutines : mapAllRoutines,
 
   fields : mapFields,
