@@ -14033,6 +14033,8 @@ function mapAllRoutines( src )
   _.routineOptions( mapAllRoutines,o );
 
   o.src = src;
+  o.own = 0;
+  o.enumerable = 0;
   o.selectFilter = function selectRoutine( src,k )
   {
     debugger;
@@ -14086,6 +14088,7 @@ function mapOwnFields( src )
   _.routineOptions( mapOwnFields,o );
 
   o.src = src;
+  o.own = 1;
   o.selectFilter = function selectRoutine( src,k )
   {
     debugger;
@@ -14114,6 +14117,8 @@ function mapAllFields( src )
   _.routineOptions( mapAllFields,o );
 
   o.src = src;
+  o.own = 0;
+  o.enumerable = 0;
   o.selectFilter = function selectRoutine( src,k )
   {
     debugger;
@@ -15632,7 +15637,7 @@ var Proto =
 
   fields : mapFields,
   mapFields : mapFields,
-  mapOwnFields : mapAllFields,
+  mapOwnFields : mapOwnFields,
   mapAllFields : mapAllFields,
 
   mapOnlyAtomics : mapOnlyAtomics,
