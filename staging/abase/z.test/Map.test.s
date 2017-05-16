@@ -831,6 +831,1011 @@ function mapAllPairs( test )
 
 //
 
+function mapProperties( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapProperties( {} );
+  test.identical( got, {} );
+
+  var got = _.mapProperties( [] );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapProperties( { a : 1 } );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  var a = [];
+  a.a = 1;
+  var got = _.mapProperties( a );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  var got = _.mapProperties( new String );
+  var expected = {};
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapProperties( a );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+
+  /**/
+
+  var got = _.mapProperties.call( { own : 1, enumerable : 1 }, a );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  /**/
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapProperties.call( { enumerable : 0, own : 1 }, a );
+  var expected = { a : 1, x : 3 };
+  test.identical( got, expected );
+
+  /**/
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapProperties.call( { enumerable : 0, own : 0 }, a );
+  test.shouldBe( Object.keys( got ).length > 3 );
+  test.shouldBe( got.a === 1 );
+  test.shouldBe( got.b === 2 );
+  test.shouldBe( got.x === 3 );
+
+  /**/
+
+  var got = _.mapProperties.call( { enumerable : 0, own : 0 }, new Number );
+  test.shouldBe( Object.keys( got ).length );
+  test.shouldBe( got.constructor.name === 'Number' );
+  test.shouldBe( _.routineIs( got.toFixed ) );
+  test.shouldBe( got.__proto__ );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapProperties();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapProperties( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapProperties( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapProperties.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapOwnProperties( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapOwnProperties( {} );
+  test.identical( got, {} );
+
+  var got = _.mapOwnProperties( [] );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapOwnProperties( { a : 1 } );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  var a = [];
+  a.a = 1;
+  var got = _.mapOwnProperties( a );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  var got = _.mapOwnProperties( new String );
+  var expected = {};
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapOwnProperties( a );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+
+  /**/
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapOwnProperties.call( { enumerable : 0 }, a );
+  var expected = { a : 1, x : 3 };
+  test.identical( got, expected );
+
+  /**/
+
+  var got = _.mapOwnProperties.call( { enumerable : 0 }, new Number );
+  test.identical( got, {} )
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnProperties();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnProperties( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnProperties( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnProperties.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapAllProperties( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapAllProperties( {} );
+  test.shouldBe( Object.keys( got ).length  )
+  test.identical( got.constructor.name, 'Object' );
+
+  var got = _.mapAllProperties( [] );
+  test.shouldBe( Object.keys( got ).length  )
+  test.identical( got.constructor.name, 'Array' );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapAllProperties( { a : 1 } );
+  test.shouldBe( Object.keys( got ).length > 1 )
+  test.identical( got.a, 1 );
+
+  var a = [];
+  a.a = 1;
+  var got = _.mapAllProperties( a );
+  test.shouldBe( Object.keys( got ).length > 1 )
+  var expected = { a : 1 };
+  test.identical( got.a, 1 );
+
+  var got = _.mapAllProperties( new String );
+  test.shouldBe( Object.keys( got ).length )
+  test.identical( got.length, 0 );
+  test.identical( got.constructor.name, 'String' );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapAllProperties( a );
+  test.shouldBe( Object.keys( got ).length > 2 )
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+
+  /**/
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapAllProperties( a );
+  test.shouldBe( Object.keys( got ).length > 3 )
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+  test.identical( got.x, 3 );
+
+  /**/
+
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  Object.defineProperty( b, 'x', { enumerable : 0, value : undefined } );
+  var got = _.mapAllProperties( a );
+  test.shouldBe( Object.keys( got ).length > 3 )
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+  test.identical( got.x, undefined );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllProperties();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapAllProperties( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllProperties( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapAllProperties.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapRoutines( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapRoutines( {} );
+  test.identical( got, {} );
+
+  var got = _.mapRoutines( [] );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapRoutines( { a : 1, b : function (){} } );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( _.routineIs( got.b ) );
+
+  var a = [];
+  a.a = function(){};
+  var got = _.mapRoutines( a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( _.routineIs( got.a ) );
+
+  var got = _.mapRoutines( new String );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapRoutines( a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( _.routineIs( got.c ) );
+
+  /**/
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapRoutines( a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( _.routineIs( got.c ) );
+
+  /* enumerable : 0 */
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapRoutines.call( { enumerable : 0 }, a );
+  test.shouldBe( Object.keys( got ).length > 1 )
+  test.shouldBe( _.routineIs( got.c ) );
+  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
+  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+
+
+  /**/
+
+  a.y = function(){}
+  var got = _.mapRoutines.call( { own : 1 }, a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( _.routineIs( got.y ) );
+
+  /* own : 0 */
+
+  var a = { a : 1, y : function(){} };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapRoutines.call( { own : 0 }, a );
+  test.shouldBe( Object.keys( got ).length === 2 )
+  test.shouldBe( _.routineIs( got.y ) );
+  test.shouldBe( _.routineIs( got.c ) );
+
+  /* own : 0, enumerable : 0 */
+
+  var a = { a : 1, y : function(){} };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+  Object.defineProperty( b, 'x', { enumerable : 0, value : function(){} } );
+  var got = _.mapRoutines.call( { own : 0, enumerable : 0 }, a );
+  test.shouldBe( Object.keys( got ).length > 3 )
+  test.shouldBe( _.routineIs( got.y ) );
+  test.shouldBe( _.routineIs( got.c ) );
+  test.shouldBe( _.routineIs( got.x ) );
+  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
+  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapRoutines();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapRoutines( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapRoutines( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapRoutines.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapOwnRoutines( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapOwnRoutines( {} );
+  test.identical( got, {} );
+
+  var got = _.mapOwnRoutines( [] );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapOwnRoutines( { a : 1, b : function (){} } );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( _.routineIs( got.b ) );
+
+  var a = [];
+  a.a = function(){};
+  var got = _.mapOwnRoutines( a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( _.routineIs( got.a ) );
+
+  var got = _.mapRoutines( new String );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapOwnRoutines( a );
+  test.identical( got, {} );
+
+  /* enumerable : 0 */
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapOwnRoutines( a );
+  test.identical( got, {} );
+
+  /* enumerable : 0 */
+
+  var a = {};
+  var b = {};
+  Object.setPrototypeOf( a, b );
+  Object.defineProperty( b, 'x', { enumerable : 0, value : function(){} } );
+  var got = _.mapOwnRoutines( a );
+  test.identical( got, {} );
+
+  /* enumerable : 0 */
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapOwnRoutines.call( { enumerable : 0 }, a );
+  test.identical( got, {} );
+
+  /* enumerable : 0 */
+
+  var a = {};
+  var b = {};
+  Object.defineProperty( a, 'x', { enumerable : 0, value : function(){} } );
+  var got = _.mapOwnRoutines.call( { enumerable : 0 }, a );
+  test.identical( got.x, a.x );
+  test.shouldBe( _.routineIs( got.x ) );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnRoutines();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnRoutines( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnRoutines( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnRoutines.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapAllRoutines( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapAllRoutines( {} );
+  test.shouldBe( Object.keys( got ).length );
+  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
+  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+
+  var got = _.mapAllRoutines( [] );
+  test.shouldBe( Object.keys( got ).length );
+  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
+  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapAllRoutines( { a : 1, b : function (){} } );
+  test.shouldBe( Object.keys( got ).length );
+  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
+  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+  test.shouldBe( _.routineIs( got.b ) );
+
+  var a = [];
+  a.a = function(){};
+  var got = _.mapAllRoutines( a );
+  test.shouldBe( Object.keys( got ).length );
+  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
+  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+  test.shouldBe( _.routineIs( got.a ) );
+
+  var got = _.mapAllRoutines( new String );
+  test.shouldBe( Object.keys( got ).length );
+  test.identical( got.constructor.name, 'String' );
+  test.shouldBe( _.routineIs( got.sub ) );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapAllRoutines( a );
+  test.shouldBe( Object.keys( got ).length > 1 );
+  test.shouldBe( _.routineIs( got.c ) );
+
+  /**/
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapAllRoutines( a );
+  test.shouldBe( Object.keys( got ).length > 1 );
+  test.shouldBe( _.routineIs( got.c ) );
+
+  /**/
+
+  Object.defineProperty( a, 'z', { enumerable : 0, value : function (){} } );
+  Object.defineProperty( b, 'y', { enumerable : 0, value : function (){} } );
+  var got = _.mapAllRoutines( a );
+  test.shouldBe( Object.keys( got ).length > 2 );
+  test.shouldBe( _.routineIs( got.c ) );
+  test.shouldBe( _.routineIs( got.y ) );
+  test.shouldBe( _.routineIs( got.z ) );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllRoutines();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapAllRoutines( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllRoutines( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapAllRoutines.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapFields( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapFields( {} );
+  test.identical( got, {} );
+
+  var got = _.mapFields( [] );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapFields( { a : 1, b : function (){} } );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( got.a === 1 );
+
+  var a = [ ];
+  a.a = function(){};
+  a.b = 1;
+  var got = _.mapFields( a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( got.b === 1 );
+
+  var got = _.mapFields( new String );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapFields( a );
+  test.shouldBe( Object.keys( got ).length === 2 );
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+
+  /**/
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapFields( a );
+  test.shouldBe( Object.keys( got ).length === 2 );
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+
+  /* enumerable : 0 */
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapFields.call( { enumerable : 0 }, a );
+  test.shouldBe( Object.keys( got ).length === 4 )
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+  test.identical( got.x, 3 );
+
+  /**/
+
+  a.y = function(){}
+  var got = _.mapFields.call( { own : 1 }, a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.identical( got.a, 1 );
+
+  /* own : 0 */
+
+  var a = { a : 1, y : function(){} };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapFields.call( { own : 0, enumerable : 1 }, a );
+  test.shouldBe( Object.keys( got ).length === 2 )
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+
+  /* enumerable : 0 */
+
+  var a = { a : 1, y : function(){} };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+  Object.defineProperty( b, 'x', { enumerable : 0, value : function(){} } );
+  Object.defineProperty( b, 'z', { enumerable : 0, value : 3 } );
+  var got = _.mapFields.call( { enumerable : 0 }, a );
+  test.identical( Object.keys( got ).length, 4 );
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+  test.identical( got.z, 3 );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapFields();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapFields( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapFields( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapFields.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapOwnFields( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapOwnFields( {} );
+  test.identical( got, {} );
+
+  var got = _.mapOwnFields( [] );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapOwnFields( { a : 1, b : function (){} } );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( got.a === 1 );
+
+  var a = [ ];
+  a.a = function(){};
+  a.b = 1;
+  var got = _.mapOwnFields( a );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.shouldBe( got.b === 1 );
+
+  var got = _.mapOwnFields( new String );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapOwnFields( a );
+  test.shouldBe( Object.keys( got ).length === 1 );
+  test.identical( got.a, 1 );
+
+  /**/
+
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapOwnFields( a );
+  test.shouldBe( Object.keys( got ).length === 1 );
+  test.identical( got.a, 1 );
+
+  /* enumerable : 0 */
+
+  Object.defineProperty( a, 'y', { enumerable : 0, value : 3 } );
+  var got = _.mapOwnFields.call( { enumerable : 0 }, a );
+  test.shouldBe( Object.keys( got ).length === 3 )
+  test.identical( got.a, 1 );
+  test.identical( got.y, 3 );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnFields();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnFields( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnFields( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnFields.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapAllFields( test )
+{
+  test.description = 'empty';
+
+  var got = _.mapAllFields( {} );
+  test.shouldBe( Object.keys( got ).length === 1 )
+  test.identical( got.__proto__, {}.__proto__ );
+
+  var got = _.mapAllFields( [] );
+  test.shouldBe( Object.keys( got ).length === 2 )
+  test.identical( got.__proto__, [].__proto__ );
+  test.identical( got.length, 0 );
+
+  //
+
+  test.description = 'simple';
+
+  var got = _.mapAllFields( { a : 1, b : function (){} } );
+  test.shouldBe( Object.keys( got ).length === 2 )
+  test.shouldBe( got.a === 1 );
+  test.shouldBe( got.__proto__ === {}.__proto__ );
+
+  var a = [ ];
+  a.a = function(){};
+  a.b = 1;
+  var got = _.mapAllFields( a );
+  console.log(got);
+  test.shouldBe( Object.keys( got ).length === 3 )
+  test.shouldBe( got.length === 0 );
+  test.shouldBe( got.b === 1 );
+  test.shouldBe( got.__proto__ === [].__proto__ );
+
+  var str = new String;
+  var got = _.mapAllFields( str );
+  test.identical( got.length, 0 );
+  test.identical( got.__proto__, str.__proto__);
+
+  //
+
+  test.description = 'prototype'
+  var a = { a : 1 };
+  var b = { b : 2, c : function (){} };
+  Object.setPrototypeOf( a, b );
+
+  /**/
+
+  var got = _.mapAllFields( a );
+  test.shouldBe( Object.keys( got ).length === 3 );
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+  test.identical( got.__proto__, b );
+
+  /**/
+
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  var got = _.mapAllFields( a );
+  test.shouldBe( Object.keys( got ).length === 4 );
+  test.identical( got.a, 1 );
+  test.identical( got.b, 2 );
+  test.identical( got.x, 3 );
+  test.identical( got.__proto__, b );
+
+  //
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllFields();
+    });
+
+    test.description = 'atomic';
+    test.shouldThrowError( function()
+    {
+      _.mapAllFields( 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapAllFields( 'wrong argument' );
+    });
+
+    test.description = 'unknown option';
+    test.shouldThrowError( function()
+    {
+      _.mapAllFields.call( { x : 1 }, {} );
+    });
+
+  }
+
+};
+
+//
+
+function mapOnlyAtomics( test )
+{
+  test.description = 'emtpy';
+
+  var got = _.mapOnlyAtomics( {} )
+  test.identical( got, {} );
+
+  test.description = 'atomics';
+
+  var src =
+  {
+    a : null,
+    b : undefined,
+    c : 5,
+    e : false,
+    f : 'a',
+    g : function (){},
+    h : [ 1 ],
+    i : new Date(),
+    j : new ArrayBuffer( 5 )
+  }
+  var got = _.mapOnlyAtomics( src );
+  var expected =
+  {
+    a : null,
+    b : undefined,
+    c : 5,
+    e : false,
+    f : 'a',
+  }
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'only enumerable';
+  var a = {};
+  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } )
+  var got = _.mapOnlyAtomics( a );
+  test.identical( got, {} );
+
+  //
+
+  test.description = 'from prototype';
+  var a = {};
+  var b = { a : 1, c : function(){} };
+  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.setPrototypeOf( a, b );
+  var got = _.mapOnlyAtomics( a );
+  test.identical( got, { a : 1 } );
+
+  if( Config.debug )
+  {
+    test.description = 'invalid arg type';
+    test.shouldThrowError( function ()
+    {
+      _.mapOnlyAtomics( [] )
+    })
+    test.description = 'no args';
+    test.shouldThrowError( function ()
+    {
+      _.mapOnlyAtomics()
+    })
+  }
+
+}
+
+//
+
 function mapOwnKey( test )
 {
 
@@ -1837,6 +2842,16 @@ var Self =
     mapPairs : mapPairs,
     mapOwnPairs : mapOwnPairs,
     mapAllPairs : mapAllPairs,
+    mapProperties : mapProperties,
+    mapOwnProperties : mapOwnProperties,
+    mapAllProperties : mapAllProperties,
+    mapRoutines : mapRoutines,
+    mapOwnRoutines : mapOwnRoutines,
+    mapAllRoutines : mapAllRoutines,
+    mapFields : mapFields,
+    mapOwnFields : mapOwnFields,
+    mapAllFields : mapAllFields,
+    mapOnlyAtomics : mapOnlyAtomics,
     mapOwnKey : mapOwnKey,
     mapIdentical : mapIdentical,
     mapContain : mapContain,
