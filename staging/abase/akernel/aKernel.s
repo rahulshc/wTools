@@ -10736,6 +10736,51 @@ function _arrayPrependOnce( dst,src )
 //
 
 /**
+ * The arrayPrependOnceStrictly() method prepends only unique value from( ins ) to the beginning of( dst ).
+ * Throws error if( ins ) already exist in ( dst );
+ *
+ * @param { Array } dst - The source array.
+ * @param { * } ins - The value to add.
+ * @param { Function } onElement - A callback function to compare element of the array( dst ) with( ins ). @see {@link wTools.compareCallback} - See for more info.
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependOnceStrictly( dst, 5 );
+ * console.log( dst );
+ * // returns [ 5, 1, 2, 3, 4 ]
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependOnceStrictly( dst, 5 );
+ * // throws error
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependOnceStrictly( dst, 5, function( el, ins ){ return el === ins } );
+ * console.log( dst );
+ * // returns [ 5, 1, 2, 3, 4 ]
+ *
+ * @method arrayPrependOnceStrictly
+ * @throws { Error } Will throw an Error if ( dst ) is not an Array.
+ * @throws { Error } Will throw an Error if ( ins ) already exists in array( dst ).
+ * @throws { Error } Will throw an Error if ( arguments.length ) is not equal two or three.
+ * @memberof wTools
+ */
+
+function arrayPrependOnceStrictly( dst,ins,onElement )
+{
+
+  _.assert( _.arrayIs( dst ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( onElement === undefined || _.routineIs( onElement ) );
+  _.assert( _.arrayLeftIndexOf( dst,ins,onElement ) === -1,'array should have only unique elements, but has several',ins );
+
+  dst.unshift( ins );
+}
+
+//
+
+/**
  * The _arrayPrependArrayOnce() method returns an array of elements from (dst)
  * and prepending only unique following arguments to the beginning.
  *
@@ -16034,6 +16079,7 @@ var Proto =
   // array transformation
 
   _arrayPrependOnce : _arrayPrependOnce,
+  arrayPrependOnceStrictly : arrayPrependOnceStrictly,
   _arrayPrependArrayOnce : _arrayPrependArrayOnce,
   arrayPrependArray : arrayPrependArray,
 
