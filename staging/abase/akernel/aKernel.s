@@ -10682,6 +10682,14 @@ function arrayHas( insArray, element )
 // array transformation
 // --
 
+function arrayPrepend( dstArray, ins )
+{
+  arrayPrepended.apply( this,arguments );
+  return dstArray;
+}
+
+//
+
 /**
  * The _arrayPrependOnce() method adds at the beginning of an array (dst) a value (src),
  * if the array (dst) doesn't have the value (src).
@@ -10713,7 +10721,7 @@ function arrayHas( insArray, element )
  * @memberof wTools
  */
 
-function _arrayPrependOnce( dst,src )
+function _arrayPrependOnce( dstArray, ins, onEqualize )
 {
 
   _.assert( _.arrayIs( dst ) );
@@ -10731,6 +10739,14 @@ function _arrayPrependOnce( dst,src )
   }
 
   return i;
+}
+
+//
+
+function arrayPrependOnce( dstArray, ins, onEqualize )
+{
+  arrayPrependedOnce.apply( this,arguments );
+  return dstArray;
 }
 
 //
@@ -10767,15 +10783,99 @@ function _arrayPrependOnce( dst,src )
  * @memberof wTools
  */
 
-function arrayPrependOnceStrictly( dst,ins,onElement )
+function arrayPrependOnceStrictly( dstArray, ins, onEqualize )
 {
 
-  _.assert( _.arrayIs( dst ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( onElement === undefined || _.routineIs( onElement ) );
-  _.assert( _.arrayLeftIndexOf( dst,ins,onElement ) === -1,'array should have only unique elements, but has several',ins );
+  // _.assert( _.arrayIs( dstArray ) );
+  // _.assert( arguments.length === 2 || arguments.length === 3 );
+  // _.assert( onEqualize === undefined || _.routineIs( onEqualize ) );
+  // _.assert( _.arrayLeftIndexOf( dstArray, ins, onEqualize ) === -1,'array should have only unique elements, but has several',ins );
+  //
+  // dstArray.unshift( ins );
 
-  dst.unshift( ins );
+  var result = arrayPrependedOnce.apply( this, arguments );
+  _.assert( result !== -1,'array should have only unique elements, but has several',ins );
+
+  return dstArray;
+}
+
+//
+
+function arrayPrepended( dstArray, ins )
+{
+  _.assert( arguments.length === 2  );
+  _.assert( _.arrayIs( dstArray ) );
+
+  dstArray.unshift( ins );
+  return 0;
+}
+
+//
+
+function arrayPrependedOnce( dstArray, ins, onEqualize )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayIs( dstArray ) );
+
+  var i = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+
+  if( i === -1 )
+  {
+    dstArray.unshift( ins );
+    return 0;
+  }
+  return -1;
+}
+
+//
+
+/**
+ * The arrayPrependArray() method adds one or more elements to the beginning of the (dst) array
+ * and returns the new length of the array.
+ *
+ * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) from the end to the beginning and assigns to the (argument) each element,
+ * checks, if (argument) is equal to the 'undefined'.
+ * If true, it throws an Error.
+ * if (argument) is an array-like.
+ * If true, it merges the (argument) into the (result) array.
+ * Otherwise, it adds element to the result.
+ *
+ * @param { Array } dst - Initial array.
+ * @param {*} arguments[] - One or more argument(s) to add to the front of the (dst) array.
+ *
+ * @example
+ * // returns [ 'str', false, { a : 1 }, 42, 3, 7, 13, 1, 2 ];
+ * var arr = _.arrayPrependArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+ *
+ * @returns { arrayLike } - Returns an array (dst) with all of the following argument(s) that were added to the beginning of the (dst) array.
+ * @method arrayPrependArray
+ * @throws { Error } If the first argument is not array.
+ * @throws { Error } If type of the argument is equal undefined.
+ * @memberof wTools
+ */
+
+function arrayPrependArray( dstArray, insArray )
+{
+  // var result = dstArray;
+  //
+  // _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+  //
+  // for( var a = arguments.length - 1 ; a > 0 ; a-- )
+  // {
+  //   var argument = arguments[ a ];
+  //
+  //   if( argument === undefined )
+  //   throw _.err( 'arrayPrependArray','argument is not defined' );
+  //
+  //   if( _.arrayLike( argument ) ) result.unshift.apply( dstArray,argument );
+  //   else result.unshift( argument );
+  // }
+  //
+  // return result;
+
+  arrayPrependedArray.apply( this, arguments );
+  return dstArray;
 }
 
 //
@@ -10808,13 +10908,13 @@ function arrayPrependOnceStrictly( dst,ins,onElement )
  * @memberof wTools
  */
 
-function _arrayPrependArrayOnce( dst )
+function _arrayPrependArrayOnce( dstArray )
 {
-  var result = dst;
+  var result = dstArray;
 
-  _assert( _.arrayIs( dst ),'_arrayPrependArrayOnce :','expects array' );
+  _assert( _.arrayIs( dstArray ),'_arrayPrependArrayOnce :','expects array' );
 
-  for( var a = 0 ; a < arguments.length ; a++ )
+  for( var a = arguments.length - 1 ; a > 0 ; a-- )
   {
     var argument = arguments[ a ];
 
@@ -10839,50 +10939,63 @@ function _arrayPrependArrayOnce( dst )
 
 //
 
-/**
- * The arrayPrependArray() method adds one or more elements to the beginning of the (dst) array
- * and returns the new length of the array.
- *
- * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
- * iterate over array-like object (arguments[]) from the end to the beginning and assigns to the (argument) each element,
- * checks, if (argument) is equal to the 'undefined'.
- * If true, it throws an Error.
- * if (argument) is an array-like.
- * If true, it merges the (argument) into the (result) array.
- * Otherwise, it adds element to the result.
- *
- * @param { Array } dst - Initial array.
- * @param {*} arguments[] - One or more argument(s) to add to the front of the (dst) array.
- *
- * @example
- * // returns [ 'str', false, { a : 1 }, 42, 3, 7, 13, 1, 2 ];
- * var arr = _.arrayPrependArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
- *
- * @returns { arrayLike } - Returns an array (dst) with all of the following argument(s) that were added to the beginning of the (dst) array.
- * @method arrayPrependArray
- * @throws { Error } If the first argument is not array.
- * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools
- */
-
-function arrayPrependArray( dst )
+function arrayPrependArrayOnce( dstArray, insArray, onEqualize )
 {
-  var result = dst;
+  arrayPrependedArrayOnce.apply( this, arguments );
+  return dstArray;
+}
 
-  _assert( _.arrayIs( dst ),'arrayPrependArray :','expects array' );
+//
 
-  for( var a = arguments.length - 1 ; a > 0 ; a-- )
+function arrayPrependArrayOnceStrictly( dstArray, insArray, onEqualize )
+{
+  var result = arrayPrependedArrayOnce.apply( this, arguments );
+  _.assert( result === insArray.length );
+
+  return dstArray;
+}
+
+//
+
+function arrayPrependedArray( dstArray, insArray )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayPrependedArray :','expects arrayLike' );
+
+  dstArray.unshift.apply( dstArray,insArray );
+  return insArray.length;
+}
+
+//
+
+function arrayPrependedArrayOnce( dstArray, insArray, onEqualize )
+{
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+  _.assert( dstArray !== insArray );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  var result = 0;
+
+  for( var i = insArray.length - 1; i >= 0; i-- )
   {
-    var argument = arguments[ a ];
-
-    if( argument === undefined )
-    throw _.err( 'arrayPrependArray','argument is not defined' );
-
-    if( _.arrayLike( argument ) ) result.unshift.apply( dst,argument );
-    else result.unshift( argument );
+    if( arrayLeftIndexOf( dstArray, insArray[ i ], onEqualize ) === -1 )
+    {
+      dstArray.unshift( insArray[ i ] );
+      result += 1;
+    }
   }
 
   return result;
+}
+
+//
+
+function arrayAppend( dstArray, ins )
+{
+  arrayAppended.apply( this, arguments );
+  return dstArray;
 }
 
 //
@@ -10918,30 +11031,30 @@ function arrayPrependArray( dst )
  * @memberof wTools
  */
 
-function _arrayAppendOnce( dst,ins,onElement )
+function _arrayAppendOnce( dstArray,ins,onEqualize )
 {
 
-  _.assert( _.arrayIs( dst ) );
+  _.assert( _.arrayIs( dstArray ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( onElement === undefined || _.routineIs( onElement ) );
+  _.assert( onEqualize === undefined || _.routineIs( onEqualize ) );
 
   var i;
 
-  if( !onElement )
-  i = dst.indexOf( ins );
+  if( !onEqualize )
+  i = dstArray.indexOf( ins );
   else
   {
-    for( i = 0 ; i < dst.length ; i++ )
-    if( onElement( dst[ i ],i,dst ) === ins )
+    for( i = 0 ; i < dstArray.length ; i++ )
+    if( onEqualize( dstArray[ i ],i,dstArray ) === ins )
     break;
-    if( i === dst.length )
+    if( i === dstArray.length )
     i = -1;
   }
 
   if( i === -1 )
   {
-    dst.push( ins );
-    return dst.length-1;
+    dstArray.push( ins );
+    return dstArray.length - 1;
   }
 
   return i;
@@ -10949,13 +11062,22 @@ function _arrayAppendOnce( dst,ins,onElement )
 
 //
 
-function arrayAppendOnceStrictly( dst,ins,onElement )
+function arrayAppendOnce( dstArray,ins,onEqualize )
+{
+  arrayAppendedOnce.apply( this, arguments );
+
+  return dstArray;
+}
+
+//
+
+function arrayAppendOnceStrictly( dstArray,ins,onEqualize )
 {
 
-  _.assert( _.arrayIs( dst ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( onElement === undefined || _.routineIs( onElement ) );
-  _.assert( _.arrayLeftIndexOf( dst,ins,onElement ) === -1,'array should have only unique elements, but has several',ins );
+  // _.assert( _.arrayIs( dstArray ) );
+  // _.assert( arguments.length === 2 || arguments.length === 3 );
+  // _.assert( onEqualize === undefined || _.routineIs( onEqualize ) );
+  // _.assert( _.arrayLeftIndexOf( dstArray,ins,onEqualize ) === -1,'array should have only unique elements, but has several',ins );
 
   // else if( Config.debug )
   // {
@@ -10964,7 +11086,38 @@ function arrayAppendOnceStrictly( dst,ins,onElement )
   //   _.assert( 0,'array should have only unique elements, but has several',ins )
   // }
 
-  dst.push( ins );
+  var result = arrayAppendedOnce.apply( this, arguments );
+  _.assert( result !== -1,'array should have only unique elements, but has several',ins );
+
+  return dstArray;
+}
+
+//
+
+function arrayAppended( dstArray, ins )
+{
+  _.assert( arguments.length === 2  );
+  _.assert( _.arrayIs( dstArray ) );
+
+  dstArray.push( ins );
+  return dstArray.length - 1;
+}
+
+//
+
+function arrayAppendedOnce( dstArray,ins,onEqualize )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayIs( dstArray ) );
+
+  var i = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+
+  if( i === -1 )
+  {
+    dstArray.push( ins );
+    return dstArray.length - 1;
+  }
+  return -1;
 }
 
 //
@@ -10997,11 +11150,11 @@ function arrayAppendOnceStrictly( dst,ins,onElement )
  * @memberof wTools
  */
 
-function _arrayAppendArrayOnce( dst )
+function _arrayAppendArrayOnce( dstArray )
 {
-  var result = dst;
+  var result = dstArray;
 
-  _assert( _.arrayIs( dst ),'_arrayAppendArrayOnce :','expects array' );
+  _assert( _.arrayIs( dstArray ),'_arrayAppendArrayOnce :','expects array' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -11022,6 +11175,59 @@ function _arrayAppendArrayOnce( dst )
       result.push( argument );
     }
 
+  }
+
+  return result;
+}
+
+//
+
+function arrayAppendArrayOnce( dstArray, insArray, onEqualize )
+{
+  arrayAppendedArrayOnce.apply( this,arguments )
+  return dstArray;
+}
+
+//
+
+function arrayAppendArrayOnceStrictly( dstArray, insArray, onEqualize )
+{
+  var result = arrayAppendedArrayOnce.apply( this,arguments )
+  _.assert( result === insArray.length );
+
+  return dstArray;
+}
+
+//
+
+function arrayAppendedArray( dstArray, insArray )
+{
+  _.assert( arguments.length === 2 )
+  _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayPrependedArray :','expects arrayLike' );
+
+  dstArray.push.apply( dstArray,insArray );
+  return insArray.length;
+}
+
+//
+
+function arrayAppendedArrayOnce( dstArray, insArray, onEqualize )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+  _.assert( dstArray !== insArray );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  var result = 0;
+
+  for( var i = 0; i < insArray.length; i++ )
+  {
+    if( arrayLeftIndexOf( dstArray, insArray[ i ], onEqualize ) === -1 )
+    {
+      dstArray.push( insArray[ i ] );
+      result += 1;
+    }
   }
 
   return result;
@@ -11055,29 +11261,38 @@ function _arrayAppendArrayOnce( dst )
  * @memberof wTools
  */
 
-function arrayAppendArray( dst )
+function arrayAppendArray( dstArray, insArray )
 {
-  var result = dst;
+  // var result = dstArray;
+  //
+  // _assert( _.arrayIs( dstArray ),'expects array' );
+  //
+  // for( var a = 1 ; a < arguments.length ; a++ )
+  // {
+  //   var argument = arguments[ a ];
+  //
+  //   if( argument === undefined )
+  //   throw _.err( 'argument is not defined' );
+  //
+  //   if( _.arrayLike( argument ) )
+  //   result.push.apply( result,argument );
+  //   else
+  //   result.push( argument );
+  // }
+  //
+  // return result;
 
-  _assert( _.arrayIs( dst ),'expects array' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-    var argument = arguments[ a ];
-
-    if( argument === undefined )
-    throw _.err( 'argument is not defined' );
-
-    if( _.arrayLike( argument ) )
-    result.push.apply( result,argument );
-    else
-    result.push( argument );
-  }
-
-  return result;
+  arrayAppendedArray.apply( this, arguments );
+  return dstArray;
 }
 
 //
+
+function arrayRemove( dstArray, ins )
+{
+  arrayRemoved.apply( this, arguments );
+  return dstArray;
+}
 
 /**
  * The arrayRemoveOnce() method removes the first matching element from (dstArray)
@@ -11112,137 +11327,51 @@ function arrayAppendArray( dst )
  * @memberof wTools
  */
 
-function arrayRemoveOnce( dstArray,ins,onElement )
+function arrayRemoveOnce( dstArray,ins,onEqualize )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
   // if( arguments.length === 2 )
   // arrayRemovedOnce( dstArray,ins );
   // else if( onElement )
-  arrayRemovedOnce( dstArray,ins,onElement );
+  arrayRemovedOnce.apply( this, arguments );
 
   return dstArray;
 }
 
 //
 
-function arrayRemoveOnceStrictly( dstArray,ins,onElement )
+function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 {
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayLeftIndexOf( dstArray,ins,onElement ) !== -1,'array should have only unique elements, but has several',ins );
+  // _.assert( arguments.length === 2 || arguments.length === 3 );
+  // _.assert( _.arrayLeftIndexOf( dstArray,ins,onEqualize ) !== -1,'array should have only unique elements, but has several',ins );
 
   // if( arguments.length === 2 )
   // arrayRemovedOnce( dstArray,ins );
   // else if( onElement )
-  arrayRemovedOnce( dstArray,ins,onElement );
+
+  var result = arrayRemovedOnce.apply( this, arguments );
+  _.assert( result !== -1,'array not contains element',ins );
 
   return dstArray;
 }
 
 //
 
-/**
- * The callback function to compare two values.
- *
- * @callback arrayRemoveArrayOnce~onElement
- * @param { * } el - The element of the (dstArray[n]) array.
- * @param { * } ins - The value to compare (insArray[n]).
- */
-
-/**
- * The arrayRemoveArrayOnce() determines whether a (dstArray) array has the same values as in a (insArray) array,
- * and returns amount of the deleted elements from the (dstArray).
- *
- * It takes two (dstArray, insArray) or three (dstArray, insArray, onElement) arguments, creates variable (var result = 0),
- * checks if (arguments[..]) passed two, it iterates over the (insArray) array and calls for each element built in function (dstArray.indexOf(insArray[i])).
- * that looking for the value of the (insArray[i]) array in the (dstArray) array.
- * If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
- * and incrementing the variable (result++).
- * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the method
- *
- * If callback function (onElement) returns true, it returns the index that will be removed from (dstArray),
- * and then incrementing the variable (result++).
- *
- * @see wTools.arrayLeftIndexOf
- *
- * @param { arrayLike } dstArray - The target array.
- * @param { arrayLike } insArray - The source array.
- * @param { function } [ onElement ] onElement - The callback function.
- * By default, it checks the equality of two arguments.
- *
- * @example
- * // returns 0
- * _.arrayRemoveArrayOnce( [  ], [  ] );
- *
- * @example
- * // returns 2
- * _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
- *
- * @example
- * // returns 4
- * var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
- *   return a < b;
- * } );
- *
- * @returns { number }  Returns amount of the deleted elements from the (dstArray).
- * @method arrayRemoveArrayOnce
- * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
- * @throws { Error } Will throw an Error if (insArray) is not an array-like.
- * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
- * @memberof wTools
- */
-
-function arrayRemoveArrayOnce( dstArray,insArray,onElement )
+function arrayRemoved( dstArray, ins )
 {
-
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( _.arrayLike( insArray ) );
-  _.assert( dstArray !== insArray );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 );
+  _assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
 
   var result = 0;
-  var index = -1;
+  var index = dstArray.indexOf( ins );
 
-  if( onElement === undefined )
+  while( index !== -1 )
   {
-
-    for( var i = 0 ; i < insArray.length ; i++ )
-    {
-      index = dstArray.indexOf( insArray[ i ] );
-      if( !( index >= 0 ) )
-      continue;
-      dstArray.splice( index,1 );
-      result += 1;
-    }
-
+    dstArray.splice( index,1 );
+    result += 1;
+    index = dstArray.indexOf( ins,index );
   }
-  else if( arguments.length === 3 )
-  {
-
-    _.assert( _.routineIs( onElement ) );
-    for( var i = 0 ; i < insArray.length ; i++ )
-    {
-      index = arrayLeftIndexOf( dstArray,insArray[ i ],onElement );
-      if( !( index >= 0 ) )
-      continue;
-      dstArray.splice( index,1 );
-      result += 1;
-    }
-
-  }
-  else _.assert( 0,'unexpected' );
-
-  return result;
-}
-
-//
-
-function arrayRemoveArrayOnceStrictly( dstArray,insArray,onElement )
-{
-
-  var result = arrayRemoveArrayOnce.apply( this,arguments );
-  _.assert( result === insArray.length );
 
   return result;
 }
@@ -11293,33 +11422,259 @@ function arrayRemoveArrayOnceStrictly( dstArray,insArray,onElement )
  * @memberof wTools
  */
 
-function arrayRemovedOnce( dstArray,ins,onElement )
+function arrayRemovedOnce( dstArray,ins,onEqualize )
 {
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  var index = -1;
+  // var index = -1;
+  //
+  // if( onElement === undefined )
+  // {
+  //
+  //   index = dstArray.indexOf( ins );
+  //
+  // }
+  // else if( onElement )
+  // {
+  //
+  //   _.assert( _.routineIs( onElement ) );
+  //   _.assert( onElement.length === 1 || onElement.length === 2 );
+  //   index = arrayLeftIndexOf( dstArray,ins,onElement );
+  //
+  // }
+  // else _.assert( 0,'unexpected' );
 
-  if( onElement === undefined )
-  {
-
-    index = dstArray.indexOf( ins );
-
-  }
-  else if( onElement )
-  {
-
-    _.assert( _.routineIs( onElement ) );
-    _.assert( onElement.length === 1 || onElement.length === 2 );
-    index = arrayLeftIndexOf( dstArray,ins,onElement );
-
-  }
-  else _.assert( 0,'unexpected' );
-
+  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
   if( index >= 0 )
-  dstArray.splice( index,1 );
+  dstArray.splice( index, 1 );
 
   return index;
+}
+
+//
+
+function arrayRemoveArray( dstArray, insArray )
+{
+  arrayRemovedArray.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoveArrayOnce( dstArray,insArray,onEqualize )
+{
+  arrayRemovedArrayOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoveArrayOnceStrictly( dstArray,insArray,onEqualize )
+{
+  var result = arrayRemovedArrayOnce.apply( this, arguments );
+  _.assert( result === insArray.length );
+
+  return dstArray;
+}
+
+//
+
+function arrayRemovedArray( dstArray, insArray )
+{
+  _.assert( arguments.length === 2 )
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+  _.assert( dstArray !== insArray );
+
+  var result = 0;
+  var index = -1;
+
+  for( var i = 0, len = insArray.length; i < len ; i++ )
+  {
+    index = dstArray.indexOf( insArray[ i ] );
+    while( index !== -1 )
+    {
+      dstArray.splice( index,1 );
+      result += 1;
+      index = dstArray.indexOf( insArray[ i ], index );
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The callback function to compare two values.
+ *
+ * @callback arrayRemovedArrayOnce~onElement
+ * @param { * } el - The element of the (dstArray[n]) array.
+ * @param { * } ins - The value to compare (insArray[n]).
+ */
+
+/**
+ * The arrayRemovedArrayOnce() determines whether a (dstArray) array has the same values as in a (insArray) array,
+ * and returns amount of the deleted elements from the (dstArray).
+ *
+ * It takes two (dstArray, insArray) or three (dstArray, insArray, onEqualize) arguments, creates variable (var result = 0),
+ * checks if (arguments[..]) passed two, it iterates over the (insArray) array and calls for each element built in function (dstArray.indexOf(insArray[i])).
+ * that looking for the value of the (insArray[i]) array in the (dstArray) array.
+ * If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
+ * and incrementing the variable (result++).
+ * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the method
+ *
+ * If callback function (onEqualize) returns true, it returns the index that will be removed from (dstArray),
+ * and then incrementing the variable (result++).
+ *
+ * @see wTools.arrayLeftIndexOf
+ *
+ * @param { arrayLike } dstArray - The target array.
+ * @param { arrayLike } insArray - The source array.
+ * @param { function } onEqualize - The callback function. By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns 0
+ * _.arrayRemovedArrayOnce( [  ], [  ] );
+ *
+ * @example
+ * // returns 2
+ * _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
+ *
+ * @example
+ * // returns 4
+ * var got = _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
+ *   return a < b;
+ * } );
+ *
+ * @returns { number }  Returns amount of the deleted elements from the (dstArray).
+ * @method arrayRemovedArrayOnce
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (insArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
+ * @memberof wTools
+ */
+
+function arrayRemovedArrayOnce( dstArray,insArray,onEqualize )
+{
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+  _.assert( dstArray !== insArray );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  var result = 0;
+  var index = -1;
+
+  for( var i = 0, len = insArray.length; i < len ; i++ )
+  {
+    index = arrayLeftIndexOf( dstArray,insArray[ i ],onEqualize );
+
+    if( index >= 0 )
+    {
+      dstArray.splice( index,1 );
+      result += 1;
+    }
+  }
+
+  return result;
+}
+
+//
+
+// function arrayRemoveArrays( dstArray )
+// {
+//   arrayRemovedArrays.apply( this, arguments );
+//   return dstArray;
+// }
+
+//
+
+// function arrayRemoveArraysOnce( dstArray )
+// {
+// }
+
+//
+
+// function arrayRemoveArraysOnceStrictly( dstArray )
+// {
+// }
+
+//
+
+function arrayRemovedArrays( dstArray )
+{
+  _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+
+  var result = 0;
+
+  function _removeElement( element )
+  {
+    var index = dstArray.indexOf( element );
+    while( index !== -1 )
+    {
+      dstArray.splice( index,1 );
+      result += 1;
+      index = dstArray.indexOf( element,index );
+    }
+  }
+
+  for( var a = arguments.length - 1 ; a > 0 ; a-- )
+  {
+    var argument = arguments[ a ];
+
+    if( argument === undefined )
+    throw _.err( 'arrayRemoveArray','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = 0 ; i < argument.length ; i++ )
+      _removeElement( argument[ i ] );
+    }
+    else
+    _removeElement( argument );
+  }
+
+  return result;
+}
+
+//
+
+function arrayRemovedArraysOnce( dstArray )
+{
+  _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+
+  var result = 0;
+
+  function _removeElement( element )
+  {
+    var index = dstArray.indexOf( element );
+    if( index !== -1 )
+    {
+      result += 1;
+      dstArray.splice( index,1 );
+    }
+  }
+
+  for( var a = arguments.length - 1 ; a > 0 ; a-- )
+  {
+    var argument = arguments[ a ];
+
+    if( argument === undefined )
+    throw _.err( 'arrayRemoveArray','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = 0 ; i < argument.length ; i++ )
+      _removeElement( argument[ i ] );
+    }
+    else
+    {
+      _removeElement( argument );
+    }
+  }
+
+  return result;
 }
 
 //
@@ -11366,28 +11721,28 @@ function arrayRemovedOnce( dstArray,ins,onElement )
  * @memberof wTools
  */
 
-function arrayRemovedAll( dstArray,ins,onElement )
-{
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length === 3 )
-  _.assert( _.routineIs( onElement ) );
-
-  var result = 0;
-
-  if( onElement === undefined )
-  onElement = function( a,b ){ return a === b };
-
-  for( var d = dstArray.length-1 ; d >= 0 ; d-- )
-  if( onElement( dstArray[ d ],ins ) )
-  {
-    dstArray.splice( d,1 );
-    result += 1;
-  }
-
-  return result;
-}
+// function arrayRemovedAll( dstArray,ins,onEqualize )
+// {
+//   _.assert( _.arrayLike( dstArray ) );
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   if( arguments.length === 3 )
+//   _.assert( _.routineIs( onEqualize ) );
+//
+//   var result = 0;
+//
+//   if( onEqualize === undefined )
+//   onEqualize = function( a,b ){ return a === b };
+//
+//   for( var d = dstArray.length-1 ; d >= 0 ; d-- )
+//   if( onEqualize( dstArray[ d ],ins ) )
+//   {
+//     dstArray.splice( d,1 );
+//     result += 1;
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -11434,17 +11789,18 @@ function arrayRemovedAll( dstArray,ins,onElement )
  * @memberof wTools
  */
 
-function arrayRemoveAll( dstArray,ins,onElement )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length === 2 )
-  arrayRemovedAll( dstArray,ins );
-  else if( arguments.length === 3 )
-  arrayRemovedAll( dstArray,ins,onElement );
-
-  return dstArray;
-}
+// function arrayRemoveAll( dstArray,ins,onEqualize )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   // if( arguments.length === 2 )
+//   // arrayRemovedAll( dstArray,ins );
+//   // else if( arguments.length === 3 )
+//   // arrayRemovedAll( dstArray,ins,onEqualize );
+//   arrayRemovedAll( dstArray,ins,onEqualize );
+//
+//   return dstArray;
+// }
 
 //
 
@@ -16078,23 +16434,71 @@ var Proto =
 
   // array transformation
 
+  // prepend
+
+  arrayPrepend : arrayPrepend,
   _arrayPrependOnce : _arrayPrependOnce,
+  arrayPrependOnce : arrayPrependOnce,
   arrayPrependOnceStrictly : arrayPrependOnceStrictly,
-  _arrayPrependArrayOnce : _arrayPrependArrayOnce,
+  arrayPrepended : arrayPrepended,
+  arrayPrependedOnce : arrayPrependedOnce,
+
   arrayPrependArray : arrayPrependArray,
+  arrayPrependArrayOnce : arrayPrependArrayOnce,
+  arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
+  arrayPrependedArray : arrayPrependedArray,
+  arrayPrependedArrayOnce : arrayPrependedArrayOnce,
 
+  // arrayPrependArrays : arrayPrependArrays,
+  // arrayPrependArraysOnce : arrayPrependArraysOnce,
+  // arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
+  // arrayPrependedArrays : arrayPrependArrays,
+  // arrayPrependedArraysOnce : arrayPrependedArraysOnce,
+
+  // append
+
+  arrayAppend : arrayAppend,
   _arrayAppendOnce : _arrayAppendOnce,
+  arrayAppendOnce : arrayAppendOnce,
   arrayAppendOnceStrictly : arrayAppendOnceStrictly,
-  _arrayAppendArrayOnce : _arrayAppendArrayOnce,
-  arrayAppendArray : arrayAppendArray,
+  arrayAppended : arrayAppended,
+  arrayAppendedOnce : arrayAppendedOnce,
 
+  arrayAppendArray : arrayAppendArray,
+  _arrayAppendArrayOnce : _arrayAppendArrayOnce,
+  arrayAppendArrayOnce : arrayAppendArrayOnce,
+  arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
+  arrayAppendedArray : arrayAppendedArray,
+  arrayAppendedArrayOnce : arrayAppendedArrayOnce,
+
+  // arrayAppendArrays : arrayPrependArrays,
+  // arrayAppendArraysOnce : arrayPrependArraysOnce,
+  // arrayAppendArraysOnceStrictly : arrayPrependArraysOnceStrictly,
+  // arrayAppendArrays : arrayPrependArrays,
+  // arrayAppendArraysOnce : arrayPrependedArraysOnce,
+
+  //remove
+
+  arrayRemove : arrayRemove,
   arrayRemoveOnce : arrayRemoveOnce,
   arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
+  arrayRemoved : arrayRemoved,
+  arrayRemovedOnce : arrayRemovedOnce,
+
+  arrayRemoveArray : arrayRemoveArray,
   arrayRemoveArrayOnce : arrayRemoveArrayOnce,
   arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
-  arrayRemovedOnce : arrayRemovedOnce,
-  arrayRemovedAll : arrayRemovedAll,
-  arrayRemoveAll : arrayRemoveAll,
+  arrayRemovedArray : arrayRemovedArray,
+  arrayRemovedArrayOnce : arrayRemovedArrayOnce,
+
+  // arrayRemoveArrays : arrayRemoveArrays,
+  // arrayRemoveArraysOnce : arrayRemoveArraysOnce,
+  // arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
+  // arrayRemovedArrays : arrayRemovedArrays,
+  // arrayRemovedArraysOnce : arrayRemovedArraysOnce,
+
+  // arrayRemovedAll : arrayRemovedAll,
+  // arrayRemoveAll : arrayRemoveAll,
 
   arraySwap : arraySwap,
 
