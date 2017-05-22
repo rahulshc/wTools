@@ -10992,6 +10992,140 @@ function arrayPrependedArrayOnce( dstArray, insArray, onEqualize )
 
 //
 
+function arrayPrependArrays( dstArray )
+{
+  arrayPrependedArrays.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependArraysOnce( dstArray )
+{
+  arrayPrependedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependArraysOnceStrictly( dstArray )
+{
+  var result = arrayPrependedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+  for( var i = arguments.length - 1; i > 0; i-- )
+  {
+    if( _.arrayLike( arguments[ i ] ) )
+    expected += arguments[ i ].length;
+    else
+    expected += 1;
+  }
+
+  _.assert( result === expected );
+
+  return dstArray;
+}
+
+//
+
+function arrayPrependedArrays( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','expects array' );
+
+  var result = 0;
+
+  function _prepend( argument )
+  {
+    dstArray.unshift( argument );
+    result += 1;
+  }
+
+  for( var a = arguments.length - 1; a > 0; a-- )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayPrependedArrays: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = argument.length - 1; i >= 0; i-- )
+      if( _.arrayLike( argument[ i ] ) )
+      {
+        var insArray = argument[ i ];
+        for( var j = insArray.length - 1; j >= 0; j-- )
+        _prepend( insArray[ j ] );
+      }
+      else
+      {
+        _prepend( argument[ i ] );
+      }
+    }
+    else
+    {
+      _prepend( argument );
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayPrependedArraysOnce( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayPrependedArraysOnce :','expects array' );
+
+  var result = 0;
+  var o = this === Self ? Object.create( null ) : this;
+
+  _.assertMapHasOnly( o,arrayPrependedArraysOnce.defaults );
+
+  function _prependOnce( argument )
+  {
+    var index = _.arrayLeftIndexOf( dstArray, argument, o.onEqualize );
+    if( index === -1 )
+    {
+      dstArray.unshift( argument );
+      result += 1;
+    }
+  }
+
+  for( var a = arguments.length - 1; a > 0; a-- )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayPrependedArraysOnce: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = argument.length - 1; i >= 0; i-- )
+      if( _.arrayLike( argument[ i ] ) )
+      {
+        var insArray = argument[ i ];
+        for( var j = insArray.length - 1; j >= 0; j-- )
+        _prependOnce( insArray[ j ] );
+      }
+      else
+      {
+        _prependOnce( argument[ i ] );
+      }
+    }
+    else
+    {
+      _prependOnce( argument );
+    }
+  }
+
+  return result;
+}
+
+arrayPrependedArraysOnce.defaults =
+{
+  onEqualize : null
+}
+
+//
+
 function arrayAppend( dstArray, ins )
 {
   arrayAppended.apply( this, arguments );
@@ -11284,6 +11418,135 @@ function arrayAppendArray( dstArray, insArray )
 
   arrayAppendedArray.apply( this, arguments );
   return dstArray;
+}
+
+//
+
+function arrayAppendArrays( dstArray )
+{
+  arrayAppendedArrays.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendArraysOnce( dstArray )
+{
+  arrayAppendedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendArraysOnceStrictly( dstArray )
+{
+  var result = arrayAppendedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+  for( var i = arguments.length - 1; i > 0; i-- )
+  {
+    if( _.arrayLike( arguments[ i ] ) )
+    expected += arguments[ i ].length;
+    else
+    expected += 1;
+  }
+
+  _.assert( result === expected );
+
+  return dstArray;
+}
+
+//
+
+function arrayAppendedArrays( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayAppendedArrays :','expects array' );
+
+  var result = 0;
+
+  function _append( argument )
+  {
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    dstArray.push.apply( dstArray, argument );
+
+    if( _.arrayLike( argument ) )
+    result += argument.length;
+    else
+    result += 1;
+  }
+
+  for( var a = 1, len = arguments.length; a < len; a++ )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayAppendedArrays: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = 0, alen = argument.length; i < alen; i++ )
+      _append( argument[ i ] );
+    }
+    else
+    {
+      _append( argument );
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayAppendedArraysOnce( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','expects array' );
+
+  var result = 0;
+  var o = this === Self ? Object.create( null ) : this;
+
+  _.assertMapHasOnly( o,arrayAppendedArraysOnce.defaults );
+
+  function _appendOnce( argument )
+  {
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    for( var i = 0, len = argument.length; i < len; i++ )
+    {
+      var index = _.arrayLeftIndexOf( dstArray, argument[ i ], o.onEqualize );
+      if( index === -1 )
+      {
+        dstArray.push( argument[ i ] );
+        result += 1;
+      }
+    }
+  }
+
+  for( var a = 1, len = arguments.length; a < len; a++ )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayAppendedArraysOnce: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = 0, alen = argument.length; i < alen; i++ )
+      _appendOnce( argument[ i ] );
+    }
+    else
+    {
+      _appendOnce( argument );
+    }
+  }
+
+  return result;
+}
+
+arrayAppendedArraysOnce.defaults =
+{
+  onEqualize : null
 }
 
 //
@@ -11582,57 +11845,80 @@ function arrayRemovedArrayOnce( dstArray,insArray,onEqualize )
 
 //
 
-// function arrayRemoveArrays( dstArray )
-// {
-//   arrayRemovedArrays.apply( this, arguments );
-//   return dstArray;
-// }
+function arrayRemoveArrays( dstArray )
+{
+  arrayRemovedArrays.apply( this, arguments );
+  return dstArray;
+}
 
 //
 
-// function arrayRemoveArraysOnce( dstArray )
-// {
-// }
+function arrayRemoveArraysOnce( dstArray )
+{
+  arrayRemovedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
 
 //
 
-// function arrayRemoveArraysOnceStrictly( dstArray )
-// {
-// }
+function arrayRemoveArraysOnceStrictly( dstArray )
+{
+  var result = arrayRemovedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+  for( var i = arguments.length - 1; i > 0; i-- )
+  {
+    if( _.arrayLike( arguments[ i ] ) )
+    expected += arguments[ i ].length;
+    else
+    expected += 1;
+  }
+
+  _.assert( result === expected );
+
+  return dstArray;
+}
 
 //
 
 function arrayRemovedArrays( dstArray )
 {
-  _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+  _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','expects array' );
 
   var result = 0;
 
-  function _removeElement( element )
+  function _remove( argument )
   {
-    var index = dstArray.indexOf( element );
-    while( index !== -1 )
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    for( var i = argument.length - 1; i >= 0; i-- )
     {
-      dstArray.splice( index,1 );
-      result += 1;
-      index = dstArray.indexOf( element,index );
+      var index = dstArray.indexOf( argument[ i ] );
+      while( index !== -1 )
+      {
+        dstArray.splice( index,1 );
+        result += 1;
+        index = dstArray.indexOf( argument[ i ], index );
+      }
     }
   }
 
-  for( var a = arguments.length - 1 ; a > 0 ; a-- )
+  for( var a = arguments.length - 1 ; a > 0; a-- )
   {
     var argument = arguments[ a ];
 
-    if( argument === undefined )
-    throw _.err( 'arrayRemoveArray','argument is not defined' );
+    _.assert( argument !== undefined,'arrayRemovedArrays: ','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = 0 ; i < argument.length ; i++ )
-      _removeElement( argument[ i ] );
+      for( var i = argument.length - 1; i >= 0; i-- )
+      _remove( argument[ i ] );
     }
     else
-    _removeElement( argument );
+    {
+      _remove( argument );
+    }
   }
 
   return result;
@@ -11642,39 +11928,52 @@ function arrayRemovedArrays( dstArray )
 
 function arrayRemovedArraysOnce( dstArray )
 {
-  _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+  _.assert( _.arrayIs( dstArray ),'arrayRemovedArraysOnce :','expects array' );
 
   var result = 0;
+  var o = this === Self ? Object.create( null ) : this;
 
-  function _removeElement( element )
+  _.assertMapHasOnly( o,arrayAppendedArraysOnce.defaults );
+
+  function _removeOnce( argument )
   {
-    var index = dstArray.indexOf( element );
-    if( index !== -1 )
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    for( var i = argument.length - 1; i >= 0; i-- )
     {
-      result += 1;
-      dstArray.splice( index,1 );
+      var index = _.arrayLeftIndexOf( dstArray, argument[ i ], o.onEqualize );
+      if( index >= 0 )
+      {
+        dstArray.splice( index, 1 );
+        result += 1;
+      }
     }
   }
 
-  for( var a = arguments.length - 1 ; a > 0 ; a-- )
+  for( var a = arguments.length - 1 ; a > 0; a-- )
   {
     var argument = arguments[ a ];
 
-    if( argument === undefined )
-    throw _.err( 'arrayRemoveArray','argument is not defined' );
+    _.assert( argument !== undefined,'arrayRemovedArraysOnce: ','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = 0 ; i < argument.length ; i++ )
-      _removeElement( argument[ i ] );
+      for( var i = argument.length - 1; i >= 0; i-- )
+      _removeOnce( argument[ i ] );
     }
     else
     {
-      _removeElement( argument );
+      _removeOnce( argument );
     }
   }
 
   return result;
+}
+
+arrayRemovedArraysOnce.defaults =
+{
+  onEqualize : null
 }
 
 //
@@ -16436,66 +16735,66 @@ var Proto =
 
   // prepend
 
-  arrayPrepend : arrayPrepend,
+  __arrayPrepend : arrayPrepend,
   _arrayPrependOnce : _arrayPrependOnce,
-  arrayPrependOnce : arrayPrependOnce,
-  arrayPrependOnceStrictly : arrayPrependOnceStrictly,
-  arrayPrepended : arrayPrepended,
-  arrayPrependedOnce : arrayPrependedOnce,
+  __arrayPrependOnce : arrayPrependOnce,
+  __arrayPrependOnceStrictly : arrayPrependOnceStrictly,
+  __arrayPrepended : arrayPrepended,
+  __arrayPrependedOnce : arrayPrependedOnce,
 
-  arrayPrependArray : arrayPrependArray,
-  arrayPrependArrayOnce : arrayPrependArrayOnce,
-  arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
-  arrayPrependedArray : arrayPrependedArray,
-  arrayPrependedArrayOnce : arrayPrependedArrayOnce,
+  __arrayPrependArray : arrayPrependArray,
+  __arrayPrependArrayOnce : arrayPrependArrayOnce,
+  __arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
+  __arrayPrependedArray : arrayPrependedArray,
+  __arrayPrependedArrayOnce : arrayPrependedArrayOnce,
 
-  // arrayPrependArrays : arrayPrependArrays,
-  // arrayPrependArraysOnce : arrayPrependArraysOnce,
-  // arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
-  // arrayPrependedArrays : arrayPrependArrays,
-  // arrayPrependedArraysOnce : arrayPrependedArraysOnce,
+  __arrayPrependArrays : arrayPrependArrays,
+  __arrayPrependArraysOnce : arrayPrependArraysOnce,
+  __arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
+  __arrayPrependedArrays : arrayPrependedArrays,
+  __arrayPrependedArraysOnce : arrayPrependedArraysOnce,
 
   // append
 
-  arrayAppend : arrayAppend,
+  __arrayAppend : arrayAppend,
   _arrayAppendOnce : _arrayAppendOnce,
-  arrayAppendOnce : arrayAppendOnce,
-  arrayAppendOnceStrictly : arrayAppendOnceStrictly,
-  arrayAppended : arrayAppended,
-  arrayAppendedOnce : arrayAppendedOnce,
+  __arrayAppendOnce : arrayAppendOnce,
+  __arrayAppendOnceStrictly : arrayAppendOnceStrictly,
+  __arrayAppended : arrayAppended,
+  __arrayAppendedOnce : arrayAppendedOnce,
 
-  arrayAppendArray : arrayAppendArray,
+  __arrayAppendArray : arrayAppendArray,
   _arrayAppendArrayOnce : _arrayAppendArrayOnce,
-  arrayAppendArrayOnce : arrayAppendArrayOnce,
-  arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
-  arrayAppendedArray : arrayAppendedArray,
-  arrayAppendedArrayOnce : arrayAppendedArrayOnce,
+  __arrayAppendArrayOnce : arrayAppendArrayOnce,
+  __arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
+  __arrayAppendedArray : arrayAppendedArray,
+  __arrayAppendedArrayOnce : arrayAppendedArrayOnce,
 
-  // arrayAppendArrays : arrayPrependArrays,
-  // arrayAppendArraysOnce : arrayPrependArraysOnce,
-  // arrayAppendArraysOnceStrictly : arrayPrependArraysOnceStrictly,
-  // arrayAppendArrays : arrayPrependArrays,
-  // arrayAppendArraysOnce : arrayPrependedArraysOnce,
+  __arrayAppendArrays : arrayAppendArrays,
+  __arrayAppendArraysOnce : arrayAppendArraysOnce,
+  __arrayAppendArraysOnceStrictly : arrayAppendArraysOnceStrictly,
+  __arrayAppendedArrays : arrayAppendedArrays,
+  __arrayAppendedArraysOnce : arrayAppendedArraysOnce,
 
   //remove
 
-  arrayRemove : arrayRemove,
-  arrayRemoveOnce : arrayRemoveOnce,
-  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
-  arrayRemoved : arrayRemoved,
-  arrayRemovedOnce : arrayRemovedOnce,
+  __arrayRemove : arrayRemove,
+  __arrayRemoveOnce : arrayRemoveOnce,
+  __arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
+  __arrayRemoved : arrayRemoved,
+  __arrayRemovedOnce : arrayRemovedOnce,
 
-  arrayRemoveArray : arrayRemoveArray,
-  arrayRemoveArrayOnce : arrayRemoveArrayOnce,
-  arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
-  arrayRemovedArray : arrayRemovedArray,
-  arrayRemovedArrayOnce : arrayRemovedArrayOnce,
+  __arrayRemoveArray : arrayRemoveArray,
+  __arrayRemoveArrayOnce : arrayRemoveArrayOnce,
+  __arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
+  __arrayRemovedArray : arrayRemovedArray,
+  __arrayRemovedArrayOnce : arrayRemovedArrayOnce,
 
-  // arrayRemoveArrays : arrayRemoveArrays,
-  // arrayRemoveArraysOnce : arrayRemoveArraysOnce,
-  // arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
-  // arrayRemovedArrays : arrayRemovedArrays,
-  // arrayRemovedArraysOnce : arrayRemovedArraysOnce,
+  __arrayRemoveArrays : arrayRemoveArrays,
+  __arrayRemoveArraysOnce : arrayRemoveArraysOnce,
+  __arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
+  __arrayRemovedArrays : arrayRemovedArrays,
+  __arrayRemovedArraysOnce : arrayRemovedArraysOnce,
 
   // arrayRemovedAll : arrayRemovedAll,
   // arrayRemoveAll : arrayRemoveAll,
