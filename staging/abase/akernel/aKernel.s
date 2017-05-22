@@ -9102,61 +9102,6 @@ function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
 
 //
 
-/**
- * The arrayFlatten() method returns an array that contains all the passed arguments.
- *
- * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
- * iterate over array-like object (arguments[]) and assigns to the (src) each element,
- * checks if (src) is not equal to the 'undefined'.
- * If true, it adds element to the result.
- * If (src) is an Array and if element(s) of the (src) is not equal to the 'undefined'.
- * If true, it adds to the (result) each element of the (src) array.
- * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
- *
- * @param {...*} arguments - One or more argument(s).
- *
- * @example
- * // returns [ 'str', {}, 1, 2, 5, true ]
- * var arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
- *
- * @returns { Array } - Returns an array of the passed argument(s).
- * @method arrayFlatten
- * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
- * @memberof wTools
- */
-
-function arrayFlatten()
-{
-  var result = _.arrayIs( this ) ? this : [];
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-
-    var src = arguments[ a ];
-
-    if( !_.arrayLike( src ) )
-    {
-      if( src !== undefined ) result.push( src );
-      continue;
-    }
-
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      if( _.arrayIs( src[ s ] ) )
-      _.arrayFlatten.call( result,src[ s ] );
-      else if( src[ s ] !== undefined )
-      result.push( src[ s ] );
-      else if( src[ s ] === undefined )
-      throw _.err( 'array should have no undefined' );
-    }
-
-  }
-
-  return result;
-}
-
-//
-
 function _arrayCopy( src )
 {
 
@@ -11979,6 +11924,169 @@ arrayRemovedArraysOnce.defaults =
 //
 
 /**
+ * The arrayFlatten() method returns an array that contains all the passed arguments.
+ *
+ * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) and assigns to the (src) each element,
+ * checks if (src) is not equal to the 'undefined'.
+ * If true, it adds element to the result.
+ * If (src) is an Array and if element(s) of the (src) is not equal to the 'undefined'.
+ * If true, it adds to the (result) each element of the (src) array.
+ * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
+ *
+ * @param {...*} arguments - One or more argument(s).
+ *
+ * @example
+ * // returns [ 'str', {}, 1, 2, 5, true ]
+ * var arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
+ *
+ * @returns { Array } - Returns an array of the passed argument(s).
+ * @method arrayFlatten
+ * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
+ * @memberof wTools
+ */
+
+// function arrayFlatten()
+// {
+//   var result = _.arrayIs( this ) ? this : [];
+//
+//   for( var a = 0 ; a < arguments.length ; a++ )
+//   {
+//
+//     var src = arguments[ a ];
+//
+//     if( !_.arrayLike( src ) )
+//     {
+//       if( src !== undefined ) result.push( src );
+//       continue;
+//     }
+//
+//     for( var s = 0 ; s < src.length ; s++ )
+//     {
+//       if( _.arrayIs( src[ s ] ) )
+//       _.arrayFlatten.call( result,src[ s ] );
+//       else if( src[ s ] !== undefined )
+//       result.push( src[ s ] );
+//       else if( src[ s ] === undefined )
+//       throw _.err( 'array should have no undefined' );
+//     }
+//
+//   }
+//
+//   return result;
+// }
+
+//
+
+function arrayFlatten( dstArray, insArray )
+{
+  arrayFlattened.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayFlattenOnce( dstArray, insArray, onEqualize )
+{
+  arrayFlattenedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayFlattenOnceStrictly( dstArray, insArray, onEqualize )
+{
+  var result = arrayFlattenedOnce.apply( this, arguments );
+
+  function _count( arr )
+  {
+    var expected = 0;
+    for( var i = arr.length - 1; i >= 0; i-- )
+    {
+      if( _.arrayLike( arr[ i ] ) )
+      expected += _count( arr[ i ] );
+      else
+      expected += 1;
+    }
+    return expected;
+  }
+
+ _.assert( result === _count( insArray ) );
+
+ return dstArray;
+}
+
+//
+
+function arrayFlattened( dstArray, insArray )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectIs( this ) );
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+
+  var result = 0;
+
+  for( var i = 0, len = insArray.length; i < len; i++ )
+  {
+    if( _.arrayLike( insArray[ i ] ) )
+    {
+      var c = _.arrayFlattened( dstArray, insArray[ i ] );
+      result += c;
+    }
+    else if( insArray[ i ] === undefined )
+    {
+      throw _.err( 'array should have no undefined' );
+    }
+    else
+    {
+      dstArray.push( insArray[ i ] );
+      result += 1;
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayFlattenedOnce( dstArray, insArray, onEqualize )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.objectIs( this ) );
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+
+  var result = 0;
+
+  for( var i = 0, len = insArray.length; i < len; i++ )
+  {
+    if( _.arrayLike( insArray[ i ] ) )
+    {
+      var c = _.arrayFlattenedOnce( dstArray, insArray[ i ], onEqualize );
+      result += c;
+    }
+    else if( insArray[ i ] === undefined )
+    {
+      throw _.err( 'array should have no undefined' );
+    }
+    else
+    {
+      var index = _.arrayLeftIndexOf( dstArray, insArray[ i ], onEqualize );
+      if( index === -1 )
+      {
+        dstArray.push( insArray[ i ] );
+        result += 1;
+      }
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
  * Callback for compare two value.
  *
  * @callback arrayRemovedAll~compareCallback
@@ -13837,13 +13945,13 @@ function _mapKeys( o )
 
     if( !o.selectFilter )
     {
-      _._arrayAppendArrayOnce( result,keys );
+      _.arrayAppendArrayOnce( result,keys );
     }
     else for( var k = 0 ; k < keys.length ; k++ )
     {
       var e = o.selectFilter( src,keys[ k ] );
       if( e !== undefined )
-      _._arrayAppendOnce( result,e );
+      _.arrayAppendOnce( result,e );
       // if( e === undefined )
       // debugger;
     }
@@ -16680,8 +16788,6 @@ var Proto =
   arraySelect : arraySelect,
   arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
 
-  arrayFlatten : arrayFlatten,
-
   _arrayCopy : _arrayCopy,
   arrayCopy : arrayCopy,
 
@@ -16736,7 +16842,6 @@ var Proto =
   // prepend
 
   __arrayPrepend : arrayPrepend,
-  _arrayPrependOnce : _arrayPrependOnce,
   __arrayPrependOnce : arrayPrependOnce,
   __arrayPrependOnceStrictly : arrayPrependOnceStrictly,
   __arrayPrepended : arrayPrepended,
@@ -16757,14 +16862,12 @@ var Proto =
   // append
 
   __arrayAppend : arrayAppend,
-  _arrayAppendOnce : _arrayAppendOnce,
   __arrayAppendOnce : arrayAppendOnce,
   __arrayAppendOnceStrictly : arrayAppendOnceStrictly,
   __arrayAppended : arrayAppended,
   __arrayAppendedOnce : arrayAppendedOnce,
 
   __arrayAppendArray : arrayAppendArray,
-  _arrayAppendArrayOnce : _arrayAppendArrayOnce,
   __arrayAppendArrayOnce : arrayAppendArrayOnce,
   __arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
   __arrayAppendedArray : arrayAppendedArray,
@@ -16798,6 +16901,12 @@ var Proto =
 
   // arrayRemovedAll : arrayRemovedAll,
   // arrayRemoveAll : arrayRemoveAll,
+
+  __arrayFlatten : arrayFlatten,
+  __arrayFlattenOnce : arrayFlattenOnce,
+  __arrayFlattenOnceStrictly : arrayFlattenOnceStrictly,
+  __arrayFlattened : arrayFlattened,
+  __arrayFlattenedOnce : arrayFlattenedOnce,
 
   arraySwap : arraySwap,
 
