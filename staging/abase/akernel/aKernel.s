@@ -10627,6 +10627,27 @@ function arrayHas( insArray, element )
 // array transformation
 // --
 
+/**
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray ).
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The element to add.
+ *
+ * @example
+ * // returns [ 5, 1, 2, 3, 4 ]
+ * _._arrayPrepend( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4, 5 ]
+ * _._arrayPrepend( [ 5, 1, 2, 3, 4, 5 ], 5 );
+ *
+ * @returns { Array } Returns updated array, that contains new element( ins ).
+ * @method arrayPrepend
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( arguments.length ) is less or more than two.
+ * @memberof wTools
+ */
+
 function arrayPrepend( dstArray, ins )
 {
   arrayPrepended.apply( this,arguments );
@@ -10635,58 +10656,69 @@ function arrayPrepend( dstArray, ins )
 
 //
 
+// function _arrayPrependOnce( dstArray, ins, onEqualize )
+// {
+//
+//   _.assert( _.arrayIs( dst ) );
+//   _.assert( arguments.length === 2 );
+//
+//   // if( !dst )
+//   // return [ src ];
+//
+//   var i = dst.indexOf( src );
+//
+//   if( i === -1 )
+//   {
+//     dst.unshift( src );
+//     return dst.length - 1;
+//   }
+//
+//   return i;
+// }
+
+//
+
 /**
- * The _arrayPrependOnce() method adds at the beginning of an array (dst) a value (src),
- * if the array (dst) doesn't have the value (src).
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * if destination( dstArray ) doesn't have the value of ( ins ).
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
  *
- * @param { Array } dst - The source array.
- * @param { * } src - The value to add.
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The value to add.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
- * _._arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+ * _.arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
  *
  * @example
  * // returns [ 1, 2, 3, 4, 5 ]
- * _._arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ * _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
  *
  * @example
  * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
- * _._arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
  *
  * @example
  * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
- * _._arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
  *
- * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
- * otherwise, it returns the original array (dst).
- * @method _arrayPrependOnce
- * @throws { Error } Will throw an Error if (dst) is not an Array.
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependOnce( [ { value : 1 }, { value : 2 } ], { value : 1 }, onEqualize );
+ * // returns [ { value : 1 }, { value : 2 } ]
+ *
+ * @returns { Array } If an array ( dstArray ) doesn't have a value ( ins ) it returns the updated array ( dstArray ) with the new length,
+ * otherwise, it returns the original array ( dstArray ).
+ * @method arrayPrependOnce
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
  * @memberof wTools
  */
-
-function _arrayPrependOnce( dstArray, ins, onEqualize )
-{
-
-  _.assert( _.arrayIs( dst ) );
-  _.assert( arguments.length === 2 );
-
-  // if( !dst )
-  // return [ src ];
-
-  var i = dst.indexOf( src );
-
-  if( i === -1 )
-  {
-    dst.unshift( src );
-    return dst.length - 1;
-  }
-
-  return i;
-}
-
-//
 
 function arrayPrependOnce( dstArray, ins, onEqualize )
 {
@@ -10697,34 +10729,46 @@ function arrayPrependOnce( dstArray, ins, onEqualize )
 //
 
 /**
- * The arrayPrependOnceStrictly() method prepends only unique value from( ins ) to the beginning of( dst ).
- * Throws error if( ins ) already exist in ( dst );
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * if destination( dstArray ) doesn't have the value of ( ins ).
+ * Returns updated array( dstArray ) if( ins ) was added, otherwise throws an Error.
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
  *
- * @param { Array } dst - The source array.
+ * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { Function } onElement - A callback function to compare element of the array( dst ) with( ins ). @see {@link wTools.compareCallback} - See for more info.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * var dst = [ 1, 2, 3, 4 ];
- * _.arrayPrependOnceStrictly( dst, 5 );
- * console.log( dst );
  * // returns [ 5, 1, 2, 3, 4 ]
+ * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4 ], 5 );
  *
  * @example
- * var dst = [ 1, 2, 3, 4 ];
- * _.arrayPrependOnceStrictly( dst, 5 );
  * // throws error
+ * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4, 5 ], 5 );
  *
  * @example
- * var dst = [ 1, 2, 3, 4 ];
- * _.arrayPrependOnceStrictly( dst, 5, function( el, ins ){ return el === ins } );
- * console.log( dst );
- * // returns [ 5, 1, 2, 3, 4 ]
+ * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
+ * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
  *
+ * @example
+ * // throws error
+ * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ *
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependOnceStrictly( [ { value : 1 }, { value : 2 } ], { value : 0 }, onEqualize );
+ * // returns [ { value : 0 }, { value : 1 }, { value : 2 } ]
+ *
+ * @returns { Array } If an array ( dstArray ) doesn't have a value ( ins ) it returns the updated array ( dstArray ) with the new length,
+ * otherwise, it throws an Error.
  * @method arrayPrependOnceStrictly
- * @throws { Error } Will throw an Error if ( dst ) is not an Array.
- * @throws { Error } Will throw an Error if ( ins ) already exists in array( dst ).
- * @throws { Error } Will throw an Error if ( arguments.length ) is not equal two or three.
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
+ * @throws { Error } An Error if ( ins ) already exists on( dstArray ).
  * @memberof wTools
  */
 
