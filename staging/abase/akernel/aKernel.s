@@ -10958,10 +10958,21 @@ function arrayPrependArraysOnceStrictly( dstArray )
   var result = arrayPrependedArraysOnce.apply( this, arguments );
 
   var expected = 0;
+
   for( var i = arguments.length - 1; i > 0; i-- )
   {
-    if( _.arrayLike( arguments[ i ] ) )
-    expected += arguments[ i ].length;
+    var argument = arguments[ i ];
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var j = argument.length - 1; j >= 0; j-- )
+      {
+        if( _.arrayLike( argument[ j ] ) )
+        expected = argument[ j ].length;
+        else
+        expected += 1;
+      }
+    }
     else
     expected += 1;
   }
@@ -11390,8 +11401,18 @@ function arrayAppendArraysOnceStrictly( dstArray )
   var expected = 0;
   for( var i = arguments.length - 1; i > 0; i-- )
   {
-    if( _.arrayLike( arguments[ i ] ) )
-    expected += arguments[ i ].length;
+    var argument = arguments[ i ];
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var j = argument.length - 1; j >= 0; j-- )
+      {
+        if( _.arrayLike( argument[ j ] ) )
+        expected = argument[ j ].length;
+        else
+        expected += 1;
+      }
+    }
     else
     expected += 1;
   }
@@ -11813,8 +11834,18 @@ function arrayRemoveArraysOnceStrictly( dstArray )
   var expected = 0;
   for( var i = arguments.length - 1; i > 0; i-- )
   {
-    if( _.arrayLike( arguments[ i ] ) )
-    expected += arguments[ i ].length;
+    var argument = arguments[ i ];
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var j = argument.length - 1; j >= 0; j-- )
+      {
+        if( _.arrayLike( argument[ j ] ) )
+        expected = argument[ j ].length;
+        else
+        expected += 1;
+      }
+    }
     else
     expected += 1;
   }
