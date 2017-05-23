@@ -11072,7 +11072,7 @@ function arrayPrependArraysOnceStrictly( dstArray )
       for( var j = argument.length - 1; j >= 0; j-- )
       {
         if( _.arrayLike( argument[ j ] ) )
-        expected = argument[ j ].length;
+        expected += argument[ j ].length;
         else
         expected += 1;
       }
@@ -11512,7 +11512,7 @@ function arrayAppendArraysOnceStrictly( dstArray )
       for( var j = argument.length - 1; j >= 0; j-- )
       {
         if( _.arrayLike( argument[ j ] ) )
-        expected = argument[ j ].length;
+        expected += argument[ j ].length;
         else
         expected += 1;
       }
@@ -11945,7 +11945,7 @@ function arrayRemoveArraysOnceStrictly( dstArray )
       for( var j = argument.length - 1; j >= 0; j-- )
       {
         if( _.arrayLike( argument[ j ] ) )
-        expected = argument[ j ].length;
+        expected += argument[ j ].length;
         else
         expected += 1;
       }
