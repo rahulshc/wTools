@@ -4,30 +4,82 @@
 
 var _ = wTools;
 
-function _declare( declarator ) { //
+function _arrayDescriptorsApplyTo( dst )
+{
 
-var ArrayType = declarator.ArrayType;
-var ArrayName = declarator.ArrayName;
+  // debugger;
+
+  _.assert( arguments.length === 1 );
+  _.assert( dst.withArray === undefined );
+
+  dst.withArray = Object.create( null );
+
+  for( var d in wTools.ArrayDescriptorsMap )
+  {
+    dst.withArray[ d ] = Object.create( dst );
+    dst.withArray[ d ].array = wTools.ArrayDescriptorsMap[ d ];
+  }
+
+}
+
+function _declare( Descriptor ) { //
+
+var ArrayType = Descriptor.ArrayType;
+var ArrayName = Descriptor.ArrayName;
+
+Descriptor = _.mapExtend( null,Descriptor );
 
 // if( !wTools[ ArrayName ] )
 // wTools[ ArrayName ] = Object.create( null );
 //var Self = wTools[ ArrayName ];
 
-var Self = Object.create( null );
+// var Self = Object.create( null );
 
 // --
 // routines
 // --
 
-function mixinArrayDescriptor( dst )
+// function mixinArrayDescriptorTo( dst )
+// {
+//
+//   _.assert( _.objectIs( dst ) );
+//   _.assert( arguments.length === 1 );
+//
+//   debugger;
+//
+//   _.mapExtendFiltering( _.filter.srcOwn(),dst,this._ArrayDescriptor );
+//
+//   return this._ArrayDescriptor;
+// }
+
+// function _makeArrayDescriptorsFor( dst )
+// {
+//
+//   _.assert( _.objectIs( dst ) );
+//   _.assert( arguments.length === 1 );
+//   _.assert( dst.array === undefined );
+//
+//   dst.array = Object.create( null );
+//
+//   debugger;
+//   for( var d in wTools.ArrayDescriptorsMap )
+//   {
+//     dst.array[ d ] = Object.create( dst );
+//     _.mapExtend( dst.array[ d ],wTools.ArrayDescriptorsMap[ d ] );
+//   }
+//   debugger;
+//
+// }
+
+//
+
+function makeSimilar( src,length )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  _.assert( _.objectIs( dst ) );
-  _.assert( arguments.length === 1 );
+  var result = _.arrayMakeSimilar( src,length );
 
-  _.mapExtendFiltering( _.filter.srcOwn(),dst,this._ArrayDescriptor );
-
-  return this._ArrayDescriptor;
+  return result;
 }
 
 //
@@ -40,7 +92,7 @@ function makeArrayOfLength( length )
   _.assert( length === undefined || length >= 0 );
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  var result = new ArrayType( length );
+  var result = new this.array.ArrayType( length );
 
   return result;
 }
@@ -55,9 +107,9 @@ function makeArrayOfLengthZeroed( length )
   _.assert( length === undefined || length >= 0 );
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  var result = new ArrayType( length );
+  var result = new this.array.ArrayType( length );
 
-  if( this.ArrayType === Array )
+  if( this.array.ArrayType === Array )
   for( var i = 0 ; i < length ; i++ )
   result[ i ] = 0;
 
@@ -66,15 +118,15 @@ function makeArrayOfLengthZeroed( length )
 
 //
 
-function makeArrayCoercing( src )
+function arrayFromCoercing( src )
 {
   _.assert( _.arrayLike( src ) );
   _.assert( arguments.length === 1 );
 
-  if( src.constructor === this.ArrayType )
+  if( src.constructor === this.array.ArrayType )
   return src;
 
-  var result = new this.ArrayType( src );
+  var result = new this.array.ArrayType( src );
   return result;
 }
 
@@ -85,32 +137,40 @@ function makeArrayCoercing( src )
 var Extend =
 {
 
-  mixinArrayDescriptor : mixinArrayDescriptor,
+  // mixinArrayDescriptorTo : mixinArrayDescriptorTo,
+  // _makeArrayDescriptorsFor : _makeArrayDescriptorsFor,
 
+  makeSimilar : makeSimilar,
   makeArrayOfLength : makeArrayOfLength,
   makeArrayOfLengthZeroed : makeArrayOfLengthZeroed,
-  makeArrayCoercing : makeArrayCoercing,
 
-  ArrayType : ArrayType,
-  ArrayName : ArrayName,
+  arrayFrom : arrayFromCoercing,
+  arrayFromCoercing : arrayFromCoercing,
+
+  // ArrayType : ArrayType,
+  // ArrayName : ArrayName,
+
+  array : Descriptor,
 
 }
 
-Extend._ArrayDescriptor = Self;
+// Extend._ArrayDescriptor = Self;
 
-_.mapExtend( Self,Extend );
+_.mapExtend( Descriptor,Extend );
 
-_.assert( !wTools.ArrayDescriptors[ ArrayName ] );
-wTools.ArrayDescriptors[ ArrayName ] = Self;
+_.assert( !wTools.ArrayDescriptorsMap[ ArrayName ] );
+wTools.ArrayDescriptorsMap[ ArrayName ] = Descriptor;
 
 // _.accessorForbid( Self,
 // {
 //   ArrayDescriptor : 'ArrayDescriptor',
 // });
 
+return Descriptor;
+
 } // _declare
 
-var Types =
+var Descriptors =
 [
   { ArrayType : Float32Array, ArrayName : 'Float32' },
   { ArrayType : Uint32Array, ArrayName : 'Wrd32' },
@@ -118,14 +178,31 @@ var Types =
   { ArrayType : Array, ArrayName : 'Array' },
 ]
 
-if( wTools.ArrayDescriptors )
+if( wTools.ArrayDescriptorsMap )
 return;
 
-wTools.ArrayDescriptors = wTools.ArrayDescriptors || {};
+_.assert( !wTools.ArrayDescriptorsMap );
+_.assert( !wTools.ArrayDescriptor );
+_.assert( !wTools.array );
+_.assert( !wTools.withArray );
 
-for( var t in Types )
-_declare( Types[ t ] );
+wTools._arrayDescriptorsApplyTo = _arrayDescriptorsApplyTo;
+wTools.ArrayDescriptorsMap = wTools.ArrayDescriptorsMap || Object.create( null );
 
-wTools.ArrayDescriptors.Array.mixinArrayDescriptor( wTools );
+for( var d = 0 ; d < Descriptors.length ; d++ )
+_declare( Descriptors[ d ] );
+
+// debugger;
+// wTools.ArrayDescriptor = wTools.ArrayDescriptorsMap.Array;
+wTools.array = wTools.ArrayDescriptorsMap.Array;
+// _.assert( wTools.ArrayDescriptorsMap );
+// debugger;
+
+_arrayDescriptorsApplyTo( wTools );
+
+_.assert( _.objectIs( wTools.ArrayDescriptorsMap ) );
+_.assert( _.objectIs( wTools.array ) );
+
+// debugger;
 
 })();

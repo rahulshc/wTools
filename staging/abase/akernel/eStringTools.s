@@ -532,9 +532,9 @@ function _toStr( src,o )
     else throw _.err( 'unexpected' );
 
   }
-  else if( _.rowIs( src ) )
+  else if( _.vectorIs( src ) )
   {
-    result += _.row.toStr( src,o );
+    result += _.vector.toStr( src,o );
   }
   else if( _.errIs( src ) )
   {
@@ -631,7 +631,7 @@ function _toStrShort( src,o )
 
   var result = '';
 
-  if( _.rowIs( src ) )
+  if( _.vectorIs( src ) )
   {
     result += '[ Row with ' + src.length + ' elements' + ' ]';
   }
@@ -738,7 +738,7 @@ function _toStrIsVisibleElement( src,o )
 
     return true;
   }
-  else if( _.rowIs( src ) )
+  else if( _.vectorIs( src ) )
   {
     if( o.noRow )
     return false;
@@ -1146,7 +1146,7 @@ function _toStrFromArrayFiltered( src,o )
   {
     var i2 = 0;
     var i = 0;
-    var src2 = _.arrayNew( src,v );
+    var src2 = _.arrayMakeSimilar( src,v );
     while( i < length )
     {
       if( _toStrIsVisibleElement( src[ i ],optionsItem ) )
@@ -4298,6 +4298,27 @@ function strFilenameFor( srcStr,o )
   return result;
 }
 
+//
+
+function strsSort( srcs )
+{
+
+  _.assert( _.arrayIs( srcs ) );
+
+  debugger;
+
+  var result = srcs.sort( function( a, b )
+  {
+    // a = a.toLowerCase();
+    // b = b.toLowerCase();
+    if( a < b ) return -1;
+    if( a > b ) return +1;
+    return 0;
+  });
+
+  return result;
+}
+
 // --
 // format
 // --
@@ -5212,6 +5233,8 @@ var Proto =
 
   strCamelize : strCamelize,
   strFilenameFor : strFilenameFor,
+
+  strsSort : strsSort,
 
 
   // format

@@ -299,26 +299,26 @@ function arraySub( test )
 
 //
 
-function arrayNew( test )
+function arrayMakeSimilar( test )
 {
 
   test.description = 'an empty array';
-  var got = _.arrayNew( [  ], 0 );
+  var got = _.arrayMakeSimilar( [  ], 0 );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'length = 1';
-  var got = _.arrayNew( [  ], 1 );
+  var got = _.arrayMakeSimilar( [  ], 1 );
   var expected = [ ,  ];
   test.identical( got, expected );
 
   test.description = 'length = 2';
-  var got = _.arrayNew( [ 1, 2, 3 ], 2 );
+  var got = _.arrayMakeSimilar( [ 1, 2, 3 ], 2 );
   var expected = [ , , ];
   test.identical( got, expected );
 
   test.description = 'length = 4';
-  var got = _.arrayNew( [ 1, 2, 3 ], 4 );
+  var got = _.arrayMakeSimilar( [ 1, 2, 3 ], 4 );
   var expected = [ , , , , ];
   test.identical( got, expected );
 
@@ -330,31 +330,31 @@ function arrayNew( test )
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
-      _.arrayNew();
+      _.arrayMakeSimilar();
     });
 
     test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
-      _.arrayNew('wrong argument');
+      _.arrayMakeSimilar('wrong argument');
     });
 
     test.description = 'arguments[1] is wrong';
     test.shouldThrowError( function()
     {
-      _.arrayNew( [ 1, 2, 3 ], 'wrong type of argument' );
+      _.arrayMakeSimilar( [ 1, 2, 3 ], 'wrong type of argument' );
     });
 
     test.description = 'extra argument';
     test.shouldThrowError( function()
     {
-      _.arrayNew( [ 1, 2, 3 ], 4, 'redundant argument' );
+      _.arrayMakeSimilar( [ 1, 2, 3 ], 4, 'redundant argument' );
     });
 
     test.description = 'argument is not wrapped into array';
     test.shouldThrowError( function()
     {
-      _.arrayNew( 1, 2, 3, 4 );
+      _.arrayMakeSimilar( 1, 2, 3, 4 );
     });
 
   }
@@ -3594,7 +3594,7 @@ var Self =
     arrayLike : arrayLike,
     hasLength : hasLength,
     arraySub : arraySub,
-    arrayNew : arrayNew,
+    arrayMakeSimilar : arrayMakeSimilar,
     arrayNewOfSameLength : arrayNewOfSameLength,
     arrayOrNumber : arrayOrNumber,
     arraySelect : arraySelect,

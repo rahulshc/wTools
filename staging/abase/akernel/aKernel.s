@@ -19,6 +19,9 @@ if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ 
 // specia globals
 
 _global_._default_ = Symbol.for( 'default' );
+_global_._all_ = Symbol.for( 'all' );
+_global_._any_ = Symbol.for( 'any' );
+_global_._none_ = Symbol.for( 'none' );
 
 // veification
 
@@ -1734,24 +1737,25 @@ function entityDiff( src1,src2,o )
  * @memberof wTools
  */
 
-function _entityEqual( src1,src2,o )
+function _entityEqual( src1, src2, iterator )
 {
 
-  var path = o.path;
-  o.lastPath = path;
+  var path = iterator.path;
+  iterator.lastPath = path;
 
   _.assert( arguments.length === 3 );
 
   if( src1 === src2 )
   return true;
 
-  if( o.strict )
+  if( iterator.strict )
   {
     if( _ObjectToString.call( src1 ) !== _ObjectToString.call( src2 ) )
     return false;
   }
   else
   {
+    if( _.atomicIs( src1 ) )
     if( _ObjectToString.call( src1 ) !== _ObjectToString.call( src2 ) && src1 != src2 )
     return false;
   }
@@ -1760,7 +1764,7 @@ function _entityEqual( src1,src2,o )
 
   if( _.objectIs( src1 ) && _.routineIs( src1._equalAre ) )
   {
-    return src1._equalAre( src1,src2,o );
+    return src1._equalAre( src1,src2,iterator );
   }
   else if( _.arrayLike( src1 ) )
   {
@@ -1769,15 +1773,15 @@ function _entityEqual( src1,src2,o )
     return false;
     if( src1.constructor !== src2.constructor )
     return false;
-    if( !o.contain )
+    if( !iterator.contain )
     if( src1.length !== src2.length )
     return false;
     for( var k = 0 ; k < src2.length ; k++ )
     {
-      o.path = path + '.' + k;
-      if( !_entityEqual( src1[ k ], src2[ k ], o ) )
+      iterator.path = path + '.' + k;
+      if( !_entityEqual( src1[ k ], src2[ k ], iterator ) )
       return false;
-      o.path = path;
+      iterator.path = path;
     }
 
   }
@@ -1787,25 +1791,25 @@ function _entityEqual( src1,src2,o )
     if( _.routineIs( src1.equalWith ) )
     {
       _.assert( src1.equalWith.length <= 2 );
-      if( !src1.equalWith( src1,src2,o ) )
+      if( !src1.equalWith( src1, src2, iterator ) )
       return false;
     }
     else if( _.regexpIs( src1 ) )
     {
-      return _.regexpIdentical( src1,src2 );
+      return _.regexpIdentical( src1, src2 );
     }
     else
     {
 
-      if( !o.contain )
+      if( !iterator.contain )
       if( _.entityLength( src1 ) !== _.entityLength( src2 ) )
       return false;
       for( var k in src2 )
       {
-        o.path = path + '.' + k;
-        if( !_entityEqual( src1[ k ], src2[ k ], o ) )
+        iterator.path = path + '.' + k;
+        if( !_entityEqual( src1[ k ], src2[ k ], iterator ) )
         return false;
-        o.path = path;
+        iterator.path = path;
       }
 
     }
@@ -1813,11 +1817,10 @@ function _entityEqual( src1,src2,o )
   }
   else if( _.numberIs( src1 ) )
   {
-    return o.onSameNumbers( src1,src2 );
+    return iterator.onSameNumbers( src1,src2 );
   }
   else if( _.bufferViewIs( src1 ) )
   {
-    if( !_.bufferViewIs( src2 ) )
     debugger;
     if( !_.bufferViewIs( src2 ) )
     return false;
@@ -1830,7 +1833,7 @@ function _entityEqual( src1,src2,o )
   }
   else
   {
-    if( o.strict )
+    if( iterator.strict )
     {
       if( src1 !== src2 )
       return false;
@@ -1847,7 +1850,7 @@ function _entityEqual( src1,src2,o )
 
 //
 
-function _entityEqualOptions( o )
+function _entityEqualIteratorMake( o )
 {
 
   function _sameNumbersStrict( a,b )
@@ -1862,13 +1865,11 @@ function _entityEqualOptions( o )
     return Math.abs( a-b ) <= eps;
   }
 
-  _assert( arguments.length === 1 );
-  _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
-
   var o = o || Object.create( null );
 
-  _.assertMapHasOnly( o,_entityEqualOptions.defaults );
-  _.mapSupplement( o,_entityEqualOptions.defaults );
+  _assert( arguments.length === 0 || arguments.length === 1 );
+  _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+  _.routineOptions( _entityEqualIteratorMake,o );
 
   if( o.onSameNumbers === null )
   o.onSameNumbers = o.strict ? _sameNumbersStrict : _sameNumbersNotStrict;
@@ -1878,7 +1879,7 @@ function _entityEqualOptions( o )
   return o;
 }
 
-_entityEqualOptions.defaults =
+_entityEqualIteratorMake.defaults =
 {
   onSameNumbers : null,
   contain : 0,
@@ -1930,7 +1931,7 @@ function entityEqual( src1,src2,o )
 
   _assert( arguments.length === 2 || arguments.length === 3 );
 
-  var o = _entityEqualOptions( o );
+  var o = _entityEqualIteratorMake( o );
 
   return _entityEqual( src1,src2,o );
 }
@@ -1939,7 +1940,7 @@ entityEqual.defaults =
 {
 }
 
-entityEqual.defaults.__proto__ = _entityEqualOptions.defaults;
+entityEqual.defaults.__proto__ = _entityEqualIteratorMake.defaults;
 
 //
 
@@ -2842,7 +2843,7 @@ function _entityFilter( o )
 
   if( _.arrayLike( o.src ) )
   {
-    result = _.arrayNew( o.src,0 );
+    result = _.arrayMakeSimilar( o.src,0 );
     for( var s = 0, d = 0 ; s < o.src.length ; s++, d++ )
     {
       var r = onEach.call( o.src,o.src[ s ],s,o.src );
@@ -5811,9 +5812,9 @@ function argumentsIs( src )
 
 //
 
-function rowIs( src )
+function vectorIs( src )
 {
-  if( src && src._rowArray )
+  if( src && src._vectorArray )
   return true;
   else return false;
 }
@@ -8087,12 +8088,12 @@ function dateToStr( date )
    * The bufferRelen() method returns a new or the same typed array (src) with a new or the same length (len).
    *
    * It creates the variable (result) checks, if (len) is more than (src.length),
-   * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayNew(src, len))
+   * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayMakeSimilar(src, len))
    * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
    * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
    * Otherwise, it returns an initial typed array.
    *
-   * @see {@link wTools.arrayNew} - See for more information.
+   * @see {@link wTools.arrayMakeSimilar} - See for more information.
    *
    * @param { typedArray } src - The source typed array.
    * @param { Number } len - The length of a typed array.
@@ -8128,7 +8129,7 @@ function bufferRelen( src,len )
 
   if( len > src.length )
   {
-    result = arrayNew( src, len );
+    result = arrayMakeSimilar( src, len );
     result.set( src );
   }
   else if( len < src.length )
@@ -8150,7 +8151,7 @@ function bufferResize( src,size )
 
   if( size > src.byteLength )
   {
-    result = arrayNew( src, size );
+    result = arrayMakeSimilar( src, size );
     var resultTyped = new Uint8Array( result,0,result.byteLength );
     var srcTyped = new Uint8Array( src,0,src.byteLength );
     resultTyped.set( srcTyped );
@@ -8837,6 +8838,23 @@ var bufferToNodeBuffer = ( function( buffer )
 // array
 // --
 
+/*
+
+alteration Routines :
+
+- array { Op } { Tense } { How }
+- array { Op } { Tense } Array { How }
+- array { Op } { Tense } Arrays { How }
+- arrayFlatten { Tense } { How }
+
+alteration Op : Append , Prepend , Remove
+alteration Tense : - , ed
+alteration How : - , Once , OnceStrictly
+
+// 60 routines
+
+*/
+
 /**
  * The arraySub() method returns a shallow copy of a portion of an array
  * or a new TypedArray that contains
@@ -8886,7 +8904,7 @@ function arraySub( src,begin,end )
 //
 
 /**
- * The arrayNew() method returns a new array or a new TypedArray with length equal (length)
+ * The arrayMakeSimilar() method returns a new array or a new TypedArray with length equal (length)
  * or new TypedArray with the same length of the initial array if second argument is not provided.
  *
  * @param { arrayLike } ins - The instance of an array.
@@ -8894,14 +8912,14 @@ function arraySub( src,begin,end )
  *
  * @example
  * // returns [ , ,  ]
- * var arr = _.arrayNew( [ 1, 2, 3 ] );
+ * var arr = _.arrayMakeSimilar( [ 1, 2, 3 ] );
  *
  * @example
  * // returns [ , , ,  ]
- * var arr = _.arrayNew( [ 1, 2, 3 ], 4 );
+ * var arr = _.arrayMakeSimilar( [ 1, 2, 3 ], 4 );
  *
  * @returns { arrayLike }  Returns an array with a certain (length).
- * @method arrayNew
+ * @method arrayMakeSimilar
  * @throws { Error } If the passed arguments is less than two.
  * @throws { Error } If the (length) is not a number.
  * @throws { Error } If the first argument in not an array like object.
@@ -8909,14 +8927,11 @@ function arraySub( src,begin,end )
  * @memberof wTools
  */
 
-function arrayNew( ins,length )
+function arrayMakeSimilar( ins,length )
 {
   var result;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  // if( ins instanceof ArrayBuffer )
-  // debugger;
 
   if( length === undefined )
   {
@@ -8928,7 +8943,7 @@ function arrayNew( ins,length )
   result = new Array( length );
   else if( _.bufferTypedIs( ins ) || ins instanceof ArrayBuffer )
   result = new ins.constructor( length );
-  else throw _.err( 'arrayNew :','unknown type of instance' );
+  else _.assert( 0,'unknown type of array' );
 
   return result;
 }
@@ -8959,7 +8974,7 @@ function arrayNew( ins,length )
 //
 //   if( _.atomicIs( ins ) ) return;
 //   if( !_.arrayIs( ins ) && !_.bufferTypedIs( ins ) ) return;
-//   var result = arrayNew( ins,ins.length );
+//   var result = arrayMakeSimilar( ins,ins.length );
 //   return result;
 // }
 
@@ -9206,7 +9221,7 @@ function arrayCopy()
   // make result
 
   if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
-  result = arrayNew( arguments[ 0 ],length );
+  result = arrayMakeSimilar( arguments[ 0 ],length );
   else if( _.bufferRawIs( arguments[ 0 ] ) )
   result = new ArrayBuffer( length );
 
@@ -9680,6 +9695,14 @@ function arrayFrom( src )
 {
 
   _.assert( arguments.length === 1 );
+
+  if( _.bufferTypedIs( src ) )
+  {
+    var result = new Array( src.length );
+    for( var i = 0 ; i < src.length ; i++ )
+    result[ i ] = src[ i ];
+    return result;
+  }
 
   if( _.arrayIs( src ) )
   return src;
@@ -10596,7 +10619,7 @@ function arrayCutin( dstArray,range,srcArray )
       // length = dstArray.byteLength;
     }
     else
-    var result = arrayNew( dstArray, newLength );
+    var result = arrayMakeSimilar( dstArray, newLength );
 
     if( first > 0 )
     for( var i = 0; i < first; ++i )
@@ -10670,7 +10693,7 @@ function arrayUniqueIs( o )
   /**/
 
   var number = o.src.length;
-  var isUnique = _.arrayNew( o.src );
+  var isUnique = _.arrayMakeSimilar( o.src );
   var index;
 
   for( var i = 0 ; i < o.src.length ; i++ )
@@ -10727,7 +10750,7 @@ function arrayUnique( src,onElement )
     onElement : onElement,
     includeFirst : 1,
   });
-  var result = arrayNew( src,isUnique.number );
+  var result = arrayMakeSimilar( src,isUnique.number );
 
   var c = 0;
   for( var i = 0 ; i < src.length ; i++ )
@@ -11072,7 +11095,7 @@ function arrayDuplicate( o )
 
   var length = o.src.length * o.numberOfDuplicatesPerElement;
   var numberOfElements = o.src.length / o.numberOfAtomsPerElement;
-  o.result = o.result || arrayNew( o.src,length );
+  o.result = o.result || arrayMakeSimilar( o.src,length );
 
   for( var c = 0, cl = numberOfElements ; c < cl ; c++ )
   {
@@ -11975,6 +11998,53 @@ function arrayHas( insArray, element )
   return insArray.indexOf( element ) !== -1;
 }
 
+//
+
+function arrayAll( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  for( var s = 0 ; s < src.length ; src++ )
+  if( !src[ s ] )
+  return false;
+
+  return true;
+}
+
+//
+
+function arrayAny( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  debugger;
+  for( var s = 0 ; s < src.length ; src++ )
+  if( src[ s ] )
+  return true;
+
+  debugger;
+  return false;
+}
+
+//
+
+function arrayNone( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  debugger;
+  for( var s = 0 ; s < src.length ; src++ )
+  if( src[ s ] )
+  return false;
+
+  debugger;
+  return true;
+}
+
+
 // --
 // array set
 // --
@@ -12205,36 +12275,6 @@ function arraySetContainSomething( src )
 
   return false;
 }
-
-// --
-// array constructor
-// --
-
-// function _makeArrayOfLength( length )
-// {
-//   if( length === undefined )
-//   length = 0;
-//
-//   var result = new this.ArrayType( length );
-//
-//   return result;
-// }
-//
-// //
-//
-// function _makeArrayOfLengthZeroed( length )
-// {
-//   if( length === undefined )
-//   length = 0;
-//
-//   var result = new this.ArrayType( length );
-//
-//   if( this.ArrayType === Array )
-//   for( var i = 0 ; i < length ; i++ )
-//   result[ i ] = 0;
-//
-//   return result;
-// }
 
 // --
 // map move
@@ -12794,18 +12834,62 @@ function mapFirstPair( srcObject )
 
 function mapInvert( src,dst )
 {
-  var dst = dst || Object.create( null );
+  var o = this === Self ? Object.create( null ) : this;
+
+  if( src )
+  o.src = src;
+
+  if( dst )
+  o.dst = dst;
+
+  _.routineOptions( mapInvert,o );
+
+  o.dst = o.dst || Object.create( null );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
+  _.assert( _.objectLike( o.src ) );
 
-  for( var s in src )
+  var del
+  if( o.duplicate === 'delete' )
+  del = Object.create( null );
+
+  /* */
+
+  for( var k in o.src )
   {
-    _.assert( dst[ src[ s ] ] === undefined,'Cant invert the map, it has several keys with value',src[ s ] );
-    dst[ src[ s ] ] = s;
+    var e = o.src[ k ];
+    if( o.duplicate === 'delete' )
+    if( o.dst[ e ] !== undefined )
+    {
+      del[ e ] = k;
+      continue;
+    }
+    if( o.duplicate === 'array' || o.duplicate === 'array-with-value' )
+    {
+      if( o.dst[ e ] === undefined )
+      o.dst[ e ] = o.duplicate === 'array-with-value' ? [ e ] : [];
+      o.dst[ e ].push( k );
+    }
+    else
+    {
+      _.assert( o.dst[ e ] === undefined,'Cant invert the map, it has several keys with value',o.src[ k ] );
+      o.dst[ e ] = k;
+    }
   }
 
-  return dst;
+  /* */
+
+  if( o.duplicate === 'delete' )
+  _.mapDelete( o.dst,del );
+
+  return o.dst;
+}
+
+mapInvert.defaults =
+{
+  src : null,
+  dst : null,
+  duplicate : 'error',
 }
 
 //
@@ -13884,7 +13968,6 @@ function mapFields( src )
   {
     if( !_.routineIs( src[ k ] ) )
     return k;
-    debugger;
   }
 
   var result = _._mapProperties( o );
@@ -14995,7 +15078,7 @@ var Proto =
   entityDiff : entityDiff,
 
   _entityEqual : _entityEqual,
-  _entityEqualOptions : _entityEqualOptions,
+  _entityEqualIteratorMake : _entityEqualIteratorMake,
   entityEqual : entityEqual,
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
@@ -15110,7 +15193,7 @@ var Proto =
 
   argumentsIs : argumentsIs,
 
-  rowIs : rowIs,
+  vectorIs : vectorIs,
 
   numberIs : numberIs,
   numberIsNotNan : numberIsNotNan,
@@ -15273,7 +15356,7 @@ var Proto =
   // array
 
   arraySub : arraySub,
-  arrayNew : arrayNew,
+  arrayMakeSimilar : arrayMakeSimilar,
   arrayFromNumber : arrayFromNumber,
 
   arraySelect : arraySelect,
@@ -15362,6 +15445,10 @@ var Proto =
   arrayForRange : arrayForRange,
 
   arrayHas : arrayHas,
+
+  arrayAll : arrayAll,
+  arrayAny : arrayAny,
+  arrayNone : arrayNone,
 
 
   // array set
