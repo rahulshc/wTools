@@ -1408,18 +1408,21 @@ function __arrayPrependArrays( test )
   test.identical( got, dst );
 
   var dst = [];
-  var got = _.__arrayPrependArrays( dst, [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] );
-  test.identical( dst, [ 1, 2, 3, 4, [ 5 ] ] );
+  var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4 ] ] ];
+  var got = _.__arrayPrependArrays( dst, insArray );
+  test.identical( dst, [ 1, 2, 3, [ 4 ] ] );
   test.identical( got, dst );
 
   var dst = [];
-  var got = _.__arrayPrependArrays( dst, 1, 2, 3 );
+  var insArray = [ 1, 2, 3 ]
+  var got = _.__arrayPrependArrays( dst, insArray );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependArrays( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var insArray = [ 'a', 1, [ { a : 1 } ], { b : 2 } ];
+  var got = _.__arrayPrependArrays( dst, insArray );
   test.identical( dst, [  'a', 1, { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, dst );
 
@@ -1458,6 +1461,17 @@ function __arrayPrependArrays( test )
       _.__arrayPrependArrays( 1, [ 2 ] );
     });
 
+    test.description = 'second arg is no a ArrayLike';
+    test.shouldThrowError( function()
+    {
+      _.__arrayPrependArrays( [], 2 );
+    });
+
+    test.description = 'too many args';
+    test.shouldThrowError( function()
+    {
+      _.__arrayPrependArrays( [], [ 1 ], [ 2 ] );
+    });
   }
 };
 
@@ -1489,12 +1503,13 @@ function __arrayPrependedArrays( test )
   test.identical( got, 2 );
 
   var dst = [];
-  var got = _.__arrayPrependedArrays( dst, [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] );
-  test.identical( dst, [ 1, 2, 3, 4, [ 5 ] ] );
+  var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4 ], 5 ] ];
+  var got = _.__arrayPrependedArrays( dst, insArray );
+  test.identical( dst, [ 1, 2, 3, [ 4 ], 5 ] );
   test.identical( got, 5 );
 
   var dst = [];
-  var got = _.__arrayPrependedArrays( dst, 1, 2, 3 );
+  var got = _.__arrayPrependedArrays( dst, [ 1, 2, 3 ]);
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
@@ -1539,6 +1554,18 @@ function __arrayPrependedArrays( test )
       _.__arrayPrependedArrays( 1, [ 2 ] );
     });
 
+    test.description = 'second arg is no a ArrayLike';
+    test.shouldThrowError( function()
+    {
+      _.__arrayPrependedArrays( [], 2 );
+    });
+
+    test.description = 'too many args';
+    test.shouldThrowError( function()
+    {
+      _.__arrayPrependedArrays( [], [ 1 ], [ 2 ] );
+    });
+
   }
 }
 
@@ -1577,13 +1604,14 @@ function __arrayPrependArraysOnce( test )
   test.identical( dst, [ 'a', { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, dst );
 
-  var dst = [ 1, 2, 3, 5 ];
-  var got = _.__arrayPrependArraysOnce( dst, [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] );
-  test.identical( dst, [ 4, [ 5 ], 1, 2, 3, 5 ] );
+  var dst = [ 1, 2, 3, 4 ];
+  var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4 ], 5 ] ];
+  var got = _.__arrayPrependArraysOnce( dst, insArray );
+  test.identical( dst, [ [ 4 ], 5, 1, 2, 3, 4 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayPrependArraysOnce( dst, 1, 2, 3 );
+  var got = _.__arrayPrependArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( got, [ 2, 1, 3 ] );
   test.identical( dst, got );
 
@@ -1594,13 +1622,10 @@ function __arrayPrependArraysOnce( test )
     return a === b;
   }
 
-  var o = { onEqualize : onEqualize };
-
   var dst = [ 1, 3 ];
-  var got = _.__arrayPrependArraysOnce.apply( o,[ dst, 1, 2, 3 ] );
+  var got = _.__arrayPrependArraysOnce( dst, [ 1, 2, 3 ], onEqualize );
   test.identical( got, [ 2, 1, 3 ] );
   test.identical( dst, got );
-
 
   test.description = 'argument is undefined';
   var dst = [ 1 ];
@@ -1638,10 +1663,15 @@ function __arrayPrependArraysOnce( test )
     test.description = 'onEqualize is not a routine';
     test.shouldThrowError( function()
     {
-      var o = { onEqualize : 1 };
-
-      _.__arrayPrependArraysOnce.apply( o,[ [], 1, 2, 3 ] );
+      _.__arrayPrependArraysOnce( [], [ 1, 2, 3 ], {} );
     });
+
+    test.description = 'second arg is no a ArrayLike';
+    test.shouldThrowError( function()
+    {
+      _.__arrayPrependArraysOnce( [], 2 );
+    });
+
   }
 
 }
@@ -1665,13 +1695,15 @@ function __arrayPrependArraysOnceStrictly( test )
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependArraysOnceStrictly( dst, [ 'a' ],[ { a : 1 } ], { b : 2 } );
+  var insArray = [ [ 'a' ],[ { a : 1 } ], { b : 2 } ];
+  var got = _.__arrayPrependArraysOnceStrictly( dst, insArray );
   test.identical( dst, [ 'a', { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, dst );
 
   var dst = [ 0 ];
-  var got = _.__arrayPrependArraysOnceStrictly( dst, [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] );
-  test.identical( dst, [ 1, 2, 3, 4, [ 5 ], 0 ] );
+  var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] ];
+  var got = _.__arrayPrependArraysOnceStrictly( dst, insArray );
+  test.identical( dst, [ 1, 2, 3, [ 4, [ 5 ] ], 0 ] );
   test.identical( got, dst );
 
   test.description = 'onEqualize';
@@ -1681,14 +1713,10 @@ function __arrayPrependArraysOnceStrictly( test )
     return a === b;
   }
 
-  var o = { onEqualize : onEqualize };
-
   var dst = [ 4,5 ];
-  var got = _.__arrayPrependArraysOnceStrictly.apply( o,[ dst, 1, 2, 3 ] );
+  var got = _.__arrayPrependArraysOnceStrictly( dst, [ 1, 2, 3 ], onEqualize )
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
   test.identical( dst, got );
-
-  test.description = 'ins has existing element';
 
   test.description = 'array has undefined';
   var dst = [ 1 ];
@@ -1718,9 +1746,7 @@ function __arrayPrependArraysOnceStrictly( test )
     test.description = 'onEqualize is not a routine';
     test.shouldThrowError( function()
     {
-      var o = { onEqualize : 1 };
-
-      _.__arrayPrependArraysOnceStrictly.apply( o,[ [], 1, 2, 3 ] );
+      _.__arrayPrependArraysOnceStrictly( [], [ 1,2,3 ], {} );
     });
 
     var dst = [ 1, 2, 3 ];
@@ -1744,6 +1770,12 @@ function __arrayPrependArraysOnceStrictly( test )
       _.__arrayPrependArraysOnceStrictly( dst, undefined );
     });
     test.identical( dst, [ 1 ] );
+
+    test.description = 'second arg is no a ArrayLike';
+    test.shouldThrowError( function()
+    {
+      _.__arrayPrependArraysOnceStrictly( [], 2 );
+    });
   }
 
 }
