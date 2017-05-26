@@ -6829,7 +6829,7 @@ function regexpBut_( options )
     atLeastOnce = options.atLeastOnce;
   }
 
-  var words = _.__arrayFlatten( args );
+  var words = _.__arrayFlatten( [], args );
   var result = '^(?:(?!';
 
   // !!! test me in builder
@@ -6875,7 +6875,7 @@ function regexpArrayMake( src )
 
   _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
 
-  src = _.__arrayFlatten( src );
+  src = _.__arrayFlatten( [], _.arrayAs( src ) );
 
   for( var k = src.length-1 ; k >= 0 ; k-- )
   {
