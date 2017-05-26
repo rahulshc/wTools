@@ -220,7 +220,7 @@ function _includeSimply( src )
   if( _.arrayLike( src ) )
   {
     var result = [];
-    src = _.arrayFlatten( src );
+    src = _.__arrayFlatten( [], src );
     for( var a = 0 ; a < src.length ; a++ )
     result[ a ] = _includeSimplyAct( src[ a ] );
     return result;
@@ -239,7 +239,7 @@ function include( src )
   if( _.arrayLike( src ) )
   {
     var result = [];
-    src = _.arrayFlatten( src );
+    src = _.__arrayFlatten( [], src );
     for( var a = 0 ; a < src.length ; a++ )
     result[ a ] = _includeAct( src[ a ] );
     return result;
