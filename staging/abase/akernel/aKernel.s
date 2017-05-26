@@ -9102,61 +9102,6 @@ function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
 
 //
 
-/**
- * The arrayFlatten() method returns an array that contains all the passed arguments.
- *
- * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
- * iterate over array-like object (arguments[]) and assigns to the (src) each element,
- * checks if (src) is not equal to the 'undefined'.
- * If true, it adds element to the result.
- * If (src) is an Array and if element(s) of the (src) is not equal to the 'undefined'.
- * If true, it adds to the (result) each element of the (src) array.
- * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
- *
- * @param {...*} arguments - One or more argument(s).
- *
- * @example
- * // returns [ 'str', {}, 1, 2, 5, true ]
- * var arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
- *
- * @returns { Array } - Returns an array of the passed argument(s).
- * @method arrayFlatten
- * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
- * @memberof wTools
- */
-
-function arrayFlatten()
-{
-  var result = _.arrayIs( this ) ? this : [];
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-
-    var src = arguments[ a ];
-
-    if( !_.arrayLike( src ) )
-    {
-      if( src !== undefined ) result.push( src );
-      continue;
-    }
-
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      if( _.arrayIs( src[ s ] ) )
-      _.arrayFlatten.call( result,src[ s ] );
-      else if( src[ s ] !== undefined )
-      result.push( src[ s ] );
-      else if( src[ s ] === undefined )
-      throw _.err( 'array should have no undefined' );
-    }
-
-  }
-
-  return result;
-}
-
-//
-
 function _arrayCopy( src )
 {
 
@@ -10682,6 +10627,27 @@ function arrayHas( insArray, element )
 // array transformation
 // --
 
+/**
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray ).
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The element to add.
+ *
+ * @example
+ * // returns [ 5, 1, 2, 3, 4 ]
+ * _.arrayPrepend( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @example
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
+ * _.arrayPrepend( [ 1, 2, 3, 4, 5 ], 5 );
+ *
+ * @returns { Array } Returns updated array, that contains new element( ins ).
+ * @method arrayPrepend
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( arguments.length ) is less or more than two.
+ * @memberof wTools
+ */
+
 function arrayPrepend( dstArray, ins )
 {
   arrayPrepended.apply( this,arguments );
@@ -10690,58 +10656,69 @@ function arrayPrepend( dstArray, ins )
 
 //
 
+// function _arrayPrependOnce( dstArray, ins, onEqualize )
+// {
+//
+//   _.assert( _.arrayIs( dst ) );
+//   _.assert( arguments.length === 2 );
+//
+//   // if( !dst )
+//   // return [ src ];
+//
+//   var i = dst.indexOf( src );
+//
+//   if( i === -1 )
+//   {
+//     dst.unshift( src );
+//     return dst.length - 1;
+//   }
+//
+//   return i;
+// }
+
+//
+
 /**
- * The _arrayPrependOnce() method adds at the beginning of an array (dst) a value (src),
- * if the array (dst) doesn't have the value (src).
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * if destination( dstArray ) doesn't have the value of ( ins ).
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
  *
- * @param { Array } dst - The source array.
- * @param { * } src - The value to add.
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The value to add.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
- * _._arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+ * _.arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
  *
  * @example
  * // returns [ 1, 2, 3, 4, 5 ]
- * _._arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ * _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
  *
  * @example
  * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
- * _._arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
  *
  * @example
  * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
- * _._arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
  *
- * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
- * otherwise, it returns the original array (dst).
- * @method _arrayPrependOnce
- * @throws { Error } Will throw an Error if (dst) is not an Array.
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependOnce( [ { value : 1 }, { value : 2 } ], { value : 1 }, onEqualize );
+ * // returns [ { value : 1 }, { value : 2 } ]
+ *
+ * @returns { Array } If an array ( dstArray ) doesn't have a value ( ins ) it returns the updated array ( dstArray ) with the new length,
+ * otherwise, it returns the original array ( dstArray ).
+ * @method arrayPrependOnce
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
  * @memberof wTools
  */
-
-function _arrayPrependOnce( dstArray, ins, onEqualize )
-{
-
-  _.assert( _.arrayIs( dst ) );
-  _.assert( arguments.length === 2 );
-
-  // if( !dst )
-  // return [ src ];
-
-  var i = dst.indexOf( src );
-
-  if( i === -1 )
-  {
-    dst.unshift( src );
-    return dst.length - 1;
-  }
-
-  return i;
-}
-
-//
 
 function arrayPrependOnce( dstArray, ins, onEqualize )
 {
@@ -10752,34 +10729,46 @@ function arrayPrependOnce( dstArray, ins, onEqualize )
 //
 
 /**
- * The arrayPrependOnceStrictly() method prepends only unique value from( ins ) to the beginning of( dst ).
- * Throws error if( ins ) already exist in ( dst );
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * if destination( dstArray ) doesn't have the value of ( ins ).
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
+ * Returns updated array( dstArray ) if( ins ) was added, otherwise throws an Error.
  *
- * @param { Array } dst - The source array.
+ * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { Function } onElement - A callback function to compare element of the array( dst ) with( ins ). @see {@link wTools.compareCallback} - See for more info.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * var dst = [ 1, 2, 3, 4 ];
- * _.arrayPrependOnceStrictly( dst, 5 );
- * console.log( dst );
  * // returns [ 5, 1, 2, 3, 4 ]
+ * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4 ], 5 );
  *
  * @example
- * var dst = [ 1, 2, 3, 4 ];
- * _.arrayPrependOnceStrictly( dst, 5 );
  * // throws error
+ * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4, 5 ], 5 );
  *
  * @example
- * var dst = [ 1, 2, 3, 4 ];
- * _.arrayPrependOnceStrictly( dst, 5, function( el, ins ){ return el === ins } );
- * console.log( dst );
- * // returns [ 5, 1, 2, 3, 4 ]
+ * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
+ * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
  *
+ * @example
+ * // throws error
+ * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ *
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependOnceStrictly( [ { value : 1 }, { value : 2 } ], { value : 0 }, onEqualize );
+ * // returns [ { value : 0 }, { value : 1 }, { value : 2 } ]
+ *
+ * @returns { Array } If an array ( dstArray ) doesn't have a value ( ins ) it returns the updated array ( dstArray ) with the new length,
+ * otherwise, it throws an Error.
  * @method arrayPrependOnceStrictly
- * @throws { Error } Will throw an Error if ( dst ) is not an Array.
- * @throws { Error } Will throw an Error if ( ins ) already exists in array( dst ).
- * @throws { Error } Will throw an Error if ( arguments.length ) is not equal two or three.
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
+ * @throws { Error } An Error if ( ins ) already exists on( dstArray ).
  * @memberof wTools
  */
 
@@ -10801,6 +10790,24 @@ function arrayPrependOnceStrictly( dstArray, ins, onEqualize )
 
 //
 
+/**
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * and returns zero if value was succesfully added.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The element to add.
+ *
+ * @example
+ * // returns 0
+ * _.arrayPrepended( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @returns { Array } Returns updated array, that contains new element( ins ).
+ * @method arrayPrepended
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( arguments.length ) is not equal to two.
+ * @memberof wTools
+ */
+
 function arrayPrepended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
@@ -10811,6 +10818,48 @@ function arrayPrepended( dstArray, ins )
 }
 
 //
+
+/**
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * if destination( dstArray ) doesn't have the value of ( ins ).
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The value to add.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns 0
+ * _.arrayPrependedOnce( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @example
+ * // returns -1
+ * _.arrayPrependedOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ *
+ * @example
+ * // returns 0
+ * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ *
+ * @example
+ * // returns -1
+ * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ *
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependedOnce( [ { value : 1 }, { value : 2 } ], { value : 1 }, onEqualize );
+ * // returns -1
+ *
+ * @returns { Array } Returns zero if elements was succesfully added, otherwise returns -1.
+ *
+ * @method arrayPrependedOnce
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
+ * @memberof wTools
+ */
 
 function arrayPrependedOnce( dstArray, ins, onEqualize )
 {
@@ -10830,28 +10879,24 @@ function arrayPrependedOnce( dstArray, ins, onEqualize )
 //
 
 /**
- * The arrayPrependArray() method adds one or more elements to the beginning of the (dst) array
- * and returns the new length of the array.
+ * Method adds all elements from array( insArray ) to the beginning of an array( dstArray ).
  *
- * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
- * iterate over array-like object (arguments[]) from the end to the beginning and assigns to the (argument) each element,
- * checks, if (argument) is equal to the 'undefined'.
- * If true, it throws an Error.
- * if (argument) is an array-like.
- * If true, it merges the (argument) into the (result) array.
- * Otherwise, it adds element to the result.
- *
- * @param { Array } dst - Initial array.
- * @param {*} arguments[] - One or more argument(s) to add to the front of the (dst) array.
+ * @param { Array } dstArray - The destination array.
+ * @param { ArrayLike } insArray - The source array.
  *
  * @example
- * // returns [ 'str', false, { a : 1 }, 42, 3, 7, 13, 1, 2 ];
- * var arr = _.arrayPrependArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+ * // returns [ 5, 1, 2, 3, 4 ]
+ * _.arrayPrependArray( [ 1, 2, 3, 4 ], [ 5 ] );
  *
- * @returns { arrayLike } - Returns an array (dst) with all of the following argument(s) that were added to the beginning of the (dst) array.
+ * @example
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
+ * _.arrayPrependArray( [ 1, 2, 3, 4, 5 ], [ 5 ] );
+ *
+ * @returns { Array } Returns updated array, that contains elements from( insArray ).
  * @method arrayPrependArray
- * @throws { Error } If the first argument is not array.
- * @throws { Error } If type of the argument is equal undefined.
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
+ * @throws { Error } An Error if ( arguments.length ) is less or more than two.
  * @memberof wTools
  */
 
@@ -10880,64 +10925,69 @@ function arrayPrependArray( dstArray, insArray )
 
 //
 
-/**
- * The _arrayPrependArrayOnce() method returns an array of elements from (dst)
- * and prepending only unique following arguments to the beginning.
- *
- * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
- * iterate over array-like object (arguments[]) from the end to the beginning and assigns to the (argument) each element,
- * checks, if (argument) is equal to the 'undefined'.
- * If true, it throws an Error.
- * if (argument) is an array-like.
- * If true, it iterate over array (argument) and checks if (result) has the same values as the (argument).
- * If false, it adds elements of (argument) to the beginning of the (result) array.
- * Otherwise, it checks if (result) has not the same values as the (argument).
- * If true, it adds elements to the beginning of the (result) array.
- *
- * @param { Array } dst - Initial array.
- * @param {*} arguments[] - One or more argument(s).
- *
- * @example
- * // returns [ {}, 'str', 5, 2, 4 ]
- * var arr = _._arrayPrependArrayOnce( [ 2, 4 ], 5, 4, 'str', {} );
- *
- * @returns { Array } - Returns an array (dst) with only unique following argument(s) that were added to the beginning of the (dst) array.
- * @method _arrayPrependArrayOnce
- * @throws { Error } If the first argument is not array.
- * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools
- */
-
-function _arrayPrependArrayOnce( dstArray )
-{
-  var result = dstArray;
-
-  _assert( _.arrayIs( dstArray ),'_arrayPrependArrayOnce :','expects array' );
-
-  for( var a = arguments.length - 1 ; a > 0 ; a-- )
-  {
-    var argument = arguments[ a ];
-
-    _assert( argument !== undefined,'_arrayPrependArrayOnce','argument is not defined' );
-
-    if( _.arrayLike( argument ) )
-    {
-      for( var i = argument.length-1 ; i >= 0 ; i-- )
-      if( result.indexOf( argument[ i ] ) === -1 )
-      result.unshift( argument[ i ] );
-    }
-    else
-    {
-      if( result.indexOf( argument ) === -1 )
-      result.unshift( argument );
-    }
-
-  }
-
-  return result;
-}
+// function _arrayPrependArrayOnce( dstArray )
+// {
+//   var result = dstArray;
+//
+//   _assert( _.arrayIs( dstArray ),'_arrayPrependArrayOnce :','expects array' );
+//
+//   for( var a = arguments.length - 1 ; a > 0 ; a-- )
+//   {
+//     var argument = arguments[ a ];
+//
+//     _assert( argument !== undefined,'_arrayPrependArrayOnce','argument is not defined' );
+//
+//     if( _.arrayLike( argument ) )
+//     {
+//       for( var i = argument.length-1 ; i >= 0 ; i-- )
+//       if( result.indexOf( argument[ i ] ) === -1 )
+//       result.unshift( argument[ i ] );
+//     }
+//     else
+//     {
+//       if( result.indexOf( argument ) === -1 )
+//       result.unshift( argument );
+//     }
+//
+//   }
+//
+//   return result;
+// }
 
 //
+
+/**
+ * Method adds all unique elements from array( insArray ) to the beginning of an array( dstArray )
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { ArrayLike } insArray - The source array.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns [ 0, 1, 2, 3, 4 ]
+ * _.arrayPrependArrayOnce( [ 1, 2, 3, 4 ], [ 0, 1, 2, 3, 4 ] );
+ *
+ * @example
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
+ * _.arrayPrependArrayOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], [ 'Dmitry' ] );
+ *
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependArrayOnce( [ { value : 1 }, { value : 2 } ], [ { value : 1 } ], onEqualize );
+ * // returns [ { value : 1 }, { value : 2 } ]
+ *
+ * @returns { Array } Returns updated array( dstArray ) or original if nothing added.
+ * @method arrayPrependArrayOnce
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
+ * @memberof wTools
+ */
 
 function arrayPrependArrayOnce( dstArray, insArray, onEqualize )
 {
@@ -10946,6 +10996,43 @@ function arrayPrependArrayOnce( dstArray, insArray, onEqualize )
 }
 
 //
+
+/**
+ * Method adds all unique elements from array( insArray ) to the beginning of an array( dstArray )
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
+ * Returns updated array( dstArray ) if all elements from( insArray ) was added, otherwise throws error.
+ * Even error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { ArrayLike } insArray - The source array.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns [ 0, 1, 2, 3, 4 ]
+ * _.arrayPrependArrayOnceStrictly( [ 1, 2, 3, 4 ], [ 0, 1, 2, 3, 4 ] );
+ *
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependArrayOnceStrictly( [ { value : 1 }, { value : 2 } ], { value : 1 }, onEqualize );
+ * // returns [ { value : 1 }, { value : 2 } ]
+ *
+ * * @example
+ * var dst = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+ * _.arrayPrependArrayOnceStrictly( dst, [ 'Antony', 'Dmitry' ] );
+ * // throws error, but dstArray was updated by one element from insArray
+ *
+ * @returns { Array } Returns updated array( dstArray ) or throws an error if not all elements from source
+ * array( insArray ) was added.
+ * @method arrayPrependArrayOnceStrictly
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
+ * @memberof wTools
+ */
 
 function arrayPrependArrayOnceStrictly( dstArray, insArray, onEqualize )
 {
@@ -10956,6 +11043,28 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, onEqualize )
 }
 
 //
+
+/**
+ * Method adds all elements from array( insArray ) to the beginning of an array( dstArray ).
+ * Returns count of added elements.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { ArrayLike } insArray - The source array.
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependedArray( dst, [ 5, 6, 7 ] );
+ * // returns 3
+ * console.log( dst );
+ * //returns [ 5, 6, 7, 1, 2, 3, 4 ]
+ *
+ * @returns { Array } Returns count of added elements.
+ * @method arrayPrependedArray
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
+ * @throws { Error } An Error if ( arguments.length ) is less or more than two.
+ * @memberof wTools
+ */
 
 function arrayPrependedArray( dstArray, insArray )
 {
@@ -10968,6 +11077,44 @@ function arrayPrependedArray( dstArray, insArray )
 }
 
 //
+
+/**
+ * Method adds all unique elements from array( insArray ) to the beginning of an array( dstArray )
+ * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
+ * Returns count of added elements.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { ArrayLike } insArray - The source array.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns 3
+ * _.arrayPrependedArrayOnce( [ 1, 2, 3 ], [ 4, 5, 6] );
+ *
+ * @example
+ * // returns 1
+ * _.arrayPrependedArrayOnce( [ 0, 2, 3, 4 ], [ 1, 1, 1 ] );
+ *
+ * @example
+ * // returns 0
+ * _.arrayPrependedArrayOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], [ 'Dmitry' ] );
+ *
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a.value === b.value;
+ * };
+ * _.arrayPrependedArrayOnce( [ { value : 1 }, { value : 2 } ], [ { value : 1 } ], onEqualize );
+ * // returns 0
+ *
+ * @returns { Array } Returns count of added elements.
+ * @method arrayPrependedArrayOnce
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
+ * @throws { Error } An Error if ( onEqualize ) is not an Function.
+ * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
+ * @memberof wTools
+ */
 
 function arrayPrependedArrayOnce( dstArray, insArray, onEqualize )
 {
@@ -10988,6 +11135,301 @@ function arrayPrependedArrayOnce( dstArray, insArray, onEqualize )
   }
 
   return result;
+}
+
+//
+
+/**
+ * Method adds all elements from provided arrays to the beginning of an array( dstArray ) in same order
+ * that they are in( arguments ).
+ * If argument provided after( dstArray ) is not a ArrayLike entity it will be prepended to destination array as usual element.
+ * If argument is an ArrayLike entity and contains inner arrays, routine looks for elements only on first two levels.
+ * Example: _.arrayPrependArrays( [], [ [ 1 ], [ [ 2 ] ] ] ) -> [ 1, [ 2 ] ];
+ * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param{ arrayLike | * } arguments[...] - Source arguments.
+ *
+ * @example
+ * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
+ * _.arrayPrependArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependArrays( dst, [ 5 ], [ 6 ], undefined );
+ * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
+ *
+ * @returns { Array } Returns updated array( dstArray ).
+ * @method arrayPrependArrays
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if one of ( arguments ) is undefined.
+ * @memberof wTools
+ */
+
+function arrayPrependArrays( dstArray )
+{
+  arrayPrependedArrays.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+/**
+ * Method adds all unique elements from provided arrays to the beginning of an array( dstArray ) in same order
+ * that they are in( arguments ).
+ * If argument provided after( dstArray ) is not a ArrayLike entity it will be prepended to destination array as usual element.
+ * If argument is an ArrayLike entity and contains inner arrays, routine looks for elements only on first two levels.
+ * Example: _.arrayPrependArrays( [], [ [ 1 ], [ [ 2 ] ] ] ) -> [ 1, [ 2 ] ];
+ * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
+
+ * @param { Array } dstArray - The destination array.
+ * @param{ arrayLike | * } arguments[...] - Source arguments.
+ *
+ * @example
+ * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
+ * _.arrayPrependArraysOnce( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependArraysOnce( dst, [ 5 ], 5, [ 6 ], 6, undefined );
+ * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
+ *
+ * @returns { Array } Returns updated array( dstArray ).
+ * @method arrayPrependArraysOnce
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if one of ( arguments ) is undefined.
+ * @memberof wTools
+ */
+
+function arrayPrependArraysOnce( dstArray )
+{
+  arrayPrependedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+/**
+ * Method adds all unique elements from provided arrays to the beginning of an array( dstArray ) in same order
+ * that they are in( arguments ).
+ * Throws an error if one of arguments is undefined.
+ * If argument provided after( dstArray ) is not a ArrayLike entity it will be prepended to destination array as usual element.
+ * If argument is an ArrayLike entity and contains inner arrays, routine looks for elements only on first two levels.
+ * Example: _.arrayPrependArraysOnce( [], [ [ 1 ], [ [ 2 ] ] ] ) -> [ 1, [ 2 ] ];
+ * After copying checks if all elements( from first two levels ) was copied, if true returns updated array( dstArray ), otherwise throws an error.
+ * Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
+
+ * @param { Array } dstArray - The destination array.
+ * @param { arrayLike | * } arguments[...] - Source arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns [ 5, 6, 7, 8, 1, 2, 3, 4 ]
+ * _.arrayPrependArraysOnceStrictly( [ 1, 2, 3, 4 ], 5, [ 6, [ 7 ] ], 8 );
+ *
+ * @example
+ * // throws error
+ * _.arrayPrependArraysOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ *
+ * @example
+ * function onEqualize( a, b )
+ * {
+ *  return a === b;
+ * };
+ * var dst = [];
+ * var arguments = [ dst, [ 1, [ 2 ], [ [ 3 ] ] ], 4 ];
+ * _.arrayPrependArraysOnceStrictly.apply( { onEqualize : onEqualize }, arguments );
+ * //returns [ 1, 2, [ 3 ], 4 ]
+ *
+ * @returns { Array } Returns updated array( dstArray ).
+ * @method arrayPrependArraysOnceStrictly
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if one of ( arguments ) is undefined.
+ * @throws { Error } An Error if count of added elements is not equal to count of elements from( arguments )( only first two levels inside of array are counted ).
+ * @memberof wTools
+ */
+
+function arrayPrependArraysOnceStrictly( dstArray )
+{
+  var result = arrayPrependedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+
+  for( var i = arguments.length - 1; i > 0; i-- )
+  {
+    var argument = arguments[ i ];
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var j = argument.length - 1; j >= 0; j-- )
+      {
+        if( _.arrayLike( argument[ j ] ) )
+        expected += argument[ j ].length;
+        else
+        expected += 1;
+      }
+    }
+    else
+    expected += 1;
+  }
+
+  _.assert( result === expected );
+
+  return dstArray;
+}
+
+//
+
+/**
+ * Method adds all elements from provided arrays to the beginning of an array( dstArray ) in same order
+ * that they are in( arguments ).
+ * If argument provided after( dstArray ) is not a ArrayLike entity it will be prepended to destination array as usual element.
+ * If argument is an ArrayLike entity and contains inner arrays, routine looks for elements only on first two levels.
+ * Example: _.arrayPrependArrays( [], [ [ 1 ], [ [ 2 ] ] ] ) -> [ 1, [ 2 ] ];
+ * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param{ arrayLike | * } arguments[...] - Source arguments.
+ *
+ * @example
+ * // returns 3
+ * _.arrayPrependedArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependedArrays( dst, [ 5 ], [ 6 ], undefined );
+ * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
+ *
+ * @returns { Array } Returns count of added elements.
+ * @method arrayPrependedArrays
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @memberof wTools
+ */
+
+function arrayPrependedArrays( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','expects array' );
+
+  var result = 0;
+
+  function _prepend( argument )
+  {
+    dstArray.unshift( argument );
+    result += 1;
+  }
+
+  for( var a = arguments.length - 1; a > 0; a-- )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayPrependedArrays: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = argument.length - 1; i >= 0; i-- )
+      if( _.arrayLike( argument[ i ] ) )
+      {
+        var insArray = argument[ i ];
+        for( var j = insArray.length - 1; j >= 0; j-- )
+        _prepend( insArray[ j ] );
+      }
+      else
+      {
+        _prepend( argument[ i ] );
+      }
+    }
+    else
+    {
+      _prepend( argument );
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * Method adds all unique elements from provided arrays to the beginning of an array( dstArray ) in same order
+ * that they are in( arguments ).
+ * If argument provided after( dstArray ) is not a ArrayLike entity it will be prepended to destination array as usual element.
+ * If argument is an ArrayLike entity and contains inner arrays, routine looks for elements only on first two levels.
+ * Example: _.arrayPrependArrays( [], [ [ 1 ], [ [ 2 ] ] ] ) -> [ 1, [ 2 ] ];
+ * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param{ arrayLike | * } arguments[...] - Source arguments.
+ *
+ * @example
+ * // returns 0
+ * _.arrayPrependedArraysOnce( [ 1, 2, 3, 4, 5, 6, 7 ], [ 5 ], [ 6 ], 7 );
+ *
+ * @example
+ * // returns 3
+ * _.arrayPrependedArraysOnce( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayPrependedArraysOnce( dst, [ 5 ], [ 6 ], undefined );
+ * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
+ *
+ * @returns { Array } Returns count of added elements.
+ * @method arrayPrependedArraysOnce
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @memberof wTools
+ */
+
+function arrayPrependedArraysOnce( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayPrependedArraysOnce :','expects array' );
+
+  var result = 0;
+  var o = this === Self ? Object.create( null ) : this;
+
+  _.assertMapHasOnly( o,arrayPrependedArraysOnce.defaults );
+
+  function _prependOnce( argument )
+  {
+    var index = _.arrayLeftIndexOf( dstArray, argument, o.onEqualize );
+    if( index === -1 )
+    {
+      dstArray.unshift( argument );
+      result += 1;
+    }
+  }
+
+  for( var a = arguments.length - 1; a > 0; a-- )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayPrependedArraysOnce: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = argument.length - 1; i >= 0; i-- )
+      if( _.arrayLike( argument[ i ] ) )
+      {
+        var insArray = argument[ i ];
+        for( var j = insArray.length - 1; j >= 0; j-- )
+        _prependOnce( insArray[ j ] );
+      }
+      else
+      {
+        _prependOnce( argument[ i ] );
+      }
+    }
+    else
+    {
+      _prependOnce( argument );
+    }
+  }
+
+  return result;
+}
+
+arrayPrependedArraysOnce.defaults =
+{
+  onEqualize : null
 }
 
 //
@@ -11288,6 +11730,145 @@ function arrayAppendArray( dstArray, insArray )
 
 //
 
+function arrayAppendArrays( dstArray )
+{
+  arrayAppendedArrays.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendArraysOnce( dstArray )
+{
+  arrayAppendedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendArraysOnceStrictly( dstArray )
+{
+  var result = arrayAppendedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+  for( var i = arguments.length - 1; i > 0; i-- )
+  {
+    var argument = arguments[ i ];
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var j = argument.length - 1; j >= 0; j-- )
+      {
+        if( _.arrayLike( argument[ j ] ) )
+        expected += argument[ j ].length;
+        else
+        expected += 1;
+      }
+    }
+    else
+    expected += 1;
+  }
+
+  _.assert( result === expected );
+
+  return dstArray;
+}
+
+//
+
+function arrayAppendedArrays( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayAppendedArrays :','expects array' );
+
+  var result = 0;
+
+  function _append( argument )
+  {
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    dstArray.push.apply( dstArray, argument );
+
+    if( _.arrayLike( argument ) )
+    result += argument.length;
+    else
+    result += 1;
+  }
+
+  for( var a = 1, len = arguments.length; a < len; a++ )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayAppendedArrays: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = 0, alen = argument.length; i < alen; i++ )
+      _append( argument[ i ] );
+    }
+    else
+    {
+      _append( argument );
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayAppendedArraysOnce( dstArray )
+{
+  _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','expects array' );
+
+  var result = 0;
+  var o = this === Self ? Object.create( null ) : this;
+
+  _.assertMapHasOnly( o,arrayAppendedArraysOnce.defaults );
+
+  function _appendOnce( argument )
+  {
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    for( var i = 0, len = argument.length; i < len; i++ )
+    {
+      var index = _.arrayLeftIndexOf( dstArray, argument[ i ], o.onEqualize );
+      if( index === -1 )
+      {
+        dstArray.push( argument[ i ] );
+        result += 1;
+      }
+    }
+  }
+
+  for( var a = 1, len = arguments.length; a < len; a++ )
+  {
+    var argument = arguments[ a ];
+
+    _.assert( argument !== undefined,'arrayAppendedArraysOnce: ','argument is not defined' );
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var i = 0, alen = argument.length; i < alen; i++ )
+      _appendOnce( argument[ i ] );
+    }
+    else
+    {
+      _appendOnce( argument );
+    }
+  }
+
+  return result;
+}
+
+arrayAppendedArraysOnce.defaults =
+{
+  onEqualize : null
+}
+
+//
+
 function arrayRemove( dstArray, ins )
 {
   arrayRemoved.apply( this, arguments );
@@ -11582,57 +12163,90 @@ function arrayRemovedArrayOnce( dstArray,insArray,onEqualize )
 
 //
 
-// function arrayRemoveArrays( dstArray )
-// {
-//   arrayRemovedArrays.apply( this, arguments );
-//   return dstArray;
-// }
+function arrayRemoveArrays( dstArray )
+{
+  arrayRemovedArrays.apply( this, arguments );
+  return dstArray;
+}
 
 //
 
-// function arrayRemoveArraysOnce( dstArray )
-// {
-// }
+function arrayRemoveArraysOnce( dstArray )
+{
+  arrayRemovedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
 
 //
 
-// function arrayRemoveArraysOnceStrictly( dstArray )
-// {
-// }
+function arrayRemoveArraysOnceStrictly( dstArray )
+{
+  var result = arrayRemovedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+  for( var i = arguments.length - 1; i > 0; i-- )
+  {
+    var argument = arguments[ i ];
+
+    if( _.arrayLike( argument ) )
+    {
+      for( var j = argument.length - 1; j >= 0; j-- )
+      {
+        if( _.arrayLike( argument[ j ] ) )
+        expected += argument[ j ].length;
+        else
+        expected += 1;
+      }
+    }
+    else
+    expected += 1;
+  }
+
+  _.assert( result === expected );
+
+  return dstArray;
+}
 
 //
 
 function arrayRemovedArrays( dstArray )
 {
-  _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+  _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','expects array' );
 
   var result = 0;
 
-  function _removeElement( element )
+  function _remove( argument )
   {
-    var index = dstArray.indexOf( element );
-    while( index !== -1 )
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    for( var i = argument.length - 1; i >= 0; i-- )
     {
-      dstArray.splice( index,1 );
-      result += 1;
-      index = dstArray.indexOf( element,index );
+      var index = dstArray.indexOf( argument[ i ] );
+      while( index !== -1 )
+      {
+        dstArray.splice( index,1 );
+        result += 1;
+        index = dstArray.indexOf( argument[ i ], index );
+      }
     }
   }
 
-  for( var a = arguments.length - 1 ; a > 0 ; a-- )
+  for( var a = arguments.length - 1 ; a > 0; a-- )
   {
     var argument = arguments[ a ];
 
-    if( argument === undefined )
-    throw _.err( 'arrayRemoveArray','argument is not defined' );
+    _.assert( argument !== undefined,'arrayRemovedArrays: ','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = 0 ; i < argument.length ; i++ )
-      _removeElement( argument[ i ] );
+      for( var i = argument.length - 1; i >= 0; i-- )
+      _remove( argument[ i ] );
     }
     else
-    _removeElement( argument );
+    {
+      _remove( argument );
+    }
   }
 
   return result;
@@ -11642,35 +12256,211 @@ function arrayRemovedArrays( dstArray )
 
 function arrayRemovedArraysOnce( dstArray )
 {
-  _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+  _.assert( _.arrayIs( dstArray ),'arrayRemovedArraysOnce :','expects array' );
 
   var result = 0;
+  var o = this === Self ? Object.create( null ) : this;
 
-  function _removeElement( element )
+  _.assertMapHasOnly( o,arrayAppendedArraysOnce.defaults );
+
+  function _removeOnce( argument )
   {
-    var index = dstArray.indexOf( element );
-    if( index !== -1 )
+    if( !_.arrayLike( argument ) )
+    argument = [ argument ];
+
+    for( var i = argument.length - 1; i >= 0; i-- )
     {
-      result += 1;
-      dstArray.splice( index,1 );
+      var index = _.arrayLeftIndexOf( dstArray, argument[ i ], o.onEqualize );
+      if( index >= 0 )
+      {
+        dstArray.splice( index, 1 );
+        result += 1;
+      }
     }
   }
 
-  for( var a = arguments.length - 1 ; a > 0 ; a-- )
+  for( var a = arguments.length - 1 ; a > 0; a-- )
   {
     var argument = arguments[ a ];
 
-    if( argument === undefined )
-    throw _.err( 'arrayRemoveArray','argument is not defined' );
+    _.assert( argument !== undefined,'arrayRemovedArraysOnce: ','argument is not defined' );
 
     if( _.arrayLike( argument ) )
     {
-      for( var i = 0 ; i < argument.length ; i++ )
-      _removeElement( argument[ i ] );
+      for( var i = argument.length - 1; i >= 0; i-- )
+      _removeOnce( argument[ i ] );
     }
     else
     {
-      _removeElement( argument );
+      _removeOnce( argument );
+    }
+  }
+
+  return result;
+}
+
+arrayRemovedArraysOnce.defaults =
+{
+  onEqualize : null
+}
+
+//
+
+/**
+ * The arrayFlatten() method returns an array that contains all the passed arguments.
+ *
+ * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) and assigns to the (src) each element,
+ * checks if (src) is not equal to the 'undefined'.
+ * If true, it adds element to the result.
+ * If (src) is an Array and if element(s) of the (src) is not equal to the 'undefined'.
+ * If true, it adds to the (result) each element of the (src) array.
+ * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
+ *
+ * @param {...*} arguments - One or more argument(s).
+ *
+ * @example
+ * // returns [ 'str', {}, 1, 2, 5, true ]
+ * var arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
+ *
+ * @returns { Array } - Returns an array of the passed argument(s).
+ * @method arrayFlatten
+ * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
+ * @memberof wTools
+ */
+
+// function arrayFlatten()
+// {
+//   var result = _.arrayIs( this ) ? this : [];
+//
+//   for( var a = 0 ; a < arguments.length ; a++ )
+//   {
+//
+//     var src = arguments[ a ];
+//
+//     if( !_.arrayLike( src ) )
+//     {
+//       if( src !== undefined ) result.push( src );
+//       continue;
+//     }
+//
+//     for( var s = 0 ; s < src.length ; s++ )
+//     {
+//       if( _.arrayIs( src[ s ] ) )
+//       _.arrayFlatten.call( result,src[ s ] );
+//       else if( src[ s ] !== undefined )
+//       result.push( src[ s ] );
+//       else if( src[ s ] === undefined )
+//       throw _.err( 'array should have no undefined' );
+//     }
+//
+//   }
+//
+//   return result;
+// }
+
+//
+
+function arrayFlatten( dstArray, insArray )
+{
+  arrayFlattened.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayFlattenOnce( dstArray, insArray, onEqualize )
+{
+  arrayFlattenedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayFlattenOnceStrictly( dstArray, insArray, onEqualize )
+{
+  var result = arrayFlattenedOnce.apply( this, arguments );
+
+  function _count( arr )
+  {
+    var expected = 0;
+    for( var i = arr.length - 1; i >= 0; i-- )
+    {
+      if( _.arrayLike( arr[ i ] ) )
+      expected += _count( arr[ i ] );
+      else
+      expected += 1;
+    }
+    return expected;
+  }
+
+ _.assert( result === _count( insArray ) );
+
+ return dstArray;
+}
+
+//
+
+function arrayFlattened( dstArray, insArray )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectIs( this ) );
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+
+  var result = 0;
+
+  for( var i = 0, len = insArray.length; i < len; i++ )
+  {
+    if( _.arrayLike( insArray[ i ] ) )
+    {
+      var c = _.arrayFlattened( dstArray, insArray[ i ] );
+      result += c;
+    }
+    else if( insArray[ i ] === undefined )
+    {
+      throw _.err( 'array should have no undefined' );
+    }
+    else
+    {
+      dstArray.push( insArray[ i ] );
+      result += 1;
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayFlattenedOnce( dstArray, insArray, onEqualize )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.objectIs( this ) );
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayLike( insArray ) );
+
+  var result = 0;
+
+  for( var i = 0, len = insArray.length; i < len; i++ )
+  {
+    if( _.arrayLike( insArray[ i ] ) )
+    {
+      var c = _.arrayFlattenedOnce( dstArray, insArray[ i ], onEqualize );
+      result += c;
+    }
+    else if( insArray[ i ] === undefined )
+    {
+      throw _.err( 'array should have no undefined' );
+    }
+    else
+    {
+      var index = _.arrayLeftIndexOf( dstArray, insArray[ i ], onEqualize );
+      if( index === -1 )
+      {
+        dstArray.push( insArray[ i ] );
+        result += 1;
+      }
     }
   }
 
@@ -13538,13 +14328,13 @@ function _mapKeys( o )
 
     if( !o.selectFilter )
     {
-      _._arrayAppendArrayOnce( result,keys );
+      _.arrayAppendArrayOnce( result,keys );
     }
     else for( var k = 0 ; k < keys.length ; k++ )
     {
       var e = o.selectFilter( src,keys[ k ] );
       if( e !== undefined )
-      _._arrayAppendOnce( result,e );
+      _.arrayAppendOnce( result,e );
       // if( e === undefined )
       // debugger;
     }
@@ -16381,8 +17171,6 @@ var Proto =
   arraySelect : arraySelect,
   arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
 
-  arrayFlatten : arrayFlatten,
-
   _arrayCopy : _arrayCopy,
   arrayCopy : arrayCopy,
 
@@ -16436,69 +17224,72 @@ var Proto =
 
   // prepend
 
-  arrayPrepend : arrayPrepend,
-  _arrayPrependOnce : _arrayPrependOnce,
-  arrayPrependOnce : arrayPrependOnce,
-  arrayPrependOnceStrictly : arrayPrependOnceStrictly,
-  arrayPrepended : arrayPrepended,
-  arrayPrependedOnce : arrayPrependedOnce,
+  __arrayPrepend : arrayPrepend,
+  __arrayPrependOnce : arrayPrependOnce,
+  __arrayPrependOnceStrictly : arrayPrependOnceStrictly,
+  __arrayPrepended : arrayPrepended,
+  __arrayPrependedOnce : arrayPrependedOnce,
 
-  arrayPrependArray : arrayPrependArray,
-  arrayPrependArrayOnce : arrayPrependArrayOnce,
-  arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
-  arrayPrependedArray : arrayPrependedArray,
-  arrayPrependedArrayOnce : arrayPrependedArrayOnce,
+  __arrayPrependArray : arrayPrependArray,
+  __arrayPrependArrayOnce : arrayPrependArrayOnce,
+  __arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
+  __arrayPrependedArray : arrayPrependedArray,
+  __arrayPrependedArrayOnce : arrayPrependedArrayOnce,
 
-  // arrayPrependArrays : arrayPrependArrays,
-  // arrayPrependArraysOnce : arrayPrependArraysOnce,
-  // arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
-  // arrayPrependedArrays : arrayPrependArrays,
-  // arrayPrependedArraysOnce : arrayPrependedArraysOnce,
+  __arrayPrependArrays : arrayPrependArrays,
+  __arrayPrependArraysOnce : arrayPrependArraysOnce,
+  __arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
+  __arrayPrependedArrays : arrayPrependedArrays,
+  __arrayPrependedArraysOnce : arrayPrependedArraysOnce,
 
   // append
 
-  arrayAppend : arrayAppend,
-  _arrayAppendOnce : _arrayAppendOnce,
-  arrayAppendOnce : arrayAppendOnce,
-  arrayAppendOnceStrictly : arrayAppendOnceStrictly,
-  arrayAppended : arrayAppended,
-  arrayAppendedOnce : arrayAppendedOnce,
+  __arrayAppend : arrayAppend,
+  __arrayAppendOnce : arrayAppendOnce,
+  __arrayAppendOnceStrictly : arrayAppendOnceStrictly,
+  __arrayAppended : arrayAppended,
+  __arrayAppendedOnce : arrayAppendedOnce,
 
-  arrayAppendArray : arrayAppendArray,
-  _arrayAppendArrayOnce : _arrayAppendArrayOnce,
-  arrayAppendArrayOnce : arrayAppendArrayOnce,
-  arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
-  arrayAppendedArray : arrayAppendedArray,
-  arrayAppendedArrayOnce : arrayAppendedArrayOnce,
+  __arrayAppendArray : arrayAppendArray,
+  __arrayAppendArrayOnce : arrayAppendArrayOnce,
+  __arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
+  __arrayAppendedArray : arrayAppendedArray,
+  __arrayAppendedArrayOnce : arrayAppendedArrayOnce,
 
-  // arrayAppendArrays : arrayPrependArrays,
-  // arrayAppendArraysOnce : arrayPrependArraysOnce,
-  // arrayAppendArraysOnceStrictly : arrayPrependArraysOnceStrictly,
-  // arrayAppendArrays : arrayPrependArrays,
-  // arrayAppendArraysOnce : arrayPrependedArraysOnce,
+  __arrayAppendArrays : arrayAppendArrays,
+  __arrayAppendArraysOnce : arrayAppendArraysOnce,
+  __arrayAppendArraysOnceStrictly : arrayAppendArraysOnceStrictly,
+  __arrayAppendedArrays : arrayAppendedArrays,
+  __arrayAppendedArraysOnce : arrayAppendedArraysOnce,
 
   //remove
 
-  arrayRemove : arrayRemove,
-  arrayRemoveOnce : arrayRemoveOnce,
-  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
-  arrayRemoved : arrayRemoved,
-  arrayRemovedOnce : arrayRemovedOnce,
+  __arrayRemove : arrayRemove,
+  __arrayRemoveOnce : arrayRemoveOnce,
+  __arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
+  __arrayRemoved : arrayRemoved,
+  __arrayRemovedOnce : arrayRemovedOnce,
 
-  arrayRemoveArray : arrayRemoveArray,
-  arrayRemoveArrayOnce : arrayRemoveArrayOnce,
-  arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
-  arrayRemovedArray : arrayRemovedArray,
-  arrayRemovedArrayOnce : arrayRemovedArrayOnce,
+  __arrayRemoveArray : arrayRemoveArray,
+  __arrayRemoveArrayOnce : arrayRemoveArrayOnce,
+  __arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
+  __arrayRemovedArray : arrayRemovedArray,
+  __arrayRemovedArrayOnce : arrayRemovedArrayOnce,
 
-  // arrayRemoveArrays : arrayRemoveArrays,
-  // arrayRemoveArraysOnce : arrayRemoveArraysOnce,
-  // arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
-  // arrayRemovedArrays : arrayRemovedArrays,
-  // arrayRemovedArraysOnce : arrayRemovedArraysOnce,
+  __arrayRemoveArrays : arrayRemoveArrays,
+  __arrayRemoveArraysOnce : arrayRemoveArraysOnce,
+  __arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
+  __arrayRemovedArrays : arrayRemovedArrays,
+  __arrayRemovedArraysOnce : arrayRemovedArraysOnce,
 
   // arrayRemovedAll : arrayRemovedAll,
   // arrayRemoveAll : arrayRemoveAll,
+
+  __arrayFlatten : arrayFlatten,
+  __arrayFlattenOnce : arrayFlattenOnce,
+  __arrayFlattenOnceStrictly : arrayFlattenOnceStrictly,
+  __arrayFlattened : arrayFlattened,
+  __arrayFlattenedOnce : arrayFlattenedOnce,
 
   arraySwap : arraySwap,
 
