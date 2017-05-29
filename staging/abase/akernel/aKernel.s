@@ -9205,6 +9205,103 @@ function arrayAs( src )
 
 //
 
+function _arrayCopy( src )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) || _.bufferAnyIs( src ) );
+  _.assert( !_.bufferNodeIs( src ),'not tested' );
+
+  if( _.bufferViewIs( src ) )
+  debugger;
+
+  if( _.bufferTypedIs( src ) || _.bufferRawIs( src ) || _.bufferNodeIs( src ) )
+  return new src.constructor( src );
+  else if( _.arrayIs( src ) )
+  return src.slice();
+  else if( _.bufferViewIs( src ) )
+  return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
+
+  _.assert( 0,'unknown kind of buffer',_.strTypeOf( src ) );
+}
+
+//
+
+function arrayCopy()
+{
+  var result;
+  var length = 0;
+
+  if( arguments.length === 1 )
+  {
+    return _._arrayCopy( arguments[ 0 ] );
+  }
+
+  /* eval length */
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var argument = arguments[ a ];
+
+    if( argument === undefined )
+    throw _.err( 'arrayCopy','argument is not defined' );
+
+    if( _.arrayLike( argument ) ) length += argument.length;
+    else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
+    else length += 1;
+  }
+
+  /* make result */
+
+  if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
+  result = arrayMakeSimilar( arguments[ 0 ],length );
+  else if( _.bufferRawIs( arguments[ 0 ] ) )
+  result = new ArrayBuffer( length );
+
+  var bufferDst;
+  var offset = 0;
+  if( _.bufferRawIs( arguments[ 0 ] ) )
+  {
+    bufferDst = new Uint8Array( result );
+  }
+
+  /* copy */
+
+  for( var a = 0, c = 0 ; a < arguments.length ; a++ )
+  {
+    var argument = arguments[ a ];
+    if( _.bufferRawIs( argument ) )
+    {
+      bufferDst.set( new Uint8Array( argument ), offset );
+      offset += argument.byteLength;
+    }
+    else if( _.bufferTypedIs( arguments[ 0 ] ) )
+    {
+      result.set( argument, offset );
+      offset += argument.length;
+    }
+    else if( _.arrayLike( argument ) )
+    for( var i = 0 ; i < argument.length ; i++ )
+    {
+      result[ c ] = argument[ i ];
+      c += 1;
+    }
+    else
+    {
+      result[ c ] = argument;
+      c += 1;
+    }
+  }
+
+  /* !!! not optimal */
+
+  return result;
+}
+
+// --
+// array converter
+// --
+
 /**
  * The arrayToMap() converts an (array) into Object.
  *
@@ -9306,101 +9403,6 @@ function arrayToStr( src,options )
     }
     result += String( src[ s ] ) + ' ';
   }
-
-  return result;
-}
-
-//
-
-function _arrayCopy( src )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( src ) || _.bufferAnyIs( src ) );
-  _.assert( !_.bufferNodeIs( src ),'not tested' );
-
-  if( _.bufferViewIs( src ) )
-  debugger;
-
-  if( _.bufferTypedIs( src ) || _.bufferRawIs( src ) || _.bufferNodeIs( src ) )
-  return new src.constructor( src );
-  else if( _.arrayIs( src ) )
-  return src.slice();
-  else if( _.bufferViewIs( src ) )
-  return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
-
-  _.assert( 0,'unknown kind of buffer',_.strTypeOf( src ) );
-}
-
-//
-
-function arrayCopy()
-{
-  var result;
-  var length = 0;
-
-  if( arguments.length === 1 )
-  {
-    return _._arrayCopy( arguments[ 0 ] );
-  }
-
-  /* eval length */
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-    var argument = arguments[ a ];
-
-    if( argument === undefined )
-    throw _.err( 'arrayCopy','argument is not defined' );
-
-    if( _.arrayLike( argument ) ) length += argument.length;
-    else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
-    else length += 1;
-  }
-
-  /* make result */
-
-  if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
-  result = arrayMakeSimilar( arguments[ 0 ],length );
-  else if( _.bufferRawIs( arguments[ 0 ] ) )
-  result = new ArrayBuffer( length );
-
-  var bufferDst;
-  var offset = 0;
-  if( _.bufferRawIs( arguments[ 0 ] ) )
-  {
-    bufferDst = new Uint8Array( result );
-  }
-
-  /* copy */
-
-  for( var a = 0, c = 0 ; a < arguments.length ; a++ )
-  {
-    var argument = arguments[ a ];
-    if( _.bufferRawIs( argument ) )
-    {
-      bufferDst.set( new Uint8Array( argument ), offset );
-      offset += argument.byteLength;
-    }
-    else if( _.bufferTypedIs( arguments[ 0 ] ) )
-    {
-      result.set( argument, offset );
-      offset += argument.length;
-    }
-    else if( _.arrayLike( argument ) )
-    for( var i = 0 ; i < argument.length ; i++ )
-    {
-      result[ c ] = argument[ i ];
-      c += 1;
-    }
-    else
-    {
-      result[ c ] = argument;
-      c += 1;
-    }
-  }
-
-  /* !!! not optimal */
 
   return result;
 }
