@@ -1762,11 +1762,19 @@ function _entityEqual( src1, src2, iterator )
 
   /* */
 
-  if( _.objectIs( src1 ) && _.routineIs( src1._equalAre ) )
-  {
-    return src1._equalAre( src1,src2,iterator );
-  }
-  else if( _.arrayLike( src1 ) )
+  // var srcIsObject = _.objectLike( src1 );
+  // if( srcIsObject && _.routineIs( src1._equalAre ) )
+  // {
+  //   debugger;
+  //   return src1._equalAre( src1,src2,iterator );
+  // }
+  // else if( srcIsObject && _.routineIs( src1.equalIs ) )
+  // {
+  //   debugger;
+  //   return src1.equalIs( src2,iterator );
+  // }
+  // else
+  if( _.arrayLike( src1 ) )
   {
 
     if( !src2 )
@@ -1788,10 +1796,16 @@ function _entityEqual( src1, src2, iterator )
   else if( _.objectLike( src1 ) )
   {
 
-    if( _.routineIs( src1.equalWith ) )
+    if( _.routineIs( src1._equalAre) )
+    {
+      _.assert( src1._equalAre.length === 3 );
+      if( !src1._equalAre( src1, src2, iterator ) )
+      return false;
+    }
+    else if( _.routineIs( src1.equalWith ) )
     {
       _.assert( src1.equalWith.length <= 2 );
-      if( !src1.equalWith( src1, src2, iterator ) )
+      if( !src1.equalWith( src2, iterator ) )
       return false;
     }
     else if( _.regexpIs( src1 ) )
@@ -9262,7 +9276,7 @@ function arrayFrom( src )
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
-  throw _.err( 'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
+  _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
 }
 
 //
@@ -10685,7 +10699,7 @@ function __arrayPrepend( dstArray, ins )
 
 //
 
-// function _arrayPrependOnce( dstArray, ins, onEqualize )
+// function __arrayPrependOnce( dstArray, ins, onEqualize )
 // {
 //
 //   _.assert( _.arrayIs( dst ) );
@@ -10915,14 +10929,14 @@ function __arrayPrependedOnce( dstArray, ins, onEqualize )
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
- * _.arrayPrependArray( [ 1, 2, 3, 4 ], [ 5 ] );
+ * _.__arrayPrependArray( [ 1, 2, 3, 4 ], [ 5 ] );
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4, 5 ]
- * _.arrayPrependArray( [ 1, 2, 3, 4, 5 ], [ 5 ] );
+ * _.__arrayPrependArray( [ 1, 2, 3, 4, 5 ], [ 5 ] );
  *
  * @returns { Array } Returns updated array, that contains elements from( insArray ).
- * @method arrayPrependArray
+ * @method __arrayPrependArray
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
@@ -10933,14 +10947,14 @@ function __arrayPrependArray( dstArray, insArray )
 {
   // var result = dstArray;
   //
-  // _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+  // _assert( _.arrayIs( dstArray ),'__arrayPrependArray :','expects array' );
   //
   // for( var a = arguments.length - 1 ; a > 0 ; a-- )
   // {
   //   var argument = arguments[ a ];
   //
   //   if( argument === undefined )
-  //   throw _.err( 'arrayPrependArray','argument is not defined' );
+  //   throw _.err( '__arrayPrependArray','argument is not defined' );
   //
   //   if( _.arrayLike( argument ) ) result.unshift.apply( dstArray,argument );
   //   else result.unshift( argument );
@@ -11472,7 +11486,7 @@ function __arrayAppend( dstArray, ins )
 //
 
 /**
- * The _arrayAppendOnce() method adds at the end of an array (dst) a value (src),
+ * The __arrayAppendOnce() method adds at the end of an array (dst) a value (src),
  * if the array (dst) doesn't have the value (src).
  *
  * @param { Array } dst - The source array.
@@ -11480,29 +11494,29 @@ function __arrayAppend( dstArray, ins )
  *
  * @example
  * // returns [ 1, 2, 3, 4, 5 ]
- * _._arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
+ * _.__arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
  *
  * @example
  * // returns [ 1, 2, 3, 4, 5 ]
- * _._arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ * _.__arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
  *
  * @example
  * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
- * _._arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * _.__arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
  *
  * @example
  * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
- * _._arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * _.__arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
  *
  * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
  * otherwise, it returns the original array (dst).
- * @method _arrayAppendOnce
+ * @method __arrayAppendOnce
  * @throws { Error } Will throw an Error if (dst) is not an Array.
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools
  */
 
-// function _arrayAppendOnce( dstArray,ins,onEqualize )
+// function __arrayAppendOnce( dstArray,ins,onEqualize )
 // {
 //
 //   _.assert( _.arrayIs( dstArray ) );
@@ -11594,7 +11608,7 @@ function __arrayAppendedOnce( dstArray,ins,onEqualize )
 //
 
 /**
- * The _arrayAppendArrayOnce() method returns an array of elements from (dst)
+ * The __arrayAppendArrayOnce() method returns an array of elements from (dst)
  * and appending only unique following arguments to the end.
  *
  * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
@@ -11612,27 +11626,27 @@ function __arrayAppendedOnce( dstArray,ins,onEqualize )
  *
  * @example
  * // returns [ 1, 2, 'str', {}, 5 ]
- * var arr = _._arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
+ * var arr = _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
  *
  * @returns { Array } - Returns an array (dst) with only unique following argument(s) that were added to the end of the (dst) array.
- * @method _arrayAppendArrayOnce
+ * @method __arrayAppendArrayOnce
  * @throws { Error } If the first argument is not array.
  * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools
  */
 
-// function _arrayAppendArrayOnce( dstArray )
+// function __arrayAppendArrayOnce( dstArray )
 // {
 //   var result = dstArray;
 //
-//   _assert( _.arrayIs( dstArray ),'_arrayAppendArrayOnce :','expects array' );
+//   _assert( _.arrayIs( dstArray ),'__arrayAppendArrayOnce :','expects array' );
 //
 //   for( var a = 1 ; a < arguments.length ; a++ )
 //   {
 //     var argument = arguments[ a ];
 //
 //     if( argument === undefined )
-//     throw _.err( '_arrayAppendArrayOnce','argument is not defined' );
+//     throw _.err( '__arrayAppendArrayOnce','argument is not defined' );
 //
 //     if( _.arrayLike( argument ) )
 //     {
@@ -11722,7 +11736,7 @@ function __arrayAppendedArrayOnce( dstArray, insArray, onEqualize )
 //
 
 /**
- * The arrayAppendArray() method adds one or more elements to the end of the (dst) array
+ * The __arrayAppendArray() method adds one or more elements to the end of the (dst) array
  * and returns the new length of the array.
  *
  * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
@@ -11738,10 +11752,10 @@ function __arrayAppendedArrayOnce( dstArray, insArray, onEqualize )
  *
  * @example
  * // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
- * var arr = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+ * var arr = _.__arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
  *
  * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
- * @method arrayAppendArray
+ * @method __arrayAppendArray
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools
@@ -11936,15 +11950,15 @@ function __arrayRemove( dstArray, ins )
 }
 
 /**
- * The arrayRemoveOnce() method removes the first matching element from (dstArray)
+ * The __arrayRemoveOnce() method removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
  * checks if arguments passed two, it calls the method
- * [arrayRemovedOnce( dstArray, ins )]{@link wTools.arrayRemovedOnce}
+ * [__arrayRemovedOnce( dstArray, ins )]{@link wTools.__arrayRemovedOnce}
  * Otherwise, if passed three arguments, it calls the method
- * [arrayRemovedOnce( dstArray, ins, onElement )]{@link wTools.arrayRemovedOnce}
- * @see  wTools.arrayRemovedOnce
+ * [__arrayRemovedOnce( dstArray, ins, onElement )]{@link wTools.__arrayRemovedOnce}
+ * @see  wTools.__arrayRemovedOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
  * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
@@ -11952,16 +11966,16 @@ function __arrayRemove( dstArray, ins )
  *
  * @example
  * // returns [ 1, 2, 3, 'str' ]
- * var arr = _.arrayRemoveOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
+ * var arr = _.__arrayRemoveOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
  *
  * @example
  * // returns [ 3, 7, 13, 33 ]
- * var arr = _.arrayRemoveOnce( [ 3, 7, 33, 13, 33 ], 13, function ( el, ins ) {
+ * var arr = _.__arrayRemoveOnce( [ 3, 7, 33, 13, 33 ], 13, function ( el, ins ) {
  *   return el > ins;
  * });
  *
  * @returns { Array } - Returns the modified (dstArray) array with the new length.
- * @method arrayRemoveOnce
+ * @method __arrayRemoveOnce
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
@@ -11973,7 +11987,7 @@ function __arrayRemoveOnce( dstArray,ins,onEqualize )
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
   // if( arguments.length === 2 )
-  // arrayRemovedOnce( dstArray,ins );
+  // __arrayRemovedOnce( dstArray,ins );
   // else if( onElement )
   __arrayRemovedOnce.apply( this, arguments );
 
@@ -11988,7 +12002,7 @@ function __arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
   // _.assert( _.arrayLeftIndexOf( dstArray,ins,onEqualize ) !== -1,'array should have only unique elements, but has several',ins );
 
   // if( arguments.length === 2 )
-  // arrayRemovedOnce( dstArray,ins );
+  // __arrayRemovedOnce( dstArray,ins );
   // else if( onElement )
 
   var result = __arrayRemovedOnce.apply( this, arguments );
@@ -12028,7 +12042,7 @@ function __arrayRemoved( dstArray, ins )
  */
 
 /**
- * The arrayRemovedOnce() method returns the index of the first matching element from (dstArray)
+ * The __arrayRemovedOnce() method returns the index of the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and remove this element.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
@@ -12047,16 +12061,16 @@ function __arrayRemoved( dstArray, ins )
  *
  * @example
  * // returns 1
- * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 4, function ( el ) {
+ * var arr = _.__arrayRemovedOnce( [ 2, 4, 6 ], 4, function ( el ) {
  *   return el;
  * });
  *
  * @example
  * // returns 0
- * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 2 );
+ * var arr = _.__arrayRemovedOnce( [ 2, 4, 6 ], 2 );
  *
  * @returns { Number } - Returns the index of the value (ins) that was removed from (dstArray).
- * @method arrayRemovedOnce
+ * @method __arrayRemovedOnce
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
@@ -12375,7 +12389,7 @@ __arrayRemovedArraysOnce.defaults =
 //
 
 /**
- * The arrayFlatten() method returns an array that contains all the passed arguments.
+ * The __arrayFlatten() method returns an array that contains all the passed arguments.
  *
  * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
  * iterate over array-like object (arguments[]) and assigns to the (src) each element,
@@ -12389,15 +12403,15 @@ __arrayRemovedArraysOnce.defaults =
  *
  * @example
  * // returns [ 'str', {}, 1, 2, 5, true ]
- * var arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
+ * var arr = _.__arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
  *
  * @returns { Array } - Returns an array of the passed argument(s).
- * @method arrayFlatten
+ * @method __arrayFlatten
  * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
  * @memberof wTools
  */
 
-// function arrayFlatten()
+// function __arrayFlatten()
 // {
 //   var result = _.arrayIs( this ) ? this : [];
 //
@@ -12415,7 +12429,7 @@ __arrayRemovedArraysOnce.defaults =
 //     for( var s = 0 ; s < src.length ; s++ )
 //     {
 //       if( _.arrayIs( src[ s ] ) )
-//       _.arrayFlatten.call( result,src[ s ] );
+//       _.__arrayFlatten.call( result,src[ s ] );
 //       else if( src[ s ] !== undefined )
 //       result.push( src[ s ] );
 //       else if( src[ s ] === undefined )
@@ -13976,7 +13990,7 @@ function mapCopy()
 //
 //   debugger;
 //
-//   var args = _.arrayAppendArray( [],Object.create( null ),arguments );
+//   var args = _.__arrayAppendArrays( [],[ Object.create( null ),arguments ] );
 //   return _.mapExtend.apply( _,args );
 // }
 
@@ -14815,7 +14829,7 @@ mapAllKeys.defaults =
 //     var src = arguments[ a ];
 //     for( var s in src )
 //     if( _hasOwnProperty.call( src,s ) )
-//     _._arrayAppendOnce( result,s );
+//     _.__arrayAppendOnce( result,s );
 //   }
 //
 //   return result;
@@ -14862,7 +14876,7 @@ mapAllKeys.defaults =
 //     var src = arguments[ a ];
 //     _.assert( _.objectLike( src ) || errIs( src ) );
 //     for( var s in src )
-//     _._arrayAppendOnce( result,s );
+//     _.__arrayAppendOnce( result,s );
 //   }
 //
 //   return result;

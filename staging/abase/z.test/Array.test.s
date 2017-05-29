@@ -1980,21 +1980,21 @@ function __arrayAppendedArray( test )
 
 //
 
-// function _arrayAppendArrayOnce( test )
+// function __arrayAppendArrayOnce( test )
 // {
 //
 //   test.description = 'nothing';
-//   var got = _._arrayAppendArrayOnce( [  ] );
+//   var got = _.__arrayAppendArrayOnce( [  ] );
 //   var expected = [  ];
 //   test.identical( got, expected );
 //
 //   test.description = 'an argument';
-//   var got = _._arrayAppendArrayOnce( [ 1, 2, undefined ] );
+//   var got = _.__arrayAppendArrayOnce( [ 1, 2, undefined ] );
 //   var expected = [ 1, 2, undefined ];
 //   test.identical( got, expected );
 //
 //   test.description = 'an array';
-//   var got = _._arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
+//   var got = _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
 //   var expected = [ 1, 2, 'str', {}, 5 ];
 //   test.identical( got, expected );
 //
@@ -2006,19 +2006,19 @@ function __arrayAppendedArray( test )
 //     test.description = 'no arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayAppendArrayOnce();
+//       _.__arrayAppendArrayOnce();
 //     });
 //
 //     test.description = 'arguments[0] is wrong, has to be an array';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayAppendArrayOnce( 'wrong argument', 'str', 2, {}, [ 'str', 5 ] );
+//       _.__arrayAppendArrayOnce( 'wrong argument', 'str', 2, {}, [ 'str', 5 ] );
 //     });
 //
 //     test.description = 'arguments[3] is undefined';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, undefined, [ 'str', 5 ] );
+//       _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, undefined, [ 'str', 5 ] );
 //     });
 //
 //   }
@@ -5551,31 +5551,31 @@ function arrayUpdate( test )
 
 // //
 //
-// function _arrayAppendOnce( test )
+// function __arrayAppendOnce( test )
 // {
 //
 //   test.description = 'add a new element';
-//   var got = _._arrayAppendOnce( [  ], 1 );
+//   var got = _.__arrayAppendOnce( [  ], 1 );
 //   var expected = [ 1 ];
 //   test.identical( got, expected );
 //
 //   test.description = 'add a new element';
-//   var got = _._arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
+//   var got = _.__arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
 //   var expected = [ 1, 2, 3, 4, 5 ];
 //   test.identical( got, expected );
 //
 //   test.description = 'nothing to add';
-//   var got = _._arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
+//   var got = _.__arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
 //   var expected = [ 1, 2, 3, 4, 5 ];
 //   test.identical( got, expected );
 //
 //   test.description = 'add a new element';
-//   var got = _._arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+//   var got = _.__arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
 //   var expected = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
 //   test.identical( got, expected );
 //
 //   test.description = 'nothing add';
-//   var got = _._arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+//   var got = _.__arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
 //   var expected = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
 //   test.identical( got, expected );
 //
@@ -5587,25 +5587,25 @@ function arrayUpdate( test )
 //     test.description = 'no arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayAppendOnce();
+//       _.__arrayAppendOnce();
 //     });
 //
 //     test.description = 'not enough arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayAppendOnce( [ 1, 2, 3, 4, 5 ] );
+//       _.__arrayAppendOnce( [ 1, 2, 3, 4, 5 ] );
 //     });
 //
 //     test.description = 'extra argument';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 6, 'redundant argument' );
+//       _.__arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 6, 'redundant argument' );
 //     });
 //
 //     test.description = 'arguments[0] is wrong';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayAppendOnce( 'wrong argument', 5 );
+//       _.__arrayAppendOnce( 'wrong argument', 5 );
 //     });
 //
 //   }
@@ -5614,31 +5614,31 @@ function arrayUpdate( test )
 //
 // //
 //
-// function _arrayPrependOnce( test )
+// function __arrayPrependOnce( test )
 // {
 //
 //   test.description = 'add a new element';
-//   var got = _._arrayPrependOnce( [  ], 1 );
+//   var got = _.__arrayPrependOnce( [  ], 1 );
 //   var expected = [ 1 ];
 //   test.identical( got, expected );
 //
 //   test.description = 'add a new element';
-//   var got = _._arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+//   var got = _.__arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
 //   var expected = [ 5, 1, 2, 3, 4 ];
 //   test.identical( got, expected );
 //
 //   test.description = 'nothing add';
-//   var got = _._arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+//   var got = _.__arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
 //   var expected = [ 1, 2, 3, 4, 5 ];
 //   test.identical( got, expected );
 //
 //   test.description = 'add a new element';
-//   var got = _._arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+//   var got = _.__arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
 //   var expected = [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ];
 //   test.identical( got, expected );
 //
 //   test.description = 'nothing add';
-//   var got = _._arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+//   var got = _.__arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
 //   var expected = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
 //   test.identical( got, expected );
 //
@@ -5650,25 +5650,25 @@ function arrayUpdate( test )
 //     test.description = 'no arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayPrependOnce();
+//       _.__arrayPrependOnce();
 //     });
 //
 //     test.description = 'not enough arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayPrependOnce( [ 1, 2, 3, 4, 5 ] );
+//       _.__arrayPrependOnce( [ 1, 2, 3, 4, 5 ] );
 //     });
 //
 //     test.description = 'extra argument';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 6, 'redundant argument' );
+//       _.__arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 6, 'redundant argument' );
 //     });
 //
 //     test.description = 'arguments[0] is wrong';
 //     test.shouldThrowError( function()
 //     {
-//       _._arrayPrependOnce( 'wrong argument', 5 );
+//       _.__arrayPrependOnce( 'wrong argument', 5 );
 //     });
 //
 //   }
@@ -7840,7 +7840,7 @@ var Self =
     // arrayRemoveAll : arrayRemoveAll,
 
     // _arrayPrependOnceArrayOnce : _arrayPrependOnceArrayOnce,
-    // _arrayAppendArrayOnce : _arrayAppendArrayOnce,
+    // __arrayAppendArrayOnce : __arrayAppendArrayOnce,
 
     arrayElementsSwap : arrayElementsSwap,
     arrayFrom : arrayFrom,
@@ -7850,8 +7850,8 @@ var Self =
 
     arrayUpdate : arrayUpdate,
 
-    // _arrayAppendOnce : _arrayAppendOnce,
-    // _arrayPrependOnce : _arrayPrependOnce,
+    // __arrayAppendOnce : __arrayAppendOnce,
+    // __arrayPrependOnce : __arrayPrependOnce,
 
     arrayCutin : arrayCutin,
     arraySlice : arraySlice,
