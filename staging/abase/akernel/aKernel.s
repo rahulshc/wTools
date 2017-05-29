@@ -12248,7 +12248,7 @@ function __arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
 // array remove
 // --
 
-function __arrayRemove( dstArray, ins )
+function __arrayRemove( dstArray, ins, onEqualize )
 {
   __arrayRemoved.apply( this, arguments );
   return dstArray;
@@ -12318,22 +12318,19 @@ function __arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 
 //
 
-function __arrayRemoved( dstArray, ins )
+function __arrayRemoved( dstArray, ins, onEqualize )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
   _assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
 
-  var result = 0;
-  var index = dstArray.indexOf( ins );
+  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
 
-  while( index !== -1 )
+  if( index !== -1 )
   {
     dstArray.splice( index,1 );
-    result += 1;
-    index = dstArray.indexOf( ins,index );
   }
 
-  return result;
+  return index;
 }
 
 //
