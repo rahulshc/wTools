@@ -12963,7 +12963,7 @@ function __arrayRemovedAll( dstArray, ins, onEqualize  )
 // --
 
 /**
- * The arrayReplaceOnce() routine returns the index of the (dstArray) array which will be replaced by (sub),
+ * The __arrayReplaceOnce() routine returns the index of the (dstArray) array which will be replaced by (sub),
  * if (dstArray) has the value (ins).
  *
  * It takes three arguments (dstArray, ins, sub), calls built in function (dstArray.indexOf(ins)),
@@ -12977,36 +12977,53 @@ function __arrayRemovedAll( dstArray, ins, onEqualize  )
  *
  * @example
  * // returns -1
- * _.arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
+ * _.__arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
  *
  * @example
  * // returns 1
- * _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+ * _.__arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
  *
  * @example
  * // returns 3
- * _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+ * _.__arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
  *
  * @example
  * // returns 4
- * _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
+ * _.__arrayReplaceOnce( [ true, true, true, true, false ], false, true );
  *
  * @returns { number }  Returns the index of the (dstArray) array which will be replaced by (sub),
  * if (dstArray) has the value (ins).
- * @function arrayReplaceOnce
+ * @function __arrayReplaceOnce
  * @throws { Error } Will throw an Error if (dstArray) is not an array.
  * @throws { Error } Will throw an Error if (arguments.length) is less than three.
  * @memberof wTools
  */
 
-function arrayReplaceOnce( dstArray,ins,sub )
+function __arrayReplaceOnce( dstArray,ins,sub,onEqualize )
+{
+  __arrayReplacedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function __arrayReplaceOnceStrictly( dstArray,ins,sub,onEqualize )
+{
+  var result = __arrayReplacedOnce.apply( this, arguments );
+  _.assert( result !== -1, '__arrayReplaceOnceStrictly: ins not exists in dstArray' );
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedOnce( dstArray,ins,sub,onEqualize )
 {
   _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
 
   var index = -1;
 
-  index = dstArray.indexOf( ins );
+  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
 
   if( index >= 0 )
   dstArray.splice( index,1,sub );
@@ -13016,17 +13033,163 @@ function arrayReplaceOnce( dstArray,ins,sub )
 
 //
 
+function __arrayReplaceAll( dstArray,ins,sub,onEqualize )
+{
+  __arrayReplacedAll.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedAll( dstArray,ins,sub,onEqualize )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
+
+  var index = -1;
+  var result = 0;
+
+  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+
+  while( index !== -1 )
+  {
+    dstArray.splice( index,1,sub );
+    result += 1;
+    index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+  }
+
+  return result;
+}
+
+//
+
+function __arrayReplaceArrayOnce( dstArray,ins,sub,onEqualize  )
+{
+  __arrayReplacedArrayOnce.apply( this,arguments );
+  return dstArray;
+}
+
+//
+
+function __arrayReplaceArrayOnceStrictly( dstArray,ins,sub,onEqualize  )
+{
+  var result = __arrayReplacedArrayOnce.apply( this,arguments );
+  _.assert( result === ins.length );
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedArrayOnce( dstArray,ins,sub,onEqualize )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.arrayLike( ins ) );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
+
+  var index = -1;
+  var result = 0;
+
+  for( var i = 0, len = ins.length; i < len; i++ )
+  {
+    index = _.arrayLeftIndexOf( dstArray,ins[ i ],onEqualize )
+    if( index >= 0 )
+    {
+      dstArray.splice( index,1,sub );
+      result += 1;
+    }
+  }
+
+  return result;
+}
+
+//
+
+
+function __arrayReplaceArraysOnce( dstArray, ins, sub, onEqualize )
+{
+  __arrayReplacedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+
+function __arrayReplaceArraysOnceStrictly( dstArray, ins, sub, onEqualize )
+{
+  var result = __arrayReplacedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+  for( var i = 0, len = ins.length; i < len; i++ )
+  expected += ins[ i ].length;
+
+  _.assert( expected === result );
+
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedArraysOnce( dstArray, ins, sub, onEqualize )
+{
+  _.assert( arguments.length === 3 || arguments.length === 4 );
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.arrayLike( ins ) );
+  _.assert( _.arrayLike( sub ) );
+  _.assert( ins.length === sub.length );
+
+  var result = 0;
+
+  function _subGet( i, j )
+  {
+    if( !_.arrayLike( sub[ i ] ) )
+    return sub[ i ];
+
+    var subArray = sub[ i ];
+    if( j < subArray.length )
+    return subArray[ j ];
+    else
+    return subArray[ subArray.length - 1 ];
+  }
+
+  for( var i = 0, alen = ins.length; i < alen; i++ )
+  {
+    _.assert( _.arrayLike( ins[ i ] ) );
+
+    var insArray = ins[ i ];
+
+    if( _.arrayLike( sub[ i ] ) )
+    {
+      _.assert( sub[ i ].length >= 1 );
+      _.assert( insArray.length >= sub[ i ].length  );
+    }
+
+    for( var j = 0, slen = insArray.length; j < slen; j++ )
+    {
+      var index = _.arrayLeftIndexOf( dstArray, insArray[ j ], onEqualize );
+      if( index >= 0 )
+      {
+        dstArray.splice( index, 1, _subGet( i, j ) );
+        result += 1;
+      }
+    }
+  }
+
+  return result;
+}
+
+//
+
 /**
  * The arrayUpdate() routine adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
  * and returns the last added index or the last replaced index of the array (dstArray).
  *
- * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
- * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
+ * It creates the variable (index) assigns and calls to it the function (__arrayReplaceOnce( dstArray, ins, sub ).
+ * [__arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.__arrayReplaceOnce}.
  * Checks if (index) equal to the -1.
  * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
  * Otherwise, it returns the replaced (index).
  *
- * @see wTools.arrayReplaceOnce
+ * @see wTools.__arrayReplaceOnce
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to change.
@@ -13059,7 +13222,7 @@ function arrayUpdate( dstArray,ins,sub )
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 3 );
 
-  var index = arrayReplaceOnce( dstArray,ins,sub );
+  var index = __arrayReplaceOnce( dstArray,ins,sub );
 
   if( index === -1 )
   {
@@ -17326,9 +17489,22 @@ var Proto =
 
   /* !!! Strictly, Array, Arrays variants needed */
 
-  arrayReplaceOnce : arrayReplaceOnce,
-  arrayUpdate : arrayUpdate,
+  __arrayReplaceOnce : __arrayReplaceOnce,
+  __arrayReplacedOnce : __arrayReplacedOnce,
+  __arrayReplaceOnceStrictly : __arrayReplaceOnceStrictly,
 
+  __arrayReplaceArrayOnce : __arrayReplaceArrayOnce,
+  __arrayReplacedArrayOnce : __arrayReplacedArrayOnce,
+  __arrayReplaceArrayOnceStrictly : __arrayReplaceArrayOnceStrictly,
+
+  __arrayReplaceArraysOnce : __arrayReplaceArraysOnce,
+  __arrayReplacedArraysOnce : __arrayReplacedArraysOnce,
+  __arrayReplaceArraysOnceStrictly : __arrayReplaceArraysOnceStrictly,
+
+  __arrayReplaceAll : __arrayReplaceAll,
+  __arrayReplacedAll : __arrayReplacedAll,
+
+  arrayUpdate : arrayUpdate,
 
   // array set
 
