@@ -5932,7 +5932,30 @@ function arrayCutin( test )
   test.identical( got, expected );
   test.identical( dst, [ 2, 3, 4 ] )
 
+  /* */
 
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayCutin( dst, [ 0 ], [] );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+  test.identical( dst, [] )
+
+  /* */
+
+  var dst = [ 1, 2, 3, 4 ];
+  var expected = dst.slice().splice( 1 );
+  var got = _.arrayCutin( dst, [ 1 ], [ 5 ] );
+  test.identical( got, expected );
+  test.identical( dst, [ 1, 5 ] )
+
+  /* */
+
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayCutin( dst, [ undefined, 1 ], [ 5 ] );
+  test.identical( got, [ 1 ] );
+  test.identical( dst, [ 5, 2, 3, 4 ] );
+
+  //
 
   test.description = 'empth';
   var dst = [];
@@ -5965,9 +5988,9 @@ function arrayCutin( test )
   test.description = 'pass only begin of range';
   var dst = [ 1, 2, 3, 4, 5 ];
   var cut = _.arrayCutin( dst, [ 1 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
+  var expected = [ 1, 11, 22, 33 ];
   test.identical( dst, expected );
-  var expected = [];
+  var expected = [ 2, 3, 4, 5 ];
   test.identical( cut, expected );
 
   /* */
@@ -5975,9 +5998,9 @@ function arrayCutin( test )
   test.description = 'pass empty range';
   var dst = [ 1, 2, 3, 4, 5 ];
   var cut = _.arrayCutin( dst, [], [ 11, 22, 33 ] );
-  var expected = [ 11, 22, 33, 1, 2, 3, 4, 5 ];
+  var expected = [ 11, 22, 33 ];
   test.identical( dst, expected );
-  var expected = [];
+  var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( cut, expected );
 
   /* */
@@ -6187,8 +6210,8 @@ function arrayCutin( test )
     /* empty */
 
     var got = _.arrayCutin( array, [], [] );
-    var expected = array;
-    test.identical( got, expected );
+    got = _.definedIs( got.length ) ? got.length : got.byteLength;
+    test.identical( got, 0 );
 
   }
 
