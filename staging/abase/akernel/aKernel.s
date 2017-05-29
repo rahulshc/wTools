@@ -3126,7 +3126,6 @@ function _entityMost( src,onElement,returnMax )
     return b-a;
   }
 
-  debugger;
   _.assert( onElement.length === 1 );
   _.assert( onCompare.length === 2 );
   // _.assert( onCompare.length === 1 || onCompare.length === 2 ); // xxx
@@ -12823,13 +12822,13 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
 /**
  * Callback for compare two value.
  *
- * @callback arrayRemovedAll~compareCallback
+ * @callback __arrayRemoved~compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
 
 /**
- * The arrayRemovedAll() routine removes all (ins) values from (dstArray)
+ * The __arrayRemoved() routine removes all (ins) values from (dstArray)
  * that corresponds to the condition in the callback function and returns the amount of them.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
@@ -12846,23 +12845,23 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  *
  * @example
  * // returns 4
- * var arr = _.arrayRemovedAll( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
+ * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
  *   return el < ins;
  * });
  *
  * @example
  * // returns 3
- * var arr = _.arrayRemovedAll( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
+ * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
  *
  * @returns { Number } - Returns the amount of the removed elements.
- * @function arrayRemovedAll
+ * @function __arrayRemoved
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
  * @memberof wTools
  */
 
-// function arrayRemovedAll( dstArray,ins,onEqualize )
+// function __arrayRemoved( dstArray,ins,onEqualize )
 // {
 //   _.assert( _.arrayLike( dstArray ) );
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -12901,11 +12900,11 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
  * checks if arguments passed two, it calls the routine
- * [arrayRemovedAll( dstArray, ins )]{@link wTools.arrayRemovedAll}
+ * [__arrayRemoved( dstArray, ins )]{@link wTools.__arrayRemoved}
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayRemovedAll( dstArray, ins, onElement )]{@link wTools.arrayRemovedAll}
+ * [__arrayRemoved( dstArray, ins, onElement )]{@link wTools.__arrayRemoved}
  *
- * @see wTools.arrayRemovedAll
+ * @see wTools.__arrayRemoved
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
@@ -12935,10 +12934,10 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
 //
 //   // if( arguments.length === 2 )
-//   // arrayRemovedAll( dstArray,ins );
+//   // __arrayRemoved( dstArray,ins );
 //   // else if( arguments.length === 3 )
-//   // arrayRemovedAll( dstArray,ins,onEqualize );
-//   arrayRemovedAll( dstArray,ins,onEqualize );
+//   // __arrayRemoved( dstArray,ins,onEqualize );
+//   __arrayRemoved( dstArray,ins,onEqualize );
 //
 //   return dstArray;
 // }

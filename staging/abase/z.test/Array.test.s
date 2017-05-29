@@ -5521,26 +5521,26 @@ function __arrayRemoveOnce( test ) {
 };
 
 
-// function arrayRemovedAll( test )
+// function __arrayRemoved( test )
 // {
 //
 //   test.description = 'nothing';
-//   var got = _.arrayRemovedAll( [  ], 2 );
+//   var got = _.__arrayRemoved( [  ], 2 );
 //   var expected = 0;
 //   test.identical( got, expected );
 //
 //   test.description = 'one element removed';
-//   var got = _.arrayRemovedAll( [ 2, 4, 6 ], 4 );
+//   var got = _.__arrayRemoved( [ 2, 4, 6 ], 4 );
 //   var expected = 1;
 //   test.identical( got, expected );
 //
 //   test.description = 'two elements removed';
-//   var got = _.arrayRemovedAll( [ true, false, 6, true ], true );
+//   var got = _.__arrayRemoved( [ true, false, 6, true ], true );
 //   var expected = 2;
 //   test.identical( got, expected );
 //
 //   test.description = 'three elements removed';
-//   var got = _.arrayRemovedAll( [ 2, 4, 6, 7 ], 2, function ( el, ins ) {
+//   var got = _.__arrayRemoved( [ 2, 4, 6, 7 ], 2, function ( el, ins ) {
 //     return el > ins;
 //   });
 //   var expected = 3;
@@ -5554,31 +5554,31 @@ function __arrayRemoveOnce( test ) {
 //     test.description = 'no arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _.arrayRemovedAll();
+//       _.__arrayRemoved();
 //     });
 //
 //     test.description = 'not enough arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _.arrayRemovedAll( [ 2, 4, 6 ] );
+//       _.__arrayRemoved( [ 2, 4, 6 ] );
 //     });
 //
 //     test.description = 'extra argument';
 //     test.shouldThrowError( function()
 //     {
-//       _.arrayRemovedAll( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+//       _.__arrayRemoved( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
 //     });
 //
 //     test.description = 'arguments[0] is wrong';
 //     test.shouldThrowError( function()
 //     {
-//       _.arrayRemovedAll( 'wrong argument', 2 );
+//       _.__arrayRemoved( 'wrong argument', 2 );
 //     });
 //
 //     test.description = 'arguments[2] is wrong';
 //     test.shouldThrowError( function()
 //     {
-//       _.arrayRemovedAll( [ 2, 4, 6 ], 2, 'wrong argument' );
+//       _.__arrayRemoved( [ 2, 4, 6 ], 2, 'wrong argument' );
 //     });
 //
 //   }
@@ -8052,7 +8052,7 @@ var Self =
     __arrayFlattened : __arrayFlattened,
     __arrayFlattenedOnce : __arrayFlattenedOnce,
 
-    // arrayRemovedAll : arrayRemovedAll,
+    // __arrayRemoved : __arrayRemoved,
     // arrayRemoveAll : arrayRemoveAll,
 
     // _arrayPrependOnceArrayOnce : _arrayPrependOnceArrayOnce,

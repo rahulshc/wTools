@@ -1264,6 +1264,173 @@ function _toStrFromArray( src,o )
 
 //
 
+/**
+ * Builds string representation of container structure using options from
+ * argument( o ). Takes keys from option( o.names ) and values from option( o.values ).
+ * Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
+ *
+ * @param {object} o - Contains data and options.
+ * @param {object} [ o.values ] - Source object that contains values.
+ * @param {array} [ o.names ] - Source object keys.
+ * @param {string} [ o.prefix ] - Denotes begin of container.
+ * @param {string} [ o.postfix ] - Denotes end of container.
+ * @param {wTools~toStrOptions} o.optionsContainer - Options for container {@link wTools~toStrOptions}.
+ * @param {wTools~toStrOptions} o.optionsItem - Options for item {@link wTools~toStrOptions}.
+ * @returns {String} Returns string representation of container.
+ *
+ * @method _toStrFromContainer
+ * @throws { Exception } If no argument provided.
+ * @throws { Exception } If( o ) is not a Object.
+ * @memberof wTools
+ *
+ */
+
+function _toStrFromContainer( o )
+{
+  var result = '';
+
+  _.assert( arguments.length );
+  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+  _.assert( _.arrayIs( o.names ) || !o.names );
+
+  var values = o.values;
+  var names = o.names;
+  var optionsContainer = o.optionsContainer;
+  var optionsItem = o.optionsItem;
+
+  var simple = o.simple;
+  var prefix = o.prefix;
+  var postfix = o.postfix;
+  var limit = optionsContainer.limitElementsNumber;
+  var l = ( names ? names.length : values.length );
+
+  if( limit > 0 && limit < l )
+  {
+    debugger;
+    l = limit;
+    optionsContainer.limitElementsNumber = 0;
+  }
+
+  /* line postfix */
+
+  var linePostfix = '';
+  if( optionsContainer.comma )
+  linePostfix += optionsContainer.comma;
+
+  if( !simple )
+  {
+    linePostfix += '\n' + optionsItem.tab;
+  }
+
+  /* prepend */
+
+  if( optionsContainer.prependTab  )
+  {
+    result += optionsContainer.tab;
+  }
+
+  /* wrap */
+
+  if( optionsContainer.wrap )
+  {
+    result += prefix;
+    if( simple )
+    {
+      if( l )
+      result += ' ';
+    }
+    else
+    {
+      result += '\n' + optionsItem.tab;
+    }
+  }
+  else if( !simple )
+  {
+    /*result += '\n' + optionsItem.tab;*/
+  }
+
+  /* exec */
+
+  var r;
+  var written = 0;
+  for( var n = 0 ; n < l ; n++ )
+  {
+
+    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
+    _assert( optionsItem.level === optionsContainer.level + 1 );
+
+    if( names )
+    r = _toStr( values[ names[ n ] ],optionsItem );
+    else
+    r = _toStr( values[ n ],optionsItem );
+
+    _assert( _.objectIs( r ) && _.strIs( r.text ) );
+    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
+
+    if( written > 0 )
+    {
+      result += linePostfix;
+    }
+    else if( !optionsContainer.wrap )
+    if( !names || !simple )
+    //if( !simple )
+    {
+      result += optionsItem.dtab;
+    }
+
+    if( names )
+    {
+      if( optionsContainer.json )
+      result += '"' + String( names[ n ] ) + '"' + optionsContainer.colon;
+      else
+      result += String( names[ n ] ) + optionsContainer.colon;
+
+      if( !r.simple )
+      result += '\n' + optionsItem.tab;
+    }
+
+    if( r.text )
+    {
+      result += r.text;
+      written += 1;
+    }
+
+  }
+
+  /* other */
+
+  function other( length )
+  {
+    debugger;
+    return linePostfix + '[ ... other '+ ( length - l ) +' element(s) ]';
+  }
+
+  // if( names && l < names.length )
+  // result += other( names.length );
+  // else if( l < names.length )
+  // result += other( names.length );
+
+  /* wrap */
+
+  if( optionsContainer.wrap )
+  {
+    if( simple )
+    {
+      if( l )
+      result += ' ';
+    }
+    else
+    {
+      result += '\n' + optionsContainer.tab;
+    }
+    result += postfix;
+  }
+
+  return result;
+}
+
+//
+
 function _toStrFromObjectKeysFiltered( src,o )
 {
   var result = '';
@@ -1398,165 +1565,13 @@ function _toStrFromObject( src,o )
 
 //
 
-/**
- * Builds string representation of container structure using options from
- * argument( o ). Takes keys from option( o.names ) and values from option( o.values ).
- * Wraps array-like and object-like entities using ( o.prefix ) and ( o.postfix ).
- *
- * @param {object} o - Contains data and options.
- * @param {object} [ o.values ] - Source object that contains values.
- * @param {array} [ o.names ] - Source object keys.
- * @param {string} [ o.prefix ] - Denotes begin of container.
- * @param {string} [ o.postfix ] - Denotes end of container.
- * @param {wTools~toStrOptions} o.optionsContainer - Options for container {@link wTools~toStrOptions}.
- * @param {wTools~toStrOptions} o.optionsItem - Options for item {@link wTools~toStrOptions}.
- * @returns {String} Returns string representation of container.
- *
- * @method _toStrFromContainer
- * @throws { Exception } If no argument provided.
- * @throws { Exception } If( o ) is not a Object.
- * @memberof wTools
- *
- */
-
-function _toStrFromContainer( o )
+function strJsonFrom( src )
 {
-  var result = '';
+  _.assert( arguments.length === 1 );
 
-  _.assert( arguments.length );
-  _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
+  var result = _.toStr( src,{ json : 1, levels : 1 << 20 } );
 
-  var values = o.values;
-  var names = o.names;
-  var optionsContainer = o.optionsContainer;
-  var optionsItem = o.optionsItem;
-
-  var simple = o.simple;
-  var prefix = o.prefix;
-  var postfix = o.postfix;
-  var limit = optionsContainer.limitElementsNumber;
-  var l = ( names ? names.length : values.length )
-
-  if( limit > 0 && limit < l )
-  {
-    debugger;
-    l = limit;
-    optionsContainer.limitElementsNumber = 0;
-  }
-
-  /* line postfix */
-
-  var linePostfix = '';
-  if( optionsContainer.comma )
-  linePostfix += optionsContainer.comma;
-
-  if( !simple )
-  {
-    linePostfix += '\n' + optionsItem.tab;
-  }
-
-  /* prepend */
-
-  if( optionsContainer.prependTab  )
-  {
-    result += optionsContainer.tab;
-  }
-
-  /* wrap */
-
-  if( optionsContainer.wrap )
-  {
-    result += prefix;
-    if( simple )
-    {
-      if( l )
-      result += ' ';
-    }
-    else
-    {
-      result += '\n' + optionsItem.tab;
-    }
-  }
-  else if( !simple )
-  {
-    /*result += '\n' + optionsItem.tab;*/
-  }
-
-  /* exec */
-
-  var r;
-  var written = 0;
-  for( var n = 0 ; n < l ; n++ )
-  {
-
-    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
-    _assert( optionsItem.level === optionsContainer.level + 1 );
-
-    if( names )
-    r = _toStr( values[ names[ n ] ],optionsItem );
-    else
-    r = _toStr( values[ n ],optionsItem );
-
-    _assert( _.objectIs( r ) && _.strIs( r.text ) );
-    _assert( optionsItem.tab === optionsContainer.tab + optionsContainer.dtab );
-
-    if( written > 0 )
-    {
-      result += linePostfix;
-    }
-    else if( !optionsContainer.wrap )
-    if( !names || !simple )
-    //if( !simple )
-    {
-      result += optionsItem.dtab;
-    }
-
-    if( names )
-    {
-      if( optionsContainer.json )
-      result += '"' + String( names[ n ] ) + '"' + optionsContainer.colon;
-      else
-      result += String( names[ n ] ) + optionsContainer.colon;
-
-      if( !r.simple )
-      result += '\n' + optionsItem.tab;
-    }
-
-    if( r.text )
-    {
-      result += r.text;
-      written += 1;
-    }
-
-  }
-
-  /* other */
-
-  function other( length )
-  {
-    return linePostfix + '[ ... other '+ ( length - l ) +' element(s) ]';
-  }
-
-  if( names && l < names.length )
-  result +=  other( names.length );
-  else if( l < values.length )
-  result +=  other( values.length );
-
-  /* wrap */
-
-  if( optionsContainer.wrap )
-  {
-    if( simple )
-    {
-      if( l )
-      result += ' ';
-    }
-    else
-    {
-      result += '\n' + optionsContainer.tab;
-    }
-    result += postfix;
-  }
+  // _.assert( result.indexOf( '...' ) === -1 );
 
   return result;
 }
@@ -5170,10 +5185,12 @@ var Proto =
   _toStrFromArrayFiltered : _toStrFromArrayFiltered,
   _toStrFromArray : _toStrFromArray,
 
+  _toStrFromContainer : _toStrFromContainer,
+
   _toStrFromObjectKeysFiltered : _toStrFromObjectKeysFiltered,
   _toStrFromObject : _toStrFromObject,
 
-  _toStrFromContainer : _toStrFromContainer,
+  strJsonFrom : strJsonFrom,
 
   //
 
