@@ -8889,7 +8889,9 @@ alteration How : - , Once , OnceStrictly
 
 */
 
-//
+// --
+// array maker
+// --
 
 /**
  * The arrayMakeSimilar() routine returns a new array or a new TypedArray with length equal (length)
@@ -17144,7 +17146,7 @@ var Proto =
   bufferToNodeBuffer : bufferToNodeBuffer,
 
 
-  // array
+  // array maker
 
   arrayMakeSimilar : arrayMakeSimilar,
   arrayMakeRandom : arrayMakeRandom,
@@ -17153,11 +17155,14 @@ var Proto =
   arrayFrom : arrayFrom,
   arrayAs : arrayAs,
 
-  arrayToMap : arrayToMap, /* experimental */
-  arrayToStr : arrayToStr, /* experimental */
-
   _arrayCopy : _arrayCopy,
   arrayCopy : arrayCopy,
+
+
+  // array converter
+
+  arrayToMap : arrayToMap, /* experimental */
+  arrayToStr : arrayToStr, /* experimental */
 
 
   // array transformer
