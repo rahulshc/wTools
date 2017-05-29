@@ -1148,10 +1148,10 @@ function entityTrivialNew( src )
 /**
  * Copies entity( src ) into( dst ) or returns own copy of( src ).Result depends on several moments:
  * -If( src ) is a Object - returns clone of( src ) using ( onRecursive ) callback function if its provided;
- * -If( dst ) has own 'copy' method - copies( src ) into( dst ) using this method;
- * -If( dst ) has own 'set' method - sets the fields of( dst ) using( src ) passed to( dst.set );
- * -If( src ) has own 'clone' method - returns clone of( src ) using ( src.clone ) method;
- * -If( src ) has own 'slice' method - returns result of( src.slice ) call;
+ * -If( dst ) has own 'copy' routine - copies( src ) into( dst ) using this routine;
+ * -If( dst ) has own 'set' routine - sets the fields of( dst ) using( src ) passed to( dst.set );
+ * -If( src ) has own 'clone' routine - returns clone of( src ) using ( src.clone ) routine;
+ * -If( src ) has own 'slice' routine - returns result of( src.slice ) call;
  * -Else returns a copy of entity( src ).
  *
  * @param {object} dst - Destination object.
@@ -1178,7 +1178,7 @@ function entityTrivialNew( src )
  * //returns 'string'
  *  _.entityCopyTry( null, new String( 'string' ) );
  *
- * @method entityCopyTry
+ * @function entityCopyTry
  * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
  * @throws {exception} If( onRecursive ) is not a Routine.
  * @memberof wTools
@@ -1284,7 +1284,7 @@ function entityCopyTry( dst,src,onRecursive )
  * console.log( dst.a === src.a );
  * //returns true
  *
- * @method entityCopyField
+ * @function entityCopyField
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
  * @memberof wTools
  *
@@ -1330,7 +1330,7 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
  * console.log( dstContainer.a );
  * //returns 15
  *
- * @method entityAssignField
+ * @function entityAssignField
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
  * @memberof wTools
  *
@@ -1378,7 +1378,7 @@ function entityAssignField( dstContainer,srcValue,name,onRecursive )
  * //returns "boolean"
  * typeof _.entityCoerceTo( "1" , true )
  *
- * @method entityCoerceTo
+ * @function entityCoerceTo
  * @throws {exception} If only one or no arguments provided.
  * @throws {exception} If type of( ins ) is not supported.
  * @memberof wTools
@@ -1522,7 +1522,7 @@ function entityFreeze( src )
  * var arr = [ NaN, 1, 2 ];
  * _.entityHasNan( arr );
  *
- * @method entityHasNan
+ * @function entityHasNan
  * @throws {exception} If no argument provided.
  * @memberof wTools
  *
@@ -1578,7 +1578,7 @@ function entityHasNan( src )
  * var arr = [ undefined, 1, 2 ];
  * _.entityHasUndef( arr );
  *
- * @method entityHasUndef
+ * @function entityHasUndef
  * @throws {exception} If no argument provided.
  * @memberof wTools
  *
@@ -1644,7 +1644,7 @@ function entityHasUndef( src )
   * //*"
   * _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
   *
-  * @method entityDiff
+  * @function entityDiff
   * @throws {exception} If( arguments.length ) is not equal 2 or 3.
   * @throws {exception} If( o ) is not a Object.
   * @throws {exception} If( o ) is extended by unknown property.
@@ -1694,14 +1694,14 @@ function entityDiff( src1,src2,o )
  * the same lengths, same keys/indexes and same appropriates values.
  * @property {boolean} [ strict=1 ] - Specify equality comparison. When it set to true, then the Strict equality
  * using (===), else the Loose equality using (==).
- * @property {string} [ lastPath='' ] - This parameters is modified during the execution of method. Specified on path to
+ * @property {string} [ lastPath='' ] - This parameters is modified during the execution of routine. Specified on path to
  * value, that composite from keys/indexes separated by '.'
  * @property {string} [ path='' ] - For non primitive entities indicates the current path for elements that is compared now.
  */
 
 /**
  * Compares two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
- * in the `options`. If in some moment method finds different values in two entities, then it returns false.
+ * in the `options`. If in some moment routine finds different values in two entities, then it returns false.
  * @param {*} src1 - Entity for comparison.
  * @param {*} src2 - Entity for comparison.
  * @param {wTools~entityEqualOptions} o - Comparison criteria.
@@ -1732,7 +1732,7 @@ function entityDiff( src1,src2,o )
  * _._entityEqual( { a : '1', b : '2' },{ a : 1, b : 2 }, o );
  *
  * @private
- * @method _entityEqual
+ * @function _entityEqual
  * @throws {exception} If ( arguments.length ) is not equal 3.
  * @memberof wTools
  */
@@ -1907,7 +1907,7 @@ _entityEqualIteratorMake.defaults =
 
 /**
  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
- * Returns false if finds difference in two entities, else returns true. By default method uses it own
+ * Returns false if finds difference in two entities, else returns true. By default routine uses it own
  * ( onSameNumbers ) routine to compare numbers.
  *
  * @param {*} src1 - Entity for comparison.
@@ -1933,7 +1933,7 @@ _entityEqualIteratorMake.defaults =
  * _.entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
  * console.log( o.lastPath );
  *
- * @method entityEqual
+ * @function entityEqual
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
  * @throws {exception} If( o ) is not a Object.
  * @throws {exception} If( o ) is extended by unknown property.
@@ -1980,7 +1980,7 @@ entityEqual.defaults.__proto__ = _entityEqualIteratorMake.defaults;
  * var src2 = { a : 1, b : { a : 1, b : 2 } };
  * _.entityIdentical( src1, src2 ) ;
  *
- * @method entityIdentical
+ * @function entityIdentical
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
  * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
@@ -2028,7 +2028,7 @@ function entityIdentical( src1,src2,options )
  * //returns true
  * _.entityEquivalent( [ 1, 2, 3 ], [ 1.9, 2.9, 3.9 ], { eps : 0.9 } );
  *
- * @method entityEquivalent
+ * @function entityEquivalent
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
  * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
@@ -2085,7 +2085,7 @@ function entityEquivalent( src1,src2,options )
  * //returns true
  * _.entityContain( { a : 1, b : 2 }, { a : 1 , b : 2 }  );
  *
- * @method entityContain
+ * @function entityContain
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
  * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
@@ -2136,7 +2136,7 @@ function entityContain( src1,src2,options )
  * var src = undefined;
  * _.entityLength( src );
  *
- * @method entityLength
+ * @function entityLength
  * @memberof wTools
 */
 
@@ -2178,7 +2178,7 @@ function entityLength( src )
  * //returns null
  * _.entitySize( 123 );
  *
- * @method entitySize
+ * @function entitySize
  * @memberof wTools
 */
 
@@ -2232,7 +2232,7 @@ function entitySize( src )
 
 /**
  * Returns value from entity( src ) using position provided by argument( index ).
- * For object method iterates over all properties and returns value when counter reaches( index ).
+ * For object routine iterates over all properties and returns value when counter reaches( index ).
  *
  * @param {*} src - Source entity.
  * @param {number} index - Specifies position of needed value.
@@ -2250,7 +2250,7 @@ function entitySize( src )
  * //returns undefined
  * _.entityValueWithIndex( { a : 'str', b : 123 }, 2 )
  *
- * @method entityValueWithIndex
+ * @function entityValueWithIndex
  * @memberof wTools
 */
 
@@ -2299,7 +2299,7 @@ function entityValueWithIndex( src,index )
  * //returns "b"
  * _.entityKeyWithValue( { a : 'str', b : 123 }, 123 )
  *
- * @method entityKeyWithValue
+ * @function entityKeyWithValue
  * @memberof wTools
 */
 
@@ -2347,7 +2347,7 @@ function entityKeyWithValue( src,value )
  * //returns { container: [ 0, 1, 2, 3 ], qarrey : [ '0', '1', '2' ], query: "0.1.2", set: 1, delimeter: [ '.','[',']' ], usingUndefinedForMissing: 1 }
  * _._entitySelectOptions( { container : [ 0, 1, 2, 3 ], query : '0.1.2', set : 1 } );
  *
- * @method _entitySelectOptions
+ * @function _entitySelectOptions
  * @throws {Exception} If( arguments.length ) is not equal 1 or 2.
  * @throws {Exception} If( o.query ) is not a String or Array.
  * @memberof wTools
@@ -2478,14 +2478,14 @@ function _entitySelect( o )
  * Returns value from entity that corresponds to index / key or path provided by( o.qarrey ) from entity( o.container ).
  *
  * @param {Object|Array} [ o.container=null ] - Source entity.
- * @param {Array} [ o.qarrey=null ] - Specifies key/index to select or path to element. If has '*' method processes each element of container.
+ * @param {Array} [ o.qarrey=null ] - Specifies key/index to select or path to element. If has '*' routine processes each element of container.
  * Example process each element at [ 0 ]: { container : [ [ 1, 2, 3 ] ], qarrey : [ 0, '*' ] }.
  * Example path to element [ 1 ][ 1 ]: { container : [ 0, [ 1, 2 ] ],qarrey : [ 1, 1 ] }.
- * @param {*} [ o.set=null ] - Replaces selected index/key value with this. If defined and specified index/key not exists, method inserts it.
+ * @param {*} [ o.set=null ] - Replaces selected index/key value with this. If defined and specified index/key not exists, routine inserts it.
  * @param {Boolean} [ o.usingUndefinedForMissing=false ] - If true returns undefined for Atomic type of( o.container ).
  * @returns {*} Returns value finded by index/key or path.
  *
- * @method _entitySelectAct
+ * @function _entitySelectAct
  * @throws {Exception} If container is Atomic type.
  * @memberof wTools
 */
@@ -2680,7 +2680,7 @@ entitySelectUnique.defaults.__proto__ = _entitySelectOptions.defaults;
 /**
  * Returns generated function that takes single argument( e ) and can be called to check if object( e )
  * has at least one key/value pair that is represented in( condition ).
- * If( condition ) is provided as routine, method uses it to check condition.
+ * If( condition ) is provided as routine, routine uses it to check condition.
  * Generated function returns origin( e ) if conditions is true, else undefined.
  *
  * @param {object|function} condition - Map to compare with( e ) or custom function.
@@ -2697,7 +2697,7 @@ entitySelectUnique.defaults.__proto__ = _entitySelectOptions.defaults;
  * var check = _._entityConditionMake( condition );
  * check( { a : 2 } );
  *
- * @method _entityConditionMake
+ * @function _entityConditionMake
  * @throws {exception} If no argument provided.
  * @throws {exception} If( condition ) is not a Routine or Object.
  * @memberof wTools
@@ -2782,7 +2782,7 @@ function _entityConditionMake( condition,levels )
  * @thorws {Error} If number of arguments less or more than 2.
  * @thorws {Error} If( src ) is not Array or ObjectLike.
  * @thorws {Error} If( onEach ) is not function.
- * @method entityMap
+ * @function entityMap
  * @memberof wTools
  */
 
@@ -2839,7 +2839,7 @@ function entityMap( src,onEach )
  * @thorws {Error} If( arguments.length ) less or more than 2.
  * @thorws {Error} If( src ) is not Array or ObjectLike.
  * @thorws {Error} If( onEach ) is not a function.
- * @method entityFilter
+ * @function entityFilter
  * @memberof wTools
  */
 
@@ -2952,7 +2952,7 @@ function entityFilterDeep( src,onEach )
    * // }
    * _.entityGroup( { src : [ { a : 1, b : 2 }, { a : 2, b : 3}, {  c : 4 }  ], key : ['a'] }  );
    *
-   * @method entityGroup
+   * @function entityGroup
    * @throws {exception} If( arguments.length ) is not equal 1.
    * @throws {exception} If( o.key ) is not a Array or String.
    * @throws {exception} If( o.src ) is not a Array-like or Object-like.
@@ -3068,7 +3068,7 @@ function entityVals( src )
 //
 
 /**
- * The result of _entityMost method object.
+ * The result of _entityMost routine object.
  * @typedef {Object} wTools~entityMostResult
  * @property {Number} index - Index of found element.
  * @property {String|Number} key - If the search was on map, the value of this property sets to key of found element.
@@ -3081,8 +3081,8 @@ function entityVals( src )
  * Returns object( wTools~entityMostResult ) that contains min or max element of entity, it depends on( returnMax ).
  *
  * @param {ArrayLike|Object} src - Source entity.
- * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
- * @param {Boolean} returnMax  - If true - method returns maximum, else method returns minimum value from entity.
+ * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
+ * @param {Boolean} returnMax  - If true - routine returns maximum, else routine returns minimum value from entity.
  * @returns {wTools~entityMostResult} Object with result of search.
  *
  * @example
@@ -3098,7 +3098,7 @@ function entityVals( src )
  * _._entityMost( { a : 1, b : 2, c : 3 }, undefined, 0 );
  *
  * @private
- * @method _entityMost
+ * @function _entityMost
  * @throws {Exception} If( arguments.length ) is not equal 3.
  * @throws {Exception} If( onElement ) function is not implemented.
  * @memberof wTools
@@ -3126,7 +3126,10 @@ function _entityMost( src,onElement,returnMax )
     return b-a;
   }
 
-  _.assert( onCompare.length === 1 || onCompare.length === 2 ); // xxx
+  debugger;
+  _.assert( onElement.length === 1 );
+  _.assert( onCompare.length === 2 );
+  // _.assert( onCompare.length === 1 || onCompare.length === 2 ); // xxx
 
   var result = { index : -1, key : undefined, value : undefined, element : undefined };
 
@@ -3155,7 +3158,7 @@ function _entityMost( src,onElement,returnMax )
   else
   {
 
-    //throw _.err( 'not tested' );
+    debugger;
     for( var s in src )
     {
       result.index = 0;
@@ -3187,10 +3190,10 @@ function _entityMost( src,onElement,returnMax )
 //
 
 /**
- * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with smallest value from( src ).
+ * Short-cut for _entityMost() routine. Returns object( wTools~entityMostResult ) with smallest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
- * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+ * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
  * @returns {wTools~entityMostResult} Object with result of search.
  *
  * @example
@@ -3200,7 +3203,7 @@ function _entityMost( src,onElement,returnMax )
  *
  * @see wTools~onEach
  * @see wTools~entityMostResult
- * @method entityMin
+ * @function entityMin
  * @throws {Exception} If missed arguments.
  * @throws {Exception} If passed extra arguments.
  * @memberof wTools
@@ -3215,10 +3218,10 @@ function entityMin( src,onElement )
 //
 
 /**
- * Short-cut for _entityMost() method. Returns object( wTools~entityMostResult ) with biggest value from( src ).
+ * Short-cut for _entityMost() routine. Returns object( wTools~entityMostResult ) with biggest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
- * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined method uses it own function.
+ * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
  * @returns {wTools~entityMostResult} Object with result of search.
  *
  * @example
@@ -3228,7 +3231,7 @@ function entityMin( src,onElement )
  *
  * @see wTools~onEach
  * @see wTools~entityMostResult
- * @method entityMax
+ * @function entityMax
  * @throws {Exception} If missed arguments.
  * @throws {Exception} If passed extra arguments.
  * @memberof wTools
@@ -3562,7 +3565,7 @@ function errAttentionRequest( err )
  * @private
  * @throws {Error} Expects single argument if pass les or more than one argument
  * @throws {Error} o.args should be array like, if o.args is not array.
- * @method _err
+ * @function _err
  * @memberof wTools
  */
 
@@ -3914,9 +3917,9 @@ _err.defaults =
  //   at <anonymous>:1:1
  *
  * @param {...String|Error} msg Accepts list of messeges/errors.
- * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
+ * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
  * reference.
- * @method err
+ * @function err
  * @memberof wTools
  */
 
@@ -3994,7 +3997,7 @@ function errAttend( err )
  * Creates error object, with message created from passed `msg` parameters and contains error trace.
  * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
  concatenating them. Prints the created error.
- * If _global_.logger defined, method will use it to print error, else uses console
+ * If _global_.logger defined, routine will use it to print error, else uses console
  * @see wTools.err
  *
  * @example
@@ -4016,8 +4019,8 @@ function errAttend( err )
    //   at <anonymous>:1:1
  *
  * @param {...String|Error} msg Accepts list of messeges/errors.
- * @returns {Error} Created Error. If passed existing error as one of parameters, method modified it and return
- * @method errLog
+ * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
+ * @function errLog
  * @memberof wTools
  */
 
@@ -4348,7 +4351,7 @@ diagnosticCode.defaults =
  // at <anonymous>:1:1"
  *
  * @returns {String} Return stack trace from call point.
- * @method stack
+ * @function stack
  * @memberof wTools
  */
 
@@ -4643,7 +4646,7 @@ function diagnosticBeep()
 
 /**
  * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If condition is true method returns without exceptions, otherwise method generates and throws exception. By default generates error with message 'Assertion failed'.
+ * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion failed'.
  * Also generates error using message(s) or existing error object(s) passed after first argument.
  *
  * @param {*} condition - condition to check.
@@ -4693,7 +4696,7 @@ function diagnosticBeep()
  * //   at divide (<anonymous>:2:29)
  * //   at <anonymous>:1:1
  * @throws {Error} If passed condition( condition ) fails.
- * @method assert
+ * @function assert
  * @memberof wTools
  */
 
@@ -4770,7 +4773,7 @@ function assertWithoutBreakpoint( condition )
 
 /**
  * Checks if map passed by argument( src ) not contains undefined properties. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If method found undefined property it generates and throws exception, otherwise returns without exception.
+ * If routine found undefined property it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed after first argument.
  *
  * @param {Object} src - source map.
@@ -4798,7 +4801,7 @@ function assertWithoutBreakpoint( condition )
  * // at assertMapHasNoUndefine (file:///.../wTools/staging/wTools.s:4087)
  * // at <anonymous>:2
  *
- * @method assertMapHasNoUndefine
+ * @function assertMapHasNoUndefine
  * @throws {Exception} If no arguments provided.
  * @throws {Exception} If map( src ) contains undefined property.
  * @memberof wTools
@@ -4834,7 +4837,7 @@ function assertMapHasNoUndefine( src )
 /**
  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If method found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
  * @param {Object} src - source map.
@@ -4866,7 +4869,7 @@ function assertMapHasNoUndefine( src )
  * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4188)
  * // at <anonymous>:4
  *
- * @method assertMapHasOnly
+ * @function assertMapHasOnly
  * @throws {Exception} If map( src ) contains unique property.
  * @memberof wTools
  *
@@ -4929,7 +4932,7 @@ function assertMapHasOnlyWithUndefines( src )
 /**
  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If method found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
  * @param {Object} src - source map.
@@ -4968,7 +4971,7 @@ function assertMapHasOnlyWithUndefines( src )
  * // at assertMapOwnOnly (file:///.../wTools/staging/wTools.s:4215)
  * // at <anonymous>:4
  *
- * @method assertMapOwnOnly
+ * @function assertMapOwnOnly
  * @throws {Exception} If map( src ) contains unique property.
  * @memberof wTools
  *
@@ -5004,7 +5007,7 @@ function assertMapOwnOnly( src )
 /**
  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If method did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
  * @param {Object} src - source map.
@@ -5041,7 +5044,7 @@ function assertMapOwnOnly( src )
  * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4242)
  * // at <anonymous>:3
  *
- * @method assertMapHasAll
+ * @function assertMapHasAll
  * @throws {Exception} If map( src ) not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -5077,7 +5080,7 @@ function assertMapHasAll( src,all,msg )
 /**
  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If method did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
  * @param {Object} src - source map.
@@ -5113,7 +5116,7 @@ function assertMapHasAll( src,all,msg )
  * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4269)
  * // at <anonymous>:3
  *
- * @method assertMapOwnAll
+ * @function assertMapOwnAll
  * @throws {Exception} If map( src ) not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -5184,7 +5187,7 @@ function assertNotTested( src )
 /**
  * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If method found some properties in source it generates and throws exception, otherwise returns without exception.
+ * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
  * @param {Object} src - source map.
@@ -5221,7 +5224,7 @@ function assertNotTested( src )
  * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4518)
  * // at <anonymous>:3
  *
- * @method assertMapHasNone
+ * @function assertMapHasNone
  * @throws {Exception} If map( src ) contains some properties from other map(s).
  * @memberof wTools
  *
@@ -5299,7 +5302,7 @@ function assertMapOwnNone( src,none )
 //
 
 /**
- * If condition failed, method prints warning messages passed after condition argument
+ * If condition failed, routine prints warning messages passed after condition argument
  * @example
   function checkAngles( a, b, c )
   {
@@ -5310,7 +5313,7 @@ function assertMapOwnNone( src,none )
  // triangle with that angles does not exists
  * @param condition Condition to check.
  * @param messages messages to print.
- * @method assertWarn
+ * @function assertWarn
  * @memberof wTools
  */
 
@@ -5345,7 +5348,7 @@ function assertWarn( condition )
  *
  * @param {*} src.
  * @return {Boolean}.
- * @method objectIs
+ * @function objectIs
  * @memberof wTools
  */
 
@@ -5398,7 +5401,7 @@ function objectLikeOrRoutine( src )
 //
 
 /**
- * The mapIs() method determines whether the passed value is an Object,
+ * The mapIs() routine determines whether the passed value is an Object,
  * and not inherits through the prototype chain.
  *
  * If the (src) is an Object, true is returned,
@@ -5419,7 +5422,7 @@ function objectLikeOrRoutine( src )
  * mapIs( [ 3, 7, 13 ] );
  *
  * @returns { Boolean } Returns true if (src) is an Object, and not inherits through the prototype chain.
- * @method mapIs
+ * @function mapIs
  * @memberof wTools
  */
 
@@ -5465,7 +5468,7 @@ function mapLike( src )
 //
 
 /**
- * The arrayIs() method determines whether the passed value is an Array.
+ * The arrayIs() routine determines whether the passed value is an Array.
  *
  * If the (src) is an Array, true is returned,
  * otherwise false is.
@@ -5481,7 +5484,7 @@ function mapLike( src )
  * arrayIs( 10 );
  *
  * @returns { boolean } Returns true if (src) is an Array.
- * @method arrayIs
+ * @function arrayIs
  * @memberof wTools
  */
 
@@ -5493,7 +5496,7 @@ function arrayIs( src )
 //
 
 /**
- * The arrayLike() method determines whether the passed value is an array-like or an Array.
+ * The arrayLike() routine determines whether the passed value is an array-like or an Array.
  * Imortant : arrayLike returns false for Object, even if the object has length field.
  *
  * If (src) is an array-like or an Array, true is returned,
@@ -5516,7 +5519,7 @@ function arrayIs( src )
  * } )('Hello there!');
  *
  * @returns { boolean } Returns true if (src) is an array-like or an Array.
- * @method arrayLike.
+ * @function arrayLike.
  * @memberof wTools
  */
 
@@ -5543,7 +5546,7 @@ function arrayLike( src )
 //
 
 /**
- * The hasLength() method determines whether the passed value has the property (length).
+ * The hasLength() routine determines whether the passed value has the property (length).
  *
  * If (src) is equal to the (undefined) or (null) false is returned.
  * If (src) has the property (length) true is returned.
@@ -5574,7 +5577,7 @@ function arrayLike( src )
  * hasLength( { } );
  *
  * @returns { boolean } Returns true if (src) has the property (length).
- * @method hasLength
+ * @function hasLength
  * @memberof wTools
  */
 
@@ -5583,41 +5586,6 @@ function hasLength( src )
   if( src === undefined || src === null ) return false;
   if( _.numberIs( src.length ) ) return true;
   return false;
-}
-
-//
-
-/**
- * Function strIs checks incoming param whether it is string.
- * Returns "true" if incoming param is string. Othervise "false" returned
- *
- * @example
- * //returns true
- * strIsIs('song');
- * @example
- * // returns false
- * strIs(5);
- *
- * @param {*} src.
- * @return {Boolean}.
- * @method strIs.
- * @memberof wTools
- */
-
-function strIs( src )
-{
-  var result = _ObjectToString.call( src ) === '[object String]';
-  return result;
-}
-
-//
-
-function strIsNotEmpty( src )
-{
-  if( !src )
-  return false;
-  var result = _ObjectToString.call( src ) === '[object String]';
-  return result;
 }
 
 //
@@ -5643,7 +5611,7 @@ function symbolIs( src )
  *
  * @param {*} src.
  * @return {Boolean}.
- * @method numberIs.
+ * @function numberIs.
  * @memberof wTools
  */
 
@@ -6227,13 +6195,48 @@ function numberRandomIntBut( range )
 // --
 
 /**
+ * Function strIs checks incoming param whether it is string.
+ * Returns "true" if incoming param is string. Othervise "false" returned
+ *
+ * @example
+ * //returns true
+ * strIsIs('song');
+ * @example
+ * // returns false
+ * strIs(5);
+ *
+ * @param {*} src.
+ * @return {Boolean}.
+ * @function strIs.
+ * @memberof wTools
+ */
+
+function strIs( src )
+{
+  var result = _ObjectToString.call( src ) === '[object String]';
+  return result;
+}
+
+//
+
+function strIsNotEmpty( src )
+{
+  if( !src )
+  return false;
+  var result = _ObjectToString.call( src ) === '[object String]';
+  return result;
+}
+
+//
+
+/**
   * Return type of src.
   * @example
       var str = _.strTypeOf( 'testing' );
   * @param {*} src
   * @return {string}
   * string name of type src
-  * @method strTypeOf
+  * @function strTypeOf
   * @memberof wTools
   */
 
@@ -6268,7 +6271,7 @@ function strTypeOf( src )
   * @param {*} src
   * @return {string}
   * string name of type src
-  * @method strPrimitiveTypeOf
+  * @function strPrimitiveTypeOf
   * @memberof wTools
   */
 
@@ -6291,7 +6294,7 @@ function strPrimitiveTypeOf( src )
    var args = _.str('test2');
   * @return {string}
   * If no arguments return empty string
-  * @method str
+  * @function str
   * @memberof wTools
   */
 
@@ -6340,7 +6343,7 @@ function str()
   * @returns { String } Returns part of source string without tail( end ) or undefined.
   * @throws { Exception } If all arguments are not strings;
   * @throws { Exception } If ( argumets.length ) is not equal 2.
-  * @method strBeginOf
+  * @function strBeginOf
   * @memberof wTools
   */
 
@@ -6381,7 +6384,7 @@ function strBeginOf( src,end )
   * @returns { String } Returns part of source string without head( begin ) or undefined.
   * @throws { Exception } If all arguments are not strings;
   * @throws { Exception } If ( argumets.length ) is not equal 2.
-  * @method strEndOf
+  * @function strEndOf
   * @memberof wTools
   */
 
@@ -6442,7 +6445,7 @@ function strEndOf( src,begin )
   * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
   * @throws { Exception } If all arguments are not strings;
   * @throws { Exception } If ( argumets.length ) is not equal 3.
-  * @method strInbetweenOf
+  * @function strInbetweenOf
   * @memberof wTools
   */
 
@@ -6483,7 +6486,7 @@ function strInbetweenOf( src,begin,end )
   * // returns false
   *
   * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
-  * @method strBegins
+  * @function strBegins
   * @throws { Exception } If one of arguments is not a String.
   * @throws { Exception } If( arguments.length ) is not equal 2.
   * @memberof wTools
@@ -6515,7 +6518,7 @@ function strBegins( src,begin )
   * // returns false
   *
   * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
-  * @method strEnds
+  * @function strEnds
   * @throws { Exception } If one of arguments is not a String.
   * @throws { Exception } If( arguments.length ) is not equal 2.
   * @memberof wTools
@@ -6549,7 +6552,7 @@ function strEnds( src,end )
  * //returns example
  * _.strRemoveBegin( 'example','abc' );
  *
- * @method strRemoveBegin
+ * @function strRemoveBegin
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( prefix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -6581,7 +6584,7 @@ function strRemoveBegin( src,begin )
  * //returns example
  * _.strRemoveEnd( 'example','abc' );
  *
- * @method strRemoveEnd
+ * @function strRemoveEnd
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( postfix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
@@ -6613,7 +6616,7 @@ function strRemoveEnd( src,end )
   * //returns 'xabc'
   *
   * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
-  * @method strPrependOnce
+  * @function strPrependOnce
   * @memberof wTools
   */
 
@@ -6642,7 +6645,7 @@ function strPrependOnce( src,begin )
   * //returns 'abcx'
   *
   * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
-  * @method strAppendOnce
+  * @function strAppendOnce
   * @memberof wTools
   */
 
@@ -6701,7 +6704,7 @@ function regexpIdentical( src1,src2 )
  * wTools.regexpEscape('Hello. How are you?'); // "Hello\. How are you\?"
  * @param {String} src Regexp string
  * @returns {String} Escaped string
- * @method regexpEscape
+ * @function regexpEscape
  * @memberof wTools
  */
 
@@ -6734,7 +6737,7 @@ function regexpEscape( src )
  * @returns {RegExp} RegExp that represent passed glob
  * @throw {Error} If missed argument, or got more than one argumet
  * @throw {Error} If glob is not string
- * @method regexpForGlob
+ * @function regexpForGlob
  * @memberof wTools
  */
 
@@ -6783,7 +6786,7 @@ function regexpForGlob( glob )
  * @returns {String} Regexp
  * @throws {Error} Throw error with message 'unknown type of expression, expects regexp or string, but got' error
  if src not string or regexp
- * @method regexpMakeExpression
+ * @function regexpMakeExpression
  * @memberof wTools
  */
 
@@ -6827,7 +6830,7 @@ function regexpMakeExpression( src,flags )
    * @returns {RegExp} Result regexp
    * @throws {Error} If passed arguments are not strings or options object.
    * @throws {Error} If options contains any different from 'but' or 'atLeastOnce' properties.
-   * @method regexpBut_
+   * @function regexpBut_
    * @memberof wTools
    */
 
@@ -6846,9 +6849,6 @@ function regexpBut_( options )
   var words = _.__arrayFlatten( [], args );
   var result = '^(?:(?!';
 
-  // !!! test me in builder
-  // var result = '^(? :(?!';
-
   for( var w = 0 ; w < words.length ; w++ )
   _.assert( _.strIs( words[ w ] ) );
 
@@ -6858,8 +6858,6 @@ function regexpBut_( options )
   result += ').)+$';
   else
   result += ').)*$';
-
-  /* console.log( 'regexpBut_.result : ' + result ) */
 
   return new RegExp( result );
 }
@@ -6880,7 +6878,7 @@ regexpBut_.defaults =
  * @param {String[]|String} src - array of strings/regexps or single string/regexp
  * @returns {RegExp[]} Array of regexps
  * @throw {Error} if `src` in not string, regexp, or array
- * @method regexpArrayMake
+ * @function regexpArrayMake
  * @memberof wTools
  */
 
@@ -6925,7 +6923,7 @@ function regexpArrayMake( src )
    * @throws {Error} If first argument is not array.
    * @throws {Error} If second argument is not string.
    * @throws {Error} If element of array is not RegExp.
-   * @method regexpArrayIndex
+   * @function regexpArrayIndex
    * @memberof wTools
    */
 
@@ -6966,7 +6964,7 @@ function regexpArrayIndex( arr,ins )
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @thows {Error} If missed one of arguments
- * @method _regexpArrayAny
+ * @function _regexpArrayAny
  * @memberof wTools
  */
 
@@ -7007,7 +7005,7 @@ function _regexpArrayAny( arr,ins,none )
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @thows {Error} If missed one of arguments
- * @method _regexpArrayAll
+ * @function _regexpArrayAll
  * @memberof wTools
  */
 
@@ -7033,7 +7031,7 @@ function _regexpArrayAll( arr,ins,none )
       If passed RegexpObject or map with properties similar to RegexpObject but with string in values, then the second
    parameter is not required;
       All strings in sources will be turned into RegExps.
-      If passed single RegExp/String or array of RegExps/Strings, then method will return RegexpObject with
+      If passed single RegExp/String or array of RegExps/Strings, then routine will return RegexpObject with
    `defaultMode` as key, and array of RegExps created from first parameter as value.
       If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
    with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
@@ -7068,7 +7066,7 @@ function _regexpArrayAll( arr,ins,none )
    * @throws {Error} Unknown src if first argument is not array, map, string or regexp.
    * @throws {Error} Unexpected if type of array element is not string regexp or RegexpObject.
    * @throws {Error} Unknown regexp filters if passed map has unexpected properties (see RegexpObject).
-   * @method regexpMakeObject
+   * @function regexpMakeObject
    * @memberof wTools
    */
 
@@ -7087,7 +7085,7 @@ function regexpMakeObject( src,defaultMode )
  * Internal implementation.
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
- * @method _routineBind
+ * @function _routineBind
  * @memberof wTools
  */
 
@@ -7176,11 +7174,11 @@ function _routineBind( o )
 //
 
 /**
- * The routineBind() method creates a new function with its 'this' (context) set to the provided `context`
- value. Unlike Function.prototype.bind() method if `context` is undefined`, in new function 'this' context will not be
+ * The routineBind() routine creates a new function with its 'this' (context) set to the provided `context`
+ value. Unlike Function.prototype.bind() routine if `context` is undefined`, in new function 'this' context will not be
  sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
  target function.
- * Besides the aforementioned difference, routineBind method accepts function as argument, that makes it more useful
+ * Besides the aforementioned difference, routineBind routine accepts function as argument, that makes it more useful
     than Function.prototype.bind().
  * @example
     var o = {
@@ -7207,7 +7205,7 @@ function _routineBind( o )
  * @returns {Function} New created function with preceding this, and args.
  * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
- * @method routineBind
+ * @function routineBind
  * @memberof wTools
  */
 
@@ -7230,9 +7228,9 @@ function routineBind( routine, context, args )
 //
 
 /**
- * The routineJoin() method creates a new function with its 'this' (context) set to the provided `context`
+ * The routineJoin() routine creates a new function with its 'this' (context) set to the provided `context`
  value. Argumetns `args` of target function which are passed before arguments of binded function during
- calling of target function. Unlike routineBind method, position of `context` parameter is more intuitive.
+ calling of target function. Unlike routineBind routine, position of `context` parameter is more intuitive.
  * @example
    var o = {
         z: 5
@@ -7260,7 +7258,7 @@ function routineBind( routine, context, args )
  * @see wTools.routineBind
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
- * @method routineJoin
+ * @function routineJoin
  * @memberof wTools
  */
 
@@ -7299,7 +7297,7 @@ function routineJoin( context, routine, args )
    * @param {Function} routine Function which will be used as base for result function.
    * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
    * @returns {Function} Result function with sealed context and arguments.
-   * @method routineJoin
+   * @function routineJoin
    * @memberof wTools
    */
 
@@ -7329,7 +7327,7 @@ function routineSeal( context, routine, args )
    * @throws {Error} If arguments less then 2
    * @throws {Error} If `delay` is not a number
    * @throws {Error} If `routine` is not a function
-   * @method routineDelayed
+   * @function routineDelayed
    * @memberof wTools
    */
 
@@ -7444,7 +7442,7 @@ function routinesJoin()
  * @param {Function[]} routines Array of called function
  * @param {Array<*>} [args] Arguments that will be passed to each functions.
  * @returns {Array<*>} Array with results of functions invocation.
- * @method routinesCall
+ * @function routinesCall
  * @memberof wTools
  */
 
@@ -7570,9 +7568,9 @@ function methodsCall( contexts,methods,args )
   for( var i = 0 ; i < l ; i++ )
   {
     var context = contextGet( i );
-    var method = context[ methodGet( i ) ];
-    _.assert( _.routineIs( method ) );
-    result[ i ] = method.apply( context,args )
+    var routine = context[ methodGet( i ) ];
+    _.assert( _.routineIs( routine ) );
+    result[ i ] = routine.apply( context,args )
   }
 
   return result;
@@ -7732,25 +7730,49 @@ routineInputMultiplicator_functor.defaults =
 
 //
 
-function _comparatorFromTransformer( transformer )
+function _equalizerFromMapper( mapper )
 {
 
-  if( transformer === undefined )
-  transformer = function transformer( a,b ){ return a-b };
+  if( mapper === undefined )
+  mapper = function mapper( a,b ){ return a === b };
+
+  _.assert( 0,'not tested' )
+  _.assert( arguments.length === 1 );
+  _.assert( mapper.length === 1 || mapper.length === 2 );
+
+  if( mapper.length === 1 )
+  {
+    var equalizer = function equalizerFromMapper( a,b )
+    {
+      return mapper( a ) === mapper( b );
+    }
+    return equalizer;
+  }
+
+  return mapper;
+}
+
+//
+
+function _comparatorFromMapper( mapper )
+{
+
+  if( mapper === undefined )
+  mapper = function mapper( a,b ){ return a-b };
 
   _.assert( arguments.length === 1 );
-  _.assert( transformer.length === 1 || transformer.length === 2 );
+  _.assert( mapper.length === 1 || mapper.length === 2 );
 
-  if( transformer.length === 1 )
+  if( mapper.length === 1 )
   {
-    var comparator = function comparatorFromTransformer( a,b )
+    var comparator = function comparatorFromMapper( a,b )
     {
-      return transformer( a ) - transformer( b );
+      return mapper( a ) - mapper( b );
     }
     return comparator;
   }
 
-  return transformer;
+  return mapper;
 }
 
 //
@@ -8099,7 +8121,7 @@ function dateToStr( date )
 // --
 
   /**
-   * The bufferRelen() method returns a new or the same typed array (src) with a new or the same length (len).
+   * The bufferRelen() routine returns a new or the same typed array (src) with a new or the same length (len).
    *
    * It creates the variable (result) checks, if (len) is more than (src.length),
    * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayMakeSimilar(src, len))
@@ -8128,7 +8150,7 @@ function dateToStr( date )
    * _.bufferRelen( ints3, 6 );
    *
    * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
-   * @method bufferRelen
+   * @function bufferRelen
    * @memberof wTools
    */
 
@@ -8206,7 +8228,7 @@ function bufferBytesGet( src )
 //
 
   /**
-   * The bufferRetype() method converts and returns a new instance of (bufferType) constructor.
+   * The bufferRetype() routine converts and returns a new instance of (bufferType) constructor.
    *
    * @param { typedArray } src - The typed array.
    * @param { typedArray } bufferType - The type of typed array.
@@ -8222,7 +8244,7 @@ function bufferBytesGet( src )
    * _.bufferRetype(view2, Int8Array);
    *
    * @returns { typedArray } Returns a new instance of (bufferType) constructor.
-   * @method bufferRetype
+   * @function bufferRetype
    * @throws { Error } Will throw an Error if (src) is not a typed array object.
    * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
    * @memberof wTools
@@ -8522,7 +8544,7 @@ bufferFrom.defaults =
 
 //
   /**
-   * The bufferRawFromBuffer() method returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
+   * The bufferRawFromBuffer() routine returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
    * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
    *
    * @param { typedArray } buffer - Entity to check.
@@ -8541,7 +8563,7 @@ bufferFrom.defaults =
    *
    * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
    * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
-   * @method bufferRawFromBuffer
+   * @function bufferRawFromBuffer
    * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
    * @throws { Error } Will throw an Error if (buffer) is not a typed array.
    * @memberof wTools
@@ -8628,7 +8650,7 @@ function buffersSerialize( o )
   var attributes = o.onAttributesGet.call( o.context );
   var buffers = [];
 
-  // eval size
+  /* eval size */
 
   for( var a = 0 ; a < attributes.length ; a++ )
   {
@@ -8656,7 +8678,7 @@ function buffersSerialize( o )
 
   }
 
-  // make buffer
+  /* make buffer */
 
   if( !store[ 'buffer' ] )
   store[ 'buffer' ] = new ArrayBuffer( size );
@@ -8674,7 +8696,7 @@ function buffersSerialize( o )
     return b.sizeOfAtom - a.sizeOfAtom;
   });
 
-  // store into single buffer
+  /* store into single buffer */
 
   var offset = 0;
   for( var b = 0 ; b < buffers.length ; b++ )
@@ -8699,8 +8721,6 @@ function buffersSerialize( o )
       'size' : bytes.length,
     }
 
-    // debugger; // xxx
-
     if( attribute.copyCustom )
     serialized[ 'fields' ] = attribute.copyCustom
     ({
@@ -8720,7 +8740,7 @@ function buffersSerialize( o )
 
   }
 
-  // return
+  /* return */
 
   return store;
 }
@@ -8869,56 +8889,10 @@ alteration How : - , Once , OnceStrictly
 
 */
 
-/**
- * The arraySub() method returns a shallow copy of a portion of an array
- * or a new TypedArray that contains
- * the elements from (begin) index to the (end) index,
- * but not including (end).
- *
- * @param { Array } src - Source array.
- * @param { Number } begin - Index at which to begin extraction.
- * @param { Number } end - Index at which to end extraction.
- *
- * @example
- * // returns [ 3, 4 ]
- * var arr = _.arraySub( [ 1, 2, 3, 4, 5 ], 2, 4 );
- *
- * @example
- * // returns [ 2, 3 ]
- * _.arraySub( [ 1, 2, 3, 4, 5 ], -4, -2 );
- *
- * @example
- * // returns [ 1, 2, 3, 4, 5 ]
- * _.arraySub( [ 1, 2, 3, 4, 5 ] );
- *
- * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
- * @method arraySub
- * @throws { Error } If the passed arguments is more than three.
- * @throws { Error } If the first argument is not an array.
- * @memberof wTools
- */
-
-function arraySub( src,begin,end )
-{
-
-  _.assert( arguments.length <= 3 );
-
-  if( _.atomicIs( src ) )
-  throw _.err( 'arraySub','Unknown argument type' );
-
-  if( _.routineIs( src.subarray ) )
-  return src.subarray( begin,end );
-
-  if( !_.routineIs( src.slice ) )
-  throw _.err( 'arraySub','Unknown argument type' );
-
-  return src.slice( begin,end );
-}
-
 //
 
 /**
- * The arrayMakeSimilar() method returns a new array or a new TypedArray with length equal (length)
+ * The arrayMakeSimilar() routine returns a new array or a new TypedArray with length equal (length)
  * or new TypedArray with the same length of the initial array if second argument is not provided.
  *
  * @param { arrayLike } ins - The instance of an array.
@@ -8933,7 +8907,7 @@ function arraySub( src,begin,end )
  * var arr = _.arrayMakeSimilar( [ 1, 2, 3 ], 4 );
  *
  * @returns { arrayLike }  Returns an array with a certain (length).
- * @method arrayMakeSimilar
+ * @function arrayMakeSimilar
  * @throws { Error } If the passed arguments is less than two.
  * @throws { Error } If the (length) is not a number.
  * @throws { Error } If the first argument in not an array like object.
@@ -8965,21 +8939,75 @@ function arrayMakeSimilar( ins,length )
 //
 
 /**
- * The arrayNewOfSameLength() method returns a new empty array
- * or a new TypedArray with the same length as in (ins).
+ * The arrayMakeRandom() routine returns an array which contains random numbers.
  *
- * @param { arrayLike } ins - The instance of an array.
+ * @param { Object } o - The options for getting random numbers.
+ * @param { Number } o.length - The length of an array.
+ * @param { Array } [ o.range = [ 0, 1 ] ] - The range of numbers.
+ * @param { Boolean } [ o.int = false ] - Floating point numbers or not.
  *
  * @example
- * // returns [ , , , , ]
- * var arr = _.arrayNewOfSameLength( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 6, 2, 4, 7, 8 ]
+ * var arr = _.arrayMakeRandom( {
+ *   length : 5,
+ *   range : [ 1, 9 ],
+ *   int : true
+ * } );
  *
- * @returns { arrayLike } - The new empty array with the same length as in (ins).
- * @method arrayNewOfSameLength
- * @throws { Error } If missed argument, or got more than one argument.
- * @throws { Error } If the first argument in not array like object.
+ * @returns { Array } - Returns an array of random numbers.
+ * @function arrayMakeRandom
  * @memberof wTools
  */
+
+function arrayMakeRandom( o )
+{
+  var result = [];
+
+  if( _.numberIs( o ) )
+  {
+    o = { length : o };
+  }
+
+  _.assert( arguments.length === 1 );
+  _.routineOptions( arrayMakeRandom,o );
+
+  debugger;
+
+  for( var i = 0 ; i < o.length ; i++ )
+  {
+    result[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
+    if( o.int )
+    result[ i ] = Math.floor( result[ i ] );
+  }
+
+  return result;
+}
+
+arrayMakeRandom.defaults =
+{
+  int : 0,
+  range : [ 0,1 ],
+  length : 1,
+}
+
+//
+
+// /**
+//  * The arrayNewOfSameLength() routine returns a new empty array
+//  * or a new TypedArray with the same length as in (ins).
+//  *
+//  * @param { arrayLike } ins - The instance of an array.
+//  *
+//  * @example
+//  * // returns [ , , , , ]
+//  * var arr = _.arrayNewOfSameLength( [ 1, 2, 3, 4, 5 ] );
+//  *
+//  * @returns { arrayLike } - The new empty array with the same length as in (ins).
+//  * @function arrayNewOfSameLength
+//  * @throws { Error } If missed argument, or got more than one argument.
+//  * @throws { Error } If the first argument in not array like object.
+//  * @memberof wTools
+//  */
 
 // function arrayNewOfSameLength( ins )
 // {
@@ -8995,7 +9023,7 @@ function arrayMakeSimilar( ins,length )
 //
 
 /**
- * The arrayFromNumber() method returns a new array
+ * The arrayFromNumber() routine returns a new array
  * which containing the static elements only type of Number.
  *
  * It takes two argument (dst) and (length)
@@ -9018,7 +9046,7 @@ function arrayMakeSimilar( ins,length )
  * var arr = _.arrayFromNumber( [ 3, 7, 13 ], 3 );
  *
  * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
- * @method arrayFromNumber
+ * @function arrayFromNumber
  * @throws { Error } If missed argument, or got less or more than two argument.
  * @throws { Error } If type of the first argument is not a number or array.
  * @throws { Error } If the second argument is less than 0.
@@ -9043,87 +9071,238 @@ function arrayFromNumber( dst,length )
 //
 
 /**
- * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
+ * The arrayFromRange() routine generate array of arithmetic progression series,
+ * from the range[ 0 ] to the range[ 1 ] with increment 1.
  *
- * @param { arrayLike } srcArray - Values for the new array.
- * @param { ( arrayLike | object ) } [ indicesArray = indicesArray.indices ] - Indexes of elements from the (srcArray) or options object.
+ * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
+ * and assigns to the each index of the (result) array (range[ 0 ] + 1).
+ *
+ * @param { arrayLike } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
  *
  * @example
- * // returns [ 3, 4, 5 ]
- * var arr = _.arraySelect( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );
+ * // returns [ 1, 2, 3, 4 ]
+ * var range = _.arrayFromRange( [ 1, 5 ] );
  *
  * @example
- * // returns [ undefined, undefined ]
- * var arr = _.arraySelect( [ 1, 2, 3 ], [ 4, 5 ] );
+ * // returns [ 0, 1, 2, 3, 4 ]
+ * var range = _.arrayFromRange( 5 );
  *
- * @returns { arrayLike } - Returns a new array with the length equal (indicesArray.length) and elements from (srcArray).
-   If there is no element with necessary index than the value will be undefined.
- * @method arraySelect
- * @throws { Error } If passed arguments is not array like object.
- * @throws { Error } If the atomsPerElement property is not equal to 1.
+ * @returns { array } Returns an array of numbers for the requested range with increment 1.
+ * May be an empty array if adding the step would not converge toward the end value.
+ * @function arrayFromRange
+ * @throws { Error } If passed arguments is less than one or more than one.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the length of the (range) is not equal to the two.
  * @memberof wTools
  */
 
-function arraySelect( srcArray,indicesArray )
+function arrayFromRange( range )
 {
-  var atomsPerElement = 1;
 
-  if( _.objectIs( indicesArray ) )
-  {
-    atomsPerElement = indicesArray.atomsPerElement || 1;
-    indicesArray = indicesArray.indices;
-  }
+  if( _.numberIs( range ) )
+  range = [ 0,range ];
 
-  _assert( _.bufferTypedIs( srcArray ) || _.arrayIs( srcArray ) );
-  _assert( _.bufferTypedIs( indicesArray ) || _.arrayIs( indicesArray ) );
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( range ) );
+  _.assert( range.length === 2 );
 
-  var result = new srcArray.constructor( indicesArray.length );
+  var result = [];
+  var first = range[ 0 ];
+  var len = range[ 1 ] - range[ 0 ];
 
-  if( atomsPerElement === 1 )
-  for( var i = 0, l = indicesArray.length ; i < l ; i += 1 )
-  {
-    result[ i ] = srcArray[ indicesArray[ i ] ];
-  }
-  else
-  for( var i = 0, l = indicesArray.length ; i < l ; i += 1 )
-  {
-    throw _.err( 'Not tested' );
-    for( var a = 0 ; a < atomsPerElement ; a += 1 )
-    result[ i*atomsPerElement+a ] = srcArray[ indicesArray[ i ]*atomsPerElement+a ];
-  }
+  for( var i = 0 ; i < len ; i++ )
+  result[ i ] = first + i;
 
   return result;
 }
 
 //
 
-function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
+/**
+ * The arrayFrom() routine converts an object-like (src) into Array.
+ *
+ * @param { * } src - To convert into Array.
+ *
+ * @example
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * _.arrayFrom( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ *
+ * @example
+ * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
+ * _.arrayFrom( { a : 3, b : 7, c : 13 } );
+ *
+ * @example
+ * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
+ * _.arrayFrom( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+ *
+ * @example
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
+ * var args = ( function() {
+ *   return arguments;
+ * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+ * _.arrayFrom( args );
+ *
+ * @returns { Array } Returns an Array.
+ * @function arrayFrom
+ * @throws { Error } Will throw an Error if (src) is not an object-like.
+ * @memberof wTools
+ */
+
+function arrayFrom( src )
 {
-  var result = [];
-  var l = srcArray.length;
 
-  debugger;
-  throw _.err( 'not tested' );
+  _.assert( arguments.length === 1 );
 
-  comparator = _._comparatorFromTransformer( comparator );
+  if( _.arrayIs( src ) )
+  return src;
 
-  function rcomparator( a,b )
+  if( _.objectIs( src ) )
+  return _.mapToArray( src );
+
+  if( _.strIs( src ) )
   {
-    return comparator( srcArray[ a ],srcArray[ b ] );
-  };
+    var sep = ( src.indexOf( ',' ) !== -1 ) ? ',' : ' '; //???
+    return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
+  }
 
-  for( var i = 0 ; i < l ; i += 1 )
+  if( _.argumentsIs( src ) )
+  return _ArraySlice.call( src );
+
+  _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
+}
+
+//
+
+/**
+ * The arrayAs() routine copies passed argument to the array.
+ *
+ * @param { * } src - The source value.
+ *
+ * @example
+ * // returns [ false ]
+ * var arr = _.arrayAs( false );
+ *
+ * @example
+ * // returns [ { a : 1, b : 2 } ]
+ * var arr = _.arrayAs( { a : 1, b : 2 } );
+ *
+ * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
+ * Otherwise return an array which contains the element from argument.
+ * @function arrayAs
+ * @memberof wTools
+ */
+
+function arrayAs( src )
+{
+
+  if( src === null || src === undefined ) return [];
+  else if( _.arrayIs( src ) ) return src;
+  else return [ src ];
+
+}
+
+//
+
+/**
+ * The arrayToMap() converts an (array) into Object.
+ *
+ * @param { arrayLike } array - To convert into Object.
+ *
+ * @example
+ * // returns {  }
+ * _.arrayToMap( [  ] );
+ *
+ * @example
+ * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
+ * _.arrayToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
+ *
+ * @example
+ * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
+ * var args = ( function() {
+ *   return arguments;
+ * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+ * _.arrayToMap( args );
+ *
+ * @returns { Object } Returns an Object.
+ * @function arrayToMap
+ * @throws { Error } Will throw an Error if (array) is not an array-like.
+ * @memberof wTools
+ */
+
+function arrayToMap( array )
+{
+  var result = Object.create( null );
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( array ) );
+
+  for( var a = 0 ; a < array.length ; a++ )
+  result[ a ] = array[ a ];
+  return result;
+}
+
+//
+
+/**
+ * The arrayToStr() routine joins an array (src) and returns one string containing each array element separated by space,
+ * only types of integer or floating point.
+ *
+ * @param { arrayLike } src - The source array.
+ * @param { objectLike } [ options = {  } ] options - The options.
+ * @param { Number } [ options.precision = 5 ] - The precision of numbers.
+ * @param { String } [ options.type = 'mixed' ] - The type of elements.
+ *
+ * @example
+ * // returns "1 2 3 "
+ * _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
+ *
+ * @example
+ * // returns "3.500 13.77 7.330"
+ * _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
+ *
+ * @returns { String } Returns one string containing each array element separated by space,
+ * only types of integer or floating point.
+ * If (src.length) is empty, it returns the empty string.
+ * @function arrayToStr
+ * @throws { Error } Will throw an Error If (options.type) is not the number or float.
+ * @memberof wTools
+ */
+
+function arrayToStr( src,options )
+{
+
+  var result = '';
+  var options = options || Object.create( null );
+
+  if( options.precission === undefined ) options.precission = 5;
+  if( options.type === undefined ) options.type = 'mixed';
+
+  if( !src.length ) return result;
+
+  if( options.type === 'float' )
   {
-
-    if( result.length < numberOfElements )
+    for( var s = 0 ; s < src.length-1 ; s++ )
     {
-      _.arraySortedAdd( result, i, rcomparator );
-      continue;
+      result += src[ s ].toPrecision( options.precission ) + ' ';
     }
-
-    _.arraySortedAdd( result, i, rcomparator );
-    result.splice( result.length-1,1 );
-
+    result += src[ s ].toPrecision( options.precission );
+  }
+  else if( options.type === 'int' )
+  {
+    for( var s = 0 ; s < src.length-1 ; s++ )
+    {
+      result += String( src[ s ] ) + ' ';
+    }
+    result += String( src[ s ] ) + ' ';
+  }
+  else
+  {
+    throw _.err( 'not tested' );
+    for( var s = 0 ; s < src.length-1 ; s++ )
+    {
+      result += String( src[ s ] ) + ' ';
+    }
+    result += String( src[ s ] ) + ' ';
   }
 
   return result;
@@ -9163,7 +9342,7 @@ function arrayCopy()
     return _._arrayCopy( arguments[ 0 ] );
   }
 
-  // eval length
+  /* eval length */
 
   for( var a = 0 ; a < arguments.length ; a++ )
   {
@@ -9177,7 +9356,7 @@ function arrayCopy()
     else length += 1;
   }
 
-  // make result
+  /* make result */
 
   if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
   result = arrayMakeSimilar( arguments[ 0 ],length );
@@ -9191,7 +9370,7 @@ function arrayCopy()
     bufferDst = new Uint8Array( result );
   }
 
-  // copy
+  /* copy */
 
   for( var a = 0, c = 0 ; a < arguments.length ; a++ )
   {
@@ -9219,104 +9398,55 @@ function arrayCopy()
     }
   }
 
-  // !!! not optimal
+  /* !!! not optimal */
 
   return result;
 }
 
-//
+// --
+// array transformer
+// --
 
 /**
- * The arrayFrom() method converts an object-like (src) into Array.
+ * The arraySub() routine returns a shallow copy of a portion of an array
+ * or a new TypedArray that contains
+ * the elements from (begin) index to the (end) index,
+ * but not including (end).
  *
- * @param { * } src - To convert into Array.
- *
- * @example
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
- * _.arrayFrom( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
- *
- * @example
- * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
- * _.arrayFrom( { a : 3, b : 7, c : 13 } );
+ * @param { Array } src - Source array.
+ * @param { Number } begin - Index at which to begin extraction.
+ * @param { Number } end - Index at which to end extraction.
  *
  * @example
- * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
- * _.arrayFrom( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+ * // returns [ 3, 4 ]
+ * var arr = _.arraySub( [ 1, 2, 3, 4, 5 ], 2, 4 );
  *
  * @example
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
- * var args = ( function() {
- *   return arguments;
- * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.arrayFrom( args );
+ * // returns [ 2, 3 ]
+ * _.arraySub( [ 1, 2, 3, 4, 5 ], -4, -2 );
  *
- * @returns { Array } Returns an Array.
- * @method arrayFrom
- * @throws { Error } Will throw an Error if (src) is not an object-like.
+ * @example
+ * // returns [ 1, 2, 3, 4, 5 ]
+ * _.arraySub( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
+ * @function arraySub
+ * @throws { Error } If the passed arguments is more than three.
+ * @throws { Error } If the first argument is not an array.
  * @memberof wTools
  */
 
-function arrayFrom( src )
+function arraySub( src,begin,end )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length <= 3 );
+  _.assert( _.arrayLike( src ),'unknown type of (-src-) argument' );
+  _.assert( _.routineIs( src.slice ) || _.routineIs( src.subarray ) );
 
-  if( _.arrayIs( src ) )
-  return src;
+  if( _.routineIs( src.subarray ) )
+  return src.subarray( begin,end );
 
-  if( _.objectIs( src ) )
-  return _.mapToArray( src );
-
-  if( _.strIs( src ) )
-  {
-    var sep = ( src.indexOf( ',' ) !== -1 ) ? ',' : ' '; //???
-    return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
-  }
-
-  if( _.argumentsIs( src ) )
-  return _ArraySlice.call( src );
-
-  _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
-}
-
-//
-
-/**
- * The arrayToMap() converts an (array) into Object.
- *
- * @param { arrayLike } array - To convert into Object.
- *
- * @example
- * // returns {  }
- * _.arrayToMap( [  ] );
- *
- * @example
- * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
- * _.arrayToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
- *
- * @example
- * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
- * var args = ( function() {
- *   return arguments;
- * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.arrayToMap( args );
- *
- * @returns { Object } Returns an Object.
- * @method arrayToMap
- * @throws { Error } Will throw an Error if (array) is not an array-like.
- * @memberof wTools
- */
-
-function arrayToMap( array )
-{
-  var result = Object.create( null );
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( array ) );
-
-  for( var a = 0 ; a < array.length ; a++ )
-  result[ a ] = array[ a ];
-  return result;
+  return src.slice( begin,end );
 }
 
 //
@@ -9379,7 +9509,7 @@ function arrayToMap( array )
  * //[ 49, 50, 51, 0, 0 ]
  *
  * @returns { Array } Returns resized copy of a part of an original array.
- * @method arrayGrow
+ * @function arrayGrow
  * @throws { Error } Will throw an Error if( array ) is not a Array or Buffer.
  * @throws { Error } Will throw an Error if( f ) or ( l ) is not a Number.
  * @throws { Error } Will throw an Error if not enough arguments provided.
@@ -9458,7 +9588,7 @@ function arrayGrow( array,f,l,val )
  * // returns [ 6, 7 ]
  *
  * @returns { Array } Returns a shallow copy of elements from the original array.
- * @method arraySlice
+ * @function arraySlice
  * @throws { Error } Will throw an Error if ( array ) is not an Array or Buffer.
  * @throws { Error } Will throw an Error if ( f ) is not a Number.
  * @throws { Error } Will throw an Error if ( l ) is not a Number.
@@ -9549,258 +9679,107 @@ function arrayMultislice()
 
 //
 
-
-
-// function arraySpliceArray( dstArray,srcArray,first,replace )
-// {
-//   debugger;
-//
-//   _.assert( arguments.length === 4 );
-//   _.assert( _.arrayIs( dstArray ) );
-//   _.assert( _.arrayIs( srcArray ) );
-//   _.assert( _.numberIs( first ) );
-//   _.assert( _.numberIs( replace ) );
-//
-//   var args = [ first,replace ];
-//   args.push.apply( args,srcArray );
-//
-//   dstArray.splice.apply( dstArray,args );
-//
-//   return dstArray;
-// }
-//
-// //
-//
-// function arraySplice( dstArray,first,replace,srcArray )
-// {
-//
-//   _.assert( _.arrayIs( dstArray ) );
-//   _.assert( _.arrayIs( srcArray ) );
-//
-//   var first = first !== undefined ? first : 0;
-//   var replace = replace !== undefined ? replace : dstArray.length;
-//   var result = dstArray.slice( first,first+replace );
-//
-//   var srcArray = srcArray.slice();
-//   srcArray.unshift( replace );
-//   srcArray.unshift( first );
-//
-//   dstArray.splice.apply( dstArray,srcArray );
-//
-//   return result;
-// }
-
-//
-
 /**
- * The arrayAs() method copies passed argument to the array.
+ * The arrayDuplicate() routine returns an array with duplicate values of a certain number of times.
  *
- * @param { * } src - The source value.
+ * @param { objectLike } [ o = {  } ] o - The set of arguments.
+ * @param { arrayLike } o.src - The given initial array.
+ * @param { arrayLike } o.result - To collect all data.
+ * @param { Number } [ o.numberOfAtomsPerElement = 1 ] o.numberOfAtomsPerElement - The certain number of times
+ * to append the next value from (srcArray or o.src) to the (o.result).
+ * If (o.numberOfAtomsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
+ * @param { Number } [ o.numberOfDuplicatesPerElement = 2 ] o.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
  *
  * @example
- * // returns [ false ]
- * var arr = _.arrayAs( false );
+ * // returns [ 'a', 'a', 'b', 'b', 'c', 'c' ]
+ * _.arrayDuplicate( [ 'a', 'b', 'c' ] );
  *
  * @example
- * // returns [ { a : 1, b : 2 } ]
- * var arr = _.arrayAs( { a : 1, b : 2 } );
+ * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
+ * var options = {
+ *   src : [ 'abc', 'def' ],
+ *   result : [  ],
+ *   numberOfAtomsPerElement : 2,
+ *   numberOfDuplicatesPerElement : 3
+ * };
+ * _.arrayDuplicate( options, {} );
  *
- * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
- * Otherwise return an array which contains the element from argument.
- * @method arrayAs
+ * @example
+ * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
+ * var options = {
+ *   src : [ 'abc', 'def' ],
+ *   result : [  ],
+ *   numberOfAtomsPerElement : 3,
+ *   numberOfDuplicatesPerElement : 3
+ * };
+ * _.arrayDuplicate( options, { a : 7, b : 13 } );
+ *
+ * @returns { Array } Returns an array with duplicate values of a certain number of times.
+ * @function arrayDuplicate
+ * @throws { Error } Will throw an Error if ( o ) is not an objectLike.
  * @memberof wTools
  */
 
-function arrayAs( src )
+function arrayDuplicate( o )
 {
 
-  if( src === null || src === undefined ) return [];
-  else if( _.arrayIs( src ) ) return src;
-  else return [ src ];
-
-}
-
-//
-
-function arrayUniqueIs( o )
-{
-
-  if( _.arrayLike( o ) )
-  o = { src : o };
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( o.src ) );
-  _.assertMapHasOnly( o,arrayUniqueIs.defaults );
-
-  /**/
-
-  if( o.onElement )
+  if( arguments.length === 2 )
   {
-    // throw _.err( 'not tested' );
-    o.src = _.entityMap( o.src,( e ) => o.onElement( e ) );
+    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 0 ] };
   }
 
-  /**/
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
+  _.routineOptions( arrayDuplicate,o );
+  _.assert( _.numberIsInt( o.src.length / o.numberOfAtomsPerElement ) );
 
-  var number = o.src.length;
-  var isUnique = _.arrayMakeSimilar( o.src );
-  var index;
+  if( o.numberOfDuplicatesPerElement === 1 )
+  {
+    if( o.result )
+    throw _.err( 'not implemented' );
+    o.result = o.src;
+    return o.result;
+  }
 
-  for( var i = 0 ; i < o.src.length ; i++ )
-  isUnique[ i ] = 1;
+  var length = o.src.length * o.numberOfDuplicatesPerElement;
+  var numberOfElements = o.src.length / o.numberOfAtomsPerElement;
+  o.result = o.result || arrayMakeSimilar( o.src,length );
 
-  for( var i = 0 ; i < o.src.length ; i++ )
+  for( var c = 0, cl = numberOfElements ; c < cl ; c++ )
   {
 
-    index = i;
-
-    if( !isUnique[ i ] )
-    continue;
-
-    var currentUnique = 1;
-    do
+    for( var d = 0, dl = o.numberOfDuplicatesPerElement ; d < dl ; d++ )
     {
-      var index = o.src.indexOf( o.src[ i ],index+1 );
-      if( index !== -1 )
+
+      for( var e = 0, el = o.numberOfAtomsPerElement ; e < el ; e++ )
       {
-        isUnique[ index ] = 0;
-        number -= 1;
-        currentUnique = 0;
+        var indexDst = c*o.numberOfAtomsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfAtomsPerElement + e;
+        var indexSrc = c*o.numberOfAtomsPerElement+e;
+        o.result[ indexDst ] = o.src[ indexSrc ];
       }
-    }
-    while( index !== -1 );
 
-    if( !o.includeFirst )
-    if( !currentUnique )
-    {
-      isUnique[ i ] = 0;
-      number -= 1;
     }
 
   }
 
-  return { number : number, array : isUnique };
+  return o.result;
 }
 
-arrayUniqueIs.defaults =
+arrayDuplicate.defaults =
 {
   src : null,
-  onElement : null,
-  includeFirst : 0,
-}
-
-//
-
-// <<<<<<< HEAD
-//   if( _.bufferTypedIs( src ) )
-//   {
-//     var result = new Array( src.length );
-//     for( var i = 0 ; i < src.length ; i++ )
-//     result[ i ] = src[ i ];
-//     return result;
-//   }
-//
-//   if( _.arrayIs( src ) )
-//   return src;
-// ======= xxx
-
-function arrayUnique( src,onElement )
-{
-// >>>>>>> 39ea66f679e5ba8509fa6c05c1974446997e2bac
-
-  var isUnique = arrayUniqueIs
-  ({
-    src : src,
-    onElement : onElement,
-    includeFirst : 1,
-  });
-  var result = arrayMakeSimilar( src,isUnique.number );
-
-  var c = 0;
-  for( var i = 0 ; i < src.length ; i++ )
-  if( isUnique.array[ i ] )
-  {
-    result[ c ] = src[ i ];
-    c += 1;
-  }
-
-  return result;
+  result : null,
+  numberOfAtomsPerElement : 1,
+  numberOfDuplicatesPerElement : 2,
 }
 
 //
 
 /**
- * The arrayToStr() method joins an array (src) and returns one string containing each array element separated by space,
- * only types of integer or floating point.
- *
- * @param { arrayLike } src - The source array.
- * @param { objectLike } [ options = {  } ] options - The options.
- * @param { Number } [ options.precision = 5 ] - The precision of numbers.
- * @param { String } [ options.type = 'mixed' ] - The type of elements.
- *
- * @example
- * // returns "1 2 3 "
- * _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
- *
- * @example
- * // returns "3.500 13.77 7.330"
- * _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
- *
- * @returns { String } Returns one string containing each array element separated by space,
- * only types of integer or floating point.
- * If (src.length) is empty, it returns the empty string.
- * @method arrayToStr
- * @throws { Error } Will throw an Error If (options.type) is not the number or float.
- * @memberof wTools
- */
-
-function arrayToStr( src,options )
-{
-
-  var result = '';
-  var options = options || Object.create( null );
-
-  if( options.precission === undefined ) options.precission = 5;
-  if( options.type === undefined ) options.type = 'mixed';
-
-  if( !src.length ) return result;
-
-  if( options.type === 'float' )
-  {
-    for( var s = 0 ; s < src.length-1 ; s++ )
-    {
-      result += src[ s ].toPrecision( options.precission ) + ' ';
-    }
-    result += src[ s ].toPrecision( options.precission );
-  }
-  else if( options.type === 'int' )
-  {
-    for( var s = 0 ; s < src.length-1 ; s++ )
-    {
-      result += String( src[ s ] ) + ' ';
-    }
-    result += String( src[ s ] ) + ' ';
-  }
-  else
-  {
-    throw Error( '_.arrayToStr : not tested' );
-    for( var s = 0 ; s < src.length-1 ; s++ )
-    {
-      result += String( src[ s ] ) + ' ';
-    }
-    result += String( src[ s ] ) + ' ';
-  }
-
-  return result;
-}
-
-//
-
-/**
- * The arrayMask() method returns a new instance of array that contains the certain value(s) from array (srcArray),
+ * The arrayMask() routine returns a new instance of array that contains the certain value(s) from array (srcArray),
  * if an array (mask) contains the truth-value(s).
  *
- * The arrayMask() method checks, how much an array (mask) contain the truth value(s),
+ * The arrayMask() routine checks, how much an array (mask) contain the truth value(s),
  * and from that amount of truth values it builds a new array, that contains the certain value(s) of an array (srcArray),
  * by corresponding index(es) (the truth value(s)) of the array (mask).
  * If amount is equal 0, it returns an empty array.
@@ -9824,7 +9803,7 @@ function arrayToStr( src,options )
  * if an array (mask) contains the truth-value(s).
  * If (mask) contains all falsy values, it returns an empty array.
  * Otherwise, it returns a new array with certain value(s) of an array (srcArray).
- * @method arrayMask
+ * @function arrayMask
  * @throws { Error } Will throw an Error if (arguments.length) is less or more that two.
  * @throws { Error } Will throw an Error if (srcArray) is not an array-like.
  * @throws { Error } Will throw an Error if (mask) is not an array-like.
@@ -9835,14 +9814,22 @@ function arrayToStr( src,options )
 function arrayMask( srcArray, mask )
 {
 
+  var atomsPerElement = mask.length;
+  var length = srcArray.length / atomsPerElement;
+
   _.assert( arguments.length === 2 );
   _.assert( _.arrayLike( srcArray ),'arrayMask :','expects array-like as srcArray' );
   _.assert( _.arrayLike( mask ),'arrayMask :','expects array-like as mask' );
-
-  var atomsPerElement = mask.length;
-  var length = srcArray.length / atomsPerElement;
-  if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of srcArray',_.toStr({ 'atomsPerElement' : atomsPerElement, 'srcArray.length' : srcArray.length  }) );
+  _.assert
+  (
+    _.numberIsInt( length ),
+    'arrayMask :','expects mask that has component for each atom of srcArray',
+    _.toStr
+    ({
+      'atomsPerElement' : atomsPerElement,
+      'srcArray.length' : srcArray.length,
+    })
+  );
 
   var preserve = 0;
   for( var m = 0 ; m < mask.length ; m++ )
@@ -9933,133 +9920,537 @@ arrayUnmask.defaults =
 
 //
 
-/**
- * The arrayDuplicate() method returns an array with duplicate values of a certain number of times.
- *
- * @param { objectLike } [ o = {  } ] o - The set of arguments.
- * @param { arrayLike } o.src - The given initial array.
- * @param { arrayLike } o.result - To collect all data.
- * @param { Number } [ o.numberOfAtomsPerElement = 1 ] o.numberOfAtomsPerElement - The certain number of times
- * to append the next value from (srcArray or o.src) to the (o.result).
- * If (o.numberOfAtomsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
- * @param { Number } [ o.numberOfDuplicatesPerElement = 2 ] o.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
- *
- * @example
- * // returns [ 'a', 'a', 'b', 'b', 'c', 'c' ]
- * _.arrayDuplicate( [ 'a', 'b', 'c' ] );
- *
- * @example
- * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
- * var options = {
- *   src : [ 'abc', 'def' ],
- *   result : [  ],
- *   numberOfAtomsPerElement : 2,
- *   numberOfDuplicatesPerElement : 3
- * };
- * _.arrayDuplicate( options, {} );
- *
- * @example
- * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
- * var options = {
- *   src : [ 'abc', 'def' ],
- *   result : [  ],
- *   numberOfAtomsPerElement : 3,
- *   numberOfDuplicatesPerElement : 3
- * };
- * _.arrayDuplicate( options, { a : 7, b : 13 } );
- *
- * @returns { Array } Returns an array with duplicate values of a certain number of times.
- * @method arrayDuplicate
- * @throws { Error } Will throw an Error if ( o ) is not an objectLike.
- * @memberof wTools
- */
-
-function arrayDuplicate( o )
+function arrayIsUniqueMap( o )
 {
 
-  if( arguments.length === 2 )
+  if( _.arrayLike( o ) )
+  o = { src : o };
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( o.src ) );
+  _.assertMapHasOnly( o,arrayIsUniqueMap.defaults );
+
+  /**/
+
+  if( o.onElement )
   {
-    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 0 ] };
+    // throw _.err( 'not tested' );
+    o.src = _.entityMap( o.src,( e ) => o.onElement( e ) );
   }
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
-  _.routineOptions( arrayDuplicate,o );
-  _.assert( _.numberIsInt( o.src.length / o.numberOfAtomsPerElement ) );
+  /**/
 
-  if( o.numberOfDuplicatesPerElement === 1 )
-  {
-    if( o.result )
-    throw _.err( 'not implemented' );
-    o.result = o.src;
-    return o.result;
-  }
+  var number = o.src.length;
+  var isUnique = _.arrayMakeSimilar( o.src );
+  var index;
 
-  var length = o.src.length * o.numberOfDuplicatesPerElement;
-  var numberOfElements = o.src.length / o.numberOfAtomsPerElement;
-  o.result = o.result || arrayMakeSimilar( o.src,length );
+  for( var i = 0 ; i < o.src.length ; i++ )
+  isUnique[ i ] = 1;
 
-  for( var c = 0, cl = numberOfElements ; c < cl ; c++ )
+  for( var i = 0 ; i < o.src.length ; i++ )
   {
 
-    for( var d = 0, dl = o.numberOfDuplicatesPerElement ; d < dl ; d++ )
+    index = i;
+
+    if( !isUnique[ i ] )
+    continue;
+
+    var currentUnique = 1;
+    do
     {
-
-      for( var e = 0, el = o.numberOfAtomsPerElement ; e < el ; e++ )
+      var index = o.src.indexOf( o.src[ i ],index+1 );
+      if( index !== -1 )
       {
-        var indexDst = c*o.numberOfAtomsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfAtomsPerElement + e;
-        var indexSrc = c*o.numberOfAtomsPerElement+e;
-        o.result[ indexDst ] = o.src[ indexSrc ];
+        isUnique[ index ] = 0;
+        number -= 1;
+        currentUnique = 0;
       }
+    }
+    while( index !== -1 );
 
+    if( !o.includeFirst )
+    if( !currentUnique )
+    {
+      isUnique[ i ] = 0;
+      number -= 1;
     }
 
   }
 
-  return o.result;
+  return { number : number, array : isUnique };
 }
 
-arrayDuplicate.defaults =
+arrayIsUniqueMap.defaults =
 {
   src : null,
+  onElement : null,
+  includeFirst : 0,
+}
+
+//
+
+function arrayUnique( src,onElement )
+{
+
+  var isUnique = arrayIsUniqueMap
+  ({
+    src : src,
+    onElement : onElement,
+    includeFirst : 1,
+  });
+  var result = arrayMakeSimilar( src,isUnique.number );
+
+  var c = 0;
+  for( var i = 0 ; i < src.length ; i++ )
+  if( isUnique.array[ i ] )
+  {
+    result[ c ] = src[ i ];
+    c += 1;
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The arraySelect() routine selects elements from (srcArray) by indexes of (indicesArray).
+ *
+ * @param { arrayLike } srcArray - Values for the new array.
+ * @param { ( arrayLike | object ) } [ indicesArray = indicesArray.indices ] - Indexes of elements from the (srcArray) or options object.
+ *
+ * @example
+ * // returns [ 3, 4, 5 ]
+ * var arr = _.arraySelect( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );
+ *
+ * @example
+ * // returns [ undefined, undefined ]
+ * var arr = _.arraySelect( [ 1, 2, 3 ], [ 4, 5 ] );
+ *
+ * @returns { arrayLike } - Returns a new array with the length equal (indicesArray.length) and elements from (srcArray).
+   If there is no element with necessary index than the value will be undefined.
+ * @function arraySelect
+ * @throws { Error } If passed arguments is not array like object.
+ * @throws { Error } If the atomsPerElement property is not equal to 1.
+ * @memberof wTools
+ */
+
+function arraySelect( srcArray,indicesArray )
+{
+  var atomsPerElement = 1;
+
+  if( _.objectIs( indicesArray ) )
+  {
+    atomsPerElement = indicesArray.atomsPerElement || 1;
+    indicesArray = indicesArray.indices;
+  }
+
+  _assert( arguments.length === 2 );
+  _assert( _.bufferTypedIs( srcArray ) || _.arrayIs( srcArray ) );
+  _assert( _.bufferTypedIs( indicesArray ) || _.arrayIs( indicesArray ) );
+
+  var result = new srcArray.constructor( indicesArray.length );
+
+  if( atomsPerElement === 1 )
+  for( var i = 0, l = indicesArray.length ; i < l ; i += 1 )
+  {
+    result[ i ] = srcArray[ indicesArray[ i ] ];
+  }
+  else
+  for( var i = 0, l = indicesArray.length ; i < l ; i += 1 )
+  {
+    throw _.err( 'not tested' );
+    for( var a = 0 ; a < atomsPerElement ; a += 1 )
+    result[ i*atomsPerElement+a ] = srcArray[ indicesArray[ i ]*atomsPerElement+a ];
+  }
+
+  return result;
+}
+
+// --
+// array manipulator
+// --
+
+/**
+ * The arraySwap() routine reverses the elements by indices (index1) and (index2) in the (dst) array.
+ *
+ * @param { Array } dst - The initial array.
+ * @param { Number } index1 - The first index.
+ * @param { Number } index2 - The second index.
+ *
+ * @example
+ * // returns [ 5, 2, 3, 4, 1 ]
+ * var arr = _.arraySwap( [ 1, 2, 3, 4, 5 ], 0, 4 );
+ *
+ * @returns { Array } - Returns the (dst) array that has been modified in place by indexes (index1) and (index2).
+ * @function arraySwap
+ * @throws { Error } If the first argument in not an array.
+ * @throws { Error } If the second argument is less than 0 and more than a length initial array.
+ * @throws { Error } If the third argument is less than 0 and more than a length initial array.
+ * @memberof wTools
+ */
+
+function arraySwap( dst,index1,index2 )
+{
+
+  if( arguments.length === 1 )
+  {
+    index1 = 0;
+    index2 = 1;
+  }
+
+  _assert( arguments.length === 1 || arguments.length === 3 );
+  _assert( _.arrayLike( dst ),'arraySwap :','argument must be array' );
+  _assert( 0 <= index1 && index1 < dst.length,'arraySwap :','index1 is out of bound' );
+  _assert( 0 <= index2 && index2 < dst.length,'arraySwap :','index2 is out of bound' );
+
+  var e = dst[ index1 ];
+  dst[ index1 ] = dst[ index2 ];
+  dst[ index2 ] = e;
+
+  return dst;
+}
+
+//
+
+// !!!
+// should give same outcomes
+// _.arrayCutin( [ 1,2,3,4 ],[ 1 ] )
+// [ 1,2,3,4 ].splice( 1 )
+
+/**
+ * Removes range( range ) of elements from provided array( dstArray ) and adds elements from array( srcArray )
+ * at the start position of provided range( range ) if( srcArray ) was provided.
+ * On success returns array with deleted element(s), otherwise returns empty array.
+ * For TypedArray's and buffers returns modified copy of ( dstArray ) or original array if nothing changed.
+ *
+ * @param { Array|TypedArray|Buffer } dstArray - The target array, TypedArray( Int8Array,Int16Array,Uint8Array ... etc ) or Buffer( ArrayBuffer, Buffer ).
+ * @param { Array|Number } range - The range of elements or index of single element to remove from ( dstArray ).
+ * @param { Array } srcArray - The array of elements to add to( dstArray ) at the start position of provided range( range ).
+ * If one of ( range ) indexies is not specified it will be setted to zero.
+ * If ( range ) start index is greater than the length of the array ( dstArray ), actual starting index will be set to the length of the array ( dstArray ).
+ * If ( range ) start index is negative, will be setted to zero.
+ * If ( range ) start index is greater than end index, the last will be setted to value of start index.
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], 2 );
+ * // returns [ 3 ]
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], [ 1, 2 ] );
+ * // returns [ 2 ]
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], [ 0, 5 ] );
+ * // returns [ 1, 2, 3, 4 ]
+ *
+ * @example
+ * _.arrayCutin( [ 1, 2, 3, 4 ], [ -1, 5 ] );
+ * // returns [ 1, 2, 3, 4 ]
+ *
+ * @example
+ * var dst = [ 1, 2, 3, 4 ];
+ * _.arrayCutin( dst, [ 0, 3 ], [ 0, 0, 0 ] );
+ * console.log( dst );
+ * // returns [ 0, 0, 0, 4 ]
+ *
+ * @example
+ * var dst = new Int32Array( 4 );
+ * dst.set( [ 1, 2, 3, 4 ] )
+ * _.arrayCutin( dst, 0 );
+ * // returns [ 2, 3, 4 ]
+ *
+ * @returns { Array|TypedArray|Buffer } For array returns array with deleted element(s), otherwise returns empty array.
+ * For other types returns modified copy or origin( dstArray ).
+ * @function arrayCutin
+ * @throws { Error } If ( arguments.length ) is not equal to two or three.
+ * @throws { Error } If ( dstArray ) is not an Array.
+ * @throws { Error } If ( srcArray ) is not an Array.
+ * @throws { Error } If ( range ) is not an Array.
+ * @memberof wTools
+ */
+
+function arrayCutin( dstArray,range,srcArray )
+{
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
+  _.assert( _.arrayIs( range ) );
+  _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
+
+  var first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
+  var length = dstArray.length || dstArray.byteLength;
+  var result;
+
+  if( first < 0 )
+  first = 0;
+  if( first > length)
+  first = length;
+  if( last > length)
+  last = length;
+  if( last < first )
+  last = first;
+
+  var args = srcArray ? srcArray.slice() : [];
+  args.unshift( last-first );
+  args.unshift( first );
+
+  if( _.bufferAnyIs( dstArray ) )
+  {
+    if( first === last )
+    return dstArray;
+
+    var newLength = length - args[ 1 ];
+    var srcArrayLength = 0;
+
+    if( srcArray )
+    {
+      srcArrayLength = srcArray.length || srcArray.byteLength;
+      newLength += srcArrayLength;
+    }
+
+    if( _.bufferRawIs( dstArray ) )
+    {
+      result = new ArrayBuffer( newLength );
+    }
+    else if( _.bufferNodeIs( dstArray ) )
+    {
+      result = new Buffer( newLength );
+    }
+    else
+    {
+      result = arrayMakeSimilar( dstArray, newLength );
+    }
+
+    if( first > 0 )
+    for( var i = 0; i < first; ++i )
+    result[ i ] = dstArray[ i ];
+
+    if( srcArray )
+    for( var i = first, j = 0; j < srcArrayLength; )
+    result[ i++ ] = srcArray[ j++ ];
+
+    for( var j = last, i = first + srcArrayLength; j < length; )
+    result[ i++ ] = dstArray[ j++ ];
+
+    return result;
+  }
+  else
+  {
+    result = dstArray.splice.apply( dstArray,args );
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The arrayPut() routine puts all values of (arguments[]) after the second argument to the (dstArray)
+ * in the position (dstOffset) and changes values of the following index.
+ *
+ * @param { arrayLike } dstArray - The source array.
+ * @param { Number } [ dstOffset = 0 ] dstOffset - The index of element where need to put the new values.
+ * @param {*} arguments[] - One or more argument(s).
+ * If the (argument) is an array it iterates over array and adds each element to the next (dstOffset++) index of the (dstArray).
+ * Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstArray).
+ *
+ * @example
+ * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
+ * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 2, 'str', true, [ 7, 8 ] );
+ *
+ * @example
+ * // returns [ 'str', true, 7, 8, 5, 6, 9 ]
+ * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 0, 'str', true, [ 7, 8 ] );
+ *
+ * @returns { arrayLike } - Returns an array containing the changed values.
+ * @function arrayPut
+ * @throws { Error } Will throw an Error if (arguments.length) is less than one.
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (dstOffset) is not a Number.
+ * @memberof wTools
+ */
+
+function arrayPut( dstArray, dstOffset )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.numberIs( dstOffset ) );
+
+  dstOffset = dstOffset || 0;
+
+  for( var a = 2 ; a < arguments.length ; a++ )
+  {
+    var argument = arguments[ a ];
+    var aIs = _.arrayIs( argument ) || _.bufferTypedIs( argument );
+
+    if( aIs && _.bufferTypedIs( dstArray ) )
+    {
+      dstArray.set( argument,dstOffset );
+      dstOffset += argument.length;
+    }
+    else if( aIs )
+    for( var i = 0 ; i < argument.length ; i++ )
+    {
+      dstArray[ dstOffset ] = argument[ i ];
+      dstOffset += 1;
+    }
+    else
+    {
+      dstArray[ dstOffset ] = argument;
+      dstOffset += 1;
+    }
+
+  }
+
+  return dstArray;
+}
+
+//
+
+/**
+ * The arrayFill() routine fills all the elements of the given or a new array from the 0 index to an (options.times) index
+ * with a static value.
+ *
+ * @param { ( Object | Number | Array ) } o - The options to fill the array.
+ * @param { Number } [ o.times = result.length ] o.times - The count of repeats.
+   If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
+ * @param { Number } [ o.value = 0 ] - The value for the filling.
+ *
+ * @example
+ * // returns [ 3, 3, 3, 3, 3 ]
+ * var arr = _.arrayFill( { times : 5, value : 3 } );
+ *
+ * @example
+ * // returns [ 0, 0, 0, 0 ]
+ * var arr = _.arrayFill( 4 );
+ *
+ * @example
+ * // returns [ 0, 0, 0 ]
+ * var arr = _.arrayFill( [ 1, 2, 3 ] );
+ *
+ * @returns { Array } - Returns an array filled with a static value.
+ * @function arrayFill
+ * @throws { Error } If missed argument, or got more than one argument.
+ * @throws { Error } If passed argument is not an object.
+ * @throws { Error } If the last element of the (o.result) is not equal to the (o.value).
+ * @memberof wTools
+ */
+
+function arrayFill( o )
+{
+
+  if( arguments.length === 1 )
+  {
+    if( _.numberIs( o ) )
+    o = { times : o };
+    else if( _.arrayIs( o ) )
+    o = { result : o };
+  }
+  else
+  {
+    o = { result : arguments[ 0 ], value : arguments[ 1 ] };
+  }
+
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _.assertMapHasOnly( o,arrayFill.defaults );
+  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+
+  var result = o.result || [];
+  var times = o.times !== undefined ? o.times : result.length;
+  var value = o.value !== undefined ? o.value : 0;
+
+  if( _.routineIs( result.fill ) )
+  {
+    if( result.length < times )
+    result.length = times;
+    result.fill( value,0,times );
+  }
+  else
+  {
+    for( var t = 0 ; t < times ; t++ )
+    result[ t ] = value;
+  }
+
+  _assert( result[ times-1 ] === value );
+  return result;
+}
+
+arrayFill.defaults =
+{
   result : null,
-  numberOfAtomsPerElement : 1,
-  numberOfDuplicatesPerElement : 2,
+  times : null,
+  value : null,
 }
 
 //
 
 /**
- * The arrayCompare() method returns the first difference between the values of the first array from the second.
+ * The arraySupplement() routine returns an array (dstArray), that contains values from following arrays only type of numbers.
+ * If the initial (dstArray) isn't contain numbers, they are replaced.
  *
- * @param { arrayLike } src1 - The first array.
- * @param { arrayLike } src2 - The second array.
+ * It finds among the arrays the biggest array, and assigns to the variable (length), iterates over from 0 to the (length),
+ * creates inner loop that iterates over (arguments[...]) from the right (arguments.length - 1) to the (arguments[0]) left,
+ * checks each element of the arrays, if it contains only type of number.
+ * If true, it adds element to the array (dstArray) by corresponding index.
+ * Otherwise, it skips and checks following array from the last executable index, previous array.
+ * If the last executable index doesn't exist, it adds 'undefined' to the array (dstArray).
+ * After that it returns to the previous array, and executes again, until (length).
+ *
+ * @param { arrayLike } dstArray - The initial array.
+ * @param { ...arrayLike } arguments[...] - The following array(s).
  *
  * @example
- * // returns 3
- * var arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
- *
- * @returns { Number } - Returns the first difference between the values of the two arrays.
- * @method arrayCompare
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
- * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
+ * // returns ?
+ * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, 8, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
+ * @returns { arrayLike } - Returns an array that contains values only type of numbers.
+ * @function arraySupplement
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (arguments[...]) is/are not the array-like.
  * @memberof wTools
  */
 
-function arrayCompare( src1,src2 )
+function arraySupplement( dstArray )
 {
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
-  _.assert( src2.length >= src1.length );
+  var result = dstArray;
+  if( result === null )
+  result = [];
 
-  var result = 0;
+  var length = result.length;
+  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
 
-  for( var s = 0 ; s < src1.length ; s++ )
+  for( a = arguments.length-1 ; a >= 1 ; a-- )
+  {
+    _assert( _.arrayLike( arguments[ a ] ),'argument is not defined :',a );
+    length = Math.max( length,arguments[ a ].length );
+  }
+
+  if( _.numberIs( result ) )
+  result = arrayFill
+  ({
+    value : result,
+    times : length,
+  });
+
+  for( var k = 0 ; k < length ; k++ )
   {
 
-    result = src1[ s ] - src2[ s ];
-    if( result !== 0 ) return result;
+    if( k in dstArray && isFinite( dstArray[ k ] ) )
+    continue;
+
+    var a;
+    for( a = arguments.length-1 ; a >= 1 ; a-- )
+    if( k in arguments[ a ] && !isNaN( arguments[ a ][ k ] ) )
+    break;
+
+    if( a === 0 )
+    continue;
+
+    result[ k ] = arguments[ a ][ k ];
 
   }
 
@@ -10069,39 +10460,63 @@ function arrayCompare( src1,src2 )
 //
 
 /**
- * The arrayIdentical() method checks the equality of two arrays.
+ * The arrayExtendScreening() routine iterates over (arguments[...]) from the right to the left (arguments[1]),
+ * and returns a (dstArray) containing the values of the following arrays,
+ * if the following arrays contains the indexes of the (screenArray).
  *
- * @param { arrayLike } src1 - The first array.
- * @param { arrayLike } src2 - The second array.
+ * @param { arrayLike } screenArray - The source array.
+ * @param { arrayLike } dstArray - To add the values from the following arrays,
+ * if the following arrays contains indexes of the (screenArray).
+ * If (dstArray) contains values, the certain values will be replaced.
+ * @param { ...arrayLike } arguments[...] - The following arrays.
  *
  * @example
- * // returns true
- * var arr = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * // returns [ 5, 6, 2 ]
+ * _.arrayExtendScreening( [ 1, 2, 3 ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
  *
- * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @method arrayIdentical
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @example
+ * // returns [ 'a', 6, 2, 13 ]
+ * _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
+ *
+ * @example
+ * // returns [ 3, 'abc', 7, 13 ]
+ * _.arrayExtendScreening( [  ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] )
+ *
+ * @returns { arrayLike } Returns a (dstArray) containing the values of the following arrays,
+ * if the following arrays contains the indexes of the (screenArray).
+ * If (screenArray) is empty, it returns a (dstArray).
+ * If (dstArray) is equal to the null, it creates a new array,
+ * and returns the corresponding values of the following arrays by the indexes of a (screenArray).
+ * @function arrayExtendScreening
+ * @throws { Error } Will throw an Error if (screenArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (arguments[...]) is/are not an array-like.
  * @memberof wTools
  */
 
-function arrayIdentical( src1,src2 )
+function arrayExtendScreening( screenArray,dstArray )
 {
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src1 ) );
-  _.assert( _.arrayLike( src2 ) );
+  var result = dstArray;
+  if( result === null ) result = [];
 
-  var result = true;
+  _assert( _.arrayLike( screenArray ),'expects object as screenArray' );
+  _assert( _.arrayLike( result ),'expects object as argument' );
+  for( a = arguments.length-1 ; a >= 2 ; a-- )
+  _assert( arguments[ a ],'argument is not defined :',a );
 
-  if( src1.length !== src2.length )
-  return false;
-
-  for( var s = 0 ; s < src1.length ; s++ )
+  for( var k = 0 ; k < screenArray.length ; k++ )
   {
 
-    result = src1[ s ] === src2[ s ];
+    if( screenArray[ k ] === undefined )
+    continue;
 
-    if( result === false )
-    return false;
+    var a;
+    for( a = arguments.length-1 ; a >= 2 ; a-- )
+    if( k in arguments[ a ] ) break;
+    if( a === 1 )
+    continue;
+
+    result[ k ] = arguments[ a ][ k ];
 
   }
 
@@ -10110,27 +10525,75 @@ function arrayIdentical( src1,src2 )
 
 //
 
-function arraySameSet( src1,src2 )
+function arrayShuffle( dst,times )
 {
-  if( src1.length !== src2.length ) return false;
-  var src = src1.slice();
-  var nil = Object.create( null );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.arrayLike( dst ) );
 
-  for( var s = 0 ; s < src2.length ; s++ )
+  if( times === undefined )
+  times = dst.length;
+
+  var l = dst.length;
+  var e1,e2;
+  for( var t1 = 0 ; t1 < times ; t1++ )
   {
-    var i = src.indexOf( src2[ s ] );
-    if( i === -1 )
-    return false;
-    src[ i ] = nil;
+    var t2 = Math.floor( Math.random() * l );
+    e1 = dst[ t1 ];
+    e2 = dst[ t2 ];
+    dst[ t1 ] = e2;
+    dst[ t2 ] = e1;
   }
 
-  return true;
+  return dst;
 }
 
 //
 
+// function arraySpliceArray( dstArray,srcArray,first,replace )
+// {
+//   debugger;
+//
+//   _.assert( arguments.length === 4 );
+//   _.assert( _.arrayIs( dstArray ) );
+//   _.assert( _.arrayIs( srcArray ) );
+//   _.assert( _.numberIs( first ) );
+//   _.assert( _.numberIs( replace ) );
+//
+//   var args = [ first,replace ];
+//   args.push.apply( args,srcArray );
+//
+//   dstArray.splice.apply( dstArray,args );
+//
+//   return dstArray;
+// }
+//
+// //
+//
+// function arraySplice( dstArray,first,replace,srcArray )
+// {
+//
+//   _.assert( _.arrayIs( dstArray ) );
+//   _.assert( _.arrayIs( srcArray ) );
+//
+//   var first = first !== undefined ? first : 0;
+//   var replace = replace !== undefined ? replace : dstArray.length;
+//   var result = dstArray.slice( first,first+replace );
+//
+//   var srcArray = srcArray.slice();
+//   srcArray.unshift( replace );
+//   srcArray.unshift( first );
+//
+//   dstArray.splice.apply( dstArray,srcArray );
+//
+//   return result;
+// }
+
+// --
+// array sequential search
+// --
+
 /**
- * The arrayLeftIndexOf() method returns the index of the first matching (ins) element in a array (arr)
+ * The arrayLeftIndexOf() routine returns the index of the first matching (ins) element in a array (arr)
  * that corresponds to the condition in the callback function.
  *
  * It iterates over an array (arr) from the left to the right,
@@ -10168,7 +10631,7 @@ function arraySameSet( src1,src2 )
  *
  * @returns { Number } Returns the corresponding index, if a callback function (equalizer) returns true.
  * Otherwise, it returns -1.
- * @method arrayLeftIndexOf
+ * @function arrayLeftIndexOf
  * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
  * @throws { Error } Will throw an Error if (equalizer.length) is not equal to the 1 or 2.
  * @throws { Error } Will throw an Error if (equalizer) is not a Function.
@@ -10180,19 +10643,6 @@ function arrayLeftIndexOf( arr,ins,equalizer )
 
   if( ins === undefined )
   debugger;
-
-  // if( !equalizer )
-  // {
-  //   if( ins === undefined )
-  //   {
-  //     ins = true;
-  //     equalizer = function( a ){ return !!a; };
-  //   }
-  //   else
-  //   {
-  //     equalizer = function( a ){ return a; };
-  //   }
-  // }
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( !equalizer || equalizer.length === 1 || equalizer.length === 2 );
@@ -10234,19 +10684,6 @@ function arrayRightIndexOf( arr,ins,equalizer )
   if( ins === undefined )
   debugger;
 
-  // if( !equalizer )
-  // {
-  //   if( ins === undefined )
-  //   {
-  //     ins = true;
-  //     equalizer = function( a ){ return !!a; };
-  //   }
-  //   else
-  //   {
-  //     equalizer = function( a ){ return a; };
-  //   }
-  // }
-
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( !equalizer || equalizer.length === 1 || equalizer.length === 2 );
   _.assert( !equalizer || _.routineIs( equalizer ) );
@@ -10282,7 +10719,7 @@ function arrayRightIndexOf( arr,ins,equalizer )
 //
 
 /**
- * The arrayLeft() method returns a new object containing the properties, (index, element),
+ * The arrayLeft() routine returns a new object containing the properties, (index, element),
  * corresponding to a found value (ins) from an array (arr).
  *
  * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
@@ -10308,7 +10745,7 @@ function arrayRightIndexOf( arr,ins,equalizer )
  * @returns { Object } Returns a new object containing the properties, (index, element),
  * corresponding to the found value (ins) from the array (arr).
  * Otherwise, it returns the empty object.
- * @method arrayLeft
+ * @function arrayLeft
  * @throws { Error } Will throw an Error if (equalizer) is not a Function.
  * @memberof wTools
  */
@@ -10370,51 +10807,7 @@ function arrayRightDefined( arr )
 //
 
 /**
- * The arrayHasAny() method checks if the (src) array has at least one value of the following arguments.
- *
- * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the method
- * [arrayAs()]{@link wTools.arrayAs}
- * Checks, if (src) array has at least one value of the (ins) array.
- * If true, it returns true.
- * Otherwise, it returns false.
- *
- * @see {@link wTools.arrayAs} - See for more information.
- *
- * @param { arrayLike } src - The source array.
- * @param {...*} arguments - One or more argument(s).
- *
- * @example
- * // returns true
- * var arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
- *
- * @returns { Boolean } - Returns true, if (src) has at least one value of the following argument(s), otherwise false is returned.
- * @method arrayHasAny
- * @throws { Error } If the first argument in not an array.
- * @memberof wTools
- */
-
-function arrayHasAny( src )
-{
-  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-
-    var ins = _.arrayAs( arguments[ a ] );
-
-    for( var i = 0 ; i < ins.length ; i++ )
-    if( src.indexOf( ins[ i ] ) !== -1 )
-    return true;
-
-  }
-
-  return false;
-}
-
-//
-
-/**
- * The arrayCount() method returns the count of matched elements in the (src) array.
+ * The arrayCount() routine returns the count of matched elements in the (src) array.
  *
  * @param { Array } src - The source array.
  * @param { * } instance - The value to search.
@@ -10424,7 +10817,7 @@ function arrayHasAny( src )
  * var arr = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );
  *
  * @returns { Number } - Returns the count of matched elements in the (src).
- * @method arrayCount
+ * @function arrayCount
  * @throws { Error } If passed arguments is less than two or more than two.
  * @throws { Error } If the first argument is not an array-like object.
  * @memberof wTools
@@ -10448,36 +10841,36 @@ function arrayCount( src,instance )
 }
 
 //
-  /**
-   * The arrayCountSame() method returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
-   *
-   * @param { arrayLike } src - The source array.
-   * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
-   *
-   * @example
-   * // returns 3
-   * _.arrayCountSame( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
-   *
-   * @example
-   * // returns 0
-   * _.arrayCountSame( [ 1, 2, 3, 4, 5 ] );
-   *
-   * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
-   * @method arrayCountSame
-   * @throws { Error } If passed arguments is less than one or more than two.
-   * @throws { Error } If the first argument is not an array-like object.
-   * @throws { Error } If the second argument is not a Function.
-   * @memberof wTools
-   */
 
-function arrayCountSame( src,onElement )
+/**
+ * The arrayCountUnique() routine returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
+ *
+ * @param { arrayLike } src - The source array.
+ * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
+ *
+ * @example
+ * // returns 3
+ * _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ *
+ * @example
+ * // returns 0
+ * _.arrayCountUnique( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
+ * @function arrayCountUnique
+ * @throws { Error } If passed arguments is less than one or more than two.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the second argument is not a Function.
+ * @memberof wTools
+ */
+
+function arrayCountUnique( src,onElement )
 {
-  var result = 0;
   var found = [];
   var onElement = onElement || function( e ){ return e };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayLike( src ),'arrayCountSame :','expects ArrayLike' );
+  _.assert( _.arrayLike( src ),'arrayCountUnique :','expects ArrayLike' );
   _.assert( _.routineIs( onElement ) );
   _.assert( onElement.length === 1 );
 
@@ -10504,49 +10897,43 @@ function arrayCountSame( src,onElement )
   return found.length;
 }
 
-//
-  /**
-   * The arraySum() method returns the sum of an array (src).
-   *
-   * @param { arrayLike } src - The source array.
-   * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
-   *
-   * @example
-   * // returns 15
-   * _.arraySum( [ 1, 2, 3, 4, 5 ] );
-   *
-   * @example
-   * // returns 29
-   * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
-   *
-   * @example
-   * // returns 94
-   * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
-   *
-   * @returns { Number } - Returns the sum of an array (src).
-   * @method arraySum
-   * @throws { Error } If passed arguments is less than one or more than two.
-   * @throws { Error } If the first argument is not an array-like object.
-   * @throws { Error } If the second argument is not a Function.
-   * @memberof wTools
-   */
+// --
+// checker
+// --
 
+/**
+ * The arrayCompare() routine returns the first difference between the values of the first array from the second.
+ *
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
+ *
+ * @example
+ * // returns 3
+ * var arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
+ *
+ * @returns { Number } - Returns the first difference between the values of the two arrays.
+ * @function arrayCompare
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
+ * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
+ * @memberof wTools
+ */
 
-function arraySum( src,onElement )
+function arrayCompare( src1,src2 )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
+  _.assert( src2.length >= src1.length );
+
   var result = 0;
 
-  _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
-
-  if( onElement === undefined )
-  onElement = function( e ){ return e; };
-
-  _.assert( _.routineIs( onElement ) );
-
-  for( var i = 0 ; i < src.length ; i++ )
+  for( var s = 0 ; s < src1.length ; s++ )
   {
-    result += onElement( src[ i ],i,src );
+
+    result = src1[ s ] - src2[ s ];
+    if( result !== 0 )
+    return result;
+
   }
 
   return result;
@@ -10555,106 +10942,41 @@ function arraySum( src,onElement )
 //
 
 /**
- * The arrayRandom() method returns an array which contains random numbers.
+ * The arrayIdentical() routine checks the equality of two arrays.
  *
- * @param { Object } o - The options for getting random numbers.
- * @param { Number } o.length - The length of an array.
- * @param { Array } [ o.range = [ 0, 1 ] ] - The range of numbers.
- * @param { Boolean } [ o.int = false ] - Floating point numbers or not.
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
  *
  * @example
- * // returns [ 6, 2, 4, 7, 8 ]
- * var arr = _.arrayRandom( {
- *   length : 5,
- *   range : [ 1, 9 ],
- *   int : true
- * } );
+ * // returns true
+ * var arr = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
- * @returns { Array } - Returns an array of random numbers.
- * @method arrayRandom
+ * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
+ * @function arrayIdentical
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools
  */
 
-function arrayRandom( o )
+function arrayIdentical( src1,src2 )
 {
-  var result = [];
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) );
+  _.assert( _.arrayLike( src2 ) );
 
-  if( _.numberIs( o ) )
+  var result = true;
+
+  if( src1.length !== src2.length )
+  return false;
+
+  for( var s = 0 ; s < src1.length ; s++ )
   {
-    o = { length : o };
+
+    result = src1[ s ] === src2[ s ];
+
+    if( result === false )
+    return false;
+
   }
-
-  _.assert( arguments.length === 1 );
-  _.routineOptions( arrayRandom,o );
-
-  debugger;
-
-  // if( o.int === undefined )
-  // o.int = false;
-  //
-  // if( o.range === undefined )
-  // o.range = [ 0,1 ];
-
-  for( var i = 0 ; i < o.length ; i++ )
-  {
-    result[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
-    if( o.int )
-    result[ i ] = Math.floor( result[ i ] );
-  }
-
-  return result;
-}
-
-arrayRandom.defaults =
-{
-  int : 0,
-  range : [ 0,1 ],
-}
-
-//
-
-/**
- * The arrayForRange() method generate array of arithmetic progression series,
- * from the range[ 0 ] to the range[ 1 ] with increment 1.
- *
- * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
- * and assigns to the each index of the (result) array (range[ 0 ] + 1).
- *
- * @param { arrayLike } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
- *
- * @example
- * // returns [ 1, 2, 3, 4 ]
- * var range = _.arrayForRange( [ 1, 5 ] );
- *
- * @example
- * // returns [ 0, 1, 2, 3, 4 ]
- * var range = _.arrayForRange( 5 );
- *
- * @returns { array } Returns an array of numbers for the requested range with increment 1.
- * May be an empty array if adding the step would not converge toward the end value.
- * @method arrayForRange
- * @throws { Error } If passed arguments is less than one or more than one.
- * @throws { Error } If the first argument is not an array-like object.
- * @throws { Error } If the length of the (range) is not equal to the two.
- * @memberof wTools
- */
-
-function arrayForRange( range )
-{
-
-  if( _.numberIs( range ) )
-  range = [ 0,range ];
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( range ) );
-  _.assert( range.length === 2 );
-
-  var result = [];
-  var first = range[ 0 ];
-  var len = range[ 1 ] - range[ 0 ];
-
-  for( var i = 0 ; i < len ; i++ )
-  result[ i ] = first + i;
 
   return result;
 }
@@ -10663,11 +10985,102 @@ function arrayForRange( range )
 
 function arrayHas( insArray, element )
 {
+  _.assert( arguments.length === 2 );
   return insArray.indexOf( element ) !== -1;
 }
 
+//
+
+/**
+ * The arrayHasAny() routine checks if the (src) array has at least one value of the following arguments.
+ *
+ * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the routine
+ * [arrayAs()]{@link wTools.arrayAs}
+ * Checks, if (src) array has at least one value of the (ins) array.
+ * If true, it returns true.
+ * Otherwise, it returns false.
+ *
+ * @see {@link wTools.arrayAs} - See for more information.
+ *
+ * @param { arrayLike } src - The source array.
+ * @param {...*} arguments - One or more argument(s).
+ *
+ * @example
+ * // returns true
+ * var arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
+ *
+ * @returns { Boolean } - Returns true, if (src) has at least one value of the following argument(s), otherwise false is returned.
+ * @function arrayHasAny
+ * @throws { Error } If the first argument in not an array.
+ * @memberof wTools
+ */
+
+function arrayHasAny( src )
+{
+  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+
+    var ins = _.arrayAs( arguments[ a ] );
+
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( src.indexOf( ins[ i ] ) !== -1 )
+    return true;
+
+  }
+
+  return false;
+}
+
+//
+
+function arrayAll( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  for( var s = 0 ; s < src.length ; src++ )
+  if( !src[ s ] )
+  return false;
+
+  return true;
+}
+
+//
+
+function arrayAny( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  debugger;
+  for( var s = 0 ; s < src.length ; src++ )
+  if( src[ s ] )
+  return true;
+
+  debugger;
+  return false;
+}
+
+//
+
+function arrayNone( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  debugger;
+  for( var s = 0 ; s < src.length ; src++ )
+  if( src[ s ] )
+  return false;
+
+  debugger;
+  return true;
+}
+
 // --
-// array transformation
+// array prepend
 // --
 
 /**
@@ -10685,7 +11098,7 @@ function arrayHas( insArray, element )
  * _.arrayPrepend( [ 1, 2, 3, 4, 5 ], 5 );
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
- * @method arrayPrepend
+ * @function arrayPrepend
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
  * @memberof wTools
@@ -10756,7 +11169,7 @@ function __arrayPrepend( dstArray, ins )
  *
  * @returns { Array } If an array ( dstArray ) doesn't have a value ( ins ) it returns the updated array ( dstArray ) with the new length,
  * otherwise, it returns the original array ( dstArray ).
- * @method arrayPrependOnce
+ * @function arrayPrependOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
@@ -10807,7 +11220,7 @@ function __arrayPrependOnce( dstArray, ins, onEqualize )
  *
  * @returns { Array } If an array ( dstArray ) doesn't have a value ( ins ) it returns the updated array ( dstArray ) with the new length,
  * otherwise, it throws an Error.
- * @method arrayPrependOnceStrictly
+ * @function arrayPrependOnceStrictly
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
@@ -10845,7 +11258,7 @@ function __arrayPrependOnceStrictly( dstArray, ins, onEqualize )
  * _.arrayPrepended( [ 1, 2, 3, 4 ], 5 );
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
- * @method arrayPrepended
+ * @function arrayPrepended
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( arguments.length ) is not equal to two.
  * @memberof wTools
@@ -10897,7 +11310,7 @@ function __arrayPrepended( dstArray, ins )
  *
  * @returns { Array } Returns zero if elements was succesfully added, otherwise returns -1.
  *
- * @method arrayPrependedOnce
+ * @function arrayPrependedOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
@@ -10936,7 +11349,7 @@ function __arrayPrependedOnce( dstArray, ins, onEqualize )
  * _.__arrayPrependArray( [ 1, 2, 3, 4, 5 ], [ 5 ] );
  *
  * @returns { Array } Returns updated array, that contains elements from( insArray ).
- * @method __arrayPrependArray
+ * @function __arrayPrependArray
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
@@ -11024,7 +11437,7 @@ function __arrayPrependArray( dstArray, insArray )
  * // returns [ { value : 1 }, { value : 2 } ]
  *
  * @returns { Array } Returns updated array( dstArray ) or original if nothing added.
- * @method arrayPrependArrayOnce
+ * @function arrayPrependArrayOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
@@ -11069,7 +11482,7 @@ function __arrayPrependArrayOnce( dstArray, insArray, onEqualize )
  *
  * @returns { Array } Returns updated array( dstArray ) or throws an error if not all elements from source
  * array( insArray ) was added.
- * @method arrayPrependArrayOnceStrictly
+ * @function arrayPrependArrayOnceStrictly
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
@@ -11102,7 +11515,7 @@ function __arrayPrependArrayOnceStrictly( dstArray, insArray, onEqualize )
  * //returns [ 5, 6, 7, 1, 2, 3, 4 ]
  *
  * @returns { Array } Returns count of added elements.
- * @method arrayPrependedArray
+ * @function arrayPrependedArray
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
@@ -11151,7 +11564,7 @@ function __arrayPrependedArray( dstArray, insArray )
  * // returns 0
  *
  * @returns { Array } Returns count of added elements.
- * @method arrayPrependedArrayOnce
+ * @function arrayPrependedArrayOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
@@ -11203,7 +11616,7 @@ function __arrayPrependedArrayOnce( dstArray, insArray, onEqualize )
  * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
  *
  * @returns { Array } Returns updated array( dstArray ).
- * @method arrayPrependArrays
+ * @function arrayPrependArrays
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if one of ( arguments ) is undefined.
  * @memberof wTools
@@ -11238,7 +11651,7 @@ function __arrayPrependArrays( dstArray, insArray )
  * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
  *
  * @returns { Array } Returns updated array( dstArray ).
- * @method arrayPrependArraysOnce
+ * @function arrayPrependArraysOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if one of ( arguments ) is undefined.
  * @memberof wTools
@@ -11285,7 +11698,7 @@ function __arrayPrependArraysOnce( dstArray,insArray, onEqualize )
  * //returns [ 1, 2, [ 3 ], 4 ]
  *
  * @returns { Array } Returns updated array( dstArray ).
- * @method arrayPrependArraysOnceStrictly
+ * @function arrayPrependArraysOnceStrictly
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if one of ( arguments ) is undefined.
  * @throws { Error } An Error if count of added elements is not equal to count of elements from( arguments )( only first two levels inside of array are counted ).
@@ -11334,7 +11747,7 @@ function __arrayPrependArraysOnceStrictly( dstArray, insArray, onEqualize )
  * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
  *
  * @returns { Array } Returns count of added elements.
- * @method arrayPrependedArrays
+ * @function arrayPrependedArrays
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @memberof wTools
  */
@@ -11391,7 +11804,7 @@ function __arrayPrependedArrays( dstArray, insArray )
  * // throws error, but dst becomes equal [ 5, 6, 1, 2, 3, 4 ]
  *
  * @returns { Array } Returns count of added elements.
- * @method arrayPrependedArraysOnce
+ * @function arrayPrependedArraysOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @memberof wTools
  */
@@ -11431,7 +11844,9 @@ function __arrayPrependedArraysOnce( dstArray, insArray, onEqualize )
   return result;
 }
 
-//
+// --
+// array append
+// --
 
 function __arrayAppend( dstArray, ins )
 {
@@ -11442,7 +11857,7 @@ function __arrayAppend( dstArray, ins )
 //
 
 /**
- * The __arrayAppendOnce() method adds at the end of an array (dst) a value (src),
+ * The __arrayAppendOnce() routine adds at the end of an array (dst) a value (src),
  * if the array (dst) doesn't have the value (src).
  *
  * @param { Array } dst - The source array.
@@ -11466,7 +11881,7 @@ function __arrayAppend( dstArray, ins )
  *
  * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
  * otherwise, it returns the original array (dst).
- * @method __arrayAppendOnce
+ * @function __arrayAppendOnce
  * @throws { Error } Will throw an Error if (dst) is not an Array.
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools
@@ -11564,7 +11979,7 @@ function __arrayAppendedOnce( dstArray,ins,onEqualize )
 //
 
 /**
- * The __arrayAppendArrayOnce() method returns an array of elements from (dst)
+ * The __arrayAppendArrayOnce() routine returns an array of elements from (dst)
  * and appending only unique following arguments to the end.
  *
  * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
@@ -11585,7 +12000,7 @@ function __arrayAppendedOnce( dstArray,ins,onEqualize )
  * var arr = _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
  *
  * @returns { Array } - Returns an array (dst) with only unique following argument(s) that were added to the end of the (dst) array.
- * @method __arrayAppendArrayOnce
+ * @function __arrayAppendArrayOnce
  * @throws { Error } If the first argument is not array.
  * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools
@@ -11639,21 +12054,6 @@ function __arrayAppendArrayOnceStrictly( dstArray, insArray, onEqualize )
   return dstArray;
 }
 
-// <<<<<<< HEAD
-//     if( _.bufferRawIs( dstArray ) )
-//     {
-//       var result = new ArrayBuffer( newLength );
-//       // length = dstArray.byteLength;
-//     }
-//     else if( _.bufferNodeIs( dstArray ) )
-//     {
-//       var result = new Buffer( newLength );
-//       // length = dstArray.byteLength;
-//     }
-//     else
-//     var result = arrayMakeSimilar( dstArray, newLength );
-// =======
-
 //
 
 function __arrayAppendedArray( dstArray, insArray )
@@ -11692,7 +12092,7 @@ function __arrayAppendedArrayOnce( dstArray, insArray, onEqualize )
 //
 
 /**
- * The __arrayAppendArray() method adds one or more elements to the end of the (dst) array
+ * The __arrayAppendArray() routine adds one or more elements to the end of the (dst) array
  * and returns the new length of the array.
  *
  * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
@@ -11711,7 +12111,7 @@ function __arrayAppendedArrayOnce( dstArray, insArray, onEqualize )
  * var arr = _.__arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
  *
  * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
- * @method __arrayAppendArray
+ * @function __arrayAppendArray
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If type of the argument is equal undefined.
  * @memberof wTools
@@ -11775,14 +12175,8 @@ function __arrayAppendArraysOnceStrictly( dstArray, insArray, onEqualize )
 
   _.assert( result === expected );
 
-// <<<<<<< HEAD
-//   var number = o.src.length;
-//   var isUnique = _.arrayMakeSimilar( o.src );
-//   var index;
-// =======
   return dstArray;
 }
-// >>>>>>> 39ea66f679e5ba8509fa6c05c1974446997e2bac
 
 //
 
@@ -11819,17 +12213,7 @@ function __arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
   _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayAppendedArraysOnce :','expects arrayLike entity' );
 
-// <<<<<<< HEAD
-//   var isUnique = arrayUniqueIs
-//   ({
-//     src : src,
-//     onElement : onElement,
-//     includeFirst : 1,
-//   });
-//   var result = arrayMakeSimilar( src,isUnique.number );
-// =======
   var result = 0;
-// >>>>>>> 39ea66f679e5ba8509fa6c05c1974446997e2bac
 
   function _appendOnce( argument )
   {
@@ -11858,7 +12242,9 @@ function __arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
   return result;
 }
 
-//
+// --
+// array remove
+// --
 
 function __arrayRemove( dstArray, ins )
 {
@@ -11867,13 +12253,13 @@ function __arrayRemove( dstArray, ins )
 }
 
 /**
- * The __arrayRemoveOnce() method removes the first matching element from (dstArray)
+ * The __arrayRemoveOnce() routine removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if arguments passed two, it calls the method
+ * checks if arguments passed two, it calls the routine
  * [__arrayRemovedOnce( dstArray, ins )]{@link wTools.__arrayRemovedOnce}
- * Otherwise, if passed three arguments, it calls the method
+ * Otherwise, if passed three arguments, it calls the routine
  * [__arrayRemovedOnce( dstArray, ins, onElement )]{@link wTools.__arrayRemovedOnce}
  * @see  wTools.__arrayRemovedOnce
  * @param { Array } dstArray - The source array.
@@ -11892,7 +12278,7 @@ function __arrayRemove( dstArray, ins )
  * });
  *
  * @returns { Array } - Returns the modified (dstArray) array with the new length.
- * @method __arrayRemoveOnce
+ * @function __arrayRemoveOnce
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
@@ -11959,14 +12345,14 @@ function __arrayRemoved( dstArray, ins )
  */
 
 /**
- * The __arrayRemovedOnce() method returns the index of the first matching element from (dstArray)
+ * The __arrayRemovedOnce() routine returns the index of the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and remove this element.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
  * checks if arguments passed two, it calls built in function (dstArray.indexOf(ins))
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
- * Otherwise, if passed three arguments, it calls the method
+ * Otherwise, if passed three arguments, it calls the routine
  * [arrayLeftIndexOf( dstArray, ins, onElement )]{@link wTools.arrayLeftIndexOf}
  * If callback function (onElement) returns true, it returns the index that will be removed from (dstArray).
  * @see {@link wTools.arrayLeftIndexOf} - See for more information.
@@ -11987,7 +12373,7 @@ function __arrayRemoved( dstArray, ins )
  * var arr = _.__arrayRemovedOnce( [ 2, 4, 6 ], 2 );
  *
  * @returns { Number } - Returns the index of the value (ins) that was removed from (dstArray).
- * @method __arrayRemovedOnce
+ * @function __arrayRemovedOnce
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
@@ -12095,7 +12481,7 @@ function __arrayRemovedArray( dstArray, insArray )
  * that looking for the value of the (insArray[i]) array in the (dstArray) array.
  * If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
  * and incrementing the variable (result++).
- * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the method
+ * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the routine
  *
  * If callback function (onEqualize) returns true, it returns the index that will be removed from (dstArray),
  * and then incrementing the variable (result++).
@@ -12121,7 +12507,7 @@ function __arrayRemovedArray( dstArray, insArray )
  * } );
  *
  * @returns { number }  Returns amount of the deleted elements from the (dstArray).
- * @method arrayRemovedArrayOnce
+ * @function arrayRemovedArrayOnce
  * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
  * @throws { Error } Will throw an Error if (insArray) is not an array-like.
  * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
@@ -12154,19 +12540,11 @@ function __arrayRemovedArrayOnce( dstArray,insArray,onEqualize )
 
 //
 
-// <<<<<<< HEAD
-//   var length = o.src.length * o.numberOfDuplicatesPerElement;
-//   var numberOfElements = o.src.length / o.numberOfAtomsPerElement;
-//   o.result = o.result || arrayMakeSimilar( o.src,length );
-// =======
-
 function __arrayRemoveArrays( dstArray, insArray )
 {
   __arrayRemovedArrays.apply( this, arguments );
   return dstArray;
 }
-
-// >>>>>>> 39ea66f679e5ba8509fa6c05c1974446997e2bac
 
 //
 
@@ -12271,10 +12649,12 @@ function __arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
   return result;
 }
 
-//
+// --
+// array flatten
+// --
 
 /**
- * The __arrayFlatten() method returns an array that contains all the passed arguments.
+ * The __arrayFlatten() routine returns an array that contains all the passed arguments.
  *
  * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
  * iterate over array-like object (arguments[]) and assigns to the (src) each element,
@@ -12291,7 +12671,7 @@ function __arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
  * var arr = _.__arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
  *
  * @returns { Array } - Returns an array of the passed argument(s).
- * @method __arrayFlatten
+ * @function __arrayFlatten
  * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
  * @memberof wTools
  */
@@ -12445,7 +12825,7 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  */
 
 /**
- * The arrayRemovedAll() method removes all (ins) values from (dstArray)
+ * The arrayRemovedAll() routine removes all (ins) values from (dstArray)
  * that corresponds to the condition in the callback function and returns the amount of them.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
@@ -12471,7 +12851,7 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  * var arr = _.arrayRemovedAll( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
  *
  * @returns { Number } - Returns the amount of the removed elements.
- * @method arrayRemovedAll
+ * @function arrayRemovedAll
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
@@ -12512,13 +12892,13 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  */
 
 /**
- * The arrayRemoveAll() method removes all (ins) values from (dstArray)
+ * The arrayRemoveAll() routine removes all (ins) values from (dstArray)
  * that corresponds to the condition in the callback function and returns the modified array.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if arguments passed two, it calls the method
+ * checks if arguments passed two, it calls the routine
  * [arrayRemovedAll( dstArray, ins )]{@link wTools.arrayRemovedAll}
- * Otherwise, if passed three arguments, it calls the method
+ * Otherwise, if passed three arguments, it calls the routine
  * [arrayRemovedAll( dstArray, ins, onElement )]{@link wTools.arrayRemovedAll}
  *
  * @see wTools.arrayRemovedAll
@@ -12539,7 +12919,7 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2 );
  *
  * @returns { Array } - Returns the modified (dstArray) array with the new length.
- * @method arrayRemoveAll
+ * @function arrayRemoveAll
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
@@ -12559,85 +12939,46 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
 //   return dstArray;
 // }
 
-//
+// --
+// array replace
+// --
 
 /**
- * The arraySwap() method reverses the elements by indices (index1) and (index2) in the (dst) array.
+ * The arrayReplaceOnce() routine returns the index of the (dstArray) array which will be replaced by (sub),
+ * if (dstArray) has the value (ins).
  *
- * @param { Array } dst - The initial array.
- * @param { Number } index1 - The first index.
- * @param { Number } index2 - The second index.
+ * It takes three arguments (dstArray, ins, sub), calls built in function (dstArray.indexOf(ins)),
+ * that looking for value (ins) in the (dstArray).
+ * If true, it replaces (ins) value of (dstArray) by (sub) and returns the index of the (ins).
+ * Otherwise, it returns (-1) index.
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { * } ins - The value to find.
+ * @param { * } sub - The value to replace.
  *
  * @example
- * // returns [ 5, 2, 3, 4, 1 ]
- * var arr = _.arraySwap( [ 1, 2, 3, 4, 5 ], 0, 4 );
+ * // returns -1
+ * _.arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
  *
- * @returns { Array } - Returns the (dst) array that has been modified in place by indexes (index1) and (index2).
- * @method arraySwap
- * @throws { Error } If the first argument in not an array.
- * @throws { Error } If the second argument is less than 0 and more than a length initial array.
- * @throws { Error } If the third argument is less than 0 and more than a length initial array.
+ * @example
+ * // returns 1
+ * _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+ *
+ * @example
+ * // returns 3
+ * _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+ *
+ * @example
+ * // returns 4
+ * _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
+ *
+ * @returns { number }  Returns the index of the (dstArray) array which will be replaced by (sub),
+ * if (dstArray) has the value (ins).
+ * @function arrayReplaceOnce
+ * @throws { Error } Will throw an Error if (dstArray) is not an array.
+ * @throws { Error } Will throw an Error if (arguments.length) is less than three.
  * @memberof wTools
  */
-
-function arraySwap( dst,index1,index2 )
-{
-
-  if( arguments.length === 3 )
-  {
-    index1 = 0;
-    index2 = 1;
-  }
-
-  _assert( arguments.length === 1 || arguments.length === 3 );
-  _assert( _.arrayLike( dst ),'arraySwap :','argument must be array' );
-  _assert( 0 <= index1 && index1 < dst.length,'arraySwap :','index1 is out of bound' );
-  _assert( 0 <= index2 && index2 < dst.length,'arraySwap :','index2 is out of bound' );
-
-  var e = dst[ index1 ];
-  dst[ index1 ] = dst[ index2 ];
-  dst[ index2 ] = e;
-
-  return dst;
-}
-
-//
-  /**
-   * The arrayReplaceOnce() method returns the index of the (dstArray) array which will be replaced by (sub),
-   * if (dstArray) has the value (ins).
-   *
-   * It takes three arguments (dstArray, ins, sub), calls built in function (dstArray.indexOf(ins)),
-   * that looking for value (ins) in the (dstArray).
-   * If true, it replaces (ins) value of (dstArray) by (sub) and returns the index of the (ins).
-   * Otherwise, it returns (-1) index.
-   *
-   * @param { Array } dstArray - The source array.
-   * @param { * } ins - The value to find.
-   * @param { * } sub - The value to replace.
-   *
-   * @example
-   * // returns -1
-   * _.arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
-   *
-   * @example
-   * // returns 1
-   * _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
-   *
-   * @example
-   * // returns 3
-   * _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
-   *
-   * @example
-   * // returns 4
-   * _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
-   *
-   * @returns { number }  Returns the index of the (dstArray) array which will be replaced by (sub),
-   * if (dstArray) has the value (ins).
-   * @method arrayReplaceOnce
-   * @throws { Error } Will throw an Error if (dstArray) is not an array.
-   * @throws { Error } Will throw an Error if (arguments.length) is less than three.
-   * @memberof wTools
-   */
 
 function arrayReplaceOnce( dstArray,ins,sub )
 {
@@ -12655,43 +12996,44 @@ function arrayReplaceOnce( dstArray,ins,sub )
 }
 
 //
-  /**
-   * The arrayUpdate() method adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
-   * and returns the last added index or the last replaced index of the array (dstArray).
-   *
-   * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
-   * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
-   * Checks if (index) equal to the -1.
-   * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
-   * Otherwise, it returns the replaced (index).
-   *
-   * @see wTools.arrayReplaceOnce
-   *
-   * @param { Array } dstArray - The source array.
-   * @param { * } ins - The value to change.
-   * @param { * } sub - The value to add or replace.
-   *
-   * @example
-   * // returns 3
-   * var add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
-   * console.log( add ) = > [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
-   *
-   * @example
-   * // returns 5
-   * var add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
-   * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
-   *
-   * @example
-   * // returns 4
-   * var replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
-   * console.log( replace ) => [ true, true true, true, true ];
-   *
-   * @returns { number } Returns the last added or the last replaced index.
-   * @method arrayUpdate
-   * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
-   * @throws { Error } Will throw an Error if (arguments.length) is less or more than three.
-   * @memberof wTools
-   */
+
+/**
+ * The arrayUpdate() routine adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
+ * and returns the last added index or the last replaced index of the array (dstArray).
+ *
+ * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
+ * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
+ * Checks if (index) equal to the -1.
+ * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
+ * Otherwise, it returns the replaced (index).
+ *
+ * @see wTools.arrayReplaceOnce
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { * } ins - The value to change.
+ * @param { * } sub - The value to add or replace.
+ *
+ * @example
+ * // returns 3
+ * var add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
+ * console.log( add ) = > [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+ *
+ * @example
+ * // returns 5
+ * var add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
+ * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
+ *
+ * @example
+ * // returns 4
+ * var replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
+ * console.log( replace ) => [ true, true true, true, true ];
+ *
+ * @returns { number } Returns the last added or the last replaced index.
+ * @function arrayUpdate
+ * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than three.
+ * @memberof wTools
+ */
 
 function arrayUpdate( dstArray,ins,sub )
 {
@@ -12709,132 +13051,38 @@ function arrayUpdate( dstArray,ins,sub )
   return index;
 }
 
-//
+// --
+// array etc
+// --
 
-/**
- * Removes range( range ) of elements from provided array( dstArray ) and adds elements from array( srcArray )
- * at the start position of provided range( range ) if( srcArray ) was provided.
- * On success returns array with deleted element(s), otherwise returns empty array.
- * For TypedArray's and buffers returns modified copy of ( dstArray ) or original array if nothing changed.
- *
- * @param { Array|TypedArray|Buffer } dstArray - The target array, TypedArray( Int8Array,Int16Array,Uint8Array ... etc ) or Buffer( ArrayBuffer, Buffer ).
- * @param { Array|Number } range - The range of elements or index of single element to remove from ( dstArray ).
- * @param { Array } srcArray - The array of elements to add to( dstArray ) at the start position of provided range( range ).
- * If one of ( range ) indexies is not specified it will be setted to zero.
- * If ( range ) start index is greater than the length of the array ( dstArray ), actual starting index will be set to the length of the array ( dstArray ).
- * If ( range ) start index is negative, will be setted to zero.
- * If ( range ) start index is greater than end index, the last will be setted to value of start index.
- *
- * @example
- * _.arrayCutin( [ 1, 2, 3, 4 ], 2 );
- * // returns [ 3 ]
- *
- * @example
- * _.arrayCutin( [ 1, 2, 3, 4 ], [ 1, 2 ] );
- * // returns [ 2 ]
- *
- * @example
- * _.arrayCutin( [ 1, 2, 3, 4 ], [ 0, 5 ] );
- * // returns [ 1, 2, 3, 4 ]
- *
- * @example
- * _.arrayCutin( [ 1, 2, 3, 4 ], [ -1, 5 ] );
- * // returns [ 1, 2, 3, 4 ]
- *
- * @example
- * var dst = [ 1, 2, 3, 4 ];
- * _.arrayCutin( dst, [ 0, 3 ], [ 0, 0, 0 ] );
- * console.log( dst );
- * // returns [ 0, 0, 0, 4 ]
- *
- * @example
- * var dst = new Int32Array( 4 );
- * dst.set( [ 1, 2, 3, 4 ] )
- * _.arrayCutin( dst, 0 );
- * // returns [ 2, 3, 4 ]
- *
- * @returns { Array|TypedArray|Buffer } For array returns array with deleted element(s), otherwise returns empty array.
- * For other types returns modified copy or origin( dstArray ).
- * @method arrayCutin
- * @throws { Error } If ( arguments.length ) is not equal to two or three.
- * @throws { Error } If ( dstArray ) is not an Array.
- * @throws { Error } If ( srcArray ) is not an Array.
- * @throws { Error } If ( range ) is not an Array.
- * @memberof wTools
- */
-
-// function arrayCutin( dstArray,first,replace,srcArray )
-function arrayCutin( dstArray,range,srcArray )
+function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
 {
+  var result = [];
+  var l = srcArray.length;
 
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
+  debugger;
+  throw _.err( 'not tested' );
 
-  var first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
+  comparator = _._comparatorFromMapper( comparator );
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-  _.assert( _.arrayIs( range ) );
-  _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
-
-  var length = dstArray.length || dstArray.byteLength;
-
-  if( first < 0 )
-  first = 0;
-  if( first > length)
-  first = length;
-  if( last > length)
-  last = length;
-  if( last < first )
-  last = first;
-
-  var args = srcArray ? srcArray.slice() : [];
-  args.unshift( last-first );
-  args.unshift( first );
-
-  if( _.bufferAnyIs( dstArray ) )
+  function rcomparator( a,b )
   {
-    if( first === last )
-    return dstArray;
+    return comparator( srcArray[ a ],srcArray[ b ] );
+  };
 
-    var newLength = length - args[ 1 ];
-    var srcArrayLength = 0;
+  for( var i = 0 ; i < l ; i += 1 )
+  {
 
-    if( srcArray )
+    if( result.length < numberOfElements )
     {
-      srcArrayLength = srcArray.length || srcArray.byteLength;
-      newLength += srcArrayLength;
+      _.arraySortedAdd( result, i, rcomparator );
+      continue;
     }
 
-    if( _.bufferRawIs( dstArray ) )
-    {
-      var result = new ArrayBuffer( newLength );
-      // length = dstArray.byteLength;
-    }
-    else if( _.bufferNodeIs( dstArray ) )
-    {
-      var result = new Buffer( newLength );
-      // length = dstArray.byteLength;
-    }
-    else
-    var result = arrayMakeSimilar( dstArray, newLength );
+    _.arraySortedAdd( result, i, rcomparator );
+    result.splice( result.length-1,1 );
 
-    if( first > 0 )
-    for( var i = 0; i < first; ++i )
-    result[ i ] = dstArray[ i ];
-
-    if( srcArray )
-    for( var i = first, j = 0; j < srcArrayLength; )
-    result[ i++ ] = srcArray[ j++ ];
-
-    for( var j = last, i = first + srcArrayLength; j < length; )
-    result[ i++ ] = dstArray[ j++ ];
-
-    return result;
   }
-  else
-  var result = dstArray.splice.apply( dstArray,args );
 
   return result;
 }
@@ -12842,485 +13090,54 @@ function arrayCutin( dstArray,range,srcArray )
 //
 
 /**
- * The arrayPut() method puts all values of (arguments[]) after the second argument to the (dstArray)
- * in the position (dstOffset) and changes values of the following index.
+ * The arraySum() routine returns the sum of an array (src).
  *
- * @param { arrayLike } dstArray - The source array.
- * @param { Number } [ dstOffset = 0 ] dstOffset - The index of element where need to put the new values.
- * @param {*} arguments[] - One or more argument(s).
- * If the (argument) is an array it iterates over array and adds each element to the next (dstOffset++) index of the (dstArray).
- * Otherwise, it adds each (argument) to the next (dstOffset++) index of the (dstArray).
+ * @param { arrayLike } src - The source array.
+ * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
  *
  * @example
- * // returns [ 1, 2, 'str', true, 7, 8, 9 ]
- * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 2, 'str', true, [ 7, 8 ] );
+ * // returns 15
+ * _.arraySum( [ 1, 2, 3, 4, 5 ] );
  *
  * @example
- * // returns [ 'str', true, 7, 8, 5, 6, 9 ]
- * var arr = _.arrayPut( [ 1, 2, 3, 4, 5, 6, 9 ], 0, 'str', true, [ 7, 8 ] );
+ * // returns 29
+ * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
  *
- * @returns { arrayLike } - Returns an array containing the changed values.
- * @method arrayPut
- * @throws { Error } Will throw an Error if (arguments.length) is less than one.
- * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
- * @throws { Error } Will throw an Error if (dstOffset) is not a Number.
+ * @example
+ * // returns 94
+ * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
+ *
+ * @returns { Number } - Returns the sum of an array (src).
+ * @function arraySum
+ * @throws { Error } If passed arguments is less than one or more than two.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the second argument is not a Function.
  * @memberof wTools
  */
 
-function arrayPut( dstArray, dstOffset )
+function arraySum( src,onElement )
 {
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( _.numberIs( dstOffset ) );
-
-  dstOffset = dstOffset || 0;
-
-  for( var a = 2 ; a < arguments.length ; a++ )
-  {
-    var argument = arguments[ a ];
-    var aIs = _.arrayIs( argument ) || _.bufferTypedIs( argument );
-
-    if( aIs && _.bufferTypedIs( dstArray ) )
-    {
-      dstArray.set( argument,dstOffset );
-      dstOffset += argument.length;
-    }
-    else if( aIs )
-    for( var i = 0 ; i < argument.length ; i++ )
-    {
-      dstArray[ dstOffset ] = argument[ i ];
-      dstOffset += 1;
-    }
-    else
-    {
-      dstArray[ dstOffset ] = argument;
-      dstOffset += 1;
-    }
-
-  }
-
-  return dstArray;
-}
-
-//
-
-/**
- * The arrayFill() method fills all the elements of the given or a new array from the 0 index to an (options.times) index
- * with a static value.
- *
- * @param { ( Object | Number | Array ) } o - The options to fill the array.
- * @param { Number } [ o.times = result.length ] o.times - The count of repeats.
-   If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
- * @param { Number } [ o.value = 0 ] - The value for the filling.
- *
- * @example
- * // returns [ 3, 3, 3, 3, 3 ]
- * var arr = _.arrayFill( { times : 5, value : 3 } );
- *
- * @example
- * // returns [ 0, 0, 0, 0 ]
- * var arr = _.arrayFill( 4 );
- *
- * @example
- * // returns [ 0, 0, 0 ]
- * var arr = _.arrayFill( [ 1, 2, 3 ] );
- *
- * @returns { Array } - Returns an array filled with a static value.
- * @method arrayFill
- * @throws { Error } If missed argument, or got more than one argument.
- * @throws { Error } If passed argument is not an object.
- * @throws { Error } If the last element of the (o.result) is not equal to the (o.value).
- * @memberof wTools
- */
-
-function arrayFill( o )
-{
-
-  if( arguments.length === 1 )
-  {
-    if( _.numberIs( o ) )
-    o = { times : o };
-    else if( _.arrayIs( o ) )
-    o = { result : o };
-  }
-  else
-  {
-    o = { result : arguments[ 0 ], value : arguments[ 1 ] };
-  }
+  var result = 0;
 
   _assert( arguments.length === 1 || arguments.length === 2 );
-  _.assertMapHasOnly( o,arrayFill.defaults );
-  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
 
-  var result = o.result || [];
-  var times = o.times !== undefined ? o.times : result.length;
-  var value = o.value !== undefined ? o.value : 0;
+  if( onElement === undefined )
+  onElement = function( e ){ return e; };
 
-  if( _.routineIs( result.fill ) )
+  _.assert( _.routineIs( onElement ) );
+
+  for( var i = 0 ; i < src.length ; i++ )
   {
-    if( result.length < times )
-    result.length = times;
-    result.fill( value,0,times );
-  }
-  else
-  {
-    for( var t = 0 ; t < times ; t++ )
-    result[ t ] = value;
-  }
-
-  _assert( result[ times-1 ] === value );
-  return result;
-}
-
-arrayFill.defaults =
-{
-  result : null,
-  times : null,
-  value : null,
-}
-
-//
-
-/**
- * The arraySupplement() method returns an array (dstArray), that contains values from following arrays only type of numbers.
- * If the initial (dstArray) isn't contain numbers, they are replaced.
- *
- * It finds among the arrays the biggest array, and assigns to the variable (length), iterates over from 0 to the (length),
- * creates inner loop that iterates over (arguments[...]) from the right (arguments.length - 1) to the (arguments[0]) left,
- * checks each element of the arrays, if it contains only type of number.
- * If true, it adds element to the array (dstArray) by corresponding index.
- * Otherwise, it skips and checks following array from the last executable index, previous array.
- * If the last executable index doesn't exist, it adds 'undefined' to the array (dstArray).
- * After that it returns to the previous array, and executes again, until (length).
- *
- * @param { arrayLike } dstArray - The initial array.
- * @param { ...arrayLike } arguments[...] - The following array(s).
- *
- * @example
- * // returns ?
- * _.arraySupplement( [ 4, 5 ], [ 1, 2, 3 ], [ 6, 7, 8, true, 9 ], [ 'a', 'b', 33, 13, 'e', 7 ] );
- * @returns { arrayLike } - Returns an array that contains values only type of numbers.
- * @method arraySupplement
- * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
- * @throws { Error } Will throw an Error if (arguments[...]) is/are not the array-like.
- * @memberof wTools
- */
-
-function arraySupplement( dstArray )
-{
-  var result = dstArray;
-  if( result === null )
-  result = [];
-
-  var length = result.length;
-  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
-
-  for( a = arguments.length-1 ; a >= 1 ; a-- )
-  {
-    _assert( _.arrayLike( arguments[ a ] ),'argument is not defined :',a );
-    length = Math.max( length,arguments[ a ].length );
-  }
-
-  if( _.numberIs( result ) )
-  result = arrayFill
-  ({
-    value : result,
-    times : length,
-  });
-
-  for( var k = 0 ; k < length ; k++ )
-  {
-
-    if( k in dstArray && isFinite( dstArray[ k ] ) )
-    continue;
-
-    var a;
-    for( a = arguments.length-1 ; a >= 1 ; a-- )
-    if( k in arguments[ a ] && !isNaN( arguments[ a ][ k ] ) )
-    break;
-
-    if( a === 0 )
-    continue;
-
-    result[ k ] = arguments[ a ][ k ];
-
+    result += onElement( src[ i ],i,src );
   }
 
   return result;
 }
-
-//
-
-/**
- * The arrayExtendScreening() method iterates over (arguments[...]) from the right to the left (arguments[1]),
- * and returns a (dstArray) containing the values of the following arrays,
- * if the following arrays contains the indexes of the (screenArray).
- *
- * @param { arrayLike } screenArray - The source array.
- * @param { arrayLike } dstArray - To add the values from the following arrays,
- * if the following arrays contains indexes of the (screenArray).
- * If (dstArray) contains values, the certain values will be replaced.
- * @param { ...arrayLike } arguments[...] - The following arrays.
- *
- * @example
- * // returns [ 5, 6, 2 ]
- * _.arrayExtendScreening( [ 1, 2, 3 ], [  ], [ 0, 1, 2 ], [ 3, 4 ], [ 5, 6 ] );
- *
- * @example
- * // returns [ 'a', 6, 2, 13 ]
- * _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] );
- *
- * @example
- * // returns [ 3, 'abc', 7, 13 ]
- * _.arrayExtendScreening( [  ], [ 3, 'abc', 7, 13 ], [ 0, 1, 2 ], [ 3, 4 ], [ 'a', 6 ] )
- *
- * @returns { arrayLike } Returns a (dstArray) containing the values of the following arrays,
- * if the following arrays contains the indexes of the (screenArray).
- * If (screenArray) is empty, it returns a (dstArray).
- * If (dstArray) is equal to the null, it creates a new array,
- * and returns the corresponding values of the following arrays by the indexes of a (screenArray).
- * @method arrayExtendScreening
- * @throws { Error } Will throw an Error if (screenArray) is not an array-like.
- * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
- * @throws { Error } Will throw an Error if (arguments[...]) is/are not an array-like.
- * @memberof wTools
- */
-
-function arrayExtendScreening( screenArray,dstArray )
-{
-  var result = dstArray;
-  if( result === null ) result = [];
-
-  _assert( _.arrayLike( screenArray ),'expects object as screenArray' );
-  _assert( _.arrayLike( result ),'expects object as argument' );
-  for( a = arguments.length-1 ; a >= 2 ; a-- )
-  _assert( arguments[ a ],'argument is not defined :',a );
-
-  for( var k = 0 ; k < screenArray.length ; k++ )
-  {
-
-    if( screenArray[ k ] === undefined )
-    continue;
-
-    var a;
-    for( a = arguments.length-1 ; a >= 2 ; a-- )
-    if( k in arguments[ a ] ) break;
-    if( a === 1 )
-    continue;
-
-    result[ k ] = arguments[ a ][ k ];
-
-  }
-
-  return result;
-}
-
-//
-
-function arrayShuffle( dst,times )
-{
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayLike( dst ) );
-
-  if( times === undefined )
-  times = dst.length;
-
-  var l = dst.length;
-  var e1,e2;
-  for( var t1 = 0 ; t1 < times ; t1++ )
-  {
-    var t2 = Math.floor( Math.random() * l );
-    e1 = dst[ t1 ];
-    e2 = dst[ t2 ];
-    dst[ t1 ] = e2;
-    dst[ t2 ] = e1;
-  }
-
-  return dst;
-}
-
-// <<<<<<< HEAD
-
-//
-
-/**
- * The arrayRandom() method returns an array which contains random numbers.
- *
- * @param { Object } o - The options for getting random numbers.
- * @param { Number } o.length - The length of an array.
- * @param { Array } [ o.range = [ 0, 1 ] ] - The range of numbers.
- * @param { Boolean } [ o.int = false ] - Floating point numbers or not.
- *
- * @example
- * // returns [ 6, 2, 4, 7, 8 ]
- * var arr = _.arrayRandom( {
- *   length : 5,
- *   range : [ 1, 9 ],
- *   int : true
- * } );
- *
- * @returns { Array } - Returns an array of random numbers.
- * @method arrayRandom
- * @memberof wTools
- */
-
-function arrayRandom( o )
-{
-  var result = [];
-
-  if( _.numberIs( o ) )
-  {
-    o = { length : o };
-  }
-
-  _.assert( arguments.length === 1 );
-  _.routineOptions( arrayRandom,o );
-
-  debugger;
-
-  // if( o.int === undefined )
-  // o.int = false;
-  //
-  // if( o.range === undefined )
-  // o.range = [ 0,1 ];
-
-  for( var i = 0 ; i < o.length ; i++ )
-  {
-    result[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
-    if( o.int )
-    result[ i ] = Math.floor( result[ i ] );
-  }
-
-  return result;
-}
-
-arrayRandom.defaults =
-{
-  int : 0,
-  range : [ 0,1 ],
-}
-
-//
-
-/**
- * The arrayForRange() method generate array of arithmetic progression series,
- * from the range[ 0 ] to the range[ 1 ] with increment 1.
- *
- * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
- * and assigns to the each index of the (result) array (range[ 0 ] + 1).
- *
- * @param { arrayLike } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
- *
- * @example
- * // returns [ 1, 2, 3, 4 ]
- * var range = _.arrayForRange( [ 1, 5 ] );
- *
- * @example
- * // returns [ 0, 1, 2, 3, 4 ]
- * var range = _.arrayForRange( 5 );
- *
- * @returns { array } Returns an array of numbers for the requested range with increment 1.
- * May be an empty array if adding the step would not converge toward the end value.
- * @method arrayForRange
- * @throws { Error } If passed arguments is less than one or more than one.
- * @throws { Error } If the first argument is not an array-like object.
- * @throws { Error } If the length of the (range) is not equal to the two.
- * @memberof wTools
- */
-
-function arrayForRange( range )
-{
-
-  if( _.numberIs( range ) )
-  range = [ 0,range ];
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( range ) );
-  _.assert( range.length === 2 );
-
-  var result = [];
-  var first = range[ 0 ];
-  var len = range[ 1 ] - range[ 0 ];
-
-  for( var i = 0 ; i < len ; i++ )
-  result[ i ] = first + i;
-
-  return result;
-}
-
-//
-
-function arrayHas( insArray, element )
-{
-  return insArray.indexOf( element ) !== -1;
-}
-
-//
-
-function arrayAll( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( src ) );
-
-  for( var s = 0 ; s < src.length ; src++ )
-  if( !src[ s ] )
-  return false;
-
-  return true;
-}
-
-//
-
-function arrayAny( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( src ) );
-
-  debugger;
-  for( var s = 0 ; s < src.length ; src++ )
-  if( src[ s ] )
-  return true;
-
-  debugger;
-  return false;
-}
-
-//
-
-function arrayNone( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( src ) );
-
-  debugger;
-  for( var s = 0 ; s < src.length ; src++ )
-  if( src[ s ] )
-  return false;
-
-  debugger;
-  return true;
-}
-
-
-// ======= xxx
-// >>>>>>> 39ea66f679e5ba8509fa6c05c1974446997e2bac
 
 // --
 // array set
 // --
-
-function arraySetIdentical( ins1,ins2 )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( ins1 ) );
-  _.assert( _.arrayLike( ins2 ) );
-
-  var result = _.arraySetDiff( ins1,ins2 );
-
-  return result.length === 0;
-}
-
-//
 
 function arraySetBut( src,but )
 {
@@ -13433,7 +13250,7 @@ function arraySetContainAll( src )
 */
 //
   /**
-   * The arraySetContainAll() method returns true, if at least one of the following arrays (arguments[...]),
+   * The arraySetContainAll() routine returns true, if at least one of the following arrays (arguments[...]),
    * contains all the same values as in the (src) array.
    *
    * @param { arrayLike } src - The source array.
@@ -13451,7 +13268,7 @@ function arraySetContainAll( src )
    * contains all the same values as in the (src) array.
    * If length of the (src) is more than the next argument, it returns false.
    * Otherwise, it returns false.
-   * @method arraySetContainAll
+   * @function arraySetContainAll
    * @throws { Error } Will throw an Error if (src) is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
    * @memberof wTools
@@ -13485,7 +13302,7 @@ function arraySetContainAll( src )
 //
 
 /**
- * The arraySetContainSomething() method returns true, if at least one of the following arrays (arguments[...]),
+ * The arraySetContainSomething() routine returns true, if at least one of the following arrays (arguments[...]),
  * contains the first matching value from (src).
  *
  * @param { arrayLike } src - The source array.
@@ -13506,7 +13323,7 @@ function arraySetContainAll( src )
  * @returns { Boolean } Returns true, if at least one of the following arrays (arguments[...]),
  * contains the first matching value from (src).
  * Otherwise, it returns false.
- * @method arraySetContainSomething
+ * @function arraySetContainSomething
  * @throws { Error } Will throw an Error if (src) is not an array-like.
  * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
  * @memberof wTools
@@ -13536,6 +13353,41 @@ function arraySetContainSomething( src )
   return false;
 }
 
+// /*function arraySameSet( src1,src2 )*/
+// function arraySetIdentical( src1,src2 )
+// {
+//   if( src1.length !== src2.length ) return false;
+//   var src = src1.slice();
+//   var nil = Object.create( null );
+//
+//   for( var s = 0 ; s < src2.length ; s++ )
+//   {
+//     var i = src.indexOf( src2[ s ] );
+//     if( i === -1 )
+//     return false;
+//     src[ i ] = nil;
+//   }
+//
+//   return true;
+// }
+
+//
+
+function arraySetIdentical( ins1,ins2 )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( ins1 ) );
+  _.assert( _.arrayLike( ins2 ) );
+
+  if( ins1.length !== ins2.length )
+  return false;
+
+  var result = _.arraySetDiff( ins1,ins2 );
+
+  return result.length === 0;
+}
+
 // --
 // map move
 // --
@@ -13549,7 +13401,7 @@ function arraySetContainSomething( src )
  */
 
 /**
- * The mapClone() method is used to clone the values of all
+ * The mapClone() routine is used to clone the values of all
  * enumerable own properties from (srcObject) object to an (options.dst) object.
  *
  * It creates two variables:
@@ -13574,7 +13426,7 @@ function arraySetContainSomething( src )
  * mapClone( new Example(), { dst : { sex : 'Male' } } );
  *
  * @returns { objectLike }  The (result) object gets returned.
- * @method mapClone
+ * @function mapClone
  * @throws { Error } Will throw an Error if ( o ) is not an Object,
  * if ( arguments.length > 2 ), if (key) is not a String or
  * if (srcObject) has not own properties.
@@ -13633,7 +13485,7 @@ function mapClone( srcObject,o )
  * _.mapExtendFiltering( _.filter.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
  *
  * @returns { objectLike } Returns the unique [ key, value ].
- * @method mapExtendFiltering
+ * @function mapExtendFiltering
  * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
  * is not a Function, (result) and (argument) are not the objects.
  * @memberof wTools
@@ -13689,7 +13541,7 @@ function mapExtendFiltering( filter,dstObject )
  * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
  *
  * @returns { objectLike } It will return the target object.
- * @method mapExtend
+ * @function mapExtend
  * @throws { Error } Will throw an error if ( arguments.length < 2 ),
  * if the (dstObject) is not an Object.
  * @memberof wTools
@@ -13759,7 +13611,7 @@ function mapExtendToThis()
   //  */
 
 /**
- * The mapSupplement() method returns an object with unique [ key, value ].
+ * The mapSupplement() routine returns an object with unique [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
  * adds a callback function ( _.filter.dstNotHas() ) to the beginning of the (args)
@@ -13772,7 +13624,7 @@ function mapExtendToThis()
  * mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
  *
  * @returns { objectLike } Returns an object with unique [ key, value ].
- * @method mapSupplement
+ * @function mapSupplement
  * @memberof wTools
  */
 
@@ -13804,7 +13656,7 @@ function mapSupplementOwn( dst )
 //  */
 
 /**
- * The mapComplement() method returns an object
+ * The mapComplement() routine returns an object
  * filled by all unique, clone [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
@@ -13819,7 +13671,7 @@ function mapSupplementOwn( dst )
  * _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
  *
  * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
- * @method mapComplement
+ * @function mapComplement
  * @memberof wTools
  */
 
@@ -13844,7 +13696,7 @@ function mapComplementWithUndefines( dst )
 //
 
 /**
- * The mapCopy() method is used to copy the values of all properties
+ * The mapCopy() routine is used to copy the values of all properties
  * from one or more source objects to the new object.
  *
  * @param { ...objectLike } arguments[] - The source object(s).
@@ -13855,7 +13707,7 @@ function mapComplementWithUndefines( dst )
  *
  * @returns { objectLike } It will return the new object filled by [ key, value ]
  * from one or more source objects.
- * @method mapCopy
+ * @function mapCopy
  * @memberof wTools
  */
 
@@ -13911,7 +13763,7 @@ function mapDelete( dst,ins )
 }
 
 // --
-// recursive
+// map recursive
 // --
 
 function mapSupplementRecursive()
@@ -14055,7 +13907,7 @@ function _mapExtendRecursive( dst,src )
 // --
 
 /**
- * The mapFirstPair() method returns first pair [ key, value ] as array.
+ * The mapFirstPair() routine returns first pair [ key, value ] as array.
  *
  * @param { objectLike } srcObject - An object like entity of get first pair.
  *
@@ -14072,7 +13924,7 @@ function _mapExtendRecursive( dst,src )
  * _.mapFirstPair( [ [ 'a', 7 ] ] );
  *
  * @returns { Array } Returns pair [ key, value ] as array if (srcObject) has fields, otherwise, undefined.
- * @method mapFirstPair
+ * @function mapFirstPair
  * @throws { Error } Will throw an Error if (arguments.length) less than one, if (srcObject) is not an object-like.
  * @memberof wTools
  */
@@ -14257,7 +14109,7 @@ mapsFlatten.defaults =
  * _.mapToArray( { a : 3, b : 13, c : 7 } );
  *
  * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
- * @method mapToArray
+ * @function mapToArray
  * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
  * @memberof wTools
  */
@@ -14296,7 +14148,7 @@ function mapToArray( src )
  * _.mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
  *
  * @returns { * } Returns value of (src) by corresponding (index).
- * @method mapValWithIndex
+ * @function mapValWithIndex
  * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
  * @memberof wTools
  */
@@ -14337,7 +14189,7 @@ function mapValWithIndex( src,index )
  * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
  *
  * @returns { string } Returns key of (src) by corresponding (index).
- * @method mapKeyWithIndex
+ * @function mapKeyWithIndex
  * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
  * @memberof wTools
  */
@@ -14362,7 +14214,7 @@ function mapKeyWithIndex( src,index )
 //
 
 /**
- * The mapToStr() method converts and returns the passed object (src) to the string.
+ * The mapToStr() routine converts and returns the passed object (src) to the string.
  *
  * It takes an object and two strings (keyValSep) and (tupleSep),
  * checks if (keyValSep and tupleSep) are strings.
@@ -14387,7 +14239,7 @@ function mapKeyWithIndex( src,index )
  * _.mapToStr( 'abc', ' : ', '; ' );
  *
  * @returns { string } Returns a string (result) representing the passed object (src).
- * @method mapToStr
+ * @function mapToStr
  * @memberof wTools
  */
 
@@ -14561,7 +14413,7 @@ _mapKeys.defaults =
  * @return { array } Returns an array with unique string elements.
  * corresponding to the enumerable properties found directly upon object or empty array
  * if nothing found.
- * @method mapKeys
+ * @function mapKeys
  * @throws { Exception } Throw an exception if (src) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -14614,7 +14466,7 @@ mapKeys.defaults =
  * @return { array } Returns an array whose elements are strings
  * corresponding to the own enumerable properties found directly upon object or empty
  * array if nothing found.
- * @method mapOwnKeys
+ * @function mapOwnKeys
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -14665,7 +14517,7 @@ mapOwnKeys.defaults =
  *
  * @return { array } Returns an array whose elements are strings
  * corresponding to the all properties found on the object.
- * @method mapAllKeys
+ * @function mapAllKeys
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @memberof wTools
 */
@@ -14739,7 +14591,7 @@ mapAllKeys.defaults =
 //  * @param { ...objectLike } src - objects of interest to extract keys.
 //  * @return { array } Returns an array with unique string elements.
 //  * corresponding to the enumerable properties found directly upon object.
-//  * @method mapKeys
+//  * @function mapKeys
 //  * @throws { Exception } Throw an exception if (src) is not an object-like entity.
 //  * @memberof wTools
 //  */
@@ -14803,7 +14655,7 @@ _mapVals.defaults =
 //
 
 /**
- * The mapVals() method returns an array of a given object's
+ * The mapVals() routine returns an array of a given object's
  * enumerable property values, in the same order as that provided by a for...in loop.
  *
  * It takes an object (src) creates an empty array,
@@ -14830,7 +14682,7 @@ _mapVals.defaults =
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
- * @method mapVals
+ * @function mapVals
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -14860,7 +14712,7 @@ mapVals.defaults =
 //
 
 /**
- * The mapOwnVals() method returns an array of a given object's
+ * The mapOwnVals() routine returns an array of a given object's
  * own enumerable property values,
  * in the same order as that provided by a for...in loop.
  *
@@ -14886,7 +14738,7 @@ mapVals.defaults =
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
- * @method mapOwnVals
+ * @function mapOwnVals
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -14933,7 +14785,7 @@ mapOwnVals.defaults =
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
- * @method mapAllVals
+ * @function mapAllVals
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @memberof wTools
  */
@@ -14979,7 +14831,7 @@ mapAllVals.defaults =
 // //
 //
 // /**
-//  * The mapVals() method returns an array of a given object's
+//  * The mapVals() routine returns an array of a given object's
 //  * own enumerable property values,
 //  * in the same order as that provided by a for...in loop.
 //  *
@@ -14996,7 +14848,7 @@ mapAllVals.defaults =
 //  *
 //  * @returns { array } Returns an array whose elements are strings.
 //  * corresponding to the enumerable property values found directly upon object.
-//  * @method mapVals
+//  * @function mapVals
 //  * @throws { Error } Will throw an Error if (src) is not an Object.
 //  * @memberof wTools
 // */
@@ -15077,7 +14929,7 @@ _mapPairs.defaults =
  * //returns [ [ "a", 1 ] ]
  *
  * @returns { array } A list of [ key, value ] pairs.
- * @method mapPairs
+ * @function mapPairs
  * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15135,7 +14987,7 @@ mapPairs.defaults =
  * _.mapOwnPairs.call( { enumerable : 0 }, a );
  *
  * @returns { array } A list of [ key, value ] pairs.
- * @method mapOwnPairs
+ * @function mapOwnPairs
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15186,7 +15038,7 @@ mapOwnPairs.defaults =
  * //returns [ [ "a", 1 ],[ "b", 2 ], ... [ "isPrototypeOf", function isPrototypeOf() ]  ]
  *
  * @returns { array } A list of [ key, value ] pairs.
- * @method mapAllPairs
+ * @function mapAllPairs
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @memberof wTools
  */
@@ -15287,7 +15139,7 @@ _mapProperties.defaults =
  * //returns { a : 1 }
  *
  * @returns { object } A new map with unique enumerable properties from source( src ).
- * @method mapProperties
+ * @function mapProperties
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15345,7 +15197,7 @@ mapProperties.defaults =
  * //returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with source( src ) own enumerable properties.
- * @method mapOwnProperties
+ * @function mapOwnProperties
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15395,7 +15247,7 @@ mapOwnProperties.defaults =
  * //returns { a : 1, b : 2, __defineGetter__ : function...}
  *
  * @returns { object } A new map with all unique properties from source( src ).
- * @method mapAllProperties
+ * @function mapAllProperties
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15454,7 +15306,7 @@ mapAllProperties.defaults =
  * //returns {}
  *
  * @returns { object } A new map with unique enumerable routine properties from source( src ).
- * @method mapRoutines
+ * @function mapRoutines
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15520,7 +15372,7 @@ mapRoutines.defaults =
  * //returns { b : function(){} }
  *
  * @returns { object } A new map with unique object`s own enumerable routine properties from source( src ).
- * @method mapOwnRoutines
+ * @function mapOwnRoutines
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15578,7 +15430,7 @@ mapOwnRoutines.defaults =
  *
  *
  * @returns { object } A new map with all unique object`s( src ) properties that are routines.
- * @method mapAllRoutines
+ * @function mapAllRoutines
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15644,7 +15496,7 @@ mapAllRoutines.defaults =
  * //returns { a : 1 }
  *
  * @returns { object } A new map with unique enumerable fields( all properties except routines ) from source( src ).
- * @method mapFields
+ * @function mapFields
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15706,7 +15558,7 @@ mapFields.defaults =
  * //returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with object`s( src ) own enumerable fields( all properties except routines ).
- * @method mapOwnFields
+ * @function mapOwnFields
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15769,7 +15621,7 @@ mapOwnFields.defaults =
  * //returns { a : 1, b : 2, __proto__ : Object }
  *
  * @returns { object } A new map with all fields( properties except routines ) from source( src ).
- * @method mapAllFields
+ * @function mapAllFields
  * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
@@ -15790,7 +15642,6 @@ function mapAllFields( src )
     debugger;
     if( !_.routineIs( src[ k ] ) )
     return k;
-    // return src[ k ]; // xxx
     debugger;
   }
 
@@ -15881,7 +15732,7 @@ mapAllFields.defaults =
  * //returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with all atomic fields from source( src ).
- * @method mapOnlyAtomics
+ * @function mapOnlyAtomics
  * @throws { Error } Will throw an Error if ( src ) is not an Object.
  * @memberof wTools
  */
@@ -15922,7 +15773,7 @@ function mapOnlyAtomics( src )
  * @throws { Error }
  *  In debug mode it throws an error if any argument is not object like.
  * @returns { object } Returns new object made by unique keys.
- * @method mapBut
+ * @function mapBut
  * @memberof wTools
  */
 
@@ -15936,9 +15787,6 @@ function mapBut( srcMap )
   for( k in srcMap )
   {
 
-    // if( k === 'toString' )
-    // debugger;
-
     for( a = 1 ; a < arguments.length ; a++ )
     {
       var argument = arguments[ a ];
@@ -15946,7 +15794,7 @@ function mapBut( srcMap )
       _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
-      if( argument[ k ] !== undefined ) // xxx
+      if( argument[ k ] !== undefined )
       break;
 
     }
@@ -16012,7 +15860,7 @@ function mapButWithUndefines( srcMap )
    * mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
    *
    * @returns { object } Returns new (result) object with unique own keys.
-   * @method mapOwnBut
+   * @function mapOwnBut
    * @throws { Error } Will throw an Error if (srcMap) is not an object.
    * @memberof wTools
    */
@@ -16058,7 +15906,7 @@ function mapOwnBut( srcMap )
   //  */
 
   /**
-   * The mapButFiltering() method returns a new object (result)
+   * The mapButFiltering() routine returns a new object (result)
    * whose (values) are not equal to the arrays or objects.
    *
    * Takes any number of objects.
@@ -16079,7 +15927,7 @@ function mapOwnBut( srcMap )
    * mapButFiltering( _.filter.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
    *
    * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
-   * @method mapButFiltering
+   * @function mapButFiltering
    * @throws { Error } Will throw an Error if (srcMap) is not an object.
    * @memberof wTools
    */
@@ -16152,7 +16000,7 @@ function mapOwnButFiltering( filter,srcMap )
  * The mapScreens() returns an object filled by unique [ key, value ]
  * from (srcObject) object.
  *
- * It creates the variable (dstObject) assignes and calls the method (_mapScreen( { } ) )
+ * It creates the variable (dstObject) assignes and calls the routine (_mapScreen( { } ) )
  * with three properties.
  *
  * @see {@link wTools._mapScreen} - See for more information.
@@ -16166,7 +16014,7 @@ function mapOwnButFiltering( filter,srcMap )
  *
  * @returns { Object } Returns an (dstObject) object filled by unique [ key, value ]
  * from (srcObject) objects.
- * @method mapScreens
+ * @function mapScreens
  * @throws { Error } Will throw an Error if (arguments.length) more that two,
  * if (srcObject or screenObject) are not objects-like.
  * @memberof wTools
@@ -16222,7 +16070,7 @@ function mapScreens( srcObject,screenObject )
  *
  * @returns { Object } Returns the object filled by unique [ key, value ]
  * from others objects.
- * @method mapScreen
+ * @function mapScreen
  * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
  * @memberof wTools
  */
@@ -16300,7 +16148,7 @@ function mapScreenOwn( screenObject )
  *
  * @returns { Object } Returns an object filled by unique [ key, value ]
  * from others objects.
- * @method _mapScreen
+ * @function _mapScreen
  * @throws { Error } Will throw an Error if (options.dstObject or screenObject) are not objects,
  * or if (srcObjects) is not an array
  * @memberof wTools
@@ -16392,7 +16240,7 @@ _mapScreen.defaults =
  *
  * @returns { boolean } Returns true, if the second object (src2)
  * has the same values as the first object(src1).
- * @method mapIdentical
+ * @function mapIdentical
  * @throws Will throw an error if ( arguments.length !== 2 ).
  * @memberof wTools
  */
@@ -16440,7 +16288,7 @@ function mapIdentical( src1,src2 )
  *
  * @returns { boolean } Returns true, if the first object (src)
  * has the same values as the second object(ins).
- * @method mapContain
+ * @function mapContain
  * @throws Will throw an error if ( arguments.length !== 2 ).
  * @memberof wTools
  */
@@ -16488,7 +16336,7 @@ function mapContain( src,ins )
 //
 
 /**
- * Short-cut for _mapSatisfy() method.
+ * Short-cut for _mapSatisfy() routine.
  * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
  * Also works with ( o.template ) as routine that check( o.src ) with own rules.
  * @param {wTools~mapSatisfyOptions} o - Default options {@link wTools~mapSatisfyOptions}.
@@ -16508,7 +16356,7 @@ function mapContain( src,ins )
  * function routine( src ){ return src.a === 12 }
  * _.mapSatisfy( { template : routine, src : { a : 1, b : 2 } } );
  *
- * @method mapSatisfy
+ * @function mapSatisfy
  * @throws {exception} If( arguments.length ) is not equal to 1 or 2.
  * @throws {exception} If( o.template ) is not a Object.
  * @throws {exception} If( o.template ) is not a Routine.
@@ -16541,7 +16389,7 @@ mapSatisfy.defaults =
 //
 
 /**
- * Default options for _mapSatisfy() method.
+ * Default options for _mapSatisfy() routine.
  * @typedef {object} wTools~mapSatisfyOptions
  * @property {object|function} [ template=null ] - Map to compare with( src ) or routine that checks each value of( src ).
  * @property {object} [ src=null ] - Source map.
@@ -16552,7 +16400,7 @@ mapSatisfy.defaults =
 /**
  * Checks if object( src ) has at least one key/value pair that is represented in( template ).
  * Returns true if( template ) has one or more indentical key/value pair with( src ).
- * If( template ) is provided as routine, method uses it to check( src ).
+ * If( template ) is provided as routine, routine uses it to check( src ).
  * @param {wTools~mapSatisfyOptions} args - Arguments list {@link wTools~mapSatisfyOptions}.
  * @returns {boolean} Returns true if( src ) has same key/value pair(s) with( template ).
  *
@@ -16569,7 +16417,7 @@ mapSatisfy.defaults =
  * function template( src ){ return src.y === 1 }
  * _._mapSatisfy( template, { y : 1 , j : 1 } );
  *
- * @method _mapSatisfy
+ * @function _mapSatisfy
  * @memberof wTools
 */
 
@@ -16620,7 +16468,7 @@ function _mapSatisfy( template,src,root,levels )
  * _.mapOwnKey( { a : 7, b : 13 }, 'c' );
  *
  * @returns { boolean } Returns true if (object) has own property.
- * @method mapOwnKey
+ * @function mapOwnKey
  * @throws { mapOwnKey } Will throw an error if the (name) is unknown.
  * @memberof wTools
  */
@@ -16668,7 +16516,7 @@ function mapOwnKey( object,key )
  * _.mapHasAll( {}, { a : 1 } );
  *
  * @returns { boolean } Returns true if object( src ) has all enumerable keys from( screen ).
- * @method mapHasAll
+ * @function mapHasAll
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
  * @memberof wTools
@@ -16712,7 +16560,7 @@ function mapHasAll( src,screen )
  * _.mapHasAny( { a : 1, b : 2 }, { c : 1 } );
  *
  * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
- * @method mapHasAny
+ * @function mapHasAny
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
  * @memberof wTools
@@ -16759,7 +16607,7 @@ function mapHasAny( src,screen )
  * _.mapHasNone( { a : 1, b : 2 }, { c : 1 } );
  *
  * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
- * @method mapHasNone
+ * @function mapHasNone
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
  * @memberof wTools
@@ -16805,7 +16653,7 @@ function mapHasNone( src,screen )
  * _.mapOwnAll( { a : 1, b : 2 }, { c : 1 } );
  *
  * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
- * @method mapOwnAll
+ * @function mapOwnAll
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
  * @memberof wTools
@@ -16852,7 +16700,7 @@ function mapOwnAll( src,screen )
  * _.mapOwnAny( { a : 1, b : 2 }, { c : 1 } );
  *
  * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
- * @method mapOwnAny
+ * @function mapOwnAny
  * @throws { Exception } Will throw an error if the ( src ) is not a map.
  * @throws { Exception } Will throw an error if the ( screen ) is not a map.
  * @memberof wTools
@@ -16899,7 +16747,7 @@ function mapOwnAny( src,screen )
  * _.mapOwnNone( { a : 1, b : 2 }, { c : 1 } );
  *
  * @returns { boolean } Returns true if map( src ) not owns properties from( screen ).
- * @method mapOwnNone
+ * @function mapOwnNone
  * @throws { Exception } Will throw an error if the ( src ) is not a map.
  * @throws { Exception } Will throw an error if the ( screen ) is not a map.
  * @memberof wTools
@@ -16998,22 +16846,8 @@ var Proto =
 
   enityExtend : enityExtend, /* experimental */
 
-  // cloneDeep_deprecated : cloneDeep_deprecated, /* deprecated */
-
   entityNew : entityNew,
   entityTrivialNew : entityTrivialNew,
-
-  // _cloneMap : _cloneMap,
-  // _cloneArray : _cloneArray,
-  // _cloneAct : _cloneAct,
-  //
-  // _cloneIteration : _cloneIteration,
-  // _cloneOptions : _cloneOptions,
-  // clone : clone,
-  // cloneObject : cloneObject,
-  // cloneObjectMergingBuffers : cloneObjectMergingBuffers, /* experimental */
-  // cloneData : cloneData,
-  // cloneDataSeparatingBuffers : cloneDataSeparatingBuffers, /* experimental */
 
   entityCopyTry : entityCopyTry, /* experimental */
   entityCopyField : entityCopyField, /* experimental */
@@ -17136,8 +16970,6 @@ var Proto =
   mapIs : mapIs,
   mapLike : mapLike,
 
-  strIs : strIs,
-  strIsNotEmpty : strIsNotEmpty,
   symbolIs : symbolIs,
 
   bufferRawIs : bufferRawIs,
@@ -17209,6 +17041,9 @@ var Proto =
 
   // str
 
+  strIs : strIs,
+  strIsNotEmpty : strIsNotEmpty,
+
   strTypeOf : strTypeOf,
   strPrimitiveTypeOf : strPrimitiveTypeOf,
 
@@ -17264,7 +17099,8 @@ var Proto =
 
   routineInputMultiplicator_functor : routineInputMultiplicator_functor,
 
-  _comparatorFromTransformer : _comparatorFromTransformer,
+  _equalizerFromMapper : _equalizerFromMapper,
+  _comparatorFromMapper : _comparatorFromMapper,
 
   bind : null,
 
@@ -17310,41 +17146,51 @@ var Proto =
 
   // array
 
-  arraySub : arraySub,
   arrayMakeSimilar : arrayMakeSimilar,
+  arrayMakeRandom : arrayMakeRandom,
   arrayFromNumber : arrayFromNumber,
+  arrayFromRange : arrayFromRange,
+  arrayFrom : arrayFrom,
+  arrayAs : arrayAs,
 
-  arraySelect : arraySelect,
-  arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
+  arrayToMap : arrayToMap, /* experimental */
+  arrayToStr : arrayToStr, /* experimental */
 
   _arrayCopy : _arrayCopy,
   arrayCopy : arrayCopy,
 
-  arrayFrom : arrayFrom,
-  arrayToMap : arrayToMap,
 
+  // array transformer
+
+  arraySub : arraySub,
   arrayGrow : arrayGrow,
   arraySlice : arraySlice,
   arrayMultislice : arrayMultislice,
-
-  // arraySpliceArray : arraySpliceArray,
-  // arraySplice : arraySplice, /* experimental */
-
-  arrayAs : arrayAs,
-
-  arrayUniqueIs : arrayUniqueIs,
-  arrayUnique : arrayUnique,
-
-  arrayToStr : arrayToStr,
+  arrayDuplicate : arrayDuplicate,
 
   arrayMask : arrayMask,
   arrayUnmask : arrayUnmask,
 
-  arrayDuplicate : arrayDuplicate,
+  arrayIsUniqueMap : arrayIsUniqueMap,  /* experimental */
+  arrayUnique : arrayUnique,  /* experimental */
+  arraySelect : arraySelect,
 
-  arrayCompare : arrayCompare,
-  arrayIdentical : arrayIdentical,
-  arraySameSet : arraySameSet,
+
+  // array manipulator
+
+  arraySwap : arraySwap,
+
+  arrayCutin : arrayCutin,
+  arrayPut : arrayPut,
+  arrayFill : arrayFill, /* experimental */
+
+  arraySupplement : arraySupplement, /* experimental */
+  arrayExtendScreening : arrayExtendScreening, /* experimental */
+
+  arrayShuffle : arrayShuffle,
+
+
+  // array sequential search
 
   arrayLeftIndexOf : arrayLeftIndexOf,
   arrayRightIndexOf : arrayRightIndexOf,
@@ -17355,26 +17201,30 @@ var Proto =
   arrayLeftDefined : arrayLeftDefined,
   arrayRightDefined : arrayRightDefined,
 
-  arrayHasAny : arrayHasAny,
   arrayCount : arrayCount,
-  arrayCountSame : arrayCountSame,
+  arrayCountUnique : arrayCountUnique,
 
-  arraySum : arraySum,
 
-  arrayRandom : arrayRandom,
-  arrayForRange : arrayForRange,
+  // array checker
 
-  arrayHas : arrayHas,
+  arrayCompare : arrayCompare,
+  arrayIdentical : arrayIdentical,
 
-// <<<<<<< HEAD
+  arrayHas : arrayHas,  /* experimental */
+  arrayHasAny : arrayHasAny,  /* experimental */
+
   arrayAll : arrayAll,
   arrayAny : arrayAny,
   arrayNone : arrayNone,
 
-// ======= xxx
-  // array transformation
 
-  // prepend
+  // array etc
+
+  arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
+  arraySum : arraySum, /* experimental */
+
+
+  // array prepend
 
   __arrayPrepend : __arrayPrepend,
   __arrayPrependOnce : __arrayPrependOnce,
@@ -17394,7 +17244,8 @@ var Proto =
   __arrayPrependedArrays : __arrayPrependedArrays,
   __arrayPrependedArraysOnce : __arrayPrependedArraysOnce,
 
-  // append
+
+  // array append
 
   __arrayAppend : __arrayAppend,
   __arrayAppendOnce : __arrayAppendOnce,
@@ -17414,7 +17265,8 @@ var Proto =
   __arrayAppendedArrays : __arrayAppendedArrays,
   __arrayAppendedArraysOnce : __arrayAppendedArraysOnce,
 
-  //remove
+
+  // array remove
 
   __arrayRemove : __arrayRemove,
   __arrayRemoveOnce : __arrayRemoveOnce,
@@ -17434,8 +17286,8 @@ var Proto =
   __arrayRemovedArrays : __arrayRemovedArrays,
   __arrayRemovedArraysOnce : __arrayRemovedArraysOnce,
 
-  // arrayRemovedAll : arrayRemovedAll,
-  // arrayRemoveAll : arrayRemoveAll,
+
+  // array flatten
 
   __arrayFlatten : __arrayFlatten,
   __arrayFlattenOnce : __arrayFlattenOnce,
@@ -17443,33 +17295,24 @@ var Proto =
   __arrayFlattened : __arrayFlattened,
   __arrayFlattenedOnce : __arrayFlattenedOnce,
 
-  arraySwap : arraySwap,
+
+  // array replace
+
+  /* !!! Strictly, Array, Arrays variants needed */
 
   arrayReplaceOnce : arrayReplaceOnce,
   arrayUpdate : arrayUpdate,
 
-  arrayCutin : arrayCutin,
-
-  arrayPut : arrayPut,
-
-  arrayFill : arrayFill,
-
-  arraySupplement : arraySupplement,
-  arrayExtendScreening : arrayExtendScreening,
-
-  arrayShuffle : arrayShuffle,
-
-// >>>>>>> 39ea66f679e5ba8509fa6c05c1974446997e2bac
 
   // array set
-
-  arraySetIdentical : arraySetIdentical,
 
   arraySetBut : arraySetBut,
   arraySetDiff : arraySetDiff,
   arraySetIntersection : arraySetIntersection,
+
   arraySetContainAll : arraySetContainAll,
   arraySetContainSomething : arraySetContainSomething,
+  arraySetIdentical : arraySetIdentical,
 
 
   // map move
@@ -17492,7 +17335,7 @@ var Proto =
   mapDelete : mapDelete,
 
 
-  // recursive
+  // map recursive
 
   mapSupplementRecursive : mapSupplementRecursive,
   mapExtendRecursive : mapExtendRecursive,

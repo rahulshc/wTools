@@ -36,36 +36,36 @@ var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefine
 
 //
 
-function arrayForRange( test )
+function arrayFromRange( test )
 {
 
   test.description = 'single zero';
-  var got = _.arrayForRange([ 0,1 ]);
+  var got = _.arrayFromRange([ 0,1 ]);
   var expected = [ 0 ];
   test.identical( got,expected );
 
   test.description = 'nothing';
-  var got = _.arrayForRange([ 1,1 ]);
+  var got = _.arrayFromRange([ 1,1 ]);
   var expected = [];
   test.identical( got,expected );
 
   test.description = 'single not zero';
-  var got = _.arrayForRange([ 1,2 ]);
+  var got = _.arrayFromRange([ 1,2 ]);
   var expected = [ 1 ];
   test.identical( got,expected );
 
   test.description = 'couple of elements';
-  var got = _.arrayForRange([ 1,3 ]);
+  var got = _.arrayFromRange([ 1,3 ]);
   var expected = [ 1,2 ];
   test.identical( got,expected );
 
   test.description = 'single number as argument';
-  var got = _.arrayForRange( 3 );
+  var got = _.arrayFromRange( 3 );
   var expected = [ 0,1,2 ];
   test.identical( got,expected );
 
   test.description = 'complex case';
-  var got = _.arrayForRange([ 3,9 ]);
+  var got = _.arrayFromRange([ 3,9 ]);
   var expected = [ 3,4,5,6,7,8 ];
   test.identical( got,expected );
 
@@ -77,25 +77,25 @@ function arrayForRange( test )
     test.description = 'extra argument';
     test.shouldThrowErrorSync( function()
     {
-      _.arrayForRange( [ 1,3 ],'wrong arguments' );
+      _.arrayFromRange( [ 1,3 ],'wrong arguments' );
     });
 
     test.description = 'argument not wrapped into array';
     test.shouldThrowErrorSync( function()
     {
-      _.arrayForRange( 1,3 );
+      _.arrayFromRange( 1,3 );
     });
 
     test.description = 'wrong type of argument';
     test.shouldThrowErrorSync( function()
     {
-      _.arrayForRange( 'wrong arguments' );
+      _.arrayFromRange( 'wrong arguments' );
     });
 
     test.description = 'no arguments'
     test.shouldThrowErrorSync( function()
     {
-      _.arrayForRange();
+      _.arrayFromRange();
     });
 
   }
@@ -113,7 +113,7 @@ var Self =
   tests :
   {
 
-    arrayForRange : arrayForRange,
+    arrayFromRange : arrayFromRange,
 
   }
 

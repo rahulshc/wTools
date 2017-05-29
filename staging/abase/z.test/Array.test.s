@@ -363,45 +363,45 @@ function arrayMakeSimilar( test )
 
 //
 
-function arrayNewOfSameLength( test )
-{
-
-  test.description = 'nothing';
-  var got = _.arrayNewOfSameLength( [  ] );
-  var expected = [  ];
-  test.identical( got, expected );
-
-  test.description = 'length = 3';
-  var got = _.arrayNewOfSameLength( [ 1, 2, 3 ] );
-  var expected = [ , , , ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayNewOfSameLength();
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayNewOfSameLength( [ 1, 2, 3 ], 'redundant argument' );
-    });
-
-    test.description = 'argument is not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.arrayNewOfSameLength( 1, 2, 3 );
-    });
-
-  }
-
-};
+// function arrayNewOfSameLength( test )
+// {
+//
+//   test.description = 'nothing';
+//   var got = _.arrayNewOfSameLength( [  ] );
+//   var expected = [  ];
+//   test.identical( got, expected );
+//
+//   test.description = 'length = 3';
+//   var got = _.arrayNewOfSameLength( [ 1, 2, 3 ] );
+//   var expected = [ , , , ];
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( Config.debug )
+//   {
+//
+//     test.description = 'no arguments';
+//     test.shouldThrowError( function()
+//     {
+//       _.arrayNewOfSameLength();
+//     });
+//
+//     test.description = 'extra argument';
+//     test.shouldThrowError( function()
+//     {
+//       _.arrayNewOfSameLength( [ 1, 2, 3 ], 'redundant argument' );
+//     });
+//
+//     test.description = 'argument is not wrapped into array';
+//     test.shouldThrowError( function()
+//     {
+//       _.arrayNewOfSameLength( 1, 2, 3 );
+//     });
+//
+//   }
+//
+// };
 
 //
 
@@ -523,38 +523,30 @@ function arraySelect( test )
 
 //
 
-function arrayIron( test )
+function arrayFlatten2( test )
 {
 
-  test.description = 'nothing';
-  var got = _.arrayIron();
-  var expected = [  ];
-  test.identical( got, expected );
-
   test.description = 'array of the passed arguments';
-  var got = _.arrayIron( 'str', {}, [ 1, 2 ], 5, true );
+  var got = _.__arrayFlatten( [],[ 'str', {}, [ 1, 2 ], 5, true ] );
   var expected = [ 'str', {}, 1, 2, 5, true ];
   test.identical( got, expected );
 
   test.description = 'without undefined';
-  var got = _.arrayIron( [ 1, 2, 3 ], 13, 'abc', undefined, null );
+  var got = _.__arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', null ] );
   var expected = [ 1, 2, 3, 13, 'abc', null ];
   test.identical( got, expected );
 
-  /**/
+  test.description = 'bad arguments'; //
 
-  if( Config.debug )
-  {
+  if( !Config.debug )
+  return;
 
-    test.description = 'arguments[0] contains undefined';
-    test.shouldThrowError( function()
-    {
-      _.arrayIron( [ 1, 2, undefined ], 13, 'abc', {} );
-    });
+  test.shouldThrowError( () => _.__arrayFlatten() );
+  test.shouldThrowError( () => _.__arrayFlatten( [] ) );
+  test.shouldThrowError( () => _.__arrayFlatten( [ 1, 2 ], 13, 'abc', {} ) );
+  test.shouldThrowError( () => _.__arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
 
-  }
-
-};
+}
 
 // ---
 // array transformation
@@ -4181,6 +4173,7 @@ function __arrayRemoveArrays( test )
       _.__arrayRemoveArrays( [], [ 1 ], [ 1 ] );
     });
   }
+
 };
 
 //
@@ -7135,21 +7128,21 @@ function arrayCount( test )
 };
 
 
-function arrayCountSame( test )
+function arrayCountUnique( test )
 {
 
   test.description = 'nothing';
-  var got = _.arrayCountSame( [  ] );
+  var got = _.arrayCountUnique( [  ] );
   var expected = 0;
   test.identical( got, expected );
 
   test.description = 'nothing';
-  var got = _.arrayCountSame( [ 1, 2, 3, 4, 5 ] );
+  var got = _.arrayCountUnique( [ 1, 2, 3, 4, 5 ] );
   var expected = 0;
   test.identical( got, expected );
 
   test.description = 'three pairs';
-  var got = _.arrayCountSame( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+  var got = _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
   var expected = 3;
   test.identical( got, expected );
 
@@ -7161,25 +7154,25 @@ function arrayCountSame( test )
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
-      _.arrayCountSame();
+      _.arrayCountUnique();
     });
 
     test.description = 'extra argument';
     test.shouldThrowError( function()
     {
-      _.arrayCountSame( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], function( e ) { return e }, 'redundant argument' );
+      _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], function( e ) { return e }, 'redundant argument' );
     });
 
     test.description = 'first argument is wrong';
     test.shouldThrowError( function()
     {
-      _.arrayCountSame( 'wrong argument', function( e ) { return e } );
+      _.arrayCountUnique( 'wrong argument', function( e ) { return e } );
     });
 
     test.description = 'second argument is wrong';
     test.shouldThrowError( function()
     {
-      _.arrayCountSame( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], 'wrong argument' );
+      _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], 'wrong argument' );
     });
 
   }
@@ -7306,31 +7299,31 @@ function arrayExtendScreening( test )
 };
 
 
-function arrayRandom( test )
+function arrayMakeRandom( test )
 {
 
   test.description = 'an array';
-  var got = _.arrayRandom( [  ] );
+  var got = _.arrayMakeRandom( [  ] );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'an empty object';
-  var got = _.arrayRandom( {  } );
+  var got = _.arrayMakeRandom( {  } );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'a function';
-  var got = _.arrayRandom( function() {  } );
+  var got = _.arrayMakeRandom( function() {  } );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'a number';
-  var got = _.arrayRandom( 5 );
+  var got = _.arrayMakeRandom( 5 );
   var expected = got;
   test.identical( got, expected );
 
   test.description = 'an object';
-  var got = _.arrayRandom( {
+  var got = _.arrayMakeRandom( {
     length : 5,
     range : [ 1, 9 ],
     int : true
@@ -7346,13 +7339,13 @@ function arrayRandom( test )
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
-      _.arrayRandom();
+      _.arrayMakeRandom();
     });
 
     test.description = 'wrong argument';
     test.shouldThrowError( function()
     {
-      _.arrayRandom( 'wrong argument' );
+      _.arrayMakeRandom( 'wrong argument' );
     });
 
   }
@@ -7744,36 +7737,36 @@ function arraySortedAddArray( test )
 };
 
 
-function arrayForRange( test )
+function arrayFromRange( test )
 {
 
   test.description = 'single zero';
-  var got = _.arrayForRange( [ 0, 1 ] );
+  var got = _.arrayFromRange( [ 0, 1 ] );
   var expected = [ 0 ];
   test.identical( got,expected );
 
   test.description = 'nothing';
-  var got = _.arrayForRange( [ 1, 1 ] );
+  var got = _.arrayFromRange( [ 1, 1 ] );
   var expected = [  ];
   test.identical( got,expected );
 
   test.description = 'single not zero';
-  var got = _.arrayForRange( [ 1, 2 ] );
+  var got = _.arrayFromRange( [ 1, 2 ] );
   var expected = [ 1 ];
   test.identical( got,expected );
 
   test.description = 'couple of elements';
-  var got = _.arrayForRange( [ 1, 3 ] );
+  var got = _.arrayFromRange( [ 1, 3 ] );
   var expected = [ 1, 2 ];
   test.identical( got,expected );
 
   test.description = 'single number as argument';
-  var got = _.arrayForRange( 3 );
+  var got = _.arrayFromRange( 3 );
   var expected = [ 0, 1, 2 ];
   test.identical( got,expected );
 
   test.description = 'complex case';
-  var got = _.arrayForRange( [ 3, 9 ] );
+  var got = _.arrayFromRange( [ 3, 9 ] );
   var expected = [ 3, 4, 5, 6, 7, 8 ];
   test.identical( got,expected );
 
@@ -7785,25 +7778,25 @@ function arrayForRange( test )
     test.description = 'extra argument';
     test.shouldThrowError( function()
     {
-      _.arrayForRange( [ 1, 3 ],'wrong arguments' );
+      _.arrayFromRange( [ 1, 3 ],'wrong arguments' );
     });
 
     test.description = 'argument not wrapped into array';
     test.shouldThrowError( function()
     {
-      _.arrayForRange( 1, 3 );
+      _.arrayFromRange( 1, 3 );
     });
 
     test.description = 'wrong type of argument';
     test.shouldThrowError( function()
     {
-      _.arrayForRange( 'wrong arguments' );
+      _.arrayFromRange( 'wrong arguments' );
     });
 
     test.description = 'no arguments'
     test.shouldThrowError( function()
     {
-      _.arrayForRange();
+      _.arrayFromRange();
     });
 
   }
@@ -7989,15 +7982,15 @@ var Self =
 
   tests :
   {
+
     arrayIs : arrayIs,
     arrayLike : arrayLike,
     hasLength : hasLength,
     arraySub : arraySub,
     arrayMakeSimilar : arrayMakeSimilar,
-    arrayNewOfSameLength : arrayNewOfSameLength,
     arrayOrNumber : arrayOrNumber,
     arraySelect : arraySelect,
-    arrayIron : arrayIron,
+    arrayFlatten2 : arrayFlatten2,
 
     __arrayPrepend : __arrayPrepend,
     __arrayPrepended : __arrayPrepended,
@@ -8094,10 +8087,10 @@ var Self =
     arrayLeft : arrayLeft,
     arrayHasAny : arrayHasAny,
     arrayCount : arrayCount,
-    arrayCountSame : arrayCountSame,
+    arrayCountUnique : arrayCountUnique,
     arraySum : arraySum,
     arrayExtendScreening : arrayExtendScreening,
-    arrayRandom : arrayRandom,
+    arrayMakeRandom : arrayMakeRandom,
 
     arraySetContainAll: arraySetContainAll,
     arraySetContainSomething : arraySetContainSomething,
@@ -8108,7 +8101,7 @@ var Self =
     arraySortedAdd : arraySortedAdd,
 
     arraySortedAddArray : arraySortedAddArray,
-    arrayForRange : arrayForRange,
+    arrayFromRange : arrayFromRange,
     arraySupplement : arraySupplement,
 
     bufferRelen : bufferRelen,
