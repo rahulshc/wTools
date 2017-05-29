@@ -10183,9 +10183,9 @@ function arrayCutin( dstArray,range,srcArray )
   _.assert( _.arrayIs( range ) );
   _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 
+  var length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
   var first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
-  var length = dstArray.length || dstArray.byteLength;
+  var last = range[ 1 ] !== undefined ? range[ 1 ] : length;
   var result;
 
   if( first < 0 )
@@ -10211,7 +10211,7 @@ function arrayCutin( dstArray,range,srcArray )
 
     if( srcArray )
     {
-      srcArrayLength = srcArray.length || srcArray.byteLength;
+      srcArrayLength = _.definedIs( srcArray.length ) ? srcArray.length : srcArray.byteLength;
       newLength += srcArrayLength;
     }
 
