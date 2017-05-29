@@ -12248,11 +12248,11 @@ function __arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
 // array remove
 // --
 
-function __arrayRemove( dstArray, ins, onEqualize )
-{
-  __arrayRemoved.apply( this, arguments );
-  return dstArray;
-}
+// function __arrayRemove( dstArray, ins, onEqualize )
+// {
+//   __arrayRemoved.apply( this, arguments );
+//   return dstArray;
+// }
 
 /**
  * The __arrayRemoveOnce() routine removes the first matching element from (dstArray)
@@ -12318,20 +12318,20 @@ function __arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 
 //
 
-function __arrayRemoved( dstArray, ins, onEqualize )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
-
-  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
-
-  if( index !== -1 )
-  {
-    dstArray.splice( index,1 );
-  }
-
-  return index;
-}
+// function __arrayRemoved( dstArray, ins, onEqualize )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   _assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
+//
+//   var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+//
+//   if( index !== -1 )
+//   {
+//     dstArray.splice( index,1 );
+//   }
+//
+//   return index;
+// }
 
 //
 
@@ -17289,10 +17289,10 @@ var Proto =
 
   // array remove
 
-  __arrayRemove : __arrayRemove,
+  // __arrayRemove : __arrayRemove,
   __arrayRemoveOnce : __arrayRemoveOnce,
   __arrayRemoveOnceStrictly : __arrayRemoveOnceStrictly,
-  __arrayRemoved : __arrayRemoved,
+  // __arrayRemoved : __arrayRemoved,
   __arrayRemovedOnce : __arrayRemovedOnce,
 
   __arrayRemoveArray : __arrayRemoveArray,
@@ -17306,6 +17306,10 @@ var Proto =
   __arrayRemoveArraysOnceStrictly : __arrayRemoveArraysOnceStrictly,
   __arrayRemovedArrays : __arrayRemovedArrays,
   __arrayRemovedArraysOnce : __arrayRemovedArraysOnce,
+
+  __arrayRemoveAll : __arrayRemoveAll,
+  __arrayRemovedAll : __arrayRemovedAll,
+
 
 
   // array flatten
