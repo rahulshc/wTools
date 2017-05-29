@@ -12925,18 +12925,37 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  * @memberof wTools
  */
 
-// function arrayRemoveAll( dstArray,ins,onEqualize )
-// {
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
+function __arrayRemoveAll( dstArray,ins,onEqualize )
+{
+
+  // if( arguments.length === 2 )
+  // arrayRemovedAll( dstArray,ins );
+  // else if( arguments.length === 3 )
+  // arrayRemovedAll( dstArray,ins,onEqualize );
+  __arrayRemovedAll.apply( this, arguments );
+
+  return dstArray;
+}
+
 //
-//   // if( arguments.length === 2 )
-//   // arrayRemovedAll( dstArray,ins );
-//   // else if( arguments.length === 3 )
-//   // arrayRemovedAll( dstArray,ins,onEqualize );
-//   arrayRemovedAll( dstArray,ins,onEqualize );
-//
-//   return dstArray;
-// }
+
+function __arrayRemovedAll( dstArray, ins, onEqualize  )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
+
+  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var result = 0;
+
+  while( index >= 0 )
+  {
+    dstArray.splice( index,1 );
+    result += 1;
+    index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  }
+
+  return result;
+}
 
 // --
 // array replace
