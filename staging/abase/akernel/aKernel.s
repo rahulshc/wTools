@@ -10184,9 +10184,9 @@ function arrayCutin( dstArray,range,srcArray )
   _.assert( _.arrayIs( range ) );
   _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 
+  var length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
   var first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  var last = range[ 1 ] !== undefined ? range[ 1 ] : 0;
-  var length = dstArray.length || dstArray.byteLength;
+  var last = range[ 1 ] !== undefined ? range[ 1 ] : length;
   var result;
 
   if( first < 0 )
@@ -10212,7 +10212,7 @@ function arrayCutin( dstArray,range,srcArray )
 
     if( srcArray )
     {
-      srcArrayLength = srcArray.length || srcArray.byteLength;
+      srcArrayLength = _.definedIs( srcArray.length ) ? srcArray.length : srcArray.byteLength;
       newLength += srcArrayLength;
     }
 
@@ -12249,11 +12249,11 @@ function __arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
 // array remove
 // --
 
-function __arrayRemove( dstArray, ins )
-{
-  __arrayRemoved.apply( this, arguments );
-  return dstArray;
-}
+// function __arrayRemove( dstArray, ins, onEqualize )
+// {
+//   __arrayRemoved.apply( this, arguments );
+//   return dstArray;
+// }
 
 /**
  * The __arrayRemoveOnce() routine removes the first matching element from (dstArray)
@@ -12319,23 +12319,20 @@ function __arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 
 //
 
-function __arrayRemoved( dstArray, ins )
-{
-  _.assert( arguments.length === 2 );
-  _assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
-
-  var result = 0;
-  var index = dstArray.indexOf( ins );
-
-  while( index !== -1 )
-  {
-    dstArray.splice( index,1 );
-    result += 1;
-    index = dstArray.indexOf( ins,index );
-  }
-
-  return result;
-}
+// function __arrayRemoved( dstArray, ins, onEqualize )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   _assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
+//
+//   var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+//
+//   if( index !== -1 )
+//   {
+//     dstArray.splice( index,1 );
+//   }
+//
+//   return index;
+// }
 
 //
 
@@ -12929,18 +12926,37 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
  * @memberof wTools
  */
 
-// function arrayRemoveAll( dstArray,ins,onEqualize )
-// {
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
+function __arrayRemoveAll( dstArray,ins,onEqualize )
+{
+
+  // if( arguments.length === 2 )
+  // arrayRemovedAll( dstArray,ins );
+  // else if( arguments.length === 3 )
+  // arrayRemovedAll( dstArray,ins,onEqualize );
+  __arrayRemovedAll.apply( this, arguments );
+
+  return dstArray;
+}
+
 //
-//   // if( arguments.length === 2 )
-//   // __arrayRemoved( dstArray,ins );
-//   // else if( arguments.length === 3 )
-//   // __arrayRemoved( dstArray,ins,onEqualize );
-//   __arrayRemoved( dstArray,ins,onEqualize );
-//
-//   return dstArray;
-// }
+
+function __arrayRemovedAll( dstArray, ins, onEqualize  )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
+
+  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var result = 0;
+
+  while( index >= 0 )
+  {
+    dstArray.splice( index,1 );
+    result += 1;
+    index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  }
+
+  return result;
+}
 
 // --
 // array replace
@@ -17274,10 +17290,10 @@ var Proto =
 
   // array remove
 
-  __arrayRemove : __arrayRemove,
+  // __arrayRemove : __arrayRemove,
   __arrayRemoveOnce : __arrayRemoveOnce,
   __arrayRemoveOnceStrictly : __arrayRemoveOnceStrictly,
-  __arrayRemoved : __arrayRemoved,
+  // __arrayRemoved : __arrayRemoved,
   __arrayRemovedOnce : __arrayRemovedOnce,
 
   __arrayRemoveArray : __arrayRemoveArray,
@@ -17291,6 +17307,10 @@ var Proto =
   __arrayRemoveArraysOnceStrictly : __arrayRemoveArraysOnceStrictly,
   __arrayRemovedArrays : __arrayRemovedArrays,
   __arrayRemovedArraysOnce : __arrayRemovedArraysOnce,
+
+  __arrayRemoveAll : __arrayRemoveAll,
+  __arrayRemovedAll : __arrayRemovedAll,
+
 
 
   // array flatten
