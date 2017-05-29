@@ -11209,7 +11209,7 @@ function __arrayPrependedArrayOnce( dstArray, insArray, onEqualize )
  * @memberof wTools
  */
 
-function __arrayPrependArrays( dstArray )
+function __arrayPrependArrays( dstArray, insArray )
 {
   __arrayPrependedArrays.apply( this, arguments );
   return dstArray;
@@ -11244,7 +11244,7 @@ function __arrayPrependArrays( dstArray )
  * @memberof wTools
  */
 
-function __arrayPrependArraysOnce( dstArray )
+function __arrayPrependArraysOnce( dstArray,insArray, onEqualize )
 {
   __arrayPrependedArraysOnce.apply( this, arguments );
   return dstArray;
@@ -11292,26 +11292,16 @@ function __arrayPrependArraysOnce( dstArray )
  * @memberof wTools
  */
 
-function __arrayPrependArraysOnceStrictly( dstArray )
+function __arrayPrependArraysOnceStrictly( dstArray, insArray, onEqualize )
 {
   var result = __arrayPrependedArraysOnce.apply( this, arguments );
 
   var expected = 0;
 
-  for( var i = arguments.length - 1; i > 0; i-- )
+  for( var i = insArray.length - 1; i >= 0; i-- )
   {
-    var argument = arguments[ i ];
-
-    if( _.arrayLike( argument ) )
-    {
-      for( var j = argument.length - 1; j >= 0; j-- )
-      {
-        if( _.arrayLike( argument[ j ] ) )
-        expected += argument[ j ].length;
-        else
-        expected += 1;
-      }
-    }
+    if( _.arrayLike( insArray[ i ] ) )
+    expected += insArray[ i ].length;
     else
     expected += 1;
   }
@@ -11349,41 +11339,25 @@ function __arrayPrependArraysOnceStrictly( dstArray )
  * @memberof wTools
  */
 
-function __arrayPrependedArrays( dstArray )
+function __arrayPrependedArrays( dstArray, insArray )
 {
+  _.assert( arguments.length === 2 );
   _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayPrependedArrays :','expects arrayLike entity' );
 
   var result = 0;
 
-  function _prepend( argument )
+  for( var a = insArray.length - 1; a >= 0; a-- )
   {
-    dstArray.unshift( argument );
-    result += 1;
-  }
-
-  for( var a = arguments.length - 1; a > 0; a-- )
-  {
-    var argument = arguments[ a ];
-
-    _.assert( argument !== undefined,'arrayPrependedArrays: ','argument is not defined' );
-
-    if( _.arrayLike( argument ) )
+    if( _.arrayLike( insArray[ a ] ) )
     {
-      for( var i = argument.length - 1; i >= 0; i-- )
-      if( _.arrayLike( argument[ i ] ) )
-      {
-        var insArray = argument[ i ];
-        for( var j = insArray.length - 1; j >= 0; j-- )
-        _prepend( insArray[ j ] );
-      }
-      else
-      {
-        _prepend( argument[ i ] );
-      }
+      dstArray.unshift.apply( dstArray, insArray[ a ] );
+      result += insArray[ a ].length;
     }
     else
     {
-      _prepend( argument );
+      dstArray.unshift( insArray[ a ] );
+      result += 1;
     }
   }
 
@@ -11422,18 +11396,17 @@ function __arrayPrependedArrays( dstArray )
  * @memberof wTools
  */
 
-function __arrayPrependedArraysOnce( dstArray )
+function __arrayPrependedArraysOnce( dstArray, insArray, onEqualize )
 {
+  _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayIs( dstArray ),'arrayPrependedArraysOnce :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayPrependedArraysOnce :','expects arrayLike entity' );
 
   var result = 0;
-  var o = this === Self ? Object.create( null ) : this;
-
-  _.assertMapHasOnly( o,__arrayPrependedArraysOnce.defaults );
 
   function _prependOnce( argument )
   {
-    var index = _.arrayLeftIndexOf( dstArray, argument, o.onEqualize );
+    var index = _.arrayLeftIndexOf( dstArray, argument, onEqualize );
     if( index === -1 )
     {
       dstArray.unshift( argument );
@@ -11441,38 +11414,21 @@ function __arrayPrependedArraysOnce( dstArray )
     }
   }
 
-  for( var a = arguments.length - 1; a > 0; a-- )
+  for( var a = insArray.length - 1; a >= 0; a-- )
   {
-    var argument = arguments[ a ];
-
-    _.assert( argument !== undefined,'arrayPrependedArraysOnce: ','argument is not defined' );
-
-    if( _.arrayLike( argument ) )
+    if( _.arrayLike( insArray[ a ] ) )
     {
-      for( var i = argument.length - 1; i >= 0; i-- )
-      if( _.arrayLike( argument[ i ] ) )
-      {
-        var insArray = argument[ i ];
-        for( var j = insArray.length - 1; j >= 0; j-- )
-        _prependOnce( insArray[ j ] );
-      }
-      else
-      {
-        _prependOnce( argument[ i ] );
-      }
+      var array = insArray[ a ];
+      for( var i = array.length - 1; i >= 0; i-- )
+      _prependOnce( array[ i ] );
     }
     else
     {
-      _prependOnce( argument );
+      _prependOnce( insArray[ a ] );
     }
   }
 
   return result;
-}
-
-__arrayPrependedArraysOnce.defaults =
-{
-  onEqualize : null
 }
 
 //
@@ -11796,7 +11752,7 @@ function __arrayAppendArrays( dstArray )
 
 //
 
-function __arrayAppendArraysOnce( dstArray )
+function __arrayAppendArraysOnce( dstArray, insArray, onEqualize )
 {
   __arrayAppendedArraysOnce.apply( this, arguments );
   return dstArray;
@@ -11804,25 +11760,15 @@ function __arrayAppendArraysOnce( dstArray )
 
 //
 
-function __arrayAppendArraysOnceStrictly( dstArray )
+function __arrayAppendArraysOnceStrictly( dstArray, insArray, onEqualize )
 {
   var result = __arrayAppendedArraysOnce.apply( this, arguments );
 
   var expected = 0;
-  for( var i = arguments.length - 1; i > 0; i-- )
+  for( var i = insArray.length - 1; i >= 0; i-- )
   {
-    var argument = arguments[ i ];
-
-    if( _.arrayLike( argument ) )
-    {
-      for( var j = argument.length - 1; j >= 0; j-- )
-      {
-        if( _.arrayLike( argument[ j ] ) )
-        expected += argument[ j ].length;
-        else
-        expected += 1;
-      }
-    }
+    if( _.arrayLike( insArray[ i ] ) )
+    expected += insArray[ i ].length;
     else
     expected += 1;
   }
@@ -11840,39 +11786,25 @@ function __arrayAppendArraysOnceStrictly( dstArray )
 
 //
 
-function __arrayAppendedArrays( dstArray )
+function __arrayAppendedArrays( dstArray, insArray )
 {
+  _.assert( arguments.length === 2 );
   _.assert( _.arrayIs( dstArray ),'arrayAppendedArrays :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayAppendedArrays :','expects arrayLike entity' );
 
   var result = 0;
 
-  function _append( argument )
+  for( var a = 0, len = insArray.length; a < len; a++ )
   {
-    if( !_.arrayLike( argument ) )
-    argument = [ argument ];
-
-    dstArray.push.apply( dstArray, argument );
-
-    if( _.arrayLike( argument ) )
-    result += argument.length;
-    else
-    result += 1;
-  }
-
-  for( var a = 1, len = arguments.length; a < len; a++ )
-  {
-    var argument = arguments[ a ];
-
-    _.assert( argument !== undefined,'arrayAppendedArrays: ','argument is not defined' );
-
-    if( _.arrayLike( argument ) )
+    if( _.arrayLike( insArray[ a ] ) )
     {
-      for( var i = 0, alen = argument.length; i < alen; i++ )
-      _append( argument[ i ] );
+      dstArray.push.apply( dstArray, insArray[ a ] );
+      result += insArray[ a ].length;
     }
     else
     {
-      _append( argument );
+      dstArray.push( insArray[ a ] );
+      result += 1;
     }
   }
 
@@ -11881,9 +11813,11 @@ function __arrayAppendedArrays( dstArray )
 
 //
 
-function __arrayAppendedArraysOnce( dstArray )
+function __arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
 {
+  _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayAppendedArraysOnce :','expects arrayLike entity' );
 
 // <<<<<<< HEAD
 //   var isUnique = arrayUniqueIs
@@ -11895,50 +11829,33 @@ function __arrayAppendedArraysOnce( dstArray )
 //   var result = arrayMakeSimilar( src,isUnique.number );
 // =======
   var result = 0;
-  var o = this === Self ? Object.create( null ) : this;
 // >>>>>>> 39ea66f679e5ba8509fa6c05c1974446997e2bac
-
-  _.assertMapHasOnly( o,__arrayAppendedArraysOnce.defaults );
 
   function _appendOnce( argument )
   {
-    if( !_.arrayLike( argument ) )
-    argument = [ argument ];
-
-    for( var i = 0, len = argument.length; i < len; i++ )
+    var index = _.arrayLeftIndexOf( dstArray, argument, onEqualize );
+    if( index === -1 )
     {
-      var index = _.arrayLeftIndexOf( dstArray, argument[ i ], o.onEqualize );
-      if( index === -1 )
-      {
-        dstArray.push( argument[ i ] );
-        result += 1;
-      }
+      dstArray.push( argument );
+      result += 1;
     }
   }
 
-  for( var a = 1, len = arguments.length; a < len; a++ )
+  for( var a = 0, len = insArray.length; a < len; a++ )
   {
-    var argument = arguments[ a ];
-
-    _.assert( argument !== undefined,'arrayAppendedArraysOnce: ','argument is not defined' );
-
-    if( _.arrayLike( argument ) )
+    if( _.arrayLike( insArray[ a ] ) )
     {
-      for( var i = 0, alen = argument.length; i < alen; i++ )
-      _appendOnce( argument[ i ] );
+      var array = insArray[ a ];
+      for( var i = 0, alen = array.length; i < alen; i++ )
+      _appendOnce( array[ i ] );
     }
     else
     {
-      _appendOnce( argument );
+      _appendOnce( insArray[ a ] );
     }
   }
 
   return result;
-}
-
-__arrayAppendedArraysOnce.defaults =
-{
-  onEqualize : null
 }
 
 //
@@ -12243,7 +12160,7 @@ function __arrayRemovedArrayOnce( dstArray,insArray,onEqualize )
 //   o.result = o.result || arrayMakeSimilar( o.src,length );
 // =======
 
-function __arrayRemoveArrays( dstArray )
+function __arrayRemoveArrays( dstArray, insArray )
 {
   __arrayRemovedArrays.apply( this, arguments );
   return dstArray;
@@ -12253,7 +12170,7 @@ function __arrayRemoveArrays( dstArray )
 
 //
 
-function __arrayRemoveArraysOnce( dstArray )
+function __arrayRemoveArraysOnce( dstArray, insArray, onEqualize )
 {
   __arrayRemovedArraysOnce.apply( this, arguments );
   return dstArray;
@@ -12261,25 +12178,15 @@ function __arrayRemoveArraysOnce( dstArray )
 
 //
 
-function __arrayRemoveArraysOnceStrictly( dstArray )
+function __arrayRemoveArraysOnceStrictly( dstArray, insArray, onEqualize )
 {
   var result = __arrayRemovedArraysOnce.apply( this, arguments );
 
   var expected = 0;
-  for( var i = arguments.length - 1; i > 0; i-- )
+  for( var i = insArray.length - 1; i >= 0; i-- )
   {
-    var argument = arguments[ i ];
-
-    if( _.arrayLike( argument ) )
-    {
-      for( var j = argument.length - 1; j >= 0; j-- )
-      {
-        if( _.arrayLike( argument[ j ] ) )
-        expected += argument[ j ].length;
-        else
-        expected += 1;
-      }
-    }
+    if( _.arrayLike( insArray[ i ] ) )
+    expected += insArray[ i ].length;
     else
     expected += 1;
   }
@@ -12291,43 +12198,36 @@ function __arrayRemoveArraysOnceStrictly( dstArray )
 
 //
 
-function __arrayRemovedArrays( dstArray )
+function __arrayRemovedArrays( dstArray, insArray )
 {
+  _.assert( arguments.length === 2 );
   _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayRemovedArrays :','expects arrayLike entity' );
 
   var result = 0;
 
   function _remove( argument )
   {
-    if( !_.arrayLike( argument ) )
-    argument = [ argument ];
-
-    for( var i = argument.length - 1; i >= 0; i-- )
+    var index = dstArray.indexOf( argument );
+    while( index !== -1 )
     {
-      var index = dstArray.indexOf( argument[ i ] );
-      while( index !== -1 )
-      {
-        dstArray.splice( index,1 );
-        result += 1;
-        index = dstArray.indexOf( argument[ i ], index );
-      }
+      dstArray.splice( index,1 );
+      result += 1;
+      index = dstArray.indexOf( argument, index );
     }
   }
 
-  for( var a = arguments.length - 1 ; a > 0; a-- )
+  for( var a = insArray.length - 1; a >= 0; a-- )
   {
-    var argument = arguments[ a ];
-
-    _.assert( argument !== undefined,'arrayRemovedArrays: ','argument is not defined' );
-
-    if( _.arrayLike( argument ) )
+    if( _.arrayLike( insArray[ a ] ) )
     {
-      for( var i = argument.length - 1; i >= 0; i-- )
-      _remove( argument[ i ] );
+      var array = insArray[ a ];
+      for( var i = array.length - 1; i >= 0; i-- )
+      _remove( array[ i ] );
     }
     else
     {
-      _remove( argument );
+      _remove( insArray[ a ] );
     }
   }
 
@@ -12336,54 +12236,39 @@ function __arrayRemovedArrays( dstArray )
 
 //
 
-function __arrayRemovedArraysOnce( dstArray )
+function __arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
 {
+  _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayIs( dstArray ),'arrayRemovedArraysOnce :','expects array' );
+  _.assert( _.arrayLike( insArray ),'arrayRemovedArraysOnce :','expects arrayLike entity' );
 
   var result = 0;
-  var o = this === Self ? Object.create( null ) : this;
-
-  _.assertMapHasOnly( o,__arrayAppendedArraysOnce.defaults );
 
   function _removeOnce( argument )
   {
-    if( !_.arrayLike( argument ) )
-    argument = [ argument ];
-
-    for( var i = argument.length - 1; i >= 0; i-- )
+    var index = _.arrayLeftIndexOf( dstArray, argument, onEqualize );
+    if( index >= 0 )
     {
-      var index = _.arrayLeftIndexOf( dstArray, argument[ i ], o.onEqualize );
-      if( index >= 0 )
-      {
-        dstArray.splice( index, 1 );
-        result += 1;
-      }
+      dstArray.splice( index, 1 );
+      result += 1;
     }
   }
 
-  for( var a = arguments.length - 1 ; a > 0; a-- )
+  for( var a = insArray.length - 1; a >= 0; a-- )
   {
-    var argument = arguments[ a ];
-
-    _.assert( argument !== undefined,'arrayRemovedArraysOnce: ','argument is not defined' );
-
-    if( _.arrayLike( argument ) )
+    if( _.arrayLike( insArray[ a ] ) )
     {
-      for( var i = argument.length - 1; i >= 0; i-- )
-      _removeOnce( argument[ i ] );
+      var array = insArray[ a ];
+      for( var i = array.length - 1; i >= 0; i-- )
+      _removeOnce( array[ i ] );
     }
     else
     {
-      _removeOnce( argument );
+      _removeOnce( insArray[ a ] );
     }
   }
 
   return result;
-}
-
-__arrayRemovedArraysOnce.defaults =
-{
-  onEqualize : null
 }
 
 //
