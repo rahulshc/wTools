@@ -3319,27 +3319,34 @@ function __arrayAppendedArraysOnce( test )
 
 //
 
-function __arrayRemove( test )
+function __arrayRemoveAll( test )
 {
   test.description = 'simple';
 
-  var got = _.__arrayRemove( [], 1 );
+  var got = _.__arrayRemoveAll( [], 1 );
   test.identical( got, [] );
 
-  var got = _.__arrayRemove( [ 1 ], 1 );
+  var got = _.__arrayRemoveAll( [ 1 ], 1 );
   test.identical( got, [ ] );
 
-  var got = _.__arrayRemove( [ 1,2,2,2 ], 2 );
+  var got = _.__arrayRemoveAll( [ 1,2,2,2 ], 2 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemove( [ 1 ], '1' );
+  var got = _.__arrayRemoveAll( [ 1 ], '1' );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemove( [ 1 ], -1 );
+  var got = _.__arrayRemoveAll( [ 1 ], -1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemove( [ 1 ], [ 1 ] );
+  var got = _.__arrayRemoveAll( [ 1 ], [ 1 ] );
   test.identical( got, [ 1 ] );
+
+  function onEqualize( a, b )
+  {
+    return a.value === b;
+  }
+  var got = _.__arrayRemoveAll( [ { value : 1 }, { value : 1 }, { value : 2 } ], 1, onEqualize );
+  test.identical( got, [ { value : 2 } ] );
 
   //
 
@@ -3348,58 +3355,67 @@ function __arrayRemove( test )
     test.description = 'no args';
     test.shouldThrowError( function()
     {
-      _.__arrayRemove();
+      _.__arrayRemoveAll();
     })
 
-    test.description = 'too many args';
+    test.description = 'third argument is not a routine';
     test.shouldThrowError( function()
     {
-      _.__arrayRemove( [], 1, 1 );
+      _.__arrayRemoveAll( [ 1 ], 1, 1 );
     })
 
     test.description = 'dst is not an array';
     test.shouldThrowError( function()
     {
-      _.__arrayRemove( 1, 1 );
+      _.__arrayRemoveAll( 1, 1 );
     })
   }
 }
 
 //
 
-function __arrayRemoved( test )
+function __arrayRemovedAll( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemoved( dst, 1 );
+  var got = _.__arrayRemovedAll( dst, 1 );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemoved( dst, 1 );
+  var got = _.__arrayRemovedAll( dst, 1 );
   test.identical( dst, [] );
   test.identical( got, 1 );
 
   var dst = [ 1,2,2 ];
-  var got = _.__arrayRemoved( dst, 2 );
+  var got = _.__arrayRemovedAll( dst, 2 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 2 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemoved( dst, '1' );
+  var got = _.__arrayRemovedAll( dst, '1' );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemoved( dst, -1 );
+  var got = _.__arrayRemovedAll( dst, -1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemoved( dst, [ 1 ] );
+  var got = _.__arrayRemovedAll( dst, [ 1 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
+
+  function onEqualize( a, b )
+  {
+    return a.value === b;
+  }
+  var dst = [ { value : 1 }, { value : 1 }, { value : 2 } ];
+  var got = _.__arrayRemovedAll( dst, 1, onEqualize );
+  test.identical( dst, [ { value : 2 } ] );
+  test.identical( got, 2 );
 
   //
 
@@ -3408,19 +3424,19 @@ function __arrayRemoved( test )
     test.description = 'no args';
     test.shouldThrowError( function()
     {
-      _.__arrayRemoved();
+      _.__arrayRemovedAll();
     })
 
-    test.description = 'too many args';
+    test.description = 'third argument is not a routine';
     test.shouldThrowError( function()
     {
-      _.__arrayRemoved( [], 1, 1 );
+      _.__arrayRemoveAll( [ 1 ], 1, 1 );
     })
 
     test.description = 'dst is not an array';
     test.shouldThrowError( function()
     {
-      _.__arrayRemoved( 1, 1 );
+      _.__arrayRemovedAll( 1, 1 );
     })
   }
 }
@@ -8051,8 +8067,8 @@ var Self =
     __arrayAppendedArrays : __arrayAppendedArrays,
     __arrayAppendedArraysOnce : __arrayAppendedArraysOnce,
 
-    __arrayRemove : __arrayRemove,
-    __arrayRemoved : __arrayRemoved,
+    __arrayRemoveAll : __arrayRemoveAll,
+    __arrayRemovedAll : __arrayRemovedAll,
     __arrayRemoveOnce : __arrayRemoveOnce,
     __arrayRemovedOnce : __arrayRemovedOnce,
     __arrayRemoveOnceStrictly : __arrayRemoveOnceStrictly,
