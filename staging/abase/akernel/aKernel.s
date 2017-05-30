@@ -11083,6 +11083,90 @@ function arrayNone( src )
 }
 
 // --
+// array etc
+// --
+
+function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
+{
+  var result = [];
+  var l = srcArray.length;
+
+  debugger;
+  throw _.err( 'not tested' );
+
+  comparator = _._comparatorFromMapper( comparator );
+
+  function rcomparator( a,b )
+  {
+    return comparator( srcArray[ a ],srcArray[ b ] );
+  };
+
+  for( var i = 0 ; i < l ; i += 1 )
+  {
+
+    if( result.length < numberOfElements )
+    {
+      _.arraySortedAdd( result, i, rcomparator );
+      continue;
+    }
+
+    _.arraySortedAdd( result, i, rcomparator );
+    result.splice( result.length-1,1 );
+
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The arraySum() routine returns the sum of an array (src).
+ *
+ * @param { arrayLike } src - The source array.
+ * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
+ *
+ * @example
+ * // returns 15
+ * _.arraySum( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @example
+ * // returns 29
+ * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
+ *
+ * @example
+ * // returns 94
+ * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
+ *
+ * @returns { Number } - Returns the sum of an array (src).
+ * @function arraySum
+ * @throws { Error } If passed arguments is less than one or more than two.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the second argument is not a Function.
+ * @memberof wTools
+ */
+
+function arraySum( src,onElement )
+{
+  var result = 0;
+
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
+
+  if( onElement === undefined )
+  onElement = function( e ){ return e; };
+
+  _.assert( _.routineIs( onElement ) );
+
+  for( var i = 0 ; i < src.length ; i++ )
+  {
+    result += onElement( src[ i ],i,src );
+  }
+
+  return result;
+}
+
+// --
 // array prepend
 // --
 
@@ -12319,6 +12403,71 @@ function __arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 
 //
 
+/**
+ * Callback for compare two value.
+ *
+ * @callback __arrayRemoved~compareCallback
+ * @param { * } el - The element of the array.
+ * @param { * } ins - The value to compare.
+ */
+
+/**
+ * The __arrayRemoved() routine removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the amount of them.
+ *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
+ * checks if (onElement) is equal to the 'undefined'.
+ * If true, it assigns by default callback function that checks the equality of two arguments.
+ * Otherwise, it uses given callback function (onElement).
+ * Then it iterates over (dstArray) from the end to the beginning, checks if (onElement) returns true.
+ * If true, it removes the value (ins) from (dstArray) array by corresponding index, and increases (result++).
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { * } ins - The value to remove.
+ * @param { compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns 4
+ * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
+ *   return el < ins;
+ * });
+ *
+ * @example
+ * // returns 3
+ * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
+ *
+ * @returns { Number } - Returns the amount of the removed elements.
+ * @function __arrayRemoved
+ * @throws { Error } If the first argument is not an array-like.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
+ * @memberof wTools
+ */
+
+// function __arrayRemoved( dstArray,ins,onEqualize )
+// {
+//   _.assert( _.arrayLike( dstArray ) );
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   if( arguments.length === 3 )
+//   _.assert( _.routineIs( onEqualize ) );
+//
+//   var result = 0;
+//
+//   if( onEqualize === undefined )
+//   onEqualize = function( a,b ){ return a === b };
+//
+//   for( var d = dstArray.length-1 ; d >= 0 ; d-- )
+//   if( onEqualize( dstArray[ d ],ins ) )
+//   {
+//     dstArray.splice( d,1 );
+//     result += 1;
+//   }
+//
+//   return result;
+// }
+
 // function __arrayRemoved( dstArray, ins, onEqualize )
 // {
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -12649,6 +12798,83 @@ function __arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
   return result;
 }
 
+//
+
+/**
+ * Callback for compare two value.
+ *
+ * @callback arrayRemoveAll~compareCallback
+ * @param { * } el - Element of the array.
+ * @param { * } ins - Value to compare.
+ */
+
+/**
+ * The arrayRemoveAll() routine removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the modified array.
+ *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
+ * checks if arguments passed two, it calls the routine
+ * [__arrayRemoved( dstArray, ins )]{@link wTools.__arrayRemoved}
+ * Otherwise, if passed three arguments, it calls the routine
+ * [__arrayRemoved( dstArray, ins, onElement )]{@link wTools.__arrayRemoved}
+ *
+ * @see wTools.__arrayRemoved
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { * } ins - The value to remove.
+ * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns [ 2, 2, 3, 5 ]
+ * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2, function ( el, ins ) {
+ *   return el < ins;
+ * });
+ *
+ * @example
+ * // returns [ 1, 3, 5 ]
+ * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2 );
+ *
+ * @returns { Array } - Returns the modified (dstArray) array with the new length.
+ * @function arrayRemoveAll
+ * @throws { Error } If the first argument is not an array-like.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
+ * @memberof wTools
+ */
+
+function __arrayRemoveAll( dstArray,ins,onEqualize )
+{
+
+  // if( arguments.length === 2 )
+  // arrayRemovedAll( dstArray,ins );
+  // else if( arguments.length === 3 )
+  // arrayRemovedAll( dstArray,ins,onEqualize );
+  __arrayRemovedAll.apply( this, arguments );
+
+  return dstArray;
+}
+
+//
+
+function __arrayRemovedAll( dstArray, ins, onEqualize  )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
+
+  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var result = 0;
+
+  while( index >= 0 )
+  {
+    dstArray.splice( index,1 );
+    result += 1;
+    index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  }
+
+  return result;
+}
+
 // --
 // array flatten
 // --
@@ -12814,150 +13040,6 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
   return result;
 }
 
-//
-
-/**
- * Callback for compare two value.
- *
- * @callback __arrayRemoved~compareCallback
- * @param { * } el - The element of the array.
- * @param { * } ins - The value to compare.
- */
-
-/**
- * The __arrayRemoved() routine removes all (ins) values from (dstArray)
- * that corresponds to the condition in the callback function and returns the amount of them.
- *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if (onElement) is equal to the 'undefined'.
- * If true, it assigns by default callback function that checks the equality of two arguments.
- * Otherwise, it uses given callback function (onElement).
- * Then it iterates over (dstArray) from the end to the beginning, checks if (onElement) returns true.
- * If true, it removes the value (ins) from (dstArray) array by corresponding index, and increases (result++).
- *
- * @param { Array } dstArray - The source array.
- * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
- * By default, it checks the equality of two arguments.
- *
- * @example
- * // returns 4
- * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
- *   return el < ins;
- * });
- *
- * @example
- * // returns 3
- * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
- *
- * @returns { Number } - Returns the amount of the removed elements.
- * @function __arrayRemoved
- * @throws { Error } If the first argument is not an array-like.
- * @throws { Error } If passed less than two or more than three arguments.
- * @throws { Error } If the third argument is not a function.
- * @memberof wTools
- */
-
-// function __arrayRemoved( dstArray,ins,onEqualize )
-// {
-//   _.assert( _.arrayLike( dstArray ) );
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//
-//   if( arguments.length === 3 )
-//   _.assert( _.routineIs( onEqualize ) );
-//
-//   var result = 0;
-//
-//   if( onEqualize === undefined )
-//   onEqualize = function( a,b ){ return a === b };
-//
-//   for( var d = dstArray.length-1 ; d >= 0 ; d-- )
-//   if( onEqualize( dstArray[ d ],ins ) )
-//   {
-//     dstArray.splice( d,1 );
-//     result += 1;
-//   }
-//
-//   return result;
-// }
-
-//
-
-/**
- * Callback for compare two value.
- *
- * @callback arrayRemoveAll~compareCallback
- * @param { * } el - Element of the array.
- * @param { * } ins - Value to compare.
- */
-
-/**
- * The arrayRemoveAll() routine removes all (ins) values from (dstArray)
- * that corresponds to the condition in the callback function and returns the modified array.
- *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if arguments passed two, it calls the routine
- * [__arrayRemoved( dstArray, ins )]{@link wTools.__arrayRemoved}
- * Otherwise, if passed three arguments, it calls the routine
- * [__arrayRemoved( dstArray, ins, onElement )]{@link wTools.__arrayRemoved}
- *
- * @see wTools.__arrayRemoved
- *
- * @param { Array } dstArray - The source array.
- * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
- * By default, it checks the equality of two arguments.
- *
- * @example
- * // returns [ 2, 2, 3, 5 ]
- * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2, function ( el, ins ) {
- *   return el < ins;
- * });
- *
- * @example
- * // returns [ 1, 3, 5 ]
- * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2 );
- *
- * @returns { Array } - Returns the modified (dstArray) array with the new length.
- * @function arrayRemoveAll
- * @throws { Error } If the first argument is not an array-like.
- * @throws { Error } If passed less than two or more than three arguments.
- * @throws { Error } If the third argument is not a function.
- * @memberof wTools
- */
-
-function __arrayRemoveAll( dstArray,ins,onEqualize )
-{
-
-  // if( arguments.length === 2 )
-  // arrayRemovedAll( dstArray,ins );
-  // else if( arguments.length === 3 )
-  // arrayRemovedAll( dstArray,ins,onEqualize );
-  __arrayRemovedAll.apply( this, arguments );
-
-  return dstArray;
-}
-
-//
-
-function __arrayRemovedAll( dstArray, ins, onEqualize  )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
-
-  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
-  var result = 0;
-
-  while( index >= 0 )
-  {
-    dstArray.splice( index,1 );
-    result += 1;
-    index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
-  }
-
-  return result;
-}
-
 // --
 // array replace
 // --
@@ -13029,36 +13111,6 @@ function __arrayReplacedOnce( dstArray,ins,sub,onEqualize )
   dstArray.splice( index,1,sub );
 
   return index;
-}
-
-//
-
-function __arrayReplaceAll( dstArray,ins,sub,onEqualize )
-{
-  __arrayReplacedAll.apply( this, arguments );
-  return dstArray;
-}
-
-//
-
-function __arrayReplacedAll( dstArray,ins,sub,onEqualize )
-{
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 3 || arguments.length === 4 );
-
-  var index = -1;
-  var result = 0;
-
-  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
-
-  while( index !== -1 )
-  {
-    dstArray.splice( index,1,sub );
-    result += 1;
-    index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
-  }
-
-  return result;
 }
 
 //
@@ -13176,6 +13228,36 @@ function __arrayReplacedArraysOnce( dstArray, ins, sub, onEqualize )
 
 //
 
+function __arrayReplaceAll( dstArray,ins,sub,onEqualize )
+{
+  __arrayReplacedAll.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedAll( dstArray,ins,sub,onEqualize )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
+
+  var index = -1;
+  var result = 0;
+
+  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+
+  while( index !== -1 )
+  {
+    dstArray.splice( index,1,sub );
+    result += 1;
+    index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+  }
+
+  return result;
+}
+
+//
+
 /**
  * The arrayUpdate() routine adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
  * and returns the last added index or the last replaced index of the array (dstArray).
@@ -13230,89 +13312,7 @@ function arrayUpdate( dstArray,ins,sub )
   return index;
 }
 
-// --
-// array etc
-// --
 
-function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
-{
-  var result = [];
-  var l = srcArray.length;
-
-  debugger;
-  throw _.err( 'not tested' );
-
-  comparator = _._comparatorFromMapper( comparator );
-
-  function rcomparator( a,b )
-  {
-    return comparator( srcArray[ a ],srcArray[ b ] );
-  };
-
-  for( var i = 0 ; i < l ; i += 1 )
-  {
-
-    if( result.length < numberOfElements )
-    {
-      _.arraySortedAdd( result, i, rcomparator );
-      continue;
-    }
-
-    _.arraySortedAdd( result, i, rcomparator );
-    result.splice( result.length-1,1 );
-
-  }
-
-  return result;
-}
-
-//
-
-/**
- * The arraySum() routine returns the sum of an array (src).
- *
- * @param { arrayLike } src - The source array.
- * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
- *
- * @example
- * // returns 15
- * _.arraySum( [ 1, 2, 3, 4, 5 ] );
- *
- * @example
- * // returns 29
- * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
- *
- * @example
- * // returns 94
- * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
- *
- * @returns { Number } - Returns the sum of an array (src).
- * @function arraySum
- * @throws { Error } If passed arguments is less than one or more than two.
- * @throws { Error } If the first argument is not an array-like object.
- * @throws { Error } If the second argument is not a Function.
- * @memberof wTools
- */
-
-function arraySum( src,onElement )
-{
-  var result = 0;
-
-  _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
-
-  if( onElement === undefined )
-  onElement = function( e ){ return e; };
-
-  _.assert( _.routineIs( onElement ) );
-
-  for( var i = 0 ; i < src.length ; i++ )
-  {
-    result += onElement( src[ i ],i,src );
-  }
-
-  return result;
-}
 
 // --
 // array set
@@ -17487,16 +17487,16 @@ var Proto =
   /* !!! Strictly, Array, Arrays variants needed */
 
   __arrayReplaceOnce : __arrayReplaceOnce,
-  __arrayReplacedOnce : __arrayReplacedOnce,
   __arrayReplaceOnceStrictly : __arrayReplaceOnceStrictly,
+  __arrayReplacedOnce : __arrayReplacedOnce,
 
   __arrayReplaceArrayOnce : __arrayReplaceArrayOnce,
-  __arrayReplacedArrayOnce : __arrayReplacedArrayOnce,
   __arrayReplaceArrayOnceStrictly : __arrayReplaceArrayOnceStrictly,
+  __arrayReplacedArrayOnce : __arrayReplacedArrayOnce,
 
   __arrayReplaceArraysOnce : __arrayReplaceArraysOnce,
-  __arrayReplacedArraysOnce : __arrayReplacedArraysOnce,
   __arrayReplaceArraysOnceStrictly : __arrayReplaceArraysOnceStrictly,
+  __arrayReplacedArraysOnce : __arrayReplacedArraysOnce,
 
   __arrayReplaceAll : __arrayReplaceAll,
   __arrayReplacedAll : __arrayReplacedAll,
