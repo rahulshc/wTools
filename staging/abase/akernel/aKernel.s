@@ -13158,10 +13158,7 @@ function __arrayReplacedArraysOnce( dstArray, ins, sub, onEqualize )
     var insArray = ins[ i ];
 
     if( _.arrayLike( sub[ i ] ) )
-    {
-      _.assert( sub[ i ].length >= 1 );
-      _.assert( insArray.length >= sub[ i ].length  );
-    }
+    _.assert( insArray.length >= sub[ i ].length  );
 
     for( var j = 0, slen = insArray.length; j < slen; j++ )
     {
