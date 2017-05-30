@@ -81,15 +81,10 @@ function arrayIs( test )
   var expected  = false;
   test.identical( got, expected );
 
-
   /**/
 
-  if( Config.debug )
-  {
-
-
-
-  }
+  if( !Config.debug )
+  return;
 
 };
 
@@ -152,12 +147,9 @@ function arrayLike( test )
 
   /**/
 
-  if( Config.debug )
-  {
+  if( !Config.debug )
+  return;
 
-
-
-  }
 
 };
 
@@ -210,12 +202,8 @@ function hasLength( test )
 
   /**/
 
-  if( Config.debug )
-  {
-
-
-
-  }
+  if( !Config.debug )
+  return;
 
 };
 
@@ -266,34 +254,32 @@ function arraySub( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySub();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySub();
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySub( 'wrong argument', 1, -1 );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySub( 'wrong argument', 1, -1 );
-    });
+  test.description = 'argument is not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arraySub( 1, 2, 3, 4, 5, 2, 4 );
+  });
 
-    test.description = 'argument is not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.arraySub( 1, 2, 3, 4, 5, 2, 4 );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySub( [ 1, 2, 3, 4, 5 ], 2, 4, 'redundant argument' );
-    });
-
-  }
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySub( [ 1, 2, 3, 4, 5 ], 2, 4, 'redundant argument' );
+  });
 
 };
 
@@ -324,41 +310,38 @@ function arrayMakeSimilar( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayMakeSimilar();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeSimilar();
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilar('wrong argument');
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeSimilar('wrong argument');
-    });
+  test.description = 'arguments[1] is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilar( [ 1, 2, 3 ], 'wrong type of argument' );
+  });
 
-    test.description = 'arguments[1] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeSimilar( [ 1, 2, 3 ], 'wrong type of argument' );
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilar( [ 1, 2, 3 ], 4, 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeSimilar( [ 1, 2, 3 ], 4, 'redundant argument' );
-    });
-
-    test.description = 'argument is not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeSimilar( 1, 2, 3, 4 );
-    });
-
-  }
-
+  test.description = 'argument is not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilar( 1, 2, 3, 4 );
+  });
 };
 
 //
@@ -425,46 +408,44 @@ function arrayOrNumber( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayOrNumber();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayOrNumber();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayOrNumber( [ 1, 2, 3 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayOrNumber( [ 1, 2, 3 ] );
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayOrNumber( [ 1, 2, 3 ], 3, 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayOrNumber( [ 1, 2, 3 ], 3, 'redundant argument' );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayOrNumber('wrong argument', 'wrong argument');
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayOrNumber('wrong argument', 'wrong argument');
-    });
+  test.description = 'second argument too much';
+  test.shouldThrowError( function()
+  {
+    _.arrayOrNumber( [ 1, 2, 3 ], 4 );
+  });
 
-    test.description = 'second argument too much';
-    test.shouldThrowError( function()
-    {
-      _.arrayOrNumber( [ 1, 2, 3 ], 4 );
-    });
-
-    test.description = 'first three arguments are not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.arrayOrNumber( 1, 2, 3, 3 );
-    });
-
-  }
+  test.description = 'first three arguments are not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arrayOrNumber( 1, 2, 3, 3 );
+  });
 
 };
 
@@ -490,34 +471,32 @@ function arraySelect( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySelect();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySelect();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySelect( [ 1, 2, 3 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySelect( [ 1, 2, 3 ] );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySelect('wrong argument', 'wrong argument');
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySelect('wrong argument', 'wrong argument');
-    });
-
-    test.description = 'arguments are not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.arraySelect( 1, 2, 3, 4, 5 );
-    });
-
-  }
+  test.description = 'arguments are not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arraySelect( 1, 2, 3, 4, 5 );
+  });
 
 };
 
@@ -579,26 +558,26 @@ function __arrayPrepend( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrepend();
-    })
+    _.__arrayPrepend();
+  })
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrepend( [], 1, 1 );
-    })
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrepend( [], 1, 1 );
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrepend( 1, 1 );
-    })
-  }
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrepend( 1, 1 );
+  })
 }
 
 //
@@ -644,26 +623,26 @@ function __arrayPrepended( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrepended();
-    })
+    _.__arrayPrepended();
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrepended( [], 1, 1 );
-    })
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrepended( [], 1, 1 );
+  });
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrepended( 1, 1 );
-    })
-  }
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrepended( 1, 1 );
+  });
 }
 
 //
@@ -731,26 +710,27 @@ function __arrayPrependOnce( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependOnce();
-    })
+    _.__arrayPrependOnce();
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependOnce( 1, 1 );
-    })
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependOnce( 1, 1 );
+  })
 
-    test.description = 'onEqualize is not a function';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependOnce( 1, 1, 1 );
-    })
-  }
+  test.description = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependOnce( 1, 1, 1 );
+  })
+
 }
 
 //
@@ -836,26 +816,26 @@ function __arrayPrependedOnce( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedOnce();
-    })
+    _.__arrayPrependedOnce();
+  })
 
-    test.description = 'third is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedOnce( [], 1, 1 );
-    })
+  test.description = 'third is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedOnce( [], 1, 1 );
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedOnce( 1, 1 );
-    })
-  }
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedOnce( 1, 1 );
+  })
 }
 
 //
@@ -912,59 +892,60 @@ function __arrayPrependOnceStrictly( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
+    _.__arrayPrependOnceStrictly();
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependOnceStrictly( 1, 1 );
+  })
+
+  test.description = 'ins already exists ion dst';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependOnceStrictly( [ 1 ], 1 );
+  });
+
+  test.shouldThrowError( function()
+  {
+     _.__arrayPrependOnceStrictly( [ 1,2,3 ], 3 );
+  });
+
+  test.description = 'onEqualize is not a routine';
+
+  test.shouldThrowError( function()
+  {
+     _.__arrayPrependOnceStrictly( [ 1,2,3 ], 3, 3 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+    var onEqualize = function( a, b )
     {
-      _.__arrayPrependOnceStrictly();
-    })
+      return a.num === b.num;
+    }
+    _.__arrayPrependOnceStrictly( dst, { num : 1 }, onEqualize );
+  });
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
+  test.shouldThrowError( function()
+  {
+    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+    var onEqualize = function( a )
     {
-      _.__arrayPrependOnceStrictly( 1, 1 );
-    })
+      return a.num;
+    }
+    _.__arrayPrependOnceStrictly( dst, 1, onEqualize );
+  });
 
-    test.description = 'ins already exists ion dst';
-
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependOnceStrictly( [ 1 ], 1 );
-    });
-
-    test.shouldThrowError( function()
-    {
-       _.__arrayPrependOnceStrictly( [ 1,2,3 ], 3 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-
-    test.shouldThrowError( function()
-    {
-       _.__arrayPrependOnceStrictly( [ 1,2,3 ], 3, 3 );
-    });
-
-    test.shouldThrowError( function()
-    {
-      var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-      var onEqualize = function( a, b )
-      {
-        return a.num === b.num;
-      }
-      _.__arrayPrependOnceStrictly( dst, { num : 1 }, onEqualize );
-    });
-
-    test.shouldThrowError( function()
-    {
-      var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-      var onEqualize = function( a )
-      {
-        return a.num;
-      }
-      _.__arrayPrependOnceStrictly( dst, 1, onEqualize );
-    });
-  }
 }
 
 //
@@ -1019,27 +1000,26 @@ function __arrayPrependArray( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependArray();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArray();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArray( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
-
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArray( [ 1, 2 ], 2 );
-    });
-  }
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArray( [ 1, 2 ], 2 );
+  });
 };
 
 //
@@ -1096,27 +1076,26 @@ function __arrayPrependedArray( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependedArray();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArray();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
-
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArray( [ 1, 2 ], 2 );
-    });
-  }
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArray( [ 1, 2 ], 2 );
+  });
 
 }
 
@@ -1173,34 +1152,32 @@ function __arrayPrependArrayOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependArrayOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnce();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrayOnce( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnce( [ 1, 2 ], 2 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnce( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
-
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+  });
 }
 
 //
@@ -1257,34 +1234,32 @@ function __arrayPrependedArrayOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependedArrayOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrayOnce();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArrayOnce( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrayOnce( [ 1, 2 ], 2 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
-
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+  });
 }
 
 //
@@ -1327,50 +1302,48 @@ function __arrayPrependArrayOnceStrictly( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependArrayOnceStrictly();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnceStrictly();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrayOnceStrictly( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnceStrictly( [ 1, 2 ], 2 );
-    });
+  test.description = 'one of elements is not unique';
 
-    test.description = 'one of elements is not unique';
+  var dst = [ 1,2,3 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayPrependArrayOnceStrictly( dst, [ 4, 5, 2 ] );
+  })
+  test.identical( dst, [ 4, 5, 1, 2, 3 ] );
 
-    var dst = [ 1,2,3 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayPrependArrayOnceStrictly( dst, [ 4, 5, 2 ] );
-    })
-    test.identical( dst, [ 4, 5, 1, 2, 3 ] );
+  var dst = [ 1, 1, 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayPrependArrayOnceStrictly( dst, [ 1 ] );
+  })
+  test.identical( dst, [ 1, 1, 1 ] );
 
-    var dst = [ 1, 1, 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayPrependArrayOnceStrictly( dst, [ 1 ] );
-    })
-    test.identical( dst, [ 1, 1, 1 ] );
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
-
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
+  });
 }
 
 //__arrayPrepend*Arrays*
@@ -1438,33 +1411,32 @@ function __arrayPrependArrays( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependArrays();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrays();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrays( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrays( 1, [ 2 ] );
-    });
+  test.description = 'second arg is no a ArrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrays( [], 2 );
+  });
 
-    test.description = 'second arg is no a ArrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrays( [], 2 );
-    });
-
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArrays( [], [ 1 ], [ 2 ] );
-    });
-  }
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArrays( [], [ 1 ], [ 2 ] );
+  });
 };
 
 //
@@ -1531,34 +1503,33 @@ function __arrayPrependedArrays( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependedArrays();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrays();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArrays( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrays( 1, [ 2 ] );
-    });
+  test.description = 'second arg is no a ArrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArrays( [], 2 );
+  });
 
-    test.description = 'second arg is no a ArrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrays( [], 2 );
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArrays( [], [ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArrays( [], [ 1 ], [ 2 ] );
-    });
-
-  }
 }
 
 //
@@ -1637,34 +1608,32 @@ function __arrayPrependArraysOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependArraysOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnce();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArraysOnce( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnce( 1, [ 2 ] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArraysOnce( [], [ 1, 2, 3 ], {} );
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnce( [], [ 1, 2, 3 ], {} );
-    });
-
-    test.description = 'second arg is no a ArrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnce( [], 2 );
-    });
-
-  }
+  test.description = 'second arg is no a ArrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArraysOnce( [], 2 );
+  });
 
 }
 
@@ -1720,56 +1689,54 @@ function __arrayPrependArraysOnceStrictly( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependArraysOnceStrictly();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnceStrictly();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArraysOnceStrictly( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnceStrictly( 1, [ 2 ] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArraysOnceStrictly( [], [ 1,2,3 ], {} );
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnceStrictly( [], [ 1,2,3 ], {} );
-    });
+  var dst = [ 1, 2, 3 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayPrependArraysOnceStrictly( dst, [ 4, 2, 5 ] );
+  })
+  test.identical( dst, [ 4, 5, 1, 2, 3 ] )
 
-    var dst = [ 1, 2, 3 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayPrependArraysOnceStrictly( dst, [ 4, 2, 5 ] );
-    })
-    test.identical( dst, [ 4, 5, 1, 2, 3 ] )
+  var dst = [ 1, 1, 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayPrependArraysOnceStrictly( dst, [ 1 ] );
+  })
+  test.identical( dst, [ 1, 1, 1 ] );
 
-    var dst = [ 1, 1, 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayPrependArraysOnceStrictly( dst, [ 1 ] );
-    })
-    test.identical( dst, [ 1, 1, 1 ] );
+  test.description = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayPrependArraysOnceStrictly( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
-    test.description = 'argument is undefined';
-    var dst = [ 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayPrependArraysOnceStrictly( dst, undefined );
-    });
-    test.identical( dst, [ 1 ] );
-
-    test.description = 'second arg is no a ArrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependArraysOnceStrictly( [], 2 );
-    });
-  }
-
+  test.description = 'second arg is no a ArrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependArraysOnceStrictly( [], 2 );
+  });
 }
 
 //
@@ -1832,7 +1799,6 @@ function __arrayPrependedArraysOnce( test )
   test.identical( dst, [ 2, 1, 3 ] );
   test.identical( got, 1 );
 
-
   test.description = 'argument is undefined';
   var dst = [ 1 ];
   test.shouldThrowError( function ()
@@ -1851,206 +1817,34 @@ function __arrayPrependedArraysOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayPrependedArraysOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArraysOnce();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArraysOnce( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArraysOnce( 1, [ 2 ] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArraysOnce( [], [ 1, 2, 3 ], [] )
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArraysOnce( [], [ 1, 2, 3 ], [] )
-    });
-
-    test.description = 'second arg is not a ArrayLike entity';
-    test.shouldThrowError( function()
-    {
-      _.__arrayPrependedArraysOnce( [ 1 ], 2 );
-    });
-  }
+  test.description = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
+  {
+    _.__arrayPrependedArraysOnce( [ 1 ], 2 );
+  });
 
 }
-
-//
-
-function __arrayAppendArray( test )
-{
-
-  test.description = 'nothing';
-  var got = _.__arrayAppendArray( [  ] );
-  var expected = [  ];
-  test.identical( got, expected );
-
-  test.description = 'an argument';
-  var got = _.__arrayAppendArray( [ 1, 2, undefined ] );
-  var expected = [ 1, 2, undefined ];
-  test.identical( got, expected );
-
-  test.description = 'an array';
-  var got = _.__arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
-  var expected = [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArray();
-    });
-
-    test.description = 'arguments[0] is wrong, has to be an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArray( 'wrong argument', 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
-    });
-
-    test.description = 'arguments[1] is undefined';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArray( [ 1, 2 ], undefined, false, { a : 1 }, 42, [ 3, 7, 13 ] );
-    });
-
-  }
-};
-
-//
-
-function __arrayAppendedArray( test )
-{
-  test.description = 'nothing';
-
-  var dst = [];
-  var got = _.__arrayAppendedArray( dst, [] );
-  test.identical( dst, [] );
-  test.identical( got, 0 );
-
-  test.description = 'simple';
-
-  var dst = [];
-  var got = _.__arrayAppendedArray( dst, [ 1, 2, 3 ] );
-  test.identical( dst, [ 1, 2, 3 ] );
-  test.identical( got, 3 );
-
-  test.description = 'prepends only unique elements';
-
-  var dst = [ 1,2,3 ];
-  var got = _.__arrayAppendedArray( dst, [ 2, 4, 5 ] );
-  test.identical( dst, [ 1, 2, 3, 2, 4, 5 ] );
-  test.identical( got, 3 );
-
-  var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendedArray( dst, [ 1 ] );
-  test.identical( dst, [ 1, 1, 1, 1 ] );
-  test.identical( got, 1 );
-
-  test.description = 'mixed arguments types';
-  var dst = [ 1 ];
-  var got = _.__arrayAppendedArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
-  test.identical( dst, [ 1, 'a', 1, [ { a : 1 } ], { b : 2 } ] );
-  test.identical( got, 4 );
-
-  test.description = 'argument is undefined';
-  var dst = [ 1 ];
-  test.shouldThrowError( function ()
-  {
-    _.__arrayAppendedArray( dst, undefined );
-  });
-  test.identical( dst, [ 1 ] );
-
-  test.description = 'array has undefined';
-  var dst = [ 1 ];
-  test.mustNotThrowError( function ()
-  {
-    _.__arrayAppendedArray( dst, [ undefined, 2 ] );
-  });
-  test.identical( dst, [ 1,undefined, 2, ] );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArray();
-    });
-
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
-
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArray( [ 1, 2 ], 2 );
-    });
-  }
-
-}
-
-//
-
-// function __arrayAppendArrayOnce( test )
-// {
-//
-//   test.description = 'nothing';
-//   var got = _.__arrayAppendArrayOnce( [  ] );
-//   var expected = [  ];
-//   test.identical( got, expected );
-//
-//   test.description = 'an argument';
-//   var got = _.__arrayAppendArrayOnce( [ 1, 2, undefined ] );
-//   var expected = [ 1, 2, undefined ];
-//   test.identical( got, expected );
-//
-//   test.description = 'an array';
-//   var got = _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
-//   var expected = [ 1, 2, 'str', {}, 5 ];
-//   test.identical( got, expected );
-//
-//   /**/
-//
-//   if( Config.debug )
-//   {
-//
-//     test.description = 'no arguments';
-//     test.shouldThrowError( function()
-//     {
-//       _.__arrayAppendArrayOnce();
-//     });
-//
-//     test.description = 'arguments[0] is wrong, has to be an array';
-//     test.shouldThrowError( function()
-//     {
-//       _.__arrayAppendArrayOnce( 'wrong argument', 'str', 2, {}, [ 'str', 5 ] );
-//     });
-//
-//     test.description = 'arguments[3] is undefined';
-//     test.shouldThrowError( function()
-//     {
-//       _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, undefined, [ 'str', 5 ] );
-//     });
-//
-//   }
-//
-// };
 
 //
 
@@ -2081,26 +1875,26 @@ function __arrayAppend( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppend();
-    })
+    _.__arrayAppend();
+  })
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppend( [], 1, 1 );
-    })
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppend( [], 1, 1 );
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppend( 1, 1 );
-    })
-  }
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppend( 1, 1 );
+  })
 }
 
 //
@@ -2146,26 +1940,26 @@ function __arrayAppended( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppended();
-    })
+    _.__arrayAppended();
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppended( [], 1, 1 );
-    })
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppended( [], 1, 1 );
+  });
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppended( 1, 1 );
-    })
-  }
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppended( 1, 1 );
+  });
 }
 
 //
@@ -2233,26 +2027,26 @@ function __arrayAppendOnce( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendOnce();
-    })
+    _.__arrayAppendOnce();
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendOnce( 1, 1 );
-    })
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendOnce( 1, 1 );
+  })
 
-    test.description = 'onEqualize is not a function';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendOnce( 1, 1, 1 );
-    })
-  }
+  test.description = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendOnce( 1, 1, 1 );
+  })
 }
 
 //
@@ -2338,32 +2132,32 @@ function __arrayAppendedOnce( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedOnce();
-    })
+    _.__arrayAppendedOnce();
+  })
 
-    test.description = 'third is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedOnce( [], 1, 1 );
-    })
+  test.description = 'third is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedOnce( [], 1, 1 );
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedOnce( 1, 1 );
-    })
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedOnce( 1, 1 );
+  })
 
-    test.description = 'onEqualize is not a function';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedOnce( 1, 1, 1 );
-    })
-  }
+  test.description = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedOnce( 1, 1, 1 );
+  })
 }
 
 //
@@ -2420,62 +2214,105 @@ function __arrayAppendOnceStrictly( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
+    _.__arrayAppendOnceStrictly();
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendOnceStrictly( 1, 1 );
+  })
+
+  test.description = 'ins already exists ion dst';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendOnceStrictly( [ 1 ], 1 );
+  });
+
+  test.shouldThrowError( function()
+  {
+     _.__arrayAppendOnceStrictly( [ 1,2,3 ], 3 );
+  });
+
+  test.description = 'onEqualize is not a routine';
+
+  test.shouldThrowError( function()
+  {
+     _.__arrayAppendOnceStrictly( [ 1,2,3 ], 3, 3 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+    var onEqualize = function( a, b )
     {
-      _.__arrayAppendOnceStrictly();
-    })
+      return a.num === b.num;
+    }
+    _.__arrayAppendOnceStrictly( dst, { num : 1 }, onEqualize );
+  });
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
+  test.shouldThrowError( function()
+  {
+    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+    var onEqualize = function( a )
     {
-      _.__arrayAppendOnceStrictly( 1, 1 );
-    })
-
-    test.description = 'ins already exists ion dst';
-
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendOnceStrictly( [ 1 ], 1 );
-    });
-
-    test.shouldThrowError( function()
-    {
-       _.__arrayAppendOnceStrictly( [ 1,2,3 ], 3 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-
-    test.shouldThrowError( function()
-    {
-       _.__arrayAppendOnceStrictly( [ 1,2,3 ], 3, 3 );
-    });
-
-    test.shouldThrowError( function()
-    {
-      var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-      var onEqualize = function( a, b )
-      {
-        return a.num === b.num;
-      }
-      _.__arrayAppendOnceStrictly( dst, { num : 1 }, onEqualize );
-    });
-
-    test.shouldThrowError( function()
-    {
-      var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-      var onEqualize = function( a )
-      {
-        return a.num;
-      }
-      _.__arrayAppendOnceStrictly( dst, 1, onEqualize );
-    });
-  }
+      return a.num;
+    }
+    _.__arrayAppendOnceStrictly( dst, 1, onEqualize );
+  });
 }
 
+// //
 //
+// function __arrayAppendArray( test )
+// {
+//
+//   test.description = 'nothing';
+//   var got = _.__arrayAppendArray( [  ] );
+//   var expected = [  ];
+//   test.identical( got, expected );
+//
+//   test.description = 'an argument';
+//   var got = _.__arrayAppendArray( [ 1, 2, undefined ] );
+//   var expected = [ 1, 2, undefined ];
+//   test.identical( got, expected );
+//
+//   test.description = 'an array';
+//   var got = _.__arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+//   var expected = [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.description = 'no arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayAppendArray();
+//   });
+//
+//   test.description = 'arguments[0] is wrong, has to be an array';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayAppendArray( 'wrong argument', 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+//   });
+//
+//   test.description = 'arguments[1] is undefined';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayAppendArray( [ 1, 2 ], undefined, false, { a : 1 }, 42, [ 3, 7, 13 ] );
+//   });
+//
+// };
 
 //
 
@@ -2529,28 +2366,150 @@ function __arrayAppendArray( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendArray();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArray();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArray( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
-
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArray( [ 1, 2 ], 2 );
-    });
-  }
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArray( [ 1, 2 ], 2 );
+  });
 };
+
+//
+
+function __arrayAppendedArray( test )
+{
+  test.description = 'nothing';
+
+  var dst = [];
+  var got = _.__arrayAppendedArray( dst, [] );
+  test.identical( dst, [] );
+  test.identical( got, 0 );
+
+  test.description = 'simple';
+
+  var dst = [];
+  var got = _.__arrayAppendedArray( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  test.description = 'prepends only unique elements';
+
+  var dst = [ 1,2,3 ];
+  var got = _.__arrayAppendedArray( dst, [ 2, 4, 5 ] );
+  test.identical( dst, [ 1, 2, 3, 2, 4, 5 ] );
+  test.identical( got, 3 );
+
+  var dst = [ 1, 1, 1 ];
+  var got = _.__arrayAppendedArray( dst, [ 1 ] );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.description = 'mixed arguments types';
+  var dst = [ 1 ];
+  var got = _.__arrayAppendedArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  test.identical( dst, [ 1, 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  test.identical( got, 4 );
+
+  test.description = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendedArray( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
+
+  test.description = 'array has undefined';
+  var dst = [ 1 ];
+  test.mustNotThrowError( function ()
+  {
+    _.__arrayAppendedArray( dst, [ undefined, 2 ] );
+  });
+  test.identical( dst, [ 1,undefined, 2, ] );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArray();
+  });
+
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
+
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArray( [ 1, 2 ], 2 );
+  });
+}
+
+//
+
+// function __arrayAppendArrayOnce( test )
+// {
+//
+//   test.description = 'nothing';
+//   var got = _.__arrayAppendArrayOnce( [  ] );
+//   var expected = [  ];
+//   test.identical( got, expected );
+//
+//   test.description = 'an argument';
+//   var got = _.__arrayAppendArrayOnce( [ 1, 2, undefined ] );
+//   var expected = [ 1, 2, undefined ];
+//   test.identical( got, expected );
+//
+//   test.description = 'an array';
+//   var got = _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
+//   var expected = [ 1, 2, 'str', {}, 5 ];
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( Config.debug )
+//   {
+//
+//     test.description = 'no arguments';
+//     test.shouldThrowError( function()
+//     {
+//       _.__arrayAppendArrayOnce();
+//     });
+//
+//     test.description = 'arguments[0] is wrong, has to be an array';
+//     test.shouldThrowError( function()
+//     {
+//       _.__arrayAppendArrayOnce( 'wrong argument', 'str', 2, {}, [ 'str', 5 ] );
+//     });
+//
+//     test.description = 'arguments[3] is undefined';
+//     test.shouldThrowError( function()
+//     {
+//       _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, undefined, [ 'str', 5 ] );
+//     });
+//
+//   }
+//
+// };
 
 //
 
@@ -2605,33 +2564,32 @@ function __arrayAppendArrayOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendArrayOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnce();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrayOnce( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnce( [ 1, 2 ], 2 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnce( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+  });
 
 }
 
@@ -2689,33 +2647,32 @@ function __arrayAppendedArrayOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendedArrayOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrayOnce();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArrayOnce( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrayOnce( [ 1, 2 ], 2 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+  });
 
 }
 
@@ -2759,49 +2716,48 @@ function __arrayAppendArrayOnceStrictly( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendArrayOnceStrictly();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnceStrictly();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrayOnceStrictly( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnceStrictly( [ 1, 2 ], 2 );
-    });
+  test.description = 'one of elements is not unique';
 
-    test.description = 'one of elements is not unique';
+  var dst = [ 1,2,3 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendArrayOnceStrictly( dst, [ 4, 5, 2 ] );
+  })
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] );
 
-    var dst = [ 1,2,3 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendArrayOnceStrictly( dst, [ 4, 5, 2 ] );
-    })
-    test.identical( dst, [ 1, 2, 3, 4, 5 ] );
+  var dst = [ 1, 1, 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendArrayOnceStrictly( dst, [ 1 ] );
+  })
+  test.identical( dst, [ 1, 1, 1 ] );
 
-    var dst = [ 1, 1, 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendArrayOnceStrictly( dst, [ 1 ] );
-    })
-    test.identical( dst, [ 1, 1, 1 ] );
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
+  });
 }
 
 //
@@ -2870,33 +2826,32 @@ function __arrayAppendArrays( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendArrays();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrays();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrays( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrays( 1, [ 2 ] );
-    });
+  test.description = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrays( [], 1 );
+  });
 
-    test.description = 'second arg is not a ArrayLike entity';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrays( [], 1 );
-    });
-
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArrays( [], [ 1 ], [ 2 ] );
-    });
-  }
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArrays( [], [ 1 ], [ 2 ] );
+  });
 };
 
 //
@@ -2957,42 +2912,41 @@ function __arrayAppendedArrays( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendedArrays();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrays();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArrays( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrays( 1, [ 2 ] );
-    });
+  test.description = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendedArrays( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
-    test.description = 'argument is undefined';
-    var dst = [ 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendedArrays( dst, undefined );
-    });
-    test.identical( dst, [ 1 ] );
+  test.description = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArrays( [], 1 );
+  });
 
-    test.description = 'second arg is not a ArrayLike entity';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrays( [], 1 );
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendedArrays( [], [ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArrays( [], [ 1 ], [ 2 ] );
-    });
-
-  }
 }
 
 //
@@ -3064,41 +3018,40 @@ function __arrayAppendArraysOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendArraysOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnce();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArraysOnce( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnce( 1, [ 2 ] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArraysOnce( [], [ 1, 2, 3 ], [] );
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnce( [], [ 1, 2, 3 ], [] );
-    });
+  test.description = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendArraysOnce( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
-    test.description = 'argument is undefined';
-    var dst = [ 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendArraysOnce( dst, undefined );
-    });
-    test.identical( dst, [ 1 ] );
-
-    test.description = 'second arg is not a ArrayLike entity';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnce( [], 1 );
-    });
-  }
+  test.description = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArraysOnce( [], 1 );
+  });
 
 }
 
@@ -3156,55 +3109,54 @@ function __arrayAppendArraysOnceStrictly( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendArraysOnceStrictly();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnceStrictly();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArraysOnceStrictly( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnceStrictly( 1, [ 2 ] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArraysOnceStrictly( [], [ 1, 2, 3 ], [] )
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnceStrictly( [], [ 1, 2, 3 ], [] )
-    });
+  var dst = [ 1, 2, 3 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendArraysOnceStrictly( dst, [ 4, 2, 5 ] );
+  })
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] )
 
-    var dst = [ 1, 2, 3 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendArraysOnceStrictly( dst, [ 4, 2, 5 ] );
-    })
-    test.identical( dst, [ 1, 2, 3, 4, 5 ] )
+  var dst = [ 1, 1, 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendArraysOnceStrictly( dst, [ 1 ] );
+  })
+  test.identical( dst, [ 1, 1, 1 ] );
 
-    var dst = [ 1, 1, 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendArraysOnceStrictly( dst, [ 1 ] );
-    })
-    test.identical( dst, [ 1, 1, 1 ] );
+  test.description = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayAppendArraysOnceStrictly( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
-    test.description = 'argument is undefined';
-    var dst = [ 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendArraysOnceStrictly( dst, undefined );
-    });
-    test.identical( dst, [ 1 ] );
-
-    test.description = 'second arg is not a ArrayLike entity';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendArraysOnceStrictly( [], 1 );
-    });
-  }
+  test.description = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
+  {
+    _.__arrayAppendArraysOnceStrictly( [], 1 );
+  });
 
 }
 
@@ -3279,166 +3231,41 @@ function __arrayAppendedArraysOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayAppendedArraysOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArraysOnce();
-    });
-
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArraysOnce( 1, [ 2 ] );
-    });
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArraysOnce( [], [ 1, 2, 3 ], [] )
-    });
-
-    test.description = 'argument is undefined';
-    var dst = [ 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayAppendedArraysOnce( dst, undefined );
-    });
-    test.identical( dst, [ 1 ] );
-
-    test.description = 'second arg is not a ArrayLike entity';
-    test.shouldThrowError( function()
-    {
-      _.__arrayAppendedArraysOnce( [], 1 );
-    });
-  }
-
-}
-
-//
-
-function __arrayRemoveAll( test )
-{
-  test.description = 'simple';
-
-  var got = _.__arrayRemoveAll( [], 1 );
-  test.identical( got, [] );
-
-  var got = _.__arrayRemoveAll( [ 1 ], 1 );
-  test.identical( got, [ ] );
-
-  var got = _.__arrayRemoveAll( [ 1,2,2,2 ], 2 );
-  test.identical( got, [ 1 ] );
-
-  var got = _.__arrayRemoveAll( [ 1 ], '1' );
-  test.identical( got, [ 1 ] );
-
-  var got = _.__arrayRemoveAll( [ 1 ], -1 );
-  test.identical( got, [ 1 ] );
-
-  var got = _.__arrayRemoveAll( [ 1 ], [ 1 ] );
-  test.identical( got, [ 1 ] );
-
-  function onEqualize( a, b )
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
   {
-    return a.value === b;
-  }
-  var got = _.__arrayRemoveAll( [ { value : 1 }, { value : 1 }, { value : 2 } ], 1, onEqualize );
-  test.identical( got, [ { value : 2 } ] );
+    _.__arrayAppendedArraysOnce( 1, [ 2 ] );
+  });
 
-  //
-
-  if( Config.debug )
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveAll();
-    })
+    _.__arrayAppendedArraysOnce( [], [ 1, 2, 3 ], [] )
+  });
 
-    test.description = 'third argument is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveAll( [ 1 ], 1, 1 );
-    })
-
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveAll( 1, 1 );
-    })
-  }
-}
-
-//
-
-function __arrayRemovedAll( test )
-{
-  test.description = 'simple';
-
-  var dst = [];
-  var got = _.__arrayRemovedAll( dst, 1 );
-  test.identical( dst, [] );
-  test.identical( got, 0 );
-
+  test.description = 'argument is undefined';
   var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, 1 );
-  test.identical( dst, [] );
-  test.identical( got, 1 );
-
-  var dst = [ 1,2,2 ];
-  var got = _.__arrayRemovedAll( dst, 2 );
-  test.identical( dst, [ 1 ] );
-  test.identical( got, 2 );
-
-  var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, '1' );
-  test.identical( dst, [ 1 ] );
-  test.identical( got, 0 );
-
-  var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, -1 );
-  test.identical( dst, [ 1 ] );
-  test.identical( got, 0 );
-
-  var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, [ 1 ] );
-  test.identical( dst, [ 1 ] );
-  test.identical( got, 0 );
-
-  function onEqualize( a, b )
+  test.shouldThrowError( function ()
   {
-    return a.value === b;
-  }
-  var dst = [ { value : 1 }, { value : 1 }, { value : 2 } ];
-  var got = _.__arrayRemovedAll( dst, 1, onEqualize );
-  test.identical( dst, [ { value : 2 } ] );
-  test.identical( got, 2 );
+    _.__arrayAppendedArraysOnce( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
-  //
-
-  if( Config.debug )
+  test.description = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedAll();
-    })
+    _.__arrayAppendedArraysOnce( [], 1 );
+  });
 
-    test.description = 'third argument is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveAll( [ 1 ], 1, 1 );
-    })
-
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedAll( 1, 1 );
-    })
-  }
 }
 
 //
@@ -3506,26 +3333,26 @@ function __arrayRemoveOnce( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce();
-    })
+    _.__arrayRemoveOnce();
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce( 1, 1 );
-    })
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveOnce( 1, 1 );
+  })
 
-    test.description = 'onEqualize is not a function';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce( 1, 1, 1 );
-    })
-  }
+  test.description = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveOnce( 1, 1, 1 );
+  })
 }
 
 //
@@ -3536,12 +3363,12 @@ function __arrayRemovedOnce( test )
 
   var dst = [];
   var got = _.__arrayRemovedOnce( dst, 1 );
-  test.identical( dst, [ 1 ] );
+  test.identical( dst, [ ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
   var got = _.__arrayRemovedOnce( dst, 1 );
-  test.identical( dst, [ 1 ] );
+  test.identical( dst, [  ] );
   test.identical( got, 0 );
 
   var dst = [ 2,2,1 ];
@@ -3572,7 +3399,7 @@ function __arrayRemovedOnce( test )
     return a.num === b.num;
   }
   var got = _.__arrayRemovedOnce( dst, { num : 4 }, onEqualize );
-  test.identical( dst, [ { num : 4 },{ num : 1 },{ num : 2 },{ num : 3 } ] );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -3606,26 +3433,26 @@ function __arrayRemovedOnce( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce();
-    })
+    _.__arrayRemovedOnce();
+  })
 
-    test.description = 'third is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce( [], 1, 1 );
-    })
+  test.description = 'third is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedOnce( [], 1, 1 );
+  })
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce( 1, 1 );
-    })
-  }
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedOnce( 1, 1 );
+  })
 }
 
 //
@@ -3663,58 +3490,58 @@ function __arrayRemoveOnceStrictly( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
+    _.__arrayRemoveOnceStrictly();
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveOnceStrictly( 1, 1 );
+  })
+
+  test.description = 'ins not exists';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveOnceStrictly( [ 1 ], 2 );
+  });
+
+  test.description = 'onEqualize is not a routine';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveOnceStrictly( [ 1,2,3 ], 3, 3 );
+  });
+
+  test.description = 'onEqualize';
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+
+  test.shouldThrowError( function()
+  {
+    var onEqualize = function( a, b )
     {
-      _.__arrayRemoveOnceStrictly();
-    })
+      return a.num === b.num;
+    }
+    _.__arrayRemoveOnceStrictly( dst, { num : 4 }, onEqualize );
+  });
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
+
+  test.shouldThrowError( function()
+  {
+    var onEqualize = function( a )
     {
-      _.__arrayRemoveOnceStrictly( 1, 1 );
-    })
-
-    test.description = 'ins not exists';
-
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnceStrictly( [ 1 ], 2 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnceStrictly( [ 1,2,3 ], 3, 3 );
-    });
-
-    test.description = 'onEqualize';
-    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-
-    test.shouldThrowError( function()
-    {
-      var onEqualize = function( a, b )
-      {
-        return a.num === b.num;
-      }
-      _.__arrayRemoveOnceStrictly( dst, { num : 4 }, onEqualize );
-    });
-    test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
-
-
-    test.shouldThrowError( function()
-    {
-      var onEqualize = function( a )
-      {
-        return a.num;
-      }
-      _.__arrayRemoveOnceStrictly( dst, 4, onEqualize );
-    });
-    test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
-  }
+      return a.num;
+    }
+    _.__arrayRemoveOnceStrictly( dst, 4, onEqualize );
+  });
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 }
 
 //
@@ -3768,27 +3595,26 @@ function __arrayRemoveArray( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemoveArray();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArray();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArray( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
-
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArray( [ 1, 2 ], 2 );
-    });
-  }
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArray( [ 1, 2 ], 2 );
+  });
 };
 
 //
@@ -3841,28 +3667,26 @@ function __arrayRemovedArray( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemovedArray();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArray();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
-
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArray( [ 1, 2 ], 2 );
-    });
-  }
-
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedArray( [ 1, 2 ], 2 );
+  });
 }
 
 //
@@ -3906,33 +3730,32 @@ function __arrayRemovedArrayOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemovedArrayOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArrayOnce();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedArrayOnce( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArrayOnce( [ 1, 2 ], 2 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+  });
 
 }
 
@@ -3976,33 +3799,32 @@ function __arrayRemoveArrayOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemoveArrayOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArrayOnce();
-    });
+  test.description = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
 
-    test.description = 'too many args';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
-    });
+  test.description = 'second args is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArrayOnce( [ 1, 2 ], 2 );
+  });
 
-    test.description = 'second args is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArrayOnce( [ 1, 2 ], 2 );
-    });
-
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArrayOnce( [ 1, 2 ], [ 2 ], 3 );
-    });
-  }
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+  });
 }
 
 //
@@ -4040,58 +3862,58 @@ function __arrayRemoveArrayOnceStrictly( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
+    _.__arrayRemoveArrayOnceStrictly();
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArrayOnceStrictly( 1, 1 );
+  })
+
+  test.description = 'ins not exists';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArrayOnceStrictly( [ 1 ], [ 2 ] );
+  });
+
+  test.description = 'onEqualize is not a routine';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArrayOnceStrictly( [ 1,2,3 ], 3, 3 );
+  });
+
+  test.description = 'onEqualize';
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+
+  test.shouldThrowError( function()
+  {
+    var onEqualize = function( a, b )
     {
-      _.__arrayRemoveArrayOnceStrictly();
-    })
+      return a.num === b.num;
+    }
+    _.__arrayRemoveArrayOnceStrictly( dst, [ { num : 4 } ], onEqualize );
+  });
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
+
+  test.shouldThrowError( function()
+  {
+    var onEqualize = function( a )
     {
-      _.__arrayRemoveArrayOnceStrictly( 1, 1 );
-    })
-
-    test.description = 'ins not exists';
-
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArrayOnceStrictly( [ 1 ], [ 2 ] );
-    });
-
-    test.description = 'onEqualize is not a routine';
-
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArrayOnceStrictly( [ 1,2,3 ], 3, 3 );
-    });
-
-    test.description = 'onEqualize';
-    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-
-    test.shouldThrowError( function()
-    {
-      var onEqualize = function( a, b )
-      {
-        return a.num === b.num;
-      }
-      _.__arrayRemoveArrayOnceStrictly( dst, [ { num : 4 } ], onEqualize );
-    });
-    test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
-
-
-    test.shouldThrowError( function()
-    {
-      var onEqualize = function( a )
-      {
-        return a.num;
-      }
-      _.__arrayRemoveArrayOnceStrictly( dst, [ 4 ], onEqualize );
-    });
-    test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
-  }
+      return a.num;
+    }
+    _.__arrayRemoveArrayOnceStrictly( dst, [ 4 ], onEqualize );
+  });
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 }
 
 //
@@ -4160,35 +3982,34 @@ function __arrayRemoveArrays( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemoveArrays();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArrays();
-    });
+  test.description = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemoveArrays( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
-    test.description = 'argument is undefined';
-    var dst = [ 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemoveArrays( dst, undefined );
-    });
-    test.identical( dst, [ 1 ] );
+  test.description = 'second arg is not arrayLike entity';
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemoveArrays( [], 1 );
+  });
 
-    test.description = 'second arg is not arrayLike entity';
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemoveArrays( [], 1 );
-    });
-
-    test.description = 'too many args';
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemoveArrays( [], [ 1 ], [ 1 ] );
-    });
-  }
+  test.description = 'too many args';
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemoveArrays( [], [ 1 ], [ 1 ] );
+  });
 
 };
 
@@ -4270,35 +4091,34 @@ function __arrayRemovedArrays( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemovedArrays();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArrays();
-    });
+  test.description = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemovedArrays( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
-    test.description = 'argument is undefined';
-    var dst = [ 1 ];
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemovedArrays( dst, undefined );
-    });
-    test.identical( dst, [ 1 ] );
+  test.description = 'second arg is not arrayLike entity';
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemovedArrays( [], 1 );
+  });
 
-    test.description = 'second arg is not arrayLike entity';
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemovedArrays( [], 1 );
-    });
-
-    test.description = 'too many args';
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemovedArrays( [], [ 1 ], [ 1 ] );
-    });
-  }
+  test.description = 'too many args';
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemovedArrays( [], [ 1 ], [ 1 ] );
+  });
 }
 
 //
@@ -4385,33 +4205,32 @@ function __arrayRemovedArraysOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemovedArraysOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArraysOnce();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedArraysOnce( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArraysOnce( 1, [ 2 ] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedArraysOnce( [], [ 1, 2, 3 ], [] )
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedArraysOnce( [], [ 1, 2, 3 ], [] )
-    });
-
-    test.description = 'second arg is not arrayLike entity';
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemovedArraysOnce( [], 1 );
-    });
-  }
+  test.description = 'second arg is not arrayLike entity';
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemovedArraysOnce( [], 1 );
+  });
 }
 
 //
@@ -4521,33 +4340,32 @@ function __arrayRemoveArraysOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayRemoveArraysOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArraysOnce();
-    });
+  test.description = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArraysOnce( 1, [ 2 ] );
+  });
 
-    test.description = 'dst is not a array';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArraysOnce( 1, [ 2 ] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArraysOnce( [  ], [ 1, 2, 3 ], [] )
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArraysOnce( [  ], [ 1, 2, 3 ], [] )
-    });
-
-    test.description = 'second arg is not arrayLike entity';
-    test.shouldThrowError( function ()
-    {
-      _.__arrayRemoveArraysOnce( [], 1 );
-    });
-  }
+  test.description = 'second arg is not arrayLike entity';
+  test.shouldThrowError( function ()
+  {
+    _.__arrayRemoveArraysOnce( [], 1 );
+  });
 }
 
 //
@@ -4610,59 +4428,183 @@ function __arrayRemoveArraysOnceStrictly( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
+    _.__arrayRemoveArraysOnceStrictly();
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArraysOnceStrictly( 1, 1 );
+  })
+
+  test.description = 'ins not exists';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArraysOnceStrictly( [ 1 ], [ 2 ] );
+  });
+
+  test.description = 'onEqualize is not a routine';
+
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveArraysOnceStrictly( [], [ 1, 2, 3 ], [] );
+  });
+
+  test.description = 'onEqualize';
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+
+  test.shouldThrowError( function()
+  {
+    var onEqualize = function( a, b )
     {
-      _.__arrayRemoveArraysOnceStrictly();
-    })
+      return a.num === b.num;
+    }
+    var insArray = [ [ { num : 4 } ] ];
+    _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
+  });
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 
-    test.description = 'dst is not an array';
-    test.shouldThrowError( function()
+  test.shouldThrowError( function()
+  {
+    var onEqualize = function( a )
     {
-      _.__arrayRemoveArraysOnceStrictly( 1, 1 );
-    })
+      return a.num;
+    }
+    var insArray = [ [ 4 ] ];
+    _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
+  });
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
+}
 
-    test.description = 'ins not exists';
+//
 
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArraysOnceStrictly( [ 1 ], [ 2 ] );
-    });
+function __arrayRemoveAll( test )
+{
+  test.description = 'simple';
 
-    test.description = 'onEqualize is not a routine';
+  var got = _.__arrayRemoveAll( [], 1 );
+  test.identical( got, [] );
 
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveArraysOnceStrictly( [], [ 1, 2, 3 ], [] );
-    });
+  var got = _.__arrayRemoveAll( [ 1 ], 1 );
+  test.identical( got, [ ] );
 
-    test.description = 'onEqualize';
-    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var got = _.__arrayRemoveAll( [ 1,2,2,2 ], 2 );
+  test.identical( got, [ 1 ] );
 
-    test.shouldThrowError( function()
-    {
-      var onEqualize = function( a, b )
-      {
-        return a.num === b.num;
-      }
-      var insArray = [ [ { num : 4 } ] ];
-      _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
-    });
-    test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
+  var got = _.__arrayRemoveAll( [ 1 ], '1' );
+  test.identical( got, [ 1 ] );
 
-    test.shouldThrowError( function()
-    {
-      var onEqualize = function( a )
-      {
-        return a.num;
-      }
-      var insArray = [ [ 4 ] ];
-      _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
-    });
-    test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
+  var got = _.__arrayRemoveAll( [ 1 ], -1 );
+  test.identical( got, [ 1 ] );
+
+  var got = _.__arrayRemoveAll( [ 1 ], [ 1 ] );
+  test.identical( got, [ 1 ] );
+
+  function onEqualize( a, b )
+  {
+    return a.value === b;
   }
+  var got = _.__arrayRemoveAll( [ { value : 1 }, { value : 1 }, { value : 2 } ], 1, onEqualize );
+  test.identical( got, [ { value : 2 } ] );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveAll();
+  })
+
+  test.description = 'third argument is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveAll( [ 1 ], 1, 1 );
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveAll( 1, 1 );
+  })
+}
+
+//
+
+function __arrayRemovedAll( test )
+{
+  test.description = 'simple';
+
+  var dst = [];
+  var got = _.__arrayRemovedAll( dst, 1 );
+  test.identical( dst, [] );
+  test.identical( got, 0 );
+
+  var dst = [ 1 ];
+  var got = _.__arrayRemovedAll( dst, 1 );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  var dst = [ 1,2,2 ];
+  var got = _.__arrayRemovedAll( dst, 2 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 1 ];
+  var got = _.__arrayRemovedAll( dst, '1' );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 0 );
+
+  var dst = [ 1 ];
+  var got = _.__arrayRemovedAll( dst, -1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 0 );
+
+  var dst = [ 1 ];
+  var got = _.__arrayRemovedAll( dst, [ 1 ] );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 0 );
+
+  function onEqualize( a, b )
+  {
+    return a.value === b;
+  }
+  var dst = [ { value : 1 }, { value : 1 }, { value : 2 } ];
+  var got = _.__arrayRemovedAll( dst, 1, onEqualize );
+  test.identical( dst, [ { value : 2 } ] );
+  test.identical( got, 2 );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedAll();
+  })
+
+  test.description = 'third argument is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemoveAll( [ 1 ], 1, 1 );
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.__arrayRemovedAll( 1, 1 );
+  })
 }
 
 //
@@ -4716,26 +4658,26 @@ function __arrayFlatten( test )
   );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
   {
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlatten();
-    });
+    _.__arrayFlatten();
+  });
 
-    test.description = 'first is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlatten( 1, [ 1 ] );
-    });
+  test.description = 'first is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlatten( 1, [ 1 ] );
+  });
 
-    test.description = 'second is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlatten( [], 1 );
-    });
-  }
+  test.description = 'second is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlatten( [], 1 );
+  });
 }
 
 //
@@ -4796,33 +4738,33 @@ function __arrayFlattenOnce( test )
   });
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
   {
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnce();
-    });
+    _.__arrayFlattenOnce();
+  });
 
-    test.description = 'first is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnce( 1, [ 1 ] );
-    });
+  test.description = 'first is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnce( 1, [ 1 ] );
+  });
 
-    test.description = 'second is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnce( [], 1 );
+  test.description = 'second is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnce( [], 1 );
 
-    });
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnce( [], [ 1 ], [] );
-    });
-  }
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnce( [], [ 1 ], [] );
+  });
 }
 
 //
@@ -4884,61 +4826,61 @@ function __arrayFlattenOnceStrictly( test )
   });
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
   {
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly();
-    });
+    _.__arrayFlattenOnceStrictly();
+  });
 
-    test.description = 'first is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly( 1, [ 1 ] );
-    });
+  test.description = 'first is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnceStrictly( 1, [ 1 ] );
+  });
 
-    test.description = 'second is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly( [], 1 );
+  test.description = 'second is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnceStrictly( [], 1 );
 
-    });
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly( [], [ 1 ], [] );
-    });
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnceStrictly( [], [ 1 ], [] );
+  });
 
-    var dst = [];
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly( dst, [ 1, 1, 2, 2, 3, 3 ] )
-    });
-    test.identical( dst, [ 1, 2, 3 ] );
+  var dst = [];
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnceStrictly( dst, [ 1, 1, 2, 2, 3, 3 ] )
+  });
+  test.identical( dst, [ 1, 2, 3 ] );
 
-    var dst = [];
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly( dst, [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
-    });
-    test.identical( dst, [ 1, 2, 3 ] );
+  var dst = [];
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnceStrictly( dst, [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
+  });
+  test.identical( dst, [ 1, 2, 3 ] );
 
-    var dst = [];
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly( dst, [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
-    });
-    test.identical( dst, [ 1, 2, 3 ] );
+  var dst = [];
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnceStrictly( dst, [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
+  });
+  test.identical( dst, [ 1, 2, 3 ] );
 
-    var dst = [];
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenOnceStrictly( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
-    });
-    test.identical( dst, [ 1 ] );
-  }
+  var dst = [];
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenOnceStrictly( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
+  });
+  test.identical( dst, [ 1 ] );
 }
 
 //
@@ -5014,26 +4956,26 @@ function __arrayFlattened( test )
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 4 );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
   {
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattened();
-    });
+    _.__arrayFlattened();
+  });
 
-    test.description = 'first is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattened( 1, [ 1 ] );
-    });
+  test.description = 'first is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattened( 1, [ 1 ] );
+  });
 
-    test.description = 'second is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattened( [], 1 );
-    });
-  }
+  test.description = 'second is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattened( [], 1 );
+  });
 }
 
 //
@@ -5125,33 +5067,33 @@ function __arrayFlattenedOnce( test )
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 1 );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
   {
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenedOnce();
-    });
+    _.__arrayFlattenedOnce();
+  });
 
-    test.description = 'first is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenedOnce( 1, [ 1 ] );
-    });
+  test.description = 'first is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenedOnce( 1, [ 1 ] );
+  });
 
-    test.description = 'second is not arrayLike';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenedOnce( [], 1 );
+  test.description = 'second is not arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenedOnce( [], 1 );
 
-    });
+  });
 
-    test.description = 'onEqualize is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayFlattenedOnce( [], [ 1 ], [] );
-    });
-  }
+  test.description = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayFlattenedOnce( [], [ 1 ], [] );
+  });
 }
 
 //
@@ -5233,40 +5175,38 @@ function arrayElementsSwap( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayElementsSwap();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayElementsSwap();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ] );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayElementsSwap('wrong argument', 'wrong argument', 'wrong argument');
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayElementsSwap('wrong argument', 'wrong argument', 'wrong argument');
-    });
+  test.description = 'arguments[1] and arguments[2] are out of bound';
+  test.shouldThrowError( function()
+  {
+    _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], -1, -4 );
+  });
 
-    test.description = 'arguments[1] and arguments[2] are out of bound';
-    test.shouldThrowError( function()
-    {
-      _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], -1, -4 );
-    });
-
-    test.description = 'first five arguments are not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.arrayElementsSwap( 1, 2, 3, 4, 5, 0, 4 );
-    });
-
-  }
+  test.description = 'first five arguments are not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arrayElementsSwap( 1, 2, 3, 4, 5, 0, 4 );
+  });
 
 };
 
@@ -5299,28 +5239,26 @@ function arrayFrom( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.arrayFrom();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayFrom();
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayFrom( 6 );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayFrom( 6 );
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayFrom( true );
-    });
-
-  }
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayFrom( true );
+  });
 
 };
 
@@ -5348,22 +5286,20 @@ function arrayToMap( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.arrayToMap();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayToMap();
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayToMap( 'wrong argument' );
-    });
-
-  }
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayToMap( 'wrong argument' );
+  });
 
 };
 
@@ -5422,119 +5358,115 @@ function arrayToMap( test )
 // };
 
 
-function __arrayRemovedOnce( test )
-{
-
-  test.description = 'nothing';
-  var got = _.__arrayRemovedOnce( [  ], 2 );
-  var expected = -1;
-  test.identical( got, expected );
-
-  test.description = 'second element removed';
-  var got = _.__arrayRemovedOnce( [ 2, 4, 6 ], 4 );
-  var expected = 1;
-  test.identical( got, expected );
-
-  test.description = 'first element removed';
-  var got = _.__arrayRemovedOnce( [ true, false, 6 ], true );
-  var expected = 0;
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce();
-    });
-
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce( [ 2, 4, 6 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce( [ 2, 4, 6 ], 2, function( el ) { return el; }, 'redundant argument' );
-    });
-
-    test.description = 'arguments[0] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce( 'wrong argument', 2 );
-    });
-
-    test.description = 'arguments[2] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemovedOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
-    });
-
-  }
-
-};
+// function __arrayRemovedOnce( test )
+// {
+//
+//   test.description = 'nothing';
+//   var got = _.__arrayRemovedOnce( [  ], 2 );
+//   var expected = -1;
+//   test.identical( got, expected );
+//
+//   test.description = 'second element removed';
+//   var got = _.__arrayRemovedOnce( [ 2, 4, 6 ], 4 );
+//   var expected = 1;
+//   test.identical( got, expected );
+//
+//   test.description = 'first element removed';
+//   var got = _.__arrayRemovedOnce( [ true, false, 6 ], true );
+//   var expected = 0;
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.description = 'no arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemovedOnce();
+//   });
+//
+//   test.description = 'not enough arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemovedOnce( [ 2, 4, 6 ] );
+//   });
+//
+//   test.description = 'extra argument';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemovedOnce( [ 2, 4, 6 ], 2, function( el ) { return el; }, 'redundant argument' );
+//   });
+//
+//   test.description = 'arguments[0] is wrong';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemovedOnce( 'wrong argument', 2 );
+//   });
+//
+//   test.description = 'arguments[2] is wrong';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemovedOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
+//   });
+//
+// };
 
 
-function __arrayRemoveOnce( test ) {
-
-  test.description = 'nothing';
-  var got = _.__arrayRemoveOnce( [  ], 2 );
-  var expected = [  ];
-  test.identical( got, expected );
-
-  test.description = 'one element left';
-  var got = _.__arrayRemoveOnce( [ 2, 4 ], 4 );
-  var expected = [ 2 ];
-  test.identical( got, expected );
-
-  test.description = 'two elements left';
-  var got = _.__arrayRemoveOnce( [ true, false, 6 ], true );
-  var expected = [ false, 6 ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce();
-    });
-
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce( [ 2, 4, 6 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
-    });
-
-    test.description = 'arguments[0] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce( 'wrong argument', 2 );
-    });
-
-    test.description = 'arguments[2] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.__arrayRemoveOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
-    });
-
-  }
-
-};
+// function __arrayRemoveOnce( test ) {
+//
+//   test.description = 'nothing';
+//   var got = _.__arrayRemoveOnce( [  ], 2 );
+//   var expected = [  ];
+//   test.identical( got, expected );
+//
+//   test.description = 'one element left';
+//   var got = _.__arrayRemoveOnce( [ 2, 4 ], 4 );
+//   var expected = [ 2 ];
+//   test.identical( got, expected );
+//
+//   test.description = 'two elements left';
+//   var got = _.__arrayRemoveOnce( [ true, false, 6 ], true );
+//   var expected = [ false, 6 ];
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.description = 'no arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemoveOnce();
+//   });
+//
+//   test.description = 'not enough arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemoveOnce( [ 2, 4, 6 ] );
+//   });
+//
+//   test.description = 'extra argument';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemoveOnce( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+//   });
+//
+//   test.description = 'arguments[0] is wrong';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemoveOnce( 'wrong argument', 2 );
+//   });
+//
+//   test.description = 'arguments[2] is wrong';
+//   test.shouldThrowError( function()
+//   {
+//     _.__arrayRemoveOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
+//   });
+//
+// };
 
 
 // function __arrayRemoved( test )
@@ -5706,33 +5638,32 @@ function __arrayReplaceOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayReplaceOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnce();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ] );
-    });
+  test.description = 'fourth argument is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
+  });
 
-    test.description = 'fourth argument is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
-    });
-
-    test.description = 'arguments[0] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnce( 'wrong argument', undefined, 3 );
-    });
-  }
+  test.description = 'arguments[0] is wrong';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnce( 'wrong argument', undefined, 3 );
+  });
 }
 
 //
@@ -5787,33 +5718,32 @@ function __arrayReplacedOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayReplacedOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplacedOnce();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ] );
-    });
+  test.description = 'fourth argument is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
+  });
 
-    test.description = 'fourth argument is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
-    });
-
-    test.description = 'arguments[0] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplacedOnce( 'wrong argument', undefined, 3 );
-    });
-  }
+  test.description = 'arguments[0] is wrong';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplacedOnce( 'wrong argument', undefined, 3 );
+  });
 }
 
 //
@@ -5847,45 +5777,44 @@ function __arrayReplaceOnceStrictly( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.__arrayReplaceOnceStrictly();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnceStrictly();
-    });
+  test.description = 'nothing';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnceStrictly( [], 0, 0 );
+  });
 
-    test.description = 'nothing';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnceStrictly( [], 0, 0 );
-    });
+  test.description = 'element not exists';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnceStrictly( [ 1,2,3 ], [ 1 ], [ 4 ] );
+  });
 
-    test.description = 'element not exists';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnceStrictly( [ 1,2,3 ], [ 1 ], [ 4 ] );
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ] );
-    });
+  test.description = 'fourth argument is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
+  });
 
-    test.description = 'fourth argument is not a routine';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
-    });
-
-    test.description = 'arguments[0] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.__arrayReplaceOnceStrictly( 'wrong argument', undefined, 3 );
-    });
-  }
+  test.description = 'arguments[0] is wrong';
+  test.shouldThrowError( function()
+  {
+    _.__arrayReplaceOnceStrictly( 'wrong argument', undefined, 3 );
+  });
 }
 
 //
@@ -6613,34 +6542,32 @@ function arrayUpdate( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayUpdate();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayUpdate();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayUpdate( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayUpdate( [ 1, 2, 3, 4, 5 ] );
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6, 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6, 'redundant argument' );
-    });
-
-    test.description = 'arguments[0] is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayUpdate( 'wrong argument', 6, 6 );
-    });
-
-  }
+  test.description = 'arguments[0] is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayUpdate( 'wrong argument', 6, 6 );
+  });
 
 }
 
@@ -7094,43 +7021,38 @@ function arrayCutin( test )
 
   }
 
+  if( !Config.debug )
+  return;
 
-
-  if( Config.debug )
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayCutin();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCutin();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCutin( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCutin( [ 1, 2, 3, 4, 5 ] );
-    });
+  test.description = 'redundant argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayCutin( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3, 'redundant argument' );
+  });
 
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayCutin( [ 1, 'a', 'b', 'c', 5 ], [ 2, 3, 4 ], 1, 3, 'redundant argument' );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCutin( 'wrong argument', 'wrong argument', 'wrong argument', 'wrong argument' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCutin( 'wrong argument', 'wrong argument', 'wrong argument', 'wrong argument' );
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayCutin( [],[ 'x' ],3 );
-    });
-
-  }
-
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayCutin( [],[ 'x' ],3 );
+  });
 };
 
 //
@@ -7205,33 +7127,32 @@ function arraySlice( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'buffer';
+
+  /**/
+
+  got = _.arraySlice( new Buffer( '123' ), 0, 1 );
+  expected = [ 49 ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
-    test.description = 'buffer';
+    _.arraySlice();
+  });
 
-    /**/
+  //
 
-    got = _.arraySlice( new Buffer( '123' ), 0, 1 );
-    expected = [ 49 ];
-    test.identical( got, expected );
-
-    //
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySlice();
-    });
-
-    //
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySlice( 'wrong argument', 'wrong argument', 'wrong argument' );
-    });
-
-  }
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySlice( 'wrong argument', 'wrong argument', 'wrong argument' );
+  });
 
 };
 
@@ -7304,42 +7225,41 @@ function arrayGrow( test )
 
   //
 
-  if( Config.debug )
+  if( !isBrowser )
   {
     test.description = 'buffer';
-
-    /**/
-
     got = _.arrayGrow( new Buffer( '123' ), 0, 5, 0 );
     expected = [ 49, 50, 51, 0, 0 ];
     test.identical( got, expected );
-
-    //
-
-    test.description = 'invalid arguments type';
-
-    /**/
-
-    test.shouldThrowErrorSync( function()
-    {
-      _.arrayGrow( 1 );
-    })
-
-    /**/
-
-    test.shouldThrowErrorSync( function()
-    {
-      _.arrayGrow( array, '1', array.length )
-    })
-
-    /**/
-
-    test.shouldThrowErrorSync( function()
-    {
-      _.arrayGrow( array, 0, '1' )
-    })
-
   }
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments type';
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( 1 );
+  })
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( array, '1', array.length )
+  })
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( array, 0, '1' )
+  })
 
 }
 
@@ -7380,12 +7300,8 @@ function arrayAs( test )
 
   /**/
 
-  if( Config.debug )
-  {
-
-
-
-  }
+  if( !Config.debug )
+  return;
 
 };
 
@@ -7414,37 +7330,36 @@ function arrayToStr( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayToStr();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayToStr();
-    });
+  test.description = 'in second argument property (type) is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayToStr( [ 1, 2, 3 ], { type : 'wrong type' } );
+  });
 
-    test.description = 'in second argument property (type) is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayToStr( [ 1, 2, 3 ], { type : 'wrong type' } );
-    });
+  test.description = 'in second argument property (type) is not provided';
+  test.shouldThrowError( function()
+  {
+    _.arrayToStr( [ 1, 2, 3 ], { precission : 4 } );
+  });
 
-    test.description = 'in second argument property (type) is not provided';
-    test.shouldThrowError( function()
-    {
-      _.arrayToStr( [ 1, 2, 3 ], { precission : 4 } );
-    });
-
-    test.description = 'first argument is string';
-    test.shouldThrowError( function()
-    {
-      _.arrayToStr( 'wrong argument', {  type : 'float' } );
-    });
-
-  }
+  test.description = 'first argument is string';
+  test.shouldThrowError( function()
+  {
+    _.arrayToStr( 'wrong argument', {  type : 'float' } );
+  });
 
 };
 
+//
 
 function arrayPut( test )
 {
@@ -7461,25 +7376,24 @@ function arrayPut( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayPut();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayPut();
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayPut( 'wrong argument', 'wrong argument', 'str', true, [ 7, 8 ] );
-    });
-
-  }
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayPut( 'wrong argument', 'wrong argument', 'str', true, [ 7, 8 ] );
+  });
 
 };
 
+//
 
 function arrayMask( test )
 {
@@ -7502,55 +7416,54 @@ function arrayMask( test )
   /**/
 
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayMask();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayMask();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayMask( [ 1, 2, 3, 4 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayMask( [ 1, 2, 3, 4 ] );
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayMask( [ 'a', 'b', 'c', 4, 5 ], [ 0, '', 1, 2, 3 ], 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayMask( [ 'a', 'b', 'c', 4, 5 ], [ 0, '', 1, 2, 3 ], 'redundant argument' );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayMask( 'wrong argument', 'wrong argument' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayMask( 'wrong argument', 'wrong argument' );
-    });
+  test.description = 'both arrays are empty';
+  test.shouldThrowError( function()
+  {
+    _.arrayMask( [  ], [  ] );
+  });
 
-    test.description = 'both arrays are empty';
-    test.shouldThrowError( function()
-    {
-      _.arrayMask( [  ], [  ] );
-    });
+  test.description = 'length of the first array is not equal to the second array';
+  test.shouldThrowError( function()
+  {
+    _.arrayMask( [ 1, 2, 3 ], [ undefined, null, 0, '' ] );
+  });
 
-    test.description = 'length of the first array is not equal to the second array';
-    test.shouldThrowError( function()
-    {
-      _.arrayMask( [ 1, 2, 3 ], [ undefined, null, 0, '' ] );
-    });
-
-    test.description = 'length of the second array is not equal to the first array';
-    test.shouldThrowError( function()
-    {
-      _.arrayMask( [ 1, 2, 3, 4 ], [ undefined, null, 0 ] );
-    });
-
-  }
+  test.description = 'length of the second array is not equal to the first array';
+  test.shouldThrowError( function()
+  {
+    _.arrayMask( [ 1, 2, 3, 4 ], [ undefined, null, 0 ] );
+  });
 
 };
 
+//
 
 function arrayDuplicate( test )
 {
@@ -7584,37 +7497,36 @@ function arrayDuplicate( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayDuplicate();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayDuplicate();
-    });
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayDuplicate( [ 'a', 'b', 'c' ], 'wrong argument' );
+  });
 
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayDuplicate( [ 'a', 'b', 'c' ], 'wrong argument' );
-    });
-
-    test.description = 'options.src is not provided or "undefined"';
-    var options = {
-      src : undefined,
-      result : [  ],
-      numberOfAtomsPerElement : 3,
-      numberOfDuplicatesPerElement : 3
-    };
-    test.shouldThrowError( function()
-    {
-      _.arrayDuplicate( options, { a : 13 } );
-    });
-
-  }
+  test.description = 'options.src is not provided or "undefined"';
+  var options = {
+    src : undefined,
+    result : [  ],
+    numberOfAtomsPerElement : 3,
+    numberOfDuplicatesPerElement : 3
+  };
+  test.shouldThrowError( function()
+  {
+    _.arrayDuplicate( options, { a : 13 } );
+  });
 
 };
 
+//
 
 function arrayFill( test )
 {
@@ -7641,31 +7553,30 @@ function arrayFill( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayFill();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayFill();
-    });
+  test.description = 'array is empty';
+  test.shouldThrowError( function()
+  {
+    _.arrayFill( [  ] );
+  });
 
-    test.description = 'array is empty';
-    test.shouldThrowError( function()
-    {
-      _.arrayFill( [  ] );
-    });
-
-    test.description = 'wrong argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayFill( 'wrong argument' );
-    });
-
-  }
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayFill( 'wrong argument' );
+  });
 
 };
 
+//
 
 function arrayCompare( test )
 {
@@ -7713,49 +7624,48 @@ function arrayCompare( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayCompare();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCompare();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCompare( [ 1, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCompare( [ 1, 5 ] );
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayCompare( [ 1, 5 ], [ 1, 2 ], 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayCompare( [ 1, 5 ], [ 1, 2 ], 'redundant argument' );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCompare( 'wrong argument', 'wrong argument' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCompare( 'wrong argument', 'wrong argument' );
-    });
+  test.description = 'second array is empty';
+  test.shouldThrowError( function()
+  {
+    _.arrayCompare( [ 1, 5 ], [  ] );
+  });
 
-    test.description = 'second array is empty';
-    test.shouldThrowError( function()
-    {
-      _.arrayCompare( [ 1, 5 ], [  ] );
-    });
-
-    test.description = 'length of the second array is less than first';
-    test.shouldThrowError( function()
-    {
-      _.arrayCompare( [ 1, 5 ], [ 1 ] );
-    });
-
-  }
+  test.description = 'length of the second array is less than first';
+  test.shouldThrowError( function()
+  {
+    _.arrayCompare( [ 1, 5 ], [ 1 ] );
+  });
 
 };
 
+//
 
 function arraySame( test )
 {
@@ -7793,31 +7703,30 @@ function arraySame( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySame();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySame();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySame( [ 1, 2, 3 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySame( [ 1, 2, 3 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySame( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
-    });
-
-  }
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySame( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
+  });
 
 };
 
+//
 
 function arrayLeftIndexOf( test )
 {
@@ -7872,31 +7781,30 @@ function arrayLeftIndexOf( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayLeftIndexOf();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayLeftIndexOf();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayLeftIndexOf( [ 1, 2, 3 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayLeftIndexOf( [ 1, 2, 3 ] );
-    });
-
-    test.description = 'third argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayLeftIndexOf( [ 1, 2, 3 ], 2, 'wrong argument' );
-    });
-
-  }
+  test.description = 'third argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayLeftIndexOf( [ 1, 2, 3 ], 2, 'wrong argument' );
+  });
 
 };
 
+//
 
 function arrayLeft( test )
 {
@@ -7923,25 +7831,24 @@ function arrayLeft( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayLeft();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayLeft();
-    });
-
-    test.description = 'third argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayLeft( [ 1, 2, 3 ], 2, 'wrong argument' );
-    });
-
-  }
+  test.description = 'third argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayLeft( [ 1, 2, 3 ], 2, 'wrong argument' );
+  });
 
 };
 
+//
 
 function arrayHasAny( test )
 {
@@ -7963,25 +7870,24 @@ function arrayHasAny( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayHasAny();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayHasAny();
-    });
-
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayHasAny( 'wrong argument', false, 7 );
-    });
-
-  }
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayHasAny( 'wrong argument', false, 7 );
+  });
 
 };
 
+//
 
 function arrayCount( test )
 {
@@ -7998,37 +7904,36 @@ function arrayCount( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayCount();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCount();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCount( [ 1, 2, 3, 'abc', 13 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCount( [ 1, 2, 3, 'abc', 13 ] );
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayCount( [ 1, 2, 3, true ], true, 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayCount( [ 1, 2, 3, true ], true, 'redundant argument' );
-    });
-
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayCount( 'wrong argument', true );
-    });
-
-  }
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayCount( 'wrong argument', true );
+  });
 
 };
 
+//
 
 function arrayCountUnique( test )
 {
@@ -8050,34 +7955,32 @@ function arrayCountUnique( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayCountUnique();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayCountUnique();
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], function( e ) { return e }, 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], function( e ) { return e }, 'redundant argument' );
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountUnique( 'wrong argument', function( e ) { return e } );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayCountUnique( 'wrong argument', function( e ) { return e } );
-    });
-
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], 'wrong argument' );
-    });
-
-  }
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ], 'wrong argument' );
+  });
 
 };
 
@@ -8107,37 +8010,36 @@ function arraySum( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySum();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySum();
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 }, 'redundant argument' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 }, 'redundant argument' );
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySum( 'wrong argument', function( e ) { return e / 2 } );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySum( 'wrong argument', function( e ) { return e / 2 } );
-    });
-
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySum( [ 1, 2, 3, 4, 5 ], 'wrong argument' );
-    });
-
-  }
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySum( [ 1, 2, 3, 4, 5 ], 'wrong argument' );
+  });
 
 };
 
+//
 
 function arrayExtendScreening( test )
 {
@@ -8169,37 +8071,36 @@ function arrayExtendScreening( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayExtendScreening();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayExtendScreening();
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayExtendScreening( [ 1, 2, 3, 'abc', 13 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayExtendScreening( [ 1, 2, 3, 'abc', 13 ] );
-    });
+  test.description = 'next arguments are wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 3, 7 ], 'wrong arguments' );
+  });
 
-    test.description = 'next arguments are wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayExtendScreening( [ 1, 2, 3 ], [ 3, 'abc', 7, 13 ], [ 3, 7 ], 'wrong arguments' );
-    });
-
-    test.description = 'arguments are wrong';
-    test.shouldThrowError( function()
-    {
-      _.arrayExtendScreening( 'wrong argument', 'wrong argument', 'wrong arguments' );
-    });
-
-  }
+  test.description = 'arguments are wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayExtendScreening( 'wrong argument', 'wrong argument', 'wrong arguments' );
+  });
 
 };
 
+//
 
 function arrayMakeRandom( test )
 {
@@ -8235,25 +8136,24 @@ function arrayMakeRandom( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arrayMakeRandom();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeRandom();
-    });
-
-    test.description = 'wrong argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeRandom( 'wrong argument' );
-    });
-
-  }
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeRandom( 'wrong argument' );
+  });
 
 };
 
+//
 
 function arraySetContainAll( test )
 {
@@ -8275,25 +8175,24 @@ function arraySetContainAll( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySetContainAll();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetContainAll();
-    });
-
-    test.description = 'wrong arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetContainAll( [ 1, 2, 3, 4 ], 'wrong arguments' );
-    });
-
-  }
+  test.description = 'wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainAll( [ 1, 2, 3, 4 ], 'wrong arguments' );
+  });
 
 };
 
+//
 
 function arraySetContainSomething( test )
 {
@@ -8325,25 +8224,24 @@ function arraySetContainSomething( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySetContainSomething();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetContainSomething();
-    });
-
-    test.description = 'wrong arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetContainSomething( [ 1, 2, 3, 4 ], 'wrong arguments' );
-    });
-
-  }
+  test.description = 'wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething( [ 1, 2, 3, 4 ], 'wrong arguments' );
+  });
 
 };
 
+//
 
 function _arraySortedLookUpAct( test )
 {
@@ -8365,19 +8263,18 @@ function _arraySortedLookUpAct( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._arraySortedLookUpAct();
-    });
-
-  }
+    _._arraySortedLookUpAct();
+  });
 
 };
 
+//
 
 function arraySortedLookUp( test )
 {
@@ -8398,37 +8295,36 @@ function arraySortedLookUp( test )
   test.identical( got, expected );
 
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySortedLookUp();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedLookUp();
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedLookUp( 'wrong argument', 5, function( a, b ) { return a - b } );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedLookUp( 'wrong argument', 5, function( a, b ) { return a - b } );
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
-    });
-
-  }
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedLookUp( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+  });
 
 };
 
+//
 
 function arraySortedRemove( test )
 {
@@ -8450,37 +8346,36 @@ function arraySortedRemove( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySortedRemove();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedRemove();
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedRemove( 'wrong argument', 5, function( a, b ) { return a - b } );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedRemove( 'wrong argument', 5, function( a, b ) { return a - b } );
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedRemove( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedRemove( [ 1, 2, 3, 4, 5 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedRemove( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
-    });
-
-  }
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedRemove( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+  });
 
 };
 
+//
 
 function arraySortedAddOnce( test )
 {
@@ -8502,37 +8397,36 @@ function arraySortedAddOnce( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySortedAddOnce();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddOnce();
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAddOnce( 'wrong argument', 5, function( a, b ) { return a - b } );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddOnce( 'wrong argument', 5, function( a, b ) { return a - b } );
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
-    });
-
-  }
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAddOnce( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+  });
 
 };
 
+//
 
 function arraySortedAdd( test )
 {
@@ -8554,37 +8448,36 @@ function arraySortedAdd( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySortedAdd();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAdd();
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAdd( 'wrong argument', 5, function( a, b ) { return a - b } );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAdd( 'wrong argument', 5, function( a, b ) { return a - b } );
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAdd( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAdd( [ 1, 2, 3, 4, 5 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAdd( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
-    });
-
-  }
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAdd( [ 1, 2, 3, 4, 5 ], 5, function( a, b ) { return a - b }, 'extra argument' );
+  });
 
 };
 
+//
 
 function arraySortedAddArray( test )
 {
@@ -8601,43 +8494,42 @@ function arraySortedAddArray( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySortedAddArray();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddArray();
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAddArray( 'wrong argument', [ 6, 7, 8, 2 ], function( a, b ) { return a - b } );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddArray( 'wrong argument', [ 6, 7, 8, 2 ], function( a, b ) { return a - b } );
-    });
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAddArray( [ 1, 2, 3, 4, 5 ], 'wrong argument', function( a, b ) { return a - b } );
+  });
 
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddArray( [ 1, 2, 3, 4, 5 ], 'wrong argument', function( a, b ) { return a - b } );
-    });
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAddArray( [ 1, 2, 3, 4, 5 ] );
+  });
 
-    test.description = 'not enough arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddArray( [ 1, 2, 3, 4, 5 ] );
-    });
-
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySortedAddArray( [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 2 ], function( a, b ) { return a - b }, 'extra argument' );
-    });
-
-  }
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySortedAddArray( [ 1, 2, 3, 4, 5 ], [ 6, 7, 8, 2 ], function( a, b ) { return a - b }, 'extra argument' );
+  });
 
 };
 
+//
 
 function arrayFromRange( test )
 {
@@ -8674,34 +8566,32 @@ function arrayFromRange( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
   {
+    _.arrayFromRange( [ 1, 3 ],'wrong arguments' );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayFromRange( [ 1, 3 ],'wrong arguments' );
-    });
+  test.description = 'argument not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromRange( 1, 3 );
+  });
 
-    test.description = 'argument not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.arrayFromRange( 1, 3 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromRange( 'wrong arguments' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.arrayFromRange( 'wrong arguments' );
-    });
-
-    test.description = 'no arguments'
-    test.shouldThrowError( function()
-    {
-      _.arrayFromRange();
-    });
-
-  }
+  test.description = 'no arguments'
+  test.shouldThrowError( function()
+  {
+    _.arrayFromRange();
+  });
 
 };
 
@@ -8732,27 +8622,24 @@ function arraySupplement( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySupplement();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySupplement();
-    });
-
-    test.description = 'arguments are wrong';
-    test.shouldThrowError( function()
-    {
-      _.arraySupplement( 'wrong argument', 'wrong arguments' );
-    });
-
-  }
+  test.description = 'arguments are wrong';
+  test.shouldThrowError( function()
+  {
+    _.arraySupplement( 'wrong argument', 'wrong arguments' );
+  });
 
 };
 
-
-
+//
 
 function bufferRelen( test )
 {
@@ -8783,16 +8670,14 @@ function bufferRelen( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.bufferRelen();
-    });
-
-  }
+    _.bufferRelen();
+  });
 
 };
 
@@ -8814,22 +8699,20 @@ function bufferRetype( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.bufferRetype();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.bufferRetype();
-    });
-
-    test.description = 'arguments are wrong';
-    test.shouldThrowError( function()
-    {
-      _.bufferRetype( 'wrong argument', 'wrong argument' );
-    });
-
-  }
+  test.description = 'arguments are wrong';
+  test.shouldThrowError( function()
+  {
+    _.bufferRetype( 'wrong argument', 'wrong argument' );
+  });
 
 };
 
@@ -8854,22 +8737,20 @@ function bufferRawFromBuffer( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.bufferRawFromBuffer();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.bufferRawFromBuffer();
-    });
-
-    test.description = 'arguments are wrong';
-    test.shouldThrowError( function()
-    {
-      _.bufferRawFromBuffer( 'wrong argument' );
-    });
-
-  }
+  test.description = 'arguments are wrong';
+  test.shouldThrowError( function()
+  {
+    _.bufferRawFromBuffer( 'wrong argument' );
+  });
 
 }
 
@@ -8930,8 +8811,6 @@ var Self =
     __arrayAppendedArrays : __arrayAppendedArrays,
     __arrayAppendedArraysOnce : __arrayAppendedArraysOnce,
 
-    __arrayRemoveAll : __arrayRemoveAll,
-    __arrayRemovedAll : __arrayRemovedAll,
     __arrayRemoveOnce : __arrayRemoveOnce,
     __arrayRemovedOnce : __arrayRemovedOnce,
     __arrayRemoveOnceStrictly : __arrayRemoveOnceStrictly,
@@ -8947,6 +8826,9 @@ var Self =
     __arrayRemoveArraysOnce : __arrayRemoveArraysOnce,
     __arrayRemovedArraysOnce : __arrayRemovedArraysOnce,
     __arrayRemoveArraysOnceStrictly : __arrayRemoveArraysOnceStrictly,
+
+    __arrayRemoveAll : __arrayRemoveAll,
+    __arrayRemovedAll : __arrayRemovedAll,
 
     __arrayFlatten : __arrayFlatten,
     __arrayFlattenOnce : __arrayFlattenOnce,
