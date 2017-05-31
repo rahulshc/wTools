@@ -5608,7 +5608,7 @@ function bufferTypedIs( src )
 {
   var type = _ObjectToString.call( src );
 
-  if( !/\wArray/.test( type ) )
+  if( !/\wArray/.test( type ) || _.bufferNodeIs( src ) )
   return false;
 
   // if( typeof Buffer !== 'undefined' )
