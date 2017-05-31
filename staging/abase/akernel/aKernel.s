@@ -5800,10 +5800,10 @@ function boolLike( src )
 
 //
 
-function boolIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Boolean]';
-}
+// function boolIs( src )
+// {
+//   return _ObjectToString.call( src ) === '[object Boolean]';
+// }
 
 //
 
