@@ -10653,6 +10653,12 @@ function arrayLeftIndexOf( arr,ins,equalizer )
 
   if( !equalizer )
   {
+    if( _.argumentsIs( arr ) )
+    {
+      var array = _ArraySlice.call( arr );
+      return array.indexOf( ins );
+    }
+
     return arr.indexOf( ins );
   }
   else if( equalizer.length === 2 )
@@ -10693,6 +10699,12 @@ function arrayRightIndexOf( arr,ins,equalizer )
 
   if( !equalizer )
   {
+    if( _.argumentsIs( arr ) )
+    {
+      var array = _ArraySlice.call( arr );
+      return array.lastIndexOf( ins );
+    }
+
     return arr.lastIndexOf( ins );
   }
   else if( equalizer.length === 2 )
