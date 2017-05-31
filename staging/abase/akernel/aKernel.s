@@ -10062,7 +10062,7 @@ function arraySelect( srcArray,indicesArray )
   else
   for( var i = 0, l = indicesArray.length ; i < l ; i += 1 )
   {
-    throw _.err( 'not tested' );
+    // throw _.err( 'not tested' );
     for( var a = 0 ; a < atomsPerElement ; a += 1 )
     result[ i*atomsPerElement+a ] = srcArray[ indicesArray[ i ]*atomsPerElement+a ];
   }
