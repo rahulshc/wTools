@@ -5334,6 +5334,127 @@ function assertWarn( condition )
 // --
 
 /**
+ * The arrayIs() routine determines whether the passed value is an Array.
+ *
+ * If the (src) is an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayIs( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayIs( 10 );
+ *
+ * @returns { boolean } Returns true if (src) is an Array.
+ * @function arrayIs
+ * @memberof wTools
+ */
+
+function arrayIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Array]';
+}
+
+//
+
+/**
+ * The arrayLike() routine determines whether the passed value is an array-like or an Array.
+ * Imortant : arrayLike returns false for Object, even if the object has length field.
+ *
+ * If (src) is an array-like or an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayLike( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayLike( 10 );
+ *
+ * @example
+ * // returns true
+ * var isArr = ( function() {
+ *   return _.arrayLike( arguments );
+ * } )('Hello there!');
+ *
+ * @returns { boolean } Returns true if (src) is an array-like or an Array.
+ * @function arrayLike.
+ * @memberof wTools
+ */
+
+function arrayLike( src )
+{
+  if( atomicIs( src ) )
+  return false;
+
+  if( _.routineIs( src ) )
+  return false;
+  if( _.objectIs( src ) )
+  return false;
+  if( _.strIs( src ) )
+  return false;
+
+  if( !_.numberIs( src.length ) )
+  return false;
+  if( Object.propertyIsEnumerable.call( src,'length' ) )
+  return false;
+
+  return true;
+}
+
+//
+
+/**
+ * The hasLength() routine determines whether the passed value has the property (length).
+ *
+ * If (src) is equal to the (undefined) or (null) false is returned.
+ * If (src) has the property (length) true is returned.
+ * Otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * hasLength( [ 1, 2 ] );
+ *
+ * @example
+ * // returns true
+ * hasLength( 'Hello there!' );
+ *
+ * @example
+ * // returns true
+ * var isLength = ( function() {
+ *   return _.hasLength( arguments );
+ * } )('Hello there!');
+ *
+ * @example
+ * // returns false
+ * hasLength( 10 );
+ *
+ * @example
+ * // returns false
+ * hasLength( { } );
+ *
+ * @returns { boolean } Returns true if (src) has the property (length).
+ * @function hasLength
+ * @memberof wTools
+ */
+
+function hasLength( src )
+{
+  if( src === undefined || src === null ) return false;
+  if( _.numberIs( src.length ) ) return true;
+  return false;
+}
+
+/**
  * Function objectIs checks incoming param whether it is object.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
@@ -5466,133 +5587,76 @@ function mapLike( src )
 
 //
 
-/**
- * The arrayIs() routine determines whether the passed value is an Array.
- *
- * If the (src) is an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayIs( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayIs( 10 );
- *
- * @returns { boolean } Returns true if (src) is an Array.
- * @function arrayIs
- * @memberof wTools
- */
-
-function arrayIs( src )
+function symbolIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Array]';
+  var result = _ObjectToString.call( src ) === '[object Symbol]';
+  return result;
 }
 
 //
 
-/**
- * The arrayLike() routine determines whether the passed value is an array-like or an Array.
- * Imortant : arrayLike returns false for Object, even if the object has length field.
- *
- * If (src) is an array-like or an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayLike( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayLike( 10 );
- *
- * @example
- * // returns true
- * var isArr = ( function() {
- *   return _.arrayLike( arguments );
- * } )('Hello there!');
- *
- * @returns { boolean } Returns true if (src) is an array-like or an Array.
- * @function arrayLike.
- * @memberof wTools
- */
-
-function arrayLike( src )
+function bufferRawIs( src )
 {
-  if( atomicIs( src ) )
+  var type = _ObjectToString.call( src );
+  var result = type === '[object ArrayBuffer]';
+  return result;
+}
+
+//
+
+function bufferTypedIs( src )
+{
+  var type = _ObjectToString.call( src );
+
+  if( !/\wArray/.test( type ) )
   return false;
 
-  if( _.routineIs( src ) )
-  return false;
-  if( _.objectIs( src ) )
-  return false;
-  if( _.strIs( src ) )
-  return false;
-
-  if( !_.numberIs( src.length ) )
-  return false;
-  if( Object.propertyIsEnumerable.call( src,'length' ) )
-  return false;
+  // if( typeof Buffer !== 'undefined' )
+  // if( src instanceof Buffer )
+  // return false;
 
   return true;
 }
 
 //
 
-/**
- * The hasLength() routine determines whether the passed value has the property (length).
- *
- * If (src) is equal to the (undefined) or (null) false is returned.
- * If (src) has the property (length) true is returned.
- * Otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * hasLength( [ 1, 2 ] );
- *
- * @example
- * // returns true
- * hasLength( 'Hello there!' );
- *
- * @example
- * // returns true
- * var isLength = ( function() {
- *   return _.hasLength( arguments );
- * } )('Hello there!');
- *
- * @example
- * // returns false
- * hasLength( 10 );
- *
- * @example
- * // returns false
- * hasLength( { } );
- *
- * @returns { boolean } Returns true if (src) has the property (length).
- * @function hasLength
- * @memberof wTools
- */
-
-function hasLength( src )
+function bufferViewIs( src )
 {
-  if( src === undefined || src === null ) return false;
-  if( _.numberIs( src.length ) ) return true;
+  var type = _ObjectToString.call( src );
+  var result = type === '[object DataView]';
+  return result;
+}
+
+//
+
+function bufferNodeIs( src )
+{
+  if( typeof Buffer !== 'undefined' )
+  return src instanceof Buffer;
   return false;
 }
 
 //
 
-function symbolIs( src )
+function bufferAnyIs( src )
 {
-  var result = _ObjectToString.call( src ) === '[object Symbol]';
-  return result;
+  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
+}
+
+//
+
+function argumentsIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Arguments]';
+}
+
+//
+
+function vectorIs( src )
+{
+  if( src && src._vectorArray )
+  return true;
+  else return false;
 }
 
 //
@@ -5714,6 +5778,13 @@ function numbersAreInt( src )
 
 //
 
+function dateIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Date]';
+}
+
+//
+
 function boolIs( src )
 {
   return _ObjectToString.call( src ) === '[object Boolean]';
@@ -5725,79 +5796,6 @@ function boolLike( src )
 {
   var type = _ObjectToString.call( src );
   return type === '[object Boolean]' || type === '[object Number]';
-}
-
-//
-
-function dateIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Date]';
-}
-
-//
-
-function bufferRawIs( src )
-{
-  var type = _ObjectToString.call( src );
-  var result = type === '[object ArrayBuffer]';
-  return result;
-}
-
-//
-
-function bufferTypedIs( src )
-{
-  var type = _ObjectToString.call( src );
-
-  if( !/\wArray/.test( type ) )
-  return false;
-
-  // if( typeof Buffer !== 'undefined' )
-  // if( src instanceof Buffer )
-  // return false;
-
-  return true;
-}
-
-//
-
-function bufferViewIs( src )
-{
-  var type = _ObjectToString.call( src );
-  var result = type === '[object DataView]';
-  return result;
-}
-
-//
-
-function bufferNodeIs( src )
-{
-  if( typeof Buffer !== 'undefined' )
-  return src instanceof Buffer;
-  return false;
-}
-
-//
-
-function bufferAnyIs( src )
-{
-  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
-}
-
-//
-
-function argumentsIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Arguments]';
-}
-
-//
-
-function vectorIs( src )
-{
-  if( src && src._vectorArray )
-  return true;
-  else return false;
 }
 
 //
