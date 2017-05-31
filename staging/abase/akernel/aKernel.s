@@ -13313,7 +13313,7 @@ function arrayUpdate( dstArray,ins,sub )
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 3 );
 
-  var index = __arrayReplaceOnce( dstArray,ins,sub );
+  var index = __arrayReplacedOnce.apply( this, arguments );
 
   if( index === -1 )
   {
