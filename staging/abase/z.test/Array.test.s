@@ -71,13 +71,13 @@ function bufferRelen( test )
 function bufferRetype( test )
 {
 
-  test.desscription = 'converts and returns the new type of Int16Array';
+  test.description = 'converts and returns the new type of Int16Array';
   var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
   var got = _.bufferRetype(view1, Int16Array);
   var expected = got; // [ 513, 1027, 1541 ];
   test.identical( got, expected );
 
-  test.desscription = 'converts and returns the new type of Int8Array';
+  test.description = 'converts and returns the new type of Int8Array';
   var view1 = new Int16Array( [ 513, 1027, 1541 ] );
   var got = _.bufferRetype(view1, Int8Array);
   var expected = got; // [ 1, 2, 3, 4, 5, 6 ];
@@ -348,6 +348,34 @@ function arrayMakeSimilar( test )
   var expected = [ , , , , ];
   test.identical( got, expected );
 
+  test.description = 'same length';
+
+  var ins = [ 1, 2, 3 ];
+  var got = _.arrayMakeSimilar( ins );
+  test.identical( got.length, 3 );
+  test.shouldBe( got !== ins );
+
+  var ins = new Uint8Array( 5 );
+  ins[ 0 ] = 1;
+  var got = _.arrayMakeSimilar( ins );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.identical( got.length, 5 );
+  test.shouldBe( got !== ins );
+
+  test.description = 'typedArray';
+  var ins = new Uint8Array( 5 );
+  ins[ 0 ] = 1;
+  var got = _.arrayMakeSimilar( ins, 4 );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.identical( got.length, 4 );
+  test.shouldBe( got !== ins );
+
+  test.description = 'ArrayBuffer';
+  var ins = new ArrayBuffer( 5 );
+  var got = _.arrayMakeSimilar( ins, 4 );
+  test.shouldBe( _.bufferRawIs( got ) );
+  test.identical( got.byteLength, 4 );
+
   /**/
 
   if( !Config.debug )
@@ -358,6 +386,21 @@ function arrayMakeSimilar( test )
   {
     _.arrayMakeSimilar();
   });
+
+  if( !isBrowser )
+  {
+    test.description = 'node buffer';
+
+    test.shouldThrowError( function()
+    {
+      _.arrayMakeSimilar( new Buffer( 5 ) );
+    });
+
+    test.shouldThrowError( function()
+    {
+      _.arrayMakeSimilar( new Buffer( 5 ), 3 );
+    });
+  }
 
   test.description = 'wrong type of argument';
   test.shouldThrowError( function()
@@ -389,24 +432,18 @@ function arrayMakeSimilar( test )
 function arrayMakeRandom( test )
 {
 
-  test.description = 'an array';
-  var got = _.arrayMakeRandom( [  ] );
-  var expected = [  ];
-  test.identical( got, expected );
-
   test.description = 'an empty object';
   var got = _.arrayMakeRandom( {  } );
-  var expected = [  ];
-  test.identical( got, expected );
-
-  test.description = 'a function';
-  var got = _.arrayMakeRandom( function() {  } );
-  var expected = [  ];
-  test.identical( got, expected );
+  test.identical( got.length, 1 );
+  test.shouldBe( got[ 0 ] >= 0 && got[ 0 ]<= 1 );
 
   test.description = 'a number';
   var got = _.arrayMakeRandom( 5 );
   var expected = got;
+  test.identical( got.length, 5 );
+
+  var got = _.arrayMakeRandom( -1 );
+  var expected = [];
   test.identical( got, expected );
 
   test.description = 'an object';
@@ -619,6 +656,13 @@ function arrayToMap( test )
   } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
   var got = _.arrayToMap( args );
   var expected = { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } };
+  test.identical( got, expected );
+
+  test.description = 'arrayLike';
+  var arr = [];
+  arr[ 'a' ] = 1;
+  var got = _.arrayToMap( arr );
+  var expected = {};
   test.identical( got, expected );
 
   /**/
@@ -1003,12 +1047,12 @@ function arrayDuplicate( test )
 
   test.description = 'second argument is replaced and non-existent elements from options.src is replaced undefined';
   var options = {
-    src : [ 'abc', 'def' ],
-    result : [  ],
+    src : [ 'abc', 'def', undefined ],
+    result : [ ],
     numberOfAtomsPerElement : 3,
     numberOfDuplicatesPerElement : 3
   };
-  var got = _.arrayDuplicate( options, { a : 7, b : 13 } );
+  var got = _.arrayDuplicate( options );
   var expected = [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ];
   test.identical( got, expected );
 
@@ -1131,6 +1175,13 @@ function arraySelect( test )
   test.description = 'array of undefined';
   var got = _.arraySelect( [ 1, 2, 3 ], [ 4, 5 ] );
   var expected = [ undefined, undefined ];
+  test.identical( got, expected );
+
+  test.description = 'using object';
+  var src = [ 1, 1, 2, 2, 3, 3 ];
+  var indices = { atomsPerElement : 2, indices : [ 0, 1, 2 ] }
+  var got = _.arraySelect( src,indices );
+  var expected = [ 1, 1, 2, 2, 3, 3 ];
   test.identical( got, expected );
 
   /**/
@@ -1537,6 +1588,16 @@ function arrayPut( test )
   var expected = [ 'str', true, 7, 8, 5, 6, 9 ];
   test.identical( got, expected );
 
+  test.description = 'add to end';
+  var got = _.arrayPut( [ 1,2,3 ], 3, 4, 5, 6 );
+  var expected = [ 1, 2, 3, 4, 5, 6 ];
+  test.identical( got, expected );
+
+  test.description = 'offset is negative';
+  var got = _.arrayPut( [ 1,2,3 ], -1, 4, 5, 6 );
+  var expected = [ 5, 6, 3 ];
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -1581,6 +1642,16 @@ function arrayFill( test )
   var expected = [ 0, 0, 0 ];
   test.identical( got, expected );
 
+  test.description = 'array';
+  var got = _.arrayFill( [ 1,2,3,4 ], 1 );
+  var expected = [ 1,1,1,1 ];
+  test.identical( got, expected );
+
+  test.description = 'as object';
+  var got = _.arrayFill({ result : [ 1,2,3,4 ], value : 1, times : 3 });
+  var expected = [ 1,1,1,4 ];
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -1590,6 +1661,19 @@ function arrayFill( test )
   test.shouldThrowError( function()
   {
     _.arrayFill();
+
+  });
+
+  test.description = 'zero';
+  test.shouldThrowError( function()
+  {
+    _.arrayFill( 0 );
+  });
+
+  test.description = 'negative';
+  test.shouldThrowError( function()
+  {
+    _.arrayFill( -1 );
   });
 
   test.description = 'array is empty';
@@ -1742,10 +1826,12 @@ function arrayLeftIndexOf( test )
   test.identical( got, expected );
 
   test.description = 'array-like arguments';
-  function arr() {
+  function arr()
+  {
     return arguments;
-  }( 3, 7, 13 );
-  var got = _.arrayLeftIndexOf( arr, 13 );
+  }
+  var _arr = arr( 3, 7, 13 );
+  var got = _.arrayLeftIndexOf( _arr, 13 );
   var expected = 2;
   test.identical( got, expected );
 
@@ -1764,6 +1850,10 @@ function arrayLeftIndexOf( test )
   var expected = 2;
   test.identical( got, expected );
 
+  test.description = 'one argument';
+  var got = _.arrayLeftIndexOf( [ 1, 2, 3 ] );
+  test.identical( got, -1 );
+
   /**/
 
   if( !Config.debug )
@@ -1773,12 +1863,6 @@ function arrayLeftIndexOf( test )
   test.shouldThrowError( function()
   {
     _.arrayLeftIndexOf();
-  });
-
-  test.description = 'not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayLeftIndexOf( [ 1, 2, 3 ] );
   });
 
   test.description = 'third argument is wrong';
@@ -1793,11 +1877,6 @@ function arrayLeftIndexOf( test )
 
 function arrayLeft( test )
 {
-
-  test.description = 'nothing';
-  var got = _.arrayLeft( [  ] );
-  var expected = {  };
-  test.identical( got, expected );
 
   test.description = 'returns an object';
   var got = _.arrayLeft( [ 1, 2, 3, 4, 5 ], 3 );
@@ -1825,6 +1904,12 @@ function arrayLeft( test )
     _.arrayLeft();
   });
 
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayLeft( [] );
+  });
+
   test.description = 'third argument is wrong';
   test.shouldThrowError( function()
   {
@@ -1846,6 +1931,13 @@ function arrayCount( test )
   test.description = 'two matching';
   var got = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );
   var expected = 2;
+  test.identical( got, expected );
+
+  test.description = 'arrayLike';
+  var src = [ 1, 2, 3 ];
+  src[ 'a' ] = 1;
+  var got = _.arrayCount( src, 1 );
+  var expected = 1;
   test.identical( got, expected );
 
   /**/
@@ -1966,10 +2058,10 @@ function arrayCompare( test )
   test.identical( got, expected );
 
   test.description = 'array-like arguments';
-  function src1() {
+  var src1 = function src1() {
     return arguments;
   }( 1, 5 );
-  function src2() {
+  var src2 = function src2() {
     return arguments;
   }( 1, 2 );
   var got = _.arrayCompare( src1, src2 );
@@ -8187,6 +8279,11 @@ function arraySetContainAll( test )
   var expected = false;
   test.identical( got, expected );
 
+  test.description = 'empty';
+  var got = _.arraySetContainAll( [ 1,2,3 ], [] );
+  var expected = false;
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -8643,11 +8740,11 @@ var Self =
     arraySetContainAll: arraySetContainAll,
     arraySetContainSomething : arraySetContainSomething,
 
-    arrayOrNumber : arrayOrNumber,//deprecated?
+    // arrayOrNumber : arrayOrNumber, /* deprecated? */
 
-    arrayElementsSwap : arrayElementsSwap,//deprecated?
+    // arrayElementsSwap : arrayElementsSwap, /* deprecated? */
 
-    arraySame : arraySame,//deprecated?
+    // arraySame : arraySame,/* deprecated? */
   }
 
 }
