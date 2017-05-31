@@ -8926,6 +8926,8 @@ function arrayMakeSimilar( ins,length )
     length = ins.length;
   }
 
+  _.assert( _.numberIs( length ) );
+
   if( _.argumentsIs( ins ) || _.arrayIs( ins ) )
   result = new Array( length );
   else if( _.bufferTypedIs( ins ) || ins instanceof ArrayBuffer )
