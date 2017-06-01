@@ -1034,16 +1034,138 @@ function arrayDuplicate( test )
   var expected = [ 'a', 'a', 'b', 'b', 'c', 'c' ];
   test.identical( got, expected );
 
+  /* */
+
+  test.description = 'numberOfAtomsPerElement 1 numberOfDuplicatesPerElement 1';
+  var options =
+  {
+    src : [ 10,20 ],
+    numberOfAtomsPerElement : 1,
+    numberOfDuplicatesPerElement : 1
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 10,20 ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'numberOfAtomsPerElement 1 numberOfDuplicatesPerElement 2';
+  var options =
+  {
+    src : [ 10,20 ],
+    numberOfAtomsPerElement : 1,
+    numberOfDuplicatesPerElement : 2
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 10,10,20,20 ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'numberOfAtomsPerElement 2 numberOfDuplicatesPerElement 1';
+  var options =
+  {
+    src : [ 10,20 ],
+    numberOfAtomsPerElement : 2,
+    numberOfDuplicatesPerElement : 1
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 10,20 ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'numberOfAtomsPerElement 2 numberOfDuplicatesPerElement 2';
+  var options =
+  {
+    src : [ 10,20 ],
+    numberOfAtomsPerElement : 2,
+    numberOfDuplicatesPerElement : 2
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 10,20,10,20 ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'result provided';
+  var options =
+  {
+    src : [ 10,20 ],
+    result : [ 1,1,1,1 ],
+    numberOfAtomsPerElement : 1,
+    numberOfDuplicatesPerElement : 2
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 10,10,20,20 ];
+  test.identical( got, expected );
+
+  /* */
+
   test.description = 'different options';
-  var options = {
+  var options =
+  {
     src : [ 'abc', 'def' ],
-    result : [  ],
+    result : new Array( 6 ),
     numberOfAtomsPerElement : 2,
     numberOfDuplicatesPerElement : 3
   };
   var got = _.arrayDuplicate( options );
   var expected = [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ];
   test.identical( got, expected );
+
+  /* */
+
+  test.description = 'different options';
+  var options =
+  {
+    src : [ 'abc', 'def' ],
+    result : [],
+    numberOfAtomsPerElement : 1,
+    numberOfDuplicatesPerElement : 1
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 'abc', 'def',  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'different options';
+  var options =
+  {
+    src : [ 'abc', 'def' ],
+    result : [ 1, 2 ],
+    numberOfAtomsPerElement : 1,
+    numberOfDuplicatesPerElement : 1
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 1, 2, 'abc', 'def',  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'different options';
+  var arr = new Uint8Array( 1 );
+  arr[ 0 ] = 5;
+  var options =
+  {
+    src : [ 1, 2 ],
+    result : arr,
+    numberOfAtomsPerElement : 1,
+    numberOfDuplicatesPerElement : 1
+  };
+  var got = _.arrayDuplicate( options );
+  var expected = [ 5, 1, 2 ];
+  var equal = true;
+  for( var i = 0; i < expected.length; i++ )
+  {
+    if( expected[ i ] !== got[ i ]  )
+    equal = false;
+  }
+  test.shouldBe( equal );
+  test.identical( got.length, expected.length );
+
+  /* */
 
   test.description = 'second argument is replaced and non-existent elements from options.src is replaced undefined';
   var options = {
@@ -1084,6 +1206,20 @@ function arrayDuplicate( test )
   {
     _.arrayDuplicate( options, { a : 13 } );
   });
+
+  test.description = 'result provided, but not enough length';
+  var options =
+  {
+    src : [ 10,20 ],
+    result : [],
+    numberOfAtomsPerElement : 1,
+    numberOfDuplicatesPerElement : 2
+  };
+  test.shouldThrowError( function ()
+  {
+    _.arrayDuplicate( options );
+  })
+
 
 };
 
