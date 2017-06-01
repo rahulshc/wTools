@@ -1028,7 +1028,6 @@ function arraySlice( test )
 
 function arrayDuplicate( test )
 {
-
   test.description = 'couple of repeats';
   var got = _.arrayDuplicate( [ 'a', 'b', 'c' ] );
   var expected = [ 'a', 'a', 'b', 'b', 'c', 'c' ];
@@ -1170,7 +1169,6 @@ function arrayDuplicate( test )
   test.description = 'second argument is replaced and non-existent elements from options.src is replaced undefined';
   var options = {
     src : [ 'abc', 'def', undefined ],
-    result : [ ],
     numberOfAtomsPerElement : 3,
     numberOfDuplicatesPerElement : 3
   };
