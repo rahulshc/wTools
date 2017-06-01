@@ -10385,7 +10385,6 @@ function arrayFill( o )
     o = { result : arguments[ 0 ], value : arguments[ 1 ] };
   }
 
-  _assert( arguments.length === 1 || arguments.length === 2 );
   _.assertMapHasOnly( o,arrayFill.defaults );
   if( o.result )
   _.assert( _.arrayLike( o.result ) );
