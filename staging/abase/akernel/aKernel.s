@@ -9725,28 +9725,50 @@ function arrayMultislice()
 
 function arrayDuplicate( o )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( arguments.length === 2 )
   {
-    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 0 ] };
+    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 1 ] };
+  }
+  else
+  {
+    if( !_.objectIs( o ) )
+    o = { src : o };
   }
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
   _.routineOptions( arrayDuplicate,o );
+  _.assert( _.arrayLike( o.src ), 'arrayDuplicate expects o.src as arrayLike entity' );
   _.assert( _.numberIsInt( o.src.length / o.numberOfAtomsPerElement ) );
 
   if( o.numberOfDuplicatesPerElement === 1 )
   {
     if( o.result )
-    throw _.err( 'not implemented' );
-    o.result = o.src;
+    {
+      _.assert( _.arrayLike( o.result ) || _.bufferTypedIs( o.result ), 'Expects o.result as arrayLike or TypedArray if numberOfDuplicatesPerElement equals 1' );
+
+      if( _.bufferTypedIs( o.result ) )
+      o.result = _.arrayCopy( o.result, o.src );
+      else if( _.arrayLike( o.result ) )
+      o.result.push.apply( o.result, o.src );
+    }
+    else
+    {
+      o.result = o.src;
+    }
     return o.result;
   }
 
   var length = o.src.length * o.numberOfDuplicatesPerElement;
   var numberOfElements = o.src.length / o.numberOfAtomsPerElement;
+
+  if( o.result )
+  _.assert( o.result.length >= length );
+
   o.result = o.result || arrayMakeSimilar( o.src,length );
+
+  var rlength = o.result.length;
 
   for( var c = 0, cl = numberOfElements ; c < cl ; c++ )
   {
@@ -9764,6 +9786,8 @@ function arrayDuplicate( o )
     }
 
   }
+
+  _.assert( o.result.length === rlength );
 
   return o.result;
 }
