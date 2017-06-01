@@ -10370,6 +10370,8 @@ function arrayPut( dstArray, dstOffset )
 
 function arrayFill( o )
 {
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
   if( arguments.length === 1 )
   {
@@ -10385,7 +10387,8 @@ function arrayFill( o )
 
   _assert( arguments.length === 1 || arguments.length === 2 );
   _.assertMapHasOnly( o,arrayFill.defaults );
-  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+  if( o.result )
+  _.assert( _.arrayLike( o.result ) );
 
   var result = o.result || [];
   var times = o.times !== undefined ? o.times : result.length;
