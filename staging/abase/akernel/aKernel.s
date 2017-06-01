@@ -5334,6 +5334,127 @@ function assertWarn( condition )
 // --
 
 /**
+ * The arrayIs() routine determines whether the passed value is an Array.
+ *
+ * If the (src) is an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayIs( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayIs( 10 );
+ *
+ * @returns { boolean } Returns true if (src) is an Array.
+ * @function arrayIs
+ * @memberof wTools
+ */
+
+function arrayIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Array]';
+}
+
+//
+
+/**
+ * The arrayLike() routine determines whether the passed value is an array-like or an Array.
+ * Imortant : arrayLike returns false for Object, even if the object has length field.
+ *
+ * If (src) is an array-like or an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayLike( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayLike( 10 );
+ *
+ * @example
+ * // returns true
+ * var isArr = ( function() {
+ *   return _.arrayLike( arguments );
+ * } )('Hello there!');
+ *
+ * @returns { boolean } Returns true if (src) is an array-like or an Array.
+ * @function arrayLike.
+ * @memberof wTools
+ */
+
+function arrayLike( src )
+{
+  if( atomicIs( src ) )
+  return false;
+
+  if( _.routineIs( src ) )
+  return false;
+  if( _.objectIs( src ) )
+  return false;
+  if( _.strIs( src ) )
+  return false;
+
+  if( !_.numberIs( src.length ) )
+  return false;
+  if( Object.propertyIsEnumerable.call( src,'length' ) )
+  return false;
+
+  return true;
+}
+
+//
+
+/**
+ * The hasLength() routine determines whether the passed value has the property (length).
+ *
+ * If (src) is equal to the (undefined) or (null) false is returned.
+ * If (src) has the property (length) true is returned.
+ * Otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * hasLength( [ 1, 2 ] );
+ *
+ * @example
+ * // returns true
+ * hasLength( 'Hello there!' );
+ *
+ * @example
+ * // returns true
+ * var isLength = ( function() {
+ *   return _.hasLength( arguments );
+ * } )('Hello there!');
+ *
+ * @example
+ * // returns false
+ * hasLength( 10 );
+ *
+ * @example
+ * // returns false
+ * hasLength( { } );
+ *
+ * @returns { boolean } Returns true if (src) has the property (length).
+ * @function hasLength
+ * @memberof wTools
+ */
+
+function hasLength( src )
+{
+  if( src === undefined || src === null ) return false;
+  if( _.numberIs( src.length ) ) return true;
+  return false;
+}
+
+/**
  * Function objectIs checks incoming param whether it is object.
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
@@ -5466,133 +5587,76 @@ function mapLike( src )
 
 //
 
-/**
- * The arrayIs() routine determines whether the passed value is an Array.
- *
- * If the (src) is an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayIs( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayIs( 10 );
- *
- * @returns { boolean } Returns true if (src) is an Array.
- * @function arrayIs
- * @memberof wTools
- */
-
-function arrayIs( src )
+function symbolIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Array]';
+  var result = _ObjectToString.call( src ) === '[object Symbol]';
+  return result;
 }
 
 //
 
-/**
- * The arrayLike() routine determines whether the passed value is an array-like or an Array.
- * Imortant : arrayLike returns false for Object, even if the object has length field.
- *
- * If (src) is an array-like or an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayLike( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayLike( 10 );
- *
- * @example
- * // returns true
- * var isArr = ( function() {
- *   return _.arrayLike( arguments );
- * } )('Hello there!');
- *
- * @returns { boolean } Returns true if (src) is an array-like or an Array.
- * @function arrayLike.
- * @memberof wTools
- */
-
-function arrayLike( src )
+function bufferRawIs( src )
 {
-  if( atomicIs( src ) )
+  var type = _ObjectToString.call( src );
+  var result = type === '[object ArrayBuffer]';
+  return result;
+}
+
+//
+
+function bufferTypedIs( src )
+{
+  var type = _ObjectToString.call( src );
+
+  if( !/\wArray/.test( type ) || _.bufferNodeIs( src ) )
   return false;
 
-  if( _.routineIs( src ) )
-  return false;
-  if( _.objectIs( src ) )
-  return false;
-  if( _.strIs( src ) )
-  return false;
-
-  if( !_.numberIs( src.length ) )
-  return false;
-  if( Object.propertyIsEnumerable.call( src,'length' ) )
-  return false;
+  // if( typeof Buffer !== 'undefined' )
+  // if( src instanceof Buffer )
+  // return false;
 
   return true;
 }
 
 //
 
-/**
- * The hasLength() routine determines whether the passed value has the property (length).
- *
- * If (src) is equal to the (undefined) or (null) false is returned.
- * If (src) has the property (length) true is returned.
- * Otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * hasLength( [ 1, 2 ] );
- *
- * @example
- * // returns true
- * hasLength( 'Hello there!' );
- *
- * @example
- * // returns true
- * var isLength = ( function() {
- *   return _.hasLength( arguments );
- * } )('Hello there!');
- *
- * @example
- * // returns false
- * hasLength( 10 );
- *
- * @example
- * // returns false
- * hasLength( { } );
- *
- * @returns { boolean } Returns true if (src) has the property (length).
- * @function hasLength
- * @memberof wTools
- */
-
-function hasLength( src )
+function bufferViewIs( src )
 {
-  if( src === undefined || src === null ) return false;
-  if( _.numberIs( src.length ) ) return true;
+  var type = _ObjectToString.call( src );
+  var result = type === '[object DataView]';
+  return result;
+}
+
+//
+
+function bufferNodeIs( src )
+{
+  if( typeof Buffer !== 'undefined' )
+  return src instanceof Buffer;
   return false;
 }
 
 //
 
-function symbolIs( src )
+function bufferAnyIs( src )
 {
-  var result = _ObjectToString.call( src ) === '[object Symbol]';
-  return result;
+  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
+}
+
+//
+
+function argumentsIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Arguments]';
+}
+
+//
+
+function vectorIs( src )
+{
+  if( src && src._vectorArray )
+  return true;
+  else return false;
 }
 
 //
@@ -5714,6 +5778,13 @@ function numbersAreInt( src )
 
 //
 
+function dateIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Date]';
+}
+
+//
+
 function boolIs( src )
 {
   return _ObjectToString.call( src ) === '[object Boolean]';
@@ -5729,83 +5800,10 @@ function boolLike( src )
 
 //
 
-function dateIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Date]';
-}
-
-//
-
-function bufferRawIs( src )
-{
-  var type = _ObjectToString.call( src );
-  var result = type === '[object ArrayBuffer]';
-  return result;
-}
-
-//
-
-function bufferTypedIs( src )
-{
-  var type = _ObjectToString.call( src );
-
-  if( !/\wArray/.test( type ) )
-  return false;
-
-  // if( typeof Buffer !== 'undefined' )
-  // if( src instanceof Buffer )
-  // return false;
-
-  return true;
-}
-
-//
-
-function bufferViewIs( src )
-{
-  var type = _ObjectToString.call( src );
-  var result = type === '[object DataView]';
-  return result;
-}
-
-//
-
-function bufferNodeIs( src )
-{
-  if( typeof Buffer !== 'undefined' )
-  return src instanceof Buffer;
-  return false;
-}
-
-//
-
-function bufferAnyIs( src )
-{
-  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
-}
-
-//
-
-function argumentsIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Arguments]';
-}
-
-//
-
-function vectorIs( src )
-{
-  if( src && src._vectorArray )
-  return true;
-  else return false;
-}
-
-//
-
-function boolIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Boolean]';
-}
+// function boolIs( src )
+// {
+//   return _ObjectToString.call( src ) === '[object Boolean]';
+// }
 
 //
 
@@ -8928,6 +8926,8 @@ function arrayMakeSimilar( ins,length )
     length = ins.length;
   }
 
+  _.assert( _.numberIs( length ) );
+
   if( _.argumentsIs( ins ) || _.arrayIs( ins ) )
   result = new Array( length );
   else if( _.bufferTypedIs( ins ) || ins instanceof ArrayBuffer )
@@ -9725,28 +9725,50 @@ function arrayMultislice()
 
 function arrayDuplicate( o )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( arguments.length === 2 )
   {
-    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 0 ] };
+    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 1 ] };
+  }
+  else
+  {
+    if( !_.objectIs( o ) )
+    o = { src : o };
   }
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
   _.routineOptions( arrayDuplicate,o );
+  _.assert( _.arrayLike( o.src ), 'arrayDuplicate expects o.src as arrayLike entity' );
   _.assert( _.numberIsInt( o.src.length / o.numberOfAtomsPerElement ) );
 
   if( o.numberOfDuplicatesPerElement === 1 )
   {
     if( o.result )
-    throw _.err( 'not implemented' );
-    o.result = o.src;
+    {
+      _.assert( _.arrayLike( o.result ) || _.bufferTypedIs( o.result ), 'Expects o.result as arrayLike or TypedArray if numberOfDuplicatesPerElement equals 1' );
+
+      if( _.bufferTypedIs( o.result ) )
+      o.result = _.arrayCopy( o.result, o.src );
+      else if( _.arrayLike( o.result ) )
+      o.result.push.apply( o.result, o.src );
+    }
+    else
+    {
+      o.result = o.src;
+    }
     return o.result;
   }
 
   var length = o.src.length * o.numberOfDuplicatesPerElement;
   var numberOfElements = o.src.length / o.numberOfAtomsPerElement;
+
+  if( o.result )
+  _.assert( o.result.length >= length );
+
   o.result = o.result || arrayMakeSimilar( o.src,length );
+
+  var rlength = o.result.length;
 
   for( var c = 0, cl = numberOfElements ; c < cl ; c++ )
   {
@@ -9764,6 +9786,8 @@ function arrayDuplicate( o )
     }
 
   }
+
+  _.assert( o.result.length === rlength );
 
   return o.result;
 }
@@ -10062,7 +10086,7 @@ function arraySelect( srcArray,indicesArray )
   else
   for( var i = 0, l = indicesArray.length ; i < l ; i += 1 )
   {
-    throw _.err( 'not tested' );
+    // throw _.err( 'not tested' );
     for( var a = 0 ; a < atomsPerElement ; a += 1 )
     result[ i*atomsPerElement+a ] = srcArray[ indicesArray[ i ]*atomsPerElement+a ];
   }
@@ -10346,6 +10370,8 @@ function arrayPut( dstArray, dstOffset )
 
 function arrayFill( o )
 {
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
   if( arguments.length === 1 )
   {
@@ -10359,9 +10385,9 @@ function arrayFill( o )
     o = { result : arguments[ 0 ], value : arguments[ 1 ] };
   }
 
-  _assert( arguments.length === 1 || arguments.length === 2 );
   _.assertMapHasOnly( o,arrayFill.defaults );
-  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+  if( o.result )
+  _.assert( _.arrayLike( o.result ) );
 
   var result = o.result || [];
   var times = o.times !== undefined ? o.times : result.length;
@@ -10653,6 +10679,12 @@ function arrayLeftIndexOf( arr,ins,equalizer )
 
   if( !equalizer )
   {
+    if( _.argumentsIs( arr ) )
+    {
+      var array = _ArraySlice.call( arr );
+      return array.indexOf( ins );
+    }
+
     return arr.indexOf( ins );
   }
   else if( equalizer.length === 2 )
@@ -10693,6 +10725,12 @@ function arrayRightIndexOf( arr,ins,equalizer )
 
   if( !equalizer )
   {
+    if( _.argumentsIs( arr ) )
+    {
+      var array = _ArraySlice.call( arr );
+      return array.lastIndexOf( ins );
+    }
+
     return arr.lastIndexOf( ins );
   }
   else if( equalizer.length === 2 )
@@ -11080,6 +11118,90 @@ function arrayNone( src )
 
   debugger;
   return true;
+}
+
+// --
+// array etc
+// --
+
+function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
+{
+  var result = [];
+  var l = srcArray.length;
+
+  debugger;
+  throw _.err( 'not tested' );
+
+  comparator = _._comparatorFromMapper( comparator );
+
+  function rcomparator( a,b )
+  {
+    return comparator( srcArray[ a ],srcArray[ b ] );
+  };
+
+  for( var i = 0 ; i < l ; i += 1 )
+  {
+
+    if( result.length < numberOfElements )
+    {
+      _.arraySortedAdd( result, i, rcomparator );
+      continue;
+    }
+
+    _.arraySortedAdd( result, i, rcomparator );
+    result.splice( result.length-1,1 );
+
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The arraySum() routine returns the sum of an array (src).
+ *
+ * @param { arrayLike } src - The source array.
+ * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
+ *
+ * @example
+ * // returns 15
+ * _.arraySum( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @example
+ * // returns 29
+ * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
+ *
+ * @example
+ * // returns 94
+ * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
+ *
+ * @returns { Number } - Returns the sum of an array (src).
+ * @function arraySum
+ * @throws { Error } If passed arguments is less than one or more than two.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the second argument is not a Function.
+ * @memberof wTools
+ */
+
+function arraySum( src,onElement )
+{
+  var result = 0;
+
+  _assert( arguments.length === 1 || arguments.length === 2 );
+  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
+
+  if( onElement === undefined )
+  onElement = function( e ){ return e; };
+
+  _.assert( _.routineIs( onElement ) );
+
+  for( var i = 0 ; i < src.length ; i++ )
+  {
+    result += onElement( src[ i ],i,src );
+  }
+
+  return result;
 }
 
 // --
@@ -12319,6 +12441,71 @@ function __arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 
 //
 
+/**
+ * Callback for compare two value.
+ *
+ * @callback __arrayRemoved~compareCallback
+ * @param { * } el - The element of the array.
+ * @param { * } ins - The value to compare.
+ */
+
+/**
+ * The __arrayRemoved() routine removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the amount of them.
+ *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
+ * checks if (onElement) is equal to the 'undefined'.
+ * If true, it assigns by default callback function that checks the equality of two arguments.
+ * Otherwise, it uses given callback function (onElement).
+ * Then it iterates over (dstArray) from the end to the beginning, checks if (onElement) returns true.
+ * If true, it removes the value (ins) from (dstArray) array by corresponding index, and increases (result++).
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { * } ins - The value to remove.
+ * @param { compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns 4
+ * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
+ *   return el < ins;
+ * });
+ *
+ * @example
+ * // returns 3
+ * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
+ *
+ * @returns { Number } - Returns the amount of the removed elements.
+ * @function __arrayRemoved
+ * @throws { Error } If the first argument is not an array-like.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
+ * @memberof wTools
+ */
+
+// function __arrayRemoved( dstArray,ins,onEqualize )
+// {
+//   _.assert( _.arrayLike( dstArray ) );
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//
+//   if( arguments.length === 3 )
+//   _.assert( _.routineIs( onEqualize ) );
+//
+//   var result = 0;
+//
+//   if( onEqualize === undefined )
+//   onEqualize = function( a,b ){ return a === b };
+//
+//   for( var d = dstArray.length-1 ; d >= 0 ; d-- )
+//   if( onEqualize( dstArray[ d ],ins ) )
+//   {
+//     dstArray.splice( d,1 );
+//     result += 1;
+//   }
+//
+//   return result;
+// }
+
 // function __arrayRemoved( dstArray, ins, onEqualize )
 // {
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -12649,6 +12836,83 @@ function __arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
   return result;
 }
 
+//
+
+/**
+ * Callback for compare two value.
+ *
+ * @callback arrayRemoveAll~compareCallback
+ * @param { * } el - Element of the array.
+ * @param { * } ins - Value to compare.
+ */
+
+/**
+ * The arrayRemoveAll() routine removes all (ins) values from (dstArray)
+ * that corresponds to the condition in the callback function and returns the modified array.
+ *
+ * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
+ * checks if arguments passed two, it calls the routine
+ * [__arrayRemoved( dstArray, ins )]{@link wTools.__arrayRemoved}
+ * Otherwise, if passed three arguments, it calls the routine
+ * [__arrayRemoved( dstArray, ins, onElement )]{@link wTools.__arrayRemoved}
+ *
+ * @see wTools.__arrayRemoved
+ *
+ * @param { Array } dstArray - The source array.
+ * @param { * } ins - The value to remove.
+ * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
+ * By default, it checks the equality of two arguments.
+ *
+ * @example
+ * // returns [ 2, 2, 3, 5 ]
+ * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2, function ( el, ins ) {
+ *   return el < ins;
+ * });
+ *
+ * @example
+ * // returns [ 1, 3, 5 ]
+ * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2 );
+ *
+ * @returns { Array } - Returns the modified (dstArray) array with the new length.
+ * @function arrayRemoveAll
+ * @throws { Error } If the first argument is not an array-like.
+ * @throws { Error } If passed less than two or more than three arguments.
+ * @throws { Error } If the third argument is not a function.
+ * @memberof wTools
+ */
+
+function __arrayRemoveAll( dstArray,ins,onEqualize )
+{
+
+  // if( arguments.length === 2 )
+  // arrayRemovedAll( dstArray,ins );
+  // else if( arguments.length === 3 )
+  // arrayRemovedAll( dstArray,ins,onEqualize );
+  __arrayRemovedAll.apply( this, arguments );
+
+  return dstArray;
+}
+
+//
+
+function __arrayRemovedAll( dstArray, ins, onEqualize  )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
+
+  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var result = 0;
+
+  while( index >= 0 )
+  {
+    dstArray.splice( index,1 );
+    result += 1;
+    index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  }
+
+  return result;
+}
+
 // --
 // array flatten
 // --
@@ -12814,156 +13078,12 @@ function __arrayFlattenedOnce( dstArray, insArray, onEqualize )
   return result;
 }
 
-//
-
-/**
- * Callback for compare two value.
- *
- * @callback __arrayRemoved~compareCallback
- * @param { * } el - The element of the array.
- * @param { * } ins - The value to compare.
- */
-
-/**
- * The __arrayRemoved() routine removes all (ins) values from (dstArray)
- * that corresponds to the condition in the callback function and returns the amount of them.
- *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if (onElement) is equal to the 'undefined'.
- * If true, it assigns by default callback function that checks the equality of two arguments.
- * Otherwise, it uses given callback function (onElement).
- * Then it iterates over (dstArray) from the end to the beginning, checks if (onElement) returns true.
- * If true, it removes the value (ins) from (dstArray) array by corresponding index, and increases (result++).
- *
- * @param { Array } dstArray - The source array.
- * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
- * By default, it checks the equality of two arguments.
- *
- * @example
- * // returns 4
- * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
- *   return el < ins;
- * });
- *
- * @example
- * // returns 3
- * var arr = _.__arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
- *
- * @returns { Number } - Returns the amount of the removed elements.
- * @function __arrayRemoved
- * @throws { Error } If the first argument is not an array-like.
- * @throws { Error } If passed less than two or more than three arguments.
- * @throws { Error } If the third argument is not a function.
- * @memberof wTools
- */
-
-// function __arrayRemoved( dstArray,ins,onEqualize )
-// {
-//   _.assert( _.arrayLike( dstArray ) );
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//
-//   if( arguments.length === 3 )
-//   _.assert( _.routineIs( onEqualize ) );
-//
-//   var result = 0;
-//
-//   if( onEqualize === undefined )
-//   onEqualize = function( a,b ){ return a === b };
-//
-//   for( var d = dstArray.length-1 ; d >= 0 ; d-- )
-//   if( onEqualize( dstArray[ d ],ins ) )
-//   {
-//     dstArray.splice( d,1 );
-//     result += 1;
-//   }
-//
-//   return result;
-// }
-
-//
-
-/**
- * Callback for compare two value.
- *
- * @callback arrayRemoveAll~compareCallback
- * @param { * } el - Element of the array.
- * @param { * } ins - Value to compare.
- */
-
-/**
- * The arrayRemoveAll() routine removes all (ins) values from (dstArray)
- * that corresponds to the condition in the callback function and returns the modified array.
- *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if arguments passed two, it calls the routine
- * [__arrayRemoved( dstArray, ins )]{@link wTools.__arrayRemoved}
- * Otherwise, if passed three arguments, it calls the routine
- * [__arrayRemoved( dstArray, ins, onElement )]{@link wTools.__arrayRemoved}
- *
- * @see wTools.__arrayRemoved
- *
- * @param { Array } dstArray - The source array.
- * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
- * By default, it checks the equality of two arguments.
- *
- * @example
- * // returns [ 2, 2, 3, 5 ]
- * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2, function ( el, ins ) {
- *   return el < ins;
- * });
- *
- * @example
- * // returns [ 1, 3, 5 ]
- * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2 );
- *
- * @returns { Array } - Returns the modified (dstArray) array with the new length.
- * @function arrayRemoveAll
- * @throws { Error } If the first argument is not an array-like.
- * @throws { Error } If passed less than two or more than three arguments.
- * @throws { Error } If the third argument is not a function.
- * @memberof wTools
- */
-
-function __arrayRemoveAll( dstArray,ins,onEqualize )
-{
-
-  // if( arguments.length === 2 )
-  // arrayRemovedAll( dstArray,ins );
-  // else if( arguments.length === 3 )
-  // arrayRemovedAll( dstArray,ins,onEqualize );
-  __arrayRemovedAll.apply( this, arguments );
-
-  return dstArray;
-}
-
-//
-
-function __arrayRemovedAll( dstArray, ins, onEqualize  )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
-
-  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
-  var result = 0;
-
-  while( index >= 0 )
-  {
-    dstArray.splice( index,1 );
-    result += 1;
-    index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
-  }
-
-  return result;
-}
-
 // --
 // array replace
 // --
 
 /**
- * The arrayReplaceOnce() routine returns the index of the (dstArray) array which will be replaced by (sub),
+ * The __arrayReplaceOnce() routine returns the index of the (dstArray) array which will be replaced by (sub),
  * if (dstArray) has the value (ins).
  *
  * It takes three arguments (dstArray, ins, sub), calls built in function (dstArray.indexOf(ins)),
@@ -12977,36 +13097,53 @@ function __arrayRemovedAll( dstArray, ins, onEqualize  )
  *
  * @example
  * // returns -1
- * _.arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
+ * _.__arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
  *
  * @example
  * // returns 1
- * _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+ * _.__arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
  *
  * @example
  * // returns 3
- * _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+ * _.__arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
  *
  * @example
  * // returns 4
- * _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
+ * _.__arrayReplaceOnce( [ true, true, true, true, false ], false, true );
  *
  * @returns { number }  Returns the index of the (dstArray) array which will be replaced by (sub),
  * if (dstArray) has the value (ins).
- * @function arrayReplaceOnce
+ * @function __arrayReplaceOnce
  * @throws { Error } Will throw an Error if (dstArray) is not an array.
  * @throws { Error } Will throw an Error if (arguments.length) is less than three.
  * @memberof wTools
  */
 
-function arrayReplaceOnce( dstArray,ins,sub )
+function __arrayReplaceOnce( dstArray,ins,sub,onEqualize )
+{
+  __arrayReplacedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function __arrayReplaceOnceStrictly( dstArray,ins,sub,onEqualize )
+{
+  var result = __arrayReplacedOnce.apply( this, arguments );
+  _.assert( result !== -1, '__arrayReplaceOnceStrictly: ins not exists in dstArray' );
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedOnce( dstArray,ins,sub,onEqualize )
 {
   _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
 
   var index = -1;
 
-  index = dstArray.indexOf( ins );
+  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
 
   if( index >= 0 )
   dstArray.splice( index,1,sub );
@@ -13016,17 +13153,160 @@ function arrayReplaceOnce( dstArray,ins,sub )
 
 //
 
+function __arrayReplaceArrayOnce( dstArray,ins,sub,onEqualize  )
+{
+  __arrayReplacedArrayOnce.apply( this,arguments );
+  return dstArray;
+}
+
+//
+
+function __arrayReplaceArrayOnceStrictly( dstArray,ins,sub,onEqualize  )
+{
+  var result = __arrayReplacedArrayOnce.apply( this,arguments );
+  _.assert( result === ins.length );
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedArrayOnce( dstArray,ins,sub,onEqualize )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.arrayLike( ins ) );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
+
+  var index = -1;
+  var result = 0;
+
+  for( var i = 0, len = ins.length; i < len; i++ )
+  {
+    index = _.arrayLeftIndexOf( dstArray,ins[ i ],onEqualize )
+    if( index >= 0 )
+    {
+      dstArray.splice( index,1,sub );
+      result += 1;
+    }
+  }
+
+  return result;
+}
+
+//
+
+
+function __arrayReplaceArraysOnce( dstArray, ins, sub, onEqualize )
+{
+  __arrayReplacedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+
+function __arrayReplaceArraysOnceStrictly( dstArray, ins, sub, onEqualize )
+{
+  var result = __arrayReplacedArraysOnce.apply( this, arguments );
+
+  var expected = 0;
+  for( var i = 0, len = ins.length; i < len; i++ )
+  expected += ins[ i ].length;
+
+  _.assert( expected === result );
+
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedArraysOnce( dstArray, ins, sub, onEqualize )
+{
+  _.assert( arguments.length === 3 || arguments.length === 4 );
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( _.arrayLike( ins ) );
+  _.assert( _.arrayLike( sub ) );
+  _.assert( ins.length === sub.length );
+
+  var result = 0;
+
+  function _subGet( i, j )
+  {
+    if( !_.arrayLike( sub[ i ] ) )
+    return sub[ i ];
+
+    var subArray = sub[ i ];
+    if( j < subArray.length )
+    return subArray[ j ];
+    else
+    return subArray[ subArray.length - 1 ];
+  }
+
+  for( var i = 0, alen = ins.length; i < alen; i++ )
+  {
+    _.assert( _.arrayLike( ins[ i ] ) );
+
+    var insArray = ins[ i ];
+
+    if( _.arrayLike( sub[ i ] ) )
+    _.assert( insArray.length >= sub[ i ].length  );
+
+    for( var j = 0, slen = insArray.length; j < slen; j++ )
+    {
+      var index = _.arrayLeftIndexOf( dstArray, insArray[ j ], onEqualize );
+      if( index >= 0 )
+      {
+        dstArray.splice( index, 1, _subGet( i, j ) );
+        result += 1;
+      }
+    }
+  }
+
+  return result;
+}
+
+//
+
+function __arrayReplaceAll( dstArray,ins,sub,onEqualize )
+{
+  __arrayReplacedAll.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function __arrayReplacedAll( dstArray,ins,sub,onEqualize )
+{
+  _.assert( _.arrayLike( dstArray ) );
+  _.assert( arguments.length === 3 || arguments.length === 4 );
+
+  var index = -1;
+  var result = 0;
+
+  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+
+  while( index !== -1 )
+  {
+    dstArray.splice( index,1,sub );
+    result += 1;
+    index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+  }
+
+  return result;
+}
+
+//
+
 /**
  * The arrayUpdate() routine adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
  * and returns the last added index or the last replaced index of the array (dstArray).
  *
- * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
- * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
+ * It creates the variable (index) assigns and calls to it the function (__arrayReplaceOnce( dstArray, ins, sub ).
+ * [__arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.__arrayReplaceOnce}.
  * Checks if (index) equal to the -1.
  * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
  * Otherwise, it returns the replaced (index).
  *
- * @see wTools.arrayReplaceOnce
+ * @see wTools.__arrayReplaceOnce
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to change.
@@ -13059,7 +13339,7 @@ function arrayUpdate( dstArray,ins,sub )
   _.assert( _.arrayLike( dstArray ) );
   _.assert( arguments.length === 3 );
 
-  var index = arrayReplaceOnce( dstArray,ins,sub );
+  var index = __arrayReplacedOnce.apply( this, arguments );
 
   if( index === -1 )
   {
@@ -13070,89 +13350,7 @@ function arrayUpdate( dstArray,ins,sub )
   return index;
 }
 
-// --
-// array etc
-// --
 
-function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
-{
-  var result = [];
-  var l = srcArray.length;
-
-  debugger;
-  throw _.err( 'not tested' );
-
-  comparator = _._comparatorFromMapper( comparator );
-
-  function rcomparator( a,b )
-  {
-    return comparator( srcArray[ a ],srcArray[ b ] );
-  };
-
-  for( var i = 0 ; i < l ; i += 1 )
-  {
-
-    if( result.length < numberOfElements )
-    {
-      _.arraySortedAdd( result, i, rcomparator );
-      continue;
-    }
-
-    _.arraySortedAdd( result, i, rcomparator );
-    result.splice( result.length-1,1 );
-
-  }
-
-  return result;
-}
-
-//
-
-/**
- * The arraySum() routine returns the sum of an array (src).
- *
- * @param { arrayLike } src - The source array.
- * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
- *
- * @example
- * // returns 15
- * _.arraySum( [ 1, 2, 3, 4, 5 ] );
- *
- * @example
- * // returns 29
- * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
- *
- * @example
- * // returns 94
- * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
- *
- * @returns { Number } - Returns the sum of an array (src).
- * @function arraySum
- * @throws { Error } If passed arguments is less than one or more than two.
- * @throws { Error } If the first argument is not an array-like object.
- * @throws { Error } If the second argument is not a Function.
- * @memberof wTools
- */
-
-function arraySum( src,onElement )
-{
-  var result = 0;
-
-  _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
-
-  if( onElement === undefined )
-  onElement = function( e ){ return e; };
-
-  _.assert( _.routineIs( onElement ) );
-
-  for( var i = 0 ; i < src.length ; i++ )
-  {
-    result += onElement( src[ i ],i,src );
-  }
-
-  return result;
-}
 
 // --
 // array set
@@ -17326,9 +17524,22 @@ var Proto =
 
   /* !!! Strictly, Array, Arrays variants needed */
 
-  arrayReplaceOnce : arrayReplaceOnce,
-  arrayUpdate : arrayUpdate,
+  __arrayReplaceOnce : __arrayReplaceOnce,
+  __arrayReplaceOnceStrictly : __arrayReplaceOnceStrictly,
+  __arrayReplacedOnce : __arrayReplacedOnce,
 
+  __arrayReplaceArrayOnce : __arrayReplaceArrayOnce,
+  __arrayReplaceArrayOnceStrictly : __arrayReplaceArrayOnceStrictly,
+  __arrayReplacedArrayOnce : __arrayReplacedArrayOnce,
+
+  __arrayReplaceArraysOnce : __arrayReplaceArraysOnce,
+  __arrayReplaceArraysOnceStrictly : __arrayReplaceArraysOnceStrictly,
+  __arrayReplacedArraysOnce : __arrayReplacedArraysOnce,
+
+  __arrayReplaceAll : __arrayReplaceAll,
+  __arrayReplacedAll : __arrayReplacedAll,
+
+  arrayUpdate : arrayUpdate,
 
   // array set
 
