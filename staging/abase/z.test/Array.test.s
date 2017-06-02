@@ -24,7 +24,9 @@ if( typeof module !== 'undefined' )
 
 var _ = wTools;
 
+// --
 // buffer
+// --
 
 function bufferRelen( test )
 {

@@ -8975,9 +8975,9 @@ function arrayMakeSimilar( ins,src )
   if( _.argumentsIs( ins ) )
   ins = [];
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1 || arguments.length === 2 ); 
   _.assert( _.numberIs( length ) );
-  _.assert( _.arrayLike( ins ),'unknown type of array',_.strTypeOf( ins ) );
+  _.assert( _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
 
   if( _.arrayLike( src ) )
   {
