@@ -897,13 +897,18 @@ function eachInMultiRange( o )
 
   /* */
 
+  var indexFlat = 0;
   var indexNd = [];
   for( var r = 0 ; r < ranges.length ; r++ )
-  indexNd[ r ] = ranges[ r ][ 0 ];
+  {
+    indexNd[ r ] = ranges[ r ][ 0 ];
+    if( ranges[ r ][ 1 ] <= ranges[ r ][ 0 ] )
+    return 0;
+  }
 
   /* */
 
-  var indexFlat = 0;
+
   while( indexNd[ last ] < ranges[ last ][ 1 ] )
   {
 
@@ -5795,9 +5800,21 @@ function argumentsIs( src )
 
 function vectorIs( src )
 {
-  if( src && src._vectorArray )
+  if( src && src._vectorBuffer )
   return true;
   else return false;
+}
+
+//
+
+function spaceIs( src )
+{
+  if( !src )
+  return false;
+  if( !_.Space )
+  return false;
+  if( src instanceof _.Space )
+  return true;
 }
 
 //
@@ -7093,8 +7110,8 @@ function _routineBind( o )
 
   _assert( arguments.length === 1 );
   _assert( _.boolIs( o.seal ) );
-  _assert( _.routineIs( o.routine ),'_routineBind :','expects routine' );
-  _assert( _.arrayIs( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
+  _assert( _.routineIs( o.routine ),'expects routine' );
+  _assert( _.arrayLike( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
 
   // if( _global_.wConsequence )
   // if( wConsequence.prototype.got === o.routine )
@@ -8119,39 +8136,39 @@ function dateToStr( date )
 // buffer
 // --
 
-  /**
-   * The bufferRelen() routine returns a new or the same typed array (src) with a new or the same length (len).
-   *
-   * It creates the variable (result) checks, if (len) is more than (src.length),
-   * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayMakeSimilar(src, len))
-   * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
-   * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
-   * Otherwise, it returns an initial typed array.
-   *
-   * @see {@link wTools.arrayMakeSimilar} - See for more information.
-   *
-   * @param { typedArray } src - The source typed array.
-   * @param { Number } len - The length of a typed array.
-   *
-   * @example
-   * // returns [ 3, 7, 13, 0 ]
-   * var ints = new Int8Array( [ 3, 7, 13 ] );
-   * _.bufferRelen( ints, 4 );
-   *
-   * @example
-   * // returns [ 3, 7, 13 ]
-   * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
-   * _.bufferRelen( ints2, 3 );
-   *
-   * @example
-   * // returns [ 3, 0, 13, 0, 77, 0 ]
-   * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
-   * _.bufferRelen( ints3, 6 );
-   *
-   * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
-   * @function bufferRelen
-   * @memberof wTools
-   */
+/**
+ * The bufferRelen() routine returns a new or the same typed array (src) with a new or the same length (len).
+ *
+ * It creates the variable (result) checks, if (len) is more than (src.length),
+ * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayMakeSimilar(src, len))
+ * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
+ * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
+ * Otherwise, it returns an initial typed array.
+ *
+ * @see {@link wTools.arrayMakeSimilar} - See for more information.
+ *
+ * @param { typedArray } src - The source typed array.
+ * @param { Number } len - The length of a typed array.
+ *
+ * @example
+ * // returns [ 3, 7, 13, 0 ]
+ * var ints = new Int8Array( [ 3, 7, 13 ] );
+ * _.bufferRelen( ints, 4 );
+ *
+ * @example
+ * // returns [ 3, 7, 13 ]
+ * var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+ * _.bufferRelen( ints2, 3 );
+ *
+ * @example
+ * // returns [ 3, 0, 13, 0, 77, 0 ]
+ * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
+ * _.bufferRelen( ints3, 6 );
+ *
+ * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
+ * @function bufferRelen
+ * @memberof wTools
+ */
 
 function bufferRelen( src,len )
 {
@@ -8916,23 +8933,51 @@ alteration How : - , Once , OnceStrictly
  * @memberof wTools
  */
 
-function arrayMakeSimilar( ins,length )
+function arrayMakeSimilar( ins,src )
 {
-  var result;
+  var result, length;
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( length === undefined )
+  if( src === undefined )
   {
-    _.assert( _.numberIs( ins.length ) );
     length = ins.length;
   }
+  else
+  {
+    if( _.arrayLike( src ) )
+    length = src.length;
+    else
+    length = src
+  }
 
-  if( _.argumentsIs( ins ) || _.arrayIs( ins ) )
-  result = new Array( length );
-  else if( _.bufferTypedIs( ins ) || ins instanceof ArrayBuffer )
-  result = new ins.constructor( length );
-  else _.assert( 0,'unknown type of array' );
+  if( _.argumentsIs( ins ) )
+  ins = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIs( length ) );
+  _.assert( _.arrayLike( ins ),'unknown type of array',_.strTypeOf( ins ) );
+
+  if( _.arrayLike( src ) )
+  {
+
+    if( ins.constructor === Array )
+    debugger;
+    else
+    debugger;
+
+    if( ins.constructor === Array )
+    result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+    else
+    result = new ins.constructor( src );
+
+    // var a = Array.bind.apply( Array, src );
+    // result = new a;
+    // var r2 = new( _.routineJoin( ins.constructor, ins.constructor,  ) );
+  }
+  else
+  {
+    result = new ins.constructor( length );
+  }
+  // else _.assert( 0,'unknown type of array',_.strTypeOf( ins ) );
 
   return result;
 }
@@ -8949,11 +8994,12 @@ function arrayMakeSimilar( ins,length )
  *
  * @example
  * // returns [ 6, 2, 4, 7, 8 ]
- * var arr = _.arrayMakeRandom( {
+ * var arr = _.arrayMakeRandom
+ * ({
  *   length : 5,
  *   range : [ 1, 9 ],
- *   int : true
- * } );
+ *   int : true,
+ * });
  *
  * @returns { Array } - Returns an array of random numbers.
  * @function arrayMakeRandom
@@ -9204,7 +9250,7 @@ function arrayAs( src )
 
 //
 
-function _arrayCopy( src )
+function _arrayClone( src )
 {
 
   _.assert( arguments.length === 1 );
@@ -9226,14 +9272,14 @@ function _arrayCopy( src )
 
 //
 
-function arrayCopy()
+function arrayClone()
 {
   var result;
   var length = 0;
 
   if( arguments.length === 1 )
   {
-    return _._arrayCopy( arguments[ 0 ] );
+    return _._arrayClone( arguments[ 0 ] );
   }
 
   /* eval length */
@@ -9243,7 +9289,7 @@ function arrayCopy()
     var argument = arguments[ a ];
 
     if( argument === undefined )
-    throw _.err( 'arrayCopy','argument is not defined' );
+    throw _.err( 'arrayClone','argument is not defined' );
 
     if( _.arrayLike( argument ) ) length += argument.length;
     else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
@@ -16191,13 +16237,13 @@ function _mapScreen( options )
   options.filter = _.filter.makeMapper( options.filter );
 
   _assert( arguments.length === 1 );
-  _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as argument' );
+  _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as (-dstObject-)' );
   _assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
   _.assertMapHasOnly( options,_mapScreen.defaults );
 
   for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects object as argument' );
+  _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
 
   for( var k in screenObject )
   {
@@ -17000,6 +17046,7 @@ var Proto =
   argumentsIs : argumentsIs,
 
   vectorIs : vectorIs,
+  spaceIs : spaceIs,
 
   numberIs : numberIs,
   numberIsNotNan : numberIsNotNan,
@@ -17172,8 +17219,8 @@ var Proto =
   arrayFrom : arrayFrom,
   arrayAs : arrayAs,
 
-  _arrayCopy : _arrayCopy,
-  arrayCopy : arrayCopy,
+  _arrayClone : _arrayClone,
+  arrayClone : arrayClone,
 
 
   // array converter

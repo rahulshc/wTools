@@ -126,7 +126,13 @@ function arrayFromCoercing( src )
   if( src.constructor === this.array.ArrayType )
   return src;
 
-  var result = new this.array.ArrayType( src );
+  var result;
+
+  if( this.array.ArrayType === Array )
+  result = new( _.routineJoin( this.array.ArrayType, this.array.ArrayType, src ) );
+  else
+  result = new this.array.ArrayType( src );
+
   return result;
 }
 
