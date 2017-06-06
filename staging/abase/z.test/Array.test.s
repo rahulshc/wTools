@@ -204,7 +204,7 @@ function arrayIs( test )
   if( !Config.debug )
   return;
 
-};
+}
 
 //
 
@@ -222,9 +222,17 @@ function arrayLike( test )
   test.identical( got, expected );
 
   test.description = 'a pseudo array';
-  var got = ( function() {
-    return _.arrayLike( arguments );
-  } )('Hello there!');
+  var got = _.arrayLike( arguments );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'raw array buffer';
+  var got = _.arrayLike( new ArrayBuffer( 10 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'typed array buffer';
+  var got = _.arrayLike( new Float32Array( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
@@ -234,22 +242,22 @@ function arrayLike( test )
   test.identical( got, expected );
 
   test.description = 'null';
-  var got = _.arrayLike();
+  var got = _.arrayLike( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'function';
-  var got = _.arrayLike( function() {  } );
+  var got = _.arrayLike( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'string';
-  var got = _.arrayLike();
+  var got = _.arrayLike( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'number';
-  var got = _.arrayLike();
+  var got = _.arrayLike( 1 );
   var expected  = false;
   test.identical( got, expected );
 
@@ -259,18 +267,75 @@ function arrayLike( test )
   test.identical( got, expected );
 
   test.description = 'object';
-  var got = _.arrayLike();
+  var got = _.arrayLike( {} );
   var expected  = false;
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
 
+}
 
-};
+//
 
+function clsLikeArray( test )
+{
+
+  test.description = 'an array';
+  var got = _.clsLikeArray( [  ].constructor );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'an arguments';
+  var got = _.clsLikeArray( arguments.constructor );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'raw array buffer';
+  var got = _.arrayLike( new ArrayBuffer( 10 ).constructor );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'typed array buffer';
+  var got = _.arrayLike( new Float32Array( 10 ).constructor );
+  var expected = true;
+  test.identical( got, expected ); 
+
+  test.description = 'no argument';
+  var got = _.clsLikeArray();
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.description = 'null';
+  var got = _.clsLikeArray( null );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.description = 'function';
+  var got = _.clsLikeArray( (function() {}).constructor );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.description = 'string';
+  var got = _.clsLikeArray( 'x'.constructor );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.description = 'object';
+  var got = _.clsLikeArray( {}.constructor );
+  var expected  = false;
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+}
+
+//
 
 function hasLength( test )
 {
@@ -8712,7 +8777,7 @@ var Self =
 {
 
   name : 'wTools.array',
-  // verbosity : 9,
+  verbosity : 7,
   // barringConsole : 0,
 
   tests :
@@ -8727,6 +8792,7 @@ var Self =
 
     arrayIs : arrayIs,
     arrayLike : arrayLike,
+    clsLikeArray : clsLikeArray,
     hasLength : hasLength,
 
     // array maker

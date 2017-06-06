@@ -5171,9 +5171,10 @@ function assertInstanceOrClass( _Self,_this )
 
 function assertOwnNoConstructor( ins )
 {
-  _.assert( arguments.length === 1 );
   _.assert( _.objectLike( ins ) );
-  _.assert( !_propertyIsEumerable.call( ins,'constructor' ) && !_hasOwnProperty.call( ins,'constructor' ) );
+  var args = _.arraySlice( arguments );
+  args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_hasOwnProperty.call( ins,'constructor' ) );
+  _.assert.call( _,args );
 }
 
 //
@@ -5408,6 +5409,26 @@ function arrayLike( src )
 
   if( !_.numberIs( src.length ) )
   return false;
+  if( Object.propertyIsEnumerable.call( src,'length' ) )
+  return false;
+
+  return true;
+}
+
+//
+
+function clsLikeArray( src )
+{
+
+  if( src === Function )
+  return false;
+  if( src === null || src === Object )
+  return false;
+  if( src === String )
+  return false;
+
+  debugger;
+
   if( Object.propertyIsEnumerable.call( src,'length' ) )
   return false;
 
@@ -5659,9 +5680,30 @@ function argumentsIs( src )
 
 function vectorIs( src )
 {
-  if( src && src._vectorArray )
+  if( src && src._vectorBuffer )
   return true;
   else return false;
+}
+
+//
+
+function clsIsVector( src )
+{
+  if( !src )
+  return false;
+  return '_vectorBuffer' in src.prototype;
+}
+
+//
+
+function spaceIs( src )
+{
+  if( !src )
+  return false;
+  if( !_.Space )
+  return false;
+  if( src instanceof _.Space )
+  return true;
 }
 
 //
@@ -5801,50 +5843,6 @@ function boolLike( src )
 {
   var type = _ObjectToString.call( src );
   return type === '[object Boolean]' || type === '[object Number]';
-}
-
-//
-
-// function bufferNodeIs( src )
-// {
-//   if( typeof Buffer !== 'undefined' )
-//   return src instanceof Buffer;
-//   return false;
-// }
-//
-// //
-//
-// function bufferAnyIs( src )
-// {
-//   return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
-// }
-//
-// //
-//
-// function argumentsIs( src )
-// {
-//   return _ObjectToString.call( src ) === '[object Arguments]';
-// }
-//
-// //
-//
-// function vectorIs( src )
-// {
-//   if( src && src._vectorBuffer )
-//   return true;
-//   else return false;
-// }
-
-//
-
-function spaceIs( src )
-{
-  if( !src )
-  return false;
-  if( !_.Space )
-  return false;
-  if( src instanceof _.Space )
-  return true;
 }
 
 //
@@ -8975,7 +8973,7 @@ function arrayMakeSimilar( ins,src )
   if( _.argumentsIs( ins ) )
   ins = [];
 
-  _.assert( arguments.length === 1 || arguments.length === 2 ); 
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
   _.assert( _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
 
@@ -8991,6 +8989,59 @@ function arrayMakeSimilar( ins,src )
     result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
     else
     result = new ins.constructor( src );
+
+  }
+  else
+  {
+    result = new ins.constructor( length );
+  }
+
+  return result;
+}
+
+//
+
+function arrayMakeSimilarZeroed( ins,src )
+{
+  var result, length;
+
+  if( src === undefined )
+  {
+    length = ins.length;
+  }
+  else
+  {
+    if( _.arrayLike( src ) )
+    length = src.length;
+    else
+    length = src
+  }
+
+  if( _.argumentsIs( ins ) )
+  ins = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIs( length ) );
+  _.assert( _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
+
+  if( _.arrayLike( src ) )
+  {
+
+    if( ins.constructor === Array )
+    debugger;
+    else
+    debugger;
+
+    if( ins.constructor === Array )
+    {
+      result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+    }
+    else
+    {
+      result = new ins.constructor( length );
+      for( var i = 0 ; i < length ; i++ )
+      result[ i ] = 0;
+    }
 
   }
   else
@@ -9787,6 +9838,8 @@ function arrayMultislice()
  * @throws { Error } Will throw an Error if ( o ) is not an objectLike.
  * @memberof wTools
  */
+
+debugger;
 
 function arrayDuplicate( o )
 {
@@ -17244,6 +17297,7 @@ var Proto =
 
   arrayIs : arrayIs,
   arrayLike : arrayLike,
+  clsLikeArray : clsLikeArray,
   hasLength : hasLength,
 
   objectIs : objectIs,
@@ -17263,6 +17317,7 @@ var Proto =
   argumentsIs : argumentsIs,
 
   vectorIs : vectorIs,
+  clsIsVector : clsIsVector,
   spaceIs : spaceIs,
 
   numberIs : numberIs,
@@ -17430,6 +17485,7 @@ var Proto =
   // array maker
 
   arrayMakeSimilar : arrayMakeSimilar,
+  arrayMakeSimilarZeroed : arrayMakeSimilarZeroed,
   arrayMakeRandom : arrayMakeRandom,
   arrayFromNumber : arrayFromNumber,
   arrayFromRange : arrayFromRange,
