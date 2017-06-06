@@ -5419,17 +5419,22 @@ function arrayLike( src )
 
 function clsLikeArray( src )
 {
+  if( !src )
+  return false;
 
   if( src === Function )
   return false;
-  if( src === null || src === Object )
+  if( src === Object )
   return false;
   if( src === String )
   return false;
 
-  debugger;
+  if( _.atomicIs( src ) )
+  return false;
 
-  if( Object.propertyIsEnumerable.call( src,'length' ) )
+  if( !( 'length' in src.prototype ) )
+  return false;
+  if( Object.propertyIsEnumerable.call( src.prototype,'length' ) )
   return false;
 
   return true;
@@ -9838,8 +9843,6 @@ function arrayMultislice()
  * @throws { Error } Will throw an Error if ( o ) is not an objectLike.
  * @memberof wTools
  */
-
-debugger;
 
 function arrayDuplicate( o )
 {

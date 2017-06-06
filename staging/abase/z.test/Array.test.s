@@ -288,20 +288,20 @@ function clsLikeArray( test )
   var expected = true;
   test.identical( got, expected );
 
-  test.description = 'an arguments';
+  test.description = 'arguments, not possible to say yes by constructor';
   var got = _.clsLikeArray( arguments.constructor );
-  var expected = true;
+  var expected = false;
   test.identical( got, expected );
 
-  test.description = 'raw array buffer';
-  var got = _.arrayLike( new ArrayBuffer( 10 ).constructor );
+  test.description = 'raw array buffer'; debugger;
+  var got = _.clsLikeArray( new ArrayBuffer( 10 ).constructor );
   var expected = false;
   test.identical( got, expected );
 
   test.description = 'typed array buffer';
-  var got = _.arrayLike( new Float32Array( 10 ).constructor );
+  var got = _.clsLikeArray( new Float32Array( 10 ).constructor );
   var expected = true;
-  test.identical( got, expected ); 
+  test.identical( got, expected );
 
   test.description = 'no argument';
   var got = _.clsLikeArray();
@@ -313,6 +313,11 @@ function clsLikeArray( test )
   var expected  = false;
   test.identical( got, expected );
 
+  test.description = 'number';
+  var got = _.clsLikeArray( 1 );
+  var expected  = false;
+  test.identical( got, expected );
+
   test.description = 'function';
   var got = _.clsLikeArray( (function() {}).constructor );
   var expected  = false;
@@ -320,6 +325,11 @@ function clsLikeArray( test )
 
   test.description = 'string';
   var got = _.clsLikeArray( 'x'.constructor );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.description = 'string';
+  var got = _.clsLikeArray( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
@@ -8967,6 +8977,7 @@ var Self =
     // arrayElementsSwap : arrayElementsSwap, /* deprecated? */
 
     // arraySame : arraySame,/* deprecated? */
+
   }
 
 }
