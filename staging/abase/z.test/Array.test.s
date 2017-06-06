@@ -422,12 +422,30 @@ function arrayMakeSimilar( test )
   test.identical( got.length, 3 );
   test.shouldBe( got !== ins );
 
+  var ins = [];
+  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilar( ins, src );
+  test.identical( got.length, 5 );
+  test.shouldBe( _.arrayIs( got ) );
+  test.identical( got, [ 1,1,1,1,1 ] );
+
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
   var got = _.arrayMakeSimilar( ins );
   test.shouldBe( _.bufferTypedIs( got ) );
   test.identical( got.length, 5 );
   test.shouldBe( got !== ins );
+
+  var ins = new Uint8Array( 5 );
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayMakeSimilar( ins,src );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.shouldBe( got instanceof Uint8Array );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < src.length; i++ )
+  isEqual = got[ i ] !== src[ i ] ? false : true;
+  test.shouldBe( isEqual );
 
   test.description = 'typedArray';
   var ins = new Uint8Array( 5 );
@@ -443,6 +461,23 @@ function arrayMakeSimilar( test )
   test.shouldBe( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 4 );
 
+  test.description = 'NodeBuffer'
+  var got = _.arrayMakeSimilar( new Buffer( 5 ) );
+  test.shouldBe( _.bufferNodeIs( got ) );
+  test.identical( got.length, 5 );
+
+  test.description = 'NodeBuffer and src'
+  var src = new Int8Array(5);
+  for( var i = 0; i < src.length; i++ )
+  src[ i ] = i;
+  var got = _.arrayMakeSimilar( new Buffer( 5 ), src );
+  test.shouldBe( _.bufferNodeIs( got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < src.length; i++ )
+  isEqual = got[ i ] !== src[ i ] ? false : true;
+  test.shouldBe( isEqual );
+
   /**/
 
   if( !Config.debug )
@@ -453,21 +488,6 @@ function arrayMakeSimilar( test )
   {
     _.arrayMakeSimilar();
   });
-
-  if( !isBrowser )
-  {
-    test.description = 'node buffer';
-
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeSimilar( new Buffer( 5 ) );
-    });
-
-    test.shouldThrowError( function()
-    {
-      _.arrayMakeSimilar( new Buffer( 5 ), 3 );
-    });
-  }
 
   test.description = 'wrong type of argument';
   test.shouldThrowError( function()
