@@ -9814,7 +9814,7 @@ function arrayDuplicate( o )
       _.assert( _.arrayLike( o.result ) || _.bufferTypedIs( o.result ), 'Expects o.result as arrayLike or TypedArray if numberOfDuplicatesPerElement equals 1' );
 
       if( _.bufferTypedIs( o.result ) )
-      o.result = _.arrayCopy( o.result, o.src );
+      o.result = _.arrayClone( o.result, o.src );
       else if( _.arrayLike( o.result ) )
       o.result.push.apply( o.result, o.src );
     }
