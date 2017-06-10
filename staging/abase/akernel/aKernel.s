@@ -5246,14 +5246,15 @@ function assertMapHasNone( src )
   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
   var none = _.mapScreens.apply( this,args );
 
-  for( var n in none )
-  {
-    for( var a = 1 ; a < arguments.length ; a++ )
-    if( arguments[ a ][ n ] !== src[ n ] )
-    break;
-    if( a === arguments.length )
-    delete none[ n ];
-  }
+  // for( var n in none )
+  // {
+  //   for( var a = 1 ; a < arguments.length ; a++ )
+  //   if( arguments[ a ][ n ] !== src[ n ] )
+  //   break;
+  //   if( a === arguments.length )
+  //   delete none[ n ];
+  // }
+
   var keys = Object.keys( none );
   if( keys.length )
   {
@@ -5713,119 +5714,13 @@ function spaceIs( src )
 
 //
 
-/**
- * Function numberIs checks incoming param whether it is number.
- * Returns "true" if incoming param is object. Othervise "false" returned.
- *
- * @example
- * //returns true
- * numberIs( 5 );
- * @example
- * // returns false
- * numberIs( 'song' );
- *
- * @param {*} src.
- * @return {Boolean}.
- * @function numberIs.
- * @memberof wTools
- */
-
-function numberIs( src )
+function clsIsSpace( src )
 {
-  return _ObjectToString.call( src ) === '[object Number]';
-}
-
-//
-
-function numberIsNotNan( src )
-{
-  return _.numberIs( src ) && !isNaN( src );
-}
-
-//
-
-function numberIsRegular( src )
-{
-  return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
-}
-
-//
-
-function numberIsFinite( src )
-{
-
-  if( !_.numberIs( src ) )
+  if( !_.Space )
   return false;
-
-  return isFinite( src );
-}
-
-//
-
-function numberIsInt( src )
-{
-
-  if( !_.numberIs( src ) )
+  if( src === _.Space )
+  return true;
   return false;
-
-  return Math.floor( src ) === src;
-}
-
-//
-
-function numbersAreFinite( src )
-{
-
-  if( _.arrayLike( src ) )
-  {
-    for( var s = 0 ; s < src.length ; s++ )
-    if( !numbersAreFinite( src[ s ] ) )
-    return false;
-    return true;
-  }
-
-  if( !_.numberIs( src ) )
-  return false;
-
-  return isFinite( src );
-}
-
-//
-
-function numbersArePositive( src )
-{
-
-  if( _.arrayLike( src ) )
-  {
-    for( var s = 0 ; s < src.length ; s++ )
-    if( !numbersArePositive( src[ s ] ) )
-    return false;
-    return true;
-  }
-
-  if( !_.numberIs( src ) )
-  return false;
-
-  return src >= 0;
-}
-
-//
-
-function numbersAreInt( src )
-{
-
-  if( _.arrayLike( src ) )
-  {
-    for( var s = 0 ; s < src.length ; s++ )
-    if( !numbersAreInt( src[ s ] ) )
-    return false;
-    return true;
-  }
-
-  if( !_.numberIs( src ) )
-  return false;
-
-  return Math.floor( src ) === src;
 }
 
 //
@@ -6085,48 +5980,125 @@ function boolFrom( src )
 }
 
 // --
-// str
-// --
-
-/*
-function toStrFast( src ) {
-
-  var result = '';
-  if( arrayIs( src ) )
-  {
-    if( src.length > 0 ) result = toStr( src[0] );
-    for( var i = 1 ; i < src.length ; i++ )
-    result += ', ' + toStr( src[i] );
-  }
-  else if( src instanceof THREE.Vector2 )
-  {
-    result = '( ' + toStr( src.x ) + ', ' + toStr( src.y ) + ' )';
-  }
-  else if( src instanceof THREE.Vector3 )
-  {
-    result = '( ' + toStr( src.x ) + ', ' + toStr( src.y ) + ', ' + toStr( src.z ) + ' )';
-  }
-  else if( src instanceof THREE.Vector4 )
-  {
-    result = '( ' + toStr( src.x ) + ', ' + toStr( src.y ) + ', ' + toStr( src.z ) + ', ' + toStr( src.w ) + ' )';
-  }
-  else if( src instanceof THREE.Matrix4 )
-  {
-    for( var i = 0 ; i < 4*4 ; i+=4 )
-    result += '\n( ' + toStr( src.elements[i+0] ) + ', ' + toStr( src.elements[i+1] ) + ', ' + toStr( src.elements[i+2] ) + ', ' + toStr( src.elements[i+3] ) + ' )';
-  }
-  else
-  {
-    result = src;
-  }
-  return result;
-
-}
-*/
-
-// --
 // number
 // --
+
+/**
+ * Function numberIs checks incoming param whether it is number.
+ * Returns "true" if incoming param is object. Othervise "false" returned.
+ *
+ * @example
+ * //returns true
+ * numberIs( 5 );
+ * @example
+ * // returns false
+ * numberIs( 'song' );
+ *
+ * @param {*} src.
+ * @return {Boolean}.
+ * @function numberIs.
+ * @memberof wTools
+ */
+
+function numberIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Number]';
+}
+
+//
+
+function numberIsNotNan( src )
+{
+  return _.numberIs( src ) && !isNaN( src );
+}
+
+//
+
+function numberIsRegular( src )
+{
+  return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
+}
+
+//
+
+function numberIsFinite( src )
+{
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return isFinite( src );
+}
+
+//
+
+function numberIsInt( src )
+{
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return Math.floor( src ) === src;
+}
+
+//
+
+function numbersAreFinite( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersAreFinite( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return isFinite( src );
+}
+
+//
+
+function numbersArePositive( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersArePositive( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return src >= 0;
+}
+
+//
+
+function numbersAreInt( src )
+{
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !numbersAreInt( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return Math.floor( src ) === src;
+}
+
+//
 
 function numberFrom( src )
 {
@@ -6230,6 +6202,61 @@ function numberRandomIntBut( range )
 
   result = NaN;
   return result;
+}
+
+//
+
+function numbersFromNumber( dst,length )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
+  _.assert( length >= 0 );
+
+  if( _.numberIs( dst ) )
+  {
+    dst = arrayFill({ times : length , value : dst });
+  }
+  else
+  {
+    for( var i = 0 ; i < dst.length ; i++ )
+    _.assert( _.numberIs( dst[ i ] ) );
+    _.assert( dst.length === length,'expects array of length',length,'but got',dst );
+  }
+
+  return dst;
+}
+
+//
+
+function numbersMake_functor( length )
+{
+  var _ = this;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.numberIs( length ) );
+
+  function numbersMake( src )
+  {
+    _.assert( arguments.length === 1 );
+    _.assert( _.numberIs( src ) || _.arrayIs( src ) );
+
+    if( _.arrayIs( src ) )
+    {
+      _.assert( src.length === length );
+      return src;
+    }
+
+    debugger;
+
+    var result = _.makeArrayOfLength( length );
+    for( var i = 0 ; i < length ; i++ )
+    result[ i ] = src;
+
+    return result;
+  }
+
+  return numbersMake;
 }
 
 // --
@@ -9178,14 +9205,19 @@ arrayMakeRandom.defaults =
 
 function arrayFromNumber( dst,length )
 {
+
   _.assert( arguments.length === 2 );
   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
   _.assert( length >= 0 );
 
   if( _.numberIs( dst ) )
-  dst = arrayFill({ times : length , value : dst });
-  else if( dst.length !== length )
-  throw _.err( 'expects array of length',length,'but got',dst );
+  {
+    dst = arrayFill({ times : length , value : dst });
+  }
+  else
+  {
+    _.assert( dst.length === length,'expects array of length',length,'but got',dst );
+  }
 
   return dst;
 }
@@ -13977,6 +14009,15 @@ function mapSupplement( dst )
 
 //
 
+function mapSupplementNulls( dst )
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( _.filter.dstNotHasOrHasNull() );
+  return mapExtendFiltering.apply( this,args );
+}
+
+//
+
 function mapSupplementOwn( dst )
 {
   var args = _.arraySlice( arguments );
@@ -16362,8 +16403,8 @@ function mapScreens( srcObject,screenObject )
 {
 
   _assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-  _assert( _.objectLike( srcObject ),'mapScreens :','expects object as argument' );
-  _assert( _.objectLike( screenObject ),'mapScreens :','expects object as screenObject' );
+  _assert( _.objectLikeOrRoutine( srcObject ),'mapScreens :','expects object as argument' );
+  _assert( _.objectLikeOrRoutine( screenObject ),'mapScreens :','expects object as screenObject' );
 
   if( arguments.length > 2 )
   {
@@ -17322,16 +17363,7 @@ var Proto =
   vectorIs : vectorIs,
   clsIsVector : clsIsVector,
   spaceIs : spaceIs,
-
-  numberIs : numberIs,
-  numberIsNotNan : numberIsNotNan,
-  numberIsRegular : numberIsRegular,
-  numberIsFinite : numberIsFinite,
-  numberIsInt : numberIsInt,
-
-  numbersAreFinite : numbersAreFinite,
-  numbersArePositive : numbersArePositive,
-  numbersAreInt : numbersAreInt,
+  clsIsSpace : clsIsSpace,
 
   dateIs : dateIs,
   boolIs : boolIs,
@@ -17372,12 +17404,25 @@ var Proto =
 
   // number
 
+  numberIs : numberIs,
+  numberIsNotNan : numberIsNotNan,
+  numberIsRegular : numberIsRegular,
+  numberIsFinite : numberIsFinite,
+  numberIsInt : numberIsInt,
+
+  numbersAreFinite : numbersAreFinite,
+  numbersArePositive : numbersArePositive,
+  numbersAreInt : numbersAreInt,
+
   numberFrom : numberFrom,
   numbersFrom : numbersFrom,
 
   numberRandomInRange : numberRandomInRange,
   numberRandomInt : numberRandomInt,
   numberRandomIntBut : numberRandomIntBut, /* experimental */
+
+  numbersFromNumber : numbersFromNumber,
+  numbersMake_functor : numbersMake_functor,
 
 
   // str
@@ -17685,6 +17730,7 @@ var Proto =
   mapExtend : mapExtend,
   mapExtendToThis : mapExtendToThis,
   mapSupplement : mapSupplement,
+  mapSupplementNulls : mapSupplementNulls,
   mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
   mapComplementWithUndefines : mapComplementWithUndefines,

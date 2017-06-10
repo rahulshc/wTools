@@ -83,7 +83,7 @@ function mapKeys( test )
   /* enumerable/own off */
 
   var o = { enumerable : 0, own : 0 };
-  Object.defineProperty( b, 'x', { enumerable : 0 } );
+  Object.defineProperty( b, 'k', { enumerable : 0 } );
   var got = _.mapKeys.call( o, a );
   var expected = _.mapAllKeys( a );
   test.identical( got, expected );
@@ -91,9 +91,9 @@ function mapKeys( test )
   /* enumerable off, own on */
 
   var o = { enumerable : 0, own : 1 };
-  Object.defineProperty( a, 'x', { enumerable : 0 } );
+  Object.defineProperty( a, 'k', { enumerable : 0 } );
   var got = _.mapKeys.call( o, a );
-  var expected = [ 'a', 'x' ]
+  var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
   //
@@ -174,10 +174,10 @@ function mapOwnKeys( test )
   var expected = [ 'a' ]
   test.identical( got, expected );
 
-  Object.defineProperty( a, 'x', { enumerable : false } );
+  Object.defineProperty( a, 'k', { enumerable : false } );
   var o = { enumerable : 0 };
   var got = _.mapOwnKeys.call( o, a );
-  var expected = [ 'a', 'x' ]
+  var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
   //
@@ -249,10 +249,10 @@ function mapAllKeys( test )
 
   test.description = 'not enumerable'
   var a = { };
-  Object.defineProperty( a, 'x', { enumerable : 0 })
+  Object.defineProperty( a, 'k', { enumerable : 0 })
   var got = _.mapAllKeys( a );
   var expected = _expected.slice();
-  expected.push( 'x' );
+  expected.push( 'k' );
   test.identical( got.sort(), expected.sort() );
 
   //
@@ -261,11 +261,11 @@ function mapAllKeys( test )
   var a = { a : 1 };
   var b = { b : 1 };
   Object.setPrototypeOf( a, b );
-  Object.defineProperty( a, 'x', { enumerable : 0 } );
+  Object.defineProperty( a, 'k', { enumerable : 0 } );
   Object.defineProperty( b, 'y', { enumerable : 0 } );
   var got = _.mapAllKeys( a );
   var expected = _expected.slice();
-  expected = expected.concat( [ 'a','b','x','y' ] );
+  expected = expected.concat( [ 'a','b','k','y' ] );
   test.identical( got.sort(), expected.sort() );
 
   //
@@ -340,7 +340,7 @@ function mapVals( test )
 
   test.description = 'enumerable'
   var a = { a : 1 };
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 2 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 2 } );
 
   /**/
 
@@ -423,7 +423,7 @@ function mapOwnVals( test )
 
   /* enumerable off */
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   Object.defineProperty( b, 'y', { enumerable : 0, value : 4 } );
   var got = _.mapOwnVals.call({ enumerable : 0 }, a );
   var expected = [ 1, 3 ];
@@ -609,9 +609,9 @@ function mapPairs( test )
   /**/
 
   var arrObj = [];
-  arrObj[ 'x' ] = 1;
+  arrObj[ 'k' ] = 1;
   var got = _.mapPairs( arrObj );
-  var expected = [ [ 'x', 1 ] ];
+  var expected = [ [ 'k', 1 ] ];
   test.identical( got, expected );
 
   /**/
@@ -639,18 +639,18 @@ function mapPairs( test )
 
   /* using enumerable off, own on */
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapPairs.call( { enumerable : 0, own : 1 }, a );
-  var expected = [ [ 'a', 1 ], [ 'x', 3 ] ];
+  var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
   /* using enumerable off, own off */
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapPairs.call( { enumerable : 0, own : 0 }, a );
   test.shouldBe( got.length > 2 );
   test.identical( got[ 0 ], [ 'a', 1 ] );
-  test.identical( got[ 1 ], [ 'x', 3 ] );
+  test.identical( got[ 1 ], [ 'k', 3 ] );
 
   //
 
@@ -699,9 +699,9 @@ function mapOwnPairs( test )
   /**/
 
   var arrObj = [];
-  arrObj[ 'x' ] = 1;
+  arrObj[ 'k' ] = 1;
   var got = _.mapOwnPairs( arrObj );
-  var expected = [ [ 'x', 1 ] ];
+  var expected = [ [ 'k', 1 ] ];
   test.identical( got, expected );
 
   /**/
@@ -723,9 +723,9 @@ function mapOwnPairs( test )
 
   /* using enumerable off */
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapOwnPairs.call( { enumerable : 0 }, a );
-  var expected = [ [ 'a', 1 ], [ 'x', 3 ] ];
+  var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
   //
@@ -775,12 +775,12 @@ function mapAllPairs( test )
   /**/
 
   var arrObj = [];
-  arrObj[ 'x' ] = 1;
+  arrObj[ 'k' ] = 1;
   var got = _.mapAllPairs( arrObj );
   test.shouldBe( got.length > 1 );
   got = _.__arrayFlatten( [], got );
-  test.shouldBe( got.indexOf( 'x' ) !== -1 );
-  test.identical( got[ got.indexOf( 'x' ) + 1 ], 1 );
+  test.shouldBe( got.indexOf( 'k' ) !== -1 );
+  test.identical( got[ got.indexOf( 'k' ) + 1 ], 1 );
 
   /**/
 
@@ -880,19 +880,19 @@ function mapProperties( test )
 
   /**/
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapProperties.call( { enumerable : 0, own : 1 }, a );
   var expected = { a : 1, x : 3 };
   test.identical( got, expected );
 
   /**/
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapProperties.call( { enumerable : 0, own : 0 }, a );
   test.shouldBe( Object.keys( got ).length > 3 );
   test.shouldBe( got.a === 1 );
   test.shouldBe( got.b === 2 );
-  test.shouldBe( got.x === 3 );
+  test.shouldBe( got.k === 3 );
 
   /**/
 
@@ -980,7 +980,7 @@ function mapOwnProperties( test )
 
   /**/
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapOwnProperties.call( { enumerable : 0 }, a );
   var expected = { a : 1, x : 3 };
   test.identical( got, expected );
@@ -1073,24 +1073,24 @@ function mapAllProperties( test )
 
   /**/
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapAllProperties( a );
   test.shouldBe( Object.keys( got ).length > 3 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
-  test.identical( got.x, 3 );
+  test.identical( got.k, 3 );
 
   /**/
 
   var a = { a : 1 };
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'x', { enumerable : 0, value : undefined } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : undefined } );
   var got = _.mapAllProperties( a );
   test.shouldBe( Object.keys( got ).length > 3 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
-  test.identical( got.x, undefined );
+  test.identical( got.k, undefined );
 
   //
 
@@ -1169,14 +1169,14 @@ function mapRoutines( test )
 
   /**/
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapRoutines( a );
   test.shouldBe( Object.keys( got ).length === 1 )
   test.shouldBe( _.routineIs( got.c ) );
 
   /* enumerable : 0 */
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapRoutines.call( { enumerable : 0 }, a );
   test.shouldBe( Object.keys( got ).length > 1 )
   test.shouldBe( _.routineIs( got.c ) );
@@ -1206,12 +1206,12 @@ function mapRoutines( test )
   var a = { a : 1, y : function(){} };
   var b = { b : 2, c : function (){} };
   Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'x', { enumerable : 0, value : function(){} } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
   var got = _.mapRoutines.call( { own : 0, enumerable : 0 }, a );
   test.shouldBe( Object.keys( got ).length > 3 )
   test.shouldBe( _.routineIs( got.y ) );
   test.shouldBe( _.routineIs( got.c ) );
-  test.shouldBe( _.routineIs( got.x ) );
+  test.shouldBe( _.routineIs( got.k ) );
   test.shouldBe( _.routineIs( got.__defineGetter__ ) );
   test.shouldBe( _.routineIs( got.__defineSetter__ ) );
 
@@ -1291,7 +1291,7 @@ function mapOwnRoutines( test )
 
   /* enumerable : 0 */
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapOwnRoutines( a );
   test.identical( got, {} );
 
@@ -1300,13 +1300,13 @@ function mapOwnRoutines( test )
   var a = {};
   var b = {};
   Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'x', { enumerable : 0, value : function(){} } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
   var got = _.mapOwnRoutines( a );
   test.identical( got, {} );
 
   /* enumerable : 0 */
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapOwnRoutines.call( { enumerable : 0 }, a );
   test.identical( got, {} );
 
@@ -1314,10 +1314,10 @@ function mapOwnRoutines( test )
 
   var a = {};
   var b = {};
-  Object.defineProperty( a, 'x', { enumerable : 0, value : function(){} } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : function(){} } );
   var got = _.mapOwnRoutines.call( { enumerable : 0 }, a );
-  test.identical( got.x, a.x );
-  test.shouldBe( _.routineIs( got.x ) );
+  test.identical( got.k, a.k );
+  test.shouldBe( _.routineIs( got.k ) );
 
   //
 
@@ -1406,7 +1406,7 @@ function mapAllRoutines( test )
 
   /**/
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapAllRoutines( a );
   test.shouldBe( Object.keys( got ).length > 1 );
   test.shouldBe( _.routineIs( got.c ) );
@@ -1500,7 +1500,7 @@ function mapFields( test )
 
   /**/
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapFields( a );
   test.shouldBe( Object.keys( got ).length === 2 );
   test.identical( got.a, 1 );
@@ -1508,12 +1508,12 @@ function mapFields( test )
 
   /* enumerable : 0 */
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapFields.call( { enumerable : 0 }, a );
   test.shouldBe( Object.keys( got ).length === 4 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
-  test.identical( got.x, 3 );
+  test.identical( got.k, 3 );
 
   /**/
 
@@ -1537,7 +1537,7 @@ function mapFields( test )
   var a = { a : 1, y : function(){} };
   var b = { b : 2, c : function (){} };
   Object.setPrototypeOf( a, b );
-  Object.defineProperty( b, 'x', { enumerable : 0, value : function(){} } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
   Object.defineProperty( b, 'z', { enumerable : 0, value : 3 } );
   var got = _.mapFields.call( { enumerable : 0 }, a );
   test.identical( Object.keys( got ).length, 4 );
@@ -1623,7 +1623,7 @@ function mapOwnFields( test )
 
   /**/
 
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapOwnFields( a );
   test.shouldBe( Object.keys( got ).length === 1 );
   test.identical( got.a, 1 );
@@ -1725,12 +1725,12 @@ function mapAllFields( test )
 
   /**/
 
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapAllFields( a );
   test.shouldBe( Object.keys( got ).length === 4 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
-  test.identical( got.x, 3 );
+  test.identical( got.k, 3 );
   test.identical( got.__proto__, b );
 
   //
@@ -1804,7 +1804,7 @@ function mapOnlyAtomics( test )
 
   test.description = 'only enumerable';
   var a = {};
-  Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } )
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } )
   var got = _.mapOnlyAtomics( a );
   test.identical( got, {} );
 
@@ -1813,7 +1813,7 @@ function mapOnlyAtomics( test )
   test.description = 'from prototype';
   var a = {};
   var b = { a : 1, c : function(){} };
-  Object.defineProperty( b, 'x', { enumerable : 0, value : 3 } );
+  Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   Object.setPrototypeOf( a, b );
   var got = _.mapOnlyAtomics( a );
   test.identical( got, { a : 1 } );

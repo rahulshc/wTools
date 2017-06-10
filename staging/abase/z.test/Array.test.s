@@ -8583,23 +8583,25 @@ function arraySetContainSomething( test )
 
 };
 
-//
+// --
+// not sorted
+// --
 
-function arrayOrNumber( test )
+function arrayFromNumber( test )
 {
 
   test.description = 'nothing';
-  var got = _.arrayOrNumber( [  ], 0 );
+  var got = _.arrayFromNumber( [  ], 0 );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'static array';
-  var got = _.arrayOrNumber( 3, 7 );
+  var got = _.arrayFromNumber( 3, 7 );
   var expected = [ 3, 3, 3, 3, 3, 3, 3 ];
   test.identical( got, expected );
 
   test.description = 'original array';
-  var got = _.arrayOrNumber( [ 3, 7, 13 ], 3 );
+  var got = _.arrayFromNumber( [ 3, 7, 13 ], 3 );
   var expected = [ 3, 7, 13 ];
   test.identical( got, expected );
 
@@ -8611,53 +8613,53 @@ function arrayOrNumber( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayOrNumber();
+    _.arrayFromNumber();
   });
 
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.arrayOrNumber( [ 1, 2, 3 ] );
+    _.arrayFromNumber( [ 1, 2, 3 ] );
   });
 
   test.description = 'extra argument';
   test.shouldThrowError( function()
   {
-    _.arrayOrNumber( [ 1, 2, 3 ], 3, 'redundant argument' );
+    _.arrayFromNumber( [ 1, 2, 3 ], 3, 'redundant argument' );
   });
 
   test.description = 'wrong type of arguments';
   test.shouldThrowError( function()
   {
-    _.arrayOrNumber('wrong argument', 'wrong argument');
+    _.arrayFromNumber('wrong argument', 'wrong argument');
   });
 
   test.description = 'second argument too much';
   test.shouldThrowError( function()
   {
-    _.arrayOrNumber( [ 1, 2, 3 ], 4 );
+    _.arrayFromNumber( [ 1, 2, 3 ], 4 );
   });
 
   test.description = 'first three arguments are not wrapped into array';
   test.shouldThrowError( function()
   {
-    _.arrayOrNumber( 1, 2, 3, 3 );
+    _.arrayFromNumber( 1, 2, 3, 3 );
   });
 
 };
 
 //
 
-function arrayElementsSwap( test )
+function arraySwap( test )
 {
 
   test.description = 'an element';
-  var got = _.arrayElementsSwap( [ 7 ], 0, 0 );
+  var got = _.arraySwap( [ 7 ], 0, 0 );
   var expected = [ 7 ];
   test.identical( got, expected );
 
   test.description = 'reverses first index and last index';
-  var got = _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], 0, 4  );
+  var got = _.arraySwap( [ 1, 2, 3, 4, 5 ], 0, 4  );
   var expected = [ 5, 2, 3, 4, 1 ];
   test.identical( got, expected );
 
@@ -8669,47 +8671,47 @@ function arrayElementsSwap( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayElementsSwap();
+    _.arraySwap();
   });
 
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ] );
+    _.arraySwap( [ 1, 2, 3, 4, 5 ] );
   });
 
   test.description = 'wrong type of arguments';
   test.shouldThrowError( function()
   {
-    _.arrayElementsSwap('wrong argument', 'wrong argument', 'wrong argument');
+    _.arraySwap('wrong argument', 'wrong argument', 'wrong argument');
   });
 
   test.description = 'arguments[1] and arguments[2] are out of bound';
   test.shouldThrowError( function()
   {
-    _.arrayElementsSwap( [ 1, 2, 3, 4, 5 ], -1, -4 );
+    _.arraySwap( [ 1, 2, 3, 4, 5 ], -1, -4 );
   });
 
   test.description = 'first five arguments are not wrapped into array';
   test.shouldThrowError( function()
   {
-    _.arrayElementsSwap( 1, 2, 3, 4, 5, 0, 4 );
+    _.arraySwap( 1, 2, 3, 4, 5, 0, 4 );
   });
 
 };
 
 //
 
-function arraySame( test )
+function arrayIdentical( test )
 {
 
   test.description = 'empty arrays';
-  var got = _.arraySame( [  ], [  ] );
+  var got = _.arrayIdentical( [  ], [  ] );
   var expected = true;
   test.identical( got, expected );
 
   test.description = 'arrays are equal';
-  var got = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+  var got = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -8720,17 +8722,17 @@ function arraySame( test )
   function src2() {
     return arguments;
   }( 3, 7, 33 );
-  var got = _.arraySame( src1, src2 );
+  var got = _.arrayIdentical( src1, src2 );
   var expected = false;
   test.identical( got, expected );
 
   test.description = 'arrays are not equal';
-  var got = _.arraySame( [ 1, 2, 3, 'Hi!' ], [ 1, 2, 3, 'Hello there!' ] );
+  var got = _.arrayIdentical( [ 1, 2, 3, 'Hi!' ], [ 1, 2, 3, 'Hello there!' ] );
   var expected = false;
   test.identical( got, expected );
 
   test.description = 'arrays length are not equal';
-  var got = _.arraySame( [ 1, 2, 3 ], [ 1, 2 ] );
+  var got = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2 ] );
   var expected = false;
   test.identical( got, expected );
 
@@ -8742,19 +8744,19 @@ function arraySame( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arraySame();
+    _.arrayIdentical();
   });
 
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.arraySame( [ 1, 2, 3 ] );
+    _.arrayIdentical( [ 1, 2, 3 ] );
   });
 
   test.description = 'extra argument';
   test.shouldThrowError( function()
   {
-    _.arraySame( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
+    _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
   });
 
 };
@@ -8808,15 +8810,16 @@ var Self =
 
   name : 'wTools.array',
   verbosity : 7,
-  // barringConsole : 0,
 
   tests :
   {
+
     // buffer
 
     bufferRelen : bufferRelen,
     bufferRetype : bufferRetype,
     bufferRawFromBuffer : bufferRawFromBuffer,
+
 
     // type test
 
@@ -8824,6 +8827,7 @@ var Self =
     arrayLike : arrayLike,
     clsLikeArray : clsLikeArray,
     hasLength : hasLength,
+
 
     // array maker
 
@@ -8836,6 +8840,7 @@ var Self =
     arrayToMap : arrayToMap,
     arrayToStr : arrayToStr,
 
+
     // array transformer
 
     arraySub : arraySub,
@@ -8847,6 +8852,7 @@ var Self =
 
     arraySelect : arraySelect,
 
+
     // array manipulator
 
     arrayCutin : arrayCutin,
@@ -8855,6 +8861,7 @@ var Self =
 
     arraySupplement : arraySupplement,
     arrayExtendScreening : arrayExtendScreening,
+
 
     // array sequential search
 
@@ -8865,15 +8872,18 @@ var Self =
     arrayCount : arrayCount,
     arrayCountUnique : arrayCountUnique,
 
+
     // array checker
 
     arrayCompare : arrayCompare,
 
     arrayHasAny : arrayHasAny,
 
+
     // array etc
 
     arraySum : arraySum,
+
 
     // array prepend
 
@@ -8895,6 +8905,7 @@ var Self =
     __arrayPrependedArrays : __arrayPrependedArrays,
     __arrayPrependedArraysOnce : __arrayPrependedArraysOnce,
 
+
     // array append
 
     __arrayAppend : __arrayAppend,
@@ -8914,6 +8925,7 @@ var Self =
     __arrayAppendArraysOnceStrictly : __arrayAppendArraysOnceStrictly,
     __arrayAppendedArrays : __arrayAppendedArrays,
     __arrayAppendedArraysOnce : __arrayAppendedArraysOnce,
+
 
     // array remove
 
@@ -8938,6 +8950,7 @@ var Self =
     // arrayRemoveAll : arrayRemoveAll,
     __arrayRemovedAll : __arrayRemovedAll,
 
+
     // array flatten
 
     __arrayFlatten : __arrayFlatten,
@@ -8947,6 +8960,7 @@ var Self =
     __arrayFlattenedOnce : __arrayFlattenedOnce,
 
     arrayFlatten2 : arrayFlatten2,
+
 
     // array replace
 
@@ -8967,16 +8981,18 @@ var Self =
 
     arrayUpdate : arrayUpdate,
 
+
     // array set
 
     arraySetContainAll: arraySetContainAll,
     arraySetContainSomething : arraySetContainSomething,
 
-    // arrayOrNumber : arrayOrNumber, /* deprecated? */
 
-    // arrayElementsSwap : arrayElementsSwap, /* deprecated? */
+    // not sorted
 
-    // arraySame : arraySame,/* deprecated? */
+    arrayFromNumber : arrayFromNumber,
+    arraySwap : arraySwap,
+    arrayIdentical : arrayIdentical,
 
   }
 

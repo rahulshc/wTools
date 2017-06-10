@@ -137,6 +137,24 @@ function dstNotHas()
 
 //
 
+function dstNotHasOrHasNull()
+{
+
+  var routine = function dstNotHasOrHasNull( dstContainer,srcContainer,key )
+  {
+
+    if( key in dstContainer && dstContainer[ key ] !== null )
+    return false;
+
+    return true;
+  }
+
+  routine.functionKind = 'field-filter';
+  return routine;
+}
+
+//
+
 function dstNotHasCloning()
 {
 
@@ -615,6 +633,8 @@ var filter =
   dstNotHasSrcOwnRoutines : dstNotHasSrcOwnRoutines,
 
   dstNotHas : dstNotHas,
+  dstNotHasOrHasNull : dstNotHasOrHasNull,
+
   dstNotHasCloning : dstNotHasCloning,
   dstNotHasSrcOwn : dstNotHasSrcOwn,
   dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
