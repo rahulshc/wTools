@@ -439,6 +439,12 @@ function arrayMakeSimilar( test )
   test.shouldBe( _.arrayIs( got ) );
   test.identical( got, [ 1,1,1,1,1 ] );
 
+  var ins = [];
+  var src = new ArrayBuffer( 5 )
+  var got = _.arrayMakeSimilar( ins, src );
+  test.identical( got.length, 5 );
+  test.shouldBe( _.arrayIs( got ) );
+
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
   var got = _.arrayMakeSimilar( ins );
@@ -477,11 +483,80 @@ function arrayMakeSimilar( test )
   test.identical( got.length, 5 );
 
   test.description = 'NodeBuffer and src'
-  var src = new Int8Array(5);
-  for( var i = 0; i < src.length; i++ )
-  src[ i ] = i;
+  var src = _.arrayFill({ result : new Uint8Array( 5 ), value : 1, times : 5 });
   var got = _.arrayMakeSimilar( new Buffer( 5 ), src );
   test.shouldBe( _.bufferNodeIs( got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < src.length; i++ )
+  isEqual = got[ i ] !== src[ i ] ? false : true;
+  test.shouldBe( isEqual );
+
+  test.description = 'NodeBuffer as src'
+  var src = new Buffer(10);
+  for( var i = 0; i < src.length; i++ )
+  src[ i ] = i;
+  var got = _.arrayMakeSimilar( [], src );
+  test.shouldBe( _.arrayIs( got ) );
+  test.identical( got.length, src.length );
+  var isEqual = true;
+  for( var i = 0; i < src.length; i++ )
+  isEqual = got[ i ] !== src[ i ] ? false : true;
+  test.shouldBe( isEqual );
+
+  test.description = 'ins as Array';
+  var got = _.arrayMakeSimilar( Array, 5 );
+  test.shouldBe( _.arrayIs(  got ) );
+  test.identical( got.length, 5 );
+
+  test.description = 'ins as Array';
+  var src = [ 1,2,3 ];
+  var got = _.arrayMakeSimilar( Array, src );
+  test.shouldBe( _.arrayIs(  got ) );
+  test.identical( got.length, 3 );
+  test.identical( got, src );
+
+  test.description = 'ins as Array';
+  var src = _.arrayFill({ result : new Float32Array( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilar( Array, src );
+  test.shouldBe( _.arrayIs(  got ) );
+  test.identical( got.length, 5 );
+  test.identical( got, [ 1, 1, 1, 1, 1 ] );
+
+  test.description = 'ins as Buffer';
+  var src = _.arrayFill({ result : new Float32Array( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilar( Buffer, src );
+  test.shouldBe( _.bufferNodeIs(  got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < src.length; i++ )
+  isEqual = got[ i ] !== src[ i ] ? false : true;
+  test.shouldBe( isEqual );
+
+  test.description = 'ins as Array';
+  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilar( Array, src );
+  test.shouldBe( _.arrayIs(  got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < src.length; i++ )
+  isEqual = got[ i ] !== src[ i ] ? false : true;
+  test.shouldBe( isEqual );
+
+  test.description = 'ins as TypedArray';
+  var src = [ 1,2,3 ];
+  var got = _.arrayMakeSimilar( Uint8Array, src );
+  test.shouldBe( _.bufferTypedIs(  got ) );
+  test.identical( got.length, 3 );
+  var isEqual = true;
+  for( var i = 0; i < src.length; i++ )
+  isEqual = got[ i ] !== src[ i ] ? false : true;
+  test.shouldBe( isEqual );
+
+  test.description = 'ins as TypedArray';
+  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilar( Float32Array, src );
+  test.shouldBe( _.bufferTypedIs(  got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
@@ -521,6 +596,245 @@ function arrayMakeSimilar( test )
   test.shouldThrowError( function()
   {
     _.arrayMakeSimilar( 1, 2, 3, 4 );
+  });
+};
+
+//
+
+function arrayMakeSimilarZeroed( test )
+{
+  test.description = 'Array';
+  var got = _.arrayMakeSimilarZeroed( Array, 1 );
+  var expected = [ 0 ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'Array';
+  var got = _.arrayMakeSimilarZeroed( Array, new Float32Array( 2 ) );
+  var expected = [ 0, 0 ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'ArrayBuffer';
+  var got = _.arrayMakeSimilarZeroed( ArrayBuffer, 3 );
+  test.shouldBe( _.bufferRawIs( got ) );
+  test.identical( got.byteLength, 3 );
+
+  //
+
+  test.description = 'Uint8Array';
+  var got = _.arrayMakeSimilarZeroed( Uint8Array, [ 1, 2, 3 ] );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.identical( got.length, 3 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'Uint8Array';
+  var got = _.arrayMakeSimilarZeroed( Buffer, new ArrayBuffer( 3) );
+  test.shouldBe( _.bufferNodeIs( got ) );
+  test.identical( got.length, 3 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'an empty array';
+  var got = _.arrayMakeSimilarZeroed( [  ], 0 );
+  var expected = [  ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'length = 1';
+  var got = _.arrayMakeSimilarZeroed( [  ], 1 );
+  var expected = [ 0 ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'length = 2';
+  var got = _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 2 );
+  var expected = [ 0, 0 ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'length = 4';
+  var got = _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 4 );
+  var expected = [ 0, 0, 0, 0 ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'same length';
+  var ins = [ 1, 2, 3 ];
+  var got = _.arrayMakeSimilarZeroed( ins );
+  test.identical( got.length, 3 );
+  test.identical( got, [ 0, 0, 0 ] )
+
+  //
+
+  test.description = 'same length';
+  var ins = new ArrayBuffer(5);
+  var got = _.arrayMakeSimilarZeroed( ins );
+  test.shouldBe( _.bufferRawIs( got ) );
+  test.identical( got.byteLength, 5 );
+
+  //
+
+  test.description = 'same length';
+  var got = _.arrayMakeSimilarZeroed( ArrayBuffer, 5 );
+  test.shouldBe( _.bufferRawIs( got ) );
+  test.identical( got.byteLength, 5 );
+
+  //
+
+  test.description = 'same length, ins is a typed array';
+  var ins = _.arrayFill({ result : new Uint8Array( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilarZeroed( ins );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'same length, ins is a node buffer';
+  var ins = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilarZeroed( ins );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  var ins = [];
+  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var got = _.arrayMakeSimilarZeroed( ins, src );
+  test.identical( got.length, 5 );
+  test.shouldBe( _.arrayIs( got ) );
+  test.identical( got, [ 0,0,0,0,0 ] );
+
+  //
+
+  var ins = new Uint8Array( 5 );
+  ins[ 0 ] = 1;
+  var got = _.arrayMakeSimilarZeroed( ins );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'typedArray';
+  var ins = new Uint8Array( 5 );
+  ins[ 0 ] = 1;
+  var got = _.arrayMakeSimilarZeroed( ins, 4 );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.identical( got.length, 4 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'ArrayBuffer';
+  var ins = new ArrayBuffer( 5 );
+  var got = _.arrayMakeSimilarZeroed( ins, 4 );
+  test.shouldBe( _.bufferRawIs( got ) );
+  test.identical( got.byteLength, 4 );
+  got = new Uint8Array( got );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'ArrayBuffer';
+  var ins = [];
+  var src = new ArrayBuffer( 5 );
+  var got = _.arrayMakeSimilarZeroed( ins, src );
+  test.shouldBe( _.arrayIs( got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'NodeBuffer'
+  var got = _.arrayMakeSimilarZeroed( new Buffer( 5 ) );
+  test.shouldBe( _.bufferNodeIs( got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  //
+
+  test.description = 'NodeBuffer and src'
+  var src = new Int8Array(5);
+  for( var i = 0; i < src.length; i++ )
+  src[ i ] = i;
+  var got = _.arrayMakeSimilarZeroed( new Buffer( 5 ), src );
+  test.shouldBe( _.bufferNodeIs( got ) );
+  test.identical( got.length, 5 );
+  var isEqual = true;
+  for( var i = 0; i < got.length; i++ )
+  isEqual = got[ i ] === 0 ? true : false;
+  test.shouldBe( isEqual );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilarZeroed();
+  });
+
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilarZeroed('wrong argument');
+  });
+
+  test.description = 'arguments[1] is wrong';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 'wrong type of argument' );
+  });
+
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 4, 'redundant argument' );
+  });
+
+  test.description = 'argument is not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arrayMakeSimilarZeroed( 1, 2, 3, 4 );
   });
 };
 
@@ -8832,6 +9146,7 @@ var Self =
     // array maker
 
     arrayMakeSimilar : arrayMakeSimilar,
+    arrayMakeSimilarZeroed : arrayMakeSimilarZeroed,
     arrayMakeRandom : arrayMakeRandom,
     arrayFromRange : arrayFromRange,
     arrayFrom : arrayFrom,
