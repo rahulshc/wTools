@@ -9398,8 +9398,12 @@ function arrayFrom( src )
 function arrayFromRange( range )
 {
 
+  if( _.numberIs( range ) )
+  range = [ 0,range ];
+
   _.assert( arguments.length === 1 );
   _.assert( range.length === 2 );
+  _.assert( _.arrayLike( range ) );
 
   var step = range[ 0 ] <= range[ 1 ] ? +1 : -1;
 
