@@ -9027,14 +9027,19 @@ function arrayMakeSimilar( ins,src )
 {
   var result, length;
 
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2 );
+
   if( src === undefined )
   {
-    length = ins.length;
+    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
   }
   else
   {
     if( _.arrayLike( src ) )
     length = src.length;
+    else if( _.bufferRawIs( src ) )
+    length = src.byteLength;
     else
     length = src
   }
@@ -9044,7 +9049,7 @@ function arrayMakeSimilar( ins,src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
-  _.assert( _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
+  _.assert( _.routineIs( ins ) || _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
 
   if( _.arrayLike( src ) )
   {
@@ -9056,12 +9061,22 @@ function arrayMakeSimilar( ins,src )
 
     if( ins.constructor === Array )
     result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+    else if( _.routineIs( ins ) )
+    {
+      if( ins.prototype.constructor.name === "Array" )
+      result = [].slice.call( src );
+      else
+      result = new ins( src );
+    }
     else
     result = new ins.constructor( src );
 
   }
   else
   {
+    if( _.routineIs( ins ) )
+    result = new ins( length );
+    else
     result = new ins.constructor( length );
   }
 
@@ -9074,14 +9089,19 @@ function arrayMakeSimilarZeroed( ins,src )
 {
   var result, length;
 
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2 );
+
   if( src === undefined )
   {
-    length = ins.length;
+    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
   }
   else
   {
     if( _.arrayLike( src ) )
     length = src.length;
+    else if( _.bufferRawIs( src ) )
+    length = src.byteLength;
     else
     length = src
   }
@@ -9091,32 +9111,45 @@ function arrayMakeSimilarZeroed( ins,src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
-  _.assert( _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
+  _.assert( _.routineIs( ins ) || _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
 
-  if( _.arrayLike( src ) )
-  {
+  // if( _.arrayLike( src ) )
+  // {
+  //
+  //   if( ins.constructor === Array )
+  //   debugger;
+  //   else
+  //   debugger;
+  //
+  //   if( ins.constructor === Array )
+  //   {
+  //     result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+  //   }
+  //   else
+  //   {
+  //     result = new ins.constructor( length );
+  //     for( var i = 0 ; i < length ; i++ )
+  //     result[ i ] = 0;
+  //   }
+  //
+  // }
+  // else
+  // {
 
-    if( ins.constructor === Array )
-    debugger;
-    else
-    debugger;
-
-    if( ins.constructor === Array )
+    if( _.routineIs( ins ) )
     {
-      result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+      result = new ins( length );
     }
     else
     {
       result = new ins.constructor( length );
-      for( var i = 0 ; i < length ; i++ )
-      result[ i ] = 0;
     }
 
-  }
-  else
-  {
-    result = new ins.constructor( length );
-  }
+    if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
+    for( var i = 0 ; i < length ; i++ )
+    result[ i ] = 0;
+
+  // }
 
   return result;
 }
