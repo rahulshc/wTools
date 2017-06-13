@@ -887,6 +887,69 @@ function arrayMakeRandom( test )
 
 //
 
+function arrayFromNumber( test )
+{
+
+  test.description = 'nothing';
+  var got = _.arrayFromNumber( [  ], 0 );
+  var expected = [  ];
+  test.identical( got, expected );
+
+  test.description = 'static array';
+  var got = _.arrayFromNumber( 3, 7 );
+  var expected = [ 3, 3, 3, 3, 3, 3, 3 ];
+  test.identical( got, expected );
+
+  test.description = 'original array';
+  var got = _.arrayFromNumber( [ 3, 7, 13 ], 3 );
+  var expected = [ 3, 7, 13 ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromNumber();
+  });
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromNumber( [ 1, 2, 3 ] );
+  });
+
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromNumber( [ 1, 2, 3 ], 3, 'redundant argument' );
+  });
+
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromNumber('wrong argument', 'wrong argument');
+  });
+
+  test.description = 'second argument too much';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromNumber( [ 1, 2, 3 ], 4 );
+  });
+
+  test.description = 'first three arguments are not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arrayFromNumber( 1, 2, 3, 3 );
+  });
+
+};
+
+//
+
 function arrayFromRange( test )
 {
 
@@ -1756,6 +1819,57 @@ function arraySelect( test )
   test.shouldThrowError( function()
   {
     _.arraySelect( 1, 2, 3, 4, 5 );
+  });
+
+};
+
+//
+
+function arraySwap( test )
+{
+
+  test.description = 'an element';
+  var got = _.arraySwap( [ 7 ], 0, 0 );
+  var expected = [ 7 ];
+  test.identical( got, expected );
+
+  test.description = 'reverses first index and last index';
+  var got = _.arraySwap( [ 1, 2, 3, 4, 5 ], 0, 4  );
+  var expected = [ 5, 2, 3, 4, 1 ];
+  test.identical( got, expected );
+
+  test.description = 'swaps first two';
+  var got = _.arraySwap( [ 1, 2, 3 ] );
+  var expected = [ 2,1,3 ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySwap();
+  });
+
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySwap('wrong argument', 'wrong argument', 'wrong argument');
+  });
+
+  test.description = 'arguments[1] and arguments[2] are out of bound';
+  test.shouldThrowError( function()
+  {
+    _.arraySwap( [ 1, 2, 3, 4, 5 ], -1, -4 );
+  });
+
+  test.description = 'first five arguments are not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.arraySwap( 1, 2, 3, 4, 5, 0, 4 );
   });
 
 };
@@ -2652,6 +2766,67 @@ function arrayCompare( test )
   test.shouldThrowError( function()
   {
     _.arrayCompare( [ 1, 5 ], [ 1 ] );
+  });
+
+};
+
+//
+
+function arrayIdentical( test )
+{
+
+  test.description = 'empty arrays';
+  var got = _.arrayIdentical( [  ], [  ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'arrays are equal';
+  var got = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'array-like arguments';
+  function src1() {
+    return arguments;
+  };
+  function src2() {
+    return arguments;
+  };
+  var got = _.arrayIdentical( src1( 3, 7, 33 ), src2( 3, 7, 13 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'arrays are not equal';
+  var got = _.arrayIdentical( [ 1, 2, 3, 'Hi!' ], [ 1, 2, 3, 'Hello there!' ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'arrays length are not equal';
+  var got = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayIdentical();
+  });
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayIdentical( [ 1, 2, 3 ] );
+  });
+
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
   });
 
 };
@@ -8901,180 +9076,6 @@ function arraySetContainSomething( test )
 // not sorted
 // --
 
-function arrayFromNumber( test )
-{
-
-  test.description = 'nothing';
-  var got = _.arrayFromNumber( [  ], 0 );
-  var expected = [  ];
-  test.identical( got, expected );
-
-  test.description = 'static array';
-  var got = _.arrayFromNumber( 3, 7 );
-  var expected = [ 3, 3, 3, 3, 3, 3, 3 ];
-  test.identical( got, expected );
-
-  test.description = 'original array';
-  var got = _.arrayFromNumber( [ 3, 7, 13 ], 3 );
-  var expected = [ 3, 7, 13 ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayFromNumber();
-  });
-
-  test.description = 'not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayFromNumber( [ 1, 2, 3 ] );
-  });
-
-  test.description = 'extra argument';
-  test.shouldThrowError( function()
-  {
-    _.arrayFromNumber( [ 1, 2, 3 ], 3, 'redundant argument' );
-  });
-
-  test.description = 'wrong type of arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayFromNumber('wrong argument', 'wrong argument');
-  });
-
-  test.description = 'second argument too much';
-  test.shouldThrowError( function()
-  {
-    _.arrayFromNumber( [ 1, 2, 3 ], 4 );
-  });
-
-  test.description = 'first three arguments are not wrapped into array';
-  test.shouldThrowError( function()
-  {
-    _.arrayFromNumber( 1, 2, 3, 3 );
-  });
-
-};
-
-//
-
-function arraySwap( test )
-{
-
-  test.description = 'an element';
-  var got = _.arraySwap( [ 7 ], 0, 0 );
-  var expected = [ 7 ];
-  test.identical( got, expected );
-
-  test.description = 'reverses first index and last index';
-  var got = _.arraySwap( [ 1, 2, 3, 4, 5 ], 0, 4  );
-  var expected = [ 5, 2, 3, 4, 1 ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySwap();
-  });
-
-  test.description = 'not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySwap( [ 1, 2, 3, 4, 5 ] );
-  });
-
-  test.description = 'wrong type of arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySwap('wrong argument', 'wrong argument', 'wrong argument');
-  });
-
-  test.description = 'arguments[1] and arguments[2] are out of bound';
-  test.shouldThrowError( function()
-  {
-    _.arraySwap( [ 1, 2, 3, 4, 5 ], -1, -4 );
-  });
-
-  test.description = 'first five arguments are not wrapped into array';
-  test.shouldThrowError( function()
-  {
-    _.arraySwap( 1, 2, 3, 4, 5, 0, 4 );
-  });
-
-};
-
-//
-
-function arrayIdentical( test )
-{
-
-  test.description = 'empty arrays';
-  var got = _.arrayIdentical( [  ], [  ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.description = 'arrays are equal';
-  var got = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.description = 'array-like arguments';
-  function src1() {
-    return arguments;
-  }( 3, 7, 13 );
-  function src2() {
-    return arguments;
-  }( 3, 7, 33 );
-  var got = _.arrayIdentical( src1, src2 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'arrays are not equal';
-  var got = _.arrayIdentical( [ 1, 2, 3, 'Hi!' ], [ 1, 2, 3, 'Hello there!' ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'arrays length are not equal';
-  var got = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2 ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayIdentical();
-  });
-
-  test.description = 'not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayIdentical( [ 1, 2, 3 ] );
-  });
-
-  test.description = 'extra argument';
-  test.shouldThrowError( function()
-  {
-    _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2 ], 'redundant argument' );
-  });
-
-};
-
 //
 
 // function arrayNewOfSameLength( test )
@@ -9148,6 +9149,7 @@ var Self =
     arrayMakeSimilar : arrayMakeSimilar,
     arrayMakeSimilarZeroed : arrayMakeSimilarZeroed,
     arrayMakeRandom : arrayMakeRandom,
+    arrayFromNumber : arrayFromNumber,
     arrayFromRange : arrayFromRange,
     arrayFrom : arrayFrom,
     arrayAs : arrayAs,
@@ -9170,6 +9172,7 @@ var Self =
 
     // array manipulator
 
+    arraySwap : arraySwap,
     arrayCutin : arrayCutin,
     arrayPut : arrayPut,
     arrayFill : arrayFill,
@@ -9191,6 +9194,7 @@ var Self =
     // array checker
 
     arrayCompare : arrayCompare,
+    arrayIdentical : arrayIdentical,
 
     arrayHasAny : arrayHasAny,
 
@@ -9301,13 +9305,6 @@ var Self =
 
     arraySetContainAll: arraySetContainAll,
     arraySetContainSomething : arraySetContainSomething,
-
-
-    // not sorted
-
-    arrayFromNumber : arrayFromNumber,
-    arraySwap : arraySwap,
-    arrayIdentical : arrayIdentical,
 
   }
 
