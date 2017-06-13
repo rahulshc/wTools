@@ -4,7 +4,10 @@
 *.db
 *.sh
 *.bat
+build
 builder
 proto
-node_modules
 html.build.coffee
+node_modules
+*.tmp
+*.special

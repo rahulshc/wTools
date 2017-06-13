@@ -3789,8 +3789,8 @@ function strIndentation( src,tab )
  * If( o.src ) is a array, function puts line counter at the begining of each line( element ).
  * Initial value of a counter can be changed by defining( o.first ) options( o ) property.
  * Can be called in two ways:
- * - First by passign all options in one object;
- * - Second by passign source only and using default value of( first ).
+ * - First by passing all options in one object;
+ * - Second by passing source only and using default value of( first ).
  *
  * @param { Object } o - options.
  * @param { String/Array } [ o.src=null ] - Source string or array of lines( not array of texts ).
@@ -3886,9 +3886,9 @@ strLinesNumber.defaults =
  * If( o.range ) and ( o.line ) are both not provided function generates range by formula: [ 0, n + 1 ], where n: number of ( o.nl ) in source( o.src ).
  * Returns selected lines range as string or empty string if nothing selected.
  * Can be called in three ways:
- * - First by passign all parameters in one options object( o ) ;
- * - Second by passign source string( o.src ) and range( o.range ) as array or number;
- * - Third by passign source string( o.src ), range start and end position.
+ * - First by passing all parameters in one options object( o ) ;
+ * - Second by passing source string( o.src ) and range( o.range ) as array or number;
+ * - Third by passing source string( o.src ), range start and end position.
  *
  * @param {Object} o - Options.
  * @param {String} [ o.src=null ] - Source string.

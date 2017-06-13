@@ -6100,6 +6100,24 @@ function numbersAreInt( src )
 
 //
 
+function numbersAreIdentical( src1,src2 )
+{
+  _.assert( arguments.length === 3 );
+  return src1 === src2;
+}
+
+//
+
+function numbersAreEquivalent( src1,src2,accuracy )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  if( accuracy === undefined )
+  accuracy = this.EPS;
+  return Math.abs( src1-src2 ) <= accuracy;
+}
+
+//
+
 function numberFrom( src )
 {
   if( strIs( src ) )
@@ -6257,6 +6275,25 @@ function numbersMake_functor( length )
   }
 
   return numbersMake;
+}
+
+//
+
+function numberClamp( src,low,high )
+{
+
+  _.assert( arguments.length === 3 );
+  _.numberIs( src );
+  _.numberIs( low );
+  _.numberIs( high );
+
+  if( src < low )
+  return low;
+  else if( src > high )
+  return high;
+  else
+  return src;
+
 }
 
 // --
@@ -9258,54 +9295,6 @@ function arrayFromNumber( dst,length )
 //
 
 /**
- * The arrayFromRange() routine generate array of arithmetic progression series,
- * from the range[ 0 ] to the range[ 1 ] with increment 1.
- *
- * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
- * and assigns to the each index of the (result) array (range[ 0 ] + 1).
- *
- * @param { arrayLike } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
- *
- * @example
- * // returns [ 1, 2, 3, 4 ]
- * var range = _.arrayFromRange( [ 1, 5 ] );
- *
- * @example
- * // returns [ 0, 1, 2, 3, 4 ]
- * var range = _.arrayFromRange( 5 );
- *
- * @returns { array } Returns an array of numbers for the requested range with increment 1.
- * May be an empty array if adding the step would not converge toward the end value.
- * @function arrayFromRange
- * @throws { Error } If passed arguments is less than one or more than one.
- * @throws { Error } If the first argument is not an array-like object.
- * @throws { Error } If the length of the (range) is not equal to the two.
- * @memberof wTools
- */
-
-function arrayFromRange( range )
-{
-
-  if( _.numberIs( range ) )
-  range = [ 0,range ];
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( range ) );
-  _.assert( range.length === 2 );
-
-  var result = [];
-  var first = range[ 0 ];
-  var len = range[ 1 ] - range[ 0 ];
-
-  for( var i = 0 ; i < len ; i++ )
-  result[ i ] = first + i;
-
-  return result;
-}
-
-//
-
-/**
  * The arrayFrom() routine converts an object-like (src) into Array.
  *
  * @param { * } src - To convert into Array.
@@ -9356,6 +9345,187 @@ function arrayFrom( src )
   return _ArraySlice.call( src );
 
   _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
+}
+
+//
+
+/**
+ * The arrayFromRange() routine generate array of arithmetic progression series,
+ * from the range[ 0 ] to the range[ 1 ] with increment 1.
+ *
+ * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
+ * and assigns to the each index of the (result) array (range[ 0 ] + 1).
+ *
+ * @param { arrayLike } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4 ]
+ * var range = _.arrayFromRange( [ 1, 5 ] );
+ *
+ * @example
+ * // returns [ 0, 1, 2, 3, 4 ]
+ * var range = _.arrayFromRange( 5 );
+ *
+ * @returns { array } Returns an array of numbers for the requested range with increment 1.
+ * May be an empty array if adding the step would not converge toward the end value.
+ * @function arrayFromRange
+ * @throws { Error } If passed arguments is less than one or more than one.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the length of the (range) is not equal to the two.
+ * @memberof wTools
+ */
+
+// function arrayFromRange( range )
+// {
+//
+//   if( _.numberIs( range ) )
+//   range = [ 0,range ];
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.arrayLike( range ) );
+//   _.assert( range.length === 2 );
+//
+//   var result = [];
+//   var first = range[ 0 ];
+//   var len = range[ 1 ] - range[ 0 ];
+//
+//   for( var i = 0 ; i < len ; i++ )
+//   result[ i ] = first + i;
+//
+//   return result;
+// }
+
+function arrayFromRange( range )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( range.length === 2 );
+
+  var step = range[ 0 ] <= range[ 1 ] ? +1 : -1;
+
+  return this.arrayFromRangeWithStep( range,step );
+}
+
+//
+
+function arrayFromProgressionArithmetic( progression,numberOfSteps )
+{
+  var result;
+
+  debugger;
+
+  // if( arguments.length === 2 )
+  // {
+  //   first = 0;
+  //   // last = arguments[ 0 ];
+  //   step = arguments[ 0 ];
+  //   numberOfSteps = arguments[ 1 ];
+  // }
+
+  // if( first === undefined )
+  // {
+  //   first = 0;
+  //   // last = first;
+  //   // first = 0;
+  // }
+  //
+  // if( step === undefined )
+  // {
+  //   step = 1;
+  //   // last = first;
+  //   // first = 0;
+  // }
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( progression ) )
+  _.assert( isFinite( progression[ 0 ] ) );
+  _.assert( isFinite( progression[ 0 ] ) );
+  _.assert( isFinite( numberOfSteps ) );
+  _.assert( this.ArrayType );
+
+  debugger;
+
+  if( numberOfSteps === 0 )
+  return new this.ArrayType();
+
+  if( numberOfSteps === 1 )
+  return new this.ArrayType([ progression[ 0 ] ]);
+
+  // var step = ( last-first ) / ( numberOfSteps-1 );
+
+  return this.arrayFromRangeWithStep( [ progression[ 0 ],progression[ 0 ]+progression[ 1 ]*(numberOfSteps+1) ],step );
+}
+
+//
+
+function arrayFromRangeWithStep( range,step )
+{
+  var result;
+
+  // if( arguments.length === 2 )
+  // {
+  //   first = 0;
+  //   last = arguments[ 0 ];
+  //   step = arguments[ 1 ];
+  // }
+
+  // if( last === undefined )
+  // {
+  //   last = first;
+  //   first = 0;
+  // }
+
+  _.assert( arguments.length === 2 );
+  _.assert( isFinite( range[ 0 ] ) );
+  _.assert( isFinite( range[ 1 ] ) );
+  _.assert( step === undefined || step < 0 || step > 0 );
+  _.assert( this.ArrayType );
+
+  if( range[ 0 ] === range[ 1 ] )
+  return new this.ArrayType();
+
+  if( range[ 0 ] < range[ 1 ] )
+  {
+
+    if( step === undefined )
+    step = 1;
+
+    _.assert( step > 0 );
+
+    result = new this.ArrayType( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
+
+    var i = 0;
+    while( range[ 0 ] < range[ 1 ] )
+    {
+      result[ i ] = range[ 0 ];
+      range[ 0 ] += step;
+      i += 1;
+    }
+
+  }
+  else
+  {
+
+    debugger;
+
+    if( step === undefined )
+    step = -1;
+
+    _.assert( step < 0 );
+
+    result = new this.ArrayType( Math.round( range[ 0 ]-range[ 1 ] / step ) );
+
+    var i = 0;
+    while( range[ 0 ] > range[ 1 ] )
+    {
+      result[ i ] = range[ 0 ];
+      range[ 0 ] += step;
+      i += 1;
+    }
+
+  }
+
+  return result;
 }
 
 //
@@ -15293,11 +15463,9 @@ function _mapPairs( o )
   if( o.selectFilter )
   debugger;
 
-  debugger;
   if( !o.selectFilter )
   o.selectFilter = function getVal( src,k )
   {
-    debugger;
     return [ k,src[ k ] ];
   }
 
@@ -15358,7 +15526,6 @@ function mapPairs( src )
 
   var result = _._mapPairs( o );
 
-  debugger;
   return result;
 }
 
@@ -17446,6 +17613,8 @@ var Proto =
   numbersAreFinite : numbersAreFinite,
   numbersArePositive : numbersArePositive,
   numbersAreInt : numbersAreInt,
+  numbersAreIdentical : numbersAreIdentical,
+  numbersAreEquivalent : numbersAreEquivalent,
 
   numberFrom : numberFrom,
   numbersFrom : numbersFrom,
@@ -17456,6 +17625,8 @@ var Proto =
 
   numbersFromNumber : numbersFromNumber,
   numbersMake_functor : numbersMake_functor,
+
+  numberClamp : numberClamp,
 
 
   // str
@@ -17569,12 +17740,15 @@ var Proto =
   arrayMakeSimilarZeroed : arrayMakeSimilarZeroed,
   arrayMakeRandom : arrayMakeRandom,
   arrayFromNumber : arrayFromNumber,
-  arrayFromRange : arrayFromRange,
   arrayFrom : arrayFrom,
   arrayAs : arrayAs,
 
   _arrayClone : _arrayClone,
   arrayClone : arrayClone,
+
+  arrayFromRange : arrayFromRange,
+  arrayFromProgressionArithmetic : arrayFromProgressionArithmetic,
+  arrayFromRangeWithStep : arrayFromRangeWithStep,
 
 
   // array converter
@@ -17713,7 +17887,6 @@ var Proto =
   __arrayRemovedAll : __arrayRemovedAll,
 
 
-
   // array flatten
 
   __arrayFlatten : __arrayFlatten,
@@ -17743,6 +17916,7 @@ var Proto =
   __arrayReplacedAll : __arrayReplacedAll,
 
   arrayUpdate : arrayUpdate,
+
 
   // array set
 
