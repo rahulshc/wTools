@@ -2106,7 +2106,7 @@ var complexData =
 
 //
 
-function strJsonFrom( test )
+function toJson( test )
 {
   debugger;
 
@@ -2114,7 +2114,7 @@ function strJsonFrom( test )
 
   var expected = '[ ' + _.arrayFromRange([ 1,100 ]).join( ', ' ) + ' ]';
   var src = _.arrayFromRange([ 1,100 ]);
-  var json = _.strJsonFrom( src );
+  var json = _.toJson( src );
   test.identical( json , expected );
 
   var got = _.exec( json );
@@ -2145,7 +2145,7 @@ function strJsonFrom( test )
     object : { object : { object : { object : { object : { object : object }}}}}
   }
 
-  var json = _.strJsonFrom( src );
+  var json = _.toJson( src );
   var got = _.exec( json );
   var expected = src;
   test.identical( got , expected );
@@ -2157,7 +2157,7 @@ function strJsonFrom( test )
   src.object = {};
 
   debugger;
-  var json = _.strJsonFrom( src );
+  var json = _.toJson( src );
   debugger;
   var got = _.exec( json );
   debugger;
@@ -2186,7 +2186,7 @@ function strJsonFrom( test )
   src.object = object;
 
   debugger;
-  var json = _.strJsonFrom( src );
+  var json = _.toJson( src );
   debugger;
   var got = _.exec( json );
   debugger;
@@ -2196,7 +2196,7 @@ function strJsonFrom( test )
   test.description = 'comlex'; //
 
   var src = complexData;
-  var json = _.strJsonFrom( src );
+  var json = _.toJson( src );
   var got = _.exec( json );
   var expected = src;
   test.identical( got , expected );
@@ -2214,7 +2214,7 @@ var Self =
 
   tests :
   {
-    strJsonFrom : strJsonFrom,
+    toJson : toJson,
   }
 
 }

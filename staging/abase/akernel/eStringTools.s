@@ -1565,7 +1565,7 @@ function _toStrFromObject( src,o )
 
 //
 
-function strJsonFrom( src )
+function toJson( src )
 {
   _.assert( arguments.length === 1 );
 
@@ -3844,9 +3844,7 @@ function strLinesNumber( o )
 
   for( var l = 0; l < lines.length; l += 1 )
   {
-
     lines[ l ] = ( l + o.first ) + ' : ' + lines[ l ];
-
   }
 
   return lines.join( '\n' );
@@ -5190,7 +5188,7 @@ var Proto =
   _toStrFromObjectKeysFiltered : _toStrFromObjectKeysFiltered,
   _toStrFromObject : _toStrFromObject,
 
-  strJsonFrom : strJsonFrom,
+  toJson : toJson,
 
   //
 

@@ -1702,7 +1702,7 @@ function __entitySelectAct( test )
 
   }
 
-};
+}
 
 //
 
@@ -1720,7 +1720,6 @@ function entityGroup( test )
     b : [ 1, 2 ]
   }
   test.identical( got, expected );
-
 
   //
 
@@ -1875,8 +1874,10 @@ var Self =
     entitySize : entitySize,
     entityValueWithIndex : entityValueWithIndex,
     entityKeyWithValue : entityKeyWithValue,
+
     _entitySelectOptions : _entitySelectOptions,
     __entitySelectAct : __entitySelectAct,
+
     entityGroup : entityGroup,
 
 
