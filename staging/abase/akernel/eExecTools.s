@@ -321,6 +321,8 @@ function routineMake( o )
 
   var prefix = '\n';
 
+  if( o.usingStrict )
+  prefix += `'use strict;'\n`;
   if( o.debug )
   prefix += 'debugger;\n';
   if( o.filePath )
@@ -333,7 +335,7 @@ function routineMake( o )
     wTools.__externals__.push( o.externals );
     prefix += '\n';
     for( e in o.externals )
-    prefix += e + ' = ' + 'wTools.__externals__[ ' + String( wTools.__externals__.length-1 ) + ' ].' + e + ';\n';
+    prefix += 'var ' + e + ' = ' + '_global_.wTools.__externals__[ ' + String( wTools.__externals__.length-1 ) + ' ].' + e + ';\n';
     prefix += '\n';
   }
 
@@ -345,7 +347,7 @@ function routineMake( o )
     if( o.prependingReturn )
     try
     {
-      var code = prefix + 'return ' + o.code;
+      var code = prefix + 'return ' + o.code.trimLeft();
       result = new Function( code );
     }
     catch( err )
@@ -409,6 +411,7 @@ routineMake.defaults =
   code : null,
   filePath : null,
   prependingReturn : 1,
+  usingStrict : 1,
   externals : null,
 }
 
@@ -440,7 +443,7 @@ function routineExec( o )
     if( o.context )
     o.result = o.routine.apply( o.context );
     else
-    o.result = o.routine.call();
+    o.result = o.routine.call( _global_ );
     // debugger;
   }
   catch( err )
@@ -470,6 +473,9 @@ routineExec.defaults.__proto__ = routineMake.defaults;
 
 function exec( o )
 {
+  _.assert( arguments.length === 1 );
+  if( _.strIs( o ) )
+  o = { code : o };
   routineExec( o );
   return o.result;
 }

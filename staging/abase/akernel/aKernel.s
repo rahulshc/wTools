@@ -3590,7 +3590,7 @@ function _err( o )
   if( o.usingSourceCode === undefined )
   o.usingSourceCode = _err.defaults.usingSourceCode;
 
-  if( o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
+  if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
 
   /* var */
@@ -3778,7 +3778,7 @@ function _err( o )
   if( o.usingSourceCode )
   if( result.sourceCode === undefined )
   {
-    debugger;
+    // debugger;
 
     var c = '';
     o.location = _.diagnosticLocation
@@ -4391,7 +4391,6 @@ function diagnosticCode( o )
 
   /* */
 
-  debugger;
   var result = _.strLinesSelect
   ({
     src : o.sourceCode,
@@ -4509,6 +4508,8 @@ function diagnosticStack( stack,first,last )
 
   /* remove redundant lines */
 
+  if( !errIs )
+  console.warn( 'REMINDER : problem here if !errIs' ); /* xxx */
   if( !errIs )
   debugger;
 
@@ -5940,9 +5941,33 @@ function canvasIs( src )
 {
   if( _.jqueryIs( src ) )
   src = src[ 0 ];
-  if( !domIs( src ) )
+  if( src instanceof HTMLCanvasElement )
+  return true;
   return false;
-  return src.tagName === 'CANVAS';
+}
+
+//
+
+function imageIs( src )
+{
+  if( _.jqueryIs( src ) )
+  src = src[ 0 ];
+  if( src instanceof HTMLImageElement )
+  return true;
+  return false;
+}
+
+//
+
+function imageLike( src )
+{
+  if( _.jqueryIs( src ) )
+  src = src[ 0 ];
+  if( src instanceof HTMLCanvasElement )
+  return true;
+  if( src instanceof HTMLImageElement )
+  return true;
+  return false;
 }
 
 //
@@ -6809,6 +6834,24 @@ function strRemoveEnd( src,end )
 
 //
 
+function strReplaceBegin( src,begin,ins )
+{
+  if( !strBegins( src,begin ) )
+  return src;
+  return ins + src.substr( begin.length,src.length );
+}
+
+//
+
+function strReplaceEnd( src,begin,ins )
+{
+  if( !strBegins( src,begin ) )
+  return src;
+  return src.substr( begin.length,src.length ) + ins;
+}
+
+//
+
 /**
   * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
   * otherwise returns original string.
@@ -7185,6 +7228,7 @@ function _regexpArrayAny( arr,ins,none )
   var arr = _.arrayAs( arr );
   for( var m = 0 ; m < arr.length ; m++ )
   {
+    _.assert( arr[ m ].test );
     if( arr[ m ].test( ins ) )
     return m;
   }
@@ -14172,15 +14216,14 @@ function mapClone( srcObject,o )
 
 function mapExtendFiltering( filter,dstObject )
 {
-  var result = dstObject;
   var filter = _.filter.makeMapper( filter );
 
-  if( result === null )
-  result = Object.create( null );
+  if( dstObject === null )
+  dstObject = Object.create( null );
 
   _assert( arguments.length >= 3,'expects more arguments' );
   _assert( _.routineIs( filter ),'expects filter' );
-  _assert( _.objectLikeOrRoutine( result ),'expects objectLikeOrRoutine as argument' );
+  _assert( _.objectLikeOrRoutine( dstObject ),'expects objectLikeOrRoutine as argument' );
 
   for( var a = 2 ; a < arguments.length ; a++ )
   {
@@ -14197,7 +14240,7 @@ function mapExtendFiltering( filter,dstObject )
 
   }
 
-  return result;
+  return dstObject;
 }
 
 //
@@ -16861,8 +16904,9 @@ function _mapScreen( options )
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
   _.assertMapHasOnly( options,_mapScreen.defaults );
 
-  for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
+  // xxx
+  // for( a = srcObjects.length-1 ; a >= 0 ; a-- )
+  // _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
 
   for( var k in screenObject )
   {
@@ -17686,6 +17730,8 @@ var Proto =
   htmlIs : htmlIs,
   jqueryIs : jqueryIs,
   canvasIs : canvasIs,
+  imageIs : imageIs,
+  imageLike : imageLike,
   domIs : domIs,
   domLike : domLike,
   domableIs : domableIs,
@@ -17753,6 +17799,9 @@ var Proto =
 
   strRemoveBegin : strRemoveBegin,
   strRemoveEnd : strRemoveEnd,
+
+  strReplaceBegin : strReplaceBegin,
+  strReplaceEnd : strReplaceEnd,
 
   strPrependOnce : strPrependOnce,
   strAppendOnce : strAppendOnce,
