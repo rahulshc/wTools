@@ -1838,6 +1838,14 @@ function _entityEqual( src1, src2, iterator )
   {
     return iterator.onSameNumbers( src1,src2 );
   }
+  else if( _.regexpIs( src1 ) )
+  {
+    debugger;
+    if( src1.source !== src2.source )
+    return false;
+    if( src1.flags !== src2.flags )
+    return false;
+  }
   else if( _.bufferViewIs( src1 ) )
   {
     debugger;
@@ -4668,6 +4676,12 @@ _.diagnosticWatchFields
   names : 'logger',
 });
 
+_.diagnosticWatchFields
+({
+  dst : self,
+  names : 'm_colorKeyRequested',
+});
+
 */
 
 function diagnosticWatchFields( o )
@@ -4744,7 +4758,7 @@ diagnosticWatchFields.defaults =
 
 //
 
-function diagnosticBeep()
+function beep()
 {
   console.log( '\x07' );
 }
@@ -6141,10 +6155,10 @@ function numberIsNotNan( src )
 
 //
 
-function numberIsRegular( src )
-{
-  return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
-}
+// function numberIsFinite( src )
+// {
+//   return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
+// }
 
 //
 
@@ -17666,7 +17680,7 @@ var Proto =
   diagnosticStack : diagnosticStack,
   diagnosticWatchObject : diagnosticWatchObject, /* experimental */
   diagnosticWatchFields : diagnosticWatchFields, /* experimental */
-  diagnosticBeep : diagnosticBeep,
+  beep : beep,
 
   assert : assert,
   assertWithoutBreakpoint : assertWithoutBreakpoint,
@@ -17757,7 +17771,6 @@ var Proto =
 
   numberIs : numberIs,
   numberIsNotNan : numberIsNotNan,
-  numberIsRegular : numberIsRegular,
   numberIsFinite : numberIsFinite,
   numberIsInt : numberIsInt,
 
