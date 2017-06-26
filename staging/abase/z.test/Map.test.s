@@ -34,6 +34,586 @@ var _ = wTools;
 
 //
 
+function mapIs( test )
+{
+
+  test.description = 'an empty object';
+  var got = _.mapIs( {} );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'an object';
+  var got = _.mapIs( { a : 7, b : 13 } );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'no argument';
+  var got = _.mapIs();
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'an array';
+  var got = _.mapIs( [  ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'a string';
+  var got = _.mapIs( 'str' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'a number';
+  var got = _.mapIs( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'a boolean';
+  var got = _.mapIs( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'a function';
+  var got = _.mapIs( function() {  } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'a string';
+  var got = _.mapIs( Object.create( { a : 7 } ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    /*test.description = 'inherits through the prototype chain';
+    test.shouldThrowError( function()
+    {
+      _.mapIs( Object.create( { a : 7 } ) );
+    });*/
+
+  }
+
+};
+
+//
+
+function mapClone( test )
+{
+
+  test.description = 'an Example';
+  function Example() {
+    this.name = 'Peter';
+    this.age = 27;
+  };
+  var got = _.mapClone( new Example(), { dst : { sex : 'Male' } } );
+  var expected = { sex : 'Male', name : 'Peter', age : 27 };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapClone();
+    });
+
+    test.description = 'redundant argument';
+    test.shouldThrowError( function()
+    {
+      _.mapClone( {}, {}, 'wrong arguments' );
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapClone( [] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapClone( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function mapExtendFiltering( test )
+{
+
+  test.description = 'an unique object';
+  var got = _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapExtendFiltering();
+    });
+
+    test.description = 'few argument';
+    test.shouldThrowError( function()
+    {
+      _.mapExtendFiltering( _.filter.supplementary() );
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapExtendFiltering( [] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapExtendFiltering( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function mapExtend( test )
+{
+
+  test.description = 'first argument is null';
+  var got = _.mapExtend( null, { a : 7, b : 13 }, { c : 3, d : 33 } );
+  var expected = { a : 7, b : 13, c : 3, d : 33 };
+  test.identical( got, expected );
+
+  test.description = 'multiple object properties';
+  var got = _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+  var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
+  test.identical( got, expected );
+
+  test.description = 'object like array';
+  var got = _.mapExtend( null, [ 3, 7, 13, 73 ] );
+  var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
+  test.identical( got, expected );
+
+  test.description = 'object like array2';
+  var got = _.mapExtend( { a : 7, b : 13 }, [ 33, 3, 7, 13 ] );
+  var expected = { 0 : 33, 1 : 3, 2 : 7, 3 : 13, a : 7, b : 13 };
+  test.identical(got, expected);
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapExtend();
+    });
+
+    test.description = 'few arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapExtend( {} );
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapExtend( [] );
+    });
+
+    test.description = 'wrong type of number';
+    test.shouldThrowError( function()
+    {
+      _.mapExtend( 13 );
+    });
+
+    test.description = 'wrong type of boolean';
+    test.shouldThrowError( function()
+    {
+      _.mapExtend( true );
+    });
+
+    test.description = 'first argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.mapExtend( 'wrong argument' );
+    });
+
+  }
+
+};
+
+//
+
+function mapSupplement( test )
+{
+
+  test.description = 'an object';
+  var got = _.mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+  var expected = { a : 1, b : 2, c : 3 };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapSupplement();
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapSupplement( [] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapSupplement( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function mapComplement( test )
+{
+
+  test.description = 'an object';
+  var got = _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+  var expected = { a : 1, b : 'yyy', c : 3 };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapComplement();
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapComplement( [] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapComplement( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function mapCopy( test )
+{
+
+  test.description = 'an object';
+  var got = _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+  var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapCopy();
+    });
+
+  }
+
+};
+
+//
+
+function mapFirstPair( test )
+{
+
+  test.description = 'first pair [ key, value ]';
+  var got = _.mapFirstPair( { a : 3, b : 13 } );
+  var expected = [ 'a', 3 ];
+  test.identical( got, expected );
+
+  test.description = 'undefined';
+  var got = _.mapFirstPair( {  } );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.description = 'object-like';
+  var obj = Object.create( null );
+  obj.a = 7;
+  var got = _.mapFirstPair( obj );
+  var expected = [ 'a', 7 ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapFirstPair();
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapFirstPair( 'wrong argument' );
+    });
+
+  }
+
+};
+
+//
+
+function mapToArray( test )
+{
+
+  test.description = 'a list of [ key, value ] pairs'
+  var got = _.mapToArray( { a : 3, b : 13, c : 7 } );
+  var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapToArray();
+    });
+
+    test.description = 'redundant argument';
+    test.shouldThrowError( function()
+    {
+      _.mapToArray( {}, 'wrong arguments' );
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapToArray( [] );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapToArray( 'wrong argumetns' );
+    });
+
+  }
+
+};
+
+//
+
+function mapValWithIndex( test )
+{
+
+  test.description = 'second index';
+  var got = _.mapValWithIndex( { 0 : 3, 1 : 13, 2 : 'c', 3 : 7 }, 2 );
+  var expected = 'c';
+  test.identical( got, expected );
+
+  test.description = 'an element';
+  var got = _.mapValWithIndex( { 0 : [ 'a', 3 ] }, 0 );
+  var expected = [ 'a', 3 ];
+  test.identical( got, expected );
+
+  test.description = 'a list of arrays';
+  var got = _.mapValWithIndex( { 0 : [ 'a', 3 ], 1 : [ 'b', 13 ], 2 : [ 'c', 7 ] }, 2 );
+  var expected = ["c", 7];
+  test.identical( got, expected );
+
+  test.description = 'a list of objects';
+  var got = _.mapValWithIndex( { 0 : { a : 3 }, 1 : { b : 13 }, 2 : { c : 7 } }, 2 );
+  var expected = {c: 7};
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function() {
+      _.mapValWithIndex();
+    });
+
+    test.description = 'few argument';
+    test.shouldThrowError( function()
+    {
+      _.mapValWithIndex( [ [] ] );
+    });
+
+    test.description = 'first the four argument not wrapped into array';
+    test.shouldThrowError( function()
+    {
+      _.mapValWithIndex( 3, 13, 'c', 7 , 2 );
+    });
+
+    test.description = 'redundant argument';
+    test.shouldThrowError( function()
+    {
+      _.mapValWithIndex( [ [] ], 2, 'wrong arguments' );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapValWithIndex( 'wrong argumetns' );
+    });
+
+  }
+
+}
+
+//
+
+function mapKeyWithIndex( test )
+{
+
+  test.description = 'last key';
+  var got = _.mapKeyWithIndex( { 'a': 3, 'b': 13, 'c': 7 }, 2 );
+  var expected = 'c';
+  test.identical( got, expected );
+
+  test.description = 'first key';
+  var got = _.mapKeyWithIndex( { 0 : { a : 3 },  1 : 13, 2 : 'c', 3 : 7 }, 3 );
+  var expected = '3';
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapKeyWithIndex();
+    });
+
+    test.description = 'few arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapKeyWithIndex( [] );
+    });
+
+    test.description = 'redundant argument';
+    test.shouldThrowError( function()
+    {
+      _.mapKeyWithIndex( [  ], 2, 'wrong arguments' );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapKeyWithIndex( 'wrong argumetns' );
+    });
+
+  }
+
+};
+
+//
+
+function mapToStr( test )
+{
+
+  test.description = 'returns an empty string';
+  var got = _.mapToStr({ src : [  ], valKeyDelimeter : ' : ',  entryDelimeter : '; '});
+  var expected = '';
+  test.identical( got, expected );
+
+  test.description = 'returns a string representing an object';
+  var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
+  var expected = 'a : 1; b : 2; c : 3; d : 4';
+  test.identical( got, expected );
+
+  test.description = 'returns a string representing an array';
+  var got = _.mapToStr({ src : [ 1, 2, 3 ], valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
+  var expected = '0 : 1; 1 : 2; 2 : 3';
+  test.identical( got, expected );
+
+  test.description = 'returns a string representing an array-like object';
+  function args() { return arguments };
+  var got = _.mapToStr({ src : args(  1, 2, 3, 4, 5 ), valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
+  var expected = '0 : 1; 1 : 2; 2 : 3; 3 : 4; 4 : 5';
+  test.identical( got, expected );
+
+  test.description = 'returns a string representing a string';
+  var got = _.mapToStr({ src : 'abc', valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
+  var expected = '0 : a; 1 : b; 2 : c';
+  test.identical( got, expected );
+
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no argument';
+    test.shouldThrowError( function()
+    {
+      _.mapToStr();
+    });
+
+    test.description = 'wrong type of number';
+    test.shouldThrowError( function()
+    {
+      _.mapToStr( 13 );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapToStr( true );
+    });
+
+  }
+
+};
+
+//
+
 function mapKeys( test )
 {
   test.description = 'simple';
@@ -293,7 +873,6 @@ function mapAllKeys( test )
 
 }
 
-
 //
 
 function mapVals( test )
@@ -513,76 +1092,6 @@ function mapAllVals( test )
     test.shouldThrowError( function()
     {
       _.mapAllVals.call( { a : 1 }, {} );
-    });
-
-  }
-
-};
-
-//
-
-function mapExtend( test )
-{
-
-  test.description = 'first argument is null';
-  var got = _.mapExtend( null, { a : 7, b : 13 }, { c : 3, d : 33 } );
-  var expected = { a : 7, b : 13, c : 3, d : 33 };
-  test.identical( got, expected );
-
-  test.description = 'multiple object properties';
-  var got = _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
-  var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
-  test.identical( got, expected );
-
-  test.description = 'object like array';
-  var got = _.mapExtend( null, [ 3, 7, 13, 73 ] );
-  var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
-  test.identical( got, expected );
-
-  test.description = 'object like array2';
-  var got = _.mapExtend( { a : 7, b : 13 }, [ 33, 3, 7, 13 ] );
-  var expected = { 0 : 33, 1 : 3, 2 : 7, 3 : 13, a : 7, b : 13 };
-  test.identical(got, expected);
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend();
-    });
-
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( {} );
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( [] );
-    });
-
-    test.description = 'wrong type of number';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( 13 );
-    });
-
-    test.description = 'wrong type of boolean';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( true );
-    });
-
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( 'wrong argument' );
     });
 
   }
@@ -1836,28 +2345,96 @@ function mapOnlyAtomics( test )
 
 //
 
-function mapOwnKey( test )
+function mapBut( test )
 {
 
-  test.description = 'second argument is string';
-  var got = _.mapOwnKey( { a : 7, b : 13 }, 'a' );
-  var expected = true;
+  test.description = 'a unique object';
+  var got = _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+  var expected = { c : 3 };
   test.identical( got, expected );
 
-  test.description = 'second argument is object';
-  var got = _.mapOwnKey( { a : 7, b : 13 }, Object.create( null ).a = 'a' );
-  var expected = true;
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapBut();
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapBut( [] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapBut( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function mapOwnBut( test )
+{
+
+  test.description = 'an empty object';
+  var got = _.mapOwnBut( {  } );
+  var expected = {  };
   test.identical( got, expected );
 
-  test.description = 'second argument is symbol';
-  var symbol = Symbol( 'b' ), obj = { a : 7, [ symbol ] : 13 };
-  var got = _.mapOwnKey( obj, symbol );
-  var expected = true;
+  test.description = 'an object';
+  var got = _.mapOwnBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+  var expected = { c : 3 };
   test.identical( got, expected );
 
-  test.description = 'false';
-  var got = _.mapOwnKey( Object.create( { a : 7, b : 13 } ), 'a' );
-  var expected = false;
+  test.description = 'an object';
+  var got = _.mapOwnBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
+  var expected = { a : 7 };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnBut();
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnBut( [  ] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnBut( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function mapButFiltering( test )
+{
+
+  test.description = 'an object';
+  var got = _.mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+  var expected = {a: 1, b: "xxx"};
   test.identical( got, expected );
 
   /**/
@@ -1868,37 +2445,184 @@ function mapOwnKey( test )
     test.description = 'no argument';
     test.shouldThrowError( function()
     {
-      _.mapOwnKey();
+      _.mapButFiltering();
     });
 
     test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapOwnKey( {}, 'a', 'b' );
+      _.mapButFiltering( _.filter.atomic() );
     });
 
-    test.description = 'wrong type of key';
+    test.description = 'second argument is wrong type of array';
     test.shouldThrowError( function()
     {
-      _.mapOwnKey( [], 1 );
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey( 1 );
-    });
-
-    test.description = 'wrong type of second argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey( {}, 13 );
+      _.mapButFiltering( _.filter.atomic(), [] );
     });
 
     test.description = 'wrong type of arguments';
     test.shouldThrowError( function()
     {
-      _.mapOwnKey( '', 7 );
+      _.mapButFiltering( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function mapScreens( test )
+{
+
+  test.description = 'test1';
+  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
+  console.log(got);
+  var expected = { a : "abc", c : 33, d : "name" };
+  test.identical( got, expected );
+
+  test.description = 'test2';
+  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
+  console.log(got);
+  var expected = { a : "abc", c : 33, d : "name" };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapScreens();
+    });
+
+    test.description = 'first argument is not an object-like';
+    test.shouldThrowError( function()
+    {
+      _.mapScreens( 3, [] );
+    });
+
+    test.description = 'second argument is not an object-like';
+    test.shouldThrowError( function()
+    {
+      _.mapScreens( [], '' );
+    });
+
+    test.description = 'few arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapScreen( {} );
+    });
+
+    test.description = 'redundant arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapScreen( [], [], {} );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapScreen( 'wrong arguments' );
+    });
+
+  }
+};
+
+//
+
+function mapScreen( test )
+{
+
+
+  test.description = 'an object'
+  var got = _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+  var expected = { a : "abc", c : 33, d : "name" };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapScreen();
+    });
+
+    test.description = 'few arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapScreen( {} );
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _.mapScreen( [] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _.mapScreen( 'wrong arguments' );
+    });
+
+  }
+
+};
+
+//
+
+function _mapScreen( test )
+{
+
+  test.description = 'an object';
+  var options = {};
+  options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+  options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+  var got = _._mapScreen( options );
+  var expected = { a : 33, c : 33, name : "Mikle" };
+  test.identical( got, expected );
+
+  test.description = 'an object2'
+  var options = {};
+  options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
+  options.srcObjects = { d : 'name', c : 33, a : 'abc' };
+  var got = _._mapScreen( options );
+  var expected = { a : "abc", c : 33, d : "name" };
+  test.identical( got, expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _._mapScreen();
+    });
+
+    test.description = 'redundant arguments';
+    test.shouldThrowError( function()
+    {
+      _._mapScreen( {}, 'wrong arguments' );
+    });
+
+    test.description = 'wrong type of array';
+    test.shouldThrowError( function()
+    {
+      _._mapScreen( [] );
+    });
+
+    test.description = 'wrong type of arguments';
+    test.shouldThrowError( function()
+    {
+      _._mapScreen( 'wrong arguments' );
     });
 
   }
@@ -1996,12 +2720,28 @@ function mapContain( test )
 
 //
 
-function mapBut( test )
+function mapOwnKey( test )
 {
 
-  test.description = 'a unique object';
-  var got = _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
-  var expected = { c : 3 };
+  test.description = 'second argument is string';
+  var got = _.mapOwnKey( { a : 7, b : 13 }, 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'second argument is object';
+  var got = _.mapOwnKey( { a : 7, b : 13 }, Object.create( null ).a = 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'second argument is symbol';
+  var symbol = Symbol( 'b' ), obj = { a : 7, [ symbol ] : 13 };
+  var got = _.mapOwnKey( obj, symbol );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'false';
+  var got = _.mapOwnKey( Object.create( { a : 7, b : 13 } ), 'a' );
+  var expected = false;
   test.identical( got, expected );
 
   /**/
@@ -2009,22 +2749,40 @@ function mapBut( test )
   if( Config.debug )
   {
 
-    test.description = 'no arguments';
+    test.description = 'no argument';
     test.shouldThrowError( function()
     {
-      _.mapBut();
+      _.mapOwnKey();
     });
 
-    test.description = 'wrong type of array';
+    test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapBut( [] );
+      _.mapOwnKey( {}, 'a', 'b' );
+    });
+
+    test.description = 'wrong type of key';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnKey( [], 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnKey( 1 );
+    });
+
+    test.description = 'wrong type of second argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnKey( {}, 13 );
     });
 
     test.description = 'wrong type of arguments';
     test.shouldThrowError( function()
     {
-      _.mapBut( 'wrong arguments' );
+      _.mapOwnKey( '', 7 );
     });
 
   }
@@ -2648,470 +3406,6 @@ function mapOwnNone( test )
 
 //
 
-
-function mapToArray( test )
-{
-
-  test.description = 'a list of [ key, value ] pairs'
-  var got = _.mapToArray( { a : 3, b : 13, c : 7 } );
-  var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray();
-    });
-
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray( {}, 'wrong arguments' );
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray( [] );
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray( 'wrong argumetns' );
-    });
-
-  }
-
-};
-
-
-function mapValWithIndex( test )
-{
-
-  test.description = 'second index';
-  var got = _.mapValWithIndex( { 0 : 3, 1 : 13, 2 : 'c', 3 : 7 }, 2 );
-  var expected = 'c';
-  test.identical( got, expected );
-
-  test.description = 'an element';
-  var got = _.mapValWithIndex( { 0 : [ 'a', 3 ] }, 0 );
-  var expected = [ 'a', 3 ];
-  test.identical( got, expected );
-
-  test.description = 'a list of arrays';
-  var got = _.mapValWithIndex( { 0 : [ 'a', 3 ], 1 : [ 'b', 13 ], 2 : [ 'c', 7 ] }, 2 );
-  var expected = ["c", 7];
-  test.identical( got, expected );
-
-  test.description = 'a list of objects';
-  var got = _.mapValWithIndex( { 0 : { a : 3 }, 1 : { b : 13 }, 2 : { c : 7 } }, 2 );
-  var expected = {c: 7};
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function() {
-      _.mapValWithIndex();
-    });
-
-    test.description = 'few argument';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( [ [] ] );
-    });
-
-    test.description = 'first the four argument not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( 3, 13, 'c', 7 , 2 );
-    });
-
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( [ [] ], 2, 'wrong arguments' );
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( 'wrong argumetns' );
-    });
-
-  }
-
-}
-
-
-function mapKeyWithIndex( test )
-{
-
-  test.description = 'last key';
-  var got = _.mapKeyWithIndex( { 'a': 3, 'b': 13, 'c': 7 }, 2 );
-  var expected = 'c';
-  test.identical( got, expected );
-
-  test.description = 'first key';
-  var got = _.mapKeyWithIndex( { 0 : { a : 3 },  1 : 13, 2 : 'c', 3 : 7 }, 3 );
-  var expected = '3';
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex();
-    });
-
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex( [] );
-    });
-
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex( [  ], 2, 'wrong arguments' );
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex( 'wrong argumetns' );
-    });
-
-  }
-
-};
-
-
-function mapIs( test )
-{
-
-  test.description = 'an empty object';
-  var got = _.mapIs( {} );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.description = 'an object';
-  var got = _.mapIs( { a : 7, b : 13 } );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.description = 'no argument';
-  var got = _.mapIs();
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'an array';
-  var got = _.mapIs( [  ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'a string';
-  var got = _.mapIs( 'str' );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'a number';
-  var got = _.mapIs( 13 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'a boolean';
-  var got = _.mapIs( true );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'a function';
-  var got = _.mapIs( function() {  } );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'a string';
-  var got = _.mapIs( Object.create( { a : 7 } ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    /*test.description = 'inherits through the prototype chain';
-    test.shouldThrowError( function()
-    {
-      _.mapIs( Object.create( { a : 7 } ) );
-    });*/
-
-  }
-
-};
-
-
-function mapClone( test )
-{
-
-  test.description = 'an Example';
-  function Example() {
-    this.name = 'Peter';
-    this.age = 27;
-  };
-  var got = _.mapClone( new Example(), { dst : { sex : 'Male' } } );
-  var expected = { sex : 'Male', name : 'Peter', age : 27 };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapClone();
-    });
-
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapClone( {}, {}, 'wrong arguments' );
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapClone( [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapClone( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-
-function mapExtendFiltering( test )
-{
-
-  test.description = 'an unique object';
-  var got = _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
-  var expected = { a : 1, b : 2, c : 3 };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapExtendFiltering();
-    });
-
-    test.description = 'few argument';
-    test.shouldThrowError( function()
-    {
-      _.mapExtendFiltering( _.filter.supplementary() );
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapExtendFiltering( [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapExtendFiltering( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-
-function mapSupplement( test )
-{
-
-  test.description = 'an object';
-  var got = _.mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
-  var expected = { a : 1, b : 2, c : 3 };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapSupplement();
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapSupplement( [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapSupplement( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-
-function mapCopy( test )
-{
-
-  test.description = 'an object';
-  var got = _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
-  var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapCopy();
-    });
-
-  }
-
-};
-
-
-function mapFirstPair( test )
-{
-
-  test.description = 'first pair [ key, value ]';
-  var got = _.mapFirstPair( { a : 3, b : 13 } );
-  var expected = [ 'a', 3 ];
-  test.identical( got, expected );
-
-  test.description = 'undefined';
-  var got = _.mapFirstPair( {  } );
-  var expected = undefined;
-  test.identical( got, expected );
-
-  test.description = 'object-like';
-  var obj = Object.create( null );
-  obj.a = 7;
-  var got = _.mapFirstPair( obj );
-  var expected = [ 'a', 7 ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapFirstPair();
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapFirstPair( 'wrong argument' );
-    });
-
-  }
-
-};
-
-
-function mapToStr( test )
-{
-
-  test.description = 'returns an empty string';
-  var got = _.mapToStr({ src : [  ], valKeyDelimeter : ' : ',  entryDelimeter : '; '});
-  var expected = '';
-  test.identical( got, expected );
-
-  test.description = 'returns a string representing an object';
-  var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
-  var expected = 'a : 1; b : 2; c : 3; d : 4';
-  test.identical( got, expected );
-
-  test.description = 'returns a string representing an array';
-  var got = _.mapToStr({ src : [ 1, 2, 3 ], valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
-  var expected = '0 : 1; 1 : 2; 2 : 3';
-  test.identical( got, expected );
-
-  test.description = 'returns a string representing an array-like object';
-  function args() { return arguments };
-  var got = _.mapToStr({ src : args(  1, 2, 3, 4, 5 ), valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
-  var expected = '0 : 1; 1 : 2; 2 : 3; 3 : 4; 4 : 5';
-  test.identical( got, expected );
-
-  test.description = 'returns a string representing a string';
-  var got = _.mapToStr({ src : 'abc', valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
-  var expected = '0 : a; 1 : b; 2 : c';
-  test.identical( got, expected );
-
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToStr();
-    });
-
-    test.description = 'wrong type of number';
-    test.shouldThrowError( function()
-    {
-      _.mapToStr( 13 );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapToStr( true );
-    });
-
-  }
-
-};
-
-
 function mapGroup( test )
 {
 
@@ -3164,289 +3458,6 @@ function mapGroup( test )
 
 };
 
-
-function mapButFiltering( test )
-{
-
-  test.description = 'an object';
-  var got = _.mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
-  var expected = {a: 1, b: "xxx"};
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapButFiltering();
-    });
-
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapButFiltering( _.filter.atomic() );
-    });
-
-    test.description = 'second argument is wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapButFiltering( _.filter.atomic(), [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapButFiltering( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-
-function mapComplement( test )
-{
-
-  test.description = 'an object';
-  var got = _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
-  var expected = { a : 1, b : 'yyy', c : 3 };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapComplement();
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapComplement( [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapComplement( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-
-function mapOwnBut( test )
-{
-
-  test.description = 'an empty object';
-  var got = _.mapOwnBut( {  } );
-  var expected = {  };
-  test.identical( got, expected );
-
-  test.description = 'an object';
-  var got = _.mapOwnBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
-  var expected = { c : 3 };
-  test.identical( got, expected );
-
-  test.description = 'an object';
-  var got = _.mapOwnBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
-  var expected = { a : 7 };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnBut();
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnBut( [  ] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnBut( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-
-
-function _mapScreen( test )
-{
-
-  test.description = 'an object';
-  var options = {};
-  options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
-  options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
-  var got = _._mapScreen( options );
-  var expected = { a : 33, c : 33, name : "Mikle" };
-  test.identical( got, expected );
-
-  test.description = 'an object2'
-  var options = {};
-  options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
-  options.srcObjects = { d : 'name', c : 33, a : 'abc' };
-  var got = _._mapScreen( options );
-  var expected = { a : "abc", c : 33, d : "name" };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen();
-    });
-
-    test.description = 'redundant arguments';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen( {}, 'wrong arguments' );
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen( [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-
-function mapScreen( test )
-{
-
-
-  test.description = 'an object'
-  var got = _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
-  var expected = { a : "abc", c : 33, d : "name" };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen();
-    });
-
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( {} );
-    });
-
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( 'wrong arguments' );
-    });
-
-  }
-
-};
-
-//
-
-function mapScreens( test )
-{
-
-
-  test.description = 'test1';
-  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
-  console.log(got);
-  var expected = { a : "abc", c : 33, d : "name" };
-  test.identical( got, expected );
-
-  test.description = 'test2';
-  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
-  console.log(got);
-  var expected = { a : "abc", c : 33, d : "name" };
-  test.identical( got, expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreens();
-    });
-
-    test.description = 'first argument is not an object-like';
-    test.shouldThrowError( function()
-    {
-      _.mapScreens( 3, [] );
-    });
-
-    test.description = 'second argument is not an object-like';
-    test.shouldThrowError( function()
-    {
-      _.mapScreens( [], '' );
-    });
-
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( {} );
-    });
-
-    test.description = 'redundant arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( [], [], {} );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( 'wrong arguments' );
-    });
-
-  }
-};
-
 //
 
 var Self =
@@ -3456,54 +3467,85 @@ var Self =
 
   tests:
   {
+    // map tester
+
+    mapIs : mapIs,
+
+    // map move
+
+    mapClone : mapClone,
+
+    mapExtendFiltering : mapExtendFiltering,
+    mapExtend : mapExtend,
+    mapSupplement : mapSupplement,
+    mapComplement : mapComplement,
+
+    mapCopy : mapCopy,
+
+    // map convert
+
+    mapFirstPair : mapFirstPair,
+
+    mapToArray : mapToArray,
+    mapValWithIndex : mapValWithIndex,
+    mapKeyWithIndex : mapKeyWithIndex,
+    mapToStr : mapToStr,
+
+    // map properties
 
     mapKeys : mapKeys,
     mapOwnKeys : mapOwnKeys,
     mapAllKeys : mapAllKeys,
+
     mapVals : mapVals,
-    mapAllVals : mapAllVals,
     mapOwnVals : mapOwnVals,
-    mapExtend : mapExtend,
+    mapAllVals : mapAllVals,
+
     mapPairs : mapPairs,
     mapOwnPairs : mapOwnPairs,
     mapAllPairs : mapAllPairs,
+
     mapProperties : mapProperties,
     mapOwnProperties : mapOwnProperties,
     mapAllProperties : mapAllProperties,
+
     mapRoutines : mapRoutines,
     mapOwnRoutines : mapOwnRoutines,
     mapAllRoutines : mapAllRoutines,
+
     mapFields : mapFields,
     mapOwnFields : mapOwnFields,
     mapAllFields : mapAllFields,
+
     mapOnlyAtomics : mapOnlyAtomics,
-    mapOwnKey : mapOwnKey,
-    mapIdentical : mapIdentical,
-    mapContain : mapContain,
+
+    // map logic
+
     mapBut : mapBut,
-    mapHasAll : mapHasAll,
-    mapHasAny : mapHasAny,
-    mapHasNone : mapHasNone,
-    mapOwnAll : mapOwnAll,
-    mapOwnAny : mapOwnAny,
-    mapOwnNone : mapOwnNone,
-    mapToArray : mapToArray,
-    mapValWithIndex : mapValWithIndex,
-    mapKeyWithIndex : mapKeyWithIndex,
-    mapIs : mapIs,
-    mapClone : mapClone,
-    mapExtendFiltering : mapExtendFiltering,
-    mapSupplement : mapSupplement,
-    mapCopy : mapCopy,
-    mapFirstPair : mapFirstPair,
-    mapToStr : mapToStr,
-    mapGroup : mapGroup,
-    mapButFiltering : mapButFiltering,
-    mapComplement : mapComplement,
+
     mapOwnBut : mapOwnBut,
+
+    mapButFiltering : mapButFiltering,
+
     mapScreens : mapScreens,
     mapScreen : mapScreen,
     _mapScreen : _mapScreen,
+
+    mapIdentical : mapIdentical,
+    mapContain : mapContain,
+
+    mapOwnKey : mapOwnKey,
+
+    mapHasAll : mapHasAll,
+    mapHasAny : mapHasAny,
+    mapHasNone : mapHasNone,
+
+    mapOwnAll : mapOwnAll,
+    mapOwnAny : mapOwnAny,
+    mapOwnNone : mapOwnNone,
+
+    mapGroup : mapGroup,
+
   }
 
 }
