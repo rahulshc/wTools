@@ -882,7 +882,7 @@ function mapProperties( test )
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapProperties.call( { enumerable : 0, own : 1 }, a );
-  var expected = { a : 1, x : 3 };
+  var expected = { a : 1, k : 3 };
   test.identical( got, expected );
 
   /**/
@@ -982,7 +982,7 @@ function mapOwnProperties( test )
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapOwnProperties.call( { enumerable : 0 }, a );
-  var expected = { a : 1, x : 3 };
+  var expected = { a : 1, k : 3 };
   test.identical( got, expected );
 
   /**/
@@ -1874,13 +1874,19 @@ function mapOwnKey( test )
     test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapOwnKey( {} );
+      _.mapOwnKey( {}, 'a', 'b' );
     });
 
-    test.description = 'wrong type of array';
+    test.description = 'wrong type of key';
     test.shouldThrowError( function()
     {
-      _.mapOwnKey( [] );
+      _.mapOwnKey( [], 1 );
+    });
+
+    test.description = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.mapOwnKey( 1 );
     });
 
     test.description = 'wrong type of second argument';
@@ -2689,22 +2695,22 @@ function mapValWithIndex( test )
 {
 
   test.description = 'second index';
-  var got = _.mapValWithIndex( [ 3, 13, 'c', 7 ], 2 );
+  var got = _.mapValWithIndex( { 0 : 3, 1 : 13, 2 : 'c', 3 : 7 }, 2 );
   var expected = 'c';
   test.identical( got, expected );
 
   test.description = 'an element';
-  var got = _.mapValWithIndex( [ [ 'a', 3 ] ], 0 );
+  var got = _.mapValWithIndex( { 0 : [ 'a', 3 ] }, 0 );
   var expected = [ 'a', 3 ];
   test.identical( got, expected );
 
   test.description = 'a list of arrays';
-  var got = _.mapValWithIndex( [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ], 2 );
+  var got = _.mapValWithIndex( { 0 : [ 'a', 3 ], 1 : [ 'b', 13 ], 2 : [ 'c', 7 ] }, 2 );
   var expected = ["c", 7];
   test.identical( got, expected );
 
   test.description = 'a list of objects';
-  var got = _.mapValWithIndex( [ { a : 3 }, { b : 13 }, { c : 7 } ], 2 );
+  var got = _.mapValWithIndex( { 0 : { a : 3 }, 1 : { b : 13 }, 2 : { c : 7 } }, 2 );
   var expected = {c: 7};
   test.identical( got, expected );
 
@@ -2756,8 +2762,8 @@ function mapKeyWithIndex( test )
   test.identical( got, expected );
 
   test.description = 'first key';
-  var got = _.mapKeyWithIndex( [ { a : 3 }, 13, 'c', 7 ], 0 );
-  var expected = '0';
+  var got = _.mapKeyWithIndex( { 0 : { a : 3 },  1 : 13, 2 : 'c', 3 : 7 }, 3 );
+  var expected = '3';
   test.identical( got, expected );
 
   /**/
@@ -3020,8 +3026,10 @@ function mapFirstPair( test )
   test.identical( got, expected );
 
   test.description = 'object-like';
-  var got = _.mapFirstPair( [ [ 'a', 7 ] ] );
-  var expected = [ '0', [ 'a', 7 ] ];
+  var obj = Object.create( null );
+  obj.a = 7;
+  var got = _.mapFirstPair( obj );
+  var expected = [ 'a', 7 ];
   test.identical( got, expected );
 
   /**/
@@ -3050,28 +3058,28 @@ function mapToStr( test )
 {
 
   test.description = 'returns an empty string';
-  var got = _.mapToStr( [  ], ' : ', '; ' );
+  var got = _.mapToStr({ src : [  ], valKeyDelimeter : ' : ',  entryDelimeter : '; '});
   var expected = '';
   test.identical( got, expected );
 
   test.description = 'returns a string representing an object';
-  var got = _.mapToStr( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+  var got = _.mapToStr({ src : { a : 1, b : 2, c : 3, d : 4 }, valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
   var expected = 'a : 1; b : 2; c : 3; d : 4';
   test.identical( got, expected );
 
   test.description = 'returns a string representing an array';
-  var got = _.mapToStr( [ 1, 2, 3 ], ' : ', '; ' );
+  var got = _.mapToStr({ src : [ 1, 2, 3 ], valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
   var expected = '0 : 1; 1 : 2; 2 : 3';
   test.identical( got, expected );
 
   test.description = 'returns a string representing an array-like object';
-  function args() { return arguments }( 1, 2, 3, 4, 5 );
-  var got = _.mapToStr( args, ' : ', '; ' );
+  function args() { return arguments };
+  var got = _.mapToStr({ src : args(  1, 2, 3, 4, 5 ), valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
   var expected = '0 : 1; 1 : 2; 2 : 3; 3 : 4; 4 : 5';
   test.identical( got, expected );
 
   test.description = 'returns a string representing a string';
-  var got = _.mapToStr( 'abc', ' : ', '; ' );
+  var got = _.mapToStr({ src : 'abc', valKeyDelimeter : ' : ',  entryDelimeter : '; ' });
   var expected = '0 : a; 1 : b; 2 : c';
   test.identical( got, expected );
 
@@ -3384,13 +3392,13 @@ function mapScreens( test )
 
 
   test.description = 'test1';
-  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
   console.log(got);
   var expected = { a : "abc", c : 33, d : "name" };
   test.identical( got, expected );
 
   test.description = 'test2';
-  var got = _.mapScreens( [ { d : 'name', c : 33, a : 'abc' } ], [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
   console.log(got);
   var expected = { a : "abc", c : 33, d : "name" };
   test.identical( got, expected );
