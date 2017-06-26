@@ -6598,16 +6598,21 @@ function strBeginOf( src,end )
 {
 
   _.assert( _.strIs( src ),'expects string ( src )' );
-  _.assert( _.strIs( end ),'expects string ( end )' );
+  _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings ( end )' );
   _.assert( arguments.length === 2 );
 
-  var i = src.indexOf( end,src.length - end.length );
-  var result = i >= 0 ? src.substr( 0,i ) : undefined;
+  if( _.strIs( end ) )
+  end = [ end ];
 
-  if( i === -1 )
-  debugger;
+  for( var k = 0, len = end.length; k < len; k++ )
+  {
+    var i = src.indexOf( end[ k ],src.length - end[ k ].length );
+    if( i >= 0 )
+    return src.substr( 0,i );
 
-  return result;
+    if( i === -1 )
+    debugger;
+  }
 }
 
 //
@@ -6639,18 +6644,23 @@ function strEndOf( src,begin )
 {
 
   _.assert( _.strIs( src ),'expects string ( src )' );
-  _.assert( _.strIs( begin ),'expects string ( begin )' );
+  _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/array of strings ( begin )' );
   _.assert( arguments.length === 2 );
 
-  var i = src.lastIndexOf( begin,0 );
-  var result = i >= 0 ? src.substr( i+begin.length ) : undefined;
+  if( _.strIs( begin ) )
+  begin = [ begin ];
+
+  for( var k = 0, len = begin.length; k < len; k++ )
+  {
+    var i = src.lastIndexOf( begin[ k ],0 );
+    if( i >= 0  )
+    return src.substr( i+begin[ k ].length );
+  }
 
   // if( i >= 0 )
   // debugger;
   // else
   // debugger;
-
-  return result;
 }
 
 //
@@ -6700,15 +6710,32 @@ function strInbetweenOf( src,begin,end )
 {
 
   _.assert( _.strIs( src ),'expects string ( src )' );
-  _.assert( _.strIs( begin ),'expects string ( begin )' );
-  _.assert( _.strIs( end ),'expects string ( end )' );
+  _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/array of strings ( begin )' );
+  _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings ( end )' );
   _.assert( arguments.length === 3 );
 
-  var f = src.indexOf( begin );
+  begin = _.arrayAs( begin );
+  end = _.arrayAs( end );
+
+  var f,l = -1;
+
+  for( var k = 0, len = begin.length; k < len; k++ )
+  {
+    f = src.indexOf( begin[ k ] );
+    if( f >= 0 )
+    break;
+  }
+
   if( f === -1 )
   return;
 
-  var l = src.lastIndexOf( end );
+  for( var k = 0, len = end.length; k < len; k++ )
+  {
+    l = src.lastIndexOf( end[ k ] );
+    if( l >= 0 )
+    break;
+  }
+
   if( l === -1 || l <= f )
   return;
 

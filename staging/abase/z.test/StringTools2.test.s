@@ -4199,6 +4199,23 @@ function strBeginOf( test )
   expected = '';
   test.identical( got,expected )
 
+  /* array */
+
+  got = _.strBeginOf( 'abc', [ 'a', 'ab', 'abc' ] );
+  expected = '';
+  test.identical( got,expected )
+
+  /* array */
+
+  got = _.strBeginOf( 'abc', [ 'x', 'y', 'c' ] );
+  expected = 'ab';
+  test.identical( got,expected )
+
+  /* array */
+
+  got = _.strBeginOf( 'abc', [ 'x', 'y', 'z' ] );
+  expected = undefined;
+  test.identical( got,expected )
 }
 
 //
@@ -4253,6 +4270,30 @@ function strEndOf( test )
   expected = '';
   test.identical( got,expected )
 
+  /* array */
+
+  got = _.strEndOf( 'abc', [ 'c', 'bc', 'ab' ] );
+  expected = 'c';
+  test.identical( got,expected )
+
+  /* array */
+
+  got = _.strEndOf( 'abc', [ 'abc', 'bc', 'ab' ] );
+  expected = '';
+  test.identical( got,expected )
+
+  /* array */
+
+  got = _.strEndOf( 'abc', [ 'x', 'y', 'c' ] );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /* array */
+
+  got = _.strEndOf( 'abc', [ 'x', 'y', 'z' ] );
+  expected = undefined;
+  test.identical( got,expected )
+
 }
 
 //
@@ -4269,12 +4310,6 @@ function strInbetweenOf( test )
 
   got = _.strInbetweenOf( '', '', '' );
   expected = undefined;
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strInbetweenOf( 'a', '', '' );
-  expected = '';
   test.identical( got, expected );
 
   /**/
@@ -4305,6 +4340,24 @@ function strInbetweenOf( test )
 
   got = _.strInbetweenOf( 'abc', 'a', 'a' );
   expected = undefined;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'aaabbbccc', [ 'a', 'b' ], [ 'b', 'c' ] );
+  expected = 'aabb';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'abc', [ 'x','y', 'c' ], 'c' );
+  expected = undefined;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'abbccc', [ 'b' ], '' );
+  expected = 'bccc';
   test.identical( got, expected );
 }
 
