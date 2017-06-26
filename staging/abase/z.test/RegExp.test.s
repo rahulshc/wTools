@@ -2,20 +2,9 @@
 
 'use strict';
 
-/*
-
- to run this test
- from the project directory run
-
- npm install
- node ./staging/z.test/RegExp.test.s
-
- */
-
 if( typeof module !== 'undefined' )
 {
 
-  if( typeof wBase === 'undefined' )
   try
   {
     require( '../../abase/wTools.s' );
@@ -32,7 +21,6 @@ if( typeof module !== 'undefined' )
 }
 
 var _ = wTools;
-var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 // shared variables
 var ArrOfRegx1 = [ /0/, /1/, /2/ ],
@@ -46,32 +34,32 @@ var ArrOfRegx1 = [ /0/, /1/, /2/ ],
 
   src1 =
   {
-    includeAny: ArrOfRegx1,
-    includeAll: ArrOfRegx2,
-    excludeAny: ArrOfRegx3,
-    excludeAll: ArrOfRegx4
+    includeAny : ArrOfRegx1,
+    includeAll : ArrOfRegx2,
+    excludeAny : ArrOfRegx3,
+    excludeAll : ArrOfRegx4
   },
   src2 =
   {
-    includeAny: ArrOfRegx5,
-    includeAll: ArrOfRegx6,
-    excludeAny: ArrOfRegx7,
-    excludeAll: ArrOfRegx8
+    includeAny : ArrOfRegx5,
+    includeAll : ArrOfRegx6,
+    excludeAny : ArrOfRegx7,
+    excludeAll : ArrOfRegx8
   },
   src3 =
   {
-    includeAny: [ /a0/, /a1/, /a2/ ],
-    includeAll: [ /b0/, /c1/, /c2/ ],
-    excludeAny: [ /c0/, /c1/, /c2/ ],
-    excludeAll: [ /d0/, /d1/, /d2/ ]
+    includeAny : [ /a0/, /a1/, /a2/ ],
+    includeAll : [ /b0/, /c1/, /c2/ ],
+    excludeAny : [ /c0/, /c1/, /c2/ ],
+    excludeAll : [ /d0/, /d1/, /d2/ ]
   },
   wrongSrc =
   {
-    includeAny: ArrOfRegx5,
-    includeAll: ArrOfRegx6,
-    excludeAny: ArrOfRegx7,
-    excludeAll: ArrOfRegx8,
-    excludeSome: [ /[^a]/ ]
+    includeAny : ArrOfRegx5,
+    includeAll : ArrOfRegx6,
+    excludeAny : ArrOfRegx7,
+    excludeAll : ArrOfRegx8,
+    excludeSome : [ /[^a]/ ]
   };
 
 //
@@ -79,11 +67,11 @@ var ArrOfRegx1 = [ /0/, /1/, /2/ ],
 function regexpEscape( test )
 {
   var simpleStr = 'hello world',
-    specialCharacters = '.*+?^=!:${}()|[]/\\',
+    specialCharacters = '.*+?^=! :${}()|[]/\\',
     simpleSent = 'Hello. How are you?',
     empty = '';
 
-  var expected1 = '\\.\\*\\+\\?\\^\\=\\!\\:\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\',
+  var expected1 = '\\.\\*\\+\\?\\^\\=\\!\\ :\\$\\{\\}\\(\\)\\|\\[\\]\\/\\\\',
     expected2 = "Hello\\. How are you\\?"
 
   test.description = 'escape simple str without spec. characters';
@@ -361,38 +349,38 @@ function test( test )
 {
   var regexpObj1 =
     {
-      includeAny: [ /2/, /6/, /7/ ],
-      includeAll: [ /0/, /1/, /2/ ],
-      excludeAny: [ /6/, /7/, /8/ ],
-      excludeAll: [ /2/, /6/, /7/ ]
+      includeAny : [ /2/, /6/, /7/ ],
+      includeAll : [ /0/, /1/, /2/ ],
+      excludeAny : [ /6/, /7/, /8/ ],
+      excludeAll : [ /2/, /6/, /7/ ]
     },
     regexpObj2 =
     {
-      includeAny: [ /9/, /6/, /7/ ], //
-      includeAll: [ /0/, /1/, /2/ ],
-      excludeAny: [ /6/, /7/, /8/ ],
-      excludeAll: [ /2/, /6/, /7/ ]
+      includeAny : [ /9/, /6/, /7/ ], //
+      includeAll : [ /0/, /1/, /2/ ],
+      excludeAny : [ /6/, /7/, /8/ ],
+      excludeAll : [ /2/, /6/, /7/ ]
     },
     regexpObj3 =
     {
-      includeAny: [ /2/, /6/, /7/ ],
-      includeAll: [ /0/, /6/, /2/ ], //
-      excludeAny: [ /6/, /7/, /8/ ],
-      excludeAll: [ /2/, /6/, /7/ ]
+      includeAny : [ /2/, /6/, /7/ ],
+      includeAll : [ /0/, /6/, /2/ ], //
+      excludeAny : [ /6/, /7/, /8/ ],
+      excludeAll : [ /2/, /6/, /7/ ]
     },
     regexpObj4 =
     {
-      includeAny: [ /2/, /6/, /7/ ],
-      includeAll: [ /0/, /1/, /2/ ],
-      excludeAny: [ /6/, /7/, /0/ ], //
-      excludeAll: [ /2/, /6/, /7/ ]
+      includeAny : [ /2/, /6/, /7/ ],
+      includeAll : [ /0/, /1/, /2/ ],
+      excludeAny : [ /6/, /7/, /0/ ], //
+      excludeAll : [ /2/, /6/, /7/ ]
     },
     regexpObj5 =
     {
-      includeAny: [ /2/, /6/, /7/ ],
-      includeAll: [ /0/, /1/, /2/ ],
-      excludeAny: [ /6/, /7/, /8/ ],
-      excludeAll: [ /0/, /1/, /2/ ] //
+      includeAny : [ /2/, /6/, /7/ ],
+      includeAll : [ /0/, /1/, /2/ ],
+      excludeAny : [ /6/, /7/, /8/ ],
+      excludeAll : [ /0/, /1/, /2/ ] //
     },
     testStr = '012345';
 
@@ -455,138 +443,138 @@ function _regexpObjectExtend( test )
   var src1 =
       [
         {
-          includeAny: ArrOfRegx1,
-          includeAll: ArrOfRegx2,
-          excludeAny: ArrOfRegx3,
-          excludeAll: ArrOfRegx4
+          includeAny : ArrOfRegx1,
+          includeAll : ArrOfRegx2,
+          excludeAny : ArrOfRegx3,
+          excludeAll : ArrOfRegx4
         }
       ],
     src2 =
       [
         {
-          includeAny: ArrOfRegx1,
-          includeAll: ArrOfRegx2,
-          excludeAny: ArrOfRegx3,
-          excludeAll: ArrOfRegx4
+          includeAny : ArrOfRegx1,
+          includeAll : ArrOfRegx2,
+          excludeAny : ArrOfRegx3,
+          excludeAll : ArrOfRegx4
         },
         {
-          includeAny: ArrOfRegx5,
-          includeAll: ArrOfRegx6,
-          excludeAny: ArrOfRegx7,
-          excludeAll: ArrOfRegx8
+          includeAny : ArrOfRegx5,
+          includeAll : ArrOfRegx6,
+          excludeAny : ArrOfRegx7,
+          excludeAll : ArrOfRegx8
         }
       ],
 
     wrongSrc1 =
     {
-      includeAny: ArrOfRegx5,
-      includeAll: ArrOfRegx6,
-      excludeAny: ArrOfRegx7,
-      excludeAll: ArrOfRegx8
+      includeAny : ArrOfRegx5,
+      includeAll : ArrOfRegx6,
+      excludeAny : ArrOfRegx7,
+      excludeAll : ArrOfRegx8
     },
     wrongSrc2 = [ 'includeAny' ],
     wrongSrc3 =
       [
         {
-          includeAny: ArrOfRegx5,
-          includeAll: ArrOfRegx6,
-          excludeAny: ArrOfRegx7,
-          excludeAll: ArrOfRegx8,
-          excludeSome: [ /[^a]/ ]
+          includeAny : ArrOfRegx5,
+          includeAll : ArrOfRegx6,
+          excludeAny : ArrOfRegx7,
+          excludeAll : ArrOfRegx8,
+          excludeSome : [ /[^a]/ ]
         }
       ],
 
     dst1 = {},
     dst2 =
     {
-      includeAny: [ /a0/, /a1/, /a2/ ],
-      includeAll: [ /b0/, /c1/, /c2/ ],
-      excludeAny: [ /c0/, /c1/, /c2/ ],
-      excludeAll: [ /d0/, /d1/, /d2/ ]
+      includeAny : [ /a0/, /a1/, /a2/ ],
+      includeAll : [ /b0/, /c1/, /c2/ ],
+      excludeAny : [ /c0/, /c1/, /c2/ ],
+      excludeAll : [ /d0/, /d1/, /d2/ ]
     },
     dst3 =
     {
-      includeAny: [ /a0/, /a1/, /a2/ ],
-      includeAll: [ /b0/, /c1/, /c2/ ],
-      excludeAny: [ /c0/, /c1/, /c2/ ],
-      excludeAll: [ /d0/, /d1/, /d2/ ]
+      includeAny : [ /a0/, /a1/, /a2/ ],
+      includeAll : [ /b0/, /c1/, /c2/ ],
+      excludeAny : [ /c0/, /c1/, /c2/ ],
+      excludeAll : [ /d0/, /d1/, /d2/ ]
     },
 
     expected1 = src1.slice().pop(),
     expected2 =
     {
-      includeAny: src2[ 1 ].includeAny,
-      includeAll: dst2.includeAll.concat( src2[ 0 ].includeAll, src2[ 1 ].includeAll ),
-      excludeAny: dst2.excludeAny.concat( src2[ 0 ].excludeAny, src2[ 1 ].excludeAny ),
-      excludeAll: src2[ 1 ].excludeAll
+      includeAny : src2[ 1 ].includeAny,
+      includeAll : dst2.includeAll.concat( src2[ 0 ].includeAll, src2[ 1 ].includeAll ),
+      excludeAny : dst2.excludeAny.concat( src2[ 0 ].excludeAny, src2[ 1 ].excludeAny ),
+      excludeAll : src2[ 1 ].excludeAll
     },
     expected3 =
     {
-      includeAny: dst3.includeAny.concat( src2[ 0 ].includeAny, src2[ 1 ].includeAny ),
-      includeAll: dst3.includeAll.concat( src2[ 0 ].includeAll, src2[ 1 ].includeAll ),
-      excludeAny: dst3.excludeAny.concat( src2[ 0 ].excludeAny, src2[ 1 ].excludeAny ),
-      excludeAll: dst3.excludeAll.concat( src2[ 0 ].excludeAll, src2[ 1 ].excludeAll )
+      includeAny : dst3.includeAny.concat( src2[ 0 ].includeAny, src2[ 1 ].includeAny ),
+      includeAll : dst3.includeAll.concat( src2[ 0 ].includeAll, src2[ 1 ].includeAll ),
+      excludeAny : dst3.excludeAny.concat( src2[ 0 ].excludeAny, src2[ 1 ].excludeAny ),
+      excludeAll : dst3.excludeAll.concat( src2[ 0 ].excludeAll, src2[ 1 ].excludeAll )
     },
 
     extendOpt1 =
     {
-      dst: dst1,
-      srcs: src1,
-      shrinking: true
+      dst : dst1,
+      srcs : src1,
+      shrinking : true
     },
     extendOpt2 =
     {
-      dst: dst2,
-      srcs: src2,
-      shrinking: true
+      dst : dst2,
+      srcs : src2,
+      shrinking : true
     },
     extendOpt3 =
     {
-      dst: dst3,
-      srcs: src2,
-      shrinking: false
+      dst : dst3,
+      srcs : src2,
+      shrinking : false
     },
 
     wrongOpt1 =
     {
-      dst: dst1,
-      srcs: src1,
+      dst : dst1,
+      srcs : src1,
     },
     wrongOpt2 =
     {
-      dst: null,
-      srcs: src1,
-      shrinking: false
+      dst : null,
+      srcs : src1,
+      shrinking : false
     },
     wrongOpt3 =
     {
-      dst: dst3,
-      srcs: wrongSrc1,
-      shrinking: false
+      dst : dst3,
+      srcs : wrongSrc1,
+      shrinking : false
     },
     wrongOpt4 =
     {
-      dst: {},
-      srcs: wrongSrc2,
-      shrinking: false
+      dst : {},
+      srcs : wrongSrc2,
+      shrinking : false
     },
     wrongOpt5 =
     {
-      dst: {},
-      srcs: wrongSrc3,
-      shrinking: false
+      dst : {},
+      srcs : wrongSrc3,
+      shrinking : false
     };
 
   test.description = 'simple rejexps objects extend with shrinking';
-  var got = _._regexpObjectExtend( extendOpt1 );
+  var got = wRegexpObject._regexpObjectExtend( extendOpt1 );
   test.identical( got, expected1 );
 
   test.description = 'rejexps objects extend with shrinking';
-  var got = _._regexpObjectExtend( extendOpt2 );
+  var got = wRegexpObject._regexpObjectExtend( extendOpt2 );
   test.identical( got, expected2 );
 
   test.description = 'rejexps objects extend without shrinking';
-  var got = _._regexpObjectExtend( extendOpt3 );
+  var got = wRegexpObject._regexpObjectExtend( extendOpt3 );
   test.identical( got, expected3 );
 
   /**/
@@ -597,31 +585,31 @@ function _regexpObjectExtend( test )
     test.description = 'missing parameters in options argument';
     test.shouldThrowErrorSync( function()
     {
-      _._regexpObjectExtend( wrongOpt1 );
+      wRegexpObject._regexpObjectExtend( wrongOpt1 );
     });
 
     test.description = 'options.dist is not object';
     test.shouldThrowErrorSync( function()
     {
-      _._regexpObjectExtend( wrongOpt2 );
+      wRegexpObject._regexpObjectExtend( wrongOpt2 );
     });
 
     test.description = 'options.srcs not wrapped into array';
     test.shouldThrowErrorSync( function()
     {
-      _._regexpObjectExtend( wrongOpt3 );
+      wRegexpObject._regexpObjectExtend( wrongOpt3 );
     });
 
     test.description = 'element of options.srcs is not object';
     test.shouldThrowErrorSync( function()
     {
-      _._regexpObjectExtend( wrongOpt4 );
+      wRegexpObject._regexpObjectExtend( wrongOpt4 );
     });
 
-    test.description = 'element of options.srcs has wrong format: (extra property)';
+    test.description = 'element of options.srcs has wrong format : (extra property)';
     test.shouldThrowErrorSync( function()
     {
-      _._regexpObjectExtend( wrongOpt5 );
+      wRegexpObject._regexpObjectExtend( wrongOpt5 );
     });
   }
 
@@ -634,27 +622,27 @@ function broaden( test )
   var dst1 = {},
     dst2 =
     {
-      includeAny: [ /a0/, /a1/, /a2/ ],
-      includeAll: [ /b0/, /c1/, /c2/ ],
-      excludeAny: [ /c0/, /c1/, /c2/ ],
-      excludeAll: [ /d0/, /d1/, /d2/ ]
+      includeAny : [ /a0/, /a1/, /a2/ ],
+      includeAll : [ /b0/, /c1/, /c2/ ],
+      excludeAny : [ /c0/, /c1/, /c2/ ],
+      excludeAll : [ /d0/, /d1/, /d2/ ]
     },
 
 
     expected0 =
     {
-      includeAny: [],
-      includeAll: [],
-      excludeAny: [],
-      excludeAll: []
+      includeAny : [],
+      includeAll : [],
+      excludeAny : [],
+      excludeAll : []
     },
     expected1 = src1,
     expected2 =
     {
-      includeAny: dst2.includeAny.concat( src1.includeAny, src2.includeAny, src3.includeAny ),
-      includeAll: dst2.includeAll.concat( src1.includeAll, src2.includeAll, src3.includeAll ),
-      excludeAny: dst2.excludeAny.concat( src1.excludeAny, src2.excludeAny, src3.excludeAny ),
-      excludeAll: dst2.excludeAll.concat( src1.excludeAll, src2.excludeAll, src3.excludeAll )
+      includeAny : dst2.includeAny.concat( src1.includeAny, src2.includeAny, src3.includeAny ),
+      includeAll : dst2.includeAll.concat( src1.includeAll, src2.includeAll, src3.includeAll ),
+      excludeAny : dst2.excludeAny.concat( src1.excludeAny, src2.excludeAny, src3.excludeAny ),
+      excludeAll : dst2.excludeAll.concat( src1.excludeAll, src2.excludeAll, src3.excludeAll )
     };
 
   test.description = 'empty RegexpObject object broaden nothing (missed source for RegexpObject extend)';
@@ -698,27 +686,27 @@ function shrink( test )
   var dst1 = {},
     dst2 =
     {
-      includeAny: [ /a0/, /a1/, /a2/ ],
-      includeAll: [ /b0/, /c1/, /c2/ ],
-      excludeAny: [ /c0/, /c1/, /c2/ ],
-      excludeAll: [ /d0/, /d1/, /d2/ ]
+      includeAny : [ /a0/, /a1/, /a2/ ],
+      includeAll : [ /b0/, /c1/, /c2/ ],
+      excludeAny : [ /c0/, /c1/, /c2/ ],
+      excludeAll : [ /d0/, /d1/, /d2/ ]
     },
 
 
     expected0 =
     {
-      includeAny: [],
-      includeAll: [],
-      excludeAny: [],
-      excludeAll: []
+      includeAny : [],
+      includeAll : [],
+      excludeAny : [],
+      excludeAll : []
     },
     expected1 = src1,
     expected2 =
     {
-      includeAny: src3.includeAny,
-      includeAll: dst2.includeAll.concat( src1.includeAll, src2.includeAll, src3.includeAll ),
-      excludeAny: dst2.excludeAny.concat( src1.excludeAny, src2.excludeAny, src3.excludeAny ),
-      excludeAll: src3.excludeAll
+      includeAny : src3.includeAny,
+      includeAll : dst2.includeAll.concat( src1.includeAll, src2.includeAll, src3.includeAll ),
+      excludeAny : dst2.excludeAny.concat( src1.excludeAny, src2.excludeAny, src3.excludeAny ),
+      excludeAll : src3.excludeAll
     };
 
   test.description = 'empty RegexpObject object broaden nothing (missed source for RegexpObject extend)';
@@ -761,7 +749,6 @@ var Self =
 {
 
   name : 'regexp',
-  sourceFilePath : sourceFilePath,
 
   tests :
   {
@@ -769,7 +756,7 @@ var Self =
     regexpEscape        : regexpEscape,
     regexpForGlob       : regexpForGlob,
     regexpMakeArray     : regexpMakeArray,
-    regexpMakeExpression: regexpMakeExpression,
+    regexpMakeExpression : regexpMakeExpression,
     _regexpArrayAny          : _regexpArrayAny,
     _regexpArrayAll          : _regexpArrayAll,
     test          : test,
@@ -781,9 +768,10 @@ var Self =
 
 }
 
-Self = wTestSuite( Self );
+//
 
+Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self.name );
 
-} )( );
+})( );

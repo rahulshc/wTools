@@ -3910,7 +3910,7 @@ strLinesNumber.defaults =
  * //returns 'a b'
  *
  * @example
- * //setting preffered number of lines to select, line option must be specified
+ * //setting preferred number of lines to select, line option must be specified
  * _.strLinesSelect({ src : 'a\nb\nc', line : 2, numberOfLines : 1 });
  * //returns 'b'
  *
