@@ -57,7 +57,7 @@ var strTypeOf = _.strTypeOf;
 
 function toStrMethods( src,o )
 {
-  var o = o || {};
+  var o = o || Object.create( null );
   o.onlyRoutines = 1;
   var result = toStrFine( src,o );
   return result;
@@ -91,7 +91,7 @@ function toStrMethods( src,o )
 
 function toStrFields( src,o )
 {
-  var o = o || {};
+  var o = o || Object.create( null );
   o.noRoutine = 1;
   var result = toStrFine( src,o );
   return result;
@@ -373,6 +373,7 @@ function toStrFine_functor()
 
     wrap : 1,
     stringWrapper : '"',
+    keyWrapper : '',
     prependTab : 1,
     errorAsMap : 0,
     own : 1,
@@ -429,25 +430,27 @@ function toStrFine_functor()
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
-    var o = o || {};
-    var toStrDefaults = {};
+    var o = o || Object.create( null );
+    var toStrDefaults = Object.create( null );
     if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
     toStrDefaults = src.toStr.defaults;
 
     if( o.levels === undefined && o.json )
     o.levels = 256;
 
-    if( o.json === 1 )
+    if( o.json )
     {
       if( o.escaping === undefined )
       o.escaping = 1;
+      if( o.keyWrapper === undefined )
+      o.keyWrapper = '"';
     }
 
     if( o.stringWrapper === undefined && o.multilinedString )
     o.stringWrapper = '`';
 
     _.assertMapHasOnly( o,composes,primeFilter,optional );
-    o = _.mapSupplement( {},o,toStrDefaults,composes,primeFilter );
+    o = _.mapSupplement( null,o,toStrDefaults,composes,primeFilter );
 
     if( o.onlyRoutines )
     {
@@ -1084,40 +1087,6 @@ function _toStrFromHashMap( src,o )
   });
 
   return { text : result, simple : simple };
-  //
-  // /* */
-  //
-  // debugger;
-  // var names = [];
-  // var values = {};
-  // for( var s of src )
-  // {
-  //   names.push( s[ 0 ] );
-  //   values[ s[ 0 ] ] = s[ 1 ];
-  // }
-  //
-  // /* */
-  //
-  // var optionsItem = _.mapExtend( null,o );
-  // optionsItem.noObject = o.noSubObject ? 1 : optionsItem.noObject;
-  // optionsItem.tab = o.tab + o.dtab;
-  // optionsItem.level = o.level + 1;
-  // optionsItem.prependTab = 0;
-  //
-  // /* */
-  //
-  // result += _toStrFromContainer
-  // ({
-  //   values : values,
-  //   names : names,
-  //   optionsContainer : o,
-  //   optionsItem : optionsItem,
-  //   simple : simple,
-  //   prefix : '{',
-  //   postfix : '}',
-  // });
-  //
-  // return { text : result, simple : simple };
 }
 
 //
@@ -1380,8 +1349,8 @@ function _toStrFromContainer( o )
 
     if( names )
     {
-      if( optionsContainer.json )
-      result += '"' + String( names[ n ] ) + '"' + optionsContainer.colon;
+      if( optionsContainer.keyWrapper )
+      result += optionsContainer.keyWrapper + String( names[ n ] ) + optionsContainer.keyWrapper + optionsContainer.colon;
       else
       result += String( names[ n ] ) + optionsContainer.colon;
 
@@ -1565,11 +1534,33 @@ function _toStrFromObject( src,o )
 
 //
 
-function strJsonFrom( src )
+function toJson( src )
 {
   _.assert( arguments.length === 1 );
 
   var result = _.toStr( src,{ json : 1, levels : 1 << 20 } );
+
+  // _.assert( result.indexOf( '...' ) === -1 );
+
+  return result;
+}
+
+//
+
+function toJstruct( src )
+{
+  _.assert( arguments.length === 1 );
+
+  var toStrOptions =
+  {
+    escaping : 1,
+    multilinedString : 1,
+    levels : 1 << 20,
+    stringWrapper : '`',
+    keyWrapper : '"',
+  }
+
+  var result = _.toStr( src,toStrOptions );
 
   // _.assert( result.indexOf( '...' ) === -1 );
 
@@ -2024,7 +2015,7 @@ function strLineCount( src )
 
 function strSplitStrNumber( src )
 {
-  var result = {};
+  var result = Object.create( null );
 
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ) );
@@ -2040,6 +2031,7 @@ function strSplitStrNumber( src )
   {
     result.str = src;
   }
+
   return result;
 }
 
@@ -2047,13 +2039,12 @@ function strSplitStrNumber( src )
 
 function strSplitChunks( o )
 {
-
-  var result = { chunks : [] };
-
+  var result = Object.create( null );
+  result.chunks = [];
 
   if( arguments.length === 2 )
   {
-    var o = arguments[ 1 ] || {};
+    var o = arguments[ 1 ] || Object.create( null );
     o.src = arguments[ 0 ];
   }
   else
@@ -2063,9 +2054,8 @@ function strSplitChunks( o )
     o = { src : arguments[ 0 ] };
   }
 
-  _.mapSupplement( o,strSplitChunks.defaults );
-  _.assertMapHasOnly( o,strSplitChunks.defaults );
-  _.assert( _.strIs( o.src ),'expects string { o.src }, but got',_.strTypeOf( o.src ) );
+  _.routineOptions( strSplitChunks,o );
+  _.assert( _.strIs( o.src ),'expects string (-o.src-), but got',_.strTypeOf( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
   o.prefix = RegExp( _.regexpEscape( o.prefix ),'m' );
@@ -2077,7 +2067,7 @@ function strSplitChunks( o )
 
   //
 
-  function columnEval( text )
+  function colAccount( text )
   {
     var i = text.lastIndexOf( '\n' );
 
@@ -2095,10 +2085,27 @@ function strSplitChunks( o )
 
   //
 
+  function makeChunkText( begin )
+  {
+    var chunk = Object.create( null );
+    chunk.line = line;
+    chunk.text = src.substring( 0,begin );
+    chunk.index = chunkIndex;
+    result.chunks.push( chunk );
+
+    src = src.substring( begin );
+    line += _.strLineCount( chunk.text ) - 1;
+    chunkIndex += 1;
+
+    colAccount( chunk.text );
+  }
+
+  //
+
   var line = 0;
   var column = 0;
   var chunkIndex = 0;
-  while( src )
+  do
   {
 
     /* begin */
@@ -2109,25 +2116,16 @@ function strSplitChunks( o )
     /* text chunk */
 
     if( begin > 0 )
-    {
-      var chunk = {};
-      chunk.line = line;
-      chunk.text = src.substring( 0,begin );
-      chunk.index = chunkIndex;
-      result.chunks.push( chunk );
-
-      src = src.substring( begin );
-      line += _.strLineCount( chunk.text ) - 1;
-      chunkIndex += 1;
-
-      columnEval( chunk.text );
-
-    }
+    makeChunkText( begin );
 
     /* break */
 
     if( !src )
-    break;
+    {
+      if( !result.chunks.length )
+      makeChunkText( 0 );
+      break;
+    }
 
     /* end */
 
@@ -2141,7 +2139,7 @@ function strSplitChunks( o )
 
     /* code chunk */
 
-    var chunk = {};
+    var chunk = Object.create( null );
     chunk.line = line;
     chunk.column = column;
     chunk.index = chunkIndex;
@@ -2153,7 +2151,7 @@ function strSplitChunks( o )
       chunk.tab = /^\s*/.exec( chunk.lines[ chunk.lines.length-1 ] )[ 0 ];
     }
 
-    columnEval( chunk.code );
+    /*colAccount( chunk.code );*/
 
     result.chunks.push( chunk );
 
@@ -2169,6 +2167,7 @@ function strSplitChunks( o )
     line += _.strLineCount( chunk.prefix + chunk.code + chunk.postfix ) - 1;
 
   }
+  while( src );
 
   return result;
 }
@@ -2954,7 +2953,7 @@ function strReplaceAll( src, ins, sub )
     _.assert( _.strIs( ins ) );
     _.assert( _.strIs( sub ) );
     o = { src : src };
-    o.dictionary = {};
+    o.dictionary = Object.create( null );
     o.dictionary[ ins ] = sub;
   }
   else if( arguments.length === 2 )
@@ -3152,7 +3151,7 @@ function strConcat()
 
   var o = _.routineOptionsFromThis( strConcat,this,Self );
 
-  o.optionsForToStr = _.mapSupplement( {},o.optionsForToStr,strConcat.defaults.optionsForToStr );
+  o.optionsForToStr = _.mapSupplement( null,o.optionsForToStr,strConcat.defaults.optionsForToStr );
 
   var result = '';
   if( !arguments.length )
@@ -3263,23 +3262,6 @@ function strUnjoin( srcStr,maskArray )
   var index = 0;
   var rindex = -1;
 
-  // if( 1 )
-  // {
-  //
-  //   function experiment()
-  //   {
-  //     console.log( 'experiment 1' );
-  //   }
-  //
-  //   function experiment()
-  //   {
-  //     console.log( 'experiment 2' );
-  //   }
-  //
-  // }
-  //
-  // experiment();
-
   /**/
 
   function checkToken()
@@ -3301,7 +3283,7 @@ function strUnjoin( srcStr,maskArray )
   function checkMask( mask )
   {
 
-    _.assert( _.strIs( mask ) || _.routineIs( mask ),'expects string or strUnjoin.any, got',_.strTypeOf( mask ) );
+    _.assert( _.strIs( mask ) || mask === strUnjoin.any , 'expects string or strUnjoin.any, got' , _.strTypeOf( mask ) );
 
     if( _.strIs( mask ) )
     {
@@ -3355,7 +3337,8 @@ function strUnjoin( srcStr,maskArray )
   return result;
 }
 
-strUnjoin.any = function any(){}
+strUnjoin.any = _global_._any_;
+_.assert( strUnjoin.any );
 
 //
 
@@ -3574,8 +3557,7 @@ function strSimilarity( src1,src2,o )
 
 function strLattersSpectre( src )
 {
-
-  var result = {};
+  var result = Object.create( null );
 
   for( var s = 0 ; s < src.length ; s++ )
   {
@@ -3844,9 +3826,7 @@ function strLinesNumber( o )
 
   for( var l = 0; l < lines.length; l += 1 )
   {
-
     lines[ l ] = ( l + o.first ) + ' : ' + lines[ l ];
-
   }
 
   return lines.join( '\n' );
@@ -4299,7 +4279,7 @@ function strFilenameFor( srcStr,o )
   _.assert( _.mapIs( arguments[ 1 ] ) );
 
   var result = srcStr;
-  var o = o || {};
+  var o = o || Object.create( null );
   if( o.separator === undefined )
   o.separator = '_';
 
@@ -4454,7 +4434,7 @@ function strMetricFormat( number,o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( o ) || o === undefined,'expects map ( o )' );
 
-  var o = o || {};
+  var o = o || Object.create( null );
 
   if( _.strIs( number ) ) number = parseFloat( number );
   if( !_.numberIs( number ) ) throw _.err( 'strMetricFormat :','"number" should be Number' );
@@ -4547,7 +4527,7 @@ function strMetricFormat( number,o )
 function strMetricFormatBytes( number,o )
 {
 
-  var o = o || {};
+  var o = o || Object.create( null );
   var defaultOptions =
   {
     divisor : 3,
@@ -4707,7 +4687,7 @@ strExtractStrips.defaults =
 function strExtractStereoStrips( src )
 {
 
-  var o = this !== Self ? this : {};
+  var o = this !== Self ? this : Object.create( null );
 
   _.assert( _.strIs( src ) );
   _.assert( _.objectIs( o ) );
@@ -4767,7 +4747,7 @@ function strCsvFrom( src,o )
 {
 
   var result = '';
-  var o = o || {};
+  var o = o || Object.create( null );
 
   debugger;
 
@@ -4885,12 +4865,11 @@ function strToDom( xmlStr )
 
 function strToConfig( src,o )
 {
-
-  var result = {};
+  var result = Object.create( null );
   if( !_.strIs( src ) )
   throw _.err( '_.strToConfig :','require string' );
 
-  var o = o || {};
+  var o = o || Object.create( null );
   if( o.delimeter === undefined ) o.delimeter = ' :';
 
   var src = src.split( '\n' );
@@ -5190,7 +5169,8 @@ var Proto =
   _toStrFromObjectKeysFiltered : _toStrFromObjectKeysFiltered,
   _toStrFromObject : _toStrFromObject,
 
-  strJsonFrom : strJsonFrom,
+  toJson : toJson,
+  toJstruct : toJstruct,
 
   //
 

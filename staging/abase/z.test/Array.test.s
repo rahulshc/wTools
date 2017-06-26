@@ -974,7 +974,7 @@ function arrayFromRange( test )
   test.identical( got,expected );
 
   test.description = 'single number as argument';
-  var got = _.arrayFromRange( 3 );
+  var got = _.arrayFromRange( 3 ); 
   var expected = [ 0, 1, 2 ];
   test.identical( got,expected );
 

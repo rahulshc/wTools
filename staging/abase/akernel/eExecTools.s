@@ -306,53 +306,60 @@ shellNode.defaults =
 
 //
 
-function exec( o )
+function routineMake( o )
 {
   var result;
 
   if( _.strIs( o ) )
   o = { code : o };
+
+  _.routineOptions( routineMake,o );
   _.assert( arguments.length === 1 );
-  _.routineOptions( makeFunction,o );
+  _.assert( _.objectIs( o.externals ) || o.externals === null );
 
-  var f = makeFunction({ code : o.code });
-  try
+  /* prefix */
+
+  var prefix = '\n';
+
+  if( o.usingStrict )
+  prefix += `'use strict;'\n`;
+  if( o.debug )
+  prefix += 'debugger;\n';
+  if( o.filePath )
+  prefix += '// ' + o.filePath + '\n';
+
+  if( o.externals )
   {
-    result = f.call();
+    if( !wTools.__externals__ )
+    wTools.__externals__ = [];
+    wTools.__externals__.push( o.externals );
+    prefix += '\n';
+    for( e in o.externals )
+    prefix += 'var ' + e + ' = ' + '_global_.wTools.__externals__[ ' + String( wTools.__externals__.length-1 ) + ' ].' + e + ';\n';
+    prefix += '\n';
   }
-  catch( err )
-  {
-    throw _.err( err );
-  }
 
-  return result;
-}
-
-exec.defaults =
-{
-  code : null,
-}
-
-//
-
-function makeFunction( o )
-{
-  var result;
-
-  if( _.strIs( o ) )
-  o = { code : o };
-  _.assert( arguments.length === 1 );
-  _.routineOptions( makeFunction,o );
-
-  // debugger;
-  var code = 'return ' + o.code + ''; // zzz : var code = 'return' + o.code + '';
-  // debugger;
+  /* */
 
   try
   {
 
-    //result = eval( code );
-    result = new Function( code );
+    if( o.prependingReturn )
+    try
+    {
+      var code = prefix + 'return ' + o.code.trimLeft();
+      result = new Function( code );
+    }
+    catch( err )
+    {
+      var code = prefix + o.code;
+      result = new Function( code );
+    }
+    else
+    {
+      var code = prefix + o.code;
+      result = new Function( code );
+    }
 
   }
   catch( err )
@@ -368,15 +375,27 @@ function makeFunction( o )
       e.src = 'data:text/javascript;charset=utf-8,' + escape( o.code );
       document.head.appendChild( e );
     }
-    else
-    if( _global_.Blob && _global_.Worker )
+    else if( _global_.Blob && _global_.Worker )
     {
       var worker = _.makeWorker( code )
     }
     else if( _global_.Esprima || _global_.esprima )
     {
       var Esprima = _global_.Esprima || _global_.esprima;
-      var parsed = Esprima.parse( '(function(){\n' + code + '\n})();' );
+      try
+      {
+        var parsed = Esprima.parse( '(function(){\n' + code + '\n})();' );
+      }
+      catch( err2 )
+      {
+        debugger;
+        throw _._err
+        ({
+          args : [ err , err2 ],
+          level : 1,
+          sourceCode : code,
+        });
+      }
     }
 
     throw _.err( 'More information about error is comming asynchronously.\n',err );
@@ -386,10 +405,86 @@ function makeFunction( o )
   return result;
 }
 
-makeFunction.defaults =
+routineMake.defaults =
 {
+  debug : 0,
   code : null,
+  filePath : null,
+  prependingReturn : 1,
+  usingStrict : 1,
+  externals : null,
 }
+
+//
+
+function routineExec( o )
+{
+  var result = Object.create( null );
+
+  if( _.strIs( o ) )
+  o = { code : o };
+  _.assert( arguments.length === 1 );
+  _.routineOptions( routineExec,o );
+
+  o.routine = routineMake
+  ({
+    code : o.code,
+    debug : o.debug,
+    filePath : o.filePath,
+    prependingReturn : o.prependingReturn,
+    externals : o.externals,
+  });
+
+  /* */
+
+  try
+  {
+    // debugger;
+    if( o.context )
+    o.result = o.routine.apply( o.context );
+    else
+    o.result = o.routine.call( _global_ );
+    // debugger;
+  }
+  catch( err )
+  {
+    debugger;
+    throw _._err
+    ({
+      args : [ err ],
+      level : 1,
+      sourceCode : o.routine.toString(),
+      location : { path : o.filePath },
+    });
+    // throw _.err( err );
+  }
+
+  return o;
+}
+
+routineExec.defaults =
+{
+  context : null,
+}
+
+routineExec.defaults.__proto__ = routineMake.defaults;
+
+//
+
+function exec( o )
+{
+  _.assert( arguments.length === 1 );
+  if( _.strIs( o ) )
+  o = { code : o };
+  routineExec( o );
+  return o.result;
+}
+
+exec.defaults =
+{
+}
+
+exec.defaults.__proto__ = routineExec.defaults;
 
 //
 
@@ -647,8 +742,9 @@ var Proto =
   shell : shell,
   shellNode : shellNode,
 
+  routineMake : routineMake,
+  routineExec : routineExec,
   exec : exec,
-  makeFunction : makeFunction,
 
   execInWorker : execInWorker,
   makeWorker : makeWorker,

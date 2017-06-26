@@ -2612,12 +2612,12 @@ entitySelect.defaults.__proto__ = _entitySelectOptions.defaults;
 
 //
 
-function entitySelectSet( container,query,value )
+function entitySelectSet( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 3 );
 
-  if( query !== undefined || value !== undefined )
+  if( arguments[ 1 ] !== undefined || arguments[ 2 ] !== undefined )
   {
     var o = Object.create( null );
     o.container = arguments[ 0 ];
@@ -2628,6 +2628,7 @@ function entitySelectSet( container,query,value )
   }
   else
   {
+    // var o = Object.create( null );
     // var o = _entitySelectOptions( arguments[ 0 ] );
     _.assert( _.mapOwnKey( o,{ set : 'set' } ) );
   }
@@ -3589,7 +3590,7 @@ function _err( o )
   if( o.usingSourceCode === undefined )
   o.usingSourceCode = _err.defaults.usingSourceCode;
 
-  if( o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
+  if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
 
   /* var */
@@ -3598,8 +3599,6 @@ function _err( o )
   var catches = '';
   var sourceCode = '';
   var stack = '';
-  // var fileName,lineNumber;
-  var location;
   var errors = [];
 
   /* Error.stackTraceLimit = 99; */
@@ -3647,7 +3646,7 @@ function _err( o )
       o.args[ a ] = '\n' + o.args[ a ];
       errors.push( arg );
 
-      location = _.diagnosticLocation({ error : arg, location : location });
+      o.location = _.diagnosticLocation({ error : arg, location : o.location });
 
     }
 
@@ -3662,12 +3661,12 @@ function _err( o )
 
     if( !_.atomicIs( arg ) )
     {
-      location = _.diagnosticLocation({ error : arg, location : location });
+      o.location = _.diagnosticLocation({ error : arg, location : o.location });
     }
 
   }
 
-  location = location || Object.create( null );
+  o.location = o.location || Object.create( null );
 
   /* make new one if no error in arguments */
 
@@ -3675,8 +3674,8 @@ function _err( o )
   {
     result = new Error( originalMessage + '\n' );
     stack = _.diagnosticStack( result,o.level,-1 );
-    if( location.full && stack.indexOf( '\n' ) === -1 )
-    stack = location.full;
+    if( o.location.full && stack.indexOf( '\n' ) === -1 )
+    stack = o.location.full;
   }
   else
   {
@@ -3717,7 +3716,15 @@ function _err( o )
     {
       str = '\n' + String( argument ) + '\n';
     }
-    else str = String( argument );
+    // else if( _.toStr && _.objectLike( argument ) )
+    // {
+    //   debugger;
+    //   str = _.toStr( argument );
+    // }
+    else
+    {
+      str = String( argument );
+    }
 
     if( _.strIs( str ) && str[ str.length-1 ] === '\n' )
     originalMessage += str;
@@ -3731,35 +3738,39 @@ function _err( o )
 
   /* line number */
 
-  if( location.line !== undefined )
+  if( o.location.line !== undefined )
   {
     Object.defineProperty( result, 'lineNumber',
     {
       enumerable : false,
       configurable : true,
       writable : true,
-      value : location.line,
+      value : o.location.line,
     });
   }
 
   /* file name */
 
-  if( location.path !== undefined )
+  if( o.location.path !== undefined && !result.fileName )
   {
-    if( location.full !== undefined )
-    originalMessage += '\n' + 'Location : ' + location.full;
     Object.defineProperty( result, 'fileName',
     {
       enumerable : false,
       configurable : true,
       writable : true,
-      value : location.path,
+      value : o.location.path,
+    });
+    Object.defineProperty( result, 'LocationFull',
+    {
+      enumerable : false,
+      configurable : true,
+      writable : true,
+      value : o.location.full,
     });
   }
 
   /* where it was caught */
 
-  // catches = '    caught ' + _.diagnosticStack( o.level,o.level+1 ) + '\n' + catches;
   catches = '    caught at ' + _.diagnosticLocation( o.level ).full + '\n' + catches;
 
   /* source code */
@@ -3767,9 +3778,20 @@ function _err( o )
   if( o.usingSourceCode )
   if( result.sourceCode === undefined )
   {
+    // debugger;
+
     var c = '';
-    location = _.diagnosticLocation({ stack : stack, location : location });
-    c = _.diagnosticCode({ location : location });
+    o.location = _.diagnosticLocation
+    ({
+      error : result,
+      stack : stack,
+      location : o.location,
+    });
+    c = _.diagnosticCode
+    ({
+      location : o.location,
+      sourceCode : o.sourceCode,
+    });
     if( c && c.length < 400 )
     {
       sourceCode += '\n';
@@ -3785,9 +3807,20 @@ function _err( o )
   var briefly = result.briefly && ( result.briefly === undefined || result.briefly === null || result.briefly );
   briefly = briefly || o.briefly;
   if( briefly )
-  message += originalMessage;
+  {
+    message += originalMessage;
+  }
   else
-  message += '\n* Catches :\n' + catches + '\n* Message :\n' + originalMessage + '\n\n* Stack :\n' + stack + '\n';
+  {
+
+    message += '\n* Catches :\n' + catches + '\n';
+    message += '* Message :\n' + originalMessage + '\n';
+
+    // if( result.LocationFull )
+    // message += '\n' + 'Location : ' + result.LocationFull;
+
+    message += '\n* Stack :\n' + stack + '\n';
+  }
 
   if( sourceCode && !briefly )
   message += '\n' + sourceCode;
@@ -3891,6 +3924,8 @@ _err.defaults =
 {
   level : 0,
   usingSourceCode : 1,
+  location : null,
+  sourceCode : null,
   briefly : null,
   args : null,
 }
@@ -4178,20 +4213,92 @@ function diagnosticLocation( o )
     return o.location;
   }
 
+  /* path from stack */
+
+  function pathFromStack( stack )
+  {
+    var path;
+
+    if( !stack )
+    return;
+
+    if( _.strIs( stack ) )
+    stack = stack.split( '\n' );
+
+    path = stack[ o.level ];
+
+    if( !_.strIs( path ) )
+    return end();
+
+    path = path.replace( /^\s+/,'' );
+    path = path.replace( /^\w+@/,'' );
+    path = path.replace( /^at/,'' );
+    path = path.replace( /^\s+/,'' );
+    path = path.replace( /\s+$/,'' );
+
+    if( _.strEnds( path,')' ) )
+    path = _.strInbetweenOf( path,'(',')' );
+
+    return path;
+  }
+
+  /* line / col number from path */
+
+  function lineColFromPath( path )
+  {
+
+    var lineNumber,colNumber;
+    var postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
+    var parsed = postfix.exec( path );
+
+    if( parsed )
+    {
+      path = parsed[ 1 ];
+      lineNumber = parsed[ 2 ];
+      colNumber = parsed[ 3 ];
+    }
+
+    // var postfix = /:(\d+)$/;
+    // colNumber = postfix.exec( o.location.path );
+    // if( colNumber )
+    // {
+    //   o.location.path = _.strRemoveEnd( o.location.path,colNumber[ 0 ] );
+    //   colNumber = colNumber[ 1 ];
+    //   lineNumber = postfix.exec( o.location.path );
+    //   if( lineNumber )
+    //   {
+    //     o.location.path = _.strRemoveEnd( o.location.path,lineNumber[ 0 ] );
+    //     lineNumber = lineNumber[ 1 ];
+    //   }
+    //   else
+    //   {
+    //     lineNumber = colNumber;
+    //     colNumber = undefined;
+    //   }
+    // }
+
+    lineNumber = parseInt( lineNumber );
+    colNumber = parseInt( colNumber );
+
+    if( isNaN( o.location.line ) && !isNaN( lineNumber ) )
+    o.location.line = lineNumber;
+
+    if( isNaN( o.location.col ) && !isNaN( colNumber ) )
+    o.location.col = colNumber;
+
+    return path;
+  }
+
   /* */
 
-  // var fileName,lineNumber;
-
-  // if( o.error && _.strIs( o.error.fileName ) && _.numberIs( o.error.lineNumber ) )
   if( o.error )
   {
-    // debugger;
-    // var result = { path : o.error.fileName, line : o.error.lineNumber, col : o.error.colNumber }
 
     o.location.path = _.arrayLeftDefined([ o.location.path, o.error.filename, o.error.fileName ]).element;
     o.location.line = _.arrayLeftDefined([ o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
     o.location.col = _.arrayLeftDefined([ o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
 
+    if( o.location.path && _.numberIs( o.location.line ) )
     return end();
   }
 
@@ -4210,55 +4317,23 @@ function diagnosticLocation( o )
     }
   }
 
-  if( _.strIs( o.stack ) )
-  o.stack = o.stack.split( '\n' );
-  o.location.path = o.stack[ o.level ];
+  var pathHad = !!o.location.path;
+  if( !pathHad )
+  o.location.path = pathFromStack( o.stack );
 
   if( !_.strIs( o.location.path ) )
   return end();
 
-  o.location.path = o.location.path.replace( /^\s+/,'' );
-  o.location.path = o.location.path.replace( /^\w+@/,'' );
-  o.location.path = o.location.path.replace( /^at/,'' );
-  o.location.path = o.location.path.replace( /^\s+/,'' );
-  o.location.path = o.location.path.replace( /\s+$/,'' );
+  if( !_.numberIs( o.location.line ) )
+  o.location.path = lineColFromPath( o.location.path );
 
-  if( _.strEnds( o.location.path,')' ) )
-  o.location.path = _.strInbetweenOf( o.location.path,'(',')' );
-
-  if( !o.location.path )
-  return end();
-
-  /* line / col number from stack */
-
-  var lineNumber,colNumber;
-  var postfix = /:(\d+)$/;
-  colNumber = postfix.exec( o.location.path );
-  if( colNumber )
+  if( !_.numberIs( o.location.line ) && pathHad )
   {
-    o.location.path = _.strRemoveEnd( o.location.path,colNumber[ 0 ] );
-    colNumber = colNumber[ 1 ];
-    lineNumber = postfix.exec( o.location.path );
-    if( lineNumber )
-    {
-      o.location.path = _.strRemoveEnd( o.location.path,lineNumber[ 0 ] );
-      lineNumber = lineNumber[ 1 ];
-    }
-    else
-    {
-      lineNumber = colNumber;
-      colNumber = undefined;
-    }
+    debugger;
+    var path = pathFromStack( o.stack );
+    if( path )
+    lineColFromPath( path );
   }
-
-  lineNumber = parseInt( lineNumber );
-  colNumber = parseInt( colNumber );
-
-  if( !isNaN( lineNumber ) )
-  o.location.line = lineNumber;
-
-  if( !isNaN( colNumber ) )
-  o.location.col = colNumber;
 
   return end();
 }
@@ -4269,6 +4344,7 @@ diagnosticLocation.defaults =
   stack : null,
   error : null,
   location : null,
+  // sourceCode : null,
 }
 
 //
@@ -4287,31 +4363,46 @@ function diagnosticCode( o )
     o.location = _.diagnosticLocation({ stack : o.stack, level : o.stack ? o.level : o.level+1 });
   }
 
-  if( !o.location.path || o.location.line === undefined )
+  if( !_.numberIs( o.location.line ) )
   return;
 
-  if( !_.fileProvider )
-  return;
+  /* */
 
-  var code = _.fileProvider.fileRead
-  ({
-    filePath : o.location.path,
-    sync : 1,
-    throwing : 0,
-  })
+  if( !o.sourceCode )
+  {
 
-  if( !code )
-  return;
+    if( !o.location.path )
+    return;
+
+    if( !_.fileProvider )
+    return;
+
+    o.sourceCode = _.fileProvider.fileRead
+    ({
+      filePath : o.location.path,
+      sync : 1,
+      throwing : 0,
+    })
+
+    if( !o.sourceCode )
+    return;
+
+  }
+
+  /* */
 
   var result = _.strLinesSelect
   ({
-    src : code,
+    src : o.sourceCode,
     line : o.location.line,
     numberOfLines : o.numberOfLines,
     selectMode : o.selectMode,
     zero : 1,
     number : 1,
   });
+
+  if( o.withPath )
+  result = o.location.full + '\n' + result;
 
   return result;
 }
@@ -4320,10 +4411,12 @@ diagnosticCode.defaults =
 {
   level : 0,
   numberOfLines : 3,
+  withPath : 1,
   selectMode : 'center',
   stack : null,
   error : null,
   location : null,
+  sourceCode : null,
 }
 
 //
@@ -4402,11 +4495,21 @@ function diagnosticStack( stack,first,last )
   if( !stack )
   return '';
 
+  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
+  return;
+
+  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
+  debugger;
+  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
+  throw 'diagnosticStack expects array or string';
+
   if( !_.arrayIs( stack ) )
   stack = stack.split( '\n' );
 
   /* remove redundant lines */
 
+  if( !errIs )
+  console.warn( 'REMINDER : problem here if !errIs' ); /* xxx */
   if( !errIs )
   debugger;
 
@@ -5838,9 +5941,33 @@ function canvasIs( src )
 {
   if( _.jqueryIs( src ) )
   src = src[ 0 ];
-  if( !domIs( src ) )
+  if( src instanceof HTMLCanvasElement )
+  return true;
   return false;
-  return src.tagName === 'CANVAS';
+}
+
+//
+
+function imageIs( src )
+{
+  if( _.jqueryIs( src ) )
+  src = src[ 0 ];
+  if( src instanceof HTMLImageElement )
+  return true;
+  return false;
+}
+
+//
+
+function imageLike( src )
+{
+  if( _.jqueryIs( src ) )
+  src = src[ 0 ];
+  if( src instanceof HTMLCanvasElement )
+  return true;
+  if( src instanceof HTMLImageElement )
+  return true;
+  return false;
 }
 
 //
@@ -6707,6 +6834,24 @@ function strRemoveEnd( src,end )
 
 //
 
+function strReplaceBegin( src,begin,ins )
+{
+  if( !strBegins( src,begin ) )
+  return src;
+  return ins + src.substr( begin.length,src.length );
+}
+
+//
+
+function strReplaceEnd( src,begin,ins )
+{
+  if( !strBegins( src,begin ) )
+  return src;
+  return src.substr( begin.length,src.length ) + ins;
+}
+
+//
+
 /**
   * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
   * otherwise returns original string.
@@ -7083,6 +7228,7 @@ function _regexpArrayAny( arr,ins,none )
   var arr = _.arrayAs( arr );
   for( var m = 0 ; m < arr.length ; m++ )
   {
+    _.assert( arr[ m ].test );
     if( arr[ m ].test( ins ) )
     return m;
   }
@@ -9056,14 +9202,14 @@ function arrayMakeSimilar( ins,src )
 
     if( ins.constructor === Array )
     debugger;
-    else
-    debugger;
+    // else
+    // debugger;
 
     if( ins.constructor === Array )
     result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
     else if( _.routineIs( ins ) )
     {
-      if( ins.prototype.constructor.name === "Array" )
+      if( ins.prototype.constructor.name === 'Array' )
       result = [].slice.call( src );
       else
       result = new ins( src );
@@ -9398,8 +9544,12 @@ function arrayFrom( src )
 function arrayFromRange( range )
 {
 
+  if( _.numberIs( range ) )
+  range = [ 0,range ];
+
   _.assert( arguments.length === 1 );
   _.assert( range.length === 2 );
+  _.assert( _.arrayLike( range ) );
 
   var step = range[ 0 ] <= range[ 1 ] ? +1 : -1;
 
@@ -14066,15 +14216,14 @@ function mapClone( srcObject,o )
 
 function mapExtendFiltering( filter,dstObject )
 {
-  var result = dstObject;
   var filter = _.filter.makeMapper( filter );
 
-  if( result === null )
-  result = Object.create( null );
+  if( dstObject === null )
+  dstObject = Object.create( null );
 
   _assert( arguments.length >= 3,'expects more arguments' );
   _assert( _.routineIs( filter ),'expects filter' );
-  _assert( _.objectLikeOrRoutine( result ),'expects objectLikeOrRoutine as argument' );
+  _assert( _.objectLikeOrRoutine( dstObject ),'expects objectLikeOrRoutine as argument' );
 
   for( var a = 2 ; a < arguments.length ; a++ )
   {
@@ -14091,7 +14240,7 @@ function mapExtendFiltering( filter,dstObject )
 
   }
 
-  return result;
+  return dstObject;
 }
 
 //
@@ -14934,7 +15083,6 @@ function _mapKeys( o )
 
     if( o.own  )
     {
-      debugger;
       filter( o.src,Object.getOwnPropertyNames( o.src ) );
     }
     else
@@ -16756,8 +16904,9 @@ function _mapScreen( options )
   _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
   _.assertMapHasOnly( options,_mapScreen.defaults );
 
-  for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
+  // xxx
+  // for( a = srcObjects.length-1 ; a >= 0 ; a-- )
+  // _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
 
   for( var k in screenObject )
   {
@@ -17456,10 +17605,10 @@ var Proto =
   // entity selector
 
   entityLength : entityLength,
-  entitySize : entitySize,
+  entitySize : entitySize, /* experimental */
 
-  entityValueWithIndex : entityValueWithIndex,
-  entityKeyWithValue : entityKeyWithValue,
+  entityValueWithIndex : entityValueWithIndex, /* experimental */
+  entityKeyWithValue : entityKeyWithValue, /* experimental */
 
   _entitySelectOptions : _entitySelectOptions,
   _entitySelect : _entitySelect,
@@ -17472,9 +17621,9 @@ var Proto =
   _entityConditionMake : _entityConditionMake,
   entityMap : entityMap,
 
-  _entityFilter : _entityFilter,
-  entityFilter : entityFilter,
-  entityFilterDeep : entityFilterDeep,
+  _entityFilter : _entityFilter, /* experimental */
+  entityFilter : entityFilter, /* experimental */
+  entityFilterDeep : entityFilterDeep, /* experimental */
 
   entityGroup : entityGroup, /* experimental */
   entityVals : entityVals,
@@ -17483,7 +17632,7 @@ var Proto =
   entityMin : entityMin,
   entityMax : entityMax,
 
-  entitySearch : entitySearch,
+  entitySearch : entitySearch, /* experimental */
 
 
   // default
@@ -17581,6 +17730,8 @@ var Proto =
   htmlIs : htmlIs,
   jqueryIs : jqueryIs,
   canvasIs : canvasIs,
+  imageIs : imageIs,
+  imageLike : imageLike,
   domIs : domIs,
   domLike : domLike,
   domableIs : domableIs,
@@ -17648,6 +17799,9 @@ var Proto =
 
   strRemoveBegin : strRemoveBegin,
   strRemoveEnd : strRemoveEnd,
+
+  strReplaceBegin : strReplaceBegin,
+  strReplaceEnd : strReplaceEnd,
 
   strPrependOnce : strPrependOnce,
   strAppendOnce : strAppendOnce,

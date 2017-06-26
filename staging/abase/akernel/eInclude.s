@@ -366,7 +366,7 @@ function appArgsInSubjectAndMapFormat( o )
     result.mainPath = process.argv[ 1 ];
     result.interpreterArgs = process.execArgv;
     result.delimter = o.delimeter;
-    result.map = null;
+    result.map = Object.create( null );
     result.subject = process.argv[ 2 ];
     result.scriptArgs = process.argv.slice( 2 );
 
