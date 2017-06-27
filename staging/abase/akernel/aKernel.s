@@ -6770,10 +6770,17 @@ function strBegins( src,begin )
 {
 
   _.assert( _.strIs( src ),'expects string' );
-  _.assert( _.strIs( begin ),'expects string' );
+  _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/array of strings' );
   _.assert( arguments.length === 2 );
 
-  return src.lastIndexOf( begin,0 ) === 0;
+  if( _.strIs( begin ) )
+  begin = [ begin ];
+
+  for( var k = 0, len = begin.length; k < len; k++ )
+  if( src.lastIndexOf( begin[ k ],0 ) === 0 )
+  return true;
+
+  return false;
 }
 
 //
@@ -6802,10 +6809,17 @@ function strEnds( src,end )
 {
 
   _.assert( _.strIs( src ),'expects string' );
-  _.assert( _.strIs( end ),'expects string' );
+  _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings' );
   _.assert( arguments.length === 2 );
 
-  return src.indexOf( end,src.length - end.length ) !== -1;
+  if( _.strIs( end ) )
+  end = [ end ];
+
+  for( var k = 0, len = end.length; k < len; k++ )
+  if( src.indexOf( end[ k ],src.length - end[ k ].length ) !== -1 )
+  return true;
+
+  return false;
 }
 
 //
@@ -6836,9 +6850,22 @@ function strEnds( src,end )
 
 function strRemoveBegin( src,begin )
 {
-  if( !strBegins( src,begin ) )
-  return src;
-  return src.substr( begin.length,src.length );
+  begin = _.arrayAs( begin );
+
+  var result = _.arrayAs( src ).slice();
+
+  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
+  for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
+  if( strBegins( result[ k ],begin[ j ] ) )
+  {
+    result[ k ] = result[ k ].substr( begin[ j ].length,result[ k ].length );
+    break;
+  }
+
+  if( result.length === 1 && _.strIs( src ) )
+  return result[ 0 ];
+
+  return result;
 }
 
 //
@@ -6868,27 +6895,77 @@ function strRemoveBegin( src,begin )
 
 function strRemoveEnd( src,end )
 {
-  if( !strEnds( src,end ) )
-  return src;
-  return src.substring( 0,src.length-end.length );
+  end = _.arrayAs( end );
+
+  var result = _.arrayAs( src ).slice();
+
+  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
+  for( var j = 0, endLength = end.length; j < endLength; j++ )
+  if( strEnds( result[ k ],end[ j ] ) )
+  {
+    result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length )
+    break;
+  }
+
+  if( result.length === 1 && _.strIs( src ) )
+  return result[ 0 ];
+
+  return result;
 }
 
 //
 
 function strReplaceBegin( src,begin,ins )
 {
-  if( !strBegins( src,begin ) )
-  return src;
-  return ins + src.substr( begin.length,src.length );
+  _.assert( arguments.length === 3 );
+  _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
+  if( _.arrayLike( begin ) && _.arrayLike( ins ) )
+  _.assert( begin.length === ins.length );
+
+  begin = _.arrayAs( begin );
+  var result = _.arrayAs( src ).slice();
+
+  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
+  for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
+  if( strBegins( result[ k ],begin[ j ] ) )
+  {
+    var prefix = _.arrayLike( ins ) ? ins[ j ] : ins;
+    _.assert( _.strIs( prefix ) );
+    result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
+    break;
+  }
+
+  if( result.length === 1 && _.strIs( src ) )
+  return result[ 0 ];
+
+  return result;
 }
 
 //
 
-function strReplaceEnd( src,begin,ins )
+function strReplaceEnd( src,end,ins )
 {
-  if( !strBegins( src,begin ) )
-  return src;
-  return src.substr( begin.length,src.length ) + ins;
+  _.assert( arguments.length === 3 );
+  _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
+  if( _.arrayLike( end ) && _.arrayLike( ins ) )
+  _.assert( end.length === ins.length );
+
+  end = _.arrayAs( end );
+  var result = _.arrayAs( src ).slice();
+
+  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
+  for( var j = 0, endLength = end.length; j < endLength; j++ )
+  if( strEnds( result[ k ],end[ j ] ) )
+  {
+    var postfix = _.arrayLike( ins ) ? ins[ j ] : ins;
+    _.assert( _.strIs( postfix ) );
+    result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
+  }
+
+  if( result.length === 1 && _.strIs( src ) )
+  return result[ 0 ];
+
+  return result;
 }
 
 //
