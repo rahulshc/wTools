@@ -5034,14 +5034,17 @@ function strAppendOnce( test )
 
 }
 
+//
+
 var Self =
 {
 
   name : 'StringTools tests 2',
-  verbosity : 6,
+  // verbosity : 6,
 
   tests :
   {
+
     strCapitalize : strCapitalize,
     strReplaceAll : strReplaceAll,
     strDropPrefix : strDropPrefix,
