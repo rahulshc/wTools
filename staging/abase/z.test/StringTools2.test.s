@@ -181,99 +181,6 @@ function strReplaceAll( test )
 
 //
 
-function strDropPrefix( test )
-{
-  test.description = 'returns string with removed occurrence from start';
-  var got = _.strDropPrefix( 'example','exa' );
-  var expected = 'mple';
-  test.identical( got,expected );
-
-  test.description = 'returns original if no occurrence found';
-  var got = _.strDropPrefix( 'mple','exa' );
-  var expected = 'mple';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strDropPrefix( 'abcd','a','a' );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strDropPrefix( );
-    });
-
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strDropPrefix( 1,'2' );
-    });
-
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strDropPrefix( '1',2 );
-    });
-
-  }
-
-}
-
-//
-
-function strDropPostfix( test )
-{
-  test.description = 'returns string with removed occurrence from end';
-  var got = _.strDropPostfix( 'example','mple' );
-  var expected = 'exa';
-  test.identical( got,expected );
-
-  test.description = 'returns original if no occurrence found ';
-  var got = _.strDropPostfix( 'example','' );
-  var expected = 'example';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strDropPostfix( 'one','two','three' );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strDropPostfix( );
-    });
-
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strDropPostfix( 1,'second' );
-    });
-
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strDropPostfix( 'first',2 );
-    });
-
-  }
-}
-
-//
-
 function strHtmlEscape( test )
 {
   test.description = 'replaces html escape symbols';
@@ -4570,6 +4477,101 @@ function strEnds( test )
 
 //
 
+function strRemoveBegin2( test )
+{
+  test.description = 'returns string with removed occurrence from start';
+  var got = _.strRemoveBegin( 'example','exa' );
+  var expected = 'mple';
+  test.identical( got,expected );
+
+  test.description = 'returns original if no occurrence found';
+  var got = _.strRemoveBegin( 'mple','exa' );
+  var expected = 'mple';
+  test.identical( got,expected );
+
+  /**/
+
+  debugger;
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveBegin( 'abcd','a','a' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveBegin( );
+    });
+
+    test.description = 'first argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveBegin( 1,'2' );
+    });
+
+    test.description = 'second argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveBegin( '1',2 );
+    });
+
+  }
+
+}
+
+//
+
+function strRemoveEnd2( test )
+{
+  test.description = 'returns string with removed occurrence from end';
+  var got = _.strRemoveEnd( 'example','mple' );
+  var expected = 'exa';
+  test.identical( got,expected );
+
+  test.description = 'returns original if no occurrence found ';
+  var got = _.strRemoveEnd( 'example','' );
+  var expected = 'example';
+  test.identical( got,expected );
+
+  /**/
+
+  if( Config.debug )
+  {
+
+    test.description = 'invalid arguments count';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveEnd( 'one','two','three' );
+    });
+
+    test.description = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveEnd( );
+    });
+
+    test.description = 'first argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveEnd( 1,'second' );
+    });
+
+    test.description = 'second argument is wrong';
+    test.shouldThrowError( function()
+    {
+      _.strRemoveEnd( 'first',2 );
+    });
+
+  }
+}
+
+//
+
 function strRemoveBegin( test )
 {
   var got,expected;
@@ -5047,8 +5049,7 @@ var Self =
 
     strCapitalize : strCapitalize,
     strReplaceAll : strReplaceAll,
-    strDropPrefix : strDropPrefix,
-    strDropPostfix : strDropPostfix,
+
     strHtmlEscape : strHtmlEscape,
     strIndentation : strIndentation,
     strCamelize : strCamelize,
@@ -5107,6 +5108,9 @@ var Self =
 
     strBegins : strBegins,
     strEnds : strEnds,
+
+    strRemoveBegin2 : strRemoveBegin2,
+    strRemoveEnd2 : strRemoveEnd2,
 
     strRemoveBegin : strRemoveBegin,
     strRemoveEnd : strRemoveEnd,
