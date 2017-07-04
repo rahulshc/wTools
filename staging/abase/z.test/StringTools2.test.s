@@ -4199,6 +4199,47 @@ function strBeginOf( test )
   expected = '';
   test.identical( got,expected )
 
+  /* array */
+
+  got = _.strBeginOf( 'abc', [] );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', [ '' ] );
+  expected = 'abc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abccc', [ 'c', 'ccc' ] );
+  expected = 'abcc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', [ 'a', 'ab', 'abc' ] );
+  expected = '';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', [ 'x', 'y', 'c' ] );
+  expected = 'ab';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', [ 'x', 'y', 'z' ] );
+  expected = undefined;
+  test.identical( got,expected )
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strBeginOf( 1, '' ) );
+  test.shouldThrowError( () => _.strBeginOf( 'abc', 1 ) );
 }
 
 //
@@ -4253,6 +4294,48 @@ function strEndOf( test )
   expected = '';
   test.identical( got,expected )
 
+  /* array */
+
+  got = _.strEndOf( 'abc', [] );
+  expected = undefined;
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abc', [ '' ] );
+  expected = 'abc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abccc', [ 'a', 'ab' ] );
+  expected = 'bccc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abc', [ 'ab', 'abc' ] );
+  expected = 'c';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abc', [ 'x', 'y', 'a' ] );
+  expected = 'bc';
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strEndOf( 'abc', [ 'x', 'y', 'z' ] );
+  expected = undefined;
+  test.identical( got,expected )
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strEndOf( 1, '' ) );
+  test.shouldThrowError( () => _.strEndOf( 'abc', 1 ) );
+
 }
 
 //
@@ -4269,12 +4352,6 @@ function strInbetweenOf( test )
 
   got = _.strInbetweenOf( '', '', '' );
   expected = undefined;
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strInbetweenOf( 'a', '', '' );
-  expected = '';
   test.identical( got, expected );
 
   /**/
@@ -4306,6 +4383,28 @@ function strInbetweenOf( test )
   got = _.strInbetweenOf( 'abc', 'a', 'a' );
   expected = undefined;
   test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'aaabbbccc', [ 'a', 'b' ], [ 'b', 'c' ] );
+  expected = 'aabb';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'abc', [ 'x','y', 'c' ], 'c' );
+  expected = undefined;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strInbetweenOf( 'abbccc', [ 'b' ], '' );
+  expected = 'bccc';
+  test.identical( got, expected );
+
+  test.shouldThrowError( () => _.strInbetweenOf( 1, '', '' ) );
+  test.shouldThrowError( () => _.strInbetweenOf( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strInbetweenOf( 'a', '', 1 ) );
 }
 
 //
@@ -4321,6 +4420,12 @@ function strBegins( test )
   /**/
 
   got = _.strBegins( '', '' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'a', '' );
   expected = true;
   test.identical( got, expected );
 
@@ -4347,6 +4452,43 @@ function strBegins( test )
   got = _.strBegins( 'abc', 'abc' );
   expected = true;
   test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'abc', ' a' );
+  expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'abc', [ 'x', 'y', 'ab' ] );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'abc', [ '' ] );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'abc', [] );
+  expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strBegins( 'abc', [ 1, 'b', 'a' ] );
+  expected = true;
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strBegins( 1, '' ) );
+  test.shouldThrowError( () => _.strBegins( 'a', 1 ) );
+
 }
 
 //
@@ -4362,6 +4504,12 @@ function strEnds( test )
   /**/
 
   got = _.strEnds( '', '' );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'a', '' );
   expected = true;
   test.identical( got, expected );
 
@@ -4388,6 +4536,36 @@ function strEnds( test )
   got = _.strEnds( 'abc', 'abc' );
   expected = true;
   test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'abc', [ 'x', 'y', 'bc' ] );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'abc', [ '' ] );
+  expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'abc', [] );
+  expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strEnds( 'abc', [ 1, 'b', 'c' ] );
+  expected = true;
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strEnds( 1, '' ) );
+  test.shouldThrowError( () => _.strEnds( 'a', 1 ) );
 }
 
 //
@@ -4441,6 +4619,66 @@ function strRemoveBegin( test )
   got = _.strRemoveBegin( 'abc', '' );
   expected = 'abc';
   test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', '' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', [ 'a', 'b', 'c' ] );
+  expected = 'bc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', [ '', 'a' ] );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', [ 'abc', 'a' ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'abc', 'bca', 'cab' ], [ 'a', 'd' ] );
+  expected = [ 'bc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'abc', 'bca', 'cab' ], [ 'a', 'b', 'c' ] );
+  expected = [ 'bc', 'ca', 'ab' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ 'x' ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strRemoveBegin( 1, '' ) )
+  test.shouldThrowError( () => _.strRemoveBegin( 'a', 1 ) )
 }
 
 //
@@ -4494,6 +4732,210 @@ function strRemoveEnd( test )
   got = _.strRemoveEnd( 'abc', '' );
   expected = 'abc';
   test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', [ 'a', 'b', 'c' ] );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', [ '', 'a' ] );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', [ 'abc', 'a' ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'a', 'd' ] );
+  expected = [ 'abc', 'bc', 'cab' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'a', 'b', 'c' ] );
+  expected = [ 'ab', 'bc', 'ca' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ 'x' ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strRemoveEnd( 1, '' ) )
+  test.shouldThrowError( () => _.strRemoveEnd( 'a', 1 ) )
+}
+
+//
+
+function strReplaceBegin( test )
+{
+  /**/
+
+  var got,expected;
+
+  got = _.strReplaceBegin( '', '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( '', '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'a', 'a', 'b' );
+  expected = 'b';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'a', 'x', 'b' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'abc', 'ab', 'c' );
+  expected = 'cc';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'abc', '', 'c' );
+  expected = 'cabc';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [], '', '' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], 'a', 'c' );
+  expected = [ 'c', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], 'c' );
+  expected = [ 'c', 'c', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'y', 'z' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'aa', 'bb', 'cc' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'xa', 'yb', 'zc' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'aa', 'bb', 'cc' ], [ 'y', 'z', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'aa', 'bb', 'zc' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ], 'c' );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'ab', 'ac' ], 'a', [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'xb', 'xc' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strReplaceBegin( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', 'a', 1 ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'x', 1 ], 'a' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'b', 'a' ], [ 'x', 1 ] ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'a' ], [ 'x', '1' ] ) );
+}
+
+//
+
+function strReplaceEnd( test )
+{
+  /**/
+
+  var got,expected;
+
+  got = _.strReplaceEnd( '', '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( '', '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'a', 'a', 'b' );
+  expected = 'b';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'a', 'x', 'b' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'abc', 'bc', 'c' );
+  expected = 'ac';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'abc', '', 'c' );
+  expected = 'abcc';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [], '', '' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], 'a', 'c' );
+  expected = [ 'c', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], 'c' );
+  expected = [ 'c', 'c', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'y', 'z' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'aa', 'bb', 'cc' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'ax', 'by', 'cz' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'aa', 'bb', 'cc' ], [ 'y', 'z', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'aa', 'bb', 'cz' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ], 'c' );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'ab', 'ca' ], 'a', [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'ab', 'cx' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strReplaceEnd( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', 'a', 1 ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'x', 1 ], 'a' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'a' ], [ 1 ] ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'b', 'c' ], [ 'c' ] ) );
 }
 
 //
@@ -4665,6 +5107,9 @@ var Self =
 
     strRemoveBegin : strRemoveBegin,
     strRemoveEnd : strRemoveEnd,
+
+    strReplaceBegin : strReplaceBegin,
+    strReplaceEnd : strReplaceEnd,
 
     strPrependOnce : strPrependOnce,
     strAppendOnce : strAppendOnce,
