@@ -1863,6 +1863,7 @@ var Self =
     entityIdentical : entityIdentical,
     entityEquivalent : entityEquivalent,
     entityContain : entityContain,
+
     entityLength : entityLength,
     entityCopyTry : entityCopyTry,
     entityCopyField : entityCopyField,
@@ -1874,7 +1875,6 @@ var Self =
     entitySize : entitySize,
     entityValueWithIndex : entityValueWithIndex,
     entityKeyWithValue : entityKeyWithValue,
-
 
   }
 

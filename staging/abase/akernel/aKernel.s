@@ -3568,6 +3568,34 @@ function errAttentionRequest( err )
 
 //
 
+function errStackPurify( stack )
+{
+
+  if( arguments.length !== 1 )
+  throw 'expects single arguments';
+  if( !_.strIs( stack ) )
+  throw 'expects string';
+
+  stack = stack.split( '\n' );
+
+  for( var s = 1 ; s < stack.length ; s++ )
+  if( /(\w)_entry(\W|$)/.test( stack[ s ] ) )
+  {
+    stack.splice( s+1,stack.length );
+    break;
+  }
+
+  for( var s = stack.length-1 ; s >= 0 ; s-- )
+  {
+    if( /(\W|^)__\w+/.test( stack[ s ] ) )
+    stack.splice( s,1 )
+  }
+
+  return stack.join( '\n' );
+}
+
+//
+
 /**
  * Creates Error object based on passed options.
  * Result error contains in message detailed stack trace and error description.
@@ -3592,11 +3620,11 @@ function _err( o )
   if( !_.arrayLike( o.args ) )
   throw Error( '_err : o.args should be array like' );
 
-  if( !_.numberIs( o.level ) )
-  o.level = _err.defaults.level;
-
   if( o.usingSourceCode === undefined )
   o.usingSourceCode = _err.defaults.usingSourceCode;
+
+  if( o.purifingStack === undefined )
+  o.purifingStack = _err.defaults.purifingStack;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
@@ -3695,8 +3723,14 @@ function _err( o )
       stack = _.diagnosticStack( result );
     }
     else
-    stack = _.diagnosticStack( o.level,-1 );
+    {
+      stack = _.diagnosticStack( o.level,-1 );
+    }
   }
+
+  /* stack */
+
+  var stackPurified = _.errStackPurify( stack );
 
   /* collect data */
 
@@ -3744,6 +3778,13 @@ function _err( o )
 
   }
 
+  /* level */
+
+  if( !_.numberIs( o.level ) )
+  o.level = result.level;
+  if( !_.numberIs( o.level ) )
+  o.level = _err.defaults.level;
+
   /* line number */
 
   if( o.location.line !== undefined )
@@ -3779,15 +3820,18 @@ function _err( o )
 
   /* where it was caught */
 
-  catches = '    caught at ' + _.diagnosticLocation( o.level ).full + '\n' + catches;
+  var floc = _.diagnosticLocation( o.level );
+  if( floc.fullWithRoutine.indexOf( 'errLogOnce' ) !== -1 )
+  debugger;
+  if( !floc.service || floc.service === 1 )
+  catches = '    caught at ' + floc.fullWithRoutine + '\n' + catches;
+  // catches = '    caught ' + _.diagnosticStack( 1,2 ).trim() + '\n' + catches;
 
   /* source code */
 
   if( o.usingSourceCode )
   if( result.sourceCode === undefined )
   {
-    // debugger;
-
     var c = '';
     o.location = _.diagnosticLocation
     ({
@@ -3808,7 +3852,7 @@ function _err( o )
     }
   }
 
-  /* join */
+  /* message */
 
   var message = '';
 
@@ -3820,13 +3864,11 @@ function _err( o )
   }
   else
   {
-
     message += '\n* Catches :\n' + catches + '\n';
     message += '* Message :\n' + originalMessage + '\n';
-
-    // if( result.LocationFull )
-    // message += '\n' + 'Location : ' + result.LocationFull;
-
+    if( o.purifingStack )
+    message += '\n* Purified Stack :\n' + stackPurified + '\n';
+    else
     message += '\n* Stack :\n' + stack + '\n';
   }
 
@@ -3849,6 +3891,26 @@ function _err( o )
     result = new Error( message );
   }
 
+  /* original message */
+
+  Object.defineProperty( result, 'originalMessage',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : originalMessage,
+  });
+
+  /* level */
+
+  Object.defineProperty( result, 'level',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : o.level,
+  });
+
   /* stack */
 
   try
@@ -3864,6 +3926,14 @@ function _err( o )
   catch( err )
   {
   }
+
+  Object.defineProperty( result, 'stackPurified',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : stack,
+  });
 
   /* briefly */
 
@@ -3884,16 +3954,6 @@ function _err( o )
     configurable : true,
     writable : true,
     value : sourceCode || null,
-  });
-
-  /* original message */
-
-  Object.defineProperty( result, 'originalMessage',
-  {
-    enumerable : false,
-    configurable : true,
-    writable : true,
-    value : originalMessage,
   });
 
   /* catches */
@@ -3932,6 +3992,7 @@ _err.defaults =
 {
   level : 0,
   usingSourceCode : 1,
+  purifingStack : 1,
   location : null,
   sourceCode : null,
   briefly : null,
@@ -4106,7 +4167,7 @@ function errLog()
 
 function errLogOnce( err )
 {
-
+  var c = _global_.logger || _global_.console;
   var err = _err
   ({
     args : arguments,
@@ -4116,7 +4177,21 @@ function errLogOnce( err )
   if( err.attentionGiven )
   return err;
 
-  return errLog( err );
+  /* */
+
+  if( _.routineIs( err.toString ) )
+  {
+    c.error( err.toString() );
+  }
+  else
+  {
+    c.error( err );
+  }
+
+  /* */
+
+  _.errAttend( err );
+  return err;
 }
 
 // --
@@ -4193,6 +4268,13 @@ function diagnosticLocation( o )
       o.location.full += ':' + o.location.line;
     }
 
+    /* name long */
+
+    if( o.location.full )
+    {
+      o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
+    }
+
     /* name */
 
     if( path )
@@ -4219,6 +4301,43 @@ function diagnosticLocation( o )
     }
 
     return o.location;
+  }
+
+  /* routine from stack */
+
+  function routineFromStack( stack )
+  {
+    var path;
+
+    if( !stack )
+    return;
+
+    if( _.strIs( stack ) )
+    stack = stack.split( '\n' );
+
+    path = stack[ o.level ];
+
+    if( !_.strIs( path ) )
+    return '(-routine anonymous-)';
+
+    // debugger;
+
+    var t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
+    path = t.exec( path )[ 2 ] || '';
+
+    if( _.strEnds( path, '.' ) )
+    path += '?';
+
+    o.location.routine = path;
+    o.location.service = 0;
+    if( o.location.service === 0 )
+    if( _.strBegins( path , '__' ) || path.indexOf( '.__' ) !== -1 )
+    o.location.service = 2;
+    if( o.location.service === 0 )
+    if( _.strBegins( path , '_' ) || path.indexOf( '._' ) !== -1 )
+    o.location.service = 1;
+
+    return path;
   }
 
   /* path from stack */
@@ -4325,6 +4444,8 @@ function diagnosticLocation( o )
     }
   }
 
+  routineFromStack( o.stack );
+
   var pathHad = !!o.location.path;
   if( !pathHad )
   o.location.path = pathFromStack( o.stack );
@@ -4337,7 +4458,7 @@ function diagnosticLocation( o )
 
   if( !_.numberIs( o.location.line ) && pathHad )
   {
-    debugger;
+    // debugger;
     var path = pathFromStack( o.stack );
     if( path )
     lineColFromPath( path );
@@ -7380,7 +7501,7 @@ function _routineBind( o )
       // throw _.err( 'not tested, not clear what convetion was meant. use [] as third argument or rotineJoin' );
       if( o.seal === true )
       {
-        return function sealedContext()
+        return function __sealedContext()
         {
           return routine.call( context );
         }
@@ -7394,7 +7515,7 @@ function _routineBind( o )
     {
       if( o.seal === true )
       {
-        return function sealedContextAndArguments()
+        return function __sealedContextAndArguments()
         {
           return routine.apply( context, args );
         }
@@ -7415,12 +7536,12 @@ function _routineBind( o )
       args = [];
 
       if( o.seal === true )
-      return function sealedArguments()
+      return function __sealedArguments()
       {
         return routine.apply( undefined, args );
       }
       else
-      return function joinedArguments()
+      return function __joinedArguments()
       {
         var a = args.slice();
         _.__arrayAppendArray( a,arguments );
@@ -17663,6 +17784,7 @@ var Proto =
   errIsAttended : errIsAttended,
   errIsAttentionRequested : errIsAttentionRequested,
   errAttentionRequest : errAttentionRequest,
+  errStackPurify : errStackPurify,
 
   _err : _err,
   err : err,
