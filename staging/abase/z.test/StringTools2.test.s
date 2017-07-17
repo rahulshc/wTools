@@ -4147,6 +4147,9 @@ function strBeginOf( test )
 
   test.shouldThrowError( () => _.strBeginOf( 1, '' ) );
   test.shouldThrowError( () => _.strBeginOf( 'abc', 1 ) );
+  test.shouldThrowError( () => _.strBeginOf() );
+  test.shouldThrowError( () => _.strBeginOf( undefined, undefined ) );
+  test.shouldThrowError( () => _.strBeginOf( null, null ) );
 }
 
 //
@@ -4242,6 +4245,9 @@ function strEndOf( test )
 
   test.shouldThrowError( () => _.strEndOf( 1, '' ) );
   test.shouldThrowError( () => _.strEndOf( 'abc', 1 ) );
+  test.shouldThrowError( () => _.strEndOf() );
+  test.shouldThrowError( () => _.strEndOf( undefined, undefined ) );
+  test.shouldThrowError( () => _.strEndOf( null, null ) );
 
 }
 
@@ -4681,6 +4687,9 @@ function strRemoveBegin( test )
 
   test.shouldThrowError( () => _.strRemoveBegin( 1, '' ) )
   test.shouldThrowError( () => _.strRemoveBegin( 'a', 1 ) )
+  test.shouldThrowError( () => _.strRemoveBegin() )
+  test.shouldThrowError( () => _.strRemoveBegin( undefined, undefined ) )
+  test.shouldThrowError( () => _.strRemoveBegin( null, null ) )
 }
 
 //
@@ -4788,6 +4797,9 @@ function strRemoveEnd( test )
 
   test.shouldThrowError( () => _.strRemoveEnd( 1, '' ) )
   test.shouldThrowError( () => _.strRemoveEnd( 'a', 1 ) )
+  test.shouldThrowError( () => _.strRemoveEnd() )
+  test.shouldThrowError( () => _.strRemoveEnd( undefined, undefined ) )
+  test.shouldThrowError( () => _.strRemoveEnd( null, null ) )
 }
 
 //
@@ -4857,6 +4869,7 @@ function strReplaceBegin( test )
   if( !Config.debug )
   return;
 
+  test.shouldThrowError( () => _.strReplaceBegin() );
   test.shouldThrowError( () => _.strReplaceBegin( 1, '', '' ) );
   test.shouldThrowError( () => _.strReplaceBegin( 'a', 1, '' ) );
   test.shouldThrowError( () => _.strReplaceBegin( 'a', 'a', 1 ) );
@@ -4932,6 +4945,7 @@ function strReplaceEnd( test )
   if( !Config.debug )
   return;
 
+  test.shouldThrowError( () => _.strReplaceEnd() );
   test.shouldThrowError( () => _.strReplaceEnd( 1, '', '' ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', 1, '' ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', 'a', 1 ) );
