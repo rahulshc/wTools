@@ -3568,34 +3568,6 @@ function errAttentionRequest( err )
 
 //
 
-function errStackPurify( stack )
-{
-
-  if( arguments.length !== 1 )
-  throw 'expects single arguments';
-  if( !_.strIs( stack ) )
-  throw 'expects string';
-
-  stack = stack.split( '\n' );
-
-  for( var s = 1 ; s < stack.length ; s++ )
-  if( /(\w)_entry(\W|$)/.test( stack[ s ] ) )
-  {
-    stack.splice( s+1,stack.length );
-    break;
-  }
-
-  for( var s = stack.length-1 ; s >= 0 ; s-- )
-  {
-    if( /(\W|^)__\w+/.test( stack[ s ] ) )
-    stack.splice( s,1 )
-  }
-
-  return stack.join( '\n' );
-}
-
-//
-
 /**
  * Creates Error object based on passed options.
  * Result error contains in message detailed stack trace and error description.
@@ -3695,7 +3667,7 @@ function _err( o )
   {
     var arg = o.args[ a ];
 
-    if( !_.atomicIs( arg ) )
+    if( !_.atomicIs( arg ) && _.objectLike( arg ) )
     {
       o.location = _.diagnosticLocation({ error : arg, location : o.location });
     }
@@ -3730,7 +3702,7 @@ function _err( o )
 
   /* stack */
 
-  var stackPurified = _.errStackPurify( stack );
+  var stackPurified = _.diagnosticStackPurify( stack );
 
   /* collect data */
 
@@ -4671,7 +4643,10 @@ function diagnosticStack( stack,first,last )
 
   // debugger;
   if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
-  throw Error( 'diagnosticStack : cant parse stack ' + stack );
+  {
+    debugger;
+    throw Error( 'diagnosticStack : cant parse stack ' + stack );
+  }
 
   /* */
 
@@ -4711,6 +4686,34 @@ function diagnosticStack( stack,first,last )
   stack = String( stack.join( '\n' ) );
 
   return stack;
+}
+
+//
+
+function diagnosticStackPurify( stack )
+{
+
+  if( arguments.length !== 1 )
+  throw 'expects single arguments';
+  if( !_.strIs( stack ) )
+  throw 'expects string';
+
+  stack = stack.split( '\n' );
+
+  for( var s = 1 ; s < stack.length ; s++ )
+  if( /(\w)_entry(\W|$)/.test( stack[ s ] ) )
+  {
+    stack.splice( s+1,stack.length );
+    break;
+  }
+
+  for( var s = stack.length-1 ; s >= 1 ; s-- )
+  {
+    if( /(\W|^)__\w+/.test( stack[ s ] ) )
+    stack.splice( s,1 )
+  }
+
+  return stack.join( '\n' );
 }
 
 //
@@ -4942,6 +4945,11 @@ function beep()
  * @memberof wTools
  */
 
+function _assertDebugger( condition )
+{
+  debugger;
+}
+
 function assert( condition )
 {
 
@@ -4952,7 +4960,7 @@ function assert( condition )
 
   if( !condition )
   {
-    debugger;
+    _assertDebugger();
     if( arguments.length === 1 )
     throw _err
     ({
@@ -6136,7 +6144,22 @@ function domableIs( src )
 
 function consequenceIs( src )
 {
-  return src instanceof wConsequence;
+  if( !src )
+  return false;
+
+  // if( _.routineIs( src ) )
+  // debugger;
+
+  var prototype = Object.getPrototypeOf( src );
+
+  if( !prototype )
+  return false;
+
+  return prototype.nameShort === 'Consequence';
+
+  // if( _.routineIs( src ) )
+  // debugger;
+  // return src instanceof wConsequence;
 }
 
 //
@@ -6429,14 +6452,14 @@ function numberRandomInRange( range )
 function numberRandomInt( range )
 {
 
-  _assert( _.arrayIs( range ) || _.numberIs( range ) );
-  _assert( range.length === 2 );
-
   if( _.numberIs( range ) )
   range = range >= 0 ? [ 0,range ] : [ range,0 ];
   else if( _.arrayIs( range ) )
   range = range;
-  else throw _.err( 'numberRandomInt','unexpected argument' );
+  else _.assert( 0,'numberRandomInt','expects range' );
+
+  _assert( _.arrayIs( range ) || _.numberIs( range ) );
+  _assert( range.length === 2 );
 
   var result = Math.floor( range[ 0 ] + Math.random()*( range[ 1 ] - range[ 0 ] ) );
 
@@ -7810,17 +7833,17 @@ function routineSeal( context, routine, args )
 
 //
 
-  /**
-   * Return function that will call passed routine function with delay.
-   * @param {number} delay delay in milliseconds
-   * @param {Function} routine function that will be called with delay.
-   * @returns {Function} result function
-   * @throws {Error} If arguments less then 2
-   * @throws {Error} If `delay` is not a number
-   * @throws {Error} If `routine` is not a function
-   * @function routineDelayed
-   * @memberof wTools
-   */
+/**
+ * Return function that will call passed routine function with delay.
+ * @param {number} delay delay in milliseconds
+ * @param {Function} routine function that will be called with delay.
+ * @returns {Function} result function
+ * @throws {Error} If arguments less then 2
+ * @throws {Error} If `delay` is not a number
+ * @throws {Error} If `routine` is not a function
+ * @function routineDelayed
+ * @memberof wTools
+ */
 
 function routineDelayed( delay,routine )
 {
@@ -7840,6 +7863,22 @@ function routineDelayed( delay,routine )
     _.timeOut( delay,this,routine,arguments );
   }
 
+}
+
+//
+
+function routineTolerantCall( context,routine,options )
+{
+
+  _.assert( arguments.length === 3 );
+  _.assert( _.routineIs( routine ) );
+  _.assert( _.objectIs( routine.defaults ) );
+  _.assert( _.objectIs( options ) );
+
+  options = _.mapScreen( routine.defaults,options );
+  var result = routine.call( context,options );
+
+  return result;
 }
 
 //
@@ -8440,7 +8479,7 @@ function timeOut( delay,onReady )
   _assert( _.numberIs( delay ) );
 
   if( arguments[ 1 ] !== undefined && arguments[ 2 ] === undefined && arguments[ 3 ] === undefined )
-  _assert( _.routineIs( onReady ) || onReady instanceof wConsequence );
+  _assert( _.routineIs( onReady ) || _.consequenceIs( onReady ) );
   else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   _assert( _.routineIs( arguments[ 2 ] ) );
 
@@ -8462,12 +8501,14 @@ function timeOut( delay,onReady )
   if( delay > 0 )
   setTimeout( onEnd,delay );
   else
-  _fastTimeOut( onEnd );
+  timeSoon( onEnd );
 
   return con;
 }
 
-var _fastTimeOut = typeof module === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
+//
+
+var timeSoon = typeof module === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
 
 //
 
@@ -11803,34 +11844,85 @@ function arrayHas( insArray, element )
 
 function arrayHasAny( src )
 {
+  var empty = true;
+  empty = false;
+
+  _assert( arguments.length >= 1 );
+  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    empty = false;
+
+    var ins = _.arrayAs( arguments[ a ] );
+    for( var i = 0 ; i < ins.length ; i++ )
+    {
+      if( src.indexOf( ins[ i ] ) !== -1 )
+      return true;
+    }
+
+  }
+
+  return empty;
+}
+
+//
+
+function arrayHasAll( src )
+{
+  _assert( arguments.length >= 1 );
   _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
 
     var ins = _.arrayAs( arguments[ a ] );
-
     for( var i = 0 ; i < ins.length ; i++ )
-    if( src.indexOf( ins[ i ] ) !== -1 )
-    return true;
+    if( src.indexOf( ins[ i ] ) === -1 )
+    return false;
 
   }
 
-  return false;
+  return true;
+}
+
+//
+
+function arrayHasNone( src )
+{
+  _assert( arguments.length >= 1 );
+  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+
+    var ins = _.arrayAs( arguments[ a ] );
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( src.indexOf( ins[ i ] ) !== -1 )
+    return false;
+
+  }
+
+  return true;
 }
 
 //
 
 function arrayAll( src )
 {
+  var empty = true;
+
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( src ) );
 
   for( var s = 0 ; s < src.length ; src++ )
-  if( !src[ s ] )
-  return false;
+  {
+    empty = false;
+    if( !src[ s ] )
+    return false;
+  }
 
-  return true;
+  return empty;
 }
 
 //
@@ -13159,9 +13251,6 @@ function __arrayRemoveOnce( dstArray,ins,onEqualize )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  // if( arguments.length === 2 )
-  // __arrayRemovedOnce( dstArray,ins );
-  // else if( onElement )
   __arrayRemovedOnce.apply( this, arguments );
 
   return dstArray;
@@ -13171,15 +13260,9 @@ function __arrayRemoveOnce( dstArray,ins,onEqualize )
 
 function __arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 {
-  // _.assert( arguments.length === 2 || arguments.length === 3 );
-  // _.assert( _.arrayLeftIndexOf( dstArray,ins,onEqualize ) !== -1,'array should have only unique elements, but has several',ins );
-
-  // if( arguments.length === 2 )
-  // __arrayRemovedOnce( dstArray,ins );
-  // else if( onElement )
 
   var result = __arrayRemovedOnce.apply( this, arguments );
-  _.assert( result !== -1,'array not contains element',ins );
+  _.assert( result !== -1,'array does not contains element',ins );
 
   return dstArray;
 }
@@ -14111,10 +14194,8 @@ function arraySetBut( src,but )
 
   for( var i = 0 ; i < src.length ; i++ )
   {
-
     if( but.indexOf( src[ i ] ) === -1 )
     result.push( src[ i ] );
-
   }
 
   return result;
@@ -14398,11 +14479,14 @@ function arraySetIdentical( ins1,ins2 )
 function mapClone( srcObject,o )
 {
   var o = o || Object.create( null );
-  var result = o.dst || Object.create( null );
+  o.dst = o.dst || Object.create( null );
+
+  // if( !o.dst )
+  // o.dst = new srcObject.constructor();
 
   _assert( _.mapIs( o ) );
-  _assert( arguments.length <= 2,'mapClone :','expects srcObject as argument' );
-  _assert( objectLike( srcObject ),'mapClone :','expects srcObject as argument' );
+  _assert( arguments.length <= 2,'mapClone :','expects (-srcObject-) as argument' );
+  _assert( objectLike( srcObject ),'mapClone :','expects (-srcObject-) as argument' );
 
   if( !o.onCopyField )
   o.onCopyField = function( dstContainer,srcContainer,key )
@@ -14414,12 +14498,12 @@ function mapClone( srcObject,o )
   for( var k in srcObject )
   {
     if( _hasOwnProperty.call( srcObject,k ) )
-    o.onCopyField( result,srcObject,k,o.onCopyField );
+    o.onCopyField( o.dst,srcObject,k,o.onCopyField );
   }
 
-  Object.setPrototypeOf( result, Object.getPrototypeOf( srcObject ) );
+  Object.setPrototypeOf( o.dst, Object.getPrototypeOf( srcObject ) );
 
-  return result;
+  return o.dst;
 }
 
   // /**
@@ -14515,8 +14599,9 @@ function mapExtend( dstObject,srcObject )
   if( result === null )
   result = Object.create( null );
 
+  // assert( srcObject );
+
   if( arguments.length === 2 && Object.getPrototypeOf( srcObject ) === null )
-  // if( arguments.length === 2 )
   return Object.assign( result,srcObject );
 
   assert( arguments.length >= 2 );
@@ -17888,7 +17973,6 @@ var Proto =
   errIsAttended : errIsAttended,
   errIsAttentionRequested : errIsAttentionRequested,
   errAttentionRequest : errAttentionRequest,
-  errStackPurify : errStackPurify,
 
   _err : _err,
   err : err,
@@ -17904,6 +17988,7 @@ var Proto =
   diagnosticLocation : diagnosticLocation,
   diagnosticCode : diagnosticCode,
   diagnosticStack : diagnosticStack,
+  diagnosticStackPurify : diagnosticStackPurify,
   diagnosticWatchObject : diagnosticWatchObject, /* experimental */
   diagnosticWatchFields : diagnosticWatchFields, /* experimental */
   beep : beep,
@@ -18071,6 +18156,7 @@ var Proto =
   routineJoin : routineJoin,
   routineSeal : routineSeal,
   routineDelayed : routineDelayed,
+  routineTolerantCall : routineTolerantCall,
 
   routinesJoin : routinesJoin,
   routinesCall : routinesCall,
@@ -18094,9 +18180,10 @@ var Proto =
   timeReadyJoin : timeReadyJoin,
   timeOnce : timeOnce,
   timeOut : timeOut,
+  timeSoon : timeSoon,
   timeOutError : timeOutError,
 
-  timePeriodic : timePeriodic,
+  timePeriodic : timePeriodic, /* experimental */
 
   _timeNow_functor : _timeNow_functor,
   timeSpent : timeSpent,
@@ -18202,10 +18289,16 @@ var Proto =
 
   arrayHas : arrayHas,  /* experimental */
   arrayHasAny : arrayHasAny,  /* experimental */
+  arrayHasAll : arrayHasAll,  /* experimental */
+  arrayHasNone : arrayHasNone,  /* experimental */
 
   arrayAll : arrayAll,
   arrayAny : arrayAny,
   arrayNone : arrayNone,
+
+  all : arrayAll,
+  any : arrayAny,
+  none : arrayNone,
 
 
   // array etc

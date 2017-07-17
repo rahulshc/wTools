@@ -2085,12 +2085,13 @@ function strSplitChunks( o )
 
   //
 
-  function makeChunkText( begin )
+  function makeChunkStatic( begin )
   {
     var chunk = Object.create( null );
     chunk.line = line;
     chunk.text = src.substring( 0,begin );
     chunk.index = chunkIndex;
+    chunk.kind = 'static';
     result.chunks.push( chunk );
 
     src = src.substring( begin );
@@ -2098,6 +2099,33 @@ function strSplitChunks( o )
     chunkIndex += 1;
 
     colAccount( chunk.text );
+  }
+
+  //
+
+  function makeChunkDynamic()
+  {
+    var chunk = Object.create( null );
+    chunk.line = line;
+    chunk.column = column;
+    chunk.index = chunkIndex;
+    chunk.kind = 'dynamic';
+    chunk.prefix = src.match( o.prefix )[ 0 ];
+    chunk.code = src.substring( chunk.prefix.length,end );
+    if( o.investigate )
+    {
+      chunk.lines = chunk.code.split( '\n' );
+      chunk.tab = /^\s*/.exec( chunk.lines[ chunk.lines.length-1 ] )[ 0 ];
+    }
+
+    /* postfix */
+
+    src = src.substring( chunk.prefix.length + chunk.code.length );
+    chunk.postfix = src.match( o.postfix )[ 0 ];
+    src = src.substring( chunk.postfix.length );
+
+    result.chunks.push( chunk );
+    return chunk;
   }
 
   //
@@ -2116,14 +2144,14 @@ function strSplitChunks( o )
     /* text chunk */
 
     if( begin > 0 )
-    makeChunkText( begin );
+    makeChunkStatic( begin );
 
     /* break */
 
     if( !src )
     {
       if( !result.chunks.length )
-      makeChunkText( 0 );
+      makeChunkStatic( 0 );
       break;
     }
 
@@ -2139,27 +2167,7 @@ function strSplitChunks( o )
 
     /* code chunk */
 
-    var chunk = Object.create( null );
-    chunk.line = line;
-    chunk.column = column;
-    chunk.index = chunkIndex;
-    chunk.prefix = src.match( o.prefix )[ 0 ];
-    chunk.code = src.substring( chunk.prefix.length,end );
-    if( o.investigate )
-    {
-      chunk.lines = chunk.code.split( '\n' );
-      chunk.tab = /^\s*/.exec( chunk.lines[ chunk.lines.length-1 ] )[ 0 ];
-    }
-
-    /*colAccount( chunk.code );*/
-
-    result.chunks.push( chunk );
-
-    /* postfix */
-
-    src = src.substring( chunk.prefix.length + chunk.code.length );
-    chunk.postfix = src.match( o.postfix )[ 0 ];
-    src = src.substring( chunk.postfix.length );
+    var chunk = makeChunkDynamic();
 
     /* wind */
 
@@ -4246,7 +4254,7 @@ function strCamelize( srcStr )
 
 /**
  * Removes invalid characters from filename passed as first( srcStr ) argument by replacing characters finded by
- * pattern with second argument( o ) property( o.separator ).If( o.separator ) is not defined,
+ * pattern with second argument( o ) property( o.delimeter ).If( o.delimeter ) is not defined,
  * function sets value to( '_' ).
  *
  * @param {string} srcStr - Source string.
@@ -4259,7 +4267,7 @@ function strCamelize( srcStr )
  *
  * @example
  * //returns #example#file#name.js
- * var o = { 'separator':'#' };
+ * var o = { 'delimeter':'#' };
  * _.strFilenameFor( "'example\\file?name.js",o );
  *
  * @method strFilenameFor
@@ -4280,14 +4288,14 @@ function strFilenameFor( srcStr,o )
 
   var result = srcStr;
   var o = o || Object.create( null );
-  if( o.separator === undefined )
-  o.separator = '_';
+  if( o.delimeter === undefined )
+  o.delimeter = '_';
 
   var regexp = /<|>| :|"|'|\/|\\|\||\&|\?|\*|\n|\s/g;
 
   var result = result.replace( regexp,function( match )
   {
-    return o.separator;
+    return o.delimeter;
   });
 
   return result;
@@ -4636,7 +4644,7 @@ strExtractStrips.defaults =
 //
 
 /**
- * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) separators
+ * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
  * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.

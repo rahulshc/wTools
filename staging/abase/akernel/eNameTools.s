@@ -73,11 +73,11 @@ function nameUnfielded( nameObject )
     name.raw = nameObject;
     name.coded = nameObject;
   }
-  else throw _.err( 'nameUnfielded :','Unknown arguments' );
+  else _.assert( 0,'nameUnfielded :','Unknown arguments' );
 
-  _assert( arguments.length === 1 );
-  _assert( _.strIs( name.raw ) || _.symbolIs( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );
-  _assert( _.strIs( name.coded ) || _.symbolIs( name.coded ),'nameUnfielded :','not a string, something wrong :',nameObject );
+  // _assert( arguments.length === 1 );
+  // _assert( _.strIs( name.raw ) || _.symbolIs( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );
+  // _assert( _.strIs( name.coded ) || _.symbolIs( name.coded ),'nameUnfielded :','not a string, something wrong :',nameObject );
 
   return name;
 }

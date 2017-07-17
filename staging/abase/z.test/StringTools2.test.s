@@ -392,7 +392,7 @@ function strFilenameFor( test )
   test.identical( got,expected );
 
   test.description = 'convertion with options';
-  var got = _.strFilenameFor( "'example\\file?name.js",{ 'separator':'#' } );
+  var got = _.strFilenameFor( "'example\\file?name.js",{ 'delimeter':'#' } ); 
   var expected = '#example#file#name.js';
   test.identical( got,expected );
 

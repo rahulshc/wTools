@@ -250,7 +250,11 @@ function shellNode( o )
 {
 
   if( !System )
-  System = require( 'os' );
+  {
+    System = require( 'os' );
+    _.include( 'wPath' );
+    _.include( 'wFiles' );
+  }
 
   if( _.strIs( o ) )
   o = { scriptPath : o }
@@ -273,9 +277,9 @@ function shellNode( o )
   var totalmem = Math.floor( ( totalmem / ( 1024*1024*1.5 ) - 1 ) / 256 ) * 256;
 
   var argumentsForNode = '--expose-gc --stack-trace-limit=999 --max_old_space_size=' + totalmem + ' --max_executable_size=' + totalmem;
-  var script = _.fileProvider.pathNativize( o.scriptPath );
+  var scriptPath = _.fileProvider.pathNativize( o.scriptPath );
   var argumentsManual = process.argv.slice( 2 );
-  var code = _.strConcat( 'node',argumentsForNode,script );
+  var code = _.strConcat( 'node',argumentsForNode,scriptPath );
 
   if( argumentsManual.length )
   code += ' "' + argumentsManual.join( '" "' ) + '"';
