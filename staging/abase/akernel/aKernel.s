@@ -6994,6 +6994,10 @@ function strEnds( src,end )
 
 function strRemoveBegin( src,begin )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src ) || _.strIs( src ) );
+  _.assert( _.arrayLike( begin ) || _.strIs( begin ) );
+
   begin = _.arrayAs( begin );
 
   var result = _.arrayAs( src ).slice();
@@ -7039,6 +7043,10 @@ function strRemoveBegin( src,begin )
 
 function strRemoveEnd( src,end )
 {
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src ) || _.strIs( src ) );
+  _.assert( _.arrayLike( end ) || _.strIs( end ) );
+
   end = _.arrayAs( end );
 
   var result = _.arrayAs( src ).slice();
