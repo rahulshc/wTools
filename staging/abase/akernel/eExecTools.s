@@ -94,6 +94,9 @@ var shell = ( function( o )
 
     try
     {
+      var optionsForSpawn = Object.create( null );
+      if( o.stdio )
+      optionsForSpawn.stdio = o.stdio;
 
       if( o.mode === 'fork')
       {
@@ -103,13 +106,10 @@ var shell = ( function( o )
       {
         var args = _.strSplit( o.code );
         var app = args.shift();
-        o.child = ChildProcess.spawn( app, args );
+        o.child = ChildProcess.spawn( app, args, optionsForSpawn );
       }
       else if( o.mode === 'shell' )
       {
-        var optionsForSpawn = Object.create( null );
-        if( o.stdio )
-        optionsForSpawn.stdio = o.stdio;
         var app = process.platform === 'win32' ? 'cmd' : 'sh';
         var appParam = process.platform === 'win32' ? '/c' : '-c';
         o.child = ChildProcess.spawn( app,[ appParam,o.code ],optionsForSpawn );
@@ -211,13 +211,15 @@ var shell = ( function( o )
 
       done = true;
 
-      if( returnCode !== 0 && o.applyingReturnCode )
-      _.appExitCode( returnCode );
-
       o.returnCode = returnCode;
 
-      if( returnCode !== 0 && o.throwingBadReturnCode )
-      con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.code ) );
+      if( _.numberIs( o.returnCode ) )
+      if( o.returnCode !== 0 && o.applyingReturnCode )
+      _.appExitCode( o.returnCode );
+
+      if( _.numberIs( o.returnCode ) )
+      if( o.returnCode !== 0 && o.throwingBadReturnCode )
+      con.error( _.err( 'Process returned error code :',o.returnCode,'\nLaunched as :',o.code ) );
       else
       con.give( o );
       /*con.give( returnCode );*/
