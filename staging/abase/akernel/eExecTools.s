@@ -65,6 +65,9 @@ var shell = ( function( o )
     _.routineOptions( shell,o );
     _.assert( arguments.length === 1 );
 
+    if( o.args )
+    _.assert( _.arrayIs( o.args ) );
+
     if( o.outputCollecting )
     o.output = '';
 
@@ -88,7 +91,12 @@ var shell = ( function( o )
     /* */
 
     if( o.verbosity )
-    logger.log( o.code );
+    {
+      if( o.args )
+      logger.log( o.code, o.args.join( ' ' ) );
+      else
+      logger.log( o.code );
+    }
 
     /* */
 
@@ -104,14 +112,24 @@ var shell = ( function( o )
       }
       else if( o.mode === 'spawn' )
       {
-        var args = _.strSplit( o.code );
-        var app = args.shift();
-        o.child = ChildProcess.spawn( app, args, optionsForSpawn );
+        var app = o.code;
+
+        if( !o.args )
+        {
+          o.args = _.strSplit( o.code );
+          app = o.args.shift();
+        }
+
+        o.child = ChildProcess.spawn( app,o.args,optionsForSpawn );
       }
       else if( o.mode === 'shell' )
       {
         var app = process.platform === 'win32' ? 'cmd' : 'sh';
         var appParam = process.platform === 'win32' ? '/c' : '-c';
+
+        if( o.args )
+        o.code = o.code + ' ' + o.args.join( ' ' );
+
         o.child = ChildProcess.spawn( app,[ appParam,o.code ],optionsForSpawn );
       }
       else if( o.mode === 'exec' )
@@ -211,15 +229,17 @@ var shell = ( function( o )
 
       done = true;
 
+      if( returnCode !== 0 && o.applyingReturnCode )
+      if( _.numberIs( returnCode ) )
+      _.appExitCode( returnCode );
+
       o.returnCode = returnCode;
 
-      if( _.numberIs( o.returnCode ) )
-      if( o.returnCode !== 0 && o.applyingReturnCode )
-      _.appExitCode( o.returnCode );
-
-      if( _.numberIs( o.returnCode ) )
-      if( o.returnCode !== 0 && o.throwingBadReturnCode )
-      con.error( _.err( 'Process returned error code :',o.returnCode,'\nLaunched as :',o.code ) );
+      if( returnCode !== 0 && o.throwingBadReturnCode )
+      {
+        if( _.numberIs( returnCode ) )
+        con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.code ) );
+      }
       else
       con.give( o );
       /*con.give( returnCode );*/
@@ -235,6 +255,7 @@ shell.defaults =
 {
   code : null,
   mode : 'shell',
+  args : null,
   stdio : 'inherit',
   throwingBadReturnCode : 0,
   applyingReturnCode : 0,
