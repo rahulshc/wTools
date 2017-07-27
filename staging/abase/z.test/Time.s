@@ -146,6 +146,126 @@ function timeOut( test )
 
 //
 
+function timeOutError( test )
+{ 
+  var delay = 300;
+  var testCon = new wConsequence().give()
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'delay only';
+    var timeBefore = _.timeNow();
+    return _.timeOutError( delay )
+    .doThen( function( err, got )
+    { 
+      test.shouldBe( _.timeNow() - timeBefore >= delay );
+      test.shouldBe( _.errIs( err ) );
+    });
+  })
+
+  /* */
+  
+  .doThen( function()
+  {
+    test.description = 'delay + routine';
+    var timeBefore = _.timeNow();
+    return _.timeOutError( delay, () => {} )
+    .doThen( function( err, got )
+    { 
+      test.shouldBe( _.timeNow() - timeBefore >= delay );
+      test.identical( got, undefined );
+      test.shouldBe( _.errIs( err ) );
+    });
+  })
+
+  /* */
+  
+  .doThen( function()
+  {
+    test.description = 'delay + routine that returns a value';
+    var timeBefore = _.timeNow();
+    var value = 'value';
+    return _.timeOutError( delay, () => value )
+    .doThen( function( err, got )
+    { 
+      test.shouldBe( _.timeNow() - timeBefore >= delay );
+      test.identical( got, undefined );
+      test.shouldBe( _.errIs( err ) );
+    });
+  })
+
+  // /* */
+  
+  .doThen( function()
+  {
+    test.description = 'delay + routine that returns a consequence';
+    var timeBefore = _.timeNow();
+    return _.timeOutError( delay, () => _.timeOut( delay ) )
+    .doThen( function( err, got )
+    { 
+      test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
+      test.identical( got, undefined );
+      test.shouldBe( _.errIs( err ) );
+    });
+  })
+
+  /* */
+  
+  .doThen( function()
+  {
+    test.description = 'delay + routine that calls another timeOut';
+    var timeBefore = _.timeNow();
+    return _.timeOutError( delay, () => { _.timeOut( delay ) } )
+    .doThen( function( err, got )
+    { 
+      test.shouldBe( _.timeNow() - timeBefore >= delay );
+      test.identical( got, undefined );
+      test.shouldBe( _.errIs( err ) );
+    });
+  })
+
+  /* */
+  
+  .doThen( function()
+  {
+    test.description = 'delay + context + routine + arguments';
+    var timeBefore = _.timeNow();
+    function r( delay )
+    {
+      return delay / 2;
+    }
+    return _.timeOutError( delay, undefined, r, [ delay ] )
+    .doThen( function( err, got )
+    { 
+      test.shouldBe( _.timeNow() - timeBefore >= delay );
+      test.identical( got, undefined );
+      test.shouldBe( _.errIs( err ) );
+    });
+  })
+
+  /* */
+  
+  .doThen( function()
+  {
+    test.description = 'delay + consequence';
+    var timeBefore = _.timeNow();
+   
+    return _.timeOutError( delay, _.timeOut( delay ) )
+    .doThen( function( err, got )
+    { 
+      test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
+      test.identical( got, undefined );
+      test.shouldBe( _.errIs( err ) );
+    });
+  })
+
+  return testCon;
+}
+
+//
+
 var Self =
 {
 
@@ -155,6 +275,7 @@ var Self =
   tests :
   {
     timeOut : timeOut,
+    timeOutError : timeOutError
   }
 
 }
