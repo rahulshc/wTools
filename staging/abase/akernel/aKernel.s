@@ -45,7 +45,7 @@ if( _global_.wBase )
 
 _global_[ '_global_' ] = _global_;
 _global_._global_ = _global_;
-
+if( _global_.DEBUG === undefined )
 _global_.DEBUG = true;
 
 // parent
@@ -1072,6 +1072,8 @@ function rangeLastGet( range,options )
 
 function enityExtend( dst,src )
 {
+
+  // debugger;
 
   if( _.objectIs( src ) || _.arrayLike( src ) )
   {
@@ -3601,6 +3603,9 @@ function _err( o )
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
 
+  if( o.args.length && _.strTypeOf( o.args[ 0 ] ) !== 'ErrorQuerying' )
+  debugger;
+
   /* var */
 
   var originalMessage = '';
@@ -3722,8 +3727,9 @@ function _err( o )
         else if( _.strIs( argument.message ) ) str = argument.message;
         else str = _.toStr( argument );
       }
-      else if( _.routineIs( argument.toString ) ) str = argument.toString();
-      else str = '[ ' + _.strTypeOf( argument ) + ' ]';
+      else str = _.toStr( argument,{ levels : 2 } );
+      // else if( _.routineIs( argument.toString ) ) str = argument.toString();
+      // else str = '[ ' + _.strTypeOf( argument ) + ' ]';
 
     }
     else if( argument === undefined )
@@ -3926,6 +3932,17 @@ function _err( o )
     configurable : true,
     writable : true,
     value : sourceCode || null,
+  });
+
+  /* location */
+
+  if( result.location === undefined )
+  Object.defineProperty( result, 'location',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : o.location,
   });
 
   /* catches */
@@ -4295,7 +4312,9 @@ function diagnosticLocation( o )
     // debugger;
 
     var t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
-    path = t.exec( path )[ 2 ] || '';
+    var executed = t.exec( path );
+    if( executed )
+    path = executed[ 2 ] || '';
 
     if( _.strEnds( path, '.' ) )
     path += '?';
@@ -7995,7 +8014,11 @@ function routinesCall()
   function makeResult()
   {
 
-    _.assert( _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ) );
+    _.assert
+    (
+      _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
+      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
+    );
 
     if( _.routineIs( routines ) )
     routines = [ routines ];
@@ -8126,6 +8149,13 @@ function routineOptions( routine,options )
   _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
   _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
   _.assert( _.objectIs( options ),'routineOptions : expects object' );
+
+  // if( options.preset )
+  // {
+  //   _.assert( routine.presets );
+  //   _.assert( filesRead.presets[ options.preset ],'unknown preset',options.preset );
+  //   _.mapComplement( options,filesRead.presets[ options.preset ] );
+  // }
 
   _.assertMapHasOnly( options,routine.defaults );
   _.mapComplement( options,routine.defaults );
@@ -14829,6 +14859,33 @@ function mapDelete( dst,ins )
 // map recursive
 // --
 
+function mapSupplementAppending( dst,src )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectIs( src ) );
+  _.assert( _.objectIs( dst ) );
+
+  for( var s in src )
+  {
+
+    if( dst[ s ] !== undefined )
+    {
+      if( _.arrayIs( dst[ s ] ) )
+      debugger;
+      if( _.arrayIs( dst[ s ] ) )
+      _.__arrayAppendArrays( dst[ s ],[ src[ s ] ] );
+      continue;
+    }
+
+    dst[ s ] = src[ s ];
+
+  }
+
+  return dst;
+}
+
+//
+
 function mapSupplementRecursive()
 {
   _.assert( this === Self );
@@ -18446,6 +18503,7 @@ var Proto =
 
   // map recursive
 
+  mapSupplementAppending : mapSupplementAppending,
   mapSupplementRecursive : mapSupplementRecursive,
   mapExtendRecursive : mapExtendRecursive,
   _mapFieldFilterMake : _mapFieldFilterMake,

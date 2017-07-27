@@ -165,6 +165,7 @@ function _includeSimplyAct( src )
   }
   catch( err )
   {
+    debugger;
     throw err;
     throw _.err( err,'\nLooked at\n',_.toStr( Module.globalPaths,{ levels : 2 } ),'\n',_.toStr( module.paths,{ levels : 2 } ) );
   }
@@ -474,19 +475,41 @@ function appExitCode( status )
 
 //
 
-function appExit( status )
+function appExit( exitCode )
 {
-  var result;
+
+  exitCode = exitCode !== undefined ? exitCode : appExitCode();
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( status === undefined || _.numberIs( status ) );
+  _.assert( exitCode === undefined || _.numberIs( exitCode ) );
 
   if( _global_.process )
   {
-    process.exit( status !== undefined ? status : appExitCode() );
+    process.exit( exitCode );
+  }
+  else
+  {
+    debugger;
   }
 
-  return result;
+}
+
+//
+
+function appExitWithBeep( exitCode )
+{
+
+  exitCode = exitCode !== undefined ? exitCode : appExitCode();
+
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( exitCode === undefined || _.numberIs( exitCode ) );
+
+  _.beep();
+
+  if( exitCode )
+  _.beep();
+
+  _.appExit( exitCode );
 }
 
 // --
@@ -642,6 +665,7 @@ var Proto =
 
   appExitCode : appExitCode,
   appExit : appExit,
+  appExitWithBeep : appExitWithBeep,
 
 }
 
