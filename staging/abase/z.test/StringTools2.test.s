@@ -1565,7 +1565,81 @@ function strSplit( test )
   });
   test.identical( got, expected );
 
+  /* ignore text inside " " */
+
+  test.description = 'ignore text inside " "';
+
+  var o =
+  {
+    src : '"/path/with space/" a b c',
+    skippingQuotation : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ '/path/with space/', 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
   /**/
+
+  var o =
+  {
+    src : 'a "/path with/empty space/" a',
+    skippingQuotation : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a', '/path with/empty space/', 'a' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b c" "a b c" "a b c"',
+    skippingQuotation : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b c', 'a b c', 'a b c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b c" "a b c" "a b c"',
+    skippingQuotation : 1,
+    preservingEmpty : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b c', '', 'a b c', '', 'a b c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b c"x"a b c"x"a b c"',
+    skippingQuotation : 1,
+    delimeter : [ 'x' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b c', 'x', 'a b c', 'x', 'a b c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b" "" c"',
+    skippingQuotation : 1,
+    delimeter : [ '"' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b', ' ', ' c"' ];
+  test.identical( got, expected );
+
 
   if( Config.debug )
   {

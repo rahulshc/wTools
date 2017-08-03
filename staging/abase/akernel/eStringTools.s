@@ -2591,6 +2591,16 @@ function strSplit( o )
 
   var delimeter = _.arrayIs( o.delimeter ) ? o.delimeter : [ o.delimeter ];
 
+  var preservingDelimeters = o.preservingDelimeters;
+  var preservingEmpty = o.preservingEmpty;
+
+  if( o.skippingQuotation )
+  {
+    o.preservingDelimeters = 1;
+    o.preservingEmpty = 1;
+    delimeter.unshift( '"' );
+  }
+
   /* */
 
   function nextDelimeter( d,last )
@@ -2646,10 +2656,10 @@ function strSplit( o )
       result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
       else if( o.preservingEmpty )
       result.unshift( '' );
-      if( o.delimeter[ splitterIndex ].length || o.preservingEmpty )
-      result.unshift( o.delimeter[ splitterIndex ] );
+      if( delimeter[ splitterIndex ].length || o.preservingEmpty )
+      result.unshift( delimeter[ splitterIndex ] );
 
-      prevPosition = position-o.delimeter[ splitterIndex ].length;
+      prevPosition = position-delimeter[ splitterIndex ].length;
 
     }
 
@@ -2689,6 +2699,75 @@ function strSplit( o )
 
   }
 
+  if( o.skippingQuotation )
+  {
+    var newResult = [];
+
+    function _sliceAndJoin( l, r )
+    {
+      var arr = result.slice( l,r );
+      var res = '';
+      for( var i = 0; i < arr.length; i++ )
+      {
+        if( !arr[ i ].length )
+        {
+          res += ' ';
+        }
+        else
+        res += arr[ i ];
+      }
+
+      return res;
+    }
+
+    var l = -1;
+    var r = -1;
+
+    // console.log( result );
+    // debugger;
+    for( var i = 0; i < result.length; i++ )
+    {
+      if( result[ i ] === '"' )
+      {
+        if( i === result.length - 1 )
+        if( l < 0 )
+        {
+          newResult[ newResult.length - 1 ] += '"';
+          break;
+        }
+
+        if( l < 0 )
+        l = i;
+        else
+        r = i;
+      }
+      else if( !result[ i ].length )
+      {
+        if( !preservingEmpty )
+        continue;
+
+        if( result[ i + 1 ] === '"' || result[ i - 1 ] === '"' )
+        continue;
+      }
+      else if( o.delimeter.indexOf( result[ i ] ) >= 0 )
+      {
+        if( !preservingDelimeters )
+        continue;
+      }
+
+      if( l >= 0 && r >= 0 )
+      {
+        newResult.push( _sliceAndJoin( l + 1, r ) );
+        l = r = -1;
+      }
+      else
+      if( l < 0 && r < 0 )
+      newResult.push( result[ i ] );
+    }
+
+    result = newResult;
+  }
+
   return result;
 }
 
@@ -2697,6 +2776,7 @@ strSplit.defaults =
   src : null,
   delimeter : ' ',
   stripping : 1,
+  skippingQuotation : 0,
   preservingEmpty : 0,
   preservingDelimeters : 0,
 }
