@@ -5,7 +5,6 @@
 if( typeof module !== 'undefined' )
 {
 
-  //if( typeof wBase === 'undefined' )
   try
   {
     require( '../../abase/wTools.s' );
@@ -22,12 +21,11 @@ if( typeof module !== 'undefined' )
 }
 
 var _ = wTools;
-var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
 function timeOut( test )
-{ 
+{
   var delay = 300;
   var testCon = new wConsequence().give()
 
@@ -39,21 +37,21 @@ function timeOut( test )
     var timeBefore = _.timeNow();
     return _.timeOut( delay )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.shouldBe( _.routineIs( got ) );
     });
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine';
     var timeBefore = _.timeNow();
     return _.timeOut( delay, () => {} )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( got, undefined );
       test.identical( err, null );
@@ -61,7 +59,7 @@ function timeOut( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that returns a value';
@@ -69,7 +67,7 @@ function timeOut( test )
     var value = 'value';
     return _.timeOut( delay, () => value )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( got, value );
       test.identical( err, null );
@@ -77,14 +75,14 @@ function timeOut( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that returns a consequence';
     var timeBefore = _.timeNow();
     return _.timeOut( delay, () => _.timeOut( delay ) )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
       test.shouldBe( _.routineIs( got ) );
       test.identical( err, null );
@@ -92,14 +90,14 @@ function timeOut( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that calls another timeOut';
     var timeBefore = _.timeNow();
     return _.timeOut( delay, () => { _.timeOut( delay ) } )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( err, null );
       test.identical( got, undefined );
@@ -107,7 +105,7 @@ function timeOut( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + context + routine + arguments';
@@ -118,7 +116,7 @@ function timeOut( test )
     }
     return _.timeOut( delay, undefined, r, [ delay ] )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( got, delay / 2 );
       test.identical( err, null );
@@ -126,15 +124,15 @@ function timeOut( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + consequence';
     var timeBefore = _.timeNow();
-   
+
     return _.timeOut( delay, _.timeOut( delay ) )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
       test.shouldBe( _.routineIs( got ) );
       test.identical( err, null );
@@ -147,7 +145,7 @@ function timeOut( test )
 //
 
 function timeOutError( test )
-{ 
+{
   var delay = 300;
   var testCon = new wConsequence().give()
 
@@ -159,21 +157,21 @@ function timeOutError( test )
     var timeBefore = _.timeNow();
     return _.timeOutError( delay )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.shouldBe( _.errIs( err ) );
     });
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine';
     var timeBefore = _.timeNow();
     return _.timeOutError( delay, () => {} )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( got, undefined );
       test.shouldBe( _.errIs( err ) );
@@ -181,7 +179,7 @@ function timeOutError( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that returns a value';
@@ -189,7 +187,7 @@ function timeOutError( test )
     var value = 'value';
     return _.timeOutError( delay, () => value )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( got, undefined );
       test.shouldBe( _.errIs( err ) );
@@ -197,14 +195,14 @@ function timeOutError( test )
   })
 
   // /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that returns a consequence';
     var timeBefore = _.timeNow();
     return _.timeOutError( delay, () => _.timeOut( delay ) )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
       test.identical( got, undefined );
       test.shouldBe( _.errIs( err ) );
@@ -212,14 +210,14 @@ function timeOutError( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that calls another timeOut';
     var timeBefore = _.timeNow();
     return _.timeOutError( delay, () => { _.timeOut( delay ) } )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( got, undefined );
       test.shouldBe( _.errIs( err ) );
@@ -227,7 +225,7 @@ function timeOutError( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + context + routine + arguments';
@@ -238,7 +236,7 @@ function timeOutError( test )
     }
     return _.timeOutError( delay, undefined, r, [ delay ] )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay );
       test.identical( got, undefined );
       test.shouldBe( _.errIs( err ) );
@@ -246,15 +244,15 @@ function timeOutError( test )
   })
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + consequence';
     var timeBefore = _.timeNow();
-   
+
     return _.timeOutError( delay, _.timeOut( delay ) )
     .doThen( function( err, got )
-    { 
+    {
       test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
       test.identical( got, undefined );
       test.shouldBe( _.errIs( err ) );
@@ -270,7 +268,6 @@ var Self =
 {
 
   name : 'Time',
-  sourceFilePath : sourceFilePath,
 
   tests :
   {
