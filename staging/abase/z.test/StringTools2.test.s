@@ -1,4 +1,4 @@
-( function _StringTools2_test_s_( ) {
+( function _StringTools2_test_s_() {
 
 'use strict';
 
@@ -5217,4 +5217,4 @@ Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self.name );
 
-} )( );
+})();
