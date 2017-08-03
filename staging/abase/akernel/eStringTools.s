@@ -4166,6 +4166,17 @@ function strCountRight( src,ins )
 
 //
 
+function strHas( src,ins )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+
+  return src.indexOf( ins ) !== -1;
+}
+
+//
+
 /**
  * Returns source string( src ) repeated specified number( times ) of times.
  * If source( src ) has zero length or ( times <= 0 ) returns empty string.
@@ -5233,6 +5244,7 @@ var Proto =
   strCount : strCount,
   strCountLeft : strCountLeft,
   strCountRight : strCountRight,
+  strHas : strHas,
 
   strDup : strDup, /* document me */
 

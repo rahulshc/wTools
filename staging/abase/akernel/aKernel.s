@@ -1503,6 +1503,7 @@ function entityFreeze( src )
   if( _.bufferTypedIs( src ) )
   {
     src = src.buffer;
+    debugger;
   }
 
   Object.freeze( src );
@@ -5436,7 +5437,7 @@ function assertInstanceOrClass( _Self,_this )
 
 function assertOwnNoConstructor( ins )
 {
-  _.assert( _.objectLike( ins ) );
+  _.assert( _.objectLikeOrRoutine( ins ) );
   var args = _.arraySlice( arguments );
   args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_hasOwnProperty.call( ins,'constructor' ) );
   _.assert.call( _,args );
@@ -6585,18 +6586,34 @@ function numbersMake_functor( length )
 
 function numberClamp( src,low,high )
 {
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  _.assert( arguments.length === 3 );
-  _.numberIs( src );
-  _.numberIs( low );
-  _.numberIs( high );
+  if( arguments.length === 2 )
+  {
+    _.assert( arguments[ 1 ].length === 2 );
+    low = arguments[ 1 ][ 0 ];
+    high = arguments[ 1 ][ 1 ];
+  }
+
+  if( src > high )
+  return high;
 
   if( src < low )
   return low;
-  else if( src > high )
-  return high;
-  else
+
   return src;
+
+  // _.assert( arguments.length === 3 );
+  // _.numberIs( src );
+  // _.numberIs( low );
+  // _.numberIs( high );
+  //
+  // if( src < low )
+  // return low;
+  // else if( src > high )
+  // return high;
+  // else
+  // return src;
 
 }
 
@@ -9799,16 +9816,16 @@ function arrayFrom( src )
   if( _.objectIs( src ) )
   return _.mapToArray( src );
 
+  if( _.arrayLike( src ) )
+  return _ArraySlice.call( src );
+
   if( _.strIs( src ) )
-  {
-    var sep = ( src.indexOf( ',' ) !== -1 ) ? ',' : ' '; //???
-    return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
-  }
+  return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
 
   if( _.argumentsIs( src ) )
   return _ArraySlice.call( src );
 
-  _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) ); //???
+  _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) );
 }
 
 //
@@ -16898,7 +16915,7 @@ function mapBut( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
+  _assert( srcMap,'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
