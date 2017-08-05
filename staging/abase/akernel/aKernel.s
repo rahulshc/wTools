@@ -8533,9 +8533,9 @@ function timeOut( delay,onReady )
 
   con.doThen( function( err,arg )
   {
-    console.log( 'timeOut.doThen' );
-    if( err )
-    console.log( 'timeOut.doThen.err' );
+    // console.log( 'timeOut.doThen' );
+    // if( err )
+    // console.log( 'timeOut.doThen.err' );
     if( err )
     clearTimeout( timer );
   });
