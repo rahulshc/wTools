@@ -2788,7 +2788,7 @@ strSplit.defaults =
  * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
- * - Second to pass map like ( { src : ' acb ', stripper : ' ' } ).
+ * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
  *
  * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
  * @param {string} [ o.src=null ]- Source string to strip.
@@ -2839,18 +2839,24 @@ function strStrip( o )
   }
 
   _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
-  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ),'expects string or array o.stripper' );
+  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ),'expects string or array or regexp ( o.stripper )' );
 
   //logger.log( 'strStrip.src :',o.src ); debugger;
 
-  if( o.stripper === ' ' )
+  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
   {
-    return o.src.replace( /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,'' );
+    return o.src.replace( o.stripper,'' );
   }
   else
   {
 
-    o.stripper = _.arrayAs( o.stripper );
+    _.assert( _.arrayIs( o.stripper ) )
+    // o.stripper = _.arrayAs( o.stripper );
+
+    debugger;
+    if( Config.debug )
+    for( var i of o.stripper )
+    _.assert( _.strIs( o.stripper ) );
 
     for( var b = 0 ; b < o.src.length ; b++ )
     if( o.stripper.indexOf( o.src[ b ] ) === -1 )
@@ -2870,7 +2876,7 @@ function strStrip( o )
 strStrip.defaults =
 {
   src : null,
-  stripper : ' ',
+  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
 }
 
 //

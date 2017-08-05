@@ -8529,14 +8529,24 @@ function timeOnce( delay,onBegin,onEnd )
 function timeOut( delay,onReady )
 {
   var con = new wConsequence();
+  var timer = null;
 
-  _assert( arguments.length <= 4 );
-  _assert( _.numberIs( delay ) );
+  con.doThen( function( err,arg )
+  {
+    console.log( 'timeOut.doThen' );
+    if( err )
+    console.log( 'timeOut.doThen.err' );
+    if( err )
+    clearTimeout( timer );
+  });
+
+  _.assert( arguments.length <= 4 );
+  _.assert( _.numberIs( delay ) );
 
   if( arguments[ 1 ] !== undefined && arguments[ 2 ] === undefined && arguments[ 3 ] === undefined )
-  _assert( _.routineIs( onReady ) || _.consequenceIs( onReady ) );
+  _.assert( _.routineIs( onReady ) || _.consequenceIs( onReady ) );
   else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
-  _assert( _.routineIs( arguments[ 2 ] ) );
+  _.assert( _.routineIs( arguments[ 2 ] ) );
 
   function onEnd()
   {
@@ -8546,6 +8556,7 @@ function timeOut( delay,onReady )
     con.first( onReady );
     else
     con.give( timeOut );
+
   }
 
   if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
@@ -8554,7 +8565,7 @@ function timeOut( delay,onReady )
   }
 
   if( delay > 0 )
-  setTimeout( onEnd,delay );
+  timer = setTimeout( onEnd,delay );
   else
   timeSoon( onEnd );
 
