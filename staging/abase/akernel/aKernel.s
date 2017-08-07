@@ -14308,15 +14308,16 @@ function arraySetIntersection( src )
 
       _.assert( _.arrayLike( arguments[ a ] ) );
 
-      throw _.err( 'Not tested' );
+      // throw _.err( 'Not tested' );
       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
       {
-        throw _.err( 'Not tested' );
+        // throw _.err( 'Not tested' );
         break;
       }
+
     }
 
-    if( a === arguments.length )
+    if( a !== arguments.length )
     result.push( src[ i ] );
 
   }
@@ -18477,8 +18478,6 @@ var Proto =
 
   // array replace
 
-  /* !!! Strictly, Array, Arrays variants needed */
-
   __arrayReplaceOnce : __arrayReplaceOnce,
   __arrayReplaceOnceStrictly : __arrayReplaceOnceStrictly,
   __arrayReplacedOnce : __arrayReplacedOnce,
@@ -18498,6 +18497,8 @@ var Proto =
 
 
   // array set
+
+  /* lack of tests !!! */
 
   arraySetBut : arraySetBut,
   arraySetDiff : arraySetDiff,

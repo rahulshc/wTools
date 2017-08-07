@@ -2855,8 +2855,8 @@ function strStrip( o )
 
     debugger;
     if( Config.debug )
-    for( var i of o.stripper )
-    _.assert( _.strIs( o.stripper ) );
+    for( var s of o.stripper )
+    _.assert( _.strIs( s,'expects string ( stripper[ * ] )' ) );
 
     for( var b = 0 ; b < o.src.length ; b++ )
     if( o.stripper.indexOf( o.src[ b ] ) === -1 )
