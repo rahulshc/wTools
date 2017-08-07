@@ -9025,6 +9025,60 @@ function arraySetContainAll( test )
 
 //
 
+function arraySetBut( test )
+{
+  var cases = 
+  [
+    { src : [], but : [], expected : [] },
+    { src : [ 1, 2, 3 ], but : [], expected : [ 1, 2, 3 ] },
+    { src : [], but : [ 1, 2, 3 ], expected : [ ] },
+    { src : [ 1, 1, 1 ], but : [ 1 ], expected : [] },
+    { src : [ 1, 2, 3 ], but : [ 3, 2, 1 ], expected : [] },
+    { src : [ 1, 2, 3 ], but : [ 3 ], expected : [ 1, 2 ] },
+    { src : [ 1, 2, 3 ], but : [ 4, 5, 6 ], expected : [ 1, 2, 3 ] },
+    { src : 1, but : 1, error : true },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.error )
+    test.shouldThrowError( () => _.arraySetBut( c.src, c.but ) );
+    else
+    test.identical( _.arraySetBut( c.src, c.but ), c.expected );
+  }
+}
+
+//
+
+function arraySetDiff( test )
+{
+  var cases = 
+  [
+    { src1 : [], src2 : [], expected : [] },
+    { src1 : [ 1, 2, 3 ], src2 : [], expected : [ 1, 2, 3 ] },
+    { src1 : [], src2 : [ 1, 2, 3 ], expected : [ 1, 2, 3 ] },
+    { src1 : [ 1, 2, 3 ], src2 : [ 4, 5, 6 ], expected : [ 1, 2, 3, 4, 5, 6 ] },
+    { src1 : [ 1, 2, 3 ], src2 : [ 3, 4, 5 ], expected : [ 1, 2, 4, 5 ] },
+    { src1 : [ 1, 1, 2, 2, 3, 3 ], src2 : [ 1, 2, 3 ], expected : [] },
+    { src1 : [ 1, 1, 2, 3, 3 ], src2 : [ 3, 3, 4, 5, 5 ], expected : [ 1, 1, 2, 4, 5, 5 ] },
+    { src1 : 1, src2 : 1, error : true },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.error )
+    test.shouldThrowError( () => _.arraySetDiff( c.src1, c.src2 ) );
+    else
+    test.identical( _.arraySetDiff( c.src1, c.src2 ), c.expected );
+  }
+}
+
+//
+
 function arraySetContainSomething( test )
 {
 
@@ -9303,6 +9357,8 @@ var Self =
 
     // array set
 
+    arraySetBut : arraySetBut,
+    arraySetDiff : arraySetDiff,
     arraySetContainAll: arraySetContainAll,
     arraySetContainSomething : arraySetContainSomething,
 

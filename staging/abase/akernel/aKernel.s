@@ -14250,6 +14250,27 @@ function arrayUpdate( dstArray,ins,sub )
 // array set
 // --
 
+/**
+ * Returns new array that contains elements from ( src ) that are not present in ( but ). 
+ * All copies of ignored element are ignored too.
+ * @param { arrayLike } src - source array;
+ * @param { arrayLike} but - array of elements to ignore.
+ *
+ * @example
+ * // returns []
+ * _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
+ * 
+ * @example
+ * // returns [ 2, 2 ]
+ * _.arraySetBut( [ 1, 1, 2, 2, 3, 3 ], [ 1, 3 ] );
+ *
+ * @returns { Array } Source array without elements from ( but ).
+ * @function arraySetBut
+ * @throws { Error } If arguments count is not 2.
+ * @throws { Error } If one or both argument(s) are not arrayLike entities.
+ * @memberof wTools
+ */
+
 function arraySetBut( src,but )
 {
   var result = [];
@@ -14268,6 +14289,27 @@ function arraySetBut( src,but )
 }
 
 //
+
+/**
+ * Returns new array that contains difference between two arrays: ( src1 ) and ( src2 ). 
+ * If some element is present in both arrays, this element and all copies of it are ignored.
+ * @param { arrayLike } src1 - source array;
+ * @param { arrayLike} src2 - array to compare with ( src1 ).
+ *
+ * @example
+ * // returns [ 1, 2, 3, 4, 5, 6 ]
+ * _.arraySetDiff( [ 1, 2, 3 ], [ 4, 5, 6 ] );
+ * 
+ * @example
+ * // returns [ 2, 4, 3, 5 ]
+ * _.arraySetDiff( [ 1, 2, 4 ], [ 1, 3, 5 ] );
+ *
+ * @returns { Array } Array with unique elements from both arrays.
+ * @function arraySetDiff
+ * @throws { Error } If arguments count is not 2.
+ * @throws { Error } If one or both argument(s) are not arrayLike entities.
+ * @memberof wTools
+ */
 
 function arraySetDiff( src1,src2 )
 {
@@ -14293,6 +14335,26 @@ function arraySetDiff( src1,src2 )
 }
 
 //
+
+/**
+ * Returns arrays that contains elements from first argument ( src ) that exists at least in one array provided after ( src ).
+ * If element exists and it has copies, all copies of that element will be included into result array. 
+ * @param { arrayLike } src - source array;
+ * @param { arrayLike... } - sequence of arrays to compare with ( src ).
+ *
+ * @example
+ * // returns [ 1, 3 ]
+ * _.arraySetIntersection( [ 1, 2, 3 ], [ 1 ], [ 3 ] );
+ * 
+ * @example
+ * // returns [ 1, 1, 2, 2, 3, 3 ]
+ * _.arraySetIntersection( [ 1, 1, 2, 2, 3, 3 ], [ 1 ], [ 2 ], [ 3 ], [ 4 ] );
+ * 
+ * @returns { Array } Array with elements that are a part of at least one of the provided arrays.
+ * @function arraySetIntersection
+ * @throws { Error } If one of arguments is not an arrayLike entity.
+ * @memberof wTools
+ */
 
 function arraySetIntersection( src )
 {
