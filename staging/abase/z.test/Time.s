@@ -130,13 +130,77 @@ function timeOut( test )
     test.description = 'delay + consequence';
     var timeBefore = _.timeNow();
 
-    return _.timeOut( delay, _.timeOut( delay ) )
+    return _.timeOut( delay, _.timeOut( delay * 2 ) )
     .doThen( function( err, got )
     {
       test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
       test.shouldBe( _.routineIs( got ) );
       test.identical( err, null );
     });
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'stop timer with error';
+    var timeBefore = _.timeNow();
+
+    var t = _.timeOut( delay );
+    t.doThen( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay / 2 );
+      test.identical( got, undefined );
+      test.identical( err, 'stop' )
+    })
+    _.timeOut( delay/ 2, () => t.error( 'stop' ) );
+
+    return t;
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'stop timer with error, routine passed';
+    var timeBefore = _.timeNow();
+    var called = false;
+
+    var t = _.timeOut( delay, () => { called = true } );
+    t.doThen( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay / 2 );
+      test.identical( got, undefined );
+      test.identical( called, false );
+      test.identical( err, 'stop' )
+    })
+    _.timeOut( delay/ 2, () => t.error( 'stop' ) );
+
+    return t;
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'give err after timeOut';
+    var timeBefore = _.timeNow();
+
+    var t = _.timeOut( delay, () => {} );
+    t.got( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay );
+      test.identical( got, undefined );
+      test.identical( err, null );
+    })
+
+    return _.timeOut( delay + 50, function()
+    {
+      t.error( 'stop' );
+      t.got( ( err, got ) => test.identical( err, 'stop' ) );
+    })
+
+    return t;
   })
 
   return testCon;
@@ -250,13 +314,55 @@ function timeOutError( test )
     test.description = 'delay + consequence';
     var timeBefore = _.timeNow();
 
-    return _.timeOutError( delay, _.timeOut( delay ) )
+    return _.timeOutError( delay, _.timeOut( delay * 2 ) )
     .doThen( function( err, got )
     {
       test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
       test.identical( got, undefined );
       test.shouldBe( _.errIs( err ) );
     });
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'stop timer with error';
+    var timeBefore = _.timeNow();
+
+    var t = _.timeOutError( delay );
+    t.doThen( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay / 2 );
+      test.identical( got, undefined );
+      test.identical( err, null );
+      test.identical( t.messagesGet().length, 0 );
+    })
+    _.timeOut( delay/ 2, () => t.error( 'stop' ) );
+
+    return t;
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'stop timer with error, routine passed';
+    var timeBefore = _.timeNow();
+    var called = false;
+
+    var t = _.timeOutError( delay, () => { called = true } );
+    t.doThen( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay / 2 );
+      test.identical( got, undefined );
+      test.identical( called, false );
+      test.identical( err, null )
+      test.identical( t.messagesGet().length, 0 );
+    })
+    _.timeOut( delay/ 2, () => t.error( 'stop' ) );
+
+    return t;
   })
 
   return testCon;
