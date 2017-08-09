@@ -3604,8 +3604,8 @@ function _err( o )
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
 
-  if( o.args.length && _.strTypeOf( o.args[ 0 ] ) !== 'ErrorQuerying' )
-  debugger;
+  // if( o.args.length && _.strTypeOf( o.args[ 0 ] ) !== 'ErrorQuerying' )
+  // debugger;
 
   /* var */
 
@@ -8531,14 +8531,22 @@ function timeOut( delay,onReady )
   var con = new wConsequence();
   var timer = null;
 
-  con.doThen( function( err,arg )
+  /* */
+
+  con.got( function( err,arg )
   {
-    // console.log( 'timeOut.doThen' );
-    // if( err )
-    // console.log( 'timeOut.doThen.err' );
     if( err )
-    clearTimeout( timer );
+    {
+      clearTimeout( timer );
+      return wConsequence().error( err );
+    }
+    // else
+    // {
+    //   return arg;
+    // }
   });
+
+  /* */
 
   _.assert( arguments.length <= 4 );
   _.assert( _.numberIs( delay ) );
@@ -8551,6 +8559,8 @@ function timeOut( delay,onReady )
   function onEnd()
   {
     var result;
+
+    con.give();
 
     if( onReady )
     con.first( onReady );
