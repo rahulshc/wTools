@@ -8538,12 +8538,8 @@ function timeOut( delay,onReady )
     if( err )
     {
       clearTimeout( timer );
-      con.error( err );
+      con.give( err );
     }
-    // else
-    // {
-    //   return arg;
-    // }
   });
 
   /* */
