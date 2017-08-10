@@ -14457,7 +14457,7 @@ function arraySetDiff( src1,src2 )
 //
 
 /**
- * Returns arrays that contains elements from first argument ( src ) that exists at least in one array provided after ( src ).
+ * Returns array that contains elements from ( src ) that exists at least in one of arrays provided after first argument.
  * If element exists and it has copies, all copies of that element will be included into result array.
  * @param { arrayLike } src - source array;
  * @param { arrayLike... } - sequence of arrays to compare with ( src ).
@@ -14664,6 +14664,27 @@ function arraySetContainSomething( src )
 // }
 
 //
+
+/**
+ * Returns true if ( ins1 ) and ( ins2) arrays have same length and elements, elements order doesn't matter.
+ * Inner arrays of arguments are not compared and result of such combination will be false.
+ * @param { arrayLike } ins1 - source array;
+ * @param { arrayLike} ins2 - array to compare with.
+ *
+ * @example
+ * // returns false
+ * _.arraySetIdentical( [ 1, 2, 3 ], [ 4, 5, 6 ] );
+ *
+ * @example
+ * // returns true
+ * _.arraySetIdentical( [ 1, 2, 4 ], [ 4, 2, 1 ] );
+ *
+ * @returns { Boolean } Result of comparison as boolean.
+ * @function arraySetIdentical
+ * @throws { Error } If one of arguments is not an ArrayLike entity.
+ * @throws { Error } If arguments length is not 2.
+ * @memberof wTools
+ */
 
 function arraySetIdentical( ins1,ins2 )
 {
