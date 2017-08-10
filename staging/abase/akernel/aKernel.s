@@ -8656,6 +8656,48 @@ var timeSoon = typeof module === 'undefined' ? function( h ){ return setTimeout(
 
 //
 
+/**
+ * Routine works moslty same like {@link wTools~timeOut} but has own small features:
+ *  Is used to set execution time limit for async routines that can run forever or run too long.
+ *  wConsequence instance returned by timeOutError always give an error:
+ *  - Own 'timeOut' error message if ( onReady ) was not provided or it execution dont give any error.
+ *  - Error throwed or returned in consequence by ( onRead ) routine.
+ *
+ * @param {Number} delay - Delay in ms before ( onReady ) is fired.
+ * @param {Function|wConsequence} onReady - Routine that will be executed with delay.
+ *
+ * @example
+ * // timeOut error after delay
+ * var t = _.timeOutError( 1000 );
+ * t.got( ( err, got ) => { throw err; } )
+ *
+ * @example
+ * // using timeOutError with long time routine
+ * var time = 5000;
+ * var timeOut = time / 2;
+ * function routine()
+ * {
+ *   return _.timeOut( time );
+ * }
+ * // eitherThenSplit waits until one of provided consequences will resolve the message.
+ * // In our example single timeOutError consequence was added, so eitherThenSplit adds own context consequence to the queue.
+ * // Consequence returned by 'routine' resolves message in 5000 ms, but timeOutError will do the same in 2500 ms and 'timeOut'.
+ * routine()
+ * .eitherThenSplit( _.timeOutError( timeOut ) )
+ * .got( function ( err, got )
+ * {
+ *   if( err )
+ *   throw err;
+ *   console.log( got );
+ * })
+ *
+ * @returns {wConsequence} Returns wConsequence instance that resolves error message when work is done.
+ * @throws {Error} If ( delay ) is not a Number.
+ * @throws {Error} If ( onReady ) is not a routine or wConsequence instance.
+ * @function timeOutError
+ * @memberof wTools
+ */
+
 function timeOutError( delay,onReady )
 {
   var result = _.timeOut.apply( this,arguments );
