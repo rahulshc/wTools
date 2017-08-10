@@ -580,7 +580,7 @@ makeWorker.defaults =
 
 function execStages( stages,o )
 {
-  var o = o || {};
+  var o = o || Object.create( null );
 
   _.routineOptionsWithUndefines( execStages,o );
 
@@ -588,25 +588,21 @@ function execStages( stages,o )
 
   Object.preventExtensions( o );
 
-  // validation
+  /* validation */
 
   _.assert( _.objectIs( stages ) || _.arrayLike( stages ),'expects array or object ( stages ), but got',_.strTypeOf( stages ) );
 
   for( var s in stages )
   {
 
-    _.assert( stages[ s ],'execStages :','#'+s,'stage is not defined' );
-
     var routine = stages[ s ];
 
-    // if( !_.routineIs( routine ) )
-    // routine = stages[ s ].syn || stages[ s ].asyn;
-
-    _.assert( _.routineIs( routine ),'execStages :','stage','#'+s,'does not have routine to execute' );
+    _.assert( routine || routine === null,'execStages :','#'+s,'stage is not defined' );
+    _.assert( _.routineIs( routine ) || routine === null,'execStages :','stage','#'+s,'does not have routine to execute' );
 
   }
 
-  //  var
+  /*  var */
 
   var con = _.timeOut( 1 );
   var keys = Object.keys( stages );
@@ -614,12 +610,12 @@ function execStages( stages,o )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  // begin
+  /* begin */
 
   if( o.onBegin )
   con.doThen( o.onBegin );
 
-  // end
+  /* end */
 
   function handleEnd()
   {
@@ -634,31 +630,31 @@ function execStages( stages,o )
 
     });
 
-    // if( o.onEnd )
-    // debugger;
-
     if( o.onEnd )
     con.doThen( o.onEnd );
 
   }
 
-  // staging
+  /* staging */
 
   function handleStage()
   {
 
     var stage = stages[ keys[ s ] ];
-    var iteration = {};
+    var iteration = Object.create( null );
 
     iteration.index = s;
     iteration.key = keys[ s ];
 
     s += 1;
 
+    if( stage === null )
+    return handleStage();
+
     if( !stage )
     return handleEnd();
 
-    // arguments
+    /* arguments */
 
     iteration.routine = stage;
     iteration.routine = _.routineJoin( o.context,iteration.routine,o.args );
@@ -669,7 +665,7 @@ function execStages( stages,o )
       return ret;
     }
 
-    // exec
+    /* exec */
 
     if( o.onEachRoutine )
     {
@@ -685,7 +681,7 @@ function execStages( stages,o )
 
   }
 
-  //
+  /* */
 
   handleStage();
 
@@ -776,7 +772,7 @@ var Proto =
   execInWorker : execInWorker,
   makeWorker : makeWorker,
 
-  execStages : execStages, /* deprecated */
+  execStages : execStages, /* experimental */
 
 }
 

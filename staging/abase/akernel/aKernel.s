@@ -18764,10 +18764,10 @@ _global_.wTestSuite = function wTestSuite( testSuite )
 
 //
 
-if( !_.Testing )
+if( !_.Tester )
 {
-  _.Testing = Object.create( null );
-  _.Testing.test = function test( testSuiteName )
+  _.Tester = Object.create( null );
+  _.Tester.test = function test( testSuiteName )
   {
     if( _.workerIs() )
     return;
@@ -18775,9 +18775,9 @@ if( !_.Testing )
     _.assert( _.strIs( testSuiteName ) || testSuiteName === undefined,'test : expects string ( testSuiteName )' );
     _.timeReady( function()
     {
-      if( _.Testing.test === test )
+      if( _.Tester.test === test )
       throw _.err( 'Cant wTesting.test, missing wTesting package' );
-      _.Testing.test.call( _.Testing,testSuiteName );
+      _.Tester.test.call( _.Tester,testSuiteName );
     });
   }
 }

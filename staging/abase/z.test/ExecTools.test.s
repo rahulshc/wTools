@@ -362,7 +362,7 @@ _.mapExtend( Self,Proto );
 Self = wTestSuite( Self );
 
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self )
+_.Tester.test( Self )
 // .got( function( err,suit )
 // {
 //   debugger;

@@ -9184,7 +9184,8 @@ var Self =
 {
 
   name : 'wTools.array',
-  verbosity : 7,
+  // verbosity : 7,
+  routine : 'bufferRelen',
 
   tests :
   {
@@ -9374,6 +9375,6 @@ var Self =
 
 Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self.name );
+_.Tester.test( Self.name );
 
 } )( );

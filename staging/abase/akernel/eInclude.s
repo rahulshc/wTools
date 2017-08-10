@@ -538,8 +538,8 @@ _includeHandlerMap[ 'wEventHandler' ] =
 
 _includeHandlerMap[ 'wTesting' ] =
 {
-  includeAny : [ '../../abase/xTesting/Testing.debug.s','abase/xTesting/Testing.debug.s','wTesting' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Testing && wTools.Testing._isFullImplementation; },
+  includeAny : [ '../../abase/xTesting/cTester.debug.s','abase/xTesting/cTester.debug.s','wTesting' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Tester && wTools.Tester._isFullImplementation; },
 }
 
 _includeHandlerMap[ 'wLogger' ] =

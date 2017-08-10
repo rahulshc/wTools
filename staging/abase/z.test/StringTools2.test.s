@@ -5215,6 +5215,6 @@ var Self =
 
 Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self.name );
+_.Tester.test( Self.name );
 
 })();
