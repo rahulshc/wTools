@@ -8538,7 +8538,7 @@ function timeOut( delay,onReady )
     if( err )
     {
       clearTimeout( timer );
-      return wConsequence().error( err );
+      con.error( err );
     }
     // else
     // {
