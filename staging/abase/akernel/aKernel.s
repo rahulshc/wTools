@@ -8526,6 +8526,65 @@ function timeOnce( delay,onBegin,onEnd )
 
 //
 
+/**
+ * Routine creates timer that executes provided routine( onReady ) after some amout of time( delay ).
+ * Returns wConsequence instance. @see {@link https://github.com/Wandalen/wConsequence }
+ *
+ * If ( onReady ) is not provided, timeOut returns consequence that gives empty message after ( delay ).
+ * If ( onReady ) is a routine, timeOut returns consequence that gives message with value returned or error throwed by ( onReady ).
+ * If ( onReady ) is a consequence or routine that returns it, timeOut returns consequence and waits until consequence from ( onReady ) resolves the message, then
+ * timeOut gives that resolved message throught own consequence.
+ * If ( delay ) <= 0 timeOut performs all operations on nextTick in node
+ * @see {@link https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#the-node-js-event-loop-timers-and-process-nexttick }
+ * or after 1 ms delay in browser.
+ * Returned consequence controls the timer. Timer can be easly stopped by giving an error from than consequence( see examples below ).
+ * Important - Error that stops timer is returned back as regular message inside consequence returned by timeOut.
+ *
+ * @param {Number} delay - Delay in ms before ( onReady ) is fired.
+ * @param {Function|wConsequence} onReady - Routine that will be executed with delay.
+ *
+ * @example
+ * // Simplest, just timer
+ * var t = _.timeOut( 1000 );
+ * t.got( () => console.log( 'Message with 1000ms delay' ) )
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // Run routine with delay
+ * var routine = () => console.log( 'Message with 1000ms delay' );
+ * var t = _.timeOut( 1000, routine );
+ * t.got( () => console.log( 'Routine finished work' ) );
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // Routine returns consequence
+ * var routine = () => new wConsequence().give( 'msg' );
+ * var t = _.timeOut( 1000, routine );
+ * t.got( ( err, got ) => console.log( 'Message from routine : ', got ) );
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // timeOut waits for long time routine
+ * var routine = () => _.timeOut( 1500, () => 'work done' ) ;
+ * var t = _.timeOut( 1000, routine );
+ * t.got( ( err, got ) => console.log( 'Message from routine : ', got ) );
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // how to stop timer
+ * var routine = () => console.log( 'This message never appears' );
+ * var t = _.timeOut( 5000, routine );
+ * t.error( 'stop' );
+ * t.got( ( err, got ) => console.log( 'Error returned as regular message : ', got ) );
+ * console.log( 'Normal message' )
+ *
+ * @returns {wConsequence} Returns wConsequence instance that resolves message when work is done.
+ * @throws {Error} If ( delay ) is not a Number.
+ * @throws {Error} If ( onReady ) is not a routine or wConsequence instance.
+ * @function timeOut
+ * @memberof wTools
+ */
+
 function timeOut( delay,onReady )
 {
   var con = new wConsequence();
