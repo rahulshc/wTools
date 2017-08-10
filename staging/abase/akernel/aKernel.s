@@ -8539,6 +8539,7 @@ function timeOnce( delay,onBegin,onEnd )
  * or after 1 ms delay in browser.
  * Returned consequence controls the timer. Timer can be easly stopped by giving an error from than consequence( see examples below ).
  * Important - Error that stops timer is returned back as regular message inside consequence returned by timeOut.
+ * Also timeOut can run routine with different context and arguments( see example below ).
  *
  * @param {Number} delay - Delay in ms before ( onReady ) is fired.
  * @param {Function|wConsequence} onReady - Routine that will be executed with delay.
@@ -8577,6 +8578,18 @@ function timeOnce( delay,onBegin,onEnd )
  * t.error( 'stop' );
  * t.got( ( err, got ) => console.log( 'Error returned as regular message : ', got ) );
  * console.log( 'Normal message' )
+ *
+ * @example
+ * // running routine with different context and arguments
+ * function routine( y )
+ * {
+ *   var self = this;
+ *   return self.x * y;
+ * }
+ * var context = { x : 5 };
+ * var arguments = [ 6 ];
+ * var t = _.timeOut( 100, context, routine, arguments );
+ * t.got( ( err, got ) => console.log( 'Result of routine execution : ', got ) );
  *
  * @returns {wConsequence} Returns wConsequence instance that resolves message when work is done.
  * @throws {Error} If ( delay ) is not a Number.
