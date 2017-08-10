@@ -31,6 +31,12 @@ var _ = wTools;
 function bufferRelen( test )
 {
 
+  debugger;
+  console.log( 'www' );
+  logger.log( 'xxx' );
+  test.logger.log( 'yyy' );
+  debugger;
+
   test.description = 'second argument is more than ints.length';
   var ints = new Int8Array( [ 3, 7, 13 ] );
   var got = _.bufferRelen( ints, 4 );
@@ -974,7 +980,7 @@ function arrayFromRange( test )
   test.identical( got,expected );
 
   test.description = 'single number as argument';
-  var got = _.arrayFromRange( 3 ); 
+  var got = _.arrayFromRange( 3 );
   var expected = [ 0, 1, 2 ];
   test.identical( got,expected );
 
@@ -9027,7 +9033,7 @@ function arraySetContainAll( test )
 
 function arraySetBut( test )
 {
-  var cases = 
+  var cases =
   [
     { src : [], but : [], expected : [] },
     { src : [ 1, 2, 3 ], but : [], expected : [ 1, 2, 3 ] },
@@ -9054,7 +9060,7 @@ function arraySetBut( test )
 
 function arraySetDiff( test )
 {
-  var cases = 
+  var cases =
   [
     { src1 : [], src2 : [], expected : [] },
     { src1 : [ 1, 2, 3 ], src2 : [], expected : [ 1, 2, 3 ] },

@@ -14261,7 +14261,7 @@ function arrayUpdate( dstArray,ins,sub )
 // --
 
 /**
- * Returns new array that contains elements from ( src ) that are not present in ( but ). 
+ * Returns new array that contains elements from ( src ) that are not present in ( but ).
  * All copies of ignored element are ignored too.
  * @param { arrayLike } src - source array;
  * @param { arrayLike} but - array of elements to ignore.
@@ -14269,7 +14269,7 @@ function arrayUpdate( dstArray,ins,sub )
  * @example
  * // returns []
  * _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
- * 
+ *
  * @example
  * // returns [ 2, 2 ]
  * _.arraySetBut( [ 1, 1, 2, 2, 3, 3 ], [ 1, 3 ] );
@@ -14301,7 +14301,7 @@ function arraySetBut( src,but )
 //
 
 /**
- * Returns new array that contains difference between two arrays: ( src1 ) and ( src2 ). 
+ * Returns new array that contains difference between two arrays: ( src1 ) and ( src2 ).
  * If some element is present in both arrays, this element and all copies of it are ignored.
  * @param { arrayLike } src1 - source array;
  * @param { arrayLike} src2 - array to compare with ( src1 ).
@@ -14309,7 +14309,7 @@ function arraySetBut( src,but )
  * @example
  * // returns [ 1, 2, 3, 4, 5, 6 ]
  * _.arraySetDiff( [ 1, 2, 3 ], [ 4, 5, 6 ] );
- * 
+ *
  * @example
  * // returns [ 2, 4, 3, 5 ]
  * _.arraySetDiff( [ 1, 2, 4 ], [ 1, 3, 5 ] );
@@ -14348,18 +14348,18 @@ function arraySetDiff( src1,src2 )
 
 /**
  * Returns arrays that contains elements from first argument ( src ) that exists at least in one array provided after ( src ).
- * If element exists and it has copies, all copies of that element will be included into result array. 
+ * If element exists and it has copies, all copies of that element will be included into result array.
  * @param { arrayLike } src - source array;
  * @param { arrayLike... } - sequence of arrays to compare with ( src ).
  *
  * @example
  * // returns [ 1, 3 ]
  * _.arraySetIntersection( [ 1, 2, 3 ], [ 1 ], [ 3 ] );
- * 
+ *
  * @example
  * // returns [ 1, 1, 2, 2, 3, 3 ]
  * _.arraySetIntersection( [ 1, 1, 2, 2, 3, 3 ], [ 1 ], [ 2 ], [ 3 ], [ 4 ] );
- * 
+ *
  * @returns { Array } Array with elements that are a part of at least one of the provided arrays.
  * @function arraySetIntersection
  * @throws { Error } If one of arguments is not an arrayLike entity.
@@ -18752,12 +18752,16 @@ _global_.wTestSuite = function wTestSuite( testSuite )
   testSuite.sourceFilePath = _.diagnosticLocation( 1 ).full;
 
   _.assert( _.strIsNotEmpty( testSuite.sourceFilePath ),'Test suite expects a mandatory option ( sourceFilePath )' );
-  /* _.assert( _.strIsNotEmpty( testSuite.name ),'Test suite should have name' ); */
   _.assert( _.objectIs( testSuite ) );
 
   if( !testSuite.abstract )
   _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name "' + testSuite.name + '" already registered!' );
   _global_.wTests[ testSuite.name ] = testSuite;
+
+  testSuite.inherit = function inherit()
+  {
+    this.inherit = _.arraySlice( arguments );
+  }
 
   return testSuite;
 }
