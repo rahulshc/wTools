@@ -31,11 +31,11 @@ var _ = wTools;
 function bufferRelen( test )
 {
 
-  debugger;
-  console.log( 'www' );
-  logger.log( 'xxx' );
-  test.logger.log( 'yyy' );
-  debugger;
+  // debugger;
+  // console.log( 'www' );
+  // logger.log( 'xxx' );
+  // test.logger.log( 'yyy' );
+  // debugger;
 
   test.description = 'second argument is more than ints.length';
   var ints = new Int8Array( [ 3, 7, 13 ] );

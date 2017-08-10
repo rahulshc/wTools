@@ -378,7 +378,7 @@ var Self =
   tests :
   {
     timeOut : timeOut,
-    timeOutError : timeOutError
+    // timeOutError : timeOutError
   }
 
 }
