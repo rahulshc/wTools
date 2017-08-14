@@ -8539,6 +8539,78 @@ function timeOnce( delay,onBegin,onEnd )
 
 //
 
+/**
+ * Routine creates timer that executes provided routine( onReady ) after some amout of time( delay ).
+ * Returns wConsequence instance. @see {@link https://github.com/Wandalen/wConsequence }
+ *
+ * If ( onReady ) is not provided, timeOut returns consequence that gives empty message after ( delay ).
+ * If ( onReady ) is a routine, timeOut returns consequence that gives message with value returned or error throwed by ( onReady ).
+ * If ( onReady ) is a consequence or routine that returns it, timeOut returns consequence and waits until consequence from ( onReady ) resolves the message, then
+ * timeOut gives that resolved message throught own consequence.
+ * If ( delay ) <= 0 timeOut performs all operations on nextTick in node
+ * @see {@link https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#the-node-js-event-loop-timers-and-process-nexttick }
+ * or after 1 ms delay in browser.
+ * Returned consequence controls the timer. Timer can be easly stopped by giving an error from than consequence( see examples below ).
+ * Important - Error that stops timer is returned back as regular message inside consequence returned by timeOut.
+ * Also timeOut can run routine with different context and arguments( see example below ).
+ *
+ * @param {Number} delay - Delay in ms before ( onReady ) is fired.
+ * @param {Function|wConsequence} onReady - Routine that will be executed with delay.
+ *
+ * @example
+ * // Simplest, just timer
+ * var t = _.timeOut( 1000 );
+ * t.got( () => console.log( 'Message with 1000ms delay' ) )
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // Run routine with delay
+ * var routine = () => console.log( 'Message with 1000ms delay' );
+ * var t = _.timeOut( 1000, routine );
+ * t.got( () => console.log( 'Routine finished work' ) );
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // Routine returns consequence
+ * var routine = () => new wConsequence().give( 'msg' );
+ * var t = _.timeOut( 1000, routine );
+ * t.got( ( err, got ) => console.log( 'Message from routine : ', got ) );
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // timeOut waits for long time routine
+ * var routine = () => _.timeOut( 1500, () => 'work done' ) ;
+ * var t = _.timeOut( 1000, routine );
+ * t.got( ( err, got ) => console.log( 'Message from routine : ', got ) );
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // how to stop timer
+ * var routine = () => console.log( 'This message never appears' );
+ * var t = _.timeOut( 5000, routine );
+ * t.error( 'stop' );
+ * t.got( ( err, got ) => console.log( 'Error returned as regular message : ', got ) );
+ * console.log( 'Normal message' )
+ *
+ * @example
+ * // running routine with different context and arguments
+ * function routine( y )
+ * {
+ *   var self = this;
+ *   return self.x * y;
+ * }
+ * var context = { x : 5 };
+ * var arguments = [ 6 ];
+ * var t = _.timeOut( 100, context, routine, arguments );
+ * t.got( ( err, got ) => console.log( 'Result of routine execution : ', got ) );
+ *
+ * @returns {wConsequence} Returns wConsequence instance that resolves message when work is done.
+ * @throws {Error} If ( delay ) is not a Number.
+ * @throws {Error} If ( onReady ) is not a routine or wConsequence instance.
+ * @function timeOut
+ * @memberof wTools
+ */
+
 function timeOut( delay,onReady )
 {
   var con = new wConsequence();
@@ -8596,6 +8668,48 @@ function timeOut( delay,onReady )
 var timeSoon = typeof module === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
 
 //
+
+/**
+ * Routine works moslty same like {@link wTools~timeOut} but has own small features:
+ *  Is used to set execution time limit for async routines that can run forever or run too long.
+ *  wConsequence instance returned by timeOutError always give an error:
+ *  - Own 'timeOut' error message if ( onReady ) was not provided or it execution dont give any error.
+ *  - Error throwed or returned in consequence by ( onRead ) routine.
+ *
+ * @param {Number} delay - Delay in ms before ( onReady ) is fired.
+ * @param {Function|wConsequence} onReady - Routine that will be executed with delay.
+ *
+ * @example
+ * // timeOut error after delay
+ * var t = _.timeOutError( 1000 );
+ * t.got( ( err, got ) => { throw err; } )
+ *
+ * @example
+ * // using timeOutError with long time routine
+ * var time = 5000;
+ * var timeOut = time / 2;
+ * function routine()
+ * {
+ *   return _.timeOut( time );
+ * }
+ * // eitherThenSplit waits until one of provided consequences will resolve the message.
+ * // In our example single timeOutError consequence was added, so eitherThenSplit adds own context consequence to the queue.
+ * // Consequence returned by 'routine' resolves message in 5000 ms, but timeOutError will do the same in 2500 ms and 'timeOut'.
+ * routine()
+ * .eitherThenSplit( _.timeOutError( timeOut ) )
+ * .got( function ( err, got )
+ * {
+ *   if( err )
+ *   throw err;
+ *   console.log( got );
+ * })
+ *
+ * @returns {wConsequence} Returns wConsequence instance that resolves error message when work is done.
+ * @throws {Error} If ( delay ) is not a Number.
+ * @throws {Error} If ( onReady ) is not a routine or wConsequence instance.
+ * @function timeOutError
+ * @memberof wTools
+ */
 
 function timeOutError( delay,onReady )
 {
@@ -14365,7 +14479,7 @@ function arraySetDiff( src1,src2 )
 //
 
 /**
- * Returns arrays that contains elements from first argument ( src ) that exists at least in one array provided after ( src ).
+ * Returns array that contains elements from ( src ) that exists at least in one of arrays provided after first argument.
  * If element exists and it has copies, all copies of that element will be included into result array.
  * @param { arrayLike } src - source array;
  * @param { arrayLike... } - sequence of arrays to compare with ( src ).
@@ -14572,6 +14686,27 @@ function arraySetContainSomething( src )
 // }
 
 //
+
+/**
+ * Returns true if ( ins1 ) and ( ins2) arrays have same length and elements, elements order doesn't matter.
+ * Inner arrays of arguments are not compared and result of such combination will be false.
+ * @param { arrayLike } ins1 - source array;
+ * @param { arrayLike} ins2 - array to compare with.
+ *
+ * @example
+ * // returns false
+ * _.arraySetIdentical( [ 1, 2, 3 ], [ 4, 5, 6 ] );
+ *
+ * @example
+ * // returns true
+ * _.arraySetIdentical( [ 1, 2, 4 ], [ 4, 2, 1 ] );
+ *
+ * @returns { Boolean } Result of comparison as boolean.
+ * @function arraySetIdentical
+ * @throws { Error } If one of arguments is not an ArrayLike entity.
+ * @throws { Error } If arguments length is not 2.
+ * @memberof wTools
+ */
 
 function arraySetIdentical( ins1,ins2 )
 {

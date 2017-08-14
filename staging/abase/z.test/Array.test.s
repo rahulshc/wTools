@@ -9085,52 +9085,171 @@ function arraySetDiff( test )
 
 //
 
+function arraySetIntersection( test )
+{
+  var cases =
+  [
+    { args : [ [] ], expected : [] },
+    { args : [ [ 1 ], [ ] ], expected : [] },
+    { args : [ [ ], [ 1 ] ], expected : [] },
+    { args : [ [ 1 ], [ 2 ] ], expected : [] },
+    { args : [ [ 1, 2, 3 ], [ 2 ] ], expected : [ 2 ] },
+    { args : [ [ 1, 2, 3 ], [ 2 ], [ 1 ], [ 3 ] ], expected : [ 1, 2, 3 ] },
+    { args : [ [ 1, 1, 1 ], [ 1 ] ], expected : [ 1, 1, 1 ] },
+    { args : [ [ 1, 2, 3 ], [ 0 ], [ 4 ], [ 0, 0, 3 ] ], expected : [ 3 ] },
+    { args : [ [ 1, 2, 3 ], [ 0 ], 1, [ 3 ] ], error : true },
+    { args : [ 1 ], error : true },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.error )
+    test.shouldThrowError( () => _.arraySetIntersection.apply( _,c.args ) );
+    else
+    test.identical( _.arraySetIntersection.apply( _,c.args ) , c.expected );
+  }
+}
+
+//
+
+function arraySetContainAll( test )
+{
+  var cases =
+  [
+    { args : [ [], [] ], expected : true },
+    { args : [ [ 1 ], [] ], expected : false },
+    { args : [ [ 1 ], [ 1 ] ], expected : true },
+    { args : [ [ 1, 1 ], [ 1, 1, 1 ] ], expected : true },
+    { args : [ [ 1, 1, 1 ], [ 1, 1 ] ], expected : false },
+    { args : [ [ 1 ], [ 1 ], [ 1 ], [] ], expected : false },
+    { args : [ [ 1 ], [ 1 ], [ 1 ], [ 1, 1, 1 ] ], expected : true },
+    { args : [ [ 1 ], [ 0, 1 ], [ 3, 2, 1 ], [ 1 ] ], expected : true },
+    { args : [ [ 1, 2, 3 ], [ 1, 2, 3 ], [ 3, 2, 1 ], [ 1, 2 ] ], expected : false },
+    { args : [ [], [ 1, 2, 3 ], [ 3, 2, 1 ], [ 1, 2 ] ], expected : true },
+    { args : [ [], 1, [ 3, 2, 1 ], [ 1, 2 ] ], error : true },
+    { args : [ 1 ], error : true },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.error )
+    test.shouldThrowError( () => _.arraySetContainAll.apply( _,c.args ) );
+    else
+    test.identical( _.arraySetContainAll.apply( _,c.args ) , c.expected );
+  }
+}
+
+//
+
 function arraySetContainSomething( test )
 {
+  var cases =
+  [
+    { args : [ [], [] ], expected : false },
+    { args : [ [ 1, 2, 3 ], [ 1 ] ], expected : true },
+    { args : [ [ 1, 2, 3 ], [], [ 3 ] ], expected : true },
+    { args : [ [ 1, 2, 3 ], [ 0, 1 ], [ 9, 3 ] ], expected : true },
+    { args : [ [ 1, 2, 3 ], [ 4 ], [ 3 ] ], expected : true },
+    { args : [ [], [ 0 ], [ 4 ], [ 3 ] ], expected : false },
+    { args : [ [ 1, 2, 3 ], [ 4 ], [ 5 ]  ], expected : false },
+    { args : [ [ 0, 0, 0, 1 ], [ 5 ], [ 6 ], [ 2, 1 ]  ], expected : true },
+    { args : [ [ 1, 2, 3 ], [ 4 ], 1  ], error : true },
+    { args : [ 1, [ 4 ], 1  ], error : true },
+  ]
 
-  test.description = 'returns false';
-  var got = _.arraySetContainSomething( [  ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'returns false';
-  var got = _.arraySetContainSomething( [  ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'returns false';
-  var got = _.arraySetContainSomething( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.description = 'matching from arguments[1]';
-  var got = _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.description = 'matching from arguments[2]';
-  var got = _.arraySetContainSomething( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
+  for( var i = 0; i < cases.length; i++ )
   {
-    _.arraySetContainSomething();
-  });
+    var c = cases[ i ];
 
-  test.description = 'wrong arguments';
-  test.shouldThrowError( function()
+    if( c.error )
+    test.shouldThrowError( () => _.arraySetContainSomething.apply( _,c.args ) );
+    else
+    test.identical( _.arraySetContainSomething.apply( _,c.args ) , c.expected );
+  }
+}
+
+//
+
+function arraySetIdentical( test )
+{
+  var cases =
+  [
+    { args : [ [], [] ], expected : true },
+    { args : [ [ 1 ], [] ], expected : false },
+    { args : [ [ 1 ], [ 1 ] ], expected : true },
+    { args : [ [ 1, 1 ], [ 1 ] ], expected : false },
+    { args : [ [ 1 ], [ 1, 1 ] ], expected : false },
+    { args : [ [ 1, 2, 3 ], [ 1, 2, 4 ] ], expected : false },
+    { args : [ [ 1, 2, 3 ], [ 3, 2, 1 ] ], expected : true },
+    { args : [ [ 1, 2, 3 ], [ 3, 2, 1 ] ], expected : true },
+    { args : [ [ [ 1 ], 2, 3 ], [ 3, 2, [ 1 ] ] ], expected : false },
+    { args : [ 1, [ 1 ] ], error : true },
+    { args : [ [ 1 ], 1 ], error : true },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
   {
-    _.arraySetContainSomething( [ 1, 2, 3, 4 ], 'wrong arguments' );
-  });
+    var c = cases[ i ];
 
-};
+    if( c.error )
+    test.shouldThrowError( () => _.arraySetIdentical.apply( _,c.args ) );
+    else
+    test.identical( _.arraySetIdentical.apply( _,c.args ) , c.expected );
+  }
+}
+
+//
+
+// function arraySetContainSomething( test )
+// {
+
+//   test.description = 'returns false';
+//   var got = _.arraySetContainSomething( [  ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
+//   var expected = false;
+//   test.identical( got, expected );
+
+//   test.description = 'returns false';
+//   var got = _.arraySetContainSomething( [  ] );
+//   var expected = false;
+//   test.identical( got, expected );
+
+//   test.description = 'returns false';
+//   var got = _.arraySetContainSomething( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
+//   var expected = false;
+//   test.identical( got, expected );
+
+//   test.description = 'matching from arguments[1]';
+//   var got = _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   test.description = 'matching from arguments[2]';
+//   var got = _.arraySetContainSomething( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+//   var expected = true;
+//   test.identical( got, expected );
+
+//   /**/
+
+//   if( !Config.debug )
+//   return;
+
+//   test.description = 'no arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.arraySetContainSomething();
+//   });
+
+//   test.description = 'wrong arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.arraySetContainSomething( [ 1, 2, 3, 4 ], 'wrong arguments' );
+//   });
+
+// };
 
 // --
 // not sorted
@@ -9366,8 +9485,10 @@ var Self =
 
     arraySetBut : arraySetBut,
     arraySetDiff : arraySetDiff,
+    arraySetIntersection : arraySetIntersection,
     arraySetContainAll: arraySetContainAll,
     arraySetContainSomething : arraySetContainSomething,
+    arraySetIdentical : arraySetIdentical
 
   }
 
