@@ -38,7 +38,7 @@ function timeOut( test )
   var testCon = new wConsequence().give()
 
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay only';
@@ -50,9 +50,9 @@ function timeOut( test )
       test.shouldBe( _.routineIs( got ) );
     });
   })
-  
+
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine';
@@ -65,9 +65,9 @@ function timeOut( test )
       test.identical( err, null );
     });
   })
-  
+
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that returns a value';
@@ -81,9 +81,9 @@ function timeOut( test )
       test.identical( err, null );
     });
   })
-  
+
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that returns a consequence';
@@ -96,9 +96,9 @@ function timeOut( test )
       test.identical( err, null );
     });
   })
-  
+
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + routine that calls another timeOut';
@@ -111,9 +111,9 @@ function timeOut( test )
       test.identical( got, undefined );
     });
   })
-  
+
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'delay + context + routine + arguments';
@@ -153,7 +153,7 @@ function timeOut( test )
   {
     test.description = 'stop timer with error';
     var timeBefore = _.timeNow();
-  
+
     var t = _.timeOut( delay );
     t.doThen( function( err, got )
     {
@@ -162,18 +162,18 @@ function timeOut( test )
       test.identical( got, 'stop' )
     })
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
-  
+
     return t;
   })
-  
+
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'stop timer with error, routine passed';
     var timeBefore = _.timeNow();
     var called = false;
-  
+
     var t = _.timeOut( delay, () => { called = true } );
     t.doThen( function( err, got )
     {
@@ -183,17 +183,17 @@ function timeOut( test )
       test.identical( err, null )
     })
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
-  
+
     return t;
   })
-  
+
   /* */
-  
+
   .doThen( function()
   {
     test.description = 'give err after timeOut';
     var timeBefore = _.timeNow();
-  
+
     var t = _.timeOut( delay, () => {} );
     t.got( function( err, got )
     {
@@ -201,13 +201,13 @@ function timeOut( test )
       test.identical( got, undefined );
       test.identical( err, null );
     })
-  
+
     return _.timeOut( delay + 50, function()
     {
       t.error( 'stop' );
       t.got( ( err, got ) => test.identical( err, 'stop' ) );
     })
-  
+
     return t;
   })
 
@@ -227,7 +227,7 @@ function timeOutAsync( test )
   var testCon = new wConsequence().give()
 
   /* asyncGiving : 1, asyncTaking : 0 */
-  
+
   .doThen( () => setAsync( 1, 0 ) )
   .doThen( function()
   {
@@ -277,7 +277,7 @@ function timeOutAsync( test )
       test.identical( t.correspondentsGet().length, 0 );
     })
   })
-  
+
   /**/
 
   .doThen( function()
@@ -452,7 +452,7 @@ function timeOutAsync( test )
     test.description = 'give err after timeOut';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
-    
+
     var con = new wConsequence();
     con.first( t );
     con.doThen( function()
@@ -487,7 +487,7 @@ function timeOutAsync( test )
   })
 
   /* asyncGiving : 0, asyncTaking : 1 */
-  
+
   .doThen( () => setAsync( 0, 1 ) )
   .doThen( function()
   {
@@ -537,7 +537,7 @@ function timeOutAsync( test )
       test.identical( t.correspondentsGet().length, 0 );
     })
   })
-  
+
   /**/
 
   .doThen( function()
@@ -707,7 +707,7 @@ function timeOutAsync( test )
     test.description = 'give err after timeOut';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
-    
+
     var con = new wConsequence();
     con.first( t );
     con.doThen( function()
@@ -743,7 +743,7 @@ function timeOutAsync( test )
   })
 
   /* asyncGiving : 1, asyncTaking : 1 */
-  
+
   .doThen( () => setAsync( 1, 1 ) )
   .doThen( function()
   {
@@ -793,7 +793,7 @@ function timeOutAsync( test )
       test.identical( t.correspondentsGet().length, 0 );
     })
   })
-  
+
   /**/
 
   .doThen( function()
@@ -968,7 +968,7 @@ function timeOutAsync( test )
     test.description = 'give err after timeOut';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
-    
+
     var con = new wConsequence();
     con.first( t );
     con.doThen( function()
@@ -1007,7 +1007,7 @@ function timeOutAsync( test )
 }
 
 timeOutAsync.timeOut = 20000;
-  
+
 //
 
 function timeOutError( test )
