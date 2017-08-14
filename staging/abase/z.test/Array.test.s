@@ -2936,29 +2936,29 @@ function arraySum( test )
 // array transformation
 // ---
 
-function __arrayPrepend( test )
+function arrayPrepend( test )
 {
   test.description = 'simple';
 
-  var got = _.__arrayPrepend( [], 1 );
+  var got = _.arrayPrepend( [], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayPrepend( [ 1 ], 1 );
+  var got = _.arrayPrepend( [ 1 ], 1 );
   test.identical( got, [ 1, 1 ] );
 
-  var got = _.__arrayPrepend( [ 1 ], 2 );
+  var got = _.arrayPrepend( [ 1 ], 2 );
   test.identical( got, [ 2, 1 ] );
 
-  var got = _.__arrayPrepend( [ 1,2,3 ], 3 );
+  var got = _.arrayPrepend( [ 1,2,3 ], 3 );
   test.identical( got, [ 3,1,2,3 ] );
 
-  var got = _.__arrayPrepend( [ 1 ], '1' );
+  var got = _.arrayPrepend( [ 1 ], '1' );
   test.identical( got, [ '1', 1 ] );
 
-  var got = _.__arrayPrepend( [ 1 ], -1 );
+  var got = _.arrayPrepend( [ 1 ], -1 );
   test.identical( got, [ -1, 1 ] );
 
-  var got = _.__arrayPrepend( [ 1 ], [ 1 ] );
+  var got = _.arrayPrepend( [ 1 ], [ 1 ] );
   test.identical( got, [ [ 1 ], 1 ] );
 
   //
@@ -2969,47 +2969,47 @@ function __arrayPrepend( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrepend();
+    _.arrayPrepend();
   })
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrepend( [], 1, 1 );
+    _.arrayPrepend( [], 1, 1 );
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrepend( 1, 1 );
+    _.arrayPrepend( 1, 1 );
   })
 }
 
 //
 
-function __arrayPrependOnce( test )
+function arrayPrependOnce( test )
 {
   test.description = 'simple';
 
-  var got = _.__arrayPrependOnce( [], 1 );
+  var got = _.arrayPrependOnce( [], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayPrependOnce( [ 1 ], 1 );
+  var got = _.arrayPrependOnce( [ 1 ], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayPrependOnce( [ 1 ], 2 );
+  var got = _.arrayPrependOnce( [ 1 ], 2 );
   test.identical( got, [ 2, 1 ] );
 
-  var got = _.__arrayPrependOnce( [ 1,2,3 ], 3 );
+  var got = _.arrayPrependOnce( [ 1,2,3 ], 3 );
   test.identical( got, [ 1,2,3 ] );
 
-  var got = _.__arrayPrependOnce( [ 1 ], '1' );
+  var got = _.arrayPrependOnce( [ 1 ], '1' );
   test.identical( got, [ '1', 1 ] );
 
-  var got = _.__arrayPrependOnce( [ 1 ], -1 );
+  var got = _.arrayPrependOnce( [ 1 ], -1 );
   test.identical( got, [ -1, 1 ] );
 
-  var got = _.__arrayPrependOnce( [ 1 ], [ 1 ] );
+  var got = _.arrayPrependOnce( [ 1 ], [ 1 ] );
   test.identical( got, [ [ 1 ], 1 ] );
 
   test.description = 'equalizer 2 args';
@@ -3019,7 +3019,7 @@ function __arrayPrependOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayPrependOnce( dst, { num : 4 }, onEqualize );
+  var got = _.arrayPrependOnce( dst, { num : 4 }, onEqualize );
   test.identical( got, [ { num : 4 },{ num : 1 },{ num : 2 },{ num : 3 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -3027,7 +3027,7 @@ function __arrayPrependOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayPrependOnce( dst, { num : 1 }, onEqualize );
+  var got = _.arrayPrependOnce( dst, { num : 1 }, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   test.description = 'equalizer 1 arg';
@@ -3037,7 +3037,7 @@ function __arrayPrependOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayPrependOnce( dst, 4, onEqualize );
+  var got = _.arrayPrependOnce( dst, 4, onEqualize );
   test.identical( got, [ 4,{ num : 1 },{ num : 2 },{ num : 3 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -3045,7 +3045,7 @@ function __arrayPrependOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayPrependOnce( dst, 1, onEqualize );
+  var got = _.arrayPrependOnce( dst, 1, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   //
@@ -3056,19 +3056,19 @@ function __arrayPrependOnce( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependOnce();
+    _.arrayPrependOnce();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependOnce( 1, 1 );
+    _.arrayPrependOnce( 1, 1 );
   })
 
   test.description = 'onEqualize is not a function';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependOnce( 1, 1, 1 );
+    _.arrayPrependOnce( 1, 1, 1 );
   })
 
 }
@@ -3139,32 +3139,32 @@ function __arrayPrependOnce( test )
 
 //
 
-function __arrayPrependOnceStrictly( test )
+function arrayPrependOnceStrictly( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependOnceStrictly( dst , 1 );
+  var got = _.arrayPrependOnceStrictly( dst , 1 );
   test.identical( got, [ 1 ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependOnceStrictly( dst, 2 );
+  var got = _.arrayPrependOnceStrictly( dst, 2 );
   test.identical( got, [ 2, 1 ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependOnceStrictly( dst, '1' );
+  var got = _.arrayPrependOnceStrictly( dst, '1' );
   test.identical( got, [ '1', 1 ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependOnceStrictly( dst, -1 );
+  var got = _.arrayPrependOnceStrictly( dst, -1 );
   test.identical( got, [ -1, 1 ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependOnceStrictly( dst, [ 1 ] );
+  var got = _.arrayPrependOnceStrictly( dst, [ 1 ] );
   test.identical( got, [ [ 1 ], 1 ] );
 
   test.description = 'equalizer 2 args';
@@ -3174,7 +3174,7 @@ function __arrayPrependOnceStrictly( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayPrependOnceStrictly( dst, { num : 4 }, onEqualize );
+  var got = _.arrayPrependOnceStrictly( dst, { num : 4 }, onEqualize );
   test.identical( got, [ { num : 4 },{ num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, dst );
 
@@ -3185,7 +3185,7 @@ function __arrayPrependOnceStrictly( test )
   {
     return a.num;
   }
-  var got = _.__arrayPrependOnceStrictly( dst, 4, onEqualize );
+  var got = _.arrayPrependOnceStrictly( dst, 4, onEqualize );
   test.identical( got, [ 4,{ num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, dst );
 
@@ -3197,32 +3197,32 @@ function __arrayPrependOnceStrictly( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependOnceStrictly();
+    _.arrayPrependOnceStrictly();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependOnceStrictly( 1, 1 );
+    _.arrayPrependOnceStrictly( 1, 1 );
   })
 
   test.description = 'ins already exists ion dst';
 
   test.shouldThrowError( function()
   {
-    _.__arrayPrependOnceStrictly( [ 1 ], 1 );
+    _.arrayPrependOnceStrictly( [ 1 ], 1 );
   });
 
   test.shouldThrowError( function()
   {
-     _.__arrayPrependOnceStrictly( [ 1,2,3 ], 3 );
+     _.arrayPrependOnceStrictly( [ 1,2,3 ], 3 );
   });
 
   test.description = 'onEqualize is not a routine';
 
   test.shouldThrowError( function()
   {
-     _.__arrayPrependOnceStrictly( [ 1,2,3 ], 3, 3 );
+     _.arrayPrependOnceStrictly( [ 1,2,3 ], 3, 3 );
   });
 
   test.shouldThrowError( function()
@@ -3232,7 +3232,7 @@ function __arrayPrependOnceStrictly( test )
     {
       return a.num === b.num;
     }
-    _.__arrayPrependOnceStrictly( dst, { num : 1 }, onEqualize );
+    _.arrayPrependOnceStrictly( dst, { num : 1 }, onEqualize );
   });
 
   test.shouldThrowError( function()
@@ -3242,49 +3242,49 @@ function __arrayPrependOnceStrictly( test )
     {
       return a.num;
     }
-    _.__arrayPrependOnceStrictly( dst, 1, onEqualize );
+    _.arrayPrependOnceStrictly( dst, 1, onEqualize );
   });
 
 }
 
 //
 
-function __arrayPrepended( test )
+function arrayPrepended( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrepended( dst, 1 );
+  var got = _.arrayPrepended( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrepended( dst, 1 );
+  var got = _.arrayPrepended( dst, 1 );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrepended( dst, 2 );
+  var got = _.arrayPrepended( dst, 2 );
   test.identical( dst, [ 2, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayPrepended( dst, 3 );
+  var got = _.arrayPrepended( dst, 3 );
   test.identical( dst, [ 3,1,2,3 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrepended( dst, '1' );
+  var got = _.arrayPrepended( dst, '1' );
   test.identical( dst, [ '1', 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrepended( dst, -1 );
+  var got = _.arrayPrepended( dst, -1 );
   test.identical( dst, [ -1, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrepended( dst, [ 1 ] );
+  var got = _.arrayPrepended( dst, [ 1 ] );
   test.identical( dst, [ [ 1 ], 1 ] );
   test.identical( got, 0 );
 
@@ -3296,60 +3296,60 @@ function __arrayPrepended( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrepended();
+    _.arrayPrepended();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrepended( [], 1, 1 );
+    _.arrayPrepended( [], 1, 1 );
   });
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrepended( 1, 1 );
+    _.arrayPrepended( 1, 1 );
   });
 }
 
 //
 
-function __arrayPrependedOnce( test )
+function arrayPrependedOnce( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependedOnce( dst, 1 );
+  var got = _.arrayPrependedOnce( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependedOnce( dst, 1 );
+  var got = _.arrayPrependedOnce( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependedOnce( dst, 2 );
+  var got = _.arrayPrependedOnce( dst, 2 );
   test.identical( dst, [ 2, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayPrependedOnce( dst, 3 );
+  var got = _.arrayPrependedOnce( dst, 3 );
   test.identical( dst, [ 1,2,3 ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependedOnce( dst, '1' );
+  var got = _.arrayPrependedOnce( dst, '1' );
   test.identical( dst, [ '1', 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependedOnce( dst, -1 );
+  var got = _.arrayPrependedOnce( dst, -1 );
   test.identical( dst, [ -1, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayPrependedOnce( dst, [ 1 ] );
+  var got = _.arrayPrependedOnce( dst, [ 1 ] );
   test.identical( dst, [ [ 1 ], 1 ] );
   test.identical( got, 0 );
 
@@ -3360,7 +3360,7 @@ function __arrayPrependedOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayPrependedOnce( dst, { num : 4 }, onEqualize );
+  var got = _.arrayPrependedOnce( dst, { num : 4 }, onEqualize );
   test.identical( dst, [ { num : 4 },{ num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, 0 );
 
@@ -3369,7 +3369,7 @@ function __arrayPrependedOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayPrependedOnce( dst, { num : 1 }, onEqualize );
+  var got = _.arrayPrependedOnce( dst, { num : 1 }, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -3380,7 +3380,7 @@ function __arrayPrependedOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayPrependedOnce( dst, 4, onEqualize );
+  var got = _.arrayPrependedOnce( dst, 4, onEqualize );
   test.identical( dst, [ 4,{ num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, 0 );
 
@@ -3389,7 +3389,7 @@ function __arrayPrependedOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayPrependedOnce( dst, 1, onEqualize );
+  var got = _.arrayPrependedOnce( dst, 1, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -3401,51 +3401,51 @@ function __arrayPrependedOnce( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedOnce();
+    _.arrayPrependedOnce();
   })
 
   test.description = 'third is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedOnce( [], 1, 1 );
+    _.arrayPrependedOnce( [], 1, 1 );
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedOnce( 1, 1 );
+    _.arrayPrependedOnce( 1, 1 );
   })
 }
 
 //
 
-function __arrayPrependArray( test )
+function arrayPrependArray( test )
 {
 
   test.description = 'nothing';
-  var got = _.__arrayPrependArray( [], [] );
+  var got = _.arrayPrependArray( [], [] );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayPrependArray( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependArray( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayPrependArray( dst,[ 4, 5 ] );
+  var got = _.arrayPrependArray( dst,[ 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependArray( dst, [ 1, 1 ] );
+  var got = _.arrayPrependArray( dst, [ 1, 1 ] );
   test.identical( dst, [ 1, 1, 1, 1, 1 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayPrependArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [  'a', 1, [ { a : 1 } ], { b : 2 }, 1  ] );
   test.identical( got, dst );
 
@@ -3453,7 +3453,7 @@ function __arrayPrependArray( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArray( dst, undefined );
+    _.arrayPrependArray( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -3462,7 +3462,7 @@ function __arrayPrependArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayPrependArray( dst, [ undefined, 2 ] );
+    got = _.arrayPrependArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, dst );
@@ -3475,54 +3475,54 @@ function __arrayPrependArray( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArray();
+    _.arrayPrependArray();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayPrependArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArray( [ 1, 2 ], 2 );
+    _.arrayPrependArray( [ 1, 2 ], 2 );
   });
 };
 
 //
 
-function __arrayPrependArrayOnce( test )
+function arrayPrependArrayOnce( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayPrependArrayOnce( [], [] );
+  var got = _.arrayPrependArrayOnce( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependArrayOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependArrayOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayPrependArrayOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayPrependArrayOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependArrayOnce( dst, [ 1 ] );
+  var got = _.arrayPrependArrayOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayPrependArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 'a', [ { a : 1 } ], { b : 2 }, 1  ] );
   test.identical( got, dst );
 
@@ -3530,7 +3530,7 @@ function __arrayPrependArrayOnce( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArrayOnce( dst, undefined );
+    _.arrayPrependArrayOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -3538,7 +3538,7 @@ function __arrayPrependArrayOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayPrependArrayOnce( dst, [ undefined, 2 ] );
+    _.arrayPrependArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
@@ -3550,25 +3550,25 @@ function __arrayPrependArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnce();
+    _.arrayPrependArrayOnce();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayPrependArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnce( [ 1, 2 ], 2 );
+    _.arrayPrependArrayOnce( [ 1, 2 ], 2 );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayPrependArrayOnce( [ 1, 2 ], [ 2 ], 3 );
   });
 }
 
@@ -3636,23 +3636,23 @@ function __arrayPrependArrayOnce( test )
 
 //
 
-function __arrayPrependArrayOnceStrictly( test )
+function arrayPrependArrayOnceStrictly( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayPrependArrayOnceStrictly( [], [] );
+  var got = _.arrayPrependArrayOnceStrictly( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependArrayOnceStrictly( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependArrayOnceStrictly( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayPrependArrayOnceStrictly( dst, [ 4, 5 ] );
+  var got = _.arrayPrependArrayOnceStrictly( dst, [ 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, dst );
 
@@ -3660,7 +3660,7 @@ function __arrayPrependArrayOnceStrictly( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArrayOnceStrictly( dst, undefined );
+    _.arrayPrependArrayOnceStrictly( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -3668,7 +3668,7 @@ function __arrayPrependArrayOnceStrictly( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayPrependArrayOnceStrictly( dst, [ undefined, 2 ] );
+    _.arrayPrependArrayOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
@@ -3680,19 +3680,19 @@ function __arrayPrependArrayOnceStrictly( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnceStrictly();
+    _.arrayPrependArrayOnceStrictly();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayPrependArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnceStrictly( [ 1, 2 ], 2 );
+    _.arrayPrependArrayOnceStrictly( [ 1, 2 ], 2 );
   });
 
   test.description = 'one of elements is not unique';
@@ -3700,57 +3700,57 @@ function __arrayPrependArrayOnceStrictly( test )
   var dst = [ 1,2,3 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArrayOnceStrictly( dst, [ 4, 5, 2 ] );
+    _.arrayPrependArrayOnceStrictly( dst, [ 4, 5, 2 ] );
   })
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
 
   var dst = [ 1, 1, 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArrayOnceStrictly( dst, [ 1 ] );
+    _.arrayPrependArrayOnceStrictly( dst, [ 1 ] );
   })
   test.identical( dst, [ 1, 1, 1 ] );
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayPrependArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
   });
 }
 
 //
 
-function __arrayPrependedArray( test )
+function arrayPrependedArray( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayPrependedArray( dst, [] );
+  var got = _.arrayPrependedArray( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependedArray( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependedArray( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayPrependedArray( dst, [ 2, 4, 5 ] );
+  var got = _.arrayPrependedArray( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 2, 4, 5, 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependedArray( dst, [ 1 ] );
+  var got = _.arrayPrependedArray( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1, 1 ] );
   test.identical( got, 1 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependedArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayPrependedArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 }, 1  ] );
   test.identical( got, 4 );
 
@@ -3758,7 +3758,7 @@ function __arrayPrependedArray( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependedArray( dst, undefined );
+    _.arrayPrependedArray( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -3766,7 +3766,7 @@ function __arrayPrependedArray( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayPrependedArray( dst, [ undefined, 2 ] );
+    _.arrayPrependedArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
@@ -3778,56 +3778,56 @@ function __arrayPrependedArray( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArray();
+    _.arrayPrependedArray();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayPrependedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArray( [ 1, 2 ], 2 );
+    _.arrayPrependedArray( [ 1, 2 ], 2 );
   });
 
 }
 
 //
 
-function __arrayPrependedArrayOnce( test )
+function arrayPrependedArrayOnce( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayPrependedArrayOnce( dst, [] );
+  var got = _.arrayPrependedArrayOnce( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependedArrayOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependedArrayOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayPrependedArrayOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayPrependedArrayOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependedArrayOnce( dst, [ 1 ] );
+  var got = _.arrayPrependedArrayOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, 0 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependedArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayPrependedArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 'a', [ { a : 1 } ], { b : 2 }, 1  ] );
   test.identical( got, 3 );
 
@@ -3835,7 +3835,7 @@ function __arrayPrependedArrayOnce( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependedArrayOnce( dst, undefined );
+    _.arrayPrependedArrayOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -3843,7 +3843,7 @@ function __arrayPrependedArrayOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayPrependedArrayOnce( dst, [ undefined, 2 ] );
+    _.arrayPrependedArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
@@ -3855,70 +3855,70 @@ function __arrayPrependedArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrayOnce();
+    _.arrayPrependedArrayOnce();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayPrependedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrayOnce( [ 1, 2 ], 2 );
+    _.arrayPrependedArrayOnce( [ 1, 2 ], 2 );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayPrependedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
   });
 }
 
-//__arrayPrepend*Arrays*
+//arrayPrepend*Arrays*
 
-function __arrayPrependArrays( test )
+function arrayPrependArrays( test )
 {
 
   test.description = 'nothing';
-  var got = _.__arrayPrependArrays( [], [] );
+  var got = _.arrayPrependArrays( [], [] );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayPrependArrays( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependArrays( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayPrependArrays( dst,[ 4, 5 ] );
+  var got = _.arrayPrependArrays( dst,[ 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependArrays( dst, [ 1, 1 ] );
+  var got = _.arrayPrependArrays( dst, [ 1, 1 ] );
   test.identical( dst, [ 1, 1, 1, 1, 1 ] );
   test.identical( got, dst );
 
   var dst = [];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4 ] ] ];
-  var got = _.__arrayPrependArrays( dst, insArray );
+  var got = _.arrayPrependArrays( dst, insArray );
   test.identical( dst, [ 1, 2, 3, [ 4 ] ] );
   test.identical( got, dst );
 
   var dst = [];
   var insArray = [ 1, 2, 3 ]
-  var got = _.__arrayPrependArrays( dst, insArray );
+  var got = _.arrayPrependArrays( dst, insArray );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
   var insArray = [ 'a', 1, [ { a : 1 } ], { b : 2 } ];
-  var got = _.__arrayPrependArrays( dst, insArray );
+  var got = _.arrayPrependArrays( dst, insArray );
   test.identical( dst, [  'a', 1, { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, dst );
 
@@ -3926,7 +3926,7 @@ function __arrayPrependArrays( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArrays( dst, undefined );
+    _.arrayPrependArrays( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -3935,7 +3935,7 @@ function __arrayPrependArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayPrependArrays( dst, [ undefined, 2 ] );
+    got = _.arrayPrependArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, dst );
@@ -3948,71 +3948,71 @@ function __arrayPrependArrays( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrays();
+    _.arrayPrependArrays();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrays( 1, [ 2 ] );
+    _.arrayPrependArrays( 1, [ 2 ] );
   });
 
   test.description = 'second arg is no a ArrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrays( [], 2 );
+    _.arrayPrependArrays( [], 2 );
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArrays( [], [ 1 ], [ 2 ] );
+    _.arrayPrependArrays( [], [ 1 ], [ 2 ] );
   });
 };
 
 //
 
-function __arrayPrependArraysOnce( test )
+function arrayPrependArraysOnce( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayPrependArraysOnce( [], [] );
+  var got = _.arrayPrependArraysOnce( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayPrependArraysOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayPrependArraysOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependArraysOnce( dst, [ 1 ] );
+  var got = _.arrayPrependArraysOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependArraysOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayPrependArraysOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 'a', { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3, 4 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4 ], 5 ] ];
-  var got = _.__arrayPrependArraysOnce( dst, insArray );
+  var got = _.arrayPrependArraysOnce( dst, insArray );
   test.identical( dst, [ [ 4 ], 5, 1, 2, 3, 4 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayPrependArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( got, [ 2, 1, 3 ] );
   test.identical( dst, got );
 
@@ -4024,7 +4024,7 @@ function __arrayPrependArraysOnce( test )
   }
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayPrependArraysOnce( dst, [ 1, 2, 3 ], onEqualize );
+  var got = _.arrayPrependArraysOnce( dst, [ 1, 2, 3 ], onEqualize );
   test.identical( got, [ 2, 1, 3 ] );
   test.identical( dst, got );
 
@@ -4032,7 +4032,7 @@ function __arrayPrependArraysOnce( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArraysOnce( dst, undefined );
+    _.arrayPrependArraysOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -4040,7 +4040,7 @@ function __arrayPrependArraysOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayPrependArraysOnce( dst, [ undefined, 2 ] );
+    _.arrayPrependArraysOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
@@ -4052,56 +4052,56 @@ function __arrayPrependArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnce();
+    _.arrayPrependArraysOnce();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnce( 1, [ 2 ] );
+    _.arrayPrependArraysOnce( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnce( [], [ 1, 2, 3 ], {} );
+    _.arrayPrependArraysOnce( [], [ 1, 2, 3 ], {} );
   });
 
   test.description = 'second arg is no a ArrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnce( [], 2 );
+    _.arrayPrependArraysOnce( [], 2 );
   });
 
 }
 
 //
 
-function __arrayPrependArraysOnceStrictly( test )
+function arrayPrependArraysOnceStrictly( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayPrependArraysOnceStrictly( [], [] );
+  var got = _.arrayPrependArraysOnceStrictly( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependArraysOnceStrictly( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependArraysOnceStrictly( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
   var insArray = [ [ 'a' ],[ { a : 1 } ], { b : 2 } ];
-  var got = _.__arrayPrependArraysOnceStrictly( dst, insArray );
+  var got = _.arrayPrependArraysOnceStrictly( dst, insArray );
   test.identical( dst, [ 'a', { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, dst );
 
   var dst = [ 0 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] ];
-  var got = _.__arrayPrependArraysOnceStrictly( dst, insArray );
+  var got = _.arrayPrependArraysOnceStrictly( dst, insArray );
   test.identical( dst, [ 1, 2, 3, [ 4, [ 5 ] ], 0 ] );
   test.identical( got, dst );
 
@@ -4113,7 +4113,7 @@ function __arrayPrependArraysOnceStrictly( test )
   }
 
   var dst = [ 4,5 ];
-  var got = _.__arrayPrependArraysOnceStrictly( dst, [ 1, 2, 3 ], onEqualize )
+  var got = _.arrayPrependArraysOnceStrictly( dst, [ 1, 2, 3 ], onEqualize )
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
   test.identical( dst, got );
 
@@ -4121,7 +4121,7 @@ function __arrayPrependArraysOnceStrictly( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayPrependArraysOnceStrictly( dst, [ undefined, 2 ] );
+    _.arrayPrependArraysOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
@@ -4133,32 +4133,32 @@ function __arrayPrependArraysOnceStrictly( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnceStrictly();
+    _.arrayPrependArraysOnceStrictly();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnceStrictly( 1, [ 2 ] );
+    _.arrayPrependArraysOnceStrictly( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnceStrictly( [], [ 1,2,3 ], {} );
+    _.arrayPrependArraysOnceStrictly( [], [ 1,2,3 ], {} );
   });
 
   var dst = [ 1, 2, 3 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArraysOnceStrictly( dst, [ 4, 2, 5 ] );
+    _.arrayPrependArraysOnceStrictly( dst, [ 4, 2, 5 ] );
   })
   test.identical( dst, [ 4, 5, 1, 2, 3 ] )
 
   var dst = [ 1, 1, 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArraysOnceStrictly( dst, [ 1 ] );
+    _.arrayPrependArraysOnceStrictly( dst, [ 1 ] );
   })
   test.identical( dst, [ 1, 1, 1 ] );
 
@@ -4166,58 +4166,58 @@ function __arrayPrependArraysOnceStrictly( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependArraysOnceStrictly( dst, undefined );
+    _.arrayPrependArraysOnceStrictly( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
   test.description = 'second arg is no a ArrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependArraysOnceStrictly( [], 2 );
+    _.arrayPrependArraysOnceStrictly( [], 2 );
   });
 }
 
 //
 
-function __arrayPrependedArrays( test )
+function arrayPrependedArrays( test )
 {
   test.description = 'nothing';
   var dst = [];
-  var got = _.__arrayPrependedArrays( dst, [] );
+  var got = _.arrayPrependedArrays( dst, [] );
   var expected = [ ];
   test.identical( dst, expected );
   test.identical( got, 0 );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayPrependedArrays( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependedArrays( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayPrependedArrays( dst,[ 4, 5 ] );
+  var got = _.arrayPrependedArrays( dst,[ 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependedArrays( dst, [ 1, 1 ] );
+  var got = _.arrayPrependedArrays( dst, [ 1, 1 ] );
   test.identical( dst, [ 1, 1, 1, 1, 1 ] );
   test.identical( got, 2 );
 
   var dst = [];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4 ], 5 ] ];
-  var got = _.__arrayPrependedArrays( dst, insArray );
+  var got = _.arrayPrependedArrays( dst, insArray );
   test.identical( dst, [ 1, 2, 3, [ 4 ], 5 ] );
   test.identical( got, 5 );
 
   var dst = [];
-  var got = _.__arrayPrependedArrays( dst, [ 1, 2, 3 ]);
+  var got = _.arrayPrependedArrays( dst, [ 1, 2, 3 ]);
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependedArrays( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayPrependedArrays( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [  'a', 1, { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, 4 );
 
@@ -4225,7 +4225,7 @@ function __arrayPrependedArrays( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependedArrays( dst, undefined );
+    _.arrayPrependedArrays( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -4234,7 +4234,7 @@ function __arrayPrependedArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayPrependedArrays( dst, [ undefined, 2 ] );
+    got = _.arrayPrependedArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, 2 );
@@ -4247,37 +4247,37 @@ function __arrayPrependedArrays( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrays();
+    _.arrayPrependedArrays();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrays( 1, [ 2 ] );
+    _.arrayPrependedArrays( 1, [ 2 ] );
   });
 
   test.description = 'second arg is no a ArrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrays( [], 2 );
+    _.arrayPrependedArrays( [], 2 );
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArrays( [], [ 1 ], [ 2 ] );
+    _.arrayPrependedArrays( [], [ 1 ], [ 2 ] );
   });
 
 }
 
 //
 
-function __arrayPrependedArraysOnce( test )
+function arrayPrependedArraysOnce( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayPrependedArraysOnce( dst, [] );
+  var got = _.arrayPrependedArraysOnce( dst, [] );
   var expected = [];
   test.identical( dst, expected );
   test.identical( got, 0 );
@@ -4285,36 +4285,36 @@ function __arrayPrependedArraysOnce( test )
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayPrependedArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependedArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayPrependedArraysOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayPrependedArraysOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayPrependedArraysOnce( dst, [ 1 ] );
+  var got = _.arrayPrependedArraysOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, 0 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayPrependedArraysOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayPrependedArraysOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 'a', { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, 3 );
 
   var dst = [];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] ];
-  var got = _.__arrayPrependedArraysOnce( dst, insArray );
+  var got = _.arrayPrependedArraysOnce( dst, insArray );
   test.identical( dst, [ 1, 2, 3, [ 4, [ 5 ] ] ] );
   test.identical( got, 4 );
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayPrependedArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayPrependedArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 2, 1, 3 ] );
   test.identical( got, 1 );
 
@@ -4326,7 +4326,7 @@ function __arrayPrependedArraysOnce( test )
   }
   var dst = [ 1, 3 ];
   var insArray = [ 1, 2, 3 ]
-  var got = _.__arrayPrependedArraysOnce( dst, insArray, onEqualize );
+  var got = _.arrayPrependedArraysOnce( dst, insArray, onEqualize );
   test.identical( dst, [ 2, 1, 3 ] );
   test.identical( got, 1 );
 
@@ -4334,7 +4334,7 @@ function __arrayPrependedArraysOnce( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayPrependedArraysOnce( dst, undefined );
+    _.arrayPrependedArraysOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -4342,7 +4342,7 @@ function __arrayPrependedArraysOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayPrependedArraysOnce( dst, [ undefined, 2 ] );
+    _.arrayPrependedArraysOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
@@ -4354,54 +4354,54 @@ function __arrayPrependedArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArraysOnce();
+    _.arrayPrependedArraysOnce();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArraysOnce( 1, [ 2 ] );
+    _.arrayPrependedArraysOnce( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArraysOnce( [], [ 1, 2, 3 ], [] )
+    _.arrayPrependedArraysOnce( [], [ 1, 2, 3 ], [] )
   });
 
   test.description = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.__arrayPrependedArraysOnce( [ 1 ], 2 );
+    _.arrayPrependedArraysOnce( [ 1 ], 2 );
   });
 
 }
 
 //
 
-function __arrayAppend( test )
+function arrayAppend( test )
 {
   test.description = 'simple';
 
-  var got = _.__arrayAppend( [], 1 );
+  var got = _.arrayAppend( [], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayAppend( [ 1 ], 1 );
+  var got = _.arrayAppend( [ 1 ], 1 );
   test.identical( got, [ 1, 1 ] );
 
-  var got = _.__arrayAppend( [ 1 ], 2 );
+  var got = _.arrayAppend( [ 1 ], 2 );
   test.identical( got, [ 1,2 ] );
 
-  var got = _.__arrayAppend( [ 1,2,3 ], 3 );
+  var got = _.arrayAppend( [ 1,2,3 ], 3 );
   test.identical( got, [ 1,2,3,3 ] );
 
-  var got = _.__arrayAppend( [ 1 ], '1' );
+  var got = _.arrayAppend( [ 1 ], '1' );
   test.identical( got, [ 1, '1' ] );
 
-  var got = _.__arrayAppend( [ 1 ], -1 );
+  var got = _.arrayAppend( [ 1 ], -1 );
   test.identical( got, [  1, -1 ] );
 
-  var got = _.__arrayAppend( [ 1 ], [ 1 ] );
+  var got = _.arrayAppend( [ 1 ], [ 1 ] );
   test.identical( got, [  1,[ 1 ] ] );
 
   //
@@ -4412,47 +4412,47 @@ function __arrayAppend( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppend();
+    _.arrayAppend();
   })
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppend( [], 1, 1 );
+    _.arrayAppend( [], 1, 1 );
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppend( 1, 1 );
+    _.arrayAppend( 1, 1 );
   })
 }
 
 //
 
-function __arrayAppendOnce( test )
+function arrayAppendOnce( test )
 {
   test.description = 'simple';
 
-  var got = _.__arrayAppendOnce( [], 1 );
+  var got = _.arrayAppendOnce( [], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayAppendOnce( [ 1 ], 1 );
+  var got = _.arrayAppendOnce( [ 1 ], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayAppendOnce( [ 1 ], 2 );
+  var got = _.arrayAppendOnce( [ 1 ], 2 );
   test.identical( got, [ 1,2 ] );
 
-  var got = _.__arrayAppendOnce( [ 1,2,3 ], 3 );
+  var got = _.arrayAppendOnce( [ 1,2,3 ], 3 );
   test.identical( got, [ 1,2,3 ] );
 
-  var got = _.__arrayAppendOnce( [ 1 ], '1' );
+  var got = _.arrayAppendOnce( [ 1 ], '1' );
   test.identical( got, [ 1, '1' ] );
 
-  var got = _.__arrayAppendOnce( [ 1 ], -1 );
+  var got = _.arrayAppendOnce( [ 1 ], -1 );
   test.identical( got, [ 1, -1 ] );
 
-  var got = _.__arrayAppendOnce( [ 1 ], [ 1 ] );
+  var got = _.arrayAppendOnce( [ 1 ], [ 1 ] );
   test.identical( got, [ 1, [ 1 ] ] );
 
   test.description = 'equalizer 2 args';
@@ -4462,7 +4462,7 @@ function __arrayAppendOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayAppendOnce( dst, { num : 4 }, onEqualize );
+  var got = _.arrayAppendOnce( dst, { num : 4 }, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -4470,7 +4470,7 @@ function __arrayAppendOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayAppendOnce( dst, { num : 1 }, onEqualize );
+  var got = _.arrayAppendOnce( dst, { num : 1 }, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   test.description = 'equalizer 1 arg';
@@ -4480,7 +4480,7 @@ function __arrayAppendOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayAppendOnce( dst, 4, onEqualize );
+  var got = _.arrayAppendOnce( dst, 4, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -4488,7 +4488,7 @@ function __arrayAppendOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayAppendOnce( dst, 1, onEqualize );
+  var got = _.arrayAppendOnce( dst, 1, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   //
@@ -4499,19 +4499,19 @@ function __arrayAppendOnce( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendOnce();
+    _.arrayAppendOnce();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendOnce( 1, 1 );
+    _.arrayAppendOnce( 1, 1 );
   })
 
   test.description = 'onEqualize is not a function';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendOnce( 1, 1, 1 );
+    _.arrayAppendOnce( 1, 1, 1 );
   })
 }
 
@@ -4580,32 +4580,32 @@ function __arrayAppendOnce( test )
 
 //
 
-function __arrayAppendOnceStrictly( test )
+function arrayAppendOnceStrictly( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendOnceStrictly( dst , 1 );
+  var got = _.arrayAppendOnceStrictly( dst , 1 );
   test.identical( got, [ 1 ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendOnceStrictly( dst, 2 );
+  var got = _.arrayAppendOnceStrictly( dst, 2 );
   test.identical( got, [ 1,2 ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendOnceStrictly( dst, '1' );
+  var got = _.arrayAppendOnceStrictly( dst, '1' );
   test.identical( got, [ 1,'1' ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendOnceStrictly( dst, -1 );
+  var got = _.arrayAppendOnceStrictly( dst, -1 );
   test.identical( got, [ 1, -1 ] );
   test.identical( got, dst );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendOnceStrictly( dst, [ 1 ] );
+  var got = _.arrayAppendOnceStrictly( dst, [ 1 ] );
   test.identical( got, [ 1, [ 1 ] ] );
 
   test.description = 'equalizer 2 args';
@@ -4615,7 +4615,7 @@ function __arrayAppendOnceStrictly( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayAppendOnceStrictly( dst,{ num : 4 }, onEqualize );
+  var got = _.arrayAppendOnceStrictly( dst,{ num : 4 }, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
   test.identical( got, dst );
 
@@ -4626,7 +4626,7 @@ function __arrayAppendOnceStrictly( test )
   {
     return a.num;
   }
-  var got = _.__arrayAppendOnceStrictly( dst, 4, onEqualize );
+  var got = _.arrayAppendOnceStrictly( dst, 4, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
   test.identical( got, dst );
 
@@ -4638,32 +4638,32 @@ function __arrayAppendOnceStrictly( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendOnceStrictly();
+    _.arrayAppendOnceStrictly();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendOnceStrictly( 1, 1 );
+    _.arrayAppendOnceStrictly( 1, 1 );
   })
 
   test.description = 'ins already exists ion dst';
 
   test.shouldThrowError( function()
   {
-    _.__arrayAppendOnceStrictly( [ 1 ], 1 );
+    _.arrayAppendOnceStrictly( [ 1 ], 1 );
   });
 
   test.shouldThrowError( function()
   {
-     _.__arrayAppendOnceStrictly( [ 1,2,3 ], 3 );
+     _.arrayAppendOnceStrictly( [ 1,2,3 ], 3 );
   });
 
   test.description = 'onEqualize is not a routine';
 
   test.shouldThrowError( function()
   {
-     _.__arrayAppendOnceStrictly( [ 1,2,3 ], 3, 3 );
+     _.arrayAppendOnceStrictly( [ 1,2,3 ], 3, 3 );
   });
 
   test.shouldThrowError( function()
@@ -4673,7 +4673,7 @@ function __arrayAppendOnceStrictly( test )
     {
       return a.num === b.num;
     }
-    _.__arrayAppendOnceStrictly( dst, { num : 1 }, onEqualize );
+    _.arrayAppendOnceStrictly( dst, { num : 1 }, onEqualize );
   });
 
   test.shouldThrowError( function()
@@ -4683,48 +4683,48 @@ function __arrayAppendOnceStrictly( test )
     {
       return a.num;
     }
-    _.__arrayAppendOnceStrictly( dst, 1, onEqualize );
+    _.arrayAppendOnceStrictly( dst, 1, onEqualize );
   });
 }
 
 //
 
-function __arrayAppended( test )
+function arrayAppended( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppended( dst, 1 );
+  var got = _.arrayAppended( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppended( dst, 1 );
+  var got = _.arrayAppended( dst, 1 );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppended( dst, 2 );
+  var got = _.arrayAppended( dst, 2 );
   test.identical( dst, [ 1, 2 ] );
   test.identical( got, 1 );
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayAppended( dst, 3 );
+  var got = _.arrayAppended( dst, 3 );
   test.identical( dst, [ 1,2,3,3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppended( dst, '1' );
+  var got = _.arrayAppended( dst, '1' );
   test.identical( dst, [ 1, '1' ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppended( dst, -1 );
+  var got = _.arrayAppended( dst, -1 );
   test.identical( dst, [ 1, -1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppended( dst, [ 1 ] );
+  var got = _.arrayAppended( dst, [ 1 ] );
   test.identical( dst, [ 1, [ 1 ] ] );
   test.identical( got, 1 );
 
@@ -4736,60 +4736,60 @@ function __arrayAppended( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppended();
+    _.arrayAppended();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppended( [], 1, 1 );
+    _.arrayAppended( [], 1, 1 );
   });
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppended( 1, 1 );
+    _.arrayAppended( 1, 1 );
   });
 }
 
 //
 
-function __arrayAppendedOnce( test )
+function arrayAppendedOnce( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendedOnce( dst, 1 );
+  var got = _.arrayAppendedOnce( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendedOnce( dst, 1 );
+  var got = _.arrayAppendedOnce( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendedOnce( dst, 2 );
+  var got = _.arrayAppendedOnce( dst, 2 );
   test.identical( dst, [ 1, 2 ] );
   test.identical( got, 1 );
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayAppendedOnce( dst, 3 );
+  var got = _.arrayAppendedOnce( dst, 3 );
   test.identical( dst, [ 1,2,3 ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendedOnce( dst, '1' );
+  var got = _.arrayAppendedOnce( dst, '1' );
   test.identical( dst, [ 1,'1' ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendedOnce( dst, -1 );
+  var got = _.arrayAppendedOnce( dst, -1 );
   test.identical( dst, [ 1,-1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayAppendedOnce( dst, [ 1 ] );
+  var got = _.arrayAppendedOnce( dst, [ 1 ] );
   test.identical( dst, [ 1,[ 1 ] ] );
   test.identical( got, 1 );
 
@@ -4800,7 +4800,7 @@ function __arrayAppendedOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayAppendedOnce( dst, { num : 4 }, onEqualize );
+  var got = _.arrayAppendedOnce( dst, { num : 4 }, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
   test.identical( got, 3 );
 
@@ -4809,7 +4809,7 @@ function __arrayAppendedOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayAppendedOnce( dst, { num : 1 }, onEqualize );
+  var got = _.arrayAppendedOnce( dst, { num : 1 }, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -4820,7 +4820,7 @@ function __arrayAppendedOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayAppendedOnce( dst, 4, onEqualize );
+  var got = _.arrayAppendedOnce( dst, 4, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
   test.identical( got, 3 );
 
@@ -4829,7 +4829,7 @@ function __arrayAppendedOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayAppendedOnce( dst, 1, onEqualize );
+  var got = _.arrayAppendedOnce( dst, 1, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -4841,45 +4841,45 @@ function __arrayAppendedOnce( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedOnce();
+    _.arrayAppendedOnce();
   })
 
   test.description = 'third is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedOnce( [], 1, 1 );
+    _.arrayAppendedOnce( [], 1, 1 );
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedOnce( 1, 1 );
+    _.arrayAppendedOnce( 1, 1 );
   })
 
   test.description = 'onEqualize is not a function';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedOnce( 1, 1, 1 );
+    _.arrayAppendedOnce( 1, 1, 1 );
   })
 }
 
 // //
 //
-// function __arrayAppendArray( test )
+// function arrayAppendArray( test )
 // {
 //
 //   test.description = 'nothing';
-//   var got = _.__arrayAppendArray( [  ] );
+//   var got = _.arrayAppendArray( [  ] );
 //   var expected = [  ];
 //   test.identical( got, expected );
 //
 //   test.description = 'an argument';
-//   var got = _.__arrayAppendArray( [ 1, 2, undefined ] );
+//   var got = _.arrayAppendArray( [ 1, 2, undefined ] );
 //   var expected = [ 1, 2, undefined ];
 //   test.identical( got, expected );
 //
 //   test.description = 'an array';
-//   var got = _.__arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+//   var got = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
 //   var expected = [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
 //   test.identical( got, expected );
 //
@@ -4891,52 +4891,52 @@ function __arrayAppendedOnce( test )
 //   test.description = 'no arguments';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayAppendArray();
+//     _.arrayAppendArray();
 //   });
 //
 //   test.description = 'arguments[0] is wrong, has to be an array';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayAppendArray( 'wrong argument', 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+//     _.arrayAppendArray( 'wrong argument', 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
 //   });
 //
 //   test.description = 'arguments[1] is undefined';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayAppendArray( [ 1, 2 ], undefined, false, { a : 1 }, 42, [ 3, 7, 13 ] );
+//     _.arrayAppendArray( [ 1, 2 ], undefined, false, { a : 1 }, 42, [ 3, 7, 13 ] );
 //   });
 //
 // };
 
 //
 
-function __arrayAppendArray( test )
+function arrayAppendArray( test )
 {
 
   test.description = 'nothing';
-  var got = _.__arrayAppendArray( [], [] );
+  var got = _.arrayAppendArray( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayAppendArray( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendArray( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayAppendArray( dst,[ 4, 5 ] );
+  var got = _.arrayAppendArray( dst,[ 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendArray( dst, [ 1, 1 ] );
+  var got = _.arrayAppendArray( dst, [ 1, 1 ] );
   test.identical( dst, [ 1, 1, 1, 1, 1 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayAppendArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayAppendArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [  1, 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( got, dst );
 
@@ -4944,7 +4944,7 @@ function __arrayAppendArray( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArray( dst, undefined );
+    _.arrayAppendArray( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -4953,7 +4953,7 @@ function __arrayAppendArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayAppendArray( dst, [ undefined, 2 ] );
+    got = _.arrayAppendArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1,undefined, 2 ] );
   test.identical( got, dst );
@@ -4966,39 +4966,39 @@ function __arrayAppendArray( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArray();
+    _.arrayAppendArray();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayAppendArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArray( [ 1, 2 ], 2 );
+    _.arrayAppendArray( [ 1, 2 ], 2 );
   });
 };
 
 //
 
-// function __arrayAppendArrayOnce( test )
+// function arrayAppendArrayOnce( test )
 // {
 //
 //   test.description = 'nothing';
-//   var got = _.__arrayAppendArrayOnce( [  ] );
+//   var got = _.arrayAppendArrayOnce( [  ] );
 //   var expected = [  ];
 //   test.identical( got, expected );
 //
 //   test.description = 'an argument';
-//   var got = _.__arrayAppendArrayOnce( [ 1, 2, undefined ] );
+//   var got = _.arrayAppendArrayOnce( [ 1, 2, undefined ] );
 //   var expected = [ 1, 2, undefined ];
 //   test.identical( got, expected );
 //
 //   test.description = 'an array';
-//   var got = _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
+//   var got = _.arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
 //   var expected = [ 1, 2, 'str', {}, 5 ];
 //   test.identical( got, expected );
 //
@@ -5010,19 +5010,19 @@ function __arrayAppendArray( test )
 //     test.description = 'no arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _.__arrayAppendArrayOnce();
+//       _.arrayAppendArrayOnce();
 //     });
 //
 //     test.description = 'arguments[0] is wrong, has to be an array';
 //     test.shouldThrowError( function()
 //     {
-//       _.__arrayAppendArrayOnce( 'wrong argument', 'str', 2, {}, [ 'str', 5 ] );
+//       _.arrayAppendArrayOnce( 'wrong argument', 'str', 2, {}, [ 'str', 5 ] );
 //     });
 //
 //     test.description = 'arguments[3] is undefined';
 //     test.shouldThrowError( function()
 //     {
-//       _.__arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, undefined, [ 'str', 5 ] );
+//       _.arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, undefined, [ 'str', 5 ] );
 //     });
 //
 //   }
@@ -5031,36 +5031,36 @@ function __arrayAppendArray( test )
 
 //
 
-function __arrayAppendArrayOnce( test )
+function arrayAppendArrayOnce( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayAppendArrayOnce( [], [] );
+  var got = _.arrayAppendArrayOnce( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendArrayOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendArrayOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'appends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayAppendArrayOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayAppendArrayOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendArrayOnce( dst, [ 1 ] );
+  var got = _.arrayAppendArrayOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayAppendArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayAppendArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 1, 'a', [ { a : 1 } ], { b : 2 } ] );
   test.identical( got, dst );
 
@@ -5068,7 +5068,7 @@ function __arrayAppendArrayOnce( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArrayOnce( dst, undefined );
+    _.arrayAppendArrayOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -5076,7 +5076,7 @@ function __arrayAppendArrayOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayAppendArrayOnce( dst, [ undefined, 2 ] );
+    _.arrayAppendArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1,undefined, 2 ] );
 
@@ -5088,48 +5088,48 @@ function __arrayAppendArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnce();
+    _.arrayAppendArrayOnce();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayAppendArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnce( [ 1, 2 ], 2 );
+    _.arrayAppendArrayOnce( [ 1, 2 ], 2 );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayAppendArrayOnce( [ 1, 2 ], [ 2 ], 3 );
   });
 
 }
 
 //
 
-function __arrayAppendArrayOnceStrictly( test )
+function arrayAppendArrayOnceStrictly( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayAppendArrayOnceStrictly( [], [] );
+  var got = _.arrayAppendArrayOnceStrictly( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendArrayOnceStrictly( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendArrayOnceStrictly( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayAppendArrayOnceStrictly( dst, [ 4, 5 ] );
+  var got = _.arrayAppendArrayOnceStrictly( dst, [ 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, dst );
 
@@ -5137,7 +5137,7 @@ function __arrayAppendArrayOnceStrictly( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArrayOnceStrictly( dst, undefined );
+    _.arrayAppendArrayOnceStrictly( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -5145,7 +5145,7 @@ function __arrayAppendArrayOnceStrictly( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayAppendArrayOnceStrictly( dst, [ undefined, 2 ] );
+    _.arrayAppendArrayOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
 
@@ -5157,19 +5157,19 @@ function __arrayAppendArrayOnceStrictly( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnceStrictly();
+    _.arrayAppendArrayOnceStrictly();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayAppendArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnceStrictly( [ 1, 2 ], 2 );
+    _.arrayAppendArrayOnceStrictly( [ 1, 2 ], 2 );
   });
 
   test.description = 'one of elements is not unique';
@@ -5177,57 +5177,57 @@ function __arrayAppendArrayOnceStrictly( test )
   var dst = [ 1,2,3 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArrayOnceStrictly( dst, [ 4, 5, 2 ] );
+    _.arrayAppendArrayOnceStrictly( dst, [ 4, 5, 2 ] );
   })
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
 
   var dst = [ 1, 1, 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArrayOnceStrictly( dst, [ 1 ] );
+    _.arrayAppendArrayOnceStrictly( dst, [ 1 ] );
   })
   test.identical( dst, [ 1, 1, 1 ] );
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayAppendArrayOnceStrictly( [ 1, 2 ], [ 2 ], 3 );
   });
 }
 
 //
 
-function __arrayAppendedArray( test )
+function arrayAppendedArray( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayAppendedArray( dst, [] );
+  var got = _.arrayAppendedArray( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendedArray( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendedArray( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayAppendedArray( dst, [ 2, 4, 5 ] );
+  var got = _.arrayAppendedArray( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 2, 4, 5 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendedArray( dst, [ 1 ] );
+  var got = _.arrayAppendedArray( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1, 1 ] );
   test.identical( got, 1 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayAppendedArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayAppendedArray( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 1, 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( got, 4 );
 
@@ -5235,7 +5235,7 @@ function __arrayAppendedArray( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendedArray( dst, undefined );
+    _.arrayAppendedArray( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -5243,7 +5243,7 @@ function __arrayAppendedArray( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayAppendedArray( dst, [ undefined, 2 ] );
+    _.arrayAppendedArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1,undefined, 2, ] );
 
@@ -5255,55 +5255,55 @@ function __arrayAppendedArray( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArray();
+    _.arrayAppendedArray();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayAppendedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArray( [ 1, 2 ], 2 );
+    _.arrayAppendedArray( [ 1, 2 ], 2 );
   });
 }
 
 //
 
-function __arrayAppendedArrayOnce( test )
+function arrayAppendedArrayOnce( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayAppendedArrayOnce( dst, [] );
+  var got = _.arrayAppendedArrayOnce( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendedArrayOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendedArrayOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayAppendedArrayOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayAppendedArrayOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendedArrayOnce( dst, [ 1 ] );
+  var got = _.arrayAppendedArrayOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, 0 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
-  var got = _.__arrayAppendedArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  var got = _.arrayAppendedArrayOnce( dst, [ 'a', 1, [ { a : 1 } ], { b : 2 } ] );
   test.identical( dst, [ 1, 'a', [ { a : 1 } ], { b : 2 } ] );
   test.identical( got, 3 );
 
@@ -5311,7 +5311,7 @@ function __arrayAppendedArrayOnce( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendedArrayOnce( dst, undefined );
+    _.arrayAppendedArrayOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -5319,7 +5319,7 @@ function __arrayAppendedArrayOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayAppendedArrayOnce( dst, [ undefined, 2 ] );
+    _.arrayAppendedArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
 
@@ -5331,71 +5331,71 @@ function __arrayAppendedArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrayOnce();
+    _.arrayAppendedArrayOnce();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayAppendedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrayOnce( [ 1, 2 ], 2 );
+    _.arrayAppendedArrayOnce( [ 1, 2 ], 2 );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayAppendedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
   });
 
 }
 
 //
 
-function __arrayAppendArrays( test )
+function arrayAppendArrays( test )
 {
 
   test.description = 'nothing';
-  var got = _.__arrayAppendArrays( [], [] );
+  var got = _.arrayAppendArrays( [], [] );
   var expected = [  ];
   test.identical( got, expected );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayAppendArrays( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendArrays( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayAppendArrays( dst,[ 4, 5 ] );
+  var got = _.arrayAppendArrays( dst,[ 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendArrays( dst, [ 1, 1 ] );
+  var got = _.arrayAppendArrays( dst, [ 1, 1 ] );
   test.identical( dst, [ 1, 1, 1, 1, 1 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 5 ] ] ]
-  var got = _.__arrayAppendArrays( dst, insArray );
+  var got = _.arrayAppendArrays( dst, insArray );
   test.identical( dst, [ 1, 2, 3, 1, 2, 3, [ 5 ] ] );
   test.identical( got, dst );
 
   test.description = 'arguments are not arrays';
   var dst = [];
-  var got = _.__arrayAppendArrays( dst, [ 1, 2, 3 ]);
+  var got = _.arrayAppendArrays( dst, [ 1, 2, 3 ]);
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
   var insArray = [ 'a', 1, [ { a : 1 } ], { b : 2 } ];
-  var got = _.__arrayAppendArrays( dst, insArray );
+  var got = _.arrayAppendArrays( dst, insArray );
   test.identical( dst, [  1, 'a', 1, { a : 1 }, { b : 2 } ] );
   test.identical( got, dst );
 
@@ -5403,7 +5403,7 @@ function __arrayAppendArrays( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArrays( dst, undefined );
+    _.arrayAppendArrays( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -5412,7 +5412,7 @@ function __arrayAppendArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayAppendArrays( dst, [ undefined, 2 ] );
+    got = _.arrayAppendArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
   test.identical( got, dst );
@@ -5425,72 +5425,72 @@ function __arrayAppendArrays( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrays();
+    _.arrayAppendArrays();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrays( 1, [ 2 ] );
+    _.arrayAppendArrays( 1, [ 2 ] );
   });
 
   test.description = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrays( [], 1 );
+    _.arrayAppendArrays( [], 1 );
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArrays( [], [ 1 ], [ 2 ] );
+    _.arrayAppendArrays( [], [ 1 ], [ 2 ] );
   });
 };
 
 //
 
-function __arrayAppendArraysOnce( test )
+function arrayAppendArraysOnce( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayAppendArraysOnce( [], [] );
+  var got = _.arrayAppendArraysOnce( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayAppendArraysOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayAppendArraysOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendArraysOnce( dst, [ 1 ] );
+  var got = _.arrayAppendArraysOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
   var insArray = [ 'a', 1, [ { a : 1 } ], { b : 2 } ];
-  var got = _.__arrayAppendArraysOnce( dst, insArray );
+  var got = _.arrayAppendArraysOnce( dst, insArray );
   test.identical( dst, [ 1, 'a', { a : 1 }, { b : 2 } ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3, 5 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ], 6 ] ];
-  var got = _.__arrayAppendArraysOnce( dst, insArray );
+  var got = _.arrayAppendArraysOnce( dst, insArray );
   test.identical( dst, [ 1, 2, 3, 5, [ 4, [ 5 ] ], 6 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayAppendArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( got, [ 1, 3, 2 ] );
   test.identical( dst, got );
 
@@ -5502,7 +5502,7 @@ function __arrayAppendArraysOnce( test )
   }
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayAppendArraysOnce( dst, [ 1, 2, 3 ], onEqualize )
+  var got = _.arrayAppendArraysOnce( dst, [ 1, 2, 3 ], onEqualize )
   test.identical( got, [ 1, 3, 2 ] );
   test.identical( dst, got );
 
@@ -5510,7 +5510,7 @@ function __arrayAppendArraysOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayAppendArraysOnce( dst, [ undefined, 2 ] );
+    _.arrayAppendArraysOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
 
@@ -5522,64 +5522,64 @@ function __arrayAppendArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnce();
+    _.arrayAppendArraysOnce();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnce( 1, [ 2 ] );
+    _.arrayAppendArraysOnce( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnce( [], [ 1, 2, 3 ], [] );
+    _.arrayAppendArraysOnce( [], [ 1, 2, 3 ], [] );
   });
 
   test.description = 'argument is undefined';
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArraysOnce( dst, undefined );
+    _.arrayAppendArraysOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
   test.description = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnce( [], 1 );
+    _.arrayAppendArraysOnce( [], 1 );
   });
 
 }
 
 //
 
-function __arrayAppendArraysOnceStrictly( test )
+function arrayAppendArraysOnceStrictly( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayAppendArraysOnceStrictly( [], [] );
+  var got = _.arrayAppendArraysOnceStrictly( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendArraysOnceStrictly( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendArraysOnceStrictly( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
   var insArray = [ [ 'a' ],[ { a : 1 } ], { b : 2 } ];
-  var got = _.__arrayAppendArraysOnceStrictly( dst, insArray );
+  var got = _.arrayAppendArraysOnceStrictly( dst, insArray );
   test.identical( dst, [ 1, 'a', { a : 1 }, { b : 2 } ] );
   test.identical( got, dst );
 
   var dst = [ 0 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ], 6 ] ];
-  var got = _.__arrayAppendArraysOnceStrictly( dst, insArray );
+  var got = _.arrayAppendArraysOnceStrictly( dst, insArray );
   test.identical( dst, [ 0, 1, 2, 3, [ 4, [ 5 ] ], 6 ] );
   test.identical( got, dst );
 
@@ -5591,7 +5591,7 @@ function __arrayAppendArraysOnceStrictly( test )
   }
 
   var dst = [ 4,5 ];
-  var got = _.__arrayAppendArraysOnceStrictly( dst, [ 1, 2, 3 ], onEqualize );
+  var got = _.arrayAppendArraysOnceStrictly( dst, [ 1, 2, 3 ], onEqualize );
   test.identical( got, [ 4, 5, 1, 2, 3 ] );
   test.identical( dst, got );
 
@@ -5601,7 +5601,7 @@ function __arrayAppendArraysOnceStrictly( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayAppendArraysOnceStrictly( dst, [ undefined, 2 ] );
+    _.arrayAppendArraysOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
 
@@ -5613,32 +5613,32 @@ function __arrayAppendArraysOnceStrictly( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnceStrictly();
+    _.arrayAppendArraysOnceStrictly();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnceStrictly( 1, [ 2 ] );
+    _.arrayAppendArraysOnceStrictly( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnceStrictly( [], [ 1, 2, 3 ], [] )
+    _.arrayAppendArraysOnceStrictly( [], [ 1, 2, 3 ], [] )
   });
 
   var dst = [ 1, 2, 3 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArraysOnceStrictly( dst, [ 4, 2, 5 ] );
+    _.arrayAppendArraysOnceStrictly( dst, [ 4, 2, 5 ] );
   })
   test.identical( dst, [ 1, 2, 3, 4, 5 ] )
 
   var dst = [ 1, 1, 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArraysOnceStrictly( dst, [ 1 ] );
+    _.arrayAppendArraysOnceStrictly( dst, [ 1 ] );
   })
   test.identical( dst, [ 1, 1, 1 ] );
 
@@ -5646,61 +5646,61 @@ function __arrayAppendArraysOnceStrictly( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendArraysOnceStrictly( dst, undefined );
+    _.arrayAppendArraysOnceStrictly( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
   test.description = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendArraysOnceStrictly( [], 1 );
+    _.arrayAppendArraysOnceStrictly( [], 1 );
   });
 
 }
 
 //
 
-function __arrayAppendedArrays( test )
+function arrayAppendedArrays( test )
 {
   test.description = 'nothing';
   var dst = [];
-  var got = _.__arrayAppendedArrays( dst, [] );
+  var got = _.arrayAppendedArrays( dst, [] );
   var expected = [ ];
   test.identical( dst, expected );
   test.identical( got, 0 );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayAppendedArrays( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendedArrays( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayAppendedArrays( dst,[ 4, 5 ] );
+  var got = _.arrayAppendedArrays( dst,[ 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendedArrays( dst, [ 1, 1 ] );
+  var got = _.arrayAppendedArrays( dst, [ 1, 1 ] );
   test.identical( dst, [ 1, 1, 1, 1, 1 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 2, 3 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, 5 ], 6 ] ];
-  var got = _.__arrayAppendedArrays( dst, insArray );
+  var got = _.arrayAppendedArrays( dst, insArray );
   test.identical( dst, [ 1, 2, 3, 1, 2, 3, [ 4, 5 ], 6 ] );
   test.identical( got, 5 );
 
   test.description = 'arguments are not arrays';
   var dst = [];
-  var got = _.__arrayAppendedArrays( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendedArrays( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
   var insArray = [ 'a', 1, [ { a : 1 } ], { b : 2 } ];
-  var got = _.__arrayAppendedArrays( dst, insArray );
+  var got = _.arrayAppendedArrays( dst, insArray );
   test.identical( dst, [  1, 'a', 1, { a : 1 }, { b : 2 } ] );
   test.identical( got, 4 );
 
@@ -5709,7 +5709,7 @@ function __arrayAppendedArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayAppendedArrays( dst, [ undefined, 2 ] );
+    got = _.arrayAppendedArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
   test.identical( got, 2 );
@@ -5722,45 +5722,45 @@ function __arrayAppendedArrays( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrays();
+    _.arrayAppendedArrays();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrays( 1, [ 2 ] );
+    _.arrayAppendedArrays( 1, [ 2 ] );
   });
 
   test.description = 'argument is undefined';
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendedArrays( dst, undefined );
+    _.arrayAppendedArrays( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
   test.description = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrays( [], 1 );
+    _.arrayAppendedArrays( [], 1 );
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArrays( [], [ 1 ], [ 2 ] );
+    _.arrayAppendedArrays( [], [ 1 ], [ 2 ] );
   });
 
 }
 
 //
 
-function __arrayAppendedArraysOnce( test )
+function arrayAppendedArraysOnce( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayAppendedArraysOnce( dst, [] );
+  var got = _.arrayAppendedArraysOnce( dst, [] );
   var expected = [];
   test.identical( dst, expected );
   test.identical( got, 0 );
@@ -5768,37 +5768,37 @@ function __arrayAppendedArraysOnce( test )
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayAppendedArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendedArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayAppendedArraysOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayAppendedArraysOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayAppendedArraysOnce( dst, [ 1 ] );
+  var got = _.arrayAppendedArraysOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1, 1 ] );
   test.identical( got, 0 );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
   var insArray = [ 'a', 1, [ { a : 1 } ], { b : 2 } ];
-  var got = _.__arrayAppendedArraysOnce( dst, insArray );
+  var got = _.arrayAppendedArraysOnce( dst, insArray );
   test.identical( dst, [  1, 'a', { a : 1 }, { b : 2 } ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 2, 3, 5 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ], 6 ] ];
-  var got = _.__arrayAppendedArraysOnce( dst, insArray );
+  var got = _.arrayAppendedArraysOnce( dst, insArray );
   test.identical( dst, [ 1, 2, 3, 5, [ 4, [ 5 ] ], 6 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayAppendedArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayAppendedArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 3, 2 ] );
   test.identical( got, 1 );
 
@@ -5810,7 +5810,7 @@ function __arrayAppendedArraysOnce( test )
   }
 
   var dst = [ 1, 3 ];
-  var got = _.__arrayAppendedArraysOnce( dst, [ 1, 2, 3 ], onEqualize );
+  var got = _.arrayAppendedArraysOnce( dst, [ 1, 2, 3 ], onEqualize );
   test.identical( dst, [ 1, 3, 2 ] );
   test.identical( got, 1 );
 
@@ -5818,7 +5818,7 @@ function __arrayAppendedArraysOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    _.__arrayAppendedArraysOnce( dst, [ undefined, 2 ] );
+    _.arrayAppendedArraysOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
 
@@ -5830,62 +5830,62 @@ function __arrayAppendedArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArraysOnce();
+    _.arrayAppendedArraysOnce();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArraysOnce( 1, [ 2 ] );
+    _.arrayAppendedArraysOnce( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArraysOnce( [], [ 1, 2, 3 ], [] )
+    _.arrayAppendedArraysOnce( [], [ 1, 2, 3 ], [] )
   });
 
   test.description = 'argument is undefined';
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayAppendedArraysOnce( dst, undefined );
+    _.arrayAppendedArraysOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
   test.description = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.__arrayAppendedArraysOnce( [], 1 );
+    _.arrayAppendedArraysOnce( [], 1 );
   });
 
 }
 
 //
 
-function __arrayRemoveOnce( test )
+function arrayRemoveOnce( test )
 {
   test.description = 'simple';
 
-  var got = _.__arrayRemoveOnce( [], 1 );
+  var got = _.arrayRemoveOnce( [], 1 );
   test.identical( got, [] );
 
-  var got = _.__arrayRemoveOnce( [ 1 ], 1 );
+  var got = _.arrayRemoveOnce( [ 1 ], 1 );
   test.identical( got, [] );
 
-  var got = _.__arrayRemoveOnce( [ 1,2,2 ], 2 );
+  var got = _.arrayRemoveOnce( [ 1,2,2 ], 2 );
   test.identical( got, [ 1,2 ] );
 
-  var got = _.__arrayRemoveOnce( [ 1,3,2,3 ], 3 );
+  var got = _.arrayRemoveOnce( [ 1,3,2,3 ], 3 );
   test.identical( got, [ 1,2,3 ] );
 
-  var got = _.__arrayRemoveOnce( [ 1 ], '1' );
+  var got = _.arrayRemoveOnce( [ 1 ], '1' );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemoveOnce( [ 1 ], -1 );
+  var got = _.arrayRemoveOnce( [ 1 ], -1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemoveOnce( [ 1 ], [ 1 ] );
+  var got = _.arrayRemoveOnce( [ 1 ], [ 1 ] );
   test.identical( got, [ 1 ] );
 
   test.description = 'equalizer 2 args';
@@ -5895,7 +5895,7 @@ function __arrayRemoveOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayRemoveOnce( dst, { num : 4 }, onEqualize );
+  var got = _.arrayRemoveOnce( dst, { num : 4 }, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -5903,7 +5903,7 @@ function __arrayRemoveOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayRemoveOnce( dst, { num : 1 }, onEqualize );
+  var got = _.arrayRemoveOnce( dst, { num : 1 }, onEqualize );
   test.identical( got, [ { num : 2 },{ num : 3 } ] );
 
   test.description = 'equalizer 1 arg';
@@ -5913,7 +5913,7 @@ function __arrayRemoveOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayRemoveOnce( dst, 4, onEqualize );
+  var got = _.arrayRemoveOnce( dst, 4, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -5921,7 +5921,7 @@ function __arrayRemoveOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayRemoveOnce( dst, 1, onEqualize );
+  var got = _.arrayRemoveOnce( dst, 1, onEqualize );
   test.identical( got, [ { num : 2 },{ num : 3 } ] );
 
   //
@@ -5932,38 +5932,38 @@ function __arrayRemoveOnce( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveOnce();
+    _.arrayRemoveOnce();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveOnce( 1, 1 );
+    _.arrayRemoveOnce( 1, 1 );
   })
 
   test.description = 'onEqualize is not a function';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveOnce( 1, 1, 1 );
+    _.arrayRemoveOnce( 1, 1, 1 );
   })
 }
 
 //
 
-// function __arrayRemoveOnce( test ) {
+// function arrayRemoveOnce( test ) {
 //
 //   test.description = 'nothing';
-//   var got = _.__arrayRemoveOnce( [  ], 2 );
+//   var got = _.arrayRemoveOnce( [  ], 2 );
 //   var expected = [  ];
 //   test.identical( got, expected );
 //
 //   test.description = 'one element left';
-//   var got = _.__arrayRemoveOnce( [ 2, 4 ], 4 );
+//   var got = _.arrayRemoveOnce( [ 2, 4 ], 4 );
 //   var expected = [ 2 ];
 //   test.identical( got, expected );
 //
 //   test.description = 'two elements left';
-//   var got = _.__arrayRemoveOnce( [ true, false, 6 ], true );
+//   var got = _.arrayRemoveOnce( [ true, false, 6 ], true );
 //   var expected = [ false, 6 ];
 //   test.identical( got, expected );
 //
@@ -5975,43 +5975,43 @@ function __arrayRemoveOnce( test )
 //   test.description = 'no arguments';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemoveOnce();
+//     _.arrayRemoveOnce();
 //   });
 //
 //   test.description = 'not enough arguments';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemoveOnce( [ 2, 4, 6 ] );
+//     _.arrayRemoveOnce( [ 2, 4, 6 ] );
 //   });
 //
 //   test.description = 'extra argument';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemoveOnce( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
+//     _.arrayRemoveOnce( [ 2, 4, 6 ], 2, function( el, ins ) { return el > ins }, 'redundant argument' );
 //   });
 //
 //   test.description = 'arguments[0] is wrong';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemoveOnce( 'wrong argument', 2 );
+//     _.arrayRemoveOnce( 'wrong argument', 2 );
 //   });
 //
 //   test.description = 'arguments[2] is wrong';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemoveOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
+//     _.arrayRemoveOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
 //   });
 //
 // };
 
 //
 
-function __arrayRemoveOnceStrictly( test )
+function arrayRemoveOnceStrictly( test )
 {
   test.description = 'simple';
 
   var dst = [ 1,2,2 ];
-  var got = _.__arrayRemoveOnceStrictly( dst, 2 );
+  var got = _.arrayRemoveOnceStrictly( dst, 2 );
   test.identical( got, [ 1,2 ] );
   test.identical( got, dst );
 
@@ -6022,7 +6022,7 @@ function __arrayRemoveOnceStrictly( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayRemoveOnceStrictly( dst, { num : 3 }, onEqualize );
+  var got = _.arrayRemoveOnceStrictly( dst, { num : 3 }, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 } ] );
   test.identical( got, dst );
 
@@ -6033,7 +6033,7 @@ function __arrayRemoveOnceStrictly( test )
   {
     return a.num;
   }
-  var got = _.__arrayRemoveOnceStrictly( dst, 3, onEqualize );
+  var got = _.arrayRemoveOnceStrictly( dst, 3, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 } ] );
   test.identical( got, dst );
 
@@ -6045,27 +6045,27 @@ function __arrayRemoveOnceStrictly( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveOnceStrictly();
+    _.arrayRemoveOnceStrictly();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveOnceStrictly( 1, 1 );
+    _.arrayRemoveOnceStrictly( 1, 1 );
   })
 
   test.description = 'ins not exists';
 
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveOnceStrictly( [ 1 ], 2 );
+    _.arrayRemoveOnceStrictly( [ 1 ], 2 );
   });
 
   test.description = 'onEqualize is not a routine';
 
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveOnceStrictly( [ 1,2,3 ], 3, 3 );
+    _.arrayRemoveOnceStrictly( [ 1,2,3 ], 3, 3 );
   });
 
   test.description = 'onEqualize';
@@ -6077,7 +6077,7 @@ function __arrayRemoveOnceStrictly( test )
     {
       return a.num === b.num;
     }
-    _.__arrayRemoveOnceStrictly( dst, { num : 4 }, onEqualize );
+    _.arrayRemoveOnceStrictly( dst, { num : 4 }, onEqualize );
   });
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 
@@ -6088,7 +6088,7 @@ function __arrayRemoveOnceStrictly( test )
     {
       return a.num;
     }
-    _.__arrayRemoveOnceStrictly( dst, 4, onEqualize );
+    _.arrayRemoveOnceStrictly( dst, 4, onEqualize );
   });
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 }
@@ -6161,37 +6161,37 @@ function __arrayRemoveOnceStrictly( test )
 
 //
 
-function __arrayRemovedOnce( test )
+function arrayRemovedOnce( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemovedOnce( dst, 1 );
+  var got = _.arrayRemovedOnce( dst, 1 );
   test.identical( dst, [ ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedOnce( dst, 1 );
+  var got = _.arrayRemovedOnce( dst, 1 );
   test.identical( dst, [  ] );
   test.identical( got, 0 );
 
   var dst = [ 2,2,1 ];
-  var got = _.__arrayRemovedOnce( dst, 2 );
+  var got = _.arrayRemovedOnce( dst, 2 );
   test.identical( dst, [ 2,1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedOnce( dst, '1' );
+  var got = _.arrayRemovedOnce( dst, '1' );
   test.identical( dst, [ 1 ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedOnce( dst, -1 );
+  var got = _.arrayRemovedOnce( dst, -1 );
   test.identical( dst, [  1 ] );
   test.identical( got, -1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedOnce( dst, [ 1 ] );
+  var got = _.arrayRemovedOnce( dst, [ 1 ] );
   test.identical( dst, [  1 ] );
   test.identical( got, -1 );
 
@@ -6202,7 +6202,7 @@ function __arrayRemovedOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayRemovedOnce( dst, { num : 4 }, onEqualize );
+  var got = _.arrayRemovedOnce( dst, { num : 4 }, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -6211,7 +6211,7 @@ function __arrayRemovedOnce( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayRemovedOnce( dst, { num : 1 }, onEqualize );
+  var got = _.arrayRemovedOnce( dst, { num : 1 }, onEqualize );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
   test.identical( got, 0 );
 
@@ -6222,7 +6222,7 @@ function __arrayRemovedOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayRemovedOnce( dst, 4, onEqualize );
+  var got = _.arrayRemovedOnce( dst, 4, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -6231,7 +6231,7 @@ function __arrayRemovedOnce( test )
   {
     return a.num;
   }
-  var got = _.__arrayRemovedOnce( dst, 1, onEqualize );
+  var got = _.arrayRemovedOnce( dst, 1, onEqualize );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
   test.identical( got, 0 );
 
@@ -6243,39 +6243,39 @@ function __arrayRemovedOnce( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedOnce();
+    _.arrayRemovedOnce();
   })
 
   test.description = 'third is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedOnce( [], 1, 1 );
+    _.arrayRemovedOnce( [], 1, 1 );
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedOnce( 1, 1 );
+    _.arrayRemovedOnce( 1, 1 );
   })
 }
 
 //
 
-// function __arrayRemovedOnce( test )
+// function arrayRemovedOnce( test )
 // {
 //
 //   test.description = 'nothing';
-//   var got = _.__arrayRemovedOnce( [  ], 2 );
+//   var got = _.arrayRemovedOnce( [  ], 2 );
 //   var expected = -1;
 //   test.identical( got, expected );
 //
 //   test.description = 'second element removed';
-//   var got = _.__arrayRemovedOnce( [ 2, 4, 6 ], 4 );
+//   var got = _.arrayRemovedOnce( [ 2, 4, 6 ], 4 );
 //   var expected = 1;
 //   test.identical( got, expected );
 //
 //   test.description = 'first element removed';
-//   var got = _.__arrayRemovedOnce( [ true, false, 6 ], true );
+//   var got = _.arrayRemovedOnce( [ true, false, 6 ], true );
 //   var expected = 0;
 //   test.identical( got, expected );
 //
@@ -6287,63 +6287,63 @@ function __arrayRemovedOnce( test )
 //   test.description = 'no arguments';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemovedOnce();
+//     _.arrayRemovedOnce();
 //   });
 //
 //   test.description = 'not enough arguments';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemovedOnce( [ 2, 4, 6 ] );
+//     _.arrayRemovedOnce( [ 2, 4, 6 ] );
 //   });
 //
 //   test.description = 'extra argument';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemovedOnce( [ 2, 4, 6 ], 2, function( el ) { return el; }, 'redundant argument' );
+//     _.arrayRemovedOnce( [ 2, 4, 6 ], 2, function( el ) { return el; }, 'redundant argument' );
 //   });
 //
 //   test.description = 'arguments[0] is wrong';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemovedOnce( 'wrong argument', 2 );
+//     _.arrayRemovedOnce( 'wrong argument', 2 );
 //   });
 //
 //   test.description = 'arguments[2] is wrong';
 //   test.shouldThrowError( function()
 //   {
-//     _.__arrayRemovedOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
+//     _.arrayRemovedOnce( [ 2, 4, 6 ], 2, 'wrong argument' );
 //   });
 //
 // };
 
 //
 
-function __arrayRemoveArray( test )
+function arrayRemoveArray( test )
 {
 
   test.description = 'nothing';
-  var got = _.__arrayRemoveArray( [], [] );
+  var got = _.arrayRemoveArray( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayRemoveArray( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemoveArray( dst, [ 1, 2, 3 ] );
   test.identical( dst, [] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayRemoveArray( dst,[ 4, 5 ] );
+  var got = _.arrayRemoveArray( dst,[ 4, 5 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayRemoveArray( dst,[ 1,3 ] );
+  var got = _.arrayRemoveArray( dst,[ 1,3 ] );
   test.identical( dst, [ 2 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayRemoveArray( dst, [ 1, 1 ] );
+  var got = _.arrayRemoveArray( dst, [ 1, 1 ] );
   test.identical( dst, [ ] );
   test.identical( got, dst );
 
@@ -6351,7 +6351,7 @@ function __arrayRemoveArray( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayRemoveArray( dst, undefined );
+    _.arrayRemoveArray( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -6360,7 +6360,7 @@ function __arrayRemoveArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayRemoveArray( dst, [ undefined, 2 ] );
+    got = _.arrayRemoveArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, dst );
@@ -6373,48 +6373,48 @@ function __arrayRemoveArray( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArray();
+    _.arrayRemoveArray();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayRemoveArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArray( [ 1, 2 ], 2 );
+    _.arrayRemoveArray( [ 1, 2 ], 2 );
   });
 };
 
 //
 
-function __arrayRemoveArrayOnce( test )
+function arrayRemoveArrayOnce( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayRemoveArrayOnce( [], [] );
+  var got = _.arrayRemoveArrayOnce( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemoveArrayOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemoveArrayOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [] );
   test.identical( got, dst );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayRemoveArrayOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayRemoveArrayOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1,3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayRemoveArrayOnce( dst, [ 1 ] );
+  var got = _.arrayRemoveArrayOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, dst );
 
@@ -6422,7 +6422,7 @@ function __arrayRemoveArrayOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    var got = _.__arrayRemoveArrayOnce( dst, [ undefined, 2 ] );
+    var got = _.arrayRemoveArrayOnce( dst, [ undefined, 2 ] );
     test.identical( dst, [ 1 ] );
     test.identical( got, dst );
   });
@@ -6435,43 +6435,43 @@ function __arrayRemoveArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnce();
+    _.arrayRemoveArrayOnce();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayRemoveArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnce( [ 1, 2 ], 2 );
+    _.arrayRemoveArrayOnce( [ 1, 2 ], 2 );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayRemoveArrayOnce( [ 1, 2 ], [ 2 ], 3 );
   });
 }
 
-// function __arrayRemoveArrayOnce( test )
+// function arrayRemoveArrayOnce( test )
 // {
 //
 //   test.description = 'nothing';
-//   var got = _.__arrayRemoveArrayOnce( [  ], [  ] );
+//   var got = _.arrayRemoveArrayOnce( [  ], [  ] );
 //   var expected = 0;
 //   test.identical( got, expected );
 //
 //   test.description = 'three elements left';
-//   var got = _.__arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
+//   var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
 //   var expected = 2;
 //   test.identical( got, expected );
 //
 //   test.description = 'one elements left';
-//   var got = _.__arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
+//   var got = _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
 //     return a < b;
 //   } );
 //   var expected = 4;
@@ -6485,25 +6485,25 @@ function __arrayRemoveArrayOnce( test )
 //     test.description = 'no arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _.__arrayRemoveArrayOnce();
+//       _.arrayRemoveArrayOnce();
 //     });
 //
 //     test.description = 'not enough arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _.__arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ] );
+//       _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ] );
 //     });
 //
 //     test.description = 'wrong type of arguments';
 //     test.shouldThrowError( function()
 //     {
-//       _.__arrayRemoveArrayOnce('wrong argument', 'wrong argument', 'wrong argument');
+//       _.arrayRemoveArrayOnce('wrong argument', 'wrong argument', 'wrong argument');
 //     });
 //
 //     test.description = 'extra argument';
 //     test.shouldThrowError( function()
 //     {
-//       _.__arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) { return a < b }, 'redundant argument' );
+//       _.arrayRemoveArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) { return a < b }, 'redundant argument' );
 //     });
 //
 //   }
@@ -6512,12 +6512,12 @@ function __arrayRemoveArrayOnce( test )
 
 //
 
-function __arrayRemoveArrayOnceStrictly( test )
+function arrayRemoveArrayOnceStrictly( test )
 {
   test.description = 'simple';
 
   var dst = [ 1,2,2 ];
-  var got = _.__arrayRemoveArrayOnceStrictly( dst, [ 2 ] );
+  var got = _.arrayRemoveArrayOnceStrictly( dst, [ 2 ] );
   test.identical( got, [ 1,2 ] );
   test.identical( got, dst );
 
@@ -6528,7 +6528,7 @@ function __arrayRemoveArrayOnceStrictly( test )
   {
     return a.num === b.num;
   }
-  var got = _.__arrayRemoveArrayOnceStrictly( dst, [ { num : 3 } ], onEqualize );
+  var got = _.arrayRemoveArrayOnceStrictly( dst, [ { num : 3 } ], onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 } ] );
   test.identical( got, dst );
 
@@ -6539,7 +6539,7 @@ function __arrayRemoveArrayOnceStrictly( test )
   {
     return a.num;
   }
-  var got = _.__arrayRemoveArrayOnceStrictly( dst, [ 3 ], onEqualize );
+  var got = _.arrayRemoveArrayOnceStrictly( dst, [ 3 ], onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 } ] );
   test.identical( got, dst );
 
@@ -6551,27 +6551,27 @@ function __arrayRemoveArrayOnceStrictly( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnceStrictly();
+    _.arrayRemoveArrayOnceStrictly();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnceStrictly( 1, 1 );
+    _.arrayRemoveArrayOnceStrictly( 1, 1 );
   })
 
   test.description = 'ins not exists';
 
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnceStrictly( [ 1 ], [ 2 ] );
+    _.arrayRemoveArrayOnceStrictly( [ 1 ], [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
 
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrayOnceStrictly( [ 1,2,3 ], 3, 3 );
+    _.arrayRemoveArrayOnceStrictly( [ 1,2,3 ], 3, 3 );
   });
 
   test.description = 'onEqualize';
@@ -6583,7 +6583,7 @@ function __arrayRemoveArrayOnceStrictly( test )
     {
       return a.num === b.num;
     }
-    _.__arrayRemoveArrayOnceStrictly( dst, [ { num : 4 } ], onEqualize );
+    _.arrayRemoveArrayOnceStrictly( dst, [ { num : 4 } ], onEqualize );
   });
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 
@@ -6594,38 +6594,38 @@ function __arrayRemoveArrayOnceStrictly( test )
     {
       return a.num;
     }
-    _.__arrayRemoveArrayOnceStrictly( dst, [ 4 ], onEqualize );
+    _.arrayRemoveArrayOnceStrictly( dst, [ 4 ], onEqualize );
   });
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 }
 
 //
 
-function __arrayRemovedArray( test )
+function arrayRemovedArray( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayRemovedArray( dst, [] );
+  var got = _.arrayRemovedArray( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemovedArray( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemovedArray( dst, [ 1, 2, 3 ] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayRemovedArray( dst, [ 2, 4, 5 ] );
+  var got = _.arrayRemovedArray( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1,3] );
   test.identical( got, 1 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayRemovedArray( dst, [ 1 ] );
+  var got = _.arrayRemovedArray( dst, [ 1 ] );
   test.identical( dst, [] );
   test.identical( got, 3 );
 
@@ -6633,7 +6633,7 @@ function __arrayRemovedArray( test )
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayRemovedArray( dst, undefined );
+    _.arrayRemovedArray( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
@@ -6642,7 +6642,7 @@ function __arrayRemovedArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayRemovedArray( dst, [ undefined, 2 ] );
+    got = _.arrayRemovedArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
@@ -6655,49 +6655,49 @@ function __arrayRemovedArray( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArray();
+    _.arrayRemovedArray();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayRemovedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArray( [ 1, 2 ], 2 );
+    _.arrayRemovedArray( [ 1, 2 ], 2 );
   });
 }
 
 //
 
-function __arrayRemovedArrayOnce( test )
+function arrayRemovedArrayOnce( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayRemovedArrayOnce( dst, [] );
+  var got = _.arrayRemovedArrayOnce( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemovedArrayOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemovedArrayOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayRemovedArrayOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayRemovedArrayOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1, 3] );
   test.identical( got, 1 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayRemovedArrayOnce( dst, [ 1 ] );
+  var got = _.arrayRemovedArrayOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 1 );
 
@@ -6705,7 +6705,7 @@ function __arrayRemovedArrayOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    var got = _.__arrayRemovedArrayOnce( dst, [ undefined, 2 ] );
+    var got = _.arrayRemovedArrayOnce( dst, [ undefined, 2 ] );
     test.identical( dst, [ 1 ] );
     test.identical( got, 0 );
   });
@@ -6718,80 +6718,80 @@ function __arrayRemovedArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArrayOnce();
+    _.arrayRemovedArrayOnce();
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
+    _.arrayRemovedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
   test.description = 'second args is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArrayOnce( [ 1, 2 ], 2 );
+    _.arrayRemovedArrayOnce( [ 1, 2 ], 2 );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
+    _.arrayRemovedArrayOnce( [ 1, 2 ], [ 2 ], 3 );
   });
 
 }
 
 //
 
-function __arrayRemoveArrays( test )
+function arrayRemoveArrays( test )
 {
   test.description = 'nothing';
-  var got = _.__arrayRemoveArrays( [], [] );
+  var got = _.arrayRemoveArrays( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
   var dst = [];
-  var got = _.__arrayRemoveArrays( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemoveArrays( dst, [ 1, 2, 3 ] );
   test.identical( dst, [] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayRemoveArrays( dst,[ 4, 5 ] );
+  var got = _.arrayRemoveArrays( dst,[ 4, 5 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayRemoveArrays( dst,[ 1,3 ] );
+  var got = _.arrayRemoveArrays( dst,[ 1,3 ] );
   test.identical( dst, [ 2 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1, 2, 2, 2 ];
-  var got = _.__arrayRemoveArrays( dst, [ [ 1 ], [ 2 ] ] );
+  var got = _.arrayRemoveArrays( dst, [ [ 1 ], [ 2 ] ] );
   test.identical( dst, [ ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3, 4, 5 ];
   var insArray = [ [ 1 ], [ 2, [ 3 ] ], [ [ [ 4 ] ], 5 ] ];
-  var got = _.__arrayRemoveArrays( dst, insArray );
+  var got = _.arrayRemoveArrays( dst, insArray );
   test.identical( dst, [ 3, 4 ] );
   test.identical( got, dst );
 
   var dst = [ 5 ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemoveArrays( dst, insArray );
+  var got = _.arrayRemoveArrays( dst, insArray );
   test.identical( dst, [] );
   test.identical( got, dst );
 
   var dst = [ [ 5 ] ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemoveArrays( dst, insArray );
+  var got = _.arrayRemoveArrays( dst, insArray );
   test.identical( dst, [ [ 5 ] ] );
   test.identical( got, dst );
 
   var dst = [ [ 5 ] ];
   var insArray = [ [ [ 5 ] ] ];
-  var got = _.__arrayRemoveArrays( dst, insArray );
+  var got = _.arrayRemoveArrays( dst, insArray );
   test.identical( dst, [ [ 5 ] ] );
   test.identical( got, dst );
 
@@ -6800,7 +6800,7 @@ function __arrayRemoveArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayRemoveArrays( dst, [ undefined, 2 ] );
+    got = _.arrayRemoveArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, dst );
@@ -6813,100 +6813,100 @@ function __arrayRemoveArrays( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArrays();
+    _.arrayRemoveArrays();
   });
 
   test.description = 'argument is undefined';
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayRemoveArrays( dst, undefined );
+    _.arrayRemoveArrays( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
   test.description = 'second arg is not arrayLike entity';
   test.shouldThrowError( function ()
   {
-    _.__arrayRemoveArrays( [], 1 );
+    _.arrayRemoveArrays( [], 1 );
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function ()
   {
-    _.__arrayRemoveArrays( [], [ 1 ], [ 1 ] );
+    _.arrayRemoveArrays( [], [ 1 ], [ 1 ] );
   });
 
 };
 
 //
 
-function __arrayRemoveArraysOnce( test )
+function arrayRemoveArraysOnce( test )
 {
   test.description = 'nothing';
 
-  var got = _.__arrayRemoveArraysOnce( [], [] );
+  var got = _.arrayRemoveArraysOnce( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemoveArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemoveArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( got, [] );
   test.identical( got, dst );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayRemoveArraysOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayRemoveArraysOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1,3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayRemoveArraysOnce( dst, [ 1 ] );
+  var got = _.arrayRemoveArraysOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 2, 3, 3, 4, 5, 5 ];
   var insArray = [ [ 1 ], [ 2, [ 3 ] ], [ [ [ 4 ] ], 5 ] ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray );
+  var got = _.arrayRemoveArraysOnce( dst, insArray );
   test.identical( got, [ 1, 3, 3, 4, 5 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 1, 2, 2, 3, 4, 4, 5 ];
   var insArray = [ [ 1, 1 ], 2 , [ 3 ], 4, 4, [ 5 ] ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray );
+  var got = _.arrayRemoveArraysOnce( dst, insArray );
   test.identical( dst, [ 2 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3, 4, 5 ];
   var insArray = [ [ 1 ], [ 2, [ 3 ] ], [ [ [ 4 ] ], 5 ] ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray );
+  var got = _.arrayRemoveArraysOnce( dst, insArray );
   test.identical( got, [ 3, 4 ] );
   test.identical( got, dst );
 
   var dst = [ 5, 5 ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray );
+  var got = _.arrayRemoveArraysOnce( dst, insArray );
   test.identical( got, [ 5 ] );
   test.identical( got, dst );
 
   var dst = [ [ 5 ],[ 5 ] ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray );
+  var got = _.arrayRemoveArraysOnce( dst, insArray );
   test.identical( dst, [ [ 5 ],[ 5 ] ] );
   test.identical( got, dst );
 
   var dst = [ [ 5 ], [ 5 ] ];
   var insArray = [ [ [ 5 ] ] ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray );
+  var got = _.arrayRemoveArraysOnce( dst, insArray );
   test.identical( dst, [ [ 5 ], [ 5 ] ] );
   test.identical( got, dst );
 
   function onEqualize( a, b ){ return a === b }
   var dst = [ 1, 2, [ 3 ] ];
   var insArray = [ 1, 2, [ 3 ] ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray, onEqualize );
+  var got = _.arrayRemoveArraysOnce( dst, insArray, onEqualize );
   test.identical( got, [ [ 3 ] ]);
   test.identical( got, dst );
 
@@ -6914,7 +6914,7 @@ function __arrayRemoveArraysOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    var got = _.__arrayRemoveArraysOnce( dst, [ undefined, 2 ] );
+    var got = _.arrayRemoveArraysOnce( dst, [ undefined, 2 ] );
     test.identical( dst, [ 1 ] );
     test.identical( got, dst );
   });
@@ -6927,7 +6927,7 @@ function __arrayRemoveArraysOnce( test )
     return a.num === b.num;
   }
   var insArray = [ [ { num : 3 } ], { num : 1 } ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray, onEqualize )
+  var got = _.arrayRemoveArraysOnce( dst, insArray, onEqualize )
   test.identical( got, [ { num : 2 } ] );
   test.identical( got, dst );
 
@@ -6939,7 +6939,7 @@ function __arrayRemoveArraysOnce( test )
     return a.num;
   }
   var insArray = [ [ 3 ], 1  ];
-  var got = _.__arrayRemoveArraysOnce( dst, insArray, onEqualize )
+  var got = _.arrayRemoveArraysOnce( dst, insArray, onEqualize )
   test.identical( got, [ { num : 2 } ] );
   test.identical( got, dst );
 
@@ -6951,59 +6951,59 @@ function __arrayRemoveArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArraysOnce();
+    _.arrayRemoveArraysOnce();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArraysOnce( 1, [ 2 ] );
+    _.arrayRemoveArraysOnce( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArraysOnce( [  ], [ 1, 2, 3 ], [] )
+    _.arrayRemoveArraysOnce( [  ], [ 1, 2, 3 ], [] )
   });
 
   test.description = 'second arg is not arrayLike entity';
   test.shouldThrowError( function ()
   {
-    _.__arrayRemoveArraysOnce( [], 1 );
+    _.arrayRemoveArraysOnce( [], 1 );
   });
 }
 
 //
 
-function __arrayRemoveArraysOnceStrictly( test )
+function arrayRemoveArraysOnceStrictly( test )
 {
   test.description = 'simple';
 
   var dst = [ 1, 2, 2 ];
-  var got = _.__arrayRemoveArraysOnceStrictly( dst, [ 2 ] );
+  var got = _.arrayRemoveArraysOnceStrictly( dst, [ 2 ] );
   test.identical( got, [ 1, 2 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayRemoveArraysOnceStrictly( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemoveArraysOnceStrictly( dst, [ 1, 2, 3 ] );
   test.identical( got, [ ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3, 4 ];
   var insArray = [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ];
-  var got = _.__arrayRemoveArraysOnceStrictly( dst, insArray );
+  var got = _.arrayRemoveArraysOnceStrictly( dst, insArray );
   test.identical( got, [ ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3, 4, 5 ];
   var insArray = [ [ 1 ], [ 2, 3 ], [ 4 ], 5 ];
-  var got = _.__arrayRemoveArraysOnceStrictly( dst, insArray );
+  var got = _.arrayRemoveArraysOnceStrictly( dst, insArray );
   test.identical( got, [] );
   test.identical( got, dst );
 
   var dst = [ 5, 5 ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemoveArraysOnceStrictly( dst, insArray );
+  var got = _.arrayRemoveArraysOnceStrictly( dst, insArray );
   test.identical( got, [ 5 ] );
   test.identical( got, dst );
 
@@ -7015,7 +7015,7 @@ function __arrayRemoveArraysOnceStrictly( test )
     return a.num === b.num;
   }
   var insArray = [ [ { num : 3 } ], { num : 1 }  ]
-  var got = _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize )
+  var got = _.arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize )
   test.identical( got, [ { num : 2 } ] );
   test.identical( got, dst );
 
@@ -7027,7 +7027,7 @@ function __arrayRemoveArraysOnceStrictly( test )
     return a.num;
   }
   var insArray = [ [ 3 ], 1  ];
-  var got = _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
+  var got = _.arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
   test.identical( got, [ { num : 2 } ] );
   test.identical( got, dst );
 
@@ -7039,27 +7039,27 @@ function __arrayRemoveArraysOnceStrictly( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArraysOnceStrictly();
+    _.arrayRemoveArraysOnceStrictly();
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArraysOnceStrictly( 1, 1 );
+    _.arrayRemoveArraysOnceStrictly( 1, 1 );
   })
 
   test.description = 'ins not exists';
 
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArraysOnceStrictly( [ 1 ], [ 2 ] );
+    _.arrayRemoveArraysOnceStrictly( [ 1 ], [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
 
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveArraysOnceStrictly( [], [ 1, 2, 3 ], [] );
+    _.arrayRemoveArraysOnceStrictly( [], [ 1, 2, 3 ], [] );
   });
 
   test.description = 'onEqualize';
@@ -7072,7 +7072,7 @@ function __arrayRemoveArraysOnceStrictly( test )
       return a.num === b.num;
     }
     var insArray = [ [ { num : 4 } ] ];
-    _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
+    _.arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
   });
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 
@@ -7083,74 +7083,74 @@ function __arrayRemoveArraysOnceStrictly( test )
       return a.num;
     }
     var insArray = [ [ 4 ] ];
-    _.__arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
+    _.arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
   });
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
 }
 
 //
 
-function __arrayRemovedArrays( test )
+function arrayRemovedArrays( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayRemovedArrays( dst, [] );
+  var got = _.arrayRemovedArrays( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemovedArrays( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemovedArrays( dst, [ 1, 2, 3 ] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayRemovedArrays( dst, [ 2, 4, 5 ] );
+  var got = _.arrayRemovedArrays( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1,3 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayRemovedArrays( dst, [ 1 ] );
+  var got = _.arrayRemovedArrays( dst, [ 1 ] );
   test.identical( dst, [] );
   test.identical( got, 3 );
 
   var dst = [ 1, 2, 3, 4, 5];
   var insArray = [ [ 1 ], [ 2, [ 3 ] ], [ [ [ 4 ] ], 5 ] ];
-  var got = _.__arrayRemovedArrays( dst, insArray );
+  var got = _.arrayRemovedArrays( dst, insArray );
   test.identical( dst, [ 3, 4 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 2, 3, 4, 5 ];
   var insArray = [ [ 1 ], 2 , [ 3 ], 4, [ 5 ] ]
-  var got = _.__arrayRemovedArrays( dst, insArray );
+  var got = _.arrayRemovedArrays( dst, insArray );
   test.identical( dst, [] );
   test.identical( got, 5 );
 
   var dst = [ 1, 2, 3, 4, 5 ];
   var insArray = [ [ 1 ], [ 2, [ 3 ] ], [ [ [ 4 ] ], 5 ] ];
-  var got = _.__arrayRemovedArrays( dst, insArray );
+  var got = _.arrayRemovedArrays( dst, insArray );
   test.identical( dst, [ 3, 4 ] );
   test.identical( got, 3 );
 
   var dst = [ 5 ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemovedArrays( dst, insArray );
+  var got = _.arrayRemovedArrays( dst, insArray );
   test.identical( dst, [] );
   test.identical( got, 1 );
 
   var dst = [ [ 5 ] ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemovedArrays( dst, insArray );
+  var got = _.arrayRemovedArrays( dst, insArray );
   test.identical( dst, [ [ 5 ] ] );
   test.identical( got, 0 );
 
   var dst = [ [ 5 ] ];
   var insArray = [ [ [ 5 ] ] ];
-  var got = _.__arrayRemovedArrays( dst, insArray );
+  var got = _.arrayRemovedArrays( dst, insArray );
   test.identical( dst, [ [ 5 ] ] );
   test.identical( got, 0 );
 
@@ -7159,7 +7159,7 @@ function __arrayRemovedArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.__arrayRemovedArrays( dst, [ undefined, 2 ] );
+    got = _.arrayRemovedArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
@@ -7172,100 +7172,100 @@ function __arrayRemovedArrays( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArrays();
+    _.arrayRemovedArrays();
   });
 
   test.description = 'argument is undefined';
   var dst = [ 1 ];
   test.shouldThrowError( function ()
   {
-    _.__arrayRemovedArrays( dst, undefined );
+    _.arrayRemovedArrays( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
 
   test.description = 'second arg is not arrayLike entity';
   test.shouldThrowError( function ()
   {
-    _.__arrayRemovedArrays( [], 1 );
+    _.arrayRemovedArrays( [], 1 );
   });
 
   test.description = 'too many args';
   test.shouldThrowError( function ()
   {
-    _.__arrayRemovedArrays( [], [ 1 ], [ 1 ] );
+    _.arrayRemovedArrays( [], [ 1 ], [ 1 ] );
   });
 }
 
 //
 
-function __arrayRemovedArraysOnce( test )
+function arrayRemovedArraysOnce( test )
 {
   test.description = 'nothing';
 
   var dst = [];
-  var got = _.__arrayRemovedArraysOnce( dst, [] );
+  var got = _.arrayRemovedArraysOnce( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemovedArraysOnce( dst, [ 1, 2, 3 ] );
+  var got = _.arrayRemovedArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
-  var got = _.__arrayRemovedArraysOnce( dst, [ 2, 4, 5 ] );
+  var got = _.arrayRemovedArraysOnce( dst, [ 2, 4, 5 ] );
   test.identical( dst, [ 1, 3] );
   test.identical( got, 1 );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayRemovedArraysOnce( dst, [ 1 ] );
+  var got = _.arrayRemovedArraysOnce( dst, [ 1 ] );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 1, 2, 3, 3, 4, 5, 5];
   var insArray = [ [ 1 ], [ 2, [ 3 ] ], [ [ [ 4 ] ], 5 ] ]
-  var got = _.__arrayRemovedArraysOnce( dst, insArray );
+  var got = _.arrayRemovedArraysOnce( dst, insArray );
   test.identical( dst, [ 1, 3, 3, 4, 5 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 1, 2, 2, 3, 4, 4, 5 ];
   var insArray = [ [ 1, 1 ], 2 , [ 3 ], 4, 4, [ 5 ] ];
-  var got = _.__arrayRemovedArraysOnce( dst, insArray );
+  var got = _.arrayRemovedArraysOnce( dst, insArray );
   test.identical( dst, [ 2 ] );
   test.identical( got, 7 );
 
   var dst = [ 1, 2, 3, 4, 5 ];
   var insArray = [ [ 1 ], [ 2, [ 3 ] ], [ [ [ 4 ] ], 5 ] ];
-  var got = _.__arrayRemovedArraysOnce( dst, insArray );
+  var got = _.arrayRemovedArraysOnce( dst, insArray );
   test.identical( dst, [ 3, 4 ] );
   test.identical( got, 3 );
 
   var dst = [ 5, 5 ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemovedArraysOnce( dst, insArray );
+  var got = _.arrayRemovedArraysOnce( dst, insArray );
   test.identical( dst, [ 5 ] );
   test.identical( got, 1 );
 
   var dst = [ [ 5 ],[ 5 ] ];
   var insArray = [ [ 5 ] ];
-  var got = _.__arrayRemovedArraysOnce( dst, insArray );
+  var got = _.arrayRemovedArraysOnce( dst, insArray );
   test.identical( dst, [ [ 5 ],[ 5 ] ] );
   test.identical( got, 0 );
 
   var dst = [ [ 5 ], [ 5 ] ];
   var insArray = [ [ [ 5 ] ] ];
-  var got = _.__arrayRemovedArraysOnce( dst, insArray );
+  var got = _.arrayRemovedArraysOnce( dst, insArray );
   test.identical( dst, [ [ 5 ], [ 5 ] ] );
   test.identical( got, 0 );
 
   function onEqualize( a, b ){ return a === b }
   var dst = [ 1, 2, [ 3 ] ];
   var insArray = [ 1, 2, [ 3 ] ];
-  var got = _.__arrayRemovedArraysOnce( dst, insArray, onEqualize );
+  var got = _.arrayRemovedArraysOnce( dst, insArray, onEqualize );
   test.identical( dst, [ [ 3 ] ]);
   test.identical( got, 2 );
 
@@ -7273,7 +7273,7 @@ function __arrayRemovedArraysOnce( test )
   var dst = [ 1 ];
   test.mustNotThrowError( function ()
   {
-    var got = _.__arrayRemovedArraysOnce( dst, [ undefined, 2 ] );
+    var got = _.arrayRemovedArraysOnce( dst, [ undefined, 2 ] );
     test.identical( dst, [ 1 ] );
     test.identical( got, 0 );
   });
@@ -7286,57 +7286,57 @@ function __arrayRemovedArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArraysOnce();
+    _.arrayRemovedArraysOnce();
   });
 
   test.description = 'dst is not a array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArraysOnce( 1, [ 2 ] );
+    _.arrayRemovedArraysOnce( 1, [ 2 ] );
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedArraysOnce( [], [ 1, 2, 3 ], [] )
+    _.arrayRemovedArraysOnce( [], [ 1, 2, 3 ], [] )
   });
 
   test.description = 'second arg is not arrayLike entity';
   test.shouldThrowError( function ()
   {
-    _.__arrayRemovedArraysOnce( [], 1 );
+    _.arrayRemovedArraysOnce( [], 1 );
   });
 }
 
 //
 
-function __arrayRemoveAll( test )
+function arrayRemoveAll( test )
 {
   test.description = 'simple';
 
-  var got = _.__arrayRemoveAll( [], 1 );
+  var got = _.arrayRemoveAll( [], 1 );
   test.identical( got, [] );
 
-  var got = _.__arrayRemoveAll( [ 1 ], 1 );
+  var got = _.arrayRemoveAll( [ 1 ], 1 );
   test.identical( got, [ ] );
 
-  var got = _.__arrayRemoveAll( [ 1,2,2,2 ], 2 );
+  var got = _.arrayRemoveAll( [ 1,2,2,2 ], 2 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemoveAll( [ 1 ], '1' );
+  var got = _.arrayRemoveAll( [ 1 ], '1' );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemoveAll( [ 1 ], -1 );
+  var got = _.arrayRemoveAll( [ 1 ], -1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.__arrayRemoveAll( [ 1 ], [ 1 ] );
+  var got = _.arrayRemoveAll( [ 1 ], [ 1 ] );
   test.identical( got, [ 1 ] );
 
   function onEqualize( a, b )
   {
     return a.value === b;
   }
-  var got = _.__arrayRemoveAll( [ { value : 1 }, { value : 1 }, { value : 2 } ], 1, onEqualize );
+  var got = _.arrayRemoveAll( [ { value : 1 }, { value : 1 }, { value : 2 } ], 1, onEqualize );
   test.identical( got, [ { value : 2 } ] );
 
   //
@@ -7347,19 +7347,19 @@ function __arrayRemoveAll( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveAll();
+    _.arrayRemoveAll();
   })
 
   test.description = 'third argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveAll( [ 1 ], 1, 1 );
+    _.arrayRemoveAll( [ 1 ], 1, 1 );
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveAll( 1, 1 );
+    _.arrayRemoveAll( 1, 1 );
   })
 }
 
@@ -7430,37 +7430,37 @@ function __arrayRemoveAll( test )
 
 //
 
-function __arrayRemovedAll( test )
+function arrayRemovedAll( test )
 {
   test.description = 'simple';
 
   var dst = [];
-  var got = _.__arrayRemovedAll( dst, 1 );
+  var got = _.arrayRemovedAll( dst, 1 );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, 1 );
+  var got = _.arrayRemovedAll( dst, 1 );
   test.identical( dst, [] );
   test.identical( got, 1 );
 
   var dst = [ 1,2,2 ];
-  var got = _.__arrayRemovedAll( dst, 2 );
+  var got = _.arrayRemovedAll( dst, 2 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 2 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, '1' );
+  var got = _.arrayRemovedAll( dst, '1' );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, -1 );
+  var got = _.arrayRemovedAll( dst, -1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.__arrayRemovedAll( dst, [ 1 ] );
+  var got = _.arrayRemovedAll( dst, [ 1 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
@@ -7469,7 +7469,7 @@ function __arrayRemovedAll( test )
     return a.value === b;
   }
   var dst = [ { value : 1 }, { value : 1 }, { value : 2 } ];
-  var got = _.__arrayRemovedAll( dst, 1, onEqualize );
+  var got = _.arrayRemovedAll( dst, 1, onEqualize );
   test.identical( dst, [ { value : 2 } ] );
   test.identical( got, 2 );
 
@@ -7481,63 +7481,63 @@ function __arrayRemovedAll( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedAll();
+    _.arrayRemovedAll();
   })
 
   test.description = 'third argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayRemoveAll( [ 1 ], 1, 1 );
+    _.arrayRemoveAll( [ 1 ], 1, 1 );
   })
 
   test.description = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.__arrayRemovedAll( 1, 1 );
+    _.arrayRemovedAll( 1, 1 );
   })
 }
 
 //
 
-function __arrayFlatten( test )
+function arrayFlatten( test )
 {
   test.description = 'make array flat, dst is empty';
 
-  var got  = _.__arrayFlatten( [], [] );
+  var got  = _.arrayFlatten( [], [] );
   test.identical( got, [] );
 
-  var got  = _.__arrayFlatten( [], [ 1, 2, 3 ] )
+  var got  = _.arrayFlatten( [], [ 1, 2, 3 ] )
   test.identical( got, [ 1, 2, 3 ] );
 
-  var got  = _.__arrayFlatten( [], [ [ 1 ], [ 2 ], [ 3 ]  ] )
+  var got  = _.arrayFlatten( [], [ [ 1 ], [ 2 ], [ 3 ]  ] )
   test.identical( got, [ 1, 2, 3 ] );
 
-  var got  = _.__arrayFlatten( [], [ [ 1, [ 2, [ 3 ] ] ]  ] )
+  var got  = _.arrayFlatten( [], [ [ 1, [ 2, [ 3 ] ] ]  ] )
   test.identical( got, [ 1, 2, 3 ] );
 
-  var got  = _.__arrayFlatten( [], [ [ [ [ [ 1 ] ] ] ] ]  )
+  var got  = _.arrayFlatten( [], [ [ [ [ [ 1 ] ] ] ] ]  )
   test.identical( got, [ 1 ] );
 
   test.description = 'make array flat, dst is not empty';
 
-  var got  = _.__arrayFlatten( [ 1, 2, 3 ], [ 4 ] );
+  var got  = _.arrayFlatten( [ 1, 2, 3 ], [ 4 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  var got  = _.__arrayFlatten( [ 1, 2, 3 ], [ 1, 2, 3 ] )
+  var got  = _.arrayFlatten( [ 1, 2, 3 ], [ 1, 2, 3 ] )
   test.identical( got, [ 1, 2, 3, 1, 2, 3 ] );
 
-  var got  = _.__arrayFlatten( [ 1, 2, 3 ],[ [ 1 ], [ 2 ], [ 3 ]  ] )
+  var got  = _.arrayFlatten( [ 1, 2, 3 ],[ [ 1 ], [ 2 ], [ 3 ]  ] )
   test.identical( got, [ 1, 2, 3, 1, 2, 3 ] );
 
-  var got  = _.__arrayFlatten( [ 1, 2, 3 ],[ [ 1, [ 2, [ 3 ] ] ]  ] )
+  var got  = _.arrayFlatten( [ 1, 2, 3 ],[ [ 1, [ 2, [ 3 ] ] ]  ] )
   test.identical( got, [ 1, 2, 3, 1, 2, 3 ] );
 
-  var got  = _.__arrayFlatten( [ 1 ],[ [ [ [ [ 1 ] ] ] ] ]  )
+  var got  = _.arrayFlatten( [ 1 ],[ [ [ [ [ 1 ] ] ] ] ]  )
   test.identical( got, [ 1, 1 ] );
 
   test.description = 'make array flat from multiple arrays as one arg';
 
-  var got  = _.__arrayFlatten
+  var got  = _.arrayFlatten
   (
     [],
     [
@@ -7554,63 +7554,63 @@ function __arrayFlatten( test )
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayFlatten();
+    _.arrayFlatten();
   });
 
   test.description = 'first is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlatten( 1, [ 1 ] );
+    _.arrayFlatten( 1, [ 1 ] );
   });
 
   test.description = 'second is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlatten( [], 1 );
+    _.arrayFlatten( [], 1 );
   });
 }
 
 //
 
-function __arrayFlattenOnce( test )
+function arrayFlattenOnce( test )
 {
   test.description = 'make array flat, dst is empty';
 
-  var got  = _.__arrayFlattenOnce( [], [] );
+  var got  = _.arrayFlattenOnce( [], [] );
   test.identical( got, [] );
 
-  var got  = _.__arrayFlattenOnce( [], [ 1, 1, 2, 2, 3 , 3 ] )
+  var got  = _.arrayFlattenOnce( [], [ 1, 1, 2, 2, 3 , 3 ] )
   test.identical( got, [ 1, 2, 3 ] );
 
-  var got  = _.__arrayFlattenOnce( [], [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
+  var got  = _.arrayFlattenOnce( [], [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
   test.identical( got, [ 1, 2, 3 ] );
 
-  var got  = _.__arrayFlattenOnce( [], [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
+  var got  = _.arrayFlattenOnce( [], [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
   test.identical( got, [ 1, 2, 3 ] );
 
-  var got  = _.__arrayFlattenOnce( [], [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
+  var got  = _.arrayFlattenOnce( [], [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
   test.identical( got, [ 1 ] );
 
   test.description = 'make array flat, dst is not empty';
 
-  var got  = _.__arrayFlattenOnce( [ 1, 2, 3, 4 ], [ 4 ] );
+  var got  = _.arrayFlattenOnce( [ 1, 2, 3, 4 ], [ 4 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  var got  = _.__arrayFlattenOnce( [ 1, 2, 3 ], [ 1, 2, 3, [ [ 4 ] ] ] );
+  var got  = _.arrayFlattenOnce( [ 1, 2, 3 ], [ 1, 2, 3, [ [ 4 ] ] ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  var got  = _.__arrayFlattenOnce( [ 1, 2, 3 ],[ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ] );
+  var got  = _.arrayFlattenOnce( [ 1, 2, 3 ],[ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  var got  = _.__arrayFlattenOnce( [ 1, 2, 3 ],[ [ 1, [ 2, [ 3 ] ] ], 4 ] );
+  var got  = _.arrayFlattenOnce( [ 1, 2, 3 ],[ [ 1, [ 2, [ 3 ] ] ], 4 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  var got  = _.__arrayFlattenOnce( [ 1 ],[ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
+  var got  = _.arrayFlattenOnce( [ 1 ],[ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
   test.identical( got, [ 1 ] );
 
   test.description = 'make array flat from multiple arrays as one arg';
 
-  var got  = _.__arrayFlattenOnce
+  var got  = _.arrayFlattenOnce
   (
     [ 1, 4 ],
     [
@@ -7622,7 +7622,7 @@ function __arrayFlattenOnce( test )
   test.identical( got, [ 1, 4, 2, 3 ] );
 
   test.description = 'onEqualize';
-  var got  = _.__arrayFlattenOnce( [ 1, 2, 3, 4 ], [ 1, 4, 2, 5 ], function( a, b )
+  var got  = _.arrayFlattenOnce( [ 1, 2, 3, 4 ], [ 1, 4, 2, 5 ], function( a, b )
   {
     return  a === b;
   });
@@ -7634,72 +7634,72 @@ function __arrayFlattenOnce( test )
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnce();
+    _.arrayFlattenOnce();
   });
 
   test.description = 'first is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnce( 1, [ 1 ] );
+    _.arrayFlattenOnce( 1, [ 1 ] );
   });
 
   test.description = 'second is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnce( [], 1 );
+    _.arrayFlattenOnce( [], 1 );
 
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnce( [], [ 1 ], [] );
+    _.arrayFlattenOnce( [], [ 1 ], [] );
   });
 }
 
 //
 
-function __arrayFlattenOnceStrictly( test )
+function arrayFlattenOnceStrictly( test )
 {
   test.description = 'make array flat, dst is empty';
 
-  var got  = _.__arrayFlattenOnceStrictly( [], [] );
+  var got  = _.arrayFlattenOnceStrictly( [], [] );
   test.identical( got, [] );
 
   var dst = [];
-  var got = _.__arrayFlattenOnceStrictly( dst, [ 1, 2, 3, 4 ] )
+  var got = _.arrayFlattenOnceStrictly( dst, [ 1, 2, 3, 4 ] )
   test.identical( got, [ 1, 2, 3, 4 ] );
   test.identical( dst, got );
 
   var dst = [];
-  var got = _.__arrayFlattenOnceStrictly( dst, [ [ 1 ], [ 2 ], [ 3 ], [ 4 ]  ] );
+  var got = _.arrayFlattenOnceStrictly( dst, [ [ 1 ], [ 2 ], [ 3 ], [ 4 ]  ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
   test.identical( dst, got );
 
   var dst = [];
-  var got = _.__arrayFlattenOnceStrictly( dst, [ [ 1, [ 2, [ 3 ], 4 ] ]  ] );
+  var got = _.arrayFlattenOnceStrictly( dst, [ [ 1, [ 2, [ 3 ], 4 ] ]  ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
   test.identical( dst, got );
 
   var dst = [];
-  var got = _.__arrayFlattenOnceStrictly( dst, [ 1, [ 2, [ [ 3, [ 4 ] ] ] ] ] );
+  var got = _.arrayFlattenOnceStrictly( dst, [ 1, [ 2, [ [ 3, [ 4 ] ] ] ] ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
   test.identical( dst, got );
 
   test.description = 'make array flat, dst is not empty';
 
-  var got  = _.__arrayFlattenOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ] );
+  var got  = _.arrayFlattenOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ] );
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
-  var got  = _.__arrayFlattenOnceStrictly( [ 1, 2, 3 ], [ [ [ 4 ] ] ] );
+  var got  = _.arrayFlattenOnceStrictly( [ 1, 2, 3 ], [ [ [ 4 ] ] ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  var got  = _.__arrayFlattenOnceStrictly( [ 1 ], [ [ [ [ [ 0, 2, 3 ] ] ] ] ]  );
+  var got  = _.arrayFlattenOnceStrictly( [ 1 ], [ [ [ [ [ 0, 2, 3 ] ] ] ] ]  );
   test.identical( got, [ 1, 0, 2, 3 ] );
 
   test.description = 'make array flat from multiple arrays as one arg';
 
-  var got  = _.__arrayFlattenOnceStrictly
+  var got  = _.arrayFlattenOnceStrictly
   (
     [ 1, 4 ],
     [
@@ -7710,7 +7710,7 @@ function __arrayFlattenOnceStrictly( test )
   test.identical( got, [ 1, 4, 2, 3, 5 ] );
 
   test.description = 'onEqualize';
-  var got  = _.__arrayFlattenOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ], function( a, b )
+  var got  = _.arrayFlattenOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ], function( a, b )
   {
     return  a === b;
   });
@@ -7722,119 +7722,119 @@ function __arrayFlattenOnceStrictly( test )
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnceStrictly();
+    _.arrayFlattenOnceStrictly();
   });
 
   test.description = 'first is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnceStrictly( 1, [ 1 ] );
+    _.arrayFlattenOnceStrictly( 1, [ 1 ] );
   });
 
   test.description = 'second is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnceStrictly( [], 1 );
+    _.arrayFlattenOnceStrictly( [], 1 );
 
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnceStrictly( [], [ 1 ], [] );
+    _.arrayFlattenOnceStrictly( [], [ 1 ], [] );
   });
 
   var dst = [];
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnceStrictly( dst, [ 1, 1, 2, 2, 3, 3 ] )
-  });
-  test.identical( dst, [ 1, 2, 3 ] );
-
-  var dst = [];
-  test.shouldThrowError( function()
-  {
-    _.__arrayFlattenOnceStrictly( dst, [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
+    _.arrayFlattenOnceStrictly( dst, [ 1, 1, 2, 2, 3, 3 ] )
   });
   test.identical( dst, [ 1, 2, 3 ] );
 
   var dst = [];
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnceStrictly( dst, [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
+    _.arrayFlattenOnceStrictly( dst, [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
   });
   test.identical( dst, [ 1, 2, 3 ] );
 
   var dst = [];
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenOnceStrictly( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
+    _.arrayFlattenOnceStrictly( dst, [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
+  });
+  test.identical( dst, [ 1, 2, 3 ] );
+
+  var dst = [];
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenOnceStrictly( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
   });
   test.identical( dst, [ 1 ] );
 }
 
 //
 
-function __arrayFlattened( test )
+function arrayFlattened( test )
 {
   test.description = 'make array flat, dst is empty';
 
   var dst = [];
-  var got  = _.__arrayFlattened( dst, [] );
+  var got  = _.arrayFlattened( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   var dst = [];
-  var got  = _.__arrayFlattened( dst, [ 1, 2, 3 ] )
+  var got  = _.arrayFlattened( dst, [ 1, 2, 3 ] )
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [];
-  var got  = _.__arrayFlattened( dst, [ [ 1 ], [ 2 ], [ 3 ]  ] )
+  var got  = _.arrayFlattened( dst, [ [ 1 ], [ 2 ], [ 3 ]  ] )
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [];
-  var got  = _.__arrayFlattened( dst, [ [ 1, [ 2, [ 3 ] ] ]  ] )
+  var got  = _.arrayFlattened( dst, [ [ 1, [ 2, [ 3 ] ] ]  ] )
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [];
-  var got  = _.__arrayFlattened( dst, [ [ [ [ [ 1 ] ] ] ] ]  )
+  var got  = _.arrayFlattened( dst, [ [ [ [ [ 1 ] ] ] ] ]  )
   test.identical( dst, [ 1 ] );
   test.identical( got, 1 );
 
   test.description = 'make array flat, dst is not empty';
 
   var dst = [ 1, 2, 3 ];
-  var got  = _.__arrayFlattened( dst, [ 4 ] );
+  var got  = _.arrayFlattened( dst, [ 4 ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
-  var got  = _.__arrayFlattened( dst, [ 1, 2, 3 ] )
+  var got  = _.arrayFlattened( dst, [ 1, 2, 3 ] )
   test.identical( dst, [ 1, 2, 3, 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayFlattened( dst, [ [ 1 ], [ 2 ], [ 3 ]  ] )
+  var got = _.arrayFlattened( dst, [ [ 1 ], [ 2 ], [ 3 ]  ] )
   test.identical( dst, [ 1, 2, 3, 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayFlattened( dst, [ [ 1, [ 2, [ 3 ] ] ]  ] )
+  var got = _.arrayFlattened( dst, [ [ 1, [ 2, [ 3 ] ] ]  ] )
   test.identical( dst, [ 1, 2, 3, 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1 ];
-  var got = _.__arrayFlattened( dst, [ [ [ [ [ 1 ] ] ] ] ]  )
+  var got = _.arrayFlattened( dst, [ [ [ [ [ 1 ] ] ] ] ]  )
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 1 );
 
   test.description = 'make array flat from multiple arrays as one arg';
 
   var dst = [];
-  var got = _.__arrayFlattened
+  var got = _.arrayFlattened
   (
     dst,
     [
@@ -7852,91 +7852,91 @@ function __arrayFlattened( test )
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattened();
+    _.arrayFlattened();
   });
 
   test.description = 'first is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattened( 1, [ 1 ] );
+    _.arrayFlattened( 1, [ 1 ] );
   });
 
   test.description = 'second is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattened( [], 1 );
+    _.arrayFlattened( [], 1 );
   });
 }
 
 //
 
-function __arrayFlattenedOnce( test )
+function arrayFlattenedOnce( test )
 {
   test.description = 'make array flat, dst is empty';
 
   var dst = [];
-  var got = _.__arrayFlattenedOnce( dst, [] );
+  var got = _.arrayFlattenedOnce( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   var dst = [];
-  var got = _.__arrayFlattenedOnce( dst, [ 1, 1, 2, 2, 3 , 3 ] )
+  var got = _.arrayFlattenedOnce( dst, [ 1, 1, 2, 2, 3 , 3 ] )
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [];
-  var got = _.__arrayFlattenedOnce( dst, [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
+  var got = _.arrayFlattenedOnce( dst, [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] )
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [];
-  var got = _.__arrayFlattenedOnce( dst, [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
+  var got = _.arrayFlattenedOnce( dst, [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] )
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
   var dst = [];
-  var got = _.__arrayFlattenedOnce( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
+  var got = _.arrayFlattenedOnce( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  )
   test.identical( dst, [ 1 ] );
   test.identical( got, 1 );
 
   test.description = 'make array flat, dst is not empty';
 
   var dst = [ 1, 2, 3, 4 ];
-  var got = _.__arrayFlattenedOnce( dst, [ 4 ] );
+  var got = _.arrayFlattenedOnce( dst, [ 4 ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 0 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayFlattenedOnce( dst, [ 1, 2, 3, [ [ 4 ] ] ] );
+  var got = _.arrayFlattenedOnce( dst, [ 1, 2, 3, [ [ 4 ] ] ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayFlattenedOnce( dst, [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ] );
+  var got = _.arrayFlattenedOnce( dst, [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayFlattenedOnce( dst, [ [ 1, [ 2, [ 3 ] ] ], 4 ] );
+  var got = _.arrayFlattenedOnce( dst, [ [ 1, [ 2, [ 3 ] ] ], 4 ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.__arrayFlattenedOnce( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
+  var got = _.arrayFlattenedOnce( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   test.description = 'dst contains some inner arrays';
 
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
-  var got = _.__arrayFlattenedOnce( dst, [ 1, 2, 3 ]  );
+  var got = _.arrayFlattenedOnce( dst, [ 1, 2, 3 ]  );
   test.identical( dst, [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3 ] );
   test.identical( got, 3 );
 
   test.description = 'make array flat from multiple arrays as one arg';
 
   var dst = [ 1, 4 ];
-  var got  = _.__arrayFlattenedOnce
+  var got  = _.arrayFlattenedOnce
   (
     dst,
     [
@@ -7950,7 +7950,7 @@ function __arrayFlattenedOnce( test )
 
   test.description = 'onEqualize';
   var dst = [ 1, 2, 3, 4 ];
-  var got = _.__arrayFlattenedOnce( dst, [ 1, 4, 2, 5 ], function( a, b )
+  var got = _.arrayFlattenedOnce( dst, [ 1, 4, 2, 5 ], function( a, b )
   {
     return  a === b;
   });
@@ -7963,26 +7963,26 @@ function __arrayFlattenedOnce( test )
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenedOnce();
+    _.arrayFlattenedOnce();
   });
 
   test.description = 'first is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenedOnce( 1, [ 1 ] );
+    _.arrayFlattenedOnce( 1, [ 1 ] );
   });
 
   test.description = 'second is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenedOnce( [], 1 );
+    _.arrayFlattenedOnce( [], 1 );
 
   });
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayFlattenedOnce( [], [ 1 ], [] );
+    _.arrayFlattenedOnce( [], [ 1 ], [] );
   });
 }
 
@@ -7992,12 +7992,12 @@ function arrayFlatten2( test )
 {
 
   test.description = 'array of the passed arguments';
-  var got = _.__arrayFlatten( [],[ 'str', {}, [ 1, 2 ], 5, true ] );
+  var got = _.arrayFlatten( [],[ 'str', {}, [ 1, 2 ], 5, true ] );
   var expected = [ 'str', {}, 1, 2, 5, true ];
   test.identical( got, expected );
 
   test.description = 'without undefined';
-  var got = _.__arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', null ] );
+  var got = _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', null ] );
   var expected = [ 1, 2, 3, 13, 'abc', null ];
   test.identical( got, expected );
 
@@ -8006,40 +8006,40 @@ function arrayFlatten2( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowError( () => _.__arrayFlatten() );
-  test.shouldThrowError( () => _.__arrayFlatten( [] ) );
-  test.shouldThrowError( () => _.__arrayFlatten( [ 1, 2 ], 13, 'abc', {} ) );
-  test.shouldThrowError( () => _.__arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
+  test.shouldThrowError( () => _.arrayFlatten() );
+  test.shouldThrowError( () => _.arrayFlatten( [] ) );
+  test.shouldThrowError( () => _.arrayFlatten( [ 1, 2 ], 13, 'abc', {} ) );
+  test.shouldThrowError( () => _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
 
 }
 
 //
 
-function __arrayReplaceOnce( test )
+function arrayReplaceOnce( test )
 {
 
   test.description = 'nothing';
-  var got = _.__arrayReplaceOnce( [  ], 0, 0 );
+  var got = _.arrayReplaceOnce( [  ], 0, 0 );
   var expected = [];
   test.identical( got, expected );
 
   test.description = 'second element';
-  var got = _.__arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+  var got = _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
   var expected = [ 1,2,3,4,5 ] ;
   test.identical( got, expected );
 
   test.description = 'third element';
-  var got = _.__arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+  var got = _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
   var expected = [ 'Petre', 'Mikle', 'Oleg', 'Bob' ];
   test.identical( got, expected );
 
   test.description = 'fourth element';
-  var got = _.__arrayReplaceOnce( [ true, true, true, true, false ], false, true );
+  var got = _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
   var expected = [ true, true, true, true, true ];
   test.identical( got, expected );
 
   test.description = 'element not exists';
-  var got = _.__arrayReplaceOnce( [ 1,2,3 ], [ 1 ], [ 4 ] );
+  var got = _.arrayReplaceOnce( [ 1,2,3 ], [ 1 ], [ 4 ] );
   var expected = [ 1,2,3 ];
   test.identical( got, expected );
 
@@ -8048,7 +8048,7 @@ function __arrayReplaceOnce( test )
   {
     return a === b[ 0 ];
   }
-  var got = _.__arrayReplaceOnce( [ 1,2,3 ], [ 1 ], [ 4 ], onEqualize );
+  var got = _.arrayReplaceOnce( [ 1,2,3 ], [ 1 ], [ 4 ], onEqualize );
   var expected = [ [ 4 ],2,3 ];
   test.identical( got, expected );
 
@@ -8060,45 +8060,45 @@ function __arrayReplaceOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnce();
+    _.arrayReplaceOnce();
   });
 
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ] );
+    _.arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ] );
   });
 
   test.description = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
+    _.arrayReplaceOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
   });
 
   test.description = 'arguments[0] is wrong';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnce( 'wrong argument', undefined, 3 );
+    _.arrayReplaceOnce( 'wrong argument', undefined, 3 );
   });
 }
 
 //
 
-function __arrayReplaceOnceStrictly( test )
+function arrayReplaceOnceStrictly( test )
 {
 
   test.description = 'second element';
-  var got = _.__arrayReplaceOnceStrictly( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+  var got = _.arrayReplaceOnceStrictly( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
   var expected = [ 1,2,3,4,5 ] ;
   test.identical( got, expected );
 
   test.description = 'third element';
-  var got = _.__arrayReplaceOnceStrictly( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+  var got = _.arrayReplaceOnceStrictly( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
   var expected = [ 'Petre', 'Mikle', 'Oleg', 'Bob' ];
   test.identical( got, expected );
 
   test.description = 'fourth element';
-  var got = _.__arrayReplaceOnceStrictly( [ true, true, true, true, false ], false, true );
+  var got = _.arrayReplaceOnceStrictly( [ true, true, true, true, false ], false, true );
   var expected = [ true, true, true, true, true ];
   test.identical( got, expected );
 
@@ -8107,7 +8107,7 @@ function __arrayReplaceOnceStrictly( test )
   {
     return a === b[ 0 ];
   }
-  var got = _.__arrayReplaceOnceStrictly( [ 1,2,3 ], [ 1 ], [ 4 ], onEqualize );
+  var got = _.arrayReplaceOnceStrictly( [ 1,2,3 ], [ 1 ], [ 4 ], onEqualize );
   var expected = [ [ 4 ],2,3 ];
   test.identical( got, expected );
 
@@ -8119,75 +8119,75 @@ function __arrayReplaceOnceStrictly( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnceStrictly();
+    _.arrayReplaceOnceStrictly();
   });
 
   test.description = 'nothing';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnceStrictly( [], 0, 0 );
+    _.arrayReplaceOnceStrictly( [], 0, 0 );
   });
 
   test.description = 'element not exists';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnceStrictly( [ 1,2,3 ], [ 1 ], [ 4 ] );
+    _.arrayReplaceOnceStrictly( [ 1,2,3 ], [ 1 ], [ 4 ] );
   });
 
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ] );
+    _.arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ] );
   });
 
   test.description = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
+    _.arrayReplaceOnceStrictly( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
   });
 
   test.description = 'arguments[0] is wrong';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceOnceStrictly( 'wrong argument', undefined, 3 );
+    _.arrayReplaceOnceStrictly( 'wrong argument', undefined, 3 );
   });
 }
 
 //
 
-function __arrayReplacedOnce( test )
+function arrayReplacedOnce( test )
 {
 
   test.description = 'nothing';
   var dst = [];
-  var got = _.__arrayReplacedOnce( dst, 0, 0 );
+  var got = _.arrayReplacedOnce( dst, 0, 0 );
   test.identical( dst, [] );
   test.identical( got, -1 );
 
   test.description = 'second element';
   var dst = [ 1, undefined, 3, 4, 5 ];
-  var got = _.__arrayReplacedOnce( dst, undefined, 2 );
+  var got = _.arrayReplacedOnce( dst, undefined, 2 );
   var expected = [ 1,2,3,4,5 ] ;
   test.identical( dst, expected );
   test.identical( got, 1 );
 
   test.description = 'third element';
   var dst = [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
-  var got = _.__arrayReplacedOnce( dst, 'Dmitry', 'Bob' );
+  var got = _.arrayReplacedOnce( dst, 'Dmitry', 'Bob' );
   var expected = [ 'Petre', 'Mikle', 'Oleg', 'Bob' ];
   test.identical( dst, expected );
   test.identical( got, 3 );
 
   test.description = 'fourth element';
   var dst = [ true, true, true, true, false ];
-  var got = _.__arrayReplacedOnce( dst, false, true );
+  var got = _.arrayReplacedOnce( dst, false, true );
   var expected = [ true, true, true, true, true ];
   test.identical( dst, expected );
   test.identical( got, 4 );
 
   test.description = 'element not exists';
   var dst = [ 1,2,3 ];
-  var got = _.__arrayReplacedOnce( dst, [ 1 ], [ 4 ] );
+  var got = _.arrayReplacedOnce( dst, [ 1 ], [ 4 ] );
   var expected = [ 1,2,3 ];
   test.identical( dst, expected );
   test.identical( got, -1 );
@@ -8198,7 +8198,7 @@ function __arrayReplacedOnce( test )
     return a === b[ 0 ];
   }
   var dst = [ 1,2,3 ];
-  var got = _.__arrayReplacedOnce( dst, [ 1 ], [ 4 ], onEqualize );
+  var got = _.arrayReplacedOnce( dst, [ 1 ], [ 4 ], onEqualize );
   var expected = [ [ 4 ],2,3 ];
   test.identical( dst, expected );
   test.identical( got,0 );
@@ -8211,61 +8211,61 @@ function __arrayReplacedOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedOnce();
+    _.arrayReplacedOnce();
   });
 
   test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ] );
+    _.arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ] );
   });
 
   test.description = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
+    _.arrayReplacedOnce( [ 1, 2, undefined, 4, 5 ], undefined, 3, 'argument' );
   });
 
   test.description = 'arguments[0] is wrong';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedOnce( 'wrong argument', undefined, 3 );
+    _.arrayReplacedOnce( 'wrong argument', undefined, 3 );
   });
 }
 
 //
 
-function __arrayReplaceArrayOnce( test )
+function arrayReplaceArrayOnce( test )
 {
   test.description = 'replace elements from ins with sub';
 
   var dst = [];
-  var got = _.__arrayReplaceArrayOnce( dst, [], [] );
+  var got = _.arrayReplaceArrayOnce( dst, [], [] );
   test.identical( got, [] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnce( dst, [ 1 ], 2 );
+  var got = _.arrayReplaceArrayOnce( dst, [ 1 ], 2 );
   test.identical( got, [ 2, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnce( dst, [ 1, 2 ], 3);
+  var got = _.arrayReplaceArrayOnce( dst, [ 1, 2 ], 3);
   test.identical( got, [ 3, 3, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnce( dst, [ 1, 0, 4 ], 3 );
+  var got = _.arrayReplaceArrayOnce( dst, [ 1, 0, 4 ], 3 );
   test.identical( got, [ 3, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
+  var got = _.arrayReplaceArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
   test.identical( got, [ [ 3 ], 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnce( dst, [ undefined ], 0 );
+  var got = _.arrayReplaceArrayOnce( dst, [ undefined ], 0 );
   test.identical( got, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
@@ -8276,7 +8276,7 @@ function __arrayReplaceArrayOnce( test )
   {
     return a[ 0 ] === b;
   }
-  var got = _.__arrayReplaceArrayOnce( dst, [ 1 ], 0, onEqualize );
+  var got = _.arrayReplaceArrayOnce( dst, [ 1 ], 0, onEqualize );
   test.identical( got, [ 0, [ 2 ], [ 3 ] ] );
   test.identical( got, dst );
 
@@ -8288,34 +8288,34 @@ function __arrayReplaceArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnce();
+    _.arrayReplaceArrayOnce();
   })
 
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnce( 1, [ 1 ], 1 );
+    _.arrayReplaceArrayOnce( 1, [ 1 ], 1 );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnce( [ 1, 2 ], 1, 1 );
+    _.arrayReplaceArrayOnce( [ 1, 2 ], 1, 1 );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnce( [ 1, 2 ], [ 1 ], 1, 1 );
+    _.arrayReplaceArrayOnce( [ 1, 2 ], [ 1 ], 1, 1 );
   })
 }
 
 //
 
-function __arrayReplaceArrayOnceStrictly( test )
+function arrayReplaceArrayOnceStrictly( test )
 {
   test.description = 'nothing replaced';
-  var got = _.__arrayReplaceArrayOnceStrictly( [], [], [] );
+  var got = _.arrayReplaceArrayOnceStrictly( [], [], [] );
   test.identical( got, [] );
 
   //
@@ -8323,17 +8323,17 @@ function __arrayReplaceArrayOnceStrictly( test )
   test.description = 'replace elements from ins with sub';
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnceStrictly( dst, [ 1 ], 2 );
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1 ], 2 );
   test.identical( got, [ 2, 2, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], 3);
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], 3);
   test.identical( got, [ 3, 3, 3 ] );
   test.identical( got, dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], [ 3 ]);
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], [ 3 ]);
   test.identical( got, [ [ 3 ], [ 3 ], 3 ] );
   test.identical( got, dst );
 
@@ -8344,7 +8344,7 @@ function __arrayReplaceArrayOnceStrictly( test )
   {
     return a[ 0 ] === b;
   }
-  var got = _.__arrayReplaceArrayOnceStrictly( dst, [ 1 ], 0, onEqualize );
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1 ], 0, onEqualize );
   test.identical( got, [ 0, [ 2 ], [ 3 ] ] );
   test.identical( got, dst );
 
@@ -8356,74 +8356,74 @@ function __arrayReplaceArrayOnceStrictly( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnceStrictly();
+    _.arrayReplaceArrayOnceStrictly();
   })
 
   test.shouldThrowError( function()
   {
     var dst = [ 1, 2, 3 ];
-    _.__arrayReplaceArrayOnceStrictly( dst, [ undefined ], 0 );
+    _.arrayReplaceArrayOnceStrictly( dst, [ undefined ], 0 );
   })
 
   test.description = 'only one replaced';
   test.shouldThrowError( function()
   {
     var dst = [ 1, 2, 3 ];
-    _.__arrayReplaceArrayOnceStrictly( dst, [ 1, 0, 4 ], 3 );
+    _.arrayReplaceArrayOnceStrictly( dst, [ 1, 0, 4 ], 3 );
   })
 
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnceStrictly( 1, [ 1 ], 1 );
+    _.arrayReplaceArrayOnceStrictly( 1, [ 1 ], 1 );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnceStrictly( [ 1, 2 ], 1, 1 );
+    _.arrayReplaceArrayOnceStrictly( [ 1, 2 ], 1, 1 );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArrayOnceStrictly( [ 1, 2 ], [ 1 ], 1, 1 );
+    _.arrayReplaceArrayOnceStrictly( [ 1, 2 ], [ 1 ], 1, 1 );
   })
 }
 
 //
 
-function __arrayReplacedArrayOnce( test )
+function arrayReplacedArrayOnce( test )
 {
   test.description = 'replace elements from ins with sub';
 
   var dst = [];
-  var got = _.__arrayReplacedArrayOnce( dst, [], [] );
+  var got = _.arrayReplacedArrayOnce( dst, [], [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArrayOnce( dst, [ 1 ], 2 );
+  var got = _.arrayReplacedArrayOnce( dst, [ 1 ], 2 );
   test.identical( dst, [ 2, 2, 3 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArrayOnce( dst, [ 1, 2 ], 3);
+  var got = _.arrayReplacedArrayOnce( dst, [ 1, 2 ], 3);
   test.identical( dst, [ 3, 3, 3 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArrayOnce( dst, [ 1, 0, 4 ], 3 );
+  var got = _.arrayReplacedArrayOnce( dst, [ 1, 0, 4 ], 3 );
   test.identical( dst, [ 3, 2, 3 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
+  var got = _.arrayReplacedArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
   test.identical( dst, [ [ 3 ], 2, 3 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArrayOnce( dst, [ undefined ], 0 );
+  var got = _.arrayReplacedArrayOnce( dst, [ undefined ], 0 );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 0 );
 
@@ -8434,7 +8434,7 @@ function __arrayReplacedArrayOnce( test )
   {
     return a[ 0 ] === b;
   }
-  var got = _.__arrayReplacedArrayOnce( dst, [ 1 ], 0, onEqualize );
+  var got = _.arrayReplacedArrayOnce( dst, [ 1 ], 0, onEqualize );
   test.identical( dst, [ 0, [ 2 ], [ 3 ] ] );
   test.identical( got, 1 );
 
@@ -8446,76 +8446,76 @@ function __arrayReplacedArrayOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArrayOnce();
+    _.arrayReplacedArrayOnce();
   })
 
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArrayOnce( 1, [ 1 ], 1 );
+    _.arrayReplacedArrayOnce( 1, [ 1 ], 1 );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArrayOnce( [ 1, 2 ], 1, 1 );
+    _.arrayReplacedArrayOnce( [ 1, 2 ], 1, 1 );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArrayOnce( [ 1, 2 ], [ 1 ], 1, 1 );
+    _.arrayReplacedArrayOnce( [ 1, 2 ], [ 1 ], 1, 1 );
   })
 }
 
 //
 
-function __arrayReplaceArraysOnce( test )
+function arrayReplaceArraysOnce( test )
 {
   test.description = 'replace elements from arrays from ins with relevant values from sub';
 
   var dst = [];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [] ], [ [] ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [] ], [ [] ] );
   test.identical( got, [] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
   test.identical( got, [ 3, 2, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
   test.identical( got, [ 3, 4, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
   test.identical( got, [ 1, 2, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
   test.identical( got, [ 0, 2, 0 ] );
 
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
@@ -8523,7 +8523,7 @@ function __arrayReplaceArraysOnce( test )
   {
     return a[ 0 ] === b[ 0 ];
   }
-  var got = _.__arrayReplaceArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+  var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
   test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
 
   //
@@ -8534,91 +8534,91 @@ function __arrayReplaceArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce();
+    _.arrayReplaceArraysOnce();
   })
 
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
+    _.arrayReplaceArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce( [ 1, 2 ], 1, [ 1 ] );
+    _.arrayReplaceArraysOnce( [ 1, 2 ], 1, [ 1 ] );
   })
 
   test.description = 'ins must be array of arrays';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
+    _.arrayReplaceArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
+    _.arrayReplaceArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
   })
 
   test.description = 'ins and sub length are different';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
+    _.arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
   })
 
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
+    _.arrayReplaceArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
   })
 
   test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
+    _.arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
   })
 }
 
 //
 
-function __arrayReplaceArraysOnceStrictly( test )
+function arrayReplaceArraysOnceStrictly( test )
 {
   test.description = 'replace elements from arrays from ins with relevant values from sub';
 
   var dst = [];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [] ], [ [] ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [] ], [ [] ] );
   test.identical( got, [] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1 ] ], [ [ 3 ] ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ] ], [ [ 3 ] ] );
   test.identical( got, [ 3, 2, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
   test.identical( got, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
   test.identical( got, [ 3, 4, 3 ] );
 
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
@@ -8626,7 +8626,7 @@ function __arrayReplaceArraysOnceStrictly( test )
   {
     return a[ 0 ] === b[ 0 ];
   }
-  var got = _.__arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
   test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
 
   //
@@ -8637,122 +8637,122 @@ function __arrayReplaceArraysOnceStrictly( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly();
+    _.arrayReplaceArraysOnceStrictly();
   })
 
   test.shouldThrowError( function()
   {
     var dst = [ 1, 2, 3 ];
-    _.__arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ] ] ], [ 0 ] );
+    _.arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ] ] ], [ 0 ] );
   })
 
   test.description = 'one element is not replaced';
   test.shouldThrowError( function()
   {
     var dst = [ 1, 2, 3 ];
-    _.__arrayReplaceArraysOnceStrictly( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
+    _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
   })
 
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly( 1, [ [ 1 ] ], [ 1 ] );
+    _.arrayReplaceArraysOnceStrictly( 1, [ [ 1 ] ], [ 1 ] );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
+    _.arrayReplaceArraysOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
   })
 
   test.description = 'ins must be array of arrays';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly( [ 1, 2 ],[ 1 ], [ 1 ] );
+    _.arrayReplaceArraysOnceStrictly( [ 1, 2 ],[ 1 ], [ 1 ] );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
+    _.arrayReplaceArraysOnceStrictly( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
   })
 
   test.description = 'ins and sub length are different';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
+    _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
   })
 
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
+    _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
   })
 
   test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
+    _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
   })
 }
 
 //
 
-function __arrayReplacedArraysOnce( test )
+function arrayReplacedArraysOnce( test )
 {
   test.description = 'replace elements from arrays from ins with relevant values from sub';
 
   var dst = [];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [] ], [ [] ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [] ], [ [] ] );
   test.identical( got, 0 );
   test.identical( dst, [] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
   test.identical( got, 1 );
   test.identical( dst, [ 3, 2, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
   test.identical( got, 2 );
   test.identical( dst, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
   test.identical( got, 2 );
   test.identical( dst, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
   test.identical( got, 2 );
   test.identical( dst, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
   test.identical( got, 3 );
   test.identical( dst, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
   test.identical( got, 3 );
   test.identical( dst, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
   test.identical( got, 3 );
   test.identical( dst, [ 3, 3, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
   test.identical( got, 2 );
   test.identical( dst, [ 3, 4, 3 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 0 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
   test.identical( dst, [ 0, 2, 0 ] );
   test.identical( got, 2 );
 
@@ -8761,7 +8761,7 @@ function __arrayReplacedArraysOnce( test )
   {
     return a[ 0 ] === b[ 0 ];
   }
-  var got = _.__arrayReplacedArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+  var got = _.arrayReplacedArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
   test.identical( dst, [ [ 0 ], [ 0 ], [ 0 ] ] );
   test.identical( got, 3 );
 
@@ -8773,71 +8773,71 @@ function __arrayReplacedArraysOnce( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce();
+    _.arrayReplacedArraysOnce();
   })
 
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
+    _.arrayReplacedArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce( [ 1, 2 ], 1, [ 1 ] );
+    _.arrayReplacedArraysOnce( [ 1, 2 ], 1, [ 1 ] );
   })
 
   test.description = 'ins must be array of arrays';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
+    _.arrayReplacedArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
+    _.arrayReplacedArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
   })
 
   test.description = 'ins and sub length are different';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
+    _.arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
   })
 
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
+    _.arrayReplacedArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
   })
 
   test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
+    _.arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
   })
 }
 
 //
 
-function __arrayReplaceAll( test )
+function arrayReplaceAll( test )
 {
   test.description = 'replace all ins with sub';
 
   var dst = [];
-  var got = _.__arrayReplaceAll( dst, undefined, 0 );
+  var got = _.arrayReplaceAll( dst, undefined, 0 );
   test.identical( got, [] );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayReplaceAll( dst, 1, 0 );
+  var got = _.arrayReplaceAll( dst, 1, 0 );
   test.identical( got, [ 0, 0, 0 ] );
 
   var dst = [ 1, 2, 1 ];
-  var got = _.__arrayReplaceAll( dst, 1, 0 );
+  var got = _.arrayReplaceAll( dst, 1, 0 );
   test.identical( got, [ 0, 2, 0 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplaceAll( dst, 4, 0 );
+  var got = _.arrayReplaceAll( dst, 4, 0 );
   test.identical( got, [ 1, 2, 3 ] );
 
   function onEqualize( a, b )
@@ -8846,7 +8846,7 @@ function __arrayReplaceAll( test )
   }
 
   var dst = [ { value : 1 }, { value : 1 }, { value : 2 } ];
-  var got = _.__arrayReplaceAll( dst, 1, { value : 0 }, onEqualize );
+  var got = _.arrayReplaceAll( dst, 1, { value : 0 }, onEqualize );
   test.identical( got, [ { value : 0 }, { value : 0 }, { value : 2 } ] );
 
   if( !Config.debug )
@@ -8855,45 +8855,45 @@ function __arrayReplaceAll( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceAll( );
+    _.arrayReplaceAll( );
   })
 
   test.description = 'first arg is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceAll( 1, 1, 1 );
+    _.arrayReplaceAll( 1, 1, 1 );
   })
 
   test.description = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplaceAll( 1, 1, 1, 1);
+    _.arrayReplaceAll( 1, 1, 1, 1);
   })
 }
 
 //
 
-function __arrayReplacedAll( test )
+function arrayReplacedAll( test )
 {
   test.description = 'replace all ins with sub';
 
   var dst = [];
-  var got = _.__arrayReplacedAll( dst, undefined, 0 );
+  var got = _.arrayReplacedAll( dst, undefined, 0 );
   test.identical( got, 0 );
   test.identical( dst, [] );
 
   var dst = [ 1, 1, 1 ];
-  var got = _.__arrayReplacedAll( dst, 1, 0 );
+  var got = _.arrayReplacedAll( dst, 1, 0 );
   test.identical( got, 3 );
   test.identical( dst, [ 0, 0, 0 ] );
 
   var dst = [ 1, 2, 1 ];
-  var got = _.__arrayReplacedAll( dst, 1, 0 );
+  var got = _.arrayReplacedAll( dst, 1, 0 );
   test.identical( got, 2 );
   test.identical( dst, [ 0, 2, 0 ] );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.__arrayReplacedAll( dst, 4, 0 );
+  var got = _.arrayReplacedAll( dst, 4, 0 );
   test.identical( got, 0 );
   test.identical( dst, [ 1, 2, 3 ] );
 
@@ -8903,7 +8903,7 @@ function __arrayReplacedAll( test )
   }
 
   var dst = [ { value : 1 }, { value : 1 }, { value : 2 } ];
-  var got = _.__arrayReplacedAll( dst, 1, { value : 0 }, onEqualize );
+  var got = _.arrayReplacedAll( dst, 1, { value : 0 }, onEqualize );
   test.identical( got, 2 );
   test.identical( dst, [ { value : 0 }, { value : 0 }, { value : 2 } ] );
 
@@ -8913,19 +8913,19 @@ function __arrayReplacedAll( test )
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedAll( );
+    _.arrayReplacedAll( );
   })
 
   test.description = 'first arg is not arrayLike';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedAll( 1, 1, 1 );
+    _.arrayReplacedAll( 1, 1, 1 );
   })
 
   test.description = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.__arrayReplacedAll( 1, 1, 1, 1);
+    _.arrayReplacedAll( 1, 1, 1, 1);
   })
 }
 
@@ -9267,97 +9267,97 @@ var Self =
 
     // array prepend
 
-    __arrayPrepend : __arrayPrepend,
-    __arrayPrependOnce : __arrayPrependOnce,
-    __arrayPrependOnceStrictly : __arrayPrependOnceStrictly,
-    __arrayPrepended : __arrayPrepended,
-    __arrayPrependedOnce : __arrayPrependedOnce,
+    arrayPrepend : arrayPrepend,
+    arrayPrependOnce : arrayPrependOnce,
+    arrayPrependOnceStrictly : arrayPrependOnceStrictly,
+    arrayPrepended : arrayPrepended,
+    arrayPrependedOnce : arrayPrependedOnce,
 
-    __arrayPrependArray : __arrayPrependArray,
-    __arrayPrependArrayOnce : __arrayPrependArrayOnce,
-    __arrayPrependArrayOnceStrictly : __arrayPrependArrayOnceStrictly,
-    __arrayPrependedArray : __arrayPrependedArray,
-    __arrayPrependedArrayOnce : __arrayPrependedArrayOnce,
+    arrayPrependArray : arrayPrependArray,
+    arrayPrependArrayOnce : arrayPrependArrayOnce,
+    arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
+    arrayPrependedArray : arrayPrependedArray,
+    arrayPrependedArrayOnce : arrayPrependedArrayOnce,
 
-    __arrayPrependArrays : __arrayPrependArrays,
-    __arrayPrependArraysOnce : __arrayPrependArraysOnce,
-    __arrayPrependArraysOnceStrictly : __arrayPrependArraysOnceStrictly,
-    __arrayPrependedArrays : __arrayPrependedArrays,
-    __arrayPrependedArraysOnce : __arrayPrependedArraysOnce,
+    arrayPrependArrays : arrayPrependArrays,
+    arrayPrependArraysOnce : arrayPrependArraysOnce,
+    arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
+    arrayPrependedArrays : arrayPrependedArrays,
+    arrayPrependedArraysOnce : arrayPrependedArraysOnce,
 
 
     // array append
 
-    __arrayAppend : __arrayAppend,
-    __arrayAppended : __arrayAppended,
-    __arrayAppendOnce : __arrayAppendOnce,
-    __arrayAppendedOnce : __arrayAppendedOnce,
-    __arrayAppendOnceStrictly : __arrayAppendOnceStrictly,
+    arrayAppend : arrayAppend,
+    arrayAppended : arrayAppended,
+    arrayAppendOnce : arrayAppendOnce,
+    arrayAppendedOnce : arrayAppendedOnce,
+    arrayAppendOnceStrictly : arrayAppendOnceStrictly,
 
-    __arrayAppendArray : __arrayAppendArray,
-    __arrayAppendedArray : __arrayAppendedArray,
-    __arrayAppendArrayOnce : __arrayAppendArrayOnce,
-    __arrayAppendedArrayOnce : __arrayAppendedArrayOnce,
-    __arrayAppendArrayOnceStrictly : __arrayAppendArrayOnceStrictly,
+    arrayAppendArray : arrayAppendArray,
+    arrayAppendedArray : arrayAppendedArray,
+    arrayAppendArrayOnce : arrayAppendArrayOnce,
+    arrayAppendedArrayOnce : arrayAppendedArrayOnce,
+    arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
 
-    __arrayAppendArrays : __arrayAppendArrays,
-    __arrayAppendArraysOnce : __arrayAppendArraysOnce,
-    __arrayAppendArraysOnceStrictly : __arrayAppendArraysOnceStrictly,
-    __arrayAppendedArrays : __arrayAppendedArrays,
-    __arrayAppendedArraysOnce : __arrayAppendedArraysOnce,
+    arrayAppendArrays : arrayAppendArrays,
+    arrayAppendArraysOnce : arrayAppendArraysOnce,
+    arrayAppendArraysOnceStrictly : arrayAppendArraysOnceStrictly,
+    arrayAppendedArrays : arrayAppendedArrays,
+    arrayAppendedArraysOnce : arrayAppendedArraysOnce,
 
 
     // array remove
 
-    __arrayRemoveOnce : __arrayRemoveOnce,
+    arrayRemoveOnce : arrayRemoveOnce,
     // _arrayRemoved : _arrayRemoved,
-    __arrayRemovedOnce : __arrayRemovedOnce,
-    __arrayRemoveOnceStrictly : __arrayRemoveOnceStrictly,
+    arrayRemovedOnce : arrayRemovedOnce,
+    arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
 
-    __arrayRemoveArray : __arrayRemoveArray,
-    __arrayRemovedArray : __arrayRemovedArray,
-    __arrayRemoveArrayOnce : __arrayRemoveArrayOnce,
-    __arrayRemovedArrayOnce : __arrayRemovedArrayOnce,
-    __arrayRemoveArrayOnceStrictly : __arrayRemoveArrayOnceStrictly,
+    arrayRemoveArray : arrayRemoveArray,
+    arrayRemovedArray : arrayRemovedArray,
+    arrayRemoveArrayOnce : arrayRemoveArrayOnce,
+    arrayRemovedArrayOnce : arrayRemovedArrayOnce,
+    arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
 
-    __arrayRemoveArrays : __arrayRemoveArrays,
-    __arrayRemovedArrays : __arrayRemovedArrays,
-    __arrayRemoveArraysOnce : __arrayRemoveArraysOnce,
-    __arrayRemovedArraysOnce : __arrayRemovedArraysOnce,
-    __arrayRemoveArraysOnceStrictly : __arrayRemoveArraysOnceStrictly,
+    arrayRemoveArrays : arrayRemoveArrays,
+    arrayRemovedArrays : arrayRemovedArrays,
+    arrayRemoveArraysOnce : arrayRemoveArraysOnce,
+    arrayRemovedArraysOnce : arrayRemovedArraysOnce,
+    arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
 
-    __arrayRemoveAll : __arrayRemoveAll,
+    arrayRemoveAll : arrayRemoveAll,
     // arrayRemoveAll : arrayRemoveAll,
-    __arrayRemovedAll : __arrayRemovedAll,
+    arrayRemovedAll : arrayRemovedAll,
 
 
     // array flatten
 
-    __arrayFlatten : __arrayFlatten,
-    __arrayFlattenOnce : __arrayFlattenOnce,
-    __arrayFlattenOnceStrictly : __arrayFlattenOnceStrictly,
-    __arrayFlattened : __arrayFlattened,
-    __arrayFlattenedOnce : __arrayFlattenedOnce,
+    arrayFlatten : arrayFlatten,
+    arrayFlattenOnce : arrayFlattenOnce,
+    arrayFlattenOnceStrictly : arrayFlattenOnceStrictly,
+    arrayFlattened : arrayFlattened,
+    arrayFlattenedOnce : arrayFlattenedOnce,
 
     arrayFlatten2 : arrayFlatten2,
 
 
     // array replace
 
-    __arrayReplaceOnce : __arrayReplaceOnce,
-    __arrayReplaceOnceStrictly : __arrayReplaceOnceStrictly,
-    __arrayReplacedOnce : __arrayReplacedOnce,
+    arrayReplaceOnce : arrayReplaceOnce,
+    arrayReplaceOnceStrictly : arrayReplaceOnceStrictly,
+    arrayReplacedOnce : arrayReplacedOnce,
 
-    __arrayReplaceArrayOnce : __arrayReplaceArrayOnce,
-    __arrayReplaceArrayOnceStrictly : __arrayReplaceArrayOnceStrictly,
-    __arrayReplacedArrayOnce : __arrayReplacedArrayOnce,
+    arrayReplaceArrayOnce : arrayReplaceArrayOnce,
+    arrayReplaceArrayOnceStrictly : arrayReplaceArrayOnceStrictly,
+    arrayReplacedArrayOnce : arrayReplacedArrayOnce,
 
-    __arrayReplaceArraysOnce : __arrayReplaceArraysOnce,
-    __arrayReplaceArraysOnceStrictly : __arrayReplaceArraysOnceStrictly,
-    __arrayReplacedArraysOnce : __arrayReplacedArraysOnce,
+    arrayReplaceArraysOnce : arrayReplaceArraysOnce,
+    arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
+    arrayReplacedArraysOnce : arrayReplacedArraysOnce,
 
-    __arrayReplaceAll : __arrayReplaceAll,
-    __arrayReplacedAll : __arrayReplacedAll,
+    arrayReplaceAll : arrayReplaceAll,
+    arrayReplacedAll : arrayReplacedAll,
 
     arrayUpdate : arrayUpdate,
 

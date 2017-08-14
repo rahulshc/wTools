@@ -221,7 +221,7 @@ function _includeSimply( src )
   if( _.arrayLike( src ) )
   {
     var result = [];
-    src = _.__arrayFlatten( [], src );
+    src = _.arrayFlatten( [], src );
     for( var a = 0 ; a < src.length ; a++ )
     result[ a ] = _includeSimplyAct( src[ a ] );
     return result;
@@ -240,7 +240,7 @@ function include( src )
   if( _.arrayLike( src ) )
   {
     var result = [];
-    src = _.__arrayFlatten( [], src );
+    src = _.arrayFlatten( [], src );
     for( var a = 0 ; a < src.length ; a++ )
     result[ a ] = _includeAct( src[ a ] );
     return result;
@@ -392,6 +392,7 @@ function appArgsInSubjectAndMapFormat( o )
     // debugger;
     result.map = _.strParseMap( splitted.join( ':' ) );
 
+    console.log( 'result',result );
   }
 
   return result;

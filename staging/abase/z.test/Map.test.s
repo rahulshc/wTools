@@ -1287,7 +1287,7 @@ function mapAllPairs( test )
   arrObj[ 'k' ] = 1;
   var got = _.mapAllPairs( arrObj );
   test.shouldBe( got.length > 1 );
-  got = _.__arrayFlatten( [], got );
+  got = _.arrayFlatten( [], got );
   test.shouldBe( got.indexOf( 'k' ) !== -1 );
   test.identical( got[ got.indexOf( 'k' ) + 1 ], 1 );
 
@@ -1295,7 +1295,7 @@ function mapAllPairs( test )
 
   var got = _.mapAllPairs( new Date );
   test.shouldBe( got.length > 1 );
-  got = _.__arrayFlatten( [], got );
+  got = _.arrayFlatten( [], got );
   test.shouldBe( got.indexOf( 'constructor' ) !== -1 );
   test.identical( got[ got.indexOf( 'constructor' ) + 1 ].name, 'Date' );
 
