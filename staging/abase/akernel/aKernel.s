@@ -11373,7 +11373,6 @@ function arrayPut( dstArray, dstOffset )
 
 function arrayFillTimes( result,times,value )
 {
-
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayLike( result ) );
 
@@ -11390,6 +11389,9 @@ function arrayFillTimes( result,times,value )
   else
   {
     debugger;
+    if( times < 0 )
+    times = result.length + times;
+
     for( var t = 0 ; t < times ; t++ )
     result[ t ] = value;
   }
