@@ -22,7 +22,7 @@ if( typeof module !== 'undefined' )
 }
 
 var _ = wTools;
-var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
+// var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 // --
 // common
@@ -583,7 +583,8 @@ var Self =
 {
 
   name : 'wTools.Changes',
-  sourceFilePath : sourceFilePath,
+  silencing : 1,
+  // sourceFilePath : sourceFilePath,
 
   tests :
   {

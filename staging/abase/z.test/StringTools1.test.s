@@ -739,6 +739,7 @@ var Self =
 {
 
   name : 'StringTools',
+  silencing : 1,
 
   tests :
   {

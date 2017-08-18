@@ -462,7 +462,9 @@ function routinesCall( test )
 
 var Self =
 {
+
   name : 'routine',
+  silencing : 1,
 
   tests :
   {

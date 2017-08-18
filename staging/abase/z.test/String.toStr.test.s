@@ -525,6 +525,7 @@ var Self =
 {
 
   name : 'wTools.toStr',
+  silencing : 1,
 
   tests :
   {

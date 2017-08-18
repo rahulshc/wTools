@@ -344,6 +344,7 @@ var Proto =
 {
 
   name : 'ExecTools',
+  silencing : 1,
   verbosity : 1,
   // sourceFilePath : sourceFilePath,
   // logger : wPrinterToJstructure(),

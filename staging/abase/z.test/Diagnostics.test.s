@@ -295,6 +295,7 @@ var Self =
 {
 
   name : 'diagnostics',
+  silencing : 1,
 
   tests :
   {

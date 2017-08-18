@@ -5130,7 +5130,7 @@ var Self =
 {
 
   name : 'StringTools tests 2',
-  // verbosity : 6,
+  silencing : 1,
 
   tests :
   {

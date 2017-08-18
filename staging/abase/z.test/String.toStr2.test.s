@@ -2806,6 +2806,7 @@ var Self =
 {
 
   name : 'wTools.toStr2',
+  silencing : 1,
 
   tests :
   {

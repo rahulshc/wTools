@@ -32,7 +32,6 @@ if( typeof module !== 'undefined' )
 }
 
 var _ = wTools;
-var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
@@ -108,7 +107,7 @@ var Self =
 {
 
   name : 'simple1',
-  sourceFilePath : sourceFilePath,
+  silencing : 1,
 
   tests :
   {

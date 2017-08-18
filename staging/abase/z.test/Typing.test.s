@@ -53,6 +53,7 @@ var Self =
 {
 
   name : 'wTools.Typing',
+  silencing : 1,
   // verbosity : 9,
 
   tests :

@@ -1176,6 +1176,7 @@ var Self =
 {
 
   name : 'Time',
+  silencing : 1,
 
   tests :
   {

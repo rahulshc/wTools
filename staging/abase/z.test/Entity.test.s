@@ -1848,6 +1848,7 @@ var Self =
 {
 
   name : 'entity',
+  silencing : 1,
 
   tests :
   {

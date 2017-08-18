@@ -7,6 +7,13 @@
  * @file wTools.s - Generic purpose tools of base level for solving problems in Java Script.
  */
 
+/*
+
+!!! arrayGrow
+!!! arrayFill*
+
+*/
+
 // global
 
 var _global_ = undefined;
@@ -6332,13 +6339,6 @@ function numberIsNotNan( src )
 
 //
 
-// function numberIsFinite( src )
-// {
-//   return _.numberIs( src ) && !isNaN( src ) && src !== +Infinity && src !== -Infinity;
-// }
-
-//
-
 function numberIsFinite( src )
 {
 
@@ -6551,12 +6551,35 @@ function numbersFromNumber( dst,length )
 
   if( _.numberIs( dst ) )
   {
-    dst = arrayFill({ times : length , value : dst });
+    dst = _.arrayFillTimes( [], length , dst );
   }
   else
   {
     for( var i = 0 ; i < dst.length ; i++ )
     _.assert( _.numberIs( dst[ i ] ) );
+    _.assert( dst.length === length,'expects array of length',length,'but got',dst );
+  }
+
+  return dst;
+}
+
+//
+
+function numbersFromInt( dst,length )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIsInt( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
+  _.assert( length >= 0 );
+
+  if( _.numberIs( dst ) )
+  {
+    dst = _.arrayFillTimes( [], length , dst );
+  }
+  else
+  {
+    for( var i = 0 ; i < dst.length ; i++ )
+    _.assert( _.numberIsInt( dst[ i ] ) );
     _.assert( dst.length === length,'expects array of length',length,'but got',dst );
   }
 
@@ -8169,26 +8192,21 @@ function methodsCall( contexts,methods,args )
 
 //
 
-function routineOptions( routine,options )
+function routineOptions( routine,options,defaults )
 {
 
   if( options === undefined )
   options = Object.create( null );
 
-  _.assert( arguments.length === 2,'routineOptions : expects 2 arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3,'routineOptions : expects 2 arguments' );
   _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
-  _.assert( _.objectIs( routine.defaults ),'routineOptions : expects routine with defined defaults' );
+  _.assert( _.objectIs( routine.defaults ) || defaults,'routineOptions : expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ),'routineOptions : expects object' );
 
-  // if( options.preset )
-  // {
-  //   _.assert( routine.presets );
-  //   _.assert( filesRead.presets[ options.preset ],'unknown preset',options.preset );
-  //   _.mapComplement( options,filesRead.presets[ options.preset ] );
-  // }
+  defaults = defaults || routine.defaults;
 
-  _.assertMapHasOnly( options,routine.defaults );
-  _.mapComplement( options,routine.defaults );
+  _.assertMapHasOnly( options,defaults );
+  _.mapComplement( options,defaults );
   _.assertMapHasNoUndefine( options );
 
   return options;
@@ -9907,7 +9925,7 @@ function arrayFromNumber( dst,length )
 
   if( _.numberIs( dst ) )
   {
-    dst = arrayFill({ times : length , value : dst });
+    dst = _.arrayFillTimes( [] , length , value );
   }
   else
   {
@@ -11353,53 +11371,90 @@ function arrayPut( dstArray, dstOffset )
  * @memberof wTools
  */
 
-function arrayFill( o )
+function arrayFillTimes( result,times,value )
 {
-  _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 
-  if( arguments.length === 1 )
-  {
-    if( _.numberIs( o ) )
-    o = { times : o };
-    else if( _.arrayIs( o ) )
-    o = { result : o };
-  }
-  else
-  {
-    o = { result : arguments[ 0 ], value : arguments[ 1 ] };
-  }
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayLike( result ) );
 
-  _.assertMapHasOnly( o,arrayFill.defaults );
-  if( o.result )
-  _.assert( _.arrayLike( o.result ) );
+  if( value === undefined )
+  value = 0;
 
-  var result = o.result || [];
-  var times = o.times !== undefined ? o.times : result.length;
-  var value = o.value !== undefined ? o.value : 0;
+  if( result.length < times )
+  result = _.arrayGrow( result , 0 , times );
 
   if( _.routineIs( result.fill ) )
   {
-    if( result.length < times )
-    result.length = times;
     result.fill( value,0,times );
   }
   else
   {
+    debugger;
     for( var t = 0 ; t < times ; t++ )
     result[ t ] = value;
   }
 
-  _assert( result[ times-1 ] === value );
+  _.assert( times <= 0 || result[ times-1 ] === value );
   return result;
 }
 
-arrayFill.defaults =
+//
+
+function arrayFillWhole( result,value )
 {
-  result : null,
-  times : null,
-  value : null,
+  _.assert( _.arrayLike( result ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( value === undefined )
+  value = 0;
+  return _.arrayFillTimes( result,result.length,value );
 }
+
+// {
+//   _assert( arguments.length === 2 || arguments.length === 3 );
+//   _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+//
+//   if( arguments.length === 1 )
+//   {
+//     if( _.numberIs( o ) )
+//     o = { times : o };
+//     else if( _.arrayIs( o ) )
+//     o = { result : o };
+//   }
+//   else
+//   {
+//     o = { result : arguments[ 0 ], value : arguments[ 1 ] };
+//   }
+//
+//   _.assertMapHasOnly( o,arrayFill.defaults );
+//   if( o.result )
+//   _.assert( _.arrayLike( o.result ) );
+//
+//   var result = o.result || [];
+//   var times = o.times !== undefined ? o.times : result.length;
+//   var value = o.value !== undefined ? o.value : 0;
+//
+//   if( _.routineIs( result.fill ) )
+//   {
+//     if( result.length < times )
+//     result.length = times;
+//     result.fill( value,0,times );
+//   }
+//   else
+//   {
+//     for( var t = 0 ; t < times ; t++ )
+//     result[ t ] = value;
+//   }
+//
+//   _assert( result[ times-1 ] === value );
+//   return result;
+// }
+//
+// arrayFill.defaults =
+// {
+//   result : null,
+//   times : null,
+//   value : null,
+// }
 
 //
 
@@ -18419,6 +18474,8 @@ var Proto =
   numberRandomIntBut : numberRandomIntBut, /* experimental */
 
   numbersFromNumber : numbersFromNumber,
+  numbersFromInt : numbersFromInt,
+
   numbersMake_functor : numbersMake_functor,
 
   numberClamp : numberClamp,
@@ -18560,13 +18617,14 @@ var Proto =
   // array transformer
 
   arraySub : arraySub,
+
   arrayGrow : arrayGrow,
   arraySlice : arraySlice,
   arrayMultislice : arrayMultislice,
   arrayDuplicate : arrayDuplicate,
 
-  arrayMask : arrayMask,
-  arrayUnmask : arrayUnmask,
+  arrayMask : arrayMask, /* experimental */
+  arrayUnmask : arrayUnmask, /* experimental */
 
   arrayIsUniqueMap : arrayIsUniqueMap,  /* experimental */
   arrayUnique : arrayUnique,  /* experimental */
@@ -18579,7 +18637,8 @@ var Proto =
 
   arrayCutin : arrayCutin,
   arrayPut : arrayPut,
-  arrayFill : arrayFill, /* experimental */
+  arrayFillTimes : arrayFillTimes,
+  arrayFillWhole : arrayFillWhole,
 
   arraySupplement : arraySupplement, /* experimental */
   arrayExtendScreening : arrayExtendScreening, /* experimental */

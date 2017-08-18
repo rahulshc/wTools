@@ -2210,6 +2210,7 @@ var Self =
 {
 
   name : 'StrJson',
+  silencing : 1,
   verbosity : 7,
 
   tests :
