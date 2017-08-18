@@ -14,7 +14,7 @@ if( typeof module !== 'undefined' )
   }
   catch( err )
   {
-    require( 'wTools' );
+    // require( 'wTools' );
   }
 
   var _ = wTools;
@@ -1409,7 +1409,7 @@ function arraySlice( test )
 {
   var got,expected;
 
-  //
+  /* Slice */
 
   test.description = 'defaults';
   var array = [ 1, 2, 3, 4, 5, 6, 7 ];
@@ -1451,7 +1451,7 @@ function arraySlice( test )
 
   /* indexes are out of bound */
 
-  got = _.arraySlice( [ 1,2,3 ], 5, 8 );
+  got = _.arraySlice( array, array.length + 1, array.length + 3 );
   expected = [];
   test.identical( got, expected );
 
@@ -1473,10 +1473,140 @@ function arraySlice( test )
   expected = array;
   test.identical( got, expected );
 
+  /* both bounds are negative */
+
+  got = _.arraySlice( array, -1, -3 );
+  expected = [];
+  test.identical( got, expected );
+
+  /* TypedArray */
+
+  var arr = new Uint16Array( array );
+  got = _.arraySlice( arr, 0, 3 );
+  expected = new Uint16Array([ 1, 2, 3 ]);
+  test.identical( got, expected );
+
+  /* Buffer */
+
+  if( !isBrowser )
+  {
+    test.description = 'buffer';
+    got = _.arraySlice( new Buffer( '123' ), 0, 5, 0 );
+    expected = [ 49, 50, 51, 0, 0 ];
+    test.identical( got, expected );
+  }
+
+  /* grow */
+
+  var got,expected;
+  var array = [ 1,2,3,4,5 ];
+
+  test.description = 'defaults';
+
+  /* default call returns copy */
+
+  got = _.arraySlice( array );
+  expected = array;
+  test.identical( got, expected );
+
+  test.description = 'increase size of array';
+
+  /* without setting value */
+
+  got = _.arraySlice( array, 0, array.length + 2, 0 );
+  expected = array.length + 2;
+  test.identical( got.length, expected );
+
+  /* by setting value */
+
+  got = _.arraySlice( array, 0, array.length + 2, 0 );
+  expected = [ 1,2,3,4,5,0,0 ];
+  test.identical( got, expected );
+
+  /* by taking only last element of source array */
+
+  got = _.arraySlice( array, array.length - 1, array.length * 2, 0 );
+  expected = [ 5,0,0,0,0,0 ];
+  test.identical( got, expected );
+
+  test.description = 'decrease size of array';
+
   /**/
+
+  got = _.arraySlice( array, 0, 3 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  /* setting value not affects on array */
+
+  got = _.arraySlice( array, 0, 3, 0 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  /* begin index is negative */
+
+  got = _.arraySlice( array, -1, 3, 0 );
+  expected = [ 0,1,2,3 ];
+  test.identical( got, expected );
+
+  /* end index is negative */
+
+  got = _.arraySlice( array, 0, -1 );
+  expected = [];
+  test.identical( got, expected );
+
+  /* begin index negative, set value */
+
+  got = _.arraySlice( array, -1, 3, 0 );
+  expected = [ 0, 1,2,3 ];
+  test.identical( got, expected );
+
+  /* TypedArray */
+
+  var arr = new Uint16Array( array );
+  got = _.arraySlice( arr, 0, 4, 4 );
+  expected = new Uint16Array([ 1, 2, 3, 4 ]);
+  test.identical( got, expected );
+
+  //
+
+  if( !isBrowser )
+  {
+    test.description = 'buffer';
+    got = _.arraySlice( new Buffer( '123' ), 0, 5, 0 );
+    expected = [ 49, 50, 51, 0, 0 ];
+    test.identical( got, expected );
+  }
+
+  //
 
   if( !Config.debug )
   return;
+
+  test.description = 'invalid arguments type';
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( 1 );
+  })
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( array, '1', array.length )
+  })
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( array, 0, '1' )
+  })
+
+  /**/
 
   test.description = 'buffer';
 
