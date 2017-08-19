@@ -14,7 +14,7 @@ if( typeof module !== 'undefined' )
   }
   catch( err )
   {
-    require( 'wTools' );
+    // require( 'wTools' );
   }
 
   var _ = wTools;
@@ -1409,7 +1409,7 @@ function arraySlice( test )
 {
   var got,expected;
 
-  //
+  /* Slice */
 
   test.description = 'defaults';
   var array = [ 1, 2, 3, 4, 5, 6, 7 ];
@@ -1451,7 +1451,7 @@ function arraySlice( test )
 
   /* indexes are out of bound */
 
-  got = _.arraySlice( [ 1,2,3 ], 5, 8 );
+  got = _.arraySlice( array, array.length + 1, array.length + 3 );
   expected = [];
   test.identical( got, expected );
 
@@ -1473,10 +1473,140 @@ function arraySlice( test )
   expected = array;
   test.identical( got, expected );
 
+  /* both bounds are negative */
+
+  got = _.arraySlice( array, -1, -3 );
+  expected = [];
+  test.identical( got, expected );
+
+  /* TypedArray */
+
+  var arr = new Uint16Array( array );
+  got = _.arraySlice( arr, 0, 3 );
+  expected = new Uint16Array([ 1, 2, 3 ]);
+  test.identical( got, expected );
+
+  /* Buffer */
+
+  if( !isBrowser )
+  {
+    test.description = 'buffer';
+    got = _.arraySlice( new Buffer( '123' ), 0, 5, 0 );
+    expected = [ 49, 50, 51, 0, 0 ];
+    test.identical( got, expected );
+  }
+
+  /* grow */
+
+  var got,expected;
+  var array = [ 1,2,3,4,5 ];
+
+  test.description = 'defaults';
+
+  /* default call returns copy */
+
+  got = _.arraySlice( array );
+  expected = array;
+  test.identical( got, expected );
+
+  test.description = 'increase size of array';
+
+  /* without setting value */
+
+  got = _.arraySlice( array, 0, array.length + 2, 0 );
+  expected = array.length + 2;
+  test.identical( got.length, expected );
+
+  /* by setting value */
+
+  got = _.arraySlice( array, 0, array.length + 2, 0 );
+  expected = [ 1,2,3,4,5,0,0 ];
+  test.identical( got, expected );
+
+  /* by taking only last element of source array */
+
+  got = _.arraySlice( array, array.length - 1, array.length * 2, 0 );
+  expected = [ 5,0,0,0,0,0 ];
+  test.identical( got, expected );
+
+  test.description = 'decrease size of array';
+
   /**/
+
+  got = _.arraySlice( array, 0, 3 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  /* setting value not affects on array */
+
+  got = _.arraySlice( array, 0, 3, 0 );
+  expected = [ 1,2,3 ];
+  test.identical( got, expected );
+
+  /* begin index is negative */
+
+  got = _.arraySlice( array, -1, 3, 0 );
+  expected = [ 0,1,2,3 ];
+  test.identical( got, expected );
+
+  /* end index is negative */
+
+  got = _.arraySlice( array, 0, -1 );
+  expected = [];
+  test.identical( got, expected );
+
+  /* begin index negative, set value */
+
+  got = _.arraySlice( array, -1, 3, 0 );
+  expected = [ 0, 1,2,3 ];
+  test.identical( got, expected );
+
+  /* TypedArray */
+
+  var arr = new Uint16Array( array );
+  got = _.arraySlice( arr, 0, 4, 4 );
+  expected = new Uint16Array([ 1, 2, 3, 4 ]);
+  test.identical( got, expected );
+
+  //
+
+  if( !isBrowser )
+  {
+    test.description = 'buffer';
+    got = _.arraySlice( new Buffer( '123' ), 0, 5, 0 );
+    expected = [ 49, 50, 51, 0, 0 ];
+    test.identical( got, expected );
+  }
+
+  //
 
   if( !Config.debug )
   return;
+
+  test.description = 'invalid arguments type';
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( 1 );
+  })
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( array, '1', array.length )
+  })
+
+  /**/
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayGrow( array, 0, '1' )
+  })
+
+  /**/
 
   test.description = 'buffer';
 
@@ -2284,37 +2414,60 @@ function arrayPut( test )
 
 //
 
-function arrayFill( test )
+function arrayFillTimes( test )
 {
-
-  test.description = 'an element';
-  var got = _.arrayFill( [ 7 ] );
+  test.description = 'empty array';
+  var got = _.arrayFillTimes( [], 1 );
   var expected = [ 0 ];
   test.identical( got, expected );
 
-  test.description = 'an object';
-  var got = _.arrayFill( { times : 5, value : 3 } );
-  var expected = [ 3, 3, 3, 3, 3 ];
+  test.description = 'times is negative, times = length + times';
+  var got = _.arrayFillTimes( [ 0, 0, 0 ], -1, 1 );
+  var expected = [ 1, 1, 0 ];
   test.identical( got, expected );
 
-  test.description = 'an array';
-  var got = _.arrayFill( [ 1, 2, 3 ] );
-  var expected = [ 0, 0, 0 ];
+  test.description = 'times is negative';
+  var got = _.arrayFillTimes( [ 0, 0 ], -2, 1 );
+  var expected = [ 0, 0 ];
   test.identical( got, expected );
 
-  test.description = 'a number';
-  var got = _.arrayFill( 3 );
-  var expected = [ 0, 0, 0 ];
+  test.description = 'empty array, value passed';
+  var got = _.arrayFillTimes( [], 1, 1 );
+  var expected = [ 1 ];
   test.identical( got, expected );
 
-  test.description = 'array';
-  var got = _.arrayFill( [ 1,2,3,4 ], 1 );
-  var expected = [ 1,1,1,1 ];
+  test.description = 'empty array, value is an array';
+  var got = _.arrayFillTimes( [], 1, [ 1, 2, 3 ] );
+  var expected = [ [ 1, 2, 3 ]];
   test.identical( got, expected );
 
-  test.description = 'as object';
-  var got = _.arrayFill({ result : [ 1,2,3,4 ], value : 1, times : 3 });
-  var expected = [ 1,1,1,4 ];
+  test.description = 'times > array.length';
+  var got = _.arrayFillTimes( [ 0 ], 3, 1 );
+  var expected = [ 1, 1, 1 ];
+  test.identical( got, expected );
+
+  test.description = 'times < array.length';
+  var got = _.arrayFillTimes( [ 0, 0, 0 ], 1, 1 );
+  var expected = [ 1, 0, 0 ];
+  test.identical( got, expected );
+
+  test.description = 'TypedArray';
+  var arr = new Uint16Array();
+  var got = _.arrayFillTimes( arr, 3, 1 );
+  var expected = new Uint16Array( [ 1, 1, 1 ] );
+  test.identical( got, expected );
+
+  test.description = 'ArrayLike without fill routine';
+  var arr = (() => arguments )( 1 );
+  var got = _.arrayFillTimes( arr, 3, 1 );
+  var expected = [ 1, 1, 1 ];
+  test.identical( got, expected );
+
+  test.description = 'no fill routine, times is negative';
+  var arr = [ 1, 1, 1 ];
+  arr.fill = null;
+  var got = _.arrayFillTimes( arr, -1, 3 );
+  var expected = [ 3, 3, 1 ];
   test.identical( got, expected );
 
   /**/
@@ -2325,32 +2478,88 @@ function arrayFill( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayFill();
+    _.arrayFillTimes();
 
   });
 
   test.description = 'zero';
   test.shouldThrowError( function()
   {
-    _.arrayFill( 0 );
+    _.arrayFillTimes( 0 );
   });
 
-  test.description = 'negative';
+  test.description = 'only one argument';
   test.shouldThrowError( function()
   {
-    _.arrayFill( -1 );
+    _.arrayFillTimes( [  ] );
   });
 
-  test.description = 'array is empty';
+  test.description = 'wrong argument type';
   test.shouldThrowError( function()
   {
-    _.arrayFill( [  ] );
+    _.arrayFillTimes( new ArrayBuffer(), 1 );
   });
 
-  test.description = 'wrong argument';
+};
+
+function arrayFillWhole( test )
+{
+  test.description = 'empty array';
+  var got = _.arrayFillWhole( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'empty array, value passed';
+  var got = _.arrayFillWhole( [], 1 );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'array with elements';
+  var got = _.arrayFillWhole( [ 1, 1, 1 ] );
+  var expected = [ 0, 0, 0 ];
+  test.identical( got, expected );
+
+  test.description = 'array with elements';
+  var got = _.arrayFillWhole( [ 1, 1, 1 ], 5 );
+  var expected = [ 5, 5, 5 ];
+  test.identical( got, expected );
+
+  test.description = 'array with elements';
+  var arr = [];
+  arr.length = 3;
+  var got = _.arrayFillWhole( arr, 5 );
+  var expected = [ 5, 5, 5 ];
+  test.identical( got, expected );
+
+  test.description = 'TypedArray';
+  var arr = new Uint16Array( 3 );
+  var got = _.arrayFillWhole( arr );
+  var expected = new Uint16Array( [ 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.description = 'no fill routine';
+  var arr = [ 1, 1, 1 ];
+  arr.fill = null;
+  var got = _.arrayFillWhole( arr, 2 );
+  var expected = [ 2, 2, 2 ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayFill( 'wrong argument' );
+    _.arrayFillWhole();
+
+  });
+
+  test.description = 'wrong argument type';
+  test.shouldThrowError( function()
+  {
+    _.arrayFillTimes( new ArrayBuffer(), 1 );
   });
 
 };
@@ -9355,7 +9564,9 @@ var Self =
     arraySwap : arraySwap,
     arrayCutin : arrayCutin,
     arrayPut : arrayPut,
-    arrayFill : arrayFill,
+    // arrayFill : arrayFill,
+    arrayFillTimes : arrayFillTimes,
+    arrayFillWhole : arrayFillWhole,
 
     arraySupplement : arraySupplement,
     arrayExtendScreening : arrayExtendScreening,
