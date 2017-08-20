@@ -47,7 +47,7 @@ Descriptor = _.mapExtend( null,Descriptor );
 //
 //   debugger;
 //
-//   _.mapExtendFiltering( _.filter.srcOwn(),dst,this._ArrayDescriptor );
+//   _.mapExtendFiltering( _.field.srcOwn(),dst,this._ArrayDescriptor );
 //
 //   return this._ArrayDescriptor;
 // }

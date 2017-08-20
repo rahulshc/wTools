@@ -150,7 +150,7 @@ function mapExtendFiltering( test )
 {
 
   test.description = 'an unique object';
-  var got = _.mapExtendFiltering( _.filter.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+  var got = _.mapExtendFiltering( _.field.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
 
@@ -168,7 +168,7 @@ function mapExtendFiltering( test )
     test.description = 'few argument';
     test.shouldThrowError( function()
     {
-      _.mapExtendFiltering( _.filter.supplementary() );
+      _.mapExtendFiltering( _.field.supplementary() );
     });
 
     test.description = 'wrong type of array';
@@ -2433,7 +2433,7 @@ function mapButFiltering( test )
 {
 
   test.description = 'an object';
-  var got = _.mapButFiltering( _.filter.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+  var got = _.mapButFiltering( _.field.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
   var expected = {a: 1, b: "xxx"};
   test.identical( got, expected );
 
@@ -2451,13 +2451,13 @@ function mapButFiltering( test )
     test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapButFiltering( _.filter.atomic() );
+      _.mapButFiltering( _.field.atomic() );
     });
 
     test.description = 'second argument is wrong type of array';
     test.shouldThrowError( function()
     {
-      _.mapButFiltering( _.filter.atomic(), [] );
+      _.mapButFiltering( _.field.atomic(), [] );
     });
 
     test.description = 'wrong type of arguments';

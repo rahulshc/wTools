@@ -2853,7 +2853,7 @@ function strStrip( o )
     _.assert( _.arrayIs( o.stripper ) )
     // o.stripper = _.arrayAs( o.stripper );
 
-    debugger;
+    // debugger;
     if( Config.debug )
     for( var s of o.stripper )
     _.assert( _.strIs( s,'expects string ( stripper[ * ] )' ) );

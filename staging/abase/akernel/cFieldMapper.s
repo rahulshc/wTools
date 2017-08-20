@@ -227,6 +227,8 @@ function dstNotOwn()
   return routine;
 }
 
+debugger;
+
 //
 
 function dstNotOwnSrcOwn()
@@ -269,10 +271,10 @@ function dstNotOwnSrcOwnCloning()
 
 //
 
-function dstNotOwnNotUndefinedCloning()
+function dstNotOwnOrUndefinedCloning()
 {
 
-  var routine = function dstNotOwnNotUndefinedCloning( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnOrUndefinedCloning( dstContainer,srcContainer,key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
@@ -621,7 +623,7 @@ function makeMapper( routine )
 
 //
 
-var filter =
+var field =
 {
 
   bypass : bypass,
@@ -642,7 +644,7 @@ var filter =
   dstNotOwn : dstNotOwn,
   dstNotOwnSrcOwn : dstNotOwnSrcOwn,
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
-  dstNotOwnNotUndefinedCloning : dstNotOwnNotUndefinedCloning,
+  dstNotOwnOrUndefinedCloning : dstNotOwnOrUndefinedCloning,
   dstNotOwnCloning : dstNotOwnCloning,
 
   cloning : cloning,
@@ -673,7 +675,7 @@ var filter =
 var Proto =
 {
 
-  filter : filter,
+  field : field,
 
 }
 

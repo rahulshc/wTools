@@ -410,7 +410,7 @@ function each( o )
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 
-  _.mapExtendFiltering( _.filter.dstNotHasSrcOwn(),o,each.defaults );
+  _.mapExtendFiltering( _.field.dstNotHasSrcOwn(),o,each.defaults );
 
   return _each( o );
 }
@@ -435,7 +435,7 @@ function eachOwn( o )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
   o.own = 1;
 
-  _.mapExtendFiltering( _.filter.dstNotHasSrcOwn(),o,eachOwn.defaults );
+  _.mapExtendFiltering( _.field.dstNotHasSrcOwn(),o,eachOwn.defaults );
 
   return _each( o );
 }
@@ -462,7 +462,7 @@ function eachRecursive( o )
 
   o.recursive = 1;
 
-  _.mapExtendFiltering( _.filter.dstNotHasSrcOwn(),o,eachRecursive.defaults );
+  _.mapExtendFiltering( _.field.dstNotHasSrcOwn(),o,eachRecursive.defaults );
 
   return _each( o );
 }
@@ -4745,59 +4745,59 @@ function diagnosticStackPurify( stack )
 
 //
 
-/*
-_.diagnosticWatchObject
-({
-  dst : self,
-  names : 'wells',
-});
-*/
-
-/*
-_.diagnosticWatchObject
-({
-  dst : _global_,
-  names : 'logger',
-});
-*/
-
-//function diagnosticWatchObject( dst,options )
-function diagnosticWatchObject( o )
-{
-
-  if( arguments.length === 2 )
-  {
-    o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
-  }
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
-
-  debugger;
-  if( o.names )
-  o.names = _.nameFielded( o.names );
-
-  Object.observe( o.dst,function( changes )
-  {
-    for( var c in changes )
-    {
-      var change = changes[ c ];
-      if( o.names )
-      if( !o.names[ change.name ] ) return;
-      console.log( change.type,change.name,change.object[ change.name ] );
-      //if( !change.object[ change.name ] )
-      //console.log( change.name,change.object[ change.name ] );
-    }
-    //debugger;
-  });
-
-}
-
-diagnosticWatchObject.defaults =
-{
-  dst : null,
-  names : null,
-}
+// /*
+// _.diagnosticWatchObject
+// ({
+//   dst : self,
+//   names : 'wells',
+// });
+// */
+//
+// /*
+// _.diagnosticWatchObject
+// ({
+//   dst : _global_,
+//   names : 'logger',
+// });
+// */
+//
+// //function diagnosticWatchObject( dst,options )
+// function diagnosticWatchObject( o )
+// {
+//
+//   if( arguments.length === 2 )
+//   {
+//     o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
+//   }
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
+//
+//   debugger;
+//   if( o.names )
+//   o.names = _.nameFielded( o.names );
+//
+//   Object.observe( o.dst,function( changes )
+//   {
+//     for( var c in changes )
+//     {
+//       var change = changes[ c ];
+//       if( o.names )
+//       if( !o.names[ change.name ] ) return;
+//       console.log( change.type,change.name,change.object[ change.name ] );
+//       //if( !change.object[ change.name ] )
+//       //console.log( change.name,change.object[ change.name ] );
+//     }
+//     //debugger;
+//   });
+//
+// }
+//
+// diagnosticWatchObject.defaults =
+// {
+//   dst : null,
+//   names : null,
+// }
 
 //
 
@@ -4830,25 +4830,30 @@ _.diagnosticWatchFields
 _.diagnosticWatchFields
 ({
   dst : self,
-  names : 'm_colorKeyRequested',
+  names : 'catalogPath',
 });
 
 */
 
 function diagnosticWatchFields( o )
 {
+
+  if( arguments[ 1 ] !== undefined )
+  o = { dst : arguments[ 0 ], names : arguments[ 1 ] }
+
   var o = o || Object.create( null );
+
+  o = _.routineOptions( diagnosticWatchFields,o );
 
   if( o.names )
   o.names = _.nameFielded( o.names );
   else
   o.names = o.dst;
 
-  _assert( arguments.length === 1 );
-  _.assertMapHasOnly( o,diagnosticWatchFields.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.mapComplement( o,diagnosticWatchFields.defaults );
-  _assert( o.dst );
-  _assert( o.names );
+  _.assert( o.dst );
+  _.assert( o.names );
 
   for( var f in o.names ) ( function()
   {
@@ -4888,6 +4893,7 @@ function diagnosticWatchFields( o )
     /* */
 
     debugger;
+    console.log( 'watching for',fieldName );
     Object.defineProperty( o.dst, fieldName,
     {
       enumerable : true,
@@ -5561,7 +5567,7 @@ function assertMapOwnNone( src,none )
 
   var has = Object.keys( _._mapScreen
   ({
-    filter : _.filter.srcOwn(),
+    filter : _.field.srcOwn(),
     screenObjects : none,
     srcObjects : src,
   }));
@@ -6678,6 +6684,24 @@ function strIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object String]';
   return result;
+}
+
+//
+
+function strsIs( src )
+{
+  if( _.strIs( src ) )
+  return true;
+
+  if( _.arrayIs( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !_.strIs( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return false;
 }
 
 //
@@ -14854,7 +14878,7 @@ function mapClone( srcObject,o )
 }
 
   // /**
-  //  * @callback _.filter.dstNotHas()
+  //  * @callback _.field.dstNotHas()
   //  * @param { objectLike } dstObject - The target object.
   //  * @param { objectLike } argument - The next object.
   //  * @param { string } key - The key of the (argument) object.
@@ -14875,7 +14899,7 @@ function mapClone( srcObject,o )
  *
  * @example
  * // returns { a : 1, b : 2, c : 3 }
- * _.mapExtendFiltering( _.filter.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+ * _.mapExtendFiltering( _.field.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
  *
  * @returns { objectLike } Returns the unique [ key, value ].
  * @function mapExtendFiltering
@@ -14886,7 +14910,7 @@ function mapClone( srcObject,o )
 
 function mapExtendFiltering( filter,dstObject )
 {
-  var filter = _.filter.makeMapper( filter );
+  var filter = _.field.makeMapper( filter );
 
   if( dstObject === null )
   dstObject = Object.create( null );
@@ -14997,7 +15021,7 @@ function mapExtendToThis()
   //
 
   // /**
-  //  * @callback  _.filter.dstNotHas()
+  //  * @callback  _.field.dstNotHas()
   //  * @param { objectLike } dstObject - The target object.
   //  * @param { objectLike } argument - The next object.
   //  * @param { string } key - The key of the (argument) object.
@@ -15007,7 +15031,7 @@ function mapExtendToThis()
  * The mapSupplement() routine returns an object with unique [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
- * adds a callback function ( _.filter.dstNotHas() ) to the beginning of the (args)
+ * adds a callback function ( _.field.dstNotHas() ) to the beginning of the (args)
  * and returns an object with unique [ key, value ].
  *
  * @param { ...objectLike } arguments[] - The source object(s).
@@ -15026,7 +15050,7 @@ function mapExtendToThis()
 function mapSupplement( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.dstNotHas() );
+  args.unshift( _.field.dstNotHas() );
   return mapExtendFiltering.apply( this,args );
 }
 
@@ -15035,7 +15059,7 @@ function mapSupplement( dst )
 function mapSupplementNulls( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.dstNotHasOrHasNull() );
+  args.unshift( _.field.dstNotHasOrHasNull() );
   return mapExtendFiltering.apply( this,args );
 }
 
@@ -15044,14 +15068,14 @@ function mapSupplementNulls( dst )
 function mapSupplementOwn( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.dstNotOwn() );
+  args.unshift( _.field.dstNotOwn() );
   return mapExtendFiltering.apply( this,args );
 }
 
 //
 
 // /**
-//  * @callback  _.filter.dstNotHasCloning()
+//  * @callback  _.field.dstNotHasCloning()
 //  * @param { objectLike } dstContainer - The target object.
 //  * @param { objectLike } srcContainer - The next object.
 //  * @param { string } key - The key of the (srcContainer) object.
@@ -15062,7 +15086,7 @@ function mapSupplementOwn( dst )
  * filled by all unique, clone [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
- * adds a specific callback function (_.filter.dstNotHasCloning())
+ * adds a specific callback function (_.field.dstNotHasCloning())
  * to the beginning of the (args)
  * and returns an object filled by all unique clone [key, value].
  *
@@ -15082,7 +15106,7 @@ function mapSupplementOwn( dst )
 function mapComplement( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.dstNotOwnNotUndefinedCloning() );
+  args.unshift( _.field.dstNotOwnOrUndefinedCloning() );
   return mapExtendFiltering.apply( this,args );
 }
 
@@ -15091,7 +15115,7 @@ function mapComplement( dst )
 function mapComplementWithUndefines( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.filter.dstNotOwnCloning() );
+  args.unshift( _.field.dstNotOwnCloning() );
   return mapExtendFiltering.apply( this,args );
 }
 
@@ -15198,7 +15222,7 @@ function mapSupplementAppending( dst,src )
 function mapSupplementRecursive()
 {
   _.assert( this === Self );
-  return _.mapExtendRecursive.apply( { filterField : _.fieldFilter.dstNotHas(), filterUp : true },arguments );
+  return _.mapExtendRecursive.apply( { filterField : _.field.dstNotHas(), filterUp : true },arguments );
 }
 
 //
@@ -17167,7 +17191,7 @@ function mapOnlyAtomics( src )
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( src ) );
 
-  var result = _.mapExtendFiltering( _.filter.atomic(),Object.create( null ),src );
+  var result = _.mapExtendFiltering( _.field.atomic(),Object.create( null ),src );
   return result;
 }
 
@@ -17324,7 +17348,7 @@ function mapOwnBut( srcMap )
 //
 
   // /**
-  //  * @callback  _.filter.atomic()
+  //  * @callback  _.field.atomic()
   //  * @param { object } result - The new object.
   //  * @param { objectLike } srcMap - The target object.
   //  * @param { string } k - The key of the (srcMap) object.
@@ -17338,7 +17362,7 @@ function mapOwnBut( srcMap )
    * If the first object has same key any other object has
    * then this pair [ key, value ] will not be included into (result) object.
    * Otherwise,
-   * it calls a provided callback function ( _.filter.atomic() )
+   * it calls a provided callback function ( _.field.atomic() )
    * once for each key in the (srcMap), and adds to the (result) object
    * all the [ key, value ],
    * if values are not equal to the array or object.
@@ -17349,7 +17373,7 @@ function mapOwnBut( srcMap )
    *
    * @example
    * // returns { a : 1, b : "b" }
-   * mapButFiltering( _.filter.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
+   * mapButFiltering( _.field.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
    *
    * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
    * @function mapButFiltering
@@ -17360,7 +17384,7 @@ function mapOwnBut( srcMap )
 function mapButFiltering( filter,srcMap )
 {
   var result = Object.create( null );
-  var filter = _.filter.makeMapper( filter );
+  var filter = _.field.makeMapper( filter );
   var a,k;
 
   assert( objectLike( srcMap ),'mapButFiltering :','expects object as argument' );
@@ -17389,7 +17413,7 @@ function mapButFiltering( filter,srcMap )
 function mapOwnButFiltering( filter,srcMap )
 {
   var result = Object.create( null );
-  var filter = _.filter.makeMapper( filter );
+  var filter = _.field.makeMapper( filter );
   var a,k;
 
   assert( objectLike( srcMap ),'mapOwnButFiltering :','expects object as argument' );
@@ -17526,7 +17550,7 @@ function mapScreenOwn( screenObject )
     screenObjects : screenObject,
     srcObjects : _.arraySlice( arguments,1 ),
     dstObject : Object.create( null ),
-    filter : _.filter.srcOwn(),
+    filter : _.field.srcOwn(),
   });
 
 }
@@ -17593,8 +17617,8 @@ function _mapScreen( options )
   srcObjects = [ srcObjects ];
 
   if( !options.filter )
-  options.filter = _.filter.bypass();
-  options.filter = _.filter.makeMapper( options.filter );
+  options.filter = _.field.bypass();
+  options.filter = _.field.makeMapper( options.filter );
 
   _assert( arguments.length === 1 );
   _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as (-dstObject-)' );
@@ -17906,7 +17930,7 @@ function mapOwnKey( object,key )
 
   if( arguments.length === 1 )
   {
-    var result = _.mapExtendFiltering( _.filter.srcOwn(),Object.create( null ),object );
+    var result = _.mapExtendFiltering( _.field.srcOwn(),Object.create( null ),object );
     return result;
   }
 
@@ -18363,7 +18387,7 @@ var Proto =
   diagnosticCode : diagnosticCode,
   diagnosticStack : diagnosticStack,
   diagnosticStackPurify : diagnosticStackPurify,
-  diagnosticWatchObject : diagnosticWatchObject, /* experimental */
+  // diagnosticWatchObject : diagnosticWatchObject, /* experimental */
   diagnosticWatchFields : diagnosticWatchFields, /* experimental */
   beep : beep,
 
@@ -18484,6 +18508,7 @@ var Proto =
   // str
 
   strIs : strIs,
+  strsIs : strsIs,
   strIsNotEmpty : strIsNotEmpty,
 
   strTypeOf : strTypeOf,
