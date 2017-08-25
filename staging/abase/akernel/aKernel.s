@@ -6204,6 +6204,32 @@ function consequenceIs( src )
 
 //
 
+function promiseIs( src )
+{
+  if( !src )
+  return false;
+
+  var prototype = Object.getPrototypeOf( src );
+
+  if( !prototype )
+  return false;
+
+  return prototype.constructor.name === 'Promise' && src instanceof Promise;
+}
+
+function consequenceLike( src )
+{
+  if( _.consequenceIs( src ) )
+  return true;
+
+  if( _.promiseIs( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
 function describedIs( src )
 {
   if( _.atomicIs( src ) )
@@ -18568,6 +18594,8 @@ var Proto =
   domLike : domLike,
   domableIs : domableIs,
   consequenceIs : consequenceIs,
+  promiseIs : promiseIs,
+  consequenceLike : consequenceLike,
 
   describedIs : describedIs,
 
