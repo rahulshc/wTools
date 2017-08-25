@@ -2110,7 +2110,7 @@ function toJson( test )
 {
   debugger;
 
-  test.description = 'simplest'; //
+  test.description = 'trivial'; //
 
   var expected = '[ ' + _.arrayFromRange([ 1,100 ]).join( ', ' ) + ' ]';
   var src = _.arrayFromRange([ 1,100 ]);

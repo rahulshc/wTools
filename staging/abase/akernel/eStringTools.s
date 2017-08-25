@@ -4263,6 +4263,76 @@ function strHas( src,ins )
 
 //
 
+function strHasAny( src,ins )
+{
+  _.assert( arguments.length === 2 );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( strHas( src,ins[ i ] ) )
+    return true;
+    return false;
+  }
+
+  return strHas( src,ins );
+}
+
+//
+
+function strHasAll( src,ins )
+{
+  _.assert( arguments.length === 2 );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( !strHas( src,ins[ i ] ) )
+    return false;
+    return true;
+  }
+
+  return strHas( src,ins );
+}
+
+//
+
+function strHasNone( src,ins )
+{
+  _.assert( arguments.length === 2 );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( strHas( src,ins[ i ] ) )
+    return false;
+    return true;
+  }
+
+  return !strHas( src,ins );
+}
+
+//
+
+function strHasSeveral( src,ins )
+{
+  var result = 0;
+
+  _.assert( arguments.length === 2 );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( strHas( src,ins[ i ] ) )
+    result += 1;
+    return result;
+  }
+
+  return strHas( src,ins ) ? 1 : 0;
+}
+
+//
+
 /**
  * Returns source string( src ) repeated specified number( times ) of times.
  * If source( src ) has zero length or ( times <= 0 ) returns empty string.
@@ -5217,7 +5287,7 @@ function _strColorStyleFor( style )
         break;
 
       case 'head' :
-        result = join( result,_.strColor.fg( 'dim' ),_.strColor.bg( 'smoke' ) );
+        result = join( result,_.strColor.fg( 'black' ),_.strColor.bg( 'light white' ) );
         break;
 
       case 'tail' :
@@ -5330,7 +5400,12 @@ var Proto =
   strCount : strCount,
   strCountLeft : strCountLeft,
   strCountRight : strCountRight,
+
   strHas : strHas,
+  strHasAny : strHasAny,
+  strHasAll : strHasAll,
+  strHasNone : strHasNone,
+  strHasSeveral : strHasSeveral,
 
   strDup : strDup, /* document me */
 

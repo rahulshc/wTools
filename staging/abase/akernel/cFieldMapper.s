@@ -227,8 +227,6 @@ function dstNotOwn()
   return routine;
 }
 
-debugger;
-
 //
 
 function dstNotOwnSrcOwn()
@@ -309,6 +307,29 @@ function dstNotOwnCloning()
     }
 
     _.entityCopyField( dstContainer,srcContainer,key );
+  }
+
+  routine.functionKind = 'field-mapper';
+  return routine;
+}
+
+//
+
+function dstNotOwnClonningPureContainers()
+{
+
+  var routine = function dstNotOwnClonningPureContainers( dstContainer,srcContainer,key )
+  {
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return;
+
+    var srcElement = srcContainer[ key ];
+    if( _.mapIs( srcElement ) || _.arrayIs( srcElement ) )
+    _.entityCopyField( dstContainer,srcContainer,key );
+    else
+    dstContainer[ key ] = srcContainer[ key ];
+
   }
 
   routine.functionKind = 'field-mapper';
@@ -646,6 +667,7 @@ var field =
   dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
   dstNotOwnOrUndefinedCloning : dstNotOwnOrUndefinedCloning,
   dstNotOwnCloning : dstNotOwnCloning,
+  dstNotOwnClonningPureContainers : dstNotOwnClonningPureContainers,
 
   cloning : cloning,
   cloningSrcOwn : cloningSrcOwn,

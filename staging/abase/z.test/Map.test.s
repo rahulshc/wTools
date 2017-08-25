@@ -616,7 +616,7 @@ function mapToStr( test )
 
 function mapKeys( test )
 {
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapKeys( {} );
   var expected = [];
@@ -878,7 +878,7 @@ function mapAllKeys( test )
 function mapVals( test )
 {
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapVals( {} );
   var expected = [];
@@ -969,7 +969,7 @@ function mapVals( test )
 function mapOwnVals( test )
 {
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapOwnVals( {} );
   var expected = [];
@@ -1039,7 +1039,7 @@ function mapOwnVals( test )
 
 function mapAllVals( test )
 {
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapAllVals( {} );
   test.shouldBe( got.length );
@@ -1352,7 +1352,7 @@ function mapProperties( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapProperties( { a : 1 } );
   var expected = { a : 1 };
@@ -1458,7 +1458,7 @@ function mapOwnProperties( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapOwnProperties( { a : 1 } );
   var expected = { a : 1 };
@@ -1548,7 +1548,7 @@ function mapAllProperties( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapAllProperties( { a : 1 } );
   test.shouldBe( Object.keys( got ).length > 1 )
@@ -1648,7 +1648,7 @@ function mapRoutines( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapRoutines( { a : 1, b : function (){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
@@ -1771,7 +1771,7 @@ function mapOwnRoutines( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapOwnRoutines( { a : 1, b : function (){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
@@ -1879,7 +1879,7 @@ function mapAllRoutines( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapAllRoutines( { a : 1, b : function (){} } );
   test.shouldBe( Object.keys( got ).length );
@@ -1977,7 +1977,7 @@ function mapFields( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapFields( { a : 1, b : function (){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
@@ -2101,7 +2101,7 @@ function mapOwnFields( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapOwnFields( { a : 1, b : function (){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
@@ -2195,7 +2195,7 @@ function mapAllFields( test )
 
   //
 
-  test.description = 'simple';
+  test.description = 'trivial';
 
   var got = _.mapAllFields( { a : 1, b : function (){} } );
   test.shouldBe( Object.keys( got ).length === 2 )

@@ -5619,6 +5619,17 @@ function assertWarn( condition )
 // type test
 // --
 
+function nothing( src )
+{
+  if( src === null )
+  return true;
+  if( src === undefined )
+  return true;
+  return false;
+}
+
+//
+
 /**
  * The arrayIs() routine determines whether the passed value is an Array.
  *
@@ -6603,6 +6614,10 @@ function numbersMake_functor( length )
 
   function numbersMake( src )
   {
+
+    if( _.vectorIs( src ) )
+    src = _.vector.slice( src );
+
     _.assert( arguments.length === 1 );
     _.assert( _.numberIs( src ) || _.arrayIs( src ) );
 
@@ -6644,19 +6659,15 @@ function numberClamp( src,low,high )
   return low;
 
   return src;
+}
 
-  // _.assert( arguments.length === 3 );
-  // _.numberIs( src );
-  // _.numberIs( low );
-  // _.numberIs( high );
-  //
-  // if( src < low )
-  // return low;
-  // else if( src > high )
-  // return high;
-  // else
-  // return src;
+//
 
+function numberMix( ins1,ins2,progress )
+{
+  _.assert( arguments.length === 3 );
+
+  return ins1*( 1-progress ) + ins2*( progress );
 }
 
 // --
@@ -10628,14 +10639,17 @@ function arrayGrow( array,f,l,val )
 
 function arraySlice( array,f,l )
 {
-  _.assert( _.arrayLike( array ) );
+  if( _.numberIs( array ) && f === undefined && l === undefined )
+  return array;
 
   var result;
   var f = f !== undefined ? f : 0;
   var l = l !== undefined ? l : array.length;
 
+  _.assert( _.arrayLike( array ) );
   _.assert( _.numberIs( f ) );
   _.assert( _.numberIs( l ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( f < 0 )
   f = 0;
@@ -15065,6 +15079,15 @@ function mapSupplementNulls( dst )
 
 //
 
+function mapSupplementOrComplementPureContainers( dst )
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.dstNotOwnClonningPureContainers() );
+  return mapExtendFiltering.apply( this,args );
+}
+
+//
+
 function mapSupplementOwn( dst )
 {
   var args = _.arraySlice( arguments );
@@ -18411,6 +18434,8 @@ var Proto =
 
   // type test
 
+  nothing : nothing,
+
   arrayIs : arrayIs,
   arrayLike : arrayLike,
   clsLikeArray : clsLikeArray,
@@ -18503,6 +18528,7 @@ var Proto =
   numbersMake_functor : numbersMake_functor,
 
   numberClamp : numberClamp,
+  numberMix : numberMix,
 
 
   // str
@@ -18828,6 +18854,7 @@ var Proto =
   mapExtendToThis : mapExtendToThis,
   mapSupplement : mapSupplement,
   mapSupplementNulls : mapSupplementNulls,
+  mapSupplementOrComplementPureContainers : mapSupplementOrComplementPureContainers,
   mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
   mapComplementWithUndefines : mapComplementWithUndefines,
