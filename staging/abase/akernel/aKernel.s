@@ -10591,7 +10591,137 @@ function arrayGrow( array,f,l,val )
     {
       result[ r ] = val;
     }
-    for( var r = lsrc-f ; r < result.length ; r++ )
+    for( var r = lsrc - f; r < result.length ; r++ )
+    {
+      result[ r ] = val;
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * Routine performs two operations: slice and grow.
+ * "Slice" means returning a copy of original array( array ) that contains elements from index( f ) to index( l ),
+ * but not including ( l ).
+ * "Grow" means returning a bigger copy of original array( array ) with free space supplemented by elements with value of ( val )
+ * argument.
+ *
+ * Returns result of operation as new array with same type as original array, original array is not modified.
+ *
+ * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
+ * If ( l ) === ( f ) - returns empty array.
+ *
+ * To run "Slice", first ( f ) and last ( l ) indexes must be in range [ 0, array.length ], otherwise routine will run "Grow" operation.
+ *
+ * Rules for "Slice":
+ * If ( f ) >= 0  and ( l ) <= ( array.length ) - returns array that contains elements with indexies from ( f ) to ( l ) but not including ( l ).
+ *
+ * Rules for "Grow":
+ *
+ * If ( f ) < 0 - prepends some number of elements with value of argument( val ) to the result array.
+ * If ( l ) > ( array.length ) - returns array that contains elements with indexies from ( f ) to ( array.length ),
+ * and free space filled by value of ( val ) if it was provided.
+ * If ( l ) < 0, ( l ) > ( f ) - returns array filled with some amount of elements with value of argument( val ).
+ *
+ * @param { Array/Buffer } array - Source array or buffer.
+ * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
+ * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
+ * @param { * } val - value used to fill the space left after copying elements of the original array.
+ *
+ * @example
+ * _.arrayResize( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
+ * // returns [ 3, 4, 5, 6 ]
+ *
+ * @example
+ * // begin index is less then zero
+ * _.arrayResize( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * //end index is bigger then length of array
+ * _.arrayResize( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
+ * // returns [ 6, 7 ]
+ *
+ * @example
+ * //Increase size, fill empty with zeroes
+ * var arr = [ 1 ]
+ * var result = _.arrayResize( arr, 0, 5, 0 );
+ * console.log( result );
+ * //[ 1, 0, 0, 0, 0 ]
+ *
+ * @example
+ * //Take two last elements from original, other fill with zeroes
+ * var arr = [ 1, 2, 3, 4, 5 ]
+ * var result = _.arrayResize( arr, 3, 8, 0 );
+ * console.log( result );
+ * //[ 4, 5, 0, 0, 0 ]
+ *
+ * @example
+ * //Add two zeroes at the beginning
+ * var arr = [ 1, 2, 3, 4, 5 ]
+ * var result = _.arrayResize( arr, -2, arr.length, 0 );
+ * console.log( result );
+ * //[ 0, 0, 1, 2, 3, 4, 5 ]
+ *
+ * @example
+ * //Add two zeroes at the beginning and two at end
+ * var arr = [ 1, 2, 3, 4, 5 ]
+ * var result = _.arrayResize( arr, -2, arr.length + 2, 0 );
+ * console.log( result );
+ * //[ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
+ *
+ * @example
+ * //Source can be also a Buffer
+ * var buffer = new Buffer( '123' );
+ * var result = _.arrayResize( buffer, 0, buffer.length + 2, 0 );
+ * console.log( result );
+ * //[ 49, 50, 51, 0, 0 ]
+ *
+ * @returns { Array } Returns a shallow copy of elements from the original array supplemented with value of( val ) if needed.
+ * @function arrayResize
+ * @throws { Error } Will throw an Error if ( array ) is not an Array-like or Buffer.
+ * @throws { Error } Will throw an Error if ( f ) is not a Number.
+ * @throws { Error } Will throw an Error if ( l ) is not a Number.
+ * @throws { Error } Will throw an Error if no arguments provided.
+ * @memberof wTools
+*/
+
+function arrayResize( array,f,l,val )
+{
+  _.assert( _.arrayLike( array ) );
+
+  var result;
+  var f = f !== undefined ? f : 0;
+  var l = l !== undefined ? l : array.length;
+
+  _.assert( _.numberIs( f ) );
+  _.assert( _.numberIs( l ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
+  if( l < f )
+  l = f;
+
+  if( _.bufferTypedIs( array ) )
+  result = new array.constructor( l-f );
+  else
+  result = new Array( l-f );
+
+  var lsrc = Math.min( array.length,l );
+  for( var r = Math.max( f,0 ) ; r < lsrc ; r++ )
+  result[ r-f ] = array[ r ];
+
+  if( f < 0 || l > array.length )
+  if( val !== undefined )
+  {
+    for( var r = 0 ; r < -f ; r++ )
+    {
+      result[ r ] = val;
+    }
+    var r = Math.max( lsrc-f, 0 );
+    for( ; r < result.length ; r++ )
     {
       result[ r ] = val;
     }
@@ -11411,7 +11541,6 @@ function arrayPut( dstArray, dstOffset )
 
 function arrayFillTimes( result,times,value )
 {
-
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayLike( result ) );
 
@@ -11428,6 +11557,9 @@ function arrayFillTimes( result,times,value )
   else
   {
     debugger;
+    if( times < 0 )
+    times = result.length + times;
+
     for( var t = 0 ; t < times ; t++ )
     result[ t ] = value;
   }
@@ -18670,6 +18802,7 @@ var Proto =
   arraySub : arraySub,
 
   arrayGrow : arrayGrow,
+  arrayResize : arrayResize,
   arraySlice : arraySlice,
   arrayMultislice : arrayMultislice,
   arrayDuplicate : arrayDuplicate,
