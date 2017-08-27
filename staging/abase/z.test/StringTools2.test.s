@@ -2530,6 +2530,122 @@ function strStrip( test )
 
 //
 
+function strStrip( test )
+{
+  var cases =
+  [
+    { description : 'defaults, src is a string' },
+    { src : '', expected : '' },
+    { src : 'a', expected : 'a' },
+    { src : '   a   ', expected : 'a' },
+    { src : ' \0 a \0 ', expected : 'a' },
+    { src : '\r\n\t\f\v a \v\r\n\t\f', expected : 'a' },
+    {
+      description : 'defaults, src is an array',
+      src :
+      [
+        '',
+        'a',
+        '   a   ',
+        ' \0 a \0 ',
+        '\r\n\t\f\v a \v\r\n\t\f'
+      ],
+      expected :
+      [
+        '',
+        'a',
+        'a',
+        'a',
+        'a'
+      ]
+    },
+    {
+      description : 'src array of strings, custom stripper',
+      src :
+      {
+        src :
+        [
+          '',
+          'a',
+          ' a ',
+          '  a  ',
+          ' \n ',
+          ' a b c ',
+        ],
+        stripper : ' '
+      },
+      expected :
+      [
+        '',
+        'a',
+        'a',
+        'a',
+        '\n',
+        'abc'
+      ]
+    },
+    {
+      description : 'src array of strings, custom stripper as regexp',
+      src :
+      {
+        src :
+        [
+          'x',
+          'xx',
+          'axbxc',
+          'x\nx'
+        ],
+        stripper : new RegExp( 'x' ),
+      },
+      expected :
+      [
+        '',
+        'x',
+        'abxc',
+        '\nx'
+      ]
+    },
+    {
+      description : 'src string, stripper array of strings',
+      src :
+      {
+        src : 'xxxzyyy',
+        stripper :
+        [
+          'x',
+          'y',
+        ]
+      },
+      expected : 'z'
+    },
+    {
+      src :
+      {
+        src : 'xxxyyy',
+        stripper :
+        [
+          'x',
+          'y',
+        ]
+      },
+      expected : 'xxxyyy'
+    },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+    if( c.description )
+    test.description = c.description;
+
+    debugger
+    if( c.src )
+    test.identical( _.strStrip( c.src ), c.expected )
+  }
+}
+
+//
+
 function strRemoveAllSpaces( test )
 {
 
