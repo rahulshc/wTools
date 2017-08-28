@@ -2630,7 +2630,34 @@ function strStrip( test )
       },
       expected : 'xxxyyy'
     },
+    {
+      description : 'invalid type',
+      args : 0,
+      err : true
+    },
+    {
+      description : 'too many arguments',
+      args : [ 'a', '' ],
+      err : true
+    },
+    {
+      description : 'one string has invalid type',
+      args : [ [ 'a', 0, 'b' ] ],
+      err : true
+    },
+    {
+      description : 'stripper has invalid type',
+      args : [ { src : 'a', stripper : 0 } ],
+      err : true
+    },
+    {
+      description : 'stripper has invalid type',
+      args : [ { src : 'a', stripper : [ 'a', 0 ]} ],
+      err : true
+    },
   ]
+
+  /**/
 
   for( var i = 0; i < cases.length; i++ )
   {
@@ -2638,7 +2665,9 @@ function strStrip( test )
     if( c.description )
     test.description = c.description;
 
-    debugger
+    if( c.err )
+    test.shouldThrowError( () => _.strStrip.apply( _, _.arrayAs( c.args ) ) );
+
     if( c.src )
     test.identical( _.strStrip( c.src ), c.expected )
   }
