@@ -392,6 +392,11 @@ function appArgsInSubjectAndMapFormat( o )
     // debugger;
     result.map = _.strParseMap( splitted.join( ':' ) );
 
+    var mapKeys = _.mapOwnKeys( result.map );
+
+    if( mapKeys.indexOf( result.subject ) >= 0 )
+    result.subject = null;
+
     console.log( 'result',result );
   }
 
