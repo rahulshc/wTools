@@ -392,7 +392,7 @@ function appArgsInSubjectAndMapFormat( o )
     // debugger;
     result.map = _.strParseMap( splitted.join( ':' ) );
 
-    console.log( 'result',result );
+    // console.log( 'appArgsInSubjectAndMapFormat\n',result );
   }
 
   return result;

@@ -5291,7 +5291,8 @@ function _strColorStyleFor( style )
         break;
 
       case 'tail' :
-        result = join( result,_.strColor.fg( 'smoke' ),_.strColor.bg( 'dim' ) );
+        result = join( result,_.strColor.fg( 'light white' ),_.strColor.bg( 'dim' ) );
+        // result = join( result,_.strColor.fg( 'smoke' ),_.strColor.bg( 'dim' ) );
         break;
 
       case 'selected' :
