@@ -2540,6 +2540,20 @@ function strStrip( test )
     { src : '   a   ', expected : 'a' },
     { src : ' \0 a \0 ', expected : 'a' },
     { src : '\r\n\t\f\v a \v\r\n\t\f', expected : 'a' },
+
+    { description : 'stripper contains regexp special symbols' },
+    { src : { src : '\\s\\s', stripper : '\\s' } , expected : '' },
+    { src : { src : '(x)(x)', stripper : '(x)' } , expected : '' },
+    { src : { src : 'abc', stripper : '[abc]' } , expected : 'abc' },
+    { src : { src : '[abc]', stripper : '[abc]' } , expected : '' },
+    { src : { src : 'abc', stripper : '[^abc]' } , expected : 'abc' },
+    { src : { src : 'abc', stripper : '[a-c]' } , expected : 'abc' },
+    { src : { src : '[a-c]', stripper : '[a-c]' } , expected : '' },
+    { src : { src : 'ab(a|b)', stripper : '(a|b)' } , expected : 'ab' },
+    { src : { src : 'aaa', stripper : 'a+' } , expected : 'aaa' },
+    { src : { src : 'bbb', stripper : 'b{3}' } , expected : 'bbb' },
+    { src : { src : 'acbc', stripper : '^[ab]c$' } , expected : 'acbc' },
+
     {
       description : 'defaults, src is an array',
       src :
@@ -2604,6 +2618,44 @@ function strStrip( test )
         'abxc',
         '\nx'
       ]
+    },
+    {
+      description : 'src array of strings, custom stripper as regexp',
+      src :
+      {
+        src :
+        [
+          'abc',
+          'acb',
+          'bac',
+          'cab',
+        ],
+        stripper : /abc|[abc]/,
+      },
+      expected :
+      [
+        '',
+        'cb',
+        'ac',
+        'ab'
+      ]
+    },
+    {
+      description : 'src array of strings, custom stripper as regexp',
+      src :
+      {
+        src :
+        [
+          'abc',
+          'acb',
+          'bac',
+          'bca',
+          'cba',
+          'cab',
+        ],
+        stripper : /[abc]/g,
+      },
+      expected : [ '','','', '', '', '' ]
     },
     {
       description : 'src string, stripper array of strings',

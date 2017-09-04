@@ -2847,7 +2847,10 @@ function strStrip( o )
   {
     var exp = o.stripper;
     if( _.strIs( exp ) )
-    exp = new RegExp( exp, 'g' );
+    {
+      exp = _.regexpEscape( exp );
+      exp = new RegExp( exp, 'g' );
+    }
 
     return o.src.replace( exp,'' );
 
