@@ -147,6 +147,81 @@ function regexpForGlob( test )
 
 //
 
+function _regexpForGlob( test )
+{
+  var glob = '*'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[^\/]*$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '*.txt'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[^\/]*\.txt$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '/a/*.txt'
+  var got = _._regexpForGlob( glob );
+  var expected = /^\/a\/[^\/]*\.txt$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '*.*'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[^\/]*\.[^\/]*$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '??.txt'
+  var got = _._regexpForGlob( glob );
+  var expected = /^..\.txt$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '/a/**/b'
+  var got = _._regexpForGlob( glob );
+  var expected = /^\/a\/.*\/b$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '**/a'
+  var got = _._regexpForGlob( glob );
+  var expected = /^.*\/a$/;
+  test.identical( got.source, expected.source );
+
+  var glob = 'a/a*/b_?.txt'
+  var got = _._regexpForGlob( glob );
+  var expected = /^a\/a[^\/]*\/b_.\.txt$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '[abc]/b'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[abc]\/b$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '[!abc]/b'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[^abc]\/b$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '[a-c]/b'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[a-c]\/b$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '[!a-c]/b'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[^a-c]\/b$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '[[{}]]/b'
+  var got = _._regexpForGlob( glob );
+  var expected = /^[\[{}\]]\/b$/;
+  test.identical( got.source, expected.source );
+
+  var glob = '/a/{*.txt,*.js}'
+  var got = _._regexpForGlob( glob );
+  var expected = /^\/a\/([^\/]*\.txt|[^\/]*\.js)$/;
+  test.identical( got.source, expected.source );
+}
+
+//
+
 function regexpMakeArray( test )
 {
   var arrOfStr = [ 'hello', 'world' ],
@@ -755,6 +830,7 @@ var Self =
 
     regexpEscape        : regexpEscape,
     regexpForGlob       : regexpForGlob,
+    _regexpForGlob : _regexpForGlob,
     regexpMakeArray     : regexpMakeArray,
     regexpMakeExpression : regexpMakeExpression,
     _regexpArrayAny          : _regexpArrayAny,
@@ -772,6 +848,6 @@ var Self =
 
 Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Testing.test( Self.name );
+_.Tester.test( Self.name );
 
 })( );
