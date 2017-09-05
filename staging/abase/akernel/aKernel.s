@@ -2195,7 +2195,7 @@ function entityLength( src )
  *
  * @example
  * //returns 8
- * _.entitySize( new ArrayBuffer(8) );
+ * _.entitySize( new ArrayBuffer( 8 ) );
  *
  * @example
  * //returns null
@@ -4109,10 +4109,10 @@ function errAttend( err )
    function divide( x, y )
    {
       if( y == 0 )
-        throw wTools.errLog('divide by zero')
+        throw wTools.errLog( 'divide by zero' )
       return x / y;
    }
-   divide (3, 0);
+   divide( 3, 0 );
 
    // Error:
    // caught     at divide (<anonymous>:2:29)
@@ -4805,31 +4805,31 @@ function diagnosticStackPurify( stack )
 
 _.diagnosticWatchFields
 ({
-  dst : _global_,
+  target : _global_,
   names : 'Uniforms',
 });
 
 _.diagnosticWatchFields
 ({
-  dst : state,
+  target : state,
   names : 'filterColor',
 });
 
 _.diagnosticWatchFields
 ({
-  dst : _global_,
+  target : _global_,
   names : 'Config',
 });
 
 _.diagnosticWatchFields
 ({
-  dst : _global_,
+  target : _global_,
   names : 'logger',
 });
 
 _.diagnosticWatchFields
 ({
-  dst : self,
+  target : self,
   names : 'catalogPath',
 });
 
@@ -4839,40 +4839,38 @@ function diagnosticWatchFields( o )
 {
 
   if( arguments[ 1 ] !== undefined )
-  o = { dst : arguments[ 0 ], names : arguments[ 1 ] }
-
-  var o = o || Object.create( null );
-
+  o = { target : arguments[ 0 ], names : arguments[ 1 ] }
   o = _.routineOptions( diagnosticWatchFields,o );
 
   if( o.names )
   o.names = _.nameFielded( o.names );
   else
-  o.names = o.dst;
+  o.names = o.target;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.mapComplement( o,diagnosticWatchFields.defaults );
-  _.assert( o.dst );
-  _.assert( o.names );
+  _.assert( _.objectLike( o.target ) );
+  _.assert( _.objectLike( o.names ) );
 
   for( var f in o.names ) ( function()
   {
 
     var fieldName = f;
     var fieldSymbol = Symbol.for( f );
-    //o.dst[ fieldSymbol ] = o.dst[ f ];
-    var val = o.dst[ f ];
+    //o.target[ fieldSymbol ] = o.target[ f ];
+    var val = o.target[ f ];
 
     /* */
 
     function read()
     {
-      //var result = o.dst[ fieldSymbol ];
+      //var result = o.target[ fieldSymbol ];
       var result = val;
-      if( o.printValue )
+      if( o.verbosity > 1 )
       console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
       else
       console.log( 'reading ' + fieldName );
+      if( o.debug > 1 )
+      debugger;
       return result;
     }
 
@@ -4880,21 +4878,24 @@ function diagnosticWatchFields( o )
 
     function write( src )
     {
-      debugger;
-      if( o.printValue )
-      console.log( 'writing ' + fieldName + ' ' + _.toStr( src ) );
+      if( o.verbosity > 1 )
+      console.log( 'writing ' + fieldName + ' ' + _.toStr( o.target[ fieldName ] ) + ' -> ' + _.toStr( src ) );
       else
       console.log( 'writing ' + fieldName );
+      if( o.debug )
       debugger;
-      //o.dst[ fieldSymbol ] = src;
+      //o.target[ fieldSymbol ] = src;
       val = src;
     }
 
     /* */
 
+    if( o.debug )
     debugger;
-    console.log( 'watching for',fieldName );
-    Object.defineProperty( o.dst, fieldName,
+
+    if( o.verbosity > 1 )
+    console.log( 'watching for',fieldName,'in',o.target );
+    Object.defineProperty( o.target, fieldName,
     {
       enumerable : true,
       configurable : true,
@@ -4908,10 +4909,60 @@ function diagnosticWatchFields( o )
 
 diagnosticWatchFields.defaults =
 {
-  printValue : true,
+  target : null,
   names : null,
-  dst : null,
+  verbosity : 2,
+  debug : 0,
 }
+
+//
+
+function diagnosticProxyFields( o )
+{
+
+  if( arguments[ 1 ] !== undefined )
+  o = { target : arguments[ 0 ], names : arguments[ 1 ] }
+  o = _.routineOptions( diagnosticWatchFields,o );
+
+  if( o.names )
+  o.names = _.nameFielded( o.names );
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.objectLike( o.target ) );
+  _.assert( _.objectLike( o.names ) || o.names === null );
+
+  var validator =
+  {
+    set : function( obj, k, e )
+    {
+      if( o.names && !( k in o.names ) )
+      return;
+      if( o.verbosity > 1 )
+      console.log( 'writing ' + k + ' ' + _.toStr( o.target[ k ] ) + ' -> ' + _.toStr( e ) );
+      else
+      console.log( 'writing ' + k );
+      if( o.debug )
+      debugger;
+      obj[ k ] = e;
+      return true;
+    }
+  }
+
+  var result = new Proxy( o.target, validator );
+  if( o.verbosity > 1 )
+  console.log( 'watching for',o.target );
+
+  if( o.debug )
+  debugger;
+
+  return result;
+}
+
+diagnosticProxyFields.defaults =
+{
+}
+
+diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
 
 //
 
@@ -4964,7 +5015,7 @@ function beep()
  *      wTools.assert( y != 0, 'divide by zero' );
  *      return x / y;
  *   }
- *   divide (3, 0);
+ *   divide( 3, 0 );
  *
  * // caught     at divide (<anonymous>:2:29)
  * // divide by zero
@@ -5679,7 +5730,7 @@ function arrayIs( src )
  * // returns true
  * var isArr = ( function() {
  *   return _.arrayLike( arguments );
- * } )('Hello there!');
+ * } )( 'Hello there!' );
  *
  * @returns { boolean } Returns true if (src) is an array-like or an Array.
  * @function arrayLike.
@@ -5754,7 +5805,7 @@ function clsLikeArray( src )
  * // returns true
  * var isLength = ( function() {
  *   return _.hasLength( arguments );
- * } )('Hello there!');
+ * } )( 'Hello there!' );
  *
  * @example
  * // returns false
@@ -5786,7 +5837,7 @@ function hasLength( src )
  * objectIs(obj);
  * @example
  * // returns false
- * objectIs(10);
+ * objectIs( 10 );
  *
  * @param {*} src.
  * @return {Boolean}.
@@ -6706,10 +6757,10 @@ function numberMix( ins1,ins2,progress )
  *
  * @example
  * //returns true
- * strIsIs('song');
+ * strIsIs( 'song' );
  * @example
  * // returns false
- * strIs(5);
+ * strIs( 5 );
  *
  * @param {*} src.
  * @return {Boolean}.
@@ -6791,7 +6842,7 @@ function strTypeOf( src )
 /**
   * Return primitive type of src.
   * @example
-      var str = _.strPrimitiveTypeOf('testing');
+      var str = _.strPrimitiveTypeOf( 'testing' );
   * @param {*} src
   * @return {string}
   * string name of type src
@@ -6815,7 +6866,7 @@ function strPrimitiveTypeOf( src )
 /**
   * Return in one string value of all arguments.
   * @example
-   var args = _.str('test2');
+   var args = _.str( 'test2' );
   * @return {string}
   * If no arguments return empty string
   * @function str
@@ -7352,10 +7403,10 @@ function regexpIdentical( src1,src2 )
 //
 
 /**
- * Escapes special characters with a slash (\). Supports next set of characters : .*+?^=! :${}()|[]/\
+ * Escapes special characters with a slash ( \ ). Supports next set of characters : .*+?^=! :${}()|[]/\
  *
  * @example
- * wTools.regexpEscape('Hello. How are you?'); // "Hello\. How are you\?"
+ * wTools.regexpEscape( 'Hello. How are you?' ); // "Hello\. How are you\?"
  * @param {String} src Regexp string
  * @returns {String} Escaped string
  * @function regexpEscape
@@ -7435,7 +7486,7 @@ function regexpForGlob( glob )
  * Make regexp from string.
  *
  * @example
- * wTools.regexpMakeExpression('Hello. How are you?'); // /Hello\. How are you\?/
+ * wTools.regexpMakeExpression( 'Hello. How are you?' ); // /Hello\. How are you\?/
  * @param {String} src - string or regexp
  * @returns {String} Regexp
  * @throws {Error} Throw error with message 'unknown type of expression, expects regexp or string, but got' error
@@ -7468,7 +7519,7 @@ function regexpMakeExpression( src,flags )
    *  The result regexp matches the strings that do not contain any of those words.
    *
    * @example
-   * wTools.regexpBut_('yellow', 'red', 'green'); //   /^(? :(?!yellow|red|green).)+$/
+   * wTools.regexpBut_( 'yellow', 'red', 'green' ); //   /^(?:(?!yellow|red|green).)+$/
    *
    * var options = {
    *    but : ['yellow', 'red', 'green'],
@@ -7829,7 +7880,7 @@ function _routineBind( o )
 //
 
 /**
- * The routineBind() routine creates a new function with its 'this' (context) set to the provided `context`
+ * The routineBind() routine creates a new function with its 'this' ( context ) set to the provided `context`
  value. Unlike Function.prototype.bind() routine if `context` is undefined`, in new function 'this' context will not be
  sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
  target function.
@@ -7883,7 +7934,7 @@ function routineBind( routine, context, args )
 //
 
 /**
- * The routineJoin() routine creates a new function with its 'this' (context) set to the provided `context`
+ * The routineJoin() routine creates a new function with its 'this' ( context ) set to the provided `context`
  value. Argumetns `args` of target function which are passed before arguments of binded function during
  calling of target function. Unlike routineBind routine, position of `context` parameter is more intuitive.
  * @example
@@ -9361,13 +9412,13 @@ bufferFrom.defaults =
    *
    * @example
    * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
-   * var buffer1 = new ArrayBuffer(10);
+   * var buffer1 = new ArrayBuffer( 10 );
    * var view1 = new Int8Array( buffer1 );
    * _.bufferRawFromBuffer( view1 );
    *
    * @example
    * // returns [ 0, 0, 0, 0, 0, 0 ]
-   * var buffer2 = new ArrayBuffer(10);
+   * var buffer2 = new ArrayBuffer( 10 );
    * var view2 = new Int8Array( buffer2, 2 );
    * _.bufferRawFromBuffer( view2 );
    *
@@ -9752,7 +9803,7 @@ function arrayMakeSimilar( ins,src )
   ins = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( length ) );
+  _.assert( _.numberIsFinite( length ) );
   _.assert( _.routineIs( ins ) || _.arrayLike( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
 
   if( _.arrayLike( src ) )
@@ -11294,6 +11345,16 @@ function arraySelect( srcArray,indicesArray )
 // --
 // array manipulator
 // --
+
+function arraySet( dst, index, value )
+{
+  _.assert( arguments.length === 3 );
+  _.assert( dst.length > index );
+  dst[ index ] = value;
+  return dst;
+}
+
+//
 
 /**
  * The arraySwap() routine reverses the elements by indices (index1) and (index2) in the (dst) array.
@@ -15852,8 +15913,8 @@ function mapKeyWithIndex( src,index )
  *
  * It takes an object and two strings (keyValSep) and (tupleSep),
  * checks if (keyValSep and tupleSep) are strings.
- * If false, it assigns them defaults (' : ') to the (keyValSep) and
- * ('; ') to the tupleSep.
+ * If false, it assigns them defaults ( ' : ' ) to the (keyValSep) and
+ * ( '; ' ) to the tupleSep.
  * Otherwise, it returns a string representing the passed object (src).
  *
  * @param { objectLike } src - The object to convert to the string.
@@ -18568,8 +18629,9 @@ var Proto =
   diagnosticCode : diagnosticCode,
   diagnosticStack : diagnosticStack,
   diagnosticStackPurify : diagnosticStackPurify,
-  // diagnosticWatchObject : diagnosticWatchObject, /* experimental */
   diagnosticWatchFields : diagnosticWatchFields, /* experimental */
+  diagnosticProxyFields : diagnosticProxyFields, /* experimental */
+
   beep : beep,
 
   assert : assert,
@@ -18845,6 +18907,7 @@ var Proto =
 
   // array manipulator
 
+  arraySet : arraySet,
   arraySwap : arraySwap,
 
   arrayCutin : arrayCutin,
