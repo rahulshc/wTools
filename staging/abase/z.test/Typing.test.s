@@ -49,6 +49,41 @@ function objectLike( t )
 
 //
 
+function promiseIs( test )
+{
+  test.description = 'check if entity is a Promise';
+
+  test.shouldBe( !_.promiseIs() );
+  test.shouldBe( !_.promiseIs( {} ) );
+
+  var _Promise = function Promise(){};
+  test.shouldBe( !_.promiseIs( new _Promise() ) );
+
+  test.shouldBe( _.promiseIs( Promise.resolve( 0 ) ) );
+
+  var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
+  test.shouldBe( _.promiseIs( promise ) );
+}
+
+//
+
+function consequenceLike( test )
+{
+  test.description = 'check if entity is a consequenceLike';
+
+  test.shouldBe( !_.consequenceLike() );
+  test.shouldBe( !_.consequenceLike( {} ) );
+  test.shouldBe( _.consequenceLike( new wConsequence() ) );
+  test.shouldBe( _.consequenceLike( wConsequence() ) );
+  test.shouldBe( _.consequenceLike( Promise.resolve( 0 ) ) );
+
+  var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
+  test.shouldBe( _.consequenceLike( promise ) );
+  test.shouldBe( _.consequenceLike( wConsequence.from( promise ) ) );
+}
+
+//
+
 var Self =
 {
 
@@ -60,6 +95,9 @@ var Self =
   {
 
     objectLike : objectLike,
+
+    promiseIs : promiseIs,
+    consequenceLike : consequenceLike
 
   }
 

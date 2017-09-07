@@ -362,14 +362,54 @@ function appArgsInSubjectAndMapFormat( o )
 
   if( _global_.process )
   {
+    if( o.argv )
+    _.assert( _.arrayLike( o.argv ) );
 
-    result.interpreterPath = process.argv[ 0 ];
-    result.mainPath = process.argv[ 1 ];
+    var argv = o.argv || process.argv;
+
+    result.interpreterPath = argv[ 0 ];
+    result.mainPath = argv[ 1 ];
     result.interpreterArgs = process.execArgv;
     result.delimter = o.delimeter;
     result.map = Object.create( null );
-    result.subject = process.argv[ 2 ];
-    result.scriptArgs = process.argv.slice( 2 );
+    result.subject = '';
+    result.scriptArgs = argv.slice( 2 );
+
+    if( !result.scriptArgs.length )
+    return result;
+
+    var scriptArgs = [];
+    result.scriptArgs.forEach( function( arg, pos )
+    {
+      if( arg.length > 1 && arg.indexOf( o.delimeter ) !== -1 )
+      {
+        var argSplitted = _.strSplit({ src : arg, delimeter : o.delimeter, stripping : 1, preservingDelimeters : 1 })
+        scriptArgs.push.apply( scriptArgs, argSplitted );
+      }
+      else
+      scriptArgs.push( arg );
+    })
+
+    result.scriptArgs = scriptArgs;
+
+    if( result.scriptArgs.length === 1 )
+    {
+      result.subject = result.scriptArgs[ 0 ];
+      return result;
+    }
+
+    var i =  result.scriptArgs.indexOf( o.delimeter );
+    if( i > 1 )
+    {
+      var part = result.scriptArgs.slice( 0, i - 1 );
+      var subject = part.join( ' ' );
+      var regexp = new RegExp( '.?\h*\\' + o.delimeter + '\\h*.?' );
+      if( !regexp.test( subject ) )
+      result.subject = subject;
+    }
+
+    if( i < 0 )
+    result.subject = result.scriptArgs.shift();
 
     var args = result.scriptArgs.join( ' ' );
     args = args.trim();
@@ -401,6 +441,7 @@ function appArgsInSubjectAndMapFormat( o )
 appArgsInSubjectAndMapFormat.defaults =
 {
   delimeter : ':',
+  argv : null
 }
 
 //
