@@ -10130,26 +10130,6 @@ function arrayFrom( src )
  * @memberof wTools
  */
 
-// function arrayFromRange( range )
-// {
-//
-//   if( _.numberIs( range ) )
-//   range = [ 0,range ];
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.arrayLike( range ) );
-//   _.assert( range.length === 2 );
-//
-//   var result = [];
-//   var first = range[ 0 ];
-//   var len = range[ 1 ] - range[ 0 ];
-//
-//   for( var i = 0 ; i < len ; i++ )
-//   result[ i ] = first + i;
-//
-//   return result;
-// }
-
 function arrayFromRange( range )
 {
 
@@ -10173,32 +10153,10 @@ function arrayFromProgressionArithmetic( progression,numberOfSteps )
 
   debugger;
 
-  // if( arguments.length === 2 )
-  // {
-  //   first = 0;
-  //   // last = arguments[ 0 ];
-  //   step = arguments[ 0 ];
-  //   numberOfSteps = arguments[ 1 ];
-  // }
-
-  // if( first === undefined )
-  // {
-  //   first = 0;
-  //   // last = first;
-  //   // first = 0;
-  // }
-  //
-  // if( step === undefined )
-  // {
-  //   step = 1;
-  //   // last = first;
-  //   // first = 0;
-  // }
-
   _.assert( arguments.length === 2 );
   _.assert( _.arrayLike( progression ) )
   _.assert( isFinite( progression[ 0 ] ) );
-  _.assert( isFinite( progression[ 0 ] ) );
+  _.assert( isFinite( progression[ 1 ] ) );
   _.assert( isFinite( numberOfSteps ) );
   _.assert( this.ArrayType );
 
@@ -10210,9 +10168,10 @@ function arrayFromProgressionArithmetic( progression,numberOfSteps )
   if( numberOfSteps === 1 )
   return new this.ArrayType([ progression[ 0 ] ]);
 
-  // var step = ( last-first ) / ( numberOfSteps-1 );
+  var range = [ progression[ 0 ],progression[ 0 ]+progression[ 1 ]*(numberOfSteps+1) ];
+  var step = ( range[ 1 ]-range[ 0 ] ) / ( numberOfSteps-1 );
 
-  return this.arrayFromRangeWithStep( [ progression[ 0 ],progression[ 0 ]+progression[ 1 ]*(numberOfSteps+1) ],step );
+  return this.arrayFromRangeWithStep( range,step );
 }
 
 //
@@ -10220,19 +10179,6 @@ function arrayFromProgressionArithmetic( progression,numberOfSteps )
 function arrayFromRangeWithStep( range,step )
 {
   var result;
-
-  // if( arguments.length === 2 )
-  // {
-  //   first = 0;
-  //   last = arguments[ 0 ];
-  //   step = arguments[ 1 ];
-  // }
-
-  // if( last === undefined )
-  // {
-  //   last = first;
-  //   first = 0;
-  // }
 
   _.assert( arguments.length === 2 );
   _.assert( isFinite( range[ 0 ] ) );
@@ -10285,6 +10231,33 @@ function arrayFromRangeWithStep( range,step )
   }
 
   return result;
+}
+
+//
+
+function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( isFinite( range[ 0 ] ) );
+  _.assert( isFinite( range[ 1 ] ) );
+  _.assert( numberOfSteps >= 0 );
+  _.assert( this.ArrayType );
+
+  if( numberOfSteps === 0 )
+  return new this.ArrayType();
+
+  if( numberOfSteps === 1 )
+  return new this.ArrayType( range[ 0 ] );
+
+  var step;
+
+  if( range[ 0 ] < range[ 1 ] )
+  step = ( range[ 1 ]-range[ 0 ] ) / (numberOfSteps-1);
+  else
+  step = ( range[ 0 ]-range[ 1 ] ) / (numberOfSteps-1);
+
+  return this.arrayFromRangeWithStep( range , step );
 }
 
 //
@@ -18190,6 +18163,22 @@ function mapOwnKey( object,key )
 
 //
 
+function mapHasVal( object,val )
+{
+  var vals = _.mapVals( object );
+  return vals.indexOf( val ) !== -1;
+}
+
+//
+
+function mapOwnVal( object,val )
+{
+  var vals = _.mapOwnVals( object );
+  return vals.indexOf( val ) !== -1;
+}
+
+//
+
 /**
  * The mapHasAll() returns true if object( src ) has all enumerable keys from object( screen ).
  * Values of properties are not checked, only names.
@@ -18879,6 +18868,7 @@ var Proto =
   arrayFromRange : arrayFromRange,
   arrayFromProgressionArithmetic : arrayFromProgressionArithmetic,
   arrayFromRangeWithStep : arrayFromRangeWithStep,
+  arrayFromRangeWithNumberOfSteps : arrayFromRangeWithNumberOfSteps,
 
 
   // array converter
@@ -19180,6 +19170,8 @@ var Proto =
   _mapSatisfy : _mapSatisfy, /* experimental */
 
   mapOwnKey : mapOwnKey, /* experimental */
+  mapHasVal : mapHasVal, /* experimental */
+  mapOwnVal : mapOwnVal, /* experimental */
 
   mapHasAll : mapHasAll,
   mapHasAny : mapHasAny,

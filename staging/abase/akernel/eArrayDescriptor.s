@@ -4,13 +4,15 @@
 
 var _ = wTools;
 
+//
+
 function _arrayDescriptorsApplyTo( dst )
 {
 
-  // debugger;
-
   _.assert( arguments.length === 1 );
-  _.assert( dst.withArray === undefined );
+  _.assert( !_.mapOwnKey( dst,'withArray' ) );
+
+  //debugger;
 
   dst.withArray = Object.create( null );
 
@@ -163,9 +165,10 @@ var Extend =
 // Extend._ArrayDescriptor = Self;
 
 _.mapExtend( Descriptor,Extend );
-
 _.assert( !wTools.ArrayDescriptorsMap[ ArrayName ] );
 wTools.ArrayDescriptorsMap[ ArrayName ] = Descriptor;
+
+// debugger;
 
 // _.accessorForbid( Self,
 // {
@@ -200,7 +203,9 @@ _declare( Descriptors[ d ] );
 
 // debugger;
 // wTools.ArrayDescriptor = wTools.ArrayDescriptorsMap.Array;
+
 wTools.array = wTools.ArrayDescriptorsMap.Array;
+
 // _.assert( wTools.ArrayDescriptorsMap );
 // debugger;
 
