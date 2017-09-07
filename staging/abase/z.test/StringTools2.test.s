@@ -2530,6 +2530,203 @@ function strStrip( test )
 
 //
 
+function strStrip( test )
+{
+  var cases =
+  [
+    { description : 'defaults, src is a string' },
+    { src : '', expected : '' },
+    { src : 'a', expected : 'a' },
+    { src : '   a   ', expected : 'a' },
+    { src : ' \0 a \0 ', expected : 'a' },
+    { src : '\r\n\t\f\v a \v\r\n\t\f', expected : 'a' },
+
+    { description : 'stripper contains regexp special symbols' },
+    { src : { src : '\\s\\s', stripper : '\\s' } , expected : '' },
+    { src : { src : '(x)(x)', stripper : '(x)' } , expected : '' },
+    { src : { src : 'abc', stripper : '[abc]' } , expected : 'abc' },
+    { src : { src : '[abc]', stripper : '[abc]' } , expected : '' },
+    { src : { src : 'abc', stripper : '[^abc]' } , expected : 'abc' },
+    { src : { src : 'abc', stripper : '[a-c]' } , expected : 'abc' },
+    { src : { src : '[a-c]', stripper : '[a-c]' } , expected : '' },
+    { src : { src : 'ab(a|b)', stripper : '(a|b)' } , expected : 'ab' },
+    { src : { src : 'aaa', stripper : 'a+' } , expected : 'aaa' },
+    { src : { src : 'bbb', stripper : 'b{3}' } , expected : 'bbb' },
+    { src : { src : 'acbc', stripper : '^[ab]c$' } , expected : 'acbc' },
+
+    {
+      description : 'defaults, src is an array',
+      src :
+      [
+        '',
+        'a',
+        '   a   ',
+        ' \0 a \0 ',
+        '\r\n\t\f\v a \v\r\n\t\f'
+      ],
+      expected :
+      [
+        '',
+        'a',
+        'a',
+        'a',
+        'a'
+      ]
+    },
+    {
+      description : 'src array of strings, custom stripper',
+      src :
+      {
+        src :
+        [
+          '',
+          'a',
+          ' a ',
+          '  a  ',
+          ' \n ',
+          ' a b c ',
+        ],
+        stripper : ' '
+      },
+      expected :
+      [
+        '',
+        'a',
+        'a',
+        'a',
+        '\n',
+        'abc'
+      ]
+    },
+    {
+      description : 'src array of strings, custom stripper as regexp',
+      src :
+      {
+        src :
+        [
+          'x',
+          'xx',
+          'axbxc',
+          'x\nx'
+        ],
+        stripper : new RegExp( 'x' ),
+      },
+      expected :
+      [
+        '',
+        'x',
+        'abxc',
+        '\nx'
+      ]
+    },
+    {
+      description : 'src array of strings, custom stripper as regexp',
+      src :
+      {
+        src :
+        [
+          'abc',
+          'acb',
+          'bac',
+          'cab',
+        ],
+        stripper : /abc|[abc]/,
+      },
+      expected :
+      [
+        '',
+        'cb',
+        'ac',
+        'ab'
+      ]
+    },
+    {
+      description : 'src array of strings, custom stripper as regexp',
+      src :
+      {
+        src :
+        [
+          'abc',
+          'acb',
+          'bac',
+          'bca',
+          'cba',
+          'cab',
+        ],
+        stripper : /[abc]/g,
+      },
+      expected : [ '','','', '', '', '' ]
+    },
+    {
+      description : 'src string, stripper array of strings',
+      src :
+      {
+        src : 'xxxzyyy',
+        stripper :
+        [
+          'x',
+          'y',
+        ]
+      },
+      expected : 'z'
+    },
+    {
+      src :
+      {
+        src : 'xxxyyy',
+        stripper :
+        [
+          'x',
+          'y',
+        ]
+      },
+      expected : 'xxxyyy'
+    },
+    {
+      description : 'invalid type',
+      args : 0,
+      err : true
+    },
+    {
+      description : 'too many arguments',
+      args : [ 'a', '' ],
+      err : true
+    },
+    {
+      description : 'one string has invalid type',
+      args : [ [ 'a', 0, 'b' ] ],
+      err : true
+    },
+    {
+      description : 'stripper has invalid type',
+      args : [ { src : 'a', stripper : 0 } ],
+      err : true
+    },
+    {
+      description : 'stripper has invalid type',
+      args : [ { src : 'a', stripper : [ 'a', 0 ]} ],
+      err : true
+    },
+  ]
+
+  /**/
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+    if( c.description )
+    test.description = c.description;
+
+    if( c.err )
+    test.shouldThrowError( () => _.strStrip.apply( _, _.arrayAs( c.args ) ) );
+
+    if( c.src )
+    test.identical( _.strStrip( c.src ), c.expected )
+  }
+}
+
+//
+
 function strRemoveAllSpaces( test )
 {
 
