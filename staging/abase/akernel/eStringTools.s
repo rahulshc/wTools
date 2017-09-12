@@ -135,7 +135,8 @@ function toStrFields( src,o )
 * @property {string} [ o.comma=', ' ] - Splitter between elements, example : [ 1, 2, 3 ].
 * @property {boolean} [ o.multiline=false ] - Writes each object property in new line.
 * @property {boolean} [ o.escaping=false ] - enable escaping of special characters.
-* @property {boolean} [ o.json=false ] - enable conversion of object( src ) to JSON string.
+* @property {boolean} [ o.jsonLike=false ] - enable conversion to JSON string.
+* @property {boolean} [ o.jstructLike=false ] - enable conversion to JS string.
 */
 
 /**
@@ -312,7 +313,7 @@ function toStrFields( src,o )
  *
  * @example
  * //returns { "a" : "string", "b" : 1, "c" : 2 }
- * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , json : 1 } );
+ * _.toStr( { a : 'string', b : 1 , c : 2  }, { levels : 2 , jsonLike : 1 } );
  *
  * @example
  * //returns
@@ -338,8 +339,8 @@ function toStrFields( src,o )
  *
  * @method toStr
  * @throws { Exception } Throw an exception if( o ) is not a Object.
- * @throws { Exception } Throw an exception if( o.stringWrapper ) is not equal true when ( o.json ) is true.
- * @throws { Exception } Throw an exception if( o.multilinedString ) is not equal false when ( o.json ) is true.
+ * @throws { Exception } Throw an exception if( o.stringWrapper ) is not equal true when ( o.jsonLike ) is true.
+ * @throws { Exception } Throw an exception if( o.multilinedString ) is not equal false when ( o.jsonLike ) is true.
  * @throws { RangeError } Throw an exception if( o.precision ) is not between 1 and 21.
  * @throws { RangeError } Throw an exception if( o.fixed ) is not between 0 and 20.
  * @memberof wTools
@@ -404,7 +405,8 @@ function toStrFine_functor()
     multiline : 0,
     multilinedString : 0,
     escaping : 0,
-    json : 0,
+    jsonLike : 0,
+    jstructLike : 0,
 
   }
 
@@ -435,10 +437,10 @@ function toStrFine_functor()
     if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
     toStrDefaults = src.toStr.defaults;
 
-    if( o.levels === undefined && o.json )
-    o.levels = 256;
+    if( o.levels === undefined && ( o.jsonLike || o.jstructLike ) )
+    o.levels = 1 << 20;
 
-    if( o.json )
+    if( o.jsonLike || o.jstructLike )
     {
       if( o.escaping === undefined )
       o.escaping = 1;
@@ -471,10 +473,10 @@ function toStrFine_functor()
 
     _.assert( _.strIs( o.stringWrapper ),'expects string ( o.stringWrapper )' );
 
-    if( o.json === 1 )
+    if( o.jsonLike )
     {
-      _.assert( o.stringWrapper === '"','expects double quote ( o.stringWrapper ) true if( o.json ) is true' );
-      _.assert( !o.multilinedString,'expects ( o.multilinedString ) false if( o.json ) is true to make valid JSON' );
+      _.assert( o.stringWrapper === '"','expects double quote ( o.stringWrapper ) true if either ( o.jsonLike ) or ( o.jstructLike ) is true' );
+      _.assert( !o.multilinedString,'expects ( o.multilinedString ) false if either ( o.jsonLike ) or ( o.jstructLike ) is true to make valid JSON' );
     }
 
     var r = _toStr( src,o );
@@ -570,6 +572,11 @@ function _toStr( src,o )
   }
   else if( type === 'Date' )
   {
+    if( o.jsonLike )
+    result += '"' + src.toISOString() + '"';
+    else if( o.jstructLike )
+    result += 'new Date( ' + src.toISOString() + ' )';
+    else
     result += src.toISOString();
   }
   else if( isArray )
@@ -596,11 +603,17 @@ function _toStr( src,o )
   }
   else
   {
-    if( o.json && src === undefined )
-    result += 'null';
+    if( o.jsonLike )
+    {
+      if( src === undefined || src === NaN )
+      result += 'null';
+      else
+      result += String( src );
+    }
     else
-    result += String( src );
-
+    {
+      result += String( src );
+    }
   }
 
   return { text : result, simple : simple };
@@ -1538,9 +1551,7 @@ function toJson( src )
 {
   _.assert( arguments.length === 1 );
 
-  var result = _.toStr( src,{ json : 1, levels : 1 << 20 } );
-
-  // _.assert( result.indexOf( '...' ) === -1 );
+  var result = _.toStr( src,{ jsonLike : 1, levels : 1 << 20 } );
 
   return result;
 }
@@ -1558,11 +1569,10 @@ function toJstruct( src )
     levels : 1 << 20,
     stringWrapper : '`',
     keyWrapper : '"',
+    jstructLike : 1,
   }
 
   var result = _.toStr( src,toStrOptions );
-
-  // _.assert( result.indexOf( '...' ) === -1 );
 
   return result;
 }

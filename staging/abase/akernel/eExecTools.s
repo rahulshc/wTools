@@ -294,7 +294,7 @@ function shellNode( o )
   /*
   1024*1024 for megabytes
   1.5 factor found empirically for windows
-      implementation of nodejs for other OSs could use more memory
+      implementation of nodejs for other OSs could be able to use more memory
   */
 
   var totalmem = Math.floor( ( totalmem / ( 1024*1024*1.5 ) - 1 ) / 256 ) * 256;
@@ -349,7 +349,7 @@ function routineMake( o )
   var prefix = '\n';
 
   if( o.usingStrict )
-  prefix += `'use strict;'\n`;
+  prefix += `'use strict';\n`;
   if( o.debug )
   prefix += 'debugger;\n';
   if( o.filePath )
@@ -392,7 +392,7 @@ function routineMake( o )
   catch( err )
   {
 
-    console.error( 'Cant execute code :' );
+    console.error( 'Cant parse the routine :' );
     console.error( code );
 
     if( _global_.document )
@@ -438,7 +438,7 @@ routineMake.defaults =
   code : null,
   filePath : null,
   prependingReturn : 1,
-  usingStrict : 1,
+  usingStrict : 0,
   externals : null,
 }
 

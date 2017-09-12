@@ -1834,16 +1834,16 @@ function toStrJson( test )
 
    options =
    [
-     /*01*/ { json : 1 },
-     /*02*/ { json : 1 },
-     /*03*/ { json : 1 },
-     /*04*/ { json : 1 },
+     /*01*/ { jsonLike : 1 },
+     /*02*/ { jsonLike : 1 },
+     /*03*/ { jsonLike : 1 },
+     /*04*/ { jsonLike : 1 },
 
-     ///*04*/ { json : 1, noRoutine : 1 },
-     ///*05*/ { json : 1 },
-     ///*06*/ { json : 1 },
-     ///*07*/ { json : 1 },
-     ///*08*/ { json : 1 },
+     ///*04*/ { jsonLike : 1, noRoutine : 1 },
+     ///*05*/ { jsonLike : 1 },
+     ///*06*/ { jsonLike : 1 },
+     ///*07*/ { jsonLike : 1 },
+     ///*08*/ { jsonLike : 1 },
 
    ]
 
@@ -2040,7 +2040,7 @@ function _toStrJsonFromFile( test,encoding )
 
   options =
   [
-    { json : 1 },
+    { jsonLike : 1 },
   ]
 
   testFunction( test, desc, src, options );
@@ -2641,22 +2641,22 @@ function toStrThrow( test )
       _.toStr( { a : 1 }, { fixed : 22 } );
     });
 
-    test.description = 'if json : 1, multilinedString 1 " ';
+    test.description = 'if jsonLike : 1, multilinedString 1 " ';
     test.shouldThrowError( function()
     {
-      _.toStr( { a : 1 }, { json : 1, multilinedString : 1 } );
+      _.toStr( { a : 1 }, { jsonLike : 1, multilinedString : 1 } );
     });
 
     test.description = 'wrong arguments count';
     test.shouldThrowError( function()
     {
-      _.toStr( { a : 1 }, { b : 1 }, { json : 1 } );
+      _.toStr( { a : 1 }, { b : 1 }, { jsonLike : 1 } );
     });
 
     test.description = 'invalid json if multilinedString is true`';
     test.shouldThrowError( function()
     {
-      _.toStr( { a : 1, b : "text" }, { json : 1, multilinedString : 1 } );
+      _.toStr( { a : 1, b : "text" }, { jsonLike : 1, multilinedString : 1 } );
     });
 
     test.description = 'onlyRoutines & noRoutine both true';

@@ -6421,6 +6421,7 @@ function boolFrom( src )
 
 function numberIs( src )
 {
+  return typeof src === 'number';
   return _ObjectToString.call( src ) === '[object Number]';
 }
 
@@ -6451,6 +6452,13 @@ function numberIsInt( src )
   return false;
 
   return Math.floor( src ) === src;
+}
+
+//
+
+function numbersAreEqual( ins1,ins2 )
+{
+  return Math.abs( ins1-ins2 ) < this.EPS;
 }
 
 //
@@ -12002,8 +12010,8 @@ function arrayShuffle( dst,times )
 function arrayLeftIndexOf( arr,ins,equalizer )
 {
 
-  if( ins === undefined )
-  debugger;
+  // if( ins === undefined )
+  // debugger;
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( !equalizer || equalizer.length === 1 || equalizer.length === 2 );
@@ -15380,9 +15388,19 @@ function mapSupplementOwn( dst )
 
 /* !!! need to explain how undefined handled */
 
-function mapComplement( dst )
+function mapComplement( dst,src )
 {
-  var args = _.arraySlice( arguments );
+  if( arguments.length === 2 )
+  return mapExtendFiltering( _.field.dstNotOwnOrUndefinedCloning(),dst,src );
+  else
+  return _mapComplementSlow( arguments );
+}
+
+//
+
+function _mapComplementSlow( args )
+{
+  var args = _.arraySlice( args );
   args.unshift( _.field.dstNotOwnOrUndefinedCloning() );
   return mapExtendFiltering.apply( this,args );
 }
@@ -15670,6 +15688,7 @@ function mapFirstPair( srcObject )
     return [ s,srcObject[ s ] ];
   }
 
+  return [];
 }
 
 //
@@ -17565,40 +17584,38 @@ function mapButWithUndefines( srcMap )
 
 //
 
-  /**
-   * The mapOwnBut() returns new object with unique own keys.
-   *
-   * Takes any number of objects.
-   * Returns new object filled by unique own keys
-   * from the first (srcMap) original object.
-   * Values for (result) object come from original object (srcMap)
-   * not from second or other one.
-   * If (srcMap) does not have own properties it skips rest of code and checks another properties.
-   * If the first object has same key any other object has
-   * then this pair( key/value ) will not be included into result object.
-   * Otherwise pair( key/value ) from the first object goes into result object.
-   *
-   * @param { objectLike } srcMap - The original object.
-   * @param { ...objectLike } arguments[] - One or more objects.
-   *
-   * @example
-   * // returns { a : 7 }
-   * mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
-   *
-   * @returns { object } Returns new (result) object with unique own keys.
-   * @function mapOwnBut
-   * @throws { Error } Will throw an Error if (srcMap) is not an object.
-   * @memberof wTools
-   */
+/**
+ * The mapOwnBut() returns new object with unique own keys.
+ *
+ * Takes any number of objects.
+ * Returns new object filled by unique own keys
+ * from the first (srcMap) original object.
+ * Values for (result) object come from original object (srcMap)
+ * not from second or other one.
+ * If (srcMap) does not have own properties it skips rest of code and checks another properties.
+ * If the first object has same key any other object has
+ * then this pair( key/value ) will not be included into result object.
+ * Otherwise pair( key/value ) from the first object goes into result object.
+ *
+ * @param { objectLike } srcMap - The original object.
+ * @param { ...objectLike } arguments[] - One or more objects.
+ *
+ * @example
+ * // returns { a : 7 }
+ * mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
+ *
+ * @returns { object } Returns new (result) object with unique own keys.
+ * @function mapOwnBut
+ * @throws { Error } Will throw an Error if (srcMap) is not an object.
+ * @memberof wTools
+ */
 
 function mapOwnBut( srcMap )
 {
   var result = Object.create( null );
   var a,k;
 
-  /*console.warn( 'fuzzy!' ); debugger;*/
-
-  _.assert( _.objectLikeOrRoutine( srcMap ),'mapOwnBut :','expects object as argument' );
+  // _.assert( _.objectLikeOrRoutine( srcMap ),'mapOwnBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -18782,6 +18799,7 @@ var Proto =
   numberIsFinite : numberIsFinite,
   numberIsInt : numberIsInt,
 
+  numbersAreEqual : numbersAreEqual,
   numbersAreFinite : numbersAreFinite,
   numbersArePositive : numbersArePositive,
   numbersAreInt : numbersAreInt,
@@ -19134,6 +19152,7 @@ var Proto =
   mapSupplementOrComplementPureContainers : mapSupplementOrComplementPureContainers,
   mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
+  _mapComplementSlow : _mapComplementSlow,
   mapComplementWithUndefines : mapComplementWithUndefines,
 
   mapCopy : mapCopy,

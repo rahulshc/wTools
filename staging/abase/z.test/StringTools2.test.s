@@ -466,7 +466,7 @@ function toStrMethods( test )
     test.description = 'wrong arguments count';
     test.shouldThrowError( function()
     {
-      _.toStrMethods( { a : 1 }, { b : 1 }, { json : 1 } );
+      _.toStrMethods( { a : 1 }, { b : 1 }, { jsonLike : 1 } );
     });
 
     test.description = 'onlyRoutines & noRoutine both true';
@@ -516,7 +516,7 @@ function toStrFields( test )
     test.description = 'wrong arguments count';
     test.shouldThrowError( function()
     {
-      _.toStrFields( { a : 1 }, { b : 1 }, { json : 1 } );
+      _.toStrFields( { a : 1 }, { b : 1 }, { jsonLike : 1 } );
     });
 
     test.description = 'onlyRoutines & noRoutine both true';
@@ -968,7 +968,7 @@ function _toStrFromObject( test )
 
 function _toStrFromContainer( test )
 {
-  var o = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0, noSubObject : 0, prependTab : 1, json : 0, stringWrapper : '"' };
+  var o = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0, noSubObject : 0, prependTab : 1, jsonLike : 0, stringWrapper : '"' };
   var src = { a : 1, b : 2, c : 'text' };
   var names = _.mapOwnKeys( src );
   var optionsItem = null;
