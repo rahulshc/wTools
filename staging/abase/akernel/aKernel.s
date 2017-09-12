@@ -7490,68 +7490,6 @@ function regexpForGlob( glob )
 
 //
 
-function _regexpForGlob( glob )
-{
-  _.assert( _.strIs( glob ) );
-  _.assert( arguments.length === 1 );
-
-  var squareBrackets  = ( src ) =>
-  {
-    src = _.strInbetweenOf( src, '[', ']' );
-    //escape inner []
-    src = src.replace( /[\[\]]/g, ( c ) => '\\' + c );
-    if( _.strBegins( src, '\\!' ) )
-    src = '^' + _.strRemoveBegin( src,'\\!' );
-    return '[' + src + ']';
-  }
-
-  var curlyBrackets  = ( src ) =>
-  {
-    src = _.strInbetweenOf( src, '{', '}' );
-    //replace , with | to separete regexps
-    src = src.split( /,+(?![^[|{]*]|})/g ).join( '|' );
-    return '(' + src + ')';
-  }
-
-  var map =
-  {
-    0 : '.*', /* doubleAsterix */
-    1 : '[^\\\/]*', /* singleAsterix */
-    2 : '.', /* questionMark */
-    3 : squareBrackets, /* squareBrackets */
-  }
-
-  function globToRegexp(  )
-  {
-    var args = [].slice.call( arguments );
-    var i = args.indexOf( args[ 0 ], 1 ) - 1;
-
-    /* i - index of captured group from regexp is equivalent to key from map  */
-
-    if( _.strIs( map[ i ] ) )
-    return map[ i ];
-    if( _.routineIs( map[ i ] ) )
-    return map[ i ]( args[ 0 ] );
-  }
-
-  //espace simple text
-  glob = glob.replace( /[^\*\[\]\{\}\?]+/g, ( m ) => _.regexpEscape( m ) );
-  //replace globs with regexps from map
-  glob = glob.replace( /(\*\*)|(\*)|(\?)|(\[.*\])/g, globToRegexp );
-  //replace {} -> () and , -> | to make proper regexp
-  glob = glob.replace( /\{.*\}+(?![^[]*\])/g, curlyBrackets );
-
-
-  glob = _.strPrependOnce( glob,'^' );
-  glob = _.strAppendOnce( glob,'$' );
-
-  // console.log( glob )
-
-  return RegExp( glob,'m' );
-}
-
-//
-
 /**
  * Make regexp from string.
  *
@@ -18855,7 +18793,6 @@ var Proto =
   regexpIdentical : regexpIdentical,
   regexpEscape : regexpEscape,
   regexpForGlob : regexpForGlob,
-  _regexpForGlob : _regexpForGlob,
 
   regexpMakeObject : regexpMakeObject,
   regexpMakeArray : regexpArrayMake,
