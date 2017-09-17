@@ -24,7 +24,7 @@
     "staging/dwtools/abase/layer1",
     "staging/dwtools/abase/layer2",
     "staging/dwtools/abase/Layer1.s",
-    "staging/dwtools/abase/Later2.s",
+    "staging/dwtools/abase/Layer2.s",
     "staging/dwtools/Base.s"
   ],
   "scripts": {
@@ -39,6 +39,8 @@
     "url": "https://github.com/Wandalen/wTools/issues"
   },
   "dependencies": {
+  },
+  "optionalDependencies": {
     "underscore": ""
   },
   "devDependencies": {
