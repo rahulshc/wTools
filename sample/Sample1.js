@@ -3,6 +3,6 @@ require( 'wTools' );
 
 var _ = wTools;
 
-var arr = _.arrayRange([ 2,10 ]);
+var arr = _.arrayFromRange([ 2,10 ]);
 
 console.log( 'arr :',arr );
