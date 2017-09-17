@@ -20,6 +20,10 @@ if( typeof module !== 'undefined' )
 
 }
 
+/*
+!!! temp files cleanup needed
+*/
+
 var _ = wTools;
 var Self = {};
 
@@ -35,12 +39,27 @@ function shell( test )
     throwingBadReturnCode : 1
   }
 
+  /* */
+
   function testApp()
   {
+
     if( typeof module !== 'undefined' )
     {
-      require( 'wTools' );
-      require( 'wConsequence' );
+      require( '../dwtools/Base.s' );
+      try
+      {
+        require( '../dwtools/Base.s' );
+      }
+      catch( err )
+      {
+        require( 'wTools' );
+      }
+
+      var _ = wTools;
+
+      _.include( 'wConsequence' );
+
     }
 
     var _ = wTools;
@@ -56,9 +75,13 @@ function shell( test )
       while( 1 )
       {
       }
+
       console.log( __filename );
-    })
+    });
+
   }
+
+  /* */
 
   var testAppPath = _.pathResolve( __dirname + '../../../../tmp.tmp/testApp.js' );
   var testApp = testApp.toString() + '\ntestApp();';
@@ -341,7 +364,7 @@ var Proto =
 
   name : 'ExecTools',
   silencing : 1,
-  verbosity : 1,
+  // verbosity : 9,
   // sourceFilePath : sourceFilePath,
   // logger : wPrinterToJstructure(),
 

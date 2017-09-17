@@ -248,11 +248,12 @@ function _includeWithRequireAny( src )
 
     try
     {
-      console.log( 'require.resolve',src,'->',require.resolve( src ) );
+      var resolved = require.resolve( src );
+      // console.log( 'require.resolve',src,'->',resolved );
     }
     catch( err )
     {
-      console.log( 'not found',src,'trying',arguments[ a+1 ] );
+      // console.log( 'not found',src,'trying',arguments[ a+1 ] );
       /* console.log( err ); */
       if( a !== arguments.length-1 && !usingSinglePath )
       continue;
@@ -302,11 +303,12 @@ function includeAny()
 
     try
     {
-      console.log( 'require.resolve',src,'->',require.resolve( src ) );
+      var resolved = require.resolve( src );
+      // console.log( 'require.resolve',src,'->',resolved );
     }
     catch( err )
     {
-      console.log( 'not found',src,'trying',arguments[ a+1 ] );
+      // console.log( 'not found',src,'trying',arguments[ a+1 ] );
       /* console.log( err ); */
       if( a !== arguments.length-1 && !usingSinglePath )
       continue;
@@ -577,7 +579,7 @@ _includeHandlerMap[ 'wEventHandler' ] =
 
 _includeHandlerMap[ 'wTesting' ] =
 {
-  includeAny : [ '../../abase/xTesting/cTester.debug.s','abase/xTesting/cTester.debug.s','wTesting' ],
+  includeAny : [ '../../abase/xtester/cTester.debug.s','abase/xtester/cTester.debug.s','wTesting' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Tester && wTools.Tester._isFullImplementation; },
 }
 
