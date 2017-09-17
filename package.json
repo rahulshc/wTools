@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "engine": "node >= 6.0.0",
   "description": "Generic purpose tools of base level for solving problems in Java Script.",
   "license": "MIT",
@@ -38,8 +38,7 @@
   "bugs": {
     "url": "https://github.com/Wandalen/wTools/issues"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "optionalDependencies": {
     "underscore": ""
   },
