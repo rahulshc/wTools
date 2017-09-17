@@ -2,12 +2,10 @@
 
 'use strict';
 
-if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
-{
-
-  require( './aKernel.s' );
-
-}
+// if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
+// {
+//   require( './aFundamental.s' );
+// }
 
 var Self = wTools;
 var _ = wTools;
@@ -701,6 +699,6 @@ var Proto =
 
 }
 
-_.mapExtend( Self, Proto );
+Object.assign( Self,Proto );
 
 })();

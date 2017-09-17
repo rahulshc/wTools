@@ -1,35 +1,37 @@
-//#! /usr/bin/env node
-( function _aKernelWithComponents_s_() {
-
-'use strict';
-
-if( typeof module !== 'undefined' && module !== null )
-require( './aKernel.s' );
-
-var Self = wTools;
-var _ = wTools;
-
+// //#! /usr/bin/env node
+// ( function _zKernelWithComponents_s_() {
 //
+// 'use strict';
+//
+// if( typeof module !== 'undefined' && module !== null )
+// require( './aFundamental.s' );
+//
+// var Self = wTools;
+// var _ = wTools;
+//
+// //
+//
+// if( typeof module !== 'undefined' && module !== null )
+// {
+//
+//   module[ 'exports' ] = Self;
+//
+//   // require( './fIncludeTools.s' );
+//   // require( './fNameTools.s' );
+//   // require( './fExecTools.s' );
+//   // require( './fStringTools.s' );
+//   // require( './cxArrayDescriptor.s' );
+//
+//   try
+//   {
+//     require( '../BackTools.ss' );
+//   }
+//   catch( err )
+//   {
+//   }
+//
+// }
+//
+// })();
 
-if( typeof module !== 'undefined' && module !== null )
-{
-
-  module[ 'exports' ] = Self;
-
-  // require( './eInclude.s' );
-  // require( './eNameTools.s' );
-  // require( './eExecTools.s' );
-  // require( './eStringTools.s' );
-  // require( './eArrayDescriptor.s' );
-
-  try
-  {
-    require( '../BackTools.ss' );
-  }
-  catch( err )
-  {
-  }
-
-}
-
-})();
+throw 'deprecated';

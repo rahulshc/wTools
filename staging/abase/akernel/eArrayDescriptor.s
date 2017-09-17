@@ -12,8 +12,6 @@ function _arrayDescriptorsApplyTo( dst )
   _.assert( arguments.length === 1 );
   _.assert( !_.mapOwnKey( dst,'withArray' ) );
 
-  //debugger;
-
   dst.withArray = Object.create( null );
 
   for( var d in wTools.ArrayDescriptorsMap )
@@ -24,54 +22,16 @@ function _arrayDescriptorsApplyTo( dst )
 
 }
 
-function _declare( Descriptor ) { //
+// --
+// delcare
+// --
+
+function _declare( Descriptor ) {
 
 var ArrayType = Descriptor.ArrayType;
 var ArrayName = Descriptor.ArrayName;
 
 Descriptor = _.mapExtend( null,Descriptor );
-
-// if( !wTools[ ArrayName ] )
-// wTools[ ArrayName ] = Object.create( null );
-//var Self = wTools[ ArrayName ];
-
-// var Self = Object.create( null );
-
-// --
-// routines
-// --
-
-// function mixinArrayDescriptorTo( dst )
-// {
-//
-//   _.assert( _.objectIs( dst ) );
-//   _.assert( arguments.length === 1 );
-//
-//   debugger;
-//
-//   _.mapExtendFiltering( _.field.srcOwn(),dst,this._ArrayDescriptor );
-//
-//   return this._ArrayDescriptor;
-// }
-
-// function _makeArrayDescriptorsFor( dst )
-// {
-//
-//   _.assert( _.objectIs( dst ) );
-//   _.assert( arguments.length === 1 );
-//   _.assert( dst.array === undefined );
-//
-//   dst.array = Object.create( null );
-//
-//   debugger;
-//   for( var d in wTools.ArrayDescriptorsMap )
-//   {
-//     dst.array[ d ] = Object.create( dst );
-//     _.mapExtend( dst.array[ d ],wTools.ArrayDescriptorsMap[ d ] );
-//   }
-//   debugger;
-//
-// }
 
 //
 
@@ -145,9 +105,6 @@ function arrayFromCoercing( src )
 var Extend =
 {
 
-  // mixinArrayDescriptorTo : mixinArrayDescriptorTo,
-  // _makeArrayDescriptorsFor : _makeArrayDescriptorsFor,
-
   makeSimilar : makeSimilar,
   makeArrayOfLength : makeArrayOfLength,
   makeArrayOfLengthZeroed : makeArrayOfLengthZeroed,
@@ -155,29 +112,21 @@ var Extend =
   arrayFrom : arrayFromCoercing,
   arrayFromCoercing : arrayFromCoercing,
 
-  // ArrayType : ArrayType,
-  // ArrayName : ArrayName,
-
   array : Descriptor,
 
 }
-
-// Extend._ArrayDescriptor = Self;
 
 _.mapExtend( Descriptor,Extend );
 _.assert( !wTools.ArrayDescriptorsMap[ ArrayName ] );
 wTools.ArrayDescriptorsMap[ ArrayName ] = Descriptor;
 
-// debugger;
-
-// _.accessorForbid( Self,
-// {
-//   ArrayDescriptor : 'ArrayDescriptor',
-// });
-
 return Descriptor;
 
-} // _declare
+}
+
+// --
+//
+// --
 
 var Descriptors =
 [
@@ -201,13 +150,7 @@ wTools.ArrayDescriptorsMap = wTools.ArrayDescriptorsMap || Object.create( null )
 for( var d = 0 ; d < Descriptors.length ; d++ )
 _declare( Descriptors[ d ] );
 
-// debugger;
-// wTools.ArrayDescriptor = wTools.ArrayDescriptorsMap.Array;
-
 wTools.array = wTools.ArrayDescriptorsMap.Array;
-
-// _.assert( wTools.ArrayDescriptorsMap );
-// debugger;
 
 _arrayDescriptorsApplyTo( wTools );
 

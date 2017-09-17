@@ -5,7 +5,7 @@
 // if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
 // {
 //
-//   require( './aKernel.s' );
+//   require( './aFundamental.s' );
 //
 // }
 //
@@ -612,6 +612,6 @@
 //
 // }
 //
-// _.mapExtend( Self, Proto );
+// Object.assign( Self,Proto );
 //
 // })();

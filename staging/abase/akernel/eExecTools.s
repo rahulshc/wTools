@@ -783,8 +783,6 @@ _.mapExtend( Self, Proto );
 // --
 
 if( typeof module !== 'undefined' && module !== null )
-{
-  module[ 'exports' ] = Self;
-}
+module[ 'exports' ] = Self;
 
 })();

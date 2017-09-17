@@ -14,7 +14,7 @@ node ./staging/z.test/Include.test.s
 if( typeof module !== 'undefined' )
 {
 
-  require( '../wTools.s' );
+  require( '../../Base.s' );
 
   var _ = wTools
 

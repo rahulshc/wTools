@@ -2,30 +2,26 @@
 
 'use strict';
 
-/*
-
-to run this test from the project directory, pelase run
-
-npm install
-node ./staging/z.test/ExecTools.test.s
-
-*/
-
 if( typeof module !== 'undefined' )
 {
 
-  require( '../wTools.s' );
+  try
+  {
+    require( '../../Base.s' );
+  }
+  catch( err )
+  {
+    require( 'wTools' );
+  }
 
-  var _ = wTools
+  var _ = wTools;
 
-  // _.include( 'wPrinterToJstructure' );
   _.include( 'wTesting' );
 
 }
 
 var _ = wTools;
 var Self = {};
-// var sourceFilePath = _.diagnosticLocation().full; // typeof module !== 'undefined' ? __filename : document.scripts[ document.scripts.length-1 ].src;
 
 //
 
@@ -89,7 +85,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return _.shell( options )
-    .doThen( function ()
+    .doThen( function()
     {
       test.identical( options.returnCode, 0 );
       test.identical( options.output, testAppPath );
@@ -103,7 +99,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return _.shell( options )
-    .doThen( function ()
+    .doThen( function()
     {
       test.identical( options.returnCode, 0 );
       test.identical( options.output.length, 0 );
@@ -118,7 +114,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return _.shell( options )
-    .doThen( function ()
+    .doThen( function()
     {
       test.identical( options.returnCode, 0 );
       test.identical( options.output.length, 0 );
@@ -142,7 +138,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return _.shell( options )
-    .doThen( function ()
+    .doThen( function()
     {
       test.identical( options.returnCode, 0 );
       test.identical( options.output, testAppPath );
@@ -157,7 +153,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return _.shell( options )
-    .doThen( function ()
+    .doThen( function()
     {
       test.identical( options.returnCode, 0 );
       test.identical( options.output.length, 0 );
@@ -172,7 +168,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return _.shell( options )
-    .doThen( function ()
+    .doThen( function()
     {
       test.identical( options.returnCode, 0 );
       test.identical( options.output.length, 0 );
@@ -193,13 +189,13 @@ function shell( test )
 
     var shell = _.shell( options );
     shell.give();
-    shell.doThen(function ()
+    shell.doThen(function()
     {
       test.identical( options.child.killed, false );
       options.child.kill( 'SIGINT' );
 
     })
-    shell.got(function ()
+    shell.got(function()
     {
       test.identical( options.child.killed, true );
       test.identical( !options.returnCode, true );
@@ -223,12 +219,12 @@ function shell( test )
 
     var shell = _.shell( options );
     shell.give();
-    shell.doThen(function ()
+    shell.doThen(function()
     {
       test.identical( options.child.killed, false );
       options.child.kill( 'SIGINT' );
     })
-    shell.got(function ()
+    shell.got(function()
     {
       test.identical( options.child.killed, true );
       test.identical( !options.returnCode, true );

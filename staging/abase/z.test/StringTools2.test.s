@@ -18,7 +18,7 @@ if( typeof module !== 'undefined' )
   //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../wTools.s' );
+    require( '../../Base.s' );
   }
   catch( err )
   {
@@ -693,7 +693,7 @@ function _toStrFromRoutine( test )
   test.identical( got,expected );
 
   test.description = 'routine without name';
-  var got = _._toStrFromRoutine( function () {} );
+  var got = _._toStrFromRoutine( function() {} );
   var expected = '[ routine without name ]';
   test.identical( got,expected );
 

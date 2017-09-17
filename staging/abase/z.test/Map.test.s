@@ -18,7 +18,7 @@ if( typeof module !== 'undefined' )
   //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/wTools.s' );
+    require( '../../Base.s' );
   }
   catch( err )
   {
@@ -765,19 +765,19 @@ function mapOwnKeys( test )
   if( Config.debug )
   {
     test.description = 'no args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnKeys();
     })
 
     test.description = 'invalid type';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnKeys( 1 );
     })
 
     test.description = 'unknown option';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnKeys.call( { own : 0 }, {} );
     })
@@ -853,19 +853,19 @@ function mapAllKeys( test )
   if( Config.debug )
   {
     test.description = 'no args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapAllKeys();
     })
 
     test.description = 'invalid argument';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapAllKeys();
     })
 
     test.description = 'unknown option';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapAllKeys.call( { own : 0 }, {} );
     })
@@ -1650,7 +1650,7 @@ function mapRoutines( test )
 
   test.description = 'trivial';
 
-  var got = _.mapRoutines( { a : 1, b : function (){} } );
+  var got = _.mapRoutines( { a : 1, b : function(){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
   test.shouldBe( _.routineIs( got.b ) );
 
@@ -1667,7 +1667,7 @@ function mapRoutines( test )
 
   test.description = 'prototype'
   var a = { a : 1 };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
 
   /**/
@@ -1703,7 +1703,7 @@ function mapRoutines( test )
   /* own : 0 */
 
   var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
   var got = _.mapRoutines.call( { own : 0 }, a );
   test.shouldBe( Object.keys( got ).length === 2 )
@@ -1713,7 +1713,7 @@ function mapRoutines( test )
   /* own : 0, enumerable : 0 */
 
   var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
   Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
   var got = _.mapRoutines.call( { own : 0, enumerable : 0 }, a );
@@ -1773,7 +1773,7 @@ function mapOwnRoutines( test )
 
   test.description = 'trivial';
 
-  var got = _.mapOwnRoutines( { a : 1, b : function (){} } );
+  var got = _.mapOwnRoutines( { a : 1, b : function(){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
   test.shouldBe( _.routineIs( got.b ) );
 
@@ -1790,7 +1790,7 @@ function mapOwnRoutines( test )
 
   test.description = 'prototype'
   var a = { a : 1 };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
 
   /**/
@@ -1881,7 +1881,7 @@ function mapAllRoutines( test )
 
   test.description = 'trivial';
 
-  var got = _.mapAllRoutines( { a : 1, b : function (){} } );
+  var got = _.mapAllRoutines( { a : 1, b : function(){} } );
   test.shouldBe( Object.keys( got ).length );
   test.shouldBe( _.routineIs( got.__defineGetter__ ) );
   test.shouldBe( _.routineIs( got.__defineSetter__ ) );
@@ -1904,7 +1904,7 @@ function mapAllRoutines( test )
 
   test.description = 'prototype'
   var a = { a : 1 };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
 
   /**/
@@ -1922,8 +1922,8 @@ function mapAllRoutines( test )
 
   /**/
 
-  Object.defineProperty( a, 'z', { enumerable : 0, value : function (){} } );
-  Object.defineProperty( b, 'y', { enumerable : 0, value : function (){} } );
+  Object.defineProperty( a, 'z', { enumerable : 0, value : function(){} } );
+  Object.defineProperty( b, 'y', { enumerable : 0, value : function(){} } );
   var got = _.mapAllRoutines( a );
   test.shouldBe( Object.keys( got ).length > 2 );
   test.shouldBe( _.routineIs( got.c ) );
@@ -1979,7 +1979,7 @@ function mapFields( test )
 
   test.description = 'trivial';
 
-  var got = _.mapFields( { a : 1, b : function (){} } );
+  var got = _.mapFields( { a : 1, b : function(){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
   test.shouldBe( got.a === 1 );
 
@@ -1997,7 +1997,7 @@ function mapFields( test )
 
   test.description = 'prototype'
   var a = { a : 1 };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
 
   /**/
@@ -2034,7 +2034,7 @@ function mapFields( test )
   /* own : 0 */
 
   var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
   var got = _.mapFields.call( { own : 0, enumerable : 1 }, a );
   test.shouldBe( Object.keys( got ).length === 2 )
@@ -2044,7 +2044,7 @@ function mapFields( test )
   /* enumerable : 0 */
 
   var a = { a : 1, y : function(){} };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
   Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
   Object.defineProperty( b, 'z', { enumerable : 0, value : 3 } );
@@ -2103,7 +2103,7 @@ function mapOwnFields( test )
 
   test.description = 'trivial';
 
-  var got = _.mapOwnFields( { a : 1, b : function (){} } );
+  var got = _.mapOwnFields( { a : 1, b : function(){} } );
   test.shouldBe( Object.keys( got ).length === 1 )
   test.shouldBe( got.a === 1 );
 
@@ -2121,7 +2121,7 @@ function mapOwnFields( test )
 
   test.description = 'prototype'
   var a = { a : 1 };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
 
   /**/
@@ -2197,7 +2197,7 @@ function mapAllFields( test )
 
   test.description = 'trivial';
 
-  var got = _.mapAllFields( { a : 1, b : function (){} } );
+  var got = _.mapAllFields( { a : 1, b : function(){} } );
   test.shouldBe( Object.keys( got ).length === 2 )
   test.shouldBe( got.a === 1 );
   test.shouldBe( got.__proto__ === {}.__proto__ );
@@ -2221,7 +2221,7 @@ function mapAllFields( test )
 
   test.description = 'prototype'
   var a = { a : 1 };
-  var b = { b : 2, c : function (){} };
+  var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
 
   /**/
@@ -2293,7 +2293,7 @@ function mapOnlyAtomics( test )
     c : 5,
     e : false,
     f : 'a',
-    g : function (){},
+    g : function(){},
     h : [ 1 ],
     i : new Date(),
     j : new ArrayBuffer( 5 )
@@ -2330,12 +2330,12 @@ function mapOnlyAtomics( test )
   if( Config.debug )
   {
     test.description = 'invalid arg type';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOnlyAtomics( [] )
     })
     test.description = 'no args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOnlyAtomics()
     })
@@ -2862,19 +2862,19 @@ function mapHasAll( test )
   if( Config.degub )
   {
     test.description = 'src is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasAll( 1, {} );
     });
 
     test.description = 'screen is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasAll( {}, 1 );
     });
 
     test.description = 'too much args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasAll( {}, {}, {} );
     });
@@ -2959,19 +2959,19 @@ function mapHasAny( test )
   if( Config.degub )
   {
     test.description = 'src is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasAny( 1, {} );
     });
 
     test.description = 'screen is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasAny( {}, 1 );
     });
 
     test.description = 'too much args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasAny( {}, {}, {} );
     });
@@ -3060,19 +3060,19 @@ function mapHasNone( test )
   if( Config.degub )
   {
     test.description = 'src is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasNone( 1, {} );
     });
 
     test.description = 'screen is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasNone( {}, 1 );
     });
 
     test.description = 'too much args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapHasNone( {}, {}, {} );
     });
@@ -3150,25 +3150,25 @@ function mapOwnAll( test )
   if( Config.degub )
   {
     test.description = 'src is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnAll( 1, {} );
     });
 
     test.description = 'screen is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnAll( {}, 1 );
     });
 
     test.description = 'too much args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnAll( {}, {}, {} );
     });
 
     test.description = 'src is not a map';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       var a = {};
       var b = { a : 1 };
@@ -3177,7 +3177,7 @@ function mapOwnAll( test )
     });
 
     test.description = 'screen is not a map';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       var a = {};
       var b = { a : 1 };
@@ -3258,25 +3258,25 @@ function mapOwnAny( test )
   if( Config.degub )
   {
     test.description = 'src is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnAny( 1, {} );
     });
 
     test.description = 'screen is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnAny( {}, 1 );
     });
 
     test.description = 'too much args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnAny( {}, {}, {} );
     });
 
     test.description = 'src is not a map';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       var a = {};
       var b = { a : 1 };
@@ -3285,7 +3285,7 @@ function mapOwnAny( test )
     });
 
     test.description = 'screen is not a map';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       var a = {};
       var b = { a : 1 };
@@ -3366,25 +3366,25 @@ function mapOwnNone( test )
   if( Config.degub )
   {
     test.description = 'src is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnNone( 1, {} );
     });
 
     test.description = 'screen is no object like';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnNone( {}, 1 );
     });
 
     test.description = 'too much args';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       _.mapOwnNone( {}, {}, {} );
     });
 
     test.description = 'src is not a map';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       var a = {};
       var b = { a : 1 };
@@ -3393,7 +3393,7 @@ function mapOwnNone( test )
     });
 
     test.description = 'screen is not a map';
-    test.shouldThrowError( function ()
+    test.shouldThrowError( function()
     {
       var a = {};
       var b = { a : 1 };

@@ -18,7 +18,7 @@ if( typeof module !== 'undefined' )
   //if( typeof wBase === 'undefined' )
   try
   {
-    require( '../../abase/wTools.s' );
+    require( '../../Base.s' );
   }
   catch( err )
   {
@@ -496,7 +496,7 @@ function toStrArray( test )
     /*16*/ [ 1, { a : 2 }, 5 ],
     /*17*/ [ 0, { b : 1 }, 3 ],
     /*18*/ [ 'a', 7, { u : 2 }, 8, 'b' ],
-    /*19*/ [ function f1( ){ }, function ( ){ } ],
+    /*19*/ [ function f1( ){ }, function( ){ } ],
     /*20*/ [ function f2( ){ }, function f3( ){ } ],
     /*21*/ [ { a : { a : '1' } } ],
     /*22*/ [ { c : 1 }, { d : 2 } ],
@@ -508,9 +508,9 @@ function toStrArray( test )
     /*28*/ [ 'a','b','c', 1, 2, 3 ],
     /*29*/ [ 15, 16, 17, 18 ],
     /*30*/ [ { a : 5, b : 6, c : 7 } ],
-    /*31*/ [ 'a', 1, function () { }, false ],
-    /*32*/ [ 'b', 2, function () { }, true ],
-    /*33*/ [ function () { } ],
+    /*31*/ [ 'a', 1, function() { }, false ],
+    /*32*/ [ 'b', 2, function() { }, true ],
+    /*33*/ [ function() { } ],
     /*34*/ [ 'a', 1000, 2000, 3000 ],
     /*35*/ [ 1.1111, 2.2222, 3.3333 ],
     /*36*/ [  7, { v : 0 }, 1, 'x' ],
@@ -2253,7 +2253,7 @@ function toStrEnumerable( test )
    var desc =  'onlyEnumerable test',
    src =
    [
-     /*01*/ ( function ()
+     /*01*/ ( function()
             {
              var x = Object.create({},
               {
@@ -2273,7 +2273,7 @@ function toStrEnumerable( test )
 
             } )(),
 
-     /*02*/ ( function ()
+     /*02*/ ( function()
             {
              var x = Object.create({},
               {
@@ -2293,7 +2293,7 @@ function toStrEnumerable( test )
 
             } )(),
 
-     /*03*/ ( function ()
+     /*03*/ ( function()
             {
              var x = Object.create({},
               {
@@ -2310,7 +2310,7 @@ function toStrEnumerable( test )
 
             } )(),
 
-      /*04*/ ( function ()
+      /*04*/ ( function()
       {
         var x = Object.create({},
           {

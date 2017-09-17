@@ -5,7 +5,7 @@
 if( typeof module !== 'undefined' && typeof wBase === 'undefined' )
 {
 
-  require( './aKernel.s' );
+  require( './aFundamental.s' );
 
 }
 
@@ -27,24 +27,24 @@ __include = importScripts;
 // routines
 // --
 
-if( 0 )
-if( Module )
-{
-  var _resolveLookupPathsOriginal = Module._resolveLookupPaths;
-  Module._resolveLookupPaths = function( request, parent )
-  {
-    var debug = 0;
-    if( request.indexOf( 'abase/component/ArraySorted.s' ) !== -1 )
-    {
-      debugger;
-      debug = 1;
-    }
-    var result = _resolveLookupPathsOriginal.apply( this,arguments );
-    if( debug )
-    console.log( '_resolveLookupPaths',result );
-    return result;
-  }
-}
+// if( 0 )
+// if( Module )
+// {
+//   var _resolveLookupPathsOriginal = Module._resolveLookupPaths;
+//   Module._resolveLookupPaths = function( request, parent )
+//   {
+//     var debug = 0;
+//     if( request.indexOf( 'abase/layer3/ArraySorted.s' ) !== -1 )
+//     {
+//       debugger;
+//       debug = 1;
+//     }
+//     var result = _resolveLookupPathsOriginal.apply( this,arguments );
+//     if( debug )
+//     console.log( '_resolveLookupPaths',result );
+//     return result;
+//   }
+// }
 
 //
 
@@ -87,21 +87,6 @@ function pathUseGlobally( paths )
   }
 
   return _pathUseGlobally( module,paths,[] );
-
-  // /* patch parents */
-  //
-  // var parent = module;
-  // while( parent )
-  // {
-  //   [].push.apply( parent.paths,paths );
-  //   parent = parent.parent;
-  // }
-  //
-  // /* patch childrens */
-  //
-  // for( var c = 0 ; c < module.children.length ; c++ )
-  // [].push.apply( module.children[ c ].paths,paths );
-
 }
 
 //
@@ -152,11 +137,13 @@ function _pathUseGloballyChildren( _module,paths,visited )
 
 //
 
-function _includeSimplyAct( src )
+function _includeWithRequireAct( src )
 {
 
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( src ),'include expects string' );
+
+  /* console.log( '_includeWithRequireAct', '"' + src + '"' ); */
 
   if( typeof module !== 'undefined' )
   try
@@ -165,7 +152,7 @@ function _includeSimplyAct( src )
   }
   catch( err )
   {
-    // debugger;
+    debugger;
     throw err;
     throw _.err( err,'\nLooked at\n',_.toStr( Module.globalPaths,{ levels : 2 } ),'\n',_.toStr( module.paths,{ levels : 2 } ) );
   }
@@ -187,7 +174,7 @@ function _includeAct( src )
 
   if( !handler )
   {
-    return _includeSimplyAny( src );
+    return _includeWithRequireAny( src );
   }
 
   /* */
@@ -198,13 +185,13 @@ function _includeAct( src )
 
   var result;
   if( handler.include )
-  result = _includeSimply( handler.include );
+  result = _includeWithRequire( handler.include );
   else if( handler.includeAny )
   {
     _.assert( _.arrayIs( handler.includeAny ),'include handler expect an array ( includeAny ) if present' );
-    result = _includeSimplyAny.apply( _,handler.includeAny );
+    result = _includeWithRequireAny.apply( _,handler.includeAny );
   }
-  else throw _.err( 'Handler does not has ( include ) neither ( includeAny ).\nCant include',src );
+  else throw _.err( 'Handler does not has ( include ) neither ( includeAny ).\nCant use the handler to include file',src );
 
   handler.returned = result;
 
@@ -213,21 +200,21 @@ function _includeAct( src )
 
 //
 
-function _includeSimply( src )
+function _includeWithRequire( src )
 {
   if( arguments.length !== 1 )
-  return _includeSimply( arguments );
+  return _includeWithRequire( arguments );
 
   if( _.arrayLike( src ) )
   {
     var result = [];
     src = _.arrayFlatten( [], src );
     for( var a = 0 ; a < src.length ; a++ )
-    result[ a ] = _includeSimplyAct( src[ a ] );
+    result[ a ] = _includeWithRequireAct( src[ a ] );
     return result;
   }
 
-  return _includeSimplyAct( src );
+  return _includeWithRequireAct( src );
 }
 
 //
@@ -251,7 +238,7 @@ function include( src )
 
 //
 
-function _includeSimplyAny( src )
+function _includeWithRequireAny( src )
 {
   var errors = [];
 
@@ -259,33 +246,48 @@ function _includeSimplyAny( src )
   {
     var src = arguments[ a ];
 
-    if( a === arguments.length-1 || usingSinglePath )
+    try
     {
-      try
-      {
-        return _includeSimplyAct( src );
-      }
-      catch( err )
-      {
-        errors.push( err );
-        throw _.err.apply( _,errors );
-      }
-    }
-    else try
-    {
-
-      var result = _includeSimplyAct( src );
-      return result;
-
+      console.log( 'require.resolve',src,'->',require.resolve( src ) );
     }
     catch( err )
     {
-      // _.errLog( err );
-      errors.push( err );
+      console.log( 'not found',src,'trying',arguments[ a+1 ] );
+      /* console.log( err ); */
+      if( a !== arguments.length-1 && !usingSinglePath )
+      continue;
     }
+
+    if( a === arguments.length-1 && src === '' )
+    return;
+
+    // if( a === arguments.length-1 || usingSinglePath )
+    // {
+    //   try
+    //   {
+    //     return _includeWithRequireAct( src );
+    //   }
+    //   catch( err )
+    //   {
+    //     errors.push( err );
+    //     throw _.err.apply( _,errors );
+    //   }
+    // }
+    // else try
+    {
+
+      var result = _includeWithRequireAct( src );
+      return result;
+
+    }
+    // catch( err )
+    // {
+    //   errors.push( err );
+    // }
 
   }
 
+  _.assert( 0,'unexpected' );
 }
 
 //
@@ -298,54 +300,52 @@ function includeAny()
   {
     var src = arguments[ a ];
 
-    if( a === arguments.length-1 || usingSinglePath )
+    try
     {
-      try
-      {
-        if( src !== '' )
-        return _includeAct( src );
-      }
-      catch( err )
-      {
-        errors.push( err );
-        throw _.err.apply( _,errors );
-      }
+      console.log( 'require.resolve',src,'->',require.resolve( src ) );
     }
-    else try
+    catch( err )
+    {
+      console.log( 'not found',src,'trying',arguments[ a+1 ] );
+      /* console.log( err ); */
+      if( a !== arguments.length-1 && !usingSinglePath )
+      continue;
+    }
+
+    if( a === arguments.length-1 && src === '' )
+    return;
+
+    // if( a === arguments.length-1 || usingSinglePath )
+    // {
+    //   try
+    //   {
+    //     if( src !== '' )
+    //     return _includeAct( src );
+    //   }
+    //   catch( err )
+    //   {
+    //     errors.push( err );
+    //     throw _.err.apply( _,errors );
+    //   }
+    // }
+    // else try
     {
 
       var result = _includeAct( src );
       return result;
 
     }
-    catch( err )
-    {
-      errors.push( err );
-    }
+    // catch( err )
+    // {
+    //   errors.push( err );
+    // }
 
   }
 
   // throw _.err( "Cant find any of required packages :",_.arraySlice( arguments ).join( ',' ) );
 
+  _.assert( 0,'unexpected' );
 }
-
-//
-
-// function includeTestsFrom( path )
-// {
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.strIs( path ) );
-//
-//   var files = _.fileProvider.filesFind({ filePath : path, ends : [ '.test.s','.test.ss' ] });
-//
-//   console.log( 'files',_.entitySelect( files,'*.absolute' ) );
-//
-//   for( var f = 0 ; f < files.length ; f++ )
-//   if( files[ f ].stat.isFile() )
-//   require( _.fileProvider.pathNativize( files[ f ].absolute ) );
-//
-// }
 
 //
 
@@ -425,14 +425,11 @@ function appArgsInSubjectAndMapFormat( o )
       return result;
     }
 
-    // debugger;
     _.assert( _.strCutOffAllLeft( splitted[ 0 ],' ' ).length === 3 )
     splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 2 ];
 
-    // debugger;
     result.map = _.strParseMap( splitted.join( ':' ) );
 
-    // console.log( 'appArgsInSubjectAndMapFormat\n',result );
   }
 
   return result;
@@ -586,19 +583,19 @@ _includeHandlerMap[ 'wTesting' ] =
 
 _includeHandlerMap[ 'wLogger' ] =
 {
-  includeAny : [ '../../abase/printer/printer/Logger.s','abase/printer/printer/Logger.s','wLogger' ],
+  includeAny : [ '../../abase/oclass/printer/top/Logger.s','abase/oclass/printer/top/Logger.s','wLogger' ],
   isIncluded : function(){ return typeof wLogger !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wPrinterToFile' ] =
 {
-  includeAny : [ '../../abase/printer/printer/PrinterToFile.s','abase/printer/printer/PrinterToFile.s','wloggertofile' ],
+  includeAny : [ '../../abase/oclass/printer/top/PrinterToFile.s','abase/oclass/printer/top/PrinterToFile.s','wloggertofile' ],
   isIncluded : function(){ return typeof wPrinterToFile !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wPrinterToJstructure' ] =
 {
-  includeAny : [ '../../abase/printer/printer/PrinterToJstructure.s','abase/printer/printer/PrinterToJstructure.s','wloggertojstructure' ],
+  includeAny : [ '../../abase/oclass/printer/top/PrinterToJstructure.s','abase/oclass/printer/top/PrinterToJstructure.s','wloggertojstructure' ],
   isIncluded : function(){ return typeof wPrinterToJstructure !== 'undefined'; },
 }
 
@@ -616,37 +613,37 @@ _includeHandlerMap[ 'wColor256' ] =
 
 _includeHandlerMap[ 'wConsequence' ] =
 {
-  includeAny : [ '../../abase/syn/Consequence.s','abase/syn/Consequence.s','wConsequence' ],
+  includeAny : [ '../../abase/oclass/Consequence.s','abase/oclass/Consequence.s','wConsequence' ],
   isIncluded : function(){ return typeof wConsequence !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wNameTools' ] =
 {
-  includeAny : [ '../../abase/component//NameTools.s','abase/component//NameTools.s','wNameTools' ],
+  includeAny : [ '../../abase/layer3//NameTools.s','abase/layer3//NameTools.s','wNameTools' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.idNumber; },
 }
 
 _includeHandlerMap[ 'wRegexpObject' ] =
 {
-  includeAny : [ '../../abase/object/RegexpObject.s','abase/object/RegexpObject.s','wRegexpObject' ],
+  includeAny : [ '../../abase/oclass/RegexpObject.s','abase/oclass/RegexpObject.s','wRegexpObject' ],
   isIncluded : function(){ return typeof wRegexpObject !== 'undefined' },
 }
 
 _includeHandlerMap[ 'wProto' ] =
 {
-  includeAny : [ '../../abase/component/Proto.s','abase/component/Proto.s','wProto' ],
+  includeAny : [ '../../abase/layer3/Proto.s','abase/layer3/Proto.s','wProto' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.mixin },
 }
 
 _includeHandlerMap[ 'wCloner' ] =
 {
-  includeAny : [ '../../abase/component/Cloner.s','abase/component/Cloner.s','wcloner' ],
+  includeAny : [ '../../abase/layer3/Cloner.s','abase/layer3/Cloner.s','wcloner' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools._clone },
 }
 
 _includeHandlerMap[ 'wPath' ] =
 {
-  includeAny : [ '../../abase/component/Path.s','abase/component/Path.s','wPath' ],
+  includeAny : [ '../../abase/layer3/PathTools.s','abase/layer3/PathTools.s','wPath' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.pathDir },
 }
 
@@ -670,7 +667,7 @@ _includeHandlerMap[ 'wNameMapper' ] =
 
 _includeHandlerMap[ 'wArraySorted' ] =
 {
-  includeAny : [ '../../abase/component/ArraySorted.s','abase/component/ArraySorted.s','warraysorted' ],
+  includeAny : [ '../../abase/layer3/ArraySorted.s','abase/layer3/ArraySorted.s','warraysorted' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.arraySortedLookUp },
 }
 
@@ -689,13 +686,13 @@ var Proto =
 
   //
 
-  _includeSimplyAct : _includeSimplyAct,
+  _includeWithRequireAct : _includeWithRequireAct,
   _includeAct : _includeAct,
 
-  _includeSimply : _includeSimply,
+  _includeWithRequire : _includeWithRequire,
   include : include,
 
-  _includeSimplyAny : _includeSimplyAny,
+  _includeWithRequireAny : _includeWithRequireAny,
   includeAny : includeAny,
 
   //
@@ -712,5 +709,8 @@ var Proto =
 }
 
 _.mapExtend( Self, Proto );
+
+if( typeof __dirname !== 'undefined' )
+_.pathUse( __dirname + '/../..' );
 
 })();

@@ -48,7 +48,7 @@ var strTypeOf = _.strTypeOf;
  *
  * @example
  * //returns { routine noname }
- * _.toStrMethods( ( function (){} ), { } )
+ * _.toStrMethods( ( function(){} ), { } )
  *
  * @method toStrMethods
  * @memberof wTools
@@ -434,7 +434,7 @@ function toStrFine_functor()
 
     var o = o || Object.create( null );
     var toStrDefaults = Object.create( null );
-    if( !_.atomicIs( src ) && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
+    if( !_.atomicIs( src ) && 'toStr' in src && _.routineIs( src.toStr ) && !src.toStr.notMethod && _.objectIs( src.toStr.defaults ) )
     toStrDefaults = src.toStr.defaults;
 
     if( o.levels === undefined && ( o.jsonLike || o.jstructLike ) )
@@ -512,14 +512,14 @@ function _toStr( src,o )
   var isAtomic = _.atomicIs( src );
   var isArray = _.arrayLike( src );
   var isObject = !isArray && _.objectIs( src );
-  var isObjectLike = !isArray && _.objectLike( src ) && !_.routineIs( src.toString );
+  var isObjectLike = !isArray && _.objectLike( src ) && !( 'toString' in src );
 
   /* */
 
   // if( src && src.toStr && src.toStr.notMethod )
   // debugger;
 
-  if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod && !_ObjectHasOwnProperty.call( src,'constructor' ) )
+  if( !isAtomic && 'toStr' in src && _.routineIs( src.toStr ) && !src.toStr.notMethod && !_ObjectHasOwnProperty.call( src,'constructor' ) )
   {
 
     var r = src.toStr( o );
@@ -745,7 +745,7 @@ function _toStrIsVisibleElement( src,o )
 
   /* */
 
-  if( !isAtomic && _.routineIs( src.toStr ) && !src.toStr.notMethod )
+  if( !isAtomic && 'toStr' in src && _.routineIs( src.toStr ) && !src.toStr.notMethod )
   {
     if( isObject && o.noObject )
     return false;

@@ -4,7 +4,7 @@
 'use strict';
 
 /**
- * @file wTools.s - Generic purpose tools of base level for solving problems in Java Script.
+ * @file Base.s - Generic purpose tools of base level for solving problems in Java Script.
  */
 
 /*
@@ -257,8 +257,6 @@ function __eachAct( iteration )
   function __onElement( k )
   {
 
-    i += 1;
-
     if( iterator.recursive || iterator.root === src )
     {
 
@@ -275,6 +273,8 @@ function __eachAct( iteration )
       __eachAct.call( iterator,newIteration );
 
     }
+
+    i += 1;
 
   }
 
@@ -506,132 +506,151 @@ function eachSample( o )
   {
     o =
     {
-      elementArrays : arguments[ 0 ],
+      sets : arguments[ 0 ],
       onEach : arguments[ 1 ],
     }
   }
 
-  _.assertMapHasOnly( o,eachSample.defaults );
-  if( o.direct === undefined )
-  o.direct = true;
-
-  /**/
-
+  _.routineOptions( eachSample,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( o.onEach ) || o.onEach === undefined );
-  _.assert( _.arrayIs( o.elementArrays ) || o.base !== undefined || o.add !== undefined );
+  _.assert( _.routineIs( o.onEach ) || o.onEach === null );
+  _.assert( _.arrayIs( o.sets ) || _.mapLike( o.sets ) || o.base !== null || o.add !== null );
 
-  /**/
+  /* */
 
-  if( o.base !== undefined || o.add !== undefined )
-  {
+  // if( o.base !== null || o.add !== null )
+  // {
+  //
+  //   var l = 1;
+  //   if( _.arrayLike( o.base ) )
+  //   l = o.base.length;
+  //   else if( _.arrayLike( o.add ) )
+  //   l = o.add.length;
+  //
+  //   if( !o.base )
+  //   o.base = 0;
+  //   o.base = _.arrayFromNumber( o.base,l );
+  //   o.add = _.arrayFromNumber( o.add,l );
+  //
+  //   _.assert( o.base.length === o.add.length );
+  //   _.assert( !o.sets );
+  //
+  //   o.sets = [];
+  //
+  //   for( var b = 0 ; b < o.base.length ; b++ )
+  //   {
+  //     var e = [ o.base[ b ], o.base[ b ] + o.add[ b ] ];
+  //     o.sets.push( e );
+  //   }
+  //
+  // }
 
-    var l = 1;
-    if( _.arrayLike( o.base ) )
-    l = o.base.length;
-    else if( _.arrayLike( o.add ) )
-    l = o.add.length;
+  /* sample */
 
-    if( !o.base )
-    o.base = 0;
-    o.base = _.arrayFromNumber( o.base,l );
-    o.add = _.arrayFromNumber( o.add,l );
+  if( !o.sample )
+  o.sample = _.entityMakeTivial( o.sets );
 
-    _.assert( o.base.length === o.add.length );
-    _.assert( !o.elementArrays );
+  /* */
 
-    o.elementArrays = [];
-
-    for( var b = 0 ; b < o.base.length ; b++ )
-    {
-      var e = [ o.base[ b ], o.base[ b ] + o.add[ b ] ];
-      o.elementArrays.push( e );
-    }
-
-  }
-
-  /* elementArrays */
-
-  if( !o.base )
-  for( var i = 0 ; i < o.elementArrays.length ; i++ )
-  {
-    _.assert( _.arrayLike( o.elementArrays[ i ] ) || _.atomicIs( o.elementArrays[ i ] ) );
-    if( _.atomicIs( o.elementArrays[ i ] ) )
-    o.elementArrays[ i ] = [ o.elementArrays[ i ] ];
-  }
-
-  /**/
-
+  var keys = _.arrayLike( o.sets ) ? _.arrayFromRange([ 0,o.sets.length ]) : _.mapKeys( o.sets );
   var result = [];
-  var sample = [];
-  var counter = [];
   var len = [];
+  var indexnd = [];
   var index = 0;
+  var l = _.entityLength( o.sets );
 
-  /**/
+  /* sets */
+
+  // for( var k = 0, l = o.sets.length; k < l ; k++ )
+  _.each( o.sets, function( e,k,it )
+  {
+    var set = o.sets[ k ];
+    _.assert( _.arrayLike( set ) || _.atomicIs( set ) );
+    if( _.atomicIs( set ) )
+    o.sets[ k ] = [ set ];
+
+    len[ it.index ] = _.entityLength( o.sets[ k ] );
+    indexnd[ it.index ] = 0;
+  });
+
+  /* */
 
   function firstSample()
   {
 
-    for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
+    // for( var k = 0, l = o.sets.length; k < l ; k++ )
+    _.each( o.sets, function( e,k,it )
     {
-      len[ s ] = o.elementArrays[ s ].length;
-      counter[ s ] = 0;
-      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
-      if( !len[ s ] )
+      o.sample[ k ] = o.sets[ k ][ indexnd[ it.index ] ];
+      if( !len[ k ] )
       return 0;
-    }
+    });
 
-    result.push( sample.slice() );
+    // debugger;
+    if( _.mapLike( o.sample ) )
+    result.push( _.mapExtend( null, o.sample ) );
+    else
+    result.push( o.sample.slice() );
+
+    // console.log( 'sample',o.sample );
 
     return 1;
   }
 
-  /**/
+  /* */
 
-  function _nextSample( s )
+  function nextSample( i )
   {
 
-    counter[ s ]++;
-    if( counter[ s ] >= len[ s ] )
+    var k = keys[ i ];
+    indexnd[ i ]++;
+
+    if( indexnd[ i ] >= len[ i ] )
     {
-      counter[ s ] = 0;
-      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
+      indexnd[ i ] = 0;
+      o.sample[ k ] = o.sets[ k ][ indexnd[ i ] ];
     }
     else
     {
-      sample[ s ] = o.elementArrays[ s ][ counter[ s ] ];
+      o.sample[ k ] = o.sets[ k ][ indexnd[ i ] ];
       index += 1;
-      result.push( sample.slice() );
+
+      if( _.mapLike( o.sample ) )
+      result.push( _.mapExtend( null, o.sample ) );
+      else
+      result.push( o.sample.slice() );
+
+      // console.log( 'sample',o.sample );
+
       return 1;
     }
 
     return 0;
   }
 
-  /**/
+  /* */
 
-  function nextSample()
+  function iterate()
   {
 
-    if( o.direct ) for( var s = 0, l = o.elementArrays.length; s < l ; s++ )
+    if( o.leftToRight )
+    // for( var i = 0, l = o.sets.length; i < l ; i++ )
+    for( var i = 0 ; i < l ; i++ )
     {
-      if( _nextSample( s ) )
+      if( nextSample( i ) )
       return 1;
     }
-    else for( var s = o.elementArrays.length - 1, l = o.elementArrays.length; s >= 0 ; s-- )
+    // else for( var i = o.sets.length - 1, l = o.sets.length; i >= 0 ; s-- )
+    else for( var i = l - 1 ; i >= 0 ; i-- )
     {
-      if( _nextSample( s ) )
+      if( nextSample( i ) )
       return 1;
     }
 
     return 0;
   }
 
-  /**/
-
-  if( !_.arrayIs( o.elementArrays ) )
-  throw _.err( 'eachSample :','array only supported' );
+  /* */
 
   if( !firstSample() )
   return result;
@@ -639,9 +658,9 @@ function eachSample( o )
   do
   {
     if( o.onEach )
-    o.onEach.call( sample,sample,index );
+    o.onEach.call( o.sample, o.sample, index );
   }
-  while( nextSample() );
+  while( iterate() );
 
   return result;
 }
@@ -649,12 +668,14 @@ function eachSample( o )
 eachSample.defaults =
 {
 
-  direct : 1,
+  leftToRight : 1,
   onEach : null,
 
-  elementArrays : null,
-  base : null,
-  add : null,
+  sets : null,
+  sample : null,
+
+  // base : null,
+  // add : null,
 
 }
 
@@ -810,10 +831,10 @@ function eachInMultiRange( o )
   }
 
   _.routineOptions( eachInMultiRange,o );
-  _assert( _.objectIs( o ) )
-  _assert( _.arrayIs( o.ranges ) || _.objectIs( o.ranges ),'eachInMultiRange :','expects o.ranges as array or object' )
-  _assert( _.routineIs( o.onEach ),'eachInMultiRange :','expects o.onEach as routine' )
-  _assert( !o.delta || o.delta.length === o.ranges.length,'eachInMultiRange :','o.delta must be same length as ranges' );
+  _.assert( _.objectIs( o ) )
+  _.assert( _.arrayIs( o.ranges ) || _.objectIs( o.ranges ),'eachInMultiRange :','expects o.ranges as array or object' )
+  _.assert( _.routineIs( o.onEach ),'eachInMultiRange :','expects o.onEach as routine' )
+  _.assert( !o.delta || o.delta.length === o.ranges.length,'eachInMultiRange :','o.delta must be same length as ranges' );
 
   /* */
 
@@ -824,7 +845,7 @@ function eachInMultiRange( o )
   var names = null;
   if( _.objectIs( o.ranges ) )
   {
-    _assert( _.objectIs( o.delta ) || !o.delta );
+    _.assert( _.objectIs( o.delta ) || !o.delta );
 
     names = [];
     var i = 0;
@@ -863,9 +884,9 @@ function eachInMultiRange( o )
     if( !_.arrayLike( ranges[ r ] ) )
     throw _.err( 'expects range as array :',ranges[ r ] );
 
-    _assert( ranges[ r ].length === 2 );
-    _assert( _.numberIs( ranges[ r ][ 0 ] ) );
-    _assert( _.numberIs( ranges[ r ][ 1 ] ) );
+    _.assert( ranges[ r ].length === 2 );
+    _.assert( _.numberIs( ranges[ r ][ 0 ] ) );
+    _.assert( _.numberIs( ranges[ r ][ 1 ] ) );
 
     iterationNumber *= ranges[ r ][ 1 ] - ranges[ r ][ 0 ];
 
@@ -1103,19 +1124,21 @@ function enityExtend( dst,src )
 
 //
 
-function entityNew( src )
+function entityMake( src,length )
 {
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( src ) )
   {
-    return new src.constructor( src.length );
+    return new src.constructor( length !== undefined ? length : src.length );
   }
   else if( _.arrayLike( src ) )
   {
     if( _.argumentsIs( src ) )
-    return new Array( src.length );
+    return new Array( length !== undefined ? length : src.length );
     else
-    return new src.constructor( src.length );
+    return new src.constructor( length !== undefined ? length : src.length );
   }
   else if( _.mapIs( src ) )
   {
@@ -1131,19 +1154,21 @@ function entityNew( src )
 
 //
 
-function entityTrivialNew( src )
+function entityMakeTivial( src,length )
 {
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( src ) )
   {
-    return new src.constructor( src.length );
+    return new src.constructor( length !== undefined ? length : src.length );
   }
   else if( _.arrayLike( src ) )
   {
     if( _.argumentsIs( src ) )
-    return new Array( src.length );
+    return new Array( length !== undefined ? length : src.length );
     else
-    return new src.constructor( src.length );
+    return new src.constructor( length !== undefined ? length : src.length );
   }
   else if( _.mapIs( src ) )
   {
@@ -1670,7 +1695,7 @@ function entityDiff( src1,src2,o )
 {
 
   var o = o || Object.create( null );
-  _assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
   var same = _.entityEqual( src1,src2,o );
 
   if( same )
@@ -1904,8 +1929,8 @@ function _entityEqualIteratorMake( o )
 
   var o = o || Object.create( null );
 
-  _assert( arguments.length === 0 || arguments.length === 1 );
-  _assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
   _.routineOptions( _entityEqualIteratorMake,o );
 
   if( o.onSameNumbers === null )
@@ -1966,7 +1991,7 @@ _entityEqualIteratorMake.defaults =
 function entityEqual( src1,src2,o )
 {
 
-  _assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   var o = _entityEqualIteratorMake( o );
 
@@ -2586,7 +2611,7 @@ function _entitySelectAct( iteration,iterator )
   if( key === '*' )
   {
 
-    result = _.entityTrivialNew( container );
+    result = _.entityMakeTivial( container );
     _.each( container,function( e,k,iteration )
     {
       result[ k ] = _select( k );
@@ -2817,7 +2842,7 @@ function entityMap( src,onEach )
   _.assert( _.objectLike( src ) || _.arrayLike( src ) );
   _.assert( _.routineIs( onEach ) );
 
-  var result = _.entityNew( src );
+  var result = _.entityMake( src );
 
   if( _.arrayLike( src ) )
   {
@@ -2894,7 +2919,7 @@ function _entityFilter( o )
   else
   {
     // result = new o.src.constructor()
-    result = _.entityNew( o.src );
+    result = _.entityMake( o.src );
     // debugger;
 
     for( var s in o.src )
@@ -3006,10 +3031,10 @@ function entityGroup( o )
 
   var o = _.routineOptions( entityGroup,o );
 
-  _assert( arguments.length === 1 );
-  _assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
-  _assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
-  _assert( _.arrayIs( o.src ),'not tested' );
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
+  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
+  _.assert( _.arrayIs( o.src ),'not tested' );
 
   /* */
 
@@ -3048,7 +3073,7 @@ function entityGroup( o )
     for( var k = 0 ; k < o.key.length ; k++ )
     {
       debugger;
-      var r = o.usingOriginal ? Object.create( null ) : _.entityNew( o.src );
+      var r = o.usingOriginal ? Object.create( null ) : _.entityMake( o.src );
       result[ o.key[ k ] ] = groupForKey( o.key[ k ],r );
     }
 
@@ -3398,121 +3423,6 @@ entitySearch.defaults =
 }
 
 entitySearch.defaults.__proto__ = _each.defaults;
-
-// --
-// default
-// --
-
-/*
-apply default to each element of map, if present
-*/
-
-function defaultApply( src )
-{
-
-  _.assert( _.objectIs( src ) || _.arrayLike( src ) );
-
-  var def = src[ _default_ ];
-
-  if( !def )
-  return src;
-
-  _.assert( _.objectIs( src ) );
-
-  if( objectIs( src ) )
-  {
-
-    for( var s in src )
-    {
-      if( !_.objectIs( src[ s ] ) )
-      continue;
-      _.mapSupplement( src[ s ],def );
-    }
-
-  }
-  else
-  {
-
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      if( !_.objectIs( src[ s ] ) )
-      continue;
-      _.mapSupplement( src[ s ],def );
-    }
-
-  }
-
-  return src;
-}
-
-//
-
-/*
-activate default proxy
-*/
-
-function defaultProxy( map )
-{
-
-  _.assert( _.objectIs( map ) );
-  _.assert( arguments.length === 1 );
-
-  var validator =
-  {
-    set : function( obj, k, e )
-    {
-      obj[ k ] = _.defaultApply( e );
-      return true;
-    }
-  }
-
-  var result = new Proxy( map, validator );
-  // var result = new Proxy( [], validator );
-
-  for( var k in map )
-  {
-    _.defaultApply( map[ k ] );
-  }
-
-  // debugger;
-  // var is = _.mapIs( result );
-  // var is = _.strTypeOf( result );
-  // debugger;
-
-  return result;
-}
-
-//
-
-function defaultProxyFlatteningToArray( src )
-{
-  var result = [];
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( src ) || _.arrayIs( src ) );
-
-  function flatten( src )
-  {
-
-    if( _.arrayIs( src ) )
-    {
-      for( var s = 0 ; s < src.length ; s++ )
-      flatten( src[ s ] );
-    }
-    else
-    {
-      if( _.objectIs( src ) )
-      result.push( defaultApply( src ) );
-      else
-      result.push( src );
-    }
-
-  }
-
-  flatten( src );
-
-  return result;
-}
 
 // --
 // error
@@ -4016,8 +3926,8 @@ _err.defaults =
  // caught     at divide (<anonymous>:2:29)
  // divide by zero
  // Error
- //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
- //   at wTools.err (file:///.../wTools/staging/wTools.s:1449:10)
+ //   at _err (file:///.../wTools/staging/Base.s:1418:13)
+ //   at wTools.err (file:///.../wTools/staging/Base.s:1449:10)
  //   at divide (<anonymous>:2:29)
  //   at <anonymous>:1:1
  *
@@ -4118,8 +4028,8 @@ function errAttend( err )
    // caught     at divide (<anonymous>:2:29)
    // divide by zero
    // Error
-   //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
-   //   at wTools.errLog (file:///.../wTools/staging/wTools.s:1462:13)
+   //   at _err (file:///.../wTools/staging/Base.s:1418:13)
+   //   at wTools.errLog (file:///.../wTools/staging/Base.s:1462:13)
    //   at divide (<anonymous>:2:29)
    //   at <anonymous>:1:1
  *
@@ -4190,1481 +4100,1481 @@ function errLogOnce( err )
   _.errAttend( err );
   return err;
 }
-
-// --
-// diagnostics
-// --
-
-function _diagnosticStripPath( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( _.strIs( src ) )
-  {
-    src = src.replace( /^\s+/,'' );
-    // src = src.replace( /^at/,'' );
-    // src = src.replace( /^\s+/,'' );
-  }
-
-  return src;
-}
-
 //
-
-// function diagnosticScript( path )
+// // --
+// // diagnostics
+// // --
+//
+// function _diagnosticStripPath( src )
+// {
+//   _.assert( arguments.length === 1 );
+//
+//   if( _.strIs( src ) )
+//   {
+//     src = src.replace( /^\s+/,'' );
+//     // src = src.replace( /^at/,'' );
+//     // src = src.replace( /^\s+/,'' );
+//   }
+//
+//   return src;
+// }
+//
+// //
+//
+// // function diagnosticScript( path )
+// // {
+// //
+// //   if( typeof document !== 'undefined' && document.scripts )
+// //   {
+// //     var scripts = document.scripts;
+// //     for( var s = 0 ; s < scripts.length ; s++ )
+// //     if( scripts[ s ].src === path )
+// //     return scripts[ s ];
+// //   }
+// //   else
+// //   {
+// //     debugger;
+// //   }
+// //
+// // }
+//
+// //
+//
+// function diagnosticLocation( o )
 // {
 //
-//   if( typeof document !== 'undefined' && document.scripts )
+//   if( _.numberIs( o ) )
+//   o = { level : o }
+//   else if( _.strIs( o ) )
+//   o = { stack : o, level : 0 }
+//   else if( _.errIs( o ) )
+//   o = { error : o, level : 0 }
+//   else if( o === undefined )
+//   o = { stack : _.diagnosticStack( 1 ) };
+//
+//   _.routineOptions( diagnosticLocation,o );
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//   _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
+//
+//   if( !o.location )
+//   o.location = Object.create( null );
+//
+//   /* end */
+//
+//   function end()
 //   {
-//     var scripts = document.scripts;
-//     for( var s = 0 ; s < scripts.length ; s++ )
-//     if( scripts[ s ].src === path )
-//     return scripts[ s ];
+//
+//     var path = o.location.path;
+//
+//     /* full */
+//
+//     if( path )
+//     {
+//       o.location.full = path;
+//       if( o.location.line !== undefined )
+//       o.location.full += ':' + o.location.line;
+//     }
+//
+//     /* name long */
+//
+//     if( o.location.full )
+//     {
+//       o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
+//     }
+//
+//     /* name */
+//
+//     if( path )
+//     {
+//       var name = path;
+//       var i = name.lastIndexOf( '/' );
+//       if( i !== -1 )
+//       name = name.substr( i+1 );
+//       o.location.name = name;
+//     }
+//
+//     /* name long */
+//
+//     if( path )
+//     {
+//       var nameLong = o.location.name;
+//       if( o.location.line !== undefined )
+//       {
+//         nameLong += ':' + o.location.line;
+//         if( o.location.col !== undefined )
+//         nameLong += ':' + o.location.col;
+//       }
+//       o.location.nameLong = nameLong;
+//     }
+//
+//     return o.location;
 //   }
-//   else
+//
+//   /* routine from stack */
+//
+//   function routineFromStack( stack )
+//   {
+//     var path;
+//
+//     if( !stack )
+//     return;
+//
+//     if( _.strIs( stack ) )
+//     stack = stack.split( '\n' );
+//
+//     path = stack[ o.level ];
+//
+//     if( !_.strIs( path ) )
+//     return '(-routine anonymous-)';
+//
+//     // debugger;
+//
+//     var t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
+//     var executed = t.exec( path );
+//     if( executed )
+//     path = executed[ 2 ] || '';
+//
+//     if( _.strEnds( path, '.' ) )
+//     path += '?';
+//
+//     o.location.routine = path;
+//     o.location.service = 0;
+//     if( o.location.service === 0 )
+//     if( _.strBegins( path , '__' ) || path.indexOf( '.__' ) !== -1 )
+//     o.location.service = 2;
+//     if( o.location.service === 0 )
+//     if( _.strBegins( path , '_' ) || path.indexOf( '._' ) !== -1 )
+//     o.location.service = 1;
+//
+//     return path;
+//   }
+//
+//   /* path from stack */
+//
+//   function pathFromStack( stack )
+//   {
+//     var path;
+//
+//     if( !stack )
+//     return;
+//
+//     if( _.strIs( stack ) )
+//     stack = stack.split( '\n' );
+//
+//     path = stack[ o.level ];
+//
+//     if( !_.strIs( path ) )
+//     return end();
+//
+//     path = path.replace( /^\s+/,'' );
+//     path = path.replace( /^\w+@/,'' );
+//     path = path.replace( /^at/,'' );
+//     path = path.replace( /^\s+/,'' );
+//     path = path.replace( /\s+$/,'' );
+//
+//     if( _.strEnds( path,')' ) )
+//     path = _.strInbetweenOf( path,'(',')' );
+//
+//     return path;
+//   }
+//
+//   /* line / col number from path */
+//
+//   function lineColFromPath( path )
+//   {
+//
+//     var lineNumber,colNumber;
+//     var postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
+//     var parsed = postfix.exec( path );
+//
+//     if( parsed )
+//     {
+//       path = parsed[ 1 ];
+//       lineNumber = parsed[ 2 ];
+//       colNumber = parsed[ 3 ];
+//     }
+//
+//     // var postfix = /:(\d+)$/;
+//     // colNumber = postfix.exec( o.location.path );
+//     // if( colNumber )
+//     // {
+//     //   o.location.path = _.strRemoveEnd( o.location.path,colNumber[ 0 ] );
+//     //   colNumber = colNumber[ 1 ];
+//     //   lineNumber = postfix.exec( o.location.path );
+//     //   if( lineNumber )
+//     //   {
+//     //     o.location.path = _.strRemoveEnd( o.location.path,lineNumber[ 0 ] );
+//     //     lineNumber = lineNumber[ 1 ];
+//     //   }
+//     //   else
+//     //   {
+//     //     lineNumber = colNumber;
+//     //     colNumber = undefined;
+//     //   }
+//     // }
+//
+//     lineNumber = parseInt( lineNumber );
+//     colNumber = parseInt( colNumber );
+//
+//     if( isNaN( o.location.line ) && !isNaN( lineNumber ) )
+//     o.location.line = lineNumber;
+//
+//     if( isNaN( o.location.col ) && !isNaN( colNumber ) )
+//     o.location.col = colNumber;
+//
+//     return path;
+//   }
+//
+//   /* */
+//
+//   if( o.error )
+//   {
+//
+//     o.location.path = _.arrayLeftDefined([ o.location.path, o.error.filename, o.error.fileName ]).element;
+//     o.location.line = _.arrayLeftDefined([ o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
+//     o.location.col = _.arrayLeftDefined([ o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
+//
+//     if( o.location.path && _.numberIs( o.location.line ) )
+//     return end();
+//   }
+//
+//   /* */
+//
+//   if( !o.stack )
+//   {
+//     if( o.error )
+//     {
+//       o.stack = _.diagnosticStack( o.error );
+//     }
+//     else
+//     {
+//       o.stack = _.diagnosticStack();
+//       o.level += 1;
+//     }
+//   }
+//
+//   routineFromStack( o.stack );
+//
+//   var pathHad = !!o.location.path;
+//   if( !pathHad )
+//   o.location.path = pathFromStack( o.stack );
+//
+//   if( !_.strIs( o.location.path ) )
+//   return end();
+//
+//   if( !_.numberIs( o.location.line ) )
+//   o.location.path = lineColFromPath( o.location.path );
+//
+//   if( !_.numberIs( o.location.line ) && pathHad )
+//   {
+//     // debugger;
+//     var path = pathFromStack( o.stack );
+//     if( path )
+//     lineColFromPath( path );
+//   }
+//
+//   return end();
+// }
+//
+// diagnosticLocation.defaults =
+// {
+//   level : 0,
+//   stack : null,
+//   error : null,
+//   location : null,
+//   // sourceCode : null,
+// }
+//
+// //
+//
+// function diagnosticCode( o )
+// {
+//
+//   _.routineOptions( diagnosticCode,o );
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//
+//   if( !o.location )
+//   {
+//     if( o.error )
+//     o.location = _.diagnosticLocation({ error : o.error, level : o.level });
+//     else
+//     o.location = _.diagnosticLocation({ stack : o.stack, level : o.stack ? o.level : o.level+1 });
+//   }
+//
+//   if( !_.numberIs( o.location.line ) )
+//   return;
+//
+//   /* */
+//
+//   if( !o.sourceCode )
+//   {
+//
+//     if( !o.location.path )
+//     return;
+//
+//     if( !_.fileProvider )
+//     return;
+//
+//     o.sourceCode = _.fileProvider.fileRead
+//     ({
+//       filePath : o.location.path,
+//       sync : 1,
+//       throwing : 0,
+//     })
+//
+//     if( !o.sourceCode )
+//     return;
+//
+//   }
+//
+//   /* */
+//
+//   var result = _.strLinesSelect
+//   ({
+//     src : o.sourceCode,
+//     line : o.location.line,
+//     numberOfLines : o.numberOfLines,
+//     selectMode : o.selectMode,
+//     zero : 1,
+//     number : 1,
+//   });
+//
+//   if( o.withPath )
+//   result = o.location.full + '\n' + result;
+//
+//   return result;
+// }
+//
+// diagnosticCode.defaults =
+// {
+//   level : 0,
+//   numberOfLines : 3,
+//   withPath : 1,
+//   selectMode : 'center',
+//   stack : null,
+//   error : null,
+//   location : null,
+//   sourceCode : null,
+// }
+//
+// //
+//
+// /**
+//  * Return stack trace as string.
+//  * @example
+//   var stack;
+//   function function1()
+//   {
+//     function2();
+//   }
+//
+//   function function2()
+//   {
+//     function3();
+//   }
+//
+//   function function3()
+//   {
+//     stack = wTools.diagnosticStack();
+//   }
+//
+//   function1();
+//   console.log( stack );
+//  //"    at function3 (<anonymous>:10:17)
+//  // at function2 (<anonymous>:6:2)
+//  // at function1 (<anonymous>:2:2)
+//  // at <anonymous>:1:1"
+//  *
+//  * @returns {String} Return stack trace from call point.
+//  * @function stack
+//  * @memberof wTools
+//  */
+//
+// function diagnosticStack( stack,first,last )
+// {
+//
+//   if( last-first === 1 )
+//   debugger;
+//
+//   if( _.numberIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined )
+//   {
+//
+//     var first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
+//     var last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
+//
+//     return diagnosticStack( new Error(),first,last );
+//   }
+//
+//   if( arguments.length !== 1 && arguments.length !== 2 && arguments.length !== 3 )
 //   {
 //     debugger;
+//     throw Error( 'diagnosticStack : expects one, two or three arguments if error provided' );
 //   }
 //
+//   if( !_.numberIs( first ) && first !== undefined )
+//   {
+//     debugger;
+//     throw Error( 'diagnosticStack : expects number ( first ), got ' + _.strTypeOf( first ) );
+//   }
+//
+//   if( !_.numberIs( last ) && last !== undefined )
+//   {
+//     debugger;
+//     throw Error( 'diagnosticStack : expects number ( last ), got' + _.strTypeOf( last ) );
+//   }
+//
+//   var errIs = 0;
+//   if( _.errIs( stack ) )
+//   {
+//     stack = stack.stack;
+//     errIs = 1;
+//   }
+//
+//   if( !stack )
+//   return '';
+//
+//   if( !_.arrayIs( stack ) && !_.strIs( stack ) )
+//   return;
+//
+//   if( !_.arrayIs( stack ) && !_.strIs( stack ) )
+//   debugger;
+//   if( !_.arrayIs( stack ) && !_.strIs( stack ) )
+//   throw 'diagnosticStack expects array or string';
+//
+//   if( !_.arrayIs( stack ) )
+//   stack = stack.split( '\n' );
+//
+//   /* remove redundant lines */
+//
+//   if( !errIs )
+//   console.warn( 'REMINDER : problem here if !errIs' ); /* xxx */
+//   if( !errIs )
+//   debugger;
+//
+//   if( errIs )
+//   {
+//     // debugger;
+//     while( stack.length )
+//     {
+//       var splice = 0;
+//       // if( stack[ 0 ].indexOf( '@' ) !== -1 )
+//       // debugger;
+//       // if( stack[ 0 ].indexOf( '@' ) !== -1 )
+//       // return '';
+//       splice |= ( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 );
+//       splice |= stack[ 0 ].indexOf( '(vm.js:' ) !== -1;
+//       splice |= stack[ 0 ].indexOf( '(module.js:' ) !== -1;
+//       splice |= stack[ 0 ].indexOf( '(internal/module.js:' ) !== -1;
+//       if( splice )
+//       stack.splice( 0,1 );
+//       else break;
+//     }
+//     // debugger;
+//   }
+//
+//   // if( stack[ 0 ].indexOf( '@' ) === -1 )
+//   // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
+//
+//   if( !stack[ 0 ] )
+//   return '{ stack is empty }';
+//
+//   // debugger;
+//   if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
+//   {
+//     debugger;
+//     throw Error( 'diagnosticStack : cant parse stack ' + stack );
+//   }
+//
+//   /* */
+//
+//   var first = first === undefined ? 0 : first;
+//   var last = last === undefined ? stack.length : last;
+//
+//   if( _.numberIs( first ) )
+//   if( first < 0 )
+//   first = stack.length + first;
+//
+//   if( _.numberIs( last ) )
+//   if( last < 0 )
+//   last = stack.length + last + 1;
+//
+//   /* */
+//
+//   // if( last-first === 1 )
+//   // {
+//   //   debugger;
+//   //   // stack = stack[ first ];
+//   //   //
+//   //   // if( _.strIs( stack ) )
+//   //   // {
+//   //   //   stack = _._diagnosticStripPath( stack );
+//   //   // }
+//   //   //
+//   //   // return stack;
+//   // }
+//
+//   if( first !== 0 || last !== stack.length )
+//   {
+//     stack = stack.slice( first || 0,last );
+//   }
+//
+//   /* */
+//
+//   stack = String( stack.join( '\n' ) );
+//
+//   return stack;
 // }
-
 //
-
-function diagnosticLocation( o )
-{
-
-  if( _.numberIs( o ) )
-  o = { level : o }
-  else if( _.strIs( o ) )
-  o = { stack : o, level : 0 }
-  else if( _.errIs( o ) )
-  o = { error : o, level : 0 }
-  else if( o === undefined )
-  o = { stack : _.diagnosticStack( 1 ) };
-
-  _.routineOptions( diagnosticLocation,o );
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
-
-  if( !o.location )
-  o.location = Object.create( null );
-
-  /* end */
-
-  function end()
-  {
-
-    var path = o.location.path;
-
-    /* full */
-
-    if( path )
-    {
-      o.location.full = path;
-      if( o.location.line !== undefined )
-      o.location.full += ':' + o.location.line;
-    }
-
-    /* name long */
-
-    if( o.location.full )
-    {
-      o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
-    }
-
-    /* name */
-
-    if( path )
-    {
-      var name = path;
-      var i = name.lastIndexOf( '/' );
-      if( i !== -1 )
-      name = name.substr( i+1 );
-      o.location.name = name;
-    }
-
-    /* name long */
-
-    if( path )
-    {
-      var nameLong = o.location.name;
-      if( o.location.line !== undefined )
-      {
-        nameLong += ':' + o.location.line;
-        if( o.location.col !== undefined )
-        nameLong += ':' + o.location.col;
-      }
-      o.location.nameLong = nameLong;
-    }
-
-    return o.location;
-  }
-
-  /* routine from stack */
-
-  function routineFromStack( stack )
-  {
-    var path;
-
-    if( !stack )
-    return;
-
-    if( _.strIs( stack ) )
-    stack = stack.split( '\n' );
-
-    path = stack[ o.level ];
-
-    if( !_.strIs( path ) )
-    return '(-routine anonymous-)';
-
-    // debugger;
-
-    var t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
-    var executed = t.exec( path );
-    if( executed )
-    path = executed[ 2 ] || '';
-
-    if( _.strEnds( path, '.' ) )
-    path += '?';
-
-    o.location.routine = path;
-    o.location.service = 0;
-    if( o.location.service === 0 )
-    if( _.strBegins( path , '__' ) || path.indexOf( '.__' ) !== -1 )
-    o.location.service = 2;
-    if( o.location.service === 0 )
-    if( _.strBegins( path , '_' ) || path.indexOf( '._' ) !== -1 )
-    o.location.service = 1;
-
-    return path;
-  }
-
-  /* path from stack */
-
-  function pathFromStack( stack )
-  {
-    var path;
-
-    if( !stack )
-    return;
-
-    if( _.strIs( stack ) )
-    stack = stack.split( '\n' );
-
-    path = stack[ o.level ];
-
-    if( !_.strIs( path ) )
-    return end();
-
-    path = path.replace( /^\s+/,'' );
-    path = path.replace( /^\w+@/,'' );
-    path = path.replace( /^at/,'' );
-    path = path.replace( /^\s+/,'' );
-    path = path.replace( /\s+$/,'' );
-
-    if( _.strEnds( path,')' ) )
-    path = _.strInbetweenOf( path,'(',')' );
-
-    return path;
-  }
-
-  /* line / col number from path */
-
-  function lineColFromPath( path )
-  {
-
-    var lineNumber,colNumber;
-    var postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
-    var parsed = postfix.exec( path );
-
-    if( parsed )
-    {
-      path = parsed[ 1 ];
-      lineNumber = parsed[ 2 ];
-      colNumber = parsed[ 3 ];
-    }
-
-    // var postfix = /:(\d+)$/;
-    // colNumber = postfix.exec( o.location.path );
-    // if( colNumber )
-    // {
-    //   o.location.path = _.strRemoveEnd( o.location.path,colNumber[ 0 ] );
-    //   colNumber = colNumber[ 1 ];
-    //   lineNumber = postfix.exec( o.location.path );
-    //   if( lineNumber )
-    //   {
-    //     o.location.path = _.strRemoveEnd( o.location.path,lineNumber[ 0 ] );
-    //     lineNumber = lineNumber[ 1 ];
-    //   }
-    //   else
-    //   {
-    //     lineNumber = colNumber;
-    //     colNumber = undefined;
-    //   }
-    // }
-
-    lineNumber = parseInt( lineNumber );
-    colNumber = parseInt( colNumber );
-
-    if( isNaN( o.location.line ) && !isNaN( lineNumber ) )
-    o.location.line = lineNumber;
-
-    if( isNaN( o.location.col ) && !isNaN( colNumber ) )
-    o.location.col = colNumber;
-
-    return path;
-  }
-
-  /* */
-
-  if( o.error )
-  {
-
-    o.location.path = _.arrayLeftDefined([ o.location.path, o.error.filename, o.error.fileName ]).element;
-    o.location.line = _.arrayLeftDefined([ o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
-    o.location.col = _.arrayLeftDefined([ o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
-
-    if( o.location.path && _.numberIs( o.location.line ) )
-    return end();
-  }
-
-  /* */
-
-  if( !o.stack )
-  {
-    if( o.error )
-    {
-      o.stack = _.diagnosticStack( o.error );
-    }
-    else
-    {
-      o.stack = _.diagnosticStack();
-      o.level += 1;
-    }
-  }
-
-  routineFromStack( o.stack );
-
-  var pathHad = !!o.location.path;
-  if( !pathHad )
-  o.location.path = pathFromStack( o.stack );
-
-  if( !_.strIs( o.location.path ) )
-  return end();
-
-  if( !_.numberIs( o.location.line ) )
-  o.location.path = lineColFromPath( o.location.path );
-
-  if( !_.numberIs( o.location.line ) && pathHad )
-  {
-    // debugger;
-    var path = pathFromStack( o.stack );
-    if( path )
-    lineColFromPath( path );
-  }
-
-  return end();
-}
-
-diagnosticLocation.defaults =
-{
-  level : 0,
-  stack : null,
-  error : null,
-  location : null,
-  // sourceCode : null,
-}
-
+// //
 //
-
-function diagnosticCode( o )
-{
-
-  _.routineOptions( diagnosticCode,o );
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-
-  if( !o.location )
-  {
-    if( o.error )
-    o.location = _.diagnosticLocation({ error : o.error, level : o.level });
-    else
-    o.location = _.diagnosticLocation({ stack : o.stack, level : o.stack ? o.level : o.level+1 });
-  }
-
-  if( !_.numberIs( o.location.line ) )
-  return;
-
-  /* */
-
-  if( !o.sourceCode )
-  {
-
-    if( !o.location.path )
-    return;
-
-    if( !_.fileProvider )
-    return;
-
-    o.sourceCode = _.fileProvider.fileRead
-    ({
-      filePath : o.location.path,
-      sync : 1,
-      throwing : 0,
-    })
-
-    if( !o.sourceCode )
-    return;
-
-  }
-
-  /* */
-
-  var result = _.strLinesSelect
-  ({
-    src : o.sourceCode,
-    line : o.location.line,
-    numberOfLines : o.numberOfLines,
-    selectMode : o.selectMode,
-    zero : 1,
-    number : 1,
-  });
-
-  if( o.withPath )
-  result = o.location.full + '\n' + result;
-
-  return result;
-}
-
-diagnosticCode.defaults =
-{
-  level : 0,
-  numberOfLines : 3,
-  withPath : 1,
-  selectMode : 'center',
-  stack : null,
-  error : null,
-  location : null,
-  sourceCode : null,
-}
-
-//
-
-/**
- * Return stack trace as string.
- * @example
-  var stack;
-  function function1()
-  {
-    function2();
-  }
-
-  function function2()
-  {
-    function3();
-  }
-
-  function function3()
-  {
-    stack = wTools.diagnosticStack();
-  }
-
-  function1();
-  console.log( stack );
- //"    at function3 (<anonymous>:10:17)
- // at function2 (<anonymous>:6:2)
- // at function1 (<anonymous>:2:2)
- // at <anonymous>:1:1"
- *
- * @returns {String} Return stack trace from call point.
- * @function stack
- * @memberof wTools
- */
-
-function diagnosticStack( stack,first,last )
-{
-
-  if( last-first === 1 )
-  debugger;
-
-  if( _.numberIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined )
-  {
-
-    var first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
-    var last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
-
-    return diagnosticStack( new Error(),first,last );
-  }
-
-  if( arguments.length !== 1 && arguments.length !== 2 && arguments.length !== 3 )
-  {
-    debugger;
-    throw Error( 'diagnosticStack : expects one, two or three arguments if error provided' );
-  }
-
-  if( !_.numberIs( first ) && first !== undefined )
-  {
-    debugger;
-    throw Error( 'diagnosticStack : expects number ( first ), got ' + _.strTypeOf( first ) );
-  }
-
-  if( !_.numberIs( last ) && last !== undefined )
-  {
-    debugger;
-    throw Error( 'diagnosticStack : expects number ( last ), got' + _.strTypeOf( last ) );
-  }
-
-  var errIs = 0;
-  if( _.errIs( stack ) )
-  {
-    stack = stack.stack;
-    errIs = 1;
-  }
-
-  if( !stack )
-  return '';
-
-  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
-  return;
-
-  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
-  debugger;
-  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
-  throw 'diagnosticStack expects array or string';
-
-  if( !_.arrayIs( stack ) )
-  stack = stack.split( '\n' );
-
-  /* remove redundant lines */
-
-  if( !errIs )
-  console.warn( 'REMINDER : problem here if !errIs' ); /* xxx */
-  if( !errIs )
-  debugger;
-
-  if( errIs )
-  {
-    // debugger;
-    while( stack.length )
-    {
-      var splice = 0;
-      // if( stack[ 0 ].indexOf( '@' ) !== -1 )
-      // debugger;
-      // if( stack[ 0 ].indexOf( '@' ) !== -1 )
-      // return '';
-      splice |= ( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 );
-      splice |= stack[ 0 ].indexOf( '(vm.js:' ) !== -1;
-      splice |= stack[ 0 ].indexOf( '(module.js:' ) !== -1;
-      splice |= stack[ 0 ].indexOf( '(internal/module.js:' ) !== -1;
-      if( splice )
-      stack.splice( 0,1 );
-      else break;
-    }
-    // debugger;
-  }
-
-  // if( stack[ 0 ].indexOf( '@' ) === -1 )
-  // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
-
-  if( !stack[ 0 ] )
-  return '{ stack is empty }';
-
-  // debugger;
-  if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
-  {
-    debugger;
-    throw Error( 'diagnosticStack : cant parse stack ' + stack );
-  }
-
-  /* */
-
-  var first = first === undefined ? 0 : first;
-  var last = last === undefined ? stack.length : last;
-
-  if( _.numberIs( first ) )
-  if( first < 0 )
-  first = stack.length + first;
-
-  if( _.numberIs( last ) )
-  if( last < 0 )
-  last = stack.length + last + 1;
-
-  /* */
-
-  // if( last-first === 1 )
-  // {
-  //   debugger;
-  //   // stack = stack[ first ];
-  //   //
-  //   // if( _.strIs( stack ) )
-  //   // {
-  //   //   stack = _._diagnosticStripPath( stack );
-  //   // }
-  //   //
-  //   // return stack;
-  // }
-
-  if( first !== 0 || last !== stack.length )
-  {
-    stack = stack.slice( first || 0,last );
-  }
-
-  /* */
-
-  stack = String( stack.join( '\n' ) );
-
-  return stack;
-}
-
-//
-
-function diagnosticStackPurify( stack )
-{
-
-  if( arguments.length !== 1 )
-  throw 'expects single arguments';
-  if( !_.strIs( stack ) )
-  throw 'expects string';
-
-  stack = stack.split( '\n' );
-
-  for( var s = 1 ; s < stack.length ; s++ )
-  if( /(\w)_entry(\W|$)/.test( stack[ s ] ) )
-  {
-    stack.splice( s+1,stack.length );
-    break;
-  }
-
-  for( var s = stack.length-1 ; s >= 1 ; s-- )
-  {
-    if( /(\W|^)__\w+/.test( stack[ s ] ) )
-    stack.splice( s,1 )
-  }
-
-  return stack.join( '\n' );
-}
-
-//
-
-// /*
-// _.diagnosticWatchObject
-// ({
-//   dst : self,
-//   names : 'wells',
-// });
-// */
-//
-// /*
-// _.diagnosticWatchObject
-// ({
-//   dst : _global_,
-//   names : 'logger',
-// });
-// */
-//
-// //function diagnosticWatchObject( dst,options )
-// function diagnosticWatchObject( o )
+// function diagnosticStackPurify( stack )
 // {
 //
-//   if( arguments.length === 2 )
+//   if( arguments.length !== 1 )
+//   throw 'expects single arguments';
+//   if( !_.strIs( stack ) )
+//   throw 'expects string';
+//
+//   stack = stack.split( '\n' );
+//
+//   for( var s = 1 ; s < stack.length ; s++ )
+//   if( /(\w)_entry(\W|$)/.test( stack[ s ] ) )
 //   {
-//     o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
+//     stack.splice( s+1,stack.length );
+//     break;
 //   }
 //
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
+//   for( var s = stack.length-1 ; s >= 1 ; s-- )
+//   {
+//     if( /(\W|^)__\w+/.test( stack[ s ] ) )
+//     stack.splice( s,1 )
+//   }
 //
-//   debugger;
+//   return stack.join( '\n' );
+// }
+//
+// //
+//
+// // /*
+// // _.diagnosticWatchObject
+// // ({
+// //   dst : self,
+// //   names : 'wells',
+// // });
+// // */
+// //
+// // /*
+// // _.diagnosticWatchObject
+// // ({
+// //   dst : _global_,
+// //   names : 'logger',
+// // });
+// // */
+// //
+// // //function diagnosticWatchObject( dst,options )
+// // function diagnosticWatchObject( o )
+// // {
+// //
+// //   if( arguments.length === 2 )
+// //   {
+// //     o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
+// //   }
+// //
+// //   _.assert( arguments.length === 1 || arguments.length === 2 );
+// //   _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
+// //
+// //   debugger;
+// //   if( o.names )
+// //   o.names = _.nameFielded( o.names );
+// //
+// //   Object.observe( o.dst,function( changes )
+// //   {
+// //     for( var c in changes )
+// //     {
+// //       var change = changes[ c ];
+// //       if( o.names )
+// //       if( !o.names[ change.name ] ) return;
+// //       console.log( change.type,change.name,change.object[ change.name ] );
+// //       //if( !change.object[ change.name ] )
+// //       //console.log( change.name,change.object[ change.name ] );
+// //     }
+// //     //debugger;
+// //   });
+// //
+// // }
+// //
+// // diagnosticWatchObject.defaults =
+// // {
+// //   dst : null,
+// //   names : null,
+// // }
+//
+// //
+//
+// /*
+//
+// _.diagnosticWatchFields
+// ({
+//   target : _global_,
+//   names : 'Uniforms',
+// });
+//
+// _.diagnosticWatchFields
+// ({
+//   target : state,
+//   names : 'filterColor',
+// });
+//
+// _.diagnosticWatchFields
+// ({
+//   target : _global_,
+//   names : 'Config',
+// });
+//
+// _.diagnosticWatchFields
+// ({
+//   target : _global_,
+//   names : 'logger',
+// });
+//
+// _.diagnosticWatchFields
+// ({
+//   target : self,
+//   names : 'catalogPath',
+// });
+//
+// */
+//
+// function diagnosticWatchFields( o )
+// {
+//
+//   if( arguments[ 1 ] !== undefined )
+//   o = { target : arguments[ 0 ], names : arguments[ 1 ] }
+//   o = _.routineOptions( diagnosticWatchFields,o );
+//
+//   if( o.names )
+//   o.names = _.nameFielded( o.names );
+//   else
+//   o.names = o.target;
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.objectLike( o.target ) );
+//   _.assert( _.objectLike( o.names ) );
+//
+//   for( var f in o.names ) ( function()
+//   {
+//
+//     var fieldName = f;
+//     var fieldSymbol = Symbol.for( f );
+//     //o.target[ fieldSymbol ] = o.target[ f ];
+//     var val = o.target[ f ];
+//
+//     /* */
+//
+//     function read()
+//     {
+//       //var result = o.target[ fieldSymbol ];
+//       var result = val;
+//       if( o.verbosity > 1 )
+//       console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
+//       else
+//       console.log( 'reading ' + fieldName );
+//       if( o.debug > 1 )
+//       debugger;
+//       return result;
+//     }
+//
+//     /* */
+//
+//     function write( src )
+//     {
+//       if( o.verbosity > 1 )
+//       console.log( 'writing ' + fieldName + ' ' + _.toStr( o.target[ fieldName ] ) + ' -> ' + _.toStr( src ) );
+//       else
+//       console.log( 'writing ' + fieldName );
+//       if( o.debug )
+//       debugger;
+//       //o.target[ fieldSymbol ] = src;
+//       val = src;
+//     }
+//
+//     /* */
+//
+//     if( o.debug )
+//     debugger;
+//
+//     if( o.verbosity > 1 )
+//     console.log( 'watching for',fieldName,'in',o.target );
+//     Object.defineProperty( o.target, fieldName,
+//     {
+//       enumerable : true,
+//       configurable : true,
+//       get : read,
+//       set : write,
+//     });
+//
+//   })();
+//
+// }
+//
+// diagnosticWatchFields.defaults =
+// {
+//   target : null,
+//   names : null,
+//   verbosity : 2,
+//   debug : 0,
+// }
+//
+// //
+//
+// function diagnosticProxyFields( o )
+// {
+//
+//   if( arguments[ 1 ] !== undefined )
+//   o = { target : arguments[ 0 ], names : arguments[ 1 ] }
+//   o = _.routineOptions( diagnosticWatchFields,o );
+//
 //   if( o.names )
 //   o.names = _.nameFielded( o.names );
 //
-//   Object.observe( o.dst,function( changes )
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.objectLike( o.target ) );
+//   _.assert( _.objectLike( o.names ) || o.names === null );
+//
+//   var validator =
 //   {
-//     for( var c in changes )
+//     set : function( obj, k, e )
 //     {
-//       var change = changes[ c ];
-//       if( o.names )
-//       if( !o.names[ change.name ] ) return;
-//       console.log( change.type,change.name,change.object[ change.name ] );
-//       //if( !change.object[ change.name ] )
-//       //console.log( change.name,change.object[ change.name ] );
+//       if( o.names && !( k in o.names ) )
+//       return;
+//       if( o.verbosity > 1 )
+//       console.log( 'writing ' + k + ' ' + _.toStr( o.target[ k ] ) + ' -> ' + _.toStr( e ) );
+//       else
+//       console.log( 'writing ' + k );
+//       if( o.debug )
+//       debugger;
+//       obj[ k ] = e;
+//       return true;
 //     }
-//     //debugger;
-//   });
+//   }
 //
+//   var result = new Proxy( o.target, validator );
+//   if( o.verbosity > 1 )
+//   console.log( 'watching for',o.target );
+//
+//   if( o.debug )
+//   debugger;
+//
+//   return result;
 // }
 //
-// diagnosticWatchObject.defaults =
+// diagnosticProxyFields.defaults =
 // {
-//   dst : null,
-//   names : null,
 // }
-
 //
-
-/*
-
-_.diagnosticWatchFields
-({
-  target : _global_,
-  names : 'Uniforms',
-});
-
-_.diagnosticWatchFields
-({
-  target : state,
-  names : 'filterColor',
-});
-
-_.diagnosticWatchFields
-({
-  target : _global_,
-  names : 'Config',
-});
-
-_.diagnosticWatchFields
-({
-  target : _global_,
-  names : 'logger',
-});
-
-_.diagnosticWatchFields
-({
-  target : self,
-  names : 'catalogPath',
-});
-
-*/
-
-function diagnosticWatchFields( o )
-{
-
-  if( arguments[ 1 ] !== undefined )
-  o = { target : arguments[ 0 ], names : arguments[ 1 ] }
-  o = _.routineOptions( diagnosticWatchFields,o );
-
-  if( o.names )
-  o.names = _.nameFielded( o.names );
-  else
-  o.names = o.target;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( o.target ) );
-  _.assert( _.objectLike( o.names ) );
-
-  for( var f in o.names ) ( function()
-  {
-
-    var fieldName = f;
-    var fieldSymbol = Symbol.for( f );
-    //o.target[ fieldSymbol ] = o.target[ f ];
-    var val = o.target[ f ];
-
-    /* */
-
-    function read()
-    {
-      //var result = o.target[ fieldSymbol ];
-      var result = val;
-      if( o.verbosity > 1 )
-      console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
-      else
-      console.log( 'reading ' + fieldName );
-      if( o.debug > 1 )
-      debugger;
-      return result;
-    }
-
-    /* */
-
-    function write( src )
-    {
-      if( o.verbosity > 1 )
-      console.log( 'writing ' + fieldName + ' ' + _.toStr( o.target[ fieldName ] ) + ' -> ' + _.toStr( src ) );
-      else
-      console.log( 'writing ' + fieldName );
-      if( o.debug )
-      debugger;
-      //o.target[ fieldSymbol ] = src;
-      val = src;
-    }
-
-    /* */
-
-    if( o.debug )
-    debugger;
-
-    if( o.verbosity > 1 )
-    console.log( 'watching for',fieldName,'in',o.target );
-    Object.defineProperty( o.target, fieldName,
-    {
-      enumerable : true,
-      configurable : true,
-      get : read,
-      set : write,
-    });
-
-  })();
-
-}
-
-diagnosticWatchFields.defaults =
-{
-  target : null,
-  names : null,
-  verbosity : 2,
-  debug : 0,
-}
-
+// diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
 //
-
-function diagnosticProxyFields( o )
-{
-
-  if( arguments[ 1 ] !== undefined )
-  o = { target : arguments[ 0 ], names : arguments[ 1 ] }
-  o = _.routineOptions( diagnosticWatchFields,o );
-
-  if( o.names )
-  o.names = _.nameFielded( o.names );
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( o.target ) );
-  _.assert( _.objectLike( o.names ) || o.names === null );
-
-  var validator =
-  {
-    set : function( obj, k, e )
-    {
-      if( o.names && !( k in o.names ) )
-      return;
-      if( o.verbosity > 1 )
-      console.log( 'writing ' + k + ' ' + _.toStr( o.target[ k ] ) + ' -> ' + _.toStr( e ) );
-      else
-      console.log( 'writing ' + k );
-      if( o.debug )
-      debugger;
-      obj[ k ] = e;
-      return true;
-    }
-  }
-
-  var result = new Proxy( o.target, validator );
-  if( o.verbosity > 1 )
-  console.log( 'watching for',o.target );
-
-  if( o.debug )
-  debugger;
-
-  return result;
-}
-
-diagnosticProxyFields.defaults =
-{
-}
-
-diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
-
+// //
 //
-
-function beep()
-{
-  console.log( '\x07' );
-}
-
+// function beep()
+// {
+//   console.log( '\x07' );
+// }
 //
-
-/**
- * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion failed'.
- * Also generates error using message(s) or existing error object(s) passed after first argument.
- *
- * @param {*} condition - condition to check.
- * @param {String|Error} [ msgs ] - error messages for generated exception.
- *
- * @example
- * var x = 1;
- * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
- *
- * // caught eval (<anonymous>:2:8)
- * // incorrect variable type-> number expects string
- * // Error
- * //   at _err (file:///.../wTools/staging/wTools.s:3707)
- * //   at assert (file://.../wTools/staging/wTools.s:4041)
- * //   at add (<anonymous>:2)
- * //   at <anonymous>:1
- *
- * @example
- * function add( x, y )
- * {
- *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
- *   return x + y;
- * }
- * add();
- *
- * // caught add (<anonymous>:3:14)
- * // incorrect arguments count
- * // Error
- * //   at _err (file:///.../wTools/staging/wTools.s:3707)
- * //   at assert (file://.../wTools/staging/wTools.s:4035)
- * //   at add (<anonymous>:3:14)
- * //   at <anonymous>:6
- *
- * @example
- *   function divide ( x, y )
- *   {
- *      wTools.assert( y != 0, 'divide by zero' );
- *      return x / y;
- *   }
- *   divide( 3, 0 );
- *
- * // caught     at divide (<anonymous>:2:29)
- * // divide by zero
- * // Error
- * //   at _err (file:///.../wTools/staging/wTools.s:1418:13)
- * //   at wTools.errLog (file://.../wTools/staging/wTools.s:1462:13)
- * //   at divide (<anonymous>:2:29)
- * //   at <anonymous>:1:1
- * @throws {Error} If passed condition( condition ) fails.
- * @function assert
- * @memberof wTools
- */
-
-function _assertDebugger( condition )
-{
-  debugger;
-}
-
-function assert( condition )
-{
-
-  /*return;*/
-
-  if( DEBUG === false )
-  return;
-
-  if( !condition )
-  {
-    _assertDebugger();
-    if( arguments.length === 1 )
-    throw _err
-    ({
-      args : [ 'Assertion failed' ],
-      level : 2,
-    });
-    else if( arguments.length === 2 )
-    throw _err
-    ({
-      args : [ arguments[ 1 ] ],
-      level : 2,
-    });
-    else
-    throw _err
-    ({
-      args : _arraySlice( arguments,1 ),
-      level : 2,
-    });
-  }
-
-  return;
-}
-
+// //
 //
-
-function assertWithoutBreakpoint( condition )
-{
-
-  /*return;*/
-
-  if( DEBUG === false )
-  return;
-
-  if( !condition )
-  {
-    if( arguments.length === 1 )
-    throw _err
-    ({
-      args : [ 'Assertion failed' ],
-      level : 2,
-    });
-    else if( arguments.length === 2 )
-    throw _err
-    ({
-      args : [ arguments[ 1 ] ],
-      level : 2,
-    });
-    else
-    throw _err
-    ({
-      args : _arraySlice( arguments,1 ),
-      level : 2,
-    });
-  }
-
-  return;
-}
-
+// /**
+//  * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+//  * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion failed'.
+//  * Also generates error using message(s) or existing error object(s) passed after first argument.
+//  *
+//  * @param {*} condition - condition to check.
+//  * @param {String|Error} [ msgs ] - error messages for generated exception.
+//  *
+//  * @example
+//  * var x = 1;
+//  * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
+//  *
+//  * // caught eval (<anonymous>:2:8)
+//  * // incorrect variable type-> number expects string
+//  * // Error
+//  * //   at _err (file:///.../wTools/staging/Base.s:3707)
+//  * //   at assert (file://.../wTools/staging/Base.s:4041)
+//  * //   at add (<anonymous>:2)
+//  * //   at <anonymous>:1
+//  *
+//  * @example
+//  * function add( x, y )
+//  * {
+//  *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
+//  *   return x + y;
+//  * }
+//  * add();
+//  *
+//  * // caught add (<anonymous>:3:14)
+//  * // incorrect arguments count
+//  * // Error
+//  * //   at _err (file:///.../wTools/staging/Base.s:3707)
+//  * //   at assert (file://.../wTools/staging/Base.s:4035)
+//  * //   at add (<anonymous>:3:14)
+//  * //   at <anonymous>:6
+//  *
+//  * @example
+//  *   function divide ( x, y )
+//  *   {
+//  *      wTools.assert( y != 0, 'divide by zero' );
+//  *      return x / y;
+//  *   }
+//  *   divide( 3, 0 );
+//  *
+//  * // caught     at divide (<anonymous>:2:29)
+//  * // divide by zero
+//  * // Error
+//  * //   at _err (file:///.../wTools/staging/Base.s:1418:13)
+//  * //   at wTools.errLog (file://.../wTools/staging/Base.s:1462:13)
+//  * //   at divide (<anonymous>:2:29)
+//  * //   at <anonymous>:1:1
+//  * @throws {Error} If passed condition( condition ) fails.
+//  * @function assert
+//  * @memberof wTools
+//  */
 //
-
-/**
- * Checks if map passed by argument( src ) not contains undefined properties. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If routine found undefined property it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed after first argument.
- *
- * @param {Object} src - source map.
- * @param {String} [ msgs ] - error message for generated exception.
- *
- * @example
- * var map = { a : '1', b : undefined };
- * wTools.assertMapHasNoUndefine( map );
- *
- * // caught <anonymous>:2:8
- * // Object  should have no undefines, but has : b
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasNoUndefine (file:///.../wTools/staging/wTools.s:4087)
- * // at <anonymous>:2
- *
- * @example
- * var map = { a : undefined, b : '1' };
- * wTools.assertMapHasNoUndefine( map, '"map"');
- *
- * // caught <anonymous>:2:8
- * // Object "map" should have no undefines, but has : a
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasNoUndefine (file:///.../wTools/staging/wTools.s:4087)
- * // at <anonymous>:2
- *
- * @function assertMapHasNoUndefine
- * @throws {Exception} If no arguments provided.
- * @throws {Exception} If map( src ) contains undefined property.
- * @memberof wTools
- *
- */
-
-function assertMapHasNoUndefine( src )
-{
-
-  if( DEBUG === false )
-  return;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 )
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-
-  for( var s in src )
-  if( src[ s ] === undefined )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
-      level : 2,
-    });
-  }
-
-}
-
+// function _assertDebugger( condition )
+// {
+//   debugger;
+// }
 //
-
-/**
- * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
- *
- * @param {Object} src - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
- *
- * @example
- * var a = { a : 1, c : 3 };
- * var b = { a : 2, b : 3 };
- * wTools.assertMapHasOnly( a, b );
- *
- * // caught <anonymous>:3:8
- * // Object should have no fields : c
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4188)
- * // at <anonymous>:3
- *
- * @example
- * var x = { d : 1 };
- * var a = Object.create( x );
- * var b = { a : 1 };
- * wTools.assertMapHasOnly( a, b, 'message' )
- *
- * // caught <anonymous>:4:8
- * // message Object should have no fields : d
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasOnly (file:///.../wTools/staging/wTools.s:4188)
- * // at <anonymous>:4
- *
- * @function assertMapHasOnly
- * @throws {Exception} If map( src ) contains unique property.
- * @memberof wTools
- *
- */
-
-function assertMapHasOnly( src )
-{
-
-  if( DEBUG === false )
-  return;
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var but = Object.keys( _.mapBut.apply( this,args ) );
-
-  if( but.length > 0 )
-  {
-    if( _.strJoin && !hasMsg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] + '\n' : '','Object should have no fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
+// function assert( condition )
+// {
 //
-
-function assertMapHasOnlyWithUndefines( src )
-{
-
-  if( DEBUG === false )
-  return;
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var but = Object.keys( _.mapButWithUndefines.apply( this,args ) );
-
-  if( but.length > 0 )
-  {
-    if( _.strJoin && !hasMsg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
+//   /*return;*/
 //
-
-/**
- * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
- *
- * @param {Object} src - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
- *
- * @example
- * var x = { d : 1 };
- * var a = Object.create( x );
- * a.a = 5;
- * var b = { a : 2 };
- * wTools.assertMapOwnOnly( a, b ); //no exception
- *
- * @example
- * var a = { d : 1 };
- * var b = { a : 2 };
- * wTools.assertMapOwnOnly( a, b );
- *
- * // caught <anonymous>:3:10
- * // Object should have no own fields : d
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapOwnOnly (file:///.../wTools/staging/wTools.s:4215)
- * // at <anonymous>:3
- *
- * @example
- * var a = { x : 0, y : 2 };
- * var b = { c : 0, d : 3};
- * var c = { a : 1 };
- * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
- *
- * // caught <anonymous>:4:8
- * // error msg Object should have no own fields : x,y
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapOwnOnly (file:///.../wTools/staging/wTools.s:4215)
- * // at <anonymous>:4
- *
- * @function assertMapOwnOnly
- * @throws {Exception} If map( src ) contains unique property.
- * @memberof wTools
- *
- */
-
-function assertMapOwnOnly( src )
-{
-
-  if( DEBUG === false )
-  return;
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var but = Object.keys( _.mapOwnBut.apply( this,args ) );
-
-  if( but.length > 0 )
-  {
-    if( _.strJoin && !hasMsg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
+//   if( DEBUG === false )
+//   return;
 //
-
-/**
- * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
- *
- * @param {Object} src - source map.
- * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
- *
- * @example
- * var x = { a : 1 };
- * var a = Object.create( x );
- * var b = { a : 2 };
- * wTools.assertMapHasAll( a, b );// no exception
- *
- * @example
- * var a = { d : 1 };
- * var b = { a : 2 };
- * wTools.assertMapHasAll( a, b );
- *
- * // caught <anonymous>:3:10
- * // Object should have fields : a
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4242)
- * // at <anonymous>:3
- *
- * @example
- * var a = { x : 0, y : 2 };
- * var b = { x : 0, d : 3};
- * wTools.assertMapHasAll( a, b, 'error msg' );
- *
- * // caught <anonymous>:4:9
- * // error msg Object should have fields : d
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4242)
- * // at <anonymous>:3
- *
- * @function assertMapHasAll
- * @throws {Exception} If map( src ) not contains some properties from argument( all ).
- * @memberof wTools
- *
- */
-
-function assertMapHasAll( src,all,msg )
-{
-
-  if( DEBUG === false )
-  return;
-
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( arguments.length === 2 || _.strIs( msg ) );
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var but = Object.keys( _.mapBut( all,src ) );
-
-  if( but.length > 0 )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
+//   if( !condition )
+//   {
+//     _assertDebugger();
+//     if( arguments.length === 1 )
+//     throw _err
+//     ({
+//       args : [ 'Assertion failed' ],
+//       level : 2,
+//     });
+//     else if( arguments.length === 2 )
+//     throw _err
+//     ({
+//       args : [ arguments[ 1 ] ],
+//       level : 2,
+//     });
+//     else
+//     throw _err
+//     ({
+//       args : _arraySlice( arguments,1 ),
+//       level : 2,
+//     });
+//   }
 //
-
-/**
- * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
- *
- * @param {Object} src - source map.
- * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
- *
- * @example
- * var a = { a : 1 };
- * var b = { a : 2 };
- * wTools.assertMapOwnAll( a, b );// no exception
- *
- * @example
- * var a = { a : 1 };
- * var b = { a : 2, b : 2 }
- * wTools.assertMapOwnAll( a, b );
- *
- * // caught <anonymous>:3:8
- * // Object should have own fields : b
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4269)
- * // at <anonymous>:3
- *
- * @example
- * var a = { x : 0 };
- * var b = { x : 1, y : 0};
- * wTools.assertMapHasAll( a, b, 'error msg' );
- *
- * // caught <anonymous>:4:9
- * // error msg Object should have fields : y
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4269)
- * // at <anonymous>:3
- *
- * @function assertMapOwnAll
- * @throws {Exception} If map( src ) not contains some properties from argument( all ).
- * @memberof wTools
- *
- */
-
-function assertMapOwnAll( src,all,msg )
-{
-
-  if( DEBUG === false )
-  return;
-
-  _assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( arguments.length === 2 || _.strIs( msg ) );
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var but = Object.keys( _.mapOwnBut( all,src ) );
-
-  if( but.length > 0 )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have own fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
+//   return;
+// }
 //
-
-function assertInstanceOrClass( _Self,_this )
-{
-
-  _.assert( arguments.length === 2 );
-  _.assert
-  (
-    _this === _Self ||
-    _this instanceof _Self ||
-    Object.isPrototypeOf.call( _Self,_this ) ||
-    Object.isPrototypeOf.call( _Self,_this.prototype )
-  );
-
-}
-
+// //
 //
-
-function assertOwnNoConstructor( ins )
-{
-  _.assert( _.objectLikeOrRoutine( ins ) );
-  var args = _.arraySlice( arguments );
-  args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_hasOwnProperty.call( ins,'constructor' ) );
-  _.assert.call( _,args );
-}
-
+// function assertWithoutBreakpoint( condition )
+// {
 //
-
-function assertNotTested( src )
-{
-
-  debugger;
-  _.assert( false,'not tested : ' + stack( 1 ) );
-
-}
-
+//   /*return;*/
 //
-
-/**
- * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
- * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
- *
- * @param {Object} src - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msg ] - error message as last argument.
- *
- * @example
- * var a = { a : 1 };
- * var b = { b : 2 };
- * wTools.assertMapHasNone( a, b );// no exception
- *
- * @example
- * var x = { a : 1 };
- * var a = Object.create( x );
- * var b = { a : 2, b : 2 }
- * wTools.assertMapHasNone( a, b );
- *
- * // caught <anonymous>:4:8
- * // Object should have no fields : a
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapHasAll (file:///.../wTools/staging/wTools.s:4518)
- * // at <anonymous>:4
- *
- * @example
- * var a = { x : 0, y : 1 };
- * var b = { x : 1, y : 0 };
- * wTools.assertMapHasNone( a, b, 'error msg' );
- *
- * // caught <anonymous>:3:9
- * // error msg Object should have no fields : x,y
- * //
- * // at _err (file:///.../wTools/staging/wTools.s:3707)
- * // at assertMapOwnAll (file:///.../wTools/staging/wTools.s:4518)
- * // at <anonymous>:3
- *
- * @function assertMapHasNone
- * @throws {Exception} If map( src ) contains some properties from other map(s).
- * @memberof wTools
- *
- */
-
-function assertMapHasNone( src )
-{
-
-  if( DEBUG === false )
-  return;
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var none = _.mapScreens.apply( this,args );
-
-  // for( var n in none )
-  // {
-  //   for( var a = 1 ; a < arguments.length ; a++ )
-  //   if( arguments[ a ][ n ] !== src[ n ] )
-  //   break;
-  //   if( a === arguments.length )
-  //   delete none[ n ];
-  // }
-
-  var keys = Object.keys( none );
-  if( keys.length )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
+//   if( DEBUG === false )
+//   return;
 //
-
-function assertMapOwnNone( src,none )
-{
-
-  if( DEBUG === false )
-  return;
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  if( hasMsg ) l -= 1;
-
-  if( l > 2 )
-  {
-    var args =_ArraySlice.call( arguments,1,l ); debugger;
-    none = _.mapCopy.apply( this,args );
-  }
-
-  var has = Object.keys( _._mapScreen
-  ({
-    filter : _.field.srcOwn(),
-    screenObjects : none,
-    srcObjects : src,
-  }));
-
-  if( has.length )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',has.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
+//   if( !condition )
+//   {
+//     if( arguments.length === 1 )
+//     throw _err
+//     ({
+//       args : [ 'Assertion failed' ],
+//       level : 2,
+//     });
+//     else if( arguments.length === 2 )
+//     throw _err
+//     ({
+//       args : [ arguments[ 1 ] ],
+//       level : 2,
+//     });
+//     else
+//     throw _err
+//     ({
+//       args : _arraySlice( arguments,1 ),
+//       level : 2,
+//     });
+//   }
 //
-
-/**
- * If condition failed, routine prints warning messages passed after condition argument
- * @example
-  function checkAngles( a, b, c )
-  {
-     wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
-  };
-  checkAngles( 120, 23, 130 );
-
- // triangle with that angles does not exists
- * @param condition Condition to check.
- * @param messages messages to print.
- * @function assertWarn
- * @memberof wTools
- */
-
-function assertWarn( condition )
-{
-
-  if( DEBUG )
-  return;
-
-  if( !condition )
-  {
-    console.warn.apply( console,[].slice.call( arguments,1 ) );
-  }
-
-}
+//   return;
+// }
+//
+// //
+//
+// /**
+//  * Checks if map passed by argument( src ) not contains undefined properties. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+//  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
+//  * Also generates error using message passed after first argument.
+//  *
+//  * @param {Object} src - source map.
+//  * @param {String} [ msgs ] - error message for generated exception.
+//  *
+//  * @example
+//  * var map = { a : '1', b : undefined };
+//  * wTools.assertMapHasNoUndefine( map );
+//  *
+//  * // caught <anonymous>:2:8
+//  * // Object  should have no undefines, but has : b
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+//  * // at <anonymous>:2
+//  *
+//  * @example
+//  * var map = { a : undefined, b : '1' };
+//  * wTools.assertMapHasNoUndefine( map, '"map"');
+//  *
+//  * // caught <anonymous>:2:8
+//  * // Object "map" should have no undefines, but has : a
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+//  * // at <anonymous>:2
+//  *
+//  * @function assertMapHasNoUndefine
+//  * @throws {Exception} If no arguments provided.
+//  * @throws {Exception} If map( src ) contains undefined property.
+//  * @memberof wTools
+//  *
+//  */
+//
+// function assertMapHasNoUndefine( src )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 )
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//
+//   for( var s in src )
+//   if( src[ s ] === undefined )
+//   {
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// /**
+//  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
+//  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+//  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
+//  * Also generates error using message passed as last argument.
+//  *
+//  * @param {Object} src - source map.
+//  * @param {...Object} target - object(s) to compare with.
+//  * @param {String} [ msgs ] - error message as last argument.
+//  *
+//  * @example
+//  * var a = { a : 1, c : 3 };
+//  * var b = { a : 2, b : 3 };
+//  * wTools.assertMapHasOnly( a, b );
+//  *
+//  * // caught <anonymous>:3:8
+//  * // Object should have no fields : c
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+//  * // at <anonymous>:3
+//  *
+//  * @example
+//  * var x = { d : 1 };
+//  * var a = Object.create( x );
+//  * var b = { a : 1 };
+//  * wTools.assertMapHasOnly( a, b, 'message' )
+//  *
+//  * // caught <anonymous>:4:8
+//  * // message Object should have no fields : d
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+//  * // at <anonymous>:4
+//  *
+//  * @function assertMapHasOnly
+//  * @throws {Exception} If map( src ) contains unique property.
+//  * @memberof wTools
+//  *
+//  */
+//
+// function assertMapHasOnly( src )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+//   var but = Object.keys( _.mapBut.apply( this,args ) );
+//
+//   if( but.length > 0 )
+//   {
+//     if( _.strJoin && !hasMsg )
+//     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] + '\n' : '','Object should have no fields :',but.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// function assertMapHasOnlyWithUndefines( src )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+//   var but = Object.keys( _.mapButWithUndefines.apply( this,args ) );
+//
+//   if( but.length > 0 )
+//   {
+//     if( _.strJoin && !hasMsg )
+//     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// /**
+//  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
+//  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+//  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
+//  * Also generates error using message passed as last argument.
+//  *
+//  * @param {Object} src - source map.
+//  * @param {...Object} target - object(s) to compare with.
+//  * @param {String} [ msgs ] - error message as last argument.
+//  *
+//  * @example
+//  * var x = { d : 1 };
+//  * var a = Object.create( x );
+//  * a.a = 5;
+//  * var b = { a : 2 };
+//  * wTools.assertMapOwnOnly( a, b ); //no exception
+//  *
+//  * @example
+//  * var a = { d : 1 };
+//  * var b = { a : 2 };
+//  * wTools.assertMapOwnOnly( a, b );
+//  *
+//  * // caught <anonymous>:3:10
+//  * // Object should have no own fields : d
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+//  * // at <anonymous>:3
+//  *
+//  * @example
+//  * var a = { x : 0, y : 2 };
+//  * var b = { c : 0, d : 3};
+//  * var c = { a : 1 };
+//  * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
+//  *
+//  * // caught <anonymous>:4:8
+//  * // error msg Object should have no own fields : x,y
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+//  * // at <anonymous>:4
+//  *
+//  * @function assertMapOwnOnly
+//  * @throws {Exception} If map( src ) contains unique property.
+//  * @memberof wTools
+//  *
+//  */
+//
+// function assertMapOwnOnly( src )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+//   var but = Object.keys( _.mapOwnBut.apply( this,args ) );
+//
+//   if( but.length > 0 )
+//   {
+//     if( _.strJoin && !hasMsg )
+//     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// /**
+//  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
+//  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+//  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
+//  * Also generates error using message passed as last argument( msg ).
+//  *
+//  * @param {Object} src - source map.
+//  * @param {Object} all - object to compare with.
+//  * @param {String} [ msgs ] - error message.
+//  *
+//  * @example
+//  * var x = { a : 1 };
+//  * var a = Object.create( x );
+//  * var b = { a : 2 };
+//  * wTools.assertMapHasAll( a, b );// no exception
+//  *
+//  * @example
+//  * var a = { d : 1 };
+//  * var b = { a : 2 };
+//  * wTools.assertMapHasAll( a, b );
+//  *
+//  * // caught <anonymous>:3:10
+//  * // Object should have fields : a
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+//  * // at <anonymous>:3
+//  *
+//  * @example
+//  * var a = { x : 0, y : 2 };
+//  * var b = { x : 0, d : 3};
+//  * wTools.assertMapHasAll( a, b, 'error msg' );
+//  *
+//  * // caught <anonymous>:4:9
+//  * // error msg Object should have fields : d
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+//  * // at <anonymous>:3
+//  *
+//  * @function assertMapHasAll
+//  * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+//  * @memberof wTools
+//  *
+//  */
+//
+// function assertMapHasAll( src,all,msg )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   _.assert( arguments.length === 2 || _.strIs( msg ) );
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   var but = Object.keys( _.mapBut( all,src ) );
+//
+//   if( but.length > 0 )
+//   {
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have fields :',but.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// /**
+//  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
+//  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+//  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
+//  * Also generates error using message passed as last argument( msg ).
+//  *
+//  * @param {Object} src - source map.
+//  * @param {Object} all - object to compare with.
+//  * @param {String} [ msgs ] - error message.
+//  *
+//  * @example
+//  * var a = { a : 1 };
+//  * var b = { a : 2 };
+//  * wTools.assertMapOwnAll( a, b );// no exception
+//  *
+//  * @example
+//  * var a = { a : 1 };
+//  * var b = { a : 2, b : 2 }
+//  * wTools.assertMapOwnAll( a, b );
+//  *
+//  * // caught <anonymous>:3:8
+//  * // Object should have own fields : b
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4269)
+//  * // at <anonymous>:3
+//  *
+//  * @example
+//  * var a = { x : 0 };
+//  * var b = { x : 1, y : 0};
+//  * wTools.assertMapHasAll( a, b, 'error msg' );
+//  *
+//  * // caught <anonymous>:4:9
+//  * // error msg Object should have fields : y
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+//  * // at <anonymous>:3
+//  *
+//  * @function assertMapOwnAll
+//  * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+//  * @memberof wTools
+//  *
+//  */
+//
+// function assertMapOwnAll( src,all,msg )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   _.assert( arguments.length === 2 || _.strIs( msg ) );
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   var but = Object.keys( _.mapOwnBut( all,src ) );
+//
+//   if( but.length > 0 )
+//   {
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have own fields :',but.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// function assertInstanceOrClass( _Self,_this )
+// {
+//
+//   _.assert( arguments.length === 2 );
+//   _.assert
+//   (
+//     _this === _Self ||
+//     _this instanceof _Self ||
+//     Object.isPrototypeOf.call( _Self,_this ) ||
+//     Object.isPrototypeOf.call( _Self,_this.prototype )
+//   );
+//
+// }
+//
+// //
+//
+// function assertOwnNoConstructor( ins )
+// {
+//   _.assert( _.objectLikeOrRoutine( ins ) );
+//   var args = _.arraySlice( arguments );
+//   args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_hasOwnProperty.call( ins,'constructor' ) );
+//   _.assert.call( _,args );
+// }
+//
+// //
+//
+// function assertNotTested( src )
+// {
+//
+//   debugger;
+//   _.assert( false,'not tested : ' + stack( 1 ) );
+//
+// }
+//
+// //
+//
+// /**
+//  * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
+//  * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+//  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
+//  * Also generates error using message passed as last argument( msg ).
+//  *
+//  * @param {Object} src - source map.
+//  * @param {...Object} target - object(s) to compare with.
+//  * @param {String} [ msg ] - error message as last argument.
+//  *
+//  * @example
+//  * var a = { a : 1 };
+//  * var b = { b : 2 };
+//  * wTools.assertMapHasNone( a, b );// no exception
+//  *
+//  * @example
+//  * var x = { a : 1 };
+//  * var a = Object.create( x );
+//  * var b = { a : 2, b : 2 }
+//  * wTools.assertMapHasNone( a, b );
+//  *
+//  * // caught <anonymous>:4:8
+//  * // Object should have no fields : a
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4518)
+//  * // at <anonymous>:4
+//  *
+//  * @example
+//  * var a = { x : 0, y : 1 };
+//  * var b = { x : 1, y : 0 };
+//  * wTools.assertMapHasNone( a, b, 'error msg' );
+//  *
+//  * // caught <anonymous>:3:9
+//  * // error msg Object should have no fields : x,y
+//  * //
+//  * // at _err (file:///.../wTools/staging/Base.s:3707)
+//  * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4518)
+//  * // at <anonymous>:3
+//  *
+//  * @function assertMapHasNone
+//  * @throws {Exception} If map( src ) contains some properties from other map(s).
+//  * @memberof wTools
+//  *
+//  */
+//
+// function assertMapHasNone( src )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+//   var none = _.mapScreens.apply( this,args );
+//
+//   // for( var n in none )
+//   // {
+//   //   for( var a = 1 ; a < arguments.length ; a++ )
+//   //   if( arguments[ a ][ n ] !== src[ n ] )
+//   //   break;
+//   //   if( a === arguments.length )
+//   //   delete none[ n ];
+//   // }
+//
+//   var keys = Object.keys( none );
+//   if( keys.length )
+//   {
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// function assertMapOwnNone( src,none )
+// {
+//
+//   if( DEBUG === false )
+//   return;
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   if( hasMsg ) l -= 1;
+//
+//   if( l > 2 )
+//   {
+//     var args =_ArraySlice.call( arguments,1,l ); debugger;
+//     none = _.mapCopy.apply( this,args );
+//   }
+//
+//   var has = Object.keys( _._mapScreen
+//   ({
+//     filter : _.field.srcOwn(),
+//     screenObjects : none,
+//     srcObjects : src,
+//   }));
+//
+//   if( has.length )
+//   {
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',has.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
+//
+// //
+//
+// /**
+//  * If condition failed, routine prints warning messages passed after condition argument
+//  * @example
+//   function checkAngles( a, b, c )
+//   {
+//      wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+//   };
+//   checkAngles( 120, 23, 130 );
+//
+//  // triangle with that angles does not exists
+//  * @param condition Condition to check.
+//  * @param messages messages to print.
+//  * @function assertWarn
+//  * @memberof wTools
+//  */
+//
+// function assertWarn( condition )
+// {
+//
+//   if( DEBUG )
+//   return;
+//
+//   if( !condition )
+//   {
+//     console.warn.apply( console,[].slice.call( arguments,1 ) );
+//   }
+//
+// }
 
 // --
 // type test
@@ -6040,7 +5950,8 @@ function argumentsIs( src )
 
 function vectorIs( src )
 {
-  if( src && src._vectorBuffer )
+  // debugger;
+  if( src && _.objectIs( src ) && ( '_vectorBuffer' in src ) )
   return true;
   else return false;
 }
@@ -6329,7 +6240,7 @@ function typeOf( src )
   }
   else if( src.constructor )
   {
-    _assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
+    _.assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
     return src.constructor;
   }
   else
@@ -6575,8 +6486,8 @@ function numbersFrom( src )
 function numberRandomInRange( range )
 {
 
-  _assert( arguments.length === 1 && _.arrayIs( range ),'numberRandomInRange :','expects range( array ) as argument' );
-  _assert( range.length === 2 );
+  _.assert( arguments.length === 1 && _.arrayIs( range ),'numberRandomInRange :','expects range( array ) as argument' );
+  _.assert( range.length === 2 );
 
   return _random()*( range[ 1 ] - range[ 0 ] ) + range[ 0 ];
 
@@ -6593,8 +6504,8 @@ function numberRandomInt( range )
   range = range;
   else _.assert( 0,'numberRandomInt','expects range' );
 
-  _assert( _.arrayIs( range ) || _.numberIs( range ) );
-  _assert( range.length === 2 );
+  _.assert( _.arrayIs( range ) || _.numberIs( range ) );
+  _.assert( range.length === 2 );
 
   var result = Math.floor( range[ 0 ] + Math.random()*( range[ 1 ] - range[ 0 ] ) );
 
@@ -7806,10 +7717,10 @@ function regexpMakeObject( src,defaultMode )
 function _routineBind( o )
 {
 
-  _assert( arguments.length === 1 );
-  _assert( _.boolIs( o.seal ) );
-  _assert( _.routineIs( o.routine ),'expects routine' );
-  _assert( _.arrayLike( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
+  _.assert( arguments.length === 1 );
+  _.assert( _.boolIs( o.seal ) );
+  _.assert( _.routineIs( o.routine ),'expects routine' );
+  _.assert( _.arrayLike( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
 
   // if( _global_.wConsequence )
   // if( wConsequence.prototype.got === o.routine )
@@ -7926,8 +7837,8 @@ function _routineBind( o )
 function routineBind( routine, context, args )
 {
 
-  _assert( _.routineIs( routine ),'routineBind :','first argument must be a routine' );
-  _assert( arguments.length <= 3,'routineBind :','expects 3 or less arguments' );
+  _.assert( _.routineIs( routine ),'routineBind :','first argument must be a routine' );
+  _.assert( arguments.length <= 3,'routineBind :','expects 3 or less arguments' );
 
   return _routineBind
   ({
@@ -7979,8 +7890,8 @@ function routineBind( routine, context, args )
 function routineJoin( context, routine, args )
 {
 
-  _assert( _.routineIs( routine ),'routineJoin :','second argument must be a routine' );
-  _assert( arguments.length <= 3,'routineJoin :','expects 3 or less arguments' );
+  _.assert( _.routineIs( routine ),'routineJoin :','second argument must be a routine' );
+  _.assert( arguments.length <= 3,'routineJoin :','expects 3 or less arguments' );
 
   return _routineBind
   ({
@@ -8018,8 +7929,8 @@ function routineJoin( context, routine, args )
 function routineSeal( context, routine, args )
 {
 
-  _assert( _.routineIs( routine ),'routineSeal :','second argument must be a routine' );
-  _assert( arguments.length <= 3,'routineSeal :','expects 3 or less arguments' );
+  _.assert( _.routineIs( routine ),'routineSeal :','second argument must be a routine' );
+  _.assert( arguments.length <= 3,'routineSeal :','expects 3 or less arguments' );
 
   return _routineBind
   ({
@@ -8054,7 +7965,7 @@ function routineDelayed( delay,routine )
 
   if( arguments.length > 2 )
   {
-    _assert( arguments.length <= 4 );
+    _.assert( arguments.length <= 4 );
     routine = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
   }
 
@@ -8100,7 +8011,7 @@ function routinesJoin()
     if( _.routineIs( routines ) )
     routines = [ routines ];
 
-    result = _.entityNew( routines );
+    result = _.entityMake( routines );
 
   }
 
@@ -8196,7 +8107,7 @@ function routinesCall()
     if( _.routineIs( routines ) )
     routines = [ routines ];
 
-    result = _.entityNew( routines );
+    result = _.entityMake( routines );
 
   }
 
@@ -8543,8 +8454,8 @@ function _comparatorFromMapper( mapper )
 function timeReady( onReady )
 {
 
-  _assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-  _assert( _.numberIs( arguments[ 0 ] ) || _.routineIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined );
+  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIs( arguments[ 0 ] ) || _.routineIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined );
 
   var timeOut = 0;
   if( _.numberIs( arguments[ 0 ] ) )
@@ -8625,7 +8536,7 @@ function timeOnce( delay,onBegin,onEnd )
   if( _.objectIs( delay ) )
   {
     options = delay;
-    _assert( arguments.length === 1 );
+    _.assert( arguments.length === 1 );
     _.assertMapHasOnly( options,optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;
@@ -8633,12 +8544,12 @@ function timeOnce( delay,onBegin,onEnd )
   }
   else
   {
-    _assert( 2 <= arguments.length && arguments.length <= 3 );
+    _.assert( 2 <= arguments.length && arguments.length <= 3 );
   }
 
-  _assert( delay >= 0 );
-  _assert( _.atomicIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
-  _assert( _.atomicIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
+  _.assert( delay >= 0 );
+  _.assert( _.atomicIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
+  _.assert( _.atomicIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
 
   return function timeOnce()
   {
@@ -8835,7 +8746,7 @@ var timeSoon = typeof module === 'undefined' ? function( h ){ return setTimeout(
  * // Consequence returned by 'routine' resolves message in 5000 ms, but timeOutError will do the same in 2500 ms and 'timeOut'.
  * routine()
  * .eitherThenSplit( _.timeOutError( timeOut ) )
- * .got( function ( err, got )
+ * .got( function( err, got )
  * {
  *   if( err )
  *   throw err;
@@ -8886,11 +8797,11 @@ function timePeriodic( delay,onReady )
   // if( arguments.length > 2 )
   // {
   //   throw _.err( 'Not tested' );
-  //   _assert( arguments.length <= 4 );
+  //   _.assert( arguments.length <= 4 );
   //   onReady = _.routineJoin( arguments[ 2 ],onReady[ 3 ],arguments[ 4 ] );
   // }
 
-  _assert( _.numberIs( delay ) );
+  _.assert( _.numberIs( delay ) );
 
   function handlePeriodicCon( err )
   {
@@ -8936,7 +8847,7 @@ function _timeNow_functor()
 {
   var now;
 
-  _assert( arguments.length === 0 );
+  // _.assert( arguments.length === 0 );
 
   if( typeof performance !== 'undefined' && performance.now !== undefined )
   now = _.routineJoin( performance,performance.now );
@@ -8952,7 +8863,7 @@ function _timeNow_functor()
 
 function timeSpent( description,time )
 {
-  var now = timeNow();
+  var now = _.timeNow();
 
   if( arguments.length === 1 )
   {
@@ -8960,9 +8871,9 @@ function timeSpent( description,time )
     description = 'Spent';
   }
 
-  _assert( 1 <= arguments.length && arguments.length <= 2 );
-  _assert( _.numberIs( time ) );
-  _assert( _.strIs( description ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 2 );
+  _.assert( _.numberIs( time ) );
+  _.assert( _.strIs( description ) );
 
   if( description && description !== ' ' )
   description = description + ' : ';
@@ -8993,7 +8904,7 @@ function dateToStr( date )
  * The bufferRelen() routine returns a new or the same typed array (src) with a new or the same length (len).
  *
  * It creates the variable (result) checks, if (len) is more than (src.length),
- * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function (arrayMakeSimilar(src, len))
+ * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function(arrayMakeSimilar(src, len))
  * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
  * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
  * Otherwise, it returns an initial typed array.
@@ -9347,9 +9258,9 @@ function bufferFrom( o )
 {
   var result;
 
-  _assert( arguments.length === 1 );
-  _assert( _.objectIs( o ) );
-  _assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectIs( o ) );
+  _.assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
   _.assertMapHasOnly( o,bufferFrom.defaults );
 
   /* buffer */
@@ -11301,9 +11212,9 @@ function arraySelect( srcArray,indicesArray )
     indicesArray = indicesArray.indices;
   }
 
-  _assert( arguments.length === 2 );
-  _assert( _.bufferTypedIs( srcArray ) || _.arrayIs( srcArray ) );
-  _assert( _.bufferTypedIs( indicesArray ) || _.arrayIs( indicesArray ) );
+  _.assert( arguments.length === 2 );
+  _.assert( _.bufferTypedIs( srcArray ) || _.arrayIs( srcArray ) );
+  _.assert( _.bufferTypedIs( indicesArray ) || _.arrayIs( indicesArray ) );
 
   var result = new srcArray.constructor( indicesArray.length );
 
@@ -11365,10 +11276,10 @@ function arraySwap( dst,index1,index2 )
     index2 = 1;
   }
 
-  _assert( arguments.length === 1 || arguments.length === 3 );
-  _assert( _.arrayLike( dst ),'arraySwap :','argument must be array' );
-  _assert( 0 <= index1 && index1 < dst.length,'arraySwap :','index1 is out of bound' );
-  _assert( 0 <= index2 && index2 < dst.length,'arraySwap :','index2 is out of bound' );
+  _.assert( arguments.length === 1 || arguments.length === 3 );
+  _.assert( _.arrayLike( dst ),'arraySwap :','argument must be array' );
+  _.assert( 0 <= index1 && index1 < dst.length,'arraySwap :','index1 is out of bound' );
+  _.assert( 0 <= index2 && index2 < dst.length,'arraySwap :','index2 is out of bound' );
 
   var e = dst[ index1 ];
   dst[ index1 ] = dst[ index2 ];
@@ -11648,8 +11559,8 @@ function arrayFillWhole( result,value )
 }
 
 // {
-//   _assert( arguments.length === 2 || arguments.length === 3 );
-//   _assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
+//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   _.assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 //
 //   if( arguments.length === 1 )
 //   {
@@ -11683,7 +11594,7 @@ function arrayFillWhole( result,value )
 //     result[ t ] = value;
 //   }
 //
-//   _assert( result[ times-1 ] === value );
+//   _.assert( result[ times-1 ] === value );
 //   return result;
 // }
 //
@@ -11728,11 +11639,11 @@ function arraySupplement( dstArray )
   result = [];
 
   var length = result.length;
-  _assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
+  _.assert( _.arrayLike( result ) || _.numberIs( result ),'expects object as argument' );
 
   for( a = arguments.length-1 ; a >= 1 ; a-- )
   {
-    _assert( _.arrayLike( arguments[ a ] ),'argument is not defined :',a );
+    _.assert( _.arrayLike( arguments[ a ] ),'argument is not defined :',a );
     length = Math.max( length,arguments[ a ].length );
   }
 
@@ -11806,10 +11717,10 @@ function arrayExtendScreening( screenArray,dstArray )
   var result = dstArray;
   if( result === null ) result = [];
 
-  _assert( _.arrayLike( screenArray ),'expects object as screenArray' );
-  _assert( _.arrayLike( result ),'expects object as argument' );
+  _.assert( _.arrayLike( screenArray ),'expects object as screenArray' );
+  _.assert( _.arrayLike( result ),'expects object as argument' );
   for( a = arguments.length-1 ; a >= 2 ; a-- )
-  _assert( arguments[ a ],'argument is not defined :',a );
+  _.assert( arguments[ a ],'argument is not defined :',a );
 
   for( var k = 0 ; k < screenArray.length ; k++ )
   {
@@ -11904,7 +11815,7 @@ function arrayShuffle( dst,times )
  * that corresponds to the condition in the callback function.
  *
  * It iterates over an array (arr) from the left to the right,
- * and checks by callback function (equalizer(arr[a], ins)).
+ * and checks by callback function(equalizer(arr[a], ins)).
  * If callback function returns true, it returns corresponding index.
  * Otherwise, it returns -1.
  *
@@ -11936,7 +11847,7 @@ function arrayShuffle( dst,times )
  * }( 3, 7, 13 );
  * _.arrayLeftIndexOf( arr, 13 );
  *
- * @returns { Number } Returns the corresponding index, if a callback function (equalizer) returns true.
+ * @returns { Number } Returns the corresponding index, if a callback function(equalizer) returns true.
  * Otherwise, it returns -1.
  * @function arrayLeftIndexOf
  * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
@@ -12041,7 +11952,7 @@ function arrayRightIndexOf( arr,ins,equalizer )
  * The arrayLeft() routine returns a new object containing the properties, (index, element),
  * corresponding to a found value (ins) from an array (arr).
  *
- * It creates the variable (i), assigns and calls to it the function (_.arrayLeftIndexOf( arr, ins, equalizer )),
+ * It creates the variable (i), assigns and calls to it the function(_.arrayLeftIndexOf( arr, ins, equalizer )),
  * that returns the index of the value (ins) in the array (arr).
  * [wTools.arrayLeftIndexOf()]{@link wTools.arrayLeftIndexOf}
  * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
@@ -12146,8 +12057,8 @@ function arrayCount( src,instance )
 {
   var result = 0;
 
-  _assert( arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
 
   var index = src.indexOf( instance );
   while( index !== -1 )
@@ -12348,8 +12259,8 @@ function arrayHasAny( src )
   var empty = true;
   empty = false;
 
-  _assert( arguments.length >= 1 );
-  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -12371,8 +12282,8 @@ function arrayHasAny( src )
 
 function arrayHasAll( src )
 {
-  _assert( arguments.length >= 1 );
-  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -12391,8 +12302,8 @@ function arrayHasAll( src )
 
 function arrayHasNone( src )
 {
-  _assert( arguments.length >= 1 );
-  _assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -12526,8 +12437,8 @@ function arraySum( src,onElement )
 {
   var result = 0;
 
-  _assert( arguments.length === 1 || arguments.length === 2 );
-  _assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
 
   if( onElement === undefined )
   onElement = function( e ){ return e; };
@@ -12823,7 +12734,7 @@ function arrayPrependArray( dstArray, insArray )
 {
   // var result = dstArray;
   //
-  // _assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
+  // _.assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
   //
   // for( var a = arguments.length - 1 ; a > 0 ; a-- )
   // {
@@ -12848,13 +12759,13 @@ function arrayPrependArray( dstArray, insArray )
 // {
 //   var result = dstArray;
 //
-//   _assert( _.arrayIs( dstArray ),'_arrayPrependArrayOnce :','expects array' );
+//   _.assert( _.arrayIs( dstArray ),'_arrayPrependArrayOnce :','expects array' );
 //
 //   for( var a = arguments.length - 1 ; a > 0 ; a-- )
 //   {
 //     var argument = arguments[ a ];
 //
-//     _assert( argument !== undefined,'_arrayPrependArrayOnce','argument is not defined' );
+//     _.assert( argument !== undefined,'_arrayPrependArrayOnce','argument is not defined' );
 //
 //     if( _.arrayLike( argument ) )
 //     {
@@ -13473,7 +13384,7 @@ function arrayAppendedOnce( dstArray,ins,onEqualize )
 // {
 //   var result = dstArray;
 //
-//   _assert( _.arrayIs( dstArray ),'arrayAppendArrayOnce :','expects array' );
+//   _.assert( _.arrayIs( dstArray ),'arrayAppendArrayOnce :','expects array' );
 //
 //   for( var a = 1 ; a < arguments.length ; a++ )
 //   {
@@ -13584,7 +13495,7 @@ function arrayAppendArray( dstArray, insArray )
 {
   // var result = dstArray;
   //
-  // _assert( _.arrayIs( dstArray ),'expects array' );
+  // _.assert( _.arrayIs( dstArray ),'expects array' );
   //
   // for( var a = 1 ; a < arguments.length ; a++ )
   // {
@@ -13736,7 +13647,7 @@ function arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
  *
  * @example
  * // returns [ 3, 7, 13, 33 ]
- * var arr = _.arrayRemoveOnce( [ 3, 7, 33, 13, 33 ], 13, function ( el, ins ) {
+ * var arr = _.arrayRemoveOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
  *   return el > ins;
  * });
  *
@@ -13785,7 +13696,7 @@ function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
  * checks if (onElement) is equal to the 'undefined'.
  * If true, it assigns by default callback function that checks the equality of two arguments.
- * Otherwise, it uses given callback function (onElement).
+ * Otherwise, it uses given callback function(onElement).
  * Then it iterates over (dstArray) from the end to the beginning, checks if (onElement) returns true.
  * If true, it removes the value (ins) from (dstArray) array by corresponding index, and increases (result++).
  *
@@ -13796,7 +13707,7 @@ function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
  *
  * @example
  * // returns 4
- * var arr = _.arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function ( el, ins ) {
+ * var arr = _.arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function( el, ins ) {
  *   return el < ins;
  * });
  *
@@ -13838,7 +13749,7 @@ function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 // function arrayRemoved( dstArray, ins, onEqualize )
 // {
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
-//   _assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
+//   _.assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
 //
 //   var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
 //
@@ -13865,12 +13776,12 @@ function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
  * that corresponds to the condition in the callback function and remove this element.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if arguments passed two, it calls built in function (dstArray.indexOf(ins))
+ * checks if arguments passed two, it calls built in function(dstArray.indexOf(ins))
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the routine
  * [arrayLeftIndexOf( dstArray, ins, onElement )]{@link wTools.arrayLeftIndexOf}
- * If callback function (onElement) returns true, it returns the index that will be removed from (dstArray).
+ * If callback function(onElement) returns true, it returns the index that will be removed from (dstArray).
  * @see {@link wTools.arrayLeftIndexOf} - See for more information.
  *
  * @param { Array } dstArray - The source array.
@@ -13880,7 +13791,7 @@ function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
  *
  * @example
  * // returns 1
- * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 4, function ( el ) {
+ * var arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 4, function( el ) {
  *   return el;
  * });
  *
@@ -13993,13 +13904,13 @@ function arrayRemovedArray( dstArray, insArray )
  * and returns amount of the deleted elements from the (dstArray).
  *
  * It takes two (dstArray, insArray) or three (dstArray, insArray, onEqualize) arguments, creates variable (var result = 0),
- * checks if (arguments[..]) passed two, it iterates over the (insArray) array and calls for each element built in function (dstArray.indexOf(insArray[i])).
+ * checks if (arguments[..]) passed two, it iterates over the (insArray) array and calls for each element built in function(dstArray.indexOf(insArray[i])).
  * that looking for the value of the (insArray[i]) array in the (dstArray) array.
  * If true, it removes the value (insArray[i]) from (dstArray) array by corresponding index,
  * and incrementing the variable (result++).
  * Otherwise, if passed three (arguments[...]), it iterates over the (insArray) and calls for each element the routine
  *
- * If callback function (onEqualize) returns true, it returns the index that will be removed from (dstArray),
+ * If callback function(onEqualize) returns true, it returns the index that will be removed from (dstArray),
  * and then incrementing the variable (result++).
  *
  * @see wTools.arrayLeftIndexOf
@@ -14194,7 +14105,7 @@ function arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
  *
  * @example
  * // returns [ 2, 2, 3, 5 ]
- * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2, function ( el, ins ) {
+ * var arr = _.arrayRemoveAll( [ 1, 2, 2, 3, 5 ], 2, function( el, ins ) {
  *   return el < ins;
  * });
  *
@@ -14227,7 +14138,7 @@ function arrayRemoveAll( dstArray,ins,onEqualize )
 function arrayRemovedAll( dstArray, ins, onEqualize  )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  _assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
+  _.assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
 
   var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
   var result = 0;
@@ -14415,7 +14326,7 @@ function arrayFlattenedOnce( dstArray, insArray, onEqualize )
  * The arrayReplaceOnce() routine returns the index of the (dstArray) array which will be replaced by (sub),
  * if (dstArray) has the value (ins).
  *
- * It takes three arguments (dstArray, ins, sub), calls built in function (dstArray.indexOf(ins)),
+ * It takes three arguments (dstArray, ins, sub), calls built in function(dstArray.indexOf(ins)),
  * that looking for value (ins) in the (dstArray).
  * If true, it replaces (ins) value of (dstArray) by (sub) and returns the index of the (ins).
  * Otherwise, it returns (-1) index.
@@ -14629,7 +14540,7 @@ function arrayReplacedAll( dstArray,ins,sub,onEqualize )
  * The arrayUpdate() routine adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub),
  * and returns the last added index or the last replaced index of the array (dstArray).
  *
- * It creates the variable (index) assigns and calls to it the function (arrayReplaceOnce( dstArray, ins, sub ).
+ * It creates the variable (index) assigns and calls to it the function(arrayReplaceOnce( dstArray, ins, sub ).
  * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
  * Checks if (index) equal to the -1.
  * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
@@ -15035,7 +14946,7 @@ function arraySetIdentical( ins1,ins2 )
  * It creates two variables:
  * var options = options || {}, result = options.dst || {}.
  * Iterate over (srcObject) object, checks if (srcObject) object has own properties.
- * If true, it calls the provided callback function ( options.onCopyField( result, srcObject, k ) ) for each key (k),
+ * If true, it calls the provided callback function( options.onCopyField( result, srcObject, k ) ) for each key (k),
  * and copies each [ key, value ] of the (srcObject) to the (result),
  * and after cycle, returns clone with prototype of srcObject.
  *
@@ -15069,9 +14980,9 @@ function mapClone( srcObject,o )
   // if( !o.dst )
   // o.dst = new srcObject.constructor();
 
-  _assert( _.mapIs( o ) );
-  _assert( arguments.length <= 2,'mapClone :','expects (-srcObject-) as argument' );
-  _assert( objectLike( srcObject ),'mapClone :','expects (-srcObject-) as argument' );
+  _.assert( _.mapIs( o ) );
+  _.assert( arguments.length <= 2,'mapClone :','expects (-srcObject-) as argument' );
+  _.assert( objectLike( srcObject ),'mapClone :','expects (-srcObject-) as argument' );
 
   if( !o.onCopyField )
   o.onCopyField = function( dstContainer,srcContainer,key )
@@ -15100,11 +15011,11 @@ function mapClone( srcObject,o )
 
 /**
  * The mapExtendFiltering() creates a new [ key, value ]
- * from the next objects if callback function (filter) returns true.
+ * from the next objects if callback function(filter) returns true.
  *
- * It calls a provided callback function (filter) once for each key in an (argument),
+ * It calls a provided callback function(filter) once for each key in an (argument),
  * and adds to the (srcObject) all the [ key, value ] for which callback
- * function (filter) returns true.
+ * function(filter) returns true.
  *
  * @param { function } filter - The callback function to test each [ key, value ]
  * of the (dstObject) object.
@@ -15129,9 +15040,9 @@ function mapExtendFiltering( filter,dstObject )
   if( dstObject === null )
   dstObject = Object.create( null );
 
-  _assert( arguments.length >= 3,'expects more arguments' );
-  _assert( _.routineIs( filter ),'expects filter' );
-  _assert( _.objectLikeOrRoutine( dstObject ),'expects objectLikeOrRoutine as argument' );
+  _.assert( arguments.length >= 3,'expects more arguments' );
+  _.assert( _.routineIs( filter ),'expects filter' );
+  _.assert( _.objectLikeOrRoutine( dstObject ),'expects objectLikeOrRoutine as argument' );
 
   for( var a = 2 ; a < arguments.length ; a++ )
   {
@@ -15184,13 +15095,11 @@ function mapExtend( dstObject,srcObject )
   if( result === null )
   result = Object.create( null );
 
-  // assert( srcObject );
-
   if( arguments.length === 2 && Object.getPrototypeOf( srcObject ) === null )
   return Object.assign( result,srcObject );
 
-  assert( arguments.length >= 2 );
-  assert( objectLikeOrRoutine( result ),'mapExtend :','expects object as the first argument' );
+  _.assert( arguments.length >= 2 );
+  _.assert( objectLikeOrRoutine( result ),'mapExtend :','expects object as the first argument' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -15215,8 +15124,8 @@ function mapExtendToThis()
   if( !result )
   result = Object.create( null );
 
-  assert( arguments.length >= 1 );
-  assert( objectLike( result ),'mapExtendToThis :','expects object as this' );
+  _.assert( arguments.length >= 1 );
+  _.assert( objectLike( result ),'mapExtendToThis :','expects object as this' );
 
   for( var a = 0 ; a < arguments.length ; a++ )
   {
@@ -15245,7 +15154,7 @@ function mapExtendToThis()
  * The mapSupplement() routine returns an object with unique [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
- * adds a callback function ( _.field.dstNotHas() ) to the beginning of the (args)
+ * adds a callback function( _.field.dstNotHas() ) to the beginning of the (args)
  * and returns an object with unique [ key, value ].
  *
  * @param { ...objectLike } arguments[] - The source object(s).
@@ -15309,7 +15218,7 @@ function mapSupplementOwn( dst )
  * filled by all unique, clone [ key, value ].
  *
  * It creates the variable (args), assign to a copy of pseudo array (arguments),
- * adds a specific callback function (_.field.dstNotHasCloning())
+ * adds a specific callback function(_.field.dstNotHasCloning())
  * to the beginning of the (args)
  * and returns an object filled by all unique clone [key, value].
  *
@@ -17465,7 +17374,7 @@ function mapBut( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _assert( srcMap,'mapBut :','expects object as argument' );
+  _.assert( srcMap,'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -17474,7 +17383,7 @@ function mapBut( srcMap )
     {
       var argument = arguments[ a ];
 
-      _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
+      _.assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
       if( argument[ k ] !== undefined )
@@ -17497,7 +17406,7 @@ function mapButWithUndefines( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
+  _.assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -17505,7 +17414,7 @@ function mapButWithUndefines( srcMap )
     {
       var argument = arguments[ a ];
 
-      _assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
+      _.assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
       break;
@@ -17594,7 +17503,7 @@ function mapOwnBut( srcMap )
    * If the first object has same key any other object has
    * then this pair [ key, value ] will not be included into (result) object.
    * Otherwise,
-   * it calls a provided callback function ( _.field.atomic() )
+   * it calls a provided callback function( _.field.atomic() )
    * once for each key in the (srcMap), and adds to the (result) object
    * all the [ key, value ],
    * if values are not equal to the array or object.
@@ -17619,7 +17528,7 @@ function mapButFiltering( filter,srcMap )
   var filter = _.field.makeMapper( filter );
   var a,k;
 
-  assert( objectLike( srcMap ),'mapButFiltering :','expects object as argument' );
+  _.assert( objectLike( srcMap ),'mapButFiltering :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -17648,7 +17557,7 @@ function mapOwnButFiltering( filter,srcMap )
   var filter = _.field.makeMapper( filter );
   var a,k;
 
-  assert( objectLike( srcMap ),'mapOwnButFiltering :','expects object as argument' );
+  _.assert( objectLike( srcMap ),'mapOwnButFiltering :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -17704,13 +17613,13 @@ function mapOwnButFiltering( filter,srcMap )
 function mapScreens( srcObject,screenObject )
 {
 
-  _assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-  _assert( _.objectLikeOrRoutine( srcObject ),'mapScreens :','expects object as argument' );
-  _assert( _.objectLikeOrRoutine( screenObject ),'mapScreens :','expects object as screenObject' );
+  _.assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
+  _.assert( _.objectLikeOrRoutine( srcObject ),'mapScreens :','expects object as argument' );
+  _.assert( _.objectLikeOrRoutine( screenObject ),'mapScreens :','expects object as screenObject' );
 
   if( arguments.length > 2 )
   {
-    screenObject =_ArraySlice.call( arguments,1 );
+    screenObject = _ArraySlice.call( arguments,1 );
   }
 
   var dstObject = _mapScreen
@@ -17802,7 +17711,7 @@ function mapScreenOwn( screenObject )
  *
  * The _mapScreen() checks whether there are the keys of
  * the (screenObject) in the list of (srcObjects).
- * If true, it calls a provided callback function (filter)
+ * If true, it calls a provided callback function(filter)
  * and adds to the (dstObject) all the [ key, value ]
  * for which callback function returns true.
  *
@@ -17852,15 +17761,15 @@ function _mapScreen( options )
   options.filter = _.field.bypass();
   options.filter = _.field.makeMapper( options.filter );
 
-  _assert( arguments.length === 1 );
-  _assert( _.objectLike( dstObject ),'_mapScreen :','expects object as (-dstObject-)' );
-  _assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
-  _assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( dstObject ),'_mapScreen :','expects object as (-dstObject-)' );
+  _.assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
+  _.assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
   _.assertMapHasOnly( options,_mapScreen.defaults );
 
   // xxx
   // for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  // _assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
+  // _.assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
 
   for( var k in screenObject )
   {
@@ -18525,7 +18434,7 @@ var Proto =
   eachRecursive : eachRecursive,
   eachOwnRecursive : eachOwnRecursive,
 
-  eachSample : eachSample, /* experimental */
+  eachSample : eachSample,
   eachInRange : eachInRange,
   eachInManyRanges : eachInManyRanges,
   eachInMultiRange : eachInMultiRange, /* exprerimental */
@@ -18544,8 +18453,8 @@ var Proto =
 
   enityExtend : enityExtend, /* experimental */
 
-  entityNew : entityNew,
-  entityTrivialNew : entityTrivialNew,
+  entityMake : entityMake,
+  entityMakeTivial : entityMakeTivial,
 
   entityCopyTry : entityCopyTry, /* experimental */
   entityCopyField : entityCopyField, /* experimental */
@@ -18605,12 +18514,6 @@ var Proto =
   entitySearch : entitySearch, /* experimental */
 
 
-  // default
-
-  defaultApply : defaultApply,
-  defaultProxy : defaultProxy,
-  defaultProxyFlatteningToArray : defaultProxyFlatteningToArray,
-
 
   // error
 
@@ -18630,32 +18533,32 @@ var Proto =
 
   // diagnostics
 
-  _diagnosticStripPath : _diagnosticStripPath,
-  diagnosticLocation : diagnosticLocation,
-  diagnosticCode : diagnosticCode,
-  diagnosticStack : diagnosticStack,
-  diagnosticStackPurify : diagnosticStackPurify,
-  diagnosticWatchFields : diagnosticWatchFields, /* experimental */
-  diagnosticProxyFields : diagnosticProxyFields, /* experimental */
-
-  beep : beep,
-
-  assert : assert,
-  assertWithoutBreakpoint : assertWithoutBreakpoint,
-  assertMapHasNoUndefine : assertMapHasNoUndefine,
-  assertMapHasOnly : assertMapHasOnly,
-  assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
-  assertMapOwnOnly : assertMapOwnOnly,
-  assertMapHasNone : assertMapHasNone,
-  assertMapOwnNone : assertMapOwnNone,
-  assertMapHasAll : assertMapHasAll,
-  assertMapOwnAll : assertMapOwnAll,
-  assertInstanceOrClass : assertInstanceOrClass,
-
-  assertOwnNoConstructor : assertOwnNoConstructor,
-
-  assertNotTested : assertNotTested,
-  assertWarn : assertWarn,
+  // _diagnosticStripPath : _diagnosticStripPath,
+  // diagnosticLocation : diagnosticLocation,
+  // diagnosticCode : diagnosticCode,
+  // diagnosticStack : diagnosticStack,
+  // diagnosticStackPurify : diagnosticStackPurify,
+  // diagnosticWatchFields : diagnosticWatchFields, /* experimental */
+  // diagnosticProxyFields : diagnosticProxyFields, /* experimental */
+  //
+  // beep : beep,
+  //
+  // assert : assert,
+  // assertWithoutBreakpoint : assertWithoutBreakpoint,
+  // assertMapHasNoUndefine : assertMapHasNoUndefine,
+  // assertMapHasOnly : assertMapHasOnly,
+  // assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
+  // assertMapOwnOnly : assertMapOwnOnly,
+  // assertMapHasNone : assertMapHasNone,
+  // assertMapOwnNone : assertMapOwnNone,
+  // assertMapHasAll : assertMapHasAll,
+  // assertMapOwnAll : assertMapOwnAll,
+  // assertInstanceOrClass : assertInstanceOrClass,
+  //
+  // assertOwnNoConstructor : assertOwnNoConstructor,
+  //
+  // assertNotTested : assertNotTested,
+  // assertWarn : assertWarn,
 
 
   // type test
@@ -19208,14 +19111,7 @@ var Proto =
 
 }
 
-mapExtend( Self, Proto );
-Self._sourceDirPath = diagnosticStack( 1 );
-
-//
-
-var _assert = _.assert;
-var _arraySlice = _.arraySlice;
-var timeNow = Self.timeNow = Self._timeNow_functor();
+Object.assign( Self,Proto );
 
 //
 
@@ -19225,19 +19121,6 @@ _global_.wBase = Self;
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
-
-//
-
-if( !_global_.logger )
-_global_.logger =
-{
-  log : _.routineJoin( console,console.log ),
-  logUp : _.routineJoin( console,console.log ),
-  logDown : _.routineJoin( console,console.log ),
-  error : _.routineJoin( console,console.error ),
-  errorUp : _.routineJoin( console,console.error ),
-  errorDown : _.routineJoin( console,console.error ),
-}
 
 //
 
@@ -19289,38 +19172,56 @@ if( !_.Tester )
 //
 
 if( typeof module !== 'undefined' && module !== null )
-try
+// try
 {
 
+  require( './cDiagnostics.s' );
   require( './cFieldFilter.s' );
   require( './cFieldMapper.s' );
 
 }
-catch( err )
-{
-}
+// catch( err )
+// {
+// }
 
+// // --
+// // prepare
+// // --
 //
-
-if( _global_._wToolsInitConfigExpected !== false )
-{
-  _._initConfig();
-  _._initUnhandledErrorHandler();
-}
-
+// var _arraySlice = _.arraySlice;
+// var timeNow = Self.timeNow = Self._timeNow_functor();
+// Self._sourceDirPath = _.diagnosticStack( 1 );
 //
-
-if( typeof module !== 'undefined' && module !== null )
-{
-
-  require( './eInclude.s' );
-  require( './eNameTools.s' );
-  require( './eExecTools.s' );
-  require( './eStringTools.s' );
-  require( './eArrayDescriptor.s' );
-
-  _.pathUse( __dirname + '/../..' );
-
-}
+// if( !_global_.logger )
+// _global_.logger =
+// {
+//   log : _.routineJoin( console,console.log ),
+//   logUp : _.routineJoin( console,console.log ),
+//   logDown : _.routineJoin( console,console.log ),
+//   error : _.routineJoin( console,console.error ),
+//   errorUp : _.routineJoin( console,console.error ),
+//   errorDown : _.routineJoin( console,console.error ),
+// }
+//
+// if( _global_._wToolsInitConfigExpected !== false )
+// {
+//   _._initConfig();
+//   _._initUnhandledErrorHandler();
+// }
+//
+// //
+//
+// if( typeof module !== 'undefined' && module !== null )
+// {
+//
+//   require( './fIncludeTools.s' );
+//   require( './fNameTools.s' );
+//   require( './fExecTools.s' );
+//   require( './fStringTools.s' );
+//   require( './cxArrayDescriptor.s' );
+//
+//   _.pathUse( __dirname + '/../..' );
+//
+// }
 
 })();
