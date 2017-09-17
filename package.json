@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.6.51",
+  "version": "0.7.0",
   "engine": "node >= 6.0.0",
   "description": "Generic purpose tools of base level for solving problems in Java Script.",
   "license": "MIT",
@@ -19,11 +19,13 @@
       "email": "iostashvxi@gmail.com"
     }
   ],
-  "main": "staging/abase/wTools.s",
+  "main": "staging/dwtools/Base.s",
   "files": [
-    "staging/abase/akernel",
-    "staging/abase/object",
-    "staging/abase/wTools.s"
+    "staging/dwtools/abase/layer1",
+    "staging/dwtools/abase/layer2",
+    "staging/dwtools/abase/Layer1.s",
+    "staging/dwtools/abase/Later2.s",
+    "staging/dwtools/Base.s"
   ],
   "scripts": {
     "test": "wtest staging",

@@ -8,7 +8,7 @@
  from the project directory run
 
  npm install
- node ./staging/abase/z.test/String.toStr2.test.s
+ node ./staging/dwtools/abase/z.test/String.toStr2.test.s
 
  */
 

@@ -947,7 +947,7 @@ function assert( condition )
     else
     throw _err
     ({
-      args : _arraySlice( arguments,1 ),
+      args : _.arraySlice( arguments,1 ),
       level : 2,
     });
   }
@@ -982,7 +982,7 @@ function assertWithoutBreakpoint( condition )
     else
     throw _err
     ({
-      args : _arraySlice( arguments,1 ),
+      args : _.arraySlice( arguments,1 ),
       level : 2,
     });
   }

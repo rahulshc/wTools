@@ -2,7 +2,7 @@ if( typeof module !== 'undefined' )
 {
   require( 'wTools' );
   require( 'wConsequence' );
-  require( '../staging/abase/component/ExecTools.s' );
+  require( '../staging/dwtools/abase/component/ExecTools.s' );
 }
 
 var _ = wTools;
