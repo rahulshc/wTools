@@ -3322,6 +3322,28 @@ strConcat.defaults =
 
 //
 
+function strQuote( o )
+{
+  if( !_.objectIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strQuote,o );
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( o.src ) );
+
+  var result = o.quote + o.src + o.quote;
+
+  return result;
+}
+
+strQuote.defaults =
+{
+  src : null,
+  quote : '"',
+}
+
+//
+
 /**
  * Splits string( srcStr ) into parts using array( maskArray ) as mask and returns them as array.
  * Mask( maskArray ) contains string(s) separated by marker( strUnjoin.any ). Mask must starts/ends with first/last letter from source
@@ -5401,6 +5423,7 @@ var Proto =
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
   strConcat : strConcat, /* me too */
+  strQuote : strQuote,
 
   strCommonLeft : strCommonLeft, /* document me */
   strCommonRight : strCommonRight, /* document me */
