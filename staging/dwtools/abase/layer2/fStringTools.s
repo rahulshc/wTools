@@ -5131,6 +5131,109 @@ strParseMap.defaults =
   entryDelimeter : ' ',
 }
 
+//
+
+function strTable( o )
+{
+  _.assert( arguments.length === 1 );
+  _.routineOptions( strTable,o );
+
+  if( typeof module !== 'undefined' && module !== null )
+  {
+    if( !_.cliTable  )
+    _.cliTable = require( 'cli-table2' );
+  }
+
+  if( _.cliTable == undefined )
+  {
+    throw( 'browser version of strTable is not implemented' );
+  }
+
+  _.assert( _.numberIs( o.rowsNumber ) && _.numberIs( o.colsNumber ) )
+
+  if( !o.onCellGet )
+  o.onCellGet = function onCellGet( data, index2d, o )
+  {
+    return data[ ( index2d[ 0 ] * index2d[ 1 ] ) - 1 ];
+  }
+
+  if( !o.onCellAfter )
+  o.onCellAfter = function onCellAfter( cellStr, index2d, o )
+  {
+    return cellStr;
+  }
+
+  //
+
+  function makeWidth( propertyName, def, len )
+  {
+    var property = o[ propertyName ];
+    var _property = _.arrayFillTimes( [], len, def );
+    if( property )
+    {
+      _.assert( _.mapIs( property ) || _.arrayLike( property ) , 'routine expects colWidths/rowWidths property as Object or Array-Like' );
+      for( var k in property )
+      {
+        k = _.numberFrom( k );
+        if( k < len )
+        {
+          _.assert( _.numberIs( property[ k ] ) );
+          _property[ k ] = property[ k ];
+        }
+      }
+    }
+    o[ propertyName ] = _property;
+  }
+
+  //
+
+  makeWidth( 'colWidths', o.colWidth, o.colsNumber );
+  makeWidth( 'rowWidths', o.rowWidth, o.rowsNumber );
+
+  var tableOptions =
+  {
+    head : o.head,
+    colWidths : o.colWidths,
+    rowWidths : o.rowWidths
+  }
+
+  //
+
+  var table = new _.cliTable( tableOptions );
+
+  if( _.arrayLike( o.data ) )
+  {
+    for( var y = 1; y <= o.rowsNumber; y++ )
+    {
+      var row = [];
+      table.push( row );
+      for( var x = 1; x <= o.colsNumber; x++ )
+      {
+        var index2d = [ y, x ];
+        var cellData = o.onCellGet( o.data, index2d, o );
+        cellData = o.onCellAfter( cellData, index2d, o );
+        row.push( cellData );
+      }
+    }
+  }
+
+  return table.toString();
+}
+
+strTable.defaults =
+{
+  data : null,
+  rowsNumber : null,
+  colsNumber : null,
+  head : null,
+  colWidth : 5,
+  colWidths : null,
+  rowWidth : 5,
+  rowWidths : null,
+  onCellGet : null,
+  onCellAfter : null,
+}
+
 // --
 // str color
 // --
@@ -5449,6 +5552,7 @@ var Proto =
 
   strParseMap : strParseMap,
 
+  strTable : strTable,
 
   //
 
