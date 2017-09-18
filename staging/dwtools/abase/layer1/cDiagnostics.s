@@ -1594,46 +1594,6 @@ var Proto =
 Object.assign( Self,Proto );
 
 // --
-// prepare
-// --
-
-// var timeNow = Self.timeNow = Self._timeNow_functor();
-// _.assert( Self.timeNow );
-// Self._sourceDirPath = _.diagnosticStack( 1 );
-//
-// if( !_global_.logger )
-// _global_.logger =
-// {
-//   log : _.routineJoin( console,console.log ),
-//   logUp : _.routineJoin( console,console.log ),
-//   logDown : _.routineJoin( console,console.log ),
-//   error : _.routineJoin( console,console.error ),
-//   errorUp : _.routineJoin( console,console.error ),
-//   errorDown : _.routineJoin( console,console.error ),
-// }
-//
-// if( _global_._wToolsInitConfigExpected !== false )
-// {
-//   _._initConfig();
-//   _._initUnhandledErrorHandler();
-// }
-
-//
-
-// if( typeof module !== 'undefined' && module !== null )
-// {
-//
-//   require( './fIncludeTools.s' );
-//   require( './fNameTools.s' );
-//   require( './fExecTools.s' );
-//   require( './fStringTools.s' );
-//   require( './cxArrayDescriptor.s' );
-//
-//   _.pathUse( __dirname + '/../..' );
-//
-// }
-
-// --
 // export
 // --
 

@@ -651,7 +651,7 @@ _includeHandlerMap[ 'wPath' ] =
 
 _includeHandlerMap[ 'wFiles' ] =
 {
-  includeAny : [ '../../amid/file/FileMid.s','amid/file/FileMid.s','wFiles' ],
+  includeAny : [ '../../amid/file/FileTop.s','amid/file/FileTop.s','wFiles' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.fileProvider },
 }
 
