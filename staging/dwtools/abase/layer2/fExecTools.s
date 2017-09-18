@@ -256,7 +256,7 @@ shell.defaults =
   code : null,
   mode : 'shell',
   args : null,
-  stdio : 'inherit', /* 'pipe' / 'ignore' / 'inherit' */
+  stdio : 'pipe', /* 'pipe' / 'ignore' / 'inherit' */
   throwingBadReturnCode : 0,
   applyingReturnCode : 0,
   usingColoring : 1,
