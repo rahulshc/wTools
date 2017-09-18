@@ -242,6 +242,7 @@ function _each( o )
 
   _.routineOptions( _each,o );
   _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
+
   // _.assert( o.onUp.length === 0 || o.onUp.length === 1 || o.onUp.length === 3 );
   // _.assert( o.onDown.length === 0 || o.onUp.length === 1 || o.onDown.length === 3 );
 
@@ -308,6 +309,7 @@ _each.defaults =
   pathDelimteter : '/',
 
   //levels : 256,
+
   level : 0,
   path : null,
   key : null,
@@ -16856,11 +16858,6 @@ Error.stackTraceLimit = Infinity;
 var Proto =
 {
 
-  // // init
-  //
-  // _initConfig : _initConfig,
-  // _initUnhandledErrorHandler : _initUnhandledErrorHandler,
-
 
   // iterator
 
@@ -17529,108 +17526,5 @@ _global_.wBase = Self;
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
-
-// //
-//
-// if( !_global_.wTestSuite )
-// _global_.wTestSuite = function wTestSuite( testSuite )
-// {
-//
-//   if( !_global_.wTests )
-//   _global_.wTests = Object.create( null );
-//
-//   if( !testSuite.sourceFilePath )
-//   testSuite.sourceFilePath = _.diagnosticLocation( 1 ).full;
-//
-//   _.assert( _.strIsNotEmpty( testSuite.sourceFilePath ),'Test suite expects a mandatory option ( sourceFilePath )' );
-//   _.assert( _.objectIs( testSuite ) );
-//
-//   if( !testSuite.abstract )
-//   _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name "' + testSuite.name + '" already registered!' );
-//   _global_.wTests[ testSuite.name ] = testSuite;
-//
-//   testSuite.inherit = function inherit()
-//   {
-//     this.inherit = _.arraySlice( arguments );
-//   }
-//
-//   return testSuite;
-// }
-//
-// //
-//
-// if( !_.Tester )
-// {
-//   _.Tester = Object.create( null );
-//   _.Tester.test = function test( testSuiteName )
-//   {
-//     if( _.workerIs() )
-//     return;
-//     _.assert( arguments.length === 0 || arguments.length === 1 );
-//     _.assert( _.strIs( testSuiteName ) || testSuiteName === undefined,'test : expects string ( testSuiteName )' );
-//     _.timeReady( function()
-//     {
-//       if( _.Tester.test === test )
-//       throw _.err( 'Cant wTesting.test, missing wTesting package' );
-//       _.Tester.test.call( _.Tester,testSuiteName );
-//     });
-//   }
-// }
-
-//
-
-// if( typeof module !== 'undefined' && module !== null )
-// // try
-// {
-//
-//   require( './cDiagnostics.s' );
-//   require( './cFieldFilter.s' );
-//   require( './cFieldMapper.s' );
-//
-// }
-
-// catch( err )
-// {
-// }
-
-// // --
-// // prepare
-// // --
-//
-// var _arraySlice = _.arraySlice;
-// var timeNow = Self.timeNow = Self._timeNow_functor();
-// Self._sourceDirPath = _.diagnosticStack( 1 );
-//
-// if( !_global_.logger )
-// _global_.logger =
-// {
-//   log : _.routineJoin( console,console.log ),
-//   logUp : _.routineJoin( console,console.log ),
-//   logDown : _.routineJoin( console,console.log ),
-//   error : _.routineJoin( console,console.error ),
-//   errorUp : _.routineJoin( console,console.error ),
-//   errorDown : _.routineJoin( console,console.error ),
-// }
-//
-// if( _global_._wToolsInitConfigExpected !== false )
-// {
-//   _._initConfig();
-//   _._initUnhandledErrorHandler();
-// }
-//
-// //
-//
-// if( typeof module !== 'undefined' && module !== null )
-// {
-//
-//   require( './fIncludeTools.s' );
-//   require( './fNameTools.s' );
-//   require( './fExecTools.s' );
-//   require( './fStringTools.s' );
-//   require( './cxArrayDescriptor.s' );
-//
-//   _.pathUse( __dirname + '/../..' );
-//
-// }
 
 })();

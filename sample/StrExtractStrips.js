@@ -1,5 +1,6 @@
+
 if( typeof module !== 'undefined' )
-  require( '../staging/dwtools/abase/wTools.s' )
+require( 'wTools' );
 
 var _ = wTools;
 
