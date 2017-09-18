@@ -128,21 +128,21 @@ function shell( test )
       test.identical( options.output.length, 0 );
     })
   })
-  .ifNoErrorThen( function()
-  {
-    /* mode : spawn, stdio : inherit */
+  // .ifNoErrorThen( function()
+  // {
+  //   /* mode : spawn, stdio : inherit */
 
-    o.stdio = 'inherit';
+  //   o.stdio = 'inherit';
 
-    var options = _.mapSupplement( {}, o, commonDefaults );
+  //   var options = _.mapSupplement( {}, o, commonDefaults );
 
-    return _.shell( options )
-    .doThen( function()
-    {
-      test.identical( options.returnCode, 0 );
-      test.identical( options.output.length, 0 );
-    })
-  })
+  //   return _.shell( options )
+  //   .doThen( function()
+  //   {
+  //     test.identical( options.returnCode, 0 );
+  //     test.identical( options.output.length, 0 );
+  //   })
+  // })
   .ifNoErrorThen( function()
   {
     test.description = 'mode : shell';
@@ -182,21 +182,21 @@ function shell( test )
       test.identical( options.output.length, 0 );
     })
   })
-  .ifNoErrorThen( function()
-  {
-    /* mode : shell, stdio : inherit */
+  // .ifNoErrorThen( function()
+  // {
+  //   /* mode : shell, stdio : inherit */
 
-    o.stdio = 'inherit'
+  //   o.stdio = 'inherit'
 
-    var options = _.mapSupplement( {}, o, commonDefaults );
+  //   var options = _.mapSupplement( {}, o, commonDefaults );
 
-    return _.shell( options )
-    .doThen( function()
-    {
-      test.identical( options.returnCode, 0 );
-      test.identical( options.output.length, 0 );
-    })
-  })
+  //   return _.shell( options )
+  //   .doThen( function()
+  //   {
+  //     test.identical( options.returnCode, 0 );
+  //     test.identical( options.output.length, 0 );
+  //   })
+  // })
   .ifNoErrorThen( function()
   {
     test.description = 'spawn, stop process using kill';
