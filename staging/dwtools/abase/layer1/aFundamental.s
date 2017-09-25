@@ -472,7 +472,8 @@ function eachSample( o )
   /* */
 
   var keys = _.arrayLike( o.sets ) ? _.arrayFromRange([ 0,o.sets.length ]) : _.mapKeys( o.sets );
-  var result = [];
+  if( o.result && !_.arrayIs( o.result ) )
+  o.result = [];
   var len = [];
   var indexnd = [];
   var index = 0;
@@ -505,13 +506,11 @@ function eachSample( o )
       return 0;
     });
 
-    // debugger;
+    if( o.collectingResult )
     if( _.mapLike( o.sample ) )
-    result.push( _.mapExtend( null, o.sample ) );
+    o.result.push( _.mapExtend( null, o.sample ) );
     else
-    result.push( o.sample.slice() );
-
-    // console.log( 'sample',o.sample );
+    o.result.push( o.sample.slice() );
 
     return 1;
   }
@@ -534,12 +533,11 @@ function eachSample( o )
       o.sample[ k ] = o.sets[ k ][ indexnd[ i ] ];
       index += 1;
 
+      if( o.collectingResult )
       if( _.mapLike( o.sample ) )
-      result.push( _.mapExtend( null, o.sample ) );
+      o.result.push( _.mapExtend( null, o.sample ) );
       else
-      result.push( o.sample.slice() );
-
-      // console.log( 'sample',o.sample );
+      o.result.push( o.sample.slice() );
 
       return 1;
     }
@@ -572,7 +570,7 @@ function eachSample( o )
   /* */
 
   if( !firstSample() )
-  return result;
+  return o.result;
 
   do
   {
@@ -581,7 +579,10 @@ function eachSample( o )
   }
   while( iterate() );
 
-  return result;
+  if( o.result )
+  return o.result;
+  else
+  return index;
 }
 
 eachSample.defaults =
@@ -592,6 +593,8 @@ eachSample.defaults =
 
   sets : null,
   sample : null,
+
+  result : 1,
 
   // base : null,
   // add : null,
@@ -4811,9 +4814,9 @@ function numberIsInt( src )
 
 //
 
-function numbersAreEqual( ins1,ins2 )
+function numbersAreEquivalent( ins1,ins2 )
 {
-  return Math.abs( ins1-ins2 ) < this.EPS;
+  return Math.abs( ins1-ins2 ) <= this.EPS;
 }
 
 //
@@ -9116,18 +9119,18 @@ function arrayResize( array,f,l,val )
 
   if( l < f )
   l = f;
+  var lsrc = Math.min( array.length,l );
 
   if( _.bufferTypedIs( array ) )
   result = new array.constructor( l-f );
   else
   result = new Array( l-f );
 
-  var lsrc = Math.min( array.length,l );
   for( var r = Math.max( f,0 ) ; r < lsrc ; r++ )
   result[ r-f ] = array[ r ];
 
-  if( f < 0 || l > array.length )
   if( val !== undefined )
+  if( f < 0 || l > array.length )
   {
     for( var r = 0 ; r < -f ; r++ )
     {
@@ -10727,7 +10730,7 @@ function arrayHasAny( src )
 function arrayHasAll( src )
 {
   _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -10747,7 +10750,7 @@ function arrayHasAll( src )
 function arrayHasNone( src )
 {
   _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -17045,7 +17048,7 @@ var Proto =
   numberIsFinite : numberIsFinite,
   numberIsInt : numberIsInt,
 
-  numbersAreEqual : numbersAreEqual,
+  numbersAreEquivalent : numbersAreEquivalent,
   numbersAreFinite : numbersAreFinite,
   numbersArePositive : numbersArePositive,
   numbersAreInt : numbersAreInt,
