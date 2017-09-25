@@ -27,10 +27,34 @@ if( typeof module !== 'undefined' )
 var _ = wTools;
 var Self = {};
 
+var testRootDirectory;
+
+function makeTestDir()
+{
+  testRootDirectory = _.dirTempFor
+  ({
+    packageName : Self.name,
+    packagePath : _.pathResolve( _.pathRealMainDir(), '../../tmp.tmp' )
+  });
+
+  testRootDirectory = _.fileProvider.pathNativize( testRootDirectory );
+
+  if( _.fileProvider.fileStat( testRootDirectory ) )
+  _.fileProvider.fileDelete( testRootDirectory );
+
+  _.fileProvider.directoryMake( testRootDirectory );
+}
+
+function cleanTestDir()
+{
+  _.fileProvider.fileDelete( testRootDirectory );
+}
+
 //
 
 function shell( test )
 {
+  var testRoutineDir = _.pathJoin( testRootDirectory, test.name );
   var commonDefaults =
   {
     outputPiping : 1,
@@ -46,7 +70,6 @@ function shell( test )
 
     if( typeof module !== 'undefined' )
     {
-      require( '../dwtools/Base.s' );
       try
       {
         require( '../dwtools/Base.s' );
@@ -83,7 +106,7 @@ function shell( test )
 
   /* */
 
-  var testAppPath = _.pathResolve( __dirname + '../../../../tmp.tmp/testApp.js' );
+  var testAppPath = _.pathJoin( testRoutineDir, 'testApp.js' );
   var testApp = testApp.toString() + '\ntestApp();';
   _.fileProvider.fileWrite( testAppPath, testApp );
 
@@ -128,21 +151,21 @@ function shell( test )
       test.identical( options.output.length, 0 );
     })
   })
-  .ifNoErrorThen( function()
-  {
-    /* mode : spawn, stdio : inherit */
+  // .ifNoErrorThen( function()
+  // {
+  //   /* mode : spawn, stdio : inherit */
 
-    o.stdio = 'inherit';
+  //   o.stdio = 'inherit';
 
-    var options = _.mapSupplement( {}, o, commonDefaults );
+  //   var options = _.mapSupplement( {}, o, commonDefaults );
 
-    return _.shell( options )
-    .doThen( function()
-    {
-      test.identical( options.returnCode, 0 );
-      test.identical( options.output.length, 0 );
-    })
-  })
+  //   return _.shell( options )
+  //   .doThen( function()
+  //   {
+  //     test.identical( options.returnCode, 0 );
+  //     test.identical( options.output.length, 0 );
+  //   })
+  // })
   .ifNoErrorThen( function()
   {
     test.description = 'mode : shell';
@@ -182,21 +205,21 @@ function shell( test )
       test.identical( options.output.length, 0 );
     })
   })
-  .ifNoErrorThen( function()
-  {
-    /* mode : shell, stdio : inherit */
+  // .ifNoErrorThen( function()
+  // {
+  //   /* mode : shell, stdio : inherit */
 
-    o.stdio = 'inherit'
+  //   o.stdio = 'inherit'
 
-    var options = _.mapSupplement( {}, o, commonDefaults );
+  //   var options = _.mapSupplement( {}, o, commonDefaults );
 
-    return _.shell( options )
-    .doThen( function()
-    {
-      test.identical( options.returnCode, 0 );
-      test.identical( options.output.length, 0 );
-    })
-  })
+  //   return _.shell( options )
+  //   .doThen( function()
+  //   {
+  //     test.identical( options.returnCode, 0 );
+  //     test.identical( options.output.length, 0 );
+  //   })
+  // })
   .ifNoErrorThen( function()
   {
     test.description = 'spawn, stop process using kill';
@@ -351,7 +374,7 @@ function shell( test )
   // })
   // ;
 
-  con.doThen( () =>  _.fileProvider.fileDelete( testAppPath ) );
+  // con.doThen( () =>  _.fileProvider.fileDelete( testAppPath ) );
   return con;
 }
 
@@ -367,6 +390,9 @@ var Proto =
   // verbosity : 9,
   // sourceFilePath : sourceFilePath,
   // logger : wPrinterToJstructure(),
+
+  onSuiteBegin : makeTestDir,
+  onSuiteEnd : cleanTestDir,
 
   tests :
   {
