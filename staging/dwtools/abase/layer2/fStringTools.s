@@ -5153,12 +5153,21 @@ strParseMap.defaults =
   entryDelimeter : ' ',
 }
 
-//
+// --
+// strTable
+// --
 
 function strTable( o )
 {
   _.assert( arguments.length === 1 );
+
+  if( !_.objectIs( o ) )
+  {
+    o = { data : o }
+  }
   _.routineOptions( strTable,o );
+
+  _.assert( _.arrayLike( o.data ) );
 
   if( typeof module !== 'undefined' && module !== null )
   {
@@ -5169,20 +5178,6 @@ function strTable( o )
   if( _.cliTable == undefined )
   {
     throw( 'browser version of strTable is not implemented' );
-  }
-
-  _.assert( _.numberIs( o.rowsNumber ) && _.numberIs( o.colsNumber ) )
-
-  if( !o.onCellGet )
-  o.onCellGet = function onCellGet( data, index2d, o )
-  {
-    return data[ ( index2d[ 0 ] * index2d[ 1 ] ) - 1 ];
-  }
-
-  if( !o.onCellAfter )
-  o.onCellAfter = function onCellAfter( cellStr, index2d, o )
-  {
-    return cellStr;
   }
 
   //
@@ -5209,6 +5204,35 @@ function strTable( o )
 
   //
 
+  var isArrayOfArrays = true;
+  var maxLen = 0;
+  for( var i = 0; i < o.data.length; i++ )
+  {
+    if( !_.arrayLike( o.data[ i ] ) )
+    {
+      isArrayOfArrays = false;
+      break;
+    }
+
+    maxLen = Math.max( maxLen, o.data[ i ].length );
+  }
+
+  var onCellGet = strTable.onCellGet;
+  o.onCellGet = o.onCellGet || isArrayOfArrays ? onCellGet.ofArrayOfArray :  onCellGet.ofFlatArray ;
+  o.onCellAfter = o.onCellAfter || strTable.onCellAfter;
+
+  if( isArrayOfArrays )
+  {
+    o.rowsNumber = o.data.length;
+    o.colsNumber = maxLen;
+  }
+  else
+  {
+    _.assert( _.numberIs( o.rowsNumber ) && _.numberIs( o.colsNumber ) );
+  }
+
+  //
+
   makeWidth( 'colWidths', o.colWidth, o.colsNumber );
   makeWidth( 'rowWidths', o.rowWidth, o.rowsNumber );
 
@@ -5219,23 +5243,28 @@ function strTable( o )
     rowWidths : o.rowWidths
   }
 
-  //
-
   var table = new _.cliTable( tableOptions );
 
-  if( _.arrayLike( o.data ) )
+  //
+
+  for( var y = 0; y < o.rowsNumber; y++ )
   {
-    for( var y = 1; y <= o.rowsNumber; y++ )
+    var row = [];
+    table.push( row );
+
+    for( var x = 0; x < o.colsNumber; x++ )
     {
-      var row = [];
-      table.push( row );
-      for( var x = 1; x <= o.colsNumber; x++ )
-      {
-        var index2d = [ y, x ];
-        var cellData = o.onCellGet( o.data, index2d, o );
-        cellData = o.onCellAfter( cellData, index2d, o );
-        row.push( cellData );
-      }
+      var index2d = [ y, x ];
+      var cellData = o.onCellGet( o.data, index2d, o );
+      var cellStr;
+
+      if( cellData === undefined )
+      var cellData = cellStr = '';
+      else
+      var cellStr = _.toStr( cellData, { wrap : 0, stringWrapper : '' } );
+
+      cellStr = o.onCellAfter( cellStr, index2d, o );
+      row.push( cellStr );
     }
   }
 
@@ -5255,6 +5284,14 @@ strTable.defaults =
   onCellGet : null,
   onCellAfter : null,
 }
+
+strTable.onCellGet =
+{
+  ofFlatArray : ( data, index2d, o  ) => data[ index2d[ 0 ] * o.colsNumber + index2d[ 1 ] ],
+  ofArrayOfArray : ( data, index2d, o  ) => data[ index2d[ 0 ] ][ index2d[ 1 ] ]
+}
+
+strTable.onCellAfter = ( cellStr, index2d, o ) => cellStr
 
 // --
 // str color
