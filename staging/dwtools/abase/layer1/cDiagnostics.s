@@ -529,7 +529,7 @@ function diagnosticStack( stack,first,last )
   /* remove redundant lines */
 
   if( !errIs )
-  console.warn( 'REMINDER : problem here if !errIs' ); /* xxx */
+  console.debug( 'REMINDER : problem here if !errIs' ); /* xxx */
   if( !errIs )
   debugger;
 

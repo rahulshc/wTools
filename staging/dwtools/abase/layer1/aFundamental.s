@@ -329,7 +329,7 @@ function each( o )
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 
-  _.mapExtendFiltering( _.field.dstNotHasSrcOwn(),o,each.defaults );
+  _.mapExtendConditional( _.field.dstNotHasSrcOwn(),o,each.defaults );
 
   return _each( o );
 }
@@ -354,7 +354,7 @@ function eachOwn( o )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
   o.own = 1;
 
-  _.mapExtendFiltering( _.field.dstNotHasSrcOwn(),o,eachOwn.defaults );
+  _.mapExtendConditional( _.field.dstNotHasSrcOwn(),o,eachOwn.defaults );
 
   return _each( o );
 }
@@ -381,7 +381,7 @@ function eachRecursive( o )
 
   o.recursive = 1;
 
-  _.mapExtendFiltering( _.field.dstNotHasSrcOwn(),o,eachRecursive.defaults );
+  _.mapExtendConditional( _.field.dstNotHasSrcOwn(),o,eachRecursive.defaults );
 
   return _each( o );
 }
@@ -13457,7 +13457,7 @@ function mapClone( srcObject,o )
   //  */
 
 /**
- * The mapExtendFiltering() creates a new [ key, value ]
+ * The mapExtendConditional() creates a new [ key, value ]
  * from the next objects if callback function(filter) returns true.
  *
  * It calls a provided callback function(filter) once for each key in an (argument),
@@ -13471,16 +13471,16 @@ function mapClone( srcObject,o )
  *
  * @example
  * // returns { a : 1, b : 2, c : 3 }
- * _.mapExtendFiltering( _.field.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+ * _.mapExtendConditional( _.field.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
  *
  * @returns { objectLike } Returns the unique [ key, value ].
- * @function mapExtendFiltering
+ * @function mapExtendConditional
  * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
  * is not a Function, (result) and (argument) are not the objects.
  * @memberof wTools
  */
 
-function mapExtendFiltering( filter,dstObject )
+function mapExtendConditional( filter,dstObject )
 {
   var filter = _.field.makeMapper( filter );
 
@@ -13495,7 +13495,7 @@ function mapExtendFiltering( filter,dstObject )
   {
     var argument = arguments[ a ];
 
-    _.assert( !_.atomicIs( argument ),'mapExtendFiltering : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
+    _.assert( !_.atomicIs( argument ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
 
     for( var k in argument )
     {
@@ -13613,11 +13613,13 @@ function mapExtendToThis()
  * @memberof wTools
  */
 
-function mapSupplement( dst )
+function mapSupplement( dst,src )
 {
+  if( dst === null && arguments.length === 2 )
+  return _.mapExtend( dst,src );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.dstNotHas() );
-  return mapExtendFiltering.apply( this,args );
+  return mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13626,7 +13628,7 @@ function mapSupplementNulls( dst )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.dstNotHasOrHasNull() );
-  return mapExtendFiltering.apply( this,args );
+  return mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13635,7 +13637,7 @@ function mapSupplementOrComplementPureContainers( dst )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.dstNotOwnClonningPureContainers() );
-  return mapExtendFiltering.apply( this,args );
+  return mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13644,7 +13646,7 @@ function mapSupplementOwn( dst )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.dstNotOwn() );
-  return mapExtendFiltering.apply( this,args );
+  return mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13681,7 +13683,7 @@ function mapSupplementOwn( dst )
 function mapComplement( dst,src )
 {
   if( arguments.length === 2 )
-  return mapExtendFiltering( _.field.dstNotOwnOrUndefinedCloning(),dst,src );
+  return mapExtendConditional( _.field.dstNotOwnOrUndefinedCloning(),dst,src );
   else
   return _mapComplementSlow( arguments );
 }
@@ -13692,7 +13694,7 @@ function _mapComplementSlow( args )
 {
   var args = _.arraySlice( args );
   args.unshift( _.field.dstNotOwnOrUndefinedCloning() );
-  return mapExtendFiltering.apply( this,args );
+  return mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13701,7 +13703,7 @@ function mapComplementWithUndefines( dst )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.dstNotOwnCloning() );
-  return mapExtendFiltering.apply( this,args );
+  return mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13731,7 +13733,7 @@ function mapCopy()
 
 //
 
-// function mapCopyFiltering( filter )
+// function mapCopyConditional( filter )
 // {
 //   var args = _.arraySlice( arguments,1 );
 //   args.unshift( Object.create( null ) );
@@ -13827,7 +13829,7 @@ function mapExtendRecursive( dst,src )
     for( var a = 1 ; a < arguments.length ; a++ )
     {
       src = arguments[ a ];
-      _mapExtendRecursiveFiltering( filter,dst,src );
+      _mapExtendRecursiveConditional( filter,dst,src );
     }
   }
   else
@@ -13880,7 +13882,7 @@ function _mapFieldFilterMake( filter )
 
 //
 
-function _mapExtendRecursiveFiltering( filter,dst,src )
+function _mapExtendRecursiveConditional( filter,dst,src )
 {
 
   _.assert( _.objectIs( src ) );
@@ -13895,7 +13897,7 @@ function _mapExtendRecursiveFiltering( filter,dst,src )
       {
         if( !_.objectIs( dst[ s ] ) )
         dst[ s ] = Object.create( null );
-        _mapExtendRecursiveFiltering( filter,dst[ s ],src[ s ] );
+        _mapExtendRecursiveConditional( filter,dst[ s ],src[ s ] );
       }
 
     }
@@ -15777,7 +15779,7 @@ function mapOnlyAtomics( src )
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( src ) );
 
-  var result = _.mapExtendFiltering( _.field.atomic(),Object.create( null ),src );
+  var result = _.mapExtendConditional( _.field.atomic(),Object.create( null ),src );
   return result;
 }
 
@@ -15939,7 +15941,7 @@ function mapOwnBut( srcMap )
   //  */
 
   /**
-   * The mapButFiltering() routine returns a new object (result)
+   * The mapButConditional() routine returns a new object (result)
    * whose (values) are not equal to the arrays or objects.
    *
    * Takes any number of objects.
@@ -15957,21 +15959,21 @@ function mapOwnBut( srcMap )
    *
    * @example
    * // returns { a : 1, b : "b" }
-   * mapButFiltering( _.field.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
+   * mapButConditional( _.field.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
    *
    * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
-   * @function mapButFiltering
+   * @function mapButConditional
    * @throws { Error } Will throw an Error if (srcMap) is not an object.
    * @memberof wTools
    */
 
-function mapButFiltering( filter,srcMap )
+function mapButConditional( filter,srcMap )
 {
   var result = Object.create( null );
   var filter = _.field.makeMapper( filter );
   var a,k;
 
-  _.assert( objectLike( srcMap ),'mapButFiltering :','expects object as argument' );
+  _.assert( objectLike( srcMap ),'mapButConditional :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -15994,13 +15996,13 @@ function mapButFiltering( filter,srcMap )
 
 //
 
-function mapOwnButFiltering( filter,srcMap )
+function mapOwnButConditional( filter,srcMap )
 {
   var result = Object.create( null );
   var filter = _.field.makeMapper( filter );
   var a,k;
 
-  _.assert( objectLike( srcMap ),'mapOwnButFiltering :','expects object as argument' );
+  _.assert( objectLike( srcMap ),'mapOwnButConditional :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -16514,7 +16516,7 @@ function mapOwnKey( object,key )
 
   if( arguments.length === 1 )
   {
-    var result = _.mapExtendFiltering( _.field.srcOwn(),Object.create( null ),object );
+    var result = _.mapExtendConditional( _.field.srcOwn(),Object.create( null ),object );
     return result;
   }
 
@@ -17392,7 +17394,7 @@ var Proto =
 
   mapClone : mapClone, /* experimental */
 
-  mapExtendFiltering : mapExtendFiltering,
+  mapExtendConditional : mapExtendConditional,
   mapExtend : mapExtend,
   mapExtendToThis : mapExtendToThis,
   mapSupplement : mapSupplement,
@@ -17404,7 +17406,7 @@ var Proto =
   mapComplementWithUndefines : mapComplementWithUndefines,
 
   mapCopy : mapCopy,
-  /*mapCopyFiltering : mapCopyFiltering,*/
+  /*mapCopyConditional : mapCopyConditional,*/
 
   mapExtendByArray : mapExtendByArray,
 
@@ -17417,7 +17419,7 @@ var Proto =
   mapSupplementRecursive : mapSupplementRecursive,
   mapExtendRecursive : mapExtendRecursive,
   _mapFieldFilterMake : _mapFieldFilterMake,
-  _mapExtendRecursiveFiltering : _mapExtendRecursiveFiltering,
+  _mapExtendRecursiveConditional : _mapExtendRecursiveConditional,
   _mapExtendRecursive : _mapExtendRecursive,
 
 
@@ -17482,8 +17484,8 @@ var Proto =
   mapButWithUndefines : mapButWithUndefines, /* experimental */
   mapOwnBut : mapOwnBut, /* experimental */
 
-  mapButFiltering : mapButFiltering, /* experimental */
-  mapOwnButFiltering : mapOwnButFiltering, /* experimental */
+  mapButConditional : mapButConditional, /* experimental */
+  mapOwnButConditional : mapOwnButConditional, /* experimental */
 
   mapScreens : mapScreens, /* experimental */
   mapScreen : mapScreen, /* experimental */

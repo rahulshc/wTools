@@ -314,6 +314,7 @@ function shellNode( o )
     outputCollecting : 0,
     applyingReturnCode : 1,
     throwingBadReturnCode : 1,
+    stdio : 'inherit',
     verbosity : o.verbosity,
   }
 

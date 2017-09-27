@@ -146,11 +146,11 @@ function mapClone( test )
 
 //
 
-function mapExtendFiltering( test )
+function mapExtendConditional( test )
 {
 
   test.description = 'an unique object';
-  var got = _.mapExtendFiltering( _.field.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+  var got = _.mapExtendConditional( _.field.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
 
@@ -162,25 +162,25 @@ function mapExtendFiltering( test )
     test.description = 'no arguments';
     test.shouldThrowError( function()
     {
-      _.mapExtendFiltering();
+      _.mapExtendConditional();
     });
 
     test.description = 'few argument';
     test.shouldThrowError( function()
     {
-      _.mapExtendFiltering( _.field.supplementary() );
+      _.mapExtendConditional( _.field.supplementary() );
     });
 
     test.description = 'wrong type of array';
     test.shouldThrowError( function()
     {
-      _.mapExtendFiltering( [] );
+      _.mapExtendConditional( [] );
     });
 
     test.description = 'wrong type of arguments';
     test.shouldThrowError( function()
     {
-      _.mapExtendFiltering( 'wrong arguments' );
+      _.mapExtendConditional( 'wrong arguments' );
     });
 
   }
@@ -2429,11 +2429,11 @@ function mapOwnBut( test )
 
 //
 
-function mapButFiltering( test )
+function mapButConditional( test )
 {
 
   test.description = 'an object';
-  var got = _.mapButFiltering( _.field.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+  var got = _.mapButConditional( _.field.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
   var expected = {a: 1, b: "xxx"};
   test.identical( got, expected );
 
@@ -2445,25 +2445,25 @@ function mapButFiltering( test )
     test.description = 'no argument';
     test.shouldThrowError( function()
     {
-      _.mapButFiltering();
+      _.mapButConditional();
     });
 
     test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapButFiltering( _.field.atomic() );
+      _.mapButConditional( _.field.atomic() );
     });
 
     test.description = 'second argument is wrong type of array';
     test.shouldThrowError( function()
     {
-      _.mapButFiltering( _.field.atomic(), [] );
+      _.mapButConditional( _.field.atomic(), [] );
     });
 
     test.description = 'wrong type of arguments';
     test.shouldThrowError( function()
     {
-      _.mapButFiltering( 'wrong arguments' );
+      _.mapButConditional( 'wrong arguments' );
     });
 
   }
@@ -3475,7 +3475,7 @@ var Self =
 
     mapClone : mapClone,
 
-    mapExtendFiltering : mapExtendFiltering,
+    mapExtendConditional : mapExtendConditional,
     mapExtend : mapExtend,
     mapSupplement : mapSupplement,
     mapComplement : mapComplement,
@@ -3525,7 +3525,7 @@ var Self =
 
     mapOwnBut : mapOwnBut,
 
-    mapButFiltering : mapButFiltering,
+    mapButConditional : mapButConditional,
 
     mapScreens : mapScreens,
     mapScreen : mapScreen,
