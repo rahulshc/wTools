@@ -108,6 +108,12 @@ function _setupUnhandledErrorHandler()
 function _setupLoggerPlaceholder()
 {
 
+  if( !_global_.console.debug )
+  _global_.console.debug = function debug()
+  {
+    this.log.apply( this,arguments );
+  }
+
   if( !_global_.logger )
   _global_.logger =
   {

@@ -19,7 +19,7 @@ var Self = wTools;
 
 function diagnosticVariate( o )
 {
-  _.routineOptions( variate,o );
+  _.routineOptions( diagnosticVariate,o );
 
   if( _.arrayIs( o.routine ) )
   {
@@ -42,7 +42,7 @@ function diagnosticVariate( o )
   }
 
   var found = 0;
-  var samples = _.eachSample
+  var nsamples = _.eachSample
   ({
 
     onEach : function( sample,i )
@@ -53,18 +53,22 @@ function diagnosticVariate( o )
       found += 1;
       if( res || !o.printingValidOnly )
       {
-        logger.log( 'routine',o.routine.name,'gave',got,'expected',o.expected,( res ? 'thats it' : '' ) );
+        logger.log( 'routine',o.routine.name,'gave',got,'expected',o.expected,'#',i );
         if( res )
-        logger.log( 'sample :',sample );
+        {
+          logger.log( 'sample :',sample );
+          logger.log( got );
+        }
       }
     },
 
     sets : o.variates,
     sample : vals,
+    result : null,
 
   });
 
-  logger.log( 'Found',found,'/',samples.length );
+  logger.log( 'Found',found,'/',nsamples );
 
 }
 
@@ -72,6 +76,7 @@ diagnosticVariate.defaults =
 {
   routine : null,
   test : null,
+
   expected : null,
   variates : null,
   eps : 1e-3,
@@ -524,7 +529,7 @@ function diagnosticStack( stack,first,last )
   /* remove redundant lines */
 
   if( !errIs )
-  console.warn( 'REMINDER : problem here if !errIs' ); /* xxx */
+  console.debug( 'REMINDER : problem here if !errIs' ); /* xxx */
   if( !errIs )
   debugger;
 
