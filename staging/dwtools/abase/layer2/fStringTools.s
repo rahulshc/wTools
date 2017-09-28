@@ -5234,13 +5234,23 @@ function strTable( o )
   //
 
   makeWidth( 'colWidths', o.colWidth, o.colsNumber );
+  makeWidth( 'colAligns', o.colAlign, o.colsNumber );
   makeWidth( 'rowWidths', o.rowWidth, o.rowsNumber );
+  makeWidth( 'rowAligns', o.rowAlign, o.rowsNumber );
 
   var tableOptions =
   {
     head : o.head,
     colWidths : o.colWidths,
-    rowWidths : o.rowWidths
+    rowWidths : o.rowWidths,
+    colAligns : o.colAligns,
+    rowAligns : o.rowAligns,
+    style :
+    {
+      compact : o.compact,
+      'padding-left' : o.paddingLeft,
+      'padding-right' : o.paddingRight,
+    }
   }
 
   var table = new _.cliTable( tableOptions );
@@ -5276,14 +5286,28 @@ strTable.defaults =
   data : null,
   rowsNumber : null,
   colsNumber : null,
+
   head : null,
-  colWidth : 5,
-  colWidths : null,
+
   rowWidth : 5,
   rowWidths : null,
+  rowAlign : 'center',
+  rowAligns : null,
+
+  colWidth : 5,
+  colWidths : null,
+  colAlign : 'center',
+  colAligns : null,
+
+  compact : true,
+
+  paddingLeft : 0,
+  paddingRight : 0,
+
   onCellGet : null,
   onCellAfter : null,
 }
+
 
 strTable.onCellGet =
 {
