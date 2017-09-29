@@ -3472,7 +3472,7 @@ function strUnjoin( srcStr,maskArray )
   return result;
 }
 
-strUnjoin.any = _global_._any_;
+strUnjoin.any = _global_.any;
 _.assert( strUnjoin.any );
 
 //

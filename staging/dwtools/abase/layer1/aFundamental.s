@@ -23,13 +23,6 @@ if( !_global_ && typeof global !== 'undefined' && global.global === global ) _gl
 if( !_global_ && typeof window !== 'undefined' && window.window === window ) _global_ = window;
 if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ = self;
 
-// specia globals
-
-_global_._default_ = Symbol.for( 'default' );
-_global_._all_ = Symbol.for( 'all' );
-_global_._any_ = Symbol.for( 'any' );
-_global_._none_ = Symbol.for( 'none' );
-
 // veification
 
 if( 1 )
@@ -78,6 +71,20 @@ if( typeof wTools === 'undefined' )
 {
   _global_.wTools = Object.create( null );
 }
+
+// specia globals
+
+_global_.def = Symbol.for( 'default' );
+_global_.all = Symbol.for( 'all' );
+_global_.any = Symbol.for( 'any' );
+_global_.none = Symbol.for( 'none' );
+_global_.nil = Symbol.for( 'nil' );
+
+wTools.def = _global_.def;
+wTools.all = _global_.all;
+wTools.any = _global_.any;
+wTools.none = _global_.none;
+wTools.nil = _global_.nil;
 
 //
 
@@ -4027,11 +4034,13 @@ function errLogOnce( err )
 // type test
 // --
 
-function nothing( src )
+function nothingIs( src )
 {
   if( src === null )
   return true;
   if( src === undefined )
+  return true;
+  if( src === wTools.nil )
   return true;
   return false;
 }
@@ -4799,6 +4808,17 @@ function numberIsFinite( src )
   return false;
 
   return isFinite( src );
+}
+
+//
+
+function numberIsInfinite( src )
+{
+
+  if( !_.numberIs( src ) )
+  return false;
+
+  return src === +Infinity || src === -Infinity;
 }
 
 //
@@ -16973,7 +16993,7 @@ var Proto =
 
   // type test
 
-  nothing : nothing,
+  nothingIs : nothingIs,
 
   arrayIs : arrayIs,
   arrayLike : arrayLike,
@@ -17048,6 +17068,7 @@ var Proto =
   numberIs : numberIs,
   numberIsNotNan : numberIsNotNan,
   numberIsFinite : numberIsFinite,
+  numberIsInfinite : numberIsInfinite,
   numberIsInt : numberIsInt,
 
   numbersAreEquivalent : numbersAreEquivalent,
