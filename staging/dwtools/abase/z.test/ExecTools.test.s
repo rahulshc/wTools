@@ -27,23 +27,9 @@ if( typeof module !== 'undefined' )
 var _ = wTools;
 var Self = {};
 
-var testRootDirectory;
+var testRootDirectory = _.dirTempMake( _.pathJoin( __dirname, '../..' ) );
 
-function makeTestDir()
-{
-  testRootDirectory = _.dirTempFor
-  ({
-    packageName : Self.name,
-    packagePath : _.pathResolve( _.pathRealMainDir(), '../../tmp.tmp' )
-  });
-
-  testRootDirectory = _.fileProvider.pathNativize( testRootDirectory );
-
-  if( _.fileProvider.fileStat( testRootDirectory ) )
-  _.fileProvider.fileDelete( testRootDirectory );
-
-  _.fileProvider.directoryMake( testRootDirectory );
-}
+//
 
 function cleanTestDir()
 {
@@ -391,7 +377,6 @@ var Proto =
   // sourceFilePath : sourceFilePath,
   // logger : wPrinterToJstructure(),
 
-  onSuiteBegin : makeTestDir,
   onSuiteEnd : cleanTestDir,
 
   tests :
