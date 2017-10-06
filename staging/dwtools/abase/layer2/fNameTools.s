@@ -111,7 +111,7 @@ function namesCoded( namesMap )
 // id
 // --
 
-function idGenerateDate( prefix,postfix,fast )
+function idWithDate( prefix,postfix,fast )
 {
 
   var date = new Date;
@@ -138,7 +138,7 @@ function idGenerateDate( prefix,postfix,fast )
 
 //
 
-var idGenerateGuid = (function()
+var idWithGuid = (function()
 {
 
   function s4()
@@ -165,7 +165,7 @@ var idGenerateGuid = (function()
 
 //
 
-var idNumber = (function()
+var idWithInt = (function()
 {
 
   var counter = 0;
@@ -195,9 +195,9 @@ var Proto =
 
   // id
 
-  idGenerateDate : idGenerateDate,
-  idGenerateGuid : idGenerateGuid,
-  idNumber : idNumber,
+  idWithDate : idWithDate,
+  idWithGuid : idWithGuid,
+  idWithInt : idWithInt,
 
 }
 

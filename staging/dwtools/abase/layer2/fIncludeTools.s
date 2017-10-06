@@ -153,8 +153,9 @@ function _includeWithRequireAct( src )
   catch( err )
   {
     debugger;
-    throw err;
-    throw _.err( err,'\nLooked at\n',_.toStr( Module.globalPaths,{ levels : 2 } ),'\n',_.toStr( module.paths,{ levels : 2 } ) );
+    // throw err;
+    throw _.err( err,'\n','Cant require',src );
+    // throw _.err( err,'\nLooked at\n',_.toStr( Module.globalPaths,{ levels : 2 } ),'\n',_.toStr( module.paths,{ levels : 2 } ) );
   }
   else
   throw _.err( 'Can make include only on Nodejs.' );
@@ -591,26 +592,14 @@ _includeHandlerMap[ 'wLogger' ] =
 
 _includeHandlerMap[ 'wPrinterToFile' ] =
 {
-  includeAny : [ '../../abase/oclass/printer/top/PrinterToFile.s','abase/oclass/printer/top/PrinterToFile.s','wloggertofile' ],
-  isIncluded : function(){ return typeof wPrinterToFile !== 'undefined'; },
+  includeAny : [ '../../abase/oclass/printer/top/ToFile.ss','abase/oclass/printer/top/ToFile.ss','wloggertofile' ],
+  isIncluded : function(){ debugger; return typeof wPrinterToFile !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wPrinterToJstructure' ] =
 {
-  includeAny : [ '../../abase/oclass/printer/top/PrinterToJstructure.s','abase/oclass/printer/top/PrinterToJstructure.s','wloggertojstructure' ],
+  includeAny : [ '../../abase/oclass/printer/top/ToJstructure.s','abase/oclass/printer/top/ToJstructure.s','wloggertojstructure' ],
   isIncluded : function(){ return typeof wPrinterToJstructure !== 'undefined'; },
-}
-
-_includeHandlerMap[ 'wColor' ] =
-{
-  includeAny : [ '../../amid/color/Color.s','amid/color/Color.s','wColor' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap },
-}
-
-_includeHandlerMap[ 'wColor256' ] =
-{
-  includeAny : [ '../../amid/color/Color256.s','amid/color/Color256.s','wColor256' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap && Object.keys( wTools.ColorMap ).length > 100 },
 }
 
 _includeHandlerMap[ 'wConsequence' ] =
@@ -619,10 +608,16 @@ _includeHandlerMap[ 'wConsequence' ] =
   isIncluded : function(){ return typeof wConsequence !== 'undefined'; },
 }
 
+_includeHandlerMap[ 'wConsequizer' ] =
+{
+  includeAny : [ '../../abase/mixin/Consequizer.s','abase/mixin/Consequizer.','wconsequizer' ],
+  isIncluded : function(){ return typeof wConsequizer !== 'undefined'; },
+}
+
 _includeHandlerMap[ 'wNameTools' ] =
 {
   includeAny : [ '../../abase/layer3//NameTools.s','abase/layer3//NameTools.s','wNameTools' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.idNumber; },
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.idWithInt; },
 }
 
 _includeHandlerMap[ 'wRegexpObject' ] =
@@ -649,6 +644,24 @@ _includeHandlerMap[ 'wPath' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.pathDir },
 }
 
+_includeHandlerMap[ 'wArraySorted' ] =
+{
+  includeAny : [ '../../abase/layer3/ArraySorted.s','abase/layer3/ArraySorted.s','warraysorted' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.arraySortedLookUp },
+}
+
+_includeHandlerMap[ 'wColor' ] =
+{
+  includeAny : [ '../../amid/color/Color.s','amid/color/Color.s','wColor' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap },
+}
+
+_includeHandlerMap[ 'wColor256' ] =
+{
+  includeAny : [ '../../amid/color/Color256.s','amid/color/Color256.s','wColor256' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ColorMap && Object.keys( wTools.ColorMap ).length > 100 },
+}
+
 _includeHandlerMap[ 'wFiles' ] =
 {
   includeAny : [ '../../amid/file/FileTop.s','amid/file/FileTop.s','wFiles' ],
@@ -667,10 +680,16 @@ _includeHandlerMap[ 'wNameMapper' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.NameMapper },
 }
 
-_includeHandlerMap[ 'wArraySorted' ] =
+_includeHandlerMap[ 'wGraph' ] =
 {
-  includeAny : [ '../../abase/layer3/ArraySorted.s','abase/layer3/ArraySorted.s','warraysorted' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.arraySortedLookUp },
+  includeAny : [ '../../amid/agraph/Graph.s','amid/agraph/Graph.s','wGraph' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.graph },
+}
+
+_includeHandlerMap[ 'wSchema' ] =
+{
+  includeAny : [ '../../amid/schema/SchemaSystem.s','amid/schema/SchemaSystem.s','wSchema' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.SchemaSystem },
 }
 
 // --

@@ -823,7 +823,7 @@ function diagnosticProxyFields( o )
   _.assert( _.objectLike( o.target ) );
   _.assert( _.objectLike( o.names ) || o.names === null );
 
-  var validator =
+  var handler =
   {
     set : function( obj, k, e )
     {
@@ -840,7 +840,7 @@ function diagnosticProxyFields( o )
     }
   }
 
-  var result = new Proxy( o.target, validator );
+  var result = new Proxy( o.target, handler );
   if( o.verbosity > 1 )
   console.log( 'watching for',o.target );
 

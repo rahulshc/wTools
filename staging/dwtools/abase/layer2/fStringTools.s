@@ -103,7 +103,7 @@ function toStrFields( src,o )
 * @typedef {Object} wTools~toStrOptions
 * @property {boolean} [ o.wrap=true ] - Wrap array-like and object-like entities
 * into "[ .. ]" / "{ .. }" respecitvely.
-* @property {boolean} [ o.stringWrapper='"' ] - Wrap string into specified string.
+* @property {boolean} [ o.stringWrapper='\'' ] - Wrap string into specified string.
 * @property {boolean} [ o.multilinedString=false ] - Wrap string into backtick ( `` ).
 * @property {number} [ o.level=0 ] - Sets the min depth of looking into source object. Function starts from zero level by default.
 * @property {number} [ o.levels=1 ] - Restricts max depth of looking into source object. Looks only in one level by default.
@@ -373,7 +373,7 @@ function toStrFine_functor()
     level : 0,
 
     wrap : 1,
-    stringWrapper : '"',
+    stringWrapper : '\'',
     keyWrapper : '',
     prependTab : 1,
     errorAsMap : 0,
@@ -446,6 +446,8 @@ function toStrFine_functor()
       o.escaping = 1;
       if( o.keyWrapper === undefined )
       o.keyWrapper = '"';
+      if( o.stringWrapper === undefined )
+      o.stringWrapper = '"';
     }
 
     if( o.stringWrapper === undefined && o.multilinedString )
@@ -3472,7 +3474,7 @@ function strUnjoin( srcStr,maskArray )
   return result;
 }
 
-strUnjoin.any = _global_._any_;
+strUnjoin.any = _global_.any;
 _.assert( strUnjoin.any );
 
 //
