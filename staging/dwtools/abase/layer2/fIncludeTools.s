@@ -22,6 +22,8 @@ if( typeof require !== 'undefined' )
 __include = require;
 else if( typeof importScripts !== 'undefined' )
 __include = importScripts;
+else if( _global_._remoteRequire )
+__include = _global_._remoteRequire;
 
 // --
 // routines
@@ -249,8 +251,8 @@ function _includeWithRequireAny( src )
 
     try
     {
-      var resolved = require.resolve( src );
-      // console.log( 'require.resolve',src,'->',resolved );
+      var resolved = __include.resolve( src );
+      // console.log( '__include.resolve',src,'->',resolved );
     }
     catch( err )
     {
@@ -304,8 +306,8 @@ function includeAny()
 
     try
     {
-      var resolved = require.resolve( src );
-      // console.log( 'require.resolve',src,'->',resolved );
+      var resolved = __include.resolve( src );
+      // console.log( '__include.resolve',src,'->',resolved );
     }
     catch( err )
     {
