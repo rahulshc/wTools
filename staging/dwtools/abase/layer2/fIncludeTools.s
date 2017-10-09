@@ -688,8 +688,14 @@ _includeHandlerMap[ 'wGraph' ] =
 
 _includeHandlerMap[ 'wSchema' ] =
 {
-  includeAny : [ '../../amid/schema/SchemaSystem.s','amid/schema/SchemaSystem.s','wSchema' ],
+  includeAny : [ '../../amid/schema/SchemaSystems.s','amid/schema/SchemaSystems.s','wSchema' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.SchemaSystem },
+}
+
+_includeHandlerMap[ 'wVector' ] =
+{
+  includeAny : [ '../../amath/cvector/vArray.s','amath/cvector/vArray.s','wVector' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.vector },
 }
 
 // --

@@ -5022,26 +5022,76 @@ function numberRandomIntBut( range )
 
 //
 
-function numbersFromNumber( dst,length )
+function numbersMake( src,length )
 {
+  var result;
+
+  if( _.vectorIs( src ) )
+  src = _.vector.slice( src );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
-  _.assert( length >= 0 );
+  _.assert( _.numberIs( src ) || _.arrayIs( src ) );
 
-  if( _.numberIs( dst ) )
+  if( _.arrayIs( src ) )
   {
-    dst = _.arrayFillTimes( [], length , dst );
+    _.assert( src.length === length );
+    var result = _.array.makeArrayOfLength( length );
+    for( var i = 0 ; i < length ; i++ )
+    result[ i ] = src[ i ];
   }
   else
   {
-    for( var i = 0 ; i < dst.length ; i++ )
-    _.assert( _.numberIs( dst[ i ] ) );
-    _.assert( dst.length === length,'expects array of length',length,'but got',dst );
+    var result = _.array.makeArrayOfLength( length );
+    for( var i = 0 ; i < length ; i++ )
+    result[ i ] = src;
   }
 
-  return dst;
+  return result;
 }
+
+//
+
+function numbersFromNumber( src,length )
+{
+
+  if( _.vectorIs( src ) )
+  src = _.vector.slice( src );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( src ) || _.arrayIs( src ) );
+
+  if( _.arrayIs( src ) )
+  {
+    _.assert( src.length === length );
+    return src;
+  }
+
+  var result = _.array.makeArrayOfLength( length );
+  for( var i = 0 ; i < length ; i++ )
+  result[ i ] = src;
+
+  return result;
+}
+
+// {
+//
+//   _.assert( arguments.length === 2 );
+//   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
+//   _.assert( length >= 0 );
+//
+//   if( _.numberIs( dst ) )
+//   {
+//     dst = _.arrayFillTimes( [], length , dst );
+//   }
+//   else
+//   {
+//     for( var i = 0 ; i < dst.length ; i++ )
+//     _.assert( _.numberIs( dst[ i ] ) );
+//     _.assert( dst.length === length,'expects array of length',length,'but got',dst );
+//   }
+//
+//   return dst;
+// }
 
 //
 
@@ -5077,29 +5127,63 @@ function numbersMake_functor( length )
 
   function numbersMake( src )
   {
+    return _.numbersMake( src,length );
+    // if( _.vectorIs( src ) )
+    // src = _.vector.slice( src );
+    //
+    // _.assert( arguments.length === 1 );
+    // _.assert( _.numberIs( src ) || _.arrayIs( src ) );
+    //
+    // if( _.arrayIs( src ) )
+    // {
+    //   _.assert( src.length === length );
+    //   return src.slice();
+    // }
+    //
+    // var result = _.makeArrayOfLength( length );
+    // for( var i = 0 ; i < length ; i++ )
+    // result[ i ] = src;
+    //
+    // return result;
 
-    if( _.vectorIs( src ) )
-    src = _.vector.slice( src );
-
-    _.assert( arguments.length === 1 );
-    _.assert( _.numberIs( src ) || _.arrayIs( src ) );
-
-    if( _.arrayIs( src ) )
-    {
-      _.assert( src.length === length );
-      return src;
-    }
-
-    debugger;
-
-    var result = _.makeArrayOfLength( length );
-    for( var i = 0 ; i < length ; i++ )
-    result[ i ] = src;
-
-    return result;
   }
 
   return numbersMake;
+}
+
+//
+
+function numbersFrom_functor( length )
+{
+  var _ = this;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.numberIs( length ) );
+
+  function numbersFromNumber( src )
+  {
+    return _.numbersFromNumber( src,length );
+
+    // if( _.vectorIs( src ) )
+    // src = _.vector.slice( src );
+    //
+    // _.assert( arguments.length === 1 );
+    // _.assert( _.numberIs( src ) || _.arrayIs( src ) );
+    //
+    // if( _.arrayIs( src ) )
+    // {
+    //   _.assert( src.length === length );
+    //   return src;
+    // }
+    //
+    // var result = _.makeArrayOfLength( length );
+    // for( var i = 0 ; i < length ; i++ )
+    // result[ i ] = src;
+    //
+    // return result;
+  }
+
+  return numbersFrom;
 }
 
 //
@@ -8423,7 +8507,7 @@ function arrayFromNumber( dst,length )
 
   if( _.numberIs( dst ) )
   {
-    dst = _.arrayFillTimes( [] , length , value );
+    dst = _.arrayFillTimes( [] , length , dst );
   }
   else
   {
@@ -17085,10 +17169,12 @@ var Proto =
   numberRandomInt : numberRandomInt,
   numberRandomIntBut : numberRandomIntBut, /* experimental */
 
+  numbersMake : numbersMake,
   numbersFromNumber : numbersFromNumber,
   numbersFromInt : numbersFromInt,
 
   numbersMake_functor : numbersMake_functor,
+  numbersFrom_functor : numbersFrom_functor,
 
   numberClamp : numberClamp,
   numberMix : numberMix,

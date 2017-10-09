@@ -48,6 +48,7 @@ function makeSimilar( src,length )
 
 function makeArrayOfLength( length )
 {
+
   if( length === undefined )
   length = 0;
 
@@ -156,6 +157,7 @@ _arrayDescriptorsApplyTo( wTools );
 
 _.assert( _.objectIs( wTools.ArrayDescriptorsMap ) );
 _.assert( _.objectIs( wTools.array ) );
+_.assert( _.routineIs( wTools.array.makeArrayOfLength ) );
 
 // debugger;
 
