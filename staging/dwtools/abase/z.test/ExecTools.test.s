@@ -47,6 +47,7 @@ function testDirMake()
 
 function cleanTestDir()
 {
+  if( !isBrowser )
   _.fileProvider.fileDelete( testRootDirectory );
 }
 
