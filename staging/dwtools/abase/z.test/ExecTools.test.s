@@ -2,8 +2,12 @@
 
 'use strict';
 
+var isBrowser = true;
+
 if( typeof module !== 'undefined' )
 {
+
+  isBrowser = false;
 
   try
   {
@@ -27,14 +31,23 @@ if( typeof module !== 'undefined' )
 var _ = wTools;
 var Self = {};
 
-return;
+// return;
 
-var testRootDirectory = _.dirTempMake( _.pathJoin( __dirname, '../..' ) );
+var testRootDirectory;
+
+function testDirMake()
+{
+  if( !isBrowser )
+  testRootDirectory = _.dirTempMake( _.pathJoin( __dirname, '../..'  ) );
+  else
+  testRootDirectory = _.pathCurrent();
+}
 
 //
 
 function cleanTestDir()
 {
+  if( !isBrowser )
   _.fileProvider.fileDelete( testRootDirectory );
 }
 
@@ -379,6 +392,7 @@ var Proto =
   // sourceFilePath : sourceFilePath,
   // logger : wPrinterToJstructure(),
 
+  onSuiteBegin : testDirMake,
   onSuiteEnd : cleanTestDir,
 
   tests :
