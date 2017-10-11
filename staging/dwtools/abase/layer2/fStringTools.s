@@ -3331,9 +3331,9 @@ function strQuote( o )
 
   _.routineOptions( strQuote,o );
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( o.src ) );
+  // _.assert( _.strIs( o.src ) );
 
-  var result = o.quote + o.src + o.quote;
+  var result = o.quote + String( o.src ) + o.quote;
 
   return result;
 }

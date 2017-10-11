@@ -595,7 +595,7 @@ _includeHandlerMap[ 'wLogger' ] =
 _includeHandlerMap[ 'wPrinterToFile' ] =
 {
   includeAny : [ '../../abase/oclass/printer/top/ToFile.ss','abase/oclass/printer/top/ToFile.ss','wloggertofile' ],
-  isIncluded : function(){ debugger; return typeof wPrinterToFile !== 'undefined'; },
+  isIncluded : function(){ return typeof wPrinterToFile !== 'undefined'; },
 }
 
 _includeHandlerMap[ 'wPrinterToJstructure' ] =
@@ -698,6 +698,12 @@ _includeHandlerMap[ 'wVector' ] =
 {
   includeAny : [ '../../amath/cvector/vArray.s','amath/cvector/vArray.s','wVector' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.vector },
+}
+
+_includeHandlerMap[ 'wIncubator' ] =
+{
+  includeAny : [ '../../amid/worker/Incubator.s','amid/worker/Incubator.s','wIncubator' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Incubator },
 }
 
 // --

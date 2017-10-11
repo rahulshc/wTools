@@ -1,21 +1,10 @@
-( function Map_test_s( ) {
+( function _Map_test_s( ) {
 
 'use strict';
-
-/*
-
- to run this test
- from the project directory run
-
- npm install
- node ./staging/z.test/Map.test.s
-
- */
 
 if( typeof module !== 'undefined' )
 {
 
-  //if( typeof wBase === 'undefined' )
   try
   {
     require( '../../Base.s' );
@@ -3458,7 +3447,9 @@ function mapGroup( test )
 
 };
 
+// --
 //
+// --
 
 var Self =
 {
@@ -3554,4 +3545,4 @@ Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
 _.Tester.test( Self.name );
 
-} )( );
+})();

@@ -243,12 +243,12 @@ function timeOutAsync( test )
         test.shouldBe( _.routineIs( got ) );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -269,12 +269,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -296,12 +296,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -322,12 +322,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -348,12 +348,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -378,12 +378,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -405,12 +405,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -436,12 +436,12 @@ function timeOutAsync( test )
         test.identical( err, null )
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -464,12 +464,12 @@ function timeOutAsync( test )
         test.identical( err, null );
       })
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen(function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
 
     return _.timeOut( delay + 50, function()
@@ -477,12 +477,12 @@ function timeOutAsync( test )
       t.error( 'stop' );
       t.got( ( err, got ) => test.identical( err, 'stop' ) );
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .doThen( function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     });
   })
 
@@ -503,12 +503,12 @@ function timeOutAsync( test )
         test.shouldBe( _.routineIs( got ) );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1, function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -529,12 +529,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1, function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -556,12 +556,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -582,12 +582,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -608,12 +608,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -638,12 +638,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -664,11 +664,11 @@ function timeOutAsync( test )
         test.shouldBe( got === 'stop' );
         test.shouldBe( err === null );
         test.identical( t.messagesGet().length, 0 );
-        test.identical( t.correspondentsGet().length, 0 );
+        test.identical( t.correspondentsEarlyGet().length, 0 );
       });
 
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
   })
 
@@ -693,10 +693,10 @@ function timeOutAsync( test )
         test.identical( called, false );
         test.identical( err, null );
         test.identical( t.messagesGet().length, 0 );
-        test.identical( t.correspondentsGet().length, 0 );
+        test.identical( t.correspondentsEarlyGet().length, 0 );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
   })
 
@@ -719,24 +719,24 @@ function timeOutAsync( test )
         test.identical( err, null );
       })
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
     .doThen( function()
     {
       t.error( 'stop' );
       t.got( ( err, got ) => test.identical( err, 'stop' ) );
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     });
 
     return con;
@@ -759,12 +759,12 @@ function timeOutAsync( test )
         test.shouldBe( _.routineIs( got ) );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1, function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -785,12 +785,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1, function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -812,12 +812,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -838,12 +838,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -864,12 +864,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -894,12 +894,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -921,12 +921,12 @@ function timeOutAsync( test )
         test.shouldBe( err === null );
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -952,12 +952,12 @@ function timeOutAsync( test )
         test.identical( err, null )
       });
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
   })
 
@@ -980,24 +980,24 @@ function timeOutAsync( test )
         test.identical( err, null );
       })
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     })
     .doThen( function()
     {
       t.error( 'stop' );
       t.got( ( err, got ) => test.identical( err, 'stop' ) );
       test.identical( t.messagesGet().length, 1 );
-      test.identical( t.correspondentsGet().length, 1 );
+      test.identical( t.correspondentsEarlyGet().length, 1 );
     })
     .timeOutThen( 1,function()
     {
       test.identical( t.messagesGet().length, 0 );
-      test.identical( t.correspondentsGet().length, 0 );
+      test.identical( t.correspondentsEarlyGet().length, 0 );
     });
 
     return con;

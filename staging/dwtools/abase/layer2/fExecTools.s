@@ -15,6 +15,8 @@ if( typeof module !== 'undefined' )
 
 }
 
+var System;
+
 var Self = wTools;
 var _ = wTools;
 
@@ -25,26 +27,6 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
-
-/*
-
-  !!! rewrite or deprecate?
-  !!! introduce paramter to continue on error
-
-*/
-
-/*
-
-!!!
-
-function read( data )
-{
-  var vm = VirtualMachine.createContext({});
-  var script = VirtualMachine.createScript( '(' + s + ')' );
-  return script.runInNewContext( vm );
-};
-
-*/
 
 // --
 // exec
@@ -65,8 +47,26 @@ var shell = ( function( o )
     _.routineOptions( shell,o );
     _.assert( arguments.length === 1 );
 
+    if( o.ipc )
+    {
+      if( _.strIs( o.stdio ) )
+      o.stdio = _.dup( o.stdio,3 );
+      if( !_.arrayHas( o.stdio,'ipc' ) )
+      o.stdio.push( 'ipc' );
+    }
+
     if( o.args )
     _.assert( _.arrayIs( o.args ) );
+
+    if( o.passingThrough )
+    {
+      var argumentsManual = process.argv.slice( 2 );
+      o.args = _.arrayAppendArray( o.args || [],argumentsManual );
+/*
+      if( argumentsManual.length )
+      code += ' "' + argumentsManual.join( '" "' ) + '"';
+*/
+    }
 
     if( o.outputCollecting )
     o.output = '';
@@ -76,20 +76,21 @@ var shell = ( function( o )
     if( !ChildProcess )
     ChildProcess = require( 'child_process' );
 
-    if( o.usingColoring )
-    if( _.color === undefined && typeof module !== 'undefined' )
+    if( o.outputColoring && typeof module !== 'undefined' )
     try
     {
-      require( 'wLogger' );
-      require( 'wColor' );
+      if( _.Logger === undefined )
+      _.include( 'wLogger' );
+      if( _.color === undefined )
+      _.include( 'wColor' );
     }
     catch( err ) 
     {
-      _.color = null;
     }
 
     /* */
 
+    debugger;
     if( o.verbosity )
     {
       if( o.args )
@@ -103,8 +104,10 @@ var shell = ( function( o )
     try
     {
       var optionsForSpawn = Object.create( null );
+
       if( o.stdio )
       optionsForSpawn.stdio = o.stdio;
+      optionsForSpawn.detached = !!o.detaching;
 
       if( o.mode === 'fork')
       {
@@ -137,7 +140,7 @@ var shell = ( function( o )
         logger.warn( '( shell.mode ) "exec" is deprecated' );
         o.child = ChildProcess.exec( o.code );
       }
-      else throw _.err( 'unknown mode',o.mode );
+      else _.assert( 0,'unknown mode',o.mode );
 
     }
     catch( err )
@@ -161,11 +164,10 @@ var shell = ( function( o )
       if( o.outputCollecting )
       o.output += data;
 
-      if( !o.outputRaw )
+      if( o.outputPrefixing )
       data = 'stdout :\n' + _.strIndentation( data,'  ' );
 
-      if( !o.outputRaw )
-      if( _.color && o.usingColoring )
+      if( _.color && o.outputColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
 
       logger.log( data );
@@ -184,14 +186,11 @@ var shell = ( function( o )
       if( _.strEnds( data,'\n' ) )
       data = _.strRemoveEnd( data,'\n' );
 
-      if( !o.outputRaw )
-      data = 'stder :\n' + _.strIndentation( data,'  ' );
+      if( o.outputPrefixing )
+      data = 'stderr :\n' + _.strIndentation( data,'  ' );
 
-      if( !o.outputRaw )
-      if( _.color && o.usingColoring )
+      if( _.color && o.outputColoring )
       data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
-
-      // debugger;
 
       logger.warn( data );
     });
@@ -203,19 +202,21 @@ var shell = ( function( o )
     {
 
       if( o.verbosity >= 1 )
-      _.errLog( err );
+      err = _.errLogOnce( err );
 
       if( done )
       return;
 
       done = true;
-      con.error( _.err( err ) );
+      con.error( err );
     });
 
     /* */
 
     o.child.on( 'close', function( returnCode )
     {
+
+      _.assert( _.numberIs( returnCode ) );
 
       if( o.verbosity > 1 )
       {
@@ -237,12 +238,13 @@ var shell = ( function( o )
 
       if( returnCode !== 0 && o.throwingBadReturnCode )
       {
-        if( _.numberIs( returnCode ) )
+        // if( _.numberIs( returnCode ) )
         con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.code ) );
       }
       else
-      con.give( o );
-      /*con.give( returnCode );*/
+      {
+        con.give( o );
+      }
 
     });
 
@@ -254,21 +256,27 @@ var shell = ( function( o )
 shell.defaults =
 {
   code : null,
-  mode : 'shell',
   args : null,
+  mode : 'shell',
+
   stdio : 'pipe', /* 'pipe' / 'ignore' / 'inherit' */
+  ipc : 0,
+  detaching : 0,
+  passingThrough : 0,
+
   throwingBadReturnCode : 0,
   applyingReturnCode : 0,
-  usingColoring : 1,
-  outputRaw : 0,
+
+  outputColoring : 1,
+  outputPrefixing : 1,
   outputPiping : 1,
-  outputCollecting : 1,
+  outputCollecting : 0,
   verbosity : 1,
+
 }
 
 //
 
-var System;
 function shellNode( o )
 {
 
@@ -282,7 +290,7 @@ function shellNode( o )
   if( _.strIs( o ) )
   o = { scriptPath : o }
 
-  _.routineOptions( shellNode,o )
+  _.routineOptions( shellNode,o );
 
   _.assert( _.strIs( o.scriptPath ) );
 
@@ -303,35 +311,59 @@ function shellNode( o )
 
   var argumentsForNode = '--expose-gc --stack-trace-limit=999 --max_old_space_size=' + totalmem;
   var scriptPath = _.fileProvider.pathNativize( o.scriptPath );
-  var argumentsManual = process.argv.slice( 2 );
   var code = _.strConcat( 'node',argumentsForNode,scriptPath );
-
-  if( argumentsManual.length )
-  code += ' "' + argumentsManual.join( '" "' ) + '"';
 
   var shell =
   {
     code : code,
-    outputRaw : 1,
+    outputPrefixing : 1,
     outputCollecting : 0,
     applyingReturnCode : 1,
     throwingBadReturnCode : 1,
     stdio : 'inherit',
     verbosity : o.verbosity,
+    passingThrough : o.passingThrough
   }
 
-  _.shell( shell );
-
-  //process.stdin.pipe( shell.child.stdin );
-
-  // console.log( 'shell',shell );
-
+  return _.shell( shell );
 }
 
 shellNode.defaults =
 {
   scriptPath : null,
   verbosity : 1,
+  passingThrough : 0,
+}
+
+//
+
+function routineSourceGet( o )
+{
+  if( _.routineIs( o ) )
+  o = { routine : o };
+
+  _.routineOptions( routineSourceGet,o );
+  _.assert( arguments.length === 1 );
+  _.assert( _.routineIs( o.routine ) );
+
+  var result = o.routine.toSource ? o.routine.toSource() : o.routine.toString();
+
+  var reg1 = /^\s*function\s*\w*\s*\([^\)]*\)\s*\{\s*/;
+  var reg2 = /\s*\}\s*$/;
+  if( !o.withWrap && reg1.exec( result ) )
+  {
+    result = result.replace( reg1,'' );
+    result = result.replace( reg2,'' );
+  }
+
+  return result;
+}
+
+routineSourceGet.defaults =
+{
+  routine : null,
+  wrap : 1,
+  withWrap : 1,
 }
 
 //
@@ -767,6 +799,8 @@ var Proto =
 
   shell : shell,
   shellNode : shellNode,
+
+  routineSourceGet : routineSourceGet,
 
   routineMake : routineMake,
   routineExec : routineExec,

@@ -153,6 +153,24 @@ function dstNotHasOrHasNull()
 
 //
 
+function dstNotHasOrHasNil()
+{
+
+  var routine = function dstNotHasOrHasNil( dstContainer,srcContainer,key )
+  {
+
+    if( key in dstContainer && dstContainer[ key ] !== nil )
+    return false;
+
+    return true;
+  }
+
+  routine.functionKind = 'field-filter';
+  return routine;
+}
+
+//
+
 function dstNotHasCloning()
 {
 
@@ -655,6 +673,7 @@ var field =
 
   dstNotHas : dstNotHas,
   dstNotHasOrHasNull : dstNotHasOrHasNull,
+  dstNotHasOrHasNil : dstNotHasOrHasNil,
 
   dstNotHasCloning : dstNotHasCloning,
   dstNotHasSrcOwn : dstNotHasSrcOwn,

@@ -13737,6 +13737,15 @@ function mapSupplementNulls( dst )
 
 //
 
+function mapSupplementNils( dst )
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.dstNotHasOrHasNil() );
+  return mapExtendConditional.apply( this,args );
+}
+
+//
+
 function mapSupplementOrComplementPureContainers( dst )
 {
   var args = _.arraySlice( arguments );
@@ -17506,6 +17515,7 @@ var Proto =
   mapExtendToThis : mapExtendToThis,
   mapSupplement : mapSupplement,
   mapSupplementNulls : mapSupplementNulls,
+  mapSupplementNils : mapSupplementNils,
   mapSupplementOrComplementPureContainers : mapSupplementOrComplementPureContainers,
   mapSupplementOwn : mapSupplementOwn,
   mapComplement : mapComplement,
