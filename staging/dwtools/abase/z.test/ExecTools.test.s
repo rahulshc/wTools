@@ -238,13 +238,13 @@ function shell( test )
     shell.give();
     shell.doThen(function()
     {
-      test.identical( options.child.killed, false );
-      options.child.kill( 'SIGINT' );
+      test.identical( options.process.killed, false );
+      options.process.kill( 'SIGINT' );
 
     })
     shell.got(function()
     {
-      test.identical( options.child.killed, true );
+      test.identical( options.process.killed, true );
       test.identical( !options.returnCode, true );
       shell.give();
     })
@@ -268,12 +268,12 @@ function shell( test )
     shell.give();
     shell.doThen(function()
     {
-      test.identical( options.child.killed, false );
-      options.child.kill( 'SIGINT' );
+      test.identical( options.process.killed, false );
+      options.process.kill( 'SIGINT' );
     })
     shell.got(function()
     {
-      test.identical( options.child.killed, true );
+      test.identical( options.process.killed, true );
       test.identical( !options.returnCode, true );
       shell.give();
     })

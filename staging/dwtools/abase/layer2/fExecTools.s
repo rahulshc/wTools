@@ -15,7 +15,7 @@ if( typeof module !== 'undefined' )
 
 }
 
-var System;
+var System,ChildProcess;
 
 var Self = wTools;
 var _ = wTools;
@@ -32,230 +32,226 @@ var _arraySlice = _.arraySlice;
 // exec
 // --
 
-var shell = ( function( o )
+function shell( o )
 {
+  var con = new wConsequence();
 
-  var ChildProcess;
+  if( _.strIs( o ) )
+  o = { path : o };
 
-  return function shell( o )
+  _.routineOptions( shell,o );
+  _.assert( arguments.length === 1 );
+  _.accessorForbid( o,'child' );
+
+  if( o.ipc )
   {
-    var con = new wConsequence();
-
-    if( _.strIs( o ) )
-    o = { code : o };
-
-    _.routineOptions( shell,o );
-    _.assert( arguments.length === 1 );
-
-    if( o.ipc )
-    {
-      if( _.strIs( o.stdio ) )
-      o.stdio = _.dup( o.stdio,3 );
-      if( !_.arrayHas( o.stdio,'ipc' ) )
-      o.stdio.push( 'ipc' );
-    }
-
-    if( o.args )
-    _.assert( _.arrayIs( o.args ) );
-
-    if( o.passingThrough )
-    {
-      var argumentsManual = process.argv.slice( 2 );
-      o.args = _.arrayAppendArray( o.args || [],argumentsManual );
-/*
-      if( argumentsManual.length )
-      code += ' "' + argumentsManual.join( '" "' ) + '"';
-*/
-    }
-
-    if( o.outputCollecting )
-    o.output = '';
-
-    /* */
-
-    if( !ChildProcess )
-    ChildProcess = require( 'child_process' );
-
-    if( o.outputColoring && typeof module !== 'undefined' )
-    try
-    {
-      if( _.Logger === undefined )
-      _.include( 'wLogger' );
-      if( _.color === undefined )
-      _.include( 'wColor' );
-    }
-    catch( err ) 
-    {
-    }
-
-    /* */
-
-    debugger;
-    if( o.verbosity )
-    {
-      if( o.args )
-      logger.log( o.code, o.args.join( ' ' ) );
-      else
-      logger.log( o.code );
-    }
-
-    /* */
-
-    try
-    {
-      var optionsForSpawn = Object.create( null );
-
-      if( o.stdio )
-      optionsForSpawn.stdio = o.stdio;
-      optionsForSpawn.detached = !!o.detaching;
-
-      if( o.mode === 'fork')
-      {
-        o.child = ChildProcess.fork( o.code,'',{ silent : false } );
-      }
-      else if( o.mode === 'spawn' )
-      {
-        var app = o.code;
-
-        if( !o.args )
-        {
-          o.args = _.strSplit( o.code );
-          app = o.args.shift();
-        }
-
-        o.child = ChildProcess.spawn( app,o.args,optionsForSpawn );
-      }
-      else if( o.mode === 'shell' )
-      {
-        var app = process.platform === 'win32' ? 'cmd' : 'sh';
-        var appParam = process.platform === 'win32' ? '/c' : '-c';
-
-        if( o.args )
-        o.code = o.code + ' ' + o.args.join( ' ' );
-
-        o.child = ChildProcess.spawn( app,[ appParam,o.code ],optionsForSpawn );
-      }
-      else if( o.mode === 'exec' )
-      {
-        logger.warn( '( shell.mode ) "exec" is deprecated' );
-        o.child = ChildProcess.exec( o.code );
-      }
-      else _.assert( 0,'unknown mode',o.mode );
-
-    }
-    catch( err )
-    {
-      return con.error( _.errLogOnce( err ) );
-    }
-
-    /* */
-
-    if( o.outputPiping )
-    if( o.child.stdout )
-    o.child.stdout.on( 'data', function( data )
-    {
-
-      if( _.bufferAnyIs( data ) )
-      data = _.bufferToStr( data );
-
-      if( _.strEnds( data,'\n' ) )
-      data = _.strRemoveEnd( data,'\n' );
-
-      if( o.outputCollecting )
-      o.output += data;
-
-      if( o.outputPrefixing )
-      data = 'stdout :\n' + _.strIndentation( data,'  ' );
-
-      if( _.color && o.outputColoring )
-      data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
-
-      logger.log( data );
-    });
-
-    /* */
-
-    if( o.outputPiping )
-    if( o.child.stderr )
-    o.child.stderr.on( 'data', function( data )
-    {
-
-      if( _.bufferAnyIs( data ) )
-      data = _.bufferToStr( data );
-
-      if( _.strEnds( data,'\n' ) )
-      data = _.strRemoveEnd( data,'\n' );
-
-      if( o.outputPrefixing )
-      data = 'stderr :\n' + _.strIndentation( data,'  ' );
-
-      if( _.color && o.outputColoring )
-      data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
-
-      logger.warn( data );
-    });
-
-    /* */
-
-    var done = false;
-    o.child.on( 'error', function( err )
-    {
-
-      if( o.verbosity >= 1 )
-      err = _.errLogOnce( err );
-
-      if( done )
-      return;
-
-      done = true;
-      con.error( err );
-    });
-
-    /* */
-
-    o.child.on( 'close', function( returnCode )
-    {
-
-      _.assert( _.numberIs( returnCode ) );
-
-      if( o.verbosity > 1 )
-      {
-        logger.log( 'Process returned error code :',returnCode );
-        if( returnCode )
-        logger.log( 'Launched as :',o.code );
-      }
-
-      if( done )
-      return;
-
-      done = true;
-
-      if( returnCode !== 0 && o.applyingReturnCode )
-      if( _.numberIs( returnCode ) )
-      _.appExitCode( returnCode );
-
-      o.returnCode = returnCode;
-
-      if( returnCode !== 0 && o.throwingBadReturnCode )
-      {
-        // if( _.numberIs( returnCode ) )
-        con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.code ) );
-      }
-      else
-      {
-        con.give( o );
-      }
-
-    });
-
-    return con;
+    if( _.strIs( o.stdio ) )
+    o.stdio = _.dup( o.stdio,3 );
+    if( !_.arrayHas( o.stdio,'ipc' ) )
+    o.stdio.push( 'ipc' );
   }
 
-})();
+  if( o.args )
+  _.assert( _.arrayIs( o.args ) );
+
+  if( o.passingThrough )
+  {
+    var argumentsManual = process.argv.slice( 2 );
+    o.args = _.arrayAppendArray( o.args || [],argumentsManual );
+/*
+    if( argumentsManual.length )
+    path += ' "' + argumentsManual.join( '" "' ) + '"';
+*/
+  }
+
+  if( o.outputCollecting && !o.output )
+  o.output = '';
+
+  /* */
+
+  if( !ChildProcess )
+  ChildProcess = require( 'child_process' );
+
+  if( o.outputColoring && typeof module !== 'undefined' )
+  try
+  {
+    if( _.Logger === undefined )
+    _.include( 'wLogger' );
+    if( _.color === undefined )
+    _.include( 'wColor' );
+  }
+  catch( err ) 
+  {
+  }
+
+  /* */
+
+  if( o.verbosity )
+  {
+    if( o.args )
+    logger.log( o.path, o.args.join( ' ' ) );
+    else
+    logger.log( o.path );
+  }
+
+  /* */
+
+  try
+  {
+    var optionsForSpawn = Object.create( null );
+
+    if( o.stdio )
+    optionsForSpawn.stdio = o.stdio;
+    optionsForSpawn.detached = !!o.detaching;
+
+    if( o.mode === 'fork')
+    {
+      o.process = ChildProcess.fork( o.path,'',{ silent : false } );
+    }
+    else if( o.mode === 'spawn' )
+    {
+      var app = o.path;
+
+      if( !o.args )
+      {
+        o.args = _.strSplit( o.path );
+        app = o.args.shift();
+      }
+
+      o.process = ChildProcess.spawn( app,o.args,optionsForSpawn );
+    }
+    else if( o.mode === 'shell' )
+    {
+      var app = process.platform === 'win32' ? 'cmd' : 'sh';
+      var appParam = process.platform === 'win32' ? '/c' : '-c';
+
+      if( o.args )
+      o.path = o.path + ' ' + o.args.join( ' ' );
+
+      o.process = ChildProcess.spawn( app,[ appParam,o.path ],optionsForSpawn );
+    }
+    else if( o.mode === 'exec' )
+    {
+      logger.warn( '( shell.mode ) "exec" is deprecated' );
+      o.process = ChildProcess.exec( o.path );
+    }
+    else _.assert( 0,'unknown mode',o.mode );
+
+  }
+  catch( err )
+  {
+    return con.error( _.errLogOnce( err ) );
+  }
+
+  /* */
+
+  if( o.outputPiping )
+  if( o.process.stdout )
+  o.process.stdout.on( 'data', function( data )
+  {
+
+    if( _.bufferAnyIs( data ) )
+    data = _.bufferToStr( data );
+
+    if( _.strEnds( data,'\n' ) )
+    data = _.strRemoveEnd( data,'\n' );
+
+    if( o.outputCollecting )
+    o.output += data;
+
+    if( o.outputPrefixing )
+    data = 'stdout :\n' + _.strIndentation( data,'  ' );
+
+    if( _.color && o.outputColoring )
+    data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
+
+    logger.log( data );
+  });
+
+  /* */
+
+  if( o.outputPiping )
+  if( o.process.stderr )
+  o.process.stderr.on( 'data', function( data )
+  {
+
+    if( _.bufferAnyIs( data ) )
+    data = _.bufferToStr( data );
+
+    if( _.strEnds( data,'\n' ) )
+    data = _.strRemoveEnd( data,'\n' );
+
+    if( o.outputPrefixing )
+    data = 'stderr :\n' + _.strIndentation( data,'  ' );
+
+    if( _.color && o.outputColoring )
+    data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
+
+    logger.warn( data );
+  });
+
+  /* */
+
+  var done = false;
+  o.process.on( 'error', function( err )
+  {
+
+    if( o.verbosity >= 1 )
+    err = _.errLogOnce( err );
+
+    if( done )
+    return;
+
+    done = true;
+    con.error( err );
+  });
+
+  /* */
+
+  o.process.on( 'close', function( returnCode )
+  {
+
+    o.returnCode = returnCode;
+
+    _.assert( _.numberIs( returnCode ) );
+
+    if( o.verbosity > 1 )
+    {
+      logger.log( 'Process returned error code :',returnCode );
+      if( returnCode )
+      logger.log( 'Launched as :',o.path );
+    }
+
+    if( done )
+    return;
+
+    done = true;
+
+    if( returnCode !== 0 && o.applyingReturnCode )
+    if( _.numberIs( returnCode ) )
+    _.appExitCode( returnCode );
+
+    o.returnCode = returnCode;
+
+    if( returnCode !== 0 && o.throwingBadReturnCode )
+    {
+      // if( _.numberIs( returnCode ) )
+      con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.path ) );
+    }
+    else
+    {
+      con.give( o );
+    }
+
+  });
+
+  return con;
+}
 
 shell.defaults =
 {
-  code : null,
+
+  path : null,
   args : null,
   mode : 'shell',
 
@@ -288,16 +284,13 @@ function shellNode( o )
   }
 
   if( _.strIs( o ) )
-  o = { scriptPath : o }
+  o = { path : o }
 
   _.routineOptions( shellNode,o );
-
-  _.assert( _.strIs( o.scriptPath ) );
-
-  var totalmem = System.totalmem();
-
-  if( o.verbosity )
-  logger.log( 'System.totalmem()',_.strMetricFormatBytes( totalmem ) );
+  _.assert( _.strIs( o.path ) );
+  _.assert( !o.code );
+  _.accessorForbid( o,'child' );
+  _.assert( arguments.length === 1 );
 
   /*
   1024*1024 for megabytes
@@ -305,35 +298,89 @@ function shellNode( o )
       implementation of nodejs for other OSs could be able to use more memory
   */
 
-  var totalmem = Math.floor( ( totalmem / ( 1024*1024*1.5 ) - 1 ) / 256 ) * 256;
-
-  // var argumentsForNode = '--expose-gc --stack-trace-limit=999 --max_old_space_size=' + totalmem + ' --max_executable_size=' + totalmem;
-
-  var argumentsForNode = '--expose-gc --stack-trace-limit=999 --max_old_space_size=' + totalmem;
-  var scriptPath = _.fileProvider.pathNativize( o.scriptPath );
-  var code = _.strConcat( 'node',argumentsForNode,scriptPath );
-
-  var shell =
+  var argumentsForNode = '';
+  if( o.maximumMemory )
   {
-    code : code,
-    outputPrefixing : 1,
-    outputCollecting : 0,
-    applyingReturnCode : 1,
-    throwingBadReturnCode : 1,
-    stdio : 'inherit',
-    verbosity : o.verbosity,
-    passingThrough : o.passingThrough
+    var totalmem = System.totalmem();
+    if( o.verbosity )
+    logger.log( 'System.totalmem()',_.strMetricFormatBytes( totalmem ) );
+    var totalmem = Math.floor( ( totalmem / ( 1024*1024*1.5 ) - 1 ) / 256 ) * 256;
+    argumentsForNode = '--expose-gc --stack-trace-limit=999 --max_old_space_size=' + totalmem;
   }
 
-  return _.shell( shell );
+  var path = _.fileProvider.pathNativize( o.path );
+  path = _.strConcat( 'node',argumentsForNode,path );
+
+  // var shellOptions =
+  // {
+  //   code : code,
+  //   outputPrefixing : 1,
+  //   outputCollecting : 0,
+  //   applyingReturnCode : 1,
+  //   throwingBadReturnCode : 1,
+  //   stdio : 'inherit',
+  //   verbosity : o.verbosity,
+  //   passingThrough : o.passingThrough
+  // }
+
+  var shellOptions = _.mapScreen( _.shell.defaults,o );
+  shellOptions.path = path;
+
+  var result = _.shell( shellOptions )
+  .got( function( err,arg )
+  {
+    o.returnCode = shellOptions.returnCode;
+    this.give( err,arg );
+  });
+
+  o.process = shellOptions.process;
+
+  return result;
 }
 
 shellNode.defaults =
 {
-  scriptPath : null,
+
+  path : null,
   verbosity : 1,
   passingThrough : 0,
+  maximumMemory : 1,
+
+  outputPrefixing : 1,
+  outputCollecting : 0,
+  applyingReturnCode : 1,
+  throwingBadReturnCode : 1,
+
+  stdio : 'inherit',
+
 }
+
+shellNode.defaults.__proto__ = shell.defaults;
+
+//
+
+function shellNodePassingThrough( o )
+{
+
+  if( _.strIs( o ) )
+  o = { path : o }
+
+  _.routineOptions( shellNodePassingThrough,o );
+  _.assert( arguments.length === 1 );
+  var result = _.shellNode( o );
+
+  return result;
+}
+
+shellNodePassingThrough.defaults =
+{
+
+  passingThrough : 1,
+  maximumMemory : 1,
+
+}
+
+shellNodePassingThrough.defaults.__proto__ = shellNode.defaults;
 
 //
 
@@ -799,6 +846,7 @@ var Proto =
 
   shell : shell,
   shellNode : shellNode,
+  shellNodePassingThrough : shellNodePassingThrough,
 
   routineSourceGet : routineSourceGet,
 
