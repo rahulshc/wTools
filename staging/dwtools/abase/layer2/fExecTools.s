@@ -150,6 +150,8 @@ function shell( o )
   o.process.stdout.on( 'data', function( data )
   {
 
+    // console.log( 'data' );
+
     if( _.bufferAnyIs( data ) )
     data = _.bufferToStr( data );
 
@@ -208,12 +210,11 @@ function shell( o )
 
   /* */
 
-  o.process.on( 'close', function( returnCode )
+  o.process.on( 'close', function( returnCode,signal )
   {
 
     o.returnCode = returnCode;
-
-    _.assert( _.numberIs( returnCode ) );
+    o.signal = signal;
 
     if( o.verbosity > 1 )
     {
@@ -227,16 +228,21 @@ function shell( o )
 
     done = true;
 
-    if( returnCode !== 0 && o.applyingReturnCode )
-    if( _.numberIs( returnCode ) )
-    _.appExitCode( returnCode );
-
-    o.returnCode = returnCode;
+    if( o.applyingReturnCode )
+    if( returnCode !== 0 || o.signal )
+    {
+      if( _.numberIs( returnCode ) )
+      _.appExitCode( returnCode );
+      else
+      _.appExitCode( -1 );
+    }
 
     if( returnCode !== 0 && o.throwingBadReturnCode )
     {
-      // if( _.numberIs( returnCode ) )
+      if( _.numberIs( returnCode ) )
       con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.path ) );
+      else
+      con.error( _.err( 'Process wass killed by signal :',signal,'\nLaunched as :',o.path ) );
     }
     else
     {
