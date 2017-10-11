@@ -229,7 +229,7 @@ function shell( o )
 
     done = true;
 
-    if( o.applyingReturnCode )
+    if( o.applyingExitCode )
     if( exitCode !== 0 || o.signal )
     {
       if( _.numberIs( exitCode ) )
@@ -238,7 +238,7 @@ function shell( o )
       _.appExitCode( -1 );
     }
 
-    if( exitCode !== 0 && o.throwingBadReturnCode )
+    if( exitCode !== 0 && o.throwingBadExitCode )
     {
       if( _.numberIs( exitCode ) )
       con.error( _.err( 'Process returned error code :',exitCode,'\nLaunched as :',o.path ) );
@@ -267,8 +267,8 @@ shell.defaults =
   detaching : 0,
   passingThrough : 0,
 
-  throwingBadReturnCode : 0,
-  applyingReturnCode : 0,
+  throwingBadExitCode : 0,
+  applyingExitCode : 0,
 
   outputColoring : 1,
   outputPrefixing : 1,
@@ -324,8 +324,8 @@ function shellNode( o )
   //   code : code,
   //   outputPrefixing : 1,
   //   outputCollecting : 0,
-  //   applyingReturnCode : 1,
-  //   throwingBadReturnCode : 1,
+  //   applyingExitCode : 1,
+  //   throwingBadExitCode : 1,
   //   stdio : 'inherit',
   //   verbosity : o.verbosity,
   //   passingThrough : o.passingThrough
@@ -357,8 +357,8 @@ shellNode.defaults =
 
   outputPrefixing : 1,
   outputCollecting : 0,
-  applyingReturnCode : 1,
-  throwingBadReturnCode : 1,
+  applyingExitCode : 1,
+  throwingBadExitCode : 1,
 
   stdio : 'inherit',
 
@@ -391,7 +391,9 @@ shellNodePassingThrough.defaults =
 
 shellNodePassingThrough.defaults.__proto__ = shellNode.defaults;
 
+// --
 //
+// --
 
 function routineSourceGet( o )
 {
@@ -781,70 +783,223 @@ function execStages( stages,o )
 
 execStages.defaults =
 {
-  // syn : 0,
   delay : 1,
 
   args : undefined,
   context : undefined,
-  // result : null,
 
   manual : false,
-  // stages : null,
 
   onEachRoutine : null,
   onBegin : null,
   onEnd : null,
 }
 
+// --
 //
-/*
-function execForEach( elements,o )
+// --
+
+var _appArgsInSubjectAndMapFormatResult;
+function appArgsInSubjectAndMapFormat( o )
 {
 
-  // validation
+  o = _.routineOptions( appArgsInSubjectAndMapFormat,o );
 
-  if( !elements ) throw _.err( 'execForEach :','require elements' );
-  if( !o ) throw _.err( 'execForEach :','require o' );
-  if( o.onEach === undefined ) throw _.err( 'execForEach :','o require onEach' );
-  if( o.range === undefined ) throw _.err( 'execForEach :','o require range' );
+  if( _appArgsInSubjectAndMapFormatResult && o.delimeter === _appArgsInSubjectAndMapFormatResult.delimeter )
+  return _appArgsInSubjectAndMapFormatResult;
 
-  // correction
+  var result = _appArgsInSubjectAndMapFormatResult = Object.create( null );
 
-  if( o.batch === undefined ) o.batch = 1;
-  if( o.delay === undefined ) o.delay = 0;
-  if( o.batch === 0 ) o.batch = o.range[ 1 ] - o.range[ 0 ];
-
-  // begin
-
-  if( o.onBegin ) o.onBegin.call( o.context );
-
-  var r = o.range[ 0 ];
-
-  var range = o.range.slice();
-
-  function exec()
+  if( _global_.process )
   {
+    if( o.argv )
+    _.assert( _.arrayLike( o.argv ) );
 
-    for( var l = Math.min( range[ 1 ],r+o.batch ) ; r < l ; r++ )
+    var argv = o.argv || process.argv;
+
+    result.interpreterPath = argv[ 0 ];
+    result.mainPath = argv[ 1 ];
+    result.interpreterArgs = process.execArgv;
+    result.delimter = o.delimeter;
+    result.map = Object.create( null );
+    result.subject = '';
+    result.scriptArgs = argv.slice( 2 );
+
+    if( !result.scriptArgs.length )
+    return result;
+
+    var scriptArgs = [];
+    result.scriptArgs.forEach( function( arg, pos )
     {
-      o.onEach.call( o.context,r );
+      if( arg.length > 1 && arg.indexOf( o.delimeter ) !== -1 )
+      {
+        var argSplitted = _.strSplit({ src : arg, delimeter : o.delimeter, stripping : 1, preservingDelimeters : 1 })
+        scriptArgs.push.apply( scriptArgs, argSplitted );
+      }
+      else
+      scriptArgs.push( arg );
+    })
+
+    result.scriptArgs = scriptArgs;
+
+    if( result.scriptArgs.length === 1 )
+    {
+      result.subject = result.scriptArgs[ 0 ];
+      return result;
     }
 
-    if( r < range[ 1 ] )
+    var i =  result.scriptArgs.indexOf( o.delimeter );
+    if( i > 1 )
     {
-      _.timeOut( o.delay,exec );
+      var part = result.scriptArgs.slice( 0, i - 1 );
+      var subject = part.join( ' ' );
+      var regexp = new RegExp( '.?\h*\\' + o.delimeter + '\\h*.?' );
+      if( !regexp.test( subject ) )
+      result.subject = subject;
     }
-    else
+
+    if( i < 0 )
+    result.subject = result.scriptArgs.shift();
+
+    var args = result.scriptArgs.join( ' ' );
+    args = args.trim();
+
+    if( !args )
+    return result;
+
+    var splitted = _.strSplit({ src : args, delimeter : o.delimeter, stripping : 1 });
+
+    if( splitted.length === 1 )
     {
-      if( o.onEnd ) o.onEnd.call( o.context );
+      result.subject = splitted[ 0 ];
+      return result;
     }
+
+    _.assert( _.strCutOffAllLeft( splitted[ 0 ],' ' ).length === 3 )
+    splitted[ 0 ] = _.strCutOffAllLeft( splitted[ 0 ],' ' )[ 2 ];
+
+    result.map = _.strParseMap( splitted.join( ':' ) );
 
   }
 
-  exec();
+  return result;
+}
+
+appArgsInSubjectAndMapFormat.defaults =
+{
+  delimeter : ':',
+  argv : null
+}
+
+//
+
+function appAnchor( o )
+{
+  var o = o || {};
+
+  _.routineOptions( appAnchor,o );
+
+  var a = _.strParseMap
+  ({
+    src : _.strRemoveBegin( window.location.hash,'#' ),
+    valKeyDelimeter : ':',
+    entryDelimeter : ';',
+  });
+
+  if( o.extend )
+  {
+    _.mapExtend( a,o.extend );
+  }
+
+  if( o.del )
+  {
+    _.mapDelete( a,o.del );
+  }
+
+  if( o.extend || o.del )
+  {
+
+    var newHash = '#' + _.mapToStr
+    ({
+      src : a,
+      valKeyDelimeter : ':',
+      entryDelimeter : ';',
+    });
+
+    if( o.replacing )
+    history.replaceState( undefined, undefined, newHash )
+    else
+    window.location.hash = newHash;
+
+  }
+
+  return a;
+}
+
+appAnchor.defaults =
+{
+  extend : null,
+  del : null,
+  replacing : 0,
+}
+
+//
+
+function appExitCode( status )
+{
+  var result;
+
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( status === undefined || _.numberIs( status ) );
+
+  if( _global_.process )
+  {
+    result = process.exitCode;
+    if( status !== undefined )
+    process.exitCode = status;
+  }
+
+  return result;
+}
+
+//
+
+function appExit( exitCode )
+{
+
+  exitCode = exitCode !== undefined ? exitCode : appExitCode();
+
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( exitCode === undefined || _.numberIs( exitCode ) );
+
+  if( _global_.process )
+  {
+    process.exit( exitCode );
+  }
+  else
+  {
+    debugger;
+  }
 
 }
-*/
+
+//
+
+function appExitWithBeep( exitCode )
+{
+
+  exitCode = exitCode !== undefined ? exitCode : appExitCode();
+
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  _.assert( exitCode === undefined || _.numberIs( exitCode ) );
+
+  _.beep();
+
+  if( exitCode )
+  _.beep();
+
+  _.appExit( exitCode );
+}
 
 // --
 // prototype
@@ -857,16 +1012,30 @@ var Proto =
   shellNode : shellNode,
   shellNodePassingThrough : shellNodePassingThrough,
 
+  //
+
   routineSourceGet : routineSourceGet,
 
   routineMake : routineMake,
   routineExec : routineExec,
+
   exec : exec,
 
   execInWorker : execInWorker,
   makeWorker : makeWorker,
 
   execStages : execStages, /* experimental */
+
+  //
+
+  appArgsInSubjectAndMapFormat : appArgsInSubjectAndMapFormat,
+  appArgs : appArgsInSubjectAndMapFormat,
+
+  appAnchor : appAnchor,
+
+  appExitCode : appExitCode,
+  appExit : appExit,
+  appExitWithBeep : appExitWithBeep,
 
 }
 

@@ -60,8 +60,8 @@ function shell( test )
   {
     outputPiping : 1,
     outputCollecting : 1,
-    applyingReturnCode : 1,
-    throwingBadReturnCode : 1
+    applyingExitCode : 1,
+    throwingBadExitCode : 1
   }
 
   /* */
@@ -358,13 +358,13 @@ function shell( test )
   // .ifNoErrorThen( function()
   // {
   //   test.description = 'bad command, shell';
-  //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'shell' });
+  //   var con = _.shell({ code : 'xxx', throwingBadExitCode : 1, mode : 'shell' });
   //   return test.shouldThrowErrorSync( con );
   // })
   // .ifNoErrorThen( function()
   // {
   //   test.description = 'bad command, spawn';
-  //   var con = _.shell({ code : 'xxx', throwingBadReturnCode : 1, mode : 'spawn' });
+  //   var con = _.shell({ code : 'xxx', throwingBadExitCode : 1, mode : 'spawn' });
   //   return test.shouldThrowErrorSync( con );
   // })
   // .ifNoErrorThen( function()
