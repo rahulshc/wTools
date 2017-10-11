@@ -42,6 +42,7 @@ function shell( o )
   _.routineOptions( shell,o );
   _.assert( arguments.length === 1 );
   _.accessorForbid( o,'child' );
+  _.accessorForbid( o,'returnCode' );
 
   if( o.ipc )
   {
@@ -210,16 +211,16 @@ function shell( o )
 
   /* */
 
-  o.process.on( 'close', function( returnCode,signal )
+  o.process.on( 'close', function( exitCode,signal )
   {
 
-    o.returnCode = returnCode;
+    o.exitCode = exitCode;
     o.signal = signal;
 
     if( o.verbosity > 1 )
     {
-      logger.log( 'Process returned error code :',returnCode );
-      if( returnCode )
+      logger.log( 'Process returned error code :',exitCode );
+      if( exitCode )
       logger.log( 'Launched as :',o.path );
     }
 
@@ -229,18 +230,18 @@ function shell( o )
     done = true;
 
     if( o.applyingReturnCode )
-    if( returnCode !== 0 || o.signal )
+    if( exitCode !== 0 || o.signal )
     {
-      if( _.numberIs( returnCode ) )
-      _.appExitCode( returnCode );
+      if( _.numberIs( exitCode ) )
+      _.appExitCode( exitCode );
       else
       _.appExitCode( -1 );
     }
 
-    if( returnCode !== 0 && o.throwingBadReturnCode )
+    if( exitCode !== 0 && o.throwingBadReturnCode )
     {
-      if( _.numberIs( returnCode ) )
-      con.error( _.err( 'Process returned error code :',returnCode,'\nLaunched as :',o.path ) );
+      if( _.numberIs( exitCode ) )
+      con.error( _.err( 'Process returned error code :',exitCode,'\nLaunched as :',o.path ) );
       else
       con.error( _.err( 'Process wass killed by signal :',signal,'\nLaunched as :',o.path ) );
     }
@@ -296,6 +297,7 @@ function shellNode( o )
   _.assert( _.strIs( o.path ) );
   _.assert( !o.code );
   _.accessorForbid( o,'child' );
+  _.accessorForbid( o,'returnCode' );
   _.assert( arguments.length === 1 );
 
   /*
@@ -335,7 +337,8 @@ function shellNode( o )
   var result = _.shell( shellOptions )
   .got( function( err,arg )
   {
-    o.returnCode = shellOptions.returnCode;
+    o.exitCode = shellOptions.exitCode;
+    o.signal = shellOptions.signal;
     this.give( err,arg );
   });
 
