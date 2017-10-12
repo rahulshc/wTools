@@ -76,9 +76,7 @@ function shell( o )
   if( o.outputColoring && typeof module !== 'undefined' )
   try
   {
-    if( _.Logger === undefined )
     _.include( 'wLogger' );
-    if( _.color === undefined )
     _.include( 'wColor' );
   }
   catch( err ) 
@@ -124,12 +122,13 @@ function shell( o )
     else if( o.mode === 'shell' )
     {
       var app = process.platform === 'win32' ? 'cmd' : 'sh';
-      var appParam = process.platform === 'win32' ? '/c' : '-c';
+      var arg1 = process.platform === 'win32' ? '/c' : '-c';
 
+      var args = [ arg1,o.path ];
       if( o.args )
-      o.path = o.path + ' ' + o.args.join( ' ' );
+      _.arrayAppendArray( args,o.args )
 
-      o.process = ChildProcess.spawn( app,[ appParam,o.path ],optionsForSpawn );
+      o.process = ChildProcess.spawn( app,args,optionsForSpawn );
     }
     else if( o.mode === 'exec' )
     {
@@ -162,11 +161,11 @@ function shell( o )
     if( o.outputCollecting )
     o.output += data;
 
+    if( _.color && o.outputColoring )
+    data = _.color.strFormat( data,'pipe.neutral' );
+
     if( o.outputPrefixing )
     data = 'stdout :\n' + _.strIndentation( data,'  ' );
-
-    if( _.color && o.outputColoring )
-    data = _.strColor.bg( _.strColor.fg( data, 'black' ) , 'yellow' );
 
     logger.log( data );
   });
@@ -184,11 +183,11 @@ function shell( o )
     if( _.strEnds( data,'\n' ) )
     data = _.strRemoveEnd( data,'\n' );
 
+    if( _.color && o.outputColoring )
+    data = _.color.strFormat( data,'pipe.negative' );
+
     if( o.outputPrefixing )
     data = 'stderr :\n' + _.strIndentation( data,'  ' );
-
-    if( _.color && o.outputColoring )
-    data = _.strColor.bg( _.strColor.fg( data, 'red' ) , 'yellow' );
 
     logger.warn( data );
   });
@@ -284,11 +283,10 @@ function shellNode( o )
 {
 
   if( !System )
-  {
-    System = require( 'os' );
-    _.include( 'wPath' );
-    _.include( 'wFiles' );
-  }
+  System = require( 'os' );
+
+  _.include( 'wPath' );
+  _.include( 'wFiles' );
 
   if( _.strIs( o ) )
   o = { path : o }
