@@ -15,7 +15,7 @@ if( typeof module !== 'undefined' )
 
 }
 
-var System,ChildProcess;
+var System, ChildProcess, Net, Stream;
 
 var Self = wTools;
 var _ = wTools;
@@ -34,7 +34,6 @@ var _arraySlice = _.arraySlice;
 
 function shell( o )
 {
-  var con = new wConsequence();
 
   if( _.strIs( o ) )
   o = { path : o };
@@ -44,6 +43,13 @@ function shell( o )
   _.accessorForbid( o,'child' );
   _.accessorForbid( o,'returnCode' );
 
+  o.con = new wConsequence();
+
+  if( o.args )
+  _.assert( _.arrayIs( o.args ) );
+
+  /* ipc */
+
   if( o.ipc )
   {
     if( _.strIs( o.stdio ) )
@@ -52,8 +58,7 @@ function shell( o )
     o.stdio.push( 'ipc' );
   }
 
-  if( o.args )
-  _.assert( _.arrayIs( o.args ) );
+  /* passingThrough */
 
   if( o.passingThrough )
   {
@@ -61,9 +66,11 @@ function shell( o )
     o.args = _.arrayAppendArray( o.args || [],argumentsManual );
 /*
     if( argumentsManual.length )
-    path += ' "' + argumentsManual.join( '" "' ) + '"';
+    path += ' '' + argumentsManual.join( '' '' ) + ''';
 */
   }
+
+  /* outputCollecting */
 
   if( o.outputCollecting && !o.output )
   o.output = '';
@@ -83,17 +90,17 @@ function shell( o )
   {
   }
 
-  /* */
+  /* logger */
 
   if( o.verbosity )
   {
     if( o.args )
-    logger.log( o.path, o.args.join( ' ' ) );
+    logger.debug( o.path, o.args.join( ' ' ) );
     else
-    logger.log( o.path );
+    logger.debug( o.path );
   }
 
-  /* */
+  /* create process */
 
   try
   {
@@ -102,6 +109,8 @@ function shell( o )
     if( o.stdio )
     optionsForSpawn.stdio = o.stdio;
     optionsForSpawn.detached = !!o.detaching;
+    if( o.env )
+    optionsForSpawn.env = o.env;
 
     if( o.mode === 'fork')
     {
@@ -123,16 +132,20 @@ function shell( o )
     {
       var app = process.platform === 'win32' ? 'cmd' : 'sh';
       var arg1 = process.platform === 'win32' ? '/c' : '-c';
+      var arg2 = o.path;
 
-      var args = [ arg1,o.path ];
+      // var args = [ arg1,o.path ];
+      // if( o.args )
+      // _.arrayAppendArray( args,o.args )
+
       if( o.args )
-      _.arrayAppendArray( args,o.args )
+      arg2 = arg2 + ' ' + o.args.join( ' ' );
 
-      o.process = ChildProcess.spawn( app,args,optionsForSpawn );
+      o.process = ChildProcess.spawn( app,[ arg1,arg2 ],optionsForSpawn );
     }
     else if( o.mode === 'exec' )
     {
-      logger.warn( '( shell.mode ) "exec" is deprecated' );
+      logger.warn( '{ shell.mode } "exec" is deprecated' );
       o.process = ChildProcess.exec( o.path );
     }
     else _.assert( 0,'unknown mode',o.mode );
@@ -140,10 +153,22 @@ function shell( o )
   }
   catch( err )
   {
-    return con.error( _.errLogOnce( err ) );
+    return o.con.error( _.errLogOnce( err ) );
   }
 
-  /* */
+  // /* ipc */
+  //
+  // if( o.ipc )
+  // {
+  //   var ipcChannelIndex = o.stdio.indexOf( 'ipc' );
+  //   logger.log( 'ipcChannelIndex',ipcChannelIndex );
+  //   logger.log( 'o.process.stdio',o.process.stdio );
+  //   _.assert( o.process.stdio[ ipcChannelIndex ] );
+  //   o.process.stdio[ ipcChannelIndex ].writable = true;
+  //   xxx
+  // }
+
+  /* piping out channel */
 
   if( o.outputPiping )
   if( o.process.stdout )
@@ -161,16 +186,16 @@ function shell( o )
     if( o.outputCollecting )
     o.output += data;
 
-    if( _.color && o.outputColoring )
-    data = _.color.strFormat( data,'pipe.neutral' );
-
     if( o.outputPrefixing )
     data = 'stdout :\n' + _.strIndentation( data,'  ' );
+
+    if( _.color && o.outputColoring )
+    data = _.color.strFormat( data,'pipe.neutral' );
 
     logger.log( data );
   });
 
-  /* */
+  /* piping error channel */
 
   if( o.outputPiping )
   if( o.process.stderr )
@@ -183,16 +208,16 @@ function shell( o )
     if( _.strEnds( data,'\n' ) )
     data = _.strRemoveEnd( data,'\n' );
 
-    if( _.color && o.outputColoring )
-    data = _.color.strFormat( data,'pipe.negative' );
-
     if( o.outputPrefixing )
     data = 'stderr :\n' + _.strIndentation( data,'  ' );
+
+    if( _.color && o.outputColoring )
+    data = _.color.strFormat( data,'pipe.negative' );
 
     logger.warn( data );
   });
 
-  /* */
+  /* error */
 
   var done = false;
   o.process.on( 'error', function( err )
@@ -205,10 +230,10 @@ function shell( o )
     return;
 
     done = true;
-    con.error( err );
+    o.con.error( err );
   });
 
-  /* */
+  /* close */
 
   o.process.on( 'close', function( exitCode,signal )
   {
@@ -240,18 +265,18 @@ function shell( o )
     if( exitCode !== 0 && o.throwingBadExitCode )
     {
       if( _.numberIs( exitCode ) )
-      con.error( _.err( 'Process returned error code :',exitCode,'\nLaunched as :',o.path ) );
+      o.con.error( _.err( 'Process returned error code :',exitCode,'\nLaunched as :',o.path ) );
       else
-      con.error( _.err( 'Process wass killed by signal :',signal,'\nLaunched as :',o.path ) );
+      o.con.error( _.err( 'Process wass killed by signal :',signal,'\nLaunched as :',o.path ) );
     }
     else
     {
-      con.give( o );
+      o.con.give( o );
     }
 
   });
 
-  return con;
+  return o.con;
 }
 
 shell.defaults =
@@ -261,6 +286,7 @@ shell.defaults =
   args : null,
   mode : 'shell',
 
+  env : null,
   stdio : 'pipe', /* 'pipe' / 'ignore' / 'inherit' */
   ipc : 0,
   detaching : 0,
@@ -317,18 +343,6 @@ function shellNode( o )
   var path = _.fileProvider.pathNativize( o.path );
   path = _.strConcat( 'node',argumentsForNode,path );
 
-  // var shellOptions =
-  // {
-  //   code : code,
-  //   outputPrefixing : 1,
-  //   outputCollecting : 0,
-  //   applyingExitCode : 1,
-  //   throwingBadExitCode : 1,
-  //   stdio : 'inherit',
-  //   verbosity : o.verbosity,
-  //   passingThrough : o.passingThrough
-  // }
-
   var shellOptions = _.mapScreen( _.shell.defaults,o );
   shellOptions.path = path;
 
@@ -340,6 +354,7 @@ function shellNode( o )
     this.give( err,arg );
   });
 
+  o.con = shellOptions.con;
   o.process = shellOptions.process;
 
   return result;
@@ -388,6 +403,153 @@ shellNodePassingThrough.defaults =
 }
 
 shellNodePassingThrough.defaults.__proto__ = shellNode.defaults;
+
+//
+
+//
+
+function exchangePoint( o )
+{
+
+  if( _.strIs( o ) )
+  o = { path : o }
+
+  _.routineOptions( exchangePoint,o );
+  _.assert( arguments.length === 1 );
+
+  o.con = new wConsequence();
+
+  if( !Net )
+  Net = require( 'net' );
+  if( !Stream )
+  Stream = require( 'stream' );
+  if( !_.fileProvider )
+  _.include( 'wFiles' );
+
+  // class SourceWrapper extends Stream.Readable
+  // {
+  //
+  //   constructor( o )
+  //   {
+  //
+  //     super( o );
+  //
+  //     // this._source = o.source;
+  //
+  //     // this._source.on( 'data' , ( chunk ) =>
+  //     // {
+  //     //   if( !this.push( chunk ) )
+  //     //   this._source.readStop();
+  //     // };
+  //     //
+  //     // this._source.onend = () =>
+  //     // {
+  //     //   this.push( null );
+  //     // };
+  //
+  //   }
+  //
+  //   // _read( size )
+  //   // {
+  //   //   this._source.readStart();
+  //   // }
+  //
+  //   _writeAct( data )
+  //   {
+  //     this.write(  )
+  //   }
+  //
+  // }
+
+  if( !o.path )
+  o.path = _.dirTempFor();
+
+  // debugger;
+
+  if( o.isMaster === null )
+  if( !_.fileProvider.fileStat( o.path ) )
+  o.isMaster = true;
+
+  if( o.verbosity )
+  logger.debug( 'exchangePoint',o.isMaster,o.path );
+
+  o.streams = [];
+
+  if( o.isMaster )
+  {
+
+    // o.stream = new Stream.Duplex();
+    o.data = new Buffer( 0 );
+
+    function broadcast( data,except )
+    {
+      o.data = Buffer.concat([ o.data, data ]);
+      for( var s = 0 ; s < o.streams.length ; s++ )
+      if( except !== o.streams[ s ] )
+      o.streams[ s ].write( data );
+      o.stream.write( data );
+    }
+
+    o.server = Net.createServer( function( stream )
+    {
+      o.streams.push( stream );
+      logger.log( 'createServer:done' );
+      stream.write( o.data );
+      stream.on( 'data', function( data )
+      {
+        broadcast( data, stream );
+        // console.log( 'data:', data.toString() );
+      });
+      stream.on( 'end', function()
+      {
+        o.server.close();
+      });
+      o.con.give( o );
+    });
+
+    o.server.listen( o.path );
+
+  }
+  else
+  {
+
+    try
+    {
+      o.stream = Net.connect( o.path );
+      o.streams.push( o.stream );
+    }
+    catch( err )
+    {
+      _.errLogOnce( err );
+      if( o.isMaster === null )
+      {
+        o.isMaster = true;
+        return exchangePoint( o );
+      }
+    }
+
+    o.stream.on( 'error',function( err )
+    {
+      logger.log( _.errLog( err ) );
+    });
+
+    // o.stream.write( 'test' );
+    // o.stream.end();
+
+    o.con.give( o );
+  }
+
+  return o.con;
+}
+
+exchangePoint.defaults =
+{
+
+  verbosity : 1,
+  isMaster : null,
+  path : null,
+
+}
 
 // --
 //
@@ -1009,6 +1171,9 @@ var Proto =
   shell : shell,
   shellNode : shellNode,
   shellNodePassingThrough : shellNodePassingThrough,
+
+  exchangePoint : exchangePoint,
+
 
   //
 
