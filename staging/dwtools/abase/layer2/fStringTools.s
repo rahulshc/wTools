@@ -3326,7 +3326,7 @@ strConcat.defaults =
 
 function strQuote( o )
 {
-  if( !_.objectIs( o ) )
+  if( !_.mapIs( o ) )
   o = { src : o };
 
   _.routineOptions( strQuote,o );

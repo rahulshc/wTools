@@ -392,10 +392,16 @@ _includeHandlerMap[ 'wFiles' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.fileProvider },
 }
 
-_includeHandlerMap[ 'wTemplateTree' ] =
+_includeHandlerMap[ 'wTemplateTreeResolver' ] =
 {
-  includeAny : [ '../../amid/mapping/TemplateTree.s','amid/mapping/TemplateTree.s','wtemplatetree' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateTree },
+  includeAny : [ '../../amid/mapping/TemplateTreeResolver.s','amid/mapping/TemplateTreeResolver.s','wtemplatetreeresolver' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateTreeResolver },
+}
+
+_includeHandlerMap[ 'wTemplateTreeEnvironment' ] =
+{
+  includeAny : [ '../../amid/mapping/TemplateTreeEnvironment.s','amid/mapping/TemplateTreeEnvironment.s','wtemplatetreeenvironment' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateTreeEnvironment },
 }
 
 _includeHandlerMap[ 'wNameMapper' ] =
@@ -412,8 +418,8 @@ _includeHandlerMap[ 'wGraph' ] =
 
 _includeHandlerMap[ 'wSchema' ] =
 {
-  includeAny : [ '../../amid/schema/SchemaSystems.s','amid/schema/SchemaSystems.s','wSchema' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.SchemaSystem },
+  includeAny : [ '../../amid/schema/Top.s','amid/schema/Top.s','wSchema' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.schema },
 }
 
 _includeHandlerMap[ 'wVector' ] =
@@ -426,6 +432,12 @@ _includeHandlerMap[ 'wIncubator' ] =
 {
   includeAny : [ '../../amid/worker/Incubator.s','amid/worker/Incubator.s','wIncubator' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Incubator },
+}
+
+_includeHandlerMap[ 'wExchangePoint' ] =
+{
+  includeAny : [ '../../amid/exchangePoint/ExchangePoint.s','amid/exchangePoint/ExchangePoint.s','wExchangePoint' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ExchangePoint },
 }
 
 // --
