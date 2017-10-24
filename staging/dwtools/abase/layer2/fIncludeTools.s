@@ -374,6 +374,12 @@ _includeHandlerMap[ 'wArraySorted' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.arraySortedLookUp },
 }
 
+_includeHandlerMap[ 'wBaseEncoder' ] =
+{
+  includeAny : [ '../../abase/layer3/Encoder.s','abase/layer3/Encoder.s','wbaseencoder' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.encode },
+}
+
 _includeHandlerMap[ 'wColor' ] =
 {
   includeAny : [ '../../amid/color/Color.s','amid/color/Color.s','wColor' ],
@@ -392,9 +398,15 @@ _includeHandlerMap[ 'wFiles' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.fileProvider },
 }
 
+_includeHandlerMap[ 'wFilesSvn' ] =
+{
+  includeAny : [ '../../amid/file/fprovider/pSvn.ss','amid/file/fprovider/pSvn.ss','wFilesSvn' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.fileProvider.Svn },
+}
+
 _includeHandlerMap[ 'wTemplateTreeResolver' ] =
 {
-  includeAny : [ '../../amid/mapping/TemplateTreeResolver.s','amid/mapping/TemplateTreeResolver.s','wtemplatetreeresolver' ],
+  includeAny : [ '../../amid/mapping/TemplateTreeAresolver.s','amid/mapping/TemplateTreeAresolver.s','wtemplatetreeresolver' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateTreeResolver },
 }
 
@@ -438,6 +450,36 @@ _includeHandlerMap[ 'wExchangePoint' ] =
 {
   includeAny : [ '../../amid/exchangePoint/ExchangePoint.s','amid/exchangePoint/ExchangePoint.s','wExchangePoint' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ExchangePoint },
+}
+
+_includeHandlerMap[ 'wCommunicator' ] =
+{
+  includeAny : [ '../../amid/communicator/Communicator.s','amid/communicator/Communicator.s','wCommunicator' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Communicator },
+}
+
+_includeHandlerMap[ 'wIncubator' ] =
+{
+  includeAny : [ '../../amid/worker/Incubator.s','amid/worker/Incubator.s','wIncubator' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Incubator },
+}
+
+_includeHandlerMap[ 'wMaker' ] =
+{
+  includeAny : [ '../../atop/maker/Maker.s','atop/maker/Maker.s','wMaker' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Maker },
+}
+
+_includeHandlerMap[ 'wDeployerUnit' ] =
+{
+  includeAny : [ '../../atop/deployer/Unit.s','atop/deployer/Unit.s','wDeployerUnit' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.DeployerUnit },
+}
+
+_includeHandlerMap[ 'wServlet' ] =
+{
+  includeAny : [ '../../atop/servlet/Servlet.ss','atop/servlet/Servlet.ss','wServlet' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.servlet },
 }
 
 // --

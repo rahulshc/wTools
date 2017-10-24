@@ -397,12 +397,21 @@ function diagnosticCode( o )
     if( !_.fileProvider )
     return;
 
-    o.sourceCode = _.fileProvider.fileRead
-    ({
-      filePath : o.location.path,
-      sync : 1,
-      throwing : 0,
-    })
+    try
+    {
+
+      o.sourceCode = _.fileProvider.fileRead
+      ({
+        filePath : o.location.path,
+        sync : 1,
+        throwing : 0,
+      })
+
+    }
+    catch( err )
+    {
+      o.sourceCode = 'CANT LOAD SOURCE CODE OF ' + _.strQuote( o.location.path );
+    }
 
     if( !o.sourceCode )
     return;

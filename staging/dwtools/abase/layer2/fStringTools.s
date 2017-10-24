@@ -3329,7 +3329,10 @@ function strQuote( o )
   if( !_.mapIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strQuote,o );
+  if( o.quote === undefined || o.quote === null )
+  o.quote = strQuote.defaults.quote;
+
+  _.assertMapHasOnly( o,strQuote.defaults );
   _.assert( arguments.length === 1 );
   // _.assert( _.strIs( o.src ) );
 

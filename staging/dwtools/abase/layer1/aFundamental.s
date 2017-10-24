@@ -1743,6 +1743,18 @@ function _entityEqual( src1, src2, iterator )
   //   return src1.equalIs( src2,iterator );
   // }
   // else
+
+  if( _.bufferRawIs( src1 ) )
+  {
+
+    if( !_.bufferRawIs( src2 ) )
+    return false;
+
+    src1 = new Uint8Array( src1 );
+    src2 = new Uint8Array( src2 );
+
+  }
+
   if( _.arrayLike( src1 ) )
   {
 
@@ -1804,7 +1816,6 @@ function _entityEqual( src1, src2, iterator )
   }
   else if( _.regexpIs( src1 ) )
   {
-    debugger;
     if( src1.source !== src2.source )
     return false;
     if( src1.flags !== src2.flags )
@@ -4397,6 +4408,13 @@ function bufferAnyIs( src )
 
 //
 
+function bufferBytesIs( src )
+{
+  return src instanceof Uint8Array;
+}
+
+//
+
 function argumentsIs( src )
 {
   return _ObjectToString.call( src ) === '[object Arguments]';
@@ -6855,8 +6873,6 @@ function routineInputMultiplicator_functor( o )
   function inputMultiplicator( src )
   {
 
-    _.assert( arguments.length === 1 );
-
     if( _.arrayIs( src ) )
     {
       var result = [];
@@ -7550,7 +7566,7 @@ function bufferBytesGet( src )
   }
   else if( _.strIs( src ) )
   {
-    return new Uint8Array( _.utf8ToBuffer( src ) );
+    return new Uint8Array( _.encode.utf8ToBuffer( src ) );
   }
   else throw _.err( '_.bufferBytesGet :','wrong argument' );
 
@@ -7590,6 +7606,73 @@ function bufferRetype( src,bufferType )
   var o = src.byteOffset;
   var l = Math.floor( src.byteLength / bufferType.BYTES_PER_ELEMENT );
   var result = new bufferType( src.buffer,o,l );
+
+  return result;
+}
+
+//
+
+function bufferJoin()
+{
+  if( arguments.length < 2 )
+  return arguments[ 0 ] || null;
+
+  var srcs = [];
+  var size = 0;
+  var firstSrc;
+  for( var s = 0 ; s < arguments.length ; s++ )
+  {
+    var src = arguments[ s ];
+
+    if( src === null )
+    continue;
+
+    if( !firstSrc )
+    firstSrc = src;
+
+    if( _.bufferRawIs( src ) )
+    {
+      srcs.push( new Uint8Array( src ) );
+    }
+    else if( src instanceof Uint8Array )
+    {
+      srcs.push( src );
+    }
+    else
+    {
+      srcs.push( new Uint8Array( src.buffer,src.byteOffset,src.byteLength ) );
+    }
+
+    _.assert( src.byteLength >= 0,'expects buffers, but got',_.strTypeOf( src ) );
+
+    size += src.byteLength;
+  }
+
+  if( srcs.length === 0 )
+  return null;
+
+  // if( srcs.length < 2 )
+  // return firstSrc || null;
+
+  /* */
+
+  var resultBuffer = new ArrayBuffer( size );
+  var result = _.bufferRawIs( firstSrc ) ? resultBuffer : new firstSrc.constructor( resultBuffer );
+  var resultUint = result.constructor === Uint8Array ? result : new Uint8Array( resultBuffer );
+
+  /* */
+
+  var offset = 0;
+  for( var s = 0 ; s < srcs.length ; s++ )
+  {
+    var src = srcs[ s ];
+    if( resultUint.set )
+    resultUint.set( src , offset );
+    else
+    for( var i = 0 ; i < src.length ; i++ )
+    resultUint[ offset+i ] = src[ i ];
+    offset += src.byteLength;
+  }
 
   return result;
 }
@@ -7718,47 +7801,134 @@ function bufferToDom( xmlBuffer ) {
 
 //
 
-function bufferLeftBufferIndex( src,ins )
+function bufferLeft( src,del )
 {
 
-  if( !_.bufferTypedIs( src ) )
+  if( !_.bufferRawIs( src ) )
   src = _.bufferBytesGet( src );
 
-  if( !_.bufferTypedIs( ins ) )
-  ins = _.bufferBytesGet( ins );
+  if( !_.bufferRawIs( del ) )
+  del = _.bufferBytesGet( del );
 
-  _.assert( _.bufferTypedIs( src ) );
-  _.assert( _.bufferTypedIs( ins ) );
+  _.assert( src.indexOf );
+  _.assert( del.indexOf );
 
-/*
-    var srcw = _.bufferRetype( src,Uint32Array );
-    var insw = _.bufferRetype( ins,Uint32Array );
-    debugger;
-*/
-
-  var o = -1
-  do
+  var index = src.indexOf( del[ 0 ] );
+  while( index !== -1 )
   {
 
-    o += 1;
-    var o = src.indexOf( ins[ 0 ],o );
-
-    for( var i = 0 ; i < ins.length ; i++ )
-    if( src[ o+i ] !== ins[ i ] )
+    for( var i = 0 ; i < del.length ; i++ )
+    if( src[ index+i ] !== del[ i ] )
     break;
 
-    if( i === ins.length )
-    return o;
+    if( i === del.length )
+    return index;
+
+    index += 1;
+    index = src.indexOf( del[ 0 ],index );
 
   }
-  while( o !== -1 );
 
   return -1;
 }
 
 //
 
-function bufferFromArrayOfArray( array,options ){
+function bufferSplit( src,del )
+{
+
+  if( !_.bufferRawIs( src ) )
+  src = _.bufferBytesGet( src );
+
+  if( !_.bufferRawIs( del ) )
+  del = _.bufferBytesGet( del );
+
+  _.assert( src.indexOf );
+  _.assert( del.indexOf );
+
+  var result = [];
+  var begin = 0;
+  var index = src.indexOf( del[ 0 ] );
+  while( index !== -1 )
+  {
+
+    for( var i = 0 ; i < del.length ; i++ )
+    if( src[ index+i ] !== del[ i ] )
+    break;
+
+    if( i === del.length )
+    {
+      result.push( src.slice( begin,index ) );
+      index += i;
+      begin = index;
+    }
+    else
+    {
+      index += 1;
+    }
+
+    index = src.indexOf( del[ 0 ],index );
+
+  }
+
+  if( begin === 0 )
+  result.push( src );
+  else
+  result.push( src.slice( begin,src.length ) );
+
+  return result;
+}
+
+//
+
+function bufferCutOffLeft( src,del )
+{
+
+  if( !_.bufferRawIs( src ) )
+  src = _.bufferBytesGet( src );
+
+  if( !_.bufferRawIs( del ) )
+  del = _.bufferBytesGet( del );
+
+  _.assert( src.indexOf );
+  _.assert( del.indexOf );
+
+  var result = [];
+  var index = src.indexOf( del[ 0 ] );
+  while( index !== -1 )
+  {
+
+    for( var i = 0 ; i < del.length ; i++ )
+    if( src[ index+i ] !== del[ i ] )
+    break;
+
+    if( i === del.length )
+    {
+      result.push( src.slice( 0,index ) );
+      result.push( src.slice( index,index+i ) );
+      result.push( src.slice( index+i,src.length ) );
+      return result;
+    }
+    else
+    {
+      index += 1;
+    }
+
+    index = src.indexOf( del[ 0 ],index );
+
+  }
+
+  result.push( null );
+  result.push( null );
+  result.push( src );
+
+  return result;
+}
+
+//
+
+function bufferFromArrayOfArray( array,options )
+{
 
   if( _.objectIs( array ) )
   {
@@ -7947,7 +8117,7 @@ function bufferRawFrom( buffer )
   else if( _.strIs( buffer ) )
   {
 
-    result = _.utf8ToBuffer( buffer ).buffer;
+    result = _.encode.utf8ToBuffer( buffer ).buffer;
 
   }
   else if( _global_.File && buffer instanceof File )
@@ -7962,6 +8132,69 @@ function bufferRawFrom( buffer )
 
   return result;
 }
+
+//
+
+function bufferNodeToBytes( src )
+{
+  _.assert( _.bufferNodeIs( src ) );
+  var result = new Uint8Array( buffer );
+  return result;
+}
+
+//
+
+var bufferToNodeBuffer = ( function( buffer )
+{
+
+  var toBuffer = null;
+
+  return function bufferToNodeBuffer( buffer )
+  {
+
+    _.assert( arguments.length === 1 );
+    _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ),'bufferToNodeBuffer : expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
+
+    if( _.bufferNodeIs( buffer ) )
+    return buffer;
+
+    /* */
+
+    if( toBuffer === null )
+    try
+    {
+      toBuffer = require( 'typedarray-to-buffer' );
+    }
+    catch( err )
+    {
+      toBuffer = false;
+    }
+
+    /* */
+
+    if( !buffer.length && !buffer.byteLength )
+    {
+      buffer = new Buffer([]);
+    }
+    else if( toBuffer )
+    try
+    {
+      buffer = toBuffer( buffer );
+    }
+    catch( err )
+    {
+      debugger;
+      buffer = toBuffer( buffer );
+    }
+    else
+    {
+      buffer = new Buffer( buffer.buffer );
+    }
+
+    return buffer;
+  }
+
+})();
 
 //
 
@@ -8149,55 +8382,6 @@ buffersDeserialize.defaults =
     new this.AttributeOfGeometry( attributeOptions ).addTo( this );
   },
 }
-
-//
-
-var bufferToNodeBuffer = ( function( buffer )
-{
-
-  var toBuffer = null;
-
-  return function bufferToNodeBuffer( buffer )
-  {
-
-    _.assert( arguments.length === 1 );
-    _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ),'bufferToNodeBuffer : expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
-
-    if( _.bufferNodeIs( buffer ) )
-    return buffer;
-
-    /* */
-
-    if( toBuffer === null )
-    try
-    {
-      toBuffer = require( 'typedarray-to-buffer' );
-    }
-    catch( err )
-    {
-      toBuffer = false;
-    }
-
-    /* */
-
-    if( !buffer.length && !buffer.byteLength )
-    buffer = new Buffer([]);
-    else if( toBuffer )
-    try
-    {
-      buffer = toBuffer( buffer );
-    }
-    catch( err )
-    {
-      debugger;
-      buffer = toBuffer( buffer );
-    }
-    else _.assert( 0,'unexpected' );
-
-    return buffer;
-  }
-
-})();
 
 // --
 // array
@@ -10071,6 +10255,7 @@ function arrayPut( dstArray, dstOffset )
 
 function arrayFillTimes( result,times,value )
 {
+
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayLike( result ) );
 
@@ -17107,6 +17292,7 @@ var Proto =
   bufferViewIs : bufferViewIs,
   bufferNodeIs : bufferNodeIs,
   bufferAnyIs : bufferAnyIs,
+  bufferBytesIs : bufferBytesIs,
 
   argumentsIs : argumentsIs,
 
@@ -17283,22 +17469,25 @@ var Proto =
   bufferBytesGet : bufferBytesGet,
   bufferRetype : bufferRetype,
 
+  bufferJoin : bufferJoin,
+
   bufferMove : bufferMove,
   bufferToStr : bufferToStr,
   bufferToDom : bufferToDom,
 
-  bufferLeftBufferIndex : bufferLeftBufferIndex,
+  bufferLeft : bufferLeft,
+  bufferSplit : bufferSplit,
+  bufferCutOffLeft : bufferCutOffLeft,
 
   bufferFromArrayOfArray : bufferFromArrayOfArray,
   bufferFrom : bufferFrom,
   bufferRawFromBuffer : bufferRawFromBuffer,
   bufferRawFrom : bufferRawFrom,
+  bufferNodeToBytes : bufferNodeToBytes,
+  bufferToNodeBuffer : bufferToNodeBuffer,
 
   buffersSerialize : buffersSerialize, /* deprecated */
   buffersDeserialize : buffersDeserialize, /* deprecated */
-
-  bufferToNodeBuffer : bufferToNodeBuffer,
-
 
   // array maker
 

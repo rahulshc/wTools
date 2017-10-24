@@ -64,6 +64,7 @@ function shell( o )
   {
     var argumentsManual = process.argv.slice( 2 );
     o.args = _.arrayAppendArray( o.args || [],argumentsManual );
+    // logger.log( 'o.args',_.toStr( o.args, { levels : 3 } ) );
 /*
     if( argumentsManual.length )
     path += ' '' + argumentsManual.join( '' '' ) + ''';
@@ -95,9 +96,9 @@ function shell( o )
   if( o.verbosity )
   {
     if( o.args )
-    logger.debug( o.path, o.args.join( ' ' ) );
+    logger.log( o.path, o.args.join( ' ' ) );
     else
-    logger.debug( o.path );
+    logger.log( o.path );
   }
 
   /* create process */
@@ -139,7 +140,9 @@ function shell( o )
       // _.arrayAppendArray( args,o.args )
 
       if( o.args )
-      arg2 = arg2 + ' ' + o.args.join( ' ' );
+      arg2 = arg2 + ' ' + '"' + o.args.join( '" "' ) + '"';
+
+      // logger.log( 'arg2',arg2 );
 
       o.process = ChildProcess.spawn( app,[ arg1,arg2 ],optionsForSpawn );
     }
@@ -223,6 +226,7 @@ function shell( o )
   o.process.on( 'error', function( err )
   {
 
+    debugger;
     if( o.verbosity >= 1 )
     err = _.errLogOnce( err );
 
