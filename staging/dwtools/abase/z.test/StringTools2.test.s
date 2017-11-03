@@ -4268,7 +4268,7 @@ function strExtractStereoStrips( test )
   /* nothing */
 
   got = _.strExtractStereoStrips( '' );
-  expected = [];
+  expected = [ '' ];
   test.identical( got, expected );
 
   /* prefix/postfix # by default*/
