@@ -4919,6 +4919,9 @@ function strExtractStereoStrips( src )
   var result = [];
   var splitted = src.split( o.prefix );
 
+  if( splitted.length === 1 )
+  return splitted;
+
   /* */
 
   if( splitted[ 0 ] )
