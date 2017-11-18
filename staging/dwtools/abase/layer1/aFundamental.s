@@ -8188,7 +8188,10 @@ var bufferToNodeBuffer = ( function( buffer )
     }
     else
     {
-      buffer = new Buffer( buffer.buffer );
+      if( _.bufferTypedIs( buffer ) )
+      buffer = Buffer.from( buffer.buffer );
+      else
+      buffer = Buffer.from( buffer );
     }
 
     return buffer;
