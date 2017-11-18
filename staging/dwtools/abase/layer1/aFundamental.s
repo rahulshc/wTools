@@ -4,7 +4,7 @@
 'use strict';
 
 /**
- * @file Base.s - Generic purpose tools of base level for solving problems in Java Script.
+ * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
  */
 
 /*
@@ -2405,6 +2405,7 @@ _entitySelectOptions.defaults =
   usingUndefinedForMissing : 1,
   usingMapIndexedAccess : 1,
   usingSet : 0,
+  onElement : null,
 }
 
 //
@@ -2433,6 +2434,7 @@ function _entitySelect( o )
       // iteration.container = o.container;
       // iterator.query = o.query[ i ];
 
+      debugger; xxx
       result[ iterator.query ] = _entitySelectAct( iteration,iterator );
     }
 
@@ -2447,13 +2449,14 @@ function _entitySelect( o )
   iterator.delimeter = o.delimeter;
   iterator.usingUndefinedForMissing = o.usingUndefinedForMissing;
   iterator.usingMapIndexedAccess = o.usingMapIndexedAccess;
+  iterator.onElement = o.onElement;
   iterator.usingSet = o.usingSet;
-
   iterator.query = o.query;
 
   var iteration = Object.create( null );
   iteration.qarrey = o.qarrey;
   iteration.container = o.container;
+  iteration.up = null;
 
   result = _entitySelectAct( iteration,iterator );
 
@@ -2488,10 +2491,15 @@ function _entitySelectAct( iteration,iterator )
   var key2 = iteration.qarrey[ 1 ];
 
   if( !iteration.qarrey.length )
-  return container;
+  {
+    if( iterator.onElement )
+    return iterator.onElement( iteration,iterator );
+    else
+    return container;
+  }
 
-  _.assert( Object.keys( iterator ).length === 6 );
-  _.assert( Object.keys( iteration ).length === 2 );
+  _.assert( Object.keys( iterator ).length === 7 );
+  _.assert( Object.keys( iteration ).length === 3 );
   _.assert( arguments.length === 2 );
 
   if( _.atomicIs( container ) )
@@ -2525,7 +2533,6 @@ function _entitySelectAct( iteration,iterator )
 
     if( field === undefined && iterator.usingSet )
     {
-      debugger;
       if( !isNaN( key2 ) )
       {
         container[ key ] = field = [];
@@ -2542,6 +2549,7 @@ function _entitySelectAct( iteration,iterator )
     var newIteration = Object.create( null );
     newIteration.container = field;
     newIteration.qarrey = qarrey;
+    newIteration.up = container;
 
     return _entitySelectAct( newIteration,iterator );
   }
@@ -2646,10 +2654,12 @@ function entitySelectUnique( o )
   // o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
-  debugger;
+  // _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
+  // debugger;
 
   var result = _entitySelect( o );
+
+  // debugger;
 
   if( o.qarrey.indexOf( '*' ) !== -1 )
   if( _.arrayLike( result ) )
@@ -2663,6 +2673,260 @@ entitySelectUnique.defaults =
 }
 
 entitySelectUnique.defaults.__proto__ = _entitySelectOptions.defaults;
+
+//
+
+function _entityProbeReport( o )
+{
+
+  _.assert( arguments.length );
+  o = _.routineOptions( _entityProbeReport,o );
+
+  /* report */
+
+  if( o.report )
+  {
+    if( !_.strIs( o.report ) )
+    o.report = '';
+    o.report += o.title + ' : ' + o.total + '\n';
+    for( var r in o.result )
+    {
+      var d = o.result[ r ];
+      o.report += o.tab;
+      if( o.prependingByAsterisk )
+      o.report += '*.';
+      o.report += r + ' : ' + d.having.length;
+      if( d.values )
+      o.report += ' ' + _.toStr( d.values,{ levels : 0 } );
+      o.report += '\n';
+    }
+  }
+
+  return o.report;
+}
+
+_entityProbeReport.defaults =
+{
+  title : null,
+  report : null,
+  result : null,
+  total : null,
+  prependingByAsterisk : 1,
+  tab : '  ',
+}
+
+//
+
+function entityProbeField( o )
+{
+
+  if( arguments[ 1 ] !== undefined )
+  {
+    var o = Object.create( null );
+    o.container = arguments[ 0 ];
+    o.query = arguments[ 1 ];
+  }
+
+  _.routineOptions( entityProbeField,o );
+
+  // o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  // _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
+  // debugger;
+  o.all = _entitySelect( _.mapScreen( _entitySelectOptions.defaults,o ) );
+  o.onElement = function( it ){ return it.up };
+  o.parents = _entitySelect( _.mapScreen( _entitySelectOptions.defaults,o ) );
+  o.result = Object.create( null );
+
+  // debugger;
+
+  // if( o.qarrey.indexOf( '*' ) !== -1 )
+  // if( _.arrayLike( result ) )
+  // result = _.arrayUnique( result );
+
+  /* */
+
+  // debugger;
+
+  for( var i = 0 ; i < o.all.length ; i++ )
+  {
+    var val = o.all[ i ];
+    // if( !_.primitiveIs( val ) )
+    // continue;
+    if( !o.result[ val ] )
+    {
+      var d = o.result[ val ] = Object.create( null );
+      d.having = [];
+      d.notHaving = [];
+      d.value = val;
+    }
+    var d = o.result[ val ];
+    d.having.push( o.parents[ i ] );
+  }
+
+  // debugger;
+
+  for( var k in o.result )
+  {
+    var d = o.result[ k ];
+    for( var i = 0 ; i < o.all.length ; i++ )
+    {
+      var element = o.all[ i ];
+      var parent = o.parents[ i ];
+      if( !_.arrayHas( d.having, parent ) )
+      d.notHaving.push( parent );
+    }
+  }
+
+  // debugger;
+
+  /* */
+
+  if( o.report )
+  {
+    // debugger;
+    if( o.title === null )
+    o.title = o.query;
+    o.report = _._entityProbeReport
+    ({
+      title : o.title,
+      report : o.report,
+      result : o.result,
+      total : o.all.length,
+      prependingByAsterisk : 0,
+    });
+    // debugger;
+  }
+
+  return o;
+}
+
+entityProbeField.defaults =
+{
+  title : null,
+  report : 1,
+}
+
+entityProbeField.defaults.__proto__ = _entitySelectOptions.defaults;
+
+//
+
+function entityProbe( o )
+{
+
+  if( _.arrayIs( o ) )
+  o = { src : o }
+
+  _.assert( arguments.length === 1 );
+  _.routineOptions( entityProbe,o );
+  _.assert( _.arrayIs( o.src ) || _.objectIs( o.src ) );
+
+  o.result = o.result || Object.create( null );
+  o.all = o.all || [];
+
+  /* */
+
+  function extend( result,src )
+  {
+
+    o.all.push( src );
+
+    if( o.assertingUniqueness )
+    _.assertMapHasNone( result,src );
+    // _.mapExtend( result,src );
+
+    for( var s in src )
+    {
+      if( !result[ s ] )
+      {
+        var r = result[ s ] = Object.create( null );
+        r.times = 0;
+        r.values = [];
+        r.having = [];
+        r.notHaving = [];
+      }
+      var r = result[ s ];
+      r.times += 1;
+      var added = _.arrayAppendedOnce( r.values,src[ s ] ) !== -1;
+      r.having.push( src );
+    }
+
+  }
+
+  /* */
+
+  // for( var a = 0 ; a < o.src.length ; a++ )
+  _.entityMap( o.src, function( e,k )
+  {
+    // var src = o.src[ k ];
+    var src = e;
+
+    o.total += 1;
+
+    //debugger;
+    if( !_.arrayLike( src ) || !o.recursive )
+    {
+      //debugger;
+      _.assert( _.objectIs( src ) );
+      if( src !== undefined )
+      extend( o.result, src );
+      return;
+    }
+
+    for( var s = 0 ; s < src.length ; s++ )
+    {
+      if( _.arrayIs( src[ s ] ) )
+      entityProbe
+      ({
+        src : src[ s ],
+        result : o.result,
+        assertingUniqueness : o.assertingUniqueness,
+      });
+      else if( _.objectIs( src[ s ] ) )
+      extend( o.result, src );
+      else
+      throw _.err( 'array should have only maps' );
+    }
+
+  });
+
+  /* not having */
+
+  for( var a = 0 ; a < o.all.length ; a++ )
+  {
+    var map = o.all[ a ];
+    for( var r in o.result )
+    {
+      var field = o.result[ r ];
+      if( !_.arrayHas( field.having,map ) )
+      field.notHaving.push( map );
+    }
+  }
+
+  if( o.report )
+  o.report = _._entityProbeReport
+  ({
+    title : o.title,
+    report : o.report,
+    result : o.result,
+    total : o.total,
+    prependingByAsterisk : 1,
+  });
+
+  return o;
+}
+
+entityProbe.defaults =
+{
+  src : null,
+  result : null,
+  recursive : 0,
+  report : 1,
+  total : 0,
+  all : null,
+  title : 'Probe',
+}
 
 //
 
@@ -2791,11 +3055,13 @@ function entityMap( src,onEach )
   }
   else if( _.objectLike( src ) )
   {
+    debugger;
     for( var s in src )
     {
       result[ s ] = onEach( src[ s ],s,src );
       _.assert( result[ s ] !== undefined,'( entityMap ) onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
     }
+    debugger;
   }
   else _.assert( 0,'unexpected' );
 
@@ -13422,7 +13688,7 @@ function arraySetDiff( src1,src2 )
  * Returns array that contains elements from ( src ) that exists at least in one of arrays provided after first argument.
  * If element exists and it has copies, all copies of that element will be included into result array.
  * @param { arrayLike } src - source array;
- * @param { arrayLike... } - sequence of arrays to compare with ( src ).
+ * @param { ...arrayLike } - sequence of arrays to compare with ( src ).
  *
  * @example
  * // returns [ 1, 3 ]
@@ -14378,23 +14644,26 @@ function mapInvertDroppingDuplicates( src,dst )
 function mapsFlatten( o )
 {
 
+  if( _.arrayIs( o ) )
+  o = { src : o }
+
   _.assert( arguments.length === 1 );
   _.routineOptions( mapsFlatten,o );
-  _.assert( _.arrayIs( o.maps ) )
+  _.assert( _.arrayIs( o.src ) )
 
   o.result = o.result || Object.create( null );
 
   function extend( r,s )
   {
-    if( o.assertUniqueness )
+    if( o.assertingUniqueness )
     _.assertMapHasNone( r,s );
     _.mapExtend( r,s );
   }
 
-  for( var a = 0 ; a < o.maps.length ; a++ )
+  for( var a = 0 ; a < o.src.length ; a++ )
   {
 
-    var src = o.maps[ a ];
+    var src = o.src[ a ];
 
     if( !_.arrayLike( src ) )
     {
@@ -14409,9 +14678,9 @@ function mapsFlatten( o )
       if( _.arrayIs( src[ s ] ) )
       mapsFlatten
       ({
-        maps : src[ s ],
+        src : src[ s ],
         result : o.result,
-        assertUniqueness : o.assertUniqueness,
+        assertingUniqueness : o.assertingUniqueness,
       });
       else if( _.objectIs( src[ s ] ) )
       extend( o.result, src );
@@ -14426,9 +14695,9 @@ function mapsFlatten( o )
 
 mapsFlatten.defaults =
 {
-  maps : null,
+  src : null,
   result : null,
-  assertUniqueness : 1,
+  assertingUniqueness : 1,
 }
 
 //
@@ -17235,6 +17504,10 @@ var Proto =
   entitySelectSet : entitySelectSet,
   entitySelectUnique : entitySelectUnique,
 
+  _entityProbeReport : _entityProbeReport,
+  entityProbeField : entityProbeField,
+  entityProbe : entityProbe,
+
   _entityConditionMake : _entityConditionMake,
   entityMap : entityMap,
 
@@ -17488,6 +17761,7 @@ var Proto =
 
   buffersSerialize : buffersSerialize, /* deprecated */
   buffersDeserialize : buffersDeserialize, /* deprecated */
+
 
   // array maker
 

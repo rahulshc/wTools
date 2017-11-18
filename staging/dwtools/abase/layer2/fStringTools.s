@@ -1021,7 +1021,7 @@ function _toStrFromStr( src,o )
   }
   else if( o.escaping )
   {
-    result = strEscape( src );
+    result = strEscape({ src : src, stringWrapper : o.stringWrapper });
   }
   else
   {
@@ -1746,8 +1746,9 @@ strShort.defaults =
  *
  */
 
-function strEscape( src )
+function strEscape( o )
 {
+
     // 007f : ""
     // . . .
     // 009f : ""
@@ -1765,18 +1766,37 @@ function strEscape( src )
     // \v 	vertical tab 	byte 0x0b in ASCII encoding
     // source : http://en.cppreference.com/w/cpp/language/escape
 
-  _.assert( _.strIs( src ) );
+  if( _.strIs( o ) )
+  o = { src : o }
+
+  _.assert( _.strIs( o.src ) );
+  _.routineOptions( strEscape,o );
+
+  if( _.strHas( o.src,'Escapes special characters with a slash' ) )
+  {
+    debugger;
+    // return 'Escapes special characters with a slash' + '-xxx-';
+  }
 
   var result = '';
-  for( var s = 0 ; s < src.length ; s++ )
+  for( var s = 0 ; s < o.src.length ; s++ )
   {
-    var c = src[ s ];
+    var c = o.src[ s ];
+    var nc = o.src[ s+1 ];
     var code = c.charCodeAt( 0 );
 
     _.assert( c.length === 1 );
 
-    //if( 127 <= code && code <= 159 || code === 173 )
-    if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
+    if( o.stringWrapper === '`' && c === '$' )
+    {
+      result += '\\$';
+    }
+    else if( o.stringWrapper && c === o.stringWrapper )
+    {
+      result += '\\' + o.stringWrapper;
+    }
+    // else if( 127 <= code && code <= 159 || code === 173 )
+    else if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
     {
       debugger;
       result += _.strUnicodeEscape( c );
@@ -1785,13 +1805,12 @@ function strEscape( src )
     {
 
       case '\\' :
-        debugger;
         result += '\\\\';
         break;
 
-      case '\"' :
-        result += '\\"';
-        break;
+      // case '\"' :
+      //   result += '\\"';
+      //   break;
 
       // case '\'' :
       //   result += "\\'";
@@ -1837,9 +1856,16 @@ function strEscape( src )
         result += c;
 
     }
+
   }
 
   return result;
+}
+
+strEscape.defaults =
+{
+  src : null,
+  stringWrapper : '"',
 }
 
 //
@@ -2902,6 +2928,48 @@ strStrip.defaults =
 
 //
 
+function strStripLeft( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStrip,o );
+  _.assert( arguments.length === 1 );
+
+  return _.strStrip( o );
+}
+
+strStripLeft.defaults =
+{
+  stripper : /^(\s|\n|\0)+/gm,
+}
+
+strStripLeft.defaults.__proto__ = strStrip.defaults;
+
+//
+
+function strStripRight( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStrip,o );
+  _.assert( arguments.length === 1 );
+
+  return _.strStrip( o );
+}
+
+strStripRight.defaults =
+{
+  stripper : /(\s|\n|\0)+$/gm,
+}
+
+strStripRight.defaults.__proto__ = strStrip.defaults;
+
+//
+
 /**
  * Removes whitespaces from source( src ).
  * If argument( sub ) is defined, function replaces whitespaces with it.
@@ -3728,13 +3796,20 @@ function lattersSpectreComparison( src1,src2 )
 }
 
 //
+
+/**
+ * @name _strHtmlEscapeMap
+ * @type {object}
+ * @description Html escape symbols map.
+ * @global
+ */
+
 /**
  * Replaces all occurrences of html escape symbols from map( _strHtmlEscapeMap )
  * in source( str ) with their code equivalent like( '&' -> '&amp;' ).
  * Returns result of replacements as new string or original if nothing replaced.
  *
  * @param {string} str - Source string to parse.
- * @global {object} _strHtmlEscapeMap - Html escape symbols map.
  * @returns {string} Returns string with result of replacements.
  *
  * @example
@@ -4575,13 +4650,19 @@ function strToBytes( src )
 //
 
 /**
+ * @name _metrics
+ * @type {object}
+ * @description Contains metric prefixes.
+ * @global
+ */
+
+/**
  * Returns string that represents number( src ) with metric unit prefix that depends on options( o ).
  * If no options provided function start calculating metric with default options.
  * Example: for number ( 50000 ) function returns ( "50.0 k" ), where "k"- thousand.
  *
  * @param {(number|string)} src - Source object.
  * @param {object} o - conversion options.
- * @global {object} _metrics - Contains metric prefixes.
  * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
  * @param {number} [ o.thousand=1000 ] - Sets integer power of one thousand.
  * @param {boolean} [ o.fixed=1 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
@@ -4721,7 +4802,7 @@ function strMetricFormat( number,o )
  * Converts number( number ) to specific count of bytes with metric prefix.
  * Example: ( 2048 -> 2.0 kb).
  *
- * @param {(string|number} str - Source number to  convert.
+ * @param {string|number} str - Source number to  convert.
  * @param {object} o - conversion options.
  * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
  * @param {number} [ o.thousand=1024 ] - Sets integer power of one thousand.
@@ -5380,6 +5461,8 @@ var Proto =
 
   strSplit : strSplit,
   strStrip : strStrip,
+  strStripLeft : strStripLeft,
+  strStripRight : strStripRight,
   strRemoveAllSpaces : strRemoveAllSpaces,
   strStripEmptyLines : strStripEmptyLines,
 
@@ -5470,5 +5553,11 @@ var toStr = Self.toStr = Self.strFrom = toStrFine;
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
+
+// debugger;
+// var x1 = '.*+?^=! :${}()|[]/';
+// var x2 = '.*+?^=! :\${}()|[]/';
+// var x3 = `.*+?^=! :\${}()|[]/`;
+// debugger;
 
 })();
