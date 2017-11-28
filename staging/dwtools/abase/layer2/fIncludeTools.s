@@ -284,24 +284,6 @@ function includeAny()
 
 var _includeHandlerMap = {};
 
-_includeHandlerMap[ 'wCopyable' ] =
-{
-  includeAny : [ '../../abase/mixin/Copyable.s','abase/mixin/Copyable.s','wCopyable' ],
-  isIncluded : function(){ return typeof wCopyable !== 'undefined'; },
-}
-
-_includeHandlerMap[ 'wInstancing' ] =
-{
-  includeAny : [ '../../abase/mixin/Instancing.s','abase/mixin/Instancing.s','winstancing' ],
-  isIncluded : function(){ return typeof wInstancing !== 'undefined'; },
-}
-
-_includeHandlerMap[ 'wEventHandler' ] =
-{
-  includeAny : [ '../../abase/mixin/EventHandler.s','abase/mixin/EventHandler.s','wEventHandler' ],
-  isIncluded : function(){ return typeof wEventHandler !== 'undefined'; },
-}
-
 _includeHandlerMap[ 'wTesting' ] =
 {
   includeAny : [ '../../abase/xtester/cTester.debug.s','abase/xtester/cTester.debug.s','wTesting' ],
@@ -311,31 +293,55 @@ _includeHandlerMap[ 'wTesting' ] =
 _includeHandlerMap[ 'wLogger' ] =
 {
   includeAny : [ '../../abase/oclass/printer/top/Logger.s','abase/oclass/printer/top/Logger.s','wLogger' ],
-  isIncluded : function(){ return typeof wLogger !== 'undefined'; },
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Logger; },
 }
 
 _includeHandlerMap[ 'wPrinterToFile' ] =
 {
   includeAny : [ '../../abase/oclass/printer/top/ToFile.ss','abase/oclass/printer/top/ToFile.ss','wloggertofile' ],
-  isIncluded : function(){ return typeof wPrinterToFile !== 'undefined'; },
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.PrinterToFile; },
 }
 
 _includeHandlerMap[ 'wPrinterToJstructure' ] =
 {
   includeAny : [ '../../abase/oclass/printer/top/ToJstructure.s','abase/oclass/printer/top/ToJstructure.s','wloggertojstructure' ],
-  isIncluded : function(){ return typeof wPrinterToJstructure !== 'undefined'; },
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.PrinterToJstructure; },
 }
 
 _includeHandlerMap[ 'wConsequence' ] =
 {
   includeAny : [ '../../abase/oclass/Consequence.s','abase/oclass/Consequence.s','wConsequence' ],
-  isIncluded : function(){ return typeof wConsequence !== 'undefined'; },
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Consequence; },
 }
 
 _includeHandlerMap[ 'wConsequizer' ] =
 {
   includeAny : [ '../../abase/mixin/Consequizer.s','abase/mixin/Consequizer.','wconsequizer' ],
-  isIncluded : function(){ return typeof wConsequizer !== 'undefined'; },
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Consequizer; },
+}
+
+_includeHandlerMap[ 'wCopyable' ] =
+{
+  includeAny : [ '../../abase/mixin/Copyable.s','abase/mixin/Copyable.s','wCopyable' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Copyable; },
+}
+
+_includeHandlerMap[ 'wInstancing' ] =
+{
+  includeAny : [ '../../abase/mixin/Instancing.s','abase/mixin/Instancing.s','winstancing' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Instancing; },
+}
+
+_includeHandlerMap[ 'wEventHandler' ] =
+{
+  includeAny : [ '../../abase/mixin/EventHandler.s','abase/mixin/EventHandler.s','wEventHandler' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.EventHandler; },
+}
+
+_includeHandlerMap[ 'wFieldsStack' ] =
+{
+  includeAny : [ '../../abase/mixin/FieldsStack.s','abase/mixin/FieldsStack.s','wfieldsstack' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.FieldsStack; },
 }
 
 _includeHandlerMap[ 'wNameTools' ] =
@@ -347,7 +353,7 @@ _includeHandlerMap[ 'wNameTools' ] =
 _includeHandlerMap[ 'wRegexpObject' ] =
 {
   includeAny : [ '../../abase/oclass/RegexpObject.s','abase/oclass/RegexpObject.s','wRegexpObject' ],
-  isIncluded : function(){ return typeof wRegexpObject !== 'undefined' },
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.RegexpObject; },
 }
 
 _includeHandlerMap[ 'wProto' ] =
@@ -404,6 +410,12 @@ _includeHandlerMap[ 'wFilesSvn' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.fileProvider.Svn },
 }
 
+_includeHandlerMap[ 'wNameMapper' ] =
+{
+  includeAny : [ '../../amid/mapping/NameMapper.s','amid/mapping/NameMapper.s','wnamemapper' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.NameMapper },
+}
+
 _includeHandlerMap[ 'wTemplateTreeResolver' ] =
 {
   includeAny : [ '../../amid/mapping/TemplateTreeAresolver.s','amid/mapping/TemplateTreeAresolver.s','wtemplatetreeresolver' ],
@@ -416,10 +428,10 @@ _includeHandlerMap[ 'wTemplateTreeEnvironment' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateTreeEnvironment },
 }
 
-_includeHandlerMap[ 'wNameMapper' ] =
+_includeHandlerMap[ 'wTemplateFileWriter' ] =
 {
-  includeAny : [ '../../amid/mapping/NameMapper.s','amid/mapping/NameMapper.s','wnamemapper' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.NameMapper },
+  includeAny : [ '../../amid/mapping/TemplateFileWriter.s','amid/mapping/TemplateFileWriter.s','wtemplatefilewriter' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.TemplateFileWriter },
 }
 
 _includeHandlerMap[ 'wGraph' ] =
@@ -438,12 +450,6 @@ _includeHandlerMap[ 'wVector' ] =
 {
   includeAny : [ '../../amath/cvector/vArray.s','amath/cvector/vArray.s','wVector' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.vector },
-}
-
-_includeHandlerMap[ 'wIncubator' ] =
-{
-  includeAny : [ '../../amid/worker/Incubator.s','amid/worker/Incubator.s','wIncubator' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Incubator },
 }
 
 _includeHandlerMap[ 'wExchangePoint' ] =

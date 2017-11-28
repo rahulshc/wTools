@@ -3055,13 +3055,13 @@ function entityMap( src,onEach )
   }
   else if( _.objectLike( src ) )
   {
-    debugger;
+    // debugger;
     for( var s in src )
     {
       result[ s ] = onEach( src[ s ],s,src );
       _.assert( result[ s ] !== undefined,'( entityMap ) onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
     }
-    debugger;
+    // debugger;
   }
   else _.assert( 0,'unexpected' );
 
@@ -7300,16 +7300,6 @@ function timeReady( onReady )
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
     var con = typeof wConsequence !== 'undefined' ? new wConsequence() : null;
-
-    // function handleTimeOut()
-    // {
-    //   if( !con && onReady )
-    //   onReady();
-    //   else if( onReady )
-    //   con.first( onReady );
-    //   else
-    //   con.give();
-    // }
 
     function handleReady()
     {

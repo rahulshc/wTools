@@ -1772,12 +1772,6 @@ function strEscape( o )
   _.assert( _.strIs( o.src ) );
   _.routineOptions( strEscape,o );
 
-  if( _.strHas( o.src,'Escapes special characters with a slash' ) )
-  {
-    debugger;
-    // return 'Escapes special characters with a slash' + '-xxx-';
-  }
-
   var result = '';
   for( var s = 0 ; s < o.src.length ; s++ )
   {
