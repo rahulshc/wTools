@@ -659,7 +659,7 @@ function _toStrShort( src,o )
   }
   else if( _.routineIs( src ) )
   {
-    result += _toStrFromRoutine( src );
+    result += _toStrFromRoutine( src,o );
   }
   else if( _.numberIs( src ) )
   {
@@ -911,7 +911,7 @@ function _toStrFromRoutine( src,o )
   var result = '';
 
   // debugger;
-  // _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2 );
   _.assert( _.routineIs( src ),'expects routine ( src )' );
 
   if( o.jstructLike )
