@@ -281,21 +281,22 @@ function _each( o )
     down : o.down,
   }
 
-  _.accessorForbid
-  ({
-    object : iterator,
-    prime : 0,
-    names :
-    {
-      levels : 'levels',
-      level : 'level',
-      path : 'path',
-      key : 'key',
-      index : 'index',
-      src : 'src',
-      down : 'down',
-    }
-  })
+  // if( Config.debug )
+  // _.accessorForbid
+  // ({
+  //   object : iterator,
+  //   prime : 0,
+  //   names :
+  //   {
+  //     levels : 'levels',
+  //     level : 'level',
+  //     path : 'path',
+  //     key : 'key',
+  //     index : 'index',
+  //     src : 'src',
+  //     down : 'down',
+  //   }
+  // })
 
   return __eachAct.call( iterator,iteration );
 }
@@ -336,7 +337,7 @@ function each( o )
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 
-  _.mapExtendConditional( _.field.dstNotHasSrcOwn(),o,each.defaults );
+  _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,each.defaults );
 
   return _each( o );
 }
@@ -361,7 +362,7 @@ function eachOwn( o )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
   o.own = 1;
 
-  _.mapExtendConditional( _.field.dstNotHasSrcOwn(),o,eachOwn.defaults );
+  _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,eachOwn.defaults );
 
   return _each( o );
 }
@@ -388,7 +389,7 @@ function eachRecursive( o )
 
   o.recursive = 1;
 
-  _.mapExtendConditional( _.field.dstNotHasSrcOwn(),o,eachRecursive.defaults );
+  _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,eachRecursive.defaults );
 
   return _each( o );
 }
@@ -1625,7 +1626,7 @@ function entityDiff( src1,src2,o )
 
   var o = o || Object.create( null );
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  var same = _.entityEqual( src1,src2,o );
+  var same = _._entityEqual( src1,src2,o );
 
   if( same )
   return false;
@@ -1654,7 +1655,7 @@ function entityDiff( src1,src2,o )
 //
 
 /**
- * Options for _entityEqual() function.
+ * Options for _entityEqualAct() function.
  * @typedef {Object} wTools~entityEqualOptions
  * @property {routine} [ onSameNumbers ] - Routine to compare two numbers.Returns true if numbers are equal.
  * @property {boolean} [ contain=0 ] - If this parameter sets to true, two entities will be considered the same,
@@ -1679,34 +1680,34 @@ function entityDiff( src1,src2,o )
  * @example
  * //returns false
  * var o = { onSameNumbers : function( a, b ){ return a === b } };
- * _._entityEqual( 5, 6, o );
+ * _._entityEqualAct( 5, 6, o );
  *
  * @example
  * //returns true
- * _._entityEqual( 'a', 'a', {} );
+ * _._entityEqualAct( 'a', 'a', {} );
  *
  * @example
  * //returns false
  * var o = { onSameNumbers : function( a, b ){ return a === b } };
- * _._entityEqual( [ 1, 2, 3 ], [ 1, 2, 4 ], o );
+ * _._entityEqualAct( [ 1, 2, 3 ], [ 1, 2, 4 ], o );
  *
  * @example
  * //returns false
  * var o = { onSameNumbers : function( a, b ){ return a === b } };
- * _._entityEqual( { a : 1, b : 2 }, { a : 1, b : 2, c: 1 }, o );
+ * _._entityEqualAct( { a : 1, b : 2 }, { a : 1, b : 2, c: 1 }, o );
  *
  * @example
  * //returns true
  * var o = { onSameNumbers : function( a, b ){ return a === b }, strict : 0 };
- * _._entityEqual( { a : '1', b : '2' },{ a : 1, b : 2 }, o );
+ * _._entityEqualAct( { a : '1', b : '2' },{ a : 1, b : 2 }, o );
  *
  * @private
- * @function _entityEqual
+ * @function _entityEqualAct
  * @throws {exception} If ( arguments.length ) is not equal 3.
  * @memberof wTools
  */
 
-function _entityEqual( src1, src2, iterator )
+function _entityEqualAct( src1, src2, iterator )
 {
 
   var path = iterator.path;
@@ -1768,7 +1769,7 @@ function _entityEqual( src1, src2, iterator )
     for( var k = 0 ; k < src2.length ; k++ )
     {
       iterator.path = path + '.' + k;
-      if( !_entityEqual( src1[ k ], src2[ k ], iterator ) )
+      if( !_entityEqualAct( src1[ k ], src2[ k ], iterator ) )
       return false;
       iterator.path = path;
     }
@@ -1802,7 +1803,7 @@ function _entityEqual( src1, src2, iterator )
       for( var k in src2 )
       {
         iterator.path = path + '.' + k;
-        if( !_entityEqual( src1[ k ], src2[ k ], iterator ) )
+        if( !_entityEqualAct( src1[ k ], src2[ k ], iterator ) )
         return false;
         iterator.path = path;
       }
@@ -1905,44 +1906,44 @@ _entityEqualIteratorMake.defaults =
  *
  * @example
  * //returns false
- * _.entityEqual( '1', 1 );
+ * _._entityEqual( '1', 1 );
  *
  * @example
  * //returns true
- * _.entityEqual( '1', 1, { strict : 0 } );
+ * _._entityEqual( '1', 1, { strict : 0 } );
  *
  * @example
  * //returns true
- * _.entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { contain : 1 } );
+ * _._entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { contain : 1 } );
  *
  * @example
  * //returns ".a.b"
  * var o = { contain : 1 };
- * _.entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
+ * _._entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
  * console.log( o.lastPath );
  *
- * @function entityEqual
+ * @function _entityEqual
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
  * @throws {exception} If( o ) is not a Object.
  * @throws {exception} If( o ) is extended by unknown property.
  * @memberof wTools
  */
 
-function entityEqual( src1,src2,o )
+function _entityEqual( src1,src2,o )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
   var o = _entityEqualIteratorMake( o );
 
-  return _entityEqual( src1,src2,o );
+  return _entityEqualAct( src1,src2,o );
 }
 
-entityEqual.defaults =
+_entityEqual.defaults =
 {
 }
 
-entityEqual.defaults.__proto__ = _entityEqualIteratorMake.defaults;
+_entityEqual.defaults.__proto__ = _entityEqualIteratorMake.defaults;
 
 //
 
@@ -1990,7 +1991,7 @@ function entityIdentical( src1,src2,options )
     onSameNumbers : sameNumbers,
   });
 
-  return _.entityEqual( src1,src2,options );
+  return _._entityEqual( src1,src2,options );
 }
 
 //
@@ -2045,7 +2046,7 @@ function entityEquivalent( src1,src2,options )
     onSameNumbers : _sameNumbers,
   });
 
-  return _.entityEqual( src1,src2,options );
+  return _._entityEqual( src1,src2,options );
 }
 
 //
@@ -2090,7 +2091,7 @@ function entityContain( src1,src2,options )
     contain : 1,
   });
 
-  return _.entityEqual( src1,src2,options );
+  return _._entityEqual( src1,src2,options );
 }
 
 // --
@@ -3737,6 +3738,7 @@ function _err( o )
   var sourceCode = '';
   var stack = '';
   var errors = [];
+  var attentionGiven = 0;
 
   /* Error.stackTraceLimit = 99; */
 
@@ -3754,6 +3756,8 @@ function _err( o )
         result = o.args[ a ];
         catches = result.catches || '';
         sourceCode = result.sourceCode || '';
+        if( o.args.length === 1 )
+        attentionGiven = result.attentionGiven;
       }
 
       if( arg.attentionRequested === undefined )
@@ -4069,6 +4073,14 @@ function _err( o )
     value : o.location,
   });
 
+  Object.defineProperty( result, 'attentionGiven',
+  {
+    enumerable : false,
+    configurable : true,
+    writable : true,
+    value : attentionGiven,
+  });
+
   /* catches */
 
   Object.defineProperty( result, 'catches',
@@ -4198,7 +4210,7 @@ function errAttend( err )
       enumerable : false,
       configurable : true,
       writable : true,
-      value : 1,
+      value : Config.debug ? _.diagnosticStack( 1,-1 ) : 1,
     });
 
   }
@@ -4490,6 +4502,16 @@ function hasLength( src )
 
 function objectIs( src )
 {
+  // if( !src )
+  // return false;
+  // if( Object.hasOwnProperty.call( src,'callee' ) )
+  // return false;
+  // if( src instanceof Array )
+  // return true;
+  // if( src instanceof Object )
+  // return true;
+  // var prototype = Object.getPrototypeOf( src );
+  // return prototype === null;
   return _ObjectToString.call( src ) === '[object Object]';
 }
 
@@ -4739,7 +4761,8 @@ function dateIs( src )
 
 function boolIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Boolean]';
+  return src === true || src === false;
+  // return _ObjectToString.call( src ) === '[object Boolean]';
 }
 
 //
@@ -10031,8 +10054,6 @@ function arrayUnmask( o )
   _.assertMapHasOnly( o,arrayUnmask.defaults );
   _.assert( _.arrayLike( o.src ),'arrayUnmask : expects o.src as ArrayLike' );
 
-  debugger;
-
   var atomsPerElement = o.mask.length;
 
   var atomsPerElementPreserved = 0;
@@ -13997,12 +14018,7 @@ function mapClone( srcObject,o )
   return o.dst;
 }
 
-  // /**
-  //  * @callback _.field.dstNotHas()
-  //  * @param { objectLike } dstObject - The target object.
-  //  * @param { objectLike } argument - The next object.
-  //  * @param { string } key - The key of the (argument) object.
-  //  */
+//
 
 /**
  * The mapExtendConditional() creates a new [ key, value ]
@@ -14019,7 +14035,7 @@ function mapClone( srcObject,o )
  *
  * @example
  * // returns { a : 1, b : 2, c : 3 }
- * _.mapExtendConditional( _.field.dstNotHas(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+ * _.mapExtendConditional( _.field.mapper.dstNotHas, { a : 1, b : 2 }, { a : 1 , c : 3 } );
  *
  * @returns { objectLike } Returns the unique [ key, value ].
  * @function mapExtendConditional
@@ -14030,7 +14046,9 @@ function mapClone( srcObject,o )
 
 function mapExtendConditional( filter,dstObject )
 {
-  var filter = _.field.makeMapper( filter );
+
+  // var filter = _.field.makeMapper( filter );
+  _.assert( filter.functionKind === 'field-mapper' );
 
   if( dstObject === null )
   dstObject = Object.create( null );
@@ -14138,13 +14156,6 @@ function mapExtendToThis()
 
   //
 
-  // /**
-  //  * @callback  _.field.dstNotHas()
-  //  * @param { objectLike } dstObject - The target object.
-  //  * @param { objectLike } argument - The next object.
-  //  * @param { string } key - The key of the (argument) object.
-  //  */
-
 /**
  * The mapSupplement() supplement destination map by source maps.
  * Pairs of destination map are not overwritten by pairs of source maps if any overlap.
@@ -14166,7 +14177,7 @@ function mapSupplement( dst,src )
   if( dst === null && arguments.length === 2 )
   return _.mapExtend( dst,src );
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.dstNotHas() );
+  args.unshift( _.field.mapper.dstNotHas );
   return mapExtendConditional.apply( this,args );
 }
 
@@ -14175,7 +14186,7 @@ function mapSupplement( dst,src )
 function mapSupplementNulls( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.dstNotHasOrHasNull() );
+  args.unshift( _.field.mapper.dstNotHasOrHasNull );
   return mapExtendConditional.apply( this,args );
 }
 
@@ -14184,7 +14195,7 @@ function mapSupplementNulls( dst )
 function mapSupplementNils( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.dstNotHasOrHasNil() );
+  args.unshift( _.field.mapper.dstNotHasOrHasNil );
   return mapExtendConditional.apply( this,args );
 }
 
@@ -14193,7 +14204,7 @@ function mapSupplementNils( dst )
 function mapSupplementOrComplementPureContainers( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.dstNotOwnClonningPureContainers() );
+  args.unshift( _.field.mapper.dstNotOwnClonningPureContainers );
   return mapExtendConditional.apply( this,args );
 }
 
@@ -14202,26 +14213,19 @@ function mapSupplementOrComplementPureContainers( dst )
 function mapSupplementOwn( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.dstNotOwn() );
+  args.unshift( _.field.mapper.dstNotOwn );
   return mapExtendConditional.apply( this,args );
 }
 
 //
 
-// /**
-//  * @callback  _.field.dstNotHasCloning()
-//  * @param { objectLike } dstContainer - The target object.
-//  * @param { objectLike } srcContainer - The next object.
-//  * @param { string } key - The key of the (srcContainer) object.
-//  */
-
 /**
  * The mapComplement() routine returns an object
  * filled by all unique, clone [ key, value ].
  *
- * It creates the variable (args), assign to a copy of pseudo array (arguments),
- * adds a specific callback function(_.field.dstNotHasCloning())
- * to the beginning of the (args)
+ * It creates the variable ( args ), assign to a copy of pseudo array (arguments),
+ * adds a specific callback function( _.field.mapper.dstNotHasCloning )
+ * to the beginning of the ( args )
  * and returns an object filled by all unique clone [key, value].
  *
  * @param { ...objectLike } arguments[] - The source object(s).
@@ -14240,7 +14244,7 @@ function mapSupplementOwn( dst )
 function mapComplement( dst,src )
 {
   if( arguments.length === 2 )
-  return mapExtendConditional( _.field.dstNotOwnOrUndefinedCloning(),dst,src );
+  return mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedCloning,dst,src );
   else
   return _mapComplementSlow( arguments );
 }
@@ -14250,7 +14254,7 @@ function mapComplement( dst,src )
 function _mapComplementSlow( args )
 {
   var args = _.arraySlice( args );
-  args.unshift( _.field.dstNotOwnOrUndefinedCloning() );
+  args.unshift( _.field.mapper.dstNotOwnOrUndefinedCloning );
   return mapExtendConditional.apply( this,args );
 }
 
@@ -14259,7 +14263,7 @@ function _mapComplementSlow( args )
 function mapComplementWithUndefines( dst )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.dstNotOwnCloning() );
+  args.unshift( _.field.mapper.dstNotOwnCloning );
   return mapExtendConditional.apply( this,args );
 }
 
@@ -14366,7 +14370,7 @@ function mapSupplementAppending( dst,src )
 function mapSupplementRecursive()
 {
   _.assert( this === Self );
-  return _.mapExtendRecursive.apply( { filterField : _.field.dstNotHas(), filterUp : true },arguments );
+  return _.mapExtendRecursive.apply( { filterField : _.field.filter.dstNotHas, filterUp : true },arguments );
 }
 
 //
@@ -14412,6 +14416,7 @@ function _mapFieldFilterMake( filter )
 {
 
   _.assert( arguments.length === 1 );
+  debugger;
 
   if( _.routineIs( filter ) )
   filter = { filterUp : filter, filterField : filter }
@@ -16339,7 +16344,7 @@ function mapOnlyAtomics( src )
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( src ) );
 
-  var result = _.mapExtendConditional( _.field.atomic(),Object.create( null ),src );
+  var result = _.mapExtendConditional( _.field.mapper.atomic,Object.create( null ),src );
   return result;
 }
 
@@ -16493,45 +16498,40 @@ function mapOwnBut( srcMap )
 
 //
 
-  // /**
-  //  * @callback  _.field.atomic()
-  //  * @param { object } result - The new object.
-  //  * @param { objectLike } srcMap - The target object.
-  //  * @param { string } k - The key of the (srcMap) object.
-  //  */
-
-  /**
-   * The mapButConditional() routine returns a new object (result)
-   * whose (values) are not equal to the arrays or objects.
-   *
-   * Takes any number of objects.
-   * If the first object has same key any other object has
-   * then this pair [ key, value ] will not be included into (result) object.
-   * Otherwise,
-   * it calls a provided callback function( _.field.atomic() )
-   * once for each key in the (srcMap), and adds to the (result) object
-   * all the [ key, value ],
-   * if values are not equal to the array or object.
-   *
-   * @param { function } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
-   * @param { objectLike } srcMap - The target object.
-   * @param { ...objectLike } arguments[] - The next objects.
-   *
-   * @example
-   * // returns { a : 1, b : "b" }
-   * mapButConditional( _.field.atomic(), { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
-   *
-   * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
-   * @function mapButConditional
-   * @throws { Error } Will throw an Error if (srcMap) is not an object.
-   * @memberof wTools
-   */
+/**
+ * The mapButConditional() routine returns a new object (result)
+ * whose (values) are not equal to the arrays or objects.
+ *
+ * Takes any number of objects.
+ * If the first object has same key any other object has
+ * then this pair [ key, value ] will not be included into (result) object.
+ * Otherwise,
+ * it calls a provided callback function( _.field.mapper.atomic )
+ * once for each key in the (srcMap), and adds to the (result) object
+ * all the [ key, value ],
+ * if values are not equal to the array or object.
+ *
+ * @param { function } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
+ * @param { objectLike } srcMap - The target object.
+ * @param { ...objectLike } arguments[] - The next objects.
+ *
+ * @example
+ * // returns { a : 1, b : "b" }
+ * mapButConditional( _.field.mapper.atomic, { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
+ *
+ * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
+ * @function mapButConditional
+ * @throws { Error } Will throw an Error if (srcMap) is not an object.
+ * @memberof wTools
+ */
 
 function mapButConditional( filter,srcMap )
 {
   var result = Object.create( null );
-  var filter = _.field.makeMapper( filter );
   var a,k;
+
+  // var filter = _.field.makeMapper( filter );
+  _.assert( filter.functionKind === 'field-mapper' );
 
   _.assert( objectLike( srcMap ),'mapButConditional :','expects object as argument' );
 
@@ -16559,9 +16559,10 @@ function mapButConditional( filter,srcMap )
 function mapOwnButConditional( filter,srcMap )
 {
   var result = Object.create( null );
-  var filter = _.field.makeMapper( filter );
   var a,k;
 
+  // var filter = _.field.makeMapper( filter );
+  _.assert( filter.functionKind === 'field-mapper' );
   _.assert( objectLike( srcMap ),'mapOwnButConditional :','expects object as argument' );
 
   for( k in srcMap )
@@ -16696,7 +16697,7 @@ function mapScreenOwn( screenObject )
     screenObjects : screenObject,
     srcObjects : _.arraySlice( arguments,1 ),
     dstObject : Object.create( null ),
-    filter : _.field.srcOwn(),
+    filter : _.field.mapper.srcOwn,
   });
 
 }
@@ -16763,8 +16764,10 @@ function _mapScreen( options )
   srcObjects = [ srcObjects ];
 
   if( !options.filter )
-  options.filter = _.field.bypass();
-  options.filter = _.field.makeMapper( options.filter );
+  options.filter = _.field.mapper.bypass;
+
+  // options.filter = _.field.makeMapper( options.filter );
+  _.assert( options.filter.functionKind === 'field-mapper' );
 
   _.assert( arguments.length === 1 );
   _.assert( _.objectLike( dstObject ),'_mapScreen :','expects object as (-dstObject-)' );
@@ -17076,7 +17079,7 @@ function mapOwnKey( object,key )
 
   if( arguments.length === 1 )
   {
-    var result = _.mapExtendConditional( _.field.srcOwn(),Object.create( null ),object );
+    var result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
     return result;
   }
 
@@ -17473,9 +17476,9 @@ var Proto =
 
   entityDiff : entityDiff,
 
-  _entityEqual : _entityEqual,
+  _entityEqualAct : _entityEqualAct,
   _entityEqualIteratorMake : _entityEqualIteratorMake,
-  entityEqual : entityEqual,
+  _entityEqual : _entityEqual,
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
   entityContain : entityContain,

@@ -139,7 +139,7 @@ function mapExtendConditional( test )
 {
 
   test.description = 'an unique object';
-  var got = _.mapExtendConditional( _.field.supplementary(), { a : 1, b : 2 }, { a : 1 , c : 3 } );
+  var got = _.mapExtendConditional( _.field.mapper.supplementary, { a : 1, b : 2 }, { a : 1 , c : 3 } );
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
 
@@ -157,7 +157,7 @@ function mapExtendConditional( test )
     test.description = 'few argument';
     test.shouldThrowError( function()
     {
-      _.mapExtendConditional( _.field.supplementary() );
+      _.mapExtendConditional( _.field.mapper.supplementary );
     });
 
     test.description = 'wrong type of array';
@@ -2422,7 +2422,7 @@ function mapButConditional( test )
 {
 
   test.description = 'an object';
-  var got = _.mapButConditional( _.field.atomic(), { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+  var got = _.mapButConditional( _.field.mapper.atomic, { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
   var expected = {a: 1, b: "xxx"};
   test.identical( got, expected );
 
@@ -2440,13 +2440,13 @@ function mapButConditional( test )
     test.description = 'few arguments';
     test.shouldThrowError( function()
     {
-      _.mapButConditional( _.field.atomic() );
+      _.mapButConditional( _.field.mapper.atomic );
     });
 
     test.description = 'second argument is wrong type of array';
     test.shouldThrowError( function()
     {
-      _.mapButConditional( _.field.atomic(), [] );
+      _.mapButConditional( _.field.mapper.atomic, [] );
     });
 
     test.description = 'wrong type of arguments';

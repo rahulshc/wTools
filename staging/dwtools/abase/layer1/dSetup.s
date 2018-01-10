@@ -139,10 +139,13 @@ function _setupTesterPlaceholder()
     if( !_global_.wTests )
     _global_.wTests = Object.create( null );
 
-    if( !testSuite.sourceFilePath )
-    testSuite.sourceFilePath = _.diagnosticLocation( 1 ).full;
+    if( !testSuite.suiteFilePath )
+    testSuite.suiteFilePath = _.diagnosticLocation( 1 ).path;
 
-    _.assert( _.strIsNotEmpty( testSuite.sourceFilePath ),'Test suite expects a mandatory option ( sourceFilePath )' );
+    if( !testSuite.suiteFileLocation )
+    testSuite.suiteFileLocation = _.diagnosticLocation( 1 ).full;
+
+    _.assert( _.strIsNotEmpty( testSuite.suiteFileLocation ),'Test suite expects a mandatory option ( suiteFileLocation )' );
     _.assert( _.objectIs( testSuite ) );
 
     // if( testSuite.name === 'Chaining test' )

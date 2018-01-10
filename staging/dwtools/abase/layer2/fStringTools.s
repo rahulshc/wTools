@@ -908,9 +908,21 @@ function _toStrIsSimpleElement( element,o )
 
 function _toStrFromRoutine( src,o )
 {
-  _.assert( _.routineIs( src ),'expects routine ( src )' );
   var result = '';
-  result = '[ routine ' + ( src.name || src._name || 'without name' ) + ' ]';
+
+  debugger;
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.routineIs( src ),'expects routine ( src )' );
+
+  if( o.jstructLike )
+  {
+    result = src.toString();
+  }
+  else
+  {
+    result = '[ routine ' + ( src.name || src._name || 'without name' ) + ' ]';
+  }
 
   return result;
 }
@@ -1792,7 +1804,7 @@ function strEscape( o )
     // else if( 127 <= code && code <= 159 || code === 173 )
     else if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
     {
-      debugger;
+      // debugger;
       result += _.strUnicodeEscape( c );
     }
     else switch( c )

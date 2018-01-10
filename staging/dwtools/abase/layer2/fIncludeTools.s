@@ -446,6 +446,12 @@ _includeHandlerMap[ 'wSchema' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.schema },
 }
 
+_includeHandlerMap[ 'wScriptLauncher' ] =
+{
+  includeAny : [ '../../amid/launcher/ScriptLauncher.s','amid/launcher/ScriptLauncher.s','wscriptlauncher' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ScriptLauncher },
+}
+
 _includeHandlerMap[ 'wVector' ] =
 {
   includeAny : [ '../../amath/cvector/vArray.s','amath/cvector/vArray.s','wVector' ],

@@ -1519,7 +1519,7 @@ function assertMapOwnNone( src,none )
 
   var has = Object.keys( _._mapScreen
   ({
-    filter : _.field.srcOwn(),
+    filter : _.field.mapper.srcOwn,
     screenObjects : none,
     srcObjects : src,
   }));

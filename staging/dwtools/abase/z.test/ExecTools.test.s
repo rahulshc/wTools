@@ -389,11 +389,11 @@ var Proto =
   name : 'ExecTools',
   silencing : 1,
   // verbosity : 9,
-  // sourceFilePath : sourceFilePath,
+  // suiteFileLocation : suiteFileLocation,
   // logger : wPrinterToJstructure(),
 
-  onSuiteBegin : testDirMake,
-  onSuiteEnd : cleanTestDir,
+  onSuitBegin : testDirMake,
+  onSuitEnd : cleanTestDir,
 
   tests :
   {

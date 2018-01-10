@@ -621,7 +621,7 @@ function makeMapper( routine )
   {
     return routine;
   }
-  else throw _.err( 'expects routine.functionKind' );
+  else _.assert( 0,'expects routine.functionKind' );
 
 }
 
@@ -660,7 +660,7 @@ function makeMapper( routine )
 
 //
 
-var field =
+var _field =
 {
 
   bypass : bypass,
@@ -704,6 +704,40 @@ var field =
 
   and : and,
   makeMapper : makeMapper,
+
+}
+
+//
+
+var field =
+{
+  make : _field,
+  mapper : Object.create( null ),
+  filter : Object.create( null ),
+  makeMapper : makeMapper,
+}
+
+//
+
+for( var f in _field )
+{
+  var fi = _field[ f ];
+
+  if( fi.length )
+  continue;
+
+  fi = fi();
+
+  if( fi.functionKind === 'field-mapper' )
+  {
+    field.mapper[ f ] = fi;
+  }
+  else if( fi.functionKind === 'field-filter' )
+  {
+    field.filter[ f ] = fi;
+    field.mapper[ f ] = makeMapper( fi );
+  }
+  else _.assert( 0,'unexpected' );
 
 }
 

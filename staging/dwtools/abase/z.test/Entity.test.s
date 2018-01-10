@@ -412,7 +412,7 @@ function entityMax( test )
 
 //
 
-function _entityEqual( test )
+function _entityEqualAct( test )
 {
   // number values
 
@@ -481,101 +481,101 @@ function _entityEqual( test )
   // numbers test
 
   test.description = 'entity same +0 and -0';
-  var got = _._entityEqual( x1, y1, options1 );
+  var got = _._entityEqualAct( x1, y1, options1 );
   test.identical( got, true );
 
   test.description = 'entity same Number.MAX_VALUE';
-  var got = _._entityEqual( x2, y2, options1 );
+  var got = _._entityEqualAct( x2, y2, options1 );
   test.identical (got, true );
 
   test.description = 'entity not same numbers';
-  var got = _._entityEqual( x3, y3, options1 );
+  var got = _._entityEqualAct( x3, y3, options1 );
   test.identical( got, false );
 
   // string tests
 
   test.description = 'entities is two empty strings';
-  var got = _._entityEqual( strX1, strY1, options1 );
+  var got = _._entityEqualAct( strX1, strY1, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two non empty strings';
-  var got = _._entityEqual( strX2, strY2, options1 );
+  var got = _._entityEqualAct( strX2, strY2, options1 );
   test.identical( got, true );
 
   test.description = 'entity same : string and object strict mode';
-  var got = _._entityEqual( strX3, strY3, options1 );
+  var got = _._entityEqualAct( strX3, strY3, options1 );
   test.identical( got, false );
 
   test.description = 'entity same : string and object non strict mode';
-  var got = _._entityEqual( strX3, strY3, options2 );
+  var got = _._entityEqualAct( strX3, strY3, options2 );
   test.identical( got, true );
 
   // array tests
 
   test.description = 'entities is two empty arrays';
-  var got = _._entityEqual( arrX1, arrY1, options1 );
+  var got = _._entityEqualAct( arrX1, arrY1, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two non empty arrays';
-  var got = _._entityEqual( arrX2, arrY2, options1 );
+  var got = _._entityEqualAct( arrX2, arrY2, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two non empty different arrays';
-  var got = _._entityEqual( arrX3, arrY3, options1 );
+  var got = _._entityEqualAct( arrX3, arrY3, options1 );
   test.identical( got, false );
 
   test.description = 'entities is two non empty nested arrays';
-  var got = _._entityEqual( arrX4, arrY4, options1 );
+  var got = _._entityEqualAct( arrX4, arrY4, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two arrays with objects as elements';
-  var got = _._entityEqual( arrX5, arrY5, options1 );
+  var got = _._entityEqualAct( arrX5, arrY5, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two arrays with strict mode';
-  var got = _._entityEqual( arrX6, arrY6, options1 );
+  var got = _._entityEqualAct( arrX6, arrY6, options1 );
   test.identical( got, false );
 
   test.description = 'entities is two arrays without strict mode';
-  var got = _._entityEqual( arrX5, arrY5, options2 );
+  var got = _._entityEqualAct( arrX5, arrY5, options2 );
   test.identical( got, true );
 
   // object tests
 
   test.description = 'entities is two empty objects';
-  var got = _._entityEqual( objX1, objY1, options1 );
+  var got = _._entityEqualAct( objX1, objY1, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two non empty objects';
-  var got = _._entityEqual( objX2, objY2, options1 );
+  var got = _._entityEqualAct( objX2, objY2, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two different objects';
-  var got = _._entityEqual( objX3, objY3, options1 );
+  var got = _._entityEqualAct( objX3, objY3, options1 );
   test.identical( got, false );
 
   test.description = 'entities is two non empty nested objects';
-  var got = _._entityEqual( objX4, objY4, options1 );
+  var got = _._entityEqualAct( objX4, objY4, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two objects with different type elements : strict mode';
-  var got = _._entityEqual( objX5, objY5, options1 );
+  var got = _._entityEqualAct( objX5, objY5, options1 );
   test.identical( got, false );
 
   /*
     TODO : need to check actuality of this test
 
     test.description = 'entities is two objects with different type elements : non strict mode';
-    var got = _._entityEqual(objX5, objY5, options2, '');
+    var got = _._entityEqualAct(objX5, objY5, options2, '');
     test.identical(got, true);
   */
 
   test.description = 'entities is two objects';
-  var got = _._entityEqual( objX6, objY6, options1 );
+  var got = _._entityEqualAct( objX6, objY6, options1 );
   test.identical( got, true );
 
   test.description = 'entities is two same objects : different constructors';
-  var got = _._entityEqual( objX7, objY7, options1 );
+  var got = _._entityEqualAct( objX7, objY7, options1 );
   test.identical( got, true );
 
   if( Config.debug )
@@ -583,13 +583,13 @@ function _entityEqual( test )
     test.description = 'missed arguments';
     test.shouldThrowError( function()
     {
-      _._entityEqual();
+      _._entityEqualAct();
     });
 
     test.description = 'extra argument';
     test.shouldThrowError( function()
     {
-      _._entityEqual( rrX5, arrY5, options1 , false );
+      _._entityEqualAct( rrX5, arrY5, options1 , false );
     });
 
   }
@@ -1211,61 +1211,61 @@ function entityHasUndef( test )
 
 //
 
-function entityEqual( test )
+function _entityEqual( test )
 {
   //default options
   test.description = 'default options, number';
-  var got = _.entityEqual( 1, 1 );
+  var got = _._entityEqual( 1, 1 );
   var expected = true ;
   test.identical( got, expected );
 
   test.description = 'default options, string';
-  var got = _.entityEqual( '123', '123' );
+  var got = _._entityEqual( '123', '123' );
   var expected = true ;
   test.identical( got, expected );
 
   test.description = 'default options, boolean';
-  var got = _.entityEqual( 0, false );
+  var got = _._entityEqual( 0, false );
   var expected = false;
   test.identical( got, expected );
 
   test.description = 'default options, array';
-  var got = _.entityEqual( [ 1, 2 ,'3'], [ 1, 2, 3 ] );
+  var got = _._entityEqual( [ 1, 2 ,'3'], [ 1, 2, 3 ] );
   var expected = false ;
   test.identical( got, expected );
 
   test.description = 'default options, object';
   var src1 = { a : 1, b : 2 , c : { d : 3  }  };
   var src2 = { a : 1, b : 2 , c : { d : 3  }  };
-  var got = _.entityEqual( src1, src2 );
+  var got = _._entityEqual( src1, src2 );
   var expected = true ;
   test.identical( got, expected );
 
   //custom options
 
   test.description = 'number & string, strict : 0';
-  var got = _.entityEqual( '123', 123, { strict : 0 } );
+  var got = _._entityEqual( '123', 123, { strict : 0 } );
   var expected = true ;
   test.identical( got, expected );
 
   test.description = 'number & boolean, strict : 0';
-  var got = _.entityEqual( false, 0, { strict : 0 } );
+  var got = _._entityEqual( false, 0, { strict : 0 } );
   var expected = true ;
   test.identical( got, expected );
 
   test.description = 'src1 constains elem from src2 ';
-  var got = _.entityEqual( { a : 1, b : 2 }, { b : 2 }, { contain : 1 } );
+  var got = _._entityEqual( { a : 1, b : 2 }, { b : 2 }, { contain : 1 } );
   var expected = true ;
   test.identical( got, expected );
 
   test.description = 'src1 constains elem from src2, strict : 0 ';
-  var got = _.entityEqual( { a : 1, b : '2' }, { b : 2 }, { contain : 1, strict : 0 } );
+  var got = _._entityEqual( { a : 1, b : '2' }, { b : 2 }, { contain : 1, strict : 0 } );
   var expected = true ;
   test.identical( got, expected );
 
   test.description = 'onSameNumbers';
   function onSameNumbers( a, b ){ return _.entityEquivalent( a, b, { eps : 1 } ) };
-  var got = _.entityEqual( { a : 1, b : 2 }, { a : 2, b : 2 }, { onSameNumbers : onSameNumbers } );
+  var got = _._entityEqual( { a : 1, b : 2 }, { a : 2, b : 2 }, { onSameNumbers : onSameNumbers } );
   var expected = true ;
   test.identical( got, expected );
 
@@ -1274,19 +1274,19 @@ function entityEqual( test )
     test.description = 'argument missed';
     test.shouldThrowError( function()
     {
-      _.entityEqual( );
+      _._entityEqual( );
     });
 
     test.description = 'options is not a Object';
     test.shouldThrowError( function()
     {
-      _.entityEqual( 1, 2, 3 );
+      _._entityEqual( 1, 2, 3 );
     });
 
     test.description = 'extendet options';
     test.shouldThrowError( function()
     {
-      _.entityEqual( 1, 2, { fixed : 1 } );
+      _._entityEqual( 1, 2, { fixed : 1 } );
     });
 
   }
@@ -1860,7 +1860,7 @@ var Self =
     entityMin    : entityMin,
     entityMax    : entityMax,
 
-    _entityEqual  : _entityEqual,
+    _entityEqualAct  : _entityEqualAct,
     entityIdentical : entityIdentical,
     entityEquivalent : entityEquivalent,
     entityContain : entityContain,
@@ -1871,7 +1871,7 @@ var Self =
     entityCoerceTo : entityCoerceTo,
     entityHasNan : entityHasNan,
     entityHasUndef : entityHasUndef,
-    entityEqual : entityEqual,
+    _entityEqual : _entityEqual,
     entityDiff : entityDiff,
     entitySize : entitySize,
     entityValueWithIndex : entityValueWithIndex,
