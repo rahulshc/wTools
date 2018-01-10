@@ -910,9 +910,8 @@ function _toStrFromRoutine( src,o )
 {
   var result = '';
 
-  debugger;
-
-  _.assert( arguments.length === 2 );
+  // debugger;
+  // _.assert( arguments.length === 2 );
   _.assert( _.routineIs( src ),'expects routine ( src )' );
 
   if( o.jstructLike )
