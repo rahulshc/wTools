@@ -222,7 +222,6 @@ var Proto =
 
 }
 
-// debugger;
 Object.assign( Self,Proto );
 Self._setup();
 

@@ -11,6 +11,8 @@ if( typeof module !== 'undefined' && module !== null )
   require( './layer2/fIncludeTools.s' );
   require( './layer2/fNameTools.s' );
   require( './layer2/fStringTools.s' );
+  require( './layer2/gStringer.s' );
+  require( './layer2/hStringExtra.s' );
 
   module[ 'exports' ] = wTools;
 
