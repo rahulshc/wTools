@@ -1262,8 +1262,10 @@ function entityCopyTry( dst,src,onRecursive )
 function entityCopyField( dstContainer,srcContainer,name,onRecursive )
 {
   var result;
-  var name = _.nameUnfielded( name ).coded;
+  // debugger;
+  // var name = _.nameUnfielded( name ).coded;
 
+  _.assert( _.strIs( name ) || _.symbolIs( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
   var dstValue = Object.hasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
@@ -1308,8 +1310,10 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
 function entityAssignField( dstContainer,srcValue,name,onRecursive )
 {
   var result;
-  var name = _.nameUnfielded( name ).coded;
+  // debugger;
+  // var name = _.nameUnfielded( name ).coded;
 
+  _.assert( _.strIs( name ) || _.symbolIs( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
   if( onRecursive )
@@ -6917,6 +6921,117 @@ function routinesJoin()
 
 //
 
+function _routinesCall( o )
+{
+  var result;
+
+  _.assert( arguments.length === 1 );
+  _.assert( o.args.length >= 1 && o.args.length <= 3 );
+
+  /* */
+
+  function makeResult()
+  {
+
+    _.assert
+    (
+      _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
+      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
+    );
+
+    if( _.routineIs( routines ) )
+    routines = [ routines ];
+
+    result = _.entityMake( routines );
+
+  }
+
+  /* */
+
+  if( o.args.length === 1 )
+  {
+    var routines = o.args[ 0 ];
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
+    for( var r = 0 ; r < routines.length ; r++ )
+    {
+      result[ r ] = routines[ r ]();
+      if( o.untilFalse && result[ r ] === false )
+      break;
+    }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ]();
+      if( o.untilFalse && result[ r ] === false )
+      break;
+    }
+
+  }
+  else if( o.args.length === 2 )
+  {
+    var context = o.args[ 0 ];
+    var routines = o.args[ 1 ];
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
+    for( var r = 0 ; r < routines.length ; r++ )
+    {
+      result[ r ] = routines[ r ].call( context );
+      if( o.untilFalse && result[ r ] === false )
+      break;
+    }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ].call( context );
+      if( o.untilFalse && result[ r ] === false )
+      break;
+    }
+
+  }
+  else if( o.args.length === 3 )
+  {
+    var context = o.args[ 0 ];
+    var routines = o.args[ 1 ];
+    var args = o.args[ 2 ];
+
+    _.assert( _.arrayLike( args ) );
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
+    for( var r = 0 ; r < routines.length ; r++ )
+    {
+      result[ r ] = routines[ r ].apply( context,args );
+      if( o.untilFalse && result[ r ] === false )
+      break;
+    }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ].apply( context,args );
+      if( o.untilFalse && result[ r ] === false )
+      break;
+    }
+
+  }
+  else _.assert( 0,'unexpected' );
+
+  return result;
+}
+
+_routinesCall.defaults =
+{
+  args : null,
+  untilFalse : 0,
+}
+
+//
+
 /**
  * Call each routines in array with passed context and arguments.
     The context and arguments are same for each called functions.
@@ -6949,88 +7064,26 @@ function routinesCall()
 {
   var result;
 
-  _.assert( arguments.length >= 1 && arguments.length <= 3 );
+  _routinesCall
+  ({
+    args : arguments,
+    untilFalse : 0,
+  });
 
-  /* */
+  return result;
+}
 
-  function makeResult()
-  {
+//
 
-    _.assert
-    (
-      _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
-      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
-    );
+function routinesCallUntilFalse()
+{
+  var result;
 
-    if( _.routineIs( routines ) )
-    routines = [ routines ];
-
-    result = _.entityMake( routines );
-
-  }
-
-  /* */
-
-  if( arguments.length === 1 )
-  {
-    var routines = arguments[ 0 ];
-
-    makeResult();
-
-    if( _.arrayIs( routines ) )
-    for( var r = 0 ; r < routines.length ; r++ )
-    {
-      result[ r ] = routines[ r ]();
-    }
-    else
-    for( var r in routines )
-    {
-      result[ r ] = routines[ r ]();
-    }
-
-  }
-  else if( arguments.length === 2 )
-  {
-    var context = arguments[ 0 ];
-    var routines = arguments[ 1 ];
-
-    makeResult();
-
-    if( _.arrayIs( routines ) )
-    for( var r = 0 ; r < routines.length ; r++ )
-    {
-      result[ r ] = routines[ r ].call( context );
-    }
-    else
-    for( var r in routines )
-    {
-      result[ r ] = routines[ r ].call( context );
-    }
-
-  }
-  else if( arguments.length === 3 )
-  {
-    var context = arguments[ 0 ];
-    var routines = arguments[ 1 ];
-    var args = arguments[ 2 ];
-
-    _.assert( _.arrayLike( args ) );
-
-    makeResult();
-
-    if( _.arrayIs( routines ) )
-    for( var r = 0 ; r < routines.length ; r++ )
-    {
-      result[ r ] = routines[ r ].apply( context,args );
-    }
-    else
-    for( var r in routines )
-    {
-      result[ r ] = routines[ r ].apply( context,args );
-    }
-
-  }
-  else _.assert( 0,'unexpected' );
+  return _routinesCall
+  ({
+    args : arguments,
+    untilFalse : 1,
+  });
 
   return result;
 }
@@ -11232,6 +11285,7 @@ function arrayIdentical( src1,src2 )
 function arrayHas( insArray, element, onElement )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( insArray );
   if( onElement === undefined )
   {
     return insArray.indexOf( element ) !== -1;
@@ -14243,6 +14297,7 @@ function mapSupplementOwn( dst )
 
 function mapComplement( dst,src )
 {
+  _.assert( _.field.mapper );
   if( arguments.length === 2 )
   return mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedCloning,dst,src );
   else
@@ -17700,7 +17755,9 @@ var Proto =
   routineTolerantCall : routineTolerantCall,
 
   routinesJoin : routinesJoin,
+  _routinesCall : _routinesCall,
   routinesCall : routinesCall,
+  routinesCallUntilFalse : routinesCallUntilFalse,
   methodsCall : methodsCall,
 
   routineOptions : routineOptions,

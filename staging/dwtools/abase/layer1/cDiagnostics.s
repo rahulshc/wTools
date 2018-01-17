@@ -818,6 +818,21 @@ diagnosticWatchFields.defaults =
 
 //
 
+/*
+
+_.diagnosticProxyFields
+({
+  target : _.field,
+});
+
+_.diagnosticWatchFields
+({
+  target : _,
+  names : 'field',
+});
+
+*/
+
 function diagnosticProxyFields( o )
 {
 
@@ -825,8 +840,8 @@ function diagnosticProxyFields( o )
   o = { target : arguments[ 0 ], names : arguments[ 1 ] }
   o = _.routineOptions( diagnosticWatchFields,o );
 
-  if( o.names )
-  o.names = _.nameFielded( o.names );
+  // if( o.names )
+  // o.names = _.nameFielded( o.names );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectLike( o.target ) );

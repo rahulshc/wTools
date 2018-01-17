@@ -906,11 +906,6 @@ function _toStrIsSimpleElement( element,o )
  *
  */
 
-
-
-
-
-
 function _toStrFromRoutine( src,o )
 {
   var result = '';

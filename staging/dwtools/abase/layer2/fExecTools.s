@@ -841,6 +841,7 @@ function appArgsInSubjectAndMapFormat( o )
     result.map = Object.create( null );
     result.subject = '';
     result.scriptArgs = argv.slice( 2 );
+    result.scriptString = result.scriptArgs.join( ' ' );
 
     if( !result.scriptArgs.length )
     return result;
