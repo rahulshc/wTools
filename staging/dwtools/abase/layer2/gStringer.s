@@ -1027,7 +1027,7 @@ function _toStrFromStr( src,o )
   }
   else if( o.escaping )
   {
-    result = strEscape({ src : src, stringWrapper : o.stringWrapper });
+    result = _.strEscape({ src : src, stringWrapper : o.stringWrapper });
   }
   else
   {

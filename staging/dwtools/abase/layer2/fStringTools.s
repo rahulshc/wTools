@@ -1687,6 +1687,67 @@ function strReplaceNames( src,ins,sub )
 
 //
 
+function strFind( o )
+{
+  var result = [];
+
+  _.assert( arguments.length === 1 );
+  _.routineOptions( strFind,o );
+
+  if( _.strIs( o.ins ) )
+  {
+    o.ins = _.regexpEscape( o.ins );
+    if( o.toleratingText )
+    {
+      // o.ins = _.strReplaceAll( o.ins,/\s+/,'\\s*' );
+      o.ins = o.ins.replace( /\s+/g,'\\s*' );
+      // o.ins = o.ins.replace( /(\w+)/,'\\s*$1\\s*' );
+      // o.ins = o.ins.replace( /\\s\*\\s\*/g,'\\s*' );
+    }
+    o.ins = RegExp( o.ins,'g' );
+  }
+
+  do
+  {
+    var execed = o.ins.exec( o.src );
+    if( execed )
+    {
+      var r = Object.create( null );
+
+      r.ins = execed[ 0 ];
+      r.range = [ execed.index, execed.index + r.ins.length ];
+      r.rrange = [ o.src.length - execed.index, o.src.length - execed.index - r.ins.length ];
+
+      if( o.determiningLineNumber )
+      {
+        var first = o.src.substring( 0,r.range[ 0 ] ).split( '\n' ).length;
+        r.lines = [ first,first+o.src.substring( r.range[ 0 ],r.range[ 1 ] ).split( '\n' ).length ];
+      }
+
+      if( o.nearestLines )
+      r.nearest = _.strLinesNearest({ src : o.src, charRange : r.range, numberOfLines : o.nearestLines });
+
+      result.push( r );
+    }
+
+  }
+  while( execed );
+
+  return result;
+}
+
+strFind.defaults =
+{
+  src : null,
+  ins : null,
+  onIns : null,
+  nearestLines : 4,
+  determiningLineNumber : 0,
+  toleratingText : 0,
+}
+
+//
+
 /**
  * Joins objects from arguments list together by concatenating their values in orded that they are specified.
  * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
@@ -2714,6 +2775,46 @@ strLinesSelect.defaults =
 
 //
 
+function strLinesNearest( o )
+{
+  var resultCharRange = [];
+
+  var numberOfLines = o.numberOfLines;
+  for( var i = o.charRange[ 0 ]-1 ; i >= 0 ; i-- )
+  {
+    if( numberOfLines <= 0 )
+    break;
+    if( o.src[ i ] === '\n' )
+    numberOfLines -= 1;
+  }
+  resultCharRange[ 0 ] = i+1;
+
+  /* */
+
+  var numberOfLines = o.numberOfLines;
+  for( var i = o.charRange[ 1 ] ; i < o.src.length ; i++ )
+  {
+    if( numberOfLines <= 0 )
+    break;
+    if( o.src[ i ] === '\n' )
+    numberOfLines -= 1;
+  }
+  resultCharRange[ 1 ] = i-1;
+
+  var result = o.src.substring( resultCharRange[ 0 ],resultCharRange[ 1 ] );
+
+  return result;
+}
+
+strLinesNearest.defaults =
+{
+  src : null,
+  charRange : null,
+  numberOfLines : 2,
+}
+
+//
+
 /**
  * Returns number of occurrences of a substring( ins ) in a string( src ),
  * Expects two objects in order: source string, substring.
@@ -3261,6 +3362,8 @@ var Proto =
   strReplaceAll : strReplaceAll, /* document me */
   strReplaceNames : strReplaceNames,
 
+  strFind : strFind,
+
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
   strConcat : strConcat, /* me too */
@@ -3280,6 +3383,7 @@ var Proto =
   strIndentation : strIndentation,
   strLinesNumber : strLinesNumber,
   strLinesSelect : strLinesSelect,
+  strLinesNearest : strLinesNearest,
 
   strCount : strCount,
   strCountLeft : strCountLeft,
