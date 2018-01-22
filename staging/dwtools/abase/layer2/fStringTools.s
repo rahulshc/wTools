@@ -1577,19 +1577,8 @@ function strReplaceAll( src, ins, sub )
 
   if( arguments.length === 3 )
   {
-    _.assert( _.strIs( ins ) || _.regexpIs( ins ) );
-    _.assert( _.strIs( sub ) );
     o = { src : src };
-    o.dictionary = Object.create( null );
-
-    if(  _.regexpIs( ins ) )
-    {
-      o.dictionary[ ins.source ] = { sub : sub, regexp : 1 };
-    }
-    else
-    {
-      o.dictionary[ ins ] = sub;
-    }
+    o.dictionary = [ [ ins, sub ] ]
   }
   else if( arguments.length === 2 )
   {
@@ -1603,48 +1592,79 @@ function strReplaceAll( src, ins, sub )
   /**/
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o.dictionary ) );
+  _.assert( _.objectIs( o.dictionary ) || _.arrayLike( o.dictionary ));
 
   /**/
 
-  var src = o.src;
-  var l = Object.keys( o.dictionary );
-  for( var ins in o.dictionary )
+  var index = 0;
+
+  function replace( src, ins, sub )
   {
-    if( !ins.length ) continue;
+    _.assert( _.strIs( sub ), 'strReplaceAll : expects sub as string' );
 
-    // var index = 0;
-    var sub = o.dictionary[ ins ];
+    if( !ins.length )
+    return src;
 
-    if( sub.regexp )
+    do
     {
-      ins = new RegExp( ins,'gm' );
-      sub = sub.sub;
+      var index = src.indexOf( ins,index );
+      if( index >= 0 )
+      {
+        src = src.substring( 0,index ) + sub + src.substring( index+ins.length );
+        index += sub.length;
+      }
+      else
+      break;
+
     }
-    else
+    while( 1 );
+
+    return src;
+  }
+
+  var src = o.src;
+
+  if( _.objectIs( o.dictionary ) )
+  {
+    for( var ins in o.dictionary )
     {
-      ins = new RegExp( _.regexpEscape( ins ),'gm' )
+      if( !ins.length ) continue;
+      src = replace( src, ins, o.dictionary[ ins ] );
     }
+  }
 
-    _.assert( _.strIs( sub ), 'strReplaceAll : expects option "sub" as string' );
+  //
 
-    src =  src.replace( ins, sub );
+  if( _.arrayLike( o.dictionary ) )
+  {
+    for( var p = 0; p < o.dictionary.length; p++ )
+    {
+      _.assert( _.arrayLike( o.dictionary[ p ] ) );
 
-    // do
-    // {
+      var pair = o.dictionary[ p ];
 
-    //   var index = src.indexOf( ins,index );
-    //   if( index >= 0 )
-    //   {
-    //     src = src.substring( 0,index ) + sub + src.substring( index+ins.length );
-    //     index += sub.length;
-    //   }
-    //   else
-    //   break;
+      _.assert( pair.length === 2 );
 
-    // }
-    // while( 1 );
+      var ins = _.arrayAs( pair[ 0 ] );
+      var sub = _.arrayAs( pair[ 1 ] );
 
+      _.assert( ins.length === sub.length );
+
+      for( var i = 0; i < ins.length; i++ )
+      {
+        _.assert( _.strIs( ins[ i ] ) || _.regexpIs( ins[ i ] ) );
+
+        if( _.strIs( ins[ i ] ) )
+        {
+          if( !ins.length ) continue;
+          src = replace( src, ins[ i ], sub[ i ] );
+        }
+        else
+        {
+          src = src.replace( ins[ i ], sub[ i ] );
+        }
+      }
+    }
   }
 
   return src;

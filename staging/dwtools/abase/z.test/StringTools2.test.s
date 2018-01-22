@@ -134,32 +134,45 @@ function strReplaceAll( test )
 
   test.description = 'regexp';
 
-  var got = _.strReplaceAll( 'aabaa',/b/,'c' );
+  var got = _.strReplaceAll( 'aabaa',/b/gm,'c' );
   var expected = 'aacaa';
   test.identical( got,expected );
 
-  var got = _.strReplaceAll( '12345',/[1-3]/,'0' );
+  debugger
+  var got = _.strReplaceAll( '12345',/[1-3]/gm,'0' );
   var expected = '00045';
   test.identical( got,expected );
 
-  var got = _.strReplaceAll( 'aaabac',/a+/,'b' );
+  var got = _.strReplaceAll( 'aaabac',/a+/gm,'b' );
   var expected = 'bbbc';
   test.identical( got,expected );
 
-  var got = _.strReplaceAll( 'aaabaaacaaad',/a+[^bc]$/,'x' );
+  var got = _.strReplaceAll( 'aaabaaacaaad',/a+[^bc]$/gm,'x' );
   var expected = 'aaabaaacx';
   test.identical( got,expected );
 
-  var dictionary = Object.create( null );
-  dictionary[ /a+/.source ] = { sub : 'x', regexp : 1 };
-  var got = _.strReplaceAll( 'aabaa', dictionary );
-  var expected = 'xbx';
+  var got = _.strReplaceAll( 'aaaa',[ 'a' ], [ 'b' ] );
+  var expected = 'bbbb';
   test.identical( got,expected );
 
-  var dictionary = Object.create( null );
-  dictionary[ /a+/ ] = 'x'
-  var got = _.strReplaceAll( 'aabaa', dictionary );
-  var expected = 'aabaa';
+  var got = _.strReplaceAll( 'aaaa',[ /a/ ], [ 'b' ] );
+  var expected = 'baaa';
+  test.identical( got,expected );
+
+  var got = _.strReplaceAll( 'aaaa',[ /a/gm ], [ 'b' ] );
+  var expected = 'bbbb';
+  test.identical( got,expected );
+
+  var got = _.strReplaceAll( 'aaaabbbb',[ 'a', 'b' ], [ 'c', 'd' ] );
+  var expected = 'ccccdddd';
+  test.identical( got,expected );
+
+  var got = _.strReplaceAll( 'aaaabbbb',[ /a/gm, /b/gm ], [ 'c', 'd' ] );
+  var expected = 'ccccdddd';
+  test.identical( got,expected );
+
+  var got = _.strReplaceAll( 'aaaabbbb',[ /a/gm, 'b' ], [ 'c', 'd' ] );
+  var expected = 'ccccdddd';
   test.identical( got,expected );
 
   /**/
@@ -215,6 +228,20 @@ function strReplaceAll( test )
       _.strReplaceAll( { dst : 'aaax', dictionary : { 'a' : [ 1, 2 ] } } )
     });
 
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( 'aaaabbbb',[ 'a' ], [ 'c', 'd' ] );
+    });
+
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( 'aaaabbbb',[ 'a', 'b' ], [ 'x' ] );
+    });
+
+    test.shouldThrowError( function()
+    {
+      _.strReplaceAll( 'aaaabbbb',{ 'a' : [ 'x' ] } );
+    });
   }
 }
 
