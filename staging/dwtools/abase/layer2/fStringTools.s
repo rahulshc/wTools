@@ -3111,27 +3111,54 @@ function strCamelize( srcStr )
  *
  */
 
-function strFilenameFor( srcStr,o )
+function strFilenameFor( o )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( srcStr ) );
+  if( _.strIs( o ) )
+  o = { src : o }
 
-  if( arguments.length === 2 )
-  _.assert( _.mapIs( arguments[ 1 ] ) );
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( o.src ) );
+  _.routineOptions( strFilenameFor,o );
 
-  var result = srcStr;
-  var o = o || Object.create( null );
-  if( o.delimeter === undefined )
-  o.delimeter = '_';
-
-  var regexp = /<|>| :|"|'|\/|\\|\||\&|\?|\*|\n|\s/g;
-
-  var result = result.replace( regexp,function( match )
+  var regexp = /<|>|:|"|'|\/|\\|\||\&|\?|\*|\n|\s/g;
+  var result = o.src.replace( regexp,function( match )
   {
     return o.delimeter;
   });
 
   return result;
+}
+
+strFilenameFor.defaults =
+{
+  src : null,
+  delimeter : '_',
+}
+
+//
+
+function strVarNameFor( o )
+{
+  if( _.strIs( o ) )
+  o = { src : o }
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( o.src ) );
+  _.routineOptions( strVarNameFor,o );
+
+  var regexp = /\.|\-|\+|<|>|:|"|'|\/|\\|\||\&|\?|\*|\n|\s/g;
+  var result = o.src.replace( regexp,function( match )
+  {
+    return o.delimeter;
+  });
+
+  return result;
+}
+
+strVarNameFor.defaults =
+{
+  src : null,
+  delimeter : '_',
 }
 
 //
@@ -3399,6 +3426,7 @@ var Proto =
 
   strCamelize : strCamelize,
   strFilenameFor : strFilenameFor,
+  strVarNameFor : strVarNameFor,
 
   strsSort : strsSort,
 

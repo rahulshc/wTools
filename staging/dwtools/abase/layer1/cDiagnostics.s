@@ -394,13 +394,15 @@ function diagnosticCode( o )
     if( !o.location.path )
     return;
 
-    if( !_.fileProvider )
+    var codeProvider = _.codeProvider || _.fileProvider;
+
+    if( !codeProvider )
     return;
 
     try
     {
 
-      o.sourceCode = _.fileProvider.fileRead
+      o.sourceCode = codeProvider.fileRead
       ({
         filePath : o.location.path,
         sync : 1,

@@ -3791,6 +3791,7 @@ function _err( o )
       o.args[ a ] = '\n' + o.args[ a ];
       errors.push( arg );
 
+      debugger;
       o.location = _.diagnosticLocation({ error : arg, location : o.location });
 
     }
@@ -3949,6 +3950,7 @@ function _err( o )
       stack : stack,
       location : o.location,
     });
+    debugger;
     c = _.diagnosticCode
     ({
       location : o.location,

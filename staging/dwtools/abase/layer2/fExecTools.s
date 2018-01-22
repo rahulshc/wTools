@@ -478,6 +478,26 @@ function routineMake( o )
 
   /* */
 
+  function make( code )
+  {
+    try
+    {
+      if( o.name )
+      code = 'return function ' + o.name + '()\n{\n' + code + '\n}';
+      var result = new Function( code );
+      if( o.name )
+      result = result();
+      return result;
+    }
+    catch( err )
+    {
+      debugger;
+      throw _.err( err );
+    }
+  }
+
+  /* */
+
   try
   {
 
@@ -485,17 +505,17 @@ function routineMake( o )
     try
     {
       var code = prefix + 'return ' + o.code.trimLeft();
-      result = new Function( code );
+      result = make( code );
     }
     catch( err )
     {
       var code = prefix + o.code;
-      result = new Function( code );
+      result = make( code );
     }
     else
     {
       var code = prefix + o.code;
-      result = new Function( code );
+      result = make( code );
     }
 
   }
@@ -550,6 +570,7 @@ routineMake.defaults =
   prependingReturn : 1,
   usingStrict : 0,
   externals : null,
+  name : null,
 }
 
 //
