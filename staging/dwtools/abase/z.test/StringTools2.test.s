@@ -111,7 +111,7 @@ function strReplaceAll( test )
   test.identical( got,expected );
 
   test.description = 'one argument call';
-  var got = _.strReplaceAll( { dst : 'aaax', dictionary : { 'x' : 'a' } } );
+  var got = _.strReplaceAll( { src : 'aaax', dictionary : { 'x' : 'a' } } );
   var expected = 'aaaa';
   test.identical( got,expected );
 
@@ -128,6 +128,38 @@ function strReplaceAll( test )
   test.description = 'empty dictionary';
   var got = _.strReplaceAll( 'hello', { } );
   var expected = 'hello';
+  test.identical( got,expected );
+
+  //
+
+  test.description = 'regexp';
+
+  var got = _.strReplaceAll( 'aabaa',/b/,'c' );
+  var expected = 'aacaa';
+  test.identical( got,expected );
+
+  var got = _.strReplaceAll( '12345',/[1-3]/,'0' );
+  var expected = '00045';
+  test.identical( got,expected );
+
+  var got = _.strReplaceAll( 'aaabac',/a+/,'b' );
+  var expected = 'bbbc';
+  test.identical( got,expected );
+
+  var got = _.strReplaceAll( 'aaabaaacaaad',/a+[^bc]$/,'x' );
+  var expected = 'aaabaaacx';
+  test.identical( got,expected );
+
+  var dictionary = Object.create( null );
+  dictionary[ /a+/.source ] = { sub : 'x', regexp : 1 };
+  var got = _.strReplaceAll( 'aabaa', dictionary );
+  var expected = 'xbx';
+  test.identical( got,expected );
+
+  var dictionary = Object.create( null );
+  dictionary[ /a+/ ] = 'x'
+  var got = _.strReplaceAll( 'aabaa', dictionary );
+  var expected = 'aabaa';
   test.identical( got,expected );
 
   /**/

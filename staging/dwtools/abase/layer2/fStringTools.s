@@ -1577,11 +1577,19 @@ function strReplaceAll( src, ins, sub )
 
   if( arguments.length === 3 )
   {
-    _.assert( _.strIs( ins ) );
+    _.assert( _.strIs( ins ) || _.regexpIs( ins ) );
     _.assert( _.strIs( sub ) );
     o = { src : src };
     o.dictionary = Object.create( null );
-    o.dictionary[ ins ] = sub;
+
+    if(  _.regexpIs( ins ) )
+    {
+      o.dictionary[ ins.source ] = { sub : sub, regexp : 1 };
+    }
+    else
+    {
+      o.dictionary[ ins ] = sub;
+    }
   }
   else if( arguments.length === 2 )
   {
@@ -1604,25 +1612,38 @@ function strReplaceAll( src, ins, sub )
   for( var ins in o.dictionary )
   {
     if( !ins.length ) continue;
-    _.assert( _.strIs( o.dictionary[ ins ] ), 'strReplaceAll : expects dictionary values only as strings' );
 
-    var index = 0;
+    // var index = 0;
     var sub = o.dictionary[ ins ];
 
-    do
+    if( sub.regexp )
     {
-
-      var index = src.indexOf( ins,index );
-      if( index >= 0 )
-      {
-        src = src.substring( 0,index ) + sub + src.substring( index+ins.length );
-        index += sub.length;
-      }
-      else
-      break;
-
+      ins = new RegExp( ins,'gm' );
+      sub = sub.sub;
     }
-    while( 1 );
+    else
+    {
+      ins = new RegExp( _.regexpEscape( ins ),'gm' )
+    }
+
+    _.assert( _.strIs( sub ), 'strReplaceAll : expects option "sub" as string' );
+
+    src =  src.replace( ins, sub );
+
+    // do
+    // {
+
+    //   var index = src.indexOf( ins,index );
+    //   if( index >= 0 )
+    //   {
+    //     src = src.substring( 0,index ) + sub + src.substring( index+ins.length );
+    //     index += sub.length;
+    //   }
+    //   else
+    //   break;
+
+    // }
+    // while( 1 );
 
   }
 
