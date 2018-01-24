@@ -536,12 +536,6 @@ _includeHandlerMap[ 'wScriptLauncher' ] =
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.ScriptLauncher },
 }
 
-_includeHandlerMap[ 'wVector' ] =
-{
-  includeAny : [ '../../amath/cvector/vArray.s','amath/cvector/vArray.s','wVector' ],
-  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.vector },
-}
-
 _includeHandlerMap[ 'wExchangePoint' ] =
 {
   includeAny : [ '../../amid/exchangePoint/ExchangePoint.s','amid/exchangePoint/ExchangePoint.s','wExchangePoint' ],
