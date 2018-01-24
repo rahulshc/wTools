@@ -15,8 +15,7 @@ var usingSinglePath = 0;
 var Self = wTools;
 var _ = wTools;
 
-if( typeof module !== 'undefined' )
-var Module = require( 'module' );
+var Module = null;
 var __include;
 if( typeof require !== 'undefined' )
 __include = require;
@@ -38,12 +37,8 @@ function pathUse( src )
   if( _.pathRefine )
   src = _.pathRefine( src );
 
-  // console.log( 'pathUse',src );
-
   if( typeof module !== 'undefined' )
   module.paths.push( src );
-
-  // Module.globalPaths.push( src );
 
 }
 
@@ -80,6 +75,9 @@ function _pathUseGlobally( _module,paths,visited )
 
   if( visited.indexOf( _module ) !== -1 )
   return;
+
+  if( !Module )
+  Module = require( 'module' );
 
   [].push.apply( Module.globalPaths, paths );
 
@@ -163,7 +161,9 @@ function _includeAct( src )
 
   var result;
   if( handler.include )
-  result = _includeWithRequire( handler.include );
+  {
+    result = _includeWithRequire( handler.include );
+  }
   else if( handler.includeAny )
   {
     _.assert( _.arrayIs( handler.includeAny ),'include handler expect an array ( includeAny ) if present' );
@@ -174,6 +174,85 @@ function _includeAct( src )
   handler.returned = result;
 
   return result;
+}
+
+//
+
+function _includeAnyAct( srcs )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( srcs ) );
+
+  /* */
+
+  var paths = [];
+  for( var s = 0 ; s < srcs.length ; s++ )
+  {
+    var src = srcs[ s ];
+
+    var handler;
+    if( _includeHandlerMap[ src ] )
+    handler = _includeHandlerMap[ src ];
+
+    if( !handler )
+    {
+      paths.push({ path : src });
+      continue;
+    }
+
+    if( handler.isIncluded )
+    if( handler.isIncluded() )
+    return handler.returned;
+
+    debugger;
+
+    var result;
+    if( handler.include )
+    {
+      paths.push({ path : handler.include, handler : handler }); debugger;
+    }
+    else if( handler.includeAny )
+    {
+      debugger;
+      _.assert( _.arrayIs( handler.includeAny ),'include handler expect an array ( includeAny ) if present' );
+      for( var p = 0 ; p < handler.includeAny.length ; p++ )
+      paths.push({ path : handler.includeAny[ p ], handler : handler });
+    }
+    else throw _.err( 'Handler does not has ( include ) neither ( includeAny ).\nCant use the handler to include file',src );
+
+  }
+
+  /* */
+
+  for( var a = 0 ; a < paths.length ; a++ )
+  {
+    var src = paths[ a ].path;
+
+    if( src !== '' )
+    try
+    {
+      var resolved = __include.resolve( src );
+      src = resolved;
+    }
+    catch( err )
+    {
+      if( a !== paths.length-1 && !usingSinglePath )
+      continue;
+    }
+
+    if( a === paths.length-1 && src === '' )
+    return;
+
+    var result = _includeWithRequireAct( src );
+    if( paths[ a ].handler )
+    paths[ a ].handler.returned = result;
+    return result;
+  }
+
+  /* */
+
+  debugger;
+  throw _.err( 'Can include none of file',srcs );
 }
 
 //
@@ -224,10 +303,12 @@ function _includeWithRequireAny( src )
   {
     var src = arguments[ a ];
 
+    if( src !== '' )
     try
     {
       var resolved = __include.resolve( src );
       /* console.log( '__include.resolve',src,'->',resolved ); */
+      src = resolved;
     }
     catch( err )
     {
@@ -250,32 +331,35 @@ function _includeWithRequireAny( src )
 
 function includeAny()
 {
-  var errors = [];
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-    var src = arguments[ a ];
-
-    try
-    {
-      var resolved = __include.resolve( src );
-      /* console.log( '__include.resolve',src,'->',resolved ); */
-    }
-    catch( err )
-    {
-      if( a !== arguments.length-1 && !usingSinglePath )
-      continue;
-    }
-
-    if( a === arguments.length-1 && src === '' )
-    return;
-
-    var result = _includeAct( src );
-    return result;
-
-  }
-
-  _.assert( 0,'unexpected' );
+  // var errors = [];
+  return _includeAnyAct( arguments );
+  //
+  // for( var a = 0 ; a < arguments.length ; a++ )
+  // {
+  //   var src = arguments[ a ];
+  //
+  //   if( src !== '' )
+  //   try
+  //   {
+  //     var resolved = __include.resolve( src );
+  //     /* console.log( '__include.resolve',src,'->',resolved ); */
+  //     src = resolved;
+  //   }
+  //   catch( err )
+  //   {
+  //     if( a !== arguments.length-1 && !usingSinglePath )
+  //     continue;
+  //   }
+  //
+  //   if( a === arguments.length-1 && src === '' )
+  //   return;
+  //
+  //   var result = _includeAct( src );
+  //   return result;
+  //
+  // }
+  //
+  // _.assert( 0,'unexpected' );
 }
 
 // --
@@ -478,20 +562,44 @@ _includeHandlerMap[ 'wIncubator' ] =
 
 _includeHandlerMap[ 'wMaker' ] =
 {
-  includeAny : [ '../../atop/maker/Maker.s','atop/maker/Maker.s','wMaker' ],
+  includeAny : [ '../../../dwtools/atop/maker/Maker.s','atop/maker/Maker.s','wMaker' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Maker },
 }
 
 _includeHandlerMap[ 'wDeployerUnit' ] =
 {
-  includeAny : [ '../../atop/deployer/Unit.s','atop/deployer/Unit.s','wDeployerUnit' ],
+  includeAny : [ '../../../dwtools/atop/deployer/Unit.s','atop/deployer/Unit.s','wDeployerUnit' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.DeployerUnit },
 }
 
 _includeHandlerMap[ 'wServlet' ] =
 {
-  includeAny : [ '../../atop/servlet/Servlet.ss','atop/servlet/Servlet.ss','wServlet' ],
+  includeAny : [ '../../../dwtools/atop/servlet/Servlet.ss','atop/servlet/Servlet.ss','wServlet' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.servlet },
+}
+
+_includeHandlerMap[ 'wMathScalar' ] =
+{
+  includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.ss','amath/arithmetic/cScalar.ss','wMathScalar' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.clamp },
+}
+
+_includeHandlerMap[ 'wMathVector' ] =
+{
+  includeAny : [ '../../../dwtools/amath/cvector/Base.s','amath/cvector/Base.s','wMathVector' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.vector },
+}
+
+_includeHandlerMap[ 'wMathSpace' ] =
+{
+  includeAny : [ '../../../dwtools/amath/servlet/wSpace.s','amath/servlet/wSpace.s','wMathSpace' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Space },
+}
+
+_includeHandlerMap[ 'wMathConcepts' ] =
+{
+  includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wMathConcepts' ],
+  isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.box },
 }
 
 // --
@@ -511,6 +619,7 @@ var Proto =
 
   _includeWithRequireAct : _includeWithRequireAct,
   _includeAct : _includeAct,
+  _includeAnyAct : _includeAnyAct,
 
   _includeWithRequire : _includeWithRequire,
   include : include,

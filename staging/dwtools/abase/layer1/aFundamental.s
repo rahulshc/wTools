@@ -50,19 +50,19 @@ _global_._global_ = _global_;
 if( _global_.DEBUG === undefined )
 _global_.DEBUG = true;
 
-// parent
+//
 
-if( typeof module !== 'undefined' && module !== null )
-{
-  try
-  {
-    if( !_global_.Underscore )
-    _global_.Underscore = require( 'underscore' );
-  }
-  catch( err )
-  {
-  }
-}
+// if( typeof module !== 'undefined' && module !== null )
+// {
+//   try
+//   {
+//     if( !_global_.Underscore )
+//     _global_.Underscore = require( 'underscore' );
+//   }
+//   catch( err )
+//   {
+//   }
+// }
 
 if( !_global_.Underscore && _global_._ )
 _global_.Underscore = _global_._;
@@ -3791,7 +3791,6 @@ function _err( o )
       o.args[ a ] = '\n' + o.args[ a ];
       errors.push( arg );
 
-      debugger;
       o.location = _.diagnosticLocation({ error : arg, location : o.location });
 
     }
@@ -3950,7 +3949,7 @@ function _err( o )
       stack : stack,
       location : o.location,
     });
-    debugger;
+    // debugger;
     c = _.diagnosticCode
     ({
       location : o.location,
@@ -7615,7 +7614,7 @@ function timeOut( delay,onReady )
 
 //
 
-var timeSoon = typeof module === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
+var timeSoon = typeof process === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
 
 //
 
@@ -14473,7 +14472,6 @@ function _mapFieldFilterMake( filter )
 {
 
   _.assert( arguments.length === 1 );
-  debugger;
 
   if( _.routineIs( filter ) )
   filter = { filterUp : filter, filterField : filter }
