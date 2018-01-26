@@ -574,25 +574,25 @@ _includeHandlerMap[ 'wServlet' ] =
 
 _includeHandlerMap[ 'wMathScalar' ] =
 {
-  includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.ss','amath/arithmetic/cScalar.ss','wMathScalar' ],
+  includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.ss','amath/arithmetic/cScalar.ss','wmathscalar' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.clamp },
 }
 
 _includeHandlerMap[ 'wMathVector' ] =
 {
-  includeAny : [ '../../../dwtools/amath/cvector/Base.s','amath/cvector/Base.s','wMathVector' ],
+  includeAny : [ '../../../dwtools/amath/cvector/Base.s','amath/cvector/Base.s','wmathvector' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.vector },
 }
 
 _includeHandlerMap[ 'wMathSpace' ] =
 {
-  includeAny : [ '../../../dwtools/amath/space/wSpace.s','amath/space/wSpace.s','wMathSpace' ],
+  includeAny : [ '../../../dwtools/amath/space/wSpace.s','amath/space/wSpace.s','wmathspace' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Space },
 }
 
 _includeHandlerMap[ 'wMathConcepts' ] =
 {
-  includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wMathConcepts' ],
+  includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wmathconcepts' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.box },
 }
 
