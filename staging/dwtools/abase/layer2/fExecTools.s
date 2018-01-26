@@ -1017,7 +1017,7 @@ function appExit( exitCode )
   }
   else
   {
-    debugger;
+    /*debugger;*/
   }
 
 }

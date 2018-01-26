@@ -586,7 +586,7 @@ _includeHandlerMap[ 'wMathVector' ] =
 
 _includeHandlerMap[ 'wMathSpace' ] =
 {
-  includeAny : [ '../../../dwtools/amath/servlet/wSpace.s','amath/servlet/wSpace.s','wMathSpace' ],
+  includeAny : [ '../../../dwtools/amath/space/wSpace.s','amath/space/wSpace.s','wMathSpace' ],
   isIncluded : function(){ return typeof wTools !== 'undefined' && wTools.Space },
 }
 

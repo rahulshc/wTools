@@ -5421,7 +5421,7 @@ function numbersFromInt( dst,length )
   else
   {
     for( var i = 0 ; i < dst.length ; i++ )
-    _.assert( _.numberIsInt( dst[ i ] ) );
+    _.assert( _.numberIsInt( dst[ i ] ),'expects integer, but got',dst[ i ] );
     _.assert( dst.length === length,'expects array of length',length,'but got',dst );
   }
 
