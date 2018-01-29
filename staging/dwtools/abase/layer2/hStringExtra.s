@@ -550,7 +550,7 @@ function strMetricFormat( number,o )
  * @param {object} o - conversion options.
  * @param {number} [ o.divisor=3 ] - Sets count of number divisors.
  * @param {number} [ o.thousand=1024 ] - Sets integer power of one thousand.
- * @see {@link wToolsxxx.strMetricFormat} Check out main function for more usage options and details.
+ * @see {@link wTools.strMetricFormat} Check out main function for more usage options and details.
  * @returns {string} Returns number of bytes with metric prefix as a string.
  *
  * @example
@@ -595,7 +595,7 @@ function strMetricFormatBytes( number,o )
  * @param {number} str - Source number to  convert.
  * @param {number} [ o.fixed=3 ] - The number of digits to appear after the decimal point, example : [ '58912.001' ].
  * Can`t be changed.
- * @see {@link wToolsxxx.strMetricFormat} Check out main function for more usage options and details.
+ * @see {@link wTools.strMetricFormat} Check out main function for more usage options and details.
  * @returns {string} Returns number of seconds with metric prefix as a string.
  *
  * @example

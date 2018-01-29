@@ -34,7 +34,7 @@ var strTypeOf = _.strTypeOf;
  * @param {object} src - Source object.
  * @param {wTools~toStrOptions} o - conversion o {@link wTools~toStrOptions}.
  * @param {boolean} [ options.onlyRoutines=true ] - makes object behavior Routine only.
- * @see {@link wToolsxxx.toStrFine} Check out main function for more usage options and details.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -68,7 +68,7 @@ function toStrMethods( src,o )
  * @param {object} src - Source object.
  * @param {wTools~toStrOptions} o - conversion o {@link wTools~toStrOptions}.
  * @param {boolean} [ options.noRoutine=false ] - Ignores all entities of type Routine.
- * @see {@link wToolsxxx.toStrFine} Check out main function for more usage options and details.
+ * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns string that represents object data.
  *
  * @example

@@ -1135,7 +1135,7 @@ function entityMakeTivial( src,length )
  * @param {object} dst - Destination object.
  * @param {object} src - Source object.
  * @param {routine} onRecursive - The callback function to copy each [ key, value ].
- * @see {@link wToolsxxx.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entities copy operation.
  *
  * @example
@@ -1238,7 +1238,7 @@ function entityCopyTry( dst,src,onRecursive )
  * @param {object} srcContainer - Source object.
  * @param {string} name - Field name.
  * @param {mapClone~onCopyField} onRecursive - The callback function to copy each [ key, value ].
- * @see {@link wToolsxxx.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entities copy operation.
  *
  * @example
@@ -1299,7 +1299,7 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
  * @param {object} srcValue - Source value.
  * @param {string} name - Field name.
  * @param {mapClone~onCopyField} onRecursive - The callback function to copy each [ key, value ].
- * @see {@link wToolsxxx.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entity field assignment operation.
  *
  * @example
@@ -3022,7 +3022,7 @@ function _entityConditionMake( condition,levels )
     return v * v
   };
 
-  var res = wToolsxxx.entityMap(numbers, sqr);
+  var res = wTools.entityMap(numbers, sqr);
   // [ 9, 16, 36 ]
   // numbers is still [ 3, 4, 6 ]
 
@@ -3040,7 +3040,7 @@ function _entityConditionMake( condition,levels )
     return v < sumOthers;
   }
 
-  var res = wToolsxxx.entityMap( numbers, checkSidesOfTriangle );
+  var res = wTools.entityMap( numbers, checkSidesOfTriangle );
  // [ true, true, true ]
  *
  * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
@@ -3088,7 +3088,7 @@ function entityMap( src,onEach )
 
  * Filters elements of entity( src ) by calling( onEach ) function for each item.
  * Returns result of filtering as new instance of type( src ) with items that succesfully passed ( onEach ) function.
- * @see wToolsxxx.entityMap
+ * @see wTools.entityMap
  *
  * @example
    var numbers = [ 36, -25, 49, 64, -16 ];
@@ -3098,7 +3098,7 @@ function entityMap( src,onEach )
       return ( v > 0 ) ? Math.sqrt( v ) : undefined;
    };
 
-   var res = wToolsxxx.entityMap( numbers, sqrt );
+   var res = wTools.entityMap( numbers, sqrt );
  // [ 6, 7, 8 ]
  // numbers are still [ 36, -25, 49, 64, -16 ];
  *
@@ -3467,7 +3467,7 @@ function _entityMost( src,onElement,returnMax )
  * @example
  *  //returns { index : 2, key : 'c', value 3: , element : 9  };
  *  var obj = { a : 25, b : 16, c : 9 };
- *  var min = wToolsxxx.entityMin( obj, Math.sqrt );
+ *  var min = wTools.entityMin( obj, Math.sqrt );
  *
  * @see wTools~onEach
  * @see wTools~entityMostResult
@@ -3495,7 +3495,7 @@ function entityMin( src,onElement )
  * @example
  *  //returns { index: 0, key: "a", value: 25, element: 25 };
  *  var obj = { a: 25, b: 16, c: 9 };
- *  var max = wToolsxxx.entityMax( obj );
+ *  var max = wTools.entityMax( obj );
  *
  * @see wTools~onEach
  * @see wTools~entityMostResult
@@ -4149,7 +4149,7 @@ _err.defaults =
   function divide( x, y )
   {
     if( y == 0 )
-      throw wToolsxxx.err( 'divide by zero' )
+      throw wTools.err( 'divide by zero' )
     return x / y;
   }
   divide( 3, 0 );
@@ -4159,7 +4159,7 @@ _err.defaults =
  // divide by zero
  // Error
  //   at _err (file:///.../wTools/staging/Base.s:1418:13)
- //   at wToolsxxx.err (file:///.../wTools/staging/Base.s:1449:10)
+ //   at wTools.err (file:///.../wTools/staging/Base.s:1449:10)
  //   at divide (<anonymous>:2:29)
  //   at <anonymous>:1:1
  *
@@ -4245,13 +4245,13 @@ function errAttend( err )
  * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
  concatenating them. Prints the created error.
  * If _global_.logger defined, routine will use it to print error, else uses console
- * @see wToolsxxx.err
+ * @see wTools.err
  *
  * @example
    function divide( x, y )
    {
       if( y == 0 )
-        throw wToolsxxx.errLog( 'divide by zero' )
+        throw wTools.errLog( 'divide by zero' )
       return x / y;
    }
    divide( 3, 0 );
@@ -4261,7 +4261,7 @@ function errAttend( err )
    // divide by zero
    // Error
    //   at _err (file:///.../wTools/staging/Base.s:1418:13)
-   //   at wToolsxxx.errLog (file:///.../wTools/staging/Base.s:1462:13)
+   //   at wTools.errLog (file:///.../wTools/staging/Base.s:1462:13)
    //   at divide (<anonymous>:2:29)
    //   at <anonymous>:1:1
  *
@@ -6199,7 +6199,7 @@ function regexpIdentical( src1,src2 )
  * Escapes special characters with a slash ( \ ). Supports next set of characters : .*+?^=! :${}()|[]/\
  *
  * @example
- * wToolsxxx.regexpEscape( 'Hello. How are you?' ); // "Hello\. How are you\?"
+ * wTools.regexpEscape( 'Hello. How are you?' ); // "Hello\. How are you\?"
  * @param {String} src Regexp string
  * @returns {String} Escaped string
  * @function regexpEscape
@@ -6229,7 +6229,7 @@ function regexpEscape( src )
  * Turn a *-wildcard style glob into a regular expression
  * @example
  * var glob = '* /www/*.js';
- * wToolsxxx.regexpForGlob(glob);
+ * wTools.regexpForGlob(glob);
  * // /^.\/[^\/]*\/www\/[^\/]*\.js$/m
  * @param {String} glob *-wildcard style glob
  * @returns {RegExp} RegExp that represent passed glob
@@ -6279,7 +6279,7 @@ function regexpForGlob( glob )
  * Make regexp from string.
  *
  * @example
- * wToolsxxx.regexpMakeExpression( 'Hello. How are you?' ); // /Hello\. How are you\?/
+ * wTools.regexpMakeExpression( 'Hello. How are you?' ); // /Hello\. How are you\?/
  * @param {String} src - string or regexp
  * @returns {String} Regexp
  * @throws {Error} Throw error with message 'unknown type of expression, expects regexp or string, but got' error
@@ -6312,13 +6312,13 @@ function regexpMakeExpression( src,flags )
    *  The result regexp matches the strings that do not contain any of those words.
    *
    * @example
-   * wToolsxxx.regexpBut_( 'yellow', 'red', 'green' ); //   /^(?:(?!yellow|red|green).)+$/
+   * wTools.regexpBut_( 'yellow', 'red', 'green' ); //   /^(?:(?!yellow|red|green).)+$/
    *
    * var options = {
    *    but : ['yellow', 'red', 'green'],
    *    atLeastOnce : false
    * };
-   * wToolsxxx.regexpBut_(options); // /^(? :(?!yellow|red|green).)*$/
+   * wTools.regexpBut_(options); // /^(? :(?!yellow|red|green).)*$/
    *
    * @param {Object} [options] options for generate regexp. If this argument omitted then default options will be used
    * @param {String[]} [options.but=null] a list of words,from each will consist regexp
@@ -6372,7 +6372,7 @@ regexpBut_.defaults =
  * Wraps regexp(s) into array and returns it. If in `src` passed string - turn it into regexp
  *
  * @example
- * wToolsxxx.regexpArrayMake( ['red', 'white', /[a-z]/] ); // [ /red/, /white/, /[a-z]/ ]
+ * wTools.regexpArrayMake( ['red', 'white', /[a-z]/] ); // [ /red/, /white/, /[a-z]/ ]
  * @param {String[]|String} src - array of strings/regexps or single string/regexp
  * @returns {RegExp[]} Array of regexps
  * @throw {Error} if `src` in not string, regexp, or array
@@ -6413,7 +6413,7 @@ function regexpArrayMake( src )
    *
      var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
      var regArr1 = [/white/, /green/, /blue/];
-     wToolsxxx.regexpArrayIndex(regArr1, str); // 1
+     wTools.regexpArrayIndex(regArr1, str); // 1
 
    * @param {RegExp[]} arr Array for regular expressions.
    * @param {String} ins String, inside which will be execute search
@@ -6453,10 +6453,10 @@ function regexpArrayIndex( arr,ins )
  * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
  *
  * var regArr2 = [/yellow/, /blue/, /red/];
- * wToolsxxx._regexpArrayAny(regArr2, str, false); // 1
+ * wTools._regexpArrayAny(regArr2, str, false); // 1
  *
  * var regArr3 = [/yellow/, /white/, /greey/]
- * wToolsxxx._regexpArrayAny(regArr3, str, false); // false
+ * wTools._regexpArrayAny(regArr3, str, false); // false
  * @param {String[]} arr Array of regular expressions strings
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
@@ -6495,10 +6495,10 @@ function _regexpArrayAny( arr,ins,none )
  * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
  *
  * var regArr1 = [/red/, /green/, /blue/];
- * wToolsxxx._regexpArrayAll(regArr1, str, false); // true
+ * wTools._regexpArrayAll(regArr1, str, false); // true
  *
  * var regArr2 = [/yellow/, /blue/, /red/];
- * wToolsxxx._regexpArrayAll(regArr2, str, false); // 0
+ * wTools._regexpArrayAll(regArr2, str, false); // 0
  * @param {String[]} arr Array of regular expressions strings
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
@@ -6547,7 +6547,7 @@ function _regexpArrayAll( arr,ins,none )
             excludeAll : [/red/, /green/, /blue/]
          }
      ];
-     wToolsxxx.regexpMakeObject(src, 'excludeAll');
+     wTools.regexpMakeObject(src, 'excludeAll');
 
      // {
      //    includeAny: [/yellow/, /blue/, /red/],
@@ -6689,7 +6689,7 @@ function _routineBind( o )
     function sum(x, y) {
        return x + y + this.z;
     }
-    var newSum = wToolsxxx.routineBind(sum, o, [3]);
+    var newSum = wTools.routineBind(sum, o, [3]);
     newSum(y); // 12
 
    function f1(){ console.log( this ) };
@@ -6740,7 +6740,7 @@ function routineBind( routine, context, args )
    function sum(x, y) {
        return x + y + this.z;
     }
-   var newSum = wToolsxxx.routineJoin(o, sum, [3]);
+   var newSum = wTools.routineJoin(o, sum, [3]);
    newSum(y); // 12
 
    function f1(){ console.log( this ) };
@@ -6754,7 +6754,7 @@ function routineBind( routine, context, args )
  * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
  calling of target function. Must be wraped into array.
  * @returns {Function} New created function with preceding this, and args.
- * @see wToolsxxx.routineBind
+ * @see wTools.routineBind
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
  * @function routineJoin
@@ -6790,7 +6790,7 @@ function routineJoin( context, routine, args )
    function sum(x, y) {
        return x + y + this.z;
     }
-   var newSum = wToolsxxx.routineSeal(o, sum, [3, 4]);
+   var newSum = wTools.routineSeal(o, sum, [3, 4]);
    newSum(y); // 12
    * @param {Object} context The value that will be set as 'this' keyword in new function
    * @param {Function} routine Function which will be used as base for result function.
@@ -7062,7 +7062,7 @@ _routinesCall.defaults =
         return x * y * this.z;
     },
     routines = [ sum, prod ];
-    var res = wToolsxxx.routinesCall( o, routines, [ x, y ] );
+    var res = wTools.routinesCall( o, routines, [ x, y ] );
  // [ 11, 36 ]
  * @param {Object} [context] Context in which calls each function.
  * @param {Function[]} routines Array of called function
@@ -7403,7 +7403,6 @@ function timeReady( onReady )
   }
   else
   {
-    debugger;
     if( _.Consequence )
     return _.timeOut( timeOut,onReady );
     else if( onReady )
@@ -7823,7 +7822,7 @@ function dateToStr( date )
  * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
  * Otherwise, it returns an initial typed array.
  *
- * @see {@link wToolsxxx.arrayMakeSimilar} - See for more information.
+ * @see {@link wTools.arrayMakeSimilar} - See for more information.
  *
  * @param { typedArray } src - The source typed array.
  * @param { Number } len - The length of a typed array.
@@ -11071,11 +11070,11 @@ function arrayRightIndexOf( arr,ins,equalizer )
  *
  * It creates the variable (i), assigns and calls to it the function(_.arrayLeftIndexOf( arr, ins, equalizer )),
  * that returns the index of the value (ins) in the array (arr).
- * [wToolsxxx.arrayLeftIndexOf()]{@link wToolsxxx.arrayLeftIndexOf}
+ * [wTools.arrayLeftIndexOf()]{@link wTools.arrayLeftIndexOf}
  * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
  * Otherwise, it returns the empty object.
  *
- * @see {@link wToolsxxx.arrayLeftIndexOf} - See for more information.
+ * @see {@link wTools.arrayLeftIndexOf} - See for more information.
  *
  * @param { arrayLike } arr - Entity to check.
  * @param { * } ins - Element to locate in the array.
@@ -11352,12 +11351,12 @@ function arrayHas( insArray, element, onElement )
  * The arrayHasAny() routine checks if the (src) array has at least one value of the following arguments.
  *
  * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the routine
- * [arrayAs()]{@link wToolsxxx.arrayAs}
+ * [arrayAs()]{@link wTools.arrayAs}
  * Checks, if (src) array has at least one value of the (ins) array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
- * @see {@link wToolsxxx.arrayAs} - See for more information.
+ * @see {@link wTools.arrayAs} - See for more information.
  *
  * @param { arrayLike } src - The source array.
  * @param {...*} arguments - One or more argument(s).
@@ -12750,10 +12749,10 @@ function arrayRemove( dstArray, ins, onEqualize )
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
  * checks if arguments passed two, it calls the routine
- * [arrayRemovedOnce( dstArray, ins )]{@link wToolsxxx.arrayRemovedOnce}
+ * [arrayRemovedOnce( dstArray, ins )]{@link wTools.arrayRemovedOnce}
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayRemovedOnce( dstArray, ins, onElement )]{@link wToolsxxx.arrayRemovedOnce}
- * @see  wToolsxxx.arrayRemovedOnce
+ * [arrayRemovedOnce( dstArray, ins, onElement )]{@link wTools.arrayRemovedOnce}
+ * @see  wTools.arrayRemovedOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
  * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
@@ -12833,9 +12832,9 @@ function arrayRemoved( dstArray, ins, onEqualize )
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayLeftIndexOf( dstArray, ins, onElement )]{@link wToolsxxx.arrayLeftIndexOf}
+ * [arrayLeftIndexOf( dstArray, ins, onElement )]{@link wTools.arrayLeftIndexOf}
  * If callback function(onElement) returns true, it returns the index that will be removed from (dstArray).
- * @see {@link wToolsxxx.arrayLeftIndexOf} - See for more information.
+ * @see {@link wTools.arrayLeftIndexOf} - See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
@@ -12966,7 +12965,7 @@ function arrayRemovedArray( dstArray, insArray )
  * If callback function(onEqualize) returns true, it returns the index that will be removed from (dstArray),
  * and then incrementing the variable (result++).
  *
- * @see wToolsxxx.arrayLeftIndexOf
+ * @see wTools.arrayLeftIndexOf
  *
  * @param { arrayLike } dstArray - The target array.
  * @param { arrayLike } insArray - The source array.
@@ -13145,11 +13144,11 @@ function arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
  * checks if arguments passed two, it calls the routine
- * [arrayRemoved( dstArray, ins )]{@link wToolsxxx.arrayRemoved}
+ * [arrayRemoved( dstArray, ins )]{@link wTools.arrayRemoved}
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayRemoved( dstArray, ins, onElement )]{@link wToolsxxx.arrayRemoved}
+ * [arrayRemoved( dstArray, ins, onElement )]{@link wTools.arrayRemoved}
  *
- * @see wToolsxxx.arrayRemoved
+ * @see wTools.arrayRemoved
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
@@ -13594,12 +13593,12 @@ function arrayReplacedAll( dstArray,ins,sub,onEqualize )
  * and returns the last added index or the last replaced index of the array (dstArray).
  *
  * It creates the variable (index) assigns and calls to it the function(arrayReplaceOnce( dstArray, ins, sub ).
- * [arrayReplaceOnce( dstArray, ins, sub )]{@link wToolsxxx.arrayReplaceOnce}.
+ * [arrayReplaceOnce( dstArray, ins, sub )]{@link wTools.arrayReplaceOnce}.
  * Checks if (index) equal to the -1.
  * If true, it adds to an array (dstArray) a value (sub), and returns the last added index of the array (dstArray).
  * Otherwise, it returns the replaced (index).
  *
- * @see wToolsxxx.arrayReplaceOnce
+ * @see wTools.arrayReplaceOnce
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to change.
@@ -15036,8 +15035,8 @@ _mapKeys.defaults =
  * Unlike standard [Object.keys]{@https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
  * which accept object only mapKeys accept any object-like entity.
  *
- * @see {@link wToolsxxx.mapOwnKeys} - Similar routine taking into account own elements only.
- * @see {@link wToolsxxx.mapVals} - Similar routine returning values.
+ * @see {@link wTools.mapOwnKeys} - Similar routine taking into account own elements only.
+ * @see {@link wTools.mapVals} - Similar routine returning values.
  *
  * @example
  * // returns [ "a", "b" ]
@@ -15223,8 +15222,8 @@ mapAllKeys.defaults =
 //  * Unlike standard [Object.keys]{@https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
 //  * which accept object only mapKeys accept any object-like entity.
 //  *
-//  * @see {@link wToolsxxx.mapOwnKeys} - Similar routine taking into account own elements only.
-//  * @see {@link wToolsxxx.mapVals} - Similar routine returning values.
+//  * @see {@link wTools.mapOwnKeys} - Similar routine taking into account own elements only.
+//  * @see {@link wTools.mapVals} - Similar routine returning values.
 //  *
 //  * @example
 //  * // returns [ "a", "b" ]
@@ -16636,7 +16635,7 @@ function mapOwnButConditional( filter,srcMap )
  * It creates the variable (dstObject) assignes and calls the routine (_mapScreen( { } ) )
  * with three properties.
  *
- * @see {@link wToolsxxx._mapScreen} - See for more information.
+ * @see {@link wTools._mapScreen} - See for more information.
  *
  * @param { objectLike } srcObject - The target object.
  * @param { objectLike } screenObject - The source object.
@@ -16692,7 +16691,7 @@ function mapScreens( srcObject,screenObject )
  * It takes number of objects, creates a new object by three properties
  * and calls the _mapScreen( {} ) with created object.
  *
- * @see  {@link wToolsxxx._mapScreen} - See for more information.
+ * @see  {@link wTools._mapScreen} - See for more information.
  *
  * @param { objectLike } screenObject - The first object.
  * @param { ...objectLike } arguments[] - One or more objects.

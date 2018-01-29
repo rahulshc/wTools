@@ -467,7 +467,7 @@ diagnosticCode.defaults =
 
   function function3()
   {
-    stack = wToolsxxx.diagnosticStack();
+    stack = wTools.diagnosticStack();
   }
 
   function1();
@@ -891,7 +891,7 @@ function beep()
 //
 
 /**
- * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2. @see wToolsxxx.err
+ * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion failed'.
  * Also generates error using message(s) or existing error object(s) passed after first argument.
  *
@@ -900,7 +900,7 @@ function beep()
  *
  * @example
  * var x = 1;
- * wToolsxxx.assert( wToolsxxx.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
+ * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
  *
  * // caught eval (<anonymous>:2:8)
  * // incorrect variable type-> number expects string
@@ -913,7 +913,7 @@ function beep()
  * @example
  * function add( x, y )
  * {
- *   wToolsxxx.assert( arguments.length === 2, 'incorrect arguments count' );
+ *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
  *   return x + y;
  * }
  * add();
@@ -929,7 +929,7 @@ function beep()
  * @example
  *   function divide ( x, y )
  *   {
- *      wToolsxxx.assert( y != 0, 'divide by zero' );
+ *      wTools.assert( y != 0, 'divide by zero' );
  *      return x / y;
  *   }
  *   divide( 3, 0 );
@@ -938,7 +938,7 @@ function beep()
  * // divide by zero
  * // Error
  * //   at _err (file:///.../wTools/staging/Base.s:1418:13)
- * //   at wToolsxxx.errLog (file://.../wTools/staging/Base.s:1462:13)
+ * //   at wTools.errLog (file://.../wTools/staging/Base.s:1462:13)
  * //   at divide (<anonymous>:2:29)
  * //   at <anonymous>:1:1
  * @throws {Error} If passed condition( condition ) fails.
@@ -1023,7 +1023,7 @@ function assertWithoutBreakpoint( condition )
 //
 
 /**
- * Checks if map passed by argument( src ) not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wToolsxxx.err
+ * Checks if map passed by argument( src ) not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed after first argument.
  *
@@ -1032,7 +1032,7 @@ function assertWithoutBreakpoint( condition )
  *
  * @example
  * var map = { a : '1', b : undefined };
- * wToolsxxx.assertMapHasNoUndefine( map );
+ * wTools.assertMapHasNoUndefine( map );
  *
  * // caught <anonymous>:2:8
  * // Object  should have no undefines, but has : b
@@ -1043,7 +1043,7 @@ function assertWithoutBreakpoint( condition )
  *
  * @example
  * var map = { a : undefined, b : '1' };
- * wToolsxxx.assertMapHasNoUndefine( map, '"map"');
+ * wTools.assertMapHasNoUndefine( map, '"map"');
  *
  * // caught <anonymous>:2:8
  * // Object "map" should have no undefines, but has : a
@@ -1087,7 +1087,7 @@ function assertMapHasNoUndefine( src )
 
 /**
  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2. @see wToolsxxx.err
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -1098,7 +1098,7 @@ function assertMapHasNoUndefine( src )
  * @example
  * var a = { a : 1, c : 3 };
  * var b = { a : 2, b : 3 };
- * wToolsxxx.assertMapHasOnly( a, b );
+ * wTools.assertMapHasOnly( a, b );
  *
  * // caught <anonymous>:3:8
  * // Object should have no fields : c
@@ -1111,7 +1111,7 @@ function assertMapHasNoUndefine( src )
  * var x = { d : 1 };
  * var a = Object.create( x );
  * var b = { a : 1 };
- * wToolsxxx.assertMapHasOnly( a, b, 'message' )
+ * wTools.assertMapHasOnly( a, b, 'message' )
  *
  * // caught <anonymous>:4:8
  * // message Object should have no fields : d
@@ -1182,7 +1182,7 @@ function assertMapHasOnlyWithUndefines( src )
 
 /**
  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
- * Works only in debug mode. Uses StackTrace level 2.@see wToolsxxx.err
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -1195,12 +1195,12 @@ function assertMapHasOnlyWithUndefines( src )
  * var a = Object.create( x );
  * a.a = 5;
  * var b = { a : 2 };
- * wToolsxxx.assertMapOwnOnly( a, b ); //no exception
+ * wTools.assertMapOwnOnly( a, b ); //no exception
  *
  * @example
  * var a = { d : 1 };
  * var b = { a : 2 };
- * wToolsxxx.assertMapOwnOnly( a, b );
+ * wTools.assertMapOwnOnly( a, b );
  *
  * // caught <anonymous>:3:10
  * // Object should have no own fields : d
@@ -1213,7 +1213,7 @@ function assertMapHasOnlyWithUndefines( src )
  * var a = { x : 0, y : 2 };
  * var b = { c : 0, d : 3};
  * var c = { a : 1 };
- * wToolsxxx.assertMapOwnOnly( a, b, c, 'error msg' );
+ * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
  *
  * // caught <anonymous>:4:8
  * // error msg Object should have no own fields : x,y
@@ -1257,7 +1257,7 @@ function assertMapOwnOnly( src )
 
 /**
  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2.@see wToolsxxx.err
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -1269,12 +1269,12 @@ function assertMapOwnOnly( src )
  * var x = { a : 1 };
  * var a = Object.create( x );
  * var b = { a : 2 };
- * wToolsxxx.assertMapHasAll( a, b );// no exception
+ * wTools.assertMapHasAll( a, b );// no exception
  *
  * @example
  * var a = { d : 1 };
  * var b = { a : 2 };
- * wToolsxxx.assertMapHasAll( a, b );
+ * wTools.assertMapHasAll( a, b );
  *
  * // caught <anonymous>:3:10
  * // Object should have fields : a
@@ -1286,7 +1286,7 @@ function assertMapOwnOnly( src )
  * @example
  * var a = { x : 0, y : 2 };
  * var b = { x : 0, d : 3};
- * wToolsxxx.assertMapHasAll( a, b, 'error msg' );
+ * wTools.assertMapHasAll( a, b, 'error msg' );
  *
  * // caught <anonymous>:4:9
  * // error msg Object should have fields : d
@@ -1330,7 +1330,7 @@ function assertMapHasAll( src,all,msg )
 
 /**
  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
- * Works only in Config.debug mode. Uses StackTrace level 2. @see wToolsxxx.err
+ * Works only in Config.debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -1341,12 +1341,12 @@ function assertMapHasAll( src,all,msg )
  * @example
  * var a = { a : 1 };
  * var b = { a : 2 };
- * wToolsxxx.assertMapOwnAll( a, b );// no exception
+ * wTools.assertMapOwnAll( a, b );// no exception
  *
  * @example
  * var a = { a : 1 };
  * var b = { a : 2, b : 2 }
- * wToolsxxx.assertMapOwnAll( a, b );
+ * wTools.assertMapOwnAll( a, b );
  *
  * // caught <anonymous>:3:8
  * // Object should have own fields : b
@@ -1358,7 +1358,7 @@ function assertMapHasAll( src,all,msg )
  * @example
  * var a = { x : 0 };
  * var b = { x : 1, y : 0};
- * wToolsxxx.assertMapHasAll( a, b, 'error msg' );
+ * wTools.assertMapHasAll( a, b, 'error msg' );
  *
  * // caught <anonymous>:4:9
  * // error msg Object should have fields : y
@@ -1438,7 +1438,7 @@ function assertNotTested( src )
 
 /**
  * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2. @see wToolsxxx.err
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -1449,13 +1449,13 @@ function assertNotTested( src )
  * @example
  * var a = { a : 1 };
  * var b = { b : 2 };
- * wToolsxxx.assertMapHasNone( a, b );// no exception
+ * wTools.assertMapHasNone( a, b );// no exception
  *
  * @example
  * var x = { a : 1 };
  * var a = Object.create( x );
  * var b = { a : 2, b : 2 }
- * wToolsxxx.assertMapHasNone( a, b );
+ * wTools.assertMapHasNone( a, b );
  *
  * // caught <anonymous>:4:8
  * // Object should have no fields : a
@@ -1467,7 +1467,7 @@ function assertNotTested( src )
  * @example
  * var a = { x : 0, y : 1 };
  * var b = { x : 1, y : 0 };
- * wToolsxxx.assertMapHasNone( a, b, 'error msg' );
+ * wTools.assertMapHasNone( a, b, 'error msg' );
  *
  * // caught <anonymous>:3:9
  * // error msg Object should have no fields : x,y
@@ -1559,7 +1559,7 @@ function assertMapOwnNone( src,none )
  * @example
   function checkAngles( a, b, c )
   {
-     wToolsxxx.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+     wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
   };
   checkAngles( 120, 23, 130 );
 
