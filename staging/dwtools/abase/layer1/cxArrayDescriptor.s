@@ -3,6 +3,7 @@
 'use strict';
 
 var _ = _global_.wTools;
+var Self = _global_.wTools;
 
 //
 
@@ -159,6 +160,15 @@ _.assert( _.objectIs( _.ArrayDescriptorsMap ) );
 _.assert( _.objectIs( _.array ) );
 _.assert( _.routineIs( _.array.makeArrayOfLength ) );
 
-// debugger;
+// --
+// export
+// --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
+
+if( typeof module !== 'undefined' && module !== null )
+module[ 'exports' ] = Self;
 
 })();

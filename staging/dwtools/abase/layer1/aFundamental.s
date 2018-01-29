@@ -1,5 +1,4 @@
-//#! /usr/bin/env node
-( function _aKernel_s_() {
+( function _aFundamental_s_() {
 
 'use strict';
 
@@ -30,7 +29,7 @@ _globalReal._globalReal_ = _globalReal;
 
 // veification
 
-if( !_global_._UsingWtoolsPrivately_ )
+if(  !_global_._UsingWtoolsPrivately_  )
 {
 
   if( _global_.wBase )
@@ -75,15 +74,9 @@ _global_.Config = { debug : 1 }
 //   }
 // }
 
-if( !_global_._UsingWtoolsPrivately_ )
+if(  !_global_._UsingWtoolsPrivately_  )
 if( !_global_.Underscore && _global_._ )
 _global_.Underscore = _global_._;
-
-// if( !_global_._UsingWtoolsPrivately_ )
-// if( typeof wTools === 'undefined' )
-// {
-//   _global_.wTools = Object.create( null );
-// }
 
 /**
  * wTools - Generic purpose tools of base level for solving problems in Java Script.
@@ -95,7 +88,7 @@ var _ = Self;
 
 // specia globals
 
-if( !_global_._UsingWtoolsPrivately_ )
+if(  !_global_._UsingWtoolsPrivately_  )
 {
   _global_.def = Symbol.for( 'default' );
   _global_.all = Symbol.for( 'all' );
@@ -7394,14 +7387,15 @@ function timeReady( onReady )
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
-    var con = typeof wConsequence !== 'undefined' ? new _.Consequence() : null;
+    var con = _.Consequence ? new _.Consequence() : null;
 
     function handleReady()
     {
-      if( typeof wConsequence !== 'undefined' )
+      if( _.Consequence )
       return _.timeOut( timeOut,onReady ).doThen( con );
-      else
+      else if( onReady )
       setTimeout( onReady,timeOut );
+      else _.assert( 0 );
     }
 
     window.addEventListener( 'load',handleReady );
@@ -7409,10 +7403,12 @@ function timeReady( onReady )
   }
   else
   {
-    if( typeof wConsequence !== 'undefined' )
+    debugger;
+    if( _.Consequence )
     return _.timeOut( timeOut,onReady );
-    else
+    else if( onReady )
     setTimeout( onReady,timeOut );
+    else _.assert( 0 );
   }
 
 }
@@ -18149,6 +18145,14 @@ Object.assign( Self,Proto );
 _global_[ 'wTools' ] = Self;
 _global_.wTools = Self;
 _global_.wBase = Self;
+
+// --
+// export
+// --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

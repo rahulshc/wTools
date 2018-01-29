@@ -1627,6 +1627,10 @@ Object.assign( Self,Proto );
 // export
 // --
 
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
+
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
 

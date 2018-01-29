@@ -398,7 +398,7 @@ var Proto =
   silencing : 1,
   // verbosity : 9,
   // suiteFileLocation : suiteFileLocation,
-  // logger : wPrinterToJstructure(),
+  // logger : wPrinterToJs(),
 
   onSuitBegin : testDirMake,
   onSuitEnd : cleanTestDir,
