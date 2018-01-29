@@ -1577,11 +1577,8 @@ function strReplaceAll( src, ins, sub )
 
   if( arguments.length === 3 )
   {
-    _.assert( _.strIs( ins ) );
-    _.assert( _.strIs( sub ) );
     o = { src : src };
-    o.dictionary = Object.create( null );
-    o.dictionary[ ins ] = sub;
+    o.dictionary = [ [ ins, sub ] ]
   }
   else if( arguments.length === 2 )
   {
@@ -1595,23 +1592,21 @@ function strReplaceAll( src, ins, sub )
   /**/
 
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o.dictionary ) );
+  _.assert( _.objectIs( o.dictionary ) || _.arrayLike( o.dictionary ));
 
   /**/
 
-  var src = o.src;
-  var l = Object.keys( o.dictionary );
-  for( var ins in o.dictionary )
-  {
-    if( !ins.length ) continue;
-    _.assert( _.strIs( o.dictionary[ ins ] ), 'strReplaceAll : expects dictionary values only as strings' );
+  var index = 0;
 
-    var index = 0;
-    var sub = o.dictionary[ ins ];
+  function replace( src, ins, sub )
+  {
+    _.assert( _.strIs( sub ), 'strReplaceAll : expects sub as string' );
+
+    if( !ins.length )
+    return src;
 
     do
     {
-
       var index = src.indexOf( ins,index );
       if( index >= 0 )
       {
@@ -1624,6 +1619,52 @@ function strReplaceAll( src, ins, sub )
     }
     while( 1 );
 
+    return src;
+  }
+
+  var src = o.src;
+
+  if( _.objectIs( o.dictionary ) )
+  {
+    for( var ins in o.dictionary )
+    {
+      if( !ins.length ) continue;
+      src = replace( src, ins, o.dictionary[ ins ] );
+    }
+  }
+
+  //
+
+  if( _.arrayLike( o.dictionary ) )
+  {
+    for( var p = 0; p < o.dictionary.length; p++ )
+    {
+      _.assert( _.arrayLike( o.dictionary[ p ] ) );
+
+      var pair = o.dictionary[ p ];
+
+      _.assert( pair.length === 2 );
+
+      var ins = _.arrayAs( pair[ 0 ] );
+      var sub = _.arrayAs( pair[ 1 ] );
+
+      _.assert( ins.length === sub.length );
+
+      for( var i = 0; i < ins.length; i++ )
+      {
+        _.assert( _.strIs( ins[ i ] ) || _.regexpIs( ins[ i ] ) );
+
+        if( _.strIs( ins[ i ] ) )
+        {
+          if( !ins.length ) continue;
+          src = replace( src, ins[ i ], sub[ i ] );
+        }
+        else
+        {
+          src = src.replace( ins[ i ], sub[ i ] );
+        }
+      }
+    }
   }
 
   return src;
