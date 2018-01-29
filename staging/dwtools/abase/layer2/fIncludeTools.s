@@ -321,35 +321,25 @@ function _includeWithRequireAny( src )
 
 function includeAny()
 {
-  // var errors = [];
   return _includeAnyAct( arguments );
-  //
-  // for( var a = 0 ; a < arguments.length ; a++ )
-  // {
-  //   var src = arguments[ a ];
-  //
-  //   if( src !== '' )
-  //   try
-  //   {
-  //     var resolved = __include.resolve( src );
-  //     /* console.log( '__include.resolve',src,'->',resolved ); */
-  //     src = resolved;
-  //   }
-  //   catch( err )
-  //   {
-  //     if( a !== arguments.length-1 && !usingSinglePath )
-  //     continue;
-  //   }
-  //
-  //   if( a === arguments.length-1 && src === '' )
-  //   return;
-  //
-  //   var result = _includeAct( src );
-  //   return result;
-  //
-  // }
-  //
-  // _.assert( 0,'unexpected' );
+}
+
+//
+
+function isIncluded( src )
+{
+
+  var handler;
+  if( _includeHandlerMap[ src ] )
+  handler = _includeHandlerMap[ src ];
+
+  if( !handler )
+  return false;
+
+  if( !handler.isIncluded )
+  return false;
+
+  return handler.isIncluded();
 }
 
 // --
@@ -617,6 +607,8 @@ var Proto =
 
   _includeWithRequireAny : _includeWithRequireAny,
   includeAny : includeAny,
+
+  isIncluded : isIncluded,
 
 }
 
