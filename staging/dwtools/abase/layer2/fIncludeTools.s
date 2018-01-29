@@ -18,6 +18,8 @@ __include = importScripts;
 else if( _global._remoteRequire )
 __include = _global._remoteRequire;
 
+debugger;
+
 // --
 // routines
 // --
