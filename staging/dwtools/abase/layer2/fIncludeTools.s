@@ -417,7 +417,7 @@ _includeHandlerMap[ 'wNameTools' ] =
 _includeHandlerMap[ 'wProto' ] =
 {
   includeAny : [ '../../abase/layer3/Proto.s','abase/layer3/Proto.s','wProto' ],
-  isIncluded : function(){ return /*typeof _global !== 'undefined' && */ !!_global.wTools && _global.wTools.mixin },
+  isIncluded : function(){ return /*typeof _global !== 'undefined' && */ !!_global.wTools && _global.wTools.mixinMake },
 }
 
 _includeHandlerMap[ 'wCloner' ] =
