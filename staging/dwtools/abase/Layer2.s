@@ -14,7 +14,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './layer2/gStringer.s' );
   require( './layer2/hStringExtra.s' );
 
-  module[ 'exports' ] = wTools;
+  module[ 'exports' ] = _global_.wTools;
 
 }
 

@@ -14,16 +14,30 @@ node ./staging/z.test/Include.test.s
 if( typeof module !== 'undefined' )
 {
 
-  require( '../../../../dwtools/Base.s' )/*fff*/;
+  if( typeof _global_ === 'undefined' || !_global_.wBase )
+  {
+    let toolsPath = '../../../dwtools/Base.s';
+    let toolsExternal = 0;
+    try
+    {
+      require.resolve( toolsPath )/*hhh*/;
+    }
+    catch( err )
+    {
+      toolsExternal = 1;
+      require( 'wTools' );
+    }
+    if( !toolsExternal )
+    require( toolsPath )/*hhh*/;
+  }
 
-  var _ = wTools
+  var _ = _global_.wTools;
 
-  // _.include( 'wPrinterToJstructure' );
   _.include( 'wTesting' );
 
 }
 
-var _ = wTools;
+var _ = _global_.wTools;
 var Self = {};
 
 //

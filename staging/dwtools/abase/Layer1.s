@@ -1,5 +1,5 @@
 //#! /usr/bin/env node
-(function _wTools_s_(){
+(function _wToolsLayer1_s_(){
 
 'use strict';
 
@@ -17,7 +17,7 @@ if( typeof module !== 'undefined' && module !== null )
     require( './layer1/dSetup.s' );
   }
 
-  module[ 'exports' ] = wTools;
+  module[ 'exports' ] = _global_.wTools;
 
 }
 

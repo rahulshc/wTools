@@ -2,8 +2,8 @@
 
 'use strict';
 
-var _ = wTools;
-var Self = wTools;
+var _ = _global_.wTools;
+var Self = _global_.wTools;
 
 // --
 // setup
@@ -12,14 +12,15 @@ var Self = wTools;
 function _setupConfig()
 {
 
+  if( _global_._UsingWtoolsPrivately_ )
+  return;
+
   // debugger;
 
   /* config */
 
   if( !_global_.Config )
-  {
-    _global_.Config = Object.create( null );
-  }
+  _global_.Config = Object.create( null );
 
   if( _global_.Config.debug === undefined )
   _global_.Config.debug = true;
@@ -46,8 +47,8 @@ function _setupConfig()
   // });
 
   _global_.Config.debug = !!_global_.Config.debug;
-  _global_.DEBUG = _global_.Config.debug;
 
+  // _global_.DEBUG = _global_.Config.debug;
   // debugger;
 
 }
@@ -136,8 +137,8 @@ function _setupTesterPlaceholder()
   _global_.wTestSuite = function wTestSuite( testSuite )
   {
 
-    if( !_global_.wTests )
-    _global_.wTests = Object.create( null );
+    if( !_globalReal_.wTests )
+    _globalReal_.wTests = Object.create( null );
 
     if( !testSuite.suiteFilePath )
     testSuite.suiteFilePath = _.diagnosticLocation( 1 ).path;
@@ -152,8 +153,8 @@ function _setupTesterPlaceholder()
     // debugger;
 
     if( !testSuite.abstract )
-    _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name "' + testSuite.name + '" already registered!' );
-    _global_.wTests[ testSuite.name ] = testSuite;
+    _.assert( !_globalReal_.wTests[ testSuite.name ],'Test suite with name "' + testSuite.name + '" already registered!' );
+    _globalReal_.wTests[ testSuite.name ] = testSuite;
 
     testSuite.inherit = function inherit()
     {

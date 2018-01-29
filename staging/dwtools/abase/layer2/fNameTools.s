@@ -2,8 +2,8 @@
 
 'use strict';
 
-var Self = wTools;
-var _ = wTools;
+var Self = _global_.wTools;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;

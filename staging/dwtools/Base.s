@@ -5,8 +5,8 @@
 if( typeof module !== 'undefined' && module !== null )
 {
 
-  require( './abase/Layer2.s' );
-  module[ 'exports' ] = wTools;
+  require( './Layer2.s' );
+  module[ 'exports' ] = _global_.wTools;
 
 }
 

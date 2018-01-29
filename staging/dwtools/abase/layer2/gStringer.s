@@ -12,8 +12,8 @@
 
 //
 
-var Self = wTools;
-var _ = wTools;
+var Self = _global_.wTools;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -34,7 +34,7 @@ var strTypeOf = _.strTypeOf;
  * @param {object} src - Source object.
  * @param {wTools~toStrOptions} o - conversion o {@link wTools~toStrOptions}.
  * @param {boolean} [ options.onlyRoutines=true ] - makes object behavior Routine only.
- * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @see {@link wToolsxxx.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -68,7 +68,7 @@ function toStrMethods( src,o )
  * @param {object} src - Source object.
  * @param {wTools~toStrOptions} o - conversion o {@link wTools~toStrOptions}.
  * @param {boolean} [ options.noRoutine=false ] - Ignores all entities of type Routine.
- * @see {@link wTools.toStrFine} Check out main function for more usage options and details.
+ * @see {@link wToolsxxx.toStrFine} Check out main function for more usage options and details.
  * @returns {string} Returns string that represents object data.
  *
  * @example
@@ -911,6 +911,9 @@ function _toStrFromRoutine( src,o )
 
   if( o.jstructLike )
   {
+    if( _.routineSourceGet )
+    result = _.routineSourceGet( src );
+    else
     result = src.toString();
   }
   else
@@ -1555,22 +1558,34 @@ function _toStrFromObject( src,o )
 
 //
 
-function toJson( src )
+function toJson( src,o )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var result = _.toStr( src,{ jsonLike : 1, levels : 1 << 20 } );
+  o = o || Object.create( null );
+
+  var def =
+  {
+    jsonLike : 1,
+    levels : 1 << 20
+  }
+
+  _.mapSupplement( o,def );
+
+  var result = _.toStr( src,o );
 
   return result;
 }
 
 //
 
-function toJstruct( src )
+function toJstruct( src,o )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var toStrOptions =
+  o = o || Object.create( null );
+
+  var def =
   {
     escaping : 1,
     multilinedString : 1,
@@ -1580,7 +1595,9 @@ function toJstruct( src )
     jstructLike : 1,
   }
 
-  var result = _.toStr( src,toStrOptions );
+  _.mapSupplement( o,def );
+
+  var result = _.toStr( src,o );
 
   return result;
 }
