@@ -192,9 +192,9 @@ function _setup()
 {
 
   Self.timeNow = Self._timeNow_functor();
-  _.assert( Self.timeNow );
+  Self._sourcePath = _.diagnosticStack( 1 );
 
-  Self._sourceDirPath = _.diagnosticStack( 1 );
+  _.assert( Self.timeNow );
 
   if( _global_._wToolsInitConfigExpected !== false )
   {
