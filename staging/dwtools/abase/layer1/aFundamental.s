@@ -4273,9 +4273,6 @@ function errAttend( err )
 
 function errLog()
 {
-
-  debugger;
-
   var c = _global.logger || _global.console;
   var err = _err
   ({
@@ -4300,7 +4297,6 @@ function errLog()
 
   /* */
 
-  debugger;
   return err;
 }
 

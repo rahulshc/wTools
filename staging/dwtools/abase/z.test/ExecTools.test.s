@@ -397,7 +397,7 @@ var Proto =
   name : 'ExecTools',
   silencing : 1,
   // verbosity : 9,
-  // suiteFileLocation : suiteFileLocation,
+  // suitFileLocation : suitFileLocation,
   // logger : wPrinterToJs(),
 
   onSuitBegin : testDirMake,
@@ -414,7 +414,7 @@ _.mapExtend( Self,Proto );
 
 //
 
-Self = wTestSuite( Self );
+Self = wTestSuit( Self );
 
 if( typeof module !== 'undefined' && !module.parent )
 _.Tester.test( Self )
