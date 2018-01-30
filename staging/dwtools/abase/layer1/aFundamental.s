@@ -6596,10 +6596,6 @@ function _routineBind( o )
   _.assert( _.routineIs( o.routine ),'expects routine' );
   _.assert( _.arrayLike( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
 
-  // if( _global.wConsequence )
-  // if( wConsequence.prototype.got === o.routine )
-  // debugger;
-
   var routine = o.routine;
   var args = o.args;
   var context = o.context;
@@ -7435,8 +7431,7 @@ function timeReadyJoin( context,routine,args )
 
 function timeOnce( delay,onBegin,onEnd )
 {
-
-  var con = new _.Consequence();
+  var con = _.Consequence ? new _.Consequence() : undefined;
   var taken = false;
   var options;
   var optionsDefault =
@@ -7478,6 +7473,7 @@ function timeOnce( delay,onBegin,onEnd )
     {
       if( _.routineIs( onBegin ) ) onBegin.apply( this,arguments );
       else if( _.objectIs( onBegin ) ) onBegin.give( arguments );
+      if( con )
       con.give();
     }
 
@@ -7488,6 +7484,7 @@ function timeOnce( delay,onBegin,onEnd )
       {
         if( _.routineIs( onEnd ) ) onEnd.apply( this,arguments );
         else if( _.objectIs( onEnd ) ) onEnd.give( arguments );
+        if( con )
         con.give();
       }
       taken = false;
@@ -7568,25 +7565,24 @@ function timeOnce( delay,onBegin,onEnd )
  *
  * @returns {wConsequence} Returns wConsequence instance that resolves message when work is done.
  * @throws {Error} If ( delay ) is not a Number.
- * @throws {Error} If ( onReady ) is not a routine or wConsequence instance.
+ * @throws {Error} If ( onEnd ) is not a routine or wConsequence instance.
  * @function timeOut
  * @memberof wTools
  */
 
-function timeOut( delay,onReady )
+function timeOut( delay,onEnd )
 {
-  var con = new _.Consequence();
+  var con = _.Consequence ? new _.Consequence() : undefined;
   var timer = null;
 
   /* */
 
+  if( con )
   con.got( function( err,arg )
   {
     if( err )
-    {
-      clearTimeout( timer );
-      con.give( err );
-    }
+    clearTimeout( timer );
+    con.give( err,arg );
   });
 
   /* */
@@ -7595,32 +7591,37 @@ function timeOut( delay,onReady )
   _.assert( _.numberIs( delay ) );
 
   if( arguments[ 1 ] !== undefined && arguments[ 2 ] === undefined && arguments[ 3 ] === undefined )
-  _.assert( _.routineIs( onReady ) || _.consequenceIs( onReady ) );
+  _.assert( _.routineIs( onEnd ) || _.consequenceIs( onEnd ) );
   else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   _.assert( _.routineIs( arguments[ 2 ] ) );
 
-  function onEnd()
+  function handleEnd()
   {
     var result;
 
-    con.give();
-
-    if( onReady )
-    con.first( onReady );
+    if( con )
+    {
+      if( onEnd )
+      con.first( onEnd );
+      else
+      con.give( timeOut );
+    }
     else
-    con.give( timeOut );
+    {
+      onEnd();
+    }
 
   }
 
   if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   {
-    onReady = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
+    onEnd = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
   }
 
   if( delay > 0 )
-  timer = setTimeout( onEnd,delay );
+  timer = setTimeout( handleEnd,delay );
   else
-  timeSoon( onEnd );
+  timeSoon( handleEnd );
 
   return con;
 }
@@ -7675,6 +7676,8 @@ var timeSoon = typeof process === 'undefined' ? function( h ){ return setTimeout
 
 function timeOutError( delay,onReady )
 {
+  _.assert( _.Consequence );
+
   var result = _.timeOut.apply( this,arguments );
 
   result.doThen( function( err,data )
@@ -7702,6 +7705,7 @@ function timeOutError( delay,onReady )
 
 function timePeriodic( delay,onReady )
 {
+  _.assert( _.Consequence );
   var con = new _.Consequence();
   var id;
 
@@ -7729,7 +7733,7 @@ function timePeriodic( delay,onReady )
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con,null );
+    _.Consequence.give( con,null );
     con.doThen( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
@@ -7738,13 +7742,13 @@ function timePeriodic( delay,onReady )
     var result = onReady.ping();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con,null );
+    _.Consequence.give( con,null );
     con.doThen( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
-    wConsequence.give( con,null );
+    _.Consequence.give( con,null );
     con.doThen( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
