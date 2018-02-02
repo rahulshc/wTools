@@ -4273,6 +4273,8 @@ function errAttend( err )
 
 function errLog()
 {
+  debugger;
+
   var c = _global.logger || _global.console;
   var err = _err
   ({
@@ -7370,10 +7372,10 @@ function timeReady( onReady )
   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( arguments[ 0 ] ) || _.routineIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined );
 
-  var timeOut = 0;
+  var time = 0;
   if( _.numberIs( arguments[ 0 ] ) )
   {
-    timeOut = arguments[ 0 ];
+    time = arguments[ 0 ];
     onReady = arguments[ 1 ];
   }
 
@@ -7384,9 +7386,9 @@ function timeReady( onReady )
     function handleReady()
     {
       if( _.Consequence )
-      return _.timeOut( timeOut,onReady ).doThen( con );
+      return _.timeOut( time,onReady ).doThen( con );
       else if( onReady )
-      setTimeout( onReady,timeOut );
+      setTimeout( onReady,time );
       else _.assert( 0 );
     }
 
@@ -7396,9 +7398,9 @@ function timeReady( onReady )
   else
   {
     if( _.Consequence )
-    return _.timeOut( timeOut,onReady );
+    return _.timeOut( time,onReady );
     else if( onReady )
-    setTimeout( onReady,timeOut );
+    setTimeout( onReady,time );
     else _.assert( 0 );
   }
 
@@ -7594,6 +7596,8 @@ function timeOut( delay,onEnd )
   function handleEnd()
   {
     var result;
+
+    // console.log( 'timeOut' );
 
     if( con )
     {
@@ -9822,8 +9826,23 @@ function arrayResize( array,f,l,val )
 
 function arraySlice( array,f,l )
 {
-  if( _.numberIs( array ) && f === undefined && l === undefined )
-  return array;
+
+  if( _.numberIs( array ) )
+  debugger;
+
+  // if( _.numberIs( array ) && f === undefined && l === undefined )
+  // return array;
+
+  if( _.argumentsIs( array ) )
+  if( f === undefined && l === undefined )
+  {
+    if( array.length === 2 )
+    return [ array[ 0 ],array[ 1 ] ];
+    else if( array.length === 1 )
+    return [ array[ 0 ] ];
+    else if( array.length === 0 )
+    return [];
+  }
 
   var result;
   var f = f !== undefined ? f : 0;
@@ -14190,7 +14209,18 @@ function mapExtendToThis()
   return result;
 }
 
-  //
+//
+
+function mapStretch( dst,src )
+{
+  if( dst === null && arguments.length === 2 )
+  return _.mapExtend( dst,src );
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwn );
+  return mapExtendConditional.apply( this,args );
+}
+
+//
 
 /**
  * The mapSupplement() supplement destination map by source maps.
@@ -18012,11 +18042,15 @@ var Proto =
   mapExtendConditional : mapExtendConditional,
   mapExtend : mapExtend,
   mapExtendToThis : mapExtendToThis,
+
+  mapStretch : mapStretch,
+
   mapSupplement : mapSupplement,
   mapSupplementNulls : mapSupplementNulls,
   mapSupplementNils : mapSupplementNils,
   mapSupplementOrComplementPureContainers : mapSupplementOrComplementPureContainers,
   mapSupplementOwn : mapSupplementOwn,
+
   mapComplement : mapComplement,
   _mapComplementSlow : _mapComplementSlow,
   mapComplementWithUndefines : mapComplementWithUndefines,

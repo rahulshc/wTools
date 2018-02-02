@@ -356,19 +356,19 @@ _includeHandlerMap[ 'wTesting' ] =
 
 _includeHandlerMap[ 'wLogger' ] =
 {
-  includeAny : [ '../../abase/oclass/printer/top/Logger.s','abase/oclass/printer/top/Logger.s','wLogger' ],
+  includeAny : [ '../../abase/printer/top/Logger.s','abase/printer/top/Logger.s','wLogger' ],
   isIncluded : function(){ return /*typeof _global !== 'undefined' && */ !!_global.wTools && _global.wTools.Logger; },
 }
 
 _includeHandlerMap[ 'wPrinterToFile' ] =
 {
-  includeAny : [ '../../abase/oclass/printer/top/ToFile.ss','abase/oclass/printer/top/ToFile.ss','wloggertofile' ],
+  includeAny : [ '../../abase/printer/top/ToFile.ss','abase/printer/top/ToFile.ss','wloggertofile' ],
   isIncluded : function(){ return /*typeof _global !== 'undefined' && */ !!_global.wTools && _global.wTools.PrinterToFile; },
 }
 
 _includeHandlerMap[ 'wPrinterToJs' ] =
 {
-  includeAny : [ '../../abase/oclass/printer/top/ToJstructure.s','abase/oclass/printer/top/ToJstructure.s','wloggertojstructure' ],
+  includeAny : [ '../../abase/printer/top/ToJstructure.s','abase/printer/top/ToJstructure.s','wloggertojstructure' ],
   isIncluded : function(){ return /*typeof _global !== 'undefined' && */ !!_global.wTools && _global.wTools.PrinterToJs; },
 }
 

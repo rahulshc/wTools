@@ -44,7 +44,7 @@ var Self =
 
 }
 
-Self = wTestSuite( Self );
+Self = wTestSuit( Self );
 if( typeof module !== 'undefined' && !module.parent )
 _.Testing.test( Self.name );
 
