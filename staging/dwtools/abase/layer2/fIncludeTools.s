@@ -64,8 +64,6 @@ function pathUseGlobally( paths )
 function _pathUseGlobally( _module,paths,visited )
 {
 
-  debugger;
-
   _.assert( arguments.length === 3 );
   _.assert( _.arrayIs( paths ) );
 
