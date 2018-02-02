@@ -112,6 +112,7 @@ var _hasOwnProperty = Object.hasOwnProperty;
 var _propertyIsEumerable = Object.propertyIsEnumerable;
 var _ceil = Math.ceil;
 var _floor = Math.floor;
+var symbolForChainDescriptor = Symbol.for( 'chainDescriptor' );
 
 // --
 // iterator
@@ -5065,6 +5066,58 @@ function workerIs( src )
   {
     return typeof WorkerGlobalScope !== 'undefined';
   }
+}
+
+//
+
+function streamIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  return _.objectIs( src ) && _.routineIs( src.pipe )
+}
+
+//
+
+function consoleIsBarred( output )
+{
+  _.assert( output === console );
+  _.assert( arguments.length === 1 );
+
+  var descriptor = output[ symbolForChainDescriptor ];
+  if( !descriptor )
+  return false;
+
+  return !!descriptor.bar;
+}
+
+//
+
+function consoleIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( src !== console )
+  return false;
+
+  var result = Object.prototype.toString.call( src );
+  if( result === '[object Console]' || result === '[object Object]' )
+  return true;
+
+  return false;
+}
+
+//
+
+function processIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  var typeOf = _.strTypeOf( src );
+  if( typeOf === 'ChildProcess' || typeOf === 'process' )
+  return true;
+
+  return false;
 }
 
 // --
@@ -17671,6 +17724,11 @@ var Proto =
   typeIsBuffer : typeIsBuffer,
 
   workerIs : workerIs,
+
+  streamIs : streamIs,
+  consoleIsBarred : consoleIsBarred,
+  consoleIs : consoleIs,
+  processIs : processIs,
 
 
   // bool
