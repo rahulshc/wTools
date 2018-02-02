@@ -112,7 +112,6 @@ var _hasOwnProperty = Object.hasOwnProperty;
 var _propertyIsEumerable = Object.propertyIsEnumerable;
 var _ceil = Math.ceil;
 var _floor = Math.floor;
-var symbolForChainDescriptor = Symbol.for( 'chainDescriptor' );
 
 // --
 // iterator
@@ -5075,20 +5074,6 @@ function streamIs( src )
   _.assert( arguments.length === 1 );
 
   return _.objectIs( src ) && _.routineIs( src.pipe )
-}
-
-//
-
-function consoleIsBarred( output )
-{
-  _.assert( output === console );
-  _.assert( arguments.length === 1 );
-
-  var descriptor = output[ symbolForChainDescriptor ];
-  if( !descriptor )
-  return false;
-
-  return !!descriptor.bar;
 }
 
 //
@@ -17726,7 +17711,6 @@ var Proto =
   workerIs : workerIs,
 
   streamIs : streamIs,
-  consoleIsBarred : consoleIsBarred,
   consoleIs : consoleIs,
   processIs : processIs,
 
