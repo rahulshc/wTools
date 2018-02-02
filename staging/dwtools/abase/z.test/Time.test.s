@@ -4,29 +4,31 @@
 
 if( typeof module !== 'undefined' )
 {
-  if( typeof wBase === 'undefined' )
-  try
+
+  if( typeof _global_ === 'undefined' || !_global_.wBase )
   {
+    let toolsPath = '../../../dwtools/Base.s';
+    let toolsExternal = 0;
     try
     {
-      require.resolve( '../../Base.s' );
+      require.resolve( toolsPath )/*hhh*/;
     }
-    finally
+    catch( err )
     {
-      require( '../../Base.s' );
+      toolsExternal = 1;
+      require( 'wTools' );
     }
+    if( !toolsExternal )
+    require( toolsPath )/*hhh*/;
   }
-  catch( err )
-  {
-    require( 'wTools' );
-  }
-var _ = wTools;
+
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
 }
 
-var _ = wTools;
+var _ = _global_.wTools;
 
 // debugger;
 //
@@ -41,7 +43,7 @@ var _ = wTools;
 function timeOut( test )
 {
   var delay = 300;
-  var testCon = new wConsequence().give()
+  var testCon = new _.Consequence().give()
 
   /* */
 
@@ -280,7 +282,7 @@ function timeOutAsync( test )
     wConsequence.prototype.asyncGiving = giving;
     wConsequence.prototype.asyncTaking = taking;
   }
-  var testCon = new wConsequence().give()
+  var testCon = new _.Consequence().give()
 
   /* asyncGiving : 1, asyncTaking : 0 */
 
@@ -290,7 +292,7 @@ function timeOutAsync( test )
     test.description = 'delay only';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -315,7 +317,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -342,7 +344,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var value = 'value';
     var t = _.timeOut( delay, () => value );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -368,7 +370,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine that returns a consequence';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => _.timeOut( delay ) );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -394,7 +396,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine that calls another timeOut';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => { _.timeOut( delay ) } );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -424,7 +426,7 @@ function timeOutAsync( test )
       return delay / 2;
     }
     var t = _.timeOut( delay, undefined, r, [ delay ] );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -451,7 +453,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay );
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -481,7 +483,7 @@ function timeOutAsync( test )
     var t = _.timeOut( delay, () => { called = true } );
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
 
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -509,7 +511,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
 
-    var con = new wConsequence();
+    var con = new _.Consequence();
     con.first( t );
     con.doThen( function()
     {
@@ -550,7 +552,7 @@ function timeOutAsync( test )
     test.description = 'delay only';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -575,7 +577,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -602,7 +604,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var value = 'value';
     var t = _.timeOut( delay, () => value );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -628,7 +630,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine that returns a consequence';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => _.timeOut( delay ) );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -654,7 +656,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine that calls another timeOut';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => { _.timeOut( delay ) } );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -684,7 +686,7 @@ function timeOutAsync( test )
       return delay / 2;
     }
     var t = _.timeOut( delay, undefined, r, [ delay ] );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -711,7 +713,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay );
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -739,7 +741,7 @@ function timeOutAsync( test )
     var t = _.timeOut( delay, () => { called = true } );
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
 
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -764,7 +766,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
 
-    var con = new wConsequence();
+    var con = new _.Consequence();
     con.first( t );
     con.doThen( function()
     {
@@ -806,7 +808,7 @@ function timeOutAsync( test )
     test.description = 'delay only';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -831,7 +833,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -858,7 +860,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var value = 'value';
     var t = _.timeOut( delay, () => value );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -884,7 +886,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine that returns a consequence';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => _.timeOut( delay ) );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -910,7 +912,7 @@ function timeOutAsync( test )
     test.description = 'delay + routine that calls another timeOut';
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => { _.timeOut( delay ) } );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -940,7 +942,7 @@ function timeOutAsync( test )
       return delay / 2;
     }
     var t = _.timeOut( delay, undefined, r, [ delay ] );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -967,7 +969,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay );
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -997,7 +999,7 @@ function timeOutAsync( test )
     var t = _.timeOut( delay, () => { called = true } );
     _.timeOut( delay/ 2, () => t.error( 'stop' ) );
 
-    return new wConsequence().first( t )
+    return new _.Consequence().first( t )
     .doThen( function()
     {
       t.got( function( err, got )
@@ -1025,7 +1027,7 @@ function timeOutAsync( test )
     var timeBefore = _.timeNow();
     var t = _.timeOut( delay, () => {} );
 
-    var con = new wConsequence();
+    var con = new _.Consequence();
     con.first( t );
     con.doThen( function()
     {
@@ -1069,7 +1071,7 @@ timeOutAsync.timeOut = 20000;
 function timeOutError( test )
 {
   var delay = 300;
-  var testCon = new wConsequence().give()
+  var testCon = new _.Consequence().give()
 
   /* */
 

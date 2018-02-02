@@ -2,7 +2,8 @@
 
 'use strict';
 
-var _ = wTools;
+var _ = _global_.wTools;
+var Self = _global_.wTools;
 
 //
 
@@ -14,10 +15,10 @@ function _arrayDescriptorsApplyTo( dst )
 
   dst.withArray = Object.create( null );
 
-  for( var d in wTools.ArrayDescriptorsMap )
+  for( var d in _.ArrayDescriptorsMap )
   {
     dst.withArray[ d ] = Object.create( dst );
-    dst.withArray[ d ].array = wTools.ArrayDescriptorsMap[ d ];
+    dst.withArray[ d ].array = _.ArrayDescriptorsMap[ d ];
   }
 
 }
@@ -118,8 +119,8 @@ var Extend =
 }
 
 _.mapExtend( Descriptor,Extend );
-_.assert( !wTools.ArrayDescriptorsMap[ ArrayName ] );
-wTools.ArrayDescriptorsMap[ ArrayName ] = Descriptor;
+_.assert( !_.ArrayDescriptorsMap[ ArrayName ] );
+_.ArrayDescriptorsMap[ ArrayName ] = Descriptor;
 
 return Descriptor;
 
@@ -137,28 +138,37 @@ var Descriptors =
   { ArrayType : Array, ArrayName : 'Array' },
 ]
 
-if( wTools.ArrayDescriptorsMap )
+if( _.ArrayDescriptorsMap )
 return;
 
-_.assert( !wTools.ArrayDescriptorsMap );
-_.assert( !wTools.ArrayDescriptor );
-_.assert( !wTools.array );
-_.assert( !wTools.withArray );
+_.assert( !_.ArrayDescriptorsMap );
+_.assert( !_.ArrayDescriptor );
+_.assert( !_.array );
+_.assert( !_.withArray );
 
-wTools._arrayDescriptorsApplyTo = _arrayDescriptorsApplyTo;
-wTools.ArrayDescriptorsMap = wTools.ArrayDescriptorsMap || Object.create( null );
+_._arrayDescriptorsApplyTo = _arrayDescriptorsApplyTo;
+_.ArrayDescriptorsMap = _.ArrayDescriptorsMap || Object.create( null );
 
 for( var d = 0 ; d < Descriptors.length ; d++ )
 _declare( Descriptors[ d ] );
 
-wTools.array = wTools.ArrayDescriptorsMap.Array;
+_.array = _.ArrayDescriptorsMap.Array;
 
-_arrayDescriptorsApplyTo( wTools );
+_arrayDescriptorsApplyTo( _ );
 
-_.assert( _.objectIs( wTools.ArrayDescriptorsMap ) );
-_.assert( _.objectIs( wTools.array ) );
-_.assert( _.routineIs( wTools.array.makeArrayOfLength ) );
+_.assert( _.objectIs( _.ArrayDescriptorsMap ) );
+_.assert( _.objectIs( _.array ) );
+_.assert( _.routineIs( _.array.makeArrayOfLength ) );
 
-// debugger;
+// --
+// export
+// --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
+
+if( typeof module !== 'undefined' && module !== null )
+module[ 'exports' ] = Self;
 
 })();

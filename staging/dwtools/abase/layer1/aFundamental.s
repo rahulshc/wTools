@@ -1,5 +1,4 @@
-//#! /usr/bin/env node
-( function _aKernel_s_() {
+( function _aFundamental_s_() {
 
 'use strict';
 
@@ -16,85 +15,95 @@
 
 // global
 
-var _global_ = undefined;
-
-if( !_global_ && typeof Global !== 'undefined' && Global.Global === Global ) _global_ = Global;
-if( !_global_ && typeof global !== 'undefined' && global.global === global ) _global_ = global;
-if( !_global_ && typeof window !== 'undefined' && window.window === window ) _global_ = window;
-if( !_global_ && typeof self   !== 'undefined' && self.self === self ) _global_ = self;
+var _global = undefined;
+if( !_global && typeof Global !== 'undefined' && Global.Global === Global ) _global = Global;
+if( !_global && typeof global !== 'undefined' && global.global === global ) _global = global;
+if( !_global && typeof window !== 'undefined' && window.window === window ) _global = window;
+if( !_global && typeof self   !== 'undefined' && self.self === self ) _global = self;
+var _globalReal = _global;
+var _globalWas = _global._global_;
+if( _global._global_ )
+_global = _global._global_;
+_global._global_ = _global;
+_globalReal._globalReal_ = _globalReal;
 
 // veification
 
-if( 1 )
-if( _global_.wBase )
+if(  !_global_._UsingWtoolsPrivately_  )
 {
-  if( typeof __dirname !== 'undefined' )
-  wTools.pathUse( __dirname + '/../..' );
-/*
-  if( _global_.wBase !== _global_.wTools )
-  throw new Error( '_global_.wBase !== _global_.wTools' );
-*/
-  module[ 'exports' ] = _global_.wBase;
-  return;
-}
 
-if( _global_.wBase )
-{
-  throw new Error( 'wTools included several times' );
-}
-
-// global var
-
-_global_[ '_global_' ] = _global_;
-_global_._global_ = _global_;
-if( _global_.DEBUG === undefined )
-_global_.DEBUG = true;
-
-// parent
-
-if( typeof module !== 'undefined' && module !== null )
-{
-  try
+  if( _global_.wBase )
   {
-    if( !_global_.Underscore )
-    _global_.Underscore = require( 'underscore' );
+    if( typeof __dirname !== 'undefined' )
+    _global_.wTools.pathUse( __dirname + '/../..' );
+  /*
+    if( _global_.wBase !== _global_.wTools )
+    throw new Error( '_global_.wBase !== _global_.wTools' );
+  */
+    module[ 'exports' ] = _global_.wBase;
+    return;
   }
-  catch( err )
+
+  if( _global_.wBase )
   {
+    throw new Error( 'wTools included several times' );
   }
+
+  // if( _global_.DEBUG === undefined )
+  // _global_.DEBUG = true;
+
 }
 
-if( !_global_.Underscore && _global_._ )
-_global_.Underscore = _global_._;
+// config
 
-if( typeof wTools === 'undefined' )
-{
-  _global_.wTools = Object.create( null );
-}
-
-// specia globals
-
-_global_.def = Symbol.for( 'default' );
-_global_.all = Symbol.for( 'all' );
-_global_.any = Symbol.for( 'any' );
-_global_.none = Symbol.for( 'none' );
-_global_.nil = Symbol.for( 'nil' );
-
-wTools.def = _global_.def;
-wTools.all = _global_.all;
-wTools.any = _global_.any;
-wTools.none = _global_.none;
-wTools.nil = _global_.nil;
+if( !_globalReal.Config )
+_globalReal.Config = { debug : 1 }
+if( !_global_.Config )
+_global_.Config = { debug : 1 }
 
 //
+// if( typeof module !== 'undefined' && module !== null )
+// {
+//   try
+//   {
+//     if( !_global_.Underscore )
+//     _global_.Underscore = require( 'underscore' );
+//   }
+//   catch( err )
+//   {
+//   }
+// }
+
+if(  !_global_._UsingWtoolsPrivately_  )
+if( !_global_.Underscore && _global_._ )
+_global_.Underscore = _global_._;
 
 /**
  * wTools - Generic purpose tools of base level for solving problems in Java Script.
  * @class wTools
  */
 
-var Self = wTools;
-var _ = wTools;
+var Self = ( _global_.wTools || Object.create( null ) );
+var _ = Self;
+
+// specia globals
+
+if(  !_global_._UsingWtoolsPrivately_  )
+{
+  _global_.def = Symbol.for( 'default' );
+  _global_.all = Symbol.for( 'all' );
+  _global_.any = Symbol.for( 'any' );
+  _global_.none = Symbol.for( 'none' );
+  _global_.nil = Symbol.for( 'nil' );
+}
+
+Self.def = _global_.def;
+Self.all = _global_.all;
+Self.any = _global_.any;
+Self.none = _global_.none;
+Self.nil = _global_.nil;
+
+//
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -3791,7 +3800,6 @@ function _err( o )
       o.args[ a ] = '\n' + o.args[ a ];
       errors.push( arg );
 
-      debugger;
       o.location = _.diagnosticLocation({ error : arg, location : o.location });
 
     }
@@ -3950,7 +3958,7 @@ function _err( o )
       stack : stack,
       location : o.location,
     });
-    debugger;
+    // debugger;
     c = _.diagnosticCode
     ({
       location : o.location,
@@ -4265,8 +4273,9 @@ function errAttend( err )
 
 function errLog()
 {
+  debugger;
 
-  var c = _global_.logger || _global_.console;
+  var c = _global.logger || _global.console;
   var err = _err
   ({
     args : arguments,
@@ -4290,7 +4299,6 @@ function errLog()
 
   /* */
 
-  debugger;
   return err;
 }
 
@@ -4298,7 +4306,7 @@ function errLog()
 
 function errLogOnce( err )
 {
-  var c = _global_.logger || _global_.console;
+  var c = _global.logger || _global.console;
   var err = _err
   ({
     args : arguments,
@@ -4335,7 +4343,7 @@ function nothingIs( src )
   return true;
   if( src === undefined )
   return true;
-  if( src === wTools.nil )
+  if( src === _.nil )
   return true;
   return false;
 }
@@ -4905,7 +4913,7 @@ function imageLike( src )
 
 function domIs( src )
 {
-  if( !_global_.Node )
+  if( !_global.Node )
   return false;
   return src instanceof Node;
 }
@@ -4914,7 +4922,7 @@ function domIs( src )
 
 function domLike( src )
 {
-  if( !_global_.Node )
+  if( !_global.Node )
   return false;
   if( src instanceof Node )
   return true;
@@ -5028,7 +5036,7 @@ function typeIsBuffer( src )
   return src.name.indexOf( 'Array' ) !== -1;
 
 /*
-  var types = [ _global_.Int8Array, _global_.Uint8Array, _global_.Uint8ClampedArray, _global_.Int16Array, _global_.Uint16Array, _global_.Int32Array, _global_.Uint32Array, _global_.Float32Array, _global_.Float64Array ];
+  var types = [ _global.Int8Array, _global.Uint8Array, _global.Uint8ClampedArray, _global.Int16Array, _global.Uint16Array, _global.Int32Array, _global.Uint32Array, _global.Float32Array, _global.Float64Array ];
   for( var t = 0 ; t < types.length ; t++ )
   {
     var type = types[ t ];
@@ -5422,7 +5430,7 @@ function numbersFromInt( dst,length )
   else
   {
     for( var i = 0 ; i < dst.length ; i++ )
-    _.assert( _.numberIsInt( dst[ i ] ) );
+    _.assert( _.numberIsInt( dst[ i ] ),'expects integer, but got',dst[ i ] );
     _.assert( dst.length === length,'expects array of length',length,'but got',dst );
   }
 
@@ -6586,10 +6594,6 @@ function _routineBind( o )
   _.assert( _.routineIs( o.routine ),'expects routine' );
   _.assert( _.arrayLike( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
 
-  // if( _global_.wConsequence )
-  // if( wConsequence.prototype.got === o.routine )
-  // debugger;
-
   var routine = o.routine;
   var args = o.args;
   var context = o.context;
@@ -7368,23 +7372,24 @@ function timeReady( onReady )
   _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( arguments[ 0 ] ) || _.routineIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined );
 
-  var timeOut = 0;
+  var time = 0;
   if( _.numberIs( arguments[ 0 ] ) )
   {
-    timeOut = arguments[ 0 ];
+    time = arguments[ 0 ];
     onReady = arguments[ 1 ];
   }
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
-    var con = typeof wConsequence !== 'undefined' ? new wConsequence() : null;
+    var con = _.Consequence ? new _.Consequence() : null;
 
     function handleReady()
     {
-      if( typeof wConsequence !== 'undefined' )
-      return _.timeOut( timeOut,onReady ).doThen( con );
-      else
-      setTimeout( onReady,timeOut );
+      if( _.Consequence )
+      return _.timeOut( time,onReady ).doThen( con );
+      else if( onReady )
+      setTimeout( onReady,time );
+      else _.assert( 0 );
     }
 
     window.addEventListener( 'load',handleReady );
@@ -7392,10 +7397,11 @@ function timeReady( onReady )
   }
   else
   {
-    if( typeof wConsequence !== 'undefined' )
-    return _.timeOut( timeOut,onReady );
-    else
-    setTimeout( onReady,timeOut );
+    if( _.Consequence )
+    return _.timeOut( time,onReady );
+    else if( onReady )
+    setTimeout( onReady,time );
+    else _.assert( 0 );
   }
 
 }
@@ -7423,8 +7429,7 @@ function timeReadyJoin( context,routine,args )
 
 function timeOnce( delay,onBegin,onEnd )
 {
-
-  var con = new wConsequence();
+  var con = _.Consequence ? new _.Consequence() : undefined;
   var taken = false;
   var options;
   var optionsDefault =
@@ -7466,6 +7471,7 @@ function timeOnce( delay,onBegin,onEnd )
     {
       if( _.routineIs( onBegin ) ) onBegin.apply( this,arguments );
       else if( _.objectIs( onBegin ) ) onBegin.give( arguments );
+      if( con )
       con.give();
     }
 
@@ -7476,6 +7482,7 @@ function timeOnce( delay,onBegin,onEnd )
       {
         if( _.routineIs( onEnd ) ) onEnd.apply( this,arguments );
         else if( _.objectIs( onEnd ) ) onEnd.give( arguments );
+        if( con )
         con.give();
       }
       taken = false;
@@ -7522,7 +7529,7 @@ function timeOnce( delay,onBegin,onEnd )
  *
  * @example
  * // Routine returns consequence
- * var routine = () => new wConsequence().give( 'msg' );
+ * var routine = () => new _.Consequence().give( 'msg' );
  * var t = _.timeOut( 1000, routine );
  * t.got( ( err, got ) => console.log( 'Message from routine : ', got ) );
  * console.log( 'Normal message' )
@@ -7556,25 +7563,24 @@ function timeOnce( delay,onBegin,onEnd )
  *
  * @returns {wConsequence} Returns wConsequence instance that resolves message when work is done.
  * @throws {Error} If ( delay ) is not a Number.
- * @throws {Error} If ( onReady ) is not a routine or wConsequence instance.
+ * @throws {Error} If ( onEnd ) is not a routine or wConsequence instance.
  * @function timeOut
  * @memberof wTools
  */
 
-function timeOut( delay,onReady )
+function timeOut( delay,onEnd )
 {
-  var con = new wConsequence();
+  var con = _.Consequence ? new _.Consequence() : undefined;
   var timer = null;
 
   /* */
 
+  if( con )
   con.got( function( err,arg )
   {
     if( err )
-    {
-      clearTimeout( timer );
-      con.give( err );
-    }
+    clearTimeout( timer );
+    con.give( err,arg );
   });
 
   /* */
@@ -7583,39 +7589,46 @@ function timeOut( delay,onReady )
   _.assert( _.numberIs( delay ) );
 
   if( arguments[ 1 ] !== undefined && arguments[ 2 ] === undefined && arguments[ 3 ] === undefined )
-  _.assert( _.routineIs( onReady ) || _.consequenceIs( onReady ) );
+  _.assert( _.routineIs( onEnd ) || _.consequenceIs( onEnd ) );
   else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   _.assert( _.routineIs( arguments[ 2 ] ) );
 
-  function onEnd()
+  function handleEnd()
   {
     var result;
 
-    con.give();
+    // console.log( 'timeOut' );
 
-    if( onReady )
-    con.first( onReady );
+    if( con )
+    {
+      if( onEnd )
+      con.first( onEnd );
+      else
+      con.give( timeOut );
+    }
     else
-    con.give( timeOut );
+    {
+      onEnd();
+    }
 
   }
 
   if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   {
-    onReady = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
+    onEnd = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
   }
 
   if( delay > 0 )
-  timer = setTimeout( onEnd,delay );
+  timer = setTimeout( handleEnd,delay );
   else
-  timeSoon( onEnd );
+  timeSoon( handleEnd );
 
   return con;
 }
 
 //
 
-var timeSoon = typeof module === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
+var timeSoon = typeof process === 'undefined' ? function( h ){ return setTimeout( h,0 ) } : process.nextTick;
 
 //
 
@@ -7663,6 +7676,8 @@ var timeSoon = typeof module === 'undefined' ? function( h ){ return setTimeout(
 
 function timeOutError( delay,onReady )
 {
+  _.assert( _.Consequence );
+
   var result = _.timeOut.apply( this,arguments );
 
   result.doThen( function( err,data )
@@ -7680,7 +7695,7 @@ function timeOutError( delay,onReady )
       value : 1,
     });
 
-    return wConsequence().error( err );
+    return _.Consequence().error( err );
   });
 
   return result;
@@ -7690,7 +7705,8 @@ function timeOutError( delay,onReady )
 
 function timePeriodic( delay,onReady )
 {
-  var con = new wConsequence();
+  _.assert( _.Consequence );
+  var con = new _.Consequence();
   var id;
 
   _.assert( arguments.length === 2 );
@@ -7717,7 +7733,7 @@ function timePeriodic( delay,onReady )
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con,null );
+    _.Consequence.give( con,null );
     con.doThen( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
@@ -7726,13 +7742,13 @@ function timePeriodic( delay,onReady )
     var result = onReady.ping();
     if( result === false )
     clearInterval( id );
-    wConsequence.give( con,null );
+    _.Consequence.give( con,null );
     con.doThen( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
-    wConsequence.give( con,null );
+    _.Consequence.give( con,null );
     con.doThen( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
@@ -8454,7 +8470,7 @@ function bufferRawFrom( buffer )
     result = _.encode.utf8ToBuffer( buffer ).buffer;
 
   }
-  else if( _global_.File && buffer instanceof File )
+  else if( _global.File && buffer instanceof File )
   {
     var fileReader = new FileReaderSync();
     result = fileReader.readAsArrayBuffer( buffer );
@@ -8685,7 +8701,7 @@ function buffersDeserialize( o )
   {
     var attribute = store[ 'attributes' ][ a ];
 
-    var bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global_[ attribute[ 'bufferConstructorName' ] ];
+    var bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global[ attribute[ 'bufferConstructorName' ] ];
     var offset = attribute[ 'offsetInCommonBuffer' ];
     var size = attribute[ 'size' ];
     var sizeOfAtom = attribute[ 'sizeOfAtom' ];
@@ -9810,8 +9826,23 @@ function arrayResize( array,f,l,val )
 
 function arraySlice( array,f,l )
 {
-  if( _.numberIs( array ) && f === undefined && l === undefined )
-  return array;
+
+  if( _.numberIs( array ) )
+  debugger;
+
+  // if( _.numberIs( array ) && f === undefined && l === undefined )
+  // return array;
+
+  if( _.argumentsIs( array ) )
+  if( f === undefined && l === undefined )
+  {
+    if( array.length === 2 )
+    return [ array[ 0 ],array[ 1 ] ];
+    else if( array.length === 1 )
+    return [ array[ 0 ] ];
+    else if( array.length === 0 )
+    return [];
+  }
 
   var result;
   var f = f !== undefined ? f : 0;
@@ -10305,7 +10336,7 @@ function arraySelect( srcArray,indicesArray )
 }
 
 // --
-// array manipulator
+// array mutator
 // --
 
 function arraySet( dst, index, value )
@@ -10834,6 +10865,39 @@ function arrayShuffle( dst,times )
   }
 
   return dst;
+}
+
+//
+
+function arraySort( srcArray,onElement )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( onElement === undefined || _.routineIs( onElement ) );
+
+  if( onElement === undefined )
+  {
+    debugger;
+    srcArray.sort();
+  }
+  else if( onElement.length === 2 )
+  {
+    debugger;
+    srcArray.sort( onElement );
+  }
+  else if( onElement.length === 1 )
+  {
+    srcArray.sort( function( a,b )
+    {
+      a = onElement( a );
+      b = onElement( b );
+      if( a > b ) return +1;
+      else if( a < b ) return -1;
+      else return 0;
+    });
+  }
+  else _.assert( 0,'Expects signle-arguments mapper or two-argument comparator' );
+
+  return srcArray;
 }
 
 //
@@ -12692,11 +12756,11 @@ function arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
 // array remove
 // --
 
-// function arrayRemove( dstArray, ins, onEqualize )
-// {
-//   arrayRemoved.apply( this, arguments );
-//   return dstArray;
-// }
+function arrayRemove( dstArray, ins, onEqualize )
+{
+  arrayRemoved.apply( this, arguments );
+  return dstArray;
+}
 
 /**
  * The arrayRemoveOnce() routine removes the first matching element from (dstArray)
@@ -12753,85 +12817,20 @@ function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
 
 //
 
-/**
- * Callback for compare two value.
- *
- * @callback arrayRemoved~compareCallback
- * @param { * } el - The element of the array.
- * @param { * } ins - The value to compare.
- */
+function arrayRemoved( dstArray, ins, onEqualize )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
 
-/**
- * The arrayRemoved() routine removes all (ins) values from (dstArray)
- * that corresponds to the condition in the callback function and returns the amount of them.
- *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
- * checks if (onElement) is equal to the 'undefined'.
- * If true, it assigns by default callback function that checks the equality of two arguments.
- * Otherwise, it uses given callback function(onElement).
- * Then it iterates over (dstArray) from the end to the beginning, checks if (onElement) returns true.
- * If true, it removes the value (ins) from (dstArray) array by corresponding index, and increases (result++).
- *
- * @param { Array } dstArray - The source array.
- * @param { * } ins - The value to remove.
- * @param { compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
- * By default, it checks the equality of two arguments.
- *
- * @example
- * // returns 4
- * var arr = _.arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5, function( el, ins ) {
- *   return el < ins;
- * });
- *
- * @example
- * // returns 3
- * var arr = _.arrayRemoved( [ 1, 2, 3, 4, 5, 5, 5 ], 5 );
- *
- * @returns { Number } - Returns the amount of the removed elements.
- * @function arrayRemoved
- * @throws { Error } If the first argument is not an array-like.
- * @throws { Error } If passed less than two or more than three arguments.
- * @throws { Error } If the third argument is not a function.
- * @memberof wTools
- */
+  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
 
-// function arrayRemoved( dstArray,ins,onEqualize )
-// {
-//   _.assert( _.arrayLike( dstArray ) );
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//
-//   if( arguments.length === 3 )
-//   _.assert( _.routineIs( onEqualize ) );
-//
-//   var result = 0;
-//
-//   if( onEqualize === undefined )
-//   onEqualize = function( a,b ){ return a === b };
-//
-//   for( var d = dstArray.length-1 ; d >= 0 ; d-- )
-//   if( onEqualize( dstArray[ d ],ins ) )
-//   {
-//     dstArray.splice( d,1 );
-//     result += 1;
-//   }
-//
-//   return result;
-// }
+  if( index !== -1 )
+  {
+    dstArray.splice( index,1 );
+  }
 
-// function arrayRemoved( dstArray, ins, onEqualize )
-// {
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//   _.assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
-//
-//   var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
-//
-//   if( index !== -1 )
-//   {
-//     dstArray.splice( index,1 );
-//   }
-//
-//   return index;
-// }
+  return index;
+}
 
 //
 
@@ -14210,7 +14209,18 @@ function mapExtendToThis()
   return result;
 }
 
-  //
+//
+
+function mapStretch( dst,src )
+{
+  if( dst === null && arguments.length === 2 )
+  return _.mapExtend( dst,src );
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwn );
+  return mapExtendConditional.apply( this,args );
+}
+
+//
 
 /**
  * The mapSupplement() supplement destination map by source maps.
@@ -14473,7 +14483,6 @@ function _mapFieldFilterMake( filter )
 {
 
   _.assert( arguments.length === 1 );
-  debugger;
 
   if( _.routineIs( filter ) )
   filter = { filterUp : filter, filterField : filter }
@@ -17466,6 +17475,7 @@ var error =
   ErrorAbort : ErrorAbort,
 }
 
+// if( !_global._UsingWtoolsPrivately_ )
 Error.stackTraceLimit = Infinity;
 
 /**
@@ -17860,7 +17870,7 @@ var Proto =
   arraySelect : arraySelect,
 
 
-  // array manipulator
+  // array mutator
 
   arraySet : arraySet,
   arraySwap : arraySwap,
@@ -17874,6 +17884,7 @@ var Proto =
   arrayExtendScreening : arrayExtendScreening, /* experimental */
 
   arrayShuffle : arrayShuffle,
+  arraySort : arraySort,
 
 
   // array sequential search
@@ -17960,10 +17971,10 @@ var Proto =
 
   // array remove
 
-  // arrayRemove : arrayRemove,
+  arrayRemove : arrayRemove,
   arrayRemoveOnce : arrayRemoveOnce,
   arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
-  // arrayRemoved : arrayRemoved,
+  arrayRemoved : arrayRemoved,
   arrayRemovedOnce : arrayRemovedOnce,
 
   arrayRemoveArray : arrayRemoveArray,
@@ -18031,11 +18042,15 @@ var Proto =
   mapExtendConditional : mapExtendConditional,
   mapExtend : mapExtend,
   mapExtendToThis : mapExtendToThis,
+
+  mapStretch : mapStretch,
+
   mapSupplement : mapSupplement,
   mapSupplementNulls : mapSupplementNulls,
   mapSupplementNils : mapSupplementNils,
   mapSupplementOrComplementPureContainers : mapSupplementOrComplementPureContainers,
   mapSupplementOwn : mapSupplementOwn,
+
   mapComplement : mapComplement,
   _mapComplementSlow : _mapComplementSlow,
   mapComplementWithUndefines : mapComplementWithUndefines,
@@ -18163,6 +18178,14 @@ Object.assign( Self,Proto );
 _global_[ 'wTools' ] = Self;
 _global_.wTools = Self;
 _global_.wBase = Self;
+
+// --
+// export
+// --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

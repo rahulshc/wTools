@@ -8,23 +8,25 @@ if( typeof module !== 'undefined' )
 {
 
   isBrowser = false;
-  if( typeof wBase === 'undefined' )
-  try
+
+  if( typeof _global_ === 'undefined' || !_global_.wBase )
   {
+    let toolsPath = '../../../dwtools/Base.s';
+    let toolsExternal = 0;
     try
     {
-      require.resolve( '../../Base.s' );
+      require.resolve( toolsPath )/*hhh*/;
     }
-    finally
+    catch( err )
     {
-      require( '../../Base.s' );
+      toolsExternal = 1;
+      require( 'wTools' );
     }
+    if( !toolsExternal )
+    require( toolsPath )/*hhh*/;
   }
-  catch( err )
-  {
-    require( 'wTools' );
-  }
-var _ = wTools;
+
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
@@ -34,7 +36,7 @@ var _ = wTools;
 !!! temp files cleanup needed
 */
 
-var _ = wTools;
+var _ = _global_.wTools;
 var Self = {};
 
 // return;
@@ -86,16 +88,16 @@ function shell( test )
         require( 'wTools' );
       }
 
-      var _ = wTools;
+      var _ = _global_.wTools;
 
       _.include( 'wConsequence' );
 
     }
 
-    var _ = wTools;
+    var _ = _global_.wTools;
 
     var args = _.appArgs();
-    var con = new wConsequence().give();
+    var con = new _.Consequence().give();
     con.timeOutThen( _.numberRandomInt( [ 300, 2000 ] ), function()
     {
       if( args.map.exitWithCode )
@@ -118,7 +120,7 @@ function shell( test )
   _.fileProvider.fileWrite( testAppPath, testApp );
 
   var o;
-  var con = new wConsequence().give();
+  var con = new _.Consequence().give();
 
   con.doThen( function()
   {
@@ -395,8 +397,8 @@ var Proto =
   name : 'ExecTools',
   silencing : 1,
   // verbosity : 9,
-  // suiteFileLocation : suiteFileLocation,
-  // logger : wPrinterToJstructure(),
+  // suitFileLocation : suitFileLocation,
+  // logger : wPrinterToJs(),
 
   onSuitBegin : testDirMake,
   onSuitEnd : cleanTestDir,

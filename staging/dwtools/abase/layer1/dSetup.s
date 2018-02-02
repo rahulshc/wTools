@@ -2,8 +2,8 @@
 
 'use strict';
 
-var _ = wTools;
-var Self = wTools;
+var _ = _global_.wTools;
+var Self = _global_.wTools;
 
 // --
 // setup
@@ -12,14 +12,15 @@ var Self = wTools;
 function _setupConfig()
 {
 
+  if( _global_._UsingWtoolsPrivately_ )
+  return;
+
   // debugger;
 
   /* config */
 
   if( !_global_.Config )
-  {
-    _global_.Config = Object.create( null );
-  }
+  _global_.Config = Object.create( null );
 
   if( _global_.Config.debug === undefined )
   _global_.Config.debug = true;
@@ -46,8 +47,8 @@ function _setupConfig()
   // });
 
   _global_.Config.debug = !!_global_.Config.debug;
-  _global_.DEBUG = _global_.Config.debug;
 
+  // _global_.DEBUG = _global_.Config.debug;
   // debugger;
 
 }
@@ -132,35 +133,35 @@ function _setupLoggerPlaceholder()
 function _setupTesterPlaceholder()
 {
 
-  if( !_global_.wTestSuite )
-  _global_.wTestSuite = function wTestSuite( testSuite )
+  if( !_global_.wTestSuit )
+  _global_.wTestSuit = function wTestSuit( testSuit )
   {
 
-    if( !_global_.wTests )
-    _global_.wTests = Object.create( null );
+    if( !_globalReal_.wTests )
+    _globalReal_.wTests = Object.create( null );
 
-    if( !testSuite.suiteFilePath )
-    testSuite.suiteFilePath = _.diagnosticLocation( 1 ).path;
+    if( !testSuit.suitFilePath )
+    testSuit.suitFilePath = _.diagnosticLocation( 1 ).path;
 
-    if( !testSuite.suiteFileLocation )
-    testSuite.suiteFileLocation = _.diagnosticLocation( 1 ).full;
+    if( !testSuit.suitFileLocation )
+    testSuit.suitFileLocation = _.diagnosticLocation( 1 ).full;
 
-    _.assert( _.strIsNotEmpty( testSuite.suiteFileLocation ),'Test suite expects a mandatory option ( suiteFileLocation )' );
-    _.assert( _.objectIs( testSuite ) );
+    _.assert( _.strIsNotEmpty( testSuit.suitFileLocation ),'Test suit expects a mandatory option ( suitFileLocation )' );
+    _.assert( _.objectIs( testSuit ) );
 
-    // if( testSuite.name === 'Chaining test' )
+    // if( testSuit.name === 'Chaining test' )
     // debugger;
 
-    if( !testSuite.abstract )
-    _.assert( !_global_.wTests[ testSuite.name ],'Test suite with name "' + testSuite.name + '" already registered!' );
-    _global_.wTests[ testSuite.name ] = testSuite;
+    if( !testSuit.abstract )
+    _.assert( !_globalReal_.wTests[ testSuit.name ],'Test suit with name "' + testSuit.name + '" already registered!' );
+    _globalReal_.wTests[ testSuit.name ] = testSuit;
 
-    testSuite.inherit = function inherit()
+    testSuit.inherit = function inherit()
     {
       this.inherit = _.arraySlice( arguments );
     }
 
-    return testSuite;
+    return testSuit;
   }
 
   /* */
@@ -168,17 +169,17 @@ function _setupTesterPlaceholder()
   if( !_.Tester )
   {
     _.Tester = Object.create( null );
-    _.Tester.test = function test( testSuiteName )
+    _.Tester.test = function test( testSuitName )
     {
       if( _.workerIs() )
       return;
       _.assert( arguments.length === 0 || arguments.length === 1 );
-      _.assert( _.strIs( testSuiteName ) || testSuiteName === undefined,'test : expects string ( testSuiteName )' );
+      _.assert( _.strIs( testSuitName ) || testSuitName === undefined,'test : expects string ( testSuitName )' );
       _.timeReady( function()
       {
         if( _.Tester.test === test )
         throw _.err( 'Cant wTesting.test, missing wTesting package' );
-        _.Tester.test.call( _.Tester,testSuiteName );
+        _.Tester.test.call( _.Tester,testSuitName );
       });
     }
   }
@@ -191,9 +192,9 @@ function _setup()
 {
 
   Self.timeNow = Self._timeNow_functor();
-  _.assert( Self.timeNow );
+  Self._sourcePath = _.diagnosticStack( 1 );
 
-  Self._sourceDirPath = _.diagnosticStack( 1 );
+  _.assert( Self.timeNow );
 
   if( _global_._wToolsInitConfigExpected !== false )
   {
@@ -228,6 +229,10 @@ Self._setup();
 // --
 // export
 // --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

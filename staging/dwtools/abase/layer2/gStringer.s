@@ -12,8 +12,8 @@
 
 //
 
-var Self = wTools;
-var _ = wTools;
+var Self = _global_.wTools;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -911,6 +911,9 @@ function _toStrFromRoutine( src,o )
 
   if( o.jstructLike )
   {
+    if( _.routineSourceGet )
+    result = _.routineSourceGet( src );
+    else
     result = src.toString();
   }
   else
@@ -1555,22 +1558,34 @@ function _toStrFromObject( src,o )
 
 //
 
-function toJson( src )
+function toJson( src,o )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var result = _.toStr( src,{ jsonLike : 1, levels : 1 << 20 } );
+  o = o || Object.create( null );
+
+  var def =
+  {
+    jsonLike : 1,
+    levels : 1 << 20
+  }
+
+  _.mapSupplement( o,def );
+
+  var result = _.toStr( src,o );
 
   return result;
 }
 
 //
 
-function toJstruct( src )
+function toJstruct( src,o )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var toStrOptions =
+  o = o || Object.create( null );
+
+  var def =
   {
     escaping : 1,
     multilinedString : 1,
@@ -1580,7 +1595,9 @@ function toJstruct( src )
     jstructLike : 1,
   }
 
-  var result = _.toStr( src,toStrOptions );
+  _.mapSupplement( o,def );
+
+  var result = _.toStr( src,o );
 
   return result;
 }
@@ -1629,7 +1646,13 @@ _.mapExtend( Self, Proto );
 var toStrFine = Self.toStrFine = Self.toStrFine_functor();
 var toStr = Self.toStr = Self.strFrom = toStrFine;
 
-//
+// --
+// export
+// --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

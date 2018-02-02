@@ -12,13 +12,13 @@
 
 // if( typeof module !== 'undefined' )
 // {
-//   wTools.includeAny( __dirname + '/Proto.s','wProto','' );
+//   _.includeAny( __dirname + '/Proto.s','wProto','' );
 // }
 
 //
 
-var Self = wTools;
-var _ = wTools;
+var Self = _global_.wTools;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -1728,67 +1728,6 @@ function strReplaceNames( src,ins,sub )
 
 //
 
-function strFind( o )
-{
-  var result = [];
-
-  _.assert( arguments.length === 1 );
-  _.routineOptions( strFind,o );
-
-  if( _.strIs( o.ins ) )
-  {
-    o.ins = _.regexpEscape( o.ins );
-    if( o.toleratingText )
-    {
-      // o.ins = _.strReplaceAll( o.ins,/\s+/,'\\s*' );
-      o.ins = o.ins.replace( /\s+/g,'\\s*' );
-      // o.ins = o.ins.replace( /(\w+)/,'\\s*$1\\s*' );
-      // o.ins = o.ins.replace( /\\s\*\\s\*/g,'\\s*' );
-    }
-    o.ins = RegExp( o.ins,'g' );
-  }
-
-  do
-  {
-    var execed = o.ins.exec( o.src );
-    if( execed )
-    {
-      var r = Object.create( null );
-
-      r.ins = execed[ 0 ];
-      r.range = [ execed.index, execed.index + r.ins.length ];
-      r.rrange = [ o.src.length - execed.index, o.src.length - execed.index - r.ins.length ];
-
-      if( o.determiningLineNumber )
-      {
-        var first = o.src.substring( 0,r.range[ 0 ] ).split( '\n' ).length;
-        r.lines = [ first,first+o.src.substring( r.range[ 0 ],r.range[ 1 ] ).split( '\n' ).length ];
-      }
-
-      if( o.nearestLines )
-      r.nearest = _.strLinesNearest({ src : o.src, charRange : r.range, numberOfLines : o.nearestLines });
-
-      result.push( r );
-    }
-
-  }
-  while( execed );
-
-  return result;
-}
-
-strFind.defaults =
-{
-  src : null,
-  ins : null,
-  onIns : null,
-  nearestLines : 4,
-  determiningLineNumber : 0,
-  toleratingText : 0,
-}
-
-//
-
 /**
  * Joins objects from arguments list together by concatenating their values in orded that they are specified.
  * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
@@ -2091,7 +2030,7 @@ function strUnjoin( srcStr,maskArray )
   return result;
 }
 
-strUnjoin.any = _global_.any;
+strUnjoin.any = _.any;
 _.assert( strUnjoin.any );
 
 //
@@ -2820,6 +2759,11 @@ function strLinesNearest( o )
 {
   var resultCharRange = [];
 
+  _.assert( arguments.length === 1 );
+  _.routineOptions( strLinesNearest,o );
+
+  /* */
+
   var numberOfLines = o.numberOfLines;
   for( var i = o.charRange[ 0 ]-1 ; i >= 0 ; i-- )
   {
@@ -2842,7 +2786,21 @@ function strLinesNearest( o )
   }
   resultCharRange[ 1 ] = i-1;
 
-  var result = o.src.substring( resultCharRange[ 0 ],resultCharRange[ 1 ] );
+  /* */
+
+  var result;
+
+  if( o.nearestSplitting )
+  {
+    result = [];
+    result[ 0 ] = o.src.substring( resultCharRange[ 0 ],o.charRange[ 0 ] );
+    result[ 1 ] = o.src.substring( o.charRange[ 0 ],o.charRange[ 1 ] );
+    result[ 2 ] = o.src.substring( o.charRange[ 1 ],resultCharRange[ 1 ] );
+  }
+  else
+  {
+    result = o.src.substring( resultCharRange[ 0 ],resultCharRange[ 1 ] );
+  }
 
   return result;
 }
@@ -2852,9 +2810,9 @@ strLinesNearest.defaults =
   src : null,
   charRange : null,
   numberOfLines : 2,
-}
+  nearestSplitting : 0,
+  }
 
-//
 
 /**
  * Returns number of occurrences of a substring( ins ) in a string( src ),
@@ -3209,7 +3167,7 @@ function strsSort( srcs )
 
   _.assert( _.arrayIs( srcs ) );
 
-  debugger;
+  // debugger;
 
   var result = srcs.sort( function( a, b )
   {
@@ -3221,175 +3179,6 @@ function strsSort( srcs )
   });
 
   return result;
-}
-
-//
-
-function strExtractStrips( src, o )
-{
-  _.assert( _.strIs( src ) );
-  _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.routineOptions( strExtractStrips, o );
-
-  var result = [];
-  var splitted = src.split( o.delimeter );
-  var isNextStrip = 0;
-  var isPrevStrip = 0;
-
-  /* */
-
-  for( var i = 0; i < splitted.length; i++ )
-  {
-
-    if( !isNextStrip )
-    {
-      isNextStrip = 1;
-      if( splitted[ i ] )
-      {
-        isPrevStrip = 0;
-        result.push( splitted[ i ] );
-      }
-      continue;
-    }
-
-    var strip = o.onStrip ? o.onStrip( splitted[ i ] ) : splitted[ i ];
-    if( strip !== undefined )
-    {
-      isNextStrip = 0;
-      isPrevStrip = 1;
-      result.push( strip );
-    }
-    else
-    {
-      if( !isPrevStrip && result.length > 0 )
-      result[ result.length-1 ] += o.delimeter + splitted[ i ];
-      else
-      result.push( o.delimeter + splitted[ i ] );
-      isNextStrip = 1;
-      isPrevStrip = 0;
-    }
-
-  }
-
-  return result;
-}
-
-strExtractStrips.defaults =
-{
-  delimeter : '#',
-  onStrip : null
-}
-
-//
-
-/**
- * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
- *
- * Returns result as array of strings.
- *
- * Function extracts words in two attempts:
- * First by splitting source string by ( o.prefix ).
- * Second by splitting each element of the result of first attempt by( o.postfix ).
- * If splitting by ( o.prefix ) gives only single element then second attempt is skipped,otherwise function
- * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onStrip ) function on first half.
- * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
- * with ( o.prefix ) prepended to the last element of result array.
- *
- * @param {string} src - Source string.
- * @param {object} o - Options map.
- * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
- * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
- * @param {string} [ o.onStrip = null ] - function called on each splitted part of a source string
- * @returns {object} Returns an array of strings separated by( o.delimeter ).
- *
- * @example
- * _.strExtractStereoStrips( '#abc#' );
- * //returns [ '', 'abc', '' ]
- *
- * @example
- * _.strExtractStereoStrips.call( { prefix : '#', postfix : '$' }, '#abc$' );
- * //returns [ 'abc' ]
- *
- * @example
- * function onStrip( strip )
- * {
- *   if( strip.length )
- *   return strip.toUpperCase();
- * }
- * _.strExtractStereoStrips.call( { postfix : '$', onStrip : onStrip }, '#abc$' );
- * //returns [ 'ABC' ]
- *
- * @method strExtractStereoStrips
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @memberof wTools
- *
- */
-
-function strExtractStereoStrips( src )
-{
-
-  var o = this !== Self ? this : Object.create( null );
-
-  _.assert( _.strIs( src ) );
-  _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1 );
-  //_.assert( arguments.length === 1 || arguments.length === 2 );
-  _.routineOptions( strExtractStereoStrips, o );
-
-  var result = [];
-  var splitted = src.split( o.prefix );
-
-  if( splitted.length === 1 )
-  return splitted;
-
-  /* */
-
-  if( splitted[ 0 ] )
-  result.push( splitted[ 0 ] );
-
-  /* */
-
-  for( var i = 1; i < splitted.length; i++ )
-  {
-
-    var halfs = strCutOffLeft( splitted[ i ],o.postfix );
-
-    if( halfs.length === 3 )
-    halfs = [ halfs[ 0 ], halfs[ 2 ] ]
-
-    var strip = o.onStrip ? o.onStrip( halfs[ 0 ] ) : halfs[ 0 ];
-
-    if( strip !== undefined )
-    {
-      result.push( strip );
-      if( halfs[ 1 ] )
-      result.push( halfs[ 1 ] );
-    }
-    else
-    {
-      if( result.length )
-      result[ result.length-1 ] += o.prefix + splitted[ i ];
-      else
-      result.push( o.prefix + splitted[ i ] );
-    }
-
-  }
-
-  return result;
-}
-
-strExtractStereoStrips.defaults =
-{
-  prefix : '#',
-  postfix : '#',
-  onStrip : null
 }
 
 // --
@@ -3430,8 +3219,6 @@ var Proto =
   strReplaceAll : strReplaceAll, /* document me */
   strReplaceNames : strReplaceNames,
 
-  strFind : strFind,
-
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
   strConcat : strConcat, /* me too */
@@ -3471,14 +3258,17 @@ var Proto =
 
   strsSort : strsSort,
 
-  strExtractStrips : strExtractStrips,
-  strExtractStereoStrips : strExtractStereoStrips,
-
 }
 
 _.mapExtend( Self, Proto );
 
-//
+// --
+// export
+// --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

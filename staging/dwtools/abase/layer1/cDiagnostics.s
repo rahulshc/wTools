@@ -10,10 +10,9 @@ var _propertyIsEumerable = Object.propertyIsEnumerable;
 var _ceil = Math.ceil;
 var _floor = Math.floor;
 
-var _ = wTools;
+var _ = _global_.wTools;
 var _err = _._err;
-
-var Self = wTools;
+var Self = _global_.wTools;
 
 //
 
@@ -892,7 +891,7 @@ function beep()
 //
 
 /**
- * Checks condition passed by argument( condition ). Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion failed'.
  * Also generates error using message(s) or existing error object(s) passed after first argument.
  *
@@ -957,7 +956,7 @@ function assert( condition )
 
   /*return;*/
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   if( !condition )
@@ -993,7 +992,7 @@ function assertWithoutBreakpoint( condition )
 
   /*return;*/
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   if( !condition )
@@ -1024,7 +1023,7 @@ function assertWithoutBreakpoint( condition )
 //
 
 /**
- * Checks if map passed by argument( src ) not contains undefined properties. Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * Checks if map passed by argument( src ) not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed after first argument.
  *
@@ -1063,7 +1062,7 @@ function assertWithoutBreakpoint( condition )
 function assertMapHasNoUndefine( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   _.assert( arguments.length === 1 || arguments.length === 2 )
@@ -1088,7 +1087,7 @@ function assertMapHasNoUndefine( src )
 
 /**
  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -1130,7 +1129,7 @@ function assertMapHasNoUndefine( src )
 function assertMapHasOnly( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -1157,7 +1156,7 @@ function assertMapHasOnly( src )
 function assertMapHasOnlyWithUndefines( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -1183,7 +1182,7 @@ function assertMapHasOnlyWithUndefines( src )
 
 /**
  * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -1232,7 +1231,7 @@ function assertMapHasOnlyWithUndefines( src )
 function assertMapOwnOnly( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -1258,7 +1257,7 @@ function assertMapOwnOnly( src )
 
 /**
  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -1305,7 +1304,7 @@ function assertMapOwnOnly( src )
 function assertMapHasAll( src,all,msg )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -1331,7 +1330,7 @@ function assertMapHasAll( src,all,msg )
 
 /**
  * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in Config.debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -1377,7 +1376,7 @@ function assertMapHasAll( src,all,msg )
 function assertMapOwnAll( src,all,msg )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -1439,7 +1438,7 @@ function assertNotTested( src )
 
 /**
  * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in DEBUG mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -1486,7 +1485,7 @@ function assertNotTested( src )
 function assertMapHasNone( src )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -1521,7 +1520,7 @@ function assertMapHasNone( src )
 function assertMapOwnNone( src,none )
 {
 
-  if( DEBUG === false )
+  if( Config.debug === false )
   return;
 
   var l = arguments.length;
@@ -1574,7 +1573,7 @@ function assertMapOwnNone( src,none )
 function assertWarn( condition )
 {
 
-  if( DEBUG )
+  if( Config.debug )
   return;
 
   if( !condition )
@@ -1627,6 +1626,10 @@ Object.assign( Self,Proto );
 // --
 // export
 // --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

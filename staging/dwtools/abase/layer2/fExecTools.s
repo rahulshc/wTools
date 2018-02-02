@@ -17,8 +17,9 @@ if( typeof module !== 'undefined' )
 
 var System, ChildProcess, Net, Stream;
 
-var Self = wTools;
-var _ = wTools;
+var _global = _global_;
+var Self = _global_.wTools;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -27,6 +28,8 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 var _assert = _.assert;
 var _arraySlice = _.arraySlice;
+
+_.assert( _globalReal_ );
 
 // --
 // exec
@@ -43,7 +46,7 @@ function shell( o )
   _.accessorForbid( o,'child' );
   _.accessorForbid( o,'returnCode' );
 
-  o.con = new wConsequence();
+  o.con = new _.Consequence();
 
   if( o.args )
   _.assert( _.arrayIs( o.args ) );
@@ -423,12 +426,41 @@ function routineSourceGet( o )
 
   var result = o.routine.toSource ? o.routine.toSource() : o.routine.toString();
 
-  var reg1 = /^\s*function\s*\w*\s*\([^\)]*\)\s*\{\s*/;
-  var reg2 = /\s*\}\s*$/;
-  if( !o.withWrap && reg1.exec( result ) )
+  function unwrap( code )
   {
-    result = result.replace( reg1,'' );
-    result = result.replace( reg2,'' );
+
+    var reg1 = /^\s*function\s*\w*\s*\([^\)]*\)\s*\{/;
+    var reg2 = /\}\s*$/;
+
+    var before = reg1.exec( code );
+    var after = reg2.exec( code );
+
+    if( before && after )
+    {
+      code = code.replace( reg1,'' );
+      code = code.replace( reg2,'' );
+    }
+
+    return [ before[ 0 ], code, after[ 0 ] ];
+  }
+
+  if( !o.withWrap )
+  result = unwrap( result )[ 1 ];
+
+  if( o.usingInline && o.routine.inlines )
+  {
+    debugger;
+    var prefix = '\n';
+    for( var i in o.routine.inlines )
+    {
+      var inline = o.routine.inlines[ i ];
+      prefix += '  var ' + i + ' = ' + _.toJstruct( inline,o.toJsOptions ) + ';\n';
+    }
+    debugger;
+    var splits = unwrap( result );
+    debugger;
+    splits[ 1 ] = prefix + '\n' + splits[ 1 ];
+    result = splits.join( '' );
   }
 
   return result;
@@ -439,6 +471,8 @@ routineSourceGet.defaults =
   routine : null,
   wrap : 1,
   withWrap : 1,
+  usingInline : 1,
+  toJsOptions : null,
 }
 
 //
@@ -453,6 +487,7 @@ function routineMake( o )
   _.routineOptions( routineMake,o );
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( o.externals ) || o.externals === null );
+  _.assert( _globalReal_ );
 
   /* prefix */
 
@@ -467,12 +502,13 @@ function routineMake( o )
 
   if( o.externals )
   {
-    if( !wTools.__externals__ )
-    wTools.__externals__ = [];
-    wTools.__externals__.push( o.externals );
+    debugger;
+    if( !_globalReal_.__wTools__externals__ )
+    _globalReal_.__wTools__externals__ = [];
+    _globalReal_.__wTools__externals__.push( o.externals );
     prefix += '\n';
     for( e in o.externals )
-    prefix += 'var ' + e + ' = ' + '_global_.wTools.__externals__[ ' + String( wTools.__externals__.length-1 ) + ' ].' + e + ';\n';
+    prefix += 'var ' + e + ' = ' + '_globalReal_.__wTools__externals__[ ' + String( _globalReal_.__wTools__externals__.length-1 ) + ' ].' + e + ';\n';
     prefix += '\n';
   }
 
@@ -525,20 +561,20 @@ function routineMake( o )
     console.error( 'Cant parse the routine :' );
     console.error( code );
 
-    if( _global_.document )
+    if( _global.document )
     {
       var e = document.createElement( 'script' );
       e.type = 'text/javascript';
       e.src = 'data:text/javascript;charset=utf-8,' + escape( o.code );
       document.head.appendChild( e );
     }
-    else if( _global_.Blob && _global_.Worker )
+    else if( _global.Blob && _global.Worker )
     {
       var worker = _.makeWorker( code )
     }
-    else if( _global_.Esprima || _global_.esprima )
+    else if( _global.Esprima || _global.esprima )
     {
-      var Esprima = _global_.Esprima || _global_.esprima;
+      var Esprima = _global.Esprima || _global.esprima;
       try
       {
         var parsed = Esprima.parse( '(function(){\n' + code + '\n})();' );
@@ -601,7 +637,7 @@ function routineExec( o )
     if( o.context )
     o.result = o.routine.apply( o.context );
     else
-    o.result = o.routine.call( _global_ );
+    o.result = o.routine.call( _global );
     // debugger;
   }
   catch( err )
@@ -848,7 +884,7 @@ function appArgsInSubjectAndMapFormat( o )
 
   var result = _appArgsInSubjectAndMapFormatResult = Object.create( null );
 
-  if( _global_.process )
+  if( _global.process )
   {
     if( o.argv )
     _.assert( _.arrayLike( o.argv ) );
@@ -991,7 +1027,7 @@ function appExitCode( status )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( status === undefined || _.numberIs( status ) );
 
-  if( _global_.process )
+  if( _global.process )
   {
     result = process.exitCode;
     if( status !== undefined )
@@ -1011,13 +1047,13 @@ function appExit( exitCode )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( exitCode === undefined || _.numberIs( exitCode ) );
 
-  if( _global_.process )
+  if( _global.process )
   {
     process.exit( exitCode );
   }
   else
   {
-    debugger;
+    /*debugger;*/
   }
 
 }
@@ -1084,6 +1120,10 @@ _.mapExtend( Self, Proto );
 // --
 // export
 // --
+
+if( typeof module !== 'undefined' )
+if( _global_._UsingWtoolsPrivately_ )
+delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
