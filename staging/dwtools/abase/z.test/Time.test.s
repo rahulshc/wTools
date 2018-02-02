@@ -49,6 +49,23 @@ function timeOut( test )
 
   .doThen( function()
   {
+    if( !Config.debug )
+    return;
+
+    test.description = 'delay must be number';
+    test.shouldThrowError( () => _.timeOut( 'x' ) )
+
+    test.description = 'if two arguments provided, second must consequence/routine';
+    test.shouldThrowError( () => _.timeOut( 0, 'x' ) )
+
+    test.description = 'if four arguments provided, third must routine';
+    test.shouldThrowError( () => _.timeOut( 0, {}, 'x', [] ) )
+  })
+
+  /* */
+
+  .doThen( function()
+  {
     test.description = 'delay only';
     var timeBefore = _.timeNow();
     return _.timeOut( delay )
@@ -152,6 +169,39 @@ function timeOut( test )
       test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
       test.shouldBe( _.routineIs( got ) );
       test.identical( err, null );
+    });
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'delay + consequence that returns value';
+    var timeBefore = _.timeNow();
+    var val = 0;
+
+    return _.timeOut( delay, _.timeOut( delay * 2, () => val ) )
+    .doThen( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
+      test.identical( err, null );
+      test.identical( got, val );
+    })
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'delay + consequence + error';
+    var timeBefore = _.timeNow();
+
+    return _.timeOut( delay, _.timeOut( delay * 2, () => { throw 'err' } ) )
+    .doThen( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay * 2 );
+      test.shouldBe( _.errIs( err ) );
+      test.identical( got, undefined );
     });
   })
 

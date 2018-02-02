@@ -5067,6 +5067,44 @@ function workerIs( src )
   }
 }
 
+//
+
+function streamIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  return _.objectIs( src ) && _.routineIs( src.pipe )
+}
+
+//
+
+function consoleIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( src !== console )
+  return false;
+
+  var result = Object.prototype.toString.call( src );
+  if( result === '[object Console]' || result === '[object Object]' )
+  return true;
+
+  return false;
+}
+
+//
+
+function processIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  var typeOf = _.strTypeOf( src );
+  if( typeOf === 'ChildProcess' || typeOf === 'process' )
+  return true;
+
+  return false;
+}
+
 // --
 // bool
 // --
@@ -17671,6 +17709,10 @@ var Proto =
   typeIsBuffer : typeIsBuffer,
 
   workerIs : workerIs,
+
+  streamIs : streamIs,
+  consoleIs : consoleIs,
+  processIs : processIs,
 
 
   // bool
