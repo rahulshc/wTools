@@ -9587,6 +9587,93 @@ function arraySub( src,begin,end )
 
 //
 
+function arrayJoin()
+{
+  if( arguments.length < 2 )
+  return arguments[ 0 ] || null;
+
+  var srcs = [];
+  var size = 0;
+  var offset = 0;
+  var firstSrc;
+
+  for( var s = 0 ; s < arguments.length ; s++ )
+  {
+    var src = arguments[ s ];
+
+    if( src === null )
+    continue;
+
+    if( !firstSrc )
+    firstSrc = src;
+
+    if( _.bufferRawIs( src ) )
+    {
+      srcs.push( new Uint8Array( src ) );
+    }
+    else if( src instanceof Uint8Array || _.arrayIs( src ) )
+    {
+      srcs.push( src );
+    }
+    else
+    {
+      srcs.push( new Uint8Array( src.buffer,src.byteOffset,src.byteLength ) );
+    }
+
+    if( _.arrayIs( src ) )
+    {
+      size += src.length;
+    }
+    else
+    {
+      _.assert( src.byteLength >= 0,'expects buffers, but got',_.strTypeOf( src ) );
+      _.assert( _.bufferAnyIs( src ) );
+      size += src.byteLength;
+    }
+  }
+
+  if( srcs.length === 0 || size === 0 )
+  return null;
+
+  /* */
+
+
+  if( _.arrayIs( firstSrc ) )
+  {
+    var result = new Array( size );
+    for( var s = 0 ; s < srcs.length ; s++ )
+    {
+      var src = srcs[ s ];
+      for( var i = 0 ; i < src.length ; i++ )
+      result[ offset+i ] = src[ i ];
+      offset += src.length;
+    }
+  }
+  else
+  {
+    var resultBuffer = new ArrayBuffer( size );
+    var result = _.bufferRawIs( firstSrc ) ? resultBuffer : new firstSrc.constructor( resultBuffer );
+    var resultUint = result.constructor === Uint8Array ? result : new Uint8Array( resultBuffer );
+
+    /* */
+
+    for( var s = 0 ; s < srcs.length ; s++ )
+    {
+      var src = srcs[ s ];
+      if( resultUint.set )
+      resultUint.set( src , offset );
+      else
+      for( var i = 0 ; i < src.length ; i++ )
+      resultUint[ offset+i ] = src[ i ];
+      offset += src.byteLength !== undefined ? src.byteLength : src.length;
+    }
+  }
+
+  return result;
+}
+
+//
+
 /**
  * Changes length of provided array( array ) by copying it elements to newly created array using begin( f ),
  * end( l ) positions of the original array and value to fill free space after copy( val ). Length of new array is equal to ( l ) - ( f ).
@@ -17897,6 +17984,8 @@ var Proto =
   // array transformer
 
   arraySub : arraySub,
+
+  arrayJoin : arrayJoin,
 
   arrayGrow : arrayGrow,
   arrayResize : arrayResize,
