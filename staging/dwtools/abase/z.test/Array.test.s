@@ -1298,6 +1298,144 @@ function arraySub( test )
 
 //
 
+function arrayJoin( test )
+{
+  test.description = 'empty call';
+  test.identical( _.arrayJoin(), null );
+
+  test.description = 'empty arrays';
+  test.identical( _.arrayJoin( [], [] ), null );
+
+  test.description = 'simple';
+
+  var src = [ 1 ];
+  var got = _.arrayJoin( src );
+  var expected = src;
+  test.identical( got, expected );
+
+  var src = [ 1 ];
+  var got = _.arrayJoin( src, src );
+  var expected = [ 1,1 ];
+  test.identical( got, expected );
+
+  test.description = 'array + typedArray';
+  var got = _.arrayJoin( [ 1 ], new Uint8Array([ 1,2 ]) );
+  var expected = [ 1,1,2 ];
+  test.identical( got, expected );
+
+  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), [ 1 ] );
+  var expected = new Uint8Array( [ 1,2,1 ] );
+  test.identical( got, expected );
+
+  test.description = 'typedArray + typedArray';
+  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), new Uint8Array( [ 1,2 ] ) );
+  var expected = new Uint8Array( [ 1,2,1,2 ] );
+  test.identical( got, expected );
+
+  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), new Uint16Array( [ 1,2 ] ) );
+  var expected = new Uint8Array( [ 1,2,1,0,2,0 ] );
+  test.identical( got, expected );
+
+  test.description = 'arrayBuffer + arrayBuffer';
+  var src = new Uint8Array( [ 1,2 ] );
+  var got = _.arrayJoin( src.buffer, src.buffer );
+  test.shouldBe( _.bufferRawIs( got ) );
+  var expected = new Uint8Array( [ 1,2,1,2 ] );
+  test.identical( new Uint8Array( got ), expected );
+
+  test.description = 'arrayBuffer + array';
+  var src = new Uint8Array( [ 1,2 ] );
+  var got = _.arrayJoin( src.buffer, [ 1,2 ] );
+  test.shouldBe( _.bufferRawIs( got ) );
+  var expected = new Uint8Array( [ 1,2,1,2 ] );
+  test.identical( new Uint8Array( got ), expected );
+
+  test.description = 'arrayBuffer + typedArray';
+  var src = new Uint8Array( [ 1,2 ] );
+  var got = _.arrayJoin( src.buffer, src );
+  test.shouldBe( _.bufferRawIs( got ) );
+  var expected = new Uint8Array( [ 1,2,1,2 ] );
+  test.identical( new Uint8Array( got ), expected );
+
+  test.description = 'typedArray + arrayBuffer';
+  var src = new Uint8Array( [ 1,2 ] );
+  var got = _.arrayJoin( src, src.buffer );
+  var expected = new Uint8Array( [ 1,2,1,2 ] );
+  test.identical( got, expected );
+
+  test.description = 'typedArray + arrayBuffer + array';
+  var src = new Uint8Array( [ 1 ] );
+  var got = _.arrayJoin( src, src.buffer, [ 1 ] );
+  var expected = new Uint8Array( [ 1,1,1 ] );
+  test.identical( got, expected );
+
+  test.description = 'array + typedArray + arrayBuffer';
+  var src = new Uint8Array( [ 1 ] );
+  var got = _.arrayJoin( [ 1 ], src, src.buffer );
+  var expected = [ 1,1,1 ];
+  test.identical( got, expected );
+
+  test.description = 'arrayBuffer + array + typedArray';
+  var src = new Uint8Array( [ 1 ] );
+  var got = _.arrayJoin( src.buffer, [ 1 ], src  );
+  test.shouldBe( _.bufferRawIs( got ) );
+  var expected = new Uint8Array( [ 1,1,1 ] );
+  test.identical( new Uint8Array( got ), expected );
+
+  if( !isBrowser )
+  {
+    test.description = 'buffer';
+    got = _.arrayJoin( new Buffer( '1' ), [ 1 ] );
+    expected = new Buffer( [ 49,1 ] );
+    test.identical( got, expected );
+
+    test.description = 'buffer + arrayBuffer';
+    var raw = new Uint8Array( [ 1 ] ).buffer;
+    got = _.arrayJoin( new Buffer( '1' ), raw );
+    expected = new Buffer( [ 49,1 ] );
+    test.identical( got, expected );
+
+    test.description = 'buffer + typedArray';
+    var typed = new Uint8Array( [ 1 ] );
+    got = _.arrayJoin( new Buffer( '1' ), typed );
+    expected = new Buffer( [ 49,1 ] );
+    test.identical( got, expected );
+
+    test.description = 'buffer + typedArray + raw + array';
+    var typed = new Uint8Array( [ 1 ] );
+    got = _.arrayJoin( new Buffer( '1' ), typed, typed.buffer, [ 1 ] );
+    expected = new Buffer( [ 49,1,1,1 ] );
+    test.identical( got, expected );
+
+    test.description = 'typedArray + buffer + raw + array';
+    var typed = new Uint8Array( [ 1 ] );
+    got = _.arrayJoin( typed, new Buffer( '1' ), typed.buffer, [ 1 ] );
+    expected = new Uint8Array( [ 1,49,1,1 ] );
+    test.identical( got, expected );
+
+    test.description = 'raw + typedArray + buffer + array';
+    var typed = new Uint8Array( [ 1 ] );
+    got = _.arrayJoin( typed.buffer, typed, new Buffer( '1' ), [ 1 ] );
+    expected = new Uint8Array( [ 1,1,49,1 ] );
+    test.identical( new Uint8Array( got ), expected );
+
+    test.description = 'array + raw + typedArray + buffer ';
+    var typed = new Uint8Array( [ 1 ] );
+    got = _.arrayJoin( [ 1 ], typed.buffer, typed, new Buffer( '1' )  );
+    expected = new Uint8Array( [ 1,1,1,49 ] );
+    test.identical( new Uint8Array( got ), expected );
+  }
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.arrayJoin( [ 1 ], '1' ) );
+  test.shouldThrowError( () => _.arrayJoin( [ 1 ], { byteLength : 5 } ) );
+
+}
+
+//
+
 function arrayGrow( test )
 {
   var got,expected;
@@ -1641,6 +1779,8 @@ function arraySlice( test )
 {
   var got,expected;
 
+  debugger
+
   //
 
   test.description = 'defaults';
@@ -1648,19 +1788,43 @@ function arraySlice( test )
 
   /*nothing*/
 
-  got = _.arraySlice( [  ] );
+  var src = [  ];
+  got = _.arraySlice( src );
   expected = [  ];
   test.identical( got, expected );
+  test.shouldBe( src !== got );
+
+  var src = [  ];
+  got = _.arraySlice( src, 0 );
+  expected = [  ];
+  test.identical( got, expected );
+  test.shouldBe( src !== got );
+
+  var src = [  ];
+  got = _.arraySlice( src, 0, 5 );
+  expected = [  ];
+  test.identical( got, expected );
+  test.shouldBe( src !== got );
 
   /*just pass array*/
 
   got = _.arraySlice( array );
   expected = array;
   test.identical( got, expected );
+  test.shouldBe( array !== got );
 
   //
 
   test.description = 'make copy of source';
+
+  got = _.arraySlice( array, 0 );
+  expected = [ 1, 2, 3, 4, 5, 6, 7 ];
+  test.identical( got, expected );
+  test.shouldBe( array !== got );
+
+  got = _.arraySlice( array, -1 );
+  expected = [ 1, 2, 3, 4, 5, 6, 7 ];
+  test.identical( got, expected );
 
   /* third argument is not provided */
 
@@ -1692,18 +1856,57 @@ function arraySlice( test )
   got = _.arraySlice( array, -1, array.length );
   expected = array;
   test.identical( got, expected );
+  test.shouldBe( array !== got );
 
   /* rigth bound is negative */
 
   got = _.arraySlice( array, 0, -1 );
   expected = [];
   test.identical( got, expected );
+  test.shouldBe( array !== got );
 
   /* rigth bound is out of range */
 
   got = _.arraySlice( array, 0, array.length + 2 );
   expected = array;
   test.identical( got, expected );
+  test.shouldBe( array !== got );
+
+  /* typed */
+
+  test.description = 'make copy of typed array';
+
+  var typed = new Uint8Array( array );
+
+  got = _.arraySlice( typed );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.shouldBe( got !== typed );
+  test.identical( got, typed );
+
+  got = _.arraySlice( typed, 0 );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.shouldBe( got !== typed );
+  test.identical( got, typed );
+
+  got = _.arraySlice( typed, -1 );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.shouldBe( got !== typed );
+  test.identical( got, typed );
+
+  got = _.arraySlice( typed, 0, 1 );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.shouldBe( got !== typed );
+  test.shouldBe( _.arraySetIdentical( got, [ 1 ] ) );
+
+  got = _.arraySlice( typed, typed.length, typed.length );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.shouldBe( got !== typed );
+  test.shouldBe( _.arraySetIdentical( got, [] ) );
+
+  got = _.arraySlice( typed, -1, typed.length + 1 );
+  test.shouldBe( _.bufferTypedIs( got ) );
+  test.shouldBe( got !== typed );
+  test.identical( got, typed );
 
   /**/
 
@@ -1731,7 +1934,26 @@ function arraySlice( test )
   test.description = 'wrong type of argument';
   test.shouldThrowError( function()
   {
-    _.arraySlice( 'wrong argument', 'wrong argument', 'wrong argument' );
+    _.arraySlice( 'x' );
+  });
+
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySlice( [ 1 ], 'x', 1 );
+  });
+
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySlice( [ 1 ], 0, 'x' );
+  });
+
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    var array = new ArrayBuffer();
+    _.arraySlice( array );
   });
 
 };
@@ -6174,6 +6396,213 @@ function arrayAppendedArraysOnce( test )
 
 //
 
+function arrayRemove( test )
+{
+  test.description = 'simple';
+
+  var dst = [];
+  var got = _.arrayRemove( dst, 1 );
+  test.identical( dst, [ ] );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemove( dst, 1 );
+  test.identical( dst, [  ] );
+
+  var dst = [ 2,2,1 ];
+  var got = _.arrayRemove( dst, 2 );
+  test.identical( dst, [ 2,1 ] );
+
+  var dst = [ 2,2,1 ];
+  var got = _.arrayRemove( dst, 1 );
+  test.identical( dst, [ 2,2 ] );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemove( dst, '1' );
+  test.identical( dst, [ 1 ] );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemove( dst, -1 );
+  test.identical( dst, [ 1 ] );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemove( dst, [ 1 ] );
+  test.identical( dst, [ 1 ] );
+
+  var dst = [ { x : 1 } ];
+  var got = _.arrayRemove( dst, { x : 1 } );
+  test.identical( dst, [ { x : 1 } ] );
+
+  test.description = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayRemove( dst, { num : 4 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayRemove( dst, { num : 1 }, onEqualize );
+  test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+
+  test.description = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayRemove( dst, 4, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayRemove( dst, 1, onEqualize );
+  test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemove();
+  })
+
+  test.description = 'third is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemove( [], 1, 1 );
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemove( 1, 1 );
+  })
+}
+
+//
+
+function arrayRemoved( test )
+{
+  test.description = 'simple';
+
+  var dst = [];
+  var got = _.arrayRemoved( dst, 1 );
+  test.identical( dst, [ ] );
+  test.identical( got, -1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemoved( dst, 1 );
+  test.identical( dst, [  ] );
+  test.identical( got, 0 );
+
+  var dst = [ 2,2,1 ];
+  var got = _.arrayRemoved( dst, 2 );
+  test.identical( dst, [ 2,1 ] );
+  test.identical( got, 0 );
+
+  var dst = [ 2,2,1 ];
+  var got = _.arrayRemoved( dst, 1 );
+  test.identical( dst, [ 2,2 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemoved( dst, '1' );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, -1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemoved( dst, -1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, -1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemoved( dst, [ 1 ] );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, -1 );
+
+  var dst = [ { x : 1 } ];
+  var got = _.arrayRemoved( dst, { x : 1 } );
+  test.identical( dst, [ { x : 1 } ] );
+  test.identical( got, -1 );
+
+  test.description = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayRemoved( dst, { num : 4 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+  test.identical( got, -1 );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayRemoved( dst, { num : 1 }, onEqualize );
+  test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+  test.identical( got, 0 );
+
+
+  test.description = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayRemoved( dst, 4, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+  test.identical( got, -1 );
+
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayRemoved( dst, 1, onEqualize );
+  test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+  test.identical( got, 0 );
+
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoved();
+  })
+
+  test.description = 'third is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoved( [], 1, 1 );
+  })
+
+  test.description = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoved( 1, 1 );
+  })
+}
+
+//
+
 function arrayRemoveOnce( test )
 {
   test.description = 'simple';
@@ -9652,6 +10081,7 @@ var Self =
     // array transformer
 
     arraySub : arraySub,
+    arrayJoin : arrayJoin,
     arrayGrow : arrayGrow,
     arrayResize : arrayResize,
     arraySlice : arraySlice,
@@ -9742,6 +10172,8 @@ var Self =
 
     // array remove
 
+    arrayRemove : arrayRemove,
+    arrayRemoved : arrayRemoved,
     arrayRemoveOnce : arrayRemoveOnce,
     // _arrayRemoved : _arrayRemoved,
     arrayRemovedOnce : arrayRemovedOnce,
