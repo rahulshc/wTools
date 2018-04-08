@@ -771,7 +771,7 @@ function diagnosticWatchFields( o )
       console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
       else
       console.log( 'reading ' + fieldName );
-      if( o.debug > 1 )
+      if( o.debugging > 1 )
       debugger;
       return result;
     }
@@ -784,7 +784,7 @@ function diagnosticWatchFields( o )
       console.log( 'writing ' + fieldName + ' ' + _.toStr( o.target[ fieldName ] ) + ' -> ' + _.toStr( src ) );
       else
       console.log( 'writing ' + fieldName );
-      if( o.debug )
+      if( o.debugging )
       debugger;
       //o.target[ fieldSymbol ] = src;
       val = src;
@@ -792,7 +792,7 @@ function diagnosticWatchFields( o )
 
     /* */
 
-    if( o.debug )
+    if( o.debugging > 1 )
     debugger;
 
     if( o.verbosity > 1 )
@@ -814,7 +814,7 @@ diagnosticWatchFields.defaults =
   target : null,
   names : null,
   verbosity : 2,
-  debug : 0,
+  debugging : 1,
 }
 
 //

@@ -454,7 +454,7 @@ function routineSourceGet( o )
     for( var i in o.routine.inlines )
     {
       var inline = o.routine.inlines[ i ];
-      prefix += '  var ' + i + ' = ' + _.toJstruct( inline,o.toJsOptions ) + ';\n';
+      prefix += '  var ' + i + ' = ' + _.toJs( inline,o.toJsOptions ) + ';\n';
     }
     debugger;
     var splits = unwrap( result );
@@ -502,7 +502,6 @@ function routineMake( o )
 
   if( o.externals )
   {
-    debugger;
     if( !_globalReal_.__wTools__externals__ )
     _globalReal_.__wTools__externals__ = [];
     _globalReal_.__wTools__externals__.push( o.externals );

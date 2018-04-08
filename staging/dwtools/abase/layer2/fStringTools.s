@@ -2825,11 +2825,11 @@ strLinesNearest.defaults =
  *
  * @example
  * //returns 2
- * _.strCount( "aaaabab","ab" );
+ * _.strCount( "aabab","ab" );
  *
  * @example
  * //returns 0
- * _.strCount( "aaaabab","" );
+ * _.strCount( "aabab","" );
  *
  * @method strCount
  * @throws { Exception } Throw an exception if( src ) is not a String.
@@ -3007,8 +3007,8 @@ function strHasSeveral( src,ins )
  * @returns {string} Returns string duplicated n-times.
  *
  * @example
- * //returns aaaaa
- * _.strDup( "a", 5 );
+ * //returns aa
+ * _.strDup( "a", 2 );
  *
  * @example
  * //returns abcabc

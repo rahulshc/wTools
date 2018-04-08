@@ -82,7 +82,7 @@ function appArgs( test )
 
   //
 
-  var argv = [ 'x', ':', 'aaa', 'bbb:' ];
+  var argv = [ 'x', ':', 'aa', 'bbb:' ];
   argv.unshift.apply( argv, _argv );
   var got = _.appArgs({ argv : argv });
   var expected =
@@ -91,9 +91,9 @@ function appArgs( test )
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
     delimter: ':',
-    map: { x : 'aaa bbb' },
+    map: { x : 'aa bbb' },
     subject: '',
-    scriptArgs: [ 'x', ':', 'aaa', 'bbb', ':' ]
+    scriptArgs: [ 'x', ':', 'aa', 'bbb', ':' ]
   }
   test.identical( got, expected );
 

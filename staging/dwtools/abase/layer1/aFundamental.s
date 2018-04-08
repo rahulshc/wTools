@@ -4273,7 +4273,6 @@ function errAttend( err )
 
 function errLog()
 {
-  debugger;
 
   var c = _global.logger || _global.console;
   var err = _err
@@ -5193,9 +5192,19 @@ function numberIsInt( src )
 
 //
 
-function numbersAreEquivalent( ins1,ins2 )
+// function numbersAreEquivalent( ins1,ins2 )
+// {
+//   return Math.abs( ins1-ins2 ) <= this.EPS;
+// }
+
+//
+
+function numbersAreEquivalent( src1,src2,accuracy )
 {
-  return Math.abs( ins1-ins2 ) <= this.EPS;
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  if( accuracy === undefined )
+  accuracy = this.EPS;
+  return Math.abs( src1-src2 ) <= accuracy;
 }
 
 //
@@ -5265,12 +5274,11 @@ function numbersAreIdentical( src1,src2 )
 
 //
 
-function numbersAreEquivalent( src1,src2,accuracy )
+function numberInRange( n,range )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  if( accuracy === undefined )
-  accuracy = this.EPS;
-  return Math.abs( src1-src2 ) <= accuracy;
+  _.assert( arguments.length === 2 );
+  _.assert( range.length === 2 );
+  return range[ 0 ] <= n && n <= range[ 1 ];
 }
 
 //
@@ -17733,7 +17741,8 @@ var Proto =
   numbersArePositive : numbersArePositive,
   numbersAreInt : numbersAreInt,
   numbersAreIdentical : numbersAreIdentical,
-  numbersAreEquivalent : numbersAreEquivalent,
+
+  numberInRange : numberInRange,
 
   numberFrom : numberFrom,
   numbersFrom : numbersFrom,

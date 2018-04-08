@@ -516,6 +516,9 @@ function _toStr( src,o )
   // if( src && src.toStr && src.toStr.notMethod )
   // debugger;
 
+  if( src && src.constructor && src.constructor.name === 'eGdcHeader' )
+  debugger;
+
   if( !isAtomic && 'toStr' in src && _.routineIs( src.toStr ) && !src.toStr.notMethod && !_ObjectHasOwnProperty.call( src,'constructor' ) )
   {
 
