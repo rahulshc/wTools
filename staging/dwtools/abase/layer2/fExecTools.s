@@ -269,7 +269,8 @@ function shell( o )
       _.appExitCode( -1 );
     }
 
-    if( exitCode !== 0 && o.throwingBadExitCode )
+    debugger;
+    if( exitCode !== 0 && o.throwingExitCode )
     {
       if( _.numberIs( exitCode ) )
       o.con.error( _.err( 'Process returned error code :',exitCode,'\nLaunched as :',o.path ) );
@@ -299,7 +300,7 @@ shell.defaults =
   detaching : 0,
   passingThrough : 0,
 
-  throwingBadExitCode : 0,
+  throwingExitCode : 1,
   applyingExitCode : 0,
 
   outputColoring : 1,
@@ -378,7 +379,7 @@ shellNode.defaults =
   outputPrefixing : 1,
   outputCollecting : 0,
   applyingExitCode : 1,
-  throwingBadExitCode : 1,
+  throwingExitCode : 1,
 
   stdio : 'inherit',
 
