@@ -56,7 +56,7 @@ function testDirMake()
 function cleanTestDir()
 {
   if( !isBrowser )
-  _.fileProvider.fileDelete( testRootDirectory );
+  _.fileProvider.filesDelete( testRootDirectory );
 }
 
 //
@@ -115,7 +115,7 @@ function shell( test )
 
   /* */
 
-  var testAppPath = _.pathJoin( testRoutineDir, 'testApp.js' );
+  var testAppPath = _.fileProvider.pathNativize( _.pathJoin( testRoutineDir, 'testApp.js' ) );
   var testApp = testApp.toString() + '\ntestApp();';
   _.fileProvider.fileWrite( testAppPath, testApp );
 
@@ -128,7 +128,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath,
+      path : 'node ' + testAppPath,
       mode : 'spawn',
       stdio : 'pipe'
     }
@@ -142,7 +142,7 @@ function shell( test )
     return _.shell( options )
     .doThen( function()
     {
-      test.identical( options.returnCode, 0 );
+      test.identical( options.exitCode, 0 );
       test.identical( options.output, testAppPath );
     })
   })
@@ -150,13 +150,15 @@ function shell( test )
   {
     /* mode : spawn, stdio : ignore */
 
+    debugger
+
     o.stdio = 'ignore';
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return _.shell( options )
     .doThen( function()
     {
-      test.identical( options.returnCode, 0 );
+      test.identical( options.exitCode, 0 );
       test.identical( options.output.length, 0 );
     })
   })
@@ -171,7 +173,7 @@ function shell( test )
   //   return _.shell( options )
   //   .doThen( function()
   //   {
-  //     test.identical( options.returnCode, 0 );
+  //     test.identical( options.exitCode, 0 );
   //     test.identical( options.output.length, 0 );
   //   })
   // })
@@ -181,7 +183,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath,
+      path : 'node ' + testAppPath,
       mode : 'shell',
       stdio : 'pipe'
     }
@@ -195,7 +197,7 @@ function shell( test )
     return _.shell( options )
     .doThen( function()
     {
-      test.identical( options.returnCode, 0 );
+      test.identical( options.exitCode, 0 );
       test.identical( options.output, testAppPath );
     })
   })
@@ -210,7 +212,7 @@ function shell( test )
     return _.shell( options )
     .doThen( function()
     {
-      test.identical( options.returnCode, 0 );
+      test.identical( options.exitCode, 0 );
       test.identical( options.output.length, 0 );
     })
   })
@@ -225,7 +227,7 @@ function shell( test )
   //   return _.shell( options )
   //   .doThen( function()
   //   {
-  //     test.identical( options.returnCode, 0 );
+  //     test.identical( options.exitCode, 0 );
   //     test.identical( options.output.length, 0 );
   //   })
   // })
@@ -235,7 +237,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath + ' loop : 1',
+      path : 'node ' + testAppPath + ' loop : 1',
       mode : 'spawn',
       stdio : 'pipe'
     }
@@ -253,7 +255,7 @@ function shell( test )
     shell.got(function()
     {
       test.identical( options.process.killed, true );
-      test.identical( !options.returnCode, true );
+      test.identical( !options.exitCode, true );
       shell.give();
     })
 
@@ -265,7 +267,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath + ' loop : 1',
+      path : 'node ' + testAppPath + ' loop : 1',
       mode : 'shell',
       stdio : 'pipe'
     }
@@ -282,7 +284,7 @@ function shell( test )
     shell.got(function()
     {
       test.identical( options.process.killed, true );
-      test.identical( !options.returnCode, true );
+      test.identical( !options.exitCode, true );
       shell.give();
     })
 
@@ -294,7 +296,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath + ' exitWithCode : 0',
+      path : 'node ' + testAppPath + ' exitWithCode : 0',
       mode : 'spawn',
       stdio : 'pipe'
     }
@@ -302,7 +304,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return test.mustNotThrowError( _.shell( options ) )
-    .doThen( () => test.identical( options.returnCode, 0 ) );
+    .doThen( () => test.identical( options.exitCode, 0 ) );
   })
   .ifNoErrorThen( function()
   {
@@ -310,7 +312,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath + ' exitWithCode : 1',
+      path : 'node ' + testAppPath + ' exitWithCode : 1',
       mode : 'spawn',
       stdio : 'pipe'
     }
@@ -318,7 +320,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return test.shouldThrowError( _.shell( options ) )
-    .doThen( () => test.identical( options.returnCode, 1 ) );
+    .doThen( () => test.identical( options.exitCode, 1 ) );
   })
   .ifNoErrorThen( function()
   {
@@ -326,7 +328,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath + ' exitWithCode : 0',
+      path : 'node ' + testAppPath + ' exitWithCode : 0',
       mode : 'shell',
       stdio : 'pipe'
     }
@@ -334,7 +336,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return test.mustNotThrowError( _.shell( options ) )
-    .doThen( () => test.identical( options.returnCode, 0 ) );
+    .doThen( () => test.identical( options.exitCode, 0 ) );
   })
   .ifNoErrorThen( function()
   {
@@ -342,7 +344,7 @@ function shell( test )
 
     o =
     {
-      code : 'node ' + testAppPath + ' exitWithCode : 1',
+      path : 'node ' + testAppPath + ' exitWithCode : 1',
       mode : 'shell',
       stdio : 'pipe'
     }
@@ -350,7 +352,7 @@ function shell( test )
     var options = _.mapSupplement( {}, o, commonDefaults );
 
     return test.shouldThrowError( _.shell( options ) )
-    .doThen( () => test.identical( options.returnCode, 1 ) );
+    .doThen( () => test.identical( options.exitCode, 1 ) );
   })
   //
   // test.description = 'test';
@@ -391,6 +393,121 @@ shell.timeOut = 30000;
 
 //
 
+function shell2( test )
+{
+  var testRoutineDir = _.pathJoin( testRootDirectory, test.name );
+  var commonDefaults =
+  {
+    outputPiping : 1,
+    outputCollecting : 1,
+    applyingExitCode : 1,
+    throwingExitCode : 1
+  }
+
+  /* */
+
+  function testApp()
+  {
+
+    if( typeof module !== 'undefined' )
+    {
+      try
+      {
+        require( '../dwtools/Base.s' );
+      }
+      catch( err )
+      {
+        require( 'wTools' );
+      }
+
+      var _ = _global_.wTools;
+
+      _.include( 'wConsequence' );
+
+    }
+
+    var _ = _global_.wTools;
+
+    var con = new _.Consequence().give();
+    con.timeOutThen( _.numberRandomInt( [ 300, 2000 ] ), function()
+    {
+      console.log( _.toStr( process.argv.slice( 2 ) ) );
+    });
+
+  }
+
+  /* */
+
+  var testAppPath = _.fileProvider.pathNativize( _.pathJoin( testRoutineDir, 'testApp.js' ) );
+  var testApp = testApp.toString() + '\ntestApp();';
+  _.fileProvider.fileWrite( testAppPath, testApp );
+
+  var o;
+  var con = new _.Consequence().give();
+
+  con.doThen( function()
+  {
+    test.description = 'mode : shell';
+
+    o =
+    {
+      path : 'node ' + testAppPath,
+      args : [ 'staging', 'debug' ],
+      mode : 'shell',
+      stdio : 'pipe'
+    }
+  })
+  .ifNoErrorThen( function()
+  {
+    /* mode : shell, stdio : pipe */
+
+    var options = _.mapSupplement( {}, o, commonDefaults );
+
+    return _.shell( options )
+    .doThen( function()
+    {
+      test.identical( options.exitCode, 0 );
+      test.identical( options.output, _.toStr( o.args ) );
+    })
+  })
+
+  //
+
+  con.doThen( function()
+  {
+    test.description = 'mode : shell, passingThrough : true';
+
+    o =
+    {
+      path : 'node ' + testAppPath,
+      args : [ 'staging', 'debug' ],
+      mode : 'shell',
+      passingThrough : 1,
+      stdio : 'pipe'
+    }
+  })
+  .ifNoErrorThen( function()
+  {
+    /* mode : shell, stdio : pipe, passingThrough : true */
+
+    var options = _.mapSupplement( {}, o, commonDefaults );
+
+    return _.shell( options )
+    .doThen( function()
+    {
+      test.identical( options.exitCode, 0 );
+      var expectedArgs= _.arrayAppendArrayOnce( o.args, process.argv.slice( 2 ) );
+      test.identical( options.output, _.toStr( expectedArgs ) );
+    })
+  })
+
+  return con;
+}
+
+shell2.timeOut = 30000;
+
+//
+
 var Proto =
 {
 
@@ -406,6 +523,7 @@ var Proto =
   tests :
   {
     shell : shell,
+    shell2 : shell2,
   }
 
 }
