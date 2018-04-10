@@ -142,6 +142,8 @@ function shell( o )
       // if( o.args )
       // _.arrayAppendArray( args,o.args )
 
+      optionsForSpawn.windowsVerbatimArguments = true;
+
       if( o.args )
       arg2 = arg2 + ' ' + '"' + o.args.join( '" "' ) + '"';
 
