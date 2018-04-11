@@ -130,6 +130,19 @@ function shell( o )
         o.args = _.strSplit( o.path );
         app = o.args.shift();
       }
+      else
+      {
+        /*
+         o.path can contain arguments but only if those were not specified through options, otherwise it will lead to 'ENOENT' error:
+
+          _.shell({ path : 'node /path/to/file arg1', mode : 'spawn' }) - ok
+          _.shell({ path : 'node', args : [ '/path/to/file', 'arg1' ], mode : 'spawn' }) - ok
+          _.shell({ path : 'node /path/to/file', args : [ 'arg1' ], mode : 'spawn' }) - error
+        */
+
+        if( app.length )
+        _.assert( _.strSplit( app ).length === 1, ' o.path must not contain arguments if those were provided through options' )
+      }
 
       o.process = ChildProcess.spawn( app,o.args,optionsForSpawn );
     }
