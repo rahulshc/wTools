@@ -66,6 +66,7 @@ function shell( o )
   if( o.passingThrough )
   {
     var argumentsManual = process.argv.slice( 2 );
+    if( argumentsManual.length )
     o.args = _.arrayAppendArray( o.args || [],argumentsManual );
     // logger.log( 'o.args',_.toStr( o.args, { levels : 3 } ) );
 /*
@@ -144,7 +145,7 @@ function shell( o )
 
       optionsForSpawn.windowsVerbatimArguments = true;
 
-      if( o.args )
+      if( o.args && o.args.length )
       arg2 = arg2 + ' ' + '"' + o.args.join( '" "' ) + '"';
 
       // logger.log( 'arg2',arg2 );
