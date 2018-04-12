@@ -41,10 +41,15 @@ function shell( o )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( shell,o );
+  _.routineOptions( shell,arguments );
   _.assert( arguments.length === 1 );
   _.accessorForbid( o,'child' );
   _.accessorForbid( o,'returnCode' );
+
+  if( !_.numberIs( o.verbosity ) )
+  o.verbosity = o.verbosity ? 1 : 0;
+  if( o.verbosity < 0 )
+  o.verbosity = 0;
 
   o.con = new _.Consequence();
 
@@ -232,7 +237,7 @@ function shell( o )
   {
 
     debugger;
-    if( o.verbosity >= 1 )
+    if( o.verbosity )
     err = _.errLogOnce( err );
 
     if( done )
@@ -302,7 +307,7 @@ shell.defaults =
   detaching : 0,
   passingThrough : 0,
 
-  throwingExitCode : 1,
+  throwingExitCode : 1, /* must be on by default */
   applyingExitCode : 0,
 
   outputColoring : 1,
@@ -327,7 +332,7 @@ function shellNode( o )
   if( _.strIs( o ) )
   o = { path : o }
 
-  _.routineOptions( shellNode,o );
+  _.routineOptions( shellNode,arguments );
   _.assert( _.strIs( o.path ) );
   _.assert( !o.code );
   _.accessorForbid( o,'child' );
@@ -397,7 +402,7 @@ function shellNodePassingThrough( o )
   if( _.strIs( o ) )
   o = { path : o }
 
-  _.routineOptions( shellNodePassingThrough,o );
+  _.routineOptions( shellNodePassingThrough,arguments );
   _.assert( arguments.length === 1 );
   var result = _.shellNode( o );
 
@@ -423,7 +428,7 @@ function routineSourceGet( o )
   if( _.routineIs( o ) )
   o = { routine : o };
 
-  _.routineOptions( routineSourceGet,o );
+  _.routineOptions( routineSourceGet,arguments );
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( o.routine ) );
 
@@ -487,7 +492,7 @@ function routineMake( o )
   if( _.strIs( o ) )
   o = { code : o };
 
-  _.routineOptions( routineMake,o );
+  _.routineOptions( routineMake,arguments );
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( o.externals ) || o.externals === null );
   _.assert( _globalReal_ );
@@ -620,7 +625,7 @@ function routineExec( o )
   if( _.strIs( o ) )
   o = { code : o };
   _.assert( arguments.length === 1 );
-  _.routineOptions( routineExec,o );
+  _.routineOptions( routineExec,arguments );
 
   o.routine = routineMake
   ({
@@ -691,7 +696,7 @@ function execInWorker( o )
   if( _.strIs( o ) )
   o = { code : o };
   _.assert( arguments.length === 1 );
-  _.routineOptions( execInWorker,o );
+  _.routineOptions( execInWorker,arguments );
 
   var blob = new Blob( [ o.code ], { type : 'text/javascript' } );
   var worker = new Worker( URL.createObjectURL( blob ) );
@@ -714,7 +719,7 @@ function makeWorker( o )
   if( _.strIs( o ) )
   o = { code : o };
   _.assert( arguments.length === 1 );
-  _.routineOptions( makeWorker,o );
+  _.routineOptions( makeWorker,arguments );
 
   var blob = new Blob( [ o.code ], { type : 'text/javascript' } );
   var worker = new Worker( URL.createObjectURL( blob ) );
@@ -879,7 +884,8 @@ var _appArgsInSubjectAndMapFormatResult;
 function appArgsInSubjectAndMapFormat( o )
 {
 
-  o = _.routineOptions( appArgsInSubjectAndMapFormat,o );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  o = _.routineOptions( appArgsInSubjectAndMapFormat,arguments );
 
   if( _appArgsInSubjectAndMapFormatResult && o.delimeter === _appArgsInSubjectAndMapFormatResult.delimeter )
   return _appArgsInSubjectAndMapFormatResult;
@@ -896,7 +902,7 @@ function appArgsInSubjectAndMapFormat( o )
     result.interpreterPath = argv[ 0 ];
     result.mainPath = argv[ 1 ];
     result.interpreterArgs = process.execArgv;
-    result.delimter = o.delimeter;
+    result.delimeter = o.delimeter;
     result.map = Object.create( null );
     result.subject = '';
     result.scriptArgs = argv.slice( 2 );
@@ -970,11 +976,69 @@ appArgsInSubjectAndMapFormat.defaults =
 
 //
 
+function appArgsReadTo( o )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 )
+
+  if( arguments[ 1 ] !== undefined )
+  o = { dst : arguments[ 0 ], nameMap : arguments[ 1 ] };
+
+  o = _.routineOptions( appArgsReadTo,o );
+
+  debugger;
+  if( !o.appArgs )
+  o.appArgs = _.appArgs();
+
+  _.assert( _.objectIs( o.dst ) );
+  _.assert( _.objectIs( o.nameMap ) );
+
+  function set( k,v )
+  {
+    _.assert( o.dst[ k ] !== undefined );
+    if( _.numberIs( o.dst[ k ] ) )
+    {
+      var v = Number( v );
+      _.assert( !isNaN( v ) );
+      o.dst[ k ] = v;
+    }
+    else if( _.boolIs( o.dst[ k ] ) )
+    {
+      var v = !!v;
+      o.dst[ k ] = v;
+    }
+    else
+    {
+      o.dst[ k ] = v;
+    }
+  }
+
+  for( var n in o.nameMap )
+  {
+    if( o.appArgs.map[ n ] !== undefined )
+    {
+      set( o.nameMap[ n ], o.appArgs.map[ n ] );
+      delete o.appArgs.map[ n ];
+    }
+  }
+
+}
+
+appArgsReadTo.defaults =
+{
+  dst : null,
+  appArgs : null,
+  nameMap : null,
+  removing : 1,
+}
+
+//
+
 function appAnchor( o )
 {
   var o = o || {};
 
-  _.routineOptions( appAnchor,o );
+  _.routineOptions( appAnchor,arguments );
 
   var a = _.strParseMap
   ({
@@ -1108,6 +1172,7 @@ var Proto =
 
   appArgsInSubjectAndMapFormat : appArgsInSubjectAndMapFormat,
   appArgs : appArgsInSubjectAndMapFormat,
+  appArgsReadTo : appArgsReadTo,
 
   appAnchor : appAnchor,
 

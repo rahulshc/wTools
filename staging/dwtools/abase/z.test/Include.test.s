@@ -56,7 +56,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: {},
     subject: '',
     scriptArgs: [ ]
@@ -73,7 +73,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: {},
     subject: '',
     scriptArgs: [ '' ]
@@ -90,7 +90,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: { x : 'aa bbb' },
     subject: '',
     scriptArgs: [ 'x', ':', 'aa', 'bbb', ':' ]
@@ -107,7 +107,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: { x : 'y' },
     subject: '',
     scriptArgs: argv.slice( 2 )
@@ -124,7 +124,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: { x : 1 },
     subject: '',
     scriptArgs: argv.slice( 2 )
@@ -141,7 +141,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: { x : 'y xyz', y : 1 },
     subject: 'a b c d',
     scriptArgs: argv.slice( 2 )
@@ -166,7 +166,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: { a : 1, b : 2, c : 3, d : 4, e : 5 },
     subject: 'filePath',
     scriptArgs:
@@ -191,7 +191,7 @@ function appArgs( test )
     interpreterPath: _argv[ 0 ],
     mainPath: _argv[ 1 ],
     interpreterArgs: [],
-    delimter: ':',
+    delimeter: ':',
     map: { a : '', b : '', c : 'd', x : 0, y : 1 },
     subject: '',
     scriptArgs: [ 'a', ':', 'b', ':', 'c', ':', 'd', 'x', ':', 0, 'y', ':', 1 ]
