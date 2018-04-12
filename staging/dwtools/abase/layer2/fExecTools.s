@@ -41,7 +41,7 @@ function shell( o )
   if( _.strIs( o ) )
   o = { path : o };
 
-  _.routineOptions( shell,arguments );
+  _.routineOptions( shell,o );
   _.assert( arguments.length === 1 );
   _.accessorForbid( o,'child' );
   _.accessorForbid( o,'returnCode' );
@@ -332,7 +332,7 @@ function shellNode( o )
   if( _.strIs( o ) )
   o = { path : o }
 
-  _.routineOptions( shellNode,arguments );
+  _.routineOptions( shellNode,o );
   _.assert( _.strIs( o.path ) );
   _.assert( !o.code );
   _.accessorForbid( o,'child' );
@@ -402,7 +402,7 @@ function shellNodePassingThrough( o )
   if( _.strIs( o ) )
   o = { path : o }
 
-  _.routineOptions( shellNodePassingThrough,arguments );
+  _.routineOptions( shellNodePassingThrough,o );
   _.assert( arguments.length === 1 );
   var result = _.shellNode( o );
 
@@ -428,7 +428,7 @@ function routineSourceGet( o )
   if( _.routineIs( o ) )
   o = { routine : o };
 
-  _.routineOptions( routineSourceGet,arguments );
+  _.routineOptions( routineSourceGet,o );
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( o.routine ) );
 
@@ -492,7 +492,7 @@ function routineMake( o )
   if( _.strIs( o ) )
   o = { code : o };
 
-  _.routineOptions( routineMake,arguments );
+  _.routineOptions( routineMake,o );
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( o.externals ) || o.externals === null );
   _.assert( _globalReal_ );
@@ -625,7 +625,7 @@ function routineExec( o )
   if( _.strIs( o ) )
   o = { code : o };
   _.assert( arguments.length === 1 );
-  _.routineOptions( routineExec,arguments );
+  _.routineOptions( routineExec,o );
 
   o.routine = routineMake
   ({
@@ -696,7 +696,7 @@ function execInWorker( o )
   if( _.strIs( o ) )
   o = { code : o };
   _.assert( arguments.length === 1 );
-  _.routineOptions( execInWorker,arguments );
+  _.routineOptions( execInWorker,o );
 
   var blob = new Blob( [ o.code ], { type : 'text/javascript' } );
   var worker = new Worker( URL.createObjectURL( blob ) );
@@ -719,7 +719,7 @@ function makeWorker( o )
   if( _.strIs( o ) )
   o = { code : o };
   _.assert( arguments.length === 1 );
-  _.routineOptions( makeWorker,arguments );
+  _.routineOptions( makeWorker,o );
 
   var blob = new Blob( [ o.code ], { type : 'text/javascript' } );
   var worker = new Worker( URL.createObjectURL( blob ) );
