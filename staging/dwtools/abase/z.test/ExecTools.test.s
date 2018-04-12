@@ -475,6 +475,86 @@ function shell2( test )
 
   con.doThen( function()
   {
+    test.description = 'mode : shell, passingThrough : true, no args';
+
+    o =
+    {
+      path : 'node ' + testAppPath,
+      mode : 'shell',
+      passingThrough : 1,
+      stdio : 'pipe'
+    }
+  })
+  .ifNoErrorThen( function()
+  {
+    /* mode : shell, stdio : pipe, passingThrough : true */
+
+    var options = _.mapSupplement( {}, o, commonDefaults );
+
+    return _.shell( options )
+    .doThen( function()
+    {
+      test.identical( options.exitCode, 0 );
+      var expectedArgs= _.arrayAppendArray( [], process.argv.slice( 2 ) );
+      test.identical( options.output, _.toStr( expectedArgs ) );
+    })
+  })
+
+  //
+
+  con.doThen( function()
+  {
+    test.description = 'mode : spawn, passingThrough : true, only filePath in args';
+
+    o =
+    {
+      path : 'node',
+      args : [ testAppPath ],
+      mode : 'spawn',
+      passingThrough : 1,
+      stdio : 'pipe'
+    }
+  })
+  .ifNoErrorThen( function()
+  {
+    /* mode : spawn, stdio : pipe, passingThrough : true */
+
+    var options = _.mapSupplement( {}, o, commonDefaults );
+
+    return _.shell( options )
+    .doThen( function()
+    {
+      test.identical( options.exitCode, 0 );
+      var expectedArgs = _.arrayAppendArray( [], process.argv.slice( 2 ) );
+      test.identical( options.output, _.toStr( expectedArgs ) );
+    })
+  })
+
+  //
+
+  con.doThen( function()
+  {
+    test.description = 'mode : spawn, passingThrough : true, incorrect usage of o.path in spawn mode';
+
+    o =
+    {
+      path : 'node ' + testApp,
+      args : [ 'staging' ],
+      mode : 'spawn',
+      passingThrough : 1,
+      stdio : 'pipe'
+    }
+  })
+  .ifNoErrorThen( function()
+  {
+    var options = _.mapSupplement( {}, o, commonDefaults );
+    return test.shouldThrowError( _.shell( options ) );
+  })
+
+  //
+
+  con.doThen( function()
+  {
     test.description = 'mode : shell, passingThrough : true';
 
     o =
@@ -496,7 +576,7 @@ function shell2( test )
     .doThen( function()
     {
       test.identical( options.exitCode, 0 );
-      var expectedArgs= _.arrayAppendArrayOnce( o.args, process.argv.slice( 2 ) );
+      var expectedArgs = _.arrayAppendArray( [ 'staging', 'debug' ], process.argv.slice( 2 ) );
       test.identical( options.output, _.toStr( expectedArgs ) );
     })
   })
