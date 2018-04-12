@@ -276,7 +276,6 @@ function shell( o )
       _.appExitCode( -1 );
     }
 
-    debugger;
     if( exitCode !== 0 && o.throwingExitCode )
     {
       if( _.numberIs( exitCode ) )
@@ -986,7 +985,6 @@ function appArgsReadTo( o )
 
   o = _.routineOptions( appArgsReadTo,o );
 
-  debugger;
   if( !o.appArgs )
   o.appArgs = _.appArgs();
 
