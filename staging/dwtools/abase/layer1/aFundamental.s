@@ -1,6 +1,6 @@
 ( function _aFundamental_s_() {
 
-'use strict';
+'use strict'; // aaa
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -5351,7 +5351,7 @@ function numberRandomInt( range )
 function numberRandomIntBut( range )
 {
   var result;
-  var attempts = 10;
+  var attempts = 50;
 
   if( _.numberIs( range ) )
   range = [ 0,range ];
@@ -5361,6 +5361,11 @@ function numberRandomIntBut( range )
 
   for( var attempt = 0 ; attempt < attempts ; attempt++ )
   {
+    // if( attempt === attempts-2 )
+    // debugger;
+    // if( attempt === attempts-1 )
+    // debugger;
+
     /*result = _.numberRandomInt( range ); */
     var result = Math.floor( range[ 0 ] + Math.random()*( range[ 1 ] - range[ 0 ] ) );
 
@@ -5376,12 +5381,15 @@ function numberRandomIntBut( range )
       if( result === arguments[ a ] )
       bad = true;
     }
-    if( bad ) continue;
+
+    if( bad )
+    continue;
     return result;
   }
 
-  console.warn( 'numberRandomIntBut :','NaN' );
-  throw _.err( 'numberRandomIntBut :','NaN' );
+  // debugger;
+  // console.warn( 'numberRandomIntBut :','NaN' );
+  // throw _.err( 'numberRandomIntBut :','NaN' );
 
   result = NaN;
   return result;
@@ -5615,8 +5623,9 @@ function strIs( src )
 
 function strsIs( src )
 {
-  if( _.strIs( src ) )
-  return true;
+
+  // if( _.strIs( src ) )
+  // return true;
 
   if( _.arrayIs( src ) )
   {
@@ -5625,7 +5634,6 @@ function strsIs( src )
     return false;
     return true;
   }
-
   return false;
 }
 
@@ -5637,6 +5645,20 @@ function strIsNotEmpty( src )
   return false;
   var result = _ObjectToString.call( src ) === '[object String]';
   return result;
+}
+
+//
+
+function strsIsNotEmpty( src )
+{
+  if( _.arrayIs( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !_.strIsNotEmpty( src[ s ] ) )
+    return false;
+    return true;
+  }
+  return false;
 }
 
 //
@@ -5844,11 +5866,11 @@ function strEndOf( src,begin )
   * //returns 'bc'
   *
   * @example
-  * _.strInbetweenOf( 'aaabccc', 'a', 'c' );
+  * _.strInbetweenOf( 'aabcc', 'a', 'c' );
   * //returns 'aabcc'
   *
   * @example
-  * _.strInbetweenOf( 'aaabccc', 'a', 'a' );
+  * _.strInbetweenOf( 'aabcc', 'a', 'a' );
   * //returns 'a'
   *
   * @example
@@ -7186,8 +7208,12 @@ function methodsCall( contexts,methods,args )
 
 //
 
-function routineOptions( routine,options,defaults )
+function routineOptions( routine,args,defaults )
 {
+
+  if( !_.argumentsIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
 
   if( options === undefined )
   options = Object.create( null );
@@ -7196,6 +7222,7 @@ function routineOptions( routine,options,defaults )
   _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
   _.assert( _.objectIs( routine.defaults ) || defaults,'routineOptions : expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ),'routineOptions : expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
 
   defaults = defaults || routine.defaults;
 
@@ -7208,8 +7235,12 @@ function routineOptions( routine,options,defaults )
 
 //
 
-function routineOptionsWithUndefines( routine,options )
+function routineOptionsWithUndefines( routine,args )
 {
+
+  if( !_.argumentsIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
 
   if( options === undefined )
   options = Object.create( null );
@@ -7218,6 +7249,7 @@ function routineOptionsWithUndefines( routine,options )
   _.assert( _.routineIs( routine ),'routineOptionsWithUndefines : expects routine' );
   _.assert( _.objectIs( routine.defaults ),'routineOptionsWithUndefines : expects routine with defined defaults' );
   _.assert( _.objectIs( options ),'routineOptionsWithUndefines : expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnlyWithUndefines( options,routine.defaults );
   _.mapComplementWithUndefines( options,routine.defaults );
@@ -8010,6 +8042,7 @@ function bufferRetype( src,bufferType )
 
 function bufferJoin()
 {
+
   if( arguments.length < 2 )
   return arguments[ 0 ] || null;
 
@@ -8054,7 +8087,7 @@ function bufferJoin()
 
   var resultBuffer = new ArrayBuffer( size );
   var result = _.bufferRawIs( firstSrc ) ? resultBuffer : new firstSrc.constructor( resultBuffer );
-  var resultUint = result.constructor === Uint8Array ? result : new Uint8Array( resultBuffer );
+  var resultBytes = result.constructor === Uint8Array ? result : new Uint8Array( resultBuffer );
 
   /* */
 
@@ -8062,11 +8095,11 @@ function bufferJoin()
   for( var s = 0 ; s < srcs.length ; s++ )
   {
     var src = srcs[ s ];
-    if( resultUint.set )
-    resultUint.set( src , offset );
+    if( resultBytes.set )
+    resultBytes.set( src , offset );
     else
     for( var i = 0 ; i < src.length ; i++ )
-    resultUint[ offset+i ] = src[ i ];
+    resultBytes[ offset+i ] = src[ i ];
     offset += src.byteLength;
   }
 
@@ -9591,93 +9624,6 @@ function arraySub( src,begin,end )
   return src.subarray( begin,end );
 
   return src.slice( begin,end );
-}
-
-//
-
-function arrayJoin()
-{
-  if( arguments.length < 2 )
-  return arguments[ 0 ] || null;
-
-  var srcs = [];
-  var size = 0;
-  var offset = 0;
-  var firstSrc;
-
-  for( var s = 0 ; s < arguments.length ; s++ )
-  {
-    var src = arguments[ s ];
-
-    if( src === null )
-    continue;
-
-    if( !firstSrc )
-    firstSrc = src;
-
-    if( _.bufferRawIs( src ) )
-    {
-      srcs.push( new Uint8Array( src ) );
-    }
-    else if( src instanceof Uint8Array || _.arrayIs( src ) )
-    {
-      srcs.push( src );
-    }
-    else
-    {
-      srcs.push( new Uint8Array( src.buffer,src.byteOffset,src.byteLength ) );
-    }
-
-    if( _.arrayIs( src ) )
-    {
-      size += src.length;
-    }
-    else
-    {
-      _.assert( src.byteLength >= 0,'expects buffers, but got',_.strTypeOf( src ) );
-      _.assert( _.bufferAnyIs( src ) );
-      size += src.byteLength;
-    }
-  }
-
-  if( srcs.length === 0 || size === 0 )
-  return null;
-
-  /* */
-
-
-  if( _.arrayIs( firstSrc ) )
-  {
-    var result = new Array( size );
-    for( var s = 0 ; s < srcs.length ; s++ )
-    {
-      var src = srcs[ s ];
-      for( var i = 0 ; i < src.length ; i++ )
-      result[ offset+i ] = src[ i ];
-      offset += src.length;
-    }
-  }
-  else
-  {
-    var resultBuffer = new ArrayBuffer( size );
-    var result = _.bufferRawIs( firstSrc ) ? resultBuffer : new firstSrc.constructor( resultBuffer );
-    var resultUint = result.constructor === Uint8Array ? result : new Uint8Array( resultBuffer );
-
-    /* */
-
-    for( var s = 0 ; s < srcs.length ; s++ )
-    {
-      var src = srcs[ s ];
-      if( resultUint.set )
-      resultUint.set( src , offset );
-      else
-      for( var i = 0 ; i < src.length ; i++ )
-      resultUint[ offset+i ] = src[ i ];
-      offset += src.byteLength !== undefined ? src.byteLength : src.length;
-    }
-  }
-
-  return result;
 }
 
 //
@@ -14524,13 +14470,19 @@ function mapExtendByArray( dst,src,val )
 function mapDelete( dst,ins )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectLike( dst ) );
   _.assert( _.objectLike( ins ) );
 
+  if( ins !== undefined )
   for( var i in ins )
   {
     delete dst[ i ];
+  }
+  else
+  for( var i in dst )
+  {
+    delete d[ i ];
   }
 
   return dst;
@@ -16583,7 +16535,7 @@ function mapBut( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _.assert( srcMap,'mapBut :','expects object as argument' );
+  _.assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -16615,7 +16567,7 @@ function mapButWithUndefines( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _.assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
+  _.assert( _.objectLikeOrRoutine( srcMap ),'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -16671,7 +16623,7 @@ function mapOwnBut( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  // _.assert( _.objectLikeOrRoutine( srcMap ),'mapOwnBut :','expects object as argument' );
+  _.assert( _.objectLikeOrRoutine( srcMap ),'mapOwnBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -16681,10 +16633,8 @@ function mapOwnBut( srcMap )
     for( a = 1 ; a < arguments.length ; a++ )
     {
       var argument = arguments[ a ];
-
       if( k in argument )
       break;
-
     }
     if( a === arguments.length )
     {
@@ -17853,7 +17803,9 @@ var Proto =
 
   strIs : strIs,
   strsIs : strsIs,
+
   strIsNotEmpty : strIsNotEmpty,
+  strsIsNotEmpty : strsIsNotEmpty,
 
   strTypeOf : strTypeOf,
   strPrimitiveTypeOf : strPrimitiveTypeOf,
@@ -17993,8 +17945,6 @@ var Proto =
   // array transformer
 
   arraySub : arraySub,
-
-  arrayJoin : arrayJoin,
 
   arrayGrow : arrayGrow,
   arrayResize : arrayResize,
