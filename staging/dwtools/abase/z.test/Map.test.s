@@ -2405,7 +2405,7 @@ function mapOwnBut( test )
 
   /**/
 
-  if( !Config.debug ) 
+  if( !Config.debug )
   return;
 
   test.description = 'no arguments';
@@ -3466,7 +3466,7 @@ function mapOwnNone( test )
 var Self =
 {
 
-  name : 'MapTests',
+  name : 'MapTest',
   silencing : 1,
 
   tests :

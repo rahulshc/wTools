@@ -292,6 +292,7 @@ function shell( o )
 
     if( exitCode !== 0 && o.throwingExitCode )
     {
+      debugger;
       if( _.numberIs( exitCode ) )
       o.con.error( _.err( 'Process returned error code :',exitCode,'\nLaunched as :',o.path ) );
       else
