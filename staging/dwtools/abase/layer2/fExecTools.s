@@ -903,7 +903,9 @@ function appArgsInSubjectAndMapFormat( o )
   if( _appArgsInSubjectAndMapFormatResult && o.delimeter === _appArgsInSubjectAndMapFormatResult.delimeter )
   return _appArgsInSubjectAndMapFormatResult;
 
-  var result = _appArgsInSubjectAndMapFormatResult = Object.create( null );
+  var result = Object.create( null );
+  if( o.delimeter === appArgsInSubjectAndMapFormat.defaults.delimeter )
+  _appArgsInSubjectAndMapFormatResult = result;
 
   if( _global.process )
   {
@@ -1179,6 +1181,7 @@ var Proto =
   makeWorker : makeWorker,
 
   execStages : execStages, /* experimental */
+
 
   //
 
