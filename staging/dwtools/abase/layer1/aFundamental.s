@@ -16535,7 +16535,7 @@ function mapBut( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _.assert( _.objectLike( srcMap ),'mapBut :','expects object as argument' );
+  _.assert( _.objectLikeOrRoutine( srcMap ),'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
