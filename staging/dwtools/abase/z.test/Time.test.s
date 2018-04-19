@@ -269,6 +269,54 @@ function timeOut( test )
     return t;
   })
 
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'give msg before timeOut';
+    var timeBefore = _.timeNow();
+    var returnValue = 1;
+    var msg = 2;
+
+    var t = _.timeOut( delay, () => returnValue );
+
+    return _.timeOut( delay / 2, function()
+    {
+      t.give( msg );
+      t.got( ( err, got ) => test.identical( got, msg ) );
+      t.got( ( err, got ) =>
+      {
+        test.shouldBe( _.timeNow() - timeBefore >= delay );
+        test.identical( got, returnValue );
+      })
+    })
+
+    return t;
+  })
+
+  /* */
+
+  .doThen( function()
+  {
+    test.description = 'stop timer with error + arg, routine passed';
+    var timeBefore = _.timeNow();
+    var called = false;
+    var stop = 'stop';
+    var arg = 'arg';
+
+    var t = _.timeOut( delay, () => { called = true } );
+    t.doThen( function( err, got )
+    {
+      test.shouldBe( _.timeNow() - timeBefore >= delay / 2 );
+      test.identical( got, [ stop, arg ] );
+      test.identical( called, false );
+      test.identical( err, null )
+    })
+    _.timeOut( delay/ 2, () => t.give( stop, arg ) );
+
+    return t;
+  })
+
   return testCon;
 }
 
