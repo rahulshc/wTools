@@ -118,24 +118,13 @@ function _setupLoggerPlaceholder()
   if( !_global_.logger )
   _global_.logger =
   {
-    log : () => { console.log.apply( console,arguments ); },
-    logUp : () => { console.logUp.apply( console,arguments ); },
-    logDown : () => { console.logDown.apply( console,arguments ); },
-    error : function() { console.error.apply( console,arguments ); },
-    errorUp : () => { console.errorUp.apply( console,arguments ); },
-    errorDown : () => { console.errorDown.apply( console,arguments ); },
+    log : function log() { console.log.apply( console,arguments ); },
+    logUp : function logUp() { console.log.apply( console,arguments ); },
+    logDown : function logDown() { console.log.apply( console,arguments ); },
+    error : function error() { console.error.apply( console,arguments ); },
+    errorUp :  function errorUp() { console.error.apply( console,arguments ); },
+    errorDown : function errorDown() { console.error.apply( console,arguments ); },
   }
-
-  // if( !_global_.logger )
-  // _global_.logger =
-  // {
-  //   log : _.routineJoin( console,console.log ),
-  //   logUp : _.routineJoin( console,console.log ),
-  //   logDown : _.routineJoin( console,console.log ),
-  //   error : _.routineJoin( console,console.error ),
-  //   errorUp : _.routineJoin( console,console.error ),
-  //   errorDown : _.routineJoin( console,console.error ),
-  // }
 
 }
 

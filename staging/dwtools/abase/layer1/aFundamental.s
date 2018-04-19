@@ -7650,6 +7650,7 @@ function timeOut( delay,onEnd )
 {
   var con = _.Consequence ? new _.Consequence() : undefined;
   var timer = null;
+  var handleCalled = false;
 
   /* */
 
@@ -7658,6 +7659,13 @@ function timeOut( delay,onEnd )
   {
     if( err )
     clearTimeout( timer );
+
+    if( err && !handleCalled )
+    {
+      arg = arg ? [ err,arg ] : err;
+      err = null;
+    }
+
     con.give( err,arg );
   });
 
@@ -7674,6 +7682,8 @@ function timeOut( delay,onEnd )
   function handleEnd()
   {
     var result;
+
+    handleCalled = true;
 
     // console.log( 'timeOut' );
 
