@@ -7660,9 +7660,9 @@ function timeOut( delay,onEnd )
     if( err )
     clearTimeout( timer );
 
-    if( !handleCalled )
+    if( err && !handleCalled )
     {
-      arg = err;
+      arg = arg ? [ err,arg ] : err;
       err = null;
     }
 
