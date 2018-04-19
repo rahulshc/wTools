@@ -121,7 +121,7 @@ function _setupLoggerPlaceholder()
     log : () => { console.log.apply( console,arguments ); },
     logUp : () => { console.logUp.apply( console,arguments ); },
     logDown : () => { console.logDown.apply( console,arguments ); },
-    error : () => { console.error.apply( console,arguments ); },
+    error : function() { console.error.apply( console,arguments ); },
     errorUp : () => { console.errorUp.apply( console,arguments ); },
     errorDown : () => { console.errorDown.apply( console,arguments ); },
   }
