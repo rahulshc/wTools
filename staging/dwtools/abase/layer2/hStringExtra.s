@@ -354,6 +354,71 @@ strExtractStereoStrips.defaults =
   onStrip : null,
 }
 
+//
+
+function strSorterParse( o )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( arguments.length === 1 )
+  {
+    if( _.strIs( o ) )
+    o = { src : o }
+  }
+
+  if( arguments.length === 2 )
+  {
+    o =
+    {
+      src : arguments[ 0 ],
+      fields : arguments[ 1 ]
+    }
+  }
+
+  _.routineOptions( strSorterParse, o );
+  _.assert( o.fields === null || _.objectLike( o.fields ) );
+
+  var map =
+  {
+    '>' : 1,
+    '<' : 0
+  }
+
+  var delimeters = _.mapOwnKeys( map );
+  var splitted = _.strSplit({ src : o.src, delimeter : delimeters, stripping : 1, preservingDelimeters : 1 });
+
+  var parsed = [];
+
+  if( splitted.length >= 2 )
+  for( var i = 0; i < splitted.length; i+= 2 )
+  {
+    var field = splitted[ i ];
+    var postfix = splitted[ i + 1 ];
+
+    _.assert( o.fields ? o.fields[ field ] : true, 'Field: ', field, ' is not allowed.' );
+    _.assert( _.strIs( postfix ), 'Field: ', field, ' doesn\'t have a postfix.' );
+
+    var valueForPostfix = map[ postfix ];
+
+    if( valueForPostfix !== undefined )
+    {
+      parsed.push( [ field,valueForPostfix ] )
+    }
+    else
+    {
+      _.assert( 0, 'unknown postfix: ', postfix )
+    }
+  }
+
+  return parsed;
+}
+
+strSorterParse.defaults =
+{
+  src : null,
+  fields : null,
+}
+
 // --
 // format
 // --
@@ -993,6 +1058,8 @@ var Proto =
 
   strExtractStrips : strExtractStrips,
   strExtractStereoStrips : strExtractStereoStrips,
+
+  strSorterParse : strSorterParse,
 
   // format
 
