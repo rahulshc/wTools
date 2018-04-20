@@ -2870,18 +2870,14 @@ function entityProbe( o )
 
   /* */
 
-  // for( var a = 0 ; a < o.src.length ; a++ )
   _.entityMap( o.src, function( e,k )
   {
-    // var src = o.src[ k ];
     var src = e;
 
     o.total += 1;
 
-    //debugger;
     if( !_.arrayLike( src ) || !o.recursive )
     {
-      //debugger;
       _.assert( _.objectIs( src ) );
       if( src !== undefined )
       extend( o.result, src );
@@ -3065,17 +3061,18 @@ function entityMap( src,onEach )
   if( _.arrayLike( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
-    result[ s ] = onEach( src[ s ],s,src );
+    {
+      result[ s ] = onEach( src[ s ],s,src );
+      _.assert( result[ s ] !== undefined,'( entityMap ) onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+    }
   }
   else if( _.objectLike( src ) )
   {
-    // debugger;
     for( var s in src )
     {
       result[ s ] = onEach( src[ s ],s,src );
       _.assert( result[ s ] !== undefined,'( entityMap ) onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
     }
-    // debugger;
   }
   else _.assert( 0,'unexpected' );
 
@@ -3138,10 +3135,7 @@ function _entityFilter( o )
   }
   else
   {
-    // result = new o.src.constructor()
     result = _.entityMake( o.src );
-    // debugger;
-
     for( var s in o.src )
     {
       r = onEach.call( o.src,o.src[ s ],s,o.src );
