@@ -6286,51 +6286,134 @@ function regexpEscape( src )
 //
 
 /**
- * Turn a *-wildcard style glob into a regular expression
+ * Turn a *-wildcard style _glob into a regular expression
  * @example
- * var glob = '* /www/*.js';
- * wTools.regexpForGlob(glob);
+ * var _glob = '* /www/*.js';
+ * wTools.regexpForGlob( _glob );
  * // /^.\/[^\/]*\/www\/[^\/]*\.js$/m
- * @param {String} glob *-wildcard style glob
- * @returns {RegExp} RegExp that represent passed glob
+ * @param {String} _glob *-wildcard style _glob
+ * @returns {RegExp} RegExp that represent passed _glob
  * @throw {Error} If missed argument, or got more than one argumet
- * @throw {Error} If glob is not string
+ * @throw {Error} If _glob is not string
  * @function regexpForGlob
  * @memberof wTools
  */
 
-function regexpForGlob( glob )
+function regexpForGlob( _glob )
 {
-  var result = '';
-  _.assert( arguments.length === 1 );
-  _.assert( _.strIs( glob ) );
 
-  var w = 0;
-  glob.replace( /(\*\*[\/\\]?)|\?|\*/g, function( matched,a,offset,str )
+  function strForGlob( _glob )
   {
 
-    result += regexpEscape( glob.substr( w,offset-w ) );
-    w = offset + matched.length;
+    var result = '';
+    _.assert( arguments.length === 1 );
+    _.assert( _.strIs( _glob ) );
 
-    if( matched === '?' )
-    result += '.';
-    else if( matched === '*' )
-    result += '[^\\\/]*';
-    else if( matched.substr( 0,2 ) === '**' )
-    result += '.*';
-    else _.assert( 0,'unexpected' );
+    var w = 0;
+    _glob.replace( /(\*\*[\/\\]?)|\?|\*/g, function( matched,a,offset,str )
+    {
 
-  });
+      result += regexpEscape( _glob.substr( w,offset-w ) );
+      w = offset + matched.length;
 
-  result += regexpEscape( glob.substr( w,glob.length-w ) );
-  if( result[ 0 ] !== '^' )
-  {
-    result = _.strPrependOnce( result,'./' );
-    result = _.strPrependOnce( result,'^' );
+      if( matched === '?' )
+      result += '.';
+      else if( matched === '*' )
+      result += '[^\\\/]*';
+      else if( matched.substr( 0,2 ) === '**' )
+      result += '.*';
+      else _.assert( 0,'unexpected' );
+
+    });
+
+    result += regexpEscape( _glob.substr( w,_glob.length-w ) );
+    if( result[ 0 ] !== '^' )
+    {
+      result = _.strPrependOnce( result,'./' );
+      result = _.strPrependOnce( result,'^' );
+    }
+    result = _.strAppendOnce( result,'$' );
+
+    return result;
   }
-  result = _.strAppendOnce( result,'$' );
 
-  return RegExp( result,'m' );
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( _glob ) || _.strsIs( _glob ) );
+
+  if( _.strIs( _glob ) )
+  _glob = [ _glob ];
+
+  var result = _.entityMap( _glob,( _glob ) => strForGlob( _glob ) );
+  result = RegExp( '(' + result.join( ')|(' ) + ')','m' );
+
+  return result;
+}
+
+//
+
+function regexpForGlob2( _glob )
+{
+
+  _.assert( _.strIs( _glob ) );
+  _.assert( arguments.length === 1 );
+
+  function squareBrackets( src )
+  {
+    src = _.strInbetweenOf( src, '[', ']' );
+    // escape inner []
+    src = src.replace( /[\[\]]/g, ( m ) => '\\' + m );
+    // replace ! -> ^ at the beginning
+    src = src.replace( /^\\!/g, '^' );
+    return '[' + src + ']';
+  }
+
+  function curlyBrackets( src )
+  {
+    src = src.replace( /[\}\{]/g, ( m ) => map[ m ] );
+    //replace , with | to separate regexps
+    src = src.replace( /,+(?![^[|(]*]|\))/g, '|' );
+    return src;
+  }
+
+  var map =
+  {
+    0 : '.*', /* doubleAsterix */
+    1 : '[^\\\/]*', /* singleAsterix */
+    2 : '.', /* questionMark */
+    3 : squareBrackets, /* squareBrackets */
+    '{' : '(',
+    '}' : ')',
+  }
+
+  function globToRegexp(  )
+  {
+    var args = [].slice.call( arguments );
+    var i = args.indexOf( args[ 0 ], 1 ) - 1;
+
+    /* i - index of captured group from regexp is equivalent to key from map  */
+
+    if( _.strIs( map[ i ] ) )
+    return map[ i ];
+    if( _.routineIs( map[ i ] ) )
+    return map[ i ]( args[ 0 ] );
+  }
+
+  //espace simple text
+  _glob = _glob.replace( /[^\*\[\]\{\}\?]+/g, ( m ) => _.regexpEscape( m ) );
+  //replace globs with regexps from map
+  _glob = _glob.replace( /(\*\*)|(\*)|(\?)|(\[.*\])/g, globToRegexp );
+  //replace {} -> () and , -> | to make proper regexp
+  _glob = _glob.replace( /\{.*\}+(?![^[]*\])/g, curlyBrackets );
+
+  if( !_.strBegins( _glob, '\\.\/' ) )
+  _glob = _.strPrependOnce( _glob,'\\.\\/' );
+
+  _glob = _.strPrependOnce( _glob,'^' );
+  _glob = _.strAppendOnce( _glob,'$' );
+
+  // console.log( _glob )
+
+  return RegExp( _glob,'m' );
 }
 
 //
@@ -6920,6 +7003,30 @@ function routineTolerantCall( context,routine,options )
   var result = routine.call( context,options );
 
   return result;
+}
+
+//
+
+function routineVectorize( routine )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.routineIs( routine ) );
+
+  function vectorized( src )
+  {
+    _.assert( arguments.length === 1 );
+    if( _.arrayLike( src ) )
+    {
+      var result = [];
+      for( var s = 0 ; s < src.length ; s++ )
+      result[ s ] = routine.call( this,src[ s ] );
+      return result;
+    }
+    return [ routine.call( this,src ) ];
+  }
+
+  return vectorized;
 }
 
 //
@@ -11541,19 +11648,17 @@ function arrayHasNone( src )
 
 function arrayAll( src )
 {
-  var empty = true;
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( src ) );
 
   for( var s = 0 ; s < src.length ; src++ )
   {
-    empty = false;
     if( !src[ s ] )
     return false;
   }
 
-  return empty;
+  return true;
 }
 
 //
@@ -17837,7 +17942,9 @@ var Proto =
 
   regexpIdentical : regexpIdentical,
   regexpEscape : regexpEscape,
+
   regexpForGlob : regexpForGlob,
+  regexpForGlob2 : regexpForGlob2,
 
   regexpMakeObject : regexpMakeObject,
   regexpMakeArray : regexpArrayMake,
@@ -17858,7 +17965,9 @@ var Proto =
   routineJoin : routineJoin,
   routineSeal : routineSeal,
   routineDelayed : routineDelayed,
+
   routineTolerantCall : routineTolerantCall,
+  routineVectorize : routineVectorize,
 
   routinesJoin : routinesJoin,
   _routinesCall : _routinesCall,
