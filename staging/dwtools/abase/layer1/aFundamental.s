@@ -6351,10 +6351,10 @@ function regexpForGlob( _glob )
 
 //
 
-function regexpForGlob2( _glob )
+function regexpForGlob2( src )
 {
 
-  _.assert( _.strIs( _glob ) );
+  _.assert( _.strIs( src ) || _.arrayLike( src ) );
   _.assert( arguments.length === 1 );
 
   function squareBrackets( src )
@@ -6398,22 +6398,48 @@ function regexpForGlob2( _glob )
     return map[ i ]( args[ 0 ] );
   }
 
-  //espace simple text
-  _glob = _glob.replace( /[^\*\[\]\{\}\?]+/g, ( m ) => _.regexpEscape( m ) );
-  //replace globs with regexps from map
-  _glob = _glob.replace( /(\*\*)|(\*)|(\?)|(\[.*\])/g, globToRegexp );
-  //replace {} -> () and , -> | to make proper regexp
-  _glob = _glob.replace( /\{.*\}+(?![^[]*\])/g, curlyBrackets );
+  function adjustGlobStr( src )
+  {
+    _.assert( _.strIs( src ) );
 
-  if( !_.strBegins( _glob, '\\.\/' ) )
-  _glob = _.strPrependOnce( _glob,'\\.\\/' );
+    //espace simple text
+    src = src.replace( /[^\*\[\]\{\}\?]+/g, ( m ) => _.regexpEscape( m ) );
+    //replace globs with regexps from map
+    src = src.replace( /(\*\*)|(\*)|(\?)|(\[.*\])/g, globToRegexp );
+    //replace {} -> () and , -> | to make proper regexp
+    src = src.replace( /\{.*\}+(?![^[]*\])/g, curlyBrackets );
 
-  _glob = _.strPrependOnce( _glob,'^' );
-  _glob = _.strAppendOnce( _glob,'$' );
+    return src;
+  }
+
+  var result = '';
+
+  if( _.strIs( src ) )
+  {
+    result = adjustGlobStr( src );
+  }
+  else
+  {
+    if( src.length > 1 )
+    for( var i = 0; i < src.length; i++ )
+    {
+      result += `(${adjustGlobStr( src[ i ] )})`;
+      if( i + 1 < src.length )
+      result += '|'
+    }
+    else
+    result = adjustGlobStr( src[ 0 ] );
+  }
+
+  if( !_.strBegins( result, '\\.\/' ) )
+  result = _.strPrependOnce( result,'\\.\\/' );
+
+  result = _.strPrependOnce( result,'^' );
+  result = _.strAppendOnce( result,'$' );
 
   // console.log( _glob )
 
-  return RegExp( _glob,'m' );
+  return RegExp( result,'m' );
 }
 
 //
