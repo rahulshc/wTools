@@ -2870,9 +2870,8 @@ function entityProbe( o )
 
   /* */
 
-  _.entityMap( o.src, function( e,k )
+  _.entityMap( o.src, function( src,k )
   {
-    var src = e;
 
     o.total += 1;
 
@@ -2881,7 +2880,7 @@ function entityProbe( o )
       _.assert( _.objectIs( src ) );
       if( src !== undefined )
       extend( o.result, src );
-      return;
+      return src;
     }
 
     for( var s = 0 ; s < src.length ; s++ )
@@ -2899,6 +2898,7 @@ function entityProbe( o )
       throw _.err( 'array should have only maps' );
     }
 
+    return src;
   });
 
   /* not having */
