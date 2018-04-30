@@ -1123,6 +1123,8 @@ function appExitCode( status )
 function appExit( exitCode )
 {
 
+  debugger;
+
   exitCode = exitCode !== undefined ? exitCode : appExitCode();
 
   _.assert( arguments.length === 0 || arguments.length === 1 );
