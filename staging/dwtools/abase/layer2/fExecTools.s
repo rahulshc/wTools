@@ -654,12 +654,10 @@ function routineExec( o )
 
   try
   {
-    // debugger;
     if( o.context )
     o.result = o.routine.apply( o.context );
     else
     o.result = o.routine.call( _global );
-    // debugger;
   }
   catch( err )
   {
@@ -671,7 +669,6 @@ function routineExec( o )
       sourceCode : o.routine.toString(),
       location : { path : o.filePath },
     });
-    // throw _.err( err );
   }
 
   return o;

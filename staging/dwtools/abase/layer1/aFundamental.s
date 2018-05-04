@@ -1,17 +1,10 @@
 ( function _aFundamental_s_() {
 
-'use strict'; // aaa
+'use strict';
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
  */
-
-/*
-
-!!! arrayGrow
-!!! arrayFill*
-
-*/
 
 // global
 
@@ -5615,7 +5608,7 @@ function strIs( src )
 
 //
 
-function strsIs( src )
+function strsAre( src )
 {
 
   // if( _.strIs( src ) )
@@ -5643,7 +5636,7 @@ function strIsNotEmpty( src )
 
 //
 
-function strsIsNotEmpty( src )
+function strsAreNotEmpty( src )
 {
   if( _.arrayIs( src ) )
   {
@@ -6338,7 +6331,7 @@ function regexpForGlob( _glob )
   }
 
   _.assert( arguments.length === 1 );
-  _.assert( _.strIs( _glob ) || _.strsIs( _glob ) );
+  _.assert( _.strIs( _glob ) || _.strsAre( _glob ) );
 
   if( _.strIs( _glob ) )
   _glob = [ _glob ];
@@ -6354,7 +6347,7 @@ function regexpForGlob( _glob )
 function regexpForGlob2( src )
 {
 
-  _.assert( _.strIs( src ) || _.arrayLike( src ) );
+  _.assert( _.strIs( src ) || _.strsAre( src ) );
   _.assert( arguments.length === 1 );
 
   function squareBrackets( src )
@@ -17937,10 +17930,10 @@ var Proto =
   // str
 
   strIs : strIs,
-  strsIs : strsIs,
+  strsAre : strsAre,
 
   strIsNotEmpty : strIsNotEmpty,
-  strsIsNotEmpty : strsIsNotEmpty,
+  strsAreNotEmpty : strsAreNotEmpty,
 
   strTypeOf : strTypeOf,
   strPrimitiveTypeOf : strPrimitiveTypeOf,
