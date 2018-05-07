@@ -1312,7 +1312,7 @@ function assertMapHasAll( src,all,msg )
 
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var but = Object.keys( _.mapBut( all,src ) );
+  var but = Object.keys( _.mapBut( src,all ) );
 
   if( but.length > 0 )
   {
