@@ -1,6 +1,6 @@
 ( function _aFundamental_s_() {
 
-'use strict';
+'use strict'; /*ggg*/
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -7026,30 +7026,6 @@ function routineTolerantCall( context,routine,options )
 
 //
 
-function routineVectorize( routine )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) );
-
-  function vectorized( src )
-  {
-    _.assert( arguments.length === 1 );
-    if( _.arrayLike( src ) )
-    {
-      var result = [];
-      for( var s = 0 ; s < src.length ; s++ )
-      result[ s ] = routine.call( this,src[ s ] );
-      return result;
-    }
-    return [ routine.call( this,src ) ];
-  }
-
-  return vectorized;
-}
-
-//
-
 function routinesJoin()
 {
   var result,routines,index;
@@ -7401,7 +7377,7 @@ function routineInputMultiplicator_functor( o )
 
   o = _.routineOptions( routineInputMultiplicator_functor,o );
 
-  var routineName = o.routine;
+  var routineName = o.routine.name;
   var routine = o.routine;
   var fieldFilter = o.fieldFilter;
   var bypassFilteredOut = o.bypassFilteredOut;
@@ -7409,6 +7385,7 @@ function routineInputMultiplicator_functor( o )
   if( strIs( routine ) )
   routine = function methodCall()
   {
+    debugger;
     return this[ routineName ].apply( this,arguments );
   }
 
@@ -7421,6 +7398,7 @@ function routineInputMultiplicator_functor( o )
 
     if( _.arrayIs( src ) )
     {
+      debugger;
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       result[ r ] = routine.call( this,src[ r ] );
@@ -7429,6 +7407,7 @@ function routineInputMultiplicator_functor( o )
 
     if( _.mapIs( src ) )
     {
+      debugger;
       var result = Object.create( null );
       for( var r in src )
       result[ r ] = routine.call( this,src[ r ] );
@@ -7436,15 +7415,13 @@ function routineInputMultiplicator_functor( o )
     }
 
     return routine.call( this,src );
-
-    _.assert( 0,'unknown argument',_.strTypeOf( src ) );
-
   }
 
   /* */
 
   function inputMultiplicatorWithFilter( src )
   {
+    debugger;
 
     _.assert( arguments.length === 1 );
 
@@ -7471,9 +7448,6 @@ function routineInputMultiplicator_functor( o )
     }
 
     return routine.call( this,src );
-
-    _.assert( 0,'unknown argument',_.strTypeOf( src ) );
-
   }
 
   /* */
@@ -7486,6 +7460,30 @@ routineInputMultiplicator_functor.defaults =
   routine : null,
   fieldFilter : null,
   bypassFilteredOut : 1,
+}
+
+//
+
+function routineVectorize_functor( routine )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.routineIs( routine ) );
+
+  function vectorized( src )
+  {
+    _.assert( arguments.length === 1 );
+    if( _.arrayLike( src ) )
+    {
+      var result = [];
+      for( var s = 0 ; s < src.length ; s++ )
+      result[ s ] = routine.call( this,src[ s ] );
+      return result;
+    }
+    return [ routine.call( this,src ) ];
+  }
+
+  return vectorized;
 }
 
 //
@@ -12836,25 +12834,6 @@ function arrayAppendedArrayOnce( dstArray, insArray, onEqualize )
 
 function arrayAppendArray( dstArray, insArray )
 {
-  // var result = dstArray;
-  //
-  // _.assert( _.arrayIs( dstArray ),'expects array' );
-  //
-  // for( var a = 1 ; a < arguments.length ; a++ )
-  // {
-  //   var argument = arguments[ a ];
-  //
-  //   if( argument === undefined )
-  //   throw _.err( 'argument is not defined' );
-  //
-  //   if( _.arrayLike( argument ) )
-  //   result.push.apply( result,argument );
-  //   else
-  //   result.push( argument );
-  // }
-  //
-  // return result;
-
   arrayAppendedArray.apply( this, arguments );
   return dstArray;
 }
@@ -14565,19 +14544,6 @@ function mapCopy()
   args.unshift( Object.create( null ) );
   return _.mapExtend.apply( _,args );
 }
-
-//
-
-// function mapCopyConditional( filter )
-// {
-//   var args = _.arraySlice( arguments,1 );
-//   args.unshift( Object.create( null ) );
-//
-//   debugger;
-//
-//   var args = _.arrayAppendArrays( [],[ Object.create( null ),arguments ] );
-//   return _.mapExtend.apply( _,args );
-// }
 
 //
 
@@ -17986,7 +17952,6 @@ var Proto =
   routineDelayed : routineDelayed,
 
   routineTolerantCall : routineTolerantCall,
-  routineVectorize : routineVectorize,
 
   routinesJoin : routinesJoin,
   _routinesCall : _routinesCall,
@@ -17999,6 +17964,7 @@ var Proto =
   routineOptionsFromThis : routineOptionsFromThis,
 
   routineInputMultiplicator_functor : routineInputMultiplicator_functor,
+  routineVectorize_functor : routineVectorize_functor,
 
   _equalizerFromMapper : _equalizerFromMapper,
   _comparatorFromMapper : _comparatorFromMapper,
