@@ -51,6 +51,9 @@ function shell( o )
   if( o.verbosity < 0 )
   o.verbosity = 0;
 
+  if( o.outputPiping === null )
+  o.outputPiping = o.verbosity >= 2;
+
   o.con = new _.Consequence();
 
   if( o.args )
@@ -73,11 +76,6 @@ function shell( o )
     var argumentsManual = process.argv.slice( 2 );
     if( argumentsManual.length )
     o.args = _.arrayAppendArray( o.args || [],argumentsManual );
-    // logger.log( 'o.args',_.toStr( o.args, { levels : 3 } ) );
-/*
-    if( argumentsManual.length )
-    path += ' '' + argumentsManual.join( '' '' ) + ''';
-*/
   }
 
   /* outputCollecting */
@@ -157,16 +155,10 @@ function shell( o )
       var arg1 = process.platform === 'win32' ? '/c' : '-c';
       var arg2 = o.path;
 
-      // var args = [ arg1,o.path ];
-      // if( o.args )
-      // _.arrayAppendArray( args,o.args )
-
       optionsForSpawn.windowsVerbatimArguments = true;
 
       if( o.args && o.args.length )
       arg2 = arg2 + ' ' + '"' + o.args.join( '" "' ) + '"';
-
-      // logger.log( 'arg2',arg2 );
 
       o.process = ChildProcess.spawn( app,[ arg1,arg2 ],optionsForSpawn );
     }
@@ -201,8 +193,6 @@ function shell( o )
   if( o.process.stdout )
   o.process.stdout.on( 'data', function( data )
   {
-
-    // console.log( 'data' );
 
     if( _.bufferAnyIs( data ) )
     data = _.bufferToStr( data );
@@ -269,7 +259,7 @@ function shell( o )
     o.exitCode = exitCode;
     o.signal = signal;
 
-    if( o.verbosity > 1 )
+    if( o.verbosity >= 3 )
     {
       logger.log( 'Process returned error code :',exitCode );
       if( exitCode )
