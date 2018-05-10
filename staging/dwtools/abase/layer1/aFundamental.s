@@ -1,6 +1,6 @@
 ( function _aFundamental_s_() {
 
-'use strict'; /*ggg*/
+'use strict'; /*bbb*/
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -5920,6 +5920,30 @@ function strInbetweenOf( src,begin,end )
 
 //
 
+function _strBegins( src,begin )
+{
+
+  _.assert( _.strIs( src ),'expects string' );
+  _.assert( arguments.length === 2 );
+
+  if( _.strIs( begin ) )
+  {
+    if( src.lastIndexOf( begin,0 ) === 0 )
+    return true;
+  }
+  else if( _.regexpIs( begin ) )
+  {
+    var matched = begin.exec( src );
+    if( matched && matched.index === 0 )
+    return true;
+  }
+  else _.assert( 0,'expects string or regexp' );
+
+  return false;
+}
+
+//
+
 /**
   * Compares two strings.
   * @param { String } src - Source string.
@@ -5943,15 +5967,14 @@ function strInbetweenOf( src,begin,end )
 function strBegins( src,begin )
 {
 
-  _.assert( _.strIs( src ),'expects string' );
-  _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/array of strings' );
+  _.assert( _.strIs( src ),'expects string {-src-}' );
+  _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
   _.assert( arguments.length === 2 );
 
-  if( _.strIs( begin ) )
-  begin = [ begin ];
+  begin = _.arrayAs( begin );
 
-  for( var k = 0, len = begin.length; k < len; k++ )
-  if( src.lastIndexOf( begin[ k ],0 ) === 0 )
+  for( var b = 0, blen = begin.length; b < blen; b++ )
+  if( _strBegins( src,begin[ b ] ) )
   return true;
 
   return false;
@@ -5982,7 +6005,7 @@ function strBegins( src,begin )
 function strEnds( src,end )
 {
 
-  _.assert( _.strIs( src ),'expects string' );
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
   _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings' );
   _.assert( arguments.length === 2 );
 
@@ -5994,6 +6017,35 @@ function strEnds( src,end )
   return true;
 
   return false;
+}
+
+//
+
+function _strRemoveBegin( src,begin )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
+
+  var result = src;
+
+  if( _.strIs( begin ) )
+  {
+    if( _strBegins( result, begin ) )
+    {
+      result = result.substr( begin.length, result.length );
+      return result;
+    }
+  }
+  else if( _.regexpIs( begin ) )
+  {
+    var matched = begin.exec( result );
+    if( matched && matched.index === 0 )
+    result = result.substring( matched[ 0 ].length, result.length );
+    return result;
+  }
+  else _.assert( 0,'expects string or regexp {-begin-}' );
+
+  return result;
 }
 
 //
@@ -6025,26 +6077,57 @@ function strEnds( src,end )
 function strRemoveBegin( src,begin )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src ) || _.strIs( src ) );
-  _.assert( _.arrayLike( begin ) || _.strIs( begin ) );
+  _.assert( _.arrayLike( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
+  _.assert( _.arrayLike( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
 
+  var result = [];
+  var srcIsArray = _.arrayLike( src );
+
+  src = _.arrayAs( src );
   begin = _.arrayAs( begin );
 
-  var result = _.arrayAs( src ).slice();
-
-  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-  for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
-  if( strBegins( result[ k ],begin[ j ] ) )
+  for( var s = 0, slen = src.length ; s < slen ; s++ )
   {
-    result[ k ] = result[ k ].substr( begin[ j ].length,result[ k ].length );
-    break;
+    var src1 = src[ s ]
+    for( var b = 0, blen = begin.length ; b < blen ; b++ )
+    {
+      var result1 = _strRemoveBegin( src1,begin[ b ] );
+      if( result1 !== src1 && blen > 1 )
+      b = 0;
+      src1 = result1;
+    }
+    result[ s ] = src1;
   }
 
-  if( result.length === 1 && _.strIs( src ) )
+  if( !srcIsArray )
   return result[ 0 ];
 
   return result;
 }
+
+// function strRemoveBegin( src,begin )
+// {
+//   _.assert( arguments.length === 2 );
+//   _.assert( _.arrayLike( src ) || _.strIs( src ) );
+//   _.assert( _.arrayLike( begin ) || _.strIs( begin ) );
+//
+//   begin = _.arrayAs( begin );
+//
+//   var result = _.arrayAs( src ).slice();
+//
+//   for( var k = 0, srcLength = result.length; k < srcLength; k++ )
+//   for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
+//   if( strBegins( result[ k ],begin[ j ] ) )
+//   {
+//     result[ k ] = result[ k ].substr( begin[ j ].length,result[ k ].length );
+//     break;
+//   }
+//
+//   if( result.length === 1 && _.strIs( src ) )
+//   return result[ 0 ];
+//
+//   return result;
+// }
 
 //
 
@@ -7398,7 +7481,6 @@ function routineInputMultiplicator_functor( o )
 
     if( _.arrayIs( src ) )
     {
-      debugger;
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       result[ r ] = routine.call( this,src[ r ] );
@@ -17910,9 +17992,11 @@ var Proto =
   strEndOf : strEndOf,
   strInbetweenOf : strInbetweenOf,
 
+  _strBegins : _strBegins,
   strBegins : strBegins,
   strEnds : strEnds,
 
+  _strRemoveBegin : _strRemoveBegin,
   strRemoveBegin : strRemoveBegin,
   strRemoveEnd : strRemoveEnd,
 
