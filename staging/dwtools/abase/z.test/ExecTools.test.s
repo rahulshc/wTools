@@ -29,41 +29,203 @@ if( typeof module !== 'undefined' )
   var _ = _global_.wTools;
 
   _.include( 'wTesting' );
+  _.include( 'wFiles' );
 
 }
-
-/*
-!!! temp files cleanup needed
-*/
 
 var _ = _global_.wTools;
 var Self = {};
 
-// return;
-
-var testRootDirectory;
+// --
+// context
+// --
 
 function testDirMake()
 {
+  var context = this;
   if( !isBrowser )
-  testRootDirectory = _.dirTempMake( _.pathJoin( __dirname, '../..'  ) );
+  context.testRootDirectory = _.dirTempMake( _.pathJoin( __dirname, '../..'  ) );
   else
-  testRootDirectory = _.pathCurrent();
+  context.testRootDirectory = _.pathCurrent();
 }
 
 //
 
 function cleanTestDir()
 {
+  var context = this;
   if( !isBrowser )
-  _.fileProvider.filesDelete( testRootDirectory );
+  _.fileProvider.filesDelete( context.testRootDirectory );
+}
+
+// --
+// test
+// --
+
+function appArgs( test )
+{
+  var _argv =  process.argv.slice( 0, 2 );
+
+  /* */
+
+  var argv = [];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : {},
+    subject : '',
+    scriptArgs : [ ]
+  }
+  test.identical( got, expected );
+
+  /* */
+
+  var argv = [ '' ];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : {},
+    subject : '',
+    scriptArgs : [ '' ]
+  }
+  test.identical( got, expected );
+
+  /* */
+
+  var argv = [ 'x', ' :', 'aa', 'bbb :' ];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : { x : 'aa bbb' },
+    subject : '',
+    scriptArgs : [ 'x', ' :', 'aa', 'bbb', ' :' ]
+  }
+  test.identical( got, expected );
+
+  /* */
+
+  var argv = [ 'x', ' :', 'y' ];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : { x : 'y' },
+    subject : '',
+    scriptArgs : argv.slice( 2 )
+  }
+  test.identical( got, expected );
+
+  /* */
+
+  var argv = [ 'x', ' :', 'y', 'x', ' :', '1' ];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : { x : 1 },
+    subject : '',
+    scriptArgs : argv.slice( 2 )
+  }
+  test.identical( got, expected );
+
+  /* */
+
+  var argv = [ 'a b c d', 'x', ' :', 'y', 'xyz', 'y', ' :', 1 ];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : { x : 'y xyz', y : 1 },
+    subject : 'a b c d',
+    scriptArgs : argv.slice( 2 )
+  }
+  test.identical( got, expected );
+
+  /* */
+
+  var argv =
+  [
+    'filePath',
+    'a :', 1,
+    'b', ' :2',
+    'c :  ', 3,
+    'd', ' :  4',
+    'e', ' :  ', 5
+  ];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : { a : 1, b : 2, c : 3, d : 4, e : 5 },
+    subject : 'filePath',
+    scriptArgs :
+    [
+      'filePath',
+      'a', ' :', 1,
+      'b', ' :', '2',
+      'c', ' :', 3,
+      'd', ' :', '4',
+      'e', ' :', 5
+    ]
+  }
+  test.identical( got, expected );
+
+  /* */
+
+  var argv = [ 'a :b :c :d', 'x', ' :', 0, 'y', ' :', 1 ];
+  argv.unshift.apply( argv, _argv );
+  var got = _.appArgs({ argv : argv });
+  var expected =
+  {
+    interpreterPath : _argv[ 0 ],
+    mainPath : _argv[ 1 ],
+    interpreterArgs : [],
+    delimeter : ' :',
+    map : { a : '', b : '', c : 'd', x : 0, y : 1 },
+    subject : '',
+    scriptArgs : [ 'a', ' :', 'b', ' :', 'c', ' :', 'd', 'x', ' :', 0, 'y', ' :', 1 ]
+  }
+  test.identical( got, expected );
+
 }
 
 //
 
 function shell( test )
 {
-  var testRoutineDir = _.pathJoin( testRootDirectory, test.name );
+  var context = this;
+  var testRoutineDir = _.pathJoin( context.testRootDirectory, test.name );
   var commonDefaults =
   {
     outputPiping : 1,
@@ -395,7 +557,8 @@ shell.timeOut = 30000;
 
 function shell2( test )
 {
-  var testRoutineDir = _.pathJoin( testRootDirectory, test.name );
+  var context = this;
+  var testRoutineDir = _.pathJoin( context.testRootDirectory, test.name );
   var commonDefaults =
   {
     outputPiping : 1,
@@ -593,18 +756,26 @@ var Proto =
 
   name : 'ExecTools',
   silencing : 1,
-  // verbosity : 9,
-  // suitFileLocation : suitFileLocation,
-  // logger : wPrinterToJs(),
 
   onSuitBegin : testDirMake,
   onSuitEnd : cleanTestDir,
 
+  context :
+  {
+
+    testRootDirectory : null,
+
+  },
+
   tests :
   {
+
+    appArgs : appArgs,
+
     shell : shell,
     shell2 : shell2,
-  }
+
+  },
 
 }
 
@@ -616,12 +787,5 @@ Self = wTestSuit( Self );
 
 if( typeof module !== 'undefined' && !module.parent )
 _.Tester.test( Self )
-// .got( function( err,suit )
-// {
-//   debugger;
-//   console.log( 'done!' );
-//   console.log( 'err',err );
-//   console.log( 'suit',suit );
-// });
 
-} )( );
+})();
