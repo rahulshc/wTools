@@ -1,6 +1,6 @@
 ( function _StringTools2_test_s_() {
 
-'use strict';/*13113*/
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
