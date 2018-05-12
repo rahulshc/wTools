@@ -1,16 +1,6 @@
 ( function _StringTools1_test_s_( ) {
 
-'use strict';
-
-/*
-
- to run this test
- from the project directory run
-
- npm install
- node ./staging/dwtools/abase/z.test/StringFormat.test.s
-
- */
+'use strict';/*aaa*/
 
 if( typeof module !== 'undefined' )
 {

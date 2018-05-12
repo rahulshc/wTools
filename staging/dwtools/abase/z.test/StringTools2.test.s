@@ -1,16 +1,6 @@
 ( function _StringTools2_test_s_() {
 
-'use strict';
-
-/*
-
-to run this test
-from the project directory run
-
-npm install
-node ./staging/z.test/Sample.test.s
-
-*/
+'use strict';/*aaa*/
 
 if( typeof module !== 'undefined' )
 {
@@ -21,7 +11,7 @@ if( typeof module !== 'undefined' )
     let toolsExternal = 0;
     try
     {
-      require.resolve( toolsPath )/*hhh*/;
+      require.resolve( toolsPath );
     }
     catch( err )
     {
@@ -29,7 +19,7 @@ if( typeof module !== 'undefined' )
       require( 'wTools' );
     }
     if( !toolsExternal )
-    require( toolsPath )/*hhh*/;
+    require( toolsPath );
   }
 
   var _ = _global_.wTools;

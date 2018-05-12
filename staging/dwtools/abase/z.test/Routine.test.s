@@ -1,16 +1,6 @@
-( function Routine_test_s( ) {
+( function _Routine_test_s_( ) {
 
-'use strict';
-
-/*
-
- to run this test
- from the project directory run
-
- npm install
- node ./staging/z.test/Routine.test.s
-
- */
+'use strict'; /*aaa*/
 
 if( typeof module !== 'undefined' )
 {

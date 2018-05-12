@@ -1,16 +1,6 @@
 ( function _String_toStr2_test_s_( ) {
 
-'use strict';
-
-/*
-
- to run this test
- from the project directory run
-
- npm install
- node ./staging/dwtools/abase/z.test/String.toStr2.test.s
-
- */
+'use strict';/*aaa*/
 
 if( typeof module !== 'undefined' )
 {
