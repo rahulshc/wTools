@@ -17155,11 +17155,11 @@ _mapScreen.defaults =
  * mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
  *
  * @example
- * returns undefined
+ * returns false
  * _.mapIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
  *
  * @example
- * returns undefined
+ * returns false
  * _.mapIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
  *
  * @returns { boolean } Returns true, if the second object (src2)
@@ -17175,12 +17175,12 @@ function mapIdentical( src1,src2 )
   _.assert( arguments.length === 2 );
 
   if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
-  return;
+  return fale;
 
   for( var s in src1 )
   {
     if( src1[ s ] !== src2[ s ] )
-  return;
+  return false;
   }
 
   return true;
