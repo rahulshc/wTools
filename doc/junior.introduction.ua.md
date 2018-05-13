@@ -48,10 +48,6 @@
 
 ![Результат команди npm test](https://imgur.com/a/Jm3Tn5u)
 
-<p align="center">
-  <img src="https://imgur.com/a/Jm3Tn5u" width="350"/>
-</p>
-
 <a name="verbosity"/>
 
 ## Кількість вихідної інформації
