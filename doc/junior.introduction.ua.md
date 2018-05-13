@@ -46,7 +46,7 @@
 
 Экран терміналу `npm test` в операційній системі Linux буде виглядати наступним образом:
 
-![`npm test`](https://ibb.co/dr8dJy)
+![Результат команди npm test](https://ibb.co/dr8dJy)
 
 <a name="verbosity"/>
 
