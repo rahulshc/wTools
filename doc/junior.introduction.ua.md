@@ -8,17 +8,20 @@
 5. [Кількість вихідної інформації](#verbosity)
 6. [Підказка по параметрам скрипта](#getting-parameters-help)
 
-<!-- <a name="repository"/> -->
+<a name="repository"/>
+
 ## Репозиторій
 ***
 Репозіторій розташовано за адресою  [https://github.com/Wandalen/wTools](https://github.com/Wandalen/wTools)
 
 <a name="repository-cloning"/>
+
 ## Клонування репозиторію
 ***
 Для клонування репозіторію використовувати команду `git clone https://github.com/Wandalen/wTools.git`
 
 <a name="package-installation"/>
+
 ## Встановлення пакету
 ***
 Для встановлення пакету глобально використовуйте
@@ -27,6 +30,7 @@
 відповідно перейшовши в директорію (теку) проекту
 
 <a name="way-of-test-running"/>
+
 ## Способи запуска тестів
 ***
  Існують три способа запуска тестів з наступними командами
@@ -38,6 +42,7 @@
 | Використовуючи тест сьюіти   | wtest staging\dwtools\abase\z.test\Map.test.s |
 
 <a name="verbosity"/>
+
 ## Кількість вихідної інформації
 ***
 
@@ -52,6 +57,7 @@
 | verbosity:9   | максимум                       |
 
 <a name="getting-parameters-help"/>
+
 ## Підказка по параметрам скрипта
 ***
  Для отримання підказки по параметрам використовуйте 
