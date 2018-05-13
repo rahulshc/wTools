@@ -9,6 +9,7 @@
 6. [Підказка по параметрам скрипта](#getting-parameters-help)
 7. [Опції тестера](#tester-options)
 8. [Структурні одиниці тестування](#testing-structure-units)
+9. [Розташуванння окремих тест рутин та їх реалізацій](№test-routines-location)
 
 <a name="repository"/>
 
@@ -41,7 +42,7 @@
 |:-----------------------------|:----------------------------------------------|
 | Безпосередньо через npm      | npm test                                      |
 | Альтернативний спосіб запуску| wtest staging                                 |
-| Використовуючи тест сьюіти   | wtest staging\dwtools\abase\z.test\Map.test.s |
+| Використовуючи тест сюіти   | wtest staging\dwtools\abase\z.test\Map.test.s |
 
 <a name="verbosity"/>
 
@@ -53,10 +54,12 @@
 
 | Параметр      | Кількість отриманої інформації |
 |:--------------|:-------------------------------|
-| verbosity:0   | жодної інформації              |
-| verbosity:1   | один рядок                     |
-| verbosity:2   | багато рядків                  |
-| verbosity:9   | максимум                       |
+| verbosity:0   | Жодної інформації              |
+| verbosity:1   | Один рядок                     |
+| verbosity:2   | Багато рядків                  |
+| verbosity:9   | Максимум                       |
+
+Наприклад: `wtest staging verbosity:2`
 
 <a name="getting-parameters-help"/>
 
@@ -67,18 +70,18 @@
 
 | Сценарії      | Виконувана дія                            |
 |:--------------|:------------------------------------------|
-| test          | запустити тести, сценарій за замовчуванням|
-| help          | отримати допомогу                         |
-| options.list  | перелік наявних опцій                     |
-| scenarios.list| перелік наявних сценарі                   |
-| suits.list    | перелюк наявних сьютів                    |
+| test          | Запустити тести, сценарій за замовчуванням|
+| help          | Отримати допомогу                         |
+| options.list  | Перелік наявних опцій                     |
+| scenarios.list| Перелік наявних сценарі                   |
+| suits.list    | Перелюк наявних сьютів                    |
 
 <a name="tester-options"/>
 
 ## Опції тестера
 ***
 В наявності наступні опції:
-
+test-routines-location
 | Опція             | Виконувана дія                                                        |
 |:------------------|:----------------------------------------------------------------------|
 | scenario          | Ім'я сценарію для запуску                                             |
@@ -102,3 +105,157 @@
 | Тест рутина             | 184                      |
 | Тест кейс               | 1332                     |
 | Тест перевірка          | 2296                     |
+
+<a name="test-routines-location"/>
+
+## Розташуванння окремих тест рутин та їх реалізацій
+***
+Окремі тест рутини розташовані в директорії `wTools/staging/dwtools/abase`
+
+Вони мають вигляд (на прикладі Тест рутини mapIdentical):
+```
+var Self =
+{
+
+  name : 'MapTest',
+  silencing : 1,
+
+  tests :
+  {
+
+    // map tester
+
+    mapIs : mapIs,
+
+    // map move
+
+    mapClone : mapClone,
+
+    mapExtendConditional : mapExtendConditional,
+    mapExtend : mapExtend,
+    mapSupplement : mapSupplement,
+    mapComplement : mapComplement,
+
+    mapCopy : mapCopy,
+
+    // map convert
+
+    mapFirstPair : mapFirstPair,
+
+    mapToArray : mapToArray,
+    mapValWithIndex : mapValWithIndex,
+    mapKeyWithIndex : mapKeyWithIndex,
+    mapToStr : mapToStr,
+
+    // map properties
+
+    mapKeys : mapKeys,
+    mapOwnKeys : mapOwnKeys,
+    mapAllKeys : mapAllKeys,
+
+    mapVals : mapVals,
+    mapOwnVals : mapOwnVals,
+    mapAllVals : mapAllVals,
+
+    mapPairs : mapPairs,
+    mapOwnPairs : mapOwnPairs,
+    mapAllPairs : mapAllPairs,
+
+    mapProperties : mapProperties,
+    mapOwnProperties : mapOwnProperties,
+    mapAllProperties : mapAllProperties,
+
+    mapRoutines : mapRoutines,
+    mapOwnRoutines : mapOwnRoutines,
+    mapAllRoutines : mapAllRoutines,
+
+    mapFields : mapFields,
+    mapOwnFields : mapOwnFields,
+    mapAllFields : mapAllFields,
+
+    mapOnlyAtomics : mapOnlyAtomics,
+
+    // map logic
+
+    mapBut : mapBut,
+
+    mapOwnBut : mapOwnBut,
+
+    mapButConditional : mapButConditional,
+
+    mapScreens : mapScreens,
+    mapScreen : mapScreen,
+    _mapScreen : _mapScreen,
+
+    mapIdentical : mapIdentical,
+    mapContain : mapContain,
+
+    mapOwnKey : mapOwnKey,
+
+    mapHasAll : mapHasAll,
+    mapHasAny : mapHasAny,
+    mapHasNone : mapHasNone,
+
+    mapOwnAll : mapOwnAll,
+    mapOwnAny : mapOwnAny,
+    mapOwnNone : mapOwnNone,
+
+    // mapGroup : mapGroup,
+
+  }
+
+}
+```
+
+Їх реалізаціі мают наступний вигляд:
+
+```
+/**
+ * The mapIdentical() returns true, if the second object (src2)
+ * has the same values as the first object(src1).
+ *
+ * It takes two objects (scr1, src2), checks
+ * if both object have the same length and [key, value] return true
+ * otherwise it returns undefined.
+ *
+ * @param { objectLike } src1 - First object.
+ * @param { objectLike } src2 - Target object.
+ * Objects to compare values.
+ *
+ * @example
+ * // returns true
+ * mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
+ *
+ * @example
+ * returns false
+ * _.mapIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
+ *
+ * @example
+ * returns false
+ * _.mapIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
+ *
+ * @returns { boolean } Returns true, if the second object (src2)
+ * has the same values as the first object(src1).
+ * @function mapIdentical
+ * @throws Will throw an error if ( arguments.length !== 2 ).
+ * @memberof wTools
+ */
+
+function mapIdentical( src1,src2 )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
+  return fale;
+
+  for( var s in src1 )
+  {
+    if( src1[ s ] !== src2[ s ] )
+  return false;
+  }
+
+  return true;
+}
+
+```
