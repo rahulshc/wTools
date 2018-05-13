@@ -9924,6 +9924,50 @@ function arraySetDiff( test )
 
 function arraySetIntersection( test )
 {
+
+  test.description = 'returns an array';
+  var got = _.arraySetIntersection( [ 1, 2, 3, 4, 15 ], [ 1, 2, 3, 4, 5 ] , [ 15, 16, 17 ]);
+  var expected = [ 1, 2, 3, 4, 15 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetIntersection( [ 1, 2, 3, 4, 15 ]);
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetIntersection( [], [ 1, 2, 3, 4, 15 ]);
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetIntersection( [], []);
+  var expected = [];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection();
+  });
+
+  test.description = 'one or several arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( 10, 15, 25 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { args : [ [] ], expected : [] },
