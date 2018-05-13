@@ -9773,6 +9773,59 @@ function arraySetContainAll( test )
 
 function arraySetBut( test )
 {
+  test.description = 'returns an array';
+  var got = _.arraySetBut( [ 1, 2, 3, 4 , 15 ], [ 1, 2, 3, 4, 5 ] );
+  var expected = [ 15 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ ], [ 1, 2, 3, 4 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an array';
+  var got = _.arraySetBut( [ 1, 4, 9 ], [ 2, 5 ] );
+  var expected = [ 1, 4, 9 ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut();
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( 5, 8 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { src : [], but : [], expected : [] },
