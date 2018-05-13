@@ -9853,6 +9853,50 @@ function arraySetBut( test )
 
 function arraySetDiff( test )
 {
+
+  test.description = 'returns an array';
+  var got = _.arraySetDiff( [ 1, 2, 3, 4, 15 ], [ 1, 2, 3, 4, 5 ] );
+  var expected = [ 15, 5 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an array';
+  var got = _.arraySetDiff( [ ], [ 1, 2, 3, 4 ] );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an array';
+  var got = _.arraySetDiff( [ 1, 2, 3, 4 ], [ ] );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetDiff( [ 3, 3, 3 ], [ 3, 3, 3, 3 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff();
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( 10, 15 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { src1 : [], src2 : [], expected : [] },
