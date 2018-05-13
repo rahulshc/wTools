@@ -10101,6 +10101,46 @@ function arraySetContainSomething( test )
 
 function arraySetIdentical( test )
 {
+
+  test.description = 'returns true';
+  var got = _.arraySetIdentical(  [ 1, 2, 4, 7, 5 ], [ 4, 2, 1, 5, 7 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'returns false, argument length mismatch';
+  var got = _.arraySetIdentical(  [ 1, 2, 4, 7, 5 ], [ 1, 5, 7 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'returns true';
+  var got = _.arraySetIdentical(  [], [] );
+  var expected = true;
+  test.identical( got, expected );  
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical();
+  });
+
+  test.description = 'one or 2 arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( [ 1, 2, 4, 7, 5 ], 15 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( [ 1, 2, 4, 7, 5 ], "wrong argument" );
+  });
+
+
   var cases =
   [
     { args : [ [], [] ], expected : true },
