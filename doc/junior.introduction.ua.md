@@ -9,7 +9,7 @@
 6. [Підказка по параметрам скрипта](#getting-parameters-help)
 7. [Опції тестера](#tester-options)
 8. [Структурні одиниці тестування](#testing-structure-units)
-9. [Розташуванння окремих тест рутин та їх реалізацій](№test-routines-location)
+9. [Розташуванння окремих тест рутин та їх реалізацій](#test-routines-location)
 
 <a name="repository"/>
 
@@ -113,7 +113,7 @@
 Окремі тест рутини розташовані в директорії `wTools/staging/dwtools/abase`
 
 Вони мають вигляд (на прикладі Тест рутини mapIdentical):
-```
+```javascript
 var Self =
 {
 
@@ -209,7 +209,7 @@ var Self =
 
 Їх реалізаціі мают наступний вигляд:
 
-```
+```javascript
 /**
  * The mapIdentical() returns true, if the second object (src2)
  * has the same values as the first object(src1).
