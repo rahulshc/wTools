@@ -9778,6 +9778,11 @@ function arraySetBut( test )
   var expected = [ 15 ];
   test.identical( got, expected );
 
+  test.description = 'returns an array';
+  var got = _.arraySetBut( [ 1, 4, 9 ], [ 2, 5 ] );
+  var expected = [ 1, 4, 9 ];
+  test.identical( got, expected );
+
   test.description = 'returns an empty array';
   var got = _.arraySetBut( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ] );
   var expected = [];
@@ -9796,11 +9801,6 @@ function arraySetBut( test )
   test.description = 'returns an empty array';
   var got = _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
   var expected = [];
-  test.identical( got, expected );
-
-  test.description = 'returns an array';
-  var got = _.arraySetBut( [ 1, 4, 9 ], [ 2, 5 ] );
-  var expected = [ 1, 4, 9 ];
   test.identical( got, expected );
 
   /**/
