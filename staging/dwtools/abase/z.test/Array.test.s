@@ -10028,6 +10028,50 @@ function arraySetContainAll( test )
 
 function arraySetContainSomething( test )
 {
+
+  test.description = 'returns true';
+  var got = _.arraySetContainSomething(  [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'returns false';
+  var got = _.arraySetContainSomething(  [ 33, 4, 5, 'b', 'c' ], [ 1, 'bcda', 'ce', 8 ], [ 45, 13, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'returns false';
+  var got = _.arraySetContainSomething(  [], [ 1, 'bcda', 'ce', 8 ], [ 45, 13, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'returns false';
+  var got = _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [], [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething();
+  });
+
+  test.description = 'one or several arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], 15, 25 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { args : [ [], [] ], expected : false },
