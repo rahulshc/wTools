@@ -2,18 +2,18 @@
 ***
 ## Зміст
 1. [Репозиторій](#repository)
-2. [Клонування репозиторію](#repository-cloining)
+2. [Клонування репозиторію](#repository-cloning)
 3. [Встановлення пакету](#package-installation)
 4. [Способи запуска тестів](#way-of-test-running)
 5. [Кількість вихідної інформації](#verbosity)
 6. [Підказка по параметрам скрипта](#getting-parameters-help)
 
-<a name="repository"/>
+<!-- <a name="repository"/> -->
 ## Репозиторій
 ***
 Репозіторій розташовано за адресою  [https://github.com/Wandalen/wTools](https://github.com/Wandalen/wTools)
 
-<a name="repository-cloining"/>
+<a name="repository-cloning"/>
 ## Клонування репозиторію
 ***
 Для клонування репозіторію використовувати команду `git clone https://github.com/Wandalen/wTools.git`
