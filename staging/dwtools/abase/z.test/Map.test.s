@@ -2645,6 +2645,16 @@ function mapIdentical( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.description = 'not the same [ key, value ] in the arrays'
+  var got = _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'not the same [ key, value ] in the arrays'
+  var got = _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 13, 'с', 15 ] );
+  var expected = false;
+  test.identical( got, expected );
+
   /**/
 
   if( Config.debug )

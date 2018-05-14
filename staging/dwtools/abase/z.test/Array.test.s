@@ -9773,6 +9773,59 @@ function arraySetContainAll( test )
 
 function arraySetBut( test )
 {
+  test.description = 'returns an array';
+  var got = _.arraySetBut( [ 1, 2, 3, 4 , 15 ], [ 1, 2, 3, 4, 5 ] );
+  var expected = [ 15 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an array';
+  var got = _.arraySetBut( [ 1, 4, 9 ], [ 2, 5 ] );
+  var expected = [ 1, 4, 9 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ ], [ 1, 2, 3, 4 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut();
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( 5, 8 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { src : [], but : [], expected : [] },
@@ -9800,6 +9853,50 @@ function arraySetBut( test )
 
 function arraySetDiff( test )
 {
+
+  test.description = 'returns an array';
+  var got = _.arraySetDiff( [ 1, 2, 3, 4, 15 ], [ 1, 2, 3, 4, 5 ] );
+  var expected = [ 15, 5 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an array';
+  var got = _.arraySetDiff( [ ], [ 1, 2, 3, 4 ] );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an array';
+  var got = _.arraySetDiff( [ 1, 2, 3, 4 ], [ ] );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetDiff( [ 3, 3, 3 ], [ 3, 3, 3, 3 ] );
+  var expected = [];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff();
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( 10, 15 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { src1 : [], src2 : [], expected : [] },
@@ -9827,6 +9924,50 @@ function arraySetDiff( test )
 
 function arraySetIntersection( test )
 {
+
+  test.description = 'returns an array';
+  var got = _.arraySetIntersection( [ 1, 2, 3, 4, 15 ], [ 1, 2, 3, 4, 5 ] , [ 15, 16, 17 ]);
+  var expected = [ 1, 2, 3, 4, 15 ];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetIntersection( [ 1, 2, 3, 4, 15 ]);
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetIntersection( [], [ 1, 2, 3, 4, 15 ]);
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'returns an empty array';
+  var got = _.arraySetIntersection( [], []);
+  var expected = [];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection();
+  });
+
+  test.description = 'one or several arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( 10, 15, 25 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { args : [ [] ], expected : [] },
@@ -9887,6 +10028,50 @@ function arraySetContainAll( test )
 
 function arraySetContainSomething( test )
 {
+
+  test.description = 'returns true';
+  var got = _.arraySetContainSomething(  [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'returns false';
+  var got = _.arraySetContainSomething(  [ 33, 4, 5, 'b', 'c' ], [ 1, 'bcda', 'ce', 8 ], [ 45, 13, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'returns false';
+  var got = _.arraySetContainSomething(  [], [ 1, 'bcda', 'ce', 8 ], [ 45, 13, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'returns false';
+  var got = _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [], [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething();
+  });
+
+  test.description = 'one or several arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], 15, 25 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething( [ 1, 2, 3 ], "wrong argument" );
+  });
+
   var cases =
   [
     { args : [ [], [] ], expected : false },
@@ -9916,6 +10101,46 @@ function arraySetContainSomething( test )
 
 function arraySetIdentical( test )
 {
+
+  test.description = 'returns true';
+  var got = _.arraySetIdentical(  [ 1, 2, 4, 7, 5 ], [ 4, 2, 1, 5, 7 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'returns false, argument length mismatch';
+  var got = _.arraySetIdentical(  [ 1, 2, 4, 7, 5 ], [ 1, 5, 7 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'returns true';
+  var got = _.arraySetIdentical(  [], [] );
+  var expected = true;
+  test.identical( got, expected );  
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical();
+  });
+
+  test.description = 'one or 2 arguments are not arrayLike entities';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( [ 1, 2, 4, 7, 5 ], 15 );
+  });
+
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( [ 1, 2, 4, 7, 5 ], "wrong argument" );
+  });
+
+
   var cases =
   [
     { args : [ [], [] ], expected : true },
