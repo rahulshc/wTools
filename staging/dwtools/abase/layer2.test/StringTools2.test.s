@@ -4383,6 +4383,109 @@ function strExtractStereoStrips( test )
 
 //
 
+function strSorterParse( test )
+{
+  var src;
+  var fields;
+  var expected;
+  var got;
+
+  /* */
+
+  test.description = 'str without special characters';
+  src = 'ab'
+  expected = [];
+  got = _.strSorterParse( src );
+
+  /* */
+
+  test.description = 'single pair';
+  src = 'a>'
+  expected = [ [ 'a', 1 ] ];
+  got = _.strSorterParse( src );
+
+  /* */
+
+  test.description = 'src only';
+
+  src = 'a>b>'
+  expected = [ [ 'a', 1 ], [ 'b', 1 ] ];
+  got = _.strSorterParse( src );
+  test.identical( got, expected );
+
+  src = 'a<b<'
+  expected = [ [ 'a', 0 ], [ 'b', 0 ] ];
+  got = _.strSorterParse( src );
+  test.identical( got, expected );
+
+  src = 'a>b<'
+  expected = [ [ 'a', 1 ], [ 'b', 0 ] ];
+  got = _.strSorterParse( src );
+  test.identical( got, expected );
+
+  src = 'a<b>'
+  expected = [ [ 'a', 0 ], [ 'b', 1 ] ];
+  got = _.strSorterParse( src );
+  test.identical( got, expected );
+
+  src = 'a>b>c<d>'
+  expected = [ [ 'a', 1 ], [ 'b', 1 ],[ 'c', 0 ], [ 'd', 1 ] ];
+  got = _.strSorterParse( src );
+  test.identical( got, expected );
+
+  src = 'a+b>c-d<'
+  expected = [ [ 'a+b', 1 ], [ 'c-d', 0 ] ];
+  got = _.strSorterParse( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'with fields';
+  var fields = { a : 'a', b : 'b', 'a+b' : 1, 'c-d' : 1 };
+
+  src = 'a>b>'
+  expected = [ [ 'a', 1 ], [ 'b', 1 ] ];
+  got = _.strSorterParse( src, fields );
+  test.identical( got, expected );
+
+  src = 'a<b<'
+  expected = [ [ 'a', 0 ], [ 'b', 0 ] ];
+  got = _.strSorterParse( src, fields );
+  test.identical( got, expected );
+
+  src = 'a>b<'
+  expected = [ [ 'a', 1 ], [ 'b', 0 ] ];
+  got = _.strSorterParse( src, fields );
+  test.identical( got, expected );
+
+  src = 'a<b>'
+  expected = [ [ 'a', 0 ], [ 'b', 1 ] ];
+  got = _.strSorterParse( src, fields );
+  test.identical( got, expected );
+
+  src = 'a+b>c-d<'
+  expected = [ [ 'a+b', 1 ], [ 'c-d', 0 ] ];
+  got = _.strSorterParse( src, fields );
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'with fields';
+  var fields = { a : 'a', b : 'b' };
+  src = 'a>b>c>'
+  test.shouldThrowError( () => _.strSorterParse( src, fields ) );
+
+  test.description = 'src must be str, fields must be objectLike';
+  src = 'a>b';
+  fields = [];
+  test.shouldThrowError( () => _.strSorterParse( src, fields ) );
+}
+
+//
+
 var Self =
 {
 
