@@ -1,6 +1,6 @@
 ( function _StringTools1_test_s_( ) {
 
-'use strict';/*aaa*/
+'use strict'; /*jjj*/
 
 if( typeof module !== 'undefined' )
 {

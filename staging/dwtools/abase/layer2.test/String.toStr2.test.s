@@ -1,6 +1,6 @@
 ( function _String_toStr2_test_s_( ) {
 
-'use strict';/*aaa*/
+'use strict'; /*jjj*/
 
 if( typeof module !== 'undefined' )
 {

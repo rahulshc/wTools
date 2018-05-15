@@ -1,6 +1,6 @@
 ( function _aFundamental_s_() {
 
-'use strict'; /*bbb*/
+'use strict'; /*jjj*/
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -7563,6 +7563,16 @@ function routineVectorize_functor( routine )
       return result;
     }
     return [ routine.call( this,src ) ];
+  }
+
+  var fields = _.mapFields( routine );
+  for( var f in fields )
+  {
+    var field = fields[ f ];
+    if( _.objectIs( field ) )
+    vectorized[ f ] = Object.create( field );
+    else
+    vectorized[ f ] = field;
   }
 
   return vectorized;
@@ -17175,12 +17185,12 @@ function mapIdentical( src1,src2 )
   _.assert( arguments.length === 2 );
 
   if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
-  return fale;
+  return false;
 
   for( var s in src1 )
   {
     if( src1[ s ] !== src2[ s ] )
-  return false;
+    return false;
   }
 
   return true;

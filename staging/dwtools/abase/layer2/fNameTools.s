@@ -1,6 +1,6 @@
 ( function _NameTools_s_() {
 
-'use strict';
+'use strict'; /*jjj*/
 
 var Self = _global_.wTools;
 var _ = _global_.wTools;

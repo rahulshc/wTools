@@ -1,6 +1,6 @@
 (function _fStringTools_s_() {
 
-'use strict';
+'use strict'; /*jjj*/
 
 /*
 - remove old code

@@ -1,6 +1,6 @@
 (function _gStringer_s_() {
 
-'use strict';
+'use strict'; /*jjj*/
 
 /*
 - remove old code
@@ -515,9 +515,8 @@ function _toStr( src,o )
 
   // if( src && src.toStr && src.toStr.notMethod )
   // debugger;
-
-  if( src && src.constructor && src.constructor.name === 'eGdcHeader' )
-  debugger;
+  // if( src && src.constructor && src.constructor.name === 'eGdcHeader' )
+  // debugger;
 
   if( !isAtomic && 'toStr' in src && _.routineIs( src.toStr ) && !src.toStr.notMethod && !_ObjectHasOwnProperty.call( src,'constructor' ) )
   {
@@ -594,6 +593,12 @@ function _toStr( src,o )
   else if( type === 'Map' )
   {
     var r = _toStrFromHashMap( src,o );
+    result += r.text;
+    simple = r.simple;
+  }
+  else if( _.bufferRawIs( src ) )
+  {
+    var r = _toStrFromBufferRaw( src,o );
     result += r.text;
     simple = r.simple;
   }
@@ -1118,6 +1123,26 @@ function _toStrFromHashMap( src,o )
 
 //
 
+function _toStrFromBufferRaw( src,o )
+{
+  var result = '';
+
+  _.assert( _.bufferRawIs( src ) );
+
+  ( new Uint8Array( src ) ).forEach( function( e,k )
+  {
+    if( k !== 0 )
+    result += ',';
+    result += '0x' + e.toString( 16 );
+  });
+
+  result = '( new Uint8Array([ ' + result + ' ]) ).buffer';
+
+  return { text : result, simple : true };
+}
+
+//
+
 function _toStrFromArrayFiltered( src,o )
 {
   var result = '';
@@ -1565,16 +1590,19 @@ function toJson( src,o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  o = o || Object.create( null );
-
-  var def =
+  var defs =
   {
     jsonLike : 1,
-    levels : 1 << 20
+    levels : 1 << 20,
+    cloning : 1,
   }
 
-  _.mapSupplement( o,def );
+  o = _.mapSupplement( o || {},defs );
 
+  if( o.cloning )
+  src = _.cloneData({ src : src });
+
+  delete o.cloning;
   var result = _.toStr( src,o );
 
   return result;
@@ -1582,7 +1610,7 @@ function toJson( src,o )
 
 //
 
-function toJstruct( src,o )
+function toJs( src,o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
@@ -1629,6 +1657,8 @@ var Proto =
 
   _toStrFromHashMap : _toStrFromHashMap,
 
+  _toStrFromBufferRaw : _toStrFromBufferRaw,
+
   _toStrFromArrayFiltered : _toStrFromArrayFiltered,
   _toStrFromArray : _toStrFromArray,
 
@@ -1638,7 +1668,7 @@ var Proto =
   _toStrFromObject : _toStrFromObject,
 
   toJson : toJson,
-  toJstruct : toJstruct,
+  toJs : toJs,
 
 }
 
