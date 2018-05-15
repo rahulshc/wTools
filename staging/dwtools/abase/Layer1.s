@@ -1,7 +1,7 @@
 //#! /usr/bin/env node
 (function _wToolsLayer1_s_(){
 
-'use strict';/*jjj*/
+'use strict';
 
 if( typeof module !== 'undefined' && module !== null )
 {

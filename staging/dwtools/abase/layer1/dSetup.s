@@ -1,6 +1,6 @@
 (function _Diagnostics_s_() {
 
-'use strict'; /*jjj*/
+'use strict'; 
 
 var _ = _global_.wTools;
 var Self = _global_.wTools;

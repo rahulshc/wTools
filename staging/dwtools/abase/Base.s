@@ -1,6 +1,6 @@
 (function _Base_s_() {
 
-'use strict';/*jjj*/
+'use strict';
 
 if( typeof module !== 'undefined' && module !== null )
 {

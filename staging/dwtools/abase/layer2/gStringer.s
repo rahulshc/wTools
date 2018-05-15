@@ -1,6 +1,6 @@
 (function _gStringer_s_() {
 
-'use strict'; /*jjj*/
+'use strict'; 
 
 /*
 - remove old code

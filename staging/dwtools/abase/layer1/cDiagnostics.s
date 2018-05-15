@@ -1,6 +1,6 @@
 (function _Diagnostics_s_() {
 
-'use strict'; /*jjj*/
+'use strict'; 
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;

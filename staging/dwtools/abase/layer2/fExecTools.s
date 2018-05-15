@@ -1,6 +1,6 @@
 ( function _ExecTools_s_() {
 
-'use strict'; /*jjj*/
+'use strict'; 
 
 if( typeof module !== 'undefined' )
 {
