@@ -40,9 +40,6 @@
     "url": "https://github.com/Wandalen/wTools/issues"
   },
   "dependencies": {},
-  "optionalDependencies": {
-    "underscore": ""
-  },
   "devDependencies": {
     "wTesting": "",
     "wTools": "."
@@ -55,7 +52,6 @@
     "tools",
     "wTools",
     "wBase",
-    "generic",
-    "underscore"
+    "generic"
   ]
 }
