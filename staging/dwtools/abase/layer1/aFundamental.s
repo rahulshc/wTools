@@ -6295,30 +6295,6 @@ function strAppendOnce( src,end )
 // regexp
 // --
 
-/*
-var regexpModeNames = namesCoded
-({
-  includeAny : 'includeAny',
-  includeAll : 'includeAll',
-  excludeAny : 'excludeAny',
-  excludeAll : 'excludeAll',
-});
-
-var regexpModeNamesToExtend = namesCoded
-({
-  includeAll : 'includeAll',
-  excludeAny : 'excludeAny',
-});
-
-var regexpModeNamesToReplace = namesCoded
-({
-  includeAny : 'includeAny',
-  excludeAll : 'excludeAll',
-});
-*/
-
-//
-
 function regexpIdentical( src1,src2 )
 {
   _.assert( arguments.length === 2 );
