@@ -1,6 +1,6 @@
 (function _fStringTools_s_() {
 
-'use strict'; 
+'use strict';
 
 /*
 - remove old code
@@ -1624,6 +1624,8 @@ function strReplaceAll( src, ins, sub )
 
   var src = o.src;
 
+  /* */
+
   if( _.objectIs( o.dictionary ) )
   {
     for( var ins in o.dictionary )
@@ -1632,10 +1634,7 @@ function strReplaceAll( src, ins, sub )
       src = replace( src, ins, o.dictionary[ ins ] );
     }
   }
-
-  //
-
-  if( _.arrayLike( o.dictionary ) )
+  else if( _.arrayLike( o.dictionary ) )
   {
     for( var p = 0; p < o.dictionary.length; p++ )
     {

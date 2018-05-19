@@ -1,6 +1,6 @@
 ( function _Include_s_() {
 
-'use strict'; 
+'use strict';
 
 //
 
@@ -472,9 +472,15 @@ _includeHandlerMap[ 'wFiles' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.fileProvider },
 }
 
-_includeHandlerMap[ 'wFileTransformers' ] =
+_includeHandlerMap[ 'wFilesArchive' ] =
 {
-  includeAny : [ '../../amid/file/FileTransformers.s','amid/file/FileTransformers.s','wfiletransformers' ],
+  includeAny : [ '../../amid/file/FilesArchive.s','amid/file/FilesArchive.s','wfilesarchive' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesArchive },
+}
+
+_includeHandlerMap[ 'wFilesTransformers' ] =
+{
+  includeAny : [ '../../amid/file/FilesTransformers.s','amid/file/FilesTransformers.s','wfilestransformers' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FileTransformers },
 }
 
