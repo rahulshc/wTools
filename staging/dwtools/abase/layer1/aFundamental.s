@@ -17159,6 +17159,8 @@ function mapIdentical( src1,src2 )
 {
 
   _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src1 ) );
+  _.assert( _.objectLike( src2 ) );
 
   if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
   return false;

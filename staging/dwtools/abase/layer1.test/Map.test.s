@@ -1,6 +1,6 @@
 ( function _Map_test_s( ) {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -2635,52 +2635,89 @@ function _mapScreen( test )
 function mapIdentical( test )
 {
 
-  test.description = 'same [ key, value ]';
+  test.description = 'same values';
   var got = _.mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
   var expected = true;
   test.identical( got, expected );
 
-  test.description = 'same [ key, value ] in the arrays';
-  var got = _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 13 ] );
+  test.description = 'not the same values in'
+  var got = _.mapIdentical( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b': 14 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'different number of keys, more in the first argument'
+  var got = _.mapIdentical( { 'a' : 7, 'b' : 13, 'с' : 15 }, { 'a' : 7, 'b' : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'different number of keys, more in the second argument'
+  var got = _.mapIdentical( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 13, 'с' : 15 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* special cases */
+
+  test.description = 'empty maps, standrard'
+  var got = _.mapIdentical( {}, {} );
   var expected = true;
   test.identical( got, expected );
 
-  test.description = 'not the same [ key, value ] in the arrays'
-  var got = _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
-  var expected = false;
+  test.description = 'empty maps, pure'
+  var got = _.mapIdentical( Object.create( null ), Object.create( null ) );
+  var expected = true;
   test.identical( got, expected );
 
-  test.description = 'not the same [ key, value ] in the arrays'
-  var got = _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 13, 'с', 15 ] );
-  var expected = false;
+  test.description = 'empty maps, one standard another pure'
+  var got = _.mapIdentical( {}, Object.create( null ) );
+  var expected = true;
   test.identical( got, expected );
 
-  /**/
+  /* bad arguments */
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.mapIdentical();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapIdentical();
-    });
+  test.description = 'not object-like arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( 'a','b' );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( 1,3 );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( null,null );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( undefined,undefined );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapIdentical( {} );
-    });
+  test.description = 'too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( {} );
+  });
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapIdentical( {}, {}, 'redundant argument' );
-    });
+  test.description = 'too much arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( {}, {}, 'redundant argument' );
+  });
 
-  }
-
-};
+}
 
 //
 
