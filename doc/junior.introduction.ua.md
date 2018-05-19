@@ -1,80 +1,75 @@
 #  Мануал початківця wTools
-***
+
 ## Зміст
-1. [Репозиторій](#repository)
-2. [Клонування репозиторію](#repository-cloning)
-3. [Встановлення пакету](#package-installation)
-4. [Способи запуска тестів](#way-of-test-running)
-5. [Кількість вихідної інформації](#verbosity)
-6. [Підказка по параметрам скрипта](#getting-parameters-help)
-7. [Опції тестера](#tester-options)
-8. [Структурні одиниці тестування](#testing-structure-units)
-9. [Розташуванння окремих тест рутин та їх реалізацій](#test-routines-location)
+
+- [Репозиторій](#repository)
+- [Клонування репозиторію](#repository-cloning)
+- [Встановлення пакету](#package-installation)
+- [Способи запуска тестів](#way-of-test-running)
+- [Кількість вихідної інформації](#verbosity)
+- [Підказка по параметрам скрипта](#getting-parameters-help)
+- [Сценарії тестера](#tester-scenarios)
+- [Опції тестера](#tester-options)
+- [Структурні одиниці тестування](#testing-structure-units)
+- [Розташуванння окремих тест рутин та їх реалізацій](#test-routines-location)
 
 <a name="repository"/>
 
 ## Репозиторій
-***
+
 Репозіторій розташовано за адресою  [https://github.com/Wandalen/wTools](https://github.com/Wandalen/wTools)
 
 <a name="repository-cloning"/>
 
 ## Клонування репозиторію
-***
+
 Для клонування репозіторію використовувати команду `git clone https://github.com/Wandalen/wTools.git`
 
 <a name="package-installation"/>
 
 ## Встановлення пакету
-***
-Для встановлення пакету глобально використовуйте
+
+Для встановлення пакету перейдіть в сколоновану теку проекту та виконайте
 `npm install`
+Для встановлення пакету для тестування глобально використайте
 `npm install -g wTesting`
-відповідно перейшовши в директорію (теку) проекту
 
 <a name="way-of-test-running"/>
 
 ## Способи запуска тестів
-***
+
+[//]: # ( xxx : не правильно, треба розбити на 4-ри пункти )
+
  Існують три способа запуска тестів з наступними командами
 
-|N п/п      | Спосіб запуску                                              | Команда                                              |
-|:----------|:------------------------------------------------------------|:-----------------------------------------------------|
-|[1](#1)    | Безпосередньо через npm                                     | `npm test`                                           |
-|[2.1](#2.1)| Альтернативний спосіб запуску                               | `wtest staging`                                      |
-|[2.2](#2.2)| Альтернативний спосіб запуску використовуючи файл тест сюіта| `wtest staging/dwtools/abase/layer1.test/Map.test.s` |
-|[3](#3)    | Використовуючи файл тест сюіта                              | `node staging/dwtools/abase/layer1.test/Map.test.s`  |
+|N п/п      | Спосіб запуску                                         | Команда                                             |
+|:----------|:-------------------------------------------------------|:----------------------------------------------------|
+|[1](#1)    | Безпосередньо через npm                                | `npm test`                                          |
+|[2.1](#2.1)| Альтернативний спосіб запуску                          | `wtest staging`                                     |
+|[2.2](#2.2)| Альтернативний спосіб запуску використовуючи test suite| `wtest staging/dwtools/abase/layer1.test/Map.test.s`|
+|[3](#3)    | Використовуючи тест сюіта                              | `node staging/dwtools/abase/layer1.test/Map.test.s` |
 
 Экран терміналу вищовказаних команд в операційній системі Linux буде виглядати наступним образом:
 
 <a name="1"/>
 
-Результат команди 1
+![Результат команди npm test](./img/1.png)
 
-![Результат команди 1](./reference/img/1.png)
+<a name="2.11"/>
 
-<a name="2.1"/>
-
-Результат команди 2.1
-
-![Результат команди 2.1](./reference/img/2.1.png)
+![Результат команди npm test](./img/2.1.png)
 
 <a name="2.2"/>
 
-Результат команди 2.2
-
-![Результат команди 2.2](./reference/img/2.2.png)
+![Результат команди npm test](./img/2.2.png)
 
 <a name="3"/>
 
-Результат команди 3
-
-![Результат команди 3](./reference/img/3.png)
+![Результат команди npm test](./img/3.png)
 
 <a name="verbosity"/>
 
 ## Кількість вихідної інформації
-***
 
 Кількість інформації, яка буде видаватися скриптом, можно регулювати наступним чином:
 використовуючи параметр `verbosity`, який регулює багатослівність.
@@ -84,16 +79,20 @@
 | verbosity:0   | Жодної інформації              |
 | verbosity:1   | Один рядок                     |
 | verbosity:2   | Багато рядків                  |
-| verbosity:9   | Максимум                       |
+| verbosity:9   | Максимум інформації            |
 
 Наприклад: `wtest staging verbosity:2`
 
 <a name="getting-parameters-help"/>
 
 ## Підказка по параметрам скрипта
-***
- Для отримання підказки по параметрам використовуйте 
- `wtest staging scenario:help`
+
+Для отримання підказки по опціям пакету для тестування використовуйте
+`wtest scenario:help`
+
+<a name="tester-scenarios"/>
+
+## Сценарії тестера
 
 | Сценарії      | Виконувана дія                            |
 |:--------------|:------------------------------------------|
@@ -106,7 +105,7 @@
 <a name="tester-options"/>
 
 ## Опції тестера
-***
+
 В наявності наступні опції:
 
 | Опція             | Виконувана дія                                                        |
@@ -124,12 +123,14 @@
 <a name="testing-structure-units"/>
 
 ## Структурні одиниці тестування
-***
 
-> Тест сюіт - це набір тест кейсів, які поєднанні тим, що відносяться до одного тестуємого модуля, функціональності,
-приоритету або одному типу тестування. Кожний тест сюіт містить більш ніж один тест кейс та виконується загалом усією "пачкою" в процесі тестування.
+[//]: # ( xxx : трохи не точно )
 
-> Тест кейси поєднують в тест сюіти для більшого зручності при проходженні тестів, проходячи їх послідовно від модуля до модуля, а не сумбурно, залишив не перевіренною більшу частину модуля або загальну функціональность.  
+> `Тест рутина`( функція, метод ) - це набір тест кейсів, що виконуються послідовно одна за одною та поєднанні тим, що відносяться до одного модуля, що тестується або функціональності. Рутина завершує своє виконання на першій викинутій помилці тож тест кейси, які йдуть пізніше можуть лишитися не виконаними, проте це не вплине на результат тестування - він буде `failed`.
+
+> `Тест кейс` - це одна або декілька перевірок поєднаних із супровідним кодом для виявлення несправності лише одного аспекту об'єкту, що тестується. Тест кейси описуються в тест рутині кодом та мають текстовий опис, що пояснює обставини тестування та очікуваний результат в даному тест кейсі.
+
+> `Тест перевірка` - це найменша структурна одиниця тестування. Тест кейс складається із одної або декількох перевірок. Достатньо лише одного перевірки із результатом `failed` щоб увесь об'єкт, що тестується вважався таким, що не пройшов його.
 
 | Структурна одиниця      | Кількість в пакеті wTools|
 |:------------------------|:-------------------------|
@@ -141,7 +142,7 @@
 <a name="test-routines-location"/>
 
 ## Розташуванння окремих тест рутин та їх реалізацій
-***
+
 Окремі тест рутини розташовані в директорії `wTools/staging/dwtools/abase`
 
 Вони мають вигляд (на прикладі Тест рутини mapIdentical):
@@ -150,129 +151,116 @@
 var Self =
 {
 
+  /* options of the test suit */
   name : 'MapTest',
   silencing : 1,
 
+  /* map of test routines available in the test suit */
   tests :
   {
 
-    // map tester
-
-    mapIs : mapIs,
-
-    // map move
-
-    mapClone : mapClone,
-
-    mapExtendConditional : mapExtendConditional,
-    mapExtend : mapExtend,
-    mapSupplement : mapSupplement,
-    mapComplement : mapComplement,
-
-    mapCopy : mapCopy,
-
-    // map convert
-
-    mapFirstPair : mapFirstPair,
-
-    mapToArray : mapToArray,
-    mapValWithIndex : mapValWithIndex,
-    mapKeyWithIndex : mapKeyWithIndex,
-    mapToStr : mapToStr,
-
-    // map properties
-
-    mapKeys : mapKeys,
-    mapOwnKeys : mapOwnKeys,
-    mapAllKeys : mapAllKeys,
-
-    mapVals : mapVals,
-    mapOwnVals : mapOwnVals,
-    mapAllVals : mapAllVals,
-
-    mapPairs : mapPairs,
-    mapOwnPairs : mapOwnPairs,
-    mapAllPairs : mapAllPairs,
-
-    mapProperties : mapProperties,
-    mapOwnProperties : mapOwnProperties,
-    mapAllProperties : mapAllProperties,
-
-    mapRoutines : mapRoutines,
-    mapOwnRoutines : mapOwnRoutines,
-    mapAllRoutines : mapAllRoutines,
-
-    mapFields : mapFields,
-    mapOwnFields : mapOwnFields,
-    mapAllFields : mapAllFields,
-
-    mapOnlyAtomics : mapOnlyAtomics,
-
-    // map logic
-
-    mapBut : mapBut,
-
-    mapOwnBut : mapOwnBut,
-
-    mapButConditional : mapButConditional,
-
-    mapScreens : mapScreens,
-    mapScreen : mapScreen,
-    _mapScreen : _mapScreen,
-
     mapIdentical : mapIdentical,
-    mapContain : mapContain,
-
-    mapOwnKey : mapOwnKey,
-
-    mapHasAll : mapHasAll,
-    mapHasAny : mapHasAny,
-    mapHasNone : mapHasNone,
-
-    mapOwnAll : mapOwnAll,
-    mapOwnAny : mapOwnAny,
-    mapOwnNone : mapOwnNone,
-
-    // mapGroup : mapGroup,
 
   }
 
 }
 ```
 
-Їх реалізаціі мают наступний вигляд:
+Тест рутина `mapIdentical` має таку реалізацію:
 
 ```javascript
-/**
- * The mapIdentical() returns true, if the second object (src2)
- * has the same values as the first object(src1).
- *
- * It takes two objects (scr1, src2), checks
- * if both object have the same length and [key, value] return true
- * otherwise it returns undefined.
- *
- * @param { objectLike } src1 - First object.
- * @param { objectLike } src2 - Target object.
- * Objects to compare values.
- *
- * @example
- * // returns true
- * mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
- *
- * @example
- * returns false
- * _.mapIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
- *
- * @example
- * returns false
- * _.mapIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
- *
- * @returns { boolean } Returns true, if the second object (src2)
- * has the same values as the first object(src1).
- * @function mapIdentical
- * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools
- */
+
+function mapIdentical( test )
+{
+
+  test.description = 'same values';
+  var got = _.mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'not the same values in'
+  var got = _.mapIdentical( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b': 14 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'different number of keys, more in the first argument'
+  var got = _.mapIdentical( { 'a' : 7, 'b' : 13, 'с' : 15 }, { 'a' : 7, 'b' : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'different number of keys, more in the second argument'
+  var got = _.mapIdentical( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 13, 'с' : 15 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* special cases */
+
+  test.description = 'empty maps, standrard'
+  var got = _.mapIdentical( {}, {} );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'empty maps, pure'
+  var got = _.mapIdentical( Object.create( null ), Object.create( null ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'empty maps, one standard another pure'
+  var got = _.mapIdentical( {}, Object.create( null ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  /* bad arguments */
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical();
+  });
+
+  test.description = 'not object-like arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( [ 'a', 7, 'b', 13 ], [ 'a', 7, 'b', 14 ] );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( 'a','b' );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( 1,3 );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( null,null );
+  });
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( undefined,undefined );
+  });
+
+  test.description = 'too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( {} );
+  });
+
+  test.description = 'too much arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapIdentical( {}, {}, 'redundant argument' );
+  });
+
+}
+
+```
+Тест рутина `mapIdentical` прокиває ( тестує ) рутину із аналогічною назвою `mapIdentical` та такою реалізацією:
+
+```javascript
 
 function mapIdentical( src1,src2 )
 {
