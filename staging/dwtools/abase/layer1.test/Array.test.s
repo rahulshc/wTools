@@ -9822,7 +9822,7 @@ function arraySetBut( test )
     test.description = 'too much arguments';
     test.shouldThrowError( function()
     {
-      _.arraySetBut( [ 1, 1, 1 ], [ 5, 8, 2], [ 3, 1, 6 ] );
+      _.arraySetBut( [ 1, 1, 1 ], [ 5, 8, 2], [ 3, 1, 6, 10 ] );
     });
     
     test.description = 'no arguments, the count of arguments doesn't match 2';
@@ -9834,7 +9834,7 @@ function arraySetBut( test )
     test.description = 'one or both arguments are not arrayLike entities, numerical arguments';
     test.shouldThrowError( function()
     {
-      _.arraySetBut( 5, 8 );
+      _.arraySetBut( 5, 8 ); 
     });
 
     test.description = 'one or both arguments are not arrayLike entities, string like arguments';
