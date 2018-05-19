@@ -9779,8 +9779,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !===a );
-  test.shouldBe( got !===b );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'first argument has several elements that are not present in second argument';
   var a = [ 1, 4, 9 ];
@@ -9788,8 +9788,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 1, 4, 9 ];
   test.identical( got, expected );
-  test.shouldBe( got !===a );
-  test.shouldBe( got !===b );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'first argument is the same as second';
   var a = [ 1, 2, 3, 4 ];
@@ -9797,8 +9797,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !===a );
-  test.shouldBe( got !===b );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -9806,8 +9806,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !===a );
-  test.shouldBe( got !===b );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3, 4 ];
@@ -9815,8 +9815,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !===a );
-  test.shouldBe( got !===b );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'first array has the same elements as second ';
   var a = [ 1, 1, 1 ];
@@ -9824,8 +9824,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !===a );
-  test.shouldBe( got !===b );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'both arguments are empty arrays';
   var a = [];
@@ -9833,8 +9833,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !===a );
-  test.shouldBe( got !===b );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   /**/
 
