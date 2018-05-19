@@ -9773,33 +9773,38 @@ function arraySetContainAll( test )
 
 function arraySetBut( test )
 {
-  test.description = 'returns an array';
+  test.description = ''first argument has single extra element, second argument has single extra element either';
   var got = _.arraySetBut( [ 1, 2, 3, 4 , 15 ], [ 1, 2, 3, 4, 5 ] );
   var expected = [ 15 ];
   test.identical( got, expected );
 
-  test.description = 'returns an array';
+  test.description = ''first argument has single extra element, second argument has single extra element either';
   var got = _.arraySetBut( [ 1, 4, 9 ], [ 2, 5 ] );
   var expected = [ 1, 4, 9 ];
   test.identical( got, expected );
 
-  test.description = 'returns an empty array, first argument is the same as second';
+  test.description = 'first argument is the same as second';
   var got = _.arraySetBut( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ] );
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'returns an empty array, first argument is an empty array';
-  var got = _.arraySetBut( [ ], [ 1, 2, 3, 4 ] );
+  test.description = 'first argument is an empty array';
+  var got = _.arraySetBut( [], [ 1, 2, 3, 4 ] );
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'returns an empty array';
+  test.description = 'second argument is an empty array, get the first element';
+  var got = _.arraySetBut( [ 1, 2, 3, 4 ], [] );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+
+  test.description = 'first array has same elements as second ';
   var got = _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
   var expected = [];
   test.identical( got, expected );
 
 
-  test.description = 'empty array';
+  test.description = 'both arguments are empty arrays';
   var got = _.arraySetBut( [], [] );
   var expected = [];
   test.identical( got, expected );
@@ -9808,62 +9813,60 @@ function arraySetBut( test )
 
   /* special cases */
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  /* bad arguments */
+
+  test.description = 'too few arguments';
+  test.shouldThrowError( function()
   {
+    _.arraySetBut( [ 1, 1, 1 ] );
+  });
 
-    /* bad arguments */
+  test.description = 'too much arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( [ 1, 1, 1 ], [ 5, 8, 2], [ 3, 1, 6, 10 ] );
+  });
+  
+  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut();
+  });
 
-    test.description = 'too few arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut( [ 1, 1, 1 ] );
-    });
+  test.description = 'one or both arguments are not arrayLike entities, numerical arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( 5, 8 ); 
+  });
 
-    test.description = 'too much arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut( [ 1, 1, 1 ], [ 5, 8, 2], [ 3, 1, 6, 10 ] );
-    });
-    
-    test.description = 'no arguments, the count of arguments doesn't match 2';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut();
-    });
+  test.description = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( 'a', 'c' );
+  });    
 
-    test.description = 'one or both arguments are not arrayLike entities, numerical arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut( 5, 8 ); 
-    });
+  test.description = 'wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( [ 1, 2, 3 ], "wrong argument" );
+  });
 
-    test.description = 'one or both arguments are not arrayLike entities, string like arguments';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut( 'a', 'c' );
-    });    
+  test.description = 'both arguments are null';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( null, null );
+  });
+  
+  test.description = 'both arguments are undefined';
+  test.shouldThrowError( function()
+  {
+    _.arraySetBut( undefined, undefined );
+  });
 
-    test.description = 'wrong argument';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut( [ 1, 2, 3 ], "wrong argument" );
-    });
 
-    test.description = 'both arguments are null';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut( null, null );
-    });
-    
-    test.description = 'both arguments are undefined';
-    test.shouldThrowError( function()
-    {
-      _.arraySetBut( undefined, undefined );
-    });
-
-    if( !Config.debug )
-    return;
-  }
 
   var cases =
   [
