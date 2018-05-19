@@ -9783,12 +9783,12 @@ function arraySetBut( test )
   var expected = [ 1, 4, 9 ];
   test.identical( got, expected );
 
-  test.description = 'returns an empty array';
+  test.description = 'returns an empty array, first argument is the same as second';
   var got = _.arraySetBut( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ] );
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'returns an empty array';
+  test.description = 'returns an empty array, first argument is an empty array';
   var got = _.arraySetBut( [ ], [ 1, 2, 3, 4 ] );
   var expected = [];
   test.identical( got, expected );
@@ -9798,33 +9798,72 @@ function arraySetBut( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'returns an empty array';
-  var got = _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
+
+  test.description = 'empty array';
+  var got = _.arraySetBut( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   /**/
 
-  if( !Config.debug )
-  return;
+  /* special cases */
 
-  test.description = 'no arguments, the count of arguments doesn\'t match 2';
-  test.shouldThrowError( function()
+  if( Config.debug )
   {
-    _.arraySetBut();
-  });
 
-  test.description = 'one or both arguments are not arrayLike entities';
-  test.shouldThrowError( function()
-  {
-    _.arraySetBut( 5, 8 );
-  });
+    /* bad arguments */
 
-  test.description = 'wrong argument';
-  test.shouldThrowError( function()
-  {
-    _.arraySetBut( [ 1, 2, 3 ], "wrong argument" );
-  });
+    test.description = 'too few arguments';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut( [ 1, 1, 1 ] );
+    });
+
+    test.description = 'too much arguments';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut( [ 1, 1, 1 ], [ 5, 8, 2], [ 3, 1, 6, 10 ] );
+    });
+    
+    test.description = 'no arguments, the count of arguments doesn't match 2';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut();
+    });
+
+    test.description = 'one or both arguments are not arrayLike entities, numerical arguments';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut( 5, 8 ); 
+    });
+
+    test.description = 'one or both arguments are not arrayLike entities, string like arguments';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut( 'a', 'c' );
+    });    
+
+    test.description = 'wrong argument';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut( [ 1, 2, 3 ], "wrong argument" );
+    });
+
+    test.description = 'both arguments are null';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut( null, null );
+    });
+    
+    test.description = 'both arguments are undefined';
+    test.shouldThrowError( function()
+    {
+      _.arraySetBut( undefined, undefined );
+    });
+
+    if( !Config.debug )
+    return;
+  }
 
   var cases =
   [
