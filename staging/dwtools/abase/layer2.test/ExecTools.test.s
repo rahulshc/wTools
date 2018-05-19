@@ -1,6 +1,6 @@
 ( function ExecTools_test_s( ) {
 
-'use strict'; /*aaa*/
+'use strict'; 
 
 var isBrowser = true;
 

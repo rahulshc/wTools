@@ -9808,7 +9808,7 @@ function arraySetBut( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.description = 'no arguments, the count of arguments doesn\'t match 2';
   test.shouldThrowError( function()
   {
     _.arraySetBut();
@@ -9879,7 +9879,7 @@ function arraySetDiff( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.description = 'no arguments, the count of arguments doesn\'t match 2';
   test.shouldThrowError( function()
   {
     _.arraySetDiff();
@@ -10115,7 +10115,7 @@ function arraySetIdentical( test )
   test.description = 'returns true';
   var got = _.arraySetIdentical(  [], [] );
   var expected = true;
-  test.identical( got, expected );  
+  test.identical( got, expected );
 
   /**/
 
