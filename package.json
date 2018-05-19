@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.7.98",
+  "version": "0.7.99",
   "engine": "node >= 6.0.0",
   "description": "Generic purpose tools of base level for solving problems in Java Script.",
   "license": "MIT",
