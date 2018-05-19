@@ -1,6 +1,6 @@
 ( function _Sample_test_s_( ) {
 
-'use strict'; 
+'use strict';
 
 /*
 
@@ -8,7 +8,7 @@ to run this test
 from the project directory run
 
 npm install
-node ./staging/z.test/Sample.test.s
+node ./staging/layer1.test/Sample.test.s
 
 */
 
