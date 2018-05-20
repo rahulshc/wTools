@@ -9730,41 +9730,115 @@ function arrayUpdate( test )
 function arraySetContainAll( test )
 {
 
-  test.description = 'returns true';
-  var got = _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
+  test.description = 'Second argument contains all the same values as in the (src)';
+  var a = [ 1, 'b', 'c', 4 ];
+  var b = [ 1, 2, 3, 4, 5, 'b', 'c' ];
+  var got = _.arraySetContainAll( a, b );
   var expected = true;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'length of the first argument is more than second argument';
-  var got = _.arraySetContainAll( [ 1, 2, 3, 4, 5 ], [ 1, 2, 3, 4 ] );
+  var a = [ 1, 2, 3, 4, 5 ];
+  var b = [ 1, 2, 3, 4 ];
+  var got = _.arraySetContainAll( a, b );
   var expected = false;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   test.description = 'length of the first argument is more than second argument';
-  var got = _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+  var a = [ 'abc', 'def', true, 26 ];
+  var b = [ 1, 2, 3, 4 ];
+  var c = [ 26, 'abc', 'def', true ];
+  var got = _.arraySetContainAll( a, b, c );
   var expected = false;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
 
-  test.description = 'empty';
-  var got = _.arraySetContainAll( [ 1,2,3 ], [] );
+  test.description = 'second argument is an empty array';
+  var a = [ 1, 2, 3 ];
+  var b = [];
+  var got = _.arraySetContainAll( a, b );
   var expected = false;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+
+  test.description = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 2, 3 ];
+  var got = _.arraySetContainAll( a, b );
+  var expected = true;
+  test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+
+  test.description = 'both arguments are empty';
+  var a = [];
+  var b = [];
+  var got = _.arraySetContainAll( a, b );
+  var expected = true;
+  test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );  
 
   /**/
 
+ /* special cases */
+
   if( !Config.debug )
   return;
+
+  test.description = 'too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainAll( [ 1, 1, 1 ] );
+  });  
 
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAll();
+  });  
+
+  test.description = 'one or both arguments are not arrayLike entities, numerical arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainAll( 5, 8 ); 
   });
+
+  test.description = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainAll( 'a', 'c' );
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities, map like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainAll( { 1, 4, 5, 7 }, { 3, 8 } );
+  });    
 
   test.description = 'wrong arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAll( [ 1, 2, 3, 4 ], 'wrong arguments' );
+  });
+
+  test.description = 'both arguments are null';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainAll( null, null );
+  });
+  
+  test.description = 'both arguments are undefined';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainAll( undefined, undefined );
   });
 
 };
