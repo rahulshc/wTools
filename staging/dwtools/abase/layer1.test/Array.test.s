@@ -10359,22 +10359,45 @@ function arraySetContainSomething( test )
 function arraySetIdentical( test )
 {
 
-  test.description = 'returns true';
-  var got = _.arraySetIdentical(  [ 1, 2, 4, 7, 5 ], [ 4, 2, 1, 5, 7 ] );
+  test.description = 'arguments have the same elements but the order is differ';
+  var a = [ 1, 2, 4, 7, 5 ];
+  var b = [ 4, 2, 1, 5, 7 ];
+  var got = _.arraySetIdentical( a, b );
   var expected = true;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
-  test.description = 'returns false, argument length mismatch';
-  var got = _.arraySetIdentical(  [ 1, 2, 4, 7, 5 ], [ 1, 5, 7 ] );
+  test.description = 'argument length mismatch';
+  var a = [ 1, 2, 4, 7, 5 ];
+  var b = [ 1, 5, 7 ];
+  var got = _.arraySetIdentical( a, b );
   var expected = false;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
-  test.description = 'returns true';
-  var got = _.arraySetIdentical(  [], [] );
+  test.description = 'arguments have the same elements have inner arrays';
+  var a = [ 1, 2, [ 1, 3], 7, 5 ];
+  var b = [ [ 1, 3], 2, 1, 5, 7 ];
+  var got = _.arraySetIdentical( a, b );
+  var expected = false;
+  test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );    
+
+  test.description = 'both arrays are empty';
+  var a = [];
+  var b = [];
+  var got = _.arraySetIdentical( a, b );
   var expected = true;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b ); 
 
   /**/
+
+  /* special cases */
 
   if( !Config.debug )
   return;
@@ -10385,16 +10408,40 @@ function arraySetIdentical( test )
     _.arraySetIdentical();
   });
 
-  test.description = 'one or 2 arguments are not arrayLike entities';
+  test.description = 'one or 2 arguments are not arrayLike entities, numeric argument';
   test.shouldThrowError( function()
   {
     _.arraySetIdentical( [ 1, 2, 4, 7, 5 ], 15 );
+  });
+
+  test.description = 'one or 2 arguments are not arrayLike entities, string like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( 'a', 'a' );
+  });
+
+  test.description = 'one or 2 arguments are not arrayLike entities, map like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( { 1, 3, 5, 7, 4}, { 1, 3, 5, 7, 4} );
   });
 
   test.description = 'wrong argument';
   test.shouldThrowError( function()
   {
     _.arraySetIdentical( [ 1, 2, 4, 7, 5 ], "wrong argument" );
+  });
+
+  test.description = 'both arguments are null';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( null, null );
+  }); 
+
+  test.description = 'both arguments are undefined';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIdentical( undefined, undefined );
   });
 
 
