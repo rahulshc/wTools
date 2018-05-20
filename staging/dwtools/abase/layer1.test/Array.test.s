@@ -9929,41 +9929,94 @@ function arraySetBut( test )
 function arraySetDiff( test )
 {
 
-  test.description = 'returns an array';
-  var got = _.arraySetDiff( [ 1, 2, 3, 4, 15 ], [ 1, 2, 3, 4, 5 ] );
+  test.description = 'first argument has single extra element, second argument has single extra element either';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var got = _.arraySetDiff( a, b );
   var expected = [ 15, 5 ];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
-  test.description = 'returns an array';
-  var got = _.arraySetDiff( [ ], [ 1, 2, 3, 4 ] );
+  test.description = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 2, 3, 4 ];
+  var got = _.arraySetDiff( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
-  test.description = 'returns an array';
-  var got = _.arraySetDiff( [ 1, 2, 3, 4 ], [ ] );
+  test.description = 'second argument is an empty array';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [];
+  var got = _.arraySetDiff( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
-  test.description = 'returns an empty array';
-  var got = _.arraySetDiff( [ 3, 3, 3 ], [ 3, 3, 3, 3 ] );
+  test.description = 'both arguments are empty arrays';
+  var a = [];
+  var b = [];
+  var got = _.arraySetDiff( a, b );
   var expected = [];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+
+  test.description = 'all of the elements is present in both arrays';
+  var a = [ 3, 3, 3 ];
+  var b = [ 3, 3, 3, 3 ];
+  var got = _.arraySetDiff( a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+
 
   /**/
+
+  /* special cases */
 
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments, the count of arguments doesn\'t match 2';
+  test.description = 'no arguments';
   test.shouldThrowError( function()
   {
     _.arraySetDiff();
   });
 
-  test.description = 'one or both arguments are not arrayLike entities';
+  test.description = 'too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff([ 1, 2, 3, 4 ]);
+  });
+
+  test.description = 'too much arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff([ 1, 2, 3, 4 ], [ 5, 7, 8, 9 ], [ 13, 15, 17 ]);
+  });
+
+
+  test.description = 'one or both arguments are not arrayLike entities, numeric arguments';
   test.shouldThrowError( function()
   {
     _.arraySetDiff( 10, 15 );
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( 'a', 'c' );
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities, map arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( { 1, 4, 5, 7 }, { 3, 8 } );
   });
 
   test.description = 'wrong argument';
@@ -9971,6 +10024,18 @@ function arraySetDiff( test )
   {
     _.arraySetDiff( [ 1, 2, 3 ], "wrong argument" );
   });
+
+  test.description = 'both arguments are null';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( null, null );
+  }); 
+
+  test.description = 'both arguments are undefined';
+  test.shouldThrowError( function()
+  {
+    _.arraySetDiff( undefined, undefined );
+  });  
 
   var cases =
   [
