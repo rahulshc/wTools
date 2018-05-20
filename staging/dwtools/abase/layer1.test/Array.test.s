@@ -10065,27 +10065,46 @@ function arraySetDiff( test )
 function arraySetIntersection( test )
 {
 
-  test.description = 'returns an array';
-  var got = _.arraySetIntersection( [ 1, 2, 3, 4, 15 ], [ 1, 2, 3, 4, 5 ] , [ 15, 16, 17 ]);
+  test.description = 'second argument has extra element, third argument has two extra elements';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var c = [ 15, 16, 17 ];
+  var got = _.arraySetIntersection( a, b, c );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
 
-  test.description = 'returns an empty array';
-  var got = _.arraySetIntersection( [ 1, 2, 3, 4, 15 ]);
+
+  test.description = 'single array argument';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var got = _.arraySetIntersection( a );
   var expected = [];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );  
 
-  test.description = 'returns an empty array';
-  var got = _.arraySetIntersection( [], [ 1, 2, 3, 4, 15 ]);
+  test.description = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 2, 3, 4, 15 ];
+  var got = _.arraySetIntersection( a, b );
   var expected = [];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
-  test.description = 'returns an empty array';
-  var got = _.arraySetIntersection( [], []);
+  test.description = 'first and second argument are empty arrays';
+  var a = [];
+  var b = [];
+  var got = _.arraySetIntersection( a, b );
   var expected = [];
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
 
   /**/
+
+  /* special cases */  
 
   if( !Config.debug )
   return;
@@ -10096,17 +10115,48 @@ function arraySetIntersection( test )
     _.arraySetIntersection();
   });
 
-  test.description = 'one or several arguments are not arrayLike entities';
+  test.description = 'too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection([ 1, 2, 3, 4 ]);
+  });
+  
+
+  test.description = 'one or several arguments are not arrayLike entities, numerical arguments';
   test.shouldThrowError( function()
   {
     _.arraySetIntersection( 10, 15, 25 );
   });
+
+  test.description = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( 'a', 'c' );
+  });
+
+  test.description = 'one or both arguments are not arrayLike entities, map arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( { 1, 4, 5, 7 }, { 3, 8 } );
+  });  
 
   test.description = 'wrong argument';
   test.shouldThrowError( function()
   {
     _.arraySetIntersection( [ 1, 2, 3 ], "wrong argument" );
   });
+
+  test.description = 'one or more arguments are null';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( null, null );
+  }); 
+
+  test.description = 'one or more arguments are undefined';
+  test.shouldThrowError( function()
+  {
+    _.arraySetIntersection( undefined, undefined );
+  });   
 
   var cases =
   [
