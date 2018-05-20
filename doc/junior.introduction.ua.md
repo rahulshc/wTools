@@ -321,3 +321,37 @@ function mapIdentical( src1,src2 )
 
 3. Твердження
 
+Для прикладу розглянемо слідуючий модульний тест arraySetBut - він розташований в файлі `wTools/staging/dwtools/abase/layer1.test/Array.test.s` :
+
+```javascript
+  test.description = 'first argument has single extra element, second argument has single extra element either';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var got = _.arraySetBut( a, b );
+  var expected = [ 15 ];
+  test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+```
+
+В налаштуваннях він має :
+
+1. Короткий опис - `  test.description = 'first argument has single extra element, second argument has single extra element either';`
+
+2. Значення параметрів :
+```javascript
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+``` 
+
+Виклик тестуємого метода :
+
+```javascript
+  var got = _.arraySetBut( a, b );
+```
+
+Твердження : 
+
+```javascript
+  test.identical( got, expected );
+```
