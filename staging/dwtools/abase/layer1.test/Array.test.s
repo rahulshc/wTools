@@ -10219,27 +10219,76 @@ function arraySetContainAll( test )
 function arraySetContainSomething( test )
 {
 
-  test.description = 'returns true';
-  var got = _.arraySetContainSomething(  [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
+  test.description = 'second and third arrays contains several values from (src) array';
+  var a = [ 33, 4, 5, 'b', 'c' ];
+  var b = [ 1, 'b', 'c', 4 ];
+  var c = [ 33, 13, 3 ];
+  var got = _.arraySetContainSomething( a, b, c );
   var expected = true;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
 
-  test.description = 'returns false';
-  var got = _.arraySetContainSomething(  [ 33, 4, 5, 'b', 'c' ], [ 1, 'bcda', 'ce', 8 ], [ 45, 13, 3 ] );
+  test.description = 'second array is empty, third array contains elements from (src) array';
+  var a = [ 33, 4, 5, 'b', 'c' ];
+  var b = [];
+  var c = [33];
+  var got = _.arraySetContainSomething( a, b, c );
+  var expected = true;
+  test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
+
+  test.description = 'second and third arrays doesn't contains matching elemets from (src) array';
+  var a = [ 33, 4, 5, 'b', 'c' ];
+  var b = [ 1, 'bcda', 'ce', 8 ];
+  var c = [ 45, 13, 3 ];
+  var got = _.arraySetContainSomething( a, b, c );
   var expected = false;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
 
-  test.description = 'returns false';
-  var got = _.arraySetContainSomething(  [], [ 1, 'bcda', 'ce', 8 ], [ 45, 13, 3 ] );
+  test.description = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 'bcda', 'ce', 8 ];
+  var c = [ 45, 13, 3 ];
+  var got = _.arraySetContainSomething( a, b, c );
   var expected = false;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
 
-  test.description = 'returns false';
-  var got = _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [], [] );
+  test.description = 'following array are empty, (src) array is not empty';
+  var a = [ 33, 4, 5, 'b', 'c' ];
+  var b = [];
+  var c = [];
+  var got = _.arraySetContainSomething( a, b, c );
   var expected = false;
   test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
+
+  test.description = 'all the array are empty';
+  var a = [];
+  var b = [];
+  var c = [];
+  var got = _.arraySetContainSomething( a, b, c );
+  var expected = true;
+  test.identical( got, expected );
+  test.shouldBe( got !=== a );
+  test.shouldBe( got !=== b );
+  test.shouldBe( got !=== c );
+
 
   /**/
+
+  /* special cases */
 
   if( !Config.debug )
   return;
@@ -10250,10 +10299,28 @@ function arraySetContainSomething( test )
     _.arraySetContainSomething();
   });
 
-  test.description = 'one or several arguments are not arrayLike entities';
+  test.description = 'too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething([ 33, 4, 5, 'b', 'c' ]);
+  });
+  
+  test.description = 'one or several arguments are not arrayLike entities,numeric arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], 15, 25 );
+  });
+
+  test.description = 'one or several arguments are not arrayLike entities,string like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], 'dfdf', 'ab' );
+  });
+
+  test.description = 'one or several arguments are not arrayLike entities,map like arguments';
+  test.shouldThrowError( function()
+  {
+    _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], { 33, 4, 5, 'b', 'c' }, { 44, 3 } );
   });
 
   test.description = 'wrong argument';
