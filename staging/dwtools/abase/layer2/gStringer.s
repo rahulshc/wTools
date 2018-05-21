@@ -1599,8 +1599,6 @@ function toJson( src,o )
 
   o = _.mapSupplement( o || {},defs );
 
-  debugger;
-
   if( o.cloning )
   src = _.cloneData({ src : src });
 
