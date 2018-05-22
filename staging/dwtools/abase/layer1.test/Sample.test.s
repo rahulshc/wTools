@@ -1,6 +1,3 @@
-( function _Sample_test_s_( ) {
-
-'use strict';
 
 /*
 
@@ -123,8 +120,8 @@ var Self =
 
 }
 
+//
+
 Self = wTestSuit( Self );
 if( typeof module !== 'undefined' && !module.parent )
 _.Tester.test( Self.name );
-
-} )( );

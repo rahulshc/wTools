@@ -341,7 +341,7 @@ function isIncluded( src )
 }
 
 // --
-// var
+// include map
 // --
 
 var _includeHandlerMap = {};
@@ -497,6 +497,18 @@ _includeHandlerMap[ 'wTimeMarker' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.TimeMakrer },
 }
 
+_includeHandlerMap[ 'wPathTranslator' ] =
+{
+  includeAny : [ '../../amid/path/PathTranslator.s','amid/path/PathTranslator.s','wpathtranslator' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.PathTranslator },
+}
+
+_includeHandlerMap[ 'wFileExecutor' ] =
+{
+  includeAny : [ '../../../dwtools/amid/executor/FileExecutor.s','amid/executor/FileExecutor.s','wFileExecutor' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.wFileExecutor },
+}
+
 _includeHandlerMap[ 'wNameMapper' ] =
 {
   includeAny : [ '../../amid/amapping/NameMapper.s','amid/amapping/NameMapper.s','wnamemapper' ],
@@ -557,24 +569,6 @@ _includeHandlerMap[ 'wIncubator' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Incubator },
 }
 
-_includeHandlerMap[ 'wMaker' ] =
-{
-  includeAny : [ '../../../dwtools/atop/maker/Maker.s','atop/maker/Maker.s','wMaker' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Maker },
-}
-
-_includeHandlerMap[ 'wDeployerUnit' ] =
-{
-  includeAny : [ '../../../dwtools/atop/deployer/Unit.s','atop/deployer/Unit.s','wDeployerUnit' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.DeployerUnit },
-}
-
-_includeHandlerMap[ 'wServlet' ] =
-{
-  includeAny : [ '../../../dwtools/atop/servlet/Servlet.ss','atop/servlet/Servlet.ss','wServlet' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.servlet },
-}
-
 _includeHandlerMap[ 'wMathScalar' ] =
 {
   includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.s','amath/arithmetic/cScalar.s','wmathscalar' ],
@@ -597,6 +591,36 @@ _includeHandlerMap[ 'wMathConcepts' ] =
 {
   includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wmathconcepts' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.box },
+}
+
+_includeHandlerMap[ 'wBaker' ] =
+{
+  includeAny : [ '../../../dwtools/atop/baker/Baker.s','atop/baker/Baker.s','wBaker' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.Baker },
+}
+
+_includeHandlerMap[ 'wBakerWithFileExecutor' ] =
+{
+  includeAny : [ '../../../dwtools/atop/baker/BakerWithFileExecutor.s','atop/baker/BakerWithFileExecutor.s','wBakerWithFileExecutor' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.wBakerWithFileExecutor },
+}
+
+_includeHandlerMap[ 'wMaker' ] =
+{
+  includeAny : [ '../../../dwtools/atop/maker/Maker.s','atop/maker/Maker.s','wMaker' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.Maker },
+}
+
+_includeHandlerMap[ 'wDeployerUnit' ] =
+{
+  includeAny : [ '../../../dwtools/atop/deployer/Unit.s','atop/deployer/Unit.s','wDeployerUnit' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.DeployerUnit },
+}
+
+_includeHandlerMap[ 'wServlet' ] =
+{
+  includeAny : [ '../../../dwtools/atop/servlet/Servlet.ss','atop/servlet/Servlet.ss','wServlet' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.servlet },
 }
 
 // --

@@ -8,16 +8,25 @@ if( typeof module !== 'undefined' )
 {
   isBrowser = false;
 
-  try
+  if( typeof _global_ === 'undefined' || !_global_.wBase )
   {
-    require( '../../abase/wTools.s' );
-  }
-  catch( err )
-  {
-    require( 'wTools' );
+    let toolsPath = '../../../dwtools/Base.s';
+    let toolsExternal = 0;
+    try
+    {
+      require.resolve( toolsPath );
+    }
+    catch( err )
+    {
+      toolsExternal = 1;
+      require( 'wTools' );
+    }
+    if( !toolsExternal )
+    require( toolsPath );
   }
 
-  var _ = wTools;
+  var _ = _global_.wTools;
+
   _.include( 'wTesting' );
 
 }
@@ -9856,7 +9865,7 @@ function arraySetBut( test )
   {
     _.arraySetBut( [ 1, 1, 1 ], [ 5, 8, 2], [ 3, 1, 6, 10 ] );
   });
-  
+
   test.description = 'no arguments, the count of arguments doesn't match 2';
   test.shouldThrowError( function()
   {
@@ -9866,14 +9875,14 @@ function arraySetBut( test )
   test.description = 'one or both arguments are not arrayLike entities, numerical arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetBut( 5, 8 ); 
+    _.arraySetBut( 5, 8 );
   });
 
   test.description = 'one or both arguments are not arrayLike entities, string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetBut( 'a', 'c' );
-  });    
+  });
 
   test.description = 'one or both arguments are not arrayLike entities, map like arguments';
   test.shouldThrowError( function()
@@ -9892,7 +9901,7 @@ function arraySetBut( test )
   {
     _.arraySetBut( null, null );
   });
-  
+
   test.description = 'both arguments are undefined';
   test.shouldThrowError( function()
   {
