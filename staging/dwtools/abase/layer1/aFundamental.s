@@ -7363,13 +7363,36 @@ function methodsCall( contexts,methods,args )
 
 //
 
-function routineOptions( routine,args,defaults )
+function assertRoutineOptions( routine,args,defaults )
 {
 
   if( !_.argumentsIs( args ) )
   args = [ args ];
   var options = args[ 0 ];
 
+  _.assert( arguments.length === 2 || arguments.length === 3,'assertRoutineOptions : expects 2 arguments' );
+  _.assert( _.routineIs( routine ),'assertRoutineOptions : expects routine' );
+  _.assert( _.objectIs( routine.defaults ) || defaults,'assertRoutineOptions : expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ),'assertRoutineOptions : expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'assertRoutineOptions : expects single options map, but got',args.length,'arguments' );
+
+  defaults = defaults || routine.defaults;
+
+  _.assertMapHasOnly( options,defaults );
+  _.assertMapHasAll( options,defaults );
+  _.assertMapHasNoUndefine( options );
+
+  return options;
+}
+
+//
+
+function routineOptions( routine,args,defaults )
+{
+
+  if( !_.argumentsIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
   if( options === undefined )
   options = Object.create( null );
 
@@ -14465,6 +14488,22 @@ function mapExtendToThis()
 
 //
 
+function mapsExtend( dst,srcs )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( srcs ) );
+
+  for( var s = 0 ; s < srcs.length ; s++ )
+  {
+    var src = srcs[ s ]
+    dst = _.mapExtend( dst,src )
+  }
+
+  return dst;
+}
+
+//
+
 function mapStretch( dst,src )
 {
   if( dst === null && arguments.length === 2 )
@@ -18031,6 +18070,7 @@ var Proto =
   routinesCallUntilFalse : routinesCallUntilFalse,
   methodsCall : methodsCall,
 
+  assertRoutineOptions : assertRoutineOptions,
   routineOptions : routineOptions,
   routineOptionsWithUndefines : routineOptionsWithUndefines,
   routineOptionsFromThis : routineOptionsFromThis,
@@ -18302,6 +18342,7 @@ var Proto =
   mapExtendConditional : mapExtendConditional,
   mapExtend : mapExtend,
   mapExtendToThis : mapExtendToThis,
+  mapsExtend : mapsExtend,
 
   mapStretch : mapStretch,
 
