@@ -9745,8 +9745,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'length of the first argument is more than second argument';
   var a = [ 1, 2, 3, 4, 5 ];
@@ -9754,8 +9754,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'length of the first argument is more than second argument';
   var a = [ 'abc', 'def', true, 26 ];
@@ -9764,9 +9764,9 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3 ];
@@ -9774,8 +9774,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -9783,8 +9783,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'both arguments are empty';
   var a = [];
@@ -9792,8 +9792,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );  
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   /**/
 
@@ -9806,18 +9806,18 @@ function arraySetContainAll( test )
   test.shouldThrowError( function()
   {
     _.arraySetContainAll( [ 1, 1, 1 ] );
-  });  
+  });
 
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAll();
-  });  
+  });
 
   test.description = 'one or both arguments are not arrayLike entities, numerical arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetContainAll( 5, 8 ); 
+    _.arraySetContainAll( 5, 8 );
   });
 
   test.description = 'one or both arguments are not arrayLike entities, string like arguments';
@@ -9829,8 +9829,8 @@ function arraySetContainAll( test )
   test.description = 'one or both arguments are not arrayLike entities, map like arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetContainAll( { 1, 4, 5, 7 }, { 3, 8 } );
-  });    
+    _.arraySetContainAll( { a : 1, b : 2 }, { c : 3 } );
+  });
 
   test.description = 'wrong arguments';
   test.shouldThrowError( function()
@@ -9843,7 +9843,7 @@ function arraySetContainAll( test )
   {
     _.arraySetContainAll( null, null );
   });
-  
+
   test.description = 'both arguments are undefined';
   test.shouldThrowError( function()
   {
@@ -9862,8 +9862,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'first argument has several elements that are not present in second argument';
   var a = [ 1, 4, 9 ];
@@ -9871,8 +9871,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 1, 4, 9 ];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'first argument is the same as second';
   var a = [ 1, 2, 3, 4 ];
@@ -9880,8 +9880,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -9889,8 +9889,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3, 4 ];
@@ -9898,8 +9898,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'first array has the same elements as second ';
   var a = [ 1, 1, 1 ];
@@ -9907,8 +9907,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'both arguments are empty arrays';
   var a = [];
@@ -9916,8 +9916,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   /**/
 
@@ -9940,7 +9940,7 @@ function arraySetBut( test )
     _.arraySetBut( [ 1, 1, 1 ], [ 5, 8, 2], [ 3, 1, 6, 10 ] );
   });
 
-  test.description = 'no arguments, the count of arguments doesn't match 2';
+  test.description = 'no arguments, the count of arguments doesn\'t match 2';
   test.shouldThrowError( function()
   {
     _.arraySetBut();
@@ -9961,7 +9961,7 @@ function arraySetBut( test )
   test.description = 'one or both arguments are not arrayLike entities, map like arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetBut( { 1, 4, 5, 7 }, { 3, 8 } );
+    _.arraySetBut( { a : 1 }, { b : 3, c : 8 } );
   });
 
   test.description = 'wrong argument';
@@ -10018,8 +10018,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [ 15, 5 ];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10027,8 +10027,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3, 4 ];
@@ -10036,8 +10036,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'both arguments are empty arrays';
   var a = [];
@@ -10045,8 +10045,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'all of the elements is present in both arrays';
   var a = [ 3, 3, 3 ];
@@ -10054,8 +10054,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
 
   /**/
@@ -10099,7 +10099,7 @@ function arraySetDiff( test )
   test.description = 'one or both arguments are not arrayLike entities, map arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetDiff( { 1, 4, 5, 7 }, { 3, 8 } );
+    _.arraySetDiff( { a : 1 }, { b : 3, c : 8 } );
   });
 
   test.description = 'wrong argument';
@@ -10112,13 +10112,13 @@ function arraySetDiff( test )
   test.shouldThrowError( function()
   {
     _.arraySetDiff( null, null );
-  }); 
+  });
 
   test.description = 'both arguments are undefined';
   test.shouldThrowError( function()
   {
     _.arraySetDiff( undefined, undefined );
-  });  
+  });
 
   var cases =
   [
@@ -10155,9 +10155,9 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a, b, c );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
 
   test.description = 'single array argument';
@@ -10165,7 +10165,7 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );  
+  test.shouldBe( got !== a );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10173,8 +10173,8 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'first and second argument are empty arrays';
   var a = [];
@@ -10182,12 +10182,12 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   /**/
 
-  /* special cases */  
+  /* special cases */
 
   if( !Config.debug )
   return;
@@ -10203,7 +10203,7 @@ function arraySetIntersection( test )
   {
     _.arraySetIntersection([ 1, 2, 3, 4 ]);
   });
-  
+
 
   test.description = 'one or several arguments are not arrayLike entities, numerical arguments';
   test.shouldThrowError( function()
@@ -10220,8 +10220,8 @@ function arraySetIntersection( test )
   test.description = 'one or both arguments are not arrayLike entities, map arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetIntersection( { 1, 4, 5, 7 }, { 3, 8 } );
-  });  
+    _.arraySetIntersection( { a : 1 }, { b : 3, c : 8 } );
+  });
 
   test.description = 'wrong argument';
   test.shouldThrowError( function()
@@ -10233,13 +10233,13 @@ function arraySetIntersection( test )
   test.shouldThrowError( function()
   {
     _.arraySetIntersection( null, null );
-  }); 
+  });
 
   test.description = 'one or more arguments are undefined';
   test.shouldThrowError( function()
   {
     _.arraySetIntersection( undefined, undefined );
-  });   
+  });
 
   var cases =
   [
@@ -10309,9 +10309,9 @@ function arraySetContainSomething( test )
   var got = _.arraySetContainSomething( a, b, c );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
   test.description = 'second array is empty, third array contains elements from (src) array';
   var a = [ 33, 4, 5, 'b', 'c' ];
@@ -10320,20 +10320,20 @@ function arraySetContainSomething( test )
   var got = _.arraySetContainSomething( a, b, c );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
-  test.description = 'second and third arrays doesn't contains matching elemets from (src) array';
+  test.description = 'second and third arrays doesn\'t contains matching elemets from (src) array';
   var a = [ 33, 4, 5, 'b', 'c' ];
   var b = [ 1, 'bcda', 'ce', 8 ];
   var c = [ 45, 13, 3 ];
   var got = _.arraySetContainSomething( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10342,9 +10342,9 @@ function arraySetContainSomething( test )
   var got = _.arraySetContainSomething( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
   test.description = 'following array are empty, (src) array is not empty';
   var a = [ 33, 4, 5, 'b', 'c' ];
@@ -10353,9 +10353,9 @@ function arraySetContainSomething( test )
   var got = _.arraySetContainSomething( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
   test.description = 'all the array are empty';
   var a = [];
@@ -10364,9 +10364,9 @@ function arraySetContainSomething( test )
   var got = _.arraySetContainSomething( a, b, c );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
-  test.shouldBe( got !=== c );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
+  test.shouldBe( got !== c );
 
 
   /**/
@@ -10387,7 +10387,7 @@ function arraySetContainSomething( test )
   {
     _.arraySetContainSomething([ 33, 4, 5, 'b', 'c' ]);
   });
-  
+
   test.description = 'one or several arguments are not arrayLike entities,numeric arguments';
   test.shouldThrowError( function()
   {
@@ -10403,7 +10403,7 @@ function arraySetContainSomething( test )
   test.description = 'one or several arguments are not arrayLike entities,map like arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], { 33, 4, 5, 'b', 'c' }, { 44, 3 } );
+    _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], { a : 33 }, { b : 44 } );
   });
 
   test.description = 'wrong argument';
@@ -10448,8 +10448,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'argument length mismatch';
   var a = [ 1, 2, 4, 7, 5 ];
@@ -10457,8 +10457,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'arguments have the same elements have inner arrays';
   var a = [ 1, 2, [ 1, 3], 7, 5 ];
@@ -10466,8 +10466,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b );    
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   test.description = 'both arrays are empty';
   var a = [];
@@ -10475,8 +10475,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !=== a );
-  test.shouldBe( got !=== b ); 
+  test.shouldBe( got !== a );
+  test.shouldBe( got !== b );
 
   /**/
 
@@ -10506,7 +10506,7 @@ function arraySetIdentical( test )
   test.description = 'one or 2 arguments are not arrayLike entities, map like arguments';
   test.shouldThrowError( function()
   {
-    _.arraySetIdentical( { 1, 3, 5, 7, 4}, { 1, 3, 5, 7, 4} );
+    _.arraySetIdentical( { a : 1 }, { b : 3, c : 8 } );
   });
 
   test.description = 'wrong argument';
@@ -10519,7 +10519,7 @@ function arraySetIdentical( test )
   test.shouldThrowError( function()
   {
     _.arraySetIdentical( null, null );
-  }); 
+  });
 
   test.description = 'both arguments are undefined';
   test.shouldThrowError( function()
