@@ -10350,17 +10350,23 @@ function arraySetContainSomething( test )
   test.shouldBe( got !== b );
   test.shouldBe( got !== c );
 
-  test.description = 'all the array are empty';
+  test.description = 'all the arrays (arguments) are empty';
   var a = [];
   var b = [];
   var c = [];
   var got = _.arraySetContainSomething( a, b, c );
-  var expected = true;
+  var expected = false;
   test.identical( got, expected );
   test.shouldBe( got !== a );
   test.shouldBe( got !== b );
   test.shouldBe( got !== c );
 
+  test.description = 'one argument (non empty array) passed';
+  var a = [ 33, 4, 5, 'b', 'c' ];
+  var got = _.arraySetContainSomething( a );
+  var expected = false;
+  test.identical( got, expected );
+  test.shouldBe( got !== a );
 
   /**/
 
@@ -10373,12 +10379,6 @@ function arraySetContainSomething( test )
   test.shouldThrowError( function()
   {
     _.arraySetContainSomething();
-  });
-
-  test.description = 'too few arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySetContainSomething([ 33, 4, 5, 'b', 'c' ]);
   });
 
   test.description = 'one or several arguments are not arrayLike entities,numeric arguments';
