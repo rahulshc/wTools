@@ -10198,13 +10198,6 @@ function arraySetIntersection( test )
     _.arraySetIntersection();
   });
 
-  test.description = 'too few arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySetIntersection([ 1, 2, 3, 4 ]);
-  });
-
-
   test.description = 'one or several arguments are not arrayLike entities, numerical arguments';
   test.shouldThrowError( function()
   {
