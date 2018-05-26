@@ -713,7 +713,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   test.description = 'same length, ins is a typed array';
-  var ins = _.arrayFill({ result : new Uint8Array( 5 ), value : 1, times : 5 });
+  var ins = _.arrayFillWhole( new Uint8Array( 5 ), 1 );
   var got = _.arrayMakeSimilarZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -724,7 +724,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   test.description = 'same length, ins is a node buffer';
-  var ins = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var ins = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilarZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -735,7 +735,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   var ins = [];
-  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilarZeroed( ins, src );
   test.identical( got.length, 5 );
   test.shouldBe( _.arrayIs( got ) );
