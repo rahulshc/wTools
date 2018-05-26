@@ -10148,12 +10148,12 @@ function arraySetDiff( test )
 function arraySetIntersection( test )
 {
 
-  test.description = 'second argument has extra element, third argument has two extra elements';
+  test.description = 'three arguments with no intersects';
   var a = [ 1, 2, 3, 4, 15 ];
-  var b = [ 1, 2, 3, 4, 5 ];
-  var c = [ 15, 16, 17 ];
+  var b = [ 6, 7, 8, 9, 10 ];
+  var c = [ 16, 17, 18 ];
   var got = _.arraySetIntersection( a, b, c );
-  var expected = [ 1, 2, 3, 4, 15 ];
+  var expected = [];
   test.identical( got, expected );
   test.shouldBe( got !== a );
   test.shouldBe( got !== b );
