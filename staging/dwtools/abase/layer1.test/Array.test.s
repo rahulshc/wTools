@@ -448,7 +448,7 @@ function arrayMakeSimilar( test )
   test.shouldBe( got !== ins );
 
   var ins = [];
-  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilar( ins, src );
   test.identical( got.length, 5 );
   test.shouldBe( _.arrayIs( got ) );
@@ -498,7 +498,7 @@ function arrayMakeSimilar( test )
   test.identical( got.length, 5 );
 
   test.description = 'NodeBuffer and src'
-  var src = _.arrayFill({ result : new Uint8Array( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Uint8Array( 5 ), 1 );
   var got = _.arrayMakeSimilar( new Buffer( 5 ), src );
   test.shouldBe( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
@@ -532,14 +532,14 @@ function arrayMakeSimilar( test )
   test.identical( got, src );
 
   test.description = 'ins as Array';
-  var src = _.arrayFill({ result : new Float32Array( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Float32Array( 5 ), 1 );
   var got = _.arrayMakeSimilar( Array, src );
   test.shouldBe( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, [ 1, 1, 1, 1, 1 ] );
 
   test.description = 'ins as Buffer';
-  var src = _.arrayFill({ result : new Float32Array( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Float32Array( 5 ), 1 );
   var got = _.arrayMakeSimilar( Buffer, src );
   test.shouldBe( _.bufferNodeIs(  got ) );
   test.identical( got.length, 5 );
@@ -549,7 +549,7 @@ function arrayMakeSimilar( test )
   test.shouldBe( isEqual );
 
   test.description = 'ins as Array';
-  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilar( Array, src );
   test.shouldBe( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
@@ -569,7 +569,7 @@ function arrayMakeSimilar( test )
   test.shouldBe( isEqual );
 
   test.description = 'ins as TypedArray';
-  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilar( Float32Array, src );
   test.shouldBe( _.bufferTypedIs(  got ) );
   test.identical( got.length, 5 );
