@@ -9124,7 +9124,7 @@ function arrayMakeSimilar( ins,src )
     else if( _.routineIs( ins ) )
     {
       if( ins.prototype.constructor.name === 'Array' )
-      result = [].slice.call( src );
+      result = _ArraySlice.call( src );
       else
       result = new ins( src );
     }
@@ -10944,6 +10944,7 @@ function arrayFillTimes( result,times,value )
   }
 
   _.assert( times <= 0 || result[ times-1 ] === value );
+
   return result;
 }
 
