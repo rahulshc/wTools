@@ -515,6 +515,12 @@ _includeHandlerMap[ 'wFileExecutorHtmlFormatters' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FileExecutorHtmlFormatters },
 }
 
+_includeHandlerMap[ 'wStarterMaker' ] =
+{
+  includeAny : [ '../../../dwtools/amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wStarterMaker' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.StarterMaker },
+}
+
 _includeHandlerMap[ 'wNameMapper' ] =
 {
   includeAny : [ '../../amid/amapping/NameMapper.s','amid/amapping/NameMapper.s','wnamemapper' ],

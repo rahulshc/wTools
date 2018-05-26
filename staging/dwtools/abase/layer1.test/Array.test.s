@@ -10656,7 +10656,7 @@ var Self =
 
   name : 'wTools.array',
   // verbosity : 7,
-  routine : 'bufferRelen',
+  // routine : 'bufferRelen',
 
   tests :
   {

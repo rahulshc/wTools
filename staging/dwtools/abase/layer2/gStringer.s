@@ -10,8 +10,6 @@
 
 //
 
-//
-
 var Self = _global_.wTools;
 var _ = _global_.wTools;
 
