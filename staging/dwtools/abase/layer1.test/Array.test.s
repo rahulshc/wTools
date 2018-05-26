@@ -10148,12 +10148,12 @@ function arraySetDiff( test )
 function arraySetIntersection( test )
 {
 
-  test.description = 'second argument has extra element, third argument has two extra elements';
+  test.description = 'three arguments with no intersects';
   var a = [ 1, 2, 3, 4, 15 ];
-  var b = [ 1, 2, 3, 4, 5 ];
-  var c = [ 15, 16, 17 ];
+  var b = [ 6, 7, 8, 9, 10 ];
+  var c = [ 16, 17, 18 ];
   var got = _.arraySetIntersection( a, b, c );
-  var expected = [ 1, 2, 3, 4, 15 ];
+  var expected = [];
   test.identical( got, expected );
   test.shouldBe( got !== a );
   test.shouldBe( got !== b );
@@ -10197,13 +10197,6 @@ function arraySetIntersection( test )
   {
     _.arraySetIntersection();
   });
-
-  test.description = 'too few arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySetIntersection([ 1, 2, 3, 4 ]);
-  });
-
 
   test.description = 'one or several arguments are not arrayLike entities, numerical arguments';
   test.shouldThrowError( function()
@@ -10357,17 +10350,23 @@ function arraySetContainSomething( test )
   test.shouldBe( got !== b );
   test.shouldBe( got !== c );
 
-  test.description = 'all the array are empty';
+  test.description = 'all the arrays (arguments) are empty';
   var a = [];
   var b = [];
   var c = [];
   var got = _.arraySetContainSomething( a, b, c );
-  var expected = true;
+  var expected = false;
   test.identical( got, expected );
   test.shouldBe( got !== a );
   test.shouldBe( got !== b );
   test.shouldBe( got !== c );
 
+  test.description = 'one argument (non empty array) passed';
+  var a = [ 33, 4, 5, 'b', 'c' ];
+  var got = _.arraySetContainSomething( a );
+  var expected = false;
+  test.identical( got, expected );
+  test.shouldBe( got !== a );
 
   /**/
 
@@ -10380,12 +10379,6 @@ function arraySetContainSomething( test )
   test.shouldThrowError( function()
   {
     _.arraySetContainSomething();
-  });
-
-  test.description = 'too few arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySetContainSomething([ 33, 4, 5, 'b', 'c' ]);
   });
 
   test.description = 'one or several arguments are not arrayLike entities,numeric arguments';
