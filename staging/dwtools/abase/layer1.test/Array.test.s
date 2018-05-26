@@ -713,7 +713,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   test.description = 'same length, ins is a typed array';
-  var ins = _.arrayFill({ result : new Uint8Array( 5 ), value : 1, times : 5 });
+  var ins = _.arrayFillWhole( new Uint8Array( 5 ), 1 );
   var got = _.arrayMakeSimilarZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -724,7 +724,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   test.description = 'same length, ins is a node buffer';
-  var ins = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var ins = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilarZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -735,7 +735,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   var ins = [];
-  var src = _.arrayFill({ result : new Buffer( 5 ), value : 1, times : 5 });
+  var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilarZeroed( ins, src );
   test.identical( got.length, 5 );
   test.shouldBe( _.arrayIs( got ) );
@@ -1307,141 +1307,141 @@ function arraySub( test )
 
 //
 
-function arrayJoin( test )
-{
-  test.description = 'empty call';
-  test.identical( _.arrayJoin(), null );
-
-  test.description = 'empty arrays';
-  test.identical( _.arrayJoin( [], [] ), null );
-
-  test.description = 'simple';
-
-  var src = [ 1 ];
-  var got = _.arrayJoin( src );
-  var expected = src;
-  test.identical( got, expected );
-
-  var src = [ 1 ];
-  var got = _.arrayJoin( src, src );
-  var expected = [ 1,1 ];
-  test.identical( got, expected );
-
-  test.description = 'array + typedArray';
-  var got = _.arrayJoin( [ 1 ], new Uint8Array([ 1,2 ]) );
-  var expected = [ 1,1,2 ];
-  test.identical( got, expected );
-
-  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), [ 1 ] );
-  var expected = new Uint8Array( [ 1,2,1 ] );
-  test.identical( got, expected );
-
-  test.description = 'typedArray + typedArray';
-  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), new Uint8Array( [ 1,2 ] ) );
-  var expected = new Uint8Array( [ 1,2,1,2 ] );
-  test.identical( got, expected );
-
-  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), new Uint16Array( [ 1,2 ] ) );
-  var expected = new Uint8Array( [ 1,2,1,0,2,0 ] );
-  test.identical( got, expected );
-
-  test.description = 'arrayBuffer + arrayBuffer';
-  var src = new Uint8Array( [ 1,2 ] );
-  var got = _.arrayJoin( src.buffer, src.buffer );
-  test.shouldBe( _.bufferRawIs( got ) );
-  var expected = new Uint8Array( [ 1,2,1,2 ] );
-  test.identical( new Uint8Array( got ), expected );
-
-  test.description = 'arrayBuffer + array';
-  var src = new Uint8Array( [ 1,2 ] );
-  var got = _.arrayJoin( src.buffer, [ 1,2 ] );
-  test.shouldBe( _.bufferRawIs( got ) );
-  var expected = new Uint8Array( [ 1,2,1,2 ] );
-  test.identical( new Uint8Array( got ), expected );
-
-  test.description = 'arrayBuffer + typedArray';
-  var src = new Uint8Array( [ 1,2 ] );
-  var got = _.arrayJoin( src.buffer, src );
-  test.shouldBe( _.bufferRawIs( got ) );
-  var expected = new Uint8Array( [ 1,2,1,2 ] );
-  test.identical( new Uint8Array( got ), expected );
-
-  test.description = 'typedArray + arrayBuffer';
-  var src = new Uint8Array( [ 1,2 ] );
-  var got = _.arrayJoin( src, src.buffer );
-  var expected = new Uint8Array( [ 1,2,1,2 ] );
-  test.identical( got, expected );
-
-  test.description = 'typedArray + arrayBuffer + array';
-  var src = new Uint8Array( [ 1 ] );
-  var got = _.arrayJoin( src, src.buffer, [ 1 ] );
-  var expected = new Uint8Array( [ 1,1,1 ] );
-  test.identical( got, expected );
-
-  test.description = 'array + typedArray + arrayBuffer';
-  var src = new Uint8Array( [ 1 ] );
-  var got = _.arrayJoin( [ 1 ], src, src.buffer );
-  var expected = [ 1,1,1 ];
-  test.identical( got, expected );
-
-  test.description = 'arrayBuffer + array + typedArray';
-  var src = new Uint8Array( [ 1 ] );
-  var got = _.arrayJoin( src.buffer, [ 1 ], src  );
-  test.shouldBe( _.bufferRawIs( got ) );
-  var expected = new Uint8Array( [ 1,1,1 ] );
-  test.identical( new Uint8Array( got ), expected );
-
-  if( !isBrowser )
-  {
-    test.description = 'buffer';
-    got = _.arrayJoin( new Buffer( '1' ), [ 1 ] );
-    expected = new Buffer( [ 49,1 ] );
-    test.identical( got, expected );
-
-    test.description = 'buffer + arrayBuffer';
-    var raw = new Uint8Array( [ 1 ] ).buffer;
-    got = _.arrayJoin( new Buffer( '1' ), raw );
-    expected = new Buffer( [ 49,1 ] );
-    test.identical( got, expected );
-
-    test.description = 'buffer + typedArray';
-    var typed = new Uint8Array( [ 1 ] );
-    got = _.arrayJoin( new Buffer( '1' ), typed );
-    expected = new Buffer( [ 49,1 ] );
-    test.identical( got, expected );
-
-    test.description = 'buffer + typedArray + raw + array';
-    var typed = new Uint8Array( [ 1 ] );
-    got = _.arrayJoin( new Buffer( '1' ), typed, typed.buffer, [ 1 ] );
-    expected = new Buffer( [ 49,1,1,1 ] );
-    test.identical( got, expected );
-
-    test.description = 'typedArray + buffer + raw + array';
-    var typed = new Uint8Array( [ 1 ] );
-    got = _.arrayJoin( typed, new Buffer( '1' ), typed.buffer, [ 1 ] );
-    expected = new Uint8Array( [ 1,49,1,1 ] );
-    test.identical( got, expected );
-
-    test.description = 'raw + typedArray + buffer + array';
-    var typed = new Uint8Array( [ 1 ] );
-    got = _.arrayJoin( typed.buffer, typed, new Buffer( '1' ), [ 1 ] );
-    expected = new Uint8Array( [ 1,1,49,1 ] );
-    test.identical( new Uint8Array( got ), expected );
-
-    test.description = 'array + raw + typedArray + buffer ';
-    var typed = new Uint8Array( [ 1 ] );
-    got = _.arrayJoin( [ 1 ], typed.buffer, typed, new Buffer( '1' )  );
-    expected = new Uint8Array( [ 1,1,1,49 ] );
-    test.identical( new Uint8Array( got ), expected );
-  }
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowError( () => _.arrayJoin( [ 1 ], '1' ) );
-  test.shouldThrowError( () => _.arrayJoin( [ 1 ], { byteLength : 5 } ) );
-
-}
+//function arrayJoin( test )
+//{
+//  test.description = 'empty call';
+//  test.identical( _.arrayJoin(), null );
+//
+//  test.description = 'empty arrays';
+//  test.identical( _.arrayJoin( [], [] ), null );
+//
+//  test.description = 'simple';
+//
+//  var src = [ 1 ];
+//  var got = _.arrayJoin( src );
+//  var expected = src;
+//  test.identical( got, expected );
+//
+//  var src = [ 1 ];
+//  var got = _.arrayJoin( src, src );
+//  var expected = [ 1,1 ];
+//  test.identical( got, expected );
+//
+//  test.description = 'array + typedArray';
+//  var got = _.arrayJoin( [ 1 ], new Uint8Array([ 1,2 ]) );
+//  var expected = [ 1,1,2 ];
+//  test.identical( got, expected );
+//
+//  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), [ 1 ] );
+//  var expected = new Uint8Array( [ 1,2,1 ] );
+//  test.identical( got, expected );
+//
+//  test.description = 'typedArray + typedArray';
+//  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), new Uint8Array( [ 1,2 ] ) );
+//  var expected = new Uint8Array( [ 1,2,1,2 ] );
+//  test.identical( got, expected );
+//
+//  var got = _.arrayJoin( new Uint8Array( [ 1,2 ] ), new Uint16Array( [ 1,2 ] ) );
+//  var expected = new Uint8Array( [ 1,2,1,0,2,0 ] );
+//  test.identical( got, expected );
+//
+//  test.description = 'arrayBuffer + arrayBuffer';
+//  var src = new Uint8Array( [ 1,2 ] );
+//  var got = _.arrayJoin( src.buffer, src.buffer );
+//  test.shouldBe( _.bufferRawIs( got ) );
+//  var expected = new Uint8Array( [ 1,2,1,2 ] );
+//  test.identical( new Uint8Array( got ), expected );
+//
+//  test.description = 'arrayBuffer + array';
+//  var src = new Uint8Array( [ 1,2 ] );
+//  var got = _.arrayJoin( src.buffer, [ 1,2 ] );
+//  test.shouldBe( _.bufferRawIs( got ) );
+//  var expected = new Uint8Array( [ 1,2,1,2 ] );
+//  test.identical( new Uint8Array( got ), expected );
+//
+//  test.description = 'arrayBuffer + typedArray';
+//  var src = new Uint8Array( [ 1,2 ] );
+//  var got = _.arrayJoin( src.buffer, src );
+//  test.shouldBe( _.bufferRawIs( got ) );
+//  var expected = new Uint8Array( [ 1,2,1,2 ] );
+//  test.identical( new Uint8Array( got ), expected );
+//
+//  test.description = 'typedArray + arrayBuffer';
+//  var src = new Uint8Array( [ 1,2 ] );
+//  var got = _.arrayJoin( src, src.buffer );
+//  var expected = new Uint8Array( [ 1,2,1,2 ] );
+//  test.identical( got, expected );
+//
+//  test.description = 'typedArray + arrayBuffer + array';
+//  var src = new Uint8Array( [ 1 ] );
+//  var got = _.arrayJoin( src, src.buffer, [ 1 ] );
+//  var expected = new Uint8Array( [ 1,1,1 ] );
+//  test.identical( got, expected );
+//
+//  test.description = 'array + typedArray + arrayBuffer';
+//  var src = new Uint8Array( [ 1 ] );
+//  var got = _.arrayJoin( [ 1 ], src, src.buffer );
+//  var expected = [ 1,1,1 ];
+//  test.identical( got, expected );
+//
+//  test.description = 'arrayBuffer + array + typedArray';
+//  var src = new Uint8Array( [ 1 ] );
+//  var got = _.arrayJoin( src.buffer, [ 1 ], src  );
+//  test.shouldBe( _.bufferRawIs( got ) );
+//  var expected = new Uint8Array( [ 1,1,1 ] );
+//  test.identical( new Uint8Array( got ), expected );
+//
+//  if( !isBrowser )
+//  {
+//    test.description = 'buffer';
+//    got = _.arrayJoin( new Buffer( '1' ), [ 1 ] );
+//    expected = new Buffer( [ 49,1 ] );
+//    test.identical( got, expected );
+//
+//    test.description = 'buffer + arrayBuffer';
+//    var raw = new Uint8Array( [ 1 ] ).buffer;
+//    got = _.arrayJoin( new Buffer( '1' ), raw );
+//    expected = new Buffer( [ 49,1 ] );
+//    test.identical( got, expected );
+//
+//    test.description = 'buffer + typedArray';
+//    var typed = new Uint8Array( [ 1 ] );
+//    got = _.arrayJoin( new Buffer( '1' ), typed );
+//    expected = new Buffer( [ 49,1 ] );
+//    test.identical( got, expected );
+//
+//    test.description = 'buffer + typedArray + raw + array';
+//    var typed = new Uint8Array( [ 1 ] );
+//    got = _.arrayJoin( new Buffer( '1' ), typed, typed.buffer, [ 1 ] );
+//    expected = new Buffer( [ 49,1,1,1 ] );
+//    test.identical( got, expected );
+//
+//    test.description = 'typedArray + buffer + raw + array';
+//    var typed = new Uint8Array( [ 1 ] );
+//    got = _.arrayJoin( typed, new Buffer( '1' ), typed.buffer, [ 1 ] );
+//    expected = new Uint8Array( [ 1,49,1,1 ] );
+//    test.identical( got, expected );
+//
+//    test.description = 'raw + typedArray + buffer + array';
+//    var typed = new Uint8Array( [ 1 ] );
+//    got = _.arrayJoin( typed.buffer, typed, new Buffer( '1' ), [ 1 ] );
+//    expected = new Uint8Array( [ 1,1,49,1 ] );
+//    test.identical( new Uint8Array( got ), expected );
+//
+//    test.description = 'array + raw + typedArray + buffer ';
+//    var typed = new Uint8Array( [ 1 ] );
+//    got = _.arrayJoin( [ 1 ], typed.buffer, typed, new Buffer( '1' )  );
+//    expected = new Uint8Array( [ 1,1,1,49 ] );
+//    test.identical( new Uint8Array( got ), expected );
+//  }
+//
+//  if( !Config.debug )
+//  return;
+//
+//  test.shouldThrowError( () => _.arrayJoin( [ 1 ], '1' ) );
+//  test.shouldThrowError( () => _.arrayJoin( [ 1 ], { byteLength : 5 } ) );
+//
+//}
 
 //
 
