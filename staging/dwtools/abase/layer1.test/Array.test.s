@@ -10693,7 +10693,7 @@ var Self =
     // array transformer
 
     arraySub : arraySub,
-    arrayJoin : arrayJoin,
+    // arrayJoin : arrayJoin,
     arrayGrow : arrayGrow,
     arrayResize : arrayResize,
     arraySlice : arraySlice,
