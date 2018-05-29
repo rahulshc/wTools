@@ -450,13 +450,13 @@ _includeHandlerMap[ 'wBaseEncoder' ] =
 
 _includeHandlerMap[ 'wStringer' ] =
 {
-  includeAny : [ '../../abase/layer4/aStringer.s','abase/layer4/aStringer.s','wStringer' ],
+  includeAny : [ '../../abase/layer4/aStringer.s','abase/layer4/aStringer.s','wstringer' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Stringer; },
 }
 
 _includeHandlerMap[ 'wStringsExtra' ] =
 {
-  includeAny : [ '../../amid/astring/StringsExtra.s','amid/astring/StringsExtra.s','wStringsExtra' ],
+  includeAny : [ '../../amid/astring/StringsExtra.s','amid/astring/StringsExtra.s','wstringsextra' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.strExtractStrips; },
 }
 
