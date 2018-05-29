@@ -1,6 +1,6 @@
 (function _Diagnostics_s_() {
 
-'use strict'; 
+'use strict';
 
 var _ = _global_.wTools;
 var Self = _global_.wTools;
@@ -83,16 +83,16 @@ function _setupUnhandledErrorHandler()
         console.error( err );
       }
       if( _.nameUnfielded )
-      _.errLog( 'Uncaught exception :',err );
+      _.errLog( 'Uncaught exception :\n',err );
       else
-      console.log( 'Uncaught exception :',err );
+      console.log( 'Uncaught exception :\n',err );
     }
     else
     {
       if( _.nameUnfielded )
-      _.errLog( 'Uncaught exception :',err );
+      _.errLog( 'Uncaught exception :\n',err );
       else
-      console.log( 'Uncaught exception :',err );
+      console.log( 'Uncaught exception :\n',err );
     }
 
     console.error( '------------------------------- unhandled errorr -------------------------------' );

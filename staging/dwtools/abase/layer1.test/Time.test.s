@@ -1,6 +1,6 @@
 ( function _Time_test_s_( ) {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -25,18 +25,11 @@ if( typeof module !== 'undefined' )
   var _ = _global_.wTools;
 
   _.include( 'wTesting' );
+  _.include( 'wConsequence' );
 
 }
 
 var _ = _global_.wTools;
-
-// debugger;
-//
-// var t = _.timeOutError( 5000 );
-// t.error( 'Stop timer' );
-//
-// debugger;
-// return;
 
 //
 

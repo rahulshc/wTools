@@ -7478,6 +7478,8 @@ function routineInputMultiplicator_functor( o )
   function inputMultiplicator( src )
   {
 
+    _.assert( arguments.length === 1 );
+
     if( _.arrayIs( src ) )
     {
       var result = [];

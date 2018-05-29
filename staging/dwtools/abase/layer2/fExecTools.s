@@ -1,6 +1,6 @@
 ( function _ExecTools_s_() {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -94,7 +94,7 @@ function shell( o )
     _.include( 'wLogger' );
     _.include( 'wColor' );
   }
-  catch( err ) 
+  catch( err )
   {
   }
 
