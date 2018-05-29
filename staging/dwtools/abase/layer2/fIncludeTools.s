@@ -448,6 +448,18 @@ _includeHandlerMap[ 'wBaseEncoder' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.encode },
 }
 
+_includeHandlerMap[ 'wStringer' ] =
+{
+  includeAny : [ '../../abse/layer4/Stringer.s','abse/layer4/Stringer.s','wStringer' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.Stringer; },
+}
+
+_includeHandlerMap[ 'wStringsExtra' ] =
+{
+  includeAny : [ '../../amid/astring/StringsExtra.s','amid/astring/StringsExtra.s','wStringsExtra' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.strExtractStrips; },
+}
+
 _includeHandlerMap[ 'wRegexpObject' ] =
 {
   includeAny : [ '../../amid/bclass/RegexpObject.s','amid/bclass/RegexpObject.s','wRegexpObject' ],

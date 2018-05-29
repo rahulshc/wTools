@@ -1,6 +1,6 @@
-( function _StringTools2_test_s_() {
+( function _String_test_s_() {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {

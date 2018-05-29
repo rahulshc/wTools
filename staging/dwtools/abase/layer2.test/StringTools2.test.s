@@ -1,6 +1,6 @@
 ( function _StringTools2_test_s_() {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -47,28 +47,27 @@ function strCapitalize( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments length';
+  test.shouldThrowError( function()
   {
+    _.strCapitalize( 'first','wrond argument' );
+  });
 
-    test.description = 'invalid arguments length';
-    test.shouldThrowError( function()
-    {
-      _.strCapitalize( 'first','wrond argument' );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.strCapitalize( 777 );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.strCapitalize( 777 );
-    });
+  test.description = 'no argument provided';
+  test.shouldThrowError( function()
+  {
+    _.strCapitalize();
+  });
 
-    test.description = 'no argument provided';
-    test.shouldThrowError( function()
-    {
-      _.strCapitalize();
-    });
-
-  }
 }
 
 //
@@ -167,72 +166,72 @@ function strReplaceAll( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strReplaceAll( '1', '2', '3', '4' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( '1', '2', '3', '4' );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( );
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( 1, '2','3');
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( 1, '2','3');
-    });
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( '1', 2, '3');
+  });
 
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( '1', 2, '3');
-    });
+  test.description = 'third argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( '1','2', 3);
+  });
 
-    test.description = 'third argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( '1','2', 3);
-    });
+  test.description = 'second arg is not a Object';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( '1', 2);
+  });
 
-    test.description = 'second arg is not a Object';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( '1', 2);
-    });
+  test.description = 'argument is not a Object';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( '1' );
+  });
 
-    test.description = 'argument is not a Object';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( '1' );
-    });
+  test.description = 'wrong type of dictionary value';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( { dst : 'aaax', dictionary : { 'a' : [ 1, 2 ] } } )
+  });
 
-    test.description = 'wrong type of dictionary value';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( { dst : 'aaax', dictionary : { 'a' : [ 1, 2 ] } } )
-    });
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( 'aaaabbbb',[ 'a' ], [ 'c', 'd' ] );
+  });
 
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( 'aaaabbbb',[ 'a' ], [ 'c', 'd' ] );
-    });
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( 'aaaabbbb',[ 'a', 'b' ], [ 'x' ] );
+  });
 
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( 'aaaabbbb',[ 'a', 'b' ], [ 'x' ] );
-    });
+  test.shouldThrowError( function()
+  {
+    _.strReplaceAll( 'aaaabbbb',{ 'a' : [ 'x' ] } );
+  });
 
-    test.shouldThrowError( function()
-    {
-      _.strReplaceAll( 'aaaabbbb',{ 'a' : [ 'x' ] } );
-    });
-  }
 }
 
 //
@@ -266,21 +265,21 @@ function strHtmlEscape( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strHtmlEscape( 'one','two' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strHtmlEscape( 'one','two' );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strHtmlEscape( );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strHtmlEscape( );
-    });
-  }
 }
 
 //
@@ -353,140 +352,33 @@ function strIndentation( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strIndentation( 'one','two','three' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strIndentation( 'one','two','three' );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strIndentation( );
-    });
-
-    test.description = 'first argument type is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strIndentation( 123,'second' );
-    });
-
-    test.description = 'second argument type is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strIndentation( 'first', 321 );
-    });
-  }
-}
-
-//
-
-function strCamelize( test )
-{
-  test.description = 'converts string to camelcase';
-  var got = _.strCamelize( 'a-b_c/d' );
-  var expected = 'aBCD';
-  test.identical( got,expected );
-
-  test.description = 'string with spaces';
-  var got = _.strCamelize( '.test -str_ing /with .spaces' );
-  var expected = 'Test StrIng With Spaces';
-  test.identical( got,expected );
-
-  test.description = 'string with no spaces';
-  var got = _.strCamelize( 'camel.case/string' );
-  var expected = 'camelCaseString';
-  test.identical( got,expected );
-
-  test.description = 'empty string';
-  var got = _.strCamelize( '' );
-  var expected = '';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strCamelize( 'one','two' );
-    });
+    _.strIndentation( );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strCamelize( );
-    });
-
-    test.description = 'wrong argument type';
-    test.shouldThrowError( function()
-    {
-      _.strCamelize( 111 );
-    });
-
-    test.description = 'wrong argument type';
-    test.shouldThrowError( function()
-    {
-      _.strCamelize( [ ] );
-    });
-
-
-  }
-}
-
-//
-
-function strFilenameFor( test )
-{
-  test.description = 'converts string to camelcase';
-  var got = _.strFilenameFor( "'example\\file?name.txt" );
-  var expected = '_example_file_name.txt';
-  test.identical( got,expected );
-
-  test.description = 'convertion with options';
-  var got = _.strFilenameFor( "'example\\file?name.js",{ 'delimeter':'#' } );
-  var expected = '#example#file#name.js';
-  test.identical( got,expected );
-
-  test.description = 'empty string';
-  var got = _.strFilenameFor( '' );
-  var expected = '';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
+  test.description = 'first argument type is wrong';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strFilenameFor( 'one','two','three' );
-    });
+    _.strIndentation( 123,'second' );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strFilenameFor( );
-    });
+  test.description = 'second argument type is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strIndentation( 'first', 321 );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strFilenameFor( 111 );
-    });
-
-    test.description = 'second argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.strFilenameFor( "'example\\file?name.txt",'wrong' );
-    });
-
-
-  }
 }
 
 //
@@ -511,625 +403,24 @@ function toStrMethods( test )
 
   /**/
 
-  if( Config.debug )
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.toStrMethods( 'one','two' );
-    });
-
-    test.description = 'wrong arguments count';
-    test.shouldThrowError( function()
-    {
-      _.toStrMethods( { a : 1 }, { b : 1 }, { jsonLike : 1 } );
-    });
-
-    test.description = 'onlyRoutines & noRoutine both true';
-    test.shouldThrowError( function()
-    {
-      _.toStrMethods( function f () {},{ noRoutine : 1 } );
-    });
-  }
-}
-
-//
-
-function toStrFields( test )
-{
-  test.description = 'Fields default options';
-  var got = _.toStrFields( [ 1, 2, 'text', undefined ] );
-  var expected = '[ 1, 2, "text", undefined ]';
-  test.identical( got,expected );
-
-  test.description = 'Fields, levels : 0';
-  var got = _.toStrFields( [ 1, 2, 'text', undefined ], { levels : 0 } );
-  var expected = '[ Array with 4 elements ]';
-  test.identical( got,expected );
-
-  test.description = 'Ignore routine';
-  var got = _.toStrFields( [ function f () {}, 1, 2, 3 ] );
-  var expected = '[ 1, 2, 3 ]';
-  test.identical( got,expected );
-
-  test.description = 'no arguments';
-  var got = _.toStrFields();
-  var expected = 'undefined';
-  test.identical( got,expected );
-
-
-
-  /**/
-
-  if( Config.debug )
-  {
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.toStrFields( 'one','two' );
-    });
-
-    test.description = 'wrong arguments count';
-    test.shouldThrowError( function()
-    {
-      _.toStrFields( { a : 1 }, { b : 1 }, { jsonLike : 1 } );
-    });
-
-    test.description = 'onlyRoutines & noRoutine both true';
-    test.shouldThrowError( function()
-    {
-      _.toStrFields( function f () {}, { onlyRoutines : 1 } );
-    });
-
-  }
-}
-
-//
-
-function _toStrShort( test )
-{
-  test.description = 'Array length test';
-  var got = _._toStrShort( [ 1, 2, 'text', undefined ], { } );
-  var expected = '[ Array with 4 elements ]';
-  test.identical( got,expected );
-
-  test.description = 'date to string';
-  var got = _._toStrShort( new Date( Date.UTC( 1993, 12, 12 ) ), { }  );
-  var expected = '1994-01-12T00:00:00.000Z';
-  test.identical( got,expected );
-
-  test.description = 'string length > 40';
-  var got = _._toStrShort( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', { stringWrapper : '"' } );
-  var expected = '[ "toxtndmtmdbmmlzoirmf" ... "pyhnrrqfuvybuuvixyrx" ]';
-  test.identical( got,expected );
-
-  test.description = 'string with options';
-  var got = _._toStrShort( '\toxtndmtmdb', { escaping : 1 } );
-  var expected = '\\toxtndmtmdb';
-  test.identical( got,expected );
-
-  test.description = 'error to string ';
-  var got = _._toStrShort( new Error( 'err' ), { } );
-  var expected = '[object Error]';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrShort( '1', 2 );
-    });
-
-    test.description = 'only one argument provided';
-    test.shouldThrowError( function()
-    {
-      _._toStrShort( '1' );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrShort( );
-    });
-
-  }
-}
-
-//
-
-function _toStrIsVisibleElement( test )
-{
-  test.description = 'default options';
-  var got = _._toStrIsVisibleElement( 123, {} );
-  var expected = true;
-  test.identical( got,expected );
-
-  test.description = 'noAtomic';
-  var got = _._toStrIsVisibleElement( 'test', { noAtomic : 1 } );
-  var expected = false;
-  test.identical( got,expected );
-
-  test.description = 'noObject';
-  var got = _._toStrIsVisibleElement( { a : 'test' }, { noObject : 1 } );
-  var expected = false;
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _._toStrIsVisibleElement( '1' );
-    });
-
-    // test.description = 'second argument is not a object';
-    // test.shouldThrowError( function()
-    // {
-    //   _._toStrIsVisibleElement( '1', 2 );
-    // });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrIsVisibleElement();
-    });
-
-  }
-}
-
-//
-
-function _toStrIsSimpleElement( test )
-{
-  test.description = 'default options';
-  var got = _._toStrIsSimpleElement( 123, {} );
-  var expected = true;
-  test.identical( got,expected );
-
-  test.description = 'string length > 40';
-  var got = _._toStrIsSimpleElement( 'toxtndmtmdbmmlzoirmfypyhnrrqfuvybuuvixyrx', {} );
-  var expected = false;
-  test.identical( got,expected );
-
-  test.description = 'object test';
-  var got = _._toStrIsSimpleElement( { a : 1 }, {} );
-  var expected = false;
-  test.identical( got,expected );
-
-  test.description = 'atomic test';
-  var got = _._toStrIsSimpleElement( undefined, {} );
-  var expected = true;
-  test.identical( got,expected );
-
-  test.description = 'escaping test';
-  var got = _._toStrIsSimpleElement( '\naaa', { escaping : 1 } );
-  var expected = true;
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _._toStrIsSimpleElement( '1' );
-    });
-
-    test.description = 'second argument is not a object';
-    test.shouldThrowError( function()
-    {
-      _._toStrIsSimpleElement( '1', 2 );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrIsSimpleElement();
-    });
-
-  }
-}
-
-//
-
-function _toStrFromRoutine( test )
-{
-  test.description = 'routine test';
-  var got = _._toStrFromRoutine( function a () {} );
-  var expected = '[ routine a ]';
-  test.identical( got,expected );
-
-  test.description = 'routine without name';
-  var got = _._toStrFromRoutine( function() {} );
-  var expected = '[ routine without name ]';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromRoutine( '1' );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromRoutine();
-    });
-
-  }
-}
-
-//
-
-function _toStrFromNumber( test )
-{
-  test.description = 'default options';
-  var got = _._toStrFromNumber( 123, {} );
-  var expected = '123';
-  test.identical( got,expected );
-
-  test.description = 'number precision test';
-  var got = _._toStrFromNumber( 123, { precision : 2 } );
-  var expected = '1.2e+2';
-  test.identical( got,expected );
-
-  test.description = 'number fixed test';
-  var got = _._toStrFromNumber( 123, { fixed : 2 } );
-  var expected = '123.00';
-  test.identical( got,expected );
-
-  test.description = 'invalid option type';
-  var got = _._toStrFromNumber( 123, { fixed : '2' } );
-  var expected = '123';
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromNumber( '1',{} );
-    });
-
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromNumber( 1, 2 );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromNumber();
-    });
-
-    test.description = 'precision out of range';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromNumber( 1, { precision : 22 });
-    });
-
-    test.description = 'fixed out of range';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromNumber( 1, { precision : 22 });
-    });
-
-  }
-}
-
-//
-
-function _toStrFromStr( test )
-{
-  test.description = 'default options';
-  var got = _._toStrFromStr( '123', {} );
-  var expected = '123';
-  test.identical( got,expected );
-
-  test.description = 'escaping';
-  var got = _._toStrFromStr( '\n123\u001b', { escaping : 1 } );
-  var expected = '\\n123\\u001b';
-  test.identical( got,expected );
-
-  test.description = 'stringWrapper';
-  var got = _._toStrFromStr( 'string', { stringWrapper : '"' } );
-  var expected = '"string"';
-  test.identical( got,expected );
-
-  test.description = 'multilinedString';
-  var got = _._toStrFromStr( 'string\nstring2', { stringWrapper : '`' } );
-  var expected = "`string\nstring2`";
-  test.identical( got,expected );
-
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromStr( 2, {} );
-    });
-
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromStr( '1', 2 );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromStr();
-    });
-
-  }
-}
-
-//
-
-function _toStrFromArray( test )
-{
-
-  test.description = 'default options';
-  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 1, comma : ', ', wrap : 1 } ).text;
-  var expected = '[ 1, 2, 3 ]';
-  test.identical( got,expected );
-
-  test.description = 'wrap test';
-  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 1, comma : ', ', wrap : 0 } ).text;
-  var expected = '   1, 2, 3';
-  test.identical( got,expected );
-
-  test.description = 'levels 0 test';
-  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab : '   ', level : 0, levels : 0, comma : ', ', wrap : 1 } ).text;
-  var expected = '[ Array with 3 elements ]';
-  test.identical( got,expected );
-
-  test.description = 'dtab & multiline test';
-  var got = _._toStrFromArray( [ 1, 2, 3 ], { tab : ' ', dtab: '-', level : 0, comma : ', ', wrap : 1, multiline : 1 } ).text;
-  var expected =
-  [
-    '[',
-    ' -1, ',
-    ' -2, ',
-    ' -3',
-    ' ]',
-  ].join( '\n' );
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromArray( 2, {} );
-    });
-
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromArray( [], 2 );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromArray();
-    });
-
-  }
-}
-
-//
-
-function _toStrFromObject( test )
-{
-  var def = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0};
-
-  test.description = 'default options';
-  var got = _._toStrFromObject( { a : 1, b : 2 , c : 'text' }, def );
-  var expected = '{ a : 1, b : 2, c : text }';
-  test.identical( got.text,expected );
-
-  test.description = 'levels 0 test';
-  def.levels = 0;
-  var got = _._toStrFromObject( { a : 1, b : 2 , c : 'text' }, def );
-  var expected = '[ Object with 3 elements ]';
-  test.identical( got.text,expected );
-
-  test.description = 'wrap 0 test';
-  def.levels = 1;
-  def.wrap = 0;
-  var got = _._toStrFromObject( { a : 1, b : 2, c : 'text' }, def );
-  var expected = 'a : 1, b : 2, c : text';
-  test.identical( got.text,expected );
-
-  test.description = 'noObject test';
-  def.noObject = 1;
-  var got = _._toStrFromObject( { a : 1, b : 2, c : 'text' }, def );
-  var expected = undefined;
-  test.identical( got,expected );
-
-  test.description = 'dtab & prependTab & multiline test';
-  def.noObject = 0;
-  def.dtab = '*';
-  def.multiline  = 1;
-  def.prependTab = 1;
-  var got = _._toStrFromObject( { a : 1, b : 2, c : 'text' }, def );
-  var expected =
-  [
-    ' *a : 1, ',
-    ' *b : 2, ',
-    ' *c : text',
-  ].join( '\n' );
-  test.identical( got.text,expected );
-
-  /**/
-
-  if( Config.debug )
-  {
-
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromObject( 1, {} );
-    });
-
-    test.description = 'empty options';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromObject( { a : 1 }, {} );
-    });
-
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromObject( { a : 1 }, 2 );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromObject();
-    });
-
-  }
-}
-
-//
-
-function _toStrFromContainer( test )
-{
-  var o = { tab : ' ', dtab : '   ',level : 0, levels : 1, onlyEnumerable : 1, own : 1, colon : ' : ', comma : ', ', wrap : 1, noObject : 0, multiline : 0, noSubObject : 0, prependTab : 1, jsonLike : 0, stringWrapper : '"' };
-  var src = { a : 1, b : 2, c : 'text' };
-  var names = _.mapOwnKeys( src );
-  var optionsItem = null;
-
-  function item_options()
-  {
-  optionsItem = _.mapExtend( {}, o);
-  optionsItem.noObject = o.noSubObject ? 1 : 0;
-  optionsItem.tab = o.tab + o.dtab;
-  optionsItem.level = o.level + 1;
-  optionsItem.prependTab = 0;
-  };
-
-  test.description = 'default options';
-  item_options();
-  var got = _._toStrFromContainer
-  ({
-    values : src,
-    names : names,
-    optionsContainer : o,
-    optionsItem : optionsItem,
-    simple : !o.multiline,
-    prefix : '{',
-    postfix : '}',
+    _.toStrMethods( 'one','two' );
   });
-  var expected = ' { a : 1, b : 2, c : "text" }';
-  test.identical( got,expected );
 
-  test.description = 'wrap 0,comma ,dtab, multiline test';
-
-  o.wrap = 0;
-  o.comma = '_';
-  o.dtab = '*';
-  o.colon = ' | ';
-  o.multiline = 1;
-  item_options();
-
-  var got = _._toStrFromContainer
-  ({
-    values : src,
-    names : names,
-    optionsContainer : o,
-    optionsItem : optionsItem,
-    simple : !o.multiline,
-    prefix : '{',
-    postfix : '}',
-  });
-  var expected =
-  [
-    ' *a | 1_',
-    ' *b | 2_',
-    ' *c | "text"',
-  ].join( '\n' );
-
-  test.identical( got,expected );
-
-  test.description = 'json test';
-
-  o.wrap = 1;
-  o.comma = ', ';
-  o.dtab = '  ';
-  o.multiline = 0;
-  o.colon = ' : ';
-  o.json = 1;
-  o.levels = 256;
-  item_options();
-
-  var got = _._toStrFromContainer
-  ({
-    values : src,
-    names : names,
-    optionsContainer : o,
-    optionsItem : optionsItem,
-    simple : !o.multiline,
-    prefix : '{',
-    postfix : '}',
-  });
-  var expected = ' { "a" : 1, "b" : 2, "c" : "text" }';
-
-  test.identical( got,expected );
-
-  /**/
-
-  if( Config.debug )
+  test.description = 'wrong arguments count';
+  test.shouldThrowError( function()
   {
+    _.toStrMethods( { a : 1 }, { b : 1 }, { jsonLike : 1 } );
+  });
 
-    test.description = 'invalid  argument type';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromContainer( 1 );
-    });
+  test.description = 'onlyRoutines & noRoutine both true';
+  test.shouldThrowError( function()
+  {
+    _.toStrMethods( function f () {},{ noRoutine : 1 } );
+  });
 
-    test.description = 'empty object';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromContainer( { } );
-    });
-
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._toStrFromContainer();
-    });
-
-  }
 }
 
 //
@@ -1149,34 +440,30 @@ function strTimes( test )
 
   /**/
 
-  if( Config.debug )
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strTimes( '1' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strTimes( '1' );
-    });
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strTimes( 1,2 );
+  });
 
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strTimes( 1,2 );
-    });
+  test.description = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strTimes( '1', '2' );
+  });
 
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _.strTimes( '1', '2' );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strTimes();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strTimes();
-    });
-
-  }
 }
 
 //
@@ -1203,34 +490,31 @@ function strLineCount( test )
 
   /**/
 
-  if( Config.debug )
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strLineCount( '1', '2' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strLineCount( '1', '2' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strLineCount( 123 );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strLineCount( 123 );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strLineCount();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strLineCount();
-    });
-
-  }
 }
 
 //
 
 function _strInhalf( test )
 {
+
   test.description = 'three words with comma';
   var got = _._strInhalf( { src : 'one,two,three', delimeter : ',' } );
   var expected = [ 'one,two','three' ];
@@ -1259,40 +543,36 @@ function _strInhalf( test )
 
   /**/
 
-  if( Config.debug )
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _._strInhalf( '1', '2' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _._strInhalf( '1', '2' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _._strInhalf( 123 );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _._strInhalf( 123 );
-    });
+  test.description = 'invalid property type';
+  test.shouldThrowError( function()
+  {
+    _._strInhalf( { src : 1 } );
+  });
 
-    test.description = 'invalid property type';
-    test.shouldThrowError( function()
-    {
-      _._strInhalf( { src : 1 } );
-    });
+  test.description = 'invalid property type';
+  test.shouldThrowError( function()
+  {
+    _._strInhalf( { src : 'word', delimeter : 0 } );
+  });
 
-    test.description = 'invalid property type';
-    test.shouldThrowError( function()
-    {
-      _._strInhalf( { src : 'word', delimeter : 0 } );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _._strInhalf();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._strInhalf();
-    });
-
-  }
 }
 
 //
@@ -1322,52 +602,48 @@ function strInhalfLeft( test )
 
   /**/
 
-  if( Config.debug )
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strInhalfLeft( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfLeft( '1', '2', '3' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfLeft( 123, ' ' );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfLeft( 123, ' ' );
-    });
+  test.description = 'delimeter not defined';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfLeft( { src : 1 } );
+  });
 
-    test.description = 'delimeter not defined';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfLeft( { src : 1 } );
-    });
+  test.description = 'invalid property type';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfLeft( { src : 'word', delimeter : 0 } );
+  });
 
-    test.description = 'invalid property type';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfLeft( { src : 'word', delimeter : 0 } );
-    });
+  test.description = 'invalid property defined';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfLeft( { src : 'word', delimeter : 0, left : 0 } );
+  });
 
-    test.description = 'invalid property defined';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfLeft( { src : 'word', delimeter : 0, left : 0 } );
-    });
+  test.description = 'only one argument provided';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfLeft('one two three ');
+  });
 
-    test.description = 'only one argument provided';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfLeft('one two three ');
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfLeft();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfLeft();
-    });
-
-  }
 }
 
 //
@@ -1397,52 +673,51 @@ function strInhalfRight( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strInhalfRight( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfRight( '1', '2', '3' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfRight( 123, ' ' );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfRight( 123, ' ' );
-    });
+  test.description = 'delimeter not defined';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfRight( { src : 1 } );
+  });
 
-    test.description = 'delimeter not defined';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfRight( { src : 1 } );
-    });
+  test.description = 'invalid property type';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfRight( { src : 'word', delimeter : 0 } );
+  });
 
-    test.description = 'invalid property type';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfRight( { src : 'word', delimeter : 0 } );
-    });
+  test.description = 'invalid property defined';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfRight( { src : 'word', delimeter : 0, left : 1 } );
+  });
 
-    test.description = 'invalid property defined';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfRight( { src : 'word', delimeter : 0, left : 1 } );
-    });
+  test.description = 'only one argument provided';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfRight('one two three ');
+  });
 
-    test.description = 'only one argument provided';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfRight('one two three ');
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strInhalfRight();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strInhalfRight();
-    });
-
-  }
 }
 
 //
@@ -1696,41 +971,39 @@ function strSplit( test )
   var expected = [ 'a b', ' ', ' c"' ];
   test.identical( got, expected );
 
+  if( !Config.debug )
+  return;
 
-  if( Config.debug )
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strSplit( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strSplit( '1', '2', '3' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strSplit( 123 );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strSplit( 123 );
-    });
+  test.description = 'invalid property type';
+  test.shouldThrowError( function()
+  {
+    _.strSplit( { src : 'word', delimeter : 0 } );
+  });
 
-    test.description = 'invalid property type';
-    test.shouldThrowError( function()
-    {
-      _.strSplit( { src : 'word', delimeter : 0 } );
-    });
+  test.description = 'invalid property defined';
+  test.shouldThrowError( function()
+  {
+    _.strSplit( { src : 'word', delimeter : 0, left : 1 } );
+  });
 
-    test.description = 'invalid property defined';
-    test.shouldThrowError( function()
-    {
-      _.strSplit( { src : 'word', delimeter : 0, left : 1 } );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSplit();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strSplit();
-    });
-
-  }
 }
 
 //
@@ -1945,6 +1218,8 @@ function strCutOffLeft( test )
   expected = [ '', 'ab', '' ];
   test.identical( got, expected );
 
+  xxx
+
   // /**/
   //
   // got = _.strCutOffLeft( 'a b c', ' ', 1 );
@@ -2045,8 +1320,9 @@ function strCutOffLeft( test )
   // expected = [ '', 'abca' ];
   // test.identical( got ,expected );
   //
-  // if( Config.debug )
-  // {
+  //   if( !Config.debug )
+  //   return;
+  //
   //   test.description = 'single argument but object expected';
   //   test.shouldThrowErrorSync( function()
   //   {
@@ -2064,7 +1340,6 @@ function strCutOffLeft( test )
   //   {
   //     _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
   //   })
-  // }
 }
 
 //
@@ -2279,6 +1554,8 @@ function strCutOffRight( test )
   expected = [ 'a', 'b', '' ];
   test.identical( got, expected );
 
+  xxx
+
   // //
   //
   // test.description = 'defaults'
@@ -2383,8 +1660,9 @@ function strCutOffRight( test )
   // expected = [ 'abca', '' ];
   // test.identical( got ,expected );
   //
-  // if( Config.debug )
-  // {
+  // if( !Config.debug )
+  // return;
+  //
   //   test.description = 'single argument but object expected';
   //   test.shouldThrowErrorSync( function()
   //   {
@@ -2402,7 +1680,6 @@ function strCutOffRight( test )
   //   {
   //     _.strCutOffRight({ src : 'abc', delimeter : 'a', left : 0 });
   //   })
-  // }
 }
 
 //
@@ -2451,20 +1728,20 @@ function strCutOffAllLeft( test )
 
   //
 
-  if( Config.debug )
-  {
-    test.description = 'delimeter must be a String';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffAllLeft( 'xxx', 1 );
-    })
+  if( !Config.debug )
+  return;
 
-    test.description = 'source must be a String';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffAllLeft( 1, '1' );
-    })
-  }
+  test.description = 'delimeter must be a String';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffAllLeft( 'xxx', 1 );
+  })
+
+  test.description = 'source must be a String';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffAllLeft( 1, '1' );
+  })
 
 }
 
@@ -2514,20 +1791,20 @@ function strCutOffAllRight( test )
 
   //
 
-  if( Config.debug )
-  {
-    test.description = 'delimeter must be a String';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffAllRight( 'xxx', 1 );
-    })
+  if( !Config.debug )
+  return;
 
-    test.description = 'source must be a String';
-    test.shouldThrowErrorSync( function()
-    {
-      _.strCutOffAllRight( 1, '1' );
-    })
-  }
+  test.description = 'delimeter must be a String';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffAllRight( 'xxx', 1 );
+  });
+
+  test.description = 'source must be a String';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffAllRight( 1, '1' );
+  });
 
 }
 
@@ -2548,40 +1825,39 @@ function strStrip( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strStrip( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strStrip( '1', '2', '3' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strStrip( 123 );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strStrip( 123 );
-    });
+  test.description = 'invalid property type';
+  test.shouldThrowError( function()
+  {
+    _.strStrip( { src : ' word ', delimeter : 0 } );
+  });
 
-    test.description = 'invalid property type';
-    test.shouldThrowError( function()
-    {
-      _.strStrip( { src : ' word ', delimeter : 0 } );
-    });
+  test.description = 'invalid property defined';
+  test.shouldThrowError( function()
+  {
+    _.strStrip( { src : ' word ', delimeter : ' ', left : 1 } );
+  });
 
-    test.description = 'invalid property defined';
-    test.shouldThrowError( function()
-    {
-      _.strStrip( { src : ' word ', delimeter : ' ', left : 1 } );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strStrip();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strStrip();
-    });
-
-  }
 }
 
 //
@@ -2813,28 +2089,27 @@ function strRemoveAllSpaces( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strRemoveAllSpaces( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strRemoveAllSpaces( '1', '2', '3' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveAllSpaces( 123 );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strRemoveAllSpaces( 123 );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveAllSpaces();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strRemoveAllSpaces();
-    });
-
-  }
 }
 
 //
@@ -2864,28 +2139,27 @@ function strStripEmptyLines( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strStripEmptyLines( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strStripEmptyLines( '1', '2', '3' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( 123 );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strStripEmptyLines( 123 );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strStripEmptyLines();
-    });
-
-  }
 }
 
 //
@@ -2905,40 +2179,39 @@ function strReplaceNames( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strReplaceNames( '1', '2');
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceNames( '1', '2');
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceNames( 123,[],[] );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceNames( 123,[],[] );
-    });
+  test.description = 'invalid arrays length';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceNames( 'one two',[ 'one' ],[ 'one', 'two' ] );
+  });
 
-    test.description = 'invalid arrays length';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceNames( 'one two',[ 'one' ],[ 'one', 'two' ] );
-    });
+  test.description = 'invalid second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceNames( 'one two',5,[ 'one', 'two' ] );
+  });
 
-    test.description = 'invalid second arg type';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceNames( 'one two',5,[ 'one', 'two' ] );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceNames();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strReplaceNames();
-    });
-
-  }
 }
 
 //
@@ -2978,21 +2251,21 @@ function strJoin( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
-    });
+    _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
+  });
 
-    test.description = 'arrays with different length';
-    test.shouldThrowError( function()
-    {
-      _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
-    });
+  test.description = 'arrays with different length';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
+  });
 
-  }
 }
 
 //
@@ -3053,40 +2326,39 @@ function strUnjoin( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strUnjoin( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strUnjoin( '1', '2', '3' );
-    });
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 123, [] );
+  });
 
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strUnjoin( 123, [] );
-    });
+  test.description = 'invalid second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', 123 );
+  });
 
-    test.description = 'invalid second arg type';
-    test.shouldThrowError( function()
-    {
-      _.strUnjoin( 'one two', 123 );
-    });
+  test.description = 'invalid array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ 1, 'two' ] );
+  });
 
-    test.description = 'invalid array element type';
-    test.shouldThrowError( function()
-    {
-      _.strUnjoin( 'one two', [ 1, 'two' ] );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strUnjoin();
-    });
-
-  }
 }
 
 //
@@ -3109,32 +2381,29 @@ function strUnicodeEscape( test )
   var expected = "";
   test.identical( got,expected );
 
-
-
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strUnicodeEscape( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strUnicodeEscape( '1', '2', '3' );
-    });
+  test.description = 'invalid  argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnicodeEscape( 123 );
+  });
 
-    test.description = 'invalid  argument type';
-    test.shouldThrowError( function()
-    {
-      _.strUnicodeEscape( 123 );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strUnicodeEscape();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strUnicodeEscape();
-    });
-
-  }
 }
 
 //
@@ -3229,22 +2498,21 @@ function strLinesNumber( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid  argument type';
+  test.shouldThrowError( function()
   {
+    _.strLinesNumber( 123 );
+  });
 
-    test.description = 'invalid  argument type';
-    test.shouldThrowError( function()
-    {
-      _.strLinesNumber( 123 );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strLinesNumber();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strLinesNumber();
-    });
-
-  }
 }
 
 //
@@ -3267,38 +2535,35 @@ function strCount( test )
   var expected = 0;
   test.identical( got,expected );
 
-
-
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strCount( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strCount( '1', '2', '3' );
-    });
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strCount( 123, '1' );
+  });
 
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strCount( 123, '1' );
-    });
+  test.description = 'invalid second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strCount( 'one two', 123 );
+  });
 
-    test.description = 'invalid second arg type';
-    test.shouldThrowError( function()
-    {
-      _.strCount( 'one two', 123 );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strCount();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strCount();
-    });
-
-  }
 }
 
 //
@@ -3321,38 +2586,35 @@ function strDup( test )
   var expected = '';
   test.identical( got,expected );
 
-
-
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strDup( '1', '2', '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strDup( '1', '2', '3' );
-    });
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 123, 1 );
+  });
 
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strDup( 123, 1 );
-    });
+  test.description = 'invalid second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 'one', 'two'  );
+  });
 
-    test.description = 'invalid second arg type';
-    test.shouldThrowError( function()
-    {
-      _.strDup( 'one', 'two'  );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strDup();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strDup();
-    });
-
-  }
 }
 
 //
@@ -3378,28 +2640,27 @@ function strToBytes( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strToBytes( '1', '2' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strToBytes( '1', '2' );
-    });
+  test.description = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strToBytes( 0 );
+  });
 
-    test.description = 'invalid argument type';
-    test.shouldThrowError( function()
-    {
-      _.strToBytes( 0 );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strToBytes();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strToBytes();
-    });
-
-  }
 }
 
 //
@@ -3452,44 +2713,41 @@ function strMetricFormat( test )
   var expected = "10 h";
   test.identical( got,expected );
 
-
-
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
   {
+    _.strMetricFormat( '1', { fixed : 0 }, '3' );
+  });
 
-    test.description = 'invalid arguments count';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormat( '1', { fixed : 0 }, '3' );
-    });
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strMetricFormat( [ 1, 2, 3 ] );
+  });
 
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormat( [ 1, 2, 3 ] );
-    });
+  test.description = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strMetricFormat( 11, '0' );
+  });
 
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormat( 11, '0' );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strMetricFormat();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormat();
-    });
+  test.description = 'fixed out of range';
+  test.shouldThrowError( function()
+  {
+    _.strMetricFormat( "1300", { fixed : 22 } );
+  });
 
-    test.description = 'fixed out of range';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormat( "1300", { fixed : 22 } );
-    });
-
-  }
 }
 
 //
@@ -3525,33 +2783,33 @@ function strMetricFormatBytes( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormatBytes( [ '1', '2', '3' ] );
-    });
+    _.strMetricFormatBytes( [ '1', '2', '3' ] );
+  });
 
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormatBytes( 0, '0' );
-    });
+  test.description = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strMetricFormatBytes( 0, '0' );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormatBytes();
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strMetricFormatBytes();
+  });
 
-    test.description = 'fixed out of range';
-    test.shouldThrowError( function()
-    {
-      _.strMetricFormatBytes( "1300", { fixed : 22 } );
-    });
+  test.description = 'fixed out of range';
+  test.shouldThrowError( function()
+  {
+    _.strMetricFormatBytes( "1300", { fixed : 22 } );
+  });
 
-  }
 }
 
 //
@@ -3591,10 +2849,11 @@ function strTimeFormat( test )
 
   /**/
 
-  if( Config.debug )
-  {
+  if( !Config.debug )
+  return;
 
-  }
+  xxx
+
 }
 
 //
@@ -3654,38 +2913,33 @@ function strShort( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strShort( 1, 5 );
-    });
+    _.strShort( 1, 5 );
+  });
 
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _.strShort( 'string', '0' );
-    });
-    // test.description = 'invalid argument type( not a Object )';
-    // test.shouldThrowError( function()
-    // {
-    //   _.strShort( 'src' );
-    // });
+  test.description = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strShort( 'string', '0' );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strShort();
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strShort();
+  });
 
-    test.description = 'unknown property provided';
-    test.shouldThrowError( function()
-    {
-      _.strShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
-    });
+  test.description = 'unknown property provided';
+  test.shouldThrowError( function()
+  {
+    _.strShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
+  });
 
-  }
 }
 
 //
@@ -4154,32 +3408,33 @@ function strLinesSelect( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid first argument type';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid first argument type';
-    test.shouldThrowError( function()
-    {
-      _.strLinesSelect( 1, 1 );
-    });
+    _.strLinesSelect( 1, 1 );
+  });
 
-    test.description = 'invalid second argument type';
-    test.shouldThrowError( function()
-    {
-      _.strLinesSelect( 'lorem\nipsum\n', 'second'  );
-    });
+  test.description = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strLinesSelect( 'lorem\nipsum\n', 'second'  );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.strLinesSelect( );
-    });
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strLinesSelect( );
+  });
 
-    test.description = 'unknown property provided';
-    test.shouldThrowError( function()
-    {
-      _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], x : 1 } );
-    });
-  }
+  test.description = 'unknown property provided';
+  test.shouldThrowError( function()
+  {
+    _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], x : 1 } );
+  });
+
 }
 
 //
@@ -4211,14 +3466,15 @@ function strCommonLeft( test )
   var expected = '';
   test.identical( got, expected );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'ins is array';
+  test.shouldThrowError( function( )
   {
-    test.description = 'ins is array';
-    test.shouldThrowError( function( )
-    {
-      _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
-    });
-  }
+    _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
+
 }
 
 //
@@ -4250,238 +3506,15 @@ function strCommonRight( test )
   var expected = '';
   test.identical( got, expected );
 
-  if( Config.debug )
-  {
-    test.description = 'ins is array';
-    test.shouldThrowError( function( )
-    {
-      _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
-    });
-  }
-}
-
-//
-
-function strExtractStrips( test )
-{
-
-  function onStrip( part )
-  {
-    var temp = part.split( ':' )
-    if( temp.length === 2 )
-    {
-      return temp;
-    }
-    return undefined;
-  }
-
-  test.description = 'case 1';
-  var str = 'this #background:red#is#background:default# text and # is not';
-  var got = _.strExtractStrips( str, { onStrip : onStrip } );
-  var expected =
-  [
-    'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not'
-  ];
-  test.identical( got, expected );
-
-  test.description = 'case 2';
-  var str = '#simple # text #background:red#is#background:default# text and # is not#';
-  var got = _.strExtractStrips( str, { onStrip : onStrip } );
-  var expected =
-  [
-    '#simple # text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not#'
-  ];
-  test.identical( got, expected );
-
-  test.description = 'case 3';
-  var str = '#background:red#i#s#background:default##text';
-  var got = _.strExtractStrips( str, { onStrip : onStrip } );
-  var expected =
-  [
-    [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], '#text'
-  ];
-  test.identical( got, expected );
-
-  test.description = 'warapped by strips';
-  var str = '#background:red#text#background:default#';
-  var got = _.strExtractStrips( str, { onStrip : onStrip } );
-  var expected =
-  [
-    [ 'background', 'red' ], 'text', [ 'background', 'default' ]
-  ];
-  test.identical( got, expected );
-
-}
-
-//
-
-function strExtractStereoStrips( test )
-{
-  var got,expected;
-
-  test.description = 'default';
-
-  /* nothing */
-
-  got = _.strExtractStereoStrips( '' );
-  expected = [ '' ];
-  test.identical( got, expected );
-
-  /* prefix/postfix # by default*/
-
-  got = _.strExtractStereoStrips( '#abc#' );
-  expected = [ '', 'abc', '' ];
-  test.identical( got, expected );
-
-  //
-
-  test.description = 'with options';
-
-  /* pre/post are same*/
-
-  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '/' }, '/abc/' );
-  expected = [ '', 'abc', '' ];
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '/' }, '//abc//' );
-  expected = [ '', '', 'abc', '', '' ];
-  test.identical( got, expected );
-
-  /* different pre/post */
-
-  got = _.strExtractStereoStrips.call( { prefix : '/#', postfix : '#' }, '/#abc#' );
-  expected = [ 'abc' ];
-  test.identical( got, expected );
-
-  /* postfix appears in source two times */
-  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '#' }, '/ab#c#' );
-  expected = [ 'ab', 'c#' ];
-  test.identical( got, expected );
-
-  /* onStrip #1 */
-  function onStrip1( strip )
-  {
-    if( strip.length )
-    return strip;
-  }
-  got = _.strExtractStereoStrips.call( { onStrip : onStrip1 }, '#abc#' );
-  expected = [ '#abc#' ];
-  test.identical( got, expected );
-
-  /* onStrip #2 */
-  function onStrip2( strip )
-  {
-    return strip + strip;
-  }
-  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '#', onStrip : onStrip2 }, '/abc#' );
-  expected = [ 'abcabc' ];
-  test.identical( got, expected );
-
-}
-
-//
-
-function strSorterParse( test )
-{
-  var src;
-  var fields;
-  var expected;
-  var got;
-
-  /* */
-
-  test.description = 'str without special characters';
-  src = 'ab'
-  expected = [];
-  got = _.strSorterParse( src );
-
-  /* */
-
-  test.description = 'single pair';
-  src = 'a>'
-  expected = [ [ 'a', 1 ] ];
-  got = _.strSorterParse( src );
-
-  /* */
-
-  test.description = 'src only';
-
-  src = 'a>b>'
-  expected = [ [ 'a', 1 ], [ 'b', 1 ] ];
-  got = _.strSorterParse( src );
-  test.identical( got, expected );
-
-  src = 'a<b<'
-  expected = [ [ 'a', 0 ], [ 'b', 0 ] ];
-  got = _.strSorterParse( src );
-  test.identical( got, expected );
-
-  src = 'a>b<'
-  expected = [ [ 'a', 1 ], [ 'b', 0 ] ];
-  got = _.strSorterParse( src );
-  test.identical( got, expected );
-
-  src = 'a<b>'
-  expected = [ [ 'a', 0 ], [ 'b', 1 ] ];
-  got = _.strSorterParse( src );
-  test.identical( got, expected );
-
-  src = 'a>b>c<d>'
-  expected = [ [ 'a', 1 ], [ 'b', 1 ],[ 'c', 0 ], [ 'd', 1 ] ];
-  got = _.strSorterParse( src );
-  test.identical( got, expected );
-
-  src = 'a+b>c-d<'
-  expected = [ [ 'a+b', 1 ], [ 'c-d', 0 ] ];
-  got = _.strSorterParse( src );
-  test.identical( got, expected );
-
-  /* */
-
-  test.description = 'with fields';
-  var fields = { a : 'a', b : 'b', 'a+b' : 1, 'c-d' : 1 };
-
-  src = 'a>b>'
-  expected = [ [ 'a', 1 ], [ 'b', 1 ] ];
-  got = _.strSorterParse( src, fields );
-  test.identical( got, expected );
-
-  src = 'a<b<'
-  expected = [ [ 'a', 0 ], [ 'b', 0 ] ];
-  got = _.strSorterParse( src, fields );
-  test.identical( got, expected );
-
-  src = 'a>b<'
-  expected = [ [ 'a', 1 ], [ 'b', 0 ] ];
-  got = _.strSorterParse( src, fields );
-  test.identical( got, expected );
-
-  src = 'a<b>'
-  expected = [ [ 'a', 0 ], [ 'b', 1 ] ];
-  got = _.strSorterParse( src, fields );
-  test.identical( got, expected );
-
-  src = 'a+b>c-d<'
-  expected = [ [ 'a+b', 1 ], [ 'c-d', 0 ] ];
-  got = _.strSorterParse( src, fields );
-  test.identical( got, expected );
-
-  /* */
-
   if( !Config.debug )
   return;
 
-  test.description = 'with fields';
-  var fields = { a : 'a', b : 'b' };
-  src = 'a>b>c>'
-  test.shouldThrowError( () => _.strSorterParse( src, fields ) );
+  test.description = 'ins is array';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
 
-  test.description = 'src must be str, fields must be objectLike';
-  src = 'a>b';
-  fields = [];
-  test.shouldThrowError( () => _.strSorterParse( src, fields ) );
 }
 
 //
@@ -4500,21 +3533,6 @@ var Self =
 
     strHtmlEscape : strHtmlEscape,
     strIndentation : strIndentation,
-    strCamelize : strCamelize,
-    strFilenameFor : strFilenameFor,
-    toStrMethods : toStrMethods,
-    toStrFields : toStrFields,
-
-    _toStrShort : _toStrShort,
-    _toStrIsVisibleElement : _toStrIsVisibleElement,
-    _toStrIsSimpleElement : _toStrIsSimpleElement,
-    _toStrFromRoutine : _toStrFromRoutine,
-    _toStrFromNumber : _toStrFromNumber,
-    _toStrFromStr : _toStrFromStr,
-    _toStrFromArray : _toStrFromArray,
-    _toStrFromObject : _toStrFromObject,
-    _toStrFromContainer : _toStrFromContainer,
-    _toStrFromContainer : _toStrFromContainer,
 
     strTimes : strTimes,
     strLineCount : strLineCount,
@@ -4547,10 +3565,7 @@ var Self =
     strLinesSelect : strLinesSelect,
     strCommonLeft : strCommonLeft,
     strCommonRight : strCommonRight,
-    strExtractStrips : strExtractStrips,
-    strExtractStereoStrips : strExtractStereoStrips,
 
-    strSorterParse : strSorterParse,
 
   }
 
