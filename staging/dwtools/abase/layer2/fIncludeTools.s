@@ -450,7 +450,7 @@ _includeHandlerMap[ 'wBaseEncoder' ] =
 
 _includeHandlerMap[ 'wStringer' ] =
 {
-  includeAny : [ '../../abse/layer4/Stringer.s','abse/layer4/Stringer.s','wStringer' ],
+  includeAny : [ '../../abase/layer4/aStringer.s','abase/layer4/aStringer.s','wStringer' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Stringer; },
 }
 
