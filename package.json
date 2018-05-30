@@ -42,7 +42,8 @@
   "dependencies": {},
   "devDependencies": {
     "wTesting": "",
-    "wTools": "."
+    "wTools": ".",
+    "wFiles": ""
   },
   "keywords": [
     "base",
