@@ -1029,48 +1029,6 @@ function strIndentation( test )
 
 //
 
-function toStrMethods( test )
-{
-  test.description = 'converts routine to string default options';
-  var got = _.toStrMethods( function route() {} );
-  var expected = '[ routine route ]';
-  test.identical( got,expected );
-
-  test.description = 'converts routine to string, levels:0';
-  var got = _.toStrMethods( function route() {}, { levels : 0 } );
-  var expected = '[ routine route ]';
-  test.identical( got,expected );
-
-  test.description = 'different input data types';
-  var got = _.toStrMethods( [ function route() {}, 0, '1', null ] );
-  var expected = '';
-  test.identical( got,expected );
-
-
-  /**/
-
-  test.description = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.toStrMethods( 'one','two' );
-  });
-
-  test.description = 'wrong arguments count';
-  test.shouldThrowError( function()
-  {
-    _.toStrMethods( { a : 1 }, { b : 1 }, { jsonLike : 1 } );
-  });
-
-  test.description = 'onlyRoutines & noRoutine both true';
-  test.shouldThrowError( function()
-  {
-    _.toStrMethods( function f () {},{ noRoutine : 1 } );
-  });
-
-}
-
-//
-
 function strLineCount( test )
 {
 
