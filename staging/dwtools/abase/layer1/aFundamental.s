@@ -5754,7 +5754,107 @@ function str()
 
 str.fields = str;
 str.routines = str;
-/* xxx */
+
+//
+
+function _strBegins( src,begin )
+{
+
+  _.assert( _.strIs( src ),'expects string' );
+  _.assert( arguments.length === 2 );
+
+  if( _.strIs( begin ) )
+  {
+    if( src.lastIndexOf( begin,0 ) === 0 )
+    return true;
+  }
+  else if( _.regexpIs( begin ) )
+  {
+    var matched = begin.exec( src );
+    if( matched && matched.index === 0 )
+    return true;
+  }
+  else _.assert( 0,'expects string or regexp' );
+
+  return false;
+}
+
+//
+
+/**
+  * Compares two strings.
+  * @param { String } src - Source string.
+  * @param { String } begin - String to find at begin of source.
+  *
+  * @example
+  * var scr = _.strBegins( "abc","a" );
+  * // returns true
+  *
+  * @example
+  * var scr = _.strBegins( "abc","b" );
+  * // returns false
+  *
+  * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
+  * @function strBegins
+  * @throws { Exception } If one of arguments is not a String.
+  * @throws { Exception } If( arguments.length ) is not equal 2.
+  * @memberof wTools
+  */
+
+function strBegins( src,begin )
+{
+
+  _.assert( _.strIs( src ),'expects string {-src-}' );
+  _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
+  _.assert( arguments.length === 2 );
+
+  begin = _.arrayAs( begin );
+
+  for( var b = 0, blen = begin.length; b < blen; b++ )
+  if( _strBegins( src,begin[ b ] ) )
+  return true;
+
+  return false;
+}
+
+//
+
+/**
+  * Compares two strings.
+  * @param { String } src - Source string.
+  * @param { String } end - String to find at end of source.
+  *
+  * @example
+  * var scr = _.strEnds( "abc","c" );
+  * // returns true
+  *
+  * @example
+  * var scr = _.strEnds( "abc","b" );
+  * // returns false
+  *
+  * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
+  * @function strEnds
+  * @throws { Exception } If one of arguments is not a String.
+  * @throws { Exception } If( arguments.length ) is not equal 2.
+  * @memberof wTools
+  */
+
+function strEnds( src,end )
+{
+
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
+  _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings' );
+  _.assert( arguments.length === 2 );
+
+  if( _.strIs( end ) )
+  end = [ end ];
+
+  for( var k = 0, len = end.length; k < len; k++ )
+  if( src.indexOf( end[ k ],src.length - end[ k ].length ) !== -1 )
+  return true;
+
+  return false;
+}
 
 //
 
@@ -5928,379 +6028,6 @@ function strInbetweenOf( src,begin,end )
   var result = src.substring( f+1,l );
 
   return result;
-}
-
-//
-
-function _strBegins( src,begin )
-{
-
-  _.assert( _.strIs( src ),'expects string' );
-  _.assert( arguments.length === 2 );
-
-  if( _.strIs( begin ) )
-  {
-    if( src.lastIndexOf( begin,0 ) === 0 )
-    return true;
-  }
-  else if( _.regexpIs( begin ) )
-  {
-    var matched = begin.exec( src );
-    if( matched && matched.index === 0 )
-    return true;
-  }
-  else _.assert( 0,'expects string or regexp' );
-
-  return false;
-}
-
-//
-
-/**
-  * Compares two strings.
-  * @param { String } src - Source string.
-  * @param { String } begin - String to find at begin of source.
-  *
-  * @example
-  * var scr = _.strBegins( "abc","a" );
-  * // returns true
-  *
-  * @example
-  * var scr = _.strBegins( "abc","b" );
-  * // returns false
-  *
-  * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
-  * @function strBegins
-  * @throws { Exception } If one of arguments is not a String.
-  * @throws { Exception } If( arguments.length ) is not equal 2.
-  * @memberof wTools
-  */
-
-function strBegins( src,begin )
-{
-
-  _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
-  _.assert( arguments.length === 2 );
-
-  begin = _.arrayAs( begin );
-
-  for( var b = 0, blen = begin.length; b < blen; b++ )
-  if( _strBegins( src,begin[ b ] ) )
-  return true;
-
-  return false;
-}
-
-//
-
-/**
-  * Compares two strings.
-  * @param { String } src - Source string.
-  * @param { String } end - String to find at end of source.
-  *
-  * @example
-  * var scr = _.strEnds( "abc","c" );
-  * // returns true
-  *
-  * @example
-  * var scr = _.strEnds( "abc","b" );
-  * // returns false
-  *
-  * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
-  * @function strEnds
-  * @throws { Exception } If one of arguments is not a String.
-  * @throws { Exception } If( arguments.length ) is not equal 2.
-  * @memberof wTools
-  */
-
-function strEnds( src,end )
-{
-
-  _.assert( _.strIs( src ), 'expects string {-src-}' );
-  _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings' );
-  _.assert( arguments.length === 2 );
-
-  if( _.strIs( end ) )
-  end = [ end ];
-
-  for( var k = 0, len = end.length; k < len; k++ )
-  if( src.indexOf( end[ k ],src.length - end[ k ].length ) !== -1 )
-  return true;
-
-  return false;
-}
-
-//
-
-function _strRemoveBegin( src,begin )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.strIs( src ), 'expects string {-src-}' );
-
-  var result = src;
-
-  if( _.strIs( begin ) )
-  {
-    if( _strBegins( result, begin ) )
-    {
-      result = result.substr( begin.length, result.length );
-      return result;
-    }
-  }
-  else if( _.regexpIs( begin ) )
-  {
-    var matched = begin.exec( result );
-    if( matched && matched.index === 0 )
-    result = result.substring( matched[ 0 ].length, result.length );
-    return result;
-  }
-  else _.assert( 0,'expects string or regexp {-begin-}' );
-
-  return result;
-}
-
-//
-
-/**
- * Finds substring prefix ( begin ) occurrence from the very begining of source ( src ) and removes it.
- * Returns original string if source( src ) does not have occurrence of ( prefix ).
- *
- * @param { String } src - Source string to parse.
- * @param { String } prefix - String that is to be dropped.
- * @returns { String } Returns string with result of prefix removement.
- *
- * @example
- * //returns mple
- * _.strRemoveBegin( 'example','exa' );
- *
- * @example
- * //returns example
- * _.strRemoveBegin( 'example','abc' );
- *
- * @function strRemoveBegin
- * @throws { Exception } Throws a exception if( src ) is not a String.
- * @throws { Exception } Throws a exception if( prefix ) is not a String.
- * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
- * @memberof wTools
- *
- */
-
-function strRemoveBegin( src,begin )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
-  _.assert( _.arrayLike( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
-
-  var result = [];
-  var srcIsArray = _.arrayLike( src );
-
-  src = _.arrayAs( src );
-  begin = _.arrayAs( begin );
-
-  for( var s = 0, slen = src.length ; s < slen ; s++ )
-  {
-    var src1 = src[ s ]
-    for( var b = 0, blen = begin.length ; b < blen ; b++ )
-    {
-      var result1 = _strRemoveBegin( src1,begin[ b ] );
-      if( result1 !== src1 && blen > 1 )
-      b = 0;
-      src1 = result1;
-    }
-    result[ s ] = src1;
-  }
-
-  if( !srcIsArray )
-  return result[ 0 ];
-
-  return result;
-}
-
-// function strRemoveBegin( src,begin )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.arrayLike( src ) || _.strIs( src ) );
-//   _.assert( _.arrayLike( begin ) || _.strIs( begin ) );
-//
-//   begin = _.arrayAs( begin );
-//
-//   var result = _.arrayAs( src ).slice();
-//
-//   for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-//   for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
-//   if( strBegins( result[ k ],begin[ j ] ) )
-//   {
-//     result[ k ] = result[ k ].substr( begin[ j ].length,result[ k ].length );
-//     break;
-//   }
-//
-//   if( result.length === 1 && _.strIs( src ) )
-//   return result[ 0 ];
-//
-//   return result;
-// }
-
-//
-
-/**
- * Removes occurrence of postfix ( end ) from the very end of string( src ).
- * Returns original string if no occurrence finded.
- * @param { String } src - Source string to parse.
- * @param { String } postfix - String that is to be dropped.
- * @returns { String } Returns string with result of postfix removement.
- *
- * @example
- * //returns examp
- * _.strRemoveEnd( 'example','le' );
- *
- * @example
- * //returns example
- * _.strRemoveEnd( 'example','abc' );
- *
- * @function strRemoveEnd
- * @throws { Exception } Throws a exception if( src ) is not a String.
- * @throws { Exception } Throws a exception if( postfix ) is not a String.
- * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
- * @memberof wTools
- *
- */
-
-function strRemoveEnd( src,end )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src ) || _.strIs( src ) );
-  _.assert( _.arrayLike( end ) || _.strIs( end ) );
-
-  end = _.arrayAs( end );
-
-  var result = _.arrayAs( src ).slice();
-
-  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-  for( var j = 0, endLength = end.length; j < endLength; j++ )
-  if( strEnds( result[ k ],end[ j ] ) )
-  {
-    result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length )
-    break;
-  }
-
-  if( result.length === 1 && _.strIs( src ) )
-  return result[ 0 ];
-
-  return result;
-}
-
-//
-
-function strReplaceBegin( src,begin,ins )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
-  if( _.arrayLike( begin ) && _.arrayLike( ins ) )
-  _.assert( begin.length === ins.length );
-
-  begin = _.arrayAs( begin );
-  var result = _.arrayAs( src ).slice();
-
-  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-  for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
-  if( strBegins( result[ k ],begin[ j ] ) )
-  {
-    var prefix = _.arrayLike( ins ) ? ins[ j ] : ins;
-    _.assert( _.strIs( prefix ) );
-    result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
-    break;
-  }
-
-  if( result.length === 1 && _.strIs( src ) )
-  return result[ 0 ];
-
-  return result;
-}
-
-//
-
-function strReplaceEnd( src,end,ins )
-{
-  _.assert( arguments.length === 3 );
-  _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
-  if( _.arrayLike( end ) && _.arrayLike( ins ) )
-  _.assert( end.length === ins.length );
-
-  end = _.arrayAs( end );
-  var result = _.arrayAs( src ).slice();
-
-  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-  for( var j = 0, endLength = end.length; j < endLength; j++ )
-  if( strEnds( result[ k ],end[ j ] ) )
-  {
-    var postfix = _.arrayLike( ins ) ? ins[ j ] : ins;
-    _.assert( _.strIs( postfix ) );
-    result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
-  }
-
-  if( result.length === 1 && _.strIs( src ) )
-  return result[ 0 ];
-
-  return result;
-}
-
-//
-
-/**
-  * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
-  * otherwise returns original string.
-  * @param { String } src - Source string to parse.
-  * @param { String } begin - String to prepend.
-  *
-  * @example
-  * _.strPrependOnce( 'test', 'test' );
-  * //returns 'test'
-  *
-  * @example
-  * _.strPrependOnce( 'abc', 'x' );
-  * //returns 'xabc'
-  *
-  * @returns { String } Returns result of prepending string( begin ) to source( src ) or original string.
-  * @function strPrependOnce
-  * @memberof wTools
-  */
-
-function strPrependOnce( src,begin )
-{
-  if( src.lastIndexOf( begin,0 ) === 0 )
-  return src;
-  else
-  return begin + src;
-}
-
-//
-
-/**
-  * Appends string( begin ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
-  * otherwise returns original string.
-  * @param {string} src - Source string to parse.
-  * @param {string} end - String to append.
-  *
-  * @example
-  * _.strAppendOnce( 'test', 'test' );
-  * //returns 'test'
-  *
-  * @example
-  * _.strAppendOnce( 'abc', 'x' );
-  * //returns 'abcx'
-  *
-  * @returns {string} Returns result of appending string( end ) to source( src ) or original string.
-  * @function strAppendOnce
-  * @memberof wTools
-  */
-
-function strAppendOnce( src,end )
-{
-  if( src.indexOf( end,src.length - end.length ) !== -1 )
-  return src;
-  else
-  return src + end;
 }
 
 // --
@@ -13801,46 +13528,6 @@ function arrayUpdate( dstArray,ins,sub )
 // --
 
 /**
- * Returns new array that contains elements from ( src ) that are not present in ( but ).
- * All copies of ignored element are ignored too.
- * @param { arrayLike } src - source array;
- * @param { arrayLike} but - array of elements to ignore.
- *
- * @example
- * // returns []
- * _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
- *
- * @example
- * // returns [ 2, 2 ]
- * _.arraySetBut( [ 1, 1, 2, 2, 3, 3 ], [ 1, 3 ] );
- *
- * @returns { Array } Source array without elements from ( but ).
- * @function arraySetBut
- * @throws { Error } If arguments count is not 2.
- * @throws { Error } If one or both argument(s) are not arrayLike entities.
- * @memberof wTools
- */
-
-function arraySetBut( src,but )
-{
-  var result = [];
-
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src ) );
-  _.assert( _.arrayLike( but ) );
-
-  for( var i = 0 ; i < src.length ; i++ )
-  {
-    if( but.indexOf( src[ i ] ) === -1 )
-    result.push( src[ i ] );
-  }
-
-  return result;
-}
-
-//
-
-/**
  * Returns new array that contains difference between two arrays: ( src1 ) and ( src2 ).
  * If some element is present in both arrays, this element and all copies of it are ignored.
  * @param { arrayLike } src1 - source array;
@@ -13887,6 +13574,66 @@ function arraySetDiff( src1,src2 )
 //
 
 /**
+ * Returns new array that contains elements from ( src ) that are not present in ( but ).
+ * All copies of ignored element are ignored too.
+ * @param { arrayLike } src - source array;
+ * @param { arrayLike} but - array of elements to ignore.
+ *
+ * @example
+ * // returns []
+ * _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
+ *
+ * @example
+ * // returns [ 2, 2 ]
+ * _.arraySetBut( [ 1, 1, 2, 2, 3, 3 ], [ 1, 3 ] );
+ *
+ * @returns { Array } Source array without elements from ( but ).
+ * @function arraySetBut
+ * @throws { Error } If arguments count is not 2.
+ * @throws { Error } If one or both argument(s) are not arrayLike entities.
+ * @memberof wTools
+ */
+
+function arraySetBut( dst )
+{
+  var args = _.arraySlice( arguments );
+
+  if( dst === null )
+  if( args.length > 1 )
+  {
+    dst = _.arraySlice( args[ 1 ] );
+    args.splice( 1,1 );
+  }
+  else
+  {
+    return [];
+  }
+
+  args[ 0 ] = dst;
+
+  _.assert( arguments.length >= 1 );
+  for( var a = 0 ; a < args.length ; a++ )
+  _.assert( _.arrayLike( args[ a ] ) );
+
+  for( var i = dst.length-1 ; i >= 0 ; i-- )
+  {
+    for( var a = 1 ; a < args.length ; a++ )
+    {
+      var but = args[ a ];
+      if( but.indexOf( dst[ i ] ) !== -1 )
+      {
+        dst.splice( i,1 );
+        break;
+      }
+    }
+  }
+
+  return dst;
+}
+
+//
+
+/**
  * Returns array that contains elements from ( src ) that exists at least in one of arrays provided after first argument.
  * If element exists and it has copies, all copies of that element will be included into result array.
  * @param { arrayLike } src - source array;
@@ -13906,38 +13653,82 @@ function arraySetDiff( src1,src2 )
  * @memberof wTools
  */
 
-function arraySetIntersection( src )
+function arraySetIntersection( dst )
 {
-  var result = [];
 
-  _.assert( _.arrayLike( src ) );
+  var first = 1;
+  if( dst === null )
+  if( arguments.length > 1 )
+  {
+    dst = _.arraySlice( arguments[ 1 ] );
+    first = 2;
+  }
+  else
+  {
+    return [];
+  }
 
-  for( var i = 0 ; i < src.length ; i++ )
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayLike( dst ) );
+  for( var a = 1 ; a < arguments.length ; a++ )
+  _.assert( _.arrayLike( arguments[ a ] ) );
+
+  for( var i = dst.length-1 ; i >= 0 ; i-- )
   {
 
-    for( var a = 1 ; a < arguments.length ; a++ )
+    for( var a = first ; a < arguments.length ; a++ )
     {
-
-      _.assert( _.arrayLike( arguments[ a ] ) );
-
-      // throw _.err( 'Not tested' );
-      if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
+      var ins = arguments[ a ];
+      if( ins.indexOf( dst[ i ] ) === -1 )
       {
-        // throw _.err( 'Not tested' );
+        dst.splice( i,1 );
         break;
       }
-
     }
-
-    if( a !== arguments.length )
-    result.push( src[ i ] );
 
   }
 
-  return result;
+  return dst;
 }
 
 //
+
+function arraySetUnion( dst )
+{
+  var args = _.arraySlice( arguments );
+
+  if( dst === null )
+  if( arguments.length > 1 )
+  {
+    dst = [];
+    // dst = _.arraySlice( args[ 1 ] );
+    // args.splice( 1,1 );
+  }
+  else
+  {
+    return [];
+  }
+
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayLike( dst ) );
+  for( var a = 1 ; a < args.length ; a++ )
+  _.assert( _.arrayLike( args[ a ] ) );
+
+  for( var a = 1 ; a < args.length ; a++ )
+  {
+    var ins = args[ a ];
+    for( var i = 0 ; i < ins.length ; i++ )
+    {
+      if( dst.indexOf( ins[ i ] ) === -1 )
+      dst.push( ins[ i ] )
+    }
+  }
+
+  return dst;
+}
+
+//
+
 /*
 function arraySetContainAll( src )
 {
@@ -13999,21 +13790,17 @@ function arraySetContainAll( src )
 function arraySetContainAll( src )
 {
   _.assert( _.arrayLike( src ) );
+  for( var a = 1 ; a < arguments.length ; a++ )
+  _.assert( _.arrayLike( arguments[ a ] ) );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
+    var ins = arguments[ a ];
 
-    _.assert( _.arrayLike( arguments[ a ] ) );
-
-    if( src.length > arguments[ a ].length )
-    return false;
-
-    for( var i = 0 ; i < src.length ; i++ )
+    for( var i = 0 ; i < ins.length ; i++ )
     {
-
-      if( arguments[ a ].indexOf( src[ i ] ) === -1 )
+      if( src.indexOf( ins[ i ] ) === -1 )
       return false;
-
     }
 
   }
@@ -14024,7 +13811,7 @@ function arraySetContainAll( src )
 //
 
 /**
- * The arraySetContainSomething() routine returns true, if at least one of the following arrays (arguments[...]),
+ * The arraySetContainAny() routine returns true, if at least one of the following arrays (arguments[...]),
  * contains the first matching value from (src).
  *
  * @param { arrayLike } src - The source array.
@@ -14032,26 +13819,26 @@ function arraySetContainAll( src )
  *
  * @example
  * // returns true
- * _.arraySetContainSomething( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
+ * _.arraySetContainAny( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
  *
  * @example
  * // returns true
- * _.arraySetContainSomething( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+ * _.arraySetContainAny( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
  *
  * @example
  * // returns false
- * _.arraySetContainSomething( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
+ * _.arraySetContainAny( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
  *
  * @returns { Boolean } Returns true, if at least one of the following arrays (arguments[...]),
  * contains the first matching value from (src).
  * Otherwise, it returns false.
- * @function arraySetContainSomething
+ * @function arraySetContainAny
  * @throws { Error } Will throw an Error if (src) is not an array-like.
  * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
  * @memberof wTools
  */
 
-function arraySetContainSomething( src )
+function arraySetContainAny( src )
 {
   _.assert( _.arrayLike( src ) );
 
@@ -14075,23 +13862,31 @@ function arraySetContainSomething( src )
   return false;
 }
 
-// /*function arraySameSet( src1,src2 )*/
-// function arraySetIdentical( src1,src2 )
-// {
-//   if( src1.length !== src2.length ) return false;
-//   var src = src1.slice();
-//   var nil = Object.create( null );
 //
-//   for( var s = 0 ; s < src2.length ; s++ )
-//   {
-//     var i = src.indexOf( src2[ s ] );
-//     if( i === -1 )
-//     return false;
-//     src[ i ] = nil;
-//   }
-//
-//   return true;
-// }
+
+function arraySetContainNone( src )
+{
+  _.assert( _.arrayLike( src ) );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+
+    _.assert( _.arrayLike( arguments[ a ] ) );
+
+    for( var i = 0 ; i < src.length ; i++ )
+    {
+
+      if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
+      {
+        return false;
+      }
+
+    }
+
+  }
+
+  return true;
+}
 
 //
 
@@ -17872,23 +17667,13 @@ var Proto =
   str : str,
   toStr : str,
 
-  strBeginOf : strBeginOf,
-  strEndOf : strEndOf,
-  strInbetweenOf : strInbetweenOf,
-
   _strBegins : _strBegins,
   strBegins : strBegins,
   strEnds : strEnds,
 
-  _strRemoveBegin : _strRemoveBegin,
-  strRemoveBegin : strRemoveBegin,
-  strRemoveEnd : strRemoveEnd,
-
-  strReplaceBegin : strReplaceBegin,
-  strReplaceEnd : strReplaceEnd,
-
-  strPrependOnce : strPrependOnce,
-  strAppendOnce : strAppendOnce,
+  strBeginOf : strBeginOf,
+  strEndOf : strEndOf,
+  strInbetweenOf : strInbetweenOf,
 
 
   // regexp
@@ -18180,12 +17965,15 @@ var Proto =
 
   /* lack of tests !!! */
 
-  arraySetBut : arraySetBut,
   arraySetDiff : arraySetDiff,
+
+  arraySetBut : arraySetBut,
   arraySetIntersection : arraySetIntersection,
+  arraySetUnion : arraySetUnion,
 
   arraySetContainAll : arraySetContainAll,
-  arraySetContainSomething : arraySetContainSomething,
+  arraySetContainAny : arraySetContainAny,
+  arraySetContainNone : arraySetContainNone,
   arraySetIdentical : arraySetIdentical,
 
 

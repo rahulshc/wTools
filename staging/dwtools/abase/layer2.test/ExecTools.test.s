@@ -1,6 +1,6 @@
 ( function ExecTools_test_s( ) {
 
-'use strict'; 
+'use strict';
 
 var isBrowser = true;
 
@@ -79,7 +79,8 @@ function appArgs( test )
     delimeter : ' :',
     map : {},
     subject : '',
-    scriptArgs : [ ]
+    scriptArgs : [ ],
+    scriptString : '',
   }
   test.identical( got, expected );
 

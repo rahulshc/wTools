@@ -457,7 +457,7 @@ _includeHandlerMap[ 'wStringer' ] =
 _includeHandlerMap[ 'wStringsExtra' ] =
 {
   includeAny : [ '../../amid/astring/StringsExtra.s','amid/astring/StringsExtra.s','wstringsextra' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.strExtractStrips; },
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.strSorterParse; },
 }
 
 _includeHandlerMap[ 'wRegexpObject' ] =

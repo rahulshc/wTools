@@ -2711,7 +2711,7 @@ function mapIdentical( test )
     _.mapIdentical( {} );
   });
 
-  test.description = 'too much arguments';
+  test.description = 'too many arguments';
   test.shouldThrowError( function()
   {
     _.mapIdentical( {}, {}, 'redundant argument' );
@@ -2756,7 +2756,7 @@ function mapContain( test )
       _.mapContain( {} );
     });
 
-    test.description = 'too much arguments';
+    test.description = 'too many arguments';
     test.shouldThrowError( function()
     {
       _.mapContain( {}, {}, 'redundant argument' );

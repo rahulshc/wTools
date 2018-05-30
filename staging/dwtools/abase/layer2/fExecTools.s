@@ -902,8 +902,8 @@ function appArgsInSubjectAndMapFormat( o )
 
     var argv = o.argv || process.argv;
 
-    result.interpreterPath = argv[ 0 ];
-    result.mainPath = argv[ 1 ];
+    result.interpreterPath = _.pathNormalize( argv[ 0 ] );
+    result.mainPath = _.pathNormalize( argv[ 1 ] );
     result.interpreterArgs = process.execArgv;
     result.delimeter = o.delimeter;
     result.map = Object.create( null );

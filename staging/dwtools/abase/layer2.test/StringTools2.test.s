@@ -1,4 +1,4 @@
-( function _StringTools2_test_s_() {
+( function _StringTools_test_s_() {
 
 'use strict';
 
@@ -30,10 +30,638 @@ if( typeof module !== 'undefined' )
 
 var _ = _global_.wTools;
 
+// --
+//
+// --
+
+function strRemoveBegin2( test )
+{
+
+  test.description = 'returns string with removed occurrence from start';
+  var got = _.strRemoveBegin( 'example','exa' );
+  var expected = 'mple';
+  test.identical( got,expected );
+
+  test.description = 'returns original if no occurrence found';
+  var got = _.strRemoveBegin( 'mple','exa' );
+  var expected = 'mple';
+  test.identical( got,expected );
+
+  /**/
+
+  debugger;
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( 'abcd','a','a' );
+  });
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( );
+  });
+
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( 1,'2' );
+  });
+
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( '1',2 );
+  });
+
+}
+
+//
+
+function strRemoveEnd2( test )
+{
+  test.description = 'returns string with removed occurrence from end';
+  var got = _.strRemoveEnd( 'example','mple' );
+  var expected = 'exa';
+  test.identical( got,expected );
+
+  test.description = 'returns original if no occurrence found ';
+  var got = _.strRemoveEnd( 'example','' );
+  var expected = 'example';
+  test.identical( got,expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( 'one','two','three' );
+  });
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( );
+  });
+
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( 1,'second' );
+  });
+
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( 'first',2 );
+  });
+
+}
+
+//
+
+function strRemoveBegin( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strRemoveBegin';
+
+  /**/
+
+  got = _.strRemoveBegin( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( '', 'x' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'a' );
+  expected = 'bc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'ab' );
+  expected = 'c';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'x' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', 'abc' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', '' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', '' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', [ 'a', 'b', 'c' ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'aabbcc', [ 'a', 'b', 'c' ] );
+  expected = 'abbcc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abcabc', [ 'a', 'b', 'c' ] );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', [ '', 'a' ] );
+  expected = 'bc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'abc', [ 'abc', 'a' ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'abc', 'bca', 'cab' ], [ 'a', 'd' ] );
+  expected = [ 'bc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'abc', 'bca', 'cab' ], [ 'a', 'b', 'c' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ 'x' ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strRemoveBegin( 1, '' ) )
+  test.shouldThrowError( () => _.strRemoveBegin( 'a', 1 ) )
+  test.shouldThrowError( () => _.strRemoveBegin() )
+  test.shouldThrowError( () => _.strRemoveBegin( undefined, undefined ) )
+  test.shouldThrowError( () => _.strRemoveBegin( null, null ) )
+}
+
+//
+
+function strRemoveEnd( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strRemoveBegin';
+
+  /**/
+
+  got = _.strRemoveEnd( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( '', 'x' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'c' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'bc' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'x' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', 'abc' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', '' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', [ 'a', 'b', 'c' ] );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', [ '', 'a' ] );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'abc', [ 'abc', 'a' ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'a', 'd' ] );
+  expected = [ 'abc', 'bc', 'cab' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'a', 'b', 'c' ] );
+  expected = [ 'ab', 'bc', 'ca' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ 'x' ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strRemoveEnd( 1, '' ) )
+  test.shouldThrowError( () => _.strRemoveEnd( 'a', 1 ) )
+  test.shouldThrowError( () => _.strRemoveEnd() )
+  test.shouldThrowError( () => _.strRemoveEnd( undefined, undefined ) )
+  test.shouldThrowError( () => _.strRemoveEnd( null, null ) )
+}
+
+//
+
+function strReplaceBegin( test )
+{
+  /**/
+
+  var got,expected;
+
+  got = _.strReplaceBegin( '', '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( '', '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'a', 'a', 'b' );
+  expected = 'b';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'a', 'x', 'b' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'abc', 'ab', 'c' );
+  expected = 'cc';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'abc', '', 'c' );
+  expected = 'cabc';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [], '', '' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], 'a', 'c' );
+  expected = [ 'c', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], 'c' );
+  expected = [ 'c', 'c', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'y', 'z' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'aa', 'bb', 'cc' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'xa', 'yb', 'zc' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'aa', 'bb', 'cc' ], [ 'y', 'z', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'aa', 'bb', 'zc' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ], 'c' );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'a', 'ab', 'ac' ], 'a', [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'xb', 'xc' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strReplaceBegin() );
+  test.shouldThrowError( () => _.strReplaceBegin( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', 'a', 1 ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'x', 1 ], 'a' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'b', 'a' ], [ 'x', 1 ] ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'a' ], [ 'x', '1' ] ) );
+}
+
+//
+
+function strReplaceEnd( test )
+{
+  /**/
+
+  var got,expected;
+
+  got = _.strReplaceEnd( '', '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( '', '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'a', 'a', 'b' );
+  expected = 'b';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'a', 'x', 'b' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'abc', 'bc', 'c' );
+  expected = 'ac';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'abc', '', 'c' );
+  expected = 'abcc';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [], '', '' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], 'a', 'c' );
+  expected = [ 'c', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], 'c' );
+  expected = [ 'c', 'c', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'y', 'z' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'aa', 'bb', 'cc' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'ax', 'by', 'cz' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'aa', 'bb', 'cc' ], [ 'y', 'z', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'aa', 'bb', 'cz' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ], 'c' );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'a', 'ab', 'ca' ], 'a', [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'ab', 'cx' ];
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strReplaceEnd() );
+  test.shouldThrowError( () => _.strReplaceEnd( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', 'a', 1 ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'x', 1 ], 'a' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'a' ], [ 1 ] ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'b', 'c' ], [ 'c' ] ) );
+}
+
+//
+
+function strPrependOnce( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strPrependOnce';
+
+  /**/
+
+  got = _.strPrependOnce( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', 'a' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', 'ab' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', 'x' );
+  expected = 'xab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'ab', '' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+}
+
+//
+
+function strAppendOnce( test )
+{
+  var got,expected;
+
+  //
+
+  test.description = 'strAppendOnce';
+
+  /**/
+
+  got = _.strAppendOnce( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', 'a' );
+  expected = 'aba';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', 'ab' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', 'x' );
+  expected = 'abx';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'ab', '' );
+  expected = 'ab';
+  test.identical( got, expected );
+
+}
+
+// --
+//
+// --
+
+function strForRange( test )
+{
+
+  test.description = 'returns string representing the range of numbers';
+  var got = _.strForRange( [ 1, 10 ] );
+  var expected = '[ 1..10 ]';
+  test.identical( got, expected );
+
+  test.description = 'returns string representing the range of symbols';
+  var got = _.strForRange( [ 'a', 'z' ] );
+  var expected = '[ a..z ]';
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strForRange( );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strForRange( 'wrong argument' );
+  } );
+
+  test.description = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strForRange( [ 1, 10 ], 'redundant argument' );
+  } );
+
+};
+
 //
 
 function strCapitalize( test )
 {
+
+  test.description = 'first letter is upper case';
+  var got = _.strCapitalize( 'object' );
+  var expected = 'Object';
+  test.identical( got, expected );
 
   test.description = 'single word';
   var got = _.strCapitalize( 'one' );
@@ -67,6 +695,24 @@ function strCapitalize( test )
   {
     _.strCapitalize();
   });
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strCapitalize( );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strCapitalize( 33 );
+  } );
+
+  test.description = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strCapitalize( 'object', 'redundant argument' );
+  } );
 
 }
 
@@ -425,51 +1071,21 @@ function toStrMethods( test )
 
 //
 
-function strTimes( test )
-{
-  test.description = 'concatenation test';
-  var got = _.strTimes( 'a', 2 );
-  var expected = 'aa';
-  test.identical( got,expected );
-
-  test.description = 'invalid times value';
-  var got = _.strTimes( 'a', -2 );
-  var expected = '';
-  test.identical( got,expected );
-
-
-  /**/
-
-  test.description = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strTimes( '1' );
-  });
-
-  test.description = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strTimes( 1,2 );
-  });
-
-  test.description = 'invalid second argument type';
-  test.shouldThrowError( function()
-  {
-    _.strTimes( '1', '2' );
-  });
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strTimes();
-  });
-
-}
-
-//
-
 function strLineCount( test )
 {
+
+  test.description = 'returns 1';
+  var func = 'function( x, y ) { return x + y; }';
+  var got = _.strLineCount( func );
+  var expected = 1;
+  test.identical( got, expected );
+
+  test.description = 'returns 4';
+  var func = 'function( x, y ) \n { \n   return x + y; \n }';
+  var got = _.strLineCount( func );
+  var expected = 4;
+  test.identical( got, expected );
+
   test.description = 'one line string test';
   var got = _.strLineCount( 'one line' );
   var expected = 1;
@@ -490,6 +1106,9 @@ function strLineCount( test )
 
   /**/
 
+  if( !Config.debug )
+  return;
+
   test.description = 'invalid arguments count';
   test.shouldThrowError( function()
   {
@@ -508,215 +1127,29 @@ function strLineCount( test )
     _.strLineCount();
   });
 
-}
-
-//
-
-function _strInhalf( test )
-{
-
-  test.description = 'three words with comma';
-  var got = _._strInhalf( { src : 'one,two,three', delimeter : ',' } );
-  var expected = [ 'one,two','three' ];
-  test.identical( got,expected );
-
-  test.description = 'array of splitters';
-  var got = _._strInhalf( { src : 'one word,two words,three words', delimeter : [ ',',' ' ] } );
-  var expected = [ "one word,two words,three", "words" ]
-  test.identical( got,expected );
-
-  test.description = 'zero delimeter length';
-  var got = _._strInhalf( { src : 'word,word', delimeter : '' } );
-  var expected = [ "word,word", "" ];
-  test.identical( got,expected );
-
-  test.description = 'left equal zero';
-  var got = _._strInhalf( { src : 'word,word_word', delimeter : '_', left : 0 } );
-  var expected = [ "word,word", "word" ];
-  test.identical( got,expected );
-
-  test.description = 'left 1 & delimeter length equal zero';
-  var got = _._strInhalf( { src : 'word,word_word', delimeter : '', left : 1 } );
-  var expected = [ "", "word,word_word" ];
-  test.identical( got,expected );
-
-
-  /**/
-
-  test.description = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _._strInhalf( '1', '2' );
-  });
-
-  test.description = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _._strInhalf( 123 );
-  });
-
-  test.description = 'invalid property type';
-  test.shouldThrowError( function()
-  {
-    _._strInhalf( { src : 1 } );
-  });
-
-  test.description = 'invalid property type';
-  test.shouldThrowError( function()
-  {
-    _._strInhalf( { src : 'word', delimeter : 0 } );
-  });
-
   test.description = 'no arguments';
-  test.shouldThrowError( function()
+  test.shouldThrowError( function( )
   {
-    _._strInhalf();
-  });
+    _.strLineCount( );
+  } );
 
-}
-
-//
-
-function strInhalfLeft( test )
-{
-
-  test.description = 'three words with comma';
-  var got = _.strInhalfLeft( { src : 'ab,bc,cd', delimeter : ',' } );
-  var expected = [ "ab", "bc,cd" ];
-  test.identical( got,expected );
-
-  test.description = 'array of splitters';
-  var got = _.strInhalfLeft( { src : 'one word,two words,three words', delimeter : [ ',',' ' ] } );
-  var expected = [ "one", "word,two words,three words" ];
-  test.identical( got,expected );
-
-  test.description = 'zero delimeter length';
-  var got = _.strInhalfLeft( { src : 'word,word', delimeter : '' } );
-  var expected = [ "", "word,word" ];
-  test.identical( got,expected );
-
-  test.description = 'two arguments';
-  var got = _.strInhalfLeft( 'word,word_word', '_' );
-  var expected = [ "word,word", "word" ];
-  test.identical( got,expected );
-
-  /**/
-
-  test.description = 'invalid arguments count';
-  test.shouldThrowError( function()
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
   {
-    _.strInhalfLeft( '1', '2', '3' );
-  });
+    _.strLineCount( [ 1, '\n', 2 ] );
+  } );
 
-  test.description = 'invalid argument type';
-  test.shouldThrowError( function()
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
   {
-    _.strInhalfLeft( 123, ' ' );
-  });
+    _.strLineCount( 13 );
+  } );
 
-  test.description = 'delimeter not defined';
-  test.shouldThrowError( function()
+  test.description = 'too many arguments';
+  test.shouldThrowError( function( )
   {
-    _.strInhalfLeft( { src : 1 } );
-  });
-
-  test.description = 'invalid property type';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfLeft( { src : 'word', delimeter : 0 } );
-  });
-
-  test.description = 'invalid property defined';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfLeft( { src : 'word', delimeter : 0, left : 0 } );
-  });
-
-  test.description = 'only one argument provided';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfLeft('one two three ');
-  });
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfLeft();
-  });
-
-}
-
-//
-
-function strInhalfRight( test )
-{
-
-  test.description = 'three words with comma';
-  var got = _.strInhalfRight( { src : 'ab,bc,cd', delimeter : ',' } );
-  var expected = [ "ab,bc","cd" ];
-  test.identical( got,expected );
-
-  test.description = 'array of splitters';
-  var got = _.strInhalfRight( { src : 'one word,two words,three words', delimeter : [ ',',' ' ] } );
-  var expected = [ "one word,two words,three", "words" ];
-  test.identical( got,expected );
-
-  test.description = 'zero delimeter length';
-  var got = _.strInhalfRight( { src : 'word,word', delimeter : '' } );
-  var expected = ["word,word", ""]
-  test.identical( got,expected );
-
-  test.description = 'two arguments';
-  var got = _.strInhalfRight( 'word,word_word', '_' );
-  var expected = [ "word,word", "word" ];
-  test.identical( got,expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfRight( '1', '2', '3' );
-  });
-
-  test.description = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfRight( 123, ' ' );
-  });
-
-  test.description = 'delimeter not defined';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfRight( { src : 1 } );
-  });
-
-  test.description = 'invalid property type';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfRight( { src : 'word', delimeter : 0 } );
-  });
-
-  test.description = 'invalid property defined';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfRight( { src : 'word', delimeter : 0, left : 1 } );
-  });
-
-  test.description = 'only one argument provided';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfRight('one two three ');
-  });
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strInhalfRight();
-  });
+    _.strLineCount( 'function( x, y ) \n { \n   return x + y; \n }', 'redundant argument' );
+  } );
 
 }
 
@@ -724,6 +1157,26 @@ function strInhalfRight( test )
 
 function strSplit( test )
 {
+
+  test.description = 'returns an array of strings';
+  var got = _.strSplit( 'test test test' );
+  var expected = [ 'test', 'test', 'test' ];
+  test.identical( got, expected );
+
+  test.description = 'split string into an array of strings';
+  var got = _.strSplit( ' test   test   test ' );
+  var expected = [ 'test', 'test', 'test' ];
+  test.identical( got, expected );
+
+  test.description = 'returns an array of strings';
+  var got = _.strSplit( ' test   test   test ', 'redundant argument' );
+  var expected = [ 'test   test   test' ];
+  test.identical( got, expected );
+
+  test.description = 'returns an array of strings';
+  var got = _.strSplit( ' test <delimteter>  test<delimteter>   test ', '<delimteter>' );
+  var expected = [ 'test', 'test', 'test' ];
+  test.identical( got, expected );
 
   test.description = 'simple string, defalut options';
   var got = _.strSplit( 'a b c d' );
@@ -898,12 +1351,25 @@ function strSplit( test )
 
   /* ignore text inside " " */
 
-  test.description = 'ignore text inside " "';
+  test.description = 'ignore text inside ""';
 
   var o =
   {
     src : '"/path/with space/" a b c',
-    skippingQuotation : 1
+    quoting : 1,
+    preservingEmpty : 1,
+  }
+  var got = _.strSplit( o );
+  var expected = [ '/path/with space/', '', 'a', '', 'b', '', 'c' ];
+  test.identical( got, expected );
+
+  test.description = 'ignore text inside ""';
+
+  var o =
+  {
+    src : '"/path/with space/" a b c',
+    quoting : 1,
+    preservingEmpty : 0,
   }
   var got = _.strSplit( o );
   var expected = [ '/path/with space/', 'a', 'b', 'c' ];
@@ -914,7 +1380,7 @@ function strSplit( test )
   var o =
   {
     src : 'a "/path with/empty space/" a',
-    skippingQuotation : 1
+    quoting : 1
   }
   var got = _.strSplit( o );
   var expected = [ 'a', '/path with/empty space/', 'a' ];
@@ -925,7 +1391,7 @@ function strSplit( test )
   var o =
   {
     src : '"a b c" "a b c" "a b c"',
-    skippingQuotation : 1
+    quoting : 1
   }
   var got = _.strSplit( o );
   var expected = [ 'a b c', 'a b c', 'a b c' ];
@@ -936,7 +1402,7 @@ function strSplit( test )
   var o =
   {
     src : '"a b c" "a b c" "a b c"',
-    skippingQuotation : 1,
+    quoting : 1,
     preservingEmpty : 1
   }
   var got = _.strSplit( o );
@@ -948,7 +1414,7 @@ function strSplit( test )
   var o =
   {
     src : '"a b c"x"a b c"x"a b c"',
-    skippingQuotation : 1,
+    quoting : 1,
     delimeter : [ 'x' ],
     preservingEmpty : 1,
     preservingDelimeters : 1
@@ -962,17 +1428,124 @@ function strSplit( test )
   var o =
   {
     src : '"a b" "" c"',
-    skippingQuotation : 1,
+    quoting : 0,
     delimeter : [ '"' ],
+    stripping : 1,
     preservingEmpty : 1,
     preservingDelimeters : 1
   }
   var got = _.strSplit( o );
-  var expected = [ 'a b', ' ', ' c"' ];
+  var expected = [ '', '\"', 'a b', '\"', '', '\"', '', '\"', 'c', '\"', '' ]
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b" "" c',
+    quoting : 0,
+    delimeter : [ '"' ],
+    stripping : 0,
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ '', '\"', 'a b', '\"', ' ', '\"', '', '\"', ' c' ];
+  test.identical( got, expected );
+
+  var o =
+  {
+    src : '"a b" "" c',
+    quoting : 1,
+    delimeter : [ '"' ],
+    stripping : 0,
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b', ' ', '', ' c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b" "" c',
+    quoting : 1,
+    delimeter : [ '"' ],
+    stripping : 0,
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b', ' ', '', ' c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b" "" c',
+    quoting : 1,
+    delimeter : [ '"' ],
+    stripping : 1,
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b', '', '', 'c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b" "" c"',
+    quoting : 1,
+    delimeter : [ '"' ],
+    stripping : 1,
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b', '', '', 'c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  var o =
+  {
+    src : '"a b" "" c"',
+    quoting : 1,
+    delimeter : [ '"' ],
+    stripping : 0,
+    preservingEmpty : 1,
+    preservingDelimeters : 1
+  }
+  var got = _.strSplit( o );
+  var expected = [ 'a b', ' ', '', ' c' ];
   test.identical( got, expected );
 
   if( !Config.debug )
   return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strSplit( );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strSplit( [  ] );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strSplit( 13 );
+  } );
 
   test.description = 'invalid arguments count';
   test.shouldThrowError( function()
@@ -1006,6 +1579,51 @@ function strSplit( test )
 
 }
 
+//
+
+function strSplitStrNumber( test )
+{
+
+  test.description = 'returns object with one property';
+  var got = _.strSplitStrNumber( 'abcdef' );
+  var expected = { str : 'abcdef' };
+  test.identical( got, expected );
+
+  test.description = 'returns object with two properties';
+  var got = _.strSplitStrNumber( 'abc3def' );
+  var expected = { str : 'abc', number : 3 };
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( [  ] );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( 13 );
+  } );
+
+  test.description = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( 'abc3', 'redundant argument' );
+  } );
+
+}
 //
 
 function strCutOffLeft( test )
@@ -1218,128 +1836,127 @@ function strCutOffLeft( test )
   expected = [ '', 'ab', '' ];
   test.identical( got, expected );
 
-  xxx
+  /**/
 
-  // /**/
+  got = _.strCutOffLeft( 'a b c', ' ', 1 );
+  expected = [ 'a', ' ', 'b c' ];
+  test.identical( got, expected );
+
   //
-  // got = _.strCutOffLeft( 'a b c', ' ', 1 );
-  // expected = [ 'a', 'b c' ];
-  // test.identical( got, expected );
+
+  test.description = 'single delimeter'
+
+  /* cut on first appear */
+
+  got = _.strCutOffLeft( 'abca', 'a', 1 );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffLeft( 'xxx', 'a', 1 );
+  expected = [ '', '', 'xxx'];
+  test.identical( got ,expected );
+
+  /* cut on second appear */
+
+  got = _.strCutOffLeft( 'abca', 'a', 2 );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got ,expected );
+
+  /* 5 attempts */
+
+  got = _.strCutOffLeft( 'abca', 'a', 5 );
+  expected = [ 'abca', 'a', '' ];
+  test.identical( got ,expected );
+
   //
-  // //
+
+  test.description = 'multiple delimeter'
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 1 );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got ,expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 2 );
+  expected = [ 'ab', 'c', 'a' ];
+  test.identical( got ,expected );
+
+  /**/
+
+  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 3 );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffLeft( 'xxx', [ 'a', 'c' ], 1 );
+  expected = [ '', '', 'xxx' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffLeft( 'xxx', [ 'a' ], 1 );
+  expected = [ '', '', 'xxx' ];
+  test.identical( got ,expected );
+
   //
-  // test.description = 'single delimeter'
+
+  test.description = 'options as map';
+
+  /**/
+
+  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a', number : 1 });
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got ,expected );
+
+  /* number option is missing */
+
+  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a' });
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got ,expected );
+
   //
-  // /* cut on first appear */
-  //
-  // got = _.strCutOffLeft( 'abca', 'a', 1 );
-  // expected = [ '', 'bca' ];
-  // test.identical( got ,expected );
-  //
-  // /* no occurrences */
-  //
-  // got = _.strCutOffLeft( 'xxx', 'a', 1 );
-  // expected = [ '', 'xxx' ];
-  // test.identical( got ,expected );
-  //
-  // /* cut on second appear */
-  //
-  // got = _.strCutOffLeft( 'abca', 'a', 2 );
-  // expected = [ 'abc', '' ];
-  // test.identical( got ,expected );
-  //
-  // /* 5 attempts */
-  //
-  // got = _.strCutOffLeft( 'abca', 'a', 5 );
-  // expected = [ '', 'abca' ];
-  // test.identical( got ,expected );
-  //
-  // //
-  //
-  // test.description = 'multiple delimeter'
-  //
-  // /**/
-  //
-  // got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 1 );
-  // expected = [ '', 'bca' ];
-  // test.identical( got ,expected );
-  //
-  // /**/
-  //
-  // got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 2 );
-  // expected = [ 'ab', 'a' ];
-  // test.identical( got ,expected );
-  //
-  // /**/
-  //
-  // got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 3 );
-  // expected = [ '', 'abca' ];
-  // test.identical( got ,expected );
-  //
-  // /* no occurrences */
-  //
-  // got = _.strCutOffLeft( 'xxx', [ 'a', 'c' ], 1 );
-  // expected = [ '', 'xxx' ];
-  // test.identical( got ,expected );
-  //
-  // /* no occurrences */
-  //
-  // got = _.strCutOffLeft( 'xxx', [ 'a' ], 1 );
-  // expected = [ '', 'xxx' ];
-  // test.identical( got ,expected );
-  //
-  // //
-  //
-  // test.description = 'options as map';
-  //
-  // /**/
-  //
-  // got = _.strCutOffLeft({ src : 'abca', delimeter : 'a', number : 1 });
-  // expected = [ '', 'bca' ];
-  // test.identical( got ,expected );
-  //
-  // /* number option is missing */
-  //
-  // got = _.strCutOffLeft({ src : 'abca', delimeter : 'a' });
-  // expected = [ '', 'bca' ];
-  // test.identical( got ,expected );
-  //
-  // //
-  //
-  // test.description = 'number option check';
-  //
-  // /* number is zero */
-  //
-  // got = _.strCutOffLeft( 'abca', 'a', 0 );
-  // expected = [ '', 'abca' ];
-  // test.identical( got ,expected );
-  //
-  // /* number is negative */
-  //
-  // got = _.strCutOffLeft( 'abca', 'a', -1 );
-  // expected = [ '', 'abca' ];
-  // test.identical( got ,expected );
-  //
-  //   if( !Config.debug )
-  //   return;
-  //
-  //   test.description = 'single argument but object expected';
-  //   test.shouldThrowErrorSync( function()
-  //   {
-  //     _.strCutOffLeft( 'abc' );
-  //   })
-  //
-  //   test.description = 'invalid option';
-  //   test.shouldThrowErrorSync( function()
-  //   {
-  //     _.strCutOffLeft({ src : 'abc', delimeter : 'a', query : 'a' });
-  //   })
-  //
-  //   test.description = 'changing of left option not allowed';
-  //   test.shouldThrowErrorSync( function()
-  //   {
-  //     _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
-  //   })
+
+  test.description = 'number option check';
+
+  /* number is zero */
+
+  got = _.strCutOffLeft( 'abca', 'a', 0 );
+  expected = [ '', '', 'abca' ];
+  test.identical( got ,expected );
+
+  /* number is negative */
+
+  got = _.strCutOffLeft( 'abca', 'a', -1 );
+  expected = [ '', '', 'abca' ];
+  test.identical( got ,expected );
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'single argument but object expected';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffLeft( 'abc' );
+  })
+
+  test.description = 'invalid option';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffLeft({ src : 'abc', delimeter : 'a', query : 'a' });
+  })
+
+  test.description = 'changing of left option not allowed';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
+  })
+
 }
 
 //
@@ -1554,132 +2171,131 @@ function strCutOffRight( test )
   expected = [ 'a', 'b', '' ];
   test.identical( got, expected );
 
-  xxx
+  //
 
-  // //
+  test.description = 'defaults'
+
+  /**/
+
+  got = _.strCutOffRight( 'a b c', ' ', 1 );
+  expected = [ 'a b', ' ', 'c' ];
+  test.identical( got, expected );
+
   //
-  // test.description = 'defaults'
+
+  test.description = 'single delimeter'
+
+  /* cut on first appear */
+
+  got = _.strCutOffRight( 'abca', 'a', 1 );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffRight( 'xxx', 'a', 1 );
+  expected = [ 'xxx', '', '' ];
+  test.identical( got ,expected );
+
+  /* cut on second appear */
+
+  got = _.strCutOffRight( 'abca', 'a', 2 );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got ,expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', 'a', 5 );
+  expected = [ '', '', 'abca' ];
+  test.identical( got ,expected );
+
   //
-  // /**/
+
+  test.description = 'multiple delimeter'
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 1 );
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got ,expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 2 );
+  expected = [ 'ab', 'c', 'a' ];
+  test.identical( got ,expected );
+
+  /**/
+
+  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 3 );
+  expected = [ '', 'a', 'bca' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffRight( 'xxx', [ 'a', 'c' ], 1 );
+  expected = [ 'xxx', '', '' ];
+  test.identical( got ,expected );
+
+  /* no occurrences */
+
+  got = _.strCutOffRight( 'xxx', [ 'a' ], 1 );
+  expected = [ 'xxx', '', '' ];
+  test.identical( got ,expected );
+
   //
-  // got = _.strCutOffRight( 'a b c', ' ', 1 );
-  // expected = [ 'a b', 'c' ];
-  // test.identical( got, expected );
+
+  test.description = 'options as map';
+
+  /**/
+
+  got = _.strCutOffRight({ src : 'abca', delimeter : 'a', number : 1 });
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got ,expected );
+
+  /* number option is missing */
+
+  got = _.strCutOffRight({ src : 'abca', delimeter : 'a' });
+  expected = [ 'abc', 'a', '' ];
+  test.identical( got ,expected );
+
   //
-  // //
-  //
-  // test.description = 'single delimeter'
-  //
-  // /* cut on first appear */
-  //
-  // got = _.strCutOffRight( 'abca', 'a', 1 );
-  // expected = [ 'abc', '' ];
-  // test.identical( got ,expected );
-  //
-  // /* no occurrences */
-  //
-  // got = _.strCutOffRight( 'xxx', 'a', 1 );
-  // expected = [ 'xxx', '' ];
-  // test.identical( got ,expected );
-  //
-  // /* cut on second appear */
-  //
-  // got = _.strCutOffRight( 'abca', 'a', 2 );
-  // expected = [ '', 'bca' ];
-  // test.identical( got ,expected );
-  //
-  // /**/
-  //
-  // got = _.strCutOffRight( 'abca', 'a', 5 );
-  // expected = [ 'abca', '' ];
-  // test.identical( got ,expected );
-  //
-  // //
-  //
-  // test.description = 'multiple delimeter'
-  //
-  // /**/
-  //
-  // got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 1 );
-  // expected = [ 'abc', '' ];
-  // test.identical( got ,expected );
-  //
-  // /**/
-  //
-  // got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 2 );
-  // expected = [ 'ab', 'a' ];
-  // test.identical( got ,expected );
-  //
-  // /**/
-  //
-  // got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 3 );
-  // expected = [ 'abca', '' ];
-  // test.identical( got ,expected );
-  //
-  // /* no occurrences */
-  //
-  // got = _.strCutOffRight( 'xxx', [ 'a', 'c' ], 1 );
-  // expected = [ 'xxx', '' ];
-  // test.identical( got ,expected );
-  //
-  // /* no occurrences */
-  //
-  // got = _.strCutOffRight( 'xxx', [ 'a' ], 1 );
-  // expected = [ 'xxx', '' ];
-  // test.identical( got ,expected );
-  //
-  // //
-  //
-  // test.description = 'options as map';
-  //
-  // /**/
-  //
-  // got = _.strCutOffRight({ src : 'abca', delimeter : 'a', number : 1 });
-  // expected = [ 'abc', '' ];
-  // test.identical( got ,expected );
-  //
-  // /* number option is missing */
-  //
-  // got = _.strCutOffRight({ src : 'abca', delimeter : 'a' });
-  // expected = [ 'abc', '' ];
-  // test.identical( got ,expected );
-  //
-  // //
-  //
-  // test.description = 'number option check';
-  //
-  // /* number is zero */
-  //
-  // got = _.strCutOffRight( 'abca', 'a', 0 );
-  // expected = [ 'abca', '' ];
-  // test.identical( got ,expected );
-  //
-  // /* number is negative */
-  //
-  // got = _.strCutOffRight( 'abca', 'a', -1 );
-  // expected = [ 'abca', '' ];
-  // test.identical( got ,expected );
-  //
-  // if( !Config.debug )
-  // return;
-  //
-  //   test.description = 'single argument but object expected';
-  //   test.shouldThrowErrorSync( function()
-  //   {
-  //     _.strCutOffRight( 'abc' );
-  //   })
-  //
-  //   test.description = 'invalid option';
-  //   test.shouldThrowErrorSync( function()
-  //   {
-  //     _.strCutOffRight({ src : 'abc', delimeter : 'a', query : 'a' });
-  //   })
-  //
-  //   test.description = 'changing of left option not allowed';
-  //   test.shouldThrowErrorSync( function()
-  //   {
-  //     _.strCutOffRight({ src : 'abc', delimeter : 'a', left : 0 });
-  //   })
+
+  test.description = 'number option check';
+
+  /* number is zero */
+
+  got = _.strCutOffRight( 'abca', 'a', 0 );
+  expected = [ 'abca', '', '' ];
+  test.identical( got ,expected );
+
+  /* number is negative */
+
+  got = _.strCutOffRight( 'abca', 'a', -1 );
+  expected = [ 'abca', '', '' ];
+  test.identical( got ,expected );
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'single argument but object expected';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffRight( 'abc' );
+  });
+
+  test.description = 'invalid option';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffRight({ src : 'abc', delimeter : 'a', query : 'a' });
+  });
+
+  test.description = 'changing of left option not allowed';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strCutOffRight({ src : 'abc', delimeter : 'a', left : 0 });
+  });
+
 }
 
 //
@@ -1823,6 +2439,26 @@ function strStrip( test )
   var expected = 'b';
   test.identical( got,expected );
 
+  test.description = 'nothing to remove';
+  var got = _.strStrip( 'test' );
+  var expected = 'test';
+  test.identical( got, expected );
+
+  test.description = 'removes whitespace from both ends of a string';
+  var got = _.strStrip( ' test ' );
+  var expected = 'test';
+  test.identical( got, expected );
+
+  test.description = 'Empty array';
+  var got = _.strStrip( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.description = 'Array with single string';
+  var got = _.strStrip( [ '' ] );
+  var expected = [ '' ];
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -1857,6 +2493,24 @@ function strStrip( test )
   {
     _.strStrip();
   });
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strStrip( );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strStrip( 13 );
+  } );
+
+  test.description = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strStrip( ' test ', 'redundant argument' );
+  } );
 
 }
 
@@ -2062,6 +2716,16 @@ function strStrip( test )
 function strRemoveAllSpaces( test )
 {
 
+  test.description = 'removes the spaces from the given string';
+  var got = _.strRemoveAllSpaces( 'a b c d e f' );
+  var expected = 'abcdef';
+  test.identical( got, expected );
+
+  test.description = 'replaces the all spaces with the commas';
+  var got = _.strRemoveAllSpaces( 'a b c d e f', ',' );
+  var expected = 'a,b,c,d,e,f';
+  test.identical( got, expected );
+
   test.description = 'simple string, defalut options';
   var got = _.strRemoveAllSpaces( 'a b c d e' );
   var expected = 'abcde';
@@ -2109,6 +2773,30 @@ function strRemoveAllSpaces( test )
   {
     _.strRemoveAllSpaces();
   });
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( [  ] );
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( 13 );
+  } );
+
+  test.description = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( 'a b c d e f', ',', 'redundant argument' );
+  } );
 
 }
 
@@ -2412,6 +3100,18 @@ function strLinesNumber( test )
 {
   var got,expected;
 
+  test.description = 'trivial';
+
+  test.description = 'returns the object';
+  var got = _.strLinesNumber( 'abc\ndef\nghi' );
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.description = 'returns the object';
+  var got = _.strLinesNumber( [] );
+  var expected = '';
+  test.identical( got, expected );
+
   //
 
   test.description = 'string';
@@ -2501,6 +3201,18 @@ function strLinesNumber( test )
   if( !Config.debug )
   return;
 
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesNumber();
+  } );
+
+  test.description = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesNumber( 13 );
+  } );
+
   test.description = 'invalid  argument type';
   test.shouldThrowError( function()
   {
@@ -2519,6 +3231,11 @@ function strLinesNumber( test )
 
 function strCount( test )
 {
+
+  test.description = 'returns 2';
+  var got = _.strCount( 'abc\ndef\nghi', '\n' );
+  var expected = 2;
+  test.identical( got, expected );
 
   test.description = 'simple string';
   var got = _.strCount( 'abaac','a' );
@@ -2539,6 +3256,30 @@ function strCount( test )
 
   if( !Config.debug )
   return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( );
+  } );
+
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( [  ], '\n' );
+  } );
+
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( 'abc\ndef\nghi', 13 );
+  } );
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( 'abc\ndef\nghi' );
+  } );
 
   test.description = 'invalid arguments count';
   test.shouldThrowError( function()
@@ -2571,9 +3312,19 @@ function strCount( test )
 function strDup( test )
 {
 
+  test.description = 'concatenation test';
+  var got = _.strDup( 'a', 2 );
+  var expected = 'aa';
+  test.identical( got,expected );
+
+  test.description = 'invalid times value';
+  var got = _.strDup( 'a', -2 );
+  var expected = '';
+  test.identical( got,expected );
+
   test.description = 'simple string';
-  var got = _.strDup( 'a', 5 );
-  var expected = 'aaaaa';
+  var got = _.strDup( 'a', 2 );
+  var expected = 'aa';
   test.identical( got,expected );
 
   test.description = 'one space';
@@ -2585,6 +3336,21 @@ function strDup( test )
   var got = _.strDup( 'a', 0 );
   var expected = '';
   test.identical( got,expected );
+
+  test.description = 'returns the empty string';
+  var got = _.strDup( 'abc', 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.description = 'returns the first copy of the given string';
+  var got = _.strDup( 'abc', 1 );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.description = 'copies and concatenates first argument three times';
+  var got = _.strDup( 'abc', 3 );
+  var expected = 'abcabcabc';
+  test.identical( got, expected );
 
   /**/
 
@@ -2615,244 +3381,47 @@ function strDup( test )
     _.strDup();
   });
 
-}
-
-//
-
-function strToBytes( test )
-{
-
-  test.description = 'simple string';
-  var got = _.strToBytes( 'abcd' );
-  var expected = new Uint8Array ( [ 97, 98, 99, 100 ] );
-  test.identical( got,expected );
-
-  test.description = 'escaping';
-  var got = _.strToBytes( '\u001bABC\n\t' );
-  var expected = new Uint8Array ( [ 27, 65, 66, 67, 10, 9 ] );
-  test.identical( got,expected );
-
-  test.description = 'zero length';
-  var got = _.strToBytes( '' );
-  var expected = new Uint8Array ( [ ] );
-  test.identical( got,expected );
-
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strToBytes( '1', '2' );
-  });
-
-  test.description = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strToBytes( 0 );
-  });
-
   test.description = 'no arguments';
-  test.shouldThrowError( function()
+  test.shouldThrowError( function( )
   {
-    _.strToBytes();
-  });
+    _.strDup( );
+  } );
 
-}
+  test.description = 'second argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 'a', 'wrong argument' );
+  } );
 
-//
-
-function strMetricFormat( test )
-{
-
-  test.description = 'default options';
-  var got = _.strMetricFormat( "100m", { } );
-  var expected = "100.0 ";
-  test.identical( got,expected );
-
-  test.description = 'default options';
-  var got = _.strMetricFormat( 0.005 );
-  var expected = "5.0 m";
-  test.identical( got,expected );
-
-  test.description = 'number to million';
-  var got = _.strMetricFormat( 1, { metric : 6 } );
-  var expected = "1.0 M";
-  test.identical( got,expected );
-
-  test.description = 'metric out of range';
-  var got = _.strMetricFormat( 1, { metric : 25 } );
-  var expected = "1.0 ";
-  test.identical( got,expected );
-
-  test.description = 'fixed : 0';
-  var got = _.strMetricFormat( "1300", { fixed : 0 } );
-  var expected = "1 k";
-  test.identical( got,expected );
-
-  test.description = 'divisor, thousand test';
-  var got = _.strMetricFormat( "1000000",{ divisor : 2, thousand:100 } );
-  var expected = "1.0 M";
-  test.identical( got,expected );
-
-  test.description = 'divisor, thousand,dimensions,metric test';
-  var got = _.strMetricFormat( "10000", { divisor : 2, thousand : 10, dimensions : 3,metric: 1 } );
-  var expected = '10.0 k'
-  test.identical( got,expected );
-
-  test.description = 'divisor, thousand,dimensions test';
-  var got = _.strMetricFormat( "10000", { divisor : 2, thousand : 10, dimensions : 3 } );
-  var expected = "10.0 h";
-  test.identical( got,expected );
-
-  test.description = 'divisor, thousand,dimensions,fixed test';
-  var got = _.strMetricFormat( "10000", { divisor : 2, thousand : 10, dimensions : 3, fixed : 0 } );
-  var expected = "10 h";
-  test.identical( got,expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
+  test.description = 'second argument is not provided';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 'a' );
+  } );
 
   test.description = 'invalid arguments count';
   test.shouldThrowError( function()
   {
-    _.strMetricFormat( '1', { fixed : 0 }, '3' );
+    _.strDup( '1' );
   });
 
   test.description = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strMetricFormat( [ 1, 2, 3 ] );
+    _.strDup( 1,2 );
   });
 
   test.description = 'invalid second argument type';
   test.shouldThrowError( function()
   {
-    _.strMetricFormat( 11, '0' );
+    _.strDup( '1', '2' );
   });
 
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strMetricFormat();
+    _.strDup();
   });
-
-  test.description = 'fixed out of range';
-  test.shouldThrowError( function()
-  {
-    _.strMetricFormat( "1300", { fixed : 22 } );
-  });
-
-}
-
-//
-
-function strMetricFormatBytes( test )
-{
-
-  test.description = 'default options';
-  var got = _.strMetricFormatBytes( 1024 );
-  var expected = '1024.0 b';
-  test.identical( got,expected );
-
-  test.description = 'default options';
-  var got = _.strMetricFormatBytes( 2500 );
-  var expected = '2.4 kb';
-  test.identical( got,expected );
-
-  test.description = 'fixed';
-  var got = _.strMetricFormatBytes( 2500, { fixed : 0 } );
-  var expected = '2 kb';
-  test.identical( got,expected );
-
-  test.description = 'invalid metric value';
-  var got = _.strMetricFormatBytes( 2500 , { metric:4 } );
-  var expected = '2500.0 b';
-  test.identical( got,expected );
-
-  test.description = 'divisor test';
-  var got = _.strMetricFormatBytes( Math.pow(2,32) , { divisor:4, thousand: 1024 } );
-  var expected = '4.0 Tb';
-  test.identical( got,expected );
-
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strMetricFormatBytes( [ '1', '2', '3' ] );
-  });
-
-  test.description = 'invalid second argument type';
-  test.shouldThrowError( function()
-  {
-    _.strMetricFormatBytes( 0, '0' );
-  });
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strMetricFormatBytes();
-  });
-
-  test.description = 'fixed out of range';
-  test.shouldThrowError( function()
-  {
-    _.strMetricFormatBytes( "1300", { fixed : 22 } );
-  });
-
-}
-
-//
-
-function strTimeFormat( test )
-{
-
-  test.description = 'simple number';
-  var got = _.strTimeFormat( 1000 );
-  var expected = '1.000 s';
-  test.identical( got,expected );
-
-  test.description = 'simple number';
-  var got = _.strTimeFormat( 1);
-  var expected = '1.000 ms';
-  test.identical( got,expected );
-
-  test.description = 'number as string';
-  var got = _.strTimeFormat( '1.5' );
-  var expected = '1.500 ms';
-  test.identical( got,expected );
-
-  test.description = 'big number';
-  var got = _.strTimeFormat( Math.pow( 4,7 ) );
-  var expected = '16.384 s';
-  test.identical( got,expected );
-
-  test.description = 'zero';
-  var got = _.strTimeFormat( 0 );
-  var expected = '0.000 ys';
-  test.identical( got,expected );
-
-  test.description = 'empty call';
-  var got = _.strTimeFormat(  );
-  var expected = 'NaN s';
-  test.identical( got,expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  xxx
 
 }
 
@@ -3013,8 +3582,6 @@ function strLinesSelect( test )
   expected = 'a';
   test.identical( got, expected );
 
-
-
   //
 
   test.description = 'multiline selection';
@@ -3131,6 +3698,7 @@ function strLinesSelect( test )
 
   /**/
 
+  var src = 'a\nb\nc\nd';
   got = _.strLinesSelect
   ({
     src : src,
@@ -3147,7 +3715,7 @@ function strLinesSelect( test )
   got = _.strLinesSelect
   ({
     src : src,
-    line : 0,//same behavior as null?
+    line : 0,
     numberOfLines : 1,
     selectMode : 'center',
     zero : 1
@@ -3311,7 +3879,7 @@ function strLinesSelect( test )
   ({
     src : src2,
     range : [ 1, 3 ],
-    nl : ' '
+    delimteter : ' '
   });
   expected = 'a b';
   test.identical( got, expected );
@@ -3322,7 +3890,7 @@ function strLinesSelect( test )
   ({
     src : src2,
     range : [ 1, 3 ],
-    nl : 'x'
+    delimteter : 'x'
   });
   expected = src2;
   test.identical( got, expected );
@@ -3377,25 +3945,25 @@ function strLinesSelect( test )
   ipsum dolor`;
   test.identical( got,expected );
 
-  //
+
 
   test.description = 'custom new line';
   var src2 ='Lorem||ipsum dolor||sit amet||consectetur'
-  var got = _.strLinesSelect( { src :  src2, range : [ 3, 5 ], nl : '||' } );
+  var got = _.strLinesSelect( { src : src2, range : [ 3, 5 ], zero : 1, delimteter : '||' } );
   var expected = `sit amet||consectetur`;
   test.identical( got,expected );
 
   //
 
   test.description = 'empty line, out of range';
-  var got = _.strLinesSelect( { src :  '', range : [ 1, 1 ] } );
+  var got = _.strLinesSelect( { src : '', range : [ 1, 1 ] } );
   var expected = '';
   test.identical( got,expected );
 
   //
 
   test.description = 'empty line';
-  var got = _.strLinesSelect( { src :  '', range : [ 0, 1 ] } );
+  var got = _.strLinesSelect( { src : '', range : [ 0, 1 ] } );
   var expected = '';
   test.identical( got,expected );
 
@@ -3519,28 +4087,161 @@ function strCommonRight( test )
 
 //
 
+function strExtractStrips( test )
+{
+
+  function onStrip( part )
+  {
+    var temp = part.split( ':' )
+    if( temp.length === 2 )
+    {
+      return temp;
+    }
+    return undefined;
+  }
+
+  test.description = 'case 1';
+  var str = 'this #background:red#is#background:default# text and # is not';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not'
+  ];
+  test.identical( got, expected );
+
+  test.description = 'case 2';
+  var str = '#simple # text #background:red#is#background:default# text and # is not#';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    '#simple # text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not#'
+  ];
+  test.identical( got, expected );
+
+  test.description = 'case 3';
+  var str = '#background:red#i#s#background:default##text';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], '#text'
+  ];
+  test.identical( got, expected );
+
+  test.description = 'warapped by strips';
+  var str = '#background:red#text#background:default#';
+  var got = _.strExtractStrips( str, { onStrip : onStrip } );
+  var expected =
+  [
+    [ 'background', 'red' ], 'text', [ 'background', 'default' ]
+  ];
+  test.identical( got, expected );
+
+}
+
+//
+
+function strExtractStereoStrips( test )
+{
+  var got,expected;
+
+  test.description = 'default';
+
+  /* nothing */
+
+  got = _.strExtractStereoStrips( '' );
+  expected = [ '' ];
+  test.identical( got, expected );
+
+  /* prefix/postfix # by default*/
+
+  got = _.strExtractStereoStrips( '#abc#' );
+  expected = [ '', 'abc', '' ];
+  test.identical( got, expected );
+
+  //
+
+  test.description = 'with options';
+
+  /* pre/post are same*/
+
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '/' }, '/abc/' );
+  expected = [ '', 'abc', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '/' }, '//abc//' );
+  expected = [ '', '', 'abc', '', '' ];
+  test.identical( got, expected );
+
+  /* different pre/post */
+
+  got = _.strExtractStereoStrips.call( { prefix : '/#', postfix : '#' }, '/#abc#' );
+  expected = [ 'abc' ];
+  test.identical( got, expected );
+
+  /* postfix appears in source two times */
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '#' }, '/ab#c#' );
+  expected = [ 'ab', 'c#' ];
+  test.identical( got, expected );
+
+  /* onStrip #1 */
+  function onStrip1( strip )
+  {
+    if( strip.length )
+    return strip;
+  }
+  got = _.strExtractStereoStrips.call( { onStrip : onStrip1 }, '#abc#' );
+  expected = [ '#abc#' ];
+  test.identical( got, expected );
+
+  /* onStrip #2 */
+  function onStrip2( strip )
+  {
+    return strip + strip;
+  }
+  got = _.strExtractStereoStrips.call( { prefix : '/', postfix : '#', onStrip : onStrip2 }, '/abc#' );
+  expected = [ 'abcabc' ];
+  test.identical( got, expected );
+
+}
+
+//
+
 var Self =
 {
 
-  name : 'StringTools tests 2',
+  name : 'StringTools',
   silencing : 1,
 
   tests :
   {
 
+    strRemoveBegin2 : strRemoveBegin2,
+    strRemoveEnd2 : strRemoveEnd2,
+
+    strRemoveBegin : strRemoveBegin,
+    strRemoveEnd : strRemoveEnd,
+
+    strReplaceBegin : strReplaceBegin,
+    strReplaceEnd : strReplaceEnd,
+
+    strPrependOnce : strPrependOnce,
+    strAppendOnce : strAppendOnce,
+
+    //
+
+    strForRange : strForRange,
     strCapitalize : strCapitalize,
     strReplaceAll : strReplaceAll,
 
     strHtmlEscape : strHtmlEscape,
     strIndentation : strIndentation,
 
-    strTimes : strTimes,
     strLineCount : strLineCount,
-    _strInhalf : _strInhalf,
-    strInhalfLeft : strInhalfLeft,
-    strInhalfRight : strInhalfRight,
 
     strSplit : strSplit,
+    strSplitStrNumber : strSplitStrNumber,
 
     strCutOffLeft : strCutOffLeft,
     strCutOffRight : strCutOffRight,
@@ -3557,15 +4258,14 @@ var Self =
     strLinesNumber : strLinesNumber,
     strCount : strCount,
     strDup : strDup,
-    strToBytes : strToBytes,
-    strMetricFormat : strMetricFormat,
-    strMetricFormatBytes : strMetricFormatBytes,
-    strTimeFormat : strTimeFormat,
+
     strShort : strShort,
     strLinesSelect : strLinesSelect,
     strCommonLeft : strCommonLeft,
     strCommonRight : strCommonRight,
 
+    strExtractStrips : strExtractStrips,
+    strExtractStereoStrips : strExtractStereoStrips,
 
   }
 
