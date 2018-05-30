@@ -4934,6 +4934,8 @@ function promiseIs( src )
   return prototype.constructor.name === 'Promise' && src instanceof Promise;
 }
 
+//
+
 function consequenceLike( src )
 {
   if( _.consequenceIs( src ) )

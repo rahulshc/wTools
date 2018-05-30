@@ -1,6 +1,6 @@
 ( function _Entity_test_s_( ) {
 
-'use strict';
+'use strict'; /*aaa*/
 
 if( typeof module !== 'undefined' )
 {
@@ -1302,35 +1302,35 @@ function entityDiff( test )
   ].join('\n');
   test.identical( got, expected );
 
-  test.description = 'arrays';
-  var got = _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
-  var expected =
-  [
-    'at : .2',
-    'src1 :',
-    '3 ',
-    'src2 :',
-    '4  ',
-    'difference :',
-    '*'
-  ].join('\n');
-  test.identical( got, expected );
-
-  test.description = 'objects,custom path';
-  var src1 = { a : { a : 1, b : '2' }, b : [ 1,2 ] };
-  var src2 = { a : { a : 1, b : '2' } };
-  var got = _.entityDiff( src1, src2, { path : 'a.b' } );
-  var expected =
-  [
-    'at : a.b',
-    'src1 :',
-    '2 ',
-    'src2 :',
-    '2  ',
-    'difference :',
-    'false'
-  ].join('\n');
-  test.identical( got, expected );
+  // test.description = 'arrays';
+  // var got = _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+  // var expected =
+  // [
+  //   'at : .2',
+  //   'src1 :',
+  //   '3 ',
+  //   'src2 :',
+  //   '4  ',
+  //   'difference :',
+  //   '*'
+  // ].join('\n');
+  // test.identical( got, expected );
+  //
+  // test.description = 'objects,custom path';
+  // var src1 = { a : { a : 1, b : '2' }, b : [ 1,2 ] };
+  // var src2 = { a : { a : 1, b : '2' } };
+  // var got = _.entityDiff( src1, src2, { path : 'a.b' } );
+  // var expected =
+  // [
+  //   'at : a.b',
+  //   'src1 :',
+  //   '2 ',
+  //   'src2 :',
+  //   '2  ',
+  //   'difference :',
+  //   'false'
+  // ].join('\n');
+  // test.identical( got, expected );
 
   if( !Config.debug )
   return;
@@ -1561,6 +1561,8 @@ var Self =
 
   name : 'entity',
   silencing : 1,
+  // verbosity : 4,
+  // importanceOfNegative : 3,
 
   tests :
   {

@@ -79,15 +79,22 @@ function consequenceLike( test )
 {
   test.description = 'check if entity is a consequenceLike';
 
+  if( !_.consequenceLike )
+  return test.identical( true,true );
+
   test.shouldBe( !_.consequenceLike() );
   test.shouldBe( !_.consequenceLike( {} ) );
-  test.shouldBe( _.consequenceLike( new _.Consequence() ) );
-  test.shouldBe( _.consequenceLike( _.Consequence() ) );
+  if( _.Consequence )
+  {
+    test.shouldBe( _.consequenceLike( new _.Consequence() ) );
+    test.shouldBe( _.consequenceLike( _.Consequence() ) );
+  }
   test.shouldBe( _.consequenceLike( Promise.resolve( 0 ) ) );
 
   var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
   test.shouldBe( _.consequenceLike( promise ) );
   test.shouldBe( _.consequenceLike( wConsequence.from( promise ) ) );
+
 }
 
 //
@@ -103,7 +110,6 @@ var Self =
   {
 
     objectLike : objectLike,
-
     promiseIs : promiseIs,
     consequenceLike : consequenceLike
 
