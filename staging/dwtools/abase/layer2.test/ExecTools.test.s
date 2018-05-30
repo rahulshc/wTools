@@ -248,7 +248,7 @@ function shell( test )
     {
       try
       {
-        require( '../dwtools/Base.s' );
+        require( '../../../Base.s' );
       }
       catch( err )
       {
@@ -584,7 +584,7 @@ function shell2( test )
     {
       try
       {
-        require( '../dwtools/Base.s' );
+        require( '../../../Base.s' );
       }
       catch( err )
       {
