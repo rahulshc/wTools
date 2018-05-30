@@ -888,10 +888,13 @@ function appArgsInSubjectAndMapFormat( o )
   _.assert( arguments.length === 0 || arguments.length === 1 );
   o = _.routineOptions( appArgsInSubjectAndMapFormat,arguments );
 
+  if( o.caching )
   if( _appArgsInSubjectAndMapFormatResult && o.delimeter === _appArgsInSubjectAndMapFormatResult.delimeter )
   return _appArgsInSubjectAndMapFormatResult;
 
   var result = Object.create( null );
+
+  if( o.caching )
   if( o.delimeter === appArgsInSubjectAndMapFormat.defaults.delimeter )
   _appArgsInSubjectAndMapFormatResult = result;
 
@@ -974,7 +977,8 @@ function appArgsInSubjectAndMapFormat( o )
 appArgsInSubjectAndMapFormat.defaults =
 {
   delimeter : ':',
-  argv : null
+  argv : null,
+  caching : true
 }
 
 //
