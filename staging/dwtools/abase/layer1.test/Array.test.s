@@ -10777,9 +10777,36 @@ function arraySetUnion( test )
 function arraySetContainAll( test )
 {
 
+  test.description = '1 argument, empty';
+  var a = [];
+  var got = _.arraySetContainAll( a );
+  var expected = true;
+  test.identical( got, expected );
+
   test.description = '1 argument, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
   var got = _.arraySetContainAll( a );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, empty';
+  var a = [];
+  var b = [];
+  var got = _.arraySetContainAll( a,b );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, src empty';
+  var a = [];
+  var b = [ 1 ];
+  var got = _.arraySetContainAll( a,b );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, ins empty';
+  var a = [ 1 ];
+  var b = [];
+  var got = _.arraySetContainAll( a,b );
   var expected = true;
   test.identical( got, expected );
 
@@ -10878,6 +10905,108 @@ function arraySetContainAll( test )
 function arraySetContainAny( test )
 {
 
+  test.description = '1 argument, empty';
+  var a = [];
+  var got = _.arraySetContainAny( a );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '1 argument, repeats';
+  var a = [ 1, 1, 1, 3, 4, 15 ];
+  var got = _.arraySetContainAny( a );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, empty';
+  var a = [];
+  var b = [];
+  var got = _.arraySetContainAny( a,b );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, src empty';
+  var a = [];
+  var b = [ 1 ];
+  var got = _.arraySetContainAny( a,b );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, ins empty';
+  var a = [ 1 ];
+  var b = [];
+  var got = _.arraySetContainAny( a,b );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'bigger second argument';
+  var a = [ 1, 3 ];
+  var b = [ 1, 1, 1, 1 ];
+  debugger;
+  var got = _.arraySetContainAny( a,b );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'bigger third argument';
+  var a = [ 1, 3 ];
+  var b = [ 1, 1 ];
+  var c = [ 1, 1, 1, 1 ];
+  var got = _.arraySetContainAny( a,b,c );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '3 arguments, the first is empty';
+  var a = [];
+  var b = [ 1 ];
+  var c = [ 2, 3];
+  var got = _.arraySetContainAny( a,b,c );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '4 arguments';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [ 1 ];
+  var c = [ 3, 1 ];
+  var d = [ 4, 1, 3, 2 ];
+  var got = _.arraySetContainAny( a,b,c,d );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'one argument have redundant element';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [ 0 ];
+  var c = [ 3, 1 ];
+  var d = [ 4, 1, 3, 2 ];
+  var got = _.arraySetContainAny( a,b,c,d );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'one argument have redundant element';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [ 1 ];
+  var c = [ 0, 1 ];
+  var d = [ 4, 1, 3, 2 ];
+  var got = _.arraySetContainAny( a,b,c,d );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'one argument have redundant element';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [ 1 ];
+  var c = [ 3, 0 ];
+  var d = [ 4, 1, 3, 2 ];
+  var got = _.arraySetContainAny( a,b,c,d );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = 'one argument have redundant element';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [ 1 ];
+  var c = [ 3, 1 ];
+  var d = [ 4, 1, 0, 2 ];
+  var got = _.arraySetContainAny( a,b,c,d );
+  var expected = true;
+  test.identical( got, expected );
+
   test.description = 'second and third arrays contains several values from (src) array';
   var a = [ 33, 4, 5, 'b', 'c' ];
   var b = [ 1, 'b', 'c', 4 ];
@@ -10892,9 +11021,9 @@ function arraySetContainAny( test )
   test.description = 'second array is empty, third array contains elements from (src) array';
   var a = [ 33, 4, 5, 'b', 'c' ];
   var b = [];
-  var c = [33];
+  var c = [ 33 ];
   var got = _.arraySetContainAny( a, b, c );
-  var expected = true;
+  var expected = false;
   test.identical( got, expected );
   test.shouldBe( got !== a );
   test.shouldBe( got !== b );
@@ -10916,7 +11045,7 @@ function arraySetContainAny( test )
   var b = [ 1, 'bcda', 'ce', 8 ];
   var c = [ 45, 13, 3 ];
   var got = _.arraySetContainAny( a, b, c );
-  var expected = false;
+  var expected = true;
   test.identical( got, expected );
   test.shouldBe( got !== a );
   test.shouldBe( got !== b );
@@ -10944,18 +11073,23 @@ function arraySetContainAny( test )
   test.shouldBe( got !== b );
   test.shouldBe( got !== c );
 
+  test.description = 'single argument';
+  var got = _.arraySetContainAny([ 33, 4, 5, 'b', 'c' ]);
+  var expected = true;
+  test.identical( got, expected );
+
   /**/
 
   var cases =
   [
-    { args : [ [], [] ], expected : false },
+    { args : [ [], [] ], expected : true },
     { args : [ [ 1, 2, 3 ], [ 1 ] ], expected : true },
-    { args : [ [ 1, 2, 3 ], [], [ 3 ] ], expected : true },
+    { args : [ [ 1, 2, 3 ], [], [ 3 ] ], expected : false },
     { args : [ [ 1, 2, 3 ], [ 0, 1 ], [ 9, 3 ] ], expected : true },
-    { args : [ [ 1, 2, 3 ], [ 4 ], [ 3 ] ], expected : true },
-    { args : [ [], [ 0 ], [ 4 ], [ 3 ] ], expected : false },
+    { args : [ [ 1, 2, 3 ], [ 4 ], [ 3 ] ], expected : false },
+    { args : [ [], [ 0 ], [ 4 ], [ 3 ] ], expected : true },
     { args : [ [ 1, 2, 3 ], [ 4 ], [ 5 ]  ], expected : false },
-    { args : [ [ 0, 0, 0, 1 ], [ 5 ], [ 6 ], [ 2, 1 ]  ], expected : true },
+    { args : [ [ 0, 0, 0, 1 ], [ 5 ], [ 6 ], [ 2, 1 ]  ], expected : false },
     { args : [ [ 1, 2, 3 ], [ 4 ], 1  ], error : true },
     { args : [ 1, [ 4 ], 1  ], error : true },
   ]
@@ -10979,12 +11113,6 @@ function arraySetContainAny( test )
   test.shouldThrowError( function()
   {
     _.arraySetContainAny();
-  });
-
-  test.description = 'too few arguments';
-  test.shouldThrowError( function()
-  {
-    _.arraySetContainAny([ 33, 4, 5, 'b', 'c' ]);
   });
 
   test.description = 'one or several arguments are not arrayLike entities,numeric arguments';
@@ -11017,6 +11145,48 @@ function arraySetContainAny( test )
 
 function arraySetIdentical( test )
 {
+
+  test.description = '2 arguments, empty';
+  var a = [];
+  var b = [];
+  var got = _.arraySetIdentical( a,b );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, src empty';
+  var a = [];
+  var b = [ 1 ];
+  var got = _.arraySetIdentical( a,b );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = '2 arguments, ins empty';
+  var a = [ 1 ];
+  var b = [];
+  var got = _.arraySetIdentical( a,b );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'repeats, bigger second argument';
+  var a = [ 1 ];
+  var b = [ 1, 1, 1, 1 ];
+  var got = _.arraySetIdentical( a,b );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'repeats, bigger first argument';
+  var a = [ 1, 1, 1, 1 ];
+  var b = [ 1 ];
+  var got = _.arraySetIdentical( a,b );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.description = 'repeats';
+  var a = [ 1, 3 ];
+  var b = [ 1, 1, 1, 1 ];
+  var got = _.arraySetIdentical( a,b );
+  var expected = false;
+  test.identical( got, expected );
 
   test.description = 'arguments have the same elements but the order is differ';
   var a = [ 1, 2, 4, 7, 5 ];
@@ -11054,9 +11224,34 @@ function arraySetIdentical( test )
   test.shouldBe( got !== a );
   test.shouldBe( got !== b );
 
-  /**/
+  /* */
 
-  /* special cases */
+  var cases =
+  [
+    { args : [ [], [] ], expected : true },
+    { args : [ [ 1 ], [] ], expected : false },
+    { args : [ [ 1 ], [ 1 ] ], expected : true },
+    { args : [ [ 1, 1 ], [ 1 ] ], expected : false },
+    { args : [ [ 1 ], [ 1, 1 ] ], expected : false },
+    { args : [ [ 1, 2, 3 ], [ 1, 2, 4 ] ], expected : false },
+    { args : [ [ 1, 2, 3 ], [ 3, 2, 1 ] ], expected : true },
+    { args : [ [ 1, 2, 3 ], [ 3, 2, 1 ] ], expected : true },
+    { args : [ [ [ 1 ], 2, 3 ], [ 3, 2, [ 1 ] ] ], expected : false },
+    { args : [ 1, [ 1 ] ], error : true },
+    { args : [ [ 1 ], 1 ], error : true },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.error )
+    test.shouldThrowError( () => _.arraySetIdentical.apply( _,c.args ) );
+    else
+    test.identical( _.arraySetIdentical.apply( _,c.args ) , c.expected );
+  }
+
+  /* */
 
   if( !Config.debug )
   return;
@@ -11103,81 +11298,7 @@ function arraySetIdentical( test )
     _.arraySetIdentical( undefined, undefined );
   });
 
-
-  var cases =
-  [
-    { args : [ [], [] ], expected : true },
-    { args : [ [ 1 ], [] ], expected : false },
-    { args : [ [ 1 ], [ 1 ] ], expected : true },
-    { args : [ [ 1, 1 ], [ 1 ] ], expected : false },
-    { args : [ [ 1 ], [ 1, 1 ] ], expected : false },
-    { args : [ [ 1, 2, 3 ], [ 1, 2, 4 ] ], expected : false },
-    { args : [ [ 1, 2, 3 ], [ 3, 2, 1 ] ], expected : true },
-    { args : [ [ 1, 2, 3 ], [ 3, 2, 1 ] ], expected : true },
-    { args : [ [ [ 1 ], 2, 3 ], [ 3, 2, [ 1 ] ] ], expected : false },
-    { args : [ 1, [ 1 ] ], error : true },
-    { args : [ [ 1 ], 1 ], error : true },
-  ]
-
-  for( var i = 0; i < cases.length; i++ )
-  {
-    var c = cases[ i ];
-
-    if( c.error )
-    test.shouldThrowError( () => _.arraySetIdentical.apply( _,c.args ) );
-    else
-    test.identical( _.arraySetIdentical.apply( _,c.args ) , c.expected );
-  }
 }
-
-//
-
-// function arraySetContainAny( test )
-// {
-
-//   test.description = 'returns false';
-//   var got = _.arraySetContainAny( [  ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
-//   var expected = false;
-//   test.identical( got, expected );
-
-//   test.description = 'returns false';
-//   var got = _.arraySetContainAny( [  ] );
-//   var expected = false;
-//   test.identical( got, expected );
-
-//   test.description = 'returns false';
-//   var got = _.arraySetContainAny( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
-//   var expected = false;
-//   test.identical( got, expected );
-
-//   test.description = 'matching from arguments[1]';
-//   var got = _.arraySetContainAny( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
-//   var expected = true;
-//   test.identical( got, expected );
-
-//   test.description = 'matching from arguments[2]';
-//   var got = _.arraySetContainAny( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
-//   var expected = true;
-//   test.identical( got, expected );
-
-//   /**/
-
-//   if( !Config.debug )
-//   return;
-
-//   test.description = 'no arguments';
-//   test.shouldThrowError( function()
-//   {
-//     _.arraySetContainAny();
-//   });
-
-//   test.description = 'wrong arguments';
-//   test.shouldThrowError( function()
-//   {
-//     _.arraySetContainAny( [ 1, 2, 3, 4 ], 'wrong arguments' );
-//   });
-
-// };
 
 // --
 // not sorted
