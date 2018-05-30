@@ -258,6 +258,9 @@ function shell( test )
       var _ = _global_.wTools;
 
       _.include( 'wConsequence' );
+      _.include( 'wstringsextra' );
+      _.include( 'wstringer' );
+      _.include( 'wPath' );
 
     }
 
