@@ -13841,25 +13841,28 @@ function arraySetContainAll( src )
 function arraySetContainAny( src )
 {
   _.assert( _.arrayLike( src ) );
+  for( var a = 1 ; a < arguments.length ; a++ )
+  _.assert( _.arrayLike( arguments[ a ] ) );
+
+  if( src.length === 0 )
+  return true;
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
+    var ins = arguments[ a ];
 
-    _.assert( _.arrayLike( arguments[ a ] ) );
-
-    for( var i = 0 ; i < src.length ; i++ )
+    for( var i = 0 ; i < ins.length ; i++ )
     {
-
-      if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
-      {
-        return true;
-      }
-
+      if( src.indexOf( ins[ i ] ) !== -1 )
+      break;
     }
+
+    if( i === ins.length )
+    return false;
 
   }
 
-  return false;
+  return true;
 }
 
 //
