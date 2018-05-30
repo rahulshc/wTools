@@ -443,36 +443,8 @@ function eachSample( o )
   _.routineOptions( eachSample,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( o.onEach ) || o.onEach === null );
-  _.assert( _.arrayIs( o.sets ) || _.mapLike( o.sets ) || o.base !== null || o.add !== null );
-
-  /* */
-
-  // if( o.base !== null || o.add !== null )
-  // {
-  //
-  //   var l = 1;
-  //   if( _.arrayLike( o.base ) )
-  //   l = o.base.length;
-  //   else if( _.arrayLike( o.add ) )
-  //   l = o.add.length;
-  //
-  //   if( !o.base )
-  //   o.base = 0;
-  //   o.base = _.arrayFromNumber( o.base,l );
-  //   o.add = _.arrayFromNumber( o.add,l );
-  //
-  //   _.assert( o.base.length === o.add.length );
-  //   _.assert( !o.sets );
-  //
-  //   o.sets = [];
-  //
-  //   for( var b = 0 ; b < o.base.length ; b++ )
-  //   {
-  //     var e = [ o.base[ b ], o.base[ b ] + o.add[ b ] ];
-  //     o.sets.push( e );
-  //   }
-  //
-  // }
+  _.assert( _.arrayIs( o.sets ) || _.mapLike( o.sets ) );
+  _.assert( o.base === undefined && o.add === undefined );
 
   /* sample */
 
@@ -491,7 +463,6 @@ function eachSample( o )
 
   /* sets */
 
-  // for( var k = 0, l = o.sets.length; k < l ; k++ )
   _.each( o.sets, function( e,k,it )
   {
     var set = o.sets[ k ];
@@ -508,7 +479,6 @@ function eachSample( o )
   function firstSample()
   {
 
-    // for( var k = 0, l = o.sets.length; k < l ; k++ )
     _.each( o.sets, function( e,k,it )
     {
       o.sample[ k ] = o.sets[ k ][ indexnd[ it.index ] ];
@@ -516,7 +486,7 @@ function eachSample( o )
       return 0;
     });
 
-    if( o.collectingResult )
+    if( o.result )
     if( _.mapLike( o.sample ) )
     o.result.push( _.mapExtend( null, o.sample ) );
     else
@@ -543,7 +513,7 @@ function eachSample( o )
       o.sample[ k ] = o.sets[ k ][ indexnd[ i ] ];
       index += 1;
 
-      if( o.collectingResult )
+      if( o.result )
       if( _.mapLike( o.sample ) )
       o.result.push( _.mapExtend( null, o.sample ) );
       else
@@ -561,13 +531,11 @@ function eachSample( o )
   {
 
     if( o.leftToRight )
-    // for( var i = 0, l = o.sets.length; i < l ; i++ )
     for( var i = 0 ; i < l ; i++ )
     {
       if( nextSample( i ) )
       return 1;
     }
-    // else for( var i = o.sets.length - 1, l = o.sets.length; i >= 0 ; s-- )
     else for( var i = l - 1 ; i >= 0 ; i-- )
     {
       if( nextSample( i ) )
@@ -605,9 +573,6 @@ eachSample.defaults =
   sample : null,
 
   result : 1,
-
-  // base : null,
-  // add : null,
 
 }
 
@@ -1312,8 +1277,6 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
 function entityAssignField( dstContainer,srcValue,name,onRecursive )
 {
   var result;
-  // debugger;
-  // var name = _.nameUnfielded( name ).coded;
 
   _.assert( _.strIs( name ) || _.symbolIs( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
@@ -1383,7 +1346,7 @@ function entityCoerceTo( src,ins )
     return _.boolFrom( src );
 
   }
-  else throw _.err( 'unknown type to coerce to : ' + _.strTypeOf( ins ) );
+  else _.assert( 0,'unknown type to coerce to : ' + _.strTypeOf( ins ) );
 
 }
 
@@ -2159,7 +2122,7 @@ function entityLength( src )
  *
  * @example
  * //returns 6
- * _.entitySize( "string" );
+ * _.entitySize( 'string' );
  *
  * @example
  * //returns 3
@@ -2179,8 +2142,11 @@ function entityLength( src )
 
 function entitySize( src )
 {
+  _.assert( arguments.length === 1 );
+
   if( _.strIs( src ) )
   return src.length;
+
   if( _.atomicIs( src ) )
   return null;
 
@@ -2252,6 +2218,9 @@ function entitySize( src )
 function entityValueWithIndex( src,index )
 {
 
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( index ) );
+
   if( _.arrayIs( src ) )
   {
     return src[ index ];
@@ -2261,7 +2230,8 @@ function entityValueWithIndex( src,index )
     var i = 0;
     for( var s in src )
     {
-      if( i === index ) return src[ s ];
+      if( i === index )
+      return src[ s ];
       i++;
     }
   }
@@ -2269,6 +2239,7 @@ function entityValueWithIndex( src,index )
   {
     return src[ index ];
   }
+  else _.assert( 0,'unknown kind of argument',_.strTypeOf( src ) );
 
 }
 
@@ -2300,8 +2271,9 @@ function entityValueWithIndex( src,index )
 
 function entityKeyWithValue( src,value )
 {
-
   var result = null;
+
+  _.assert( arguments.length === 2 );
 
   if( _.arrayIs( src ) )
   {
@@ -2319,8 +2291,11 @@ function entityKeyWithValue( src,value )
   {
     result = src.indexOf( value );
   }
+  else _.assert( 0,'unknown kind of argument',_.strTypeOf( src ) );
 
-  if( result === -1 ) result = null;
+  if( result === -1 )
+  result = null;
+
   return result;
 }
 
@@ -6873,7 +6848,7 @@ function routinesCall()
 {
   var result;
 
-  _routinesCall
+  result = _routinesCall
   ({
     args : arguments,
     untilFalse : 0,
@@ -6888,7 +6863,7 @@ function routinesCallUntilFalse()
 {
   var result;
 
-  return _routinesCall
+  result = _routinesCall
   ({
     args : arguments,
     untilFalse : 1,
@@ -17669,6 +17644,7 @@ var Proto =
 
   str : str,
   toStr : str,
+  strFrom : str,
 
   _strBegins : _strBegins,
   strBegins : strBegins,

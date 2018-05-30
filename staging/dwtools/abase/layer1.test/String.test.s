@@ -471,7 +471,7 @@ function strBegins( test )
 
   /**/
 
-  got = _.strBegins( 'abc', [ 1, 'b', 'a' ] );
+  got = _.strBegins( 'abc', [ '1', 'b', 'a' ] );
   expected = true;
   test.identical( got, expected );
 
@@ -480,6 +480,7 @@ function strBegins( test )
 
   test.shouldThrowError( () => _.strBegins( 1, '' ) );
   test.shouldThrowError( () => _.strBegins( 'a', 1 ) );
+  test.shouldThrowError( () => _.strBegins( 'abc', [ 1, 'b', 'a' ] ) );
 
 }
 

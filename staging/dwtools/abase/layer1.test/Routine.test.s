@@ -1,6 +1,6 @@
 ( function _Routine_test_s_( ) {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -68,52 +68,52 @@ function _routineBind( test )
     testParam2 = 4,
     options1 =
     {
-      seal: false,
-      routine: testFunction1,
-      args: [ testParam2 ] // x
+      seal : false,
+      routine : testFunction1,
+      args : [ testParam2 ] // x
     },
     options2 =
     {
-      seal: true,
-      routine: testFunction2,
-      args: [ testParam2 ] // x
+      seal : true,
+      routine : testFunction2,
+      args : [ testParam2 ] // x
     },
 
     options3 =
     {
-      seal: false,
-      routine: testFunction3,
-      args: [ testParam2 ], // x
-      context: context3
+      seal : false,
+      routine : testFunction3,
+      args : [ testParam2 ], // x
+      context : context3
     },
     options4 =
     {
-      seal: false,
-      routine: testFunction4,
-      args: [ testParam2 ], // x
-      context: context3
+      seal : false,
+      routine : testFunction4,
+      args : [ testParam2 ], // x
+      context : context3
     },
 
     options5 =
     {
-      seal: true,
-      routine: testFunction3,
-      args: [ testParam1, testParam2 ], // x
-      context: context3
+      seal : true,
+      routine : testFunction3,
+      args : [ testParam1, testParam2 ], // x
+      context : context3
     },
 
     wrongOpt1 = {
-      seal: true,
-      routine: {},
-      args: [ testParam1, testParam2 ], // x
-      context: context3
+      seal : true,
+      routine : {},
+      args : [ testParam1, testParam2 ], // x
+      context : context3
     },
 
     wrongOpt2 = {
-      seal: true,
-      routine: testFunction3,
-      args: 'wrong', // x
-      context: context3
+      seal : true,
+      routine : testFunction3,
+      args : 'wrong', // x
+      context : context3
     },
 
     expected1 = 6,
@@ -121,61 +121,59 @@ function _routineBind( test )
     expected3 = 21,
     expected5 = 21;
 
-  test.description = 'simple function without context with arguments bind without seal: result check';
+  test.description = 'simple function without context with arguments bind without seal : result check';
   var gotfn = _._routineBind( options1 );
   var got = gotfn( testParam1 );
   test.identical( got,expected1 );
 
-  test.description = 'simple function without context and seal: context test';
+  test.description = 'simple function without context and seal : context test';
   var gotfn = _._routineBind(options2);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
-  test.description = 'simple function with context and arguments: result check';
+  test.description = 'simple function with context and arguments : result check';
   var gotfn = _._routineBind(options3);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
-  test.description = 'simple function with context and arguments: context check';
+  test.description = 'simple function with context and arguments : context check';
   var gotfn = _._routineBind(options4);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
-  test.description = 'simple function with context and arguments: result check, seal == true ';
+  test.description = 'simple function with context and arguments : result check, seal == true ';
   var gotfn = _._routineBind(options5);
   var got = gotfn( testParam1 );
   test.identical( got, expected5 );
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'missed argument';
+  test.shouldThrowError( function()
   {
+    _._routineBind();
+  });
 
-    test.description = 'missed argument';
-    test.shouldThrowError( function()
-    {
-      _._routineBind();
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _._routineBind( options1, options2 );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _._routineBind( options1, options2 );
-    });
+  test.description = 'passed non callable object';
+  test.shouldThrowError( function()
+  {
+    _._routineBind( wrongOpt1 );
+  });
 
-    test.description = 'passed non callable object';
-    test.shouldThrowError( function()
-    {
-      _._routineBind( wrongOpt1 );
-    });
-
-    test.description = 'passed arguments as primitive value';
-    test.shouldThrowError( function()
-    {
-      _._routineBind( wrongOpt2 );
-    });
-
-  }
+  test.description = 'passed arguments as primitive value';
+  test.shouldThrowError( function()
+  {
+    _._routineBind( wrongOpt2 );
+  });
 
 };
 
@@ -190,54 +188,53 @@ function routineBind( test )
     expected2 = undefined,
     expected3 = 21;
 
-  test.description = 'simple function without context with arguments bind: result check';
+  test.description = 'simple function without context with arguments bind : result check';
   var gotfn = _.routineBind( testFunction1, undefined, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got,expected1 );
 
-  test.description = 'simple function without context: context test';
+  test.description = 'simple function without context : context test';
   var gotfn = _.routineBind(testFunction2, undefined, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
-  test.description = 'simple function with context and arguments: result check';
+  test.description = 'simple function with context and arguments : result check';
   var gotfn = _.routineBind(testFunction3, context3, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
-  test.description = 'simple function with context and arguments: context check';
+  test.description = 'simple function with context and arguments : context check';
   var gotfn = _.routineBind(testFunction4, context3, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'missed argument';
+  test.shouldThrowError( function()
   {
+    _.routineBind();
+  });
 
-    test.description = 'missed argument';
-    test.shouldThrowError( function()
-    {
-      _.routineBind();
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.routineBind( testFunction4, context3, [ testParam2 ], [ testParam1 ] );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.routineBind( testFunction4, context3, [ testParam2 ], [ testParam1 ] );
-    });
+  test.description = 'passed non callable object';
+  test.shouldThrowError( function()
+  {
+    _.routineBind( {}, context3, [ testParam2 ] );
+  });
 
-    test.description = 'passed non callable object';
-    test.shouldThrowError( function()
-    {
-      _.routineBind( {}, context3, [ testParam2 ] );
-    });
+  test.description = 'passed arguments as primitive value';
+  test.shouldThrowError( function()
+  {
+    _.routineBind( testFunction4, context3, testParam2 );
+  });
 
-    test.description = 'passed arguments as primitive value';
-    test.shouldThrowError( function()
-    {
-      _.routineBind( testFunction4, context3, testParam2 );
-    });
-
-  }
 };
 
 //
@@ -251,55 +248,54 @@ function routineJoin( test )
     expected2 = undefined,
     expected3 = 21;
 
-  test.description = 'simple function without context with arguments bind: result check';
+  test.description = 'simple function without context with arguments bind : result check';
   var gotfn = _.routineJoin( undefined, testFunction1, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got,expected1 );
 
-  test.description = 'simple function without context: context test';
+  test.description = 'simple function without context : context test';
   var gotfn = _.routineJoin(undefined, testFunction2, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
-  test.description = 'simple function with context and arguments: result check';
+  test.description = 'simple function with context and arguments : result check';
   var gotfn = _.routineJoin(context3, testFunction3, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
-  test.description = 'simple function with context and arguments: context check';
+  test.description = 'simple function with context and arguments : context check';
   var gotfn = _.routineJoin(context3, testFunction4, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'missed argument';
+  test.shouldThrowError( function()
   {
+    _.routineJoin();
+  });
 
-    test.description = 'missed argument';
-    test.shouldThrowError( function()
-    {
-      _.routineJoin();
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.routineJoin( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.routineJoin( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
-    });
+  test.description = 'passed non callable object';
+  test.shouldThrowError( function()
+  {
+    _.routineJoin( context3, {}, [ testParam2 ] );
+  });
 
-    test.description = 'passed non callable object';
-    test.shouldThrowError( function()
-    {
-      _.routineJoin( context3, {}, [ testParam2 ] );
-    });
+  test.description = 'passed arguments as primitive value';
+  test.shouldThrowError( function()
+  {
+    _.routineJoin( context3, testFunction4, testParam2 );
+  });
 
-    test.description = 'passed arguments as primitive value';
-    test.shouldThrowError( function()
-    {
-      _.routineJoin( context3, testFunction4, testParam2 );
-    });
-
-  }
-};
+}
 
 //
 
@@ -312,55 +308,54 @@ function routineSeal(test)
     expected2 = undefined,
     expected3 = 21;
 
-  test.description = 'simple function with seal arguments: result check';
+  test.description = 'simple function with seal arguments : result check';
   var gotfn = _.routineSeal(undefined, testFunction1, [testParam1, testParam2]);
   var got = gotfn( testParam1 );
   test.identical( got, expected1 );
 
-  test.description = 'simple function with seal arguments: context check';
+  test.description = 'simple function with seal arguments : context check';
   var gotfn = _.routineSeal(undefined, testFunction2, [testParam1, testParam2]);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
-  test.description = 'simple function with seal context and arguments: result check';
+  test.description = 'simple function with seal context and arguments : result check';
   var gotfn = _.routineSeal(context3, testFunction3, [testParam1, testParam2]);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
-  test.description = 'simple function with seal context and arguments: context check';
+  test.description = 'simple function with seal context and arguments : context check';
   var gotfn = _.routineSeal(context3, testFunction4, [testParam1, testParam2]);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'missed argument';
+  test.shouldThrowError( function()
   {
+    _.routineSeal();
+  });
 
-    test.description = 'missed argument';
-    test.shouldThrowError( function()
-    {
-      _.routineSeal();
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.routineSeal( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.routineSeal( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
-    });
+  test.description = 'passed non callable object';
+  test.shouldThrowError( function()
+  {
+    _.routineSeal( context3, {}, [ testParam1, testParam2 ] );
+  });
 
-    test.description = 'passed non callable object';
-    test.shouldThrowError( function()
-    {
-      _.routineSeal( context3, {}, [ testParam1, testParam2 ] );
-    });
+  test.description = 'passed arguments as primitive value';
+  test.shouldThrowError( function()
+  {
+    _.routineSeal( context3, testFunction4, testParam2 );
+  });
 
-    test.description = 'passed arguments as primitive value';
-    test.shouldThrowError( function()
-    {
-      _.routineSeal( context3, testFunction4, testParam2 );
-    });
-
-  }
-};
+}
 
 //
 
@@ -405,7 +400,9 @@ function routinesCall( test )
     ];
 
   test.description = 'call single function without arguments and context';
+  debugger;
   var got = _.routinesCall( function1 );
+  debugger;
   test.identical( got, expected1 );
 
   test.description = 'call single function with context and arguments';
@@ -420,39 +417,38 @@ function routinesCall( test )
   var got = _.routinesCall( context3, [ function4, function5, function6 ], [value2, value3] );
   test.identical( got, expected4 );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'missed argument';
+  test.shouldThrowError( function()
   {
+    _.routinesCall();
+  });
 
-    test.description = 'missed argument';
-    test.shouldThrowError( function()
-    {
-      _.routinesCall();
-    });
+  test.description = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.routinesCall(
+      context3,
+      [ function1, function2, function3 ],
+      [ function4, function5, function6 ],
+      [value2, value3]
+    );
+  });
 
-    test.description = 'extra argument';
-    test.shouldThrowError( function()
-    {
-      _.routinesCall(
-        context3,
-        [ function1, function2, function3 ],
-        [ function4, function5, function6 ],
-        [value2, value3]
-      );
-    });
+  test.description = 'passed non callable object';
+  test.shouldThrowError( function()
+  {
+    _.routinesCall( null );
+  });
 
-    test.description = 'passed non callable object';
-    test.shouldThrowError( function()
-    {
-      _.routinesCall( null );
-    });
+  test.description = 'passed arguments as primitive value (no wrapped into array)';
+  test.shouldThrowError( function()
+  {
+     _.routinesCall( context3, testFunction3, value2 )
+  });
 
-    test.description = 'passed arguments as primitive value (no wrapped into array)';
-    test.shouldThrowError( function()
-    {
-       _.routinesCall( context3, testFunction3, value2 )
-    });
-
-  }
 }
 
 //
