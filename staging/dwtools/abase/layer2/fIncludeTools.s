@@ -478,6 +478,18 @@ _includeHandlerMap[ 'wColor256' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.ColorMap && Object.keys( _global.wTools.ColorMap ).length > 100 },
 }
 
+_includeHandlerMap[ 'wChangeTransactor' ] =
+{
+  includeAny : [ '../../amid/changes/ChangeTransactor.s','amid/changes/ChangeTransactor.s','wChangeTransactor' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.ChangeTransactor },
+}
+
+_includeHandlerMap[ 'wVocabulary' ] =
+{
+  includeAny : [ '../../amid/bclass/Vocabulary.s','amid/bclass/Vocabulary.s','wVocabulary' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.Vocabulary },
+}
+
 _includeHandlerMap[ 'wFiles' ] =
 {
   includeAny : [ '../../amid/file/FileTop.s','amid/file/FileTop.s','wFiles' ],

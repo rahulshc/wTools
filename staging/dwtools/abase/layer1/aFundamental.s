@@ -9165,8 +9165,11 @@ function _arrayClone( src )
 
   if( _.bufferViewIs( src ) )
   debugger;
+  debugger;
 
-  if( _.bufferTypedIs( src ) || _.bufferRawIs( src ) || _.bufferNodeIs( src ) )
+  if( _.bufferRawIs( src ) )
+  return new Uint8Array( new Uint8Array( src ) ).buffer;
+  else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
   return new src.constructor( src );
   else if( _.arrayIs( src ) )
   return src.slice();
