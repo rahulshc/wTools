@@ -42,30 +42,23 @@ if(  !_global_._UsingWtoolsPrivately_  )
     throw new Error( 'wTools included several times' );
   }
 
-  // if( _global_.DEBUG === undefined )
-  // _global_.DEBUG = true;
-
 }
 
 // config
 
 if( !_globalReal.Config )
-_globalReal.Config = { debug : 1 }
-if( !_global_.Config )
-_global_.Config = { debug : 1 }
+_globalReal.Config = { debug : true }
+if( _globalReal.Config.debug === undefined )
+_globalReal.Config.debug = true;
+if( _globalReal.Config.server === undefined )
+_globalReal.Config.server = ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' );
 
-//
-// if( typeof module !== 'undefined' && module !== null )
-// {
-//   try
-//   {
-//     if( !_global_.Underscore )
-//     _global_.Underscore = require( 'underscore' );
-//   }
-//   catch( err )
-//   {
-//   }
-// }
+if( !_global_.Config )
+_global_.Config = { debug : true }
+if( _global_.Config.debug === undefined )
+_global_.Config.debug = true;
+if( _global_.Config.server === undefined )
+_global_.Config.server = ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' );
 
 if(  !_global_._UsingWtoolsPrivately_  )
 if( !_global_.Underscore && _global_._ )
@@ -9164,7 +9157,6 @@ function _arrayClone( src )
   _.assert( !_.bufferNodeIs( src ),'not tested' );
 
   if( _.bufferViewIs( src ) )
-  debugger;
   debugger;
 
   if( _.bufferRawIs( src ) )
