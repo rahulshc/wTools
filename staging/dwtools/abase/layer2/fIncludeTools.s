@@ -605,6 +605,12 @@ _includeHandlerMap[ 'wIncubator' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Incubator },
 }
 
+_includeHandlerMap[ 'wStarterMaker' ] =
+{
+  includeAny : [ '../../amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wStarterMaker' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.StarterMaker },
+}
+
 _includeHandlerMap[ 'wMathScalar' ] =
 {
   includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.s','amath/arithmetic/cScalar.s','wmathscalar' ],

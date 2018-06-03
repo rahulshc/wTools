@@ -991,7 +991,7 @@ function rangeLastGet( range,options )
 function enityExtend( dst,src )
 {
 
-  // debugger;
+  _.assert( arguments.length === 2 );
 
   if( _.objectIs( src ) || _.arrayLike( src ) )
   {
@@ -4497,7 +4497,7 @@ function objectLike( src )
   if( _.arrayLike( src ) )
   return false;
 
-  if( _.routinePureIs( src ) )
+  if( _.routineIsPure( src ) )
   return false;
 
   // if( Object.getPrototypeOf( src ) === Function.__proto__ )
@@ -4739,41 +4739,6 @@ function boolLike( src )
 {
   var type = _ObjectToString.call( src );
   return type === '[object Boolean]' || type === '[object Number]';
-}
-
-//
-
-function routineIs( src )
-{
-  // if( !src )
-  // return false;
-  // if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
-  // return false;
-  // return true;
-  return _ObjectToString.call( src ) === '[object Function]';
-}
-
-//
-
-function routinePureIs( src )
-{
-  if( !src )
-  return false;
-  if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
-  return false;
-  return true;
-  // return _ObjectToString.call( src ) === '[object Function]';
-}
-
-//
-
-function routineHasName( src )
-{
-  if( !routineIs( src ) )
-  return false;
-  if( !src.name )
-  return false;
-  return true;
 }
 
 //
@@ -6351,15 +6316,66 @@ function regexpMakeObject( src,defaultMode )
 // routine
 // --
 
+function routineIs( src )
+{
+  // if( !src )
+  // return false;
+  // if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
+  // return false;
+  // return true;
+  return _ObjectToString.call( src ) === '[object Function]';
+}
+
+//
+
+function routinesAre( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !_.routineIs( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return routineIs( src );
+}
+
+//
+
+function routineIsPure( src )
+{
+  if( !src )
+  return false;
+  if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
+  return false;
+  return true;
+}
+
+//
+
+function routineHasName( src )
+{
+  if( !routineIs( src ) )
+  return false;
+  if( !src.name )
+  return false;
+  return true;
+}
+
+//
+
 /**
  * Internal implementation.
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
- * @function _routineBind
+ * @function _routineJoin
  * @memberof wTools
  */
 
-function _routineBind( o )
+function _routineJoin( o )
 {
 
   _.assert( arguments.length === 1 );
@@ -6481,7 +6497,7 @@ function routineBind( routine, context, args )
   _.assert( _.routineIs( routine ),'routineBind :','first argument must be a routine' );
   _.assert( arguments.length <= 3,'routineBind :','expects 3 or less arguments' );
 
-  return _routineBind
+  return _routineJoin
   ({
     routine : routine,
     context : context,
@@ -6534,7 +6550,7 @@ function routineJoin( context, routine, args )
   _.assert( _.routineIs( routine ),'routineJoin :','second argument must be a routine' );
   _.assert( arguments.length <= 3,'routineJoin :','expects 3 or less arguments' );
 
-  return _routineBind
+  return _routineJoin
   ({
     routine : routine,
     context : context,
@@ -6573,7 +6589,7 @@ function routineSeal( context, routine, args )
   _.assert( _.routineIs( routine ),'routineSeal :','second argument must be a routine' );
   _.assert( arguments.length <= 3,'routineSeal :','expects 3 or less arguments' );
 
-  return _routineBind
+  return _routineJoin
   ({
     routine : routine,
     context : context,
@@ -6737,15 +6753,21 @@ function _routinesCall( o )
     for( var r = 0 ; r < routines.length ; r++ )
     {
       result[ r ] = routines[ r ]();
-      if( o.untilFalse && result[ r ] === false )
-      break;
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
     }
     else
     for( var r in routines )
     {
       result[ r ] = routines[ r ]();
-      if( o.untilFalse && result[ r ] === false )
-      break;
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
     }
 
   }
@@ -6760,15 +6782,21 @@ function _routinesCall( o )
     for( var r = 0 ; r < routines.length ; r++ )
     {
       result[ r ] = routines[ r ].call( context );
-      if( o.untilFalse && result[ r ] === false )
-      break;
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
     }
     else
     for( var r in routines )
     {
       result[ r ] = routines[ r ].call( context );
-      if( o.untilFalse && result[ r ] === false )
-      break;
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
     }
 
   }
@@ -6786,15 +6814,21 @@ function _routinesCall( o )
     for( var r = 0 ; r < routines.length ; r++ )
     {
       result[ r ] = routines[ r ].apply( context,args );
-      if( o.untilFalse && result[ r ] === false )
-      break;
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
     }
     else
     for( var r in routines )
     {
       result[ r ] = routines[ r ].apply( context,args );
-      if( o.untilFalse && result[ r ] === false )
-      break;
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
     }
 
   }
@@ -6806,7 +6840,7 @@ function _routinesCall( o )
 _routinesCall.defaults =
 {
   args : null,
-  untilFalse : 0,
+  whileTrue : 0,
 }
 
 //
@@ -6846,7 +6880,7 @@ function routinesCall()
   result = _routinesCall
   ({
     args : arguments,
-    untilFalse : 0,
+    whileTrue : 0,
   });
 
   return result;
@@ -6854,14 +6888,14 @@ function routinesCall()
 
 //
 
-function routinesCallUntilFalse()
+function routinesCallWhile()
 {
   var result;
 
   result = _routinesCall
   ({
     args : arguments,
-    untilFalse : 1,
+    whileTrue : 1,
   });
 
   return result;
@@ -6909,6 +6943,73 @@ function methodsCall( contexts,methods,args )
   }
 
   return result;
+}
+
+//
+
+function routinesCompose()
+{
+  var srcs = _.arrayAppendArrays( [],arguments );
+
+  srcs = srcs.filter( ( e ) => e === null ? false : e );
+
+  _.assert( _.routinesAre( srcs ) );
+
+  if( srcs.length === 0 )
+  debugger;
+  else if( srcs.length === 1 )
+  {}
+  else
+  debugger;
+
+  if( srcs.length === 0 )
+  return function empty()
+  {
+  }
+  else if( srcs.length === 1 )
+  {
+    return srcs[ 0 ];
+  }
+  else return function composition()
+  {
+    var result = [];
+    for( var s = 0 ; s < srcs.length ; s++ )
+    result[ s ] = srcs[ s ].apply( this,arguments );
+    return result;
+  }
+
+}
+
+//
+
+function routinesComposeWhile()
+{
+  var srcs = _.arrayAppendArrays( [],arguments );
+
+  srcs = srcs.filter( ( e ) => e === null ? false : e );
+
+  _.assert( _.routinesAre( srcs ) );
+
+  if( srcs.length === 0 )
+  return function empty()
+  {
+  }
+  else if( srcs.length === 1 )
+  {
+    return srcs[ 0 ];
+  }
+  else return function composition()
+  {
+    var result = [];
+    for( var s = 0 ; s < srcs.length ; s++ )
+    {
+      result[ s ] = srcs[ s ].apply( this,arguments );
+      if( result[ s ] === false )
+      return false;
+    }
+    return result;
+  }
+
 }
 
 //
@@ -7012,7 +7113,9 @@ function routineInputMultiplicator_functor( o )
   var routineName = o.routine.name;
   var routine = o.routine;
   var fieldFilter = o.fieldFilter;
-  var bypassFilteredOut = o.bypassFilteredOut;
+  var bypassingFilteredOut = o.bypassingFilteredOut;
+  var vectorizingArray = o.vectorizingArray;
+  var vectorizingMap = o.vectorizingArray;
 
   if( strIs( routine ) )
   routine = function methodCall()
@@ -7030,7 +7133,8 @@ function routineInputMultiplicator_functor( o )
 
     _.assert( arguments.length === 1 );
 
-    if( _.arrayIs( src ) )
+    if( vectorizingArray )
+    if( _.arrayLike( src ) )
     {
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
@@ -7038,6 +7142,7 @@ function routineInputMultiplicator_functor( o )
       return result;
     }
 
+    if( vectorizingMap )
     if( _.mapIs( src ) )
     {
       debugger;
@@ -7058,29 +7163,49 @@ function routineInputMultiplicator_functor( o )
 
     _.assert( arguments.length === 1 );
 
-    if( _.arrayIs( src ) )
+    if( vectorizingArray )
+    if( _.arrayLike( src ) )
     {
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       if( fieldFilter( src[ r ],r,src ) )
       result.push( routine.call( this,src[ r ] ) );
-      else if( bypassFilteredOut )
+      else if( bypassingFilteredOut )
       result.push( src[ r ] );
       return result;
     }
 
+    if( vectorizingMap )
     if( _.mapIs( src ) )
     {
       var result = Object.create( null );
       for( var r in src )
       if( fieldFilter( src[ r ],r,src ) )
       result[ r ] = routine.call( this,src[ r ] );
-      else if( bypassFilteredOut )
+      else if( bypassingFilteredOut )
       result[ r ] = src[ r ];
       return result;
     }
 
     return routine.call( this,src );
+  }
+
+  /* */
+
+  var fields = _.mapFields( routine );
+  for( var f in fields )
+  {
+    var field = fields[ f ];
+    if( _.objectIs( field ) )
+    {
+      inputMultiplicatorWithFilter[ f ] = Object.create( field );
+      inputMultiplicator[ f ] = Object.create( field );
+    }
+    else
+    {
+      inputMultiplicatorWithFilter[ f ] = field;
+      inputMultiplicator[ f ] = field;
+    }
   }
 
   /* */
@@ -7092,43 +7217,45 @@ routineInputMultiplicator_functor.defaults =
 {
   routine : null,
   fieldFilter : null,
-  bypassFilteredOut : 1,
+  bypassingFilteredOut : 1,
+  vectorizingArray : 1,
+  vectorizingMap : 1,
 }
 
 //
-
-function routineVectorize_functor( routine )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.routineIs( routine ) );
-
-  function vectorized( src )
-  {
-    _.assert( arguments.length === 1 );
-    if( _.arrayLike( src ) )
-    {
-      var result = [];
-      for( var s = 0 ; s < src.length ; s++ )
-      result[ s ] = routine.call( this,src[ s ] );
-      return result;
-    }
-    return [ routine.call( this,src ) ];
-  }
-
-  var fields = _.mapFields( routine );
-  for( var f in fields )
-  {
-    var field = fields[ f ];
-    if( _.objectIs( field ) )
-    vectorized[ f ] = Object.create( field );
-    else
-    vectorized[ f ] = field;
-  }
-
-  return vectorized;
-}
-
+//
+// function routineVectorize_functor( routine )
+// {
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.routineIs( routine ) );
+//
+//   function vectorized( src )
+//   {
+//     _.assert( arguments.length === 1 );
+//     if( _.arrayLike( src ) )
+//     {
+//       var result = [];
+//       for( var s = 0 ; s < src.length ; s++ )
+//       result[ s ] = routine.call( this,src[ s ] );
+//       return result;
+//     }
+//     return [ routine.call( this,src ) ];
+//   }
+//
+//   var fields = _.mapFields( routine );
+//   for( var f in fields )
+//   {
+//     var field = fields[ f ];
+//     if( _.objectIs( field ) )
+//     vectorized[ f ] = Object.create( field );
+//     else
+//     vectorized[ f ] = field;
+//   }
+//
+//   return vectorized;
+// }
+//
 //
 
 function _equalizerFromMapper( mapper )
@@ -11445,7 +11572,7 @@ function arraySum( src,onElement )
 // --
 
 /**
- * Method adds a value of argument( ins ) to the beginning of an array( dstArray ).
+ * Routine adds a value of argument( ins ) to the beginning of an array( dstArray ).
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The element to add.
@@ -14356,20 +14483,20 @@ function mapSupplementRecursive()
 
 function mapExtendRecursive( dst,src )
 {
-  var filter = this;
+  var iterator = this;
 
   _.assert( arguments.length >= 2 );
 
-  if( filter === Self )
-  filter = null;
+  if( iterator === Self )
+  iterator = null;
 
-  if( filter )
+  if( iterator )
   {
-    filter = _mapFieldFilterMake( filter );
+    iterator = _mapFieldIterator( iterator );
     for( var a = 1 ; a < arguments.length ; a++ )
     {
       src = arguments[ a ];
-      _mapExtendRecursiveConditional( filter,dst,src );
+      _mapExtendRecursiveConditional( iterator,dst,src );
     }
   }
   else
@@ -14391,33 +14518,33 @@ _filterTrue.functionKind = 'field-filter';
 function _filterFalse(){ return true };
 _filterFalse.functionKind = 'field-filter';
 
-function _mapFieldFilterMake( filter )
+function _mapFieldIterator( iterator )
 {
 
   _.assert( arguments.length === 1 );
 
-  if( _.routineIs( filter ) )
-  filter = { filterUp : filter, filterField : filter }
+  if( _.routineIs( iterator ) )
+  iterator = { filterUp : iterator, filterField : iterator }
 
-  if( filter.filterUp === undefined )
-  filter.filterUp = filter.filterField;
-  else if( filter.filterUp === true )
-  filter.filterUp = _filterTrue;
-  else if( filter.filterUp === false )
-  filter.filterUp = _filterFalse;
+  if( iterator.filterUp === undefined )
+  iterator.filterUp = iterator.filterField;
+  else if( iterator.filterUp === true )
+  iterator.filterUp = _filterTrue;
+  else if( iterator.filterUp === false )
+  iterator.filterUp = _filterFalse;
 
-  if( filter.filterField === true )
-  filter.filterField = _filterTrue;
-  else if( filter.filterField === false )
-  filter.filterField = _filterFalse;
+  if( iterator.filterField === true )
+  iterator.filterField = _filterTrue;
+  else if( iterator.filterField === false )
+  iterator.filterField = _filterFalse;
 
-  _.assert( _.routineIs( filter.filterUp ) );
-  _.assert( _.routineIs( filter.filterField ) );
+  _.assert( _.routineIs( iterator.filterUp ) );
+  _.assert( _.routineIs( iterator.filterField ) );
 
-  _.assert( filter.filterUp.functionKind === 'field-filter' );
-  _.assert( filter.filterField.functionKind === 'field-filter' );
+  _.assert( iterator.filterUp.functionKind === 'field-filter' );
+  _.assert( iterator.filterField.functionKind === 'field-filter' );
 
-  return filter;
+  return iterator;
 }
 
 //
@@ -14425,12 +14552,12 @@ function _mapFieldFilterMake( filter )
 function _mapExtendRecursiveConditional( filter,dst,src )
 {
 
-  _.assert( _.objectIs( src ) );
+  _.assert( _.mapIs( src ) );
 
   for( var s in src )
   {
 
-    if( _.objectIs( src[ s ] ) )
+    if( _.mapIs( src[ s ] ) )
     {
 
       if( filter.filterUp( dst,src,s ) === true )
@@ -17552,9 +17679,6 @@ var Proto =
   dateIs : dateIs,
   boolIs : boolIs,
   boolLike : boolLike,
-  routineIs : routineIs,
-  routinePureIs : routinePureIs,
-  routineHasName : routineHasName,
 
   regexpIs : regexpIs,
   regexpObjectIs : regexpObjectIs,
@@ -17671,7 +17795,12 @@ var Proto =
 
   // routine
 
-  _routineBind : _routineBind,
+  routineIs : routineIs,
+  routinesAre : routinesAre,
+  routineIsPure : routineIsPure,
+  routineHasName : routineHasName,
+
+  _routineJoin : _routineJoin,
   routineBind : routineBind, /* deprecated */
   routineJoin : routineJoin,
   routineSeal : routineSeal,
@@ -17682,8 +17811,11 @@ var Proto =
   routinesJoin : routinesJoin,
   _routinesCall : _routinesCall,
   routinesCall : routinesCall,
-  routinesCallUntilFalse : routinesCallUntilFalse,
+  routinesCallWhile : routinesCallWhile,
   methodsCall : methodsCall,
+
+  routinesCompose : routinesCompose,
+  routinesComposeWhile : routinesComposeWhile,
 
   assertRoutineOptions : assertRoutineOptions,
   routineOptions : routineOptions,
@@ -17691,7 +17823,7 @@ var Proto =
   routineOptionsFromThis : routineOptionsFromThis,
 
   routineInputMultiplicator_functor : routineInputMultiplicator_functor,
-  routineVectorize_functor : routineVectorize_functor,
+  // routineVectorize_functor : routineVectorize_functor,
 
   _equalizerFromMapper : _equalizerFromMapper,
   _comparatorFromMapper : _comparatorFromMapper,
@@ -17986,8 +18118,10 @@ var Proto =
 
   mapSupplementAppending : mapSupplementAppending,
   mapSupplementRecursive : mapSupplementRecursive,
+
   mapExtendRecursive : mapExtendRecursive,
-  _mapFieldFilterMake : _mapFieldFilterMake,
+
+  _mapFieldIterator : _mapFieldIterator,
   _mapExtendRecursiveConditional : _mapExtendRecursiveConditional,
   _mapExtendRecursive : _mapExtendRecursive,
 
