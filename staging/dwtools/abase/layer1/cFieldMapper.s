@@ -1,6 +1,6 @@
 ( function _FieldMapper_s_() {
 
-'use strict'; 
+'use strict';
 
 var Self = _global_.wTools;
 var _ = _global_.wTools;
@@ -154,7 +154,7 @@ function dstNotHasOrHasNil()
   var routine = function dstNotHasOrHasNil( dstContainer,srcContainer,key )
   {
 
-    if( key in dstContainer && dstContainer[ key ] !== nil )
+    if( key in dstContainer && dstContainer[ key ] !== _.nothing )
     return false;
 
     return true;
@@ -385,7 +385,7 @@ function atomic()
 
   var routine = function atomic( dstContainer,srcContainer,key )
   {
-    if( !_.atomicIs( srcContainer[ key ] ) )
+    if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -405,7 +405,7 @@ function atomicSrcOwn()
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_.atomicIs( srcContainer[ key ] ) )
+    if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -423,7 +423,7 @@ function notAtomicCloning()
 
   var routine = function notAtomicCloning( dstContainer,srcContainer,key )
   {
-    if( _.atomicIs( srcContainer[ key ] ) )
+    if( _.primitiveIs( srcContainer[ key ] ) )
     return;
 
     _.entityCopyField( dstContainer,srcContainer,key );
@@ -442,7 +442,7 @@ function notAtomicCloningSrcOwn()
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
-    if( _.atomicIs( srcContainer[ key ] ) )
+    if( _.primitiveIs( srcContainer[ key ] ) )
     return;
 
     _.entityCopyField( dstContainer,srcContainer,key );
@@ -461,7 +461,7 @@ function notAtomicCloningRecursiveSrcOwn()
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
-    if( _.atomicIs( srcContainer[ key ] ) )
+    if( _.primitiveIs( srcContainer[ key ] ) )
     return;
 
     _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );

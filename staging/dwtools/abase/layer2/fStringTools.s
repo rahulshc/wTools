@@ -601,7 +601,7 @@ function strForCall( nameOfRoutine,args,ret,o )
   _assert( _.arrayIs( args ) || _.objectIs( args ) );
   _assert( arguments.length <= 4 );
 
-  _.each( args,function( e,k,iteration )
+  _.each( args,function( e,k )
   {
 
     if( first === false )

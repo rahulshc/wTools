@@ -295,61 +295,61 @@ function arrayLike( test )
 
 //
 
-function clsLikeArray( test )
+function constructorLikeArray( test )
 {
 
   test.description = 'an array';
-  var got = _.clsLikeArray( [  ].constructor );
+  var got = _.constructorLikeArray( [  ].constructor );
   var expected = true;
   test.identical( got, expected );
 
   test.description = 'arguments, not possible to say yes by constructor';
-  var got = _.clsLikeArray( arguments.constructor );
+  var got = _.constructorLikeArray( arguments.constructor );
   var expected = false;
   test.identical( got, expected );
 
   test.description = 'raw array buffer'; debugger;
-  var got = _.clsLikeArray( new ArrayBuffer( 10 ).constructor );
+  var got = _.constructorLikeArray( new ArrayBuffer( 10 ).constructor );
   var expected = false;
   test.identical( got, expected );
 
   test.description = 'typed array buffer';
-  var got = _.clsLikeArray( new Float32Array( 10 ).constructor );
+  var got = _.constructorLikeArray( new Float32Array( 10 ).constructor );
   var expected = true;
   test.identical( got, expected );
 
   test.description = 'no argument';
-  var got = _.clsLikeArray();
+  var got = _.constructorLikeArray();
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'null';
-  var got = _.clsLikeArray( null );
+  var got = _.constructorLikeArray( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'number';
-  var got = _.clsLikeArray( 1 );
+  var got = _.constructorLikeArray( 1 );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'function';
-  var got = _.clsLikeArray( (function() {}).constructor );
+  var got = _.constructorLikeArray( (function() {}).constructor );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'string';
-  var got = _.clsLikeArray( 'x'.constructor );
+  var got = _.constructorLikeArray( 'x'.constructor );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'string';
-  var got = _.clsLikeArray( 'x' );
+  var got = _.constructorLikeArray( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.description = 'object';
-  var got = _.clsLikeArray( {}.constructor );
+  var got = _.constructorLikeArray( {}.constructor );
   var expected  = false;
   test.identical( got, expected );
 
@@ -10904,7 +10904,7 @@ var Self =
 
     arrayIs : arrayIs,
     arrayLike : arrayLike,
-    clsLikeArray : clsLikeArray,
+    constructorLikeArray : constructorLikeArray,
     hasLength : hasLength,
 
 

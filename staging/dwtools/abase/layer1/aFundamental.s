@@ -80,14 +80,14 @@ if(  !_global_._UsingWtoolsPrivately_  )
   _global_.all = Symbol.for( 'all' );
   _global_.any = Symbol.for( 'any' );
   _global_.none = Symbol.for( 'none' );
-  _global_.nil = Symbol.for( 'nil' );
+  _global_.nothing = Symbol.for( 'nothing' );
 }
 
 Self.def = _global_.def;
 Self.all = _global_.all;
 Self.any = _global_.any;
 Self.none = _global_.none;
-Self.nil = _global_.nil;
+Self.nothing = _global_.nothing;
 
 //
 
@@ -103,21 +103,21 @@ var _floor = Math.floor;
 // iterator
 // --
 
-function __eachAct( iteration )
+function __eachAct( it )
 {
 
   var iterator = this;
-  var src = iteration.src;
+  var src = it.src;
   var i = 0;
 
   _.assert( Object.keys( iterator ).length === 11 );
-  _.assert( Object.keys( iteration ).length === 6 );
-  _.assert( iteration.level >= 0 );
+  _.assert( Object.keys( it ).length === 6 );
+  _.assert( it.level >= 0 );
   _.assert( arguments.length === 1 );
 
   /* level */
 
-  if( !( iteration.level < iterator.levelLimit ) )
+  if( !( it.level < iterator.levelLimit ) )
   {
     debugger;
     return i;
@@ -138,11 +138,11 @@ function __eachAct( iteration )
   var c = true;
   if( iterator.root !== src )
   {
-    c = iterator.onUp.call( iterator,src,iteration.key,iteration );
+    c = iterator.onUp.call( iterator,src,it.key,it );
   }
   else if( iterator.usingRootVisit )
   {
-    c = iterator.onUp.call( iterator,src,iteration.key,iteration );
+    c = iterator.onUp.call( iterator,src,it.key,it );
   }
 
   /* down */
@@ -152,11 +152,11 @@ function __eachAct( iteration )
 
     if( iterator.root !== src )
     {
-      iterator.onDown.call( iterator,src,iteration.key,iteration );
+      iterator.onDown.call( iterator,src,it.key,it );
     }
     else if( iterator.usingRootVisit )
     {
-      iterator.onDown.call( iterator,src,iteration.key,iteration );
+      iterator.onDown.call( iterator,src,it.key,it );
     }
 
     if( iterator.usingVisits )
@@ -173,7 +173,7 @@ function __eachAct( iteration )
 
   /* element */
 
-  function __onElement( k )
+  function handleElement( k )
   {
 
     if( iterator.recursive || iterator.root === src )
@@ -181,11 +181,11 @@ function __eachAct( iteration )
 
       var newIteration =
       {
-        level : iteration.level+1,
-        path : iteration.path !== iterator.pathDelimteter ? iteration.path + iterator.pathDelimteter + k : iteration.path + k,
+        level : it.level+1,
+        path : it.path !== iterator.pathDelimteter ? it.path + iterator.pathDelimteter + k : it.path + k,
         key : k,
         index : i,
-        down : iteration,
+        down : it,
         src : src[ k ],
       }
 
@@ -205,7 +205,7 @@ function __eachAct( iteration )
     for( var k = 0 ; k < src.length ; k++ )
     {
 
-      __onElement( k );
+      handleElement( k );
 
     }
 
@@ -217,10 +217,10 @@ function __eachAct( iteration )
     {
 
       if( iterator.own )
-      if( !Object.hasOwnProperty.call( src,k ) )
+      if( !_hasOwnProperty.call( src,k ) )
       continue;
 
-      __onElement( k );
+      handleElement( k );
 
     }
 
@@ -266,7 +266,7 @@ function _each( o )
     pathDelimteter : o.pathDelimteter,
   }
 
-  var iteration =
+  var it =
   {
     level : o.level,
     path : o.path,
@@ -276,32 +276,16 @@ function _each( o )
     down : o.down,
   }
 
-  // if( Config.debug )
-  // _.accessorForbid
-  // ({
-  //   object : iterator,
-  //   prime : 0,
-  //   names :
-  //   {
-  //     levels : 'levels',
-  //     level : 'level',
-  //     path : 'path',
-  //     key : 'key',
-  //     index : 'index',
-  //     src : 'src',
-  //     down : 'down',
-  //   }
-  // })
-
-  return __eachAct.call( iterator,iteration );
+  return __eachAct.call( iterator,it );
 }
 
 _each.defaults =
 {
 
+  onUp : function( e,k,it ){},
+  onDown : function( e,k,it ){},
+
   root : null,
-  onUp : function( e,k,iteration ){},
-  onDown : function( e,k,iteration ){},
   own : 0,
   recursive : 0,
   usingVisits : 1,
@@ -310,8 +294,6 @@ _each.defaults =
   visited : [],
   levelLimit : 256,
   pathDelimteter : '/',
-
-  //levels : 256,
 
   level : 0,
   path : null,
@@ -322,6 +304,29 @@ _each.defaults =
 
 }
 
+// //
+//
+// function each( o )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//
+//   if( arguments.length === 2 )
+//   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+//
+//   _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,each.defaults );
+//
+//   return _each( o );
+// }
+//
+// // each.defaults = Object.create( _each.defaults );
+// each.defaults = Object.create( null );
+//
+// each.defaults.own = 0;
+// each.defaults.usingVisits = 0;
+// each.defaults.recursive = 0;
+// each.defaults.usingRootVisit = 0;
+//
 //
 
 function each( o )
@@ -332,45 +337,119 @@ function each( o )
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 
-  _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,each.defaults );
+  _.routineOptions( each, o );
+  _.assert( o.onUp && o.onUp.length <= 2 );
 
-  return _each( o );
+  var src = o.src;
+
+  function handleElement( k )
+  {
+    o.onUp.call( o, src[ k ], k );
+  }
+
+  if( _.arrayLike( src ) )
+  {
+
+    for( var k = 0 ; k < src.length ; k++ )
+    {
+      handleElement( k );
+    }
+
+  }
+  else if( _.objectLike( src ) )
+  {
+
+    for( var k in src )
+    {
+      handleElement( k );
+    }
+
+  }
+  else _.assert( 0,'not container' );
+
+  return src;
 }
 
-each.defaults =
-{
-  own : 0,
-  usingVisits : 0,
-  recursive : 0,
-  usingRootVisit : 0,
-}
+var defaults = each.defaults = Object.create( null );
 
-each.defaults.__proto__ = _each.defaults;
+defaults.src = null;
+defaults.onUp = function( e,k ){};
 
 //
-
 function eachOwn( o )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
+
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-  o.own = 1;
 
-  _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,eachOwn.defaults );
+  _.routineOptions( eachOwn, o );
+  _.assert( o.onUp && o.onUp.length <= 2 );
 
-  return _each( o );
+  var src = o.src;
+
+  function handleElement( k )
+  {
+    o.onUp.call( o, src[ k ], k );
+  }
+
+  if( _.arrayLike( src ) )
+  {
+
+    for( var k = 0 ; k < src.length ; k++ )
+    {
+
+      handleElement( k );
+
+    }
+
+  }
+  else if( _.objectLike( src ) )
+  {
+
+    for( var k in src )
+    {
+
+      if( !_hasOwnProperty.call( src,k ) )
+      continue;
+      handleElement( k );
+
+    }
+
+  }
+  else _.assert( 0,'not container' );
+
+  return src;
 }
 
-eachOwn.defaults =
-{
-  own : 1,
-  usingVisits : 0,
-  recursive : 0,
-  usingRootVisit : 0,
-}
+var defaults = eachOwn.defaults = Object.create( null );
 
-eachOwn.defaults.__proto__ = _each.defaults;
+defaults.src = null;
+defaults.onUp = function( e,k ){};
+
+// function eachOwn( o )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   if( arguments.length === 2 )
+//   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+//   o.own = 1;
+//
+//   _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,eachOwn.defaults );
+//
+//   return _each( o );
+// }
+//
+// eachOwn.defaults =
+// {
+//   own : 1,
+//   usingVisits : 0,
+//   recursive : 0,
+//   usingRootVisit : 0,
+// }
+//
+// eachOwn.defaults.__proto__ = _each.defaults;
 
 //
 
@@ -456,15 +535,17 @@ function eachSample( o )
 
   /* sets */
 
-  _.each( o.sets, function( e,k,it )
+  var sindex = 0;
+  _.each( o.sets, function( e,k )
   {
     var set = o.sets[ k ];
-    _.assert( _.arrayLike( set ) || _.atomicIs( set ) );
-    if( _.atomicIs( set ) )
+    _.assert( _.arrayLike( set ) || _.primitiveIs( set ) );
+    if( _.primitiveIs( set ) )
     o.sets[ k ] = [ set ];
 
-    len[ it.index ] = _.entityLength( o.sets[ k ] );
-    indexnd[ it.index ] = 0;
+    len[ sindex ] = _.entityLength( o.sets[ k ] );
+    indexnd[ sindex ] = 0;
+    sindex += 1;
   });
 
   /* */
@@ -472,9 +553,11 @@ function eachSample( o )
   function firstSample()
   {
 
-    _.each( o.sets, function( e,k,it )
+    var sindex = 0;
+    _.each( o.sets, function( e,k )
     {
-      o.sample[ k ] = o.sets[ k ][ indexnd[ it.index ] ];
+      o.sample[ k ] = o.sets[ k ][ indexnd[ sindex ] ];
+      sindex += 1;
       if( !len[ k ] )
       return 0;
     });
@@ -703,11 +786,7 @@ function eachInManyRanges( o )
 
 }
 
-eachInManyRanges.defaults =
-{
-}
-
-eachInManyRanges.defaults.__proto__ = eachInRange.defaults;
+eachInManyRanges.defaults = Object.create( eachInRange.defaults )
 
 //
 
@@ -996,7 +1075,7 @@ function enityExtend( dst,src )
   if( _.objectIs( src ) || _.arrayLike( src ) )
   {
 
-    _.each( src,function( e,k,iteration )
+    _.each( src,function( e,k )
     {
       dst[ k ] = e;
     });
@@ -1141,7 +1220,7 @@ function entityCopyTry( dst,src,onRecursive )
       throw _.err( 'not tested' );
       result = src.clone( dst );
     }
-    else if( _.atomicIs( dst ) || _.arrayLike( dst ) )
+    else if( _.primitiveIs( dst ) || _.arrayLike( dst ) )
     {
       result = src.clone();
     }
@@ -1164,7 +1243,7 @@ function entityCopyTry( dst,src,onRecursive )
   {
 
     if( onRecursive )
-    result = _.mapClone( src,{ onCopyField : onRecursive, dst : _.atomicIs( dst ) ? Object.create( null ) : dst } );
+    result = _.mapClone( src,{ onCopyField : onRecursive, dst : _.primitiveIs( dst ) ? Object.create( null ) : dst } );
     else
     result = _.mapClone( src );
 
@@ -1222,13 +1301,11 @@ function entityCopyTry( dst,src,onRecursive )
 function entityCopyField( dstContainer,srcContainer,name,onRecursive )
 {
   var result;
-  // debugger;
-  // var name = _.nameUnfielded( name ).coded;
 
   _.assert( _.strIs( name ) || _.symbolIs( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
-  var dstValue = Object.hasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
+  var dstValue = _hasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
 
   if( onRecursive )
   result = entityCopyTry( dstValue,srcContainer[ name ],onRecursive );
@@ -1280,7 +1357,9 @@ function entityAssignField( dstContainer,srcValue,name,onRecursive )
     result = entityCopyTry( dstContainer[ name ],srcValue,onRecursive );
   }
   else
-  result = entityCopyTry( dstContainer[ name ],srcValue );
+  {
+    result = entityCopyTry( dstContainer[ name ],srcValue );
+  }
 
   if( result !== undefined )
   dstContainer[ name ] = result;
@@ -1359,25 +1438,25 @@ function entityWrap( o )
 
   /* */
 
-  function handleDown( e,k,iteration )
+  function handleDown( e,k,it )
   {
 
     debugger;
 
     if( o.onCondition )
-    if( !o.onCondition.call( this,e,k,iteration ) )
+    if( !o.onCondition.call( this,e,k,it ) )
     return
 
     if( o.onWrap )
     {
-      var newElement = o.onWrap.call( this,e,k,iteration );
+      var newElement = o.onWrap.call( this,e,k,it );
 
       if( newElement !== e )
       {
         if( e === result )
         result = newElement;
-        if( iteration.down && iteration.down.src )
-        iteration.down.src[ iteration.key ] = newElement;
+        if( it.down && it.down.src )
+        it.down.src[ it.key ] = newElement;
       }
 
     }
@@ -1388,7 +1467,7 @@ function entityWrap( o )
       if( e === result )
       result = newElement;
       else
-      iteration.down.src[ iteration.key ] = newElement;
+      it.down.src[ it.key ] = newElement;
 
     }
 
@@ -1595,10 +1674,10 @@ function entityDiff( src1,src2,o )
 
   var result = '';
 
-  if( !_.atomicIs( src1 ) )
+  if( !_.primitiveIs( src1 ) )
   src1 = _.toStr( _.entitySelect( src1,o.path ) );
 
-  if( !_.atomicIs( src2 ) )
+  if( !_.primitiveIs( src2 ) )
   src2 = _.toStr( _.entitySelect( src2,o.path ) );
 
   result += _.str
@@ -1687,7 +1766,7 @@ function _entityEqualAct( src1, src2, iterator )
   }
   else
   {
-    if( _.atomicIs( src1 ) )
+    if( _.primitiveIs( src1 ) )
     if( _ObjectToString.call( src1 ) !== _ObjectToString.call( src2 ) && src1 != src2 )
     return false;
   }
@@ -2140,7 +2219,7 @@ function entitySize( src )
   if( _.strIs( src ) )
   return src.length;
 
-  if( _.atomicIs( src ) )
+  if( _.primitiveIs( src ) )
   return null;
 
   if( _.numberIs( src.byteLength ) )
@@ -2169,14 +2248,14 @@ function entitySize( src )
 //   }
 //
 //   debugger;
-//   _.eachRecursive( src,function( e,iteration )
+//   _.eachRecursive( src,function( e,it )
 //   {
 //
 //     debugger;
 //     if( k === key )
 //     {
-//       if( onEach ) onEach( e,iteration );
-//       return { value : src[ key ], key : key, index : iteration.index, container : src };
+//       if( onEach ) onEach( e,it );
+//       return { value : src[ key ], key : key, index : it.index, container : src };
 //     }
 //
 //   });
@@ -2397,20 +2476,20 @@ function _entitySelect( o )
     for( var i = 0 ; i < o.query.length ; i++ )
     {
 
-      // var iteration = Object.create( null );
-      // iteration.qarrey = o.qarrey[ i ];
-      // iteration.container = o.container;
+      // var it = Object.create( null );
+      // it.qarrey = o.qarrey[ i ];
+      // it.container = o.container;
       // iterator.query = o.query[ i ];
 
       var optionsForSelect = _.mapExtend( Object.create( null ),o );
       optionsForSelect.query = optionsForSelect.query[ i ];
 
-      // iteration.qarrey = o.qarrey[ i ];
-      // iteration.container = o.container;
+      // it.qarrey = o.qarrey[ i ];
+      // it.container = o.container;
       // iterator.query = o.query[ i ];
 
       debugger; xxx
-      result[ iterator.query ] = _entitySelectAct( iteration,iterator );
+      result[ iterator.query ] = _entitySelectAct( it,iterator );
     }
 
     return result;
@@ -2428,12 +2507,12 @@ function _entitySelect( o )
   iterator.usingSet = o.usingSet;
   iterator.query = o.query;
 
-  var iteration = Object.create( null );
-  iteration.qarrey = o.qarrey;
-  iteration.container = o.container;
-  iteration.up = null;
+  var it = Object.create( null );
+  it.qarrey = o.qarrey;
+  it.container = o.container;
+  it.up = null;
 
-  result = _entitySelectAct( iteration,iterator );
+  result = _entitySelectAct( it,iterator );
 
   return result;
 }
@@ -2456,36 +2535,36 @@ function _entitySelect( o )
  * @memberof wTools
 */
 
-function _entitySelectAct( iteration,iterator )
+function _entitySelectAct( it,iterator )
 {
 
   var result;
-  var container = iteration.container;
+  var container = it.container;
 
-  var key = iteration.qarrey[ 0 ];
-  var key2 = iteration.qarrey[ 1 ];
+  var key = it.qarrey[ 0 ];
+  var key2 = it.qarrey[ 1 ];
 
-  if( !iteration.qarrey.length )
+  if( !it.qarrey.length )
   {
     if( iterator.onElement )
-    return iterator.onElement( iteration,iterator );
+    return iterator.onElement( it,iterator );
     else
     return container;
   }
 
   _.assert( Object.keys( iterator ).length === 7 );
-  _.assert( Object.keys( iteration ).length === 3 );
+  _.assert( Object.keys( it ).length === 3 );
   _.assert( arguments.length === 2 );
 
-  if( _.atomicIs( container ) )
+  if( _.primitiveIs( container ) )
   {
     if( iterator.usingUndefinedForMissing )
     return undefined;
     else
-    throw _.err( 'cant select',iteration.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
+    throw _.err( 'cant select',it.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
   }
 
-  var qarrey = iteration.qarrey.slice( 1 );
+  var qarrey = it.qarrey.slice( 1 );
 
   /* */
 
@@ -2535,7 +2614,7 @@ function _entitySelectAct( iteration,iterator )
   {
 
     result = _.entityMakeTivial( container );
-    _.each( container,function( e,k,iteration )
+    _.each( container,function( e,k )
     {
       result[ k ] = _select( k );
     });
@@ -3216,11 +3295,11 @@ function entityGroup( o )
   function groupForKey( key,result )
   {
 
-    _.each( o.src, function( e,k,iteration )
+    _.each( o.src, function( e,k )
     {
 
-      var value = o.usingOriginal ? o.src[ iteration.key ] : o.src[ iteration.key ][ key ];
-      var dstKey = o.usingOriginal ? o.src[ iteration.key ][ key ] : iteration.key;
+      var value = o.usingOriginal ? o.src[ k ] : o.src[ k ][ key ];
+      var dstKey = o.usingOriginal ? o.src[ k ][ key ] : k;
 
       if( o.usingOriginal )
       {
@@ -3278,7 +3357,7 @@ function entityVals( src )
   var result = [];
 
   _.assert( arguments.length === 1 );
-  _.assert( !_.atomicIs( src ) );
+  _.assert( !_.primitiveIs( src ) );
 
   if( _.arrayLike( src ) )
   return src;
@@ -3353,6 +3432,7 @@ function _entityMost( src,onElement,returnMax )
   _.assert( onElement.length === 1 );
   _.assert( onCompare.length === 2 );
   // _.assert( onCompare.length === 1 || onCompare.length === 2 ); // xxx
+  debugger;
 
   var result = { index : -1, key : undefined, value : undefined, element : undefined };
 
@@ -3499,13 +3579,13 @@ function entitySearch( o )
 
   /* */
 
-  function checkCandidate( e,k,iteration,r,path )
+  function checkCandidate( e,k,it,r,path )
   {
 
     var c = true;
     if( o.condition )
     {
-      c = o.condition.call( this,e,k,iteration );
+      c = o.condition.call( this,e,k,it );
     }
 
     if( !c )
@@ -3530,21 +3610,21 @@ function entitySearch( o )
   /* */
 
   var onUp = o.onUp;
-  function handleUp( e,k,iteration )
+  function handleUp( e,k,it )
   {
 
     if( onUp )
-    if( onUp.call( this,e,k,iteration ) === false )
+    if( onUp.call( this,e,k,it ) === false )
     return false;
 
-    var path = iteration.path;
+    var path = it.path;
 
     var r;
-    if( o.returnParent && iteration.down )
+    if( o.returnParent && it.down )
     {
-      r = iteration.down.src;
+      r = it.down.src;
       if( o.usingExactPath )
-      path = iteration.down.path;
+      path = it.down.path;
     }
     else
     {
@@ -3553,12 +3633,12 @@ function entitySearch( o )
 
     if( o.searchingValue )
     {
-      checkCandidate.call( this,e,k,iteration,r,path );
+      checkCandidate.call( this,e,k,it,r,path );
     }
 
     if( o.searchingKey )
     {
-      checkCandidate.call( this,iteration.key,k,iteration,r,path );
+      checkCandidate.call( this,it.key,k,it,r,path );
     }
 
   }
@@ -3768,7 +3848,7 @@ function _err( o )
   {
     var arg = o.args[ a ];
 
-    if( !_.atomicIs( arg ) && _.objectLike( arg ) )
+    if( !_.primitiveIs( arg ) && _.objectLike( arg ) )
     {
       o.location = _.diagnosticLocation({ error : arg, location : o.location });
     }
@@ -3812,10 +3892,10 @@ function _err( o )
     var argument = o.args[ a ];
     var str;
 
-    if( argument && !_.atomicIs( argument ) )
+    if( argument && !_.primitiveIs( argument ) )
     {
 
-      if( _.atomicIs( argument ) ) str = String( argument );
+      if( _.primitiveIs( argument ) ) str = String( argument );
       else if( _.routineIs( argument.toStr ) ) str = argument.toStr();
       else if( _.errIs( argument ) || _.strIs( argument.message ) )
       {
@@ -4297,311 +4377,33 @@ function nothingIs( src )
   return true;
   if( src === undefined )
   return true;
-  if( src === _.nil )
+  if( src === _.nothing )
   return true;
   return false;
 }
 
 //
 
-/**
- * The arrayIs() routine determines whether the passed value is an Array.
- *
- * If the (src) is an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayIs( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayIs( 10 );
- *
- * @returns { boolean } Returns true if (src) is an Array.
- * @function arrayIs
- * @memberof wTools
- */
-
-function arrayIs( src )
+function definedIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Array]';
+  return src !== undefined && src !== null && src !== NaN && src !== _.nothing;
 }
 
 //
 
-/**
- * The arrayLike() routine determines whether the passed value is an array-like or an Array.
- * Imortant : arrayLike returns false for Object, even if the object has length field.
- *
- * If (src) is an array-like or an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayLike( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayLike( 10 );
- *
- * @example
- * // returns true
- * var isArr = ( function() {
- *   return _.arrayLike( arguments );
- * } )( 'Hello there!' );
- *
- * @returns { boolean } Returns true if (src) is an array-like or an Array.
- * @function arrayLike.
- * @memberof wTools
- */
-
-function arrayLike( src )
+function primitiveIs( src )
 {
-  if( atomicIs( src ) )
-  return false;
-
-  if( _.routineIs( src ) )
-  return false;
-  if( _.objectIs( src ) )
-  return false;
-  if( _.strIs( src ) )
-  return false;
-
-  if( !_.numberIs( src.length ) )
-  return false;
-  if( Object.propertyIsEnumerable.call( src,'length' ) )
-  return false;
-
+  if( src === null || src === undefined )
   return true;
+  var t = _ObjectToString.call( src );
+  return t === '[object Symbol]' || t === '[object Number]' || t === '[object Boolean]' || t === '[object String]';
 }
 
 //
 
-function clsLikeArray( src )
+function argumentsIs( src )
 {
-  if( !src )
-  return false;
-
-  if( src === Function )
-  return false;
-  if( src === Object )
-  return false;
-  if( src === String )
-  return false;
-
-  if( _.atomicIs( src ) )
-  return false;
-
-  if( !( 'length' in src.prototype ) )
-  return false;
-  if( Object.propertyIsEnumerable.call( src.prototype,'length' ) )
-  return false;
-
-  return true;
-}
-
-//
-
-/**
- * The hasLength() routine determines whether the passed value has the property (length).
- *
- * If (src) is equal to the (undefined) or (null) false is returned.
- * If (src) has the property (length) true is returned.
- * Otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * hasLength( [ 1, 2 ] );
- *
- * @example
- * // returns true
- * hasLength( 'Hello there!' );
- *
- * @example
- * // returns true
- * var isLength = ( function() {
- *   return _.hasLength( arguments );
- * } )( 'Hello there!' );
- *
- * @example
- * // returns false
- * hasLength( 10 );
- *
- * @example
- * // returns false
- * hasLength( { } );
- *
- * @returns { boolean } Returns true if (src) has the property (length).
- * @function hasLength
- * @memberof wTools
- */
-
-function hasLength( src )
-{
-  if( src === undefined || src === null ) return false;
-  if( _.numberIs( src.length ) ) return true;
-  return false;
-}
-
-/**
- * Function objectIs checks incoming param whether it is object.
- * Returns "true" if incoming param is object. Othervise "false" returned.
- *
- * @example
- * // returns true
- * var obj = {x : 100};
- * objectIs(obj);
- * @example
- * // returns false
- * objectIs( 10 );
- *
- * @param {*} src.
- * @return {Boolean}.
- * @function objectIs
- * @memberof wTools
- */
-
-function objectIs( src )
-{
-  // if( !src )
-  // return false;
-  // if( Object.hasOwnProperty.call( src,'callee' ) )
-  // return false;
-  // if( src instanceof Array )
-  // return true;
-  // if( src instanceof Object )
-  // return true;
-  // var prototype = Object.getPrototypeOf( src );
-  // return prototype === null;
-  return _ObjectToString.call( src ) === '[object Object]';
-}
-
-//
-
-function objectLike( src )
-{
-
-  if( objectIs( src ) )
-  return true;
-
-  if( atomicIs( src ) )
-  return false;
-
-  if( _.arrayLike( src ) )
-  return false;
-
-  if( _.routineIsPure( src ) )
-  return false;
-
-  // if( Object.getPrototypeOf( src ) === Function.__proto__ )
-  // debugger;
-  //
-  // if( Object.getPrototypeOf( src ) === Function.__proto__ )
-  // return false;
-
-  for( var k in src )
-  return true;
-
-  // if( Object.getOwnPropertyNames( src ).length )
-  // return true;
-
-  return false;
-}
-
-//
-
-function objectLikeOrRoutine( src )
-{
-  if( routineIs( src ) )
-  return true;
-  return objectLike( src );
-}
-
-//
-
-/**
- * The mapIs() routine determines whether the passed value is an Object,
- * and not inherits through the prototype chain.
- *
- * If the (src) is an Object, true is returned,
- * otherwise false is.
- *
- * @param { * } src - Entity to check.
- *
- * @example
- * // returns true
- * mapIs( { a : 7, b : 13 } );
- *
- * @example
- * // returns false
- * mapIs( 13 );
- *
- * @example
- * // returns false
- * mapIs( [ 3, 7, 13 ] );
- *
- * @returns { Boolean } Returns true if (src) is an Object, and not inherits through the prototype chain.
- * @function mapIs
- * @memberof wTools
- */
-
-function mapIs( src )
-{
-
-  if( !_.objectIs( src ) )
-  return false;
-
-  var proto = Object.getPrototypeOf( src );
-
-  if( proto === null )
-  return true;
-
-  if( proto.constructor && proto.constructor.name !== 'Object' )
-  return false;
-
-  if( Object.getPrototypeOf( proto ) === null )
-  return true;
-
-  _.assert( proto === null || proto,'unexpected' );
-
-  return false;
-}
-
-//
-
-function mapIsPure( src )
-{
-  if( !src )
-  return;
-
-  if( Object.getPrototypeOf( src ) === null )
-  return true;
-
-  return false;
-}
-
-//
-
-function mapLike( src )
-{
-
-  if( mapIs( src ) )
-  return true;
-
-  if( src.constructor === Object || src.constructor === null )
-  debugger;
-
-  if( src.constructor === Object || src.constructor === null )
-  return true;
-
-  return false;
+  return _ObjectToString.call( src ) === '[object Arguments]';
 }
 
 //
@@ -4614,73 +4416,15 @@ function symbolIs( src )
 
 //
 
-function bufferRawIs( src )
+function dateIs( src )
 {
-  var type = _ObjectToString.call( src );
-  var result = type === '[object ArrayBuffer]';
-  return result;
-}
-
-//
-
-function bufferTypedIs( src )
-{
-  var type = _ObjectToString.call( src );
-
-  if( !/\wArray/.test( type ) || _.bufferNodeIs( src ) )
-  return false;
-
-  // if( typeof Buffer !== 'undefined' )
-  // if( src instanceof Buffer )
-  // return false;
-
-  return true;
-}
-
-//
-
-function bufferViewIs( src )
-{
-  var type = _ObjectToString.call( src );
-  var result = type === '[object DataView]';
-  return result;
-}
-
-//
-
-function bufferNodeIs( src )
-{
-  if( typeof Buffer !== 'undefined' )
-  return src instanceof Buffer;
-  return false;
-}
-
-//
-
-function bufferAnyIs( src )
-{
-  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
-}
-
-//
-
-function bufferBytesIs( src )
-{
-  return src instanceof Uint8Array;
-}
-
-//
-
-function argumentsIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Arguments]';
+  return _ObjectToString.call( src ) === '[object Date]';
 }
 
 //
 
 function vectorIs( src )
 {
-  // debugger;
   if( src && _.objectIs( src ) && ( '_vectorBuffer' in src ) )
   return true;
   else return false;
@@ -4688,7 +4432,7 @@ function vectorIs( src )
 
 //
 
-function clsIsVector( src )
+function constructorIsVector( src )
 {
   if( !src )
   return false;
@@ -4709,7 +4453,7 @@ function spaceIs( src )
 
 //
 
-function clsIsSpace( src )
+function constructorIsSpace( src )
 {
   if( !_.Space )
   return false;
@@ -4720,48 +4464,236 @@ function clsIsSpace( src )
 
 //
 
-function dateIs( src )
+function consequenceIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Date]';
-}
-
-//
-
-function boolIs( src )
-{
-  return src === true || src === false;
-  // return _ObjectToString.call( src ) === '[object Boolean]';
-}
-
-//
-
-function boolLike( src )
-{
-  var type = _ObjectToString.call( src );
-  return type === '[object Boolean]' || type === '[object Number]';
-}
-
-//
-
-function regexpIs( src )
-{
-  return _ObjectToString.call( src ) === '[object RegExp]';
-}
-
-//
-
-function regexpObjectIs( src )
-{
-  if( !_.RegexpObject )
+  if( !src )
   return false;
-  return src instanceof _.RegexpObject;
+
+  var prototype = Object.getPrototypeOf( src );
+
+  if( !prototype )
+  return false;
+
+  return prototype.nameShort === 'Consequence';
 }
 
 //
 
-function definedIs( src )
+function consequenceLike( src )
 {
-  return src !== undefined && src !== null && src !== NaN;
+  if( _.consequenceIs( src ) )
+  return true;
+
+  if( _.promiseIs( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
+function promiseIs( src )
+{
+  if( !src )
+  return false;
+
+  var prototype = Object.getPrototypeOf( src );
+
+  if( !prototype )
+  return false;
+
+  return prototype.constructor.name === 'Promise' && src instanceof Promise;
+}
+
+//
+
+/**
+ * Is prototype.
+ * @function prototypeIs
+ * @param {object} src - entity to check
+ * @memberof wTools#
+ */
+
+function prototypeIs( src )
+{
+  _.assert( arguments.length === 1 );
+  if( _.primitiveIs( src ) )
+  return false;
+  return _hasOwnProperty.call( src, 'constructor' );
+}
+
+//
+
+function prototypeIsStandard( src )
+{
+
+  if( !_.prototypeIs( src ) )
+  return false;
+
+  if( !_hasOwnProperty.call( src, 'Composes' ) )
+  return false;
+
+  return true;
+}
+
+//
+
+/**
+ * Is constructor.
+ * @function constructorIs
+ * @param {object} cls - entity to check
+ * @memberof wTools#
+ */
+
+function constructorIs( cls )
+{
+  _.assert( arguments.length === 1 );
+  return _.routineIs( cls ) && !instanceIs( cls );
+}
+
+//
+
+function constructorIsStandard( cls )
+{
+
+  _.assert( _.constructorIs( cls ) );
+
+  var prototype = _.prototypeGet( cls );
+
+  return _.prototypeIsStandard( prototype );
+}
+
+/**
+ * Is instance.
+ * @function instanceIs
+ * @param {object} src - entity to check
+ * @memberof wTools#
+ */
+
+function instanceIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( _.primitiveIs( src ) )
+  return false;
+
+  if( _hasOwnProperty.call( src,'constructor' ) )
+  return false;
+  else if( _hasOwnProperty.call( src,'prototype' ) && src.prototype )
+  return false;
+
+  if( Object.getPrototypeOf( src ) === Object.prototype )
+  return false;
+  if( Object.getPrototypeOf( src ) === null )
+  return false;
+
+  return true;
+}
+
+//
+
+function instanceIsStandard( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( !_.instanceIs( src ) )
+  return false;
+
+  var proto = _.prototypeGet( src );
+
+  if( !proto )
+  return false;
+
+  return _.prototypeIsStandard( proto );
+}
+
+//
+
+function instanceLike( src )
+{
+  if( _.primitiveIs( src ) )
+  return false;
+  if( src.Composes )
+  return true;
+  return false;
+}
+
+//
+
+function typeOf( src )
+{
+  if( src === null || src === undefined )
+  return null
+  else if( numberIs( src ) || boolIs( src ) || strIs( src ) )
+  {
+    return src.constructor;
+  }
+  else if( src.constructor )
+  {
+    _.assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
+    return src.constructor;
+  }
+  else
+  {
+    return null;
+  }
+}
+
+//
+
+function workerIs( src )
+{
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  if( arguments.length === 1 )
+  {
+    if( typeof WorkerGlobalScope !== 'undefined' && src instanceof WorkerGlobalScope )
+    return true;
+    if( typeof Worker !== 'undefined' && src instanceof Worker )
+    return true;
+    return false;
+  }
+  else
+  {
+    return typeof WorkerGlobalScope !== 'undefined';
+  }
+}
+
+//
+
+function streamIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  return _.objectIs( src ) && _.routineIs( src.pipe )
+}
+
+//
+
+function consoleIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( src !== console )
+  return false;
+
+  var result = Object.prototype.toString.call( src );
+  if( result === '[object Console]' || result === '[object Object]' )
+  return true;
+
+  return false;
+}
+
+//
+
+function processIs( src )
+{
+  _.assert( arguments.length === 1 );
+
+  var typeOf = _.strTypeOf( src );
+  if( typeOf === 'ChildProcess' || typeOf === 'process' )
+  return true;
+
+  return false;
 }
 
 //
@@ -4855,180 +4787,24 @@ function domableIs( src )
   return strIs( src ) || domIs( src ) || jqueryIs( src );
 }
 
-//
-
-function consequenceIs( src )
-{
-  if( !src )
-  return false;
-
-  // if( _.routineIs( src ) )
-  // debugger;
-
-  var prototype = Object.getPrototypeOf( src );
-
-  if( !prototype )
-  return false;
-
-  return prototype.nameShort === 'Consequence';
-
-  // if( _.routineIs( src ) )
-  // debugger;
-  // return src instanceof wConsequence;
-}
-
-//
-
-function promiseIs( src )
-{
-  if( !src )
-  return false;
-
-  var prototype = Object.getPrototypeOf( src );
-
-  if( !prototype )
-  return false;
-
-  return prototype.constructor.name === 'Promise' && src instanceof Promise;
-}
-
-//
-
-function consequenceLike( src )
-{
-  if( _.consequenceIs( src ) )
-  return true;
-
-  if( _.promiseIs( src ) )
-  return true;
-
-  return false;
-}
-
-//
-
-function describedIs( src )
-{
-  if( _.atomicIs( src ) )
-  return false;
-  if( src.Composes )
-  return true;
-  return false;
-}
-
-//
-
-function atomicIs( src )
-{
-  if( src === null || src === undefined )
-  return true;
-  var t = _ObjectToString.call( src );
-  return t === '[object Symbol]' || t === '[object Number]' || t === '[object Boolean]' || t === '[object String]';
-}
-
-//
-
-function typeOf( src )
-{
-  if( src === null || src === undefined )
-  return null
-  else if( numberIs( src ) || boolIs( src ) || strIs( src ) )
-  {
-    return src.constructor;
-  }
-  else if( src.constructor )
-  {
-    _.assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
-    return src.constructor;
-  }
-  else
-  {
-    return null;
-  }
-}
-
-//
-
-function typeIsBuffer( src )
-{
-  if( !src ) return false;
-  if( !_.numberIs( src.BYTES_PER_ELEMENT ) ) return false;
-  if( !_.strIs( src.name ) ) return false;
-  return src.name.indexOf( 'Array' ) !== -1;
-
-/*
-  var types = [ _global.Int8Array, _global.Uint8Array, _global.Uint8ClampedArray, _global.Int16Array, _global.Uint16Array, _global.Int32Array, _global.Uint32Array, _global.Float32Array, _global.Float64Array ];
-  for( var t = 0 ; t < types.length ; t++ )
-  {
-    var type = types[ t ];
-    if( !type ) continue;
-    if( src === type ) return true;
-  }
-  return false;
-*/
-
-}
-
-//
-
-function workerIs( src )
-{
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  if( arguments.length === 1 )
-  {
-    if( typeof WorkerGlobalScope !== 'undefined' && src instanceof WorkerGlobalScope )
-    return true;
-    if( typeof Worker !== 'undefined' && src instanceof Worker )
-    return true;
-    return false;
-  }
-  else
-  {
-    return typeof WorkerGlobalScope !== 'undefined';
-  }
-}
-
-//
-
-function streamIs( src )
-{
-  _.assert( arguments.length === 1 );
-
-  return _.objectIs( src ) && _.routineIs( src.pipe )
-}
-
-//
-
-function consoleIs( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( src !== console )
-  return false;
-
-  var result = Object.prototype.toString.call( src );
-  if( result === '[object Console]' || result === '[object Object]' )
-  return true;
-
-  return false;
-}
-
-//
-
-function processIs( src )
-{
-  _.assert( arguments.length === 1 );
-
-  var typeOf = _.strTypeOf( src );
-  if( typeOf === 'ChildProcess' || typeOf === 'process' )
-  return true;
-
-  return false;
-}
-
 // --
 // bool
 // --
+
+function boolIs( src )
+{
+  return src === true || src === false;
+}
+
+//
+
+function boolLike( src )
+{
+  var type = _ObjectToString.call( src );
+  return type === '[object Boolean]' || type === '[object Number]';
+}
+
+//
 
 function boolFrom( src )
 {
@@ -5601,7 +5377,7 @@ function strTypeOf( src )
 
   _.assert( arguments.length === 1 );
 
-  if( !_.atomicIs( src ) )
+  if( !_.primitiveIs( src ) )
   if( src.constructor && src.constructor.name )
   return src.constructor.name;
 
@@ -5968,6 +5744,22 @@ function strInbetweenOf( src,begin,end )
 // --
 // regexp
 // --
+
+function regexpIs( src )
+{
+  return _ObjectToString.call( src ) === '[object RegExp]';
+}
+
+//
+
+function regexpObjectIs( src )
+{
+  if( !_.RegexpObject )
+  return false;
+  return src instanceof _.RegexpObject;
+}
+
+//
 
 function regexpIdentical( src1,src2 )
 {
@@ -6381,7 +6173,7 @@ function _routineJoin( o )
   _.assert( arguments.length === 1 );
   _.assert( _.boolIs( o.seal ) );
   _.assert( _.routineIs( o.routine ),'expects routine' );
-  _.assert( _.arrayLike( o.args ) || _.argumentsIs( o.args ) || o.args === undefined );
+  _.assert( _.arrayLike( o.args ) || o.args === undefined );
 
   var routine = o.routine;
   var args = o.args;
@@ -6392,8 +6184,6 @@ function _routineJoin( o )
 
     if( context !== undefined && args === undefined )
     {
-      // if( o.seal === true )
-      // throw _.err( 'not tested, not clear what convetion was meant. use [] as third argument or rotineJoin' );
       if( o.seal === true )
       {
         return function __sealedContext()
@@ -6447,72 +6237,72 @@ function _routineJoin( o )
 
   }
 
-  //
+  /* */
 
-  throw _.err( 'not implemented' );
+ _.assert( 0,'not implemented' );
 
 }
 
 //
-
-/**
- * The routineBind() routine creates a new function with its 'this' ( context ) set to the provided `context`
- value. Unlike Function.prototype.bind() routine if `context` is undefined`, in new function 'this' context will not be
- sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
- target function.
- * Besides the aforementioned difference, routineBind routine accepts function as argument, that makes it more useful
-    than Function.prototype.bind().
- * @example
-    var o = {
-        z: 5
-    };
-
-    var y = 4;
-
-    function sum(x, y) {
-       return x + y + this.z;
-    }
-    var newSum = wTools.routineBind(sum, o, [3]);
-    newSum(y); // 12
-
-   function f1(){ console.log( this ) };
-   var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
-   f2.call( o ); // try to call new function with context set to { z: 5 }
-   var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
-   f3.call( o ) // print  { z: 5 }
- * @param {Function} routine Function which will be used as base for result function.
- * @param {Object} context The value that will be set as 'this' keyword in new function
- * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
- function. Must be wraped into array.
- * @returns {Function} New created function with preceding this, and args.
- * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
- * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
- * @function routineBind
- * @memberof wTools
- */
-
-function routineBind( routine, context, args )
-{
-
-  _.assert( _.routineIs( routine ),'routineBind :','first argument must be a routine' );
-  _.assert( arguments.length <= 3,'routineBind :','expects 3 or less arguments' );
-
-  return _routineJoin
-  ({
-    routine : routine,
-    context : context,
-    args : args,
-    seal : false,
-  });
-
-}
+//
+// /**
+//  * The routineBind() routine creates a new function with its 'this' ( context ) set to the provided `context`
+//  value. Unlike Function.prototype.bind() routine if `context` is undefined`, in new function 'this' context will not be
+//  sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
+//  target function.
+//  * Besides the aforementioned difference, routineBind routine accepts function as argument, that makes it more useful
+//     than Function.prototype.bind().
+//  * @example
+//     var o = {
+//         z: 5
+//     };
+//
+//     var y = 4;
+//
+//     function sum(x, y) {
+//        return x + y + this.z;
+//     }
+//     var newSum = wTools.routineBind(sum, o, [3]);
+//     newSum(y); // 12
+//
+//    function f1(){ console.log( this ) };
+//    var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+//    f2.call( o ); // try to call new function with context set to { z: 5 }
+//    var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
+//    f3.call( o ) // print  { z: 5 }
+//  * @param {Function} routine Function which will be used as base for result function.
+//  * @param {Object} context The value that will be set as 'this' keyword in new function
+//  * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
+//  function. Must be wraped into array.
+//  * @returns {Function} New created function with preceding this, and args.
+//  * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
+//  * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+//  * @function routineBind
+//  * @memberof wTools
+//  */
+//
+// function routineBind( routine, context, args )
+// {
+//
+//   _.assert( _.routineIs( routine ),'routineBind :','first argument must be a routine' );
+//   _.assert( arguments.length <= 3,'routineBind :','expects 3 or less arguments' );
+//
+//   return _routineJoin
+//   ({
+//     routine : routine,
+//     context : context,
+//     args : args,
+//     seal : false,
+//   });
+//
+// }
 
 //
 
 /**
  * The routineJoin() routine creates a new function with its 'this' ( context ) set to the provided `context`
  value. Argumetns `args` of target function which are passed before arguments of binded function during
- calling of target function. Unlike routineBind routine, position of `context` parameter is more intuitive.
+ calling of target function. Unlike bind routine, position of `context` parameter is more intuitive.
  * @example
    var o = {
         z: 5
@@ -6537,7 +6327,6 @@ function routineBind( routine, context, args )
  * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
  calling of target function. Must be wraped into array.
  * @returns {Function} New created function with preceding this, and args.
- * @see wTools.routineBind
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
  * @function routineJoin
@@ -7003,10 +6792,14 @@ function routinesComposeWhile()
     var result = [];
     for( var s = 0 ; s < srcs.length ; s++ )
     {
-      result[ s ] = srcs[ s ].apply( this,arguments );
-      if( result[ s ] === false )
+      var r = srcs[ s ].apply( this,arguments );
+      if( r === false )
       return false;
+      else if( r !== undefined )
+      result.push( r );
     }
+    if( !result.length )
+    return;
     return result;
   }
 
@@ -7420,8 +7213,8 @@ function timeOnce( delay,onBegin,onEnd )
   }
 
   _.assert( delay >= 0 );
-  _.assert( _.atomicIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
-  _.assert( _.atomicIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
+  _.assert( _.primitiveIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
+  _.assert( _.primitiveIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
 
   return function timeOnce()
   {
@@ -7793,6 +7586,72 @@ function dateToStr( date )
 // buffer
 // --
 
+function bufferRawIs( src )
+{
+  var type = _ObjectToString.call( src );
+  var result = type === '[object ArrayBuffer]';
+  return result;
+}
+
+//
+
+function bufferTypedIs( src )
+{
+  var type = _ObjectToString.call( src );
+
+  if( !/\wArray/.test( type ) || _.bufferNodeIs( src ) )
+  return false;
+
+  return true;
+}
+
+//
+
+function bufferViewIs( src )
+{
+  var type = _ObjectToString.call( src );
+  var result = type === '[object DataView]';
+  return result;
+}
+
+//
+
+function bufferNodeIs( src )
+{
+  if( typeof Buffer !== 'undefined' )
+  return src instanceof Buffer;
+  return false;
+}
+
+//
+
+function bufferAnyIs( src )
+{
+  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
+}
+
+//
+
+function bufferBytesIs( src )
+{
+  return src instanceof Uint8Array;
+}
+
+//
+
+function constructorIsBuffer( src )
+{
+  if( !src )
+  return false;
+  if( !_.numberIs( src.BYTES_PER_ELEMENT ) )
+  return false;
+  if( !_.strIs( src.name ) )
+  return false;
+  return src.name.indexOf( 'Array' ) !== -1;
+}
+
+//
+
 /**
  * The bufferRelen() routine returns a new or the same typed array (src) with a new or the same length (len).
  *
@@ -7927,7 +7786,7 @@ function bufferRetype( src,bufferType )
 {
 
   _.assert( _.bufferTypedIs( src ) );
-  _.assert( _.typeIsBuffer( bufferType ) );
+  _.assert( _.constructorIsBuffer( bufferType ) );
 
   var o = src.byteOffset;
   var l = Math.floor( src.byteLength / bufferType.BYTES_PER_ELEMENT );
@@ -8714,6 +8573,395 @@ buffersDeserialize.defaults =
 }
 
 // --
+// array checker
+// --
+
+/**
+ * The arrayIs() routine determines whether the passed value is an Array.
+ *
+ * If the (src) is an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayIs( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayIs( 10 );
+ *
+ * @returns { boolean } Returns true if (src) is an Array.
+ * @function arrayIs
+ * @memberof wTools
+ */
+
+function arrayIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Array]';
+}
+
+//
+
+/**
+ * The arrayLike() routine determines whether the passed value is an array-like or an Array.
+ * Imortant : arrayLike returns false for Object, even if the object has length field.
+ *
+ * If (src) is an array-like or an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayLike( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayLike( 10 );
+ *
+ * @example
+ * // returns true
+ * var isArr = ( function() {
+ *   return _.arrayLike( arguments );
+ * } )( 'Hello there!' );
+ *
+ * @returns { boolean } Returns true if (src) is an array-like or an Array.
+ * @function arrayLike.
+ * @memberof wTools
+ */
+
+function arrayLike( src )
+{
+  if( primitiveIs( src ) )
+  return false;
+
+  if( _.routineIs( src ) )
+  return false;
+  if( _.objectIs( src ) )
+  return false;
+  if( _.strIs( src ) )
+  return false;
+
+  if( !_.numberIs( src.length ) )
+  return false;
+  if( Object.propertyIsEnumerable.call( src,'length' ) )
+  return false;
+
+  return true;
+}
+
+//
+
+function constructorLikeArray( src )
+{
+  if( !src )
+  return false;
+
+  if( src === Function )
+  return false;
+  if( src === Object )
+  return false;
+  if( src === String )
+  return false;
+
+  if( _.primitiveIs( src ) )
+  return false;
+
+  if( !( 'length' in src.prototype ) )
+  return false;
+  if( Object.propertyIsEnumerable.call( src.prototype,'length' ) )
+  return false;
+
+  return true;
+}
+
+//
+
+/**
+ * The hasLength() routine determines whether the passed value has the property (length).
+ *
+ * If (src) is equal to the (undefined) or (null) false is returned.
+ * If (src) has the property (length) true is returned.
+ * Otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * hasLength( [ 1, 2 ] );
+ *
+ * @example
+ * // returns true
+ * hasLength( 'Hello there!' );
+ *
+ * @example
+ * // returns true
+ * var isLength = ( function() {
+ *   return _.hasLength( arguments );
+ * } )( 'Hello there!' );
+ *
+ * @example
+ * // returns false
+ * hasLength( 10 );
+ *
+ * @example
+ * // returns false
+ * hasLength( { } );
+ *
+ * @returns { boolean } Returns true if (src) has the property (length).
+ * @function hasLength
+ * @memberof wTools
+ */
+
+function hasLength( src )
+{
+  if( src === undefined || src === null ) return false;
+  if( _.numberIs( src.length ) ) return true;
+  return false;
+}
+
+//
+
+/**
+ * The arrayCompare() routine returns the first difference between the values of the first array from the second.
+ *
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
+ *
+ * @example
+ * // returns 3
+ * var arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
+ *
+ * @returns { Number } - Returns the first difference between the values of the two arrays.
+ * @function arrayCompare
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
+ * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
+ * @memberof wTools
+ */
+
+function arrayCompare( src1,src2 )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
+  _.assert( src2.length >= src1.length );
+
+  var result = 0;
+
+  for( var s = 0 ; s < src1.length ; s++ )
+  {
+
+    result = src1[ s ] - src2[ s ];
+    if( result !== 0 )
+    return result;
+
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The arrayIdentical() routine checks the equality of two arrays.
+ *
+ * @param { arrayLike } src1 - The first array.
+ * @param { arrayLike } src2 - The second array.
+ *
+ * @example
+ * // returns true
+ * var arr = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ *
+ * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
+ * @function arrayIdentical
+ * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
+ * @memberof wTools
+ */
+
+function arrayIdentical( src1,src2 )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayLike( src1 ) );
+  _.assert( _.arrayLike( src2 ) );
+
+  var result = true;
+
+  if( src1.length !== src2.length )
+  return false;
+
+  for( var s = 0 ; s < src1.length ; s++ )
+  {
+
+    result = src1[ s ] === src2[ s ];
+
+    if( result === false )
+    return false;
+
+  }
+
+  return result;
+}
+
+//
+
+function arrayHas( insArray, element, onElement )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( insArray );
+  if( onElement === undefined )
+  {
+    return insArray.indexOf( element ) !== -1;
+  }
+  else
+  {
+    if( _.arrayLeftIndexOf( insArray, element, onElement ) >= 0 )
+    return true;
+    return false;
+  }
+}
+
+//
+
+/**
+ * The arrayHasAny() routine checks if the (src) array has at least one value of the following arguments.
+ *
+ * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the routine
+ * [arrayAs()]{@link wTools.arrayAs}
+ * Checks, if (src) array has at least one value of the (ins) array.
+ * If true, it returns true.
+ * Otherwise, it returns false.
+ *
+ * @see {@link wTools.arrayAs} - See for more information.
+ *
+ * @param { arrayLike } src - The source array.
+ * @param {...*} arguments - One or more argument(s).
+ *
+ * @example
+ * // returns true
+ * var arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
+ *
+ * @returns { Boolean } - Returns true, if (src) has at least one value of the following argument(s), otherwise false is returned.
+ * @function arrayHasAny
+ * @throws { Error } If the first argument in not an array.
+ * @memberof wTools
+ */
+
+function arrayHasAny( src )
+{
+  var empty = true;
+  empty = false;
+
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    empty = false;
+
+    var ins = _.arrayAs( arguments[ a ] );
+    for( var i = 0 ; i < ins.length ; i++ )
+    {
+      if( src.indexOf( ins[ i ] ) !== -1 )
+      return true;
+    }
+
+  }
+
+  return empty;
+}
+
+//
+
+function arrayHasAll( src )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+
+    var ins = _.arrayAs( arguments[ a ] );
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( src.indexOf( ins[ i ] ) === -1 )
+    return false;
+
+  }
+
+  return true;
+}
+
+//
+
+function arrayHasNone( src )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+
+    var ins = _.arrayAs( arguments[ a ] );
+    for( var i = 0 ; i < ins.length ; i++ )
+    if( src.indexOf( ins[ i ] ) !== -1 )
+    return false;
+
+  }
+
+  return true;
+}
+
+//
+
+function arrayAll( src )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  for( var s = 0 ; s < src.length ; src++ )
+  {
+    if( !src[ s ] )
+    return false;
+  }
+
+  return true;
+}
+
+//
+
+function arrayAny( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  debugger;
+  for( var s = 0 ; s < src.length ; src++ )
+  if( src[ s ] )
+  return true;
+
+  debugger;
+  return false;
+}
+
+//
+
+function arrayNone( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayLike( src ) );
+
+  debugger;
+  for( var s = 0 ; s < src.length ; src++ )
+  if( src[ s ] )
+  return false;
+
+  debugger;
+  return true;
+}
+
+// --
 // array
 // --
 
@@ -8972,7 +9220,7 @@ arrayMakeRandom.defaults =
 //
 //   _.assert( arguments.length === 1 );
 //
-//   if( _.atomicIs( ins ) ) return;
+//   if( _.primitiveIs( ins ) ) return;
 //   if( !_.arrayIs( ins ) && !_.bufferTypedIs( ins ) ) return;
 //   var result = arrayMakeSimilar( ins,ins.length );
 //   return result;
@@ -10167,7 +10415,7 @@ arrayUnmask.defaults =
 
 //
 
-function arrayIsUniqueMap( o )
+function arrayInvestigateUniqueMap( o )
 {
 
   if( _.arrayLike( o ) )
@@ -10175,7 +10423,7 @@ function arrayIsUniqueMap( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayLike( o.src ) );
-  _.assertMapHasOnly( o,arrayIsUniqueMap.defaults );
+  _.assertMapHasOnly( o,arrayInvestigateUniqueMap.defaults );
 
   /**/
 
@@ -10227,7 +10475,7 @@ function arrayIsUniqueMap( o )
   return { number : number, array : isUnique };
 }
 
-arrayIsUniqueMap.defaults =
+arrayInvestigateUniqueMap.defaults =
 {
   src : null,
   onElement : null,
@@ -10239,7 +10487,7 @@ arrayIsUniqueMap.defaults =
 function arrayUnique( src,onElement )
 {
 
-  var isUnique = arrayIsUniqueMap
+  var isUnique = arrayInvestigateUniqueMap
   ({
     src : src,
     onElement : onElement,
@@ -11240,247 +11488,6 @@ function arrayCountUnique( src,onElement )
   }
 
   return found.length;
-}
-
-// --
-// checker
-// --
-
-/**
- * The arrayCompare() routine returns the first difference between the values of the first array from the second.
- *
- * @param { arrayLike } src1 - The first array.
- * @param { arrayLike } src2 - The second array.
- *
- * @example
- * // returns 3
- * var arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
- *
- * @returns { Number } - Returns the first difference between the values of the two arrays.
- * @function arrayCompare
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
- * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
- * @memberof wTools
- */
-
-function arrayCompare( src1,src2 )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
-  _.assert( src2.length >= src1.length );
-
-  var result = 0;
-
-  for( var s = 0 ; s < src1.length ; s++ )
-  {
-
-    result = src1[ s ] - src2[ s ];
-    if( result !== 0 )
-    return result;
-
-  }
-
-  return result;
-}
-
-//
-
-/**
- * The arrayIdentical() routine checks the equality of two arrays.
- *
- * @param { arrayLike } src1 - The first array.
- * @param { arrayLike } src2 - The second array.
- *
- * @example
- * // returns true
- * var arr = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
- *
- * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @function arrayIdentical
- * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @memberof wTools
- */
-
-function arrayIdentical( src1,src2 )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( src1 ) );
-  _.assert( _.arrayLike( src2 ) );
-
-  var result = true;
-
-  if( src1.length !== src2.length )
-  return false;
-
-  for( var s = 0 ; s < src1.length ; s++ )
-  {
-
-    result = src1[ s ] === src2[ s ];
-
-    if( result === false )
-    return false;
-
-  }
-
-  return result;
-}
-
-//
-
-function arrayHas( insArray, element, onElement )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( insArray );
-  if( onElement === undefined )
-  {
-    return insArray.indexOf( element ) !== -1;
-  }
-  else
-  {
-    if( _.arrayLeftIndexOf( insArray, element, onElement ) >= 0 )
-    return true;
-    return false;
-  }
-}
-
-//
-
-/**
- * The arrayHasAny() routine checks if the (src) array has at least one value of the following arguments.
- *
- * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the routine
- * [arrayAs()]{@link wTools.arrayAs}
- * Checks, if (src) array has at least one value of the (ins) array.
- * If true, it returns true.
- * Otherwise, it returns false.
- *
- * @see {@link wTools.arrayAs} - See for more information.
- *
- * @param { arrayLike } src - The source array.
- * @param {...*} arguments - One or more argument(s).
- *
- * @example
- * // returns true
- * var arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
- *
- * @returns { Boolean } - Returns true, if (src) has at least one value of the following argument(s), otherwise false is returned.
- * @function arrayHasAny
- * @throws { Error } If the first argument in not an array.
- * @memberof wTools
- */
-
-function arrayHasAny( src )
-{
-  var empty = true;
-  empty = false;
-
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-    empty = false;
-
-    var ins = _.arrayAs( arguments[ a ] );
-    for( var i = 0 ; i < ins.length ; i++ )
-    {
-      if( src.indexOf( ins[ i ] ) !== -1 )
-      return true;
-    }
-
-  }
-
-  return empty;
-}
-
-//
-
-function arrayHasAll( src )
-{
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-
-    var ins = _.arrayAs( arguments[ a ] );
-    for( var i = 0 ; i < ins.length ; i++ )
-    if( src.indexOf( ins[ i ] ) === -1 )
-    return false;
-
-  }
-
-  return true;
-}
-
-//
-
-function arrayHasNone( src )
-{
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-
-    var ins = _.arrayAs( arguments[ a ] );
-    for( var i = 0 ; i < ins.length ; i++ )
-    if( src.indexOf( ins[ i ] ) !== -1 )
-    return false;
-
-  }
-
-  return true;
-}
-
-//
-
-function arrayAll( src )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( src ) );
-
-  for( var s = 0 ; s < src.length ; src++ )
-  {
-    if( !src[ s ] )
-    return false;
-  }
-
-  return true;
-}
-
-//
-
-function arrayAny( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( src ) );
-
-  debugger;
-  for( var s = 0 ; s < src.length ; src++ )
-  if( src[ s ] )
-  return true;
-
-  debugger;
-  return false;
-}
-
-//
-
-function arrayNone( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.arrayLike( src ) );
-
-  debugger;
-  for( var s = 0 ; s < src.length ; src++ )
-  if( src[ s ] )
-  return false;
-
-  debugger;
-  return true;
 }
 
 // --
@@ -14029,6 +14036,741 @@ function arraySetIdentical( ins1,ins2 )
 }
 
 // --
+// map checker
+// --
+
+/**
+ * Function objectIs checks incoming param whether it is object.
+ * Returns "true" if incoming param is object. Othervise "false" returned.
+ *
+ * @example
+ * // returns true
+ * var obj = {x : 100};
+ * objectIs(obj);
+ * @example
+ * // returns false
+ * objectIs( 10 );
+ *
+ * @param {*} src.
+ * @return {Boolean}.
+ * @function objectIs
+ * @memberof wTools
+ */
+
+function objectIs( src )
+{
+  // if( !src )
+  // return false;
+  // if( _hasOwnProperty.call( src,'callee' ) )
+  // return false;
+  // if( src instanceof Array )
+  // return true;
+  // if( src instanceof Object )
+  // return true;
+  // var prototype = Object.getPrototypeOf( src );
+  // return prototype === null;
+  return _ObjectToString.call( src ) === '[object Object]';
+}
+
+//
+
+function objectLike( src )
+{
+
+  if( objectIs( src ) )
+  return true;
+
+  if( primitiveIs( src ) )
+  return false;
+
+  if( _.arrayLike( src ) )
+  return false;
+
+  if( _.routineIsPure( src ) )
+  return false;
+
+  // if( Object.getPrototypeOf( src ) === Function.__proto__ )
+  // debugger;
+  //
+  // if( Object.getPrototypeOf( src ) === Function.__proto__ )
+  // return false;
+
+  for( var k in src )
+  return true;
+
+  // if( Object.getOwnPropertyNames( src ).length )
+  // return true;
+
+  return false;
+}
+
+//
+
+function objectLikeOrRoutine( src )
+{
+  if( routineIs( src ) )
+  return true;
+  return objectLike( src );
+}
+
+//
+
+/**
+ * The mapIs() routine determines whether the passed value is an Object,
+ * and not inherits through the prototype chain.
+ *
+ * If the (src) is an Object, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - Entity to check.
+ *
+ * @example
+ * // returns true
+ * mapIs( { a : 7, b : 13 } );
+ *
+ * @example
+ * // returns false
+ * mapIs( 13 );
+ *
+ * @example
+ * // returns false
+ * mapIs( [ 3, 7, 13 ] );
+ *
+ * @returns { Boolean } Returns true if (src) is an Object, and not inherits through the prototype chain.
+ * @function mapIs
+ * @memberof wTools
+ */
+
+function mapIs( src )
+{
+
+  if( !_.objectIs( src ) )
+  return false;
+
+  var proto = Object.getPrototypeOf( src );
+
+  if( proto === null )
+  return true;
+
+  if( proto.constructor && proto.constructor.name !== 'Object' )
+  return false;
+
+  if( Object.getPrototypeOf( proto ) === null )
+  return true;
+
+  _.assert( proto === null || proto,'unexpected' );
+
+  return false;
+}
+
+//
+
+function mapIsPure( src )
+{
+  if( !src )
+  return;
+
+  if( Object.getPrototypeOf( src ) === null )
+  return true;
+
+  return false;
+}
+
+//
+
+function mapLike( src )
+{
+
+  if( mapIs( src ) )
+  return true;
+
+  if( src.constructor === Object || src.constructor === null )
+  debugger;
+
+  if( src.constructor === Object || src.constructor === null )
+  return true;
+
+  return false;
+}
+
+//
+
+/**
+ * The mapIdentical() returns true, if the second object (src2)
+ * has the same values as the first object(src1).
+ *
+ * It takes two objects (scr1, src2), checks
+ * if both object have the same length and [key, value] return true
+ * otherwise it returns undefined.
+ *
+ * @param { objectLike } src1 - First object.
+ * @param { objectLike } src2 - Target object.
+ * Objects to compare values.
+ *
+ * @example
+ * // returns true
+ * mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
+ *
+ * @example
+ * returns false
+ * _.mapIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
+ *
+ * @example
+ * returns false
+ * _.mapIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
+ *
+ * @returns { boolean } Returns true, if the second object (src2)
+ * has the same values as the first object(src1).
+ * @function mapIdentical
+ * @throws Will throw an error if ( arguments.length !== 2 ).
+ * @memberof wTools
+ */
+
+function mapIdentical( src1,src2 )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src1 ) );
+  _.assert( _.objectLike( src2 ) );
+
+  if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
+  return false;
+
+  for( var s in src1 )
+  {
+    if( src1[ s ] !== src2[ s ] )
+    return false;
+  }
+
+  return true;
+}
+
+//
+
+/**
+ * The mapContain() returns true, if the first object (src)
+ * has the same values as the second object(ins).
+ *
+ * It takes two objects (scr, ins),
+ * checks if the first object (src) has the same [key, value] as
+ * the second object (ins).
+ * If true, it returns true,
+ * otherwise it returns false.
+ *
+ * @param { objectLike } src - Target object.
+ * @param { objectLike } ins - Second object.
+ * Objects to compare values.
+ *
+ * @example
+ * // returns true
+ * mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
+ *
+ * @example
+ * returns false
+ * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
+ *
+ * @returns { boolean } Returns true, if the first object (src)
+ * has the same values as the second object(ins).
+ * @function mapContain
+ * @throws Will throw an error if ( arguments.length !== 2 ).
+ * @memberof wTools
+ */
+
+function mapContain( src,ins )
+{
+  _.assert( arguments.length === 2 );
+
+/*
+  if( Object.keys( src ).length < Object.keys( ins ).length )
+  return false;
+*/
+
+  for( var s in ins )
+  {
+
+    if( ins[ s ] === undefined )
+    continue;
+
+    if( src[ s ] !== ins[ s ] )
+    return false;
+
+  }
+
+  return true;
+}
+
+//
+
+// function mapHas( object,name )
+// {
+//   var name = _.nameUnfielded( name ).coded;
+//
+//   var descriptor = Object.getOwnPropertyDescriptor( object,name );
+//
+//   if( !descriptor )
+//   return false;
+//
+//   if( descriptor.set && descriptor.set.forbid )
+//   return false;
+//
+//   return true;
+// }
+
+//
+
+/**
+ * Short-cut for _mapSatisfy() routine.
+ * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
+ * Also works with ( o.template ) as routine that check( o.src ) with own rules.
+ * @param {wTools~mapSatisfyOptions} o - Default options {@link wTools~mapSatisfyOptions}.
+ * @returns {boolean} Returns true if( o.src ) has same key/value pair(s) with( o.template )
+ * or result if ( o.template ) routine call is true.
+ *
+ * @example
+ * //returns true
+ * _.mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns true
+ * _.mapSatisfy( { template : {a : 1, b : 1, c : 1 }, src : { a : 1, b : 2 } } );
+ *
+ * @example
+ * //returns false
+ * function routine( src ){ return src.a === 12 }
+ * _.mapSatisfy( { template : routine, src : { a : 1, b : 2 } } );
+ *
+ * @function mapSatisfy
+ * @throws {exception} If( arguments.length ) is not equal to 1 or 2.
+ * @throws {exception} If( o.template ) is not a Object.
+ * @throws {exception} If( o.template ) is not a Routine.
+ * @throws {exception} If( o.src ) is undefined.
+ * @memberof wTools
+*/
+
+function mapSatisfy( o )
+{
+
+  if( arguments.length === 2 )
+  o = { template : arguments[ 0 ], src : arguments[ 1 ] };
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
+  _.assert( o.src !== undefined );
+
+  _.routineOptions( mapSatisfy,o );
+
+  return _mapSatisfy( o.template,o.src,o.src,o.levels );
+}
+
+mapSatisfy.defaults =
+{
+  template : null,
+  src : null,
+  levels : 1,
+}
+
+//
+
+/**
+ * Default options for _mapSatisfy() routine.
+ * @typedef {object} wTools~mapSatisfyOptions
+ * @property {object|function} [ template=null ] - Map to compare with( src ) or routine that checks each value of( src ).
+ * @property {object} [ src=null ] - Source map.
+ * @property {number} [ levels=256 ] - Number of levels in map structure.
+ *
+*/
+
+/**
+ * Checks if object( src ) has at least one key/value pair that is represented in( template ).
+ * Returns true if( template ) has one or more indentical key/value pair with( src ).
+ * If( template ) is provided as routine, routine uses it to check( src ).
+ * @param {wTools~mapSatisfyOptions} args - Arguments list {@link wTools~mapSatisfyOptions}.
+ * @returns {boolean} Returns true if( src ) has same key/value pair(s) with( template ).
+ *
+ * @example
+ * //returns true
+ * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ *
+ * @example
+ * //returns false
+ * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { y : 1 , j : 1 } );
+ *
+ * @example
+ * //returns true
+ * function template( src ){ return src.y === 1 }
+ * _._mapSatisfy( template, { y : 1 , j : 1 } );
+ *
+ * @function _mapSatisfy
+ * @memberof wTools
+*/
+
+function _mapSatisfy( template,src,root,levels )
+{
+
+  if( template === src )
+  return true;
+
+  if( levels <= 0 )
+  return false;
+  //throw _.err( '_mapSatisfy : too deep structure' );
+
+  if( _.routineIs( template ) )
+  return template( src );
+
+  if( objectIs( template ) )
+  {
+    for( var t in template )
+    if( !_mapSatisfy( template[ t ],src[ t ],root,levels-1 ) )
+    return false;
+    return true;
+  }
+
+  debugger;
+
+  return false;
+}
+
+//
+
+/**
+ * The mapOwnKey() returns true if (object) has own property.
+ *
+ * It takes (name) checks if (name) is a String,
+ * if (object) has own property with the (name).
+ * If true, it returns true.
+ *
+ * @param { Object } object - Object that will be check.
+ * @param { name } name - Target property.
+ *
+ * @example
+ * // returns true
+ * _.mapOwnKey( { a : 7, b : 13 }, 'a' );
+ *
+ * @example
+ * // returns false
+ * _.mapOwnKey( { a : 7, b : 13 }, 'c' );
+ *
+ * @returns { boolean } Returns true if (object) has own property.
+ * @function mapOwnKey
+ * @throws { mapOwnKey } Will throw an error if the (name) is unknown.
+ * @memberof wTools
+ */
+
+//
+
+function mapOwnKey( object,key )
+{
+
+  if( arguments.length === 1 )
+  {
+    var result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
+    return result;
+  }
+
+  _.assert( arguments.length === 2 );
+
+  if( _.strIs( key ) )
+  return _hasOwnProperty.call( object, key );
+  else if( _.mapIs( key ) )
+  return _hasOwnProperty.call( object, _.nameUnfielded( key ).coded );
+  else if( _.symbolIs( key ) )
+  return _hasOwnProperty.call( object, key );
+
+  _.assert( 0,'mapOwnKey :','unknown type of key :',_.strTypeOf( key ) );
+}
+
+//
+
+function mapHasVal( object,val )
+{
+  var vals = _.mapVals( object );
+  return vals.indexOf( val ) !== -1;
+}
+
+//
+
+function mapOwnVal( object,val )
+{
+  var vals = _.mapOwnVals( object );
+  return vals.indexOf( val ) !== -1;
+}
+
+//
+
+/**
+ * The mapHasAll() returns true if object( src ) has all enumerable keys from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has property with same name.
+ * Returns true if all keys from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
+ * @param { ObjectLike } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapHasAll( {}, {} );
+ *
+ * // returns false
+ * _.mapHasAll( {}, { a : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has all enumerable keys from( screen ).
+ * @function mapHasAll
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
+
+function mapHasAll( src,screen )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) );
+  _.assert( _.objectLike( screen ) );
+
+  for( var k in screen )
+  {
+    if( !( k in src ) )
+    return false;
+  }
+
+  return true;
+}
+
+//
+
+/**
+ * The mapHasAny() returns true if object( src ) has at least one enumerable key from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has at least one property with same name.
+ * Returns true if any key from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
+ * @param { ObjectLike } screen - Map that hold keys.
+ *
+ * @example
+ * // returns false
+ * _.mapHasAny( {}, {} );
+ *
+ * // returns true
+ * _.mapHasAny( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns false
+ * _.mapHasAny( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
+ * @function mapHasAny
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
+
+function mapHasAny( src,screen )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) );
+  _.assert( _.objectLike( screen ) );
+
+  for( var k in screen )
+  {
+    if( k in src )
+    debugger;
+    if( k in src )
+    return true;
+  }
+
+  debugger;
+  return false;
+}
+
+//
+
+/**
+ * The mapHasAny() returns true if object( src ) has no one enumerable key from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has no one property with same name.
+ * Returns true if all keys from( screen ) not exists on object( src ), otherwise returns false.
+ *
+ * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
+ * @param { ObjectLike } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapHasNone( {}, {} );
+ *
+ * // returns false
+ * _.mapHasNone( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns true
+ * _.mapHasNone( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
+ * @function mapHasNone
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
+
+function mapHasNone( src,screen )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) );
+  _.assert( _.objectLike( screen ) );
+
+  for( var k in screen )
+  {
+    // if( k in src )
+    // debugger;
+    if( k in src )
+    return false;
+  }
+
+  return true;
+}
+
+//
+
+/**
+ * The mapOwnAll() returns true if object( src ) has all own keys from object( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
+ * Returns true if all keys from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { Object } src - Map that will be checked for keys from( screen ).
+ * @param { Object } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapOwnAll( {}, {} );
+ *
+ * // returns true
+ * _.mapOwnAll( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns false
+ * _.mapOwnAll( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
+ * @function mapOwnAll
+ * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
+ * @memberof wTools
+ */
+
+function mapOwnAll( src,screen )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.mapIs( src ) );
+  _.assert( _.mapIs( screen ) );
+
+  for( var k in screen )
+  {
+    if( !_hasOwnProperty.call( src,k ) )
+    debugger;
+    if( !_hasOwnProperty.call( src,k ) )
+    return false;
+  }
+
+  debugger;
+  return true;
+}
+
+//
+
+/**
+ * The mapOwnAny() returns true if map( src ) has at least one own property from map( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from map( screen ) and checks if source( src ) has at least one property with that key name.
+ * Returns true if one of keys from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { Object } src - Map that will be checked for keys from( screen ).
+ * @param { Object } screen - Map that hold keys.
+ *
+ * @example
+ * // returns false
+ * _.mapOwnAny( {}, {} );
+ *
+ * // returns true
+ * _.mapOwnAny( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns false
+ * _.mapOwnAny( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
+ * @function mapOwnAny
+ * @throws { Exception } Will throw an error if the ( src ) is not a map.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a map.
+ * @memberof wTools
+ */
+
+function mapOwnAny( src,screen )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.mapIs( src ) );
+  _.assert( _.mapIs( screen ) );
+
+  for( var k in screen )
+  {
+    if( _hasOwnProperty.call( src,k ) )
+    debugger;
+    if( _hasOwnProperty.call( src,k ) )
+    return true;
+  }
+
+  debugger;
+  return false;
+}
+
+//
+
+/**
+ * The mapOwnNone() returns true if map( src ) not owns properties from map( screen ).
+ * Values of properties are not checked, only names.
+ *
+ * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
+ * Returns true if no one key from( screen ) exists on object( src ), otherwise returns false.
+ *
+ * @param { Object } src - Map that will be checked for keys from( screen ).
+ * @param { Object } screen - Map that hold keys.
+ *
+ * @example
+ * // returns true
+ * _.mapOwnNone( {}, {} );
+ *
+ * // returns false
+ * _.mapOwnNone( { a : 1, b : 2 }, { a : 1 } );
+ *
+ * // returns true
+ * _.mapOwnNone( { a : 1, b : 2 }, { c : 1 } );
+ *
+ * @returns { boolean } Returns true if map( src ) not owns properties from( screen ).
+ * @function mapOwnNone
+ * @throws { Exception } Will throw an error if the ( src ) is not a map.
+ * @throws { Exception } Will throw an error if the ( screen ) is not a map.
+ * @memberof wTools
+ */
+
+function mapOwnNone( src,screen )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.mapIs( src ) );
+  _.assert( _.mapIs( screen ) );
+
+  for( var k in screen )
+  {
+    if( _hasOwnProperty.call( src,k ) )
+    debugger;
+    if( _hasOwnProperty.call( src,k ) )
+    return false;
+  }
+
+  debugger;
+  return true;
+}
+
+// --
 // map move
 // --
 
@@ -14146,7 +14888,7 @@ function mapExtendConditional( filter,dstObject )
   {
     var argument = arguments[ a ];
 
-    _.assert( !_.atomicIs( argument ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
+    _.assert( !_.primitiveIs( argument ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
 
     for( var k in argument )
     {
@@ -15006,7 +15748,7 @@ function _mapEnumerableKeys( src,own )
   if( own )
   {
     for( var k in src )
-    if( Object.hasOwnProperty.call( src,k ) )
+    if( _hasOwnProperty.call( src,k ) )
     result.push( k );
   }
   else
@@ -15136,7 +15878,7 @@ function mapKeys( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapKeys.defaults );
-  _.assert( !_.atomicIs( src ) );
+  _.assert( !_.primitiveIs( src ) );
 
   o.src = src;
 
@@ -15189,7 +15931,7 @@ function mapOwnKeys( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapOwnKeys.defaults );
-  _.assert( !_.atomicIs( src ) );
+  _.assert( !_.primitiveIs( src ) );
 
   o.src = src;
   o.own = 1;
@@ -15238,7 +15980,7 @@ function mapAllKeys( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapAllKeys.defaults );
-  _.assert( !_.atomicIs( src ) );
+  _.assert( !_.primitiveIs( src ) );
 
   o.src = src;
   o.own = 0;
@@ -15404,7 +16146,7 @@ function mapVals( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapVals.defaults );
-  _.assert( !_.atomicIs( src ) );
+  _.assert( !_.primitiveIs( src ) );
 
   o.src = src;
 
@@ -15460,7 +16202,7 @@ function mapOwnVals( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapVals.defaults );
-  _.assert( !_.atomicIs( src ) );
+  _.assert( !_.primitiveIs( src ) );
 
   o.src = src;
   o.own = 1;
@@ -15506,7 +16248,7 @@ function mapAllVals( src )
 
   _.assert( arguments.length === 1 );
   _.assertMapHasOnly( o,mapAllVals.defaults );
-  _.assert( !_.atomicIs( src ) );
+  _.assert( !_.primitiveIs( src ) );
 
   o.src = src;
   o.own = 0;
@@ -15584,7 +16326,7 @@ function _mapPairs( o )
   _.routineOptions( _mapPairs,o );
   _.assert( arguments.length === 1 );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
-  _.assert( !_.atomicIs( o.src ) );
+  _.assert( !_.primitiveIs( o.src ) );
 
   var selectFilter = o.selectFilter;
 
@@ -16913,585 +17655,6 @@ _mapScreen.defaults =
 }
 
 // --
-// map tester
-// --
-
-/**
- * The mapIdentical() returns true, if the second object (src2)
- * has the same values as the first object(src1).
- *
- * It takes two objects (scr1, src2), checks
- * if both object have the same length and [key, value] return true
- * otherwise it returns undefined.
- *
- * @param { objectLike } src1 - First object.
- * @param { objectLike } src2 - Target object.
- * Objects to compare values.
- *
- * @example
- * // returns true
- * mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
- *
- * @example
- * returns false
- * _.mapIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
- *
- * @example
- * returns false
- * _.mapIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
- *
- * @returns { boolean } Returns true, if the second object (src2)
- * has the same values as the first object(src1).
- * @function mapIdentical
- * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools
- */
-
-function mapIdentical( src1,src2 )
-{
-
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src1 ) );
-  _.assert( _.objectLike( src2 ) );
-
-  if( Object.keys( src1 ).length !== Object.keys( src2 ).length )
-  return false;
-
-  for( var s in src1 )
-  {
-    if( src1[ s ] !== src2[ s ] )
-    return false;
-  }
-
-  return true;
-}
-
-//
-
-/**
- * The mapContain() returns true, if the first object (src)
- * has the same values as the second object(ins).
- *
- * It takes two objects (scr, ins),
- * checks if the first object (src) has the same [key, value] as
- * the second object (ins).
- * If true, it returns true,
- * otherwise it returns false.
- *
- * @param { objectLike } src - Target object.
- * @param { objectLike } ins - Second object.
- * Objects to compare values.
- *
- * @example
- * // returns true
- * mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
- *
- * @example
- * returns false
- * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
- *
- * @returns { boolean } Returns true, if the first object (src)
- * has the same values as the second object(ins).
- * @function mapContain
- * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools
- */
-
-function mapContain( src,ins )
-{
-  _.assert( arguments.length === 2 );
-
-/*
-  if( Object.keys( src ).length < Object.keys( ins ).length )
-  return false;
-*/
-
-  for( var s in ins )
-  {
-
-    if( ins[ s ] === undefined )
-    continue;
-
-    if( src[ s ] !== ins[ s ] )
-    return false;
-
-  }
-
-  return true;
-}
-
-//
-
-// function mapHas( object,name )
-// {
-//   var name = _.nameUnfielded( name ).coded;
-//
-//   var descriptor = Object.getOwnPropertyDescriptor( object,name );
-//
-//   if( !descriptor )
-//   return false;
-//
-//   if( descriptor.set && descriptor.set.forbid )
-//   return false;
-//
-//   return true;
-// }
-
-//
-
-/**
- * Short-cut for _mapSatisfy() routine.
- * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
- * Also works with ( o.template ) as routine that check( o.src ) with own rules.
- * @param {wTools~mapSatisfyOptions} o - Default options {@link wTools~mapSatisfyOptions}.
- * @returns {boolean} Returns true if( o.src ) has same key/value pair(s) with( o.template )
- * or result if ( o.template ) routine call is true.
- *
- * @example
- * //returns true
- * _.mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
- *
- * @example
- * //returns true
- * _.mapSatisfy( { template : {a : 1, b : 1, c : 1 }, src : { a : 1, b : 2 } } );
- *
- * @example
- * //returns false
- * function routine( src ){ return src.a === 12 }
- * _.mapSatisfy( { template : routine, src : { a : 1, b : 2 } } );
- *
- * @function mapSatisfy
- * @throws {exception} If( arguments.length ) is not equal to 1 or 2.
- * @throws {exception} If( o.template ) is not a Object.
- * @throws {exception} If( o.template ) is not a Routine.
- * @throws {exception} If( o.src ) is undefined.
- * @memberof wTools
-*/
-
-function mapSatisfy( o )
-{
-
-  if( arguments.length === 2 )
-  o = { template : arguments[ 0 ], src : arguments[ 1 ] };
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
-  _.assert( o.src !== undefined );
-
-  _.routineOptions( mapSatisfy,o );
-
-  return _mapSatisfy( o.template,o.src,o.src,o.levels );
-}
-
-mapSatisfy.defaults =
-{
-  template : null,
-  src : null,
-  levels : 1,
-}
-
-//
-
-/**
- * Default options for _mapSatisfy() routine.
- * @typedef {object} wTools~mapSatisfyOptions
- * @property {object|function} [ template=null ] - Map to compare with( src ) or routine that checks each value of( src ).
- * @property {object} [ src=null ] - Source map.
- * @property {number} [ levels=256 ] - Number of levels in map structure.
- *
-*/
-
-/**
- * Checks if object( src ) has at least one key/value pair that is represented in( template ).
- * Returns true if( template ) has one or more indentical key/value pair with( src ).
- * If( template ) is provided as routine, routine uses it to check( src ).
- * @param {wTools~mapSatisfyOptions} args - Arguments list {@link wTools~mapSatisfyOptions}.
- * @returns {boolean} Returns true if( src ) has same key/value pair(s) with( template ).
- *
- * @example
- * //returns true
- * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
- *
- * @example
- * //returns false
- * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { y : 1 , j : 1 } );
- *
- * @example
- * //returns true
- * function template( src ){ return src.y === 1 }
- * _._mapSatisfy( template, { y : 1 , j : 1 } );
- *
- * @function _mapSatisfy
- * @memberof wTools
-*/
-
-function _mapSatisfy( template,src,root,levels )
-{
-
-  if( template === src )
-  return true;
-
-  if( levels <= 0 )
-  return false;
-  //throw _.err( '_mapSatisfy : too deep structure' );
-
-  if( _.routineIs( template ) )
-  return template( src );
-
-  if( objectIs( template ) )
-  {
-    for( var t in template )
-    if( !_mapSatisfy( template[ t ],src[ t ],root,levels-1 ) )
-    return false;
-    return true;
-  }
-
-  debugger;
-
-  return false;
-}
-
-//
-
-/**
- * The mapOwnKey() returns true if (object) has own property.
- *
- * It takes (name) checks if (name) is a String,
- * if (object) has own property with the (name).
- * If true, it returns true.
- *
- * @param { Object } object - Object that will be check.
- * @param { name } name - Target property.
- *
- * @example
- * // returns true
- * _.mapOwnKey( { a : 7, b : 13 }, 'a' );
- *
- * @example
- * // returns false
- * _.mapOwnKey( { a : 7, b : 13 }, 'c' );
- *
- * @returns { boolean } Returns true if (object) has own property.
- * @function mapOwnKey
- * @throws { mapOwnKey } Will throw an error if the (name) is unknown.
- * @memberof wTools
- */
-
-//
-
-function mapOwnKey( object,key )
-{
-
-  if( arguments.length === 1 )
-  {
-    var result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
-    return result;
-  }
-
-  _.assert( arguments.length === 2 );
-
-  if( _.strIs( key ) )
-  return _hasOwnProperty.call( object, key );
-  else if( _.mapIs( key ) )
-  return _hasOwnProperty.call( object, _.nameUnfielded( key ).coded );
-  else if( _.symbolIs( key ) )
-  return _hasOwnProperty.call( object, key );
-
-  _.assert( 0,'mapOwnKey :','unknown type of key :',_.strTypeOf( key ) );
-}
-
-//
-
-function mapHasVal( object,val )
-{
-  var vals = _.mapVals( object );
-  return vals.indexOf( val ) !== -1;
-}
-
-//
-
-function mapOwnVal( object,val )
-{
-  var vals = _.mapOwnVals( object );
-  return vals.indexOf( val ) !== -1;
-}
-
-//
-
-/**
- * The mapHasAll() returns true if object( src ) has all enumerable keys from object( screen ).
- * Values of properties are not checked, only names.
- *
- * Uses for..in to get each key name from object( screen ) and checks if source( src ) has property with same name.
- * Returns true if all keys from( screen ) exists on object( src ), otherwise returns false.
- *
- * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
- * @param { ObjectLike } screen - Map that hold keys.
- *
- * @example
- * // returns true
- * _.mapHasAll( {}, {} );
- *
- * // returns false
- * _.mapHasAll( {}, { a : 1 } );
- *
- * @returns { boolean } Returns true if object( src ) has all enumerable keys from( screen ).
- * @function mapHasAll
- * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
- * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
- */
-
-function mapHasAll( src,screen )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
-  _.assert( _.objectLike( screen ) );
-
-  for( var k in screen )
-  {
-    if( !( k in src ) )
-    return false;
-  }
-
-  return true;
-}
-
-//
-
-/**
- * The mapHasAny() returns true if object( src ) has at least one enumerable key from object( screen ).
- * Values of properties are not checked, only names.
- *
- * Uses for..in to get each key name from object( screen ) and checks if source( src ) has at least one property with same name.
- * Returns true if any key from( screen ) exists on object( src ), otherwise returns false.
- *
- * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
- * @param { ObjectLike } screen - Map that hold keys.
- *
- * @example
- * // returns false
- * _.mapHasAny( {}, {} );
- *
- * // returns true
- * _.mapHasAny( { a : 1, b : 2 }, { a : 1 } );
- *
- * // returns false
- * _.mapHasAny( { a : 1, b : 2 }, { c : 1 } );
- *
- * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
- * @function mapHasAny
- * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
- * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
- */
-
-function mapHasAny( src,screen )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
-  _.assert( _.objectLike( screen ) );
-
-  for( var k in screen )
-  {
-    if( k in src )
-    debugger;
-    if( k in src )
-    return true;
-  }
-
-  debugger;
-  return false;
-}
-
-//
-
-/**
- * The mapHasAny() returns true if object( src ) has no one enumerable key from object( screen ).
- * Values of properties are not checked, only names.
- *
- * Uses for..in to get each key name from object( screen ) and checks if source( src ) has no one property with same name.
- * Returns true if all keys from( screen ) not exists on object( src ), otherwise returns false.
- *
- * @param { ObjectLike } src - Map that will be checked for keys from( screen ).
- * @param { ObjectLike } screen - Map that hold keys.
- *
- * @example
- * // returns true
- * _.mapHasNone( {}, {} );
- *
- * // returns false
- * _.mapHasNone( { a : 1, b : 2 }, { a : 1 } );
- *
- * // returns true
- * _.mapHasNone( { a : 1, b : 2 }, { c : 1 } );
- *
- * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
- * @function mapHasNone
- * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
- * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
- */
-
-function mapHasNone( src,screen )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
-  _.assert( _.objectLike( screen ) );
-
-  for( var k in screen )
-  {
-    // if( k in src )
-    // debugger;
-    if( k in src )
-    return false;
-  }
-
-  return true;
-}
-
-//
-
-/**
- * The mapOwnAll() returns true if object( src ) has all own keys from object( screen ).
- * Values of properties are not checked, only names.
- *
- * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
- * Returns true if all keys from( screen ) exists on object( src ), otherwise returns false.
- *
- * @param { Object } src - Map that will be checked for keys from( screen ).
- * @param { Object } screen - Map that hold keys.
- *
- * @example
- * // returns true
- * _.mapOwnAll( {}, {} );
- *
- * // returns true
- * _.mapOwnAll( { a : 1, b : 2 }, { a : 1 } );
- *
- * // returns false
- * _.mapOwnAll( { a : 1, b : 2 }, { c : 1 } );
- *
- * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
- * @function mapOwnAll
- * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
- * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
- */
-
-function mapOwnAll( src,screen )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.mapIs( src ) );
-  _.assert( _.mapIs( screen ) );
-
-  for( var k in screen )
-  {
-    if( !_hasOwnProperty.call( src,k ) )
-    debugger;
-    if( !_hasOwnProperty.call( src,k ) )
-    return false;
-  }
-
-  debugger;
-  return true;
-}
-
-//
-
-/**
- * The mapOwnAny() returns true if map( src ) has at least one own property from map( screen ).
- * Values of properties are not checked, only names.
- *
- * Uses for..in to get each key name from map( screen ) and checks if source( src ) has at least one property with that key name.
- * Returns true if one of keys from( screen ) exists on object( src ), otherwise returns false.
- *
- * @param { Object } src - Map that will be checked for keys from( screen ).
- * @param { Object } screen - Map that hold keys.
- *
- * @example
- * // returns false
- * _.mapOwnAny( {}, {} );
- *
- * // returns true
- * _.mapOwnAny( { a : 1, b : 2 }, { a : 1 } );
- *
- * // returns false
- * _.mapOwnAny( { a : 1, b : 2 }, { c : 1 } );
- *
- * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
- * @function mapOwnAny
- * @throws { Exception } Will throw an error if the ( src ) is not a map.
- * @throws { Exception } Will throw an error if the ( screen ) is not a map.
- * @memberof wTools
- */
-
-function mapOwnAny( src,screen )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.mapIs( src ) );
-  _.assert( _.mapIs( screen ) );
-
-  for( var k in screen )
-  {
-    if( _hasOwnProperty.call( src,k ) )
-    debugger;
-    if( _hasOwnProperty.call( src,k ) )
-    return true;
-  }
-
-  debugger;
-  return false;
-}
-
-//
-
-/**
- * The mapOwnNone() returns true if map( src ) not owns properties from map( screen ).
- * Values of properties are not checked, only names.
- *
- * Uses for..in to get each key name from object( screen ) and checks if source( src ) has own property with that key name.
- * Returns true if no one key from( screen ) exists on object( src ), otherwise returns false.
- *
- * @param { Object } src - Map that will be checked for keys from( screen ).
- * @param { Object } screen - Map that hold keys.
- *
- * @example
- * // returns true
- * _.mapOwnNone( {}, {} );
- *
- * // returns false
- * _.mapOwnNone( { a : 1, b : 2 }, { a : 1 } );
- *
- * // returns true
- * _.mapOwnNone( { a : 1, b : 2 }, { c : 1 } );
- *
- * @returns { boolean } Returns true if map( src ) not owns properties from( screen ).
- * @function mapOwnNone
- * @throws { Exception } Will throw an error if the ( src ) is not a map.
- * @throws { Exception } Will throw an error if the ( screen ) is not a map.
- * @memberof wTools
- */
-
-function mapOwnNone( src,screen )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.mapIs( src ) );
-  _.assert( _.mapIs( screen ) );
-
-  for( var k in screen )
-  {
-    if( _hasOwnProperty.call( src,k ) )
-    debugger;
-    if( _hasOwnProperty.call( src,k ) )
-    return false;
-  }
-
-  debugger;
-  return true;
-}
-
-// --
 // var
 // --
 
@@ -17585,6 +17748,7 @@ var Proto =
   _entityEqualAct : _entityEqualAct,
   _entityEqualIteratorMake : _entityEqualIteratorMake,
   _entityEqual : _entityEqual,
+
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
   entityContain : entityContain,
@@ -17647,43 +17811,35 @@ var Proto =
   // type test
 
   nothingIs : nothingIs,
-
-  arrayIs : arrayIs,
-  arrayLike : arrayLike,
-  clsLikeArray : clsLikeArray,
-  hasLength : hasLength,
-
-  objectIs : objectIs,
-  objectLike : objectLike,
-  objectLikeOrRoutine : objectLikeOrRoutine,
-  mapIs : mapIs,
-  mapIsPure : mapIsPure,
-  mapLike : mapLike,
-
-  symbolIs : symbolIs,
-
-  bufferRawIs : bufferRawIs,
-  bufferTypedIs : bufferTypedIs,
-  bufferViewIs : bufferViewIs,
-  bufferNodeIs : bufferNodeIs,
-  bufferAnyIs : bufferAnyIs,
-  bufferBytesIs : bufferBytesIs,
+  definedIs : definedIs,
+  primitiveIs : primitiveIs,
 
   argumentsIs : argumentsIs,
+  symbolIs : symbolIs,
+  dateIs : dateIs,
 
   vectorIs : vectorIs,
-  clsIsVector : clsIsVector,
+  constructorIsVector : constructorIsVector,
   spaceIs : spaceIs,
-  clsIsSpace : clsIsSpace,
+  constructorIsSpace : constructorIsSpace,
 
-  dateIs : dateIs,
-  boolIs : boolIs,
-  boolLike : boolLike,
+  consequenceIs : consequenceIs,
+  consequenceLike : consequenceLike,
+  promiseIs : promiseIs,
 
-  regexpIs : regexpIs,
-  regexpObjectIs : regexpObjectIs,
+  prototypeIs : prototypeIs,
+  prototypeIsStandard : prototypeIsStandard,
+  constructorIs : constructorIs,
+  constructorIsStandard : constructorIsStandard,
+  instanceIs : instanceIs,
+  instanceIsStandard : instanceIsStandard,
+  instanceLike : instanceLike,
+  typeOf : typeOf,
 
-  definedIs : definedIs,
+  workerIs : workerIs,
+  streamIs : streamIs,
+  consoleIs : consoleIs,
+  processIs : processIs,
 
   eventIs : eventIs,
   htmlIs : htmlIs,
@@ -17694,27 +17850,12 @@ var Proto =
   domIs : domIs,
   domLike : domLike,
   domableIs : domableIs,
-  consequenceIs : consequenceIs,
-  promiseIs : promiseIs,
-  consequenceLike : consequenceLike,
-
-  describedIs : describedIs,
-
-  atomicIs : atomicIs,
-  primitiveIs : atomicIs,
-
-  typeOf : typeOf,
-  typeIsBuffer : typeIsBuffer,
-
-  workerIs : workerIs,
-
-  streamIs : streamIs,
-  consoleIs : consoleIs,
-  processIs : processIs,
 
 
   // bool
 
+  boolIs : boolIs,
+  boolLike : boolLike,
   boolFrom : boolFrom,
 
 
@@ -17778,6 +17919,9 @@ var Proto =
 
   // regexp
 
+  regexpIs : regexpIs,
+  regexpObjectIs : regexpObjectIs,
+
   regexpIdentical : regexpIdentical,
   regexpEscape : regexpEscape,
 
@@ -17801,7 +17945,6 @@ var Proto =
   routineHasName : routineHasName,
 
   _routineJoin : _routineJoin,
-  routineBind : routineBind, /* deprecated */
   routineJoin : routineJoin,
   routineSeal : routineSeal,
   routineDelayed : routineDelayed,
@@ -17823,7 +17966,6 @@ var Proto =
   routineOptionsFromThis : routineOptionsFromThis,
 
   routineInputMultiplicator_functor : routineInputMultiplicator_functor,
-  // routineVectorize_functor : routineVectorize_functor,
 
   _equalizerFromMapper : _equalizerFromMapper,
   _comparatorFromMapper : _comparatorFromMapper,
@@ -17849,6 +17991,14 @@ var Proto =
 
   // buffer
 
+  bufferRawIs : bufferRawIs,
+  bufferTypedIs : bufferTypedIs,
+  bufferViewIs : bufferViewIs,
+  bufferNodeIs : bufferNodeIs,
+  bufferAnyIs : bufferAnyIs,
+  bufferBytesIs : bufferBytesIs,
+  constructorIsBuffer : constructorIsBuffer,
+
   bufferRelen : bufferRelen,
   bufferResize : bufferResize,
   bufferBytesGet : bufferBytesGet,
@@ -17873,6 +18023,30 @@ var Proto =
 
   buffersSerialize : buffersSerialize, /* deprecated */
   buffersDeserialize : buffersDeserialize, /* deprecated */
+
+
+  // array checker
+
+  arrayIs : arrayIs,
+  arrayLike : arrayLike,
+  constructorLikeArray : constructorLikeArray,
+  hasLength : hasLength,
+
+  arrayCompare : arrayCompare,
+  arrayIdentical : arrayIdentical,
+
+  arrayHas : arrayHas,  /* experimental */
+  arrayHasAny : arrayHasAny,  /* experimental */
+  arrayHasAll : arrayHasAll,  /* experimental */
+  arrayHasNone : arrayHasNone,  /* experimental */
+
+  arrayAll : arrayAll,
+  arrayAny : arrayAny,
+  arrayNone : arrayNone,
+
+  all : arrayAll,
+  any : arrayAny,
+  none : arrayNone,
 
 
   // array maker
@@ -17912,7 +18086,7 @@ var Proto =
   arrayMask : arrayMask, /* experimental */
   arrayUnmask : arrayUnmask, /* experimental */
 
-  arrayIsUniqueMap : arrayIsUniqueMap,  /* experimental */
+  arrayInvestigateUniqueMap : arrayInvestigateUniqueMap,  /* experimental */
   arrayUnique : arrayUnique,  /* experimental */
   arraySelect : arraySelect,
 
@@ -17947,25 +18121,6 @@ var Proto =
 
   arrayCount : arrayCount,
   arrayCountUnique : arrayCountUnique,
-
-
-  // array checker
-
-  arrayCompare : arrayCompare,
-  arrayIdentical : arrayIdentical,
-
-  arrayHas : arrayHas,  /* experimental */
-  arrayHasAny : arrayHasAny,  /* experimental */
-  arrayHasAll : arrayHasAll,  /* experimental */
-  arrayHasNone : arrayHasNone,  /* experimental */
-
-  arrayAll : arrayAll,
-  arrayAny : arrayAny,
-  arrayNone : arrayNone,
-
-  all : arrayAll,
-  any : arrayAny,
-  none : arrayNone,
 
 
   // array etc
@@ -18085,6 +18240,34 @@ var Proto =
   arraySetIdentical : arraySetIdentical,
 
 
+  // map checker
+
+  objectIs : objectIs,
+  objectLike : objectLike,
+  objectLikeOrRoutine : objectLikeOrRoutine,
+  mapIs : mapIs,
+  mapIsPure : mapIsPure,
+  mapLike : mapLike,
+
+  mapIdentical : mapIdentical, /* experimental */
+  mapContain : mapContain, /* experimental */
+
+  mapSatisfy : mapSatisfy, /* experimental */
+  _mapSatisfy : _mapSatisfy, /* experimental */
+
+  mapOwnKey : mapOwnKey, /* experimental */
+  mapHasVal : mapHasVal, /* experimental */
+  mapOwnVal : mapOwnVal, /* experimental */
+
+  mapHasAll : mapHasAll,
+  mapHasAny : mapHasAny,
+  mapHasNone : mapHasNone,
+
+  mapOwnAll : mapOwnAll,
+  mapOwnAny : mapOwnAny,
+  mapOwnNone : mapOwnNone,
+
+
   // map move
 
   mapClone : mapClone, /* experimental */
@@ -18194,27 +18377,6 @@ var Proto =
   mapScreen : mapScreen, /* experimental */
   mapScreenOwn : mapScreenOwn, /* experimental */
   _mapScreen : _mapScreen, /* experimental */
-
-
-  // map tester
-
-  mapIdentical : mapIdentical, /* experimental */
-  mapContain : mapContain, /* experimental */
-
-  mapSatisfy : mapSatisfy, /* experimental */
-  _mapSatisfy : _mapSatisfy, /* experimental */
-
-  mapOwnKey : mapOwnKey, /* experimental */
-  mapHasVal : mapHasVal, /* experimental */
-  mapOwnVal : mapOwnVal, /* experimental */
-
-  mapHasAll : mapHasAll,
-  mapHasAny : mapHasAny,
-  mapHasNone : mapHasNone,
-
-  mapOwnAll : mapOwnAll,
-  mapOwnAny : mapOwnAny,
-  mapOwnNone : mapOwnNone,
 
 
   // var

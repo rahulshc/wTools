@@ -61,7 +61,7 @@ var context3 = new contextConstructor3();
 
 //
 
-function _routineBind( test )
+function _routineJoin( test )
 {
 
   var testParam1 = 2,
@@ -122,27 +122,27 @@ function _routineBind( test )
     expected5 = 21;
 
   test.description = 'simple function without context with arguments bind without seal : result check';
-  var gotfn = _._routineBind( options1 );
+  var gotfn = _._routineJoin( options1 );
   var got = gotfn( testParam1 );
   test.identical( got,expected1 );
 
   test.description = 'simple function without context and seal : context test';
-  var gotfn = _._routineBind(options2);
+  var gotfn = _._routineJoin(options2);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
   test.description = 'simple function with context and arguments : result check';
-  var gotfn = _._routineBind(options3);
+  var gotfn = _._routineJoin(options3);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
   test.description = 'simple function with context and arguments : context check';
-  var gotfn = _._routineBind(options4);
+  var gotfn = _._routineJoin(options4);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
   test.description = 'simple function with context and arguments : result check, seal == true ';
-  var gotfn = _._routineBind(options5);
+  var gotfn = _._routineJoin(options5);
   var got = gotfn( testParam1 );
   test.identical( got, expected5 );
 
@@ -154,88 +154,88 @@ function _routineBind( test )
   test.description = 'missed argument';
   test.shouldThrowError( function()
   {
-    _._routineBind();
+    _._routineJoin();
   });
 
   test.description = 'extra argument';
   test.shouldThrowError( function()
   {
-    _._routineBind( options1, options2 );
+    _._routineJoin( options1, options2 );
   });
 
   test.description = 'passed non callable object';
   test.shouldThrowError( function()
   {
-    _._routineBind( wrongOpt1 );
+    _._routineJoin( wrongOpt1 );
   });
 
   test.description = 'passed arguments as primitive value';
   test.shouldThrowError( function()
   {
-    _._routineBind( wrongOpt2 );
+    _._routineJoin( wrongOpt2 );
   });
 
 };
 
 //
-
-function routineBind( test )
-{
-
-  var testParam1 = 2,
-    testParam2 = 4,
-    expected1 = 6,
-    expected2 = undefined,
-    expected3 = 21;
-
-  test.description = 'simple function without context with arguments bind : result check';
-  var gotfn = _.routineBind( testFunction1, undefined, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got,expected1 );
-
-  test.description = 'simple function without context : context test';
-  var gotfn = _.routineBind(testFunction2, undefined, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got, expected2 );
-
-  test.description = 'simple function with context and arguments : result check';
-  var gotfn = _.routineBind(testFunction3, context3, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got, expected3 );
-
-  test.description = 'simple function with context and arguments : context check';
-  var gotfn = _.routineBind(testFunction4, context3, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got instanceof contextConstructor3, true );
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'missed argument';
-  test.shouldThrowError( function()
-  {
-    _.routineBind();
-  });
-
-  test.description = 'extra argument';
-  test.shouldThrowError( function()
-  {
-    _.routineBind( testFunction4, context3, [ testParam2 ], [ testParam1 ] );
-  });
-
-  test.description = 'passed non callable object';
-  test.shouldThrowError( function()
-  {
-    _.routineBind( {}, context3, [ testParam2 ] );
-  });
-
-  test.description = 'passed arguments as primitive value';
-  test.shouldThrowError( function()
-  {
-    _.routineBind( testFunction4, context3, testParam2 );
-  });
-
-};
+//
+// function routineBind( test )
+// {
+//
+//   var testParam1 = 2,
+//     testParam2 = 4,
+//     expected1 = 6,
+//     expected2 = undefined,
+//     expected3 = 21;
+//
+//   test.description = 'simple function without context with arguments bind : result check';
+//   var gotfn = _.routineBind( testFunction1, undefined, [ testParam2 ]);
+//   var got = gotfn( testParam1 );
+//   test.identical( got,expected1 );
+//
+//   test.description = 'simple function without context : context test';
+//   var gotfn = _.routineBind(testFunction2, undefined, [ testParam2 ]);
+//   var got = gotfn( testParam1 );
+//   test.identical( got, expected2 );
+//
+//   test.description = 'simple function with context and arguments : result check';
+//   var gotfn = _.routineBind(testFunction3, context3, [ testParam2 ]);
+//   var got = gotfn( testParam1 );
+//   test.identical( got, expected3 );
+//
+//   test.description = 'simple function with context and arguments : context check';
+//   var gotfn = _.routineBind(testFunction4, context3, [ testParam2 ]);
+//   var got = gotfn( testParam1 );
+//   test.identical( got instanceof contextConstructor3, true );
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.description = 'missed argument';
+//   test.shouldThrowError( function()
+//   {
+//     _.routineBind();
+//   });
+//
+//   test.description = 'extra argument';
+//   test.shouldThrowError( function()
+//   {
+//     _.routineBind( testFunction4, context3, [ testParam2 ], [ testParam1 ] );
+//   });
+//
+//   test.description = 'passed non callable object';
+//   test.shouldThrowError( function()
+//   {
+//     _.routineBind( {}, context3, [ testParam2 ] );
+//   });
+//
+//   test.description = 'passed arguments as primitive value';
+//   test.shouldThrowError( function()
+//   {
+//     _.routineBind( testFunction4, context3, testParam2 );
+//   });
+//
+// };
 
 //
 
@@ -462,8 +462,8 @@ var Self =
   tests :
   {
 
-    _routineBind : _routineBind,
-    routineBind  : routineBind,
+    _routineJoin : _routineJoin,
+    // routineBind  : routineBind,
     routineJoin  : routineJoin,
     routineSeal  : routineSeal,
     routinesCall : routinesCall
