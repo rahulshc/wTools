@@ -5015,6 +5015,15 @@ function numbersFrom( src )
 
 //
 
+function numbersSlice( src,f,l )
+{
+  if( _.numberIs( src ) )
+  return src;
+  return _.arraySlice( src,f,l );
+}
+
+//
+
 function numberRandomInRange( range )
 {
 
@@ -17877,6 +17886,8 @@ var Proto =
 
   numberFrom : numberFrom,
   numbersFrom : numbersFrom,
+
+  numbersSlice : numbersSlice,
 
   numberRandomInRange : numberRandomInRange,
   numberRandomInt : numberRandomInt,
