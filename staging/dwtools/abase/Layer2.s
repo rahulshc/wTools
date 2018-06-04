@@ -10,12 +10,11 @@ if( typeof module !== 'undefined' && module !== null )
   var _ = _global_.wTools;
   var Self = _global_.wTools;
 
+  require( './layer2/bLooker.s' );
   require( './layer2/fExecTools.s' );
   require( './layer2/fIncludeTools.s' );
   require( './layer2/fNameTools.s' );
   require( './layer2/fStringTools.s' );
-  // require( './layer4/aStringer.s' );
-  // require( './layer4/hStringExtra.s' );
 
 }
 

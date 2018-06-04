@@ -1,0 +1,61 @@
+
+modules :
+
+paths :
+  proto : './proto'
+  staging : './staging'
+  'staging.release' : './staging.release'
+  production : './production'
+
+files :
+
+  'common' :
+    basePath : './proto'
+    srcPath : './dwtools'
+    filter :
+      mask :
+        excludeAny :
+        - !regexp '/(^|\/)-/'
+
+  'staging.debug' :
+    inherit : common
+    filter :
+      mask :
+        excludeAny :
+        - !regexp '/\.release($|\.|\/)/i'
+        - !regexp '/\.production($|\.|\/)/i'
+        - !regexp '/(^|\/)-/'
+
+  'staging.release' :
+    inherit : common
+    filter :
+      mask :
+        excludeAny :
+        - !regexp '/\.debug($|\.|\/)/i'
+        - !regexp '/\.test($|\.|\/)/i'
+        - !regexp '/\.experiment($|\.|\/)/i'
+        - !regexp '/\.production($|\.|\/)/i'
+        - !regexp '/(^|\/)-/'
+
+builds :
+
+'.staging.debug' :
+  settings :
+    debug : 1
+    staging : 1
+  composes :
+    StagingFiles : staging
+    wTools : staging
+    wProto : staging
+    wMathScalar : staging
+
+'.staging.release' :
+  default : 1
+  settings :
+    debug : 0
+    staging : 1
+  composes :
+    StagingFiles : staging.release
+    wTools : staging.release
+    wProto : staging.release
+    wMathScalar : staging.release
