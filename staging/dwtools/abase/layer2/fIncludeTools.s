@@ -430,6 +430,12 @@ _includeHandlerMap[ 'wCloner' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools._clone },
 }
 
+_includeHandlerMap[ 'wExecTools' ] =
+{
+  includeAny : [ '../../abase/layer3/ExecTools.s','abase/layer3/ExecTools.s','wexectools' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.shell },
+}
+
 _includeHandlerMap[ 'wPath' ] =
 {
   includeAny : [ '../../abase/layer3/PathTools.s','abase/layer3/PathTools.s','wPath' ],

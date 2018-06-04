@@ -1,6 +1,6 @@
 ( function _ExecTools_s_() {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -1150,6 +1150,39 @@ function appExitWithBeep( exitCode )
   _.appExit( exitCode );
 }
 
+//
+
+function appRepairExitHandler()
+{
+
+  _.assert( arguments.length === 0 );
+
+
+  process.on( 'exit', function()
+  {
+    debugger;
+    console.log( 'Tester : exiting . . .' );
+  });
+
+  process.on( 'SIGINT',function()
+  {
+    console.log( 'SIGINT' );
+    try
+    {
+      process.exit();
+    }
+    catch( err )
+    {
+      console.log( err );
+    }
+  });
+
+  process.on( 'SIGUSR1', () => console.log( 'SIGUSR1' ) );
+  process.on( 'SIGUSR2', () => console.log( 'SIGUSR2' ) );
+
+
+}
+
 // --
 // prototype
 // --
@@ -1188,6 +1221,8 @@ var Proto =
   appExitCode : appExitCode,
   appExit : appExit,
   appExitWithBeep : appExitWithBeep,
+
+  appRepairExitHandler : appRepairExitHandler,
 
 }
 
