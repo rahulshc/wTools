@@ -605,7 +605,7 @@ function shell2( test )
     var con = new _.Consequence().give();
     con.timeOutThen( _.numberRandomInt( [ 300, 2000 ] ), function()
     {
-      console.log( _.toStr( process.argv.slice( 2 ) ) );
+      console.log( process.argv.slice( 2 ).join( ' ' ) );
     });
 
   }
@@ -641,7 +641,7 @@ function shell2( test )
     .doThen( function()
     {
       test.identical( options.exitCode, 0 );
-      test.identical( options.output, _.toStr( o.args ) );
+      test.identical( options.output, o.args.join( ' ' ) );
     })
   })
 
@@ -670,7 +670,7 @@ function shell2( test )
     {
       test.identical( options.exitCode, 0 );
       var expectedArgs= _.arrayAppendArray( [], process.argv.slice( 2 ) );
-      test.identical( options.output, _.toStr( expectedArgs ) );
+      test.identical( options.output, expectedArgs.join( ' ' ) );
     })
   })
 
@@ -700,7 +700,7 @@ function shell2( test )
     {
       test.identical( options.exitCode, 0 );
       var expectedArgs = _.arrayAppendArray( [], process.argv.slice( 2 ) );
-      test.identical( options.output, _.toStr( expectedArgs ) );
+      test.identical( options.output, expectedArgs.join( ' ' ) );
     })
   })
 
@@ -751,7 +751,7 @@ function shell2( test )
     {
       test.identical( options.exitCode, 0 );
       var expectedArgs = _.arrayAppendArray( [ 'staging', 'debug' ], process.argv.slice( 2 ) );
-      test.identical( options.output, _.toStr( expectedArgs ) );
+      test.identical( options.output, expectedArgs.join( ' ' ) );
     })
   })
 
