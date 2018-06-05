@@ -20,6 +20,8 @@ _.assert( _globalReal_ );
 function __eachAct( it )
 {
 
+  debugger;
+
   // var iterator = this;
   var src = it.src;
   var i = 0;
