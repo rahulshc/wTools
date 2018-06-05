@@ -20,18 +20,18 @@ _.assert( _globalReal_ );
 function __eachAct( it )
 {
 
-  var iterator = this;
+  // var iterator = this;
   var src = it.src;
   var i = 0;
 
-  _.assert( Object.keys( iterator ).length === 11 );
+  _.assert( Object.keys( it.iterator ).length === 11 );
   _.assert( Object.keys( it ).length === 6 );
   _.assert( it.level >= 0 );
   _.assert( arguments.length === 1 );
 
   /* level */
 
-  if( !( it.level < iterator.levelLimit ) )
+  if( !( it.level < it.levelLimit ) )
   {
     debugger;
     return i;
@@ -39,24 +39,24 @@ function __eachAct( it )
 
   /* usingVisits */
 
-  if( iterator.usingVisits )
+  if( it.usingVisits )
   {
-    if( iterator.visited.indexOf( src ) !== -1 )
+    if( it.visited.indexOf( src ) !== -1 )
     return i;
-    iterator.visited.push( src );
+    it.visited.push( src );
   }
 
   /* up */
 
-  iterator.counter += 1;
+  it.iterator.counter += 1;
   var c = true;
-  if( iterator.root !== src )
+  if( it.root !== src )
   {
-    c = iterator.onUp.call( iterator,src,it.key,it );
+    c = it.onUp.call( it.iterator,src,it.key,it );
   }
-  else if( iterator.usingRootVisit )
+  else if( it.usingRootVisit )
   {
-    c = iterator.onUp.call( iterator,src,it.key,it );
+    c = it.onUp.call( it.iterator,src,it.key,it );
   }
 
   /* down */
@@ -64,19 +64,19 @@ function __eachAct( it )
   function end()
   {
 
-    if( iterator.root !== src )
+    if( it.root !== src )
     {
-      iterator.onDown.call( iterator,src,it.key,it );
+      it.onDown.call( it.iterator,src,it.key,it );
     }
-    else if( iterator.usingRootVisit )
+    else if( it.usingRootVisit )
     {
-      iterator.onDown.call( iterator,src,it.key,it );
+      it.onDown.call( it.iterator,src,it.key,it );
     }
 
-    if( iterator.usingVisits )
+    if( it.usingVisits )
     {
-      _.assert( Object.is( iterator.visited[ iterator.visited.length-1 ], src ) );
-      iterator.visited.pop();
+      _.assert( Object.is( it.visited[ it.visited.length-1 ], src ) );
+      it.visited.pop();
     }
 
     return i;
@@ -90,20 +90,22 @@ function __eachAct( it )
   function handleElement( k )
   {
 
-    if( iterator.recursive || iterator.root === src )
+    if( it.recursive || it.root === src )
     {
 
-      var newIteration =
-      {
-        level : it.level+1,
-        path : it.path !== iterator.pathDelimteter ? it.path + iterator.pathDelimteter + k : it.path + k,
-        key : k,
-        index : i,
-        down : it,
-        src : src[ k ],
-      }
+      // var newIteration =
+      // {
+      //   level : it.level+1,
+      //   path : it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k,
+      //   key : k,
+      //   index : i,
+      //   down : it,
+      //   src : src[ k ],
+      // }
 
-      __eachAct.call( iterator,newIteration );
+      var newIteration = it.newIteration().select( k,i )
+
+      __eachAct( newIteration );
 
     }
 
@@ -150,25 +152,49 @@ function __eachAct( it )
 
 //
 
-function _eachIterationSelect( k,i )
+function _eachIteratorIterationNew()
+{
+  var it = this;
+
+  _.assert( arguments.length === 0 );
+  _.assert( it.level >= 0 );
+  _.assert( it.iterator );
+
+  var itNew = Object.create( it.iterator );
+
+  itNew.level = it.level,
+  itNew.path = it.path;
+  itNew.down = it;
+  itNew.key = null;
+  itNew.index = null;
+  itNew.src = it.src;
+
+  Object.preventExtensions( itNew );
+
+  return itNew;
+}
+
+//
+
+function _eachIteratorSelect( k,i )
 {
   var it = this;
 
   _.assert( arguments.length === 2 );
   _.assert( it.level >= 0 );
 
-  var itNew =
-  {
-    level : it.level+1,
-    path : it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k,
-    down : it,
-    key : k,
-    index : i,
-    src : src[ k ],
-  }
+  it.level = it.level+1;
+  it.path = it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k;
+  it.key = k;
+  it.index = i;
+  it.src = src[ k ];
 
-  return itNew;
+  return it;
 }
+
+var IteratorEach = Object.create( null );
+IteratorEach.iterationNew = _eachIteratorIterationNew;
+IteratorEach.select = _eachIteratorSelect;
 
 //
 
@@ -188,32 +214,41 @@ function _each( o )
   if( o.path === null )
   o.path = o.pathDelimteter;
 
-  var iterator =
-  {
-    root : o.root,
-    onUp : o.onUp,
-    onDown : o.onDown,
-    own : o.own,
-    recursive : o.recursive,
-    usingVisits : o.usingVisits,
-    usingRootVisit : o.usingRootVisit,
-    counter : o.counter,
-    visited : o.visited,
-    levelLimit : o.levelLimit,
-    pathDelimteter : o.pathDelimteter,
-  }
+  debugger;
 
-  var it =
-  {
-    level : o.level,
-    path : o.path,
-    key : o.key,
-    index : o.index,
-    src : o.src,
-    down : o.down,
-  }
+  // var iterator =
+  // {
+  //   root : o.root,
+  //   onUp : o.onUp,
+  //   onDown : o.onDown,
+  //   own : o.own,
+  //   recursive : o.recursive,
+  //   usingVisits : o.usingVisits,
+  //   usingRootVisit : o.usingRootVisit,
+  //   counter : o.counter,
+  //   visited : o.visited,
+  //   levelLimit : o.levelLimit,
+  //   pathDelimteter : o.pathDelimteter,
+  // }
+  //
+  // var it =
+  // {
+  //   level : o.level,
+  //   path : o.path,
+  //   key : o.key,
+  //   index : o.index,
+  //   src : o.src,
+  //   down : o.down,
+  // }
 
-  return __eachAct.call( iterator,it );
+  var iterator = Object.create( IteratorEach );
+  _.mapExtend( iterator,o );
+  iterator.iterator = iterator;
+  Object.preventExtensions( itNew );
+
+  var it = iterator.iterationNew();
+
+  return __eachAct( it );
 }
 
 _each.defaults =
@@ -2195,7 +2230,7 @@ var Proto =
 {
 
   __eachAct : __eachAct,
-  _eachIterationSelect : _eachIterationSelect,
+  _eachIteratorSelect : _eachIteratorSelect,
   _each : _each,
 
   eachRecursive : eachRecursive,

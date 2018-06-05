@@ -438,7 +438,7 @@ _includeHandlerMap[ 'wExecTools' ] =
 
 _includeHandlerMap[ 'wPath' ] =
 {
-  includeAny : [ '../../abase/layer3/PathTools.s','abase/layer3/PathTools.s','wPath' ],
+  includeAny : [ '../../abase/layer3/aPathTools.s','abase/layer3/aPathTools.s','wPath' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.pathDir },
 }
 
