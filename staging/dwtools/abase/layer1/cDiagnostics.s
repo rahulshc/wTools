@@ -1,6 +1,6 @@
 (function _Diagnostics_s_() {
 
-'use strict'; 
+'use strict';
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -10,7 +10,7 @@ var _propertyIsEumerable = Object.propertyIsEnumerable;
 var _ceil = Math.ceil;
 var _floor = Math.floor;
 
-var _ = _global_.wTools;
+var _global = _global_; var _ = _global_.wTools;
 var _err = _._err;
 var Self = _global_.wTools;
 
@@ -644,62 +644,6 @@ function diagnosticStackPurify( stack )
 
   return stack.join( '\n' );
 }
-
-//
-
-// /*
-// _.diagnosticWatchObject
-// ({
-//   dst : self,
-//   names : 'wells',
-// });
-// */
-//
-// /*
-// _.diagnosticWatchObject
-// ({
-//   dst : _global_,
-//   names : 'logger',
-// });
-// */
-//
-// //function diagnosticWatchObject( dst,options )
-// function diagnosticWatchObject( o )
-// {
-//
-//   if( arguments.length === 2 )
-//   {
-//     o = { dst : arguments[ 0 ], names : arguments[ 1 ] };
-//   }
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assertMapHasOnly( diagnosticWatchObject.defaults,o );
-//
-//   debugger;
-//   if( o.names )
-//   o.names = _.nameFielded( o.names );
-//
-//   Object.observe( o.dst,function( changes )
-//   {
-//     for( var c in changes )
-//     {
-//       var change = changes[ c ];
-//       if( o.names )
-//       if( !o.names[ change.name ] ) return;
-//       console.log( change.type,change.name,change.object[ change.name ] );
-//       //if( !change.object[ change.name ] )
-//       //console.log( change.name,change.object[ change.name ] );
-//     }
-//     //debugger;
-//   });
-//
-// }
-//
-// diagnosticWatchObject.defaults =
-// {
-//   dst : null,
-//   names : null,
-// }
 
 //
 
@@ -1628,7 +1572,7 @@ Object.assign( Self,Proto );
 // --
 
 if( typeof module !== 'undefined' )
-if( _global_._UsingWtoolsPrivately_ )
+if( _global_.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )

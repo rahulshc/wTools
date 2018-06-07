@@ -7,7 +7,7 @@ if( typeof module !== 'undefined' && module !== null )
 
   require( './Layer1.s' );
 
-  var _ = _global_.wTools;
+  var _global = _global_; var _ = _global_.wTools;
   var Self = _global_.wTools;
 
   require( './layer2/bLooker.s' );
@@ -22,7 +22,7 @@ if( typeof module !== 'undefined' && module !== null )
 // --
 
 if( typeof module !== 'undefined' )
-if( _global_._UsingWtoolsPrivately_ )
+if( _global_.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )

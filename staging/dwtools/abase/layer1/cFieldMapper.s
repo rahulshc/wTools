@@ -3,7 +3,7 @@
 'use strict';
 
 var Self = _global_.wTools;
-var _ = _global_.wTools;
+var _global = _global_; var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -754,7 +754,7 @@ Object.assign( Self,Proto );
 // --
 
 if( typeof module !== 'undefined' )
-if( _global_._UsingWtoolsPrivately_ )
+if( _global_.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )

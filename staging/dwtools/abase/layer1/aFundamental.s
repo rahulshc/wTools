@@ -14,7 +14,7 @@ if( !_global && typeof global !== 'undefined' && global.global === global ) _glo
 if( !_global && typeof window !== 'undefined' && window.window === window ) _global = window;
 if( !_global && typeof self   !== 'undefined' && self.self === self ) _global = self;
 var _globalReal = _global;
-var _globalWas = _global._global_;
+var _globalWas = _global._global_ || _global;
 if( _global._global_ )
 _global = _global._global_;
 _global._global_ = _global;
@@ -22,7 +22,7 @@ _globalReal._globalReal_ = _globalReal;
 
 // veification
 
-if(  !_global_._UsingWtoolsPrivately_  )
+if(  !_global_.WTOOLS_PRIVATE  )
 {
 
   if( _global_.wBase )
@@ -60,7 +60,7 @@ _global_.Config.debug = true;
 if( _global_.Config.server === undefined )
 _global_.Config.server = ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' );
 
-if(  !_global_._UsingWtoolsPrivately_  )
+if(  !_global_.WTOOLS_PRIVATE  )
 if( !_global_.Underscore && _global_._ )
 _global_.Underscore = _global_._;
 
@@ -74,7 +74,7 @@ var _ = Self;
 
 // specia globals
 
-if(  !_global_._UsingWtoolsPrivately_  )
+if(  !_global_.WTOOLS_PRIVATE  )
 {
   _global_.def = Symbol.for( 'default' );
   _global_.all = Symbol.for( 'all' );
@@ -15451,7 +15451,7 @@ var error =
   ErrorAbort : ErrorAbort,
 }
 
-// if( !_global._UsingWtoolsPrivately_ )
+// if( !_global.WTOOLS_PRIVATE )
 Error.stackTraceLimit = Infinity;
 
 /**
@@ -16138,7 +16138,7 @@ _global_.wBase = Self;
 // --
 
 if( typeof module !== 'undefined' )
-if( _global_._UsingWtoolsPrivately_ )
+if( _global_.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )

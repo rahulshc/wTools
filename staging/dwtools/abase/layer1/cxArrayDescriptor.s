@@ -2,7 +2,7 @@
 
 'use strict'; 
 
-var _ = _global_.wTools;
+var _global = _global_; var _ = _global_.wTools;
 var Self = _global_.wTools;
 
 //
@@ -165,7 +165,7 @@ _.assert( _.routineIs( _.array.makeArrayOfLength ) );
 // --
 
 if( typeof module !== 'undefined' )
-if( _global_._UsingWtoolsPrivately_ )
+if( _global_.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )

@@ -2,6 +2,7 @@
 
 'use strict';
 
+var _global = _global_;
 var _ = _global_.wTools;
 var Self = _global_.wTools;
 
@@ -12,43 +13,43 @@ var Self = _global_.wTools;
 function _setupConfig()
 {
 
-  if( _global_._UsingWtoolsPrivately_ )
+  if( _global.WTOOLS_PRIVATE )
   return;
 
   // debugger;
 
   /* config */
 
-  if( !_global_.Config )
-  _global_.Config = Object.create( null );
+  if( !_global.Config )
+  _global.Config = Object.create( null );
 
-  if( _global_.Config.debug === undefined )
-  _global_.Config.debug = true;
+  if( _global.Config.debug === undefined )
+  _global.Config.debug = true;
 
-  // Object.defineProperty( _global_, 'Config',
+  // Object.defineProperty( _global, 'Config',
   // {
-  //   value : _global_.Config,
+  //   value : _global.Config,
   //   enumerable : true,
   //   writable : false,
   // });
   //
-  // Object.defineProperty( _global_.Config, 'debug',
+  // Object.defineProperty( _global.Config, 'debug',
   // {
-  //   value : !!_global_.Config.debug,
+  //   value : !!_global.Config.debug,
   //   enumerable : true,
   //   writable : false,
   // });
   //
-  // Object.defineProperty( _global_, 'DEBUG',
+  // Object.defineProperty( _global, 'DEBUG',
   // {
-  //   value : _global_.Config.debug,
+  //   value : _global.Config.debug,
   //   enumerable : true,
   //   writable : false,
   // });
 
-  _global_.Config.debug = !!_global_.Config.debug;
+  _global.Config.debug = !!_global.Config.debug;
 
-  // _global_.DEBUG = _global_.Config.debug;
+  // _global.DEBUG = _global.Config.debug;
   // debugger;
 
 }
@@ -58,15 +59,13 @@ function _setupConfig()
 function _setupUnhandledErrorHandler()
 {
 
-  // console.log( '_setupUnhandledErrorHandler' );
-
-  if( _global_._setupUnhandledErrorHandlerDone )
+  if( _global._setupUnhandledErrorHandlerDone )
   return;
 
-  _global_._setupUnhandledErrorHandlerDone = true;
+  _global._setupUnhandledErrorHandlerDone = true;
 
-  if( typeof process !== 'undefined' && _.routineIs( process.on ) )
-  process.on( 'uncaughtException', function( err )
+  if( _global.process && _.routineIs( _global.process.on ) )
+  _global.process.on( 'uncaughtException', function( err )
   {
 
     console.error( '------------------------------- unhandled errorr -------------------------------' );
@@ -98,8 +97,8 @@ function _setupUnhandledErrorHandler()
     console.error( '------------------------------- unhandled errorr -------------------------------' );
     debugger;
 
-    if( _global_.process && !process.exitCode )
-    process.exitCode = -1;
+    if( _global.process && !_global.process.exitCode )
+    _global.process.exitCode = -1;
   });
 
 }
@@ -231,7 +230,7 @@ Self._setup();
 // --
 
 if( typeof module !== 'undefined' )
-if( _global_._UsingWtoolsPrivately_ )
+if( _global_.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
