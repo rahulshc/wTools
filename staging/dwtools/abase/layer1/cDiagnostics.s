@@ -905,7 +905,7 @@ function assert( condition )
 
   if( !condition )
   {
-    _assertDebugger();
+    _assertDebugger( condition );
     if( arguments.length === 1 )
     throw _err
     ({
