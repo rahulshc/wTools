@@ -48,6 +48,7 @@ function objectLike( t )
 
   t.description = 'this entities are object-like';
 
+  t.identical( _.objectLike( _global_ ),true );
   t.identical( _.objectLike( new Object() ),true );
   t.identical( _.objectLike( {} ),true );
   t.identical( _.objectLike( Object.create( null ) ),true );

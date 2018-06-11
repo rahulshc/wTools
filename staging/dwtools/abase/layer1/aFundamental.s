@@ -3827,55 +3827,54 @@ function _regexpArrayAll( arr,ins,none )
 
 //
 
-  /**
-   * Make RegexpObject from different type sources.
-      If passed RegexpObject or map with properties similar to RegexpObject but with string in values, then the second
-   parameter is not required;
-      All strings in sources will be turned into RegExps.
-      If passed single RegExp/String or array of RegExps/Strings, then routine will return RegexpObject with
-   `defaultMode` as key, and array of RegExps created from first parameter as value.
-      If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
-   with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
-   with `defaultMode` key.
-   *
-   * @example
-     var src = [
-         /hello/,
-         'world',
-         {
-            includeAny : ['yellow', 'blue', 'red'],
-            includeAll : [/red/, /green/, /brown/],
-            excludeAny : [/yellow/, /white/, /grey/],
-            excludeAll : [/red/, /green/, /blue/]
-         }
-     ];
-     wTools.regexpMakeObject(src, 'excludeAll');
+/**
+ * Make RegexpObject from different type sources.
+    If passed RegexpObject or map with properties similar to RegexpObject but with string in values, then the second
+ parameter is not required;
+    All strings in sources will be turned into RegExps.
+    If passed single RegExp/String or array of RegExps/Strings, then routine will return RegexpObject with
+ `defaultMode` as key, and array of RegExps created from first parameter as value.
+    If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
+ with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
+ with `defaultMode` key.
+ *
+ * @example
+   var src = [
+       /hello/,
+       'world',
+       {
+          includeAny : ['yellow', 'blue', 'red'],
+          includeAll : [/red/, /green/, /brown/],
+          excludeAny : [/yellow/, /white/, /grey/],
+          excludeAll : [/red/, /green/, /blue/]
+       }
+   ];
+   wTools.regexpMakeObject(src, 'excludeAll');
 
-     // {
-     //    includeAny: [/yellow/, /blue/, /red/],
-     //    includeAll: [/red/, /green/, /brown/],
-     //    excludeAny: [/yellow/, /white/, /grey/],
-     //    excludeAll: [/hello/, /world/]
-     // }
-   * @param {RegexpObject|String|RegExp|RegexpObject[]|String[]|RegExp[]} src Source for making RegexpObject
-   * @param {String} [defaultMode] key for result RegexpObject map. Can be one of next strings: 'includeAny',
-   'includeAll','excludeAny' or 'excludeAll'.
-   * @returns {RegexpObject} Result RegexpObject
-   * @throws {Error} Missing arguments if call without argument
-   * @throws {Error} Missing arguments if passed array without `defaultMode`
-   * @throws {Error} Unknown mode `defaultMode`
-   * @throws {Error} Unknown src if first argument is not array, map, string or regexp.
-   * @throws {Error} Unexpected if type of array element is not string regexp or RegexpObject.
-   * @throws {Error} Unknown regexp filters if passed map has unexpected properties (see RegexpObject).
-   * @function regexpMakeObject
-   * @memberof wTools
-   */
+   // {
+   //    includeAny: [/yellow/, /blue/, /red/],
+   //    includeAll: [/red/, /green/, /brown/],
+   //    excludeAny: [/yellow/, /white/, /grey/],
+   //    excludeAll: [/hello/, /world/]
+   // }
+ * @param {RegexpObject|String|RegExp|RegexpObject[]|String[]|RegExp[]} src Source for making RegexpObject
+ * @param {String} [defaultMode] key for result RegexpObject map. Can be one of next strings: 'includeAny',
+ 'includeAll','excludeAny' or 'excludeAll'.
+ * @returns {RegexpObject} Result RegexpObject
+ * @throws {Error} Missing arguments if call without argument
+ * @throws {Error} Missing arguments if passed array without `defaultMode`
+ * @throws {Error} Unknown mode `defaultMode`
+ * @throws {Error} Unknown src if first argument is not array, map, string or regexp.
+ * @throws {Error} Unexpected if type of array element is not string regexp or RegexpObject.
+ * @throws {Error} Unknown regexp filters if passed map has unexpected properties (see RegexpObject).
+ * @function regexpMakeObject
+ * @memberof wTools
+ */
 
 function regexpMakeObject( src,defaultMode )
 {
-
+  _.assert( _.RegexpObject );
   return _.RegexpObject( src,defaultMode );
-
 }
 
 // --
@@ -5110,7 +5109,7 @@ function timeOut( delay,onEnd )
   /* */
 
   if( con )
-  con.got( function( err,arg )
+  con.got( function timeGot( err,arg )
   {
     if( err )
     clearTimeout( timer );
@@ -5134,13 +5133,11 @@ function timeOut( delay,onEnd )
   else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   _.assert( _.routineIs( arguments[ 2 ] ) );
 
-  function handleEnd()
+  function timeEnd()
   {
     var result;
 
     handleCalled = true;
-
-    // console.log( 'timeOut' );
 
     if( con )
     {
@@ -5162,9 +5159,9 @@ function timeOut( delay,onEnd )
   }
 
   if( delay > 0 )
-  timer = setTimeout( handleEnd,delay );
+  timer = setTimeout( timeEnd,delay );
   else
-  timeSoon( handleEnd );
+  timeSoon( timeEnd );
 
   return con;
 }
@@ -6408,9 +6405,8 @@ function arrayIs( src )
 
 function arrayLike( src )
 {
-  if( primitiveIs( src ) )
+  if( _.primitiveIs( src ) )
   return false;
-
   if( _.routineIs( src ) )
   return false;
   if( _.objectIs( src ) )
@@ -6418,9 +6414,9 @@ function arrayLike( src )
   if( _.strIs( src ) )
   return false;
 
-  if( !_.numberIs( src.length ) )
-  return false;
   if( Object.propertyIsEnumerable.call( src,'length' ) )
+  return false;
+  if( !_.numberIs( src.length ) )
   return false;
 
   return true;
@@ -11851,29 +11847,21 @@ function objectIs( src )
 function objectLike( src )
 {
 
-  if( objectIs( src ) )
+  if( _.objectIs( src ) )
   return true;
-
-  if( primitiveIs( src ) )
+  if( _.primitiveIs( src ) )
   return false;
-
   if( _.arrayLike( src ) )
   return false;
-
+  // if( _.bufferAnyIs( src ) )
+  // return false;
   if( _.routineIsPure( src ) )
   return false;
-
-  // if( Object.getPrototypeOf( src ) === Function.__proto__ )
-  // debugger;
-  //
-  // if( Object.getPrototypeOf( src ) === Function.__proto__ )
-  // return false;
+  if( _.strIs( src ) )
+  return false;
 
   for( var k in src )
   return true;
-
-  // if( Object.getOwnPropertyNames( src ).length )
-  // return true;
 
   return false;
 }
@@ -12704,16 +12692,15 @@ function mapExtendConditional( filter,dstObject )
 
 function mapExtend( dstObject,srcObject )
 {
-  var result = dstObject;
 
-  if( result === null )
-  result = Object.create( null );
+  if( dstObject === null )
+  dstObject = Object.create( null );
 
   if( arguments.length === 2 && Object.getPrototypeOf( srcObject ) === null )
-  return Object.assign( result,srcObject );
+  return Object.assign( dstObject,srcObject );
 
   _.assert( arguments.length >= 2 );
-  _.assert( objectLikeOrRoutine( result ),'mapExtend :','expects object as the first argument' );
+  _.assert( !_.primitiveIs( dstObject ),'mapExtend :','expects object as the first argument' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -12721,12 +12708,12 @@ function mapExtend( dstObject,srcObject )
 
     for( var k in argument )
     {
-      result[ k ] = argument[ k ];
+      dstObject[ k ] = argument[ k ];
     }
 
   }
 
-  return result;
+  return dstObject;
 }
 
 //

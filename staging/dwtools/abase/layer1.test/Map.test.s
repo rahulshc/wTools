@@ -195,9 +195,11 @@ function mapExtend( test )
   test.identical( got, expected );
 
   test.description = 'multiple object properties';
-  var got = _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+  var dst = { a : 7, b : 13 };
+  var got = _.mapExtend( dst, { c : 3, d : 33 }, { e : 77 } );
   var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
   test.identical( got, expected );
+  test.shouldBe( got === dst );
 
   test.description = 'object like array';
   var got = _.mapExtend( null, [ 3, 7, 13, 73 ] );
@@ -205,54 +207,85 @@ function mapExtend( test )
   test.identical( got, expected );
 
   test.description = 'object like array2';
-  var got = _.mapExtend( { a : 7, b : 13 }, [ 33, 3, 7, 13 ] );
+  var dst = { a : 7, b : 13 };
+  var got = _.mapExtend( dst, [ 33, 3, 7, 13 ] );
   var expected = { 0 : 33, 1 : 3, 2 : 7, 3 : 13, a : 7, b : 13 };
-  test.identical(got, expected);
+  test.identical( got, expected );
+  test.shouldBe( got === dst );
 
   /**/
 
-  if( Config.debug )
+  var dst = Object.create( null );
+  dst.x1 = '1';
+  dst.x2 = 2;
+  dst = Object.create( dst );
+  dst.x3 = 3;
+  dst.x4 = 4;
+
+  var src = Object.create( null );
+  src.x1 = '11';
+  src.y2 = 12;
+  src = Object.create( src );
+  src.x3 = 13;
+  src.y4 = 14;
+
+  test.description = 'extend complex map by complex map';
+  var got = _.mapExtend( dst, src );
+  var expected = Object.create( null );
+  expected.x1 = '1';
+  expected.x2 = 2;
+  expected = Object.create( expected );
+  expected.x4 = 4;
+  expected.x1 = '11';
+  expected.y2 = 12;
+  expected.x3 = 13;
+  expected.y4 = 14;
+
+  test.identical( got, expected );
+  test.shouldBe( got === dst );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapExtend();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend();
-    });
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapExtend( {} );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( {} );
-    });
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapExtend( [] );
+  });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( [] );
-    });
+  test.description = 'wrong type of number';
+  test.shouldThrowError( function()
+  {
+    _.mapExtend( 13 );
+  });
 
-    test.description = 'wrong type of number';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( 13 );
-    });
+  test.description = 'wrong type of boolean';
+  test.shouldThrowError( function()
+  {
+    _.mapExtend( true );
+  });
 
-    test.description = 'wrong type of boolean';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( true );
-    });
+  test.description = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.mapExtend( 'wrong argument' );
+  });
 
-    test.description = 'first argument is wrong';
-    test.shouldThrowError( function()
-    {
-      _.mapExtend( 'wrong argument' );
-    });
-
-  }
-
-};
+}
 
 //
 

@@ -1097,7 +1097,7 @@ function _entitySelect( o )
       // it.container = o.container;
       // iterator.query = o.query[ i ];
 
-      var optionsForSelect = _.mapExtend( Object.create( null ),o );
+      var optionsForSelect = _.mapExtend( null,o );
       optionsForSelect.query = optionsForSelect.query[ i ];
 
       // it.qarrey = o.qarrey[ i ];
