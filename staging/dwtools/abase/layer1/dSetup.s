@@ -26,31 +26,7 @@ function _setupConfig()
   if( _global.Config.debug === undefined )
   _global.Config.debug = true;
 
-  // Object.defineProperty( _global, 'Config',
-  // {
-  //   value : _global.Config,
-  //   enumerable : true,
-  //   writable : false,
-  // });
-  //
-  // Object.defineProperty( _global.Config, 'debug',
-  // {
-  //   value : !!_global.Config.debug,
-  //   enumerable : true,
-  //   writable : false,
-  // });
-  //
-  // Object.defineProperty( _global, 'DEBUG',
-  // {
-  //   value : _global.Config.debug,
-  //   enumerable : true,
-  //   writable : false,
-  // });
-
   _global.Config.debug = !!_global.Config.debug;
-
-  // _global.DEBUG = _global.Config.debug;
-  // debugger;
 
 }
 
@@ -64,42 +40,90 @@ function _setupUnhandledErrorHandler()
 
   _global._setupUnhandledErrorHandlerDone = true;
 
+  var handlerWas = null;
+
   if( _global.process && _.routineIs( _global.process.on ) )
-  _global.process.on( 'uncaughtException', function( err )
+  {
+    _global.process.on( 'uncaughtException', handleError );
+  }
+  else if( Object.hasOwnProperty.call( _global_,'onerror' ) )
+  {
+    handlerWas = _global_.onerror;
+    _global_.onerror = handleBrowserError;
+  }
+
+  /**/
+
+  function handleBrowserError( message, source, lineno, colno, error )
+  {
+    debugger;
+    var err = _._err
+    ({
+      args : [ message , error ],
+      level : 1,
+      sourceCode : source,
+      location :
+      {
+        line : lineno,
+        col : colno,
+      },
+    });
+
+
+    handleError( err );
+
+    handlerWas.call( this, message, source, lineno, colno, error );
+  }
+
+  /* */
+
+  function handleError( err )
   {
 
     console.error( '------------------------------- unhandled errorr -------------------------------' );
 
-    // console.log( err.message );
+    try
+    {
 
-    if( !err.originalMessage )
-    {
-      if( _.objectLike( err ) )
+      if( _.appExitCode )
+      _.appExitCode( -1 )
+
+      // console.log( err.message );
+
+      if( !err.originalMessage )
       {
-        if( _.toStr && _.field )
-        console.error( _.toStr.fields( err,{ errorAsMap : 1 } ) );
+        if( _.objectLike( err ) )
+        {
+          if( _.toStr && _.field )
+          console.error( _.toStr.fields( err,{ errorAsMap : 1 } ) );
+          else
+          console.error( err );
+        }
+        debugger;
+        if( _.errLog )
+        _.errLog( 'Uncaught exception :\n',err );
         else
-        console.error( err );
+        console.log( 'Uncaught exception :\n',err );
       }
-      if( _.nameUnfielded )
-      _.errLog( 'Uncaught exception :\n',err );
       else
-      console.log( 'Uncaught exception :\n',err );
+      {
+        if( _.errLog )
+        _.errLog( 'Uncaught exception :\n',err );
+        else
+        console.log( 'Uncaught exception :\n',err );
+      }
+
     }
-    else
+    catch( nerr )
     {
-      if( _.nameUnfielded )
-      _.errLog( 'Uncaught exception :\n',err );
-      else
-      console.log( 'Uncaught exception :\n',err );
+      debugger;
+      console.log( err );
     }
 
     console.error( '------------------------------- unhandled errorr -------------------------------' );
     debugger;
 
-    if( _global.process && !_global.process.exitCode )
-    _global.process.exitCode = -1;
-  });
+  }
 
 }
 

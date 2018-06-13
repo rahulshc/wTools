@@ -50,15 +50,15 @@ if( !_globalReal.Config )
 _globalReal.Config = { debug : true }
 if( _globalReal.Config.debug === undefined )
 _globalReal.Config.debug = true;
-if( _globalReal.Config.server === undefined )
-_globalReal.Config.server = ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' );
+if( _globalReal.Config.platform === undefined )
+_globalReal.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
 
 if( !_global_.Config )
 _global_.Config = { debug : true }
 if( _global_.Config.debug === undefined )
 _global_.Config.debug = true;
-if( _global_.Config.server === undefined )
-_global_.Config.server = ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' );
+if( _global_.Config.platform === undefined )
+_globalReal.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
 
 if(  !_global_.WTOOLS_PRIVATE  )
 if( !_global_.Underscore && _global_._ )
@@ -1540,9 +1540,6 @@ function _err( o )
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   debugger;
-
-  // if( o.args.length && _.strTypeOf( o.args[ 0 ] ) !== 'ErrorQuerying' )
-  // debugger;
 
   /* var */
 

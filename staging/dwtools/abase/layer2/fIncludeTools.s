@@ -139,8 +139,8 @@ function _includeAct( src )
   _.assert( _.strIs( src ) );
 
   var handler;
-  if( _includeHandlerMap[ src ] )
-  handler = _includeHandlerMap[ src ];
+  if( IncludeHandlersMap[ src ] )
+  handler = IncludeHandlersMap[ src ];
 
   if( !handler )
   {
@@ -183,7 +183,7 @@ function _includeAnyAct( srcs )
   for( var s = 0 ; s < srcs.length ; s++ )
   {
     var src = srcs[ s ];
-    var handler = _includeHandlerMap[ src ];
+    var handler = IncludeHandlersMap[ src ];
 
     if( !handler )
     {
@@ -328,8 +328,8 @@ function isIncluded( src )
 {
 
   var handler;
-  if( _includeHandlerMap[ src ] )
-  handler = _includeHandlerMap[ src ];
+  if( IncludeHandlersMap[ src ] )
+  handler = IncludeHandlersMap[ src ];
 
   if( !handler )
   return false;
@@ -344,328 +344,328 @@ function isIncluded( src )
 // include map
 // --
 
-var _includeHandlerMap = {};
+var IncludeHandlersMap = Object.create( null );
 
-_includeHandlerMap[ 'wTesting' ] =
+IncludeHandlersMap[ 'wTesting' ] =
 {
   includeAny : [ '../../abase/xtester/aBase.debug.s','abase/xtester/aBase.debug.s','wTesting' ],
   isIncluded : function(){ return /*typeof _globalReal_ !== 'undefined' &&*/ _globalReal_.wTester && _globalReal_.wTester._isFullImplementation; },
 }
 
-_includeHandlerMap[ 'wLogger' ] =
+IncludeHandlersMap[ 'wLogger' ] =
 {
   includeAny : [ '../../abase/printer/top/Logger.s','abase/printer/top/Logger.s','wLogger' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Logger; },
 }
 
-_includeHandlerMap[ 'wPrinterToFile' ] =
+IncludeHandlersMap[ 'wPrinterToFile' ] =
 {
   includeAny : [ '../../abase/printer/top/ToFile.ss','abase/printer/top/ToFile.ss','wloggertofile' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.PrinterToFile; },
 }
 
-_includeHandlerMap[ 'wPrinterToJs' ] =
+IncludeHandlersMap[ 'wPrinterToJs' ] =
 {
   includeAny : [ '../../abase/printer/top/ToJstructure.s','abase/printer/top/ToJstructure.s','wloggertojstructure' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.PrinterToJs; },
 }
 
-_includeHandlerMap[ 'wConsequence' ] =
+IncludeHandlersMap[ 'wConsequence' ] =
 {
   includeAny : [ '../../abase/oclass/Consequence.s','abase/oclass/Consequence.s','wConsequence' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Consequence; },
 }
 
-_includeHandlerMap[ 'wConsequizer' ] =
+IncludeHandlersMap[ 'wConsequizer' ] =
 {
   includeAny : [ '../../abase/mixin/Consequizer.s','abase/mixin/Consequizer.','wconsequizer' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Consequizer; },
 }
 
-_includeHandlerMap[ 'wCopyable' ] =
+IncludeHandlersMap[ 'wCopyable' ] =
 {
   includeAny : [ '../../abase/mixin/Copyable.s','abase/mixin/Copyable.s','wCopyable' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Copyable; },
 }
 
-_includeHandlerMap[ 'wInstancing' ] =
+IncludeHandlersMap[ 'wInstancing' ] =
 {
   includeAny : [ '../../abase/mixin/Instancing.s','abase/mixin/Instancing.s','winstancing' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Instancing; },
 }
 
-_includeHandlerMap[ 'wEventHandler' ] =
+IncludeHandlersMap[ 'wEventHandler' ] =
 {
   includeAny : [ '../../abase/mixin/EventHandler.s','abase/mixin/EventHandler.s','wEventHandler' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.EventHandler; },
 }
 
-_includeHandlerMap[ 'wFieldsStack' ] =
+IncludeHandlersMap[ 'wFieldsStack' ] =
 {
   includeAny : [ '../../abase/mixin/FieldsStack.s','abase/mixin/FieldsStack.s','wfieldsstack' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FieldsStack; },
 }
 
-_includeHandlerMap[ 'wNameTools' ] =
+IncludeHandlersMap[ 'wNameTools' ] =
 {
   includeAny : [ '../../abase/layer3//NameTools.s','abase/layer3//NameTools.s','wNameTools' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.idWithInt; },
 }
 
-_includeHandlerMap[ 'wProto' ] =
+IncludeHandlersMap[ 'wProto' ] =
 {
   includeAny : [ '../../abase/layer3/Proto.s','abase/layer3/Proto.s','wProto' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.mixinMake },
 }
 
-_includeHandlerMap[ 'wTraverser' ] =
+IncludeHandlersMap[ 'wTraverser' ] =
 {
   includeAny : [ '../../abase/layer3/bTraverser.s','abase/layer3/bTraverser.s','wtraverser' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools._traverse },
 }
 
-_includeHandlerMap[ 'wCloner' ] =
+IncludeHandlersMap[ 'wCloner' ] =
 {
   includeAny : [ '../../abase/layer4/Cloner.s','abase/layer4/Cloner.s','wcloner' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools._clone },
 }
 
-_includeHandlerMap[ 'wExecTools' ] =
+IncludeHandlersMap[ 'wExecTools' ] =
 {
   includeAny : [ '../../abase/layer3/ExecTools.s','abase/layer3/ExecTools.s','wexectools' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.shell },
 }
 
-_includeHandlerMap[ 'wPath' ] =
+IncludeHandlersMap[ 'wPath' ] =
 {
   includeAny : [ '../../abase/layer3/aPathTools.s','abase/layer3/aPathTools.s','wPath' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.pathDir },
 }
 
-_includeHandlerMap[ 'wArraySorted' ] =
+IncludeHandlersMap[ 'wArraySorted' ] =
 {
   includeAny : [ '../../abase/layer4/ArraySorted.s','abase/layer4/ArraySorted.s','warraysorted' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.arraySortedLookUp },
 }
 
-_includeHandlerMap[ 'wBaseEncoder' ] =
+IncludeHandlersMap[ 'wBaseEncoder' ] =
 {
   includeAny : [ '../../abase/layer4/Encoder.s','abase/layer4/Encoder.s','wbaseencoder' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.encode },
 }
 
-_includeHandlerMap[ 'wStringer' ] =
+IncludeHandlersMap[ 'wStringer' ] =
 {
   includeAny : [ '../../abase/layer4/aStringer.s','abase/layer4/aStringer.s','wstringer' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Stringer; },
 }
 
-_includeHandlerMap[ 'wStringsExtra' ] =
+IncludeHandlersMap[ 'wStringsExtra' ] =
 {
   includeAny : [ '../../amid/astring/StringsExtra.s','amid/astring/StringsExtra.s','wstringsextra' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.strSorterParse; },
 }
 
-_includeHandlerMap[ 'wRegexpObject' ] =
+IncludeHandlersMap[ 'wRegexpObject' ] =
 {
   includeAny : [ '../../amid/bclass/RegexpObject.s','amid/bclass/RegexpObject.s','wRegexpObject' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.RegexpObject; },
 }
 
-_includeHandlerMap[ 'wColor' ] =
+IncludeHandlersMap[ 'wColor' ] =
 {
   includeAny : [ '../../amid/color/Color.s','amid/color/Color.s','wColor' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.ColorMap },
 }
 
-_includeHandlerMap[ 'wColor256' ] =
+IncludeHandlersMap[ 'wColor256' ] =
 {
   includeAny : [ '../../amid/color/Color256.s','amid/color/Color256.s','wColor256' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.ColorMap && Object.keys( _global.wTools.ColorMap ).length > 100 },
 }
 
-_includeHandlerMap[ 'wChangeTransactor' ] =
+IncludeHandlersMap[ 'wChangeTransactor' ] =
 {
   includeAny : [ '../../amid/changes/ChangeTransactor.s','amid/changes/ChangeTransactor.s','wChangeTransactor' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.ChangeTransactor },
 }
 
-_includeHandlerMap[ 'wVocabulary' ] =
+IncludeHandlersMap[ 'wVocabulary' ] =
 {
   includeAny : [ '../../amid/bclass/Vocabulary.s','amid/bclass/Vocabulary.s','wVocabulary' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Vocabulary },
 }
 
-_includeHandlerMap[ 'wFiles' ] =
+IncludeHandlersMap[ 'wFiles' ] =
 {
   includeAny : [ '../../amid/file/FileTop.s','amid/file/FileTop.s','wFiles' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.fileProvider },
 }
 
-_includeHandlerMap[ 'wFilesArchive' ] =
+IncludeHandlersMap[ 'wFilesArchive' ] =
 {
   includeAny : [ '../../amid/file/FilesArchive.s','amid/file/FilesArchive.s','wfilesarchive' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesArchive },
 }
 
-_includeHandlerMap[ 'wFilesTransformers' ] =
+IncludeHandlersMap[ 'wFilesTransformers' ] =
 {
   includeAny : [ '../../amid/file/FilesTransformers.s','amid/file/FilesTransformers.s','wfilestransformers' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FileTransformers },
 }
 
-_includeHandlerMap[ 'wFilesSvn' ] =
+IncludeHandlersMap[ 'wFilesSvn' ] =
 {
   includeAny : [ '../../amid/file/fprovider/pSvn.ss','amid/file/fprovider/pSvn.ss','wFilesSvn' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.fileProvider.Svn },
 }
 
 
-_includeHandlerMap[ 'wTimeMarker' ] =
+IncludeHandlersMap[ 'wTimeMarker' ] =
 {
   includeAny : [ '../../amid/mixin/TimeMarker.s','amid/mixin/TimeMarker.s','wtimemarker' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.TimeMakrer },
 }
 
-_includeHandlerMap[ 'wPathTranslator' ] =
+IncludeHandlersMap[ 'wPathTranslator' ] =
 {
   includeAny : [ '../../amid/path/PathTranslator.s','amid/path/PathTranslator.s','wpathtranslator' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.PathTranslator },
 }
 
-_includeHandlerMap[ 'wFileExecutor' ] =
+IncludeHandlersMap[ 'wFileExecutor' ] =
 {
   includeAny : [ '../../../dwtools/amid/executor/FileExecutor.s','amid/executor/FileExecutor.s','wFileExecutor' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.wFileExecutor },
 }
 
-_includeHandlerMap[ 'wFileExecutorHtmlFormatters' ] =
+IncludeHandlersMap[ 'wFileExecutorHtmlFormatters' ] =
 {
   includeAny : [ '../../../dwtools/amid/executor/HtmlFormatters.s','amid/executor/HtmlFormatters.s','wFileExecutorHtmlFormatters' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FileExecutorHtmlFormatters },
 }
 
-_includeHandlerMap[ 'wStarterMaker' ] =
+IncludeHandlersMap[ 'wStarterMaker' ] =
 {
   includeAny : [ '../../../dwtools/amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wStarterMaker' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.StarterMaker },
 }
 
-_includeHandlerMap[ 'wNameMapper' ] =
+IncludeHandlersMap[ 'wNameMapper' ] =
 {
   includeAny : [ '../../amid/amapping/NameMapper.s','amid/amapping/NameMapper.s','wnamemapper' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.NameMapper },
 }
 
-_includeHandlerMap[ 'wTemplateTreeResolver' ] =
+IncludeHandlersMap[ 'wTemplateTreeResolver' ] =
 {
   includeAny : [ '../../amid/amapping/TemplateTreeAresolver.s','amid/amapping/TemplateTreeAresolver.s','wtemplatetreeresolver' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.TemplateTreeResolver },
 }
 
-_includeHandlerMap[ 'wTemplateTreeEnvironment' ] =
+IncludeHandlersMap[ 'wTemplateTreeEnvironment' ] =
 {
   includeAny : [ '../../amid/amapping/TemplateTreeEnvironment.s','amid/amapping/TemplateTreeEnvironment.s','wtemplatetreeenvironment' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.TemplateTreeEnvironment },
 }
 
-_includeHandlerMap[ 'wTemplateFileWriter' ] =
+IncludeHandlersMap[ 'wTemplateFileWriter' ] =
 {
   includeAny : [ '../../amid/amapping/TemplateFileWriter.s','amid/amapping/TemplateFileWriter.s','wtemplatefilewriter' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.TemplateFileWriter },
 }
 
-_includeHandlerMap[ 'wGraph' ] =
+IncludeHandlersMap[ 'wGraph' ] =
 {
   includeAny : [ '../../amid/agraph/Graph.s','amid/agraph/Graph.s','wGraph' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.graph },
 }
 
-_includeHandlerMap[ 'wSchema' ] =
+IncludeHandlersMap[ 'wSchema' ] =
 {
   includeAny : [ '../../amid/schema/Top.s','amid/schema/Top.s','wSchema' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.schema },
 }
 
-_includeHandlerMap[ 'wScriptLauncher' ] =
+IncludeHandlersMap[ 'wScriptLauncher' ] =
 {
   includeAny : [ '../../amid/launcher/ScriptLauncher.s','amid/launcher/ScriptLauncher.s','wscriptlauncher' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.ScriptLauncher },
 }
 
-_includeHandlerMap[ 'wExchangePoint' ] =
+IncludeHandlersMap[ 'wExchangePoint' ] =
 {
   includeAny : [ '../../amid/exchangePoint/ExchangePoint.s','amid/exchangePoint/ExchangePoint.s','wExchangePoint' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.ExchangePoint },
 }
 
-_includeHandlerMap[ 'wCommunicator' ] =
+IncludeHandlersMap[ 'wCommunicator' ] =
 {
   includeAny : [ '../../amid/communicator/Communicator.s','amid/communicator/Communicator.s','wCommunicator' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Communicator },
 }
 
-_includeHandlerMap[ 'wIncubator' ] =
+IncludeHandlersMap[ 'wIncubator' ] =
 {
   includeAny : [ '../../amid/worker/Incubator.s','amid/worker/Incubator.s','wIncubator' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Incubator },
 }
 
-_includeHandlerMap[ 'wStarterMaker' ] =
+IncludeHandlersMap[ 'wStarterMaker' ] =
 {
   includeAny : [ '../../amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wStarterMaker' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.StarterMaker },
 }
 
-_includeHandlerMap[ 'wMathScalar' ] =
+IncludeHandlersMap[ 'wMathScalar' ] =
 {
   includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.s','amath/arithmetic/cScalar.s','wmathscalar' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.clamp },
 }
 
-_includeHandlerMap[ 'wMathVector' ] =
+IncludeHandlersMap[ 'wMathVector' ] =
 {
   includeAny : [ '../../../dwtools/amath/cvector/Base.s','amath/cvector/Base.s','wmathvector' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.vector },
 }
 
-_includeHandlerMap[ 'wMathSpace' ] =
+IncludeHandlersMap[ 'wMathSpace' ] =
 {
   includeAny : [ '../../../dwtools/amath/space/wSpace.s','amath/space/wSpace.s','wmathspace' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Space },
 }
 
-_includeHandlerMap[ 'wMathConcepts' ] =
+IncludeHandlersMap[ 'wMathConcepts' ] =
 {
   includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wmathconcepts' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.box },
 }
 
-_includeHandlerMap[ 'wBaker' ] =
+IncludeHandlersMap[ 'wBaker' ] =
 {
   includeAny : [ '../../../dwtools/atop/baker/Baker.s','atop/baker/Baker.s','wBaker' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Baker },
 }
 
-_includeHandlerMap[ 'wBakerWithFileExecutor' ] =
+IncludeHandlersMap[ 'wBakerWithFileExecutor' ] =
 {
   includeAny : [ '../../../dwtools/atop/baker/BakerWithFileExecutor.s','atop/baker/BakerWithFileExecutor.s','wBakerWithFileExecutor' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.wBakerWithFileExecutor },
 }
 
-_includeHandlerMap[ 'wMaker' ] =
+IncludeHandlersMap[ 'wMaker' ] =
 {
   includeAny : [ '../../../dwtools/atop/maker/Maker.s','atop/maker/Maker.s','wMaker' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Maker },
 }
 
-_includeHandlerMap[ 'wDeployerUnit' ] =
+IncludeHandlersMap[ 'wDeployerUnit' ] =
 {
   includeAny : [ '../../../dwtools/atop/deployer/Unit.s','atop/deployer/Unit.s','wDeployerUnit' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.DeployerUnit },
 }
 
-_includeHandlerMap[ 'wServlet' ] =
+IncludeHandlersMap[ 'wServlet' ] =
 {
   includeAny : [ '../../../dwtools/atop/servlet/Servlet.ss','atop/servlet/Servlet.ss','wServlet' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.servlet },
@@ -697,6 +697,10 @@ var Proto =
   includeAny : includeAny,
 
   isIncluded : isIncluded,
+
+  //
+
+  IncludeHandlersMap : IncludeHandlersMap,
 
 }
 
