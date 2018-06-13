@@ -35,6 +35,7 @@ function _lookIterationBegin()
   newIt.key = null;
   newIt.index = null;
   newIt.src = it.src;
+  newIt.dst = it.dst;
   newIt.ascending = true;
 
   Object.preventExtensions( newIt );
@@ -57,7 +58,12 @@ function _lookIterationSelect( k,i )
   it.path = it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k;
   it.key = k;
   it.index = i;
-  it.src = src[ k ];
+  it.src = it.src[ k ];
+
+  if( it.dst )
+  it.dst = it.dst[ k ];
+  else
+  it.dst = undefined;
 
   return it;
 }
@@ -76,9 +82,10 @@ function __lookAct( it )
   // var iterator = this;
   // var src = it.src;
   // var index = 0;
+  //
+  // _.assert( Object.keys( it.iterator ).length === 11 );
+  // _.assert( Object.keys( it ).length === 6 );
 
-  _.assert( Object.keys( it.iterator ).length === 11 );
-  _.assert( Object.keys( it ).length === 6 );
   _.assert( it.level >= 0 );
   _.assert( arguments.length === 1 );
 
@@ -104,9 +111,11 @@ function __lookAct( it )
 
   /* up */
 
-  if( it.visitingRoot || it.root !== src )
+  if( it.visitingRoot || it.root !== it.src )
   {
     it.ascending = it.onUp.call( it, it );
+    if( it.ascending === undefined )
+    it.ascending = true;
     _.assert( _.boolIs( it.ascending ),'expects it.onUp returns boolean, but got',_.strTypeOf( it.ascending ) );
   }
 
@@ -115,7 +124,7 @@ function __lookAct( it )
   function end()
   {
 
-    if( it.root !== src )
+    if( it.root !== it.src )
     {
       it.onDown.call( it, it );
     }
@@ -138,12 +147,13 @@ function __lookAct( it )
 
   /* element */
 
+  var index = 0;
   function handleElement( k )
   {
 
-    if( it.recursive || it.root === src )
+    if( it.recursive || it.root === it.src )
     {
-      var itNew = it.begin().select( k,i )
+      var itNew = it.begin().select( k,index )
       __lookAct( itNew );
     }
 
@@ -152,10 +162,10 @@ function __lookAct( it )
 
   /* iterate */
 
-  if( _.arrayLike( src ) )
+  if( _.arrayLike( it.src ) )
   {
 
-    for( var k = 0 ; k < src.length ; k++ )
+    for( var k = 0 ; k < it.src.length ; k++ )
     {
 
       handleElement( k );
@@ -163,14 +173,14 @@ function __lookAct( it )
     }
 
   }
-  else if( _.objectLike( src ) )
+  else if( _.objectLike( it.src ) )
   {
 
-    for( var k in src )
+    for( var k in it.src )
     {
 
-      if( iterator.own )
-      if( !_hasOwnProperty.call( src,k ) )
+      if( it.own )
+      if( !_hasOwnProperty.call( it.src,k ) )
       continue;
 
       handleElement( k );
@@ -221,7 +231,7 @@ function _lookBody( o )
 
   /* */
 
-  var itetator = Object.create( LookIrerator );
+  var iterator = Object.create( LookIrerator );
   _.mapExtend( iterator, o );
 
   iterator.iterator = iterator;
@@ -239,7 +249,7 @@ function _lookBody( o )
   iterator.key = null;
   iterator.looking = true;
 
-  Object.preventExtensions( newIt );
+  Object.preventExtensions( iterator );
 
   var it = iterator.begin();
 
