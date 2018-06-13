@@ -10,7 +10,7 @@ if( typeof module !== 'undefined' && module !== null )
   var _global = _global_; var _ = _global_.wTools;
   var Self = _global_.wTools;
 
-  require( './layer2/bLooker.s' );
+  require( './layer2/bLookTools.s' );
   require( './layer2/fIncludeTools.s' );
   require( './layer2/fNameTools.s' );
   require( './layer2/fStringTools.s' );
