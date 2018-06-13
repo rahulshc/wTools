@@ -14,51 +14,100 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 _.assert( _globalReal_ );
 
 // --
-// routines
+// look
 // --
 
-function __eachAct( it )
+function _lookIterationBegin()
 {
+  var it = this;
 
   debugger;
 
+  _.assert( arguments.length === 0 );
+  _.assert( it.level >= 0 );
+  _.assert( it.iterator );
+
+  var newIt = Object.create( it.iterator );
+
+  newIt.level = it.level,
+  newIt.path = it.path;
+  newIt.down = it;
+  newIt.key = null;
+  newIt.index = null;
+  newIt.src = it.src;
+  newIt.ascending = true;
+
+  Object.preventExtensions( newIt );
+
+  return newIt;
+}
+
+//
+
+function _lookIterationSelect( k,i )
+{
+  var it = this;
+
+  debugger;
+
+  _.assert( arguments.length === 2 );
+  _.assert( it.level >= 0 );
+
+  it.level = it.level+1;
+  it.path = it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k;
+  it.key = k;
+  it.index = i;
+  it.src = src[ k ];
+
+  return it;
+}
+
+//
+
+var LookIrerator = Object.create( null );
+LookIrerator.begin = _lookIterationBegin;
+LookIrerator.select = _lookIterationSelect;
+
+//
+
+function __lookAct( it )
+{
+
   // var iterator = this;
-  var src = it.src;
-  var i = 0;
+  // var src = it.src;
+  // var index = 0;
 
   _.assert( Object.keys( it.iterator ).length === 11 );
   _.assert( Object.keys( it ).length === 6 );
   _.assert( it.level >= 0 );
   _.assert( arguments.length === 1 );
 
+  debugger;
+
   /* level */
 
+  if( it.levelLimit !== 0 )
   if( !( it.level < it.levelLimit ) )
   {
     debugger;
-    return i;
+    return it;
   }
 
-  /* usingVisits */
+  /* trackingVisits */
 
-  if( it.usingVisits )
+  if( it.trackingVisits )
   {
-    if( it.visited.indexOf( src ) !== -1 )
-    return i;
-    it.visited.push( src );
+    if( it.visited.indexOf( it.src ) !== -1 )
+    return it;
+    it.visited.push( it.src );
   }
 
   /* up */
 
-  it.iterator.counter += 1;
-  var c = true;
-  if( it.root !== src )
+  if( it.visitingRoot || it.root !== src )
   {
-    c = it.onUp.call( it.iterator,src,it.key,it );
-  }
-  else if( it.usingRootVisit )
-  {
-    c = it.onUp.call( it.iterator,src,it.key,it );
+    it.ascending = it.onUp.call( it, it );
+    _.assert( _.boolIs( it.ascending ),'expects it.onUp returns boolean, but got',_.strTypeOf( it.ascending ) );
   }
 
   /* down */
@@ -68,23 +117,23 @@ function __eachAct( it )
 
     if( it.root !== src )
     {
-      it.onDown.call( it.iterator,src,it.key,it );
+      it.onDown.call( it, it );
     }
-    else if( it.usingRootVisit )
+    else if( it.visitingRoot )
     {
-      it.onDown.call( it.iterator,src,it.key,it );
+      it.onDown.call( it, it );
     }
 
-    if( it.usingVisits )
+    if( it.trackingVisits )
     {
-      _.assert( Object.is( it.visited[ it.visited.length-1 ], src ) );
+      _.assert( it.visited[ it.visited.length-1 ] === it.src );
       it.visited.pop();
     }
 
-    return i;
+    return it;
   }
 
-  if( c === false )
+  if( it.ascending === false || it.iterator.looking === false )
   return end();
 
   /* element */
@@ -94,25 +143,11 @@ function __eachAct( it )
 
     if( it.recursive || it.root === src )
     {
-
-      // var newIteration =
-      // {
-      //   level : it.level+1,
-      //   path : it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k,
-      //   key : k,
-      //   index : i,
-      //   down : it,
-      //   src : src[ k ],
-      // }
-
-      var newIteration = it.newIteration().select( k,i )
-
-      __eachAct( newIteration );
-
+      var itNew = it.begin().select( k,i )
+      __lookAct( itNew );
     }
 
-    i += 1;
-
+    index += 1;
   }
 
   /* iterate */
@@ -145,6 +180,8 @@ function __eachAct( it )
   }
   else
   {
+    if( it.onTerminal )
+    it.onTerminal.call( it, it );
   }
 
   /* end */
@@ -154,172 +191,127 @@ function __eachAct( it )
 
 //
 
-function _eachIteratorIterationNew()
+function _lookPre( routine, args )
 {
-  var it = this;
+  var o;
 
-  _.assert( arguments.length === 0 );
-  _.assert( it.level >= 0 );
-  _.assert( it.iterator );
+  if( args.length === 1 )
+  o = args[ 0 ];
+  else if( args.length === 2 )
+  o = { src : args[ 0 ], onUp : args[ 1 ] };
+  else if( args.length === 3 )
+  o = { src : args[ 0 ], onUp : args[ 1 ], onDown : args[ 2 ] };
+  else _.assert( 0,'look expects single options map, 2 or 3 arguments' );
 
-  var itNew = Object.create( it.iterator );
-
-  itNew.level = it.level,
-  itNew.path = it.path;
-  itNew.down = it;
-  itNew.key = null;
-  itNew.index = null;
-  itNew.src = it.src;
-
-  Object.preventExtensions( itNew );
-
-  return itNew;
-}
-
-//
-
-function _eachIteratorSelect( k,i )
-{
-  var it = this;
-
+  _.routineOptions( routine, o );
+  _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
-  _.assert( it.level >= 0 );
 
-  it.level = it.level+1;
-  it.path = it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k;
-  it.key = k;
-  it.index = i;
-  it.src = src[ k ];
-
-  return it;
+  return o
 }
-
-var IteratorEach = Object.create( null );
-IteratorEach.iterationNew = _eachIteratorIterationNew;
-IteratorEach.select = _eachIteratorSelect;
 
 //
 
-function _each( o )
+function _lookBody( o )
 {
 
-  if( o.root === undefined )
-  o.root = o.src;
-
-  _.routineOptions( _each,o );
-  _.assert( _.routineIs( o.onUp ) || _.routineIs( o.onDown ),'each : expects routine o.onUp or o.onDown' );
   _.assert( arguments.length === 1 );
+  _.assert( o.onUp === null || o.onUp.length === 1 );
+  _.assert( o.onDown === null || o.onDown.length === 1 );
 
-  // _.assert( o.onUp.length === 0 || o.onUp.length === 1 || o.onUp.length === 3 );
-  // _.assert( o.onDown.length === 0 || o.onUp.length === 1 || o.onDown.length === 3 );
+  /* */
 
-  if( o.path === null )
-  o.path = o.pathDelimteter;
+  var itetator = Object.create( LookIrerator );
+  _.mapExtend( iterator, o );
 
-  debugger;
-
-  // var iterator =
-  // {
-  //   root : o.root,
-  //   onUp : o.onUp,
-  //   onDown : o.onDown,
-  //   own : o.own,
-  //   recursive : o.recursive,
-  //   usingVisits : o.usingVisits,
-  //   usingRootVisit : o.usingRootVisit,
-  //   counter : o.counter,
-  //   visited : o.visited,
-  //   levelLimit : o.levelLimit,
-  //   pathDelimteter : o.pathDelimteter,
-  // }
-  //
-  // var it =
-  // {
-  //   level : o.level,
-  //   path : o.path,
-  //   key : o.key,
-  //   index : o.index,
-  //   src : o.src,
-  //   down : o.down,
-  // }
-
-  var iterator = Object.create( IteratorEach );
-  _.mapExtend( iterator,o );
   iterator.iterator = iterator;
-  Object.preventExtensions( itNew );
 
-  var it = iterator.iterationNew();
+  if( iterator.root === null )
+  iterator.root = iterator.src;
 
-  return __eachAct( it );
+  if( iterator.trackingVisits )
+  if( iterator.visited === null )
+  iterator.visited = [];
+
+  if( iterator.path === null )
+  iterator.path = o.pathDelimteter;
+
+  iterator.key = null;
+  iterator.looking = true;
+
+  Object.preventExtensions( newIt );
+
+  var it = iterator.begin();
+
+  return __lookAct( it );
 }
 
-_each.defaults =
+_lookBody.defaults =
 {
 
-  onUp : function( e,k,it ){},
-  onDown : function( e,k,it ){},
+  onUp : function( it ){},
+  onTerminal : function( it ){},
+  onDown : function( it ){},
 
-  root : null,
-  own : 0,
-  recursive : 0,
-  usingVisits : 1,
-  usingRootVisit : 1,
-  counter : 0,
-  visited : [],
-  levelLimit : 256,
-  pathDelimteter : '/',
-
-  level : 0,
-  path : null,
-  key : null,
-  index : 0,
   src : null,
+  dst : null,
+
+  own : 0,
+  recursive : 1,
+  visitingRoot : 1,
+
+  trackingVisits : 1,
+  levelLimit : 0,
+
+  pathDelimteter : '/',
+  path : null,
+
+  counter : 0,
+  visited : null,
+  level : 0,
   down : null,
+  root : null,
+
+  // key : null,
+  // index : 0,
 
 }
 
 //
 
-function eachRecursive( o )
+function look( o )
 {
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-
-  o.recursive = 1;
-
-  _.mapExtendConditional( _.field.mapper.dstNotHasSrcOwn,o,eachRecursive.defaults );
-
-  return _each( o );
+  var o = look.pre.call( _, look, arguments );
+  return look.body.call( _, o );
 }
 
-var defaults = eachRecursive.defaults = Object.create( _each.defaults );
+look.pre = _lookPre;
+look.body = _lookBody;
+
+var defaults = look.defaults = Object.create( _lookBody.defaults );
 
 defaults.own = 0;
-defaults.recursive = 1;
 
 //
 
-function eachOwnRecursive( o )
+function lookOwn( o )
 {
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onEach : arguments[ 1 ] }
-  o.own = 1;
-  o.recursive = 1;
-
-  return _each( o );
+  var o = lookOwn.pre.call( _, look, arguments );
+  _.assert( o.own );
+  return lookOwn.body.call( _, o );
 }
 
-var defaults = eachOwnRecursive.defaults = Object.create( _each.defaults );
+look.pre = _lookPre;
+look.body = _lookBody;
+
+var defaults = lookOwn.defaults = Object.create( _lookBody.defaults );
 
 defaults.own = 1;
 defaults.recursive = 1;
 
-//
+// --
+// each
+// --
 
 function eachSample( o )
 {
@@ -828,7 +820,7 @@ function entityWrap( o )
 
   /* */
 
-  _.eachRecursive
+  _.look
   ({
     src : o.dst,
     own : o.own,
@@ -949,10 +941,10 @@ function entitySearch( o )
 
   /* */
 
-  var optionsEach = _.mapScreen( _.eachRecursive.defaults,o )
+  var optionsEach = _.mapScreen( _.look.defaults,o )
   optionsEach.onUp = handleUp;
 
-  _.eachRecursive( optionsEach );
+  _.look( optionsEach );
 
   return result;
 }
@@ -980,7 +972,7 @@ entitySearch.defaults =
 
 }
 
-entitySearch.defaults.__proto__ = eachRecursive.defaults;
+entitySearch.defaults.__proto__ = look.defaults;
 
 // --
 // selector
@@ -2225,18 +2217,23 @@ function entityDiff( src1,src2,o )
 }
 
 // --
-// prototype
+// define class
 // --
 
 var Proto =
 {
 
-  __eachAct : __eachAct,
-  _eachIteratorSelect : _eachIteratorSelect,
-  _each : _each,
+  // look
 
-  eachRecursive : eachRecursive,
-  eachOwnRecursive : eachOwnRecursive,
+  LookIrerator : LookIrerator,
+
+  __lookAct : __lookAct,
+  _lookPre : _lookPre,
+  _lookBody : _lookBody,
+  look : look,
+  lookOwn : lookOwn,
+
+  // eacg
 
   eachSample : eachSample,
   eachInRange : eachInRange,
@@ -2245,7 +2242,6 @@ var Proto =
 
   entityWrap : entityWrap,
   entitySearch : entitySearch,
-
 
   // selector
 
@@ -2257,7 +2253,6 @@ var Proto =
   entitySelectSet : entitySelectSet,
   entitySelectUnique : entitySelectUnique,
 
-
   // transformer
 
   _entityProbeReport : _entityProbeReport,
@@ -2265,7 +2260,6 @@ var Proto =
   entityProbe : entityProbe,
 
   entityGroup : entityGroup, /* experimental */
-
 
   // entity checker
 

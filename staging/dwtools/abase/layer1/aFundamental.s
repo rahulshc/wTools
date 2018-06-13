@@ -15447,7 +15447,7 @@ Error.stackTraceLimit = Infinity;
  */
 
 // --
-// prototype
+// define class
 // --
 
 var Proto =

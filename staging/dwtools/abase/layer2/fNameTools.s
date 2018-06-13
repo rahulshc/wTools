@@ -180,7 +180,7 @@ var idWithInt = (function()
 })();
 
 // --
-// prototype
+// define class
 // --
 
 var Proto =

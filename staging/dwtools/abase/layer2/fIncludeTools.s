@@ -672,7 +672,7 @@ IncludeHandlersMap[ 'wServlet' ] =
 }
 
 // --
-// prototype
+// define class
 // --
 
 var Proto =

@@ -1528,7 +1528,7 @@ function assertWarn( condition )
 }
 
 // --
-// prototype
+// define class
 // --
 
 var Proto =

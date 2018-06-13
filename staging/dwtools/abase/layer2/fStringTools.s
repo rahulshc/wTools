@@ -3340,7 +3340,7 @@ strExtractStereoStrips.defaults =
 }
 
 // --
-// prototype
+// define class
 // --
 
 var Proto =

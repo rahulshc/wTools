@@ -737,7 +737,7 @@ for( var f in _field )
 }
 
 // --
-// prototype
+// define class
 // --
 
 var Proto =
