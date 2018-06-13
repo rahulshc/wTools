@@ -79,17 +79,8 @@ LookIrerator.select = _lookIterationSelect;
 function __lookAct( it )
 {
 
-  // var iterator = this;
-  // var src = it.src;
-  // var index = 0;
-  //
-  // _.assert( Object.keys( it.iterator ).length === 11 );
-  // _.assert( Object.keys( it ).length === 6 );
-
   _.assert( it.level >= 0 );
   _.assert( arguments.length === 1 );
-
-  debugger;
 
   /* level */
 
@@ -162,7 +153,7 @@ function __lookAct( it )
 
   /* iterate */
 
-  if( _.arrayLike( it.src ) )
+  if( _.arrayIs( it.src ) || _.argumentsIs( it.src ) )
   {
 
     for( var k = 0 ; k < it.src.length ; k++ )
