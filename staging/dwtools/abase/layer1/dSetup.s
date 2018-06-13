@@ -57,6 +57,9 @@ function _setupUnhandledErrorHandler()
   function handleBrowserError( message, source, lineno, colno, error )
   {
     debugger;
+    var err = error;
+    if( 0 )
+    if( _._err )
     var err = _._err
     ({
       args : [ message , error ],
@@ -68,7 +71,6 @@ function _setupUnhandledErrorHandler()
         col : colno,
       },
     });
-
 
     handleError( err );
 
