@@ -80,24 +80,11 @@ function mapIs( test )
   var expected = false;
   test.identical( got, expected );
 
-  /**/
-
-  if( Config.debug )
-  {
-
-    /*test.description = 'inherits through the prototype chain';
-    test.shouldThrowError( function()
-    {
-      _.mapIs( Object.create( { a : 7 } ) );
-    });*/
-
-  }
-
-};
+}
 
 //
 
-function mapClone( test )
+function mapCloneAssigning( test )
 {
 
   test.description = 'an Example';
@@ -105,42 +92,43 @@ function mapClone( test )
     this.name = 'Peter';
     this.age = 27;
   };
-  var got = _.mapClone( new Example(), { dst : { sex : 'Male' } } );
+  var srcMap = new Example();
+  var dstMap = { sex : 'Male' };
+  var got = _.mapCloneAssigning({ srcMap : srcMap, dstMap : dstMap });
   var expected = { sex : 'Male', name : 'Peter', age : 27 };
+  test.shouldBe( dstMap === got );
   test.identical( got, expected );
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.mapCloneAssigning();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapClone();
-    });
+  test.description = 'redundant argument';
+  test.shouldThrowError( function()
+  {
+    _.mapCloneAssigning( {}, {}, 'wrong arguments' );
+  });
 
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapClone( {}, {}, 'wrong arguments' );
-    });
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapCloneAssigning( [] );
+  });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapClone( [] );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapCloneAssigning( 'wrong arguments' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapClone( 'wrong arguments' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -299,30 +287,28 @@ function mapSupplement( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapSupplement();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapSupplement();
-    });
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapSupplement( [] );
+  });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapSupplement( [] );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapSupplement( 'wrong arguments' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapSupplement( 'wrong arguments' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -336,55 +322,48 @@ function mapComplement( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapComplement();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapComplement();
-    });
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapComplement( [] );
+  });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapComplement( [] );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapComplement( 'wrong arguments' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapComplement( 'wrong arguments' );
-    });
-
-  }
-
-};
+}
 
 //
 
-function mapCopy( test )
+function mapMake( test )
 {
 
   test.description = 'an object';
-  var got = _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+  var got = _.mapMake( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
   var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
   test.identical( got, expected );
 
   /**/
 
-  if( Config.debug )
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapMake();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapCopy();
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -410,24 +389,22 @@ function mapFirstPair( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapFirstPair();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapFirstPair();
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapFirstPair( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapFirstPair( 'wrong argument' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -441,36 +418,34 @@ function mapToArray( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapToArray();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray();
-    });
+  test.description = 'redundant argument';
+  test.shouldThrowError( function()
+  {
+    _.mapToArray( {}, 'wrong arguments' );
+  });
 
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray( {}, 'wrong arguments' );
-    });
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapToArray( [] );
+  });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray( [] );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapToArray( 'wrong argumetns' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToArray( 'wrong argumetns' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -499,39 +474,37 @@ function mapValWithIndex( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function() {
+    _.mapValWithIndex();
+  });
+
+  test.description = 'few argument';
+  test.shouldThrowError( function()
   {
+    _.mapValWithIndex( [ [] ] );
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function() {
-      _.mapValWithIndex();
-    });
+  test.description = 'first the four argument not wrapped into array';
+  test.shouldThrowError( function()
+  {
+    _.mapValWithIndex( 3, 13, 'c', 7 , 2 );
+  });
 
-    test.description = 'few argument';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( [ [] ] );
-    });
+  test.description = 'redundant argument';
+  test.shouldThrowError( function()
+  {
+    _.mapValWithIndex( [ [] ], 2, 'wrong arguments' );
+  });
 
-    test.description = 'first the four argument not wrapped into array';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( 3, 13, 'c', 7 , 2 );
-    });
-
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( [ [] ], 2, 'wrong arguments' );
-    });
-
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapValWithIndex( 'wrong argumetns' );
-    });
-
-  }
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapValWithIndex( 'wrong argumetns' );
+  });
 
 }
 
@@ -552,36 +525,34 @@ function mapKeyWithIndex( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapKeyWithIndex();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex();
-    });
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapKeyWithIndex( [] );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex( [] );
-    });
+  test.description = 'redundant argument';
+  test.shouldThrowError( function()
+  {
+    _.mapKeyWithIndex( [  ], 2, 'wrong arguments' );
+  });
 
-    test.description = 'redundant argument';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex( [  ], 2, 'wrong arguments' );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapKeyWithIndex( 'wrong argumetns' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapKeyWithIndex( 'wrong argumetns' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -617,30 +588,28 @@ function mapToStr( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapToStr();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapToStr();
-    });
+  test.description = 'wrong type of number';
+  test.shouldThrowError( function()
+  {
+    _.mapToStr( 13 );
+  });
 
-    test.description = 'wrong type of number';
-    test.shouldThrowError( function()
-    {
-      _.mapToStr( 13 );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapToStr( true );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapToStr( true );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -648,92 +617,92 @@ function mapKeys( test )
 {
   test.description = 'trivial';
 
-  // var got = _.mapKeys( {} );
-  // var expected = [];
-  //
-  // var got = _.mapKeys( { a : 7, b : 13 } );
-  // var expected = [ 'a', 'b' ];
-  // test.identical( got, expected );
-  //
-  // var got = _.mapKeys( { 7 : 'a', 3 : 'b', 13 : 'c' } );
-  // var expected = [ '3', '7', '13' ];
-  // test.identical( got, expected );
-  //
-  // var f = function(){};
-  // Object.setPrototypeOf( f, String );
-  // f.a = 1;
-  // var got = _.mapKeys( f );
-  // var expected = [ 'a' ];
-  // test.identical( got, expected );
-  //
-  // var got = _.mapKeys( new Date );
-  // var expected = [ ];
-  // test.identical( got, expected );
-  //
-  // //
-  //
-  // test.description = 'options';
-  // var a = { a : 1 }
-  // var b = { b : 2 }
-  // Object.setPrototypeOf( a, b );
-  //
-  // /* own off */
-  //
-  // var got = _.mapKeys( a );
-  // var expected = [ 'a', 'b' ];
-  // test.identical( got, expected );
-  //
-  // /* own on */
-  //
-  // var o = { own : 1 };
-  // var got = _.mapKeys.call( o, a );
-  // var expected = [ 'a' ];
-  // test.identical( got, expected );
-  //
-  // /* enumerable/own off */
-  //
-  // var o = { enumerable : 0, own : 0 };
-  // Object.defineProperty( b, 'k', { enumerable : 0 } );
-  // var got = _.mapKeys.call( o, a );
-  // var expected = _.mapAllKeys( a );
-  // test.identical( got, expected );
-  //
-  // /* enumerable off, own on */
-  //
-  // var o = { enumerable : 0, own : 1 };
-  // Object.defineProperty( a, 'k', { enumerable : 0 } );
-  // var got = _.mapKeys.call( o, a );
-  // var expected = [ 'a', 'k' ]
-  // test.identical( got, expected );
+  debugger;
+
+  var got = _.mapKeys( {} );
+  var expected = [];
+
+  var got = _.mapKeys( { a : 7, b : 13 } );
+  var expected = [ 'a', 'b' ];
+  test.identical( got, expected );
+
+  var got = _.mapKeys( { 7 : 'a', 3 : 'b', 13 : 'c' } );
+  var expected = [ '3', '7', '13' ];
+  test.identical( got, expected );
+
+  var f = function(){};
+  Object.setPrototypeOf( f, String );
+  f.a = 1;
+  var got = _.mapKeys( f );
+  var expected = [ 'a' ];
+  test.identical( got, expected );
+
+  var got = _.mapKeys( new Date );
+  var expected = [ ];
+  test.identical( got, expected );
 
   //
 
-  if( Config.debug )
+  test.description = 'options';
+  var a = { a : 1 }
+  var b = { b : 2 }
+  Object.setPrototypeOf( a, b );
+
+  /* own off */
+
+  var got = _.mapKeys( a );
+  var expected = [ 'a', 'b' ];
+  test.identical( got, expected );
+
+  /* own on */
+
+  var o = { own : 1 };
+  var got = _.mapKeys.call( o, a );
+  var expected = [ 'a' ];
+  test.identical( got, expected );
+
+  /* enumerable/own off */
+
+  var o = { enumerable : 0, own : 0 };
+  Object.defineProperty( b, 'k', { enumerable : 0 } );
+  var got = _.mapKeys.call( o, a );
+  var expected = _.mapAllKeys( a );
+  test.identical( got, expected );
+
+  /* enumerable off, own on */
+
+  var o = { enumerable : 0, own : 1 };
+  Object.defineProperty( a, 'k', { enumerable : 0 } );
+  var got = _.mapKeys.call( o, a );
+  var expected = [ 'a', 'k' ]
+  test.identical( got, expected );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapKeys();
+  });
 
-    // test.description = 'no argument';
-    // test.shouldThrowError( function()
-    // {
-    //   _.mapKeys();
-    // });
-    //
-    // test.description = 'wrong type of argument';
-    // test.shouldThrowError( function()
-    // {
-    //   _.mapKeys( 'wrong arguments' );
-    // });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapKeys( 'wrong arguments' );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      debugger;
-      _.mapKeys.call( { x : 1 }, {} );
-      debugger;
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    debugger;
+    _.mapKeys.call( { x : 1 }, {} );
+    debugger;
+  });
 
-  }
-
-};
+}
 
 //
 
@@ -795,26 +764,26 @@ function mapOwnKeys( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKeys();
-    })
+    _.mapOwnKeys();
+  })
 
-    test.description = 'invalid type';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKeys( 1 );
-    })
+  test.description = 'invalid type';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnKeys( 1 );
+  })
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKeys.call( { own : 0 }, {} );
-    })
-  }
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnKeys.call( { own : 0 }, {} );
+  })
 
 }
 
@@ -883,26 +852,26 @@ function mapAllKeys( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no args';
+  test.shouldThrowError( function()
   {
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.mapAllKeys();
-    })
+    _.mapAllKeys();
+  })
 
-    test.description = 'invalid argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllKeys();
-    })
+  test.description = 'invalid argument';
+  test.shouldThrowError( function()
+  {
+    _.mapAllKeys();
+  })
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapAllKeys.call( { own : 0 }, {} );
-    })
-  }
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapAllKeys.call( { own : 0 }, {} );
+  })
 
 }
 
@@ -974,28 +943,28 @@ function mapVals( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapVals();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapVals();
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapVals( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapVals( 'wrong argument' );
-    });
+  test.description = 'wrong option';
+  test.shouldThrowError( function()
+  {
+    _.mapVals.call( { a : 1 }, {} );
+  });
 
-    test.description = 'wrong option';
-    test.shouldThrowError( function()
-    {
-      _.mapVals.call( { a : 1 }, {} );
-    });
-  }
-};
+}
 
 //
 
@@ -1043,30 +1012,28 @@ function mapOwnVals( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapOwnVals();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnVals();
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnVals( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnVals( 'wrong argument' );
-    });
+  test.description = 'wrong option';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnVals.call( { a : 1 }, {} );
+  });
 
-    test.description = 'wrong option';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnVals.call( { a : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1106,30 +1073,28 @@ function mapAllVals( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapAllVals();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllVals();
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapAllVals( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllVals( 'wrong argument' );
-    });
+  test.description = 'wrong option';
+  test.shouldThrowError( function()
+  {
+    _.mapAllVals.call( { a : 1 }, {} );
+  });
 
-    test.description = 'wrong option';
-    test.shouldThrowError( function()
-    {
-      _.mapAllVals.call( { a : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1196,30 +1161,28 @@ function mapPairs( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapPairs();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapPairs();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapPairs( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapPairs( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapPairs( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapPairs( 'wrong argument' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1272,30 +1235,28 @@ function mapOwnPairs( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapOwnPairs();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnPairs();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnPairs( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnPairs( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnPairs( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnPairs( 'wrong argument' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1346,30 +1307,28 @@ function mapAllPairs( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapAllPairs();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllPairs();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapAllPairs( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapAllPairs( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapAllPairs( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllPairs( 'wrong argument' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1446,36 +1405,34 @@ function mapProperties( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapProperties();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapProperties();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapProperties( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapProperties( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapProperties( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapProperties( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapProperties.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapProperties.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1534,36 +1491,34 @@ function mapOwnProperties( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapOwnProperties();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnProperties();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnProperties( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnProperties( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnProperties( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnProperties( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnProperties.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnProperties.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1636,36 +1591,34 @@ function mapAllProperties( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapAllProperties();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllProperties();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapAllProperties( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapAllProperties( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapAllProperties( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllProperties( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapAllProperties.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapAllProperties.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1759,36 +1712,34 @@ function mapRoutines( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapRoutines();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapRoutines();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapRoutines( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapRoutines( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapRoutines( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapRoutines( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapRoutines.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapRoutines.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1863,36 +1814,34 @@ function mapOwnRoutines( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapOwnRoutines();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnRoutines();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnRoutines( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnRoutines( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnRoutines( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnRoutines( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnRoutines.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnRoutines.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -1965,36 +1914,34 @@ function mapAllRoutines( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapAllRoutines();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllRoutines();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapAllRoutines( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapAllRoutines( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapAllRoutines( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllRoutines( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapAllRoutines.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapAllRoutines.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -2089,36 +2036,34 @@ function mapFields( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapFields();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapFields();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapFields( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapFields( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapFields( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapFields( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapFields.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapFields.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -2180,36 +2125,34 @@ function mapOwnFields( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapOwnFields();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnFields();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnFields( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnFields( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnFields( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnFields( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnFields.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnFields.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -2277,36 +2220,34 @@ function mapAllFields( test )
 
   //
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapAllFields();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllFields();
-    });
+  test.description = 'atomic';
+  test.shouldThrowError( function()
+  {
+    _.mapAllFields( 1 );
+  });
 
-    test.description = 'atomic';
-    test.shouldThrowError( function()
-    {
-      _.mapAllFields( 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapAllFields( 'wrong argument' );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapAllFields( 'wrong argument' );
-    });
+  test.description = 'unknown option';
+  test.shouldThrowError( function()
+  {
+    _.mapAllFields.call( { x : 1 }, {} );
+  });
 
-    test.description = 'unknown option';
-    test.shouldThrowError( function()
-    {
-      _.mapAllFields.call( { x : 1 }, {} );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -2360,19 +2301,19 @@ function mapOnlyAtomics( test )
   var got = _.mapOnlyAtomics( a );
   test.identical( got, { a : 1 } );
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'invalid arg type';
+  test.shouldThrowError( function()
   {
-    test.description = 'invalid arg type';
-    test.shouldThrowError( function()
-    {
-      _.mapOnlyAtomics( [] )
-    })
-    test.description = 'no args';
-    test.shouldThrowError( function()
-    {
-      _.mapOnlyAtomics()
-    })
-  }
+    _.mapOnlyAtomics( [] )
+  })
+  test.description = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.mapOnlyAtomics()
+  })
 
 }
 
@@ -2467,42 +2408,40 @@ function mapButConditional( test )
 {
 
   test.description = 'an object';
-  var got = _.mapButConditional( _.field.mapper.atomic, { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
+  var got = _.mapButConditional( _.field.mapper.primitive, { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
   var expected = {a: 1, b: "xxx"};
   test.identical( got, expected );
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapButConditional();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapButConditional();
-    });
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapButConditional( _.field.mapper.primitive );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapButConditional( _.field.mapper.atomic );
-    });
+  test.description = 'second argument is wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapButConditional( _.field.mapper.primitive, [] );
+  });
 
-    test.description = 'second argument is wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapButConditional( _.field.mapper.atomic, [] );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapButConditional( 'wrong arguments' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapButConditional( 'wrong arguments' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -2523,47 +2462,46 @@ function mapScreens( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.mapScreens();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreens();
-    });
+  test.description = 'first argument is not an object-like';
+  test.shouldThrowError( function()
+  {
+    _.mapScreens( 3, [] );
+  });
 
-    test.description = 'first argument is not an object-like';
-    test.shouldThrowError( function()
-    {
-      _.mapScreens( 3, [] );
-    });
+  test.description = 'second argument is not an object-like';
+  test.shouldThrowError( function()
+  {
+    _.mapScreens( [], '' );
+  });
 
-    test.description = 'second argument is not an object-like';
-    test.shouldThrowError( function()
-    {
-      _.mapScreens( [], '' );
-    });
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( {} );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( {} );
-    });
+  test.description = 'redundant arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( [], [], {} );
+  });
 
-    test.description = 'redundant arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( [], [], {} );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( 'wrong arguments' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( 'wrong arguments' );
-    });
-
-  }
-};
+}
 
 //
 
@@ -2578,34 +2516,32 @@ function mapScreen( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.mapScreen();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen();
-    });
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( {} );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( {} );
-    });
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( [] );
+  });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( [] );
-    });
-
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapScreen( 'wrong arguments' );
-    });
-
-  }
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( 'wrong arguments' );
+  });
 
 };
 
@@ -2616,52 +2552,50 @@ function _mapScreen( test )
 
   test.description = 'an object';
   var options = {};
-  options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
-  options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+  options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+  options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
   var got = _._mapScreen( options );
   var expected = { a : 33, c : 33, name : "Mikle" };
   test.identical( got, expected );
 
   test.description = 'an object2'
   var options = {};
-  options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
-  options.srcObjects = { d : 'name', c : 33, a : 'abc' };
+  options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
+  options.srcMaps = { d : 'name', c : 33, a : 'abc' };
   var got = _._mapScreen( options );
   var expected = { a : "abc", c : 33, d : "name" };
   test.identical( got, expected );
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _._mapScreen();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen();
-    });
+  test.description = 'redundant arguments';
+  test.shouldThrowError( function()
+  {
+    _._mapScreen( {}, 'wrong arguments' );
+  });
 
-    test.description = 'redundant arguments';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen( {}, 'wrong arguments' );
-    });
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _._mapScreen( [] );
+  });
 
-    test.description = 'wrong type of array';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen( [] );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _._mapScreen( 'wrong arguments' );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _._mapScreen( 'wrong arguments' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -2774,30 +2708,28 @@ function mapContain( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no arguments';
+  test.shouldThrowError( function()
   {
+    _.mapContain();
+  });
 
-    test.description = 'no arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapContain();
-    });
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapContain( {} );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapContain( {} );
-    });
+  test.description = 'too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapContain( {}, {}, 'redundant argument' );
+  });
 
-    test.description = 'too many arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapContain( {}, {}, 'redundant argument' );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -2827,48 +2759,46 @@ function mapOwnKey( test )
 
   /**/
 
-  if( Config.debug )
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
   {
+    _.mapOwnKey();
+  });
 
-    test.description = 'no argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey();
-    });
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnKey( {}, 'a', 'b' );
+  });
 
-    test.description = 'few arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey( {}, 'a', 'b' );
-    });
+  test.description = 'wrong type of key';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnKey( [], 1 );
+  });
 
-    test.description = 'wrong type of key';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey( [], 1 );
-    });
+  test.description = 'wrong type of argument';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnKey( 1 );
+  });
 
-    test.description = 'wrong type of argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey( 1 );
-    });
+  test.description = 'wrong type of second argument';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnKey( {}, 13 );
+  });
 
-    test.description = 'wrong type of second argument';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey( {}, 13 );
-    });
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnKey( '', 7 );
+  });
 
-    test.description = 'wrong type of arguments';
-    test.shouldThrowError( function()
-    {
-      _.mapOwnKey( '', 7 );
-    });
-
-  }
-
-};
+}
 
 //
 
@@ -3485,60 +3415,6 @@ function mapOwnNone( test )
 
 }
 
-//
-
-// function mapGroup( test )
-// {
-//
-//   test.description = 'an empty object';
-//   var got = _.mapGroup( [  ], { key : 'key1' } );
-//   var expected = {  };
-//   test.identical( got, expected );
-//
-//   test.description = 'first argument is an array';
-//   var got = _.mapGroup( [ { key1 : 44, key2 : 77 }, { key1 : 33 } ], { key : 'key1' } );
-//   var expected = { 33 : [ { key1 : 33 } ], 44 : [ { key1 : 44, key2 : 77 } ] };
-//   test.identical( got, expected );
-//
-//   /**/
-//
-//   if( Config.debug )
-//   {
-//
-//     test.description = 'no argument';
-//     test.shouldThrowError( function()
-//     {
-//       _.mapGroup();
-//     });
-//
-//     test.description = 'few arguments';
-//     test.shouldThrowError( function()
-//     {
-//       _.mapGroup( [] );
-//     });
-//
-//     test.description = 'first argument not wrapped into array';
-//     test.shouldThrowError( function()
-//     {
-//       _.mapGroup( { key1 : 44, key2 : 77 }, { key1 : 33 } , { key : 'key1' } );
-//     });
-//
-//     test.description = 'second argument is wrong';
-//     test.shouldThrowError( function()
-//     {
-//       _.mapGroup( {  }, [  ] );
-//     });
-//
-//     test.description = 'wrong type of arguments';
-//     test.shouldThrowError( function()
-//     {
-//       _.mapGroup( 'wrong arguments' );
-//     });
-//
-//   }
-//
-// };
-
 // --
 //
 // --
@@ -3558,14 +3434,14 @@ var Self =
 
     // map move
 
-    mapClone : mapClone,
+    mapCloneAssigning : mapCloneAssigning,
 
     mapExtendConditional : mapExtendConditional,
     mapExtend : mapExtend,
     mapSupplement : mapSupplement,
     mapComplement : mapComplement,
 
-    mapCopy : mapCopy,
+    mapMake : mapMake,
 
     // map convert
 
@@ -3628,8 +3504,6 @@ var Self =
     mapOwnAll : mapOwnAll,
     mapOwnAny : mapOwnAny,
     mapOwnNone : mapOwnNone,
-
-    // mapGroup : mapGroup,
 
   }
 

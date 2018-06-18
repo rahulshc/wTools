@@ -1,25 +1,31 @@
-(function _ArrayDescriptor_s_() {
+(function _kArrayDescriptor_s_() {
 
-'use strict'; 
+'use strict';
 
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 var Self = _global_.wTools;
 
 //
 
-function _arrayDescriptorsApplyTo( dst )
+function _arrayNameSpaceApplyTo( dst,def )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 2 );
   _.assert( !_.mapOwnKey( dst,'withArray' ) );
+  _.assert( !_.mapOwnKey( dst,'array' ) );
+  _.assert( ArrayNameSpaces[ def ] );
 
   dst.withArray = Object.create( null );
 
-  for( var d in _.ArrayDescriptorsMap )
+  for( var d in ArrayNameSpaces )
   {
     dst.withArray[ d ] = Object.create( dst );
-    dst.withArray[ d ].array = _.ArrayDescriptorsMap[ d ];
+    _.mapExtend( dst.withArray[ d ], ArrayNameSpaces[ d ] );
   }
+
+  dst.array = dst.withArray[ def ];
+  dst.ArrayNameSpaces = ArrayNameSpaces;
 
 }
 
@@ -27,12 +33,13 @@ function _arrayDescriptorsApplyTo( dst )
 // delcare
 // --
 
-function _declare( Descriptor ) {
+function _declare( nameSpace )
+{
 
-var ArrayType = Descriptor.ArrayType;
-var ArrayName = Descriptor.ArrayName;
+var ArrayType = nameSpace.ArrayType;
+var ArrayName = nameSpace.ArrayName;
 
-Descriptor = _.mapExtend( null,Descriptor );
+nameSpace = _.mapExtend( null,nameSpace );
 
 //
 
@@ -101,7 +108,7 @@ function arrayFromCoercing( src )
 }
 
 // --
-// float
+//
 // --
 
 var Extend =
@@ -114,15 +121,16 @@ var Extend =
   arrayFrom : arrayFromCoercing,
   arrayFromCoercing : arrayFromCoercing,
 
-  array : Descriptor,
+  array : nameSpace,
 
 }
 
-_.mapExtend( Descriptor,Extend );
-_.assert( !_.ArrayDescriptorsMap[ ArrayName ] );
-_.ArrayDescriptorsMap[ ArrayName ] = Descriptor;
+_.mapExtend( nameSpace,Extend );
+_.assert( !ArrayNameSpaces[ ArrayName ] );
 
-return Descriptor;
+ArrayNameSpaces[ ArrayName ] = nameSpace;
+
+return nameSpace;
 
 }
 
@@ -130,7 +138,7 @@ return Descriptor;
 //
 // --
 
-var Descriptors =
+var _ArrayNameSpaces =
 [
   { ArrayType : Float32Array, ArrayName : 'Float32' },
   { ArrayType : Uint32Array, ArrayName : 'Wrd32' },
@@ -138,25 +146,34 @@ var Descriptors =
   { ArrayType : Array, ArrayName : 'Array' },
 ]
 
-if( _.ArrayDescriptorsMap )
-return;
+// if( _.Array )
+// debugger;
+// if( _.Array )
+// return;
 
-_.assert( !_.ArrayDescriptorsMap );
+_.assert( !_.Array );
 _.assert( !_.ArrayDescriptor );
 _.assert( !_.array );
 _.assert( !_.withArray );
 
-_._arrayDescriptorsApplyTo = _arrayDescriptorsApplyTo;
-_.ArrayDescriptorsMap = _.ArrayDescriptorsMap || Object.create( null );
+var ArrayNameSpaces = Object.create( null );
 
-for( var d = 0 ; d < Descriptors.length ; d++ )
-_declare( Descriptors[ d ] );
+_._arrayNameSpaceApplyTo = _arrayNameSpaceApplyTo;
 
-_.array = _.ArrayDescriptorsMap.Array;
+for( var d = 0 ; d < _ArrayNameSpaces.length ; d++ )
+_declare( _ArrayNameSpaces[ d ] );
 
-_arrayDescriptorsApplyTo( _ );
+_arrayNameSpaceApplyTo( _,'Array' );
 
-_.assert( _.objectIs( _.ArrayDescriptorsMap ) );
+_.assert( !_.Array );
+
+_.assert( _.mapOwnKey( _,'withArray' ) );
+_.assert( _.mapOwnKey( _,'array' ) );
+_.assert( _.mapOwnKey( _.array,'array' ) );
+_.assert( !_.mapOwnKey( _.array,'withArray' ) );
+_.assert( _.array.withArray );
+
+_.assert( _.objectIs( _.withArray ) );
 _.assert( _.objectIs( _.array ) );
 _.assert( _.routineIs( _.array.makeArrayOfLength ) );
 

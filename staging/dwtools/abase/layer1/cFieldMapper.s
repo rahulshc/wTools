@@ -3,7 +3,8 @@
 'use strict';
 
 var Self = _global_.wTools;
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -11,7 +12,7 @@ var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
-// map filter
+//
 // --
 
 function bypass()
@@ -23,16 +24,18 @@ function bypass()
     return true;
   }
 
-  routine.functionKind = 'field-filter';
+  routine.functionFamily = 'field-filter';
   return routine;
 }
 
+bypass.functionFamily = 'field-filter';
+
 //
 
-function srcAndDstOwn()
+function dstAndSrcOwn()
 {
 
-  var routine = function srcAndDstOwn( dstContainer,srcContainer,key )
+  var routine = function dstAndSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -42,47 +45,277 @@ function srcAndDstOwn()
     return true;
   }
 
-  routine.functionKind = 'field-filter';
+  routine.functionFamily = 'field-filter';
   return routine;
 }
 
+dstAndSrcOwn.functionFamily = 'field-filter';
+
 //
 
-function srcOwn()
+function assigning()
 {
 
-  var routine = function srcOwn( dstContainer,srcContainer,key )
+  var routine = function assigning( dstContainer,srcContainer,key )
+  {
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+assigning.functionFamily = 'field-mapper';
+
+//
+
+function primitive()
+{
+
+  var routine = function primitive( dstContainer,srcContainer,key )
+  {
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+primitive.functionFamily = 'field-filter';
+
+//
+
+function appending()
+{
+
+  var routine = function appending( dstContainer,srcContainer,key )
+  {
+    if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
+    debugger;
+    if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
+    _.arrayAppendArray( dstContainer[ key ], srcContainer[ key ] );
+    else
+    dstContainer[ key ] = srcContainer[ key ];
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+appending.functionFamily = 'field-mapper';
+
+//
+
+function notPrimitiveAssigning()
+{
+
+  var routine = function notPrimitiveAssigning( dstContainer,srcContainer,key )
+  {
+    if( _.primitiveIs( srcContainer[ key ] ) )
+    return;
+
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+notPrimitiveAssigning.functionFamily = 'field-mapper';
+
+//
+
+function assigningRecursive()
+{
+
+  var routine = function assigningRecursive( dstContainer,srcContainer,key )
+  {
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key,_.entityAssignFieldFromContainer );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+assigningRecursive.functionFamily = 'field-mapper';
+
+//
+
+function drop( dropContainer )
+{
+
+  debugger;
+
+  _.assert( _.objectIs( dropContainer ) );
+
+  var routine = function drop( dstContainer,srcContainer,key )
+  {
+    if( dropContainer[ key ] !== undefined )
+    return false
+
+    /*dstContainer[ key ] = srcContainer[ key ];*/
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+drop.functionFamily = 'field-filter';
+
+// --
+// dstNotHas
+// --
+
+function dstNotHas()
+{
+
+  var routine = function dstNotHas( dstContainer,srcContainer,key )
+  {
+
+    // if( dstContainer[ key ] !== undefined )
+    // return false;
+
+    if( key in dstContainer )
+    return false;
+
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstNotHas.functionFamily = 'field-filter';
+
+//
+
+function dstNotHasOrHasNull()
+{
+
+  var routine = function dstNotHasOrHasNull( dstContainer,srcContainer,key )
+  {
+
+    if( key in dstContainer && dstContainer[ key ] !== null )
+    return false;
+
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstNotHasOrHasNull.functionFamily = 'field-filter';
+
+//
+
+function dstNotHasOrHasNil()
+{
+
+  var routine = function dstNotHasOrHasNil( dstContainer,srcContainer,key )
+  {
+
+    if( key in dstContainer && dstContainer[ key ] !== _.nothing )
+    return false;
+
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstNotHasOrHasNil.functionFamily = 'field-filter';
+
+//
+
+function dstNotHasAssigning()
+{
+
+  var routine = function dstNotHasAssigning( dstContainer,srcContainer,key )
+  {
+    if( dstContainer[ key ] !== undefined )
+    return;
+
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+dstNotHasAssigning.functionFamily = 'field-mapper';
+
+//
+
+function dstNotHasAppending()
+{
+
+  var routine = function dstNotHasAppending( dstContainer,srcContainer,key )
+  {
+    debugger;
+    if( dstContainer[ key ] !== undefined )
+    {
+      debugger;
+      if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
+      _.arrayAppendArray( dstContainer,srcContainer,key );
+      return;
+    }
+    dstContainer[ key ] = srcContainer[ key ];
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+dstNotHasAppending.functionFamily = 'field-mapper';
+
+//
+
+function dstNotHasSrcOwn()
+{
+
+  var routine = function dstNotHasSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    if( dstContainer[ key ] !== undefined )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
     return true;
   }
 
-  routine.functionKind = 'field-filter';
+  routine.functionFamily = 'field-filter';
   return routine;
 }
+
+dstNotHasSrcOwn.functionFamily = 'field-filter';
 
 //
 
-function srcOwnRoutines()
+function dstNotHasSrcOwnAssigning()
 {
 
-  var routine = function srcOwnRoutines( dstContainer,srcContainer,key )
+  var routine = function dstNotHasSrcOwnAssigning( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_.routineIs( srcContainer[ key ] ) )
-    return false;
+    return;
+    if( dstContainer[ key ] !== undefined )
+    return;
 
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
   }
 
-  routine.functionKind = 'field-filter'; ;
+  routine.functionFamily = 'field-mapper';
   return routine;
 }
+
+dstNotHasSrcOwnAssigning.functionFamily = 'field-mapper';
 
 //
 
@@ -103,124 +336,34 @@ function dstNotHasSrcOwnRoutines()
     return true;
   }
 
-  routine.functionKind = 'field-filter';
+  routine.functionFamily = 'field-filter';
   return routine;
 }
 
-//
-
-function dstNotHas()
-{
-
-  var routine = function dstNotHas( dstContainer,srcContainer,key )
-  {
-
-    // if( dstContainer[ key ] !== undefined )
-    // return false;
-
-    if( key in dstContainer )
-    return false;
-
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
+dstNotHasSrcOwnRoutines.functionFamily = 'field-filter';
 
 //
 
-function dstNotHasOrHasNull()
+function dstNotHasAssigningRecursive()
 {
 
-  var routine = function dstNotHasOrHasNull( dstContainer,srcContainer,key )
-  {
-
-    if( key in dstContainer && dstContainer[ key ] !== null )
-    return false;
-
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-function dstNotHasOrHasNil()
-{
-
-  var routine = function dstNotHasOrHasNil( dstContainer,srcContainer,key )
-  {
-
-    if( key in dstContainer && dstContainer[ key ] !== _.nothing )
-    return false;
-
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-function dstNotHasCloning()
-{
-
-  var routine = function dstNotHasCloning( dstContainer,srcContainer,key )
+  var routine = function dstNotHasAssigningRecursive( dstContainer,srcContainer,key )
   {
     if( dstContainer[ key ] !== undefined )
     return;
 
-    _.entityCopyField( dstContainer,srcContainer,key );
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key,_.entityAssignFieldFromContainer );
   }
 
-  routine.functionKind = 'field-mapper';
+  routine.functionFamily = 'field-mapper';
   return routine;
 }
 
-//
+dstNotHasAssigningRecursive.functionFamily = 'field-mapper';
 
-function dstNotHasSrcOwn()
-{
-
-  var routine = function dstNotHasSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( dstContainer[ key ] !== undefined )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-function dstNotHasSrcOwnCloning()
-{
-
-  var routine = function dstNotHasSrcOwnCloning( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-    if( dstContainer[ key ] !== undefined )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
+// --
+// dstNotOwn
+// --
 
 function dstNotOwn()
 {
@@ -234,9 +377,11 @@ function dstNotOwn()
     return true;
   }
 
-  routine.functionKind = 'field-filter';
+  routine.functionFamily = 'field-filter';
   return routine;
 }
+
+dstNotOwn.functionFamily = 'field-filter';
 
 //
 
@@ -254,16 +399,18 @@ function dstNotOwnSrcOwn()
     dstContainer[ key ] = srcContainer[ key ];
   }
 
-  routine.functionKind = 'field-mapper';
+  routine.functionFamily = 'field-mapper';
   return routine;
 }
 
+dstNotOwnSrcOwn.functionFamily = 'field-mapper';
+
 //
 
-function dstNotOwnSrcOwnCloning()
+function dstNotOwnSrcOwnAssigning()
 {
 
-  var routine = function dstNotOwnSrcOwnCloning( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnSrcOwnAssigning( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -271,19 +418,21 @@ function dstNotOwnSrcOwnCloning()
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
 
-    _.entityCopyField( dstContainer,srcContainer,key );
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
   }
 
-  routine.functionKind = 'field-mapper';
+  routine.functionFamily = 'field-mapper';
   return routine;
 }
 
+dstNotOwnSrcOwnAssigning.functionFamily = 'field-mapper';
+
 //
 
-function dstNotOwnOrUndefinedCloning()
+function dstNotOwnOrUndefinedAssigning()
 {
 
-  var routine = function dstNotOwnOrUndefinedCloning( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnOrUndefinedAssigning( dstContainer,srcContainer,key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
@@ -294,42 +443,44 @@ function dstNotOwnOrUndefinedCloning()
 
     }
 
-    _.entityCopyField( dstContainer,srcContainer,key );
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
   }
 
-  routine.functionKind = 'field-mapper';
+  routine.functionFamily = 'field-mapper';
   return routine;
 }
 
+dstNotOwnOrUndefinedAssigning.functionFamily = 'field-mapper';
+
+// //
+//
+// function dstNotOwnAssigning()
+// {
+//
+//   var routine = function dstNotOwnAssigning( dstContainer,srcContainer,key )
+//   {
+//
+//     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+//     {
+//
+//       if( key in dstContainer )
+//       return;
+//
+//     }
+//
+//     _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
+//   }
+//
+//   routine.functionFamily = 'field-mapper';
+//   return routine;
+// }
+
 //
 
-function dstNotOwnCloning()
+function dstNotOwnAssigning()
 {
 
-  var routine = function dstNotOwnCloning( dstContainer,srcContainer,key )
-  {
-
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
-    {
-
-      if( key in dstContainer )
-      return;
-
-    }
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-function dstNotOwnClonningPureContainers()
-{
-
-  var routine = function dstNotOwnClonningPureContainers( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnAssigning( dstContainer,srcContainer,key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
@@ -337,209 +488,192 @@ function dstNotOwnClonningPureContainers()
 
     var srcElement = srcContainer[ key ];
     if( _.mapIs( srcElement ) || _.arrayIs( srcElement ) )
-    _.entityCopyField( dstContainer,srcContainer,key );
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
     else
     dstContainer[ key ] = srcContainer[ key ];
 
   }
 
-  routine.functionKind = 'field-mapper';
+  routine.functionFamily = 'field-mapper';
   return routine;
 }
 
-//
-
-function cloning()
-{
-
-  var routine = function cloning( dstContainer,srcContainer,key )
-  {
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
+dstNotOwnAssigning.functionFamily = 'field-mapper';
 
 //
 
-function cloningSrcOwn()
+function dstNotOwnAppending()
 {
 
-  var routine = function cloning( dstContainer,srcContainer,key )
+  var routine = function dstNotOwnAppending( dstContainer,srcContainer,key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-function atomic()
-{
-
-  var routine = function atomic( dstContainer,srcContainer,key )
-  {
-    if( !_.primitiveIs( srcContainer[ key ] ) )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-function atomicSrcOwn()
-{
-
-  var routine = function atomicSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_.primitiveIs( srcContainer[ key ] ) )
-    return false;
-
-    /*dstContainer[ key ] = srcContainer[ key ];*/
-    return true;
-  }
-
-  routine.functionKind = 'field-filter';
-  return routine;
-}
-
-//
-
-function notAtomicCloning()
-{
-
-  var routine = function notAtomicCloning( dstContainer,srcContainer,key )
-  {
-    if( _.primitiveIs( srcContainer[ key ] ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-function notAtomicCloningSrcOwn()
-{
-
-  var routine = function notAtomicCloningSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-    if( _.primitiveIs( srcContainer[ key ] ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-function notAtomicCloningRecursiveSrcOwn()
-{
-
-  var routine = function notAtomicCloningRecursiveSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-    if( _.primitiveIs( srcContainer[ key ] ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-function recursiveClonning()
-{
-
-  var routine = function recursiveClonning( dstContainer,srcContainer,key )
-  {
-    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-function recursiveCloningSrcOwn()
-{
-
-  var routine = function recursiveCloningSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
-
-    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
-  }
-
-  routine.functionKind = 'field-mapper';
-  return routine;
-}
-
-//
-
-function dstNotHasRecursiveClonning()
-{
-
-  var routine = function dstNotHasRecursiveClonning( dstContainer,srcContainer,key )
-  {
+    debugger;
     if( dstContainer[ key ] !== undefined )
+    {
+      debugger;
+      if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
+      _.arrayAppendArray( dstContainer,srcContainer,key );
+    }
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
-
-    _.entityCopyField( dstContainer,srcContainer,key,_.entityCopyField );
+    dstContainer[ key ] = srcContainer[ key ];
   }
 
-  routine.functionKind = 'field-mapper';
+  routine.functionFamily = 'field-mapper';
   return routine;
 }
 
-//
+dstNotOwnAppending.functionFamily = 'field-mapper';
 
-function drop( dropContainer )
+// --
+// srcOwn
+// --
+
+function srcOwn()
 {
 
-  _.assert( _.objectIs( dropContainer ) );
-
-  var routine = function drop( dstContainer,srcContainer,key )
+  var routine = function srcOwn( dstContainer,srcContainer,key )
   {
-    if( dropContainer[ key ] !== undefined )
-    return false
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
     return true;
   }
 
-  routine.functionKind = 'field-filter';
+  routine.functionFamily = 'field-filter';
   return routine;
 }
 
+srcOwn.functionFamily = 'field-filter';
+
 //
+
+function srcOwnRoutines()
+{
+
+  var routine = function srcOwnRoutines( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    if( !_.routineIs( srcContainer[ key ] ) )
+    return false;
+
+    /*dstContainer[ key ] = srcContainer[ key ];*/
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter'; ;
+  return routine;
+}
+
+srcOwnRoutines.functionFamily = 'field-filter';
+
+//
+
+function srcOwnAssigning()
+{
+
+  var routine = function assigning( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+srcOwnAssigning.functionFamily = 'field-mapper';
+
+//
+
+function srcOwnPrimitive()
+{
+
+  var routine = function srcOwnPrimitive( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    /*dstContainer[ key ] = srcContainer[ key ];*/
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+srcOwnPrimitive.functionFamily = 'field-filter';
+
+//
+
+function srcOwnNotPrimitiveAssigning()
+{
+
+  var routine = function srcOwnNotPrimitiveAssigning( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+    if( _.primitiveIs( srcContainer[ key ] ) )
+    return;
+
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+srcOwnNotPrimitiveAssigning.functionFamily = 'field-mapper';
+
+//
+
+function srcOwnNotPrimitiveAssigningRecursive()
+{
+
+  var routine = function srcOwnNotPrimitiveAssigningRecursive( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+    if( _.primitiveIs( srcContainer[ key ] ) )
+    return;
+
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key,_.entityAssignFieldFromContainer );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+srcOwnNotPrimitiveAssigningRecursive.functionFamily = 'field-mapper';
+
+//
+
+function srcOwnAssigningRecursive()
+{
+
+  var routine = function srcOwnAssigningRecursive( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return;
+
+    _.entityAssignFieldFromContainer( dstContainer,srcContainer,key,_.entityAssignFieldFromContainer );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+srcOwnAssigningRecursive.functionFamily = 'field-mapper';
+
+// --
+//
+// --
 
 function and()
 {
@@ -550,12 +684,12 @@ function and()
   {
     var routine = arguments[ a ];
     _.assert( _.routineIs( routine ) );
-    _.assert( _.strIs( routine.functionKind ) );
-    if( routine.functionKind === 'field-filter' )
+    _.assert( _.strIs( routine.functionFamily ) );
+    if( routine.functionFamily === 'field-filter' )
     filters.push( routine );
-    else if( routine.functionKind === 'field-mapper' )
+    else if( routine.functionFamily === 'field-mapper' )
     mappers.push( routine );
-    else throw _.err( 'expects routine.functionKind' );
+    else throw _.err( 'expects routine.functionFamily' );
   }
 
   if( mappers.length > 1 )
@@ -586,20 +720,20 @@ function and()
     return mappers.length ? undefined : true;
   }
 
-  routine.functionKind = mappers.length ? 'field-mapper' : 'field-filter';
+  routine.functionFamily = mappers.length ? 'field-mapper' : 'field-filter';
   return routine;
 }
 
 //
 
-function makeMapper( routine )
+function mapperFromFilter( routine )
 {
 
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( routine ),'expects routine but got',_.strTypeOf( routine ) );
-  _.assert( _.strIs( routine.functionKind ) );
+  _.assert( _.strIs( routine.functionFamily ) );
 
-  if( routine.functionKind === 'field-filter' )
+  if( routine.functionFamily === 'field-filter' )
   {
     function r( dstContainer,srcContainer,key )
     {
@@ -609,29 +743,29 @@ function makeMapper( routine )
       return;
       dstContainer[ key ] = srcContainer[ key ];
     }
-    r.functionKind = 'field-mapper';
+    r.functionFamily = 'field-mapper';
     return r;
   }
-  else if( routine.functionKind === 'field-mapper' )
+  else if( routine.functionFamily === 'field-mapper' )
   {
     return routine;
   }
-  else _.assert( 0,'expects routine.functionKind' );
+  else _.assert( 0,'expects routine.functionFamily' );
 
 }
 
 //
-
-// function makeMapperRecursive( routine )
+//
+// function mapperFromFilterRecursive( routine )
 // {
 //
 //   _.assert( arguments.length === 1 );
 //   _.assert( _.routineIs( routine ) );
-//   _.assert( _.strIs( routine.functionKind ) );
+//   _.assert( _.strIs( routine.functionFamily ) );
 //
 //   debugger;
 //
-//   if( routine.functionKind === 'field-filter' )
+//   if( routine.functionFamily === 'field-filter' )
 //   {
 //     function r( dstContainer,srcContainer,key )
 //     {
@@ -642,112 +776,128 @@ function makeMapper( routine )
 //       return;
 //       dstContainer[ key ] = srcContainer[ key ];
 //     }
-//     r.functionKind = 'field-mapper';
+//     r.functionFamily = 'field-mapper';
 //     return r;
 //   }
-//   else if( routine.functionKind === 'field-mapper' )
+//   else if( routine.functionFamily === 'field-mapper' )
 //   {
 //     return routine;
 //   }
-//   else throw _.err( 'expects routine.functionKind' );
+//   else throw _.err( 'expects routine.functionFamily' );
 //
 // }
 
-//
+// --
+// setup
+// --
 
-var _field =
+function setup()
 {
 
+  for( var f in make )
+  {
+    var fi = make[ f ];
+
+    if( fi.length )
+    continue;
+
+    fi = fi();
+
+    if( fi.functionFamily === 'field-mapper' )
+    {
+      field.mapper[ f ] = fi;
+    }
+    else if( fi.functionFamily === 'field-filter' )
+    {
+      field.filter[ f ] = fi;
+      field.mapper[ f ] = mapperFromFilter( fi );
+    }
+    else _.assert( 0,'unexpected' );
+
+  }
+
+}
+
+// --
+// make
+// --
+
+var make =
+{
+
+  //
+
   bypass : bypass,
+  dstAndSrcOwn : dstAndSrcOwn,
+  assigning : assigning,
+  primitive : primitive,
+  appending : appending,
+  notPrimitiveAssigning : notPrimitiveAssigning,
+  assigningRecursive : assigningRecursive,
+  drop : drop,
 
-  srcAndDstOwn : srcAndDstOwn,
-
-  srcOwn : srcOwn,
-  srcOwnRoutines : srcOwnRoutines,
-  dstNotHasSrcOwnRoutines : dstNotHasSrcOwnRoutines,
+  // dstNotHas
 
   dstNotHas : dstNotHas,
   dstNotHasOrHasNull : dstNotHasOrHasNull,
   dstNotHasOrHasNil : dstNotHasOrHasNil,
 
-  dstNotHasCloning : dstNotHasCloning,
+  dstNotHasAssigning : dstNotHasAssigning,
+  dstNotHasAppending : dstNotHasAppending,
+
   dstNotHasSrcOwn : dstNotHasSrcOwn,
-  dstNotHasSrcOwnCloning : dstNotHasSrcOwnCloning,
+  dstNotHasSrcOwnAssigning : dstNotHasSrcOwnAssigning,
+  dstNotHasSrcOwnRoutines : dstNotHasSrcOwnRoutines,
+  dstNotHasAssigningRecursive : dstNotHasAssigningRecursive,
+
+  // dstNotOwn
 
   dstNotOwn : dstNotOwn,
   dstNotOwnSrcOwn : dstNotOwnSrcOwn,
-  dstNotOwnSrcOwnCloning : dstNotOwnSrcOwnCloning,
-  dstNotOwnOrUndefinedCloning : dstNotOwnOrUndefinedCloning,
-  dstNotOwnCloning : dstNotOwnCloning,
-  dstNotOwnClonningPureContainers : dstNotOwnClonningPureContainers,
+  dstNotOwnSrcOwnAssigning : dstNotOwnSrcOwnAssigning,
+  dstNotOwnOrUndefinedAssigning : dstNotOwnOrUndefinedAssigning,
+  dstNotOwnAssigning : dstNotOwnAssigning,
+  dstNotOwnAppending : dstNotOwnAppending,
 
-  cloning : cloning,
-  cloningSrcOwn : cloningSrcOwn,
+  // srcOwn
 
-  atomic : atomic,
-  atomicSrcOwn : atomicSrcOwn,
-
-  notAtomicCloning : notAtomicCloning,
-  notAtomicCloningSrcOwn : notAtomicCloningSrcOwn,
-  notAtomicCloningRecursiveSrcOwn : notAtomicCloningRecursiveSrcOwn,
-
-  recursiveClonning : recursiveClonning,
-  recursiveCloningSrcOwn : recursiveCloningSrcOwn,
-  dstNotHasRecursiveClonning : dstNotHasRecursiveClonning,
-
-  drop : drop,
-
-  and : and,
-  makeMapper : makeMapper,
+  srcOwn : srcOwn,
+  srcOwnRoutines : srcOwnRoutines,
+  srcOwnAssigning : srcOwnAssigning,
+  srcOwnPrimitive : srcOwnPrimitive,
+  srcOwnNotPrimitiveAssigning : srcOwnNotPrimitiveAssigning,
+  srcOwnNotPrimitiveAssigningRecursive : srcOwnNotPrimitiveAssigningRecursive,
+  srcOwnAssigningRecursive : srcOwnAssigningRecursive,
 
 }
 
-//
+// --
+// namespace
+// --
 
 var field =
 {
-  make : _field,
+  make : make,
   mapper : Object.create( null ),
   filter : Object.create( null ),
-  makeMapper : makeMapper,
+  and : and,
+  mapperFromFilter : mapperFromFilter,
 }
 
-//
-
-for( var f in _field )
-{
-  var fi = _field[ f ];
-
-  if( fi.length )
-  continue;
-
-  fi = fi();
-
-  if( fi.functionKind === 'field-mapper' )
-  {
-    field.mapper[ f ] = fi;
-  }
-  else if( fi.functionKind === 'field-filter' )
-  {
-    field.filter[ f ] = fi;
-    field.mapper[ f ] = makeMapper( fi );
-  }
-  else _.assert( 0,'unexpected' );
-
-}
+setup();
 
 // --
-// define class
+// extend
 // --
 
-var Proto =
+var Extend =
 {
 
   field : field,
 
 }
 
-Object.assign( Self,Proto );
+Object.assign( Self,Extend );
 
 // --
 // export

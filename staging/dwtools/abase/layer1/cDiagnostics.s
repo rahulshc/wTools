@@ -568,7 +568,7 @@ function diagnosticStack( stack,first,last )
   // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
 
   if( !stack[ 0 ] )
-  return '{ stack is empty }';
+  return '... stack is empty ...';
 
   // debugger;
   if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
@@ -1474,14 +1474,14 @@ function assertMapOwnNone( src,none )
   if( l > 2 )
   {
     var args =_ArraySlice.call( arguments,1,l ); debugger;
-    none = _.mapCopy.apply( this,args );
+    none = _.mapMake.apply( this,args );
   }
 
   var has = Object.keys( _._mapScreen
   ({
     filter : _.field.mapper.srcOwn,
-    screenObjects : none,
-    srcObjects : src,
+    screenMaps : none,
+    srcMaps : src,
   }));
 
   if( has.length )

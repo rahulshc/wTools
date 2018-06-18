@@ -21,7 +21,7 @@ function _lookIterationBegin()
 {
   var it = this;
 
-  debugger;
+  // debugger;
 
   _.assert( arguments.length === 0 );
   _.assert( it.level >= 0 );
@@ -49,7 +49,7 @@ function _lookIterationSelect( k,i )
 {
   var it = this;
 
-  debugger;
+  // debugger;
 
   _.assert( arguments.length === 2 );
   _.assert( it.level >= 0 );
@@ -115,12 +115,9 @@ function __lookAct( it )
   function end()
   {
 
-    if( it.root !== it.src )
+    if( it.visitingRoot || it.root !== it.src )
     {
-      it.onDown.call( it, it );
-    }
-    else if( it.visitingRoot )
-    {
+      if( it.onDown )
       it.onDown.call( it, it );
     }
 

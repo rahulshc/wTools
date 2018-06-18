@@ -8,9 +8,9 @@ if( typeof module !== 'undefined' && module !== null )
 
   require( './layer1/aFundamental.s' );
   require( './layer1/cDiagnostics.s' );
-  require( './layer1/cFieldMapper.s' );
-  require( './layer1/cxArrayDescriptor.s' );
-  require( './layer1/dSetup.s' );
+  require( './layer1/eFieldMapper.s' );
+  require( './layer1/kArrayDescriptor.s' );
+  require( './layer1/zSetup.s' );
 
   var _global = _global_; var _ = _global_.wTools;
   var Self = _global_.wTools;

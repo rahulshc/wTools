@@ -932,19 +932,19 @@ function entityLength( test )
 
 //
 
-function entityCopyTry( test )
+function entityAssign( test )
 {
   test.description = 'src null';
   var dst = new String( 'string' );
   var src = null;
-  var got = _.entityCopyTry( dst, src  );
+  var got = _.entityAssign( dst, src  );
   var expected = null;
   test.identical( got, expected );
 
   test.description = 'dst.copy';
   var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } };
   var src = { src : 'string', num : 123 }
-  _.entityCopyTry( dst, src  );
+  _.entityAssign( dst, src  );
   var got = dst;
   var expected =
   {
@@ -958,21 +958,21 @@ function entityCopyTry( test )
   test.description = 'src.clone';
   var dst = 1;
   var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
-  var got = _.entityCopyTry( dst, src  );
+  var got = _.entityAssign( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
   test.description = 'src.slice returns copy of array';
   var dst = [ ];
   var src = [ 1, 2 ,3 ];
-  var got = _.entityCopyTry( dst, src  );
+  var got = _.entityAssign( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
   test.description = 'dst.set ';
   var dst = { set : function( src ){ this.value = src[ 'value' ]; } };
   var src = { value : 100 };
-  _.entityCopyTry( dst, src  );
+  _.entityAssign( dst, src  );
   var got = dst;
   var expected = { set : dst.set, value : 100 };
   test.identical( got, expected );
@@ -985,14 +985,14 @@ function entityCopyTry( test )
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  _.entityCopyTry( dst, src, onRecursive  );
+  _.entityAssign( dst, src, onRecursive  );
   var got = dst;
   var expected = src;
   test.identical( got, expected );
 
   test.description = 'atomic ';
   var src = 2;
-  var got = _.entityCopyTry( null, src );
+  var got = _.entityAssign( null, src );
   var expected = src;
   test.identical( got, expected );
 
@@ -1002,7 +1002,7 @@ function entityCopyTry( test )
   test.description = 'missed arguments';
   test.shouldThrowError( function()
   {
-    _.entityCopyTry( );
+    _.entityAssign( );
   });
 
   test.description = 'src.clone throws "unexpected"';
@@ -1010,21 +1010,21 @@ function entityCopyTry( test )
   {
     var dst = {};
     var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
-    _.entityCopyTry( dst, src  );
+    _.entityAssign( dst, src  );
   });
 
 }
 
 //
 
-function entityCopyField( test )
+function entityAssignFieldFromContainer( test )
 {
 
   test.description = 'non recursive';
   var dst ={};
   var src = { a : 'string' };
   var name = 'a';
-  var got = _.entityCopyField(dst, src, name );
+  var got = _.entityAssignFieldFromContainer(dst, src, name );
   var expected = dst[ name ];
   test.identical( got, expected );
 
@@ -1032,7 +1032,7 @@ function entityCopyField( test )
   var dst ={};
   var src = { a : undefined };
   var name = 'a';
-  var got = _.entityCopyField(dst, src, name );
+  var got = _.entityAssignFieldFromContainer(dst, src, name );
   var expected = undefined;
   test.identical( got, expected );
 
@@ -1045,7 +1045,7 @@ function entityCopyField( test )
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   };
-  var got = _.entityCopyField(dst, src, name,onRecursive );
+  var got = _.entityAssignFieldFromContainer(dst, src, name,onRecursive );
   var expected = dst[ name ];
   test.identical( got, expected );
 
@@ -1055,7 +1055,7 @@ function entityCopyField( test )
   test.description = 'argument missed';
   test.shouldThrowError( function()
   {
-    _.entityCopyField( );
+    _.entityAssignFieldFromContainer( );
   });
 
 }
@@ -1580,8 +1580,8 @@ var Self =
     entityContain : entityContain,
 
     entityLength : entityLength,
-    entityCopyTry : entityCopyTry,
-    entityCopyField : entityCopyField,
+    entityAssign : entityAssign,
+    entityAssignFieldFromContainer : entityAssignFieldFromContainer,
     entityCoerceTo : entityCoerceTo,
     entityHasNan : entityHasNan,
     entityHasUndef : entityHasUndef,

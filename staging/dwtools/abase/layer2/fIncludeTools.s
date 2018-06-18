@@ -295,7 +295,6 @@ function _includeWithRequireAny( src )
     try
     {
       var resolved = __include.resolve( src );
-      /* console.log( '__include.resolve',src,'->',resolved ); */
       src = resolved;
     }
     catch( err )
@@ -424,12 +423,6 @@ IncludeHandlersMap[ 'wTraverser' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools._traverse },
 }
 
-IncludeHandlersMap[ 'wCloner' ] =
-{
-  includeAny : [ '../../abase/layer4/Cloner.s','abase/layer4/Cloner.s','wcloner' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools._clone },
-}
-
 IncludeHandlersMap[ 'wExecTools' ] =
 {
   includeAny : [ '../../abase/layer3/ExecTools.s','abase/layer3/ExecTools.s','wexectools' ],
@@ -458,6 +451,24 @@ IncludeHandlersMap[ 'wStringer' ] =
 {
   includeAny : [ '../../abase/layer4/aStringer.s','abase/layer4/aStringer.s','wstringer' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Stringer; },
+}
+
+IncludeHandlersMap[ 'wCloner' ] =
+{
+  includeAny : [ '../../abase/layer4/Cloner.s','abase/layer4/Cloner.s','wcloner' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools._clone },
+}
+
+IncludeHandlersMap[ 'wRoutineTransform' ] =
+{
+  includeAny : [ '../../abase/layer4/RoutineTransform.s','abase/RoutineTransform/Cloner.s','wroutinetransform' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.routineNew },
+}
+
+IncludeHandlersMap[ 'wDomTools' ] =
+{
+  includeAny : [ '../../abase/rbrowser/DomBase.js','abase/rbrowser/DomBase.js','wdomtools' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.eventName },
 }
 
 IncludeHandlersMap[ 'wStringsExtra' ] =
@@ -611,9 +622,17 @@ IncludeHandlersMap[ 'wIncubator' ] =
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Incubator },
 }
 
+
+
+IncludeHandlersMap[ 'wCollectionOfInstances' ] =
+{
+  includeAny : [ '../../amid/container/CollectionOfInstances.s','amid/container/CollectionOfInstances.s','wcollectionofinstances' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.CollectionOfInstances },
+}
+
 IncludeHandlersMap[ 'wStarterMaker' ] =
 {
-  includeAny : [ '../../amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wStarterMaker' ],
+  includeAny : [ '../../amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wstartermaker' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.StarterMaker },
 }
 

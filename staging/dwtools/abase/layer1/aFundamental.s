@@ -233,86 +233,6 @@ function dup( ins,times,result )
 }
 
 // --
-// range
-// --
-
-function rangeLengthGet( range,options )
-{
-
-  var options = options || Object.create( null );
-  var rangeWithIncrementDefaults =
-  {
-    first : null,
-    last : null,
-    increment : null,
-  }
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( options.increment === undefined )
-  options.increment = 1;
-
-  if( _.arrayIs( range ) )
-  {
-    _.assert( range.length === 2 );
-    return options.increment ? ( range[ 1 ]-range[ 0 ] ) / options.increment : 0;
-  }
-  else if( _.mapIs( range ) )
-  {
-    _.assertMapHasAll( range,rangeWithIncrementDefaults );
-    return ( range.last - range.first ) / range.increment;
-  }
-  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
-
-}
-
-//
-
-function rangeFirstGet( range,options )
-{
-
-  var options = options || Object.create( null );
-  if( options.increment === undefined )
-  options.increment = 1;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( _.arrayIs( range ) )
-  {
-    return range[ 0 ];
-  }
-  else if( _.mapIs( range ) )
-  {
-    return range.first
-  }
-  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
-
-}
-
-//
-
-function rangeLastGet( range,options )
-{
-
-  var options = options || Object.create( null );
-  if( options.increment === undefined )
-  options.increment = 1;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( _.arrayIs( range ) )
-  {
-    return range[ 1 ];
-  }
-  else if( _.mapIs( range ) )
-  {
-    return range.last
-  }
-  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
-
-}
-
-// --
 // entity modifier
 // --
 
@@ -328,6 +248,41 @@ function enityExtend( dst,src )
     {
       dst[ k ] = e;
     });
+
+  }
+  else
+  {
+
+    dst = src;
+
+  }
+
+  return dst;
+}
+
+//
+
+function enityExtendAppending( dst,src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.objectIs( src ) )
+  {
+
+    _.each( src,function( e,k )
+    {
+      dst[ k ] = e;
+    });
+
+  }
+  else if( _.arrayLike( src ) )
+  {
+
+    if( dst === null || dst === undefined )
+    dst = _.arraySlice( src );
+    else
+    _.arrayAppendArray( dst,src );
 
   }
   else
@@ -414,35 +369,35 @@ function entityMakeTivial( src,length )
  * @param {object} dst - Destination object.
  * @param {object} src - Source object.
  * @param {routine} onRecursive - The callback function to copy each [ key, value ].
- * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @see {@link wTools.mapCloneAssigning} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entities copy operation.
  *
  * @example
  * var dst = { set : function( src ) { this.str = src.src } };
  * var src = { src : 'string' };
- *  _.entityCopyTry( dst, src );
+ *  _.entityAssign( dst, src );
  * console.log( dst.str )
  * //returns "string"
  *
  * @example
  * var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } }
  * var src = { src : 'string', num : 123 }
- *  _.entityCopyTry( dst, src );
+ *  _.entityAssign( dst, src );
  * console.log( dst )
  * //returns Object {src: "string", num: 123}
  *
  * @example
  * //returns 'string'
- *  _.entityCopyTry( null, new String( 'string' ) );
+ *  _.entityAssign( null, new String( 'string' ) );
  *
- * @function entityCopyTry
+ * @function entityAssign
  * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
  * @throws {exception} If( onRecursive ) is not a Routine.
  * @memberof wTools
  *
  */
 
-function entityCopyTry( dst,src,onRecursive )
+function entityAssign( dst,src,onRecursive )
 {
   var result;
 
@@ -473,13 +428,13 @@ function entityCopyTry( dst,src,onRecursive )
     {
       result = src.clone();
     }
-    else _.assert( 0,'unexpected' );
+    else _.assert( 0,'unknown' );
 
   }
   else if( src && _.routineIs( src.slice ) )
   {
 
-    result = src.slice( 0 );
+    result = src.slice();
 
   }
   else if( dst && _.routineIs( dst.set ) )
@@ -492,9 +447,9 @@ function entityCopyTry( dst,src,onRecursive )
   {
 
     if( onRecursive )
-    result = _.mapClone( src,{ onCopyField : onRecursive, dst : _.primitiveIs( dst ) ? Object.create( null ) : dst } );
+    result = _.mapCloneAssigning({ srcMap : src, dstMap : _.primitiveIs( dst ) ? Object.create( null ) : dst, onField : onRecursive } );
     else
-    result = _.mapClone( src );
+    result = _.mapCloneAssigning({ srcMap : src });
 
   }
   else
@@ -510,21 +465,21 @@ function entityCopyTry( dst,src,onRecursive )
 //
 
 /**
- * Short-cut for entityCopyTry function. Copies specified( name ) field from
+ * Short-cut for entityAssign function. Copies specified( name ) field from
  * source container( srcContainer ) into( dstContainer ).
  *
  * @param {object} dstContainer - Destination object.
  * @param {object} srcContainer - Source object.
  * @param {string} name - Field name.
- * @param {mapClone~onCopyField} onRecursive - The callback function to copy each [ key, value ].
- * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @param {mapCloneAssigning~onField} onRecursive - The callback function to copy each [ key, value ].
+ * @see {@link wTools.mapCloneAssigning} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entities copy operation.
  *
  * @example
  * var dst = {};
  * var src = { a : 'string' };
  * var name = 'a';
- * _.entityCopyField(dst, src, name );
+ * _.entityAssignFieldFromContainer(dst, src, name );
  * console.log( dst.a === src.a );
  * //returns true
  *
@@ -537,17 +492,17 @@ function entityCopyTry( dst,src,onRecursive )
  *   _.assert( _.strIs( key ) );
  *   dstContainer[ key ] = srcContainer[ key ];
  * };
- * _.entityCopyField(dst, src, name, onRecursive );
+ * _.entityAssignFieldFromContainer(dst, src, name, onRecursive );
  * console.log( dst.a === src.a );
  * //returns true
  *
- * @function entityCopyField
+ * @function entityAssignFieldFromContainer
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
  * @memberof wTools
  *
  */
 
-function entityCopyField( dstContainer,srcContainer,name,onRecursive )
+function entityAssignFieldFromContainer( dstContainer,srcContainer,name,onRecursive )
 {
   var result;
 
@@ -555,11 +510,12 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
   var dstValue = _hasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
+  var srcValue = srcContainer[ name ];
 
   if( onRecursive )
-  result = entityCopyTry( dstValue,srcContainer[ name ],onRecursive );
+  result = entityAssign( dstValue, srcValue, onRecursive );
   else
-  result = entityCopyTry( dstValue,srcContainer[ name ] );
+  result = entityAssign( dstValue, srcValue );
 
   if( result !== undefined )
   dstContainer[ name ] = result;
@@ -570,13 +526,13 @@ function entityCopyField( dstContainer,srcContainer,name,onRecursive )
 //
 
 /**
- * Short-cut for entityCopyTry function. Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
+ * Short-cut for entityAssign function. Assigns value of( srcValue ) to container( dstContainer ) field specified by( name ).
  *
  * @param {object} dstContainer - Destination object.
  * @param {object} srcValue - Source value.
  * @param {string} name - Field name.
- * @param {mapClone~onCopyField} onRecursive - The callback function to copy each [ key, value ].
- * @see {@link wTools.mapClone} Check this function for more info about( onRecursive ) callback.
+ * @param {mapCloneAssigning~onField} onRecursive - The callback function to copy each [ key, value ].
+ * @see {@link wTools.mapCloneAssigning} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entity field assignment operation.
  *
  * @example
@@ -600,14 +556,16 @@ function entityAssignField( dstContainer,srcValue,name,onRecursive )
   _.assert( _.strIs( name ) || _.symbolIs( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
+  var dstValue = dstContainer[ name ];
+
   if( onRecursive )
   {
     throw _.err( 'not tested' );
-    result = entityCopyTry( dstContainer[ name ],srcValue,onRecursive );
+    result = entityAssign( dstValue, srcValue,onRecursive );
   }
   else
   {
-    result = entityCopyTry( dstContainer[ name ],srcValue );
+    result = entityAssign( dstValue, srcValue );
   }
 
   if( result !== undefined )
@@ -1330,7 +1288,7 @@ function _entityMost( src,onElement,returnMax )
   _.assert( onElement.length === 1 );
   _.assert( onCompare.length === 2 );
   // _.assert( onCompare.length === 1 || onCompare.length === 2 ); // xxx
-  debugger;
+  // debugger;
 
   var result = { index : -1, key : undefined, value : undefined, element : undefined };
 
@@ -1546,7 +1504,6 @@ function _err( o )
   var originalMessage = '';
   var catches = '';
   var sourceCode = '';
-  var stack = '';
   var errors = [];
   var attentionGiven = 0;
 
@@ -1621,21 +1578,37 @@ function _err( o )
 
   /* make new one if no error in arguments */
 
+  var stack = o.stack;
+  var stackPurified = '';
+
+  if( stack )
+  stackPurified = _.diagnosticStackPurify( stack );
+
   if( !result )
   {
     result = new Error( originalMessage + '\n' );
-    stack = _.diagnosticStack( result,o.level,-1 );
-    if( o.location.full && stack.indexOf( '\n' ) === -1 )
-    stack = o.location.full;
+    if( !stack )
+    {
+      stack = _.diagnosticStack( result,o.level,-1 );
+      if( o.location.full && stack.indexOf( '\n' ) === -1 )
+      debugger;
+      if( o.location.full && stack.indexOf( '\n' ) === -1 )
+      stack = o.location.full;
+    }
   }
   else
   {
     if( result.stack !== undefined )
     {
       if( result.originalMessage !== undefined )
-      stack = result.stack;
+      {
+        stack = result.stack;
+        stackPurified = result.stackPurified;
+      }
       else
-      stack = _.diagnosticStack( result );
+      {
+        stack = _.diagnosticStack( result );
+      }
     }
     else
     {
@@ -1643,9 +1616,8 @@ function _err( o )
     }
   }
 
-  /* stack */
-
-  var stackPurified = _.diagnosticStackPurify( stack );
+  if( !stackPurified )
+  stackPurified = _.diagnosticStackPurify( stack );
 
   /* collect data */
 
@@ -1689,8 +1661,8 @@ function _err( o )
     else
     originalMessage += str + ' ';
 
-    if( originalMessage.indexOf( 'caught at' ) !== -1 )
-    debugger;
+    // if( originalMessage.indexOf( 'caught at' ) !== -1 )
+    // debugger;
 
   }
 
@@ -1734,15 +1706,6 @@ function _err( o )
     });
   }
 
-  /* where it was caught */
-
-  var floc = _.diagnosticLocation( o.level );
-  if( floc.fullWithRoutine.indexOf( 'errLogOnce' ) !== -1 )
-  debugger;
-  if( !floc.service || floc.service === 1 )
-  catches = '    caught at ' + floc.fullWithRoutine + '\n' + catches;
-  // catches = '    caught ' + _.diagnosticStack( 1,2 ).trim() + '\n' + catches;
-
   /* source code */
 
   if( o.usingSourceCode )
@@ -1755,7 +1718,6 @@ function _err( o )
       stack : stack,
       location : o.location,
     });
-    // debugger;
     c = _.diagnosticCode
     ({
       location : o.location,
@@ -1769,6 +1731,14 @@ function _err( o )
     }
   }
 
+  /* where it was caught */
+
+  var floc = _.diagnosticLocation( o.level );
+  if( floc.fullWithRoutine.indexOf( 'errLogOnce' ) !== -1 )
+  debugger;
+  if( !floc.service || floc.service === 1 )
+  catches = '    caught at ' + floc.fullWithRoutine + '\n' + catches;
+
   /* message */
 
   var message = '';
@@ -1781,10 +1751,10 @@ function _err( o )
   }
   else
   {
-    message += '\n* Catches :\n' + catches + '\n';
-    message += '* Message :\n' + originalMessage + '\n';
+    message += '\n* Catches\n' + catches + '\n';
+    message += '* Message\n' + originalMessage + '\n';
     if( o.purifingStack )
-    message += '\n* Purified Stack :\n' + stackPurified + '\n';
+    message += '\n* Stack ( purified )\n' + stackPurified + '\n';
     else
     message += '\n* Stack :\n' + stack + '\n';
   }
@@ -1849,7 +1819,7 @@ function _err( o )
     enumerable : false,
     configurable : true,
     writable : true,
-    value : stack,
+    value : stackPurified,
   });
 
   /* briefly */
@@ -1933,6 +1903,7 @@ _err.defaults =
   sourceCode : null,
   briefly : null,
   args : null,
+  stack : null,
 }
 
 //
@@ -1993,9 +1964,6 @@ function errBriefly()
 function errAttend( err )
 {
 
-  // if( arguments.length !== 1 || !_.errIsRefined(  ) )
-  // debugger;
-
   if( arguments.length !== 1 || !_.errIsRefined( err ) )
   err = _err
   ({
@@ -2033,6 +2001,22 @@ function errAttend( err )
   /* */
 
   return err;
+}
+
+//
+
+function errRestack( err,level )
+{
+  if( level === undefined )
+  level = 1;
+
+  var err2 = _._err
+  ({
+    args : [],
+    level : level+1,
+  });
+
+  return _.err( err2,err );
 }
 
 //
@@ -2972,24 +2956,6 @@ function numbersMake_functor( length )
   function numbersMake( src )
   {
     return _.numbersMake( src,length );
-    // if( _.vectorIs( src ) )
-    // src = _.vector.slice( src );
-    //
-    // _.assert( arguments.length === 1 );
-    // _.assert( _.numberIs( src ) || _.arrayIs( src ) );
-    //
-    // if( _.arrayIs( src ) )
-    // {
-    //   _.assert( src.length === length );
-    //   return src.slice();
-    // }
-    //
-    // var result = _.makeArrayOfLength( length );
-    // for( var i = 0 ; i < length ; i++ )
-    // result[ i ] = src;
-    //
-    // return result;
-
   }
 
   return numbersMake;
@@ -3007,24 +2973,6 @@ function numbersFrom_functor( length )
   function numbersFromNumber( src )
   {
     return _.numbersFromNumber( src,length );
-
-    // if( _.vectorIs( src ) )
-    // src = _.vector.slice( src );
-    //
-    // _.assert( arguments.length === 1 );
-    // _.assert( _.numberIs( src ) || _.arrayIs( src ) );
-    //
-    // if( _.arrayIs( src ) )
-    // {
-    //   _.assert( src.length === length );
-    //   return src;
-    // }
-    //
-    // var result = _.makeArrayOfLength( length );
-    // for( var i = 0 ; i < length ; i++ )
-    // result[ i ] = src;
-    //
-    // return result;
   }
 
   return numbersFrom;
@@ -6372,6 +6320,19 @@ function arrayIs( src )
 
 //
 
+function arrayGenericIs( src )
+{
+
+  if( _.arrayIs( src ) )
+  return true;
+  if( _.argumentsIs( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
 /**
  * The arrayLike() routine determines whether the passed value is an array-like or an Array.
  * Imortant : arrayLike returns false for Object, even if the object has length field.
@@ -7823,7 +7784,6 @@ function arraySlice( array,f,l )
 
   if( _.numberIs( array ) )
   debugger;
-
   // if( _.numberIs( array ) && f === undefined && l === undefined )
   // return array;
 
@@ -7838,14 +7798,15 @@ function arraySlice( array,f,l )
     return [];
   }
 
+  _.assert( _.arrayLike( array ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
   var result;
   var f = f !== undefined ? f : 0;
   var l = l !== undefined ? l : array.length;
 
-  _.assert( _.arrayLike( array ) );
   _.assert( _.numberIs( f ) );
   _.assert( _.numberIs( l ) );
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( f < 0 )
   f = 0;
@@ -11803,6 +11764,86 @@ function arraySetIdentical( ins1,ins2 )
 }
 
 // --
+// range
+// --
+
+function rangeLengthGet( range,options )
+{
+
+  var options = options || Object.create( null );
+  var rangeWithIncrementDefaults =
+  {
+    first : null,
+    last : null,
+    increment : null,
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( options.increment === undefined )
+  options.increment = 1;
+
+  if( _.arrayIs( range ) )
+  {
+    _.assert( range.length === 2 );
+    return options.increment ? ( range[ 1 ]-range[ 0 ] ) / options.increment : 0;
+  }
+  else if( _.mapIs( range ) )
+  {
+    _.assertMapHasAll( range,rangeWithIncrementDefaults );
+    return ( range.last - range.first ) / range.increment;
+  }
+  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
+
+}
+
+//
+
+function rangeFirstGet( range,options )
+{
+
+  var options = options || Object.create( null );
+  if( options.increment === undefined )
+  options.increment = 1;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( _.arrayIs( range ) )
+  {
+    return range[ 0 ];
+  }
+  else if( _.mapIs( range ) )
+  {
+    return range.first
+  }
+  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
+
+}
+
+//
+
+function rangeLastGet( range,options )
+{
+
+  var options = options || Object.create( null );
+  if( options.increment === undefined )
+  options.increment = 1;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( _.arrayIs( range ) )
+  {
+    return range[ 1 ];
+  }
+  else if( _.mapIs( range ) )
+  {
+    return range.last
+  }
+  else throw _.err( 'unexpected type of range',_.strTypeOf( range ) );
+
+}
+
+// --
 // map checker
 // --
 
@@ -12534,29 +12575,54 @@ function mapOwnNone( src,screen )
 // --
 
 /**
- * @callback mapClone~onCopyField
+ * The mapMake() routine is used to copy the values of all properties
+ * from one or more source objects to the new object.
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+ * _.mapMake( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+ *
+ * @returns { objectLike } It will return the new object filled by [ key, value ]
+ * from one or more source objects.
+ * @function mapMake
+ * @memberof wTools
+ */
+
+function mapMake()
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( Object.create( null ) );
+  return _.mapExtend.apply( _,args );
+}
+
+//
+
+/**
+ * @callback mapCloneAssigning~onField
  * @param { objectLike } dstContainer - destination object.
  * @param { objectLike } srcContainer - source object.
  * @param { string } key - key to coping from one object to another.
- * @param { function } onCopyField - handler of fields.
+ * @param { function } onField - handler of fields.
  */
 
 /**
- * The mapClone() routine is used to clone the values of all
- * enumerable own properties from (srcObject) object to an (options.dst) object.
+ * The mapCloneAssigning() routine is used to clone the values of all
+ * enumerable own properties from (srcMap) object to an (options.dst) object.
  *
  * It creates two variables:
  * var options = options || {}, result = options.dst || {}.
- * Iterate over (srcObject) object, checks if (srcObject) object has own properties.
- * If true, it calls the provided callback function( options.onCopyField( result, srcObject, k ) ) for each key (k),
- * and copies each [ key, value ] of the (srcObject) to the (result),
- * and after cycle, returns clone with prototype of srcObject.
+ * Iterate over (srcMap) object, checks if (srcMap) object has own properties.
+ * If true, it calls the provided callback function( options.onField( result, srcMap, k ) ) for each key (k),
+ * and copies each [ key, value ] of the (srcMap) to the (result),
+ * and after cycle, returns clone with prototype of srcMap.
  *
- * @param { objectLike } srcObject - The source object.
+ * @param { objectLike } srcMap - The source object.
  * @param { Object } o - The options.
  * @param { objectLike } [options.dst = Object.create( null )] - The target object.
- * @param { mapClone~onCopyField } [options.onCopyField()] - The callback function to copy each [ key, value ]
- * of the (srcObject) to the (result).
+ * @param { mapCloneAssigning~onField } [options.onField()] - The callback function to copy each [ key, value ]
+ * of the (srcMap) to the (result).
  *
  * @example
  * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
@@ -12564,44 +12630,129 @@ function mapOwnNone( src,screen )
  *   this.name = 'Peter';
  *   this.age = 27;
  * }
- * mapClone( new Example(), { dst : { sex : 'Male' } } );
+ * mapCloneAssigning( new Example(), { dst : { sex : 'Male' } } );
  *
  * @returns { objectLike }  The (result) object gets returned.
- * @function mapClone
+ * @function mapCloneAssigning
  * @throws { Error } Will throw an Error if ( o ) is not an Object,
  * if ( arguments.length > 2 ), if (key) is not a String or
- * if (srcObject) has not own properties.
+ * if (srcMap) has not own properties.
  * @memberof wTools
  */
 
-function mapClone( srcObject,o )
+function mapCloneAssigning( o )
 {
-  var o = o || Object.create( null );
-  o.dst = o.dst || Object.create( null );
-
-  // if( !o.dst )
-  // o.dst = new srcObject.constructor();
+  o.dstMap = o.dstMap || Object.create( null );
 
   _.assert( _.mapIs( o ) );
-  _.assert( arguments.length <= 2,'mapClone :','expects (-srcObject-) as argument' );
-  _.assert( objectLike( srcObject ),'mapClone :','expects (-srcObject-) as argument' );
+  _.assert( arguments.length === 1,'mapCloneAssigning :','expects {-srcMap-} as argument' );
+  _.assert( objectLike( o.srcMap ),'mapCloneAssigning :','expects {-srcMap-} as argument' );
+  _.routineOptions( mapCloneAssigning, o );
 
-  if( !o.onCopyField )
-  o.onCopyField = function( dstContainer,srcContainer,key )
+  if( !o.onField )
+  o.onField = function onField( dstContainer,srcContainer,key )
   {
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
   }
 
-  for( var k in srcObject )
+  for( var k in o.srcMap )
   {
-    if( _hasOwnProperty.call( srcObject,k ) )
-    o.onCopyField( o.dst,srcObject,k,o.onCopyField );
+    if( _hasOwnProperty.call( o.srcMap,k ) )
+    o.onField( o.dstMap,o.srcMap,k,o.onField );
   }
 
-  Object.setPrototypeOf( o.dst, Object.getPrototypeOf( srcObject ) );
+  Object.setPrototypeOf( o.dstMap, Object.getPrototypeOf( o.srcMap ) );
 
-  return o.dst;
+  return o.dstMap;
+}
+
+mapCloneAssigning.defaults =
+{
+  srcMap : null,
+  dstMap : null,
+  onField : null,
+}
+
+//
+
+/**
+ * The mapExtend() is used to copy the values of all properties
+ * from one or more source objects to a target object.
+ *
+ * It takes first object (dstMap)
+ * creates variable (result) and assign first object.
+ * Checks if arguments equal two or more and if (result) is an object.
+ * If true,
+ * it extends (result) from the next objects.
+ *
+ * @param{ objectLike } dstMap - The target object.
+ * @param{ ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+ * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+ *
+ * @returns { objectLike } It will return the target object.
+ * @function mapExtend
+ * @throws { Error } Will throw an error if ( arguments.length < 2 ),
+ * if the (dstMap) is not an Object.
+ * @memberof wTools
+ */
+
+function mapExtend( dstMap,srcMap )
+{
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  if( arguments.length === 2 && Object.getPrototypeOf( srcMap ) === null )
+  return Object.assign( dstMap,srcMap );
+
+  _.assert( arguments.length >= 2 );
+  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var srcMap = arguments[ a ];
+
+    for( var k in srcMap )
+    {
+      dstMap[ k ] = srcMap[ k ];
+    }
+
+  }
+
+  return dstMap;
+}
+
+//
+
+function mapExtendByMaps( dstMap, srcMaps )
+{
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
+  return Object.assign( dstMap,srcMaps[ 0 ] );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayGenericIs( srcMaps ) );
+  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
+
+  for( var a = 0 ; a < srcMaps.length ; a++ )
+  {
+    var srcMap = srcMaps[ a ];
+
+    for( var k in srcMap )
+    {
+      dstMap[ k ] = srcMap[ k ];
+    }
+
+  }
+
+  return dstMap;
 }
 
 //
@@ -12611,12 +12762,12 @@ function mapClone( srcObject,o )
  * from the next objects if callback function(filter) returns true.
  *
  * It calls a provided callback function(filter) once for each key in an (argument),
- * and adds to the (srcObject) all the [ key, value ] for which callback
+ * and adds to the (srcMap) all the [ key, value ] for which callback
  * function(filter) returns true.
  *
  * @param { function } filter - The callback function to test each [ key, value ]
- * of the (dstObject) object.
- * @param { objectLike } dstObject - The target object.
+ * of the (dstMap) object.
+ * @param { objectLike } dstMap - The target object.
  * @param { ...objectLike } arguments[] - The next object.
  *
  * @example
@@ -12630,140 +12781,86 @@ function mapClone( srcObject,o )
  * @memberof wTools
  */
 
-function mapExtendConditional( filter,dstObject )
+function mapExtendConditional( filter,dstMap )
 {
 
-  // var filter = _.field.makeMapper( filter );
-  _.assert( filter.functionKind === 'field-mapper' );
+  if( dstMap === null )
+  dstMap = Object.create( null );
 
-  if( dstObject === null )
-  dstObject = Object.create( null );
-
+  _.assert( filter );
+  _.assert( filter.functionFamily === 'field-mapper' );
   _.assert( arguments.length >= 3,'expects more arguments' );
   _.assert( _.routineIs( filter ),'expects filter' );
-  _.assert( _.objectLikeOrRoutine( dstObject ),'expects objectLikeOrRoutine as argument' );
+  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as argument' );
 
   for( var a = 2 ; a < arguments.length ; a++ )
   {
-    var argument = arguments[ a ];
+    var srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( argument ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strTypeOf( argument ) );
+    _.assert( !_.primitiveIs( srcMap ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
 
-    for( var k in argument )
+    for( var k in srcMap )
     {
 
-      filter.call( this,dstObject,argument,k );
+      filter.call( this, dstMap, srcMap, k );
 
     }
 
   }
 
-  return dstObject;
+  return dstMap;
 }
 
 //
 
-/**
- * The mapExtend() is used to copy the values of all properties
- * from one or more source objects to a target object.
- *
- * It takes first object (dstObject)
- * creates variable (result) and assign first object.
- * Checks if arguments equal two or more and if (result) is an object.
- * If true,
- * it extends (result) from the next objects.
- *
- * @param{ objectLike } dstObject - The target object.
- * @param{ ...objectLike } arguments[] - The source object(s).
- *
- * @example
- * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
- * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
- *
- * @returns { objectLike } It will return the target object.
- * @function mapExtend
- * @throws { Error } Will throw an error if ( arguments.length < 2 ),
- * if the (dstObject) is not an Object.
- * @memberof wTools
- */
-
-function mapExtend( dstObject,srcObject )
+function mapExtendByMapsConditional( filter, dstMap, srcMaps )
 {
 
-  if( dstObject === null )
-  dstObject = Object.create( null );
+  if( dstMap === null )
+  dstMap = Object.create( null );
 
-  if( arguments.length === 2 && Object.getPrototypeOf( srcObject ) === null )
-  return Object.assign( dstObject,srcObject );
+  _.assert( filter );
+  _.assert( filter.functionFamily === 'field-mapper' );
+  _.assert( arguments.length === 3,'expects more arguments' );
+  _.assert( _.routineIs( filter ),'expects filter' );
+  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as argument' );
 
-  _.assert( arguments.length >= 2 );
-  _.assert( !_.primitiveIs( dstObject ),'mapExtend :','expects object as the first argument' );
-
-  for( var a = 1 ; a < arguments.length ; a++ )
+  for( var a = 0 ; a < srcMaps.length ; a++ )
   {
-    var argument = arguments[ a ];
+    var srcMap = srcMaps[ a ];
 
-    for( var k in argument )
+    _.assert( !_.primitiveIs( srcMap ),'mapExtendByMapsConditional : expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
+
+    for( var k in srcMap )
     {
-      dstObject[ k ] = argument[ k ];
+
+      filter.call( this, dstMap, srcMap, k );
+
     }
 
   }
 
-  return dstObject;
+  return dstMap;
 }
 
 //
 
-function mapExtendToThis()
+function mapExtendAppending( dstMap )
 {
-  var result = this;
-
-  if( !result )
-  result = Object.create( null );
-
-  _.assert( arguments.length >= 1 );
-  _.assert( objectLike( result ),'mapExtendToThis :','expects object as this' );
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-
-    var argument = arguments[ a ];
-    for( var k in argument )
-    {
-      result[ k ] = argument[ k ];
-    }
-
-  }
-
-  return result;
-}
-
-//
-
-function mapsExtend( dst,srcs )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayLike( srcs ) );
-
-  for( var s = 0 ; s < srcs.length ; s++ )
-  {
-    var src = srcs[ s ]
-    dst = _.mapExtend( dst,src )
-  }
-
-  return dst;
-}
-
-//
-
-function mapStretch( dst,src )
-{
-  if( dst === null && arguments.length === 2 )
-  return _.mapExtend( dst,src );
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( null, srcMap );
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.mapper.dstNotOwn );
+  args.unshift( _.field.mapper.appending );
   return mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapExtendByMapsAppending( dstMap, srcMaps )
+{
+  if( dstMap === null && srcMaps.length === 2 )
+  return _.mapExtend( null, srcMaps[ 0 ] );
+  return _.mapExtendByMapsConditional( _.field.mapper.appending, dstMap, srcMaps );
 }
 
 //
@@ -12784,10 +12881,10 @@ function mapStretch( dst,src )
  * @memberof wTools
  */
 
-function mapSupplement( dst,src )
+function mapSupplement( dstMap,srcMap )
 {
-  if( dst === null && arguments.length === 2 )
-  return _.mapExtend( dst,src );
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( null, srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotHas );
   return mapExtendConditional.apply( this,args );
@@ -12795,7 +12892,16 @@ function mapSupplement( dst,src )
 
 //
 
-function mapSupplementNulls( dst )
+function mapSupplementByMaps( dstMap, srcMaps )
+{
+  if( dstMap === null && srcMaps.length === 2 )
+  return _.mapExtend( null, srcMaps[ 0 ] );
+  return _.mapExtendByMapsConditional( _.field.mapper.dstNotHas, dstMap, srcMaps );
+}
+
+//
+
+function mapSupplementNulls( dstMap )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotHasOrHasNull );
@@ -12804,7 +12910,7 @@ function mapSupplementNulls( dst )
 
 //
 
-function mapSupplementNils( dst )
+function mapSupplementNils( dstMap )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotHasOrHasNil );
@@ -12813,17 +12919,70 @@ function mapSupplementNils( dst )
 
 //
 
-function mapSupplementOrComplementPureContainers( dst )
+function mapSupplementAssigning( dstMap )
 {
   var args = _.arraySlice( arguments );
-  args.unshift( _.field.mapper.dstNotOwnClonningPureContainers );
+  // args.unshift( _.field.mapper.dstNotOwnAssigning );
+  args.unshift( _.field.mapper.dstNotHasAssigning );
   return mapExtendConditional.apply( this,args );
 }
 
 //
 
-function mapSupplementOwn( dst )
+function mapSupplementAppending( dstMap )
 {
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( null, srcMap );
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.dstNotHasAppending );
+  return mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapSupplementByMapsAppending( dstMap, srcMaps )
+{
+  if( dstMap === null && srcMaps.length === 2 )
+  return _.mapExtend( null, srcMaps[ 0 ] );
+  return _.mapExtendByMapsConditional( _.field.mapper.dstNotHasAppending, dstMap, srcMaps );
+}
+
+//
+//
+// function mapSupplementAppending( dstMap,srcMap )
+// {
+//   _.assert( arguments.length === 2 );
+//   _.assert( _.objectIs( srcMap ) );
+//   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
+//
+//   xxx
+//
+//   for( var s in srcMap )
+//   {
+//
+//     if( dstMap[ s ] !== undefined )
+//     {
+//       if( _.arrayIs( dstMap[ s ] ) )
+//       debugger;
+//       if( _.arrayIs( dstMap[ s ] ) )
+//       _.arrayAppendArrays( dstMap[ s ],[ srcMap[ s ] ] );
+//       continue;
+//     }
+//
+//     dstMap[ s ] = srcMap[ s ];
+//
+//   }
+//
+//   return dstMap;
+// }
+
+//
+
+// function mapStretch( dstMap )
+function mapSupplementOwn( dstMap, srcMap )
+{
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( dstMap,srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotOwn );
   return mapExtendConditional.apply( this,args );
@@ -12831,14 +12990,26 @@ function mapSupplementOwn( dst )
 
 //
 
+function mapSupplementByMapsOwn( dstMap, srcMaps )
+{
+  if( dstMap === null && srcMaps.length === 2 )
+  return _.mapExtend( null, srcMaps[ 0 ] );
+  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwn, dstMap, srcMaps );
+}
+
+//
+
+function mapSupplementOwnAssigning( dstMap )
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwnAssigning );
+  return mapExtendConditional.apply( this,args );
+}
+
+//
+
 /**
- * The mapComplement() routine returns an object
- * filled by all unique, clone [ key, value ].
- *
- * It creates the variable ( args ), assign to a copy of pseudo array (arguments),
- * adds a specific callback function( _.field.mapper.dstNotHasCloning )
- * to the beginning of the ( args )
- * and returns an object filled by all unique clone [key, value].
+ * The mapComplement() complement ( dstMap ) by one or several ( srcMap ).
  *
  * @param { ...objectLike } arguments[] - The source object(s).
  *
@@ -12853,226 +13024,135 @@ function mapSupplementOwn( dst )
 
 /* !!! need to explain how undefined handled */
 
-function mapComplement( dst,src )
+function mapComplement( dstMap,srcMap )
 {
   _.assert( _.field.mapper );
   if( arguments.length === 2 )
-  return mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedCloning,dst,src );
-  else
-  return _mapComplementSlow( arguments );
+  return mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwnOrUndefinedAssigning );
+  return mapExtendConditional.apply( this, args );
 }
 
 //
 
-function _mapComplementSlow( args )
+function mapComplementByMaps( dstMap, srcMaps )
 {
-  var args = _.arraySlice( args );
-  args.unshift( _.field.mapper.dstNotOwnOrUndefinedCloning );
+  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
+}
+
+//
+
+function mapComplementWithUndefines( dstMap )
+{
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwnAssigning );
   return mapExtendConditional.apply( this,args );
 }
 
 //
 
-function mapComplementWithUndefines( dst )
-{
-  var args = _.arraySlice( arguments );
-  args.unshift( _.field.mapper.dstNotOwnCloning );
-  return mapExtendConditional.apply( this,args );
-}
-
-//
-
-/**
- * The mapCopy() routine is used to copy the values of all properties
- * from one or more source objects to the new object.
- *
- * @param { ...objectLike } arguments[] - The source object(s).
- *
- * @example
- * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
- * _.mapCopy( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
- *
- * @returns { objectLike } It will return the new object filled by [ key, value ]
- * from one or more source objects.
- * @function mapCopy
- * @memberof wTools
- */
-
-function mapCopy()
-{
-  var args = _.arraySlice( arguments );
-  args.unshift( Object.create( null ) );
-  return _.mapExtend.apply( _,args );
-}
-
-//
-
-function mapExtendByArray( dst,src,val )
-{
-
-  _.assert( _.objectIs( dst ) );
-  _.assert( _.arrayIs( src ) );
-  _.assert( arguments.length === 3 );
-
-  for( var s = 0 ; s < src.length ; s++ )
-  dst[ src[ s ] ] = val;
-
-}
-
-//
-
-function mapDelete( dst,ins )
+function mapDelete( dstMap,ins )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectLike( dst ) );
+  _.assert( _.objectLike( dstMap ) );
   _.assert( _.objectLike( ins ) );
 
   if( ins !== undefined )
   for( var i in ins )
   {
-    delete dst[ i ];
+    delete dstMap[ i ];
   }
   else
-  for( var i in dst )
+  for( var i in dstMap )
   {
     delete d[ i ];
   }
 
-  return dst;
+  return dstMap;
 }
 
 // --
 // map recursive
 // --
 
-function mapSupplementAppending( dst,src )
+function mapExtendRecursiveConditional( filters, dstMap, srcMap )
 {
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectIs( src ) );
-  _.assert( _.objectIs( dst ) );
-
-  for( var s in src )
-  {
-
-    if( dst[ s ] !== undefined )
-    {
-      if( _.arrayIs( dst[ s ] ) )
-      debugger;
-      if( _.arrayIs( dst[ s ] ) )
-      _.arrayAppendArrays( dst[ s ],[ src[ s ] ] );
-      continue;
-    }
-
-    dst[ s ] = src[ s ];
-
-  }
-
-  return dst;
-}
-
-//
-
-function mapSupplementRecursive()
-{
+  _.assert( arguments.length >= 3 );
   _.assert( this === Self );
-  return _.mapExtendRecursive.apply( { filterField : _.field.filter.dstNotHas, filterUp : true },arguments );
-}
-
-//
-
-function mapExtendRecursive( dst,src )
-{
-  var iterator = this;
-
-  _.assert( arguments.length >= 2 );
-
-  if( iterator === Self )
-  iterator = null;
-
-  if( iterator )
-  {
-    iterator = _mapFieldIterator( iterator );
-    for( var a = 1 ; a < arguments.length ; a++ )
-    {
-      src = arguments[ a ];
-      _mapExtendRecursiveConditional( iterator,dst,src );
-    }
-  }
-  else
-  {
-    for( var a = 1 ; a < arguments.length ; a++ )
-    {
-      src = arguments[ a ];
-      _mapExtendRecursive( dst,src );
-    }
-  }
-
-  return dst;
+  var srcMaps = _.arraySlice( arguments,2 );
+  return _.mapExtendByMapsRecursiveConditional( filters, dstMap, srcMaps );
 }
 
 //
 
 function _filterTrue(){ return true };
-_filterTrue.functionKind = 'field-filter';
+_filterTrue.functionFamily = 'field-filter';
 function _filterFalse(){ return true };
-_filterFalse.functionKind = 'field-filter';
+_filterFalse.functionFamily = 'field-filter';
 
-function _mapFieldIterator( iterator )
+function mapExtendByMapsRecursiveConditional( filters, dstMap, srcMaps )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 3 );
+  _.assert( this === Self );
 
-  if( _.routineIs( iterator ) )
-  iterator = { filterUp : iterator, filterField : iterator }
+  if( _.routineIs( filters ) )
+  filters = { onUpFilter : filters, onField : filters }
 
-  if( iterator.filterUp === undefined )
-  iterator.filterUp = iterator.filterField;
-  else if( iterator.filterUp === true )
-  iterator.filterUp = _filterTrue;
-  else if( iterator.filterUp === false )
-  iterator.filterUp = _filterFalse;
+  if( filters.onUpFilter === undefined )
+  filters.onUpFilter = filters.onField;
+  else if( filters.onUpFilter === true )
+  filters.onUpFilter = _filterTrue;
+  else if( filters.onUpFilter === false )
+  filters.onUpFilter = _filterFalse;
 
-  if( iterator.filterField === true )
-  iterator.filterField = _filterTrue;
-  else if( iterator.filterField === false )
-  iterator.filterField = _filterFalse;
+  if( filters.onField === true )
+  filters.onField = _filterTrue;
+  else if( filters.onField === false )
+  filters.onField = _filterFalse;
 
-  _.assert( _.routineIs( iterator.filterUp ) );
-  _.assert( _.routineIs( iterator.filterField ) );
+  _.assert( _.routineIs( filters.onUpFilter ) );
+  _.assert( _.routineIs( filters.onField ) );
+  _.assert( filters.onUpFilter.functionFamily === 'field-filter' );
+  _.assert( filters.onField.functionFamily === 'field-filter' || filters.onField.functionFamily === 'field-mapper' );
 
-  _.assert( iterator.filterUp.functionKind === 'field-filter' );
-  _.assert( iterator.filterField.functionKind === 'field-filter' );
+  for( var a = 0 ; a < srcMaps.length ; a++ )
+  {
+    var srcMap = srcMaps[ a ];
+    _mapExtendRecursiveConditional( filters, dstMap, srcMap );
+  }
 
-  return iterator;
+  return dstMap;
 }
 
 //
 
-function _mapExtendRecursiveConditional( filter,dst,src )
+function _mapExtendRecursiveConditional( filters, dstMap, srcMap )
 {
 
-  _.assert( _.mapIs( src ) );
+  _.assert( _.mapIs( srcMap ) );
 
-  for( var s in src )
+  for( var s in srcMap )
   {
 
-    if( _.mapIs( src[ s ] ) )
+    if( _.mapIs( srcMap[ s ] ) )
     {
 
-      if( filter.filterUp( dst,src,s ) === true )
+      if( filters.onUpFilter( dstMap,srcMap,s ) === true )
       {
-        if( !_.objectIs( dst[ s ] ) )
-        dst[ s ] = Object.create( null );
-        _mapExtendRecursiveConditional( filter,dst[ s ],src[ s ] );
+        if( !_.objectIs( dstMap[ s ] ) )
+        dstMap[ s ] = Object.create( null );
+        _mapExtendRecursiveConditional( filters,dstMap[ s ],srcMap[ s ] );
       }
 
     }
     else
     {
 
-      if( filter.filterField( dst,src,s ) === true )
-      dst[ s ] = src[ s ];
+      if( filters.onField( dstMap,srcMap,s ) === true )
+      dstMap[ s ] = srcMap[ s ];
 
     }
 
@@ -13082,30 +13162,146 @@ function _mapExtendRecursiveConditional( filter,dst,src )
 
 //
 
-function _mapExtendRecursive( dst,src )
+function mapExtendRecursive( dstMap,srcMap )
 {
 
-  _.assert( _.objectIs( src ) );
+  _.assert( arguments.length >= 2 );
+  _.assert( this === Self );
 
-  for( var s in src )
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    srcMap = arguments[ a ];
+    _mapExtendRecursive( dstMap,srcMap );
+  }
+
+  return dstMap;
+}
+
+//
+
+function mapExtendByMapsRecursive( dstMap,srcMaps )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( this === Self );
+
+  for( var a = 1 ; a < srcMaps.length ; a++ )
+  {
+    var srcMap = srcMaps[ a ];
+    _mapExtendRecursive( dstMap,srcMap );
+  }
+
+  return dstMap;
+}
+
+//
+
+function _mapExtendRecursive( dstMap,srcMap )
+{
+
+  _.assert( _.objectIs( srcMap ) );
+
+  for( var s in srcMap )
   {
 
-    if( _.objectIs( src[ s ] ) )
+    if( _.objectIs( srcMap[ s ] ) )
     {
 
-      if( !_.objectIs( dst[ s ] ) )
-      dst[ s ] = Object.create( null );
-      _mapExtendRecursive( dst[ s ],src[ s ] );
+      if( !_.objectIs( dstMap[ s ] ) )
+      dstMap[ s ] = Object.create( null );
+      _mapExtendRecursive( dstMap[ s ],srcMap[ s ] );
 
     }
     else
     {
 
-      dst[ s ] = src[ s ];
+      dstMap[ s ] = srcMap[ s ];
 
     }
 
   }
+
+}
+
+//
+
+function mapExtendAppendingRecursive( dstMap, srcMap )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length >= 2 );
+  var filters = { onField : _.field.mapper.appending, onUpFilter : true };
+  var args = _.arraySlice( arguments );
+  args.unshift( filters );
+  return _.mapExtendRecursiveConditional.apply( _,args );
+}
+
+//
+
+function mapExtendByMapsAppendingRecursive( dstMap, srcMaps )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length === 2 );
+  var filters = { onField : _.field.mapper.appending, onUpFilter : true };
+  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+}
+
+//
+
+function mapSupplementRecursive( dstMap, srcMap )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length >= 2 );
+  var filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
+  var args = _.arraySlice( arguments );
+  args.unshift( filters );
+  return _.mapExtendRecursiveConditional.apply( _,args );
+}
+
+//
+
+function mapSupplementByMapsRecursive( dstMap, srcMaps )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length === 2 );
+  var filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
+  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+}
+
+//
+
+function mapSupplementOwnRecursive( dstMap, srcMap )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length >= 2 );
+  var filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
+  var args = _.arraySlice( arguments );
+  args.unshift( filters );
+  return _.mapExtendRecursiveConditional.apply( _,args );
+}
+
+//
+
+function mapSupplementByMapsOwnRecursive( dstMap, srcMaps )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length === 2 );
+  var filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
+  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+}
+
+// --
+// map manipulator
+// --
+
+function mapSetWithKeys( dstMap,srcArray,val )
+{
+
+  _.assert( _.objectIs( dstMap ) );
+  _.assert( _.arrayIs( srcArray ) );
+  _.assert( arguments.length === 3 );
+
+  for( var s = 0 ; s < srcArray.length ; s++ )
+  dstMap[ srcArray[ s ] ] = val;
 
 }
 
@@ -13116,7 +13312,7 @@ function _mapExtendRecursive( dst,src )
 /**
  * The mapFirstPair() routine returns first pair [ key, value ] as array.
  *
- * @param { objectLike } srcObject - An object like entity of get first pair.
+ * @param { objectLike } srcMap - An object like entity of get first pair.
  *
  * @example
  * // returns [ 'a', 3 ]
@@ -13130,21 +13326,21 @@ function _mapExtendRecursive( dst,src )
  * // returns [ '0', [ 'a', 7 ] ]
  * _.mapFirstPair( [ [ 'a', 7 ] ] );
  *
- * @returns { Array } Returns pair [ key, value ] as array if (srcObject) has fields, otherwise, undefined.
+ * @returns { Array } Returns pair [ key, value ] as array if (srcMap) has fields, otherwise, undefined.
  * @function mapFirstPair
- * @throws { Error } Will throw an Error if (arguments.length) less than one, if (srcObject) is not an object-like.
+ * @throws { Error } Will throw an Error if (arguments.length) less than one, if (srcMap) is not an object-like.
  * @memberof wTools
  */
 
-function mapFirstPair( srcObject )
+function mapFirstPair( srcMap )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( srcObject ) );
+  _.assert( _.objectLike( srcMap ) );
 
-  for( var s in srcObject )
+  for( var s in srcMap )
   {
-    return [ s,srcObject[ s ] ];
+    return [ s,srcMap[ s ] ];
   }
 
   return [];
@@ -13152,7 +13348,7 @@ function mapFirstPair( srcObject )
 
 //
 
-function mapInvert( src,dst )
+function mapInvert( src, dst )
 {
   var o = this === Self ? Object.create( null ) : this;
 
@@ -14949,7 +15145,7 @@ function mapOnlyAtomics( src )
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( src ) );
 
-  var result = _.mapExtendConditional( _.field.mapper.atomic,Object.create( null ),src );
+  var result = _.mapExtendConditional( _.field.mapper.primitive,Object.create( null ),src );
   return result;
 }
 
@@ -15109,18 +15305,18 @@ function mapOwnBut( srcMap )
  * If the first object has same key any other object has
  * then this pair [ key, value ] will not be included into (result) object.
  * Otherwise,
- * it calls a provided callback function( _.field.mapper.atomic )
+ * it calls a provided callback function( _.field.mapper.primitive )
  * once for each key in the (srcMap), and adds to the (result) object
  * all the [ key, value ],
  * if values are not equal to the array or object.
  *
- * @param { function } filter.atomic() - Callback function to test each [ key, value ] of the (srcMap) object.
+ * @param { function } filter.primitive() - Callback function to test each [ key, value ] of the (srcMap) object.
  * @param { objectLike } srcMap - The target object.
  * @param { ...objectLike } arguments[] - The next objects.
  *
  * @example
  * // returns { a : 1, b : "b" }
- * mapButConditional( _.field.mapper.atomic, { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
+ * mapButConditional( _.field.mapper.primitive, { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
  *
  * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
  * @function mapButConditional
@@ -15133,8 +15329,8 @@ function mapButConditional( filter,srcMap )
   var result = Object.create( null );
   var a,k;
 
-  // var filter = _.field.makeMapper( filter );
-  _.assert( filter.functionKind === 'field-mapper' );
+  _.assert( filter );
+  _.assert( filter.functionFamily === 'field-mapper' );
 
   _.assert( objectLike( srcMap ),'mapButConditional :','expects object as argument' );
 
@@ -15164,8 +15360,8 @@ function mapOwnButConditional( filter,srcMap )
   var result = Object.create( null );
   var a,k;
 
-  // var filter = _.field.makeMapper( filter );
-  _.assert( filter.functionKind === 'field-mapper' );
+  _.assert( filter );
+  _.assert( filter.functionFamily === 'field-mapper' );
   _.assert( objectLike( srcMap ),'mapOwnButConditional :','expects object as argument' );
 
   for( k in srcMap )
@@ -15190,65 +15386,65 @@ function mapOwnButConditional( filter,srcMap )
 //
 
 /**
- * @property { objectLike } srcObjects.srcObject - The target object.
- * @property { objectLike } screenObjects.screenObject - The source object.
- * @property { Object } dstObject - The empty object.
+ * @property { objectLike } srcMaps.srcMap - The target object.
+ * @property { objectLike } screenMaps.screenMap - The source object.
+ * @property { Object } dstMap - The empty object.
  */
 
 /**
  * The mapScreens() returns an object filled by unique [ key, value ]
- * from (srcObject) object.
+ * from (srcMap) object.
  *
- * It creates the variable (dstObject) assignes and calls the routine (_mapScreen( { } ) )
+ * It creates the variable (dstMap) assignes and calls the routine (_mapScreen( { } ) )
  * with three properties.
  *
  * @see {@link wTools._mapScreen} - See for more information.
  *
- * @param { objectLike } srcObject - The target object.
- * @param { objectLike } screenObject - The source object.
+ * @param { objectLike } srcMap - The target object.
+ * @param { objectLike } screenMap - The source object.
  *
  * @example
  * // returns { a : "abc", c : 33, d : "name" };
  * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
  *
- * @returns { Object } Returns an (dstObject) object filled by unique [ key, value ]
- * from (srcObject) objects.
+ * @returns { Object } Returns an (dstMap) object filled by unique [ key, value ]
+ * from (srcMap) objects.
  * @function mapScreens
  * @throws { Error } Will throw an Error if (arguments.length) more that two,
- * if (srcObject or screenObject) are not objects-like.
+ * if (srcMap or screenMap) are not objects-like.
  * @memberof wTools
  */
 
-function mapScreens( srcObject,screenObject )
+function mapScreens( srcMap,screenMap )
 {
 
   _.assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-  _.assert( _.objectLikeOrRoutine( srcObject ),'mapScreens :','expects object as argument' );
-  _.assert( _.objectLikeOrRoutine( screenObject ),'mapScreens :','expects object as screenObject' );
+  _.assert( _.objectLikeOrRoutine( srcMap ),'mapScreens :','expects object as argument' );
+  _.assert( _.objectLikeOrRoutine( screenMap ),'mapScreens :','expects object as screenMap' );
 
   if( arguments.length > 2 )
   {
-    screenObject = _ArraySlice.call( arguments,1 );
+    screenMap = _ArraySlice.call( arguments,1 );
   }
 
-  var dstObject = _mapScreen
+  var dstMap = _mapScreen
   ({
-    screenObjects : screenObject,
-    srcObjects : srcObject,
-    dstObject : Object.create( null ),
+    screenMaps : screenMap,
+    srcMaps : srcMap,
+    dstMap : Object.create( null ),
   });
 
-  return dstObject;
+  return dstMap;
 }
 
 //
 
 /**
  * @namespace
- * @property { objectLike } screenObjects.screenObject - The first object.
- * @property { ...objectLike } srcObject.arguments[1,...] -
+ * @property { objectLike } screenMaps.screenMap - The first object.
+ * @property { ...objectLike } srcMap.arguments[1,...] -
  * The pseudo array (arguments[]) from the first [1] index to the end.
- * @property { object } dstObject - The empty object.
+ * @property { object } dstMap - The empty object.
  */
 
 /**
@@ -15260,7 +15456,7 @@ function mapScreens( srcObject,screenObject )
  *
  * @see  {@link wTools._mapScreen} - See for more information.
  *
- * @param { objectLike } screenObject - The first object.
+ * @param { objectLike } screenMap - The first object.
  * @param { ...objectLike } arguments[] - One or more objects.
  *
  * @example
@@ -15274,32 +15470,32 @@ function mapScreens( srcObject,screenObject )
  * @memberof wTools
  */
 
-function mapScreen( screenObject )
+function mapScreen( screenMap )
 {
 
   _.assert( arguments.length === 2 );
 
   return _mapScreen
   ({
-    screenObjects : screenObject,
-    srcObjects : _.arraySlice( arguments,1 ),
-    dstObject : Object.create( null ),
+    screenMaps : screenMap,
+    srcMaps : _.arraySlice( arguments,1 ),
+    dstMap : Object.create( null ),
   });
 
 }
 
 //
 
-function mapScreenOwn( screenObject )
+function mapScreenOwn( screenMap )
 {
 
   _.assert( arguments.length === 2 );
 
   return _mapScreen
   ({
-    screenObjects : screenObject,
-    srcObjects : _.arraySlice( arguments,1 ),
-    dstObject : Object.create( null ),
+    screenMaps : screenMap,
+    srcMaps : _.arraySlice( arguments,1 ),
+    dstMap : Object.create( null ),
     filter : _.field.mapper.srcOwn,
   });
 
@@ -15309,9 +15505,9 @@ function mapScreenOwn( screenObject )
 
   // /**
   //  * @callback  options.filter
-  //  * @param { objectLike } dstObject - An empty object.
-  //  * @param { objectLike } srcObjects - The target object.
-  //  * @param { string } - The key of the (screenObject).
+  //  * @param { objectLike } dstMap - An empty object.
+  //  * @param { objectLike } srcMaps - The target object.
+  //  * @param { string } - The key of the (screenMap).
   //  */
 
 /**
@@ -15319,97 +15515,91 @@ function mapScreenOwn( screenObject )
  * from others objects.
  *
  * The _mapScreen() checks whether there are the keys of
- * the (screenObject) in the list of (srcObjects).
+ * the (screenMap) in the list of (srcMaps).
  * If true, it calls a provided callback function(filter)
- * and adds to the (dstObject) all the [ key, value ]
+ * and adds to the (dstMap) all the [ key, value ]
  * for which callback function returns true.
  *
  * @param { function } [options.filter = filter.bypass()] options.filter - The callback function.
- * @param { objectLike } options.srcObjects - The target object.
- * @param { objectLike } options.screenObjects - The source object.
- * @param { Object } [options.dstObject = Object.create( null )] options.dstObject - The empty object.
+ * @param { objectLike } options.srcMaps - The target object.
+ * @param { objectLike } options.screenMaps - The source object.
+ * @param { Object } [options.dstMap = Object.create( null )] options.dstMap - The empty object.
  *
  * @example
  * // returns { a : 33, c : 33, name : "Mikle" };
  * var options = Object.create( null );
- * options.dstObject = Object.create( null );
- * options.screenObjects = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
- * options.srcObjects = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+ * options.dstMap = Object.create( null );
+ * options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+ * options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
  * _mapScreen( options );
  *
  * @example
  * // returns { a : "abc", c : 33, d : "name" };
  * var options = Object.create( null );
- * options.dstObject = Object.create( null );
- * options.screenObjects = { a : 13, b : 77, c : 3, d : 'name' };
- * options.srcObjects = { d : 'name', c : 33, a : 'abc' };
+ * options.dstMap = Object.create( null );
+ * options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
+ * options.srcMaps = { d : 'name', c : 33, a : 'abc' };
  * _mapScreen( options );
  *
  * @returns { Object } Returns an object filled by unique [ key, value ]
  * from others objects.
  * @function _mapScreen
- * @throws { Error } Will throw an Error if (options.dstObject or screenObject) are not objects,
- * or if (srcObjects) is not an array
+ * @throws { Error } Will throw an Error if (options.dstMap or screenMap) are not objects,
+ * or if (srcMaps) is not an array
  * @memberof wTools
  */
 
-function _mapScreen( options )
+function _mapScreen( o )
 {
 
-  var dstObject = options.dstObject || Object.create( null );
-  var screenObject = options.screenObjects;
-  var srcObjects = options.srcObjects;
+  var dstMap = o.dstMap || Object.create( null );
+  var screenMap = o.screenMaps;
+  var srcMaps = o.srcMaps;
 
-  if( _.arrayIs( screenObject ) )
-  screenObject = _.mapCopy.apply( this,screenObject );
+  if( _.arrayIs( screenMap ) )
+  screenMap = _.mapMake.apply( this,screenMap );
 
-  if( !_.arrayIs( srcObjects ) )
-  srcObjects = [ srcObjects ];
+  if( !_.arrayIs( srcMaps ) )
+  srcMaps = [ srcMaps ];
 
-  if( !options.filter )
-  options.filter = _.field.mapper.bypass;
+  if( !o.filter )
+  o.filter = _.field.mapper.bypass;
 
-  // options.filter = _.field.makeMapper( options.filter );
-  _.assert( options.filter.functionKind === 'field-mapper' );
-
+  _.assert( o.filter.functionFamily === 'field-mapper' );
   _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( dstObject ),'_mapScreen :','expects object as (-dstObject-)' );
-  _.assert( _.objectLike( screenObject ),'_mapScreen :','expects object as screenObject' );
-  _.assert( _.arrayIs( srcObjects ),'_mapScreen :','expects array of object as screenObject' );
-  _.assertMapHasOnly( options,_mapScreen.defaults );
+  _.assert( _.objectLike( dstMap ),'_mapScreen :','expects object as (-dstMap-)' );
+  _.assert( _.objectLike( screenMap ),'_mapScreen :','expects object as screenMap' );
+  _.assert( _.arrayIs( srcMaps ),'_mapScreen :','expects array of object as screenMap' );
+  _.assertMapHasOnly( o,_mapScreen.defaults );
 
-  // xxx
-  // for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-  // _.assert( _.objectLikeOrRoutine( srcObjects[ a ] ),'_mapScreen :','expects objects in (-srcObjects-)' );
-
-  for( var k in screenObject )
+  for( var k in screenMap )
   {
 
-    if( screenObject[ k ] === undefined )
+    if( screenMap[ k ] === undefined )
     continue;
 
     var a;
-    for( a = srcObjects.length-1 ; a >= 0 ; a-- )
-    if( k in srcObjects[ a ] )
-    if( srcObjects[ a ][ k ] !== undefined )
+    for( a = srcMaps.length-1 ; a >= 0 ; a-- )
+    if( k in srcMaps[ a ] )
+    if( srcMaps[ a ][ k ] !== undefined )
     break;
 
     if( a === -1 )
     continue;
 
-    options.filter.call( this,dstObject,srcObjects[ a ],k );
+    o.filter.call( this,dstMap,srcMaps[ a ],k );
 
   }
 
-  return dstObject;
+  return dstMap;
 }
 
 _mapScreen.defaults =
 {
   filter : null,
-  screenObjects : null,
-  srcObjects : null,
-  dstObject : null,
+  screenMaps : null,
+  srcMaps : null,
+  dstMap : null,
 }
 
 // --
@@ -15447,10 +15637,20 @@ Error.stackTraceLimit = Infinity;
  */
 
 // --
-// define class
+// vars
 // --
 
-var Proto =
+var Vars =
+{
+  ArrayType : Array,
+  error : error,
+}
+
+// --
+// routines
+// --
+
+var Routines =
 {
 
 
@@ -15462,23 +15662,17 @@ var Proto =
   dup : dup,
 
 
-  // range
-
-  rangeLengthGet : rangeLengthGet, /* exprerimental */
-  rangeFirstGet : rangeFirstGet, /* exprerimental */
-  rangeLastGet : rangeLastGet, /* exprerimental */
-
-
   // entity modifier
 
-  enityExtend : enityExtend, /* experimental */
+  enityExtend : enityExtend,
+  enityExtendAppending : enityExtendAppending,
 
   entityMake : entityMake,
   entityMakeTivial : entityMakeTivial,
 
-  entityCopyTry : entityCopyTry, /* experimental */
-  entityCopyField : entityCopyField, /* experimental */
-  entityAssignField : entityAssignField, /* experimental */
+  entityAssign : entityAssign, /* dubious */
+  entityAssignFieldFromContainer : entityAssignFieldFromContainer, /* dubious */
+  entityAssignField : entityAssignField, /* dubious */
 
   entityCoerceTo : entityCoerceTo,
 
@@ -15494,17 +15688,17 @@ var Proto =
   // entity selector
 
   entityLength : entityLength,
-  entitySize : entitySize, /* experimental */
+  entitySize : entitySize, /* dubious */
 
-  entityValueWithIndex : entityValueWithIndex, /* experimental */
-  entityKeyWithValue : entityKeyWithValue, /* experimental */
+  entityValueWithIndex : entityValueWithIndex, /* dubious */
+  entityKeyWithValue : entityKeyWithValue, /* dubious */
 
   _entityConditionMake : _entityConditionMake,
   entityMap : entityMap,
 
-  _entityFilter : _entityFilter, /* experimental */
-  entityFilter : entityFilter, /* experimental */
-  entityFilterDeep : entityFilterDeep, /* experimental */
+  _entityFilter : _entityFilter, /* dubious */
+  entityFilter : entityFilter, /* dubious */
+  entityFilterDeep : entityFilterDeep, /* dubious */
 
   entityVals : entityVals,
 
@@ -15525,6 +15719,7 @@ var Proto =
   err : err,
   errBriefly : errBriefly,
   errAttend : errAttend,
+  errRestack : errRestack,
   errLog : errLog,
   errLogOnce : errLogOnce,
 
@@ -15572,13 +15767,11 @@ var Proto =
   domLike : domLike,
   domableIs : domableIs,
 
-
   // bool
 
   boolIs : boolIs,
   boolLike : boolLike,
   boolFrom : boolFrom,
-
 
   // number
 
@@ -15603,7 +15796,7 @@ var Proto =
 
   numberRandomInRange : numberRandomInRange,
   numberRandomInt : numberRandomInt,
-  numberRandomIntBut : numberRandomIntBut, /* experimental */
+  numberRandomIntBut : numberRandomIntBut, /* dubious */
 
   numbersMake : numbersMake,
   numbersFromNumber : numbersFromNumber,
@@ -15614,7 +15807,6 @@ var Proto =
 
   numberClamp : numberClamp,
   numberMix : numberMix,
-
 
   // str
 
@@ -15639,7 +15831,6 @@ var Proto =
   strEndOf : strEndOf,
   strInbetweenOf : strInbetweenOf,
 
-
   // regexp
 
   regexpIs : regexpIs,
@@ -15658,7 +15849,6 @@ var Proto =
   regexpArrayIndex : regexpArrayIndex,
   _regexpArrayAny : _regexpArrayAny,
   _regexpArrayAll : _regexpArrayAll,
-
 
   // routine
 
@@ -15695,7 +15885,6 @@ var Proto =
 
   bind : null,
 
-
   // time
 
   timeReady : timeReady,
@@ -15705,12 +15894,11 @@ var Proto =
   timeSoon : timeSoon,
   timeOutError : timeOutError,
 
-  timePeriodic : timePeriodic, /* experimental */
+  timePeriodic : timePeriodic, /* dubious */
 
   _timeNow_functor : _timeNow_functor,
   timeSpent : timeSpent,
   dateToStr : dateToStr,
-
 
   // buffer
 
@@ -15747,21 +15935,22 @@ var Proto =
   buffersSerialize : buffersSerialize, /* deprecated */
   buffersDeserialize : buffersDeserialize, /* deprecated */
 
-
   // array checker
 
   arrayIs : arrayIs,
+  arrayGenericIs : arrayGenericIs,
   arrayLike : arrayLike,
+
   constructorLikeArray : constructorLikeArray,
   hasLength : hasLength,
 
   arrayCompare : arrayCompare,
   arrayIdentical : arrayIdentical,
 
-  arrayHas : arrayHas,  /* experimental */
-  arrayHasAny : arrayHasAny,  /* experimental */
-  arrayHasAll : arrayHasAll,  /* experimental */
-  arrayHasNone : arrayHasNone,  /* experimental */
+  arrayHas : arrayHas,  /* dubious */
+  arrayHasAny : arrayHasAny,  /* dubious */
+  arrayHasAll : arrayHasAll,  /* dubious */
+  arrayHasNone : arrayHasNone,  /* dubious */
 
   arrayAll : arrayAll,
   arrayAny : arrayAny,
@@ -15770,7 +15959,6 @@ var Proto =
   all : arrayAll,
   any : arrayAny,
   none : arrayNone,
-
 
   // array maker
 
@@ -15789,12 +15977,10 @@ var Proto =
   arrayFromRangeWithStep : arrayFromRangeWithStep,
   arrayFromRangeWithNumberOfSteps : arrayFromRangeWithNumberOfSteps,
 
-
   // array converter
 
-  arrayToMap : arrayToMap, /* experimental */
-  arrayToStr : arrayToStr, /* experimental */
-
+  arrayToMap : arrayToMap, /* dubious */
+  arrayToStr : arrayToStr, /* dubious */
 
   // array transformer
 
@@ -15806,13 +15992,12 @@ var Proto =
   arrayMultislice : arrayMultislice,
   arrayDuplicate : arrayDuplicate,
 
-  arrayMask : arrayMask, /* experimental */
-  arrayUnmask : arrayUnmask, /* experimental */
+  arrayMask : arrayMask, /* dubious */
+  arrayUnmask : arrayUnmask, /* dubious */
 
-  arrayInvestigateUniqueMap : arrayInvestigateUniqueMap,  /* experimental */
-  arrayUnique : arrayUnique,  /* experimental */
+  arrayInvestigateUniqueMap : arrayInvestigateUniqueMap,  /* dubious */
+  arrayUnique : arrayUnique,  /* dubious */
   arraySelect : arraySelect,
-
 
   // array mutator
 
@@ -15830,7 +16015,6 @@ var Proto =
   arrayShuffle : arrayShuffle,
   arraySort : arraySort,
 
-
   // array sequential search
 
   arrayLeftIndexOf : arrayLeftIndexOf,
@@ -15845,12 +16029,10 @@ var Proto =
   arrayCount : arrayCount,
   arrayCountUnique : arrayCountUnique,
 
-
   // array etc
 
-  arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
-  arraySum : arraySum, /* experimental */
-
+  arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* dubious */
+  arraySum : arraySum, /* dubious */
 
   // array prepend
 
@@ -15872,7 +16054,6 @@ var Proto =
   arrayPrependedArrays : arrayPrependedArrays,
   arrayPrependedArraysOnce : arrayPrependedArraysOnce,
 
-
   // array append
 
   arrayAppend : arrayAppend,
@@ -15892,7 +16073,6 @@ var Proto =
   arrayAppendArraysOnceStrictly : arrayAppendArraysOnceStrictly,
   arrayAppendedArrays : arrayAppendedArrays,
   arrayAppendedArraysOnce : arrayAppendedArraysOnce,
-
 
   // array remove
 
@@ -15917,7 +16097,6 @@ var Proto =
   arrayRemoveAll : arrayRemoveAll,
   arrayRemovedAll : arrayRemovedAll,
 
-
   // array flatten
 
   arrayFlatten : arrayFlatten,
@@ -15925,7 +16104,6 @@ var Proto =
   arrayFlattenOnceStrictly : arrayFlattenOnceStrictly,
   arrayFlattened : arrayFlattened,
   arrayFlattenedOnce : arrayFlattenedOnce,
-
 
   // array replace
 
@@ -15946,10 +16124,7 @@ var Proto =
 
   arrayUpdate : arrayUpdate,
 
-
   // array set
-
-  /* lack of tests !!! */
 
   arraySetDiff : arraySetDiff,
 
@@ -15962,6 +16137,11 @@ var Proto =
   arraySetContainNone : arraySetContainNone,
   arraySetIdentical : arraySetIdentical,
 
+  // range
+
+  rangeLengthGet : rangeLengthGet, /* experimental */
+  rangeFirstGet : rangeFirstGet, /* experimental */
+  rangeLastGet : rangeLastGet, /* experimental */
 
   // map checker
 
@@ -15972,15 +16152,15 @@ var Proto =
   mapIsPure : mapIsPure,
   mapLike : mapLike,
 
-  mapIdentical : mapIdentical, /* experimental */
-  mapContain : mapContain, /* experimental */
+  mapIdentical : mapIdentical, /* dubious */
+  mapContain : mapContain, /* dubious */
 
-  mapSatisfy : mapSatisfy, /* experimental */
-  _mapSatisfy : _mapSatisfy, /* experimental */
+  mapSatisfy : mapSatisfy, /* dubious */
+  _mapSatisfy : _mapSatisfy, /* dubious */
 
-  mapOwnKey : mapOwnKey, /* experimental */
-  mapHasVal : mapHasVal, /* experimental */
-  mapOwnVal : mapOwnVal, /* experimental */
+  mapOwnKey : mapOwnKey, /* dubious */
+  mapHasVal : mapHasVal, /* dubious */
+  mapOwnVal : mapOwnVal, /* dubious */
 
   mapHasAll : mapHasAll,
   mapHasAny : mapHasAny,
@@ -15990,63 +16170,71 @@ var Proto =
   mapOwnAny : mapOwnAny,
   mapOwnNone : mapOwnNone,
 
-
   // map move
 
-  mapClone : mapClone, /* experimental */
+  mapMake : mapMake,
+  mapCloneAssigning : mapCloneAssigning, /* dubious */
 
-  mapExtendConditional : mapExtendConditional,
   mapExtend : mapExtend,
-  mapExtendToThis : mapExtendToThis,
-  mapsExtend : mapsExtend,
-
-  mapStretch : mapStretch,
+  mapExtendByMaps : mapExtendByMaps,
+  mapExtendConditional : mapExtendConditional,
+  mapExtendByMapsConditional : mapExtendByMapsConditional,
+  mapExtendAppending : mapExtendAppending,
+  mapExtendByMapsAppending : mapExtendByMapsAppending,
 
   mapSupplement : mapSupplement,
   mapSupplementNulls : mapSupplementNulls,
   mapSupplementNils : mapSupplementNils,
-  mapSupplementOrComplementPureContainers : mapSupplementOrComplementPureContainers,
+  mapSupplementAssigning : mapSupplementAssigning,
+  mapSupplementAppending : mapSupplementAppending,
+  mapSupplementByMapsAppending : mapSupplementByMapsAppending,
+
   mapSupplementOwn : mapSupplementOwn,
+  mapSupplementByMapsOwn : mapSupplementByMapsOwn,
+  mapSupplementOwnAssigning : mapSupplementOwnAssigning,
 
   mapComplement : mapComplement,
-  _mapComplementSlow : _mapComplementSlow,
+  mapComplementByMaps : mapComplementByMaps,
   mapComplementWithUndefines : mapComplementWithUndefines,
-
-  mapCopy : mapCopy,
-  /*mapCopyConditional : mapCopyConditional,*/
-
-  mapExtendByArray : mapExtendByArray,
 
   mapDelete : mapDelete,
 
-
   // map recursive
 
-  mapSupplementAppending : mapSupplementAppending,
-  mapSupplementRecursive : mapSupplementRecursive,
+  mapExtendRecursiveConditional : mapExtendRecursiveConditional,
+  mapExtendByMapsRecursiveConditional : mapExtendByMapsRecursiveConditional,
+  _mapExtendRecursiveConditional : _mapExtendRecursiveConditional,
 
   mapExtendRecursive : mapExtendRecursive,
-
-  _mapFieldIterator : _mapFieldIterator,
-  _mapExtendRecursiveConditional : _mapExtendRecursiveConditional,
+  mapExtendByMapsRecursive : mapExtendByMapsRecursive,
   _mapExtendRecursive : _mapExtendRecursive,
 
+  mapExtendAppendingRecursive : mapExtendAppendingRecursive,
+  mapExtendByMapsAppendingRecursive : mapExtendByMapsAppendingRecursive,
+
+  mapSupplementRecursive : mapSupplementRecursive,
+  mapSupplementByMapsRecursive : mapSupplementByMapsRecursive,
+  mapSupplementOwnRecursive : mapSupplementOwnRecursive,
+  mapSupplementByMapsOwnRecursive : mapSupplementByMapsOwnRecursive,
+
+  // map manipulator
+
+  mapSetWithKeys : mapSetWithKeys,
 
   // map convert
 
   mapFirstPair : mapFirstPair,
 
-  mapInvert : mapInvert, /* experimental */
-  mapInvertDroppingDuplicates : mapInvertDroppingDuplicates, /* experimental */
+  mapInvert : mapInvert, /* dubious */
+  mapInvertDroppingDuplicates : mapInvertDroppingDuplicates, /* dubious */
   mapsFlatten : mapsFlatten,
 
-  mapToArray : mapToArray, /* experimental */
-  mapValWithIndex : mapValWithIndex, /* experimental */
-  mapKeyWithIndex : mapKeyWithIndex, /* experimental */
-  mapToStr : mapToStr, /* experimental */
+  mapToArray : mapToArray, /* dubious */
+  mapValWithIndex : mapValWithIndex, /* dubious */
+  mapKeyWithIndex : mapKeyWithIndex, /* dubious */
+  mapToStr : mapToStr, /* dubious */
 
-  mapIndexForValue : mapIndexForValue, /* experimental */
-
+  mapIndexForValue : mapIndexForValue, /* dubious */
 
   // map properties
 
@@ -16086,40 +16274,34 @@ var Proto =
 
   mapOnlyAtomics : mapOnlyAtomics,
 
-
   // map logic
 
-  mapBut : mapBut, /* experimental */
-  mapButWithUndefines : mapButWithUndefines, /* experimental */
-  mapOwnBut : mapOwnBut, /* experimental */
+  mapBut : mapBut, /* dubious */
+  mapButWithUndefines : mapButWithUndefines, /* dubious */
+  mapOwnBut : mapOwnBut, /* dubious */
 
-  mapButConditional : mapButConditional, /* experimental */
-  mapOwnButConditional : mapOwnButConditional, /* experimental */
+  mapButConditional : mapButConditional, /* dubious */
+  mapOwnButConditional : mapOwnButConditional, /* dubious */
 
-  mapScreens : mapScreens, /* experimental */
-  mapScreen : mapScreen, /* experimental */
-  mapScreenOwn : mapScreenOwn, /* experimental */
-  _mapScreen : _mapScreen, /* experimental */
-
-
-  // var
-
-  ArrayType : Array,
-  error : error,
+  mapScreens : mapScreens, /* dubious */
+  mapScreen : mapScreen, /* dubious */
+  mapScreenOwn : mapScreenOwn, /* dubious */
+  _mapScreen : _mapScreen, /* dubious */
 
 }
 
-Object.assign( Self,Proto );
-
 //
 
-_global_[ 'wTools' ] = Self;
-_global_.wTools = Self;
-_global_.wBase = Self;
+Object.assign( Self,Routines );
+Object.assign( Self,Vars );
 
 // --
 // export
 // --
+
+_global_[ 'wTools' ] = Self;
+_global_.wTools = Self;
+_global_.wBase = Self;
 
 if( typeof module !== 'undefined' )
 if( _global_.WTOOLS_PRIVATE )
