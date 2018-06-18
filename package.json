@@ -29,7 +29,7 @@
     "staging/dwtools/Base.s"
   ],
   "scripts": {
-    "test": "wtest staging importanceOfNegative:9",
+    "test": "wtest staging",
     "make_doc": "./doc.sh"
   },
   "repository": {
