@@ -348,7 +348,7 @@ var IncludeHandlersMap = Object.create( null );
 IncludeHandlersMap[ 'wTesting' ] =
 {
   includeAny : [ '../../abase/xtester/aBase.debug.s','abase/xtester/aBase.debug.s','wTesting' ],
-  isIncluded : function(){ return /*typeof _globalReal_ !== 'undefined' &&*/ _globalReal_.wTester && _globalReal_.wTester._isFullImplementation; },
+  isIncluded : function(){ return /*typeof _realGlobal_ !== 'undefined' &&*/ _realGlobal_.wTester && _realGlobal_.wTester._isFullImplementation; },
 }
 
 IncludeHandlersMap[ 'wLogger' ] =
@@ -725,7 +725,7 @@ var Proto =
 
 _.mapExtend( Self, Proto );
 
-if( typeof __dirname !== 'undefined' )
+if( _.pathUse && typeof __dirname !== 'undefined' )
 _.pathUse( __dirname + '/../..' );
 
 // --

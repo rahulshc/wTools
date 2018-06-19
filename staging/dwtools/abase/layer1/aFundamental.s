@@ -13,12 +13,12 @@ if( !_global && typeof Global !== 'undefined' && Global.Global === Global ) _glo
 if( !_global && typeof global !== 'undefined' && global.global === global ) _global = global;
 if( !_global && typeof window !== 'undefined' && window.window === window ) _global = window;
 if( !_global && typeof self   !== 'undefined' && self.self === self ) _global = self;
-var _globalReal = _global;
+var _realGlobal = _global;
 var _globalWas = _global._global_ || _global;
 if( _global._global_ )
 _global = _global._global_;
 _global._global_ = _global;
-_globalReal._globalReal_ = _globalReal;
+_realGlobal._realGlobal_ = _realGlobal;
 
 // veification
 
@@ -27,7 +27,7 @@ if(  !_global_.WTOOLS_PRIVATE  )
 
   if( _global_.wBase )
   {
-    if( typeof __dirname !== 'undefined' )
+    if( _global_.wTools.pathUse )
     _global_.wTools.pathUse( __dirname + '/../..' );
   /*
     if( _global_.wBase !== _global_.wTools )
@@ -46,19 +46,23 @@ if(  !_global_.WTOOLS_PRIVATE  )
 
 // config
 
-if( !_globalReal.Config )
-_globalReal.Config = { debug : true }
-if( _globalReal.Config.debug === undefined )
-_globalReal.Config.debug = true;
-if( _globalReal.Config.platform === undefined )
-_globalReal.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
+if( !_realGlobal.Config )
+_realGlobal.Config = { debug : true }
+if( _realGlobal.Config.debug === undefined )
+_realGlobal.Config.debug = true;
+if( _realGlobal.Config.platform === undefined )
+_realGlobal.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
+if( _realGlobal.Config.isWorker === undefined )
+_realGlobal.Config.isWorker = !!( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' );
 
 if( !_global_.Config )
 _global_.Config = { debug : true }
 if( _global_.Config.debug === undefined )
 _global_.Config.debug = true;
 if( _global_.Config.platform === undefined )
-_globalReal.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
+_global_.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
+if( _global_.Config.isWorker === undefined )
+_global_.Config.isWorker = !!( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' );
 
 if(  !_global_.WTOOLS_PRIVATE  )
 if( !_global_.Underscore && _global_._ )
@@ -1591,8 +1595,6 @@ function _err( o )
     {
       stack = _.diagnosticStack( result,o.level,-1 );
       if( o.location.full && stack.indexOf( '\n' ) === -1 )
-      debugger;
-      if( o.location.full && stack.indexOf( '\n' ) === -1 )
       stack = o.location.full;
     }
   }
@@ -1885,10 +1887,10 @@ function _err( o )
   if( originalMessage.indexOf( 'caught at' ) !== -1 )
   {
     debugger;
-    console.log( '-' );
-    console.log( result.toString() );
-    console.log( '-' );
-    throw Error( 'err : originalMessage should have no "caught at"' );
+    // console.error( '-' );
+    // console.error( result.toString() );
+    // console.error( '-' );
+    // throw Error( 'err : originalMessage should have no "caught at"' );
   }
 
   return result;

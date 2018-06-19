@@ -11,7 +11,7 @@ var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
-_.assert( _globalReal_ );
+_.assert( _realGlobal_ );
 
 // --
 // look
