@@ -2427,54 +2427,6 @@ function mapButConditional( test )
 
 //
 
-function mapScreens( test )
-{
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapScreens();
-  });
-
-  test.description = 'first argument is not an object-like';
-  test.shouldThrowError( function()
-  {
-    _.mapScreens( 3, [] );
-  });
-
-  test.description = 'second argument is not an object-like';
-  test.shouldThrowError( function()
-  {
-    _.mapScreens( [], '' );
-  });
-
-  test.description = 'few arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapScreen( {} );
-  });
-
-  test.description = 'redundant arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapScreen( [], [], {} );
-  });
-
-  test.description = 'wrong type of arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapScreen( 'wrong arguments' );
-  });
-
-}
-
-//
-
 function mapScreen( test )
 {
 
@@ -2527,13 +2479,13 @@ function mapScreen( test )
   test.description = 'first argument is not an object-like';
   test.shouldThrowError( function()
   {
-    _.mapScreens( 3, [] );
+    _.mapScreen( 3, [] );
   });
 
   test.description = 'second argument is not an object-like';
   test.shouldThrowError( function()
   {
-    _.mapScreens( [], '' );
+    _.mapScreen( [], '' );
   });
 
   test.description = 'few arguments';
@@ -3497,7 +3449,6 @@ var Self =
 
     mapButConditional : mapButConditional,
 
-    mapScreens : mapScreens,
     mapScreen : mapScreen,
     _mapScreen : _mapScreen,
 
