@@ -94,8 +94,6 @@ function appending()
   var routine = function appending( dstContainer,srcContainer,key )
   {
     if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
-    debugger;
-    if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
     _.arrayAppendArray( dstContainer[ key ], srcContainer[ key ] );
     else
     dstContainer[ key ] = srcContainer[ key ];
@@ -106,6 +104,53 @@ function appending()
 }
 
 appending.functionFamily = 'field-mapper';
+
+//
+
+function appendingOnce()
+{
+
+  var routine = function appendingOnce( dstContainer,srcContainer,key )
+  {
+    if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
+    _.arrayAppendArrayOnce( dstContainer[ key ], srcContainer[ key ] );
+    else
+    dstContainer[ key ] = srcContainer[ key ];
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+appendingOnce.functionFamily = 'field-mapper';
+
+//
+
+function removing()
+{
+
+  var routine = function removing( dstContainer,srcContainer,key )
+  {
+    var dstElement = dstContainer[ key ];
+    var srcElement = srcContainer[ key ];
+    if( _.arrayIs( dstElement ) && _.arrayIs( srcElement ) )
+    {
+      if( dstElement === srcElement )
+      dstContainer[ key ] = [];
+      else
+      _.arrayRemoveArrayOnce( dstElement, srcElement );
+    }
+    else if( dstElement === srcElement )
+    {
+      delete dstContainer[ key ];
+    }
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+removing.functionFamily = 'field-mapper';
 
 //
 
@@ -832,6 +877,8 @@ var make =
   assigning : assigning,
   primitive : primitive,
   appending : appending,
+  appendingOnce : appendingOnce,
+  removing : removing,
   notPrimitiveAssigning : notPrimitiveAssigning,
   assigningRecursive : assigningRecursive,
   drop : drop,

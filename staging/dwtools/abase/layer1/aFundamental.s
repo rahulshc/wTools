@@ -308,14 +308,14 @@ function entityMake( src,length )
 
   if( _.arrayIs( src ) )
   {
-    return new src.constructor( length !== undefined ? length : src.length );
+    return new Array( length !== undefined ? length : src.length );
   }
   else if( _.arrayLike( src ) )
   {
-    if( _.argumentsIs( src ) )
-    return new Array( length !== undefined ? length : src.length );
-    else
+    if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
     return new src.constructor( length !== undefined ? length : src.length );
+    else
+    return new Array( length !== undefined ? length : src.length );
   }
   else if( _.mapIs( src ) )
   {
@@ -338,18 +338,14 @@ function entityMakeTivial( src,length )
 
   if( _.arrayIs( src ) )
   {
-    return new src.constructor( length !== undefined ? length : src.length );
+    return new Array( length !== undefined ? length : src.length );
   }
   else if( _.arrayLike( src ) )
   {
-    if( _.argumentsIs( src ) )
-    return new Array( length !== undefined ? length : src.length );
-    else
+    if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
     return new src.constructor( length !== undefined ? length : src.length );
-  }
-  else if( _.mapIs( src ) )
-  {
-    return Object.create( null );
+    else
+    return new Array( length !== undefined ? length : src.length );
   }
   else if( _.objectIs( src ) )
   {
@@ -1580,16 +1576,22 @@ function _err( o )
 
   o.location = o.location || Object.create( null );
 
+  /* level */
+
+  // if( !_.numberIs( o.level ) )
+  // o.level = result.level;
+  if( !_.numberIs( o.level ) )
+  o.level = _err.defaults.level;
+
   /* make new one if no error in arguments */
 
   var stack = o.stack;
   var stackPurified = '';
 
-  if( stack )
-  stackPurified = _.diagnosticStackPurify( stack );
-
   if( !result )
   {
+    if( !stack )
+    stack = o.fallBackStack;
     result = new Error( originalMessage + '\n' );
     if( !stack )
     {
@@ -1618,8 +1620,13 @@ function _err( o )
     }
   }
 
-  if( !stackPurified )
-  stackPurified = _.diagnosticStackPurify( stack );
+  if( !stack )
+  stack = o.fallBackStack;
+
+  if( stack && !stackPurified )
+  {
+    stackPurified = _.diagnosticStackPurify( stack );
+  }
 
   /* collect data */
 
@@ -1640,19 +1647,12 @@ function _err( o )
         else str = _.toStr( argument );
       }
       else str = _.toStr( argument,{ levels : 2 } );
-      // else if( _.routineIs( argument.toString ) ) str = argument.toString();
-      // else str = '[ ' + _.strTypeOf( argument ) + ' ]';
 
     }
     else if( argument === undefined )
     {
       str = '\n' + String( argument ) + '\n';
     }
-    // else if( _.toStr && _.objectLike( argument ) )
-    // {
-    //   debugger;
-    //   str = _.toStr( argument );
-    // }
     else
     {
       str = String( argument );
@@ -1663,17 +1663,7 @@ function _err( o )
     else
     originalMessage += str + ' ';
 
-    // if( originalMessage.indexOf( 'caught at' ) !== -1 )
-    // debugger;
-
   }
-
-  /* level */
-
-  if( !_.numberIs( o.level ) )
-  o.level = result.level;
-  if( !_.numberIs( o.level ) )
-  o.level = _err.defaults.level;
 
   /* line number */
 
@@ -1898,7 +1888,8 @@ function _err( o )
 
 _err.defaults =
 {
-  level : 0,
+  /* to make catch stack work properly it should be 1 */
+  level : 1,
   usingSourceCode : 1,
   purifingStack : 1,
   location : null,
@@ -1906,6 +1897,7 @@ _err.defaults =
   briefly : null,
   args : null,
   stack : null,
+  fallBackStack : null,
 }
 
 //
@@ -2141,10 +2133,30 @@ function definedIs( src )
 
 function primitiveIs( src )
 {
-  if( src === null || src === undefined )
+  if( !src )
   return true;
   var t = _ObjectToString.call( src );
   return t === '[object Symbol]' || t === '[object Number]' || t === '[object Boolean]' || t === '[object String]';
+}
+
+//
+
+function containerIs( src )
+{
+  if( !_.arrayIs( src ) )
+  return true;
+  if( !_.objectIs( src ) )
+  return true;
+}
+
+//
+
+function containerLike( src )
+{
+  if( !_.arrayLike( src ) )
+  return true;
+  if( !_.objectLike( src ) )
+  return true;
 }
 
 //
@@ -11893,8 +11905,6 @@ function objectLike( src )
   return false;
   if( _.arrayLike( src ) )
   return false;
-  // if( _.bufferAnyIs( src ) )
-  // return false;
   if( _.routineIsPure( src ) )
   return false;
   if( _.strIs( src ) )
@@ -12102,7 +12112,7 @@ function mapContain( src,ins )
 }
 
 //
-
+//
 // function mapHas( object,name )
 // {
 //   var name = _.nameUnfielded( name ).coded;
@@ -12214,7 +12224,6 @@ function _mapSatisfy( template,src,root,levels )
 
   if( levels <= 0 )
   return false;
-  //throw _.err( '_mapSatisfy : too deep structure' );
 
   if( _.routineIs( template ) )
   return template( src );
@@ -12230,6 +12239,29 @@ function _mapSatisfy( template,src,root,levels )
   debugger;
 
   return false;
+}
+
+//
+
+function mapHasKey( object,key )
+{
+
+  // if( arguments.length === 1 )
+  // {
+  //   var result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
+  //   return result;
+  // }
+
+  _.assert( arguments.length === 2 );
+
+  if( _.strIs( key ) )
+  return ( key in object );
+  else if( _.mapIs( key ) )
+  return ( _.nameUnfielded( key ).coded in object );
+  else if( _.symbolIs( key ) )
+  return ( key in object );
+
+  _.assert( 0,'mapHasKey :','unknown type of key :',_.strTypeOf( key ) );
 }
 
 //
@@ -12263,11 +12295,11 @@ function _mapSatisfy( template,src,root,levels )
 function mapOwnKey( object,key )
 {
 
-  if( arguments.length === 1 )
-  {
-    var result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
-    return result;
-  }
+  // if( arguments.length === 1 )
+  // {
+  //   var result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
+  //   return result;
+  // }
 
   _.assert( arguments.length === 2 );
 
@@ -13249,6 +13281,28 @@ function mapExtendByMapsAppendingRecursive( dstMap, srcMaps )
 
 //
 
+function mapExtendAppendingOnceRecursive( dstMap, srcMap )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length >= 2 );
+  var filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
+  var args = _.arraySlice( arguments );
+  args.unshift( filters );
+  return _.mapExtendRecursiveConditional.apply( _,args );
+}
+
+//
+
+function mapExtendByMapsAppendingOnceRecursive( dstMap, srcMaps )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length === 2 );
+  var filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
+  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+}
+
+//
+
 function mapSupplementRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
@@ -13291,6 +13345,28 @@ function mapSupplementByMapsOwnRecursive( dstMap, srcMaps )
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
+//
+
+function mapSupplementRemovingRecursive( dstMap, srcMap )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length >= 2 );
+  var filters = { onField : _.field.mapper.removing, onUpFilter : true };
+  var args = _.arraySlice( arguments );
+  args.unshift( filters );
+  return _.mapExtendRecursiveConditional.apply( _,args );
+}
+
+//
+
+function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length === 2 );
+  var filters = { onField : _.field.mapper.removing, onUpFilter : true };
+  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+}
+
 // --
 // map manipulator
 // --
@@ -13310,45 +13386,6 @@ function mapSetWithKeys( dstMap,srcArray,val )
 // --
 // map getter
 // --
-
-/**
- * The mapFirstPair() routine returns first pair [ key, value ] as array.
- *
- * @param { objectLike } srcMap - An object like entity of get first pair.
- *
- * @example
- * // returns [ 'a', 3 ]
- * _.mapFirstPair( { a : 3, b : 13 } );
- *
- * @example
- * // returns 'undefined'
- * _.mapFirstPair( {  } );
- *
- * @example
- * // returns [ '0', [ 'a', 7 ] ]
- * _.mapFirstPair( [ [ 'a', 7 ] ] );
- *
- * @returns { Array } Returns pair [ key, value ] as array if (srcMap) has fields, otherwise, undefined.
- * @function mapFirstPair
- * @throws { Error } Will throw an Error if (arguments.length) less than one, if (srcMap) is not an object-like.
- * @memberof wTools
- */
-
-function mapFirstPair( srcMap )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.objectLike( srcMap ) );
-
-  for( var s in srcMap )
-  {
-    return [ s,srcMap[ s ] ];
-  }
-
-  return [];
-}
-
-//
 
 function mapInvert( src, dst )
 {
@@ -13468,26 +13505,33 @@ function mapsFlatten( o )
 
     if( !_.arrayLike( src ) )
     {
-      _.assert( _.objectIs( src ) );
+      _.assert( _.objectLike( src ) );
       if( src !== undefined )
       extend( o.result, src );
       continue;
     }
 
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      if( _.arrayIs( src[ s ] ) )
-      mapsFlatten
-      ({
-        src : src[ s ],
-        result : o.result,
-        assertingUniqueness : o.assertingUniqueness,
-      });
-      else if( _.objectIs( src[ s ] ) )
-      extend( o.result, src );
-      else
-      throw _.err( 'array should have only maps' );
-    }
+    mapsFlatten
+    ({
+      src : src,
+      result : o.result,
+      assertingUniqueness : o.assertingUniqueness,
+    });
+
+    // for( var s = 0 ; s < src.length ; s++ )
+    // {
+    //   if( _.arrayIs( src[ s ] ) )
+    //   mapsFlatten
+    //   ({
+    //     src : src[ s ],
+    //     result : o.result,
+    //     assertingUniqueness : o.assertingUniqueness,
+    //   });
+    //   else if( _.objectIs( src[ s ] ) )
+    //   extend( o.result, src );
+    //   else
+    //   throw _.err( 'array should have only maps' );
+    // }
 
   }
 
@@ -13502,123 +13546,41 @@ mapsFlatten.defaults =
 }
 
 //
-
-/**
- * The mapToArray() converts an object (src) into array [ [ key, value ] ... ].
- *
- * It takes an object (src) creates an empty array,
- * checks if ( arguments.length === 1 ) and (src) is an object.
- * If true, it returns a list of [ [ key, value ] ... ] pairs.
- * Otherwise it throws an Error.
- *
- * @param { objectLike } src - object to get a list of [ key, value ] pairs.
- *
- * @example
- * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
- * _.mapToArray( { a : 3, b : 13, c : 7 } );
- *
- * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
- * @function mapToArray
- * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
- * @memberof wTools
- */
-
-function mapToArray( src )
-{
-  var result = [];
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( src ) );
-
-  for( var s in src )
-  {
-    result.push( [ s,src[s] ] );
-  }
-
-  return result;
-}
-
 //
-
-/**
- * The mapValWithIndex() returns value of (src) by corresponding (index).
- *
- * It takes (src) and (index), creates a variable ( i = 0 ),
- * checks if ( index > 0 ), iterate over (src) object-like and match
- * if ( i == index ).
- * If true, it returns value of (src).
- * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
- *
- * @param { objectLike } src - An object-like.
- * @param { number } index - To find the position an element.
- *
- * @example
- * // returns 7
- * _.mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
- *
- * @returns { * } Returns value of (src) by corresponding (index).
- * @function mapValWithIndex
- * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
- * @memberof wTools
- */
-
-function mapValWithIndex( src,index )
-{
-
-  _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) );
-
-
-  if( index < 0 ) return;
-
-  var i = 0;
-  for( var s in src )
-  {
-    if( i == index ) return src[s];
-    i++;
-  }
-}
-
+// /**
+//  * The mapToArray() converts an object (src) into array [ [ key, value ] ... ].
+//  *
+//  * It takes an object (src) creates an empty array,
+//  * checks if ( arguments.length === 1 ) and (src) is an object.
+//  * If true, it returns a list of [ [ key, value ] ... ] pairs.
+//  * Otherwise it throws an Error.
+//  *
+//  * @param { objectLike } src - object to get a list of [ key, value ] pairs.
+//  *
+//  * @example
+//  * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
+//  * _.mapToArray( { a : 3, b : 13, c : 7 } );
+//  *
+//  * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
+//  * @function mapToArray
+//  * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
+//  * @memberof wTools
+//  */
 //
-
-/**
- * The mapKeyWithIndex() returns key of (src) by corresponding (index).
- *
- * It takes (src) and (index), creates a variable ( i = 0 ),
- * checks if ( index > 0 ), iterate over (src) object-like and match
- * if ( i == index ).
- * If true, it returns value of (src).
- * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
- *
- * @param { objectLike } src - An object-like.
- * @param { number } index - To find the position an element.
- *
- * @example
- * // returns '1'
- * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
- *
- * @returns { string } Returns key of (src) by corresponding (index).
- * @function mapKeyWithIndex
- * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
- * @memberof wTools
- */
-
-function mapKeyWithIndex( src,index )
-{
-
-   _.assert( arguments.length === 2 );
-   _.assert( _.objectLike( src ) );
-
-  if( index < 0 ) return;
-
-  var i = 0;
-  for( var s in src )
-  {
-    if( i == index ) return s;
-    i++;
-  }
-
-}
+// function mapToArray( src )
+// {
+//   var result = [];
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.objectIs( src ) );
+//
+//   for( var s in src )
+//   {
+//     result.push( [ s,src[s] ] );
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -13655,6 +13617,9 @@ function mapKeyWithIndex( src,index )
 function mapToStr( o )
 {
 
+  if( _.strIs( o ) )
+  o = { src : o }
+
   _.routineOptions( mapToStr,o );
   _.assert( arguments.length === 1 );
 
@@ -13676,22 +13641,8 @@ mapToStr.defaults =
   entryDelimeter : ';',
 }
 
-//
-
-function mapIndexForValue( src,ins )
-{
-
-  for( var s in src )
-  {
-    if( src[ s ] === ins )
-    return s;
-  }
-
-  return;
-}
-
 // --
-// map properties
+// map selector
 // --
 
 function _mapEnumerableKeys( src,own )
@@ -13699,7 +13650,6 @@ function _mapEnumerableKeys( src,own )
   var result = [];
 
   _.assert( arguments.length === 2 );
-  // _.objectLike( src );
 
   if( own )
   {
@@ -14273,7 +14223,7 @@ mapAllVals.defaults =
 //
 //   return result;
 // }
-
+//
 //
 
 function _mapPairs( o )
@@ -15114,7 +15064,7 @@ mapAllFields.defaults =
 //
 
 /**
- * The mapOnlyAtomics() gets all object`s( src ) enumerable atomic fields( null,undef,number,string,symbol ) and returns them as new map.
+ * The mapOnlyPrimitives() gets all object`s( src ) enumerable atomic fields( null,undef,number,string,symbol ) and returns them as new map.
  *
  * It takes an object ( src ) creates an empty map,
  * checks if ( src ) is an object.
@@ -15126,29 +15076,183 @@ mapAllFields.defaults =
  * @example
  * var a = {};
  * Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } )
- * _.mapOnlyAtomics( a );
+ * _.mapOnlyPrimitives( a );
  * // returns { }
  *
  * @example
  * var a = { a : 1 };
  * var b = { b : 2, c : function(){} };
  * Object.setPrototypeOf( a, b );
- * _.mapOnlyAtomics( a );
+ * _.mapOnlyPrimitives( a );
  * //returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with all atomic fields from source( src ).
- * @function mapOnlyAtomics
+ * @function mapOnlyPrimitives
  * @throws { Error } Will throw an Error if ( src ) is not an Object.
  * @memberof wTools
  */
 
-function mapOnlyAtomics( src )
+function mapOnlyPrimitives( src )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( src ) );
 
   var result = _.mapExtendConditional( _.field.mapper.primitive,Object.create( null ),src );
   return result;
+}
+
+//
+
+/**
+ * The mapValWithIndex() returns value of (src) by corresponding (index).
+ *
+ * It takes (src) and (index), creates a variable ( i = 0 ),
+ * checks if ( index > 0 ), iterate over (src) object-like and match
+ * if ( i == index ).
+ * If true, it returns value of (src).
+ * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
+ *
+ * @param { objectLike } src - An object-like.
+ * @param { number } index - To find the position an element.
+ *
+ * @example
+ * // returns 7
+ * _.mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
+ *
+ * @returns { * } Returns value of (src) by corresponding (index).
+ * @function mapValWithIndex
+ * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
+ * @memberof wTools
+ */
+
+function mapValWithIndex( src,index )
+{
+
+ _.assert( arguments.length === 2 );
+ _.assert( !_.primitiveIs( src ) );
+
+  if( index < 0 ) return;
+
+  var i = 0;
+  for( var s in src )
+  {
+    if( i == index ) return src[s];
+    i++;
+  }
+}
+
+//
+
+/**
+ * The mapKeyWithIndex() returns key of (src) by corresponding (index).
+ *
+ * It takes (src) and (index), creates a variable ( i = 0 ),
+ * checks if ( index > 0 ), iterate over (src) object-like and match
+ * if ( i == index ).
+ * If true, it returns value of (src).
+ * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
+ *
+ * @param { objectLike } src - An object-like.
+ * @param { number } index - To find the position an element.
+ *
+ * @example
+ * // returns '1'
+ * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
+ *
+ * @returns { string } Returns key of (src) by corresponding (index).
+ * @function mapKeyWithIndex
+ * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
+ * @memberof wTools
+ */
+
+function mapKeyWithIndex( src,index )
+{
+
+   _.assert( arguments.length === 2 );
+   _.assert( !_.primitiveIs( src ) );
+
+  if( index < 0 ) return;
+
+  var i = 0;
+  for( var s in src )
+  {
+    if( i == index ) return s;
+    i++;
+  }
+
+}
+
+//
+
+function mapIndexWithKey( srcMap,key )
+{
+
+ _.assert( arguments.length === 2 );
+ _.assert( !_.primitiveIs( src ) );
+
+  for( var s in srcMap )
+  {
+    if( s === key )
+    return s;
+  }
+
+  return;
+}
+
+//
+
+function mapIndexWithValue( srcMap,value )
+{
+
+ _.assert( arguments.length === 2 );
+ _.assert( !_.primitiveIs( src ) );
+
+  for( var s in srcMap )
+  {
+    if( srcMap[ s ] === value )
+    return s;
+  }
+
+  return;
+}
+
+//
+
+/**
+ * The mapFirstPair() routine returns first pair [ key, value ] as array.
+ *
+ * @param { objectLike } srcMap - An object like entity of get first pair.
+ *
+ * @example
+ * // returns [ 'a', 3 ]
+ * _.mapFirstPair( { a : 3, b : 13 } );
+ *
+ * @example
+ * // returns 'undefined'
+ * _.mapFirstPair( {  } );
+ *
+ * @example
+ * // returns [ '0', [ 'a', 7 ] ]
+ * _.mapFirstPair( [ [ 'a', 7 ] ] );
+ *
+ * @returns { Array } Returns pair [ key, value ] as array if (srcMap) has fields, otherwise, undefined.
+ * @function mapFirstPair
+ * @throws { Error } Will throw an Error if (arguments.length) less than one, if (srcMap) is not an object-like.
+ * @memberof wTools
+ */
+
+function mapFirstPair( srcMap )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( srcMap ) );
+
+  for( var s in srcMap )
+  {
+    return [ s,srcMap[ s ] ];
+  }
+
+  return [];
 }
 
 // --
@@ -15386,59 +15490,59 @@ function mapOwnButConditional( filter,srcMap )
 }
 
 //
-
-/**
- * @property { objectLike } srcMaps.srcMap - The target object.
- * @property { objectLike } screenMaps.screenMap - The source object.
- * @property { Object } dstMap - The empty object.
- */
-
-/**
- * The mapScreens() returns an object filled by unique [ key, value ]
- * from (srcMap) object.
- *
- * It creates the variable (dstMap) assignes and calls the routine (_mapScreen( { } ) )
- * with three properties.
- *
- * @see {@link wTools._mapScreen} - See for more information.
- *
- * @param { objectLike } srcMap - The target object.
- * @param { objectLike } screenMap - The source object.
- *
- * @example
- * // returns { a : "abc", c : 33, d : "name" };
- * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
- *
- * @returns { Object } Returns an (dstMap) object filled by unique [ key, value ]
- * from (srcMap) objects.
- * @function mapScreens
- * @throws { Error } Will throw an Error if (arguments.length) more that two,
- * if (srcMap or screenMap) are not objects-like.
- * @memberof wTools
- */
-
-function mapScreens( srcMap,screenMap )
-{
-
-  _.assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-  _.assert( _.objectLikeOrRoutine( srcMap ),'mapScreens :','expects object as argument' );
-  _.assert( _.objectLikeOrRoutine( screenMap ),'mapScreens :','expects object as screenMap' );
-
-  if( arguments.length > 2 )
-  {
-    screenMap = _ArraySlice.call( arguments,1 );
-  }
-
-  var dstMap = _mapScreen
-  ({
-    screenMaps : screenMap,
-    srcMaps : srcMap,
-    dstMap : Object.create( null ),
-  });
-
-  return dstMap;
-}
-
+//
+// /**
+//  * @property { objectLike } srcMaps.srcMap - The target object.
+//  * @property { objectLike } screenMaps.screenMap - The source object.
+//  * @property { Object } dstMap - The empty object.
+//  */
+//
+// /**
+//  * The mapScreens() returns an object filled by unique [ key, value ]
+//  * from (srcMap) object.
+//  *
+//  * It creates the variable (dstMap) assignes and calls the routine (_mapScreen( { } ) )
+//  * with three properties.
+//  *
+//  * @see {@link wTools._mapScreen} - See for more information.
+//  *
+//  * @param { objectLike } srcMap - The target object.
+//  * @param { objectLike } screenMap - The source object.
+//  *
+//  * @example
+//  * // returns { a : "abc", c : 33, d : "name" };
+//  * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+//  *
+//  * @returns { Object } Returns an (dstMap) object filled by unique [ key, value ]
+//  * from (srcMap) objects.
+//  * @function mapScreens
+//  * @throws { Error } Will throw an Error if (arguments.length) more that two,
+//  * if (srcMap or screenMap) are not objects-like.
+//  * @memberof wTools
+//  */
+//
+// function mapScreens( srcMap,screenMap )
+// {
+//
+//   _.assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
+//   _.assert( _.objectLikeOrRoutine( srcMap ),'mapScreens :','expects object as argument' );
+//   _.assert( _.objectLikeOrRoutine( screenMap ),'mapScreens :','expects object as screenMap' );
+//
+//   if( arguments.length > 2 )
+//   {
+//     screenMap = _ArraySlice.call( arguments,1 );
+//   }
+//
+//   var dstMap = _mapScreen
+//   ({
+//     screenMaps : screenMap,
+//     srcMaps : srcMap,
+//     dstMap : Object.create( null ),
+//   });
+//
+//   return dstMap;
+// }
+//
 //
 
 /**
@@ -15472,15 +15576,15 @@ function mapScreens( srcMap,screenMap )
  * @memberof wTools
  */
 
-function mapScreen( screenMap )
+function mapScreen( screenMaps, srcMaps )
 {
 
   _.assert( arguments.length === 2 );
 
   return _mapScreen
   ({
-    screenMaps : screenMap,
-    srcMaps : _.arraySlice( arguments,1 ),
+    screenMaps : screenMaps,
+    srcMaps : srcMaps,
     dstMap : Object.create( null ),
   });
 
@@ -15488,17 +15592,34 @@ function mapScreen( screenMap )
 
 //
 
-function mapScreenOwn( screenMap )
+function mapScreenOwn( screenMaps, srcMaps )
 {
 
   _.assert( arguments.length === 2 );
 
   return _mapScreen
   ({
-    screenMaps : screenMap,
-    srcMaps : _.arraySlice( arguments,1 ),
+    screenMaps : screenMaps,
+    srcMaps : srcMaps,
     dstMap : Object.create( null ),
     filter : _.field.mapper.srcOwn,
+  });
+
+}
+
+//
+
+function mapScreenComplementing( screenMaps, srcMaps )
+{
+
+  _.assert( arguments.length === 2 );
+
+  return _mapScreen
+  ({
+    screenMaps : screenMaps,
+    srcMaps : srcMaps,
+    dstMap : Object.create( null ),
+    filter : _.field.mapper.dstNotOwnOrUndefinedAssigning,
   });
 
 }
@@ -15731,6 +15852,8 @@ var Routines =
   nothingIs : nothingIs,
   definedIs : definedIs,
   primitiveIs : primitiveIs,
+  containerIs : containerIs,
+  containerLike : containerLike,
 
   argumentsIs : argumentsIs,
   symbolIs : symbolIs,
@@ -16154,15 +16277,16 @@ var Routines =
   mapIsPure : mapIsPure,
   mapLike : mapLike,
 
-  mapIdentical : mapIdentical, /* dubious */
-  mapContain : mapContain, /* dubious */
+  mapIdentical : mapIdentical,
+  mapContain : mapContain,
 
-  mapSatisfy : mapSatisfy, /* dubious */
-  _mapSatisfy : _mapSatisfy, /* dubious */
+  mapSatisfy : mapSatisfy,
+  _mapSatisfy : _mapSatisfy,
 
-  mapOwnKey : mapOwnKey, /* dubious */
-  mapHasVal : mapHasVal, /* dubious */
-  mapOwnVal : mapOwnVal, /* dubious */
+  mapHasKey : mapHasKey,
+  mapOwnKey : mapOwnKey,
+  mapHasVal : mapHasVal,
+  mapOwnVal : mapOwnVal,
 
   mapHasAll : mapHasAll,
   mapHasAny : mapHasAny,
@@ -16172,7 +16296,7 @@ var Routines =
   mapOwnAny : mapOwnAny,
   mapOwnNone : mapOwnNone,
 
-  // map move
+  // map extend
 
   mapMake : mapMake,
   mapCloneAssigning : mapCloneAssigning, /* dubious */
@@ -16199,9 +16323,7 @@ var Routines =
   mapComplementByMaps : mapComplementByMaps,
   mapComplementWithUndefines : mapComplementWithUndefines,
 
-  mapDelete : mapDelete,
-
-  // map recursive
+  // map extend recursive
 
   mapExtendRecursiveConditional : mapExtendRecursiveConditional,
   mapExtendByMapsRecursiveConditional : mapExtendByMapsRecursiveConditional,
@@ -16213,32 +16335,30 @@ var Routines =
 
   mapExtendAppendingRecursive : mapExtendAppendingRecursive,
   mapExtendByMapsAppendingRecursive : mapExtendByMapsAppendingRecursive,
+  mapExtendAppendingOnceRecursive : mapExtendAppendingOnceRecursive,
+  mapExtendByMapsAppendingOnceRecursive : mapExtendByMapsAppendingOnceRecursive,
 
   mapSupplementRecursive : mapSupplementRecursive,
   mapSupplementByMapsRecursive : mapSupplementByMapsRecursive,
   mapSupplementOwnRecursive : mapSupplementOwnRecursive,
   mapSupplementByMapsOwnRecursive : mapSupplementByMapsOwnRecursive,
+  mapSupplementRemovingRecursive : mapSupplementRemovingRecursive,
+  mapSupplementByMapsRemovingRecursive : mapSupplementByMapsRemovingRecursive,
 
   // map manipulator
 
   mapSetWithKeys : mapSetWithKeys,
+  mapDelete : mapDelete,
 
-  // map convert
+  // map transformer
 
-  mapFirstPair : mapFirstPair,
-
-  mapInvert : mapInvert, /* dubious */
-  mapInvertDroppingDuplicates : mapInvertDroppingDuplicates, /* dubious */
+  mapInvert : mapInvert,
+  mapInvertDroppingDuplicates : mapInvertDroppingDuplicates,
   mapsFlatten : mapsFlatten,
 
-  mapToArray : mapToArray, /* dubious */
-  mapValWithIndex : mapValWithIndex, /* dubious */
-  mapKeyWithIndex : mapKeyWithIndex, /* dubious */
   mapToStr : mapToStr, /* dubious */
 
-  mapIndexForValue : mapIndexForValue, /* dubious */
-
-  // map properties
+  // map selector
 
   _mapEnumerableKeys : _mapEnumerableKeys,
 
@@ -16274,21 +16394,28 @@ var Routines =
   mapOwnFields : mapOwnFields,
   mapAllFields : mapAllFields,
 
-  mapOnlyAtomics : mapOnlyAtomics,
+  mapOnlyPrimitives : mapOnlyPrimitives,
+
+  mapValWithIndex : mapValWithIndex,
+  mapKeyWithIndex : mapKeyWithIndex,
+  mapIndexWithKey : mapIndexWithKey,
+  mapIndexWithValue : mapIndexWithValue,
+
+  mapFirstPair : mapFirstPair,
 
   // map logic
 
-  mapBut : mapBut, /* dubious */
-  mapButWithUndefines : mapButWithUndefines, /* dubious */
-  mapOwnBut : mapOwnBut, /* dubious */
+  mapBut : mapBut, /* experimental */
+  mapButWithUndefines : mapButWithUndefines, /* experimental */
+  mapOwnBut : mapOwnBut, /* experimental */
 
-  mapButConditional : mapButConditional, /* dubious */
-  mapOwnButConditional : mapOwnButConditional, /* dubious */
+  mapButConditional : mapButConditional, /* experimental */
+  mapOwnButConditional : mapOwnButConditional, /* experimental */
 
-  mapScreens : mapScreens, /* dubious */
-  mapScreen : mapScreen, /* dubious */
-  mapScreenOwn : mapScreenOwn, /* dubious */
-  _mapScreen : _mapScreen, /* dubious */
+  mapScreen : mapScreen,
+  mapScreenOwn : mapScreenOwn,
+  mapScreenComplementing : mapScreenComplementing,
+  _mapScreen : _mapScreen,
 
 }
 

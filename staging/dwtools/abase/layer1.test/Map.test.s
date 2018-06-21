@@ -408,47 +408,6 @@ function mapFirstPair( test )
 
 //
 
-function mapToArray( test )
-{
-
-  test.description = 'a list of [ key, value ] pairs'
-  var got = _.mapToArray( { a : 3, b : 13, c : 7 } );
-  var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no argument';
-  test.shouldThrowError( function()
-  {
-    _.mapToArray();
-  });
-
-  test.description = 'redundant argument';
-  test.shouldThrowError( function()
-  {
-    _.mapToArray( {}, 'wrong arguments' );
-  });
-
-  test.description = 'wrong type of array';
-  test.shouldThrowError( function()
-  {
-    _.mapToArray( [] );
-  });
-
-  test.description = 'wrong type of argument';
-  test.shouldThrowError( function()
-  {
-    _.mapToArray( 'wrong argumetns' );
-  });
-
-}
-
-//
-
 function mapValWithIndex( test )
 {
 
@@ -464,7 +423,7 @@ function mapValWithIndex( test )
 
   test.description = 'a list of arrays';
   var got = _.mapValWithIndex( { 0 : [ 'a', 3 ], 1 : [ 'b', 13 ], 2 : [ 'c', 7 ] }, 2 );
-  var expected = ["c", 7];
+  var expected = ['c', 7];
   test.identical( got, expected );
 
   test.description = 'a list of objects';
@@ -793,18 +752,18 @@ function mapAllKeys( test )
 {
   var _expected =
   [
-    "__defineGetter__",
-    "__defineSetter__",
-    "hasOwnProperty",
-    "__lookupGetter__",
-    "__lookupSetter__",
-    "propertyIsEnumerable",
-    "__proto__",
-    "constructor",
-    "toString",
-    "toLocaleString",
-    "valueOf",
-    "isPrototypeOf"
+    '__defineGetter__',
+    '__defineSetter__',
+    'hasOwnProperty',
+    '__lookupGetter__',
+    '__lookupSetter__',
+    'propertyIsEnumerable',
+    '__proto__',
+    'constructor',
+    'toString',
+    'toLocaleString',
+    'valueOf',
+    'isPrototypeOf'
   ]
 
   //
@@ -1100,17 +1059,28 @@ function mapAllVals( test )
 
 function mapPairs( test )
 {
+
   test.description = 'empty';
+
   var got = _.mapPairs( {} );
   var expected = [];
   test.identical( got, expected );
 
-  //
+  var got = _.mapPairs( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  /**/
 
   test.description = 'a list of [ key, value ] pairs';
 
   var got = _.mapPairs( { a : 7, b : 13 } );
-  var expected = [ [ "a", 7 ], [ "b", 13 ] ];
+  var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
+  test.identical( got, expected );
+
+  test.description = 'a list of [ key, value ] pairs'
+  var got = _.mapPairs( { a : 3, b : 13, c : 7 } );
+  var expected = [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ];
   test.identical( got, expected );
 
   /**/
@@ -1127,7 +1097,7 @@ function mapPairs( test )
   var expected = [];
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.description = 'from prototype';
 
@@ -1159,7 +1129,7 @@ function mapPairs( test )
   test.identical( got[ 0 ], [ 'a', 1 ] );
   test.identical( got[ 1 ], [ 'k', 3 ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -1182,6 +1152,18 @@ function mapPairs( test )
     _.mapPairs( 'wrong argument' );
   });
 
+  test.description = 'redundant argument';
+  test.shouldThrowError( function()
+  {
+    _.mapPairs( {}, 'wrong arguments' );
+  });
+
+  test.description = 'wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapPairs( null );
+  });
+
 }
 
 //
@@ -1198,7 +1180,7 @@ function mapOwnPairs( test )
   test.description = 'a list of [ key, value ] pairs';
 
   var got = _.mapOwnPairs( { a : 7, b : 13 } );
-  var expected = [ [ "a", 7 ], [ "b", 13 ] ];
+  var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
   test.identical( got, expected );
 
   /**/
@@ -1272,8 +1254,8 @@ function mapAllPairs( test )
 
   var got = _.mapAllPairs( { a : 7, b : 13 } );
   test.shouldBe( got.length > 2 );
-  test.identical( got[ 0 ], [ "a", 7 ] );
-  test.identical( got[ 1 ], [ "b", 13 ] );
+  test.identical( got[ 0 ], [ 'a', 7 ] );
+  test.identical( got[ 1 ], [ 'b', 13 ] );
 
   /**/
 
@@ -1302,8 +1284,8 @@ function mapAllPairs( test )
   Object.setPrototypeOf( a, b );
   var got = _.mapAllPairs( a );
   test.shouldBe( got.length > 2 );
-  test.identical( got[ 0 ], [ "a", 1 ] );
-  test.identical( got[ 1 ], [ "b", 2 ] );
+  test.identical( got[ 0 ], [ 'a', 1 ] );
+  test.identical( got[ 1 ], [ 'b', 2 ] );
 
   //
 
@@ -2251,11 +2233,11 @@ function mapAllFields( test )
 
 //
 
-function mapOnlyAtomics( test )
+function mapOnlyPrimitives( test )
 {
   test.description = 'emtpy';
 
-  var got = _.mapOnlyAtomics( {} )
+  var got = _.mapOnlyPrimitives( {} )
   test.identical( got, {} );
 
   test.description = 'atomics';
@@ -2272,7 +2254,7 @@ function mapOnlyAtomics( test )
     i : new Date(),
     j : new ArrayBuffer( 5 )
   }
-  var got = _.mapOnlyAtomics( src );
+  var got = _.mapOnlyPrimitives( src );
   var expected =
   {
     a : null,
@@ -2288,7 +2270,7 @@ function mapOnlyAtomics( test )
   test.description = 'only enumerable';
   var a = {};
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } )
-  var got = _.mapOnlyAtomics( a );
+  var got = _.mapOnlyPrimitives( a );
   test.identical( got, {} );
 
   //
@@ -2298,7 +2280,7 @@ function mapOnlyAtomics( test )
   var b = { a : 1, c : function(){} };
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   Object.setPrototypeOf( a, b );
-  var got = _.mapOnlyAtomics( a );
+  var got = _.mapOnlyPrimitives( a );
   test.identical( got, { a : 1 } );
 
   if( !Config.debug )
@@ -2307,12 +2289,12 @@ function mapOnlyAtomics( test )
   test.description = 'invalid arg type';
   test.shouldThrowError( function()
   {
-    _.mapOnlyAtomics( [] )
+    _.mapOnlyPrimitives( [] )
   })
   test.description = 'no args';
   test.shouldThrowError( function()
   {
-    _.mapOnlyAtomics()
+    _.mapOnlyPrimitives()
   })
 
 }
@@ -2408,8 +2390,8 @@ function mapButConditional( test )
 {
 
   test.description = 'an object';
-  var got = _.mapButConditional( _.field.mapper.primitive, { a : 1, b : 'xxx', c : [ 1, 2, 3 ] } );
-  var expected = {a: 1, b: "xxx"};
+  var got = _.mapButConditional( _.field.mapper.primitive, { a : 1, b : 'ab', c : [ 1, 2, 3 ] } );
+  var expected = { a : 1, b : 'ab'};
   test.identical( got, expected );
 
   /**/
@@ -2447,18 +2429,6 @@ function mapButConditional( test )
 
 function mapScreens( test )
 {
-
-  test.description = 'test1';
-  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
-  console.log(got);
-  var expected = { a : "abc", c : 33, d : "name" };
-  test.identical( got, expected );
-
-  test.description = 'test2';
-  var got = _.mapScreens( { d : 'name', c : 33, a : 'abc' }, { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' });
-  console.log(got);
-  var expected = { a : "abc", c : 33, d : "name" };
-  test.identical( got, expected );
 
   /**/
 
@@ -2508,13 +2478,24 @@ function mapScreens( test )
 function mapScreen( test )
 {
 
-
   test.description = 'an object'
   var got = _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
-  var expected = { a : "abc", c : 33, d : "name" };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
 
-  /**/
+  test.description = 'test1';
+  var got = _.mapScreen( [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ], { d : 'name', c : 33, a : 'abc' } );
+  console.log(got);
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+
+  test.description = 'test2';
+  var got = _.mapScreen( [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ], { d : 'name', c : 33, a : 'abc' } );
+  console.log(got);
+  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.identical( got, expected );
+
+  /* */
 
   if( !Config.debug )
   return;
@@ -2543,7 +2524,37 @@ function mapScreen( test )
     _.mapScreen( 'wrong arguments' );
   });
 
-};
+  test.description = 'first argument is not an object-like';
+  test.shouldThrowError( function()
+  {
+    _.mapScreens( 3, [] );
+  });
+
+  test.description = 'second argument is not an object-like';
+  test.shouldThrowError( function()
+  {
+    _.mapScreens( [], '' );
+  });
+
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( {} );
+  });
+
+  test.description = 'redundant arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( [], [], {} );
+  });
+
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapScreen( 'wrong arguments', 'wrong arguments' );
+  });
+
+}
 
 //
 
@@ -2555,7 +2566,7 @@ function _mapScreen( test )
   options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
   options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
   var got = _._mapScreen( options );
-  var expected = { a : 33, c : 33, name : "Mikle" };
+  var expected = { a : 33, c : 33, name : 'Mikle' };
   test.identical( got, expected );
 
   test.description = 'an object2'
@@ -2563,7 +2574,7 @@ function _mapScreen( test )
   options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
   options.srcMaps = { d : 'name', c : 33, a : 'abc' };
   var got = _._mapScreen( options );
-  var expected = { a : "abc", c : 33, d : "name" };
+  var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
 
   /**/
@@ -3446,8 +3457,6 @@ var Self =
     // map convert
 
     mapFirstPair : mapFirstPair,
-
-    mapToArray : mapToArray,
     mapValWithIndex : mapValWithIndex,
     mapKeyWithIndex : mapKeyWithIndex,
     mapToStr : mapToStr,
@@ -3478,7 +3487,7 @@ var Self =
     mapOwnFields : mapOwnFields,
     mapAllFields : mapAllFields,
 
-    mapOnlyAtomics : mapOnlyAtomics,
+    mapOnlyPrimitives : mapOnlyPrimitives,
 
     // map logic
 

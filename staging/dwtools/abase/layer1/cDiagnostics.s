@@ -567,14 +567,15 @@ function diagnosticStack( stack,first,last )
   // if( stack[ 0 ].indexOf( '@' ) === -1 )
   // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
 
-  if( !stack[ 0 ] )
-  return '... stack is empty ...';
+  // if( !stack[ 0 ] )
+  // return '... stack is empty ...';
 
   // debugger;
+  if( stack[ 0 ] )
   if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
   {
     debugger;
-    throw Error( 'diagnosticStack : cant parse stack ' + stack );
+    console.error( 'diagnosticStack : cant parse stack\n' + stack );
   }
 
   /* */
@@ -1434,17 +1435,10 @@ function assertMapHasNone( src )
 
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var none = _.mapScreens.apply( this,args );
-
-  // for( var n in none )
-  // {
-  //   for( var a = 1 ; a < arguments.length ; a++ )
-  //   if( arguments[ a ][ n ] !== src[ n ] )
-  //   break;
-  //   if( a === arguments.length )
-  //   delete none[ n ];
-  // }
+  var screens = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
+  debugger;
+  var none = _.mapScreen( screens, src );
+  debugger;
 
   var keys = Object.keys( none );
   if( keys.length )
@@ -1477,12 +1471,14 @@ function assertMapOwnNone( src,none )
     none = _.mapMake.apply( this,args );
   }
 
-  var has = Object.keys( _._mapScreen
-  ({
-    filter : _.field.mapper.srcOwn,
-    screenMaps : none,
-    srcMaps : src,
-  }));
+  var has = Object.keys( _.mapScreenOwn( none, src ) );
+
+  // var has = Object.keys( _._mapScreen
+  // ({
+  //   filter : _.field.mapper.srcOwn,
+  //   screenMaps : none,
+  //   srcMaps : src,
+  // }));
 
   if( has.length )
   {

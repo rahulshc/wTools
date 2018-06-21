@@ -55,12 +55,12 @@ function look( test )
   var gotUpPaths = [];
   var gotDownPaths = [];
 
-  function handleUp1( it )
+  function handleUp1( e, k, it )
   {
     gotUpPaths.push( it.path );
   }
 
-  function handleDown1( it )
+  function handleDown1( e, k, it )
   {
     gotDownPaths.push( it.path );
   }

@@ -21,8 +21,6 @@ function _lookIterationBegin()
 {
   var it = this;
 
-  // debugger;
-
   _.assert( arguments.length === 0 );
   _.assert( it.level >= 0 );
   _.assert( it.iterator );
@@ -48,8 +46,6 @@ function _lookIterationBegin()
 function _lookIterationSelect( k,i )
 {
   var it = this;
-
-  // debugger;
 
   _.assert( arguments.length === 2 );
   _.assert( it.level >= 0 );
@@ -104,7 +100,7 @@ function __lookAct( it )
 
   if( it.visitingRoot || it.root !== it.src )
   {
-    it.ascending = it.onUp.call( it, it );
+    it.ascending = it.onUp.call( it, it.src, it.key, it );
     if( it.ascending === undefined )
     it.ascending = true;
     _.assert( _.boolIs( it.ascending ),'expects it.onUp returns boolean, but got',_.strTypeOf( it.ascending ) );
@@ -118,7 +114,7 @@ function __lookAct( it )
     if( it.visitingRoot || it.root !== it.src )
     {
       if( it.onDown )
-      it.onDown.call( it, it );
+      it.onDown.call( it, it.src, it.key, it );
     }
 
     if( it.trackingVisits )
@@ -179,7 +175,7 @@ function __lookAct( it )
   else
   {
     if( it.onTerminal )
-    it.onTerminal.call( it, it );
+    it.onTerminal.call( it, it.src, it.key, it );
   }
 
   /* end */
@@ -204,6 +200,8 @@ function _lookPre( routine, args )
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
+  _.assert( o.onUp === null || o.onUp.length === 3 );
+  _.assert( o.onDown === null || o.onDown.length === 3 );
 
   return o
 }
@@ -214,8 +212,6 @@ function _lookBody( o )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( o.onUp === null || o.onUp.length === 1 );
-  _.assert( o.onDown === null || o.onDown.length === 1 );
 
   /* */
 
@@ -250,9 +246,9 @@ function _lookBody( o )
 _lookBody.defaults =
 {
 
-  onUp : function( it ){},
-  onTerminal : function( it ){},
-  onDown : function( it ){},
+  onUp : function( e,k,it ){},
+  onTerminal : function( e,k,it ){},
+  onDown : function( e,k,it ){},
 
   own : 0,
   recursive : 1,
@@ -940,10 +936,10 @@ function entitySearch( o )
 
   /* */
 
-  var optionsEach = _.mapScreen( _.look.defaults,o )
-  optionsEach.onUp = handleUp;
+  var lookOptions = _.mapScreen( _.look.defaults,o )
+  lookOptions.onUp = handleUp;
 
-  _.look( optionsEach );
+  _.look( lookOptions );
 
   return result;
 }
@@ -973,12 +969,26 @@ entitySearch.defaults =
 
 entitySearch.defaults.__proto__ = look.defaults;
 
+//
+
+function entityFreezeRecursive( src )
+{
+  var lookOptions = Object.create( null );
+
+  lookOptions.src = src;
+  lookOptions.onUp = function handleUp( e, k, it )
+  {
+    _.entityFreeze( e )
+  }
+
+  _.look( lookOptions );
+
+  return src;
+}
+
 // --
 // selector
 // --
-
-
-//
 
 /**
  * Returns generated options object( o ) for ( entitySelect ) routine.
@@ -2232,7 +2242,7 @@ var Proto =
   look : look,
   lookOwn : lookOwn,
 
-  // eacg
+  // each
 
   eachSample : eachSample,
   eachInRange : eachInRange,
@@ -2241,6 +2251,7 @@ var Proto =
 
   entityWrap : entityWrap,
   entitySearch : entitySearch,
+  entityFreezeRecursive : entityFreezeRecursive,
 
   // selector
 
