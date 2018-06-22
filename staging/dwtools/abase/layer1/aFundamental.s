@@ -8925,6 +8925,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 {
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayLike( arr ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -10893,7 +10894,7 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
   {
     dstArray.splice( index,1 );
     result += 1;
-    index = _.arrayLeftIndex( _, arguments );
+    index = _.arrayLeftIndex.apply( _, arguments );
   }
 
   return result;

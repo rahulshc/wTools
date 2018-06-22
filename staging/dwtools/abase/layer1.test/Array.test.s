@@ -3019,7 +3019,7 @@ function arrayRightIndex( test )
 
   test.description = 'zero index';
   var got = _.arrayRightIndex( [ 1, 2, 3 ], 3, function( el, ins ) { return el < ins } );
-  var expected = 0;
+  var expected = 1;
   test.identical( got, expected );
 
   test.description = 'nothing';
@@ -3057,14 +3057,16 @@ function arrayRightIndex( test )
   var expected = 2;
   test.identical( got, expected );
 
-  test.description = 'one argument';
-  var got = _.arrayRightIndex( [ 1, 2, 3 ] );
-  test.identical( got, -1 );
-
   /**/
 
   if( !Config.debug )
   return;
+
+  test.description = 'one argument';
+  test.shouldThrowError( function()
+  {
+    var got = _.arrayRightIndex( [ 1, 2, 3 ] );
+  });
 
   test.description = 'no arguments';
   test.shouldThrowError( function()
@@ -3575,19 +3577,11 @@ function arrayPrependOnce( test )
   test.description = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayPrependOnce( dst, 4, onEqualize );
+  var got = _.arrayPrependOnce( dst, 4,( e ) => e.num, ( e ) => e );
   test.identical( got, [ 4,{ num : 1 },{ num : 2 },{ num : 3 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayPrependOnce( dst, 1, onEqualize );
+  var got = _.arrayPrependOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   //
@@ -3711,16 +3705,6 @@ function arrayPrependOnceStrictly( test )
       return a.num === b.num;
     }
     _.arrayPrependOnceStrictly( dst, { num : 1 }, onEqualize );
-  });
-
-  test.shouldThrowError( function()
-  {
-    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-    var onEqualize = function( a )
-    {
-      return a.num;
-    }
-    _.arrayPrependOnceStrictly( dst, 1, onEqualize );
   });
 
 }
@@ -3863,11 +3847,7 @@ function arrayPrependedOnce( test )
   test.identical( got, 0 );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayPrependedOnce( dst, 1, onEqualize );
+  var got = _.arrayPrependedOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -4900,11 +4880,7 @@ function arrayAppendOnce( test )
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayAppendOnce( dst, 1, onEqualize );
+  var got = _.arrayAppendOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   //
@@ -5029,15 +5005,6 @@ function arrayAppendOnceStrictly( test )
     _.arrayAppendOnceStrictly( dst, { num : 1 }, onEqualize );
   });
 
-  test.shouldThrowError( function()
-  {
-    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-    var onEqualize = function( a )
-    {
-      return a.num;
-    }
-    _.arrayAppendOnceStrictly( dst, 1, onEqualize );
-  });
 }
 
 //
@@ -5178,11 +5145,7 @@ function arrayAppendedOnce( test )
   test.identical( got, 3 );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayAppendedOnce( dst, 1, onEqualize );
+  var got = _.arrayAppendedOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, -1 );
 
@@ -6388,11 +6351,7 @@ function arrayRemove( test )
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayRemove( dst, 1, onEqualize );
+  var got = _.arrayRemove( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
 
   if( !Config.debug )
@@ -6497,11 +6456,7 @@ function arrayRemoved( test )
 
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayRemoved( dst, 1, onEqualize );
+  var got = _.arrayRemoved( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
   test.identical( got, 0 );
 
@@ -6584,11 +6539,7 @@ function arrayRemoveOnce( test )
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayRemoveOnce( dst, 1, onEqualize );
+  var got = _.arrayRemoveOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 2 },{ num : 3 } ] );
 
   //
@@ -6696,11 +6647,7 @@ function arrayRemoveOnceStrictly( test )
   test.description = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayRemoveOnceStrictly( dst, 3, onEqualize );
+  var got = _.arrayRemoveOnceStrictly( dst, 3, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 1 },{ num : 2 } ] );
   test.identical( got, dst );
 
@@ -6828,11 +6775,7 @@ function arrayRemovedOnce( test )
   test.identical( got, -1 );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayRemovedOnce( dst, 1, onEqualize );
+  var got = _.arrayRemovedOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
   test.identical( got, 0 );
 
@@ -7083,11 +7026,7 @@ function arrayRemoveArrayOnceStrictly( test )
   test.description = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayRemoveArrayOnceStrictly( dst, [ 3 ], onEqualize );
+  var got = _.arrayRemoveArrayOnceStrictly( dst, [ 3 ], ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 1 },{ num : 2 } ] );
   test.identical( got, dst );
 
@@ -7482,12 +7421,8 @@ function arrayRemoveArraysOnce( test )
   test.description = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
   var insArray = [ [ 3 ], 1  ];
-  var got = _.arrayRemoveArraysOnce( dst, insArray, onEqualize )
+  var got = _.arrayRemoveArraysOnce( dst, insArray, ( e ) => e.num, ( e ) => e )
   test.identical( got, [ { num : 2 } ] );
   test.identical( got, dst );
 
@@ -7570,16 +7505,12 @@ function arrayRemoveArraysOnceStrictly( test )
   test.description = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
   var insArray = [ [ 3 ], 1  ];
-  var got = _.arrayRemoveArraysOnceStrictly( dst, insArray, onEqualize );
+  var got = _.arrayRemoveArraysOnceStrictly( dst, insArray, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 2 } ] );
   test.identical( got, dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -9400,16 +9331,20 @@ function arrayReplacedAll( test )
   })
 
   test.description = 'first arg is not arrayLike';
+  debugger;
   test.shouldThrowError( function()
   {
+    debugger;
     _.arrayReplacedAll( 1, 1, 1 );
   })
+  debugger;
 
   test.description = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
-    _.arrayReplacedAll( 1, 1, 1, 1);
+    _.arrayReplacedAll( 1, 1, 1, 1 );
   })
+
 }
 
 //
