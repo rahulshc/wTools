@@ -95,6 +95,8 @@ Self.nothing = _global_.nothing;
 
 //
 
+var _ArrayIndexOf = Array.prototype.indexOf;
+var _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
@@ -6548,20 +6550,24 @@ function arrayIdentical( src1,src2 )
 
 //
 
-function arrayHas( insArray, element, onElement )
+function arrayHas( array, value, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( insArray );
-  if( onElement === undefined )
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( array );
+
+  if( evaluator1 === undefined )
   {
-    return insArray.indexOf( element ) !== -1;
+    return _ArrayIndexOf.call( array, value ) !== -1;
+    // return array.indexOf( value ) !== -1;
   }
   else
   {
-    if( _.arrayLeftIndexOf( insArray, element, onElement ) >= 0 )
+    debugger;
+    if( _.arrayLeftIndex( array, value, evaluator1, evaluator2 ) >= 0 )
     return true;
     return false;
   }
+
 }
 
 //
@@ -8915,89 +8921,51 @@ function arraySort( srcArray,onElement )
 // array sequential search
 // --
 
-/**
- * The arrayLeftIndexOf() routine returns the index of the first matching (ins) element in a array (arr)
- * that corresponds to the condition in the callback function.
- *
- * It iterates over an array (arr) from the left to the right,
- * and checks by callback function(equalizer(arr[a], ins)).
- * If callback function returns true, it returns corresponding index.
- * Otherwise, it returns -1.
- *
- * @param { arrayLike } arr - The target array.
- * @param { * } ins - The value to compare.
- * @param { wTools~compareCallback } [equalizer] equalizer - A callback function.
- * By default, it checks the equality of two arguments.
- *
- * @example
- * // returns 0
- * _.arrayLeftIndexOf( [ 1, 2, 3 ], 1 );
- *
- * @example
- * // returns -1
- * _.arrayLeftIndexOf( [ 1, 2, 3 ], 4 );
- *
- * @example
- * // returns 3
- * _.arrayLeftIndexOf( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
- *
- * @example
- * // returns 3
- * _.arrayLeftIndexOf( 'abcdef', 'd' );
- *
- * @example
- * // returns 2
- * function arr() {
- *   return arguments;
- * }( 3, 7, 13 );
- * _.arrayLeftIndexOf( arr, 13 );
- *
- * @returns { Number } Returns the corresponding index, if a callback function(equalizer) returns true.
- * Otherwise, it returns -1.
- * @function arrayLeftIndexOf
- * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
- * @throws { Error } Will throw an Error if (equalizer.length) is not equal to the 1 or 2.
- * @throws { Error } Will throw an Error if (equalizer) is not a Function.
- * @memberof wTools
- */
-
-function arrayLeftIndexOf( arr,ins,equalizer )
+function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 {
 
-  // if( ins === undefined )
-  // debugger;
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
+  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+  _.assert( !evaluator2 || evaluator2.length === 1 );
+  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
 
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( !equalizer || equalizer.length === 1 || equalizer.length === 2 );
-  _.assert( !equalizer || _.routineIs( equalizer ) );
-
-  if( !equalizer )
+  if( !evaluator1 )
   {
-    if( _.argumentsIs( arr ) )
-    {
-      var array = _ArraySlice.call( arr );
-      return array.indexOf( ins );
-    }
-
-    return arr.indexOf( ins );
+    _.assert( !evaluator2 );
+    if( !_.arrayIs( arr ) )
+    debugger;
+    return _ArrayIndexOf.call( arr, ins );
+    // if( _.argumentsIs( arr ) )
+    // {
+    //   var array = _ArraySlice.call( arr );
+    //   return array.indexOf( ins );
+    // }
+    // return arr.indexOf( ins );
   }
-  else if( equalizer.length === 2 )
-  for( var a = 0 ; a < arr.length ; a++ )
+  else if( evaluator1.length === 2 )
   {
+    _.assert( !evaluator2 );
+    for( var a = 0 ; a < arr.length ; a++ )
+    {
 
-    if( equalizer( arr[ a ],ins ) )
-    return a;
+      if( evaluator1( arr[ a ],ins ) )
+      return a;
 
+    }
   }
   else
   {
 
+    if( evaluator2 )
+    ins = evaluator2( ins );
+    else
+    ins = evaluator1( ins );
+
     for( var a = 0 ; a < arr.length ; a++ )
     {
-
-      if( equalizer( arr[ a ] ) === ins )
+      if( evaluator1( arr[ a ] ) === ins )
       return a;
-
     }
 
   }
@@ -9007,49 +8975,213 @@ function arrayLeftIndexOf( arr,ins,equalizer )
 
 //
 
-function arrayRightIndexOf( arr,ins,equalizer )
+function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 {
 
   if( ins === undefined )
   debugger;
+  debugger;
 
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( !equalizer || equalizer.length === 1 || equalizer.length === 2 );
-  _.assert( !equalizer || _.routineIs( equalizer ) );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
+  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+  _.assert( !evaluator2 || evaluator2.length === 1 );
+  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
 
-  if( !equalizer )
+  if( !evaluator1 )
   {
-    if( _.argumentsIs( arr ) )
-    {
-      var array = _ArraySlice.call( arr );
-      return array.lastIndexOf( ins );
-    }
-
-    return arr.lastIndexOf( ins );
+    _.assert( !evaluator2 );
+    if( !_.arrayIs( arr ) )
+    debugger;
+    return _ArrayLastIndexOf.call( arr, ins );
+    // if( _.argumentsIs( arr ) )
+    // {
+    //   var array = _ArraySlice.call( arr );
+    //   return array.lastIndexOf( ins );
+    // }
+    // return arr.lastIndexOf( ins );
   }
-  else if( equalizer.length === 2 )
-  for( var a = arr.length-1 ; a >= 0 ; a-- )
+  else if( evaluator1.length === 2 )
   {
-
-    if( equalizer( arr[ a ],ins ) )
-    return a;
-
+    _.assert( !evaluator2 );
+    for( var a = arr.length-1 ; a >= 0 ; a-- )
+    {
+      if( evaluator1( arr[ a ],ins ) )
+      return a;
+    }
   }
   else
   {
 
+    debugger;
+    if( evaluator2 )
+    ins = evaluator2( ins );
+    else
+    ins = evaluator1( ins );
+
     for( var a = arr.length-1 ; a >= 0 ; a-- )
     {
-
-      if( equalizer( arr[ a ] ) === ins )
+      if( evaluator1( arr[ a ] ) === ins )
       return a;
-
     }
 
   }
 
   return -1;
 }
+
+//
+//
+// /**
+//  * The arrayLeftIndex() routine returns the index of the first matching (ins) element in a array (arr)
+//  * that corresponds to the condition in the callback function.
+//  *
+//  * It iterates over an array (arr) from the left to the right,
+//  * and checks by callback function( evaluator1( arr[ a ], ins ) ).
+//  * If callback function returns true, it returns corresponding index.
+//  * Otherwise, it returns -1.
+//  *
+//  * @param { arrayLike } arr - The target array.
+//  * @param { * } ins - The value to compare.
+//  * @param { wTools~compareCallback } [equalizer] evaluator1 - A callback function.
+//  * By default, it checks the equality of two arguments.
+//  *
+//  * @example
+//  * // returns 0
+//  * _.arrayLeftIndex( [ 1, 2, 3 ], 1 );
+//  *
+//  * @example
+//  * // returns -1
+//  * _.arrayLeftIndex( [ 1, 2, 3 ], 4 );
+//  *
+//  * @example
+//  * // returns 3
+//  * _.arrayLeftIndex( [ 1, 2, 3, 4 ], 3, function( el, ins ) { return el > ins } );
+//  *
+//  * @example
+//  * // returns 3
+//  * _.arrayLeftIndex( 'abcdef', 'd' );
+//  *
+//  * @example
+//  * // returns 2
+//  * function arr() {
+//  *   return arguments;
+//  * }( 3, 7, 13 );
+//  * _.arrayLeftIndex( arr, 13 );
+//  *
+//  * @returns { Number } Returns the corresponding index, if a callback function ( evaluator1 ) returns true.
+//  * Otherwise, it returns -1.
+//  * @function arrayLeftIndex
+//  * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 2 or 3.
+//  * @throws { Error } Will throw an Error if (evaluator1.length) is not equal to the 1 or 2.
+//  * @throws { Error } Will throw an Error if (evaluator1) is not a Function.
+//  * @memberof wTools
+//  */
+//
+// function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
+// {
+//
+//   _.assert( 2 <= arguments.length || arguments.length <= 4 );
+//   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
+//   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+//   _.assert( !evaluator2 || evaluator2.length === 1 );
+//   _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
+//
+//   if( !evaluator1 )
+//   {
+//     _.assert( !evaluator2 );
+//     if( !_.arrayIs( arr ) )
+//     debugger;
+//     return _ArrayIndexOf.call( arr, ins );
+//     // if( _.argumentsIs( arr ) )
+//     // {
+//     //   var array = _ArraySlice.call( arr );
+//     //   return array.indexOf( ins );
+//     // }
+//     // return arr.indexOf( ins );
+//   }
+//   else if( evaluator1.length === 2 )
+//   {
+//     _.assert( !evaluator2 );
+//     for( var a = 0 ; a < arr.length ; a++ )
+//     {
+//
+//       if( evaluator1( arr[ a ],ins ) )
+//       return a;
+//
+//     }
+//   }
+//   else
+//   {
+//
+//     debugger;
+//     if( evaluator2 )
+//     ins = evaluator2( ins );
+//
+//     debugger;
+//     for( var a = 0 ; a < arr.length ; a++ )
+//     {
+//       if( evaluator1( arr[ a ] ) === evaluator1( ins ) )
+//       return a;
+//     }
+//
+//   }
+//
+//   return -1;
+// }
+//
+// //
+//
+// function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
+// {
+//
+//   if( ins === undefined )
+//   debugger;
+//
+//   debugger;
+//
+//   _.assert( 2 <= arguments.length || arguments.length <= 4 );
+//   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
+//   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+//
+//   if( !evaluator1 )
+//   {
+//     _.assert( !evaluator2 );
+//     if( !_.arrayIs( arr ) )
+//     debugger;
+//     return _ArrayLastIndexOf.call( arr, ins );
+//     // if( _.argumentsIs( arr ) )
+//     // {
+//     //   var array = _ArraySlice.call( arr );
+//     //   return array.lastIndexOf( ins );
+//     // }
+//     // return arr.lastIndexOf( ins );
+//   }
+//   else if( evaluator1.length === 2 )
+//   {
+//     _.assert( !evaluator2 );
+//     for( var a = arr.length-1 ; a >= 0 ; a-- )
+//     {
+//
+//       if( evaluator1( arr[ a ],ins ) )
+//       return a;
+//
+//     }
+//   }
+//   else
+//   {
+//
+//     debugger;
+//     for( var a = arr.length-1 ; a >= 0 ; a-- )
+//     {
+//       if( evaluator1( arr[ a ] ) === evaluator1 ( ins ) )
+//       return a;
+//     }
+//
+//   }
+//
+//   return -1;
+// }
 
 //
 
@@ -9057,17 +9189,17 @@ function arrayRightIndexOf( arr,ins,equalizer )
  * The arrayLeft() routine returns a new object containing the properties, (index, element),
  * corresponding to a found value (ins) from an array (arr).
  *
- * It creates the variable (i), assigns and calls to it the function(_.arrayLeftIndexOf( arr, ins, equalizer )),
+ * It creates the variable (i), assigns and calls to it the function( _.arrayLeftIndex( arr, ins, evaluator1 ) ),
  * that returns the index of the value (ins) in the array (arr).
- * [wTools.arrayLeftIndexOf()]{@link wTools.arrayLeftIndexOf}
+ * [wTools.arrayLeftIndex()]{@link wTools.arrayLeftIndex}
  * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
  * Otherwise, it returns the empty object.
  *
- * @see {@link wTools.arrayLeftIndexOf} - See for more information.
+ * @see {@link wTools.arrayLeftIndex} - See for more information.
  *
  * @param { arrayLike } arr - Entity to check.
  * @param { * } ins - Element to locate in the array.
- * @param { wTools~compareCallback } equalizer - A callback function.
+ * @param { wTools~compareCallback } evaluator1 - A callback function.
  *
  * @example
  * // returns { index : 3, element : 'str' }
@@ -9081,16 +9213,16 @@ function arrayRightIndexOf( arr,ins,equalizer )
  * corresponding to the found value (ins) from the array (arr).
  * Otherwise, it returns the empty object.
  * @function arrayLeft
- * @throws { Error } Will throw an Error if (equalizer) is not a Function.
+ * @throws { Error } Will throw an Error if (evaluator1) is not a Function.
  * @memberof wTools
  */
 
-function arrayLeft( arr,ins,equalizer )
+function arrayLeft( arr, ins, evaluator1, evaluator2 )
 {
   var result = Object.create( null );
-  var i = _.arrayLeftIndexOf( arr,ins,equalizer );
+  var i = _.arrayLeftIndex( arr, ins, evaluator1, evaluator2 );
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   if( i >= 0 )
   {
@@ -9103,12 +9235,12 @@ function arrayLeft( arr,ins,equalizer )
 
 //
 
-function arrayRight( arr,ins,equalizer )
+function arrayRight( arr, ins, evaluator1, evaluator2 )
 {
   var result = Object.create( null );
-  var i = _.arrayRightIndexOf( arr,ins,equalizer );
+  var i = _.arrayRightIndex( arr, ins, evaluator1, evaluator2 );
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   if( i >= 0 )
   {
@@ -9349,28 +9481,6 @@ function arrayPrepend( dstArray, ins )
 
 //
 
-// function arrayPrependOnce( dstArray, ins, onEqualize )
-// {
-//
-//   _.assert( _.arrayIs( dst ) );
-//   _.assert( arguments.length === 2 );
-//
-//   // if( !dst )
-//   // return [ src ];
-//
-//   var i = dst.indexOf( src );
-//
-//   if( i === -1 )
-//   {
-//     dst.unshift( src );
-//     return dst.length - 1;
-//   }
-//
-//   return i;
-// }
-
-//
-
 /**
  * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
  * if destination( dstArray ) doesn't have the value of ( ins ).
@@ -9413,7 +9523,7 @@ function arrayPrepend( dstArray, ins )
  * @memberof wTools
  */
 
-function arrayPrependOnce( dstArray, ins, onEqualize )
+function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayPrependedOnce.apply( this,arguments );
   return dstArray;
@@ -9465,15 +9575,8 @@ function arrayPrependOnce( dstArray, ins, onEqualize )
  * @memberof wTools
  */
 
-function arrayPrependOnceStrictly( dstArray, ins, onEqualize )
+function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-
-  // _.assert( _.arrayIs( dstArray ) );
-  // _.assert( arguments.length === 2 || arguments.length === 3 );
-  // _.assert( onEqualize === undefined || _.routineIs( onEqualize ) );
-  // _.assert( _.arrayLeftIndexOf( dstArray, ins, onEqualize ) === -1,'array should have only unique elements, but has several',ins );
-  //
-  // dstArray.unshift( ins );
 
   var result = arrayPrependedOnce.apply( this, arguments );
   _.assert( result !== -1,'array should have only unique elements, but has several',ins );
@@ -9554,12 +9657,11 @@ function arrayPrepended( dstArray, ins )
  * @memberof wTools
  */
 
-function arrayPrependedOnce( dstArray, ins, onEqualize )
+function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.arrayIs( dstArray ) );
 
-  var i = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var i = _.arrayLeftIndex.apply( _, arguments );
 
   if( i === -1 )
   {
@@ -9682,7 +9784,7 @@ function arrayPrependArray( dstArray, insArray )
  * @memberof wTools
  */
 
-function arrayPrependArrayOnce( dstArray, insArray, onEqualize )
+function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   arrayPrependedArrayOnce.apply( this, arguments );
   return dstArray;
@@ -9727,11 +9829,10 @@ function arrayPrependArrayOnce( dstArray, insArray, onEqualize )
  * @memberof wTools
  */
 
-function arrayPrependArrayOnceStrictly( dstArray, insArray, onEqualize )
+function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayPrependedArrayOnce.apply( this, arguments );
   _.assert( result === insArray.length );
-
   return dstArray;
 }
 
@@ -9809,18 +9910,18 @@ function arrayPrependedArray( dstArray, insArray )
  * @memberof wTools
  */
 
-function arrayPrependedArrayOnce( dstArray, insArray, onEqualize )
+function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayLike( insArray ) );
   _.assert( dstArray !== insArray );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   var result = 0;
 
   for( var i = insArray.length - 1; i >= 0; i-- )
   {
-    if( _.arrayLeftIndexOf( dstArray, insArray[ i ], onEqualize ) === -1 )
+    if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
     {
       dstArray.unshift( insArray[ i ] );
       result += 1;
@@ -9894,7 +9995,7 @@ function arrayPrependArrays( dstArray, insArray )
  * @memberof wTools
  */
 
-function arrayPrependArraysOnce( dstArray,insArray, onEqualize )
+function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   arrayPrependedArraysOnce.apply( this, arguments );
   return dstArray;
@@ -9942,7 +10043,7 @@ function arrayPrependArraysOnce( dstArray,insArray, onEqualize )
  * @memberof wTools
  */
 
-function arrayPrependArraysOnceStrictly( dstArray, insArray, onEqualize )
+function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayPrependedArraysOnce.apply( this, arguments );
 
@@ -10046,9 +10147,9 @@ function arrayPrependedArrays( dstArray, insArray )
  * @memberof wTools
  */
 
-function arrayPrependedArraysOnce( dstArray, insArray, onEqualize )
+function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ),'arrayPrependedArraysOnce :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayPrependedArraysOnce :','expects arrayLike entity' );
 
@@ -10056,7 +10157,7 @@ function arrayPrependedArraysOnce( dstArray, insArray, onEqualize )
 
   function _prependOnce( argument )
   {
-    var index = _.arrayLeftIndexOf( dstArray, argument, onEqualize );
+    var index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     if( index === -1 )
     {
       dstArray.unshift( argument );
@@ -10124,64 +10225,19 @@ function arrayAppend( dstArray, ins )
  * @memberof wTools
  */
 
-// function arrayAppendOnce( dstArray,ins,onEqualize )
-// {
-//
-//   _.assert( _.arrayIs( dstArray ) );
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//   _.assert( onEqualize === undefined || _.routineIs( onEqualize ) );
-//
-//   var i;
-//
-//   if( !onEqualize )
-//   i = dstArray.indexOf( ins );
-//   else
-//   {
-//     for( i = 0 ; i < dstArray.length ; i++ )
-//     if( onEqualize( dstArray[ i ],i,dstArray ) === ins )
-//     break;
-//     if( i === dstArray.length )
-//     i = -1;
-//   }
-//
-//   if( i === -1 )
-//   {
-//     dstArray.push( ins );
-//     return dstArray.length - 1;
-//   }
-//
-//   return i;
-// }
-
-//
-
-function arrayAppendOnce( dstArray,ins,onEqualize )
+function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayAppendedOnce.apply( this, arguments );
-
   return dstArray;
 }
 
 //
 
-function arrayAppendOnceStrictly( dstArray,ins,onEqualize )
+function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
-  // _.assert( _.arrayIs( dstArray ) );
-  // _.assert( arguments.length === 2 || arguments.length === 3 );
-  // _.assert( onEqualize === undefined || _.routineIs( onEqualize ) );
-  // _.assert( _.arrayLeftIndexOf( dstArray,ins,onEqualize ) === -1,'array should have only unique elements, but has several',ins );
-
-  // else if( Config.debug )
-  // {
-  //   for( d = 0 ; d < dst.length ; d++ )
-  //   if( onElement( dst[ d ],d,dst ) === ins )
-  //   _.assert( 0,'array should have only unique elements, but has several',ins )
-  // }
-
   var result = arrayAppendedOnce.apply( this, arguments );
-  _.assert( result !== -1,'array should have only unique elements, but has several',ins );
-
+  _.assert( result !== -1,'array should have only unique elements, but has several', ins );
   return dstArray;
 }
 
@@ -10191,25 +10247,22 @@ function arrayAppended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
   _.assert( _.arrayIs( dstArray ) );
-
   dstArray.push( ins );
   return dstArray.length - 1;
 }
 
 //
 
-function arrayAppendedOnce( dstArray,ins,onEqualize )
+function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayIs( dstArray ) );
-
-  var i = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+  var i = _.arrayLeftIndex.apply( _, arguments );
 
   if( i === -1 )
   {
     dstArray.push( ins );
     return dstArray.length - 1;
   }
+
   return -1;
 }
 
@@ -10243,39 +10296,7 @@ function arrayAppendedOnce( dstArray,ins,onEqualize )
  * @memberof wTools
  */
 
-// function arrayAppendArrayOnce( dstArray )
-// {
-//   var result = dstArray;
-//
-//   _.assert( _.arrayIs( dstArray ),'arrayAppendArrayOnce :','expects array' );
-//
-//   for( var a = 1 ; a < arguments.length ; a++ )
-//   {
-//     var argument = arguments[ a ];
-//
-//     if( argument === undefined )
-//     throw _.err( 'arrayAppendArrayOnce','argument is not defined' );
-//
-//     if( _.arrayLike( argument ) )
-//     {
-//       for( var i = 0 ; i < argument.length ; i++ )
-//       if( result.indexOf( argument[ i ] ) === -1 )
-//       result.push( argument[ i ] );
-//     }
-//     else
-//     {
-//       if( result.indexOf( argument ) === -1 )
-//       result.push( argument );
-//     }
-//
-//   }
-//
-//   return result;
-// }
-
-//
-
-function arrayAppendArrayOnce( dstArray, insArray, onEqualize )
+function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   arrayAppendedArrayOnce.apply( this,arguments )
   return dstArray;
@@ -10283,11 +10304,10 @@ function arrayAppendArrayOnce( dstArray, insArray, onEqualize )
 
 //
 
-function arrayAppendArrayOnceStrictly( dstArray, insArray, onEqualize )
+function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayAppendedArrayOnce.apply( this,arguments )
   _.assert( result === insArray.length );
-
   return dstArray;
 }
 
@@ -10305,18 +10325,17 @@ function arrayAppendedArray( dstArray, insArray )
 
 //
 
-function arrayAppendedArrayOnce( dstArray, insArray, onEqualize )
+function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayLike( dstArray ) );
   _.assert( _.arrayLike( insArray ) );
   _.assert( dstArray !== insArray );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   var result = 0;
 
-  for( var i = 0; i < insArray.length; i++ )
+  for( var i = 0 ; i < insArray.length ; i++ )
   {
-    if( _.arrayLeftIndexOf( dstArray, insArray[ i ], onEqualize ) === -1 )
+    if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
     {
       dstArray.push( insArray[ i ] );
       result += 1;
@@ -10370,7 +10389,7 @@ function arrayAppendArrays( dstArray )
 
 //
 
-function arrayAppendArraysOnce( dstArray, insArray, onEqualize )
+function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   arrayAppendedArraysOnce.apply( this, arguments );
   return dstArray;
@@ -10378,7 +10397,7 @@ function arrayAppendArraysOnce( dstArray, insArray, onEqualize )
 
 //
 
-function arrayAppendArraysOnceStrictly( dstArray, insArray, onEqualize )
+function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayAppendedArraysOnce.apply( this, arguments );
 
@@ -10425,9 +10444,9 @@ function arrayAppendedArrays( dstArray, insArray )
 
 //
 
-function arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
+function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayAppendedArraysOnce :','expects arrayLike entity' );
 
@@ -10435,7 +10454,7 @@ function arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
 
   function _appendOnce( argument )
   {
-    var index = _.arrayLeftIndexOf( dstArray, argument, onEqualize );
+    var index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     if( index === -1 )
     {
       dstArray.push( argument );
@@ -10464,11 +10483,13 @@ function arrayAppendedArraysOnce( dstArray, insArray, onEqualize )
 // array remove
 // --
 
-function arrayRemove( dstArray, ins, onEqualize )
+function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemoved.apply( this, arguments );
   return dstArray;
 }
+
+//
 
 /**
  * The arrayRemoveOnce() routine removes the first matching element from (dstArray)
@@ -10503,34 +10524,26 @@ function arrayRemove( dstArray, ins, onEqualize )
  * @memberof wTools
  */
 
-function arrayRemoveOnce( dstArray,ins,onEqualize )
+function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
   arrayRemovedOnce.apply( this, arguments );
-
   return dstArray;
 }
 
 //
 
-function arrayRemoveOnceStrictly( dstArray,ins,onEqualize )
+function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-
   var result = arrayRemovedOnce.apply( this, arguments );
   _.assert( result !== -1,'array does not contains element',ins );
-
   return dstArray;
 }
 
 //
 
-function arrayRemoved( dstArray, ins, onEqualize )
+function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayIs( dstArray ),'arrayRemoved :','expects array' );
-
-  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var index = _.arrayLeftIndex.apply( _, arguments );
 
   if( index !== -1 )
   {
@@ -10559,9 +10572,9 @@ function arrayRemoved( dstArray, ins, onEqualize )
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayLeftIndexOf( dstArray, ins, onElement )]{@link wTools.arrayLeftIndexOf}
+ * [arrayLeftIndex( dstArray, ins, onElement )]{@link wTools.arrayLeftIndex}
  * If callback function(onElement) returns true, it returns the index that will be removed from (dstArray).
- * @see {@link wTools.arrayLeftIndexOf} - See for more information.
+ * @see {@link wTools.arrayLeftIndex} - See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
@@ -10586,30 +10599,10 @@ function arrayRemoved( dstArray, ins, onEqualize )
  * @memberof wTools
  */
 
-function arrayRemovedOnce( dstArray,ins,onEqualize )
+function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  // var index = -1;
-  //
-  // if( onElement === undefined )
-  // {
-  //
-  //   index = dstArray.indexOf( ins );
-  //
-  // }
-  // else if( onElement )
-  // {
-  //
-  //   _.assert( _.routineIs( onElement ) );
-  //   _.assert( onElement.length === 1 || onElement.length === 2 );
-  //   index = arrayLeftIndexOf( dstArray,ins,onElement );
-  //
-  // }
-  // else _.assert( 0,'unexpected' );
-
-  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var index = _.arrayLeftIndex.apply( _, arguments );
   if( index >= 0 )
   dstArray.splice( index, 1 );
 
@@ -10626,7 +10619,7 @@ function arrayRemoveArray( dstArray, insArray )
 
 //
 
-function arrayRemoveArrayOnce( dstArray,insArray,onEqualize )
+function arrayRemoveArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   arrayRemovedArrayOnce.apply( this, arguments );
   return dstArray;
@@ -10634,11 +10627,10 @@ function arrayRemoveArrayOnce( dstArray,insArray,onEqualize )
 
 //
 
-function arrayRemoveArrayOnceStrictly( dstArray,insArray,onEqualize )
+function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayRemovedArrayOnce.apply( this, arguments );
   _.assert( result === insArray.length );
-
   return dstArray;
 }
 
@@ -10692,7 +10684,7 @@ function arrayRemovedArray( dstArray, insArray )
  * If callback function(onEqualize) returns true, it returns the index that will be removed from (dstArray),
  * and then incrementing the variable (result++).
  *
- * @see wTools.arrayLeftIndexOf
+ * @see wTools.arrayLeftIndex
  *
  * @param { arrayLike } dstArray - The target array.
  * @param { arrayLike } insArray - The source array.
@@ -10720,19 +10712,19 @@ function arrayRemovedArray( dstArray, insArray )
  * @memberof wTools
  */
 
-function arrayRemovedArrayOnce( dstArray,insArray,onEqualize )
+function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayLike( insArray ) );
   _.assert( dstArray !== insArray );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   var result = 0;
   var index = -1;
 
   for( var i = 0, len = insArray.length; i < len ; i++ )
   {
-    index = _.arrayLeftIndexOf( dstArray,insArray[ i ],onEqualize );
+    index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 
     if( index >= 0 )
     {
@@ -10754,7 +10746,7 @@ function arrayRemoveArrays( dstArray, insArray )
 
 //
 
-function arrayRemoveArraysOnce( dstArray, insArray, onEqualize )
+function arrayRemoveArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   arrayRemovedArraysOnce.apply( this, arguments );
   return dstArray;
@@ -10762,7 +10754,7 @@ function arrayRemoveArraysOnce( dstArray, insArray, onEqualize )
 
 //
 
-function arrayRemoveArraysOnceStrictly( dstArray, insArray, onEqualize )
+function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayRemovedArraysOnce.apply( this, arguments );
 
@@ -10820,9 +10812,9 @@ function arrayRemovedArrays( dstArray, insArray )
 
 //
 
-function arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
+function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ),'arrayRemovedArraysOnce :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayRemovedArraysOnce :','expects arrayLike entity' );
 
@@ -10830,7 +10822,7 @@ function arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
 
   function _removeOnce( argument )
   {
-    var index = _.arrayLeftIndexOf( dstArray, argument, onEqualize );
+    var index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     if( index >= 0 )
     {
       dstArray.splice( index, 1 );
@@ -10900,33 +10892,24 @@ function arrayRemovedArraysOnce( dstArray, insArray, onEqualize )
  * @memberof wTools
  */
 
-function arrayRemoveAll( dstArray,ins,onEqualize )
+function arrayRemoveAll( dstArray, ins, evaluator1, evaluator2 )
 {
-
-  // if( arguments.length === 2 )
-  // arrayRemovedAll( dstArray,ins );
-  // else if( arguments.length === 3 )
-  // arrayRemovedAll( dstArray,ins,onEqualize );
   arrayRemovedAll.apply( this, arguments );
-
   return dstArray;
 }
 
 //
 
-function arrayRemovedAll( dstArray, ins, onEqualize  )
+function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.arrayIs( dstArray ),'arrayRemovedAll :','expects array' );
-
-  var index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+  var index = _.arrayLeftIndex.apply( _, arguments );
   var result = 0;
 
   while( index >= 0 )
   {
     dstArray.splice( index,1 );
     result += 1;
-    index = _.arrayLeftIndexOf( dstArray, ins, onEqualize );
+    index = _.arrayLeftIndex( _, arguments );
   }
 
   return result;
@@ -10999,7 +10982,7 @@ function arrayFlatten( dstArray, insArray )
 
 //
 
-function arrayFlattenOnce( dstArray, insArray, onEqualize )
+function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   arrayFlattenedOnce.apply( this, arguments );
   return dstArray;
@@ -11007,7 +10990,7 @@ function arrayFlattenOnce( dstArray, insArray, onEqualize )
 
 //
 
-function arrayFlattenOnceStrictly( dstArray, insArray, onEqualize )
+function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayFlattenedOnce.apply( this, arguments );
 
@@ -11063,10 +11046,9 @@ function arrayFlattened( dstArray, insArray )
 
 //
 
-function arrayFlattenedOnce( dstArray, insArray, onEqualize )
+function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.objectIs( this ) );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayLike( insArray ) );
 
@@ -11074,18 +11056,15 @@ function arrayFlattenedOnce( dstArray, insArray, onEqualize )
 
   for( var i = 0, len = insArray.length; i < len; i++ )
   {
+    _.assert( insArray[ i ] !== undefined );
     if( _.arrayLike( insArray[ i ] ) )
     {
-      var c = _.arrayFlattenedOnce( dstArray, insArray[ i ], onEqualize );
+      var c = _.arrayFlattenedOnce( dstArray, insArray[ i ], evaluator1, evaluator2 );
       result += c;
-    }
-    else if( insArray[ i ] === undefined )
-    {
-      throw _.err( 'array should have no undefined' );
     }
     else
     {
-      var index = _.arrayLeftIndexOf( dstArray, insArray[ i ], onEqualize );
+      var index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
       if( index === -1 )
       {
         dstArray.push( insArray[ i ] );
@@ -11138,7 +11117,7 @@ function arrayFlattenedOnce( dstArray, insArray, onEqualize )
  * @memberof wTools
  */
 
-function arrayReplaceOnce( dstArray,ins,sub,onEqualize )
+function arrayReplaceOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   arrayReplacedOnce.apply( this, arguments );
   return dstArray;
@@ -11146,7 +11125,7 @@ function arrayReplaceOnce( dstArray,ins,sub,onEqualize )
 
 //
 
-function arrayReplaceOnceStrictly( dstArray,ins,sub,onEqualize )
+function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   var result = arrayReplacedOnce.apply( this, arguments );
   _.assert( result !== -1, 'arrayReplaceOnceStrictly: ins not exists in dstArray' );
@@ -11155,24 +11134,23 @@ function arrayReplaceOnceStrictly( dstArray,ins,sub,onEqualize )
 
 //
 
-function arrayReplacedOnce( dstArray,ins,sub,onEqualize )
+function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 3 || arguments.length === 4 );
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   var index = -1;
 
-  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   if( index >= 0 )
-  dstArray.splice( index,1,sub );
+  dstArray.splice( index, 1, sub );
 
   return index;
 }
 
 //
 
-function arrayReplaceArrayOnce( dstArray,ins,sub,onEqualize  )
+function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
 {
   arrayReplacedArrayOnce.apply( this,arguments );
   return dstArray;
@@ -11180,7 +11158,7 @@ function arrayReplaceArrayOnce( dstArray,ins,sub,onEqualize  )
 
 //
 
-function arrayReplaceArrayOnceStrictly( dstArray,ins,sub,onEqualize  )
+function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
 {
   var result = arrayReplacedArrayOnce.apply( this,arguments );
   _.assert( result === ins.length );
@@ -11189,18 +11167,17 @@ function arrayReplaceArrayOnceStrictly( dstArray,ins,sub,onEqualize  )
 
 //
 
-function arrayReplacedArrayOnce( dstArray,ins,sub,onEqualize )
+function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayLike( dstArray ) );
   _.assert( _.arrayLike( ins ) );
-  _.assert( arguments.length === 3 || arguments.length === 4 );
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   var index = -1;
   var result = 0;
 
   for( var i = 0, len = ins.length; i < len; i++ )
   {
-    index = _.arrayLeftIndexOf( dstArray,ins[ i ],onEqualize )
+    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 )
     if( index >= 0 )
     {
       dstArray.splice( index,1,sub );
@@ -11214,7 +11191,7 @@ function arrayReplacedArrayOnce( dstArray,ins,sub,onEqualize )
 //
 
 
-function arrayReplaceArraysOnce( dstArray, ins, sub, onEqualize )
+function arrayReplaceArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   arrayReplacedArraysOnce.apply( this, arguments );
   return dstArray;
@@ -11223,7 +11200,7 @@ function arrayReplaceArraysOnce( dstArray, ins, sub, onEqualize )
 //
 
 
-function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, onEqualize )
+function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   var result = arrayReplacedArraysOnce.apply( this, arguments );
 
@@ -11238,10 +11215,9 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, onEqualize )
 
 //
 
-function arrayReplacedArraysOnce( dstArray, ins, sub, onEqualize )
+function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
-  _.assert( arguments.length === 3 || arguments.length === 4 );
-  _.assert( _.arrayLike( dstArray ) );
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
   _.assert( _.arrayLike( ins ) );
   _.assert( _.arrayLike( sub ) );
   _.assert( ins.length === sub.length );
@@ -11269,9 +11245,9 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, onEqualize )
     if( _.arrayLike( sub[ i ] ) )
     _.assert( insArray.length >= sub[ i ].length  );
 
-    for( var j = 0, slen = insArray.length; j < slen; j++ )
+    for( var j = 0, slen = insArray.length ; j < slen ; j++ )
     {
-      var index = _.arrayLeftIndexOf( dstArray, insArray[ j ], onEqualize );
+      var index = _.arrayLeftIndex( dstArray, insArray[ j ], evaluator1, evaluator2 );
       if( index >= 0 )
       {
         dstArray.splice( index, 1, _subGet( i, j ) );
@@ -11285,7 +11261,7 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, onEqualize )
 
 //
 
-function arrayReplaceAll( dstArray,ins,sub,onEqualize )
+function arrayReplaceAll( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   arrayReplacedAll.apply( this, arguments );
   return dstArray;
@@ -11293,21 +11269,20 @@ function arrayReplaceAll( dstArray,ins,sub,onEqualize )
 
 //
 
-function arrayReplacedAll( dstArray,ins,sub,onEqualize )
+function arrayReplacedAll( dstArray, ins, sub, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 3 || arguments.length === 4 );
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   var index = -1;
   var result = 0;
 
-  index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   while( index !== -1 )
   {
     dstArray.splice( index,1,sub );
     result += 1;
-    index = _.arrayLeftIndexOf( dstArray,ins,onEqualize );
+    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
   }
 
   return result;
@@ -11353,11 +11328,8 @@ function arrayReplacedAll( dstArray,ins,sub,onEqualize )
  * @memberof wTools
  */
 
-function arrayUpdate( dstArray,ins,sub )
+function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayLike( dstArray ) );
-  _.assert( arguments.length === 3 );
-
   var index = arrayReplacedOnce.apply( this, arguments );
 
   if( index === -1 )
@@ -11396,7 +11368,7 @@ function arrayUpdate( dstArray,ins,sub )
  * @memberof wTools
  */
 
-function arraySetDiff( src1,src2 )
+function arraySetDiff( src1, src2 )
 {
   var result = [];
 
@@ -12982,35 +12954,6 @@ function mapSupplementByMapsAppending( dstMap, srcMaps )
 }
 
 //
-//
-// function mapSupplementAppending( dstMap,srcMap )
-// {
-//   _.assert( arguments.length === 2 );
-//   _.assert( _.objectIs( srcMap ) );
-//   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
-//
-//   xxx
-//
-//   for( var s in srcMap )
-//   {
-//
-//     if( dstMap[ s ] !== undefined )
-//     {
-//       if( _.arrayIs( dstMap[ s ] ) )
-//       debugger;
-//       if( _.arrayIs( dstMap[ s ] ) )
-//       _.arrayAppendArrays( dstMap[ s ],[ srcMap[ s ] ] );
-//       continue;
-//     }
-//
-//     dstMap[ s ] = srcMap[ s ];
-//
-//   }
-//
-//   return dstMap;
-// }
-
-//
 
 // function mapStretch( dstMap )
 function mapSupplementOwn( dstMap, srcMap )
@@ -13546,41 +13489,31 @@ mapsFlatten.defaults =
 }
 
 //
-//
-// /**
-//  * The mapToArray() converts an object (src) into array [ [ key, value ] ... ].
-//  *
-//  * It takes an object (src) creates an empty array,
-//  * checks if ( arguments.length === 1 ) and (src) is an object.
-//  * If true, it returns a list of [ [ key, value ] ... ] pairs.
-//  * Otherwise it throws an Error.
-//  *
-//  * @param { objectLike } src - object to get a list of [ key, value ] pairs.
-//  *
-//  * @example
-//  * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
-//  * _.mapToArray( { a : 3, b : 13, c : 7 } );
-//  *
-//  * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
-//  * @function mapToArray
-//  * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
-//  * @memberof wTools
-//  */
-//
-// function mapToArray( src )
-// {
-//   var result = [];
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.objectIs( src ) );
-//
-//   for( var s in src )
-//   {
-//     result.push( [ s,src[s] ] );
-//   }
-//
-//   return result;
-// }
+
+/**
+ * The mapToArray() converts an object (src) into array [ [ key, value ] ... ].
+ *
+ * It takes an object (src) creates an empty array,
+ * checks if ( arguments.length === 1 ) and (src) is an object.
+ * If true, it returns a list of [ [ key, value ] ... ] pairs.
+ * Otherwise it throws an Error.
+ *
+ * @param { objectLike } src - object to get a list of [ key, value ] pairs.
+ *
+ * @example
+ * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
+ * _.mapToArray( { a : 3, b : 13, c : 7 } );
+ *
+ * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
+ * @function mapToArray
+ * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
+ * @memberof wTools
+ */
+
+function mapToArray( src )
+{
+  return _.mapPairs( src );
+}
 
 //
 
@@ -16142,8 +16075,8 @@ var Routines =
 
   // array sequential search
 
-  arrayLeftIndexOf : arrayLeftIndexOf,
-  arrayRightIndexOf : arrayRightIndexOf,
+  arrayLeftIndex : arrayLeftIndex,
+  arrayRightIndex : arrayRightIndex,
 
   arrayLeft : arrayLeft,
   arrayRight : arrayRight,
@@ -16160,6 +16093,8 @@ var Routines =
   arraySum : arraySum, /* dubious */
 
   // array prepend
+
+  /* all once + equilizer require tests!!! */
 
   arrayPrepend : arrayPrepend,
   arrayPrependOnce : arrayPrependOnce,
@@ -16356,7 +16291,8 @@ var Routines =
   mapInvertDroppingDuplicates : mapInvertDroppingDuplicates,
   mapsFlatten : mapsFlatten,
 
-  mapToStr : mapToStr, /* dubious */
+  mapToArray : mapToArray, /* !!! test rquired */
+  mapToStr : mapToStr, /* experimental */
 
   // map selector
 
@@ -16373,7 +16309,7 @@ var Routines =
   mapAllVals : mapAllVals,
 
   _mapPairs : _mapPairs,
-  mapPairs : mapPairs,
+  mapPairs : mapPairs, /* !!! test rquired */
   mapOwnPairs : mapOwnPairs,
   mapAllPairs : mapAllPairs,
 
