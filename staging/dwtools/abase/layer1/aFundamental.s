@@ -8933,15 +8933,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
   if( !evaluator1 )
   {
     _.assert( !evaluator2 );
-    if( !_.arrayIs( arr ) )
-    debugger;
     return _ArrayIndexOf.call( arr, ins );
-    // if( _.argumentsIs( arr ) )
-    // {
-    //   var array = _ArraySlice.call( arr );
-    //   return array.indexOf( ins );
-    // }
-    // return arr.indexOf( ins );
   }
   else if( evaluator1.length === 2 )
   {
@@ -8980,7 +8972,6 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 
   if( ins === undefined )
   debugger;
-  debugger;
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
@@ -8994,12 +8985,6 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     if( !_.arrayIs( arr ) )
     debugger;
     return _ArrayLastIndexOf.call( arr, ins );
-    // if( _.argumentsIs( arr ) )
-    // {
-    //   var array = _ArraySlice.call( arr );
-    //   return array.lastIndexOf( ins );
-    // }
-    // return arr.lastIndexOf( ins );
   }
   else if( evaluator1.length === 2 )
   {
@@ -9013,7 +8998,6 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
   else
   {
 
-    debugger;
     if( evaluator2 )
     ins = evaluator2( ins );
     else
