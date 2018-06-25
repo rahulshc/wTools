@@ -2810,16 +2810,16 @@ function strStripEmptyLines( test )
 
 //
 
-function strReplaceNames( test )
+function strReplaceWords( test )
 {
 
   test.description = 'simple string';
-  var got = _.strReplaceNames( 'a b c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var got = _.strReplaceWords( 'a b c d',[ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = 'a x y d';
   test.identical( got,expected );
 
   test.description = 'escaping string';
-  var got = _.strReplaceNames( '\na b \n c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var got = _.strReplaceWords( '\na b \n c d',[ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = '\na x \n y d';
   test.identical( got,expected );
 
@@ -2831,31 +2831,31 @@ function strReplaceNames( test )
   test.description = 'invalid arguments count';
   test.shouldThrowError( function()
   {
-    _.strReplaceNames( '1', '2');
+    _.strReplaceWords( '1', '2');
   });
 
   test.description = 'invalid argument type';
   test.shouldThrowError( function()
   {
-    _.strReplaceNames( 123,[],[] );
+    _.strReplaceWords( 123,[],[] );
   });
 
   test.description = 'invalid arrays length';
   test.shouldThrowError( function()
   {
-    _.strReplaceNames( 'one two',[ 'one' ],[ 'one', 'two' ] );
+    _.strReplaceWords( 'one two',[ 'one' ],[ 'one', 'two' ] );
   });
 
   test.description = 'invalid second arg type';
   test.shouldThrowError( function()
   {
-    _.strReplaceNames( 'one two',5,[ 'one', 'two' ] );
+    _.strReplaceWords( 'one two',5,[ 'one', 'two' ] );
   });
 
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strReplaceNames();
+    _.strReplaceWords();
   });
 
 }
@@ -4209,7 +4209,7 @@ var Self =
     strStrip : strStrip,
     strRemoveAllSpaces : strRemoveAllSpaces,
     strStripEmptyLines : strStripEmptyLines,
-    strReplaceNames : strReplaceNames,
+    strReplaceWords : strReplaceWords,
     strJoin : strJoin,
     strUnjoin : strUnjoin,
     strUnicodeEscape : strUnicodeEscape,

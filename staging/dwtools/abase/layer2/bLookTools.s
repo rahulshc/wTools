@@ -1854,7 +1854,7 @@ function _entityEqualAct( src1, src2, iterator )
     }
     else if( _.regexpIs( src1 ) )
     {
-      return _.regexpIdentical( src1, src2 );
+      return _.regexpsAreIdentical( src1, src2 );
     }
     else
     {

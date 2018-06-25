@@ -2110,6 +2110,183 @@ function errLogOnce( err )
 }
 
 // --
+// assert
+// --
+
+/**
+ * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion failed'.
+ * Also generates error using message(s) or existing error object(s) passed after first argument.
+ *
+ * @param {*} condition - condition to check.
+ * @param {String|Error} [ msgs ] - error messages for generated exception.
+ *
+ * @example
+ * var x = 1;
+ * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
+ *
+ * // caught eval (<anonymous>:2:8)
+ * // incorrect variable type-> number expects string
+ * // Error
+ * //   at _err (file:///.../wTools/staging/Base.s:3707)
+ * //   at assert (file://.../wTools/staging/Base.s:4041)
+ * //   at add (<anonymous>:2)
+ * //   at <anonymous>:1
+ *
+ * @example
+ * function add( x, y )
+ * {
+ *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
+ *   return x + y;
+ * }
+ * add();
+ *
+ * // caught add (<anonymous>:3:14)
+ * // incorrect arguments count
+ * // Error
+ * //   at _err (file:///.../wTools/staging/Base.s:3707)
+ * //   at assert (file://.../wTools/staging/Base.s:4035)
+ * //   at add (<anonymous>:3:14)
+ * //   at <anonymous>:6
+ *
+ * @example
+ *   function divide ( x, y )
+ *   {
+ *      wTools.assert( y != 0, 'divide by zero' );
+ *      return x / y;
+ *   }
+ *   divide( 3, 0 );
+ *
+ * // caught     at divide (<anonymous>:2:29)
+ * // divide by zero
+ * // Error
+ * //   at _err (file:///.../wTools/staging/Base.s:1418:13)
+ * //   at wTools.errLog (file://.../wTools/staging/Base.s:1462:13)
+ * //   at divide (<anonymous>:2:29)
+ * //   at <anonymous>:1:1
+ * @throws {Error} If passed condition( condition ) fails.
+ * @function assert
+ * @memberof wTools
+ */
+
+function _assertDebugger( condition )
+{
+  debugger;
+}
+
+//
+
+function assert( condition )
+{
+
+  /*return;*/
+
+  if( Config.debug === false )
+  return;
+
+  if( !condition )
+  {
+    _assertDebugger( condition );
+    if( arguments.length === 1 )
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+    });
+    else if( arguments.length === 2 )
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+    });
+    else
+    throw _err
+    ({
+      args : _.arraySlice( arguments,1 ),
+      level : 2,
+    });
+  }
+
+  return;
+}
+
+//
+
+function assertWithoutBreakpoint( condition )
+{
+
+  /*return;*/
+
+  if( Config.debug === false )
+  return;
+
+  if( !condition )
+  {
+    if( arguments.length === 1 )
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+    });
+    else if( arguments.length === 2 )
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+    });
+    else
+    throw _err
+    ({
+      args : _.arraySlice( arguments,1 ),
+      level : 2,
+    });
+  }
+
+  return;
+}
+
+//
+
+function assertNotTested( src )
+{
+
+  debugger;
+  _.assert( false,'not tested : ' + stack( 1 ) );
+
+}
+
+//
+
+/**
+ * If condition failed, routine prints warning messages passed after condition argument
+ * @example
+  function checkAngles( a, b, c )
+  {
+     wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+  };
+  checkAngles( 120, 23, 130 );
+
+ // triangle with that angles does not exists
+ * @param condition Condition to check.
+ * @param messages messages to print.
+ * @function assertWarn
+ * @memberof wTools
+ */
+
+function assertWarn( condition )
+{
+
+  if( Config.debug )
+  return;
+
+  if( !condition )
+  {
+    console.warn.apply( console,[].slice.call( arguments,1 ) );
+  }
+
+}
+
+// --
 // type test
 // --
 
@@ -2458,95 +2635,966 @@ function processIs( src )
   return false;
 }
 
+// --
+// routine
+// --
+
+function routineIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Function]';
+}
+
 //
 
-function eventIs( src )
+function routinesAre( src )
 {
-  if( src instanceof Event )
-  return true;
-  if( typeof jQuery === 'undefined' )
+  _.assert( arguments.length === 1 );
+
+  if( _.arrayLike( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !_.routineIs( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return routineIs( src );
+}
+
+//
+
+function routineIsPure( src )
+{
+  if( !src )
   return false;
-  if( src instanceof jQuery.Event )
-  return true;
+  if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
   return false;
-}
-
-//
-
-function htmlIs( src )
-{
-  return _ObjectToString.call( src ).indexOf( '[object HTML' ) !== -1;
-}
-
-//
-
-function jqueryIs( src )
-{
-  if( typeof jQuery === 'undefined' )
-  return;
-  return src instanceof jQuery;
-}
-
-//
-
-function canvasIs( src )
-{
-  if( _.jqueryIs( src ) )
-  src = src[ 0 ];
-  if( src instanceof HTMLCanvasElement )
   return true;
-  return false;
 }
 
 //
 
-function imageIs( src )
+function routineHasName( src )
 {
-  if( _.jqueryIs( src ) )
-  src = src[ 0 ];
-  if( src instanceof HTMLImageElement )
+  if( !routineIs( src ) )
+  return false;
+  if( !src.name )
+  return false;
   return true;
-  return false;
 }
 
 //
 
-function imageLike( src )
+/**
+ * Internal implementation.
+ * @param {object} object - object to check.
+ * @return {object} object - name in key/value format.
+ * @function _routineJoin
+ * @memberof wTools
+ */
+
+function _routineJoin( o )
 {
-  if( _.jqueryIs( src ) )
-  src = src[ 0 ];
-  if( src instanceof HTMLCanvasElement )
-  return true;
-  if( src instanceof HTMLImageElement )
-  return true;
-  return false;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.boolIs( o.seal ) );
+  _.assert( _.routineIs( o.routine ),'expects routine' );
+  _.assert( _.arrayLike( o.args ) || o.args === undefined );
+
+  var routine = o.routine;
+  var args = o.args;
+  var context = o.context;
+
+  if( _FunctionBind )
+  {
+
+    if( context !== undefined && args === undefined )
+    {
+      if( o.seal === true )
+      {
+        return function __sealedContext()
+        {
+          return routine.call( context );
+        }
+      }
+      else
+      {
+        return _FunctionBind.call( routine, context );
+      }
+    }
+    else if( context !== undefined )
+    {
+      if( o.seal === true )
+      {
+        return function __sealedContextAndArguments()
+        {
+          return routine.apply( context, args );
+        }
+      }
+      else
+      {
+        var a = _.arrayAppendArray( [ context ],args );
+        return _FunctionBind.apply( routine, a );
+      }
+    }
+    else if( args === undefined && !o.seal )
+    {
+      return routine;
+    }
+    else
+    {
+      if( !args )
+      args = [];
+
+      if( o.seal === true )
+      return function __sealedArguments()
+      {
+        return routine.apply( undefined, args );
+      }
+      else
+      return function __joinedArguments()
+      {
+        var a = args.slice();
+        _.arrayAppendArray( a,arguments );
+        return routine.apply( this, a );
+      }
+
+    }
+
+  }
+
+  /* */
+
+ _.assert( 0,'not implemented' );
+
 }
 
 //
 
-function domIs( src )
+/**
+ * The routineJoin() routine creates a new function with its 'this' ( context ) set to the provided `context`
+ value. Argumetns `args` of target function which are passed before arguments of binded function during
+ calling of target function. Unlike bind routine, position of `context` parameter is more intuitive.
+ * @example
+   var o = {
+        z: 5
+    };
+
+   var y = 4;
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineJoin(o, sum, [3]);
+   newSum(y); // 12
+
+   function f1(){ console.log( this ) };
+   var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+   f2.call( o ); // try to call new function with context set to { z: 5 }
+   var f3 = _.routineJoin( undefined,f1 ); // new function.
+   f3.call( o ) // print  { z: 5 }
+
+ * @param {Object} context The value that will be set as 'this' keyword in new function
+ * @param {Function} routine Function which will be used as base for result function.
+ * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
+ calling of target function. Must be wraped into array.
+ * @returns {Function} New created function with preceding this, and args.
+ * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
+ * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+ * @function routineJoin
+ * @memberof wTools
+ */
+
+function routineJoin( context, routine, args )
 {
-  if( !_global.Node )
-  return false;
-  return src instanceof Node;
+
+  _.assert( _.routineIs( routine ),'routineJoin :','second argument must be a routine' );
+  _.assert( arguments.length <= 3,'routineJoin :','expects 3 or less arguments' );
+
+  return _routineJoin
+  ({
+    routine : routine,
+    context : context,
+    args : args,
+    seal : false,
+  });
+
 }
 
 //
 
-function domLike( src )
+  /**
+   * Return new function with sealed context and arguments.
+   *
+   * @example
+   var o = {
+        z: 5
+    };
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   var newSum = wTools.routineSeal(o, sum, [3, 4]);
+   newSum(y); // 12
+   * @param {Object} context The value that will be set as 'this' keyword in new function
+   * @param {Function} routine Function which will be used as base for result function.
+   * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
+   * @returns {Function} Result function with sealed context and arguments.
+   * @function routineJoin
+   * @memberof wTools
+   */
+
+function routineSeal( context, routine, args )
 {
-  if( !_global.Node )
-  return false;
-  if( src instanceof Node )
-  return true;
-  return jqueryIs( src );
+
+  _.assert( _.routineIs( routine ),'routineSeal :','second argument must be a routine' );
+  _.assert( arguments.length <= 3,'routineSeal :','expects 3 or less arguments' );
+
+  return _routineJoin
+  ({
+    routine : routine,
+    context : context,
+    args : args,
+    seal : true,
+  });
+
 }
 
 //
 
-function domableIs( src )
+/**
+ * Return function that will call passed routine function with delay.
+ * @param {number} delay delay in milliseconds
+ * @param {Function} routine function that will be called with delay.
+ * @returns {Function} result function
+ * @throws {Error} If arguments less then 2
+ * @throws {Error} If `delay` is not a number
+ * @throws {Error} If `routine` is not a function
+ * @function routineDelayed
+ * @memberof wTools
+ */
+
+function routineDelayed( delay,routine )
 {
-  return strIs( src ) || domIs( src ) || jqueryIs( src );
+
+  _.assert( arguments.length >= 2 );
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( routine ) );
+
+  if( arguments.length > 2 )
+  {
+    _.assert( arguments.length <= 4 );
+    routine = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
+  }
+
+  return function delayed()
+  {
+    _.timeOut( delay,this,routine,arguments );
+  }
+
+}
+
+//
+
+function routineCall( context, routine, args )
+{
+  var result;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  /* */
+
+  if( arguments.length === 1 )
+  {
+    var routine = arguments[ 0 ];
+    result = routine();
+  }
+  else if( arguments.length === 2 )
+  {
+    var context = arguments[ 0 ];
+    var routine = arguments[ 1 ];
+    result = routine.call( context );
+  }
+  else if( arguments.length === 3 )
+  {
+    var context = arguments[ 0 ];
+    var routine = arguments[ 1 ];
+    var args = arguments[ 2 ];
+    _.assert( _.arrayLike( args ) );
+    result = routine.apply( context,args );
+  }
+  else _.assert( 0,'unexpected' );
+
+  return result;
+}
+
+//
+
+function routineTolerantCall( context,routine,options )
+{
+
+  _.assert( arguments.length === 3 );
+  _.assert( _.routineIs( routine ) );
+  _.assert( _.objectIs( routine.defaults ) );
+  _.assert( _.objectIs( options ) );
+
+  options = _.mapScreen( routine.defaults,options );
+  var result = routine.call( context,options );
+
+  return result;
+}
+
+//
+
+function routinesJoin()
+{
+  var result,routines,index;
+  var args = _.arraySlice( arguments );
+
+  _.assert( arguments.length >= 1 && arguments.length <= 3  );
+
+  /* */
+
+  function makeResult()
+  {
+
+    _.assert( _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ) );
+
+    if( _.routineIs( routines ) )
+    routines = [ routines ];
+
+    result = _.entityMake( routines );
+
+  }
+
+  /* */
+
+  if( arguments.length === 1 )
+  {
+    routines = arguments[ 0 ];
+    index = 0;
+    makeResult();
+  }
+  else if( arguments.length === 2 )
+  {
+    routines = arguments[ 1 ];
+    index = 1;
+    makeResult();
+  }
+  else if( arguments.length === 3 )
+  {
+    routines = arguments[ 1 ];
+    index = 1;
+    makeResult();
+  }
+  else _.assert( 0,'unexpected' );
+
+  /* */
+
+  if( _.arrayIs( routines ) )
+  for( var r = 0 ; r < routines.length ; r++ )
+  {
+    args[ index ] = routines[ r ];
+    result[ r ] = _.routineJoin.apply( this,args );
+  }
+  else
+  for( var r in routines )
+  {
+    args[ index ] = routines[ r ];
+    result[ r ] = _.routineJoin.apply( this,args );
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+function _routinesCall( o )
+{
+  var result;
+
+  _.assert( arguments.length === 1 );
+  _.assert( o.args.length >= 1 && o.args.length <= 3 );
+
+  /* */
+
+  function makeResult()
+  {
+
+    _.assert
+    (
+      _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
+      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
+    );
+
+    if( _.routineIs( routines ) )
+    routines = [ routines ];
+
+    result = _.entityMake( routines );
+
+  }
+
+  /* */
+
+  if( o.args.length === 1 )
+  {
+    var routines = o.args[ 0 ];
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
+    for( var r = 0 ; r < routines.length ; r++ )
+    {
+      result[ r ] = routines[ r ]();
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
+    }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ]();
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
+    }
+
+  }
+  else if( o.args.length === 2 )
+  {
+    var context = o.args[ 0 ];
+    var routines = o.args[ 1 ];
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
+    for( var r = 0 ; r < routines.length ; r++ )
+    {
+      result[ r ] = routines[ r ].call( context );
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
+    }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ].call( context );
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
+    }
+
+  }
+  else if( o.args.length === 3 )
+  {
+    var context = o.args[ 0 ];
+    var routines = o.args[ 1 ];
+    var args = o.args[ 2 ];
+
+    _.assert( _.arrayLike( args ) );
+
+    makeResult();
+
+    if( _.arrayIs( routines ) )
+    for( var r = 0 ; r < routines.length ; r++ )
+    {
+      result[ r ] = routines[ r ].apply( context,args );
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
+    }
+    else
+    for( var r in routines )
+    {
+      result[ r ] = routines[ r ].apply( context,args );
+      if( o.whileTrue && result[ r ] === false )
+      {
+        result = false;
+        break;
+      }
+    }
+
+  }
+  else _.assert( 0,'unexpected' );
+
+  return result;
+}
+
+_routinesCall.defaults =
+{
+  args : null,
+  whileTrue : 0,
+}
+
+//
+
+/**
+ * Call each routines in array with passed context and arguments.
+    The context and arguments are same for each called functions.
+    Can accept only routines without context and args.
+    Can accept single routine instead array.
+ * @example
+    var x = 2, y = 3,
+        o { z : 6 };
+
+    function sum( x, y )
+    {
+        return x + y + this.z;
+    },
+    prod = function( x, y )
+    {
+        return x * y * this.z;
+    },
+    routines = [ sum, prod ];
+    var res = wTools.routinesCall( o, routines, [ x, y ] );
+ // [ 11, 36 ]
+ * @param {Object} [context] Context in which calls each function.
+ * @param {Function[]} routines Array of called function
+ * @param {Array<*>} [args] Arguments that will be passed to each functions.
+ * @returns {Array<*>} Array with results of functions invocation.
+ * @function routinesCall
+ * @memberof wTools
+ */
+
+function routinesCall()
+{
+  var result;
+
+  result = _routinesCall
+  ({
+    args : arguments,
+    whileTrue : 0,
+  });
+
+  return result;
+}
+
+//
+
+function routinesCallWhile()
+{
+  var result;
+
+  result = _routinesCall
+  ({
+    args : arguments,
+    whileTrue : 1,
+  });
+
+  return result;
+}
+
+//
+
+function methodsCall( contexts,methods,args )
+{
+  var result = [];
+
+  if( args === undefined )
+  args = [];
+
+  var isContextsArray = _.arrayLike( contexts );
+  var isMethodsArray = _.arrayLike( methods );
+  var l1 = isContextsArray ? contexts.length : 1;
+  var l2 = isMethodsArray ? methods.length : 1;
+  var l = Math.max( l1,l2 );
+
+  _.assert( l >= 0 );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( !l )
+  return result;
+
+  var contextGet;
+  if( isContextsArray )
+  contextGet = ( i ) => contexts[ i ];
+  else
+  contextGet = ( i ) => contexts;
+
+  var methodGet;
+  if( isMethodsArray )
+  methodGet = ( i ) => methods[ i ];
+  else
+  methodGet = ( i ) => methods;
+
+  for( var i = 0 ; i < l ; i++ )
+  {
+    var context = contextGet( i );
+    var routine = context[ methodGet( i ) ];
+    _.assert( _.routineIs( routine ) );
+    result[ i ] = routine.apply( context,args )
+  }
+
+  return result;
+}
+
+//
+
+function routinesCompose()
+{
+  var srcs = _.arrayAppendArrays( [],arguments );
+
+  srcs = srcs.filter( ( e ) => e === null ? false : e );
+
+  _.assert( _.routinesAre( srcs ) );
+
+  if( srcs.length === 0 )
+  debugger;
+  else if( srcs.length === 1 )
+  {}
+  else
+  debugger;
+
+  if( srcs.length === 0 )
+  return function empty()
+  {
+  }
+  else if( srcs.length === 1 )
+  {
+    return srcs[ 0 ];
+  }
+  else return function composition()
+  {
+    var result = [];
+    for( var s = 0 ; s < srcs.length ; s++ )
+    result[ s ] = srcs[ s ].apply( this,arguments );
+    return result;
+  }
+
+}
+
+//
+
+function routinesComposeWhile()
+{
+  var srcs = _.arrayAppendArrays( [],arguments );
+
+  srcs = srcs.filter( ( e ) => e === null ? false : e );
+
+  _.assert( _.routinesAre( srcs ) );
+
+  if( srcs.length === 0 )
+  return function empty()
+  {
+  }
+  else if( srcs.length === 1 )
+  {
+    return srcs[ 0 ];
+  }
+  else return function composition()
+  {
+    var result = [];
+    for( var s = 0 ; s < srcs.length ; s++ )
+    {
+      var r = srcs[ s ].apply( this,arguments );
+      if( r === false )
+      return false;
+      else if( r !== undefined )
+      result.push( r );
+    }
+    if( !result.length )
+    return;
+    return result;
+  }
+
+}
+
+//
+
+function assertRoutineOptions( routine,args,defaults )
+{
+
+  if( !_.argumentsIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
+
+  _.assert( arguments.length === 2 || arguments.length === 3,'assertRoutineOptions : expects 2 arguments' );
+  _.assert( _.routineIs( routine ),'assertRoutineOptions : expects routine' );
+  _.assert( _.objectIs( routine.defaults ) || defaults,'assertRoutineOptions : expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ),'assertRoutineOptions : expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'assertRoutineOptions : expects single options map, but got',args.length,'arguments' );
+
+  defaults = defaults || routine.defaults;
+
+  _.assertMapHasOnly( options,defaults );
+  _.assertMapHasAll( options,defaults );
+  _.assertMapHasNoUndefine( options );
+
+  return options;
+}
+
+//
+
+function routineOptions( routine,args,defaults )
+{
+
+  if( !_.argumentsIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
+  if( options === undefined )
+  options = Object.create( null );
+
+  _.assert( arguments.length === 2 || arguments.length === 3,'routineOptions : expects 2 arguments' );
+  _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
+  _.assert( _.objectIs( routine.defaults ) || defaults,'routineOptions : expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ),'routineOptions : expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
+
+  defaults = defaults || routine.defaults;
+
+  _.assertMapHasOnly( options,defaults );
+  _.mapComplement( options,defaults );
+  _.assertMapHasNoUndefine( options );
+
+  return options;
+}
+
+//
+
+function routineOptionsWithUndefines( routine,args )
+{
+
+  if( !_.argumentsIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
+
+  if( options === undefined )
+  options = Object.create( null );
+
+  _.assert( arguments.length === 2,'routineOptionsWithUndefines : expects 2 arguments' );
+  _.assert( _.routineIs( routine ),'routineOptionsWithUndefines : expects routine' );
+  _.assert( _.objectIs( routine.defaults ),'routineOptionsWithUndefines : expects routine with defined defaults' );
+  _.assert( _.objectIs( options ),'routineOptionsWithUndefines : expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
+
+  _.assertMapHasOnlyWithUndefines( options,routine.defaults );
+  _.mapComplementWithUndefines( options,routine.defaults );
+
+  return options;
+}
+
+//
+
+function routineOptionsFromThis( routine,_this,constructor )
+{
+
+  _.assert( arguments.length === 3,'routineOptionsFromThis : expects 3 arguments' );
+
+  var options = _this || Object.create( null );
+  if( Object.isPrototypeOf.call( constructor,_this ) || constructor === _this )
+  options = Object.create( null );
+
+  return _.routineOptions( routine,options );
+}
+
+//
+
+function routineVectorize_functor( o )
+{
+
+  if( routineIs( o ) || strIs( o ) )
+  o = { routine : o }
+
+  o = routineOptions( routineVectorize_functor,o );
+
+  var routineName = o.routine.name;
+  var routine = o.routine;
+  var fieldFilter = o.fieldFilter;
+  var bypassingFilteredOut = o.bypassingFilteredOut;
+  var vectorizingArray = o.vectorizingArray;
+  var vectorizingMap = o.vectorizingArray;
+
+  if( strIs( routine ) )
+  routine = function methodCall()
+  {
+    debugger;
+    return this[ routineName ].apply( this,arguments );
+  }
+
+  _.assert( routineIs( routine ) );
+  _.assert( arguments.length === 1 );
+
+  /* */
+
+  var result = vectorize;
+
+  if( fieldFilter )
+  result = vectorizeWithFilters;
+  else if( !vectorizingArray || vectorizingMap )
+  result = vectorizeMapAndArray;
+  else
+  result = vectorize;
+
+  /* */
+
+  var fields = _.mapFields( routine );
+  for( var f in fields )
+  {
+    var field = fields[ f ];
+    if( _.objectIs( field ) )
+    {
+      result[ f ] = Object.create( field );
+    }
+    else
+    {
+      result[ f ] = field;
+    }
+  }
+
+  /* */
+
+  return result;
+
+  /* */
+
+  function vectorize( src )
+  {
+
+    _.assert( arguments.length === 1 );
+
+    if( _.arrayLike( src ) )
+    {
+      var result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      result[ r ] = routine.call( this,src[ r ] );
+      return result;
+    }
+
+    return routine.call( this,src );
+  }
+
+  /* */
+
+  function vectorizeMapAndArray( src )
+  {
+
+    _.assert( arguments.length === 1 );
+
+    if( vectorizingArray )
+    if( _.arrayLike( src ) )
+    {
+      var result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      result[ r ] = routine.call( this,src[ r ] );
+      return result;
+    }
+
+    if( vectorizingMap )
+    if( _.mapIs( src ) )
+    {
+      debugger;
+      var result = Object.create( null );
+      for( var r in src )
+      result[ r ] = routine.call( this,src[ r ] );
+      return result;
+    }
+
+    return routine.call( this,src );
+  }
+
+  /* */
+
+  function vectorizeWithFilters( src )
+  {
+    debugger;
+
+    _.assert( arguments.length === 1 );
+
+    if( vectorizingArray )
+    if( _.arrayLike( src ) )
+    {
+      var result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      if( fieldFilter( src[ r ],r,src ) )
+      result.push( routine.call( this,src[ r ] ) );
+      else if( bypassingFilteredOut )
+      result.push( src[ r ] );
+      return result;
+    }
+
+    if( vectorizingMap )
+    if( _.mapIs( src ) )
+    {
+      var result = Object.create( null );
+      for( var r in src )
+      if( fieldFilter( src[ r ],r,src ) )
+      result[ r ] = routine.call( this,src[ r ] );
+      else if( bypassingFilteredOut )
+      result[ r ] = src[ r ];
+      return result;
+    }
+
+    return routine.call( this,src );
+  }
+
+}
+
+routineVectorize_functor.defaults =
+{
+  routine : null,
+  fieldFilter : null,
+  bypassingFilteredOut : 1,
+  vectorizingArray : 1,
+  vectorizingMap : 0,
+}
+
+//
+
+function _equalizerFromMapper( mapper )
+{
+
+  if( mapper === undefined )
+  mapper = function mapper( a,b ){ return a === b };
+
+  _.assert( 0,'not tested' )
+  _.assert( arguments.length === 1 );
+  _.assert( mapper.length === 1 || mapper.length === 2 );
+
+  if( mapper.length === 1 )
+  {
+    var equalizer = function equalizerFromMapper( a,b )
+    {
+      return mapper( a ) === mapper( b );
+    }
+    return equalizer;
+  }
+
+  return mapper;
+}
+
+//
+
+function _comparatorFromMapper( mapper )
+{
+
+  if( mapper === undefined )
+  mapper = function mapper( a,b ){ return a-b };
+
+  _.assert( arguments.length === 1 );
+  _.assert( mapper.length === 1 || mapper.length === 2 );
+
+  if( mapper.length === 1 )
+  {
+    var comparator = function comparatorFromMapper( a,b )
+    {
+      return mapper( a ) - mapper( b );
+    }
+    return comparator;
+  }
+
+  return mapper;
 }
 
 // --
@@ -3496,7 +4544,28 @@ function regexpObjectIs( src )
 
 //
 
-function regexpIdentical( src1,src2 )
+function regexpLike( src )
+{
+  if( _.regexpIs( src ) || _.strIs( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function regexpsLike( srcs )
+{
+  if( !_.arrayIs( srcs ) )
+  return false;
+  for( var s = 0 ; s < srcs.length ; s++ )
+  if( !_.regexpLike( srcs[ s ] ) )
+  return false;
+  return true;
+}
+
+//
+
+function regexpsAreIdentical( src1,src2 )
 {
   _.assert( arguments.length === 2 );
 
@@ -3536,97 +4605,266 @@ function regexpEscape( src )
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
 
+// //
+//
+// var regexpsEscape = routineVectorize_functor( regexpEscape );
+
 //
 
 /**
  * Make regexp from string.
  *
  * @example
- * wTools.regexpMakeExpression( 'Hello. How are you?' ); // /Hello\. How are you\?/
+ * wTools.regexpFrom( 'Hello. How are you?' ); // /Hello\. How are you\?/
  * @param {String} src - string or regexp
  * @returns {String} Regexp
  * @throws {Error} Throw error with message 'unknown type of expression, expects regexp or string, but got' error
  if src not string or regexp
- * @function regexpMakeExpression
+ * @function regexpFrom
  * @memberof wTools
  */
 
-function regexpMakeExpression( src,flags )
+function regexpFrom( src,flags )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( flags === undefined || _.strIs( flags ) );
 
   if( _.regexpIs( src ) )
   return src;
 
-  _.assert( flags === undefined || _.strIs( flags ) );
-
-  if( _.strIs( src ) )
   return new RegExp( _.regexpEscape( src ),flags );
-
-  debugger;
-  throw _.err( 'regexpMakeExpression :','unknown type of expression, expects regexp or string, but got',_.strTypeOf( src ) );
 }
 
 //
 
-  /**
-   *  Generates "but" regular expression pattern. Accepts a list of words, which will be used in regexp.
-   *  The result regexp matches the strings that do not contain any of those words.
-   *
-   * @example
-   * wTools.regexpBut_( 'yellow', 'red', 'green' ); //   /^(?:(?!yellow|red|green).)+$/
-   *
-   * var options = {
-   *    but : ['yellow', 'red', 'green'],
-   *    atLeastOnce : false
-   * };
-   * wTools.regexpBut_(options); // /^(? :(?!yellow|red|green).)*$/
-   *
-   * @param {Object} [options] options for generate regexp. If this argument omitted then default options will be used
-   * @param {String[]} [options.but=null] a list of words,from each will consist regexp
-   * @param {boolean} [options.atLeastOne=true] indicates whether search matches at least once
-   * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
-   * options object.
-   * @returns {RegExp} Result regexp
-   * @throws {Error} If passed arguments are not strings or options object.
-   * @throws {Error} If options contains any different from 'but' or 'atLeastOnce' properties.
-   * @function regexpBut_
-   * @memberof wTools
-   */
-
-function regexpBut_( options )
+function regexpsSources( o )
 {
-  var args = arguments;
-  var atLeastOnce = regexpBut_.defaults.atLeastOnce;
-  if( arguments.length === 1 && _.objectIs( options ) )
+  if( _.arrayIs( arguments[ 0 ] ) )
   {
-    _.assertMapHasOnly( options,regexpBut_.defaults );
-    _.mapComplement( options,regexpBut_.defaults );
-    args = options.but;
-    atLeastOnce = options.atLeastOnce;
+    var o = Object.create( null );
+    o.sources = arguments[ 0 ];
   }
 
-  var words = _.arrayFlatten( [], args );
-  var result = '^(?:(?!';
+  o.sources = o.sources || [];
+  if( o.flags === undefined )
+  o.flags = null;
 
-  for( var w = 0 ; w < words.length ; w++ )
-  _.assert( _.strIs( words[ w ] ) );
+  _.assert( arguments.length === 1 );
 
-  result += words.join( '|' );
+  for( var s = 0 ; s < o.sources.length ; s++ )
+  {
+    var src = o.sources[ s ];
+    if( _.regexpIs( src ) )
+    {
+      o.sources[ s ] = src.source;
+      _.assert( o.flags === null || src.flags === o.flags, 'all RegExps should have flags field with the same value', '"' + src.flags + '"', '!=',  '"' + o.flags + '"' );
+      if( o.flags === null )
+      o.flags = src.flags;
+    }
+    _.assert( _.strIs( o.sources[ s ] ) );
+  }
 
-  if( atLeastOnce )
-  result += ').)+$';
-  else
-  result += ').)*$';
+  // o.flags = o.flags || '';
 
-  return new RegExp( result );
+  return o;
 }
 
-regexpBut_.defaults =
+regexpsSources.defaults =
 {
-  but : null,
-  atLeastOnce : true,
+  sources : null,
+  flags : null,
+}
+
+//
+
+function regexpsJoin( o )
+{
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsJoin, o );
+  _.assert( arguments.length === 1 );
+
+  var src = o.sources[ 0 ];
+  o = _.regexpsSources( o );
+  if( o.sources.length === 1 && _.regexpIs( src ) )
+  return src;
+
+  var result = o.sources.join( '' );
+
+  return new RegExp( result, o.flags || '' );
+}
+
+regexpsJoin.defaults =
+{
+  flags : null,
+  sources : null,
+}
+
+//
+
+function regexpsAtLeastFirst( o )
+{
+
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsAny, o );
+  _.assert( arguments.length === 1 );
+
+  var src = o.sources[ 0 ];
+  o = _.regexpsSources( o );
+  if( o.sources.length === 1 && _.regexpIs( src ) )
+  return src;
+
+  var result = '';
+  var prefix = '';
+  var postfix = '';
+
+  for( var s = 0 ; s < o.sources.length ; s++ )
+  {
+    var src = o.sources[ s ];
+    prefix = prefix + '(' + src;
+    if( s === 0 )
+    postfix =  ')' + postfix
+    else
+    postfix =  ')?' + postfix
+  }
+
+  result = prefix + postfix;
+  return new RegExp( result, o.flags || '' );
+}
+
+regexpsAtLeastFirst.defaults =
+{
+  flags : null,
+  sources : null,
+}
+
+//
+
+/**
+ *  Generates "but" regular expression pattern. Accepts a list of words, which will be used in regexp.
+ *  The result regexp matches the strings that do not contain any of those words.
+ *
+ * @example
+ * wTools.regexpsNone( 'yellow', 'red', 'green' ); //   /^(?:(?!yellow|red|green).)+$/
+ *
+ * var options =
+ * {
+ *    but : [ 'yellow', 'red', 'green' ],
+ *    atLeastOnce : false
+ * };
+ * wTools.regexpsNone(options); // /^(?:(?!yellow|red|green).)*$/
+ *
+ * @param {Object} [options] options for generate regexp. If this argument omitted then default options will be used
+ * @param {String[]} [options.but=null] a list of words,from each will consist regexp
+ * @param {boolean} [options.atLeastOne=true] indicates whether search matches at least once
+ * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
+ * options object.
+ * @returns {RegExp} Result regexp
+ * @throws {Error} If passed arguments are not strings or options object.
+ * @throws {Error} If options contains any different from 'but' or 'atLeastOnce' properties.
+ * @function regexpsNone
+ * @memberof wTools
+ */
+
+function regexpsNone( o )
+{
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsNone, o );
+  _.assert( arguments.length === 1 );
+
+  o = _.regexpsSources( o );
+
+  var result = '^(?:(?!(';
+  result += o.sources.join( ')|(' );
+  // if( o.atLeastOnce )
+  result += ')).)+$';
+  // else
+  // result += ').)*$';
+
+  return new RegExp( result, o.flags || '' );
+}
+
+regexpsNone.defaults =
+{
+  flags : null,
+  sources : null,
+  // atLeastOnce : true,
+}
+
+//
+
+function regexpsAny( o )
+{
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsAny, o );
+  _.assert( arguments.length === 1 );
+
+  var src = o.sources[ 0 ];
+  o = _.regexpsSources( o );
+  if( o.sources.length === 1 && _.regexpIs( src ) )
+  return src;
+
+  var result = '(';
+  result += o.sources.join( ')|(' );
+  result += ')';
+
+  return new RegExp( result, o.flags || '' );
+}
+
+regexpsAny.defaults =
+{
+  flags : null,
+  sources : null,
+}
+
+//
+
+function regexpsAll( o )
+{
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsAll, o );
+  _.assert( arguments.length === 1 );
+
+  var src = o.sources[ 0 ];
+  o = _.regexpsSources( o );
+  if( o.sources.length === 1 && _.regexpIs( src ) )
+  return src;
+
+  var result = ''
+
+  if( o.sources.length > 0 )
+  {
+
+    if( o.sources.length > 1 )
+    {
+      result += '(?=';
+      result += o.sources.slice( 0, o.sources.length-1 ).join( ')(?=' );
+      result += ')';
+    }
+
+    result += '(';
+    result += o.sources[ o.sources.length-1 ];
+    result += ')';
+
+  }
+
+  return new RegExp( result, o.flags || '' );
+}
+
+regexpsAll.defaults =
+{
+  flags : null,
+  sources : null,
 }
 
 //
@@ -3646,7 +4884,7 @@ regexpBut_.defaults =
 function regexpArrayMake( src )
 {
 
-  _.assert( _.arrayIs( src ) || _.regexpIs( src ) || _.strIs( src ),'expects array/regexp/string, got ' + _.strTypeOf( src ) );
+  _.assert( _.regexpLike( src ) || _.arrayIs( src ), 'expects array/regexp/string, got ' + _.strTypeOf( src ) );
 
   src = _.arrayFlatten( [], _.arrayAs( src ) );
 
@@ -3660,7 +4898,7 @@ function regexpArrayMake( src )
       continue;
     }
 
-    src[ k ] = _.regexpMakeExpression( e );
+    src[ k ] = _.regexpFrom( e );
 
   }
 
@@ -3669,24 +4907,24 @@ function regexpArrayMake( src )
 
 //
 
-  /**
-   * regexpArrayIndex() returns the index of the first regular expression that matches substring
-    Otherwise, it returns -1.
-   * @example
-   *
-     var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
-     var regArr1 = [/white/, /green/, /blue/];
-     wTools.regexpArrayIndex(regArr1, str); // 1
+/**
+ * regexpArrayIndex() returns the index of the first regular expression that matches substring
+  Otherwise, it returns -1.
+ * @example
+ *
+   var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
+   var regArr1 = [/white/, /green/, /blue/];
+   wTools.regexpArrayIndex(regArr1, str); // 1
 
-   * @param {RegExp[]} arr Array for regular expressions.
-   * @param {String} ins String, inside which will be execute search
-   * @returns {number} Index of first matching or -1.
-   * @throws {Error} If first argument is not array.
-   * @throws {Error} If second argument is not string.
-   * @throws {Error} If element of array is not RegExp.
-   * @function regexpArrayIndex
-   * @memberof wTools
-   */
+ * @param {RegExp[]} arr Array for regular expressions.
+ * @param {String} ins String, inside which will be execute search
+ * @returns {number} Index of first matching or -1.
+ * @throws {Error} If first argument is not array.
+ * @throws {Error} If second argument is not string.
+ * @throws {Error} If element of array is not RegExp.
+ * @function regexpArrayIndex
+ * @memberof wTools
+ */
 
 function regexpArrayIndex( arr,ins )
 {
@@ -3716,20 +4954,20 @@ function regexpArrayIndex( arr,ins )
  * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
  *
  * var regArr2 = [/yellow/, /blue/, /red/];
- * wTools._regexpArrayAny(regArr2, str, false); // 1
+ * wTools.regexpArrayAny(regArr2, str, false); // 1
  *
  * var regArr3 = [/yellow/, /white/, /greey/]
- * wTools._regexpArrayAny(regArr3, str, false); // false
+ * wTools.regexpArrayAny(regArr3, str, false); // false
  * @param {String[]} arr Array of regular expressions strings
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @thows {Error} If missed one of arguments
- * @function _regexpArrayAny
+ * @function regexpArrayAny
  * @memberof wTools
  */
 
-function _regexpArrayAny( arr,ins,none )
+function regexpArrayAny( arr, ins, none )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -3758,20 +4996,20 @@ function _regexpArrayAny( arr,ins,none )
  * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
  *
  * var regArr1 = [/red/, /green/, /blue/];
- * wTools._regexpArrayAll(regArr1, str, false); // true
+ * wTools.regexpArrayAll(regArr1, str, false); // true
  *
  * var regArr2 = [/yellow/, /blue/, /red/];
- * wTools._regexpArrayAll(regArr2, str, false); // 0
+ * wTools.regexpArrayAll(regArr2, str, false); // 0
  * @param {String[]} arr Array of regular expressions strings
  * @param {String} ins - string that is tested by regular expressions passed in `arr` parameter
  * @param {*} none - Default return value if array is empty
  * @returns {*} Returns the first match index, false if input array of regexp was empty or default value otherwise
  * @thows {Error} If missed one of arguments
- * @function _regexpArrayAll
+ * @function regexpArrayAll
  * @memberof wTools
  */
 
-function _regexpArrayAll( arr,ins,none )
+function regexpArrayAll( arr, ins, none )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
   _.assert( arguments.length === 3 );
@@ -3781,6 +5019,25 @@ function _regexpArrayAll( arr,ins,none )
   {
     if( !arr[ m ].test( ins ) )
     return m;
+  }
+
+  return arr.length ? true : none;
+}
+
+//
+
+function regexpArrayNone( arr, ins, none )
+{
+
+  _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
+  _.assert( arguments.length === 3 );
+
+  var arr = _.arrayAs( arr );
+  for( var m = 0 ; m < arr.length ; m++ )
+  {
+    _.assert( arr[ m ].test );
+    if( arr[ m ].test( ins ) )
+    return false;
   }
 
   return arr.length ? true : none;
@@ -3837,1023 +5094,6 @@ function regexpMakeObject( src,defaultMode )
   _.assert( _.RegexpObject );
   return _.RegexpObject( src,defaultMode );
 }
-
-// --
-// routine
-// --
-
-function routineIs( src )
-{
-  // if( !src )
-  // return false;
-  // if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
-  // return false;
-  // return true;
-  return _ObjectToString.call( src ) === '[object Function]';
-}
-
-//
-
-function routinesAre( src )
-{
-  _.assert( arguments.length === 1 );
-
-  if( _.arrayLike( src ) )
-  {
-    for( var s = 0 ; s < src.length ; s++ )
-    if( !_.routineIs( src[ s ] ) )
-    return false;
-    return true;
-  }
-
-  return routineIs( src );
-}
-
-//
-
-function routineIsPure( src )
-{
-  if( !src )
-  return false;
-  if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
-  return false;
-  return true;
-}
-
-//
-
-function routineHasName( src )
-{
-  if( !routineIs( src ) )
-  return false;
-  if( !src.name )
-  return false;
-  return true;
-}
-
-//
-
-/**
- * Internal implementation.
- * @param {object} object - object to check.
- * @return {object} object - name in key/value format.
- * @function _routineJoin
- * @memberof wTools
- */
-
-function _routineJoin( o )
-{
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.boolIs( o.seal ) );
-  _.assert( _.routineIs( o.routine ),'expects routine' );
-  _.assert( _.arrayLike( o.args ) || o.args === undefined );
-
-  var routine = o.routine;
-  var args = o.args;
-  var context = o.context;
-
-  if( _FunctionBind )
-  {
-
-    if( context !== undefined && args === undefined )
-    {
-      if( o.seal === true )
-      {
-        return function __sealedContext()
-        {
-          return routine.call( context );
-        }
-      }
-      else
-      {
-        return _FunctionBind.call( routine, context );
-      }
-    }
-    else if( context !== undefined )
-    {
-      if( o.seal === true )
-      {
-        return function __sealedContextAndArguments()
-        {
-          return routine.apply( context, args );
-        }
-      }
-      else
-      {
-        var a = _.arrayAppendArray( [ context ],args );
-        return _FunctionBind.apply( routine, a );
-      }
-    }
-    else if( args === undefined && !o.seal )
-    {
-      return routine;
-    }
-    else
-    {
-      if( !args )
-      args = [];
-
-      if( o.seal === true )
-      return function __sealedArguments()
-      {
-        return routine.apply( undefined, args );
-      }
-      else
-      return function __joinedArguments()
-      {
-        var a = args.slice();
-        _.arrayAppendArray( a,arguments );
-        return routine.apply( this, a );
-      }
-
-    }
-
-  }
-
-  /* */
-
- _.assert( 0,'not implemented' );
-
-}
-
-//
-//
-// /**
-//  * The routineBind() routine creates a new function with its 'this' ( context ) set to the provided `context`
-//  value. Unlike Function.prototype.bind() routine if `context` is undefined`, in new function 'this' context will not be
-//  sealed. Argumetns `args` of target function which are passed before arguments of binded function during calling of
-//  target function.
-//  * Besides the aforementioned difference, routineBind routine accepts function as argument, that makes it more useful
-//     than Function.prototype.bind().
-//  * @example
-//     var o = {
-//         z: 5
-//     };
-//
-//     var y = 4;
-//
-//     function sum(x, y) {
-//        return x + y + this.z;
-//     }
-//     var newSum = wTools.routineBind(sum, o, [3]);
-//     newSum(y); // 12
-//
-//    function f1(){ console.log( this ) };
-//    var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
-//    f2.call( o ); // try to call new function with context set to { z: 5 }
-//    var f3 = _.routineBind( f1 ); // new function, 'this' is undefined/global object.
-//    f3.call( o ) // print  { z: 5 }
-//  * @param {Function} routine Function which will be used as base for result function.
-//  * @param {Object} context The value that will be set as 'this' keyword in new function
-//  * @param {Array<*>} args Arguments to prepend to arguments provided to the bound function when invoking the target
-//  function. Must be wraped into array.
-//  * @returns {Function} New created function with preceding this, and args.
-//  * @throws {Error} When first argument is not callable throws error with text 'first argument must be a routine'
-//  * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
-//  * @function routineBind
-//  * @memberof wTools
-//  */
-//
-// function routineBind( routine, context, args )
-// {
-//
-//   _.assert( _.routineIs( routine ),'routineBind :','first argument must be a routine' );
-//   _.assert( arguments.length <= 3,'routineBind :','expects 3 or less arguments' );
-//
-//   return _routineJoin
-//   ({
-//     routine : routine,
-//     context : context,
-//     args : args,
-//     seal : false,
-//   });
-//
-// }
-
-//
-
-/**
- * The routineJoin() routine creates a new function with its 'this' ( context ) set to the provided `context`
- value. Argumetns `args` of target function which are passed before arguments of binded function during
- calling of target function. Unlike bind routine, position of `context` parameter is more intuitive.
- * @example
-   var o = {
-        z: 5
-    };
-
-   var y = 4;
-
-   function sum(x, y) {
-       return x + y + this.z;
-    }
-   var newSum = wTools.routineJoin(o, sum, [3]);
-   newSum(y); // 12
-
-   function f1(){ console.log( this ) };
-   var f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
-   f2.call( o ); // try to call new function with context set to { z: 5 }
-   var f3 = _.routineJoin( undefined,f1 ); // new function.
-   f3.call( o ) // print  { z: 5 }
-
- * @param {Object} context The value that will be set as 'this' keyword in new function
- * @param {Function} routine Function which will be used as base for result function.
- * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
- calling of target function. Must be wraped into array.
- * @returns {Function} New created function with preceding this, and args.
- * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
- * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
- * @function routineJoin
- * @memberof wTools
- */
-
-function routineJoin( context, routine, args )
-{
-
-  _.assert( _.routineIs( routine ),'routineJoin :','second argument must be a routine' );
-  _.assert( arguments.length <= 3,'routineJoin :','expects 3 or less arguments' );
-
-  return _routineJoin
-  ({
-    routine : routine,
-    context : context,
-    args : args,
-    seal : false,
-  });
-
-}
-
-//
-
-  /**
-   * Return new function with sealed context and arguments.
-   *
-   * @example
-   var o = {
-        z: 5
-    };
-
-   function sum(x, y) {
-       return x + y + this.z;
-    }
-   var newSum = wTools.routineSeal(o, sum, [3, 4]);
-   newSum(y); // 12
-   * @param {Object} context The value that will be set as 'this' keyword in new function
-   * @param {Function} routine Function which will be used as base for result function.
-   * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
-   * @returns {Function} Result function with sealed context and arguments.
-   * @function routineJoin
-   * @memberof wTools
-   */
-
-function routineSeal( context, routine, args )
-{
-
-  _.assert( _.routineIs( routine ),'routineSeal :','second argument must be a routine' );
-  _.assert( arguments.length <= 3,'routineSeal :','expects 3 or less arguments' );
-
-  return _routineJoin
-  ({
-    routine : routine,
-    context : context,
-    args : args,
-    seal : true,
-  });
-
-}
-
-//
-
-/**
- * Return function that will call passed routine function with delay.
- * @param {number} delay delay in milliseconds
- * @param {Function} routine function that will be called with delay.
- * @returns {Function} result function
- * @throws {Error} If arguments less then 2
- * @throws {Error} If `delay` is not a number
- * @throws {Error} If `routine` is not a function
- * @function routineDelayed
- * @memberof wTools
- */
-
-function routineDelayed( delay,routine )
-{
-
-  _.assert( arguments.length >= 2 );
-  _.assert( _.numberIs( delay ) );
-  _.assert( _.routineIs( routine ) );
-
-  if( arguments.length > 2 )
-  {
-    _.assert( arguments.length <= 4 );
-    routine = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
-  }
-
-  return function delayed()
-  {
-    _.timeOut( delay,this,routine,arguments );
-  }
-
-}
-
-//
-
-function routineTolerantCall( context,routine,options )
-{
-
-  _.assert( arguments.length === 3 );
-  _.assert( _.routineIs( routine ) );
-  _.assert( _.objectIs( routine.defaults ) );
-  _.assert( _.objectIs( options ) );
-
-  options = _.mapScreen( routine.defaults,options );
-  var result = routine.call( context,options );
-
-  return result;
-}
-
-//
-
-function routinesJoin()
-{
-  var result,routines,index;
-  var args = _.arraySlice( arguments );
-
-  _.assert( arguments.length >= 1 && arguments.length <= 3  );
-
-  /* */
-
-  function makeResult()
-  {
-
-    _.assert( _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ) );
-
-    if( _.routineIs( routines ) )
-    routines = [ routines ];
-
-    result = _.entityMake( routines );
-
-  }
-
-  /* */
-
-  if( arguments.length === 1 )
-  {
-    routines = arguments[ 0 ];
-    index = 0;
-    makeResult();
-  }
-  else if( arguments.length === 2 )
-  {
-    routines = arguments[ 1 ];
-    index = 1;
-    makeResult();
-  }
-  else if( arguments.length === 3 )
-  {
-    routines = arguments[ 1 ];
-    index = 1;
-    makeResult();
-  }
-  else _.assert( 0,'unexpected' );
-
-  /* */
-
-  if( _.arrayIs( routines ) )
-  for( var r = 0 ; r < routines.length ; r++ )
-  {
-    args[ index ] = routines[ r ];
-    result[ r ] = _.routineJoin.apply( this,args );
-  }
-  else
-  for( var r in routines )
-  {
-    args[ index ] = routines[ r ];
-    result[ r ] = _.routineJoin.apply( this,args );
-  }
-
-  /* */
-
-  return result;
-}
-
-//
-
-function _routinesCall( o )
-{
-  var result;
-
-  _.assert( arguments.length === 1 );
-  _.assert( o.args.length >= 1 && o.args.length <= 3 );
-
-  /* */
-
-  function makeResult()
-  {
-
-    _.assert
-    (
-      _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
-      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
-    );
-
-    if( _.routineIs( routines ) )
-    routines = [ routines ];
-
-    result = _.entityMake( routines );
-
-  }
-
-  /* */
-
-  if( o.args.length === 1 )
-  {
-    var routines = o.args[ 0 ];
-
-    makeResult();
-
-    if( _.arrayIs( routines ) )
-    for( var r = 0 ; r < routines.length ; r++ )
-    {
-      result[ r ] = routines[ r ]();
-      if( o.whileTrue && result[ r ] === false )
-      {
-        result = false;
-        break;
-      }
-    }
-    else
-    for( var r in routines )
-    {
-      result[ r ] = routines[ r ]();
-      if( o.whileTrue && result[ r ] === false )
-      {
-        result = false;
-        break;
-      }
-    }
-
-  }
-  else if( o.args.length === 2 )
-  {
-    var context = o.args[ 0 ];
-    var routines = o.args[ 1 ];
-
-    makeResult();
-
-    if( _.arrayIs( routines ) )
-    for( var r = 0 ; r < routines.length ; r++ )
-    {
-      result[ r ] = routines[ r ].call( context );
-      if( o.whileTrue && result[ r ] === false )
-      {
-        result = false;
-        break;
-      }
-    }
-    else
-    for( var r in routines )
-    {
-      result[ r ] = routines[ r ].call( context );
-      if( o.whileTrue && result[ r ] === false )
-      {
-        result = false;
-        break;
-      }
-    }
-
-  }
-  else if( o.args.length === 3 )
-  {
-    var context = o.args[ 0 ];
-    var routines = o.args[ 1 ];
-    var args = o.args[ 2 ];
-
-    _.assert( _.arrayLike( args ) );
-
-    makeResult();
-
-    if( _.arrayIs( routines ) )
-    for( var r = 0 ; r < routines.length ; r++ )
-    {
-      result[ r ] = routines[ r ].apply( context,args );
-      if( o.whileTrue && result[ r ] === false )
-      {
-        result = false;
-        break;
-      }
-    }
-    else
-    for( var r in routines )
-    {
-      result[ r ] = routines[ r ].apply( context,args );
-      if( o.whileTrue && result[ r ] === false )
-      {
-        result = false;
-        break;
-      }
-    }
-
-  }
-  else _.assert( 0,'unexpected' );
-
-  return result;
-}
-
-_routinesCall.defaults =
-{
-  args : null,
-  whileTrue : 0,
-}
-
-//
-
-/**
- * Call each routines in array with passed context and arguments.
-    The context and arguments are same for each called functions.
-    Can accept only routines without context and args.
-    Can accept single routine instead array.
- * @example
-    var x = 2, y = 3,
-        o { z : 6 };
-
-    function sum( x, y )
-    {
-        return x + y + this.z;
-    },
-    prod = function( x, y )
-    {
-        return x * y * this.z;
-    },
-    routines = [ sum, prod ];
-    var res = wTools.routinesCall( o, routines, [ x, y ] );
- // [ 11, 36 ]
- * @param {Object} [context] Context in which calls each function.
- * @param {Function[]} routines Array of called function
- * @param {Array<*>} [args] Arguments that will be passed to each functions.
- * @returns {Array<*>} Array with results of functions invocation.
- * @function routinesCall
- * @memberof wTools
- */
-
-function routinesCall()
-{
-  var result;
-
-  result = _routinesCall
-  ({
-    args : arguments,
-    whileTrue : 0,
-  });
-
-  return result;
-}
-
-//
-
-function routinesCallWhile()
-{
-  var result;
-
-  result = _routinesCall
-  ({
-    args : arguments,
-    whileTrue : 1,
-  });
-
-  return result;
-}
-
-//
-
-function methodsCall( contexts,methods,args )
-{
-  var result = [];
-
-  if( args === undefined )
-  args = [];
-
-  var isContextsArray = _.arrayLike( contexts );
-  var isMethodsArray = _.arrayLike( methods );
-  var l1 = isContextsArray ? contexts.length : 1;
-  var l2 = isMethodsArray ? methods.length : 1;
-  var l = Math.max( l1,l2 );
-
-  _.assert( l >= 0 );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( !l )
-  return result;
-
-  var contextGet;
-  if( isContextsArray )
-  contextGet = ( i ) => contexts[ i ];
-  else
-  contextGet = ( i ) => contexts;
-
-  var methodGet;
-  if( isMethodsArray )
-  methodGet = ( i ) => methods[ i ];
-  else
-  methodGet = ( i ) => methods;
-
-  for( var i = 0 ; i < l ; i++ )
-  {
-    var context = contextGet( i );
-    var routine = context[ methodGet( i ) ];
-    _.assert( _.routineIs( routine ) );
-    result[ i ] = routine.apply( context,args )
-  }
-
-  return result;
-}
-
-//
-
-function routinesCompose()
-{
-  var srcs = _.arrayAppendArrays( [],arguments );
-
-  srcs = srcs.filter( ( e ) => e === null ? false : e );
-
-  _.assert( _.routinesAre( srcs ) );
-
-  if( srcs.length === 0 )
-  debugger;
-  else if( srcs.length === 1 )
-  {}
-  else
-  debugger;
-
-  if( srcs.length === 0 )
-  return function empty()
-  {
-  }
-  else if( srcs.length === 1 )
-  {
-    return srcs[ 0 ];
-  }
-  else return function composition()
-  {
-    var result = [];
-    for( var s = 0 ; s < srcs.length ; s++ )
-    result[ s ] = srcs[ s ].apply( this,arguments );
-    return result;
-  }
-
-}
-
-//
-
-function routinesComposeWhile()
-{
-  var srcs = _.arrayAppendArrays( [],arguments );
-
-  srcs = srcs.filter( ( e ) => e === null ? false : e );
-
-  _.assert( _.routinesAre( srcs ) );
-
-  if( srcs.length === 0 )
-  return function empty()
-  {
-  }
-  else if( srcs.length === 1 )
-  {
-    return srcs[ 0 ];
-  }
-  else return function composition()
-  {
-    var result = [];
-    for( var s = 0 ; s < srcs.length ; s++ )
-    {
-      var r = srcs[ s ].apply( this,arguments );
-      if( r === false )
-      return false;
-      else if( r !== undefined )
-      result.push( r );
-    }
-    if( !result.length )
-    return;
-    return result;
-  }
-
-}
-
-//
-
-function assertRoutineOptions( routine,args,defaults )
-{
-
-  if( !_.argumentsIs( args ) )
-  args = [ args ];
-  var options = args[ 0 ];
-
-  _.assert( arguments.length === 2 || arguments.length === 3,'assertRoutineOptions : expects 2 arguments' );
-  _.assert( _.routineIs( routine ),'assertRoutineOptions : expects routine' );
-  _.assert( _.objectIs( routine.defaults ) || defaults,'assertRoutineOptions : expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ),'assertRoutineOptions : expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'assertRoutineOptions : expects single options map, but got',args.length,'arguments' );
-
-  defaults = defaults || routine.defaults;
-
-  _.assertMapHasOnly( options,defaults );
-  _.assertMapHasAll( options,defaults );
-  _.assertMapHasNoUndefine( options );
-
-  return options;
-}
-
-//
-
-function routineOptions( routine,args,defaults )
-{
-
-  if( !_.argumentsIs( args ) )
-  args = [ args ];
-  var options = args[ 0 ];
-  if( options === undefined )
-  options = Object.create( null );
-
-  _.assert( arguments.length === 2 || arguments.length === 3,'routineOptions : expects 2 arguments' );
-  _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
-  _.assert( _.objectIs( routine.defaults ) || defaults,'routineOptions : expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ),'routineOptions : expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
-
-  defaults = defaults || routine.defaults;
-
-  _.assertMapHasOnly( options,defaults );
-  _.mapComplement( options,defaults );
-  _.assertMapHasNoUndefine( options );
-
-  return options;
-}
-
-//
-
-function routineOptionsWithUndefines( routine,args )
-{
-
-  if( !_.argumentsIs( args ) )
-  args = [ args ];
-  var options = args[ 0 ];
-
-  if( options === undefined )
-  options = Object.create( null );
-
-  _.assert( arguments.length === 2,'routineOptionsWithUndefines : expects 2 arguments' );
-  _.assert( _.routineIs( routine ),'routineOptionsWithUndefines : expects routine' );
-  _.assert( _.objectIs( routine.defaults ),'routineOptionsWithUndefines : expects routine with defined defaults' );
-  _.assert( _.objectIs( options ),'routineOptionsWithUndefines : expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
-
-  _.assertMapHasOnlyWithUndefines( options,routine.defaults );
-  _.mapComplementWithUndefines( options,routine.defaults );
-
-  return options;
-}
-
-//
-
-function routineOptionsFromThis( routine,_this,constructor )
-{
-
-  _.assert( arguments.length === 3,'routineOptionsFromThis : expects 3 arguments' );
-
-  var options = _this || Object.create( null );
-  if( Object.isPrototypeOf.call( constructor,_this ) || constructor === _this )
-  options = Object.create( null );
-
-  return _.routineOptions( routine,options );
-}
-
-//
-
-function routineInputMultiplicator_functor( o )
-{
-
-  if( _.routineIs( o ) || _.strIs( o ) )
-  o = { routine : o }
-
-  o = _.routineOptions( routineInputMultiplicator_functor,o );
-
-  var routineName = o.routine.name;
-  var routine = o.routine;
-  var fieldFilter = o.fieldFilter;
-  var bypassingFilteredOut = o.bypassingFilteredOut;
-  var vectorizingArray = o.vectorizingArray;
-  var vectorizingMap = o.vectorizingArray;
-
-  if( strIs( routine ) )
-  routine = function methodCall()
-  {
-    debugger;
-    return this[ routineName ].apply( this,arguments );
-  }
-
-  _.assert( _.routineIs( routine ) );
-
-  /* */
-
-  function inputMultiplicator( src )
-  {
-
-    _.assert( arguments.length === 1 );
-
-    if( vectorizingArray )
-    if( _.arrayLike( src ) )
-    {
-      var result = [];
-      for( var r = 0 ; r < src.length ; r++ )
-      result[ r ] = routine.call( this,src[ r ] );
-      return result;
-    }
-
-    if( vectorizingMap )
-    if( _.mapIs( src ) )
-    {
-      debugger;
-      var result = Object.create( null );
-      for( var r in src )
-      result[ r ] = routine.call( this,src[ r ] );
-      return result;
-    }
-
-    return routine.call( this,src );
-  }
-
-  /* */
-
-  function inputMultiplicatorWithFilter( src )
-  {
-    debugger;
-
-    _.assert( arguments.length === 1 );
-
-    if( vectorizingArray )
-    if( _.arrayLike( src ) )
-    {
-      var result = [];
-      for( var r = 0 ; r < src.length ; r++ )
-      if( fieldFilter( src[ r ],r,src ) )
-      result.push( routine.call( this,src[ r ] ) );
-      else if( bypassingFilteredOut )
-      result.push( src[ r ] );
-      return result;
-    }
-
-    if( vectorizingMap )
-    if( _.mapIs( src ) )
-    {
-      var result = Object.create( null );
-      for( var r in src )
-      if( fieldFilter( src[ r ],r,src ) )
-      result[ r ] = routine.call( this,src[ r ] );
-      else if( bypassingFilteredOut )
-      result[ r ] = src[ r ];
-      return result;
-    }
-
-    return routine.call( this,src );
-  }
-
-  /* */
-
-  var fields = _.mapFields( routine );
-  for( var f in fields )
-  {
-    var field = fields[ f ];
-    if( _.objectIs( field ) )
-    {
-      inputMultiplicatorWithFilter[ f ] = Object.create( field );
-      inputMultiplicator[ f ] = Object.create( field );
-    }
-    else
-    {
-      inputMultiplicatorWithFilter[ f ] = field;
-      inputMultiplicator[ f ] = field;
-    }
-  }
-
-  /* */
-
-  return fieldFilter ? inputMultiplicatorWithFilter : inputMultiplicator;
-}
-
-routineInputMultiplicator_functor.defaults =
-{
-  routine : null,
-  fieldFilter : null,
-  bypassingFilteredOut : 1,
-  vectorizingArray : 1,
-  vectorizingMap : 1,
-}
-
-//
-//
-// function routineVectorize_functor( routine )
-// {
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.routineIs( routine ) );
-//
-//   function vectorized( src )
-//   {
-//     _.assert( arguments.length === 1 );
-//     if( _.arrayLike( src ) )
-//     {
-//       var result = [];
-//       for( var s = 0 ; s < src.length ; s++ )
-//       result[ s ] = routine.call( this,src[ s ] );
-//       return result;
-//     }
-//     return [ routine.call( this,src ) ];
-//   }
-//
-//   var fields = _.mapFields( routine );
-//   for( var f in fields )
-//   {
-//     var field = fields[ f ];
-//     if( _.objectIs( field ) )
-//     vectorized[ f ] = Object.create( field );
-//     else
-//     vectorized[ f ] = field;
-//   }
-//
-//   return vectorized;
-// }
-//
-//
-
-function _equalizerFromMapper( mapper )
-{
-
-  if( mapper === undefined )
-  mapper = function mapper( a,b ){ return a === b };
-
-  _.assert( 0,'not tested' )
-  _.assert( arguments.length === 1 );
-  _.assert( mapper.length === 1 || mapper.length === 2 );
-
-  if( mapper.length === 1 )
-  {
-    var equalizer = function equalizerFromMapper( a,b )
-    {
-      return mapper( a ) === mapper( b );
-    }
-    return equalizer;
-  }
-
-  return mapper;
-}
-
-//
-
-function _comparatorFromMapper( mapper )
-{
-
-  if( mapper === undefined )
-  mapper = function mapper( a,b ){ return a-b };
-
-  _.assert( arguments.length === 1 );
-  _.assert( mapper.length === 1 || mapper.length === 2 );
-
-  if( mapper.length === 1 )
-  {
-    var comparator = function comparatorFromMapper( a,b )
-    {
-      return mapper( a ) - mapper( b );
-    }
-    return comparator;
-  }
-
-  return mapper;
-}
-
-//
-//
-// function routines( src )
-// {
-//   var result = Object.create( null );
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.objectLike( src ) );
-//
-//   var keys = _._mapKeys
-//   ({
-//     src : src,
-//     own : 0,
-//     enumerable : 1,
-//   });
-//
-//   for( var k = 0 ; k < keys.length ; k++ )
-//   {
-//     if( _.routineIs( src[ keys[ k ] ] ) )
-//     result[ keys[ k ] ] = src[ keys[ k ] ];
-//   }
-//
-//   return result;
-// }
 
 // --
 // time
@@ -8423,7 +8663,7 @@ function arraySwap( dst,index1,index2 )
  * @memberof wTools
  */
 
-function arrayCutin( dstArray,range,srcArray )
+function arrayCutin( dstArray, range, srcArray )
 {
 
   if( _.numberIs( range ) )
@@ -15643,6 +15883,495 @@ _mapScreen.defaults =
   dstMap : null,
 }
 
+//
+
+/**
+ * Checks if map passed by argument( src ) not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found undefined property it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed after first argument.
+ *
+ * @param {Object} src - source map.
+ * @param {String} [ msgs ] - error message for generated exception.
+ *
+ * @example
+ * var map = { a : '1', b : undefined };
+ * wTools.assertMapHasNoUndefine( map );
+ *
+ * // caught <anonymous>:2:8
+ * // Object  should have no undefines, but has : b
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * var map = { a : undefined, b : '1' };
+ * wTools.assertMapHasNoUndefine( map, '"map"');
+ *
+ * // caught <anonymous>:2:8
+ * // Object "map" should have no undefines, but has : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @function assertMapHasNoUndefine
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If map( src ) contains undefined property.
+ * @memberof wTools
+ *
+ */
+
+function assertMapHasNoUndefine( src )
+{
+
+  if( Config.debug === false )
+  return;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 )
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+
+  for( var s in src )
+  if( src[ s ] === undefined )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1, c : 3 };
+ * var b = { a : 2, b : 3 };
+ * wTools.assertMapHasOnly( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have no fields : c
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 1 };
+ * wTools.assertMapHasOnly( a, b, 'message' )
+ *
+ * // caught <anonymous>:4:8
+ * // message Object should have no fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at <anonymous>:4
+ *
+ * @function assertMapHasOnly
+ * @throws {Exception} If map( src ) contains unique property.
+ * @memberof wTools
+ *
+ */
+
+function assertMapHasOnly( src )
+{
+
+  if( Config.debug === false )
+  return;
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+  var but = Object.keys( _.mapBut.apply( this,args ) );
+
+  if( but.length > 0 )
+  {
+    if( _.strJoin && !hasMsg )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] + '\n' : '','Object should have no fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+function assertMapHasOnlyWithUndefines( src )
+{
+
+  if( Config.debug === false )
+  return;
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+  var but = Object.keys( _.mapButWithUndefines.apply( this,args ) );
+
+  if( but.length > 0 )
+  {
+    if( _.strJoin && !hasMsg )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
+ *
+ * @example
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * a.a = 5;
+ * var b = { a : 2 };
+ * wTools.assertMapOwnOnly( a, b ); //no exception
+ *
+ * @example
+ * var a = { d : 1 };
+ * var b = { a : 2 };
+ * wTools.assertMapOwnOnly( a, b );
+ *
+ * // caught <anonymous>:3:10
+ * // Object should have no own fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0, y : 2 };
+ * var b = { c : 0, d : 3};
+ * var c = { a : 1 };
+ * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
+ *
+ * // caught <anonymous>:4:8
+ * // error msg Object should have no own fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at <anonymous>:4
+ *
+ * @function assertMapOwnOnly
+ * @throws {Exception} If map( src ) contains unique property.
+ * @memberof wTools
+ *
+ */
+
+function assertMapOwnOnly( src )
+{
+
+  if( Config.debug === false )
+  return;
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+  var but = Object.keys( _.mapOwnBut.apply( this,args ) );
+
+  if( but.length > 0 )
+  {
+    if( _.strJoin && !hasMsg )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msg ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * wTools.assertMapHasNone( a, b );// no exception
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2, b : 2 }
+ * wTools.assertMapHasNone( a, b );
+ *
+ * // caught <anonymous>:4:8
+ * // Object should have no fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:4
+ *
+ * @example
+ * var a = { x : 0, y : 1 };
+ * var b = { x : 1, y : 0 };
+ * wTools.assertMapHasNone( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:3:9
+ * // error msg Object should have no fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:3
+ *
+ * @function assertMapHasNone
+ * @throws {Exception} If map( src ) contains some properties from other map(s).
+ * @memberof wTools
+ *
+ */
+
+function assertMapHasNone( src )
+{
+
+  if( Config.debug === false )
+  return;
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var screens = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
+  var none = _.mapScreen( screens, src );
+
+  var keys = Object.keys( none );
+  if( keys.length )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+function assertMapOwnNone( src,none )
+{
+
+  if( Config.debug === false )
+  return;
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  if( hasMsg ) l -= 1;
+
+  if( l > 2 )
+  {
+    var args =_ArraySlice.call( arguments,1,l ); debugger;
+    none = _.mapMake.apply( this,args );
+  }
+
+  var has = Object.keys( _.mapScreenOwn( none, src ) );
+
+  // var has = Object.keys( _._mapScreen
+  // ({
+  //   filter : _.field.mapper.srcOwn,
+  //   screenMaps : none,
+  //   srcMaps : src,
+  // }));
+
+  if( has.length )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',has.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {Object} all - object to compare with.
+ * @param {String} [ msgs ] - error message.
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2 };
+ * wTools.assertMapHasAll( a, b );// no exception
+ *
+ * @example
+ * var a = { d : 1 };
+ * var b = { a : 2 };
+ * wTools.assertMapHasAll( a, b );
+ *
+ * // caught <anonymous>:3:10
+ * // Object should have fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0, y : 2 };
+ * var b = { x : 0, d : 3};
+ * wTools.assertMapHasAll( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg Object should have fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at <anonymous>:3
+ *
+ * @function assertMapHasAll
+ * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+ * @memberof wTools
+ *
+ */
+
+function assertMapHasAll( src,all,msg )
+{
+
+  if( Config.debug === false )
+  return;
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var but = Object.keys( _.mapBut( all,src ) );
+
+  if( but.length > 0 )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
+ * Works only in Config.debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} src - source map.
+ * @param {Object} all - object to compare with.
+ * @param {String} [ msgs ] - error message.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2 };
+ * wTools.assertMapOwnAll( a, b );// no exception
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2, b : 2 }
+ * wTools.assertMapOwnAll( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have own fields : b
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4269)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0 };
+ * var b = { x : 1, y : 0};
+ * wTools.assertMapHasAll( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg Object should have fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at <anonymous>:3
+ *
+ * @function assertMapOwnAll
+ * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+ * @memberof wTools
+ *
+ */
+
+function assertMapOwnAll( src,all,msg )
+{
+
+  if( Config.debug === false )
+  return;
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var but = Object.keys( _.mapOwnBut( all,src ) );
+
+  if( but.length > 0 )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have own fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
 // --
 // var
 // --
@@ -15681,8 +16410,14 @@ Error.stackTraceLimit = Infinity;
 // vars
 // --
 
+var Later =
+{
+  regexpsEscape : [ _, routineVectorize_functor, regexpEscape ],
+}
+
 var Vars =
 {
+  Later : Later,
   ArrayType : Array,
   error : error,
 }
@@ -15702,7 +16437,6 @@ var Routines =
 
   dup : dup,
 
-
   // entity modifier
 
   enityExtend : enityExtend,
@@ -15719,12 +16453,10 @@ var Routines =
 
   entityFreeze : entityFreeze,
 
-
   // entity chacker
 
   entityHasNan : entityHasNan,
   entityHasUndef : entityHasUndef,
-
 
   // entity selector
 
@@ -15747,7 +16479,6 @@ var Routines =
   entityMin : entityMin,
   entityMax : entityMax,
 
-
   // error
 
   errIs : errIs,
@@ -15764,6 +16495,12 @@ var Routines =
   errLog : errLog,
   errLogOnce : errLogOnce,
 
+  // assert
+
+  assert : assert,
+  assertWithoutBreakpoint : assertWithoutBreakpoint,
+  assertNotTested : assertNotTested,
+  assertWarn : assertWarn,
 
   // type test
 
@@ -15800,15 +16537,41 @@ var Routines =
   consoleIs : consoleIs,
   processIs : processIs,
 
-  eventIs : eventIs,
-  htmlIs : htmlIs,
-  jqueryIs : jqueryIs,
-  canvasIs : canvasIs,
-  imageIs : imageIs,
-  imageLike : imageLike,
-  domIs : domIs,
-  domLike : domLike,
-  domableIs : domableIs,
+  // routine
+
+  routineIs : routineIs,
+  routinesAre : routinesAre,
+  routineIsPure : routineIsPure,
+  routineHasName : routineHasName,
+
+  _routineJoin : _routineJoin,
+  routineJoin : routineJoin,
+  routineSeal : routineSeal,
+  routineDelayed : routineDelayed,
+
+  routineCall : routineCall,
+  routineTolerantCall : routineTolerantCall,
+
+  routinesJoin : routinesJoin,
+  _routinesCall : _routinesCall,
+  routinesCall : routinesCall,
+  routinesCallWhile : routinesCallWhile,
+  methodsCall : methodsCall,
+
+  routinesCompose : routinesCompose,
+  routinesComposeWhile : routinesComposeWhile,
+
+  assertRoutineOptions : assertRoutineOptions,
+  routineOptions : routineOptions,
+  routineOptionsWithUndefines : routineOptionsWithUndefines,
+  routineOptionsFromThis : routineOptionsFromThis,
+
+  routineVectorize_functor : routineVectorize_functor,
+
+  _equalizerFromMapper : _equalizerFromMapper,
+  _comparatorFromMapper : _comparatorFromMapper,
+
+  bind : null,
 
   // bool
 
@@ -15878,55 +16641,30 @@ var Routines =
 
   regexpIs : regexpIs,
   regexpObjectIs : regexpObjectIs,
+  regexpLike : regexpLike,
+  regexpsLike : regexpsLike,
 
-  regexpIdentical : regexpIdentical,
+  regexpsAreIdentical : regexpsAreIdentical,
   regexpEscape : regexpEscape,
+  regexpsEscape : null,
 
   regexpMakeObject : regexpMakeObject,
   regexpMakeArray : regexpArrayMake,
-  regexpMakeExpression : regexpMakeExpression,
+  regexpFrom : regexpFrom,
 
-  regexpBut_ : regexpBut_,
+  regexpsSources : regexpsSources,
+  regexpsJoin : regexpsJoin,
+  regexpsAtLeastFirst : regexpsAtLeastFirst,
+
+  regexpsNone : regexpsNone,
+  regexpsAny : regexpsAny,
+  regexpsAll : regexpsAll,
 
   regexpArrayMake : regexpArrayMake,
   regexpArrayIndex : regexpArrayIndex,
-  _regexpArrayAny : _regexpArrayAny,
-  _regexpArrayAll : _regexpArrayAll,
-
-  // routine
-
-  routineIs : routineIs,
-  routinesAre : routinesAre,
-  routineIsPure : routineIsPure,
-  routineHasName : routineHasName,
-
-  _routineJoin : _routineJoin,
-  routineJoin : routineJoin,
-  routineSeal : routineSeal,
-  routineDelayed : routineDelayed,
-
-  routineTolerantCall : routineTolerantCall,
-
-  routinesJoin : routinesJoin,
-  _routinesCall : _routinesCall,
-  routinesCall : routinesCall,
-  routinesCallWhile : routinesCallWhile,
-  methodsCall : methodsCall,
-
-  routinesCompose : routinesCompose,
-  routinesComposeWhile : routinesComposeWhile,
-
-  assertRoutineOptions : assertRoutineOptions,
-  routineOptions : routineOptions,
-  routineOptionsWithUndefines : routineOptionsWithUndefines,
-  routineOptionsFromThis : routineOptionsFromThis,
-
-  routineInputMultiplicator_functor : routineInputMultiplicator_functor,
-
-  _equalizerFromMapper : _equalizerFromMapper,
-  _comparatorFromMapper : _comparatorFromMapper,
-
-  bind : null,
+  regexpArrayAny : regexpArrayAny,
+  regexpArrayAll : regexpArrayAll,
+  regexpArrayNone : regexpArrayNone,
 
   // time
 
@@ -15990,10 +16728,10 @@ var Routines =
   arrayCompare : arrayCompare,
   arrayIdentical : arrayIdentical,
 
-  arrayHas : arrayHas,  /* dubious */
-  arrayHasAny : arrayHasAny,  /* dubious */
-  arrayHasAll : arrayHasAll,  /* dubious */
-  arrayHasNone : arrayHasNone,  /* dubious */
+  arrayHas : arrayHas, /* dubious */
+  arrayHasAny : arrayHasAny, /* dubious */
+  arrayHasAll : arrayHasAll, /* dubious */
+  arrayHasNone : arrayHasNone, /* dubious */
 
   arrayAll : arrayAll,
   arrayAny : arrayAny,
@@ -16338,12 +17076,23 @@ var Routines =
   mapScreenComplementing : mapScreenComplementing,
   _mapScreen : _mapScreen,
 
+  // map assert
+
+  assertMapHasNoUndefine : assertMapHasNoUndefine,
+  assertMapHasOnly : assertMapHasOnly,
+  assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
+  assertMapOwnOnly : assertMapOwnOnly,
+  assertMapHasNone : assertMapHasNone,
+  assertMapOwnNone : assertMapOwnNone,
+  assertMapHasAll : assertMapHasAll,
+  assertMapOwnAll : assertMapOwnAll,
+
 }
 
 //
 
-Object.assign( Self,Routines );
-Object.assign( Self,Vars );
+Object.assign( Self, Routines );
+Object.assign( Self, Vars );
 
 // --
 // export

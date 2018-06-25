@@ -1953,9 +1953,9 @@ strReplaceAll.defaults =
  *
  * @example
  * //returns " your cars are"
- * _.strReplaceNames( ' my name is',[ 'my','name','is' ],[ 'your','cars','are' ] )
+ * _.strReplaceWords( ' my name is',[ 'my','name','is' ],[ 'your','cars','are' ] )
  *
- * @method strReplaceNames
+ * @method strReplaceWords
  * @throws { Exception } Throws a exception if( ins ) is not a Array.
  * @throws { Exception } Throws a exception if( sub ) is not a Array.
  * @throws { TypeError } Throws a exception if( src ) is not a String.
@@ -1964,7 +1964,7 @@ strReplaceAll.defaults =
  *
  */
 
-function strReplaceNames( src,ins,sub )
+function strReplaceWords( src,ins,sub )
 {
   _.assert( arguments.length === 3 );
   _.assert( _.strIs( src ) );
@@ -3172,21 +3172,24 @@ function strHasSeveral( src,ins )
 
 //
 
-function strExtractStrips( src, o )
+function strExtractStrips( o )
 {
-  _.assert( _.strIs( src ) );
+  if( _.strIs( o ) )
+  o = { src : o }
+
+  _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1 );
   _.routineOptions( strExtractStrips, o );
 
   var result = [];
-  var splitted = src.split( o.delimeter );
+  var splitted = o.src.split( o.delimeter );
   var isNextStrip = 0;
   var isPrevStrip = 0;
 
   /* */
 
-  for( var i = 0; i < splitted.length; i++ )
+  for( var i = 0 ; i < splitted.length ; i++ )
   {
 
     if( !isNextStrip )
@@ -3219,11 +3222,14 @@ function strExtractStrips( src, o )
 
   }
 
+  /* */
+
   return result;
 }
 
 strExtractStrips.defaults =
 {
+  src : null,
   delimeter : '#',
   onStrip : null
 }
@@ -3279,18 +3285,22 @@ strExtractStrips.defaults =
  *
  */
 
-function strExtractStereoStrips( src )
+function strExtractStereoStrips( o )
 {
 
-  var o = this !== Self ? this : Object.create( null );
+  // var o = this !== Self ? this : Object.create( null );
 
-  _.assert( _.strIs( src ) );
+  if( _.strIs( o ) )
+  o = { src : o }
+
+  _.assert( this === _ );
+  _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
   _.assert( arguments.length === 1 );
   _.routineOptions( strExtractStereoStrips, o );
 
   var result = [];
-  var splitted = src.split( o.prefix );
+  var splitted = o.src.split( o.prefix );
 
   if( splitted.length === 1 )
   return splitted;
@@ -3306,21 +3316,26 @@ function strExtractStereoStrips( src )
   {
     var halfs = _.strCutOffLeft( splitted[ i ],o.postfix );
 
-    _.assert( halfs.length === 1 || halfs.length === 3 ); /* xxx */
-
-    if( halfs.length === 3 )
-    halfs = [ halfs[ 0 ], halfs[ 2 ] ]
+    // debugger;
+    _.assert( halfs.length === 3 );
+    // _.assert( halfs.length === 1 || halfs.length === 3 );
+    // if( halfs.length === 3 )
+    // halfs = [ halfs[ 0 ], halfs[ 2 ] ]
 
     var strip = o.onStrip ? o.onStrip( halfs[ 0 ] ) : halfs[ 0 ];
 
     if( strip !== undefined )
     {
       result.push( strip );
-      if( halfs[ 1 ] )
-      result.push( halfs[ 1 ] );
+      if( halfs[ 2 ] )
+      result.push( halfs[ 2 ] );
     }
     else
     {
+      if( result.length )
+      debugger;
+      else
+      debugger;
       if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
       else
@@ -3334,6 +3349,7 @@ function strExtractStereoStrips( src )
 
 strExtractStereoStrips.defaults =
 {
+  src : null,
   prefix : '#',
   postfix : '#',
   onStrip : null,
@@ -3388,7 +3404,7 @@ var Proto =
   /*strIron : strIron, */
 
   strReplaceAll : strReplaceAll, /* document me */
-  strReplaceNames : strReplaceNames,
+  strReplaceWords : strReplaceWords,
 
   // generator
 
