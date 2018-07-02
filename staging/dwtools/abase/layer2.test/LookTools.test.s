@@ -957,8 +957,8 @@ function entityIdenticalCycled( test )
   var got = _.entityIdentical( a, b );
   test.identical( got, expected );
 
-  var a = { e : [ 1,3 ] }
-  var b = { e : [ 1,4 ] }
+  var a = { e : [ 1,3,4 ] }
+  var b = { e : [ 1,4,4 ] }
   var expected = false;
   var got = _.entityIdentical( a, b );
   test.identical( got, expected );
@@ -975,6 +975,14 @@ function entityIdenticalCycled( test )
   a.y = a;
   var b = { x : 1, y : null }
   b.y = b;
+  var expected = true;
+  var got = _.entityIdentical( a, b );
+  test.identical( got, expected );
+
+  var a = { x : 1, y : null }
+  a.x = a;
+  var b = { x : 1, y : null }
+  b.x = b;
   var expected = true;
   var got = _.entityIdentical( a, b );
   test.identical( got, expected );
@@ -1010,7 +1018,7 @@ function entityIdenticalCycled( test )
   binstances.push( bc1 );
 
   var expected = true;
-  var got = _.entityIdentical( a,b );
+  var got = _.entityIdentical( a, b );
   test.identical( got, expected );
 
   test.description = 'mixed cycle - different cycle a';
@@ -1027,7 +1035,7 @@ function entityIdenticalCycled( test )
   binstances.push( bc1 );
 
   var expected = false;
-  var got = _.entityIdentical( a,b );
+  var got = _.entityIdentical( a, b );
   test.identical( got, expected );
 
   test.description = 'mixed cycle - different cycle b';
@@ -1044,7 +1052,7 @@ function entityIdenticalCycled( test )
   binstances.push( b );
 
   var expected = false;
-  var got = _.entityIdentical( a,b );
+  var got = _.entityIdentical( a, b );
   test.identical( got, expected );
 
 }
@@ -1060,9 +1068,8 @@ function entityIdenticalCycledWithOptions( test )
   var onUpPaths = [];
   function onUp( e, k, it )
   {
-    // debugger;
     onUpPaths.push( it.path );
-    return it.looking;
+    return it.result;
   }
 
   /* */
@@ -1070,9 +1077,8 @@ function entityIdenticalCycledWithOptions( test )
   var onDownPaths = [];
   function onDown( e, k, it )
   {
-    // debugger;
     onDownPaths.push( it.path );
-    return it.looking;
+    return it.result;
   }
 
   /* */
@@ -1081,9 +1087,10 @@ function entityIdenticalCycledWithOptions( test )
   {
     onUpPaths = [];
     onDownPaths = [];
+    opt = { onUp : onUp, onDown : onDown };
   }
 
-  var opt = { onUp : onUp, onDown : onDown };
+  var opt = null;
 
   /* */
 
@@ -1091,48 +1098,63 @@ function entityIdenticalCycledWithOptions( test )
 
   clean();
   var expected = true;
-  debugger;
   var got = _.entityIdentical( [ 1,3 ], [ 1,3 ], opt );
-  debugger;
   test.identical( got, expected );
-  debugger;
   test.identical( onUpPaths, [ '/', '/0', '/1' ] );
   test.identical( onDownPaths, [ '/0', '/1', '/' ] );
-  debugger;
 
-  return;
-
+  clean();
   var expected = false;
-  var got = _.entityIdentical( [ 1 ], [ 1,3 ] );
+  var got = _.entityIdentical( [ 1 ], [ 1,3 ], opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/' ] );
+  test.identical( onDownPaths, [ '/' ] );
 
+  clean();
   var expected = false;
-  var got = _.entityIdentical( [ 1,3 ], [ 1 ] );
+  var got = _.entityIdentical( [ 1,3 ], [ 1 ], opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/' ] );
+  test.identical( onDownPaths, [ '/' ] );
 
+  clean();
   var expected = false;
-  var got = _.entityIdentical( [ [ 1,2 ] ], [ [ 1,2,3 ] ] );
+  var got = _.entityIdentical( [ [ 1,2 ] ], [ [ 1,2,3 ] ], opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/0' ] );
+  test.identical( onDownPaths, [ '/0', '/' ] );
 
-  test.description = 'trivial map';
+  test.description = 'trivial map'; /* */
 
+  clean();
   var expected = true;
-  var got = _.entityIdentical( { a : 1, b : 3 }, { a : 1, b : 3 } );
+  var got = _.entityIdentical( { a : 1, b : 3 }, { a : 1, b : 3 }, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/a', '/b' ] );
+  test.identical( onDownPaths, [ '/a', '/b', '/' ] );
 
+  clean();
   var expected = false;
-  var got = _.entityIdentical( { a : 1 }, { a : 1, b : 3 } );
+  var got = _.entityIdentical( { a : 1 }, { a : 1, b : 3 }, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/' ] );
+  test.identical( onDownPaths, [ '/' ] );
 
+  clean();
   var expected = false;
-  var got = _.entityIdentical( { a : 1, b : 3 }, { a : 1 } );
+  var got = _.entityIdentical( { a : 1, b : 3 }, { a : 1 }, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/' ] );
+  test.identical( onDownPaths, [ '/' ] );
 
+  clean();
   var expected = false;
-  var got = _.entityIdentical( { a : { a : 1, b : 2 } }, { a : { a : 1, b : 2, c : 3 } } );
+  var got = _.entityIdentical( { a : { a : 1, b : 2 } }, { a : { a : 1, b : 2, c : 3 } }, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/a' ] );
+  test.identical( onDownPaths, [ '/a', '/' ] );
 
-  test.description = 'trivial mixed with routine';
+  test.description = 'trivial mixed with routine'; /* */
 
   var onAtom = function(){};
   var src1 =
@@ -1148,9 +1170,12 @@ function entityIdenticalCycledWithOptions( test )
     takingArguments : [ 1,3 ],
   }
 
+  clean();
   var expected = true;
-  var got = _.entityIdentical( src1, src2 );
+  var got = _.entityIdentical( src1, src2, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/onAtom', '/name', '/takingArguments', '/takingArguments/0', '/takingArguments/1' ] );
+  test.identical( onDownPaths, [ '/onAtom', '/name', '/takingArguments/0', '/takingArguments/1', '/takingArguments', '/' ] );
 
   var onAtom = function(){};
   var src1 =
@@ -1166,58 +1191,111 @@ function entityIdenticalCycledWithOptions( test )
     takingArguments : [ 1,3 ],
   }
 
+  clean();
   var expected = false;
-  var got = _.entityIdentical( src1, src2 );
+  var got = _.entityIdentical( src1, src2, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/onAtom' ] );
+  test.identical( onDownPaths, [ '/onAtom', '/' ] );
 
-  test.description = 'trivial mixed';
+  test.description = 'trivial mixed'; /* */
 
+  clean();
   var a = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,3 ] } ] } }
   var b = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,3 ] } ] } }
   var expected = true;
-  var got = _.entityIdentical( a, b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/a', '/a/0', '/b', '/b/c', '/b/c/0', '/b/c/0/d', '/b/c/0/e', '/b/c/0/e/0', '/b/c/0/e/1' ] );
+  test.identical( onDownPaths, [ '/a/0', '/a', '/b/c/0/d', '/b/c/0/e/0', '/b/c/0/e/1', '/b/c/0/e', '/b/c/0', '/b/c', '/b', '/' ] );
 
+  clean();
   var a = { e : [ 1,3 ] }
   var b = { e : [ 1,4 ] }
   var expected = false;
-  var got = _.entityIdentical( a, b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/e', '/e/0', '/e/1' ] );
+  test.identical( onDownPaths, [ '/e/0', '/e/1', '/e', '/' ] );
 
+  clean();
+  var a = { e : [ 1,3,4 ] }
+  var b = { e : [ 1,4,4 ] }
+  var expected = false;
+  var got = _.entityIdentical( a, b, opt  );
+  test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/e', '/e/0', '/e/1' ] );
+  test.identical( onDownPaths, [ '/e/0', '/e/1', '/e', '/' ] );
+
+  clean();
   var a = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,3 ] } ] } }
   var b = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,4 ] } ] } }
   var expected = false;
-  var got = _.entityIdentical( a, b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/a', '/a/0', '/b', '/b/c', '/b/c/0', '/b/c/0/d', '/b/c/0/e', '/b/c/0/e/0', '/b/c/0/e/1' ] );
+  test.identical( onDownPaths, [ '/a/0', '/a', '/b/c/0/d', '/b/c/0/e/0', '/b/c/0/e/1', '/b/c/0/e', '/b/c/0', '/b/c', '/b', '/' ] );
 
-  test.description = 'cycle';
+  test.description = 'cycle'; /* */
 
+  clean();
   var a = { x : 1, y : null }
   a.y = a;
   var b = { x : 1, y : null }
   b.y = b;
   var expected = true;
-  var got = _.entityIdentical( a, b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/x', '/y' ] );
+  test.identical( onDownPaths, [ '/x', '/y', '/' ] );
 
+  clean();
+  var a = { x : 1, y : null }
+  a.x = a;
+  var b = { x : 1, y : null }
+  b.x = b;
+  var expected = true;
+  var got = _.entityIdentical( a, b, opt  );
+  test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/x', '/y' ] );
+  test.identical( onDownPaths, [ '/x', '/y', '/' ] );
+
+  clean();
+  var a = { x : { x : 1, y : null }, y : null }
+  a.x.x = a;
+  var b = { x : 1, y : null }
+  b.x = b;
+  var expected = false;
+  var got = _.entityIdentical( a, b, opt  );
+  test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/x' ] );
+  test.identical( onDownPaths, [ '/x', '/' ] );
+
+  clean();
   var a = { x : 1, y : { x : 1, y : null } }
   a.y.y = a;
   var b = { x : 1, y : null }
   b.y = b;
   var expected = false;
-  var got = _.entityIdentical( a, b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/x', '/y' ] );
+  test.identical( onDownPaths, [ '/x', '/y', '/' ] );
 
+  clean();
   var a = { x : 1, y : null }
   a.y = a;
   var b = { x : 1, y : { x : 1, y : null } }
   b.y.y = b;
   var expected = false;
-  var got = _.entityIdentical( a, b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/x', '/y', '/y/x', '/y/y' ] );
+  test.identical( onDownPaths, [ '/x', '/y/x', '/y/y', '/y', '/' ] );
 
-  test.description = 'mixed cycle - equal';
+  test.description = 'mixed cycle - equal'; /* */
 
+  clean();
   var af1 = [];
   var ainstances = [];
   var a = { f1 : af1, instances : ainstances };
@@ -1231,11 +1309,14 @@ function entityIdenticalCycledWithOptions( test )
   binstances.push( bc1 );
 
   var expected = true;
-  var got = _.entityIdentical( a,b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/f1', '/instances', '/instances/0', '/instances/0/f1', '/instances/0/instances' ] );
+  test.identical( onDownPaths, [ '/f1', '/instances/0/f1', '/instances/0/instances', '/instances/0', '/instances', '/' ] );
 
-  test.description = 'mixed cycle - different cycle a';
+  test.description = 'mixed cycle - different cycle a'; /* */
 
+  clean();
   var af1 = [];
   var ainstances = [];
   var a = { f1 : af1, instances : ainstances };
@@ -1248,11 +1329,14 @@ function entityIdenticalCycledWithOptions( test )
   binstances.push( bc1 );
 
   var expected = false;
-  var got = _.entityIdentical( a,b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/f1', '/instances', '/instances/0', '/instances/0/f1', '/instances/0/instances' ] );
+  test.identical( onDownPaths, [ '/f1', '/instances/0/f1', '/instances/0/instances', '/instances/0', '/instances', '/' ] );
 
-  test.description = 'mixed cycle - different cycle b';
+  test.description = 'mixed cycle - different cycle b'; /* */
 
+  clean();
   var af1 = [];
   var ainstances = [];
   var a = { f1 : af1, instances : ainstances };
@@ -1265,8 +1349,10 @@ function entityIdenticalCycledWithOptions( test )
   binstances.push( b );
 
   var expected = false;
-  var got = _.entityIdentical( a,b );
+  var got = _.entityIdentical( a, b, opt  );
   test.identical( got, expected );
+  test.identical( onUpPaths, [ '/', '/f1', '/instances', '/instances/0' ] );
+  test.identical( onDownPaths, [ '/f1', '/instances/0', '/instances', '/' ] );
 
 }
 
@@ -1362,8 +1448,8 @@ function entityEquivalentCycled( test )
   var got = _.entityEquivalent( a, b );
   test.identical( got, expected );
 
-  var a = { e : [ 1,3 ] }
-  var b = { e : [ 1,4 ] }
+  var a = { e : [ 1,3,4 ] }
+  var b = { e : [ 1,4,4 ] }
   var expected = false;
   var got = _.entityEquivalent( a, b );
   test.identical( got, expected );
@@ -1380,6 +1466,14 @@ function entityEquivalentCycled( test )
   a.y = a;
   var b = { x : 1, y : null }
   b.y = b;
+  var expected = true;
+  var got = _.entityEquivalent( a, b );
+  test.identical( got, expected );
+
+  var a = { x : 1, y : null }
+  a.x = a;
+  var b = { x : 1, y : null }
+  b.x = b;
   var expected = true;
   var got = _.entityEquivalent( a, b );
   test.identical( got, expected );
@@ -1417,7 +1511,7 @@ function entityEquivalentCycled( test )
   binstances.push( bc1 );
 
   var expected = true;
-  var got = _.entityEquivalent( a,b );
+  var got = _.entityEquivalent( a, b );
   test.identical( got, expected );
 
   /* */
@@ -1436,7 +1530,7 @@ function entityEquivalentCycled( test )
   binstances.push( bc1 );
 
   var expected = true;
-  var got = _.entityEquivalent( a,b );
+  var got = _.entityEquivalent( a, b );
   test.identical( got, expected );
 
   /* */
@@ -1455,7 +1549,7 @@ function entityEquivalentCycled( test )
   binstances.push( b );
 
   var expected = true;
-  var got = _.entityEquivalent( a,b );
+  var got = _.entityEquivalent( a, b );
   test.identical( got, expected );
 
 }
@@ -1516,8 +1610,8 @@ function entityContain( test )
   var got = _.entityContain( a, b );
   test.identical( got, expected );
 
-  var a = { e : [ 1,3 ] }
-  var b = { e : [ 1,4 ] }
+  var a = { e : [ 1,3,4 ] }
+  var b = { e : [ 1,4,4 ] }
   var expected = false;
   var got = _.entityContain( a, b );
   test.identical( got, expected );
@@ -1548,6 +1642,14 @@ function entityContain( test )
   a.y = a;
   var b = { x : 1, y : null }
   b.y = b;
+  var expected = true;
+  var got = _.entityContain( a, b );
+  test.identical( got, expected );
+
+  var a = { x : 1, y : null }
+  a.x = a;
+  var b = { x : 1, y : null }
+  b.x = b;
   var expected = true;
   var got = _.entityContain( a, b );
   test.identical( got, expected );

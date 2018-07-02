@@ -1841,12 +1841,12 @@ function __entityEqualUp( e, k, it )
 
   _.assert( arguments.length === 3, 'expects exactly three argument' );
 
-  if( it.path === '/inputs/0/input' )
-  debugger;
+  // if( it.path === '/inputs/0/input' )
+  // debugger;
 
   if( Object.is( it.src, it.dst ) )
   {
-    return give( true, true );
+    return clearEnd( true );
   }
 
   /* fast comparison if possible */
@@ -1855,38 +1855,38 @@ function __entityEqualUp( e, k, it )
   {
     // debugger; // xxx
     if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.dst ) )
-    return give( false, false );
+    return clearEnd( false );
   }
   else
   {
     if( _.primitiveIs( it.src ) )
     if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.dst ) )
     if( it.src != it.dst )
-    return give( false, false );
+    return clearEnd( false );
   }
 
   /* */
 
   if( _.numberIs( it.src ) )
   {
-    return give( it.context.onNumbersAreEqual( it.src, it.dst ), false );
+    return clearEnd( it.context.onNumbersAreEqual( it.src, it.dst ) );
   }
   else if( _.regexpIs( it.src ) )
   {
-    return give( _.regexpsAreIdentical( it.src, it.dst ), false );
+    return clearEnd( _.regexpsAreIdentical( it.src, it.dst ) );
   }
   else if( _.dateIs( it.src ) )
   {
-    return give( _.datesAreIdentical( it.src, it.dst ), false );
+    return clearEnd( _.datesAreIdentical( it.src, it.dst ) );
   }
   else if( _.bufferAnyIs( it.src ) )
   {
     if( !it.context.strictTyping )
     debugger;
     if( it.context.strictTyping )
-    return give( _.buffersAreIdentical( it.src, it.dst ), false );
+    return clearEnd( _.buffersAreIdentical( it.src, it.dst ) );
     else
-    return give( _.buffersAreEquivalent( it.src, it.dst, it.context.accuracy ), false );
+    return clearEnd( _.buffersAreEquivalent( it.src, it.dst, it.context.accuracy ) );
   }
   else if( _.arrayLike( it.src ) )
   {
@@ -1894,19 +1894,19 @@ function __entityEqualUp( e, k, it )
     it._ = 'arrayLike';
 
     if( !it.dst )
-    return give( false, false );
+    return clearEnd( false );
     if( it.src.constructor !== it.dst.constructor )
-    return give( false, false );
+    return clearEnd( false );
 
     if( !it.context.contain )
     {
       if( it.src.length !== it.dst.length )
-      return give( false, false );
+      return clearEnd( false );
     }
     else
     {
       if( it.src.length > it.dst.length )
-      return give( false, false );
+      return clearEnd( false );
     }
 
   }
@@ -1919,27 +1919,25 @@ function __entityEqualUp( e, k, it )
     {
       _.assert( it.src._equalAre.length === 3 );
       if( !it.src._equalAre( it.src, it.dst, it ) )
-      return give( false, false );
+      return clearEnd( false );
     }
     else if( _.routineIs( it.src.equalWith ) )
     {
       _.assert( it.src.equalWith.length <= 2 );
       if( !it.src.equalWith( it.dst, it ) )
-      return give( false, false );
+      return clearEnd( false );
     }
     else if( _.routineIs( it.dst.equalWith ) )
     {
       _.assert( it.dst.equalWith.length <= 2 );
       if( !it.dst.equalWith( it.src, it ) )
-      return give( false, false );
+      return clearEnd( false );
     }
     else
     {
-
       if( !it.context.contain )
       if( _.entityLength( it.src ) !== _.entityLength( it.dst ) )
-      return give( false, false );
-
+      return clearEnd( false );
     }
 
   }
@@ -1948,28 +1946,44 @@ function __entityEqualUp( e, k, it )
     if( it.context.strictTyping )
     {
       if( it.src !== it.dst )
-      return give( false, false );
+      return clearEnd( false );
     }
     else
     {
       if( it.src != it.dst )
-      return give( false, false );
+      return clearEnd( false );
     }
   }
 
-  return give( true, true );
+  __entityEqualCycle( e, k, it );
+
+  return end();
 
   /* */
 
-  function give( result, looking )
+  function clearEnd( result )
   {
-    _.assert( arguments.length === 2 );
 
     it.result = it.result && result;
-    it.looking = it.looking && looking;
+    it.looking = false;
 
-    if( !it.looking )
-    it.iterator.looking = false;
+    _.assert( arguments.length === 1 );
+
+    return end();
+  }
+
+  /* */
+
+  function end()
+  {
+
+    if( !it.result )
+    {
+      it.iterator.looking = false;
+      it.looking = false;
+    }
+
+    _.assert( arguments.length === 0 );
 
     return it.looking;
   }
@@ -1983,8 +1997,25 @@ function __entityEqualDown( e, k, it )
 
   _.assert( it.ascending === false );
 
-  // if( it.wasVisited )
-  // debugger;
+  // __entityEqualCycle( e, k, it );
+
+  /* if element is not equal then descend it down */
+  if( !it.result )
+  if( it.down )
+  {
+    it.down.result = it.result;
+  }
+
+  return it.result;
+}
+
+//
+
+function __entityEqualCycle( e, k, it )
+{
+
+  if( it.wasVisited )
+  debugger;
 
   /* if cycled and strict cycling */
   if( it.result )
@@ -2017,14 +2048,6 @@ function __entityEqualDown( e, k, it )
     it.result = _._entityEqual_body( o2 );
   }
 
-  /* if element is not equal then descend it down */
-  if( !it.result )
-  if( it.down )
-  {
-    it.down.result = it.result;
-  }
-
-  return it.result;
 }
 
 //
@@ -2484,6 +2507,8 @@ var Proto =
 
   __entityEqualUp : __entityEqualUp,
   __entityEqualDown : __entityEqualDown,
+  __entityEqualCycle : __entityEqualCycle,
+
   _entityEqual_lookBegin : _entityEqual_lookBegin,
   _entityEqual_lookIt : _entityEqual_lookIt,
   _entityEqual_lookContinue : _entityEqual_lookContinue,
