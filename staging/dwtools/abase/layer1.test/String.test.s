@@ -22,7 +22,7 @@ if( typeof module !== 'undefined' )
     require( toolsPath );
   }
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
@@ -566,7 +566,7 @@ function strEnds( test )
 var Self =
 {
 
-  name : 'StringTools base tests',
+  name : 'Tools/base/laye1/String',
   silencing : 1,
 
   tests :

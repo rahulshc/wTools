@@ -37,7 +37,7 @@ function diagnosticVariate( o )
   if( o.test === null )
   o.test = function vtest( got,o )
   {
-    return _.entityEquivalent( got,o.expected,{ eps : o.eps } );
+    return _.entityEquivalent( got,o.expected,{ /*eps*/accuracy : o./*eps*/accuracy } );
   }
 
   var found = 0;
@@ -78,7 +78,7 @@ diagnosticVariate.defaults =
 
   expected : null,
   variates : null,
-  eps : 1e-3,
+  /*eps*/accuracy : 1e-3,
   printingValidOnly : 1,
 }
 
@@ -88,7 +88,7 @@ diagnosticVariate.defaults =
 
 function _diagnosticStripPath( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.strIs( src ) )
   {
@@ -838,7 +838,7 @@ function beep()
 function assertInstanceOrClass( _Self,_this )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert
   (
     _this === _Self ||

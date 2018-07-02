@@ -22,7 +22,7 @@ if( typeof module !== 'undefined' )
     require( toolsPath );
   }
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
@@ -456,7 +456,7 @@ function routinesCall( test )
 var Self =
 {
 
-  name : 'routine',
+  name : 'Tools/base/laye1/Routine',
   silencing : 1,
 
   tests :

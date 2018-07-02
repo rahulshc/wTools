@@ -22,7 +22,7 @@ var strTypeOf = _.strTypeOf;
 
 function _strRemoveBegin( src,begin )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( src ), 'expects string {-src-}' );
 
   var result = src;
@@ -75,7 +75,7 @@ function _strRemoveBegin( src,begin )
 
 function strRemoveBegin( src,begin )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
   _.assert( _.arrayLike( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
 
@@ -112,7 +112,7 @@ function strRemoveBegin( src,begin )
 
 // function strRemoveBegin( src,begin )
 // {
-//   _.assert( arguments.length === 2 );
+//   _.assert( arguments.length === 2, 'expects exactly two argument' );
 //   _.assert( _.arrayLike( src ) || _.strIs( src ) );
 //   _.assert( _.arrayLike( begin ) || _.strIs( begin ) );
 //
@@ -161,7 +161,7 @@ function strRemoveBegin( src,begin )
 
 function strRemoveEnd( src,end )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( src ) || _.strIs( src ) );
   _.assert( _.arrayLike( end ) || _.strIs( end ) );
 
@@ -187,7 +187,7 @@ function strRemoveEnd( src,end )
 
 function strReplaceBegin( src,begin,ins )
 {
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
   if( _.arrayLike( begin ) && _.arrayLike( ins ) )
   _.assert( begin.length === ins.length );
@@ -215,7 +215,7 @@ function strReplaceBegin( src,begin,ins )
 
 function strReplaceEnd( src,end,ins )
 {
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
   if( _.arrayLike( end ) && _.arrayLike( ins ) )
   _.assert( end.length === ins.length );
@@ -651,7 +651,7 @@ function strForCall( nameOfRoutine,args,ret,o )
 function strCapitalize( src )
 {
   _.assert( _.strIs( src ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   /*_.assert( src.length > 0 );*/
   /*_.assert( src.match(/(^\W)/) === null );*/
@@ -692,7 +692,7 @@ function strDup( s,times )
 {
   var result = '';
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( s ) );
   _.assert( _.numberIs( times ) );
 
@@ -728,7 +728,7 @@ function strDup( s,times )
 
 function strLineCount( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
   var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
   return result;
@@ -777,7 +777,7 @@ function _strCutOff( o )
   var result = [];
 
   _.routineOptions( _strCutOff,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( o.src ),'_strCutOff expects string ( o.src ), got',_.strTypeOf( o.src ) );
   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
   _.assert( _.numberIs( o.number ) );
@@ -919,7 +919,7 @@ function strCutOffLeft( o )
   }
   else
   {
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
   }
 
   _.assertMapHasOnly( o,strCutOffLeft.defaults );
@@ -977,7 +977,7 @@ function strCutOffRight( o )
   }
   else
   {
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
   }
 
   _.assertMapHasOnly( o,strCutOffRight.defaults );
@@ -1008,7 +1008,7 @@ function strCutOffAllLeft( o )
   }
   else
   {
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
   }
 
   _.assertMapHasOnly( o,strCutOffAllLeft.defaults );
@@ -1044,7 +1044,7 @@ function strCutOffAllRight( o )
   }
   else
   {
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
   }
 
   _.assertMapHasOnly( o,strCutOffAllRight.defaults );
@@ -1097,7 +1097,7 @@ function strSplitStrNumber( src )
 {
   var result = Object.create( null );
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
 
   var mnumber = src.match(/\d+/);
@@ -1129,7 +1129,7 @@ function strSplitChunks( o )
   }
   else
   {
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
     if( _.strIs( arguments[ 0 ] ) )
     o = { src : arguments[ 0 ] };
   }
@@ -1578,7 +1578,7 @@ function strStrip( o )
   o = { src : o };
 
   _.routineOptions( strStrip,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.arrayIs( o.src ) )
   {
@@ -1644,7 +1644,7 @@ function strStripLeft( o )
   o = { src : o };
 
   _.routineOptions( strStrip,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.strStrip( o );
 }
@@ -1665,7 +1665,7 @@ function strStripRight( o )
   o = { src : o };
 
   _.routineOptions( strStrip,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.strStrip( o );
 }
@@ -1746,7 +1746,7 @@ function strStripEmptyLines( srcStr )
   var lines = srcStr.split( '\n' );
 
   _.assert( _.strIs( srcStr ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   for( var l = 0; l < lines.length; l += 1 )
   {
@@ -1966,7 +1966,7 @@ strReplaceAll.defaults =
 
 function strReplaceWords( src,ins,sub )
 {
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( _.strIs( src ) );
   _.assert( _.arrayIs( ins ) );
   _.assert( _.arrayIs( sub ) );
@@ -2026,7 +2026,7 @@ function strDup( src,times )
 {
   var result = '';
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( src ) );
   _.assert( _.numberIs( times ) );
 
@@ -2196,7 +2196,7 @@ function strQuote( o )
   o.quote = strQuote.defaults.quote;
 
   _.assertMapHasOnly( o,strQuote.defaults );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var result = o.quote + String( o.src ) + o.quote;
 
@@ -2256,7 +2256,7 @@ strQuote.defaults =
 function strUnjoin( srcStr,maskArray )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( srcStr ) );
   _.assert( _.arrayIs( maskArray ) );
 
@@ -2509,7 +2509,7 @@ var _strHtmlEscapeMap =
 
 function strHtmlEscape( str )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   return String( str ).replace( /[&<>"'\/]/g, function( s )
   {
@@ -2549,7 +2549,7 @@ function strUnicodeEscape( src )
   var result = '';
 
   _.assert( _.strIs( src ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   for( var i = 0 ; i < src.length ; i++ )
   {
@@ -2716,7 +2716,7 @@ strLinesNumber.defaults =
 
 // function strLinesAt( code,line,radius )
 // {
-//   _.assert( arguments.length === 3 );
+//   _.assert( arguments.length === 3, 'expects exactly three argument' );
 //   _.assert( _.strIs( code ) || _.arrayIs( code ) );
 //   _.assert( _.numberIs( line ) );
 //
@@ -2933,7 +2933,7 @@ function strLinesNearest( o )
 {
   var resultCharRange = [];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( strLinesNearest,o );
 
   /* */
@@ -3017,7 +3017,7 @@ function strCount( src,ins )
 {
   var result = -1;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3041,7 +3041,7 @@ function strCountLeft( src,ins )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3067,7 +3067,7 @@ function strCountRight( src,ins )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3093,7 +3093,7 @@ function strCountRight( src,ins )
 
 function strHas( src,ins )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3104,7 +3104,7 @@ function strHas( src,ins )
 
 function strHasAny( src,ins )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.arrayIs( ins ) )
   {
@@ -3121,7 +3121,7 @@ function strHasAny( src,ins )
 
 function strHasAll( src,ins )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.arrayIs( ins ) )
   {
@@ -3138,7 +3138,7 @@ function strHasAll( src,ins )
 
 function strHasNone( src,ins )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.arrayIs( ins ) )
   {
@@ -3157,7 +3157,7 @@ function strHasSeveral( src,ins )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.arrayIs( ins ) )
   {
@@ -3179,7 +3179,7 @@ function strExtractStrips( o )
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( strExtractStrips, o );
 
   var result = [];
@@ -3296,7 +3296,7 @@ function strExtractStereoStrips( o )
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( strExtractStereoStrips, o );
 
   var result = [];

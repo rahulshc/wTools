@@ -25,7 +25,7 @@ __include = _global._remoteRequire;
 function pathUse( src )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
 
   if( _.pathRefine )
@@ -44,7 +44,7 @@ function pathUseGlobally( paths )
   if( _.strIs( paths ) )
   paths = [ paths ];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( _.fileProvider && _.pathRefine )
@@ -64,7 +64,7 @@ function pathUseGlobally( paths )
 function _pathUseGlobally( _module,paths,visited )
 {
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )
@@ -90,7 +90,7 @@ function _pathUseGlobally( _module,paths,visited )
 function _pathUseGloballyChildren( _module,paths,visited )
 {
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )
@@ -112,7 +112,7 @@ function _pathUseGloballyChildren( _module,paths,visited )
 function _includeWithRequireAct( src )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ),'include expects string' );
 
   /* console.log( '_includeWithRequireAct', '"' + src + '"' ); */
@@ -135,7 +135,7 @@ function _includeWithRequireAct( src )
 
 function _includeAct( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
 
   var handler;
@@ -174,7 +174,7 @@ function _includeAct( src )
 
 function _includeAnyAct( srcs )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayLike( srcs ) );
 
   /* */

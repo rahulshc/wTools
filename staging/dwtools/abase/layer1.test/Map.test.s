@@ -22,7 +22,7 @@ if( typeof module !== 'undefined' )
     require( toolsPath );
   }
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
@@ -96,7 +96,7 @@ function mapCloneAssigning( test )
   var dstMap = { sex : 'Male' };
   var got = _.mapCloneAssigning({ srcMap : srcMap, dstMap : dstMap });
   var expected = { sex : 'Male', name : 'Peter', age : 27 };
-  test.shouldBe( dstMap === got );
+  test.is( dstMap === got );
   test.identical( got, expected );
 
   /**/
@@ -187,7 +187,7 @@ function mapExtend( test )
   var got = _.mapExtend( dst, { c : 3, d : 33 }, { e : 77 } );
   var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
   test.identical( got, expected );
-  test.shouldBe( got === dst );
+  test.is( got === dst );
 
   test.description = 'object like array';
   var got = _.mapExtend( null, [ 3, 7, 13, 73 ] );
@@ -199,7 +199,7 @@ function mapExtend( test )
   var got = _.mapExtend( dst, [ 33, 3, 7, 13 ] );
   var expected = { 0 : 33, 1 : 3, 2 : 7, 3 : 13, a : 7, b : 13 };
   test.identical( got, expected );
-  test.shouldBe( got === dst );
+  test.is( got === dst );
 
   /**/
 
@@ -230,7 +230,7 @@ function mapExtend( test )
   expected.y4 = 14;
 
   test.identical( got, expected );
-  test.shouldBe( got === dst );
+  test.is( got === dst );
 
   /**/
 
@@ -898,7 +898,7 @@ function mapVals( test )
     if( !contains )
     break;
   }
-  test.shouldBe( contains );
+  test.is( contains );
 
   //
 
@@ -1001,19 +1001,19 @@ function mapAllVals( test )
   test.description = 'trivial';
 
   var got = _.mapAllVals( {} );
-  test.shouldBe( got.length );
+  test.is( got.length );
 
   /**/
 
   var got = _.mapAllVals( { a : 7, b : 13 } );
-  test.shouldBe( got.length );
-  test.shouldBe( got.indexOf( 7 ) !== -1 );
-  test.shouldBe( got.indexOf( 13 ) !== -1 );
+  test.is( got.length );
+  test.is( got.indexOf( 7 ) !== -1 );
+  test.is( got.indexOf( 13 ) !== -1 );
 
   /**/
 
   var got = _.mapAllVals( new Date );
-  test.shouldBe( got.length > _.mapAllVals( {} ).length );
+  test.is( got.length > _.mapAllVals( {} ).length );
 
   //
 
@@ -1026,9 +1026,9 @@ function mapAllVals( test )
 
   var got = _.mapAllVals( a );
   var expected = [ 1 ];
-  test.shouldBe( got.length > _.mapAllVals( {} ).length );
-  test.shouldBe( got.indexOf( 1 ) !== -1 );
-  test.shouldBe( got.indexOf( 2 ) !== -1 );
+  test.is( got.length > _.mapAllVals( {} ).length );
+  test.is( got.indexOf( 1 ) !== -1 );
+  test.is( got.indexOf( 2 ) !== -1 );
 
   //
 
@@ -1125,7 +1125,7 @@ function mapPairs( test )
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapPairs.call( { enumerable : 0, own : 0 }, a );
-  test.shouldBe( got.length > 2 );
+  test.is( got.length > 2 );
   test.identical( got[ 0 ], [ 'a', 1 ] );
   test.identical( got[ 1 ], [ 'k', 3 ] );
 
@@ -1140,7 +1140,7 @@ function mapPairs( test )
     _.mapPairs();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapPairs( 1 );
@@ -1226,7 +1226,7 @@ function mapOwnPairs( test )
     _.mapOwnPairs();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapOwnPairs( 1 );
@@ -1246,14 +1246,14 @@ function mapAllPairs( test )
 {
   test.description = 'empty';
   var got = _.mapAllPairs( {} );
-  test.shouldBe( got.length );
+  test.is( got.length );
 
   //
 
   test.description = 'a list of [ key, value ] pairs';
 
   var got = _.mapAllPairs( { a : 7, b : 13 } );
-  test.shouldBe( got.length > 2 );
+  test.is( got.length > 2 );
   test.identical( got[ 0 ], [ 'a', 7 ] );
   test.identical( got[ 1 ], [ 'b', 13 ] );
 
@@ -1262,17 +1262,17 @@ function mapAllPairs( test )
   var arrObj = [];
   arrObj[ 'k' ] = 1;
   var got = _.mapAllPairs( arrObj );
-  test.shouldBe( got.length > 1 );
+  test.is( got.length > 1 );
   got = _.arrayFlatten( [], got );
-  test.shouldBe( got.indexOf( 'k' ) !== -1 );
+  test.is( got.indexOf( 'k' ) !== -1 );
   test.identical( got[ got.indexOf( 'k' ) + 1 ], 1 );
 
   /**/
 
   var got = _.mapAllPairs( new Date );
-  test.shouldBe( got.length > 1 );
+  test.is( got.length > 1 );
   got = _.arrayFlatten( [], got );
-  test.shouldBe( got.indexOf( 'constructor' ) !== -1 );
+  test.is( got.indexOf( 'constructor' ) !== -1 );
   test.identical( got[ got.indexOf( 'constructor' ) + 1 ].name, 'Date' );
 
   //
@@ -1283,7 +1283,7 @@ function mapAllPairs( test )
   var b = { b : 2 };
   Object.setPrototypeOf( a, b );
   var got = _.mapAllPairs( a );
-  test.shouldBe( got.length > 2 );
+  test.is( got.length > 2 );
   test.identical( got[ 0 ], [ 'a', 1 ] );
   test.identical( got[ 1 ], [ 'b', 2 ] );
 
@@ -1298,7 +1298,7 @@ function mapAllPairs( test )
     _.mapAllPairs();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapAllPairs( 1 );
@@ -1338,7 +1338,7 @@ function mapProperties( test )
   var expected = { a : 1 };
   test.identical( got, expected );
 
-  var got = _.mapProperties( new String );
+  var got = _.mapProperties( new Date() );
   var expected = {};
   test.identical( got, expected );
 
@@ -1372,20 +1372,20 @@ function mapProperties( test )
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapProperties.call( { enumerable : 0, own : 0 }, a );
-  test.shouldBe( Object.keys( got ).length > 3 );
-  test.shouldBe( got.a === 1 );
-  test.shouldBe( got.b === 2 );
-  test.shouldBe( got.k === 3 );
+  test.is( Object.keys( got ).length > 3 );
+  test.is( got.a === 1 );
+  test.is( got.b === 2 );
+  test.is( got.k === 3 );
 
   /**/
 
-  var got = _.mapProperties.call( { enumerable : 0, own : 0 }, new Number );
-  test.shouldBe( Object.keys( got ).length );
-  test.shouldBe( got.constructor.name === 'Number' );
-  test.shouldBe( _.routineIs( got.toFixed ) );
-  test.shouldBe( got.__proto__ );
+  var got = _.mapProperties.call( { enumerable : 0, own : 0 }, new Date() );
+  test.is( Object.keys( got ).length );
+  test.is( got.constructor.name === 'Date' );
+  test.is( _.routineIs( got.getDate ) );
+  test.is( !!got.__proto__ );
 
-  //
+  /**/
 
   if( !Config.debug )
   return;
@@ -1396,7 +1396,7 @@ function mapProperties( test )
     _.mapProperties();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapProperties( 1 );
@@ -1442,7 +1442,7 @@ function mapOwnProperties( test )
   var expected = { a : 1 };
   test.identical( got, expected );
 
-  var got = _.mapOwnProperties( new String );
+  var got = _.mapOwnProperties( new Date() );
   var expected = {};
   test.identical( got, expected );
 
@@ -1468,7 +1468,7 @@ function mapOwnProperties( test )
 
   /**/
 
-  var got = _.mapOwnProperties.call( { enumerable : 0 }, new Number );
+  var got = _.mapOwnProperties.call( { enumerable : 0 }, new Date() );
   test.identical( got, {} )
 
   //
@@ -1482,7 +1482,7 @@ function mapOwnProperties( test )
     _.mapOwnProperties();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapOwnProperties( 1 );
@@ -1509,11 +1509,11 @@ function mapAllProperties( test )
   test.description = 'empty';
 
   var got = _.mapAllProperties( {} );
-  test.shouldBe( Object.keys( got ).length  )
+  test.is( Object.keys( got ).length  )
   test.identical( got.constructor.name, 'Object' );
 
   var got = _.mapAllProperties( [] );
-  test.shouldBe( Object.keys( got ).length  )
+  test.is( Object.keys( got ).length  )
   test.identical( got.constructor.name, 'Array' );
 
   //
@@ -1521,20 +1521,19 @@ function mapAllProperties( test )
   test.description = 'trivial';
 
   var got = _.mapAllProperties( { a : 1 } );
-  test.shouldBe( Object.keys( got ).length > 1 )
+  test.is( Object.keys( got ).length > 1 )
   test.identical( got.a, 1 );
 
   var a = [];
   a.a = 1;
   var got = _.mapAllProperties( a );
-  test.shouldBe( Object.keys( got ).length > 1 )
+  test.is( Object.keys( got ).length > 1 )
   var expected = { a : 1 };
   test.identical( got.a, 1 );
 
-  var got = _.mapAllProperties( new String );
-  test.shouldBe( Object.keys( got ).length )
-  test.identical( got.length, 0 );
-  test.identical( got.constructor.name, 'String' );
+  var got = _.mapAllProperties( new Date() );
+  test.is( _.routineIs( got.getDate ) );
+  test.identical( got.constructor.name, 'Date' );
 
   //
 
@@ -1546,7 +1545,7 @@ function mapAllProperties( test )
   /**/
 
   var got = _.mapAllProperties( a );
-  test.shouldBe( Object.keys( got ).length > 2 )
+  test.is( Object.keys( got ).length > 2 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
 
@@ -1554,7 +1553,7 @@ function mapAllProperties( test )
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapAllProperties( a );
-  test.shouldBe( Object.keys( got ).length > 3 )
+  test.is( Object.keys( got ).length > 3 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
   test.identical( got.k, 3 );
@@ -1566,7 +1565,7 @@ function mapAllProperties( test )
   Object.setPrototypeOf( a, b );
   Object.defineProperty( b, 'k', { enumerable : 0, value : undefined } );
   var got = _.mapAllProperties( a );
-  test.shouldBe( Object.keys( got ).length > 3 )
+  test.is( Object.keys( got ).length > 3 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
   test.identical( got.k, undefined );
@@ -1582,7 +1581,7 @@ function mapAllProperties( test )
     _.mapAllProperties();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapAllProperties( 1 );
@@ -1619,16 +1618,16 @@ function mapRoutines( test )
   test.description = 'trivial';
 
   var got = _.mapRoutines( { a : 1, b : function(){} } );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( _.routineIs( got.b ) );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( _.routineIs( got.b ) );
 
   var a = [];
   a.a = function(){};
   var got = _.mapRoutines( a );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( _.routineIs( got.a ) );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( _.routineIs( got.a ) );
 
-  var got = _.mapRoutines( new String );
+  var got = _.mapRoutines( new Date() );
   test.identical( got, {} );
 
   //
@@ -1641,32 +1640,32 @@ function mapRoutines( test )
   /**/
 
   var got = _.mapRoutines( a );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( _.routineIs( got.c ) );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( _.routineIs( got.c ) );
 
   /**/
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapRoutines( a );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( _.routineIs( got.c ) );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( _.routineIs( got.c ) );
 
   /* enumerable : 0 */
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapRoutines.call( { enumerable : 0 }, a );
-  test.shouldBe( Object.keys( got ).length > 1 )
-  test.shouldBe( _.routineIs( got.c ) );
-  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
-  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+  test.is( Object.keys( got ).length > 1 )
+  test.is( _.routineIs( got.c ) );
+  test.is( _.routineIs( got.__defineGetter__ ) );
+  test.is( _.routineIs( got.__defineSetter__ ) );
 
 
   /**/
 
   a.y = function(){}
   var got = _.mapRoutines.call( { own : 1 }, a );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( _.routineIs( got.y ) );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( _.routineIs( got.y ) );
 
   /* own : 0 */
 
@@ -1674,9 +1673,9 @@ function mapRoutines( test )
   var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
   var got = _.mapRoutines.call( { own : 0 }, a );
-  test.shouldBe( Object.keys( got ).length === 2 )
-  test.shouldBe( _.routineIs( got.y ) );
-  test.shouldBe( _.routineIs( got.c ) );
+  test.is( Object.keys( got ).length === 2 )
+  test.is( _.routineIs( got.y ) );
+  test.is( _.routineIs( got.c ) );
 
   /* own : 0, enumerable : 0 */
 
@@ -1685,12 +1684,12 @@ function mapRoutines( test )
   Object.setPrototypeOf( a, b );
   Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
   var got = _.mapRoutines.call( { own : 0, enumerable : 0 }, a );
-  test.shouldBe( Object.keys( got ).length > 3 )
-  test.shouldBe( _.routineIs( got.y ) );
-  test.shouldBe( _.routineIs( got.c ) );
-  test.shouldBe( _.routineIs( got.k ) );
-  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
-  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+  test.is( Object.keys( got ).length > 3 )
+  test.is( _.routineIs( got.y ) );
+  test.is( _.routineIs( got.c ) );
+  test.is( _.routineIs( got.k ) );
+  test.is( _.routineIs( got.__defineGetter__ ) );
+  test.is( _.routineIs( got.__defineSetter__ ) );
 
   //
 
@@ -1703,7 +1702,7 @@ function mapRoutines( test )
     _.mapRoutines();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapRoutines( 1 );
@@ -1740,16 +1739,16 @@ function mapOwnRoutines( test )
   test.description = 'trivial';
 
   var got = _.mapOwnRoutines( { a : 1, b : function(){} } );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( _.routineIs( got.b ) );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( _.routineIs( got.b ) );
 
   var a = [];
   a.a = function(){};
   var got = _.mapOwnRoutines( a );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( _.routineIs( got.a ) );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( _.routineIs( got.a ) );
 
-  var got = _.mapRoutines( new String );
+  var got = _.mapRoutines( new Date() );
   test.identical( got, {} );
 
   //
@@ -1792,7 +1791,7 @@ function mapOwnRoutines( test )
   Object.defineProperty( a, 'k', { enumerable : 0, value : function(){} } );
   var got = _.mapOwnRoutines.call( { enumerable : 0 }, a );
   test.identical( got.k, a.k );
-  test.shouldBe( _.routineIs( got.k ) );
+  test.is( _.routineIs( got.k ) );
 
   //
 
@@ -1805,7 +1804,7 @@ function mapOwnRoutines( test )
     _.mapOwnRoutines();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapOwnRoutines( 1 );
@@ -1832,37 +1831,37 @@ function mapAllRoutines( test )
   test.description = 'empty';
 
   var got = _.mapAllRoutines( {} );
-  test.shouldBe( Object.keys( got ).length );
-  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
-  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+  test.is( Object.keys( got ).length );
+  test.is( _.routineIs( got.__defineGetter__ ) );
+  test.is( _.routineIs( got.__defineSetter__ ) );
 
   var got = _.mapAllRoutines( [] );
-  test.shouldBe( Object.keys( got ).length );
-  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
-  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
+  test.is( Object.keys( got ).length );
+  test.is( _.routineIs( got.__defineGetter__ ) );
+  test.is( _.routineIs( got.__defineSetter__ ) );
 
   //
 
   test.description = 'trivial';
 
   var got = _.mapAllRoutines( { a : 1, b : function(){} } );
-  test.shouldBe( Object.keys( got ).length );
-  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
-  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
-  test.shouldBe( _.routineIs( got.b ) );
+  test.is( Object.keys( got ).length );
+  test.is( _.routineIs( got.__defineGetter__ ) );
+  test.is( _.routineIs( got.__defineSetter__ ) );
+  test.is( _.routineIs( got.b ) );
 
   var a = [];
   a.a = function(){};
   var got = _.mapAllRoutines( a );
-  test.shouldBe( Object.keys( got ).length );
-  test.shouldBe( _.routineIs( got.__defineGetter__ ) );
-  test.shouldBe( _.routineIs( got.__defineSetter__ ) );
-  test.shouldBe( _.routineIs( got.a ) );
+  test.is( Object.keys( got ).length );
+  test.is( _.routineIs( got.__defineGetter__ ) );
+  test.is( _.routineIs( got.__defineSetter__ ) );
+  test.is( _.routineIs( got.a ) );
 
-  var got = _.mapAllRoutines( new String );
-  test.shouldBe( Object.keys( got ).length );
-  test.identical( got.constructor.name, 'String' );
-  test.shouldBe( _.routineIs( got.sub ) );
+  var got = _.mapAllRoutines( new Date() );
+  test.is( Object.keys( got ).length );
+  test.identical( got.constructor.name, 'Date' );
+  test.is( _.routineIs( got.getDate ) );
 
   //
 
@@ -1874,25 +1873,25 @@ function mapAllRoutines( test )
   /**/
 
   var got = _.mapAllRoutines( a );
-  test.shouldBe( Object.keys( got ).length > 1 );
-  test.shouldBe( _.routineIs( got.c ) );
+  test.is( Object.keys( got ).length > 1 );
+  test.is( _.routineIs( got.c ) );
 
   /**/
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapAllRoutines( a );
-  test.shouldBe( Object.keys( got ).length > 1 );
-  test.shouldBe( _.routineIs( got.c ) );
+  test.is( Object.keys( got ).length > 1 );
+  test.is( _.routineIs( got.c ) );
 
   /**/
 
   Object.defineProperty( a, 'z', { enumerable : 0, value : function(){} } );
   Object.defineProperty( b, 'y', { enumerable : 0, value : function(){} } );
   var got = _.mapAllRoutines( a );
-  test.shouldBe( Object.keys( got ).length > 2 );
-  test.shouldBe( _.routineIs( got.c ) );
-  test.shouldBe( _.routineIs( got.y ) );
-  test.shouldBe( _.routineIs( got.z ) );
+  test.is( Object.keys( got ).length > 2 );
+  test.is( _.routineIs( got.c ) );
+  test.is( _.routineIs( got.y ) );
+  test.is( _.routineIs( got.z ) );
 
   //
 
@@ -1905,7 +1904,7 @@ function mapAllRoutines( test )
     _.mapAllRoutines();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapAllRoutines( 1 );
@@ -1942,17 +1941,17 @@ function mapFields( test )
   test.description = 'trivial';
 
   var got = _.mapFields( { a : 1, b : function(){} } );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( got.a === 1 );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( got.a === 1 );
 
   var a = [ ];
   a.a = function(){};
   a.b = 1;
   var got = _.mapFields( a );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( got.b === 1 );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( got.b === 1 );
 
-  var got = _.mapFields( new String );
+  var got = _.mapFields( new Date() );
   test.identical( got, {} );
 
   //
@@ -1965,7 +1964,7 @@ function mapFields( test )
   /**/
 
   var got = _.mapFields( a );
-  test.shouldBe( Object.keys( got ).length === 2 );
+  test.is( Object.keys( got ).length === 2 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
 
@@ -1973,7 +1972,7 @@ function mapFields( test )
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapFields( a );
-  test.shouldBe( Object.keys( got ).length === 2 );
+  test.is( Object.keys( got ).length === 2 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
 
@@ -1981,7 +1980,7 @@ function mapFields( test )
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapFields.call( { enumerable : 0 }, a );
-  test.shouldBe( Object.keys( got ).length === 4 )
+  test.is( Object.keys( got ).length === 4 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
   test.identical( got.k, 3 );
@@ -1990,7 +1989,7 @@ function mapFields( test )
 
   a.y = function(){}
   var got = _.mapFields.call( { own : 1 }, a );
-  test.shouldBe( Object.keys( got ).length === 1 )
+  test.is( Object.keys( got ).length === 1 )
   test.identical( got.a, 1 );
 
   /* own : 0 */
@@ -1999,7 +1998,7 @@ function mapFields( test )
   var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
   var got = _.mapFields.call( { own : 0, enumerable : 1 }, a );
-  test.shouldBe( Object.keys( got ).length === 2 )
+  test.is( Object.keys( got ).length === 2 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
 
@@ -2027,7 +2026,7 @@ function mapFields( test )
     _.mapFields();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapFields( 1 );
@@ -2059,53 +2058,53 @@ function mapOwnFields( test )
   var got = _.mapOwnFields( [] );
   test.identical( got, {} );
 
-  //
+  /* */
 
   test.description = 'trivial';
 
   var got = _.mapOwnFields( { a : 1, b : function(){} } );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( got.a === 1 );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( got.a === 1 );
 
   var a = [ ];
   a.a = function(){};
   a.b = 1;
   var got = _.mapOwnFields( a );
-  test.shouldBe( Object.keys( got ).length === 1 )
-  test.shouldBe( got.b === 1 );
+  test.is( Object.keys( got ).length === 1 )
+  test.is( got.b === 1 );
 
-  var got = _.mapOwnFields( new String );
+  var got = _.mapOwnFields( new Date() );
   test.identical( got, {} );
 
-  //
+  /* */
 
   test.description = 'prototype'
   var a = { a : 1 };
   var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
 
-  /**/
+  /* */
 
   var got = _.mapOwnFields( a );
-  test.shouldBe( Object.keys( got ).length === 1 );
+  test.is( Object.keys( got ).length === 1 );
   test.identical( got.a, 1 );
 
-  /**/
+  /* */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapOwnFields( a );
-  test.shouldBe( Object.keys( got ).length === 1 );
+  test.is( Object.keys( got ).length === 1 );
   test.identical( got.a, 1 );
 
   /* enumerable : 0 */
 
   Object.defineProperty( a, 'y', { enumerable : 0, value : 3 } );
   var got = _.mapOwnFields.call( { enumerable : 0 }, a );
-  test.shouldBe( Object.keys( got ).length === 3 )
+  test.is( Object.keys( got ).length === 3 )
   test.identical( got.a, 1 );
   test.identical( got.y, 3 );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -2116,7 +2115,13 @@ function mapOwnFields( test )
     _.mapOwnFields();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnFields( 'x' );
+  });
+
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapOwnFields( 1 );
@@ -2143,11 +2148,11 @@ function mapAllFields( test )
   test.description = 'empty';
 
   var got = _.mapAllFields( {} );
-  test.shouldBe( Object.keys( got ).length === 1 )
+  test.is( Object.keys( got ).length === 1 )
   test.identical( got.__proto__, {}.__proto__ );
 
   var got = _.mapAllFields( [] );
-  test.shouldBe( Object.keys( got ).length === 2 )
+  test.is( Object.keys( got ).length === 2 )
   test.identical( got.__proto__, [].__proto__ );
   test.identical( got.length, 0 );
 
@@ -2156,23 +2161,22 @@ function mapAllFields( test )
   test.description = 'trivial';
 
   var got = _.mapAllFields( { a : 1, b : function(){} } );
-  test.shouldBe( Object.keys( got ).length === 2 )
-  test.shouldBe( got.a === 1 );
-  test.shouldBe( got.__proto__ === {}.__proto__ );
+  test.is( Object.keys( got ).length === 2 )
+  test.is( got.a === 1 );
+  test.is( got.__proto__ === {}.__proto__ );
 
   var a = [ ];
   a.a = function(){};
   a.b = 1;
   var got = _.mapAllFields( a );
   console.log(got);
-  test.shouldBe( Object.keys( got ).length === 3 )
-  test.shouldBe( got.length === 0 );
-  test.shouldBe( got.b === 1 );
-  test.shouldBe( got.__proto__ === [].__proto__ );
+  test.is( Object.keys( got ).length === 3 )
+  test.is( got.length === 0 );
+  test.is( got.b === 1 );
+  test.is( got.__proto__ === [].__proto__ );
 
-  var str = new String;
+  var str = new Date();
   var got = _.mapAllFields( str );
-  test.identical( got.length, 0 );
   test.identical( got.__proto__, str.__proto__);
 
   //
@@ -2185,7 +2189,7 @@ function mapAllFields( test )
   /**/
 
   var got = _.mapAllFields( a );
-  test.shouldBe( Object.keys( got ).length === 3 );
+  test.is( Object.keys( got ).length === 3 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
   test.identical( got.__proto__, b );
@@ -2194,7 +2198,7 @@ function mapAllFields( test )
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
   var got = _.mapAllFields( a );
-  test.shouldBe( Object.keys( got ).length === 4 );
+  test.is( Object.keys( got ).length === 4 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
   test.identical( got.k, 3 );
@@ -2211,7 +2215,7 @@ function mapAllFields( test )
     _.mapAllFields();
   });
 
-  test.description = 'atomic';
+  test.description = 'primitive';
   test.shouldThrowError( function()
   {
     _.mapAllFields( 1 );
@@ -2240,7 +2244,7 @@ function mapOnlyPrimitives( test )
   var got = _.mapOnlyPrimitives( {} )
   test.identical( got, {} );
 
-  test.description = 'atomics';
+  test.description = 'primitives';
 
   var src =
   {
@@ -2265,7 +2269,7 @@ function mapOnlyPrimitives( test )
   }
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.description = 'only enumerable';
   var a = {};
@@ -2273,7 +2277,7 @@ function mapOnlyPrimitives( test )
   var got = _.mapOnlyPrimitives( a );
   test.identical( got, {} );
 
-  //
+  /* */
 
   test.description = 'from prototype';
   var a = {};
@@ -2283,14 +2287,17 @@ function mapOnlyPrimitives( test )
   var got = _.mapOnlyPrimitives( a );
   test.identical( got, { a : 1 } );
 
+  /* */
+
   if( !Config.debug )
   return;
 
   test.description = 'invalid arg type';
   test.shouldThrowError( function()
   {
-    _.mapOnlyPrimitives( [] )
-  })
+    _.mapOnlyPrimitives( null )
+  });
+
   test.description = 'no args';
   test.shouldThrowError( function()
   {
@@ -2325,7 +2332,13 @@ function mapBut( test )
     _.mapBut();
   });
 
-  test.description = 'wrong type of array';
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapBut( {} );
+  });
+
+  test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
     _.mapBut( [] );
@@ -2345,7 +2358,7 @@ function mapOwnBut( test )
 {
 
   test.description = 'an empty object';
-  var got = _.mapOwnBut( {  } );
+  var got = _.mapOwnBut( {}, {} );
   var expected = {  };
   test.identical( got, expected );
 
@@ -2370,10 +2383,16 @@ function mapOwnBut( test )
     _.mapOwnBut();
   });
 
-  test.description = 'wrong type of array';
+  test.description = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.mapOwnBut( [  ] );
+    _.mapOwnBut( {} );
+  });
+
+  test.description = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapOwnBut( [] );
   });
 
   test.description = 'wrong type of arguments';
@@ -2769,37 +2788,37 @@ function mapHasAll( test )
 {
   test.description = 'empty';
   var got = _.mapHasAll( {}, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen empty';
   var got = _.mapHasAll( { a : 1 }, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'same keys';
   var got = _.mapHasAll( { a : 1 }, { a : 2 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has only one';
   var got = _.mapHasAll( { a : 1, b : 2, c :  3 }, { b : 2 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has all';
   var got = _.mapHasAll( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'one is mising';
   var got = _.mapHasAll( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapHasAll( a, { a : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapHasAll( a, a );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has enumerable';
 
@@ -2808,28 +2827,28 @@ function mapHasAll( test )
   var screen = {};
   Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
   var got = _.mapHasAll( src, screen );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapHasAll( a, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapHasAll( { a : undefined }, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'src has toString on proto';
   var got = _.mapHasAll( {}, { toString : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'map has on proto';
   var a = {};
   var b = { a : 1 };
   Object.setPrototypeOf( a, b );
   var got = _.mapHasAll( a, { a : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   //
 
@@ -2862,41 +2881,41 @@ function mapHasAny( test )
 {
   test.description = 'empty';
   var got = _.mapHasAny( {}, {} );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'screen empty';
   var got = _.mapHasAny( { a : 1 }, {} );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'same keys';
   var got = _.mapHasAny( { a : 1 }, { a : 2 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has only one';
   var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has all';
   var got = _.mapHasAny( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'one is mising';
   var got = _.mapHasAny( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has no one';
   var got = _.mapHasAny( { a : 1, b : 2 }, { x : 1, y : 1} );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapHasAny( a, { a : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapHasAny( a, a );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'screen has enumerable';
 
@@ -2905,28 +2924,28 @@ function mapHasAny( test )
   var screen = {};
   Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
   var got = _.mapHasAny( src, screen );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapHasAny( a, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapHasAny( { a : undefined }, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'src has toString on proto';
   var got = _.mapHasAny( {}, { x : 1, toString : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'map has on proto';
   var a = {};
   var b = { a : 1 };
   Object.setPrototypeOf( a, b );
   var got = _.mapHasAny( a, { a : 1, x : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   //
 
@@ -2959,41 +2978,41 @@ function mapHasNone( test )
 {
   test.description = 'empty';
   var got = _.mapHasNone( {}, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen empty';
   var got = _.mapHasNone( { a : 1 }, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'same keys';
   var got = _.mapHasNone( { a : 1 }, { a : 2 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has only one';
   var got = _.mapHasNone( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has all';
   var got = _.mapHasNone( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'one is mising';
   var got = _.mapHasNone( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has no one';
   var got = _.mapHasNone( { a : 1, b : 2 }, { x : 1, y : 1} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapHasNone( a, { a : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   var got = _.mapHasNone( a, a );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has enumerable';
 
@@ -3002,21 +3021,21 @@ function mapHasNone( test )
   var screen = {};
   Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
   var got = _.mapHasNone( src, screen );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapHasNone( a, { a : undefined } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   var got = _.mapHasNone( { a : undefined }, { a : undefined } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'src has toString on proto';
   var got = _.mapHasNone( {}, { x : 1, toString : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'map has on proto';
   var a = {};
@@ -3024,10 +3043,10 @@ function mapHasNone( test )
   Object.setPrototypeOf( a, b );
 
   var got = _.mapHasNone( a, { x : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapHasNone( a, { a : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   //
 
@@ -3060,41 +3079,41 @@ function mapOwnAll( test )
 {
   test.description = 'empty';
   var got = _.mapOwnAll( {}, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen empty';
   var got = _.mapOwnAll( { a : 1 }, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'same keys';
   var got = _.mapOwnAll( { a : 1 }, { a : 2 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has only one';
   var got = _.mapOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has all';
   var got = _.mapOwnAll( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'one is mising';
   var got = _.mapOwnAll( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has no one';
   var got = _.mapOwnAll( { a : 1, b : 2 }, { x : 1, y : 1} );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapOwnAll( a, { a : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapOwnAll( a, a );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has enumerable';
 
@@ -3103,21 +3122,21 @@ function mapOwnAll( test )
   var screen = {};
   Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
   var got = _.mapOwnAll( src, screen );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapOwnAll( a, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapOwnAll( { a : undefined }, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'src has toString on proto';
   var got = _.mapOwnAll( {}, { x : 1, toString : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   //
 
@@ -3168,41 +3187,41 @@ function mapOwnAny( test )
 {
   test.description = 'empty';
   var got = _.mapOwnAny( {}, {} );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'screen empty';
   var got = _.mapOwnAny( { a : 1 }, {} );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'same keys';
   var got = _.mapOwnAny( { a : 1 }, { a : 2 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has only one';
   var got = _.mapOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has all';
   var got = _.mapOwnAny( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'one is mising';
   var got = _.mapOwnAny( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'has no one';
   var got = _.mapOwnAny( { a : 1, b : 2 }, { x : 1, y : 1} );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapOwnAny( a, { a : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapOwnAny( a, a );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'screen has enumerable';
 
@@ -3211,21 +3230,21 @@ function mapOwnAny( test )
   var screen = {};
   Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
   var got = _.mapOwnAny( src, screen );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapOwnAny( a, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   var got = _.mapOwnAny( { a : undefined }, { a : undefined } );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'src has toString on proto';
   var got = _.mapOwnAny( {}, { x : 1, toString : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   //
 
@@ -3276,41 +3295,41 @@ function mapOwnNone( test )
 {
   test.description = 'empty';
   var got = _.mapOwnNone( {}, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen empty';
   var got = _.mapOwnNone( { a : 1 }, {} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'same keys';
   var got = _.mapOwnNone( { a : 1 }, { a : 2 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has only one';
   var got = _.mapOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, x : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has all';
   var got = _.mapOwnNone( { a : 1, b : 2, c :  3 }, { b : 2, a : 3, c : 4 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'one is mising';
   var got = _.mapOwnNone( { a : 1, b : 2 }, { b : 2, a : 3, c : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'has no one';
   var got = _.mapOwnNone( { a : 1, b : 2 }, { x : 1, y : 1} );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'src has enumerable';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapOwnNone( a, { a : 1 } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   var got = _.mapOwnNone( a, a );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has enumerable';
 
@@ -3319,21 +3338,21 @@ function mapOwnNone( test )
   var screen = {};
   Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
   var got = _.mapOwnNone( src, screen );
-  test.shouldBe( got );
+  test.is( got );
 
   test.description = 'screen has undefined';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
   var got = _.mapOwnNone( a, { a : undefined } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   var got = _.mapOwnNone( { a : undefined }, { a : undefined } );
-  test.shouldBe( !got );
+  test.is( !got );
 
   test.description = 'src has toString on proto';
   var got = _.mapOwnNone( {}, { x : 1, toString : 1 } );
-  test.shouldBe( got );
+  test.is( got );
 
   //
 
@@ -3385,7 +3404,7 @@ function mapOwnNone( test )
 var Self =
 {
 
-  name : 'MapTest',
+  name : 'Tools/base/laye1/Map',
   silencing : 1,
 
   tests :

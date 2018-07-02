@@ -25,7 +25,7 @@ if( typeof module !== 'undefined' )
     require( toolsPath );
   }
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
@@ -445,138 +445,138 @@ function arrayMakeSimilar( test )
   var ins = [ 1, 2, 3 ];
   var got = _.arrayMakeSimilar( ins );
   test.identical( got.length, 3 );
-  test.shouldBe( got !== ins );
+  test.is( got !== ins );
 
   var ins = [];
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilar( ins, src );
   test.identical( got.length, 5 );
-  test.shouldBe( _.arrayIs( got ) );
+  test.is( _.arrayIs( got ) );
   test.identical( got, [ 1,1,1,1,1 ] );
 
   var ins = [];
   var src = new ArrayBuffer( 5 )
   var got = _.arrayMakeSimilar( ins, src );
   test.identical( got.length, 5 );
-  test.shouldBe( _.arrayIs( got ) );
+  test.is( _.arrayIs( got ) );
 
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
   var got = _.arrayMakeSimilar( ins );
-  test.shouldBe( _.bufferTypedIs( got ) );
+  test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 5 );
-  test.shouldBe( got !== ins );
+  test.is( got !== ins );
 
   var ins = new Uint8Array( 5 );
   var src = [ 1, 2, 3, 4, 5 ];
   var got = _.arrayMakeSimilar( ins,src );
-  test.shouldBe( _.bufferTypedIs( got ) );
-  test.shouldBe( got instanceof Uint8Array );
+  test.is( _.bufferTypedIs( got ) );
+  test.is( got instanceof Uint8Array );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
   isEqual = got[ i ] !== src[ i ] ? false : true;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   test.description = 'typedArray';
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
   var got = _.arrayMakeSimilar( ins, 4 );
-  test.shouldBe( _.bufferTypedIs( got ) );
+  test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 4 );
-  test.shouldBe( got !== ins );
+  test.is( got !== ins );
 
   test.description = 'ArrayBuffer';
   var ins = new ArrayBuffer( 5 );
   var got = _.arrayMakeSimilar( ins, 4 );
-  test.shouldBe( _.bufferRawIs( got ) );
+  test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 4 );
 
   test.description = 'NodeBuffer'
   var got = _.arrayMakeSimilar( new Buffer( 5 ) );
-  test.shouldBe( _.bufferNodeIs( got ) );
+  test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
 
   test.description = 'NodeBuffer and src'
   var src = _.arrayFillWhole( new Uint8Array( 5 ), 1 );
   var got = _.arrayMakeSimilar( new Buffer( 5 ), src );
-  test.shouldBe( _.bufferNodeIs( got ) );
+  test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
   isEqual = got[ i ] !== src[ i ] ? false : true;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   test.description = 'NodeBuffer as src'
   var src = new Buffer(10);
   for( var i = 0; i < src.length; i++ )
   src[ i ] = i;
   var got = _.arrayMakeSimilar( [], src );
-  test.shouldBe( _.arrayIs( got ) );
+  test.is( _.arrayIs( got ) );
   test.identical( got.length, src.length );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
   isEqual = got[ i ] !== src[ i ] ? false : true;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   test.description = 'ins as Array';
   var got = _.arrayMakeSimilar( Array, 5 );
-  test.shouldBe( _.arrayIs(  got ) );
+  test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
 
   test.description = 'ins as Array';
   var src = [ 1,2,3 ];
   var got = _.arrayMakeSimilar( Array, src );
-  test.shouldBe( _.arrayIs(  got ) );
+  test.is( _.arrayIs(  got ) );
   test.identical( got.length, 3 );
   test.identical( got, src );
 
   test.description = 'ins as Array';
   var src = _.arrayFillWhole( new Float32Array( 5 ), 1 );
   var got = _.arrayMakeSimilar( Array, src );
-  test.shouldBe( _.arrayIs(  got ) );
+  test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, [ 1, 1, 1, 1, 1 ] );
 
   test.description = 'ins as Buffer';
   var src = _.arrayFillWhole( new Float32Array( 5 ), 1 );
   var got = _.arrayMakeSimilar( Buffer, src );
-  test.shouldBe( _.bufferNodeIs(  got ) );
+  test.is( _.bufferNodeIs(  got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
   isEqual = got[ i ] !== src[ i ] ? false : true;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   test.description = 'ins as Array';
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilar( Array, src );
-  test.shouldBe( _.arrayIs(  got ) );
+  test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
   isEqual = got[ i ] !== src[ i ] ? false : true;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   test.description = 'ins as TypedArray';
   var src = [ 1,2,3 ];
   var got = _.arrayMakeSimilar( Uint8Array, src );
-  test.shouldBe( _.bufferTypedIs(  got ) );
+  test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 3 );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
   isEqual = got[ i ] !== src[ i ] ? false : true;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   test.description = 'ins as TypedArray';
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilar( Float32Array, src );
-  test.shouldBe( _.bufferTypedIs(  got ) );
+  test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < src.length; i++ )
   isEqual = got[ i ] !== src[ i ] ? false : true;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   /**/
 
@@ -634,30 +634,30 @@ function arrayMakeSimilarZeroed( test )
 
   test.description = 'ArrayBuffer';
   var got = _.arrayMakeSimilarZeroed( ArrayBuffer, 3 );
-  test.shouldBe( _.bufferRawIs( got ) );
+  test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 3 );
 
   //
 
   test.description = 'Uint8Array';
   var got = _.arrayMakeSimilarZeroed( Uint8Array, [ 1, 2, 3 ] );
-  test.shouldBe( _.bufferTypedIs( got ) );
+  test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 3 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
   test.description = 'Uint8Array';
   var got = _.arrayMakeSimilarZeroed( Buffer, new ArrayBuffer( 3) );
-  test.shouldBe( _.bufferNodeIs( got ) );
+  test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 3 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
@@ -700,14 +700,14 @@ function arrayMakeSimilarZeroed( test )
   test.description = 'same length';
   var ins = new ArrayBuffer(5);
   var got = _.arrayMakeSimilarZeroed( ins );
-  test.shouldBe( _.bufferRawIs( got ) );
+  test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 5 );
 
   //
 
   test.description = 'same length';
   var got = _.arrayMakeSimilarZeroed( ArrayBuffer, 5 );
-  test.shouldBe( _.bufferRawIs( got ) );
+  test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 5 );
 
   //
@@ -719,7 +719,7 @@ function arrayMakeSimilarZeroed( test )
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
@@ -730,7 +730,7 @@ function arrayMakeSimilarZeroed( test )
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
@@ -738,7 +738,7 @@ function arrayMakeSimilarZeroed( test )
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
   var got = _.arrayMakeSimilarZeroed( ins, src );
   test.identical( got.length, 5 );
-  test.shouldBe( _.arrayIs( got ) );
+  test.is( _.arrayIs( got ) );
   test.identical( got, [ 0,0,0,0,0 ] );
 
   //
@@ -746,12 +746,12 @@ function arrayMakeSimilarZeroed( test )
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
   var got = _.arrayMakeSimilarZeroed( ins );
-  test.shouldBe( _.bufferTypedIs( got ) );
+  test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
@@ -759,25 +759,25 @@ function arrayMakeSimilarZeroed( test )
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
   var got = _.arrayMakeSimilarZeroed( ins, 4 );
-  test.shouldBe( _.bufferTypedIs( got ) );
+  test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 4 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
   test.description = 'ArrayBuffer';
   var ins = new ArrayBuffer( 5 );
   var got = _.arrayMakeSimilarZeroed( ins, 4 );
-  test.shouldBe( _.bufferRawIs( got ) );
+  test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 4 );
   got = new Uint8Array( got );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
@@ -785,23 +785,23 @@ function arrayMakeSimilarZeroed( test )
   var ins = [];
   var src = new ArrayBuffer( 5 );
   var got = _.arrayMakeSimilarZeroed( ins, src );
-  test.shouldBe( _.arrayIs( got ) );
+  test.is( _.arrayIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
   test.description = 'NodeBuffer'
   var got = _.arrayMakeSimilarZeroed( new Buffer( 5 ) );
-  test.shouldBe( _.bufferNodeIs( got ) );
+  test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   //
 
@@ -810,12 +810,12 @@ function arrayMakeSimilarZeroed( test )
   for( var i = 0; i < src.length; i++ )
   src[ i ] = i;
   var got = _.arrayMakeSimilarZeroed( new Buffer( 5 ), src );
-  test.shouldBe( _.bufferNodeIs( got ) );
+  test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
-  test.shouldBe( isEqual );
+  test.is( isEqual );
 
   /**/
 
@@ -861,7 +861,7 @@ function arrayMakeRandom( test )
   test.description = 'an empty object';
   var got = _.arrayMakeRandom( {  } );
   test.identical( got.length, 1 );
-  test.shouldBe( got[ 0 ] >= 0 && got[ 0 ]<= 1 );
+  test.is( got[ 0 ] >= 0 && got[ 0 ]<= 1 );
 
   test.description = 'a number';
   var got = _.arrayMakeRandom( 5 );
@@ -1348,21 +1348,21 @@ function arraySub( test )
 //  test.description = 'arrayBuffer + arrayBuffer';
 //  var src = new Uint8Array( [ 1,2 ] );
 //  var got = _.arrayJoin( src.buffer, src.buffer );
-//  test.shouldBe( _.bufferRawIs( got ) );
+//  test.is( _.bufferRawIs( got ) );
 //  var expected = new Uint8Array( [ 1,2,1,2 ] );
 //  test.identical( new Uint8Array( got ), expected );
 //
 //  test.description = 'arrayBuffer + array';
 //  var src = new Uint8Array( [ 1,2 ] );
 //  var got = _.arrayJoin( src.buffer, [ 1,2 ] );
-//  test.shouldBe( _.bufferRawIs( got ) );
+//  test.is( _.bufferRawIs( got ) );
 //  var expected = new Uint8Array( [ 1,2,1,2 ] );
 //  test.identical( new Uint8Array( got ), expected );
 //
 //  test.description = 'arrayBuffer + typedArray';
 //  var src = new Uint8Array( [ 1,2 ] );
 //  var got = _.arrayJoin( src.buffer, src );
-//  test.shouldBe( _.bufferRawIs( got ) );
+//  test.is( _.bufferRawIs( got ) );
 //  var expected = new Uint8Array( [ 1,2,1,2 ] );
 //  test.identical( new Uint8Array( got ), expected );
 //
@@ -1387,7 +1387,7 @@ function arraySub( test )
 //  test.description = 'arrayBuffer + array + typedArray';
 //  var src = new Uint8Array( [ 1 ] );
 //  var got = _.arrayJoin( src.buffer, [ 1 ], src  );
-//  test.shouldBe( _.bufferRawIs( got ) );
+//  test.is( _.bufferRawIs( got ) );
 //  var expected = new Uint8Array( [ 1,1,1 ] );
 //  test.identical( new Uint8Array( got ), expected );
 //
@@ -1801,26 +1801,26 @@ function arraySlice( test )
   got = _.arraySlice( src );
   expected = [  ];
   test.identical( got, expected );
-  test.shouldBe( src !== got );
+  test.is( src !== got );
 
   var src = [  ];
   got = _.arraySlice( src, 0 );
   expected = [  ];
   test.identical( got, expected );
-  test.shouldBe( src !== got );
+  test.is( src !== got );
 
   var src = [  ];
   got = _.arraySlice( src, 0, 5 );
   expected = [  ];
   test.identical( got, expected );
-  test.shouldBe( src !== got );
+  test.is( src !== got );
 
   /*just pass array*/
 
   got = _.arraySlice( array );
   expected = array;
   test.identical( got, expected );
-  test.shouldBe( array !== got );
+  test.is( array !== got );
 
   //
 
@@ -1829,7 +1829,7 @@ function arraySlice( test )
   got = _.arraySlice( array, 0 );
   expected = [ 1, 2, 3, 4, 5, 6, 7 ];
   test.identical( got, expected );
-  test.shouldBe( array !== got );
+  test.is( array !== got );
 
   got = _.arraySlice( array, -1 );
   expected = [ 1, 2, 3, 4, 5, 6, 7 ];
@@ -1865,21 +1865,21 @@ function arraySlice( test )
   got = _.arraySlice( array, -1, array.length );
   expected = array;
   test.identical( got, expected );
-  test.shouldBe( array !== got );
+  test.is( array !== got );
 
   /* rigth bound is negative */
 
   got = _.arraySlice( array, 0, -1 );
   expected = [];
   test.identical( got, expected );
-  test.shouldBe( array !== got );
+  test.is( array !== got );
 
   /* rigth bound is out of range */
 
   got = _.arraySlice( array, 0, array.length + 2 );
   expected = array;
   test.identical( got, expected );
-  test.shouldBe( array !== got );
+  test.is( array !== got );
 
   /* typed */
 
@@ -1888,33 +1888,33 @@ function arraySlice( test )
   var typed = new Uint8Array( array );
 
   got = _.arraySlice( typed );
-  test.shouldBe( _.bufferTypedIs( got ) );
-  test.shouldBe( got !== typed );
+  test.is( _.bufferTypedIs( got ) );
+  test.is( got !== typed );
   test.identical( got, typed );
 
   got = _.arraySlice( typed, 0 );
-  test.shouldBe( _.bufferTypedIs( got ) );
-  test.shouldBe( got !== typed );
+  test.is( _.bufferTypedIs( got ) );
+  test.is( got !== typed );
   test.identical( got, typed );
 
   got = _.arraySlice( typed, -1 );
-  test.shouldBe( _.bufferTypedIs( got ) );
-  test.shouldBe( got !== typed );
+  test.is( _.bufferTypedIs( got ) );
+  test.is( got !== typed );
   test.identical( got, typed );
 
   got = _.arraySlice( typed, 0, 1 );
-  test.shouldBe( _.bufferTypedIs( got ) );
-  test.shouldBe( got !== typed );
-  test.shouldBe( _.arraySetIdentical( got, [ 1 ] ) );
+  test.is( _.bufferTypedIs( got ) );
+  test.is( got !== typed );
+  test.is( _.arraySetIdentical( got, [ 1 ] ) );
 
   got = _.arraySlice( typed, typed.length, typed.length );
-  test.shouldBe( _.bufferTypedIs( got ) );
-  test.shouldBe( got !== typed );
-  test.shouldBe( _.arraySetIdentical( got, [] ) );
+  test.is( _.bufferTypedIs( got ) );
+  test.is( got !== typed );
+  test.is( _.arraySetIdentical( got, [] ) );
 
   got = _.arraySlice( typed, -1, typed.length + 1 );
-  test.shouldBe( _.bufferTypedIs( got ) );
-  test.shouldBe( got !== typed );
+  test.is( _.bufferTypedIs( got ) );
+  test.is( got !== typed );
   test.identical( got, typed );
 
   /**/
@@ -2104,7 +2104,7 @@ function arrayDuplicate( test )
     if( expected[ i ] !== got[ i ]  )
     equal = false;
   }
-  test.shouldBe( equal );
+  test.is( equal );
   test.identical( got.length, expected.length );
 
   /* */
@@ -9414,8 +9414,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'length of the first argument is more than second argument';
   var a = [ 1, 2, 3, 4, 5 ];
@@ -9423,8 +9423,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'length of the first argument is more than second argument';
   var a = [ 'abc', 'def', true, 26 ];
@@ -9433,9 +9433,9 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3 ];
@@ -9443,8 +9443,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -9452,8 +9452,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'both arguments are empty';
   var a = [];
@@ -9461,8 +9461,8 @@ function arraySetContainAll( test )
   var got = _.arraySetContainAll( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   /**/
 
@@ -9534,8 +9534,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [ 15, 5 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -9543,8 +9543,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3, 4 ];
@@ -9552,8 +9552,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'both arguments are empty arrays';
   var a = [];
@@ -9561,8 +9561,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'all of the elements is present in both arrays';
   var a = [ 3, 3, 3 ];
@@ -9570,8 +9570,8 @@ function arraySetDiff( test )
   var got = _.arraySetDiff( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   /* */
 
@@ -9672,8 +9672,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 15 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first argument has single extra element, second argument has single extra element either';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -9681,8 +9681,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a, b );
   var expected = [ 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first argument has several elements that are not present in second argument';
   var a = [ 1, 4, 9 ];
@@ -9690,8 +9690,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 1, 4, 9 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first argument has several elements that are not present in second argument';
   var a = [ 1, 4, 9 ];
@@ -9699,8 +9699,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a, b );
   var expected = [ 1, 4, 9 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first argument is the same as second';
   var a = [ 1, 2, 3, 4 ];
@@ -9708,8 +9708,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first argument is the same as second';
   var a = [ 1, 2, 3, 4 ];
@@ -9717,8 +9717,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -9726,8 +9726,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -9735,8 +9735,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3, 4 ];
@@ -9744,8 +9744,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'second argument is an empty array';
   var a = [ 1, 2, 3, 4 ];
@@ -9753,8 +9753,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first array has the same element as the second ';
   var a = [ 1, 1, 1 ];
@@ -9762,8 +9762,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first array has the same element as the second ';
   var a = [ 1, 1, 1 ];
@@ -9771,8 +9771,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'both arguments are empty arrays';
   var a = [];
@@ -9780,8 +9780,8 @@ function arraySetBut( test )
   var got = _.arraySetBut( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'both arguments are empty arrays';
   var a = [];
@@ -9789,36 +9789,36 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'single empty argument';
   var a = [];
   var got = _.arraySetBut( a );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
+  test.is( got === a );
 
   test.description = 'single empty argument';
   var a = [];
   var got = _.arraySetBut( null, a );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
+  test.is( got !== a );
 
   test.description = 'single not empty argument';
   var a = [ 3,4,5 ];
   var got = _.arraySetBut( a );
   var expected = [ 3,4,5 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
+  test.is( got === a );
 
   test.description = 'single not empty argument';
   var a = [ 3,4,5 ];
   var got = _.arraySetBut( null, a );
   var expected = [ 3,4,5 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
+  test.is( got !== a );
 
   test.description = 'three arguments, same elements';
   var a = [ 3,4,5 ];
@@ -9827,9 +9827,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( a,b,c );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'three arguments, same elements';
   var a = [ 3,4,5 ];
@@ -9838,9 +9838,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( null,a,b,c );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'three arguments, differet elements';
   var a = [ 3,4,5 ];
@@ -9849,9 +9849,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( a,b,c );
   var expected = [ 4 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'three arguments, differet elements';
   var a = [ 3,4,5 ];
@@ -9860,9 +9860,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( null,a,b,c );
   var expected = [ 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'three arguments, no elements in the second and third';
   var a = [ 3,4,5 ];
@@ -9871,9 +9871,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( a,b,c );
   var expected = [ 3,4,5 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'three arguments, no elements in the second and third';
   var a = [ 3,4,5 ];
@@ -9882,9 +9882,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( null,a,b,c );
   var expected = [ 3,4,5 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'three arguments, no elements in the first';
   var a = [];
@@ -9893,9 +9893,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( a,b,c );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'three arguments, no elements in the first';
   var a = [];
@@ -9904,9 +9904,9 @@ function arraySetBut( test )
   var got = _.arraySetBut( null,a,b,c );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'complex case';
   var got = _.arraySetBut( [ 1, 10, 0, 5 ], [ 5, 8, 2 ], [ 3, 1, 6, 4 ], [ 0 ] );
@@ -9918,18 +9918,18 @@ function arraySetBut( test )
   var got = _.arraySetBut( null, a );
   var expected = [ 1, 1, 1, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 argument, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
   var got = _.arraySetBut( a );
   var expected = [ 1, 1, 1, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 null';
   var got = _.arraySetBut( null );
@@ -10028,8 +10028,8 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'second argument has extra element, third argument has two extra elements';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10037,22 +10037,22 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( null, a, b );
   var expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'single array argument';
   var a = [ 1, 2, 3, 4, 15 ];
   var got = _.arraySetIntersection( a );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
+  test.is( got === a );
 
   test.description = 'single array argument';
   var a = [ 1, 2, 3, 4, 15 ];
   var got = _.arraySetIntersection( null,a );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
+  test.is( got !== a );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10060,8 +10060,8 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10069,8 +10069,8 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( null,a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first and second argument are empty arrays';
   var a = [];
@@ -10078,8 +10078,8 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first and second argument are empty arrays';
   var a = [];
@@ -10087,8 +10087,8 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( null, a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = '3 arguments, nothing in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10097,9 +10097,9 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( a, b, c );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, nothing in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10108,9 +10108,9 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( null, a, b, c );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, something in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10119,9 +10119,9 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( null, a, b, c );
   var expected = [ 1, 3 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, something in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10130,9 +10130,9 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( null, a, b, c );
   var expected = [ 3 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
@@ -10141,27 +10141,27 @@ function arraySetIntersection( test )
   var got = _.arraySetIntersection( null, a, b, c );
   var expected = [ 1, 1, 1, 3 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 argument, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
   var got = _.arraySetIntersection( null, a );
   var expected = [ 1, 1, 1, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 argument, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
   var got = _.arraySetIntersection( a );
   var expected = [ 1, 1, 1, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 null';
   var got = _.arraySetIntersection( null );
@@ -10252,8 +10252,8 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( a, b );
   var expected = [ 1, 2, 3, 4, 15, 5 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'second argument has extra element, third argument has two extra elements';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10261,22 +10261,22 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( null, a, b );
   var expected = [ 1, 2, 3, 4, 15, 5 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'single array argument';
   var a = [ 1, 2, 3, 4, 15 ];
   var got = _.arraySetUnion( a );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
+  test.is( got === a );
 
   test.description = 'single array argument';
   var a = [ 1, 2, 3, 4, 15 ];
   var got = _.arraySetUnion( null,a );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
+  test.is( got !== a );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10284,8 +10284,8 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( a, b );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10293,8 +10293,8 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( null,a, b );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'first and second argument are empty arrays';
   var a = [];
@@ -10302,8 +10302,8 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
+  test.is( got === a );
+  test.is( got !== b );
 
   test.description = 'first and second argument are empty arrays';
   var a = [];
@@ -10311,8 +10311,8 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( null, a, b );
   var expected = [];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = '3 arguments, nothing in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10321,9 +10321,9 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( a, b, c );
   var expected = [ 1, 2, 3, 4, 15, 5, 16, 17 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, nothing in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10332,9 +10332,9 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( null, a, b, c );
   var expected = [ 1, 2, 3, 4, 15, 5, 16, 17 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, something in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10343,9 +10343,9 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( null, a, b, c );
   var expected = [ 1, 2, 3, 4, 15, 5, 16, 17 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, something in common';
   var a = [ 1, 2, 3, 4, 15 ];
@@ -10354,9 +10354,9 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( null, a, b, c );
   var expected = [ 1, 2, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '3 arguments, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
@@ -10365,27 +10365,27 @@ function arraySetUnion( test )
   var got = _.arraySetUnion( null, a, b, c );
   var expected = [ 1, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 argument, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
   var got = _.arraySetUnion( null, a );
   var expected = [ 1, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 argument, repeats';
   var a = [ 1, 1, 1, 3, 4, 15 ];
   var got = _.arraySetUnion( a );
   var expected = [ 1, 1, 1, 3, 4, 15 ];
   test.identical( got, expected );
-  test.shouldBe( got === a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = '1 null';
   var got = _.arraySetUnion( null );
@@ -10683,9 +10683,9 @@ function arraySetContainAny( test )
   var got = _.arraySetContainAny( a, b, c );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'second array is empty, third array contains elements from (src) array';
   var a = [ 33, 4, 5, 'b', 'c' ];
@@ -10694,9 +10694,9 @@ function arraySetContainAny( test )
   var got = _.arraySetContainAny( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'second and third arrays doesn\'t contains matching elemets from (src) array';
   var a = [ 33, 4, 5, 'b', 'c' ];
@@ -10705,9 +10705,9 @@ function arraySetContainAny( test )
   var got = _.arraySetContainAny( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'first argument is an empty array';
   var a = [];
@@ -10716,9 +10716,9 @@ function arraySetContainAny( test )
   var got = _.arraySetContainAny( a, b, c );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'following array are empty, (src) array is not empty';
   var a = [ 33, 4, 5, 'b', 'c' ];
@@ -10727,9 +10727,9 @@ function arraySetContainAny( test )
   var got = _.arraySetContainAny( a, b, c );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'all the array are empty';
   var a = [];
@@ -10738,9 +10738,9 @@ function arraySetContainAny( test )
   var got = _.arraySetContainAny( a, b, c );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
-  test.shouldBe( got !== c );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
 
   test.description = 'single argument';
   var got = _.arraySetContainAny([ 33, 4, 5, 'b', 'c' ]);
@@ -10863,8 +10863,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'argument length mismatch';
   var a = [ 1, 2, 4, 7, 5 ];
@@ -10872,8 +10872,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'arguments have the same elements have inner arrays';
   var a = [ 1, 2, [ 1, 3], 7, 5 ];
@@ -10881,8 +10881,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = false;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   test.description = 'both arrays are empty';
   var a = [];
@@ -10890,8 +10890,8 @@ function arraySetIdentical( test )
   var got = _.arraySetIdentical( a, b );
   var expected = true;
   test.identical( got, expected );
-  test.shouldBe( got !== a );
-  test.shouldBe( got !== b );
+  test.is( got !== a );
+  test.is( got !== b );
 
   /* */
 
@@ -10974,7 +10974,7 @@ function arraySetIdentical( test )
 var Self =
 {
 
-  name : 'wTools.array',
+  name : 'Tools/base/laye1/Array',
   silencing : 1,
   // verbosity : 7,
   // routine : 'bufferRelen',

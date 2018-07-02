@@ -17,6 +17,68 @@ _.assert( _realGlobal_ );
 // look
 // --
 
+var LookDefaults =
+{
+
+  onUp : function( e,k,it ){ return it.looking },
+  onTerminal : function( e,k,it ){ return it.result },
+  onDown : function( e,k,it ){ return it.result },
+
+  own : 0,
+  recursive : 1,
+  visitingRoot : 1,
+
+  trackingVisits : 1,
+  levelLimit : 0,
+
+  pathDelimteter : '/',
+  path : null,
+
+  counter : 0,
+  level : 0,
+
+  src : null,
+  root : null,
+
+  dst : null,
+  dstRoot : null,
+
+  context : null,
+
+}
+
+//
+
+var LookIterator = Object.create( null );
+
+LookIterator.begin = _lookIterationBegin;
+LookIterator.select = _lookIterationSelect;
+
+if( _realGlobal_.wTools.LookIterator )
+LookIterator = _realGlobal_.wTools.LookIterator;
+else
+_realGlobal_.wTools.LookIterator = LookIterator;
+
+//
+
+var LookIteration = Object.create( null );
+
+LookIteration.hasChildren = 0;
+LookIteration.level = 0,
+LookIteration.path = '/';
+LookIteration.key = null;
+LookIteration.index = null;
+LookIteration.src = null;
+LookIteration.dst = null;
+LookIteration.result = true;
+LookIteration.looking = true;
+LookIteration.ascending = true;
+LookIteration.wasVisited = false;
+LookIteration._ = null;
+LookIteration.down = null;
+
+//
+
 function _lookIterationBegin()
 {
   var it = this;
@@ -26,34 +88,33 @@ function _lookIterationBegin()
   _.assert( it.iterator );
 
   var newIt = Object.create( it.iterator );
+  _.mapExtend( newIt, LookIteration );
+  Object.preventExtensions( newIt );
 
-  newIt.level = it.level,
+  newIt.level = it.level;
   newIt.path = it.path;
   newIt.down = it;
-  newIt.key = null;
-  newIt.index = null;
   newIt.src = it.src;
   newIt.dst = it.dst;
-  newIt.ascending = true;
-
-  Object.preventExtensions( newIt );
 
   return newIt;
 }
 
 //
 
-function _lookIterationSelect( k,i )
+function _lookIterationSelect( k )
 {
   var it = this;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 1, 'expects exactly two argument' );
   _.assert( it.level >= 0 );
+  _.assert( it.down );
 
   it.level = it.level+1;
   it.path = it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k;
+  it.iterator.lastPath = it.path;
   it.key = k;
-  it.index = i;
+  it.index = it.down.hasChildren;
   it.src = it.src[ k ];
 
   if( it.dst )
@@ -66,93 +127,94 @@ function _lookIterationSelect( k,i )
 
 //
 
-var LookIrerator = Object.create( null );
-LookIrerator.begin = _lookIterationBegin;
-LookIrerator.select = _lookIterationSelect;
+function __look_lookBegin( routine, args )
+{
+  var o = args[ 0 ];
+
+  _.assert( args.length === 1 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assertRoutineOptionsWithUndefines( routine, o );
+  _.assert( routine.lookBegin === __look_lookBegin );
+
+  /* */
+
+  var iterator = Object.create( LookIterator );
+  _.mapExtend( iterator, o );
+
+  iterator.iterator = iterator;
+
+  if( iterator.root === null )
+  iterator.root = iterator.src;
+
+  if( iterator.dstRoot === null )
+  iterator.dstRoot = iterator.dst;
+
+  if( iterator.trackingVisits )
+  {
+    iterator.srcVisited = [];
+    iterator.dstVisited = [];
+  }
+
+  if( iterator.path === null )
+  iterator.path = iterator.pathDelimteter;
+
+  iterator.lastPath = iterator.path;
+  iterator.key = null;
+  iterator.looking = true;
+
+  Object.preventExtensions( iterator );
+
+  _.assert( iterator.level !== undefined );
+  _.assert( iterator.path !== undefined );
+  _.assert( iterator.lastPath );
+
+  var it = Object.create( iterator );
+  _.mapExtend( it, LookIteration );
+  Object.preventExtensions( it );
+
+  it.src = iterator.src;
+  it.dst = iterator.dst;
+
+  return it;
+}
 
 //
 
-function __lookAct( it )
+function __look_lookIt( it )
 {
 
   _.assert( it.level >= 0 );
-  _.assert( arguments.length === 1 );
-
-  /* level */
-
-  if( it.levelLimit !== 0 )
-  if( !( it.level < it.levelLimit ) )
-  {
-    debugger;
-    return it;
-  }
-
-  /* trackingVisits */
-
-  if( it.trackingVisits )
-  {
-    if( it.visited.indexOf( it.src ) !== -1 )
-    return it;
-    it.visited.push( it.src );
-  }
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   /* up */
 
-  if( it.visitingRoot || it.root !== it.src )
+  up();
+
+  /* level */
+
+  var keepLooking = true;
+  if( it.levelLimit !== 0 )
+  if( !( it.level < it.levelLimit ) )
   {
-    it.ascending = it.onUp.call( it, it.src, it.key, it );
-    if( it.ascending === undefined )
-    it.ascending = true;
-    _.assert( _.boolIs( it.ascending ),'expects it.onUp returns boolean, but got',_.strTypeOf( it.ascending ) );
+    keepLooking = false;
   }
 
-  /* down */
-
-  function end()
-  {
-
-    if( it.visitingRoot || it.root !== it.src )
-    {
-      if( it.onDown )
-      it.onDown.call( it, it.src, it.key, it );
-    }
-
-    if( it.trackingVisits )
-    {
-      _.assert( it.visited[ it.visited.length-1 ] === it.src );
-      it.visited.pop();
-    }
-
-    return it;
-  }
-
-  if( it.ascending === false || it.iterator.looking === false )
-  return end();
-
-  /* element */
-
-  var index = 0;
-  function handleElement( k )
-  {
-
-    if( it.recursive || it.root === it.src )
-    {
-      var itNew = it.begin().select( k,index )
-      __lookAct( itNew );
-    }
-
-    index += 1;
-  }
+  if( keepLooking === false || it.looking === false || it.iterator.looking === false || it.wasVisited )
+  return down();
 
   /* iterate */
 
-  if( _.arrayIs( it.src ) || _.argumentsIs( it.src ) )
+  // var index = 0;
+  if( _.arrayIs( it.src ) || _.argumentsArrayIs( it.src ) )
   {
 
     for( var k = 0 ; k < it.src.length ; k++ )
     {
 
       handleElement( k );
+
+      if( !it.iterator.looking )
+      break;
 
     }
 
@@ -169,6 +231,9 @@ function __lookAct( it )
 
       handleElement( k );
 
+      if( !it.iterator.looking )
+      break;
+
     }
 
   }
@@ -180,97 +245,135 @@ function __lookAct( it )
 
   /* end */
 
-  return end();
+  return down();
+
+  /* element */
+
+  function handleElement( k )
+  {
+
+    if( it.recursive || it.root === it.src )
+    {
+      var itNew = it.begin().select( k/*,index*/ );
+      __look_lookIt( itNew );
+    }
+
+    /*index += 1;*/
+  }
+
+  /* up */
+
+  function up()
+  {
+
+    if( it.trackingVisits )
+    {
+      if( it.srcVisited.indexOf( it.src ) !== -1 )
+      it.wasVisited = true;
+      it.srcVisited.push( it.src );
+      it.dstVisited.push( it.dst );
+    }
+
+    it.ascending = true;
+    if( it.down )
+    it.down.hasChildren += 1;
+
+    if( it.visitingRoot || it.root !== it.src )
+    {
+      _.assert( it.onUp );
+      it.looking = it.onUp.call( it, it.src, it.key, it );
+      if( it.looking === undefined )
+      it.looking = true;
+      _.assert( _.boolIs( it.looking ),'expects it.onUp returns boolean, but got',_.strTypeOf( it.looking ) );
+    }
+
+  }
+
+  /* down */
+
+  function down()
+  {
+    it.ascending = false;
+
+    if( it.visitingRoot || it.root !== it.src )
+    {
+      if( it.onDown )
+      it.result = it.onDown.call( it, it.src, it.key, it );
+    }
+
+    if( it.trackingVisits )
+    {
+      _.assert( Object.is( it.srcVisited[ it.srcVisited.length-1 ], it.src ) );
+      it.srcVisited.pop();
+      _.assert( Object.is( it.dstVisited[ it.dstVisited.length-1 ], it.dst ) );
+      it.dstVisited.pop();
+    }
+
+    return it;
+  }
+
 }
 
 //
 
-function _lookPre( routine, args )
+function __look_lookContinue( routine, args )
+{
+  var it = args[ args.length - 1 ];
+
+  _.assert( arguments.length === 2 );
+
+  if( !Object.isPrototypeOf.call( LookIterator, it ) )
+  {
+    debugger;
+    it = routine.pre( routine, args );
+  }
+
+  return it;
+}
+
+//
+
+function _look_pre( routine, args )
 {
   var o;
 
   if( args.length === 1 )
-  o = args[ 0 ];
+  {
+    if( _.numberIs( args[ 0 ] ) )
+    o = { accuracy : args[ 0 ] }
+    else
+    o = args[ 0 ];
+  }
   else if( args.length === 2 )
-  o = { src : args[ 0 ], onUp : args[ 1 ] };
+  {
+    o = { src : args[ 0 ], onUp : args[ 1 ] };
+  }
   else if( args.length === 3 )
-  o = { src : args[ 0 ], onUp : args[ 1 ], onDown : args[ 2 ] };
+  {
+    o = { src : args[ 0 ], onUp : args[ 1 ], onDown : args[ 2 ] };
+  }
   else _.assert( 0,'look expects single options map, 2 or 3 arguments' );
 
-  _.routineOptions( routine, o );
+  _.routineOptionsWithUndefines( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
-  _.assert( arguments.length === 2 );
-  _.assert( o.onUp === null || o.onUp.length === 3 );
-  _.assert( o.onDown === null || o.onDown.length === 3 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( o.onUp === null || o.onUp.length === 0 || o.onUp.length === 3, 'onUp should expects exactly three arguments' );
+  _.assert( o.onDown === null || o.onDown.length === 0 || o.onDown.length === 3, 'onUp should expects exactly three arguments' );
 
-  return o
+  var it = look.lookBegin( routine, [ o ] );
+
+  return it;
 }
 
 //
 
-function _lookBody( o )
+function _look_body( it )
 {
-
-  _.assert( arguments.length === 1 );
-
-  /* */
-
-  var iterator = Object.create( LookIrerator );
-  _.mapExtend( iterator, o );
-
-  iterator.iterator = iterator;
-
-  if( iterator.root === null )
-  iterator.root = iterator.src;
-
-  if( iterator.dstRoot === null )
-  iterator.dstRoot = iterator.dst;
-
-  if( iterator.trackingVisits )
-  if( iterator.visited === null )
-  iterator.visited = [];
-
-  if( iterator.path === null )
-  iterator.path = o.pathDelimteter;
-
-  iterator.key = null;
-  iterator.looking = true;
-
-  Object.preventExtensions( iterator );
-
-  var it = iterator.begin();
-
-  return __lookAct( it );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  return look.lookIt( it );
 }
 
-_lookBody.defaults =
-{
-
-  onUp : function( e,k,it ){},
-  onTerminal : function( e,k,it ){},
-  onDown : function( e,k,it ){},
-
-  own : 0,
-  recursive : 1,
-  visitingRoot : 1,
-
-  trackingVisits : 1,
-  levelLimit : 0,
-
-  pathDelimteter : '/',
-  path : null,
-
-  counter : 0,
-  visited : null,
-  level : 0,
-
-  src : null,
-  root : null,
-
-  dst : null,
-  dstRoot : null,
-
-}
+_look_body.defaults = Object.create( LookDefaults );
 
 //
 
@@ -280,10 +383,13 @@ function look( o )
   return look.body.call( _, o );
 }
 
-look.pre = _lookPre;
-look.body = _lookBody;
+look.lookBegin = __look_lookBegin;
+look.lookIt = __look_lookIt;
+look.lookContinue = __look_lookContinue;
+look.pre = _look_pre;
+look.body = _look_body;
 
-var defaults = look.defaults = Object.create( _lookBody.defaults );
+var defaults = look.defaults = Object.create( _look_body.defaults );
 
 defaults.own = 0;
 
@@ -296,10 +402,10 @@ function lookOwn( o )
   return lookOwn.body.call( _, o );
 }
 
-look.pre = _lookPre;
-look.body = _lookBody;
+look.pre = _look_pre;
+look.body = _look_body;
 
-var defaults = lookOwn.defaults = Object.create( _lookBody.defaults );
+var defaults = lookOwn.defaults = Object.create( _look_body.defaults );
 
 defaults.own = 1;
 defaults.recursive = 1;
@@ -472,7 +578,7 @@ function eachInRange( o )
   if( _.numberIs( o.range ) )
   o.range = [ 0,o.range ];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( o.range.length === 2 );
   _.assert( o.increment >= 0 );
 
@@ -557,7 +663,7 @@ function eachInManyRanges( o )
   o = { range : o };
 
   _.routineOptions( eachInManyRanges,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayIs( o.range ) );
 
   /* estimate */
@@ -771,7 +877,7 @@ function entityWrap( o )
   debugger;
 
   _.routineOptions( entityWrap,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( o.onCondition )
   o.onCondition = _entityConditionMake( o.onCondition,1 );
@@ -1105,7 +1211,8 @@ function _entitySelect( o )
       // it.container = o.container;
       // iterator.query = o.query[ i ];
 
-      debugger; xxx
+      debugger;
+      _.assert( 0,'not tested' );
       result[ iterator.query ] = _entitySelectAct( it,iterator );
     }
 
@@ -1171,7 +1278,7 @@ function _entitySelectAct( it,iterator )
 
   _.assert( Object.keys( iterator ).length === 7 );
   _.assert( Object.keys( it ).length === 3 );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.primitiveIs( container ) )
   {
@@ -1491,7 +1598,7 @@ function entityProbe( o )
   if( _.arrayIs( o ) )
   o = { src : o }
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( entityProbe,o );
   _.assert( _.arrayIs( o.src ) || _.objectIs( o.src ) );
 
@@ -1660,7 +1767,7 @@ function entityGroup( o )
 
   var o = _.routineOptions( entityGroup,o );
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
   _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
   _.assert( _.arrayIs( o.src ),'not tested' );
@@ -1729,229 +1836,291 @@ entityGroup.defaults =
 // entity checker
 // --
 
-/**
- * Options for _entityEqualAct() function.
- * @typedef {Object} wTools~entityEqualOptions
- * @property {routine} [ onSameNumbers ] - Routine to compare two numbers.Returns true if numbers are equal.
- * @property {boolean} [ contain=0 ] - If this parameter sets to true, two entities will be considered the same,
- * if all keys/indexes of `src2`, are in `src1` with same values. Has no effect on comparison entities with primitive
- * types. If `options.contain` set to false, `src1` and `src2` will be considered the same, if and only if they has
- * the same lengths, same keys/indexes and same appropriates values.
- * @property {boolean} [ strict=1 ] - Specify equality comparison. When it set to true, then the Strict equality
- * using (===), else the Loose equality using (==).
- * @property {string} [ lastPath='' ] - This parameters is modified during the execution of routine. Specified on path to
- * value, that composite from keys/indexes separated by '.'
- * @property {string} [ path='' ] - For non primitive entities indicates the current path for elements that is compared now.
- */
-
-/**
- * Compares two values. For objects, arrays, array like objects, comparison will be recursive. Comparison criteria set
- * in the `options`. If in some moment routine finds different values in two entities, then it returns false.
- * @param {*} src1 - Entity for comparison.
- * @param {*} src2 - Entity for comparison.
- * @param {wTools~entityEqualOptions} o - Comparison criteria.
- * @returns {boolean} result - Returns true for same entities.
- *
- * @example
- * //returns false
- * var o = { onSameNumbers : function( a, b ){ return a === b } };
- * _._entityEqualAct( 5, 6, o );
- *
- * @example
- * //returns true
- * _._entityEqualAct( 'a', 'a', {} );
- *
- * @example
- * //returns false
- * var o = { onSameNumbers : function( a, b ){ return a === b } };
- * _._entityEqualAct( [ 1, 2, 3 ], [ 1, 2, 4 ], o );
- *
- * @example
- * //returns false
- * var o = { onSameNumbers : function( a, b ){ return a === b } };
- * _._entityEqualAct( { a : 1, b : 2 }, { a : 1, b : 2, c: 1 }, o );
- *
- * @example
- * //returns true
- * var o = { onSameNumbers : function( a, b ){ return a === b }, strict : 0 };
- * _._entityEqualAct( { a : '1', b : '2' },{ a : 1, b : 2 }, o );
- *
- * @private
- * @function _entityEqualAct
- * @throws {exception} If ( arguments.length ) is not equal 3.
- * @memberof wTools
- */
-
-function _entityEqualAct( src1, src2, iterator )
+function __entityEqualUp( e, k, it )
 {
 
-  var path = iterator.path;
-  iterator.lastPath = path;
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
-  _.assert( arguments.length === 3 );
+  if( it.path === '/inputs/0/input' )
+  debugger;
 
-  if( src1 === src2 )
-  return true;
-
-  if( iterator.strict )
+  if( Object.is( it.src, it.dst ) )
   {
-    if( _ObjectToString.call( src1 ) !== _ObjectToString.call( src2 ) )
-    return false;
+    return give( true, true );
+  }
+
+  /* fast comparison if possible */
+
+  if( it.context.strictTyping )
+  {
+    // debugger; // xxx
+    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.dst ) )
+    return give( false, false );
   }
   else
   {
-    if( _.primitiveIs( src1 ) )
-    if( _ObjectToString.call( src1 ) !== _ObjectToString.call( src2 ) && src1 != src2 )
-    return false;
+    if( _.primitiveIs( it.src ) )
+    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.dst ) )
+    if( it.src != it.dst )
+    return give( false, false );
   }
 
   /* */
 
-  if( _.bufferRawIs( src1 ) )
+  if( _.numberIs( it.src ) )
+  {
+    return give( it.context.onNumbersAreEqual( it.src, it.dst ), false );
+  }
+  else if( _.regexpIs( it.src ) )
+  {
+    return give( _.regexpsAreIdentical( it.src, it.dst ), false );
+  }
+  else if( _.dateIs( it.src ) )
+  {
+    return give( _.datesAreIdentical( it.src, it.dst ), false );
+  }
+  else if( _.bufferAnyIs( it.src ) )
+  {
+    if( !it.context.strictTyping )
+    debugger;
+    if( it.context.strictTyping )
+    return give( _.buffersAreIdentical( it.src, it.dst ), false );
+    else
+    return give( _.buffersAreEquivalent( it.src, it.dst, it.context.accuracy ), false );
+  }
+  else if( _.arrayLike( it.src ) )
   {
 
-    if( !_.bufferRawIs( src2 ) )
-    return false;
+    it._ = 'arrayLike';
 
-    src1 = new Uint8Array( src1 );
-    src2 = new Uint8Array( src2 );
+    if( !it.dst )
+    return give( false, false );
+    if( it.src.constructor !== it.dst.constructor )
+    return give( false, false );
+
+    if( !it.context.contain )
+    {
+      if( it.src.length !== it.dst.length )
+      return give( false, false );
+    }
+    else
+    {
+      if( it.src.length > it.dst.length )
+      return give( false, false );
+    }
 
   }
-
-  if( _.arrayLike( src1 ) )
+  else if( _.objectLike( it.src ) )
   {
 
-    if( !src2 )
-    return false;
-    if( src1.constructor !== src2.constructor )
-    return false;
-    if( !iterator.contain )
-    if( src1.length !== src2.length )
-    return false;
-    for( var k = 0 ; k < src2.length ; k++ )
-    {
-      iterator.path = path + '.' + k;
-      if( !_entityEqualAct( src1[ k ], src2[ k ], iterator ) )
-      return false;
-      iterator.path = path;
-    }
+    it._ = 'objectLike';
 
-  }
-  else if( _.objectLike( src1 ) )
-  {
-
-    if( _.routineIs( src1._equalAre) )
+    if( _.routineIs( it.src._equalAre ) )
     {
-      _.assert( src1._equalAre.length === 3 );
-      if( !src1._equalAre( src1, src2, iterator ) )
-      return false;
+      _.assert( it.src._equalAre.length === 3 );
+      if( !it.src._equalAre( it.src, it.dst, it ) )
+      return give( false, false );
     }
-    else if( _.routineIs( src1.equalWith ) )
+    else if( _.routineIs( it.src.equalWith ) )
     {
-      _.assert( src1.equalWith.length <= 2 );
-      if( !src1.equalWith( src2, iterator ) )
-      return false;
+      _.assert( it.src.equalWith.length <= 2 );
+      if( !it.src.equalWith( it.dst, it ) )
+      return give( false, false );
     }
-    else if( _.regexpIs( src1 ) )
+    else if( _.routineIs( it.dst.equalWith ) )
     {
-      return _.regexpsAreIdentical( src1, src2 );
+      _.assert( it.dst.equalWith.length <= 2 );
+      if( !it.dst.equalWith( it.src, it ) )
+      return give( false, false );
     }
     else
     {
 
-      if( !iterator.contain )
-      if( _.entityLength( src1 ) !== _.entityLength( src2 ) )
-      return false;
-      for( var k in src2 )
-      {
-        iterator.path = path + '.' + k;
-        if( !_entityEqualAct( src1[ k ], src2[ k ], iterator ) )
-        return false;
-        iterator.path = path;
-      }
+      if( !it.context.contain )
+      if( _.entityLength( it.src ) !== _.entityLength( it.dst ) )
+      return give( false, false );
 
     }
 
-  }
-  else if( _.numberIs( src1 ) )
-  {
-    return iterator.onSameNumbers( src1,src2 );
-  }
-  else if( _.regexpIs( src1 ) )
-  {
-    if( src1.source !== src2.source )
-    return false;
-    if( src1.flags !== src2.flags )
-    return false;
-  }
-  else if( _.bufferViewIs( src1 ) )
-  {
-    debugger;
-    if( !_.bufferViewIs( src2 ) )
-    return false;
-    if( src1.byteLength !== src2.byteLength )
-    debugger;
-    for( var i = 0 ; i < src1.byteLength ; i++ )
-    if( src1.getUint8( i ) !== src2.getUint8( i ) )
-    return false;
-    return true;
   }
   else
   {
-    if( iterator.strict )
+    if( it.context.strictTyping )
     {
-      if( src1 !== src2 )
-      return false;
+      if( it.src !== it.dst )
+      return give( false, false );
     }
     else
     {
-      if( src1 != src2 )
-      return false;
+      if( it.src != it.dst )
+      return give( false, false );
     }
   }
 
-  return true;
+  return give( true, true );
+
+  /* */
+
+  function give( result, looking )
+  {
+    _.assert( arguments.length === 2 );
+
+    it.result = it.result && result;
+    it.looking = it.looking && looking;
+
+    if( !it.looking )
+    it.iterator.looking = false;
+
+    return it.looking;
+  }
+
 }
 
 //
 
-function _entityEqualIteratorMake( o )
+function __entityEqualDown( e, k, it )
 {
 
-  function _sameNumbersStrict( a,b )
+  _.assert( it.ascending === false );
+
+  // if( it.wasVisited )
+  // debugger;
+
+  /* if cycled and strict cycling */
+  if( it.result )
+  if( it.context.strictCycling )
+  if( it.wasVisited )
+  {
+    /* if opposite branch was cycled earlier */
+    if( it.down.dst !== undefined )
+    {
+      var i = it.dstVisited.indexOf( it.down.dst );
+      if( 0 <= i && i <= it.dstVisited.length-3 )
+      it.result = false;
+    }
+    /* or not yet cycled */
+    if( it.result )
+    it.result = it.dstVisited[ it.srcVisited.indexOf( it.src ) ] === it.dst;
+    /* then not equal otherwise equal */
+  }
+
+  /* if cycled and loose cycling */
+  if( it.result )
+  if( !it.context.strictCycling )
+  if( it.wasVisited )
+  if( it.levelLimit && it.level < it.levelLimit )
+  {
+    var o2 = _.mapExtend( null, it.context );
+    o2.src1 = it.dst;
+    o2.src2 = it.src;
+    o2.levelLimit = 1;
+    it.result = _._entityEqual_body( o2 );
+  }
+
+  /* if element is not equal then descend it down */
+  if( !it.result )
+  if( it.down )
+  {
+    it.down.result = it.result;
+  }
+
+  return it.result;
+}
+
+//
+
+function _entityEqual_lookBegin( routine, args )
+{
+  var o = args[ 0 ];
+
+  _.assert( args.length === 1 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assertRoutineOptionsWithUndefines( routine, o );
+  _.assert( routine.lookBegin === _entityEqual_lookBegin );
+
+  /* */
+
+  var lookOptions = Object.create( null );
+  lookOptions.src = o.src2;
+  lookOptions.dst = o.src1;
+  lookOptions.levelLimit = o.levelLimit;
+  lookOptions.context = o;
+  lookOptions.onUp = _.routinesComposeReturningLast( __entityEqualUp, o.onUp );
+  lookOptions.onDown = _.routinesComposeReturningLast( __entityEqualDown, o.onDown );
+
+  var it = _.look.pre( _.look, [ lookOptions ] );
+  o.iterator = it.iterator;
+
+  return it;
+}
+
+//
+
+var _entityEqual_lookIt = look.lookIt;
+
+//
+
+var _entityEqual_lookContinue = __look_lookContinue;
+
+//
+
+function _entityEqual_pre( routine, args )
+{
+
+  _.assert( args.length === 2 || args.length === 3 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+
+  var o = _.routineOptionsWithUndefines( routine, args[ 2 ] || Object.create( null ) );
+  var accuracy = o.accuracy;
+
+  o.src1 = args[ 0 ];
+  o.src2 = args[ 1 ];
+
+  if( o.onNumbersAreEqual === null )
+  o.onNumbersAreEqual = o.strictNumbering ? numbersAreIdentical : numbersAreEquivalent;
+
+  var it = _._entityEqual.lookBegin( routine, [ o ] );
+
+  return it;
+
+  /* */
+
+  function numbersAreIdentical( a,b )
   {
     return Object.is( a,b );
   }
 
-  function _sameNumbersNotStrict( a,b )
+  function numbersAreEquivalent( a,b )
   {
     if( Object.is( a,b ) )
     return true;
-    return Math.abs( a-b ) <= eps;
+    return Math.abs( a-b ) <= accuracy;
   }
 
-  var o = o || Object.create( null );
-
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( o === undefined || _.objectIs( o ), '_.toStrFine :','options must be object' );
-  _.routineOptions( _entityEqualIteratorMake,o );
-
-  if( o.onSameNumbers === null )
-  o.onSameNumbers = o.strict ? _sameNumbersStrict : _sameNumbersNotStrict;
-
-  var eps = o.eps;
-
-  return o;
 }
 
-_entityEqualIteratorMake.defaults =
+//
+
+function _entityEqual_body( it )
 {
-  onSameNumbers : null,
+  _.assert( arguments.length === 1, 'expects single argument' );
+   _._entityEqual.lookIt( it );
+  return it.result;
+}
+
+_entityEqual_body.defaults =
+{
+  src1 : null,
+  src2 : null,
   contain : 0,
-  strict : 1,
-  lastPath : '',
-  path : '',
-  eps : 1e-7,
+  strictTyping : 1,
+  strictNumbering : 1,
+  strictCycling : 1,
+  accuracy : 1e-7,
+  levelLimit : 0,
+  onNumbersAreEqual : null,
+  onUp : null,
+  onDown : null,
 }
 
 //
@@ -1959,7 +2128,7 @@ _entityEqualIteratorMake.defaults =
 /**
  * Deep comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
  * Returns false if finds difference in two entities, else returns true. By default routine uses it own
- * ( onSameNumbers ) routine to compare numbers.
+ * ( onNumbersAreEqual ) routine to compare numbers.
  *
  * @param {*} src1 - Entity for comparison.
  * @param {*} src2 - Entity for comparison.
@@ -1972,7 +2141,7 @@ _entityEqualIteratorMake.defaults =
  *
  * @example
  * //returns true
- * _._entityEqual( '1', 1, { strict : 0 } );
+ * _._entityEqual( '1', 1, { strictTyping : 0 } );
  *
  * @example
  * //returns true
@@ -1991,21 +2160,21 @@ _entityEqualIteratorMake.defaults =
  * @memberof wTools
  */
 
-function _entityEqual( src1,src2,o )
+function _entityEqual( src1, src2, options )
 {
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  var o = _entityEqualIteratorMake( o );
-
-  return _entityEqualAct( src1,src2,o );
+  var it = _entityEqual.pre.call( this, _entityEqual, arguments );
+  var result = _entityEqual.body.call( this, it );
+  return result;
 }
 
-_entityEqual.defaults =
-{
-}
+_entityEqual.lookBegin = _entityEqual_lookBegin;
+_entityEqual.lookIt = _entityEqual_lookIt;
+_entityEqual.lookContinue = _entityEqual_lookContinue;
 
-_entityEqual.defaults.__proto__ = _entityEqualIteratorMake.defaults;
+_entityEqual.pre = _entityEqual_pre;
+_entityEqual.body = _entityEqual_body;
+
+var defaults = _entityEqual.defaults = Object.create( _entityEqual_body.defaults );
 
 //
 
@@ -2016,7 +2185,7 @@ _entityEqual.defaults.__proto__ = _entityEqualIteratorMake.defaults;
  * @param {*} src1 - Entity for comparison.
  * @param {*} src2 - Entity for comparison.
  * @param {wTools~entityEqualOptions} options - Comparsion options {@link wTools~entityEqualOptions}.
- * @param {boolean} [ options.strict = true ] - Method uses strict equality mode( '===' ).
+ * @param {boolean} [ options.strictTyping = true ] - Method uses strict equality mode( '===' ).
  * @returns {boolean} result - Returns true for identical entities.
  *
  * @example
@@ -2037,47 +2206,46 @@ _entityEqual.defaults.__proto__ = _entityEqualIteratorMake.defaults;
  * @memberof wTools
 */
 
-function entityIdentical( src1,src2,options )
+function entityIdentical( src1, src2, options )
 {
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  function sameNumbers( a,b )
-  {
-    return Object.is( a,b );
-  }
-
-  var options = _.mapSupplement( options || Object.create( null ),
-  {
-    strict : 1,
-    onSameNumbers : sameNumbers,
-  });
-
-  return _._entityEqual( src1,src2,options );
+  var it = _entityEqual.pre.call( this, entityIdentical, arguments );
+  var result = _entityEqual.body.call( this, it );
+  return result;
 }
+
+entityIdentical.pre = _entityEqual.pre;
+entityIdentical.body = _entityEqual.body;
+entityIdentical.lookBegin = _entityEqual.lookBegin;
+entityIdentical.lookIt = _entityEqual.lookIt;
+
+var defaults = entityIdentical.defaults = Object.create( _entityEqual.defaults );
+
+defaults.strictTyping = 1;
+defaults.strictNumbering = 1;
+defaults.strictCycling = 1;
 
 //
 
 /**
  * Deep soft comparsion of two entities. Uses recursive comparsion for objects,arrays and array-like objects.
- * By default uses own( onSameNumbers ) routine to compare numbers using( options.eps ). Returns true if two numbers are NaN, strict equal or
- * ( a - b ) <= ( options.eps ). For example: '_.entityEquivalent( 1, 1.5, { eps : .5 } )' returns true.
+ * By default uses own( onNumbersAreEqual ) routine to compare numbers using( options.accuracy ). Returns true if two numbers are NaN, strict equal or
+ * ( a - b ) <= ( options.accuracy ). For example: '_.entityEquivalent( 1, 1.5, { accuracy : .5 } )' returns true.
  *
  * @param {*} src1 - Entity for comparison.
  * @param {*} src2 - Entity for comparison.
  * @param {wTools~entityEqualOptions} options - Comparsion options {@link wTools~entityEqualOptions}.
  * @param {boolean} [ options.strict = false ] - Method uses( '==' ) equality mode .
- * @param {number} [ options.eps = 1e-5 ] - Maximal distance between two numbers.
- * Example: If( options.eps ) is '1e-5' then 0.99999 and 1.0 are equivalent.
+ * @param {number} [ options.accuracy = 1e-5 ] - Maximal distance between two numbers.
+ * Example: If( options.accuracy ) is '1e-5' then 0.99999 and 1.0 are equivalent.
  * @returns {boolean} Returns true if entities are equivalent.
  *
  * @example
  * //returns true
- * _.entityEquivalent( 2, 2.1, { eps : .2 } );
+ * _.entityEquivalent( 2, 2.1, { accuracy : .2 } );
  *
  * @example
  * //returns true
- * _.entityEquivalent( [ 1, 2, 3 ], [ 1.9, 2.9, 3.9 ], { eps : 0.9 } );
+ * _.entityEquivalent( [ 1, 2, 3 ], [ 1.9, 2.9, 3.9 ], { accuracy : 0.9 } );
  *
  * @function entityEquivalent
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
@@ -2085,31 +2253,23 @@ function entityIdentical( src1,src2,options )
  * @memberof wTools
 */
 
-function entityEquivalent( src1,src2,options )
+function entityEquivalent( src1, src2, options )
 {
-  var options = options || Object.create( null );
-  var eps = options.eps;
-  if( eps === undefined )
-  eps = 1e-5;
-  delete options.eps;
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  function _sameNumbers( a,b )
-  {
-    if( Object.is( a,b ) )
-    return true;
-    return Math.abs( a-b ) <= eps;
-  }
-
-  var options = _.mapSupplement( options || Object.create( null ),
-  {
-    strict : 0,
-    onSameNumbers : _sameNumbers,
-  });
-
-  return _._entityEqual( src1,src2,options );
+  var it = _entityEqual.pre.call( this, entityEquivalent, arguments );
+  var result = _entityEqual.body.call( this, it );
+  return result;
 }
+
+entityEquivalent.pre = _entityEqual.pre;
+entityEquivalent.body = _entityEqual.body;
+entityEquivalent.lookBegin = _entityEqual.lookBegin;
+entityEquivalent.lookIt = _entityEqual.lookIt;
+
+var defaults = entityEquivalent.defaults = Object.create( _entityEqual.defaults );
+
+defaults.strictTyping = 0;
+defaults.strictNumbering = 0;
+defaults.strictCycling = 0;
 
 //
 
@@ -2142,19 +2302,24 @@ function entityEquivalent( src1,src2,options )
  * @memberof wTools
 */
 
-function entityContain( src1,src2,options )
+function entityContain( src1, src2, options )
 {
-
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  var options = _.mapSupplement( options || Object.create( null ),
-  {
-    strict : 1,
-    contain : 1,
-  });
-
-  return _._entityEqual( src1,src2,options );
+  var it = _entityEqual.pre.call( this, entityContain, arguments );
+  var result = _entityEqual.body.call( this, it );
+  return result;
 }
+
+entityContain.pre = _entityEqual.pre;
+entityContain.body = _entityEqual.body;
+entityContain.lookBegin = _entityEqual.lookBegin;
+entityContain.lookIt = _entityEqual.lookIt;
+
+var defaults = entityContain.defaults = Object.create( _entityEqual.defaults );
+
+defaults.contain = 1;
+defaults.strictTyping = 1;
+defaults.strictNumbering = 1;
+defaults.strictCycling = 1;
 
 //
 
@@ -2194,36 +2359,75 @@ function entityContain( src1,src2,options )
   * @memberof wTools
   */
 
-function entityDiff( src1,src2,o )
+function entityDiff( src1, src2, o )
 {
 
   var o = o || Object.create( null );
   _.assert( arguments.length === 2 || arguments.length === 3 );
-  var same = _._entityEqual( src1,src2,o );
+  var equal = _._entityEqual( src1, src2, o );
 
-  if( same )
+  if( equal )
   return false;
 
-  var result = '';
-
-  if( !_.primitiveIs( src1 ) )
-  src1 = _.toStr( _.entitySelect( src1,o.path ) );
-
-  if( !_.primitiveIs( src2 ) )
-  src2 = _.toStr( _.entitySelect( src2,o.path ) );
-
-  result += _.str
-  (
-    'at : ' + o.path +
-    '\nsrc1 :\n' + src1 +
-    '\nsrc2 :\n' + src2
-  );
-
-  if( _.strIs( src1 ) && _.strIs( src2 ) )
-  result += ( '\ndifference :\n' + _.strDifference( src1,src2 ) );
+  var result = _.entityDiffDescription
+  ({
+    src1 : src1,
+    src2 : src2,
+    path : o.iterator.lastPath,
+  });
 
   return result;
 }
+
+//
+
+function entityDiffDescription( o )
+{
+
+  o = _.routineOptions( entityDiffDescription, arguments );
+
+  var result = '';
+
+  if( o.path )
+  {
+
+    var dir = _.strCutOffRight( o.path, '/' )[ 0 ];
+    if( !dir )
+    dir = '/';
+
+    _.assert( arguments.length === 1 );
+
+    if( !_.primitiveIs( o.src1 ) )
+    o.src1 = _.toStr( _.entitySelect( o.src1, dir ) );
+
+    if( !_.primitiveIs( o.src2 ) )
+    o.src2 = _.toStr( _.entitySelect( o.src2, dir ) );
+
+    if( o.path !== '/' )
+    result += 'at ' + o.path + '\n';
+
+  }
+
+  result += _.str( o.name1 + ' :\n' + o.src1 + '\n' + o.name2 + ' :\n' + o.src2 );
+  // result += _.toStr( o.name1 + ' :\n' + o.src1 + '\n' + o.name2 + ' :\n' + o.src2, { levels : 2, stringWrapper : '' } );
+
+  if( _.strIs( o.src1 ) && _.strIs( o.src2 ) )
+  {
+    var strDiff = _.strDifference( o.src1,o.src2 );
+    if( strDiff !== false )
+    result += ( '\ndifference :\n' + strDiff );
+  }
+
+  return result;
+}
+
+var defaults = entityDiffDescription.defaults = Object.create( null );
+
+defaults.src1 = null;
+defaults.src2 = null;
+defaults.name1 = 'src1';
+defaults.name2 = 'src2';
+defaults.path = null;
 
 // --
 // define class
@@ -2234,11 +2438,16 @@ var Proto =
 
   // look
 
-  LookIrerator : LookIrerator,
+  LookDefaults : LookDefaults,
+  LookIterator : LookIterator,
+  LookIteration : LookIteration,
 
-  __lookAct : __lookAct,
-  _lookPre : _lookPre,
-  _lookBody : _lookBody,
+  __look_lookIt : __look_lookIt,
+  __look_lookBegin : __look_lookBegin,
+  __look_lookContinue : __look_lookContinue,
+
+  _look_pre : _look_pre,
+  _look_body : _look_body,
   look : look,
   lookOwn : lookOwn,
 
@@ -2247,7 +2456,7 @@ var Proto =
   eachSample : eachSample,
   eachInRange : eachInRange,
   eachInManyRanges : eachInManyRanges,
-  eachInMultiRange : eachInMultiRange, /* exprerimental */
+  eachInMultiRange : eachInMultiRange, /* experimental */
 
   entityWrap : entityWrap,
   entitySearch : entitySearch,
@@ -2273,19 +2482,25 @@ var Proto =
 
   // entity checker
 
-  _entityEqualAct : _entityEqualAct,
-  _entityEqualIteratorMake : _entityEqualIteratorMake,
+  __entityEqualUp : __entityEqualUp,
+  __entityEqualDown : __entityEqualDown,
+  _entityEqual_lookBegin : _entityEqual_lookBegin,
+  _entityEqual_lookIt : _entityEqual_lookIt,
+  _entityEqual_lookContinue : _entityEqual_lookContinue,
+
+  _entityEqual_pre : _entityEqual_pre,
+  _entityEqual_body : _entityEqual_body,
   _entityEqual : _entityEqual,
 
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
   entityContain : entityContain,
-
   entityDiff : entityDiff,
+  entityDiffDescription : entityDiffDescription,
 
 }
 
-_.mapExtend( Self, Proto );
+_.mapSupplement( Self, Proto );
 
 // --
 // export

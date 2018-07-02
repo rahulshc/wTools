@@ -774,7 +774,7 @@ function and()
 function mapperFromFilter( routine )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.routineIs( routine ),'expects routine but got',_.strTypeOf( routine ) );
   _.assert( _.strIs( routine.functionFamily ) );
 
@@ -804,7 +804,7 @@ function mapperFromFilter( routine )
 // function mapperFromFilterRecursive( routine )
 // {
 //
-//   _.assert( arguments.length === 1 );
+//   _.assert( arguments.length === 1, 'expects single argument' );
 //   _.assert( _.routineIs( routine ) );
 //   _.assert( _.strIs( routine.functionFamily ) );
 //

@@ -4169,7 +4169,7 @@ function strExtractStereoStrips( test )
 var Self =
 {
 
-  name : 'StringTools',
+  name : 'Tools/base/layer2/String',
   silencing : 1,
 
   tests :

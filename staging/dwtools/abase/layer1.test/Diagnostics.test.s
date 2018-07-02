@@ -2,40 +2,34 @@
 
 'use strict';
 
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' )
+{
 
-  require( '../../../dwtools/Base.s' );
-  wTools.include( 'wTesting' );
+  if( typeof _global_ === 'undefined' || !_global_.wBase )
+  {
+    let toolsPath = '../../../dwtools/Base.s';
+    let toolsExternal = 0;
+    try
+    {
+      toolsPath = require.resolve( toolsPath );
+    }
+    catch( err )
+    {
+      toolsExternal = 1;
+      require( 'wTools' );
+    }
+    if( !toolsExternal )
+    require( toolsPath );
+  }
+
+  var _ = _global_.wTools;
+
+  _.include( 'wTesting' );
 
 }
 
-// if( typeof module !== 'undefined' )
-// {
-//
-//   if( typeof _global_ === 'undefined' || !_global_.wBase )
-//   {
-//     let toolsPath = '../../../dwtools/Base.s';
-//     let toolsExternal = 0;
-//     try
-//     {
-//       toolsPath = require.resolve( toolsPath );
-//     }
-//     catch( err )
-//     {
-//       toolsExternal = 1;
-//       require( 'wTools' );
-//     }
-//     if( !toolsExternal )
-//     require( toolsPath );
-//   }
-//
-//   var _ = _global_.wTools;
-//
-//   _.include( 'wTesting' );
-//
-// }
-
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 
 //
 
@@ -298,7 +292,7 @@ function diagnosticStack( test )
 var Self =
 {
 
-  name : 'diagnostics',
+  name : 'Tools/base/laye1/Diagnostics',
   silencing : 1,
 
   tests :

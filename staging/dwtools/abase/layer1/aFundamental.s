@@ -29,10 +29,6 @@ if(  !_global_.WTOOLS_PRIVATE  )
   {
     if( _global_.wTools.pathUse )
     _global_.wTools.pathUse( __dirname + '/../..' );
-  /*
-    if( _global_.wBase !== _global_.wTools )
-    throw new Error( '_global_.wBase !== _global_.wTools' );
-  */
     module[ 'exports' ] = _global_.wBase;
     return;
   }
@@ -73,7 +69,9 @@ _global_.Underscore = _global_._;
  * @class wTools
  */
 
-var Self = ( _global_.wTools || Object.create( null ) );
+_global.wTools = _global.wTools || Object.create( null );
+_realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
+var Self = _global.wTools;
 var _ = Self;
 
 // specia globals
@@ -245,7 +243,7 @@ function dup( ins,times,result )
 function enityExtend( dst,src )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.objectIs( src ) || _.arrayLike( src ) )
   {
@@ -271,7 +269,7 @@ function enityExtend( dst,src )
 function enityExtendAppending( dst,src )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.objectIs( src ) )
   {
@@ -607,7 +605,7 @@ function entityAssignField( dstContainer,srcValue,name,onRecursive )
 function entityCoerceTo( src,ins )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.numberIs( ins ) )
   {
@@ -675,7 +673,7 @@ function entityFreeze( src )
 
 function entityHasNan( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var result = false;
   if( src === undefined )
@@ -731,7 +729,7 @@ function entityHasNan( src )
 
 function entityHasUndef( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var result = false;
   if( src === undefined )
@@ -837,7 +835,7 @@ function entityLength( src )
 
 function entitySize( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.strIs( src ) )
   return src.length;
@@ -883,7 +881,7 @@ function entitySize( src )
 function entityValueWithIndex( src,index )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.numberIs( index ) );
 
   if( _.arrayIs( src ) )
@@ -938,7 +936,7 @@ function entityKeyWithValue( src,value )
 {
   var result = null;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.arrayIs( src ) )
   {
@@ -996,7 +994,7 @@ function _entityConditionMake( condition,levels )
 {
   var result;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
 
   if( _.objectIs( condition ) )
@@ -1078,7 +1076,7 @@ function _entityConditionMake( condition,levels )
 function entityMap( src,onEach )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.objectLike( src ) || _.arrayLike( src ) );
   _.assert( _.routineIs( onEach ) );
 
@@ -1141,7 +1139,7 @@ function _entityFilter( o )
   var result;
   var onEach = _entityConditionMake( o.onEach,o.conditionLevels );
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ),'entityFilter : expects objectLike or arrayLike src, but got',_.strTypeOf( o.src ) );
   _.assert( _.routineIs( onEach ) );
 
@@ -1186,7 +1184,7 @@ _entityFilter.defaults =
 
 function entityFilter( src,onEach )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   return _entityFilter
   ({
     src : src,
@@ -1199,7 +1197,7 @@ function entityFilter( src,onEach )
 
 function entityFilterDeep( src,onEach )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   return _entityFilter
   ({
     src : src,
@@ -1214,7 +1212,7 @@ function entityVals( src )
 {
   var result = [];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( !_.primitiveIs( src ) );
 
   if( _.arrayLike( src ) )
@@ -1234,7 +1232,7 @@ function entityVals( src )
  * @property {Number} index - Index of found element.
  * @property {String|Number} key - If the search was on map, the value of this property sets to key of found element.
  * Else if search was on array - to index of found element.
- * @property {Number} value - The found result of onElement, if onElement don't set, this value will be same as element.
+ * @property {Number} value - The found result of onEvaluate, if onEvaluate don't set, this value will be same as element.
  * @property {Number} element - The appropriate element for found value.
  */
 
@@ -1242,7 +1240,7 @@ function entityVals( src )
  * Returns object( wTools~entityMostResult ) that contains min or max element of entity, it depends on( returnMax ).
  *
  * @param {ArrayLike|Object} src - Source entity.
- * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
+ * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
  * @param {Boolean} returnMax  - If true - routine returns maximum, else routine returns minimum value from entity.
  * @returns {wTools~entityMostResult} Object with result of search.
  *
@@ -1261,18 +1259,18 @@ function entityVals( src )
  * @private
  * @function _entityMost
  * @throws {Exception} If( arguments.length ) is not equal 3.
- * @throws {Exception} If( onElement ) function is not implemented.
+ * @throws {Exception} If( onEvaluate ) function is not implemented.
  * @memberof wTools
  */
 
-function _entityMost( src,onElement,returnMax )
+function _entityMost( src, onEvaluate, returnMax )
 {
 
-  if( onElement === undefined )
-  onElement = function( element ){ return element; }
+  if( onEvaluate === undefined )
+  onEvaluate = function( element ){ return element; }
 
-  _.assert( arguments.length === 3 );
-  _.assert( onElement.length === 1,'not mplemented' );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( onEvaluate.length === 1,'not mplemented' );
 
   var onCompare = null;
 
@@ -1287,10 +1285,8 @@ function _entityMost( src,onElement,returnMax )
     return b-a;
   }
 
-  _.assert( onElement.length === 1 );
+  _.assert( onEvaluate.length === 1 );
   _.assert( onCompare.length === 2 );
-  // _.assert( onCompare.length === 1 || onCompare.length === 2 ); // xxx
-  // debugger;
 
   var result = { index : -1, key : undefined, value : undefined, element : undefined };
 
@@ -1300,12 +1296,12 @@ function _entityMost( src,onElement,returnMax )
     if( src.length === 0 )
     return result;
     result.key = 0;
-    result.value = onElement( src[ 0 ] );
+    result.value = onEvaluate( src[ 0 ] );
     result.element = src[ 0 ];
 
     for( var s = 0 ; s < src.length ; s++ )
     {
-      var value = onElement( src[ s ] );
+      var value = onEvaluate( src[ s ] );
       if( onCompare( value,result.value ) > 0 )
       {
         result.key = s;
@@ -1324,7 +1320,7 @@ function _entityMost( src,onElement,returnMax )
     {
       result.index = 0;
       result.key = s;
-      result.value = onElement( src[ s ] );
+      result.value = onEvaluate( src[ s ] );
       result.element = src[ s ]
       break;
     }
@@ -1332,7 +1328,7 @@ function _entityMost( src,onElement,returnMax )
     var index = 0;
     for( var s in src )
     {
-      var value = onElement( src[ s ] );
+      var value = onEvaluate( src[ s ] );
       if( onCompare( value,result.value ) > 0 )
       {
         result.index = index;
@@ -1354,7 +1350,7 @@ function _entityMost( src,onElement,returnMax )
  * Short-cut for _entityMost() routine. Returns object( wTools~entityMostResult ) with smallest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
- * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
+ * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
  * @returns {wTools~entityMostResult} Object with result of search.
  *
  * @example
@@ -1370,10 +1366,10 @@ function _entityMost( src,onElement,returnMax )
  * @memberof wTools
  */
 
-function entityMin( src,onElement )
+function entityMin( src,onEvaluate )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost( src,onElement,0 );
+  return _entityMost( src,onEvaluate,0 );
 }
 
 //
@@ -1382,7 +1378,7 @@ function entityMin( src,onElement )
  * Short-cut for _entityMost() routine. Returns object( wTools~entityMostResult ) with biggest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
- * @param {Function} onElement  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
+ * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
  * @returns {wTools~entityMostResult} Object with result of search.
  *
  * @example
@@ -1398,10 +1394,10 @@ function entityMin( src,onElement )
  * @memberof wTools
  */
 
-function entityMax( src,onElement )
+function entityMax( src,onEvaluate )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost( src,onElement,1 );
+  return _entityMost( src, onEvaluate, 1 );
 }
 
 // --
@@ -2340,7 +2336,7 @@ function containerLike( src )
 
 //
 
-function argumentsIs( src )
+function argumentsArrayIs( src )
 {
   return _ObjectToString.call( src ) === '[object Arguments]';
 }
@@ -2351,13 +2347,6 @@ function symbolIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object Symbol]';
   return result;
-}
-
-//
-
-function dateIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Date]';
 }
 
 //
@@ -2455,7 +2444,7 @@ function promiseIs( src )
 
 function prototypeIs( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   if( _.primitiveIs( src ) )
   return false;
   return _hasOwnProperty.call( src, 'constructor' );
@@ -2486,7 +2475,7 @@ function prototypeIsStandard( src )
 
 function constructorIs( cls )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   return _.routineIs( cls ) && !instanceIs( cls );
 }
 
@@ -2511,7 +2500,7 @@ function constructorIsStandard( cls )
 
 function instanceIs( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.primitiveIs( src ) )
   return false;
@@ -2533,7 +2522,7 @@ function instanceIs( src )
 
 function instanceIsStandard( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( !_.instanceIs( src ) )
   return false;
@@ -2601,7 +2590,7 @@ function workerIs( src )
 
 function streamIs( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.objectIs( src ) && _.routineIs( src.pipe )
 }
@@ -2610,7 +2599,7 @@ function streamIs( src )
 
 function consoleIs( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( src !== console )
   return false;
@@ -2626,7 +2615,7 @@ function consoleIs( src )
 
 function processIs( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var typeOf = _.strTypeOf( src );
   if( typeOf === 'ChildProcess' || typeOf === 'process' )
@@ -2648,7 +2637,7 @@ function routineIs( src )
 
 function routinesAre( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.arrayLike( src ) )
   {
@@ -2696,7 +2685,7 @@ function routineHasName( src )
 function _routineJoin( o )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.boolIs( o.seal ) );
   _.assert( _.routineIs( o.routine ),'expects routine' );
   _.assert( _.arrayLike( o.args ) || o.args === undefined );
@@ -2877,7 +2866,7 @@ function routineSeal( context, routine, args )
 function routineDelayed( delay,routine )
 {
 
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   _.assert( _.numberIs( delay ) );
   _.assert( _.routineIs( routine ) );
 
@@ -2933,7 +2922,7 @@ function routineCall( context, routine, args )
 function routineTolerantCall( context,routine,options )
 {
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( _.routineIs( routine ) );
   _.assert( _.objectIs( routine.defaults ) );
   _.assert( _.objectIs( options ) );
@@ -3015,7 +3004,7 @@ function _routinesCall( o )
 {
   var result;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( o.args.length >= 1 && o.args.length <= 3 );
 
   /* */
@@ -3255,7 +3244,7 @@ function routinesCompose()
   else if( srcs.length === 1 )
   {}
   else
-  debugger;
+  {}
 
   if( srcs.length === 0 )
   return function empty()
@@ -3277,9 +3266,24 @@ function routinesCompose()
 
 //
 
+function routinesComposeReturningLast()
+{
+  var routine = _.routinesCompose.apply( this, arguments );
+
+  function returnLast()
+  {
+    var result = routine.apply( this, arguments );
+    return result[ result.length-1 ];
+  }
+
+  return returnLast;
+}
+
+//
+
 function routinesComposeWhile()
 {
-  var srcs = _.arrayAppendArrays( [],arguments );
+  var srcs = _.arrayAppendArrays( [], arguments );
 
   srcs = srcs.filter( ( e ) => e === null ? false : e );
 
@@ -3313,20 +3317,44 @@ function routinesComposeWhile()
 
 //
 
+function routineOptions( routine, args, defaults )
+{
+
+  if( !_.argumentsArrayIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
+  if( options === undefined )
+  options = Object.create( null );
+  defaults = defaults || routine.defaults;
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ), 'expects routine' );
+  _.assert( _.objectIs( defaults ), 'expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ), 'expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
+
+  _.assertMapHasOnly( options, defaults );
+  _.mapComplement( options, defaults );
+  _.assertMapHasNoUndefine( options );
+
+  return options;
+}
+
+//
+
 function assertRoutineOptions( routine,args,defaults )
 {
 
-  if( !_.argumentsIs( args ) )
+  if( !_.argumentsArrayIs( args ) )
   args = [ args ];
   var options = args[ 0 ];
-
-  _.assert( arguments.length === 2 || arguments.length === 3,'assertRoutineOptions : expects 2 arguments' );
-  _.assert( _.routineIs( routine ),'assertRoutineOptions : expects routine' );
-  _.assert( _.objectIs( routine.defaults ) || defaults,'assertRoutineOptions : expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ),'assertRoutineOptions : expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'assertRoutineOptions : expects single options map, but got',args.length,'arguments' );
-
   defaults = defaults || routine.defaults;
+
+  _.assert( arguments.length === 2 || arguments.length === 3,'expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ),'expects routine' );
+  _.assert( _.objectIs( defaults ),'expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ),'expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options,defaults );
   _.assertMapHasAll( options,defaults );
@@ -3337,57 +3365,53 @@ function assertRoutineOptions( routine,args,defaults )
 
 //
 
-function routineOptions( routine,args,defaults )
+function routineOptionsWithUndefines( routine, args, defaults )
 {
 
-  if( !_.argumentsIs( args ) )
+  if( !_.argumentsArrayIs( args ) )
   args = [ args ];
   var options = args[ 0 ];
   if( options === undefined )
   options = Object.create( null );
-
-  _.assert( arguments.length === 2 || arguments.length === 3,'routineOptions : expects 2 arguments' );
-  _.assert( _.routineIs( routine ),'routineOptions : expects routine' );
-  _.assert( _.objectIs( routine.defaults ) || defaults,'routineOptions : expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ),'routineOptions : expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
-
   defaults = defaults || routine.defaults;
 
-  _.assertMapHasOnly( options,defaults );
-  _.mapComplement( options,defaults );
-  _.assertMapHasNoUndefine( options );
-
-  return options;
-}
-
-//
-
-function routineOptionsWithUndefines( routine,args )
-{
-
-  if( !_.argumentsIs( args ) )
-  args = [ args ];
-  var options = args[ 0 ];
-
-  if( options === undefined )
-  options = Object.create( null );
-
-  _.assert( arguments.length === 2,'routineOptionsWithUndefines : expects 2 arguments' );
-  _.assert( _.routineIs( routine ),'routineOptionsWithUndefines : expects routine' );
-  _.assert( _.objectIs( routine.defaults ),'routineOptionsWithUndefines : expects routine with defined defaults' );
-  _.assert( _.objectIs( options ),'routineOptionsWithUndefines : expects object' );
+  _.assert( arguments.length === 2 || arguments.length === 3,'expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ),'expects routine' );
+  _.assert( _.objectIs( defaults ),'expects routine with defined defaults' );
+  _.assert( _.objectIs( options ),'expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
 
-  _.assertMapHasOnlyWithUndefines( options,routine.defaults );
-  _.mapComplementWithUndefines( options,routine.defaults );
+  _.assertMapHasOnlyWithUndefines( options, defaults );
+  _.mapComplementWithUndefines( options, defaults );
 
   return options;
 }
 
 //
 
-function routineOptionsFromThis( routine,_this,constructor )
+function assertRoutineOptionsWithUndefines( routine, args, defaults )
+{
+
+  if( !_.argumentsArrayIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
+  defaults = defaults || routine.defaults;
+
+  _.assert( arguments.length === 2 || arguments.length === 3,'expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ),'expects routine' );
+  _.assert( _.objectIs( defaults ),'expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ),'expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
+
+  _.assertMapHasOnlyWithUndefines( options,defaults );
+  _.assertMapHasAllWithUndefines( options,defaults );
+
+  return options;
+}
+
+//
+
+function routineOptionsFromThis( routine, _this, constructor )
 {
 
   _.assert( arguments.length === 3,'routineOptionsFromThis : expects 3 arguments' );
@@ -3397,6 +3421,51 @@ function routineOptionsFromThis( routine,_this,constructor )
   options = Object.create( null );
 
   return _.routineOptions( routine,options );
+}
+
+//
+
+function routineSupplement( dst )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.routineIs( dst ) );
+
+  /* */
+
+  for( var s in dst )
+  {
+    var el = dst[ s ];
+    if( _.mapIs( el ) )
+    {
+      el = _.mapExtend( null, el );
+      dst[ s ] = el;
+    }
+  }
+
+  /* */
+
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    _.assert( _.routineIs( src ) );
+    for( var s in src )
+    {
+      var el = src[ s ];
+      if( _.objectIs( el ) )
+      {
+        _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+        el = Object.create( el );
+        if( dst[ s ] )
+        _.mapExtend( el, dst[ s ] );
+      }
+      dst[ s ] = el;
+    }
+  }
+
+  /* */
+
+  return dst;
 }
 
 //
@@ -3424,7 +3493,7 @@ function routineVectorize_functor( o )
   }
 
   _.assert( routineIs( routine ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   /* */
 
@@ -3462,7 +3531,7 @@ function routineVectorize_functor( o )
   function vectorize( src )
   {
 
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
 
     if( _.arrayLike( src ) )
     {
@@ -3480,7 +3549,7 @@ function routineVectorize_functor( o )
   function vectorizeMapAndArray( src )
   {
 
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
 
     if( vectorizingArray )
     if( _.arrayLike( src ) )
@@ -3510,7 +3579,7 @@ function routineVectorize_functor( o )
   {
     debugger;
 
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
 
     if( vectorizingArray )
     if( _.arrayLike( src ) )
@@ -3559,7 +3628,7 @@ function _equalizerFromMapper( mapper )
   mapper = function mapper( a,b ){ return a === b };
 
   _.assert( 0,'not tested' )
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( mapper.length === 1 || mapper.length === 2 );
 
   if( mapper.length === 1 )
@@ -3582,7 +3651,7 @@ function _comparatorFromMapper( mapper )
   if( mapper === undefined )
   mapper = function mapper( a,b ){ return a-b };
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( mapper.length === 1 || mapper.length === 2 );
 
   if( mapper.length === 1 )
@@ -3700,18 +3769,19 @@ function numberIsInt( src )
 
 //
 
-// function numbersAreEquivalent( ins1,ins2 )
-// {
-//   return Math.abs( ins1-ins2 ) <= this.EPS;
-// }
+function numbersAreIdentical( src1, src2 )
+{
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  return Object.is( src1, src2 );
+}
 
 //
 
-function numbersAreEquivalent( src1,src2,accuracy )
+function numbersAreEquivalent( src1, src2, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3 );
   if( accuracy === undefined )
-  accuracy = this.EPS;
+  accuracy = _.EPS;
   return Math.abs( src1-src2 ) <= accuracy;
 }
 
@@ -3774,17 +3844,9 @@ function numbersAreInt( src )
 
 //
 
-function numbersAreIdentical( src1,src2 )
-{
-  _.assert( arguments.length === 3 );
-  return src1 === src2;
-}
-
-//
-
 function numberInRange( n,range )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( range.length === 2 );
   return range[ 0 ] <= n && n <= range[ 1 ];
 }
@@ -3921,7 +3983,7 @@ function numbersMake( src,length )
   if( _.vectorIs( src ) )
   src = _.vector.slice( src );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.numberIs( src ) || _.arrayIs( src ) );
 
   if( _.arrayIs( src ) )
@@ -3949,7 +4011,7 @@ function numbersFromNumber( src,length )
   if( _.vectorIs( src ) )
   src = _.vector.slice( src );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.numberIs( src ) || _.arrayIs( src ) );
 
   if( _.arrayIs( src ) )
@@ -3967,7 +4029,7 @@ function numbersFromNumber( src,length )
 
 // {
 //
-//   _.assert( arguments.length === 2 );
+//   _.assert( arguments.length === 2, 'expects exactly two argument' );
 //   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
 //   _.assert( length >= 0 );
 //
@@ -3990,7 +4052,7 @@ function numbersFromNumber( src,length )
 function numbersFromInt( dst,length )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.numberIsInt( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
   _.assert( length >= 0 );
 
@@ -4014,7 +4076,7 @@ function numbersMake_functor( length )
 {
   var _ = this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.numberIs( length ) );
 
   function numbersMake( src )
@@ -4031,7 +4093,7 @@ function numbersFrom_functor( length )
 {
   var _ = this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.numberIs( length ) );
 
   function numbersFromNumber( src )
@@ -4068,7 +4130,7 @@ function numberClamp( src,low,high )
 
 function numberMix( ins1,ins2,progress )
 {
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   return ins1*( 1-progress ) + ins2*( progress );
 }
@@ -4158,7 +4220,7 @@ function strsAreNotEmpty( src )
 function strTypeOf( src )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( !_.primitiveIs( src ) )
   if( src.constructor && src.constructor.name )
@@ -4255,7 +4317,7 @@ function _strBegins( src,begin )
 {
 
   _.assert( _.strIs( src ),'expects string' );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.strIs( begin ) )
   {
@@ -4300,7 +4362,7 @@ function strBegins( src,begin )
 
   _.assert( _.strIs( src ),'expects string {-src-}' );
   _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   begin = _.arrayAs( begin );
 
@@ -4338,7 +4400,7 @@ function strEnds( src,end )
 
   _.assert( _.strIs( src ), 'expects string {-src-}' );
   _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings' );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.strIs( end ) )
   end = [ end ];
@@ -4379,7 +4441,7 @@ function strBeginOf( src,end )
 
   _.assert( _.strIs( src ),'expects string ( src )' );
   _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings ( end )' );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.strIs( end ) )
   end = [ end ];
@@ -4425,7 +4487,7 @@ function strEndOf( src,begin )
 
   _.assert( _.strIs( src ),'expects string ( src )' );
   _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/array of strings ( begin )' );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.strIs( begin ) )
   begin = [ begin ];
@@ -4492,7 +4554,7 @@ function strInbetweenOf( src,begin,end )
   _.assert( _.strIs( src ),'expects string ( src )' );
   _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/array of strings ( begin )' );
   _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings ( end )' );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   begin = _.arrayAs( begin );
   end = _.arrayAs( end );
@@ -4567,7 +4629,7 @@ function regexpsLike( srcs )
 
 function regexpsAreIdentical( src1,src2 )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
   return false;
@@ -4591,7 +4653,7 @@ function regexpsAreIdentical( src1,src2 )
 function regexpEscape( src )
 {
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   if( _.arrayIs( src ) )
   {
     var result = [];
@@ -4650,7 +4712,7 @@ function regexpsSources( o )
   if( o.flags === undefined )
   o.flags = null;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   for( var s = 0 ; s < o.sources.length ; s++ )
   {
@@ -4684,7 +4746,7 @@ function regexpsJoin( o )
   o = { sources : o }
 
   _.routineOptions( regexpsJoin, o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
@@ -4711,7 +4773,7 @@ function regexpsAtLeastFirst( o )
   o = { sources : o }
 
   _.routineOptions( regexpsAny, o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
@@ -4776,7 +4838,7 @@ function regexpsNone( o )
   o = { sources : o }
 
   _.routineOptions( regexpsNone, o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   o = _.regexpsSources( o );
 
@@ -4805,7 +4867,7 @@ function regexpsAny( o )
   o = { sources : o }
 
   _.routineOptions( regexpsAny, o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
@@ -4833,7 +4895,7 @@ function regexpsAll( o )
   o = { sources : o }
 
   _.routineOptions( regexpsAll, o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
@@ -4971,7 +5033,7 @@ function regexpArrayAny( arr, ins, none )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   var arr = _.arrayAs( arr );
   for( var m = 0 ; m < arr.length ; m++ )
@@ -5012,7 +5074,7 @@ function regexpArrayAny( arr, ins, none )
 function regexpArrayAll( arr, ins, none )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   var arr = _.arrayAs( arr );
   for( var m = 0 ; m < arr.length ; m++ )
@@ -5030,7 +5092,7 @@ function regexpArrayNone( arr, ins, none )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   var arr = _.arrayAs( arr );
   for( var m = 0 ; m < arr.length ; m++ )
@@ -5098,6 +5160,30 @@ function regexpMakeObject( src,defaultMode )
 // --
 // time
 // --
+
+function dateIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Date]';
+}
+
+//
+
+function datesAreIdentical( src1, src2 )
+{
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+
+  if( !_.dateIs( src1 ) )
+  return false;
+  if( !_.dateIs( src2 ) )
+  return false;
+
+  var src1 = src1.getTime();
+  var src2 = src2.getTime();
+
+  return src1 === src2;
+}
+
+//
 
 function timeReady( onReady )
 {
@@ -5175,7 +5261,7 @@ function timeOnce( delay,onBegin,onEnd )
   if( _.objectIs( delay ) )
   {
     options = delay;
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
     _.assertMapHasOnly( options,optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;
@@ -5313,13 +5399,15 @@ function timeOut( delay,onEnd )
   con.got( function timeGot( err,arg )
   {
     if( err )
+    debugger;
+    if( err )
     clearTimeout( timer );
 
-    if( err && !handleCalled )
-    {
-      arg = arg ? [ err,arg ] : err;
-      err = null;
-    }
+    // if( err && !handleCalled )
+    // {
+    //   arg = err;
+    //   err = undefined;
+    // }
 
     con.give( err,arg );
   });
@@ -5421,10 +5509,11 @@ function timeOutError( delay,onReady )
 
   var result = _.timeOut.apply( this,arguments );
 
-  result.doThen( function( err,data )
+  result.doThen( function( err,arg )
   {
+    debugger;
     if( err )
-    throw err;
+    return _.Consequence().error( err );
 
     var err = _.err( 'Time out!' );
 
@@ -5450,7 +5539,7 @@ function timePeriodic( delay,onReady )
   var con = new _.Consequence();
   var id;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   // if( arguments.length > 2 )
   // {
@@ -5570,10 +5659,8 @@ function bufferRawIs( src )
 function bufferTypedIs( src )
 {
   var type = _ObjectToString.call( src );
-
   if( !/\wArray/.test( type ) || _.bufferNodeIs( src ) )
   return false;
-
   return true;
 }
 
@@ -5624,12 +5711,172 @@ function constructorIsBuffer( src )
 
 //
 
+function buffersTypedAreEquivalent( src1, src2, accuracy )
+{
+
+  if( !_.bufferTypedIs( src1 ) )
+  return false;
+  if( !_.bufferTypedIs( src2 ) )
+  return false;
+
+  if( src1.length !== src2.length )
+  debugger;
+  if( src1.length !== src2.length )
+  return false;
+
+  debugger;
+  if( accuracy === null || accuracy === undefined )
+  accuracy = _.EPS;
+
+  for( var i = 0 ; i < src1.length ; i++ )
+  if( Math.abs( src1[ i ] - src2[ i ] ) > accuracy )
+  return false;
+
+  return true;
+}
+
+//
+
+function buffersTypedAreIdentical( src1, src2 )
+{
+
+  if( !_.bufferTypedIs( src1 ) )
+  return false;
+  if( !_.bufferTypedIs( src2 ) )
+  return false;
+
+  var t1 = _ObjectToString.call( src1 );
+  var t2 = _ObjectToString.call( src2 );
+  if( t1 !== t2 )
+  return false;
+
+  if( src1.length !== src2.length )
+  debugger;
+  if( src1.length !== src2.length )
+  return false;
+
+  for( var i = 0 ; i < src1.length ; i++ )
+  if( !Object.is( src1[ i ], src2[ i ] ) )
+  return false;
+
+  return true;
+}
+
+//
+
+function buffersRawAreIdentical( src1, src2 )
+{
+
+  if( !_.bufferRawIs( src1 ) )
+  return false;
+  if( !_.bufferRawIs( src2 ) )
+  return false;
+
+  if( src1.byteLength !== src2.byteLength )
+  debugger;
+  if( src1.byteLength !== src2.byteLength )
+  return false;
+
+  src1 = new Uint8Array( src1 );
+  src2 = new Uint8Array( src2 );
+
+  for( var i = 0 ; i < src1.length ; i++ )
+  if( src1[ i ] !== src2[ i ] )
+  return false;
+
+  return true;
+}
+
+//
+
+function buffersViewAreIdentical( src1, src2 )
+{
+
+  debugger;
+
+  if( !_.bufferViewIs( src1 ) )
+  return false;
+  if( !_.bufferViewIs( src2 ) )
+  return false;
+
+  if( src1.byteLength !== src2.byteLength )
+  debugger;
+  if( src1.byteLength !== src2.byteLength )
+  return false;
+
+  for( var i = 0 ; i < src1.byteLength ; i++ )
+  if( src1.getUint8( i ) !== src2.getUint8( i ) )
+  return false;
+
+  return true;
+}
+
+//
+
+function buffersNodeAreIdentical( src1, src2 )
+{
+
+  debugger;
+
+  if( !_.bufferNodeIs( src1 ) )
+  return false;
+  if( !_.bufferNodeIs( src2 ) )
+  return false;
+
+  return src1.equals( src2 );
+}
+
+//
+
+function buffersAreEquivalent( src1, src2, accuracy )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( _.bufferTypedIs( src1 ) )
+  return _.buffersTypedAreEquivalent( src1 ,src2, accuracy );
+  else if( _.bufferRawIs( src1 ) )
+  return _.buffersRawAreIdentical( src1, src2 );
+  else if( _.bufferViewIs( src1 ) )
+  return _.buffersViewAreIdentical( src1, src2 );
+  else if( _.bufferNodeIs( src1 ) )
+  return _.buffersNodeAreIdentica( src1, src2 );
+  else return false;
+
+}
+
+//
+
+function buffersAreIdentical( src1, src2 )
+{
+
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+
+  var t1 = _ObjectToString.call( src1 );
+  var t2 = _ObjectToString.call( src2 );
+  if( t1 !== t2 )
+  return false;
+
+  if( _.bufferTypedIs( src1 ) )
+  return _.buffersTypedAreIdentical( src1, src2 );
+  else if( _.bufferRawIs( src1 ) )
+  return _.buffersRawAreIdentical( src1, src2 );
+  else if( _.bufferViewIs( src1 ) )
+  return _.buffersViewAreIdentical( src1, src2 );
+  else if( _.bufferNodeIs( src1 ) )
+  return _.buffersNodeAreIdentical( src1, src2 );
+  else return false;
+
+}
+
+//
+
 /**
- * The bufferRelen() routine returns a new or the same typed array (src) with a new or the same length (len).
+ * The bufferRelen() routine returns a new or the same typed array {-srcMap-} with a new or the same length (len).
  *
  * It creates the variable (result) checks, if (len) is more than (src.length),
  * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function(arrayMakeSimilar(src, len))
- * and copies each element from the (src) into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
+ * and copies each element from the {-srcMap-} into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
  * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
  * Otherwise, it returns an initial typed array.
  *
@@ -5653,7 +5900,7 @@ function constructorIsBuffer( src )
  * var ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
  * _.bufferRelen( ints3, 6 );
  *
- * @returns { typedArray } - Returns a new or the same typed array (src) with a new or the same length (len).
+ * @returns { typedArray } - Returns a new or the same typed array {-srcMap-} with a new or the same length (len).
  * @function bufferRelen
  * @memberof wTools
  */
@@ -5662,7 +5909,7 @@ function bufferRelen( src,len )
 {
 
   _.assert( _.bufferTypedIs( src ) );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.numberIs( len ) );
 
   var result = src;
@@ -5749,7 +5996,7 @@ function bufferBytesGet( src )
    *
    * @returns { typedArray } Returns a new instance of (bufferType) constructor.
    * @function bufferRetype
-   * @throws { Error } Will throw an Error if (src) is not a typed array object.
+   * @throws { Error } Will throw an Error if {-srcMap-} is not a typed array object.
    * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
    * @memberof wTools
    */
@@ -5911,7 +6158,7 @@ function bufferToStr( src )
   if( src instanceof ArrayBuffer )
   src = new Uint8Array( src,0,src.byteLength );
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.bufferAnyIs( src ) );
 
   if( bufferNodeIs( src ) )
@@ -6137,7 +6384,7 @@ function bufferFrom( o )
 {
   var result;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.objectIs( o ) );
   _.assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
   _.assertMapHasOnly( o,bufferFrom.defaults );
@@ -6231,7 +6478,7 @@ bufferFrom.defaults =
 function bufferRawFromBuffer( buffer )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) );
 
   if( _.bufferRawIs( buffer ) )
@@ -6253,7 +6500,7 @@ function bufferRawFrom( buffer )
 {
   var result;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( buffer instanceof ArrayBuffer )
   return buffer;
@@ -6310,7 +6557,7 @@ var bufferToNodeBuffer = ( function( buffer )
   return function bufferToNodeBuffer( buffer )
   {
 
-    _.assert( arguments.length === 1 );
+    _.assert( arguments.length === 1, 'expects single argument' );
     _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ),'bufferToNodeBuffer : expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
 
     if( _.bufferNodeIs( buffer ) )
@@ -6551,7 +6798,7 @@ buffersDeserialize.defaults =
 /**
  * The arrayIs() routine determines whether the passed value is an Array.
  *
- * If the (src) is an Array, true is returned,
+ * If the {-srcMap-} is an Array, true is returned,
  * otherwise false is.
  *
  * @param { * } src - The object to be checked.
@@ -6564,7 +6811,7 @@ buffersDeserialize.defaults =
  * // returns false
  * arrayIs( 10 );
  *
- * @returns { boolean } Returns true if (src) is an Array.
+ * @returns { boolean } Returns true if {-srcMap-} is an Array.
  * @function arrayIs
  * @memberof wTools
  */
@@ -6581,7 +6828,7 @@ function arrayGenericIs( src )
 
   if( _.arrayIs( src ) )
   return true;
-  if( _.argumentsIs( src ) )
+  if( _.argumentsArrayIs( src ) )
   return true;
 
   return false;
@@ -6593,7 +6840,7 @@ function arrayGenericIs( src )
  * The arrayLike() routine determines whether the passed value is an array-like or an Array.
  * Imortant : arrayLike returns false for Object, even if the object has length field.
  *
- * If (src) is an array-like or an Array, true is returned,
+ * If {-srcMap-} is an array-like or an Array, true is returned,
  * otherwise false is.
  *
  * @param { * } src - The object to be checked.
@@ -6612,7 +6859,7 @@ function arrayGenericIs( src )
  *   return _.arrayLike( arguments );
  * } )( 'Hello there!' );
  *
- * @returns { boolean } Returns true if (src) is an array-like or an Array.
+ * @returns { boolean } Returns true if {-srcMap-} is an array-like or an Array.
  * @function arrayLike.
  * @memberof wTools
  */
@@ -6666,8 +6913,8 @@ function constructorLikeArray( src )
 /**
  * The hasLength() routine determines whether the passed value has the property (length).
  *
- * If (src) is equal to the (undefined) or (null) false is returned.
- * If (src) has the property (length) true is returned.
+ * If {-srcMap-} is equal to the (undefined) or (null) false is returned.
+ * If {-srcMap-} has the property (length) true is returned.
  * Otherwise false is.
  *
  * @param { * } src - The object to be checked.
@@ -6694,7 +6941,7 @@ function constructorLikeArray( src )
  * // returns false
  * hasLength( { } );
  *
- * @returns { boolean } Returns true if (src) has the property (length).
+ * @returns { boolean } Returns true if {-srcMap-} has the property (length).
  * @function hasLength
  * @memberof wTools
  */
@@ -6728,7 +6975,7 @@ function hasLength( src )
 
 function arrayCompare( src1,src2 )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
   _.assert( src2.length >= src1.length );
 
@@ -6766,7 +7013,7 @@ function arrayCompare( src1,src2 )
 
 function arrayIdentical( src1,src2 )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( src1 ) );
   _.assert( _.arrayLike( src2 ) );
 
@@ -6813,11 +7060,11 @@ function arrayHas( array, value, evaluator1, evaluator2 )
 //
 
 /**
- * The arrayHasAny() routine checks if the (src) array has at least one value of the following arguments.
+ * The arrayHasAny() routine checks if the {-srcMap-} array has at least one value of the following arguments.
  *
  * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the routine
  * [arrayAs()]{@link wTools.arrayAs}
- * Checks, if (src) array has at least one value of the (ins) array.
+ * Checks, if {-srcMap-} array has at least one value of the (ins) array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
@@ -6830,7 +7077,7 @@ function arrayHas( array, value, evaluator1, evaluator2 )
  * // returns true
  * var arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
  *
- * @returns { Boolean } - Returns true, if (src) has at least one value of the following argument(s), otherwise false is returned.
+ * @returns { Boolean } - Returns true, if {-srcMap-} has at least one value of the following argument(s), otherwise false is returned.
  * @function arrayHasAny
  * @throws { Error } If the first argument in not an array.
  * @memberof wTools
@@ -6841,7 +7088,7 @@ function arrayHasAny( src )
   var empty = true;
   empty = false;
 
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length >= 1, 'expects at least one argument' );
   _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
@@ -6864,7 +7111,7 @@ function arrayHasAny( src )
 
 function arrayHasAll( src )
 {
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length >= 1, 'expects at least one argument' );
   _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
@@ -6884,7 +7131,7 @@ function arrayHasAll( src )
 
 function arrayHasNone( src )
 {
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length >= 1, 'expects at least one argument' );
   _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
@@ -6905,7 +7152,7 @@ function arrayHasNone( src )
 function arrayAll( src )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayLike( src ) );
 
   for( var s = 0 ; s < src.length ; src++ )
@@ -6921,7 +7168,7 @@ function arrayAll( src )
 
 function arrayAny( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayLike( src ) );
 
   debugger;
@@ -6937,7 +7184,7 @@ function arrayAny( src )
 
 function arrayNone( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayLike( src ) );
 
   debugger;
@@ -7003,7 +7250,7 @@ function arrayMakeSimilar( ins,src )
   var result, length;
 
   if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( src === undefined )
   {
@@ -7019,7 +7266,7 @@ function arrayMakeSimilar( ins,src )
     length = src
   }
 
-  if( _.argumentsIs( ins ) )
+  if( _.argumentsArrayIs( ins ) )
   ins = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -7065,7 +7312,7 @@ function arrayMakeSimilarZeroed( ins,src )
   var result, length;
 
   if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( src === undefined )
   {
@@ -7081,7 +7328,7 @@ function arrayMakeSimilarZeroed( ins,src )
     length = src
   }
 
-  if( _.argumentsIs( ins ) )
+  if( _.argumentsArrayIs( ins ) )
   ins = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -7162,7 +7409,7 @@ function arrayMakeRandom( o )
     o = { length : o };
   }
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( arrayMakeRandom,o );
 
   debugger;
@@ -7206,7 +7453,7 @@ arrayMakeRandom.defaults =
 // function arrayNewOfSameLength( ins )
 // {
 //
-//   _.assert( arguments.length === 1 );
+//   _.assert( arguments.length === 1, 'expects single argument' );
 //
 //   if( _.primitiveIs( ins ) ) return;
 //   if( !_.arrayIs( ins ) && !_.bufferTypedIs( ins ) ) return;
@@ -7251,7 +7498,7 @@ arrayMakeRandom.defaults =
 function arrayFromNumber( dst,length )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
   _.assert( length >= 0 );
 
@@ -7270,7 +7517,7 @@ function arrayFromNumber( dst,length )
 //
 
 /**
- * The arrayFrom() routine converts an object-like (src) into Array.
+ * The arrayFrom() routine converts an object-like {-srcMap-} into Array.
  *
  * @param { * } src - To convert into Array.
  *
@@ -7295,14 +7542,14 @@ function arrayFromNumber( dst,length )
  *
  * @returns { Array } Returns an Array.
  * @function arrayFrom
- * @throws { Error } Will throw an Error if (src) is not an object-like.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an object-like.
  * @memberof wTools
  */
 
 function arrayFrom( src )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.arrayIs( src ) )
   return src;
@@ -7316,7 +7563,7 @@ function arrayFrom( src )
   if( _.strIs( src ) )
   return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
 
-  if( _.argumentsIs( src ) )
+  if( _.argumentsArrayIs( src ) )
   return _ArraySlice.call( src );
 
   _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) );
@@ -7356,7 +7603,7 @@ function arrayFromRange( range )
   if( _.numberIs( range ) )
   range = [ 0,range ];
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( range.length === 2 );
   _.assert( _.arrayLike( range ) );
 
@@ -7367,13 +7614,13 @@ function arrayFromRange( range )
 
 //
 
-function arrayFromProgressionArithmetic( progression,numberOfSteps )
+function arrayFromProgressionArithmetic( progression, numberOfSteps )
 {
   var result;
 
   debugger;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( progression ) )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
@@ -7400,7 +7647,7 @@ function arrayFromRangeWithStep( range,step )
 {
   var result;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
@@ -7458,7 +7705,7 @@ function arrayFromRangeWithStep( range,step )
 function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
@@ -7515,7 +7762,7 @@ function arrayAs( src )
 function _arrayClone( src )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayLike( src ) || _.bufferAnyIs( src ) );
   _.assert( !_.bufferNodeIs( src ),'not tested' );
 
@@ -7641,7 +7888,7 @@ function arrayToMap( array )
 {
   var result = Object.create( null );
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayLike( array ) );
 
   for( var a = 0 ; a < array.length ; a++ )
@@ -7652,7 +7899,7 @@ function arrayToMap( array )
 //
 
 /**
- * The arrayToStr() routine joins an array (src) and returns one string containing each array element separated by space,
+ * The arrayToStr() routine joins an array {-srcMap-} and returns one string containing each array element separated by space,
  * only types of integer or floating point.
  *
  * @param { arrayLike } src - The source array.
@@ -8047,7 +8294,7 @@ function arraySlice( array,f,l )
   // if( _.numberIs( array ) && f === undefined && l === undefined )
   // return array;
 
-  if( _.argumentsIs( array ) )
+  if( _.argumentsArrayIs( array ) )
   if( f === undefined && l === undefined )
   {
     if( array.length === 2 )
@@ -8302,7 +8549,7 @@ function arrayMask( srcArray, mask )
   var atomsPerElement = mask.length;
   var length = srcArray.length / atomsPerElement;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( srcArray ),'arrayMask :','expects array-like as srcArray' );
   _.assert( _.arrayLike( mask ),'arrayMask :','expects array-like as mask' );
   _.assert
@@ -8409,16 +8656,15 @@ function arrayInvestigateUniqueMap( o )
   if( _.arrayLike( o ) )
   o = { src : o };
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayLike( o.src ) );
   _.assertMapHasOnly( o,arrayInvestigateUniqueMap.defaults );
 
   /**/
 
-  if( o.onElement )
+  if( o.onEvaluate )
   {
-    // throw _.err( 'not tested' );
-    o.src = _.entityMap( o.src,( e ) => o.onElement( e ) );
+    o.src = _.entityMap( o.src,( e ) => o.onEvaluate( e ) );
   }
 
   /**/
@@ -8466,21 +8712,24 @@ function arrayInvestigateUniqueMap( o )
 arrayInvestigateUniqueMap.defaults =
 {
   src : null,
-  onElement : null,
+  onEvaluate : null,
   includeFirst : 0,
 }
 
 //
 
-function arrayUnique( src,onElement )
+function arrayUnique( src, onEvaluate )
 {
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   var isUnique = arrayInvestigateUniqueMap
   ({
     src : src,
-    onElement : onElement,
+    onEvaluate : onEvaluate,
     includeFirst : 1,
   });
+
   var result = arrayMakeSimilar( src,isUnique.number );
 
   var c = 0;
@@ -8528,7 +8777,7 @@ function arraySelect( srcArray,indicesArray )
     indicesArray = indicesArray.indices;
   }
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.bufferTypedIs( srcArray ) || _.arrayIs( srcArray ) );
   _.assert( _.bufferTypedIs( indicesArray ) || _.arrayIs( indicesArray ) );
 
@@ -8556,7 +8805,7 @@ function arraySelect( srcArray,indicesArray )
 
 function arraySet( dst, index, value )
 {
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( dst.length > index );
   dst[ index ] = value;
   return dst;
@@ -8770,7 +9019,7 @@ function arrayCutin( dstArray, range, srcArray )
 
 function arrayPut( dstArray, dstOffset )
 {
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length >= 1, 'expects at least one argument' );
   _.assert( _.arrayLike( dstArray ) );
   _.assert( _.numberIs( dstOffset ) );
 
@@ -9085,27 +9334,27 @@ function arrayShuffle( dst,times )
 
 //
 
-function arraySort( srcArray,onElement )
+function arraySort( srcArray, onEvaluate )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onElement === undefined || _.routineIs( onElement ) );
+  _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
 
-  if( onElement === undefined )
+  if( onEvaluate === undefined )
   {
     debugger;
     srcArray.sort();
   }
-  else if( onElement.length === 2 )
+  else if( onEvaluate.length === 2 )
   {
     debugger;
-    srcArray.sort( onElement );
+    srcArray.sort( onEvaluate );
   }
-  else if( onElement.length === 1 )
+  else if( onEvaluate.length === 1 )
   {
     srcArray.sort( function( a,b )
     {
-      a = onElement( a );
-      b = onElement( b );
+      a = onEvaluate( a );
+      b = onEvaluate( b );
       if( a > b ) return +1;
       else if( a < b ) return -1;
       else return 0;
@@ -9318,7 +9567,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 //     if( !_.arrayIs( arr ) )
 //     debugger;
 //     return _ArrayIndexOf.call( arr, ins );
-//     // if( _.argumentsIs( arr ) )
+//     // if( _.argumentsArrayIs( arr ) )
 //     // {
 //     //   var array = _ArraySlice.call( arr );
 //     //   return array.indexOf( ins );
@@ -9375,7 +9624,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 //     if( !_.arrayIs( arr ) )
 //     debugger;
 //     return _ArrayLastIndexOf.call( arr, ins );
-//     // if( _.argumentsIs( arr ) )
+//     // if( _.argumentsArrayIs( arr ) )
 //     // {
 //     //   var array = _ArraySlice.call( arr );
 //     //   return array.lastIndexOf( ins );
@@ -9481,7 +9730,7 @@ function arrayRight( arr, ins, evaluator1, evaluator2 )
 function arrayLeftDefined( arr )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.arrayLeft( arr,true,function( e ){ return e !== undefined; } );
 }
@@ -9491,7 +9740,7 @@ function arrayLeftDefined( arr )
 function arrayRightDefined( arr )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.arrayRight( arr,true,function( e ){ return e !== undefined; } );
 }
@@ -9499,7 +9748,7 @@ function arrayRightDefined( arr )
 //
 
 /**
- * The arrayCount() routine returns the count of matched elements in the (src) array.
+ * The arrayCount() routine returns the count of matched elements in the {-srcMap-} array.
  *
  * @param { Array } src - The source array.
  * @param { * } instance - The value to search.
@@ -9508,7 +9757,7 @@ function arrayRightDefined( arr )
  * // returns 2
  * var arr = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );
  *
- * @returns { Number } - Returns the count of matched elements in the (src).
+ * @returns { Number } - Returns the count of matched elements in the {-srcMap-}.
  * @function arrayCount
  * @throws { Error } If passed arguments is less than two or more than two.
  * @throws { Error } If the first argument is not an array-like object.
@@ -9519,7 +9768,7 @@ function arrayCount( src,instance )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
 
   var index = src.indexOf( instance );
@@ -9535,10 +9784,10 @@ function arrayCount( src,instance )
 //
 
 /**
- * The arrayCountUnique() routine returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
+ * The arrayCountUnique() routine returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array {-srcMap-}.
  *
  * @param { arrayLike } src - The source array.
- * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
+ * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
  * // returns 3
@@ -9548,7 +9797,7 @@ function arrayCount( src,instance )
  * // returns 0
  * _.arrayCountUnique( [ 1, 2, 3, 4, 5 ] );
  *
- * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array (src).
+ * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array {-srcMap-}.
  * @function arrayCountUnique
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an array-like object.
@@ -9556,26 +9805,26 @@ function arrayCount( src,instance )
  * @memberof wTools
  */
 
-function arrayCountUnique( src,onElement )
+function arrayCountUnique( src, onEvaluate )
 {
   var found = [];
-  var onElement = onElement || function( e ){ return e };
+  var onEvaluate = onEvaluate || function( e ){ return e };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.arrayLike( src ),'arrayCountUnique :','expects ArrayLike' );
-  _.assert( _.routineIs( onElement ) );
-  _.assert( onElement.length === 1 );
+  _.assert( _.routineIs( onEvaluate ) );
+  _.assert( onEvaluate.length === 1 );
 
   for( var i1 = 0 ; i1 < src.length ; i1++ )
   {
-    var element1 = onElement( src[ i1 ] );
+    var element1 = onEvaluate( src[ i1 ] );
     if( found.indexOf( element1 ) !== -1 )
     continue;
 
     for( var i2 = i1+1 ; i2 < src.length ; i2++ )
     {
 
-      var element2 = onElement( src[ i2 ] );
+      var element2 = onEvaluate( src[ i2 ] );
       if( found.indexOf( element2 ) !== -1 )
       continue;
 
@@ -9628,10 +9877,10 @@ function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
 //
 
 /**
- * The arraySum() routine returns the sum of an array (src).
+ * The arraySum() routine returns the sum of an array {-srcMap-}.
  *
  * @param { arrayLike } src - The source array.
- * @param { Function } [ onElement = function( e ) { return e } ] - A callback function.
+ * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
  * // returns 15
@@ -9645,7 +9894,7 @@ function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
  * // returns 94
  * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
  *
- * @returns { Number } - Returns the sum of an array (src).
+ * @returns { Number } - Returns the sum of an array {-srcMap-}.
  * @function arraySum
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an array-like object.
@@ -9653,21 +9902,21 @@ function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
  * @memberof wTools
  */
 
-function arraySum( src,onElement )
+function arraySum( src,onEvaluate )
 {
   var result = 0;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.arrayLike( src ),'arraySum :','expects ArrayLike' );
 
-  if( onElement === undefined )
-  onElement = function( e ){ return e; };
+  if( onEvaluate === undefined )
+  onEvaluate = function( e ){ return e; };
 
-  _.assert( _.routineIs( onElement ) );
+  _.assert( _.routineIs( onEvaluate ) );
 
   for( var i = 0 ; i < src.length ; i++ )
   {
-    result += onElement( src[ i ],i,src );
+    result += onEvaluate( src[ i ],i,src );
   }
 
   return result;
@@ -10087,7 +10336,7 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
 function arrayPrependedArray( dstArray, insArray )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayPrependedArray :','expects arrayLike' );
 
@@ -10317,7 +10566,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 
 function arrayPrependedArrays( dstArray, insArray )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayPrependedArrays :','expects arrayLike entity' );
 
@@ -10420,8 +10669,8 @@ function arrayAppend( dstArray, ins )
 //
 
 /**
- * The arrayAppendOnce() routine adds at the end of an array (dst) a value (src),
- * if the array (dst) doesn't have the value (src).
+ * The arrayAppendOnce() routine adds at the end of an array (dst) a value {-srcMap-},
+ * if the array (dst) doesn't have the value {-srcMap-}.
  *
  * @param { Array } dst - The source array.
  * @param { * } src - The value to add.
@@ -10442,7 +10691,7 @@ function arrayAppend( dstArray, ins )
  * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
  *
- * @returns { Array } If an array (dst) doesn't have a value (src) it returns the updated array (dst) with the new length,
+ * @returns { Array } If an array (dst) doesn't have a value {-srcMap-} it returns the updated array (dst) with the new length,
  * otherwise, it returns the original array (dst).
  * @function arrayAppendOnce
  * @throws { Error } Will throw an Error if (dst) is not an Array.
@@ -10644,7 +10893,7 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
 function arrayAppendedArrays( dstArray, insArray )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayIs( dstArray ),'arrayAppendedArrays :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayAppendedArrays :','expects arrayLike entity' );
 
@@ -10720,15 +10969,15 @@ function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
  * The arrayRemoveOnce() routine removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
+ * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
  * checks if arguments passed two, it calls the routine
  * [arrayRemovedOnce( dstArray, ins )]{@link wTools.arrayRemovedOnce}
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayRemovedOnce( dstArray, ins, onElement )]{@link wTools.arrayRemovedOnce}
+ * [arrayRemovedOnce( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedOnce}
  * @see  wTools.arrayRemovedOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -10792,18 +11041,18 @@ function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
  * The arrayRemovedOnce() routine returns the index of the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and remove this element.
  *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
+ * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
  * checks if arguments passed two, it calls built in function(dstArray.indexOf(ins))
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayLeftIndex( dstArray, ins, onElement )]{@link wTools.arrayLeftIndex}
- * If callback function(onElement) returns true, it returns the index that will be removed from (dstArray).
+ * [arrayLeftIndex( dstArray, ins, onEvaluate )]{@link wTools.arrayLeftIndex}
+ * If callback function(onEvaluate) returns true, it returns the index that will be removed from (dstArray).
  * @see {@link wTools.arrayLeftIndex} - See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -10890,7 +11139,7 @@ function arrayRemovedArray( dstArray, insArray )
 /**
  * The callback function to compare two values.
  *
- * @callback arrayRemovedArrayOnce~onElement
+ * @callback arrayRemovedArrayOnce~onEvaluate
  * @param { * } el - The element of the (dstArray[n]) array.
  * @param { * } ins - The value to compare (insArray[n]).
  */
@@ -11001,7 +11250,7 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
 function arrayRemovedArrays( dstArray, insArray )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayRemovedArrays :','expects arrayLike entity' );
 
@@ -11086,17 +11335,17 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * The arrayRemoveAll() routine removes all (ins) values from (dstArray)
  * that corresponds to the condition in the callback function and returns the modified array.
  *
- * It takes two (dstArray, ins) or three (dstArray, ins, onElement) arguments,
+ * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
  * checks if arguments passed two, it calls the routine
  * [arrayRemoved( dstArray, ins )]{@link wTools.arrayRemoved}
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayRemoved( dstArray, ins, onElement )]{@link wTools.arrayRemoved}
+ * [arrayRemoved( dstArray, ins, onEvaluate )]{@link wTools.arrayRemoved}
  *
  * @see wTools.arrayRemoved
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onElement ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -11147,13 +11396,13 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 /**
  * The arrayFlatten() routine returns an array that contains all the passed arguments.
  *
- * It creates two variables the (result) - array and the (src) - elements of array-like object (arguments[]),
- * iterate over array-like object (arguments[]) and assigns to the (src) each element,
- * checks if (src) is not equal to the 'undefined'.
+ * It creates two variables the (result) - array and the {-srcMap-} - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) and assigns to the {-srcMap-} each element,
+ * checks if {-srcMap-} is not equal to the 'undefined'.
  * If true, it adds element to the result.
- * If (src) is an Array and if element(s) of the (src) is not equal to the 'undefined'.
- * If true, it adds to the (result) each element of the (src) array.
- * Otherwise, if (src) is an Array and if element(s) of the (src) is equal to the 'undefined' it throws an Error.
+ * If {-srcMap-} is an Array and if element(s) of the {-srcMap-} is not equal to the 'undefined'.
+ * If true, it adds to the (result) each element of the {-srcMap-} array.
+ * Otherwise, if {-srcMap-} is an Array and if element(s) of the {-srcMap-} is equal to the 'undefined' it throws an Error.
  *
  * @param {...*} arguments - One or more argument(s).
  *
@@ -11241,7 +11490,7 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattened( dstArray, insArray )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayLike( insArray ) );
@@ -11597,7 +11846,7 @@ function arraySetDiff( src1, src2 )
 {
   var result = [];
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( src1 ) );
   _.assert( _.arrayLike( src2 ) );
 
@@ -11656,7 +11905,7 @@ function arraySetBut( dst )
 
   args[ 0 ] = dst;
 
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length >= 1, 'expects at least one argument' );
   for( var a = 0 ; a < args.length ; a++ )
   _.assert( _.arrayLike( args[ a ] ) );
 
@@ -11713,7 +11962,7 @@ function arraySetIntersection( dst )
     return [];
   }
 
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length >= 1, 'expects at least one argument' );
   _.assert( _.arrayLike( dst ) );
   for( var a = 1 ; a < arguments.length ; a++ )
   _.assert( _.arrayLike( arguments[ a ] ) );
@@ -11754,7 +12003,7 @@ function arraySetUnion( dst )
     return [];
   }
 
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length >= 1, 'expects at least one argument' );
   _.assert( _.arrayLike( dst ) );
   for( var a = 1 ; a < args.length ; a++ )
   _.assert( _.arrayLike( args[ a ] ) );
@@ -11809,7 +12058,7 @@ function arraySetContainAll( src )
 //
   /**
    * The arraySetContainAll() routine returns true, if at least one of the following arrays (arguments[...]),
-   * contains all the same values as in the (src) array.
+   * contains all the same values as in the {-srcMap-} array.
    *
    * @param { arrayLike } src - The source array.
    * @param { ...arrayLike } arguments[...] - The target array.
@@ -11823,11 +12072,11 @@ function arraySetContainAll( src )
    * _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
    *
    * @returns { boolean } Returns true, if at least one of the following arrays (arguments[...]),
-   * contains all the same values as in the (src) array.
-   * If length of the (src) is more than the next argument, it returns false.
+   * contains all the same values as in the {-srcMap-} array.
+   * If length of the {-srcMap-} is more than the next argument, it returns false.
    * Otherwise, it returns false.
    * @function arraySetContainAll
-   * @throws { Error } Will throw an Error if (src) is not an array-like.
+   * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
    * @memberof wTools
    */
@@ -11857,7 +12106,7 @@ function arraySetContainAll( src )
 
 /**
  * The arraySetContainAny() routine returns true, if at least one of the following arrays (arguments[...]),
- * contains the first matching value from (src).
+ * contains the first matching value from {-srcMap-}.
  *
  * @param { arrayLike } src - The source array.
  * @param { ...arrayLike } arguments[...] - The target array.
@@ -11875,10 +12124,10 @@ function arraySetContainAll( src )
  * _.arraySetContainAny( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
  *
  * @returns { Boolean } Returns true, if at least one of the following arrays (arguments[...]),
- * contains the first matching value from (src).
+ * contains the first matching value from {-srcMap-}.
  * Otherwise, it returns false.
  * @function arraySetContainAny
- * @throws { Error } Will throw an Error if (src) is not an array-like.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
  * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
  * @memberof wTools
  */
@@ -11962,7 +12211,7 @@ function arraySetContainNone( src )
 function arraySetIdentical( ins1,ins2 )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayLike( ins1 ) );
   _.assert( _.arrayLike( ins2 ) );
 
@@ -12128,7 +12377,7 @@ function objectLikeOrRoutine( src )
  * The mapIs() routine determines whether the passed value is an Object,
  * and not inherits through the prototype chain.
  *
- * If the (src) is an Object, true is returned,
+ * If the {-srcMap-} is an Object, true is returned,
  * otherwise false is.
  *
  * @param { * } src - Entity to check.
@@ -12145,7 +12394,7 @@ function objectLikeOrRoutine( src )
  * // returns false
  * mapIs( [ 3, 7, 13 ] );
  *
- * @returns { Boolean } Returns true if (src) is an Object, and not inherits through the prototype chain.
+ * @returns { Boolean } Returns true if {-srcMap-} is an Object, and not inherits through the prototype chain.
  * @function mapIs
  * @memberof wTools
  */
@@ -12238,7 +12487,7 @@ function mapLike( src )
 function mapIdentical( src1,src2 )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.objectLike( src1 ) );
   _.assert( _.objectLike( src2 ) );
 
@@ -12257,11 +12506,11 @@ function mapIdentical( src1,src2 )
 //
 
 /**
- * The mapContain() returns true, if the first object (src)
+ * The mapContain() returns true, if the first object {-srcMap-}
  * has the same values as the second object(ins).
  *
  * It takes two objects (scr, ins),
- * checks if the first object (src) has the same [key, value] as
+ * checks if the first object {-srcMap-} has the same [key, value] as
  * the second object (ins).
  * If true, it returns true,
  * otherwise it returns false.
@@ -12278,7 +12527,7 @@ function mapIdentical( src1,src2 )
  * returns false
  * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
  *
- * @returns { boolean } Returns true, if the first object (src)
+ * @returns { boolean } Returns true, if the first object {-srcMap-}
  * has the same values as the second object(ins).
  * @function mapContain
  * @throws Will throw an error if ( arguments.length !== 2 ).
@@ -12287,7 +12536,7 @@ function mapIdentical( src1,src2 )
 
 function mapContain( src,ins )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
 /*
   if( Object.keys( src ).length < Object.keys( ins ).length )
@@ -12443,13 +12692,7 @@ function _mapSatisfy( template,src,root,levels )
 function mapHasKey( object,key )
 {
 
-  // if( arguments.length === 1 )
-  // {
-  //   var result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
-  //   return result;
-  // }
-
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.strIs( key ) )
   return ( key in object );
@@ -12498,7 +12741,7 @@ function mapOwnKey( object,key )
   //   return result;
   // }
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   if( _.strIs( key ) )
   return _hasOwnProperty.call( object, key );
@@ -12554,7 +12797,7 @@ function mapOwnVal( object,val )
 
 function mapHasAll( src,screen )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.objectLike( src ) );
   _.assert( _.objectLike( screen ) );
 
@@ -12598,7 +12841,7 @@ function mapHasAll( src,screen )
 
 function mapHasAny( src,screen )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.objectLike( src ) );
   _.assert( _.objectLike( screen ) );
 
@@ -12645,7 +12888,7 @@ function mapHasAny( src,screen )
 
 function mapHasNone( src,screen )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.objectLike( src ) );
   _.assert( _.objectLike( screen ) );
 
@@ -12691,7 +12934,7 @@ function mapHasNone( src,screen )
 
 function mapOwnAll( src,screen )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.mapIs( src ) );
   _.assert( _.mapIs( screen ) );
 
@@ -12738,7 +12981,7 @@ function mapOwnAll( src,screen )
 
 function mapOwnAny( src,screen )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.mapIs( src ) );
   _.assert( _.mapIs( screen ) );
 
@@ -12785,7 +13028,7 @@ function mapOwnAny( src,screen )
 
 function mapOwnNone( src,screen )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.mapIs( src ) );
   _.assert( _.mapIs( screen ) );
 
@@ -12840,20 +13083,20 @@ function mapMake()
 
 /**
  * The mapCloneAssigning() routine is used to clone the values of all
- * enumerable own properties from (srcMap) object to an (options.dst) object.
+ * enumerable own properties from {-srcMap-} object to an (options.dst) object.
  *
  * It creates two variables:
  * var options = options || {}, result = options.dst || {}.
- * Iterate over (srcMap) object, checks if (srcMap) object has own properties.
+ * Iterate over {-srcMap-} object, checks if {-srcMap-} object has own properties.
  * If true, it calls the provided callback function( options.onField( result, srcMap, k ) ) for each key (k),
- * and copies each [ key, value ] of the (srcMap) to the (result),
+ * and copies each [ key, value ] of the {-srcMap-} to the (result),
  * and after cycle, returns clone with prototype of srcMap.
  *
  * @param { objectLike } srcMap - The source object.
  * @param { Object } o - The options.
  * @param { objectLike } [options.dst = Object.create( null )] - The target object.
  * @param { mapCloneAssigning~onField } [options.onField()] - The callback function to copy each [ key, value ]
- * of the (srcMap) to the (result).
+ * of the {-srcMap-} to the (result).
  *
  * @example
  * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
@@ -12867,7 +13110,7 @@ function mapMake()
  * @function mapCloneAssigning
  * @throws { Error } Will throw an Error if ( o ) is not an Object,
  * if ( arguments.length > 2 ), if (key) is not a String or
- * if (srcMap) has not own properties.
+ * if {-srcMap-} has not own properties.
  * @memberof wTools
  */
 
@@ -12940,7 +13183,7 @@ function mapExtend( dstMap,srcMap )
   if( arguments.length === 2 && Object.getPrototypeOf( srcMap ) === null )
   return Object.assign( dstMap,srcMap );
 
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
@@ -12968,7 +13211,7 @@ function mapExtendByMaps( dstMap, srcMaps )
   if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
   return Object.assign( dstMap,srcMaps[ 0 ] );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( _.arrayGenericIs( srcMaps ) );
   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
 
@@ -12993,7 +13236,7 @@ function mapExtendByMaps( dstMap, srcMaps )
  * from the next objects if callback function(filter) returns true.
  *
  * It calls a provided callback function(filter) once for each key in an (argument),
- * and adds to the (srcMap) all the [ key, value ] for which callback
+ * and adds to the {-srcMap-} all the [ key, value ] for which callback
  * function(filter) returns true.
  *
  * @param { function } filter - The callback function to test each [ key, value ]
@@ -13281,7 +13524,7 @@ function mapDelete( dstMap,ins )
 
 function mapExtendRecursiveConditional( filters, dstMap, srcMap )
 {
-  _.assert( arguments.length >= 3 );
+  _.assert( arguments.length >= 3, 'expects at least three arguments' );
   _.assert( this === Self );
   var srcMaps = _.arraySlice( arguments,2 );
   return _.mapExtendByMapsRecursiveConditional( filters, dstMap, srcMaps );
@@ -13297,7 +13540,7 @@ _filterFalse.functionFamily = 'field-filter';
 function mapExtendByMapsRecursiveConditional( filters, dstMap, srcMaps )
 {
 
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
   _.assert( this === Self );
 
   if( _.routineIs( filters ) )
@@ -13367,7 +13610,7 @@ function _mapExtendRecursiveConditional( filters, dstMap, srcMap )
 function mapExtendRecursive( dstMap,srcMap )
 {
 
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   _.assert( this === Self );
 
   for( var a = 1 ; a < arguments.length ; a++ )
@@ -13384,7 +13627,7 @@ function mapExtendRecursive( dstMap,srcMap )
 function mapExtendByMapsRecursive( dstMap,srcMaps )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( this === Self );
 
   for( var a = 1 ; a < srcMaps.length ; a++ )
@@ -13430,7 +13673,7 @@ function _mapExtendRecursive( dstMap,srcMap )
 function mapExtendAppendingRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   var filters = { onField : _.field.mapper.appending, onUpFilter : true };
   var args = _.arraySlice( arguments );
   args.unshift( filters );
@@ -13442,7 +13685,7 @@ function mapExtendAppendingRecursive( dstMap, srcMap )
 function mapExtendByMapsAppendingRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   var filters = { onField : _.field.mapper.appending, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13452,7 +13695,7 @@ function mapExtendByMapsAppendingRecursive( dstMap, srcMaps )
 function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   var filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
   var args = _.arraySlice( arguments );
   args.unshift( filters );
@@ -13464,7 +13707,7 @@ function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 function mapExtendByMapsAppendingOnceRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   var filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13474,7 +13717,7 @@ function mapExtendByMapsAppendingOnceRecursive( dstMap, srcMaps )
 function mapSupplementRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   var filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
   var args = _.arraySlice( arguments );
   args.unshift( filters );
@@ -13486,7 +13729,7 @@ function mapSupplementRecursive( dstMap, srcMap )
 function mapSupplementByMapsRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   var filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13496,7 +13739,7 @@ function mapSupplementByMapsRecursive( dstMap, srcMaps )
 function mapSupplementOwnRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   var filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
   var args = _.arraySlice( arguments );
   args.unshift( filters );
@@ -13508,7 +13751,7 @@ function mapSupplementOwnRecursive( dstMap, srcMap )
 function mapSupplementByMapsOwnRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   var filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13518,7 +13761,7 @@ function mapSupplementByMapsOwnRecursive( dstMap, srcMaps )
 function mapSupplementRemovingRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
   var filters = { onField : _.field.mapper.removing, onUpFilter : true };
   var args = _.arraySlice( arguments );
   args.unshift( filters );
@@ -13530,7 +13773,7 @@ function mapSupplementRemovingRecursive( dstMap, srcMap )
 function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   var filters = { onField : _.field.mapper.removing, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13544,7 +13787,7 @@ function mapSetWithKeys( dstMap,srcArray,val )
 
   _.assert( _.objectIs( dstMap ) );
   _.assert( _.arrayIs( srcArray ) );
-  _.assert( arguments.length === 3 );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   for( var s = 0 ; s < srcArray.length ; s++ )
   dstMap[ srcArray[ s ] ] = val;
@@ -13653,7 +13896,7 @@ function mapsFlatten( o )
   if( _.arrayIs( o ) )
   o = { src : o }
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapsFlatten,o );
   _.assert( _.arrayIs( o.src ) )
 
@@ -13716,10 +13959,10 @@ mapsFlatten.defaults =
 //
 
 /**
- * The mapToArray() converts an object (src) into array [ [ key, value ] ... ].
+ * The mapToArray() converts an object {-srcMap-} into array [ [ key, value ] ... ].
  *
- * It takes an object (src) creates an empty array,
- * checks if ( arguments.length === 1 ) and (src) is an object.
+ * It takes an object {-srcMap-} creates an empty array,
+ * checks if ( arguments.length === 1 ) and {-srcMap-} is an object.
  * If true, it returns a list of [ [ key, value ] ... ] pairs.
  * Otherwise it throws an Error.
  *
@@ -13731,7 +13974,7 @@ mapsFlatten.defaults =
  *
  * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
  * @function mapToArray
- * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or (src) is not an object.
+ * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or {-srcMap-} is not an object.
  * @memberof wTools
  */
 
@@ -13743,13 +13986,13 @@ function mapToArray( src )
 //
 
 /**
- * The mapToStr() routine converts and returns the passed object (src) to the string.
+ * The mapToStr() routine converts and returns the passed object {-srcMap-} to the string.
  *
  * It takes an object and two strings (keyValSep) and (tupleSep),
  * checks if (keyValSep and tupleSep) are strings.
  * If false, it assigns them defaults ( ' : ' ) to the (keyValSep) and
  * ( '; ' ) to the tupleSep.
- * Otherwise, it returns a string representing the passed object (src).
+ * Otherwise, it returns a string representing the passed object {-srcMap-}.
  *
  * @param { objectLike } src - The object to convert to the string.
  * @param { string } [ keyValSep = ' : ' ] keyValSep - colon.
@@ -13767,7 +14010,7 @@ function mapToArray( src )
  * // returns '0 : a; 1 : b; 2 : c';
  * _.mapToStr( 'abc', ' : ', '; ' );
  *
- * @returns { string } Returns a string (result) representing the passed object (src).
+ * @returns { string } Returns a string (result) representing the passed object {-srcMap-}.
  * @function mapToStr
  * @memberof wTools
  */
@@ -13779,7 +14022,7 @@ function mapToStr( o )
   o = { src : o }
 
   _.routineOptions( mapToStr,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   var result = '';
   for( var s in o.src )
@@ -13803,21 +14046,22 @@ mapToStr.defaults =
 // map selector
 // --
 
-function _mapEnumerableKeys( src,own )
+function _mapEnumerableKeys( srcMap,own )
 {
   var result = [];
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( !_.primitiveIs( srcMap ) );
 
   if( own )
   {
-    for( var k in src )
-    if( _hasOwnProperty.call( src,k ) )
+    for( var k in srcMap )
+    if( _hasOwnProperty.call( srcMap,k ) )
     result.push( k );
   }
   else
   {
-    for( var k in src )
+    for( var k in srcMap )
     result.push( k );
   }
 
@@ -13832,14 +14076,14 @@ function _mapKeys( o )
   var result = [];
 
   _.routineOptions( _mapKeys,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.objectLike( o ) );
-  _.assert( !( o.src instanceof Map ),'not implemented' );
+  _.assert( !( o.srcMap instanceof Map ),'not implemented' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
 
   /* */
 
-  function filter( src,keys )
+  function filter( srcMap,keys )
   {
 
     if( !o.selectFilter )
@@ -13848,11 +14092,9 @@ function _mapKeys( o )
     }
     else for( var k = 0 ; k < keys.length ; k++ )
     {
-      var e = o.selectFilter( src,keys[ k ] );
+      var e = o.selectFilter( srcMap,keys[ k ] );
       if( e !== undefined )
       _.arrayAppendOnce( result,e );
-      // if( e === undefined )
-      // debugger;
     }
   }
 
@@ -13861,7 +14103,7 @@ function _mapKeys( o )
   if( o.enumerable )
   {
 
-    filter( o.src,_._mapEnumerableKeys( o.src,o.own ) );
+    filter( o.srcMap,_._mapEnumerableKeys( o.srcMap,o.own ) );
 
   }
   else
@@ -13869,23 +14111,20 @@ function _mapKeys( o )
 
     if( o.own  )
     {
-      filter( o.src,Object.getOwnPropertyNames( o.src ) );
+      filter( o.srcMap,Object.getOwnPropertyNames( o.srcMap ) );
     }
     else
     {
-      debugger;
-      var proto = o.src;
+      var proto = o.srcMap;
       result = [];
       do
       {
-        debugger;
         filter( proto,Object.getOwnPropertyNames( proto ) );
         proto = Object.getPrototypeOf( proto );
       }
       while( proto );
     }
 
-    // result = o.own ? _.mapOwnKeys( o.src ) : _.mapKeys( o.src );
   }
 
   /* */
@@ -13895,7 +14134,7 @@ function _mapKeys( o )
 
 _mapKeys.defaults =
 {
-  src : null,
+  srcMap : null,
   own : 0,
   enumerable : 1,
   selectFilter : null,
@@ -13922,7 +14161,7 @@ _mapKeys.defaults =
  * var o = { own : 1, enumerable : 0 };
  * _.mapKeys.call( o, { a : 1 } );
  *
- * @param { objectLike } src - object of interest to extract keys.
+ * @param { objectLike } srcMap - object of interest to extract keys.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
@@ -13930,24 +14169,24 @@ _mapKeys.defaults =
  * corresponding to the enumerable properties found directly upon object or empty array
  * if nothing found.
  * @function mapKeys
- * @throws { Exception } Throw an exception if (src) is not an objectLike entity.
+ * @throws { Exception } Throw an exception if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapKeys( src )
+function mapKeys( srcMap )
 {
   var result;
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
-  _.assertMapHasOnly( o,mapKeys.defaults );
-  _.assert( !_.primitiveIs( src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.routineOptions( mapKeys, o );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  o.src = src;
+  o.srcMap = srcMap;
 
   if( o.enumerable )
-  result = _._mapEnumerableKeys( o.src,o.own );
+  result = _._mapEnumerableKeys( o.srcMap, o.own );
   else
   result = _._mapKeys( o );
 
@@ -13966,7 +14205,7 @@ mapKeys.defaults =
  * The mapOwnKeys() returns an array of a given object`s own enumerable properties,
  * in the same order as that provided by a for...in loop. Each element of result array is unique.
  *
- * @param { objectLike } src - The object whose properties keys are to be returned.
+ * @param { objectLike } srcMap - The object whose properties keys are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
@@ -13983,25 +14222,25 @@ mapKeys.defaults =
  * corresponding to the own enumerable properties found directly upon object or empty
  * array if nothing found.
  * @function mapOwnKeys
- * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
 */
 
-function mapOwnKeys( src )
+function mapOwnKeys( srcMap )
 {
   var result;
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assertMapHasOnly( o,mapOwnKeys.defaults );
-  _.assert( !_.primitiveIs( src ) );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 1;
 
   if( o.enumerable )
-  result = _._mapEnumerableKeys( o.src,o.own );
+  result = _._mapEnumerableKeys( o.srcMap,o.own );
   else
   result = _._mapKeys( o );
 
@@ -14022,7 +14261,7 @@ mapOwnKeys.defaults =
  * The mapAllKeys() returns all properties of provided object as array,
  * in the same order as that provided by a for...in loop. Each element of result array is unique.
  *
- * @param { objectLike } src - The object whose properties keys are to be returned.
+ * @param { objectLike } srcMap - The object whose properties keys are to be returned.
  *
  * @example
  * // returns [ "a", "b", "__defineGetter__", ... "isPrototypeOf" ]
@@ -14034,19 +14273,19 @@ mapOwnKeys.defaults =
  * @return { array } Returns an array whose elements are strings
  * corresponding to the all properties found on the object.
  * @function mapAllKeys
- * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @memberof wTools
 */
 
-function mapAllKeys( src )
+function mapAllKeys( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assertMapHasOnly( o,mapAllKeys.defaults );
-  _.assert( !_.primitiveIs( src ) );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
 
@@ -14060,88 +14299,13 @@ mapAllKeys.defaults =
 {
 }
 
-// function mapOwnKeys( src )
-// {
-//   var result = [];
-//
-//   if( arguments.length === 0 )
-//   return result;
-//
-//   _.assert( _.objectLike( src ) );
-//
-//   if( arguments.length === 1 )
-//   if( _.objectIs( src ) && Object.keys )
-//   return Object.keys( src );
-//
-//   for( var s in src )
-//   if( _hasOwnProperty.call( src,s ) )
-//   result.push( s );
-//
-//   for( var a = 1 ; a < arguments.length ; a++ )
-//   {
-//     var src = arguments[ a ];
-//     for( var s in src )
-//     if( _hasOwnProperty.call( src,s ) )
-//     _.arrayAppendOnce( result,s );
-//   }
-//
-//   return result;
-// }
-
-//
-
-// /**
-//  * This routine returns an array of a given objects enumerable properties,
-//  * in the same order as that provided by a for...in loop.
-//  * Accept several objects or single. Each element of result array is unique.
-//  * Unlike standard [Object.keys]{@https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/keys}
-//  * which accept object only mapKeys accept any object-like entity.
-//  *
-//  * @see {@link wTools.mapOwnKeys} - Similar routine taking into account own elements only.
-//  * @see {@link wTools.mapVals} - Similar routine returning values.
-//  *
-//  * @example
-//  * // returns [ "a", "b" ]
-//  * _.mapKeys({ a : 7, b : 13 });
-//  *
-//  * @param { ...objectLike } src - objects of interest to extract keys.
-//  * @return { array } Returns an array with unique string elements.
-//  * corresponding to the enumerable properties found directly upon object.
-//  * @function mapKeys
-//  * @throws { Exception } Throw an exception if (src) is not an object-like entity.
-//  * @memberof wTools
-//  */
-
-// function mapKeys( src )
-// {
-//   var result = [];
-//
-//   if( arguments.length === 0 )
-//   return result;
-//
-//   _.assert( _.objectLike( src ) || errIs( src ));
-//
-//   for( var s in src )
-//   result.push( s );
-//
-//   for( var a = 1 ; a < arguments.length ; a++ )
-//   {
-//     var src = arguments[ a ];
-//     _.assert( _.objectLike( src ) || errIs( src ) );
-//     for( var s in src )
-//     _.arrayAppendOnce( result,s );
-//   }
-//
-//   return result;
-// }
-
 //
 
 function _mapVals( o )
 {
 
   _.routineOptions( _mapVals,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
 
   var selectFilter = o.selectFilter;
@@ -14150,9 +14314,9 @@ function _mapVals( o )
   debugger;
 
   if( !o.selectFilter )
-  o.selectFilter = function getVal( src,k )
+  o.selectFilter = function getVal( srcMap,k )
   {
-    return src[ k ]
+    return srcMap[ k ]
   }
 
   var result = _._mapKeys( o );
@@ -14162,7 +14326,7 @@ function _mapVals( o )
 
 _mapVals.defaults =
 {
-  src : null,
+  srcMap : null,
   own : 0,
   enumerable : 1,
   selectFilter : null,
@@ -14174,12 +14338,12 @@ _mapVals.defaults =
  * The mapVals() routine returns an array of a given object's
  * enumerable property values, in the same order as that provided by a for...in loop.
  *
- * It takes an object (src) creates an empty array,
- * checks if (src) is an object.
+ * It takes an object {-srcMap-} creates an empty array,
+ * checks if {-srcMap-} is an object.
  * If true, it returns an array of values,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src - The object whose property values are to be returned.
+ * @param { objectLike } srcMap - The object whose property values are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
@@ -14199,20 +14363,20 @@ _mapVals.defaults =
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @function mapVals
- * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapVals( src )
+function mapVals( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
-  _.assertMapHasOnly( o,mapVals.defaults );
-  _.assert( !_.primitiveIs( src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.routineOptions( mapVals, o );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  o.src = src;
+  o.srcMap = srcMap;
 
   var result = _._mapVals( o );
 
@@ -14232,12 +14396,12 @@ mapVals.defaults =
  * own enumerable property values,
  * in the same order as that provided by a for...in loop.
  *
- * It takes an object (src) creates an empty array,
- * checks if (src) is an object.
+ * It takes an object {-srcMap-} creates an empty array,
+ * checks if {-srcMap-} is an object.
  * If true, it returns an array of values,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src - The object whose property values are to be returned.
+ * @param { objectLike } srcMap - The object whose property values are to be returned.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
@@ -14255,20 +14419,20 @@ mapVals.defaults =
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @function mapOwnVals
- * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapOwnVals( src )
+function mapOwnVals( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assertMapHasOnly( o,mapVals.defaults );
-  _.assert( !_.primitiveIs( src ) );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 1;
 
   var result = _._mapVals( o );
@@ -14288,12 +14452,12 @@ mapOwnVals.defaults =
  * The mapAllVals() returns values of all properties of provided object as array,
  * in the same order as that provided by a for...in loop.
  *
- * It takes an object (src) creates an empty array,
- * checks if (src) is an object.
+ * It takes an object {-srcMap-} creates an empty array,
+ * checks if {-srcMap-} is an object.
  * If true, it returns an array of values,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src - The object whose property values are to be returned.
+ * @param { objectLike } srcMap - The object whose property values are to be returned.
  *
  * @example
  * // returns [ "7", "13", function __defineGetter__(), ... function isPrototypeOf() ]
@@ -14302,19 +14466,19 @@ mapOwnVals.defaults =
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
  * @function mapAllVals
- * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @memberof wTools
  */
 
-function mapAllVals( src )
+function mapAllVals( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assertMapHasOnly( o,mapAllVals.defaults );
-  _.assert( !_.primitiveIs( src ) );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
 
@@ -14328,69 +14492,15 @@ mapAllVals.defaults =
 {
 }
 
-// function mapOwnValues( src )
-// {
-//   var result = [];
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.objectLike( src ) );
-//
-//   for( var s in src )
-//   {
-//     if( _hasOwnProperty.call( src,s ) )
-//     result.push( src[ s ] );
-//   }
-//
-//   return result;
-// }
-//
-// //
-//
-// /**
-//  * The mapVals() routine returns an array of a given object's
-//  * own enumerable property values,
-//  * in the same order as that provided by a for...in loop.
-//  *
-//  * It takes an object (src) creates an empty array,
-//  * checks if (src) is an object.
-//  * If true, it returns an array of values,
-//  * otherwise it returns an empty array.
-//  *
-//  * @param { objectLike } src - The object whose property values are to be returned.
-//  *
-//  * @example
-//  * // returns [ "7", "13" ]
-//  * _.mapVals( { a : 7, b : 13 } );
-//  *
-//  * @returns { array } Returns an array whose elements are strings.
-//  * corresponding to the enumerable property values found directly upon object.
-//  * @function mapVals
-//  * @throws { Error } Will throw an Error if (src) is not an Object.
-//  * @memberof wTools
-// */
-//
-// function mapVals( src )
-// {
-//   var result = [];
-//
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.objectLike( src ) );
-//
-//   for( var s in src )
-//   result.push( src[ s ] );
-//
-//   return result;
-// }
-//
 //
 
 function _mapPairs( o )
 {
 
   _.routineOptions( _mapPairs,o );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
-  _.assert( !_.primitiveIs( o.src ) );
+  _.assert( !_.primitiveIs( o.srcMap ) );
 
   var selectFilter = o.selectFilter;
 
@@ -14398,9 +14508,9 @@ function _mapPairs( o )
   debugger;
 
   if( !o.selectFilter )
-  o.selectFilter = function getVal( src,k )
+  o.selectFilter = function getVal( srcMap,k )
   {
-    return [ k,src[ k ] ];
+    return [ k,srcMap[ k ] ];
   }
 
   var result = _._mapKeys( o );
@@ -14410,7 +14520,7 @@ function _mapPairs( o )
 
 _mapPairs.defaults =
 {
-  src : null,
+  srcMap : null,
   own : 0,
   enumerable : 1,
   selectFilter : null,
@@ -14421,12 +14531,12 @@ _mapPairs.defaults =
 /**
  * The mapPairs() converts an object into a list of unique [ key, value ] pairs.
  *
- * It takes an object (src) creates an empty array,
- * checks if (src) is an object.
+ * It takes an object {-srcMap-} creates an empty array,
+ * checks if {-srcMap-} is an object.
  * If true, it returns a list of [ key, value ] pairs if they exist,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
+ * @param { objectLike } srcMap - Object to get a list of [ key, value ] pairs.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
@@ -14444,19 +14554,19 @@ _mapPairs.defaults =
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapPairs
- * @throws { Error } Will throw an Error if (src) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapPairs( src )
+function mapPairs( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assertMapHasOnly( o,mapPairs.defaults );
 
-  o.src = src;
+  o.srcMap = srcMap;
 
   var result = _._mapPairs( o );
 
@@ -14475,12 +14585,12 @@ mapPairs.defaults =
  * The mapOwnPairs() converts an object's own properties into a list of [ key, value ] pairs.
  *
  *
- * It takes an object ( src ) creates an empty array,
- * checks if ( src ) is an object.
+ * It takes an object {-srcMap-} creates an empty array,
+ * checks if {-srcMap-} is an object.
  * If true, it returns a list of [ key, value ] pairs of object`s own properties if they exist,
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
+ * @param { objectLike } srcMap - Object to get a list of [ key, value ] pairs.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
@@ -14501,19 +14611,19 @@ mapPairs.defaults =
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapOwnPairs
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapOwnPairs( src )
+function mapOwnPairs( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assertMapHasOnly( o,mapPairs.defaults );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 1;
 
   var result = _._mapPairs( o );
@@ -14530,14 +14640,14 @@ mapOwnPairs.defaults =
 //
 
 /**
- * The mapAllPairs() converts all properties of the object( src ) into a list of unique [ key, value ] pairs.
+ * The mapAllPairs() converts all properties of the object {-srcMap-} into a list of unique [ key, value ] pairs.
  *
- * It takes an object ( src ) creates an empty array,
- * checks if ( src ) is an object.
- * If true, it returns a list of [ key, value ] pairs that repesents all properties of provided object( src ),
+ * It takes an object {-srcMap-} creates an empty array,
+ * checks if {-srcMap-} is an object.
+ * If true, it returns a list of [ key, value ] pairs that repesents all properties of provided object{-srcMap-},
  * otherwise it returns an empty array.
  *
- * @param { objectLike } src - Object to get a list of [ key, value ] pairs.
+ * @param { objectLike } srcMap - Object to get a list of [ key, value ] pairs.
  *
  * @example
  * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function isPrototypeOf() ] ]
@@ -14552,18 +14662,18 @@ mapOwnPairs.defaults =
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @memberof wTools
  */
 
-function mapAllPairs( src )
+function mapAllPairs( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assertMapHasOnly( o,mapAllPairs.defaults );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
 
@@ -14577,18 +14687,6 @@ mapAllPairs.defaults =
 {
 }
 
-// function mapPairs( src )
-// {
-//   var result = [];
-//
-//   _.assert( _.objectLike( src ) );
-//
-//   for( var s in src )
-//   result.push([ s, src[ s ] ]);
-//
-//   return result;
-// }
-
 //
 
 function _mapProperties( o )
@@ -14596,14 +14694,14 @@ function _mapProperties( o )
   var result = Object.create( null );
 
   _.routineOptions( _mapProperties,o );
-  _.assert( arguments.length === 1 );
-  _.assert( o.src instanceof Object || _.objectLike( o.src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( !_.primitiveIs( o.srcMap ) );
 
   var keys = _._mapKeys( o );
 
   for( var k = 0 ; k < keys.length ; k++ )
   {
-    result[ keys[ k ] ] = o.src[ keys[ k ] ];
+    result[ keys[ k ] ] = o.srcMap[ keys[ k ] ];
   }
 
   return result;
@@ -14611,7 +14709,7 @@ function _mapProperties( o )
 
 _mapProperties.defaults =
 {
-  src : null,
+  srcMap : null,
   own : 0,
   enumerable : 1,
   selectFilter : null,
@@ -14620,15 +14718,15 @@ _mapProperties.defaults =
 //
 
 /**
- * The mapProperties() gets enumerable properties of the object( src ) and returns them as new map.
+ * The mapProperties() gets enumerable properties of the object{-srcMap-} and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
  * If true, it copies unique enumerable properties of the provided object to the new map using
  * their original name/value and returns the result,
  * otherwise it returns empty map.
  *
- * @param { objectLike } src - Object to get a map of enumerable properties.
+ * @param { objectLike } srcMap - Object to get a map of enumerable properties.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
@@ -14651,21 +14749,21 @@ _mapProperties.defaults =
  * _.mapProperties.call( { own : 1 }, a )
  * //returns { a : 1 }
  *
- * @returns { object } A new map with unique enumerable properties from source( src ).
+ * @returns { object } A new map with unique enumerable properties from source{-srcMap-}.
  * @function mapProperties
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapProperties( src )
+function mapProperties( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapProperties,o );
 
-  o.src = src;
+  o.srcMap = srcMap;
 
   var result = _._mapProperties( o );
   return result;
@@ -14680,15 +14778,15 @@ mapProperties.defaults =
 //
 
 /**
- * The mapOwnProperties() gets the object's( src ) own enumerable properties and returns them as new map.
+ * The mapOwnProperties() gets the object's {-srcMap-} own enumerable properties and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
  * If true, it copies object's own enumerable properties to the new map using
  * their original name/value and returns the result,
  * otherwise it returns empty map.
  *
- * @param { objectLike } src - Source to get a map of object`s own enumerable properties.
+ * @param { objectLike } srcMap - Source to get a map of object`s own enumerable properties.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
@@ -14709,21 +14807,21 @@ mapProperties.defaults =
  * _.mapOwnProperties.call( { enumerable : 0 }, a )
  * //returns { a : 1, b : 2 }
  *
- * @returns { object } A new map with source( src ) own enumerable properties.
+ * @returns { object } A new map with source {-srcMap-} own enumerable properties.
  * @function mapOwnProperties
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapOwnProperties( src )
+function mapOwnProperties( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapOwnProperties,o );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 1;
 
   var result = _._mapProperties( o );
@@ -14738,15 +14836,15 @@ mapOwnProperties.defaults =
 //
 
 /**
- * The mapAllProperties() gets all properties from provided object( src ) and returns them as new map.
+ * The mapAllProperties() gets all properties from provided object {-srcMap-} and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
  * If true, it copies all unique object's properties to the new map using
  * their original name/value and returns the result,
  * otherwise it returns empty map.
  *
- * @param { objectLike } src - Source to get a map of all object`s properties.
+ * @param { objectLike } srcMap - Source to get a map of all object`s properties.
  *
  * @example
  * // returns { a : 7, b : 13, __defineGetter__ : function...}
@@ -14759,21 +14857,21 @@ mapOwnProperties.defaults =
  * _.mapAllProperties( a );
  * //returns { a : 1, b : 2, __defineGetter__ : function...}
  *
- * @returns { object } A new map with all unique properties from source( src ).
+ * @returns { object } A new map with all unique properties from source {-srcMap-}.
  * @function mapAllProperties
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapAllProperties( src )
+function mapAllProperties( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapAllProperties,o );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
 
@@ -14788,14 +14886,14 @@ mapAllProperties.defaults =
 //
 
 /**
- * The mapRoutines() gets enumerable properties that contains routines as value from the object( src ) and returns them as new map.
+ * The mapRoutines() gets enumerable properties that contains routines as value from the object {-srcMap-} and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
- * If true, it copies unique enumerable properties that holds routines from source( src ) to the new map using
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
+ * If true, it copies unique enumerable properties that holds routines from source {-srcMap-} to the new map using
  * original name/value of the property and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } src - Source to get a map of object`s properties.
+ * @param { objectLike } srcMap - Source to get a map of object`s properties.
  * @param { objectLike } o - routine options, can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
@@ -14818,26 +14916,26 @@ mapAllProperties.defaults =
  * _.mapRoutines.call( { own : 1 }, a )
  * //returns {}
  *
- * @returns { object } A new map with unique enumerable routine properties from source( src ).
+ * @returns { object } A new map with unique enumerable routine properties from source {-srcMap-}.
  * @function mapRoutines
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
 
-function mapRoutines( src )
+function mapRoutines( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapRoutines,o );
 
-  o.src = src;
-  o.selectFilter = function selectRoutine( src,k )
+  o.srcMap = srcMap;
+  o.selectFilter = function selectRoutine( srcMap, k )
   {
     debugger;
-    if( _.routineIs( src[ k ] ) )
+    if( _.routineIs( srcMap[ k ] ) )
     return k;
     debugger;
   }
@@ -14856,14 +14954,14 @@ mapRoutines.defaults =
 //
 
 /**
- * The mapOwnRoutines() gets object`s( src ) own enumerable properties that contains routines as value and returns them as new map.
+ * The mapOwnRoutines() gets object`s {-srcMap-} own enumerable properties that contains routines as value and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
- * If true, it copies object`s( src ) own unique enumerable properties that holds routines to the new map using
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
+ * If true, it copies object`s {-srcMap-} own unique enumerable properties that holds routines to the new map using
  * original name/value of the property and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } src - Source to get a map of object`s properties.
+ * @param { objectLike } srcMap - Source to get a map of object`s properties.
  * @param { objectLike } o - routine options, can be provided through routine`s context.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
@@ -14884,26 +14982,26 @@ mapRoutines.defaults =
  * _.mapOwnRoutines.call( { enumerable : 0 }, a )
  * //returns { b : function(){} }
  *
- * @returns { object } A new map with unique object`s own enumerable routine properties from source( src ).
+ * @returns { object } A new map with unique object`s own enumerable routine properties from source {-srcMap-}.
  * @function mapOwnRoutines
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapOwnRoutines( src )
+function mapOwnRoutines( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapOwnRoutines,o );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 1;
-  o.selectFilter = function selectRoutine( src,k )
+  o.selectFilter = function selectRoutine( srcMap,k )
   {
     debugger;
-    if( _.routineIs( src[ k ] ) )
+    if( _.routineIs( srcMap[ k ] ) )
     return k;
     debugger;
   }
@@ -14921,14 +15019,14 @@ mapOwnRoutines.defaults =
 //
 
 /**
- * The mapAllRoutines() gets all properties of object( src ) that contains routines as value and returns them as new map.
+ * The mapAllRoutines() gets all properties of object {-srcMap-} that contains routines as value and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
- * If true, it copies all unique properties of source( src ) that holds routines to the new map using
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
+ * If true, it copies all unique properties of source {-srcMap-} that holds routines to the new map using
  * original name/value of the property and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } src - Source to get a map of object`s properties.
+ * @param { objectLike } srcMap - Source to get a map of object`s properties.
  *
  * @example
  * // returns { f : function, __defineGetter__ : function...}
@@ -14942,27 +15040,27 @@ mapOwnRoutines.defaults =
  * // returns { f : function, __defineGetter__ : function...}
  *
  *
- * @returns { object } A new map with all unique object`s( src ) properties that are routines.
+ * @returns { object } A new map with all unique object`s {-srcMap-} properties that are routines.
  * @function mapAllRoutines
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapAllRoutines( src )
+function mapAllRoutines( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapAllRoutines,o );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
-  o.selectFilter = function selectRoutine( src,k )
+  o.selectFilter = function selectRoutine( srcMap,k )
   {
     debugger;
-    if( _.routineIs( src[ k ] ) )
+    if( _.routineIs( srcMap[ k ] ) )
     return k;
   }
 
@@ -14978,14 +15076,14 @@ mapAllRoutines.defaults =
 //
 
 /**
- * The mapFields() gets enumerable fields( all properties except routines ) of the object( src ) and returns them as new map.
+ * The mapFields() gets enumerable fields( all properties except routines ) of the object {-srcMap-} and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
- * If true, it copies unique enumerable properties of the provided object( src ) that are not routines to the new map using
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
+ * If true, it copies unique enumerable properties of the provided object {-srcMap-} that are not routines to the new map using
  * their original name/value and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } src - Object to get a map of enumerable properties.
+ * @param { objectLike } srcMap - Object to get a map of enumerable properties.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.own = false ] - count only object`s own properties.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
@@ -15008,24 +15106,24 @@ mapAllRoutines.defaults =
  * _.mapFields.call( { own : 1 }, a )
  * //returns { a : 1 }
  *
- * @returns { object } A new map with unique enumerable fields( all properties except routines ) from source( src ).
+ * @returns { object } A new map with unique enumerable fields( all properties except routines ) from source {-srcMap-}.
  * @function mapFields
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapFields( src )
+function mapFields( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapFields,o );
 
-  o.src = src;
-  o.selectFilter = function selectRoutine( src,k )
+  o.srcMap = srcMap;
+  o.selectFilter = function selectRoutine( srcMap,k )
   {
-    if( !_.routineIs( src[ k ] ) )
+    if( !_.routineIs( srcMap[ k ] ) )
     return k;
   }
 
@@ -15042,14 +15140,14 @@ mapFields.defaults =
 //
 
 /**
- * The mapOwnFields() gets object`s( src ) own enumerable fields( all properties except routines ) and returns them as new map.
+ * The mapOwnFields() gets object`s {-srcMap-} own enumerable fields( all properties except routines ) and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
  * If true, it copies object`s own enumerable properties that are not routines to the new map using
  * their original name/value and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } src - Object to get a map of enumerable properties.
+ * @param { objectLike } srcMap - Object to get a map of enumerable properties.
  * @param { objectLike } o - routine options can be provided through routine`s context.
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
@@ -15070,31 +15168,28 @@ mapFields.defaults =
  * _.mapFields.call( { enumerable : 0 }, a )
  * //returns { a : 1, b : 2 }
  *
- * @returns { object } A new map with object`s( src ) own enumerable fields( all properties except routines ).
+ * @returns { object } A new map with object`s {-srcMap-} own enumerable fields( all properties except routines ).
  * @function mapOwnFields
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapOwnFields( src )
+function mapOwnFields( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapOwnFields,o );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 1;
-  o.selectFilter = function selectRoutine( src,k )
+  o.selectFilter = function selectRoutine( srcMap,k )
   {
-    debugger;
-    if( !_.routineIs( src[ k ] ) )
+    if( !_.routineIs( srcMap[ k ] ) )
     return k;
-    debugger;
   }
 
-  debugger;
   var result = _._mapProperties( o );
   return result;
 }
@@ -15107,14 +15202,14 @@ mapOwnFields.defaults =
 //
 
 /**
- * The mapAllFields() gets all object`s( src ) fields( properties except routines ) and returns them as new map.
+ * The mapAllFields() gets all object`s {-srcMap-} fields( properties except routines ) and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
  * If true, it copies all object`s properties that are not routines to the new map using
  * their original name/value and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } src - Object to get a map of all properties.
+ * @param { objectLike } srcMap - Object to get a map of all properties.
  *
  * @example
  * // returns { a : 7, b : 13, __proto__ : Object }
@@ -15133,27 +15228,27 @@ mapOwnFields.defaults =
  * _.mapAllFields( a );
  * //returns { a : 1, b : 2, __proto__ : Object }
  *
- * @returns { object } A new map with all fields( properties except routines ) from source( src ).
+ * @returns { object } A new map with all fields( properties except routines ) from source {-srcMap-}.
  * @function mapAllFields
- * @throws { Error } Will throw an Error if ( src ) is not an objectLike entity.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
  * @memberof wTools
  */
 
-function mapAllFields( src )
+function mapAllFields( srcMap )
 {
   var o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( mapAllFields,o );
 
-  o.src = src;
+  o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
-  o.selectFilter = function selectRoutine( src,k )
+  o.selectFilter = function selectRoutine( srcMap,k )
   {
     debugger;
-    if( !_.routineIs( src[ k ] ) )
+    if( !_.routineIs( srcMap[ k ] ) )
     return k;
     debugger;
   }
@@ -15167,69 +15262,17 @@ mapAllFields.defaults =
 {
 }
 
-// //
-//
-// function mapFields( src )
-// {
-//   var result = Object.create( null );
-//   var o = this === Self ? Object.create( null ) : this;
-//
-//   _.routineOptions( mapFields,o );
-//   _.assert( arguments.length === 1 );
-//   // _.assert( _.objectLike( src ) );
-//
-//   var keys = _._mapKeys
-//   ({
-//     src : src,
-//     own : 0,
-//     enumerable : 1,
-//   });
-//
-//   for( var k = 0 ; k < keys.length ; k++ )
-//   {
-//     if( !_.routineIs( src[ keys[ k ] ] ) )
-//     result[ keys[ k ] ] = src[ keys[ k ] ];
-//   }
-//
-//   return result;
-// }
-//
-// mapFields.defaults =
-// {
-//   own : 0,
-//   enumerable : 1,
-// }
-//
-// //
-//
-// function mapAllFields( src )
-// {
-//   var result = Object.create( null );
-//   var o = this === Self ? Object.create( null ) : this;
-//
-//   _.routineOptions( mapFields,o );
-//   _.assert( arguments.length === 1 );
-//
-//   return mapFields.call( o,src );
-// }
-//
-// mapAllFields.defaults =
-// {
-//   own : 1,
-//   enumerable : 1,
-// }
-
 //
 
 /**
- * The mapOnlyPrimitives() gets all object`s( src ) enumerable atomic fields( null,undef,number,string,symbol ) and returns them as new map.
+ * The mapOnlyPrimitives() gets all object`s {-srcMap-} enumerable atomic fields( null,undef,number,string,symbol ) and returns them as new map.
  *
- * It takes an object ( src ) creates an empty map,
- * checks if ( src ) is an object.
- * If true, it copies object`s( src ) enumerable atomic properties to the new map using
+ * It takes an object {-srcMap-} creates an empty map,
+ * checks if {-srcMap-} is an object.
+ * If true, it copies object`s {-srcMap-} enumerable atomic properties to the new map using
  * their original name/value and returns the result, otherwise it returns empty map.
  *
- * @param { objectLike } src - Object to get a map of atomic properties.
+ * @param { objectLike } srcMap - Object to get a map of atomic properties.
  *
  * @example
  * var a = {};
@@ -15244,134 +15287,19 @@ mapAllFields.defaults =
  * _.mapOnlyPrimitives( a );
  * //returns { a : 1, b : 2 }
  *
- * @returns { object } A new map with all atomic fields from source( src ).
+ * @returns { object } A new map with all atomic fields from source {-srcMap-}.
  * @function mapOnlyPrimitives
- * @throws { Error } Will throw an Error if ( src ) is not an Object.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an Object.
  * @memberof wTools
  */
 
-function mapOnlyPrimitives( src )
+function mapOnlyPrimitives( srcMap )
 {
-  _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  var result = _.mapExtendConditional( _.field.mapper.primitive,Object.create( null ),src );
+  var result = _.mapExtendConditional( _.field.mapper.primitive, Object.create( null ), srcMap );
   return result;
-}
-
-//
-
-/**
- * The mapValWithIndex() returns value of (src) by corresponding (index).
- *
- * It takes (src) and (index), creates a variable ( i = 0 ),
- * checks if ( index > 0 ), iterate over (src) object-like and match
- * if ( i == index ).
- * If true, it returns value of (src).
- * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
- *
- * @param { objectLike } src - An object-like.
- * @param { number } index - To find the position an element.
- *
- * @example
- * // returns 7
- * _.mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
- *
- * @returns { * } Returns value of (src) by corresponding (index).
- * @function mapValWithIndex
- * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
- * @memberof wTools
- */
-
-function mapValWithIndex( src,index )
-{
-
- _.assert( arguments.length === 2 );
- _.assert( !_.primitiveIs( src ) );
-
-  if( index < 0 ) return;
-
-  var i = 0;
-  for( var s in src )
-  {
-    if( i == index ) return src[s];
-    i++;
-  }
-}
-
-//
-
-/**
- * The mapKeyWithIndex() returns key of (src) by corresponding (index).
- *
- * It takes (src) and (index), creates a variable ( i = 0 ),
- * checks if ( index > 0 ), iterate over (src) object-like and match
- * if ( i == index ).
- * If true, it returns value of (src).
- * Otherwise it increment ( i++ ) and iterate over (src) until it doesn't match index.
- *
- * @param { objectLike } src - An object-like.
- * @param { number } index - To find the position an element.
- *
- * @example
- * // returns '1'
- * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
- *
- * @returns { string } Returns key of (src) by corresponding (index).
- * @function mapKeyWithIndex
- * @throws { Error } Will throw an Error if( arguments.length > 2 ) or (src) is not an Object.
- * @memberof wTools
- */
-
-function mapKeyWithIndex( src,index )
-{
-
-   _.assert( arguments.length === 2 );
-   _.assert( !_.primitiveIs( src ) );
-
-  if( index < 0 ) return;
-
-  var i = 0;
-  for( var s in src )
-  {
-    if( i == index ) return s;
-    i++;
-  }
-
-}
-
-//
-
-function mapIndexWithKey( srcMap,key )
-{
-
- _.assert( arguments.length === 2 );
- _.assert( !_.primitiveIs( src ) );
-
-  for( var s in srcMap )
-  {
-    if( s === key )
-    return s;
-  }
-
-  return;
-}
-
-//
-
-function mapIndexWithValue( srcMap,value )
-{
-
- _.assert( arguments.length === 2 );
- _.assert( !_.primitiveIs( src ) );
-
-  for( var s in srcMap )
-  {
-    if( srcMap[ s ] === value )
-    return s;
-  }
-
-  return;
 }
 
 //
@@ -15393,16 +15321,16 @@ function mapIndexWithValue( srcMap,value )
  * // returns [ '0', [ 'a', 7 ] ]
  * _.mapFirstPair( [ [ 'a', 7 ] ] );
  *
- * @returns { Array } Returns pair [ key, value ] as array if (srcMap) has fields, otherwise, undefined.
+ * @returns { Array } Returns pair [ key, value ] as array if {-srcMap-} has fields, otherwise, undefined.
  * @function mapFirstPair
- * @throws { Error } Will throw an Error if (arguments.length) less than one, if (srcMap) is not an object-like.
+ * @throws { Error } Will throw an Error if (arguments.length) less than one, if {-srcMap-} is not an object-like.
  * @memberof wTools
  */
 
 function mapFirstPair( srcMap )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.objectLike( srcMap ) );
 
   for( var s in srcMap )
@@ -15411,6 +15339,133 @@ function mapFirstPair( srcMap )
   }
 
   return [];
+}
+
+//
+
+/**
+ * The mapValWithIndex() returns value of {-srcMap-} by corresponding (index).
+ *
+ * It takes {-srcMap-} and (index), creates a variable ( i = 0 ),
+ * checks if ( index > 0 ), iterate over {-srcMap-} object-like and match
+ * if ( i == index ).
+ * If true, it returns value of {-srcMap-}.
+ * Otherwise it increment ( i++ ) and iterate over {-srcMap-} until it doesn't match index.
+ *
+ * @param { objectLike } srcMap - An object-like.
+ * @param { number } index - To find the position an element.
+ *
+ * @example
+ * // returns 7
+ * _.mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
+ *
+ * @returns { * } Returns value of {-srcMap-} by corresponding (index).
+ * @function mapValWithIndex
+ * @throws { Error } Will throw an Error if( arguments.length > 2 ) or {-srcMap-} is not an Object.
+ * @memberof wTools
+ */
+
+function mapValWithIndex( srcMap,index )
+{
+
+ _.assert( arguments.length === 2, 'expects exactly two argument' );
+ _.assert( !_.primitiveIs( srcMap ) );
+
+  if( index < 0 ) return;
+
+  var i = 0;
+  for( var s in srcMap )
+  {
+    if( i == index ) return srcMap[s];
+    i++;
+  }
+}
+
+//
+
+/**
+ * The mapKeyWithIndex() returns key of {-srcMap-} by corresponding (index).
+ *
+ * It takes {-srcMap-} and (index), creates a variable ( i = 0 ),
+ * checks if ( index > 0 ), iterate over {-srcMap-} object-like and match
+ * if ( i == index ).
+ * If true, it returns value of {-srcMap-}.
+ * Otherwise it increment ( i++ ) and iterate over {-srcMap-} until it doesn't match index.
+ *
+ * @param { objectLike } srcMap - An object-like.
+ * @param { number } index - To find the position an element.
+ *
+ * @example
+ * // returns '1'
+ * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
+ *
+ * @returns { string } Returns key of {-srcMap-} by corresponding (index).
+ * @function mapKeyWithIndex
+ * @throws { Error } Will throw an Error if( arguments.length > 2 ) or {-srcMap-} is not an Object.
+ * @memberof wTools
+ */
+
+function mapKeyWithIndex( srcMap, index )
+{
+
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  if( index < 0 )
+  return;
+
+  var i = 0;
+  for( var s in srcMap )
+  {
+    if( i == index ) return s;
+    i++;
+  }
+
+}
+
+//
+
+function mapKeyWithValue( srcMap, value )
+{
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( !_.primitiveIs( srcMap ) );
+
+
+
+}
+
+//
+
+function mapIndexWithKey( srcMap, key )
+{
+
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  for( var s in srcMap )
+  {
+    if( s === key )
+    return s;
+  }
+
+  return;
+}
+
+//
+
+function mapIndexWithValue( srcMap,value )
+{
+
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  for( var s in srcMap )
+  {
+    if( srcMap[ s ] === value )
+    return s;
+  }
+
+  return;
 }
 
 // --
@@ -15422,8 +15477,8 @@ function mapFirstPair( srcMap )
  *
  * Takes any number of objects.
  * Returns new object filled by unique keys
- * from the first (srcMap) original object.
- * Values for result object come from original object (srcMap)
+ * from the first {-srcMap-} original object.
+ * Values for result object come from original object {-srcMap-}
  * not from second or other one.
  * If the first object has same key any other object has
  * then this pair( key/value ) will not be included into result object.
@@ -15435,21 +15490,22 @@ function mapFirstPair( srcMap )
  *
  * @example
  * // returns { c : 3 }
- * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+ * mapButWithoutUndefines( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  *
  * @throws { Error }
  *  In debug mode it throws an error if any argument is not object like.
  * @returns { object } Returns new object made by unique keys.
- * @function mapBut
+ * @function mapButWithoutUndefines
  * @memberof wTools
  */
 
-function mapBut( srcMap )
+function mapButWithoutUndefines( srcMap )
 {
   var result = Object.create( null );
   var a,k;
 
-  _.assert( _.objectLikeOrRoutine( srcMap ),'mapBut :','expects object as argument' );
+  _.assert( arguments.length >= 2 );
+  _.assert( !_.primitiveIs( srcMap ), 'expects object as argument' );
 
   for( k in srcMap )
   {
@@ -15458,7 +15514,7 @@ function mapBut( srcMap )
     {
       var argument = arguments[ a ];
 
-      _.assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
+      _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
       if( argument[ k ] !== undefined )
@@ -15481,7 +15537,8 @@ function mapButWithUndefines( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _.assert( _.objectLikeOrRoutine( srcMap ),'mapBut :','expects object as argument' );
+  _.assert( arguments.length >= 2 );
+  _.assert( !_.primitiveIs( srcMap ),'mapBut :','expects object as argument' );
 
   for( k in srcMap )
   {
@@ -15489,7 +15546,7 @@ function mapButWithUndefines( srcMap )
     {
       var argument = arguments[ a ];
 
-      _.assert( _.objectLike( argument ),'argument','#'+a,'is not object' );
+      _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
 
       if( k in argument )
       break;
@@ -15511,10 +15568,10 @@ function mapButWithUndefines( srcMap )
  *
  * Takes any number of objects.
  * Returns new object filled by unique own keys
- * from the first (srcMap) original object.
- * Values for (result) object come from original object (srcMap)
+ * from the first {-srcMap-} original object.
+ * Values for (result) object come from original object {-srcMap-}
  * not from second or other one.
- * If (srcMap) does not have own properties it skips rest of code and checks another properties.
+ * If {-srcMap-} does not have own properties it skips rest of code and checks another properties.
  * If the first object has same key any other object has
  * then this pair( key/value ) will not be included into result object.
  * Otherwise pair( key/value ) from the first object goes into result object.
@@ -15528,7 +15585,7 @@ function mapButWithUndefines( srcMap )
  *
  * @returns { object } Returns new (result) object with unique own keys.
  * @function mapOwnBut
- * @throws { Error } Will throw an Error if (srcMap) is not an object.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an object.
  * @memberof wTools
  */
 
@@ -15537,7 +15594,8 @@ function mapOwnBut( srcMap )
   var result = Object.create( null );
   var a,k;
 
-  _.assert( _.objectLikeOrRoutine( srcMap ),'mapOwnBut :','expects object as argument' );
+  _.assert( arguments.length >= 2 );
+  _.assert( !_.primitiveIs( srcMap ),'expects object as argument' );
 
   for( k in srcMap )
   {
@@ -15570,11 +15628,11 @@ function mapOwnBut( srcMap )
  * then this pair [ key, value ] will not be included into (result) object.
  * Otherwise,
  * it calls a provided callback function( _.field.mapper.primitive )
- * once for each key in the (srcMap), and adds to the (result) object
+ * once for each key in the {-srcMap-}, and adds to the (result) object
  * all the [ key, value ],
  * if values are not equal to the array or object.
  *
- * @param { function } filter.primitive() - Callback function to test each [ key, value ] of the (srcMap) object.
+ * @param { function } filter.primitive() - Callback function to test each [ key, value ] of the {-srcMap-} object.
  * @param { objectLike } srcMap - The target object.
  * @param { ...objectLike } arguments[] - The next objects.
  *
@@ -15584,7 +15642,7 @@ function mapOwnBut( srcMap )
  *
  * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
  * @function mapButConditional
- * @throws { Error } Will throw an Error if (srcMap) is not an object.
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an object.
  * @memberof wTools
  */
 
@@ -15657,7 +15715,7 @@ function mapOwnButConditional( filter,srcMap )
 //
 // /**
 //  * The mapScreens() returns an object filled by unique [ key, value ]
-//  * from (srcMap) object.
+//  * from {-srcMap-} object.
 //  *
 //  * It creates the variable (dstMap) assignes and calls the routine (_mapScreen( { } ) )
 //  * with three properties.
@@ -15672,7 +15730,7 @@ function mapOwnButConditional( filter,srcMap )
 //  * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 //  *
 //  * @returns { Object } Returns an (dstMap) object filled by unique [ key, value ]
-//  * from (srcMap) objects.
+//  * from {-srcMap-} objects.
 //  * @function mapScreens
 //  * @throws { Error } Will throw an Error if (arguments.length) more that two,
 //  * if (srcMap or screenMap) are not objects-like.
@@ -15737,7 +15795,7 @@ function mapOwnButConditional( filter,srcMap )
 function mapScreen( screenMaps, srcMaps )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   return _mapScreen
   ({
@@ -15753,7 +15811,7 @@ function mapScreen( screenMaps, srcMaps )
 function mapScreenOwn( screenMaps, srcMaps )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   return _mapScreen
   ({
@@ -15770,7 +15828,7 @@ function mapScreenOwn( screenMaps, srcMaps )
 function mapScreenComplementing( screenMaps, srcMaps )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
 
   return _mapScreen
   ({
@@ -15847,7 +15905,7 @@ function _mapScreen( o )
   o.filter = _.field.mapper.bypass;
 
   _.assert( o.filter.functionFamily === 'field-mapper' );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.objectLike( dstMap ),'_mapScreen :','expects object as (-dstMap-)' );
   _.assert( _.objectLike( screenMap ),'_mapScreen :','expects object as screenMap' );
   _.assert( _.arrayIs( srcMaps ),'_mapScreen :','expects array of object as screenMap' );
@@ -15886,75 +15944,12 @@ _mapScreen.defaults =
 //
 
 /**
- * Checks if map passed by argument( src ) not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
- * If routine found undefined property it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed after first argument.
- *
- * @param {Object} src - source map.
- * @param {String} [ msgs ] - error message for generated exception.
- *
- * @example
- * var map = { a : '1', b : undefined };
- * wTools.assertMapHasNoUndefine( map );
- *
- * // caught <anonymous>:2:8
- * // Object  should have no undefines, but has : b
- * //
- * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
- * // at <anonymous>:2
- *
- * @example
- * var map = { a : undefined, b : '1' };
- * wTools.assertMapHasNoUndefine( map, '"map"');
- *
- * // caught <anonymous>:2:8
- * // Object "map" should have no undefines, but has : a
- * //
- * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
- * // at <anonymous>:2
- *
- * @function assertMapHasNoUndefine
- * @throws {Exception} If no arguments provided.
- * @throws {Exception} If map( src ) contains undefined property.
- * @memberof wTools
- *
- */
-
-function assertMapHasNoUndefine( src )
-{
-
-  if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 )
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-
-  for( var s in src )
-  if( src[ s ] === undefined )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
-      level : 2,
-    });
-  }
-
-}
-
-//
-
-/**
- * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
- * @param {Object} src - source map.
+ * @param {Object} srcMap - source map.
  * @param {...Object} target - object(s) to compare with.
  * @param {String} [ msgs ] - error message as last argument.
  *
@@ -15984,12 +15979,12 @@ function assertMapHasNoUndefine( src )
  * // at <anonymous>:4
  *
  * @function assertMapHasOnly
- * @throws {Exception} If map( src ) contains unique property.
+ * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
  */
 
-function assertMapHasOnly( src )
+function assertMapHasOnly( srcMap )
 {
 
   if( Config.debug === false )
@@ -16016,40 +16011,13 @@ function assertMapHasOnly( src )
 
 //
 
-function assertMapHasOnlyWithUndefines( src )
-{
-
-  if( Config.debug === false )
-  return;
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var but = Object.keys( _.mapButWithUndefines.apply( this,args ) );
-
-  if( but.length > 0 )
-  {
-    if( _.strJoin && !hasMsg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
-
-//
-
 /**
- * Checks if map passed by argument( src ) has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
+ * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
  * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
- * @param {Object} src - source map.
+ * @param {Object} srcMap - source map.
  * @param {...Object} target - object(s) to compare with.
  * @param {String} [ msgs ] - error message as last argument.
  *
@@ -16086,12 +16054,12 @@ function assertMapHasOnlyWithUndefines( src )
  * // at <anonymous>:4
  *
  * @function assertMapOwnOnly
- * @throws {Exception} If map( src ) contains unique property.
+ * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
  */
 
-function assertMapOwnOnly( src )
+function assertMapOwnOnly( srcMap )
 {
 
   if( Config.debug === false )
@@ -16118,13 +16086,40 @@ function assertMapOwnOnly( src )
 
 //
 
+function assertMapHasOnlyWithUndefines( srcMap )
+{
+
+  if( Config.debug === false )
+  return;
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+  var but = Object.keys( _.mapButWithUndefines.apply( this,args ) );
+
+  if( but.length > 0 )
+  {
+    if( _.strJoin && !hasMsg )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
 /**
- * Checks if map passed by argument( src ) has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
- * @param {Object} src - source map.
+ * @param {Object} srcMap - source map.
  * @param {...Object} target - object(s) to compare with.
  * @param {String} [ msg ] - error message as last argument.
  *
@@ -16155,16 +16150,16 @@ function assertMapOwnOnly( src )
  * // error msg Object should have no fields : x,y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4518)
+ * // at assertMapHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
  * @function assertMapHasNone
- * @throws {Exception} If map( src ) contains some properties from other map(s).
+ * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
  * @memberof wTools
  *
  */
 
-function assertMapHasNone( src )
+function assertMapHasNone( srcMap )
 {
 
   if( Config.debug === false )
@@ -16173,7 +16168,7 @@ function assertMapHasNone( src )
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
   var screens = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
-  var none = _.mapScreen( screens, src );
+  var none = _.mapScreen( screens, srcMap );
 
   var keys = Object.keys( none );
   if( keys.length )
@@ -16190,7 +16185,7 @@ function assertMapHasNone( src )
 
 //
 
-function assertMapOwnNone( src,none )
+function assertMapOwnNone( srcMap,none )
 {
 
   if( Config.debug === false )
@@ -16206,14 +16201,7 @@ function assertMapOwnNone( src,none )
     none = _.mapMake.apply( this,args );
   }
 
-  var has = Object.keys( _.mapScreenOwn( none, src ) );
-
-  // var has = Object.keys( _._mapScreen
-  // ({
-  //   filter : _.field.mapper.srcOwn,
-  //   screenMaps : none,
-  //   srcMaps : src,
-  // }));
+  var has = Object.keys( _.mapScreenOwn( none, srcMap ) );
 
   if( has.length )
   {
@@ -16230,12 +16218,12 @@ function assertMapOwnNone( src,none )
 //
 
 /**
- * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks all enumerable properties.
+ * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
- * @param {Object} src - source map.
+ * @param {Object} srcMap - source map.
  * @param {Object} all - object to compare with.
  * @param {String} [ msgs ] - error message.
  *
@@ -16270,12 +16258,12 @@ function assertMapOwnNone( src,none )
  * // at <anonymous>:3
  *
  * @function assertMapHasAll
- * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+ * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
  */
 
-function assertMapHasAll( src,all,msg )
+function assertMapHasAll( srcMap, all, msg )
 {
 
   if( Config.debug === false )
@@ -16286,7 +16274,7 @@ function assertMapHasAll( src,all,msg )
 
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var but = Object.keys( _.mapBut( all,src ) );
+  var but = Object.keys( _.mapBut( all,srcMap ) );
 
   if( but.length > 0 )
   {
@@ -16303,12 +16291,12 @@ function assertMapHasAll( src,all,msg )
 //
 
 /**
- * Checks if map passed by argument( src ) has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
+ * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
  * Works only in Config.debug mode. Uses StackTrace level 2. @see wTools.err
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
- * @param {Object} src - source map.
+ * @param {Object} srcMap - source map.
  * @param {Object} all - object to compare with.
  * @param {String} [ msgs ] - error message.
  *
@@ -16342,12 +16330,12 @@ function assertMapHasAll( src,all,msg )
  * // at <anonymous>:3
  *
  * @function assertMapOwnAll
- * @throws {Exception} If map( src ) not contains some properties from argument( all ).
+ * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
  */
 
-function assertMapOwnAll( src,all,msg )
+function assertMapOwnAll( srcMap, all, msg )
 {
 
   if( Config.debug === false )
@@ -16358,14 +16346,104 @@ function assertMapOwnAll( src,all,msg )
 
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var but = Object.keys( _.mapOwnBut( all,src ) );
+  var but = Object.keys( _.mapOwnBut( all,srcMap ) );
 
   if( but.length > 0 )
   {
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have own fields :',but.join( ',' ) ],
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should own all fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+function assertMapHasAllWithUndefines( srcMap, all, msg )
+{
+
+  if( Config.debug === false )
+  return;
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+  var but = Object.keys( _.mapButWithUndefines( all,srcMap ) );
+
+  if( but.length > 0 )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have all fields :',but.join( ',' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found undefined property it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed after first argument.
+ *
+ * @param {Object} srcMap - source map.
+ * @param {String} [ msgs ] - error message for generated exception.
+ *
+ * @example
+ * var map = { a : '1', b : undefined };
+ * wTools.assertMapHasNoUndefine( map );
+ *
+ * // caught <anonymous>:2:8
+ * // Object  should have no undefines, but has : b
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * var map = { a : undefined, b : '1' };
+ * wTools.assertMapHasNoUndefine( map, '"map"');
+ *
+ * // caught <anonymous>:2:8
+ * // Object "map" should have no undefines, but has : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @function assertMapHasNoUndefine
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If map {-srcMap-} contains undefined property.
+ * @memberof wTools
+ *
+ */
+
+function assertMapHasNoUndefine( srcMap )
+{
+
+  if( Config.debug === false )
+  return;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 )
+
+  var l = arguments.length;
+  var hasMsg = _.strIs( arguments[ l-1 ] );
+
+  for( var s in srcMap )
+  if( srcMap[ s ] === undefined )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
       level : 2,
     });
   }
@@ -16413,6 +16491,7 @@ Error.stackTraceLimit = Infinity;
 var Later =
 {
   regexpsEscape : [ _, routineVectorize_functor, regexpEscape ],
+  timeNow : [ _, _timeNow_functor ]
 }
 
 var Vars =
@@ -16510,9 +16589,8 @@ var Routines =
   containerIs : containerIs,
   containerLike : containerLike,
 
-  argumentsIs : argumentsIs,
+  argumentsArrayIs : argumentsArrayIs,
   symbolIs : symbolIs,
-  dateIs : dateIs,
 
   vectorIs : vectorIs,
   constructorIsVector : constructorIsVector,
@@ -16547,6 +16625,7 @@ var Routines =
   _routineJoin : _routineJoin,
   routineJoin : routineJoin,
   routineSeal : routineSeal,
+
   routineDelayed : routineDelayed,
 
   routineCall : routineCall,
@@ -16559,12 +16638,16 @@ var Routines =
   methodsCall : methodsCall,
 
   routinesCompose : routinesCompose,
+  routinesComposeReturningLast : routinesComposeReturningLast,
   routinesComposeWhile : routinesComposeWhile,
 
-  assertRoutineOptions : assertRoutineOptions,
   routineOptions : routineOptions,
+  assertRoutineOptions : assertRoutineOptions,
   routineOptionsWithUndefines : routineOptionsWithUndefines,
+  assertRoutineOptionsWithUndefines : assertRoutineOptionsWithUndefines,
   routineOptionsFromThis : routineOptionsFromThis,
+
+  routineSupplement : routineSupplement,
 
   routineVectorize_functor : routineVectorize_functor,
 
@@ -16587,11 +16670,11 @@ var Routines =
   numberIsInfinite : numberIsInfinite,
   numberIsInt : numberIsInt,
 
+  numbersAreIdentical : numbersAreIdentical,
   numbersAreEquivalent : numbersAreEquivalent,
   numbersAreFinite : numbersAreFinite,
   numbersArePositive : numbersArePositive,
   numbersAreInt : numbersAreInt,
-  numbersAreIdentical : numbersAreIdentical,
 
   numberInRange : numberInRange,
 
@@ -16668,6 +16751,9 @@ var Routines =
 
   // time
 
+  dateIs : dateIs,
+  datesAreIdentical : datesAreIdentical,
+
   timeReady : timeReady,
   timeReadyJoin : timeReadyJoin,
   timeOnce : timeOnce,
@@ -16678,6 +16764,8 @@ var Routines =
   timePeriodic : timePeriodic, /* dubious */
 
   _timeNow_functor : _timeNow_functor,
+  timeNow : null,
+
   timeSpent : timeSpent,
   dateToStr : dateToStr,
 
@@ -16690,6 +16778,14 @@ var Routines =
   bufferAnyIs : bufferAnyIs,
   bufferBytesIs : bufferBytesIs,
   constructorIsBuffer : constructorIsBuffer,
+
+  buffersTypedAreEquivalent : buffersTypedAreEquivalent,
+  buffersTypedAreIdentical : buffersTypedAreIdentical,
+  buffersRawAreIdentical : buffersRawAreIdentical,
+  buffersViewAreIdentical : buffersViewAreIdentical,
+  buffersNodeAreIdentical : buffersNodeAreIdentical,
+  buffersAreEquivalent : buffersAreEquivalent,
+  buffersAreIdentical : buffersAreIdentical,
 
   bufferRelen : bufferRelen,
   bufferResize : bufferResize,
@@ -16941,6 +17037,7 @@ var Routines =
   mapSatisfy : mapSatisfy,
   _mapSatisfy : _mapSatisfy,
 
+  mapHas : mapHasKey,
   mapHasKey : mapHasKey,
   mapOwnKey : mapOwnKey,
   mapHasVal : mapHasVal,
@@ -17054,18 +17151,21 @@ var Routines =
   mapAllFields : mapAllFields,
 
   mapOnlyPrimitives : mapOnlyPrimitives,
+  mapFirstPair : mapFirstPair,
 
   mapValWithIndex : mapValWithIndex,
   mapKeyWithIndex : mapKeyWithIndex,
+  mapKeyWithValue : mapKeyWithValue,
   mapIndexWithKey : mapIndexWithKey,
   mapIndexWithValue : mapIndexWithValue,
 
-  mapFirstPair : mapFirstPair,
 
   // map logic
 
-  mapBut : mapBut, /* experimental */
+  mapButWithoutUndefines : mapButWithoutUndefines, /* experimental */
   mapButWithUndefines : mapButWithUndefines, /* experimental */
+
+  mapBut : mapButWithUndefines, /* experimental */
   mapOwnBut : mapOwnBut, /* experimental */
 
   mapButConditional : mapButConditional, /* experimental */
@@ -17078,14 +17178,18 @@ var Routines =
 
   // map assert
 
-  assertMapHasNoUndefine : assertMapHasNoUndefine,
   assertMapHasOnly : assertMapHasOnly,
-  assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
   assertMapOwnOnly : assertMapOwnOnly,
+  assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
+
   assertMapHasNone : assertMapHasNone,
   assertMapOwnNone : assertMapOwnNone,
+
   assertMapHasAll : assertMapHasAll,
   assertMapOwnAll : assertMapOwnAll,
+  assertMapHasAllWithUndefines : assertMapHasAllWithUndefines,
+
+  assertMapHasNoUndefine : assertMapHasNoUndefine,
 
 }
 
@@ -17098,12 +17202,12 @@ Object.assign( Self, Vars );
 // export
 // --
 
-_global_[ 'wTools' ] = Self;
-_global_.wTools = Self;
-_global_.wBase = Self;
+_global[ 'wTools' ] = Self;
+_global.wTools = Self;
+_global.wBase = Self;
 
 if( typeof module !== 'undefined' )
-if( _global_.WTOOLS_PRIVATE )
+if( _global.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )

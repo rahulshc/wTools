@@ -22,7 +22,7 @@ if( typeof module !== 'undefined' )
     require( toolsPath );
   }
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
@@ -62,16 +62,16 @@ function promiseIs( test )
 {
   test.description = 'check if entity is a Promise';
 
-  test.shouldBe( !_.promiseIs() );
-  test.shouldBe( !_.promiseIs( {} ) );
+  test.is( !_.promiseIs() );
+  test.is( !_.promiseIs( {} ) );
 
   var _Promise = function Promise(){};
-  test.shouldBe( !_.promiseIs( new _Promise() ) );
+  test.is( !_.promiseIs( new _Promise() ) );
 
-  test.shouldBe( _.promiseIs( Promise.resolve( 0 ) ) );
+  test.is( _.promiseIs( Promise.resolve( 0 ) ) );
 
   var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
-  test.shouldBe( _.promiseIs( promise ) );
+  test.is( _.promiseIs( promise ) );
 }
 
 //
@@ -83,18 +83,18 @@ function consequenceLike( test )
   if( !_.consequenceLike )
   return test.identical( true,true );
 
-  test.shouldBe( !_.consequenceLike() );
-  test.shouldBe( !_.consequenceLike( {} ) );
+  test.is( !_.consequenceLike() );
+  test.is( !_.consequenceLike( {} ) );
   if( _.Consequence )
   {
-    test.shouldBe( _.consequenceLike( new _.Consequence() ) );
-    test.shouldBe( _.consequenceLike( _.Consequence() ) );
+    test.is( _.consequenceLike( new _.Consequence() ) );
+    test.is( _.consequenceLike( _.Consequence() ) );
   }
-  test.shouldBe( _.consequenceLike( Promise.resolve( 0 ) ) );
+  test.is( _.consequenceLike( Promise.resolve( 0 ) ) );
 
   var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
-  test.shouldBe( _.consequenceLike( promise ) );
-  test.shouldBe( _.consequenceLike( wConsequence.from( promise ) ) );
+  test.is( _.consequenceLike( promise ) );
+  test.is( _.consequenceLike( wConsequence.from( promise ) ) );
 
 }
 
@@ -103,9 +103,8 @@ function consequenceLike( test )
 var Self =
 {
 
-  name : 'wTools/Typing',
+  name : 'Tools/base/laye1/Typing',
   silencing : 1,
-  // verbosity : 9,
 
   tests :
   {

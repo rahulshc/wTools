@@ -11,7 +11,7 @@ var Self = _global_.wTools;
 function _arrayNameSpaceApplyTo( dst,def )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two argument' );
   _.assert( !_.mapOwnKey( dst,'withArray' ) );
   _.assert( !_.mapOwnKey( dst,'array' ) );
   _.assert( ArrayNameSpaces[ def ] );
@@ -92,7 +92,7 @@ function makeArrayOfLengthZeroed( length )
 function arrayFromCoercing( src )
 {
   _.assert( _.arrayLike( src ) );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
   if( src.constructor === this.array.ArrayType )
   return src;
