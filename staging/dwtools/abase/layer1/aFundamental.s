@@ -3270,7 +3270,15 @@ function routinesComposeReturningLast()
 {
   var routine = _.routinesCompose.apply( this, arguments );
 
-  function returnLast()
+  if( arguments.length === 0 )
+  return function empty()
+  {
+  }
+  else if( arguments.length === 1 )
+  {
+    return arguments[ 0 ];
+  }
+  else return function returnLast()
   {
     var result = routine.apply( this, arguments );
     return result[ result.length-1 ];
