@@ -3305,7 +3305,7 @@ function _routinesComposeReturningLast_body( o )
 
   return function returnLast()
   {
-    var result = routine.apply( this, o.srcs );
+    var result = routine.apply( this, arguments );
     return result[ result.length-1 ];
   }
 

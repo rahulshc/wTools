@@ -1096,8 +1096,9 @@ function entityIdenticalCycledWithOptions( test )
   debugger;
   test.identical( got, expected );
   debugger;
-  test.identical( onUpPaths, [] );
-  test.identical( onDownPaths, [] );
+  test.identical( onUpPaths, [ '/', '/0', '/1' ] );
+  test.identical( onDownPaths, [ '/0', '/1', '/' ] );
+  debugger;
 
   return;
 
