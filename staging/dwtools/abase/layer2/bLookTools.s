@@ -106,7 +106,7 @@ function _lookIterationSelect( k )
 {
   var it = this;
 
-  _.assert( arguments.length === 1, 'expects exactly two argument' );
+  _.assert( arguments.length === 1, 'expects exactly two arguments' );
   _.assert( it.level >= 0 );
   _.assert( it.down );
 
@@ -356,7 +356,7 @@ function _look_pre( routine, args )
 
   _.routineOptionsWithUndefines( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( o.onUp === null || o.onUp.length === 0 || o.onUp.length === 3, 'onUp should expects exactly three arguments' );
   _.assert( o.onDown === null || o.onDown.length === 0 || o.onDown.length === 3, 'onUp should expects exactly three arguments' );
 
@@ -1278,7 +1278,7 @@ function _entitySelectAct( it,iterator )
 
   _.assert( Object.keys( iterator ).length === 7 );
   _.assert( Object.keys( it ).length === 3 );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.primitiveIs( container ) )
   {
@@ -2091,7 +2091,7 @@ function _entityEqual_pre( routine, args )
 {
 
   _.assert( args.length === 2 || args.length === 3 );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   var o = _.routineOptionsWithUndefines( routine, args[ 2 ] || Object.create( null ) );
   var accuracy = o.accuracy;

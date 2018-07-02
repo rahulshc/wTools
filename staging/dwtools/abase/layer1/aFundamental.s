@@ -243,7 +243,7 @@ function dup( ins,times,result )
 function enityExtend( dst,src )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.objectIs( src ) || _.arrayLike( src ) )
   {
@@ -269,7 +269,7 @@ function enityExtend( dst,src )
 function enityExtendAppending( dst,src )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.objectIs( src ) )
   {
@@ -605,7 +605,7 @@ function entityAssignField( dstContainer,srcValue,name,onRecursive )
 function entityCoerceTo( src,ins )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.numberIs( ins ) )
   {
@@ -881,7 +881,7 @@ function entitySize( src )
 function entityValueWithIndex( src,index )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.numberIs( index ) );
 
   if( _.arrayIs( src ) )
@@ -936,7 +936,7 @@ function entityKeyWithValue( src,value )
 {
   var result = null;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.arrayIs( src ) )
   {
@@ -994,7 +994,7 @@ function _entityConditionMake( condition,levels )
 {
   var result;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
 
   if( _.objectIs( condition ) )
@@ -1076,7 +1076,7 @@ function _entityConditionMake( condition,levels )
 function entityMap( src,onEach )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectLike( src ) || _.arrayLike( src ) );
   _.assert( _.routineIs( onEach ) );
 
@@ -1184,7 +1184,7 @@ _entityFilter.defaults =
 
 function entityFilter( src,onEach )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return _entityFilter
   ({
     src : src,
@@ -1197,7 +1197,7 @@ function entityFilter( src,onEach )
 
 function entityFilterDeep( src,onEach )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return _entityFilter
   ({
     src : src,
@@ -3829,7 +3829,7 @@ function numberIsInt( src )
 
 function numbersAreIdentical( src1, src2 )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return Object.is( src1, src2 );
 }
 
@@ -3904,7 +3904,7 @@ function numbersAreInt( src )
 
 function numberInRange( n,range )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( range.length === 2 );
   return range[ 0 ] <= n && n <= range[ 1 ];
 }
@@ -4041,7 +4041,7 @@ function numbersMake( src,length )
   if( _.vectorIs( src ) )
   src = _.vector.slice( src );
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.numberIs( src ) || _.arrayIs( src ) );
 
   if( _.arrayIs( src ) )
@@ -4069,7 +4069,7 @@ function numbersFromNumber( src,length )
   if( _.vectorIs( src ) )
   src = _.vector.slice( src );
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.numberIs( src ) || _.arrayIs( src ) );
 
   if( _.arrayIs( src ) )
@@ -4087,7 +4087,7 @@ function numbersFromNumber( src,length )
 
 // {
 //
-//   _.assert( arguments.length === 2, 'expects exactly two argument' );
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 //   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
 //   _.assert( length >= 0 );
 //
@@ -4110,7 +4110,7 @@ function numbersFromNumber( src,length )
 function numbersFromInt( dst,length )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.numberIsInt( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
   _.assert( length >= 0 );
 
@@ -4375,7 +4375,7 @@ function _strBegins( src,begin )
 {
 
   _.assert( _.strIs( src ),'expects string' );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( begin ) )
   {
@@ -4420,7 +4420,7 @@ function strBegins( src,begin )
 
   _.assert( _.strIs( src ),'expects string {-src-}' );
   _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   begin = _.arrayAs( begin );
 
@@ -4458,7 +4458,7 @@ function strEnds( src,end )
 
   _.assert( _.strIs( src ), 'expects string {-src-}' );
   _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings' );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( end ) )
   end = [ end ];
@@ -4499,7 +4499,7 @@ function strBeginOf( src,end )
 
   _.assert( _.strIs( src ),'expects string ( src )' );
   _.assert( _.strIs( end ) || _.arrayLike( end ),'expects string/array of strings ( end )' );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( end ) )
   end = [ end ];
@@ -4545,7 +4545,7 @@ function strEndOf( src,begin )
 
   _.assert( _.strIs( src ),'expects string ( src )' );
   _.assert( _.strIs( begin ) || _.arrayLike( begin ),'expects string/array of strings ( begin )' );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( begin ) )
   begin = [ begin ];
@@ -4687,7 +4687,7 @@ function regexpsLike( srcs )
 
 function regexpsAreIdentical( src1,src2 )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
   return false;
@@ -5228,7 +5228,7 @@ function dateIs( src )
 
 function datesAreIdentical( src1, src2 )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( !_.dateIs( src1 ) )
   return false;
@@ -5597,7 +5597,7 @@ function timePeriodic( delay,onReady )
   var con = new _.Consequence();
   var id;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   // if( arguments.length > 2 )
   // {
@@ -5908,7 +5908,7 @@ function buffersAreEquivalent( src1, src2, accuracy )
 function buffersAreIdentical( src1, src2 )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   var t1 = _ObjectToString.call( src1 );
   var t2 = _ObjectToString.call( src2 );
@@ -5967,7 +5967,7 @@ function bufferRelen( src,len )
 {
 
   _.assert( _.bufferTypedIs( src ) );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.numberIs( len ) );
 
   var result = src;
@@ -7033,7 +7033,7 @@ function hasLength( src )
 
 function arrayCompare( src1,src2 )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( src1 ) && _.arrayLike( src2 ) );
   _.assert( src2.length >= src1.length );
 
@@ -7071,7 +7071,7 @@ function arrayCompare( src1,src2 )
 
 function arrayIdentical( src1,src2 )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( src1 ) );
   _.assert( _.arrayLike( src2 ) );
 
@@ -7308,7 +7308,7 @@ function arrayMakeSimilar( ins,src )
   var result, length;
 
   if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( src === undefined )
   {
@@ -7370,7 +7370,7 @@ function arrayMakeSimilarZeroed( ins,src )
   var result, length;
 
   if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( src === undefined )
   {
@@ -7556,7 +7556,7 @@ arrayMakeRandom.defaults =
 function arrayFromNumber( dst,length )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
   _.assert( length >= 0 );
 
@@ -7678,7 +7678,7 @@ function arrayFromProgressionArithmetic( progression, numberOfSteps )
 
   debugger;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( progression ) )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
@@ -7705,7 +7705,7 @@ function arrayFromRangeWithStep( range,step )
 {
   var result;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
@@ -7763,7 +7763,7 @@ function arrayFromRangeWithStep( range,step )
 function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
@@ -8607,7 +8607,7 @@ function arrayMask( srcArray, mask )
   var atomsPerElement = mask.length;
   var length = srcArray.length / atomsPerElement;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( srcArray ),'arrayMask :','expects array-like as srcArray' );
   _.assert( _.arrayLike( mask ),'arrayMask :','expects array-like as mask' );
   _.assert
@@ -8835,7 +8835,7 @@ function arraySelect( srcArray,indicesArray )
     indicesArray = indicesArray.indices;
   }
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.bufferTypedIs( srcArray ) || _.arrayIs( srcArray ) );
   _.assert( _.bufferTypedIs( indicesArray ) || _.arrayIs( indicesArray ) );
 
@@ -9826,7 +9826,7 @@ function arrayCount( src,instance )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( src ),'arrayCount :','expects ArrayLike' );
 
   var index = src.indexOf( instance );
@@ -10394,7 +10394,7 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
 function arrayPrependedArray( dstArray, insArray )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayPrependedArray :','expects arrayLike' );
 
@@ -10624,7 +10624,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 
 function arrayPrependedArrays( dstArray, insArray )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayPrependedArrays :','expects arrayLike entity' );
 
@@ -10951,7 +10951,7 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
 function arrayAppendedArrays( dstArray, insArray )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayIs( dstArray ),'arrayAppendedArrays :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayAppendedArrays :','expects arrayLike entity' );
 
@@ -11308,7 +11308,7 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
 function arrayRemovedArrays( dstArray, insArray )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','expects array' );
   _.assert( _.arrayLike( insArray ),'arrayRemovedArrays :','expects arrayLike entity' );
 
@@ -11548,7 +11548,7 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattened( dstArray, insArray )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
   _.assert( _.arrayLike( insArray ) );
@@ -11904,7 +11904,7 @@ function arraySetDiff( src1, src2 )
 {
   var result = [];
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( src1 ) );
   _.assert( _.arrayLike( src2 ) );
 
@@ -12269,7 +12269,7 @@ function arraySetContainNone( src )
 function arraySetIdentical( ins1,ins2 )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( ins1 ) );
   _.assert( _.arrayLike( ins2 ) );
 
@@ -12545,7 +12545,7 @@ function mapLike( src )
 function mapIdentical( src1,src2 )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectLike( src1 ) );
   _.assert( _.objectLike( src2 ) );
 
@@ -12594,7 +12594,7 @@ function mapIdentical( src1,src2 )
 
 function mapContain( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
 /*
   if( Object.keys( src ).length < Object.keys( ins ).length )
@@ -12750,7 +12750,7 @@ function _mapSatisfy( template,src,root,levels )
 function mapHasKey( object,key )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( key ) )
   return ( key in object );
@@ -12799,7 +12799,7 @@ function mapOwnKey( object,key )
   //   return result;
   // }
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( key ) )
   return _hasOwnProperty.call( object, key );
@@ -12855,7 +12855,7 @@ function mapOwnVal( object,val )
 
 function mapHasAll( src,screen )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectLike( src ) );
   _.assert( _.objectLike( screen ) );
 
@@ -12899,7 +12899,7 @@ function mapHasAll( src,screen )
 
 function mapHasAny( src,screen )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectLike( src ) );
   _.assert( _.objectLike( screen ) );
 
@@ -12946,7 +12946,7 @@ function mapHasAny( src,screen )
 
 function mapHasNone( src,screen )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectLike( src ) );
   _.assert( _.objectLike( screen ) );
 
@@ -12992,7 +12992,7 @@ function mapHasNone( src,screen )
 
 function mapOwnAll( src,screen )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
   _.assert( _.mapIs( screen ) );
 
@@ -13039,7 +13039,7 @@ function mapOwnAll( src,screen )
 
 function mapOwnAny( src,screen )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
   _.assert( _.mapIs( screen ) );
 
@@ -13086,7 +13086,7 @@ function mapOwnAny( src,screen )
 
 function mapOwnNone( src,screen )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
   _.assert( _.mapIs( screen ) );
 
@@ -13269,7 +13269,7 @@ function mapExtendByMaps( dstMap, srcMaps )
   if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
   return Object.assign( dstMap,srcMaps[ 0 ] );
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayGenericIs( srcMaps ) );
   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
 
@@ -13685,7 +13685,7 @@ function mapExtendRecursive( dstMap,srcMap )
 function mapExtendByMapsRecursive( dstMap,srcMaps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( this === Self );
 
   for( var a = 1 ; a < srcMaps.length ; a++ )
@@ -13743,7 +13743,7 @@ function mapExtendAppendingRecursive( dstMap, srcMap )
 function mapExtendByMapsAppendingRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.appending, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13765,7 +13765,7 @@ function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 function mapExtendByMapsAppendingOnceRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13787,7 +13787,7 @@ function mapSupplementRecursive( dstMap, srcMap )
 function mapSupplementByMapsRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13809,7 +13809,7 @@ function mapSupplementOwnRecursive( dstMap, srcMap )
 function mapSupplementByMapsOwnRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -13831,7 +13831,7 @@ function mapSupplementRemovingRecursive( dstMap, srcMap )
 function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.removing, onUpFilter : true };
   return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
@@ -14108,7 +14108,7 @@ function _mapEnumerableKeys( srcMap,own )
 {
   var result = [];
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ) );
 
   if( own )
@@ -15426,7 +15426,7 @@ function mapFirstPair( srcMap )
 function mapValWithIndex( srcMap,index )
 {
 
- _.assert( arguments.length === 2, 'expects exactly two argument' );
+ _.assert( arguments.length === 2, 'expects exactly two arguments' );
  _.assert( !_.primitiveIs( srcMap ) );
 
   if( index < 0 ) return;
@@ -15466,7 +15466,7 @@ function mapValWithIndex( srcMap,index )
 function mapKeyWithIndex( srcMap, index )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ) );
 
   if( index < 0 )
@@ -15485,7 +15485,7 @@ function mapKeyWithIndex( srcMap, index )
 
 function mapKeyWithValue( srcMap, value )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ) );
 
 
@@ -15497,7 +15497,7 @@ function mapKeyWithValue( srcMap, value )
 function mapIndexWithKey( srcMap, key )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ) );
 
   for( var s in srcMap )
@@ -15514,7 +15514,7 @@ function mapIndexWithKey( srcMap, key )
 function mapIndexWithValue( srcMap,value )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ) );
 
   for( var s in srcMap )
@@ -15853,7 +15853,7 @@ function mapOwnButConditional( filter,srcMap )
 function mapScreen( screenMaps, srcMaps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   return _mapScreen
   ({
@@ -15869,7 +15869,7 @@ function mapScreen( screenMaps, srcMaps )
 function mapScreenOwn( screenMaps, srcMaps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   return _mapScreen
   ({
@@ -15886,7 +15886,7 @@ function mapScreenOwn( screenMaps, srcMaps )
 function mapScreenComplementing( screenMaps, srcMaps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   return _mapScreen
   ({

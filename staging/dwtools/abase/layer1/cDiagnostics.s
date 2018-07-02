@@ -838,7 +838,7 @@ function beep()
 function assertInstanceOrClass( _Self,_this )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert
   (
     _this === _Self ||

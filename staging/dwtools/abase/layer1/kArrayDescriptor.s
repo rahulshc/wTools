@@ -11,7 +11,7 @@ var Self = _global_.wTools;
 function _arrayNameSpaceApplyTo( dst,def )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.mapOwnKey( dst,'withArray' ) );
   _.assert( !_.mapOwnKey( dst,'array' ) );
   _.assert( ArrayNameSpaces[ def ] );

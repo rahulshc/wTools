@@ -22,7 +22,7 @@ var strTypeOf = _.strTypeOf;
 
 function _strRemoveBegin( src,begin )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ), 'expects string {-src-}' );
 
   var result = src;
@@ -75,7 +75,7 @@ function _strRemoveBegin( src,begin )
 
 function strRemoveBegin( src,begin )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
   _.assert( _.arrayLike( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
 
@@ -112,7 +112,7 @@ function strRemoveBegin( src,begin )
 
 // function strRemoveBegin( src,begin )
 // {
-//   _.assert( arguments.length === 2, 'expects exactly two argument' );
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 //   _.assert( _.arrayLike( src ) || _.strIs( src ) );
 //   _.assert( _.arrayLike( begin ) || _.strIs( begin ) );
 //
@@ -161,7 +161,7 @@ function strRemoveBegin( src,begin )
 
 function strRemoveEnd( src,end )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayLike( src ) || _.strIs( src ) );
   _.assert( _.arrayLike( end ) || _.strIs( end ) );
 
@@ -692,7 +692,7 @@ function strDup( s,times )
 {
   var result = '';
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( s ) );
   _.assert( _.numberIs( times ) );
 
@@ -2026,7 +2026,7 @@ function strDup( src,times )
 {
   var result = '';
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.numberIs( times ) );
 
@@ -2256,7 +2256,7 @@ strQuote.defaults =
 function strUnjoin( srcStr,maskArray )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
   _.assert( _.arrayIs( maskArray ) );
 
@@ -3017,7 +3017,7 @@ function strCount( src,ins )
 {
   var result = -1;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3041,7 +3041,7 @@ function strCountLeft( src,ins )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3067,7 +3067,7 @@ function strCountRight( src,ins )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3093,7 +3093,7 @@ function strCountRight( src,ins )
 
 function strHas( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -3104,7 +3104,7 @@ function strHas( src,ins )
 
 function strHasAny( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
@@ -3121,7 +3121,7 @@ function strHasAny( src,ins )
 
 function strHasAll( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
@@ -3138,7 +3138,7 @@ function strHasAll( src,ins )
 
 function strHasNone( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
@@ -3157,7 +3157,7 @@ function strHasSeveral( src,ins )
 {
   var result = 0;
 
-  _.assert( arguments.length === 2, 'expects exactly two argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
