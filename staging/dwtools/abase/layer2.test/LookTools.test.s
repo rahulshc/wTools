@@ -1060,7 +1060,7 @@ function entityIdenticalCycledWithOptions( test )
   var onUpPaths = [];
   function onUp( e, k, it )
   {
-    debugger;
+    // debugger;
     onUpPaths.push( it.path );
     return it.looking;
   }
@@ -1070,7 +1070,7 @@ function entityIdenticalCycledWithOptions( test )
   var onDownPaths = [];
   function onDown( e, k, it )
   {
-    debugger;
+    // debugger;
     onDownPaths.push( it.path );
     return it.looking;
   }

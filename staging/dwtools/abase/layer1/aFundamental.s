@@ -3231,86 +3231,121 @@ function methodsCall( contexts,methods,args )
 
 //
 
-function routinesCompose()
+function _routinesCompose_pre( routine, args )
 {
-  var srcs = _.arrayAppendArrays( [],arguments );
+  var srcs = _.arrayAppendArrays( [], args );
 
   srcs = srcs.filter( ( e ) => e === null ? false : e );
 
   _.assert( _.routinesAre( srcs ) );
+  _.assert( arguments.length === 2 );
 
-  if( srcs.length === 0 )
+  return { srcs : srcs };
+}
+
+//
+
+function _routinesCompose_body( o )
+{
+
+  if( o.srcs.length === 0 )
   debugger;
-  else if( srcs.length === 1 )
+  else if( o.srcs.length === 1 )
   {}
   else
   {}
 
-  if( srcs.length === 0 )
+  if( o.srcs.length === 0 )
   return function empty()
   {
   }
-  else if( srcs.length === 1 )
+  else if( o.srcs.length === 1 )
   {
-    return srcs[ 0 ];
+    return o.srcs[ 0 ];
   }
   else return function composition()
   {
     var result = [];
-    for( var s = 0 ; s < srcs.length ; s++ )
-    result[ s ] = srcs[ s ].apply( this,arguments );
+    for( var s = 0 ; s < o.srcs.length ; s++ )
+    result[ s ] = o.srcs[ s ].apply( this,arguments );
     return result;
   }
 
 }
 
+_routinesCompose_body.defaults =
+{
+  srcs : null,
+}
+
 //
 
-function routinesComposeReturningLast()
+function routinesCompose()
 {
-  var routine = _.routinesCompose.apply( this, arguments );
+  var o = _.routinesCompose.pre( routinesCompose, arguments );
+  var result = _.routinesCompose.body( o );
+  return result;
+}
 
-  if( arguments.length === 0 )
-  return function empty()
+routinesCompose.pre = _routinesCompose_pre;
+routinesCompose.body = _routinesCompose_body;
+routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
+
+//
+
+function _routinesComposeReturningLast_body( o )
+{
+
+  if( o.srcs.length === 1 )
   {
+    return o.srcs[ 0 ];
   }
-  else if( arguments.length === 1 )
+
+  var routine = _.routinesCompose.body( o );
+
+  return function returnLast()
   {
-    return arguments[ 0 ];
-  }
-  else return function returnLast()
-  {
-    var result = routine.apply( this, arguments );
+    var result = routine.apply( this, o.srcs );
     return result[ result.length-1 ];
   }
 
   return returnLast;
 }
 
+_routinesComposeReturningLast_body.defaults = Object.create( routinesCompose.defaults );
+
 //
 
-function routinesComposeWhile()
+function routinesComposeReturningLast()
 {
-  var srcs = _.arrayAppendArrays( [], arguments );
+  var o = _.routinesComposeReturningLast.pre( routinesComposeReturningLast, arguments );
+  var result = _.routinesComposeReturningLast.body( o );
+  return result;
+}
 
-  srcs = srcs.filter( ( e ) => e === null ? false : e );
+routinesComposeReturningLast.pre = _routinesCompose_pre;
+routinesComposeReturningLast.body = _routinesComposeReturningLast_body;
+routinesComposeReturningLast.defaults = Object.create( routinesComposeReturningLast.body.defaults );
 
-  _.assert( _.routinesAre( srcs ) );
+//
 
-  if( srcs.length === 0 )
+function _routinesComposeWhile_body( o )
+{
+
+  if( o.srcs.length === 0 )
   return function empty()
   {
   }
-  else if( srcs.length === 1 )
+  else if( o.srcs.length === 1 )
   {
-    return srcs[ 0 ];
+    return o.srcs[ 0 ];
   }
   else return function composition()
   {
     var result = [];
-    for( var s = 0 ; s < srcs.length ; s++ )
+    for( var s = 0 ; s < o.srcs.length ; s++ )
     {
-      var r = srcs[ s ].apply( this,arguments );
+      var r = o.srcs[ s ].apply( this,arguments );
       if( r === false )
       return false;
       else if( r !== undefined )
@@ -3322,6 +3357,21 @@ function routinesComposeWhile()
   }
 
 }
+
+_routinesComposeWhile_body.defaults = Object.create( routinesCompose.defaults );
+
+//
+
+function routinesComposeWhile()
+{
+  var o = _.routinesComposeWhile.pre( routinesComposeWhile, arguments );
+  var result = _.routinesComposeWhile.body( o );
+  return result;
+}
+
+routinesComposeWhile.pre = _routinesCompose_pre;
+routinesComposeWhile.body = _routinesComposeWhile_body;
+routinesComposeWhile.defaults = Object.create( routinesComposeWhile.body.defaults );
 
 //
 
