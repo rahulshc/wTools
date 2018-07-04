@@ -133,9 +133,31 @@ function diagnosticLocation( o )
   else if( o === undefined )
   o = { stack : _.diagnosticStack( 1 ) };
 
-  _.routineOptions( diagnosticLocation,o );
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-  _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
+  /* */
+
+  for( var e in o )
+  {
+    if( diagnosticLocation.defaults[ e ] === undefined )
+    throw 'Unknown option ' + e;
+  }
+
+  for( var e in diagnosticLocation.defaults )
+  {
+    if( o[ e ] === undefined )
+    o[ e ] = diagnosticLocation.defaults[ e ];
+  }
+
+  if( !( arguments.length === 0 || arguments.length === 1 ) )
+  throw 'Expects single argument or none';
+
+  if( !( _.objectIs( o ) ) )
+  throw 'Expects options map';
+
+  // _.routineOptions( diagnosticLocation,o );
+  // _.assert( arguments.length === 0 || arguments.length === 1 );
+  // _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
+
+  /* */
 
   if( !o.location )
   o.location = Object.create( null );
@@ -363,7 +385,6 @@ diagnosticLocation.defaults =
   stack : null,
   error : null,
   location : null,
-  // sourceCode : null,
 }
 
 //

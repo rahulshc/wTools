@@ -40,8 +40,8 @@ var LookDefaults =
   src : null,
   root : null,
 
-  dst : null,
-  dstRoot : null,
+  src2 : null,
+  src2Root : null,
 
   context : null,
 
@@ -69,7 +69,7 @@ LookIteration.path = '/';
 LookIteration.key = null;
 LookIteration.index = null;
 LookIteration.src = null;
-LookIteration.dst = null;
+LookIteration.src2 = null;
 LookIteration.result = true;
 LookIteration.looking = true;
 LookIteration.ascending = true;
@@ -95,7 +95,7 @@ function _lookIterationBegin()
   newIt.path = it.path;
   newIt.down = it;
   newIt.src = it.src;
-  newIt.dst = it.dst;
+  newIt.src2 = it.src2;
 
   return newIt;
 }
@@ -117,10 +117,10 @@ function _lookIterationSelect( k )
   it.index = it.down.hasChildren;
   it.src = it.src[ k ];
 
-  if( it.dst )
-  it.dst = it.dst[ k ];
+  if( it.src2 )
+  it.src2 = it.src2[ k ];
   else
-  it.dst = undefined;
+  it.src2 = undefined;
 
   return it;
 }
@@ -146,13 +146,13 @@ function __look_lookBegin( routine, args )
   if( iterator.root === null )
   iterator.root = iterator.src;
 
-  if( iterator.dstRoot === null )
-  iterator.dstRoot = iterator.dst;
+  if( iterator.src2Root === null )
+  iterator.src2Root = iterator.src2;
 
   if( iterator.trackingVisits )
   {
     iterator.srcVisited = [];
-    iterator.dstVisited = [];
+    iterator.src2Visited = [];
   }
 
   if( iterator.path === null )
@@ -173,7 +173,7 @@ function __look_lookBegin( routine, args )
   Object.preventExtensions( it );
 
   it.src = iterator.src;
-  it.dst = iterator.dst;
+  it.src2 = iterator.src2;
 
   return it;
 }
@@ -271,7 +271,7 @@ function __look_lookIt( it )
       if( it.srcVisited.indexOf( it.src ) !== -1 )
       it.wasVisited = true;
       it.srcVisited.push( it.src );
-      it.dstVisited.push( it.dst );
+      it.src2Visited.push( it.src2 );
     }
 
     it.ascending = true;
@@ -305,8 +305,8 @@ function __look_lookIt( it )
     {
       _.assert( Object.is( it.srcVisited[ it.srcVisited.length-1 ], it.src ) );
       it.srcVisited.pop();
-      _.assert( Object.is( it.dstVisited[ it.dstVisited.length-1 ], it.dst ) );
-      it.dstVisited.pop();
+      _.assert( Object.is( it.src2Visited[ it.src2Visited.length-1 ], it.src2 ) );
+      it.src2Visited.pop();
     }
 
     return it;
@@ -324,7 +324,6 @@ function __look_lookContinue( routine, args )
 
   if( !Object.isPrototypeOf.call( LookIterator, it ) )
   {
-    debugger;
     it = routine.pre( routine, args );
   }
 
@@ -1042,7 +1041,7 @@ function entitySearch( o )
 
   /* */
 
-  var lookOptions = _.mapScreen( _.look.defaults,o )
+  var lookOptions = _.mapOnly( o, _.look.defaults )
   lookOptions.onUp = handleUp;
 
   _.look( lookOptions );
@@ -1509,31 +1508,17 @@ function entityProbeField( o )
 
   _.routineOptions( entityProbeField,o );
 
-  // o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  // _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
-  // debugger;
-  o.all = _entitySelect( _.mapScreen( _entitySelectOptions.defaults,o ) );
+  o.all = _entitySelect( _.mapOnly( o, _entitySelectOptions.defaults ) );
   o.onElement = function( it ){ return it.up };
-  o.parents = _entitySelect( _.mapScreen( _entitySelectOptions.defaults,o ) );
+  o.parents = _entitySelect( _.mapOnly( o, _entitySelectOptions.defaults ) );
   o.result = Object.create( null );
 
-  // debugger;
-
-  // if( o.qarrey.indexOf( '*' ) !== -1 )
-  // if( _.arrayLike( result ) )
-  // result = _.arrayUnique( result );
-
   /* */
-
-  // debugger;
 
   for( var i = 0 ; i < o.all.length ; i++ )
   {
     var val = o.all[ i ];
-    // if( !_.primitiveIs( val ) )
-    // continue;
     if( !o.result[ val ] )
     {
       var d = o.result[ val ] = Object.create( null );
@@ -1544,8 +1529,6 @@ function entityProbeField( o )
     var d = o.result[ val ];
     d.having.push( o.parents[ i ] );
   }
-
-  // debugger;
 
   for( var k in o.result )
   {
@@ -1559,13 +1542,10 @@ function entityProbeField( o )
     }
   }
 
-  // debugger;
-
   /* */
 
   if( o.report )
   {
-    // debugger;
     if( o.title === null )
     o.title = o.query;
     o.report = _._entityProbeReport
@@ -1576,7 +1556,6 @@ function entityProbeField( o )
       total : o.all.length,
       prependingByAsterisk : 0,
     });
-    // debugger;
   }
 
   return o;
@@ -1614,7 +1593,6 @@ function entityProbe( o )
 
     if( o.assertingUniqueness )
     _.assertMapHasNone( result,src );
-    // _.mapExtend( result,src );
 
     for( var s in src )
     {
@@ -1841,10 +1819,17 @@ function __entityEqualUp( e, k, it )
 
   _.assert( arguments.length === 3, 'expects exactly three argument' );
 
-  // if( it.path === '/inputs/0/input' )
-  // debugger;
+  /* if containing mode then src2 could even don't have such entry */
 
-  if( Object.is( it.src, it.dst ) )
+  if( it.context.containing )
+  {
+    if( it.down && !( it.key in it.down.src2 ) )
+    return clearEnd( false );
+  }
+
+  /* */
+
+  if( Object.is( it.src, it.src2 ) )
   {
     return clearEnd( true );
   }
@@ -1853,59 +1838,61 @@ function __entityEqualUp( e, k, it )
 
   if( it.context.strictTyping )
   {
-    // debugger; // xxx
-    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.dst ) )
+    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.src2 ) )
     return clearEnd( false );
   }
   else
   {
-    if( _.primitiveIs( it.src ) )
-    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.dst ) )
-    if( it.src != it.dst )
-    return clearEnd( false );
+    if( _.primitiveIs( it.src ) || _.primitiveIs( it.src2 ) )
+    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.src2 ) )
+    {
+      if( it.context.strictNumbering )
+      return clearEnd( false );
+      return clearEnd( it.src == it.src2 );
+    }
   }
 
   /* */
 
   if( _.numberIs( it.src ) )
   {
-    return clearEnd( it.context.onNumbersAreEqual( it.src, it.dst ) );
+    return clearEnd( it.context.onNumbersAreEqual( it.src, it.src2 ) );
   }
   else if( _.regexpIs( it.src ) )
   {
-    return clearEnd( _.regexpsAreIdentical( it.src, it.dst ) );
+    return clearEnd( _.regexpsAreIdentical( it.src, it.src2 ) );
   }
   else if( _.dateIs( it.src ) )
   {
-    return clearEnd( _.datesAreIdentical( it.src, it.dst ) );
+    return clearEnd( _.datesAreIdentical( it.src, it.src2 ) );
   }
   else if( _.bufferAnyIs( it.src ) )
   {
     if( !it.context.strictTyping )
     debugger;
     if( it.context.strictTyping )
-    return clearEnd( _.buffersAreIdentical( it.src, it.dst ) );
+    return clearEnd( _.buffersAreIdentical( it.src, it.src2 ) );
     else
-    return clearEnd( _.buffersAreEquivalent( it.src, it.dst, it.context.accuracy ) );
+    return clearEnd( _.buffersAreEquivalent( it.src, it.src2, it.context.accuracy ) );
   }
   else if( _.arrayLike( it.src ) )
   {
 
     it._ = 'arrayLike';
 
-    if( !it.dst )
+    if( !it.src2 )
     return clearEnd( false );
-    if( it.src.constructor !== it.dst.constructor )
+    if( it.src.constructor !== it.src2.constructor )
     return clearEnd( false );
 
-    if( !it.context.contain )
+    if( !it.context.containing )
     {
-      if( it.src.length !== it.dst.length )
+      if( it.src.length !== it.src2.length )
       return clearEnd( false );
     }
     else
     {
-      if( it.src.length > it.dst.length )
+      if( it.src.length > it.src2.length )
       return clearEnd( false );
     }
 
@@ -1917,26 +1904,26 @@ function __entityEqualUp( e, k, it )
 
     if( _.routineIs( it.src._equalAre ) )
     {
-      _.assert( it.src._equalAre.length === 3 );
-      if( !it.src._equalAre( it.src, it.dst, it ) )
+      _.assert( it.src._equalAre.length === 1 );
+      if( !it.src._equalAre( it ) )
       return clearEnd( false );
     }
     else if( _.routineIs( it.src.equalWith ) )
     {
       _.assert( it.src.equalWith.length <= 2 );
-      if( !it.src.equalWith( it.dst, it ) )
+      if( !it.src.equalWith( it.src2, it ) )
       return clearEnd( false );
     }
-    else if( _.routineIs( it.dst.equalWith ) )
+    else if( _.routineIs( it.src2.equalWith ) )
     {
-      _.assert( it.dst.equalWith.length <= 2 );
-      if( !it.dst.equalWith( it.src, it ) )
+      _.assert( it.src2.equalWith.length <= 2 );
+      if( !it.src2.equalWith( it.src, it ) )
       return clearEnd( false );
     }
     else
     {
-      if( !it.context.contain )
-      if( _.entityLength( it.src ) !== _.entityLength( it.dst ) )
+      if( !it.context.containing )
+      if( _.entityLength( it.src ) !== _.entityLength( it.src2 ) )
       return clearEnd( false );
     }
 
@@ -1945,12 +1932,12 @@ function __entityEqualUp( e, k, it )
   {
     if( it.context.strictTyping )
     {
-      if( it.src !== it.dst )
+      if( it.src !== it.src2 )
       return clearEnd( false );
     }
     else
     {
-      if( it.src != it.dst )
+      if( it.src != it.src2 )
       return clearEnd( false );
     }
   }
@@ -2023,15 +2010,15 @@ function __entityEqualCycle( e, k, it )
   if( it.wasVisited )
   {
     /* if opposite branch was cycled earlier */
-    if( it.down.dst !== undefined )
+    if( it.down.src2 !== undefined )
     {
-      var i = it.dstVisited.indexOf( it.down.dst );
-      if( 0 <= i && i <= it.dstVisited.length-3 )
+      var i = it.src2Visited.indexOf( it.down.src2 );
+      if( 0 <= i && i <= it.src2Visited.length-3 )
       it.result = false;
     }
     /* or not yet cycled */
     if( it.result )
-    it.result = it.dstVisited[ it.srcVisited.indexOf( it.src ) ] === it.dst;
+    it.result = it.src2Visited[ it.srcVisited.indexOf( it.src ) ] === it.src2;
     /* then not equal otherwise equal */
   }
 
@@ -2042,10 +2029,11 @@ function __entityEqualCycle( e, k, it )
   if( it.levelLimit && it.level < it.levelLimit )
   {
     var o2 = _.mapExtend( null, it.context );
-    o2.src1 = it.dst;
+    o2.src1 = it.src2;
     o2.src2 = it.src;
     o2.levelLimit = 1;
-    it.result = _._entityEqual_body( o2 );
+    debugger;
+    it.result = _._entityEqual.body( o2 );
   }
 
 }
@@ -2065,7 +2053,7 @@ function _entityEqual_lookBegin( routine, args )
 
   var lookOptions = Object.create( null );
   lookOptions.src = o.src2;
-  lookOptions.dst = o.src1;
+  lookOptions.src2 = o.src1;
   lookOptions.levelLimit = o.levelLimit;
   lookOptions.context = o;
   lookOptions.onUp = _.routinesComposeReturningLast( __entityEqualUp, o.onUp );
@@ -2100,7 +2088,12 @@ function _entityEqual_pre( routine, args )
   o.src2 = args[ 1 ];
 
   if( o.onNumbersAreEqual === null )
-  o.onNumbersAreEqual = o.strictNumbering ? numbersAreIdentical : numbersAreEquivalent;
+  if( o.strictNumbering && o.strictTyping )
+  o.onNumbersAreEqual = numbersAreIdentical;
+  else if( o.strictNumbering && !o.strictTyping )
+  o.onNumbersAreEqual = numbersAreIdenticalNotStrictly;
+  else
+  o.onNumbersAreEqual = numbersAreEquivalent;
 
   var it = _._entityEqual.lookBegin( routine, [ o ] );
 
@@ -2111,6 +2104,12 @@ function _entityEqual_pre( routine, args )
   function numbersAreIdentical( a,b )
   {
     return Object.is( a,b );
+  }
+
+  function numbersAreIdenticalNotStrictly( a,b )
+  {
+    /* take into account -0 === +0 case */
+    return Object.is( a,b ) || a === b;
   }
 
   function numbersAreEquivalent( a,b )
@@ -2135,7 +2134,7 @@ _entityEqual_body.defaults =
 {
   src1 : null,
   src2 : null,
-  contain : 0,
+  containing : 0,
   strictTyping : 1,
   strictNumbering : 1,
   strictCycling : 1,
@@ -2168,11 +2167,11 @@ _entityEqual_body.defaults =
  *
  * @example
  * //returns true
- * _._entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { contain : 1 } );
+ * _._entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, { containing : 1 } );
  *
  * @example
  * //returns ".a.b"
- * var o = { contain : 1 };
+ * var o = { containing : 1 };
  * _._entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
  * console.log( o.lastPath );
  *
@@ -2236,12 +2235,9 @@ function entityIdentical( src1, src2, options )
   return result;
 }
 
-entityIdentical.pre = _entityEqual.pre;
-entityIdentical.body = _entityEqual.body;
-entityIdentical.lookBegin = _entityEqual.lookBegin;
-entityIdentical.lookIt = _entityEqual.lookIt;
+_.routineSupplement( entityIdentical, _entityEqual );
 
-var defaults = entityIdentical.defaults = Object.create( _entityEqual.defaults );
+var defaults = entityIdentical.defaults;
 
 defaults.strictTyping = 1;
 defaults.strictNumbering = 1;
@@ -2283,12 +2279,9 @@ function entityEquivalent( src1, src2, options )
   return result;
 }
 
-entityEquivalent.pre = _entityEqual.pre;
-entityEquivalent.body = _entityEqual.body;
-entityEquivalent.lookBegin = _entityEqual.lookBegin;
-entityEquivalent.lookIt = _entityEqual.lookIt;
+_.routineSupplement( entityEquivalent, _entityEqual );
 
-var defaults = entityEquivalent.defaults = Object.create( _entityEqual.defaults );
+var defaults = entityEquivalent.defaults;
 
 defaults.strictTyping = 0;
 defaults.strictNumbering = 0;
@@ -2304,43 +2297,40 @@ defaults.strictCycling = 0;
  * @param {*} src2 - Entity for comparison.
  * @param {wTools~entityEqualOptions} options - Comparsion options {@link wTools~entityEqualOptions}.
  * @param {boolean} [ options.strict = true ] - Method uses strict( '===' ) equality mode .
- * @param {boolean} [ options.contain = true ] - Check if( src1 ) contains  keys/indexes and same appropriates values from( src2 ).
+ * @param {boolean} [ options.containing = true ] - Check if( src1 ) contains  keys/indexes and same appropriates values from( src2 ).
  * @returns {boolean} Returns boolean result of comparison.
  *
  * @example
  * //returns true
- * _.entityContain( [ 1, 2, 3 ], [ 1 ] );
+ * _.entityContains( [ 1, 2, 3 ], [ 1 ] );
  *
  * @example
  * //returns false
- * _.entityContain( [ 1, 2, 3 ], [ 1, 4 ] );
+ * _.entityContains( [ 1, 2, 3 ], [ 1, 4 ] );
  *
  * @example
  * //returns true
- * _.entityContain( { a : 1, b : 2 }, { a : 1 , b : 2 }  );
+ * _.entityContains( { a : 1, b : 2 }, { a : 1 , b : 2 }  );
  *
- * @function entityContain
+ * @function entityContains
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
  * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
 */
 
-function entityContain( src1, src2, options )
+function entityContains( src1, src2, options )
 {
-  var it = _entityEqual.pre.call( this, entityContain, arguments );
+  var it = _entityEqual.pre.call( this, entityContains, arguments );
   var result = _entityEqual.body.call( this, it );
   return result;
 }
 
-entityContain.pre = _entityEqual.pre;
-entityContain.body = _entityEqual.body;
-entityContain.lookBegin = _entityEqual.lookBegin;
-entityContain.lookIt = _entityEqual.lookIt;
+_.routineSupplement( entityContains, _entityEqual );
 
-var defaults = entityContain.defaults = Object.create( _entityEqual.defaults );
+var defaults = entityContains.defaults;
 
-defaults.contain = 1;
-defaults.strictTyping = 1;
+defaults.containing = 1;
+defaults.strictTyping = 0;
 defaults.strictNumbering = 1;
 defaults.strictCycling = 1;
 
@@ -2386,7 +2376,7 @@ function entityDiff( src1, src2, o )
 {
 
   var o = o || Object.create( null );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   var equal = _._entityEqual( src1, src2, o );
 
   if( equal )
@@ -2519,7 +2509,7 @@ var Proto =
 
   entityIdentical : entityIdentical,
   entityEquivalent : entityEquivalent,
-  entityContain : entityContain,
+  entityContains : entityContains,
   entityDiff : entityDiff,
   entityDiffDescription : entityDiffDescription,
 

@@ -211,7 +211,7 @@ defaults.onUp = function( e,k ){};
 
 function dup( ins,times,result )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( _.numberIs( times ) || _.arrayLike( times ),'dup expects times as number or array' );
 
   if( _.numberIs( times ) )
@@ -401,7 +401,7 @@ function entityAssign( dst,src,onRecursive )
 {
   var result;
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( arguments.length < 3 || _.routineIs( onRecursive ) );
 
   if( src === null )
@@ -2927,7 +2927,7 @@ function routineTolerantCall( context,routine,options )
   _.assert( _.objectIs( routine.defaults ) );
   _.assert( _.objectIs( options ) );
 
-  options = _.mapScreen( routine.defaults,options );
+  options = _.mapOnly( options, routine.defaults );
   var result = routine.call( context,options );
 
   return result;
@@ -3201,7 +3201,7 @@ function methodsCall( contexts,methods,args )
   var l = Math.max( l1,l2 );
 
   _.assert( l >= 0 );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
 
   if( !l )
   return result;
@@ -3837,7 +3837,7 @@ function numbersAreIdentical( src1, src2 )
 
 function numbersAreEquivalent( src1, src2, accuracy )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   if( accuracy === undefined )
   accuracy = _.EPS;
   return Math.abs( src1-src2 ) <= accuracy;
@@ -4166,7 +4166,7 @@ function numbersFrom_functor( length )
 
 function numberClamp( src,low,high )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
 
   if( arguments.length === 2 )
   {
@@ -5889,7 +5889,7 @@ function buffersNodeAreIdentical( src1, src2 )
 function buffersAreEquivalent( src1, src2, accuracy )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
 
   if( _.bufferTypedIs( src1 ) )
   return _.buffersTypedAreEquivalent( src1 ,src2, accuracy );
@@ -8976,7 +8976,7 @@ function arrayCutin( dstArray, range, srcArray )
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
   _.assert( _.arrayIs( range ) );
   _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
@@ -9144,7 +9144,7 @@ function arrayPut( dstArray, dstOffset )
 function arrayFillTimes( result,times,value )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( _.arrayLike( result ) );
 
   if( value === undefined )
@@ -9184,7 +9184,7 @@ function arrayFillWhole( result,value )
 }
 
 // {
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
 //   _.assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 //
 //   if( arguments.length === 1 )
@@ -13124,8 +13124,12 @@ function mapOwnNone( src,screen )
 
 function mapMake()
 {
+  if( arguments.length <= 1 )
+  if( arguments[ 0 ] === undefined || arguments[ 0 ] === null )
+  return Object.create( null );
   var args = _.arraySlice( arguments );
   args.unshift( Object.create( null ) );
+  _.assert( !_.primitiveIs( arguments[ 0 ] ) || arguments[ 0 ] === null );
   return _.mapExtend.apply( _,args );
 }
 
@@ -13232,14 +13236,14 @@ mapCloneAssigning.defaults =
  * @memberof wTools
  */
 
-function mapExtend( dstMap,srcMap )
+function mapExtend( dstMap, srcMap )
 {
 
   if( dstMap === null )
   dstMap = Object.create( null );
 
   if( arguments.length === 2 && Object.getPrototypeOf( srcMap ) === null )
-  return Object.assign( dstMap,srcMap );
+  return Object.assign( dstMap, srcMap );
 
   _.assert( arguments.length >= 2, 'expects at least two arguments' );
   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
@@ -13248,6 +13252,11 @@ function mapExtend( dstMap,srcMap )
   {
     var srcMap = arguments[ a ];
 
+    _.assert( !_.primitiveIs( srcMap ),'expects non primitive' );
+
+    if( Object.getPrototypeOf( srcMap ) === null )
+    Object.assign( dstMap, srcMap );
+    else
     for( var k in srcMap )
     {
       dstMap[ k ] = srcMap[ k ];
@@ -13269,6 +13278,9 @@ function mapExtendByMaps( dstMap, srcMaps )
   if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
   return Object.assign( dstMap,srcMaps[ 0 ] );
 
+  if( !_.arrayGenericIs( srcMaps ) )
+  srcMaps = [ srcMaps ];
+
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.arrayGenericIs( srcMaps ) );
   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
@@ -13277,7 +13289,11 @@ function mapExtendByMaps( dstMap, srcMaps )
   {
     var srcMap = srcMaps[ a ];
 
-    for( var k in srcMap )
+    _.assert( !_.primitiveIs( srcMap ),'expects non primitive' );
+
+    if( Object.getPrototypeOf( srcMap ) === null )
+    Object.assign( dstMap, srcMap );
+    else for( var k in srcMap )
     {
       dstMap[ k ] = srcMap[ k ];
     }
@@ -15531,6 +15547,80 @@ function mapIndexWithValue( srcMap,value )
 // --
 
 /**
+ * The mapButConditional() routine returns a new object (result)
+ * whose (values) are not equal to the arrays or objects.
+ *
+ * Takes any number of objects.
+ * If the first object has same key any other object has
+ * then this pair [ key, value ] will not be included into (result) object.
+ * Otherwise,
+ * it calls a provided callback function( _.field.mapper.primitive )
+ * once for each key in the {-srcMap-}, and adds to the (result) object
+ * all the [ key, value ],
+ * if values are not equal to the array or object.
+ *
+ * @param { function } filter.primitive() - Callback function to test each [ key, value ] of the {-srcMap-} object.
+ * @param { objectLike } srcMap - The target object.
+ * @param { ...objectLike } arguments[] - The next objects.
+ *
+ * @example
+ * // returns { a : 1, b : "b" }
+ * mapButConditional( _.field.mapper.primitive, { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
+ *
+ * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
+ * @function mapButConditional
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an object.
+ * @memberof wTools
+ */
+
+function mapButConditional( fieldFilter, srcMap, butMap )
+{
+  var result = Object.create( null );
+
+  _.assert( arguments.length === 3, 'expects exactly three arguments' );
+  _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
+  _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'expects map {-srcMap-}' );
+  _.assert( fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'expects field-filter {-fieldFilter-}' );
+
+  if( _.arrayGenericIs( butMap ) )
+  {
+
+    for( var s in srcMap )
+    {
+
+      for( var m = 0 ; m < butMap.length ; m++ )
+      {
+        if( !fieldFilter( butMap[ m ], srcMap, s ) )
+        break;
+      }
+
+      if( m === butMap.length )
+      result[ s ] = srcMap[ s ];
+
+    }
+
+  }
+  else
+  {
+
+    for( var s in srcMap )
+    {
+
+      if( fieldFilter( butMap, srcMap, s ) )
+      {
+        result[ s ] = srcMap[ s ];
+      }
+
+    }
+
+  }
+
+  return result;
+}
+
+//
+
+/**
  * Returns new object with unique keys.
  *
  * Takes any number of objects.
@@ -15548,41 +15638,56 @@ function mapIndexWithValue( srcMap,value )
  *
  * @example
  * // returns { c : 3 }
- * mapButWithoutUndefines( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+ * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  *
  * @throws { Error }
  *  In debug mode it throws an error if any argument is not object like.
  * @returns { object } Returns new object made by unique keys.
- * @function mapButWithoutUndefines
+ * @function mapBut
  * @memberof wTools
  */
 
-function mapButWithoutUndefines( srcMap )
+function mapBut( srcMap, butMap )
 {
   var result = Object.create( null );
-  var a,k;
 
-  _.assert( arguments.length >= 2 );
-  _.assert( !_.primitiveIs( srcMap ), 'expects object as argument' );
+  if( _.arrayGenericIs( srcMap ) )
+  srcMap = _.mapMake.apply( this, srcMap );
 
-  for( k in srcMap )
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
+  _.assert( !_.primitiveIs( srcMap ) && !_.arrayGenericIs( srcMap ), 'expects map {-srcMap-}' );
+
+  if( _.arrayGenericIs( butMap ) )
   {
 
-    for( a = 1 ; a < arguments.length ; a++ )
+    for( var s in srcMap )
     {
-      var argument = arguments[ a ];
+      for( var m = 0 ; m < butMap.length ; m++ )
+      {
+        if( ( s in butMap[ m ] ) )
+        break;
+      }
 
-      _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
-
-      if( k in argument )
-      if( argument[ k ] !== undefined )
-      break;
+      if( m === butMap.length )
+      result[ s ] = srcMap[ s ];
 
     }
-    if( a === arguments.length )
+
+  }
+  else
+  {
+
+    for( var s in srcMap )
     {
-      result[ k ] = srcMap[ k ];
+
+      if( !( s in butMap ) )
+      {
+        result[ s ] = srcMap[ s ];
+      }
+
     }
+
   }
 
   return result;
@@ -15590,35 +15695,157 @@ function mapButWithoutUndefines( srcMap )
 
 //
 
-function mapButWithUndefines( srcMap )
+/**
+ * Returns new object with unique keys.
+ *
+ * Takes any number of objects.
+ * Returns new object filled by unique keys
+ * from the first {-srcMap-} original object.
+ * Values for result object come from original object {-srcMap-}
+ * not from second or other one.
+ * If the first object has same key any other object has
+ * then this pair( key/value ) will not be included into result object.
+ * Otherwise pair( key/value ) from the first object goes into result object.
+ *
+ * @param{ objectLike } srcMap - original object.
+ * @param{ ...objectLike } arguments[] - one or more objects.
+ * Objects to return an object without repeating keys.
+ *
+ * @example
+ * // returns { c : 3 }
+ * mapButIgnoringUndefines( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
+ *
+ * @throws { Error }
+ *  In debug mode it throws an error if any argument is not object like.
+ * @returns { object } Returns new object made by unique keys.
+ * @function mapButIgnoringUndefines
+ * @memberof wTools
+ */
+
+function mapButIgnoringUndefines( srcMap, butMap )
 {
   var result = Object.create( null );
-  var a,k;
 
-  _.assert( arguments.length >= 2 );
-  _.assert( !_.primitiveIs( srcMap ),'mapBut :','expects object as argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  for( k in srcMap )
-  {
-    for( a = 1 ; a < arguments.length ; a++ )
-    {
-      var argument = arguments[ a ];
-
-      _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
-
-      if( k in argument )
-      break;
-
-    }
-    if( a === arguments.length )
-    {
-      result[ k ] = srcMap[ k ];
-    }
-  }
-
-  return result;
+  return _.mapButConditional( _.field.filter.dstUndefinedSrcNotUndefined, srcMap, butMap );
+  // return _.mapButConditional( _.field.filter.dstHasButUndefined, butMap, srcMap );
 }
 
+// function mapButIgnoringUndefines( srcMap, butMap )
+// {
+//   var result = Object.create( null );
+//
+//   _.assert( arguments.length === 2 );
+//   _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
+//   _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'expects map {-srcMap-}' );
+//
+//   if( _.arrayGenericIs( butMap ) )
+//   {
+//
+//     for( var s in srcMap )
+//     {
+//
+//       if( srcMap[ k ] === undefined )
+//       continue;
+//
+//       for( var m = 0 ; m < butMap.length ; m++ )
+//       {
+//         if( butMap[ m ][ s ] === undefined )
+//         break;
+//       }
+//
+//       if( m === butMap.length )
+//       result[ s ] = srcMap[ s ];
+//
+//     }
+//
+//   }
+//   else
+//   {
+//
+//     for( var s in srcMap )
+//     {
+//
+//       if( srcMap[ k ] === undefined )
+//       continue;
+//
+//       if( butMap[ s ] === undefined )
+//       {
+//         result[ s ] = srcMap[ s ];
+//       }
+//
+//     }
+//
+//   }
+//
+//   return result;
+// }
+//
+//
+//
+// function mapButIgnoringUndefines( srcMap )
+// {
+//   var result = Object.create( null );
+//   var a,k;
+//
+//   _.assert( arguments.length >= 2 );
+//   _.assert( !_.primitiveIs( srcMap ), 'expects object as argument' );
+//
+//   for( k in srcMap )
+//   {
+//
+//     for( a = 1 ; a < arguments.length ; a++ )
+//     {
+//       var argument = arguments[ a ];
+//
+//       _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
+//
+//       if( k in argument )
+//       if( argument[ k ] !== undefined )
+//       break;
+//
+//     }
+//     if( a === arguments.length )
+//     {
+//       result[ k ] = srcMap[ k ];
+//     }
+//   }
+//
+//   return result;
+// }
+//
+// //
+//
+// function mapBut( srcMap )
+// {
+//   var result = Object.create( null );
+//   var a,k;
+//
+//   _.assert( arguments.length >= 2 );
+//   _.assert( !_.primitiveIs( srcMap ),'mapBut :','expects object as argument' );
+//
+//   for( k in srcMap )
+//   {
+//     for( a = 1 ; a < arguments.length ; a++ )
+//     {
+//       var argument = arguments[ a ];
+//
+//       _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
+//
+//       if( k in argument )
+//       break;
+//
+//     }
+//     if( a === arguments.length )
+//     {
+//       result[ k ] = srcMap[ k ];
+//     }
+//   }
+//
+//   return result;
+// }
+//
 //
 
 /**
@@ -15647,176 +15874,15 @@ function mapButWithUndefines( srcMap )
  * @memberof wTools
  */
 
-function mapOwnBut( srcMap )
+function mapOwnBut( srcMap, butMap )
 {
   var result = Object.create( null );
-  var a,k;
 
-  _.assert( arguments.length >= 2 );
-  _.assert( !_.primitiveIs( srcMap ),'expects object as argument' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  for( k in srcMap )
-  {
-    if( !_hasOwnProperty.call( srcMap, k ) )
-    continue;
-
-    for( a = 1 ; a < arguments.length ; a++ )
-    {
-      var argument = arguments[ a ];
-      if( k in argument )
-      break;
-    }
-    if( a === arguments.length )
-    {
-      result[ k ] = srcMap[ k ];
-    }
-  }
-
-  return result;
+  return _.mapButConditional( _.field.filter.dstNotHasSrcOwn, srcMap, butMap );
 }
 
-//
-
-/**
- * The mapButConditional() routine returns a new object (result)
- * whose (values) are not equal to the arrays or objects.
- *
- * Takes any number of objects.
- * If the first object has same key any other object has
- * then this pair [ key, value ] will not be included into (result) object.
- * Otherwise,
- * it calls a provided callback function( _.field.mapper.primitive )
- * once for each key in the {-srcMap-}, and adds to the (result) object
- * all the [ key, value ],
- * if values are not equal to the array or object.
- *
- * @param { function } filter.primitive() - Callback function to test each [ key, value ] of the {-srcMap-} object.
- * @param { objectLike } srcMap - The target object.
- * @param { ...objectLike } arguments[] - The next objects.
- *
- * @example
- * // returns { a : 1, b : "b" }
- * mapButConditional( _.field.mapper.primitive, { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
- *
- * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
- * @function mapButConditional
- * @throws { Error } Will throw an Error if {-srcMap-} is not an object.
- * @memberof wTools
- */
-
-function mapButConditional( filter,srcMap )
-{
-  var result = Object.create( null );
-  var a,k;
-
-  _.assert( filter );
-  _.assert( filter.functionFamily === 'field-mapper' );
-
-  _.assert( objectLike( srcMap ),'mapButConditional :','expects object as argument' );
-
-  for( k in srcMap )
-  {
-    for( a = 2 ; a < arguments.length ; a++ )
-    {
-      var argument = arguments[ a ];
-
-      if( k in argument )
-      break;
-
-    }
-    if( a === arguments.length )
-    {
-      filter.call( this,result,srcMap,k );
-    }
-  }
-
-  return result;
-}
-
-//
-
-function mapOwnButConditional( filter,srcMap )
-{
-  var result = Object.create( null );
-  var a,k;
-
-  _.assert( filter );
-  _.assert( filter.functionFamily === 'field-mapper' );
-  _.assert( objectLike( srcMap ),'mapOwnButConditional :','expects object as argument' );
-
-  for( k in srcMap )
-  {
-    for( a = 2 ; a < arguments.length ; a++ )
-    {
-      var argument = arguments[ a ];
-
-      if( _hasOwnProperty.call( argument,k ) )
-      break;
-
-    }
-    if( a === arguments.length )
-    {
-      filter.call( this,result,srcMap,k );
-    }
-  }
-
-  return result;
-}
-
-//
-//
-// /**
-//  * @property { objectLike } srcMaps.srcMap - The target object.
-//  * @property { objectLike } screenMaps.screenMap - The source object.
-//  * @property { Object } dstMap - The empty object.
-//  */
-//
-// /**
-//  * The mapScreens() returns an object filled by unique [ key, value ]
-//  * from {-srcMap-} object.
-//  *
-//  * It creates the variable (dstMap) assignes and calls the routine (_mapScreen( { } ) )
-//  * with three properties.
-//  *
-//  * @see {@link wTools._mapScreen} - See for more information.
-//  *
-//  * @param { objectLike } srcMap - The target object.
-//  * @param { objectLike } screenMap - The source object.
-//  *
-//  * @example
-//  * // returns { a : "abc", c : 33, d : "name" };
-//  * _.mapScreens( { d : 'name', c : 33, a : 'abc' }, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
-//  *
-//  * @returns { Object } Returns an (dstMap) object filled by unique [ key, value ]
-//  * from {-srcMap-} objects.
-//  * @function mapScreens
-//  * @throws { Error } Will throw an Error if (arguments.length) more that two,
-//  * if (srcMap or screenMap) are not objects-like.
-//  * @memberof wTools
-//  */
-//
-// function mapScreens( srcMap,screenMap )
-// {
-//
-//   _.assert( arguments.length >= 2,'mapScreens :','expects at least 2 arguments' );
-//   _.assert( _.objectLikeOrRoutine( srcMap ),'mapScreens :','expects object as argument' );
-//   _.assert( _.objectLikeOrRoutine( screenMap ),'mapScreens :','expects object as screenMap' );
-//
-//   if( arguments.length > 2 )
-//   {
-//     screenMap = _ArraySlice.call( arguments,1 );
-//   }
-//
-//   var dstMap = _mapScreen
-//   ({
-//     screenMaps : screenMap,
-//     srcMaps : srcMap,
-//     dstMap : Object.create( null ),
-//   });
-//
-//   return dstMap;
-// }
-//
 //
 
 /**
@@ -15828,37 +15894,40 @@ function mapOwnButConditional( filter,srcMap )
  */
 
 /**
- * The mapScreen() returns an object filled by unique [ key, value ]
+ * The mapOnly() returns an object filled by unique [ key, value ]
  * from others objects.
  *
  * It takes number of objects, creates a new object by three properties
- * and calls the _mapScreen( {} ) with created object.
+ * and calls the _mapOnly( {} ) with created object.
  *
- * @see  {@link wTools._mapScreen} - See for more information.
+ * @see  {@link wTools._mapOnly} - See for more information.
  *
  * @param { objectLike } screenMap - The first object.
  * @param { ...objectLike } arguments[] - One or more objects.
  *
  * @example
  * // returns { a : "abc", c : 33, d : "name" };
- * _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+ * _.mapOnly( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
  *
  * @returns { Object } Returns the object filled by unique [ key, value ]
  * from others objects.
- * @function mapScreen
+ * @function mapOnly
  * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
  * @memberof wTools
  */
 
-function mapScreen( screenMaps, srcMaps )
+function mapOnly( srcMaps, screenMaps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  if( arguments.length === 1 )
+  return _.mapExtendByMaps( null, srcMaps );
 
-  return _mapScreen
+  _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
+
+  return _mapOnly
   ({
-    screenMaps : screenMaps,
     srcMaps : srcMaps,
+    screenMaps : screenMaps,
     dstMap : Object.create( null ),
   });
 
@@ -15866,52 +15935,55 @@ function mapScreen( screenMaps, srcMaps )
 
 //
 
-function mapScreenOwn( screenMaps, srcMaps )
+function mapOnlyOwn( srcMaps, screenMaps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  if( arguments.length === 1 )
+  return _.mapExtendByMapsConditional( _.field.mapper.srcOwn, null, srcMaps );
 
-  return _mapScreen
+  _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
+
+  return _mapOnly
   ({
-    screenMaps : screenMaps,
-    srcMaps : srcMaps,
-    dstMap : Object.create( null ),
     filter : _.field.mapper.srcOwn,
+    srcMaps : srcMaps,
+    screenMaps : screenMaps,
+    dstMap : Object.create( null ),
   });
 
 }
 
 //
 
-function mapScreenComplementing( screenMaps, srcMaps )
+function mapOnlyComplementing( srcMaps, screenMaps )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
 
-  return _mapScreen
+  return _mapOnly
   ({
-    screenMaps : screenMaps,
-    srcMaps : srcMaps,
-    dstMap : Object.create( null ),
     filter : _.field.mapper.dstNotOwnOrUndefinedAssigning,
+    srcMaps : srcMaps,
+    screenMaps : screenMaps,
+    dstMap : Object.create( null ),
   });
 
 }
 
 //
-
-  // /**
-  //  * @callback  options.filter
-  //  * @param { objectLike } dstMap - An empty object.
-  //  * @param { objectLike } srcMaps - The target object.
-  //  * @param { string } - The key of the (screenMap).
-  //  */
 
 /**
- * The _mapScreen() returns an object filled by unique [ key, value]
+ * @callback  options.filter
+ * @param { objectLike } dstMap - An empty object.
+ * @param { objectLike } srcMaps - The target object.
+ * @param { string } - The key of the (screenMap).
+ */
+
+/**
+ * The _mapOnly() returns an object filled by unique [ key, value]
  * from others objects.
  *
- * The _mapScreen() checks whether there are the keys of
+ * The _mapOnly() checks whether there are the keys of
  * the (screenMap) in the list of (srcMaps).
  * If true, it calls a provided callback function(filter)
  * and adds to the (dstMap) all the [ key, value ]
@@ -15928,7 +16000,7 @@ function mapScreenComplementing( screenMaps, srcMaps )
  * options.dstMap = Object.create( null );
  * options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
  * options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
- * _mapScreen( options );
+ * _mapOnly( options );
  *
  * @example
  * // returns { a : "abc", c : 33, d : "name" };
@@ -15936,17 +16008,17 @@ function mapScreenComplementing( screenMaps, srcMaps )
  * options.dstMap = Object.create( null );
  * options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
  * options.srcMaps = { d : 'name', c : 33, a : 'abc' };
- * _mapScreen( options );
+ * _mapOnly( options );
  *
  * @returns { Object } Returns an object filled by unique [ key, value ]
  * from others objects.
- * @function _mapScreen
+ * @function _mapOnly
  * @throws { Error } Will throw an Error if (options.dstMap or screenMap) are not objects,
  * or if (srcMaps) is not an array
  * @memberof wTools
  */
 
-function _mapScreen( o )
+function _mapOnly( o )
 {
 
   var dstMap = o.dstMap || Object.create( null );
@@ -15962,12 +16034,20 @@ function _mapScreen( o )
   if( !o.filter )
   o.filter = _.field.mapper.bypass;
 
-  _.assert( o.filter.functionFamily === 'field-mapper' );
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.objectLike( dstMap ),'_mapScreen :','expects object as (-dstMap-)' );
-  _.assert( _.objectLike( screenMap ),'_mapScreen :','expects object as screenMap' );
-  _.assert( _.arrayIs( srcMaps ),'_mapScreen :','expects array of object as screenMap' );
-  _.assertMapHasOnly( o,_mapScreen.defaults );
+  if( Config.debug )
+  {
+
+    _.assert( o.filter.functionFamily === 'field-mapper' );
+    _.assert( arguments.length === 1, 'expects single argument' );
+    _.assert( _.objectLike( dstMap ), 'expects object-like {-dstMap-}' );
+    _.assert( !_.primitiveIs( screenMap ), 'expects not primitive {-screenMap-}' );
+    _.assert( _.arrayIs( srcMaps ), 'expects array {-srcMaps-}' );
+    _.assertMapHasOnly( o,_mapOnly.defaults );
+
+    for( var s = srcMaps.length-1 ; s >= 0 ; s-- )
+    _.assert( !_.primitiveIs( srcMaps[ s ] ), 'expects {-srcMaps-}' );
+
+  }
 
   for( var k in screenMap )
   {
@@ -15975,28 +16055,27 @@ function _mapScreen( o )
     if( screenMap[ k ] === undefined )
     continue;
 
-    var a;
-    for( a = srcMaps.length-1 ; a >= 0 ; a-- )
-    if( k in srcMaps[ a ] )
-    if( srcMaps[ a ][ k ] !== undefined )
+    for( var s = srcMaps.length-1 ; s >= 0 ; s-- )
+    if( k in srcMaps[ s ] )
+    if( srcMaps[ s ][ k ] !== undefined )
     break;
 
-    if( a === -1 )
+    if( s === -1 )
     continue;
 
-    o.filter.call( this,dstMap,srcMaps[ a ],k );
+    o.filter.call( this,dstMap,srcMaps[ s ],k );
 
   }
 
   return dstMap;
 }
 
-_mapScreen.defaults =
+_mapOnly.defaults =
 {
-  filter : null,
-  screenMaps : null,
-  srcMaps : null,
   dstMap : null,
+  srcMaps : null,
+  screenMaps : null,
+  filter : null,
 }
 
 //
@@ -16042,25 +16121,28 @@ _mapScreen.defaults =
  *
  */
 
-function assertMapHasOnly( srcMap )
+function assertMapHasOnly( srcMap, screenMaps, msg )
 {
 
   if( Config.debug === false )
   return;
 
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var but = Object.keys( _.mapBut.apply( this,args ) );
+  // var screenMaps = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
+  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
     if( _.strJoin && !hasMsg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ', but, ' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] + '\n' : '','Object should have no fields :',but.join( ',' ) ],
+      args : [ hasMsg ? arguments[ l-1 ] + '\n' : '', 'Object should have no fields :',but.join( ',' ) ],
       level : 2,
     });
   }
@@ -16117,16 +16199,23 @@ function assertMapHasOnly( srcMap )
  *
  */
 
-function assertMapOwnOnly( srcMap )
+function assertMapOwnOnly( srcMap, screenMaps, msg )
 {
 
   if( Config.debug === false )
   return;
 
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+
+  // var l = arguments.length;
+  // var hasMsg = _.strIs( arguments[ l-1 ] );
+  // var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
+  // var but = Object.keys( _.mapOwnBut.apply( this,args ) );
+
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var but = Object.keys( _.mapOwnBut.apply( this,args ) );
+  var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
@@ -16144,16 +16233,19 @@ function assertMapOwnOnly( srcMap )
 
 //
 
-function assertMapHasOnlyWithUndefines( srcMap )
+function assertMapHasOnlyWithUndefines( srcMap, screenMaps, msg )
 {
 
   if( Config.debug === false )
   return;
 
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  var but = Object.keys( _.mapButWithUndefines.apply( this,args ) );
+  // var screenMaps = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
+  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
@@ -16217,16 +16309,19 @@ function assertMapHasOnlyWithUndefines( srcMap )
  *
  */
 
-function assertMapHasNone( srcMap )
+function assertMapHasNone( srcMap, screenMaps, msg )
 {
 
   if( Config.debug === false )
   return;
 
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var screens = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
-  var none = _.mapScreen( screens, srcMap );
+  // var screens = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
+  var none = _.mapOnly( srcMap, screenMaps );
 
   var keys = Object.keys( none );
   if( keys.length )
@@ -16243,23 +16338,26 @@ function assertMapHasNone( srcMap )
 
 //
 
-function assertMapOwnNone( srcMap,none )
+function assertMapOwnNone( srcMap, screenMaps, msg )
 {
 
   if( Config.debug === false )
   return;
 
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
   if( hasMsg ) l -= 1;
 
-  if( l > 2 )
-  {
-    var args =_ArraySlice.call( arguments,1,l ); debugger;
-    none = _.mapMake.apply( this,args );
-  }
+  // if( l > 2 )
+  // {
+  //   var args =_ArraySlice.call( arguments,1,l ); debugger;
+  //   none = _.mapMake.apply( this,args );
+  // }
 
-  var has = Object.keys( _.mapScreenOwn( none, srcMap ) );
+  var has = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
 
   if( has.length )
   {
@@ -16327,7 +16425,7 @@ function assertMapHasAll( srcMap, all, msg )
   if( Config.debug === false )
   return;
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   var l = arguments.length;
@@ -16399,7 +16497,7 @@ function assertMapOwnAll( srcMap, all, msg )
   if( Config.debug === false )
   return;
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   var l = arguments.length;
@@ -16426,12 +16524,12 @@ function assertMapHasAllWithUndefines( srcMap, all, msg )
   if( Config.debug === false )
   return;
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   var l = arguments.length;
   var hasMsg = _.strIs( arguments[ l-1 ] );
-  var but = Object.keys( _.mapButWithUndefines( all,srcMap ) );
+  var but = Object.keys( _.mapBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
@@ -16484,7 +16582,7 @@ function assertMapHasAllWithUndefines( srcMap, all, msg )
  *
  */
 
-function assertMapHasNoUndefine( srcMap )
+function assertMapHasNoUndefine( srcMap, msg )
 {
 
   if( Config.debug === false )
@@ -17217,22 +17315,17 @@ var Routines =
   mapIndexWithKey : mapIndexWithKey,
   mapIndexWithValue : mapIndexWithValue,
 
-
   // map logic
 
-  mapButWithoutUndefines : mapButWithoutUndefines, /* experimental */
-  mapButWithUndefines : mapButWithUndefines, /* experimental */
+  mapButConditional : mapButConditional,
+  mapBut : mapBut,
+  mapButIgnoringUndefines : mapButIgnoringUndefines,
+  mapOwnBut : mapOwnBut,
 
-  mapBut : mapButWithUndefines, /* experimental */
-  mapOwnBut : mapOwnBut, /* experimental */
-
-  mapButConditional : mapButConditional, /* experimental */
-  mapOwnButConditional : mapOwnButConditional, /* experimental */
-
-  mapScreen : mapScreen,
-  mapScreenOwn : mapScreenOwn,
-  mapScreenComplementing : mapScreenComplementing,
-  _mapScreen : _mapScreen,
+  mapOnly : mapOnly,
+  mapOnlyOwn : mapOnlyOwn,
+  mapOnlyComplementing : mapOnlyComplementing,
+  _mapOnly : _mapOnly,
 
   // map assert
 

@@ -92,6 +92,14 @@ function entityIdenticalSimple( test )
   test.identical( got, expected );
 
   var expected = false;
+  var got = _.entityIdentical( 0, '0' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( 0, '' );
+  test.identical( got, expected );
+
+  var expected = false;
   var got = _.entityIdentical( 0, null );
   test.identical( got, expected );
 
@@ -113,6 +121,14 @@ function entityIdenticalSimple( test )
 
   var expected = false;
   var got = _.entityIdentical( 3, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( 3, [ 3 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( 3, { a : 3 } );
   test.identical( got, expected );
 
   var expected = false;
@@ -192,6 +208,14 @@ function entityIdenticalSimple( test )
   test.identical( got, expected );
 
   var expected = false;
+  var got = _.entityIdentical( '', [ '' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( '', { a : '' } );
+  test.identical( got, expected );
+
+  var expected = false;
   var got = _.entityIdentical( '', new Float32Array( 3 ) );
   test.identical( got, expected );
 
@@ -228,11 +252,27 @@ function entityIdenticalSimple( test )
   test.identical( got, expected );
 
   var expected = false;
+  var got = _.entityIdentical( '0', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( '1', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
   var got = _.entityIdentical( 'abc', [] );
   test.identical( got, expected );
 
   var expected = false;
   var got = _.entityIdentical( 'abc', {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( 'abc', [ 'abc' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( 'abc', { abc : 'abc' } );
   test.identical( got, expected );
 
   var expected = false;
@@ -328,6 +368,14 @@ function entityIdenticalSimple( test )
   test.identical( got, expected );
 
   var expected = false;
+  var got = _.entityIdentical( new RegExp( '' ), [ new RegExp( '' ) ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( new RegExp( '' ), { a : new RegExp( '' ) } );
+  test.identical( got, expected );
+
+  var expected = false;
   var got = _.entityIdentical( new RegExp( '' ), new Float32Array( 3 ) );
   test.identical( got, expected );
 
@@ -365,6 +413,14 @@ function entityIdenticalSimple( test )
 
   var expected = false;
   var got = _.entityIdentical( /abc/, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( /abc/, [ /abc/ ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( /abc/, { a : /abc/ } );
   test.identical( got, expected );
 
   var expected = false;
@@ -424,6 +480,14 @@ function entityIdenticalSimple( test )
 
   var expected = false;
   var got = _.entityIdentical( func1, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( func1, [ func1 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( func1, { a : func1 } );
   test.identical( got, expected );
 
   var expected = false;
@@ -490,6 +554,14 @@ function entityIdenticalSimple( test )
   test.identical( got, expected );
 
   var expected = false;
+  var got = _.entityIdentical( new Date(), [ new Date() ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( new Date(), { a : new Date() } );
+  test.identical( got, expected );
+
+  var expected = false;
   var got = _.entityIdentical( new Date(), new Float32Array( 3 ) );
   test.identical( got, expected );
 
@@ -531,6 +603,10 @@ function entityIdenticalSimple( test )
 
   var expected = false;
   var got = _.entityIdentical( [ [ 1,2 ] ], [ [ 1,2,3 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( [ [ 1,2,3 ] ], [ [ 1,2 ] ] );
   test.identical( got, expected );
 
   var expected = false;
@@ -655,6 +731,22 @@ function entityIdenticalSimple( test )
   var got = _.entityIdentical( { a : 1 }, { a : 1 } );
   test.identical( got, expected );
 
+  var expected = false;
+  var got = _.entityIdentical( { a : 1, b : 1 }, { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( { a : 1 }, { a : 1, b : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( { a : undefined, b : 1 }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( { a : undefined }, { a : undefined, b : 1 } );
+  test.identical( got, expected );
+
   var expected = true;
   var got = _.entityIdentical( { a : undefined }, { a : undefined } );
   test.identical( got, expected );
@@ -724,6 +816,14 @@ function entityIdenticalSimple( test )
   test.identical( got, expected );
 
   var expected = false;
+  var got = _.entityIdentical( {}, [ 0 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityIdentical( {}, [ 1 ] );
+  test.identical( got, expected );
+
+  var expected = false;
   var got = _.entityIdentical( {}, new Date() );
   test.identical( got, expected );
 
@@ -783,6 +883,886 @@ function entityIdenticalSimple( test )
 
   var expected = false;
   var got = _.entityIdentical( { a : function(){} }, function(){} );
+  test.identical( got, expected );
+
+  /* qqq : add typed / raw / node / view buffers tests */
+
+}
+
+//
+
+function entityContainsSimple( test )
+{
+
+  test.description = 'null - undefined';
+
+  var expected = true;
+  debugger;
+  var got = _.entityContains( null, null );
+  debugger;
+  test.identical( got, expected );
+  debugger;
+
+  var expected = true;
+  var got = _.entityContains( undefined, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( null, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( undefined, null );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'number - number';
+
+  var expected = true;
+  var got = _.entityContains( 1, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 1, 1 + 1e-15 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( 0, 0 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( NaN, NaN );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( Infinity, Infinity );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'number - not number';
+
+  var expected = false;
+  var got = _.entityContains( 1, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, '0' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, '' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( NaN, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( Infinity, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, [ 0 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, { a : 0 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 0, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, [ 3 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, { a : 3 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 3, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'String - String';
+
+  var expected = true;
+  var got = _.entityContains( '', '' );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( 'abc', 'abc' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', 'abc' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', '' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'ab', 'c' );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'String - not String';
+
+  var expected = false;
+  var got = _.entityContains( '', new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', [ '' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', { a : '' } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', new RegExp( '' ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '', function(){} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '0', 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( '1', 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', [ 'abc' ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', { a : 'abc' } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( 'abc', function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'RegExp - RegExp';
+
+  var expected = true;
+  var got = _.entityContains( new RegExp( '' ), new RegExp( '' ) );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( /abc/, /abc/ );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( /abc/iy, /abc/yi );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( new RegExp( 'abc' ), /abc/ );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( new RegExp( 'abc','i' ), /abc/i );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/i, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/i, /abc/yi );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /ab/, /c/ );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'RegExp - not RegExp';
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), [] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( new RegExp( '' ), {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), [ new RegExp( '' ) ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), { a : new RegExp( '' ) } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), { a : '' } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new RegExp( '' ), function(){} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, [] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( /abc/, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, [ /abc/ ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, { a : /abc/ } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( /abc/, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Routine - Routine';
+
+  var func1 = function func(){};
+  var func2 = function func(){};
+
+  var expected = true;
+  var got = _.entityContains( func1, func1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, func2 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Routine - not Routine';
+
+  var expected = false;
+  var got = _.entityContains( func1, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, [] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( func1, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, [ func1 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, { func1 : func1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( func1, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Date - Date';
+
+  var expected = true;
+  var got = _.entityContains( new Date(), new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var src1 = new Date();
+  var src2 = new Date();
+  src2.setFullYear( 1987 );
+  var got = _.entityContains( src1, src2 );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Date - not Date';
+
+  var expected = false;
+  var got = _.entityContains( new Date(), '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), [] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( new Date(), {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), [ new Date() ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), { a : new Date() } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), /abc/ );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( new Date(), function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Array - Array';
+
+  var expected = true;
+  var got = _.entityContains( [], [] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ 0 ], [ 0 ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ 1 ], [ 1 ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ undefined ], [ undefined ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ null ], [ null ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ [ 1,2,3 ] ], [ [ 1,2,3 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ [ 1,2 ] ], [ [ 1,2,3 ] ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ [ 1,2,3 ] ], [ [ 1,2 ] ] );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ [ 1,2 ] ], [ [ 1 ] ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ [ 1,3 ] ], [ 1,3 ] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ null ], [ undefined ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Array - not Array';
+
+  var expected = false;
+  var got = _.entityContains( [], '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], 1 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [], {} );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ 1 ], {} );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ 1 ], { 0 : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ 1 ], { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], new RegExp( '' ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [], function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  var expected = false;
+  var got = _.entityContains( [ '1' ], '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ undefined ], undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ null ], null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ NaN ], NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ 0 ], 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ 1 ], 1 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( [ {} ], {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ new Date() ], new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ new Float32Array( 3 ) ], new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ new RegExp( '' ) ], new RegExp( '' ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( [ function(){} ], function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Map - Map';
+
+  var expected = true;
+  var got = _.entityContains( {}, {} );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : 0 }, { a : 0 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : 1 }, { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : 1, b : 1 }, { a : 1 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : 1 }, { a : 1, b : 1 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : undefined, b : 1 }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : undefined }, { a : undefined, b : 1 } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : undefined }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : null }, { a : null } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : { b : 1 } }, { a : { b : 1 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : { b : 1 } }, { a : { b : 1, c : 2 } } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : { b : 1, c : 2 } }, { a : { b : 1 } } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : { b : 1, c : 3 } }, { b : 1, c : 3 } );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : null }, { a : undefined } );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : undefined }, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, { a : undefined } );
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'Map - not Map';
+
+  var expected = false;
+  var got = _.entityContains( {}, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, 1 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, [] );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( {}, function(){} );
+  test.identical( got, expected );
+
+  /* */
+
+  var expected = false;
+  var got = _.entityContains( { a : '1' }, '1' );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : undefined }, undefined );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : null }, null );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : NaN }, NaN );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : 0 }, 0 );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : 1 }, 1 );
+  test.identical( got, expected );
+
+  var expected = true;
+  var got = _.entityContains( { a : {} }, {} );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : new Date() }, new Date() );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : new Float32Array( 3 ) }, new Float32Array( 3 ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : new RegExp( '' ) }, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  var expected = false;
+  var got = _.entityContains( { a : function(){} }, function(){} );
   test.identical( got, expected );
 
   /* qqq : add typed / raw / node / view buffers tests */
@@ -1556,7 +2536,7 @@ function entityEquivalentCycled( test )
 
 //
 
-function entityContain( test )
+function entityContainsCycled( test )
 {
   var c = this;
 
@@ -1565,19 +2545,19 @@ function entityContain( test )
   test.description = 'trivial array';
 
   var expected = true;
-  var got = _.entityContain( [ 1,3 ], [ 1,3 ] );
+  var got = _.entityContains( [ 1,3 ], [ 1,3 ] );
   test.identical( got, expected );
 
   var expected = false;
-  var got = _.entityContain( [ 1 ], [ 1,3 ] );
+  var got = _.entityContains( [ 1 ], [ 1,3 ] );
   test.identical( got, expected );
 
   var expected = true;
-  var got = _.entityContain( [ 1,3 ], [ 1 ] );
+  var got = _.entityContains( [ 1,3 ], [ 1 ] );
   test.identical( got, expected );
 
   var expected = false;
-  var got = _.entityContain( [ [ 1,2 ] ], [ [ 1,2,3 ] ] );
+  var got = _.entityContains( [ [ 1,2 ] ], [ [ 1,2,3 ] ] );
   test.identical( got, expected );
 
   /* */
@@ -1585,19 +2565,19 @@ function entityContain( test )
   test.description = 'trivial map';
 
   var expected = true;
-  var got = _.entityContain( { a : 1, b : 3 }, { a : 1, b : 3 } );
+  var got = _.entityContains( { a : 1, b : 3 }, { a : 1, b : 3 } );
   test.identical( got, expected );
 
   var expected = false;
-  var got = _.entityContain( { a : 1 }, { a : 1, b : 3 } );
+  var got = _.entityContains( { a : 1 }, { a : 1, b : 3 } );
   test.identical( got, expected );
 
   var expected = true;
-  var got = _.entityContain( { a : 1, b : 3 }, { a : 1 } );
+  var got = _.entityContains( { a : 1, b : 3 }, { a : 1 } );
   test.identical( got, expected );
 
   var expected = false;
-  var got = _.entityContain( { a : { a : 1, b : 2 } }, { a : { a : 1, b : 2, c : 3 } } );
+  var got = _.entityContains( { a : { a : 1, b : 2 } }, { a : { a : 1, b : 2, c : 3 } } );
   test.identical( got, expected );
 
   /* */
@@ -1607,31 +2587,31 @@ function entityContain( test )
   var a = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,3 ] } ] } }
   var b = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,3 ] } ] } }
   var expected = true;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   var a = { e : [ 1,3,4 ] }
   var b = { e : [ 1,4,4 ] }
   var expected = false;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   var a = { e : [ 1,4,3 ] }
   var b = { e : [ 1,4 ] }
   var expected = true;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   var a = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,4,3 ] } ] } }
   var b = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,4 ] } ] } }
   var expected = true;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   var a = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,3 ] } ] } }
   var b = { a : [ 1 ], b : { c : [ { d : 1, e : [ 1,4 ] } ] } }
   var expected = false;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   /* */
@@ -1643,7 +2623,7 @@ function entityContain( test )
   var b = { x : 1, y : null }
   b.y = b;
   var expected = true;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   var a = { x : 1, y : null }
@@ -1651,7 +2631,7 @@ function entityContain( test )
   var b = { x : 1, y : null }
   b.x = b;
   var expected = true;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   var a = { x : 1, y : { x : 1, y : null } }
@@ -1659,7 +2639,7 @@ function entityContain( test )
   var b = { x : 1, y : null }
   b.y = b;
   var expected = false;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
   var a = { x : 1, y : null }
@@ -1667,7 +2647,7 @@ function entityContain( test )
   var b = { x : 1, y : { x : 1, y : null } }
   b.y.y = b;
   var expected = false;
-  var got = _.entityContain( a, b );
+  var got = _.entityContains( a, b );
   test.identical( got, expected );
 
 }
@@ -1709,9 +2689,7 @@ function _entityEqualLoose( test )
   /* strict string - number */
 
   test.description = 'number & string, strictNumbering : 0, strictTyping : 0';
-  debugger;
   var got = _._entityEqual( '123', 123, { strictNumbering : 0, strictTyping : 0 } );
-  debugger;
   var expected = true ;
   test.identical( got, expected );
 
@@ -1727,6 +2705,28 @@ function _entityEqualLoose( test )
 
   test.description = 'number & string, strictNumbering : 1, strictTyping : 1';
   var got = _._entityEqual( '123', 123, { strictNumbering : 1, strictTyping : 1 } );
+  var expected = false ;
+  test.identical( got, expected );
+
+  /* */
+
+  test.description = 'number & string, strictNumbering : 0, strictTyping : 0';
+  var got = _._entityEqual( 123, '123', { strictNumbering : 0, strictTyping : 0 } );
+  var expected = true ;
+  test.identical( got, expected );
+
+  test.description = 'number & string, strictNumbering : 1, strictTyping : 0';
+  var got = _._entityEqual( 123, '123', { strictNumbering : 1, strictTyping : 0 } );
+  var expected = false ;
+  test.identical( got, expected );
+
+  test.description = 'number & string, strictNumbering : 0, strictTyping : 1';
+  var got = _._entityEqual( 123, '123', { strictNumbering : 0, strictTyping : 1 } );
+  var expected = false ;
+  test.identical( got, expected );
+
+  test.description = 'number & string, strictNumbering : 1, strictTyping : 1';
+  var got = _._entityEqual( 123, '123', { strictNumbering : 1, strictTyping : 1 } );
   var expected = false ;
   test.identical( got, expected );
 
@@ -1755,7 +2755,7 @@ function _entityEqualLoose( test )
   /* */
 
   test.description = 'src1 constains elem from src2 ';
-  var got = _._entityEqual( { a : 1, b : 2 }, { b : 2 }, { contain : 1 } );
+  var got = _._entityEqual( { a : 1, b : 2 }, { b : 2 }, { containing : 1 } );
   var expected = true ;
   test.identical( got, expected );
 
@@ -2000,41 +3000,41 @@ function entityContainLoose( test )
   /* array tests */
 
   test.description = 'tests two non empty arrays : same length';
-  var got = _.entityContain( arrX1, arrY1 );
+  var got = _.entityContains( arrX1, arrY1 );
   test.identical( got, true );
 
   test.description = 'tests two non empty different arrays';
-  var got = _.entityContain( arrX2, arrY2 );
+  var got = _.entityContains( arrX2, arrY2 );
   test.identical( got, false );
 
   test.description = 'one array contains other`s elements';
-  var got = _.entityContain( arrX3, arrY3 );
+  var got = _.entityContains( arrX3, arrY3 );
   test.identical( got, true );
 
   test.description = 'one array contains other as element';
-  var got = _.entityContain( arrX4, arrY4 );
+  var got = _.entityContains( arrX4, arrY4 );
   test.identical( got, false );
 
   test.description = 'nested arrays';
-  var got = _.entityContain( arrX5, arrY5 );
+  var got = _.entityContains( arrX5, arrY5 );
   test.identical( got, true );
 
   /* object tests */
 
   test.description = 'tests two non empty objects : identical keys';
-  var got = _.entityContain( objX1, objY1 );
+  var got = _.entityContains( objX1, objY1 );
   test.identical( got, true );
 
   test.description = 'tests two different objects : identical keys';
-  var got = _.entityContain( objX2, objY2 );
+  var got = _.entityContains( objX2, objY2 );
   test.identical( got, false );
 
   test.description = 'tests nested objects : identical';
-  var got = _.entityContain( objX3, objY3 );
+  var got = _.entityContains( objX3, objY3 );
   test.identical( got, true );
 
   test.description = 'one object contains elements of another';
-  var got = _.entityContain( objX4, objY4 );
+  var got = _.entityContains( objX4, objY4 );
   test.identical( got, true );
 
   if( !Config.debug )
@@ -2043,13 +3043,13 @@ function entityContainLoose( test )
   test.description = 'missed arguments';
   test.shouldThrowError( function()
   {
-    _.entityContain();
+    _.entityContains();
   });
 
   test.description = 'extra argument';
   test.shouldThrowError( function()
   {
-    _.entityContain( strX3, strY3, options, '');
+    _.entityContains( strX3, strY3, options, '');
   });
 
 }
@@ -2171,6 +3171,82 @@ src2 :
 
 //
 
+function eachSample( test )
+{
+
+  test.description = 'simplest leftToRight : 1'; /* */
+
+  var expected =
+  [
+    [ 0,2,5 ],[ 1,2,5 ],
+    [ 0,3,5 ],[ 1,3,5 ],
+    [ 0,4,5 ],[ 1,4,5 ],
+  ];
+
+  var got = _.eachSample
+  ({
+    sets : [ [ 0,1 ],[ 2,3,4 ],[ 5 ] ],
+    leftToRight : 1,
+  });
+
+  test.identical( got, expected );
+
+  test.description = 'simplest leftToRight : 0'; /* */
+
+  var expected =
+  [
+    [ 0,2,5 ],[ 0,3,5 ],[ 0,4,5 ],
+    [ 1,2,5 ],[ 1,3,5 ],[ 1,4,5 ],
+  ];
+
+  var got = _.eachSample
+  ({
+    sets : [ [ 0,1 ],[ 2,3,4 ],[ 5 ] ],
+    leftToRight : 0,
+  });
+
+  test.identical( got, expected );
+
+  test.description = 'simplest leftToRight : 1'; /* */
+
+  var expected =
+  [
+    { a : 0,b : 2,c : 5 },{ a : 1,b : 2,c : 5 },
+    { a : 0,b : 3,c : 5 },{ a : 1,b : 3,c : 5 },
+    { a : 0,b : 4,c : 5 },{ a : 1,b : 4,c : 5 },
+  ];
+
+  var got = _.eachSample
+  ({
+    sets : { a : [ 0,1 ],b : [ 2,3,4 ], c : [ 5 ] },
+    leftToRight : 1,
+  });
+
+  test.identical( got, expected );
+
+  test.description = 'simplest leftToRight : 0'; /* */
+
+  var expected =
+  [
+    { a : 0,b : 2,c : 5 },{ a : 0,b : 3,c : 5 },{ a : 0,b : 4,c : 5 },
+    { a : 1,b : 2,c : 5 },{ a : 1,b : 3,c : 5 },{ a : 1,b : 4,c : 5 },
+  ];
+
+  var got = _.eachSample
+  ({
+    sets : { a : [ 0,1 ],b : [ 2,3,4 ], c : [ 5 ] },
+    leftToRight : 0,
+  });
+
+  test.identical( got, expected );
+
+  logger.log( 'expected',_.toStr( expected,{ levels : 5 } ) );
+  logger.log( 'got',_.toStr( got,{ levels : 5 } ) );
+
+}
+
+//
+
 function look( test )
 {
 
@@ -2242,18 +3318,22 @@ var Self =
   {
 
     entityIdenticalSimple : entityIdenticalSimple,
+    entityContainsSimple : entityContainsSimple,
+
     entityEqualBuffers : entityEqualBuffers,
 
     entityIdenticalCycled : entityIdenticalCycled,
     entityIdenticalCycledWithOptions : entityIdenticalCycledWithOptions,
     entityEquivalentCycled : entityEquivalentCycled,
-    entityContain : entityContain,
+    entityContainsCycled : entityContainsCycled,
 
     _entityEqualLoose : _entityEqualLoose,
     entityIdenticalLoose : entityIdenticalLoose,
     entityEquivalentLoose : entityEquivalentLoose,
     entityContainLoose : entityContainLoose,
     entityDiffLoose : entityDiffLoose,
+
+    eachSample : eachSample,
 
     look : look,
 

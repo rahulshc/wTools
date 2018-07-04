@@ -177,31 +177,129 @@ function mapExtendConditional( test )
 function mapExtend( test )
 {
 
-  test.description = 'first argument is null';
-  var got = _.mapExtend( null, { a : 7, b : 13 }, { c : 3, d : 33 } );
+  test.description = 'trivial, first argument is null';
+  var src1 = { a : 7, b : 13 };
+  var src1Copy = { a : 7, b : 13 };
+  var src2 = { c : 3, d : 33 };
+  var src2Copy = { c : 3, d : 33 };
+  var got = _.mapExtend( null, src1, src2 );
   var expected = { a : 7, b : 13, c : 3, d : 33 };
   test.identical( got, expected );
+  test.identical( src1, src1Copy );
+  test.identical( src2, src2Copy );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
 
-  test.description = 'multiple object properties';
-  var dst = { a : 7, b : 13 };
-  var got = _.mapExtend( dst, { c : 3, d : 33 }, { e : 77 } );
-  var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
+  test.description = 'trivial, first argument';
+  var src1 = { a : 7, b : 13 };
+  var src1Copy = { a : 7, b : 13 };
+  var src2 = { c : 3, d : 33 };
+  var src2Copy = { c : 3, d : 33 };
+  var got = _.mapExtend( src1, src2 );
+  var expected = { a : 7, b : 13, c : 3, d : 33 };
   test.identical( got, expected );
-  test.is( got === dst );
+  test.identical( src2, src2Copy );
+  test.is( got === src1 );
+  test.is( got !== src2 );
+
+  test.description = 'complex, first argument is null';
+  var src1 = { a : 1, b : 1, c : 1, z : 1 };
+  var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
+  var src2 = { a : 2, c : 2, d : 2 };
+  var src2Copy = { a : 2, c : 2, d : 2 };
+  var src3 = { a : 3, b : 3, e : 3 };
+  var src3Copy = { a : 3, b : 3, e : 3 };
+  var got = _.mapExtend( null, src1, src2, src3 );
+  var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
+  test.identical( got, expected );
+  test.identical( src1, src1Copy );
+  test.identical( src2, src2Copy );
+  test.identical( src3, src3Copy );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.is( got !== src3 );
+
+  test.description = 'complex, first argument is not null';
+  var src1 = { a : 1, b : 1, c : 1, z : 1 };
+  var src1Copy = { a : 1, b : 1, c : 1, z : 1 };
+  var src2 = { a : 2, c : 2, d : 2 };
+  var src2Copy = { a : 2, c : 2, d : 2 };
+  var src3 = { a : 3, b : 3, e : 3 };
+  var src3Copy = { a : 3, b : 3, e : 3 };
+  var got = _.mapExtend( src1, src2, src3 );
+  var expected = { a : 3, b : 3, c : 2, d : 2, e : 3, z : 1 };
+  test.identical( got, expected );
+  test.identical( src2, src2Copy );
+  test.identical( src3, src3Copy );
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.is( got !== src3 );
+
+  test.description = 'extend pure map by empty strings, first argument is null';
+  var src1 = Object.create( null );
+  src1.a = '1';
+  src1.b = '1';
+  src1.c = '1';
+  src1.z = '1';
+  var src1Copy = Object.create( null );
+  src1Copy.a = '1';
+  src1Copy.b = '1';
+  src1Copy.c = '1';
+  src1Copy.z = '1';
+  var src2 = Object.create( null );
+  src2.a = '';
+  src2.c = '';
+  src2.d = '';
+  src2.e = '2';
+  var src2Copy = Object.create( null );
+  src2Copy.a = '';
+  src2Copy.c = '';
+  src2Copy.d = '';
+  src2Copy.e = '2';
+  var got = _.mapExtend( null, src1, src2 );
+  var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
+  test.identical( got, expected );
+  test.identical( src1, src1Copy );
+  test.identical( src2, src2Copy );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+
+  test.description = 'extend pure map by empty strings, first argument is not null';
+  var src1 = Object.create( null );
+  src1.a = '1';
+  src1.b = '1';
+  src1.c = '1';
+  src1.z = '1';
+  var src1Copy = Object.create( null );
+  src1Copy.a = '1';
+  src1Copy.b = '1';
+  src1Copy.c = '1';
+  src1Copy.z = '1';
+  var src2 = Object.create( null );
+  src2.a = '';
+  src2.c = '';
+  src2.d = '';
+  src2.e = '2';
+  var src2Copy = Object.create( null );
+  src2Copy.a = '';
+  src2Copy.c = '';
+  src2Copy.d = '';
+  src2Copy.e = '2';
+  var got = _.mapExtend( src1, src2 );
+  var expected = { a : '', b : '1', c : '', d : '', e : '2', z : '1' };
+  test.identical( got, expected );
+  test.identical( src2, src2Copy );
+  test.is( got === src1 );
+  test.is( got !== src2 );
 
   test.description = 'object like array';
   var got = _.mapExtend( null, [ 3, 7, 13, 73 ] );
   var expected = { 0 : 3, 1 : 7, 2 : 13, 3 : 73 };
   test.identical( got, expected );
 
-  test.description = 'object like array2';
-  var dst = { a : 7, b : 13 };
-  var got = _.mapExtend( dst, [ 33, 3, 7, 13 ] );
-  var expected = { 0 : 33, 1 : 3, 2 : 7, 3 : 13, a : 7, b : 13 };
-  test.identical( got, expected );
-  test.is( got === dst );
-
   /**/
+
+  test.description = 'extend complex map by complex map';
 
   var dst = Object.create( null );
   dst.x1 = '1';
@@ -217,8 +315,6 @@ function mapExtend( test )
   src.x3 = 13;
   src.y4 = 14;
 
-  test.description = 'extend complex map by complex map';
-  var got = _.mapExtend( dst, src );
   var expected = Object.create( null );
   expected.x1 = '1';
   expected.x2 = 2;
@@ -229,6 +325,7 @@ function mapExtend( test )
   expected.x3 = 13;
   expected.y4 = 14;
 
+  var got = _.mapExtend( dst, src );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -350,18 +447,88 @@ function mapComplement( test )
 function mapMake( test )
 {
 
-  test.description = 'an object';
-  var got = _.mapMake( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
-  var expected = { a : 7, b : 13, c : 3, d : 33, e : 77 };
+  test.description = 'empty'; /**/
+
+  var got = _.mapMake();
+  var expected = {};
   test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
 
-  /**/
+  var got = _.mapMake( null );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
 
-  test.description = 'no argument';
+  var got = _.mapMake( undefined );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+
+  test.description = 'empty map'; /**/
+
+  var src1 = {};
+  var src1Copy = _.mapExtend( null, src1 );
+  var got = _.mapMake( src1 );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.identical( src1, src1Copy );
+  test.is( got !== src1 );
+
+  test.description = 'single map'; /**/
+
+  var src1 = { a : 7, b : 13 };
+  var src1Copy = _.mapExtend( null, src1 );
+  var got = _.mapMake( src1 );
+  var expected = { a : 7, b : 13 };
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.identical( src1, src1Copy );
+  test.is( got !== src1 );
+
+  test.description = 'trivial'; /**/
+
+  var src1 = { a : 7, b : 13 };
+  var src2 = { a : 77, c : 3, d : 33 };
+  var src3 = { a : 'x', e : 77 };
+  var src1Copy = _.mapExtend( null, src1 );
+  var src2Copy = _.mapExtend( null, src2 );
+  var src3Copy = _.mapExtend( null, src3 );
+  var got = _.mapMake( src1, src2, src3 );
+  var expected = { a : 'x', b : 13, c : 3, d : 33, e : 77 };
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.identical( src1, src1Copy );
+  test.identical( src2, src2Copy );
+  test.identical( src3, src3Copy );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.is( got !== src3 );
+
+  /* */
+
+  test.description = 'bad arguments'; /**/
+
   test.shouldThrowError( function()
   {
-    _.mapMake();
+    _.mapMake( '' );
   });
+
+  test.description = 'bad arguments'; /**/
+
+  test.shouldThrowError( function()
+  {
+    _.mapMake( 'x' );
+  });
+
+  test.description = 'bad arguments'; /**/
+
+  test.shouldThrowError( function()
+  {
+    _.mapMake( null, 'x' );
+  });
+
+  test.description = 'bad arguments'; /**/
 
 }
 
@@ -2308,18 +2475,151 @@ function mapOnlyPrimitives( test )
 
 //
 
+function mapButConditional( test )
+{
+
+  test.description = 'an object';
+  var got = _.mapButConditional( _.field.filter.dstNotHasSrcPrimitive, { a : 1, b : 'ab', c : [ 1, 2, 3 ] }, { a : 1, b : 'ab', d : [ 1, 2, 3 ] }  );
+  var expected = {};
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.description = 'no argument';
+  test.shouldThrowError( function()
+  {
+    _.mapButConditional();
+  });
+
+  test.description = 'few arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapButConditional( _.field.mapper.primitive );
+  });
+
+  test.description = 'second argument is wrong type of array';
+  test.shouldThrowError( function()
+  {
+    _.mapButConditional( _.field.mapper.primitive, [] );
+  });
+
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapButConditional( 'wrong arguments' );
+  });
+
+}
+
+//
+
 function mapBut( test )
 {
 
-  test.description = 'a unique object';
-  var got = _.mapBut( { a : 7, b : 13, c : 3 }, { a : 1, b : 1 } );
-  var expected = { c : 3 };
-  test.identical( got, expected );
+  test.description = 'empty src map'; /* */
 
-  test.description = 'a unique object';
-  var got = _.mapBut( { a : 7, b : 13, c : 3 }, { a : 1, b : 1 },{ a : 1, c : 1 } );
+  var srcMap = {};
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapBut( srcMap, screenMap );
   var expected = {};
   test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  test.description = 'empty src array'; /* */
+
+  var srcMap = [];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var srcMapCopy = srcMap.slice();
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapBut( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  test.description = 'empty screen'; /* */
+
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = {};
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapBut( srcMap, screenMap );
+  var expected = { d : 'name', c : 33, a : 'abc' };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  test.description = 'trivial'; /* */
+
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapBut( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  var srcMap = { d : 'name', c : 33, a : 'abc', x : 13 };
+  var screenMap = { b : 77, c : 3, d : 'name' };
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapBut( srcMap, screenMap );
+  var expected = { a : 'abc', x : 13 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  test.description = 'several screens'; /* */
+
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = screenMap.slice();
+  var got = _.mapBut( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  test.description = 'several srcs'; /* */
+
+  var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
+  var screenMap = { a : 2, b : 2, d : 2 };
+  var srcMapCopy = srcMap.slice();
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapBut( srcMap, screenMap );
+  var expected = { c :1 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  test.description = 'several srcs and screens'; /* */
+
+  var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
+  var screenMap = [ { a : 2 }, { b : 2 }, { d : 2 } ];
+  var srcMapCopy = srcMap.slice();
+  var screenMapCopy = screenMap.slice();
+  var got = _.mapBut( srcMap, screenMap );
+  var expected = { c : 1 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
 
   /* */
 
@@ -2332,25 +2632,49 @@ function mapBut( test )
     _.mapBut();
   });
 
-  test.description = 'not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapBut( {} );
-  });
-
-  test.description = 'not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapBut( [] );
-  });
-
   test.description = 'wrong type of arguments';
   test.shouldThrowError( function()
   {
     _.mapBut( 'wrong arguments' );
   });
 
-};
+  test.description = 'only src map';
+  test.shouldThrowError( function()
+  {
+    _.mapBut( srcMap );
+  });
+
+  test.description = 'first argument is not an object-like';
+  test.shouldThrowError( function()
+  {
+    _.mapBut( 3, [] );
+  });
+
+  test.description = 'second argument is not an object-like';
+  test.shouldThrowError( function()
+  {
+    _.mapBut( [], '' );
+  });
+
+  test.description = 'redundant arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapBut( [], [], {} );
+  });
+
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapBut( {}, 'wrong arguments' );
+  });
+
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapBut( 'wrong arguments', {} );
+  });
+
+}
 
 //
 
@@ -2405,66 +2729,108 @@ function mapOwnBut( test )
 
 //
 
-function mapButConditional( test )
+function mapOnly( test )
 {
 
-  test.description = 'an object';
-  var got = _.mapButConditional( _.field.mapper.primitive, { a : 1, b : 'ab', c : [ 1, 2, 3 ] } );
-  var expected = { a : 1, b : 'ab'};
+  test.description = 'empty src map'; /* */
+
+  var srcMap = {};
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
   test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
 
-  /**/
+  test.description = 'empty src array'; /* */
 
-  if( !Config.debug )
-  return;
+  var srcMap = [];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var srcMapCopy = srcMap.slice();
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
 
-  test.description = 'no argument';
-  test.shouldThrowError( function()
-  {
-    _.mapButConditional();
-  });
+  test.description = 'empty screen'; /* */
 
-  test.description = 'few arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapButConditional( _.field.mapper.primitive );
-  });
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = {};
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
 
-  test.description = 'second argument is wrong type of array';
-  test.shouldThrowError( function()
-  {
-    _.mapButConditional( _.field.mapper.primitive, [] );
-  });
+  test.description = 'only srcMap'; /* */
 
-  test.description = 'wrong type of arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapButConditional( 'wrong arguments' );
-  });
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var got = _.mapOnly( srcMap );
+  var expected = { d : 'name', c : 33, a : 'abc' };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
 
-}
+  test.description = 'trivial'; /* */
 
-//
-
-function mapScreen( test )
-{
-
-  test.description = 'an object'
-  var got = _.mapScreen( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapOnly( srcMap, screenMap );
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
 
-  test.description = 'test1';
-  var got = _.mapScreen( [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ], { d : 'name', c : 33, a : 'abc' } );
-  console.log(got);
+  test.description = 'several screens'; /* */
+
+  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
+  var srcMapCopy = _.mapExtend( null, srcMap );
+  var screenMapCopy = screenMap.slice();
+  var got = _.mapOnly( srcMap, screenMap );
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
 
-  test.description = 'test2';
-  var got = _.mapScreen( [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ], { d : 'name', c : 33, a : 'abc' } );
-  console.log(got);
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  test.description = 'several srcs'; /* */
+
+  var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
+  var screenMap = { a : 2, b : 2, d : 2 };
+  var srcMapCopy = srcMap.slice();
+  var screenMapCopy = _.mapExtend( null, screenMap );
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = { a : 1, b : 1 };
   test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
+
+  test.description = 'several srcs and screens'; /* */
+
+  var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
+  var screenMap = [ { a : 2 }, { b : 2 }, { d : 2 } ];
+  var srcMapCopy = srcMap.slice();
+  var screenMapCopy = screenMap.slice();
+  var got = _.mapOnly( srcMap, screenMap );
+  var expected = { a : 1, b : 1 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, srcMapCopy );
+  test.identical( screenMap, screenMapCopy );
 
   /* */
 
@@ -2474,69 +2840,57 @@ function mapScreen( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.mapScreen();
-  });
-
-  test.description = 'few arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapScreen( {} );
-  });
-
-  test.description = 'wrong type of array';
-  test.shouldThrowError( function()
-  {
-    _.mapScreen( [] );
+    _.mapOnly();
   });
 
   test.description = 'wrong type of arguments';
   test.shouldThrowError( function()
   {
-    _.mapScreen( 'wrong arguments' );
+    _.mapOnly( 'wrong arguments' );
   });
 
   test.description = 'first argument is not an object-like';
   test.shouldThrowError( function()
   {
-    _.mapScreen( 3, [] );
+    _.mapOnly( 3, [] );
   });
 
   test.description = 'second argument is not an object-like';
   test.shouldThrowError( function()
   {
-    _.mapScreen( [], '' );
-  });
-
-  test.description = 'few arguments';
-  test.shouldThrowError( function()
-  {
-    _.mapScreen( {} );
+    _.mapOnly( [], '' );
   });
 
   test.description = 'redundant arguments';
   test.shouldThrowError( function()
   {
-    _.mapScreen( [], [], {} );
+    _.mapOnly( [], [], {} );
   });
 
   test.description = 'wrong type of arguments';
   test.shouldThrowError( function()
   {
-    _.mapScreen( 'wrong arguments', 'wrong arguments' );
+    _.mapOnly( {}, 'wrong arguments' );
+  });
+
+  test.description = 'wrong type of arguments';
+  test.shouldThrowError( function()
+  {
+    _.mapOnly( 'wrong arguments', {} );
   });
 
 }
 
 //
 
-function _mapScreen( test )
+function _mapOnly( test )
 {
 
   test.description = 'an object';
   var options = {};
   options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
   options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
-  var got = _._mapScreen( options );
+  var got = _._mapOnly( options );
   var expected = { a : 33, c : 33, name : 'Mikle' };
   test.identical( got, expected );
 
@@ -2544,7 +2898,7 @@ function _mapScreen( test )
   var options = {};
   options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
   options.srcMaps = { d : 'name', c : 33, a : 'abc' };
-  var got = _._mapScreen( options );
+  var got = _._mapOnly( options );
   var expected = { a : 'abc', c : 33, d : 'name' };
   test.identical( got, expected );
 
@@ -2556,25 +2910,25 @@ function _mapScreen( test )
   test.description = 'no arguments';
   test.shouldThrowError( function()
   {
-    _._mapScreen();
+    _._mapOnly();
   });
 
   test.description = 'redundant arguments';
   test.shouldThrowError( function()
   {
-    _._mapScreen( {}, 'wrong arguments' );
+    _._mapOnly( {}, 'wrong arguments' );
   });
 
   test.description = 'wrong type of array';
   test.shouldThrowError( function()
   {
-    _._mapScreen( [] );
+    _._mapOnly( [] );
   });
 
   test.description = 'wrong type of arguments';
   test.shouldThrowError( function()
   {
-    _._mapScreen( 'wrong arguments' );
+    _._mapOnly( 'wrong arguments' );
   });
 
 }
@@ -3462,14 +3816,12 @@ var Self =
 
     // map logic
 
+    mapButConditional : mapButConditional,
     mapBut : mapBut,
-
     mapOwnBut : mapOwnBut,
 
-    mapButConditional : mapButConditional,
-
-    mapScreen : mapScreen,
-    _mapScreen : _mapScreen,
+    mapOnly : mapOnly,
+    _mapOnly : _mapOnly,
 
     mapIdentical : mapIdentical,
     mapContain : mapContain,

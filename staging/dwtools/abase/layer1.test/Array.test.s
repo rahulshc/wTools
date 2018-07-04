@@ -8415,7 +8415,7 @@ function arrayFlatten2( test )
   var expected = [ 1, 2, 3, 13, 'abc', null ];
   test.identical( got, expected );
 
-  test.description = 'bad arguments'; //
+  test.description = 'bad arguments'; /* */
 
   if( !Config.debug )
   return;

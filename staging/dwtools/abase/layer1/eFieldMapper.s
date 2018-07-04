@@ -321,6 +321,30 @@ dstNotHasAppending.functionFamily = 'field-mapper';
 
 //
 
+function dstNotHasSrcPrimitive()
+{
+
+  var routine = function dstNotHasSrcPrimitive( dstContainer,srcContainer,key )
+  {
+    debugger;
+    if( ( key in dstContainer ) )
+    return false;
+
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+
+  return routine;
+}
+
+dstNotHasSrcPrimitive.functionFamily = 'field-filter';
+
+//
+
 function dstNotHasSrcOwn()
 {
 
@@ -569,6 +593,106 @@ function dstNotOwnAppending()
 }
 
 dstNotOwnAppending.functionFamily = 'field-mapper';
+
+// --
+// dstHas
+// --
+
+function dstHasMaybeUndefined()
+{
+
+  var routine = function dstHasMaybeUndefined( dstContainer,srcContainer,key )
+  {
+    if( key in dstContainer )
+    return true;
+    return false;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstHasMaybeUndefined.functionFamily = 'field-filter';
+
+//
+
+function dstHasButUndefined()
+{
+
+  var routine = function dstHasButUndefined( dstContainer,srcContainer,key )
+  {
+    if( dstContainer[ key ] === undefined )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstHasButUndefined.functionFamily = 'field-filter';
+
+//
+
+function dstHasSrcOwn()
+{
+
+  var routine = function dstHasSrcOwn( dstContainer,srcContainer,key )
+  {
+    if( !( key in dstContainer ) )
+    return false;
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstHasSrcOwn.functionFamily = 'field-filter';
+
+//
+
+function dstHasSrcNotOwn()
+{
+
+  var routine = function dstHasSrcNotOwn( dstContainer,srcContainer,key )
+  {
+    if( !( key in dstContainer ) )
+    return false;
+    if( _ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstHasSrcNotOwn.functionFamily = 'field-filter';
+
+// --
+//
+// --
+
+function dstUndefinedSrcNotUndefined()
+{
+
+  var routine = function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
+  {
+    if( dstContainer[ key ] !== undefined )
+    return false;
+    if( srcContainer[ key ] === undefined )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstUndefinedSrcNotUndefined.functionFamily = 'field-filter';
 
 // --
 // srcOwn
@@ -891,6 +1015,7 @@ var make =
 
   dstNotHasAssigning : dstNotHasAssigning,
   dstNotHasAppending : dstNotHasAppending,
+  dstNotHasSrcPrimitive : dstNotHasSrcPrimitive,
 
   dstNotHasSrcOwn : dstNotHasSrcOwn,
   dstNotHasSrcOwnAssigning : dstNotHasSrcOwnAssigning,
@@ -905,6 +1030,17 @@ var make =
   dstNotOwnOrUndefinedAssigning : dstNotOwnOrUndefinedAssigning,
   dstNotOwnAssigning : dstNotOwnAssigning,
   dstNotOwnAppending : dstNotOwnAppending,
+
+  // dstHas
+
+  dstHasMaybeUndefined : dstHasMaybeUndefined,
+  dstHasButUndefined : dstHasButUndefined,
+  dstHasSrcOwn : dstHasSrcOwn,
+  dstHasSrcNotOwn : dstHasSrcNotOwn,
+
+  //
+
+  dstUndefinedSrcNotUndefined : dstUndefinedSrcNotUndefined,
 
   // srcOwn
 
