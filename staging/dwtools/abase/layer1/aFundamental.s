@@ -15417,6 +15417,20 @@ function mapFirstPair( srcMap )
 
 //
 
+function mapValsSet( dstMap, val )
+{
+  _.assert( arguments.length === 2 );
+
+  for( var k in dstMap )
+  {
+    dstMap[ k ] = val;
+  }
+
+  return dstMap;
+}
+
+//
+
 /**
  * The mapValWithIndex() returns value of {-srcMap-} by corresponding (index).
  *
@@ -17308,6 +17322,7 @@ var Routines =
 
   mapOnlyPrimitives : mapOnlyPrimitives,
   mapFirstPair : mapFirstPair,
+  mapValsSet : mapValsSet,
 
   mapValWithIndex : mapValWithIndex,
   mapKeyWithIndex : mapKeyWithIndex,

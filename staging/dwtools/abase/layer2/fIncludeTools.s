@@ -467,7 +467,7 @@ IncludeHandlersMap[ 'wRoutineTransform' ] =
 
 IncludeHandlersMap[ 'wDomTools' ] =
 {
-  includeAny : [ '../../abase/rbrowser/DomBase.js','abase/rbrowser/DomBase.js','wdomtools' ],
+  includeAny : [ '../../abase/tbrowser/DomBase.js','abase/tbrowser/DomBase.js','wdomtools' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.eventName },
 }
 
