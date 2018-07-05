@@ -21,6 +21,7 @@
   ],
   "main": "staging/dwtools/Base.s",
   "files": [
+    "package.json",
     "npm-shrinkwrap.json",
     "staging/dwtools/abase/layer1",
     "staging/dwtools/abase/layer2",
