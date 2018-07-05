@@ -28,6 +28,7 @@
     "staging/dwtools/abase/Base.s",
     "staging/dwtools/Base.s"
   ],
+
   "scripts": {
     "test": "wtest staging",
     "make_doc": "./doc.sh"
