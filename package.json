@@ -41,9 +41,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "wTesting": "",
-    "wFiles": "",
-    "wcloner": "",
     "wTools": "."
   },
   "keywords": [
