@@ -5456,8 +5456,9 @@ function timeOut( delay,onEnd )
   if( con )
   con.got( function timeGot( err,arg )
   {
-    if( err )
-    debugger;
+    // if( err )
+    // debugger;
+
     if( err )
     clearTimeout( timer );
 
@@ -5569,7 +5570,8 @@ function timeOutError( delay,onReady )
 
   result.doThen( function( err,arg )
   {
-    debugger;
+    // debugger;
+
     if( err )
     return _.Consequence().error( err );
 
@@ -5621,7 +5623,7 @@ function timePeriodic( delay,onReady )
     var result = onReady.call();
     if( result === false )
     clearInterval( id );
-    _.Consequence.give( con,null );
+    _.Consequence.give( con, undefined );
     con.doThen( handlePeriodicCon );
   }
   else if( onReady instanceof wConsquence )
@@ -5630,13 +5632,13 @@ function timePeriodic( delay,onReady )
     var result = onReady.ping();
     if( result === false )
     clearInterval( id );
-    _.Consequence.give( con,null );
+    _.Consequence.give( con, undefined );
     con.doThen( handlePeriodicCon );
   }
   else if( onReady === undefined )
   _onReady = function()
   {
-    _.Consequence.give( con,null );
+    _.Consequence.give( con, undefined );
     con.doThen( handlePeriodicCon );
   }
   else throw _.err( 'unexpected type of onReady' );
@@ -15594,7 +15596,7 @@ function mapButConditional( fieldFilter, srcMap, butMap )
   _.assert( arguments.length === 3, 'expects exactly three arguments' );
   _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
   _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'expects map {-srcMap-}' );
-  _.assert( fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'expects field-filter {-fieldFilter-}' );
+  _.assert( fieldFilter && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'expects field-filter {-fieldFilter-}' );
 
   if( _.arrayGenericIs( butMap ) )
   {
@@ -16198,7 +16200,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * var a = { x : 0, y : 2 };
  * var b = { c : 0, d : 3};
  * var c = { a : 1 };
- * wTools.assertMapOwnOnly( a, b, c, 'error msg' );
+ * wTools.assertMapOwnOnly( a, b, 'error msg' );
  *
  * // caught <anonymous>:4:8
  * // error msg Object should have no own fields : x,y

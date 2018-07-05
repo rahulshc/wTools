@@ -32,27 +32,6 @@ bypass.functionFamily = 'field-filter';
 
 //
 
-function dstAndSrcOwn()
-{
-
-  var routine = function dstAndSrcOwn( dstContainer,srcContainer,key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_ObjectHasOwnProperty.call( dstContainer, key ) )
-    return false;
-
-    return true;
-  }
-
-  routine.functionFamily = 'field-filter';
-  return routine;
-}
-
-dstAndSrcOwn.functionFamily = 'field-filter';
-
-//
-
 function assigning()
 {
 
@@ -303,7 +282,7 @@ function dstNotHasAppending()
   var routine = function dstNotHasAppending( dstContainer,srcContainer,key )
   {
     debugger;
-    if( dstContainer[ key ] !== undefined )
+    if( key in dstContainer )
     {
       debugger;
       if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
@@ -327,7 +306,7 @@ function dstNotHasSrcPrimitive()
   var routine = function dstNotHasSrcPrimitive( dstContainer,srcContainer,key )
   {
     debugger;
-    if( ( key in dstContainer ) )
+    if( key in dstContainer )
     return false;
 
     if( !_.primitiveIs( srcContainer[ key ] ) )
@@ -352,7 +331,7 @@ function dstNotHasSrcOwn()
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( dstContainer[ key ] !== undefined )
+    if( key in dstContainer )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -374,7 +353,7 @@ function dstNotHasSrcOwnAssigning()
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
-    if( dstContainer[ key ] !== undefined )
+    if( key in dstContainer )
     return;
 
     _.entityAssignFieldFromContainer( dstContainer,srcContainer,key );
@@ -397,7 +376,7 @@ function dstNotHasSrcOwnRoutines()
     return false;
     if( !_.routineIs( srcContainer[ key ] ) )
     return false;
-    if( dstContainer[ key ] !== undefined )
+    if( key in dstContainer )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -418,7 +397,7 @@ function dstNotHasAssigningRecursive()
 
   var routine = function dstNotHasAssigningRecursive( dstContainer,srcContainer,key )
   {
-    if( dstContainer[ key ] !== undefined )
+    if( key in dstContainer )
     return;
 
     _.entityAssignFieldFromContainer( dstContainer,srcContainer,key,_.entityAssignFieldFromContainer );
@@ -460,19 +439,19 @@ function dstNotOwnSrcOwn()
   var routine = function dstNotOwnSrcOwn( dstContainer,srcContainer,key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return;
+    return false;
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
-    return;
+    return false;
 
-    dstContainer[ key ] = srcContainer[ key ];
+    return true;
   }
 
-  routine.functionFamily = 'field-mapper';
+  routine.functionFamily = 'field-filter';
   return routine;
 }
 
-dstNotOwnSrcOwn.functionFamily = 'field-mapper';
+dstNotOwnSrcOwn.functionFamily = 'field-filter';
 
 //
 
@@ -675,6 +654,27 @@ dstHasSrcNotOwn.functionFamily = 'field-filter';
 // --
 //
 // --
+
+function dstAndSrcOwn()
+{
+
+  var routine = function dstAndSrcOwn( dstContainer,srcContainer,key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    if( !_ObjectHasOwnProperty.call( dstContainer, key ) )
+    return false;
+
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstAndSrcOwn.functionFamily = 'field-filter';
+
+//
 
 function dstUndefinedSrcNotUndefined()
 {
@@ -997,7 +997,6 @@ var make =
   //
 
   bypass : bypass,
-  dstAndSrcOwn : dstAndSrcOwn,
   assigning : assigning,
   primitive : primitive,
   appending : appending,
@@ -1040,6 +1039,7 @@ var make =
 
   //
 
+  dstAndSrcOwn : dstAndSrcOwn,
   dstUndefinedSrcNotUndefined : dstUndefinedSrcNotUndefined,
 
   // srcOwn
