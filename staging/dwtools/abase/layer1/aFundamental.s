@@ -6,7 +6,7 @@
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
  */
 
-console.warn( 'REMINDER : remove it' );
+// console.warn( 'REMINDER : remove it' );
 
 // global
 
