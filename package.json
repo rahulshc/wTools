@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.8.69",
+  "version": "0.8.70",
   "engine": "node >= 6.0.0",
   "description": "Generic purpose tools of base level for solving problems in Java Script.",
   "license": "MIT",
@@ -28,7 +28,6 @@
     "staging/dwtools/abase/Base.s",
     "staging/dwtools/Base.s"
   ],
-
   "scripts": {
     "test": "wtest staging",
     "make_doc": "./doc.sh"
