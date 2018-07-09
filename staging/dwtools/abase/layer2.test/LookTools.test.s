@@ -2905,7 +2905,7 @@ function entityIdenticalLoose( test )
 
 function entityEquivalentLoose( test )
 {
-  var accuracy = 1e-5;
+  var accuracy = 1e-7;
 
   var options =
   {

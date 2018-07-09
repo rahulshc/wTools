@@ -17,7 +17,7 @@ var _arraySlice = _.arraySlice;
 var strTypeOf = _.strTypeOf;
 
 // --
-//
+// replacer
 // --
 
 function _strRemoveBegin( src,begin )
@@ -296,11 +296,222 @@ function strAppendOnce( src,end )
   return src + end;
 }
 
+// --
+// etc
+// --
+
+/**
+ * Replaces occurrence of each word from array( ins ) in string( src ) with word
+ * from array( sub ) considering it position.
+ * @param {string} src - Source string to parse.
+ * @param {array} ins - Array with strings to replace.
+ * @param {string} sub - Array with new strings.
+ * @returns {string} Returns string with result of replacements.
+ *
+ * @example
+ * //returns ' your cars are'
+ * _.strReplaceWords( ' my name is',[ 'my','name','is' ],[ 'your','cars','are' ] )
+ *
+ * @method strReplaceWords
+ * @throws { Exception } Throws a exception if( ins ) is not a Array.
+ * @throws { Exception } Throws a exception if( sub ) is not a Array.
+ * @throws { TypeError } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 3.
+ * @memberof wTools
+ *
+ */
+
+function strReplaceWords( src,ins,sub )
+{
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( _.strIs( src ) );
+  _.assert( _.arrayIs( ins ) );
+  _.assert( _.arrayIs( sub ) );
+  _.assert( ins.length === sub.length );
+
+  var result = src;
+  for( var i = 0 ; i < ins.length ; i++ )
+  {
+    _.assert( _.strIs( ins[ i ] ) );
+    var r = new RegExp( '(\\W|^)' + ins[ i ] + '(?=\\W|$)','gm' );
+    result = result.replace( r, function( original )
+    {
+
+      if( original[ 0 ] !== sub[ i ][ 0 ] )
+      return original[ 0 ] + sub[ i ];
+      else
+      return sub[ i ];
+
+    });
+  }
+
+  return result;
+}
+
+// --
+// etc
+// --
+
+/**
+ * Finds common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have same first symbol with pattern( ins ) function returns empty string.
+ * Otherwise returns symbol sequence that appears from the start of each string.
+ *
+ * @param {string} ins - Sequence of possible symbols.
+ * @returns {string} Returns found common symbols.
+ *
+ * @example 'a'
+ * _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
+ *
+ * @example 'abc'
+ * _.strCommonLeft( 'abcd', 'abc', 'abcd' );
+ *
+ * @example ''
+ * _.strCommonLeft( 'abcd', 'abc', 'd' )
+ *
+ * @method strCommonLeft
+ * @throws {exception} If( ins ) is not a String.
+ * @memberof wTools
+ *
+ */
+
+function strCommonLeft( ins )
+{
+
+  if( arguments.length === 0 )
+  return '';
+  if( arguments.length === 1 )
+  return ins;
+
+  _.assert( _.strIs( ins ) );
+
+  var length = +Infinity;
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    length = Math.min( length,src.length );
+  }
+
+  for( var i = 0 ; i < length ; i++ )
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    if( src[ i ] !== ins[ i ] )
+    return ins.substring( 0,i );
+  }
+
+  return ins.substring( 0,i );
+}
+
+//
+
+/**
+ * Finds common symbols from the end of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have same last symbol with pattern( ins ) function returns empty string.
+ * Otherwise returns symbol sequence that appears from the end of each string.
+ *
+ * @param {string} ins - Sequence of possible symbols.
+ * @returns {string} Returns found common symbols.
+ *
+ * @example 'ame'
+ * _.strCommonRight( 'ame', 'same', 'name' );
+ *
+ * @example 'c'
+ * _.strCommonRight( 'abc', 'dbc', 'ddc', 'aac' );
+ *
+ * @example ''
+ * _.strCommonRight( 'abc', 'dba', 'abc' );
+ *
+ * @method strCommonRight
+ * @throws {exception} If( ins ) is not a String.
+ * @memberof wTools
+ *
+ */
+
+function strCommonRight( ins )
+{
+
+  if( arguments.length === 0 )
+  return '';
+  if( arguments.length === 1 )
+  return ins;
+
+  _.assert( _.strIs( ins ) );
+
+  var length = +Infinity;
+
+  for( var a = 0 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    length = Math.min( length,src.length );
+  }
+
+  for( var i = 0 ; i < length ; i++ )
+  for( var a = 1 ; a < arguments.length ; a++ )
+  {
+    var src = arguments[ a ];
+    if( src[ src.length - i - 1 ] !== ins[ ins.length - i - 1 ] )
+    return ins.substring( ins.length-i );
+  }
+
+  return ins.substring( ins.length-i );
+}
+
+// --
+// formatter
+// --
+
+function strForRange( range )
+{
+  var result;
+
+  _assert( arguments.length === 1 );
+  _assert( _.arrayIs( range ) );
+
+  result = '[ ' + range[ 0 ] + '..' + range[ 1 ] + ' ]';
+
+  return result;
+}
+
+//
+
+function strForCall( nameOfRoutine,args,ret,o )
+{
+  var result = nameOfRoutine + '( ';
+  var first = true;
+
+  _assert( _.arrayIs( args ) || _.objectIs( args ) );
+  _assert( arguments.length <= 4 );
+
+  _.each( args,function( e,k )
+  {
+
+    if( first === false )
+    result += ', ';
+
+    if( _.objectIs( e ) )
+    result += k + ' :' + _.toStr( e,o );
+    else
+    result += _.toStr( e,o );
+
+    first = false;
+
+  });
+
+  result += ' )';
+
+  if( arguments.length >= 3 )
+  result += ' -> ' + _.toStr( ret,o );
+
+  return result;
+}
+
 //
 
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
- * For example: src : 'string', limit : 4, result -> '"st"..."ng"'.
+ * For example: src : 'string', limit : 4, result -> ''st'...'ng''.
  * Function can be called in two ways:
  * - First to pass only source string and limit;
  * - Second to pass all options map. Example: ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
@@ -308,16 +519,16 @@ function strAppendOnce( src,end )
  * @param {string|object} o - String to parse or object with options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {number} [ o.limit=40 ] - Limit of characters in output.
- * @param {string} [ o.wrap='"' ] - String wrapper. Use zero or false to disable.
+ * @param {string} [ o.wrap='\'' ] - String wrapper. Use zero or false to disable.
  * @param {string} [ o.escaping=1 ] - Escaping characters appears in output.
  * @returns {string} Returns simplified source string.
  *
  * @example
- * //returns '"st" ... "ng"'
+ * //returns ''st' ... 'ng''
  * _.strShort( 'string', 4 );
  *
  * @example
- * //returns '"s" ... "ng"'
+ * //returns ''s' ... 'ng''
  * _.strShort( 's\ntring', 4 );
  *
  * @example
@@ -325,19 +536,19 @@ function strAppendOnce( src,end )
  * _.strShort( 'string', 0 );
  *
  * @example
- * //returns "'st' ... 'ng'"
- * _.strShort( { src : 'string', limit : 4, wrap : "'" } );
+ * //returns ''st' ... 'ng''
+ * _.strShort( { src : 'string', limit : 4, wrap : '\'' } );
  *
  * @example
- * //returns "si ... le"
+ * //returns 'si ... le'
  *  _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
  *
  * @example
- * //returns '"si" ... "le"'
- *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"' } );
+ * //returns ''si' ... 'le''
+ *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '\'' } );
  *
  * @example
- * //returns '"s\u0001" ... " string"'
+ * //returns ''s\u0001' ... ' string''
  *  _.strShort( 's\x01t\x01ing string string', 14 );
  *
  * @method strShort
@@ -426,8 +637,72 @@ strShort.defaults =
 {
   src : null,
   limit : 40,
-  wrap : '"',
+  wrap : '\'',
   escaping : 1
+}
+
+//
+
+function strQuote( o )
+{
+  if( !_.mapIs( o ) )
+  o = { src : o };
+
+  if( o.quote === undefined || o.quote === null )
+  o.quote = strQuote.defaults.quote;
+
+  _.assertMapHasOnly( o,strQuote.defaults );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  var result = o.quote + String( o.src ) + o.quote;
+
+  return result;
+}
+
+strQuote.defaults =
+{
+  src : null,
+  quote : '\'',
+}
+
+// --
+// transformer
+// --
+
+/**
+ * Returns string with first letter converted to upper case.
+ * Expects one object: the string to be formatted.
+ *
+ * @param {string} src - Source string.
+ * @returns {String} Returns a string with the first letter capitalized.
+ *
+ * @example
+ * //returns Test string
+ * _.strCapitalize( 'test string' );
+ *
+ * @example
+ * //returns Another_test_string
+ * _.strCapitalize( 'another_test_string' );
+ *
+ * @method strCapitalize
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @memberof wTools
+ *
+ */
+
+function strCapitalize( src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  /*_.assert( src.length > 0 );*/
+  /*_.assert( src.match(/(^\W)/) === null );*/
+
+  if( src.length === 0 )
+  return src;
+
+  return src[ 0 ].toUpperCase() + src.substring( 1 );
 }
 
 //
@@ -440,19 +715,19 @@ strShort.defaults =
  * @returns {string} Returns string with disabled escaped characters.
  *
  * @example
- * //returns "\nhello\u001bworld\n"
+ * //returns '\nhello\u001bworld\n'
  * _.strEscape( '\nhello\u001bworld\n' );
  *
  * @example
- * //returns "string"
+ * //returns 'string'
  * _.strEscape( 'string' );
  *
  * @example
- * //returns "str\""
- * _.strEscape( 'str"' );
+ * //returns 'str\''
+ * _.strEscape( 'str\'' );
  *
  * @example
- * //returns ""
+ * //returns ''
  * _.strEscape( '' );
  *
  * @method strEscape
@@ -464,14 +739,14 @@ strShort.defaults =
 function strEscape( o )
 {
 
-    // 007f : ""
+    // 007f : ''
     // . . .
-    // 009f : ""
+    // 009f : ''
 
-    // 00ad : "­"
+    // 00ad : '­'
 
     // \' 	single quote 	byte 0x27 in ASCII encoding
-    // \" 	double quote 	byte 0x22 in ASCII encoding
+    // \' 	double quote 	byte 0x22 in ASCII encoding
     // \\ 	backslash 	byte 0x5c in ASCII encoding
     // \b 	backspace 	byte 0x08 in ASCII encoding
     // \f 	form feed - new page 	byte 0x0c in ASCII encoding
@@ -517,16 +792,16 @@ function strEscape( o )
         result += '\\\\';
         break;
 
-      // case '\"' :
-      //   result += '\\"';
+      // case '\'' :
+      //   result += '\\'';
       //   break;
 
       // case '\'' :
-      //   result += "\\'";
+      //   result += '\\'';
       //   break;
 
       // case '\`' :
-      //   result += "\\`";
+      //   result += '\\`';
       //   break;
 
       case '\b' :
@@ -574,167 +849,298 @@ function strEscape( o )
 strEscape.defaults =
 {
   src : null,
-  stringWrapper : '"',
+  stringWrapper : '\'',
 }
 
-//
+/**
+ * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
+ * Example: ( 't' -> '\u0074' ). Returns result of conversion as new string or empty string if source has zero length.
+ * @param {string} str - Source string to parse.
+ * @returns {string} Returns string with result of conversion.
+ *
+ * @example
+ * //returns \u0061\u0062\u0063;
+ * _.strUnicodeEscape( 'abc' );
+ *
+ * @example
+ * //returns \u0077\u006f\u0072\u006c\u0064
+ * _.strUnicodeEscape( 'world' );
+ *
+ * @example
+ * //returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
+ * _.strUnicodeEscape( '//test//' );
+ *
+ * @method strUnicodeEscape
+ * @throws { Exception } Throws a exception if no argument provided.
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @memberof wTools
+ *
+ */
 
-function strForRange( range )
+function strUnicodeEscape( src )
 {
-  var result;
+  var result = '';
 
-  _assert( arguments.length === 1 );
-  _assert( _.arrayIs( range ) );
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
 
-  result = '[ ' + range[ 0 ] + '..' + range[ 1 ] + ' ]';
+  for( var i = 0 ; i < src.length ; i++ )
+  {
+    var c = src[ i ];
+    var code = c.charCodeAt( 0 );
+    var h = code.toString( 16 );
+    var d = _.strDup( '0',4-h.length ) + h;
+    result += '\\u' + d;
+  }
 
   return result;
 }
 
 //
 
-function strForCall( nameOfRoutine,args,ret,o )
+function strReverse( srcStr )
 {
-  var result = nameOfRoutine + '( ';
-  var first = true;
+  _.assert( arguments.length === 1, 'expects single argument' );
+  var result = '';
+  for( var i = 0 ; i < srcStr.length ; i++ )
+  result = srcStr[ i ] + result;
+  return result;
+}
 
-  _assert( _.arrayIs( args ) || _.objectIs( args ) );
-  _assert( arguments.length <= 4 );
+// --
+// stripper
+// --
 
-  _.each( args,function( e,k )
+/**
+ * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
+ * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
+ *
+ * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
+ * @param {string} [ o.src=null ]- Source string to strip.
+ * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
+ * @returns {string} Returns result of removement in a string.
+ *
+ * @example
+ * //returns 'b'
+ * _.strStrip( { src : 'aabaa', stripper : 'a' } );
+ *
+ * @example
+ * //returns 'b'
+ * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
+ *
+ * @example
+ * //returns 'b'
+ * _.strStrip( { src : '   b  \n' } )
+ *
+ * @method strStrip
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( o ) is not Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @memberof wTools
+ *
+ */
+
+function strStrip( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStrip,o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( _.arrayIs( o.src ) )
+  {
+    var result = [];
+    for( var s = 0 ; s < o.src.length ; s++ )
+    {
+      var optionsForStrip = _.mapExtend( null,o );
+      optionsForStrip.src = optionsForStrip.src[ s ];
+      result[ s ] = strStrip( optionsForStrip );
+    }
+    return result;
+  }
+
+  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ),'expects string or array or regexp ( o.stripper )' );
+
+  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
+  {
+    var exp = o.stripper;
+    if( _.strIs( exp ) )
+    {
+      exp = _.regexpEscape( exp );
+      exp = new RegExp( exp, 'g' );
+    }
+
+    return o.src.replace( exp,'' );
+  }
+  else
   {
 
-    if( first === false )
-    result += ', ';
+    _.assert( _.arrayIs( o.stripper ) )
 
-    if( _.objectIs( e ) )
-    result += k + ' :' + _.toStr( e,o );
-    else
-    result += _.toStr( e,o );
+    if( Config.debug )
+    for( var s of o.stripper )
+    _.assert( _.strIs( s,'expects string ( stripper[ * ] )' ) );
 
-    first = false;
+    for( var b = 0 ; b < o.src.length ; b++ )
+    if( o.stripper.indexOf( o.src[ b ] ) === -1 )
+    break;
 
-  });
+    for( var e = o.src.length-1 ; e >= 0 ; e-- )
+    if( o.stripper.indexOf( o.src[ e ] ) === -1 )
+    break;
 
-  result += ' )';
+    if( b >= e )
+    return '';
 
-  if( arguments.length >= 3 )
-  result += ' -> ' + _.toStr( ret,o );
+    return o.src.substring( b,e+1 );
+  }
 
-  return result;
+}
+
+strStrip.defaults =
+{
+  src : null,
+  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
+}
+
+//
+
+function strStripLeft( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStrip,o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  return _.strStrip( o );
+}
+
+strStripLeft.defaults =
+{
+  stripper : /^(\s|\n|\0)+/gm,
+}
+
+strStripLeft.defaults.__proto__ = strStrip.defaults;
+
+//
+
+function strStripRight( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStrip,o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  return _.strStrip( o );
+}
+
+strStripRight.defaults =
+{
+  stripper : /(\s|\n|\0)+$/gm,
+}
+
+strStripRight.defaults.__proto__ = strStrip.defaults;
+
+//
+
+/**
+ * Removes whitespaces from source( src ).
+ * If argument( sub ) is defined, function replaces whitespaces with it.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} sub - Substring that replaces whitespaces.
+ * @returns {string} Returns a string with removed whitespaces.
+ *
+ * @example
+ * //returns abcde
+ * _.strRemoveAllSpaces( 'a b c d e' );
+ *
+ * @example
+ * //returns a*b*c*d*e
+ * _.strRemoveAllSpaces( 'a b c d e','*' );
+ *
+ * @method strRemoveAllSpaces
+ * @memberof wTools
+ *
+*/
+
+function strRemoveAllSpaces( src,sub )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+
+  if( sub === undefined )
+  sub = '';
+
+  return src.replace( /\s/g,sub );
 }
 
 //
 
 /**
- * Returns string with first letter converted to upper case.
- * Expects one object: the string to be formatted.
+ * Removes empty lines from the string passed by argument( srcStr ).
  *
- * @param {string} src - Source string.
- * @returns {String} Returns a string with the first letter capitalized.
- *
- * @example
- * //returns Test string
- * _.strCapitalize( 'test string' );
+ * @param {string} srcStr - Source string to parse.
+ * @returns {string} Returns a string with empty lines removed.
  *
  * @example
- * //returns Another_test_string
- * _.strCapitalize( 'another_test_string' );
+ * //returns
+ * //first
+ * //second
+ * _.strStripEmptyLines( 'first\n\nsecond' );
  *
- * @method strCapitalize
- * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @example
+ * //returns
+ * //zero
+ * //first
+ * //second
+ * _.strStripEmptyLines( 'zero\n\nfirst\n\nsecond' );
+ *
+ * @method strStripEmptyLines
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @memberof wTools
  *
  */
 
-function strCapitalize( src )
-{
-  _.assert( _.strIs( src ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  /*_.assert( src.length > 0 );*/
-  /*_.assert( src.match(/(^\W)/) === null );*/
-
-  if( src.length === 0 )
-  return src;
-
-  return src[ 0 ].toUpperCase() + src.substring( 1 );
-}
-
-//
-
-/**
- * Appends string to it itself n-times.
- * Expects two object: source string( s ) and number of concatenations( times ).
- *
- * @param {string} s - Source string.
- * @param {number} times - Number of concatenation cycles.
- * @returns {String} Returns a string concatenated n-times.
- *
- * @example
- * //returns WordWordWordWordWord
- * _.strDup( 'Word',5 );
- *
- * @example
- * //returns 1 21 2
- * _.strDup( '1 '+'2',2 );
- *
- * @method strDup
- * @throws { Exception } Throw an exception if( s ) is not a String.
- * @throws { Exception } Throw an exception if( times ) is not a Number.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @memberof wTools
- *
- */
-
-function strDup( s,times )
+function strStripEmptyLines( srcStr )
 {
   var result = '';
+  var lines = srcStr.split( '\n' );
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.strIs( s ) );
-  _.assert( _.numberIs( times ) );
-
-  for( var t = 0 ; t < times ; t++ )
-  result += s;
-
-  return result;
-}
-
-//
-
-/**
- * Returns a count of lines in a string.
- * Expects one object: the string( src ) to be processed.
- *
- * @param {string} src - Source string.
- * @returns {number} Returns a number of lines in string.
- *
- * @example
- * //returns 2
- * _.strLineCount( 'first\nsecond' );
- *
- * @example
- * //returns 4
- * _.strLineCount( 'first\nsecond\nthird\n' );
- *
- * @method strLineCount
- * @throws { Exception } Throw an exception if( src ) is not a String.
- * @throws { Exception } Throw an exception if no argument provided.
- * @memberof wTools
- *
-*/
-
-function strLineCount( src )
-{
+  _.assert( _.strIs( srcStr ) );
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.strIs( src ) );
-  var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
+
+  for( var l = 0; l < lines.length; l += 1 )
+  {
+    var line = lines[ l ];
+
+    if( !_.strStrip( line ) )
+    continue;
+
+    result += line + '\n';
+  }
+
+  result = result.substring( 0, result.length - 1 );
   return result;
 }
 
-//
+// --
+// splitter
+// --
 
 /**
 * @typedef {object} wTools~toStrInhalfOptions
@@ -751,15 +1157,15 @@ function strLineCount( src )
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
- * //returns [ "sample", "string" ]
+ * //returns [ 'sample', 'string' ]
  * _._strCutOff( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
- * //returns [ "sample", "string" ]
+ * //returns [ 'sample', 'string' ]
  *_._strCutOff( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
- * //returns [ "sample string,name", "string" ]
+ * //returns [ 'sample string,name', 'string' ]
  * _._strCutOff( { src : 'sample string,name string', delimeter : [ ',', ' ' ] } )
  *
  * @method _strCutOff
@@ -889,15 +1295,15 @@ _strCutOff.defaults =
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
- * //returns [ "sample", "string" ]
+ * //returns [ 'sample', 'string' ]
  * _.strCutOffLeft( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
- * //returns [ "sample", "string" ]
+ * //returns [ 'sample', 'string' ]
  *_.strCutOffLeft( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
- * //returns [ "sample string,name", "string" ]
+ * //returns [ 'sample string,name', 'string' ]
  * _.strCutOffLeft( 'sample string,name string', ',' )
  *
  * @method strCutOffLeft
@@ -947,15 +1353,15 @@ strCutOffLeft.defaults =
  * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
  *
  * @example
- * //returns [ "sample", "string" ]
+ * //returns [ 'sample', 'string' ]
  * _.strCutOffRight( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
- * //returns [ "sample", "string" ]
+ * //returns [ 'sample', 'string' ]
  *_.strCutOffRight( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
- * //returns [ "sample, ", "string" ]
+ * //returns [ 'sample, ', 'string' ]
  * _.strCutOffRight( { src : 'sample,  string', delimeter : [ ',', ' ' ] } )
  *
  * @method strCutOffRight
@@ -1175,7 +1581,7 @@ function strSplitChunks( o )
     result.chunks.push( chunk );
 
     src = src.substring( begin );
-    line += _.strLineCount( chunk.text ) - 1;
+    line += _.strCountLines( chunk.text ) - 1;
     chunkIndex += 1;
 
     colAccount( chunk.text );
@@ -1252,7 +1658,7 @@ function strSplitChunks( o )
     /* wind */
 
     chunkIndex += 1;
-    line += _.strLineCount( chunk.prefix + chunk.code + chunk.postfix ) - 1;
+    line += _.strCountLines( chunk.prefix + chunk.code + chunk.postfix ) - 1;
 
   }
   while( src );
@@ -1266,6 +1672,403 @@ strSplitChunks.defaults =
   investigate : 1,
   prefix : '//>-' + '->//',
   postfix : '//<-' + '-<//',
+}
+
+//
+
+function _strSplit_pre( routine, args )
+{
+  var o = args[ 0 ];
+
+  if( args.length === 2 )
+  o = { src : args[ 0 ], delimeter : args[ 1 ] }
+  else if( _.strIs( args[ 0 ] ) )
+  o = { src : args[ 0 ] }
+
+  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1 || args.length === 2, 'expects one or two argument' );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.objectIs( o ) );
+  _.routineOptions( routine, o );
+
+  return o;
+}
+
+//
+
+function _strSplitFast_body( o )
+{
+
+  _.assert( arguments.length === 1 );
+
+  o.delimeter = _.arrayAs( o.delimeter );
+  if( o.preservingDelimeters === null )
+  o.preservingDelimeters = 0;
+
+  /* */
+
+  if( o.preservingDelimeters )
+  {
+
+    var result = [];
+    var right = [];
+    var prevPosition = o.src.length;
+
+    for( var s = 0 ; s < delimeter.length ; s++ )
+    right[ s ] = nextDelimeter( s,o.src.length );
+
+    while( true )
+    {
+      var splitterIndex = -1;
+      var position = -1;
+      for( var s = 0 ; s < delimeter.length ; s++ )
+      {
+        /* if one delimeter coontain another one, it's possible right is invalid at this point */
+        if( right[ s ] >= prevPosition )
+        {
+          right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
+        }
+        if( right[ s ] > position )
+        {
+          splitterIndex = s;
+          position = right[ s ];
+        }
+      }
+
+      if( position === -1 )
+      break;
+
+      if( right[ splitterIndex ] > 0 )
+      right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
+      else
+      right[ splitterIndex ] = -1;
+
+      var r = [ position,prevPosition ];
+      if( r[ 0 ] < r[ 1 ] )
+      result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
+      else
+      result.unshift( '' );
+
+      if( delimeter[ splitterIndex ].length )
+      result.unshift( delimeter[ splitterIndex ] );
+
+      prevPosition = position-delimeter[ splitterIndex ].length;
+
+    }
+
+    result.unshift( o.src.substring( 0,prevPosition ) );
+
+  }
+  else
+  {
+
+    var result = o.src.split( delimeter[ 0 ] );
+    for( var s = 1 ; s < delimeter.length ; s++ )
+    {
+
+      for( var r = result.length-1 ; r >= 0 ; r-- )
+      {
+
+        var sub = result[ r ].split( delimeter[ s ] );
+        if( sub.length > 1 )
+        _.arrayCutin( result,[ r,r+1 ],sub );
+
+      }
+
+    }
+
+  }
+
+  return result;
+
+  /* */
+
+  function nextDelimeter( d,last )
+  {
+    if( last < 0 )
+    return last;
+    var result = o.src.lastIndexOf( delimeter[ d ],last );
+    if( result >= 0 )
+    result += delimeter[ d ].length;
+    return result;
+  }
+
+}
+
+_strSplitFast_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  preservingEmpty : 0,
+  preservingDelimeters : null,
+}
+
+//
+
+/**
+ * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
+ * If( o.stripping ) is true - removes leading and trailing whitespace characters.
+ * If( o.preservingEmpty ) is true - empty lines are saved in the result array.
+ * If( o.preservingDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
+ * Returns result as array of strings.
+ *
+ * @param {string|object} o - Source string to split or map with source( o.src ) and options.
+ * @param {string} [ o.src=null ] - Source string.
+ * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
+ * @param {boolean} [ o.preservingEmpty=false ] - Leaves empty strings in the result array.
+ * @param {boolean} [ o.preservingDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
+ * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
+ * @returns {object} Returns an array of strings separated by( o.delimeter ).
+ *
+ * @example
+ * //returns [ 'first', 'second', 'third' ]
+ * _.strSplitFast( ' first second third ' );
+ *
+ * @example
+ * //returns [ 'a', 'b', 'c', 'd' ]
+ * _.strSplitFast( { src : 'a,b,c,d', delimeter : ','  } );
+ *
+ * @example
+ * //returns [ 'a', 'b', 'c', 'd' ]
+ * _.strSplitFast( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
+ *
+ * @example
+ * //returns [ '    a', 'b', 'c', 'd   ' ]
+   * _.strSplitFast( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+ *
+ * @example
+ * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
+ * _.strSplitFast( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
+ *
+ * @example
+ * //returns [ 'a', '', 'b', '', 'c', '', 'd' ]
+ * _.strSplitFast( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
+ *
+ * @method strSplitFast
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @memberof wTools
+ *
+ */
+
+var strSplitFast = _.routineForPreAndBody( _strSplit_pre, _strSplitFast_body );
+
+_.assert( strSplitFast.pre === _strSplit_pre );
+_.assert( strSplitFast.body === _strSplitFast_body );
+_.assert( strSplitFast.defaults );
+
+//
+
+function _strSplit_body( o )
+{
+
+  if( o.quoting )
+  {
+    if( _.numberIs( o.quoting ) || _.boolIs( o.quoting ) )
+    o.quoting = '\"';
+    if( o.preservingDelimeters === null || o.preservingDelimeters === undefined )
+    o.preservingDelimeters = 1;
+    _.assert( _.strIs( o.quoting ) );
+  }
+
+  _.assert( arguments.length === 1 );
+
+  var delimeter = _.arrayIs( o.delimeter ) ? o.delimeter : [ o.delimeter ];
+  var preservingDelimeters = o.preservingDelimeters;
+  var preservingEmpty = o.preservingEmpty;
+
+  if( o.quoting )
+  {
+    if( o.preservingDelimeters === null )
+    o.preservingDelimeters = 1;
+    _.assert( o.preservingDelimeters );
+    _.arrayAppendOnce( delimeter, o.quoting );
+  }
+
+  if( o.preservingDelimeters === null )
+  o.preservingDelimeters = 0;
+
+  /* */
+
+  if( o.preservingDelimeters )
+  {
+
+    var result = [];
+    var right = [];
+    var prevPosition = o.src.length;
+
+    for( var s = 0 ; s < delimeter.length ; s++ )
+    right[ s ] = nextDelimeter( s,o.src.length );
+
+    while( true )
+    {
+      var splitterIndex = -1;
+      var position = -1;
+      for( var s = 0 ; s < delimeter.length ; s++ )
+      {
+        /* if one delimeter coontain another one, it's possible right is invalid at this point */
+        if( right[ s ] >= prevPosition )
+        {
+          right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
+        }
+        if( right[ s ] > position )
+        {
+          splitterIndex = s;
+          position = right[ s ];
+        }
+      }
+
+      if( position === -1 )
+      break;
+
+      if( right[ splitterIndex ] > 0 )
+      right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
+      else
+      right[ splitterIndex ] = -1;
+
+      var r = [ position,prevPosition ];
+      if( r[ 0 ] < r[ 1 ] )
+      result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
+      else
+      result.unshift( '' );
+
+      if( delimeter[ splitterIndex ].length )
+      result.unshift( delimeter[ splitterIndex ] );
+
+      prevPosition = position-delimeter[ splitterIndex ].length;
+
+    }
+
+    result.unshift( o.src.substring( 0,prevPosition ) );
+
+  }
+  else
+  {
+
+    var result = o.src.split( delimeter[ 0 ] );
+    for( var s = 1 ; s < delimeter.length ; s++ )
+    {
+
+      for( var r = result.length-1 ; r >= 0 ; r-- )
+      {
+
+        var sub = result[ r ].split( delimeter[ s ] );
+        if( sub.length > 1 )
+        _.arrayCutin( result,[ r,r+1 ],sub );
+
+      }
+
+    }
+
+  }
+
+  /* quoting */
+
+  if( o.quoting )
+  {
+    var newResult = [];
+
+    function _sliceAndJoin( l, r )
+    {
+      var arr = result.slice( l,r );
+      var res = '';
+      for( var i = 0; i < arr.length; i++ )
+      {
+        res += arr[ i ];
+      }
+      return res;
+    }
+
+    var l = -1;
+    var r = -1;
+
+    for( var i = 0; i < result.length; i++ )
+    {
+      if( result[ i ] === o.quoting )
+      {
+        if( i === result.length - o.quoting.length )
+        if( l < 0 )
+        {
+          newResult[ newResult.length - 1 ] += o.quoting;
+          break;
+        }
+
+        if( l < 0 )
+        l = i;
+        else
+        r = i;
+      }
+      else if( !result[ i ].length )
+      {
+        if( !preservingEmpty )
+        continue;
+
+        if( result[ i + 1 ] === o.quoting || result[ i - 1 ] === o.quoting )
+        continue;
+      }
+      else if( _.arrayHas( o.delimeter, result[ i ] ) )
+      {
+        if( !preservingDelimeters )
+        continue;
+      }
+
+      if( l >= 0 && r >= 0 )
+      {
+        newResult.push( _sliceAndJoin( l + 1, r ) );
+        l = r = -1;
+      }
+      else
+      if( l < 0 && r < 0 )
+      newResult.push( result[ i ] );
+    }
+
+    result = newResult;
+  }
+
+  /* stripping and removing empty */
+
+  for( var r = result.length-1 ; r >= 0 ; r-- )
+  {
+
+    if( o.stripping )
+    result[ r ] = _.strStrip( result[ r ] );
+
+    if( !o.preservingEmpty )
+    if( !result[ r ] )
+    result.splice( r,1 );
+
+  }
+
+  return result;
+
+  /* */
+
+  function nextDelimeter( d,last )
+  {
+    if( last < 0 )
+    return last;
+    var result = o.src.lastIndexOf( delimeter[ d ],last );
+    if( result >= 0 )
+    result += delimeter[ d ].length;
+    return result;
+  }
+
+}
+
+_strSplit_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+
+  stripping : 1,
+  quoting : 0,
+  preservingEmpty : 0,
+  preservingDelimeters : null,
 }
 
 //
@@ -1321,717 +2124,480 @@ strSplitChunks.defaults =
  *
  */
 
-function strSplit( o )
+var strSplit = _.routineForPreAndBody( _strSplit_pre, _strSplit_body );
+
+_.assert( strSplit.pre === _strSplit_pre );
+_.assert( strSplit.body === _strSplit_body );
+_.assert( strSplit.defaults );
+
+// {
+//   var o = _.strSplit.pre( strSplit, arguments );
+//   var result = _.strSplit.body( o );
+//   return result;
+// }
+//
+// strSplit.pre = _strSplit_pre;
+// strSplit.body = _strSplit_body;
+//
+// var defaults = sstrSplit.defaults = Object.create( strSplit.body.defaults );
+//
+// //
+//
+// function strExtractInlined_old( o )
+// {
+//   if( arguments.length === 2 )
+//   o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] }
+//   else if( _.strIs( o ) )
+//   o = { src : arguments[ 0 ] }
+//
+//   _.assert( _.strIs( o.src ) );
+//   _.assert( _.objectIs( o ) );
+//   _.assert( arguments.length === 1 || arguments.length === 2, 'expects single argument' );
+//   _.routineOptions( strExtractInlined_old, o );
+//
+//   var result = [];
+//   var splitted = o.src.split( o.delimeter );
+//   var isNextStrip = 0;
+//   var isPrevStrip = 0;
+//
+//   /* */
+//
+//   for( var i = 0 ; i < splitted.length ; i++ )
+//   {
+//
+//     if( !isNextStrip )
+//     {
+//       isNextStrip = 1;
+//       if( splitted[ i ] )
+//       {
+//         isPrevStrip = 0;
+//         result.push( splitted[ i ] );
+//       }
+//       continue;
+//     }
+//
+//     var strip = o.onInlined ? o.onInlined( splitted[ i ] ) : splitted[ i ];
+//
+//     if( strip !== undefined )
+//     {
+//       isNextStrip = 0;
+//       isPrevStrip = 1;
+//       result.push( strip );
+//     }
+//     else
+//     {
+//       if( !isPrevStrip && result.length > 0 )
+//       result[ result.length-1 ] += o.delimeter + splitted[ i ];
+//       else
+//       result.push( o.delimeter + splitted[ i ] );
+//       isNextStrip = 1;
+//       isPrevStrip = 0;
+//     }
+//
+//   }
+//
+//   /* */
+//
+//   return result;
+// }
+//
+// strExtractInlined_old.defaults =
+// {
+//   src : null,
+//   delimeter : '#',
+//   onInlined : null
+// }
+//
+//
+
+function _strExtractInlined_body( o )
 {
 
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] };
+  _.assert( arguments.length === 1, 'expects single options map' );
 
-  if( _.strIs( o ) )
-  o = { src : o };
-
-  if( o.quoting )
+  var delimetr;
+  if( o.delimeterLeft === null && o.delimeterRight === null )
   {
-    if( _.numberIs( o.quoting ) || _.boolIs( o.quoting ) )
-    o.quoting = '"';
-    if( o.preservingDelimeters === null || o.preservingDelimeters === undefined )
-    o.preservingDelimeters = 1;
-    _.assert( _.strIs( o.quoting ) );
-  }
-
-  _.routineOptions( strSplit,o );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.delimeter ) || _.strsAre( o.delimeter ) );
-
-  var delimeter = _.arrayIs( o.delimeter ) ? o.delimeter : [ o.delimeter ];
-  var preservingDelimeters = o.preservingDelimeters;
-  var preservingEmpty = o.preservingEmpty;
-
-  if( o.quoting )
-  {
-    _.assert( o.preservingDelimeters );
-    _.arrayAppendOnce( delimeter, o.quoting );
-  }
-
-  /* */
-
-  function nextDelimeter( d,last )
-  {
-    if( last < 0 )
-    return last;
-    var result = o.src.lastIndexOf( delimeter[ d ],last );
-    if( result >= 0 )
-    result += delimeter[ d ].length;
-    return result;
-  }
-
-  /* */
-
-  if( o.preservingDelimeters )
-  {
-
-    var result = [];
-    var right = [];
-    var prevPosition = o.src.length;
-
-    for( var s = 0 ; s < delimeter.length ; s++ )
-    right[ s ] = nextDelimeter( s,o.src.length );
-
-    while( true )
-    {
-      var splitterIndex = -1;
-      var position = -1;
-      for( var s = 0 ; s < delimeter.length ; s++ )
-      {
-        /* if one delimeter coontain another one, it's possible right is invalid at this point */
-        if( right[ s ] >= prevPosition )
-        {
-          right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
-        }
-        if( right[ s ] > position )
-        {
-          splitterIndex = s;
-          position = right[ s ];
-        }
-      }
-
-      if( position === -1 )
-      break;
-
-      if( right[ splitterIndex ] > 0 )
-      right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
-      else
-      right[ splitterIndex ] = -1;
-
-      var r = [ position,prevPosition ];
-      if( r[ 0 ] < r[ 1 ] )
-      result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
-      else /*if( o.preservingEmpty )*/
-      result.unshift( '' );
-
-      if( delimeter[ splitterIndex ].length /*|| o.preservingEmpty*/ )
-      result.unshift( delimeter[ splitterIndex ] );
-
-      prevPosition = position-delimeter[ splitterIndex ].length;
-
-    }
-
-    result.unshift( o.src.substring( 0,prevPosition ) );
-
+    if( o.delimeter === null )
+    o.delimeter = '#';
   }
   else
   {
-
-    var result = o.src.split( delimeter[ 0 ] );
-    for( var s = 1 ; s < delimeter.length ; s++ )
-    {
-
-      for( var r = result.length-1 ; r >= 0 ; r-- )
-      {
-
-        var sub = result[ r ].split( delimeter[ s ] );
-        if( sub.length > 1 )
-        _.arrayCutin( result,[ r,r+1 ],sub );
-
-      }
-
-    }
-
+    _.assert( o.delimeter === null );
   }
 
-  /* quoting */
+  var splitArray = _.strSplit
+  ({
+    src : o.src,
+    delimeter : o.delimeter,
+    stripping : o.stripping,
+    quoting : o.quoting,
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+  });
 
-  // debugger;
-
-  if( o.quoting )
+  if( splitArray.length <= 1 )
   {
-    var newResult = [];
-
-    function _sliceAndJoin( l, r )
-    {
-      var arr = result.slice( l,r );
-      var res = '';
-      for( var i = 0; i < arr.length; i++ )
-      {
-        // if( !arr[ i ].length )
-        // res += ' ';
-        // else
-        res += arr[ i ];
-      }
-      return res;
-    }
-
-    var l = -1;
-    var r = -1;
-
-    for( var i = 0; i < result.length; i++ )
-    {
-      if( result[ i ] === o.quoting )
-      {
-        if( i === result.length - o.quoting.length )
-        if( l < 0 )
-        {
-          newResult[ newResult.length - 1 ] += o.quoting;
-          break;
-        }
-
-        if( l < 0 )
-        l = i;
-        else
-        r = i;
-      }
-      else if( !result[ i ].length )
-      {
-        if( !preservingEmpty )
-        continue;
-
-        if( result[ i + 1 ] === o.quoting || result[ i - 1 ] === o.quoting )
-        continue;
-      }
-      else if( o.delimeter.indexOf( result[ i ] ) >= 0 )
-      {
-        if( !preservingDelimeters )
-        continue;
-      }
-
-      if( l >= 0 && r >= 0 )
-      {
-        newResult.push( _sliceAndJoin( l + 1, r ) );
-        l = r = -1;
-      }
-      else
-      if( l < 0 && r < 0 )
-      newResult.push( result[ i ] );
-    }
-
-    result = newResult;
-  }
-
-  /* stripping and removing empty */
-
-  for( var r = result.length-1 ; r >= 0 ; r-- )
-  {
-
-    if( o.stripping )
-    result[ r ] = _.strStrip( result[ r ] );
-
     if( !o.preservingEmpty )
-    if( !result[ r ] )
-    result.splice( r,1 );
+    if( splitArray[ 0 ] === '' )
+    splitArray.splice( 0,1 );
+    return splitArray;
+  }
+
+  /*
+  first - for tracking index to insert ordinary text
+  onInlined should be called first and
+  if undefined returned escaped text shoud be treated as ordinary
+  so tracking index to insert ordinary text ( in case not undefined returned ) required
+  */
+
+  var first = 0;
+  var result = [];
+  for( var i = 0 ; i < splitArray.length ; i += 4 )
+  {
+
+    if( splitArray.length-i >= 4 )
+    {
+      if( handleTriplet() )
+      handleOrdinary();
+    }
+    else
+    {
+      if( splitArray.length > i+1 )
+      {
+        debugger;
+        splitArray[ i ] = splitArray.slice( i, splitArray.length ).join( '' );
+        splitArray.splice( i+1, splitArray.length-i-1 );
+      }
+      handleOrdinary();
+      _.assert( i+1 === splitArray.length, 'Openning delimeter', o.delimeter, 'does not have closing' );
+    }
+
+  }
+
+  return result;
+
+  /* */
+
+  function handleTriplet()
+  {
+
+    var delimeter1 = splitArray[ i+1 ];
+    var escaped = splitArray[ i+2 ];
+    var delimeter2 = splitArray[ i+3 ];
+
+    if( o.onInlined )
+    escaped = o.onInlined( escaped, o, [ delimeter1, delimeter2 ] );
+
+    if( escaped === undefined )
+    {
+      _.assert( _.strIs( splitArray[ i+4 ] ) );
+      splitArray[ i+2 ] = splitArray[ i+0 ] + splitArray[ i+1 ] + splitArray[ i+2 ];
+      splitArray.splice( i,2 );
+      i -= 4;
+      return false;
+    }
+
+    first = result.length;
+
+    if( o.preservingDelimeters && delimeter1 !== undefined )
+    if( o.preservingEmpty || delimeter1 )
+    result.push( delimeter1 );
+
+    if( o.preservingInlined && escaped !== undefined )
+    if( o.preservingEmpty || escaped )
+    result.push( escaped );
+
+    if( o.preservingDelimeters && delimeter2 !== undefined )
+    if( o.preservingEmpty || delimeter2 )
+    result.push( delimeter2 );
+
+    return true;
+  }
+
+  /* */
+
+  function handleOrdinary()
+  {
+    var ordinary = splitArray[ i+0 ];
+
+    if( o.onOrdinary )
+    ordinary = o.onOrdinary( ordinary, o );
+
+    if( o.preservingOrdinary && ordinary !== undefined )
+    if( o.preservingEmpty || ordinary )
+    result.splice( first, 0, ordinary );
+
+    first = result.length;
+  }
+
+}
+
+_strExtractInlined_body.defaults =
+{
+
+  src : null,
+  delimeter : null,
+  delimeterLeft : null,
+  delimeterRight : null,
+  stripping : 0,
+  quoting : 0,
+
+  onOrdinary : null,
+  onInlined : ( e ) => [ e ],
+
+  preservingEmpty : 1,
+  preservingDelimeters : 0,
+  preservingOrdinary : 1,
+  preservingInlined : 1,
+
+}
+
+//
+
+var strExtractInlined = _.routineForPreAndBody( _strSplit_pre, _strExtractInlined_body );
+
+//
+
+function _strExtractInlinedStereo_body( o )
+{
+
+  _.assert( arguments.length === 1, 'expects single options map argument' );
+
+  var splitArray = _.strSplit
+  ({
+    src : o.src,
+    delimeter : o.prefix,
+    stripping : o.stripping,
+    quoting : o.quoting,
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+  });
+
+  if( splitArray.length <= 1 )
+  {
+    if( !o.preservingEmpty )
+    if( splitArray[ 0 ] === '' )
+    splitArray.splice( 0,1 );
+    return splitArray;
+  }
+
+  var result = [];
+
+  /* */
+
+  if( splitArray[ 0 ] )
+  result.push( splitArray[ 0 ] );
+
+  /* */
+
+  for( var i = 1; i < splitArray.length; i++ )
+  {
+    var halfs = _.strCutOffLeft( splitArray[ i ], o.postfix );
+
+    _.assert( halfs.length === 3 );
+
+    var inlined = halfs[ 2 ];
+
+    inlined = o.onInlined ? o.onInlined( inlined ) : inlined;
+
+    if( inlined !== undefined )
+    {
+      result.push( halfs[ 0 ] );
+      result.push( inlined );
+      // if( inlined[ 2 ] )
+      // result.push( inlined[ 2 ] );
+    }
+    else
+    {
+      xxx
+      if( result.length )
+      debugger;
+      else
+      debugger;
+      if( result.length )
+      result[ result.length-1 ] += o.prefix + splitArray[ i ];
+      else
+      result.push( o.prefix + splitArray[ i ] );
+    }
 
   }
 
   return result;
 }
 
-strSplit.defaults =
+_strExtractInlinedStereo_body.defaults =
 {
   src : null,
-  delimeter : ' ',
-  stripping : 1,
+
+  prefix : '#',
+  postfix : '#',
+  stripping : 0,
   quoting : 0,
-  preservingEmpty : 0,
+
+  onInlined : null,
+
+  preservingEmpty : 1,
   preservingDelimeters : 0,
+  preservingOrdinary : 1,
+  preservingInlined : 1,
+
 }
 
 //
 
 /**
- * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
- * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
+ * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
  * Function can be called in two ways:
  * - First to pass only source string and use default options;
- * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
+ * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
  *
- * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
- * @param {string} [ o.src=null ]- Source string to strip.
- * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
- * @returns {string} Returns result of removement in a string.
+ * Returns result as array of strings.
+ *
+ * Function extracts words in two attempts:
+ * First by splitting source string by ( o.prefix ).
+ * Second by splitting each element of the result of first attempt by( o.postfix ).
+ * If splitting by ( o.prefix ) gives only single element then second attempt is skipped,otherwise function
+ * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onInlined ) function on first half.
+ * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
+ * with ( o.prefix ) prepended to the last element of result array.
+ *
+ * @param {string} src - Source string.
+ * @param {object} o - Options map.
+ * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
+ * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
+ * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
+ * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
  * @example
- * //returns "b"
- * _.strStrip( { src : 'aabaa', stripper : 'a' } );
+ * _.strExtractInlinedStereo( '#abc#' );
+ * //returns [ '', 'abc', '' ]
  *
  * @example
- * //returns "b"
- * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
+ * _.strExtractInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
+ * //returns [ 'abc' ]
  *
  * @example
- * //returns "b"
- * _.strStrip( { src : '   b  \n' } )
+ * function onInlined( strip )
+ * {
+ *   if( strip.length )
+ *   return strip.toUpperCase();
+ * }
+ * _.strExtractInlinedStereo.call( { postfix : '$', onInlined : onInlined }, '#abc$' );
+ * //returns [ 'ABC' ]
  *
- * @method strStrip
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
- * @throws { Exception } Throw an exception if( o ) is not Map.
+ * @method strExtractInlinedStereo
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
+ * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @memberof wTools
  *
  */
 
-function strStrip( o )
+var strExtractInlinedStereo = _.routineForPreAndBody( _strSplit_pre, _strExtractInlinedStereo_body );
+
+function strExtractInlinedStereo( o )
 {
 
-  if( _.strIs( o ) || _.arrayIs( o ) )
-  o = { src : o };
+  if( _.strIs( o ) )
+  o = { src : o }
 
-  _.routineOptions( strStrip,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  if( _.arrayIs( o.src ) )
-  {
-    var result = [];
-    for( var s = 0 ; s < o.src.length ; s++ )
-    {
-      var optionsForStrip = _.mapExtend( null,o );
-      optionsForStrip.src = optionsForStrip.src[ s ];
-      result[ s ] = strStrip( optionsForStrip );
-    }
-    return result;
-  }
-
-  _.assert( _.strIs( o.src ),'expects string or array o.src, got',_.strTypeOf( o.src ) );
-  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ),'expects string or array or regexp ( o.stripper )' );
-
-  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
-  {
-    var exp = o.stripper;
-    if( _.strIs( exp ) )
-    {
-      exp = _.regexpEscape( exp );
-      exp = new RegExp( exp, 'g' );
-    }
-
-    return o.src.replace( exp,'' );
-
-  }
-  else
-  {
-
-    _.assert( _.arrayIs( o.stripper ) )
-
-    if( Config.debug )
-    for( var s of o.stripper )
-    _.assert( _.strIs( s,'expects string ( stripper[ * ] )' ) );
-
-    for( var b = 0 ; b < o.src.length ; b++ )
-    if( o.stripper.indexOf( o.src[ b ] ) === -1 )
-    break;
-
-    for( var e = o.src.length-1 ; e >= 0 ; e-- )
-    if( o.stripper.indexOf( o.src[ e ] ) === -1 )
-    break;
-
-    return o.src.substring( b,e+1 );
-  }
-
-}
-
-strStrip.defaults =
-{
-  src : null,
-  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
-}
-
-//
-
-function strStripLeft( o )
-{
-
-  if( _.strIs( o ) || _.arrayIs( o ) )
-  o = { src : o };
-
-  _.routineOptions( strStrip,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  return _.strStrip( o );
-}
-
-strStripLeft.defaults =
-{
-  stripper : /^(\s|\n|\0)+/gm,
-}
-
-strStripLeft.defaults.__proto__ = strStrip.defaults;
-
-//
-
-function strStripRight( o )
-{
-
-  if( _.strIs( o ) || _.arrayIs( o ) )
-  o = { src : o };
-
-  _.routineOptions( strStrip,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  return _.strStrip( o );
-}
-
-strStripRight.defaults =
-{
-  stripper : /(\s|\n|\0)+$/gm,
-}
-
-strStripRight.defaults.__proto__ = strStrip.defaults;
-
-//
-
-/**
- * Removes whitespaces from source( src ).
- * If argument( sub ) is defined, function replaces whitespaces with it.
- *
- * @param {string} src - Source string to parse.
- * @param {string} sub - Substring that replaces whitespaces.
- * @returns {string} Returns a string with removed whitespaces.
- *
- * @example
- * //returns abcde
- * _.strRemoveAllSpaces( 'a b c d e' );
- *
- * @example
- * //returns a*b*c*d*e
- * _.strRemoveAllSpaces( 'a b c d e','*' );
- *
- * @method strRemoveAllSpaces
- * @memberof wTools
- *
-*/
-
-function strRemoveAllSpaces( src,sub )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( src ) );
-
-  if( sub === undefined )
-  sub = '';
-
-  return src.replace( /\s/g,sub );
-}
-
-//
-
-/**
- * Removes empty lines from the string passed by argument( srcStr ).
- *
- * @param {string} srcStr - Source string to parse.
- * @returns {string} Returns a string with empty lines removed.
- *
- * @example
- * //returns
- * //first
- * //second
- * _.strStripEmptyLines( 'first\n\nsecond' );
- *
- * @example
- * //returns
- * //zero
- * //first
- * //second
- * _.strStripEmptyLines( 'zero\n\nfirst\n\nsecond' );
- *
- * @method strStripEmptyLines
- * @throws { Exception } Throw an exception if( srcStr ) is not a String.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
- * @memberof wTools
- *
- */
-
-function strStripEmptyLines( srcStr )
-{
-  var result = '';
-  var lines = srcStr.split( '\n' );
-
-  _.assert( _.strIs( srcStr ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  for( var l = 0; l < lines.length; l += 1 )
-  {
-    var line = lines[ l ];
-
-    if( !_.strStrip( line ) )
-    continue;
-
-    result += line + '\n';
-  }
-
-  result = result.substring( 0, result.length - 1 );
-  return result;
-}
-
-//
-//
-// function strIron()
-// {
-//
-//   throw _.err( 'not tested' );
-//
-//   var result = '';
-//
-//   for( var a = 0 ; a < arguments.length ; a++ )
-//   {
-//
-//     var argument = arguments[ a ];
-//
-//     if( !_.strIs( argument ) && !_.objectIs( argument ) && !_.arrayIs( argument ) )
-//     throw _.err( '_.strIron :','argument could be string, array or object' );
-//
-//     if( _.strIs( argument ) )
-//     {
-//       result += argument;
-//     }
-//     else _.each( argument,function( e,k,i ){
-//
-//       result += _.strIron( e );
-//
-//     });
-//
-//   }
-//
-//   return result;
-// }
-
-//
-
-/**
- * Replaces each occurrence of string( ins ) in source( src ) with string( sub ).
- * Returns result of replacements as new string or original string if no matches finded in source( src ).
- * Function can be called in three different ways:
- * - One argument: object that contains options: source( src ) and dictionary.
- * - Two arguments: source string( src ), map( dictionary ).
- * - Three arguments: source string( src ), pattern string( ins ), replacement( sub ).
- * @param {string} src - Source string to parse.
- * @param {string} ins - String to find in source( src ).
- * @param {string} sub - String that replaces finded occurrence( ins ).
- * @param {object} dictionary - Map that contains pattern/replacement pairs like ( { 'ins' : 'sub' } ).
- * @returns {string} Returns string with result of replacements.
- *
- * @example
- * //one argument
- * //returns xbc
- * _.strReplaceAll( { src : 'abc', dictionary : { 'a' : 'x' } } );
- *
- * @example
- * //two arguments
- * //returns a12
- * _.strReplaceAll( 'abc',{ 'a' : '1', 'b' : '2' } );
- *
- * @example
- * //three arguments
- * //returns axc
- * _.strReplaceAll( 'abc','b','x' );
- *
- * @method strReplaceAll
- * @throws { Exception } Throws a exception if no arguments provided.
- * @throws { Exception } Throws a exception if( src ) is not a String.
- * @throws { Exception } Throws a exception if( ins ) is not a String.
- * @throws { Exception } Throws a exception if( sub ) is not a String.
- * @throws { Exception } Throws a exception if( dictionary ) is not a Object.
- * @throws { Exception } Throws a exception if( dictionary ) key value is not a String.
- * @memberof wTools
- *
- */
-
-function strReplaceAll( src, ins, sub )
-{
-  var o;
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length === 3 )
-  {
-    o = { src : src };
-    o.dictionary = [ [ ins, sub ] ]
-  }
-  else if( arguments.length === 2 )
-  {
-    o = { src : src , dictionary : arguments[ 1 ] };
-  }
-  else if( arguments.length === 1 )
-  {
-    o = arguments[ 0 ];
-  }
-
-  /**/
-
+  _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o.dictionary ) || _.arrayLike( o.dictionary ));
+  _.assert( _.objectIs( o ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.routineOptions( strExtractInlinedStereo, o );
 
-  /**/
+  var result = [];
+  var splitted = o.src.split( o.prefix );
 
-  var index = 0;
-
-  function replace( src, ins, sub )
-  {
-    _.assert( _.strIs( sub ), 'strReplaceAll : expects sub as string' );
-
-    if( !ins.length )
-    return src;
-
-    do
-    {
-      var index = src.indexOf( ins,index );
-      if( index >= 0 )
-      {
-        src = src.substring( 0,index ) + sub + src.substring( index+ins.length );
-        index += sub.length;
-      }
-      else
-      break;
-
-    }
-    while( 1 );
-
-    return src;
-  }
-
-  var src = o.src;
+  if( splitted.length === 1 )
+  return splitted;
 
   /* */
 
-  if( _.objectIs( o.dictionary ) )
+  if( splitted[ 0 ] )
+  result.push( splitted[ 0 ] );
+
+  /* */
+
+  for( var i = 1; i < splitted.length; i++ )
   {
-    for( var ins in o.dictionary )
+    var halfs = _.strCutOffLeft( splitted[ i ],o.postfix );
+    var strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+
+    _.assert( halfs.length === 3 );
+
+    if( strip !== undefined )
     {
-      if( !ins.length ) continue;
-      src = replace( src, ins, o.dictionary[ ins ] );
+      result.push( strip );
+      if( halfs[ 2 ] )
+      result.push( halfs[ 2 ] );
     }
-  }
-  else if( _.arrayLike( o.dictionary ) )
-  {
-    for( var p = 0; p < o.dictionary.length; p++ )
+    else
     {
-      _.assert( _.arrayLike( o.dictionary[ p ] ) );
-
-      var pair = o.dictionary[ p ];
-
-      _.assert( pair.length === 2 );
-
-      var ins = _.arrayAs( pair[ 0 ] );
-      var sub = _.arrayAs( pair[ 1 ] );
-
-      _.assert( ins.length === sub.length );
-
-      for( var i = 0; i < ins.length; i++ )
-      {
-        _.assert( _.strIs( ins[ i ] ) || _.regexpIs( ins[ i ] ) );
-
-        if( _.strIs( ins[ i ] ) )
-        {
-          if( !ins.length ) continue;
-          src = replace( src, ins[ i ], sub[ i ] );
-        }
-        else
-        {
-          src = src.replace( ins[ i ], sub[ i ] );
-        }
-      }
-    }
-  }
-
-  return src;
-  //return src.replace( new RegExp( _.regexpEscape( ins ),'gm' ), sub );
-}
-
-strReplaceAll.defaults =
-{
-  src : null,
-  dictionary : null,
-}
-
-  //
-
-/**
- * Replaces occurrence of each word from array( ins ) in string( src ) with word
- * from array( sub ) considering it position.
- * @param {string} src - Source string to parse.
- * @param {array} ins - Array with strings to replace.
- * @param {string} sub - Array with new strings.
- * @returns {string} Returns string with result of replacements.
- *
- * @example
- * //returns " your cars are"
- * _.strReplaceWords( ' my name is',[ 'my','name','is' ],[ 'your','cars','are' ] )
- *
- * @method strReplaceWords
- * @throws { Exception } Throws a exception if( ins ) is not a Array.
- * @throws { Exception } Throws a exception if( sub ) is not a Array.
- * @throws { TypeError } Throws a exception if( src ) is not a String.
- * @throws { Exception } Throws a exception if( arguments.length ) is not equal 3.
- * @memberof wTools
- *
- */
-
-function strReplaceWords( src,ins,sub )
-{
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
-  _.assert( _.strIs( src ) );
-  _.assert( _.arrayIs( ins ) );
-  _.assert( _.arrayIs( sub ) );
-  _.assert( ins.length === sub.length );
-
-  var result = src;
-  for( var i = 0 ; i < ins.length ; i++ )
-  {
-    var r = new RegExp( '(\\W|^)' + ins[ i ] + '(?=\\W|$)','gm' );
-    result = result.replace( r,function( original )
-    {
-
-      if( original[ 0 ] !== sub[ i ][ 0 ] )
-      return original[ 0 ] + sub[ i ];
+      if( result.length )
+      debugger;
       else
-      return sub[ i ];
+      debugger;
+      if( result.length )
+      result[ result.length-1 ] += o.prefix + splitted[ i ];
+      else
+      result.push( o.prefix + splitted[ i ] );
+    }
 
-    });
   }
 
   return result;
 }
 
+strExtractInlinedStereo.defaults =
+{
+  src : null,
+  prefix : '#',
+  postfix : '#',
+  onInlined : null,
+}
+
 // --
-// generator
+// joiner
 // --
 
 /**
- * Returns source string( src ) repeated specified number( times ) of times.
- * If source( src ) has zero length or ( times <= 0 ) returns empty string.
+ * Appends string to it itself n-times.
+ * Expects two object: source string( s ) and number of concatenations( times ).
  *
- * @param {string} src - Source string.
- * @param {number} times - Number of duplicates.
- * @returns {string} Returns string duplicated n-times.
- *
- * @example
- * //returns aa
- * _.strDup( "a", 2 );
+ * @param {string} s - Source string.
+ * @param {number} times - Number of concatenation cycles.
+ * @returns {String} Returns a string concatenated n-times.
  *
  * @example
- * //returns abcabc
- * _.strDup( "abc", 2 );
+ * //returns WordWordWordWordWord
+ * _.strDup( 'Word',5 );
  *
  * @example
- * //returns ''
- * _.strDup( "abc", 0 );
+ * //returns 1 21 2
+ * _.strDup( '1 '+'2',2 );
  *
  * @method strDup
- * @throws { Exception } If( src ) is not a String.
- * @throws { Exception } If( times ) is not a Number.
- * @throws { Exception } If( arguments.length ) is not equal 2.
+ * @throws { Exception } Throw an exception if( s ) is not a String.
+ * @throws { Exception } Throw an exception if( times ) is not a Number.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
  *
  */
 
-function strDup( src,times )
+function strDup( s,times )
 {
   var result = '';
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( s ) );
   _.assert( _.numberIs( times ) );
 
   for( var t = 0 ; t < times ; t++ )
-  result += src;
+  result += s;
 
   return result;
 }
@@ -2042,26 +2608,26 @@ function strDup( src,times )
  * Joins objects from arguments list together by concatenating their values in orded that they are specified.
  * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
- * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ "13", "23" ] ),
- * ( [ 1, 2 ], [ 1, 2] ) -> ( [ "11", "23" ] ).
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ '13', '23' ] ),
+ * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '23' ] ).
  *
  * @param {array-like} arguments - Contains provided objects.
  * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
  *
  * @example
- * //returns "123"
+ * //returns '123'
  * _.strJoin( 1, 2, 3 );
  *
  * @example
- * //returns [ "12", "22", "32" ]
+ * //returns [ '12', '22', '32' ]
  * _.strJoin( [ 1, 2, 3 ], 2 );
  *
  * @example
- * //returns [ "11", "23" ]
+ * //returns [ '11', '23' ]
  * _.strJoin( [ 1, 2 ], [ 1, 3 ] );
  *
  * @example
- * //returns [ "1236", "1247", "1258" ]
+ * //returns [ '1236', '1247', '1258' ]
  * _.strJoin( 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] );
  *
  * @method strJoin
@@ -2129,7 +2695,7 @@ function strConcat()
 
   var o = _.routineOptionsFromThis( strConcat,this,Self );
 
-  o.optionsForToStr = _.mapSupplement( null,o.optionsForToStr,strConcat.defaults.optionsForToStr );
+  o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
 
   var result = '';
   if( !arguments.length )
@@ -2187,30 +2753,6 @@ strConcat.defaults =
 
 //
 
-function strQuote( o )
-{
-  if( !_.mapIs( o ) )
-  o = { src : o };
-
-  if( o.quote === undefined || o.quote === null )
-  o.quote = strQuote.defaults.quote;
-
-  _.assertMapHasOnly( o,strQuote.defaults );
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  var result = o.quote + String( o.src ) + o.quote;
-
-  return result;
-}
-
-strQuote.defaults =
-{
-  src : null,
-  quote : '"',
-}
-
-//
-
 /**
  * Splits string( srcStr ) into parts using array( maskArray ) as mask and returns them as array.
  * Mask( maskArray ) contains string(s) separated by marker( strUnjoin.any ). Mask must starts/ends with first/last letter from source
@@ -2225,23 +2767,23 @@ strQuote.defaults =
  * @returns {array} Returns array with unjoined string part.
  *
  * @example
- * //returns [ "prefix", "_something_", "postfix" ]
+ * //returns [ 'prefix', '_something_', 'postfix' ]
  * _.strUnjoin( 'prefix_something_postfix',[ 'prefix', _.strUnjoin.any, 'postfix' ] );
  *
  * @example
- * //returns [ "prefix_", "something", "_", "postfix" ]
+ * //returns [ 'prefix_', 'something', '_', 'postfix' ]
  * _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'something', _.strUnjoin.any, 'postfix' ] );
  *
  * @example
- * //returns [ "prefix_something_", "postfix" ]
+ * //returns [ 'prefix_something_', 'postfix' ]
  * _.strUnjoin( 'prefix_something_postfix',[ _.strUnjoin.any, 'postfix' ] );
  *
  * @example
- * //returns [ "prefix", "_something_postfix" ]
+ * //returns [ 'prefix', '_something_postfix' ]
  * _.strUnjoin( 'prefix_something_postfix', [ 'prefix', _.strUnjoin.any ] );
  *
  * @example
- * //returns [ "prefi", "x", "_something_", "p", "ostfix" ]
+ * //returns [ 'prefi', 'x', '_something_', 'p', 'ostfix' ]
  * _.strUnjoin( 'prefix_something_postfix', [ _.strUnjoin.any, 'x', _.strUnjoin.any, 'p', _.strUnjoin.any ] );
  *
  * @method strUnjoin
@@ -2263,6 +2805,32 @@ function strUnjoin( srcStr,maskArray )
   var result = [];
   var index = 0;
   var rindex = -1;
+
+  /**/
+
+  for( var m = 0 ; m < maskArray.length ; m++ )
+  {
+
+    var mask = maskArray[ m ];
+
+    if( !checkMask( mask ) )
+    return;
+
+  }
+
+  if( rindex !== -1 )
+  {
+    index = srcStr.length;
+    if( !checkToken() )
+    return;
+  }
+
+  if( index !== srcStr.length )
+  return;
+
+  /**/
+
+  return result;
 
   /**/
 
@@ -2307,263 +2875,19 @@ function strUnjoin( srcStr,maskArray )
     {
       rindex = index;
     }
-    else throw _.err( 'strUnjoin : unexpected mask' );
+    else _.assert( 0, 'unexpected mask' );
 
     return true;
   }
 
-  /**/
-
-  for( var m = 0 ; m < maskArray.length ; m++ )
-  {
-
-    var mask = maskArray[ m ];
-
-    if( !checkMask( mask ) )
-    return;
-
-  }
-
-  if( rindex !== -1 )
-  {
-    index = srcStr.length;
-    if( !checkToken() )
-    return;
-  }
-
-  if( index !== srcStr.length )
-  return;
-
-  /**/
-
-  return result;
 }
 
 strUnjoin.any = _.any;
 _.assert( strUnjoin.any );
 
 // --
-// extractor
+// liner
 // --
-
-/**
- * Finds common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have same first symbol with pattern( ins ) function returns empty string.
- * Otherwise returns symbol sequence that appears from the start of each string.
- *
- * @param {string} ins - Sequence of possible symbols.
- * @returns {string} Returns found common symbols.
- *
- * @example "a"
- * _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
- *
- * @example "abc"
- * _.strCommonLeft( 'abcd', 'abc', 'abcd' );
- *
- * @example ""
- * _.strCommonLeft( 'abcd', 'abc', 'd' )
- *
- * @method strCommonLeft
- * @throws {exception} If( ins ) is not a String.
- * @memberof wTools
- *
- */
-
-function strCommonLeft( ins )
-{
-
-  if( arguments.length === 0 )
-  return '';
-  if( arguments.length === 1 )
-  return ins;
-
-  _.assert( _.strIs( ins ) );
-
-  var length = +Infinity;
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-    var src = arguments[ a ];
-    length = Math.min( length,src.length );
-  }
-
-  for( var i = 0 ; i < length ; i++ )
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-    var src = arguments[ a ];
-    if( src[ i ] !== ins[ i ] )
-    return ins.substring( 0,i );
-  }
-
-  return ins.substring( 0,i );
-}
-
-//
-
-/**
- * Finds common symbols from the end of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have same last symbol with pattern( ins ) function returns empty string.
- * Otherwise returns symbol sequence that appears from the end of each string.
- *
- * @param {string} ins - Sequence of possible symbols.
- * @returns {string} Returns found common symbols.
- *
- * @example "ame"
- * _.strCommonRight( 'ame', 'same', 'name' );
- *
- * @example "c"
- * _.strCommonRight( 'abc', 'dbc', 'ddc', 'aac' );
- *
- * @example ""
- * _.strCommonRight( 'abc', 'dba', 'abc' );
- *
- * @method strCommonRight
- * @throws {exception} If( ins ) is not a String.
- * @memberof wTools
- *
- */
-
-function strCommonRight( ins )
-{
-
-  if( arguments.length === 0 )
-  return '';
-  if( arguments.length === 1 )
-  return ins;
-
-  _.assert( _.strIs( ins ) );
-
-  var length = +Infinity;
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-    var src = arguments[ a ];
-    length = Math.min( length,src.length );
-  }
-
-  for( var i = 0 ; i < length ; i++ )
-  for( var a = 1 ; a < arguments.length ; a++ )
-  {
-    var src = arguments[ a ];
-    if( src[ src.length - i - 1 ] !== ins[ ins.length - i - 1 ] )
-    return ins.substring( ins.length-i );
-  }
-
-  return ins.substring( ins.length-i );
-}
-
-// --
-//
-// --
-
-/**
- * @name _strHtmlEscapeMap
- * @type {object}
- * @description Html escape symbols map.
- * @global
- */
-
-/**
- * Replaces all occurrences of html escape symbols from map( _strHtmlEscapeMap )
- * in source( str ) with their code equivalent like( '&' -> '&amp;' ).
- * Returns result of replacements as new string or original if nothing replaced.
- *
- * @param {string} str - Source string to parse.
- * @returns {string} Returns string with result of replacements.
- *
- * @example
- * //returns &lt;&amp;test &amp;text &amp;here&gt;
- * _.strHtmlEscape( '<&test &text &here>' );
- *
- * @example
- * //returns 1 &lt; 2
- * _.strHtmlEscape( '1 < 2' );
- *
- * @example
- * //returns &#x2F;&#x2F;test&#x2F;&#x2F;
- * _.strHtmlEscape( '//test//' );
- *
- * @example
- * //returns &amp;,&lt;
- * _.strHtmlEscape( ['&','<'] );
- *
- * @example
- * //returns &lt;div class=&quot;cls&quot;&gt;&lt;&#x2F;div&gt;
- * _.strHtmlEscape('<div class="cls"></div>');
- *
- * @method strHtmlEscape
- * @throws { Exception } Throws a exception if no argument provided.
- * @memberof wTools
- *
- */
-
-var _strHtmlEscapeMap =
-{
-  '&' : '&amp;',
-  '<' : '&lt;',
-  '>' : '&gt;',
-  '"' : '&quot;',
-  '\'' : '&#39;',
-  '/' : '&#x2F;'
-}
-
-function strHtmlEscape( str )
-{
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  return String( str ).replace( /[&<>"'\/]/g, function( s )
-  {
-    return _strHtmlEscapeMap[ s ];
-  });
-}
-
-//
-
-/**
- * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
- * Example: ( 't' -> '\u0074' ). Returns result of conversion as new string or empty string if source has zero length.
- * @param {string} str - Source string to parse.
- * @returns {string} Returns string with result of conversion.
- *
- * @example
- * //returns \u0061\u0062\u0063;
- * _.strUnicodeEscape( 'abc' );
- *
- * @example
- * //returns \u0077\u006f\u0072\u006c\u0064
- * _.strUnicodeEscape( "world" );
- *
- * @example
- * //returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
- * _.strUnicodeEscape( '//test//' );
- *
- * @method strUnicodeEscape
- * @throws { Exception } Throws a exception if no argument provided.
- * @throws { Exception } Throws a exception if( src ) is not a String.
- * @memberof wTools
- *
- */
-
-function strUnicodeEscape( src )
-{
-  var result = '';
-
-  _.assert( _.strIs( src ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
-
-  for( var i = 0 ; i < src.length ; i++ )
-  {
-    var c = src[ i ];
-    var code = c.charCodeAt( 0 );
-    var h = code.toString( 16 );
-    var d = _.strDup( '0',4-h.length ) + h;
-    result += '\\u' + d;
-  }
-
-  return result;
-}
-
-//
 
 /**
  * Adds indentation character(s) to passed string.
@@ -2616,9 +2940,9 @@ function strUnicodeEscape( src )
 function strIndentation( src,tab )
 {
 
-  _assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects src as string or array' );
-  _assert( _.strIs( tab ),'strIndentation : expects string tab' );
-  _assert( arguments.length === 2,'strIndentation : expects two arguments' );
+  _.assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects src as string or array' );
+  _.assert( _.strIs( tab ),'strIndentation : expects string tab' );
+  _.assert( arguments.length === 2,'strIndentation : expects two arguments' );
 
   if( _.strIs( src ) )
   {
@@ -2987,6 +3311,9 @@ strLinesNearest.defaults =
   nearestSplitting : 0,
   }
 
+// --
+// evaluator
+// --
 
 /**
  * Returns number of occurrences of a substring( ins ) in a string( src ),
@@ -2999,11 +3326,11 @@ strLinesNearest.defaults =
  *
  * @example
  * //returns 2
- * _.strCount( "aabab","ab" );
+ * _.strCount( 'aabab','ab' );
  *
  * @example
  * //returns 0
- * _.strCount( "aabab","" );
+ * _.strCount( 'aabab','' );
  *
  * @method strCount
  * @throws { Exception } Throw an exception if( src ) is not a String.
@@ -3091,6 +3418,40 @@ function strCountRight( src,ins )
 
 //
 
+/**
+ * Returns a count of lines in a string.
+ * Expects one object: the string( src ) to be processed.
+ *
+ * @param {string} src - Source string.
+ * @returns {number} Returns a number of lines in string.
+ *
+ * @example
+ * //returns 2
+ * _.strCountLines( 'first\nsecond' );
+ *
+ * @example
+ * //returns 4
+ * _.strCountLines( 'first\nsecond\nthird\n' );
+ *
+ * @method strCountLines
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @memberof wTools
+ *
+*/
+
+function strCountLines( src )
+{
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( _.strIs( src ) );
+  var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
+  return result;
+}
+
+// --
+// checker
+// --
+
 function strHas( src,ins )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -3170,197 +3531,14 @@ function strHasSeveral( src,ins )
   return strHas( src,ins ) ? 1 : 0;
 }
 
-//
-
-function strExtractStrips( o )
-{
-  if( _.strIs( o ) )
-  o = { src : o }
-
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.routineOptions( strExtractStrips, o );
-
-  var result = [];
-  var splitted = o.src.split( o.delimeter );
-  var isNextStrip = 0;
-  var isPrevStrip = 0;
-
-  /* */
-
-  for( var i = 0 ; i < splitted.length ; i++ )
-  {
-
-    if( !isNextStrip )
-    {
-      isNextStrip = 1;
-      if( splitted[ i ] )
-      {
-        isPrevStrip = 0;
-        result.push( splitted[ i ] );
-      }
-      continue;
-    }
-
-    var strip = o.onStrip ? o.onStrip( splitted[ i ] ) : splitted[ i ];
-    if( strip !== undefined )
-    {
-      isNextStrip = 0;
-      isPrevStrip = 1;
-      result.push( strip );
-    }
-    else
-    {
-      if( !isPrevStrip && result.length > 0 )
-      result[ result.length-1 ] += o.delimeter + splitted[ i ];
-      else
-      result.push( o.delimeter + splitted[ i ] );
-      isNextStrip = 1;
-      isPrevStrip = 0;
-    }
-
-  }
-
-  /* */
-
-  return result;
-}
-
-strExtractStrips.defaults =
-{
-  src : null,
-  delimeter : '#',
-  onStrip : null
-}
-
-//
-
-/**
- * Extracts words enclosed by prefix( o.prefix ) and postfix( o.postfix ) delimeters
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass source string and options map like ( { prefix : '#', postfix : '#' } ) as function context.
- *
- * Returns result as array of strings.
- *
- * Function extracts words in two attempts:
- * First by splitting source string by ( o.prefix ).
- * Second by splitting each element of the result of first attempt by( o.postfix ).
- * If splitting by ( o.prefix ) gives only single element then second attempt is skipped,otherwise function
- * splits all elements except first by ( o.postfix ) into two halfs and calls provided ( o.onStrip ) function on first half.
- * If result of second splitting( by o.postfix ) is undefined function appends value of element from first splitting attempt
- * with ( o.prefix ) prepended to the last element of result array.
- *
- * @param {string} src - Source string.
- * @param {object} o - Options map.
- * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
- * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
- * @param {string} [ o.onStrip = null ] - function called on each splitted part of a source string
- * @returns {object} Returns an array of strings separated by( o.delimeter ).
- *
- * @example
- * _.strExtractStereoStrips( '#abc#' );
- * //returns [ '', 'abc', '' ]
- *
- * @example
- * _.strExtractStereoStrips.call( { prefix : '#', postfix : '$' }, '#abc$' );
- * //returns [ 'abc' ]
- *
- * @example
- * function onStrip( strip )
- * {
- *   if( strip.length )
- *   return strip.toUpperCase();
- * }
- * _.strExtractStereoStrips.call( { postfix : '$', onStrip : onStrip }, '#abc$' );
- * //returns [ 'ABC' ]
- *
- * @method strExtractStereoStrips
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @memberof wTools
- *
- */
-
-function strExtractStereoStrips( o )
-{
-
-  // var o = this !== Self ? this : Object.create( null );
-
-  if( _.strIs( o ) )
-  o = { src : o }
-
-  _.assert( this === _ );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.objectIs( o ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.routineOptions( strExtractStereoStrips, o );
-
-  var result = [];
-  var splitted = o.src.split( o.prefix );
-
-  if( splitted.length === 1 )
-  return splitted;
-
-  /* */
-
-  if( splitted[ 0 ] )
-  result.push( splitted[ 0 ] );
-
-  /* */
-
-  for( var i = 1; i < splitted.length; i++ )
-  {
-    var halfs = _.strCutOffLeft( splitted[ i ],o.postfix );
-
-    // debugger;
-    _.assert( halfs.length === 3 );
-    // _.assert( halfs.length === 1 || halfs.length === 3 );
-    // if( halfs.length === 3 )
-    // halfs = [ halfs[ 0 ], halfs[ 2 ] ]
-
-    var strip = o.onStrip ? o.onStrip( halfs[ 0 ] ) : halfs[ 0 ];
-
-    if( strip !== undefined )
-    {
-      result.push( strip );
-      if( halfs[ 2 ] )
-      result.push( halfs[ 2 ] );
-    }
-    else
-    {
-      if( result.length )
-      debugger;
-      else
-      debugger;
-      if( result.length )
-      result[ result.length-1 ] += o.prefix + splitted[ i ];
-      else
-      result.push( o.prefix + splitted[ i ] );
-    }
-
-  }
-
-  return result;
-}
-
-strExtractStereoStrips.defaults =
-{
-  src : null,
-  prefix : '#',
-  postfix : '#',
-  onStrip : null,
-}
-
 // --
 // define class
 // --
 
 var Proto =
 {
+
+  // replacer
 
   _strRemoveBegin : _strRemoveBegin,
   strRemoveBegin : strRemoveBegin,
@@ -3372,17 +3550,36 @@ var Proto =
   strPrependOnce : strPrependOnce,
   strAppendOnce : strAppendOnce,
 
-  // converter
+  strReplaceWords : strReplaceWords,
+
+  // etc
+
+  strCommonLeft : strCommonLeft, /* document me */
+  strCommonRight : strCommonRight, /* document me */
+
+  // formatter
 
   strForRange : strForRange, /* experimental */
   strForCall : strForCall, /* experimental */
-
   strShort : strShort,
-  strEscape : strEscape,
+  strQuote : strQuote,
+
+  // transformer
 
   strCapitalize : strCapitalize,
-  strDup : strDup,
-  strLineCount : strLineCount,
+  strEscape : strEscape,
+  strUnicodeEscape : strUnicodeEscape, /* document me */
+  strReverse : strReverse,
+
+  // stripper
+
+  strStrip : strStrip,
+  strStripLeft : strStripLeft,
+  strStripRight : strStripRight,
+  strRemoveAllSpaces : strRemoveAllSpaces,
+  strStripEmptyLines : strStripEmptyLines,
+
+  // splitter
 
   _strCutOff : _strCutOff,
   strCutOffLeft : strCutOffLeft,
@@ -3394,53 +3591,40 @@ var Proto =
   strSplitStrNumber : strSplitStrNumber, /* experimental */
   strSplitChunks : strSplitChunks, /* experimental */
 
+  strSplitFast : strSplitFast,
   strSplit : strSplit,
-  strStrip : strStrip,
-  strStripLeft : strStripLeft,
-  strStripRight : strStripRight,
-  strRemoveAllSpaces : strRemoveAllSpaces,
-  strStripEmptyLines : strStripEmptyLines,
 
-  /*strIron : strIron, */
+  strExtractInlined : strExtractInlined,
+  strExtractInlinedStereo : strExtractInlinedStereo,
 
-  strReplaceAll : strReplaceAll, /* document me */
-  strReplaceWords : strReplaceWords,
-
-  // generator
+  // joiner
 
   strDup : strDup, /* document me */
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
-  strConcat : strConcat, /* me too */
-  strQuote : strQuote,
+  strConcat : strConcat, /* document me */
 
-  // extractor
-
-  strCommonLeft : strCommonLeft, /* document me */
-  strCommonRight : strCommonRight, /* document me */
-
-  //
-
-  strHtmlEscape : strHtmlEscape, /* improve my document */
-  strUnicodeEscape : strUnicodeEscape, /* document me */
+  // liner
 
   strIndentation : strIndentation,
   strLinesNumber : strLinesNumber,
   strLinesSelect : strLinesSelect,
   strLinesNearest : strLinesNearest,
 
+  // evaluator
+
   strCount : strCount,
   strCountLeft : strCountLeft,
   strCountRight : strCountRight,
+  strCountLines : strCountLines,
+
+  // checker
 
   strHas : strHas,
   strHasAny : strHasAny,
   strHasAll : strHasAll,
   strHasNone : strHasNone,
   strHasSeveral : strHasSeveral,
-
-  strExtractStrips : strExtractStrips,
-  strExtractStereoStrips : strExtractStereoStrips,
 
 }
 

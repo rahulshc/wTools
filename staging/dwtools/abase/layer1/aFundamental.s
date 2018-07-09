@@ -1680,23 +1680,23 @@ function _err( o )
 
   /* file name */
 
-  if( o.location.path !== undefined && !result.fileName )
-  {
-    Object.defineProperty( result, 'fileName',
-    {
-      enumerable : false,
-      configurable : true,
-      writable : true,
-      value : o.location.path,
-    });
-    Object.defineProperty( result, 'LocationFull',
-    {
-      enumerable : false,
-      configurable : true,
-      writable : true,
-      value : o.location.full,
-    });
-  }
+  // if( o.location.path !== undefined && !result.fileName )
+  // {
+  //   Object.defineProperty( result, 'fileName',
+  //   {
+  //     enumerable : false,
+  //     configurable : true,
+  //     writable : true,
+  //     value : o.location.path,
+  //   });
+  //   Object.defineProperty( result, 'LocationFull',
+  //   {
+  //     enumerable : false,
+  //     configurable : true,
+  //     writable : true,
+  //     value : o.location.full,
+  //   });
+  // }
 
   /* source code */
 
@@ -3530,6 +3530,32 @@ function routineSupplement( dst )
 
 //
 
+function routineForPreAndBody( pre, body )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.routineIs( pre ) );
+  _.assert( _.routineIs( body ) );
+  _.assert( body.defaults );
+  _.assertMapHasOnly( pre,{} );
+  _.assertMapHasOnly( body,{ defaults : null } );
+
+  function callPreAndBody()
+  {
+    var o = pre.call( this, callPreAndBody, arguments );
+    var result = body.call( this, o );
+    return result;
+  }
+
+  _.routineSupplement( callPreAndBody, body );
+
+  callPreAndBody.pre = pre;
+  callPreAndBody.body = body;
+
+  return callPreAndBody;
+}
+
+//
+
 function routineVectorize_functor( o )
 {
 
@@ -3705,7 +3731,7 @@ function _equalizerFromMapper( mapper )
 
 //
 
-function _comparatorFromMapper( mapper )
+function _comparatorFromEvaluator( mapper )
 {
 
   if( mapper === undefined )
@@ -4832,7 +4858,7 @@ function regexpsAtLeastFirst( o )
   if( !_.objectIs( o ) )
   o = { sources : o }
 
-  _.routineOptions( regexpsAny, o );
+  _.routineOptions( regexpsAtLeastFirst, o );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   var src = o.sources[ 0 ];
@@ -4902,12 +4928,11 @@ function regexpsNone( o )
 
   o = _.regexpsSources( o );
 
-  var result = '^(?:(?!(';
-  result += o.sources.join( ')|(' );
-  // if( o.atLeastOnce )
+  /* ^(?:(?!(?:abc)).)+$ */
+
+  var result = '^(?:(?!(?:';
+  result += o.sources.join( ')|(?:' );
   result += ')).)+$';
-  // else
-  // result += ').)*$';
 
   return new RegExp( result, o.flags || '' );
 }
@@ -4934,8 +4959,8 @@ function regexpsAny( o )
   if( o.sources.length === 1 && _.regexpIs( src ) )
   return src;
 
-  var result = '(';
-  result += o.sources.join( ')|(' );
+  var result = '(?:';
+  result += o.sources.join( ')|(?:' );
   result += ')';
 
   return new RegExp( result, o.flags || '' );
@@ -4974,7 +4999,7 @@ function regexpsAll( o )
       result += ')';
     }
 
-    result += '(';
+    result += '(?:';
     result += o.sources[ o.sources.length-1 ];
     result += ')';
 
@@ -5666,6 +5691,18 @@ function _timeNow_functor()
   now = function(){ return Date().getTime() };
 
   return now;
+}
+
+//
+
+function timeFrom( time )
+{
+  _.assert( arguments.length === 1 );
+  if( _.numberIs( time ) )
+  return time;
+  if( _.dateIs( time ) )
+  return time.getTime()
+  _.assert( 0, 'Not clear how to coerce to time', _.strTypeOf( time ) );
 }
 
 //
@@ -9912,7 +9949,7 @@ function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
   debugger;
   throw _.err( 'not tested' );
 
-  comparator = _._comparatorFromMapper( comparator );
+  comparator = _._comparatorFromEvaluator( comparator );
 
   function rcomparator( a,b )
   {
@@ -16822,11 +16859,12 @@ var Routines =
   routineOptionsFromThis : routineOptionsFromThis,
 
   routineSupplement : routineSupplement,
+  routineForPreAndBody : routineForPreAndBody,
 
   routineVectorize_functor : routineVectorize_functor,
 
   _equalizerFromMapper : _equalizerFromMapper,
-  _comparatorFromMapper : _comparatorFromMapper,
+  _comparatorFromEvaluator : _comparatorFromEvaluator,
 
   bind : null,
 
@@ -16940,6 +16978,7 @@ var Routines =
   _timeNow_functor : _timeNow_functor,
   timeNow : null,
 
+  timeFrom : timeFrom,
   timeSpent : timeSpent,
   dateToStr : dateToStr,
 

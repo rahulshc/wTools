@@ -2254,8 +2254,8 @@ defaults.strictCycling = 1;
  * @param {*} src2 - Entity for comparison.
  * @param {wTools~entityEqualOptions} options - Comparsion options {@link wTools~entityEqualOptions}.
  * @param {boolean} [ options.strict = false ] - Method uses( '==' ) equality mode .
- * @param {number} [ options.accuracy = 1e-5 ] - Maximal distance between two numbers.
- * Example: If( options.accuracy ) is '1e-5' then 0.99999 and 1.0 are equivalent.
+ * @param {number} [ options.accuracy = 1e-7 ] - Maximal distance between two numbers.
+ * Example: If( options.accuracy ) is '1e-7' then 0.99999 and 1.0 are equivalent.
  * @returns {boolean} Returns true if entities are equivalent.
  *
  * @example
