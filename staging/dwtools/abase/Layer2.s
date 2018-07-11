@@ -7,7 +7,7 @@ if( typeof module !== 'undefined' && module !== null )
 
   require( './Layer1.s' );
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
   var Self = _global_.wTools;
 
   require( './layer2/bLookTools.s' );

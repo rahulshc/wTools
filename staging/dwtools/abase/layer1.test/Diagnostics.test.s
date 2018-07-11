@@ -40,7 +40,7 @@ function _err( test )
   var errMsg2 = errObj1.message;
 
   var errMsg1 = 'some error message',
-    fileName = 'Diagnostics.test.s',
+    strName = 'Diagnostics.test.s',
     errObj2 = new Error( 'Error #3' ),
     errMsg3 = errObj2.message,
     optionsObj3 =
@@ -69,7 +69,7 @@ function _err( test )
   test.identical( expectMsg.test( got.message ), true );
 
   test.description = 'single string passed as args property : result message should contains file name';
-  var expectFileName = new RegExp( fileName );
+  var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
   test.description = 'single error instance passed as args property : result should be Error obj';
@@ -81,7 +81,7 @@ function _err( test )
   test.identical( expectMsg.test( got.message ), true );
 
   test.description = 'single error instance passed as args property : result message should contains file name';
-  test.identical( _.strHas( got.message,errObj1.fileName ), true );
+  test.identical( _.strHas( got.message, errObj1.location.path ), true );
 
   test.description = 'several error instances/messages passed as args property : result should be Error obj';
   var got = _._err( optionsObj4 );
@@ -95,7 +95,7 @@ function _err( test )
 
   test.description = 'several error instances/messages passed as args property : result message should contains ' +
     'file name';
-  var expectFileName = new RegExp( fileName );
+  var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
   /**/
@@ -134,7 +134,7 @@ function _err( test )
 function err( test )
 {
   var errMsg1 = 'some error message',
-    fileName = 'Diagnostics.test.s',
+    strName = 'Diagnostics.test.s',
     errObj1 = new Error( 'err obj for tesst' ),
     errMsg2 = errObj1.message,
     errObj2 = new Error( 'Error #3' ),
@@ -150,7 +150,7 @@ function err( test )
   test.identical( expectMsg.test( got.message ), true );
 
   test.description = 'single string passed as args property : result message should contains file name';
-  var expectFileName = new RegExp( fileName );
+  var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
   test.description = 'single error instance passed as args property : result should be Error obj';
@@ -162,8 +162,7 @@ function err( test )
   test.identical( expectMsg.test( got.message ), true );
 
   test.description = 'single error instance passed as args property : result message should contains file name';
-  var expectFileName = new RegExp( errObj1.fileName );
-  test.identical( _.strHas( got.message,errObj1.fileName ), true );
+  test.identical( _.strHas( got.message,errObj1.location.path ), true );
 
   test.description = 'several error instances/messages passed as args property : result should be Error obj';
   var got = _.err( errObj2, errMsg1 );
@@ -177,7 +176,7 @@ function err( test )
 
   test.description = 'several error instances/messages passed as args property : result message should contains ' +
     'file name';
-  var expectFileName = new RegExp( fileName );
+  var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
 };
@@ -187,7 +186,7 @@ function err( test )
 function errLog( test )
 {
   var errMsg1 = 'some error message',
-    fileName = 'Diagnostics.test.s',
+    strName = 'Diagnostics.test.s',
     errObj1 = new Error( 'err obj for tesst' ),
     errMsg2 = errObj1.message;
 
@@ -201,7 +200,7 @@ function errLog( test )
   test.identical( expectMsg.test( got.message ), true );
 
   test.description = 'single string passed as args property : result message should contains file name';
-  var expectFileName = new RegExp( fileName );
+  var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
   test.description = 'single error instance passed as args property : result should be Error obj';
@@ -213,8 +212,7 @@ function errLog( test )
   test.identical( expectMsg.test( got.message ), true );
 
   test.description = 'single error instance passed as args property : result message should contains file name';
-  var expectFileName = new RegExp( errObj1.fileName );
-  test.identical( _.strHas( got.message,errObj1.fileName ), true );
+  test.identical( _.strHas( got.message,errObj1.location.path ), true );
 
 }
 

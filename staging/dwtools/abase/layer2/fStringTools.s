@@ -1676,7 +1676,174 @@ strSplitChunks.defaults =
 
 //
 
-function _strSplit_pre( routine, args )
+function _strSplitsQuote_pre( routine, args )
+{
+  var o = args[ 0 ];
+
+  _.routineOptions( routine, o );
+
+  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1, 'expects one or two argument' );
+  _.assert( _.objectIs( o ) );
+
+  if( o.quoting )
+  {
+
+    if( _.boolLike( o.quoting ) )
+    {
+      if( !o.quotingPrefixes )
+      o.quotingPrefixes = [ '"' ];
+      if( !o.quotingPostfixes )
+      o.quotingPostfixes = [ '"' ];
+    }
+    else if( _.strIs( o.quoting ) || _.regexpIs( o.quoting ) || _.arrayIs( o.quoting ) )
+    {
+      _.assert( !o.quotingPrefixes );
+      _.assert( !o.quotingPostfixes );
+      o.quoting = _.arrayAs( o.quoting );
+      o.quotingPrefixes = o.quoting;
+      o.quotingPostfixes = o.quoting;
+      o.quoting = true;
+    }
+    else _.assert( 0, 'unexpected type of {-o.quoting-}' );
+
+    _.assert( o.quotingPrefixes.length === o.quotingPostfixes.length );
+    _.assert( _.boolLike( o.quoting ) );
+
+  }
+
+  return o;
+}
+
+//
+
+function _strSplitsQuote_body( o )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( o.splits ) );
+
+  /* quoting */
+
+  if( o.quoting )
+  debugger;
+  if( o.quoting )
+  for( var s = 1 ; s < o.splits.length ; s += 2 )
+  {
+    var split = o.splits[ s ];
+
+    var q = o.quotingPrefixes.indexOf( split );
+    if( q >= 0 )
+    {
+      var postfix = o.quotingPostfixes[ q ];
+      for( var s2 = s+2 ; s2 < o.splits.length ; s2 += 2 )
+      {
+        var split2 = o.splits[ s2 ];
+        if( split2 === postfix )
+        {
+          var splitNew = o.splits.splice( s, s2-s ).join( '' )
+          o.splits[ s ] = splitNew + o.splits[ s ];
+          s2 = s;
+          break;
+        }
+      }
+    }
+
+    /* if complementing postfix not found */
+
+    if( s2 >= o.splits.length )
+    {
+      debugger;
+      if( !_.arrayHas( o.delimeter, split ) )
+      {
+        var splitNew = o.splits.splice( s, 2 ).join( '' );
+        o.splits[ s-1 ] = o.splits[ s-1 ] + splitNew;
+      }
+    }
+
+  }
+
+  return o.splits;
+}
+
+_strSplitsQuote_body.defaults =
+{
+  quoting : 1,
+  quotingPrefixes : null,
+  quotingPostfixes : null,
+  splits : null,
+  delimeter : null,
+}
+
+//
+
+var strSplitsQuote = _.routineForPreAndBody( _strSplitsQuote_pre, _strSplitsQuote_body );
+
+//
+
+function _strSplitsStrip_pre( routine, args )
+{
+  var o = args[ 0 ];
+
+  _.routineOptions( routine, o );
+
+  if( o.stripping && _.boolLike( o.stripping ) )
+  o.stripping = _.strStrip.defaults.stripper;
+
+  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1, 'expects one or two argument' );
+  _.assert( _.objectIs( o ) );
+  _.assert( !o.stripping || _.strIs( o.stripping ) || _.regexpIs( o.stripping ) );
+
+  return o;
+}
+
+//
+
+function _strSplitsStrip_body( o )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( o.splits ) );
+
+  /* stripping */
+
+  for( var s = 0 ; s < o.splits.length ; s++ )
+  {
+    var split = o.splits[ s ];
+
+    if( o.stripping )
+    split = _.strStrip({ src : split, stripper : o.stripping });
+
+    if( o.preservingEmpty || split )
+    {
+      o.splits[ s ] = split;
+    }
+    else
+    {
+      o.splits.splice( s,1 );
+      s -= 1;
+    }
+
+  }
+
+  return o.splits;
+}
+
+_strSplitsStrip_body.defaults =
+{
+  trimming : 1,
+  preservingEmpty : null,
+  splits : null,
+}
+
+//
+
+var strSplitsStrip = _.routineForPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
+
+//
+
+function _strSplitFast_pre( routine, args )
 {
   var o = args[ 0 ];
 
@@ -1685,11 +1852,12 @@ function _strSplit_pre( routine, args )
   else if( _.strIs( args[ 0 ] ) )
   o = { src : args[ 0 ] }
 
+  _.routineOptions( routine, o );
+
   _.assert( arguments.length === 2 );
   _.assert( args.length === 1 || args.length === 2, 'expects one or two argument' );
   _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
-  _.routineOptions( routine, o );
 
   return o;
 }
@@ -1698,84 +1866,76 @@ function _strSplit_pre( routine, args )
 
 function _strSplitFast_body( o )
 {
-
-  _.assert( arguments.length === 1 );
+  var result;
 
   o.delimeter = _.arrayAs( o.delimeter );
-  if( o.preservingDelimeters === null )
-  o.preservingDelimeters = 0;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( o.delimeter ) );
+  _.assert( _.boolLike( o.preservingDelimeters ) );
 
   /* */
 
-  if( o.preservingDelimeters )
+  if( !o.preservingDelimeters && o.delimeter.length === 1 )
   {
 
-    var result = [];
-    var right = [];
-    var prevPosition = o.src.length;
+    result = o.src.split( o.delimeter[ 0 ] );
 
-    for( var s = 0 ; s < delimeter.length ; s++ )
-    right[ s ] = nextDelimeter( s,o.src.length );
-
-    while( true )
-    {
-      var splitterIndex = -1;
-      var position = -1;
-      for( var s = 0 ; s < delimeter.length ; s++ )
-      {
-        /* if one delimeter coontain another one, it's possible right is invalid at this point */
-        if( right[ s ] >= prevPosition )
-        {
-          right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
-        }
-        if( right[ s ] > position )
-        {
-          splitterIndex = s;
-          position = right[ s ];
-        }
-      }
-
-      if( position === -1 )
-      break;
-
-      if( right[ splitterIndex ] > 0 )
-      right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
-      else
-      right[ splitterIndex ] = -1;
-
-      var r = [ position,prevPosition ];
-      if( r[ 0 ] < r[ 1 ] )
-      result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
-      else
-      result.unshift( '' );
-
-      if( delimeter[ splitterIndex ].length )
-      result.unshift( delimeter[ splitterIndex ] );
-
-      prevPosition = position-delimeter[ splitterIndex ].length;
-
-    }
-
-    result.unshift( o.src.substring( 0,prevPosition ) );
+    if( !o.preservingEmpty )
+    result = result.filter( ( e ) => e ? e : false );
 
   }
   else
   {
 
-    var result = o.src.split( delimeter[ 0 ] );
-    for( var s = 1 ; s < delimeter.length ; s++ )
+    if( !o.delimeter.length )
     {
+      result = [ o.src ];
+      return result;
+    }
 
-      for( var r = result.length-1 ; r >= 0 ; r-- )
-      {
+    var result = [];
+    var closests = [];
+    var position = 0;
+    var closestPosition = 0;
+    var closestIndex = -1;
+    var hasEmptyDelimeter = false;
 
-        var sub = result[ r ].split( delimeter[ s ] );
-        if( sub.length > 1 )
-        _.arrayCutin( result,[ r,r+1 ],sub );
+    for( var d = 0 ; d < o.delimeter.length ; d++ )
+    {
+      if( o.delimeter[ d ].length === 0 )
+      hasEmptyDelimeter = true;
+      closests[ d ] = delimeterNext( d, position );
+    }
 
-      }
+    do
+    {
+      closestWhich();
+
+      if( closestPosition === o.src.length )
+      break;
+
+      var delimeter = o.delimeter[ closestIndex ];
+
+      if( !delimeter.length )
+      position += 1;
+
+      ordinaryAdd( o.src.substring( position, closestPosition ) );
+
+      if( delimeter.length > 0 || position < o.src.length )
+      delimeterAdd( delimeter );
+
+      position = closests[ closestIndex ] + ( delimeter.length ? delimeter.length : 1 );
+
+      for( var d = 0 ; d < o.delimeter.length ; d++ )
+      if( closests[ d ] < position )
+      closests[ d ] = delimeterNext( d, position );
 
     }
+    while( position < o.src.length );
+
+    if( delimeter || !hasEmptyDelimeter )
+    ordinaryAdd( o.src.substring( position, o.src.length ) );
 
   }
 
@@ -1783,13 +1943,49 @@ function _strSplitFast_body( o )
 
   /* */
 
-  function nextDelimeter( d,last )
+  function delimeterAdd( delimeter )
   {
-    if( last < 0 )
-    return last;
-    var result = o.src.lastIndexOf( delimeter[ d ],last );
-    if( result >= 0 )
-    result += delimeter[ d ].length;
+
+    if( o.preservingDelimeters )
+    if( o.preservingEmpty || delimeter )
+    result.push( delimeter );
+
+  }
+
+  /*  */
+
+  function ordinaryAdd( ordinary )
+  {
+    if( o.preservingEmpty || ordinary )
+    result.push( ordinary );
+  }
+
+  /* */
+
+  function closestWhich()
+  {
+
+    closestPosition = o.src.length;
+    closestIndex = -1;
+    for( var d = 0 ; d < o.delimeter.length ; d++ )
+    {
+      if( closests[ d ] < o.src.length && closests[ d ] < closestPosition )
+      {
+        closestPosition = closests[ d ];
+        closestIndex = d;
+      }
+    }
+
+  }
+
+  /* */
+
+  function delimeterNext( d, position )
+  {
+    _.assert( position <= o.src.length );
+    var result = o.src.indexOf( o.delimeter[ d ], position );
+    if( result === -1 )
+    return o.src.length;
     return result;
   }
 
@@ -1799,8 +1995,8 @@ _strSplitFast_body.defaults =
 {
   src : null,
   delimeter : ' ',
-  preservingEmpty : 0,
-  preservingDelimeters : null,
+  preservingEmpty : 1,
+  preservingDelimeters : 0,
 }
 
 //
@@ -1856,11 +2052,74 @@ _strSplitFast_body.defaults =
  *
  */
 
-var strSplitFast = _.routineForPreAndBody( _strSplit_pre, _strSplitFast_body );
+var strSplitFast = _.routineForPreAndBody( _strSplitFast_pre, _strSplitFast_body );
 
-_.assert( strSplitFast.pre === _strSplit_pre );
+_.assert( strSplitFast.pre === _strSplitFast_pre );
 _.assert( strSplitFast.body === _strSplitFast_body );
 _.assert( strSplitFast.defaults );
+
+//
+
+function _strSplit2_body( o )
+{
+
+  o.delimeter = _.arrayAs( o.delimeter );
+
+  if( !o.stripping && !o.quoting && !o.onDelimeter )
+  {
+    debugger;
+    throw _.err( 'not tested' );
+    return _.strSplitFast.body( _.mapOnly( o, _.strSplitFast.defaults ) );
+  }
+
+  /* */
+
+  _.assert( arguments.length === 1 );
+
+  /* */
+
+  var result = [];
+  var fastOptions = _.mapOnly( o, _.strSplitFast.defaults );
+  fastOptions.preservingEmpty = 1;
+  fastOptions.preservingDelimeters = 1;
+
+  if( o.quoting )
+  fastOptions.delimeter = _.arrayPrependArraysOnce( [], [ o.quotingPrefixes, o.quotingPostfixes, fastOptions.delimeter ] );
+
+  o.splits = _.strSplitFast.body( fastOptions );
+
+  if( o.quoting )
+  _.strSplitsQuote.body( o );
+
+  if( o.stripping )
+  _.strSplitsStrip.body( o );
+
+  /* */
+
+  return o.splits;
+}
+
+var defaults = _strSplit2_body.defaults = Object.create( _strSplitFast_body.defaults );
+
+defaults.preservingEmpty = 1;
+defaults.preservingDelimeters = 1;
+
+defaults.stripping = 1;
+defaults.quoting = 1;
+defaults.quotingPrefixes = null;
+defaults.quotingPostfixes = null;
+
+defaults.onDelimeter = null;
+defaults.onQuote = null;
+
+//
+
+var strSplit2 = _.routineForPreAndBody( [ strSplitFast.pre, strSplitsQuote.pre, strSplitsStrip.pre ], _strSplit2_body );
+
+_.assert( strSplit2.pre !== strSplitFast.pre );
+_.assert( strSplit2.pre );
+_.assert( strSplit2.body === _strSplit2_body );
+_.assert( strSplit2.defaults );
 
 //
 
@@ -1878,7 +2137,8 @@ function _strSplit_body( o )
 
   _.assert( arguments.length === 1 );
 
-  var delimeter = _.arrayIs( o.delimeter ) ? o.delimeter : [ o.delimeter ];
+  o.delimeter = _.arrayAs( o.delimeter );
+  var delimeter = o.delimeter;
   var preservingDelimeters = o.preservingDelimeters;
   var preservingEmpty = o.preservingEmpty;
 
@@ -2064,7 +2324,6 @@ _strSplit_body.defaults =
 {
   src : null,
   delimeter : ' ',
-
   stripping : 1,
   quoting : 0,
   preservingEmpty : 0,
@@ -2124,9 +2383,9 @@ _strSplit_body.defaults =
  *
  */
 
-var strSplit = _.routineForPreAndBody( _strSplit_pre, _strSplit_body );
+var strSplit = _.routineForPreAndBody( _strSplitFast_pre, _strSplit_body );
 
-_.assert( strSplit.pre === _strSplit_pre );
+_.assert( strSplit.pre === _strSplitFast_pre );
 _.assert( strSplit.body === _strSplit_body );
 _.assert( strSplit.defaults );
 
@@ -2136,7 +2395,7 @@ _.assert( strSplit.defaults );
 //   return result;
 // }
 //
-// strSplit.pre = _strSplit_pre;
+// strSplit.pre = _strSplitFast_pre;
 // strSplit.body = _strSplit_body;
 //
 // var defaults = sstrSplit.defaults = Object.create( strSplit.body.defaults );
@@ -2355,7 +2614,7 @@ _strExtractInlined_body.defaults =
 
 //
 
-var strExtractInlined = _.routineForPreAndBody( _strSplit_pre, _strExtractInlined_body );
+var strExtractInlined = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlined_body );
 
 //
 
@@ -2382,7 +2641,7 @@ function _strExtractInlinedStereo_body( o )
     return splitArray;
   }
 
-  var result = []; xxx
+  var result = [];
 
   /* */
 
@@ -2494,7 +2753,7 @@ _strExtractInlinedStereo_body.defaults =
  *
  */
 
-// var strExtractInlinedStereo = _.routineForPreAndBody( _strSplit_pre, _strExtractInlinedStereo_body );
+// var strExtractInlinedStereo = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlinedStereo_body );
 
 function strExtractInlinedStereo( o )
 {
@@ -3249,7 +3508,7 @@ strLinesSelect.defaults =
 // var l = strLinesSelect( a,[ 2,5 ] );
 // var l = strLinesSelect( a,[ 3,5 ] );
 // debugger;
-
+//
 //
 
 function strLinesNearest( o )
@@ -3590,7 +3849,11 @@ var Proto =
   strSplitStrNumber : strSplitStrNumber, /* experimental */
   strSplitChunks : strSplitChunks, /* experimental */
 
+  strSplitsQuote : strSplitsQuote,
+  strSplitsStrip : strSplitsStrip,
+
   strSplitFast : strSplitFast,
+  strSplit2 : strSplit2,
   strSplit : strSplit,
 
   strExtractInlined : strExtractInlined,

@@ -2056,8 +2056,8 @@ function _entityEqual_lookBegin( routine, args )
   lookOptions.src2 = o.src1;
   lookOptions.levelLimit = o.levelLimit;
   lookOptions.context = o;
-  lookOptions.onUp = _.routinesComposeReturningLast( __entityEqualUp, o.onUp );
-  lookOptions.onDown = _.routinesComposeReturningLast( __entityEqualDown, o.onDown );
+  lookOptions.onUp = _.routinesComposeReturningLast([ __entityEqualUp, o.onUp ]);
+  lookOptions.onDown = _.routinesComposeReturningLast([ __entityEqualDown, o.onDown ]);
 
   var it = _.look.pre( _.look, [ lookOptions ] );
   o.iterator = it.iterator;

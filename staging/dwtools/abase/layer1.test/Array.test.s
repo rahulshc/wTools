@@ -4383,6 +4383,16 @@ function arrayPrependArraysOnce( test )
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
 
+  test.description = 'should keep sequence';
+
+  var dst = [ 6 ];
+  var src = [ [ 1,2 ], 3, [ 6,4,5,1,2,3 ] ];
+  var srcCopy = [ [ 1,2 ], 3, [ 6,4,5,1,2,3 ] ];
+  var got = _.arrayPrependArraysOnce( dst, src );
+  test.identical( dst, [ 1, 2, 3, 4, 5, 6 ] );
+  test.identical( src, srcCopy );
+  test.is( got === dst );
+
   test.description = 'prepends only unique elements';
 
   var dst = [ 1,2,3 ];
@@ -4487,6 +4497,16 @@ function arrayPrependArraysOnceStrictly( test )
   var got = _.arrayPrependArraysOnceStrictly( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, dst );
+
+  test.description = 'should keep sequence';
+
+  var dst = [ 6 ];
+  var src = [ [ 1,2 ], 3, [ 4,5 ] ];
+  var srcCopy = [ [ 1,2 ], 3, [ 4,5 ] ];
+  var got = _.arrayPrependArraysOnceStrictly( dst, src );
+  test.identical( dst, [ 1, 2, 3, 4, 5, 6 ] );
+  test.identical( src, srcCopy );
+  test.is( got === dst );
 
   test.description = 'mixed arguments types';
   var dst = [ 1 ];
@@ -4670,6 +4690,7 @@ function arrayPrependedArrays( test )
 
 function arrayPrependedArraysOnce( test )
 {
+
   test.description = 'nothing';
 
   var dst = [];
@@ -4684,6 +4705,23 @@ function arrayPrependedArraysOnce( test )
   var got = _.arrayPrependedArraysOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
+
+  test.description = 'simple';
+
+  var dst = [];
+  var got = _.arrayPrependedArraysOnce( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  test.description = 'should keep sequence';
+
+  var dst = [ 6 ];
+  var src = [ [ 1,2 ], 3, [ 6,4,5,1,2,3 ] ];
+  var srcCopy = [ [ 1,2 ], 3, [ 6,4,5,1,2,3 ] ];
+  var got = _.arrayPrependedArraysOnce( dst, src );
+  test.identical( dst, [ 1, 2, 3, 4, 5, 6 ] );
+  test.identical( src, srcCopy );
+  test.identical( got, 5 );
 
   test.description = 'prepends only unique elements';
 
@@ -8651,50 +8689,117 @@ function arrayReplacedOnce( test )
 
 function arrayReplaceArrayOnce( test )
 {
-  test.description = 'replace elements from ins with sub';
+
+  test.description = 'trivial';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrayOnce( dst, [ 'a', 'b', 'c' ], [ 'x', 'y' ] );
+  test.identical( got, [ 'x', 'y', 'd' ] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'dst, ins, sub are empty';
 
   var dst = [];
   var got = _.arrayReplaceArrayOnce( dst, [], [] );
   test.identical( got, [] );
   test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'dst, ins are empty, sub is not';
+
+  var dst = [];
+  var got = _.arrayReplaceArrayOnce( dst, [], [ 'x','y' ] );
+  test.identical( got, [] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'dst, sub are empty, ins is not';
+
+  var dst = [];
+  var got = _.arrayReplaceArrayOnce( dst, [ 'a', 'b' ], [] );
+  test.identical( got, [] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'ins, sub are empty, dst is not';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrayOnce( dst, [], [] );
+  test.identical( got, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'only ins is empty';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrayOnce( dst, [], [ 'x', 'y' ] );
+  test.identical( got, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'only sub is empty';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrayOnce( dst, [ 'a', 'b', 'c' ], [] );
+  test.identical( got, [ 'd' ] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'other';
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArrayOnce( dst, [ 1 ], 2 );
+  var got = _.arrayReplaceArrayOnce( dst, [ 1 ], [ 2 ] );
   test.identical( got, [ 2, 2, 3 ] );
   test.identical( got, dst );
+  test.is( got === dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArrayOnce( dst, [ 1, 2 ], 3);
-  test.identical( got, [ 3, 3, 3 ] );
+  var got = _.arrayReplaceArrayOnce( dst, [ 1, 2 ], [ 3 ] );
+  test.identical( got, [ 3, 3 ] );
   test.identical( got, dst );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArrayOnce( dst, [ 1, 0, 4 ], 3 );
-  test.identical( got, [ 3, 2, 3 ] );
-  test.identical( got, dst );
+  test.is( got === dst );
 
   var dst = [ 1, 2, 3 ];
   var got = _.arrayReplaceArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
-  test.identical( got, [ [ 3 ], 2, 3 ] );
+  test.identical( got, [ 3, 2, 3 ] );
   test.identical( got, dst );
+  test.is( got === dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArrayOnce( dst, [ undefined ], 0 );
+  var got = _.arrayReplaceArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
+  test.identical( got, [ 3, 2, 3 ] );
+  test.identical( got, dst );
+
+  test.description = 'ins has undefined';
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArrayOnce( dst, [ undefined ], [ 0 ] );
   test.identical( got, [ 1, 2, 3 ] );
   test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'ins and dst has undefined';
+
+  var dst = [ 1, undefined, 3 ];
+  var got = _.arrayReplaceArrayOnce( dst, [ undefined ], [ 0 ] );
+  test.identical( got, [ 1, 0, 3 ] );
+  test.identical( got, dst );
+  test.is( got === dst );
 
   test.description = 'onEqualize'
 
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
   function onEqualize( a, b )
   {
-    return a[ 0 ] === b;
+    return a[ 0 ] === b[ 0 ];
   }
-  var got = _.arrayReplaceArrayOnce( dst, [ 1 ], 0, onEqualize );
-  test.identical( got, [ 0, [ 2 ], [ 3 ] ] );
+  var got = _.arrayReplaceArrayOnce( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize );
+  test.identical( got, [ [ 0 ], [ 2 ], [ 3 ] ] );
   test.identical( got, dst );
+  test.is( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -8705,64 +8810,104 @@ function arrayReplaceArrayOnce( test )
     _.arrayReplaceArrayOnce();
   })
 
+  test.description = 'sub is not a arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArrayOnce( [ 1 ], [ 1 ], 1 );
+  })
+
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.arrayReplaceArrayOnce( 1, [ 1 ], 1 );
+    _.arrayReplaceArrayOnce( 1, [ 1 ], [ 1 ] );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.arrayReplaceArrayOnce( [ 1, 2 ], 1, 1 );
+    _.arrayReplaceArrayOnce( [ 1, 2 ], 1, [ 1 ] );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.arrayReplaceArrayOnce( [ 1, 2 ], [ 1 ], 1, 1 );
-  })
+    _.arrayReplaceArrayOnce( [ 1, 2 ], [ 1 ], [ 1 ], 1 );
+  });
+
 }
 
 //
 
 function arrayReplaceArrayOnceStrictly( test )
 {
-  test.description = 'nothing replaced';
-  var got = _.arrayReplaceArrayOnceStrictly( [], [], [] );
+
+  test.description = 'trivial';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 'a', 'b', 'c' ], [ 'x', 'y', undefined ] );
+  test.identical( got, [ 'x', 'y', 'd' ] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'dst, ins, sub are empty';
+
+  var dst = [];
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [], [] );
   test.identical( got, [] );
+  test.identical( got, dst );
+  test.is( got === dst );
 
-  //
+  test.description = 'ins, sub are empty, dst is not';
 
-  test.description = 'replace elements from ins with sub';
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [], [] );
+  test.identical( got, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'only sub is empty';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 'a', 'b', 'c' ], [ undefined, undefined, undefined ] );
+  test.identical( got, [ 'd' ] );
+  test.identical( got, dst );
+  test.is( got === dst );
+
+  test.description = 'other';
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1 ], 2 );
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1 ], [ 2 ] );
   test.identical( got, [ 2, 2, 3 ] );
   test.identical( got, dst );
+  test.is( got === dst );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], 3);
-  test.identical( got, [ 3, 3, 3 ] );
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], [ 3, undefined ] );
+  test.identical( got, [ 3, 3 ] );
   test.identical( got, dst );
+  test.is( got === dst );
 
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], [ 3 ]);
-  test.identical( got, [ [ 3 ], [ 3 ], 3 ] );
+  test.description = 'ins and dst has undefined';
+
+  var dst = [ 1, undefined, 3 ];
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ undefined ], [ 0 ] );
+  test.identical( got, [ 1, 0, 3 ] );
   test.identical( got, dst );
+  test.is( got === dst );
 
   test.description = 'onEqualize'
 
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
   function onEqualize( a, b )
   {
-    return a[ 0 ] === b;
+    return a[ 0 ] === b[ 0 ];
   }
-  var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1 ], 0, onEqualize );
-  test.identical( got, [ 0, [ 2 ], [ 3 ] ] );
+  var got = _.arrayReplaceArrayOnceStrictly( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize );
+  test.identical( got, [ [ 0 ], [ 2 ], [ 3 ] ] );
   test.identical( got, dst );
+  test.is( got === dst );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -8786,73 +8931,169 @@ function arrayReplaceArrayOnceStrictly( test )
     _.arrayReplaceArrayOnceStrictly( dst, [ 1, 0, 4 ], 3 );
   })
 
+  test.description = 'sub is not a arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArrayOnceStrictly( [ 1 ], [ 1 ], 1 );
+  })
+
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.arrayReplaceArrayOnceStrictly( 1, [ 1 ], 1 );
+    _.arrayReplaceArrayOnceStrictly( 1, [ 1 ], [ 1 ] );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.arrayReplaceArrayOnceStrictly( [ 1, 2 ], 1, 1 );
+    _.arrayReplaceArrayOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.arrayReplaceArrayOnceStrictly( [ 1, 2 ], [ 1 ], 1, 1 );
+    _.arrayReplaceArrayOnceStrictly( [ 1, 2 ], [ 1 ], [ 1 ], 1 );
   })
+
+  test.description = 'dst, ins are empty, sub is not, dst does not has ins';
+
+  test.shouldThrowError( function()
+  {
+    var dst = [];
+    _.arrayReplaceArrayOnceStrictly( dst, [ undefined ], [ 'x' ] );
+  });
+
+  test.description = 'dst does not has ins';
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ 'b', 'c' ];
+    var got = _.arrayReplaceArrayOnceStrictly( dst, [ 'a' ], [ 'x' ] );
+  });
+
+  test.description = 'dst, sub are empty, ins is not';
+
+  test.shouldThrowError( function()
+  {
+    var dst = [];
+    var got = _.arrayReplaceArrayOnceStrictly( dst, [ 'a', 'b' ], [] );
+  });
+
+  test.description = 'only ins is empty';
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ 'a', 'b', 'c', 'd' ];
+    var got = _.arrayReplaceArrayOnceStrictly( dst, [], [ 'x', 'y' ] );
+  });
+
+  test.description = 'not equal length of ins and sub';
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ 1, 2, 3 ];
+    var got = _.arrayReplaceArrayOnceStrictly( dst, [ 1, 2 ], [ 3 ] );
+  });
+
 }
 
 //
 
 function arrayReplacedArrayOnce( test )
 {
-  test.description = 'replace elements from ins with sub';
+
+  test.description = 'trivial';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplacedArrayOnce( dst, [ 'a', 'b', 'c' ], [ 'x', 'y' ] );
+  test.identical( dst, [ 'x', 'y', 'd' ] );
+  test.identical( got, 3 );
+
+  test.description = 'dst, ins, sub are empty';
 
   var dst = [];
   var got = _.arrayReplacedArrayOnce( dst, [], [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
+  test.description = 'dst, ins are empty, sub is not';
+
+  var dst = [];
+  var got = _.arrayReplacedArrayOnce( dst, [], [ 'x','y' ] );
+  test.identical( dst, [] );
+  test.identical( got, 0 );
+
+  test.description = 'dst, sub are empty, ins is not';
+
+  var dst = [];
+  var got = _.arrayReplacedArrayOnce( dst, [ 'a', 'b' ], [] );
+  test.identical( dst, [] );
+  test.identical( got, 0 );
+
+  test.description = 'ins, sub are empty, dst is not';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplacedArrayOnce( dst, [], [] );
+  test.identical( dst, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( got, 0 );
+
+  test.description = 'only ins is empty';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplacedArrayOnce( dst, [], [ 'x', 'y' ] );
+  test.identical( dst, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( got, 0 );
+
+  test.description = 'only sub is empty';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplacedArrayOnce( dst, [ 'a', 'b', 'c' ], [] );
+  test.identical( dst, [ 'd' ] );
+  test.identical( got, 3 );
+
+  test.description = 'other';
+
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArrayOnce( dst, [ 1 ], 2 );
+  var got = _.arrayReplacedArrayOnce( dst, [ 1 ], [ 2 ] );
   test.identical( dst, [ 2, 2, 3 ] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArrayOnce( dst, [ 1, 2 ], 3);
-  test.identical( dst, [ 3, 3, 3 ] );
+  var got = _.arrayReplacedArrayOnce( dst, [ 1, 2 ], [ 3 ] );
+  test.identical( dst, [ 3, 3 ] );
   test.identical( got, 2 );
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArrayOnce( dst, [ 1, 0, 4 ], 3 );
+  var got = _.arrayReplacedArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
   test.identical( dst, [ 3, 2, 3 ] );
   test.identical( got, 1 );
 
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArrayOnce( dst, [ 1, 0, 4 ], [ 3 ] );
-  test.identical( dst, [ [ 3 ], 2, 3 ] );
-  test.identical( got, 1 );
+  test.description = 'ins has undefined';
 
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArrayOnce( dst, [ undefined ], 0 );
+  var got = _.arrayReplacedArrayOnce( dst, [ undefined ], [ 0 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 0 );
+
+  test.description = 'ins and dst has undefined';
+
+  var dst = [ 1, undefined, 3 ];
+  var got = _.arrayReplacedArrayOnce( dst, [ undefined ], [ 0 ] );
+  test.identical( dst, [ 1, 0, 3 ] );
+  test.identical( got, 1 );
 
   test.description = 'onEqualize'
 
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
   function onEqualize( a, b )
   {
-    return a[ 0 ] === b;
+    return a[ 0 ] === b[ 0 ];
   }
-  var got = _.arrayReplacedArrayOnce( dst, [ 1 ], 0, onEqualize );
-  test.identical( dst, [ 0, [ 2 ], [ 3 ] ] );
+  var got = _.arrayReplacedArrayOnce( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize );
+  test.identical( dst, [ [ 0 ], [ 2 ], [ 3 ] ] );
   test.identical( got, 1 );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -8863,375 +9104,382 @@ function arrayReplacedArrayOnce( test )
     _.arrayReplacedArrayOnce();
   })
 
+  test.description = 'sub is not a arrayLike';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArrayOnce( [ 1 ], [ 1 ], 1 );
+  })
+
   test.description = 'dstArray is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.arrayReplacedArrayOnce( 1, [ 1 ], 1 );
+    _.arrayReplacedArrayOnce( 1, [ 1 ], [ 1 ] );
   })
 
   test.description = 'ins is not a arrayLike';
   test.shouldThrowError( function()
   {
-    _.arrayReplacedArrayOnce( [ 1, 2 ], 1, 1 );
+    _.arrayReplacedArrayOnce( [ 1, 2 ], 1, [ 1 ] );
   })
 
   test.description = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
-    _.arrayReplacedArrayOnce( [ 1, 2 ], [ 1 ], 1, 1 );
-  })
+    _.arrayReplacedArrayOnce( [ 1, 2 ], [ 1 ], [ 1 ], 1 );
+  });
+
 }
 
+// //
 //
-
-function arrayReplaceArraysOnce( test )
-{
-  test.description = 'replace elements from arrays from ins with relevant values from sub';
-
-  var dst = [];
-  var got = _.arrayReplaceArraysOnce( dst, [ [] ], [ [] ] );
-  test.identical( got, [] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
-  test.identical( got, [ 3, 2, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
-  test.identical( got, [ 3, 4, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
-  test.identical( got, [ 1, 2, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
-  test.identical( got, [ 0, 2, 0 ] );
-
-  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
-  function onEqualize( a, b )
-  {
-    return a[ 0 ] === b[ 0 ];
-  }
-  var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
-  test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce();
-  })
-
-  test.description = 'dstArray is not a arrayLike';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
-  })
-
-  test.description = 'ins is not a arrayLike';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce( [ 1, 2 ], 1, [ 1 ] );
-  })
-
-  test.description = 'ins must be array of arrays';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
-  })
-
-  test.description = 'onEqualize is not a routine';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
-  })
-
-  test.description = 'ins and sub length are different';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
-  })
-
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
-  })
-
-  test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
-  })
-}
-
+// function arrayReplaceArraysOnce( test )
+// {
+//   test.description = 'replace elements from arrays from ins with relevant values from sub';
 //
-
-function arrayReplaceArraysOnceStrictly( test )
-{
-  test.description = 'replace elements from arrays from ins with relevant values from sub';
-
-  var dst = [];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [] ], [ [] ] );
-  test.identical( got, [] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ] ], [ [ 3 ] ] );
-  test.identical( got, [ 3, 2, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
-  test.identical( got, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
-  test.identical( got, [ 3, 4, 3 ] );
-
-  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
-  function onEqualize( a, b )
-  {
-    return a[ 0 ] === b[ 0 ];
-  }
-  var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
-  test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly();
-  })
-
-  test.shouldThrowError( function()
-  {
-    var dst = [ 1, 2, 3 ];
-    _.arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ] ] ], [ 0 ] );
-  })
-
-  test.description = 'one element is not replaced';
-  test.shouldThrowError( function()
-  {
-    var dst = [ 1, 2, 3 ];
-    _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
-  })
-
-  test.description = 'dstArray is not a arrayLike';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly( 1, [ [ 1 ] ], [ 1 ] );
-  })
-
-  test.description = 'ins is not a arrayLike';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
-  })
-
-  test.description = 'ins must be array of arrays';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly( [ 1, 2 ],[ 1 ], [ 1 ] );
-  })
-
-  test.description = 'onEqualize is not a routine';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
-  })
-
-  test.description = 'ins and sub length are different';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
-  })
-
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
-  })
-
-  test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
-  })
-}
-
+//   var dst = [];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [] ], [ [] ] );
+//   test.identical( got, [] );
 //
-
-function arrayReplacedArraysOnce( test )
-{
-  test.description = 'replace elements from arrays from ins with relevant values from sub';
-
-  var dst = [];
-  var got = _.arrayReplacedArraysOnce( dst, [ [] ], [ [] ] );
-  test.identical( got, 0 );
-  test.identical( dst, [] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
-  test.identical( got, 1 );
-  test.identical( dst, [ 3, 2, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
-  test.identical( got, 2 );
-  test.identical( dst, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
-  test.identical( got, 2 );
-  test.identical( dst, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
-  test.identical( got, 2 );
-  test.identical( dst, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
-  test.identical( got, 3 );
-  test.identical( dst, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
-  test.identical( got, 3 );
-  test.identical( dst, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
-  test.identical( got, 3 );
-  test.identical( dst, [ 3, 3, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
-  test.identical( got, 2 );
-  test.identical( dst, [ 3, 4, 3 ] );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
-  test.identical( dst, [ 1, 2, 3 ] );
-  test.identical( got, 0 );
-
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayReplacedArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
-  test.identical( dst, [ 0, 2, 0 ] );
-  test.identical( got, 2 );
-
-  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
-  function onEqualize( a, b )
-  {
-    return a[ 0 ] === b[ 0 ];
-  }
-  var got = _.arrayReplacedArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
-  test.identical( dst, [ [ 0 ], [ 0 ], [ 0 ] ] );
-  test.identical( got, 3 );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.description = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce();
-  })
-
-  test.description = 'dstArray is not a arrayLike';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
-  })
-
-  test.description = 'ins is not a arrayLike';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce( [ 1, 2 ], 1, [ 1 ] );
-  })
-
-  test.description = 'ins must be array of arrays';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
-  })
-
-  test.description = 'onEqualize is not a routine';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
-  })
-
-  test.description = 'ins and sub length are different';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
-  })
-
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
-  })
-
-  test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
-  test.shouldThrowError( function()
-  {
-    _.arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
-  })
-}
-
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
+//   test.identical( got, [ 3, 2, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
+//   test.identical( got, [ 3, 4, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
+//   test.identical( got, [ 1, 2, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
+//   test.identical( got, [ 0, 2, 0 ] );
+//
+//   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
+//   function onEqualize( a, b )
+//   {
+//     return a[ 0 ] === b[ 0 ];
+//   }
+//   var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+//   test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
+//
+//   //
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.description = 'no arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce();
+//   })
+//
+//   test.description = 'dstArray is not a arrayLike';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
+//   })
+//
+//   test.description = 'ins is not a arrayLike';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce( [ 1, 2 ], 1, [ 1 ] );
+//   })
+//
+//   test.description = 'ins must be array of arrays';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
+//   })
+//
+//   test.description = 'onEqualize is not a routine';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
+//   })
+//
+//   test.description = 'ins and sub length are different';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
+//   })
+//
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
+//   })
+//
+//   test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
+//   })
+// }
+//
+// //
+//
+// function arrayReplaceArraysOnceStrictly( test )
+// {
+//   test.description = 'replace elements from arrays from ins with relevant values from sub';
+//
+//   var dst = [];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [] ], [ [] ] );
+//   test.identical( got, [] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ] ], [ [ 3 ] ] );
+//   test.identical( got, [ 3, 2, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
+//   test.identical( got, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
+//   test.identical( got, [ 3, 4, 3 ] );
+//
+//   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
+//   function onEqualize( a, b )
+//   {
+//     return a[ 0 ] === b[ 0 ];
+//   }
+//   var got = _.arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+//   test.identical( got, [ [ 0 ], [ 0 ], [ 0 ] ] );
+//
+//   //
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.description = 'no arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly();
+//   })
+//
+//   test.shouldThrowError( function()
+//   {
+//     var dst = [ 1, 2, 3 ];
+//     _.arrayReplaceArraysOnceStrictly( dst, [ [ [ 1 ] ] ], [ 0 ] );
+//   })
+//
+//   test.description = 'one element is not replaced';
+//   test.shouldThrowError( function()
+//   {
+//     var dst = [ 1, 2, 3 ];
+//     _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
+//   })
+//
+//   test.description = 'dstArray is not a arrayLike';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly( 1, [ [ 1 ] ], [ 1 ] );
+//   })
+//
+//   test.description = 'ins is not a arrayLike';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
+//   })
+//
+//   test.description = 'ins must be array of arrays';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly( [ 1, 2 ],[ 1 ], [ 1 ] );
+//   })
+//
+//   test.description = 'onEqualize is not a routine';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
+//   })
+//
+//   test.description = 'ins and sub length are different';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
+//   })
+//
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
+//   })
+//
+//   test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplaceArraysOnceStrictly( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
+//   })
+// }
+//
+// //
+//
+// function arrayReplacedArraysOnce( test )
+// {
+//   test.description = 'replace elements from arrays from ins with relevant values from sub';
+//
+//   var dst = [];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [] ], [ [] ] );
+//   test.identical( got, 0 );
+//   test.identical( dst, [] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ] ], [ [ 3 ] ] );
+//   test.identical( got, 1 );
+//   test.identical( dst, [ 3, 2, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ],[ 3 ] ] );
+//   test.identical( got, 2 );
+//   test.identical( dst, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], 3 ] );
+//   test.identical( got, 2 );
+//   test.identical( dst, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ 3, 3 ] );
+//   test.identical( got, 2 );
+//   test.identical( dst, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ 3 ] );
+//   test.identical( got, 3 );
+//   test.identical( dst, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3,3,3, ] ] );
+//   test.identical( got, 3 );
+//   test.identical( dst, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1, 2, 3 ] ], [ [ 3 ] ] );
+//   test.identical( got, 3 );
+//   test.identical( dst, [ 3, 3, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ], [ 2 ] ], [ [ 3 ], [ 4 ] ] );
+//   test.identical( got, 2 );
+//   test.identical( dst, [ 3, 4, 3 ] );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ [ 1 ] ] ], [ 0 ] );
+//   test.identical( dst, [ 1, 2, 3 ] );
+//   test.identical( got, 0 );
+//
+//   var dst = [ 1, 2, 3 ];
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
+//   test.identical( dst, [ 0, 2, 0 ] );
+//   test.identical( got, 2 );
+//
+//   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
+//   function onEqualize( a, b )
+//   {
+//     return a[ 0 ] === b[ 0 ];
+//   }
+//   var got = _.arrayReplacedArraysOnce( dst, [ [ [ 1 ], [ 2 ], [ 3 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+//   test.identical( dst, [ [ 0 ], [ 0 ], [ 0 ] ] );
+//   test.identical( got, 3 );
+//
+//   //
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.description = 'no arguments';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce();
+//   })
+//
+//   test.description = 'dstArray is not a arrayLike';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
+//   })
+//
+//   test.description = 'ins is not a arrayLike';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce( [ 1, 2 ], 1, [ 1 ] );
+//   })
+//
+//   test.description = 'ins must be array of arrays';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce( [ 1, 2 ],[ 1 ], [ 1 ] );
+//   })
+//
+//   test.description = 'onEqualize is not a routine';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce( [ 1, 2 ], [ [ 1 ] ], [ 1 ], 1 );
+//   })
+//
+//   test.description = 'ins and sub length are different';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ 10, 20 ] );
+//   })
+//
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce( [ 1 ], [ [ 1, 2 ] ], [ 10,20 ] );
+//   })
+//
+//   test.description = 'ins[ 0 ] and sub[ 0 ] length are different';
+//   test.shouldThrowError( function()
+//   {
+//     _.arrayReplacedArraysOnce( [ 1 ], [ [ 1 ] ], [ [ 10,20 ] ] );
+//   })
+// }
+//
 //
 
 function arrayReplaceAll( test )
@@ -10988,14 +11236,12 @@ var Self =
     bufferRetype : bufferRetype,
     bufferRawFromBuffer : bufferRawFromBuffer,
 
-
     // type test
 
     arrayIs : arrayIs,
     arrayLike : arrayLike,
     constructorLikeArray : constructorLikeArray,
     hasLength : hasLength,
-
 
     // array maker
 
@@ -11010,7 +11256,6 @@ var Self =
     arrayToMap : arrayToMap,
     arrayToStr : arrayToStr,
 
-
     // array transformer
 
     arraySub : arraySub,
@@ -11024,7 +11269,6 @@ var Self =
 
     arraySelect : arraySelect,
 
-
     // array manipulator
 
     arraySwap : arraySwap,
@@ -11037,7 +11281,6 @@ var Self =
     arraySupplement : arraySupplement,
     arrayExtendScreening : arrayExtendScreening,
 
-
     // array sequential search
 
     arrayRightIndex : arrayRightIndex,
@@ -11047,7 +11290,6 @@ var Self =
     arrayCount : arrayCount,
     arrayCountUnique : arrayCountUnique,
 
-
     // array checker
 
     arrayCompare : arrayCompare,
@@ -11055,11 +11297,9 @@ var Self =
 
     arrayHasAny : arrayHasAny,
 
-
     // array etc
 
     arraySum : arraySum,
-
 
     // array prepend
 
@@ -11080,7 +11320,6 @@ var Self =
     arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
     arrayPrependedArrays : arrayPrependedArrays,
     arrayPrependedArraysOnce : arrayPrependedArraysOnce,
-
 
     // array append
 
@@ -11129,7 +11368,6 @@ var Self =
     // arrayRemoveAll : arrayRemoveAll,
     arrayRemovedAll : arrayRemovedAll,
 
-
     // array flatten
 
     arrayFlatten : arrayFlatten,
@@ -11139,7 +11377,6 @@ var Self =
     arrayFlattenedOnce : arrayFlattenedOnce,
 
     arrayFlatten2 : arrayFlatten2,
-
 
     // array replace
 
@@ -11151,15 +11388,14 @@ var Self =
     arrayReplaceArrayOnceStrictly : arrayReplaceArrayOnceStrictly,
     arrayReplacedArrayOnce : arrayReplacedArrayOnce,
 
-    arrayReplaceArraysOnce : arrayReplaceArraysOnce,
-    arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
-    arrayReplacedArraysOnce : arrayReplacedArraysOnce,
+    // arrayReplaceArraysOnce : arrayReplaceArraysOnce,
+    // arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
+    // arrayReplacedArraysOnce : arrayReplacedArraysOnce,
 
     arrayReplaceAll : arrayReplaceAll,
     arrayReplacedAll : arrayReplacedAll,
 
     arrayUpdate : arrayUpdate,
-
 
     // array set
 

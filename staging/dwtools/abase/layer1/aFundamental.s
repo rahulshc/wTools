@@ -2345,6 +2345,23 @@ function argumentsArrayIs( src )
 
 //
 
+function _argumentsArrayFrom()
+{
+  return arguments;
+}
+
+//
+
+function argumentsArrayFrom( args )
+{
+  _.assert( arguments.length === 1, 'expects single argument' );
+  if( _.argumentsArrayIs( args ) )
+  return args;
+  return _argumentsArrayFrom.apply( this, args );
+}
+
+//
+
 function symbolIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object Symbol]';
@@ -3233,17 +3250,94 @@ function methodsCall( contexts,methods,args )
 
 //
 
-function _routinesCompose_pre( routine, args )
+function _routinesChain_pre( routine, args )
 {
-  var srcs = _.arrayAppendArrays( [], args );
+  var srcs = _.arrayAppendArrays( [], args[ 0 ] );
 
   srcs = srcs.filter( ( e ) => e === null ? false : e );
 
   _.assert( _.routinesAre( srcs ) );
   _.assert( arguments.length === 2 );
+  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( _.arrayIs( args[ 0 ] ) || _.routineIs( args[ 0 ] ) );
+  _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined );
 
-  return { srcs : srcs };
+  return { srcs : srcs, joiner : args[ 1 ] || null };
 }
+
+//
+
+function _routinesChain_body( o )
+{
+
+  if( o.srcs.length === 0 )
+  debugger;
+  else if( o.srcs.length === 1 )
+  debugger;
+  else
+  {}
+
+  if( o.srcs.length === 0 )
+  return function empty()
+  {
+    debugger;
+    return arguments;
+  }
+  else if( o.srcs.length === 1 )
+  {
+    debugger;
+    return o.srcs[ 0 ];
+  }
+  else if( o.joiner ) return function chainWithJoiner()
+  {
+    var result = [];
+    var args = arguments;
+    for( var s = 0 ; s < o.srcs.length ; s++ )
+    {
+      if( !_.argumentsArrayIs( args ) )
+      args = [ args ]
+      if( s > 0 )
+      args = o.joiner.apply( this, args );
+      args = o.srcs[ s ].apply( this, args );
+    }
+    return args;
+  }
+  else return function chain()
+  {
+    debugger;
+    var result = [];
+    var args = arguments;
+    for( var s = 0 ; s < o.srcs.length ; s++ )
+    {
+      debugger;
+      if( !_.argumentsArrayIs( args ) )
+      args = [ args ]
+      args = o.srcs[ s ].apply( this, args );
+    }
+    debugger;
+    return args;
+  }
+
+}
+
+_routinesChain_body.defaults =
+{
+  srcs : null,
+  joiner : null,
+}
+
+//
+
+function routinesChain()
+{
+  var o = _.routinesChain.pre( routinesChain, arguments );
+  var result = _.routinesChain.body( o );
+  return result;
+}
+
+routinesChain.pre = _routinesChain_pre;
+routinesChain.body = _routinesChain_body;
+routinesChain.defaults = Object.create( routinesChain.body.defaults );
 
 //
 
@@ -3278,6 +3372,7 @@ function _routinesCompose_body( o )
 _routinesCompose_body.defaults =
 {
   srcs : null,
+  joiner : null,
 }
 
 //
@@ -3289,7 +3384,7 @@ function routinesCompose()
   return result;
 }
 
-routinesCompose.pre = _routinesCompose_pre;
+routinesCompose.pre = _routinesChain_pre;
 routinesCompose.body = _routinesCompose_body;
 routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
@@ -3325,7 +3420,7 @@ function routinesComposeReturningLast()
   return result;
 }
 
-routinesComposeReturningLast.pre = _routinesCompose_pre;
+routinesComposeReturningLast.pre = _routinesChain_pre;
 routinesComposeReturningLast.body = _routinesComposeReturningLast_body;
 routinesComposeReturningLast.defaults = Object.create( routinesComposeReturningLast.body.defaults );
 
@@ -3371,7 +3466,7 @@ function routinesComposeWhile()
   return result;
 }
 
-routinesComposeWhile.pre = _routinesCompose_pre;
+routinesComposeWhile.pre = _routinesChain_pre;
 routinesComposeWhile.body = _routinesComposeWhile_body;
 routinesComposeWhile.defaults = Object.create( routinesComposeWhile.body.defaults );
 
@@ -3533,11 +3628,14 @@ function routineSupplement( dst )
 function routineForPreAndBody( pre, body )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( pre ) );
+  _.assert( _.routineIs( pre ) || _.routinesAre( pre ) );
   _.assert( _.routineIs( body ) );
   _.assert( body.defaults );
   _.assertMapHasOnly( pre,{} );
   _.assertMapHasOnly( body,{ defaults : null } );
+
+  if( !_.routineIs( pre ) )
+  pre = _.routinesChain( pre, ( o ) => _.argumentsArrayFrom([ callPreAndBody, [ o ] ]) );
 
   function callPreAndBody()
   {
@@ -4873,7 +4971,7 @@ function regexpsAtLeastFirst( o )
   for( var s = 0 ; s < o.sources.length ; s++ )
   {
     var src = o.sources[ s ];
-    prefix = prefix + '(' + src;
+    prefix = prefix + '(?:' + src;
     if( s === 0 )
     postfix =  ')' + postfix
     else
@@ -10619,18 +10717,22 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
   var result = arrayPrependedArraysOnce.apply( this, arguments );
-
   var expected = 0;
 
-  for( var i = insArray.length - 1; i >= 0; i-- )
+  if( Config.debug )
   {
-    if( _.arrayLike( insArray[ i ] ) )
-    expected += insArray[ i ].length;
-    else
-    expected += 1;
-  }
 
-  _.assert( result === expected );
+    for( var i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.arrayLike( insArray[ i ] ) )
+      expected += insArray[ i ].length;
+      else
+      expected += 1;
+    }
+
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+
+  }
 
   return dstArray;
 }
@@ -10728,27 +10830,30 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   var result = 0;
 
-  function _prependOnce( argument )
+  function _prependOnce( element )
   {
-    var index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    var index = _.arrayLeftIndex( dstArray, element, evaluator1, evaluator2 );
     if( index === -1 )
     {
-      dstArray.unshift( argument );
+      // dstArray.unshift( argument );
+      dstArray.splice( result, 0, element );
       result += 1;
     }
   }
 
-  for( var a = insArray.length - 1; a >= 0; a-- )
+  // for( var ii = insArray.length - 1; ii >= 0; ii-- )
+  for( var ii = 0 ; ii < insArray.length ; ii++ )
   {
-    if( _.arrayLike( insArray[ a ] ) )
+    if( _.arrayLike( insArray[ ii ] ) )
     {
-      var array = insArray[ a ];
-      for( var i = array.length - 1; i >= 0; i-- )
-      _prependOnce( array[ i ] );
+      var array = insArray[ ii ];
+      // for( var a = array.length - 1; a >= 0; a-- )
+      for( var a = 0 ; a < array.length ; a++ )
+      _prependOnce( array[ a ] );
     }
     else
     {
-      _prependOnce( insArray[ a ] );
+      _prependOnce( insArray[ ii ] );
     }
   }
 
@@ -10974,16 +11079,21 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 {
   var result = arrayAppendedArraysOnce.apply( this, arguments );
 
-  var expected = 0;
-  for( var i = insArray.length - 1; i >= 0; i-- )
+  if( Config.debug )
   {
-    if( _.arrayLike( insArray[ i ] ) )
-    expected += insArray[ i ].length;
-    else
-    expected += 1;
-  }
 
-  _.assert( result === expected );
+    var expected = 0;
+    for( var i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.arrayLike( insArray[ i ] ) )
+      expected += insArray[ i ].length;
+      else
+      expected += 1;
+    }
+
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+
+  }
 
   return dstArray;
 }
@@ -11734,7 +11844,8 @@ function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
 function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
 {
   var result = arrayReplacedArrayOnce.apply( this,arguments );
-  _.assert( result === ins.length );
+  _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
   return dstArray;
 }
 
@@ -11743,6 +11854,7 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
 function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( _.arrayLike( ins ) );
+  _.assert( _.arrayLike( sub ) );
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   var index = -1;
@@ -11753,7 +11865,11 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
     index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 )
     if( index >= 0 )
     {
-      dstArray.splice( index,1,sub );
+      var subValue = sub[ i ];
+      if( subValue === undefined )
+      dstArray.splice( index, 1 );
+      else
+      dstArray.splice( index, 1, subValue );
       result += 1;
     }
   }
@@ -11761,77 +11877,77 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   return result;
 }
 
+// //
 //
-
-
-function arrayReplaceArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
-{
-  arrayReplacedArraysOnce.apply( this, arguments );
-  return dstArray;
-}
-
 //
-
-
-function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
-{
-  var result = arrayReplacedArraysOnce.apply( this, arguments );
-
-  var expected = 0;
-  for( var i = 0, len = ins.length; i < len; i++ )
-  expected += ins[ i ].length;
-
-  _.assert( expected === result );
-
-  return dstArray;
-}
-
+// function arrayReplaceArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+// {
+//   arrayReplacedArraysOnce.apply( this, arguments );
+//   return dstArray;
+// }
 //
-
-function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
-{
-  _.assert( 3 <= arguments.length && arguments.length <= 5 );
-  _.assert( _.arrayLike( ins ) );
-  _.assert( _.arrayLike( sub ) );
-  _.assert( ins.length === sub.length );
-
-  var result = 0;
-
-  function _subGet( i, j )
-  {
-    if( !_.arrayLike( sub[ i ] ) )
-    return sub[ i ];
-
-    var subArray = sub[ i ];
-    if( j < subArray.length )
-    return subArray[ j ];
-    else
-    return subArray[ subArray.length - 1 ];
-  }
-
-  for( var i = 0, alen = ins.length; i < alen; i++ )
-  {
-    _.assert( _.arrayLike( ins[ i ] ) );
-
-    var insArray = ins[ i ];
-
-    if( _.arrayLike( sub[ i ] ) )
-    _.assert( insArray.length >= sub[ i ].length  );
-
-    for( var j = 0, slen = insArray.length ; j < slen ; j++ )
-    {
-      var index = _.arrayLeftIndex( dstArray, insArray[ j ], evaluator1, evaluator2 );
-      if( index >= 0 )
-      {
-        dstArray.splice( index, 1, _subGet( i, j ) );
-        result += 1;
-      }
-    }
-  }
-
-  return result;
-}
-
+// //
+//
+//
+// function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+// {
+//   var result = arrayReplacedArraysOnce.apply( this, arguments );
+//
+//   var expected = 0;
+//   for( var i = 0, len = ins.length; i < len; i++ )
+//   expected += ins[ i ].length;
+//
+//   _.assert( expected === result );
+//
+//   return dstArray;
+// }
+//
+// //
+//
+// function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+// {
+//   _.assert( 3 <= arguments.length && arguments.length <= 5 );
+//   _.assert( _.arrayLike( ins ) );
+//   _.assert( _.arrayLike( sub ) );
+//   _.assert( ins.length === sub.length );
+//
+//   var result = 0;
+//
+//   function _subGet( i, j )
+//   {
+//     if( !_.arrayLike( sub[ i ] ) )
+//     return sub[ i ];
+//
+//     var subArray = sub[ i ];
+//     if( j < subArray.length )
+//     return subArray[ j ];
+//     else
+//     return subArray[ subArray.length - 1 ];
+//   }
+//
+//   for( var i = 0, ilen = ins.length; i < ilen; i++ )
+//   {
+//     _.assert( _.arrayLike( ins[ i ] ) );
+//
+//     var insArray = ins[ i ];
+//
+//     if( _.arrayLike( sub[ i ] ) )
+//     _.assert( insArray.length >= sub[ i ].length  );
+//
+//     for( var j = 0, slen = insArray.length ; j < slen ; j++ )
+//     {
+//       var index = _.arrayLeftIndex( dstArray, insArray[ j ], evaluator1, evaluator2 );
+//       if( index >= 0 )
+//       {
+//         dstArray.splice( index, 1, _subGet( i, j ) );
+//         result += 1;
+//       }
+//     }
+//   }
+//
+//   return result;
+// }
+//
 //
 
 function arrayReplaceAll( dstArray, ins, sub, evaluator1, evaluator2 )
@@ -16801,6 +16917,9 @@ var Routines =
   containerLike : containerLike,
 
   argumentsArrayIs : argumentsArrayIs,
+  _argumentsArrayFrom : _argumentsArrayFrom,
+  argumentsArrayFrom : argumentsArrayFrom, /* xxx */
+
   symbolIs : symbolIs,
 
   vectorIs : vectorIs,
@@ -16848,6 +16967,7 @@ var Routines =
   routinesCallWhile : routinesCallWhile,
   methodsCall : methodsCall,
 
+  routinesChain : routinesChain,
   routinesCompose : routinesCompose,
   routinesComposeReturningLast : routinesComposeReturningLast,
   routinesComposeWhile : routinesComposeWhile,
@@ -17207,9 +17327,9 @@ var Routines =
   arrayReplaceArrayOnceStrictly : arrayReplaceArrayOnceStrictly,
   arrayReplacedArrayOnce : arrayReplacedArrayOnce,
 
-  arrayReplaceArraysOnce : arrayReplaceArraysOnce,
-  arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
-  arrayReplacedArraysOnce : arrayReplacedArraysOnce,
+  // arrayReplaceArraysOnce : arrayReplaceArraysOnce,
+  // arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
+  // arrayReplacedArraysOnce : arrayReplacedArraysOnce,
 
   arrayReplaceAll : arrayReplaceAll,
   arrayReplacedAll : arrayReplacedAll,

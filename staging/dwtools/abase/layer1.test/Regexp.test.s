@@ -459,7 +459,7 @@ function regexpsAtLeastFirst( test )
 
   var r1 = 'abc';
   var r2 = 'def';
-  var expected = /(abc(def)?)/;
+  var expected = /(?:abc(?:def)?)/;
   var got = _.regexpsAtLeastFirst([ r1, r2 ]);
   test.identical( got, expected );
 
@@ -468,7 +468,7 @@ function regexpsAtLeastFirst( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(abc(def(.+)?)?)/i;
+  var expected = /(?:abc(?:def(?:.+)?)?)/i;
   var got = _.regexpsAtLeastFirst([ r1, r2, r3 ]);
   test.identical( got, expected );
 
@@ -477,7 +477,7 @@ function regexpsAtLeastFirst( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(abc(def(.+)?)?)/i;
+  var expected = /(?:abc(?:def(?:.+)?)?)/i;
   var got = _.regexpsAtLeastFirst({ sources : [ r1, r2, r3 ], flags : 'i' });
   test.identical( got, expected );
 
@@ -512,14 +512,14 @@ function regexpsNone( test )
 
   test.description = 'empty';
 
-  var expected = /^(?:(?!()).)+$/;
+  var expected = /^(?:(?!(?:)).)+$/;
   var got = _.regexpsNone([]);
   test.identical( got, expected );
 
   test.description = 'single regexp';
 
   var r1 = /.+/i;
-  var expected = /^(?:(?!(.+)).)+$/i;
+  var expected = /^(?:(?!(?:.+)).)+$/i;
   var got = _.regexpsNone([ r1 ]);
   test.identical( got, expected );
   test.is( got !== r1 );
@@ -528,7 +528,7 @@ function regexpsNone( test )
 
   var r1 = 'abc';
   var r2 = 'def';
-  var expected = /^(?:(?!(abc)|(def)).)+$/;
+  var expected = /^(?:(?!(?:abc)|(?:def)).)+$/;
   var got = _.regexpsNone([ r1, r2 ]);
   test.identical( got, expected );
 
@@ -537,7 +537,7 @@ function regexpsNone( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /^(?:(?!(abc)|(def)|(.+)).)+$/i;
+  var expected = /^(?:(?!(?:abc)|(?:def)|(?:.+)).)+$/i;
   var got = _.regexpsNone([ r1, r2, r3 ]);
   test.identical( got, expected );
 
@@ -546,7 +546,7 @@ function regexpsNone( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /^(?:(?!(abc)|(def)|(.+)).)+$/i;
+  var expected = /^(?:(?!(?:abc)|(?:def)|(?:.+)).)+$/i;
   var got = _.regexpsNone({ sources : [ r1, r2, r3 ], flags : 'i' });
   test.identical( got, expected );
 
@@ -581,7 +581,7 @@ function regexpsAny( test )
 
   test.description = 'empty';
 
-  var expected = /()/;
+  var expected = /(?:)/;
   var got = _.regexpsAny([]);
   test.identical( got, expected );
 
@@ -597,7 +597,7 @@ function regexpsAny( test )
 
   var r1 = 'abc';
   var r2 = 'def';
-  var expected = /(abc)|(def)/;
+  var expected = /(?:abc)|(?:def)/;
   var got = _.regexpsAny([ r1, r2 ]);
   test.identical( got, expected );
 
@@ -606,7 +606,7 @@ function regexpsAny( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(abc)|(def)|(.+)/i;
+  var expected = /(?:abc)|(?:def)|(?:.+)/i;
   var got = _.regexpsAny([ r1, r2, r3 ]);
   test.identical( got, expected );
 
@@ -615,7 +615,7 @@ function regexpsAny( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(abc)|(def)|(.+)/i;
+  var expected = /(?:abc)|(?:def)|(?:.+)/i;
   var got = _.regexpsAny({ sources : [ r1, r2, r3 ], flags : 'i' });
   test.identical( got, expected );
 
@@ -666,7 +666,7 @@ function regexpsAll( test )
 
   var r1 = 'abc';
   var r2 = 'def';
-  var expected = /(?=abc)(def)/;
+  var expected = /(?=abc)(?:def)/;
   var got = _.regexpsAll([ r1, r2 ]);
   test.identical( got, expected );
 
@@ -675,7 +675,7 @@ function regexpsAll( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(?=abc)(?=def)(.+)/i;
+  var expected = /(?=abc)(?=def)(?:.+)/i;
   var got = _.regexpsAll([ r1, r2, r3 ]);
   test.identical( got, expected );
 
@@ -684,7 +684,7 @@ function regexpsAll( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(?=abc)(?=def)(.+)/i;
+  var expected = /(?=abc)(?=def)(?:.+)/i;
   var got = _.regexpsAll({ sources : [ r1, r2, r3 ], flags : 'i' });
   test.identical( got, expected );
 
