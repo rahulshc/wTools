@@ -55,7 +55,7 @@ function _err( test )
       args : [ errMsg1, errObj2 ]
     };
 
-  test.description = 'single string passed as args property : result should be Error obj';
+  test.case = 'single string passed as args property : result should be Error obj';
   var optionsObj2 =
   {
     level : 1,
@@ -64,36 +64,36 @@ function _err( test )
   var got = _._err( optionsObj2 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'single string passed as args property : result message should contains passed string';
+  test.case = 'single string passed as args property : result message should contains passed string';
   var expectMsg = new RegExp( errMsg1 );
   test.identical( expectMsg.test( got.message ), true );
 
-  test.description = 'single string passed as args property : result message should contains file name';
+  test.case = 'single string passed as args property : result message should contains file name';
   var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
-  test.description = 'single error instance passed as args property : result should be Error obj';
+  test.case = 'single error instance passed as args property : result should be Error obj';
   var got = _._err( optionsObj3 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'single error instance passed as args property : result message should contains passed string';
+  test.case = 'single error instance passed as args property : result message should contains passed string';
   var expectMsg = new RegExp( errMsg2 );
   test.identical( expectMsg.test( got.message ), true );
 
-  test.description = 'single error instance passed as args property : result message should contains file name';
+  test.case = 'single error instance passed as args property : result message should contains file name';
   test.identical( _.strHas( got.message, errObj1.location.path ), true );
 
-  test.description = 'several error instances/messages passed as args property : result should be Error obj';
+  test.case = 'several error instances/messages passed as args property : result should be Error obj';
   var got = _._err( optionsObj4 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'several error instances/messages passed as args : result message should contains all ' +
+  test.case = 'several error instances/messages passed as args : result message should contains all ' +
     'passed string';
   var expectMsg1 = new RegExp( errMsg3 ),
     expectMsg2 = new RegExp( errMsg1 );
   test.identical( [ expectMsg1.test( got.message ), expectMsg2.test( got.message ) ], [ true, true ] );
 
-  test.description = 'several error instances/messages passed as args property : result message should contains ' +
+  test.case = 'several error instances/messages passed as args property : result message should contains ' +
     'file name';
   var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
@@ -109,19 +109,19 @@ function _err( test )
   if( !Config.debug )
   return;
 
-  test.description = 'missed argument';
+  test.case = 'missed argument';
   test.shouldThrowError( function( )
   {
     _._err( );
   } );
 
-  test.description = 'extra argument';
+  test.case = 'extra argument';
   test.shouldThrowError( function( )
   {
     _._err( optionsObj1, optionsObj2 );
   } );
 
-  test.description = 'options.args not array';
+  test.case = 'options.args not array';
   test.shouldThrowError( function( )
   {
     _._err( optionsObj1 );
@@ -141,40 +141,40 @@ function err( test )
     errMsg3 = errObj2.message;
 
 
-  test.description = 'single string passed as args property : result should be Error obj';
+  test.case = 'single string passed as args property : result should be Error obj';
   var got = _.err( errMsg1 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'single string passed as args property : result message should contains passed string';
+  test.case = 'single string passed as args property : result message should contains passed string';
   var expectMsg = new RegExp( errMsg1 );
   test.identical( expectMsg.test( got.message ), true );
 
-  test.description = 'single string passed as args property : result message should contains file name';
+  test.case = 'single string passed as args property : result message should contains file name';
   var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
-  test.description = 'single error instance passed as args property : result should be Error obj';
+  test.case = 'single error instance passed as args property : result should be Error obj';
   var got = _.err( errObj1 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'single error instance passed as args property : result message should contains passed string';
+  test.case = 'single error instance passed as args property : result message should contains passed string';
   var expectMsg = new RegExp( errMsg2 );
   test.identical( expectMsg.test( got.message ), true );
 
-  test.description = 'single error instance passed as args property : result message should contains file name';
+  test.case = 'single error instance passed as args property : result message should contains file name';
   test.identical( _.strHas( got.message,errObj1.location.path ), true );
 
-  test.description = 'several error instances/messages passed as args property : result should be Error obj';
+  test.case = 'several error instances/messages passed as args property : result should be Error obj';
   var got = _.err( errObj2, errMsg1 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'several error instances/messages passed as args : result message should contains all ' +
+  test.case = 'several error instances/messages passed as args : result message should contains all ' +
     'passed string';
   var expectMsg1 = new RegExp( errMsg3 ),
     expectMsg2 = new RegExp( errMsg1 );
   test.identical( [ expectMsg1.test( got.message ), expectMsg2.test( got.message ) ], [ true, true ] );
 
-  test.description = 'several error instances/messages passed as args property : result message should contains ' +
+  test.case = 'several error instances/messages passed as args property : result message should contains ' +
     'file name';
   var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
@@ -191,27 +191,27 @@ function errLog( test )
     errMsg2 = errObj1.message;
 
 
-  test.description = 'single string passed as args property : result should be Error obj';
+  test.case = 'single string passed as args property : result should be Error obj';
   var got = _.errLog( errMsg1 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'single string passed as args property : result message should contains passed string';
+  test.case = 'single string passed as args property : result message should contains passed string';
   var expectMsg = new RegExp( errMsg1 );
   test.identical( expectMsg.test( got.message ), true );
 
-  test.description = 'single string passed as args property : result message should contains file name';
+  test.case = 'single string passed as args property : result message should contains file name';
   var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
-  test.description = 'single error instance passed as args property : result should be Error obj';
+  test.case = 'single error instance passed as args property : result should be Error obj';
   var got = _.errLog( errObj1 );
   test.identical( got instanceof Error, true );
 
-  test.description = 'single error instance passed as args property : result message should contains passed string';
+  test.case = 'single error instance passed as args property : result message should contains passed string';
   var expectMsg = new RegExp( errMsg2 );
   test.identical( expectMsg.test( got.message ), true );
 
-  test.description = 'single error instance passed as args property : result message should contains file name';
+  test.case = 'single error instance passed as args property : result message should contains file name';
   test.identical( _.strHas( got.message,errObj1.location.path ), true );
 
 }
@@ -224,11 +224,11 @@ function assert( test )
     msg1 = 'short error description',
     rgMsg1 = new RegExp( msg1 );
 
-  test.description = 'assert successful condition';
+  test.case = 'assert successful condition';
   var got = _.assert( 5 === 5 );
   test.identical( got, undefined );
 
-  test.description = 'passed failure condition : should generates exception';
+  test.case = 'passed failure condition : should generates exception';
   try
   {
     _.assert( 5 != 5 )
@@ -239,7 +239,7 @@ function assert( test )
   }
   test.identical( err instanceof Error, true );
 
-  test.description = 'passed failure condition with passed message : should generates exception with message';
+  test.case = 'passed failure condition with passed message : should generates exception with message';
   try
   {
     _.assert( false, msg1 )
@@ -272,7 +272,7 @@ function diagnosticStack( test )
 
   var expectedTrace = [ 'function3', 'function2', 'function1', 'Diagnostics.test.s' ];
 
-  test.description = 'test diagnosticStack function sequence';
+  test.case = 'test diagnosticStack function sequence';
   var got = function1();
   got = got.split( '\n' );
   console.log( got.length );

@@ -70,33 +70,33 @@ function entityMap( test )
     return v * v + i;
   };
 
-  test.description = 'simple test with mapping array by sqr';
+  test.case = 'simple test with mapping array by sqr';
   var got = _.entityMap( entity1, callback1 );
   test.identical( got,expected1 );
 
-  test.description = 'simple test with mapping array by sqr : source array should not be modified';
+  test.case = 'simple test with mapping array by sqr : source array should not be modified';
   var got = _.entityMap( entity1, callback1 );
   test.identical( entity1, expected3 );
 
-  test.description = 'simple test with mapping object by sqr';
+  test.case = 'simple test with mapping object by sqr';
   var got = _.entityMap( entity2, callback1 );
   test.identical( got,expected2 );
 
-  test.description = 'simple test with mapping object by sqr : using constructor';
+  test.case = 'simple test with mapping object by sqr : using constructor';
   var got = _.entityMap( entity4, callback2 );
   test.identical( got, expected4 );
 
-  test.description = 'simple test with mapping object by sqr : check constructor';
+  test.case = 'simple test with mapping object by sqr : check constructor';
   test.identical( got instanceof constr1, true );
 
-  test.description = 'simple test with mapping object by sqr : check callback arguments';
+  test.case = 'simple test with mapping object by sqr : check callback arguments';
   var externEnt = {};
   var got = _.entityMap( entity4, callback3 );
   test.identical( externEnt, entity4 );
 
   if( Object.is )
   {
-    test.description = 'simple test with mapping object by sqr : source object should be unmodified';
+    test.case = 'simple test with mapping object by sqr : source object should be unmodified';
     test.identical( Object.is( got, entity4 ), false );
   }
 
@@ -105,25 +105,25 @@ function entityMap( test )
   if( !Config.debug )
   return;
 
-  test.description = 'missed arguments';
+  test.case = 'missed arguments';
   test.shouldThrowError( function()
   {
     _.entityMap();
   });
 
-  test.description = 'extra argument';
+  test.case = 'extra argument';
   test.shouldThrowError( function()
   {
     _.entityMap( [ 1,3 ], callback1, callback2 );
   });
 
-  test.description = 'passed argument is not ArrayLike, ObjectLike';
+  test.case = 'passed argument is not ArrayLike, ObjectLike';
   test.shouldThrowError( function()
   {
     _.entityFilter( 44, callback1 );
   });
 
-  test.description = 'second argument is not routine';
+  test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
     _.entityMap( [ 1,3 ], 'callback' );
@@ -152,14 +152,14 @@ function entityFilter( test )
     return _.entityFilter( arguments, callback1 );
   }
 
-  test.description = 'simple test with mapping array by sqrt';
+  test.case = 'simple test with mapping array by sqrt';
   var got = _.entityFilter( entity1, callback1 );
   test.identical( got,expected1 );
 
   /*
     TODO : need to check actuality of this test
 
-    test.description = 'simple test with arrayLike';
+    test.case = 'simple test with arrayLike';
     var got = null;
     try
     {
@@ -177,15 +177,15 @@ function entityFilter( test )
     }
   */
 
-  test.description = 'simple test with mapping array by sqrt : source array should not be modified';
+  test.case = 'simple test with mapping array by sqrt : source array should not be modified';
   var got = _.entityFilter( entity1, callback1 );
   test.identical( entity1, expected3 );
 
-  test.description = 'simple test with mapping object by sqrt';
+  test.case = 'simple test with mapping object by sqrt';
   var got = _.entityFilter( entity2, callback1 );
   test.identical( got,expected2 );
 
-  test.description = 'simple test with mapping array by sqrt';
+  test.case = 'simple test with mapping array by sqrt';
   var got = _.entityFilter( entity1, callback1 );
   test.identical( got,expected1 );
 
@@ -194,25 +194,25 @@ function entityFilter( test )
   if( !Config.debug )
   return;
 
-  test.description = 'missed arguments';
+  test.case = 'missed arguments';
   test.shouldThrowError( function()
   {
     _.entityFilter();
   });
 
-  test.description = 'extra argument';
+  test.case = 'extra argument';
   test.shouldThrowError( function()
   {
     _.entityFilter( [ 1,3 ], callback1, callback2 );
   });
 
-  test.description = 'passed argument is not ArrayLike, ObjectLike';
+  test.case = 'passed argument is not ArrayLike, ObjectLike';
   test.shouldThrowError( function()
   {
     _.entityFilter( 44, callback1 );
   });
 
-  test.description = 'second argument is not routine';
+  test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
     _.entityFilter( [ 1,3 ], 'callback' );
@@ -241,49 +241,49 @@ function _entityMost( test )
     return v * v;
   };
 
-  test.description = 'test entityMost with array and default onElement and returnMax = true';
+  test.case = 'test entityMost with array and default onElement and returnMax = true';
   var got = _._entityMost( args1, undefined, true );
   test.identical( got, expected1 );
 
-  test.description = 'test entityMost with array and default onElement and returnMax = false';
+  test.case = 'test entityMost with array and default onElement and returnMax = false';
   var got = _._entityMost( args1, undefined, false );
   test.identical( got, expected2 );
 
-  test.description = 'test entityMost with array simple onElement function and returnMax = true';
+  test.case = 'test entityMost with array simple onElement function and returnMax = true';
   var got = _._entityMost( args2, sqr, true );
   test.identical( got, expected3 );
 
-  test.description = 'test entityMost with array : passed array should be unmodified';
+  test.case = 'test entityMost with array : passed array should be unmodified';
   test.identical( args2, expected4 );
 
-  test.description = 'test entityMost with array simple onElement function and returnMax = false';
+  test.case = 'test entityMost with array simple onElement function and returnMax = false';
   var got = _._entityMost( args2, sqr, false );
   test.identical( got, expected5 );
 
-  test.description = 'test entityMost with map and default onElement and returnMax = true';
+  test.case = 'test entityMost with map and default onElement and returnMax = true';
   var got = _._entityMost( args3, undefined, true );
   test.identical( got, expected6 );
 
-  test.description = 'test entityMost with map and returnMax = false';
+  test.case = 'test entityMost with map and returnMax = false';
   var got = _._entityMost( args3, Math.sqrt, false );
   test.identical( got, expected7 );
 
   if( !Config.debug )
   return;
 
-  test.description = 'missed arguments';
+  test.case = 'missed arguments';
   test.shouldThrowError( function()
   {
     _._entityMost();
   });
 
-  test.description = 'extra argument';
+  test.case = 'extra argument';
   test.shouldThrowError( function()
   {
     _._entityMost( [ 1,3 ], sqr, true, false );
   });
 
-  test.description = 'second argument is not routine';
+  test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
     _._entityMost( [ 1,3 ], 'callback', true );
@@ -308,41 +308,41 @@ function entityMin( test )
     return v * v;
   };
 
-  test.description = 'test entityMin with array and without onElement callback';
+  test.case = 'test entityMin with array and without onElement callback';
   var got = _.entityMin( args1 );
   test.identical( got, expected1 );
 
 
 
-  test.description = 'test entityMin with array simple onElement function';
+  test.case = 'test entityMin with array simple onElement function';
   var got = _.entityMin( args2, sqr );
   test.identical( got, expected2 );
 
-  test.description = 'test entityMin with array : passed array should be unmodified';
+  test.case = 'test entityMin with array : passed array should be unmodified';
   test.identical( args2, expected3 );
 
 
 
-  test.description = 'test entityMin with map';
+  test.case = 'test entityMin with map';
   var got = _.entityMin( args3 );
   test.identical( got, expected4 );
 
   if( !Config.debug )
   return;
 
-  test.description = 'missed arguments';
+  test.case = 'missed arguments';
   test.shouldThrowError( function()
   {
     _.entityMin();
   });
 
-  test.description = 'extra argument';
+  test.case = 'extra argument';
   test.shouldThrowError( function()
   {
     _.entityMin( [ 1,3 ], sqr, true );
   });
 
-  test.description = 'second argument is not routine';
+  test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
     _.entityMin( [ 1,3 ], 'callback' );
@@ -368,37 +368,37 @@ function entityMax( test )
     return v * v;
   };
 
-  test.description = 'test entityMax with array';
+  test.case = 'test entityMax with array';
   var got = _.entityMax( args1 );
   test.identical( got, expected1 );
 
-  test.description = 'test entityMax with array and simple onElement function';
+  test.case = 'test entityMax with array and simple onElement function';
   var got = _.entityMax( args2, sqr );
   test.identical( got, expected3 );
 
-  test.description = 'test entityMax with array : passed array should be unmodified';
+  test.case = 'test entityMax with array : passed array should be unmodified';
   test.identical( args2, expected2 );
 
-  test.description = 'test entityMax with map';
+  test.case = 'test entityMax with map';
   var got = _.entityMax( args3, Math.sqrt );
   test.identical( got, expected4 );
 
   if( !Config.debug )
   return;
 
-  test.description = 'missed arguments';
+  test.case = 'missed arguments';
   test.shouldThrowError( function()
   {
     _.entityMax();
   });
 
-  test.description = 'extra argument';
+  test.case = 'extra argument';
   test.shouldThrowError( function()
   {
     _.entityMax( [ 1,3 ], sqr, true );
   });
 
-  test.description = 'second argument is not routine';
+  test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
     _.entityMax( [ 1,3 ], 'callback' );
@@ -465,49 +465,49 @@ function entityLength( test )
     expected9 = 3,
     expected10 = 1;
 
-  test.description = 'entity is undefined';
+  test.case = 'entity is undefined';
   var got = _.entityLength( x1 );
   test.identical( got, expected1 );
 
-  test.description = 'entity is number';
+  test.case = 'entity is number';
   var got = _.entityLength( x2 );
   test.identical( got, expected2 );
 
-  test.description = 'entity is string';
+  test.case = 'entity is string';
   var got = _.entityLength( x3 );
   test.identical( got, expected3 );
 
-  test.description = 'entity is array';
+  test.case = 'entity is array';
   var got = _.entityLength( x4 );
   test.identical( got, expected4 );
 
-  test.description = 'entity is nested array';
+  test.case = 'entity is nested array';
   var got = _.entityLength( x5 );
   test.identical( got, expected5 );
 
-  test.description = 'entity is object';
+  test.case = 'entity is object';
   var got = _.entityLength( x6 );
   test.identical( got, expected6 );
 
-  test.description = 'entity is nested object';
+  test.case = 'entity is nested object';
   var got = _.entityLength( x7 );
   test.identical( got, expected7 );
 
-  test.description = 'entity is array like';
+  test.case = 'entity is array like';
   var got = _.entityLength( x8 );
   test.identical( got, expected8 );
 
-  test.description = 'entity is array like';
+  test.case = 'entity is array like';
   var got = _.entityLength( x8 );
   test.identical( got, expected8 );
 
   console.log( _.toStr( x9 ) );
 
-  test.description = 'entity is created instance of class';
+  test.case = 'entity is created instance of class';
   var got = _.entityLength( x9 );
   test.identical( got, expected9 );
 
-  test.description = 'some properties are non enumerable';
+  test.case = 'some properties are non enumerable';
   var got = _.entityLength( x10 );
   test.identical( got, expected10 );
 
@@ -517,14 +517,14 @@ function entityLength( test )
 
 function entityAssign( test )
 {
-  test.description = 'src null';
+  test.case = 'src null';
   var dst = new String( 'string' );
   var src = null;
   var got = _.entityAssign( dst, src  );
   var expected = null;
   test.identical( got, expected );
 
-  test.description = 'dst.copy';
+  test.case = 'dst.copy';
   var dst = { copy : function( src ) { for( var i in src ) this[ i ] = src[ i ] } };
   var src = { src : 'string', num : 123 }
   _.entityAssign( dst, src  );
@@ -538,21 +538,21 @@ function entityAssign( test )
   };
   test.identical( got, expected );
 
-  test.description = 'src.clone';
+  test.case = 'src.clone';
   var dst = 1;
   var src = { src : 'string', num : 123, clone : function() { var clone = _.cloneObject( { src : this } ); return clone; } }
   var got = _.entityAssign( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
-  test.description = 'src.slice returns copy of array';
+  test.case = 'src.slice returns copy of array';
   var dst = [ ];
   var src = [ 1, 2 ,3 ];
   var got = _.entityAssign( dst, src  );
   var expected = src;
   test.identical( got, expected );
 
-  test.description = 'dst.set ';
+  test.case = 'dst.set ';
   var dst = { set : function( src ){ this.value = src[ 'value' ]; } };
   var src = { value : 100 };
   _.entityAssign( dst, src  );
@@ -560,7 +560,7 @@ function entityAssign( test )
   var expected = { set : dst.set, value : 100 };
   test.identical( got, expected );
 
-  test.description = 'onRecursive ';
+  test.case = 'onRecursive ';
   var dst = { };
   var src = { value : 100, a : {  b : 101 } };
   function onRecursive( dstContainer,srcContainer,key )
@@ -573,7 +573,7 @@ function entityAssign( test )
   var expected = src;
   test.identical( got, expected );
 
-  test.description = 'atomic ';
+  test.case = 'atomic ';
   var src = 2;
   var got = _.entityAssign( null, src );
   var expected = src;
@@ -582,13 +582,13 @@ function entityAssign( test )
   if( !Config.debug )
   return;
 
-  test.description = 'missed arguments';
+  test.case = 'missed arguments';
   test.shouldThrowError( function()
   {
     _.entityAssign( );
   });
 
-  test.description = 'src.clone throws "unexpected"';
+  test.case = 'src.clone throws "unexpected"';
   test.shouldThrowError( function()
   {
     var dst = {};
@@ -603,7 +603,7 @@ function entityAssign( test )
 function entityAssignFieldFromContainer( test )
 {
 
-  test.description = 'non recursive';
+  test.case = 'non recursive';
   var dst ={};
   var src = { a : 'string' };
   var name = 'a';
@@ -611,7 +611,7 @@ function entityAssignFieldFromContainer( test )
   var expected = dst[ name ];
   test.identical( got, expected );
 
-  test.description = 'undefined';
+  test.case = 'undefined';
   var dst ={};
   var src = { a : undefined };
   var name = 'a';
@@ -619,7 +619,7 @@ function entityAssignFieldFromContainer( test )
   var expected = undefined;
   test.identical( got, expected );
 
-  test.description = 'recursive';
+  test.case = 'recursive';
   var dst ={};
   var src = { a : 'string' };
   var name = 'a';
@@ -635,7 +635,7 @@ function entityAssignFieldFromContainer( test )
   if( !Config.debug )
   return;
 
-  test.description = 'argument missed';
+  test.case = 'argument missed';
   test.shouldThrowError( function()
   {
     _.entityAssignFieldFromContainer( );
@@ -648,35 +648,35 @@ function entityAssignFieldFromContainer( test )
 function entityCoerceTo( test )
 {
 
-  test.description = 'string & num';
+  test.case = 'string & num';
   var src = '5';
   var ins =  1
   var got = typeof( _.entityCoerceTo( src, ins ) );
   var expected = typeof( ins );
   test.identical( got, expected );
 
-  test.description = 'num to string';
+  test.case = 'num to string';
   var src = 1;
   var ins =  '5';
   var got = typeof( _.entityCoerceTo( src, ins ) );
   var expected = typeof( ins );
   test.identical( got, expected );
 
-  test.description = 'to boolean';
+  test.case = 'to boolean';
   var src = 1;
   var ins =  true;
   var got = typeof( _.entityCoerceTo( src, ins ) );
   var expected = typeof( ins );
   test.identical( got, expected );
 
-  test.description = 'object and num';
+  test.case = 'object and num';
   var src = { a : 1 };
   var ins =  1;
   var got = typeof( _.entityCoerceTo( src, ins ) );
   var expected = typeof( ins );
   test.identical( got, expected );
 
-  test.description = 'array and string';
+  test.case = 'array and string';
   var src = [ 1, 2, 3 ];
   var ins =  'str';
   var got = typeof( _.entityCoerceTo( src, ins ) );
@@ -686,13 +686,13 @@ function entityCoerceTo( test )
   if( !Config.debug )
   return;
 
-  test.description = 'argument missed';
+  test.case = 'argument missed';
   test.shouldThrowError( function()
   {
     _.entityCoerceTo( );
   });
 
-  test.description = 'unknown type';
+  test.case = 'unknown type';
   test.shouldThrowError( function()
   {
     _.entityCoerceTo( 1, { a : 1 }  );
@@ -705,27 +705,27 @@ function entityCoerceTo( test )
 function entityHasNan( test )
 {
 
-  test.description = 'undefined';
+  test.case = 'undefined';
   var got = _.entityHasNan( undefined );
   var expected = true;
   test.identical( got, expected );
 
-  test.description = 'number';
+  test.case = 'number';
   var got = _.entityHasNan( 150 );
   var expected = false;
   test.identical( got, expected );
 
-  test.description = 'null';
+  test.case = 'null';
   var got = _.entityHasNan( null );
   var expected = false;
   test.identical( got, expected );
 
-  test.description = 'array';
+  test.case = 'array';
   var got = _.entityHasNan( [ 1,'A2',3 ] );
   var expected = false;
   test.identical( got, expected );
 
-  test.description = 'object';
+  test.case = 'object';
   var got = _.entityHasNan( { a : 1, b : 2 } );
   var expected = false;
   test.identical( got, expected );
@@ -733,7 +733,7 @@ function entityHasNan( test )
   if( !Config.debug )
   return;
 
-  test.description = 'argument missed';
+  test.case = 'argument missed';
   test.shouldThrowError( function()
   {
     _.entityHasNan( );
@@ -746,22 +746,22 @@ function entityHasNan( test )
 function entityHasUndef( test )
 {
 
-  test.description = 'undefined';
+  test.case = 'undefined';
   var got = _.entityHasUndef( undefined );
   var expected = true;
   test.identical( got, expected );
 
-  test.description = 'number';
+  test.case = 'number';
   var got = _.entityHasUndef( 150 );
   var expected = false;
   test.identical( got, expected );
 
-  test.description = 'array';
+  test.case = 'array';
   var got = _.entityHasUndef( [ 1,'2',3 ] );
   var expected = false;
   test.identical( got, expected );
 
-  test.description = 'object';
+  test.case = 'object';
   var got = _.entityHasUndef( { a : 1, b : 2 } );
   var expected = false;
   test.identical( got, expected );
@@ -769,7 +769,7 @@ function entityHasUndef( test )
   if( !Config.debug )
   return;
 
-  test.description = 'argument missed';
+  test.case = 'argument missed';
   test.shouldThrowError( function()
   {
     _.entityHasUndef( );
@@ -782,32 +782,32 @@ function entityHasUndef( test )
 function entitySize( test )
 {
 
-  test.description = 'string';
+  test.case = 'string';
   var got = _.entitySize( 'str' );
   var expected = 3 ;
   test.identical( got, expected );
 
-  test.description = 'atomic type';
+  test.case = 'atomic type';
   var got = _.entitySize( 6 );
   var expected = null;
   test.identical( got, expected );
 
-  test.description = 'buffer';
+  test.case = 'buffer';
   var got = _.entitySize( new ArrayBuffer( 10 ) );
   var expected = 10;
   test.identical( got, expected );
 
-  test.description = 'arraylike';
+  test.case = 'arraylike';
   var got = _.entitySize( [ 1, 2, 3 ] );
   var expected = 3;
   test.identical( got, expected );
 
-  test.description = 'object';
+  test.case = 'object';
   var got = _.entitySize( { a : 1, b : 2 } );
   var expected = null;
   test.identical( got, expected );
 
-  test.description = 'empty call';
+  test.case = 'empty call';
   var got = _.entitySize( undefined );
   var expected = null;
   test.identical( got, expected );
@@ -815,25 +815,25 @@ function entitySize( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.entitySize();
   });
 
-  test.description = 'redundant arguments';
+  test.case = 'redundant arguments';
   test.shouldThrowError( function()
   {
     _.entitySize( 1,2 );
   });
 
-  test.description = 'redundant arguments';
+  test.case = 'redundant arguments';
   test.shouldThrowError( function()
   {
     _.entitySize( 1,undefined );
   });
 
-  test.description = 'redundant arguments';
+  test.case = 'redundant arguments';
   test.shouldThrowError( function()
   {
     _.entitySize( [],undefined );
@@ -845,17 +845,17 @@ function entitySize( test )
 
 function entityValueWithIndex( test )
 {
-  test.description = 'array';
+  test.case = 'array';
   var got = _.entityValueWithIndex( [ [ 1, 2, 3 ] ], 0 );
   var expected = [ 1, 2, 3 ] ;
   test.identical( got, expected );
 
-  test.description = 'object';
+  test.case = 'object';
   var got = _.entityValueWithIndex( { a : 1, b : [ 1, 2, 3 ] }, 1 );
   var expected = [ 1, 2, 3 ] ;
   test.identical( got, expected );
 
-  test.description = 'string';
+  test.case = 'string';
   var got = _.entityValueWithIndex( 'simple string', 5 );
   var expected = 'e' ;
   test.identical( got, expected );
@@ -863,43 +863,43 @@ function entityValueWithIndex( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.entityValueWithIndex();
   });
 
-  test.description = 'no selector';
+  test.case = 'no selector';
   test.shouldThrowError( function()
   {
     _.entityValueWithIndex( [ 1 ] );
   });
 
-  test.description = 'bad selector';
+  test.case = 'bad selector';
   test.shouldThrowError( function()
   {
     _.entityValueWithIndex( [ 0 ],'1' );
   });
 
-  test.description = 'bad arguments';
+  test.case = 'bad arguments';
   test.shouldThrowError( function()
   {
     _.entityValueWithIndex( true,0 );
   });
 
-  test.description = 'bad arguments';
+  test.case = 'bad arguments';
   test.shouldThrowError( function()
   {
     _.entityValueWithIndex( 1,2 );
   });
 
-  test.description = 'bad arguments';
+  test.case = 'bad arguments';
   test.shouldThrowError( function()
   {
     _.entityValueWithIndex( 1,undefined );
   });
 
-  test.description = 'redundant arguments';
+  test.case = 'redundant arguments';
   test.shouldThrowError( function()
   {
     _.entityValueWithIndex( [ 0 ],0,0 );
@@ -911,32 +911,32 @@ function entityValueWithIndex( test )
 
 function entityKeyWithValue( test )
 {
-  test.description = 'array';
+  test.case = 'array';
   var got = _.entityKeyWithValue( [ 1, 2, 3 ], 3 );
   var expected =  2;
   test.identical( got, expected );
 
-  test.description = 'array#2';
+  test.case = 'array#2';
   var got = _.entityKeyWithValue( [ 1, 2, 3 ], 'a' );
   var expected =  null;
   test.identical( got, expected );
 
-  test.description = 'object';
+  test.case = 'object';
   var got = _.entityKeyWithValue( { a : 1, b : 'a' }, 'a' );
   var expected =  'b';
   test.identical( got, expected );
 
-  test.description = 'value undefined';
+  test.case = 'value undefined';
   var got = _.entityKeyWithValue( [ 1, 2, 3 ], undefined );
   var expected =  null;
   test.identical( got, expected );
 
-  test.description = 'value string';
+  test.case = 'value string';
   var got = _.entityKeyWithValue( [ 0 ],'1' );
   var expected =  null;
   test.identical( got, expected );
 
-  test.description = 'value string';
+  test.case = 'value string';
   var got = _.entityKeyWithValue( [ 0 ],'1' );
   var expected =  null;
   test.identical( got, expected );
@@ -944,37 +944,37 @@ function entityKeyWithValue( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.entityKeyWithValue();
   });
 
-  test.description = 'no selector';
+  test.case = 'no selector';
   test.shouldThrowError( function()
   {
     _.entityKeyWithValue( [ 1 ] );
   });
 
-  test.description = 'bad arguments';
+  test.case = 'bad arguments';
   test.shouldThrowError( function()
   {
     _.entityKeyWithValue( true,0 );
   });
 
-  test.description = 'bad arguments';
+  test.case = 'bad arguments';
   test.shouldThrowError( function()
   {
     _.entityKeyWithValue( 1,2 );
   });
 
-  test.description = 'bad arguments';
+  test.case = 'bad arguments';
   test.shouldThrowError( function()
   {
     _.entityKeyWithValue( 1,undefined );
   });
 
-  test.description = 'redundant arguments';
+  test.case = 'redundant arguments';
   test.shouldThrowError( function()
   {
     _.entityKeyWithValue( [ 0 ],0,0 );

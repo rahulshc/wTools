@@ -37,12 +37,12 @@ var _global = _global_; var _ = _global_.wTools;
 function strRemoveBegin2( test )
 {
 
-  test.description = 'returns string with removed occurrence from start';
+  test.case = 'returns string with removed occurrence from start';
   var got = _.strRemoveBegin( 'example','exa' );
   var expected = 'mple';
   test.identical( got,expected );
 
-  test.description = 'returns original if no occurrence found';
+  test.case = 'returns original if no occurrence found';
   var got = _.strRemoveBegin( 'mple','exa' );
   var expected = 'mple';
   test.identical( got,expected );
@@ -54,25 +54,25 @@ function strRemoveBegin2( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strRemoveBegin( 'abcd','a','a' );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strRemoveBegin( );
   });
 
-  test.description = 'first argument is wrong';
+  test.case = 'first argument is wrong';
   test.shouldThrowError( function()
   {
     _.strRemoveBegin( 1,'2' );
   });
 
-  test.description = 'second argument is wrong';
+  test.case = 'second argument is wrong';
   test.shouldThrowError( function()
   {
     _.strRemoveBegin( '1',2 );
@@ -84,12 +84,12 @@ function strRemoveBegin2( test )
 
 function strRemoveEnd2( test )
 {
-  test.description = 'returns string with removed occurrence from end';
+  test.case = 'returns string with removed occurrence from end';
   var got = _.strRemoveEnd( 'example','mple' );
   var expected = 'exa';
   test.identical( got,expected );
 
-  test.description = 'returns original if no occurrence found ';
+  test.case = 'returns original if no occurrence found ';
   var got = _.strRemoveEnd( 'example','' );
   var expected = 'example';
   test.identical( got,expected );
@@ -99,25 +99,25 @@ function strRemoveEnd2( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strRemoveEnd( 'one','two','three' );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strRemoveEnd( );
   });
 
-  test.description = 'first argument is wrong';
+  test.case = 'first argument is wrong';
   test.shouldThrowError( function()
   {
     _.strRemoveEnd( 1,'second' );
   });
 
-  test.description = 'second argument is wrong';
+  test.case = 'second argument is wrong';
   test.shouldThrowError( function()
   {
     _.strRemoveEnd( 'first',2 );
@@ -133,7 +133,7 @@ function strRemoveBegin( test )
 
   //
 
-  test.description = 'strRemoveBegin';
+  test.case = 'strRemoveBegin';
 
   /**/
 
@@ -261,7 +261,7 @@ function strRemoveEnd( test )
 
   //
 
-  test.description = 'strRemoveBegin';
+  test.case = 'strRemoveBegin';
 
   /**/
 
@@ -523,7 +523,7 @@ function strPrependOnce( test )
 
   //
 
-  test.description = 'strPrependOnce';
+  test.case = 'strPrependOnce';
 
   /**/
 
@@ -571,7 +571,7 @@ function strAppendOnce( test )
 
   //
 
-  test.description = 'strAppendOnce';
+  test.case = 'strAppendOnce';
 
   /**/
 
@@ -618,12 +618,12 @@ function strAppendOnce( test )
 function strForRange( test )
 {
 
-  test.description = 'returns string representing the range of numbers';
+  test.case = 'returns string representing the range of numbers';
   var got = _.strForRange( [ 1, 10 ] );
   var expected = '[ 1..10 ]';
   test.identical( got, expected );
 
-  test.description = 'returns string representing the range of symbols';
+  test.case = 'returns string representing the range of symbols';
   var got = _.strForRange( [ 'a', 'z' ] );
   var expected = '[ a..z ]';
   test.identical( got, expected );
@@ -633,19 +633,19 @@ function strForRange( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strForRange( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strForRange( 'wrong argument' );
   } );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
   test.shouldThrowError( function( )
   {
     _.strForRange( [ 1, 10 ], 'redundant argument' );
@@ -658,17 +658,17 @@ function strForRange( test )
 function strCapitalize( test )
 {
 
-  test.description = 'first letter is upper case';
+  test.case = 'first letter is upper case';
   var got = _.strCapitalize( 'object' );
   var expected = 'Object';
   test.identical( got, expected );
 
-  test.description = 'single word';
+  test.case = 'single word';
   var got = _.strCapitalize( 'one' );
   var expected = 'One';
   test.identical( got,expected );
 
-  test.description = 'two words';
+  test.case = 'two words';
   var got = _.strCapitalize( 'one two' );
   var expected = 'One two';
   test.identical( got,expected );
@@ -678,37 +678,37 @@ function strCapitalize( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments length';
+  test.case = 'invalid arguments length';
   test.shouldThrowError( function()
   {
     _.strCapitalize( 'first','wrond argument' );
   });
 
-  test.description = 'wrong type of argument';
+  test.case = 'wrong type of argument';
   test.shouldThrowError( function()
   {
     _.strCapitalize( 777 );
   });
 
-  test.description = 'no argument provided';
+  test.case = 'no argument provided';
   test.shouldThrowError( function()
   {
     _.strCapitalize();
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strCapitalize( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strCapitalize( 33 );
   } );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
   test.shouldThrowError( function( )
   {
     _.strCapitalize( 'object', 'redundant argument' );
@@ -724,7 +724,7 @@ function strIndentation( test )
 
   //
 
-  test.description = 'single line';
+  test.case = 'single line';
 
   /**/
 
@@ -740,7 +740,7 @@ function strIndentation( test )
 
   //
 
-  test.description = 'multiline';
+  test.case = 'multiline';
 
   /**/
 
@@ -768,7 +768,7 @@ function strIndentation( test )
 
   //
 
-  test.description = 'array';
+  test.case = 'array';
 
   /**/
 
@@ -789,25 +789,25 @@ function strIndentation( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strIndentation( 'one','two','three' );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strIndentation( );
   });
 
-  test.description = 'first argument type is wrong';
+  test.case = 'first argument type is wrong';
   test.shouldThrowError( function()
   {
     _.strIndentation( 123,'second' );
   });
 
-  test.description = 'second argument type is wrong';
+  test.case = 'second argument type is wrong';
   test.shouldThrowError( function()
   {
     _.strIndentation( 'first', 321 );
@@ -820,29 +820,29 @@ function strIndentation( test )
 function strCountLines( test )
 {
 
-  test.description = 'returns 1';
+  test.case = 'returns 1';
   var func = 'function( x, y ) { return x + y; }';
   var got = _.strCountLines( func );
   var expected = 1;
   test.identical( got, expected );
 
-  test.description = 'returns 4';
+  test.case = 'returns 4';
   var func = 'function( x, y ) \n { \n   return x + y; \n }';
   var got = _.strCountLines( func );
   var expected = 4;
   test.identical( got, expected );
 
-  test.description = 'one line string test';
+  test.case = 'one line string test';
   var got = _.strCountLines( 'one line' );
   var expected = 1;
   test.identical( got,expected );
 
-  test.description = 'multiline string test';
+  test.case = 'multiline string test';
   var got = _.strCountLines( 'first line\nsecond line\nthird line' );
   var expected = 3;
   test.identical( got,expected );
 
-  test.description = 'multiline  text test';
+  test.case = 'multiline  text test';
   var got = _.strCountLines( `one
                              two
                              three`
@@ -855,43 +855,43 @@ function strCountLines( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strCountLines( '1', '2' );
   });
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strCountLines( 123 );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strCountLines();
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strCountLines( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strCountLines( [ 1, '\n', 2 ] );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strCountLines( 13 );
   } );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
   test.shouldThrowError( function( )
   {
     _.strCountLines( 'function( x, y ) \n { \n   return x + y; \n }', 'redundant argument' );
@@ -904,7 +904,7 @@ function strCountLines( test )
 function strSplitFast( test )
 {
 
-  test.description = 'trivial';
+  test.case = 'trivial';
 
   var got = _.strSplitFast( '', '' );
   var expected = [];
@@ -922,22 +922,22 @@ function strSplitFast( test )
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'split string into an array of strings';
+  test.case = 'split string into an array of strings';
   var got = _.strSplitFast( ' test   test   test ' );
   var expected = [ '', 'test', '', '', 'test', '', '', 'test', '' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var got = _.strSplitFast( ' test   test   test ', 'something' );
   var expected = [ ' test   test   test ' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var got = _.strSplitFast( ' test <delimteter>  test<delimteter>   test ', '<delimteter>' );
   var expected = [ ' test ', '  test', '   test ' ];
   test.identical( got, expected );
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var got = _.strSplitFast( 'a b c d' );
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
@@ -955,7 +955,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'empty both';
+  test.case = 'empty both';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = '';
@@ -963,7 +963,7 @@ function strSplitFast( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'empty delimeter';
+  test.case = 'empty delimeter';
   var o = _.mapExtend( null, op );
   o.src = 'abc';
   o.delimeter = '';
@@ -971,7 +971,7 @@ function strSplitFast( test )
   var expected = [ 'a', 'b', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'empty src';
+  test.case = 'empty src';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = 'a';
@@ -979,28 +979,28 @@ function strSplitFast( test )
   var expected = [ '' ];
   test.identical( got, expected );
 
-  test.description = 'has empty element in result';
+  test.case = 'has empty element in result';
   var o = _.mapExtend( null, op );
   o.src = 'a b  c';
   var got = _.strSplitFast( o );
   var expected = [ 'a', 'b', '', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var o = _.mapExtend( null, op );
   o.src = 'test test test';
   var got = _.strSplitFast( o );
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'split string into an array of strings';
+  test.case = 'split string into an array of strings';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ';
   var got = _.strSplitFast( o );
   var expected = [ '', 'test', '', '', 'test', '', '', 'test', '' ];
   test.identical( got, expected );
 
-  test.description = 'split with delimeter which src does not have';
+  test.case = 'split with delimeter which src does not have';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ', 'something';
   o.delimeter = 'x';
@@ -1008,7 +1008,7 @@ function strSplitFast( test )
   var expected = [ ' test   test   test ' ];
   test.identical( got, expected );
 
-  test.description = 'custom delimeter';
+  test.case = 'custom delimeter';
   var o = _.mapExtend( null, op );
   o.src = ' test <delimteter>  test<delimteter>   test ', '<delimteter>';
   o.delimeter = '<delimteter>';
@@ -1016,14 +1016,14 @@ function strSplitFast( test )
   var expected = [ ' test ', '  test', '   test ' ];
   test.identical( got, expected );
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var o = _.mapExtend( null, op );
   o.src = 'a b c d';
   var got = _.strSplitFast( o );
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'arguments as map';
+  test.case = 'arguments as map';
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c,d';
   o.delimeter = ',';
@@ -1031,7 +1031,7 @@ function strSplitFast( test )
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'delimeter as array';
+  test.case = 'delimeter as array';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [ ',', '.' ];
@@ -1039,7 +1039,7 @@ function strSplitFast( test )
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'zero delimeter length';
+  test.case = 'zero delimeter length';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [];
@@ -1047,7 +1047,7 @@ function strSplitFast( test )
   var expected = [ 'a,b.c.d' ];
   test.identical( got,expected );
 
-  test.description = 'stripping off';
+  test.case = 'stripping off';
   var o = _.mapExtend( null, op );
   o.src = '    a,b,c,d   ';
   o.delimeter = [ ',' ];
@@ -1057,7 +1057,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'many delimeters, delimeter on the begin';
+  test.case = 'many delimeters, delimeter on the begin';
   var o = _.mapExtend( null, op );
   o.src = '.content';
   o.delimeter = [ '.','#' ];
@@ -1065,7 +1065,7 @@ function strSplitFast( test )
   var expected = [ '', 'content' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters, delimeter on the end';
+  test.case = 'many delimeters, delimeter on the end';
   var o = _.mapExtend( null, op );
   o.src = 'content.';
   o.delimeter = [ '.','#' ];
@@ -1073,7 +1073,7 @@ function strSplitFast( test )
   var expected = [ 'content', '' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1081,7 +1081,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<', ];
@@ -1089,7 +1089,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common';
+  test.case = 'having long common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<' ];
@@ -1097,7 +1097,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common 2';
+  test.case = 'having long common 2';
   var o = _.mapExtend( null, op );
   o.src = 'a1 a2 a3 <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1105,7 +1105,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'delimeter not exist in src';
+  test.case = 'delimeter not exist in src';
 
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c';
@@ -1116,7 +1116,7 @@ function strSplitFast( test )
 
   /**/
 
-  test.description = 'several delimeters';
+  test.case = 'several delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a ., b ., c ., d';
   o.delimeter = [ ',', '.' ];
@@ -1124,7 +1124,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'one delimeters';
+  test.case = 'one delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a , b , c , d';
   o.delimeter = ',';
@@ -1132,7 +1132,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'delimeters equal src';
+  test.case = 'delimeters equal src';
   var o = _.mapExtend( null, op );
   o.src = ',';
   o.delimeter = ',';
@@ -1140,7 +1140,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'src is triplet of delimeter';
+  test.case = 'src is triplet of delimeter';
   var o = _.mapExtend( null, op );
   o.src = ',,,';
   o.delimeter = ',';
@@ -1150,7 +1150,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'quoted at edges';
+  test.case = 'quoted at edges';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c"';
   o.delimeter = [ '"' ];
@@ -1158,7 +1158,7 @@ function strSplitFast( test )
   var expected = [ '', 'a b', ' ', '', ' c', '' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c' ];
@@ -1166,7 +1166,7 @@ function strSplitFast( test )
   var expected = [ '"', '" ""', '' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space first';
+  test.case = 'quoted in the middle with space first';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"' ];
@@ -1174,7 +1174,7 @@ function strSplitFast( test )
   var expected = [ '', '', '', '', '', '', '', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space last';
+  test.case = 'quoted in the middle with space last';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c', '"', ' ' ];
@@ -1182,7 +1182,7 @@ function strSplitFast( test )
   var expected = [ '', '', '', '', '', '', '', '' ];
   test.identical( got, expected );
 
-  test.description = 'delimeter with empty string at the beginning of array';
+  test.case = 'delimeter with empty string at the beginning of array';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ '', 'a b', ' ', '', ' c' ];
@@ -1190,7 +1190,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a', ' ', 'b', '"', ' ', '"', '"', ' ', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" x "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"', '' ];
@@ -1211,7 +1211,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'empty both';
+  test.case = 'empty both';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = '';
@@ -1219,7 +1219,7 @@ function strSplitFast( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'empty delimeter';
+  test.case = 'empty delimeter';
   var o = _.mapExtend( null, op );
   o.src = 'abc';
   o.delimeter = '';
@@ -1227,7 +1227,7 @@ function strSplitFast( test )
   var expected = [ 'a', 'b', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'empty src';
+  test.case = 'empty src';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = 'a';
@@ -1235,28 +1235,28 @@ function strSplitFast( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'has empty element in result';
+  test.case = 'has empty element in result';
   var o = _.mapExtend( null, op );
   o.src = 'a b  c';
   var got = _.strSplitFast( o );
   var expected = [ 'a', 'b', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var o = _.mapExtend( null, op );
   o.src = 'test test test';
   var got = _.strSplitFast( o );
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'split string into an array of strings';
+  test.case = 'split string into an array of strings';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ';
   var got = _.strSplitFast( o );
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'split with delimeter which src does not have';
+  test.case = 'split with delimeter which src does not have';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ', 'something';
   o.delimeter = 'x';
@@ -1264,7 +1264,7 @@ function strSplitFast( test )
   var expected = [ ' test   test   test ' ];
   test.identical( got, expected );
 
-  test.description = 'custom delimeter';
+  test.case = 'custom delimeter';
   var o = _.mapExtend( null, op );
   o.src = ' test <delimteter>  test<delimteter>   test ', '<delimteter>';
   o.delimeter = '<delimteter>';
@@ -1272,14 +1272,14 @@ function strSplitFast( test )
   var expected = [ ' test ', '  test', '   test ' ];
   test.identical( got, expected );
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var o = _.mapExtend( null, op );
   o.src = 'a b c d';
   var got = _.strSplitFast( o );
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'arguments as map';
+  test.case = 'arguments as map';
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c,d';
   o.delimeter = ',';
@@ -1287,7 +1287,7 @@ function strSplitFast( test )
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'delimeter as array';
+  test.case = 'delimeter as array';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [ ',', '.' ];
@@ -1295,7 +1295,7 @@ function strSplitFast( test )
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'zero delimeter length';
+  test.case = 'zero delimeter length';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [];
@@ -1303,7 +1303,7 @@ function strSplitFast( test )
   var expected = [ 'a,b.c.d' ];
   test.identical( got,expected );
 
-  test.description = 'stripping off';
+  test.case = 'stripping off';
   var o = _.mapExtend( null, op );
   o.src = '    a,b,c,d   ';
   o.delimeter = [ ',' ];
@@ -1313,7 +1313,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'many delimeters, delimeter on the begin';
+  test.case = 'many delimeters, delimeter on the begin';
   var o = _.mapExtend( null, op );
   o.src = '.content';
   o.delimeter = [ '.','#' ];
@@ -1321,7 +1321,7 @@ function strSplitFast( test )
   var expected = ['content' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters, delimeter on the end';
+  test.case = 'many delimeters, delimeter on the end';
   var o = _.mapExtend( null, op );
   o.src = 'content.';
   o.delimeter = [ '.','#' ];
@@ -1329,7 +1329,7 @@ function strSplitFast( test )
   var expected = [ 'content' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1337,7 +1337,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<', ];
@@ -1345,7 +1345,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common';
+  test.case = 'having long common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<' ];
@@ -1353,7 +1353,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common 2';
+  test.case = 'having long common 2';
   var o = _.mapExtend( null, op );
   o.src = 'a1 a2 a3 <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1361,7 +1361,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'delimeter not exist in src';
+  test.case = 'delimeter not exist in src';
 
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c';
@@ -1372,7 +1372,7 @@ function strSplitFast( test )
 
   /**/
 
-  test.description = 'several delimeters';
+  test.case = 'several delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a ., b ., c ., d';
   o.delimeter = [ ',', '.' ];
@@ -1380,7 +1380,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'one delimeters';
+  test.case = 'one delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a , b , c , d';
   o.delimeter = ',';
@@ -1388,7 +1388,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'delimeters equal src';
+  test.case = 'delimeters equal src';
   var o = _.mapExtend( null, op );
   o.src = ',';
   o.delimeter = ',';
@@ -1396,7 +1396,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'src is triplet of delimeter';
+  test.case = 'src is triplet of delimeter';
   var o = _.mapExtend( null, op );
   o.src = ',,,';
   o.delimeter = ',';
@@ -1406,7 +1406,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'quoted at edges';
+  test.case = 'quoted at edges';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c"';
   o.delimeter = [ '"' ];
@@ -1414,7 +1414,7 @@ function strSplitFast( test )
   var expected = [ 'a b', ' ', ' c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c' ];
@@ -1422,7 +1422,7 @@ function strSplitFast( test )
   var expected = [ '"', '" ""' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space first';
+  test.case = 'quoted in the middle with space first';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"' ];
@@ -1430,7 +1430,7 @@ function strSplitFast( test )
   var expected = [ 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space last';
+  test.case = 'quoted in the middle with space last';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c', '"', ' ' ];
@@ -1438,7 +1438,7 @@ function strSplitFast( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'delimeter with empty string at the beginning of array';
+  test.case = 'delimeter with empty string at the beginning of array';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ '', 'a b', ' ', '', ' c' ];
@@ -1446,7 +1446,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a', ' ', 'b', '"', ' ', '"', '"', ' ', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" x "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"', '' ];
@@ -1467,7 +1467,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'empty both';
+  test.case = 'empty both';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = '';
@@ -1475,7 +1475,7 @@ function strSplitFast( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'empty delimeter';
+  test.case = 'empty delimeter';
   var o = _.mapExtend( null, op );
   o.src = 'abc';
   o.delimeter = '';
@@ -1483,7 +1483,7 @@ function strSplitFast( test )
   var expected = [ 'a', '', 'b', '', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'empty src';
+  test.case = 'empty src';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = 'a';
@@ -1491,28 +1491,28 @@ function strSplitFast( test )
   var expected = [ '' ];
   test.identical( got, expected );
 
-  test.description = 'has empty element in result';
+  test.case = 'has empty element in result';
   var o = _.mapExtend( null, op );
   o.src = 'a b  c';
   var got = _.strSplitFast( o );
   var expected = [ 'a', ' ', 'b', ' ', '', ' ', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var o = _.mapExtend( null, op );
   o.src = 'test test test';
   var got = _.strSplitFast( o );
   var expected = [ 'test', ' ', 'test', ' ', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'split string into an array of strings';
+  test.case = 'split string into an array of strings';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ';
   var got = _.strSplitFast( o );
   var expected = [ '', ' ', 'test', ' ', '', ' ', '', ' ', 'test', ' ', '', ' ', '', ' ', 'test', ' ', '' ];
   test.identical( got, expected );
 
-  test.description = 'split with delimeter which src does not have';
+  test.case = 'split with delimeter which src does not have';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ', 'something';
   o.delimeter = 'x';
@@ -1520,7 +1520,7 @@ function strSplitFast( test )
   var expected = [ ' test   test   test ' ];
   test.identical( got, expected );
 
-  test.description = 'custom delimeter';
+  test.case = 'custom delimeter';
   var o = _.mapExtend( null, op );
   o.src = ' test <delimteter>  test<delimteter>   test ', '<delimteter>';
   o.delimeter = '<delimteter>';
@@ -1528,14 +1528,14 @@ function strSplitFast( test )
   var expected = [ ' test ', '<delimteter>', '  test', '<delimteter>', '   test ' ];
   test.identical( got, expected );
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var o = _.mapExtend( null, op );
   o.src = 'a b c d';
   var got = _.strSplitFast( o );
   var expected = [ 'a', ' ', 'b', ' ', 'c', ' ', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'arguments as map';
+  test.case = 'arguments as map';
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c,d';
   o.delimeter = ',';
@@ -1543,7 +1543,7 @@ function strSplitFast( test )
   var expected = [ 'a', ',', 'b', ',', 'c', ',', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'delimeter as array';
+  test.case = 'delimeter as array';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [ ',', '.' ];
@@ -1551,7 +1551,7 @@ function strSplitFast( test )
   var expected = [ 'a', ',', 'b', '.', 'c', '.', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'zero delimeter length';
+  test.case = 'zero delimeter length';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [];
@@ -1559,7 +1559,7 @@ function strSplitFast( test )
   var expected = [ 'a,b.c.d' ];
   test.identical( got,expected );
 
-  test.description = 'stripping off';
+  test.case = 'stripping off';
   var o = _.mapExtend( null, op );
   o.src = '    a,b,c,d   ';
   o.delimeter = [ ',' ];
@@ -1569,7 +1569,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'many delimeters, delimeter on the begin';
+  test.case = 'many delimeters, delimeter on the begin';
   var o = _.mapExtend( null, op );
   o.src = '.content';
   o.delimeter = [ '.','#' ];
@@ -1577,7 +1577,7 @@ function strSplitFast( test )
   var expected = [ '', '.', 'content' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters, delimeter on the end';
+  test.case = 'many delimeters, delimeter on the end';
   var o = _.mapExtend( null, op );
   o.src = 'content.';
   o.delimeter = [ '.','#' ];
@@ -1585,7 +1585,7 @@ function strSplitFast( test )
   var expected = [ 'content', '.', '' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1593,7 +1593,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<', ];
@@ -1601,7 +1601,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common';
+  test.case = 'having long common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<' ];
@@ -1609,7 +1609,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common 2';
+  test.case = 'having long common 2';
   var o = _.mapExtend( null, op );
   o.src = 'a1 a2 a3 <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1617,7 +1617,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'delimeter not exist in src';
+  test.case = 'delimeter not exist in src';
 
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c';
@@ -1628,7 +1628,7 @@ function strSplitFast( test )
 
   /**/
 
-  test.description = 'several delimeters';
+  test.case = 'several delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a ., b ., c ., d';
   o.delimeter = [ ',', '.' ];
@@ -1636,7 +1636,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'one delimeters';
+  test.case = 'one delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a , b , c , d';
   o.delimeter = ',';
@@ -1644,7 +1644,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'delimeters equal src';
+  test.case = 'delimeters equal src';
   var o = _.mapExtend( null, op );
   o.src = ',';
   o.delimeter = ',';
@@ -1652,7 +1652,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'src is triplet of delimeter';
+  test.case = 'src is triplet of delimeter';
   var o = _.mapExtend( null, op );
   o.src = ',,,';
   o.delimeter = ',';
@@ -1662,7 +1662,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'quoted at edges';
+  test.case = 'quoted at edges';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c"';
   o.delimeter = [ '"' ];
@@ -1670,7 +1670,7 @@ function strSplitFast( test )
   var expected = [ '', '"', 'a b', '"', ' ', '"', '', '"', ' c', '"', '' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c' ];
@@ -1678,7 +1678,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a b', '" ""', ' c', '' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space first';
+  test.case = 'quoted in the middle with space first';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"' ];
@@ -1686,7 +1686,7 @@ function strSplitFast( test )
   var expected = [ '', '"', '', 'a b', '', '"', '', ' ', '', '"', '', '"', '', ' ', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space last';
+  test.case = 'quoted in the middle with space last';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c', '"', ' ' ];
@@ -1694,7 +1694,7 @@ function strSplitFast( test )
   var expected = [ '', '"', '', 'a b', '', '"', '', ' ', '', '"', '', '"', '', ' c', '' ];
   test.identical( got, expected );
 
-  test.description = 'delimeter with empty string at the beginning of array';
+  test.case = 'delimeter with empty string at the beginning of array';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ '', 'a b', ' ', '', ' c' ];
@@ -1702,7 +1702,7 @@ function strSplitFast( test )
   var expected = [ '"', '', 'a', '', ' ', '', 'b', '', '"', '', ' ', '', '"', '', '"', '', ' ', '', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" x "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"', '' ];
@@ -1723,7 +1723,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'empty both';
+  test.case = 'empty both';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = '';
@@ -1731,7 +1731,7 @@ function strSplitFast( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'empty delimeter';
+  test.case = 'empty delimeter';
   var o = _.mapExtend( null, op );
   o.src = 'abc';
   o.delimeter = '';
@@ -1739,7 +1739,7 @@ function strSplitFast( test )
   var expected = [ 'a', 'b', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'empty src';
+  test.case = 'empty src';
   var o = _.mapExtend( null, op );
   o.src = '';
   o.delimeter = 'a';
@@ -1747,28 +1747,28 @@ function strSplitFast( test )
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'has empty element in result';
+  test.case = 'has empty element in result';
   var o = _.mapExtend( null, op );
   o.src = 'a b  c';
   var got = _.strSplitFast( o );
   var expected = [ 'a', ' ', 'b', ' ', ' ', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var o = _.mapExtend( null, op );
   o.src = 'test test test';
   var got = _.strSplitFast( o );
   var expected = [ 'test', ' ', 'test', ' ', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'split string into an array of strings';
+  test.case = 'split string into an array of strings';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ';
   var got = _.strSplitFast( o );
   var expected = [ ' ', 'test', ' ', ' ', ' ', 'test', ' ', ' ', ' ', 'test', ' ' ];
   test.identical( got, expected );
 
-  test.description = 'split with delimeter which src does not have';
+  test.case = 'split with delimeter which src does not have';
   var o = _.mapExtend( null, op );
   o.src = ' test   test   test ', 'something';
   o.delimeter = 'x';
@@ -1776,7 +1776,7 @@ function strSplitFast( test )
   var expected = [ ' test   test   test ' ];
   test.identical( got, expected );
 
-  test.description = 'custom delimeter';
+  test.case = 'custom delimeter';
   var o = _.mapExtend( null, op );
   o.src = ' test <delimteter>  test<delimteter>   test ', '<delimteter>';
   o.delimeter = '<delimteter>';
@@ -1784,14 +1784,14 @@ function strSplitFast( test )
   var expected = [ ' test ', '<delimteter>', '  test', '<delimteter>', '   test ' ];
   test.identical( got, expected );
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var o = _.mapExtend( null, op );
   o.src = 'a b c d';
   var got = _.strSplitFast( o );
   var expected = [ 'a', ' ', 'b', ' ', 'c', ' ', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'arguments as map';
+  test.case = 'arguments as map';
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c,d';
   o.delimeter = ',';
@@ -1799,7 +1799,7 @@ function strSplitFast( test )
   var expected = [ 'a', ',', 'b', ',', 'c', ',', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'delimeter as array';
+  test.case = 'delimeter as array';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [ ',', '.' ];
@@ -1807,7 +1807,7 @@ function strSplitFast( test )
   var expected = [ 'a', ',', 'b', '.', 'c', '.', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'zero delimeter length';
+  test.case = 'zero delimeter length';
   var o = _.mapExtend( null, op );
   o.src = 'a,b.c.d';
   o.delimeter = [];
@@ -1815,7 +1815,7 @@ function strSplitFast( test )
   var expected = [ 'a,b.c.d' ];
   test.identical( got,expected );
 
-  test.description = 'stripping off';
+  test.case = 'stripping off';
   var o = _.mapExtend( null, op );
   o.src = '    a,b,c,d   ';
   o.delimeter = [ ',' ];
@@ -1825,7 +1825,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'many delimeters, delimeter on the begin';
+  test.case = 'many delimeters, delimeter on the begin';
   var o = _.mapExtend( null, op );
   o.src = '.content';
   o.delimeter = [ '.','#' ];
@@ -1833,7 +1833,7 @@ function strSplitFast( test )
   var expected = [ '.', 'content' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters, delimeter on the end';
+  test.case = 'many delimeters, delimeter on the end';
   var o = _.mapExtend( null, op );
   o.src = 'content.';
   o.delimeter = [ '.','#' ];
@@ -1841,7 +1841,7 @@ function strSplitFast( test )
   var expected = [ 'content', '.' ];
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1849,7 +1849,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'many delimeters having common';
+  test.case = 'many delimeters having common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<! <<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<', ];
@@ -1857,7 +1857,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common';
+  test.case = 'having long common';
   var o = _.mapExtend( null, op );
   o.src = 'Aa <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<' ];
@@ -1865,7 +1865,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'having long common 2';
+  test.case = 'having long common 2';
   var o = _.mapExtend( null, op );
   o.src = 'a1 a2 a3 <<<- Bb';
   o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -1873,7 +1873,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got,expected );
 
-  test.description = 'delimeter not exist in src';
+  test.case = 'delimeter not exist in src';
 
   var o = _.mapExtend( null, op );
   o.src = 'a,b,c';
@@ -1884,7 +1884,7 @@ function strSplitFast( test )
 
   /**/
 
-  test.description = 'several delimeters';
+  test.case = 'several delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a ., b ., c ., d';
   o.delimeter = [ ',', '.' ];
@@ -1892,7 +1892,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'one delimeters';
+  test.case = 'one delimeters';
   var o = _.mapExtend( null, op );
   o.src = 'a , b , c , d';
   o.delimeter = ',';
@@ -1900,7 +1900,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'delimeters equal src';
+  test.case = 'delimeters equal src';
   var o = _.mapExtend( null, op );
   o.src = ',';
   o.delimeter = ',';
@@ -1908,7 +1908,7 @@ function strSplitFast( test )
   var got = _.strSplitFast( o );
   test.identical( got, expected );
 
-  test.description = 'src is triplet of delimeter';
+  test.case = 'src is triplet of delimeter';
   var o = _.mapExtend( null, op );
   o.src = ',,,';
   o.delimeter = ',';
@@ -1918,7 +1918,7 @@ function strSplitFast( test )
 
   /* */
 
-  test.description = 'quoted at edges';
+  test.case = 'quoted at edges';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c"';
   o.delimeter = [ '"' ];
@@ -1926,7 +1926,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a b', '"', ' ', '"', '"', ' c', '"' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c' ];
@@ -1934,7 +1934,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a b', '" ""', ' c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space first';
+  test.case = 'quoted in the middle with space first';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"' ];
@@ -1942,7 +1942,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a b', '"', ' ', '"', '"', ' ', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle with space last';
+  test.case = 'quoted in the middle with space last';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c', '"', ' ' ];
@@ -1950,7 +1950,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a b', '"', ' ', '"', '"', ' c' ];
   test.identical( got, expected );
 
-  test.description = 'delimeter with empty string at the beginning of array';
+  test.case = 'delimeter with empty string at the beginning of array';
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ '', 'a b', ' ', '', ' c' ];
@@ -1958,7 +1958,7 @@ function strSplitFast( test )
   var expected = [ '"', 'a', ' ', 'b', '"', ' ', '"', '"', ' ', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'quoted in the middle';
+  test.case = 'quoted in the middle';
   var o = _.mapExtend( null, op );
   o.src = '"a b" x "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"', '' ];
@@ -1971,49 +1971,49 @@ function strSplitFast( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strSplitFast( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strSplitFast( [  ] );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strSplitFast( 13 );
   } );
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strSplitFast( '1', '2', '3' );
   });
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strSplitFast( 123 );
   });
 
-  test.description = 'invalid option type';
+  test.case = 'invalid option type';
   test.shouldThrowError( function()
   {
     _.strSplitFast( { src : 3 } );
   });
 
-  test.description = 'invalid option defined';
+  test.case = 'invalid option defined';
   test.shouldThrowError( function()
   {
     _.strSplitFast( { src : 'word', delimeter : 0, left : 1 } );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strSplitFast();
@@ -2026,7 +2026,51 @@ function strSplitFast( test )
 function strSplit2( test )
 {
 
-  // test.description = 'trivial';
+  /* */
+
+  test.open( 'delimeter:" "' );
+
+  test.case = ' space at the beginning'; /**/
+  var got = _.strSplit2( ' aa b#b cc', ' ' );
+  var expected = [ '', '', 'aa', '', 'b#b', '', 'cc' ];
+  test.identical( got, expected );
+
+  test.case = 'space in the end';  /**/
+  var got = _.strSplit2( 'aa b#b cc ', ' ' );
+  var expected = [ 'aa', '', 'b#b', '', 'cc', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'space on the beginning and the end';  /**/
+  var got = _.strSplit2( ' aa b#b cc ', ' ' );
+  var expected = [ '', '', 'aa', '', 'b#b', '', 'cc', '', '' ];
+  test.identical( got, expected );
+
+  test.close( 'delimeter:" "' );
+
+  /* */
+
+  test.open( 'delimeter:"#"' );
+
+  test.case = ' space at the beginning'; /**/
+  var got = _.strSplit2( ' aa b#b cc', '#' );
+  var expected = [ 'aa b', '#', 'b cc' ];
+  test.identical( got, expected );
+
+  test.case = 'space in the end';  /**/
+  var got = _.strSplit2( 'aa b#b cc ', '#' );
+  var expected = [ 'aa b', '#', 'b cc' ];
+  test.identical( got, expected );
+
+  test.case = 'space on the beginning and the end';  /**/
+  var got = _.strSplit2( ' aa b#b cc ', '#' );
+  var expected = [ 'aa b', '#', 'b cc' ];
+  test.identical( got, expected );
+
+  test.close( 'delimeter:"#"' );
+
+  /* */
+
+  // test.case = 'trivial';
   //
   // var got = _.strSplit2( '', '' );
   // var expected = [];
@@ -2044,26 +2088,39 @@ function strSplit2( test )
   // var expected = [ 'test', 'test', 'test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'split string into an array of strings';
+  // test.case = 'split string into an array of strings';
   // var got = _.strSplit2( ' test   test   test ' );
   // var expected = [ '', 'test', '', '', 'test', '', '', 'test', '' ];
   // test.identical( got, expected );
   //
-  // test.description = 'returns an array of strings';
+  // test.case = 'returns an array of strings';
   // var got = _.strSplit2( ' test   test   test ', 'something' );
   // var expected = [ ' test   test   test ' ];
   // test.identical( got, expected );
   //
-  // test.description = 'returns an array of strings';
+  // test.case = 'returns an array of strings';
   // var got = _.strSplit2( ' test <delimteter>  test<delimteter>   test ', '<delimteter>' );
   // var expected = [ ' test ', '  test', '   test ' ];
   // test.identical( got, expected );
   //
-  // test.description = 'simple string, default options';
+  // test.case = 'simple string, default options';
   // var got = _.strSplit2( 'a b c d' );
   // var expected = [ 'a', 'b', 'c', 'd' ];
   // test.identical( got,expected );
-  //
+
+  test.case = 'long with quotes inside';
+  var o =
+  {
+    stripping : 0,
+    quoting : 1,
+    preservingEmpty : 1,
+    delimeter : [ ' > ', ' < ', '/' ],
+  }
+  o.src = 'Test check ( Tools/base/layer2/String / strSplit2 / delimeter:" " > space on the beginning and the end <  ) # 3 ... failed';
+  var got = _.strSplit2( o );
+  var expected = [ 'Test check ( Tools', '/', 'base', '/', 'layer2', '/', 'String ', '/', ' strSplit2 ', '/', ' delimeter:', '" "', '', ' > ', 'space on the beginning and the end', ' < ', ' ) # 3 ... failed' ];
+  test.identical( got, expected );
+
   // /*
   //   stripping : 1,
   //   quoting : 0,
@@ -2079,7 +2136,7 @@ function strSplit2( test )
   //
   // /* */
   //
-  // test.description = 'empty both';
+  // test.case = 'empty both';
   // var o = _.mapExtend( null, op );
   // o.src = '';
   // o.delimeter = '';
@@ -2087,7 +2144,7 @@ function strSplit2( test )
   // var expected = [];
   // test.identical( got, expected );
   //
-  // test.description = 'empty delimeter';
+  // test.case = 'empty delimeter';
   // var o = _.mapExtend( null, op );
   // o.src = 'abc';
   // o.delimeter = '';
@@ -2095,7 +2152,7 @@ function strSplit2( test )
   // var expected = [ 'a', 'b', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'empty src';
+  // test.case = 'empty src';
   // var o = _.mapExtend( null, op );
   // o.src = '';
   // o.delimeter = 'a';
@@ -2103,28 +2160,28 @@ function strSplit2( test )
   // var expected = [];
   // test.identical( got, expected );
   //
-  // test.description = 'has empty element in result';
+  // test.case = 'has empty element in result';
   // var o = _.mapExtend( null, op );
   // o.src = 'a b  c';
   // var got = _.strSplit2( o );
   // var expected = [ 'a', 'b', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'returns an array of strings';
+  // test.case = 'returns an array of strings';
   // var o = _.mapExtend( null, op );
   // o.src = 'test test test';
   // var got = _.strSplit2( o );
   // var expected = [ 'test', 'test', 'test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'split string into an array of strings';
+  // test.case = 'split string into an array of strings';
   // var o = _.mapExtend( null, op );
   // o.src = ' test   test   test ';
   // var got = _.strSplit2( o );
   // var expected = [ 'test', 'test', 'test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'split with delimeter which src does not have';
+  // test.case = 'split with delimeter which src does not have';
   // var o = _.mapExtend( null, op );
   // o.src = ' test   test   test ', 'something';
   // o.delimeter = 'x';
@@ -2132,7 +2189,7 @@ function strSplit2( test )
   // var expected = [ 'test   test   test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'custom delimeter';
+  // test.case = 'custom delimeter';
   // var o = _.mapExtend( null, op );
   // o.src = ' test <delimteter>  test<delimteter>   test ', '<delimteter>';
   // o.delimeter = '<delimteter>';
@@ -2140,14 +2197,14 @@ function strSplit2( test )
   // var expected = [ 'test', '<delimteter>', 'test', '<delimteter>', 'test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'simple string, default options';
+  // test.case = 'simple string, default options';
   // var o = _.mapExtend( null, op );
   // o.src = 'a b c d';
   // var got = _.strSplit2( o );
   // var expected = [ 'a', 'b', 'c', 'd' ];
   // test.identical( got,expected );
   //
-  // test.description = 'arguments as map';
+  // test.case = 'arguments as map';
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b,c,d';
   // o.delimeter = ',';
@@ -2155,7 +2212,7 @@ function strSplit2( test )
   // var expected = [ 'a', ',', 'b', ',', 'c', ',', 'd' ];
   // test.identical( got,expected );
   //
-  // test.description = 'delimeter as array';
+  // test.case = 'delimeter as array';
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b.c.d';
   // o.delimeter = [ ',', '.' ];
@@ -2163,7 +2220,7 @@ function strSplit2( test )
   // var expected = [ 'a', ',', 'b', '.', 'c', '.', 'd' ];
   // test.identical( got,expected );
   //
-  // test.description = 'zero delimeter length';
+  // test.case = 'zero delimeter length';
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b.c.d';
   // o.delimeter = [];
@@ -2171,7 +2228,7 @@ function strSplit2( test )
   // var expected = [ 'a,b.c.d' ];
   // test.identical( got,expected );
   //
-  // test.description = 'stripping off';
+  // test.case = 'stripping off';
   // var o = _.mapExtend( null, op );
   // o.src = '    a,b,c,d   ';
   // o.delimeter = [ ',' ];
@@ -2181,7 +2238,7 @@ function strSplit2( test )
   //
   // /* */
   //
-  // test.description = 'many delimeters, delimeter on the begin';
+  // test.case = 'many delimeters, delimeter on the begin';
   // var o = _.mapExtend( null, op );
   // o.src = '.content';
   // o.delimeter = [ '.','#' ];
@@ -2189,7 +2246,7 @@ function strSplit2( test )
   // var expected = [ '.', 'content' ];
   // test.identical( got,expected );
   //
-  // test.description = 'many delimeters, delimeter on the end';
+  // test.case = 'many delimeters, delimeter on the end';
   // var o = _.mapExtend( null, op );
   // o.src = 'content.';
   // o.delimeter = [ '.','#' ];
@@ -2197,7 +2254,7 @@ function strSplit2( test )
   // var expected = [ 'content', '.' ];
   // test.identical( got,expected );
   //
-  // test.description = 'many delimeters having common';
+  // test.case = 'many delimeters having common';
   // var o = _.mapExtend( null, op );
   // o.src = 'Aa <<! <<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -2205,7 +2262,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'many delimeters having common';
+  // test.case = 'many delimeters having common';
   // var o = _.mapExtend( null, op );
   // o.src = 'Aa <<! <<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<', ];
@@ -2213,7 +2270,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'having long common';
+  // test.case = 'having long common';
   // var o = _.mapExtend( null, op );
   // o.src = 'Aa <<<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<' ];
@@ -2221,7 +2278,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'having long common 2';
+  // test.case = 'having long common 2';
   // var o = _.mapExtend( null, op );
   // o.src = 'a1 a2 a3 <<<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -2229,7 +2286,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'delimeter not exist in src';
+  // test.case = 'delimeter not exist in src';
   //
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b,c';
@@ -2240,7 +2297,7 @@ function strSplit2( test )
   //
   // /**/
   //
-  // test.description = 'several delimeters';
+  // test.case = 'several delimeters';
   // var o = _.mapExtend( null, op );
   // o.src = 'a ., b ., c ., d';
   // o.delimeter = [ ',', '.' ];
@@ -2248,7 +2305,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got, expected );
   //
-  // test.description = 'one delimeters';
+  // test.case = 'one delimeters';
   // var o = _.mapExtend( null, op );
   // o.src = 'a , b , c , d';
   // o.delimeter = ',';
@@ -2256,7 +2313,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got, expected );
   //
-  // test.description = 'delimeters equal src';
+  // test.case = 'delimeters equal src';
   // var o = _.mapExtend( null, op );
   // o.src = ',';
   // o.delimeter = ',';
@@ -2264,7 +2321,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got, expected );
   //
-  // test.description = 'src is triplet of delimeter';
+  // test.case = 'src is triplet of delimeter';
   // var o = _.mapExtend( null, op );
   // o.src = ',,,';
   // o.delimeter = ',';
@@ -2274,7 +2331,7 @@ function strSplit2( test )
   //
   // /* */
   //
-  // test.description = 'quoted at edges';
+  // test.case = 'quoted at edges';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c"';
   // o.delimeter = [ '"' ];
@@ -2282,7 +2339,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a b', '"', '"','"', 'c', '"' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle';
+  // test.case = 'quoted in the middle';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ 'a b', ' c' ];
@@ -2290,7 +2347,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a b', '" ""', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle with space first';
+  // test.case = 'quoted in the middle with space first';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ 'a b', ' ', ' c', '"' ];
@@ -2298,7 +2355,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a b', '"', '"', '"', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle with space last';
+  // test.case = 'quoted in the middle with space last';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ 'a b', ' c', '"', ' ' ];
@@ -2306,7 +2363,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a b', '"', '"', '"', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'delimeter with empty string at the beginning of array';
+  // test.case = 'delimeter with empty string at the beginning of array';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ '', 'a b', ' ', '', ' c' ];
@@ -2314,7 +2371,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a', 'b', '"', '"', '"', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle';
+  // test.case = 'quoted in the middle';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" x "" c';
   // o.delimeter = [ 'a b', ' ', ' c', '"', '' ];
@@ -2337,7 +2394,7 @@ function strSplit2( test )
 
   /* */
 
-  // test.description = 'empty both';
+  // test.case = 'empty both';
   // var o = _.mapExtend( null, op );
   // o.src = '';
   // o.delimeter = '';
@@ -2345,7 +2402,7 @@ function strSplit2( test )
   // var expected = [];
   // test.identical( got, expected );
   //
-  // test.description = 'empty delimeter';
+  // test.case = 'empty delimeter';
   // var o = _.mapExtend( null, op );
   // o.src = 'abc';
   // o.delimeter = '';
@@ -2353,7 +2410,7 @@ function strSplit2( test )
   // var expected = [ 'a', 'b', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'empty src';
+  // test.case = 'empty src';
   // var o = _.mapExtend( null, op );
   // o.src = '';
   // o.delimeter = 'a';
@@ -2361,28 +2418,28 @@ function strSplit2( test )
   // var expected = [];
   // test.identical( got, expected );
   //
-  // test.description = 'has empty element in result';
+  // test.case = 'has empty element in result';
   // var o = _.mapExtend( null, op );
   // o.src = 'a b  c';
   // var got = _.strSplit2( o );
   // var expected = [ 'a', 'b', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'returns an array of strings';
+  // test.case = 'returns an array of strings';
   // var o = _.mapExtend( null, op );
   // o.src = 'test test test';
   // var got = _.strSplit2( o );
   // var expected = [ 'test', 'test', 'test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'split string into an array of strings';
+  // test.case = 'split string into an array of strings';
   // var o = _.mapExtend( null, op );
   // o.src = ' test   test   test ';
   // var got = _.strSplit2( o );
   // var expected = [ 'test', 'test', 'test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'split with delimeter which src does not have';
+  // test.case = 'split with delimeter which src does not have';
   // var o = _.mapExtend( null, op );
   // o.src = ' test   test   test ', 'something';
   // o.delimeter = 'x';
@@ -2390,7 +2447,7 @@ function strSplit2( test )
   // var expected = [ 'test   test   test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'custom delimeter';
+  // test.case = 'custom delimeter';
   // var o = _.mapExtend( null, op );
   // o.src = ' test <delimteter>  test<delimteter>   test ', '<delimteter>';
   // o.delimeter = '<delimteter>';
@@ -2398,14 +2455,14 @@ function strSplit2( test )
   // var expected = [ 'test', '<delimteter>', 'test', '<delimteter>', 'test' ];
   // test.identical( got, expected );
   //
-  // test.description = 'simple string, default options';
+  // test.case = 'simple string, default options';
   // var o = _.mapExtend( null, op );
   // o.src = 'a b c d';
   // var got = _.strSplit2( o );
   // var expected = [ 'a', 'b', 'c', 'd' ];
   // test.identical( got,expected );
   //
-  // test.description = 'arguments as map';
+  // test.case = 'arguments as map';
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b,c,d';
   // o.delimeter = ',';
@@ -2413,7 +2470,7 @@ function strSplit2( test )
   // var expected = [ 'a', ',', 'b', ',', 'c', ',', 'd' ];
   // test.identical( got,expected );
   //
-  // test.description = 'delimeter as array';
+  // test.case = 'delimeter as array';
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b.c.d';
   // o.delimeter = [ ',', '.' ];
@@ -2421,7 +2478,7 @@ function strSplit2( test )
   // var expected = [ 'a', ',', 'b', '.', 'c', '.', 'd' ];
   // test.identical( got,expected );
   //
-  // test.description = 'zero delimeter length';
+  // test.case = 'zero delimeter length';
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b.c.d';
   // o.delimeter = [];
@@ -2429,7 +2486,7 @@ function strSplit2( test )
   // var expected = [ 'a,b.c.d' ];
   // test.identical( got,expected );
   //
-  // test.description = 'stripping off';
+  // test.case = 'stripping off';
   // var o = _.mapExtend( null, op );
   // o.src = '    a,b,c,d   ';
   // o.delimeter = [ ',' ];
@@ -2439,7 +2496,7 @@ function strSplit2( test )
   //
   // /* */
   //
-  // test.description = 'many delimeters, delimeter on the begin';
+  // test.case = 'many delimeters, delimeter on the begin';
   // var o = _.mapExtend( null, op );
   // o.src = '.content';
   // o.delimeter = [ '.','#' ];
@@ -2447,7 +2504,7 @@ function strSplit2( test )
   // var expected = [ '.', 'content' ];
   // test.identical( got,expected );
   //
-  // test.description = 'many delimeters, delimeter on the end';
+  // test.case = 'many delimeters, delimeter on the end';
   // var o = _.mapExtend( null, op );
   // o.src = 'content.';
   // o.delimeter = [ '.','#' ];
@@ -2455,7 +2512,7 @@ function strSplit2( test )
   // var expected = [ 'content', '.' ];
   // test.identical( got,expected );
   //
-  // test.description = 'many delimeters having common';
+  // test.case = 'many delimeters having common';
   // var o = _.mapExtend( null, op );
   // o.src = 'Aa <<! <<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -2463,7 +2520,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'many delimeters having common';
+  // test.case = 'many delimeters having common';
   // var o = _.mapExtend( null, op );
   // o.src = 'Aa <<! <<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<', ];
@@ -2471,7 +2528,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'having long common';
+  // test.case = 'having long common';
   // var o = _.mapExtend( null, op );
   // o.src = 'Aa <<<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<' ];
@@ -2479,7 +2536,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'having long common 2';
+  // test.case = 'having long common 2';
   // var o = _.mapExtend( null, op );
   // o.src = 'a1 a2 a3 <<<- Bb';
   // o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
@@ -2487,7 +2544,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got,expected );
   //
-  // test.description = 'delimeter not exist in src';
+  // test.case = 'delimeter not exist in src';
   //
   // var o = _.mapExtend( null, op );
   // o.src = 'a,b,c';
@@ -2498,7 +2555,7 @@ function strSplit2( test )
   //
   // /**/
   //
-  // test.description = 'several delimeters';
+  // test.case = 'several delimeters';
   // var o = _.mapExtend( null, op );
   // o.src = 'a ., b ., c ., d';
   // o.delimeter = [ ',', '.' ];
@@ -2506,7 +2563,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got, expected );
   //
-  // test.description = 'one delimeters';
+  // test.case = 'one delimeters';
   // var o = _.mapExtend( null, op );
   // o.src = 'a , b , c , d';
   // o.delimeter = ',';
@@ -2514,7 +2571,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got, expected );
   //
-  // test.description = 'delimeters equal src';
+  // test.case = 'delimeters equal src';
   // var o = _.mapExtend( null, op );
   // o.src = ',';
   // o.delimeter = ',';
@@ -2522,7 +2579,7 @@ function strSplit2( test )
   // var got = _.strSplit2( o );
   // test.identical( got, expected );
   //
-  // test.description = 'src is triplet of delimeter';
+  // test.case = 'src is triplet of delimeter';
   // var o = _.mapExtend( null, op );
   // o.src = ',,,';
   // o.delimeter = ',';
@@ -2532,7 +2589,7 @@ function strSplit2( test )
 
   /* */
 
-  // test.description = 'complex quoted at edges';
+  // test.case = 'complex quoted at edges';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" " c"';
   // o.delimeter = [ '"' ];
@@ -2540,7 +2597,7 @@ function strSplit2( test )
   // var expected = [ '"a b"', '"c"' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle';
+  // test.case = 'quoted in the middle';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ 'a b', ' c' ];
@@ -2548,7 +2605,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a b', '" ""', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle with space first';
+  // test.case = 'quoted in the middle with space first';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ 'a b', ' ', ' c', '"' ];
@@ -2556,7 +2613,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a b', '"', '"', '"', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle with space last';
+  // test.case = 'quoted in the middle with space last';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ 'a b', ' c', '"', ' ' ];
@@ -2564,7 +2621,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a b', '"', '"', '"', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'delimeter with empty string at the beginning of array';
+  // test.case = 'delimeter with empty string at the beginning of array';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" "" c';
   // o.delimeter = [ '', 'a b', ' ', '', ' c' ];
@@ -2572,7 +2629,7 @@ function strSplit2( test )
   // var expected = [ '"', 'a', 'b', '"', '"', '"', 'c' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted in the middle';
+  // test.case = 'quoted in the middle';
   // var o = _.mapExtend( null, op );
   // o.src = '"a b" x "" c';
   // o.delimeter = [ 'a b', ' ', ' c', '"', '' ];
@@ -2588,7 +2645,7 @@ function strSplit2( test )
     preservingEmpty : 0,
   */
 
-  // test.description = 'quoted at edges, delimeter : #';
+  // test.case = 'quoted at edges, delimeter : #';
   // var o = _.mapExtend( null, op );
   // o.src = '"aa"bb"cc"';
   // o.delimeter = [ '#' ];
@@ -2596,7 +2653,7 @@ function strSplit2( test )
   // var expected = [ '"aa"', 'bb', '"cc"' ];
   // test.identical( got, expected );
   //
-  // test.description = 'quoted at edges with extra quote inside, delimeter : #';
+  // test.case = 'quoted at edges with extra quote inside, delimeter : #';
   // var o = _.mapExtend( null, op );
   // o.src = '"aa"bb""cc"';
   // o.delimeter = [ '#' ];
@@ -2675,66 +2732,66 @@ function strSplit2( test )
 function strSplit( test )
 {
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var got = _.strSplit( 'test test test' );
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'split string into an array of strings';
+  test.case = 'split string into an array of strings';
   var got = _.strSplit( ' test   test   test ' );
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var got = _.strSplit( ' test   test   test ', 'redundant argument' );
   var expected = [ 'test   test   test' ];
   test.identical( got, expected );
 
-  test.description = 'returns an array of strings';
+  test.case = 'returns an array of strings';
   var got = _.strSplit( ' test <delimteter>  test<delimteter>   test ', '<delimteter>' );
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var got = _.strSplit( 'a b c d' );
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'arguments as map';
+  test.case = 'arguments as map';
   var got = _.strSplit( { src : 'a,b,c,d', delimeter : ','  } );
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'delimeter as array';
+  test.case = 'delimeter as array';
   var got = _.strSplit( { src : 'a,b.c.d', delimeter : [ ',', '.' ]  } );
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
-  test.description = 'zero delimeter length';
+  test.case = 'zero delimeter length';
   var got = _.strSplit( { src : 'a,b.c.d', delimeter : []  } );
   var expected = [ 'a,b.c.d' ];
   test.identical( got,expected );
 
-  test.description = 'stripping off';
+  test.case = 'stripping off';
   var got = _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
   var expected = [ '    a', 'b', 'c', 'd   ' ];
   test.identical( got,expected );
 
   /* */
 
-  test.description = 'preserving delimeters, many delimeters, delimeter on the begin';
+  test.case = 'preserving delimeters, many delimeters, delimeter on the begin';
   var got = _.strSplit({ src : '.content', preservingDelimeters : 1, delimeter : [ '.','#' ] })
   var expected = [ '.','content' ];
   test.identical( got,expected );
 
-  test.description = 'preserving delimeters, many delimeters, delimeter on the end';
+  test.case = 'preserving delimeters, many delimeters, delimeter on the end';
   var got = _.strSplit({ src : 'content.', preservingDelimeters : 1, delimeter : [ '.','#' ] })
   var expected = [ 'content','.' ];
   test.identical( got,expected );
 
   /* */
 
-  test.description = 'many delimeters having common, preserving empty';
+  test.case = 'many delimeters having common, preserving empty';
   var src = 'Aa <<! <<- Bb';
   var expected = [ 'Aa',' ','','<<!','',' ','','<<-','',' ','Bb' ];
   var got = _.strSplit
@@ -2747,7 +2804,7 @@ function strSplit( test )
   });
 
   test.identical( got,expected );
-  test.description = 'many delimeters having common, removing empty';
+  test.case = 'many delimeters having common, removing empty';
   var src = 'Aa <<! <<- Bb';
   var expected = [ 'Aa',' ','<<!',' ','<<-',' ','Bb' ];
   var got = _.strSplit
@@ -2762,7 +2819,7 @@ function strSplit( test )
 
   /* */
 
-  test.description = 'having long common';
+  test.case = 'having long common';
   var src = 'Aa <<<- Bb';
   var expected = [ 'Aa',' ','','<<<-','',' ','Bb' ];
   var got = _.strSplit
@@ -2777,7 +2834,7 @@ function strSplit( test )
 
   /* */
 
-  test.description = 'having long common 2';
+  test.case = 'having long common 2';
   var src = 'a1 a2 a3 <<<- Bb';
   var expected = [ 'a1',' ','a2',' ','a3',' ','','<<<-','',' ','Bb' ];
   var got = _.strSplit
@@ -2816,7 +2873,7 @@ function strSplit( test )
 
   /**/
 
-  test.description = 'preservingEmpty';
+  test.case = 'preservingEmpty';
 
   var src = 'a ., b ., c ., d';
   var expected = [ 'a', '', 'b', '', 'c', '', 'd' ];
@@ -2867,7 +2924,7 @@ function strSplit( test )
 
   /* take into acount text inside " " */
 
-  test.description = 'take into acount text inside ""';
+  test.case = 'take into acount text inside ""';
 
   var o =
   {
@@ -2879,7 +2936,7 @@ function strSplit( test )
   var expected = [ '/path/with space/', '', 'a', '', 'b', '', 'c' ];
   test.identical( got, expected );
 
-  test.description = 'take into acount text inside ""';
+  test.case = 'take into acount text inside ""';
 
   var o =
   {
@@ -3060,49 +3117,49 @@ function strSplit( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strSplit( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strSplit( [  ] );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strSplit( 13 );
   } );
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strSplit( '1', '2', '3' );
   });
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strSplit( 123 );
   });
 
-  test.description = 'invalid option type';
+  test.case = 'invalid option type';
   test.shouldThrowError( function()
   {
     _.strSplit( { src : 3 } );
   });
 
-  test.description = 'invalid option defined';
+  test.case = 'invalid option defined';
   test.shouldThrowError( function()
   {
     _.strSplit( { src : 'word', delimeter : 0, left : 1 } );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strSplit();
@@ -3115,12 +3172,12 @@ function strSplit( test )
 function strSplitStrNumber( test )
 {
 
-  test.description = 'returns object with one property';
+  test.case = 'returns object with one property';
   var got = _.strSplitStrNumber( 'abcdef' );
   var expected = { str : 'abcdef' };
   test.identical( got, expected );
 
-  test.description = 'returns object with two properties';
+  test.case = 'returns object with two properties';
   var got = _.strSplitStrNumber( 'abc3def' );
   var expected = { str : 'abc', number : 3 };
   test.identical( got, expected );
@@ -3130,25 +3187,25 @@ function strSplitStrNumber( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strSplitStrNumber( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strSplitStrNumber( [  ] );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strSplitStrNumber( 13 );
   } );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
   test.shouldThrowError( function( )
   {
     _.strSplitStrNumber( 'abc3', 'redundant argument' );
@@ -3163,7 +3220,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'single delimeter';
+  test.case = 'single delimeter';
 
   /**/
 
@@ -3227,7 +3284,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'single delimeter, number';
+  test.case = 'single delimeter, number';
 
   /*!!!*/
 
@@ -3273,7 +3330,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'several delimeters';
+  test.case = 'several delimeters';
 
   /**/
 
@@ -3301,7 +3358,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'several delimeters, number';
+  test.case = 'several delimeters, number';
 
   /* empty delimeters array */
 
@@ -3341,7 +3398,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'one of delimeters contains other';
+  test.case = 'one of delimeters contains other';
 
   //
 
@@ -3375,7 +3432,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'single delimeter'
+  test.case = 'single delimeter'
 
   /* cut on first appear */
 
@@ -3403,7 +3460,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'multiple delimeter'
+  test.case = 'multiple delimeter'
 
   /**/
 
@@ -3437,7 +3494,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'options as map';
+  test.case = 'options as map';
 
   /**/
 
@@ -3453,7 +3510,7 @@ function strCutOffLeft( test )
 
   //
 
-  test.description = 'number option check';
+  test.case = 'number option check';
 
   /* number is zero */
 
@@ -3470,19 +3527,19 @@ function strCutOffLeft( test )
   if( !Config.debug )
   return;
 
-  test.description = 'single argument but object expected';
+  test.case = 'single argument but object expected';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffLeft( 'abc' );
   })
 
-  test.description = 'invalid option';
+  test.case = 'invalid option';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffLeft({ src : 'abc', delimeter : 'a', query : 'a' });
   })
 
-  test.description = 'changing of left option not allowed';
+  test.case = 'changing of left option not allowed';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
@@ -3498,7 +3555,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'single delimeter';
+  test.case = 'single delimeter';
 
   /**/
 
@@ -3562,7 +3619,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'single delimeter, number';
+  test.case = 'single delimeter, number';
 
   /*!!!*/
 
@@ -3608,7 +3665,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'several delimeters';
+  test.case = 'several delimeters';
 
   /**/
 
@@ -3636,7 +3693,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'several delimeters, number';
+  test.case = 'several delimeters, number';
 
   /* empty delimeters array */
 
@@ -3676,7 +3733,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'one of delimeters contains other';
+  test.case = 'one of delimeters contains other';
 
   //
 
@@ -3704,7 +3761,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'defaults'
+  test.case = 'defaults'
 
   /**/
 
@@ -3714,7 +3771,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'single delimeter'
+  test.case = 'single delimeter'
 
   /* cut on first appear */
 
@@ -3742,7 +3799,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'multiple delimeter'
+  test.case = 'multiple delimeter'
 
   /**/
 
@@ -3776,7 +3833,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'options as map';
+  test.case = 'options as map';
 
   /**/
 
@@ -3792,7 +3849,7 @@ function strCutOffRight( test )
 
   //
 
-  test.description = 'number option check';
+  test.case = 'number option check';
 
   /* number is zero */
 
@@ -3809,19 +3866,19 @@ function strCutOffRight( test )
   if( !Config.debug )
   return;
 
-  test.description = 'single argument but object expected';
+  test.case = 'single argument but object expected';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffRight( 'abc' );
   });
 
-  test.description = 'invalid option';
+  test.case = 'invalid option';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffRight({ src : 'abc', delimeter : 'a', query : 'a' });
   });
 
-  test.description = 'changing of left option not allowed';
+  test.case = 'changing of left option not allowed';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffRight({ src : 'abc', delimeter : 'a', left : 0 });
@@ -3835,7 +3892,7 @@ function strCutOffAllLeft( test )
 {
   var got, expected;
 
-  test.description = 'cut in most right position';
+  test.case = 'cut in most right position';
 
   /* nothing */
 
@@ -3878,13 +3935,13 @@ function strCutOffAllLeft( test )
   if( !Config.debug )
   return;
 
-  test.description = 'delimeter must be a String';
+  test.case = 'delimeter must be a String';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffAllLeft( 'jj', 1 );
   })
 
-  test.description = 'source must be a String';
+  test.case = 'source must be a String';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffAllLeft( 1, '1' );
@@ -3898,7 +3955,7 @@ function strCutOffAllRight( test )
 {
   var got, expected;
 
-  test.description = 'cut in most left position';
+  test.case = 'cut in most left position';
 
   /* nothing */
 
@@ -3941,13 +3998,13 @@ function strCutOffAllRight( test )
   if( !Config.debug )
   return;
 
-  test.description = 'delimeter must be a String';
+  test.case = 'delimeter must be a String';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffAllRight( 'jj', 1 );
   });
 
-  test.description = 'source must be a String';
+  test.case = 'source must be a String';
   test.shouldThrowErrorSync( function()
   {
     _.strCutOffAllRight( 1, '1' );
@@ -3960,32 +4017,32 @@ function strCutOffAllRight( test )
 function strStrip( test )
 {
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var got = _.strStrip( '\nabc  ' );
   var expected = 'abc';
   test.identical( got,expected );
 
-  test.description = 'arguments as map';
+  test.case = 'arguments as map';
   var got = _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } );
   var expected = 'b';
   test.identical( got,expected );
 
-  test.description = 'nothing to remove';
+  test.case = 'nothing to remove';
   var got = _.strStrip( 'test' );
   var expected = 'test';
   test.identical( got, expected );
 
-  test.description = 'removes whitespace from both ends of a string';
+  test.case = 'removes whitespace from both ends of a string';
   var got = _.strStrip( ' test ' );
   var expected = 'test';
   test.identical( got, expected );
 
-  test.description = 'Empty array';
+  test.case = 'Empty array';
   var got = _.strStrip( [] );
   var expected = [];
   test.identical( got, expected );
 
-  test.description = 'Array with single string';
+  test.case = 'Array with single string';
   var got = _.strStrip( [ '' ] );
   var expected = [ '' ];
   test.identical( got, expected );
@@ -3995,49 +4052,49 @@ function strStrip( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strStrip( '1', '2', '3' );
   });
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strStrip( 123 );
   });
 
-  test.description = 'invalid property type';
+  test.case = 'invalid property type';
   test.shouldThrowError( function()
   {
     _.strStrip( { src : ' word ', delimeter : 0 } );
   });
 
-  test.description = 'invalid property defined';
+  test.case = 'invalid property defined';
   test.shouldThrowError( function()
   {
     _.strStrip( { src : ' word ', delimeter : ' ', left : 1 } );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strStrip();
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strStrip( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strStrip( 13 );
   } );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
   test.shouldThrowError( function( )
   {
     _.strStrip( ' test ', 'redundant argument' );
@@ -4235,7 +4292,7 @@ function strStrip( test )
     var c = cases[ i ];
 
     if( c.description )
-    test.description = c.description;
+    test.case = c.description;
 
     if( c.err )
     test.shouldThrowError( () => _.strStrip.apply( _, _.arrayAs( c.args ) ) );
@@ -4260,37 +4317,37 @@ function strStrip( test )
 function strRemoveAllSpaces( test )
 {
 
-  test.description = 'removes the spaces from the given string';
+  test.case = 'removes the spaces from the given string';
   var got = _.strRemoveAllSpaces( 'a b c d e f' );
   var expected = 'abcdef';
   test.identical( got, expected );
 
-  test.description = 'replaces the all spaces with the commas';
+  test.case = 'replaces the all spaces with the commas';
   var got = _.strRemoveAllSpaces( 'a b c d e f', ',' );
   var expected = 'a,b,c,d,e,f';
   test.identical( got, expected );
 
-  test.description = 'simple string, default options';
+  test.case = 'simple string, default options';
   var got = _.strRemoveAllSpaces( 'a b c d e' );
   var expected = 'abcde';
   test.identical( got,expected );
 
-  test.description = 'sub defined';
+  test.case = 'sub defined';
   var got = _.strRemoveAllSpaces( 'a b c d e', ', ' );
   var expected = 'a, b, c, d, e';
   test.identical( got,expected );
 
-  test.description = 'empty string';
+  test.case = 'empty string';
   var got = _.strRemoveAllSpaces( ' ' );
   var expected = '';
   test.identical( got,expected );
 
-  test.description = 'sub as number';
+  test.case = 'sub as number';
   var got = _.strRemoveAllSpaces( 'a b c', 0 );
   var expected = 'a0b0c';
   test.identical( got,expected );
 
-  test.description = 'sub as array';
+  test.case = 'sub as array';
   var got = _.strRemoveAllSpaces( 'a b c d e', [ 5, 6 ] );
   var expected = 'a5,6b5,6c5,6d5,6e';
   test.identical( got,expected );
@@ -4300,43 +4357,43 @@ function strRemoveAllSpaces( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strRemoveAllSpaces( '1', '2', '3' );
   });
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strRemoveAllSpaces( 123 );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strRemoveAllSpaces();
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strRemoveAllSpaces( );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strRemoveAllSpaces( [  ] );
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strRemoveAllSpaces( 13 );
   } );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
   test.shouldThrowError( function( )
   {
     _.strRemoveAllSpaces( 'a b c d e f', ',', 'redundant argument' );
@@ -4349,22 +4406,22 @@ function strRemoveAllSpaces( test )
 function strStripEmptyLines( test )
 {
 
-  test.description = 'simple string';
+  test.case = 'simple string';
   var got = _.strStripEmptyLines( 'line_one\n\nline_two' );
   var expected = 'line_one\nline_two';
   test.identical( got,expected );
 
-  test.description = 'empty string';
+  test.case = 'empty string';
   var got = _.strStripEmptyLines( '' );
   var expected = '';
   test.identical( got,expected );
 
-  test.description = 'single line';
+  test.case = 'single line';
   var got = _.strStripEmptyLines( 'b' );
   var expected = 'b';
   test.identical( got,expected );
 
-  test.description = 'multiple breaklines';
+  test.case = 'multiple breaklines';
   var got = _.strStripEmptyLines( '\n\na\n\nb\n\n\n' );
   var expected = 'a\nb';
   test.identical( got,expected );
@@ -4374,19 +4431,19 @@ function strStripEmptyLines( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strStripEmptyLines( '1', '2', '3' );
   });
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strStripEmptyLines( 123 );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strStripEmptyLines();
@@ -4399,12 +4456,12 @@ function strStripEmptyLines( test )
 function strReplaceWords( test )
 {
 
-  test.description = 'simple string';
+  test.case = 'simple string';
   var got = _.strReplaceWords( 'a b c d',[ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = 'a x y d';
   test.identical( got,expected );
 
-  test.description = 'escaping string';
+  test.case = 'escaping string';
   var got = _.strReplaceWords( '\na b \n c d',[ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = '\na x \n y d';
   test.identical( got,expected );
@@ -4414,31 +4471,31 @@ function strReplaceWords( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strReplaceWords( '1', '2');
   });
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strReplaceWords( 123,[],[] );
   });
 
-  test.description = 'invalid arrays length';
+  test.case = 'invalid arrays length';
   test.shouldThrowError( function()
   {
     _.strReplaceWords( 'one two',[ 'one' ],[ 'one', 'two' ] );
   });
 
-  test.description = 'invalid second arg type';
+  test.case = 'invalid second arg type';
   test.shouldThrowError( function()
   {
     _.strReplaceWords( 'one two',5,[ 'one', 'two' ] );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strReplaceWords();
@@ -4451,32 +4508,32 @@ function strReplaceWords( test )
 function strJoin( test )
 {
 
-  test.description = 'join numbers';
+  test.case = 'join numbers';
   var got = _.strJoin( 1, 2, 3 );
   var expected = '123';
   test.identical( got,expected );
 
-  test.description = 'join array + string';
+  test.case = 'join array + string';
   var got = _.strJoin( [ 1, 2 ], '3' );
   var expected = [ '13', '23' ];
   test.identical( got,expected );
 
-  test.description = 'join two arrays';
+  test.case = 'join two arrays';
   var got = _.strJoin( [ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = [ 'bx', 'cy' ];
   test.identical( got,expected );
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   var got = _.strJoin( );
   var expected = '';
   test.identical( got,expected );
 
-  test.description = 'one argument';
+  test.case = 'one argument';
   var got = _.strJoin( '1' );
   var expected = '1';
   test.identical( got,expected );
 
-  test.description = 'different types';
+  test.case = 'different types';
   var got = _.strJoin( 1, '2', [ '3', 4 ], 5, '6' );
   var expected = [ "12356", "12456" ];
   test.identical( got,expected );
@@ -4486,13 +4543,13 @@ function strJoin( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid argument type';
+  test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
     _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
   });
 
-  test.description = 'arrays with different length';
+  test.case = 'arrays with different length';
   test.shouldThrowError( function()
   {
     _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
@@ -4506,52 +4563,52 @@ function strUnjoin( test )
 {
   var any = _.strUnjoin.any;
 
-  test.description = 'case 1';
+  test.case = 'case 1';
   var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', any, 'postfix' ] );
   var expected = [ "prefix", "_something_", "postfix" ];
   test.identical( got,expected );
 
-  test.description = 'case 2a';
+  test.case = 'case 2a';
   var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', 'postfix' ] );
   var expected = undefined;
   test.identical( got,expected );
 
-  test.description = 'case 2b';
+  test.case = 'case 2b';
   var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', any, 'postfix' ] );
   var expected = [ "prefix_", "something", '_', "postfix" ];
   test.identical( got,expected );
 
-  test.description = 'case 3a';
+  test.case = 'case 3a';
   var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', 'postfix', any ] );
   var expected = undefined;
   test.identical( got,expected );
 
-  test.description = 'case 3b';
+  test.case = 'case 3b';
   var got = _.strUnjoin( 'prefix_something_postfix', [ any, 'something', any, 'postfix', any ] );
   var expected = [ "prefix_","something","_", "postfix", "" ];
   test.identical( got,expected );
 
-  test.description = 'case 4';
+  test.case = 'case 4';
   var got = _.strUnjoin( 'abc', [ any ] );
   var expected = [ "abc" ];
   test.identical( got,expected );
 
-  test.description = 'case 5';
+  test.case = 'case 5';
   var got = _.strUnjoin( 'abc', [ 'a', any ] );
   var expected = [ "a", "bc" ];
   test.identical( got,expected );
 
-  test.description = 'case 6';
+  test.case = 'case 6';
   var got = _.strUnjoin( 'abc', [ 'b', any ] );
   var expected = undefined;
   test.identical( got,expected );
 
-  test.description = 'case 7';
+  test.case = 'case 7';
   var got = _.strUnjoin( 'abc', [ any, 'b' ] );
   var expected = undefined;
   test.identical( got,expected );
 
-  test.description = 'case 7';
+  test.case = 'case 7';
   var got = _.strUnjoin( 'abc', [ any, 'c' ] );
   var expected = [ "ab", "c" ];
   test.identical( got,expected );
@@ -4561,31 +4618,31 @@ function strUnjoin( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strUnjoin( '1', '2', '3' );
   });
 
-  test.description = 'invalid first argument type';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
     _.strUnjoin( 123, [] );
   });
 
-  test.description = 'invalid second arg type';
+  test.case = 'invalid second arg type';
   test.shouldThrowError( function()
   {
     _.strUnjoin( 'one two', 123 );
   });
 
-  test.description = 'invalid array element type';
+  test.case = 'invalid array element type';
   test.shouldThrowError( function()
   {
     _.strUnjoin( 'one two', [ 1, 'two' ] );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strUnjoin();
@@ -4598,17 +4655,17 @@ function strUnjoin( test )
 function strUnicodeEscape( test )
 {
 
-  test.description = 'simple string';
+  test.case = 'simple string';
   var got = _.strUnicodeEscape( 'prefix' );
   var expected = "\\u0070\\u0072\\u0065\\u0066\\u0069\\u0078";
   test.identical( got,expected );
 
-  test.description = 'escaping';
+  test.case = 'escaping';
   var got = _.strUnicodeEscape( '\npostfix//' );
   var expected = "\\u000a\\u0070\\u006f\\u0073\\u0074\\u0066\\u0069\\u0078\\u002f\\u002f";
   test.identical( got,expected );
 
-  test.description = 'empty string';
+  test.case = 'empty string';
   var got = _.strUnicodeEscape( '' );
   var expected = "";
   test.identical( got,expected );
@@ -4618,19 +4675,19 @@ function strUnicodeEscape( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strUnicodeEscape( '1', '2', '3' );
   });
 
-  test.description = 'invalid  argument type';
+  test.case = 'invalid  argument type';
   test.shouldThrowError( function()
   {
     _.strUnicodeEscape( 123 );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strUnicodeEscape();
@@ -4644,21 +4701,21 @@ function strLinesNumber( test )
 {
   var got,expected;
 
-  test.description = 'trivial';
+  test.case = 'trivial';
 
-  test.description = 'returns the object';
+  test.case = 'returns the object';
   var got = _.strLinesNumber( 'abc\ndef\nghi' );
   var expected = '1 : abc\n2 : def\n3 : ghi';
   test.identical( got, expected );
 
-  test.description = 'returns the object';
+  test.case = 'returns the object';
   var got = _.strLinesNumber( [] );
   var expected = '';
   test.identical( got, expected );
 
   //
 
-  test.description = 'string';
+  test.case = 'string';
 
   /**/
 
@@ -4708,7 +4765,7 @@ function strLinesNumber( test )
 
   //
 
-  test.description = 'array';
+  test.case = 'array';
 
   /**/
 
@@ -4745,25 +4802,25 @@ function strLinesNumber( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strLinesNumber();
   } );
 
-  test.description = 'argument is wrong';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strLinesNumber( 13 );
   } );
 
-  test.description = 'invalid  argument type';
+  test.case = 'invalid  argument type';
   test.shouldThrowError( function()
   {
     _.strLinesNumber( 123 );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strLinesNumber();
@@ -4776,22 +4833,22 @@ function strLinesNumber( test )
 function strCount( test )
 {
 
-  test.description = 'returns 2';
+  test.case = 'returns 2';
   var got = _.strCount( 'abc\ndef\nghi', '\n' );
   var expected = 2;
   test.identical( got, expected );
 
-  test.description = 'simple string';
+  test.case = 'simple string';
   var got = _.strCount( 'abaac','a' );
   var expected = 3;
   test.identical( got,expected );
 
-  test.description = 'empty src';
+  test.case = 'empty src';
   var got = _.strCount( '', 'a' );
   var expected = 0;
   test.identical( got,expected );
 
-  test.description = 'empty substring';
+  test.case = 'empty substring';
   var got = _.strCount( 'a', '' );
   var expected = 0;
   test.identical( got,expected );
@@ -4801,49 +4858,49 @@ function strCount( test )
   if( !Config.debug )
   return;
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strCount( );
   } );
 
-  test.description = 'first argument is wrong';
+  test.case = 'first argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strCount( [  ], '\n' );
   } );
 
-  test.description = 'second argument is wrong';
+  test.case = 'second argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strCount( 'abc\ndef\nghi', 13 );
   } );
 
-  test.description = 'not enough arguments';
+  test.case = 'not enough arguments';
   test.shouldThrowError( function( )
   {
     _.strCount( 'abc\ndef\nghi' );
   } );
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strCount( '1', '2', '3' );
   });
 
-  test.description = 'invalid first argument type';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
     _.strCount( 123, '1' );
   });
 
-  test.description = 'invalid second arg type';
+  test.case = 'invalid second arg type';
   test.shouldThrowError( function()
   {
     _.strCount( 'one two', 123 );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strCount();
@@ -4856,42 +4913,42 @@ function strCount( test )
 function strDup( test )
 {
 
-  test.description = 'concatenation test';
+  test.case = 'concatenation test';
   var got = _.strDup( 'a', 2 );
   var expected = 'aa';
   test.identical( got,expected );
 
-  test.description = 'invalid times value';
+  test.case = 'invalid times value';
   var got = _.strDup( 'a', -2 );
   var expected = '';
   test.identical( got,expected );
 
-  test.description = 'simple string';
+  test.case = 'simple string';
   var got = _.strDup( 'a', 2 );
   var expected = 'aa';
   test.identical( got,expected );
 
-  test.description = 'one space';
+  test.case = 'one space';
   var got = _.strDup( ' ', 2 );
   var expected = '  ';
   test.identical( got,expected );
 
-  test.description = 'zero times';
+  test.case = 'zero times';
   var got = _.strDup( 'a', 0 );
   var expected = '';
   test.identical( got,expected );
 
-  test.description = 'returns the empty string';
+  test.case = 'returns the empty string';
   var got = _.strDup( 'abc', 0 );
   var expected = '';
   test.identical( got, expected );
 
-  test.description = 'returns the first copy of the given string';
+  test.case = 'returns the first copy of the given string';
   var got = _.strDup( 'abc', 1 );
   var expected = 'abc';
   test.identical( got, expected );
 
-  test.description = 'copies and concatenates first argument three times';
+  test.case = 'copies and concatenates first argument three times';
   var got = _.strDup( 'abc', 3 );
   var expected = 'abcabcabc';
   test.identical( got, expected );
@@ -4901,67 +4958,67 @@ function strDup( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strDup( '1', '2', '3' );
   });
 
-  test.description = 'invalid first argument type';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
     _.strDup( 123, 1 );
   });
 
-  test.description = 'invalid second arg type';
+  test.case = 'invalid second arg type';
   test.shouldThrowError( function()
   {
     _.strDup( 'one', 'two'  );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strDup();
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
     _.strDup( );
   } );
 
-  test.description = 'second argument is wrong';
+  test.case = 'second argument is wrong';
   test.shouldThrowError( function( )
   {
     _.strDup( 'a', 'wrong argument' );
   } );
 
-  test.description = 'second argument is not provided';
+  test.case = 'second argument is not provided';
   test.shouldThrowError( function( )
   {
     _.strDup( 'a' );
   } );
 
-  test.description = 'invalid arguments count';
+  test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
     _.strDup( '1' );
   });
 
-  test.description = 'invalid first argument type';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
     _.strDup( 1,2 );
   });
 
-  test.description = 'invalid second argument type';
+  test.case = 'invalid second argument type';
   test.shouldThrowError( function()
   {
     _.strDup( '1', '2' );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strDup();
@@ -4974,52 +5031,52 @@ function strDup( test )
 function strShort( test )
 {
 
-  test.description = 'simple string';
+  test.case = 'simple string';
   var got = _.strShort( 'string', 4 );
   var expected = '\'st\' ... \'ng\'';
   test.identical( got,expected );
 
-  test.description = 'string with escaping';
+  test.case = 'string with escaping';
   var got = _.strShort( 's\ntring', 4 );
   var expected = '\'s\' ... \'ng\'';
   test.identical( got,expected );
 
-  test.description = 'limit 0';
+  test.case = 'limit 0';
   var got = _.strShort( 'string', 0 );
   var expected = 'string';
   test.identical( got,expected );
 
-  test.description = 'limit 1';
+  test.case = 'limit 1';
   var got = _.strShort( 'string', 1 );
   var expected = '\'s\'';
   test.identical( got,expected );
 
-  test.description = 'string wih spaces';
+  test.case = 'string wih spaces';
   var got = _.strShort( 'source and', 5 );
   var expected = '\'sou\' ... \'nd\'';
   test.identical( got,expected );
 
-  test.description = 'one argument call';
+  test.case = 'one argument call';
   var got = _.strShort( { src : 'string', limit : 4, wrap : "'" } );
   var expected = "'st' ... 'ng'";
   test.identical( got,expected );
 
-  test.description = 'string with whitespaces';
+  test.case = 'string with whitespaces';
   var got = _.strShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
   var expected = "'  ' ... '  '";
   test.identical( got,expected );
 
-  test.description = 'wrap 0';
+  test.case = 'wrap 0';
   var got = _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
   var expected = "si ... le";
   test.identical( got,expected );
 
-  test.description = 'escaping 0';
+  test.case = 'escaping 0';
   var got = _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
   var expected = '"si\x01" ... "le"';
   test.identical( got,expected );
 
-  test.description = 'escaping 1';
+  test.case = 'escaping 1';
   var got = _.strShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
   var expected = '"s" ... "ng"';
   test.identical( got,expected );
@@ -5029,25 +5086,25 @@ function strShort( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid first argument type';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
     _.strShort( 1, 5 );
   });
 
-  test.description = 'invalid second argument type';
+  test.case = 'invalid second argument type';
   test.shouldThrowError( function()
   {
     _.strShort( 'string', '0' );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strShort();
   });
 
-  test.description = 'unknown property provided';
+  test.case = 'unknown property provided';
   test.shouldThrowError( function()
   {
     _.strShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
@@ -5064,7 +5121,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'single line selection';
+  test.case = 'single line selection';
 
   /**/
 
@@ -5128,7 +5185,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'multiline selection';
+  test.case = 'multiline selection';
 
   /**/
 
@@ -5186,7 +5243,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'selection without range provided, selectMode : center';
+  test.case = 'selection without range provided, selectMode : center';
 
   /**/
 
@@ -5280,7 +5337,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'selection without range provided, selectMode : begin';
+  test.case = 'selection without range provided, selectMode : begin';
 
   /*two lines from begining of the string*/
 
@@ -5349,7 +5406,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'selection without range provided, selectMode : end';
+  test.case = 'selection without range provided, selectMode : end';
 
   /**/
 
@@ -5414,7 +5471,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'custom new line'
+  test.case = 'custom new line'
   var src2 = 'a b c d'
 
   /**/
@@ -5441,7 +5498,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'number'
+  test.case = 'number'
 
   /**/
 
@@ -5466,14 +5523,14 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'first line';
+  test.case = 'first line';
   var got = _.strLinesSelect( src, 1 );
   var expected = 'Lorem';
   test.identical( got,expected );
 
   //
 
-  test.description = 'first two lines';
+  test.case = 'first two lines';
   var got = _.strLinesSelect( src, 1, 3 );
   var expected =
   `Lorem
@@ -5482,7 +5539,7 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'range as array';
+  test.case = 'range as array';
   var got = _.strLinesSelect( src, [ 1, 3 ] );
   var expected =
   `Lorem
@@ -5491,7 +5548,7 @@ function strLinesSelect( test )
 
 
 
-  test.description = 'custom new line';
+  test.case = 'custom new line';
   var src2 ='Lorem||ipsum dolor||sit amet||consectetur'
   var got = _.strLinesSelect( { src : src2, range : [ 3, 5 ], zero : 1, delimteter : '||' } );
   var expected = `sit amet||consectetur`;
@@ -5499,21 +5556,21 @@ function strLinesSelect( test )
 
   //
 
-  test.description = 'empty line, out of range';
+  test.case = 'empty line, out of range';
   var got = _.strLinesSelect( { src : '', range : [ 1, 1 ] } );
   var expected = '';
   test.identical( got,expected );
 
   //
 
-  test.description = 'empty line';
+  test.case = 'empty line';
   var got = _.strLinesSelect( { src : '', range : [ 0, 1 ] } );
   var expected = '';
   test.identical( got,expected );
 
   //
 
-  test.description = 'incorrect range';
+  test.case = 'incorrect range';
   var got = _.strLinesSelect( { src :  src, range : [ 2, 1 ] } );
   var expected = '';
   test.identical( got,expected );
@@ -5523,25 +5580,25 @@ function strLinesSelect( test )
   if( !Config.debug )
   return;
 
-  test.description = 'invalid first argument type';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
     _.strLinesSelect( 1, 1 );
   });
 
-  test.description = 'invalid second argument type';
+  test.case = 'invalid second argument type';
   test.shouldThrowError( function()
   {
     _.strLinesSelect( 'lorem\nipsum\n', 'second'  );
   });
 
-  test.description = 'no arguments';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
     _.strLinesSelect( );
   });
 
-  test.description = 'unknown property provided';
+  test.case = 'unknown property provided';
   test.shouldThrowError( function()
   {
     _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], x : 1 } );
@@ -5553,27 +5610,27 @@ function strLinesSelect( test )
 
 function strCommonLeft( test )
 {
-  test.description = 'no args';
+  test.case = 'no args';
   var got = _.strCommonLeft( );
   var expected = '';
   test.identical( got, expected );
 
-  test.description = 'one argument';
+  test.case = 'one argument';
   var got = _.strCommonLeft( 'abc' );
   var expected = 'abc';
   test.identical( got, expected );
 
-  test.description = 'ins is empty string';
+  test.case = 'ins is empty string';
   var got = _.strCommonLeft( '', 'a', 'b' );
   var expected = '';
   test.identical( got, expected );
 
-  test.description = 'several strings';
+  test.case = 'several strings';
   var got = _.strCommonLeft( 'abc', 'abd', 'abc', 'ada' );
   var expected = 'a';
   test.identical( got, expected );
 
-  test.description = 'one string is empty';
+  test.case = 'one string is empty';
   var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
   var expected = '';
   test.identical( got, expected );
@@ -5581,7 +5638,7 @@ function strCommonLeft( test )
   if( !Config.debug )
   return;
 
-  test.description = 'ins is array';
+  test.case = 'ins is array';
   test.shouldThrowError( function( )
   {
     _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
@@ -5593,27 +5650,27 @@ function strCommonLeft( test )
 
 function strCommonRight( test )
 {
-  test.description = 'no args';
+  test.case = 'no args';
   var got = _.strCommonRight( );
   var expected = '';
   test.identical( got, expected );
 
-  test.description = 'one argument';
+  test.case = 'one argument';
   var got = _.strCommonRight( 'abc' );
   var expected = 'abc';
   test.identical( got, expected );
 
-  test.description = 'ins is empty string';
+  test.case = 'ins is empty string';
   var got = _.strCommonRight( '', 'a', 'b' );
   var expected = '';
   test.identical( got, expected );
 
-  test.description = 'several strings';
+  test.case = 'several strings';
   var got = _.strCommonRight( 'a', 'cba', 'dba', 'ada' );
   var expected = 'a';
   test.identical( got, expected );
 
-  test.description = 'one string is empty';
+  test.case = 'one string is empty';
   var got = _.strCommonRight( 'abc', '', 'abc', 'ada' );
   var expected = '';
   test.identical( got, expected );
@@ -5621,7 +5678,7 @@ function strCommonRight( test )
   if( !Config.debug )
   return;
 
-  test.description = 'ins is array';
+  test.case = 'ins is array';
   test.shouldThrowError( function( )
   {
     _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
@@ -5646,7 +5703,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'empty';
+  test.case = 'empty';
   var srcStr = '';
   var got = _.strExtractInlined( srcStr );
   var expected = [ '' ];
@@ -5654,7 +5711,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'without inlined text';
+  test.case = 'without inlined text';
   var srcStr = 'a';
   var got = _.strExtractInlined( srcStr );
   var expected = [ 'a' ];
@@ -5662,7 +5719,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'default options';
+  test.case = 'default options';
   var srcStr = 'ab#cd#ef';
   var got = _.strExtractInlined( srcStr );
   var expected = [ 'ab', [ 'cd' ], 'ef' ];
@@ -5670,7 +5727,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'trivial case';
+  test.case = 'trivial case';
   var srcStr = 'this #background:red#is#background:default# text and is not';
   var got = _.strExtractInlined({ src : srcStr, onInlined : onInlined,  });
   var expected =
@@ -5681,7 +5738,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'openning delimeter # does not have closing';
+  test.case = 'openning delimeter # does not have closing';
   var srcStr = 'this #background:red#is#background:default# text and # is not';
   var got = _.strExtractInlined({ src : srcStr, onInlined : onInlined,  });
   var expected =
@@ -5692,7 +5749,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'two inlined substrings is not in fact inlined';
+  test.case = 'two inlined substrings is not in fact inlined';
   var srcStr = '#simple # text #background:red#is#background:default# text and # is not#';
   var got = _.strExtractInlined({ src : srcStr, onInlined : onInlined,  });
   var expected =
@@ -5703,7 +5760,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'inlined at the beginning and false inlined';
+  test.case = 'inlined at the beginning and false inlined';
   var srcStr = '#background:red#i#s#background:default##text';
   var got = _.strExtractInlined({ src : srcStr, onInlined : onInlined,  });
   var expected =
@@ -5714,7 +5771,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'inlined at the beginning and the end';
+  test.case = 'inlined at the beginning and the end';
   var srcStr = '#background:red#i#s#background:default#';
   var got = _.strExtractInlined({ src : srcStr, onInlined : onInlined,  });
   var expected =
@@ -5725,7 +5782,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'inlined at the beginning and the end with preservingEmpty:0';
+  test.case = 'inlined at the beginning and the end with preservingEmpty:0';
   var srcStr = '#background:red#i#s#background:default#';
   var got = _.strExtractInlined({ src : srcStr, onInlined : onInlined, preservingEmpty : 0 });
   var expected =
@@ -5736,7 +5793,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'wrapped by inlined text';
+  test.case = 'wrapped by inlined text';
   var srcStr = '#background:red#text#background:default#';
   var got = _.strExtractInlined({ src : srcStr, onInlined : onInlined,  } );
   var expected =
@@ -5747,7 +5804,7 @@ function strExtractInlined( test )
 
   /* */ //
 
-  test.description = 'preservingEmpty:0, no empty';
+  test.case = 'preservingEmpty:0, no empty';
   var srcStr = '#inline1#ordinary#inline2#';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
@@ -5758,7 +5815,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, empty left';
+  test.case = 'preservingEmpty:0, empty left';
   var srcStr = '##ordinary#inline2#';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
@@ -5769,7 +5826,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, empty right';
+  test.case = 'preservingEmpty:0, empty right';
   var srcStr = '#inline1#ordinary##';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
@@ -5780,7 +5837,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, empty middle';
+  test.case = 'preservingEmpty:0, empty middle';
   var srcStr = '#inline1##inline2#';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
@@ -5791,7 +5848,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, empty all';
+  test.case = 'preservingEmpty:0, empty all';
   var srcStr = '####';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
   var expected = [ [ '' ],[ '' ] ];
@@ -5799,7 +5856,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, empty all';
+  test.case = 'preservingEmpty:0, empty all';
   var srcStr = '';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
   var expected = [];
@@ -5807,7 +5864,7 @@ function strExtractInlined( test )
 
   /* */ //
 
-  test.description = 'preservingEmpty:0, onInlined:null no empty';
+  test.case = 'preservingEmpty:0, onInlined:null no empty';
   var srcStr = '#inline1#ordinary#inline2#';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
@@ -5818,7 +5875,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, onInlined:null, empty left';
+  test.case = 'preservingEmpty:0, onInlined:null, empty left';
   var srcStr = '##ordinary#inline2#';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
@@ -5829,7 +5886,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, onInlined:null, empty right';
+  test.case = 'preservingEmpty:0, onInlined:null, empty right';
   var srcStr = '#inline1#ordinary##';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
@@ -5840,7 +5897,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, onInlined:null, empty middle';
+  test.case = 'preservingEmpty:0, onInlined:null, empty middle';
   var srcStr = '#inline1##inline2#';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
@@ -5851,7 +5908,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, onInlined:null, empty all';
+  test.case = 'preservingEmpty:0, onInlined:null, empty all';
   var srcStr = '####';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected = [];
@@ -5859,7 +5916,7 @@ function strExtractInlined( test )
 
   /* */
 
-  test.description = 'preservingEmpty:0, onInlined:null, empty all';
+  test.case = 'preservingEmpty:0, onInlined:null, empty all';
   var srcStr = '';
   var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected = [];
@@ -5870,7 +5927,7 @@ function strExtractInlined( test )
   if( !Config.debug )
   return;
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
   test.shouldThrowError( () => { debugger; _.strExtractInlined( '',{},'' ) } );
 
 }
@@ -5881,7 +5938,7 @@ function strExtractInlinedStereo( test )
 {
   var got,expected;
 
-  test.description = 'default';
+  test.case = 'default';
 
   /* nothing */
 
@@ -5899,7 +5956,7 @@ function strExtractInlinedStereo( test )
 
   //
 
-  test.description = 'with options';
+  test.case = 'with options';
 
   /* pre/post are same*/
 

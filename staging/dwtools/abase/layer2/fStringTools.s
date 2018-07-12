@@ -662,7 +662,7 @@ function strQuote( o )
 strQuote.defaults =
 {
   src : null,
-  quote : '\'',
+  quote : '"',
 }
 
 // --

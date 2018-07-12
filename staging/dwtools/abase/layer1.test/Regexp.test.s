@@ -41,7 +41,7 @@ function regexpsAreIdentical( test )
 
   /* */
 
-  test.description = 'null';
+  test.case = 'null';
 
   var expected = false;
   var got = _.regexpsAreIdentical( null, null );
@@ -49,7 +49,7 @@ function regexpsAreIdentical( test )
 
   /* */
 
-  test.description = 'null and regexp';
+  test.case = 'null and regexp';
 
   var expected = false;
   var got = _.regexpsAreIdentical( /x/, null );
@@ -57,7 +57,7 @@ function regexpsAreIdentical( test )
 
   /* */
 
-  test.description = 'same string';
+  test.case = 'same string';
 
   var expected = false;
   var got = _.regexpsAreIdentical( 'x','x' );
@@ -65,28 +65,28 @@ function regexpsAreIdentical( test )
 
   /* */
 
-  test.description = 'same regexp';
+  test.case = 'same regexp';
   var expected = true;
   var got = _.regexpsAreIdentical( /abc/iy, /abc/yi );
   test.identical( got, expected );
 
   /* */
 
-  test.description = 'not identical regexp, different flags';
+  test.case = 'not identical regexp, different flags';
   var expected = false;
   var got = _.regexpsAreIdentical( /abc/i, /abc/ );
   test.identical( got, expected );
 
   /* */
 
-  test.description = 'not identical regexp, different source';
+  test.case = 'not identical regexp, different source';
   var expected = false;
   var got = _.regexpsAreIdentical( /abcd/i, /abc/i );
   test.identical( got, expected );
 
   /* */
 
-  test.description = 'not identical regexp';
+  test.case = 'not identical regexp';
   var expected = false;
   var got = _.regexpsAreIdentical( /abcd/y, /abc/i );
   test.identical( got, expected );
@@ -96,11 +96,11 @@ function regexpsAreIdentical( test )
   if( !Config.debug )
   return;
 
-  test.description = 'none argument';
+  test.case = 'none argument';
 
   test.shouldThrowErrorSync( () => _.regexpsAreIdentical() );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
 
   test.shouldThrowErrorSync( () => _.regexpsAreIdentical( /abc/i, /def/i, /a/i ) );
 
@@ -114,7 +114,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'empty';
+  test.case = 'empty';
 
   var expected =
   {
@@ -126,7 +126,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'single string';
+  test.case = 'single string';
 
   var r1 = 'abc';
   var expected =
@@ -139,7 +139,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'single regexp';
+  test.case = 'single regexp';
 
   var r1 = /abc/i;
   var expected =
@@ -152,7 +152,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'all strings';
+  test.case = 'all strings';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -167,7 +167,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'strings with regexps';
+  test.case = 'strings with regexps';
 
   var r1 = 'abc';
   var r2 = /def/;
@@ -182,7 +182,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'strings with regexps and flags i';
+  test.case = 'strings with regexps and flags i';
 
   var r1 = 'abc';
   var r2 = /def/i;
@@ -197,7 +197,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'strings with regexps and flags iy';
+  test.case = 'strings with regexps and flags iy';
 
   var r1 = /abc/iy;
   var r2 = 'def';
@@ -212,7 +212,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'empty in map';
+  test.case = 'empty in map';
 
   var expected =
   {
@@ -229,7 +229,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'strings with regexps and flags iy in map';
+  test.case = 'strings with regexps and flags iy in map';
 
   var r1 = /abc/iy;
   var r2 = 'def';
@@ -249,7 +249,7 @@ function regexpsSources( test )
 
   /* */
 
-  test.description = 'options map with flags';
+  test.case = 'options map with flags';
 
   var r1 = /abc/i;
   var r2 = 'def';
@@ -273,19 +273,19 @@ function regexpsSources( test )
   if( !Config.debug )
   return;
 
-  test.description = 'none argument';
+  test.case = 'none argument';
 
   test.shouldThrowErrorSync( () => _.regexpsSources() );
 
-  test.description = 'strings with different flags';
+  test.case = 'strings with different flags';
 
   test.shouldThrowErrorSync( () => _.regexpsSources([ /abc/i, /def/iy ]) );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
 
   test.shouldThrowErrorSync( () => _.regexpsSources( 'ab', 'cd' ) );
 
-  test.description = 'different flags in map';
+  test.case = 'different flags in map';
 
   test.shouldThrowErrorSync( () => _.regexpsSources({ sources : [ /abc/i ], flags : 'y' }) );
 
@@ -299,7 +299,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'empty';
+  test.case = 'empty';
 
   var expected = new RegExp( '','' );
   var got = _.regexpsJoin([]);
@@ -307,7 +307,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'single string';
+  test.case = 'single string';
 
   var r1 = 'abc';
   var expected = /abc/;
@@ -316,7 +316,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'single regexp';
+  test.case = 'single regexp';
 
   var r1 = /abc/i;
   var expected = /abc/i;
@@ -326,7 +326,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'all strings';
+  test.case = 'all strings';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -337,7 +337,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'strings with regexps';
+  test.case = 'strings with regexps';
 
   var r1 = 'abc';
   var r2 = /def/;
@@ -348,7 +348,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'strings with regexps and flags i';
+  test.case = 'strings with regexps and flags i';
 
   var r1 = 'abc';
   var r2 = /def/i;
@@ -359,7 +359,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'strings with regexps and flags iy';
+  test.case = 'strings with regexps and flags iy';
 
   var r1 = /abc/iy;
   var r2 = 'def';
@@ -370,7 +370,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'empty in map';
+  test.case = 'empty in map';
 
   var o =
   {
@@ -383,7 +383,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'strings with regexps and flags iy in map';
+  test.case = 'strings with regexps and flags iy in map';
 
   var r1 = /abc/iy;
   var r2 = 'def';
@@ -398,7 +398,7 @@ function regexpsJoin( test )
 
   /* */
 
-  test.description = 'options map with flags';
+  test.case = 'options map with flags';
 
   var r1 = /abc/i;
   var r2 = 'def';
@@ -417,19 +417,19 @@ function regexpsJoin( test )
   if( !Config.debug )
   return;
 
-  test.description = 'none argument';
+  test.case = 'none argument';
 
   test.shouldThrowErrorSync( () => _.regexpsJoin() );
 
-  test.description = 'strings with different flags';
+  test.case = 'strings with different flags';
 
   test.shouldThrowErrorSync( () => _.regexpsJoin([ /abc/i, /def/iy ]) );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
 
   test.shouldThrowErrorSync( () => _.regexpsJoin( 'ab', 'cd' ) );
 
-  test.description = 'different flags in map';
+  test.case = 'different flags in map';
 
   test.shouldThrowErrorSync( () => _.regexpsJoin({ sources : [ /abc/i ], flags : 'y' }) );
 
@@ -441,13 +441,13 @@ function regexpsAtLeastFirst( test )
 {
   var context = this;
 
-  test.description = 'empty';
+  test.case = 'empty';
 
   var expected = new RegExp( '' );
   var got = _.regexpsAtLeastFirst([]);
   test.identical( got, expected );
 
-  test.description = 'single regexp';
+  test.case = 'single regexp';
 
   var r1 = /.+/i;
   var expected = /.+/i;
@@ -455,7 +455,7 @@ function regexpsAtLeastFirst( test )
   test.identical( got, expected );
   test.is( got === r1 );
 
-  test.description = 'strings';
+  test.case = 'strings';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -463,7 +463,7 @@ function regexpsAtLeastFirst( test )
   var got = _.regexpsAtLeastFirst([ r1, r2 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps';
+  test.case = 'strings and regexps';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -472,7 +472,7 @@ function regexpsAtLeastFirst( test )
   var got = _.regexpsAtLeastFirst([ r1, r2, r3 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps and flags';
+  test.case = 'strings and regexps and flags';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -486,19 +486,19 @@ function regexpsAtLeastFirst( test )
   if( !Config.debug )
   return;
 
-  test.description = 'none argument';
+  test.case = 'none argument';
 
   test.shouldThrowErrorSync( () => _.regexpsAtLeastFirst() );
 
-  test.description = 'strings with different flags';
+  test.case = 'strings with different flags';
 
   test.shouldThrowErrorSync( () => _.regexpsAtLeastFirst([ /abc/i, /def/iy ]) );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
 
   test.shouldThrowErrorSync( () => _.regexpsAtLeastFirst( 'ab', 'cd' ) );
 
-  test.description = 'different flags in map';
+  test.case = 'different flags in map';
 
   test.shouldThrowErrorSync( () => _.regexpsAtLeastFirst({ sources : [ /abc/i ], flags : 'y' }) );
 
@@ -510,13 +510,13 @@ function regexpsNone( test )
 {
   var context = this;
 
-  test.description = 'empty';
+  test.case = 'empty';
 
   var expected = /^(?:(?!(?:)).)+$/;
   var got = _.regexpsNone([]);
   test.identical( got, expected );
 
-  test.description = 'single regexp';
+  test.case = 'single regexp';
 
   var r1 = /.+/i;
   var expected = /^(?:(?!(?:.+)).)+$/i;
@@ -524,7 +524,7 @@ function regexpsNone( test )
   test.identical( got, expected );
   test.is( got !== r1 );
 
-  test.description = 'strings';
+  test.case = 'strings';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -532,7 +532,7 @@ function regexpsNone( test )
   var got = _.regexpsNone([ r1, r2 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps';
+  test.case = 'strings and regexps';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -541,7 +541,7 @@ function regexpsNone( test )
   var got = _.regexpsNone([ r1, r2, r3 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps and flags';
+  test.case = 'strings and regexps and flags';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -555,19 +555,19 @@ function regexpsNone( test )
   if( !Config.debug )
   return;
 
-  test.description = 'none argument';
+  test.case = 'none argument';
 
   test.shouldThrowErrorSync( () => _.regexpsNone() );
 
-  test.description = 'strings with different flags';
+  test.case = 'strings with different flags';
 
   test.shouldThrowErrorSync( () => _.regexpsNone([ /abc/i, /def/iy ]) );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
 
   test.shouldThrowErrorSync( () => _.regexpsNone( 'ab', 'cd' ) );
 
-  test.description = 'different flags in map';
+  test.case = 'different flags in map';
 
   test.shouldThrowErrorSync( () => _.regexpsNone({ sources : [ /abc/i ], flags : 'y' }) );
 
@@ -579,13 +579,13 @@ function regexpsAny( test )
 {
   var context = this;
 
-  test.description = 'empty';
+  test.case = 'empty';
 
   var expected = /(?:)/;
   var got = _.regexpsAny([]);
   test.identical( got, expected );
 
-  test.description = 'single regexp';
+  test.case = 'single regexp';
 
   var r1 = /.+/i;
   var expected = /.+/i;
@@ -593,7 +593,7 @@ function regexpsAny( test )
   test.identical( got, expected );
   test.is( got === r1 );
 
-  test.description = 'strings';
+  test.case = 'strings';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -601,7 +601,7 @@ function regexpsAny( test )
   var got = _.regexpsAny([ r1, r2 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps';
+  test.case = 'strings and regexps';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -610,7 +610,7 @@ function regexpsAny( test )
   var got = _.regexpsAny([ r1, r2, r3 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps and flags';
+  test.case = 'strings and regexps and flags';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -624,19 +624,19 @@ function regexpsAny( test )
   if( !Config.debug )
   return;
 
-  test.description = 'none argument';
+  test.case = 'none argument';
 
   test.shouldThrowErrorSync( () => _.regexpsAny() );
 
-  test.description = 'strings with different flags';
+  test.case = 'strings with different flags';
 
   test.shouldThrowErrorSync( () => _.regexpsAny([ /abc/i, /def/iy ]) );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
 
   test.shouldThrowErrorSync( () => _.regexpsAny( 'ab', 'cd' ) );
 
-  test.description = 'different flags in map';
+  test.case = 'different flags in map';
 
   test.shouldThrowErrorSync( () => _.regexpsAny({ sources : [ /abc/i ], flags : 'y' }) );
 
@@ -648,13 +648,13 @@ function regexpsAll( test )
 {
   var context = this;
 
-  test.description = 'empty';
+  test.case = 'empty';
 
   var expected = new RegExp( '' );
   var got = _.regexpsAll([]);
   test.identical( got, expected );
 
-  test.description = 'single regexp';
+  test.case = 'single regexp';
 
   var r1 = /.+/i;
   var expected = /.+/i;
@@ -662,7 +662,7 @@ function regexpsAll( test )
   test.identical( got, expected );
   test.is( got === r1 );
 
-  test.description = 'strings';
+  test.case = 'strings';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -670,7 +670,7 @@ function regexpsAll( test )
   var got = _.regexpsAll([ r1, r2 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps';
+  test.case = 'strings and regexps';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -679,7 +679,7 @@ function regexpsAll( test )
   var got = _.regexpsAll([ r1, r2, r3 ]);
   test.identical( got, expected );
 
-  test.description = 'strings and regexps and flags';
+  test.case = 'strings and regexps and flags';
 
   var r1 = 'abc';
   var r2 = 'def';
@@ -693,19 +693,19 @@ function regexpsAll( test )
   if( !Config.debug )
   return;
 
-  test.description = 'none argument';
+  test.case = 'none argument';
 
   test.shouldThrowErrorSync( () => _.regexpsAll() );
 
-  test.description = 'strings with different flags';
+  test.case = 'strings with different flags';
 
   test.shouldThrowErrorSync( () => _.regexpsAll([ /abc/i, /def/iy ]) );
 
-  test.description = 'too many arguments';
+  test.case = 'too many arguments';
 
   test.shouldThrowErrorSync( () => _.regexpsAll( 'ab', 'cd' ) );
 
-  test.description = 'different flags in map';
+  test.case = 'different flags in map';
 
   test.shouldThrowErrorSync( () => _.regexpsAll({ sources : [ /abc/i ], flags : 'y' }) );
 

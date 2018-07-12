@@ -60,7 +60,7 @@ function objectLike( t )
 
 function promiseIs( test )
 {
-  test.description = 'check if entity is a Promise';
+  test.case = 'check if entity is a Promise';
 
   test.is( !_.promiseIs() );
   test.is( !_.promiseIs( {} ) );
@@ -78,7 +78,7 @@ function promiseIs( test )
 
 function consequenceLike( test )
 {
-  test.description = 'check if entity is a consequenceLike';
+  test.case = 'check if entity is a consequenceLike';
 
   if( !_.consequenceLike )
   return test.identical( true,true );

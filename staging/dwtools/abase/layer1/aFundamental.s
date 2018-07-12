@@ -5842,7 +5842,7 @@ function timeSpent( description,time )
   if( arguments.length === 1 )
   {
     time = arguments[ 0 ];
-    description = 'Spent';
+    description = 'Spent ';
   }
 
   _.assert( 1 <= arguments.length && arguments.length <= 2 );
@@ -5850,7 +5850,9 @@ function timeSpent( description,time )
   _.assert( _.strIs( description ) );
 
   if( description && description !== ' ' )
-  description = description + ' : ';
+  description = description;
+
+  debugger;
 
   var result = description + ( 0.001*( now-time ) ).toFixed( 3 ) + 's';
 

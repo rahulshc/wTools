@@ -38,7 +38,7 @@ function strBeginOf( test )
 
   //
 
-  test.description = 'strBeginOf';
+  test.case = 'strBeginOf';
 
   /**/
 
@@ -136,7 +136,7 @@ function strEndOf( test )
 
   //
 
-  test.description = 'strEndOf';
+  test.case = 'strEndOf';
 
   /**/
 
@@ -235,7 +235,7 @@ function strInbetweenOf( test )
 
   //
 
-  test.description = 'strInbetweenOf';
+  test.case = 'strInbetweenOf';
 
   /**/
 
@@ -304,7 +304,7 @@ function strBegins( test )
 
   //
 
-  test.description = 'strBegins';
+  test.case = 'strBegins';
 
   /**/
 
@@ -389,7 +389,7 @@ function strEnds( test )
 
   //
 
-  test.description = 'strEnds';
+  test.case = 'strEnds';
 
   /**/
 
