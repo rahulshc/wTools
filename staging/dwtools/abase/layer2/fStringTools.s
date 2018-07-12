@@ -645,6 +645,7 @@ strShort.defaults =
 
 function strQuote( o )
 {
+
   if( !_.mapIs( o ) )
   o = { src : o };
 
@@ -653,6 +654,15 @@ function strQuote( o )
 
   _.assertMapHasOnly( o,strQuote.defaults );
   _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( _.strIs( o.src ) || _.numberIs( o.src ) || _.arrayIs( o.src ) );
+
+  if( _.arrayIs( o.src ) )
+  {
+    var result = [];
+    for( var s = 0 ; s < o.src.length ; s++ )
+    result.push( _.strQuote( o.src[ s ] ) );
+    return result;
+  }
 
   var result = o.quote + String( o.src ) + o.quote;
 

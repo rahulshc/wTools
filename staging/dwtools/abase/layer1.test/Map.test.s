@@ -174,15 +174,6 @@ function mapExtendConditional( test )
 
 //
 
-  // /* */
-  //
-  // test.open( 'delimeter:" "' );
-  //
-  // test.case = ' space at the beginning'; /**/
-  // var got = _.strSplit2( ' aa b#b cc', ' ' );
-  // var expected = [ '', '', 'aa', '', 'b#b', '', 'cc' ];
-  // test.identical( got, expected );
-
 function mapExtend( test )
 {
 
@@ -407,6 +398,7 @@ function mapExtend( test )
 
   /**/
 
+  return;
   if( !Config.debug )
   return;
 

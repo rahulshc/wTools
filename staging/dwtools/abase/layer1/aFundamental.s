@@ -3511,8 +3511,8 @@ function assertRoutineOptions( routine,args,defaults )
   _.assert( _.objectIs( options ),'expects object' );
   _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
 
-  _.assertMapHasOnly( options,defaults );
-  _.assertMapHasAll( options,defaults );
+  _.assertMapHasOnly( options, defaults );
+  _.assertMapHasAll( options, defaults );
   _.assertMapHasNoUndefine( options );
 
   return options;
@@ -5854,7 +5854,21 @@ function timeSpent( description,time )
 
   debugger;
 
-  var result = description + ( 0.001*( now-time ) ).toFixed( 3 ) + 's';
+  var result = _.timeSpentFormat( now-time );
+
+  return result;
+}
+
+//
+
+function timeSpentFormat( spent )
+{
+  var now = _.timeNow();
+
+  _.assert( 1 === arguments.length );
+  _.assert( _.numberIs( spent ) );
+
+  var result = ( 0.001*( spent ) ).toFixed( 3 ) + 's';
 
   return result;
 }
@@ -17134,6 +17148,7 @@ var Routines =
 
   timeFrom : timeFrom,
   timeSpent : timeSpent,
+  timeSpentFormat : timeSpentFormat,
   dateToStr : dateToStr,
 
   // buffer

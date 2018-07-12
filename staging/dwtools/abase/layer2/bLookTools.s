@@ -2410,10 +2410,10 @@ function entityDiffDescription( o )
 
     _.assert( arguments.length === 1 );
 
-    if( !_.primitiveIs( o.src1 ) )
+    // if( !_.primitiveIs( o.src1 ) )
     o.src1 = _.toStr( _.entitySelect( o.src1, dir ) );
 
-    if( !_.primitiveIs( o.src2 ) )
+    // if( !_.primitiveIs( o.src2 ) )
     o.src2 = _.toStr( _.entitySelect( o.src2, dir ) );
 
     if( o.path !== '/' )
