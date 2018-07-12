@@ -3536,8 +3536,11 @@ function routineOptionsWithUndefines( routine, args, defaults )
   _.assert( _.objectIs( options ),'expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
 
-  _.assertMapHasOnlyWithUndefines( options, defaults );
-  _.mapComplementWithUndefines( options, defaults );
+  _.assertMapHasOnly( options, defaults );
+  _.mapComplement( options, defaults );
+
+  // _.assertMapHasOnlyWithUndefines( options, defaults );
+  // _.mapComplementWithUndefines( options, defaults );
 
   return options;
 }
@@ -3558,8 +3561,11 @@ function assertRoutineOptionsWithUndefines( routine, args, defaults )
   _.assert( _.objectIs( options ),'expects object' );
   _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
 
-  _.assertMapHasOnlyWithUndefines( options,defaults );
-  _.assertMapHasAllWithUndefines( options,defaults );
+  // _.assertMapHasOnlyWithUndefines( options,defaults );
+  // _.assertMapHasAllWithUndefines( options,defaults );
+
+  _.assertMapHasOnly( options,defaults );
+  _.assertMapHasAll( options,defaults );
 
   return options;
 }
@@ -3673,7 +3679,7 @@ function routineVectorize_functor( o )
   routine = function methodCall()
   {
     debugger;
-    return this[ routineName ].apply( this,arguments );
+    return this[ routineName ].apply( this, arguments );
   }
 
   _.assert( routineIs( routine ) );
@@ -3715,17 +3721,21 @@ function routineVectorize_functor( o )
   function vectorize( src )
   {
 
-    _.assert( arguments.length === 1, 'expects single argument' );
+    // _.assert( arguments.length === 1, 'expects single argument' );
 
     if( _.arrayLike( src ) )
     {
+      var args = _.arraySlice( arguments );
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
-      result[ r ] = routine.call( this,src[ r ] );
+      {
+        args[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args );
+      }
       return result;
     }
 
-    return routine.call( this,src );
+    return routine.apply( this, arguments );
   }
 
   /* */
@@ -3733,24 +3743,29 @@ function routineVectorize_functor( o )
   function vectorizeMapAndArray( src )
   {
 
-    _.assert( arguments.length === 1, 'expects single argument' );
+    // _.assert( arguments.length === 1, 'expects single argument' );
 
-    if( vectorizingArray )
-    if( _.arrayLike( src ) )
+    if( vectorizingArray && _.arrayLike( src ) )
     {
+      var args = _.arraySlice( arguments );
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
-      result[ r ] = routine.call( this,src[ r ] );
+      {
+        args[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args );
+      }
       return result;
     }
-
-    if( vectorizingMap )
-    if( _.mapIs( src ) )
+    else if( vectorizingMap && _.mapIs( src ) )
     {
+      var args = _.arraySlice( arguments );
       debugger;
       var result = Object.create( null );
       for( var r in src )
-      result[ r ] = routine.call( this,src[ r ] );
+      {
+        args[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args );
+      }
       return result;
     }
 
@@ -3764,28 +3779,43 @@ function routineVectorize_functor( o )
     debugger;
 
     _.assert( arguments.length === 1, 'expects single argument' );
+      {
+        args[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args );
+      }
 
-    if( vectorizingArray )
-    if( _.arrayLike( src ) )
+    if( vectorizingArray && _.arrayLike( src ) )
     {
+      var args = _.arraySlice( arguments );
       var result = [];
+      xxx
       for( var r = 0 ; r < src.length ; r++ )
-      if( fieldFilter( src[ r ],r,src ) )
-      result.push( routine.call( this,src[ r ] ) );
-      else if( bypassingFilteredOut )
-      result.push( src[ r ] );
+      {
+        if( fieldFilter( src[ r ],r,src ) )
+        {
+          args[ 0 ] = src[ r ];
+          result.push( routine.apply( this,args ) );
+        }
+        else if( bypassingFilteredOut )
+        result.push( src[ r ] );
+      }
       return result;
     }
-
-    if( vectorizingMap )
-    if( _.mapIs( src ) )
+    else if( vectorizingMap && _.mapIs( src ) )
     {
+      var args = _.arraySlice( arguments );
       var result = Object.create( null );
+      xxx
       for( var r in src )
-      if( fieldFilter( src[ r ],r,src ) )
-      result[ r ] = routine.call( this,src[ r ] );
-      else if( bypassingFilteredOut )
-      result[ r ] = src[ r ];
+      {
+        if( fieldFilter( src[ r ],r,src ) )
+        {
+          args[ 0 ] = src[ r ];
+          result[ r ] = routine.apply( this, args );
+        }
+        else if( bypassingFilteredOut )
+        result[ r ] = src[ r ];
+      }
       return result;
     }
 
@@ -16299,21 +16329,21 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
   return;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
   var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
+  // var hasMsg = _.strIs( arguments[ l-1 ] );
   // var screenMaps = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
   var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
-    if( _.strJoin && !hasMsg )
+    if( _.strJoin && !msg )
     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ', but, ' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] + '\n' : '', 'Object should have no fields :',but.join( ',' ) ],
+      args : [ msg ? _.strConcat( msg ) + '\n' : '', 'Object should have no fields :', but.join( ',' ) ],
       level : 2,
     });
   }
@@ -16377,7 +16407,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
   return;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
   // var l = arguments.length;
   // var hasMsg = _.strIs( arguments[ l-1 ] );
@@ -16385,17 +16415,18 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
   // var but = Object.keys( _.mapOwnBut.apply( this,args ) );
 
   var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
+  // var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
-    if( _.strJoin && !hasMsg )
+    if( _.strJoin && !msg )
     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
+      args : [ msg ? _.strConcat( msg ) + '\n' : '', 'Object should own no fields :', but.join( ',' ) ],
+      // args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
       level : 2,
     });
   }
@@ -16403,34 +16434,34 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
 }
 
 //
-
-function assertMapHasOnlyWithUndefines( srcMap, screenMaps, msg )
-{
-
-  if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  // var screenMaps = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
-  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
-
-  if( but.length > 0 )
-  {
-    if( _.strJoin && !hasMsg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
+//
+// function assertMapHasOnlyWithUndefines( srcMap, screenMaps, msg )
+// {
+//
+//   if( Config.debug === false )
+//   return;
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+//   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   // var screenMaps = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
+//   var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
+//
+//   if( but.length > 0 )
+//   {
+//     if( _.strJoin && !hasMsg )
+//     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
 
 //
 
@@ -16487,10 +16518,10 @@ function assertMapHasNone( srcMap, screenMaps, msg )
   return;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
   var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
+  // var hasMsg = _.strIs( arguments[ l-1 ] );
   // var screens = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
   var none = _.mapOnly( srcMap, screenMaps );
 
@@ -16500,7 +16531,8 @@ function assertMapHasNone( srcMap, screenMaps, msg )
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
+      args : [ msg ? _.strConcat( msg ) + '\n' : '', 'Object should have no fields :', but.join( ',' ) ],
+      // args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
       level : 2,
     });
   }
@@ -16688,31 +16720,31 @@ function assertMapOwnAll( srcMap, all, msg )
 }
 
 //
-
-function assertMapHasAllWithUndefines( srcMap, all, msg )
-{
-
-  if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  var but = Object.keys( _.mapBut( all, srcMap ) );
-
-  if( but.length > 0 )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have all fields :',but.join( ',' ) ],
-      level : 2,
-    });
-  }
-
-}
+//
+// function assertMapHasAllWithUndefines( srcMap, all, msg )
+// {
+//
+//   if( Config.debug === false )
+//   return;
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+//   _.assert( arguments.length === 2 || _.strIs( msg ) );
+//
+//   var l = arguments.length;
+//   var hasMsg = _.strIs( arguments[ l-1 ] );
+//   var but = Object.keys( _.mapBut( all, srcMap ) );
+//
+//   if( but.length > 0 )
+//   {
+//     debugger;
+//     throw _err
+//     ({
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have all fields :',but.join( ',' ) ],
+//       level : 2,
+//     });
+//   }
+//
+// }
 
 //
 
@@ -17509,14 +17541,14 @@ var Routines =
 
   assertMapHasOnly : assertMapHasOnly,
   assertMapOwnOnly : assertMapOwnOnly,
-  assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
+  // assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
 
   assertMapHasNone : assertMapHasNone,
   assertMapOwnNone : assertMapOwnNone,
 
   assertMapHasAll : assertMapHasAll,
   assertMapOwnAll : assertMapOwnAll,
-  assertMapHasAllWithUndefines : assertMapHasAllWithUndefines,
+  // assertMapHasAllWithUndefines : assertMapHasAllWithUndefines,
 
   assertMapHasNoUndefine : assertMapHasNoUndefine,
 

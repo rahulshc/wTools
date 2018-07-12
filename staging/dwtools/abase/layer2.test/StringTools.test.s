@@ -2612,60 +2612,61 @@ function strSplit2( test )
     delimeter : '#',
   }
 
-  // test.groupBegin( 'delimeter:#' );
+  test.testsGroupOpen( 'delimeter:#' );
 
   /* */
 
-  test.description = 'quoted at edges"';
+  test.case = 'quoted at edges"';
   var o = _.mapExtend( null, op );
   o.src = '"aa"bb"cc"';
   var got = _.strSplit2( o );
   var expected = [ '"aa"', 'bb', '"cc"' ];
   test.identical( got, expected );
 
-  test.description = 'quoted at edges with extra quote inside "';
+  test.case = 'quoted at edges with extra quote inside "';
   var o = _.mapExtend( null, op );
   o.src = '"aa"bb""cc"';
   var got = _.strSplit2( o );
   var expected = [ '"aa"', 'bb', '""', 'cc"' ];
   test.identical( got, expected );
 
-  test.description = 'quoted at edges with # inside the first quoted text"';
+  test.case = 'quoted at edges with # inside the first quoted text"';
   var o = _.mapExtend( null, op );
   o.src = '"a#a"bb""cc"';
   var got = _.strSplit2( o );
-  var expected = [ '"a#a"', 'bb', '"cc"' ];
+  var expected = [ '"a#a"', 'bb', '""', 'cc"' ];
   test.identical( got, expected );
 
-  test.description = 'quoted at edges with # inside not quoted text"';
+  test.case = 'quoted at edges with # inside not quoted text"';
   var o = _.mapExtend( null, op );
   o.src = '"aa"b#b""cc"';
   var got = _.strSplit2( o );
-  var expected = [ '"aa"', 'b#b', '"cc"' ];
+  var expected = [ '"aa"', 'b', '#', 'b', '""', 'cc"' ];
   test.identical( got, expected );
 
-  test.description = 'quoted at edges with # inside the last quoted text"';
+  test.case = 'quoted at edges with # inside the last quoted text"';
   var o = _.mapExtend( null, op );
   o.src = '"aa"bb""c#c"';
   var got = _.strSplit2( o );
-  var expected = [ '"aa"', 'bb', '"c#c"' ];
+  var expected = [ '"aa"', 'bb', '""', 'c', '#', 'c"' ];
   test.identical( got, expected );
 
-  test.description = 'quoted at edges with # inside all 3 text splits"';
+  test.case = 'quoted at edges with # inside all 3 text splits"';
   var o = _.mapExtend( null, op );
   o.src = '"a#a"b#b""c#c"';
   var got = _.strSplit2( o );
-  var expected = [ '"a#a"', 'b#b', '"c#c"' ];
+  var expected = [ '"a#a"', 'b', '#', 'b', '""', 'c', '#', 'c"' ];
   test.identical( got, expected );
 
-  /* */
-
-  test.description = 'quoted at edges with extra spaces on edges';
+  test.case = 'quoted at edges with extra spaces on edges';
   var o = _.mapExtend( null, op );
   o.src = ' "aa"bb"cc" ';
   var got = _.strSplit2( o );
   var expected = [ '"aa"', 'bb', '"cc"' ];
   test.identical( got, expected );
+
+  debugger;
+  test.testsGroupClose( 'delimeter:#' );
 
 }
 
@@ -5950,7 +5951,7 @@ var Self =
 {
 
   name : 'Tools/base/layer2/String',
-  silencing : 1,
+  silencing : 0,
 
   tests :
   {

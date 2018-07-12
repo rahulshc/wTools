@@ -759,8 +759,8 @@ function strEscape( o )
   if( _.strIs( o ) )
   o = { src : o }
 
-  _.assert( _.strIs( o.src ) );
-  _.routineOptions( strEscape,o );
+  _.assert( _.strIs( o.src ), 'expects string {-o.src-}, but got', _.strTypeOf( o.src ) );
+  _.routineOptions( strEscape, o );
 
   var result = '';
   for( var s = 0 ; s < o.src.length ; s++ )
@@ -1725,8 +1725,9 @@ function _strSplitsQuote_body( o )
 
   /* quoting */
 
-  if( o.quoting )
-  debugger;
+  // if( o.quoting )
+  // debugger;
+
   if( o.quoting )
   for( var s = 1 ; s < o.splits.length ; s += 2 )
   {
@@ -1741,7 +1742,7 @@ function _strSplitsQuote_body( o )
         var split2 = o.splits[ s2 ];
         if( split2 === postfix )
         {
-          var splitNew = o.splits.splice( s, s2-s ).join( '' )
+          var splitNew = o.splits.splice( s, s2-s ).join( '' );
           o.splits[ s ] = splitNew + o.splits[ s ];
           s2 = s;
           break;
@@ -1753,7 +1754,6 @@ function _strSplitsQuote_body( o )
 
     if( s2 >= o.splits.length )
     {
-      debugger;
       if( !_.arrayHas( o.delimeter, split ) )
       {
         var splitNew = o.splits.splice( s, 2 ).join( '' );
