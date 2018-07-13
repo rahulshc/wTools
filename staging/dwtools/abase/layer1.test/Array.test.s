@@ -1086,19 +1086,8 @@ function arrayFrom( test )
 
 function arrayAs( test )
 {
-
-  test.case = 'nothing';
-  var got = _.arrayAs();
-  var expected = [  ];
-  test.identical( got, expected );
-
   test.case = 'an empty array';
   var got = _.arrayAs( [  ] );
-  var expected = [  ];
-  test.identical( got, expected );
-
-  test.case = 'undefined';
-  var got = _.arrayAs( undefined );
   var expected = [  ];
   test.identical( got, expected );
 
@@ -1122,6 +1111,11 @@ function arrayAs( test )
   if( !Config.debug )
   return;
 
+  test.case = 'nothing';
+  test.shouldThrowError( () => _.arrayAs() );
+
+  test.case = 'undefined';
+  test.shouldThrowError( () => _.arrayAs( undefined ) );
 };
 
 //
