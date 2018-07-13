@@ -110,30 +110,6 @@ function strRemoveBegin( src,begin )
   return result;
 }
 
-// function strRemoveBegin( src,begin )
-// {
-//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-//   _.assert( _.arrayLike( src ) || _.strIs( src ) );
-//   _.assert( _.arrayLike( begin ) || _.strIs( begin ) );
-//
-//   begin = _.arrayAs( begin );
-//
-//   var result = _.arrayAs( src ).slice();
-//
-//   for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-//   for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
-//   if( _.strBegins( result[ k ],begin[ j ] ) )
-//   {
-//     result[ k ] = result[ k ].substr( begin[ j ].length,result[ k ].length );
-//     break;
-//   }
-//
-//   if( result.length === 1 && _.strIs( src ) )
-//   return result[ 0 ];
-//
-//   return result;
-// }
-
 //
 
 /**
@@ -654,7 +630,7 @@ function strQuote( o )
 
   _.assertMapHasOnly( o,strQuote.defaults );
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.strIs( o.src ) || _.numberIs( o.src ) || _.arrayIs( o.src ) );
+  _.assert( _.primitiveIs( o.src ) || _.arrayIs( o.src ) );
 
   if( _.arrayIs( o.src ) )
   {
@@ -2958,23 +2934,28 @@ function strJoin()
 
 //
 
-function strConcat()
+function strConcat( srcs, o )
 {
 
-  var o = _.routineOptionsFromThis( strConcat,this,Self );
-
+  // var o = _.routineOptionsFromThis( strConcat,this,Self );
+  o = _.routineOptions( strConcat, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( this.strConcat === strConcat );
   o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
 
+  if( !_.arrayGenericIs( srcs ) )
+  srcs = [ srcs ];
+
   var result = '';
-  if( !arguments.length )
+  if( !srcs.length )
   return result;
 
   /* */
 
   var nl = 1;
-  for( var a = 0 ; a < arguments.length ; a++ )
+  for( var a = 0 ; a < srcs.length ; a++ )
   {
-    var src = arguments[ a ];
+    var src = srcs[ a ];
     src = _.toStr( src,o.optionsForToStr );
     if( !nl )
     {

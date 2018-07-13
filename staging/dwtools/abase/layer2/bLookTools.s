@@ -2410,10 +2410,7 @@ function entityDiffDescription( o )
 
     _.assert( arguments.length === 1 );
 
-    // if( !_.primitiveIs( o.src1 ) )
     o.src1 = _.toStr( _.entitySelect( o.src1, dir ) );
-
-    // if( !_.primitiveIs( o.src2 ) )
     o.src2 = _.toStr( _.entitySelect( o.src2, dir ) );
 
     if( o.path !== '/' )
@@ -2422,25 +2419,29 @@ function entityDiffDescription( o )
   }
 
   result += _.str( o.name1 + ' :\n' + o.src1 + '\n' + o.name2 + ' :\n' + o.src2 );
-  // result += _.toStr( o.name1 + ' :\n' + o.src1 + '\n' + o.name2 + ' :\n' + o.src2, { levels : 2, stringWrapper : '' } );
 
-  if( _.strIs( o.src1 ) && _.strIs( o.src2 ) )
-  {
-    var strDiff = _.strDifference( o.src1,o.src2 );
-    if( strDiff !== false )
-    result += ( '\ndifference :\n' + strDiff );
-  }
+  /* */
+
+  var strDiff = _.strDifference( o.src1,o.src2 );
+  if( strDiff !== false )
+  result += ( '\ndifference :\n' + strDiff );
+
+  /**/
+
+  if( o.accuracy !== null )
+  result += '\naccuracy : ' + o.accuracy + '\n';
 
   return result;
 }
 
 var defaults = entityDiffDescription.defaults = Object.create( null );
 
-defaults.src1 = null;
-defaults.src2 = null;
 defaults.name1 = 'src1';
 defaults.name2 = 'src2';
+defaults.src1 = null;
+defaults.src2 = null;
 defaults.path = null;
+defaults.accuracy = null;
 
 // --
 // define class

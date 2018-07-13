@@ -2064,6 +2064,8 @@ function errLog()
   }
   else
   {
+    debugger;
+    c.error( 'Error does not have toString' );
     c.error( err );
   }
 
@@ -5852,9 +5854,7 @@ function timeSpent( description,time )
   if( description && description !== ' ' )
   description = description;
 
-  debugger;
-
-  var result = _.timeSpentFormat( now-time );
+  var result = description + _.timeSpentFormat( now-time );
 
   return result;
 }
@@ -7993,10 +7993,15 @@ function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
 
 function arrayAs( src )
 {
+  _.assert( arguments.length === 1 );
+  _.assert( src !== undefined );
 
-  if( src === null || src === undefined ) return [];
-  else if( _.arrayIs( src ) ) return src;
-  else return [ src ];
+  if( src === null )
+  return [];
+  else if( _.arrayGenericIs( src ) )
+  return src;
+  else
+  return [ src ];
 
 }
 
@@ -16359,7 +16364,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
     debugger;
     throw _err
     ({
-      args : [ msg ? _.strConcat( msg ) + '\n' : '', 'Object should have no fields :', but.join( ',' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
   }
@@ -16425,13 +16430,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
-  // var l = arguments.length;
-  // var hasMsg = _.strIs( arguments[ l-1 ] );
-  // var args = hasMsg ? _.arraySlice( arguments,0,l-1 ) : arguments;
-  // var but = Object.keys( _.mapOwnBut.apply( this,args ) );
-
   var l = arguments.length;
-  // var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
@@ -16441,8 +16440,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
     debugger;
     throw _err
     ({
-      args : [ msg ? _.strConcat( msg ) + '\n' : '', 'Object should own no fields :', but.join( ',' ) ],
-      // args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',but.join( ',' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
   }
@@ -16472,7 +16470,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
 //     debugger;
 //     throw _err
 //     ({
-//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',but.join( ',' ) ],
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',_.strQuote( but ).join( ', ' ) ],
 //       level : 2,
 //     });
 //   }
@@ -16537,8 +16535,6 @@ function assertMapHasNone( srcMap, screenMaps, msg )
   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
   var l = arguments.length;
-  // var hasMsg = _.strIs( arguments[ l-1 ] );
-  // var screens = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
   var none = _.mapOnly( srcMap, screenMaps );
 
   var keys = Object.keys( none );
@@ -16547,8 +16543,7 @@ function assertMapHasNone( srcMap, screenMaps, msg )
     debugger;
     throw _err
     ({
-      args : [ msg ? _.strConcat( msg ) + '\n' : '', 'Object should have no fields :', but.join( ',' ) ],
-      // args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :', keys.join( ',' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
   }
@@ -16567,23 +16562,14 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-  if( hasMsg ) l -= 1;
+  var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
 
-  // if( l > 2 )
-  // {
-  //   var args =_ArraySlice.call( arguments,1,l ); debugger;
-  //   none = _.mapMake.apply( this,args );
-  // }
-
-  var has = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
-
-  if( has.length )
+  if( but.length )
   {
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no own fields :',has.join( ',' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
   }
@@ -16648,7 +16634,6 @@ function assertMapHasAll( srcMap, all, msg )
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapBut( all,srcMap ) );
 
   if( but.length > 0 )
@@ -16656,7 +16641,7 @@ function assertMapHasAll( srcMap, all, msg )
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should have fields :',but.join( ',' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should have fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
   }
@@ -16720,7 +16705,6 @@ function assertMapOwnAll( srcMap, all, msg )
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
   var but = Object.keys( _.mapOwnBut( all,srcMap ) );
 
   if( but.length > 0 )
@@ -16728,7 +16712,7 @@ function assertMapOwnAll( srcMap, all, msg )
     debugger;
     throw _err
     ({
-      args : [ hasMsg ? arguments[ l-1 ] : '','Object should own all fields :',but.join( ',' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should own fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
   }
@@ -16755,7 +16739,7 @@ function assertMapOwnAll( srcMap, all, msg )
 //     debugger;
 //     throw _err
 //     ({
-//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have all fields :',but.join( ',' ) ],
+//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have all fields :',_.strQuote( but ).join( ', ' ) ],
 //       level : 2,
 //     });
 //   }
@@ -17558,14 +17542,12 @@ var Routines =
 
   assertMapHasOnly : assertMapHasOnly,
   assertMapOwnOnly : assertMapOwnOnly,
-  // assertMapHasOnlyWithUndefines : assertMapHasOnlyWithUndefines,
 
   assertMapHasNone : assertMapHasNone,
   assertMapOwnNone : assertMapOwnNone,
 
   assertMapHasAll : assertMapHasAll,
   assertMapOwnAll : assertMapOwnAll,
-  // assertMapHasAllWithUndefines : assertMapHasAllWithUndefines,
 
   assertMapHasNoUndefine : assertMapHasNoUndefine,
 
