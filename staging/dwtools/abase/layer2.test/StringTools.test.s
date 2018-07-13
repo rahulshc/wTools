@@ -2108,7 +2108,9 @@ function strSplit2( test )
   var expected = [ 'a', 'b', 'c', 'd' ];
   test.identical( got,expected );
 
+  //test.open( 'quotes' );
   test.case = 'long with quotes inside'; xxx
+  
   var o =
   {
     stripping : 0,
@@ -2120,6 +2122,8 @@ function strSplit2( test )
   var got = _.strSplit2( o );
   var expected = [ 'Test check ( Tools', '/', 'base', '/', 'layer2', '/', 'String ', '/', ' strSplit2 ', '/', ' delimeter:', '" "', '', ' > ', 'space on the beginning and the end', ' < ', ' ) # 3 ... failed' ];
   test.identical( got, expected );
+
+  //test.close( 'quotes' );
 
   /*
     stripping : 1,
