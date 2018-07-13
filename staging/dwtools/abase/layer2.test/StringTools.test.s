@@ -6012,7 +6012,7 @@ var Self =
 {
 
   name : 'Tools/base/layer2/String',
-  silencing : 0,
+  silencing : 1,
 
   tests :
   {
