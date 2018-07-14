@@ -5822,7 +5822,6 @@ function timeOutError( delay,onReady )
 
   result.doThen( function( err,arg )
   {
-    // debugger;
 
     if( err )
     return _.Consequence().error( err );
@@ -13670,7 +13669,7 @@ function mapExtendConditional( filter,dstMap )
 
 //
 
-function mapExtendByMapsConditional( filter, dstMap, srcMaps )
+function mapsExtendConditional( filter, dstMap, srcMaps )
 {
 
   if( dstMap === null )
@@ -13678,7 +13677,7 @@ function mapExtendByMapsConditional( filter, dstMap, srcMaps )
 
   _.assert( filter );
   _.assert( filter.functionFamily === 'field-mapper' );
-  _.assert( arguments.length === 3,'expects more arguments' );
+  _.assert( arguments.length === 3,'expects exactly three arguments' );
   _.assert( _.routineIs( filter ),'expects filter' );
   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as argument' );
 
@@ -13686,7 +13685,7 @@ function mapExtendByMapsConditional( filter, dstMap, srcMaps )
   {
     var srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'mapExtendByMapsConditional : expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ),'expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
 
     for( var k in srcMap )
     {
@@ -13708,16 +13707,36 @@ function mapExtendAppending( dstMap )
   return _.mapExtend( null, srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.appending );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
 
-function mapExtendByMapsAppending( dstMap, srcMaps )
+function mapsExtendAppending( dstMap, srcMaps )
 {
-  if( dstMap === null && srcMaps.length === 2 )
+  _.assert( arguments.length === 2 );
+  if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
-  return _.mapExtendByMapsConditional( _.field.mapper.appending, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.appending, dstMap, srcMaps );
+}
+
+//
+
+function mapExtendByDefined( dstMap )
+{
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( null, srcMap );
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.appending );
+  return _.mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapsExtendByDefined( dstMap, srcMaps )
+{
+  _.assert( arguments.length === 2 );
+  return _.mapsExtendConditional( _.field.mapper.appending, dstMap, srcMaps );
 }
 
 //
@@ -13744,16 +13763,17 @@ function mapSupplement( dstMap,srcMap )
   return _.mapExtend( null, srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotHas );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
 
 function mapSupplementByMaps( dstMap, srcMaps )
 {
-  if( dstMap === null && srcMaps.length === 2 )
+  _.assert( arguments.length === 2 );
+  if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
-  return _.mapExtendByMapsConditional( _.field.mapper.dstNotHas, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.dstNotHas, dstMap, srcMaps );
 }
 
 //
@@ -13762,7 +13782,7 @@ function mapSupplementNulls( dstMap )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotHasOrHasNull );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13771,7 +13791,7 @@ function mapSupplementNils( dstMap )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotHasOrHasNil );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13781,7 +13801,7 @@ function mapSupplementAssigning( dstMap )
   var args = _.arraySlice( arguments );
   // args.unshift( _.field.mapper.dstNotOwnAssigning );
   args.unshift( _.field.mapper.dstNotHasAssigning );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13792,16 +13812,15 @@ function mapSupplementAppending( dstMap )
   return _.mapExtend( null, srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotHasAppending );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
 
-function mapSupplementByMapsAppending( dstMap, srcMaps )
+function mapsSupplementAppending( dstMap, srcMaps )
 {
-  if( dstMap === null && srcMaps.length === 2 )
-  return _.mapExtend( null, srcMaps[ 0 ] );
-  return _.mapExtendByMapsConditional( _.field.mapper.dstNotHasAppending, dstMap, srcMaps );
+  _.assert( arguments.length === 2 );
+  return _.mapsExtendConditional( _.field.mapper.dstNotHasAppending, dstMap, srcMaps );
 }
 
 //
@@ -13813,16 +13832,17 @@ function mapSupplementOwn( dstMap, srcMap )
   return _.mapExtend( dstMap,srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotOwn );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
 
-function mapSupplementByMapsOwn( dstMap, srcMaps )
+function mapsSupplementOwn( dstMap, srcMaps )
 {
-  if( dstMap === null && srcMaps.length === 2 )
+  _.assert( arguments.length === 2 );
+  if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
-  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwn, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.dstNotOwn, dstMap, srcMaps );
 }
 
 //
@@ -13831,7 +13851,7 @@ function mapSupplementOwnAssigning( dstMap )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnAssigning );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
@@ -13856,17 +13876,18 @@ function mapComplement( dstMap,srcMap )
 {
   _.assert( _.field.mapper );
   if( arguments.length === 2 )
-  return mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
+  return _.mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnOrUndefinedAssigning );
-  return mapExtendConditional.apply( this, args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
 
-function mapComplementByMaps( dstMap, srcMaps )
+function mapsComplement( dstMap, srcMaps )
 {
-  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
+  _.assert( arguments.length === 2 );
+  return _.mapsExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
 }
 
 //
@@ -13875,17 +13896,18 @@ function mapComplementReplacingUndefines( dstMap,srcMap )
 {
   _.assert( _.field.mapper );
   if( arguments.length === 2 )
-  return mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
+  return _.mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnOrUndefinedAssigning );
-  return mapExtendConditional.apply( this, args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
 
-function mapComplementByMapsReplacingUndefines( dstMap, srcMaps )
+function mapsComplementReplacingUndefines( dstMap, srcMaps )
 {
-  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
+  _.assert( arguments.length === 2 );
+  return _.mapsExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
 }
 
 //
@@ -13894,14 +13916,15 @@ function mapComplementPreservingUndefines( dstMap )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnAssigning );
-  return mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this,args );
 }
 
 //
 
-function mapComplementByMapsPreservingUndefines( dstMap, srcMaps )
+function mapsComplementPreservingUndefines( dstMap, srcMaps )
 {
-  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwnAssigning, dstMap, srcMaps );
+  _.assert( arguments.length === 2 );
+  return _.mapsExtendConditional( _.field.mapper.dstNotOwnAssigning, dstMap, srcMaps );
 }
 
 //
@@ -14091,7 +14114,7 @@ function mapExtendAppendingRecursive( dstMap, srcMap )
 
 //
 
-function mapExtendByMapsAppendingRecursive( dstMap, srcMaps )
+function mapsExtendAppendingRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -14113,7 +14136,7 @@ function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 
 //
 
-function mapExtendByMapsAppendingOnceRecursive( dstMap, srcMaps )
+function mapsExtendAppendingOnceRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -14157,7 +14180,7 @@ function mapSupplementOwnRecursive( dstMap, srcMap )
 
 //
 
-function mapSupplementByMapsOwnRecursive( dstMap, srcMaps )
+function mapsSupplementOwnRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -16288,7 +16311,7 @@ function mapOnlyOwn( srcMaps, screenMaps )
 {
 
   if( arguments.length === 1 )
-  return _.mapExtendByMapsConditional( _.field.mapper.srcOwn, null, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.srcOwn, null, srcMaps );
 
   _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
 
@@ -17235,9 +17258,15 @@ var Later =
 
 var Vars =
 {
+
   Later : Later,
   ArrayType : Array,
   error : error,
+
+  accuracy : 1e-7,
+  accuracySqrt : 1e-4,
+  accuracySqr : 1e-14,
+
 }
 
 // --
@@ -17812,27 +17841,30 @@ var Routines =
   mapExtend : mapExtend,
   mapExtendByMaps : mapExtendByMaps,
   mapExtendConditional : mapExtendConditional,
-  mapExtendByMapsConditional : mapExtendByMapsConditional,
+  mapsExtendConditional : mapsExtendConditional,
+
   mapExtendAppending : mapExtendAppending,
-  mapExtendByMapsAppending : mapExtendByMapsAppending,
+  mapsExtendAppending : mapsExtendAppending,
+  mapExtendByDefined : mapExtendByDefined,
+  mapsExtendByDefined : mapsExtendByDefined,
 
   mapSupplement : mapSupplement,
   mapSupplementNulls : mapSupplementNulls,
   mapSupplementNils : mapSupplementNils,
   mapSupplementAssigning : mapSupplementAssigning,
   mapSupplementAppending : mapSupplementAppending,
-  mapSupplementByMapsAppending : mapSupplementByMapsAppending,
+  mapsSupplementAppending : mapsSupplementAppending,
 
   mapSupplementOwn : mapSupplementOwn,
-  mapSupplementByMapsOwn : mapSupplementByMapsOwn,
+  mapsSupplementOwn : mapsSupplementOwn,
   mapSupplementOwnAssigning : mapSupplementOwnAssigning,
 
   mapComplement : mapComplement,
-  mapComplementByMaps : mapComplementByMaps,
+  mapsComplement : mapsComplement,
   mapComplementReplacingUndefines : mapComplementReplacingUndefines,
-  mapComplementByMapsReplacingUndefines : mapComplementByMapsReplacingUndefines,
+  mapsComplementReplacingUndefines : mapsComplementReplacingUndefines,
   mapComplementPreservingUndefines : mapComplementPreservingUndefines,
-  mapComplementByMapsPreservingUndefines : mapComplementByMapsPreservingUndefines,
+  mapsComplementPreservingUndefines : mapsComplementPreservingUndefines,
 
   // map extend recursive
 
@@ -17845,14 +17877,14 @@ var Routines =
   _mapExtendRecursive : _mapExtendRecursive,
 
   mapExtendAppendingRecursive : mapExtendAppendingRecursive,
-  mapExtendByMapsAppendingRecursive : mapExtendByMapsAppendingRecursive,
+  mapsExtendAppendingRecursive : mapsExtendAppendingRecursive,
   mapExtendAppendingOnceRecursive : mapExtendAppendingOnceRecursive,
-  mapExtendByMapsAppendingOnceRecursive : mapExtendByMapsAppendingOnceRecursive,
+  mapsExtendAppendingOnceRecursive : mapsExtendAppendingOnceRecursive,
 
   mapSupplementRecursive : mapSupplementRecursive,
   mapSupplementByMapsRecursive : mapSupplementByMapsRecursive,
   mapSupplementOwnRecursive : mapSupplementOwnRecursive,
-  mapSupplementByMapsOwnRecursive : mapSupplementByMapsOwnRecursive,
+  mapsSupplementOwnRecursive : mapsSupplementOwnRecursive,
   mapSupplementRemovingRecursive : mapSupplementRemovingRecursive,
   mapSupplementByMapsRemovingRecursive : mapSupplementByMapsRemovingRecursive,
 

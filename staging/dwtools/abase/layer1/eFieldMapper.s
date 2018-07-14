@@ -190,6 +190,24 @@ function drop( dropContainer )
 
 drop.functionFamily = 'field-filter';
 
+//
+
+function srcDefined()
+{
+
+  var routine = function srcDefined( dstContainer,srcContainer,key )
+  {
+    if( srcContainer[ key ] === undefined )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter'; ;
+  return routine;
+}
+
+srcDefined.functionFamily = 'field-filter';
+
 // --
 // dstNotHas
 // --
@@ -1005,6 +1023,8 @@ var make =
   notPrimitiveAssigning : notPrimitiveAssigning,
   assigningRecursive : assigningRecursive,
   drop : drop,
+
+  srcDefined : srcDefined,
 
   // dstNotHas
 
