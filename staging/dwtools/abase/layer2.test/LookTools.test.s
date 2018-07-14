@@ -25,6 +25,8 @@ if( typeof module !== 'undefined' )
   var _ = _global_.wTools;
 
   _.include( 'wTesting' );
+  _.include( 'wStringer' );
+  _.include( 'wStringsExtra' );
 
 }
 
@@ -897,11 +899,8 @@ function entityContainsSimple( test )
   test.case = 'null - undefined';
 
   var expected = true;
-  debugger;
   var got = _.entityContains( null, null );
-  debugger;
   test.identical( got, expected );
-  debugger;
 
   var expected = true;
   var got = _.entityContains( undefined, undefined );
@@ -3059,64 +3058,106 @@ function entityContainLoose( test )
 function entityDiffLoose( test )
 {
 
-  /* returns false if same */
+  test.case = 'undefined - null'; /* */
 
-  test.case = 'number';
+  var got = _.entityDiff( undefined, null );
+  var expected =
+`
+- src1 :
+  undefined
+- src2 :
+  null
+- difference :
+ *
+`
+  test.identical( _.strStrip( got ), _.strStrip( expected ) );
+
+  test.case = 'null - undefined'; /* */
+
+  var got = _.entityDiff( null, undefined );
+  var expected =
+`
+- src1 :
+  null
+- src2 :
+  undefined
+- difference :
+  *
+`
+  test.identical( _.strStrip( got ), _.strStrip( expected ) );
+
+  test.case = 'undefined - undefined'; /* */
+
+  var got = _.entityDiff( undefined, undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null - null'; /* */
+
+  var got = _.entityDiff( null, null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'number'; /* */
+
   var got = _.entityDiff( 1, 1 );
   var expected = false ;
   test.identical( got, expected );
 
-  test.case = 'strings';
+  test.case = 'strings'; /* */
+
   debugger;
   var got = _.entityDiff( 'abc', 'abd' );
   debugger;
   var expected =
-  [
-    'src1 :',
-    'abc',
-    'src2 :',
-    'abd ',
-    'difference :',
-    'ab*'
-  ].join('\n');
-  test.identical( got, expected );
+`
+- src1 :
+  'abc'
+- src2 :
+  'abd'
+- difference :
+  'ab*
+`;
 
-  test.case = 'arrays';
-  debugger;
-  var got = _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
-  debugger;
-  var expected =
-`at /2
-src1 :
-[ 1, 2, 3 ]
-src2 :
-[ 1, 2, 4 ]
-difference :
-[ 1, 2, *`;
   test.identical( _.strStrip( got ), _.strStrip( expected ) );
 
-  test.case = 'objects,custom path';
+  test.case = 'arrays'; /* */
+
+  var got = _.entityDiff( [ 1, 2, 3 ], [ 1, 2, 4 ] );
+  var expected =
+`at /2
+- src1 :
+  [ 1, 2, 3 ]
+- src2 :
+  [ 1, 2, 4 ]
+- difference :
+  [ 1, 2, *`;
+  test.identical( _.strStrip( got ), _.strStrip( expected ) );
+
+  test.case = 'objects,custom path'; /* */
+
   var src1 = { a : { a : 1, b : '2' }, b : [ 1,2 ] };
   var src2 = { a : { a : 1, b : '2' } };
   var got = _.entityDiff( src1, src2 );
   var expected =
-`src1 :
+`
+- src1 :
 {
   a : [ Object with 2 elements ],
   b : [ Array with 2 elements ]
 }
-src2 :
+- src2 :
 {
   a : [ Object with 2 elements ]
 }
-difference :
+- difference :
 {
   a : [ Object with 2 elements ]*`;
   test.identical( _.strStrip( got ), _.strStrip( expected ) );
 
   /* */
 
-  test.case = 'trivial mixed';
+  test.case = 'trivial mixed'; /* */
 
   var src1 =
   {
@@ -3136,14 +3177,14 @@ difference :
   var got = _.entityDiff( src1, src2 );
   var expected =
 `at /f
-src1 :
+- src1 :
 {
   f : [ routine f ],
   a : 'reducing',
   b : [ Array with 2 elements ],
   c : true
 }
-src2 :
+- src2 :
 {
   f : [ routine f ],
   a : 'reducing',
@@ -3155,18 +3196,19 @@ src2 :
   if( !Config.debug )
   return;
 
-  test.case = 'argument missed';
+  test.case = 'argument missed'; /* */
   test.shouldThrowError( function()
   {
     _.entityDiff( );
   });
 
-  test.case = 'invalid options type';
+  test.case = 'invalid options type'; /* */
   test.shouldThrowError( function()
   {
     _.entityDiff( 1, 2, 3 );
   });
 
+  debugger;
 }
 
 //
@@ -3309,6 +3351,7 @@ var Self =
 
   name : 'Tools/base/layer2/Look',
   silencing : 1,
+  enabled : 1,
 
   context :
   {
@@ -3331,6 +3374,7 @@ var Self =
     entityIdenticalLoose : entityIdenticalLoose,
     entityEquivalentLoose : entityEquivalentLoose,
     entityContainLoose : entityContainLoose,
+
     entityDiffLoose : entityDiffLoose,
 
     eachSample : eachSample,

@@ -817,90 +817,6 @@ function strIndentation( test )
 
 //
 
-function strCountLines( test )
-{
-
-  test.case = 'returns 1';
-  var func = 'function( x, y ) { return x + y; }';
-  var got = _.strCountLines( func );
-  var expected = 1;
-  test.identical( got, expected );
-
-  test.case = 'returns 4';
-  var func = 'function( x, y ) \n { \n   return x + y; \n }';
-  var got = _.strCountLines( func );
-  var expected = 4;
-  test.identical( got, expected );
-
-  test.case = 'one line string test';
-  var got = _.strCountLines( 'one line' );
-  var expected = 1;
-  test.identical( got,expected );
-
-  test.case = 'multiline string test';
-  var got = _.strCountLines( 'first line\nsecond line\nthird line' );
-  var expected = 3;
-  test.identical( got,expected );
-
-  test.case = 'multiline  text test';
-  var got = _.strCountLines( `one
-                             two
-                             three`
-                          );
-  var expected = 3;
-  test.identical( got,expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strCountLines( '1', '2' );
-  });
-
-  test.case = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strCountLines( 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strCountLines();
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strCountLines( );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strCountLines( [ 1, '\n', 2 ] );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strCountLines( 13 );
-  } );
-
-  test.case = 'too many arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strCountLines( 'function( x, y ) \n { \n   return x + y; \n }', 'redundant argument' );
-  } );
-
-}
-
-//
-
 function strSplitFast( test )
 {
 
@@ -2110,7 +2026,7 @@ function strSplit2( test )
 
   //test.open( 'quotes' );
   test.case = 'long with quotes inside'; xxx
-  
+
   var o =
   {
     stripping : 0,
@@ -4701,139 +4617,6 @@ function strUnicodeEscape( test )
 
 //
 
-function strLinesNumber( test )
-{
-  var got,expected;
-
-  test.case = 'trivial';
-
-  test.case = 'returns the object';
-  var got = _.strLinesNumber( 'abc\ndef\nghi' );
-  var expected = '1 : abc\n2 : def\n3 : ghi';
-  test.identical( got, expected );
-
-  test.case = 'returns the object';
-  var got = _.strLinesNumber( [] );
-  var expected = '';
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'string';
-
-  /**/
-
-  got = _.strLinesNumber( '' );
-  expected = '1 : ';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a' );
-  expected = '1 : a';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a\nb' );
-  expected = '1 : a\n2 : b';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a\nb', 2 );
-  expected = '2 : a\n3 : b';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'line1\nline2\nline3' );
-  expected =
-  [
-    '1 : line1',
-    '2 : line2',
-    '3 : line3',
-  ].join( '\n' );
-  test.identical( got,expected );
-
-  /**/
-
-  got = _.strLinesNumber( '\n\n' );
-  var expected =
-  [
-    '1 : ',
-    '2 : ',
-    '3 : ',
-  ].join( '\n' );
-  test.identical( got,expected );
-
-  //
-
-  test.case = 'array';
-
-  /**/
-
-  got = _.strLinesNumber( [ 'line1', 'line2', 'line3' ] );
-  expected =
-  [
-    '1 : line1',
-    '2 : line2',
-    '3 : line3',
-  ].join( '\n' );
-
-  /**/
-
-  got = _.strLinesNumber( [ 'line', 'line', 'line' ], 2 );
-  expected =
-  [
-    '2 : line',
-    '3 : line',
-    '4 : line',
-  ].join( '\n' );
-
-  /**/
-
-  got = _.strLinesNumber( [ 'line\n', 'line\n', 'line\n' ] );
-  expected =
-  [
-    '1 : line\n',
-    '2 : line\n',
-    '3 : line\n',
-  ].join( '\n' );
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesNumber();
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesNumber( 13 );
-  } );
-
-  test.case = 'invalid  argument type';
-  test.shouldThrowError( function()
-  {
-    _.strLinesNumber( 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strLinesNumber();
-  });
-
-}
-
-//
-
 function strCount( test )
 {
 
@@ -5032,98 +4815,12 @@ function strDup( test )
 
 //
 
-function strShort( test )
-{
-
-  test.case = 'simple string';
-  var got = _.strShort( 'string', 4 );
-  var expected = '\'st\' ... \'ng\'';
-  test.identical( got,expected );
-
-  test.case = 'string with escaping';
-  var got = _.strShort( 's\ntring', 4 );
-  var expected = '\'s\' ... \'ng\'';
-  test.identical( got,expected );
-
-  test.case = 'limit 0';
-  var got = _.strShort( 'string', 0 );
-  var expected = 'string';
-  test.identical( got,expected );
-
-  test.case = 'limit 1';
-  var got = _.strShort( 'string', 1 );
-  var expected = '\'s\'';
-  test.identical( got,expected );
-
-  test.case = 'string wih spaces';
-  var got = _.strShort( 'source and', 5 );
-  var expected = '\'sou\' ... \'nd\'';
-  test.identical( got,expected );
-
-  test.case = 'one argument call';
-  var got = _.strShort( { src : 'string', limit : 4, wrap : "'" } );
-  var expected = "'st' ... 'ng'";
-  test.identical( got,expected );
-
-  test.case = 'string with whitespaces';
-  var got = _.strShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
-  var expected = "'  ' ... '  '";
-  test.identical( got,expected );
-
-  test.case = 'wrap 0';
-  var got = _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
-  var expected = "si ... le";
-  test.identical( got,expected );
-
-  test.case = 'escaping 0';
-  var got = _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
-  var expected = '"si\x01" ... "le"';
-  test.identical( got,expected );
-
-  test.case = 'escaping 1';
-  var got = _.strShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
-  var expected = '"s" ... "ng"';
-  test.identical( got,expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strShort( 1, 5 );
-  });
-
-  test.case = 'invalid second argument type';
-  test.shouldThrowError( function()
-  {
-    _.strShort( 'string', '0' );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strShort();
-  });
-
-  test.case = 'unknown property provided';
-  test.shouldThrowError( function()
-  {
-    _.strShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
-  });
-
-}
-
-//
-
 function strLinesSelect( test )
 {
   var got,expected;
   var src = 'a\nb\nc\nd';
 
-  //
+  /* */
 
   test.case = 'single line selection';
 
@@ -5612,6 +5309,309 @@ function strLinesSelect( test )
 
 //
 
+function strLinesNumber( test )
+{
+  var got,expected;
+
+  test.case = 'trivial';
+
+  test.case = 'returns the object';
+  var got = _.strLinesNumber( 'abc\ndef\nghi' );
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'returns the object';
+  var got = _.strLinesNumber( [] );
+  var expected = '';
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'string';
+
+  /**/
+
+  got = _.strLinesNumber( '' );
+  expected = '1 : ';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a' );
+  expected = '1 : a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a\nb' );
+  expected = '1 : a\n2 : b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a\nb', 2 );
+  expected = '2 : a\n3 : b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'line1\nline2\nline3' );
+  expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+  test.identical( got,expected );
+
+  /**/
+
+  got = _.strLinesNumber( '\n\n' );
+  var expected =
+  [
+    '1 : ',
+    '2 : ',
+    '3 : ',
+  ].join( '\n' );
+  test.identical( got,expected );
+
+  //
+
+  test.case = 'array';
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line1', 'line2', 'line3' ] );
+  expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line', 'line', 'line' ], 2 );
+  expected =
+  [
+    '2 : line',
+    '3 : line',
+    '4 : line',
+  ].join( '\n' );
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line\n', 'line\n', 'line\n' ] );
+  expected =
+  [
+    '1 : line\n',
+    '2 : line\n',
+    '3 : line\n',
+  ].join( '\n' );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesNumber();
+  } );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesNumber( 13 );
+  } );
+
+  test.case = 'invalid  argument type';
+  test.shouldThrowError( function()
+  {
+    _.strLinesNumber( 123 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strLinesNumber();
+  });
+
+}
+
+//
+
+function strLinesCount( test )
+{
+
+  test.case = 'returns 1';
+  var func = 'function( x, y ) { return x + y; }';
+  var got = _.strLinesCount( func );
+  var expected = 1;
+  test.identical( got, expected );
+
+  test.case = 'returns 4';
+  var func = 'function( x, y ) \n { \n   return x + y; \n }';
+  var got = _.strLinesCount( func );
+  var expected = 4;
+  test.identical( got, expected );
+
+  test.case = 'one line string test';
+  var got = _.strLinesCount( 'one line' );
+  var expected = 1;
+  test.identical( got,expected );
+
+  test.case = 'multiline string test';
+  var got = _.strLinesCount( 'first line\nsecond line\nthird line' );
+  var expected = 3;
+  test.identical( got,expected );
+
+  test.case = 'multiline  text test';
+  var got = _.strLinesCount( `one
+                             two
+                             three`
+                          );
+  var expected = 3;
+  test.identical( got,expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strLinesCount( '1', '2' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strLinesCount( 123 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strLinesCount();
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( );
+  } );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( [ 1, '\n', 2 ] );
+  } );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( 13 );
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( 'function( x, y ) \n { \n   return x + y; \n }', 'redundant argument' );
+  } );
+
+}
+
+//
+
+function strShort( test )
+{
+
+  test.case = 'simple string';
+  var got = _.strShort( 'string', 4 );
+  var expected = '\'st\' ... \'ng\'';
+  test.identical( got,expected );
+
+  test.case = 'string with escaping';
+  var got = _.strShort( 's\ntring', 4 );
+  var expected = '\'s\' ... \'ng\'';
+  test.identical( got,expected );
+
+  test.case = 'limit 0';
+  var got = _.strShort( 'string', 0 );
+  var expected = 'string';
+  test.identical( got,expected );
+
+  test.case = 'limit 1';
+  var got = _.strShort( 'string', 1 );
+  var expected = '\'s\'';
+  test.identical( got,expected );
+
+  test.case = 'string wih spaces';
+  var got = _.strShort( 'source and', 5 );
+  var expected = '\'sou\' ... \'nd\'';
+  test.identical( got,expected );
+
+  test.case = 'one argument call';
+  var got = _.strShort( { src : 'string', limit : 4, wrap : "'" } );
+  var expected = "'st' ... 'ng'";
+  test.identical( got,expected );
+
+  test.case = 'string with whitespaces';
+  var got = _.strShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
+  var expected = "'  ' ... '  '";
+  test.identical( got,expected );
+
+  test.case = 'wrap 0';
+  var got = _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
+  var expected = "si ... le";
+  test.identical( got,expected );
+
+  test.case = 'escaping 0';
+  var got = _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
+  var expected = '"si\x01" ... "le"';
+  test.identical( got,expected );
+
+  test.case = 'escaping 1';
+  var got = _.strShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
+  var expected = '"s" ... "ng"';
+  test.identical( got,expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strShort( 1, 5 );
+  });
+
+  test.case = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strShort( 'string', '0' );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strShort();
+  });
+
+  test.case = 'unknown property provided';
+  test.shouldThrowError( function()
+  {
+    _.strShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
+  });
+
+}
+
+//
+
 function strCommonLeft( test )
 {
   test.case = 'no args';
@@ -6036,8 +6036,6 @@ var Self =
 
     strIndentation : strIndentation,
 
-    strCountLines : strCountLines,
-
     strSplitFast : strSplitFast,
     // strSplit2 : strSplit2,
 
@@ -6056,12 +6054,14 @@ var Self =
     strJoin : strJoin,
     strUnjoin : strUnjoin,
     strUnicodeEscape : strUnicodeEscape,
-    strLinesNumber : strLinesNumber,
     strCount : strCount,
     strDup : strDup,
 
-    strShort : strShort,
     strLinesSelect : strLinesSelect,
+    strLinesNumber : strLinesNumber,
+    strLinesCount : strLinesCount,
+
+    strShort : strShort,
     strCommonLeft : strCommonLeft,
     strCommonRight : strCommonRight,
 

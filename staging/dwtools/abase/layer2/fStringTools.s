@@ -811,7 +811,6 @@ function strEscape( o )
         break;
 
       // case '\v' :
-      //   xxx
       //   result += '\\v';
       //   break;
 
@@ -1314,7 +1313,7 @@ function strCutOffLeft( o )
     _.assert( arguments.length === 1, 'expects single argument' );
   }
 
-  _.assertMapHasOnly( o,strCutOffLeft.defaults );
+  _.assertMapHasOnly( o, strCutOffLeft.defaults );
 
   o.left = 1;
 
@@ -1567,7 +1566,7 @@ function strSplitChunks( o )
     result.chunks.push( chunk );
 
     src = src.substring( begin );
-    line += _.strCountLines( chunk.text ) - 1;
+    line += _.strLinesCount( chunk.text ) - 1;
     chunkIndex += 1;
 
     colAccount( chunk.text );
@@ -1644,7 +1643,7 @@ function strSplitChunks( o )
     /* wind */
 
     chunkIndex += 1;
-    line += _.strCountLines( chunk.prefix + chunk.code + chunk.postfix ) - 1;
+    line += _.strLinesCount( chunk.prefix + chunk.code + chunk.postfix ) - 1;
 
   }
   while( src );
@@ -2510,7 +2509,6 @@ function _strExtractInlined_body( o )
     {
       if( splitArray.length > i+1 )
       {
-        debugger;
         splitArray[ i ] = splitArray.slice( i, splitArray.length ).join( '' );
         splitArray.splice( i+1, splitArray.length-i-1 );
       }
@@ -3210,8 +3208,6 @@ function strIndentation( src,tab )
 
 //
 
-// !!! pelase update description
-
 /**
  * Puts line counter before each line/element of provided source( o.src ).
  * If( o.src ) is a string, function splits it into array using new line as splitter, then puts line counter at the begining of each line( element ).
@@ -3676,20 +3672,20 @@ function strCountRight( src,ins )
  *
  * @example
  * //returns 2
- * _.strCountLines( 'first\nsecond' );
+ * _.strLinesCount( 'first\nsecond' );
  *
  * @example
  * //returns 4
- * _.strCountLines( 'first\nsecond\nthird\n' );
+ * _.strLinesCount( 'first\nsecond\nthird\n' );
  *
- * @method strCountLines
+ * @method strLinesCount
  * @throws { Exception } Throw an exception if( src ) is not a String.
  * @throws { Exception } Throw an exception if no argument provided.
  * @memberof wTools
  *
 */
 
-function strCountLines( src )
+function strLinesCount( src )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
@@ -3863,13 +3859,13 @@ var Proto =
   strLinesNumber : strLinesNumber,
   strLinesSelect : strLinesSelect,
   strLinesNearest : strLinesNearest,
+  strLinesCount : strLinesCount,
 
   // evaluator
 
   strCount : strCount,
   strCountLeft : strCountLeft,
   strCountRight : strCountRight,
-  strCountLines : strCountLines,
 
   // checker
 

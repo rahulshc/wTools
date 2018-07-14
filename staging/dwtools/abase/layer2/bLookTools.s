@@ -133,7 +133,7 @@ function __look_lookBegin( routine, args )
 
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assertRoutineOptionsWithUndefines( routine, o );
+  _.assertRoutineOptionsPreservingUndefines( routine, o );
   _.assert( routine.lookBegin === __look_lookBegin );
 
   /* */
@@ -353,7 +353,7 @@ function _look_pre( routine, args )
   }
   else _.assert( 0,'look expects single options map, 2 or 3 arguments' );
 
-  _.routineOptionsWithUndefines( routine, o );
+  _.routineOptionsPreservingUndefines( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( o.onUp === null || o.onUp.length === 0 || o.onUp.length === 3, 'onUp should expects exactly three arguments' );
@@ -1131,7 +1131,7 @@ function _entitySelectOptions( o )
   o.usingSet = 1;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.routineOptions( _entitySelectOptions,o );
+  _.routineOptionsPreservingUndefines( _entitySelectOptions,o );
   _.assert( _.strIs( o.query ) || _.numberIs( o.query ) || _.arrayIs( o.query ) );
 
   /* makeQarrey */
@@ -2046,7 +2046,7 @@ function _entityEqual_lookBegin( routine, args )
 
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assertRoutineOptionsWithUndefines( routine, o );
+  _.assertRoutineOptionsPreservingUndefines( routine, o );
   _.assert( routine.lookBegin === _entityEqual_lookBegin );
 
   /* */
@@ -2081,7 +2081,7 @@ function _entityEqual_pre( routine, args )
   _.assert( args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  var o = _.routineOptionsWithUndefines( routine, args[ 2 ] || Object.create( null ) );
+  var o = _.routineOptionsPreservingUndefines( routine, args[ 2 ] || Object.create( null ) );
   var accuracy = o.accuracy;
 
   o.src1 = args[ 0 ];
@@ -2382,10 +2382,9 @@ function entityDiff( src1, src2, o )
   if( equal )
   return false;
 
-  var result = _.entityDiffDescription
+  var result = _.entityDiffExplanation
   ({
-    src1 : src1,
-    src2 : src2,
+    srcs : [ src1, src2 ],
     path : o.iterator.lastPath,
   });
 
@@ -2394,10 +2393,12 @@ function entityDiff( src1, src2, o )
 
 //
 
-function entityDiffDescription( o )
+function entityDiffExplanation( o )
 {
 
-  o = _.routineOptions( entityDiffDescription, arguments );
+  o = _.routineOptions( entityDiffExplanation, arguments );
+  _.assert( _.arrayIs( o.srcs ) );
+  _.assert( o.srcs.length === 2 );
 
   var result = '';
 
@@ -2410,36 +2411,45 @@ function entityDiffDescription( o )
 
     _.assert( arguments.length === 1 );
 
-    o.src1 = _.toStr( _.entitySelect( o.src1, dir ) );
-    o.src2 = _.toStr( _.entitySelect( o.src2, dir ) );
+    o.srcs[ 0 ] = _.entitySelect( o.srcs[ 0 ], dir );
+    o.srcs[ 1 ] = _.entitySelect( o.srcs[ 1 ], dir );
 
     if( o.path !== '/' )
     result += 'at ' + o.path + '\n';
 
   }
 
-  result += _.str( o.name1 + ' :\n' + o.src1 + '\n' + o.name2 + ' :\n' + o.src2 );
+  o.srcs[ 0 ] = _.toStr( o.srcs[ 0 ] );
+  o.srcs[ 1 ] = _.toStr( o.srcs[ 1 ] );
+
+  o.srcs[ 0 ] = _.strIndentation( o.srcs[ 0 ], '  ' );
+  o.srcs[ 1 ] = _.strIndentation( o.srcs[ 1 ], '  ' );
+
+  result += _.str( o.name1 + ' :\n' + o.srcs[ 0 ] + '\n' + o.name2 + ' :\n' + o.srcs[ 1 ] );
 
   /* */
 
-  var strDiff = _.strDifference( o.src1,o.src2 );
+  var strDiff = _.strDifference( o.srcs[ 0 ], o.srcs[ 1 ] );
   if( strDiff !== false )
-  result += ( '\ndifference :\n' + strDiff );
+  {
+    result += ( '\n' + o.differenceName + ' :\n' + strDiff );
+  }
 
-  /**/
+  /* */
 
   if( o.accuracy !== null )
-  result += '\naccuracy : ' + o.accuracy + '\n';
+  result += '\n' + o.accuracyName + ' ' + o.accuracy + '\n';
 
   return result;
 }
 
-var defaults = entityDiffDescription.defaults = Object.create( null );
+var defaults = entityDiffExplanation.defaults = Object.create( null );
 
-defaults.name1 = 'src1';
-defaults.name2 = 'src2';
-defaults.src1 = null;
-defaults.src2 = null;
+defaults.name1 = '- src1';
+defaults.name2 = '- src2';
+defaults.differenceName = '- difference';
+defaults.accuracyName = 'with accuracy';
+defaults.srcs = null;
 defaults.path = null;
 defaults.accuracy = null;
 
@@ -2512,7 +2522,7 @@ var Proto =
   entityEquivalent : entityEquivalent,
   entityContains : entityContains,
   entityDiff : entityDiff,
-  entityDiffDescription : entityDiffDescription,
+  entityDiffExplanation : entityDiffExplanation,
 
 }
 

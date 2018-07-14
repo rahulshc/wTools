@@ -2110,6 +2110,46 @@ function errLogOnce( err )
 }
 
 // --
+// sure
+// --
+
+function _sureDebugger( condition )
+{
+  debugger;
+}
+
+//
+
+function sure( condition )
+{
+
+  if( !condition )
+  {
+    _sureDebugger( condition );
+    if( arguments.length === 1 )
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+    });
+    else if( arguments.length === 2 )
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+    });
+    else
+    throw _err
+    ({
+      args : _.arraySlice( arguments,1 ),
+      level : 2,
+    });
+  }
+
+  return;
+}
+
+// --
 // assert
 // --
 
@@ -2182,7 +2222,7 @@ function assert( condition )
   /*return;*/
 
   if( Config.debug === false )
-  return;
+  return true;
 
   if( !condition )
   {
@@ -2218,7 +2258,7 @@ function assertWithoutBreakpoint( condition )
   /*return;*/
 
   if( Config.debug === false )
-  return;
+  return true;
 
   if( !condition )
   {
@@ -2336,30 +2376,6 @@ function containerLike( src )
   return true;
   if( !_.objectLike( src ) )
   return true;
-}
-
-//
-
-function argumentsArrayIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Arguments]';
-}
-
-//
-
-function _argumentsArrayFrom()
-{
-  return arguments;
-}
-
-//
-
-function argumentsArrayFrom( args )
-{
-  _.assert( arguments.length === 1, 'expects single argument' );
-  if( _.argumentsArrayIs( args ) )
-  return args;
-  return _argumentsArrayFrom.apply( this, args );
 }
 
 //
@@ -3254,14 +3270,14 @@ function methodsCall( contexts,methods,args )
 
 function _routinesChain_pre( routine, args )
 {
-  var srcs = _.arrayAppendArrays( [], args[ 0 ] );
+  var srcs = _.arrayAppendArrays( [], [ args[ 0 ] ] );
 
   srcs = srcs.filter( ( e ) => e === null ? false : e );
 
   _.assert( _.routinesAre( srcs ) );
   _.assert( arguments.length === 2 );
   _.assert( args.length === 1 || args.length === 2 );
-  _.assert( _.arrayIs( args[ 0 ] ) || _.routineIs( args[ 0 ] ) );
+  _.assert( _.arrayIs( srcs ) || _.routineIs( srcs ) );
   _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined );
 
   return { srcs : srcs, joiner : args[ 1 ] || null };
@@ -3522,7 +3538,7 @@ function assertRoutineOptions( routine,args,defaults )
 
 //
 
-function routineOptionsWithUndefines( routine, args, defaults )
+function routineOptionsPreservingUndefines( routine, args, defaults )
 {
 
   if( !_.argumentsArrayIs( args ) )
@@ -3539,17 +3555,38 @@ function routineOptionsWithUndefines( routine, args, defaults )
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options, defaults );
-  _.mapComplement( options, defaults );
-
-  // _.assertMapHasOnlyWithUndefines( options, defaults );
-  // _.mapComplementWithUndefines( options, defaults );
+  _.mapComplementPreservingUndefines( options, defaults );
 
   return options;
 }
 
 //
 
-function assertRoutineOptionsWithUndefines( routine, args, defaults )
+function routineOptionsReplacingUndefines( routine, args, defaults )
+{
+
+  if( !_.argumentsArrayIs( args ) )
+  args = [ args ];
+  var options = args[ 0 ];
+  if( options === undefined )
+  options = Object.create( null );
+  defaults = defaults || routine.defaults;
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ), 'expects routine' );
+  _.assert( _.objectIs( defaults ), 'expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ), 'expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
+
+  _.assertMapHasOnly( options, defaults );
+  _.mapComplementReplacingUndefines( options, defaults );
+
+  return options;
+}
+
+//
+
+function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
 {
 
   if( !_.argumentsArrayIs( args ) )
@@ -3562,9 +3599,6 @@ function assertRoutineOptionsWithUndefines( routine, args, defaults )
   _.assert( _.objectIs( defaults ),'expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ),'expects object' );
   _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
-
-  // _.assertMapHasOnlyWithUndefines( options,defaults );
-  // _.assertMapHasAllWithUndefines( options,defaults );
 
   _.assertMapHasOnly( options,defaults );
   _.assertMapHasAll( options,defaults );
@@ -3790,7 +3824,7 @@ function routineVectorize_functor( o )
     {
       var args = _.arraySlice( arguments );
       var result = [];
-      xxx
+      throw _.err( 'not tested' );
       for( var r = 0 ; r < src.length ; r++ )
       {
         if( fieldFilter( src[ r ],r,src ) )
@@ -3807,7 +3841,7 @@ function routineVectorize_functor( o )
     {
       var args = _.arraySlice( arguments );
       var result = Object.create( null );
-      xxx
+      throw _.err( 'not tested' );
       for( var r in src )
       {
         if( fieldFilter( src[ r ],r,src ) )
@@ -3880,6 +3914,32 @@ function _comparatorFromEvaluator( mapper )
   }
 
   return mapper;
+}
+
+// --
+// arguments array
+// --
+
+function argumentsArrayIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Arguments]';
+}
+
+//
+
+function _argumentsArrayFrom()
+{
+  return arguments;
+}
+
+//
+
+function argumentsArrayFrom( args )
+{
+  _.assert( arguments.length === 1, 'expects single argument' );
+  if( _.argumentsArrayIs( args ) )
+  return args;
+  return _argumentsArrayFrom.apply( this, args );
 }
 
 // --
@@ -3985,6 +4045,26 @@ function numberIsInt( src )
 
 //
 
+function numbersAre( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( _.bufferTypedIs( src ) )
+  return true;
+
+  if( _.arrayGenericIs( src ) )
+  {
+    for( var s = 0 ; s < src.length ; s++ )
+    if( !_.numberIs( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return false;
+}
+
+//
+
 function numbersAreIdentical( src1, src2 )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -3997,7 +4077,7 @@ function numbersAreEquivalent( src1, src2, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   if( accuracy === undefined )
-  accuracy = _.EPS;
+  accuracy = _.accuracy;
   return Math.abs( src1-src2 ) <= accuracy;
 }
 
@@ -4065,6 +4145,22 @@ function numberInRange( n,range )
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( range.length === 2 );
   return range[ 0 ] <= n && n <= range[ 1 ];
+}
+
+//
+
+function numbersTotal( numbers )
+{
+  var result = 0;
+  _.assert( _.arrayLike( numbers ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  for( var n = 0 ; n < numbers.length ; n++ )
+  {
+    var number = numbers[ n ];
+    _.assert( _.numberIs( number ) )
+    result += number;
+  }
+  return result;
 }
 
 //
@@ -4382,9 +4478,7 @@ function strIs( src )
 
 function strsAre( src )
 {
-
-  // if( _.strIs( src ) )
-  // return true;
+  _.assert( arguments.length === 1 );
 
   if( _.arrayIs( src ) )
   {
@@ -4393,6 +4487,7 @@ function strsAre( src )
     return false;
     return true;
   }
+
   return false;
 }
 
@@ -5969,7 +6064,7 @@ function buffersTypedAreEquivalent( src1, src2, accuracy )
 
   debugger;
   if( accuracy === null || accuracy === undefined )
-  accuracy = _.EPS;
+  accuracy = _.accuracy;
 
   for( var i = 0 ; i < src1.length ; i++ )
   if( Math.abs( src1[ i ] - src2[ i ] ) > accuracy )
@@ -8097,8 +8192,6 @@ function arrayClone()
     }
   }
 
-  /* !!! not optimal */
-
   return result;
 }
 
@@ -9103,11 +9196,6 @@ function arraySwap( dst,index1,index2 )
 
 //
 
-// !!!
-// should give same outcomes
-// _.arrayCutin( [ 1,2,3,4 ],[ 1 ] )
-// [ 1,2,3,4 ].splice( 1 )
-
 /**
  * Removes range( range ) of elements from provided array( dstArray ) and adds elements from array( srcArray )
  * at the start position of provided range( range ) if( srcArray ) was provided.
@@ -9185,16 +9273,12 @@ function arrayCutin( dstArray, range, srcArray )
   if( last < first )
   last = first;
 
-  var args = srcArray ? srcArray.slice() : [];
-  args.unshift( last-first );
-  args.unshift( first );
-
   if( _.bufferAnyIs( dstArray ) )
   {
     if( first === last )
     return dstArray;
 
-    var newLength = length - args[ 1 ];
+    var newLength = length - last + first;
     var srcArrayLength = 0;
 
     if( srcArray )
@@ -9231,6 +9315,11 @@ function arrayCutin( dstArray, range, srcArray )
   }
   else
   {
+
+    var args = srcArray ? srcArray.slice() : [];
+    args.unshift( last-first );
+    args.unshift( first );
+
     result = dstArray.splice.apply( dstArray,args );
   }
 
@@ -12493,6 +12582,18 @@ function arraySetIdentical( ins1,ins2 )
 // range
 // --
 
+function rangeIs( range )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.numbersAre( range ) )
+  return false;
+  if( range.length !== 2 )
+  return false;
+  return true;
+}
+
+//
+
 function rangeLengthGet( range,options )
 {
 
@@ -13749,7 +13850,7 @@ function mapSupplementOwnAssigning( dstMap )
  * @memberof wTools
  */
 
-/* !!! need to explain how undefined handled */
+/* qqq : need to explain how undefined handled and write good documentation */
 
 function mapComplement( dstMap,srcMap )
 {
@@ -13770,11 +13871,37 @@ function mapComplementByMaps( dstMap, srcMaps )
 
 //
 
-function mapComplementWithUndefines( dstMap )
+function mapComplementReplacingUndefines( dstMap,srcMap )
+{
+  _.assert( _.field.mapper );
+  if( arguments.length === 2 )
+  return mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
+  var args = _.arraySlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwnOrUndefinedAssigning );
+  return mapExtendConditional.apply( this, args );
+}
+
+//
+
+function mapComplementByMapsReplacingUndefines( dstMap, srcMaps )
+{
+  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
+}
+
+//
+
+function mapComplementPreservingUndefines( dstMap )
 {
   var args = _.arraySlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnAssigning );
   return mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapComplementByMapsPreservingUndefines( dstMap, srcMaps )
+{
+  return _.mapExtendByMapsConditional( _.field.mapper.dstNotOwnAssigning, dstMap, srcMaps );
 }
 
 //
@@ -16300,7 +16427,443 @@ _mapOnly.defaults =
   filter : null,
 }
 
+// --
+// map sure
+// --
+
+/**
+ * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} srcMap - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1, c : 3 };
+ * var b = { a : 2, b : 3 };
+ * wTools.sureMapHasOnly( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have no fields : c
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 1 };
+ * wTools.sureMapHasOnly( a, b, 'message' )
+ *
+ * // caught <anonymous>:4:8
+ * // message Object should have no fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at <anonymous>:4
+ *
+ * @function sureMapHasOnly
+ * @throws {Exception} If map {-srcMap-} contains unique property.
+ * @memberof wTools
+ *
+ */
+
+function sureMapHasOnly( srcMap, screenMaps, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
+
+  if( but.length > 0 )
+  {
+    if( _.strJoin && !msg )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ', but, ' : null,' ).join( '\n' ) );
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+  }
+
+}
+
 //
+
+/**
+ * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument.
+ *
+ * @param {Object} srcMap - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msgs ] - error message as last argument.
+ *
+ * @example
+ * var x = { d : 1 };
+ * var a = Object.create( x );
+ * a.a = 5;
+ * var b = { a : 2 };
+ * wTools.sureMapOwnOnly( a, b ); //no exception
+ *
+ * @example
+ * var a = { d : 1 };
+ * var b = { a : 2 };
+ * wTools.sureMapOwnOnly( a, b );
+ *
+ * // caught <anonymous>:3:10
+ * // Object should have no own fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0, y : 2 };
+ * var b = { c : 0, d : 3};
+ * var c = { a : 1 };
+ * wTools.sureMapOwnOnly( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:8
+ * // error msg Object should have no own fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at <anonymous>:4
+ *
+ * @function sureMapOwnOnly
+ * @throws {Exception} If map {-srcMap-} contains unique property.
+ * @memberof wTools
+ *
+ */
+
+function sureMapOwnOnly( srcMap, screenMaps, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
+
+  if( but.length > 0 )
+  {
+    if( _.strJoin && !msg )
+    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} srcMap - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msg ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * wTools.sureMapHasNone( a, b );// no exception
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2, b : 2 }
+ * wTools.sureMapHasNone( a, b );
+ *
+ * // caught <anonymous>:4:8
+ * // Object should have no fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:4
+ *
+ * @example
+ * var a = { x : 0, y : 1 };
+ * var b = { x : 1, y : 0 };
+ * wTools.sureMapHasNone( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:3:9
+ * // error msg Object should have no fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:3
+ *
+ * @function sureMapHasNone
+ * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
+ * @memberof wTools
+ *
+ */
+
+function sureMapHasNone( srcMap, screenMaps, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
+
+  var l = arguments.length;
+  var none = _.mapOnly( srcMap, screenMaps );
+
+  var keys = Object.keys( none );
+  if( keys.length )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+function sureMapOwnNone( srcMap, screenMaps, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
+
+  if( but.length )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks all enumerable properties.
+ * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} srcMap - source map.
+ * @param {Object} all - object to compare with.
+ * @param {String} [ msgs ] - error message.
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2 };
+ * wTools.sureMapHasAll( a, b );// no exception
+ *
+ * @example
+ * var a = { d : 1 };
+ * var b = { a : 2 };
+ * wTools.sureMapHasAll( a, b );
+ *
+ * // caught <anonymous>:3:10
+ * // Object should have fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0, y : 2 };
+ * var b = { x : 0, d : 3};
+ * wTools.sureMapHasAll( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg Object should have fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at <anonymous>:3
+ *
+ * @function sureMapHasAll
+ * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
+ * @memberof wTools
+ *
+ */
+
+function sureMapHasAll( srcMap, all, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapBut( all,srcMap ) );
+
+  if( but.length > 0 )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should have fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
+ * Works only in Config.debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} srcMap - source map.
+ * @param {Object} all - object to compare with.
+ * @param {String} [ msgs ] - error message.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2 };
+ * wTools.sureMapOwnAll( a, b );// no exception
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { a : 2, b : 2 }
+ * wTools.sureMapOwnAll( a, b );
+ *
+ * // caught <anonymous>:3:8
+ * // Object should have own fields : b
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4269)
+ * // at <anonymous>:3
+ *
+ * @example
+ * var a = { x : 0 };
+ * var b = { x : 1, y : 0};
+ * wTools.sureMapHasAll( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg Object should have fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at <anonymous>:3
+ *
+ * @function sureMapOwnAll
+ * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
+ * @memberof wTools
+ *
+ */
+
+function sureMapOwnAll( srcMap, all, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapOwnBut( all,srcMap ) );
+
+  if( but.length > 0 )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should own fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+//
+
+/**
+ * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found undefined property it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed after first argument.
+ *
+ * @param {Object} srcMap - source map.
+ * @param {String} [ msgs ] - error message for generated exception.
+ *
+ * @example
+ * var map = { a : '1', b : undefined };
+ * wTools.sureMapHasNoUndefine( map );
+ *
+ * // caught <anonymous>:2:8
+ * // Object  should have no undefines, but has : b
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * var map = { a : undefined, b : '1' };
+ * wTools.sureMapHasNoUndefine( map, '"map"');
+ *
+ * // caught <anonymous>:2:8
+ * // Object "map" should have no undefines, but has : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @function sureMapHasNoUndefine
+ * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If map {-srcMap-} contains undefined property.
+ * @memberof wTools
+ *
+ */
+
+function sureMapHasNoUndefine( srcMap, msg )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 )
+
+  var but = [];
+  var l = arguments.length;
+
+  for( var s in srcMap )
+  if( srcMap[ s ] === undefined )
+  but.push( s );
+
+  if( but.length )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ 'Object ' + ( msg ? _.strConcat( msg ) : ' should have no undefines, but has' ) + ' : ' + _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+  }
+
+}
+
+// --
+// map assert
+// --
 
 /**
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
@@ -16345,30 +16908,9 @@ _mapOnly.defaults =
 
 function assertMapHasOnly( srcMap, screenMaps, msg )
 {
-
   if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
-
-  var l = arguments.length;
-  // var hasMsg = _.strIs( arguments[ l-1 ] );
-  // var screenMaps = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
-  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
-
-  if( but.length > 0 )
-  {
-    if( _.strJoin && !msg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ', but, ' : null,' ).join( '\n' ) );
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
+  return true;
+  return _.sureMapHasOnly.apply( this, arguments );
 }
 
 //
@@ -16423,59 +16965,10 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
 
 function assertMapOwnOnly( srcMap, screenMaps, msg )
 {
-
   if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
-
-  var l = arguments.length;
-  var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
-
-  if( but.length > 0 )
-  {
-    if( _.strJoin && !msg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
+  return true;
+  return _.sureMapOwnOnly.apply( this, arguments );
 }
-
-//
-//
-// function assertMapHasOnlyWithUndefines( srcMap, screenMaps, msg )
-// {
-//
-//   if( Config.debug === false )
-//   return;
-//
-//   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-//   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) );
-//
-//   var l = arguments.length;
-//   var hasMsg = _.strIs( arguments[ l-1 ] );
-//   // var screenMaps = hasMsg ? _.arraySlice( arguments,1,l-1 ) : _.arraySlice( arguments,1,l );
-//   var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
-//
-//   if( but.length > 0 )
-//   {
-//     if( _.strJoin && !hasMsg )
-//     console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
-//     debugger;
-//     throw _err
-//     ({
-//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have no fields :',_.strQuote( but ).join( ', ' ) ],
-//       level : 2,
-//     });
-//   }
-//
-// }
 
 //
 
@@ -16527,53 +17020,18 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
 
 function assertMapHasNone( srcMap, screenMaps, msg )
 {
-
   if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
-
-  var l = arguments.length;
-  var none = _.mapOnly( srcMap, screenMaps );
-
-  var keys = Object.keys( none );
-  if( keys.length )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
+  return true;
+  return _.sureMapHasNone.apply( this, arguments );
 }
 
 //
 
 function assertMapOwnNone( srcMap, screenMaps, msg )
 {
-
   if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
-
-  var l = arguments.length;
-  var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
-
-  if( but.length )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
+  return true;
+  return _.sureMapOwnNone.apply( this, arguments );
 }
 
 //
@@ -16626,26 +17084,9 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
 
 function assertMapHasAll( srcMap, all, msg )
 {
-
   if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
-
-  var l = arguments.length;
-  var but = Object.keys( _.mapBut( all,srcMap ) );
-
-  if( but.length > 0 )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
+  return true;
+  return _.sureMapHasAll.apply( this, arguments );
 }
 
 //
@@ -16697,54 +17138,10 @@ function assertMapHasAll( srcMap, all, msg )
 
 function assertMapOwnAll( srcMap, all, msg )
 {
-
   if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
-
-  var l = arguments.length;
-  var but = Object.keys( _.mapOwnBut( all,srcMap ) );
-
-  if( but.length > 0 )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
+  return true;
+  return _.sureMapOwnAll.apply( this, arguments );
 }
-
-//
-//
-// function assertMapHasAllWithUndefines( srcMap, all, msg )
-// {
-//
-//   if( Config.debug === false )
-//   return;
-//
-//   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-//   _.assert( arguments.length === 2 || _.strIs( msg ) );
-//
-//   var l = arguments.length;
-//   var hasMsg = _.strIs( arguments[ l-1 ] );
-//   var but = Object.keys( _.mapBut( all, srcMap ) );
-//
-//   if( but.length > 0 )
-//   {
-//     debugger;
-//     throw _err
-//     ({
-//       args : [ hasMsg ? arguments[ l-1 ] : '','Object should have all fields :',_.strQuote( but ).join( ', ' ) ],
-//       level : 2,
-//     });
-//   }
-//
-// }
 
 //
 
@@ -16787,26 +17184,9 @@ function assertMapOwnAll( srcMap, all, msg )
 
 function assertMapHasNoUndefine( srcMap, msg )
 {
-
   if( Config.debug === false )
-  return;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 )
-
-  var l = arguments.length;
-  var hasMsg = _.strIs( arguments[ l-1 ] );
-
-  for( var s in srcMap )
-  if( srcMap[ s ] === undefined )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( 'Object ' + ( hasMsg ? _.arraySlice( arguments,1,arguments.length ) : '' ) + ' should have no undefines, but has' ) + ' : ' + s ],
-      level : 2,
-    });
-  }
-
+  return true;
+  return _.sureMapHasNoUndefine.apply( this, arguments );
 }
 
 // --
@@ -16933,6 +17313,10 @@ var Routines =
   errLog : errLog,
   errLogOnce : errLogOnce,
 
+  // sure
+
+  sure : sure,
+
   // assert
 
   assert : assert,
@@ -16947,10 +17331,6 @@ var Routines =
   primitiveIs : primitiveIs,
   containerIs : containerIs,
   containerLike : containerLike,
-
-  argumentsArrayIs : argumentsArrayIs,
-  _argumentsArrayFrom : _argumentsArrayFrom,
-  argumentsArrayFrom : argumentsArrayFrom, /* xxx */
 
   symbolIs : symbolIs,
 
@@ -17006,8 +17386,8 @@ var Routines =
 
   routineOptions : routineOptions,
   assertRoutineOptions : assertRoutineOptions,
-  routineOptionsWithUndefines : routineOptionsWithUndefines,
-  assertRoutineOptionsWithUndefines : assertRoutineOptionsWithUndefines,
+  routineOptionsPreservingUndefines : routineOptionsPreservingUndefines,
+  assertRoutineOptionsPreservingUndefines : assertRoutineOptionsPreservingUndefines,
   routineOptionsFromThis : routineOptionsFromThis,
 
   routineSupplement : routineSupplement,
@@ -17019,6 +17399,12 @@ var Routines =
   _comparatorFromEvaluator : _comparatorFromEvaluator,
 
   bind : null,
+
+  // arguments array
+
+  argumentsArrayIs : argumentsArrayIs,
+  _argumentsArrayFrom : _argumentsArrayFrom,
+  argumentsArrayFrom : argumentsArrayFrom,
 
   // bool
 
@@ -17034,6 +17420,7 @@ var Routines =
   numberIsInfinite : numberIsInfinite,
   numberIsInt : numberIsInt,
 
+  numbersAre : numbersAre,
   numbersAreIdentical : numbersAreIdentical,
   numbersAreEquivalent : numbersAreEquivalent,
   numbersAreFinite : numbersAreFinite,
@@ -17041,6 +17428,7 @@ var Routines =
   numbersAreInt : numbersAreInt,
 
   numberInRange : numberInRange,
+  numbersTotal : numbersTotal,
 
   numberFrom : numberFrom,
   numbersFrom : numbersFrom,
@@ -17279,8 +17667,6 @@ var Routines =
 
   // array prepend
 
-  /* all once + equilizer require tests!!! */
-
   arrayPrepend : arrayPrepend,
   arrayPrependOnce : arrayPrependOnce,
   arrayPrependOnceStrictly : arrayPrependOnceStrictly,
@@ -17384,9 +17770,10 @@ var Routines =
 
   // range
 
-  rangeLengthGet : rangeLengthGet, /* experimental */
-  rangeFirstGet : rangeFirstGet, /* experimental */
-  rangeLastGet : rangeLastGet, /* experimental */
+  rangeIs : rangeIs,
+  rangeLengthGet : rangeLengthGet,
+  rangeFirstGet : rangeFirstGet,
+  rangeLastGet : rangeLastGet,
 
   // map checker
 
@@ -17442,7 +17829,10 @@ var Routines =
 
   mapComplement : mapComplement,
   mapComplementByMaps : mapComplementByMaps,
-  mapComplementWithUndefines : mapComplementWithUndefines,
+  mapComplementReplacingUndefines : mapComplementReplacingUndefines,
+  mapComplementByMapsReplacingUndefines : mapComplementByMapsReplacingUndefines,
+  mapComplementPreservingUndefines : mapComplementPreservingUndefines,
+  mapComplementByMapsPreservingUndefines : mapComplementByMapsPreservingUndefines,
 
   // map extend recursive
 
@@ -17477,7 +17867,7 @@ var Routines =
   mapInvertDroppingDuplicates : mapInvertDroppingDuplicates,
   mapsFlatten : mapsFlatten,
 
-  mapToArray : mapToArray, /* !!! test rquired */
+  mapToArray : mapToArray, /* qqq : test rquired */
   mapToStr : mapToStr, /* experimental */
 
   // map selector
@@ -17495,7 +17885,7 @@ var Routines =
   mapAllVals : mapAllVals,
 
   _mapPairs : _mapPairs,
-  mapPairs : mapPairs, /* !!! test rquired */
+  mapPairs : mapPairs,
   mapOwnPairs : mapOwnPairs,
   mapAllPairs : mapAllPairs,
 
@@ -17537,6 +17927,19 @@ var Routines =
   mapOnlyOwn : mapOnlyOwn,
   mapOnlyComplementing : mapOnlyComplementing,
   _mapOnly : _mapOnly,
+
+  // map surer
+
+  sureMapHasOnly : sureMapHasOnly,
+  sureMapOwnOnly : sureMapOwnOnly,
+
+  sureMapHasNone : sureMapHasNone,
+  sureMapOwnNone : sureMapOwnNone,
+
+  sureMapHasAll : sureMapHasAll,
+  sureMapOwnAll : sureMapOwnAll,
+
+  sureMapHasNoUndefine : sureMapHasNoUndefine,
 
   // map assert
 
