@@ -98,16 +98,16 @@ Self.nothing = _global_.nothing;
 _global_.U32x = Uint32Array;
 _global_.U16x = Uint16Array;
 _global_.U8x = Uint8Array;
-_global_.Ux = U32x;
+_global_.Ux = _global_.U32x;
 
 _global_.I32x = Int32Array;
 _global_.I16x = Int16Array;
 _global_.I8x = Int8Array;
-_global_.Ix = I32x;
+_global_.Ix = _global_.I32x;
 
 _global_.F64x = Float64Array;
 _global_.F32x = Float32Array;
-_global_.Fx = F32x;
+_global_.Fx = _global_.F32x;
 
 //
 
