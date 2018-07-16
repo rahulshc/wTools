@@ -1,6 +1,6 @@
 ( function _aFundamental_s_() {
 
-'use strict';
+'use strict'; /**/
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.

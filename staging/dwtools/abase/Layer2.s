@@ -1,6 +1,6 @@
 (function _wToolsLayer2_s_(){
 
-'use strict';
+'use strict'; /**/
 
 if( typeof module !== 'undefined' && module !== null )
 {
