@@ -93,6 +93,22 @@ Self.any = _global_.any;
 Self.none = _global_.none;
 Self.nothing = _global_.nothing;
 
+// type aliases
+
+_global_.U32x = Uint32Array;
+_global_.U16x = Uint16Array;
+_global_.U8x = Uint8Array;
+_global_.Ux = U32x;
+
+_global_.I32x = Int32Array;
+_global_.I16x = Int16Array;
+_global_.I8x = Int8Array;
+_global_.Ix = I32x;
+
+_global_.F64x = Float64Array;
+_global_.F32x = Float32Array;
+_global_.Fx = F32x;
+
 //
 
 var _ArrayIndexOf = Array.prototype.indexOf;
@@ -15679,13 +15695,19 @@ function mapAllFields( srcMap )
   o.enumerable = 0;
   o.selectFilter = function selectRoutine( srcMap,k )
   {
-    debugger;
     if( !_.routineIs( srcMap[ k ] ) )
     return k;
-    debugger;
   }
 
-  debugger;
+  if( _.routineIs( srcMap ) )
+  o.selectFilter = function selectRoutine( srcMap,k )
+  {
+    if( _.arrayHas( [ 'arguments', 'caller' ], k ) )
+    return;
+    if( !_.routineIs( srcMap[ k ] ) )
+    return k;
+  }
+
   var result = _._mapProperties( o );
   return result;
 }
@@ -16454,6 +16476,30 @@ _mapOnly.defaults =
 // map sure
 // --
 
+function sureMapHasFields( srcMap, screenMaps, msg )
+{
+  var result = true;
+
+  result = result && sureMapHasOnly( srcMap, screenMaps );
+  result = result && sureMapHasAll( srcMap, screenMaps );
+
+  return true;
+}
+
+//
+
+function sureMapOwnFields( srcMap, screenMaps, msg )
+{
+  var result = true;
+
+  result = result && sureMapOwnOnly( srcMap, screenMaps );
+  result = result && sureMapOwnAll( srcMap, screenMaps );
+
+  return true;
+}
+
+//
+
 /**
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
@@ -16514,8 +16560,10 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
       args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    return false;
   }
 
+  return true;
 }
 
 //
@@ -16587,101 +16635,10 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
       args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    return false;
   }
 
-}
-
-//
-
-/**
- * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
- * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
- *
- * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msg ] - error message as last argument.
- *
- * @example
- * var a = { a : 1 };
- * var b = { b : 2 };
- * wTools.sureMapHasNone( a, b );// no exception
- *
- * @example
- * var x = { a : 1 };
- * var a = Object.create( x );
- * var b = { a : 2, b : 2 }
- * wTools.sureMapHasNone( a, b );
- *
- * // caught <anonymous>:4:8
- * // Object should have no fields : a
- * //
- * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4518)
- * // at <anonymous>:4
- *
- * @example
- * var a = { x : 0, y : 1 };
- * var b = { x : 1, y : 0 };
- * wTools.sureMapHasNone( a, b, 'error msg' );
- *
- * // caught <anonymous>:3:9
- * // error msg Object should have no fields : x,y
- * //
- * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
- * // at <anonymous>:3
- *
- * @function sureMapHasNone
- * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
- * @memberof wTools
- *
- */
-
-function sureMapHasNone( srcMap, screenMaps, msg )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
-
-  var l = arguments.length;
-  var none = _.mapOnly( srcMap, screenMaps );
-
-  var keys = Object.keys( none );
-  if( keys.length )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
-}
-
-//
-
-function sureMapOwnNone( srcMap, screenMaps, msg )
-{
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
-
-  var l = arguments.length;
-  var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
-
-  if( but.length )
-  {
-    debugger;
-    throw _err
-    ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
-  }
-
+  return true;
 }
 
 //
@@ -16738,7 +16695,7 @@ function sureMapHasAll( srcMap, all, msg )
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
-  var l = arguments.length;
+  // var l = arguments.length;
   var but = Object.keys( _.mapBut( all,srcMap ) );
 
   if( but.length > 0 )
@@ -16749,8 +16706,10 @@ function sureMapHasAll( srcMap, all, msg )
       args : [ ( msg ? _.strConcat( msg ) : 'Object should have fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    return false;
   }
 
+  return true;
 }
 
 //
@@ -16806,7 +16765,7 @@ function sureMapOwnAll( srcMap, all, msg )
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
-  var l = arguments.length;
+  // var l = arguments.length;
   var but = Object.keys( _.mapOwnBut( all,srcMap ) );
 
   if( but.length > 0 )
@@ -16817,8 +16776,107 @@ function sureMapOwnAll( srcMap, all, msg )
       args : [ ( msg ? _.strConcat( msg ) : 'Object should own fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    return false;
   }
 
+  return true;
+}
+
+//
+
+/**
+ * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
+ * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
+ * Also generates error using message passed as last argument( msg ).
+ *
+ * @param {Object} srcMap - source map.
+ * @param {...Object} target - object(s) to compare with.
+ * @param {String} [ msg ] - error message as last argument.
+ *
+ * @example
+ * var a = { a : 1 };
+ * var b = { b : 2 };
+ * wTools.sureMapHasNone( a, b );// no exception
+ *
+ * @example
+ * var x = { a : 1 };
+ * var a = Object.create( x );
+ * var b = { a : 2, b : 2 }
+ * wTools.sureMapHasNone( a, b );
+ *
+ * // caught <anonymous>:4:8
+ * // Object should have no fields : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:4
+ *
+ * @example
+ * var a = { x : 0, y : 1 };
+ * var b = { x : 1, y : 0 };
+ * wTools.sureMapHasNone( a, b, 'error msg' );
+ *
+ * // caught <anonymous>:3:9
+ * // error msg Object should have no fields : x,y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:3
+ *
+ * @function sureMapHasNone
+ * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
+ * @memberof wTools
+ *
+ */
+
+function sureMapHasNone( srcMap, screenMaps, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
+
+  // var l = arguments.length;
+  var none = _.mapOnly( srcMap, screenMaps );
+
+  var keys = Object.keys( none );
+  if( keys.length )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+    return false;
+  }
+
+  return true;
+}
+
+//
+
+function sureMapOwnNone( srcMap, screenMaps, msg )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || _.strIs( msg ) );
+
+  // var l = arguments.length;
+  var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
+
+  if( but.length )
+  {
+    debugger;
+    throw _err
+    ({
+      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+    return false;
+  }
+
+  return true;
 }
 
 //
@@ -16880,13 +16938,33 @@ function sureMapHasNoUndefine( srcMap, msg )
       args : [ 'Object ' + ( msg ? _.strConcat( msg ) : ' should have no undefines, but has' ) + ' : ' + _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    return false;
   }
 
+  return true;
 }
 
 // --
 // map assert
 // --
+
+function assertMapHasFields( srcMap, screenMaps, msg )
+{
+  if( Config.debug === false )
+  return true;
+  return _.sureMapHasFields.apply( this, arguments );
+}
+
+//
+
+function assertMapOwnFields( srcMap, screenMaps, msg )
+{
+  if( Config.debug === false )
+  return true;
+  return _.sureMapOwnFields.apply( this, arguments );
+}
+
+//
 
 /**
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
@@ -17962,18 +18040,24 @@ var Routines =
 
   // map surer
 
+  sureMapHasFields : sureMapHasFields,
+  sureMapOwnFields : sureMapOwnFields,
+
   sureMapHasOnly : sureMapHasOnly,
   sureMapOwnOnly : sureMapOwnOnly,
-
-  sureMapHasNone : sureMapHasNone,
-  sureMapOwnNone : sureMapOwnNone,
 
   sureMapHasAll : sureMapHasAll,
   sureMapOwnAll : sureMapOwnAll,
 
+  sureMapHasNone : sureMapHasNone,
+  sureMapOwnNone : sureMapOwnNone,
+
   sureMapHasNoUndefine : sureMapHasNoUndefine,
 
   // map assert
+
+  assertMapHasFields : assertMapHasFields,
+  assertMapOwnFields : assertMapOwnFields,
 
   assertMapHasOnly : assertMapHasOnly,
   assertMapOwnOnly : assertMapOwnOnly,
