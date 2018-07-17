@@ -1,6 +1,6 @@
 (function _fStringTools_s_() {
 
-'use strict'; /**/
+'use strict';
 
 //
 
@@ -1126,6 +1126,17 @@ function strStripEmptyLines( srcStr )
 // --
 // splitter
 // --
+
+function strSub( srcStr, range )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( srcStr ) );
+  _.assert( _.rangeIs( range ) );
+
+  return srcStr.substring( range[ 0 ], range[ 1 ] );
+}
+
+//
 
 /**
 * @typedef {object} wTools~toStrInhalfOptions
@@ -3476,30 +3487,11 @@ strLinesSelect.defaults =
   delimteter : '\n',
 }
 
-// debugger;
-// var a = '1\n\n3\n4';
-// var l = strLinesSelect( a,[ 0,1 ] );
-// var l = strLinesSelect( a,[ 1,2 ] );
-// var l = strLinesSelect( a,[ 2,3 ] );
-// var l = strLinesSelect( a,[ 3,4 ] );
-// debugger;
-//
-// var l = strLinesSelect( a,[ 4,5 ] );
-// var l = strLinesSelect( a,[ -1,0 ] );
-// var l = strLinesSelect( a,[ -1,1 ] );
-// var l = strLinesSelect( a,[ -1,2 ] );
-//
-// var l = strLinesSelect( a,[ 0,2 ] );
-// var l = strLinesSelect( a,[ 1,3 ] );
-// var l = strLinesSelect( a,[ 2,4 ] );
-// var l = strLinesSelect( a,[ 2,5 ] );
-// var l = strLinesSelect( a,[ 3,5 ] );
-// debugger;
-//
 //
 
 function strLinesNearest( o )
 {
+  var result;
   var resultCharRange = [];
 
   _.assert( arguments.length === 1, 'expects single argument' );
@@ -3507,43 +3499,62 @@ function strLinesNearest( o )
 
   /* */
 
-  var numberOfLines = o.numberOfLines;
-  for( var i = o.charRange[ 0 ]-1 ; i >= 0 ; i-- )
-  {
-    if( numberOfLines <= 0 )
-    break;
-    if( o.src[ i ] === '\n' )
-    numberOfLines -= 1;
-  }
-  resultCharRange[ 0 ] = i+1;
-
-  /* */
-
-  var numberOfLines = o.numberOfLines;
-  for( var i = o.charRange[ 1 ] ; i < o.src.length ; i++ )
-  {
-    if( numberOfLines <= 0 )
-    break;
-    if( o.src[ i ] === '\n' )
-    numberOfLines -= 1;
-  }
-  resultCharRange[ 1 ] = i-1;
-
-  /* */
-
-  var result;
-
-  if( o.nearestSplitting )
+  if( o.numberOfLines === 0 )
   {
     result = [];
-    result[ 0 ] = o.src.substring( resultCharRange[ 0 ],o.charRange[ 0 ] );
-    result[ 1 ] = o.src.substring( o.charRange[ 0 ],o.charRange[ 1 ] );
-    result[ 2 ] = o.src.substring( o.charRange[ 1 ],resultCharRange[ 1 ] );
+    result[ 0 ] = '';
+    result[ 1 ] = o.src.substring( o.charsRange[ 0 ],o.charsRange[ 1 ] );
+    result[ 2 ] = '';
+    return result;
   }
-  else
+
+  /* */
+
+  var i = o.charsRange[ 0 ]-1;
+  var numberOfLinesLeft = Math.ceil( ( o.numberOfLines+1 ) / 2 );
+  var numberOfLines = numberOfLinesLeft;
+  if( numberOfLines > 0 )
   {
-    result = o.src.substring( resultCharRange[ 0 ],resultCharRange[ 1 ] );
+    for( ; i >= 0 ; i-- )
+    {
+      if( o.src[ i ] === '\n' )
+      numberOfLines -= 1;
+      if( numberOfLines <= 0 )
+      break;
+    }
+    i = i+1;
   }
+  resultCharRange[ 0 ] = i;
+
+  // 0 -> 0 + 0 = 0
+  // 1 -> 1 + 1 = 2
+  // 2 -> 2 + 1 = 3
+  // 3 -> 2 + 2 = 4
+
+  /* */
+
+  var i = o.charsRange[ 1 ];
+  var numberOfLinesRight = o.numberOfLines + 1 - numberOfLinesLeft;
+  var numberOfLines = numberOfLinesRight;
+  if( numberOfLines > 0 )
+  {
+    for( var i = o.charsRange[ 1 ] ; i < o.src.length ; i++ )
+    {
+      if( o.src[ i ] === '\n' )
+      numberOfLines -= 1;
+      if( numberOfLines <= 0 )
+      break;
+    }
+    // i = i-1;
+  }
+  resultCharRange[ 1 ] = i;
+
+  /* */
+
+  result = [];
+  result[ 0 ] = o.src.substring( resultCharRange[ 0 ],o.charsRange[ 0 ] );
+  result[ 1 ] = o.src.substring( o.charsRange[ 0 ],o.charsRange[ 1 ] );
+  result[ 2 ] = o.src.substring( o.charsRange[ 1 ],resultCharRange[ 1 ] );
 
   return result;
 }
@@ -3551,10 +3562,9 @@ function strLinesNearest( o )
 strLinesNearest.defaults =
 {
   src : null,
-  charRange : null,
+  charsRange : null,
   numberOfLines : 2,
-  nearestSplitting : 0,
-  }
+}
 
 // --
 // evaluator
@@ -3693,6 +3703,35 @@ function strLinesCount( src )
   return result;
 }
 
+//
+
+function strLinesRangeWithCharRange( o )
+{
+
+  if( arguments[ 1 ] !== undefined )
+  o = { src : arguments[ 0 ], charsRange : arguments[ 1 ] }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.rangeIs( o.charsRange ) );
+  _.assert( _.strIs( o.src ) );
+  _.routineOptions( strLinesRangeWithCharRange, o );
+
+  var pre = o.src.substring( 0, o.charsRange[ 0 ] );
+  var mid = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
+  var result = []
+
+  result[ 0 ] = _.strLinesCount( pre )-1;
+  result[ 1 ] = result[ 0 ] + _.strLinesCount( mid );
+
+  return result;
+}
+
+strLinesRangeWithCharRange.defaults =
+{
+  src : null,
+  charsRange : null,
+}
+
 // --
 // checker
 // --
@@ -3826,6 +3865,8 @@ var Proto =
 
   // splitter
 
+  strSub : strSub,
+
   _strCutOff : _strCutOff,
   strCutOffLeft : strCutOffLeft,
   strCutOffRight : strCutOffRight,
@@ -3860,6 +3901,7 @@ var Proto =
   strLinesSelect : strLinesSelect,
   strLinesNearest : strLinesNearest,
   strLinesCount : strLinesCount,
+  strLinesRangeWithCharRange : strLinesRangeWithCharRange,
 
   // evaluator
 

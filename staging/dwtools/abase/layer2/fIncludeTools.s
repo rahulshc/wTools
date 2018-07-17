@@ -1,6 +1,6 @@
 ( function _Include_s_() {
 
-'use strict'; /**/
+'use strict';
 
 //
 
@@ -659,6 +659,14 @@ IncludeHandlersMap[ 'wMathConcepts' ] =
   includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wmathconcepts' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.box },
 }
+
+IncludeHandlersMap[ 'wFilesOperationsDirector' ] =
+{
+  includeAny : [ '../../../dwtools/atop/files/OperationsDirector.s','atop/files/OperationsDirector.s','wFilesOperationsDirector' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesOperationDirector },
+}
+
+
 
 IncludeHandlersMap[ 'wBaker' ] =
 {

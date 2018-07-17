@@ -1,6 +1,6 @@
 ( function _StringTools_test_s_() {
 
-'use strict'; /**/
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -5526,6 +5526,500 @@ function strLinesCount( test )
 
 //
 
+function strLinesNearest( test )
+{
+
+  var srcStr =
+`
+a
+bc
+def
+ghij
+
+`
+;
+
+  function forSplitting( splitting )
+  {
+
+    /* - */
+
+    test.open( 'aligned range, single line' );
+
+    /*  */
+
+    test.open( 'numberOfLines : 0' );
+
+    var crange = [ 6,9 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      '',
+      'def',
+      '',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 0,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'def' );
+
+    test.close( 'numberOfLines : 0' );
+
+    /*  */
+
+    test.open( 'numberOfLines : 1' );
+
+    var crange = [ 6,9 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      '',
+      'def',
+      '',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 1,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'def' );
+
+    test.close( 'numberOfLines : 1' );
+
+    /* */
+
+    test.open( 'numberOfLines : 2' );
+
+    var crange = [ 6,9 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      'bc\n',
+      'def',
+      '',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 2,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'def' );
+
+    test.close( 'numberOfLines : 2' );
+
+    /* */
+
+    test.open( 'numberOfLines : 3' );
+
+    var crange = [ 6,9 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      'bc\n',
+      'def',
+      '\nghij',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 3,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'def' );
+
+    test.close( 'numberOfLines : 3' );
+
+    /* */
+
+    test.open( 'numberOfLines : 4' );
+
+    var crange = [ 6,9 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      'a\nbc\n',
+      'def',
+      '\nghij',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 4,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'def' );
+
+    test.close( 'numberOfLines : 4' );
+
+    /* - */
+
+    test.close( 'aligned range, single line' );
+
+    /* - */
+
+    test.open( 'not aligned range, several lines' );
+
+    /*  */
+
+    test.open( 'numberOfLines : 0' );
+
+    var crange = [ 4,11 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      '',
+      'c\ndef\ng',
+      '',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 0,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'c\ndef\ng' );
+
+    test.close( 'numberOfLines : 0' );
+
+    /*  */
+
+    test.open( 'numberOfLines : 1' );
+
+    var crange = [ 4,11 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      'b',
+      'c\ndef\ng',
+      'hij',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 1,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'c\ndef\ng' );
+
+    test.close( 'numberOfLines : 1' );
+
+    /* */
+
+    test.open( 'numberOfLines : 2' );
+
+    var crange = [ 4,11 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      'a\nb',
+      'c\ndef\ng',
+      'hij',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 2,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'c\ndef\ng' );
+
+    test.close( 'numberOfLines : 2' );
+
+    /* */
+
+    test.open( 'numberOfLines : 3' );
+
+    var crange = [ 4,11 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      'a\nb',
+      'c\ndef\ng',
+      'hij\n',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 3,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'c\ndef\ng' );
+
+    test.close( 'numberOfLines : 3' );
+
+    /* */
+
+    test.open( 'numberOfLines : 4' );
+
+    var crange = [ 4,11 ];
+    var sub = _.strSub( srcStr,crange );
+
+    var expected =
+    [
+      '\na\nb',
+      'c\ndef\ng',
+      'hij\n',
+    ]
+
+    var got = _.strLinesNearest
+    ({
+      src : srcStr,
+      charsRange : crange,
+      numberOfLines : 4,
+    });
+
+    test.will = 'check strLinesNearest';
+    test.identical( got, splitting ? expected : expected.join( '' ) );
+    test.will = 'check strSub';
+    test.identical( sub, 'c\ndef\ng' );
+
+    test.close( 'numberOfLines : 4' );
+
+    /* - */
+
+    test.close( 'not aligned range, several lines' );
+
+  }
+
+  /* -- */
+
+  test.open( 'splitting : 1' );
+  forSplitting( 1 );
+  test.close( 'splitting : 1' );
+
+  /* -- */
+
+  test.open( 'splitting : 0' );
+  forSplitting( 0 );
+  test.close( 'splitting : 0' );
+
+  /* -- */
+
+}
+
+//
+
+function strLinesRangeWithCharRange( test )
+{
+
+  test.open( 'embraced by empty lines' );
+
+  var srcStr =
+`
+a
+bc
+def
+ghij
+
+`
+;
+
+  test.case = 'single line in the middle'; /* */
+
+  var crange = [ 3,5 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 2,3 ] );
+  test.identical( sub, 'bc' );
+
+  test.case = 'line in the middle with NL'; /* */
+
+  var crange = [ 3,6 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 2,4 ] );
+  test.identical( sub, 'bc\n' );
+
+  test.case = 'single line in the beginning'; /* */
+
+  var crange = [ 1,2 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 1,2 ] );
+  test.identical( sub, 'a' );
+
+  test.case = 'line in the beginning with NL'; /* */
+
+  var crange = [ 1,3 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 1,3 ] );
+  test.identical( sub, 'a\n' );
+
+  test.case = 'single line in the end'; /* */
+
+  var crange = [ 10,14 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 4,5 ] );
+  test.identical( sub, 'ghij' );
+
+  test.case = 'line in the end with NL'; /* */
+
+  var crange = [ 10,15 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 4,6 ] );
+  test.identical( sub, 'ghij\n' );
+
+  test.case = 'not aligned range with multiple lines'; /* */
+
+  var crange = [ 4,11 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 2,5 ] );
+  test.identical( sub, 'c\ndef\ng' );
+
+  test.case = 'empty line in the beginning'; /* */
+
+  var crange = [ 0,0 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 0,1 ] );
+  test.identical( sub, '' );
+
+  test.case = 'empty line in the end'; /* */
+
+  var crange = [ 15,15 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 5,6 ] );
+  test.identical( sub, '' );
+
+  test.close( 'embraced by empty lines' );
+
+  /* */
+
+  test.open( 'not embraced by empty lines' );
+
+  var srcStr =
+`a
+bc
+def
+ghij`
+;
+
+  test.case = 'single line in the middle'; /* */
+
+  var crange = [ 2,4 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 1,2 ] );
+  test.identical( sub, 'bc' );
+
+  test.case = 'line in the middle with NL'; /* */
+
+  var crange = [ 2,5 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 1,3 ] );
+  test.identical( sub, 'bc\n' );
+
+  test.case = 'single line in the beginning'; /* */
+
+  var crange = [ 0,1 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 0,1 ] );
+  test.identical( sub, 'a' );
+
+  test.case = 'line in the beginning with NL'; /* */
+
+  var crange = [ 0,2 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 0,2 ] );
+  test.identical( sub, 'a\n' );
+
+  test.case = 'single line in the end'; /* */
+
+  var crange = [ 9,13 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 3,4 ] );
+  test.identical( sub, 'ghij' );
+
+  test.case = 'line in the end with NL'; /* */
+
+  var crange = [ 9,14 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 3,4 ] );
+  test.identical( sub, 'ghij' );
+
+  test.case = 'not aligned range with multiple lines'; /* */
+
+  var crange = [ 3,10 ];
+  var sub = _.strSub( srcStr,crange );
+  var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
+  test.identical( lrange, [ 1,4 ] );
+  test.identical( sub, 'c\ndef\ng' );
+
+  test.close( 'not embraced by empty lines' );
+
+}
+
+//
+
 function strShort( test )
 {
 
@@ -6060,6 +6554,9 @@ var Self =
     strLinesSelect : strLinesSelect,
     strLinesNumber : strLinesNumber,
     strLinesCount : strLinesCount,
+
+    strLinesNearest : strLinesNearest,
+    strLinesRangeWithCharRange : strLinesRangeWithCharRange,
 
     strShort : strShort,
     strCommonLeft : strCommonLeft,
