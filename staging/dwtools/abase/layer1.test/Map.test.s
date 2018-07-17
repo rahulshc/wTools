@@ -1,6 +1,6 @@
 ( function _Map_test_s( ) {
 
-'use strict'; /**/
+'use strict';
 
 if( typeof module !== 'undefined' )
 {

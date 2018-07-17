@@ -1,6 +1,6 @@
 ( function _aFundamental_s_() {
 
-'use strict'; /**/
+'use strict';
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -2403,6 +2403,15 @@ function containerLike( src )
 function symbolIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object Symbol]';
+  return result;
+}
+
+//
+
+function bigNumberIs( src )
+{
+  var result = _ObjectToString.call( src ) === '[object BigNumber]';
+  debugger;
   return result;
 }
 
@@ -7247,7 +7256,7 @@ function arrayLike( src )
   if( _.strIs( src ) )
   return false;
 
-  if( Object.propertyIsEnumerable.call( src,'length' ) )
+  if( Object.propertyIsEnumerable.call( src, 'length' ) )
   return false;
   if( !_.numberIs( src.length ) )
   return false;
@@ -16572,7 +16581,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( _.strJoin && !msg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ', but, ' : null,' ).join( '\n' ) );
+    console.error( 'Consider extending object by :\n' + _.strJoin( '  ', but, ' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
@@ -16647,7 +16656,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( _.strJoin && !msg )
-    console.error( 'Consider extending Composes by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    console.error( 'Consider extending object by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
     debugger;
     throw _err
     ({
@@ -17452,6 +17461,8 @@ var Routines =
 
   // type test
 
+  /* !!! requires good tests */
+
   nothingIs : nothingIs,
   definedIs : definedIs,
   primitiveIs : primitiveIs,
@@ -17459,6 +17470,7 @@ var Routines =
   containerLike : containerLike,
 
   symbolIs : symbolIs,
+  bigNumberIs : bigNumberIs,
 
   vectorIs : vectorIs,
   constructorIsVector : constructorIsVector,

@@ -1,6 +1,6 @@
 (function _kArrayDescriptor_s_() {
 
-'use strict'; /**/
+'use strict';
 
 var _global = _global_;
 var _ = _global_.wTools;

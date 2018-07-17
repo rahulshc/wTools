@@ -1,6 +1,6 @@
 ( function _Include_s_() {
 
-'use strict'; /**/
+'use strict';
 
 //
 
@@ -509,33 +509,38 @@ IncludeHandlersMap[ 'wVocabulary' ] =
 
 IncludeHandlersMap[ 'wFiles' ] =
 {
-  includeAny : [ '../../amid/file/FileTop.s','amid/file/FileTop.s','wFiles' ],
+  includeAny : [ '../../amid/files/UseTop.s','amid/files/UseTop.s','wFiles' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.fileProvider },
 }
 
 IncludeHandlersMap[ 'wFilesArchive' ] =
 {
-  includeAny : [ '../../amid/file/FilesArchive.s','amid/file/FilesArchive.s','wfilesarchive' ],
+  includeAny : [ '../../amid/files/FilesArchive.s','amid/files/FilesArchive.s','wfilesarchive' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesArchive },
 }
 
 IncludeHandlersMap[ 'wFilesTransformers' ] =
 {
-  includeAny : [ '../../amid/file/FilesTransformers.s','amid/file/FilesTransformers.s','wfilestransformers' ],
+  includeAny : [ '../../amid/files/FilesTransformers.s','amid/files/FilesTransformers.s','wfilestransformers' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.FileTransformers },
 }
 
 IncludeHandlersMap[ 'wFilesSvn' ] =
 {
-  includeAny : [ '../../amid/file/fprovider/pSvn.ss','amid/file/fprovider/pSvn.ss','wFilesSvn' ],
+  includeAny : [ '../../amid/files/fprovider/pSvn.ss','amid/files/fprovider/pSvn.ss','wFilesSvn' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.fileProvider.Svn },
 }
-
 
 IncludeHandlersMap[ 'wTimeMarker' ] =
 {
   includeAny : [ '../../amid/mixin/TimeMarker.s','amid/mixin/TimeMarker.s','wtimemarker' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.TimeMakrer },
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.TimeMarker },
+}
+
+IncludeHandlersMap[ 'wVerbal' ] =
+{
+  includeAny : [ '../../amid/mixin/Verbal.s','amid/mixin/Verbal.s','wverbal' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.Verbal },
 }
 
 IncludeHandlersMap[ 'wPathTranslator' ] =

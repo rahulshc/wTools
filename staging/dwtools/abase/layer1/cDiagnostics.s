@@ -1,6 +1,6 @@
 (function _Diagnostics_s_() {
 
-'use strict'; /**/
+'use strict';
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -859,16 +859,16 @@ function beep()
 
 //
 
-function assertInstanceOrClass( _Self,_this )
+function assertInstanceOrClass( _constructor, _this )
 {
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert
   (
-    _this === _Self ||
-    _this instanceof _Self ||
-    Object.isPrototypeOf.call( _Self,_this ) ||
-    Object.isPrototypeOf.call( _Self,_this.prototype )
+    _this === _constructor ||
+    _this instanceof _constructor ||
+    Object.isPrototypeOf.call( _constructor,_this ) ||
+    Object.isPrototypeOf.call( _constructor,_this.prototype )
   );
 
 }
