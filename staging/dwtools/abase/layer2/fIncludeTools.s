@@ -663,7 +663,7 @@ IncludeHandlersMap[ 'wMathConcepts' ] =
 IncludeHandlersMap[ 'wFilesOperationsDirector' ] =
 {
   includeAny : [ '../../../dwtools/atop/files/OperationsDirector.s','atop/files/OperationsDirector.s','wFilesOperationsDirector' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesOperationDirector },
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesOperationsDirector },
 }
 
 

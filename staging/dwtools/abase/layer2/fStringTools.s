@@ -17,6 +17,19 @@ var _arraySlice = _.arraySlice;
 var strTypeOf = _.strTypeOf;
 
 // --
+// checker
+// --
+
+function strIsMultilined( src )
+{
+  if( !_.strIs( src ) )
+  return false;
+  if( src.indexOf( '\n' ) !== -1 )
+  return true;
+  return false;
+}
+
+// --
 // replacer
 // --
 
@@ -3274,11 +3287,21 @@ function strLinesNumber( o )
 
   _.routineOptions( strLinesNumber,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( o.src ) || _.arrayIs( o.src ),'strLinesNumber : expects o.src as string or array of strings' );
+  _.assert( _.strIs( o.src ) || _.strinsAre( o.src ),'expects string or strings {-o.src-}' );
 
   var lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
 
-  for( var l = 0; l < lines.length; l += 1 )
+  if( o.onLine ) for( var l = 0; l < lines.length; l += 1 )
+  {
+    lines[ l ] = o.onLine( [ ( l + o.first ), ' : ', lines[ l ] ], o );
+    if( lines[ l ] === undefined )
+    {
+      lines.splice( l,1 );
+      l -= 1;
+    }
+    _.assert( _.strIs( lines[ l ] ) );
+  }
+  else for( var l = 0; l < lines.length; l += 1 )
   {
     lines[ l ] = ( l + o.first ) + ' : ' + lines[ l ];
   }
@@ -3290,6 +3313,7 @@ strLinesNumber.defaults =
 {
   src : null,
   first : 1,
+  onLine : null,
 }
 
 //
@@ -3821,6 +3845,10 @@ function strHasSeveral( src,ins )
 
 var Proto =
 {
+
+  // checker
+
+  strIsMultilined : strIsMultilined,
 
   // replacer
 

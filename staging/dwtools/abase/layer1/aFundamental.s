@@ -2076,7 +2076,11 @@ function errLog()
 
   if( _.routineIs( err.toString ) )
   {
-    c.error( err.toString() );
+    var str = err.toString();
+    if( _.loggerIs( c ) )
+    c.error( '#ignoreDirectives : 1#' + str + '#ignoreDirectives : 0#' )
+    else
+    c.error( str );
   }
   else
   {
@@ -2659,6 +2663,21 @@ function consoleIs( src )
 
   var result = Object.prototype.toString.call( src );
   if( result === '[object Console]' || result === '[object Object]' )
+  return true;
+
+  return false;
+}
+
+//
+
+function loggerIs( src )
+{
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( !_.Logger )
+  return false;
+
+  if( src instanceof _.Logger )
   return true;
 
   return false;
@@ -17462,6 +17481,7 @@ var Routines =
   workerIs : workerIs,
   streamIs : streamIs,
   consoleIs : consoleIs,
+  loggerIs : loggerIs,
   processIs : processIs,
 
   // routine
