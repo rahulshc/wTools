@@ -5539,320 +5539,301 @@ ghij
 `
 ;
 
-  function forSplitting( splitting )
-  {
+  /* - */
 
-    /* - */
+  test.open( 'aligned range, single line' );
 
-    test.open( 'aligned range, single line' );
+  /*  */
 
-    /*  */
+  test.open( 'numberOfLines : 0' );
 
-    test.open( 'numberOfLines : 0' );
+  var crange = [ 6,9 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 6,9 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    '',
+    'def',
+    '',
+  ]
 
-    var expected =
-    [
-      '',
-      'def',
-      '',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 0,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 0,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'def' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'def' );
+  test.close( 'numberOfLines : 0' );
 
-    test.close( 'numberOfLines : 0' );
+  /*  */
 
-    /*  */
+  test.open( 'numberOfLines : 1' );
 
-    test.open( 'numberOfLines : 1' );
+  var crange = [ 6,9 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 6,9 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    '',
+    'def',
+    '',
+  ]
 
-    var expected =
-    [
-      '',
-      'def',
-      '',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 1,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 1,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'def' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'def' );
+  test.close( 'numberOfLines : 1' );
 
-    test.close( 'numberOfLines : 1' );
+  /* */
 
-    /* */
+  test.open( 'numberOfLines : 2' );
 
-    test.open( 'numberOfLines : 2' );
+  var crange = [ 6,9 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 6,9 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    'bc\n',
+    'def',
+    '',
+  ]
 
-    var expected =
-    [
-      'bc\n',
-      'def',
-      '',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 2,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 2,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'def' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'def' );
+  test.close( 'numberOfLines : 2' );
 
-    test.close( 'numberOfLines : 2' );
+  /* */
 
-    /* */
+  test.open( 'numberOfLines : 3' );
 
-    test.open( 'numberOfLines : 3' );
+  var crange = [ 6,9 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 6,9 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    'bc\n',
+    'def',
+    '\nghij',
+  ]
 
-    var expected =
-    [
-      'bc\n',
-      'def',
-      '\nghij',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 3,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 3,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'def' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'def' );
+  test.close( 'numberOfLines : 3' );
 
-    test.close( 'numberOfLines : 3' );
+  /* */
 
-    /* */
+  test.open( 'numberOfLines : 4' );
 
-    test.open( 'numberOfLines : 4' );
+  var crange = [ 6,9 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 6,9 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    'a\nbc\n',
+    'def',
+    '\nghij',
+  ]
 
-    var expected =
-    [
-      'a\nbc\n',
-      'def',
-      '\nghij',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 4,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 4,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'def' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'def' );
+  test.close( 'numberOfLines : 4' );
 
-    test.close( 'numberOfLines : 4' );
+  /* - */
 
-    /* - */
+  test.close( 'aligned range, single line' );
 
-    test.close( 'aligned range, single line' );
+  /* - */
 
-    /* - */
+  test.open( 'not aligned range, several lines' );
 
-    test.open( 'not aligned range, several lines' );
+  /*  */
 
-    /*  */
+  test.open( 'numberOfLines : 0' );
 
-    test.open( 'numberOfLines : 0' );
+  var crange = [ 4,11 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 4,11 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    '',
+    'c\ndef\ng',
+    '',
+  ]
 
-    var expected =
-    [
-      '',
-      'c\ndef\ng',
-      '',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 0,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 0,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'c\ndef\ng' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'c\ndef\ng' );
+  test.close( 'numberOfLines : 0' );
 
-    test.close( 'numberOfLines : 0' );
+  /*  */
 
-    /*  */
+  test.open( 'numberOfLines : 1' );
 
-    test.open( 'numberOfLines : 1' );
+  var crange = [ 4,11 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 4,11 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    'b',
+    'c\ndef\ng',
+    'hij',
+  ]
 
-    var expected =
-    [
-      'b',
-      'c\ndef\ng',
-      'hij',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 1,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 1,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'c\ndef\ng' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'c\ndef\ng' );
+  test.close( 'numberOfLines : 1' );
 
-    test.close( 'numberOfLines : 1' );
+  /* */
 
-    /* */
+  test.open( 'numberOfLines : 2' );
 
-    test.open( 'numberOfLines : 2' );
+  var crange = [ 4,11 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 4,11 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    'a\nb',
+    'c\ndef\ng',
+    'hij',
+  ]
 
-    var expected =
-    [
-      'a\nb',
-      'c\ndef\ng',
-      'hij',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 2,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 2,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'c\ndef\ng' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'c\ndef\ng' );
+  test.close( 'numberOfLines : 2' );
 
-    test.close( 'numberOfLines : 2' );
+  /* */
 
-    /* */
+  test.open( 'numberOfLines : 3' );
 
-    test.open( 'numberOfLines : 3' );
+  var crange = [ 4,11 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 4,11 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    'a\nb',
+    'c\ndef\ng',
+    'hij\n',
+  ]
 
-    var expected =
-    [
-      'a\nb',
-      'c\ndef\ng',
-      'hij\n',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 3,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 3,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'c\ndef\ng' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'c\ndef\ng' );
+  test.close( 'numberOfLines : 3' );
 
-    test.close( 'numberOfLines : 3' );
+  /* */
 
-    /* */
+  test.open( 'numberOfLines : 4' );
 
-    test.open( 'numberOfLines : 4' );
+  var crange = [ 4,11 ];
+  var sub = _.strSub( srcStr,crange );
 
-    var crange = [ 4,11 ];
-    var sub = _.strSub( srcStr,crange );
+  var expected =
+  [
+    '\na\nb',
+    'c\ndef\ng',
+    'hij\n',
+  ]
 
-    var expected =
-    [
-      '\na\nb',
-      'c\ndef\ng',
-      'hij\n',
-    ]
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 4,
+  });
 
-    var got = _.strLinesNearest
-    ({
-      src : srcStr,
-      charsRange : crange,
-      numberOfLines : 4,
-    });
+  test.will = 'check strLinesNearest';
+  test.identical( got, expected );
+  test.will = 'check strSub';
+  test.identical( sub, 'c\ndef\ng' );
 
-    test.will = 'check strLinesNearest';
-    test.identical( got, splitting ? expected : expected.join( '' ) );
-    test.will = 'check strSub';
-    test.identical( sub, 'c\ndef\ng' );
+  test.close( 'numberOfLines : 4' );
 
-    test.close( 'numberOfLines : 4' );
+  /* - */
 
-    /* - */
-
-    test.close( 'not aligned range, several lines' );
-
-  }
-
-  /* -- */
-
-  test.open( 'splitting : 1' );
-  forSplitting( 1 );
-  test.close( 'splitting : 1' );
-
-  /* -- */
-
-  test.open( 'splitting : 0' );
-  forSplitting( 0 );
-  test.close( 'splitting : 0' );
-
-  /* -- */
+  test.close( 'not aligned range, several lines' );
 
 }
 
