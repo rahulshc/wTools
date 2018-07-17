@@ -1,6 +1,6 @@
 ( function _StringTools_test_s_() {
 
-'use strict';
+'use strict'; /**/
 
 if( typeof module !== 'undefined' )
 {
@@ -22,13 +22,14 @@ if( typeof module !== 'undefined' )
     require( toolsPath );
   }
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
 
   _.include( 'wTesting' );
 
 }
 
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 
 // --
 //

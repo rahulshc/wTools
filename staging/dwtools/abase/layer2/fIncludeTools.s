@@ -1,6 +1,6 @@
 ( function _Include_s_() {
 
-'use strict';
+'use strict'; /**/
 
 //
 
