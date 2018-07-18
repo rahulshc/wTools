@@ -5836,6 +5836,11 @@ ghij
 
   test.close( 'not aligned range, several lines' );
 
+  debugger;
+
+  console.log( 'done1' );
+  logger.log( 'done2' );
+
 }
 
 //

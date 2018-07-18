@@ -533,14 +533,20 @@ IncludeHandlersMap[ 'wFilesSvn' ] =
 
 IncludeHandlersMap[ 'wTimeMarker' ] =
 {
-  includeAny : [ '../../amid/mixin/TimeMarker.s','amid/mixin/TimeMarker.s','wtimemarker' ],
+  includeAny : [ '../../amid/amixin/TimeMarker.s','amid/amixin/TimeMarker.s','wtimemarker' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.TimeMarker },
 }
 
 IncludeHandlersMap[ 'wVerbal' ] =
 {
-  includeAny : [ '../../amid/mixin/Verbal.s','amid/mixin/Verbal.s','wverbal' ],
+  includeAny : [ '../../amid/amixin/Verbal.s','amid/amixin/Verbal.s','wverbal' ],
   isIncluded : function(){ return !!_global.wTools && _global.wTools.Verbal },
+}
+
+IncludeHandlersMap[ 'wFileStorage' ] =
+{
+  includeAny : [ '../../amid/amixin/FileStorage.s','amid/amixin/FileStorage.s','wfilestorage' ],
+  isIncluded : function(){ return !!_global.wTools && _global.wTools.FileStorage },
 }
 
 IncludeHandlersMap[ 'wPathTranslator' ] =
