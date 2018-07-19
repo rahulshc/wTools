@@ -47,7 +47,7 @@ function makeSimilar( src,length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var result = _.arrayMakeSimilar( src,length );
+  var result = _.longMakeSimilar( src,length );
 
   return result;
 }
@@ -91,7 +91,7 @@ function makeArrayOfLengthZeroed( length )
 
 function arrayFromCoercing( src )
 {
-  _.assert( _.arrayLike( src ) );
+  _.assert( _.longIs( src ) );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   if( src.constructor === this.array.ArrayType )

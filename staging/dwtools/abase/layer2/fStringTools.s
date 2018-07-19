@@ -13,7 +13,7 @@ var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 var _assert = _.assert;
-var _arraySlice = _.arraySlice;
+var _arraySlice = _.longSlice;
 var strTypeOf = _.strTypeOf;
 
 // --
@@ -89,11 +89,11 @@ function _strRemoveBegin( src,begin )
 function strRemoveBegin( src,begin )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.arrayLike( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
-  _.assert( _.arrayLike( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
+  _.assert( _.longIs( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
+  _.assert( _.longIs( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
 
   var result = [];
-  var srcIsArray = _.arrayLike( src );
+  var srcIsArray = _.longIs( src );
 
   src = _.arrayAs( src );
   begin = _.arrayAs( begin );
@@ -151,8 +151,8 @@ function strRemoveBegin( src,begin )
 function strRemoveEnd( src,end )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.arrayLike( src ) || _.strIs( src ) );
-  _.assert( _.arrayLike( end ) || _.strIs( end ) );
+  _.assert( _.longIs( src ) || _.strIs( src ) );
+  _.assert( _.longIs( end ) || _.strIs( end ) );
 
   end = _.arrayAs( end );
 
@@ -177,8 +177,8 @@ function strRemoveEnd( src,end )
 function strReplaceBegin( src,begin,ins )
 {
   _.assert( arguments.length === 3, 'expects exactly three argument' );
-  _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
-  if( _.arrayLike( begin ) && _.arrayLike( ins ) )
+  _.assert( _.strIs( ins ) || _.longIs( ins ),'expects ( ins ) as string/array of strings' );
+  if( _.longIs( begin ) && _.longIs( ins ) )
   _.assert( begin.length === ins.length );
 
   begin = _.arrayAs( begin );
@@ -188,7 +188,7 @@ function strReplaceBegin( src,begin,ins )
   for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
   if( _.strBegins( result[ k ],begin[ j ] ) )
   {
-    var prefix = _.arrayLike( ins ) ? ins[ j ] : ins;
+    var prefix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( prefix ) );
     result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
     break;
@@ -205,8 +205,8 @@ function strReplaceBegin( src,begin,ins )
 function strReplaceEnd( src,end,ins )
 {
   _.assert( arguments.length === 3, 'expects exactly three argument' );
-  _.assert( _.strIs( ins ) || _.arrayLike( ins ),'expects ( ins ) as string/array of strings' );
-  if( _.arrayLike( end ) && _.arrayLike( ins ) )
+  _.assert( _.strIs( ins ) || _.longIs( ins ),'expects ( ins ) as string/array of strings' );
+  if( _.longIs( end ) && _.longIs( ins ) )
   _.assert( end.length === ins.length );
 
   end = _.arrayAs( end );
@@ -216,7 +216,7 @@ function strReplaceEnd( src,end,ins )
   for( var j = 0, endLength = end.length; j < endLength; j++ )
   if( _.strEnds( result[ k ],end[ j ] ) )
   {
-    var postfix = _.arrayLike( ins ) ? ins[ j ] : ins;
+    var postfix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( postfix ) );
     result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
   }
@@ -2965,7 +2965,7 @@ function strConcat( srcs, o )
   _.assert( this.strConcat === strConcat );
   o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
 
-  if( !_.arrayGenericIs( srcs ) )
+  if( !_._arrayLike( srcs ) )
   srcs = [ srcs ];
 
   var result = '';
@@ -3455,7 +3455,7 @@ function strLinesSelect( o )
     }
   }
 
-  _.assert( _.arrayLike( o.range ) );
+  _.assert( _.longIs( o.range ) );
 
   /* */
 

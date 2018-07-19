@@ -223,66 +223,66 @@ function arrayIs( test )
 
 //
 
-function arrayLike( test )
+function longIs( test )
 {
 
   test.case = 'an empty array';
-  var got = _.arrayLike( [  ] );
+  var got = _.longIs( [  ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'an array';
-  var got = _.arrayLike( [ 1, 2, 3 ] );
+  var got = _.longIs( [ 1, 2, 3 ] );
   var expected  = true;
   test.identical( got, expected );
 
   test.case = 'a pseudo array';
-  var got = _.arrayLike( arguments );
+  var got = _.longIs( arguments );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.arrayLike( new ArrayBuffer( 10 ) );
+  var got = _.longIs( new ArrayBuffer( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'typed array buffer';
-  var got = _.arrayLike( new Float32Array( 10 ) );
+  var got = _.longIs( new Float32Array( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'no argument';
-  var got = _.arrayLike();
+  var got = _.longIs();
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.arrayLike( null );
+  var got = _.longIs( null );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.arrayLike( function() {} );
+  var got = _.longIs( function() {} );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'string';
-  var got = _.arrayLike( 'x' );
+  var got = _.longIs( 'x' );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'number';
-  var got = _.arrayLike( 1 );
+  var got = _.longIs( 1 );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'boolean';
-  var got = _.arrayLike( true );
+  var got = _.longIs( true );
   var expected  = false;
   test.identical( got, expected );
 
   test.case = 'object';
-  var got = _.arrayLike( {} );
+  var got = _.longIs( {} );
   var expected  = false;
   test.identical( got, expected );
 
@@ -417,59 +417,59 @@ function hasLength( test )
 
 //
 
-function arrayMakeSimilar( test )
+function longMakeSimilar( test )
 {
 
   test.case = 'an empty array';
-  var got = _.arrayMakeSimilar( [  ], 0 );
+  var got = _.longMakeSimilar( [  ], 0 );
   var expected = [  ];
   test.identical( got, expected );
 
   test.case = 'length = 1';
-  var got = _.arrayMakeSimilar( [  ], 1 );
+  var got = _.longMakeSimilar( [  ], 1 );
   var expected = [ ,  ];
   test.identical( got, expected );
 
   test.case = 'length = 2';
-  var got = _.arrayMakeSimilar( [ 1, 2, 3 ], 2 );
+  var got = _.longMakeSimilar( [ 1, 2, 3 ], 2 );
   var expected = [ , , ];
   test.identical( got, expected );
 
   test.case = 'length = 4';
-  var got = _.arrayMakeSimilar( [ 1, 2, 3 ], 4 );
+  var got = _.longMakeSimilar( [ 1, 2, 3 ], 4 );
   var expected = [ , , , , ];
   test.identical( got, expected );
 
   test.case = 'same length';
 
   var ins = [ 1, 2, 3 ];
-  var got = _.arrayMakeSimilar( ins );
+  var got = _.longMakeSimilar( ins );
   test.identical( got.length, 3 );
   test.is( got !== ins );
 
   var ins = [];
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
-  var got = _.arrayMakeSimilar( ins, src );
+  var got = _.longMakeSimilar( ins, src );
   test.identical( got.length, 5 );
   test.is( _.arrayIs( got ) );
   test.identical( got, [ 1,1,1,1,1 ] );
 
   var ins = [];
   var src = new ArrayBuffer( 5 )
-  var got = _.arrayMakeSimilar( ins, src );
+  var got = _.longMakeSimilar( ins, src );
   test.identical( got.length, 5 );
   test.is( _.arrayIs( got ) );
 
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
-  var got = _.arrayMakeSimilar( ins );
+  var got = _.longMakeSimilar( ins );
   test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 5 );
   test.is( got !== ins );
 
   var ins = new Uint8Array( 5 );
   var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.arrayMakeSimilar( ins,src );
+  var got = _.longMakeSimilar( ins,src );
   test.is( _.bufferTypedIs( got ) );
   test.is( got instanceof Uint8Array );
   test.identical( got.length, 5 );
@@ -481,25 +481,25 @@ function arrayMakeSimilar( test )
   test.case = 'typedArray';
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
-  var got = _.arrayMakeSimilar( ins, 4 );
+  var got = _.longMakeSimilar( ins, 4 );
   test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 4 );
   test.is( got !== ins );
 
   test.case = 'ArrayBuffer';
   var ins = new ArrayBuffer( 5 );
-  var got = _.arrayMakeSimilar( ins, 4 );
+  var got = _.longMakeSimilar( ins, 4 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 4 );
 
   test.case = 'NodeBuffer'
-  var got = _.arrayMakeSimilar( new Buffer( 5 ) );
+  var got = _.longMakeSimilar( new Buffer( 5 ) );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
 
   test.case = 'NodeBuffer and src'
   var src = _.arrayFillWhole( new Uint8Array( 5 ), 1 );
-  var got = _.arrayMakeSimilar( new Buffer( 5 ), src );
+  var got = _.longMakeSimilar( new Buffer( 5 ), src );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -511,7 +511,7 @@ function arrayMakeSimilar( test )
   var src = new Buffer(10);
   for( var i = 0; i < src.length; i++ )
   src[ i ] = i;
-  var got = _.arrayMakeSimilar( [], src );
+  var got = _.longMakeSimilar( [], src );
   test.is( _.arrayIs( got ) );
   test.identical( got.length, src.length );
   var isEqual = true;
@@ -520,27 +520,27 @@ function arrayMakeSimilar( test )
   test.is( isEqual );
 
   test.case = 'ins as Array';
-  var got = _.arrayMakeSimilar( Array, 5 );
+  var got = _.longMakeSimilar( Array, 5 );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
 
   test.case = 'ins as Array';
   var src = [ 1,2,3 ];
-  var got = _.arrayMakeSimilar( Array, src );
+  var got = _.longMakeSimilar( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 3 );
   test.identical( got, src );
 
   test.case = 'ins as Array';
   var src = _.arrayFillWhole( new Float32Array( 5 ), 1 );
-  var got = _.arrayMakeSimilar( Array, src );
+  var got = _.longMakeSimilar( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, [ 1, 1, 1, 1, 1 ] );
 
   test.case = 'ins as Buffer';
   var src = _.arrayFillWhole( new Float32Array( 5 ), 1 );
-  var got = _.arrayMakeSimilar( Buffer, src );
+  var got = _.longMakeSimilar( Buffer, src );
   test.is( _.bufferNodeIs(  got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -550,7 +550,7 @@ function arrayMakeSimilar( test )
 
   test.case = 'ins as Array';
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
-  var got = _.arrayMakeSimilar( Array, src );
+  var got = _.longMakeSimilar( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -560,7 +560,7 @@ function arrayMakeSimilar( test )
 
   test.case = 'ins as TypedArray';
   var src = [ 1,2,3 ];
-  var got = _.arrayMakeSimilar( Uint8Array, src );
+  var got = _.longMakeSimilar( Uint8Array, src );
   test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 3 );
   var isEqual = true;
@@ -570,7 +570,7 @@ function arrayMakeSimilar( test )
 
   test.case = 'ins as TypedArray';
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
-  var got = _.arrayMakeSimilar( Float32Array, src );
+  var got = _.longMakeSimilar( Float32Array, src );
   test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -586,61 +586,61 @@ function arrayMakeSimilar( test )
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilar();
+    _.longMakeSimilar();
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilar('wrong argument');
+    _.longMakeSimilar('wrong argument');
   });
 
   test.case = 'arguments[1] is wrong';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilar( [ 1, 2, 3 ], 'wrong type of argument' );
+    _.longMakeSimilar( [ 1, 2, 3 ], 'wrong type of argument' );
   });
 
   test.case = 'extra argument';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilar( [ 1, 2, 3 ], 4, 'redundant argument' );
+    _.longMakeSimilar( [ 1, 2, 3 ], 4, 'redundant argument' );
   });
 
   test.case = 'argument is not wrapped into array';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilar( 1, 2, 3, 4 );
+    _.longMakeSimilar( 1, 2, 3, 4 );
   });
 };
 
 //
 
-function arrayMakeSimilarZeroed( test )
+function longMakeSimilarZeroed( test )
 {
   test.case = 'Array';
-  var got = _.arrayMakeSimilarZeroed( Array, 1 );
+  var got = _.longMakeSimilarZeroed( Array, 1 );
   var expected = [ 0 ];
   test.identical( got, expected );
 
   //
 
   test.case = 'Array';
-  var got = _.arrayMakeSimilarZeroed( Array, new Float32Array( 2 ) );
+  var got = _.longMakeSimilarZeroed( Array, new Float32Array( 2 ) );
   var expected = [ 0, 0 ];
   test.identical( got, expected );
 
   //
 
   test.case = 'ArrayBuffer';
-  var got = _.arrayMakeSimilarZeroed( ArrayBuffer, 3 );
+  var got = _.longMakeSimilarZeroed( ArrayBuffer, 3 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 3 );
 
   //
 
   test.case = 'Uint8Array';
-  var got = _.arrayMakeSimilarZeroed( Uint8Array, [ 1, 2, 3 ] );
+  var got = _.longMakeSimilarZeroed( Uint8Array, [ 1, 2, 3 ] );
   test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 3 );
   var isEqual = true;
@@ -651,7 +651,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   test.case = 'Uint8Array';
-  var got = _.arrayMakeSimilarZeroed( Buffer, new ArrayBuffer( 3) );
+  var got = _.longMakeSimilarZeroed( Buffer, new ArrayBuffer( 3) );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 3 );
   var isEqual = true;
@@ -662,28 +662,28 @@ function arrayMakeSimilarZeroed( test )
   //
 
   test.case = 'an empty array';
-  var got = _.arrayMakeSimilarZeroed( [  ], 0 );
+  var got = _.longMakeSimilarZeroed( [  ], 0 );
   var expected = [  ];
   test.identical( got, expected );
 
   //
 
   test.case = 'length = 1';
-  var got = _.arrayMakeSimilarZeroed( [  ], 1 );
+  var got = _.longMakeSimilarZeroed( [  ], 1 );
   var expected = [ 0 ];
   test.identical( got, expected );
 
   //
 
   test.case = 'length = 2';
-  var got = _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 2 );
+  var got = _.longMakeSimilarZeroed( [ 1, 2, 3 ], 2 );
   var expected = [ 0, 0 ];
   test.identical( got, expected );
 
   //
 
   test.case = 'length = 4';
-  var got = _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 4 );
+  var got = _.longMakeSimilarZeroed( [ 1, 2, 3 ], 4 );
   var expected = [ 0, 0, 0, 0 ];
   test.identical( got, expected );
 
@@ -691,7 +691,7 @@ function arrayMakeSimilarZeroed( test )
 
   test.case = 'same length';
   var ins = [ 1, 2, 3 ];
-  var got = _.arrayMakeSimilarZeroed( ins );
+  var got = _.longMakeSimilarZeroed( ins );
   test.identical( got.length, 3 );
   test.identical( got, [ 0, 0, 0 ] )
 
@@ -699,14 +699,14 @@ function arrayMakeSimilarZeroed( test )
 
   test.case = 'same length';
   var ins = new ArrayBuffer(5);
-  var got = _.arrayMakeSimilarZeroed( ins );
+  var got = _.longMakeSimilarZeroed( ins );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 5 );
 
   //
 
   test.case = 'same length';
-  var got = _.arrayMakeSimilarZeroed( ArrayBuffer, 5 );
+  var got = _.longMakeSimilarZeroed( ArrayBuffer, 5 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 5 );
 
@@ -714,7 +714,7 @@ function arrayMakeSimilarZeroed( test )
 
   test.case = 'same length, ins is a typed array';
   var ins = _.arrayFillWhole( new Uint8Array( 5 ), 1 );
-  var got = _.arrayMakeSimilarZeroed( ins );
+  var got = _.longMakeSimilarZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
@@ -725,7 +725,7 @@ function arrayMakeSimilarZeroed( test )
 
   test.case = 'same length, ins is a node buffer';
   var ins = _.arrayFillWhole( new Buffer( 5 ), 1 );
-  var got = _.arrayMakeSimilarZeroed( ins );
+  var got = _.longMakeSimilarZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
@@ -736,7 +736,7 @@ function arrayMakeSimilarZeroed( test )
 
   var ins = [];
   var src = _.arrayFillWhole( new Buffer( 5 ), 1 );
-  var got = _.arrayMakeSimilarZeroed( ins, src );
+  var got = _.longMakeSimilarZeroed( ins, src );
   test.identical( got.length, 5 );
   test.is( _.arrayIs( got ) );
   test.identical( got, [ 0,0,0,0,0 ] );
@@ -745,7 +745,7 @@ function arrayMakeSimilarZeroed( test )
 
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
-  var got = _.arrayMakeSimilarZeroed( ins );
+  var got = _.longMakeSimilarZeroed( ins );
   test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -758,7 +758,7 @@ function arrayMakeSimilarZeroed( test )
   test.case = 'typedArray';
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
-  var got = _.arrayMakeSimilarZeroed( ins, 4 );
+  var got = _.longMakeSimilarZeroed( ins, 4 );
   test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 4 );
   var isEqual = true;
@@ -770,7 +770,7 @@ function arrayMakeSimilarZeroed( test )
 
   test.case = 'ArrayBuffer';
   var ins = new ArrayBuffer( 5 );
-  var got = _.arrayMakeSimilarZeroed( ins, 4 );
+  var got = _.longMakeSimilarZeroed( ins, 4 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 4 );
   got = new Uint8Array( got );
@@ -784,7 +784,7 @@ function arrayMakeSimilarZeroed( test )
   test.case = 'ArrayBuffer';
   var ins = [];
   var src = new ArrayBuffer( 5 );
-  var got = _.arrayMakeSimilarZeroed( ins, src );
+  var got = _.longMakeSimilarZeroed( ins, src );
   test.is( _.arrayIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -795,7 +795,7 @@ function arrayMakeSimilarZeroed( test )
   //
 
   test.case = 'NodeBuffer'
-  var got = _.arrayMakeSimilarZeroed( new Buffer( 5 ) );
+  var got = _.longMakeSimilarZeroed( new Buffer( 5 ) );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -809,7 +809,7 @@ function arrayMakeSimilarZeroed( test )
   var src = new Int8Array(5);
   for( var i = 0; i < src.length; i++ )
   src[ i ] = i;
-  var got = _.arrayMakeSimilarZeroed( new Buffer( 5 ), src );
+  var got = _.longMakeSimilarZeroed( new Buffer( 5 ), src );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -825,31 +825,31 @@ function arrayMakeSimilarZeroed( test )
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilarZeroed();
+    _.longMakeSimilarZeroed();
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilarZeroed('wrong argument');
+    _.longMakeSimilarZeroed('wrong argument');
   });
 
   test.case = 'arguments[1] is wrong';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 'wrong type of argument' );
+    _.longMakeSimilarZeroed( [ 1, 2, 3 ], 'wrong type of argument' );
   });
 
   test.case = 'extra argument';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilarZeroed( [ 1, 2, 3 ], 4, 'redundant argument' );
+    _.longMakeSimilarZeroed( [ 1, 2, 3 ], 4, 'redundant argument' );
   });
 
   test.case = 'argument is not wrapped into array';
   test.shouldThrowError( function()
   {
-    _.arrayMakeSimilarZeroed( 1, 2, 3, 4 );
+    _.longMakeSimilarZeroed( 1, 2, 3, 4 );
   });
 };
 
@@ -1141,7 +1141,7 @@ function arrayToMap( test )
   var expected = { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } };
   test.identical( got, expected );
 
-  test.case = 'arrayLike';
+  test.case = 'longIs';
   var arr = [];
   arr[ 'a' ] = 1;
   var got = _.arrayToMap( arr );
@@ -1778,7 +1778,7 @@ function arrayResize( test )
 
 //
 
-function arraySlice( test )
+function longSlice( test )
 {
   var got,expected;
 
@@ -1792,26 +1792,26 @@ function arraySlice( test )
   /*nothing*/
 
   var src = [  ];
-  got = _.arraySlice( src );
+  got = _.longSlice( src );
   expected = [  ];
   test.identical( got, expected );
   test.is( src !== got );
 
   var src = [  ];
-  got = _.arraySlice( src, 0 );
+  got = _.longSlice( src, 0 );
   expected = [  ];
   test.identical( got, expected );
   test.is( src !== got );
 
   var src = [  ];
-  got = _.arraySlice( src, 0, 5 );
+  got = _.longSlice( src, 0, 5 );
   expected = [  ];
   test.identical( got, expected );
   test.is( src !== got );
 
   /*just pass array*/
 
-  got = _.arraySlice( array );
+  got = _.longSlice( array );
   expected = array;
   test.identical( got, expected );
   test.is( array !== got );
@@ -1820,57 +1820,57 @@ function arraySlice( test )
 
   test.case = 'make copy of source';
 
-  got = _.arraySlice( array, 0 );
+  got = _.longSlice( array, 0 );
   expected = [ 1, 2, 3, 4, 5, 6, 7 ];
   test.identical( got, expected );
   test.is( array !== got );
 
-  got = _.arraySlice( array, -1 );
+  got = _.longSlice( array, -1 );
   expected = [ 1, 2, 3, 4, 5, 6, 7 ];
   test.identical( got, expected );
 
   /* third argument is not provided */
 
-  got = _.arraySlice( array, 2 );
+  got = _.longSlice( array, 2 );
   expected = [ 3, 4, 5, 6, 7 ];
   test.identical( got, expected );
 
   /* second argument is undefined */
 
-  got = _.arraySlice( array, undefined, 4  );
+  got = _.longSlice( array, undefined, 4  );
   expected = [ 1, 2, 3, 4 ];
   test.identical( got, expected );
 
   /* from two to six */
 
   test.case = 'from two to six';
-  got = _.arraySlice( array, 2, 6 );
+  got = _.longSlice( array, 2, 6 );
   expected = [ 3, 4, 5, 6 ];
   test.identical( got, expected );
 
   /* indexes are out of bound */
 
-  got = _.arraySlice( [ 1,2,3 ], 5, 8 );
+  got = _.longSlice( [ 1,2,3 ], 5, 8 );
   expected = [];
   test.identical( got, expected );
 
   /* left bound is negative */
 
-  got = _.arraySlice( array, -1, array.length );
+  got = _.longSlice( array, -1, array.length );
   expected = array;
   test.identical( got, expected );
   test.is( array !== got );
 
   /* rigth bound is negative */
 
-  got = _.arraySlice( array, 0, -1 );
+  got = _.longSlice( array, 0, -1 );
   expected = [];
   test.identical( got, expected );
   test.is( array !== got );
 
   /* rigth bound is out of range */
 
-  got = _.arraySlice( array, 0, array.length + 2 );
+  got = _.longSlice( array, 0, array.length + 2 );
   expected = array;
   test.identical( got, expected );
   test.is( array !== got );
@@ -1881,32 +1881,32 @@ function arraySlice( test )
 
   var typed = new Uint8Array( array );
 
-  got = _.arraySlice( typed );
+  got = _.longSlice( typed );
   test.is( _.bufferTypedIs( got ) );
   test.is( got !== typed );
   test.identical( got, typed );
 
-  got = _.arraySlice( typed, 0 );
+  got = _.longSlice( typed, 0 );
   test.is( _.bufferTypedIs( got ) );
   test.is( got !== typed );
   test.identical( got, typed );
 
-  got = _.arraySlice( typed, -1 );
+  got = _.longSlice( typed, -1 );
   test.is( _.bufferTypedIs( got ) );
   test.is( got !== typed );
   test.identical( got, typed );
 
-  got = _.arraySlice( typed, 0, 1 );
+  got = _.longSlice( typed, 0, 1 );
   test.is( _.bufferTypedIs( got ) );
   test.is( got !== typed );
   test.is( _.arraySetIdentical( got, [ 1 ] ) );
 
-  got = _.arraySlice( typed, typed.length, typed.length );
+  got = _.longSlice( typed, typed.length, typed.length );
   test.is( _.bufferTypedIs( got ) );
   test.is( got !== typed );
   test.is( _.arraySetIdentical( got, [] ) );
 
-  got = _.arraySlice( typed, -1, typed.length + 1 );
+  got = _.longSlice( typed, -1, typed.length + 1 );
   test.is( _.bufferTypedIs( got ) );
   test.is( got !== typed );
   test.identical( got, typed );
@@ -1920,7 +1920,7 @@ function arraySlice( test )
 
   /**/
 
-  got = _.arraySlice( new Buffer( '123' ), 0, 1 );
+  got = _.longSlice( new Buffer( '123' ), 0, 1 );
   expected = [ 49 ];
   test.identical( got, expected );
 
@@ -1929,7 +1929,7 @@ function arraySlice( test )
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arraySlice();
+    _.longSlice();
   });
 
   //
@@ -1937,26 +1937,26 @@ function arraySlice( test )
   test.case = 'wrong type of argument';
   test.shouldThrowError( function()
   {
-    _.arraySlice( 'x' );
+    _.longSlice( 'x' );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowError( function()
   {
-    _.arraySlice( [ 1 ], 'x', 1 );
+    _.longSlice( [ 1 ], 'x', 1 );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowError( function()
   {
-    _.arraySlice( [ 1 ], 0, 'x' );
+    _.longSlice( [ 1 ], 0, 'x' );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowError( function()
   {
     var array = new ArrayBuffer();
-    _.arraySlice( array );
+    _.longSlice( array );
   });
 
 };
@@ -3136,7 +3136,7 @@ function arrayCount( test )
   var expected = 2;
   test.identical( got, expected );
 
-  test.case = 'arrayLike';
+  test.case = 'longIs';
   var src = [ 1, 2, 3 ];
   src[ 'a' ] = 1;
   var got = _.arrayCount( src, 1 );
@@ -3936,7 +3936,7 @@ function arrayPrependArray( test )
     _.arrayPrependArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayPrependArray( [ 1, 2 ], 2 );
@@ -4011,7 +4011,7 @@ function arrayPrependArrayOnce( test )
     _.arrayPrependArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayPrependArrayOnce( [ 1, 2 ], 2 );
@@ -4079,7 +4079,7 @@ function arrayPrependArrayOnceStrictly( test )
     _.arrayPrependArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayPrependArrayOnceStrictly( [ 1, 2 ], 2 );
@@ -4177,7 +4177,7 @@ function arrayPrependedArray( test )
     _.arrayPrependedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayPrependedArray( [ 1, 2 ], 2 );
@@ -4254,7 +4254,7 @@ function arrayPrependedArrayOnce( test )
     _.arrayPrependedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayPrependedArrayOnce( [ 1, 2 ], 2 );
@@ -5323,7 +5323,7 @@ function arrayAppendArray( test )
     _.arrayAppendArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayAppendArray( [ 1, 2 ], 2 );
@@ -5398,7 +5398,7 @@ function arrayAppendArrayOnce( test )
     _.arrayAppendArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayAppendArrayOnce( [ 1, 2 ], 2 );
@@ -5467,7 +5467,7 @@ function arrayAppendArrayOnceStrictly( test )
     _.arrayAppendArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayAppendArrayOnceStrictly( [ 1, 2 ], 2 );
@@ -5565,7 +5565,7 @@ function arrayAppendedArray( test )
     _.arrayAppendedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayAppendedArray( [ 1, 2 ], 2 );
@@ -5643,7 +5643,7 @@ function arrayAppendedArrayOnce( test )
     _.arrayAppendedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayAppendedArrayOnce( [ 1, 2 ], 2 );
@@ -5795,7 +5795,7 @@ function arrayAppendedArrayOnceWithSelector( test )
     _.arrayAppendedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayAppendedArrayOnce( [ 1, 2 ], 2, ( e ) => e.a );
@@ -6958,7 +6958,7 @@ function arrayRemoveArray( test )
     _.arrayRemoveArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayRemoveArray( [ 1, 2 ], 2 );
@@ -7020,7 +7020,7 @@ function arrayRemoveArrayOnce( test )
     _.arrayRemoveArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayRemoveArrayOnce( [ 1, 2 ], 2 );
@@ -7183,7 +7183,7 @@ function arrayRemovedArray( test )
     _.arrayRemovedArray( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayRemovedArray( [ 1, 2 ], 2 );
@@ -7246,7 +7246,7 @@ function arrayRemovedArrayOnce( test )
     _.arrayRemovedArrayOnce( [ 1, 2 ],[ 1 ], [ 2 ] );
   });
 
-  test.case = 'second args is not arrayLike';
+  test.case = 'second args is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayRemovedArrayOnce( [ 1, 2 ], 2 );
@@ -7343,7 +7343,7 @@ function arrayRemoveArrays( test )
   });
   test.identical( dst, [ 1 ] );
 
-  test.case = 'second arg is not arrayLike entity';
+  test.case = 'second arg is not longIs entity';
   test.shouldThrowError( function ()
   {
     _.arrayRemoveArrays( [], 1 );
@@ -7481,7 +7481,7 @@ function arrayRemoveArraysOnce( test )
     _.arrayRemoveArraysOnce( [  ], [ 1, 2, 3 ], [] )
   });
 
-  test.case = 'second arg is not arrayLike entity';
+  test.case = 'second arg is not longIs entity';
   test.shouldThrowError( function ()
   {
     _.arrayRemoveArraysOnce( [], 1 );
@@ -7694,7 +7694,7 @@ function arrayRemovedArrays( test )
   });
   test.identical( dst, [ 1 ] );
 
-  test.case = 'second arg is not arrayLike entity';
+  test.case = 'second arg is not longIs entity';
   test.shouldThrowError( function ()
   {
     _.arrayRemovedArrays( [], 1 );
@@ -7812,7 +7812,7 @@ function arrayRemovedArraysOnce( test )
     _.arrayRemovedArraysOnce( [], [ 1, 2, 3 ], [] )
   });
 
-  test.case = 'second arg is not arrayLike entity';
+  test.case = 'second arg is not longIs entity';
   test.shouldThrowError( function ()
   {
     _.arrayRemovedArraysOnce( [], 1 );
@@ -8003,13 +8003,13 @@ function arrayFlatten( test )
     _.arrayFlatten();
   });
 
-  test.case = 'first is not arrayLike';
+  test.case = 'first is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlatten( 1, [ 1 ] );
   });
 
-  test.case = 'second is not arrayLike';
+  test.case = 'second is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlatten( [], 1 );
@@ -8083,13 +8083,13 @@ function arrayFlattenOnce( test )
     _.arrayFlattenOnce();
   });
 
-  test.case = 'first is not arrayLike';
+  test.case = 'first is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattenOnce( 1, [ 1 ] );
   });
 
-  test.case = 'second is not arrayLike';
+  test.case = 'second is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattenOnce( [], 1 );
@@ -8171,13 +8171,13 @@ function arrayFlattenOnceStrictly( test )
     _.arrayFlattenOnceStrictly();
   });
 
-  test.case = 'first is not arrayLike';
+  test.case = 'first is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattenOnceStrictly( 1, [ 1 ] );
   });
 
-  test.case = 'second is not arrayLike';
+  test.case = 'second is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattenOnceStrictly( [], 1 );
@@ -8301,13 +8301,13 @@ function arrayFlattened( test )
     _.arrayFlattened();
   });
 
-  test.case = 'first is not arrayLike';
+  test.case = 'first is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattened( 1, [ 1 ] );
   });
 
-  test.case = 'second is not arrayLike';
+  test.case = 'second is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattened( [], 1 );
@@ -8412,13 +8412,13 @@ function arrayFlattenedOnce( test )
     _.arrayFlattenedOnce();
   });
 
-  test.case = 'first is not arrayLike';
+  test.case = 'first is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattenedOnce( 1, [ 1 ] );
   });
 
-  test.case = 'second is not arrayLike';
+  test.case = 'second is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattenedOnce( [], 1 );
@@ -8804,19 +8804,19 @@ function arrayReplaceArrayOnce( test )
     _.arrayReplaceArrayOnce();
   })
 
-  test.case = 'sub is not a arrayLike';
+  test.case = 'sub is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceArrayOnce( [ 1 ], [ 1 ], 1 );
   })
 
-  test.case = 'dstArray is not a arrayLike';
+  test.case = 'dstArray is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceArrayOnce( 1, [ 1 ], [ 1 ] );
   })
 
-  test.case = 'ins is not a arrayLike';
+  test.case = 'ins is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceArrayOnce( [ 1, 2 ], 1, [ 1 ] );
@@ -8925,19 +8925,19 @@ function arrayReplaceArrayOnceStrictly( test )
     _.arrayReplaceArrayOnceStrictly( dst, [ 1, 0, 4 ], 3 );
   })
 
-  test.case = 'sub is not a arrayLike';
+  test.case = 'sub is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceArrayOnceStrictly( [ 1 ], [ 1 ], 1 );
   })
 
-  test.case = 'dstArray is not a arrayLike';
+  test.case = 'dstArray is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceArrayOnceStrictly( 1, [ 1 ], [ 1 ] );
   })
 
-  test.case = 'ins is not a arrayLike';
+  test.case = 'ins is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceArrayOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
@@ -9098,19 +9098,19 @@ function arrayReplacedArrayOnce( test )
     _.arrayReplacedArrayOnce();
   })
 
-  test.case = 'sub is not a arrayLike';
+  test.case = 'sub is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnce( [ 1 ], [ 1 ], 1 );
   })
 
-  test.case = 'dstArray is not a arrayLike';
+  test.case = 'dstArray is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnce( 1, [ 1 ], [ 1 ] );
   })
 
-  test.case = 'ins is not a arrayLike';
+  test.case = 'ins is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnce( [ 1, 2 ], 1, [ 1 ] );
@@ -9193,13 +9193,13 @@ function arrayReplacedArrayOnce( test )
 //     _.arrayReplaceArraysOnce();
 //   })
 //
-//   test.case = 'dstArray is not a arrayLike';
+//   test.case = 'dstArray is not a longIs';
 //   test.shouldThrowError( function()
 //   {
 //     _.arrayReplaceArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
 //   })
 //
-//   test.case = 'ins is not a arrayLike';
+//   test.case = 'ins is not a longIs';
 //   test.shouldThrowError( function()
 //   {
 //     _.arrayReplaceArraysOnce( [ 1, 2 ], 1, [ 1 ] );
@@ -9309,13 +9309,13 @@ function arrayReplacedArrayOnce( test )
 //     _.arrayReplaceArraysOnceStrictly( dst, [ [ 1, [ 2 ], 3 ] ], [ 0 ] );
 //   })
 //
-//   test.case = 'dstArray is not a arrayLike';
+//   test.case = 'dstArray is not a longIs';
 //   test.shouldThrowError( function()
 //   {
 //     _.arrayReplaceArraysOnceStrictly( 1, [ [ 1 ] ], [ 1 ] );
 //   })
 //
-//   test.case = 'ins is not a arrayLike';
+//   test.case = 'ins is not a longIs';
 //   test.shouldThrowError( function()
 //   {
 //     _.arrayReplaceArraysOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
@@ -9432,13 +9432,13 @@ function arrayReplacedArrayOnce( test )
 //     _.arrayReplacedArraysOnce();
 //   })
 //
-//   test.case = 'dstArray is not a arrayLike';
+//   test.case = 'dstArray is not a longIs';
 //   test.shouldThrowError( function()
 //   {
 //     _.arrayReplacedArraysOnce( 1, [ [ 1 ] ], [ 1 ] );
 //   })
 //
-//   test.case = 'ins is not a arrayLike';
+//   test.case = 'ins is not a longIs';
 //   test.shouldThrowError( function()
 //   {
 //     _.arrayReplacedArraysOnce( [ 1, 2 ], 1, [ 1 ] );
@@ -9514,7 +9514,7 @@ function arrayReplaceAll( test )
     _.arrayReplaceAll( );
   })
 
-  test.case = 'first arg is not arrayLike';
+  test.case = 'first arg is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceAll( 1, 1, 1 );
@@ -9572,7 +9572,7 @@ function arrayReplacedAll( test )
     _.arrayReplacedAll( );
   })
 
-  test.case = 'first arg is not arrayLike';
+  test.case = 'first arg is not longIs';
   debugger;
   test.shouldThrowError( function()
   {
@@ -9725,19 +9725,19 @@ function arraySetContainAll( test )
     _.arraySetContainAll();
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, numerical arguments';
+  test.case = 'one or both arguments are not longIs entities, numerical arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAll( 5, 8 );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.case = 'one or both arguments are not longIs entities, string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAll( 'a', 'c' );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, map like arguments';
+  test.case = 'one or both arguments are not longIs entities, map like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAll( { a : 1, b : 2 }, { c : 3 } );
@@ -9865,19 +9865,19 @@ function arraySetDiff( test )
   });
 
 
-  test.case = 'one or both arguments are not arrayLike entities, numeric arguments';
+  test.case = 'one or both arguments are not longIs entities, numeric arguments';
   test.shouldThrowError( function()
   {
     _.arraySetDiff( 10, 15 );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.case = 'one or both arguments are not longIs entities, string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetDiff( 'a', 'c' );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, map arguments';
+  test.case = 'one or both arguments are not longIs entities, map arguments';
   test.shouldThrowError( function()
   {
     _.arraySetDiff( { a : 1 }, { b : 3, c : 8 } );
@@ -10221,19 +10221,19 @@ function arraySetBut( test )
     _.arraySetBut();
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, numerical arguments';
+  test.case = 'one or both arguments are not longIs entities, numerical arguments';
   test.shouldThrowError( function()
   {
     _.arraySetBut( 5, 8 );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.case = 'one or both arguments are not longIs entities, string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetBut( 'a', 'c' );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, map like arguments';
+  test.case = 'one or both arguments are not longIs entities, map like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetBut( { a : 1 }, { b : 3, c : 8 } );
@@ -10445,19 +10445,19 @@ function arraySetIntersection( test )
     _.arraySetIntersection();
   });
 
-  test.case = 'one or several arguments are not arrayLike entities, numerical arguments';
+  test.case = 'one or several arguments are not longIs entities, numerical arguments';
   test.shouldThrowError( function()
   {
     _.arraySetIntersection( 10, 15, 25 );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.case = 'one or both arguments are not longIs entities, string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetIntersection( 'a', 'c' );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, map arguments';
+  test.case = 'one or both arguments are not longIs entities, map arguments';
   test.shouldThrowError( function()
   {
     _.arraySetIntersection( { a : 1 }, { b : 3, c : 8 } );
@@ -10645,19 +10645,19 @@ function arraySetUnion( test )
     _.arraySetUnion();
   });
 
-  test.case = 'one or several arguments are not arrayLike entities, numerical arguments';
+  test.case = 'one or several arguments are not longIs entities, numerical arguments';
   test.shouldThrowError( function()
   {
     _.arraySetUnion( 10, 15, 25 );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, string like arguments';
+  test.case = 'one or both arguments are not longIs entities, string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetUnion( 'a', 'c' );
   });
 
-  test.case = 'one or both arguments are not arrayLike entities, map arguments';
+  test.case = 'one or both arguments are not longIs entities, map arguments';
   test.shouldThrowError( function()
   {
     _.arraySetUnion( { a : 1 }, { b : 3, c : 8 } );
@@ -11026,19 +11026,19 @@ function arraySetContainAny( test )
     _.arraySetContainAny();
   });
 
-  test.case = 'one or several arguments are not arrayLike entities,numeric arguments';
+  test.case = 'one or several arguments are not longIs entities,numeric arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAny( [ 33, 4, 5, 'b', 'c' ], 15, 25 );
   });
 
-  test.case = 'one or several arguments are not arrayLike entities,string like arguments';
+  test.case = 'one or several arguments are not longIs entities,string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAny( [ 33, 4, 5, 'b', 'c' ], 'dfdf', 'ab' );
   });
 
-  test.case = 'one or several arguments are not arrayLike entities,map like arguments';
+  test.case = 'one or several arguments are not longIs entities,map like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetContainAny( [ 33, 4, 5, 'b', 'c' ], { a : 33 }, { b : 44 } );
@@ -11173,19 +11173,19 @@ function arraySetIdentical( test )
     _.arraySetIdentical();
   });
 
-  test.case = 'one or 2 arguments are not arrayLike entities, numeric argument';
+  test.case = 'one or 2 arguments are not longIs entities, numeric argument';
   test.shouldThrowError( function()
   {
     _.arraySetIdentical( [ 1, 2, 4, 7, 5 ], 15 );
   });
 
-  test.case = 'one or 2 arguments are not arrayLike entities, string like arguments';
+  test.case = 'one or 2 arguments are not longIs entities, string like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetIdentical( 'a', 'a' );
   });
 
-  test.case = 'one or 2 arguments are not arrayLike entities, map like arguments';
+  test.case = 'one or 2 arguments are not longIs entities, map like arguments';
   test.shouldThrowError( function()
   {
     _.arraySetIdentical( { a : 1 }, { b : 3, c : 8 } );
@@ -11233,14 +11233,14 @@ var Self =
     // type test
 
     arrayIs : arrayIs,
-    arrayLike : arrayLike,
+    longIs : longIs,
     constructorLikeArray : constructorLikeArray,
     hasLength : hasLength,
 
     // array maker
 
-    arrayMakeSimilar : arrayMakeSimilar,
-    arrayMakeSimilarZeroed : arrayMakeSimilarZeroed,
+    longMakeSimilar : longMakeSimilar,
+    longMakeSimilarZeroed : longMakeSimilarZeroed,
     arrayMakeRandom : arrayMakeRandom,
     arrayFromNumber : arrayFromNumber,
     arrayFromRange : arrayFromRange,
@@ -11256,7 +11256,7 @@ var Self =
     // arrayJoin : arrayJoin,
     arrayGrow : arrayGrow,
     arrayResize : arrayResize,
-    arraySlice : arraySlice,
+    longSlice : longSlice,
     arrayDuplicate : arrayDuplicate,
 
     arrayMask : arrayMask,

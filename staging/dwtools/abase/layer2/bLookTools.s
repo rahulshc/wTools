@@ -438,7 +438,7 @@ function eachSample( o )
 
   /* */
 
-  var keys = _.arrayLike( o.sets ) ? _.arrayFromRange([ 0,o.sets.length ]) : _.mapKeys( o.sets );
+  var keys = _.longIs( o.sets ) ? _.arrayFromRange([ 0,o.sets.length ]) : _.mapKeys( o.sets );
   if( o.result && !_.arrayIs( o.result ) )
   o.result = [];
   var len = [];
@@ -452,7 +452,7 @@ function eachSample( o )
   _.each( o.sets, function( e,k )
   {
     var set = o.sets[ k ];
-    _.assert( _.arrayLike( set ) || _.primitiveIs( set ) );
+    _.assert( _.longIs( set ) || _.primitiveIs( set ) );
     if( _.primitiveIs( set ) )
     o.sets[ k ] = [ set ];
 
@@ -583,7 +583,7 @@ function eachInRange( o )
 
   var increment = o.increment;
   var range = o.range;
-  var len = _.rangeLengthGet( range,o.increment );
+  var len = _.rangeNumberElements( range,o.increment );
   var value = range[ 0 ];
 
   if( o.estimate )
@@ -672,7 +672,7 @@ function eachInManyRanges( o )
     var range = o.range[ r ];
     if( _.numberIs( o.range ) )
     range = o.range[ r ] = [ 0,o.range ];
-    len += _.rangeLengthGet( range,o.increment );
+    len += _.rangeNumberElements( range,o.increment );
   }
 
   if( o.estimate )
@@ -749,7 +749,7 @@ function eachInMultiRange( o )
   else
   {
     ranges = o.ranges.slice();
-    delta = _.arrayLike( o.delta ) ? o.delta.slice() : null;
+    delta = _.longIs( o.delta ) ? o.delta.slice() : null;
     l = o.ranges.length;
   }
 
@@ -763,7 +763,7 @@ function eachInMultiRange( o )
     if( _.numberIs( ranges[ r ] ) )
     ranges[ r ] = [ 0,ranges[ r ] ];
 
-    if( !_.arrayLike( ranges[ r ] ) )
+    if( !_.longIs( ranges[ r ] ) )
     throw _.err( 'expects range as array :',ranges[ r ] );
 
     _.assert( ranges[ r ].length === 2 );
@@ -1439,7 +1439,7 @@ function entitySelectUnique( o )
   // debugger;
 
   if( o.qarrey.indexOf( '*' ) !== -1 )
-  if( _.arrayLike( result ) )
+  if( _.longIs( result ) )
   result = _.arrayUnique( result );
 
   return result;
@@ -1619,7 +1619,7 @@ function entityProbe( o )
 
     o.total += 1;
 
-    if( !_.arrayLike( src ) || !o.recursive )
+    if( !_.longIs( src ) || !o.recursive )
     {
       _.assert( _.objectIs( src ) );
       if( src !== undefined )
@@ -1734,7 +1734,7 @@ function entityGroup( o )
     if( o.usingOriginal === undefined )
     o.usingOriginal = 0;
 
-    if( _.arrayLike( o.key ) )
+    if( _.longIs( o.key ) )
     o.key = _.mapKeys.apply( _,o.src );
     else
     o.key = _.mapKeys.apply( _,_.mapVals( o.src ) );
@@ -1747,7 +1747,7 @@ function entityGroup( o )
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
-  _.assert( _.objectLike( o.src ) || _.arrayLike( o.src ) );
+  _.assert( _.objectLike( o.src ) || _.longIs( o.src ) );
   _.assert( _.arrayIs( o.src ),'not tested' );
 
   /* */
@@ -1875,10 +1875,10 @@ function __entityEqualUp( e, k, it )
     else
     return clearEnd( _.buffersAreEquivalent( it.src, it.src2, it.context.accuracy ) );
   }
-  else if( _.arrayLike( it.src ) )
+  else if( _.longIs( it.src ) )
   {
 
-    it._ = 'arrayLike';
+    it._ = 'longIs';
 
     if( !it.src2 )
     return clearEnd( false );

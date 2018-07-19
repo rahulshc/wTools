@@ -11,7 +11,7 @@ var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 var _assert = _.assert;
-var _arraySlice = _.arraySlice;
+var _arraySlice = _.longSlice;
 
 // --
 // name and symbol

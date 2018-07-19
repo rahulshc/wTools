@@ -878,7 +878,7 @@ function assertInstanceOrClass( _constructor, _this )
 function assertOwnNoConstructor( ins )
 {
   _.assert( _.objectLikeOrRoutine( ins ) );
-  var args = _.arraySlice( arguments );
+  var args = _.longSlice( arguments );
   args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_hasOwnProperty.call( ins,'constructor' ) );
   _.assert.call( _,args );
 }

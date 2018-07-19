@@ -159,7 +159,7 @@ function entityFilter( test )
   /*
     TODO : need to check actuality of this test
 
-    test.case = 'simple test with arrayLike';
+    test.case = 'simple test with longIs';
     var got = null;
     try
     {

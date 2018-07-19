@@ -175,7 +175,7 @@ function _includeAct( src )
 function _includeAnyAct( srcs )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.arrayLike( srcs ) );
+  _.assert( _.longIs( srcs ) );
 
   /* */
 
@@ -250,7 +250,7 @@ function _includeWithRequire( src )
   if( arguments.length !== 1 )
   return _includeWithRequire( arguments );
 
-  if( _.arrayLike( src ) )
+  if( _.longIs( src ) )
   {
     var result = [];
     src = _.arrayFlatten( [], src );
@@ -269,7 +269,7 @@ function include( src )
   if( arguments.length !== 1 )
   return _includeAct( arguments );
 
-  if( _.arrayLike( src ) )
+  if( _.longIs( src ) )
   {
     var result = [];
     src = _.arrayFlatten( [], src );
