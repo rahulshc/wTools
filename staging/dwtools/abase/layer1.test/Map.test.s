@@ -811,10 +811,13 @@ function mapKeys( test )
 {
   test.case = 'trivial';
 
-  debugger;
-
   var got = _.mapKeys( {} );
   var expected = [];
+  test.identical( got, expected );
+
+  var got = _.mapKeys( { a : 1, b : undefined } ); 
+  var expected = [ 'a', 'b' ];
+  test.identical( got, expected );
 
   var got = _.mapKeys( { a : 7, b : 13 } );
   var expected = [ 'a', 'b' ];
@@ -1080,6 +1083,10 @@ function mapVals( test )
   var expected = [];
   test.identical( got, expected );
 
+  var got = _.mapVals( { a : 1, b : undefined } );
+  var expected = [ 1, undefined ];
+  test.identical( got, expected );
+
   var got = _.mapVals( { a : 7, b : 13 } );
   var expected = [ 7, 13 ];
   test.identical( got, expected );
@@ -1092,7 +1099,7 @@ function mapVals( test )
   var expected = [ ];
   test.identical( got, expected );
 
-  //
+  /* */
 
   test.case = 'own'
   var a = { a : 1 };

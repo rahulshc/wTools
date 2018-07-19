@@ -2428,7 +2428,6 @@ function symbolIs( src )
 function bigNumberIs( src )
 {
   var result = _ObjectToString.call( src ) === '[object BigNumber]';
-  debugger;
   return result;
 }
 
@@ -7411,6 +7410,16 @@ function longSlice( array,f,l )
   _.assert( _.longIs( array ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
+  // if( !_.arrayLikeMutable( array ) )
+  // debugger;
+  // console.log( _.strTypeOf( array ) );
+
+  if( _.arrayLikeMutable( array ) )
+  {
+    result = _ArraySlice.apply( array,f,l );
+    return result;
+  }
+
   var result;
   var f = f !== undefined ? f : 0;
   var l = l !== undefined ? l : array.length;
@@ -7553,6 +7562,15 @@ function argumentsArrayFrom( args )
 function arrayIs( src )
 {
   return _ObjectToString.call( src ) === '[object Array]';
+}
+
+//
+
+function arrayLikeMutable( src )
+{
+  if( _ObjectToString.call( src ) === '[object Array]' )
+  return true;
+  return false;
 }
 
 //
@@ -8596,7 +8614,7 @@ function arraySub( src,begin,end )
 
 function arrayButRange( src, range, ins )
 {
-  _.assert( _.arrayIs( src ) );
+  _.assert( _.arrayLikeMutable( src ) );
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
@@ -8632,47 +8650,51 @@ function arrayButRange( src, range, ins )
 
 //
 
+/* qqq : requires good test coverage */
+
 function arraySlice( srcArray,f,l )
 {
 
-  if( _.argumentsArrayIs( srcArray ) )
-  if( f === undefined && l === undefined )
-  {
-    if( srcArray.length === 2 )
-    return [ srcArray[ 0 ],srcArray[ 1 ] ];
-    else if( srcArray.length === 1 )
-    return [ srcArray[ 0 ] ];
-    else if( srcArray.length === 0 )
-    return [];
-  }
+  // if( _.argumentsArrayIs( srcArray ) )
+  // if( f === undefined && l === undefined )
+  // {
+  //   if( srcArray.length === 2 )
+  //   return [ srcArray[ 0 ],srcArray[ 1 ] ];
+  //   else if( srcArray.length === 1 )
+  //   return [ srcArray[ 0 ] ];
+  //   else if( srcArray.length === 0 )
+  //   return [];
+  // }
 
-  if( _.arrayIs( srcArray ) )
-  return srcArray.slice( f,l );
+  // if( _.arrayLikeMutable( srcArray ) )
+  // return srcArray.slice( f,l );
 
-  _.assert( _.argumentsArrayIs( srcArray ) );
+  _.assert( _.arrayLikeMutable( srcArray ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
-  var f = f !== undefined ? f : 0;
-  var l = l !== undefined ? l : srcArray.length;
+  return srcArray.slice( f,l );
 
-  _.assert( _.numberIs( f ) );
-  _.assert( _.numberIs( l ) );
-
-  if( f < 0 )
-  f = 0;
-  if( l > srcArray.length )
-  l = srcArray.length;
-  if( l < f )
-  l = f;
-
-  debugger;
-
-  xxx
-
-  var result = _.argumentsArrayOfLength( l-f );
-  for( var r = f ; r < l ; r++ )
-  result[ r-f ] = srcArray[ r ];
-  return result;
+  // var f = f !== undefined ? f : 0;
+  // var l = l !== undefined ? l : srcArray.length;
+  //
+  // _.assert( _.numberIs( f ) );
+  // _.assert( _.numberIs( l ) );
+  //
+  // if( f < 0 )
+  // f = 0;
+  // if( l > srcArray.length )
+  // l = srcArray.length;
+  // if( l < f )
+  // l = f;
+  //
+  // debugger;
+  //
+  // xxx
+  //
+  // var result = _.argumentsArrayOfLength( l-f );
+  // for( var r = f ; r < l ; r++ )
+  // result[ r-f ] = srcArray[ r ];
+  // return result;
 }
 
 //
@@ -15004,19 +15026,25 @@ function _mapVals( o )
   _.routineOptions( _mapVals,o );
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
+  _.assert( o.selectFilter === null );
 
-  var selectFilter = o.selectFilter;
-
-  if( o.selectFilter )
-  debugger;
-
-  if( !o.selectFilter )
-  o.selectFilter = function getVal( srcMap,k )
-  {
-    return srcMap[ k ]
-  }
+  // var selectFilter = o.selectFilter;
+  //
+  // if( o.selectFilter )
+  // debugger;
+  //
+  // if( !o.selectFilter )
+  // o.selectFilter = function getVal( srcMap,k )
+  // {
+  //   return srcMap[ k ]
+  // }
 
   var result = _._mapKeys( o );
+
+  for( var k = 0 ; k < result.length ; k++ )
+  {
+    result[ k ] = o.srcMap[ result[ k ] ];
+  }
 
   return result;
 }
@@ -16056,6 +16084,25 @@ function mapValsSet( dstMap, val )
   }
 
   return dstMap;
+}
+
+//
+
+function mapSelect( srcMap, keys )
+{
+  var result = Object.create( null );
+
+  _.assert( _._arrayLike( keys ) );
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  for( var k = 0 ; k < keys.length ; k++ )
+  {
+    var key = keys[ k ];
+    _.assert( _.strIs( key ) || _.numberIs( key ) );
+    result[ key ] = srcMap[ key ];
+  }
+
+  return result;
 }
 
 //
@@ -17938,6 +17985,7 @@ var Routines =
   // array checker
 
   arrayIs : arrayIs,
+  arrayLikeMutable : arrayLikeMutable,
   _arrayLike : _arrayLike,
   longIs : longIs,
 
@@ -18282,6 +18330,7 @@ var Routines =
   mapOnlyPrimitives : mapOnlyPrimitives,
   mapFirstPair : mapFirstPair,
   mapValsSet : mapValsSet,
+  mapSelect : mapSelect,
 
   mapValWithIndex : mapValWithIndex,
   mapKeyWithIndex : mapKeyWithIndex,
