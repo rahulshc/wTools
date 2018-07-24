@@ -7119,7 +7119,7 @@ function bufferRawFrom( buffer )
     result = fileReader.readAsArrayBuffer( buffer );
     throw _.err( 'not tested' );
   }
-  else throw _.err( 'bufferRawFrom : unknown source' );
+  else _.assert( 0, 'bufferRawFrom : unknown source' );
 
   _.assert( _.bufferRawIs( result ) );
 
@@ -7593,12 +7593,10 @@ function longSlice( array,f,l )
   _.assert( _.longIs( array ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
-  // if( !_.arrayLikeResizable( array ) )
-  // debugger;
-  // console.log( _.strTypeOf( array ) );
-
   if( _.arrayLikeResizable( array ) )
   {
+    _.assert( f === undefined || _.numberIs( f ) );
+    _.assert( l === undefined || _.numberIs( l ) );
     result = array.slice( f,l );
     return result;
   }
@@ -7609,6 +7607,11 @@ function longSlice( array,f,l )
 
   _.assert( _.numberIs( f ) );
   _.assert( _.numberIs( l ) );
+
+  if( f < 0 )
+  f = array.length + f;
+  if( l < 0 )
+  l = array.length + l;
 
   if( f < 0 )
   f = 0;

@@ -1390,44 +1390,44 @@ function arraySub( test )
 //  if( !isBrowser )
 //  {
 //    test.case = 'buffer';
-//    got = _.arrayJoin( new Buffer( '1' ), [ 1 ] );
-//    expected = new Buffer( [ 49,1 ] );
+//    var got = _.arrayJoin( new Buffer( '1' ), [ 1 ] );
+//    var expected = new Buffer( [ 49,1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'buffer + arrayBuffer';
 //    var raw = new Uint8Array( [ 1 ] ).buffer;
-//    got = _.arrayJoin( new Buffer( '1' ), raw );
-//    expected = new Buffer( [ 49,1 ] );
+//    var got = _.arrayJoin( new Buffer( '1' ), raw );
+//    var expected = new Buffer( [ 49,1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'buffer + typedArray';
 //    var typed = new Uint8Array( [ 1 ] );
-//    got = _.arrayJoin( new Buffer( '1' ), typed );
-//    expected = new Buffer( [ 49,1 ] );
+//    var got = _.arrayJoin( new Buffer( '1' ), typed );
+//    var expected = new Buffer( [ 49,1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'buffer + typedArray + raw + array';
 //    var typed = new Uint8Array( [ 1 ] );
-//    got = _.arrayJoin( new Buffer( '1' ), typed, typed.buffer, [ 1 ] );
-//    expected = new Buffer( [ 49,1,1,1 ] );
+//    var got = _.arrayJoin( new Buffer( '1' ), typed, typed.buffer, [ 1 ] );
+//    var expected = new Buffer( [ 49,1,1,1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'typedArray + buffer + raw + array';
 //    var typed = new Uint8Array( [ 1 ] );
-//    got = _.arrayJoin( typed, new Buffer( '1' ), typed.buffer, [ 1 ] );
-//    expected = new Uint8Array( [ 1,49,1,1 ] );
+//    var got = _.arrayJoin( typed, new Buffer( '1' ), typed.buffer, [ 1 ] );
+//    var expected = new Uint8Array( [ 1,49,1,1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'raw + typedArray + buffer + array';
 //    var typed = new Uint8Array( [ 1 ] );
-//    got = _.arrayJoin( typed.buffer, typed, new Buffer( '1' ), [ 1 ] );
-//    expected = new Uint8Array( [ 1,1,49,1 ] );
+//    var got = _.arrayJoin( typed.buffer, typed, new Buffer( '1' ), [ 1 ] );
+//    var expected = new Uint8Array( [ 1,1,49,1 ] );
 //    test.identical( new Uint8Array( got ), expected );
 //
 //    test.case = 'array + raw + typedArray + buffer ';
 //    var typed = new Uint8Array( [ 1 ] );
-//    got = _.arrayJoin( [ 1 ], typed.buffer, typed, new Buffer( '1' )  );
-//    expected = new Uint8Array( [ 1,1,1,49 ] );
+//    var got = _.arrayJoin( [ 1 ], typed.buffer, typed, new Buffer( '1' )  );
+//    var expected = new Uint8Array( [ 1,1,1,49 ] );
 //    test.identical( new Uint8Array( got ), expected );
 //  }
 //
@@ -1511,8 +1511,8 @@ function arrayGrow( test )
   if( !isBrowser )
   {
     test.case = 'buffer';
-    got = _.arrayGrow( new Buffer( '123' ), 0, 5, 0 );
-    expected = [ 49, 50, 51, 0, 0 ];
+    var got = _.arrayGrow( new Buffer( '123' ), 0, 5, 0 );
+    var expected = [ 49, 50, 51, 0, 0 ];
     test.identical( got, expected );
   }
 
@@ -1621,8 +1621,8 @@ function arrayResize( test )
   if( !isBrowser )
   {
     test.case = 'buffer';
-    got = _.arrayResize( new Buffer( '123' ), 0, 5, 0 );
-    expected = [ 49, 50, 51, 0, 0 ];
+    var got = _.arrayResize( new Buffer( '123' ), 0, 5, 0 );
+    var expected = [ 49, 50, 51, 0, 0 ];
     test.identical( got, expected );
   }
 
@@ -1717,8 +1717,8 @@ function arrayResize( test )
   if( !isBrowser )
   {
     test.case = 'buffer';
-    got = _.arrayResize( new Buffer( '123' ), 0, 5, 0 );
-    expected = [ 49, 50, 51, 0, 0 ];
+    var got = _.arrayResize( new Buffer( '123' ), 0, 5, 0 );
+    var expected = [ 49, 50, 51, 0, 0 ];
     test.identical( got, expected );
   }
 
@@ -1780,188 +1780,307 @@ function arrayResize( test )
 
 //
 
+/*
+qqq : improve, add exception checking ceases
+*/
+
 function longSlice( test )
 {
-  var got,expected;
 
-  debugger
+  test.open( 'Array' );
+  runFor( makeArray );
+  test.close( 'Array' );
 
-  //
+  test.open( 'ArgumentsArray' );
+  runFor( makeU8 );
+  test.close( 'ArgumentsArray' );
 
-  test.case = 'defaults';
-  var array = [ 1, 2, 3, 4, 5, 6, 7 ];
+  test.open( 'F32x' );
+  runFor( makeF32 );
+  test.close( 'F32x' );
 
-  /*nothing*/
+  test.open( 'U8x' );
+  runFor( makeU8 );
+  test.close( 'U8x' );
 
-  var src = [  ];
-  got = _.longSlice( src );
-  expected = [  ];
-  test.identical( got, expected );
-  test.is( src !== got );
-
-  var src = [  ];
-  got = _.longSlice( src, 0 );
-  expected = [  ];
-  test.identical( got, expected );
-  test.is( src !== got );
-
-  var src = [  ];
-  got = _.longSlice( src, 0, 5 );
-  expected = [  ];
-  test.identical( got, expected );
-  test.is( src !== got );
-
-  /*just pass array*/
-
-  got = _.longSlice( array );
-  expected = array;
-  test.identical( got, expected );
-  test.is( array !== got );
-
-  //
-
-  test.case = 'make copy of source';
-
-  got = _.longSlice( array, 0 );
-  expected = [ 1, 2, 3, 4, 5, 6, 7 ];
-  test.identical( got, expected );
-  test.is( array !== got );
-
-  got = _.longSlice( array, -1 );
-  expected = [ 1, 2, 3, 4, 5, 6, 7 ];
-  test.identical( got, expected );
-
-  /* third argument is not provided */
-
-  got = _.longSlice( array, 2 );
-  expected = [ 3, 4, 5, 6, 7 ];
-  test.identical( got, expected );
-
-  /* second argument is undefined */
-
-  got = _.longSlice( array, undefined, 4  );
-  expected = [ 1, 2, 3, 4 ];
-  test.identical( got, expected );
-
-  /* from two to six */
-
-  test.case = 'from two to six';
-  got = _.longSlice( array, 2, 6 );
-  expected = [ 3, 4, 5, 6 ];
-  test.identical( got, expected );
-
-  /* indexes are out of bound */
-
-  got = _.longSlice( [ 1,2,3 ], 5, 8 );
-  expected = [];
-  test.identical( got, expected );
-
-  /* left bound is negative */
-
-  got = _.longSlice( array, -1, array.length );
-  expected = array;
-  test.identical( got, expected );
-  test.is( array !== got );
-
-  /* rigth bound is negative */
-
-  got = _.longSlice( array, 0, -1 );
-  expected = [];
-  test.identical( got, expected );
-  test.is( array !== got );
-
-  /* rigth bound is out of range */
-
-  got = _.longSlice( array, 0, array.length + 2 );
-  expected = array;
-  test.identical( got, expected );
-  test.is( array !== got );
-
-  /* typed */
-
-  test.case = 'make copy of typed array';
-
-  var typed = new Uint8Array( array );
-
-  got = _.longSlice( typed );
-  test.is( _.bufferTypedIs( got ) );
-  test.is( got !== typed );
-  test.identical( got, typed );
-
-  got = _.longSlice( typed, 0 );
-  test.is( _.bufferTypedIs( got ) );
-  test.is( got !== typed );
-  test.identical( got, typed );
-
-  got = _.longSlice( typed, -1 );
-  test.is( _.bufferTypedIs( got ) );
-  test.is( got !== typed );
-  test.identical( got, typed );
-
-  got = _.longSlice( typed, 0, 1 );
-  test.is( _.bufferTypedIs( got ) );
-  test.is( got !== typed );
-  test.is( _.arraySetIdentical( got, [ 1 ] ) );
-
-  got = _.longSlice( typed, typed.length, typed.length );
-  test.is( _.bufferTypedIs( got ) );
-  test.is( got !== typed );
-  test.is( _.arraySetIdentical( got, [] ) );
-
-  got = _.longSlice( typed, -1, typed.length + 1 );
-  test.is( _.bufferTypedIs( got ) );
-  test.is( got !== typed );
-  test.identical( got, typed );
-
-  /**/
+  /* */
 
   if( !Config.debug )
   return;
 
-  test.case = 'buffer';
-
-  /**/
-
-  got = _.longSlice( new Buffer( '123' ), 0, 1 );
-  expected = [ 49 ];
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'no arguments';
+  test.case = 'raw buffer';
   test.shouldThrowError( function()
   {
-    _.longSlice();
+    _.longSlice( new ArrayBuffer() );
   });
 
-  //
+  /* */
 
-  test.case = 'wrong type of argument';
-  test.shouldThrowError( function()
+  function makeArray()
   {
-    _.longSlice( 'x' );
-  });
+    var result = [];
+    for( var a = 0 ; a < arguments.length ; a++ )
+    result.push( arguments[ a ] );
+    return result;
+  }
 
-  test.case = 'wrong type of argument';
-  test.shouldThrowError( function()
+  function makeArgumentsArray()
   {
-    _.longSlice( [ 1 ], 'x', 1 );
-  });
+    return arguments;
+  }
 
-  test.case = 'wrong type of argument';
-  test.shouldThrowError( function()
+  function makeF32()
   {
-    _.longSlice( [ 1 ], 0, 'x' );
-  });
+    var result = new F32x( arguments );
+    return result;
+  }
 
-  test.case = 'wrong type of argument';
-  test.shouldThrowError( function()
+  function makeU8()
   {
-    var array = new ArrayBuffer();
-    _.longSlice( array );
-  });
+    var result = new U8x( arguments );
+    return result;
+  }
 
-};
+  /* */
+
+  function runFor( a )
+  {
+
+    test.case = 'empty';
+
+    var srcLong = a();
+    var got = _.longSlice( srcLong );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a();
+    var got = _.longSlice( srcLong, 0 );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a();
+    var got = _.longSlice( srcLong, 0, 5 );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a();
+    var got = _.longSlice( srcLong, -1, 5 );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a();
+    var got = _.longSlice( srcLong, 0, -1 );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    test.case = 'single element';
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong );
+    var expected = a( 3 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong, 0 );
+    var expected = a( 3 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong, 0, -1 );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong, 0, 10 );
+    var expected = a( 3 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong, 0, -10 );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong, -1 );
+    var expected = a( 3 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong, -1, 10 );
+    var expected = a( 3 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 3 );
+    var got = _.longSlice( srcLong, -1, -2 );
+    var expected = a();
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    test.case = 'just pass srcLong';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong );
+    var expected = srcLong;
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    test.case = 'make copy of source';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, 0 );
+    var expected = a( 1, 2, 3, 4, 5, 6, 7 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, -1 );
+    var expected = a( 7 );
+    test.identical( got, expected );
+
+    test.case = 'third argument is not provided';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, 2 );
+    var expected = a( 3, 4, 5, 6, 7 );
+    test.identical( got, expected );
+
+    test.case = 'second argument is undefined';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, undefined, 4  );
+    var expected = a( 1, 2, 3, 4 );
+    test.identical( got, expected );
+
+    test.case = 'from two to six';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, 2, 6 );
+    var expected = a( 3, 4, 5, 6 );
+    test.identical( got, expected );
+
+    test.case = 'indexes are out of bound';
+
+    var srcLong = a( 1,2,3 );
+    var got = _.longSlice( srcLong, 5, 8 );
+    var expected = a();
+    test.identical( got, expected );
+
+    test.case = 'left bound is negative';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, -1, srcLong.length );
+    var expected = a( 7 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    test.case = 'rigth bound is negative';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, 0, -1 );
+    var expected = a( 1,2,3,4,5,6 );
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    test.case = 'rigth bound is out of range';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, 0, srcLong.length + 2 );
+    var expected = srcLong;
+    test.identical( got, expected );
+    test.is( srcLong !== got );
+
+    test.case = 'etc';
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong );
+    test.is( got.constructor === srcLong.constructor );
+    test.is( got !== srcLong );
+    test.identical( got, srcLong );
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, 0 );
+    test.is( got.constructor === srcLong.constructor );
+    test.is( got !== srcLong );
+    test.identical( got, srcLong );
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var expected = a( 7 );
+    var got = _.longSlice( srcLong, -1 );
+    test.is( got.constructor === srcLong.constructor );
+    test.is( got !== srcLong );
+    test.identical( got, expected );
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, 0, 1 );
+    test.is( got.constructor === srcLong.constructor );
+    test.is( got !== srcLong );
+    test.identical( got, a( 1 ) );
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, srcLong.length, srcLong.length );
+    test.is( got.constructor === srcLong.constructor );
+    test.is( got !== srcLong );
+    test.identical( got, a() );
+
+    var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
+    var got = _.longSlice( srcLong, -1, srcLong.length + 1 );
+    test.is( got.constructor === srcLong.constructor );
+    test.is( got !== srcLong );
+    test.identical( got, a( 7 ) );
+
+    /* */
+
+    if( !Config.debug )
+    return;
+
+    test.case = 'no arguments';
+    test.shouldThrowError( function()
+    {
+      _.longSlice();
+    });
+
+    test.case = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.longSlice( 'x' );
+    });
+
+    test.case = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.longSlice( [ 1 ], 'x', 1 );
+    });
+
+    test.case = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      _.longSlice( [ 1 ], 0, 'x' );
+    });
+
+    test.case = 'wrong type of argument';
+    test.shouldThrowError( function()
+    {
+      var array = new ArrayBuffer();
+      _.longSlice( array );
+    });
+
+  }
+
+}
+
+longSlice.timeOut = 20000;
 
 //
 
@@ -2574,49 +2693,49 @@ function arrayCutin( test )
 
     var got = _.arrayCutin( array, 0 );
     var expected = [ 2, 3, 4, 5 ];
-    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    var expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
     test.identical( got,expected );
 
     /* simple cut, add one element to begin */
 
     var got = _.arrayCutin( array, 0, [ 9 ] );
     var expected = [ 9, 2, 3, 4, 5 ];
-    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    var expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
     test.identical( got,expected );
 
     /* simple cut */
 
     var got = _.arrayCutin( array, 4 );
     var expected = [ 1, 2, 3, 4 ];
-    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    var expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
     test.identical( got,expected );
 
     /* range */
 
     var got = _.arrayCutin( array, [ 0, 1 ] );
     var expected = [ 2, 3, 4, 5 ];
-    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    var expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
     test.identical( got,expected );
 
     /* range */
 
     var got = _.arrayCutin( array, [ 2, 5 ] );
     var expected = [ 1, 2 ];
-    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    var expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
     test.identical( got,expected );
 
     /* single, add new elements to end */
 
     var got = _.arrayCutin( array, 4, [ 6, 7 ] );
     var expected = [ 1, 2, 3, 4, 6, 7 ];
-    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    var expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
     test.identical( got,expected );
 
     /* range, add new elements to end */
 
     var got = _.arrayCutin( array, [ 4, 5 ], [ 6, 7 ] );
     var expected = [ 1, 2, 3, 4, 6, 7 ];
-    expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
+    var expected = _.arrayCutin( new list[ i ]( 1 ), 0, expected );
     test.identical( got,expected );
 
     /* out of range, returns original */
@@ -2658,7 +2777,7 @@ function arrayCutin( test )
     /* empty */
 
     var got = _.arrayCutin( array, [], [] );
-    got = _.definedIs( got.length ) ? got.length : got.byteLength;
+    var got = _.definedIs( got.length ) ? got.length : got.byteLength;
     test.identical( got, 0 );
 
   }
@@ -3916,7 +4035,7 @@ function arrayPrependArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayPrependArray( dst, [ undefined, 2 ] );
+    var got = _.arrayPrependArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, dst );
@@ -4327,7 +4446,7 @@ function arrayPrependArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayPrependArrays( dst, [ undefined, 2 ] );
+    var got = _.arrayPrependArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, dst );
@@ -4646,7 +4765,7 @@ function arrayPrependedArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayPrependedArrays( dst, [ undefined, 2 ] );
+    var got = _.arrayPrependedArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, 2 );
@@ -5303,7 +5422,7 @@ function arrayAppendArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayAppendArray( dst, [ undefined, 2 ] );
+    var got = _.arrayAppendArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1,undefined, 2 ] );
   test.identical( got, dst );
@@ -5703,7 +5822,7 @@ function arrayAppendedArrayOnceWithSelector( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
+    var got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
   });
   test.identical( dst, [ { a : 1 }, { a : undefined }, { a : 2 } ] );
   test.identical( got, 2 );
@@ -5712,7 +5831,7 @@ function arrayAppendedArrayOnceWithSelector( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
+    var got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
   });
   test.identical( dst, [ { a : 1 }, { a : undefined }, { a : 2 } ] );
   test.identical( got, 1 );
@@ -5758,7 +5877,7 @@ function arrayAppendedArrayOnceWithSelector( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayAppendedArrayOnce( dst, [ { b : undefined }, { b : 2 } ], ( e ) => e.a, ( e ) => e.b );
+    var got = _.arrayAppendedArrayOnce( dst, [ { b : undefined }, { b : 2 } ], ( e ) => e.a, ( e ) => e.b );
   });
   test.identical( dst, [ { a : 1 }, { b : undefined }, { b : 2 } ] );
   test.identical( got, 2 );
@@ -5767,7 +5886,7 @@ function arrayAppendedArrayOnceWithSelector( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayAppendedArrayOnce( dst, [ { b : undefined }, { b : 2 } ], ( e ) => e.a, ( e ) => e.b );
+    var got = _.arrayAppendedArrayOnce( dst, [ { b : undefined }, { b : 2 } ], ( e ) => e.a, ( e ) => e.b );
   });
   test.identical( dst, [ { a : 1 }, { b : undefined }, { b : 2 } ] );
   test.identical( got, 1 );
@@ -5869,7 +5988,7 @@ function arrayAppendArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayAppendArrays( dst, [ undefined, 2 ] );
+    var got = _.arrayAppendArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
   test.identical( got, dst );
@@ -6166,7 +6285,7 @@ function arrayAppendedArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayAppendedArrays( dst, [ undefined, 2 ] );
+    var got = _.arrayAppendedArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
   test.identical( got, 2 );
@@ -6938,7 +7057,7 @@ function arrayRemoveArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayRemoveArray( dst, [ undefined, 2 ] );
+    var got = _.arrayRemoveArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, dst );
@@ -7163,7 +7282,7 @@ function arrayRemovedArray( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayRemovedArray( dst, [ undefined, 2 ] );
+    var got = _.arrayRemovedArray( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
@@ -7321,7 +7440,7 @@ function arrayRemoveArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayRemoveArrays( dst, [ undefined, 2 ] );
+    var got = _.arrayRemoveArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, dst );
@@ -7672,7 +7791,7 @@ function arrayRemovedArrays( test )
   var got;
   test.mustNotThrowError( function ()
   {
-    got = _.arrayRemovedArrays( dst, [ undefined, 2 ] );
+    var got = _.arrayRemovedArrays( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
