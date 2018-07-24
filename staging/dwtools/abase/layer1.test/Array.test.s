@@ -2,6 +2,8 @@
 
 'use strict';
 
+/* cls && debugnode builder\include\dwtools\abase\layer1.test\Array.test.s r:arraySetIdentical */
+
 var isBrowser = true;
 
 if( typeof module !== 'undefined' )
