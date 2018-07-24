@@ -6007,56 +6007,56 @@ ghij`
 
 //
 
-function strShort( test )
+function strShortSrt( test )
 {
 
   test.case = 'simple string';
-  var got = _.strShort( 'string', 4 );
+  var got = _.strShortSrt( 'string', 4 );
   var expected = '\'st\' ... \'ng\'';
   test.identical( got,expected );
 
   test.case = 'string with escaping';
-  var got = _.strShort( 's\ntring', 4 );
+  var got = _.strShortSrt( 's\ntring', 4 );
   var expected = '\'s\' ... \'ng\'';
   test.identical( got,expected );
 
   test.case = 'limit 0';
-  var got = _.strShort( 'string', 0 );
+  var got = _.strShortSrt( 'string', 0 );
   var expected = 'string';
   test.identical( got,expected );
 
   test.case = 'limit 1';
-  var got = _.strShort( 'string', 1 );
+  var got = _.strShortSrt( 'string', 1 );
   var expected = '\'s\'';
   test.identical( got,expected );
 
   test.case = 'string wih spaces';
-  var got = _.strShort( 'source and', 5 );
+  var got = _.strShortSrt( 'source and', 5 );
   var expected = '\'sou\' ... \'nd\'';
   test.identical( got,expected );
 
   test.case = 'one argument call';
-  var got = _.strShort( { src : 'string', limit : 4, wrap : "'" } );
+  var got = _.strShortSrt( { src : 'string', limit : 4, wrap : "'" } );
   var expected = "'st' ... 'ng'";
   test.identical( got,expected );
 
   test.case = 'string with whitespaces';
-  var got = _.strShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
+  var got = _.strShortSrt( { src : '  simple string   ', limit : 4, wrap : "'" } );
   var expected = "'  ' ... '  '";
   test.identical( got,expected );
 
   test.case = 'wrap 0';
-  var got = _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
+  var got = _.strShortSrt( { src : 'simple', limit : 4, wrap : 0 } );
   var expected = "si ... le";
   test.identical( got,expected );
 
   test.case = 'escaping 0';
-  var got = _.strShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
+  var got = _.strShortSrt( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
   var expected = '"si\x01" ... "le"';
   test.identical( got,expected );
 
   test.case = 'escaping 1';
-  var got = _.strShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
+  var got = _.strShortSrt( { src : 's\u001btring', limit : 4, wrap : '"' } );
   var expected = '"s" ... "ng"';
   test.identical( got,expected );
 
@@ -6068,25 +6068,25 @@ function strShort( test )
   test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strShort( 1, 5 );
+    _.strShortSrt( 1, 5 );
   });
 
   test.case = 'invalid second argument type';
   test.shouldThrowError( function()
   {
-    _.strShort( 'string', '0' );
+    _.strShortSrt( 'string', '0' );
   });
 
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strShort();
+    _.strShortSrt();
   });
 
   test.case = 'unknown property provided';
   test.shouldThrowError( function()
   {
-    _.strShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
+    _.strShortSrt( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
   });
 
 }
@@ -6545,7 +6545,7 @@ var Self =
     strLinesNearest : strLinesNearest,
     strLinesRangeWithCharRange : strLinesRangeWithCharRange,
 
-    strShort : strShort,
+    strShortSrt : strShortSrt,
     strCommonLeft : strCommonLeft,
     strCommonRight : strCommonRight,
 

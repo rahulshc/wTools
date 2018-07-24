@@ -435,7 +435,7 @@ function diagnosticCode( o )
     }
     catch( err )
     {
-      o.sourceCode = 'CANT LOAD SOURCE CODE OF ' + _.strQuote( o.location.path );
+      o.sourceCode = 'CANT LOAD SOURCE CODE ' + _.strQuote( o.location.path );
     }
 
     if( !o.sourceCode )

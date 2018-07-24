@@ -514,33 +514,33 @@ function strForCall( nameOfRoutine,args,ret,o )
  *
  * @example
  * //returns ''st' ... 'ng''
- * _.strShort( 'string', 4 );
+ * _.strShortSrt( 'string', 4 );
  *
  * @example
  * //returns ''s' ... 'ng''
- * _.strShort( 's\ntring', 4 );
+ * _.strShortSrt( 's\ntring', 4 );
  *
  * @example
  * //returns 'string'
- * _.strShort( 'string', 0 );
+ * _.strShortSrt( 'string', 0 );
  *
  * @example
  * //returns ''st' ... 'ng''
- * _.strShort( { src : 'string', limit : 4, wrap : '\'' } );
+ * _.strShortSrt( { src : 'string', limit : 4, wrap : '\'' } );
  *
  * @example
  * //returns 'si ... le'
- *  _.strShort( { src : 'simple', limit : 4, wrap : 0 } );
+ *  _.strShortSrt( { src : 'simple', limit : 4, wrap : 0 } );
  *
  * @example
  * //returns ''si' ... 'le''
- *  _.strShort( { src : 'si\x01mple', limit : 5, wrap : '\'' } );
+ *  _.strShortSrt( { src : 'si\x01mple', limit : 5, wrap : '\'' } );
  *
  * @example
  * //returns ''s\u0001' ... ' string''
- *  _.strShort( 's\x01t\x01ing string string', 14 );
+ *  _.strShortSrt( 's\x01t\x01ing string string', 14 );
  *
- * @method strShort
+ * @method strShortSrt
  * @throws { Exception } If no argument provided.
  * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } If( o ) is extended with unknown property.
@@ -552,7 +552,7 @@ function strForCall( nameOfRoutine,args,ret,o )
  *
  */
 
-function strShort( o )
+function strShortSrt( o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
@@ -562,8 +562,7 @@ function strShort( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.mapSupplement( o,strShort.defaults );
-  _.assertMapHasOnly( o,strShort.defaults );
+  _.routineOptions( strShortSrt, o );
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
 
@@ -622,7 +621,7 @@ function strShort( o )
   return str;
 }
 
-strShort.defaults =
+strShortSrt.defaults =
 {
   src : null,
   limit : 40,
@@ -643,17 +642,23 @@ function strQuote( o )
 
   _.assertMapHasOnly( o,strQuote.defaults );
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.primitiveIs( o.src ) || _.arrayIs( o.src ) );
 
   if( _.arrayIs( o.src ) )
   {
     var result = [];
     for( var s = 0 ; s < o.src.length ; s++ )
-    result.push( _.strQuote( o.src[ s ] ) );
+    result.push( _.strQuote({ src : o.src[ s ], quote : o.quote }) );
     return result;
   }
 
-  var result = o.quote + String( o.src ) + o.quote;
+  var src = o.src;
+
+  if( !_.primitiveIs( src ) )
+  src = _.toStr( src );
+
+  _.assert( _.primitiveIs( src ) );
+
+  var result = o.quote + String( src ) + o.quote;
 
   return result;
 }
@@ -702,6 +707,19 @@ function strCapitalize( src )
   return src;
 
   return src[ 0 ].toUpperCase() + src.substring( 1 );
+}
+
+//
+
+function strDecapitalize( src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( src.length === 0 )
+  return src;
+
+  return src[ 0 ].toLowerCase() + src.substring( 1 );
 }
 
 //
@@ -2483,16 +2501,18 @@ function _strExtractInlined_body( o )
 
   _.assert( arguments.length === 1, 'expects single options map' );
 
-  var delimetr;
-  if( o.delimeterLeft === null && o.delimeterRight === null )
-  {
-    if( o.delimeter === null )
-    o.delimeter = '#';
-  }
-  else
-  {
-    _.assert( o.delimeter === null );
-  }
+  // if( o.delimeterLeft === null && o.delimeterRight === null )
+  // {
+  //   if( o.delimeter === null )
+  //   o.delimeter = '#';
+  // }
+  // else
+  // {
+  //   _.assert( o.delimeter === null );
+  // }
+
+  if( o.delimeter === null )
+  o.delimeter = '#';
 
   var splitArray = _.strSplit
   ({
@@ -2605,8 +2625,8 @@ _strExtractInlined_body.defaults =
 
   src : null,
   delimeter : null,
-  delimeterLeft : null,
-  delimeterRight : null,
+  // delimeterLeft : null,
+  // delimeterRight : null,
   stripping : 0,
   quoting : 0,
 
@@ -2960,7 +2980,7 @@ function strConcat( srcs, o )
 {
 
   // var o = _.routineOptionsFromThis( strConcat,this,Self );
-  o = _.routineOptions( strConcat, o );
+  o = _.routineOptions( strConcat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.strConcat === strConcat );
   o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
@@ -3873,12 +3893,13 @@ var Proto =
 
   strForRange : strForRange, /* experimental */
   strForCall : strForCall, /* experimental */
-  strShort : strShort,
+  strShortSrt : strShortSrt,
   strQuote : strQuote,
 
   // transformer
 
   strCapitalize : strCapitalize,
+  strDecapitalize : strDecapitalize,
   strEscape : strEscape,
   strUnicodeEscape : strUnicodeEscape, /* document me */
   strReverse : strReverse,

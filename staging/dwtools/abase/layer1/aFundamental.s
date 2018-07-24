@@ -2095,7 +2095,7 @@ function errLog()
   {
     var str = err.toString();
     if( _.loggerIs( c ) )
-    c.error( '#ignoreDirectives : 1#' + str + '#ignoreDirectives : 0#' )
+    c.error( '#inputRaw : 1#\n' + str + '\n#inputRaw : 0#' )
     else
     c.error( str );
   }
@@ -2392,7 +2392,7 @@ function primitiveIs( src )
   if( !src )
   return true;
   var t = _ObjectToString.call( src );
-  return t === '[object Symbol]' || t === '[object Number]' || t === '[object Boolean]' || t === '[object String]';
+  return t === '[object Symbol]' || t === '[object Number]' || t === '[object BigInt]' || t === '[object Boolean]' || t === '[object String]';
 }
 
 //
@@ -2425,9 +2425,9 @@ function symbolIs( src )
 
 //
 
-function bigNumberIs( src )
+function bigIntIs( src )
 {
-  var result = _ObjectToString.call( src ) === '[object BigNumber]';
+  var result = _ObjectToString.call( src ) === '[object BigInt]';
   return result;
 }
 
@@ -2688,6 +2688,36 @@ function consoleIs( src )
 
   var result = Object.prototype.toString.call( src );
   if( result === '[object Console]' || result === '[object Object]' )
+  return true;
+
+  return false;
+}
+
+//
+
+function printerLike( src )
+{
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( printerIs( src ) )
+  return true;
+
+  if( consoleIs( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
+function printerIs( src )
+{
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( !_.PrinterBase )
+  return false;
+
+  if( src instanceof _.PrinterBase )
   return true;
 
   return false;
@@ -3269,7 +3299,7 @@ function routinesCall()
 
 //
 
-function routinesCallWhile()
+function routinesCallEvery()
 {
   var result;
 
@@ -3502,9 +3532,11 @@ routinesComposeReturningLast.pre = _routinesChain_pre;
 routinesComposeReturningLast.body = _routinesComposeReturningLast_body;
 routinesComposeReturningLast.defaults = Object.create( routinesComposeReturningLast.body.defaults );
 
+/*xxx : autogenerate*/
+
 //
 
-function _routinesComposeWhile_body( o )
+function _routinesComposeEvery_body( o )
 {
 
   if( o.srcs.length === 0 )
@@ -3533,20 +3565,20 @@ function _routinesComposeWhile_body( o )
 
 }
 
-_routinesComposeWhile_body.defaults = Object.create( routinesCompose.defaults );
+_routinesComposeEvery_body.defaults = Object.create( routinesCompose.defaults );
 
 //
 
-function routinesComposeWhile()
+function routinesComposeEvery()
 {
-  var o = _.routinesComposeWhile.pre( routinesComposeWhile, arguments );
-  var result = _.routinesComposeWhile.body( o );
+  var o = _.routinesComposeEvery.pre( routinesComposeEvery, arguments );
+  var result = _.routinesComposeEvery.body( o );
   return result;
 }
 
-routinesComposeWhile.pre = _routinesChain_pre;
-routinesComposeWhile.body = _routinesComposeWhile_body;
-routinesComposeWhile.defaults = Object.create( routinesComposeWhile.body.defaults );
+routinesComposeEvery.pre = _routinesChain_pre;
+routinesComposeEvery.body = _routinesComposeEvery_body;
+routinesComposeEvery.defaults = Object.create( routinesComposeEvery.body.defaults );
 
 //
 
@@ -3756,6 +3788,8 @@ function routineForPreAndBody( pre, body )
 
 //
 
+/* !!! need to comple the routine for all cases, good test coverage is required too  */
+
 function routineVectorize_functor( o )
 {
 
@@ -3769,7 +3803,9 @@ function routineVectorize_functor( o )
   var fieldFilter = o.fieldFilter;
   var bypassingFilteredOut = o.bypassingFilteredOut;
   var vectorizingArray = o.vectorizingArray;
-  var vectorizingMap = o.vectorizingArray;
+  var vectorizingMap = o.vectorizingMap;
+  var forKey = o.forKey;
+  var pre = null;
 
   if( strIs( routine ) )
   routine = function methodCall()
@@ -3785,12 +3821,29 @@ function routineVectorize_functor( o )
 
   var result = vectorize;
 
-  if( fieldFilter )
-  result = vectorizeWithFilters;
-  else if( !vectorizingArray || vectorizingMap )
-  result = vectorizeMapAndArray;
+  if( forKey === null )
+  {
+    if( fieldFilter )
+    result = vectorizeWithFilters;
+    else if( !vectorizingArray || vectorizingMap )
+    result = vectorizeMapAndArray;
+    else
+    result = vectorize;
+  }
   else
-  result = vectorize;
+  {
+    if( routine.pre )
+    {
+      pre = routine.pre;
+      routine = routine.body;
+    }
+    if( fieldFilter )
+    _.assert( 0, 'not implemented' );
+    else if( !vectorizingArray || vectorizingMap )
+    _.assert( 0, 'not implemented' );
+    else
+    result = vectorizeWithKey;
+  }
 
   /* */
 
@@ -3826,6 +3879,35 @@ function routineVectorize_functor( o )
       for( var r = 0 ; r < src.length ; r++ )
       {
         args[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args );
+      }
+      return result;
+    }
+
+    return routine.apply( this, arguments );
+  }
+
+  /* */
+
+  function vectorizeWithKey( srcMap )
+  {
+    var src = srcMap[ forKey ];
+
+    _.assert( arguments.length === 1, 'expects single argument' );
+
+    if( _.longIs( src ) )
+    {
+      var args = _.longSlice( arguments );
+      if( pre )
+      {
+        args = pre( routine, args );
+        _.assert( _.arrayLikeResizable( args ) );
+      }
+      var result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      {
+        args[ 0 ] = _.mapExtend( null, srcMap );
+        args[ 0 ][ forKey ] = src[ r ];
         result[ r ] = routine.apply( this, args );
       }
       return result;
@@ -3927,6 +4009,7 @@ routineVectorize_functor.defaults =
   bypassingFilteredOut : 1,
   vectorizingArray : 1,
   vectorizingMap : 0,
+  forKey : null,
 }
 
 //
@@ -4578,7 +4661,7 @@ function strTypeOf( src )
     if( Object.getPrototypeOf( src ) === null )
     result = 'Map:Pure';
     else if( src.__proto__ !== Object.__proto__ )
-    result = 'Object:Fake';
+    result = 'Object:Special';
   }
 
   return result;
@@ -4632,13 +4715,9 @@ function str()
   {
     var src = arguments[ a ];
 
-    // if( _.str )
-    // line = _.toStr( src,{ stringWrapper : '' } );
-    // else
     if( src && src.toStr )
     line = src.toStr();
-    else
-    try
+    else try
     {
       line = String( src );
     }
@@ -4997,24 +5076,25 @@ function regexpsAreIdentical( src1,src2 )
 
 function regexpEscape( src )
 {
-  _.assert( _.strIs( src ) || _.arrayIs( src ) );
+  _.assert( _.strIs( src ) );
+  // _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1, 'expects single argument' );
-  if( _.arrayIs( src ) )
-  {
-    var result = [];
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      _.assert( _.strIs( src[ s ] ) )
-      result[ s ] = regexpEscape( src[ s ] );
-    }
-    return result;
-  }
+  // if( _.arrayIs( src ) )
+  // {
+  //   var result = [];
+  //   for( var s = 0 ; s < src.length ; s++ )
+  //   {
+  //     _.assert( _.strIs( src[ s ] ) )
+  //     result[ s ] = regexpEscape( src[ s ] );
+  //   }
+  //   return result;
+  // }
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
 
-// //
 //
-// var regexpsEscape = routineVectorize_functor( regexpEscape );
+
+var regexpsEscape = null;
 
 //
 
@@ -5031,7 +5111,7 @@ function regexpEscape( src )
  * @memberof wTools
  */
 
-function regexpFrom( src,flags )
+function regexpFrom( src, flags )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -5040,8 +5120,104 @@ function regexpFrom( src,flags )
   if( _.regexpIs( src ) )
   return src;
 
+  _.assert( _.strIs( src ) );
+
   return new RegExp( _.regexpEscape( src ),flags );
 }
+
+//
+//
+// function regexpMaybeFrom( src, flags )
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( flags === undefined || _.strIs( flags ) );
+//
+//   if( !_.strIs( src ) )
+//   return src;
+//
+//   if( !_.strBegins( src,'/' ) || !_.strEnds( src,'/' ) )
+//   return src;
+//
+//   src = _.strRemoveBegin( src,'/' );
+//   src = _.strRemoveEnd( src,'/' );
+//
+//   return new RegExp( src,flags );
+// }
+//
+//
+
+function regexpMaybeFrom( o )
+{
+  if( !_.objectIs( o ) )
+  o = { srcStr : arguments[ 0 ] }
+
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( _.strIs( o.srcStr ) || _.regexpIs( o.srcStr ) );
+  _.routineOptions( regexpMaybeFrom, o );
+
+  var result = o.srcStr;
+
+  if( _.strIs( result ) )
+  {
+
+    // var optionsExtract =
+    // {
+    //   prefix : '//',
+    //   postfix : '//',
+    //   src : result,
+    // }
+    // var strips = _.strExtractInlinedStereo( optionsExtract );
+
+    if( o.stringWithRegexp )
+    {
+
+      var optionsExtract =
+      {
+        delimeter : '//',
+        src : result,
+      }
+      var strips = _.strExtractInlined( optionsExtract );
+
+      // if( strips.length > 1 )
+      // debugger;
+
+    }
+    else
+    {
+      var strips = [ result ];
+    }
+
+    for( var s = 0 ; s < strips.length ; s++ )
+    {
+      var strip = strips[ s ];
+
+      if( s % 2 === 0 )
+      {
+        strip = _.regexpEscape( strip );
+        if( o.toleratingSpaces )
+        strip = strip.replace( /\s+/g,'\\s*' );
+      }
+
+      strips[ s ] = strip;
+    }
+
+    result = RegExp( strips.join( '' ), o.flags );
+  }
+
+  return result;
+}
+
+regexpMaybeFrom.defaults =
+{
+  srcStr : null,
+  stringWithRegexp : 1,
+  toleratingSpaces : 1,
+  flags : 'g',
+}
+
+//
+
+var regexpsMaybeFrom = null;
 
 //
 
@@ -5354,7 +5530,7 @@ function regexpArrayIndex( arr,ins )
  * Checks if any regexp passed in `arr` is found in string `ins`
  * If match was found - returns match index
  * If no matches found and regexp array is not empty - returns false
- * If regexp array is empty - returns some default value passed in the `none` input param
+ * If regexp array is empty - returns some default value passed in the `ifEmpty` input param
  *
  * @example
  * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
@@ -5373,7 +5549,7 @@ function regexpArrayIndex( arr,ins )
  * @memberof wTools
  */
 
-function regexpArrayAny( arr, ins, none )
+function regexpArrayAny( arr, ins, ifEmpty )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -5387,7 +5563,7 @@ function regexpArrayAny( arr, ins, none )
     return m;
   }
 
-  return arr.length ? false : none;
+  return arr.length ? false : ifEmpty;
 }
 
 //
@@ -5396,7 +5572,7 @@ function regexpArrayAny( arr, ins, none )
  * Checks if all regexps passed in `arr` are found in string `ins`
  * If any of regex was not found - returns match index
  * If regexp array is not empty and all regexps passed test - returns true
- * If regexp array is empty - returns some default value passed in the `none` input param
+ * If regexp array is empty - returns some default value passed in the `ifEmpty` input param
  *
  * @example
  * var str = "The RGB color model is an additive color model in which red, green, and blue light are added together in various ways to reproduce a broad array of colors";
@@ -5415,7 +5591,7 @@ function regexpArrayAny( arr, ins, none )
  * @memberof wTools
  */
 
-function regexpArrayAll( arr, ins, none )
+function regexpArrayAll( arr, ins, ifEmpty )
 {
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
   _.assert( arguments.length === 3, 'expects exactly three argument' );
@@ -5427,12 +5603,12 @@ function regexpArrayAll( arr, ins, none )
     return m;
   }
 
-  return arr.length ? true : none;
+  return arr.length ? true : ifEmpty;
 }
 
 //
 
-function regexpArrayNone( arr, ins, none )
+function regexpArrayNone( arr, ins, ifEmpty )
 {
 
   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
@@ -5446,7 +5622,7 @@ function regexpArrayNone( arr, ins, none )
     return false;
   }
 
-  return arr.length ? true : none;
+  return arr.length ? true : ifEmpty;
 }
 
 //
@@ -6030,7 +6206,9 @@ function bufferRawIs( src )
 function bufferTypedIs( src )
 {
   var type = _ObjectToString.call( src );
-  if( !/\wArray/.test( type ) || _.bufferNodeIs( src ) )
+  if( !/\wArray/.test( type ) )
+  return false;
+  if( _.bufferNodeIs( src ) )
   return false;
   return true;
 }
@@ -6057,7 +6235,10 @@ function bufferNodeIs( src )
 
 function bufferAnyIs( src )
 {
-  return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
+  if( !src )
+  return false;
+  return src.byteLength >= 0;
+  // return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
 }
 
 //
@@ -6333,25 +6514,26 @@ function bufferRelen( src,len )
 
 //
 
-/* qqq : clean it */
+/* qqq : implement for 2 other types of buffer and do code test coverage */
 
-function bufferResize( src,size )
+function bufferResize( srcBuffer, size )
 {
-  var result = src;
+  var result;
 
-  _.assert( _.longIs( src ) );
+  _.assert( _.bufferRawIs( srcBuffer ) || _.bufferTypedIs( srcBuffer ) );
+  _.assert( srcBuffer.byteLength >= 0 );
   _.assert( arguments.length === 2 );
 
-  if( size > src.byteLength )
+  if( size > srcBuffer.byteLength )
   {
-    result = longMakeSimilar( src, size );
+    result = _.longMakeSimilar( srcBuffer, size );
     var resultTyped = new Uint8Array( result,0,result.byteLength );
-    var srcTyped = new Uint8Array( src,0,src.byteLength );
+    var srcTyped = new Uint8Array( srcBuffer,0,srcBuffer.byteLength );
     resultTyped.set( srcTyped );
   }
-  else if( size < src.byteLength )
+  else if( size < srcBuffer.byteLength )
   {
-    result = src.slice( 0,size );
+    result = srcBuffer.slice( 0,size );
   }
 
   return result;
@@ -7240,10 +7422,11 @@ function longMakeSimilar( ins,src )
   {
     if( _.longIs( src ) )
     length = src.length;
-    else if( _.bufferRawIs( src ) )
-    length = src.byteLength;
-    else
-    length = src
+    // else if( _.bufferRawIs( src ) )
+    // length = src.byteLength;
+    else if( _.numberIs( src ) )
+    length = src;
+    else _.assert( 0 );
   }
 
   if( _.argumentsArrayIs( ins ) )
@@ -7410,13 +7593,13 @@ function longSlice( array,f,l )
   _.assert( _.longIs( array ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
-  // if( !_.arrayLikeMutable( array ) )
+  // if( !_.arrayLikeResizable( array ) )
   // debugger;
   // console.log( _.strTypeOf( array ) );
 
-  if( _.arrayLikeMutable( array ) )
+  if( _.arrayLikeResizable( array ) )
   {
-    result = _ArraySlice.apply( array,f,l );
+    result = array.slice( f,l );
     return result;
   }
 
@@ -7459,9 +7642,6 @@ function longButRange( src, range, ins )
 
   var result;
   var range = _.rangeFrom( range );
-
-  // if( range[ 1 ] - range[ 0 ] <= 0 )
-  // return _.arraySlice( src ); /* xxx : check arguments array case */
 
   _.rangeClamp( range, [ 0, src.length ] );
   var d = range[ 1 ] - range[ 0 ];
@@ -7566,7 +7746,7 @@ function arrayIs( src )
 
 //
 
-function arrayLikeMutable( src )
+function arrayLikeResizable( src )
 {
   if( _ObjectToString.call( src ) === '[object Array]' )
   return true;
@@ -8614,7 +8794,7 @@ function arraySub( src,begin,end )
 
 function arrayButRange( src, range, ins )
 {
-  _.assert( _.arrayLikeMutable( src ) );
+  _.assert( _.arrayLikeResizable( src ) );
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
@@ -8626,26 +8806,6 @@ function arrayButRange( src, range, ins )
   var result = src.slice();
   result.splice.apply( result, args );
   return result;
-
-  // var result;
-  // var range = _.rangeFrom( range );
-  //
-  // if( range[ 1 ] - range[ 0 ] <= 0 )
-  // return _.arraySlice( src ); /* xxx : check arguments array case */
-  //
-  // _.rangeClamp( range, [ 0, src.length ] );
-  // var d = range[ 1 ] - range[ 0 ];
-  // var l = src.length - d;
-  //
-  // var result = _.longMakeSimilar( src, l );
-  //
-  // for( var i = 0 ; i < range[ 0 ] ; i++ )
-  // result[ i ] = src[ i ];
-  //
-  // for( var i = range[ 1 ] ; i < l ; i++ )
-  // result[ i-d ] = src[ i ];
-  //
-  // return result;
 }
 
 //
@@ -8655,46 +8815,10 @@ function arrayButRange( src, range, ins )
 function arraySlice( srcArray,f,l )
 {
 
-  // if( _.argumentsArrayIs( srcArray ) )
-  // if( f === undefined && l === undefined )
-  // {
-  //   if( srcArray.length === 2 )
-  //   return [ srcArray[ 0 ],srcArray[ 1 ] ];
-  //   else if( srcArray.length === 1 )
-  //   return [ srcArray[ 0 ] ];
-  //   else if( srcArray.length === 0 )
-  //   return [];
-  // }
-
-  // if( _.arrayLikeMutable( srcArray ) )
-  // return srcArray.slice( f,l );
-
-  _.assert( _.arrayLikeMutable( srcArray ) );
+  _.assert( _.arrayLikeResizable( srcArray ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   return srcArray.slice( f,l );
-
-  // var f = f !== undefined ? f : 0;
-  // var l = l !== undefined ? l : srcArray.length;
-  //
-  // _.assert( _.numberIs( f ) );
-  // _.assert( _.numberIs( l ) );
-  //
-  // if( f < 0 )
-  // f = 0;
-  // if( l > srcArray.length )
-  // l = srcArray.length;
-  // if( l < f )
-  // l = f;
-  //
-  // debugger;
-  //
-  // xxx
-  //
-  // var result = _.argumentsArrayOfLength( l-f );
-  // for( var r = f ; r < l ; r++ )
-  // result[ r-f ] = srcArray[ r ];
-  // return result;
 }
 
 //
@@ -10653,7 +10777,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   var result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result !== -1,'array should have only unique elements, but has several',ins );
+  _.assert( result >= 0,'array should have only unique elements, but has several',ins );
 
   return dstArray;
 }
@@ -11318,7 +11442,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   var result = arrayAppendedOnce.apply( this, arguments );
-  _.assert( result !== -1,'array should have only unique elements, but has several', ins );
+  _.assert( result >= 0,'array should have only unique elements, but has several', ins );
   return dstArray;
 }
 
@@ -11621,7 +11745,7 @@ function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   var result = arrayRemovedOnce.apply( this, arguments );
-  _.assert( result !== -1,'array does not contains element',ins );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   return dstArray;
 }
 
@@ -11630,6 +11754,8 @@ function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
 {
   var index = _.arrayLeftIndex.apply( _, arguments );
+
+  /* qqq : this is not correct! */
 
   if( index !== -1 )
   {
@@ -11695,6 +11821,47 @@ function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
   return index;
 }
 
+//
+
+function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  var result = arrayRemovedOnce.apply( this, arguments );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  return dstArray;
+}
+
+//
+
+function arrayRemovedOnceElement( dstArray, ins, evaluator1, evaluator2 )
+{
+
+  var result;
+  var index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    result = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+
+  return result;
+}
+
+//
+
+function arrayRemovedOnceElementStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+
+  var result;
+  var index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    result = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+
+  return result;
+}
 //
 
 function arrayRemoveArray( dstArray, insArray )
@@ -12214,7 +12381,7 @@ function arrayReplaceOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   var result = arrayReplacedOnce.apply( this, arguments );
-  _.assert( result !== -1, 'arrayReplaceOnceStrictly: ins not exists in dstArray' );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   return dstArray;
 }
 
@@ -12280,77 +12447,6 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   return result;
 }
 
-// //
-//
-//
-// function arrayReplaceArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
-// {
-//   arrayReplacedArraysOnce.apply( this, arguments );
-//   return dstArray;
-// }
-//
-// //
-//
-//
-// function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
-// {
-//   var result = arrayReplacedArraysOnce.apply( this, arguments );
-//
-//   var expected = 0;
-//   for( var i = 0, len = ins.length; i < len; i++ )
-//   expected += ins[ i ].length;
-//
-//   _.assert( expected === result );
-//
-//   return dstArray;
-// }
-//
-// //
-//
-// function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
-// {
-//   _.assert( 3 <= arguments.length && arguments.length <= 5 );
-//   _.assert( _.longIs( ins ) );
-//   _.assert( _.longIs( sub ) );
-//   _.assert( ins.length === sub.length );
-//
-//   var result = 0;
-//
-//   function _subGet( i, j )
-//   {
-//     if( !_.longIs( sub[ i ] ) )
-//     return sub[ i ];
-//
-//     var subArray = sub[ i ];
-//     if( j < subArray.length )
-//     return subArray[ j ];
-//     else
-//     return subArray[ subArray.length - 1 ];
-//   }
-//
-//   for( var i = 0, ilen = ins.length; i < ilen; i++ )
-//   {
-//     _.assert( _.longIs( ins[ i ] ) );
-//
-//     var insArray = ins[ i ];
-//
-//     if( _.longIs( sub[ i ] ) )
-//     _.assert( insArray.length >= sub[ i ].length  );
-//
-//     for( var j = 0, slen = insArray.length ; j < slen ; j++ )
-//     {
-//       var index = _.arrayLeftIndex( dstArray, insArray[ j ], evaluator1, evaluator2 );
-//       if( index >= 0 )
-//       {
-//         dstArray.splice( index, 1, _subGet( i, j ) );
-//         result += 1;
-//       }
-//     }
-//   }
-//
-//   return result;
-// }
-//
 //
 
 function arrayReplaceAll( dstArray, ins, sub, evaluator1, evaluator2 )
@@ -13315,23 +13411,36 @@ mapSatisfy.defaults =
  * @memberof wTools
 */
 
-function _mapSatisfy( template,src,root,levels )
+function _mapSatisfy( template, src, root, levels )
 {
 
   if( template === src )
   return true;
 
-  if( levels <= 0 )
-  return false;
+  if( levels === 0 )
+  {
+    if( _.objectIs( template ) && _.objectIs( src ) && _.routineIs( template.identicalWith ) && src.identicalWith === template.identicalWith )
+    return template.identicalWith( src );
+    else
+    return template === src;
+  }
+  else if( levels < 0 )
+  {
+    return false;
+  }
 
   if( _.routineIs( template ) )
   return template( src );
 
-  if( objectIs( template ) )
+  if( _.objectIs( template ) )
   {
     for( var t in template )
-    if( !_mapSatisfy( template[ t ],src[ t ],root,levels-1 ) )
-    return false;
+    {
+      var satisfy = false;
+      satisfy = _mapSatisfy( template[ t ], src[ t ], root, levels-1 );
+      if( !satisfy )
+      return false;
+    }
     return true;
   }
 
@@ -17619,19 +17728,108 @@ Error.stackTraceLimit = Infinity;
  */
 
 // --
+// meta
+// --
+
+_.Later = function Later()
+{
+  var d = Object.create( null );
+  d.args = arguments;
+  _.Later._lates.push( d );
+  return d;
+}
+
+//
+
+_.Later.replace = function replace( container )
+{
+  if( arguments.length !== 1 || !container )
+  throw Error( 'Expects single argument {-container-}' );
+  if( !_.Later._lates.length )
+  throw Error( 'No late was done' );
+
+  // debugger;
+  var descriptors = _.Later._associatedMap.get( container ) || [];
+  _.Later._associatedMap.set( container, descriptors );
+  _.Later._lates.forEach( ( d ) =>
+  {
+    d.container = container;
+    // _.Later._associatedLates.push( d );
+    descriptors.push( d );
+  });
+  _.Later._lates = [];
+  // debugger;
+
+}
+
+//
+
+_.Later.for = function for_( container )
+{
+  if( arguments.length !== 1 || !container )
+  throw Error( 'Expects single argument {-container-}' );
+
+  var descriptors = _.Later._associatedMap.get( container );
+  _.Later._associatedMap.delete( container );
+
+  if( !descriptors )
+  throw Error( 'No laters for {-container-} was made' );
+
+  // debugger;
+
+  for( var k in container )
+  {
+    var d = container[ k ];
+    var i = descriptors.indexOf( d );
+    if( i !== -1 )
+    {
+      descriptors.splice( i,1 );
+      _.Later._for( k,d );
+    }
+  }
+
+  // debugger;
+
+  if( descriptors.length )
+  throw Error( 'Some laters was not found in the {-container-}' );
+
+}
+
+//
+
+_.Later._for = function _for( key, descriptor )
+{
+
+  if( descriptor.args.length === 3 )
+  if( !_.arrayIs( descriptor.args[ 2 ] ) )
+  descriptor.args[ 2 ] = [ descriptor.args[ 2 ] ];
+
+  // debugger;
+  descriptor.container[ key ] = routineCall.apply( _, descriptor.args );
+  // debugger;
+
+}
+
+//
+
+_.Later._lates = [];
+_.Later._associatedMap = new Map();
+
+// --
 // vars
 // --
 
-var Later =
-{
-  regexpsEscape : [ _, routineVectorize_functor, regexpEscape ],
-  timeNow : [ _, _timeNow_functor ]
-}
+// var Later =
+// {
+//   regexpsMaybeFrom : [ _, routineVectorize_functor, regexpMaybeFrom ],
+//   regexpsEscape : [ _, routineVectorize_functor, regexpEscape ],
+//   timeNow : [ _, _timeNow_functor ]
+// }
 
 var Vars =
 {
 
-  Later : Later,
+  // Later : Later,
   ArrayType : Array,
   error : error,
 
@@ -17647,7 +17845,6 @@ var Vars =
 
 var Routines =
 {
-
 
   // etc
 
@@ -17736,7 +17933,7 @@ var Routines =
   containerLike : containerLike,
 
   symbolIs : symbolIs,
-  bigNumberIs : bigNumberIs,
+  bigIntIs : bigIntIs,
 
   vectorIs : vectorIs,
   constructorIsVector : constructorIsVector,
@@ -17759,6 +17956,8 @@ var Routines =
   workerIs : workerIs,
   streamIs : streamIs,
   consoleIs : consoleIs,
+  printerLike : printerLike,
+  printerIs : printerIs,
   loggerIs : loggerIs,
   processIs : processIs,
 
@@ -17781,13 +17980,13 @@ var Routines =
   routinesJoin : routinesJoin,
   _routinesCall : _routinesCall,
   routinesCall : routinesCall,
-  routinesCallWhile : routinesCallWhile,
+  routinesCallEvery : routinesCallEvery,
   methodsCall : methodsCall,
 
   routinesChain : routinesChain,
   routinesCompose : routinesCompose,
   routinesComposeReturningLast : routinesComposeReturningLast,
-  routinesComposeWhile : routinesComposeWhile,
+  routinesComposeEvery : routinesComposeEvery,
 
   routineOptions : routineOptions,
   assertRoutineOptions : assertRoutineOptions,
@@ -17861,6 +18060,7 @@ var Routines =
 
   str : str,
   toStr : str,
+  toStrShort : str,
   strFrom : str,
 
   _strBegins : _strBegins,
@@ -17880,11 +18080,14 @@ var Routines =
 
   regexpsAreIdentical : regexpsAreIdentical,
   regexpEscape : regexpEscape,
-  regexpsEscape : null,
+  regexpsEscape : _.Later( _, routineVectorize_functor, regexpEscape ),
 
   regexpMakeObject : regexpMakeObject,
   regexpMakeArray : regexpArrayMake,
   regexpFrom : regexpFrom,
+
+  regexpMaybeFrom : regexpMaybeFrom,
+  regexpsMaybeFrom : _.Later( _, routineVectorize_functor, { routine : regexpMaybeFrom, forKey : 'srcStr' } ),
 
   regexpsSources : regexpsSources,
   regexpsJoin : regexpsJoin,
@@ -17915,7 +18118,7 @@ var Routines =
   timePeriodic : timePeriodic, /* dubious */
 
   _timeNow_functor : _timeNow_functor,
-  timeNow : null,
+  timeNow : _.Later( _, _timeNow_functor ),
 
   timeFrom : timeFrom,
   timeSpent : timeSpent,
@@ -17985,7 +18188,7 @@ var Routines =
   // array checker
 
   arrayIs : arrayIs,
-  arrayLikeMutable : arrayLikeMutable,
+  arrayLikeResizable : arrayLikeResizable,
   _arrayLike : _arrayLike,
   longIs : longIs,
 
@@ -18128,6 +18331,9 @@ var Routines =
   arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
   arrayRemoved : arrayRemoved,
   arrayRemovedOnce : arrayRemovedOnce,
+  arrayRemovedOnceStrictly : arrayRemovedOnceStrictly, /* qqq : test required */
+  arrayRemovedOnceElement : arrayRemovedOnceElement, /* qqq : test required */
+  arrayRemovedOnceElementStrictly : arrayRemovedOnceElementStrictly, /* qqq : test required */
 
   arrayRemoveArray : arrayRemoveArray,
   arrayRemoveArrayOnce : arrayRemoveArrayOnce,
@@ -18158,13 +18364,13 @@ var Routines =
   arrayReplaceOnceStrictly : arrayReplaceOnceStrictly,
   arrayReplacedOnce : arrayReplacedOnce,
 
+  // arrayReplacedOnceStrictly : arrayReplacedOnceStrictly, /* qqq : implement */
+  // arrayReplacedOnceElement : arrayReplacedOnceElement, /* qqq : implement */
+  // arrayReplacedOnceElementStrictly : arrayReplacedOnceElementStrictly, /* qqq : implement */
+
   arrayReplaceArrayOnce : arrayReplaceArrayOnce,
   arrayReplaceArrayOnceStrictly : arrayReplaceArrayOnceStrictly,
   arrayReplacedArrayOnce : arrayReplacedArrayOnce,
-
-  // arrayReplaceArraysOnce : arrayReplaceArraysOnce,
-  // arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
-  // arrayReplacedArraysOnce : arrayReplacedArraysOnce,
 
   arrayReplaceAll : arrayReplaceAll,
   arrayReplacedAll : arrayReplacedAll,
@@ -18388,6 +18594,8 @@ var Routines =
 
 Object.assign( Self, Routines );
 Object.assign( Self, Vars );
+
+_.Later.replace( Self );
 
 // --
 // export

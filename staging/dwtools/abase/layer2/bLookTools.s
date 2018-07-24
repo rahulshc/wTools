@@ -1476,7 +1476,7 @@ function _entityProbeReport( o )
       o.report += '*.';
       o.report += r + ' : ' + d.having.length;
       if( d.values )
-      o.report += ' ' + _.toStr( d.values,{ levels : 0 } );
+      o.report += ' ' + _.toStrShort( d.values );
       o.report += '\n';
     }
   }
