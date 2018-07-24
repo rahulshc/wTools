@@ -42,12 +42,6 @@ var _ = wTools;
 function bufferRelen( test )
 {
 
-  // debugger;
-  // console.log( 'www' );
-  // logger.log( 'xxx' );
-  // test.logger.log( 'yyy' );
-  // debugger;
-
   test.case = 'second argument is more than ints.length';
   var ints = new Int8Array( [ 3, 7, 13 ] );
   var got = _.bufferRelen( ints, 4 );
@@ -419,6 +413,8 @@ function hasLength( test )
 
 //
 
+/* qqq : implement bufferMakeSimilar */
+
 function longMakeSimilar( test )
 {
 
@@ -456,11 +452,11 @@ function longMakeSimilar( test )
   test.is( _.arrayIs( got ) );
   test.identical( got, [ 1,1,1,1,1 ] );
 
-  var ins = [];
-  var src = new ArrayBuffer( 5 )
-  var got = _.longMakeSimilar( ins, src );
-  test.identical( got.length, 5 );
-  test.is( _.arrayIs( got ) );
+  // var ins = [];
+  // var src = new ArrayBuffer( 5 )
+  // var got = _.longMakeSimilar( ins, src );
+  // test.identical( got.length, 5 );
+  // test.is( _.arrayIs( got ) );
 
   var ins = new Uint8Array( 5 );
   ins[ 0 ] = 1;
@@ -4032,11 +4028,7 @@ function arrayPrependArray( test )
 
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayPrependArray( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayPrependArray( dst, [ undefined, 2 ] );
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, dst );
 
@@ -4388,7 +4380,9 @@ function arrayPrependedArrayOnce( test )
   });
 }
 
+// --
 //arrayPrepend*Arrays*
+// --
 
 function arrayPrependArrays( test )
 {
@@ -4433,21 +4427,10 @@ function arrayPrependArrays( test )
   test.identical( dst, [  'a', 1, { a : 1 }, { b : 2 }, 1  ] );
   test.identical( got, dst );
 
-  test.case = 'argument is undefined';
-  var dst = [ 1 ];
-  test.shouldThrowError( function ()
-  {
-    _.arrayPrependArrays( dst, undefined );
-  });
-  test.identical( dst, [ 1 ] );
-
   test.case = 'array has undefined';
   var dst = [ 1 ];
   var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayPrependArrays( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayPrependArrays( dst, [ undefined, 2 ] );
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, dst );
 
@@ -4455,6 +4438,14 @@ function arrayPrependArrays( test )
 
   if( !Config.debug )
   return;
+
+  test.case = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayPrependArrays( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
 
   test.case = 'no arguments';
   test.shouldThrowError( function()
@@ -4479,6 +4470,7 @@ function arrayPrependArrays( test )
   {
     _.arrayPrependArrays( [], [ 1 ], [ 2 ] );
   });
+
 };
 
 //
@@ -4763,10 +4755,7 @@ function arrayPrependedArrays( test )
   test.case = 'array has undefined';
   var dst = [ 1 ];
   var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayPrependedArrays( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayPrependedArrays( dst, [ undefined, 2 ] );
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, 2 );
 
@@ -5419,11 +5408,7 @@ function arrayAppendArray( test )
 
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayAppendArray( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayAppendArray( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1,undefined, 2 ] );
   test.identical( got, dst );
 
@@ -5819,20 +5804,12 @@ function arrayAppendedArrayOnceWithSelector( test )
   test.case = 'array has undefined, single equalizer';
 
   var dst = [ { a : 1 } ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
-  });
+  var got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
   test.identical( dst, [ { a : 1 }, { a : undefined }, { a : 2 } ] );
   test.identical( got, 2 );
 
   var dst = [ { a : 1 }, { a : undefined } ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
-  });
+  var got = _.arrayAppendedArrayOnce( dst, [ { a : undefined }, { a : 2 } ], ( e ) => e.a );
   test.identical( dst, [ { a : 1 }, { a : undefined }, { a : 2 } ] );
   test.identical( got, 1 );
 
@@ -5883,11 +5860,7 @@ function arrayAppendedArrayOnceWithSelector( test )
   test.identical( got, 2 );
 
   var dst = [ { a : 1 }, { a : undefined } ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayAppendedArrayOnce( dst, [ { b : undefined }, { b : 2 } ], ( e ) => e.a, ( e ) => e.b );
-  });
+  var got = _.arrayAppendedArrayOnce( dst, [ { b : undefined }, { b : 2 } ], ( e ) => e.a, ( e ) => e.b );
   test.identical( dst, [ { a : 1 }, { b : undefined }, { b : 2 } ] );
   test.identical( got, 1 );
 
@@ -5985,11 +5958,7 @@ function arrayAppendArrays( test )
 
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayAppendArrays( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayAppendArrays( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1, undefined, 2 ] );
   test.identical( got, dst );
 
@@ -6282,11 +6251,7 @@ function arrayAppendedArrays( test )
 
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayAppendedArrays( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayAppendedArrays( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1, undefined, 2 ] );
   test.identical( got, 2 );
 
@@ -7012,7 +6977,7 @@ function arrayRemovedOnce( test )
 //   });
 //
 // };
-
+//
 //
 
 function arrayRemoveArray( test )
@@ -7044,21 +7009,9 @@ function arrayRemoveArray( test )
   test.identical( dst, [ ] );
   test.identical( got, dst );
 
-  test.case = 'argument is undefined';
-  var dst = [ 1 ];
-  test.shouldThrowError( function ()
-  {
-    _.arrayRemoveArray( dst, undefined );
-  });
-  test.identical( dst, [ 1 ] );
-
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayRemoveArray( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayRemoveArray( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, dst );
 
@@ -7066,6 +7019,12 @@ function arrayRemoveArray( test )
 
   if( !Config.debug )
   return;
+
+  test.case = 'argument is undefined';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoveArray( [ 1 ], undefined );
+  });
 
   test.case = 'no arguments';
   test.shouldThrowError( function()
@@ -7269,21 +7228,10 @@ function arrayRemovedArray( test )
   test.identical( dst, [] );
   test.identical( got, 3 );
 
-  test.case = 'argument is undefined';
-  var dst = [ 1 ];
-  test.shouldThrowError( function ()
-  {
-    _.arrayRemovedArray( dst, undefined );
-  });
-  test.identical( dst, [ 1 ] );
-
   test.case = 'array has undefined';
   var dst = [ 1 ];
   var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayRemovedArray( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayRemovedArray( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
@@ -7291,6 +7239,12 @@ function arrayRemovedArray( test )
 
   if( !Config.debug )
   return;
+
+  test.case = 'argument is undefined';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedArray( [ 1 ], undefined );
+  });
 
   test.case = 'no arguments';
   test.shouldThrowError( function()
@@ -7437,11 +7391,7 @@ function arrayRemoveArrays( test )
 
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayRemoveArrays( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayRemoveArrays( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, dst );
 
@@ -7788,11 +7738,7 @@ function arrayRemovedArrays( test )
 
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  var got;
-  test.mustNotThrowError( function ()
-  {
-    var got = _.arrayRemovedArrays( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayRemovedArrays( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 

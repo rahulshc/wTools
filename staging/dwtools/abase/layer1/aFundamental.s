@@ -6423,6 +6423,94 @@ function buffersAreIdentical( src1, src2 )
 
 //
 
+/**
+ * The bufferMakeSimilar() routine returns a new array or a new TypedArray with length equal (length)
+ * or new TypedArray with the same length of the initial array if second argument is not provided.
+ *
+ * @param { longIs } ins - The instance of an array.
+ * @param { Number } [ length = ins.length ] - The length of the new array.
+ *
+ * @example
+ * // returns [ , ,  ]
+ * var arr = _.bufferMakeSimilar( [ 1, 2, 3 ] );
+ *
+ * @example
+ * // returns [ , , ,  ]
+ * var arr = _.bufferMakeSimilar( [ 1, 2, 3 ], 4 );
+ *
+ * @returns { longIs }  Returns an array with a certain (length).
+ * @function bufferMakeSimilar
+ * @throws { Error } If the passed arguments is less than two.
+ * @throws { Error } If the (length) is not a number.
+ * @throws { Error } If the first argument in not an array like object.
+ * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @memberof wTools
+ */
+
+/* qqq : implement */
+
+function bufferMakeSimilar( ins,src )
+{
+  var result, length;
+
+  throw _.err( 'not tested' );
+
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+
+  if( src === undefined )
+  {
+    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+  }
+  else
+  {
+    if( _.longIs( src ) )
+    length = src.length;
+    else if( _.bufferRawIs( src ) )
+    length = src.byteLength;
+    else if( _.numberIs( src ) )
+    length = src;
+    else _.assert( 0 );
+  }
+
+  if( _.argumentsArrayIs( ins ) )
+  ins = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
+
+  if( _.longIs( src ) || _.bufferAnyIs( src ) )
+  {
+
+    if( ins.constructor === Array )
+    {
+      result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+    }
+    else if( _.routineIs( ins ) )
+    {
+      if( ins.prototype.constructor.name === 'Array' )
+      result = _ArraySlice.call( src );
+      else
+      result = new ins( src );
+    }
+    else
+    result = new ins.constructor( src );
+
+  }
+  else
+  {
+    if( _.routineIs( ins ) )
+    result = new ins( length );
+    else
+    result = new ins.constructor( length );
+  }
+
+  return result;
+}
+
+//
+
 /* qqq : implement */
 
 function bufferButRange( src, range, ins )
@@ -7439,8 +7527,8 @@ function longMakeSimilar( ins,src )
   if( _.longIs( src ) )
   {
 
-    if( ins.constructor === Array )
-    debugger;
+    // if( ins.constructor === Array )
+    // debugger;
     // else
     // debugger;
 
@@ -18146,6 +18234,7 @@ var Routines =
   buffersAreEquivalent : buffersAreEquivalent,
   buffersAreIdentical : buffersAreIdentical,
 
+  bufferMakeSimilar : bufferMakeSimilar,
   bufferButRange : bufferButRange,
   bufferRelen : bufferRelen,
   bufferResize : bufferResize,
