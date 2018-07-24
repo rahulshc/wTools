@@ -4471,7 +4471,7 @@ function arrayPrependArrays( test )
     _.arrayPrependArrays( [], [ 1 ], [ 2 ] );
   });
 
-};
+}
 
 //
 
