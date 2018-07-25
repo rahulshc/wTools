@@ -3403,7 +3403,7 @@ function _routinesChain_body( o )
     for( var s = 0 ; s < o.srcs.length ; s++ )
     {
       if( !_.argumentsArrayIs( args ) )
-      args = [ args ]
+      args = [ args ];
       if( s > 0 )
       args = o.joiner.apply( this, args );
       args = o.srcs[ s ].apply( this, args );
@@ -3419,7 +3419,7 @@ function _routinesChain_body( o )
     {
       debugger;
       if( !_.argumentsArrayIs( args ) )
-      args = [ args ]
+      args = [ args ];
       args = o.srcs[ s ].apply( this, args );
     }
     debugger;
@@ -3768,13 +3768,19 @@ function routineForPreAndBody( pre, body )
   _.assertMapHasOnly( pre,{} );
   _.assertMapHasOnly( body,{ defaults : null } );
 
+  // if( !_.routineIs( pre ) )
+  // debugger;
   if( !_.routineIs( pre ) )
   pre = _.routinesChain( pre, ( o ) => _.argumentsArrayFrom([ callPreAndBody, [ o ] ]) );
 
   function callPreAndBody()
   {
+    let result;
     var o = pre.call( this, callPreAndBody, arguments );
-    var result = body.call( this, o );
+    if( _.argumentsArrayIs( o ) )
+    result = body.apply( this, o );
+    else
+    result = body.call( this, o );
     return result;
   }
 

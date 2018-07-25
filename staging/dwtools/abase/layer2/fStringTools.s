@@ -1169,6 +1169,53 @@ function strSub( srcStr, range )
 
 //
 
+/*
+
+_.strCutOffLeft( 'a b c',' ' )
+(3) [ 'a', ' ', 'b c' ]
+_.strCutOffRight( 'a b c',' ' )
+(3) [ 'a b', ' ', 'c' ]
+_.strCutOffAllLeft( 'a b c',' ' )
+(3) [ 'a b', ' ', 'c' ]
+_.strCutOffAllRight( 'a b c',' ' )
+(3) [ 'a', ' ', 'b c' ]
+
+_.strCutOffLeft( 'abc',' ' )
+(3) [ '', '', 'abc' ]
+_.strCutOffRight( 'abc',' ' )
+(3) [ 'abc', '', '' ]
+_.strCutOffAllLeft( 'abc',' ' )
+(3) [ '', '', 'abc' ]
+_.strCutOffAllRight( 'abc',' ' )
+(3) [ 'abc', '', '' ]
+
+*/
+
+function _strCutOff_pre( routine, args )
+{
+  let o;
+
+  if( args.length > 1 )
+  {
+    o = { src : args[ 0 ], delimeter : args[ 1 ] };
+  }
+  else
+  {
+    o = args[ 0 ];
+    _.assert( args.length === 1, 'expects single argument' );
+  }
+
+  _.routineOptions( routine, o );
+  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.strIs( o.delimeter ) );
+
+  return o;
+}
+
+//
+
 /**
 * @typedef {object} wTools~toStrInhalfOptions
 * @property {string} [ o.src=null ] - Source string.
@@ -1219,6 +1266,8 @@ function _strCutOff( o )
   var delimeter
   var index = o.left ? -1 : o.src.length;
 
+  debugger;
+
   /* */
 
   if( !( number >= 1 ) )
@@ -1247,7 +1296,6 @@ function _strCutOff( o )
 
         var i = o.src.indexOf( a,index );
         if( i === -1 )
-        // if( i === -1 && o.number > 1 )
         return o.src.length;
 
         return i;
@@ -1255,11 +1303,7 @@ function _strCutOff( o )
       else
       s = _.entityMax( o.delimeter,function( a )
       {
-
         var i = o.src.lastIndexOf( a,index );
-        // if( i === -1 )
-        // return o.src.length;
-
         return i;
       });
 
@@ -1287,7 +1331,6 @@ function _strCutOff( o )
     if( !o.left && number > 1 && index === 0  )
     return  [ '', '', o.src ]
 
-    // if( !( index >= 0 ) || ( !o.left && index === 0 && number > 1 ) )
     if( !( index >= 0 ) && o.number === 1 )
     return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
 
@@ -1341,34 +1384,21 @@ _strCutOff.defaults =
  *
  */
 
-function strCutOffLeft( o )
+function _strCutOffLeft_body( o )
 {
-
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length > 1 )
-  {
-    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ], number : arguments[ 2 ] };
-  }
-  else
-  {
-    _.assert( arguments.length === 1, 'expects single argument' );
-  }
-
-  _.assertMapHasOnly( o, strCutOffLeft.defaults );
-
   o.left = 1;
-
   var result = _strCutOff( o );
   return result;
 }
 
-strCutOffLeft.defaults =
+_strCutOffLeft_body.defaults =
 {
   src : null,
   delimeter : ' ',
   number : 1,
 }
+
+var strCutOffLeft = _.routineForPreAndBody( _strCutOff_pre, _strCutOffLeft_body );
 
 //
 
@@ -1399,54 +1429,26 @@ strCutOffLeft.defaults =
  *
  */
 
-function strCutOffRight( o )
+function _strCutOffRight_body( o )
 {
-
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-
-  if( arguments.length > 1 )
-  {
-    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ], number : arguments[ 2 ] };
-  }
-  else
-  {
-    _.assert( arguments.length === 1, 'expects single argument' );
-  }
-
-  _.assertMapHasOnly( o,strCutOffRight.defaults );
-
   o.left = 0;
-
   var result = _strCutOff( o );
   return result;
 }
 
-strCutOffRight.defaults =
+_strCutOffRight_body.defaults =
 {
   src : null,
   delimeter : ' ',
   number : 1,
 }
 
+var strCutOffRight = _.routineForPreAndBody( _strCutOff_pre, _strCutOffRight_body );
+
 //
 
-function strCutOffAllLeft( o )
+function _strCutOffAllLeft_body( o )
 {
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( arguments.length > 1 )
-  {
-    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] };
-  }
-  else
-  {
-    _.assert( arguments.length === 1, 'expects single argument' );
-  }
-
-  _.assertMapHasOnly( o,strCutOffAllLeft.defaults );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.delimeter ) );
 
   var i = o.src.lastIndexOf( o.delimeter );
 
@@ -1458,31 +1460,18 @@ function strCutOffAllLeft( o )
   return result;
 }
 
-strCutOffAllLeft.defaults =
+_strCutOffAllLeft_body.defaults =
 {
   src : null,
   delimeter : ' ',
 }
 
+var strCutOffAllLeft = _.routineForPreAndBody( _strCutOff_pre, _strCutOffAllLeft_body );
+
 //
 
-function strCutOffAllRight( o )
+function _strCutOffAllRight_body( o )
 {
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  if( arguments.length > 1 )
-  {
-    o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] };
-  }
-  else
-  {
-    _.assert( arguments.length === 1, 'expects single argument' );
-  }
-
-  _.assertMapHasOnly( o,strCutOffAllRight.defaults );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.delimeter ) );
 
   var i = o.src.indexOf( o.delimeter );
 
@@ -1494,11 +1483,13 @@ function strCutOffAllRight( o )
   return result;
 }
 
-strCutOffAllRight.defaults =
+_strCutOffAllRight_body.defaults =
 {
   src : null,
   delimeter : ' ',
 }
+
+var strCutOffAllRight = _.routineForPreAndBody( _strCutOff_pre, _strCutOffAllRight_body );
 
 //
 
@@ -2119,7 +2110,7 @@ _strSplitFast_body.defaults =
   src : null,
   delimeter : ' ',
   preservingEmpty : 1,
-  preservingDelimeters : 0,
+  preservingDelimeters : 1,
 }
 
 //
@@ -2183,7 +2174,7 @@ _.assert( strSplitFast.defaults );
 
 //
 
-function _strSplit2_body( o )
+function _strSplit_body/**2**/( o )
 {
 
   o.delimeter = _.arrayAs( o.delimeter );
@@ -2209,8 +2200,6 @@ function _strSplit2_body( o )
 
   o.splits = _.strSplitFast.body( fastOptions );
 
-  debugger;
-
   if( o.quoting )
   _.strSplitsQuote.body( o );
 
@@ -2228,7 +2217,7 @@ function _strSplit2_body( o )
   return o.splits;
 }
 
-var defaults = _strSplit2_body.defaults = Object.create( _strSplitFast_body.defaults );
+var defaults = _strSplit_body/**2**/.defaults = Object.create( _strSplitFast_body.defaults );
 
 defaults.preservingEmpty = 1;
 defaults.preservingDelimeters = 1;
@@ -2294,16 +2283,26 @@ defaults.onQuote = null;
  *
  */
 
-var strSplit2 = _.routineForPreAndBody( [ strSplitFast.pre, strSplitsQuote.pre, strSplitsStrip.pre ], _strSplit2_body );
+var pre = [ strSplitFast.pre, strSplitsQuote.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
+var strSplit/**2**/ = _.routineForPreAndBody( pre, _strSplit_body/**2**/ );
 
-_.assert( strSplit2.pre !== strSplitFast.pre );
-_.assert( strSplit2.pre );
-_.assert( strSplit2.body === _strSplit2_body );
-_.assert( strSplit2.defaults );
+_.assert( strSplit/**2**/.pre !== strSplitFast.pre );
+_.assert( strSplit/**2**/.pre );
+_.assert( strSplit/**2**/.body === _strSplit_body/**2**/ );
+_.assert( strSplit/**2**/.defaults );
 
 //
 
-function _strSplit_body( o )
+var strSplitNonPreserving = _.routineForPreAndBody( strSplit.pre, strSplit.body );
+
+var defaults = strSplitNonPreserving.defaults;
+
+defaults.preservingEmpty = 0
+defaults.preservingDelimeters = 0;
+
+//
+
+function _strSplitNaive_body( o )
 {
 
   if( o.quoting )
@@ -2500,7 +2499,7 @@ function _strSplit_body( o )
 
 }
 
-_strSplit_body.defaults =
+_strSplitNaive_body.defaults =
 {
   src : null,
   delimeter : ' ',
@@ -2532,29 +2531,29 @@ _strSplit_body.defaults =
  *
  * @example
  * //returns [ 'first', 'second', 'third' ]
- * _.strSplit( ' first second third ' );
+ * _.strSplitNaive( ' first second third ' );
  *
  * @example
  * //returns [ 'a', 'b', 'c', 'd' ]
- * _.strSplit( { src : 'a,b,c,d', delimeter : ','  } );
+ * _.strSplitNaive( { src : 'a,b,c,d', delimeter : ','  } );
  *
  * @example
  * //returns [ 'a', 'b', 'c', 'd' ]
- * _.strSplit( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
+ * _.strSplitNaive( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
  *
  * @example
  * //returns [ '    a', 'b', 'c', 'd   ' ]
-   * _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+   * _.strSplitNaive( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
  *
  * @example
  * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
- * _.strSplit( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
+ * _.strSplitNaive( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
  *
  * @example
  * //returns [ 'a', '', 'b', '', 'c', '', 'd' ]
- * _.strSplit( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
+ * _.strSplitNaive( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
  *
- * @method strSplit
+ * @method strSplitNaive
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
@@ -2563,90 +2562,12 @@ _strSplit_body.defaults =
  *
  */
 
-var strSplit = _.routineForPreAndBody( _strSplitFast_pre, _strSplit_body );
+var strSplitNaive = _.routineForPreAndBody( _strSplitFast_pre, _strSplitNaive_body );
 
-_.assert( strSplit.pre === _strSplitFast_pre );
-_.assert( strSplit.body === _strSplit_body );
-_.assert( strSplit.defaults );
+_.assert( strSplitNaive.pre === _strSplitFast_pre );
+_.assert( strSplitNaive.body === _strSplitNaive_body );
+_.assert( strSplitNaive.defaults );
 
-// {
-//   var o = _.strSplit.pre( strSplit, arguments );
-//   var result = _.strSplit.body( o );
-//   return result;
-// }
-//
-// strSplit.pre = _strSplitFast_pre;
-// strSplit.body = _strSplit_body;
-//
-// var defaults = sstrSplit.defaults = Object.create( strSplit.body.defaults );
-//
-// //
-//
-// function strExtractInlined_old( o )
-// {
-//   if( arguments.length === 2 )
-//   o = { src : arguments[ 0 ], delimeter : arguments[ 1 ] }
-//   else if( _.strIs( o ) )
-//   o = { src : arguments[ 0 ] }
-//
-//   _.assert( _.strIs( o.src ) );
-//   _.assert( _.objectIs( o ) );
-//   _.assert( arguments.length === 1 || arguments.length === 2, 'expects single argument' );
-//   _.routineOptions( strExtractInlined_old, o );
-//
-//   var result = [];
-//   var splitted = o.src.split( o.delimeter );
-//   var isNextStrip = 0;
-//   var isPrevStrip = 0;
-//
-//   /* */
-//
-//   for( var i = 0 ; i < splitted.length ; i++ )
-//   {
-//
-//     if( !isNextStrip )
-//     {
-//       isNextStrip = 1;
-//       if( splitted[ i ] )
-//       {
-//         isPrevStrip = 0;
-//         result.push( splitted[ i ] );
-//       }
-//       continue;
-//     }
-//
-//     var strip = o.onInlined ? o.onInlined( splitted[ i ] ) : splitted[ i ];
-//
-//     if( strip !== undefined )
-//     {
-//       isNextStrip = 0;
-//       isPrevStrip = 1;
-//       result.push( strip );
-//     }
-//     else
-//     {
-//       if( !isPrevStrip && result.length > 0 )
-//       result[ result.length-1 ] += o.delimeter + splitted[ i ];
-//       else
-//       result.push( o.delimeter + splitted[ i ] );
-//       isNextStrip = 1;
-//       isPrevStrip = 0;
-//     }
-//
-//   }
-//
-//   /* */
-//
-//   return result;
-// }
-//
-// strExtractInlined_old.defaults =
-// {
-//   src : null,
-//   delimeter : '#',
-//   onInlined : null
-// }
-//
 //
 
 function _strExtractInlined_body( o )
@@ -2654,20 +2575,10 @@ function _strExtractInlined_body( o )
 
   _.assert( arguments.length === 1, 'expects single options map' );
 
-  // if( o.delimeterLeft === null && o.delimeterRight === null )
-  // {
-  //   if( o.delimeter === null )
-  //   o.delimeter = '#';
-  // }
-  // else
-  // {
-  //   _.assert( o.delimeter === null );
-  // }
-
   if( o.delimeter === null )
   o.delimeter = '#';
 
-  var splitArray = _.strSplit
+  var splitArray = _.strSplit/**1**/
   ({
     src : o.src,
     delimeter : o.delimeter,
@@ -2804,7 +2715,7 @@ function _strExtractInlinedStereo_body( o )
 
   _.assert( arguments.length === 1, 'expects single options map argument' );
 
-  var splitArray = _.strSplit
+  var splitArray = _.strSplit/**1**/
   ({
     src : o.src,
     delimeter : o.prefix,
@@ -4072,7 +3983,6 @@ var Proto =
   _strCutOff : _strCutOff,
   strCutOffLeft : strCutOffLeft,
   strCutOffRight : strCutOffRight,
-
   strCutOffAllLeft : strCutOffAllLeft,
   strCutOffAllRight : strCutOffAllRight,
 
@@ -4085,8 +3995,10 @@ var Proto =
   strSplitsDropEmpty : strSplitsDropEmpty,
 
   strSplitFast : strSplitFast,
-  strSplit2 : strSplit2,
-  strSplit : strSplit,
+  strSplit/**2**/ : strSplit/**2**/,
+  strSplitNonPreserving : strSplitNonPreserving,
+
+  strSplitNaive : strSplitNaive,
 
   strExtractInlined : strExtractInlined,
   strExtractInlinedStereo : strExtractInlinedStereo,
