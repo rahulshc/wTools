@@ -1806,7 +1806,59 @@ _strSplitsQuote_body.defaults =
 
 var strSplitsQuote = _.routineForPreAndBody( _strSplitsQuote_pre, _strSplitsQuote_body );
 
+// --
 //
+// --
+
+function _strSplitsDropDelimeters_pre( routine, args )
+{
+  var o = args[ 0 ];
+
+  _.routineOptions( routine, o );
+
+  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1 );
+  _.assert( _.objectIs( o ) );
+
+  return o;
+}
+
+//
+
+function _strSplitsDropDelimeters_body( o )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( o.splits ) );
+
+  /* stripping */
+
+  for( var s = o.splits.length-1 ; s >= 0 ; s-- )
+  {
+    var split = o.splits[ s ];
+
+    if( s % 2 === 1 )
+    {
+      o.splits.splice( s,1 );
+    }
+
+  }
+
+  return o.splits;
+}
+
+_strSplitsDropDelimeters_body.defaults =
+{
+  splits : null,
+}
+
+//
+
+var strSplitsDropDelimeters = _.routineForPreAndBody( _strSplitsDropDelimeters_pre, _strSplitsDropDelimeters_body );
+
+// --
+//
+// --
 
 function _strSplitsStrip_pre( routine, args )
 {
@@ -1818,7 +1870,7 @@ function _strSplitsStrip_pre( routine, args )
   o.stripping = _.strStrip.defaults.stripper;
 
   _.assert( arguments.length === 2 );
-  _.assert( args.length === 1, 'expects one or two argument' );
+  _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
   _.assert( !o.stripping || _.strIs( o.stripping ) || _.regexpIs( o.stripping ) );
 
@@ -1842,11 +1894,55 @@ function _strSplitsStrip_body( o )
     if( o.stripping )
     split = _.strStrip({ src : split, stripper : o.stripping });
 
-    if( o.preservingEmpty || split )
-    {
-      o.splits[ s ] = split;
-    }
-    else
+    o.splits[ s ] = split;
+
+  }
+
+  return o.splits;
+}
+
+_strSplitsStrip_body.defaults =
+{
+  stripping : 1,
+  splits : null,
+}
+
+//
+
+var strSplitsStrip = _.routineForPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
+
+// --
+//
+// --
+
+function _strSplitsDropEmpty_pre( routine, args )
+{
+  var o = args[ 0 ];
+
+  _.routineOptions( routine, o );
+
+  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1 );
+  _.assert( _.objectIs( o ) );
+
+  return o;
+}
+
+//
+
+function _strSplitsDropEmpty_body( o )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( o.splits ) );
+
+  /* stripping */
+
+  for( var s = 0 ; s < o.splits.length ; s++ )
+  {
+    var split = o.splits[ s ];
+
+    if( !split )
     {
       o.splits.splice( s,1 );
       s -= 1;
@@ -1857,18 +1953,18 @@ function _strSplitsStrip_body( o )
   return o.splits;
 }
 
-_strSplitsStrip_body.defaults =
+_strSplitsDropEmpty_body.defaults =
 {
-  trimming : 1,
-  preservingEmpty : null,
   splits : null,
 }
 
 //
 
-var strSplitsStrip = _.routineForPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
+var strSplitsDropEmpty = _.routineForPreAndBody( _strSplitsDropEmpty_pre, _strSplitsDropEmpty_body );
 
+// --
 //
+// --
 
 function _strSplitFast_pre( routine, args )
 {
@@ -2094,8 +2190,6 @@ function _strSplit2_body( o )
 
   if( !o.stripping && !o.quoting && !o.onDelimeter )
   {
-    debugger;
-    throw _.err( 'not tested' );
     return _.strSplitFast.body( _.mapOnly( o, _.strSplitFast.defaults ) );
   }
 
@@ -2115,11 +2209,19 @@ function _strSplit2_body( o )
 
   o.splits = _.strSplitFast.body( fastOptions );
 
+  debugger;
+
   if( o.quoting )
   _.strSplitsQuote.body( o );
 
+  if( !o.preservingDelimeters )
+  _.strSplitsDropDelimeters.body( o );
+
   if( o.stripping )
   _.strSplitsStrip.body( o );
+
+  if( !o.preservingEmpty )
+  _.strSplitsDropEmpty.body( o );
 
   /* */
 
@@ -2140,6 +2242,57 @@ defaults.onDelimeter = null;
 defaults.onQuote = null;
 
 //
+
+/**
+ * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
+ * If( o.stripping ) is true - removes leading and trailing whitespace characters.
+ * If( o.preservingEmpty ) is true - empty lines are saved in the result array.
+ * If( o.preservingDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
+ * Returns result as array of strings.
+ *
+ * @param {string|object} o - Source string to split or map with source( o.src ) and options.
+ * @param {string} [ o.src=null ] - Source string.
+ * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
+ * @param {boolean} [ o.preservingEmpty=false ] - Leaves empty strings in the result array.
+ * @param {boolean} [ o.preservingDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
+ * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
+ * @returns {object} Returns an array of strings separated by( o.delimeter ).
+ *
+ * @example
+ * //returns [ 'first', 'second', 'third' ]
+ * _.strSplit( ' first second third ' );
+ *
+ * @example
+ * //returns [ 'a', 'b', 'c', 'd' ]
+ * _.strSplit( { src : 'a,b,c,d', delimeter : ','  } );
+ *
+ * @example
+ * //returns [ 'a', 'b', 'c', 'd' ]
+ * _.strSplit( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
+ *
+ * @example
+ * //returns [ '    a', 'b', 'c', 'd   ' ]
+   * _.strSplit( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+ *
+ * @example
+ * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
+ * _.strSplit( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
+ *
+ * @example
+ * //returns [ 'a', '', 'b', '', 'c', '', 'd' ]
+ * _.strSplit( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
+ *
+ * @method strSplit
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @memberof wTools
+ *
+ */
 
 var strSplit2 = _.routineForPreAndBody( [ strSplitFast.pre, strSplitsQuote.pre, strSplitsStrip.pre ], _strSplit2_body );
 
@@ -3307,7 +3460,7 @@ function strLinesNumber( o )
 
   _.routineOptions( strLinesNumber,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( o.src ) || _.strinsAre( o.src ),'expects string or strings {-o.src-}' );
+  _.assert( _.strIs( o.src ) || _.strsAre( o.src ),'expects string or strings {-o.src-}' );
 
   var lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
 
@@ -3927,7 +4080,9 @@ var Proto =
   strSplitChunks : strSplitChunks, /* experimental */
 
   strSplitsQuote : strSplitsQuote,
+  strSplitsDropDelimeters : strSplitsDropDelimeters,
   strSplitsStrip : strSplitsStrip,
+  strSplitsDropEmpty : strSplitsDropEmpty,
 
   strSplitFast : strSplitFast,
   strSplit2 : strSplit2,

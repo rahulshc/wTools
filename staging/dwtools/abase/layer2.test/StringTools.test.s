@@ -1943,9 +1943,154 @@ function strSplitFast( test )
 function strSplit2( test )
 {
 
-  /* */
+  /* - */
 
-  test.open( 'delimeter:" "' );
+  test.open( 'empty' );
+
+  var got = _.strSplit2( '', '' );
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit2( 'abc', '' );
+  var expected = [ 'a', '', 'b', '', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 0,
+  });
+  var expected = [ 'a', '', 'b', '', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 0,
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2( '', 'a' );
+  var expected = [ '' ];
+  test.identical( got, expected );
+
+  test.close( 'empty' );
+
+  /* - */
+
+  test.open( 'trivial' );
+
+  var got = _.strSplit2( 'test test test' );
+  var expected = [ 'test', '', 'test', '', 'test' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2( ' test   test   test ' );
+  var expected = [ '', '', 'test', '', '', '', '', '', 'test', '', '', '', '', '', 'test', '', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2( ' test   test   test ', 'something' );
+  var expected = [ 'test   test   test' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2( ' test <delimteter>  test<delimteter>   test ', '<delimteter>' );
+  var expected = [ 'test', '<delimteter>', 'test', '<delimteter>', 'test' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2( 'a b c d' );
+  var expected = [ 'a', '', 'b', '', 'c', '', 'd' ];
+  test.identical( got,expected );
+
+  test.close( 'trivial' );
+
+  /* - */
+
+  test.open( 'trivial, pe:0' );
+
+  var got = _.strSplit2({ src : 'test test test', preservingEmpty : 0 });
+  var expected = [ 'test', 'test', 'test' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2({ src : ' test   test   test ', preservingEmpty : 0 });
+  var expected = [ 'test', 'test', 'test' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2({ src : ' test   test   test ', delimeter : 'something', preservingEmpty : 0 });
+  var expected = [ 'test   test   test' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2({ src : ' test <delimteter>  test<delimteter>   test ', delimeter : '<delimteter>', preservingEmpty : 0 });
+  var expected = [ 'test', '<delimteter>', 'test', '<delimteter>', 'test' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit2({ src : 'a b c d', preservingEmpty : 0 });
+  var expected = [ 'a', 'b', 'c', 'd' ];
+  test.identical( got,expected );
+
+  test.close( 'trivial, pe:0' );
+
+  /* - */
+
+  test.open( 'd:" " trivial' );
 
   test.case = ' space at the beginning'; /**/
   var got = _.strSplit2( ' aa b#b cc', ' ' );
@@ -1962,11 +2107,11 @@ function strSplit2( test )
   var expected = [ '', '', 'aa', '', 'b#b', '', 'cc', '', '' ];
   test.identical( got, expected );
 
-  test.close( 'delimeter:" "' );
+  test.close( 'd:" " trivial' );
 
-  /* */
+  /* - */
 
-  test.open( 'delimeter:"#"' );
+  test.open( 'd:"#" trivial' );
 
   test.case = ' space at the beginning'; /**/
   var got = _.strSplit2( ' aa b#b cc', '#' );
@@ -1983,50 +2128,13 @@ function strSplit2( test )
   var expected = [ 'aa b', '#', 'b cc' ];
   test.identical( got, expected );
 
-  test.close( 'delimeter:"#"' );
+  test.close( 'd:"#" trivial' );
 
-  /* */
+  /* - */
 
-  test.case = 'trivial';
+  test.open( 'complex' );
 
-  var got = _.strSplit2( '', '' );
-  var expected = [];
-  test.identical( got, expected );
-
-  var got = _.strSplit2( 'abc', '' );
-  var expected = [ 'a', 'b', 'c' ];
-  test.identical( got, expected );
-
-  var got = _.strSplit2( '', 'a' );
-  var expected = [ '' ];
-  test.identical( got, expected );
-
-  var got = _.strSplit2( 'test test test' );
-  var expected = [ 'test', 'test', 'test' ];
-  test.identical( got, expected );
-
-  test.case = 'split string into an array of strings';
-  var got = _.strSplit2( ' test   test   test ' );
-  var expected = [ '', 'test', '', '', 'test', '', '', 'test', '' ];
-  test.identical( got, expected );
-
-  test.case = 'returns an array of strings';
-  var got = _.strSplit2( ' test   test   test ', 'something' );
-  var expected = [ ' test   test   test ' ];
-  test.identical( got, expected );
-
-  test.case = 'returns an array of strings';
-  var got = _.strSplit2( ' test <delimteter>  test<delimteter>   test ', '<delimteter>' );
-  var expected = [ ' test ', '  test', '   test ' ];
-  test.identical( got, expected );
-
-  test.case = 'simple string, default options';
-  var got = _.strSplit2( 'a b c d' );
-  var expected = [ 'a', 'b', 'c', 'd' ];
-  test.identical( got,expected );
-
-  //test.open( 'quotes' );
-  test.case = 'long with quotes inside'; xxx
+  test.case = 'long with quotes inside';
 
   var o =
   {
@@ -2040,13 +2148,11 @@ function strSplit2( test )
   var expected = [ 'Test check ( Tools', '/', 'base', '/', 'layer2', '/', 'String ', '/', ' strSplit2 ', '/', ' delimeter:', '" "', '', ' > ', 'space on the beginning and the end', ' < ', ' ) # 3 ... failed' ];
   test.identical( got, expected );
 
-  //test.close( 'quotes' );
+  test.close( 'complex' );
 
-  /*
-    stripping : 1,
-    quoting : 0,
-    preservingEmpty : 0,
-  */
+  /* - */
+
+  test.open( 's:1 q:0 pe:0' );
 
   var op =
   {
@@ -2054,8 +2160,6 @@ function strSplit2( test )
     quoting : 0,
     preservingEmpty : 0,
   }
-
-  /* */
 
   test.case = 'empty both';
   var o = _.mapExtend( null, op );
@@ -2216,7 +2320,7 @@ function strSplit2( test )
   var got = _.strSplit2( o );
   test.identical( got, expected );
 
-  /**/
+  /* */
 
   test.case = 'several delimeters';
   var o = _.mapExtend( null, op );
@@ -2300,11 +2404,267 @@ function strSplit2( test )
   var expected = [ '"', 'a b', '"', 'x', '"', '"', 'c' ];
   test.identical( got, expected );
 
-  /*
+  test.close( 's:1 q:0 pe:0' );
+
+  /* - */
+
+  test.open( 's:1 q:0 pe:1' );
+
+  var op =
+  {
     stripping : 1,
-    quoting : 1,
-    preservingEmpty : 0,
-  */
+    quoting : 0,
+    preservingEmpty : 1,
+  }
+
+  test.case = 'empty both';
+  var o = _.mapExtend( null, op );
+  o.src = '';
+  o.delimeter = '';
+  var got = _.strSplit2( o );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'empty delimeter';
+  var o = _.mapExtend( null, op );
+  o.src = 'abc';
+  o.delimeter = '';
+  var got = _.strSplit2( o );
+  var expected = [ 'a', '', 'b', '', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+  var o = _.mapExtend( null, op );
+  o.src = '';
+  o.delimeter = 'a';
+  var got = _.strSplit2( o );
+  var expected = [ '' ];
+  test.identical( got, expected );
+
+  test.case = 'has empty element in result';
+  var o = _.mapExtend( null, op );
+  o.src = 'a b  c';
+  var got = _.strSplit2( o );
+  var expected = [ 'a', '', 'b', '', '', '', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'returns an array of strings';
+  var o = _.mapExtend( null, op );
+  o.src = 'test test test';
+  var got = _.strSplit2( o );
+  var expected = [ 'test', '', 'test', '', 'test' ];
+  test.identical( got, expected );
+
+  test.case = 'split string into an array of strings';
+  var o = _.mapExtend( null, op );
+  o.src = ' test   test   test ';
+  var got = _.strSplit2( o );
+  var expected = [ '', '', 'test', '', '', '', '', '', 'test', '', '', '', '', '', 'test', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'split with delimeter which src does not have';
+  var o = _.mapExtend( null, op );
+  o.src = ' test   test   test ', 'something';
+  o.delimeter = 'x';
+  var got = _.strSplit2( o );
+  var expected = [ 'test   test   test' ];
+  test.identical( got, expected );
+
+  test.case = 'custom delimeter';
+  var o = _.mapExtend( null, op );
+  o.src = ' test <delimteter>  test<delimteter>   test ', '<delimteter>';
+  o.delimeter = '<delimteter>';
+  var got = _.strSplit2( o );
+  var expected = [ 'test', '<delimteter>', 'test', '<delimteter>', 'test' ];
+  test.identical( got, expected );
+
+  test.case = 'simple string, default options';
+  var o = _.mapExtend( null, op );
+  o.src = 'a b c d';
+  var got = _.strSplit2( o );
+  var expected = [ 'a', '', 'b', '', 'c', '', 'd' ];
+  test.identical( got,expected );
+
+  test.case = 'arguments as map';
+  var o = _.mapExtend( null, op );
+  o.src = 'a,b,c,d';
+  o.delimeter = ',';
+  var got = _.strSplit2( o );
+  var expected = [ 'a', ',', 'b', ',', 'c', ',', 'd' ];
+  test.identical( got,expected );
+
+  test.case = 'delimeter as array';
+  var o = _.mapExtend( null, op );
+  o.src = 'a,b.c.d';
+  o.delimeter = [ ',', '.' ];
+  var got = _.strSplit2( o );
+  var expected = [ 'a', ',', 'b', '.', 'c', '.', 'd' ];
+  test.identical( got,expected );
+
+  test.case = 'zero delimeter length';
+  var o = _.mapExtend( null, op );
+  o.src = 'a,b.c.d';
+  o.delimeter = [];
+  var got = _.strSplit2( o );
+  var expected = [ 'a,b.c.d' ];
+  test.identical( got,expected );
+
+  test.case = 'stripping off';
+  var o = _.mapExtend( null, op );
+  o.src = '    a,b,c,d   ';
+  o.delimeter = [ ',' ];
+  var got = _.strSplit2( o );
+  var expected = [ 'a', ',', 'b', ',', 'c', ',', 'd' ];
+  test.identical( got,expected );
+
+  /* */
+
+  test.case = 'many delimeters, delimeter on the begin';
+  var o = _.mapExtend( null, op );
+  o.src = '.content';
+  o.delimeter = [ '.','#' ];
+  var got = _.strSplit2( o )
+  var expected = [ '', '.', 'content' ];
+  test.identical( got,expected );
+
+  test.case = 'many delimeters, delimeter on the end';
+  var o = _.mapExtend( null, op );
+  o.src = 'content.';
+  o.delimeter = [ '.','#' ];
+  var got = _.strSplit2( o )
+  var expected = [ 'content', '.', '' ];
+  test.identical( got,expected );
+
+  test.case = 'many delimeters having common';
+  var o = _.mapExtend( null, op );
+  o.src = 'Aa <<! <<- Bb';
+  o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
+  var expected = [ 'Aa', '', '', '<<!', '', '', '', '<<-', '', '', 'Bb' ];
+  var got = _.strSplit2( o );
+  test.identical( got,expected );
+
+  test.case = 'many delimeters having common';
+  var o = _.mapExtend( null, op );
+  o.src = 'Aa <<! <<- Bb';
+  o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<', ];
+  var expected = [ 'Aa', '<<!', '', '<<-', 'Bb' ];
+  var got = _.strSplit2( o );
+  test.identical( got,expected );
+
+  test.case = 'having long common';
+  var o = _.mapExtend( null, op );
+  o.src = 'Aa <<<- Bb';
+  o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<' ];
+  var expected = [ 'Aa', '<<<-', 'Bb' ];
+  var got = _.strSplit2( o );
+  test.identical( got,expected );
+
+  test.case = 'having long common 2';
+  var o = _.mapExtend( null, op );
+  o.src = 'a1 a2 a3 <<<- Bb';
+  o.delimeter = [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ];
+  var expected = [ 'a1', '', 'a2', '', 'a3', '', '', '<<<-', '', '', 'Bb' ];
+  var got = _.strSplit2( o );
+  test.identical( got,expected );
+
+  test.case = 'delimeter not exist in src';
+
+  var o = _.mapExtend( null, op );
+  o.src = 'a,b,c';
+  o.delimeter = [ '.' ];
+  var expected = [ 'a,b,c' ];
+  var got = _.strSplit2( o );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'several delimeters';
+  var o = _.mapExtend( null, op );
+  o.src = 'a ., b ., c ., d';
+  o.delimeter = [ ',', '.' ];
+  var expected = [ 'a', '.', '', ',', 'b', '.', '', ',', 'c', '.', '', ',', 'd' ];
+  var got = _.strSplit2( o );
+  test.identical( got, expected );
+
+  test.case = 'one delimeters';
+  var o = _.mapExtend( null, op );
+  o.src = 'a , b , c , d';
+  o.delimeter = ',';
+  var expected = [ 'a', ',' , 'b', ',', 'c', ',', 'd' ];
+  var got = _.strSplit2( o );
+  test.identical( got, expected );
+
+  test.case = 'delimeters equal src';
+  var o = _.mapExtend( null, op );
+  o.src = ',';
+  o.delimeter = ',';
+  var expected = [ '', ',', '' ];
+  var got = _.strSplit2( o );
+  test.identical( got, expected );
+
+  test.case = 'src is triplet of delimeter';
+  var o = _.mapExtend( null, op );
+  o.src = ',,,';
+  o.delimeter = ',';
+  var expected = [ '', ',', '', ',', '', ',', '' ];
+  var got = _.strSplit2( o );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'quoted at edges';
+  var o = _.mapExtend( null, op );
+  o.src = '"a b" "" c"';
+  o.delimeter = [ '"' ];
+  var got = _.strSplit2( o );
+  var expected = [ '', '"', 'a b', '"', '', '"', '', '"', 'c', '"', '' ];
+  test.identical( got, expected );
+
+  test.case = 'quoted in the middle';
+  var o = _.mapExtend( null, op );
+  o.src = '"a b" "" c';
+  o.delimeter = [ 'a b', ' c' ];
+  var got = _.strSplit2( o );
+  var expected = [ '"', 'a b', '" ""', 'c', '' ];
+  test.identical( got, expected );
+
+  test.case = 'quoted in the middle with space first';
+  var o = _.mapExtend( null, op );
+  o.src = '"a b" "" c';
+  o.delimeter = [ 'a b', ' ', ' c', '"' ];
+  var got = _.strSplit2( o );
+  var expected = [ '', '"', '', 'a b', '', '"', '', '', '', '"', '', '"', '', '', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'quoted in the middle with space last';
+  var o = _.mapExtend( null, op );
+  o.src = '"a b" "" c';
+  o.delimeter = [ 'a b', ' c', '"', ' ' ];
+  var got = _.strSplit2( o );
+  var expected = [ '', '"', '', 'a b', '', '"', '', '', '', '"', '', '"', '', 'c', '' ];
+  test.identical( got, expected );
+
+  test.case = 'delimeter with empty string at the beginning of array';
+  var o = _.mapExtend( null, op );
+  o.src = '"a b" "" c';
+  o.delimeter = [ '', 'a b', ' ', '', ' c' ];
+  var got = _.strSplit2( o );
+  var expected = [ '"', '', 'a', '', '', '', 'b', '', '"', '', '', '', '"', '', '"', '', '', '', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'quoted in the middle';
+  var o = _.mapExtend( null, op );
+  o.src = '"a b" x "" c';
+  o.delimeter = [ '', '"', '', 'a b', '', '"', '', '', 'x', '', '', '', '', '"', '', '"', '', '', 'c' ];
+  var got = _.strSplit2( o );
+  var expected = [ '"', '', 'a', '', '', '', 'b', '', '"', '', '', '', 'x', '', '', '', '"', '', '"', '', '', '', 'c' ];
+  test.identical( got, expected );
+
+  test.close( 's:1 q:0 pe:1' );
+
+  /* - */
+
+  test.open( 's:1 q:1 pe:0' );
 
   var op =
   {
@@ -2312,8 +2672,6 @@ function strSplit2( test )
     quoting : 1,
     preservingEmpty : 0,
   }
-
-  /* */
 
   test.case = 'empty both';
   var o = _.mapExtend( null, op );
@@ -2515,7 +2873,7 @@ function strSplit2( test )
   o.src = '"a b" " c"';
   o.delimeter = [ '"' ];
   var got = _.strSplit2( o );
-  var expected = [ '"a b"', '"c"' ];
+  var expected = [ '"a b"', '" c"' ];
   test.identical( got, expected );
 
   test.case = 'quoted in the middle';
@@ -2523,7 +2881,7 @@ function strSplit2( test )
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c' ];
   var got = _.strSplit2( o );
-  var expected = [ '"', 'a b', '" ""', 'c' ];
+  var expected = [ '"a b"', '""', 'c' ];
   test.identical( got, expected );
 
   test.case = 'quoted in the middle with space first';
@@ -2531,7 +2889,7 @@ function strSplit2( test )
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"' ];
   var got = _.strSplit2( o );
-  var expected = [ '"', 'a b', '"', '"', '"', 'c' ];
+  var expected = [ '"a b"', '""', 'c' ];
   test.identical( got, expected );
 
   test.case = 'quoted in the middle with space last';
@@ -2539,7 +2897,7 @@ function strSplit2( test )
   o.src = '"a b" "" c';
   o.delimeter = [ 'a b', ' c', '"', ' ' ];
   var got = _.strSplit2( o );
-  var expected = [ '"', 'a b', '"', '"', '"', 'c' ];
+  var expected = [ '"a b"', '""', 'c' ];
   test.identical( got, expected );
 
   test.case = 'delimeter with empty string at the beginning of array';
@@ -2547,7 +2905,7 @@ function strSplit2( test )
   o.src = '"a b" "" c';
   o.delimeter = [ '', 'a b', ' ', '', ' c' ];
   var got = _.strSplit2( o );
-  var expected = [ '"', 'a', 'b', '"', '"', '"', 'c' ];
+  var expected = [ '"a b"', '""', 'c' ];
   test.identical( got, expected );
 
   test.case = 'quoted in the middle';
@@ -2555,16 +2913,10 @@ function strSplit2( test )
   o.src = '"a b" x "" c';
   o.delimeter = [ 'a b', ' ', ' c', '"', '' ];
   var got = _.strSplit2( o );
-  var expected = [ '"', 'a b', '"', 'x', '"', '"', 'c' ];
+  var expected = [ '"a b"', 'x', '""', 'c' ];
   test.identical( got, expected );
 
   /* special quoting tests */
-
-  /*
-    stripping : 1,
-    quoting : 1,
-    preservingEmpty : 0,
-  */
 
   test.case = 'quoted at edges, delimeter : #';
   var o = _.mapExtend( null, op );
@@ -2582,6 +2934,12 @@ function strSplit2( test )
   var expected = [ '"aa"', 'bb', '""', 'cc"' ];
   test.identical( got, expected );
 
+  test.close( 's:1 q:1 pe:0' );
+
+  /* - */
+
+  test.open( 's:1 q:1 pe:0 delimeter:#' );
+
   var op =
   {
     stripping : 1,
@@ -2589,10 +2947,6 @@ function strSplit2( test )
     preservingEmpty : 0,
     delimeter : '#',
   }
-
-  test.testsGroupOpen( 'delimeter:#' );
-
-  /* */
 
   test.case = 'quoted at edges"';
   var o = _.mapExtend( null, op );
@@ -2643,8 +2997,7 @@ function strSplit2( test )
   var expected = [ '"aa"', 'bb', '"cc"' ];
   test.identical( got, expected );
 
-  debugger;
-  test.testsGroupClose( 'delimeter:#' );
+  test.close( 's:1 q:1 pe:0 delimeter:#' );
 
 }
 
@@ -6518,9 +6871,9 @@ var Self =
     strIndentation : strIndentation,
 
     strSplitFast : strSplitFast,
-    // strSplit2 : strSplit2,
-
+    strSplit2 : strSplit2,
     strSplit : strSplit,
+
     strSplitStrNumber : strSplitStrNumber,
 
     strCutOffLeft : strCutOffLeft,
