@@ -3,9 +3,8 @@ modules :
 
 paths :
   proto : './proto'
-  staging : './staging'
-  'staging.release' : './staging.release'
-  production : './production'
+  debug : './staging'
+  release : './production'
 
 files :
 

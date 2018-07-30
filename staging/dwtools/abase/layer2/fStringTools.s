@@ -2,6 +2,14 @@
 
 'use strict';
 
+/*
+
+= articles
+
+- strIsolate* difference
+
+*/
+
 //
 
 var Self = _global_.wTools;
@@ -177,7 +185,7 @@ function strRemoveEnd( src,end )
 function strReplaceBegin( src,begin,ins )
 {
   _.assert( arguments.length === 3, 'expects exactly three argument' );
-  _.assert( _.strIs( ins ) || _.longIs( ins ),'expects ( ins ) as string/array of strings' );
+  _.assert( _.strIs( ins ) || _.longIs( ins ),'expects {-ins-} as string/array of strings' );
   if( _.longIs( begin ) && _.longIs( ins ) )
   _.assert( begin.length === ins.length );
 
@@ -205,7 +213,7 @@ function strReplaceBegin( src,begin,ins )
 function strReplaceEnd( src,end,ins )
 {
   _.assert( arguments.length === 3, 'expects exactly three argument' );
-  _.assert( _.strIs( ins ) || _.longIs( ins ),'expects ( ins ) as string/array of strings' );
+  _.assert( _.strIs( ins ) || _.longIs( ins ),'expects {-ins-} as string/array of strings' );
   if( _.longIs( end ) && _.longIs( ins ) )
   _.assert( end.length === ins.length );
 
@@ -1003,7 +1011,7 @@ function strStrip( o )
 
     if( Config.debug )
     for( var s of o.stripper )
-    _.assert( _.strIs( s,'expects string ( stripper[ * ] )' ) );
+    _.assert( _.strIs( s,'expects string {-stripper[ * ]-}' ) );
 
     for( var b = 0 ; b < o.src.length ; b++ )
     if( o.stripper.indexOf( o.src[ b ] ) === -1 )
@@ -1160,7 +1168,7 @@ function strStripEmptyLines( srcStr )
 
 function strSub( srcStr, range )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
   _.assert( _.rangeIs( range ) );
 
@@ -1171,6 +1179,30 @@ function strSub( srcStr, range )
 
 /*
 
+_.strIsolateBeginOrAll
+_.strIsolateBeginOrNone
+_.strIsolateEndOrAll
+_.strIsolateEndOrNone
+
+_.strIsolateBeginOrNone( 'a b c',' ' )
+(3) [ 'a', ' ', 'b c' ]
+_.strIsolateEndOrNone( 'a b c',' ' )
+(3) [ 'a b', ' ', 'c' ]
+_.strIsolateEndOrAll( 'a b c',' ' )
+(3) [ 'a b', ' ', 'c' ]
+_.strIsolateBeginOrAll( 'a b c',' ' )
+(3) [ 'a', ' ', 'b c' ]
+_.strIsolateBeginOrNone( 'abc',' ' )
+(3) [ '', '', 'abc' ]
+_.strIsolateEndOrNone( 'abc',' ' )
+(3) [ 'abc', '', '' ]
+_.strIsolateEndOrAll( 'abc',' ' )
+(3) [ '', '', 'abc' ]
+_.strIsolateBeginOrAll( 'abc',' ' )
+(3) [ 'abc', '', '' ]
+
+used to be
+
 _.strCutOffLeft( 'a b c',' ' )
 (3) [ 'a', ' ', 'b c' ]
 _.strCutOffRight( 'a b c',' ' )
@@ -1179,7 +1211,6 @@ _.strCutOffAllLeft( 'a b c',' ' )
 (3) [ 'a b', ' ', 'c' ]
 _.strCutOffAllRight( 'a b c',' ' )
 (3) [ 'a', ' ', 'b c' ]
-
 _.strCutOffLeft( 'abc',' ' )
 (3) [ '', '', 'abc' ]
 _.strCutOffRight( 'abc',' ' )
@@ -1197,7 +1228,7 @@ function _strCutOff_pre( routine, args )
 
   if( args.length > 1 )
   {
-    o = { src : args[ 0 ], delimeter : args[ 1 ] };
+    o = { src : args[ 0 ], delimeter : args[ 1 ], number : args[ 2 ] };
   }
   else
   {
@@ -1206,10 +1237,10 @@ function _strCutOff_pre( routine, args )
   }
 
   _.routineOptions( routine, o );
-  _.assert( args.length === 1 || args.length === 2 );
-  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.delimeter ) );
+  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
 
   return o;
 }
@@ -1255,26 +1286,30 @@ function _strCutOff_pre( routine, args )
 function _strCutOff( o )
 {
   var result = [];
-
-  _.routineOptions( _strCutOff,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.strIs( o.src ),'_strCutOff expects string ( o.src ), got',_.strTypeOf( o.src ) );
-  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
-  _.assert( _.numberIs( o.number ) );
-
   var number = o.number;
   var delimeter
   var index = o.left ? -1 : o.src.length;
 
-  debugger;
+  // var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+
+  _.assertRoutineOptions( _strCutOff, o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( _.strIs( o.src ), 'expects string {-o.src-}, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
+  _.assert( _.numberIs( o.number ) );
 
   /* */
 
   if( !( number >= 1 ) )
-  return o.left ? [ '', '', o.src ] : [ o.src, '', '' ];
+  {
+    // debugger;
+    return whatLeft( o.left ^ o.none );
+  }
 
   if( _.arrayIs( o.delimeter ) && o.delimeter.length === 1 )
   o.delimeter = o.delimeter[ 0 ];
+
+  let closest = o.left ? entityMin : entityMax;
 
   /* */
 
@@ -1287,28 +1322,15 @@ function _strCutOff( o )
     {
 
       if( !o.delimeter.length )
-      return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
-      var s;
-
-      if( o.left )
-      s = _.entityMin( o.delimeter,function( a )
       {
+        // debugger;
+        return whatLeft( o.left ^ o.none );
+      }
 
-        var i = o.src.indexOf( a,index );
-        if( i === -1 )
-        return o.src.length;
+      let c = closest( index )
 
-        return i;
-      });
-      else
-      s = _.entityMax( o.delimeter,function( a )
-      {
-        var i = o.src.lastIndexOf( a,index );
-        return i;
-      });
-
-      delimeter = s.element;
-      index = s.value;
+      delimeter = c.element;
+      index = c.value;
 
       if( o.number === 1 && index === o.src.length && o.left )
       index = -1;
@@ -1316,6 +1338,7 @@ function _strCutOff( o )
     }
     else
     {
+
       delimeter = o.delimeter;
       index = o.left ? o.src.indexOf( delimeter,index ) : o.src.lastIndexOf( delimeter,index );
 
@@ -1324,15 +1347,22 @@ function _strCutOff( o )
         index = o.src.length;
         break;
       }
+
     }
 
     /* */
 
     if( !o.left && number > 1 && index === 0  )
-    return  [ '', '', o.src ]
+    {
+      // debugger;
+      return whatLeft( !o.none )
+    }
 
     if( !( index >= 0 ) && o.number === 1 )
-    return o.left ? [ '', '', o.src ] : [ o.src, '' ,'' ];
+    {
+      // debugger;
+      return whatLeft( o.left ^ o.none )
+    }
 
     number -= 1;
 
@@ -1345,6 +1375,38 @@ function _strCutOff( o )
   result.push( o.src.substring( index + delimeter.length ) );
 
   return result;
+
+  /* */
+
+  function whatLeft( side )
+  {
+    return ( side ) ? [ o.src, '', '' ] : [ '', '', o.src ];
+  }
+
+  /* */
+
+  function entityMin( index )
+  {
+    return _.entityMin( o.delimeter,function( a )
+    {
+      var i = o.src.indexOf( a,index );
+      if( i === -1 )
+      return o.src.length;
+      return i;
+    });
+  }
+
+  /* */
+
+  function entityMax( index )
+  {
+    return _.entityMax( o.delimeter,function( a )
+    {
+      var i = o.src.lastIndexOf( a,index );
+      return i;
+    });
+  }
+
 }
 
 _strCutOff.defaults =
@@ -1353,6 +1415,7 @@ _strCutOff.defaults =
   delimeter : ' ',
   left : 1,
   number : 1,
+  none : 1,
 }
 
 //
@@ -1366,17 +1429,17 @@ _strCutOff.defaults =
  *
  * @example
  * //returns [ 'sample', 'string' ]
- * _.strCutOffLeft( { src : 'sample,string', delimeter : [ ',' ] } );
+ * _.strIsolateBeginOrNone( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ 'sample', 'string' ]
- *_.strCutOffLeft( { src : 'sample string', delimeter : ' ' } )
+ *_.strIsolateBeginOrNone( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
  * //returns [ 'sample string,name', 'string' ]
- * _.strCutOffLeft( 'sample string,name string', ',' )
+ * _.strIsolateBeginOrNone( 'sample string,name string', ',' )
  *
- * @method strCutOffLeft
+ * @method strIsolateBeginOrNone
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o ) is not a Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
@@ -1384,21 +1447,22 @@ _strCutOff.defaults =
  *
  */
 
-function _strCutOffLeft_body( o )
+function _strIsolateBeginOrNone_body( o )
 {
   o.left = 1;
+  o.none = 1;
   var result = _strCutOff( o );
   return result;
 }
 
-_strCutOffLeft_body.defaults =
+_strIsolateBeginOrNone_body.defaults =
 {
   src : null,
   delimeter : ' ',
   number : 1,
 }
 
-var strCutOffLeft = _.routineForPreAndBody( _strCutOff_pre, _strCutOffLeft_body );
+var strIsolateBeginOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
 
 //
 
@@ -1411,17 +1475,17 @@ var strCutOffLeft = _.routineForPreAndBody( _strCutOff_pre, _strCutOffLeft_body 
  *
  * @example
  * //returns [ 'sample', 'string' ]
- * _.strCutOffRight( { src : 'sample,string', delimeter : [ ',' ] } );
+ * _.strIsolateEndOrNone( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ 'sample', 'string' ]
- *_.strCutOffRight( { src : 'sample string', delimeter : ' ' } )
+ *_.strIsolateEndOrNone( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
  * //returns [ 'sample, ', 'string' ]
- * _.strCutOffRight( { src : 'sample,  string', delimeter : [ ',', ' ' ] } )
+ * _.strIsolateEndOrNone( { src : 'sample,  string', delimeter : [ ',', ' ' ] } )
  *
- * @method strCutOffRight
+ * @method strIsolateEndOrNone
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o ) is not a Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
@@ -1429,67 +1493,78 @@ var strCutOffLeft = _.routineForPreAndBody( _strCutOff_pre, _strCutOffLeft_body 
  *
  */
 
-function _strCutOffRight_body( o )
+function _strIsolateEndOrNone_body( o )
 {
   o.left = 0;
+  o.none = 1;
   var result = _strCutOff( o );
   return result;
 }
 
-_strCutOffRight_body.defaults =
+_strIsolateEndOrNone_body.defaults =
 {
   src : null,
   delimeter : ' ',
   number : 1,
 }
 
-var strCutOffRight = _.routineForPreAndBody( _strCutOff_pre, _strCutOffRight_body );
+var strIsolateEndOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
 
 //
 
-function _strCutOffAllLeft_body( o )
+function _strIsolateEndOrAll_body( o )
 {
-
-  var i = o.src.lastIndexOf( o.delimeter );
-
-  if( i === -1 )
-  return [ '', '', o.src ];
-
-  var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
-
+  o.left = 0;
+  o.none = 0;
+  var result = _strCutOff( o );
   return result;
+
+  // var i = o.src.lastIndexOf( o.delimeter );
+  //
+  // if( i === -1 )
+  // return [ '', '', o.src ];
+  //
+  // var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  //
+  // return result;
 }
 
-_strCutOffAllLeft_body.defaults =
+_strIsolateEndOrAll_body.defaults =
 {
   src : null,
   delimeter : ' ',
+  number : 1,
 }
 
-var strCutOffAllLeft = _.routineForPreAndBody( _strCutOff_pre, _strCutOffAllLeft_body );
+var strIsolateEndOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
 
 //
 
-function _strCutOffAllRight_body( o )
+function _strIsolateBeginOrAll_body( o )
 {
-
-  var i = o.src.indexOf( o.delimeter );
-
-  if( i === -1 )
-  return [ o.src, '', '' ];
-
-  var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
-
+  o.left = 1;
+  o.none = 0;
+  var result = _strCutOff( o );
   return result;
+
+  // var i = o.src.indexOf( o.delimeter );
+  //
+  // if( i === -1 )
+  // return [ o.src, '', '' ];
+  //
+  // var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  //
+  // return result;
 }
 
-_strCutOffAllRight_body.defaults =
+_strIsolateBeginOrAll_body.defaults =
 {
   src : null,
   delimeter : ' ',
+  number : 1,
 }
 
-var strCutOffAllRight = _.routineForPreAndBody( _strCutOff_pre, _strCutOffAllRight_body );
+var strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
 
 //
 
@@ -1700,7 +1775,7 @@ function _strSplitsQuote_pre( routine, args )
 
   _.routineOptions( routine, o );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( args.length === 1, 'expects one or two argument' );
   _.assert( _.objectIs( o ) );
 
@@ -1807,7 +1882,7 @@ function _strSplitsDropDelimeters_pre( routine, args )
 
   _.routineOptions( routine, o );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
 
@@ -1860,7 +1935,7 @@ function _strSplitsStrip_pre( routine, args )
   if( o.stripping && _.boolLike( o.stripping ) )
   o.stripping = _.strStrip.defaults.stripper;
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
   _.assert( !o.stripping || _.strIs( o.stripping ) || _.regexpIs( o.stripping ) );
@@ -1912,7 +1987,7 @@ function _strSplitsDropEmpty_pre( routine, args )
 
   _.routineOptions( routine, o );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
 
@@ -1968,7 +2043,7 @@ function _strSplitFast_pre( routine, args )
 
   _.routineOptions( routine, o );
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2, 'expects one or two argument' );
   _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
@@ -2744,7 +2819,7 @@ function _strExtractInlinedStereo_body( o )
 
   for( var i = 1; i < splitArray.length; i++ )
   {
-    var halfs = _.strCutOffLeft( splitArray[ i ], o.postfix );
+    var halfs = _.strIsolateBeginOrNone( splitArray[ i ], o.postfix );
 
     _.assert( halfs.length === 3 );
 
@@ -2874,7 +2949,7 @@ function strExtractInlinedStereo( o )
 
   for( var i = 1; i < splitted.length; i++ )
   {
-    var halfs = _.strCutOffLeft( splitted[ i ],o.postfix );
+    var halfs = _.strIsolateBeginOrNone( splitted[ i ],o.postfix );
     var strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
 
     _.assert( halfs.length === 3 );
@@ -3981,10 +4056,10 @@ var Proto =
   strSub : strSub,
 
   _strCutOff : _strCutOff,
-  strCutOffLeft : strCutOffLeft,
-  strCutOffRight : strCutOffRight,
-  strCutOffAllLeft : strCutOffAllLeft,
-  strCutOffAllRight : strCutOffAllRight,
+  strIsolateBeginOrNone : strIsolateBeginOrNone,
+  strIsolateEndOrNone : strIsolateEndOrNone,
+  strIsolateEndOrAll : strIsolateEndOrAll,
+  strIsolateBeginOrAll : strIsolateBeginOrAll,
 
   strSplitStrNumber : strSplitStrNumber, /* experimental */
   strSplitChunks : strSplitChunks, /* experimental */

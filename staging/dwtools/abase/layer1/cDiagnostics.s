@@ -155,7 +155,7 @@ function diagnosticLocation( o )
 
   // _.routineOptions( diagnosticLocation,o );
   // _.assert( arguments.length === 0 || arguments.length === 1 );
-  // _.assert( _.objectIs( o ),'diagnosticLocation expects integer ( level ) or string ( stack ) or object ( options )' );
+  // _.assert( _.objectIs( o ),'diagnosticLocation expects integer {-level-} or string ( stack ) or object ( options )' );
 
   /* */
 
@@ -530,13 +530,13 @@ function diagnosticStack( stack,first,last )
   if( !_.numberIs( first ) && first !== undefined )
   {
     debugger;
-    throw Error( 'diagnosticStack : expects number ( first ), got ' + _.strTypeOf( first ) );
+    throw Error( 'diagnosticStack : expects number {-first-}, got ' + _.strTypeOf( first ) );
   }
 
   if( !_.numberIs( last ) && last !== undefined )
   {
     debugger;
-    throw Error( 'diagnosticStack : expects number ( last ), got' + _.strTypeOf( last ) );
+    throw Error( 'diagnosticStack : expects number {-last-}, got' + _.strTypeOf( last ) );
   }
 
   var errIs = 0;
@@ -589,7 +589,7 @@ function diagnosticStack( stack,first,last )
   }
 
   // if( stack[ 0 ].indexOf( '@' ) === -1 )
-  // stack[ 0 ] = _.strCutOffLeft( stack[ 0 ],'@' )[ 1 ];
+  // stack[ 0 ] = _.strIsolateBeginOrNone( stack[ 0 ],'@' )[ 1 ];
 
   // if( !stack[ 0 ] )
   // return '... stack is empty ...';

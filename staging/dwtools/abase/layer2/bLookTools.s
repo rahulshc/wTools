@@ -320,7 +320,7 @@ function __look_lookContinue( routine, args )
 {
   var it = args[ args.length - 1 ];
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( !Object.isPrototypeOf.call( LookIterator, it ) )
   {
@@ -2407,7 +2407,7 @@ function entityDiffExplanation( o )
   if( o.path )
   {
 
-    var dir = _.strCutOffRight( o.path, '/' )[ 0 ];
+    var dir = _.strIsolateEndOrNone( o.path, '/' )[ 0 ];
     if( !dir )
     dir = '/';
 

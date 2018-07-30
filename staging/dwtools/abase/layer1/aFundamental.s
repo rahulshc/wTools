@@ -129,42 +129,38 @@ var _floor = Math.floor;
 function each( o )
 {
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 
   _.routineOptions( each, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( o.onUp && o.onUp.length <= 2 );
 
-  var src = o.src;
+  /* */
 
-  function handleElement( k )
-  {
-    o.onUp.call( o, src[ k ], k );
-  }
-
-  if( _.longIs( src ) )
+  if( _.longIs( o.src ) )
   {
 
-    for( var k = 0 ; k < src.length ; k++ )
+    for( var k = 0 ; k < o.src.length ; k++ )
     {
-      handleElement( k );
+      o.onUp.call( o, o.src[ k ], k );
     }
 
   }
-  else if( _.objectLike( src ) )
+  else if( _.objectLike( o.src ) )
   {
 
-    for( var k in src )
+    for( var k in o.src )
     {
-      handleElement( k );
+      o.onUp.call( o, o.src[ k ], k );
     }
 
   }
-  else _.assert( 0,'not container' );
+  else _.assert( 0, 'not container' );
 
-  return src;
+  /* */
+
+  return o.src;
 }
 
 var defaults = each.defaults = Object.create( null );
@@ -174,51 +170,85 @@ defaults.onUp = function( e,k ){};
 
 //
 
-function eachOwn( o )
+function eachName( o )
 {
 
+  if( arguments.length === 2 )
+  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+
+  _.routineOptions( eachName, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( o.onUp && o.onUp.length <= 3 );
+
+  /* */
+
+  if( _.longIs( o.src ) )
+  {
+
+    for( var index = 0 ; index < o.src.length ; index++ )
+    {
+      o.onUp.call( o, o.src[ index ], undefined, index );
+    }
+
+  }
+  else if( _.objectLike( o.src ) )
+  {
+
+    var index = 0;
+    for( var k in o.src )
+    {
+      o.onUp.call( o, k, o.src[ k ], index );
+      index += 1;
+    }
+
+  }
+  else _.assert( 0, 'not container' );
+
+  /* */
+
+  return o.src;
+}
+
+var defaults = eachName.defaults = Object.create( null );
+
+defaults.src = null;
+defaults.onUp = function( e,k ){};
+
+//
+
+function eachOwn( o )
+{
 
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
 
   _.routineOptions( eachOwn, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( o.onUp && o.onUp.length <= 2 );
 
-  var src = o.src;
-
-  function handleElement( k )
-  {
-    o.onUp.call( o, src[ k ], k );
-  }
-
-  if( _.longIs( src ) )
+  if( _.longIs( o.src ) )
   {
 
-    for( var k = 0 ; k < src.length ; k++ )
+    for( var k = 0 ; k < o.src.length ; k++ )
     {
-
-      handleElement( k );
-
+      o.onUp.call( o, o.src[ k ], k );
     }
 
   }
-  else if( _.objectLike( src ) )
+  else if( _.objectLike( o.src ) )
   {
 
-    for( var k in src )
+    for( var k in o.src )
     {
-
-      if( !_hasOwnProperty.call( src,k ) )
+      if( !_hasOwnProperty.call( o.src, k ) )
       continue;
-      handleElement( k );
-
+      o.onUp.call( o, o.src[ k ], k );
     }
 
   }
   else _.assert( 0,'not container' );
 
-  return src;
+  return o.src;
 }
 
 var defaults = eachOwn.defaults = Object.create( null );
@@ -663,6 +693,21 @@ function entityFreeze( src )
   Object.freeze( src );
 
   return _src;
+}
+
+//
+
+function entityShallowClone( src )
+{
+
+  if( _.primitiveIs( src ) )
+  return src;
+  else if( _.mapIs( src ) )
+  return _.mapShallowClone( src )
+  else if( _.longIs( src ) )
+  return _.longShallowClone( src );
+  else _.assert( 0, 'Not clear how to shallow clone', _.strTypeOf( src ) );
+
 }
 
 // --
@@ -2399,20 +2444,22 @@ function primitiveIs( src )
 
 function containerIs( src )
 {
-  if( !_.arrayIs( src ) )
+  if( _._arrayLike( src ) )
   return true;
-  if( !_.objectIs( src ) )
+  if( _.objectIs( src ) )
   return true;
+  return false;
 }
 
 //
 
 function containerLike( src )
 {
-  if( !_.longIs( src ) )
+  if( _.longIs( src ) )
   return true;
-  if( !_.objectLike( src ) )
+  if( _.objectLike( src ) )
   return true;
+  return false;
 }
 
 //
@@ -2484,7 +2531,7 @@ function consequenceIs( src )
   if( !prototype )
   return false;
 
-  return prototype.nameShort === 'Consequence';
+  return prototype.shortName === 'Consequence';
 }
 
 //
@@ -2749,6 +2796,21 @@ function processIs( src )
   return true;
 
   return false;
+}
+
+//
+
+function definitionIs( src )
+{
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( !src )
+  return false;
+
+  if( !_.define )
+  return false;
+
+  return src instanceof _.define.Definition;
 }
 
 // --
@@ -3365,7 +3427,7 @@ function _routinesChain_pre( routine, args )
   srcs = srcs.filter( ( e ) => e === null ? false : e );
 
   _.assert( _.routinesAre( srcs ) );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2 );
   _.assert( _.arrayIs( srcs ) || _.routineIs( srcs ) );
   _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined );
@@ -3761,7 +3823,7 @@ function routineSupplement( dst )
 
 function routineForPreAndBody( pre, body )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.routineIs( pre ) || _.routinesAre( pre ) );
   _.assert( _.routineIs( body ) );
   _.assert( body.defaults );
@@ -4869,7 +4931,7 @@ function strEnds( src,end )
 function strBeginOf( src,end )
 {
 
-  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( src ),'expects string {-src-}' );
   _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings ( end )' );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
@@ -4915,7 +4977,7 @@ function strBeginOf( src,end )
 function strEndOf( src,begin )
 {
 
-  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( src ),'expects string {-src-}' );
   _.assert( _.strIs( begin ) || _.longIs( begin ),'expects string/array of strings ( begin )' );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
@@ -4981,7 +5043,7 @@ function strEndOf( src,begin )
 function strInbetweenOf( src,begin,end )
 {
 
-  _.assert( _.strIs( src ),'expects string ( src )' );
+  _.assert( _.strIs( src ),'expects string {-src-}' );
   _.assert( _.strIs( begin ) || _.longIs( begin ),'expects string/array of strings ( begin )' );
   _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings ( end )' );
   _.assert( arguments.length === 3, 'expects exactly three argument' );
@@ -6616,7 +6678,7 @@ function bufferResize( srcBuffer, size )
 
   _.assert( _.bufferRawIs( srcBuffer ) || _.bufferTypedIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( size > srcBuffer.byteLength )
   {
@@ -8638,12 +8700,12 @@ function arrayAs( src )
 
 //
 
-function _arrayClone( src )
+function _longClone( src )
 {
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.longIs( src ) || _.bufferAnyIs( src ) );
-  _.assert( !_.bufferNodeIs( src ),'not tested' );
+  _.assert( !_.bufferNodeIs( src ), 'not tested' );
 
   if( _.bufferViewIs( src ) )
   debugger;
@@ -8657,19 +8719,19 @@ function _arrayClone( src )
   else if( _.bufferViewIs( src ) )
   return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
 
-  _.assert( 0,'unknown kind of buffer',_.strTypeOf( src ) );
+  _.assert( 0, 'unknown kind of buffer', _.strTypeOf( src ) );
 }
 
 //
 
-function arrayClone()
+function longShallowClone()
 {
   var result;
   var length = 0;
 
   if( arguments.length === 1 )
   {
-    return _._arrayClone( arguments[ 0 ] );
+    return _._longClone( arguments[ 0 ] );
   }
 
   /* eval length */
@@ -8679,7 +8741,7 @@ function arrayClone()
     var argument = arguments[ a ];
 
     if( argument === undefined )
-    throw _.err( 'arrayClone','argument is not defined' );
+    throw _.err( 'longShallowClone','argument is not defined' );
 
     if( _.longIs( argument ) ) length += argument.length;
     else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
@@ -9279,7 +9341,7 @@ function arrayDuplicate( o )
       _.assert( _.longIs( o.result ) || _.bufferTypedIs( o.result ), 'Expects o.result as longIs or TypedArray if numberOfDuplicatesPerElement equals 1' );
 
       if( _.bufferTypedIs( o.result ) )
-      o.result = _.arrayClone( o.result, o.src );
+      o.result = _.longShallowClone( o.result, o.src );
       else if( _.longIs( o.result ) )
       o.result.push.apply( o.result, o.src );
     }
@@ -13071,7 +13133,7 @@ function rangeFrom( range )
 function rangeClamp( dstRange, clampRange )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.rangeIs( dstRange ) );
   _.assert( _.rangeIs( clampRange ) );
 
@@ -13936,6 +13998,15 @@ function mapMake()
 
 //
 
+function mapShallowClone( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectIs( src ) );
+  return _.mapExtend( null, src );
+}
+
+//
+
 /**
  * @callback mapCloneAssigning~onField
  * @param { objectLike } dstContainer - destination object.
@@ -14070,7 +14141,7 @@ function mapExtend( dstMap, srcMap )
 
 //
 
-function mapExtendByMaps( dstMap, srcMaps )
+function mapsExtend( dstMap, srcMaps )
 {
 
   if( dstMap === null )
@@ -14194,6 +14265,23 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
 
 //
 
+function mapExtendHiding( dstMap )
+{
+  var args = _.longSlice( arguments );
+  args.unshift( _.field.mapper.hiding );
+  return _.mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapsExtendHiding( dstMap, srcMaps )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  return _.mapsExtendConditional( _.field.mapper.hiding, dstMap, srcMaps );
+}
+
+//
+
 function mapExtendAppending( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
@@ -14207,7 +14295,7 @@ function mapExtendAppending( dstMap )
 
 function mapsExtendAppending( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
   return _.mapsExtendConditional( _.field.mapper.appending, dstMap, srcMaps );
@@ -14228,7 +14316,7 @@ function mapExtendByDefined( dstMap )
 
 function mapsExtendByDefined( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return _.mapsExtendConditional( _.field.mapper.appending, dstMap, srcMaps );
 }
 
@@ -14263,7 +14351,7 @@ function mapSupplement( dstMap,srcMap )
 
 function mapSupplementByMaps( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
   return _.mapsExtendConditional( _.field.mapper.dstNotHas, dstMap, srcMaps );
@@ -14312,7 +14400,7 @@ function mapSupplementAppending( dstMap )
 
 function mapsSupplementAppending( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return _.mapsExtendConditional( _.field.mapper.dstNotHasAppending, dstMap, srcMaps );
 }
 
@@ -14332,7 +14420,7 @@ function mapSupplementOwn( dstMap, srcMap )
 
 function mapsSupplementOwn( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
   return _.mapsExtendConditional( _.field.mapper.dstNotOwn, dstMap, srcMaps );
@@ -14345,6 +14433,15 @@ function mapSupplementOwnAssigning( dstMap )
   var args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnAssigning );
   return _.mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapSupplementOwnFromDefinition( dstMap, srcMap )
+{
+  var args = _.longSlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwnFromDefinition );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -14379,7 +14476,7 @@ function mapComplement( dstMap,srcMap )
 
 function mapsComplement( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return _.mapsExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
 }
 
@@ -14399,7 +14496,7 @@ function mapComplementReplacingUndefines( dstMap,srcMap )
 
 function mapsComplementReplacingUndefines( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return _.mapsExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMaps );
 }
 
@@ -14416,7 +14513,7 @@ function mapComplementPreservingUndefines( dstMap )
 
 function mapsComplementPreservingUndefines( dstMap, srcMaps )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   return _.mapsExtendConditional( _.field.mapper.dstNotOwnAssigning, dstMap, srcMaps );
 }
 
@@ -14452,7 +14549,7 @@ function mapExtendRecursiveConditional( filters, dstMap, srcMap )
   _.assert( arguments.length >= 3, 'expects at least three arguments' );
   _.assert( this === Self );
   var srcMaps = _.longSlice( arguments,2 );
-  return _.mapExtendByMapsRecursiveConditional( filters, dstMap, srcMaps );
+  return _.mapsExtendRecursiveConditional( filters, dstMap, srcMaps );
 }
 
 //
@@ -14462,7 +14559,7 @@ _filterTrue.functionFamily = 'field-filter';
 function _filterFalse(){ return true };
 _filterFalse.functionFamily = 'field-filter';
 
-function mapExtendByMapsRecursiveConditional( filters, dstMap, srcMaps )
+function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
 {
 
   _.assert( arguments.length === 3, 'expects exactly three argument' );
@@ -14549,7 +14646,7 @@ function mapExtendRecursive( dstMap,srcMap )
 
 //
 
-function mapExtendByMapsRecursive( dstMap,srcMaps )
+function mapsExtendRecursive( dstMap,srcMaps )
 {
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -14612,7 +14709,7 @@ function mapsExtendAppendingRecursive( dstMap, srcMaps )
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.appending, onUpFilter : true };
-  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+  return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
 //
@@ -14634,7 +14731,7 @@ function mapsExtendAppendingOnceRecursive( dstMap, srcMaps )
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
-  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+  return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
 //
@@ -14656,7 +14753,7 @@ function mapSupplementByMapsRecursive( dstMap, srcMaps )
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
-  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+  return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
 //
@@ -14678,7 +14775,7 @@ function mapsSupplementOwnRecursive( dstMap, srcMaps )
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
-  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+  return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
 //
@@ -14700,7 +14797,7 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   var filters = { onField : _.field.mapper.removing, onUpFilter : true };
-  return _.mapExtendByMapsRecursiveConditional.call( _, filters, dstMap, srcMaps );
+  return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
 // --
@@ -16282,7 +16379,7 @@ function mapFirstPair( srcMap )
 
 function mapValsSet( dstMap, val )
 {
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   for( var k in dstMap )
   {
@@ -16632,7 +16729,7 @@ function mapButIgnoringUndefines( srcMap, butMap )
 // {
 //   var result = Object.create( null );
 //
-//   _.assert( arguments.length === 2 );
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 //   _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
 //   _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'expects map {-srcMap-}' );
 //
@@ -16816,7 +16913,7 @@ function mapOnly( srcMaps, screenMaps )
 {
 
   if( arguments.length === 1 )
-  return _.mapExtendByMaps( null, srcMaps );
+  return _.mapsExtend( null, srcMaps );
 
   _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
 
@@ -16959,7 +17056,7 @@ function _mapOnly( o )
     if( s === -1 )
     continue;
 
-    o.filter.call( this,dstMap,srcMaps[ s ],k );
+    o.filter.call( this, dstMap, srcMaps[ s ], k );
 
   }
 
@@ -17946,6 +18043,7 @@ var Routines =
   // etc
 
   each : each,
+  eachName : eachName,
   eachOwn : eachOwn,
 
   dup : dup,
@@ -17991,6 +18089,8 @@ var Routines =
   _entityMost : _entityMost,
   entityMin : entityMin,
   entityMax : entityMax,
+
+  entityShallowClone : entityShallowClone,
 
   // error
 
@@ -18057,6 +18157,7 @@ var Routines =
   printerIs : printerIs,
   loggerIs : loggerIs,
   processIs : processIs,
+  definitionIs : definitionIs,
 
   // routine
 
@@ -18316,8 +18417,8 @@ var Routines =
   arrayFrom : arrayFrom,
   arrayAs : arrayAs,
 
-  _arrayClone : _arrayClone,
-  arrayClone : arrayClone,
+  _longClone : _longClone,
+  longShallowClone : longShallowClone,
 
   arrayFromRange : arrayFromRange,
   arrayFromProgressionArithmetic : arrayFromProgressionArithmetic,
@@ -18529,13 +18630,16 @@ var Routines =
   // map extend
 
   mapMake : mapMake,
+  mapShallowClone : mapShallowClone,
   mapCloneAssigning : mapCloneAssigning, /* dubious */
 
   mapExtend : mapExtend,
-  mapExtendByMaps : mapExtendByMaps,
+  mapsExtend : mapsExtend,
   mapExtendConditional : mapExtendConditional,
   mapsExtendConditional : mapsExtendConditional,
 
+  mapExtendHiding : mapExtendHiding,
+  mapsExtendHiding : mapsExtendHiding,
   mapExtendAppending : mapExtendAppending,
   mapsExtendAppending : mapsExtendAppending,
   mapExtendByDefined : mapExtendByDefined,
@@ -18551,6 +18655,7 @@ var Routines =
   mapSupplementOwn : mapSupplementOwn,
   mapsSupplementOwn : mapsSupplementOwn,
   mapSupplementOwnAssigning : mapSupplementOwnAssigning,
+  mapSupplementOwnFromDefinition : mapSupplementOwnFromDefinition,
 
   mapComplement : mapComplement,
   mapsComplement : mapsComplement,
@@ -18562,11 +18667,11 @@ var Routines =
   // map extend recursive
 
   mapExtendRecursiveConditional : mapExtendRecursiveConditional,
-  mapExtendByMapsRecursiveConditional : mapExtendByMapsRecursiveConditional,
+  mapsExtendRecursiveConditional : mapsExtendRecursiveConditional,
   _mapExtendRecursiveConditional : _mapExtendRecursiveConditional,
 
   mapExtendRecursive : mapExtendRecursive,
-  mapExtendByMapsRecursive : mapExtendByMapsRecursive,
+  mapsExtendRecursive : mapsExtendRecursive,
   _mapExtendRecursive : _mapExtendRecursive,
 
   mapExtendAppendingRecursive : mapExtendAppendingRecursive,

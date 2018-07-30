@@ -132,7 +132,7 @@ function strRemoveBegin( test )
 {
   var got,expected;
 
-  //
+  /* - */
 
   test.case = 'strRemoveBegin';
 
@@ -260,7 +260,7 @@ function strRemoveEnd( test )
 {
   var got,expected;
 
-  //
+  /* - */
 
   test.case = 'strRemoveBegin';
 
@@ -522,7 +522,7 @@ function strPrependOnce( test )
 {
   var got,expected;
 
-  //
+  /* - */
 
   test.case = 'strPrependOnce';
 
@@ -570,7 +570,7 @@ function strAppendOnce( test )
 {
   var got,expected;
 
-  //
+  /* - */
 
   test.case = 'strAppendOnce';
 
@@ -723,7 +723,7 @@ function strIndentation( test )
 {
   var got, expected;
 
-  //
+  /* - */
 
   test.case = 'single line';
 
@@ -739,7 +739,7 @@ function strIndentation( test )
   expected = '_abc';
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'multiline';
 
@@ -767,7 +767,7 @@ function strIndentation( test )
   expected = '\ta\n\tb\n\tc';
   test.identical( got,expected );
 
-  //
+  /* - */
 
   test.case = 'array';
 
@@ -828,7 +828,7 @@ function strSplitFast( test )
   test.identical( got, expected );
 
   var got = _.strSplitFast( 'abc', '' );
-  var expected = [ 'a', 'b', 'c' ];
+  var expected = [ 'a', '', 'b', '', 'c' ];
   test.identical( got, expected );
 
   var got = _.strSplitFast( '', 'a' );
@@ -836,12 +836,12 @@ function strSplitFast( test )
   test.identical( got, expected );
 
   var got = _.strSplitFast( 'test test test' );
-  var expected = [ 'test', 'test', 'test' ];
+  var expected = [ 'test', ' ', 'test', ' ', 'test' ];
   test.identical( got, expected );
 
   test.case = 'split string into an array of strings';
   var got = _.strSplitFast( ' test   test   test ' );
-  var expected = [ '', 'test', '', '', 'test', '', '', 'test', '' ];
+  var expected = [ '', ' ', 'test', ' ', '', ' ', '', ' ', 'test', ' ', '', ' ', '', ' ', 'test', ' ', '' ];
   test.identical( got, expected );
 
   test.case = 'returns an array of strings';
@@ -851,12 +851,12 @@ function strSplitFast( test )
 
   test.case = 'returns an array of strings';
   var got = _.strSplitFast( ' test <delimteter>  test<delimteter>   test ', '<delimteter>' );
-  var expected = [ ' test ', '  test', '   test ' ];
+  var expected = [ ' test ', '<delimteter>', '  test', '<delimteter>', '   test ' ];
   test.identical( got, expected );
 
   test.case = 'simple string, default options';
   var got = _.strSplitFast( 'a b c d' );
-  var expected = [ 'a', 'b', 'c', 'd' ];
+  var expected = [ 'a', ' ', 'b', ' ', 'c', ' ', 'd' ];
   test.identical( got,expected );
 
   /*
@@ -3042,7 +3042,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check ', '/', '', '/', ' ( Tools', '/', 'base', '/', 'layer2', '/', 'String ', '/', ' strSplit ', '/', ' delimeter:" "', ' > ', 'space on the beginning and the end', ' < ', ' ) # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:0 q:1 pe:0 pd:0';
@@ -3057,7 +3057,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check ', ' ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:', 'space on the beginning and the end', ' ) # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:0 q:1 pe:0 pd:1';
@@ -3072,7 +3072,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check ', '/', '/', ' ( Tools', '/', 'base', '/', 'layer2', '/', 'String ', '/', ' strSplit ', '/', ' delimeter:', '" "', ' > ', 'space on the beginning and the end', ' < ', ' ) # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:0 q:1 pe:1 pd:0';
@@ -3087,7 +3087,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check ', '', ' ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:', '', 'space on the beginning and the end', ' ) # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:0 q:1 pe:1 pd:1';
@@ -3102,7 +3102,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check ', '/', '', '/', ' ( Tools', '/', 'base', '/', 'layer2', '/', 'String ', '/', ' strSplit ', '/', ' delimeter:', '" "', '', ' > ', 'space on the beginning and the end', ' < ', ' ) # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:0 pe:0 pd:0';
@@ -3117,7 +3117,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '( Tools', 'base', 'layer2', 'String', 'strSplit', 'delimeter:" "', 'space on the beginning and the end', ') # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:0 pe:0 pd:1';
@@ -3132,7 +3132,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '/', '/', '( Tools', '/', 'base', '/', 'layer2', '/', 'String', '/', 'strSplit', '/', 'delimeter:" "', '>', 'space on the beginning and the end', '<', ') # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:0 pe:1 pd:0';
@@ -3147,7 +3147,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '', '( Tools', 'base', 'layer2', 'String', 'strSplit', 'delimeter:" "', 'space on the beginning and the end', ') # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:0 pe:1 pd:1';
@@ -3162,7 +3162,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '/', '', '/', '( Tools', '/', 'base', '/', 'layer2', '/', 'String', '/', 'strSplit', '/', 'delimeter:" "', '>', 'space on the beginning and the end', '<', ') # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:1 pe:0 pd:0';
@@ -3177,7 +3177,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '( Tools', 'base', 'layer2', 'String', 'strSplit', 'delimeter:', 'space on the beginning and the end', ') # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:1 pe:0 pd:1';
@@ -3192,7 +3192,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '/', '/', '( Tools', '/', 'base', '/', 'layer2', '/', 'String', '/', 'strSplit', '/', 'delimeter:', '" "', '>', 'space on the beginning and the end', '<', ') # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:1 pe:1 pd:0';
@@ -3207,7 +3207,7 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '', '( Tools', 'base', 'layer2', 'String', 'strSplit', 'delimeter:', '', 'space on the beginning and the end', ') # 3 ... failed' ];
   test.identical( got, expected );
 
   test.case = 's:1 q:1 pe:1 pd:1';
@@ -3222,25 +3222,8 @@ function strSplit/**2**/( test )
     src : src,
   }
   var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', 'base', 'layer2', 'String ', ' strSplit ', ' delimeter:" "', 'space on the beginning and the end', ' ) # 3 ... failed' ];
+  var expected = [ 'Test check', '/', '', '/', '( Tools', '/', 'base', '/', 'layer2', '/', 'String', '/', 'strSplit', '/', 'delimeter:', '" "', '', '>', 'space on the beginning and the end', '<', ') # 3 ... failed' ];
   test.identical( got, expected );
-
-  test.case = 's:0 q:1 pe:1 pd:1';
-
-  var o =
-  {
-    stripping : 0,
-    quoting : 1,
-    preservingEmpty : 1,
-    preservingDelimeters : 1,
-    delimeter : [ ' > ', ' < ', '/' ],
-    src : src,
-  }
-  var got = _.strSplit/**2**/( o );
-  var expected = [ 'Test check ( Tools', '/', 'base', '/', 'layer2', '/', 'String ', '/', ' strSplit ', '/', ' delimeter:', '" "', '', ' > ', 'space on the beginning and the end', ' < ', ' ) # 3 ... failed' ];
-  test.identical( got, expected );
-
-  test.case = 'long with quotes inside';
 
   test.close( 'complex' );
 
@@ -3733,313 +3716,311 @@ function strSplitStrNumber( test )
 }
 //
 
-function strCutOffLeft( test )
+function strIsolateBeginOrNone( test )
 {
   var got,expected;
 
-  //
+  /* - */
 
   test.case = 'single delimeter';
 
   /**/
 
-  got = _.strCutOffLeft( '', '' );
+  got = _.strIsolateBeginOrNone( '', '' );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( '', [ '' ] );
+  got = _.strIsolateBeginOrNone( '', [ '' ] );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abc', [ '' ] );
+  got = _.strIsolateBeginOrNone( 'abc', [ '' ] );
   expected = [ '', '', 'abc' ];
   test.identical( got, expected );
 
   /* empty delimeters array */
 
-  got = _.strCutOffLeft( 'abca', [] );
+  got = _.strIsolateBeginOrNone( 'abca', [] );
   expected = [ '', '', 'abca' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( '', 'a' );
+  got = _.strIsolateBeginOrNone( '', 'a' );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( '', [ 'a' ] );
+  got = _.strIsolateBeginOrNone( '', [ 'a' ] );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', 'a' );
+  got = _.strIsolateBeginOrNone( 'abca', 'a' );
   expected = [ '', 'a', 'bca' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a' ] );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'a' ] );
   expected = [ '', 'a', 'bca' ];
   test.identical( got, expected );
 
   /* number 1 by default, no cut, just returns src */
 
-  got = _.strCutOffLeft( 'abca', 'd' );
+  got = _.strIsolateBeginOrNone( 'abca', 'd' );
   expected = [ '', '', 'abca' ];
   test.identical( got, expected );
 
   /* number 1 by default, no cut, just returns src */
 
-  got = _.strCutOffLeft( 'abca', [ 'd' ] );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'd' ] );
   expected = [ '', '', 'abca' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'single delimeter, number';
 
-  /*!!!*/
-
-  got = _.strCutOffLeft( 'abca', '', 2 );
+  got = _.strIsolateBeginOrNone( 'abca', '', 2 );
   expected = [ 'a', '', 'bca' ];
   test.identical( got, expected );
 
   /* cut on second occurrence */
 
-  got = _.strCutOffLeft( 'abca', 'a', 2 );
+  got = _.strIsolateBeginOrNone( 'abca', 'a', 2 );
   expected = [ 'abc', 'a', '' ];
   test.identical( got, expected );
 
   /* cut on second occurrence */
 
-  got = _.strCutOffLeft( 'abca', [ 'a' ], 2 );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'a' ], 2 );
   expected = [ 'abc', 'a', '' ];
   test.identical( got, expected );
 
   /* cut on third occurrence */
 
-  got = _.strCutOffLeft( 'abcaca', 'a', 3 );
+  got = _.strIsolateBeginOrNone( 'abcaca', 'a', 3 );
   expected = [ 'abcac', 'a', '' ];
   test.identical( got, expected );
 
   /* cut on third occurrence */
 
-  got = _.strCutOffLeft( 'abcaca', [ 'a' ], 3 );
+  got = _.strIsolateBeginOrNone( 'abcaca', [ 'a' ], 3 );
   expected = [ 'abcac', 'a', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abcaca', 'a', 4 );
+  got = _.strIsolateBeginOrNone( 'abcaca', 'a', 4 );
   expected = [ 'abcaca', 'a', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abcaca', [ 'a' ], 4 );
+  got = _.strIsolateBeginOrNone( 'abcaca', [ 'a' ], 4 );
   expected = [ 'abcaca', 'a', '' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'several delimeters';
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ] );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'a', 'c' ] );
   expected = [ '', 'a', 'bca' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'c', 'a' ] );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'c', 'a' ] );
   expected = [ '', 'a', 'bca' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'x', 'y' ] );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'x', 'y' ] );
   expected = [ '', '', 'abca'  ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'x', 'y', 'a' ] );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'x', 'y', 'a' ] );
   expected = [ '', 'a', 'bca'  ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'several delimeters, number';
 
   /* empty delimeters array */
 
-  got = _.strCutOffLeft( 'abca', [], 2 );
+  got = _.strIsolateBeginOrNone( 'abca', [], 2 );
   expected = [ '', '', 'abca' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 2 );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'a', 'c' ], 2 );
   expected = [ 'ab', 'c', 'a' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abcbc', [ 'c', 'a' ], 2 );
+  got = _.strIsolateBeginOrNone( 'abcbc', [ 'c', 'a' ], 2 );
   expected = [ 'ab', 'c', 'bc' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'cbcbc', [ 'c', 'a' ], 3 );
+  got = _.strIsolateBeginOrNone( 'cbcbc', [ 'c', 'a' ], 3 );
   expected = [ 'cbcb', 'c', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'cbcbc', [ 'c', 'a' ], 4 );
+  got = _.strIsolateBeginOrNone( 'cbcbc', [ 'c', 'a' ], 4 );
   expected = [ 'cbcbc', 'c', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'jj', [ 'c', 'a' ], 4 );
+  got = _.strIsolateBeginOrNone( 'jj', [ 'c', 'a' ], 4 );
   expected = [ 'jj', 'c', ''];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'one of delimeters contains other';
 
-  //
+  /* - */
 
-  got = _.strCutOffLeft( 'ab', [ 'a', 'ab' ] );
+  got = _.strIsolateBeginOrNone( 'ab', [ 'a', 'ab' ] );
   expected = [ '', 'a', 'b' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'ab', [ 'ab', 'a' ] );
+  got = _.strIsolateBeginOrNone( 'ab', [ 'ab', 'a' ] );
   expected = [ '', 'ab', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'ab', [ 'b', 'ab' ] );
+  got = _.strIsolateBeginOrNone( 'ab', [ 'b', 'ab' ] );
   expected = [ '', 'ab', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'ab', [ 'ab', 'b' ] );
+  got = _.strIsolateBeginOrNone( 'ab', [ 'ab', 'b' ] );
   expected = [ '', 'ab', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'a b c', ' ', 1 );
+  got = _.strIsolateBeginOrNone( 'a b c', ' ', 1 );
   expected = [ 'a', ' ', 'b c' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'single delimeter'
 
   /* cut on first appear */
 
-  got = _.strCutOffLeft( 'abca', 'a', 1 );
+  got = _.strIsolateBeginOrNone( 'abca', 'a', 1 );
   expected = [ '', 'a', 'bca' ];
   test.identical( got ,expected );
 
   /* no occurrences */
 
-  got = _.strCutOffLeft( 'jj', 'a', 1 );
+  got = _.strIsolateBeginOrNone( 'jj', 'a', 1 );
   expected = [ '', '', 'jj'];
   test.identical( got ,expected );
 
   /* cut on second appear */
 
-  got = _.strCutOffLeft( 'abca', 'a', 2 );
+  got = _.strIsolateBeginOrNone( 'abca', 'a', 2 );
   expected = [ 'abc', 'a', '' ];
   test.identical( got ,expected );
 
   /* 5 attempts */
 
-  got = _.strCutOffLeft( 'abca', 'a', 5 );
+  got = _.strIsolateBeginOrNone( 'abca', 'a', 5 );
   expected = [ 'abca', 'a', '' ];
   test.identical( got ,expected );
 
-  //
+  /* - */
 
   test.case = 'multiple delimeter'
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 1 );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'a', 'c' ], 1 );
   expected = [ '', 'a', 'bca' ];
   test.identical( got ,expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 2 );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'a', 'c' ], 2 );
   expected = [ 'ab', 'c', 'a' ];
   test.identical( got ,expected );
 
   /**/
 
-  got = _.strCutOffLeft( 'abca', [ 'a', 'c' ], 3 );
+  got = _.strIsolateBeginOrNone( 'abca', [ 'a', 'c' ], 3 );
   expected = [ 'abc', 'a', '' ];
   test.identical( got ,expected );
 
   /* no occurrences */
 
-  got = _.strCutOffLeft( 'jj', [ 'a', 'c' ], 1 );
+  got = _.strIsolateBeginOrNone( 'jj', [ 'a', 'c' ], 1 );
   expected = [ '', '', 'jj' ];
   test.identical( got ,expected );
 
   /* no occurrences */
 
-  got = _.strCutOffLeft( 'jj', [ 'a' ], 1 );
+  got = _.strIsolateBeginOrNone( 'jj', [ 'a' ], 1 );
   expected = [ '', '', 'jj' ];
   test.identical( got ,expected );
 
-  //
+  /* - */
 
   test.case = 'options as map';
 
   /**/
 
-  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a', number : 1 });
+  got = _.strIsolateBeginOrNone({ src : 'abca', delimeter : 'a', number : 1 });
   expected = [ '', 'a', 'bca' ];
   test.identical( got ,expected );
 
   /* number option is missing */
 
-  got = _.strCutOffLeft({ src : 'abca', delimeter : 'a' });
+  got = _.strIsolateBeginOrNone({ src : 'abca', delimeter : 'a' });
   expected = [ '', 'a', 'bca' ];
   test.identical( got ,expected );
 
-  //
+  /* - */
 
   test.case = 'number option check';
 
   /* number is zero */
 
-  got = _.strCutOffLeft( 'abca', 'a', 0 );
+  got = _.strIsolateBeginOrNone( 'abca', 'a', 0 );
   expected = [ '', '', 'abca' ];
   test.identical( got ,expected );
 
   /* number is negative */
 
-  got = _.strCutOffLeft( 'abca', 'a', -1 );
+  got = _.strIsolateBeginOrNone( 'abca', 'a', -1 );
   expected = [ '', '', 'abca' ];
   test.identical( got ,expected );
 
@@ -4049,336 +4030,336 @@ function strCutOffLeft( test )
   test.case = 'single argument but object expected';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffLeft( 'abc' );
+    _.strIsolateBeginOrNone( 'abc' );
   })
 
   test.case = 'invalid option';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffLeft({ src : 'abc', delimeter : 'a', query : 'a' });
+    _.strIsolateBeginOrNone({ src : 'abc', delimeter : 'a', query : 'a' });
   })
 
   test.case = 'changing of left option not allowed';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffLeft({ src : 'abc', delimeter : 'a', left : 0 });
+    _.strIsolateBeginOrNone({ src : 'abc', delimeter : 'a', left : 0 });
   })
 
 }
 
 //
 
-function strCutOffRight( test )
+function strIsolateEndOrNone( test )
 {
   var got,expected;
 
-  //
+  /* - */
 
   test.case = 'single delimeter';
 
   /**/
 
-  got = _.strCutOffRight( '', '' );
+  got = _.strIsolateEndOrNone( '', '' );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( '', [ '' ] );
+  got = _.strIsolateEndOrNone( '', [ '' ] );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /*!!!*/
 
-  got = _.strCutOffRight( 'abc', [ '' ] );
+  got = _.strIsolateEndOrNone( 'abc', [ '' ] );
   expected = [ 'ab', '', 'c' ];
   test.identical( got, expected );
 
   /* empty delimeters array */
 
-  got = _.strCutOffRight( 'abca', [] );
+  got = _.strIsolateEndOrNone( 'abca', [] );
   expected = [ 'abca', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( '', 'a' );
+  got = _.strIsolateEndOrNone( '', 'a' );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( '', [ 'a' ] );
+  got = _.strIsolateEndOrNone( '', [ 'a' ] );
   expected = [ '', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', 'a' );
+  got = _.strIsolateEndOrNone( 'abca', 'a' );
   expected = [ 'abc', 'a', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a' ] );
+  got = _.strIsolateEndOrNone( 'abca', [ 'a' ] );
   expected = [ 'abc', 'a', '' ];
   test.identical( got, expected );
 
   /* number 1 by default, no cut, just returns src */
 
-  got = _.strCutOffRight( 'abca', 'd' );
+  got = _.strIsolateEndOrNone( 'abca', 'd' );
   expected = [ 'abca', '', '' ];
   test.identical( got, expected );
 
   /* number 1 by default, no cut, just returns src */
 
-  got = _.strCutOffRight( 'abca', [ 'd' ] );
+  got = _.strIsolateEndOrNone( 'abca', [ 'd' ] );
   expected = [ 'abca', '', '' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'single delimeter, number';
 
   /*!!!*/
 
-  got = _.strCutOffRight( 'abca', '', 2 );
+  got = _.strIsolateEndOrNone( 'abca', '', 2 );
   expected = [ 'ab', '', 'ca' ];
   test.identical( got, expected );
 
   /* cut on second occurrence */
 
-  got = _.strCutOffRight( 'abca', 'a', 2 );
+  got = _.strIsolateEndOrNone( 'abca', 'a', 2 );
   expected = [ '', 'a', 'bca' ];
   test.identical( got, expected );
 
   /* cut on second occurrence */
 
-  got = _.strCutOffRight( 'abca', [ 'a' ], 2 );
+  got = _.strIsolateEndOrNone( 'abca', [ 'a' ], 2 );
   expected = [ '', 'a', 'bca' ];
   test.identical( got, expected );
 
   /* cut on third occurrence */
 
-  got = _.strCutOffRight( 'abcaca', 'a', 3 );
+  got = _.strIsolateEndOrNone( 'abcaca', 'a', 3 );
   expected = [ '', 'a', 'bcaca' ];
   test.identical( got, expected );
 
   /* cut on third occurrence */
 
-  got = _.strCutOffRight( 'abcaca', [ 'a' ], 3 );
+  got = _.strIsolateEndOrNone( 'abcaca', [ 'a' ], 3 );
   expected = [ '', 'a', 'bcaca' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abcaca', 'a', 4 );
+  got = _.strIsolateEndOrNone( 'abcaca', 'a', 4 ); /* xxx */
   expected = [ '', '', 'abcaca' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abcaca', [ 'a' ], 4 );
+  got = _.strIsolateEndOrNone( 'abcaca', [ 'a' ], 4 );
   expected = [ '', '', 'abcaca' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'several delimeters';
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a', 'c' ] );
+  got = _.strIsolateEndOrNone( 'abca', [ 'a', 'c' ] );
   expected = [ 'abc', 'a', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'c', 'a' ] );
+  got = _.strIsolateEndOrNone( 'abca', [ 'c', 'a' ] );
   expected = [ 'abc', 'a', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'x', 'y' ] );
+  got = _.strIsolateEndOrNone( 'abca', [ 'x', 'y' ] );
   expected = [ 'abca', '', ''  ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'x', 'y', 'a' ] );
+  got = _.strIsolateEndOrNone( 'abca', [ 'x', 'y', 'a' ] );
   expected = [ 'abc', 'a', ''  ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'several delimeters, number';
 
   /* empty delimeters array */
 
-  got = _.strCutOffRight( 'abca', [], 2 );
+  got = _.strIsolateEndOrNone( 'abca', [], 2 );
   expected = [ 'abca', '', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 2 );
+  got = _.strIsolateEndOrNone( 'abca', [ 'a', 'c' ], 2 );
   expected = [ 'ab', 'c', 'a' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abcbc', [ 'c', 'a' ], 2 );
+  got = _.strIsolateEndOrNone( 'abcbc', [ 'c', 'a' ], 2 );
   expected = [ 'ab', 'c', 'bc' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'cbcbc', [ 'c', 'a' ], 3 );
+  got = _.strIsolateEndOrNone( 'cbcbc', [ 'c', 'a' ], 3 );
   expected = [ '', 'c', 'bcbc' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'cbcbc', [ 'c', 'a' ], 4 );
+  got = _.strIsolateEndOrNone( 'cbcbc', [ 'c', 'a' ], 4 );
   expected = [ '', '', 'cbcbc' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'jj', [ 'c', 'a' ], 4 );
+  got = _.strIsolateEndOrNone( 'jj', [ 'c', 'a' ], 4 );
   expected = [ '', 'c', 'jj' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'one of delimeters contains other';
 
-  //
+  /* - */
 
-  got = _.strCutOffRight( 'ab', [ 'a', 'ab' ] );
+  got = _.strIsolateEndOrNone( 'ab', [ 'a', 'ab' ] );
   expected = [ '', 'a', 'b' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'ab', [ 'ab', 'a' ] );
+  got = _.strIsolateEndOrNone( 'ab', [ 'ab', 'a' ] );
   expected = [ '', 'ab', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'ab', [ 'b', 'ab' ] );
+  got = _.strIsolateEndOrNone( 'ab', [ 'b', 'ab' ] );
   expected = [ 'a', 'b', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strCutOffRight( 'ab', [ 'ab', 'b' ] );
+  got = _.strIsolateEndOrNone( 'ab', [ 'ab', 'b' ] );
   expected = [ 'a', 'b', '' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'defaults'
 
   /**/
 
-  got = _.strCutOffRight( 'a b c', ' ', 1 );
+  got = _.strIsolateEndOrNone( 'a b c', ' ', 1 );
   expected = [ 'a b', ' ', 'c' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'single delimeter'
 
   /* cut on first appear */
 
-  got = _.strCutOffRight( 'abca', 'a', 1 );
+  got = _.strIsolateEndOrNone( 'abca', 'a', 1 );
   expected = [ 'abc', 'a', '' ];
   test.identical( got ,expected );
 
   /* no occurrences */
 
-  got = _.strCutOffRight( 'jj', 'a', 1 );
+  got = _.strIsolateEndOrNone( 'jj', 'a', 1 );
   expected = [ 'jj', '', '' ];
   test.identical( got ,expected );
 
   /* cut on second appear */
 
-  got = _.strCutOffRight( 'abca', 'a', 2 );
+  got = _.strIsolateEndOrNone( 'abca', 'a', 2 );
   expected = [ '', 'a', 'bca' ];
   test.identical( got ,expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', 'a', 5 );
+  got = _.strIsolateEndOrNone( 'abca', 'a', 5 );
   expected = [ '', '', 'abca' ];
   test.identical( got ,expected );
 
-  //
+  /* - */
 
   test.case = 'multiple delimeter'
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 1 );
+  got = _.strIsolateEndOrNone( 'abca', [ 'a', 'c' ], 1 );
   expected = [ 'abc', 'a', '' ];
   test.identical( got ,expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 2 );
+  got = _.strIsolateEndOrNone( 'abca', [ 'a', 'c' ], 2 );
   expected = [ 'ab', 'c', 'a' ];
   test.identical( got ,expected );
 
   /**/
 
-  got = _.strCutOffRight( 'abca', [ 'a', 'c' ], 3 );
+  got = _.strIsolateEndOrNone( 'abca', [ 'a', 'c' ], 3 );
   expected = [ '', 'a', 'bca' ];
   test.identical( got ,expected );
 
   /* no occurrences */
 
-  got = _.strCutOffRight( 'jj', [ 'a', 'c' ], 1 );
+  got = _.strIsolateEndOrNone( 'jj', [ 'a', 'c' ], 1 );
   expected = [ 'jj', '', '' ];
   test.identical( got ,expected );
 
   /* no occurrences */
 
-  got = _.strCutOffRight( 'jj', [ 'a' ], 1 );
+  got = _.strIsolateEndOrNone( 'jj', [ 'a' ], 1 );
   expected = [ 'jj', '', '' ];
   test.identical( got ,expected );
 
-  //
+  /* - */
 
   test.case = 'options as map';
 
   /**/
 
-  got = _.strCutOffRight({ src : 'abca', delimeter : 'a', number : 1 });
+  got = _.strIsolateEndOrNone({ src : 'abca', delimeter : 'a', number : 1 });
   expected = [ 'abc', 'a', '' ];
   test.identical( got ,expected );
 
   /* number option is missing */
 
-  got = _.strCutOffRight({ src : 'abca', delimeter : 'a' });
+  got = _.strIsolateEndOrNone({ src : 'abca', delimeter : 'a' });
   expected = [ 'abc', 'a', '' ];
   test.identical( got ,expected );
 
-  //
+  /* - */
 
   test.case = 'number option check';
 
   /* number is zero */
 
-  got = _.strCutOffRight( 'abca', 'a', 0 );
+  got = _.strIsolateEndOrNone( 'abca', 'a', 0 );
   expected = [ 'abca', '', '' ];
   test.identical( got ,expected );
 
   /* number is negative */
 
-  got = _.strCutOffRight( 'abca', 'a', -1 );
+  got = _.strIsolateEndOrNone( 'abca', 'a', -1 );
   expected = [ 'abca', '', '' ];
   test.identical( got ,expected );
 
@@ -4388,26 +4369,26 @@ function strCutOffRight( test )
   test.case = 'single argument but object expected';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffRight( 'abc' );
+    _.strIsolateEndOrNone( 'abc' );
   });
 
   test.case = 'invalid option';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffRight({ src : 'abc', delimeter : 'a', query : 'a' });
+    _.strIsolateEndOrNone({ src : 'abc', delimeter : 'a', query : 'a' });
   });
 
   test.case = 'changing of left option not allowed';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffRight({ src : 'abc', delimeter : 'a', left : 0 });
+    _.strIsolateEndOrNone({ src : 'abc', delimeter : 'a', left : 0 });
   });
 
 }
 
 //
 
-function strCutOffAllLeft( test )
+function strIsolateEndOrAll( test )
 {
   var got, expected;
 
@@ -4415,37 +4396,37 @@ function strCutOffAllLeft( test )
 
   /* nothing */
 
-  got = _.strCutOffAllLeft( '', 'b' );
+  got = _.strIsolateEndOrAll( '', 'b' );
   expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /* nothing */
 
-  got = _.strCutOffAllLeft( '', '' );
+  got = _.strIsolateEndOrAll( '', '' );
   expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllLeft( 'ahpc', 'h' );
+  got = _.strIsolateEndOrAll( 'ahpc', 'h' );
   expected = [ 'a', 'h', 'pc' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllLeft( 'ahpc', 'c' );
+  got = _.strIsolateEndOrAll( 'ahpc', 'c' );
   expected = [ 'ahp', 'c', '' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllLeft( 'appbb', 'b' );
+  got = _.strIsolateEndOrAll( 'appbb', 'b' );
   expected = [ 'appb', 'b', '' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllLeft( 'jj', 'a' );
+  got = _.strIsolateEndOrAll( 'jj', 'a' );
   expected = [ '', '', 'jj' ];
   test.identical( got,expected );
 
@@ -4457,20 +4438,20 @@ function strCutOffAllLeft( test )
   test.case = 'delimeter must be a String';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffAllLeft( 'jj', 1 );
+    _.strIsolateEndOrAll( 'jj', 1 );
   })
 
   test.case = 'source must be a String';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffAllLeft( 1, '1' );
+    _.strIsolateEndOrAll( 1, '1' );
   })
 
 }
 
 //
 
-function strCutOffAllRight( test )
+function strIsolateBeginOrAll( test )
 {
   var got, expected;
 
@@ -4478,41 +4459,41 @@ function strCutOffAllRight( test )
 
   /* nothing */
 
-  got = _.strCutOffAllRight( '', 'b' );
+  got = _.strIsolateBeginOrAll( '', 'b' );
   expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /* nothing */
 
-  got = _.strCutOffAllRight( '', '' );
+  got = _.strIsolateBeginOrAll( '', '' );
   expected = [ '', '', '' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllRight( 'appc', 'p' );
+  got = _.strIsolateBeginOrAll( 'appc', 'p' );
   expected = [ 'a', 'p', 'pc' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllRight( 'appc', 'c' );
+  got = _.strIsolateBeginOrAll( 'appc', 'c' );
   expected = [ 'app', 'c', '' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllRight( 'appc', 'a' );
+  got = _.strIsolateBeginOrAll( 'appc', 'a' );
   expected = [ '', 'a', 'ppc' ];
   test.identical( got,expected );
 
   /**/
 
-  got = _.strCutOffAllRight( 'jj', 'a' );
+  got = _.strIsolateBeginOrAll( 'jj', 'a' );
   expected = [ 'jj', '', '' ];
   test.identical( got,expected );
 
-  //
+  /* - */
 
   if( !Config.debug )
   return;
@@ -4520,13 +4501,13 @@ function strCutOffAllRight( test )
   test.case = 'delimeter must be a String';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffAllRight( 'jj', 1 );
+    _.strIsolateBeginOrAll( 'jj', 1 );
   });
 
   test.case = 'source must be a String';
   test.shouldThrowErrorSync( function()
   {
-    _.strCutOffAllRight( 1, '1' );
+    _.strIsolateBeginOrAll( 1, '1' );
   });
 
 }
@@ -5483,7 +5464,7 @@ function strLinesSelect( test )
   expected = 'a';
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'multiline selection';
 
@@ -5541,7 +5522,7 @@ function strLinesSelect( test )
   expected = 'a';
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'selection without range provided, selectMode : center';
 
@@ -5635,7 +5616,7 @@ function strLinesSelect( test )
   expected = '';
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'selection without range provided, selectMode : begin';
 
@@ -5704,7 +5685,7 @@ function strLinesSelect( test )
   expected = src;
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'selection without range provided, selectMode : end';
 
@@ -5769,7 +5750,7 @@ function strLinesSelect( test )
   expected = '';
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'custom new line'
   var src2 = 'a b c d'
@@ -5796,7 +5777,7 @@ function strLinesSelect( test )
   expected = src2;
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'number'
 
@@ -5811,7 +5792,7 @@ function strLinesSelect( test )
   expected = '1 : a\n2 : b';
   test.identical( got, expected );
 
-  //
+  /* - */
 
   var src =
   `Lorem
@@ -5821,14 +5802,14 @@ function strLinesSelect( test )
   adipisicing
   elit`;
 
-  //
+  /* - */
 
   test.case = 'first line';
   var got = _.strLinesSelect( src, 1 );
   var expected = 'Lorem';
   test.identical( got,expected );
 
-  //
+  /* - */
 
   test.case = 'first two lines';
   var got = _.strLinesSelect( src, 1, 3 );
@@ -5837,7 +5818,7 @@ function strLinesSelect( test )
   ipsum dolor`;
   test.identical( got,expected );
 
-  //
+  /* - */
 
   test.case = 'range as array';
   var got = _.strLinesSelect( src, [ 1, 3 ] );
@@ -5854,21 +5835,21 @@ function strLinesSelect( test )
   var expected = `sit amet||consectetur`;
   test.identical( got,expected );
 
-  //
+  /* - */
 
   test.case = 'empty line, out of range';
   var got = _.strLinesSelect( { src : '', range : [ 1, 1 ] } );
   var expected = '';
   test.identical( got,expected );
 
-  //
+  /* - */
 
   test.case = 'empty line';
   var got = _.strLinesSelect( { src : '', range : [ 0, 1 ] } );
   var expected = '';
   test.identical( got,expected );
 
-  //
+  /* - */
 
   test.case = 'incorrect range';
   var got = _.strLinesSelect( { src :  src, range : [ 2, 1 ] } );
@@ -5924,7 +5905,7 @@ function strLinesNumber( test )
   var expected = '';
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'string';
 
@@ -5974,7 +5955,7 @@ function strLinesNumber( test )
   ].join( '\n' );
   test.identical( got,expected );
 
-  //
+  /* - */
 
   test.case = 'array';
 
@@ -6008,7 +5989,7 @@ function strLinesNumber( test )
     '3 : line\n',
   ].join( '\n' );
 
-  //
+  /* - */
 
   if( !Config.debug )
   return;
@@ -7037,7 +7018,7 @@ function strExtractInlinedStereo( test )
   expected = [ '', 'abc', '' ];
   test.identical( got, expected );
 
-  //
+  /* - */
 
   test.case = 'with options';
 
@@ -7108,7 +7089,7 @@ var Self =
     strPrependOnce : strPrependOnce,
     strAppendOnce : strAppendOnce,
 
-    //
+    /* - */
 
     strForRange : strForRange,
     strCapitalize : strCapitalize,
@@ -7121,10 +7102,10 @@ var Self =
 
     strSplitStrNumber : strSplitStrNumber,
 
-    strCutOffLeft : strCutOffLeft,
-    strCutOffRight : strCutOffRight,
-    strCutOffAllLeft : strCutOffAllLeft,
-    strCutOffAllRight : strCutOffAllRight,
+    strIsolateBeginOrNone : strIsolateBeginOrNone,
+    strIsolateEndOrNone : strIsolateEndOrNone,
+    strIsolateEndOrAll : strIsolateEndOrAll,
+    strIsolateBeginOrAll : strIsolateBeginOrAll,
 
     strStrip : strStrip,
     strRemoveAllSpaces : strRemoveAllSpaces,
