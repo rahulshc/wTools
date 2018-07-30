@@ -5,7 +5,7 @@
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
-var _hasOwnProperty = Object.hasOwnProperty;
+var _ObjectHasOwnProperty = Object.hasOwnProperty;
 var _propertyIsEumerable = Object.propertyIsEnumerable;
 var _ceil = Math.ceil;
 var _floor = Math.floor;
@@ -879,7 +879,7 @@ function assertOwnNoConstructor( ins )
 {
   _.assert( _.objectLikeOrRoutine( ins ) );
   var args = _.longSlice( arguments );
-  args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_hasOwnProperty.call( ins,'constructor' ) );
+  args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_ObjectHasOwnProperty.call( ins,'constructor' ) );
   _.assert.call( _,args );
 }
 

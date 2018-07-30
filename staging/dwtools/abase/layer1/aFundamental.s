@@ -117,7 +117,7 @@ var _ArraySlice = Array.prototype.slice;
 var _ArraySplice = Array.prototype.splice;
 var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
-var _hasOwnProperty = Object.hasOwnProperty;
+var _ObjectHasOwnProperty = Object.hasOwnProperty;
 var _propertyIsEumerable = Object.propertyIsEnumerable;
 var _ceil = Math.ceil;
 var _floor = Math.floor;
@@ -240,7 +240,7 @@ function eachOwn( o )
 
     for( var k in o.src )
     {
-      if( !_hasOwnProperty.call( o.src, k ) )
+      if( !_ObjectHasOwnProperty.call( o.src, k ) )
       continue;
       o.onUp.call( o, o.src[ k ], k );
     }
@@ -558,7 +558,7 @@ function entityAssignFieldFromContainer( dstContainer,srcContainer,name,onRecurs
   _.assert( _.strIs( name ) || _.symbolIs( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
-  var dstValue = _hasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
+  var dstValue = _ObjectHasOwnProperty.call( dstContainer,name ) ? dstContainer[ name ] : undefined;
   var srcValue = srcContainer[ name ];
 
   if( onRecursive )
@@ -2482,9 +2482,18 @@ function bigIntIs( src )
 
 function vectorIs( src )
 {
-  if( src && _.objectIs( src ) && ( '_vectorBuffer' in src ) )
+  if( !_.objectIs( src ) )
+  return false;
+  if( !( '_vectorBuffer' in src ) )
+  return false;
+
+  if( _ObjectHasOwnProperty.call( src, 'constructor' ) )
+  {
+    debugger;
+    return false;
+  }
+
   return true;
-  else return false;
 }
 
 //
@@ -2576,7 +2585,7 @@ function prototypeIs( src )
   _.assert( arguments.length === 1, 'expects single argument' );
   if( _.primitiveIs( src ) )
   return false;
-  return _hasOwnProperty.call( src, 'constructor' );
+  return _ObjectHasOwnProperty.call( src, 'constructor' );
 }
 
 //
@@ -2587,7 +2596,7 @@ function prototypeIsStandard( src )
   if( !_.prototypeIs( src ) )
   return false;
 
-  if( !_hasOwnProperty.call( src, 'Composes' ) )
+  if( !_ObjectHasOwnProperty.call( src, 'Composes' ) )
   return false;
 
   return true;
@@ -2634,9 +2643,9 @@ function instanceIs( src )
   if( _.primitiveIs( src ) )
   return false;
 
-  if( _hasOwnProperty.call( src,'constructor' ) )
+  if( _ObjectHasOwnProperty.call( src,'constructor' ) )
   return false;
-  else if( _hasOwnProperty.call( src,'prototype' ) && src.prototype )
+  else if( _ObjectHasOwnProperty.call( src,'prototype' ) && src.prototype )
   return false;
 
   if( Object.getPrototypeOf( src ) === Object.prototype )
@@ -4783,7 +4792,7 @@ function str()
   {
     var src = arguments[ a ];
 
-    if( src && src.toStr )
+    if( src && src.toStr && !_ObjectHasOwnProperty.call( src, 'constructor' ) )
     line = src.toStr();
     else try
     {
@@ -13237,7 +13246,7 @@ function objectIs( src )
 {
   // if( !src )
   // return false;
-  // if( _hasOwnProperty.call( src,'callee' ) )
+  // if( _ObjectHasOwnProperty.call( src,'callee' ) )
   // return false;
   // if( src instanceof Array )
   // return true;
@@ -13665,11 +13674,11 @@ function mapOwnKey( object,key )
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( key ) )
-  return _hasOwnProperty.call( object, key );
+  return _ObjectHasOwnProperty.call( object, key );
   else if( _.mapIs( key ) )
-  return _hasOwnProperty.call( object, _.nameUnfielded( key ).coded );
+  return _ObjectHasOwnProperty.call( object, _.nameUnfielded( key ).coded );
   else if( _.symbolIs( key ) )
-  return _hasOwnProperty.call( object, key );
+  return _ObjectHasOwnProperty.call( object, key );
 
   _.assert( 0,'mapOwnKey :','unknown type of key :',_.strTypeOf( key ) );
 }
@@ -13861,9 +13870,9 @@ function mapOwnAll( src,screen )
 
   for( var k in screen )
   {
-    if( !_hasOwnProperty.call( src,k ) )
+    if( !_ObjectHasOwnProperty.call( src,k ) )
     debugger;
-    if( !_hasOwnProperty.call( src,k ) )
+    if( !_ObjectHasOwnProperty.call( src,k ) )
     return false;
   }
 
@@ -13908,9 +13917,9 @@ function mapOwnAny( src,screen )
 
   for( var k in screen )
   {
-    if( _hasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src,k ) )
     debugger;
-    if( _hasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src,k ) )
     return true;
   }
 
@@ -13955,9 +13964,9 @@ function mapOwnNone( src,screen )
 
   for( var k in screen )
   {
-    if( _hasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src,k ) )
     debugger;
-    if( _hasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src,k ) )
     return false;
   }
 
@@ -14066,7 +14075,7 @@ function mapCloneAssigning( o )
 
   for( var k in o.srcMap )
   {
-    if( _hasOwnProperty.call( o.srcMap,k ) )
+    if( _ObjectHasOwnProperty.call( o.srcMap,k ) )
     o.onField( o.dstMap,o.srcMap,k,o.onField );
   }
 
@@ -15078,7 +15087,7 @@ function _mapEnumerableKeys( srcMap,own )
   if( own )
   {
     for( var k in srcMap )
-    if( _hasOwnProperty.call( srcMap,k ) )
+    if( _ObjectHasOwnProperty.call( srcMap,k ) )
     result.push( k );
   }
   else

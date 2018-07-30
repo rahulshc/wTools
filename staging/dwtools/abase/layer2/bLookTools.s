@@ -226,7 +226,7 @@ function __look_lookIt( it )
     {
 
       if( it.own )
-      if( !_hasOwnProperty.call( it.src,k ) )
+      if( !_ObjectHasOwnProperty.call( it.src,k ) )
       continue;
 
       handleElement( k );
