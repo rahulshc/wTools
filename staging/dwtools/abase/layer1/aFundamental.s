@@ -2574,7 +2574,6 @@ function consequenceIs( src )
   return false;
 
   var prototype = Object.getPrototypeOf( src );
-
   if( !prototype )
   return false;
 
@@ -2808,10 +2807,14 @@ function printerIs( src )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
 
-  if( !_.PrinterBase )
+  if( !src )
   return false;
 
-  if( src instanceof _.PrinterBase )
+  var prototype = Object.getPrototypeOf( src );
+  if( !prototype )
+  return false;
+
+  if( src.MetaType === 'Printer' )
   return true;
 
   return false;
