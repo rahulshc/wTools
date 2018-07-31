@@ -1,6 +1,6 @@
-(function _Diagnostics_s_() {
+(function _zSetup_s_() {
 
-'use strict';
+'use strict'; /* aaa */
 
 var _global = _global_;
 var _ = _global_.wTools;
@@ -15,8 +15,6 @@ function _setupConfig()
 
   if( _global.WTOOLS_PRIVATE )
   return;
-
-  // debugger;
 
   /* config */
 
@@ -42,31 +40,31 @@ function _setupUnhandledErrorHandler()
 
   var handlerWas = null;
 
+  // console.info( 'REMINDER : fix unhandled error handler' );
+
   if( _global.process && _.routineIs( _global.process.on ) )
   {
     _global.process.on( 'uncaughtException', handleError );
   }
-  else if( Object.hasOwnProperty.call( _global_,'onerror' ) )
+  else if( Object.hasOwnProperty.call( _global,'onerror' ) )
   {
-    handlerWas = _global_.onerror;
-    _global_.onerror = handleBrowserError;
+    handlerWas = _global.onerror;
+    _global.onerror = handleBrowserError;
   }
 
   /**/
 
-  function handleBrowserError( message, source, lineno, colno, error )
+  function handleBrowserError( message, sourcePath, lineno, colno, error )
   {
-    debugger;
-    var err = error;
-    if( 0 )
     if( _._err )
     var err = _._err
     ({
-      args : [ message , error ],
+      args : [ error ],
       level : 1,
-      sourceCode : source,
+      fallBackStack : 'at handleError @ ' + sourcePath + ':' + lineno,
       location :
       {
+        path : sourcePath,
         line : lineno,
         col : colno,
       },
@@ -74,13 +72,24 @@ function _setupUnhandledErrorHandler()
 
     handleError( err );
 
-    handlerWas.call( this, message, source, lineno, colno, error );
+    if( handlerWas )
+    handlerWas.call( this, message, sourcePath, lineno, colno, error );
   }
 
   /* */
 
   function handleError( err )
   {
+
+    try
+    {
+      if( _.errIsAttended( err ) )
+      return
+    }
+    catch( err2 )
+    {
+      console.error( err2.toString() );
+    }
 
     console.error( '------------------------------- unhandled errorr -------------------------------' );
 
@@ -89,8 +98,6 @@ function _setupUnhandledErrorHandler()
 
       if( _.appExitCode )
       _.appExitCode( -1 )
-
-      // console.log( err.message );
 
       if( !err.originalMessage )
       {
@@ -103,23 +110,33 @@ function _setupUnhandledErrorHandler()
         }
         debugger;
         if( _.errLog )
-        _.errLog( 'Uncaught exception :\n',err );
+        _.errLog( 'Uncaught exception :\n', err );
         else
-        console.log( 'Uncaught exception :\n',err );
+        console.error( 'Uncaught exception :\n', err );
       }
       else
       {
         if( _.errLog )
-        _.errLog( 'Uncaught exception :\n',err );
+        _.errLog( 'Uncaught exception :\n', err );
         else
-        console.log( 'Uncaught exception :\n',err );
+        console.error( 'Uncaught exception :\n', err );
       }
 
     }
-    catch( nerr )
+    catch( err2 )
     {
       debugger;
-      console.log( err );
+
+      if( err2 && _.routineIs( err2.toString ) )
+      console.error( err2.toString() );
+      else
+      console.error( err2 );
+
+      if( err && _.routineIs( err.toString ) )
+      console.error( err.toString() + '\n' + err.stack );
+      else
+      console.error( err );
+
     }
 
     console.error( '------------------------------- unhandled errorr -------------------------------' );
@@ -134,14 +151,14 @@ function _setupUnhandledErrorHandler()
 function _setupLoggerPlaceholder()
 {
 
-  if( !_global_.console.debug )
-  _global_.console.debug = function debug()
+  if( !_global.console.debug )
+  _global.console.debug = function debug()
   {
     this.log.apply( this,arguments );
   }
 
-  if( !_global_.logger )
-  _global_.logger =
+  if( !_global.logger )
+  _global.logger =
   {
     log : function log() { console.log.apply( console,arguments ); },
     logUp : function logUp() { console.log.apply( console,arguments ); },
@@ -158,32 +175,32 @@ function _setupLoggerPlaceholder()
 function _setupTesterPlaceholder()
 {
 
-  if( !_global_.wTestSuit )
-  _global_.wTestSuit = function wTestSuit( testSuit )
+  if( !_global.wTestSuite )
+  _global.wTestSuite = function wTestSuite( testSuit )
   {
 
-    if( !_globalReal_.wTests )
-    _globalReal_.wTests = Object.create( null );
+    if( !_realGlobal_.wTests )
+    _realGlobal_.wTests = Object.create( null );
 
-    if( !testSuit.suitFilePath )
-    testSuit.suitFilePath = _.diagnosticLocation( 1 ).path;
+    if( !testSuit.suiteFilePath )
+    testSuit.suiteFilePath = _.diagnosticLocation( 1 ).path;
 
-    if( !testSuit.suitFileLocation )
-    testSuit.suitFileLocation = _.diagnosticLocation( 1 ).full;
+    if( !testSuit.suiteFileLocation )
+    testSuit.suiteFileLocation = _.diagnosticLocation( 1 ).full;
 
-    _.assert( _.strIsNotEmpty( testSuit.suitFileLocation ),'Test suit expects a mandatory option ( suitFileLocation )' );
+    _.assert( _.strIsNotEmpty( testSuit.suiteFileLocation ),'Test suit expects a mandatory option ( suiteFileLocation )' );
     _.assert( _.objectIs( testSuit ) );
 
     // if( testSuit.name === 'Chaining test' )
     // debugger;
 
     if( !testSuit.abstract )
-    _.assert( !_globalReal_.wTests[ testSuit.name ],'Test suit with name "' + testSuit.name + '" already registered!' );
-    _globalReal_.wTests[ testSuit.name ] = testSuit;
+    _.assert( !_realGlobal_.wTests[ testSuit.name ],'Test suit with name "' + testSuit.name + '" already registered!' );
+    _realGlobal_.wTests[ testSuit.name ] = testSuit;
 
     testSuit.inherit = function inherit()
     {
-      this.inherit = _.arraySlice( arguments );
+      this.inherit = _.longSlice( arguments );
     }
 
     return testSuit;
@@ -199,7 +216,7 @@ function _setupTesterPlaceholder()
       if( _.workerIs() )
       return;
       _.assert( arguments.length === 0 || arguments.length === 1 );
-      _.assert( _.strIs( testSuitName ) || testSuitName === undefined,'test : expects string ( testSuitName )' );
+      _.assert( _.strIs( testSuitName ) || testSuitName === undefined,'test : expects string {-testSuitName-}' );
       _.timeReady( function()
       {
         if( _.Tester.test === test )
@@ -213,29 +230,54 @@ function _setupTesterPlaceholder()
 
 //
 
+function _setupLater()
+{
+
+  _.Later.for( _ );
+
+  // for( var l in _.Later )
+  // {
+  //   var later = _.Later[ l ];
+  //   delete _.Later[ l ];
+  //
+  //   _.assert( _[ l ] === null );
+  //
+  //   if( later.length === 3 )
+  //   if( !_.arrayIs( later[ 2 ] ) )
+  //   later[ 2 ] = [ later[ 2 ] ];
+  //
+  //   _[ l ] = _.routineCall.apply( _,later );
+  //
+  // }
+
+}
+
+//
+
 function _setup()
 {
 
-  Self.timeNow = Self._timeNow_functor();
+  // Self.timeNow = Self._timeNow_functor();
   Self._sourcePath = _.diagnosticStack( 1 );
 
-  _.assert( Self.timeNow );
-
-  if( _global_._wToolsInitConfigExpected !== false )
+  if( _global._WTOOLS_SETUP_EXPECTED_ !== false )
   {
     _._setupConfig();
     _._setupUnhandledErrorHandler();
     _._setupLoggerPlaceholder();
     _._setupTesterPlaceholder();
+    _._setupLater();
   }
+
+  _.assert( !!Self.timeNow );
 
 }
 
 // --
-// prototype
+// routines
 // --
 
-var Proto =
+var Routines =
 {
 
   _setupConfig : _setupConfig,
@@ -244,11 +286,14 @@ var Proto =
   _setupLoggerPlaceholder : _setupLoggerPlaceholder,
   _setupTesterPlaceholder : _setupTesterPlaceholder,
 
+  _setupLater : _setupLater,
+
   _setup : _setup,
 
 }
 
-Object.assign( Self,Proto );
+Object.assign( Self,Routines );
+
 Self._setup();
 
 // --
