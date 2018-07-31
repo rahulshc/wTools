@@ -2798,7 +2798,6 @@ function printerLike( src )
   if( consoleIs( src ) )
   return true;
 
-
   return false;
 }
 
