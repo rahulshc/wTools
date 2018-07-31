@@ -2801,7 +2801,6 @@ function printerLike( src )
   return false;
 }
 
-
 //
 
 function printerIs( src )
