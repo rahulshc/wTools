@@ -916,6 +916,10 @@ function assertOwnNoConstructor( ins )
   _.assert( _.objectLikeOrRoutine( ins ) );
   var args = _.longSlice( arguments );
   args[ 0 ] = _.checkOwnNoConstructor( ins );
+
+  if( args.length === 1 )
+  args.push( () => 'entity should not own constructor, but own ' + _.toStrShort( ins ) );
+
   _.assert.apply( _, args );
 }
 
