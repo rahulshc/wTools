@@ -1,6 +1,6 @@
 ( function _aFundamental_s_() {
 
-'use strict'; 
+'use strict';
 
 /**
  * @file aFundamental.s - Generic purpose tools of base level for solving problems in Java Script.
@@ -4090,7 +4090,9 @@ function routineVectorize_functor( o )
           result.push( routine.apply( this,args ) );
         }
         else if( bypassingFilteredOut )
-        result.push( src[ r ] );
+        {
+          result.push( src[ r ] );
+        }
       }
       return result;
     }
@@ -4107,7 +4109,9 @@ function routineVectorize_functor( o )
           result[ r ] = routine.apply( this, args );
         }
         else if( bypassingFilteredOut )
-        result[ r ] = src[ r ];
+        {
+          result[ r ] = src[ r ];
+        }
       }
       return result;
     }
