@@ -1,6 +1,6 @@
 ( function _bLookTools_s_() {
 
-'use strict';
+'use strict'; /* aaa */
 
 var _global = _global_;
 var Self = _global_.wTools;

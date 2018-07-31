@@ -1,6 +1,6 @@
 ( function _FieldMapper_s_() {
 
-'use strict';
+'use strict'; /* aaa */
 
 var Self = _global_.wTools;
 var _global = _global_;
