@@ -2231,6 +2231,36 @@ function sure( condition )
   return;
 }
 
+//
+
+function sureWithoutDebugger( condition )
+{
+
+  if( !condition || !_.boolLike( condition ) )
+  {
+    if( arguments.length === 1 )
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+    });
+    else if( arguments.length === 2 )
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+    });
+    else
+    throw _err
+    ({
+      args : _.longSlice( arguments,1 ),
+      level : 2,
+    });
+  }
+
+  return;
+}
+
 // --
 // assert
 // --
@@ -5643,7 +5673,7 @@ function regexpArrayAny( arr, ins, ifEmpty )
   var arr = _.arrayAs( arr );
   for( var m = 0 ; m < arr.length ; m++ )
   {
-    _.assert( arr[ m ].test );
+    _.assert( _.routineIs( arr[ m ].test ) );
     if( arr[ m ].test( ins ) )
     return m;
   }
@@ -5702,7 +5732,7 @@ function regexpArrayNone( arr, ins, ifEmpty )
   var arr = _.arrayAs( arr );
   for( var m = 0 ; m < arr.length ; m++ )
   {
-    _.assert( arr[ m ].test );
+    _.assert( _.routineIs( arr[ m ].test ) );
     if( arr[ m ].test( ins ) )
     return false;
   }
@@ -8578,7 +8608,7 @@ function arrayFromProgressionArithmetic( progression, numberOfSteps )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
   _.assert( isFinite( numberOfSteps ) );
-  _.assert( this.ArrayType );
+  _.assert( _.routineIs( this.ArrayType ) );
 
   debugger;
 
@@ -8604,7 +8634,7 @@ function arrayFromRangeWithStep( range,step )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
-  _.assert( this.ArrayType );
+  _.assert( _.routineIs( this.ArrayType ) );
 
   if( range[ 0 ] === range[ 1 ] )
   return new this.ArrayType();
@@ -8662,7 +8692,7 @@ function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
-  _.assert( this.ArrayType );
+  _.assert( _.routineIs( this.ArrayType ) );
 
   if( numberOfSteps === 0 )
   return new this.ArrayType();
@@ -18128,6 +18158,7 @@ var Routines =
   // sure
 
   sure : sure,
+  sureWithoutDebugger : sureWithoutDebugger,
 
   // assert
 
