@@ -14,7 +14,7 @@ function _arrayNameSpaceApplyTo( dst,def )
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.mapOwnKey( dst,'withArray' ) );
   _.assert( !_.mapOwnKey( dst,'array' ) );
-  _.assert( ArrayNameSpaces[ def ] );
+  _.assert( !!ArrayNameSpaces[ def ] );
 
   dst.withArray = Object.create( null );
 
@@ -171,7 +171,7 @@ _.assert( _.mapOwnKey( _,'withArray' ) );
 _.assert( _.mapOwnKey( _,'array' ) );
 _.assert( _.mapOwnKey( _.array,'array' ) );
 _.assert( !_.mapOwnKey( _.array,'withArray' ) );
-_.assert( _.array.withArray );
+_.assert( !!_.array.withArray );
 
 _.assert( _.objectIs( _.withArray ) );
 _.assert( _.objectIs( _.array ) );

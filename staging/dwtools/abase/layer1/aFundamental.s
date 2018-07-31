@@ -2205,7 +2205,7 @@ function _sureDebugger( condition )
 function sure( condition )
 {
 
-  if( !condition )
+  if( !condition || !_.boolLike( condition ) )
   {
     _sureDebugger( condition );
     if( arguments.length === 1 )
@@ -2306,6 +2306,14 @@ function assert( condition )
   if( Config.debug === false )
   return true;
 
+  /*
+    assert is going to become stricter
+    assert will treat as true only bool like argument
+  */
+  if( !_.boolLike( condition ) )
+  debugger;
+
+  // if( !condition || !_.boolLike( condition ) )
   if( !condition )
   {
     _assertDebugger( condition );
@@ -2342,7 +2350,7 @@ function assertWithoutBreakpoint( condition )
   if( Config.debug === false )
   return true;
 
-  if( !condition )
+  if( !condition || !_.boolLike( condition ) )
   {
     if( arguments.length === 1 )
     throw _err
@@ -2401,7 +2409,7 @@ function assertWarn( condition )
   if( Config.debug )
   return;
 
-  if( !condition )
+  if( !condition || !_.boolLike( condition ) )
   {
     console.warn.apply( console,[].slice.call( arguments,1 ) );
   }
@@ -2444,7 +2452,7 @@ function primitiveIs( src )
 
 function containerIs( src )
 {
-  if( _._arrayLike( src ) )
+  if( _.arrayLike( src ) )
   return true;
   if( _.objectIs( src ) )
   return true;
@@ -3835,7 +3843,7 @@ function routineForPreAndBody( pre, body )
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.routineIs( pre ) || _.routinesAre( pre ) );
   _.assert( _.routineIs( body ) );
-  _.assert( body.defaults );
+  _.assert( !!body.defaults );
   _.assertMapHasOnly( pre,{} );
   _.assertMapHasOnly( body,{ defaults : null } );
 
@@ -4246,7 +4254,7 @@ function numbersAre( src )
   if( _.bufferTypedIs( src ) )
   return true;
 
-  if( _._arrayLike( src ) )
+  if( _.arrayLike( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
     if( !_.numberIs( src[ s ] ) )
@@ -5750,7 +5758,7 @@ function regexpArrayNone( arr, ins, ifEmpty )
 
 function regexpMakeObject( src,defaultMode )
 {
-  _.assert( _.RegexpObject );
+  _.assert( _.routineIs( _.RegexpObject ) );
   return _.RegexpObject( src,defaultMode );
 }
 
@@ -6103,7 +6111,7 @@ var timeSoon = typeof process === 'undefined' ? function( h ){ return setTimeout
 
 function timeOutError( delay,onReady )
 {
-  _.assert( _.Consequence );
+  _.assert( _.routineIs( _.Consequence ) );
 
   var result = _.timeOut.apply( this,arguments );
 
@@ -6133,7 +6141,7 @@ function timeOutError( delay,onReady )
 
 function timePeriodic( delay,onReady )
 {
-  _.assert( _.Consequence );
+  _.assert( _.routineIs( _.Consequence ) );
   var con = new _.Consequence();
   var id;
 
@@ -7923,7 +7931,7 @@ function arrayLikeResizable( src )
 
 //
 
-function _arrayLike( src )
+function arrayLike( src )
 {
 
   if( _.arrayIs( src ) )
@@ -8142,7 +8150,7 @@ function arrayIdentical( src1,src2 )
 function arrayHas( array, value, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( array );
+  _.assert( _.arrayLike( array ) );
 
   if( evaluator1 === undefined )
   {
@@ -8700,7 +8708,7 @@ function arrayAs( src )
 
   if( src === null )
   return [];
-  else if( _._arrayLike( src ) )
+  else if( _.arrayLike( src ) )
   return src;
   else
   return [ src ];
@@ -14159,11 +14167,11 @@ function mapsExtend( dstMap, srcMaps )
   if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
   return Object.assign( dstMap,srcMaps[ 0 ] );
 
-  if( !_._arrayLike( srcMaps ) )
+  if( !_.arrayLike( srcMaps ) )
   srcMaps = [ srcMaps ];
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _._arrayLike( srcMaps ) );
+  _.assert( _.arrayLike( srcMaps ) );
   _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
 
   for( var a = 0 ; a < srcMaps.length ; a++ )
@@ -14216,7 +14224,7 @@ function mapExtendConditional( filter,dstMap )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  _.assert( filter );
+  _.assert( !!filter );
   _.assert( filter.functionFamily === 'field-mapper' );
   _.assert( arguments.length >= 3,'expects more arguments' );
   _.assert( _.routineIs( filter ),'expects filter' );
@@ -14248,7 +14256,7 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   if( dstMap === null )
   dstMap = Object.create( null );
 
-  _.assert( filter );
+  _.assert( !!filter );
   _.assert( filter.functionFamily === 'field-mapper' );
   _.assert( arguments.length === 3,'expects exactly three arguments' );
   _.assert( _.routineIs( filter ),'expects filter' );
@@ -14473,7 +14481,7 @@ function mapSupplementOwnFromDefinition( dstMap, srcMap )
 
 function mapComplement( dstMap,srcMap )
 {
-  _.assert( _.field.mapper );
+  _.assert( !!_.field.mapper );
   if( arguments.length === 2 )
   return _.mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
   var args = _.longSlice( arguments );
@@ -14493,7 +14501,7 @@ function mapsComplement( dstMap, srcMaps )
 
 function mapComplementReplacingUndefines( dstMap,srcMap )
 {
-  _.assert( _.field.mapper );
+  _.assert( !!_.field.mapper );
   if( arguments.length === 2 )
   return _.mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
   var args = _.longSlice( arguments );
@@ -16404,7 +16412,7 @@ function mapSelect( srcMap, keys )
 {
   var result = Object.create( null );
 
-  _.assert( _._arrayLike( keys ) );
+  _.assert( _.arrayLike( keys ) );
   _.assert( !_.primitiveIs( srcMap ) );
 
   for( var k = 0 ; k < keys.length ; k++ )
@@ -16584,7 +16592,7 @@ function mapButConditional( fieldFilter, srcMap, butMap )
   _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'expects map {-srcMap-}' );
   _.assert( fieldFilter && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'expects field-filter {-fieldFilter-}' );
 
-  if( _._arrayLike( butMap ) )
+  if( _.arrayLike( butMap ) )
   {
 
     for( var s in srcMap )
@@ -16653,14 +16661,14 @@ function mapBut( srcMap, butMap )
 {
   var result = Object.create( null );
 
-  if( _._arrayLike( srcMap ) )
+  if( _.arrayLike( srcMap ) )
   srcMap = _.mapMake.apply( this, srcMap );
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
-  _.assert( !_.primitiveIs( srcMap ) && !_._arrayLike( srcMap ), 'expects map {-srcMap-}' );
+  _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'expects map {-srcMap-}' );
 
-  if( _._arrayLike( butMap ) )
+  if( _.arrayLike( butMap ) )
   {
 
     for( var s in srcMap )
@@ -16742,7 +16750,7 @@ function mapButIgnoringUndefines( srcMap, butMap )
 //   _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
 //   _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'expects map {-srcMap-}' );
 //
-//   if( _._arrayLike( butMap ) )
+//   if( _.arrayLike( butMap ) )
 //   {
 //
 //     for( var s in srcMap )
@@ -18397,7 +18405,7 @@ var Routines =
 
   arrayIs : arrayIs,
   arrayLikeResizable : arrayLikeResizable,
-  _arrayLike : _arrayLike,
+  arrayLike : arrayLike,
   longIs : longIs,
 
   constructorLikeArray : constructorLikeArray,

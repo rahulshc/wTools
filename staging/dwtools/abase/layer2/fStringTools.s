@@ -20,7 +20,7 @@ var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
-var _assert = _.assert;
+// var __assert = _.assert;
 var _arraySlice = _.longSlice;
 var strTypeOf = _.strTypeOf;
 
@@ -463,8 +463,8 @@ function strForRange( range )
 {
   var result;
 
-  _assert( arguments.length === 1 );
-  _assert( _.arrayIs( range ) );
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( range ) );
 
   result = '[ ' + range[ 0 ] + '..' + range[ 1 ] + ' ]';
 
@@ -478,8 +478,8 @@ function strForCall( nameOfRoutine,args,ret,o )
   var result = nameOfRoutine + '( ';
   var first = true;
 
-  _assert( _.arrayIs( args ) || _.objectIs( args ) );
-  _assert( arguments.length <= 4 );
+  _.assert( _.arrayIs( args ) || _.objectIs( args ) );
+  _.assert( arguments.length <= 4 );
 
   _.each( args,function( e,k )
   {
@@ -648,7 +648,7 @@ function strQuote( o )
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuote.defaults.quote;
 
-  _.assertMapHasOnly( o,strQuote.defaults );
+  _.assertMapHasOnly( o, strQuote.defaults );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   if( _.arrayIs( o.src ) )
@@ -2245,7 +2245,7 @@ var strSplitFast = _.routineForPreAndBody( _strSplitFast_pre, _strSplitFast_body
 
 _.assert( strSplitFast.pre === _strSplitFast_pre );
 _.assert( strSplitFast.body === _strSplitFast_body );
-_.assert( strSplitFast.defaults );
+_.assert( _.objectIs( strSplitFast.defaults ) );
 
 //
 
@@ -2362,9 +2362,9 @@ var pre = [ strSplitFast.pre, strSplitsQuote.pre, strSplitsDropDelimeters.pre, s
 var strSplit/**2**/ = _.routineForPreAndBody( pre, _strSplit_body/**2**/ );
 
 _.assert( strSplit/**2**/.pre !== strSplitFast.pre );
-_.assert( strSplit/**2**/.pre );
+_.assert( _.routineIs( strSplit/**2**/.pre ) );
 _.assert( strSplit/**2**/.body === _strSplit_body/**2**/ );
-_.assert( strSplit/**2**/.defaults );
+_.assert( _.objectIs( strSplit/**2**/.defaults ) );
 
 //
 
@@ -2641,7 +2641,7 @@ var strSplitNaive = _.routineForPreAndBody( _strSplitFast_pre, _strSplitNaive_bo
 
 _.assert( strSplitNaive.pre === _strSplitFast_pre );
 _.assert( strSplitNaive.body === _strSplitNaive_body );
-_.assert( strSplitNaive.defaults );
+_.assert( _.objectIs( strSplitNaive.defaults ) );
 
 //
 
@@ -3124,7 +3124,7 @@ function strConcat( srcs, o )
   _.assert( this.strConcat === strConcat );
   o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
 
-  if( !_._arrayLike( srcs ) )
+  if( !_.arrayLike( srcs ) )
   srcs = [ srcs ];
 
   var result = '';
@@ -3313,7 +3313,7 @@ function strUnjoin( srcStr,maskArray )
 }
 
 strUnjoin.any = _.any;
-_.assert( strUnjoin.any );
+_.assert( _.routineIs( strUnjoin.any ) );
 
 // --
 // liner

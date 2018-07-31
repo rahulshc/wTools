@@ -1,6 +1,6 @@
 ( function _NameTools_s_() {
 
-'use strict'; 
+'use strict';
 
 var Self = _global_.wTools;
 var _global = _global_; var _ = _global_.wTools;
@@ -10,7 +10,7 @@ var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
-var _assert = _.assert;
+// var __assert = _.assert;
 var _arraySlice = _.longSlice;
 
 // --
@@ -75,9 +75,9 @@ function nameUnfielded( nameObject )
   }
   else _.assert( 0,'nameUnfielded :','Unknown arguments' );
 
-  // _assert( arguments.length === 1 );
-  // _assert( _.strIs( name.raw ) || _.symbolIs( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );
-  // _assert( _.strIs( name.coded ) || _.symbolIs( name.coded ),'nameUnfielded :','not a string, something wrong :',nameObject );
+  // _.assert( arguments.length === 1 );
+  // _.assert( _.strIs( name.raw ) || _.symbolIs( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );
+  // _.assert( _.strIs( name.coded ) || _.symbolIs( name.coded ),'nameUnfielded :','not a string, something wrong :',nameObject );
 
   return name;
 }
@@ -96,10 +96,10 @@ function namesCoded( namesMap )
 {
   var result = {}
 
-  if( _assert )
-  _assert( arguments.length === 1 );
-  if( _assert )
-  _assert( _.objectIs( namesMap ) );
+  if( _.assert )
+  _.assert( arguments.length === 1 );
+  if( _.assert )
+  _.assert( _.objectIs( namesMap ) );
 
   for( var n in namesMap )
   result[ n ] = n;
@@ -172,7 +172,7 @@ var idWithInt = (function()
 
   return function()
   {
-    _assert( arguments.length === 0 );
+    _.assert( arguments.length === 0 );
     counter += 1;
     return counter;
   }

@@ -859,18 +859,54 @@ function beep()
 
 //
 
-function assertInstanceOrClass( _constructor, _this )
+function checkInstanceOrClass( _constructor, _this )
 {
-
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert
+  debugger;
+  var result =
   (
     _this === _constructor ||
     _this instanceof _constructor ||
     Object.isPrototypeOf.call( _constructor,_this ) ||
     Object.isPrototypeOf.call( _constructor,_this.prototype )
   );
+  return result;
+}
 
+//
+
+function sureInstanceOrClass( _constructor, _this )
+{
+  _.sure( arguments.length === 2, 'expects exactly two arguments' );
+  _.sure( _.checkInstanceOrClass( _constructor, _this ) );
+}
+
+//
+
+function assertInstanceOrClass( _constructor, _this )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.checkInstanceOrClass( _constructor, _this ) );
+}
+
+//
+
+function checkOwnNoConstructor( ins )
+{
+  _.assert( _.objectLikeOrRoutine( ins ) );
+  _.assert( arguments.length === 1 );
+  var result = !_ObjectHasOwnProperty.call( ins,'constructor' );
+  return result;
+}
+
+//
+
+function sureOwnNoConstructor( ins )
+{
+  _.sure( _.objectLikeOrRoutine( ins ) );
+  var args = _.longSlice( arguments );
+  args[ 0 ] = _.checkOwnNoConstructor( ins );
+  _.sure.apply( _, args );
 }
 
 //
@@ -879,8 +915,8 @@ function assertOwnNoConstructor( ins )
 {
   _.assert( _.objectLikeOrRoutine( ins ) );
   var args = _.longSlice( arguments );
-  args.unshift( !_propertyIsEumerable.call( ins,'constructor' ) && !_ObjectHasOwnProperty.call( ins,'constructor' ) );
-  _.assert.call( _,args );
+  args[ 0 ] = _.checkOwnNoConstructor( ins );
+  _.assert.apply( _, args );
 }
 
 // --
@@ -902,7 +938,12 @@ var Proto =
 
   beep : beep,
 
+  checkInstanceOrClass : checkInstanceOrClass,
+  sureInstanceOrClass : sureInstanceOrClass,
   assertInstanceOrClass : assertInstanceOrClass,
+
+  checkOwnNoConstructor : checkOwnNoConstructor,
+  sureOwnNoConstructor : sureOwnNoConstructor,
   assertOwnNoConstructor : assertOwnNoConstructor,
 
 }

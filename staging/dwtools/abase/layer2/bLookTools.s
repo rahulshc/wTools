@@ -11,7 +11,7 @@ var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
 
-_.assert( _realGlobal_ );
+_.assert( !!_realGlobal_ );
 
 // --
 // look
@@ -85,7 +85,7 @@ function _lookIterationBegin()
 
   _.assert( arguments.length === 0 );
   _.assert( it.level >= 0 );
-  _.assert( it.iterator );
+  _.assert( _.objectIs( it.iterator ) );
 
   var newIt = Object.create( it.iterator );
   _.mapExtend( newIt, LookIteration );
@@ -108,7 +108,7 @@ function _lookIterationSelect( k )
 
   _.assert( arguments.length === 1, 'expects exactly two arguments' );
   _.assert( it.level >= 0 );
-  _.assert( it.down );
+  _.assert( _.objectIs( it.down ) );
 
   it.level = it.level+1;
   it.path = it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k;
@@ -166,7 +166,7 @@ function __look_lookBegin( routine, args )
 
   _.assert( iterator.level !== undefined );
   _.assert( iterator.path !== undefined );
-  _.assert( iterator.lastPath );
+  _.assert( _.strIs( iterator.lastPath ) );
 
   var it = Object.create( iterator );
   _.mapExtend( it, LookIteration );
@@ -280,7 +280,7 @@ function __look_lookIt( it )
 
     if( it.visitingRoot || it.root !== it.src )
     {
-      _.assert( it.onUp );
+      _.assert( _.routineIs( it.onUp ) );
       it.looking = it.onUp.call( it, it.src, it.key, it );
       if( it.looking === undefined )
       it.looking = true;
