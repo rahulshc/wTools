@@ -3907,7 +3907,7 @@ function routineForPreAndBody( pre, body )
 
 //
 
-/* !!! need to comple the routine for all cases, good test coverage is required too  */
+/* !!! need to complete the routine for all cases, good test coverage is required too  */
 
 function routineVectorize_functor( o )
 {
