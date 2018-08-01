@@ -2434,8 +2434,6 @@ function assertNotTested( src )
  */
 
 
-
-
 function assertWarn( condition )
 {
 
