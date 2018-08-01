@@ -854,7 +854,7 @@ diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
 
 function beep()
 {
-  console.log( _.diagnosticStack() );
+  // console.log( _.diagnosticStack() );
   console.log( '\x07' );
 }
 
