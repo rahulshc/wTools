@@ -2450,10 +2450,6 @@ function assertWarn( condition )
 // type test
 // --
 
-
-
-
-
 function nothingIs( src )
 {
   if( src === null )
