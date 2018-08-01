@@ -1,6 +1,6 @@
 (function _Diagnostics_s_() {
 
-'use strict'; 
+'use strict';
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -854,6 +854,7 @@ diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
 
 function beep()
 {
+  console.log( _.diagnosticStack() );
   console.log( '\x07' );
 }
 
