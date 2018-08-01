@@ -2452,6 +2452,7 @@ function assertWarn( condition )
 
 
 
+
 function nothingIs( src )
 {
   if( src === null )
