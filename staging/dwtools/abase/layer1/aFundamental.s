@@ -10287,7 +10287,6 @@ function arraySort( srcArray, onEvaluate )
   }
   else if( onEvaluate.length === 2 )
   {
-    debugger;
     srcArray.sort( onEvaluate );
   }
   else if( onEvaluate.length === 1 )
@@ -10301,7 +10300,7 @@ function arraySort( srcArray, onEvaluate )
       else return 0;
     });
   }
-  else _.assert( 0,'Expects signle-arguments mapper or two-argument comparator' );
+  else _.assert( 0, 'Expects signle-arguments evaluator or two-argument comparator' );
 
   return srcArray;
 }
