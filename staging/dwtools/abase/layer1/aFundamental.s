@@ -2433,6 +2433,8 @@ function assertNotTested( src )
  * @memberof wTools
  */
 
+
+
 function assertWarn( condition )
 {
 
@@ -17195,6 +17197,8 @@ function sureMapOwnFields( srcMap, screenMaps, msg )
  * @memberof wTools
  *
  */
+
+/* qqq : msg also could be a routine */
 
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
