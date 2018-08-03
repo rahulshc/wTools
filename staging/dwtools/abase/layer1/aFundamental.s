@@ -6742,7 +6742,7 @@ function bufferRelen( src,len )
 
 function bufferResize( srcBuffer, size )
 {
-  var result;
+  var result = srcBuffer;
 
   _.assert( _.bufferRawIs( srcBuffer ) || _.bufferTypedIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
