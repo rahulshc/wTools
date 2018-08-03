@@ -18,8 +18,6 @@
  * @file aFundamental.s.
  */
 
-// console.warn( 'REMINDER : remove it' );
-
 // global
 
 var _global = undefined;
