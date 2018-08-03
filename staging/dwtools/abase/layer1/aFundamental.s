@@ -3,7 +3,7 @@
 'use strict';
 
 /**
-  @module Tools/base/x
+  @module Tools/base/x -
 */
 
 /**
