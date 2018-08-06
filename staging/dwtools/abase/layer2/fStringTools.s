@@ -898,7 +898,7 @@ function strCodeUnicodeEscape( code )
 {
   var result = '';
 
-  _.assert( _.numberIs( src ) );
+  _.assert( _.numberIs( code ) );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   var h = code.toString( 16 );
