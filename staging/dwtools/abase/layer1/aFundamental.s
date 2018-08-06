@@ -18119,19 +18119,9 @@ _.Later._associatedMap = new Map();
 // vars
 // --
 
-// var Later =
-// {
-//   regexpsMaybeFrom : [ _, routineVectorize_functor, regexpMaybeFrom ],
-//   regexpsEscape : [ _, routineVectorize_functor, regexpEscape ],
-//   timeNow : [ _, _timeNow_functor ]
-// }
-
-debugger;
-
-var Vars =
+var Fields =
 {
 
-  // Later : Later,
   ArrayType : Array,
   error : error,
 
@@ -18906,7 +18896,7 @@ var Routines =
 //
 
 Object.assign( Self, Routines );
-Object.assign( Self, Vars );
+Object.assign( Self, Fields );
 
 _.assert( !Self.Array );
 _.assert( !Self.array );
