@@ -19,14 +19,12 @@
       "email": "iostashvxi@gmail.com"
     }
   ],
-  "main": "staging/dwtools/Base.s",
+  "main": "staging/dwtools/abase/Layer2.s",
   "files": [
     "staging/dwtools/abase/layer1",
     "staging/dwtools/abase/layer2",
     "staging/dwtools/abase/Layer1.s",
-    "staging/dwtools/abase/Layer2.s",
-    "staging/dwtools/abase/Base.s",
-    "staging/dwtools/Base.s"
+    "staging/dwtools/abase/Layer2.s"
   ],
   "scripts": {
     "test": "wtest staging",

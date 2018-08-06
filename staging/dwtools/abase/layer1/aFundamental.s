@@ -14586,7 +14586,7 @@ function mapsComplementPreservingUndefines( dstMap, srcMaps )
 
 //
 
-function mapDelete( dstMap,ins )
+function mapDelete( dstMap, ins )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );

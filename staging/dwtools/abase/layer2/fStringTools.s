@@ -1,6 +1,6 @@
 (function _fStringTools_s_() {
 
-'use strict'; 
+'use strict';
 
 /*
 
@@ -781,6 +781,10 @@ function strEscape( o )
     // \v 	vertical tab 	byte 0x0b in ASCII encoding
     // source : http://en.cppreference.com/w/cpp/language/escape
 
+  // console.log( _.appMemoryUsageInfo(), o.src.length );
+  // if( o.src.length === 111691 )
+  // debugger;
+
   if( _.strIs( o ) )
   o = { src : o }
 
@@ -788,80 +792,67 @@ function strEscape( o )
   _.routineOptions( strEscape, o );
 
   var result = '';
+  // var src = o.src.split( '' );
+  // debugger;
+  var stringWrapperCode = o.stringWrapper.charCodeAt( 0 );
   for( var s = 0 ; s < o.src.length ; s++ )
   {
-    var c = o.src[ s ];
-    var nc = o.src[ s+1 ];
-    var code = c.charCodeAt( 0 );
+    // var c = o.src[ s ];
+    // var c = src[ s ];
+    // var code = c.charCodeAt( 0 );
+    var code = o.src.charCodeAt( s );
 
-    _.assert( c.length === 1 );
-
-    if( o.stringWrapper === '`' && c === '$' )
+    // if( o.stringWrapper === '`' && c === '$' )
+    if( o.stringWrapper === '`' && code === 0x24 /* $ */ )
     {
       result += '\\$';
     }
-    else if( o.stringWrapper && c === o.stringWrapper )
+    else if( o.stringWrapper && code === stringWrapperCode )
     {
       result += '\\' + o.stringWrapper;
     }
-    // else if( 127 <= code && code <= 159 || code === 173 )
     else if( 0x007f <= code && code <= 0x009f || code === 0x00ad /*|| code >= 65533*/ )
     {
-      // debugger;
-      result += _.strUnicodeEscape( c );
+      // result += _.strUnicodeEscape( c );
+      result += _.strCodeUnicodeEscape( code );
     }
-    else switch( c )
+    else switch( code )
     {
 
-      case '\\' :
+      case 0x5c /* '\\' */ :
         result += '\\\\';
         break;
 
-      // case '\'' :
-      //   result += '\\'';
-      //   break;
-
-      // case '\'' :
-      //   result += '\\'';
-      //   break;
-
-      // case '\`' :
-      //   result += '\\`';
-      //   break;
-
-      case '\b' :
+      case 0x08 /* '\b' */ :
         result += '\\b';
         break;
 
-      case '\f' :
+      case 0x0c /* '\f' */ :
         result += '\\f';
         break;
 
-      case '\n' :
+      case 0x0a /* '\n' */ :
         result += '\\n';
         break;
 
-      case '\r' :
+      case 0x0d /* '\r' */ :
         result += '\\r';
         break;
 
-      case '\t' :
+      case 0x09 /* '\t' */ :
         result += '\\t';
         break;
 
-      // case '\v' :
-      //   result += '\\v';
-      //   break;
-
       default :
 
-        _.assert( code !== 92 );
         if( code < 32 )
         {
-          result += _.strUnicodeEscape( c );
+          result += _.strCodeUnicodeEscape( code );
         }
         else
-        result += c;
+        {
+          result += String.fromCharCode( code );
+        }
 
     }
 
@@ -875,6 +866,50 @@ strEscape.defaults =
   src : null,
   stringWrapper : '\'',
 }
+
+//
+
+/**
+ * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
+ * Example: ( 't' -> '\u0074' ). Returns result of conversion as new string or empty string if source has zero length.
+ * @param {string} str - Source string to parse.
+ * @returns {string} Returns string with result of conversion.
+ *
+ * @example
+ * //returns \u0061\u0062\u0063;
+ * _.strUnicodeEscape( 'abc' );
+ *
+ * @example
+ * //returns \u0077\u006f\u0072\u006c\u0064
+ * _.strUnicodeEscape( 'world' );
+ *
+ * @example
+ * //returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
+ * _.strUnicodeEscape( '//test//' );
+ *
+ * @method strUnicodeEscape
+ * @throws { Exception } Throws a exception if no argument provided.
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @memberof wTools
+ *
+ */
+
+function strCodeUnicodeEscape( code )
+{
+  var result = '';
+
+  _.assert( _.numberIs( src ) );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  var h = code.toString( 16 );
+  var d = _.strDup( '0', 4-h.length ) + h;
+
+  result += '\\u' + d;
+
+  return result;
+}
+
+//
 
 /**
  * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
@@ -910,11 +945,8 @@ function strUnicodeEscape( src )
 
   for( var i = 0 ; i < src.length ; i++ )
   {
-    var c = src[ i ];
-    var code = c.charCodeAt( 0 );
-    var h = code.toString( 16 );
-    var d = _.strDup( '0',4-h.length ) + h;
-    result += '\\u' + d;
+    var code = src.charCodeAt( i );
+    result += _.strCodeUnicodeEscape( code );
   }
 
   return result;
@@ -4040,6 +4072,7 @@ var Proto =
   strCapitalize : strCapitalize,
   strDecapitalize : strDecapitalize,
   strEscape : strEscape,
+  strCodeUnicodeEscape : strCodeUnicodeEscape,
   strUnicodeEscape : strUnicodeEscape, /* document me */
   strReverse : strReverse,
 
