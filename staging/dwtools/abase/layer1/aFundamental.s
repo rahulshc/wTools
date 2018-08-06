@@ -39,8 +39,8 @@ if( !_global_.WTOOLS_PRIVATE  )
 
   if( _global_.wBase )
   {
-    if( _global_.wTools.pathUse )
-    _global_.wTools.pathUse( __dirname + '/../..' );
+    if( _global_.wTools.usePath )
+    _global_.wTools.usePath( __dirname + '/../..' );
     module[ 'exports' ] = _global_.wBase;
     return;
   }

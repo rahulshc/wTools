@@ -718,7 +718,7 @@ function regexpsAll( test )
 var Self =
 {
 
-  name : 'Tools/base/laye1/Regexp',
+  name : 'Tools/base/layer1/Regexp',
   silencing : 1,
 
   tests :

@@ -463,7 +463,7 @@ function strEnds( test )
 var Self =
 {
 
-  name : 'Tools/base/laye1/String',
+  name : 'Tools/base/layer1/String',
   silencing : 1,
 
   tests :

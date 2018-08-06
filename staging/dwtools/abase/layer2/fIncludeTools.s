@@ -1,6 +1,6 @@
 ( function _Include_s_() {
 
-'use strict'; 
+'use strict';
 
 //
 
@@ -22,14 +22,14 @@ __include = _global._remoteRequire;
 // routines
 // --
 
-function pathUse( src )
+function usePath( src )
 {
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
 
-  if( _.pathRefine )
-  src = _.pathRefine( src );
+  if( _.path && _.path.pathRefine )
+  src = _.path.pathRefine( src );
 
   if( typeof module !== 'undefined' )
   module.paths.push( src );
@@ -38,7 +38,7 @@ function pathUse( src )
 
 //
 
-function pathUseGlobally( paths )
+function usePathGlobally( paths )
 {
 
   if( _.strIs( paths ) )
@@ -47,21 +47,21 @@ function pathUseGlobally( paths )
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayIs( paths ) );
 
-  if( _.fileProvider && _.pathRefine )
+  if( _.fileProvider && _.path.pathRefine )
   {
     for( var p = 0 ; p < paths.length ; p++ )
     {
-      paths[ p ] = _.fileProvider.pathNativize( _.pathResolve( paths[ p ] ) );
-      console.log( 'pathUseGlobally',paths[ p ] );
+      paths[ p ] = _.fileProvider.pathNativize( _.path.pathResolve( paths[ p ] ) );
+      console.log( 'usePathGlobally',paths[ p ] );
     }
   }
 
-  return _pathUseGlobally( module,paths,[] );
+  return _usePathGlobally( module,paths,[] );
 }
 
 //
 
-function _pathUseGlobally( _module,paths,visited )
+function _usePathGlobally( _module,paths,visited )
 {
 
   _.assert( arguments.length === 3, 'expects exactly three argument' );
@@ -79,7 +79,7 @@ function _pathUseGlobally( _module,paths,visited )
 
   while( _module )
   {
-    _pathUseGloballyChildren( _module,paths,visited );
+    _usePathGloballyChildren( _module,paths,visited );
     _module = _module.parent;
   }
 
@@ -87,7 +87,7 @@ function _pathUseGlobally( _module,paths,visited )
 
 //
 
-function _pathUseGloballyChildren( _module,paths,visited )
+function _usePathGloballyChildren( _module,paths,visited )
 {
 
   _.assert( arguments.length === 3, 'expects exactly three argument' );
@@ -103,7 +103,7 @@ function _pathUseGloballyChildren( _module,paths,visited )
 
   if( _module.children )
   for( var c = 0 ; c < _module.children.length ; c++ )
-  _pathUseGloballyChildren( _module.children[ c ],paths,visited );
+  _usePathGloballyChildren( _module.children[ c ],paths,visited );
 
 }
 
@@ -354,283 +354,295 @@ IncludeHandlersMap[ 'wTesting' ] =
 IncludeHandlersMap[ 'wLogger' ] =
 {
   includeAny : [ '../../abase/printer/top/Logger.s','abase/printer/top/Logger.s','wLogger' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Logger; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Logger; },
 }
 
 IncludeHandlersMap[ 'wPrinterToFile' ] =
 {
   includeAny : [ '../../abase/printer/top/ToFile.ss','abase/printer/top/ToFile.ss','wloggertofile' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.PrinterToFile; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToFile; },
 }
 
 IncludeHandlersMap[ 'wPrinterToJs' ] =
 {
   includeAny : [ '../../abase/printer/top/ToJstructure.s','abase/printer/top/ToJstructure.s','wloggertojstructure' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.PrinterToJs; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
 }
 
 IncludeHandlersMap[ 'wConsequence' ] =
 {
   includeAny : [ '../../abase/oclass/Consequence.s','abase/oclass/Consequence.s','wConsequence' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Consequence; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequence; },
 }
 
 IncludeHandlersMap[ 'wConsequizer' ] =
 {
   includeAny : [ '../../abase/mixin/Consequizer.s','abase/mixin/Consequizer.','wconsequizer' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Consequizer; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequizer; },
 }
 
 IncludeHandlersMap[ 'wCopyable' ] =
 {
   includeAny : [ '../../abase/mixin/Copyable.s','abase/mixin/Copyable.s','wCopyable' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Copyable; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Copyable; },
 }
 
 IncludeHandlersMap[ 'wInstancing' ] =
 {
   includeAny : [ '../../abase/mixin/Instancing.s','abase/mixin/Instancing.s','winstancing' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Instancing; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Instancing; },
 }
 
 IncludeHandlersMap[ 'wEventHandler' ] =
 {
   includeAny : [ '../../abase/mixin/EventHandler.s','abase/mixin/EventHandler.s','wEventHandler' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.EventHandler; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.EventHandler; },
 }
 
 IncludeHandlersMap[ 'wFieldsStack' ] =
 {
   includeAny : [ '../../abase/mixin/FieldsStack.s','abase/mixin/FieldsStack.s','wfieldsstack' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.FieldsStack; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FieldsStack; },
 }
 
 IncludeHandlersMap[ 'wNameTools' ] =
 {
   includeAny : [ '../../abase/layer3//NameTools.s','abase/layer3//NameTools.s','wNameTools' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.idWithInt; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.idWithInt; },
 }
 
 IncludeHandlersMap[ 'wProto' ] =
 {
   includeAny : [ '../../abase/layer3/Proto.s','abase/layer3/Proto.s','wProto' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.mixinMake },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.mixinMake },
+}
+
+IncludeHandlersMap[ 'wExternalFundamentals' ] =
+{
+  includeAny : [ '../../abase/layer4/External.s','abase/layer4/External.s','wexternalfundamentals' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.shell },
+}
+
+// IncludeHandlersMap[ 'wPath' ] =
+// {
+//   includeAny : [ '../../abase/layer3/PathFundamentals.s','abase/layer3/PathFundamentals.s','wPath' ],
+//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.pathDir },
+// }
+
+IncludeHandlersMap[ 'wPathFundamentals' ] =
+{
+  includeAny : [ '../../abase/layer3/Path.s','abase/layer3/Path.s','wpathfundamentals' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.path },
+}
+
+IncludeHandlersMap[ 'wUriFundamentals' ] =
+{
+  includeAny : [ '../../abase/layer4/Uri.s','abase/layer4/Uri.s','wurifundamentals' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.uri },
 }
 
 IncludeHandlersMap[ 'wTraverser' ] =
 {
-  includeAny : [ '../../abase/layer3/bTraverser.s','abase/layer3/bTraverser.s','wtraverser' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools._traverse },
-}
-
-IncludeHandlersMap[ 'wExecTools' ] =
-{
-  includeAny : [ '../../abase/layer3/ExecTools.s','abase/layer3/ExecTools.s','wexectools' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.shell },
-}
-
-IncludeHandlersMap[ 'wPath' ] =
-{
-  includeAny : [ '../../abase/layer3/aPathTools.s','abase/layer3/aPathTools.s','wPath' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.pathDir },
+  includeAny : [ '../../abase/layer4/Traverser.s','abase/layer4/Traverser.s','wtraverser' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._traverse },
 }
 
 IncludeHandlersMap[ 'wArraySorted' ] =
 {
   includeAny : [ '../../abase/layer4/ArraySorted.s','abase/layer4/ArraySorted.s','warraysorted' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.arraySortedLookUp },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.arraySortedLookUp },
 }
 
 IncludeHandlersMap[ 'wBaseEncoder' ] =
 {
   includeAny : [ '../../abase/layer4/Encoder.s','abase/layer4/Encoder.s','wbaseencoder' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.encode },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
 }
 
 IncludeHandlersMap[ 'wStringer' ] =
 {
   includeAny : [ '../../abase/layer4/aStringer.s','abase/layer4/aStringer.s','wstringer' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Stringer; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stringer; },
 }
 
 IncludeHandlersMap[ 'wCloner' ] =
 {
-  includeAny : [ '../../abase/layer4/Cloner.s','abase/layer4/Cloner.s','wcloner' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools._clone },
+  includeAny : [ '../../abase/layer5/Cloner.s','abase/layer5/Cloner.s','wcloner' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._clone },
 }
 
 IncludeHandlersMap[ 'wRoutineTransform' ] =
 {
   includeAny : [ '../../abase/layer4/RoutineTransform.s','abase/RoutineTransform/Cloner.s','wroutinetransform' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.routineNew },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
 }
 
 IncludeHandlersMap[ 'wDomTools' ] =
 {
   includeAny : [ '../../abase/tbrowser/DomBase.js','abase/tbrowser/DomBase.js','wdomtools' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.eventName },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
 }
 
 IncludeHandlersMap[ 'wStringsExtra' ] =
 {
   includeAny : [ '../../amid/astring/StringsExtra.s','amid/astring/StringsExtra.s','wstringsextra' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.strSorterParse; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
 }
 
 IncludeHandlersMap[ 'wRegexpObject' ] =
 {
   includeAny : [ '../../amid/bclass/RegexpObject.s','amid/bclass/RegexpObject.s','wRegexpObject' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.RegexpObject; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.RegexpObject; },
 }
 
 IncludeHandlersMap[ 'wColor' ] =
 {
   includeAny : [ '../../amid/color/Color.s','amid/color/Color.s','wColor' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.ColorMap },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.ColorMap },
 }
 
 IncludeHandlersMap[ 'wColor256' ] =
 {
   includeAny : [ '../../amid/color/Color256.s','amid/color/Color256.s','wColor256' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.ColorMap && Object.keys( _global.wTools.ColorMap ).length > 100 },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.ColorMap && Object.keys( _global.wTools.ColorMap ).length > 100 },
 }
 
 IncludeHandlersMap[ 'wChangeTransactor' ] =
 {
   includeAny : [ '../../amid/changes/ChangeTransactor.s','amid/changes/ChangeTransactor.s','wChangeTransactor' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.ChangeTransactor },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.ChangeTransactor },
 }
 
 IncludeHandlersMap[ 'wVocabulary' ] =
 {
   includeAny : [ '../../amid/bclass/Vocabulary.s','amid/bclass/Vocabulary.s','wVocabulary' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Vocabulary },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Vocabulary },
 }
 
 IncludeHandlersMap[ 'wFiles' ] =
 {
   includeAny : [ '../../amid/files/UseTop.s','amid/files/UseTop.s','wFiles' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.fileProvider },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
 }
 
 IncludeHandlersMap[ 'wFilesArchive' ] =
 {
   includeAny : [ '../../amid/files/FilesArchive.s','amid/files/FilesArchive.s','wfilesarchive' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesArchive },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesArchive },
 }
 
 IncludeHandlersMap[ 'wFilesTransformers' ] =
 {
   includeAny : [ '../../amid/files/FilesTransformers.s','amid/files/FilesTransformers.s','wfilestransformers' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.FileTransformers },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileTransformers },
 }
 
 IncludeHandlersMap[ 'wFilesSvn' ] =
 {
   includeAny : [ '../../amid/files/fprovider/pSvn.ss','amid/files/fprovider/pSvn.ss','wFilesSvn' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.fileProvider.Svn },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider.Svn },
 }
 
 IncludeHandlersMap[ 'wTimeMarker' ] =
 {
   includeAny : [ '../../amid/amixin/TimeMarker.s','amid/amixin/TimeMarker.s','wtimemarker' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.TimeMarker },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TimeMarker },
 }
 
 IncludeHandlersMap[ 'wVerbal' ] =
 {
   includeAny : [ '../../amid/amixin/Verbal.s','amid/amixin/Verbal.s','wverbal' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Verbal },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Verbal },
 }
 
 IncludeHandlersMap[ 'wFileStorage' ] =
 {
   includeAny : [ '../../amid/amixin/FileStorage.s','amid/amixin/FileStorage.s','wfilestorage' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.FileStorage },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileStorage },
 }
 
 IncludeHandlersMap[ 'wPathTranslator' ] =
 {
   includeAny : [ '../../amid/path/PathTranslator.s','amid/path/PathTranslator.s','wpathtranslator' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.PathTranslator },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
 }
 
 IncludeHandlersMap[ 'wFileExecutor' ] =
 {
   includeAny : [ '../../../dwtools/amid/executor/FileExecutor.s','amid/executor/FileExecutor.s','wFileExecutor' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.wFileExecutor },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.wFileExecutor },
 }
 
 IncludeHandlersMap[ 'wFileExecutorHtmlFormatters' ] =
 {
   includeAny : [ '../../../dwtools/amid/executor/HtmlFormatters.s','amid/executor/HtmlFormatters.s','wFileExecutorHtmlFormatters' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.FileExecutorHtmlFormatters },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileExecutorHtmlFormatters },
 }
 
 IncludeHandlersMap[ 'wStarterMaker' ] =
 {
   includeAny : [ '../../../dwtools/amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wStarterMaker' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.StarterMaker },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
 }
 
 IncludeHandlersMap[ 'wNameMapper' ] =
 {
   includeAny : [ '../../amid/amapping/NameMapper.s','amid/amapping/NameMapper.s','wnamemapper' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.NameMapper },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.NameMapper },
 }
 
 IncludeHandlersMap[ 'wTemplateTreeResolver' ] =
 {
   includeAny : [ '../../amid/amapping/TemplateTreeAresolver.s','amid/amapping/TemplateTreeAresolver.s','wtemplatetreeresolver' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.TemplateTreeResolver },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver },
 }
 
 IncludeHandlersMap[ 'wTemplateTreeEnvironment' ] =
 {
   includeAny : [ '../../amid/amapping/TemplateTreeEnvironment.s','amid/amapping/TemplateTreeEnvironment.s','wtemplatetreeenvironment' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.TemplateTreeEnvironment },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeEnvironment },
 }
 
 IncludeHandlersMap[ 'wTemplateFileWriter' ] =
 {
   includeAny : [ '../../amid/amapping/TemplateFileWriter.s','amid/amapping/TemplateFileWriter.s','wtemplatefilewriter' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.TemplateFileWriter },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateFileWriter },
 }
 
 IncludeHandlersMap[ 'wGraph' ] =
 {
-  includeAny : [ '../../amid/agraph/Graph.s','amid/agraph/Graph.s','wGraph' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.graph },
+  includeAny : [ '../../amid/agraph/UseTop.s','amid/agraph/UseTop.s','wgraph' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph },
 }
 
 IncludeHandlersMap[ 'wSchema' ] =
 {
   includeAny : [ '../../amid/schema/Top.s','amid/schema/Top.s','wSchema' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.schema },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.schema },
 }
 
 IncludeHandlersMap[ 'wScriptLauncher' ] =
 {
   includeAny : [ '../../amid/launcher/ScriptLauncher.s','amid/launcher/ScriptLauncher.s','wscriptlauncher' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.ScriptLauncher },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.ScriptLauncher },
 }
 
 IncludeHandlersMap[ 'wExchangePoint' ] =
 {
   includeAny : [ '../../amid/exchangePoint/ExchangePoint.s','amid/exchangePoint/ExchangePoint.s','wExchangePoint' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.ExchangePoint },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.ExchangePoint },
 }
 
 IncludeHandlersMap[ 'wCommunicator' ] =
 {
   includeAny : [ '../../amid/communicator/Communicator.s','amid/communicator/Communicator.s','wCommunicator' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Communicator },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Communicator },
 }
 
 IncludeHandlersMap[ 'wIncubator' ] =
 {
   includeAny : [ '../../amid/worker/Incubator.s','amid/worker/Incubator.s','wIncubator' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Incubator },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Incubator },
 }
 
 
@@ -638,43 +650,43 @@ IncludeHandlersMap[ 'wIncubator' ] =
 IncludeHandlersMap[ 'wCollectionOfInstances' ] =
 {
   includeAny : [ '../../amid/container/CollectionOfInstances.s','amid/container/CollectionOfInstances.s','wcollectionofinstances' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.CollectionOfInstances },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CollectionOfInstances },
 }
 
 IncludeHandlersMap[ 'wStarterMaker' ] =
 {
   includeAny : [ '../../amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wstartermaker' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.StarterMaker },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
 }
 
 IncludeHandlersMap[ 'wMathScalar' ] =
 {
   includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.s','amath/arithmetic/cScalar.s','wmathscalar' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.clamp },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.clamp },
 }
 
 IncludeHandlersMap[ 'wMathVector' ] =
 {
   includeAny : [ '../../../dwtools/amath/cvector/Base.s','amath/cvector/Base.s','wmathvector' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.vector },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.vector },
 }
 
 IncludeHandlersMap[ 'wMathSpace' ] =
 {
   includeAny : [ '../../../dwtools/amath/space/wSpace.s','amath/space/wSpace.s','wmathspace' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Space },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Space },
 }
 
 IncludeHandlersMap[ 'wMathConcepts' ] =
 {
   includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wmathconcepts' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.box },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.box },
 }
 
 IncludeHandlersMap[ 'wFilesOperationsDirector' ] =
 {
   includeAny : [ '../../../dwtools/atop/files/OperationsDirector.s','atop/files/OperationsDirector.s','wFilesOperationsDirector' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.FilesOperationsDirector },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesOperationsDirector },
 }
 
 
@@ -682,31 +694,31 @@ IncludeHandlersMap[ 'wFilesOperationsDirector' ] =
 IncludeHandlersMap[ 'wBaker' ] =
 {
   includeAny : [ '../../../dwtools/atop/baker/Baker.s','atop/baker/Baker.s','wBaker' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Baker },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Baker },
 }
 
 IncludeHandlersMap[ 'wBakerWithFileExecutor' ] =
 {
   includeAny : [ '../../../dwtools/atop/baker/BakerWithFileExecutor.s','atop/baker/BakerWithFileExecutor.s','wBakerWithFileExecutor' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.wBakerWithFileExecutor },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.wBakerWithFileExecutor },
 }
 
 IncludeHandlersMap[ 'wMaker' ] =
 {
   includeAny : [ '../../../dwtools/atop/maker/Maker.s','atop/maker/Maker.s','wMaker' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.Maker },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Maker },
 }
 
 IncludeHandlersMap[ 'wDeployerUnit' ] =
 {
   includeAny : [ '../../../dwtools/atop/deployer/Unit.s','atop/deployer/Unit.s','wDeployerUnit' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.DeployerUnit },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.DeployerUnit },
 }
 
 IncludeHandlersMap[ 'wServlet' ] =
 {
   includeAny : [ '../../../dwtools/atop/servlet/Servlet.ss','atop/servlet/Servlet.ss','wServlet' ],
-  isIncluded : function(){ return !!_global.wTools && _global.wTools.servlet },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.servlet },
 }
 
 // --
@@ -716,11 +728,11 @@ IncludeHandlersMap[ 'wServlet' ] =
 var Proto =
 {
 
-  pathUse : pathUse,
+  usePath : usePath,
 
-  pathUseGlobally : pathUseGlobally,
-  _pathUseGlobally : _pathUseGlobally,
-  _pathUseGloballyChildren : _pathUseGloballyChildren,
+  usePathGlobally : usePathGlobally,
+  _usePathGlobally : _usePathGlobally,
+  _usePathGloballyChildren : _usePathGloballyChildren,
 
   //
 
@@ -744,8 +756,8 @@ var Proto =
 
 _.mapExtend( Self, Proto );
 
-if( _.pathUse && typeof __dirname !== 'undefined' )
-_.pathUse( __dirname + '/../..' );
+if( _.usePath && typeof __dirname !== 'undefined' )
+_.usePath( __dirname + '/../..' );
 
 // --
 // export

@@ -103,7 +103,7 @@ function consequenceLike( test )
 var Self =
 {
 
-  name : 'Tools/base/laye1/Typing',
+  name : 'Tools/base/layer1/Typing',
   silencing : 1,
 
   tests :

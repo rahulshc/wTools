@@ -1,4 +1,4 @@
-(function _Base_s_() {
+(function _wToolsLayer3_s_(){
 
 'use strict';
 
@@ -6,10 +6,28 @@ if( typeof module !== 'undefined' && module !== null )
 {
 
   require( './Layer2.s' );
-  module[ 'exports' ] = _global_.wTools;
 
-  var _global = _global_; var _ = _global_.wTools;
+  var _ = _global_.wTools;
   var Self = _global_.wTools;
+
+  _.include( 'wExternalFundamentals' );
+  _.include( 'wPathFundamentals' );
+  _.include( 'wTraverser' );
+  _.include( 'wCloner' );
+  _.include( 'wProto' );
+  _.include( 'wCopyable' );
+  _.include( 'wEventHandler' );
+  _.include( 'wInstancing' );
+  _.include( 'wConsequence' );
+
+  try
+  {
+    if( typeof module !== 'undefined' && module !== null )
+    require( './Back.ss' );
+  }
+  catch( err )
+  {
+  }
 
 }
 

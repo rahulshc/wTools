@@ -456,7 +456,7 @@ function routinesCall( test )
 var Self =
 {
 
-  name : 'Tools/base/laye1/Routine',
+  name : 'Tools/base/layer1/Routine',
   silencing : 1,
 
   tests :

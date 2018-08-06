@@ -3833,7 +3833,7 @@ function mapOwnNone( test )
 var Self =
 {
 
-  name : 'Tools/base/laye1/Map',
+  name : 'Tools/base/layer1/Map',
   silencing : 1,
 
   tests :

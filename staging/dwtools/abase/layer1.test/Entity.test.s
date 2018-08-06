@@ -987,7 +987,7 @@ function entityKeyWithValue( test )
 var Self =
 {
 
-  name : 'Tools/base/laye1/Entity',
+  name : 'Tools/base/layer1/Entity',
   silencing : 1,
   // verbosity : 4,
   // importanceOfNegative : 3,

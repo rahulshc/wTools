@@ -11281,7 +11281,7 @@ function arraySetIdentical( test )
 var Self =
 {
 
-  name : 'Tools/base/laye1/Array',
+  name : 'Tools/base/layer1/Array',
   silencing : 1,
   // verbosity : 7,
   // routine : 'bufferRelen',

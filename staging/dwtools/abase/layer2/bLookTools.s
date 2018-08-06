@@ -1,6 +1,6 @@
 ( function _bLookTools_s_() {
 
-'use strict'; 
+'use strict';
 
 var _global = _global_;
 var Self = _global_.wTools;
@@ -1906,7 +1906,7 @@ function __entityEqualUp( e, k, it )
 
     if( _.routineIs( it.src._equalAre ) )
     {
-      _.assert( it.src._equalAre.length === 1 );
+      // _.assert( it.src._equalAre.length === 1 ); // does not applicable to VectorImage
       if( !it.src._equalAre( it ) )
       return clearEnd( false );
     }
