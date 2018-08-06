@@ -254,7 +254,7 @@ function diagnosticLocation( o )
 
   /* path from stack */
 
-  function pathFromStack( stack )
+  function fromStack( stack )
   {
     var path;
 
@@ -361,9 +361,9 @@ function diagnosticLocation( o )
 
   routineFromStack( o.stack );
 
-  var pathHad = !!o.location.path;
-  if( !pathHad )
-  o.location.path = pathFromStack( o.stack );
+  var had = !!o.location.path;
+  if( !had )
+  o.location.path = fromStack( o.stack );
 
   if( !_.strIs( o.location.path ) )
   return end();
@@ -371,10 +371,10 @@ function diagnosticLocation( o )
   if( !_.numberIs( o.location.line ) )
   o.location.path = lineColFromPath( o.location.path );
 
-  if( !_.numberIs( o.location.line ) && pathHad )
+  if( !_.numberIs( o.location.line ) && had )
   {
     // debugger;
-    var path = pathFromStack( o.stack );
+    var path = fromStack( o.stack );
     if( path )
     lineColFromPath( path );
   }

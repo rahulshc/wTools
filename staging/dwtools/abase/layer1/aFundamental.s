@@ -14513,6 +14513,15 @@ function mapSupplementOwnFromDefinition( dstMap, srcMap )
 
 //
 
+function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
+{
+  var args = _.longSlice( arguments );
+  args.unshift( _.field.mapper.dstNotOwnFromDefinitionStrictlyPrimitive );
+  return _.mapExtendConditional.apply( this, args );
+}
+
+//
+
 /**
  * The mapComplement() complement ( dstMap ) by one or several ( srcMap ).
  *
@@ -14591,17 +14600,21 @@ function mapDelete( dstMap, ins )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectLike( dstMap ) );
-  _.assert( _.objectLike( ins ) );
 
   if( ins !== undefined )
-  for( var i in ins )
   {
-    delete dstMap[ i ];
+    _.assert( _.objectLike( ins ) );
+    for( var i in ins )
+    {
+      delete dstMap[ i ];
+    }
   }
   else
-  for( var i in dstMap )
   {
-    delete d[ i ];
+    for( var i in dstMap )
+    {
+      delete dstMap[ i ];
+    }
   }
 
   return dstMap;
@@ -18726,6 +18739,7 @@ var Routines =
   mapsSupplementOwn : mapsSupplementOwn,
   mapSupplementOwnAssigning : mapSupplementOwnAssigning,
   mapSupplementOwnFromDefinition : mapSupplementOwnFromDefinition,
+  mapSupplementOwnFromDefinitionStrictlyPrimitives : mapSupplementOwnFromDefinitionStrictlyPrimitives,
 
   mapComplement : mapComplement,
   mapsComplement : mapsComplement,

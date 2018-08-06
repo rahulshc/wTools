@@ -31,7 +31,7 @@ var LookDefaults =
   trackingVisits : 1,
   levelLimit : 0,
 
-  pathDelimteter : '/',
+  delimteter : '/',
   path : null,
 
   counter : 0,
@@ -111,7 +111,7 @@ function _lookIterationSelect( k )
   _.assert( _.objectIs( it.down ) );
 
   it.level = it.level+1;
-  it.path = it.path !== it.pathDelimteter ? it.path + it.pathDelimteter + k : it.path + k;
+  it.path = it.path !== it.delimteter ? it.path + it.delimteter + k : it.path + k;
   it.iterator.lastPath = it.path;
   it.key = k;
   it.index = it.down.hasChildren;
@@ -156,7 +156,7 @@ function __look_lookBegin( routine, args )
   }
 
   if( iterator.path === null )
-  iterator.path = iterator.pathDelimteter;
+  iterator.path = iterator.delimteter;
 
   iterator.lastPath = iterator.path;
   iterator.key = null;

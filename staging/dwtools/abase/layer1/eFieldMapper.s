@@ -1,15 +1,15 @@
 ( function _FieldMapper_s_() {
 
-'use strict'; 
+'use strict';
 
-var Self = _global_.wTools;
-var _global = _global_;
-var _ = _global_.wTools;
+let Self = _global_.wTools;
+let _global = _global_;
+let _ = _global_.wTools;
 
-var _ArraySlice = Array.prototype.slice;
-var _FunctionBind = Function.prototype.bind;
-var _ObjectToString = Object.prototype.toString;
-var _ObjectHasOwnProperty = Object.hasOwnProperty;
+let _ArraySlice = Array.prototype.slice;
+let _FunctionBind = Function.prototype.bind;
+let _ObjectToString = Object.prototype.toString;
+let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
 //
@@ -18,7 +18,7 @@ var _ObjectHasOwnProperty = Object.hasOwnProperty;
 function bypass()
 {
 
-  var routine = function bypass( dstContainer, srcContainer, key )
+  let routine = function bypass( dstContainer, srcContainer, key )
   {
     /*dstContainer[ key ] = srcContainer[ key ];*/
     return true;
@@ -35,7 +35,7 @@ bypass.functionFamily = 'field-filter';
 function assigning()
 {
 
-  var routine = function assigning( dstContainer, srcContainer, key )
+  let routine = function assigning( dstContainer, srcContainer, key )
   {
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
@@ -51,7 +51,7 @@ assigning.functionFamily = 'field-mapper';
 function primitive()
 {
 
-  var routine = function primitive( dstContainer, srcContainer, key )
+  let routine = function primitive( dstContainer, srcContainer, key )
   {
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
@@ -70,7 +70,7 @@ primitive.functionFamily = 'field-filter';
 function hiding()
 {
 
-  var routine = function hiding( dstContainer, srcContainer, key )
+  let routine = function hiding( dstContainer, srcContainer, key )
   {
     Object.defineProperty( dstContainer, key,
     {
@@ -91,7 +91,7 @@ hiding.functionFamily = 'field-mapper';
 function appending()
 {
 
-  var routine = function appending( dstContainer, srcContainer, key )
+  let routine = function appending( dstContainer, srcContainer, key )
   {
     if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
     _.arrayAppendArray( dstContainer[ key ], srcContainer[ key ] );
@@ -110,7 +110,7 @@ appending.functionFamily = 'field-mapper';
 function appendingOnce()
 {
 
-  var routine = function appendingOnce( dstContainer, srcContainer, key )
+  let routine = function appendingOnce( dstContainer, srcContainer, key )
   {
     if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
     _.arrayAppendArrayOnce( dstContainer[ key ], srcContainer[ key ] );
@@ -129,10 +129,10 @@ appendingOnce.functionFamily = 'field-mapper';
 function removing()
 {
 
-  var routine = function removing( dstContainer, srcContainer, key )
+  let routine = function removing( dstContainer, srcContainer, key )
   {
-    var dstElement = dstContainer[ key ];
-    var srcElement = srcContainer[ key ];
+    let dstElement = dstContainer[ key ];
+    let srcElement = srcContainer[ key ];
     if( _.arrayIs( dstElement ) && _.arrayIs( srcElement ) )
     {
       if( dstElement === srcElement )
@@ -157,7 +157,7 @@ removing.functionFamily = 'field-mapper';
 function notPrimitiveAssigning()
 {
 
-  var routine = function notPrimitiveAssigning( dstContainer, srcContainer, key )
+  let routine = function notPrimitiveAssigning( dstContainer, srcContainer, key )
   {
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
@@ -176,7 +176,7 @@ notPrimitiveAssigning.functionFamily = 'field-mapper';
 function assigningRecursive()
 {
 
-  var routine = function assigningRecursive( dstContainer, srcContainer, key )
+  let routine = function assigningRecursive( dstContainer, srcContainer, key )
   {
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
   }
@@ -196,7 +196,7 @@ function drop( dropContainer )
 
   _.assert( _.objectIs( dropContainer ) );
 
-  var routine = function drop( dstContainer, srcContainer, key )
+  let routine = function drop( dstContainer, srcContainer, key )
   {
     if( dropContainer[ key ] !== undefined )
     return false
@@ -216,7 +216,7 @@ drop.functionFamily = 'field-filter';
 function srcDefined()
 {
 
-  var routine = function srcDefined( dstContainer, srcContainer, key )
+  let routine = function srcDefined( dstContainer, srcContainer, key )
   {
     if( srcContainer[ key ] === undefined )
     return false;
@@ -236,7 +236,7 @@ srcDefined.functionFamily = 'field-filter';
 function dstNotHas()
 {
 
-  var routine = function dstNotHas( dstContainer, srcContainer, key )
+  let routine = function dstNotHas( dstContainer, srcContainer, key )
   {
 
     // if( dstContainer[ key ] !== undefined )
@@ -259,7 +259,7 @@ dstNotHas.functionFamily = 'field-filter';
 function dstNotHasOrHasNull()
 {
 
-  var routine = function dstNotHasOrHasNull( dstContainer, srcContainer, key )
+  let routine = function dstNotHasOrHasNull( dstContainer, srcContainer, key )
   {
 
     if( key in dstContainer && dstContainer[ key ] !== null )
@@ -279,7 +279,7 @@ dstNotHasOrHasNull.functionFamily = 'field-filter';
 function dstNotHasOrHasNil()
 {
 
-  var routine = function dstNotHasOrHasNil( dstContainer, srcContainer, key )
+  let routine = function dstNotHasOrHasNil( dstContainer, srcContainer, key )
   {
 
     if( key in dstContainer && dstContainer[ key ] !== _.nothing )
@@ -299,7 +299,7 @@ dstNotHasOrHasNil.functionFamily = 'field-filter';
 function dstNotHasAssigning()
 {
 
-  var routine = function dstNotHasAssigning( dstContainer, srcContainer, key )
+  let routine = function dstNotHasAssigning( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] !== undefined )
     return;
@@ -318,7 +318,7 @@ dstNotHasAssigning.functionFamily = 'field-mapper';
 function dstNotHasAppending()
 {
 
-  var routine = function dstNotHasAppending( dstContainer, srcContainer, key )
+  let routine = function dstNotHasAppending( dstContainer, srcContainer, key )
   {
     if( key in dstContainer )
     {
@@ -341,7 +341,7 @@ dstNotHasAppending.functionFamily = 'field-mapper';
 function dstNotHasSrcPrimitive()
 {
 
-  var routine = function dstNotHasSrcPrimitive( dstContainer, srcContainer, key )
+  let routine = function dstNotHasSrcPrimitive( dstContainer, srcContainer, key )
   {
     debugger;
     if( key in dstContainer )
@@ -365,7 +365,7 @@ dstNotHasSrcPrimitive.functionFamily = 'field-filter';
 function dstNotHasSrcOwn()
 {
 
-  var routine = function dstNotHasSrcOwn( dstContainer, srcContainer, key )
+  let routine = function dstNotHasSrcOwn( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -387,7 +387,7 @@ dstNotHasSrcOwn.functionFamily = 'field-filter';
 function dstNotHasSrcOwnAssigning()
 {
 
-  var routine = function dstNotHasSrcOwnAssigning( dstContainer, srcContainer, key )
+  let routine = function dstNotHasSrcOwnAssigning( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -408,7 +408,7 @@ dstNotHasSrcOwnAssigning.functionFamily = 'field-mapper';
 function dstNotHasSrcOwnRoutines()
 {
 
-  var routine = function dstNotHasSrcOwnRoutines( dstContainer, srcContainer, key )
+  let routine = function dstNotHasSrcOwnRoutines( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -433,7 +433,7 @@ dstNotHasSrcOwnRoutines.functionFamily = 'field-filter';
 function dstNotHasAssigningRecursive()
 {
 
-  var routine = function dstNotHasAssigningRecursive( dstContainer, srcContainer, key )
+  let routine = function dstNotHasAssigningRecursive( dstContainer, srcContainer, key )
   {
     if( key in dstContainer )
     return;
@@ -454,7 +454,7 @@ dstNotHasAssigningRecursive.functionFamily = 'field-mapper';
 function dstNotOwn()
 {
 
-  var routine = function dstNotOwn( dstContainer, srcContainer, key )
+  let routine = function dstNotOwn( dstContainer, srcContainer, key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
@@ -474,7 +474,7 @@ dstNotOwn.functionFamily = 'field-filter';
 function dstNotOwnSrcOwn()
 {
 
-  var routine = function dstNotOwnSrcOwn( dstContainer, srcContainer, key )
+  let routine = function dstNotOwnSrcOwn( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -496,7 +496,7 @@ dstNotOwnSrcOwn.functionFamily = 'field-filter';
 function dstNotOwnSrcOwnAssigning()
 {
 
-  var routine = function dstNotOwnSrcOwnAssigning( dstContainer, srcContainer, key )
+  let routine = function dstNotOwnSrcOwnAssigning( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -518,7 +518,7 @@ dstNotOwnSrcOwnAssigning.functionFamily = 'field-mapper';
 function dstNotOwnOrUndefinedAssigning()
 {
 
-  var routine = function dstNotOwnOrUndefinedAssigning( dstContainer, srcContainer, key )
+  let routine = function dstNotOwnOrUndefinedAssigning( dstContainer, srcContainer, key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
@@ -543,7 +543,7 @@ dstNotOwnOrUndefinedAssigning.functionFamily = 'field-mapper';
 // function dstNotOwnAssigning()
 // {
 //
-//   var routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
+//   let routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
 //   {
 //
 //     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
@@ -566,13 +566,13 @@ dstNotOwnOrUndefinedAssigning.functionFamily = 'field-mapper';
 function dstNotOwnAssigning()
 {
 
-  var routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
+  let routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
 
-    var srcElement = srcContainer[ key ];
+    let srcElement = srcContainer[ key ];
     if( _.mapIs( srcElement ) || _.arrayIs( srcElement ) )
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
     else
@@ -591,7 +591,7 @@ dstNotOwnAssigning.functionFamily = 'field-mapper';
 function dstNotOwnAppending()
 {
 
-  var routine = function dstNotOwnAppending( dstContainer, srcContainer, key )
+  let routine = function dstNotOwnAppending( dstContainer, srcContainer, key )
   {
     debugger;
     if( dstContainer[ key ] !== undefined )
@@ -616,19 +616,45 @@ dstNotOwnAppending.functionFamily = 'field-mapper';
 function dstNotOwnFromDefinition()
 {
 
-  var routine = function dstNotOwnFromDefinition( dstContainer, srcContainer, key )
+  let routine = function dstNotOwnFromDefinition( dstContainer, srcContainer, key )
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
 
-    var srcElement = srcContainer[ key ];
-    // if( _.definitionIs( srcElement ) )
-    // debugger;
+    let srcElement = srcContainer[ key ];
     if( _.definitionIs( srcElement ) )
     dstContainer[ key ] = srcElement.valueGet();
     else
-    dstContainer[ key ] = srcContainer[ key ];
+    dstContainer[ key ] = srcElement;
+
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+//
+
+function dstNotOwnFromDefinitionStrictlyPrimitive()
+{
+
+  let routine = function dstNotOwnFromDefinitionStrictlyPrimitive( dstContainer, srcContainer, key )
+  {
+
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return;
+
+    let srcElement = srcContainer[ key ];
+    if( _.definitionIs( srcElement ) )
+    {
+      dstContainer[ key ] = srcElement.valueGet();
+    }
+    else
+    {
+      _.assert( _.primitiveIs( srcElement ), () => 'Map has non-primitive element ' + _.strQuote( key ) + ' use _.define.own instead' );
+      dstContainer[ key ] = srcElement;
+    }
 
   }
 
@@ -643,7 +669,7 @@ function dstNotOwnFromDefinition()
 function dstHasMaybeUndefined()
 {
 
-  var routine = function dstHasMaybeUndefined( dstContainer, srcContainer, key )
+  let routine = function dstHasMaybeUndefined( dstContainer, srcContainer, key )
   {
     if( key in dstContainer )
     return true;
@@ -661,7 +687,7 @@ dstHasMaybeUndefined.functionFamily = 'field-filter';
 function dstHasButUndefined()
 {
 
-  var routine = function dstHasButUndefined( dstContainer, srcContainer, key )
+  let routine = function dstHasButUndefined( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] === undefined )
     return false;
@@ -679,7 +705,7 @@ dstHasButUndefined.functionFamily = 'field-filter';
 function dstHasSrcOwn()
 {
 
-  var routine = function dstHasSrcOwn( dstContainer, srcContainer, key )
+  let routine = function dstHasSrcOwn( dstContainer, srcContainer, key )
   {
     if( !( key in dstContainer ) )
     return false;
@@ -699,7 +725,7 @@ dstHasSrcOwn.functionFamily = 'field-filter';
 function dstHasSrcNotOwn()
 {
 
-  var routine = function dstHasSrcNotOwn( dstContainer, srcContainer, key )
+  let routine = function dstHasSrcNotOwn( dstContainer, srcContainer, key )
   {
     if( !( key in dstContainer ) )
     return false;
@@ -721,7 +747,7 @@ dstHasSrcNotOwn.functionFamily = 'field-filter';
 function dstAndSrcOwn()
 {
 
-  var routine = function dstAndSrcOwn( dstContainer, srcContainer, key )
+  let routine = function dstAndSrcOwn( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -742,7 +768,7 @@ dstAndSrcOwn.functionFamily = 'field-filter';
 function dstUndefinedSrcNotUndefined()
 {
 
-  var routine = function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
+  let routine = function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] !== undefined )
     return false;
@@ -764,7 +790,7 @@ dstUndefinedSrcNotUndefined.functionFamily = 'field-filter';
 function srcOwn()
 {
 
-  var routine = function srcOwn( dstContainer, srcContainer, key )
+  let routine = function srcOwn( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -784,7 +810,7 @@ srcOwn.functionFamily = 'field-filter';
 function srcOwnRoutines()
 {
 
-  var routine = function srcOwnRoutines( dstContainer, srcContainer, key )
+  let routine = function srcOwnRoutines( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -806,7 +832,7 @@ srcOwnRoutines.functionFamily = 'field-filter';
 function srcOwnAssigning()
 {
 
-  var routine = function assigning( dstContainer, srcContainer, key )
+  let routine = function assigning( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -825,7 +851,7 @@ srcOwnAssigning.functionFamily = 'field-mapper';
 function srcOwnPrimitive()
 {
 
-  var routine = function srcOwnPrimitive( dstContainer, srcContainer, key )
+  let routine = function srcOwnPrimitive( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -847,7 +873,7 @@ srcOwnPrimitive.functionFamily = 'field-filter';
 function srcOwnNotPrimitiveAssigning()
 {
 
-  var routine = function srcOwnNotPrimitiveAssigning( dstContainer, srcContainer, key )
+  let routine = function srcOwnNotPrimitiveAssigning( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -868,7 +894,7 @@ srcOwnNotPrimitiveAssigning.functionFamily = 'field-mapper';
 function srcOwnNotPrimitiveAssigningRecursive()
 {
 
-  var routine = function srcOwnNotPrimitiveAssigningRecursive( dstContainer, srcContainer, key )
+  let routine = function srcOwnNotPrimitiveAssigningRecursive( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -889,7 +915,7 @@ srcOwnNotPrimitiveAssigningRecursive.functionFamily = 'field-mapper';
 function srcOwnAssigningRecursive()
 {
 
-  var routine = function srcOwnAssigningRecursive( dstContainer, srcContainer, key )
+  let routine = function srcOwnAssigningRecursive( dstContainer, srcContainer, key )
   {
     if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
     return;
@@ -910,11 +936,11 @@ srcOwnAssigningRecursive.functionFamily = 'field-mapper';
 function and()
 {
 
-  var filters = [];
-  var mappers = [];
-  for( var a = 0 ; a < arguments.length ; a++ )
+  let filters = [];
+  let mappers = [];
+  for( let a = 0 ; a < arguments.length ; a++ )
   {
-    var routine = arguments[ a ];
+    let routine = arguments[ a ];
     _.assert( _.routineIs( routine ) );
     _.assert( _.strIs( routine.functionFamily ) );
     if( routine.functionFamily === 'field-filter' )
@@ -927,24 +953,24 @@ function and()
   if( mappers.length > 1 )
   throw _.err( 'can combineMethodUniform only one mapper with any number of filters' );
 
-  var routine = function and( dstContainer, srcContainer, key )
+  let routine = function and( dstContainer, srcContainer, key )
   {
 
-    for( var f = 0 ; f < filters.length ; f++ )
+    for( let f = 0 ; f < filters.length ; f++ )
     {
-      var filter = filters[ f ];
+      let filter = filters[ f ];
 
-      var result = filter( dstContainer, srcContainer, key );
+      let result = filter( dstContainer, srcContainer, key );
       _.assert( _.boolIs( result ) );
       if( result === false )
       return mappers.length ? undefined : false;
     }
 
-    for( var m = 0 ; m < mappers.length ; m++ )
+    for( let m = 0 ; m < mappers.length ; m++ )
     {
-      var mapper = mappers[ m ];
+      let mapper = mappers[ m ];
 
-      var result = mapper( dstContainer, srcContainer, key );
+      let result = mapper( dstContainer, srcContainer, key );
       _.assert( result === undefined );
       return;
     }
@@ -969,7 +995,7 @@ function mapperFromFilter( routine )
   {
     function r( dstContainer, srcContainer, key )
     {
-      var result = routine( dstContainer, srcContainer, key );
+      let result = routine( dstContainer, srcContainer, key );
       _.assert( _.boolIs( result ) );
       if( result === false )
       return;
@@ -1002,7 +1028,7 @@ function mapperFromFilter( routine )
 //     function r( dstContainer, srcContainer, key )
 //     {
 //       debugger;
-//       var result = routine( dstContainer, srcContainer, key );
+//       let result = routine( dstContainer, srcContainer, key );
 //       _.assert( _.boolIs( result ) );
 //       if( result === false )
 //       return;
@@ -1026,9 +1052,9 @@ function mapperFromFilter( routine )
 function setup()
 {
 
-  for( var f in make )
+  for( let f in make )
   {
-    var fi = make[ f ];
+    let fi = make[ f ];
 
     if( fi.length )
     continue;
@@ -1054,7 +1080,7 @@ function setup()
 // make
 // --
 
-var make =
+let make =
 {
 
   //
@@ -1096,6 +1122,7 @@ var make =
   dstNotOwnAssigning : dstNotOwnAssigning,
   dstNotOwnAppending : dstNotOwnAppending,
   dstNotOwnFromDefinition : dstNotOwnFromDefinition,
+  dstNotOwnFromDefinitionStrictlyPrimitive : dstNotOwnFromDefinitionStrictlyPrimitive,
 
   // dstHas
 
@@ -1125,7 +1152,7 @@ var make =
 // namespace
 // --
 
-var field =
+let field =
 {
   make : make,
   mapper : Object.create( null ),
@@ -1140,7 +1167,7 @@ setup();
 // extend
 // --
 
-var Extend =
+let Extend =
 {
 
   field : field,

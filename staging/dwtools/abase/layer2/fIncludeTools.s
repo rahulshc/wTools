@@ -28,8 +28,8 @@ function usePath( src )
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
 
-  if( _.path && _.path.pathRefine )
-  src = _.path.pathRefine( src );
+  if( _.path && _.path.refine )
+  src = _.path.refine( src );
 
   if( typeof module !== 'undefined' )
   module.paths.push( src );
@@ -47,11 +47,11 @@ function usePathGlobally( paths )
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.arrayIs( paths ) );
 
-  if( _.fileProvider && _.path.pathRefine )
+  if( _.fileProvider && _.path.refine )
   {
     for( var p = 0 ; p < paths.length ; p++ )
     {
-      paths[ p ] = _.fileProvider.pathNativize( _.path.pathResolve( paths[ p ] ) );
+      paths[ p ] = _.fileProvider.nativize( _.path.resolve( paths[ p ] ) );
       console.log( 'usePathGlobally',paths[ p ] );
     }
   }
@@ -414,7 +414,7 @@ IncludeHandlersMap[ 'wNameTools' ] =
 IncludeHandlersMap[ 'wProto' ] =
 {
   includeAny : [ '../../abase/layer3/Proto.s','abase/layer3/Proto.s','wProto' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.mixinMake },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.mixinDelcare },
 }
 
 IncludeHandlersMap[ 'wExternalFundamentals' ] =
@@ -426,7 +426,7 @@ IncludeHandlersMap[ 'wExternalFundamentals' ] =
 // IncludeHandlersMap[ 'wPath' ] =
 // {
 //   includeAny : [ '../../abase/layer3/PathFundamentals.s','abase/layer3/PathFundamentals.s','wPath' ],
-//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.pathDir },
+//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.dir },
 // }
 
 IncludeHandlersMap[ 'wPathFundamentals' ] =
