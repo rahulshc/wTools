@@ -1,10 +1,14 @@
 (function _kArrayDescriptor_s_() {
 
-'use strict'; 
+'use strict';
 
 var _global = _global_;
-var _ = _global_.wTools;
-var Self = _global_.wTools;
+var _ = _global.wTools;
+var Self = _global.wTools;
+
+_.assert( !_.Array );
+_.assert( !_.array );
+_.assert( !_.withArray );
 
 //
 
@@ -152,7 +156,6 @@ var _ArrayNameSpaces =
 // return;
 
 _.assert( !_.Array );
-_.assert( !_.ArrayDescriptor );
 _.assert( !_.array );
 _.assert( !_.withArray );
 

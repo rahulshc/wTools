@@ -81,6 +81,9 @@ _global_.Underscore = _global_._;
  * @class wTools
  */
 
+if( _global !== _realGlobal_ && !!_global.wTools )
+throw 'Multiple inclusions of Fundamental.s';
+
 _global.wTools = _global.wTools || Object.create( null );
 _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
 var Self = _global.wTools;
@@ -2215,7 +2218,7 @@ function _sureDebugger( condition )
 function sure( condition )
 {
 
-  if( !condition || !_.boolLike( condition ) )
+  if( !condition || !boolLike( condition ) )
   {
     _sureDebugger( condition );
     if( arguments.length === 1 )
@@ -2239,6 +2242,13 @@ function sure( condition )
   }
 
   return;
+
+  function boolLike( src )
+  {
+    var type = _ObjectToString.call( src );
+    return type === '[object Boolean]' || type === '[object Number]';
+  }
+
 }
 
 //
@@ -2246,7 +2256,7 @@ function sure( condition )
 function sureWithoutDebugger( condition )
 {
 
-  if( !condition || !_.boolLike( condition ) )
+  if( !condition || !boolLike( condition ) )
   {
     if( arguments.length === 1 )
     throw _err
@@ -2269,6 +2279,13 @@ function sureWithoutDebugger( condition )
   }
 
   return;
+
+  function boolLike( src )
+  {
+    var type = _ObjectToString.call( src );
+    return type === '[object Boolean]' || type === '[object Number]';
+  }
+
 }
 
 // --
@@ -2350,10 +2367,10 @@ function assert( condition )
     assert is going to become stricter
     assert will treat as true only bool like argument
   */
-  if( !_.boolLike( condition ) )
+  if( !boolLike( condition ) )
   debugger;
 
-  // if( !condition || !_.boolLike( condition ) )
+  // if( !condition || !boolLike( condition ) )
   if( !condition )
   {
     _assertDebugger( condition );
@@ -2378,6 +2395,13 @@ function assert( condition )
   }
 
   return;
+
+  function boolLike( src )
+  {
+    var type = _ObjectToString.call( src );
+    return type === '[object Boolean]' || type === '[object Number]';
+  }
+
 }
 
 //
@@ -18102,6 +18126,8 @@ _.Later._associatedMap = new Map();
 //   timeNow : [ _, _timeNow_functor ]
 // }
 
+debugger;
+
 var Vars =
 {
 
@@ -18882,7 +18908,13 @@ var Routines =
 Object.assign( Self, Routines );
 Object.assign( Self, Vars );
 
+_.assert( !Self.Array );
+_.assert( !Self.array );
+_.assert( !Self.withArray );
+
+_.assert( _.objectIs( _.regexpsEscape ) );
 _.Later.replace( Self );
+_.assert( _.objectIs( _.regexpsEscape ) );
 
 // --
 // export

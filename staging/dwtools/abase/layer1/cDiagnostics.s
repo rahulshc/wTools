@@ -10,9 +10,10 @@ var _propertyIsEumerable = Object.propertyIsEnumerable;
 var _ceil = Math.ceil;
 var _floor = Math.floor;
 
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global.wTools;
 var _err = _._err;
-var Self = _global_.wTools;
+var Self = _;
 
 //
 

@@ -1,10 +1,10 @@
 (function _zSetup_s_() {
 
-'use strict'; 
+'use strict';
 
 var _global = _global_;
-var _ = _global_.wTools;
-var Self = _global_.wTools;
+var _ = _global.wTools;
+var Self = _global.wTools;
 
 // --
 // setup
@@ -233,7 +233,9 @@ function _setupTesterPlaceholder()
 function _setupLater()
 {
 
+  _.assert( _.objectIs( _.regexpsEscape ) );
   _.Later.for( _ );
+  _.assert( _.routineIs( _.regexpsEscape ) );
 
   // for( var l in _.Later )
   // {
