@@ -3030,7 +3030,7 @@ function _routineJoin( o )
 
   /* */
 
- _.assert( 0,'not implemented' );
+  _.assert( 0,'not implemented' );
 
 }
 
