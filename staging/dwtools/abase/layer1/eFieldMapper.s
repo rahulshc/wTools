@@ -652,7 +652,7 @@ function dstNotOwnFromDefinitionStrictlyPrimitive()
     }
     else
     {
-      _.assert( _.primitiveIs( srcElement ) || _.routineIs( srcElement ), () => 'Map has non-primitive element ' + _.strQuote( key ) + ' use _.define.own instead' );
+      _.assert( _.primitiveIs( srcElement ) || _.routineIs( srcElement ), () => _.toStrShort( dstContainer ) + ' has non-primitive element ' + _.strQuote( key ) + ' use _.define.own instead' );
       dstContainer[ key ] = srcElement;
     }
 

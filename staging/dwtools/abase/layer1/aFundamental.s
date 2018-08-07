@@ -2348,8 +2348,14 @@ function sureWithoutDebugger( condition )
  * @memberof wTools
  */
 
-function _assertDebugger( condition )
+function _assertDebugger( condition, args )
 {
+  var err = _err
+  ({
+    args : _.longSlice( args,1 ),
+    level : 3,
+  });
+  console.log( _.errBriefly( err ) );
   debugger;
 }
 
@@ -2373,7 +2379,7 @@ function assert( condition )
   // if( !condition || !boolLike( condition ) )
   if( !condition )
   {
-    _assertDebugger( condition );
+    _assertDebugger( condition, arguments );
     if( arguments.length === 1 )
     throw _err
     ({
