@@ -425,7 +425,7 @@ IncludeHandlersMap[ 'wExternalFundamentals' ] =
 
 // IncludeHandlersMap[ 'wPath' ] =
 // {
-//   includeAny : [ '../../abase/layer3/PathFundamentals.s','abase/layer3/PathFundamentals.s','wPath' ],
+//   includeAny : [ '../../abase/layer3/Path.s','abase/layer3/Path.s','wPath' ],
 //   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.dir },
 // }
 
