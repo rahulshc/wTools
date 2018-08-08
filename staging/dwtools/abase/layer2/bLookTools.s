@@ -4,7 +4,8 @@
 
 var _global = _global_;
 var Self = _global_.wTools;
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;

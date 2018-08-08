@@ -13,7 +13,8 @@
 //
 
 var Self = _global_.wTools;
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 
 var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
@@ -4030,6 +4031,45 @@ function strHasSeveral( src,ins )
   return strHas( src,ins ) ? 1 : 0;
 }
 
+//
+
+function strsAnyHas( srcs, ins )
+{
+  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( ins ) );
+
+  if( _.strIs( srcs ) )
+  return _.strHas( srcs, ins );
+
+  return srcs.some( ( src ) => _.strHas( src, ins ) );
+}
+
+//
+
+function strsAllHas( srcs, ins )
+{
+  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( ins ) );
+
+  if( _.strIs( srcs ) )
+  return _.strHas( srcs, ins );
+
+  return srcs.every( ( src ) => _.strHas( src, ins ) );
+}
+
+//
+
+function strsNoneHas( srcs, ins )
+{
+  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( ins ) );
+
+  if( _.strIs( srcs ) )
+  return !_.strHas( srcs, ins );
+
+  return srcs.every( ( src ) => !_.strHas( src, ins ) );
+}
+
 // --
 // define class
 // --
@@ -4140,6 +4180,10 @@ var Proto =
   strHasAll : strHasAll,
   strHasNone : strHasNone,
   strHasSeveral : strHasSeveral,
+
+  strsAnyHas : strsAnyHas,
+  strsAllHas : strsAllHas,
+  strsNoneHas : strsNoneHas,
 
 }
 

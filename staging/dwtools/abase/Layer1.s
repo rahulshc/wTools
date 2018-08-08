@@ -11,8 +11,8 @@ if( typeof module !== 'undefined' && module !== null )
   require( './layer1/eFieldMapper.s' );
   require( './layer1/kArrayDescriptor.s' );
   require( './layer1/zSetup.s' );
-
-  var _global = _global_; var _ = _global_.wTools;
+  var _global = _global_;
+  var _ = _global_.wTools;
   var Self = _global_.wTools;
 
 }

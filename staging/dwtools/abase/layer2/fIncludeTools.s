@@ -6,7 +6,8 @@
 
 var usingSinglePath = 0;
 var Self = _global_.wTools;
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 var _global = _global_;
 
 var Module = null;

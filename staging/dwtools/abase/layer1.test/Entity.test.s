@@ -29,8 +29,8 @@ if( typeof module !== 'undefined' )
   _.include( 'wStringsExtra' );
 
 }
-
-var _global = _global_; var _ = _global_.wTools;
+var _global = _global_;
+var _ = _global_.wTools;
 var Self = {};
 
 //

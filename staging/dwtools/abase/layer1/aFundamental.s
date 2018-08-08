@@ -5243,20 +5243,11 @@ function regexpsAreIdentical( src1,src2 )
 function regexpEscape( src )
 {
   _.assert( _.strIs( src ) );
-  // _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1, 'expects single argument' );
-  // if( _.arrayIs( src ) )
-  // {
-  //   var result = [];
-  //   for( var s = 0 ; s < src.length ; s++ )
-  //   {
-  //     _.assert( _.strIs( src[ s ] ) )
-  //     result[ s ] = regexpEscape( src[ s ] );
-  //   }
-  //   return result;
-  // }
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
+
+/* qqq : /(\s*)var _global \= _global_; var _ \= _global_\.wTools;/g */
 
 //
 
@@ -5400,6 +5391,9 @@ function regexpsSources( o )
   o.flags = null;
 
   _.assert( arguments.length === 1, 'expects single argument' );
+  _.routineOptions( regexpsSources, o );
+
+  /* */
 
   for( var s = 0 ; s < o.sources.length ; s++ )
   {
@@ -5407,14 +5401,19 @@ function regexpsSources( o )
     if( _.regexpIs( src ) )
     {
       o.sources[ s ] = src.source;
-      _.assert( o.flags === null || src.flags === o.flags, 'all RegExps should have flags field with the same value', '"' + src.flags + '"', '!=',  '"' + o.flags + '"' );
+      _.assert( o.flags === null || src.flags === o.flags, () => 'All RegExps should have flags field with the same value ' + _.strQuote( src.flags ) + ' != ' + _.strQuote( o.flags ) );
       if( o.flags === null )
       o.flags = src.flags;
+    }
+    else
+    {
+      if( o.escaping )
+      o.sources[ s ] = _.regexpEscape( src );
     }
     _.assert( _.strIs( o.sources[ s ] ) );
   }
 
-  // o.flags = o.flags || '';
+  /* */
 
   return o;
 }
@@ -5423,6 +5422,7 @@ regexpsSources.defaults =
 {
   sources : null,
   flags : null,
+  escaping : 0,
 }
 
 //
@@ -5449,7 +5449,26 @@ regexpsJoin.defaults =
 {
   flags : null,
   sources : null,
+  escaping : 0,
 }
+
+//
+
+function regexpsJoinEscaping( o )
+{
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsJoinEscaping, o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( !!o.escaping );
+
+  return _.regexpsJoin( o );
+}
+
+var defaults = regexpsJoinEscaping.defaults = Object.create( regexpsJoin.defaults );
+
+defaults.escaping = 1;
 
 //
 
@@ -5489,6 +5508,7 @@ regexpsAtLeastFirst.defaults =
 {
   flags : null,
   sources : null,
+  escaping : 0,
 }
 
 //
@@ -5542,7 +5562,7 @@ regexpsNone.defaults =
 {
   flags : null,
   sources : null,
-  // atLeastOnce : true,
+  escaping : 0,
 }
 
 //
@@ -5571,6 +5591,7 @@ regexpsAny.defaults =
 {
   flags : null,
   sources : null,
+  escaping : 0,
 }
 
 //
@@ -5613,6 +5634,7 @@ regexpsAll.defaults =
 {
   flags : null,
   sources : null,
+  escaping : 0,
 }
 
 //
@@ -8236,11 +8258,9 @@ function arrayHas( array, value, evaluator1, evaluator2 )
   if( evaluator1 === undefined )
   {
     return _ArrayIndexOf.call( array, value ) !== -1;
-    // return array.indexOf( value ) !== -1;
   }
   else
   {
-    debugger;
     if( _.arrayLeftIndex( array, value, evaluator1, evaluator2 ) >= 0 )
     return true;
     return false;
@@ -18135,6 +18155,8 @@ var Fields =
   accuracySqrt : 1e-4,
   accuracySqr : 1e-14,
 
+  regexpIdentationRegexp : /(\s*\n(\s*))/g,
+
 }
 
 // --
@@ -18394,6 +18416,7 @@ var Routines =
 
   regexpsSources : regexpsSources,
   regexpsJoin : regexpsJoin,
+  regexpsJoinEscaping : regexpsJoinEscaping,
   regexpsAtLeastFirst : regexpsAtLeastFirst,
 
   regexpsNone : regexpsNone,
