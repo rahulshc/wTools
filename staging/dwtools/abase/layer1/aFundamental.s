@@ -5230,6 +5230,21 @@ function regexpsAreIdentical( src1,src2 )
 
 //
 
+function regexpTest( regexp, strs )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpIs( regexp ) );
+
+  if( _.strIs( strs ) )
+  return regexp.test( strs );
+  else if( _.arrayLike( strs ) )
+  return strs.map( ( str ) => regexp.test( str ) )
+  else _.assert( 0 );
+
+}
+
+//
+
 /**
  * Escapes special characters with a slash ( \ ). Supports next set of characters : .*+?^=! :${}()|[]/\
  *
@@ -5387,7 +5402,8 @@ function regexpsSources( o )
     o.sources = arguments[ 0 ];
   }
 
-  o.sources = o.sources || [];
+  // o.sources = o.sources ? _.longSlice( o.sources ) : [];
+  o.sources = _.longSlice( o.sources );
   if( o.flags === undefined )
   o.flags = null;
 
@@ -5576,6 +5592,12 @@ function regexpsAny( o )
   _.routineOptions( regexpsAny, o );
   _.assert( arguments.length === 1, 'expects single argument' );
 
+  if( _.regexpIs( o.sources ) )
+  {
+    _.assert( o.sources.flags === o.flags || o.flags === null );
+    return o.sources;
+  }
+
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
   if( o.sources.length === 1 && _.regexpIs( src ) )
@@ -5604,6 +5626,12 @@ function regexpsAll( o )
 
   _.routineOptions( regexpsAll, o );
   _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( _.regexpIs( o.sources ) )
+  {
+    _.assert( o.sources.flags === o.flags || o.flags === null );
+    return o.sources;
+  }
 
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
@@ -8367,7 +8395,7 @@ function arrayAll( src )
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.longIs( src ) );
 
-  for( var s = 0 ; s < src.length ; src++ )
+  for( var s = 0 ; s < src.length ; s += 1 )
   {
     if( !src[ s ] )
     return false;
@@ -8384,7 +8412,7 @@ function arrayAny( src )
   _.assert( _.longIs( src ) );
 
   debugger;
-  for( var s = 0 ; s < src.length ; src++ )
+  for( var s = 0 ; s < src.length ; s += 1 )
   if( src[ s ] )
   return true;
 
@@ -8399,12 +8427,10 @@ function arrayNone( src )
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.longIs( src ) );
 
-  debugger;
-  for( var s = 0 ; s < src.length ; src++ )
+  for( var s = 0 ; s < src.length ; s += 1 )
   if( src[ s ] )
   return false;
 
-  debugger;
   return true;
 }
 
@@ -18403,8 +18429,9 @@ var Routines =
   regexpObjectIs : regexpObjectIs,
   regexpLike : regexpLike,
   regexpsLike : regexpsLike,
-
   regexpsAreIdentical : regexpsAreIdentical,
+
+  regexpTest : regexpTest,
   regexpEscape : regexpEscape,
   regexpsEscape : _.Later( _, routineVectorize_functor, regexpEscape ),
 
