@@ -2355,7 +2355,8 @@ function _assertDebugger( condition, args )
     args : _.longSlice( args,1 ),
     level : 3,
   });
-  console.log( _.errBriefly( err ) );
+  // console.error( 'Assert failed' );
+  console.error( 'Assert failed :', _.errBriefly( err ).toString() );
   debugger;
 }
 
