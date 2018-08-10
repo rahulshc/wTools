@@ -120,6 +120,7 @@ function regexpsSources( test )
   {
     sources : [],
     flags : null,
+    escaping : 0,
   }
   var got = _.regexpsSources([]);
   test.identical( got, expected );
@@ -133,6 +134,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc' ],
     flags : null,
+    escaping : 0
   }
   var got = _.regexpsSources([ r1 ]);
   test.identical( got, expected );
@@ -146,6 +148,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc' ],
     flags : 'i',
+    escaping : 0
   }
   var got = _.regexpsSources([ r1 ]);
   test.identical( got, expected );
@@ -161,6 +164,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc', 'def', '.+' ],
     flags : null,
+    escaping : 0
   }
   var got = _.regexpsSources([ r1, r2, r3 ]);
   test.identical( got, expected );
@@ -176,6 +180,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc', 'def', '.+' ],
     flags : '',
+    escaping : 0
   }
   var got = _.regexpsSources([ r1, r2, r3 ]);
   test.identical( got, expected );
@@ -191,6 +196,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc', 'def', '.+' ],
     flags : 'i',
+    escaping : 0
   }
   var got = _.regexpsSources([ r1, r2, r3 ]);
   test.identical( got, expected );
@@ -206,6 +212,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc', 'def', '.+' ],
     flags : 'iy',
+    escaping : 0
   }
   var got = _.regexpsSources([ r1, r2, r3 ]);
   test.identical( got, expected );
@@ -218,6 +225,7 @@ function regexpsSources( test )
   {
     sources : [],
     flags : null,
+    escaping : 0
   }
   var o =
   {
@@ -238,6 +246,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc', 'def', '.+' ],
     flags : 'iy',
+    escaping : 0
   }
   var o =
   {
@@ -258,6 +267,7 @@ function regexpsSources( test )
   {
     sources : [ 'abc', 'def', '.+' ],
     flags : 'i',
+    escaping : 0
   }
   var o =
   {
