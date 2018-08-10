@@ -481,8 +481,8 @@ function mapComplement( test )
 {
 
   test.case = 'an object';
-  var got = _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
-  var expected = { a : 1, b : 'yyy', c : 3 };
+  var got = _.mapComplement( { a : 1, b : 'ab' }, { a : 12 , c : 3 } );
+  var expected = { a : 1, b : 'ab', c : 3 };
   test.identical( got, expected );
 
   /**/
@@ -815,7 +815,7 @@ function mapKeys( test )
   var expected = [];
   test.identical( got, expected );
 
-  var got = _.mapKeys( { a : 1, b : undefined } ); 
+  var got = _.mapKeys( { a : 1, b : undefined } );
   var expected = [ 'a', 'b' ];
   test.identical( got, expected );
 

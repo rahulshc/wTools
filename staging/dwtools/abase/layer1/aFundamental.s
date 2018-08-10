@@ -18,6 +18,8 @@
  * @file aFundamental.s.
  */
 
+/* experiment() */
+
 // global
 
 var _global = undefined;
@@ -14605,8 +14607,8 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
  * @param { ...objectLike } arguments[] - The source object(s).
  *
  * @example
- * // returns { a : 1, b : 'yyy', c : 3 };
- * _.mapComplement( { a : 1, b : 'yyy' }, { a : 12 , c : 3 } );
+ * // returns { a : 1, b : 'ab', c : 3 };
+ * _.mapComplement( { a : 1, b : 'ab' }, { a : 12 , c : 3 } );
  *
  * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
  * @function mapComplement
@@ -18430,6 +18432,8 @@ var Routines =
   regexpLike : regexpLike,
   regexpsLike : regexpsLike,
   regexpsAreIdentical : regexpsAreIdentical,
+
+  /* !!! move out */
 
   regexpTest : regexpTest,
   regexpEscape : regexpEscape,

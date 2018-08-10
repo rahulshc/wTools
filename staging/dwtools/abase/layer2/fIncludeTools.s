@@ -366,7 +366,7 @@ IncludeHandlersMap[ 'wPrinterToFile' ] =
 
 IncludeHandlersMap[ 'wPrinterToJs' ] =
 {
-  includeAny : [ '../../abase/printer/top/ToJstructure.s','abase/printer/top/ToJstructure.s','wloggertojstructure' ],
+  includeAny : [ '../../abase/printer/top/ToJstructure.s','abase/printer/top/ToJstructure.s','wloggertojs' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
 }
 
