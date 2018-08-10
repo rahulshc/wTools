@@ -2457,7 +2457,7 @@ defaults.path = null;
 defaults.accuracy = null;
 
 // --
-// define class
+// declare
 // --
 
 var Proto =

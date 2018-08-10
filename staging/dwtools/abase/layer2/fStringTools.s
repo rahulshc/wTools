@@ -4071,7 +4071,7 @@ function strsNoneHas( srcs, ins )
 }
 
 // --
-// define class
+// declare
 // --
 
 var Proto =

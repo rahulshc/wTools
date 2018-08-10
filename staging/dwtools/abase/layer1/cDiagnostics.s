@@ -926,7 +926,7 @@ function assertOwnNoConstructor( ins )
 }
 
 // --
-// define class
+// declare
 // --
 
 var Proto =

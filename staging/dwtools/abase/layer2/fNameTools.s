@@ -181,7 +181,7 @@ var idWithInt = (function()
 })();
 
 // --
-// define class
+// declare
 // --
 
 var Proto =
