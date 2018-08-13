@@ -4207,25 +4207,25 @@ function _equalizerFromMapper( mapper )
 
 //
 
-function _comparatorFromEvaluator( mapper )
+function _comparatorFromEvaluator( evaluator )
 {
 
-  if( mapper === undefined )
-  mapper = function mapper( a,b ){ return a-b };
+  if( evaluator === undefined )
+  evaluator = function comparator( a,b ){ return a-b };
 
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( mapper.length === 1 || mapper.length === 2 );
+  _.assert( evaluator.length === 1 || evaluator.length === 2 );
 
-  if( mapper.length === 1 )
+  if( evaluator.length === 1 )
   {
-    var comparator = function comparatorFromMapper( a,b )
+    var comparator = function comparatorFromEvaluator( a,b )
     {
-      return mapper( a ) - mapper( b );
+      return evaluator( a ) - evaluator( b );
     }
     return comparator;
   }
 
-  return mapper;
+  return evaluator;
 }
 
 // --
@@ -10891,11 +10891,11 @@ function arrayIndicesOfGreatest( srcArray,numberOfElements,comparator )
 
     if( result.length < numberOfElements )
     {
-      _.arraySortedAdd( result, i, rcomparator );
+      _.sorted.add( result, i, rcomparator );
       continue;
     }
 
-    _.arraySortedAdd( result, i, rcomparator );
+    _.sorted.add( result, i, rcomparator );
     result.splice( result.length-1,1 );
 
   }
@@ -12534,7 +12534,9 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 
 function arrayFlatten( dstArray, insArray )
 {
-  arrayFlattened.apply( this, arguments );
+  if( dstArray === null )
+  dstArray = [];
+  _.arrayFlattened.call( this, dstArray, insArray );
   return dstArray;
 }
 

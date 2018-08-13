@@ -451,7 +451,13 @@ IncludeHandlersMap[ 'wTraverser' ] =
 IncludeHandlersMap[ 'wArraySorted' ] =
 {
   includeAny : [ '../../abase/layer4/ArraySorted.s','abase/layer4/ArraySorted.s','warraysorted' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.arraySortedLookUp },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.sorted },
+}
+
+IncludeHandlersMap[ 'wArraySparse' ] =
+{
+  includeAny : [ '../../abase/layer4/ArraySparse.s','abase/layer4/ArraySparse.s','warraysparse' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.sparse },
 }
 
 IncludeHandlersMap[ 'wBaseEncoder' ] =
