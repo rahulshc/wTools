@@ -3903,7 +3903,7 @@ function routineExtend( dst )
   for( var a = 1 ; a < arguments.length ; a++ )
   {
     var src = arguments[ a ];
-    _.assert( _.routineIs( src ) );
+    _.assert( _.routineIs( src ) || _.mapIs( src ) );
     for( var s in src )
     {
       var el = src[ s ];
