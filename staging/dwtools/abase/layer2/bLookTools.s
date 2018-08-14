@@ -2238,7 +2238,7 @@ function entityIdentical( src1, src2, options )
   return result;
 }
 
-_.routineSupplement( entityIdentical, _entityEqual );
+_.routineExtend( entityIdentical, _entityEqual );
 
 var defaults = entityIdentical.defaults;
 
@@ -2282,7 +2282,7 @@ function entityEquivalent( src1, src2, options )
   return result;
 }
 
-_.routineSupplement( entityEquivalent, _entityEqual );
+_.routineExtend( entityEquivalent, _entityEqual );
 
 var defaults = entityEquivalent.defaults;
 
@@ -2328,7 +2328,7 @@ function entityContains( src1, src2, options )
   return result;
 }
 
-_.routineSupplement( entityContains, _entityEqual );
+_.routineExtend( entityContains, _entityEqual );
 
 var defaults = entityContains.defaults;
 

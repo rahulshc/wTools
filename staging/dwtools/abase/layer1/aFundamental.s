@@ -3872,11 +3872,19 @@ function routineOptionsFromThis( routine, _this, constructor )
 
 //
 
-function routineSupplement( dst )
+function routineExtend( dst )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.routineIs( dst ) );
+  _.assert( _.routineIs( dst ) || dst === null );
+
+  /* */
+
+  let originalDst = dst;
+  if( dst === null )
+  {
+    dst = Object.create( null );
+  }
 
   /* */
 
@@ -3912,29 +3920,75 @@ function routineSupplement( dst )
 
   /* */
 
+  if( originalDst === null )
+  {
+    let routine, result;
+
+    for( var a = 1 ; a < arguments.length ; a++ )
+    if( _.routineIs( arguments[ a ] ) )
+    {
+      routine = arguments[ a ];
+      break;
+    }
+
+    if( dst.pre && dst.body )
+    result = _.routineForPreAndBody( dst.pre, dst.body );
+    else
+    result = function call()
+    {
+      debugger;
+      return _.routineForPreAndBody( dst.p );
+    }
+
+    _.mapExtend( result, dst );
+
+    dst = result;
+  }
+
+  /* */
+
   return dst;
 }
 
 //
 
-function routineForPreAndBody( pre, body )
+function routineForPreAndBody_pre( routine, args )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.routineIs( pre ) || _.routinesAre( pre ) );
-  _.assert( _.routineIs( body ) );
-  _.assert( !!body.defaults );
-  _.assertMapHasOnly( pre,{} );
-  _.assertMapHasOnly( body,{ defaults : null } );
+  let o = args[ 0 ];
 
-  // if( !_.routineIs( pre ) )
-  // debugger;
-  if( !_.routineIs( pre ) )
-  pre = _.routinesChain( pre, ( o ) => _.argumentsArrayFrom([ callPreAndBody, [ o ] ]) );
+  if( args[ 1 ] !== undefined )
+  {
+    o = { pre : args[ 0 ], body : args[ 1 ] };
+  }
 
+  _.routineOptions( routine, o );
+  _.assert( args.length === 1 || args.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2 );
+  _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ) );
+  _.assert( _.routineIs( o.body ) );
+  _.assert( !!o.body.defaults );
+  _.assertMapHasOnly( o.pre, o.preProperties );
+  _.assertMapHasOnly( o.body, o.bodyProperties );
+
+  return o;
+}
+
+//
+
+function routineForPreAndBody_body( o )
+{
+
+  _.assert( arguments.length === 1 );
+
+  if( !_.routineIs( o.pre ) )
+  o.pre = _.routinesChain( o.pre, ( o ) => _.argumentsArrayFrom([ callPreAndBody, [ o ] ]) );
+
+  let pre = o.pre;
+  let body = o.body;
   function callPreAndBody()
   {
     let result;
-    var o = pre.call( this, callPreAndBody, arguments );
+    let o = pre.call( this, callPreAndBody, arguments );
     if( _.argumentsArrayIs( o ) )
     result = body.apply( this, o );
     else
@@ -3942,18 +3996,38 @@ function routineForPreAndBody( pre, body )
     return result;
   }
 
-  _.routineSupplement( callPreAndBody, body );
+  _.routineExtend( callPreAndBody, o.body );
 
-  callPreAndBody.pre = pre;
-  callPreAndBody.body = body;
+  callPreAndBody.pre = o.pre;
+  callPreAndBody.body = o.body;
 
   return callPreAndBody;
 }
 
+routineForPreAndBody_body.defaults =
+{
+  pre : null,
+  body : null,
+  preProperties : {},
+  bodyProperties : { defaults : null },
+}
+
+//
+
+function routineForPreAndBody()
+{
+  let o = routineForPreAndBody.pre.call( this, routineForPreAndBody, arguments );
+  let result = routineForPreAndBody.body.call( this, o );
+  return result;
+}
+
+routineForPreAndBody.pre = routineForPreAndBody_pre;
+routineForPreAndBody.body = routineForPreAndBody_body;
+routineForPreAndBody.defaults = routineForPreAndBody_body.defaults;
+
 //
 
 /* !!! need to complete the routine for all cases, good test coverage is required too  */
-
 
 function routineVectorize_functor( o )
 {
@@ -18350,7 +18424,7 @@ var Routines =
   assertRoutineOptionsPreservingUndefines : assertRoutineOptionsPreservingUndefines,
   routineOptionsFromThis : routineOptionsFromThis,
 
-  routineSupplement : routineSupplement,
+  routineExtend : routineExtend,
   routineForPreAndBody : routineForPreAndBody,
 
   routineVectorize_functor : routineVectorize_functor,
