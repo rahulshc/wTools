@@ -121,14 +121,15 @@ function _includeWithRequireAct( src )
   if( typeof module !== 'undefined' )
   try
   {
+    // debugger;
     return __include( src );
   }
   catch( err )
   {
+    debugger;
     throw _.err( err,'\n','Cant require',src );
   }
-  else
-  throw _.err( 'Can make include only on Nodejs.' );
+  else throw _.err( 'Cant include, no "require".' );
 
 }
 
@@ -424,9 +425,9 @@ IncludeHandlersMap[ 'wExternalFundamentals' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.shell },
 }
 
-// IncludeHandlersMap[ 'wPath' ] =
+// IncludeHandlersMap[ 'wPathFundamentals' ] =
 // {
-//   includeAny : [ '../../abase/layer3/Path.s','abase/layer3/Path.s','wPath' ],
+//   includeAny : [ '../../abase/layer3/Path.s','abase/layer3/Path.s','wPathFundamentals' ],
 //   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.dir },
 // }
 
@@ -486,7 +487,7 @@ IncludeHandlersMap[ 'wRoutineTransform' ] =
 
 IncludeHandlersMap[ 'wDomTools' ] =
 {
-  includeAny : [ '../../abase/tbrowser/DomBase.js','abase/tbrowser/DomBase.js','wdomtools' ],
+  includeAny : [ '../../abase/layer2/aCommon.js','abase/tbrowser/layer2/aCommon.js','wdomtools' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
 }
 
