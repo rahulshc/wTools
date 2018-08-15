@@ -2821,6 +2821,10 @@ function consoleIs( src )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
 
+  if( console.Console )
+  if( src && src instanceof console.Console )
+  return true;
+
   if( src !== console )
   return false;
 
