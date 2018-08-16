@@ -485,9 +485,21 @@ IncludeHandlersMap[ 'wRoutineTransform' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
 }
 
-IncludeHandlersMap[ 'wDomTools' ] =
+IncludeHandlersMap[ 'wDomLayer1' ] =
 {
-  includeAny : [ '../../abase/layer2/aCommon.js','abase/tbrowser/layer2/aCommon.js','wdomtools' ],
+  includeAny : [ '../../abase/tbrowser/layer1/aCommon.js','abase/tbrowser/layer1/aCommon.js','wdomlayer1' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
+}
+
+IncludeHandlersMap[ 'wDomLayer3' ] =
+{
+  includeAny : [ '../../abase/tbrowser/layer3/aCommon.js','abase/tbrowser/layer3/aCommon.js','wdomlayer3' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
+}
+
+IncludeHandlersMap[ 'wDomLayer4' ] =
+{
+  includeAny : [ '../../abase/tbrowser/layer4/aCommon.js','abase/tbrowser/layer4/aCommon.js','wdomlayer4' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
 }
 
