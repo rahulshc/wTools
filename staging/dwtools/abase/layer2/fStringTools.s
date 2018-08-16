@@ -2282,7 +2282,7 @@ _.assert( _.objectIs( strSplitFast.defaults ) );
 
 //
 
-function _strSplit_body/**2**/( o )
+function _strSplit_body( o )
 {
 
   o.delimeter = _.arrayAs( o.delimeter );
@@ -2325,7 +2325,7 @@ function _strSplit_body/**2**/( o )
   return o.splits;
 }
 
-var defaults = _strSplit_body/**2**/.defaults = Object.create( _strSplitFast_body.defaults );
+var defaults = _strSplit_body.defaults = Object.create( _strSplitFast_body.defaults );
 
 defaults.preservingEmpty = 1;
 defaults.preservingDelimeters = 1;
@@ -2392,12 +2392,12 @@ defaults.onQuote = null;
  */
 
 var pre = [ strSplitFast.pre, strSplitsQuote.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
-var strSplit/**2**/ = _.routineForPreAndBody( pre, _strSplit_body/**2**/ );
+var strSplit = _.routineForPreAndBody( pre, _strSplit_body );
 
-_.assert( strSplit/**2**/.pre !== strSplitFast.pre );
-_.assert( _.routineIs( strSplit/**2**/.pre ) );
-_.assert( strSplit/**2**/.body === _strSplit_body/**2**/ );
-_.assert( _.objectIs( strSplit/**2**/.defaults ) );
+_.assert( strSplit.pre !== strSplitFast.pre );
+_.assert( _.routineIs( strSplit.pre ) );
+_.assert( strSplit.body === _strSplit_body );
+_.assert( _.objectIs( strSplit.defaults ) );
 
 //
 
@@ -2686,7 +2686,7 @@ function _strExtractInlined_body( o )
   if( o.delimeter === null )
   o.delimeter = '#';
 
-  var splitArray = _.strSplit/**1**/
+  var splitArray = _.strSplit
   ({
     src : o.src,
     delimeter : o.delimeter,
@@ -2823,7 +2823,7 @@ function _strExtractInlinedStereo_body( o )
 
   _.assert( arguments.length === 1, 'expects single options map argument' );
 
-  var splitArray = _.strSplit/**1**/
+  var splitArray = _.strSplit
   ({
     src : o.src,
     delimeter : o.prefix,
@@ -4143,7 +4143,7 @@ var Proto =
   strSplitsDropEmpty : strSplitsDropEmpty,
 
   strSplitFast : strSplitFast,
-  strSplit/**2**/ : strSplit/**2**/,
+  strSplit : strSplit,
   strSplitNonPreserving : strSplitNonPreserving,
 
   strSplitNaive : strSplitNaive,

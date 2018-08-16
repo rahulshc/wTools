@@ -91,7 +91,7 @@ function _setupUnhandledErrorHandler()
       console.error( err2.toString() );
     }
 
-    console.error( '------------------------------- unhandled errorr -------------------------------' );
+    console.error( '------------------------------- unhandled errorr ------------------------------->' );
 
     try
     {
@@ -139,7 +139,7 @@ function _setupUnhandledErrorHandler()
 
     }
 
-    console.error( '------------------------------- unhandled errorr -------------------------------' );
+    console.error( '------------------------------- unhandled errorr -------------------------------<' );
     debugger;
 
   }

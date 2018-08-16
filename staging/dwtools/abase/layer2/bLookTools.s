@@ -1144,7 +1144,7 @@ function _entitySelectOptions( o )
     if( _.numberIs( query ) )
     qarrey = [ query ];
     else
-    qarrey = _.strSplitNaive/**1**/
+    qarrey = _.strSplitNaive
     ({
       src : query,
       delimeter : o.delimeter,

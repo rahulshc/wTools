@@ -539,6 +539,12 @@ IncludeHandlersMap[ 'wVocabulary' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Vocabulary },
 }
 
+IncludeHandlersMap[ 'wCommandsAggregator' ] =
+{
+  includeAny : [ '../../amid/layer7/CommandsAggregator.s','amid/layer7/CommandsAggregator.s','wcommandsaggregator' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsAggregator },
+}
+
 IncludeHandlersMap[ 'wFiles' ] =
 {
   includeAny : [ '../../amid/files/UseTop.s','amid/files/UseTop.s','wFiles' ],
