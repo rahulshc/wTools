@@ -535,7 +535,7 @@ IncludeHandlersMap[ 'wChangeTransactor' ] =
 
 IncludeHandlersMap[ 'wVocabulary' ] =
 {
-  includeAny : [ '../../amid/bclass/Vocabulary.s','amid/bclass/Vocabulary.s','wVocabulary' ],
+  includeAny : [ '../../amid/bclass/Vocabulary.s','amid/bclass/Vocabulary.s','wvocabulary' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Vocabulary },
 }
 
