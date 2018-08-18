@@ -93,20 +93,21 @@ var _ = Self;
 
 // specia globals
 
-if(  !_global_.WTOOLS_PRIVATE  )
-{
-  _global_.def = Symbol.for( 'default' );
-  _global_.all = Symbol.for( 'all' );
-  _global_.any = Symbol.for( 'any' );
-  _global_.none = Symbol.for( 'none' );
-  _global_.nothing = Symbol.for( 'nothing' );
-}
-
-Self.def = _global_.def;
-Self.all = _global_.all;
-Self.any = _global_.any;
-Self.none = _global_.none;
-Self.nothing = _global_.nothing;
+// if( !_global_.WTOOLS_PRIVATE  )
+// {
+//   _global_.def = Symbol.for( 'default' );
+//   _global_.all = Symbol.for( 'all' );
+//   _global_.any = Symbol.for( 'any' );
+//
+//   _global_.none = Symbol.for( 'none' );
+//   _global_.nothing = Symbol.for( 'nothing' );
+// }
+//
+// Self.def = _global_.def;
+// Self.all = _global_.all;
+// Self.any = _global_.any;
+// Self.none = _global_.none;
+// Self.nothing = _global_.nothing;
 
 // type aliases
 
@@ -141,87 +142,156 @@ var _floor = Math.floor;
 // etc
 // --
 
-function each( o )
+function each( src, onEach )
 {
 
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-
-  _.routineOptions( each, o );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( o.onUp && o.onUp.length <= 2 );
+  _.assert( arguments.length === 2 );
+  _.assert( onEach.length <= 2 );
+  _.assert( _.routineIs( onEach ) );
 
   /* */
 
-  if( _.longIs( o.src ) )
+  if( _.longIs( src ) )
   {
 
-    for( var k = 0 ; k < o.src.length ; k++ )
+    for( var k = 0 ; k < src.length ; k++ )
     {
-      o.onUp.call( o, o.src[ k ], k );
+      onEach( src[ k ], k, src );
     }
 
   }
-  else if( _.objectLike( o.src ) )
+  else if( _.objectLike( src ) )
   {
 
-    for( var k in o.src )
+    for( var k in src )
     {
-      o.onUp.call( o, o.src[ k ], k );
+      onEach( src[ k ], k, src );
     }
 
   }
-  else _.assert( 0, 'not container' );
+  else
+  {
+    onEach( src, undefined, undefined );
+  }
 
   /* */
 
-  return o.src;
+  return src;
+  // if( arguments.length === 2 )
+  // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  //
+  // _.routineOptions( each, o );
+  // _.assert( arguments.length === 1 || arguments.length === 2 );
+  // _.assert( o.onUp && o.onUp.length <= 2 );
+  //
+  // /* */
+  //
+  // if( _.longIs( o.src ) )
+  // {
+  //
+  //   for( var k = 0 ; k < o.src.length ; k++ )
+  //   {
+  //     o.onUp.call( o, o.src[ k ], k );
+  //   }
+  //
+  // }
+  // else if( _.objectLike( o.src ) )
+  // {
+  //
+  //   for( var k in o.src )
+  //   {
+  //     o.onUp.call( o, o.src[ k ], k );
+  //   }
+  //
+  // }
+  // else
+  // {
+  //   o.onUp.call( o, o.src, null );
+  // }
+  //
+  // /* */
+  //
+  // return src;
 }
 
-var defaults = each.defaults = Object.create( null );
-
-defaults.src = null;
-defaults.onUp = function( e,k ){};
+// var defaults = each.defaults = Object.create( null );
+//
+// defaults.src = null;
+// defaults.onUp = function( e,k ){};
 
 //
 
-function eachName( o )
+function eachName( src, onEach )
 {
-
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-
-  _.routineOptions( eachName, o );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( o.onUp && o.onUp.length <= 3 );
+  _.assert( arguments.length === 2 );
+  _.assert( onEach.length <= 2 );
+  _.assert( _.routineIs( onEach ) );
 
   /* */
 
-  if( _.longIs( o.src ) )
+  if( _.longIs( src ) )
   {
 
-    for( var index = 0 ; index < o.src.length ; index++ )
+    for( var index = 0 ; index < src.length ; index++ )
     {
-      o.onUp.call( o, o.src[ index ], undefined, index );
+      onEach( src[ index ], undefined, index, src );
     }
 
   }
-  else if( _.objectLike( o.src ) )
+  else if( _.objectLike( src ) )
   {
 
     var index = 0;
-    for( var k in o.src )
+    for( var k in src )
     {
-      o.onUp.call( o, k, o.src[ k ], index );
+      onEach( k, src[ k ], index, src );
       index += 1;
     }
 
   }
-  else _.assert( 0, 'not container' );
+  else
+  {
+    onEach( src, undefined, undefined, undefined );
+  }
 
   /* */
 
-  return o.src;
+  return src;
+
+  // if( arguments.length === 2 )
+  // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  //
+  // _.routineOptions( eachName, o );
+  // _.assert( arguments.length === 1 || arguments.length === 2 );
+  // _.assert( o.onUp && o.onUp.length <= 3 );
+  //
+  // /* */
+  //
+  // if( _.longIs( o.src ) )
+  // {
+  //
+  //   for( var index = 0 ; index < o.src.length ; index++ )
+  //   {
+  //     o.onUp.call( o, o.src[ index ], undefined, index );
+  //   }
+  //
+  // }
+  // else if( _.objectLike( o.src ) )
+  // {
+  //
+  //   var index = 0;
+  //   for( var k in o.src )
+  //   {
+  //     o.onUp.call( o, k, o.src[ k ], index );
+  //     index += 1;
+  //   }
+  //
+  // }
+  // else _.assert( 0, 'not container' );
+  //
+  // /* */
+  //
+  // return src;
 }
 
 var defaults = eachName.defaults = Object.create( null );
@@ -231,45 +301,213 @@ defaults.onUp = function( e,k ){};
 
 //
 
-function eachOwn( o )
+function eachOwn( src, onEach )
 {
 
-  if( arguments.length === 2 )
-  o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  _.assert( arguments.length === 2 );
+  _.assert( onEach.length <= 2 );
+  _.assert( _.routineIs( onEach ) );
 
-  _.routineOptions( eachOwn, o );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( o.onUp && o.onUp.length <= 2 );
+  /* */
 
-  if( _.longIs( o.src ) )
+  if( _.longIs( src ) )
   {
 
-    for( var k = 0 ; k < o.src.length ; k++ )
+    for( var k = 0 ; k < src.length ; k++ )
     {
-      o.onUp.call( o, o.src[ k ], k );
+      onEach( src[ k ], k, src );
     }
 
   }
-  else if( _.objectLike( o.src ) )
+  else if( _.objectLike( src ) )
   {
 
-    for( var k in o.src )
+    for( var k in src )
     {
-      if( !_ObjectHasOwnProperty.call( o.src, k ) )
+      if( !_ObjectHasOwnProperty.call( src, k ) )
       continue;
-      o.onUp.call( o, o.src[ k ], k );
+      onEach( src[ k ], k, src );
     }
 
   }
-  else _.assert( 0,'not container' );
+  else
+  {
+    onEach( src, undefined, undefined );
+  }
 
-  return o.src;
+  /* */
+
+  return src;
+
+  // if( arguments.length === 2 )
+  // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+  //
+  // _.routineOptions( eachOwn, o );
+  // _.assert( arguments.length === 1 || arguments.length === 2 );
+  // _.assert( o.onUp && o.onUp.length <= 2 );
+  //
+  // if( _.longIs( o.src ) )
+  // {
+  //
+  //   for( var k = 0 ; k < o.src.length ; k++ )
+  //   {
+  //     o.onUp.call( o, o.src[ k ], k );
+  //   }
+  //
+  // }
+  // else if( _.objectLike( o.src ) )
+  // {
+  //
+  //   for( var k in o.src )
+  //   {
+  //     if( !_ObjectHasOwnProperty.call( o.src, k ) )
+  //     continue;
+  //     o.onUp.call( o, o.src[ k ], k );
+  //   }
+  //
+  // }
+  // else _.assert( 0,'not container' );
+  //
+  // return src;
 }
 
-var defaults = eachOwn.defaults = Object.create( null );
+//
 
-defaults.src = null;
-defaults.onUp = function( e,k ){};
+function every( src, onEach )
+{
+  let result = true;
+
+  _.assert( arguments.length === 2 );
+  _.assert( onEach.length <= 2 );
+  _.assert( _.routineIs( onEach ) );
+
+  /* */
+
+  if( _.longIs( src ) )
+  {
+
+    for( var k = 0 ; k < src.length ; k++ )
+    {
+      result = onEach( src[ k ], k, src );
+      if( !result )
+      return result;
+    }
+
+  }
+  else if( _.objectLike( src ) )
+  {
+
+    for( var k in src )
+    {
+      result = onEach( src[ k ], k, src );
+      if( !result )
+      return result;
+    }
+
+  }
+  else
+  {
+    result = onEach( src, undefined, undefined );
+    if( !result )
+    return result;
+  }
+
+  /* */
+
+  return true;
+}
+
+//
+
+function any( src, onEach )
+{
+  let result = false;
+
+  _.assert( arguments.length === 2 );
+  _.assert( onEach.length <= 2 );
+  _.assert( _.routineIs( onEach ) );
+
+  /* */
+
+  if( _.longIs( src ) )
+  {
+
+    for( var k = 0 ; k < src.length ; k++ )
+    {
+      result = onEach( src[ k ], k, undefined );
+      if( result )
+      return result;
+    }
+
+  }
+  else if( _.objectLike( src ) )
+  {
+
+    for( var k in src )
+    {
+      result = onEach( src[ k ], k, undefined );
+      if( result )
+      return result;
+    }
+
+  }
+  else
+  {
+    result = onEach( src, undefined, undefined );
+    if( result )
+    return result;
+  }
+
+  /* */
+
+  return false;
+}
+
+//
+
+function none( src, onEach )
+{
+  let result = true;
+
+  _.assert( arguments.length === 2 );
+  _.assert( onEach.length <= 2 );
+  _.assert( _.routineIs( onEach ) );
+
+  /* */
+
+  if( _.longIs( src ) )
+  {
+
+    for( var k = 0 ; k < src.length ; k++ )
+    {
+      result = onEach( src[ k ], k, src );
+      if( result )
+      return !result;
+    }
+
+  }
+  else if( _.objectLike( src ) )
+  {
+
+    for( var k in src )
+    {
+      result = onEach( src[ k ], k, src );
+      if( result )
+      return !result;
+    }
+
+  }
+  else
+  {
+    result = onEach( src, undefined, undefined );
+    if( result )
+    return !result;
+  }
+
+  /* */
+
+  return true;
+}
 
 //
 
@@ -1054,22 +1292,22 @@ function entityKeyWithValue( src,value )
  *
  * @example
  * //returns Object {a: 1}
- * var check = _._entityConditionMake( { a : 1, b : 1, c : 1 } );
+ * var check = _._selectorMake( { a : 1, b : 1, c : 1 } );
  * check( { a : 1 } );
  *
  * @example
  * //returns false
  * function condition( src ){ return src.y === 1 }
- * var check = _._entityConditionMake( condition );
+ * var check = _._selectorMake( condition );
  * check( { a : 2 } );
  *
- * @function _entityConditionMake
+ * @function _selectorMake
  * @throws {exception} If no argument provided.
  * @throws {exception} If( condition ) is not a Routine or Object.
  * @memberof wTools
 */
 
-function _entityConditionMake( condition,levels )
+function _selectorMake( condition, levels )
 {
   var result;
 
@@ -1079,7 +1317,7 @@ function _entityConditionMake( condition,levels )
   if( _.objectIs( condition ) )
   {
     var template = condition;
-    condition = function( e )
+    condition = function selector( e )
     {
       if( e === template )
       return e;
@@ -1216,7 +1454,7 @@ function _entityFilter( o )
 {
 
   var result;
-  var onEach = _entityConditionMake( o.onEach,o.conditionLevels );
+  var onEach = _selectorMake( o.onEach,o.conditionLevels );
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.objectLike( o.src ) || _.longIs( o.src ),'entityFilter : expects objectLike or longIs src, but got',_.strTypeOf( o.src ) );
@@ -13751,7 +13989,7 @@ function mapSatisfy( o )
 
   _.routineOptions( mapSatisfy,o );
 
-  return _mapSatisfy( o.template,o.src,o.src,o.levels );
+  return _mapSatisfy( o.template, o.src, o.src, o.levels );
 }
 
 mapSatisfy.defaults =
@@ -16775,7 +17013,7 @@ function mapIndexWithValue( srcMap,value )
 }
 
 // --
-// map logic
+// map logic operator
 // --
 
 /**
@@ -17311,27 +17549,166 @@ _mapOnly.defaults =
 }
 
 // --
-// map sure
+// map has/own
 // --
 
-function sureMapHasFields( srcMap, screenMaps, msg )
+function mapHasExactly( srcMap, screenMaps )
 {
   var result = true;
 
-  result = result && sureMapHasOnly( srcMap, screenMaps );
-  result = result && sureMapHasAll( srcMap, screenMaps );
+  _.assert( arguments.length === 2 );
+
+  result = result && _.mapHasOnly( srcMap, screenMaps );
+  result = result && _.mapHasAll( srcMap, screenMaps );
 
   return true;
 }
 
 //
 
-function sureMapOwnFields( srcMap, screenMaps, msg )
+function mapOwnExactly( srcMap, screenMaps )
 {
   var result = true;
 
-  result = result && sureMapOwnOnly( srcMap, screenMaps );
-  result = result && sureMapOwnAll( srcMap, screenMaps );
+  _.assert( arguments.length === 2 );
+
+  result = result && _.mapOwnOnly( srcMap, screenMaps );
+  result = result && _.mapOwnAll( srcMap, screenMaps );
+
+  return true;
+}
+
+//
+
+function mapHasOnly( srcMap, screenMaps )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
+
+  if( but.length > 0 )
+  return false;
+
+  return true;
+}
+
+//
+
+function mapOwnOnly( srcMap, screenMaps )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
+
+  if( but.length > 0 )
+  return false;
+
+  return true;
+}
+
+//
+
+function mapHasAll( srcMap, all )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var but = Object.keys( _.mapBut( all,srcMap ) );
+
+  if( but.length > 0 )
+  return false;
+
+  return true;
+}
+
+//
+
+function mapOwnAll( srcMap, all )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var but = Object.keys( _.mapOwnBut( all,srcMap ) );
+
+  if( but.length > 0 )
+  return false;
+
+  return true;
+}
+
+//
+
+function mapHasNone( srcMap, screenMaps )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var but = _.mapOnly( srcMap, screenMaps );
+  var keys = Object.keys( but );
+  if( keys.length )
+  return false;
+
+  return true;
+}
+
+//
+
+function mapOwnNone( srcMap, screenMaps )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
+
+  if( but.length )
+  return false;
+
+  return true;
+}
+
+//
+
+function mapHasNoUndefine( srcMap )
+{
+
+  _.assert( arguments.length === 1 );
+
+  var but = [];
+  var l = arguments.length;
+
+  for( var s in srcMap )
+  if( srcMap[ s ] === undefined )
+  return false;
+
+  return true;
+}
+
+// --
+// map sure
+// --
+
+function sureMapHasExactly( srcMap, screenMaps, msg )
+{
+  var result = true;
+
+  result = result && _.sureMapHasOnly( srcMap, screenMaps );
+  result = result && _.sureMapHasAll( srcMap, screenMaps );
+
+  return true;
+}
+
+//
+
+function sureMapOwnExactly( srcMap, screenMaps, msg )
+{
+  var result = true;
+
+  result = result && _.sureMapOwnOnly( srcMap, screenMaps );
+  result = result && _.sureMapOwnAll( srcMap, screenMaps );
 
   return true;
 }
@@ -17790,7 +18167,7 @@ function assertMapHasFields( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapHasFields.apply( this, arguments );
+  return _.sureMapHasExactly.apply( this, arguments );
 }
 
 //
@@ -17799,7 +18176,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
 {
   if( Config.debug === false )
   return true;
-  return _.sureMapOwnFields.apply( this, arguments );
+  return _.sureMapOwnExactly.apply( this, arguments );
 }
 
 //
@@ -18281,6 +18658,10 @@ var Routines =
   eachName : eachName,
   eachOwn : eachOwn,
 
+  every : every,
+  any : any,
+  none : none,
+
   dup : dup,
 
   // entity modifier
@@ -18312,7 +18693,7 @@ var Routines =
   entityValueWithIndex : entityValueWithIndex, /* dubious */
   entityKeyWithValue : entityKeyWithValue, /* dubious */
 
-  _entityConditionMake : _entityConditionMake,
+  _selectorMake : _selectorMake,
   entityMap : entityMap,
 
   _entityFilter : _entityFilter, /* dubious */
@@ -18988,7 +19369,7 @@ var Routines =
   mapIndexWithKey : mapIndexWithKey,
   mapIndexWithValue : mapIndexWithValue,
 
-  // map logic
+  // map logic operator
 
   mapButConditional : mapButConditional,
   mapBut : mapBut,
@@ -19000,10 +19381,26 @@ var Routines =
   mapOnlyComplementing : mapOnlyComplementing,
   _mapOnly : _mapOnly,
 
+  // map has/own
+
+  mapHasExactly : mapHasExactly,
+  mapOwnExactly : mapOwnExactly,
+
+  mapHasOnly : mapHasOnly,
+  mapOwnOnly : mapOwnOnly,
+
+  mapHasAll : mapHasAll,
+  mapOwnAll : mapOwnAll,
+
+  mapHasNone : mapHasNone,
+  mapOwnNone : mapOwnNone,
+
+  mapHasNoUndefine : mapHasNoUndefine,
+
   // map surer
 
-  sureMapHasFields : sureMapHasFields,
-  sureMapOwnFields : sureMapOwnFields,
+  sureMapHasExactly : sureMapHasExactly,
+  sureMapOwnExactly : sureMapOwnExactly,
 
   sureMapHasOnly : sureMapHasOnly,
   sureMapOwnOnly : sureMapOwnOnly,

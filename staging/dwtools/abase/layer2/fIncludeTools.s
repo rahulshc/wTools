@@ -581,10 +581,16 @@ IncludeHandlersMap[ 'wVerbal' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Verbal },
 }
 
-IncludeHandlersMap[ 'wFileStorage' ] =
+IncludeHandlersMap[ 'wStateStorage' ] =
 {
-  includeAny : [ '../../amid/amixin/FileStorage.s','amid/amixin/FileStorage.s','wfilestorage' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileStorage },
+  includeAny : [ '../../amid/amixin/aStateStorage.s','amid/amixin/aStateStorage.s','wstatestorage' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StateStorage },
+}
+
+IncludeHandlersMap[ 'wStateSession' ] =
+{
+  includeAny : [ '../../amid/amixin/StateSession.s','amid/amixin/StateSession.s','wstatesession' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StateSession },
 }
 
 IncludeHandlersMap[ 'wPathTranslator' ] =
@@ -671,8 +677,6 @@ IncludeHandlersMap[ 'wIncubator' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Incubator },
 }
 
-
-
 IncludeHandlersMap[ 'wCollectionOfInstances' ] =
 {
   includeAny : [ '../../amid/container/CollectionOfInstances.s','amid/container/CollectionOfInstances.s','wcollectionofinstances' ],
@@ -709,13 +713,19 @@ IncludeHandlersMap[ 'wMathConcepts' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.box },
 }
 
+//
+
 IncludeHandlersMap[ 'wFilesOperationsDirector' ] =
 {
-  includeAny : [ '../../../dwtools/atop/files/OperationsDirector.s','atop/files/OperationsDirector.s','wFilesOperationsDirector' ],
+  includeAny : [ '../../../dwtools/atop/files/OperationsDirector.s','atop/files/OperationsDirector.s','wfilesoperationsdirector' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesOperationsDirector },
 }
 
-
+IncludeHandlersMap[ 'wFilesLinker' ] =
+{
+  includeAny : [ '../../../dwtools/atop/files/Linker.s','atop/files/Linker.s','wfileslinker' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesLinker },
+}
 
 IncludeHandlersMap[ 'wBaker' ] =
 {
