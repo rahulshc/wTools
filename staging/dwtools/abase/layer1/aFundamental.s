@@ -139,10 +139,10 @@ var _ceil = Math.ceil;
 var _floor = Math.floor;
 
 // --
-// etc
+// entity iterator
 // --
 
-function each( src, onEach )
+function entityEach( src, onEach )
 {
 
   _.assert( arguments.length === 2 );
@@ -177,51 +177,11 @@ function each( src, onEach )
   /* */
 
   return src;
-  // if( arguments.length === 2 )
-  // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-  //
-  // _.routineOptions( each, o );
-  // _.assert( arguments.length === 1 || arguments.length === 2 );
-  // _.assert( o.onUp && o.onUp.length <= 2 );
-  //
-  // /* */
-  //
-  // if( _.longIs( o.src ) )
-  // {
-  //
-  //   for( var k = 0 ; k < o.src.length ; k++ )
-  //   {
-  //     o.onUp.call( o, o.src[ k ], k );
-  //   }
-  //
-  // }
-  // else if( _.objectLike( o.src ) )
-  // {
-  //
-  //   for( var k in o.src )
-  //   {
-  //     o.onUp.call( o, o.src[ k ], k );
-  //   }
-  //
-  // }
-  // else
-  // {
-  //   o.onUp.call( o, o.src, null );
-  // }
-  //
-  // /* */
-  //
-  // return src;
 }
 
-// var defaults = each.defaults = Object.create( null );
-//
-// defaults.src = null;
-// defaults.onUp = function( e,k ){};
-
 //
 
-function eachName( src, onEach )
+function entityEachName( src, onEach )
 {
   _.assert( arguments.length === 2 );
   _.assert( onEach.length <= 2 );
@@ -294,14 +254,14 @@ function eachName( src, onEach )
   // return src;
 }
 
-var defaults = eachName.defaults = Object.create( null );
+var defaults = entityEachName.defaults = Object.create( null );
 
 defaults.src = null;
 defaults.onUp = function( e,k ){};
 
 //
 
-function eachOwn( src, onEach )
+function entityEachOwn( src, onEach )
 {
 
   _.assert( arguments.length === 2 );
@@ -338,68 +298,47 @@ function eachOwn( src, onEach )
   /* */
 
   return src;
-
-  // if( arguments.length === 2 )
-  // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-  //
-  // _.routineOptions( eachOwn, o );
-  // _.assert( arguments.length === 1 || arguments.length === 2 );
-  // _.assert( o.onUp && o.onUp.length <= 2 );
-  //
-  // if( _.longIs( o.src ) )
-  // {
-  //
-  //   for( var k = 0 ; k < o.src.length ; k++ )
-  //   {
-  //     o.onUp.call( o, o.src[ k ], k );
-  //   }
-  //
-  // }
-  // else if( _.objectLike( o.src ) )
-  // {
-  //
-  //   for( var k in o.src )
-  //   {
-  //     if( !_ObjectHasOwnProperty.call( o.src, k ) )
-  //     continue;
-  //     o.onUp.call( o, o.src[ k ], k );
-  //   }
-  //
-  // }
-  // else _.assert( 0,'not container' );
-  //
-  // return src;
 }
 
 //
 
-function every( src, onEach )
+function entityAll( src, onEach )
 {
   let result = true;
 
-  _.assert( arguments.length === 2 );
-  _.assert( onEach.length <= 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
-  if( _.longIs( src ) )
+  if( _.routineIs( onEach ) )
   {
 
-    for( var k = 0 ; k < src.length ; k++ )
+    if( _.longIs( src ) )
     {
-      result = onEach( src[ k ], k, src );
-      if( !result )
-      return result;
+
+      for( var k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( !result )
+        return result;
+      }
+
     }
-
-  }
-  else if( _.objectLike( src ) )
-  {
-
-    for( var k in src )
+    else if( _.objectLike( src ) )
     {
-      result = onEach( src[ k ], k, src );
+
+      for( var k in src )
+      {
+        result = onEach( src[ k ], k, src );
+        if( !result )
+        return result;
+      }
+
+    }
+    else
+    {
+      result = onEach( src, undefined, undefined );
       if( !result )
       return result;
     }
@@ -407,9 +346,36 @@ function every( src, onEach )
   }
   else
   {
-    result = onEach( src, undefined, undefined );
-    if( !result )
-    return result;
+
+    if( _.longIs( src ) )
+    {
+
+      for( var k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( !result )
+        return result;
+      }
+
+    }
+    else if( _.objectLike( src ) )
+    {
+
+      for( var k in src )
+      {
+        result = src[ k ];
+        if( !result )
+        return result;
+      }
+
+    }
+    else
+    {
+      result = src;
+      if( !result )
+      return result;
+    }
+
   }
 
   /* */
@@ -419,33 +385,43 @@ function every( src, onEach )
 
 //
 
-function any( src, onEach )
+function entityAny( src, onEach )
 {
   let result = false;
 
-  _.assert( arguments.length === 2 );
-  _.assert( onEach.length <= 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
-  if( _.longIs( src ) )
+  if( _.routineIs( onEach ) )
   {
 
-    for( var k = 0 ; k < src.length ; k++ )
+    if( _.longIs( src ) )
     {
-      result = onEach( src[ k ], k, undefined );
-      if( result )
-      return result;
+
+      for( var k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, undefined );
+        if( result )
+        return result;
+      }
+
     }
-
-  }
-  else if( _.objectLike( src ) )
-  {
-
-    for( var k in src )
+    else if( _.objectLike( src ) )
     {
-      result = onEach( src[ k ], k, undefined );
+
+      for( var k in src )
+      {
+        result = onEach( src[ k ], k, undefined );
+        if( result )
+        return result;
+      }
+
+    }
+    else
+    {
+      result = onEach( src, undefined, undefined );
       if( result )
       return result;
     }
@@ -453,9 +429,36 @@ function any( src, onEach )
   }
   else
   {
-    result = onEach( src, undefined, undefined );
-    if( result )
-    return result;
+
+    if( _.longIs( src ) )
+    {
+
+      for( var k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( result )
+        return result;
+      }
+
+    }
+    else if( _.objectLike( src ) )
+    {
+
+      for( var k in src )
+      {
+        result = src[ k ];
+        if( result )
+        return result;
+      }
+
+    }
+    else
+    {
+      result = src;
+      if( result )
+      return result;
+    }
+
   }
 
   /* */
@@ -465,33 +468,43 @@ function any( src, onEach )
 
 //
 
-function none( src, onEach )
+function entityNone( src, onEach )
 {
   let result = true;
 
-  _.assert( arguments.length === 2 );
-  _.assert( onEach.length <= 2 );
-  _.assert( _.routineIs( onEach ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
-  if( _.longIs( src ) )
+  if( _.routineIs( onEach ) )
   {
 
-    for( var k = 0 ; k < src.length ; k++ )
+    if( _.longIs( src ) )
     {
-      result = onEach( src[ k ], k, src );
-      if( result )
-      return !result;
+
+      for( var k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( result )
+        return !result;
+      }
+
     }
-
-  }
-  else if( _.objectLike( src ) )
-  {
-
-    for( var k in src )
+    else if( _.objectLike( src ) )
     {
-      result = onEach( src[ k ], k, src );
+
+      for( var k in src )
+      {
+        result = onEach( src[ k ], k, src );
+        if( result )
+        return !result;
+      }
+
+    }
+    else
+    {
+      result = onEach( src, undefined, undefined );
       if( result )
       return !result;
     }
@@ -499,14 +512,238 @@ function none( src, onEach )
   }
   else
   {
-    result = onEach( src, undefined, undefined );
-    if( result )
-    return !result;
+
+    if( _.longIs( src ) )
+    {
+
+      for( var k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( result )
+        return !result;
+      }
+
+    }
+    else if( _.objectLike( src ) )
+    {
+
+      for( var k in src )
+      {
+        result = src[ k ];
+        if( result )
+        return !result;
+      }
+
+    }
+    else
+    {
+      result = src;
+      if( result )
+      return !result;
+    }
+
   }
 
   /* */
 
   return true;
+}
+
+//
+
+/**
+ * Function that produces an elements for entityMap result
+ * @callback wTools~onEach
+ * @param {*} val - The current element being processed in the entity.
+ * @param {string|number} key - The index (if entity is array) or key of processed element.
+ * @param {Array|Object} src - The src passed to entityMap.
+ */
+
+/**
+ * Creates new instance with same as( src ) type. Elements of new instance results of calling a provided ( onEach )
+ * function on every element of src. If entity is array, the new array has the same length as source.
+ *
+ * @example
+  var numbers = [ 3, 4, 6 ];
+
+  function sqr( v )
+  {
+    return v * v
+  };
+
+  var res = wTools.entityMap(numbers, sqr);
+  // [ 9, 16, 36 ]
+  // numbers is still [ 3, 4, 6 ]
+
+  function checkSidesOfTriangle( v, i, src )
+  {
+    var sumOthers = 0,
+      l = src.length,
+      j;
+
+    for ( j = 0; j < l; j++ )
+    {
+      if ( i === j ) continue;
+      sumOthers += src[ j ];
+    }
+    return v < sumOthers;
+  }
+
+  var res = wTools.entityMap( numbers, checkSidesOfTriangle );
+ // [ true, true, true ]
+ *
+ * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
+ * @param {wTools~onEach} onEach - Function that produces an element of the new entity.
+ * @returns {ArrayLike|ObjectLike} New entity.
+ * @thorws {Error} If number of arguments less or more than 2.
+ * @thorws {Error} If( src ) is not Array or ObjectLike.
+ * @thorws {Error} If( onEach ) is not function.
+ * @function entityMap
+ * @memberof wTools
+ */
+
+function entityMap( src,onEach )
+{
+
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.routineIs( onEach ) );
+
+  var result;
+
+  if( _.longIs( src ) )
+  {
+    result = _.entityMake( src );
+    for( var s = 0 ; s < src.length ; s++ )
+    {
+      result[ s ] = onEach( src[ s ], s, src );
+      _.assert( result[ s ] !== undefined,'{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+    }
+  }
+  else if( _.objectLike( src ) )
+  {
+    result = _.entityMake( src );
+    for( var s in src )
+    {
+      result[ s ] = onEach( src[ s ], s, src );
+      _.assert( result[ s ] !== undefined,'{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+    }
+  }
+  else
+  {
+    result = onEach( src, undefined, undefined );
+    _.assert( result !== undefined,'{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+
+  }
+
+  return result;
+}
+
+//
+
+function entityFilter( src, onEach )
+{
+  var result;
+  onEach = _selectorMake( onEach, 1 );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.objectLike( src ) || _.longIs( src ), () => 'expects objectLike or longIs src, but got ' + _.strTypeOf( src ) );
+  _.assert( _.routineIs( onEach ) );
+
+  /* */
+
+  if( _.longIs( src ) )
+  {
+    result = _.longMakeSimilar( src,0 );
+    for( var s = 0, d = 0 ; s < src.length ; s++, d++ )
+    {
+      var r = onEach.call( src,src[ s ],s,src );
+      if( r === undefined )
+      d--;
+      else
+      result[ d ] = r;
+    }
+    if( d < src.length )
+    result = _.arraySlice( result, 0, d );
+  }
+  else
+  {
+    result = _.entityMake( src );
+    for( var s in src )
+    {
+      r = onEach.call( src,src[ s ],s,src );
+      if( r !== undefined )
+      result[ s ] = r;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+function _entityFilterDeep( o )
+{
+
+  var result;
+  var onEach = _selectorMake( o.onEach,o.conditionLevels );
+
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( _.objectLike( o.src ) || _.longIs( o.src ),'entityFilter : expects objectLike or longIs src, but got',_.strTypeOf( o.src ) );
+  _.assert( _.routineIs( onEach ) );
+
+  /* */
+
+  if( _.longIs( o.src ) )
+  {
+    result = _.longMakeSimilar( o.src,0 );
+    for( var s = 0, d = 0 ; s < o.src.length ; s++, d++ )
+    {
+      var r = onEach.call( o.src,o.src[ s ],s,o.src );
+      if( r === undefined )
+      d--;
+      else
+      result[ d ] = r;
+    }
+    debugger;
+    if( d < o.src.length )
+    result = _.arraySlice( result, 0, d );
+  }
+  else
+  {
+    result = _.entityMake( o.src );
+    for( var s in o.src )
+    {
+      r = onEach.call( o.src,o.src[ s ],s,o.src );
+      if( r !== undefined )
+      result[ s ] = r;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
+_entityFilterDeep.defaults =
+{
+  src : null,
+  onEach : null,
+  conditionLevels : 1,
+}
+
+//
+
+function entityFilterDeep( src, onEach )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  return _entityFilterDeep
+  ({
+    src : src,
+    onEach : onEach,
+    conditionLevels : 1024,
+  });
 }
 
 //
@@ -1335,192 +1572,6 @@ function _selectorMake( condition, levels )
   }
 
   return condition;
-}
-
-//
-
-/**
- * Function that produces an elements for entityMap result
- * @callback wTools~onEach
- * @param {*} val - The current element being processed in the entity.
- * @param {string|number} key - The index (if entity is array) or key of processed element.
- * @param {Array|Object} src - The src passed to entityMap.
- */
-
-/**
- * Creates new instance with same as( src ) type. Elements of new instance results of calling a provided ( onEach )
- * function on every element of src. If entity is array, the new array has the same length as source.
- *
- * @example
-  var numbers = [ 3, 4, 6 ];
-
-  function sqr( v )
-  {
-    return v * v
-  };
-
-  var res = wTools.entityMap(numbers, sqr);
-  // [ 9, 16, 36 ]
-  // numbers is still [ 3, 4, 6 ]
-
-  function checkSidesOfTriangle( v, i, src )
-  {
-    var sumOthers = 0,
-      l = src.length,
-      j;
-
-    for ( j = 0; j < l; j++ )
-    {
-      if ( i === j ) continue;
-      sumOthers += src[ j ];
-    }
-    return v < sumOthers;
-  }
-
-  var res = wTools.entityMap( numbers, checkSidesOfTriangle );
- // [ true, true, true ]
- *
- * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
- * @param {wTools~onEach} onEach - Function that produces an element of the new entity.
- * @returns {ArrayLike|ObjectLike} New entity.
- * @thorws {Error} If number of arguments less or more than 2.
- * @thorws {Error} If( src ) is not Array or ObjectLike.
- * @thorws {Error} If( onEach ) is not function.
- * @function entityMap
- * @memberof wTools
- */
-
-function entityMap( src,onEach )
-{
-
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.objectLike( src ) || _.longIs( src ) );
-  _.assert( _.routineIs( onEach ) );
-
-  var result = _.entityMake( src );
-
-  if( _.longIs( src ) )
-  {
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      result[ s ] = onEach( src[ s ],s,src );
-      _.assert( result[ s ] !== undefined,'( entityMap ) onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
-    }
-  }
-  else if( _.objectLike( src ) )
-  {
-    for( var s in src )
-    {
-      result[ s ] = onEach( src[ s ],s,src );
-      _.assert( result[ s ] !== undefined,'( entityMap ) onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
-    }
-  }
-  else _.assert( 0,'unexpected' );
-
-  return result;
-}
-
-//
-
-/**
-
- * Filters elements of entity( src ) by calling( onEach ) function for each item.
- * Returns result of filtering as new instance of type( src ) with items that succesfully passed ( onEach ) function.
- * @see wTools.entityMap
- *
- * @example
-   var numbers = [ 36, -25, 49, 64, -16 ];
-
-   function sqrt( v )
-   {
-      return ( v > 0 ) ? Math.sqrt( v ) : undefined;
-   };
-
-   var res = wTools.entityMap( numbers, sqrt );
- // [ 6, 7, 8 ]
- // numbers are still [ 36, -25, 49, 64, -16 ];
- *
- * @param {ArrayLike|ObjectLike} src - Source entity.
- * @param {wTools~onEach} onEach - Conditional function called for each entities element.
- * @returns {ArrayLike|ObjectLike} Returns new entity that contais filtered items.
- * @thorws {Error} If( arguments.length ) less or more than 2.
- * @thorws {Error} If( src ) is not Array or ObjectLike.
- * @thorws {Error} If( onEach ) is not a function.
- * @function entityFilter
- * @memberof wTools
- */
-
-function _entityFilter( o )
-{
-
-  var result;
-  var onEach = _selectorMake( o.onEach,o.conditionLevels );
-
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.objectLike( o.src ) || _.longIs( o.src ),'entityFilter : expects objectLike or longIs src, but got',_.strTypeOf( o.src ) );
-  _.assert( _.routineIs( onEach ) );
-
-  /* */
-
-  if( _.longIs( o.src ) )
-  {
-    result = _.longMakeSimilar( o.src,0 );
-    for( var s = 0, d = 0 ; s < o.src.length ; s++, d++ )
-    {
-      var r = onEach.call( o.src,o.src[ s ],s,o.src );
-      if( r === undefined )
-      d--;
-      else
-      result[ d ] = r;
-    }
-  }
-  else
-  {
-    result = _.entityMake( o.src );
-    for( var s in o.src )
-    {
-      r = onEach.call( o.src,o.src[ s ],s,o.src );
-      if( r !== undefined )
-      result[ s ] = r;
-    }
-  }
-
-  /* */
-
-  return result;
-}
-
-_entityFilter.defaults =
-{
-  src : null,
-  onEach : null,
-  conditionLevels : 1,
-}
-
-//
-
-function entityFilter( src,onEach )
-{
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  return _entityFilter
-  ({
-    src : src,
-    onEach : onEach,
-    conditionLevels : 1,
-  });
-}
-
-//
-
-function entityFilterDeep( src,onEach )
-{
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  return _entityFilter
-  ({
-    src : src,
-    onEach : onEach,
-    conditionLevels : 1024,
-  });
 }
 
 //
@@ -18652,15 +18703,31 @@ var Fields =
 var Routines =
 {
 
-  // etc
+  // entity iterator
 
-  each : each,
-  eachName : eachName,
-  eachOwn : eachOwn,
+  entityEach : entityEach,
+  entityEachName : entityEachName,
+  entityEachOwn : entityEachOwn,
 
-  every : every,
-  any : any,
-  none : none,
+  entityAll : entityAll,
+  entityAny : entityAny,
+  entityNone : entityNone,
+
+  entityMap : entityMap,
+  entityFilter : entityFilter,
+  _entityFilterDeep : _entityFilterDeep,
+  entityFilterDeep : entityFilterDeep,
+
+  each : entityEach,
+  eachName : entityEachName,
+  eachOwn : entityEachOwn,
+
+  all : entityAll,
+  any : entityAny,
+  none : entityNone,
+
+  map : entityMap,
+  filter : entityFilter,
 
   dup : dup,
 
@@ -18694,11 +18761,6 @@ var Routines =
   entityKeyWithValue : entityKeyWithValue, /* dubious */
 
   _selectorMake : _selectorMake,
-  entityMap : entityMap,
-
-  _entityFilter : _entityFilter, /* dubious */
-  entityFilter : entityFilter, /* dubious */
-  entityFilterDeep : entityFilterDeep, /* dubious */
 
   entityVals : entityVals,
 
@@ -19027,9 +19089,9 @@ var Routines =
   arrayAny : arrayAny,
   arrayNone : arrayNone,
 
-  all : arrayAll,
-  any : arrayAny,
-  none : arrayNone,
+  // all : arrayAll,
+  // any : arrayAny,
+  // none : arrayNone,
 
   // array maker
 
