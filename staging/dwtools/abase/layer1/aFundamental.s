@@ -3189,6 +3189,23 @@ function processIs( src )
 
 //
 
+function processIsDebugged()
+{
+  _.assert( arguments.length === 0 );
+
+  if( typeof process === 'undefined' )
+  return false;
+
+  if( !process.execArgv.length )
+  return false;
+
+  let execArgv = process.execArgv.join();
+  return _.strHas( execArgv, '--inspect' );
+
+}
+
+//
+
 function definitionIs( src )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
@@ -19034,6 +19051,7 @@ var Routines =
   printerIs : printerIs,
   loggerIs : loggerIs,
   processIs : processIs,
+  processIsDebugged : processIsDebugged,
   definitionIs : definitionIs,
 
   // routine
