@@ -12,18 +12,18 @@
 
 //
 
-var Self = _global_.wTools;
-var _global = _global_;
-var _ = _global_.wTools;
+let Self = _global_.wTools;
+let _global = _global_;
+let _ = _global_.wTools;
 
-var _ArraySlice = Array.prototype.slice;
-var _FunctionBind = Function.prototype.bind;
-var _ObjectToString = Object.prototype.toString;
-var _ObjectHasOwnProperty = Object.hasOwnProperty;
+let _ArraySlice = Array.prototype.slice;
+let _FunctionBind = Function.prototype.bind;
+let _ObjectToString = Object.prototype.toString;
+let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
-// var __assert = _.assert;
-var _arraySlice = _.longSlice;
-var strTypeOf = _.strTypeOf;
+// let __assert = _.assert;
+let _arraySlice = _.longSlice;
+let strTypeOf = _.strTypeOf;
 
 // --
 // checker
@@ -42,29 +42,32 @@ function strIsMultilined( src )
 // replacer
 // --
 
-function _strRemoveBegin( src,begin )
+function _strRemovedBegin( src,begin )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ), 'expects string {-src-}' );
 
-  var result = src;
+  let result = src;
+  let beginOf = _._strBeginOf( result, begin );
+  if( beginOf !== false )
+  result = result.substr( beginOf.length, result.length );
 
-  if( _.strIs( begin ) )
-  {
-    if( _._strBegins( result, begin ) )
-    {
-      result = result.substr( begin.length, result.length );
-      return result;
-    }
-  }
-  else if( _.regexpIs( begin ) )
-  {
-    var matched = begin.exec( result );
-    if( matched && matched.index === 0 )
-    result = result.substring( matched[ 0 ].length, result.length );
-    return result;
-  }
-  else _.assert( 0,'expects string or regexp {-begin-}' );
+  // if( _.strIs( begin ) )
+  // {
+  //   if( _._strBeginOf( result, begin ) !== false )
+  //   {
+  //     result = result.substr( begin.length, result.length );
+  //     return result;
+  //   }
+  // }
+  // else if( _.regexpIs( begin ) )
+  // {
+  //   let matched = begin.exec( result );
+  //   if( matched && matched.index === 0 )
+  //   result = result.substring( matched[ 0 ].length, result.length );
+  //   return result;
+  // }
+  // else _.assert( 0,'expects string or regexp {-begin-}' );
 
   return result;
 }
@@ -101,28 +104,26 @@ function strRemoveBegin( src,begin )
   _.assert( _.longIs( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
   _.assert( _.longIs( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
 
-  var result = [];
-  var srcIsArray = _.longIs( src );
+  let result = [];
+  let srcIsArray = _.longIs( src );
+
+  if( _.strIs( src ) && !_.longIs( begin ) )
+  return _._strRemovedBegin( src, begin );
 
   src = _.arrayAs( src );
   begin = _.arrayAs( begin );
-
-  for( var s = 0, slen = src.length ; s < slen ; s++ )
+  for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
-    var seen = [];
-    var src1 = src[ s ]
-    for( var b = 0, blen = begin.length ; b < blen ; b++ )
+    let beginOf = false;
+    let src1 = src[ s ]
+    for( let b = 0, blen = begin.length ; b < blen ; b++ )
     {
-      if( seen[ b ] )
-      continue;
-      var result1 = _strRemoveBegin( src1,begin[ b ] );
-      if( result1 !== src1 && blen > 1 )
-      {
-        seen[ b ] = 1;
-        b = -1;
-      }
-      src1 = result1;
+      beginOf = _._strBeginOf( src1, begin[ b ] );
+      if( beginOf !== false )
+      break;
     }
+    if( beginOf !== false )
+    src1 = src1.substr( beginOf.length, src1.length );
     result[ s ] = src1;
   }
 
@@ -131,6 +132,100 @@ function strRemoveBegin( src,begin )
 
   return result;
 }
+
+// function strRemoveBegin( src,begin )
+// {
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
+//   _.assert( _.longIs( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
+//   _.assert( _.longIs( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
+//
+//   let result = [];
+//   let srcIsArray = _.longIs( src );
+//
+//   if( _.strIs( src ) && !_.longIs( begin ) )
+//   return _._strRemovedBegin( src, begin );
+//
+//   src = _.arrayAs( src );
+//   begin = _.arrayAs( begin );
+//   for( let s = 0, slen = src.length ; s < slen ; s++ )
+//   {
+//     // let seen = [];
+//     let beginOf = false;
+//     let src1 = src[ s ]
+//     for( let b = 0, blen = begin.length ; b < blen ; b++ )
+//     {
+//       // if( seen[ b ] )
+//       // continue;
+//
+//       beginOf = _._strBeginOf( src1, begin[ b ] );
+//       if( beginOf !== false )
+//       {
+//         break;
+//       }
+//
+//       // let result1 = _._strRemovedBegin( src1, begin[ b ] );
+//       // if( result1 !== src1 && blen > 1 )
+//       // if( beginOf !== false && blen > 1 )
+//       // {
+//       //   seen[ b ] = 1;
+//       //   b = -1;
+//       // }
+//       // src1 = result1;
+//     }
+//     if( beginOf !== false )
+//     {
+//       // _.assert( beginOf );
+//       src1 = src1.substr( beginOf.length, src1.length );
+//     }
+//     result[ s ] = src1;
+//   }
+//
+//   if( !srcIsArray )
+//   return result[ 0 ];
+//
+//   return result;
+// }
+
+//
+
+function _strRemovedEnd( src, end )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
+
+  let result = src;
+  let endOf = _._strEndOf( result, end );
+  if( endOf !== false )
+  result = result.substr( 0, result.length - endOf.length );
+
+  return result;
+}
+
+// {
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
+//   _.assert( _.strIs( src ), 'expects string {-src-}' );
+//
+//   let result = src;
+// xxx
+//   if( _.strIs( end ) )
+//   {
+//     if( _._strEnds( result, end ) )
+//     {
+//       result = result.substr( end.length, result.length );
+//       return result;
+//     }
+//   }
+//   else if( _.regexpIs( end ) )
+//   {
+//     let matched = end.exec( result );
+//     if( matched && matched.index === 0 )
+//     result = result.substring( matched[ 0 ].length, result.length );
+//     return result;
+//   }
+//   else _.assert( 0,'expects string or regexp {-begin-}' );
+//
+//   return result;
+// }
 
 //
 
@@ -157,29 +252,65 @@ function strRemoveBegin( src,begin )
  *
  */
 
-function strRemoveEnd( src,end )
+function strRemoveEnd( src, end )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.longIs( src ) || _.strIs( src ) );
-  _.assert( _.longIs( end ) || _.strIs( end ) );
+  _.assert( _.longIs( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
+  _.assert( _.longIs( end ) || _.strIs( end ) || _.regexpIs( end ), 'expects string/regexp or array of strings/regexps {-end-}' );
 
+  let result = [];
+  let srcIsArray = _.longIs( src );
+
+  if( _.strIs( src ) && !_.longIs( end ) )
+  return _._strRemovedEnd( src, end );
+
+  src = _.arrayAs( src );
   end = _.arrayAs( end );
 
-  var result = _.arrayAs( src ).slice();
-
-  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-  for( var j = 0, endLength = end.length; j < endLength; j++ )
-  if( _.strEnds( result[ k ],end[ j ] ) )
+  for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
-    result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length )
-    break;
+    let endOf = false;
+    let src1 = src[ s ]
+    for( let b = 0, blen = end.length ; b < blen ; b++ )
+    {
+      endOf = _._strEndOf( src1, end[ b ] );
+      if( endOf !== false )
+      break;
+    }
+    if( endOf !== false )
+    src1 = src1.substr( 0,src1.length - endOf.length );
+    result[ s ] = src1;
   }
 
-  if( result.length === 1 && _.strIs( src ) )
+  if( !srcIsArray )
   return result[ 0 ];
 
   return result;
 }
+
+// function strRemoveEnd( src,end )
+// {
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
+//   _.assert( _.longIs( src ) || _.strIs( src ) );
+//   _.assert( _.longIs( end ) || _.strIs( end ) );
+//
+//   end = _.arrayAs( end );
+//
+//   let result = _.arrayAs( src ).slice();
+//
+//   for( let k = 0, srcLength = result.length; k < srcLength; k++ )
+//   for( let j = 0, endLength = end.length; j < endLength; j++ )
+//   if( _.strEnds( result[ k ],end[ j ] ) )
+//   {
+//     result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length )
+//     break;
+//   }
+//
+//   if( result.length === 1 && _.strIs( src ) )
+//   return result[ 0 ];
+//
+//   return result;
+// }
 
 //
 
@@ -191,13 +322,13 @@ function strReplaceBegin( src,begin,ins )
   _.assert( begin.length === ins.length );
 
   begin = _.arrayAs( begin );
-  var result = _.arrayAs( src ).slice();
+  let result = _.arrayAs( src ).slice();
 
-  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-  for( var j = 0, beginLength = begin.length; j < beginLength; j++ )
+  for( let k = 0, srcLength = result.length; k < srcLength; k++ )
+  for( let j = 0, beginLength = begin.length; j < beginLength; j++ )
   if( _.strBegins( result[ k ],begin[ j ] ) )
   {
-    var prefix = _.longIs( ins ) ? ins[ j ] : ins;
+    let prefix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( prefix ) );
     result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
     break;
@@ -219,13 +350,13 @@ function strReplaceEnd( src,end,ins )
   _.assert( end.length === ins.length );
 
   end = _.arrayAs( end );
-  var result = _.arrayAs( src ).slice();
+  let result = _.arrayAs( src ).slice();
 
-  for( var k = 0, srcLength = result.length; k < srcLength; k++ )
-  for( var j = 0, endLength = end.length; j < endLength; j++ )
+  for( let k = 0, srcLength = result.length; k < srcLength; k++ )
+  for( let j = 0, endLength = end.length; j < endLength; j++ )
   if( _.strEnds( result[ k ],end[ j ] ) )
   {
-    var postfix = _.longIs( ins ) ? ins[ j ] : ins;
+    let postfix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( postfix ) );
     result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
   }
@@ -327,11 +458,11 @@ function strReplaceWords( src,ins,sub )
   _.assert( _.arrayIs( sub ) );
   _.assert( ins.length === sub.length );
 
-  var result = src;
-  for( var i = 0 ; i < ins.length ; i++ )
+  let result = src;
+  for( let i = 0 ; i < ins.length ; i++ )
   {
     _.assert( _.strIs( ins[ i ] ) );
-    var r = new RegExp( '(\\W|^)' + ins[ i ] + '(?=\\W|$)','gm' );
+    let r = new RegExp( '(\\W|^)' + ins[ i ] + '(?=\\W|$)','gm' );
     result = result.replace( r, function( original )
     {
 
@@ -383,18 +514,19 @@ function strCommonLeft( ins )
 
   _.assert( _.strIs( ins ) );
 
-  var length = +Infinity;
+  let length = +Infinity;
 
-  for( var a = 0 ; a < arguments.length ; a++ )
+  for( let a = 0 ; a < arguments.length ; a++ )
   {
-    var src = arguments[ a ];
+    let src = arguments[ a ];
     length = Math.min( length,src.length );
   }
 
-  for( var i = 0 ; i < length ; i++ )
-  for( var a = 1 ; a < arguments.length ; a++ )
+  let i = 0;
+  for( ; i < length ; i++ )
+  for( let a = 1 ; a < arguments.length ; a++ )
   {
-    var src = arguments[ a ];
+    let src = arguments[ a ];
     if( src[ i ] !== ins[ i ] )
     return ins.substring( 0,i );
   }
@@ -437,18 +569,19 @@ function strCommonRight( ins )
 
   _.assert( _.strIs( ins ) );
 
-  var length = +Infinity;
+  let length = +Infinity;
 
-  for( var a = 0 ; a < arguments.length ; a++ )
+  for( let a = 0 ; a < arguments.length ; a++ )
   {
-    var src = arguments[ a ];
+    let src = arguments[ a ];
     length = Math.min( length,src.length );
   }
 
-  for( var i = 0 ; i < length ; i++ )
-  for( var a = 1 ; a < arguments.length ; a++ )
+  let i = 0;
+  for( ; i < length ; i++ )
+  for( let a = 1 ; a < arguments.length ; a++ )
   {
-    var src = arguments[ a ];
+    let src = arguments[ a ];
     if( src[ src.length - i - 1 ] !== ins[ ins.length - i - 1 ] )
     return ins.substring( ins.length-i );
   }
@@ -462,7 +595,7 @@ function strCommonRight( ins )
 
 function strForRange( range )
 {
-  var result;
+  let result;
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( range ) );
@@ -476,8 +609,8 @@ function strForRange( range )
 
 function strForCall( nameOfRoutine,args,ret,o )
 {
-  var result = nameOfRoutine + '( ';
-  var first = true;
+  let result = nameOfRoutine + '( ';
+  let first = true;
 
   _.assert( _.arrayIs( args ) || _.objectIs( args ) );
   _.assert( arguments.length <= 4 );
@@ -575,24 +708,24 @@ function strShortSrt( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
 
-  var str = o.src;
+  let str = o.src;
 
   if( str.length > o.limit && o.limit > 0  )
   {
-    var b = Math.ceil( o.limit / 2 );
-    var e = o.limit - b;
+    let b = Math.ceil( o.limit / 2 );
+    let e = o.limit - b;
 
-    var begin = str.substr( 0, b );
-    var end = str.slice( -e );
+    let begin = str.substr( 0, b );
+    let end = str.slice( -e );
 
     if( o.escaping )
     {
       function check( s, l )
       {
-        var temp = _.strEscape( s );
+        let temp = _.strEscape( s );
 
         if( temp.length > l )
-        for( var i = s.length - 1; i >= 0 ; --i )
+        for( let i = s.length - 1; i >= 0 ; --i )
         {
           if( temp.length <= l )
           break;
@@ -654,20 +787,20 @@ function strQuote( o )
 
   if( _.arrayIs( o.src ) )
   {
-    var result = [];
-    for( var s = 0 ; s < o.src.length ; s++ )
+    let result = [];
+    for( let s = 0 ; s < o.src.length ; s++ )
     result.push( _.strQuote({ src : o.src[ s ], quote : o.quote }) );
     return result;
   }
 
-  var src = o.src;
+  let src = o.src;
 
   if( !_.primitiveIs( src ) )
   src = _.toStr( src );
 
   _.assert( _.primitiveIs( src ) );
 
-  var result = o.quote + String( src ) + o.quote;
+  let result = o.quote + String( src ) + o.quote;
 
   return result;
 }
@@ -792,16 +925,16 @@ function strEscape( o )
   _.assert( _.strIs( o.src ), 'expects string {-o.src-}, but got', _.strTypeOf( o.src ) );
   _.routineOptions( strEscape, o );
 
-  var result = '';
-  // var src = o.src.split( '' );
+  let result = '';
+  // let src = o.src.split( '' );
   // debugger;
-  var stringWrapperCode = o.stringWrapper.charCodeAt( 0 );
-  for( var s = 0 ; s < o.src.length ; s++ )
+  let stringWrapperCode = o.stringWrapper.charCodeAt( 0 );
+  for( let s = 0 ; s < o.src.length ; s++ )
   {
-    // var c = o.src[ s ];
-    // var c = src[ s ];
-    // var code = c.charCodeAt( 0 );
-    var code = o.src.charCodeAt( s );
+    // let c = o.src[ s ];
+    // let c = src[ s ];
+    // let code = c.charCodeAt( 0 );
+    let code = o.src.charCodeAt( s );
 
     // if( o.stringWrapper === '`' && c === '$' )
     if( o.stringWrapper === '`' && code === 0x24 /* $ */ )
@@ -897,13 +1030,13 @@ strEscape.defaults =
 
 function strCodeUnicodeEscape( code )
 {
-  var result = '';
+  let result = '';
 
   _.assert( _.numberIs( code ) );
   _.assert( arguments.length === 1, 'expects single argument' );
 
-  var h = code.toString( 16 );
-  var d = _.strDup( '0', 4-h.length ) + h;
+  let h = code.toString( 16 );
+  let d = _.strDup( '0', 4-h.length ) + h;
 
   result += '\\u' + d;
 
@@ -939,14 +1072,14 @@ function strCodeUnicodeEscape( code )
 
 function strUnicodeEscape( src )
 {
-  var result = '';
+  let result = '';
 
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1, 'expects single argument' );
 
-  for( var i = 0 ; i < src.length ; i++ )
+  for( let i = 0 ; i < src.length ; i++ )
   {
-    var code = src.charCodeAt( i );
+    let code = src.charCodeAt( i );
     result += _.strCodeUnicodeEscape( code );
   }
 
@@ -958,8 +1091,8 @@ function strUnicodeEscape( src )
 function strReverse( srcStr )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
-  var result = '';
-  for( var i = 0 ; i < srcStr.length ; i++ )
+  let result = '';
+  for( let i = 0 ; i < srcStr.length ; i++ )
   result = srcStr[ i ] + result;
   return result;
 }
@@ -1013,10 +1146,10 @@ function strStrip( o )
 
   if( _.arrayIs( o.src ) )
   {
-    var result = [];
-    for( var s = 0 ; s < o.src.length ; s++ )
+    let result = [];
+    for( let s = 0 ; s < o.src.length ; s++ )
     {
-      var optionsForStrip = _.mapExtend( null,o );
+      let optionsForStrip = _.mapExtend( null,o );
       optionsForStrip.src = optionsForStrip.src[ s ];
       result[ s ] = strStrip( optionsForStrip );
     }
@@ -1028,7 +1161,7 @@ function strStrip( o )
 
   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
   {
-    var exp = o.stripper;
+    let exp = o.stripper;
     if( _.strIs( exp ) )
     {
       exp = _.regexpEscape( exp );
@@ -1040,24 +1173,26 @@ function strStrip( o )
   else
   {
 
-    _.assert( _.arrayIs( o.stripper ) )
+    _.assert( _.arrayIs( o.stripper ) );
 
     if( Config.debug )
-    for( var s of o.stripper )
+    for( let s of o.stripper )
     _.assert( _.strIs( s,'expects string {-stripper[ * ]-}' ) );
 
-    for( var b = 0 ; b < o.src.length ; b++ )
+    let b = 0;
+    for( ; b < o.src.length ; b++ )
     if( o.stripper.indexOf( o.src[ b ] ) === -1 )
     break;
 
-    for( var e = o.src.length-1 ; e >= 0 ; e-- )
+    let e = o.src.length-1;
+    for( ; e >= 0 ; e-- )
     if( o.stripper.indexOf( o.src[ e ] ) === -1 )
     break;
 
     if( b >= e )
     return '';
 
-    return o.src.substring( b,e+1 );
+    return o.src.substring( b, e+1 );
   }
 
 }
@@ -1175,15 +1310,15 @@ function strRemoveAllSpaces( src,sub )
 
 function strStripEmptyLines( srcStr )
 {
-  var result = '';
-  var lines = srcStr.split( '\n' );
+  let result = '';
+  let lines = srcStr.split( '\n' );
 
   _.assert( _.strIs( srcStr ) );
   _.assert( arguments.length === 1, 'expects single argument' );
 
-  for( var l = 0; l < lines.length; l += 1 )
+  for( let l = 0; l < lines.length; l += 1 )
   {
-    var line = lines[ l ];
+    let line = lines[ l ];
 
     if( !_.strStrip( line ) )
     continue;
@@ -1318,12 +1453,12 @@ function _strCutOff_pre( routine, args )
 
 function _strCutOff( o )
 {
-  var result = [];
-  var number = o.number;
-  var delimeter
-  var index = o.left ? -1 : o.src.length;
+  let result = [];
+  let number = o.number;
+  let delimeter
+  let index = o.left ? -1 : o.src.length;
 
-  // var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
 
   _.assertRoutineOptions( _strCutOff, o );
   _.assert( arguments.length === 1, 'expects single argument' );
@@ -1422,7 +1557,7 @@ function _strCutOff( o )
   {
     return _.entityMin( o.delimeter,function( a )
     {
-      var i = o.src.indexOf( a,index );
+      let i = o.src.indexOf( a,index );
       if( i === -1 )
       return o.src.length;
       return i;
@@ -1435,7 +1570,7 @@ function _strCutOff( o )
   {
     return _.entityMax( o.delimeter,function( a )
     {
-      var i = o.src.lastIndexOf( a,index );
+      let i = o.src.lastIndexOf( a,index );
       return i;
     });
   }
@@ -1484,7 +1619,7 @@ function _strIsolateBeginOrNone_body( o )
 {
   o.left = 1;
   o.none = 1;
-  var result = _strCutOff( o );
+  let result = _strCutOff( o );
   return result;
 }
 
@@ -1495,7 +1630,7 @@ _strIsolateBeginOrNone_body.defaults =
   number : 1,
 }
 
-var strIsolateBeginOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
+let strIsolateBeginOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
 
 //
 
@@ -1530,7 +1665,7 @@ function _strIsolateEndOrNone_body( o )
 {
   o.left = 0;
   o.none = 1;
-  var result = _strCutOff( o );
+  let result = _strCutOff( o );
   return result;
 }
 
@@ -1541,7 +1676,7 @@ _strIsolateEndOrNone_body.defaults =
   number : 1,
 }
 
-var strIsolateEndOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
+let strIsolateEndOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
 
 //
 
@@ -1549,15 +1684,15 @@ function _strIsolateEndOrAll_body( o )
 {
   o.left = 0;
   o.none = 0;
-  var result = _strCutOff( o );
+  let result = _strCutOff( o );
   return result;
 
-  // var i = o.src.lastIndexOf( o.delimeter );
+  // let i = o.src.lastIndexOf( o.delimeter );
   //
   // if( i === -1 )
   // return [ '', '', o.src ];
   //
-  // var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
   //
   // return result;
 }
@@ -1569,7 +1704,7 @@ _strIsolateEndOrAll_body.defaults =
   number : 1,
 }
 
-var strIsolateEndOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
+let strIsolateEndOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
 
 //
 
@@ -1577,15 +1712,15 @@ function _strIsolateBeginOrAll_body( o )
 {
   o.left = 1;
   o.none = 0;
-  var result = _strCutOff( o );
+  let result = _strCutOff( o );
   return result;
 
-  // var i = o.src.indexOf( o.delimeter );
+  // let i = o.src.indexOf( o.delimeter );
   //
   // if( i === -1 )
   // return [ o.src, '', '' ];
   //
-  // var result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
   //
   // return result;
 }
@@ -1597,7 +1732,7 @@ _strIsolateBeginOrAll_body.defaults =
   number : 1,
 }
 
-var strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
+let strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
 
 //
 
@@ -1627,15 +1762,15 @@ var strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBe
 
 function strSplitStrNumber( src )
 {
-  var result = Object.create( null );
+  let result = Object.create( null );
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
 
-  var mnumber = src.match(/\d+/);
+  let mnumber = src.match(/\d+/);
   if( mnumber && mnumber.length )
   {
-    var mstr = src.match(/[^\d]*/);
+    let mstr = src.match(/[^\d]*/);
     result.str = mstr[ 0 ];
     result.number = _.numberFrom( mnumber[0] );
   }
@@ -1651,12 +1786,12 @@ function strSplitStrNumber( src )
 
 function strSplitChunks( o )
 {
-  var result = Object.create( null );
+  let result = Object.create( null );
   result.chunks = [];
 
   if( arguments.length === 2 )
   {
-    var o = arguments[ 1 ] || Object.create( null );
+    let o = arguments[ 1 ] || Object.create( null );
     o.src = arguments[ 0 ];
   }
   else
@@ -1675,13 +1810,13 @@ function strSplitChunks( o )
   if( !_.regexpIs( o.postfix ) )
   o.postfix = RegExp( _.regexpEscape( o.postfix ),'m' );
 
-  var src = o.src;
+  let src = o.src;
 
   /* */
 
   function colAccount( text )
   {
-    var i = text.lastIndexOf( '\n' );
+    let i = text.lastIndexOf( '\n' );
 
     if( i === -1 )
     {
@@ -1699,7 +1834,7 @@ function strSplitChunks( o )
 
   function makeChunkStatic( begin )
   {
-    var chunk = Object.create( null );
+    let chunk = Object.create( null );
     chunk.line = line;
     chunk.text = src.substring( 0,begin );
     chunk.index = chunkIndex;
@@ -1717,7 +1852,7 @@ function strSplitChunks( o )
 
   function makeChunkDynamic()
   {
-    var chunk = Object.create( null );
+    let chunk = Object.create( null );
     chunk.line = line;
     chunk.column = column;
     chunk.index = chunkIndex;
@@ -1742,15 +1877,15 @@ function strSplitChunks( o )
 
   //
 
-  var line = 0;
-  var column = 0;
-  var chunkIndex = 0;
+  let line = 0;
+  let column = 0;
+  let chunkIndex = 0;
   do
   {
 
     /* begin */
 
-    var begin = src.search( o.prefix );
+    let begin = src.search( o.prefix );
     if( begin === -1 ) begin = src.length;
 
     /* text chunk */
@@ -1769,7 +1904,7 @@ function strSplitChunks( o )
 
     /* end */
 
-    var end = src.search( o.postfix );
+    let end = src.search( o.postfix );
     if( end === -1 )
     {
       result.lines = src.split( '\n' ).length;
@@ -1779,7 +1914,7 @@ function strSplitChunks( o )
 
     /* code chunk */
 
-    var chunk = makeChunkDynamic();
+    let chunk = makeChunkDynamic();
 
     /* wind */
 
@@ -1804,7 +1939,7 @@ strSplitChunks.defaults =
 
 function _strSplitsQuote_pre( routine, args )
 {
-  var o = args[ 0 ];
+  let o = args[ 0 ];
 
   _.routineOptions( routine, o );
 
@@ -1851,24 +1986,22 @@ function _strSplitsQuote_body( o )
 
   /* quoting */
 
-  // if( o.quoting )
-  // debugger;
-
   if( o.quoting )
-  for( var s = 1 ; s < o.splits.length ; s += 2 )
+  for( let s = 1 ; s < o.splits.length ; s += 2 )
   {
-    var split = o.splits[ s ];
+    let split = o.splits[ s ];
+    let s2;
 
-    var q = o.quotingPrefixes.indexOf( split );
+    let q = o.quotingPrefixes.indexOf( split );
     if( q >= 0 )
     {
-      var postfix = o.quotingPostfixes[ q ];
-      for( var s2 = s+2 ; s2 < o.splits.length ; s2 += 2 )
+      let postfix = o.quotingPostfixes[ q ];
+      for( s2 = s+2 ; s2 < o.splits.length ; s2 += 2 )
       {
-        var split2 = o.splits[ s2 ];
+        let split2 = o.splits[ s2 ];
         if( split2 === postfix )
         {
-          var splitNew = o.splits.splice( s, s2-s ).join( '' );
+          let splitNew = o.splits.splice( s, s2-s ).join( '' );
           o.splits[ s ] = splitNew + o.splits[ s ];
           s2 = s;
           break;
@@ -1882,7 +2015,7 @@ function _strSplitsQuote_body( o )
     {
       if( !_.arrayHas( o.delimeter, split ) )
       {
-        var splitNew = o.splits.splice( s, 2 ).join( '' );
+        let splitNew = o.splits.splice( s, 2 ).join( '' );
         o.splits[ s-1 ] = o.splits[ s-1 ] + splitNew;
       }
     }
@@ -1903,7 +2036,7 @@ _strSplitsQuote_body.defaults =
 
 //
 
-var strSplitsQuote = _.routineForPreAndBody( _strSplitsQuote_pre, _strSplitsQuote_body );
+let strSplitsQuote = _.routineForPreAndBody( _strSplitsQuote_pre, _strSplitsQuote_body );
 
 // --
 //
@@ -1911,7 +2044,7 @@ var strSplitsQuote = _.routineForPreAndBody( _strSplitsQuote_pre, _strSplitsQuot
 
 function _strSplitsDropDelimeters_pre( routine, args )
 {
-  var o = args[ 0 ];
+  let o = args[ 0 ];
 
   _.routineOptions( routine, o );
 
@@ -1932,9 +2065,9 @@ function _strSplitsDropDelimeters_body( o )
 
   /* stripping */
 
-  for( var s = o.splits.length-1 ; s >= 0 ; s-- )
+  for( let s = o.splits.length-1 ; s >= 0 ; s-- )
   {
-    var split = o.splits[ s ];
+    let split = o.splits[ s ];
 
     if( s % 2 === 1 )
     {
@@ -1953,7 +2086,7 @@ _strSplitsDropDelimeters_body.defaults =
 
 //
 
-var strSplitsDropDelimeters = _.routineForPreAndBody( _strSplitsDropDelimeters_pre, _strSplitsDropDelimeters_body );
+let strSplitsDropDelimeters = _.routineForPreAndBody( _strSplitsDropDelimeters_pre, _strSplitsDropDelimeters_body );
 
 // --
 //
@@ -1961,7 +2094,7 @@ var strSplitsDropDelimeters = _.routineForPreAndBody( _strSplitsDropDelimeters_p
 
 function _strSplitsStrip_pre( routine, args )
 {
-  var o = args[ 0 ];
+  let o = args[ 0 ];
 
   _.routineOptions( routine, o );
 
@@ -1986,9 +2119,9 @@ function _strSplitsStrip_body( o )
 
   /* stripping */
 
-  for( var s = 0 ; s < o.splits.length ; s++ )
+  for( let s = 0 ; s < o.splits.length ; s++ )
   {
-    var split = o.splits[ s ];
+    let split = o.splits[ s ];
 
     if( o.stripping )
     split = _.strStrip({ src : split, stripper : o.stripping });
@@ -2008,7 +2141,7 @@ _strSplitsStrip_body.defaults =
 
 //
 
-var strSplitsStrip = _.routineForPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
+let strSplitsStrip = _.routineForPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
 
 // --
 //
@@ -2016,7 +2149,7 @@ var strSplitsStrip = _.routineForPreAndBody( _strSplitsStrip_pre, _strSplitsStri
 
 function _strSplitsDropEmpty_pre( routine, args )
 {
-  var o = args[ 0 ];
+  let o = args[ 0 ];
 
   _.routineOptions( routine, o );
 
@@ -2037,9 +2170,9 @@ function _strSplitsDropEmpty_body( o )
 
   /* stripping */
 
-  for( var s = 0 ; s < o.splits.length ; s++ )
+  for( let s = 0 ; s < o.splits.length ; s++ )
   {
-    var split = o.splits[ s ];
+    let split = o.splits[ s ];
 
     if( !split )
     {
@@ -2059,7 +2192,7 @@ _strSplitsDropEmpty_body.defaults =
 
 //
 
-var strSplitsDropEmpty = _.routineForPreAndBody( _strSplitsDropEmpty_pre, _strSplitsDropEmpty_body );
+let strSplitsDropEmpty = _.routineForPreAndBody( _strSplitsDropEmpty_pre, _strSplitsDropEmpty_body );
 
 // --
 //
@@ -2067,7 +2200,7 @@ var strSplitsDropEmpty = _.routineForPreAndBody( _strSplitsDropEmpty_pre, _strSp
 
 function _strSplitFast_pre( routine, args )
 {
-  var o = args[ 0 ];
+  let o = args[ 0 ];
 
   if( args.length === 2 )
   o = { src : args[ 0 ], delimeter : args[ 1 ] }
@@ -2088,7 +2221,12 @@ function _strSplitFast_pre( routine, args )
 
 function _strSplitFast_body( o )
 {
-  var result;
+  let result;
+  let closests;
+  let position;
+  let closestPosition;
+  let closestIndex;
+  let hasEmptyDelimeter;
 
   o.delimeter = _.arrayAs( o.delimeter );
 
@@ -2116,19 +2254,21 @@ function _strSplitFast_body( o )
       return result;
     }
 
-    var result = [];
-    var closests = [];
-    var position = 0;
-    var closestPosition = 0;
-    var closestIndex = -1;
-    var hasEmptyDelimeter = false;
+    result = [];
+    closests = [];
+    position = 0;
+    closestPosition = 0;
+    closestIndex = -1;
+    hasEmptyDelimeter = false;
 
-    for( var d = 0 ; d < o.delimeter.length ; d++ )
+    for( let d = 0 ; d < o.delimeter.length ; d++ )
     {
       if( o.delimeter[ d ].length === 0 )
       hasEmptyDelimeter = true;
       closests[ d ] = delimeterNext( d, position );
     }
+
+    let delimeter;
 
     do
     {
@@ -2137,7 +2277,7 @@ function _strSplitFast_body( o )
       if( closestPosition === o.src.length )
       break;
 
-      var delimeter = o.delimeter[ closestIndex ];
+      delimeter = o.delimeter[ closestIndex ];
 
       if( !delimeter.length )
       position += 1;
@@ -2149,7 +2289,7 @@ function _strSplitFast_body( o )
 
       position = closests[ closestIndex ] + ( delimeter.length ? delimeter.length : 1 );
 
-      for( var d = 0 ; d < o.delimeter.length ; d++ )
+      for( let d = 0 ; d < o.delimeter.length ; d++ )
       if( closests[ d ] < position )
       closests[ d ] = delimeterNext( d, position );
 
@@ -2189,7 +2329,7 @@ function _strSplitFast_body( o )
 
     closestPosition = o.src.length;
     closestIndex = -1;
-    for( var d = 0 ; d < o.delimeter.length ; d++ )
+    for( let d = 0 ; d < o.delimeter.length ; d++ )
     {
       if( closests[ d ] < o.src.length && closests[ d ] < closestPosition )
       {
@@ -2205,7 +2345,7 @@ function _strSplitFast_body( o )
   function delimeterNext( d, position )
   {
     _.assert( position <= o.src.length );
-    var result = o.src.indexOf( o.delimeter[ d ], position );
+    let result = o.src.indexOf( o.delimeter[ d ], position );
     if( result === -1 )
     return o.src.length;
     return result;
@@ -2274,7 +2414,7 @@ _strSplitFast_body.defaults =
  *
  */
 
-var strSplitFast = _.routineForPreAndBody( _strSplitFast_pre, _strSplitFast_body );
+let strSplitFast = _.routineForPreAndBody( _strSplitFast_pre, _strSplitFast_body );
 
 _.assert( strSplitFast.pre === _strSplitFast_pre );
 _.assert( strSplitFast.body === _strSplitFast_body );
@@ -2298,8 +2438,8 @@ function _strSplit_body( o )
 
   /* */
 
-  var result = [];
-  var fastOptions = _.mapOnly( o, _.strSplitFast.defaults );
+  let result = [];
+  let fastOptions = _.mapOnly( o, _.strSplitFast.defaults );
   fastOptions.preservingEmpty = 1;
   fastOptions.preservingDelimeters = 1;
 
@@ -2391,8 +2531,8 @@ defaults.onQuote = null;
  *
  */
 
-var pre = [ strSplitFast.pre, strSplitsQuote.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
-var strSplit = _.routineForPreAndBody( pre, _strSplit_body );
+let pre = [ strSplitFast.pre, strSplitsQuote.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
+let strSplit = _.routineForPreAndBody( pre, _strSplit_body );
 
 _.assert( strSplit.pre !== strSplitFast.pre );
 _.assert( _.routineIs( strSplit.pre ) );
@@ -2401,7 +2541,7 @@ _.assert( _.objectIs( strSplit.defaults ) );
 
 //
 
-var strSplitNonPreserving = _.routineForPreAndBody( strSplit.pre, strSplit.body );
+let strSplitNonPreserving = _.routineForPreAndBody( strSplit.pre, strSplit.body );
 
 var defaults = strSplitNonPreserving.defaults;
 
@@ -2425,9 +2565,10 @@ function _strSplitNaive_body( o )
   _.assert( arguments.length === 1 );
 
   o.delimeter = _.arrayAs( o.delimeter );
-  var delimeter = o.delimeter;
-  var preservingDelimeters = o.preservingDelimeters;
-  var preservingEmpty = o.preservingEmpty;
+  let delimeter = o.delimeter;
+  let preservingDelimeters = o.preservingDelimeters;
+  let preservingEmpty = o.preservingEmpty;
+  let result = [];
 
   if( o.quoting )
   {
@@ -2445,18 +2586,17 @@ function _strSplitNaive_body( o )
   if( o.preservingDelimeters )
   {
 
-    var result = [];
-    var right = [];
-    var prevPosition = o.src.length;
+    let right = [];
+    let prevPosition = o.src.length;
 
-    for( var s = 0 ; s < delimeter.length ; s++ )
+    for( let s = 0 ; s < delimeter.length ; s++ )
     right[ s ] = nextDelimeter( s,o.src.length );
 
     while( true )
     {
-      var splitterIndex = -1;
-      var position = -1;
-      for( var s = 0 ; s < delimeter.length ; s++ )
+      let splitterIndex = -1;
+      let position = -1;
+      for( let s = 0 ; s < delimeter.length ; s++ )
       {
         /* if one delimeter coontain another one, it's possible right is invalid at this point */
         if( right[ s ] >= prevPosition )
@@ -2478,7 +2618,7 @@ function _strSplitNaive_body( o )
       else
       right[ splitterIndex ] = -1;
 
-      var r = [ position,prevPosition ];
+      let r = [ position,prevPosition ];
       if( r[ 0 ] < r[ 1 ] )
       result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
       else
@@ -2497,14 +2637,14 @@ function _strSplitNaive_body( o )
   else
   {
 
-    var result = o.src.split( delimeter[ 0 ] );
-    for( var s = 1 ; s < delimeter.length ; s++ )
+    result = o.src.split( delimeter[ 0 ] );
+    for( let s = 1 ; s < delimeter.length ; s++ )
     {
 
-      for( var r = result.length-1 ; r >= 0 ; r-- )
+      for( let r = result.length-1 ; r >= 0 ; r-- )
       {
 
-        var sub = result[ r ].split( delimeter[ s ] );
+        let sub = result[ r ].split( delimeter[ s ] );
         if( sub.length > 1 )
         _.arrayCutin( result,[ r,r+1 ],sub );
 
@@ -2518,23 +2658,23 @@ function _strSplitNaive_body( o )
 
   if( o.quoting )
   {
-    var newResult = [];
+    let newResult = [];
 
     function _sliceAndJoin( l, r )
     {
-      var arr = result.slice( l,r );
-      var res = '';
-      for( var i = 0; i < arr.length; i++ )
+      let arr = result.slice( l,r );
+      let res = '';
+      for( let i = 0; i < arr.length; i++ )
       {
         res += arr[ i ];
       }
       return res;
     }
 
-    var l = -1;
-    var r = -1;
+    let l = -1;
+    let r = -1;
 
-    for( var i = 0; i < result.length; i++ )
+    for( let i = 0; i < result.length; i++ )
     {
       if( result[ i ] === o.quoting )
       {
@@ -2579,7 +2719,7 @@ function _strSplitNaive_body( o )
 
   /* stripping and removing empty */
 
-  for( var r = result.length-1 ; r >= 0 ; r-- )
+  for( let r = result.length-1 ; r >= 0 ; r-- )
   {
 
     if( o.stripping )
@@ -2599,7 +2739,7 @@ function _strSplitNaive_body( o )
   {
     if( last < 0 )
     return last;
-    var result = o.src.lastIndexOf( delimeter[ d ],last );
+    let result = o.src.lastIndexOf( delimeter[ d ],last );
     if( result >= 0 )
     result += delimeter[ d ].length;
     return result;
@@ -2670,7 +2810,7 @@ _strSplitNaive_body.defaults =
  *
  */
 
-var strSplitNaive = _.routineForPreAndBody( _strSplitFast_pre, _strSplitNaive_body );
+let strSplitNaive = _.routineForPreAndBody( _strSplitFast_pre, _strSplitNaive_body );
 
 _.assert( strSplitNaive.pre === _strSplitFast_pre );
 _.assert( strSplitNaive.body === _strSplitNaive_body );
@@ -2686,7 +2826,7 @@ function _strExtractInlined_body( o )
   if( o.delimeter === null )
   o.delimeter = '#';
 
-  var splitArray = _.strSplit
+  let splitArray = _.strSplit
   ({
     src : o.src,
     delimeter : o.delimeter,
@@ -2711,9 +2851,10 @@ function _strExtractInlined_body( o )
   so tracking index to insert ordinary text ( in case not undefined returned ) required
   */
 
-  var first = 0;
-  var result = [];
-  for( var i = 0 ; i < splitArray.length ; i += 4 )
+  let first = 0;
+  let result = [];
+  let i = 0;
+  for( ; i < splitArray.length ; i += 4 )
   {
 
     if( splitArray.length-i >= 4 )
@@ -2741,9 +2882,9 @@ function _strExtractInlined_body( o )
   function handleTriplet()
   {
 
-    var delimeter1 = splitArray[ i+1 ];
-    var escaped = splitArray[ i+2 ];
-    var delimeter2 = splitArray[ i+3 ];
+    let delimeter1 = splitArray[ i+1 ];
+    let escaped = splitArray[ i+2 ];
+    let delimeter2 = splitArray[ i+3 ];
 
     if( o.onInlined )
     escaped = o.onInlined( escaped, o, [ delimeter1, delimeter2 ] );
@@ -2778,7 +2919,7 @@ function _strExtractInlined_body( o )
 
   function handleOrdinary()
   {
-    var ordinary = splitArray[ i+0 ];
+    let ordinary = splitArray[ i+0 ];
 
     if( o.onOrdinary )
     ordinary = o.onOrdinary( ordinary, o );
@@ -2814,7 +2955,7 @@ _strExtractInlined_body.defaults =
 
 //
 
-var strExtractInlined = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlined_body );
+let strExtractInlined = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlined_body );
 
 //
 
@@ -2823,7 +2964,7 @@ function _strExtractInlinedStereo_body( o )
 
   _.assert( arguments.length === 1, 'expects single options map argument' );
 
-  var splitArray = _.strSplit
+  let splitArray = _.strSplit
   ({
     src : o.src,
     delimeter : o.prefix,
@@ -2841,7 +2982,7 @@ function _strExtractInlinedStereo_body( o )
     return splitArray;
   }
 
-  var result = [];
+  let result = [];
 
   /* */
 
@@ -2850,13 +2991,13 @@ function _strExtractInlinedStereo_body( o )
 
   /* */
 
-  for( var i = 1; i < splitArray.length; i++ )
+  for( let i = 1; i < splitArray.length; i++ )
   {
-    var halfs = _.strIsolateBeginOrNone( splitArray[ i ], o.postfix );
+    let halfs = _.strIsolateBeginOrNone( splitArray[ i ], o.postfix );
 
     _.assert( halfs.length === 3 );
 
-    var inlined = halfs[ 2 ];
+    let inlined = halfs[ 2 ];
 
     inlined = o.onInlined ? o.onInlined( inlined ) : inlined;
 
@@ -2953,7 +3094,7 @@ _strExtractInlinedStereo_body.defaults =
  *
  */
 
-// var strExtractInlinedStereo = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlinedStereo_body );
+// let strExtractInlinedStereo = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlinedStereo_body );
 
 function strExtractInlinedStereo( o )
 {
@@ -2967,8 +3108,8 @@ function strExtractInlinedStereo( o )
   _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( strExtractInlinedStereo, o );
 
-  var result = [];
-  var splitted = o.src.split( o.prefix );
+  let result = [];
+  let splitted = o.src.split( o.prefix );
 
   if( splitted.length === 1 )
   return splitted;
@@ -2980,10 +3121,10 @@ function strExtractInlinedStereo( o )
 
   /* */
 
-  for( var i = 1; i < splitted.length; i++ )
+  for( let i = 1; i < splitted.length; i++ )
   {
-    var halfs = _.strIsolateBeginOrNone( splitted[ i ],o.postfix );
-    var strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+    let halfs = _.strIsolateBeginOrNone( splitted[ i ],o.postfix );
+    let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
 
     _.assert( halfs.length === 3 );
 
@@ -3048,13 +3189,13 @@ strExtractInlinedStereo.defaults =
 
 function strDup( s,times )
 {
-  var result = '';
+  let result = '';
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( s ) );
   _.assert( _.numberIs( times ) );
 
-  for( var t = 0 ; t < times ; t++ )
+  for( let t = 0 ; t < times ; t++ )
   result += s;
 
   return result;
@@ -3097,9 +3238,9 @@ function strDup( s,times )
 
 function strJoin()
 {
-  var result = [ '' ];
-  var arrayEncountered = 0;
-  var arrayLength;
+  let result = [ '' ];
+  let arrayEncountered = 0;
+  let arrayLength;
 
   function join( s,src )
   {
@@ -3108,9 +3249,9 @@ function strJoin()
 
   /**/
 
-  for( var a = 0 ; a < arguments.length ; a++ )
+  for( let a = 0 ; a < arguments.length ; a++ )
   {
-    var src = arguments[ a ];
+    let src = arguments[ a ];
 
     _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
 
@@ -3118,21 +3259,21 @@ function strJoin()
     {
 
       if( arrayEncountered === 0 )
-      for( var s = 1 ; s < src.length ; s++ )
+      for( let s = 1 ; s < src.length ; s++ )
       result[ s ] = result[ 0 ];
 
       _.assert( arrayLength === undefined || arrayLength === src.length, 'strJoin : all arrays should has same length' );
       arrayLength = src.length;
 
       arrayEncountered = 1;
-      for( var s = 0 ; s < src.length ; s++ )
+      for( let s = 0 ; s < src.length ; s++ )
       join( s,src[ s ] );
 
     }
     else
     {
 
-      for( var s = 0 ; s < result.length ; s++ )
+      for( let s = 0 ; s < result.length ; s++ )
       join( s,src );
 
     }
@@ -3151,7 +3292,7 @@ function strJoin()
 function strConcat( srcs, o )
 {
 
-  // var o = _.routineOptionsFromThis( strConcat,this,Self );
+  // let o = _.routineOptionsFromThis( strConcat,this,Self );
   o = _.routineOptions( strConcat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.strConcat === strConcat );
@@ -3160,20 +3301,20 @@ function strConcat( srcs, o )
   if( !_.arrayLike( srcs ) )
   srcs = [ srcs ];
 
-  var result = '';
+  let result = '';
   if( !srcs.length )
   return result;
 
   /* */
 
-  var nl = 1;
-  for( var a = 0 ; a < srcs.length ; a++ )
+  let nl = 1;
+  for( let a = 0 ; a < srcs.length ; a++ )
   {
-    var src = srcs[ a ];
+    let src = srcs[ a ];
     src = _.toStr( src,o.optionsForToStr );
     if( !nl )
     {
-      var i = src.lastIndexOf( o.lineDelimter );
+      let i = src.lastIndexOf( o.lineDelimter );
       if( i === -1 )
       {
         result += o.delimeter;
@@ -3265,16 +3406,16 @@ function strUnjoin( srcStr,maskArray )
   _.assert( _.strIs( srcStr ) );
   _.assert( _.arrayIs( maskArray ) );
 
-  var result = [];
-  var index = 0;
-  var rindex = -1;
+  let result = [];
+  let index = 0;
+  let rindex = -1;
 
   /**/
 
-  for( var m = 0 ; m < maskArray.length ; m++ )
+  for( let m = 0 ; m < maskArray.length ; m++ )
   {
 
-    var mask = maskArray[ m ];
+    let mask = maskArray[ m ];
 
     if( !checkMask( mask ) )
     return;
@@ -3384,7 +3525,7 @@ _.assert( _.routineIs( strUnjoin.any ) );
  * _c
  *
  * @example
- * var array = [ 'a\nb', 'c\nd' ];
+ * let array = [ 'a\nb', 'c\nd' ];
  * _.strIndentation( array.join( '\n' ), '_' )
  * //returns
  * _a
@@ -3417,7 +3558,7 @@ function strIndentation( src,tab )
 
   }
 
-  var result = tab + src.join( '\n' + tab );
+  let result = tab + src.join( '\n' + tab );
 
   return result;
 }
@@ -3481,9 +3622,9 @@ function strLinesNumber( o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( o.src ) || _.strsAre( o.src ),'expects string or strings {-o.src-}' );
 
-  var lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
+  let lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
 
-  if( o.onLine ) for( var l = 0; l < lines.length; l += 1 )
+  if( o.onLine ) for( let l = 0; l < lines.length; l += 1 )
   {
     lines[ l ] = o.onLine( [ ( l + o.first ), ' : ', lines[ l ] ], o );
     if( lines[ l ] === undefined )
@@ -3493,7 +3634,7 @@ function strLinesNumber( o )
     }
     _.assert( _.strIs( lines[ l ] ) );
   }
-  else for( var l = 0; l < lines.length; l += 1 )
+  else for( let l = 0; l < lines.length; l += 1 )
   {
     lines[ l ] = ( l + o.first ) + ' : ' + lines[ l ];
   }
@@ -3521,8 +3662,8 @@ strLinesNumber.defaults =
 //
 //   debugger;
 //
-//   var lines = code.split( '\n' );
-//   var result = lines.slice( line-radius,line+radius-1 );
+//   let lines = code.split( '\n' );
+//   let result = lines.slice( line-radius,line+radius-1 );
 //   result = _.strLinesNumber( result,line-radius+1 );
 //
 //   return result;
@@ -3651,8 +3792,8 @@ function strLinesSelect( o )
 
   /* */
 
-  var f = 0;
-  var counter = o.zero;
+  let f = 0;
+  let counter = o.zero;
   while( counter < o.range[ 0 ] )
   {
     f = o.src.indexOf( o.delimteter,f );
@@ -3664,7 +3805,7 @@ function strLinesSelect( o )
 
   /* */
 
-  var l = f-1;
+  let l = f-1;
   while( counter < o.range[ 1 ] )
   {
     l += 1;
@@ -3679,7 +3820,7 @@ function strLinesSelect( o )
 
   /* */
 
-  var result = f < l ? o.src.substring( f,l ) : '';
+  let result = f < l ? o.src.substring( f,l ) : '';
 
   /* number */
 
@@ -3707,8 +3848,9 @@ strLinesSelect.defaults =
 
 function strLinesNearest( o )
 {
-  var result;
-  var resultCharRange = [];
+  let result;
+  let resultCharRange = [];
+  let i, numberOfLines;
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.routineOptions( strLinesNearest,o );
@@ -3726,12 +3868,11 @@ function strLinesNearest( o )
 
   /* */
 
-  var i = o.charsRange[ 0 ]-1;
-  var numberOfLinesLeft = Math.ceil( ( o.numberOfLines+1 ) / 2 );
-  var numberOfLines = numberOfLinesLeft;
+  let numberOfLinesLeft = Math.ceil( ( o.numberOfLines+1 ) / 2 );
+  numberOfLines = numberOfLinesLeft;
   if( numberOfLines > 0 )
   {
-    for( ; i >= 0 ; i-- )
+    for( i = o.charsRange[ 0 ]-1 ; i >= 0 ; i-- )
     {
       if( o.src[ i ] === '\n' )
       numberOfLines -= 1;
@@ -3749,19 +3890,17 @@ function strLinesNearest( o )
 
   /* */
 
-  var i = o.charsRange[ 1 ];
-  var numberOfLinesRight = o.numberOfLines + 1 - numberOfLinesLeft;
-  var numberOfLines = numberOfLinesRight;
+  let numberOfLinesRight = o.numberOfLines + 1 - numberOfLinesLeft;
+  numberOfLines = numberOfLinesRight;
   if( numberOfLines > 0 )
   {
-    for( var i = o.charsRange[ 1 ] ; i < o.src.length ; i++ )
+    for( i = o.charsRange[ 1 ] ; i < o.src.length ; i++ )
     {
       if( o.src[ i ] === '\n' )
       numberOfLines -= 1;
       if( numberOfLines <= 0 )
       break;
     }
-    // i = i-1;
   }
   resultCharRange[ 1 ] = i;
 
@@ -3813,7 +3952,7 @@ strLinesNearest.defaults =
 
 function strCount( src,ins )
 {
-  var result = -1;
+  let result = -1;
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
@@ -3822,7 +3961,7 @@ function strCount( src,ins )
   if( !ins.length )
   return 0;
 
-  var i = -1;
+  let i = -1;
   do
   {
     result += 1;
@@ -3837,7 +3976,7 @@ function strCount( src,ins )
 
 function strCountLeft( src,ins )
 {
-  var result = 0;
+  let result = 0;
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
@@ -3846,7 +3985,7 @@ function strCountLeft( src,ins )
   if( !ins.length )
   return 0;
 
-  var i = 0;
+  let i = 0;
   do
   {
     if( src.substring( i,i+ins.length ) !== ins )
@@ -3863,7 +4002,7 @@ function strCountLeft( src,ins )
 
 function strCountRight( src,ins )
 {
-  var result = 0;
+  let result = 0;
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( src ) );
@@ -3874,7 +4013,7 @@ function strCountRight( src,ins )
   if( !ins.length )
   return 0;
 
-  var i = src.length;
+  let i = src.length;
   do
   {
     if( src.substring( i-ins.length,i ) !== ins )
@@ -3915,7 +4054,7 @@ function strLinesCount( src )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( src ) );
-  var result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
+  let result = src.indexOf( '\n' ) !== -1 ? src.split( '\n' ).length : 1;
   return result;
 }
 
@@ -3932,9 +4071,9 @@ function strLinesRangeWithCharRange( o )
   _.assert( _.strIs( o.src ) );
   _.routineOptions( strLinesRangeWithCharRange, o );
 
-  var pre = o.src.substring( 0, o.charsRange[ 0 ] );
-  var mid = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
-  var result = []
+  let pre = o.src.substring( 0, o.charsRange[ 0 ] );
+  let mid = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
+  let result = []
 
   result[ 0 ] = _.strLinesCount( pre )-1;
   result[ 1 ] = result[ 0 ] + _.strLinesCount( mid );
@@ -3969,7 +4108,7 @@ function strHasAny( src,ins )
 
   if( _.arrayIs( ins ) )
   {
-    for( var i = 0 ; i < ins.length ; i++ )
+    for( let i = 0 ; i < ins.length ; i++ )
     if( strHas( src,ins[ i ] ) )
     return true;
     return false;
@@ -3986,7 +4125,7 @@ function strHasAll( src,ins )
 
   if( _.arrayIs( ins ) )
   {
-    for( var i = 0 ; i < ins.length ; i++ )
+    for( let i = 0 ; i < ins.length ; i++ )
     if( !strHas( src,ins[ i ] ) )
     return false;
     return true;
@@ -4003,7 +4142,7 @@ function strHasNone( src,ins )
 
   if( _.arrayIs( ins ) )
   {
-    for( var i = 0 ; i < ins.length ; i++ )
+    for( let i = 0 ; i < ins.length ; i++ )
     if( strHas( src,ins[ i ] ) )
     return false;
     return true;
@@ -4016,13 +4155,13 @@ function strHasNone( src,ins )
 
 function strHasSeveral( src,ins )
 {
-  var result = 0;
+  let result = 0;
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
-    for( var i = 0 ; i < ins.length ; i++ )
+    for( let i = 0 ; i < ins.length ; i++ )
     if( strHas( src,ins[ i ] ) )
     result += 1;
     return result;
@@ -4074,7 +4213,7 @@ function strsNoneHas( srcs, ins )
 // declare
 // --
 
-var Proto =
+let Proto =
 {
 
   // checker
@@ -4083,8 +4222,9 @@ var Proto =
 
   // replacer
 
-  _strRemoveBegin : _strRemoveBegin,
+  _strRemovedBegin : _strRemovedBegin,
   strRemoveBegin : strRemoveBegin,
+  _strRemovedEnd : _strRemovedEnd,
   strRemoveEnd : strRemoveEnd,
 
   strReplaceBegin : strReplaceBegin,

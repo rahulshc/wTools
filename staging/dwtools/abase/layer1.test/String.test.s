@@ -229,71 +229,71 @@ function strEndOf( test )
 
 //
 
-function strInbetweenOf( test )
+function strFindInsideOf( test )
 {
   var got,expected;
 
   //
 
-  test.case = 'strInbetweenOf';
+  test.case = 'strFindInsideOf';
 
   /**/
 
-  got = _.strInbetweenOf( '', '', '' );
+  got = _.strFindInsideOf( '', '', '' );
   expected = undefined;
   test.identical( got, expected );
 
   /**/
 
-  got = _.strInbetweenOf( 'abc', 'a', 'c' );
+  got = _.strFindInsideOf( 'abc', 'a', 'c' );
   expected = 'b';
   test.identical( got, expected );
 
   /*firs of begin, last of end*/
 
-  got = _.strInbetweenOf( 'aaabccc', 'a', 'c' );
+  got = _.strFindInsideOf( 'aaabccc', 'a', 'c' );
   expected = 'aabcc';
   test.identical( got, expected );
 
   /* f > l */
 
-  got = _.strInbetweenOf( 'aaabccc', 'c', 'a' );
+  got = _.strFindInsideOf( 'aaabccc', 'c', 'a' );
   expected = undefined;
   test.identical( got, expected );
 
   /* begin === end, string contains several of it */
 
-  got = _.strInbetweenOf( 'aaabccc', 'a', 'a' );
+  got = _.strFindInsideOf( 'aaabccc', 'a', 'a' );
   expected = 'a';
   test.identical( got, expected );
 
   /* begin === end, string contains single */
 
-  got = _.strInbetweenOf( 'abc', 'a', 'a' );
+  got = _.strFindInsideOf( 'abc', 'a', 'a' );
   expected = undefined;
   test.identical( got, expected );
 
   /**/
 
-  got = _.strInbetweenOf( 'aaabbbccc', [ 'a', 'b' ], [ 'b', 'c' ] );
+  got = _.strFindInsideOf( 'aaabbbccc', [ 'a', 'b' ], [ 'b', 'c' ] );
   expected = 'aabb';
   test.identical( got, expected );
 
   /**/
 
-  got = _.strInbetweenOf( 'abc', [ 'x','y', 'c' ], 'c' );
+  got = _.strFindInsideOf( 'abc', [ 'x','y', 'c' ], 'c' );
   expected = undefined;
   test.identical( got, expected );
 
   /**/
 
-  got = _.strInbetweenOf( 'abbccc', [ 'b' ], '' );
+  got = _.strFindInsideOf( 'abbccc', [ 'b' ], '' );
   expected = 'bccc';
   test.identical( got, expected );
 
-  test.shouldThrowError( () => _.strInbetweenOf( 1, '', '' ) );
-  test.shouldThrowError( () => _.strInbetweenOf( 'a', 1, '' ) );
-  test.shouldThrowError( () => _.strInbetweenOf( 'a', '', 1 ) );
+  test.shouldThrowError( () => _.strFindInsideOf( 1, '', '' ) );
+  test.shouldThrowError( () => _.strFindInsideOf( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strFindInsideOf( 'a', '', 1 ) );
 }
 
 //
@@ -471,7 +471,7 @@ var Self =
 
     strBeginOf : strBeginOf,
     strEndOf : strEndOf,
-    strInbetweenOf : strInbetweenOf,
+    strFindInsideOf : strFindInsideOf,
 
     strBegins : strBegins,
     strEnds : strEnds,

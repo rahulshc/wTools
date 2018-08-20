@@ -110,16 +110,16 @@ function _setupUnhandledErrorHandler()
         }
         debugger;
         if( _.errLog )
-        _.errLog( 'Uncaught exception :\n', err );
+        _.errLog( 'Uncaught exception\n', err );
         else
-        console.error( 'Uncaught exception :\n', err );
+        console.error( 'Uncaught exception\n', err );
       }
       else
       {
         if( _.errLog )
-        _.errLog( 'Uncaught exception :\n', err );
+        _.errLog( 'Uncaught exception\n', err );
         else
-        console.error( 'Uncaught exception :\n', err );
+        console.error( 'Uncaught exception\n', err );
       }
 
     }
@@ -185,6 +185,7 @@ function _setupTesterPlaceholder()
     if( !testSuit.suiteFilePath )
     testSuit.suiteFilePath = _.diagnosticLocation( 1 ).path;
 
+    debugger;
     if( !testSuit.suiteFileLocation )
     testSuit.suiteFileLocation = _.diagnosticLocation( 1 ).full;
 

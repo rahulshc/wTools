@@ -2108,8 +2108,8 @@ function _err( o )
   /* where it was caught */
 
   var floc = _.diagnosticLocation( o.level );
-  if( floc.fullWithRoutine.indexOf( 'errLogOnce' ) !== -1 )
-  debugger;
+  // if( floc.fullWithRoutine.indexOf( 'errLogOnce' ) !== -1 )
+  // debugger;
   if( !floc.service || floc.service === 1 )
   catches = '    caught at ' + floc.fullWithRoutine + '\n' + catches;
 
@@ -5273,24 +5273,50 @@ str.routines = str;
 
 //
 
-function _strBegins( src,begin )
+function _strBeginOf( src,begin )
 {
 
-  _.assert( _.strIs( src ),'expects string' );
+  _.assert( _.strIs( src ), 'expects string' );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
   if( _.strIs( begin ) )
   {
     if( src.lastIndexOf( begin,0 ) === 0 )
-    return true;
+    return begin;
   }
   else if( _.regexpIs( begin ) )
   {
     var matched = begin.exec( src );
+    debugger;
     if( matched && matched.index === 0 )
-    return true;
+    return matched[ 0 ];
   }
   else _.assert( 0,'expects string or regexp' );
+
+  return false;
+}
+
+//
+
+function _strEndOf( src, end )
+{
+
+  _.assert( _.strIs( src ), 'expects string' );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+
+  if( _.strIs( end ) )
+  {
+    if( src.indexOf( end, src.length - end.length ) !== -1 )
+    return end;
+  }
+  else if( _.regexpIs( end ) )
+  {
+    debugger;
+    var matched = end.exec( src );
+    if( matched && matched.index === 0 )
+    return matched[ 0 ];
+  }
+  else _.assert( 0, 'expects string or regexp' );
 
   return false;
 }
@@ -5317,18 +5343,25 @@ function _strBegins( src,begin )
   * @memberof wTools
   */
 
-function strBegins( src,begin )
+function strBegins( src, begin )
 {
 
   _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( begin ) || _.longIs( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
+  _.assert( _.strIs( begin ) || _.regexpIs( begin ) || _.longIs( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  begin = _.arrayAs( begin );
+  if( !_.longIs( begin ) )
+  {
+    var result = _._strBeginOf( src, begin );
+    return result === false ? result : true;
+  }
 
-  for( var b = 0, blen = begin.length; b < blen; b++ )
-  if( _strBegins( src,begin[ b ] ) )
-  return true;
+  for( var b = 0, blen = begin.length ; b < blen; b++ )
+  {
+    let result = _._strBeginOf( src, begin[ b ] );
+    if( result !== false )
+    return true;
+  }
 
   return false;
 }
@@ -5355,22 +5388,46 @@ function strBegins( src,begin )
   * @memberof wTools
   */
 
-function strEnds( src,end )
+function strEnds( src, end )
 {
 
-  _.assert( _.strIs( src ), 'expects string {-src-}' );
-  _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings' );
+  _.assert( _.strIs( src ),'expects string {-src-}' );
+  _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ),'expects string/regexp or array of strings/regexps {-end-}' );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  if( _.strIs( end ) )
-  end = [ end ];
+  if( !_.longIs( end ) )
+  {
+    var result = _._strEndOf( src, end );
+    return result === false ? result : true;
+  }
 
-  for( var k = 0, len = end.length; k < len; k++ )
-  if( src.indexOf( end[ k ],src.length - end[ k ].length ) !== -1 )
-  return true;
+  debugger;
+
+  for( var b = 0, blen = end.length ; b < blen; b++ )
+  {
+    let result = _._strEndOf( src, end[ b ] );
+    if( result !== false )
+    return true;
+  }
 
   return false;
 }
+
+// {
+//
+//   _.assert( _.strIs( src ), 'expects string {-src-}' );
+//   _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings' );
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
+//
+//   if( _.strIs( end ) )
+//   end = [ end ];
+//
+//   for( var k = 0, len = end.length; k < len; k++ )
+//   if( src.indexOf( end[ k ], src.length - end[ k ].length ) !== -1 )
+//   return true;
+//
+//   return false;
+// }
 
 //
 
@@ -5396,26 +5453,52 @@ function strEnds( src,end )
   * @memberof wTools
   */
 
-function strBeginOf( src,end )
+function strBeginOf( src, begin )
 {
 
   _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings ( end )' );
+  _.assert( _.strIs( begin ) || _.regexpIs( begin ) || _.longIs( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  if( _.strIs( end ) )
-  end = [ end ];
 
-  for( var k = 0, len = end.length; k < len; k++ )
+  if( !_.longIs( begin ) )
   {
-    var i = src.indexOf( end[ k ],src.length - end[ k ].length );
-    if( i >= 0 )
-    return src.substr( 0,i );
-
-    if( i === -1 )
+    var result = _._strBeginOf( src, begin );
+    if( result )
     debugger;
+    return result;
   }
+
+  debugger;
+  for( var b = 0, blen = begin.length ; b < blen; b++ )
+  {
+    let result = _._strBeginOf( src, begin[ b ] );
+    if( result !== false )
+    return result;
+  }
+
+  return false;
 }
+
+// {
+//
+//   _.assert( _.strIs( src ),'expects string {-src-}' );
+//   _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings ( end )' );
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
+//
+//   if( _.strIs( end ) )
+//   end = [ end ];
+//
+//   for( var k = 0, len = end.length; k < len; k++ )
+//   {
+//     var i = src.indexOf( end[ k ],src.length - end[ k ].length );
+//     if( i >= 0 )
+//     return src.substr( 0,i );
+//
+//     if( i === -1 )
+//     debugger;
+//   }
+// }
 
 //
 
@@ -5442,27 +5525,142 @@ function strBeginOf( src,end )
   * @memberof wTools
   */
 
-function strEndOf( src,begin )
+function strEndOf( src, end )
 {
 
   _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( begin ) || _.longIs( begin ),'expects string/array of strings ( begin )' );
+  _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ),'expects string/regexp or array of strings/regexps {-end-}' );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  if( _.strIs( begin ) )
-  begin = [ begin ];
+  debugger;
 
-  for( var k = 0, len = begin.length; k < len; k++ )
+  if( !_.longIs( end ) )
   {
-    var i = src.lastIndexOf( begin[ k ],0 );
-    if( i >= 0  )
-    return src.substr( i+begin[ k ].length );
+    var result = _._strEndOf( src, end );
+    return result;
   }
 
-  // if( i >= 0 )
-  // debugger;
-  // else
-  // debugger;
+  for( var b = 0, blen = end.length ; b < blen; b++ )
+  {
+    let result = _._strEndOf( src, end[ b ] );
+    if( result !== false )
+    return result;
+  }
+
+  return false;
+}
+
+// {
+//
+//   _.assert( _.strIs( src ),'expects string {-src-}' );
+//   _.assert( _.strIs( begin ) || _.longIs( begin ),'expects string/array of strings ( begin )' );
+//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
+//
+//   if( _.strIs( begin ) )
+//   begin = [ begin ];
+//
+//   for( var k = 0, len = begin.length; k < len; k++ )
+//   {
+//     var i = src.lastIndexOf( begin[ k ],0 );
+//     if( i >= 0  )
+//     return src.substr( i+begin[ k ].length );
+//   }
+//
+//   // if( i >= 0 )
+//   // debugger;
+//   // else
+//   // debugger;
+// }
+
+//
+
+/**
+  * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
+  * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+  * Otherwise returns undefined.
+  *
+  * @param { String } src - The source string.
+  * @param { String } begin - String to find from begin of source.
+  * @param { String } end - String to find from end source.
+  *
+  * @example
+  * _.strInsideOf( 'abcd', 'a', 'd' );
+  * //returns 'bc'
+  *
+  * @example
+  * _.strInsideOf( 'aabcc', 'a', 'c' );
+  * //returns 'aabcc'
+  *
+  * @example
+  * _.strInsideOf( 'aabcc', 'a', 'a' );
+  * //returns 'a'
+  *
+  * @example
+  * _.strInsideOf( 'abc', 'a', 'a' );
+  * //returns undefined
+  *
+  * @example
+  * _.strInsideOf( 'abcd', 'x', 'y' )
+  * //returns undefined
+  *
+  * @example
+  * //index of begin is bigger then index of end
+  * _.strInsideOf( 'abcd', 'c', 'a' )
+  * //returns undefined
+  *
+  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 3.
+  * @function strInsideOf
+  * @memberof wTools
+  */
+
+function strInsideOf( src, begin, end )
+{
+
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+
+  let beginOf, endOf;
+
+  beginOf = _.strBeginOf( src, begin );
+  if( beginOf === false )
+  return false;
+
+  debugger;
+
+  endOf = _.strEndOf( src, end );
+  if( endOf === false )
+  return false;
+
+  debugger;
+
+  var result = src.substring( beginOf.length, src.length - endOf.length );
+
+  return result;
+}
+
+//
+
+function strOutsideOf( src, begin, end )
+{
+
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+
+  let beginOf, endOf;
+
+  beginOf = _.strBeginOf( src, begin );
+  if( beginOf === false )
+  return false;
+
+  endOf = _.strEndOf( src, end );
+  if( endOf === false )
+  return false;
+
+  var result = beginOf + endOf;
+
+  return result;
 }
 
 //
@@ -5477,49 +5675,49 @@ function strEndOf( src,begin )
   * @param { String } end - String to find from end source.
   *
   * @example
-  * _.strInbetweenOf( 'abcd', 'a', 'd' );
+  * _.strFindInsideOf( 'abcd', 'a', 'd' );
   * //returns 'bc'
   *
   * @example
-  * _.strInbetweenOf( 'aabcc', 'a', 'c' );
+  * _.strFindInsideOf( 'aabcc', 'a', 'c' );
   * //returns 'aabcc'
   *
   * @example
-  * _.strInbetweenOf( 'aabcc', 'a', 'a' );
+  * _.strFindInsideOf( 'aabcc', 'a', 'a' );
   * //returns 'a'
   *
   * @example
-  * _.strInbetweenOf( 'abc', 'a', 'a' );
+  * _.strFindInsideOf( 'abc', 'a', 'a' );
   * //returns undefined
   *
   * @example
-  * _.strInbetweenOf( 'abcd', 'x', 'y' )
+  * _.strFindInsideOf( 'abcd', 'x', 'y' )
   * //returns undefined
   *
   * @example
   * //index of begin is bigger then index of end
-  * _.strInbetweenOf( 'abcd', 'c', 'a' )
+  * _.strFindInsideOf( 'abcd', 'c', 'a' )
   * //returns undefined
   *
   * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
   * @throws { Exception } If all arguments are not strings;
   * @throws { Exception } If ( argumets.length ) is not equal 3.
-  * @function strInbetweenOf
+  * @function strFindInsideOf
   * @memberof wTools
   */
 
-function strInbetweenOf( src,begin,end )
+// function strInbetweenOf( src, begin, end )
+function strFindInsideOf( src, begin, end )
 {
 
-  _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( begin ) || _.longIs( begin ),'expects string/array of strings ( begin )' );
-  _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings ( end )' );
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
   _.assert( arguments.length === 3, 'expects exactly three argument' );
 
   begin = _.arrayAs( begin );
   end = _.arrayAs( end );
 
-  var f,l = -1;
+  var f = -1;
+  var l = -1;
 
   for( var k = 0, len = begin.length; k < len; k++ )
   {
@@ -18940,13 +19138,18 @@ var Routines =
   toStrShort : str,
   strFrom : str,
 
-  _strBegins : _strBegins,
+  _strBeginOf : _strBeginOf,
+  _strEndOf : _strEndOf,
+
   strBegins : strBegins,
   strEnds : strEnds,
 
   strBeginOf : strBeginOf,
   strEndOf : strEndOf,
-  strInbetweenOf : strInbetweenOf,
+
+  strInsideOf : strInsideOf,
+  strOutsideOf : strOutsideOf,
+  strFindInsideOf : strFindInsideOf,
 
   // regexp
 

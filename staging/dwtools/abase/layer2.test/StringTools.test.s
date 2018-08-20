@@ -35,8 +35,11 @@ var _ = _global_.wTools;
 //
 // --
 
-function strRemoveBegin2( test )
+function strRemoveBegin( test )
 {
+  var got,expected;
+
+  /* - */
 
   test.case = 'returns string with removed occurrence from start';
   var got = _.strRemoveBegin( 'example','exa' );
@@ -48,93 +51,9 @@ function strRemoveBegin2( test )
   var expected = 'mple';
   test.identical( got,expected );
 
-  /**/
-
-  debugger;
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( 'abcd','a','a' );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( );
-  });
-
-  test.case = 'first argument is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( 1,'2' );
-  });
-
-  test.case = 'second argument is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( '1',2 );
-  });
-
-}
-
-//
-
-function strRemoveEnd2( test )
-{
-  test.case = 'returns string with removed occurrence from end';
-  var got = _.strRemoveEnd( 'example','mple' );
-  var expected = 'exa';
-  test.identical( got,expected );
-
-  test.case = 'returns original if no occurrence found ';
-  var got = _.strRemoveEnd( 'example','' );
-  var expected = 'example';
-  test.identical( got,expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveEnd( 'one','two','three' );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveEnd( );
-  });
-
-  test.case = 'first argument is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveEnd( 1,'second' );
-  });
-
-  test.case = 'second argument is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveEnd( 'first',2 );
-  });
-
-}
-
-//
-
-function strRemoveBegin( test )
-{
-  var got,expected;
-
   /* - */
 
-  test.case = 'strRemoveBegin';
+  test.case = 'other';
 
   /**/
 
@@ -187,7 +106,7 @@ function strRemoveBegin( test )
   /**/
 
   got = _.strRemoveBegin( 'abc', [ 'a', 'b', 'c' ] );
-  expected = '';
+  expected = 'bc';
   test.identical( got, expected );
 
   /**/
@@ -199,13 +118,13 @@ function strRemoveBegin( test )
   /**/
 
   got = _.strRemoveBegin( 'abcabc', [ 'a', 'b', 'c' ] );
-  expected = 'abc';
+  expected = 'bcabc';
   test.identical( got, expected );
 
   /**/
 
   got = _.strRemoveBegin( 'abc', [ '', 'a' ] );
-  expected = 'bc';
+  expected = 'abc';
   test.identical( got, expected );
 
   /**/
@@ -223,7 +142,13 @@ function strRemoveBegin( test )
   /**/
 
   got = _.strRemoveBegin( [ 'abc', 'bca', 'cab' ], [ 'a', 'b', 'c' ] );
-  expected = [ '', '', '' ];
+  expected = [ 'bc', 'ca', 'ab' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'abcabc', 'bcabca', 'cabcab' ], [ 'a', 'b', 'c' ] );
+  expected = [ 'bcabc', 'cabca', 'abcab' ];
   test.identical( got, expected );
 
   /**/
@@ -247,11 +172,36 @@ function strRemoveBegin( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowError( () => _.strRemoveBegin( 1, '' ) )
-  test.shouldThrowError( () => _.strRemoveBegin( 'a', 1 ) )
-  test.shouldThrowError( () => _.strRemoveBegin() )
-  test.shouldThrowError( () => _.strRemoveBegin( undefined, undefined ) )
-  test.shouldThrowError( () => _.strRemoveBegin( null, null ) )
+  test.shouldThrowError( () => _.strRemoveBegin( 1, '' ) );
+  test.shouldThrowError( () => _.strRemoveBegin( 'a', 1 ) );
+  test.shouldThrowError( () => _.strRemoveBegin() );
+  test.shouldThrowError( () => _.strRemoveBegin( undefined, undefined ) );
+  test.shouldThrowError( () => _.strRemoveBegin( null, null ) );
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( 'abcd','a','a' );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( );
+  });
+
+  test.case = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( 1,'2' );
+  });
+
+  test.case = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( '1',2 );
+  });
+
 }
 
 //
@@ -260,9 +210,19 @@ function strRemoveEnd( test )
 {
   var got,expected;
 
+  test.case = 'returns string with removed occurrence from end';
+  var got = _.strRemoveEnd( 'example','mple' );
+  var expected = 'exa';
+  test.identical( got,expected );
+
+  test.case = 'returns original if no occurrence found ';
+  var got = _.strRemoveEnd( 'example','' );
+  var expected = 'example';
+  test.identical( got,expected );
+
   /* - */
 
-  test.case = 'strRemoveBegin';
+  test.case = 'other';
 
   /**/
 
@@ -357,11 +317,36 @@ function strRemoveEnd( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowError( () => _.strRemoveEnd( 1, '' ) )
-  test.shouldThrowError( () => _.strRemoveEnd( 'a', 1 ) )
-  test.shouldThrowError( () => _.strRemoveEnd() )
-  test.shouldThrowError( () => _.strRemoveEnd( undefined, undefined ) )
-  test.shouldThrowError( () => _.strRemoveEnd( null, null ) )
+  test.shouldThrowError( () => _.strRemoveEnd( 1, '' ) );
+  test.shouldThrowError( () => _.strRemoveEnd( 'a', 1 ) );
+  test.shouldThrowError( () => _.strRemoveEnd() );
+  test.shouldThrowError( () => _.strRemoveEnd( undefined, undefined ) );
+  test.shouldThrowError( () => _.strRemoveEnd( null, null ) );
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( 'one','two','three' );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( );
+  });
+
+  test.case = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( 1,'second' );
+  });
+
+  test.case = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveEnd( 'first',2 );
+  });
+
 }
 
 //
@@ -3235,7 +3220,9 @@ function strSplitNaive( test )
 {
 
   test.case = 'returns an array of strings';
+  debugger;
   var got = _.strSplitNaive( 'test test test' );
+  debugger;
   var expected = [ 'test', 'test', 'test' ];
   test.identical( got, expected );
 
@@ -7076,9 +7063,6 @@ var Self =
 
   tests :
   {
-
-    strRemoveBegin2 : strRemoveBegin2,
-    strRemoveEnd2 : strRemoveEnd2,
 
     strRemoveBegin : strRemoveBegin,
     strRemoveEnd : strRemoveEnd,

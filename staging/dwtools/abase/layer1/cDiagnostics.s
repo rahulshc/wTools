@@ -163,6 +163,56 @@ function diagnosticLocation( o )
   if( !o.location )
   o.location = Object.create( null );
 
+  /* */
+
+  if( o.error )
+  {
+    var location2 = o.error.location || Object.create( null );
+
+    o.location.path = _.arrayLeftDefined([ location2.path, o.location.path, o.error.filename, o.error.fileName ]).element;
+    o.location.line = _.arrayLeftDefined([ location2.line, o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
+    o.location.col = _.arrayLeftDefined([ location2.col, o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
+
+    if( o.location.path && _.numberIs( o.location.line ) )
+    return end();
+  }
+
+  /* */
+
+  if( !o.stack )
+  {
+    if( o.error )
+    {
+      o.stack = _.diagnosticStack( o.error );
+    }
+    else
+    {
+      o.stack = _.diagnosticStack();
+      o.level += 1;
+    }
+  }
+
+  routineFromStack( o.stack );
+
+  var had = !!o.location.path;
+  if( !had )
+  o.location.path = fromStack( o.stack );
+
+  if( !_.strIs( o.location.path ) )
+  return end();
+
+  if( !_.numberIs( o.location.line ) )
+  o.location.path = lineColFromPath( o.location.path );
+
+  if( !_.numberIs( o.location.line ) && had )
+  {
+    var path = fromStack( o.stack );
+    if( path )
+    lineColFromPath( path );
+  }
+
+  return end();
+
   /* end */
 
   function end()
@@ -172,9 +222,9 @@ function diagnosticLocation( o )
 
     /* full */
 
-    if( path )
+    // if( path )
     {
-      o.location.full = path;
+      o.location.full = path || '';
       if( o.location.line !== undefined )
       o.location.full += ':' + o.location.line;
     }
@@ -277,7 +327,7 @@ function diagnosticLocation( o )
     path = path.replace( /\s+$/,'' );
 
     if( _.strEnds( path,')' ) )
-    path = _.strInbetweenOf( path,'(',')' );
+    path = _.strFindInsideOf( path,'(',')' );
 
     return path;
   }
@@ -329,58 +379,6 @@ function diagnosticLocation( o )
     return path;
   }
 
-  /* */
-
-  if( o.error )
-  {
-
-    // _.assert( !o.error.location );
-    var location2 = o.error.location || Object.create( null );
-
-    o.location.path = _.arrayLeftDefined([ location2.path, o.location.path, o.error.filename, o.error.fileName ]).element;
-    o.location.line = _.arrayLeftDefined([ location2.line, o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
-    o.location.col = _.arrayLeftDefined([ location2.col, o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
-
-    if( o.location.path && _.numberIs( o.location.line ) )
-    return end();
-  }
-
-  /* */
-
-  if( !o.stack )
-  {
-    if( o.error )
-    {
-      o.stack = _.diagnosticStack( o.error );
-    }
-    else
-    {
-      o.stack = _.diagnosticStack();
-      o.level += 1;
-    }
-  }
-
-  routineFromStack( o.stack );
-
-  var had = !!o.location.path;
-  if( !had )
-  o.location.path = fromStack( o.stack );
-
-  if( !_.strIs( o.location.path ) )
-  return end();
-
-  if( !_.numberIs( o.location.line ) )
-  o.location.path = lineColFromPath( o.location.path );
-
-  if( !_.numberIs( o.location.line ) && had )
-  {
-    // debugger;
-    var path = fromStack( o.stack );
-    if( path )
-    lineColFromPath( path );
-  }
-
-  return end();
 }
 
 diagnosticLocation.defaults =
