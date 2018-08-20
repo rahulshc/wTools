@@ -5304,7 +5304,6 @@ function _strBeginOf( src,begin )
   else if( _.regexpIs( begin ) )
   {
     var matched = begin.exec( src );
-    debugger;
     if( matched && matched.index === 0 )
     return matched[ 0 ];
   }
@@ -19743,5 +19742,3 @@ if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
 
 })();
-
-  
