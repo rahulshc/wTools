@@ -823,7 +823,7 @@ function routinesChain( test )
   var routines = [ null, routineUnrolling, null, r2, null ];
   var composition = _.routinesChain( routines );
   var got = composition( 1,2,3 );
-  var expected = [ _.unrollAppend([ 1,2,3,16 ]), 160 ];
+  var expected = [ 1,2,3,16,160 ];
   test.identical( got, expected );
   test.identical( counter, 160 );
 
@@ -835,7 +835,7 @@ function routinesChain( test )
   var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
   var composition = _.routinesChain( routines );
   var got = composition( 1,2,3 );
-  var expected = [ _.unrollAppend([ 1,2,3,16 ]) ];
+  var expected = [ 1,2,3,16 ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
