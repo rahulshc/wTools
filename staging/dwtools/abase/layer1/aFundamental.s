@@ -93,21 +93,20 @@ var _ = Self;
 
 // specia globals
 
-// if( !_global_.WTOOLS_PRIVATE  )
-// {
-//   _global_.def = Symbol.for( 'default' );
-//   _global_.all = Symbol.for( 'all' );
-//   _global_.any = Symbol.for( 'any' );
-//
-//   _global_.none = Symbol.for( 'none' );
-//   _global_.nothing = Symbol.for( 'nothing' );
-// }
-//
-// Self.def = _global_.def;
+if( !_realGlobal_.def  )
+{
+  _realGlobal_.def = Symbol.for( 'default' );
+  // _global_.all = Symbol.for( 'all' );
+  // _global_.any = Symbol.for( 'any' );
+  // _global_.none = Symbol.for( 'none' );
+  _realGlobal_.nothing = Symbol.for( 'nothing' );
+}
+
+Self.def = _global_.def;
 // Self.all = _global_.all;
 // Self.any = _global_.any;
 // Self.none = _global_.none;
-// Self.nothing = _global_.nothing;
+Self.nothing = _global_.nothing;
 
 // type aliases
 

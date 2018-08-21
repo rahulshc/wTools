@@ -185,7 +185,6 @@ function _setupTesterPlaceholder()
     if( !testSuit.suiteFilePath )
     testSuit.suiteFilePath = _.diagnosticLocation( 1 ).path;
 
-    debugger;
     if( !testSuit.suiteFileLocation )
     testSuit.suiteFileLocation = _.diagnosticLocation( 1 ).full;
 

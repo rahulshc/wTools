@@ -1791,7 +1791,7 @@ function strSplitChunks( o )
 
   if( arguments.length === 2 )
   {
-    let o = arguments[ 1 ] || Object.create( null );
+    o = arguments[ 1 ] || Object.create( null );
     o.src = arguments[ 0 ];
   }
   else
@@ -1814,78 +1814,17 @@ function strSplitChunks( o )
 
   /* */
 
-  function colAccount( text )
-  {
-    let i = text.lastIndexOf( '\n' );
-
-    if( i === -1 )
-    {
-      column += text.length;
-    }
-    else
-    {
-      column = text.length - i;
-    }
-
-    _.assert( column >= 0 );
-  }
-
-  //
-
-  function makeChunkStatic( begin )
-  {
-    let chunk = Object.create( null );
-    chunk.line = line;
-    chunk.text = src.substring( 0,begin );
-    chunk.index = chunkIndex;
-    chunk.kind = 'static';
-    result.chunks.push( chunk );
-
-    src = src.substring( begin );
-    line += _.strLinesCount( chunk.text ) - 1;
-    chunkIndex += 1;
-
-    colAccount( chunk.text );
-  }
-
-  //
-
-  function makeChunkDynamic()
-  {
-    let chunk = Object.create( null );
-    chunk.line = line;
-    chunk.column = column;
-    chunk.index = chunkIndex;
-    chunk.kind = 'dynamic';
-    chunk.prefix = src.match( o.prefix )[ 0 ];
-    chunk.code = src.substring( chunk.prefix.length,end );
-    if( o.investigate )
-    {
-      chunk.lines = chunk.code.split( '\n' );
-      chunk.tab = /^\s*/.exec( chunk.lines[ chunk.lines.length-1 ] )[ 0 ];
-    }
-
-    /* postfix */
-
-    src = src.substring( chunk.prefix.length + chunk.code.length );
-    chunk.postfix = src.match( o.postfix )[ 0 ];
-    src = src.substring( chunk.postfix.length );
-
-    result.chunks.push( chunk );
-    return chunk;
-  }
-
-  //
-
   let line = 0;
   let column = 0;
   let chunkIndex = 0;
+  let begin = -1;
+  let end = -1;
   do
   {
 
     /* begin */
 
-    let begin = src.search( o.prefix );
+    begin = src.search( o.prefix );
     if( begin === -1 ) begin = src.length;
 
     /* text chunk */
@@ -1904,7 +1843,7 @@ function strSplitChunks( o )
 
     /* end */
 
-    let end = src.search( o.postfix );
+    end = src.search( o.postfix );
     if( end === -1 )
     {
       result.lines = src.split( '\n' ).length;
@@ -1925,6 +1864,70 @@ function strSplitChunks( o )
   while( src );
 
   return result;
+
+  /* - */
+
+  function colAccount( text )
+  {
+    let i = text.lastIndexOf( '\n' );
+
+    if( i === -1 )
+    {
+      column += text.length;
+    }
+    else
+    {
+      column = text.length - i;
+    }
+
+    _.assert( column >= 0 );
+  }
+
+  /* - */
+
+  function makeChunkStatic( begin )
+  {
+    let chunk = Object.create( null );
+    chunk.line = line;
+    chunk.text = src.substring( 0,begin );
+    chunk.index = chunkIndex;
+    chunk.kind = 'static';
+    result.chunks.push( chunk );
+
+    src = src.substring( begin );
+    line += _.strLinesCount( chunk.text ) - 1;
+    chunkIndex += 1;
+
+    colAccount( chunk.text );
+  }
+
+  /* - */
+
+  function makeChunkDynamic()
+  {
+    let chunk = Object.create( null );
+    chunk.line = line;
+    chunk.column = column;
+    chunk.index = chunkIndex;
+    chunk.kind = 'dynamic';
+    chunk.prefix = src.match( o.prefix )[ 0 ];
+    chunk.code = src.substring( chunk.prefix.length, end );
+    if( o.investigate )
+    {
+      chunk.lines = chunk.code.split( '\n' );
+      chunk.tab = /^\s*/.exec( chunk.lines[ chunk.lines.length-1 ] )[ 0 ];
+    }
+
+    /* postfix */
+
+    src = src.substring( chunk.prefix.length + chunk.code.length );
+    chunk.postfix = src.match( o.postfix )[ 0 ];
+    src = src.substring( chunk.postfix.length );
+
+    result.chunks.push( chunk );
+    return chunk;
+  }
+
 }
 
 strSplitChunks.defaults =
