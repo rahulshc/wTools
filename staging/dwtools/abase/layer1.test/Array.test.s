@@ -3589,29 +3589,29 @@ function arraySum( test )
 // array transformation
 // ---
 
-function arrayPrepend( test )
+function arrayPrependElement( test )
 {
   test.case = 'simple';
 
-  var got = _.arrayPrepend( [], 1 );
+  var got = _.arrayPrependElement( [], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.arrayPrepend( [ 1 ], 1 );
+  var got = _.arrayPrependElement( [ 1 ], 1 );
   test.identical( got, [ 1, 1 ] );
 
-  var got = _.arrayPrepend( [ 1 ], 2 );
+  var got = _.arrayPrependElement( [ 1 ], 2 );
   test.identical( got, [ 2, 1 ] );
 
-  var got = _.arrayPrepend( [ 1,2,3 ], 3 );
+  var got = _.arrayPrependElement( [ 1,2,3 ], 3 );
   test.identical( got, [ 3,1,2,3 ] );
 
-  var got = _.arrayPrepend( [ 1 ], '1' );
+  var got = _.arrayPrependElement( [ 1 ], '1' );
   test.identical( got, [ '1', 1 ] );
 
-  var got = _.arrayPrepend( [ 1 ], -1 );
+  var got = _.arrayPrependElement( [ 1 ], -1 );
   test.identical( got, [ -1, 1 ] );
 
-  var got = _.arrayPrepend( [ 1 ], [ 1 ] );
+  var got = _.arrayPrependElement( [ 1 ], [ 1 ] );
   test.identical( got, [ [ 1 ], 1 ] );
 
   //
@@ -3622,19 +3622,19 @@ function arrayPrepend( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayPrepend();
+    _.arrayPrependElement();
   })
 
   test.case = 'too many args';
   test.shouldThrowError( function()
   {
-    _.arrayPrepend( [], 1, 1 );
+    _.arrayPrependElement( [], 1, 1 );
   })
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayPrepend( 1, 1 );
+    _.arrayPrependElement( 1, 1 );
   })
 }
 
@@ -3820,42 +3820,42 @@ function arrayPrependOnceStrictly( test )
 
 //
 
-function arrayPrepended( test )
+function arrayPrependedElement( test )
 {
   test.case = 'simple';
 
   var dst = [];
-  var got = _.arrayPrepended( dst, 1 );
+  var got = _.arrayPrependedElement( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.arrayPrepended( dst, 1 );
+  var got = _.arrayPrependedElement( dst, 1 );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.arrayPrepended( dst, 2 );
+  var got = _.arrayPrependedElement( dst, 2 );
   test.identical( dst, [ 2, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1,2,3 ];
-  var got = _.arrayPrepended( dst, 3 );
+  var got = _.arrayPrependedElement( dst, 3 );
   test.identical( dst, [ 3,1,2,3 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.arrayPrepended( dst, '1' );
+  var got = _.arrayPrependedElement( dst, '1' );
   test.identical( dst, [ '1', 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.arrayPrepended( dst, -1 );
+  var got = _.arrayPrependedElement( dst, -1 );
   test.identical( dst, [ -1, 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.arrayPrepended( dst, [ 1 ] );
+  var got = _.arrayPrependedElement( dst, [ 1 ] );
   test.identical( dst, [ [ 1 ], 1 ] );
   test.identical( got, 0 );
 
@@ -3867,19 +3867,19 @@ function arrayPrepended( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayPrepended();
+    _.arrayPrependedElement();
   });
 
   test.case = 'too many args';
   test.shouldThrowError( function()
   {
-    _.arrayPrepended( [], 1, 1 );
+    _.arrayPrependedElement( [], 1, 1 );
   });
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayPrepended( 1, 1 );
+    _.arrayPrependedElement( 1, 1 );
   });
 }
 
@@ -4379,7 +4379,7 @@ function arrayPrependedArrayOnce( test )
 }
 
 // --
-//arrayPrepend*Arrays*
+//arrayPrependElement*Arrays*
 // --
 
 function arrayPrependArrays( test )
@@ -4915,29 +4915,29 @@ function arrayPrependedArraysOnce( test )
 
 //
 
-function arrayAppend( test )
+function arrayAppendElement( test )
 {
   test.case = 'simple';
 
-  var got = _.arrayAppend( [], 1 );
+  var got = _.arrayAppendElement( [], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.arrayAppend( [ 1 ], 1 );
+  var got = _.arrayAppendElement( [ 1 ], 1 );
   test.identical( got, [ 1, 1 ] );
 
-  var got = _.arrayAppend( [ 1 ], 2 );
+  var got = _.arrayAppendElement( [ 1 ], 2 );
   test.identical( got, [ 1,2 ] );
 
-  var got = _.arrayAppend( [ 1,2,3 ], 3 );
+  var got = _.arrayAppendElement( [ 1,2,3 ], 3 );
   test.identical( got, [ 1,2,3,3 ] );
 
-  var got = _.arrayAppend( [ 1 ], '1' );
+  var got = _.arrayAppendElement( [ 1 ], '1' );
   test.identical( got, [ 1, '1' ] );
 
-  var got = _.arrayAppend( [ 1 ], -1 );
+  var got = _.arrayAppendElement( [ 1 ], -1 );
   test.identical( got, [  1, -1 ] );
 
-  var got = _.arrayAppend( [ 1 ], [ 1 ] );
+  var got = _.arrayAppendElement( [ 1 ], [ 1 ] );
   test.identical( got, [  1,[ 1 ] ] );
 
   //
@@ -4948,19 +4948,19 @@ function arrayAppend( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayAppend();
+    _.arrayAppendElement();
   })
 
   test.case = 'too many args';
   test.shouldThrowError( function()
   {
-    _.arrayAppend( [], 1, 1 );
+    _.arrayAppendElement( [], 1, 1 );
   })
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayAppend( 1, 1 );
+    _.arrayAppendElement( 1, 1 );
   })
 }
 
@@ -5149,42 +5149,42 @@ function arrayAppendOnceStrictly( test )
 
 //
 
-function arrayAppended( test )
+function arrayAppendedElement( test )
 {
   test.case = 'simple';
 
   var dst = [];
-  var got = _.arrayAppended( dst, 1 );
+  var got = _.arrayAppendedElement( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppended( dst, 1 );
+  var got = _.arrayAppendedElement( dst, 1 );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppended( dst, 2 );
+  var got = _.arrayAppendedElement( dst, 2 );
   test.identical( dst, [ 1, 2 ] );
   test.identical( got, 1 );
 
   var dst = [ 1,2,3 ];
-  var got = _.arrayAppended( dst, 3 );
+  var got = _.arrayAppendedElement( dst, 3 );
   test.identical( dst, [ 1,2,3,3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppended( dst, '1' );
+  var got = _.arrayAppendedElement( dst, '1' );
   test.identical( dst, [ 1, '1' ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppended( dst, -1 );
+  var got = _.arrayAppendedElement( dst, -1 );
   test.identical( dst, [ 1, -1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppended( dst, [ 1 ] );
+  var got = _.arrayAppendedElement( dst, [ 1 ] );
   test.identical( dst, [ 1, [ 1 ] ] );
   test.identical( got, 1 );
 
@@ -5196,19 +5196,19 @@ function arrayAppended( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayAppended();
+    _.arrayAppendedElement();
   });
 
   test.case = 'too many args';
   test.shouldThrowError( function()
   {
-    _.arrayAppended( [], 1, 1 );
+    _.arrayAppendedElement( [], 1, 1 );
   });
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayAppended( 1, 1 );
+    _.arrayAppendedElement( 1, 1 );
   });
 }
 
@@ -11362,10 +11362,10 @@ var Self =
 
     // array prepend
 
-    arrayPrepend : arrayPrepend,
+    arrayPrependElement : arrayPrependElement,
     arrayPrependOnce : arrayPrependOnce,
     arrayPrependOnceStrictly : arrayPrependOnceStrictly,
-    arrayPrepended : arrayPrepended,
+    arrayPrependedElement : arrayPrependedElement,
     arrayPrependedOnce : arrayPrependedOnce,
 
     arrayPrependArray : arrayPrependArray,
@@ -11382,8 +11382,8 @@ var Self =
 
     // array append
 
-    arrayAppend : arrayAppend,
-    arrayAppended : arrayAppended,
+    arrayAppendElement : arrayAppendElement,
+    arrayAppendedElement : arrayAppendedElement,
     arrayAppendOnce : arrayAppendOnce,
     arrayAppendedOnce : arrayAppendedOnce,
     arrayAppendOnceStrictly : arrayAppendOnceStrictly,

@@ -453,6 +453,57 @@ function routinesCall( test )
 
 //
 
+function routinesCompose( test )
+{
+
+  function r1()
+  {
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    debugger;
+    return _.unrollAppend( null, arguments, counter );
+  }
+
+  function r2()
+  {
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += 2*arguments[ a ];
+    return counter;
+  }
+
+  function chainer( e, k, args, o )
+  {
+    return e;
+  }
+
+  /* - */
+
+  test.case = 'without chainer';
+
+  var counter = 0;
+  var routines = [ null, r1, null, r2, null ];
+  var composition = _.routinesCompose( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ _.unrollAppend([ 1,2,3,6 ]), 18 ];
+  test.identical( got, expected );
+  test.identical( counter, 18 );
+
+  /* - */
+
+  test.case = 'with chainer';
+
+  var counter = 0;
+  var routines = [ null, r1, null, r2, null ];
+  var composition = _.routinesCompose( routines, chainer );
+  var got = composition( 1,2,3 );
+  var expected = [ _.unrollAppend([ 1,2,3,6 ]), 30 ];
+  test.identical( got, expected );
+  test.identical( counter, 30 );
+
+}
+
+//
+
 var Self =
 {
 
@@ -466,7 +517,9 @@ var Self =
     // routineBind  : routineBind,
     routineJoin  : routineJoin,
     routineSeal  : routineSeal,
-    routinesCall : routinesCall
+    routinesCall : routinesCall,
+
+    routinesCompose : routinesCompose,
 
   }
 

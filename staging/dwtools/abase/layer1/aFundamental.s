@@ -3869,11 +3869,12 @@ function _routinesChain_body( o )
     var args = arguments;
     for( var s = 0 ; s < o.srcs.length ; s++ )
     {
-      if( !_.argumentsArrayIs( args ) )
-      args = [ args ];
       if( s > 0 )
       args = o.joiner.apply( this, args );
       args = o.srcs[ s ].apply( this, args );
+      _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
+      if( !_.unrollIs( args ) )
+      args = _.unrollAppend([ args ]);
     }
     return args;
   }
@@ -3885,9 +3886,10 @@ function _routinesChain_body( o )
     for( var s = 0 ; s < o.srcs.length ; s++ )
     {
       debugger;
-      if( !_.argumentsArrayIs( args ) )
-      args = [ args ];
       args = o.srcs[ s ].apply( this, args );
+      _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
+      if( !_.unrollIs( args ) )
+      args = [ args ];
     }
     debugger;
     return args;
@@ -3916,6 +3918,26 @@ routinesChain.defaults = Object.create( routinesChain.body.defaults );
 
 //
 
+function _routinesCompose_pre( routine, args )
+{
+  var srcs = _.arrayAppendArrays( [], [ args[ 0 ] ] );
+
+  srcs = srcs.filter( ( e ) => e === null ? false : e );
+
+  _.assert( _.routinesAre( srcs ) );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  // _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
+  _.assert( args.length === 1 || args.length === 2);
+  _.assert( _.arrayIs( srcs ) || _.routineIs( srcs ) );
+  _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
+  // _.assert( _.routineIs( args[ 2 ] ) || args[ 2 ] === undefined || args[ 2 ] === null );
+
+  return { srcs : srcs, chainer : args[ 1 ] || null };
+  // return { srcs : srcs, joiner : args[ 1 ] || null, chainer : args[ 2 ] || null };
+}
+
+//
+
 function _routinesCompose_body( o )
 {
 
@@ -3926,9 +3948,32 @@ function _routinesCompose_body( o )
   else
   {}
 
+  /* */
+
+  // if( !o.joiner )
+  // o.joiner = function join( e, k, args, op )
+  // {
+  //   return e;
+  // }
+
+  if( !o.chainer )
+  o.chainer = function chainer( e, k, args, op )
+  {
+    return args;
+  }
+
+  // let joiner = o.joiner;
+  let chainer = o.chainer;
+
+  // _.assert( _.routineIs( joiner ) );
+  _.assert( _.routineIs( chainer ) );
+
+  /* */
+
   if( o.srcs.length === 0 )
   return function empty()
   {
+    throw _.err( 'not tested' );
   }
   else if( o.srcs.length === 1 )
   {
@@ -3937,8 +3982,15 @@ function _routinesCompose_body( o )
   else return function composition()
   {
     var result = [];
-    for( var s = 0 ; s < o.srcs.length ; s++ )
-    result[ s ] = o.srcs[ s ].apply( this,arguments );
+    var args = _.unrollAppend( null, arguments );
+    for( var k = 0 ; k < o.srcs.length ; k++ )
+    {
+      var r = o.srcs[ k ].apply( this, args );
+      _.assert( !_.argumentsArrayIs( r ) );
+      // r = joiner( r, k, args, o );
+      result.push( r );
+      args = chainer( r, k, args, o );
+    }
     return result;
   }
 
@@ -3947,7 +3999,8 @@ function _routinesCompose_body( o )
 _routinesCompose_body.defaults =
 {
   srcs : null,
-  joiner : null,
+  // joiner : null,
+  chainer : null,
 }
 
 //
@@ -3959,7 +4012,7 @@ function routinesCompose()
   return result;
 }
 
-routinesCompose.pre = _routinesChain_pre;
+routinesCompose.pre = _routinesCompose_pre;
 routinesCompose.body = _routinesCompose_body;
 routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
@@ -3995,7 +4048,7 @@ function routinesComposeReturningLast()
   return result;
 }
 
-routinesComposeReturningLast.pre = _routinesChain_pre;
+routinesComposeReturningLast.pre = _routinesCompose_pre;
 routinesComposeReturningLast.body = _routinesComposeReturningLast_body;
 routinesComposeReturningLast.defaults = Object.create( routinesComposeReturningLast.body.defaults );
 
@@ -4043,7 +4096,7 @@ function routinesComposeEvery()
   return result;
 }
 
-routinesComposeEvery.pre = _routinesChain_pre;
+routinesComposeEvery.pre = _routinesCompose_pre;
 routinesComposeEvery.body = _routinesComposeEvery_body;
 routinesComposeEvery.defaults = Object.create( routinesComposeEvery.body.defaults );
 
@@ -4275,7 +4328,7 @@ function routineForPreAndBody_pre( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ) );
   _.assert( _.routineIs( o.body ) );
-  _.assert( !!o.body.defaults );
+  _.assert( !!o.body.defaults, 'body should have defaults' );
   _.assertMapHasOnly( o.pre, o.preProperties );
   _.assertMapHasOnly( o.body, o.bodyProperties );
 
@@ -4290,7 +4343,11 @@ function routineForPreAndBody_body( o )
   _.assert( arguments.length === 1 );
 
   if( !_.routineIs( o.pre ) )
-  o.pre = _.routinesChain( o.pre, ( o ) => _.argumentsArrayFrom([ callPreAndBody, [ o ] ]) );
+  o.pre = _.routinesChain( o.pre, ( o ) =>
+  {
+    _.assert( arguments.length === 1 );
+    return _.unrollAppend([ callPreAndBody, [ o ] ]);
+  });
 
   let pre = o.pre;
   let body = o.body;
@@ -4298,7 +4355,8 @@ function routineForPreAndBody_body( o )
   {
     let result;
     let o = pre.call( this, callPreAndBody, arguments );
-    if( _.argumentsArrayIs( o ) )
+    _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+    if( _.unrollIs( o ) )
     result = body.apply( this, o );
     else
     result = body.call( this, o );
@@ -8707,6 +8765,15 @@ function longIs( src )
 
 //
 
+function unrollIs( src )
+{
+  if( !_.arrayIs( src ) )
+  return false;
+  return src[ unrollSymbol ];
+}
+
+//
+
 function constructorLikeArray( src )
 {
   if( !src )
@@ -11532,8 +11599,86 @@ function arraySum( src,onEvaluate )
 }
 
 // --
+// unroll
+// --
+
+function unrollPrepend( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  for( var a = arguments.length - 1 ; a >= 1 ; a-- )
+  {
+    if( _.longIs( arguments[ a ] ) )
+    {
+      dstArray.unshift.apply( dstArray, arguments[ a ] );
+    }
+    else
+    {
+      dstArray.unshift( arguments[ a ] );
+    }
+  }
+
+  dstArray[ unrollSymbol ] = true;
+
+  return dstArray;
+}
+
+//
+
+function unrollAppend( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  for( var a = 1, len = arguments.length ; a < len; a++ )
+  {
+    if( _.longIs( arguments[ a ] ) )
+    {
+      dstArray.push.apply( dstArray, arguments[ a ] );
+    }
+    else
+    {
+      dstArray.push( arguments[ a ] );
+    }
+  }
+
+  dstArray[ unrollSymbol ] = true;
+
+  return dstArray;
+}
+
+// --
 // array prepend
 // --
+
+function arrayPrepend_( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  for( var a = arguments.length - 1 ; a >= 1 ; a-- )
+  {
+    if( _.longIs( arguments[ a ] ) )
+    {
+      dstArray.unshift.apply( dstArray, arguments[ a ] );
+    }
+    else
+    {
+      dstArray.unshift( arguments[ a ] );
+    }
+  }
+
+  return dstArray;
+}
+
+//
 
 /**
  * Routine adds a value of argument( ins ) to the beginning of an array( dstArray ).
@@ -11543,22 +11688,22 @@ function arraySum( src,onEvaluate )
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
- * _.arrayPrepend( [ 1, 2, 3, 4 ], 5 );
+ * _.arrayPrependElement( [ 1, 2, 3, 4 ], 5 );
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4, 5 ]
- * _.arrayPrepend( [ 1, 2, 3, 4, 5 ], 5 );
+ * _.arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 );
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
- * @function arrayPrepend
+ * @function arrayPrependElement
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
  * @memberof wTools
  */
 
-function arrayPrepend( dstArray, ins )
+function arrayPrependElement( dstArray, ins )
 {
-  arrayPrepended.apply( this,arguments );
+  arrayPrependedElement.apply( this,arguments );
   return dstArray;
 }
 
@@ -11678,16 +11823,16 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
  *
  * @example
  * // returns 0
- * _.arrayPrepended( [ 1, 2, 3, 4 ], 5 );
+ * _.arrayPrependedElement( [ 1, 2, 3, 4 ], 5 );
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
- * @function arrayPrepended
+ * @function arrayPrependedElement
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( arguments.length ) is not equal to two.
  * @memberof wTools
  */
 
-function arrayPrepended( dstArray, ins )
+function arrayPrependedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
   _.assert( _.arrayIs( dstArray ) );
@@ -11780,57 +11925,9 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependArray( dstArray, insArray )
 {
-  // var result = dstArray;
-  //
-  // _.assert( _.arrayIs( dstArray ),'arrayPrependArray :','expects array' );
-  //
-  // for( var a = arguments.length - 1 ; a > 0 ; a-- )
-  // {
-  //   var argument = arguments[ a ];
-  //
-  //   if( argument === undefined )
-  //   throw _.err( 'arrayPrependArray','argument is not defined' );
-  //
-  //   if( _.longIs( argument ) ) result.unshift.apply( dstArray,argument );
-  //   else result.unshift( argument );
-  // }
-  //
-  // return result;
-
   arrayPrependedArray.apply( this, arguments );
   return dstArray;
 }
-
-//
-
-// function _arrayPrependArrayOnce( dstArray )
-// {
-//   var result = dstArray;
-//
-//   _.assert( _.arrayIs( dstArray ),'_arrayPrependArrayOnce :','expects array' );
-//
-//   for( var a = arguments.length - 1 ; a > 0 ; a-- )
-//   {
-//     var argument = arguments[ a ];
-//
-//     _.assert( argument !== undefined,'_arrayPrependArrayOnce','argument is not defined' );
-//
-//     if( _.longIs( argument ) )
-//     {
-//       for( var i = argument.length-1 ; i >= 0 ; i-- )
-//       if( result.indexOf( argument[ i ] ) === -1 )
-//       result.unshift( argument[ i ] );
-//     }
-//     else
-//     {
-//       if( result.indexOf( argument ) === -1 )
-//       result.unshift( argument );
-//     }
-//
-//   }
-//
-//   return result;
-// }
 
 //
 
@@ -12185,7 +12282,7 @@ function arrayPrependedArrays( dstArray, insArray )
 
   var result = 0;
 
-  for( var a = insArray.length - 1; a >= 0; a-- )
+  for( var a = insArray.length - 1 ; a >= 0 ; a-- )
   {
     if( _.longIs( insArray[ a ] ) )
     {
@@ -12276,9 +12373,33 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // array append
 // --
 
-function arrayAppend( dstArray, ins )
+function arrayAppend_( dstArray )
 {
-  arrayAppended.apply( this, arguments );
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  for( var a = 1, len = arguments.length ; a < len; a++ )
+  {
+    if( _.longIs( arguments[ a ] ) )
+    {
+      dstArray.push.apply( dstArray, arguments[ a ] );
+    }
+    else
+    {
+      dstArray.push( arguments[ a ] );
+    }
+  }
+
+  return dstArray;
+}
+
+//
+
+function arrayAppendElement( dstArray, ins )
+{
+  arrayAppendedElement.apply( this, arguments );
   return dstArray;
 }
 
@@ -12333,7 +12454,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayAppended( dstArray, ins )
+function arrayAppendedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
   _.assert( _.arrayIs( dstArray ) );
@@ -12514,9 +12635,10 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
 function arrayAppendedArrays( dstArray, insArray )
 {
+
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.arrayIs( dstArray ),'arrayAppendedArrays :','expects array' );
-  _.assert( _.longIs( insArray ),'arrayAppendedArrays :','expects longIs entity' );
+  _.assert( _.arrayIs( dstArray ), 'expects array' );
+  _.assert( _.longIs( insArray ), 'expects longIs entity' );
 
   var result = 0;
 
@@ -13109,7 +13231,7 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 //
 //   return result;
 // }
-
+//
 //
 
 function arrayFlatten( dstArray, insArray )
@@ -18892,8 +19014,10 @@ _.Later._lates = [];
 _.Later._associatedMap = new Map();
 
 // --
-// vars
+// fields
 // --
+
+var unrollSymbol = Symbol.for( 'unroll' );
 
 var Fields =
 {
@@ -19292,6 +19416,7 @@ var Routines =
   arrayLikeResizable : arrayLikeResizable,
   arrayLike : arrayLike,
   longIs : longIs,
+  unrollIs : unrollIs,
 
   constructorLikeArray : constructorLikeArray,
   hasLength : hasLength,
@@ -19385,12 +19510,18 @@ var Routines =
   arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* dubious */
   arraySum : arraySum, /* dubious */
 
+  // unroll
+
+  unrollPrepend : unrollPrepend,
+  unrollAppend : unrollAppend,
+
   // array prepend
 
-  arrayPrepend : arrayPrepend,
+  arrayPrepend_ : arrayPrepend_,
+  arrayPrependElement : arrayPrependElement,
   arrayPrependOnce : arrayPrependOnce,
   arrayPrependOnceStrictly : arrayPrependOnceStrictly,
-  arrayPrepended : arrayPrepended,
+  arrayPrependedElement : arrayPrependedElement,
   arrayPrependedOnce : arrayPrependedOnce,
 
   arrayPrependArray : arrayPrependArray,
@@ -19407,10 +19538,11 @@ var Routines =
 
   // array append
 
-  arrayAppend : arrayAppend,
+  arrayAppend_ : arrayAppend_,
+  arrayAppendElement : arrayAppendElement,
   arrayAppendOnce : arrayAppendOnce,
   arrayAppendOnceStrictly : arrayAppendOnceStrictly,
-  arrayAppended : arrayAppended,
+  arrayAppendedElement : arrayAppendedElement,
   arrayAppendedOnce : arrayAppendedOnce,
 
   arrayAppendArray : arrayAppendArray,
