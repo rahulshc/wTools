@@ -456,8 +456,346 @@ function routinesCall( test )
 function routinesCompose( test )
 {
 
-  function r1()
+  function routineUnrolling()
   {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    debugger;
+    return _.unrollAppend( null, arguments, counter );
+  }
+
+  function routineNotUnrolling()
+  {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    debugger;
+    return _.arrayAppend_( null, arguments, counter );
+  }
+
+  function r2()
+  {
+    counter += 100;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += 2*arguments[ a ];
+    return counter;
+  }
+
+  function _break()
+  {
+    return undefined;
+  }
+
+  function chainer1( e, k, args, op )
+  {
+    return e;
+  }
+
+  /* - */
+
+  test.case = 'empty';
+
+  var counter = 0;
+  var routines = [];
+  var composition = _.routinesCompose( routines );
+  var got = composition( 1,2,3 );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( counter, 0 );
+
+  /* - */
+
+  test.open( 'unrolling:1' )
+
+  /* */
+
+  test.case = 'without chainer';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, r2, null ];
+  var composition = _.routinesCompose( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ 1,2,3,16,128 ];
+  test.identical( got, expected );
+  test.identical( counter, 128 );
+
+  /* */
+
+  test.case = 'with chainer';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, r2, null ];
+  var composition = _.routinesCompose( routines, chainer1 );
+  var got = composition( 1,2,3 );
+  var expected = [ 1,2,3,16,160 ];
+  test.identical( got, expected );
+  test.identical( counter, 160 );
+
+  /* */
+
+  test.case = 'with chainer and break';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
+  var composition = _.routinesCompose( routines, chainer1 );
+  var got = composition( 1,2,3 );
+  var expected = [ 1,2,3,16 ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  /* */
+
+  test.close( 'unrolling:1' )
+
+  /* - */
+
+  test.open( 'unrolling:0' )
+
+  /* */
+
+  test.case = 'without chainer';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, r2, null ];
+  var composition = _.routinesCompose( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ [ 1,2,3,16 ], 128 ];
+  test.identical( got, expected );
+  test.identical( counter, 128 );
+
+  /* */
+
+  test.case = 'with chainer';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, r2, null ];
+  var composition = _.routinesCompose( routines, chainer1 );
+  var got = composition( 1,2,3 );
+  var expected = [ [ 1,2,3,16 ], 160 ];
+  test.identical( got, expected );
+  test.identical( counter, 160 );
+
+  /* */
+
+  test.case = 'with chainer and break';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, _break, null, r2, null ];
+  var composition = _.routinesCompose( routines, chainer1 );
+  var got = composition( 1,2,3 );
+  var expected = [ [ 1,2,3,16 ] ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  /* */
+
+  test.close( 'unrolling:0' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery() );
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){}, function(){} ) );
+
+}
+
+//
+
+function routinesComposeEvery( test )
+{
+
+  function routineUnrolling()
+  {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    debugger;
+    return _.unrollAppend( null, arguments, counter );
+  }
+
+  function routineNotUnrolling()
+  {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    debugger;
+    return _.arrayAppend_( null, arguments, counter );
+  }
+
+  function r2()
+  {
+    counter += 100;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += 2*arguments[ a ];
+    return counter;
+  }
+
+  function _nothing()
+  {
+    return undefined;
+  }
+
+  function _dont()
+  {
+    return dont;
+  }
+
+  test.case = 'with nothing';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
+  var composition = _.routinesComposeEvery( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ 1,2,3,16,128 ];
+  test.identical( got, expected );
+  test.identical( counter, 128 );
+
+  test.case = 'last nothing';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _nothing ];
+  var composition = _.routinesComposeEvery( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ 1,2,3,16 ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  test.case = 'not unrolling and last nothing';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, _nothing ];
+  var composition = _.routinesComposeEvery( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ [ 1,2,3,16 ] ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  test.case = 'with nothing and dont';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
+  var composition = _.routinesComposeEvery( routines );
+  var got = composition( 1,2,3 );
+  var expected = undefined;
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery() );
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){}, function(){} ) );
+
+}
+
+//
+
+function routinesComposeEveryReturningLast( test )
+{
+
+  function routineUnrolling()
+  {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    debugger;
+    return _.unrollAppend( null, arguments, counter );
+  }
+
+  function routineNotUnrolling()
+  {
+    counter += 10;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += arguments[ a ];
+    debugger;
+    return _.arrayAppend_( null, arguments, counter );
+  }
+
+  function r2()
+  {
+    counter += 100;
+    for( var a = 0 ; a < arguments.length ; a++ )
+    counter += 2*arguments[ a ];
+    return counter;
+  }
+
+  function _nothing()
+  {
+    return undefined;
+  }
+
+  function _dont()
+  {
+    return dont;
+  }
+
+  test.case = 'with nothing';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
+  var composition = _.routinesComposeEveryReturningLast( routines );
+  var got = composition( 1,2,3 );
+  var expected = 128;
+  test.identical( got, expected );
+  test.identical( counter, 128 );
+
+  test.case = 'last nothing';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _nothing ];
+  var composition = _.routinesComposeEveryReturningLast( routines );
+  var got = composition( 1,2,3 );
+  var expected = 16;
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  test.case = 'not unrolling and last nothing';
+
+  var counter = 0;
+  var routines = [ null, routineNotUnrolling, null, _nothing ];
+  var composition = _.routinesComposeEveryReturningLast( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ 1,2,3,16 ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  test.case = 'with nothing and dont';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
+  var composition = _.routinesComposeEveryReturningLast( routines );
+  var got = composition( 1,2,3 );
+  var expected = dont;
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.routinesComposeEveryReturningLast() );
+  test.shouldThrowErrorSync( () => _.routinesComposeEveryReturningLast( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeEveryReturningLast( routines, function(){}, function(){} ) );
+
+}
+
+//
+
+function routinesChain( test )
+{
+
+  function routineUnrolling()
+  {
+    counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
     debugger;
@@ -466,39 +804,49 @@ function routinesCompose( test )
 
   function r2()
   {
+    counter += 100;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += 2*arguments[ a ];
     return counter;
   }
 
-  function chainer( e, k, args, o )
+  function _break()
   {
-    return e;
+    return undefined;
   }
 
-  /* - */
+  /* */
 
-  test.case = 'without chainer';
-
-  var counter = 0;
-  var routines = [ null, r1, null, r2, null ];
-  var composition = _.routinesCompose( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ _.unrollAppend([ 1,2,3,6 ]), 18 ];
-  test.identical( got, expected );
-  test.identical( counter, 18 );
-
-  /* - */
-
-  test.case = 'with chainer';
+  test.case = 'without break';
 
   var counter = 0;
-  var routines = [ null, r1, null, r2, null ];
-  var composition = _.routinesCompose( routines, chainer );
+  var routines = [ null, routineUnrolling, null, r2, null ];
+  var composition = _.routinesChain( routines );
   var got = composition( 1,2,3 );
-  var expected = [ _.unrollAppend([ 1,2,3,6 ]), 30 ];
+  var expected = [ _.unrollAppend([ 1,2,3,16 ]), 160 ];
   test.identical( got, expected );
-  test.identical( counter, 30 );
+  test.identical( counter, 160 );
+
+  /* */
+
+  test.case = 'with break';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
+  var composition = _.routinesChain( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ _.unrollAppend([ 1,2,3,16 ]) ];
+  test.identical( got, expected );
+  test.identical( counter, 16 );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'bad arguments';
+
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery() );
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){}, function(){} ) );
 
 }
 
@@ -520,6 +868,9 @@ var Self =
     routinesCall : routinesCall,
 
     routinesCompose : routinesCompose,
+    routinesComposeEvery : routinesComposeEvery,
+    routinesComposeEveryReturningLast : routinesComposeEveryReturningLast,
+    routinesChain : routinesChain,
 
   }
 

@@ -100,6 +100,7 @@ if( !_realGlobal_.def  )
   // _global_.any = Symbol.for( 'any' );
   // _global_.none = Symbol.for( 'none' );
   _realGlobal_.nothing = Symbol.for( 'nothing' );
+  _realGlobal_.dont = Symbol.for( 'dont' );
 }
 
 Self.def = _global_.def;
@@ -107,6 +108,7 @@ Self.def = _global_.def;
 // Self.any = _global_.any;
 // Self.none = _global_.none;
 Self.nothing = _global_.nothing;
+Self.dont = _global_.dont;
 
 // type aliases
 
@@ -3825,7 +3827,7 @@ function methodsCall( contexts,methods,args )
 
 //
 
-function _routinesChain_pre( routine, args )
+function _routinesComposeWithSingleArgument_pre( routine, args )
 {
   var srcs = _.arrayAppendArrays( [], [ args[ 0 ] ] );
 
@@ -3833,88 +3835,15 @@ function _routinesChain_pre( routine, args )
 
   _.assert( _.routinesAre( srcs ) );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( args.length === 1 || args.length === 2 );
+
+  _.assert( args.length === 1 );
+  // _.assert( args.length === 1 || args.length === 2 );
   _.assert( _.arrayIs( srcs ) || _.routineIs( srcs ) );
-  _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined );
+  // _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined );
 
-  return { srcs : srcs, joiner : args[ 1 ] || null };
+  // return { srcs : srcs, joiner : args[ 1 ] || null };
+  return { srcs : srcs };
 }
-
-//
-
-function _routinesChain_body( o )
-{
-
-  if( o.srcs.length === 0 )
-  debugger;
-  else if( o.srcs.length === 1 )
-  debugger;
-  else
-  {}
-
-  if( o.srcs.length === 0 )
-  return function empty()
-  {
-    debugger;
-    return arguments;
-  }
-  else if( o.srcs.length === 1 )
-  {
-    debugger;
-    return o.srcs[ 0 ];
-  }
-  else if( o.joiner ) return function chainWithJoiner()
-  {
-    var result = [];
-    var args = arguments;
-    for( var s = 0 ; s < o.srcs.length ; s++ )
-    {
-      if( s > 0 )
-      args = o.joiner.apply( this, args );
-      args = o.srcs[ s ].apply( this, args );
-      _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
-      if( !_.unrollIs( args ) )
-      args = _.unrollAppend([ args ]);
-    }
-    return args;
-  }
-  else return function chain()
-  {
-    debugger;
-    var result = [];
-    var args = arguments;
-    for( var s = 0 ; s < o.srcs.length ; s++ )
-    {
-      debugger;
-      args = o.srcs[ s ].apply( this, args );
-      _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
-      if( !_.unrollIs( args ) )
-      args = [ args ];
-    }
-    debugger;
-    return args;
-  }
-
-}
-
-_routinesChain_body.defaults =
-{
-  srcs : null,
-  joiner : null,
-}
-
-//
-
-function routinesChain()
-{
-  var o = _.routinesChain.pre( routinesChain, arguments );
-  var result = _.routinesChain.body( o );
-  return result;
-}
-
-routinesChain.pre = _routinesChain_pre;
-routinesChain.body = _routinesChain_body;
-routinesChain.defaults = Object.create( routinesChain.body.defaults );
 
 //
 
@@ -3942,19 +3871,16 @@ function _routinesCompose_body( o )
 {
 
   if( o.srcs.length === 0 )
-  debugger;
-  else if( o.srcs.length === 1 )
-  {}
-  else
-  {}
+  return function empty(){ return [] }
+
+  // if( o.srcs.length === 0 )
+  // debugger;
+  // else if( o.srcs.length === 1 )
+  // {}
+  // else
+  // {}
 
   /* */
-
-  // if( !o.joiner )
-  // o.joiner = function join( e, k, args, op )
-  // {
-  //   return e;
-  // }
 
   if( !o.chainer )
   o.chainer = function chainer( e, k, args, op )
@@ -3962,10 +3888,8 @@ function _routinesCompose_body( o )
     return args;
   }
 
-  // let joiner = o.joiner;
   let chainer = o.chainer;
 
-  // _.assert( _.routineIs( joiner ) );
   _.assert( _.routineIs( chainer ) );
 
   /* */
@@ -3987,9 +3911,11 @@ function _routinesCompose_body( o )
     {
       var r = o.srcs[ k ].apply( this, args );
       _.assert( !_.argumentsArrayIs( r ) );
-      // r = joiner( r, k, args, o );
-      result.push( r );
+      if( r !== undefined )
+      _.arrayAppendUnrolling( result, r );
       args = chainer( r, k, args, o );
+      if( args === undefined )
+      break;
     }
     return result;
   }
@@ -3999,7 +3925,6 @@ function _routinesCompose_body( o )
 _routinesCompose_body.defaults =
 {
   srcs : null,
-  // joiner : null,
   chainer : null,
 }
 
@@ -4056,32 +3981,102 @@ routinesComposeReturningLast.defaults = Object.create( routinesComposeReturningL
 
 //
 
+function _routinesComposeReturningBeforeLast_body( o )
+{
+
+  if( o.srcs.length === 1 )
+  {
+    return o.srcs[ 0 ];
+  }
+
+  var routine = _.routinesCompose.body( o );
+
+  return function returnLast()
+  {
+    var result = routine.apply( this, arguments );
+    return result[ result.length-1 ];
+  }
+
+  return returnLast;
+}
+
+_routinesComposeReturningBeforeLast_body.defaults = Object.create( routinesCompose.defaults );
+
+//
+
+function routinesComposeReturningBeforeLast()
+{
+  var o = _.routinesComposeReturningBeforeLast.pre( routinesComposeReturningBeforeLast, arguments );
+  var result = _.routinesComposeReturningBeforeLast.body( o );
+  return result;
+}
+
+routinesComposeReturningBeforeLast.pre = _routinesCompose_pre;
+routinesComposeReturningBeforeLast.body = _routinesComposeReturningBeforeLast_body;
+routinesComposeReturningBeforeLast.defaults = Object.create( routinesComposeReturningBeforeLast.body.defaults );
+
+//
+
 function _routinesComposeEvery_body( o )
 {
 
   if( o.srcs.length === 0 )
-  return function empty()
+  debugger;
+
+  if( o.srcs.length === 1 )
   {
-  }
-  else if( o.srcs.length === 1 )
-  {
+    _.assert( _.routineIs( o.srcs[ 0 ] ) );
     return o.srcs[ 0 ];
   }
-  else return function composition()
+
+  o.chainer = function chainer( e, k, args, o )
   {
-    var result = [];
-    for( var s = 0 ; s < o.srcs.length ; s++ )
-    {
-      var r = o.srcs[ s ].apply( this,arguments );
-      if( r === false )
-      return false;
-      else if( r !== undefined )
-      result.push( r );
-    }
+    _.assert( e !== false );
+    if( e === dont )
+    return undefined;
+    return args;
+  }
+
+  var routine = _.routinesCompose.body( o );
+
+  function returnNotEmpty()
+  {
+    var result = routine.apply( this, arguments );
     if( !result.length )
+    return;
+    if( result[ result.length-1 ] === dont )
     return;
     return result;
   }
+
+  return returnNotEmpty;
+
+  // if( o.srcs.length === 0 )
+  // return function empty()
+  // {
+  // }
+  // else if( o.srcs.length === 1 )
+  // {
+  //   return o.srcs[ 0 ];
+  // }
+  // else return function composition()
+  // {
+  //   var result = [];
+  //   for( var s = 0 ; s < o.srcs.length ; s++ )
+  //   {
+  //     var r = o.srcs[ s ].apply( this, arguments );
+  //     _.assert( r !== false );
+  //     if( r === dont )
+  //     return;
+  //     // if( r === false )
+  //     // return false;
+  //     else if( r !== undefined )
+  //     result.push( r );
+  //   }
+  //   if( !result.length )
+  //   return;
+  //   return result;
+  // }
 
 }
 
@@ -4096,9 +4091,140 @@ function routinesComposeEvery()
   return result;
 }
 
-routinesComposeEvery.pre = _routinesCompose_pre;
+routinesComposeEvery.pre = _routinesComposeWithSingleArgument_pre;
 routinesComposeEvery.body = _routinesComposeEvery_body;
 routinesComposeEvery.defaults = Object.create( routinesComposeEvery.body.defaults );
+
+//
+
+function _routinesComposeEveryReturningLast_body( o )
+{
+
+  if( o.srcs.length === 0 )
+  debugger;
+
+  if( o.srcs.length === 1 )
+  {
+    _.assert( _.routineIs( o.srcs[ 0 ] ) );
+    return o.srcs[ 0 ];
+  }
+
+  o.chainer = function chainer( e, k, args, o )
+  {
+    _.assert( e !== false );
+    if( e === dont )
+    return undefined;
+    return args;
+  }
+
+  var routine = _.routinesCompose.body( o );
+
+  function returnNotEmpty()
+  {
+    var result = routine.apply( this, arguments );
+    return result[ result.length-1 ];
+  }
+
+  return returnNotEmpty;
+}
+
+_routinesComposeEveryReturningLast_body.defaults = Object.create( routinesCompose.defaults );
+
+//
+
+function routinesComposeEveryReturningLast()
+{
+  var o = _.routinesComposeEveryReturningLast.pre( routinesComposeEveryReturningLast, arguments );
+  var result = _.routinesComposeEveryReturningLast.body( o );
+  return result;
+}
+
+routinesComposeEveryReturningLast.pre = _routinesComposeWithSingleArgument_pre;
+routinesComposeEveryReturningLast.body = _routinesComposeEveryReturningLast_body;
+routinesComposeEveryReturningLast.defaults = Object.create( routinesComposeEveryReturningLast.body.defaults );
+
+//
+
+function _routinesChain_body( o )
+{
+
+  if( o.srcs.length === 0 )
+  debugger;
+  else if( o.srcs.length === 1 )
+  debugger;
+  else
+  debugger;
+
+  o.chainer = function chainer( e, k, args, o )
+  {
+    return e;
+  }
+
+  return _.routinesCompose.body( o );
+
+  // if( o.srcs.length === 0 )
+  // return function empty()
+  // {
+  //   debugger;
+  //   return arguments;
+  // }
+  // else if( o.srcs.length === 1 )
+  // {
+  //   debugger;
+  //   return o.srcs[ 0 ];
+  // }
+  // else if( o.joiner ) return function chainWithJoiner()
+  // {
+  //   var result = [];
+  //   var args = arguments;
+  //   for( var s = 0 ; s < o.srcs.length ; s++ )
+  //   {
+  //     if( s > 0 )
+  //     args = o.joiner.apply( this, args );
+  //     args = o.srcs[ s ].apply( this, args );
+  //     _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
+  //     if( !_.unrollIs( args ) )
+  //     args = _.unrollAppend([ args ]);
+  //   }
+  //   return args;
+  // }
+  // else return function chain()
+  // {
+  //   debugger;
+  //   var result = [];
+  //   var args = arguments;
+  //   for( var s = 0 ; s < o.srcs.length ; s++ )
+  //   {
+  //     debugger;
+  //     args = o.srcs[ s ].apply( this, args );
+  //     _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
+  //     if( !_.unrollIs( args ) )
+  //     args = [ args ];
+  //   }
+  //   debugger;
+  //   return args;
+  // }
+
+}
+
+_routinesChain_body.defaults =
+{
+  srcs : null,
+  // joiner : null,
+}
+
+//
+
+function routinesChain()
+{
+  var o = _.routinesChain.pre( routinesChain, arguments );
+  var result = _.routinesChain.body( o );
+  return result;
+}
+
+routinesChain.pre = _routinesComposeWithSingleArgument_pre;
+routinesChain.body = _routinesChain_body;
+routinesChain.defaults = Object.create( routinesChain.body.defaults );
 
 //
 
@@ -4343,11 +4469,19 @@ function routineForPreAndBody_body( o )
   _.assert( arguments.length === 1 );
 
   if( !_.routineIs( o.pre ) )
-  o.pre = _.routinesChain( o.pre, ( o ) =>
   {
-    _.assert( arguments.length === 1 );
-    return _.unrollAppend([ callPreAndBody, [ o ] ]);
-  });
+    let _pre = _.routinesCompose( o.pre, function( e, k, args, op )
+    {
+      _.assert( arguments.length === 4 );
+      // return _.unrollAppend([ callPreAndBody, [ o ] ]);
+      return args;
+    });
+    o.pre = function pre()
+    {
+      let result = _pre.apply( this, arguments );
+      return result[ result.length-1 ];
+    }
+  }
 
   let pre = o.pre;
   let body = o.body;
@@ -11656,6 +11790,42 @@ function unrollAppend( dstArray )
 // array prepend
 // --
 
+function _arrayPrependUnrolling( dstArray, srcArray )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayIs( dstArray ), 'expects array' );
+
+  for( var a = srcArray.length - 1 ; a >= 0 ; a-- )
+  {
+    if( _.unrollIs( srcArray[ a ] ) )
+    {
+      _arrayPrependUnrolling( dstArray, srcArray[ a ] );
+    }
+    else
+    {
+      dstArray.unshift( srcArray[ a ] );
+    }
+  }
+
+  return dstArray;
+}
+
+//
+
+function arrayPrependUnrolling( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  _._arrayPrependUnrolling( dstArray, _.longSlice( arguments, 1 ) );
+
+  return dstArray;
+}
+
+//
+
 function arrayPrepend_( dstArray )
 {
   _.assert( arguments.length >= 1 );
@@ -12372,6 +12542,42 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // --
 // array append
 // --
+
+function _arrayAppendUnrolling( dstArray, srcArray )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.arrayIs( dstArray ), 'expects array' );
+
+  for( var a = 0, len = srcArray.length ; a < len; a++ )
+  {
+    if( _.unrollIs( srcArray[ a ] ) )
+    {
+      _arrayAppendUnrolling( dstArray, srcArray[ a ] );
+    }
+    else
+    {
+      dstArray.push( srcArray[ a ] );
+    }
+  }
+
+  return dstArray;
+}
+
+//
+
+function arrayAppendUnrolling( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  _._arrayAppendUnrolling( dstArray, _.longSlice( arguments, 1 ) );
+
+  return dstArray;
+}
+
+//
 
 function arrayAppend_( dstArray )
 {
@@ -19201,7 +19407,9 @@ var Routines =
   routinesChain : routinesChain,
   routinesCompose : routinesCompose,
   routinesComposeReturningLast : routinesComposeReturningLast,
+  routinesComposeReturningBeforeLast : routinesComposeReturningBeforeLast,
   routinesComposeEvery : routinesComposeEvery,
+  routinesComposeEveryReturningLast : routinesComposeEveryReturningLast,
 
   routineOptions : routineOptions,
   assertRoutineOptions : assertRoutineOptions,
@@ -19517,7 +19725,10 @@ var Routines =
 
   // array prepend
 
+  _arrayPrependUnrolling : _arrayPrependUnrolling,
+  arrayPrependUnrolling : arrayPrependUnrolling,
   arrayPrepend_ : arrayPrepend_,
+
   arrayPrependElement : arrayPrependElement,
   arrayPrependOnce : arrayPrependOnce,
   arrayPrependOnceStrictly : arrayPrependOnceStrictly,
@@ -19538,7 +19749,10 @@ var Routines =
 
   // array append
 
+  _arrayAppendUnrolling : _arrayAppendUnrolling,
+  arrayAppendUnrolling : arrayAppendUnrolling,
   arrayAppend_ : arrayAppend_,
+
   arrayAppendElement : arrayAppendElement,
   arrayAppendOnce : arrayAppendOnce,
   arrayAppendOnceStrictly : arrayAppendOnceStrictly,
