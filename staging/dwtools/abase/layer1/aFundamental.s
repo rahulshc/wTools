@@ -3909,6 +3909,7 @@ function _routinesCompose_body( o )
     var args = _.unrollAppend( null, arguments );
     for( var k = 0 ; k < o.srcs.length ; k++ )
     {
+      _.assert( _.unrollIs( args ), 'expects unroll' );
       var r = o.srcs[ k ].apply( this, args );
       _.assert( !_.argumentsArrayIs( r ) );
       if( r !== undefined )
@@ -4157,7 +4158,8 @@ function _routinesChain_body( o )
 
   o.chainer = function chainer( e, k, args, o )
   {
-    return e;
+    return _.unrollFrom( e );
+    // return e;
   }
 
   return _.routinesCompose.body( o );
@@ -4470,11 +4472,15 @@ function routineForPreAndBody_body( o )
 
   if( !_.routineIs( o.pre ) )
   {
-    let _pre = _.routinesCompose( o.pre, function( e, k, args, op )
+    // o.pre = _.routinesChain( o.pre );
+    let _pre = _.routinesCompose( o.pre, function( element, index, args, op )
     {
+      // debugger;
       _.assert( arguments.length === 4 );
-      // return _.unrollAppend([ callPreAndBody, [ o ] ]);
-      return args;
+      _.assert( !_.unrollIs( element ) );
+      _.assert( _.objectIs( element ) );
+      return _.unrollAppend([ callPreAndBody, [ element ] ]);
+      // return args;
     });
     o.pre = function pre()
     {
@@ -4485,6 +4491,16 @@ function routineForPreAndBody_body( o )
 
   let pre = o.pre;
   let body = o.body;
+
+  _.routineExtend( callPreAndBody, o.body );
+
+  callPreAndBody.pre = o.pre;
+  callPreAndBody.body = o.body;
+
+  return callPreAndBody;
+
+  /* */
+
   function callPreAndBody()
   {
     let result;
@@ -4497,12 +4513,6 @@ function routineForPreAndBody_body( o )
     return result;
   }
 
-  _.routineExtend( callPreAndBody, o.body );
-
-  callPreAndBody.pre = o.pre;
-  callPreAndBody.body = o.body;
-
-  return callPreAndBody;
 }
 
 routineForPreAndBody_body.defaults =
@@ -8797,6 +8807,70 @@ function argumentsArrayFrom( args )
 }
 
 // --
+// unroll
+// --
+
+function unrollFrom( unrollMaybe )
+{
+  _.assert( arguments.length === 1 );
+  if( _.unrollIs( unrollMaybe ) )
+  return unrollMaybe;
+  return _.unrollAppend( null, unrollMaybe );
+}
+
+//
+
+function unrollPrepend( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  for( var a = arguments.length - 1 ; a >= 1 ; a-- )
+  {
+    if( _.longIs( arguments[ a ] ) )
+    {
+      dstArray.unshift.apply( dstArray, arguments[ a ] );
+    }
+    else
+    {
+      dstArray.unshift( arguments[ a ] );
+    }
+  }
+
+  dstArray[ unrollSymbol ] = true;
+
+  return dstArray;
+}
+
+//
+
+function unrollAppend( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+
+  dstArray = dstArray || [];
+
+  for( var a = 1, len = arguments.length ; a < len; a++ )
+  {
+    if( _.longIs( arguments[ a ] ) )
+    {
+      dstArray.push.apply( dstArray, arguments[ a ] );
+    }
+    else
+    {
+      dstArray.push( arguments[ a ] );
+    }
+  }
+
+  dstArray[ unrollSymbol ] = true;
+
+  return dstArray;
+}
+
+// --
 // array checker
 // --
 
@@ -9331,7 +9405,7 @@ arrayMakeRandom.defaults =
  * The arrayFromNumber() routine returns a new array
  * which containing the static elements only type of Number.
  *
- * It takes two argument (dst) and (length)
+ * It takes two arguments (dst) and (length)
  * checks if the (dst) is a Number, If the (length) is greater than or equal to zero.
  * If true, it returns the new array of static (dst) numbers.
  * Otherwise, if the first argument (dst) is an Array,
@@ -9352,7 +9426,7 @@ arrayMakeRandom.defaults =
  *
  * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
  * @function arrayFromNumber
- * @throws { Error } If missed argument, or got less or more than two argument.
+ * @throws { Error } If missed argument, or got less or more than two arguments.
  * @throws { Error } If type of the first argument is not a number or array.
  * @throws { Error } If the second argument is less than 0.
  * @throws { Error } If (dst.length) is not equal to the (length).
@@ -11730,60 +11804,6 @@ function arraySum( src,onEvaluate )
   }
 
   return result;
-}
-
-// --
-// unroll
-// --
-
-function unrollPrepend( dstArray )
-{
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
-
-  dstArray = dstArray || [];
-
-  for( var a = arguments.length - 1 ; a >= 1 ; a-- )
-  {
-    if( _.longIs( arguments[ a ] ) )
-    {
-      dstArray.unshift.apply( dstArray, arguments[ a ] );
-    }
-    else
-    {
-      dstArray.unshift( arguments[ a ] );
-    }
-  }
-
-  dstArray[ unrollSymbol ] = true;
-
-  return dstArray;
-}
-
-//
-
-function unrollAppend( dstArray )
-{
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
-
-  dstArray = dstArray || [];
-
-  for( var a = 1, len = arguments.length ; a < len; a++ )
-  {
-    if( _.longIs( arguments[ a ] ) )
-    {
-      dstArray.push.apply( dstArray, arguments[ a ] );
-    }
-    else
-    {
-      dstArray.push( arguments[ a ] );
-    }
-  }
-
-  dstArray[ unrollSymbol ] = true;
-
-  return dstArray;
 }
 
 // --
@@ -14863,7 +14883,7 @@ function mapHasAny( src,screen )
  * @memberof wTools
  */
 
-function mapHasNone( src,screen )
+function mapHasNone( src, screen )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectLike( src ) );
@@ -14871,8 +14891,6 @@ function mapHasNone( src,screen )
 
   for( var k in screen )
   {
-    // if( k in src )
-    // debugger;
     if( k in src )
     return false;
   }
@@ -15018,6 +15036,143 @@ function mapOwnNone( src,screen )
   }
 
   debugger;
+  return true;
+}
+
+//
+
+function mapHasExactly( srcMap, screenMaps )
+{
+  var result = true;
+
+  _.assert( arguments.length === 2 );
+
+  result = result && _.mapHasOnly( srcMap, screenMaps );
+  result = result && _.mapHasAll( srcMap, screenMaps );
+
+  return true;
+}
+
+//
+
+function mapOwnExactly( srcMap, screenMaps )
+{
+  var result = true;
+
+  _.assert( arguments.length === 2 );
+
+  result = result && _.mapOwnOnly( srcMap, screenMaps );
+  result = result && _.mapOwnAll( srcMap, screenMaps );
+
+  return true;
+}
+
+//
+//
+// function mapHasOnly( srcMap, screenMaps )
+// {
+//
+//   _.assert( arguments.length === 2 );
+//
+//   var l = arguments.length;
+//   var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
+//
+//   if( but.length > 0 )
+//   return false;
+//
+//   return true;
+// }
+//
+// //
+//
+// function mapOwnOnly( srcMap, screenMaps )
+// {
+//
+//   _.assert( arguments.length === 2 );
+//
+//   var l = arguments.length;
+//   var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
+//
+//   if( but.length > 0 )
+//   return false;
+//
+//   return true;
+// }
+//
+// //
+//
+// function mapHasAll( srcMap, all )
+// {
+//
+//   _.assert( arguments.length === 2 );
+//
+//   var but = Object.keys( _.mapBut( all,srcMap ) );
+//
+//   if( but.length > 0 )
+//   return false;
+//
+//   return true;
+// }
+//
+//
+//
+// function mapOwnAll( srcMap, all )
+// {
+//
+//   _.assert( arguments.length === 2 );
+//
+//   var but = Object.keys( _.mapOwnBut( all,srcMap ) );
+//
+//   if( but.length > 0 )
+//   return false;
+//
+//   return true;
+// }
+//
+// //
+//
+// function mapHasNone( srcMap, screenMaps )
+// {
+//
+//   _.assert( arguments.length === 2 );
+//
+//   var but = _.mapOnly( srcMap, screenMaps );
+//   var keys = Object.keys( but );
+//   if( keys.length )
+//   return false;
+//
+//   return true;
+// }
+//
+// //
+//
+// function mapOwnNone( srcMap, screenMaps )
+// {
+//
+//   _.assert( arguments.length === 2 );
+//
+//   var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
+//
+//   if( but.length )
+//   return false;
+//
+//   return true;
+// }
+
+//
+
+function mapHasNoUndefine( srcMap )
+{
+
+  _.assert( arguments.length === 1 );
+
+  var but = [];
+  var l = arguments.length;
+
+  for( var s in srcMap )
+  if( srcMap[ s ] === undefined )
+  return false;
+
   return true;
 }
 
@@ -18141,145 +18296,6 @@ _mapOnly.defaults =
 }
 
 // --
-// map has/own
-// --
-
-function mapHasExactly( srcMap, screenMaps )
-{
-  var result = true;
-
-  _.assert( arguments.length === 2 );
-
-  result = result && _.mapHasOnly( srcMap, screenMaps );
-  result = result && _.mapHasAll( srcMap, screenMaps );
-
-  return true;
-}
-
-//
-
-function mapOwnExactly( srcMap, screenMaps )
-{
-  var result = true;
-
-  _.assert( arguments.length === 2 );
-
-  result = result && _.mapOwnOnly( srcMap, screenMaps );
-  result = result && _.mapOwnAll( srcMap, screenMaps );
-
-  return true;
-}
-
-//
-
-function mapHasOnly( srcMap, screenMaps )
-{
-
-  _.assert( arguments.length === 2 );
-
-  var l = arguments.length;
-  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
-
-  if( but.length > 0 )
-  return false;
-
-  return true;
-}
-
-//
-
-function mapOwnOnly( srcMap, screenMaps )
-{
-
-  _.assert( arguments.length === 2 );
-
-  var l = arguments.length;
-  var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
-
-  if( but.length > 0 )
-  return false;
-
-  return true;
-}
-
-//
-
-function mapHasAll( srcMap, all )
-{
-
-  _.assert( arguments.length === 2 );
-
-  var but = Object.keys( _.mapBut( all,srcMap ) );
-
-  if( but.length > 0 )
-  return false;
-
-  return true;
-}
-
-//
-
-function mapOwnAll( srcMap, all )
-{
-
-  _.assert( arguments.length === 2 );
-
-  var but = Object.keys( _.mapOwnBut( all,srcMap ) );
-
-  if( but.length > 0 )
-  return false;
-
-  return true;
-}
-
-//
-
-function mapHasNone( srcMap, screenMaps )
-{
-
-  _.assert( arguments.length === 2 );
-
-  var but = _.mapOnly( srcMap, screenMaps );
-  var keys = Object.keys( but );
-  if( keys.length )
-  return false;
-
-  return true;
-}
-
-//
-
-function mapOwnNone( srcMap, screenMaps )
-{
-
-  _.assert( arguments.length === 2 );
-
-  var but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
-
-  if( but.length )
-  return false;
-
-  return true;
-}
-
-//
-
-function mapHasNoUndefine( srcMap )
-{
-
-  _.assert( arguments.length === 1 );
-
-  var but = [];
-  var l = arguments.length;
-
-  for( var s in srcMap )
-  if( srcMap[ s ] === undefined )
-  return false;
-
-  return true;
-}
-
-// --
 // map sure
 // --
 
@@ -19618,6 +19634,12 @@ var Routines =
   argumentsArrayOfLength : argumentsArrayOfLength,
   argumentsArrayFrom : argumentsArrayFrom,
 
+  // unroll
+
+  unrollFrom : unrollFrom,
+  unrollPrepend : unrollPrepend,
+  unrollAppend : unrollAppend,
+
   // array checker
 
   arrayIs : arrayIs,
@@ -19717,11 +19739,6 @@ var Routines =
 
   arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* dubious */
   arraySum : arraySum, /* dubious */
-
-  // unroll
-
-  unrollPrepend : unrollPrepend,
-  unrollAppend : unrollAppend,
 
   // array prepend
 
@@ -19875,6 +19892,18 @@ var Routines =
   mapOwnAny : mapOwnAny,
   mapOwnNone : mapOwnNone,
 
+  mapHasExactly : mapHasExactly,
+  mapOwnExactly : mapOwnExactly,
+
+  // mapHasOnly : mapHasOnly,
+  // mapOwnOnly : mapOwnOnly,
+  // mapHasAll : mapHasAll,
+  // mapOwnAll : mapOwnAll,
+  // mapHasNone : mapHasNone,
+  // mapOwnNone : mapOwnNone,
+
+  mapHasNoUndefine : mapHasNoUndefine,
+
   // map extend
 
   mapMake : mapMake,
@@ -20007,22 +20036,6 @@ var Routines =
   mapOnlyOwn : mapOnlyOwn,
   mapOnlyComplementing : mapOnlyComplementing,
   _mapOnly : _mapOnly,
-
-  // map has/own
-
-  mapHasExactly : mapHasExactly,
-  mapOwnExactly : mapOwnExactly,
-
-  mapHasOnly : mapHasOnly,
-  mapOwnOnly : mapOwnOnly,
-
-  mapHasAll : mapHasAll,
-  mapOwnAll : mapOwnAll,
-
-  mapHasNone : mapHasNone,
-  mapOwnNone : mapOwnNone,
-
-  mapHasNoUndefine : mapHasNoUndefine,
 
   // map surer
 

@@ -1942,12 +1942,12 @@ strSplitChunks.defaults =
 
 function _strSplitsQuote_pre( routine, args )
 {
+  _.assert( !!args ); // xxx
   let o = args[ 0 ];
 
   _.routineOptions( routine, o );
-
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( args.length === 1, 'expects one or two argument' );
+  _.assert( args.length === 1, 'expects one or two arguments' );
   _.assert( _.objectIs( o ) );
 
   if( o.quoting )
@@ -2213,7 +2213,7 @@ function _strSplitFast_pre( routine, args )
   _.routineOptions( routine, o );
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( args.length === 1 || args.length === 2, 'expects one or two argument' );
+  _.assert( args.length === 1 || args.length === 2, 'expects one or two arguments' );
   _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
 

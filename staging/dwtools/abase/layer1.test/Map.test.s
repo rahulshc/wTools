@@ -3433,11 +3433,13 @@ function mapHasNone( test )
   var got = _.mapHasNone( { a : 1, b : 2 }, { x : 1, y : 1} );
   test.is( got );
 
-  test.case = 'src has enumerable';
+  test.case = 'src has non enumerable';
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
+  debugger;
   var got = _.mapHasNone( a, { a : 1 } );
+  debugger;
   test.is( !got );
 
   var got = _.mapHasNone( a, a );
