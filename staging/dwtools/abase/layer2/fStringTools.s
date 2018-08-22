@@ -2576,7 +2576,7 @@ _strSplitFast_body.defaults =
   src : null,
   delimeter : ' ',
   preservingEmpty : 1,
-  preservingDelimeters : 1, 
+  preservingDelimeters : 1,
 }
 
 //
@@ -3796,6 +3796,16 @@ function strIndentation( src,tab )
 
 //
 
+function strLinesSplit( src )
+{
+  _.assert( _.strIs( src ) || _.arrayIs( src ) );
+  if( _.arrayIs( src ) )
+  return src;
+  return src.split( '\n' );
+}
+
+//
+
 /**
  * Puts line counter before each line/element of provided source( o.src ).
  * If( o.src ) is a string, function splits it into array using new line as splitter, then puts line counter at the begining of each line( element ).
@@ -4248,11 +4258,13 @@ function strLinesNearestReport_body( o )
   // result.linesRange = _.strLinesRangeWithCharRange.body( o );
 
   result.report = result.nearest.slice();
-  // if( !o.gray )
-  // result.report = _.color.strEscape( result.nearest );
   if( !o.gray )
-  result.report[ 1 ] = _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } );
+  result.report[ 1 ] = _.color.strUnescape( _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } ) );
   result.report = result.report.join( '' );
+
+  result.report = _.strLinesSplit( result.report );
+  if( !o.gray )
+  result.report = _.color.strEscape( result.report );
 
   let f = _.strLinesCount( o.src.substring( 0, o.charsRange[ 0 ] ) )-1;
   result.report = _.strLinesNumber
@@ -4392,6 +4404,7 @@ let Proto =
   // liner
 
   strIndentation : strIndentation,
+  strLinesSplit : strLinesSplit,
   strLinesNumber : strLinesNumber,
   strLinesSelect : strLinesSelect,
   strLinesNearest : strLinesNearest,
