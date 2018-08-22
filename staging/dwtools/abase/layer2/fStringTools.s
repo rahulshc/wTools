@@ -25,6 +25,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 let _arraySlice = _.longSlice;
 let strTypeOf = _.strTypeOf;
 
+
 // --
 // checker
 // --
@@ -36,6 +37,231 @@ function strIsMultilined( src )
   if( src.indexOf( '\n' ) !== -1 )
   return true;
   return false;
+}
+
+//
+
+function strHas( src,ins )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+
+  return src.indexOf( ins ) !== -1;
+}
+
+//
+
+function strHasAny( src,ins )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( let i = 0 ; i < ins.length ; i++ )
+    if( strHas( src,ins[ i ] ) )
+    return true;
+    return false;
+  }
+
+  return strHas( src,ins );
+}
+
+//
+
+function strHasAll( src,ins )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( let i = 0 ; i < ins.length ; i++ )
+    if( !strHas( src,ins[ i ] ) )
+    return false;
+    return true;
+  }
+
+  return strHas( src,ins );
+}
+
+//
+
+function strHasNone( src,ins )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( let i = 0 ; i < ins.length ; i++ )
+    if( strHas( src,ins[ i ] ) )
+    return false;
+    return true;
+  }
+
+  return !strHas( src,ins );
+}
+
+//
+
+function strHasSeveral( src,ins )
+{
+  let result = 0;
+
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+
+  if( _.arrayIs( ins ) )
+  {
+    for( let i = 0 ; i < ins.length ; i++ )
+    if( strHas( src,ins[ i ] ) )
+    result += 1;
+    return result;
+  }
+
+  return strHas( src,ins ) ? 1 : 0;
+}
+
+//
+
+function strsAnyHas( srcs, ins )
+{
+  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( ins ) );
+
+  if( _.strIs( srcs ) )
+  return _.strHas( srcs, ins );
+
+  return srcs.some( ( src ) => _.strHas( src, ins ) );
+}
+
+//
+
+function strsAllHas( srcs, ins )
+{
+  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( ins ) );
+
+  if( _.strIs( srcs ) )
+  return _.strHas( srcs, ins );
+
+  return srcs.every( ( src ) => _.strHas( src, ins ) );
+}
+
+//
+
+function strsNoneHas( srcs, ins )
+{
+  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( ins ) );
+
+  if( _.strIs( srcs ) )
+  return !_.strHas( srcs, ins );
+
+  return srcs.every( ( src ) => !_.strHas( src, ins ) );
+}
+
+// --
+// evaluator
+// --
+
+/**
+ * Returns number of occurrences of a substring( ins ) in a string( src ),
+ * Expects two objects in order: source string, substring.
+ * Returns zero if one of arguments is empty string.
+ *
+ * @param {string} src - Source string.
+ * @param {string} ins - Substring.
+ * @returns {Number} Returns number of occurrences of a substring in a string.
+ *
+ * @example
+ * //returns 2
+ * _.strCount( 'aabab','ab' );
+ *
+ * @example
+ * //returns 0
+ * _.strCount( 'aabab','' );
+ *
+ * @method strCount
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( ins ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
+
+function strCount( src,ins )
+{
+  let result = -1;
+
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+
+  if( !ins.length )
+  return 0;
+
+  let i = -1;
+  do
+  {
+    result += 1;
+    i = src.indexOf( ins,i+1 );
+  }
+  while( i !== -1 );
+
+  return result;
+}
+
+//
+
+function strCountLeft( src,ins )
+{
+  let result = 0;
+
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+
+  if( !ins.length )
+  return 0;
+
+  let i = 0;
+  do
+  {
+    if( src.substring( i,i+ins.length ) !== ins )
+    break;
+    result += 1;
+    i += ins.length;
+  }
+  while( i < src.length );
+
+  return result;
+}
+
+//
+
+function strCountRight( src,ins )
+{
+  let result = 0;
+
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strIs( ins ) );
+
+  throw _.err( 'not tested' );
+
+  if( !ins.length )
+  return 0;
+
+  let i = src.length;
+  do
+  {
+    if( src.substring( i-ins.length,i ) !== ins )
+    break;
+    result += 1;
+    i -= ins.length;
+  }
+  while( i > 0 );
+
+  return result;
 }
 
 // --
@@ -1334,17 +1560,6 @@ function strStripEmptyLines( srcStr )
 // splitter
 // --
 
-function strSub( srcStr, range )
-{
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.strIs( srcStr ) );
-  _.assert( _.rangeIs( range ) );
-
-  return srcStr.substring( range[ 0 ], range[ 1 ] );
-}
-
-//
-
 /*
 
 _.strIsolateBeginOrAll
@@ -1431,17 +1646,17 @@ function _strCutOff_pre( routine, args )
  *
  * @example
  * //returns [ 'sample', 'string' ]
- * _._strCutOff( { src : 'sample,string', delimeter : [ ',' ] } );
+ * _._strIsolate( { src : 'sample,string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ 'sample', 'string' ]
- *_._strCutOff( { src : 'sample string', delimeter : ' ' } )
+ *_._strIsolate( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
  * //returns [ 'sample string,name', 'string' ]
- * _._strCutOff( { src : 'sample string,name string', delimeter : [ ',', ' ' ] } )
+ * _._strIsolate( { src : 'sample string,name string', delimeter : [ ',', ' ' ] } )
  *
- * @method _strCutOff
+ * @method _strIsolate
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o ) is not a Map.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
@@ -1451,7 +1666,7 @@ function _strCutOff_pre( routine, args )
  *
  */
 
-function _strCutOff( o )
+function _strIsolate( o )
 {
   let result = [];
   let number = o.number;
@@ -1460,7 +1675,7 @@ function _strCutOff( o )
 
   // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
 
-  _.assertRoutineOptions( _strCutOff, o );
+  _.assertRoutineOptions( _strIsolate, o );
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( o.src ), 'expects string {-o.src-}, got',_.strTypeOf( o.src ) );
   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
@@ -1577,7 +1792,7 @@ function _strCutOff( o )
 
 }
 
-_strCutOff.defaults =
+_strIsolate.defaults =
 {
   src : null,
   delimeter : ' ',
@@ -1589,7 +1804,7 @@ _strCutOff.defaults =
 //
 
 /**
- * Short-cut for _strCutOff function.
+ * Short-cut for _strIsolate function.
  * Finds occurrence of delimeter( o.delimeter ) from begining of ( o.src ) and splits string in finded position by half.
  *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
@@ -1619,7 +1834,7 @@ function _strIsolateBeginOrNone_body( o )
 {
   o.left = 1;
   o.none = 1;
-  let result = _strCutOff( o );
+  let result = _strIsolate( o );
   return result;
 }
 
@@ -1635,7 +1850,7 @@ let strIsolateBeginOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateB
 //
 
 /**
- * Short-cut for _strCutOff function.
+ * Short-cut for _strIsolate function.
  * Finds occurrence of delimeter( o.delimeter ) from end of ( o.src ) and splits string in finded position by half.
  *
  * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
@@ -1665,7 +1880,7 @@ function _strIsolateEndOrNone_body( o )
 {
   o.left = 0;
   o.none = 1;
-  let result = _strCutOff( o );
+  let result = _strIsolate( o );
   return result;
 }
 
@@ -1684,7 +1899,7 @@ function _strIsolateEndOrAll_body( o )
 {
   o.left = 0;
   o.none = 0;
-  let result = _strCutOff( o );
+  let result = _strIsolate( o );
   return result;
 
   // let i = o.src.lastIndexOf( o.delimeter );
@@ -1712,7 +1927,7 @@ function _strIsolateBeginOrAll_body( o )
 {
   o.left = 1;
   o.none = 0;
-  let result = _strCutOff( o );
+  let result = _strIsolate( o );
   return result;
 
   // let i = o.src.indexOf( o.delimeter );
@@ -2361,7 +2576,7 @@ _strSplitFast_body.defaults =
   src : null,
   delimeter : ' ',
   preservingEmpty : 1,
-  preservingDelimeters : 1,
+  preservingDelimeters : 1, 
 }
 
 //
@@ -2818,6 +3033,19 @@ let strSplitNaive = _.routineForPreAndBody( _strSplitFast_pre, _strSplitNaive_bo
 _.assert( strSplitNaive.pre === _strSplitFast_pre );
 _.assert( strSplitNaive.body === _strSplitNaive_body );
 _.assert( _.objectIs( strSplitNaive.defaults ) );
+
+// --
+// extractor
+// --
+
+function strSub( srcStr, range )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( srcStr ) );
+  _.assert( _.rangeIs( range ) );
+
+  return srcStr.substring( range[ 0 ], range[ 1 ] );
+}
 
 //
 
@@ -3849,14 +4077,25 @@ strLinesSelect.defaults =
 
 //
 
-function strLinesNearest( o )
+function strLinesNearest_pre( routine, args )
+{
+
+  let o = args[ 0 ];
+  if( args[ 1 ] !== undefined )
+  o = { src : args[ 0 ], charsRange : args[ 1 ] };
+
+  _.routineOptions( routine, o );
+
+  return o;
+}
+
+//
+
+function strLinesNearest_body( o )
 {
   let result;
   let resultCharRange = [];
   let i, numberOfLines;
-
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.routineOptions( strLinesNearest,o );
 
   /* */
 
@@ -3917,117 +4156,14 @@ function strLinesNearest( o )
   return result;
 }
 
-strLinesNearest.defaults =
+strLinesNearest_body.defaults =
 {
   src : null,
   charsRange : null,
-  numberOfLines : 2,
+  numberOfLines : 3,
 }
 
-// --
-// evaluator
-// --
-
-/**
- * Returns number of occurrences of a substring( ins ) in a string( src ),
- * Expects two objects in order: source string, substring.
- * Returns zero if one of arguments is empty string.
- *
- * @param {string} src - Source string.
- * @param {string} ins - Substring.
- * @returns {Number} Returns number of occurrences of a substring in a string.
- *
- * @example
- * //returns 2
- * _.strCount( 'aabab','ab' );
- *
- * @example
- * //returns 0
- * _.strCount( 'aabab','' );
- *
- * @method strCount
- * @throws { Exception } Throw an exception if( src ) is not a String.
- * @throws { Exception } Throw an exception if( ins ) is not a String.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @memberof wTools
- *
- */
-
-function strCount( src,ins )
-{
-  let result = -1;
-
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.strIs( src ) );
-  _.assert( _.strIs( ins ) );
-
-  if( !ins.length )
-  return 0;
-
-  let i = -1;
-  do
-  {
-    result += 1;
-    i = src.indexOf( ins,i+1 );
-  }
-  while( i !== -1 );
-
-  return result;
-}
-
-//
-
-function strCountLeft( src,ins )
-{
-  let result = 0;
-
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.strIs( src ) );
-  _.assert( _.strIs( ins ) );
-
-  if( !ins.length )
-  return 0;
-
-  let i = 0;
-  do
-  {
-    if( src.substring( i,i+ins.length ) !== ins )
-    break;
-    result += 1;
-    i += ins.length;
-  }
-  while( i < src.length );
-
-  return result;
-}
-
-//
-
-function strCountRight( src,ins )
-{
-  let result = 0;
-
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.strIs( src ) );
-  _.assert( _.strIs( ins ) );
-
-  throw _.err( 'not tested' );
-
-  if( !ins.length )
-  return 0;
-
-  let i = src.length;
-  do
-  {
-    if( src.substring( i-ins.length,i ) !== ins )
-    break;
-    result += 1;
-    i -= ins.length;
-  }
-  while( i > 0 );
-
-  return result;
-}
+let strLinesNearest = _.routineForPreAndBody( strLinesNearest_pre, strLinesNearest_body );
 
 //
 
@@ -4063,16 +4199,26 @@ function strLinesCount( src )
 
 //
 
-function strLinesRangeWithCharRange( o )
+function strLinesRangeWithCharRange_pre( routine, args )
 {
 
-  if( arguments[ 1 ] !== undefined )
-  o = { src : arguments[ 0 ], charsRange : arguments[ 1 ] }
+  let o = args[ 0 ];
+  if( args[ 1 ] !== undefined )
+  o = { src : args[ 0 ], charsRange : args[ 1 ] }
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1 || args.length === 2 );
   _.assert( _.rangeIs( o.charsRange ) );
   _.assert( _.strIs( o.src ) );
-  _.routineOptions( strLinesRangeWithCharRange, o );
+  _.routineOptions( routine, o );
+
+  return o;
+}
+
+//
+
+function strLinesRangeWithCharRange_body( o )
+{
 
   let pre = o.src.substring( 0, o.charsRange[ 0 ] );
   let mid = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
@@ -4084,133 +4230,59 @@ function strLinesRangeWithCharRange( o )
   return result;
 }
 
-strLinesRangeWithCharRange.defaults =
+strLinesRangeWithCharRange_body.defaults =
 {
   src : null,
   charsRange : null,
 }
 
-// --
-// checker
-// --
-
-function strHas( src,ins )
-{
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.strIs( src ) );
-  _.assert( _.strIs( ins ) );
-
-  return src.indexOf( ins ) !== -1;
-}
+let strLinesRangeWithCharRange = _.routineForPreAndBody( strLinesRangeWithCharRange_pre, strLinesRangeWithCharRange_body );
 
 //
 
-function strHasAny( src,ins )
+function strLinesNearestReport_body( o )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  let result = Object.create( null );
 
-  if( _.arrayIs( ins ) )
-  {
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( strHas( src,ins[ i ] ) )
-    return true;
-    return false;
-  }
+  result.nearest = _.strLinesNearest.body( o );
+  // result.linesRange = _.strLinesRangeWithCharRange.body( o );
 
-  return strHas( src,ins );
+  result.report = result.nearest.slice();
+  // if( !o.gray )
+  // result.report = _.color.strEscape( result.nearest );
+  if( !o.gray )
+  result.report[ 1 ] = _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } );
+  result.report = result.report.join( '' );
+
+  let f = _.strLinesCount( o.src.substring( 0, o.charsRange[ 0 ] ) )-1;
+  result.report = _.strLinesNumber
+  ({
+    src : result.report,
+    first : f,
+    onLine : ( line ) =>
+    {
+      if( !o.gray )
+      {
+        line[ 0 ] = _.color.strFormat( line[ 0 ], { fg : 'bright black' } );
+        line[ 1 ] = _.color.strFormat( line[ 1 ], { fg : 'bright black' } );
+      }
+      return line.join( '' );
+    }
+  });
+
+  debugger;
+  return result;
 }
 
-//
-
-function strHasAll( src,ins )
+strLinesNearestReport_body.defaults =
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-
-  if( _.arrayIs( ins ) )
-  {
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( !strHas( src,ins[ i ] ) )
-    return false;
-    return true;
-  }
-
-  return strHas( src,ins );
+  src : null,
+  charsRange : null,
+  numberOfLines : 3,
+  gray : 0,
 }
 
-//
-
-function strHasNone( src,ins )
-{
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-
-  if( _.arrayIs( ins ) )
-  {
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( strHas( src,ins[ i ] ) )
-    return false;
-    return true;
-  }
-
-  return !strHas( src,ins );
-}
-
-//
-
-function strHasSeveral( src,ins )
-{
-  let result = 0;
-
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-
-  if( _.arrayIs( ins ) )
-  {
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( strHas( src,ins[ i ] ) )
-    result += 1;
-    return result;
-  }
-
-  return strHas( src,ins ) ? 1 : 0;
-}
-
-//
-
-function strsAnyHas( srcs, ins )
-{
-  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
-  _.assert( _.strIs( ins ) );
-
-  if( _.strIs( srcs ) )
-  return _.strHas( srcs, ins );
-
-  return srcs.some( ( src ) => _.strHas( src, ins ) );
-}
-
-//
-
-function strsAllHas( srcs, ins )
-{
-  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
-  _.assert( _.strIs( ins ) );
-
-  if( _.strIs( srcs ) )
-  return _.strHas( srcs, ins );
-
-  return srcs.every( ( src ) => _.strHas( src, ins ) );
-}
-
-//
-
-function strsNoneHas( srcs, ins )
-{
-  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
-  _.assert( _.strIs( ins ) );
-
-  if( _.strIs( srcs ) )
-  return !_.strHas( srcs, ins );
-
-  return srcs.every( ( src ) => !_.strHas( src, ins ) );
-}
+let strLinesNearestReport = _.routineForPreAndBody( strLinesNearest_pre, strLinesNearestReport_body );
 
 // --
 // declare
@@ -4222,6 +4294,21 @@ let Proto =
   // checker
 
   strIsMultilined : strIsMultilined,
+  strHas : strHas,
+  strHasAny : strHasAny,
+  strHasAll : strHasAll,
+  strHasNone : strHasNone,
+  strHasSeveral : strHasSeveral,
+
+  strsAnyHas : strsAnyHas,
+  strsAllHas : strsAllHas,
+  strsNoneHas : strsNoneHas,
+
+  // evaluator
+
+  strCount : strCount,
+  strCountLeft : strCountLeft,
+  strCountRight : strCountRight,
 
   // replacer
 
@@ -4269,9 +4356,7 @@ let Proto =
 
   // splitter
 
-  strSub : strSub,
-
-  _strCutOff : _strCutOff,
+  _strIsolate : _strIsolate,
   strIsolateBeginOrNone : strIsolateBeginOrNone,
   strIsolateEndOrNone : strIsolateEndOrNone,
   strIsolateEndOrAll : strIsolateEndOrAll,
@@ -4291,6 +4376,9 @@ let Proto =
 
   strSplitNaive : strSplitNaive,
 
+// extractor
+
+  strSub : strSub,
   strExtractInlined : strExtractInlined,
   strExtractInlinedStereo : strExtractInlinedStereo,
 
@@ -4309,24 +4397,7 @@ let Proto =
   strLinesNearest : strLinesNearest,
   strLinesCount : strLinesCount,
   strLinesRangeWithCharRange : strLinesRangeWithCharRange,
-
-  // evaluator
-
-  strCount : strCount,
-  strCountLeft : strCountLeft,
-  strCountRight : strCountRight,
-
-  // checker
-
-  strHas : strHas,
-  strHasAny : strHasAny,
-  strHasAll : strHasAll,
-  strHasNone : strHasNone,
-  strHasSeveral : strHasSeveral,
-
-  strsAnyHas : strsAnyHas,
-  strsAllHas : strsAllHas,
-  strsNoneHas : strsNoneHas,
+  strLinesNearestReport : strLinesNearestReport,
 
 }
 

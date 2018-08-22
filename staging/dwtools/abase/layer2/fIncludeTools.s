@@ -473,16 +473,22 @@ IncludeHandlersMap[ 'wStringer' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stringer; },
 }
 
+IncludeHandlersMap[ 'wRoutineTransform' ] =
+{
+  includeAny : [ '../../abase/layer4/RoutineTransform.s','abase/RoutineTransform/Cloner.s','wroutinetransform' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
+}
+
 IncludeHandlersMap[ 'wCloner' ] =
 {
   includeAny : [ '../../abase/layer5/Cloner.s','abase/layer5/Cloner.s','wcloner' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._clone },
 }
 
-IncludeHandlersMap[ 'wRoutineTransform' ] =
+IncludeHandlersMap[ 'wStringsExtra' ] =
 {
-  includeAny : [ '../../abase/layer4/RoutineTransform.s','abase/RoutineTransform/Cloner.s','wroutinetransform' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
+  includeAny : [ '../../abase/layer5/StringTools.s','abase/layer5/StringTools.s','wstringsextra' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
 }
 
 IncludeHandlersMap[ 'wDomLayer1' ] =
@@ -501,12 +507,6 @@ IncludeHandlersMap[ 'wDomLayer4' ] =
 {
   includeAny : [ '../../abase/tbrowser/layer4/aCommon.js','abase/tbrowser/layer4/aCommon.js','wdomlayer4' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
-}
-
-IncludeHandlersMap[ 'wStringsExtra' ] =
-{
-  includeAny : [ '../../amid/astring/StringsExtra.s','amid/astring/StringsExtra.s','wstringsextra' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
 }
 
 IncludeHandlersMap[ 'wRegexpObject' ] =
