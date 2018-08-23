@@ -432,6 +432,7 @@ function diagnosticCode( o )
       try
       {
 
+        if( _global._starter_ )
         debugger;
         if( _global._starter_ )
         _global._starter_.fileProvider.fileRead( o.location.path );
