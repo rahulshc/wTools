@@ -559,7 +559,7 @@ IncludeHandlersMap[ 'wFilesArchive' ] =
 
 IncludeHandlersMap[ 'wFilesTransformers' ] =
 {
-  includeAny : [ '../../amid/files/alayer2/FilesTransformers.s','amid/files/alayer2/FilesTransformers.s','wfilestransformers' ],
+  includeAny : [ '../../amid/files/l9/FilesTransformers.s','amid/files/l9/FilesTransformers.s','wfilestransformers' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileTransformers },
 }
 
