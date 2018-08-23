@@ -491,22 +491,22 @@ IncludeHandlersMap[ 'wStringsExtra' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
 }
 
-IncludeHandlersMap[ 'wDomLayer1' ] =
+IncludeHandlersMap[ 'wDomBaseLayer1' ] =
 {
-  includeAny : [ '../../abase/tbrowser/layer1/aCommon.js','abase/tbrowser/layer1/aCommon.js','wdomlayer1' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
+  includeAny : [ '../../abase_dom/l1/Common.js','abase_dom/l1/Common.js','wdombaselayer1' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._domBaselayer1Loaded },
 }
 
-IncludeHandlersMap[ 'wDomLayer3' ] =
+IncludeHandlersMap[ 'wDomBaseLayer3' ] =
 {
-  includeAny : [ '../../abase/tbrowser/layer3/aCommon.js','abase/tbrowser/layer3/aCommon.js','wdomlayer3' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
+  includeAny : [ '../../abase_dom/l3/Common.js','abase_dom/l3/Common.js','wdombaselayer3' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._domBaselayer3Loaded },
 }
 
-IncludeHandlersMap[ 'wDomLayer4' ] =
+IncludeHandlersMap[ 'wDomBaseLayer5' ] =
 {
-  includeAny : [ '../../abase/tbrowser/layer4/aCommon.js','abase/tbrowser/layer4/aCommon.js','wdomlayer4' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.eventName },
+  includeAny : [ '../../abase_dom/l5/Common.js','abase_dom/l5/Common.js','wdombaselayer5' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._domBaselayer5Loaded },
 }
 
 IncludeHandlersMap[ 'wRegexpObject' ] =
