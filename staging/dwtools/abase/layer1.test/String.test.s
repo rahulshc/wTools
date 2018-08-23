@@ -43,79 +43,79 @@ function strBeginOf( test )
   /**/
 
   got = _.strBeginOf( 'abc', '' );
-  expected = 'abc';
+  expected = '';
   test.identical( got,expected )
 
   /**/
 
   got = _.strBeginOf( 'abc', 'c' );
-  expected = 'ab';
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strBeginOf( 'abc', 'bc' );
-  expected = 'a';
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strBeginOf( 'abc', ' c' );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /* end.length > src.length */
 
   got = _.strBeginOf( 'abc', 'abcd' );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /* same length, not equal*/
 
   got = _.strBeginOf( 'abc', 'cba' );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /* equal */
 
   got = _.strBeginOf( 'abc', 'abc' );
-  expected = '';
+  expected = 'abc';
   test.identical( got,expected )
 
   /* array */
 
   got = _.strBeginOf( 'abc', [] );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strBeginOf( 'abc', [ '' ] );
-  expected = 'abc';
-  test.identical( got,expected )
-
-  /**/
-
-  got = _.strBeginOf( 'abccc', [ 'c', 'ccc' ] );
-  expected = 'abcc';
-  test.identical( got,expected )
-
-  /**/
-
-  got = _.strBeginOf( 'abc', [ 'a', 'ab', 'abc' ] );
   expected = '';
   test.identical( got,expected )
 
   /**/
 
+  got = _.strBeginOf( 'abccc', [ 'c', 'ccc' ] );
+  expected = false;
+  test.identical( got,expected )
+
+  /**/
+
+  got = _.strBeginOf( 'abc', [ 'a', 'ab', 'abc' ] );
+  expected = 'a';
+  test.identical( got,expected )
+
+  /**/
+
   got = _.strBeginOf( 'abc', [ 'x', 'y', 'c' ] );
-  expected = 'ab';
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strBeginOf( 'abc', [ 'x', 'y', 'z' ] );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   if( !Config.debug )
@@ -141,79 +141,79 @@ function strEndOf( test )
   /**/
 
   got = _.strEndOf( 'abc', '' );
-  expected = 'abc';
+  expected = '';
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abc', 'a' );
-  expected = 'bc';
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abc', 'ab' );
-  expected = 'c';
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abc', ' a' );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /* end.length > src.length */
 
   got = _.strEndOf( 'abc', 'abcd' );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /* same length */
 
   got = _.strEndOf( 'abc', 'cba' );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /* equal */
 
   got = _.strEndOf( 'abc', 'abc' );
-  expected = '';
+  expected = 'abc';
   test.identical( got,expected )
 
   /* array */
 
   got = _.strEndOf( 'abc', [] );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abc', [ '' ] );
-  expected = 'abc';
+  expected = '';
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abccc', [ 'a', 'ab' ] );
-  expected = 'bccc';
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abc', [ 'ab', 'abc' ] );
-  expected = 'c';
+  expected = 'abc';
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abc', [ 'x', 'y', 'a' ] );
-  expected = 'bc';
+  expected = false;
   test.identical( got,expected )
 
   /**/
 
   got = _.strEndOf( 'abc', [ 'x', 'y', 'z' ] );
-  expected = undefined;
+  expected = false;
   test.identical( got,expected )
 
   if( !Config.debug )
@@ -291,9 +291,15 @@ function strFindInsideOf( test )
   expected = 'bccc';
   test.identical( got, expected );
 
+  got = _.strFindInsideOf( 'a', 1, '' );
+  expected = undefined;
+  test.identical( got, expected );
+
+  got = _.strFindInsideOf( 'a', '', 1 );
+  expected = undefined;
+  test.identical( got, expected );
+
   test.shouldThrowError( () => _.strFindInsideOf( 1, '', '' ) );
-  test.shouldThrowError( () => _.strFindInsideOf( 'a', 1, '' ) );
-  test.shouldThrowError( () => _.strFindInsideOf( 'a', '', 1 ) );
 }
 
 //
@@ -447,7 +453,7 @@ function strEnds( test )
 
   /**/
 
-  got = _.strEnds( 'abc', [ 1, 'b', 'c' ] );
+  got = _.strEnds( 'abc', [ '1', 'b', 'c' ] );
   expected = true;
   test.identical( got, expected );
 
