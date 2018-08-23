@@ -5618,8 +5618,6 @@ function strEnds( src, end )
     return result === false ? result : true;
   }
 
-  debugger;
-
   for( var b = 0, blen = end.length ; b < blen; b++ )
   {
     let result = _._strEndOf( src, end[ b ] );
@@ -15068,37 +15066,37 @@ function mapOwnExactly( srcMap, screenMaps )
 }
 
 //
+
+function mapHasOnly( srcMap, screenMaps )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
+
+  if( but.length > 0 )
+  return false;
+
+  return true;
+}
+
 //
-// function mapHasOnly( srcMap, screenMaps )
-// {
-//
-//   _.assert( arguments.length === 2 );
-//
-//   var l = arguments.length;
-//   var but = Object.keys( _.mapBut( srcMap, screenMaps ) );
-//
-//   if( but.length > 0 )
-//   return false;
-//
-//   return true;
-// }
-//
-// //
-//
-// function mapOwnOnly( srcMap, screenMaps )
-// {
-//
-//   _.assert( arguments.length === 2 );
-//
-//   var l = arguments.length;
-//   var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
-//
-//   if( but.length > 0 )
-//   return false;
-//
-//   return true;
-// }
-//
+
+function mapOwnOnly( srcMap, screenMaps )
+{
+
+  _.assert( arguments.length === 2 );
+
+  var l = arguments.length;
+  var but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
+
+  if( but.length > 0 )
+  return false;
+
+  return true;
+}
+
 // //
 //
 // function mapHasAll( srcMap, all )
@@ -19895,8 +19893,9 @@ var Routines =
   mapHasExactly : mapHasExactly,
   mapOwnExactly : mapOwnExactly,
 
-  // mapHasOnly : mapHasOnly,
-  // mapOwnOnly : mapOwnOnly,
+  mapHasOnly : mapHasOnly,
+  mapOwnOnly : mapOwnOnly,
+
   // mapHasAll : mapHasAll,
   // mapOwnAll : mapOwnAll,
   // mapHasNone : mapHasNone,

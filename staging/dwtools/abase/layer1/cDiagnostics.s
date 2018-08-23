@@ -391,73 +391,101 @@ diagnosticLocation.defaults =
 
 //
 
+let _diagnosticCodeExecuting = 0;
 function diagnosticCode( o )
 {
 
   _.routineOptions( diagnosticCode,o );
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  if( !o.location )
-  {
-    if( o.error )
-    o.location = _.diagnosticLocation({ error : o.error, level : o.level });
-    else
-    o.location = _.diagnosticLocation({ stack : o.stack, level : o.stack ? o.level : o.level+1 });
-  }
-
-  if( !_.numberIs( o.location.line ) )
+  if( _diagnosticCodeExecuting )
   return;
+  _diagnosticCodeExecuting += 1;
 
-  /* */
-
-  if( !o.sourceCode )
+  try
   {
 
-    if( !o.location.path )
-    return;
-
-    var codeProvider = _.codeProvider || _.fileProvider;
-
-    if( !codeProvider )
-    return;
-
-    try
+    if( !o.location )
     {
-
-      o.sourceCode = codeProvider.fileRead
-      ({
-        filePath : o.location.path,
-        sync : 1,
-        throwing : 0,
-      })
-
+      if( o.error )
+      o.location = _.diagnosticLocation({ error : o.error, level : o.level });
+      else
+      o.location = _.diagnosticLocation({ stack : o.stack, level : o.stack ? o.level : o.level+1 });
     }
-    catch( err )
-    {
-      o.sourceCode = 'CANT LOAD SOURCE CODE ' + _.strQuote( o.location.path );
-    }
+
+    if( !_.numberIs( o.location.line ) )
+    return end();
+
+    /* */
 
     if( !o.sourceCode )
-    return;
+    {
 
+      if( !o.location.path )
+      return end();
+
+      var codeProvider = _.codeProvider || _.fileProvider;
+
+      if( !codeProvider )
+      return end();
+
+      try
+      {
+
+        debugger;
+        if( _global._starter_ )
+        _global._starter_.fileProvider.fileRead( o.location.path );
+
+        o.sourceCode = codeProvider.fileRead
+        ({
+          filePath : o.location.path,
+          sync : 1,
+          throwing : 0,
+        })
+
+      }
+      catch( err )
+      {
+        o.sourceCode = 'CANT LOAD SOURCE CODE ' + _.strQuote( o.location.path );
+      }
+
+      if( !o.sourceCode )
+      return end();
+
+    }
+
+    /* */
+
+    var result = _.strLinesSelect
+    ({
+      src : o.sourceCode,
+      line : o.location.line,
+      numberOfLines : o.numberOfLines,
+      selectMode : o.selectMode,
+      zero : 1,
+      number : 1,
+    });
+
+    if( o.withPath )
+    result = o.location.full + '\n' + result;
+
+    return end( result );
+
+  }
+  catch( err )
+  {
+    console.log( err.toString() );
+    return;
   }
 
   /* */
 
-  var result = _.strLinesSelect
-  ({
-    src : o.sourceCode,
-    line : o.location.line,
-    numberOfLines : o.numberOfLines,
-    selectMode : o.selectMode,
-    zero : 1,
-    number : 1,
-  });
+  function end( result )
+  {
+    _diagnosticCodeExecuting -= 1;
+    return result;
+  }
 
-  if( o.withPath )
-  result = o.location.full + '\n' + result;
-
-  return result;
 }
 
 diagnosticCode.defaults =

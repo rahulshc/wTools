@@ -553,7 +553,7 @@ IncludeHandlersMap[ 'wFiles' ] =
 
 IncludeHandlersMap[ 'wFilesArchive' ] =
 {
-  includeAny : [ '../../amid/files/FilesArchive.s','amid/files/FilesArchive.s','wfilesarchive' ],
+  includeAny : [ '../../amid/files/UseFilesArchive.s','amid/files/UseFilesArchive.s','wfilesarchive' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesArchive },
 }
 
