@@ -461,7 +461,6 @@ function routinesCompose( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    debugger;
     return _.unrollAppend( null, arguments, counter );
   }
 
@@ -470,7 +469,6 @@ function routinesCompose( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    debugger;
     return _.arrayAppend_( null, arguments, counter );
   }
 
@@ -614,7 +612,6 @@ function routinesComposeEvery( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    debugger;
     return _.unrollAppend( null, arguments, counter );
   }
 
@@ -623,7 +620,6 @@ function routinesComposeEvery( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    debugger;
     return _.arrayAppend_( null, arguments, counter );
   }
 
@@ -680,7 +676,9 @@ function routinesComposeEvery( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
   var composition = _.routinesComposeEvery( routines );
+  debugger;
   var got = composition( 1,2,3 );
+  debugger;
   var expected = undefined;
   test.identical( got, expected );
   test.identical( counter, 16 );
@@ -798,7 +796,6 @@ function routinesChain( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    debugger;
     return _.unrollAppend( null, arguments, counter );
   }
 
@@ -811,6 +808,11 @@ function routinesChain( test )
   }
 
   function _break()
+  {
+    return _.dont;
+  }
+
+  function dontInclude()
   {
     return undefined;
   }
@@ -838,6 +840,18 @@ function routinesChain( test )
   var expected = [ 1,2,3,16 ];
   test.identical( got, expected );
   test.identical( counter, 16 );
+
+  /* */
+
+  test.case = 'with dont include';
+
+  var counter = 0;
+  var routines = [ null, routineUnrolling, null, dontInclude, null, r2, null ];
+  var composition = _.routinesChain( routines );
+  var got = composition( 1,2,3 );
+  var expected = [ 1,2,3,16, 160 ];
+  test.identical( got, expected );
+  test.identical( counter, 160 );
 
   if( !Config.debug )
   return;

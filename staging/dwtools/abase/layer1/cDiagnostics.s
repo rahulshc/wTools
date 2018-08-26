@@ -327,7 +327,7 @@ function diagnosticLocation( o )
     path = path.replace( /\s+$/,'' );
 
     if( _.strEnds( path,')' ) )
-    path = _.strFindInsideOf( path,'(',')' );
+    path = _.strIsolateInsideOrAll( path,'(',')' )[ 2 ];
 
     return path;
   }

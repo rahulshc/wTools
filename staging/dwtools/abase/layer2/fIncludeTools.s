@@ -443,6 +443,12 @@ IncludeHandlersMap[ 'wUriFundamentals' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.uri },
 }
 
+IncludeHandlersMap[ 'wWebUriFundamentals' ] =
+{
+  includeAny : [ '../../abase/layer4/WebUri.s','abase/layer4/WebUri.s','wweburifundamentals' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.weburi },
+}
+
 IncludeHandlersMap[ 'wTraverser' ] =
 {
   includeAny : [ '../../abase/layer4/Traverser.s','abase/layer4/Traverser.s','wtraverser' ],

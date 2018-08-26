@@ -30,13 +30,1199 @@ if( typeof module !== 'undefined' )
 var _global = _global_;
 var _ = _global_.wTools;
 
+// --
+//
+// --
+
+function strFirst( test )
+{
+
+  /* - */
+
+  test.open( 'string' );
+
+  /* - */
+
+  test.case = 'begin';
+
+  var expected = { index : 0, entry : 'aa' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', 'aa' );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = { index : 6, entry : 'bb' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', 'bb' );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = { index : 12, entry : 'cc' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', 'cc' );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = { index : 0, entry : 'aa' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = { index : 0, entry : 'aa' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = { index : 6, entry : 'bb' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = { index : 6, entry : 'bb' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = { index : 12, entry : 'cc' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = { index : 12, entry : 'cc' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ { index : 0, entry : 'aa' },{ index : 6, entry : 'bb' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = [ { index : 0, entry : 'aa' },{ index : 6, entry : 'bb' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ { index : 6, entry : 'bb' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ { index : 6, entry : 'bb' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ { index : 12, entry : 'cc' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = [ { index : 12, entry : 'cc' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = { index : 17, entry : undefined }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = { index : 17, entry : undefined }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', 'dd' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = { index : 0, entry : '' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = { index : 0, entry : '' }
+  var got = _.strFirst( '', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = { index : 0, entry : undefined }
+  var got = _.strFirst( '', 'aa' );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'string' );
+  test.open( 'regexp' );
+
+  /* - */
+
+  test.case = 'begin';
+
+  var expected = { index : 0, entry : 'aa' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', /a+/ );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = { index : 6, entry : 'bb' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', /b+/ );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = { index : 12, entry : 'cc' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', /c+/ );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin smeared';
+
+  var expected = { index : 0, entry : 'xa' }
+  var got = _.strFirst( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wa/ );
+  test.identical( got, expected );
+
+  test.case = 'middle smeared';
+
+  var expected = { index : 10, entry : 'xb' }
+  var got = _.strFirst( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wb/ );
+  test.identical( got, expected );
+
+  test.case = 'end ';
+
+  var expected = { index : 20, entry : 'xc' }
+  var got = _.strFirst( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /\wc/ );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = { index : 0, entry : 'aa' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = { index : 0, entry : 'aa' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = { index : 6, entry : 'bb' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = { index : 6, entry : 'bb' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = { index : 12, entry : 'cc' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = { index : 12, entry : 'cc' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ { index : 0, entry : 'aa' },{ index : 6, entry : 'bb' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = [ { index : 0, entry : 'aa' },{ index : 6, entry : 'bb' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ { index : 6, entry : 'bb' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ { index : 6, entry : 'bb' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ { index : 12, entry : 'cc' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = [ { index : 12, entry : 'cc' },{ index : 0, entry : 'cc' } ];
+  var got = _.strFirst( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = { index : 17, entry : undefined }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = { index : 17, entry : undefined }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', /d+/ );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = { index : 0, entry : '' }
+  var got = _.strFirst( 'aa_aa_bb_bb_cc_cc', new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = { index : 0, entry : '' }
+  var got = _.strFirst( '', new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = { index : 0, entry : undefined }
+  var got = _.strFirst( '', /a+/ );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'regexp' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.open( 'throwing' );
+
+  test.shouldThrowErrorSync( () => _.strFirst( /a/, /a+/ ) );
+  test.shouldThrowErrorSync( () => _.strFirst( 'abc', /a+/, '' ) );
+  test.shouldThrowErrorSync( () => _.strFirst( 'abc' ) );
+  test.shouldThrowErrorSync( () => _.strFirst( '123', 1 ) );
+  test.shouldThrowErrorSync( () => _.strFirst( '123', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strFirst() );
+
+  test.close( 'throwing' );
+
+}
+
+//
+
+function strLast( test )
+{
+
+  /* - */
+
+  test.open( 'string' );
+
+  /* - */
+
+  test.case = 'begin';
+
+  var expected = { index : 3, entry : 'aa' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', 'aa' );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = { index : 9, entry : 'bb' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', 'bb' );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', 'cc' );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = { index : 9, entry : 'bb' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = { index : 9, entry : 'bb' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ { index : 9, entry : 'bb' },{ index : 15, entry : 'aa' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = [ { index : 9, entry : 'bb' },{ index : 15, entry : 'aa' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ { index : 15, entry : 'cc' },{ index : 9, entry : 'bb' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ { index : 15, entry : 'cc' },{ index : 9, entry : 'bb' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ { index : 15, entry : 'cc' },{ index : 3, entry : 'cc' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = [ { index : 15, entry : 'cc' },{ index : 3, entry : 'cc' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = { index : -1, entry : undefined }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = { index : -1, entry : undefined }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', 'dd' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = { index : 17, entry : '' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = { index : 0, entry : '' }
+  var got = _.strLast( '', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = { index : -1, entry : undefined }
+  var got = _.strLast( '', 'aa' );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'string' );
+  test.open( 'regexp' );
+
+  /* - */
+
+  test.case = 'begin';
+
+  var expected = { index : 3, entry : 'aa' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', /a+/ );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = { index : 9, entry : 'bb' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', /b+/ );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', /c+/ );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin smeared';
+
+  var expected = { index : 7, entry : 'ax' }
+  var got = _.strLast( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /a\w/ );
+  test.identical( got, expected );
+
+  test.case = 'middle smeared';
+
+  var expected = { index : 17, entry : 'bx' }
+  var got = _.strLast( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /b\w/ );
+  test.identical( got, expected );
+
+  test.case = 'end ';
+
+  var expected = { index : 27, entry : 'cx' }
+  var got = _.strLast( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/ );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = { index : 9, entry : 'bb' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = { index : 9, entry : 'bb' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = { index : 15, entry : 'cc' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ { index : 9, entry : 'bb' },{ index : 15, entry : 'aa' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = [ { index : 9, entry : 'bb' },{ index : 15, entry : 'aa' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ { index : 15, entry : 'cc' },{ index : 9, entry : 'bb' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ { index : 15, entry : 'cc' },{ index : 9, entry : 'bb' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ { index : 15, entry : 'cc' },{ index : 3, entry : 'cc' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = [ { index : 15, entry : 'cc' },{ index : 3, entry : 'cc' } ];
+  var got = _.strLast( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = { index : -1, entry : undefined }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = { index : -1, entry : undefined }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', /d+/ );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = { index : 17, entry : '' }
+  var got = _.strLast( 'aa_aa_bb_bb_cc_cc', new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = { index : 0, entry : '' }
+  var got = _.strLast( '', new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = { index : -1, entry : undefined }
+  var got = _.strLast( '', /a+/ );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'regexp' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.open( 'throwing' );
+
+  test.shouldThrowErrorSync( () => _.strLast( /a/, /a+/ ) );
+  test.shouldThrowErrorSync( () => _.strLast( 'abc', /a+/, '' ) );
+  test.shouldThrowErrorSync( () => _.strLast( 'abc' ) );
+  test.shouldThrowErrorSync( () => _.strLast( '123', 1 ) );
+  test.shouldThrowErrorSync( () => _.strLast( '123', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strLast() );
+
+  test.close( 'throwing' );
+
+}
+
+//
+
+function strIsolateInsideOrNone( test )
+{
+
+  /* - */
+
+  test.open( 'string' );
+
+  /* - */
+
+  test.case = 'begin';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', 'aa', 'bb' );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', 'bb', 'cc' );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', 'cc', 'dd' );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', 'cc', '' );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ], [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ], [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ], [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ], [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ], [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ], [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ], [ '', '' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ], [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ], [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ], [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ], [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ], [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ], [ '', 'cc', '_cc_bb_bb_aa_aa', '', '' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ], [ '', '' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [], [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', 'dd', 'dd' );
+  test.identical( got, expected );
+
+  test.case = 'not found begin';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', 'dd', '' );
+  test.identical( got, expected );
+
+  test.case = 'not found end';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', '', 'dd' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', '', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = [ '', '', '', '', '' ];
+  var got = _.strIsolateInsideOrNone( '', '', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( '', 'aa', 'bb' );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'string' );
+  test.open( 'regexp' );
+
+  /* */
+
+  test.case = 'begin smeared';
+
+  var expected = [ 'x', 'aa', 'x_xaax_xbbx_xb', 'bx', '_xccx_xccx' ];
+  var got = _.strIsolateInsideOrNone( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /a\w/, /b\w/ );
+  test.identical( got, expected );
+
+  test.case = 'middle smeared';
+
+  var expected = [ 'xaax_xaax_x', 'bb', 'x_xbbx_xccx_xc', 'cx', '' ];
+  var got = _.strIsolateInsideOrNone( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /b\w/, /c\w/ );
+  test.identical( got, expected );
+
+  test.case = 'end smeared';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/, /d\w/ );
+  test.identical( got, expected );
+  var expected = [ 'xaax_xaax_xbbx_xbbx_x', 'cc', 'x_xccx', '', '' ];
+  var got = _.strIsolateInsideOrNone( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'begin';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', /a+/, /b+/ );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', /b+/, /c+/ );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', /c+/, /d+/ );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', /c+/, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ], [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ], [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ], [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ], [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ], [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ], [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ], [ new RegExp( '' ), new RegExp( '' ) ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ], [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ], [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ], [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ], [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ], [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ], [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ], [ '', 'cc', '_cc_bb_bb_aa_aa', '', '' ] ];
+  var got = _.strIsolateInsideOrNone( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ], [ new RegExp( '' ), new RegExp( '' ) ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', [], [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', /d+/, /d+/ );
+  test.identical( got, expected );
+
+  test.case = 'not found begin';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', /d+/, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'not found end';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', new RegExp( '' ), /d+/ );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrNone( 'aa_aa_bb_bb_cc_cc', new RegExp( '' ), new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = [ '', '', '', '', '' ];
+  var got = _.strIsolateInsideOrNone( '', new RegExp( '' ), new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = undefined;
+  var got = _.strIsolateInsideOrNone( '', /a+/, /b+/ );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'regexp' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strIsolateInsideOrNone() );
+  test.shouldThrowError( () => _.strIsolateInsideOrNone( '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrNone( '', '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrNone( '', '', '', '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrNone( 1, '', '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrNone( '123', 1, '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrNone( '123', '', 3 ) );
+
+}
+
+//
+
+function strIsolateInsideOrAll( test )
+{
+
+  /* - */
+
+  test.open( 'string' );
+
+  /* - */
+
+  test.case = 'begin';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', 'aa', 'bb' );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', 'bb', 'cc' );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', 'cc', 'dd' );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', 'cc', '' );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ 'aa', 'bb' ], [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'aa' ], [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ 'bb', 'cc' ], [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'bb' ], [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ 'cc', 'dd' ], [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ], [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ 'dd', 'cc' ], [ '', '' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'aa', 'bb' ], [ 'aa', 'bb' ] );
+  test.identical( got, expected );
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'aa' ], [ 'bb', 'aa' ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'bb', 'cc' ], [ 'bb', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'bb' ], [ 'cc', 'bb' ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'cc', 'dd' ], [ 'cc', 'dd' ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ], [ 'dd', 'cc' ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ], [ '', 'cc', '_cc_bb_bb_aa_aa', '', '' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ 'dd', 'cc' ], [ '', '' ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [], [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', 'dd', 'dd' );
+  test.identical( got, expected );
+
+  test.case = 'not found begin';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', 'dd', '' );
+  test.identical( got, expected );
+
+  test.case = 'not found end';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', '', 'dd' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', '', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = [ '', '', '', '', '' ];
+  var got = _.strIsolateInsideOrAll( '', '', '' );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = [ '', '', '', '', '' ];
+  var got = _.strIsolateInsideOrAll( '', 'aa', 'bb' );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'string' );
+  test.open( 'regexp' );
+
+  /* */
+
+  test.case = 'begin smeared';
+
+  var expected = [ 'x', 'aa', 'x_xaax_xbbx_xb', 'bx', '_xccx_xccx' ];
+  var got = _.strIsolateInsideOrAll( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /a\w/, /b\w/ );
+  test.identical( got, expected );
+
+  test.case = 'middle smeared';
+
+  var expected = [ 'xaax_xaax_x', 'bb', 'x_xbbx_xccx_xc', 'cx', '' ];
+  var got = _.strIsolateInsideOrAll( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /b\w/, /c\w/ );
+  test.identical( got, expected );
+
+  test.case = 'end smeared';
+
+  var expected = [ 'xaax_xaax_xbbx_xbbx_x', 'cc', 'x_xccx', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/, /d\w/ );
+  test.identical( got, expected );
+  var expected = [ 'xaax_xaax_xbbx_xbbx_x', 'cc', 'x_xccx', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'begin';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', /a+/, /b+/ );
+  test.identical( got, expected );
+
+  test.case = 'middle';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', /b+/, /c+/ );
+  test.identical( got, expected );
+
+  test.case = 'end';
+
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', /c+/, /d+/ );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', /c+/, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry';
+
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ /a+/, /b+/ ], [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ /b+/, /a+/ ], [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry';
+
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ /b+/, /c+/ ], [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ /c+/, /b+/ ], [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry';
+
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ /c+/, /d+/ ], [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ], [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [ /d+/, /c+/ ], [ new RegExp( '' ), new RegExp( '' ) ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'begin, several entry, several sources';
+
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /a+/, /b+/ ], [ /a+/, /b+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ '', 'aa', '_aa_bb_', 'bb', '_cc_cc' ], [ 'cc_cc_', 'bb', '_bb_aa_', 'aa', '' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /a+/ ], [ /b+/, /a+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'middle, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /b+/, /c+/ ], [ /b+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_', 'bb', '_bb_cc_', 'cc', '' ], [ '', 'cc', '_cc_bb_', 'bb', '_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /b+/ ], [ /c+/, /b+/ ] );
+  test.identical( got, expected );
+
+  test.case = 'end, several entry, several sources';
+
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /c+/, /d+/ ], [ /c+/, /d+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_', 'cc', '' ], [ '', 'cc', '_', 'cc', '_bb_bb_aa_aa' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ], [ /d+/, /c+/ ] );
+  test.identical( got, expected );
+  var expected = [ [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ], [ '', 'cc', '_cc_bb_bb_aa_aa', '', '' ] ];
+  var got = _.strIsolateInsideOrAll( [ 'aa_aa_bb_bb_cc_cc', 'cc_cc_bb_bb_aa_aa' ], [ /d+/, /c+/ ], [ new RegExp( '' ), new RegExp( '' ) ] );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'no entry';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', [], [] );
+  test.identical( got, expected );
+
+  test.case = 'not found';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', /d+/, /d+/ );
+  test.identical( got, expected );
+
+  test.case = 'not found begin';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', /d+/, new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'not found end';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', new RegExp( '' ), /d+/ );
+  test.identical( got, expected );
+
+  test.case = 'empty entry';
+
+  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var got = _.strIsolateInsideOrAll( 'aa_aa_bb_bb_cc_cc', new RegExp( '' ), new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty entry, empty src';
+
+  var expected = [ '', '', '', '', '' ];
+  var got = _.strIsolateInsideOrAll( '', new RegExp( '' ), new RegExp( '' ) );
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+
+  var expected = [ '', '', '', '', '' ];
+  var got = _.strIsolateInsideOrAll( '', /a+/, /b+/ );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.close( 'regexp' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strIsolateInsideOrAll() );
+  test.shouldThrowError( () => _.strIsolateInsideOrAll( '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrAll( '', '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrAll( '', '', '', '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrAll( 1, '', '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrAll( '123', 1, '' ) );
+  test.shouldThrowError( () => _.strIsolateInsideOrAll( '123', '', 3 ) );
+
+}
+
 //
 
 function strBeginOf( test )
 {
   var got,expected;
 
-  //
+  /**/
 
   test.case = 'strBeginOf';
 
@@ -229,81 +1415,6 @@ function strEndOf( test )
 
 //
 
-function strFindInsideOf( test )
-{
-  var got,expected;
-
-  //
-
-  test.case = 'strFindInsideOf';
-
-  /**/
-
-  got = _.strFindInsideOf( '', '', '' );
-  expected = undefined;
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strFindInsideOf( 'abc', 'a', 'c' );
-  expected = 'b';
-  test.identical( got, expected );
-
-  /*firs of begin, last of end*/
-
-  got = _.strFindInsideOf( 'aaabccc', 'a', 'c' );
-  expected = 'aabcc';
-  test.identical( got, expected );
-
-  /* f > l */
-
-  got = _.strFindInsideOf( 'aaabccc', 'c', 'a' );
-  expected = undefined;
-  test.identical( got, expected );
-
-  /* begin === end, string contains several of it */
-
-  got = _.strFindInsideOf( 'aaabccc', 'a', 'a' );
-  expected = 'a';
-  test.identical( got, expected );
-
-  /* begin === end, string contains single */
-
-  got = _.strFindInsideOf( 'abc', 'a', 'a' );
-  expected = undefined;
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strFindInsideOf( 'aaabbbccc', [ 'a', 'b' ], [ 'b', 'c' ] );
-  expected = 'aabb';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strFindInsideOf( 'abc', [ 'x','y', 'c' ], 'c' );
-  expected = undefined;
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strFindInsideOf( 'abbccc', [ 'b' ], '' );
-  expected = 'bccc';
-  test.identical( got, expected );
-
-  got = _.strFindInsideOf( 'a', 1, '' );
-  expected = undefined;
-  test.identical( got, expected );
-
-  got = _.strFindInsideOf( 'a', '', 1 );
-  expected = undefined;
-  test.identical( got, expected );
-
-  test.shouldThrowError( () => _.strFindInsideOf( 1, '', '' ) );
-}
-
-//
-
 function strBegins( test )
 {
   var got, expected;
@@ -475,9 +1586,14 @@ var Self =
   tests :
   {
 
+    strFirst : strFirst,
+    strLast : strLast,
+
+    strIsolateInsideOrNone : strIsolateInsideOrNone,
+    strIsolateInsideOrAll : strIsolateInsideOrAll,
+
     strBeginOf : strBeginOf,
     strEndOf : strEndOf,
-    strFindInsideOf : strFindInsideOf,
 
     strBegins : strBegins,
     strEnds : strEnds,

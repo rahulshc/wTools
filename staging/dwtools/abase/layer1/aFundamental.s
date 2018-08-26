@@ -3,14 +3,6 @@
 'use strict';
 
 /**
-  @module Tools/base/x -
-*/
-
-/**
- * @file X.s.
- */
-
-/**
   @module Tools/base/Fundamental - Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind. Tools contain hundreds of routines to operate effectively with Array, SortedArray, Map, RegExp, Buffer, Time, String, Number, Routine, Error and other fundamental types. The module provides advanced tools for diagnostics and errors handling. Use it to have a stronger foundation for the application.
 */
 
@@ -3909,7 +3901,7 @@ function _routinesCompose_body( o )
     var args = _.unrollAppend( null, arguments );
     for( var k = 0 ; k < o.srcs.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), 'expects unroll' );
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
       var r = o.srcs[ k ].apply( this, args );
       _.assert( !_.argumentsArrayIs( r ) );
       if( r !== undefined )
@@ -3917,6 +3909,7 @@ function _routinesCompose_body( o )
       args = chainer( r, k, args, o );
       if( args === undefined )
       break;
+      args = _.unrollFrom( args );
     }
     return result;
   }
@@ -4154,65 +4147,30 @@ function _routinesChain_body( o )
   else if( o.srcs.length === 1 )
   debugger;
   else
-  debugger;
+  {};
 
   o.chainer = function chainer( e, k, args, o )
   {
+    if( e === undefined )
+    return args;
+    if( e === _.dont )
+    return undefined;
     return _.unrollFrom( e );
-    // return e;
   }
 
-  return _.routinesCompose.body( o );
-
-  // if( o.srcs.length === 0 )
-  // return function empty()
-  // {
-  //   debugger;
-  //   return arguments;
-  // }
-  // else if( o.srcs.length === 1 )
-  // {
-  //   debugger;
-  //   return o.srcs[ 0 ];
-  // }
-  // else if( o.joiner ) return function chainWithJoiner()
-  // {
-  //   var result = [];
-  //   var args = arguments;
-  //   for( var s = 0 ; s < o.srcs.length ; s++ )
-  //   {
-  //     if( s > 0 )
-  //     args = o.joiner.apply( this, args );
-  //     args = o.srcs[ s ].apply( this, args );
-  //     _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
-  //     if( !_.unrollIs( args ) )
-  //     args = _.unrollAppend([ args ]);
-  //   }
-  //   return args;
-  // }
-  // else return function chain()
-  // {
-  //   debugger;
-  //   var result = [];
-  //   var args = arguments;
-  //   for( var s = 0 ; s < o.srcs.length ; s++ )
-  //   {
-  //     debugger;
-  //     args = o.srcs[ s ].apply( this, args );
-  //     _.assert( !_.argumentsArrayIs( args ), 'does not expect arguments array' );
-  //     if( !_.unrollIs( args ) )
-  //     args = [ args ];
-  //   }
-  //   debugger;
-  //   return args;
-  // }
-
+  let routine = _.routinesCompose.body( o );
+  return function routinesChain()
+  {
+    let result = routine.apply( this, arguments );
+    if( result[ result.length-1 ] === _.dont )
+    result.pop();
+    return result;
+  }
 }
 
 _routinesChain_body.defaults =
 {
   srcs : null,
-  // joiner : null,
 }
 
 //
@@ -4457,8 +4415,8 @@ function routineForPreAndBody_pre( routine, args )
   _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ) );
   _.assert( _.routineIs( o.body ) );
   _.assert( !!o.body.defaults, 'body should have defaults' );
-  _.assertMapHasOnly( o.pre, o.preProperties );
-  _.assertMapHasOnly( o.body, o.bodyProperties );
+  // _.assertMapHasOnly( o.pre, o.preProperties, '{-pre-} should not have such properties' );
+  // _.assertMapHasOnly( o.body, o.bodyProperties, '{-body-} should not have such properties' );
 
   return o;
 }
@@ -5491,6 +5449,331 @@ str.routines = str;
 
 //
 
+function _strFirst( src, ent )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+
+  ent = _.arrayAs( ent );
+
+  let result = Object.create( null );
+  result.index = src.length;
+  result.entry = undefined;
+
+  for( var k = 0, len = ent.length ; k < len ; k++ )
+  {
+    let entry = ent[ k ];
+    if( _.strIs( entry ) )
+    {
+      let found = src.indexOf( entry );
+      if( found >= 0 && ( found < result.index || result.entry === undefined ) )
+      {
+        result.index = found;
+        result.entry = entry;
+      }
+    }
+    else if( _.regexpIs( entry ) )
+    {
+      let found = src.match( entry );
+      if( found && ( found.index < result.index || result.entry === undefined ) )
+      {
+        result.index = found.index;
+        result.entry = found[ 0 ];
+      }
+    }
+    else _.assert( 0, 'expects string or regexp' );
+  }
+
+  return result;
+}
+
+//
+
+function strFirst( src, ent )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.arrayIs( src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < src.length ; s++ )
+    result[ s ] = _._strFirst( src[ s ], ent );
+    return result;
+  }
+  else
+  {
+    return _._strFirst( src, ent );
+  }
+
+}
+
+//
+
+/*
+
+(bb)(?!(?=.).*(?:bb))
+aaa_bbb_|bb|b_ccc_ccc
+
+.*(bb)
+aaa_bbb_b|bb|_ccc_ccc
+
+(b+)(?!(?=.).*(?:b+))
+aaa_bbb_|bbb|_ccc_ccc
+
+.*(b+)
+aaa_bbb_bb|b|_ccc_ccc
+
+*/
+
+function _strLast( src, ent )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+
+  ent = _.arrayAs( ent );
+
+  let result = Object.create( null );
+  result.index = -1;
+  result.entry = undefined;
+
+  for( var k = 0, len = ent.length ; k < len ; k++ )
+  {
+    let entry = ent[ k ];
+    if( _.strIs( entry ) )
+    {
+      let found = src.lastIndexOf( entry );
+      if( found >= 0 && found > result.index )
+      {
+        result.index = found;
+        result.entry = entry;
+      }
+    }
+    else if( _.regexpIs( entry ) )
+    {
+
+      // entry = _.regexpsJoin([ entry, '(?!(?=.).*(?:))' ]);
+      // debugger;
+
+      let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]);
+      let match1 = src.match( regexp1 );
+      if( !match1 )
+      continue;
+
+      let regexp2 = _.regexpsJoin([ entry, '(?!(?=.).*', entry, ')' ]);
+      let match2 = src.match( regexp2 );
+      _.assert( !!match2 );
+
+      let found;
+      let found1 = match1[ 1 ];
+      let found2 = match2[ 0 ];
+      let index;
+      let index1 = match1.index + match1[ 0 ].length;
+      let index2 = match2.index + match2[ 0 ].length;
+
+      if( index1 === index2 )
+      {
+        if( found1.length < found2.length )
+        {
+          debugger;
+          found = found2;
+          index = index2 - found.length;
+        }
+        else
+        {
+          debugger;
+          found = found1;
+          index = index1 - found.length;
+        }
+      }
+      else if( index1 < index2 )
+      {
+        found = found2;
+        index = index2 - found.length;
+      }
+      else
+      {
+        debugger;
+        found = found1;
+        index = index1 - found.length;
+      }
+
+      if( index > result.index )
+      {
+        result.index = index;
+        result.entry = found;
+      }
+
+    }
+    else _.assert( 0, 'expects string or regexp' );
+  }
+
+  return result;
+}
+
+//
+
+function strLast( src, ent )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.arrayIs( src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < src.length ; s++ )
+    result[ s ] = _._strLast( src[ s ], ent );
+    return result;
+  }
+  else
+  {
+    return _._strLast( src, ent );
+  }
+
+}
+
+//
+
+/**
+  * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
+  * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+  * Otherwise returns undefined.
+  *
+  * @param { String } src - The source string.
+  * @param { String } begin - String to find from begin of source.
+  * @param { String } end - String to find from end source.
+  *
+  * @example
+  * _.strIsolateInsideOrNone( 'abcd', 'a', 'd' );
+  * //returns 'bc'
+  *
+  * @example
+  * _.strIsolateInsideOrNone( 'aabcc', 'a', 'c' );
+  * //returns 'aabcc'
+  *
+  * @example
+  * _.strIsolateInsideOrNone( 'aabcc', 'a', 'a' );
+  * //returns 'a'
+  *
+  * @example
+  * _.strIsolateInsideOrNone( 'abc', 'a', 'a' );
+  * //returns undefined
+  *
+  * @example
+  * _.strIsolateInsideOrNone( 'abcd', 'x', 'y' )
+  * //returns undefined
+  *
+  * @example
+  * //index of begin is bigger then index of end
+  * _.strIsolateInsideOrNone( 'abcd', 'c', 'a' )
+  * //returns undefined
+  *
+  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
+  * @throws { Exception } If all arguments are not strings;
+  * @throws { Exception } If ( argumets.length ) is not equal 3.
+  * @function strIsolateInsideOrNone
+  * @memberof wTools
+  */
+
+function _strIsolateInsideOrNone( src, begin, end )
+{
+
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+
+  var b = _.strFirst( src, begin );
+
+  if( b.entry === undefined )
+  return;
+
+  var e = _.strLast( src, end );
+
+  if( e.entry === undefined )
+  return;
+
+  if( e.index < b.index + b.entry.length )
+  return;
+
+  var result = [ src.substring( 0, b.index ), b.entry, src.substring( b.index + b.entry.length, e.index ), e.entry, src.substring( e.index+e.entry.length, src.length ) ];
+
+  return result;
+}
+
+//
+
+function strIsolateInsideOrNone( src, begin, end )
+{
+
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+
+  if( _.arrayIs( src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < src.length ; s++ )
+    result[ s ] = _._strIsolateInsideOrNone( src[ s ], begin, end );
+    return result;
+  }
+  else
+  {
+    return _._strIsolateInsideOrNone( src, begin, end );
+  }
+
+}
+
+//
+
+function _strIsolateInsideOrAll( src, begin, end )
+{
+
+  _.assert( _.strIs( src ), 'expects string {-src-}' );
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+
+  var b = _.strFirst( src, begin );
+
+  if( b.entry === undefined )
+  b = { entry : '', index : 0 }
+
+  var e = _.strLast( src, end );
+
+  if( e.entry === undefined )
+  e = { entry : '', index : src.length }
+
+  if( e.index < b.index + b.entry.length )
+  {
+    e.index = src.length;
+    e.entry = '';
+  }
+
+  var result = [ src.substring( 0, b.index ), b.entry, src.substring( b.index + b.entry.length, e.index ), e.entry, src.substring( e.index+e.entry.length, src.length ) ];
+
+  return result;
+}
+
+//
+
+function strIsolateInsideOrAll( src, begin, end )
+{
+
+  _.assert( arguments.length === 3, 'expects exactly three argument' );
+
+  if( _.arrayIs( src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < src.length ; s++ )
+    result[ s ] = _._strIsolateInsideOrAll( src[ s ], begin, end );
+    return result;
+  }
+  else
+  {
+    return _._strIsolateInsideOrAll( src, begin, end );
+  }
+
+}
+
+//
+
 function _strBeginOf( src,begin )
 {
 
@@ -5628,22 +5911,6 @@ function strEnds( src, end )
   return false;
 }
 
-// {
-//
-//   _.assert( _.strIs( src ), 'expects string {-src-}' );
-//   _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings' );
-//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-//
-//   if( _.strIs( end ) )
-//   end = [ end ];
-//
-//   for( var k = 0, len = end.length; k < len; k++ )
-//   if( src.indexOf( end[ k ], src.length - end[ k ].length ) !== -1 )
-//   return true;
-//
-//   return false;
-// }
-
 //
 
 /**
@@ -5695,26 +5962,6 @@ function strBeginOf( src, begin )
   return false;
 }
 
-// {
-//
-//   _.assert( _.strIs( src ),'expects string {-src-}' );
-//   _.assert( _.strIs( end ) || _.longIs( end ),'expects string/array of strings ( end )' );
-//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-//
-//   if( _.strIs( end ) )
-//   end = [ end ];
-//
-//   for( var k = 0, len = end.length; k < len; k++ )
-//   {
-//     var i = src.indexOf( end[ k ],src.length - end[ k ].length );
-//     if( i >= 0 )
-//     return src.substr( 0,i );
-//
-//     if( i === -1 )
-//     debugger;
-//   }
-// }
-
 //
 
 /**
@@ -5764,28 +6011,6 @@ function strEndOf( src, end )
 
   return false;
 }
-
-// {
-//
-//   _.assert( _.strIs( src ),'expects string {-src-}' );
-//   _.assert( _.strIs( begin ) || _.longIs( begin ),'expects string/array of strings ( begin )' );
-//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-//
-//   if( _.strIs( begin ) )
-//   begin = [ begin ];
-//
-//   for( var k = 0, len = begin.length; k < len; k++ )
-//   {
-//     var i = src.lastIndexOf( begin[ k ],0 );
-//     if( i >= 0  )
-//     return src.substr( i+begin[ k ].length );
-//   }
-//
-//   // if( i >= 0 )
-//   // debugger;
-//   // else
-//   // debugger;
-// }
 
 //
 
@@ -5874,87 +6099,6 @@ function strOutsideOf( src, begin, end )
   return false;
 
   var result = beginOf + endOf;
-
-  return result;
-}
-
-//
-
-/**
-  * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
-  * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
-  * Otherwise returns undefined.
-  *
-  * @param { String } src - The source string.
-  * @param { String } begin - String to find from begin of source.
-  * @param { String } end - String to find from end source.
-  *
-  * @example
-  * _.strFindInsideOf( 'abcd', 'a', 'd' );
-  * //returns 'bc'
-  *
-  * @example
-  * _.strFindInsideOf( 'aabcc', 'a', 'c' );
-  * //returns 'aabcc'
-  *
-  * @example
-  * _.strFindInsideOf( 'aabcc', 'a', 'a' );
-  * //returns 'a'
-  *
-  * @example
-  * _.strFindInsideOf( 'abc', 'a', 'a' );
-  * //returns undefined
-  *
-  * @example
-  * _.strFindInsideOf( 'abcd', 'x', 'y' )
-  * //returns undefined
-  *
-  * @example
-  * //index of begin is bigger then index of end
-  * _.strFindInsideOf( 'abcd', 'c', 'a' )
-  * //returns undefined
-  *
-  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
-  * @throws { Exception } If all arguments are not strings;
-  * @throws { Exception } If ( argumets.length ) is not equal 3.
-  * @function strFindInsideOf
-  * @memberof wTools
-  */
-
-// function strInbetweenOf( src, begin, end )
-function strFindInsideOf( src, begin, end )
-{
-
-  _.assert( _.strIs( src ), 'expects string {-src-}' );
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
-
-  begin = _.arrayAs( begin );
-  end = _.arrayAs( end );
-
-  var f = -1;
-  var l = -1;
-
-  for( var k = 0, len = begin.length; k < len; k++ )
-  {
-    f = src.indexOf( begin[ k ] );
-    if( f >= 0 )
-    break;
-  }
-
-  if( f === -1 )
-  return;
-
-  for( var k = 0, len = end.length; k < len; k++ )
-  {
-    l = src.lastIndexOf( end[ k ] );
-    if( l >= 0 )
-    break;
-  }
-
-  if( l === -1 || l <= f )
-  return;
-
-  var result = src.substring( f+1,l );
 
   return result;
 }
@@ -8975,7 +9119,7 @@ function unrollIs( src )
 {
   if( !_.arrayIs( src ) )
   return false;
-  return src[ unrollSymbol ];
+  return !!src[ unrollSymbol ];
 }
 
 //
@@ -19488,7 +19632,6 @@ var Routines =
 
   strIs : strIs,
   strsAre : strsAre,
-
   strIsNotEmpty : strIsNotEmpty,
   strsAreNotEmpty : strsAreNotEmpty,
 
@@ -19499,6 +19642,16 @@ var Routines =
   toStr : str,
   toStrShort : str,
   strFrom : str,
+
+  _strFirst : _strFirst,
+  strFirst : strFirst,
+  _strLast : _strLast,
+  strLast : strLast,
+
+  _strIsolateInsideOrNone : _strIsolateInsideOrNone,
+  strIsolateInsideOrNone : strIsolateInsideOrNone,
+  _strIsolateInsideOrAll : _strIsolateInsideOrAll,
+  strIsolateInsideOrAll : strIsolateInsideOrAll,
 
   _strBeginOf : _strBeginOf,
   _strEndOf : _strEndOf,
@@ -19511,7 +19664,6 @@ var Routines =
 
   strInsideOf : strInsideOf,
   strOutsideOf : strOutsideOf,
-  strFindInsideOf : strFindInsideOf,
 
   // regexp
 
