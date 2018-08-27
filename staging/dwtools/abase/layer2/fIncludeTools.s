@@ -445,7 +445,7 @@ IncludeHandlersMap[ 'wUriFundamentals' ] =
 
 IncludeHandlersMap[ 'wWebUriFundamentals' ] =
 {
-  includeAny : [ '../../abase/layer4/WebUri.s','abase/layer4/WebUri.s','wweburifundamentals' ],
+  includeAny : [ '../../abase/layer5/WebUri.s','abase/layer5/WebUri.s','wweburifundamentals' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.weburi },
 }
 
