@@ -8333,7 +8333,7 @@ function bufferRawFrom( buffer )
   else if( _.bufferTypedIs( buffer ) || _.bufferViewIs( buffer ) )
   {
 
-    buffer = buffer.buffer;
+    result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
     result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
 

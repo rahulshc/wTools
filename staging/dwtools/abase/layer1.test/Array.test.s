@@ -153,6 +153,53 @@ function bufferRawFromBuffer( test )
 
 //
 
+function bufferRawFrom( test )
+{
+  test.case = 'typed';
+  var src = new Uint8Array( 3 );
+  var got = _.bufferRawFrom( src );
+  var expected = new ArrayBuffer( 3 );
+  test.identical( got, expected );
+
+  test.case = 'raw';
+  var src = new ArrayBuffer( 3 );
+  var got = _.bufferRawFrom( src );
+  var expected = src;
+  test.identical( got, expected );
+
+  test.case = 'view';
+  var buffer = new ArrayBuffer( 10 );
+  var src = new DataView( buffer );
+  var got = _.bufferRawFrom( src );
+  var expected = buffer;
+  test.identical( got, expected );
+
+  test.case = 'str';
+  var src = 'abc';
+  var got = _.bufferRawFrom( src );
+  var expected = new Uint8Array([ 97,98,99 ]).buffer;
+  test.identical( got, expected );
+
+  if( Config.platform === 'nodejs' )
+  {
+    test.case = 'node-buffer';
+    var src = Buffer.from( 'abc' );
+    var got = _.bufferRawFrom( src );
+    var expected = new Uint8Array([ 97,98,99 ]).buffer;
+    test.identical( got, expected );
+  }
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'unknown source';
+  test.shouldThrowError( () => _.bufferRawFrom( 5 ) );
+  test.shouldThrowError( () => _.bufferRawFrom( [] ) );
+  test.shouldThrowError( () => _.bufferRawFrom( {} ) );
+}
+
+//
+
 function arrayIs( test )
 {
 
@@ -11294,6 +11341,7 @@ var Self =
     bufferRelen : bufferRelen,
     bufferRetype : bufferRetype,
     bufferRawFromBuffer : bufferRawFromBuffer,
+    bufferRawFrom : bufferRawFrom,
 
     // type test
 
