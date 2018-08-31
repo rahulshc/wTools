@@ -132,6 +132,79 @@ var _ceil = Math.ceil;
 var _floor = Math.floor;
 
 // --
+// multiplier
+// --
+
+function dup( ins, times, result )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( _.numberIs( times ) || _.longIs( times ),'dup expects times as number or array' );
+
+  if( _.numberIs( times ) )
+  {
+    if( !result )
+    result = new Array( times );
+    for( var t = 0 ; t < times ; t++ )
+    result[ t ] = ins;
+    return result;
+  }
+  else if( _.longIs( times ) )
+  {
+    _.assert( times.length === 2 );
+    var l = times[ 1 ] - times[ 0 ];
+    if( !result )
+    result = new Array( times[ 1 ] );
+    for( var t = 0 ; t < l ; t++ )
+    result[ times[ 0 ] + t ] = ins;
+    return result;
+  }
+  else _.assert( 0,'unexpected' );
+
+}
+
+//
+
+function multiple( src, times )
+{
+  _.assert( arguments.length === 2 );
+  if( _.arrayIs( src ) )
+  _.assert( src.length === times );
+  else
+  src = _.dup( src, times );
+  return src;
+}
+
+//
+
+function multipleAll( dsts )
+{
+  var length = undefined;
+
+  _.assert( arguments.length === 1 );
+
+  for( var d = 0 ; d < dsts.length ; d++ )
+  if( _.arrayIs( dsts[ d ] ) )
+  {
+    // debugger;
+    length = dsts[ d ].length;
+    break;
+  }
+
+  // if( length === undefined )
+  // debugger;
+
+  if( length === undefined )
+  return dsts;
+
+  // debugger;
+
+  for( var d = 0 ; d < dsts.length ; d++ )
+  dsts[ d ] = _.multiple( dsts[ d ], length );
+
+  return dsts;
+}
+
+// --
 // entity iterator
 // --
 
@@ -739,40 +812,11 @@ function entityFilterDeep( src, onEach )
   });
 }
 
-//
-
-function dup( ins,times,result )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( _.numberIs( times ) || _.longIs( times ),'dup expects times as number or array' );
-
-  if( _.numberIs( times ) )
-  {
-    if( !result )
-    result = new Array( times );
-    for( var t = 0 ; t < times ; t++ )
-    result[ t ] = ins;
-    return result;
-  }
-  else if( _.longIs( times ) )
-  {
-    _.assert( times.length === 2 );
-    var l = times[ 1 ] - times[ 0 ];
-    if( !result )
-    result = new Array( times[ 1 ] );
-    for( var t = 0 ; t < l ; t++ )
-    result[ times[ 0 ] + t ] = ins;
-    return result;
-  }
-  else _.assert( 0,'unexpected' );
-
-}
-
 // --
 // entity modifier
 // --
 
-function enityExtend( dst,src )
+function enityExtend( dst, src )
 {
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -6436,14 +6480,61 @@ function regexpsAtLeastFirst( o )
   for( var s = 0 ; s < o.sources.length ; s++ )
   {
     var src = o.sources[ s ];
-    prefix = prefix + '(?:' + src;
+
     if( s === 0 )
-    postfix =  ')' + postfix
+    {
+      prefix = prefix + src;
+    }
     else
-    postfix =  ')?' + postfix
+    {
+      prefix = prefix + '(?:' + src;
+      postfix =  ')?' + postfix
+    }
+
   }
 
   result = prefix + postfix;
+  return new RegExp( result, o.flags || '' );
+}
+
+regexpsAtLeastFirst.defaults =
+{
+  flags : null,
+  sources : null,
+  escaping : 0,
+}
+
+//
+
+function regexpsAtLeastFirstOnly( o )
+{
+
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsAtLeastFirst, o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  var src = o.sources[ 0 ];
+  o = _.regexpsSources( o );
+  if( o.sources.length === 1 && _.regexpIs( src ) )
+  return src;
+
+  var result = '';
+
+  if( o.sources.length === 1 )
+  {
+    result = o.sources[ 0 ]
+  }
+  else for( var s = 0 ; s < o.sources.length ; s++ )
+  {
+    var src = o.sources[ s ];
+    if( s < o.sources.length-1 )
+    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + '$)?|';
+    else
+    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + ')?';
+  }
+
   return new RegExp( result, o.flags || '' );
 }
 
@@ -6524,6 +6615,7 @@ function regexpsAny( o )
     return o.sources;
   }
 
+  _.assert( !!o.sources );
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
   if( o.sources.length === 1 && _.regexpIs( src ) )
@@ -19404,6 +19496,12 @@ var Fields =
 var Routines =
 {
 
+  // multiplier
+
+  dup : dup,
+  multiple : multiple,
+  multipleAll : multipleAll,
+
   // entity iterator
 
   entityEach : entityEach,
@@ -19429,8 +19527,6 @@ var Routines =
 
   map : entityMap,
   filter : entityFilter,
-
-  dup : dup,
 
   // entity modifier
 
@@ -19690,6 +19786,7 @@ var Routines =
   regexpsJoin : regexpsJoin,
   regexpsJoinEscaping : regexpsJoinEscaping,
   regexpsAtLeastFirst : regexpsAtLeastFirst,
+  regexpsAtLeastFirstOnly : regexpsAtLeastFirstOnly,
 
   regexpsNone : regexpsNone,
   regexpsAny : regexpsAny,
