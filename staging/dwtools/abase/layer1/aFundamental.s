@@ -8498,7 +8498,7 @@ function bufferBytesFrom( buffer )
   {
 
     debugger;
-    _.assert( 0, 'not tested' );
+    // _.assert( 0, 'not tested' );
     result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
 
   }
@@ -8556,7 +8556,7 @@ function bufferNodeFrom( buffer )
 
   if( buffer.length === 0 || buffer.byteLength === 0 )
   {
-    _.assert( 0, 'not tested' );
+    // _.assert( 0, 'not tested' );
     result = new Buffer([]);
   }
   else if( _.strIs( buffer ) )
@@ -8570,7 +8570,7 @@ function bufferNodeFrom( buffer )
   }
   else
   {
-    _.assert( 0, 'not tested' );
+    // _.assert( 0, 'not tested' );
     result = Buffer.from( buffer );
   }
 

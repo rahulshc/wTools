@@ -200,6 +200,132 @@ function bufferRawFrom( test )
 
 //
 
+function bufferBytesFrom( test )
+{
+  test.case = 'raw';
+  var src = new ArrayBuffer( 3 );
+  var got = _.bufferBytesFrom( src );
+  var expected = new Uint8Array([ 0,0,0 ]);
+  test.identical( got, expected );
+
+  test.case = 'typed';
+  var src = new Int8Array([ 97,98,99 ]);
+  var got = _.bufferBytesFrom( src );
+  var expected = new Uint8Array([ 97,98,99 ]);
+  test.identical( got, expected );
+
+  test.case = 'view';
+  var buffer = new ArrayBuffer( 3 );
+  var src = new DataView( buffer );
+  var got = _.bufferBytesFrom( src );
+  var expected = new Uint8Array([ 0,0,0 ]);
+  test.identical( got, expected );
+
+  test.case = 'str';
+  var src = 'abc';
+  var got = _.bufferBytesFrom( src );
+  var expected = new Uint8Array([ 97,98,99 ]);
+  test.identical( got, expected );
+
+  if( Config.platform === 'nodejs' )
+  {
+    test.case = 'node';
+    var src = Buffer.from( 'abc' );
+    var got = _.bufferBytesFrom( src );
+    var expected = new Uint8Array([ 97,98,99 ]);
+    test.identical( got, expected );
+  }
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'unknown source';
+  test.shouldThrowError( () => _.bufferBytesFrom( 5 ) );
+  test.shouldThrowError( () => _.bufferBytesFrom( [] ) );
+  test.shouldThrowError( () => _.bufferBytesFrom( {} ) );
+
+}
+
+//
+
+function bufferNodeFrom( test )
+{
+  if( Config.platform !== 'nodejs' )
+  return;
+
+  test.case = 'raw';
+  var src = new ArrayBuffer( 3 );
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.from([ 0,0,0 ])
+  test.identical( got, expected );
+
+  test.case = 'typed';
+  var src = new Int8Array([ 97,98,99 ]);
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.from([ 97,98,99 ]);
+  test.identical( got, expected );
+
+  test.case = 'view';
+  var buffer = new ArrayBuffer( 3 );
+  var src = new DataView( buffer );
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.from([ 0,0,0 ]);
+  test.identical( got, expected );
+
+  test.case = 'str';
+  var src = 'abc';
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.from( src );
+  test.identical( got, expected );
+
+  test.case = 'node';
+  var src = Buffer.from( 'abc' );
+  var got = _.bufferNodeFrom( src );
+  var expected = src
+  test.identical( got, expected );
+
+  test.case = 'empty raw';
+  var src = new ArrayBuffer( 0 );
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.alloc( 0 );
+  test.identical( got, expected );
+
+  test.case = 'empty typed';
+  var src = new Int8Array([]);
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.alloc( 0 );
+  test.identical( got, expected );
+
+  test.case = 'empty node';
+  var src = Buffer.alloc( 0 );
+  var got = _.bufferNodeFrom( src );
+  var expected = src;
+  test.identical( got, expected );
+
+  test.case = 'array';
+  var src = [ 97,98,99 ];
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.from( src );
+  test.identical( got, expected );
+
+  test.case = 'object';
+  var src = new String( 'abc' );
+  var got = _.bufferNodeFrom( src );
+  var expected = Buffer.from([ 97,98,99 ]);
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'unknown source';
+  test.shouldThrowError( () => _.bufferNodeFrom( 5 ) );
+  test.shouldThrowError( () => _.bufferNodeFrom( [] ) );
+  test.shouldThrowError( () => _.bufferNodeFrom( {} ) );
+
+}
+
+//
+
 function arrayIs( test )
 {
 
@@ -11341,6 +11467,8 @@ var Self =
     bufferRelen : bufferRelen,
     bufferRetype : bufferRetype,
     bufferRawFrom : bufferRawFrom,
+    bufferBytesFrom : bufferBytesFrom,
+    bufferNodeFrom : bufferNodeFrom,
     bufferRawFromTyped : bufferRawFromTyped,
 
     // type test
