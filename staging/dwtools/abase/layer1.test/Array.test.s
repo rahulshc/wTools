@@ -115,20 +115,20 @@ function bufferRetype( test )
 
 //
 
-function bufferRawFromBuffer( test )
+function bufferRawFromTyped( test )
 {
 
   var buffer1 = new ArrayBuffer(10);
   var view1 = new Int8Array( buffer1 );
   test.case = 'returns the same length of typed array';
-  var got = _.bufferRawFromBuffer( view1 );
+  var got = _.bufferRawFromTyped( view1 );
   var expected = got; // [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
   test.identical( got, expected );
 
   var buffer2 = new ArrayBuffer(10);
   var view2 = new Int8Array( buffer2, 2 );
   test.case = 'returns the new sub typed array';
-  var got = _.bufferRawFromBuffer( view2 );
+  var got = _.bufferRawFromTyped( view2 );
   var expected = got; // [ 0, 0, 0, 0, 0, 0 ]
   test.identical( got, expected );
 
@@ -140,13 +140,13 @@ function bufferRawFromBuffer( test )
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.bufferRawFromBuffer();
+    _.bufferRawFromTyped();
   });
 
   test.case = 'arguments are wrong';
   test.shouldThrowError( function()
   {
-    _.bufferRawFromBuffer( 'wrong argument' );
+    _.bufferRawFromTyped( 'wrong argument' );
   });
 
 }
@@ -11340,8 +11340,8 @@ var Self =
 
     bufferRelen : bufferRelen,
     bufferRetype : bufferRetype,
-    bufferRawFromBuffer : bufferRawFromBuffer,
     bufferRawFrom : bufferRawFrom,
+    bufferRawFromTyped : bufferRawFromTyped,
 
     // type test
 

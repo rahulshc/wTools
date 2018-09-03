@@ -132,6 +132,79 @@ var _ceil = Math.ceil;
 var _floor = Math.floor;
 
 // --
+// multiplier
+// --
+
+function dup( ins, times, result )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( _.numberIs( times ) || _.longIs( times ),'dup expects times as number or array' );
+
+  if( _.numberIs( times ) )
+  {
+    if( !result )
+    result = new Array( times );
+    for( var t = 0 ; t < times ; t++ )
+    result[ t ] = ins;
+    return result;
+  }
+  else if( _.longIs( times ) )
+  {
+    _.assert( times.length === 2 );
+    var l = times[ 1 ] - times[ 0 ];
+    if( !result )
+    result = new Array( times[ 1 ] );
+    for( var t = 0 ; t < l ; t++ )
+    result[ times[ 0 ] + t ] = ins;
+    return result;
+  }
+  else _.assert( 0,'unexpected' );
+
+}
+
+//
+
+function multiple( src, times )
+{
+  _.assert( arguments.length === 2 );
+  if( _.arrayIs( src ) )
+  _.assert( src.length === times );
+  else
+  src = _.dup( src, times );
+  return src;
+}
+
+//
+
+function multipleAll( dsts )
+{
+  var length = undefined;
+
+  _.assert( arguments.length === 1 );
+
+  for( var d = 0 ; d < dsts.length ; d++ )
+  if( _.arrayIs( dsts[ d ] ) )
+  {
+    // debugger;
+    length = dsts[ d ].length;
+    break;
+  }
+
+  // if( length === undefined )
+  // debugger;
+
+  if( length === undefined )
+  return dsts;
+
+  // debugger;
+
+  for( var d = 0 ; d < dsts.length ; d++ )
+  dsts[ d ] = _.multiple( dsts[ d ], length );
+
+  return dsts;
+}
+
+// --
 // entity iterator
 // --
 
@@ -739,40 +812,11 @@ function entityFilterDeep( src, onEach )
   });
 }
 
-//
-
-function dup( ins,times,result )
-{
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  _.assert( _.numberIs( times ) || _.longIs( times ),'dup expects times as number or array' );
-
-  if( _.numberIs( times ) )
-  {
-    if( !result )
-    result = new Array( times );
-    for( var t = 0 ; t < times ; t++ )
-    result[ t ] = ins;
-    return result;
-  }
-  else if( _.longIs( times ) )
-  {
-    _.assert( times.length === 2 );
-    var l = times[ 1 ] - times[ 0 ];
-    if( !result )
-    result = new Array( times[ 1 ] );
-    for( var t = 0 ; t < l ; t++ )
-    result[ times[ 0 ] + t ] = ins;
-    return result;
-  }
-  else _.assert( 0,'unexpected' );
-
-}
-
 // --
 // entity modifier
 // --
 
-function enityExtend( dst,src )
+function enityExtend( dst, src )
 {
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -6436,14 +6480,61 @@ function regexpsAtLeastFirst( o )
   for( var s = 0 ; s < o.sources.length ; s++ )
   {
     var src = o.sources[ s ];
-    prefix = prefix + '(?:' + src;
+
     if( s === 0 )
-    postfix =  ')' + postfix
+    {
+      prefix = prefix + src;
+    }
     else
-    postfix =  ')?' + postfix
+    {
+      prefix = prefix + '(?:' + src;
+      postfix =  ')?' + postfix
+    }
+
   }
 
   result = prefix + postfix;
+  return new RegExp( result, o.flags || '' );
+}
+
+regexpsAtLeastFirst.defaults =
+{
+  flags : null,
+  sources : null,
+  escaping : 0,
+}
+
+//
+
+function regexpsAtLeastFirstOnly( o )
+{
+
+  if( !_.objectIs( o ) )
+  o = { sources : o }
+
+  _.routineOptions( regexpsAtLeastFirst, o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  var src = o.sources[ 0 ];
+  o = _.regexpsSources( o );
+  if( o.sources.length === 1 && _.regexpIs( src ) )
+  return src;
+
+  var result = '';
+
+  if( o.sources.length === 1 )
+  {
+    result = o.sources[ 0 ]
+  }
+  else for( var s = 0 ; s < o.sources.length ; s++ )
+  {
+    var src = o.sources[ s ];
+    if( s < o.sources.length-1 )
+    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + '$)?|';
+    else
+    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + ')?';
+  }
+
   return new RegExp( result, o.flags || '' );
 }
 
@@ -6524,6 +6615,7 @@ function regexpsAny( o )
     return o.sources;
   }
 
+  _.assert( !!o.sources );
   var src = o.sources[ 0 ];
   o = _.regexpsSources( o );
   if( o.sources.length === 1 && _.regexpIs( src ) )
@@ -7388,6 +7480,8 @@ function bufferAnyIs( src )
 
 function bufferBytesIs( src )
 {
+  if( _.bufferNodeIs( src ) )
+  return false;
   return src instanceof Uint8Array;
 }
 
@@ -7781,17 +7875,20 @@ function bufferBytesGet( src )
   }
   else if( typeof Buffer !== 'undefined' && src instanceof Buffer )
   {
-    return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
+    return new Uint8Array( src.buffer, src.byteOffset, src.byteLength );
   }
   else if( _.bufferTypedIs( src ) )
   {
-    return new Uint8Array( src.buffer,src.byteOffset,src.byteLength );
+    return new Uint8Array( src.buffer, src.byteOffset, src.byteLength );
   }
   else if( _.strIs( src ) )
   {
+    if( _global_.Buffer )
+    return new Uint8Array( _.bufferRawFrom( Buffer.from( src, 'utf8' ) ) );
+    else
     return new Uint8Array( _.encode.utf8ToBuffer( src ) );
   }
-  else throw _.err( '_.bufferBytesGet :','wrong argument' );
+  else _.assert( 0, 'wrong argument' );
 
 }
 
@@ -8203,7 +8300,7 @@ function bufferFrom( o )
 {
   var result;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1 );
   _.assert( _.objectIs( o ) );
   _.assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
   _.assertMapHasOnly( o,bufferFrom.defaults );
@@ -8245,7 +8342,9 @@ function bufferFrom( o )
   /* make */
 
   if( _.arrayIs( o.src ) )
-  result = new o.bufferConstructor( o.src );
+  {
+    result = new o.bufferConstructor( o.src );
+  }
   else if ( _.longIs( o.src ) )
   {
     result = new o.bufferConstructor( o.src );
@@ -8268,33 +8367,34 @@ bufferFrom.defaults =
 }
 
 //
-  /**
-   * The bufferRawFromBuffer() routine returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
-   * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
-   *
-   * @param { typedArray } buffer - Entity to check.
-   *
-   * @example
-   * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
-   * var buffer1 = new ArrayBuffer( 10 );
-   * var view1 = new Int8Array( buffer1 );
-   * _.bufferRawFromBuffer( view1 );
-   *
-   * @example
-   * // returns [ 0, 0, 0, 0, 0, 0 ]
-   * var buffer2 = new ArrayBuffer( 10 );
-   * var view2 = new Int8Array( buffer2, 2 );
-   * _.bufferRawFromBuffer( view2 );
-   *
-   * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
-   * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
-   * @function bufferRawFromBuffer
-   * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
-   * @throws { Error } Will throw an Error if (buffer) is not a typed array.
-   * @memberof wTools
-   */
 
-function bufferRawFromBuffer( buffer )
+/**
+ * The bufferRawFromTyped() routine returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
+ * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
+ *
+ * @param { typedArray } buffer - Entity to check.
+ *
+ * @example
+ * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+ * var buffer1 = new ArrayBuffer( 10 );
+ * var view1 = new Int8Array( buffer1 );
+ * _.bufferRawFromTyped( view1 );
+ *
+ * @example
+ * // returns [ 0, 0, 0, 0, 0, 0 ]
+ * var buffer2 = new ArrayBuffer( 10 );
+ * var view2 = new Int8Array( buffer2, 2 );
+ * _.bufferRawFromTyped( view2 );
+ *
+ * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
+ * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
+ * @function bufferRawFromTyped
+ * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
+ * @throws { Error } Will throw an Error if (buffer) is not a typed array.
+ * @memberof wTools
+ */
+
+function bufferRawFromTyped( buffer )
 {
 
   _.assert( arguments.length === 1, 'expects single argument' );
@@ -8327,12 +8427,15 @@ function bufferRawFrom( buffer )
   if( _.bufferNodeIs( buffer ) )
   {
 
+    // result = buffer.buffer;
     result = new Uint8Array( buffer ).buffer;
 
   }
   else if( _.bufferTypedIs( buffer ) || _.bufferViewIs( buffer ) )
   {
 
+    debugger;
+    _.assert( 0, 'not implemented' );
     result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
     result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
@@ -8341,16 +8444,23 @@ function bufferRawFrom( buffer )
   else if( _.strIs( buffer ) )
   {
 
-    result = _.encode.utf8ToBuffer( buffer ).buffer;
+    if( _global_.Buffer )
+    {
+      result = _.bufferRawFrom( Buffer.from( buffer, 'utf8' ) );
+    }
+    else
+    {
+      result = _.encode.utf8ToBuffer( buffer ).buffer;
+    }
 
   }
   else if( _global.File && buffer instanceof File )
   {
     var fileReader = new FileReaderSync();
     result = fileReader.readAsArrayBuffer( buffer );
-    throw _.err( 'not tested' );
+    _.assert( 0, 'not tested' );
   }
-  else _.assert( 0, 'bufferRawFrom : unknown source' );
+  else _.assert( 0, () => 'Unknown type of source ' + _.strTypeOf( buffer ) );
 
   _.assert( _.bufferRawIs( result ) );
 
@@ -8359,7 +8469,54 @@ function bufferRawFrom( buffer )
 
 //
 
-function bufferNodeToBytes( src )
+function bufferBytesFrom( buffer )
+{
+  var result;
+
+  _.assert( arguments.length === 1, 'expects single argument' );
+
+  if( _.bufferNodeIs( buffer ) )
+  {
+
+    _.assert( _.bufferRawIs( buffer.buffer ) )
+    result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
+
+  }
+  else if( _.bufferRawIs( buffer ) )
+  {
+
+    result = new U8x( buffer, 0, buffer.byteLength );
+
+  }
+  else if( _.bufferTypedIs( buffer ) )
+  {
+
+    result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
+
+  }
+  else if( _.bufferViewIs( buffer ) )
+  {
+
+    debugger;
+    _.assert( 0, 'not tested' );
+    result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
+
+  }
+  else
+  {
+
+    return _.bufferBytesFrom( _.bufferRawFrom( buffer ) );
+
+  }
+
+  _.assert( _.bufferBytesIs( result ) );
+
+  return result;
+}
+
+//
+
+function bufferBytesFromNode( src )
 {
   _.assert( _.bufferNodeIs( src ) );
   var result = new Uint8Array( buffer );
@@ -8368,60 +8525,81 @@ function bufferNodeToBytes( src )
 
 //
 
-var bufferToNodeBuffer = ( function( buffer )
+/*
+qqq : cover it
+*/
+
+function bufferNodeFrom( buffer )
 {
 
-  var toBuffer = null;
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ), 'expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
 
-  return function bufferToNodeBuffer( buffer )
+  if( _.bufferNodeIs( buffer ) )
+  return buffer;
+
+  /* */
+
+  // if( toBuffer === null )
+  // try
+  // {
+  //   toBuffer = require( 'typedarray-to-buffer' );
+  // }
+  // catch( err )
+  // {
+  //   toBuffer = false;
+  // }
+
+  /* */
+
+  let result;
+
+  if( buffer.length === 0 || buffer.byteLength === 0 )
   {
-
-    _.assert( arguments.length === 1, 'expects single argument' );
-    _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ),'bufferToNodeBuffer : expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
-
-    if( _.bufferNodeIs( buffer ) )
-    return buffer;
-
-    /* */
-
-    if( toBuffer === null )
-    try
-    {
-      toBuffer = require( 'typedarray-to-buffer' );
-    }
-    catch( err )
-    {
-      toBuffer = false;
-    }
-
-    /* */
-
-    if( !buffer.length && !buffer.byteLength )
-    {
-      buffer = new Buffer([]);
-    }
-    else if( toBuffer )
-    try
-    {
-      buffer = toBuffer( buffer );
-    }
-    catch( err )
-    {
-      debugger;
-      buffer = toBuffer( buffer );
-    }
-    else
-    {
-      if( _.bufferTypedIs( buffer ) )
-      buffer = Buffer.from( buffer.buffer );
-      else
-      buffer = Buffer.from( buffer );
-    }
-
-    return buffer;
+    _.assert( 0, 'not tested' );
+    result = new Buffer([]);
+  }
+  else if( _.strIs( buffer ) )
+  {
+    debugger;
+    result = _.bufferNodeFrom( _.bufferRawFrom( buffer ) );
+  }
+  else if( buffer.buffer )
+  {
+    result = Buffer.from( buffer.buffer, buffer.byteOffset, buffer.byteLength );
+  }
+  else
+  {
+    _.assert( 0, 'not tested' );
+    result = Buffer.from( buffer );
   }
 
-})();
+  // if( !buffer.length && !buffer.byteLength )
+  // {
+  //   buffer = new Buffer([]);
+  // }
+  // else if( toBuffer )
+  // try
+  // {
+  //   buffer = toBuffer( buffer );
+  // }
+  // catch( err )
+  // {
+  //   debugger;
+  //   buffer = toBuffer( buffer );
+  // }
+  // else
+  // {
+  //   if( _.bufferTypedIs( buffer ) )
+  //   buffer = Buffer.from( buffer.buffer );
+  //   else
+  //   buffer = Buffer.from( buffer );
+  // }
+
+  _.assert( _.bufferNodeIs( result ) );
+
+  return result;
+}
 
 //
 
@@ -8569,7 +8747,7 @@ function buffersDeserialize( o )
   _.assert( _.objectIs( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
 
-  commonBuffer = _.bufferRawFromBuffer( commonBuffer );
+  commonBuffer = _.bufferRawFromTyped( commonBuffer );
 
   for( var a in store[ 'attributes' ] )
   {
@@ -19404,6 +19582,12 @@ var Fields =
 var Routines =
 {
 
+  // multiplier
+
+  dup : dup,
+  multiple : multiple,
+  multipleAll : multipleAll,
+
   // entity iterator
 
   entityEach : entityEach,
@@ -19429,8 +19613,6 @@ var Routines =
 
   map : entityMap,
   filter : entityFilter,
-
-  dup : dup,
 
   // entity modifier
 
@@ -19690,6 +19872,7 @@ var Routines =
   regexpsJoin : regexpsJoin,
   regexpsJoinEscaping : regexpsJoinEscaping,
   regexpsAtLeastFirst : regexpsAtLeastFirst,
+  regexpsAtLeastFirstOnly : regexpsAtLeastFirstOnly,
 
   regexpsNone : regexpsNone,
   regexpsAny : regexpsAny,
@@ -19731,6 +19914,7 @@ var Routines =
   bufferNodeIs : bufferNodeIs,
   bufferAnyIs : bufferAnyIs,
   bufferBytesIs : bufferBytesIs,
+  bytesIs : bufferBytesIs,
   constructorIsBuffer : constructorIsBuffer,
 
   buffersTypedAreEquivalent : buffersTypedAreEquivalent,
@@ -19760,10 +19944,11 @@ var Routines =
 
   bufferFromArrayOfArray : bufferFromArrayOfArray,
   bufferFrom : bufferFrom,
-  bufferRawFromBuffer : bufferRawFromBuffer,
+  bufferRawFromTyped : bufferRawFromTyped,
   bufferRawFrom : bufferRawFrom,
-  bufferNodeToBytes : bufferNodeToBytes,
-  bufferToNodeBuffer : bufferToNodeBuffer,
+  bufferBytesFrom : bufferBytesFrom,
+  bufferBytesFromNode : bufferBytesFromNode,
+  bufferNodeFrom : bufferNodeFrom,
 
   buffersSerialize : buffersSerialize, /* deprecated */
   buffersDeserialize : buffersDeserialize, /* deprecated */

@@ -653,6 +653,12 @@ IncludeHandlersMap[ 'wGraph' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph },
 }
 
+IncludeHandlersMap[ 'wGraphLive' ] =
+{
+  includeAny : [ '../../amid/agraph/UseLive.s','amid/agraph/UseLive.s','wgraphlive' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LiveSystem },
+}
+
 IncludeHandlersMap[ 'wSchema' ] =
 {
   includeAny : [ '../../amid/schema/Top.s','amid/schema/Top.s','wSchema' ],
@@ -694,6 +700,14 @@ IncludeHandlersMap[ 'wStarterMaker' ] =
   includeAny : [ '../../amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wstartermaker' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
 }
+
+IncludeHandlersMap[ 'wStarterMaker' ] =
+{
+  includeAny : [ '../../../dwtools/amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wstartermaker' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
+}
+
+//
 
 IncludeHandlersMap[ 'wMathScalar' ] =
 {
