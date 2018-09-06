@@ -8305,23 +8305,38 @@ function bufferFrom( o )
   _.assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
   _.assertMapHasOnly( o,bufferFrom.defaults );
 
-  /* buffer */
+  /* same */
 
-  if( _.bufferTypedIs( o.src ) )
-  {
-    if( o.src.constructor === o.bufferConstructor )
-    return o.src;
-
-    debugger;
-
-    result = new o.bufferConstructor( o.src );
-    return result;
-  }
+  if( o.src.constructor )
+  if( o.src.constructor === o.bufferConstructor  )
+  return o.src;
 
   /* number */
 
   if( _.numberIs( o.src ) )
   o.src = [ o.src ];
+
+  if( o.bufferConstructor.name === 'ArrayBuffer' )
+  return _.bufferRawFrom( o.src );
+
+  if( o.bufferConstructor.name === 'Buffer' )
+  return _.bufferNodeFrom( o.src );
+
+  /* str / buffer.node / buffer.raw */
+
+  if( _.strIs( o.src ) || _.bufferNodeIs( o.src ) || _.bufferRawIs( o.src ) )
+  o.src = _.bufferBytesFrom( o.src );
+
+  /* buffer.typed */
+
+  if( _.bufferTypedIs( o.src ) )
+  {
+    if( o.src.constructor === o.bufferConstructor  )
+    return o.src;
+
+    result = new o.bufferConstructor( o.src );
+    return result;
+  }
 
   /* verification */
 
@@ -8533,7 +8548,7 @@ function bufferNodeFrom( buffer )
 {
 
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ), 'expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
+  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
 
   if( _.bufferNodeIs( buffer ) )
   return buffer;
@@ -8557,7 +8572,8 @@ function bufferNodeFrom( buffer )
   if( buffer.length === 0 || buffer.byteLength === 0 )
   {
     // _.assert( 0, 'not tested' );
-    result = new Buffer([]);
+    // result = new Buffer([]);
+    result = Buffer.from([]);
   }
   else if( _.strIs( buffer ) )
   {
