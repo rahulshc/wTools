@@ -4550,10 +4550,10 @@ function routineVectorize_functor( o )
   var bypassingFilteredOut = o.bypassingFilteredOut;
   var vectorizingArray = o.vectorizingArray;
   var vectorizingMap = o.vectorizingMap;
-  var forKey = o.forKey;
+  // var forKey = o.forKey;
   var pre = null;
-  var miltipleArguments = o.miltipleArguments === null ? 1 : o.miltipleArguments;
-  var multiply = miltipleArguments <= 1 ? multiplyNo : multiplyReally;
+  var select = o.select === null ? 1 : o.select;
+  var multiply = select > 1 ? multiplyReally : multiplyNo;
 
   if( strIs( routine ) )
   routine = function methodCall()
@@ -4564,13 +4564,13 @@ function routineVectorize_functor( o )
 
   _.assert( routineIs( routine ) );
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( miltipleArguments >= 1 );
+  _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ) );
 
   /* */
 
   var resultRoutine = vectorizeArray;
 
-  if( forKey === null )
+  if( _.numberIs( select ) )
   {
     if( fieldFilter )
     resultRoutine = vectorizeWithFilters;
@@ -4592,7 +4592,7 @@ function routineVectorize_functor( o )
     if( fieldFilter )
     _.assert( 0, 'not implemented' );
     else if( vectorizingArray || !vectorizingMap )
-    resultRoutine = vectorizeWithKey;
+    resultRoutine = vectorizeForOptionsMap;
     else
     _.assert( 0, 'not implemented' );
   }
@@ -4634,9 +4634,9 @@ function routineVectorize_functor( o )
 
     args = _.longSlice( args );
 
-    _.assert( args.length === miltipleArguments );
+    _.assert( args.length === select );
 
-    for( var d = 0 ; d < miltipleArguments ; d++ )
+    for( var d = 0 ; d < select ; d++ )
     if( _.arrayIs( args[ d ] ) )
     {
       length = args[ d ].length;
@@ -4644,7 +4644,7 @@ function routineVectorize_functor( o )
     }
 
     if( length !== undefined )
-    for( var d = 0 ; d < miltipleArguments ; d++ )
+    for( var d = 0 ; d < select ; d++ )
     args[ d ] = _.multiple( args[ d ], length );
 
     return args;
@@ -4691,7 +4691,7 @@ function routineVectorize_functor( o )
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       {
-        for( var m = 0 ; m < miltipleArguments ; m++ )
+        for( var m = 0 ; m < select ; m++ )
         args2[ m ] = args[ m ][ r ];
         result[ r ] = routine.apply( this, args2 );
       }
@@ -4703,9 +4703,9 @@ function routineVectorize_functor( o )
 
   /* */
 
-  function vectorizeWithKey( srcMap )
+  function vectorizeForOptionsMap( srcMap )
   {
-    var src = srcMap[ forKey ];
+    var src = srcMap[ select ];
 
     _.assert( arguments.length === 1, 'expects single argument' );
 
@@ -4721,7 +4721,7 @@ function routineVectorize_functor( o )
       for( var r = 0 ; r < src.length ; r++ )
       {
         args[ 0 ] = _.mapExtend( null, srcMap );
-        args[ 0 ][ forKey ] = src[ r ];
+        args[ 0 ][ select ] = src[ r ];
         result[ r ] = routine.apply( this, args );
       }
       return result;
@@ -4744,7 +4744,7 @@ function routineVectorize_functor( o )
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       {
-        for( var m = 0 ; m < miltipleArguments ; m++ )
+        for( var m = 0 ; m < select ; m++ )
         args2[ m ] = args[ m ][ r ];
         // args2[ 0 ] = src[ r ];
         result[ r ] = routine.apply( this, args2 );
@@ -4756,7 +4756,7 @@ function routineVectorize_functor( o )
       let args2 = _.longSlice( args );
       debugger;
       _.assert( 0, 'not tested' );
-      _.assert( miltipleArguments === 1, 'not implemented' );
+      _.assert( select === 1, 'not implemented' );
       var result = Object.create( null );
       for( var r in src )
       {
@@ -4835,8 +4835,9 @@ routineVectorize_functor.defaults =
   bypassingFilteredOut : 1,
   vectorizingArray : 1,
   vectorizingMap : 0,
-  forKey : null,
-  miltipleArguments : 1,
+  select : 1,
+  // forKey : null,
+  // miltipleArguments : 1,
 }
 
 //
@@ -19953,7 +19954,7 @@ var Routines =
   regexpFrom : regexpFrom,
 
   regexpMaybeFrom : regexpMaybeFrom,
-  regexpsMaybeFrom : _.Later( _, routineVectorize_functor, { routine : regexpMaybeFrom, forKey : 'srcStr' } ),
+  regexpsMaybeFrom : _.Later( _, routineVectorize_functor, { routine : regexpMaybeFrom, select : 'srcStr' } ),
 
   regexpsSources : regexpsSources,
   regexpsJoin : regexpsJoin,
