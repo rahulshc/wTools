@@ -8376,23 +8376,38 @@ function bufferFrom( o )
   _.assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
   _.assertMapHasOnly( o,bufferFrom.defaults );
 
-  /* buffer */
+  /* same */
 
-  if( _.bufferTypedIs( o.src ) )
-  {
-    if( o.src.constructor === o.bufferConstructor )
-    return o.src;
-
-    debugger;
-
-    result = new o.bufferConstructor( o.src );
-    return result;
-  }
+  if( o.src.constructor )
+  if( o.src.constructor === o.bufferConstructor  )
+  return o.src;
 
   /* number */
 
   if( _.numberIs( o.src ) )
   o.src = [ o.src ];
+
+  if( o.bufferConstructor.name === 'ArrayBuffer' )
+  return _.bufferRawFrom( o.src );
+
+  if( o.bufferConstructor.name === 'Buffer' )
+  return _.bufferNodeFrom( o.src );
+
+  /* str / buffer.node / buffer.raw */
+
+  if( _.strIs( o.src ) || _.bufferNodeIs( o.src ) || _.bufferRawIs( o.src ) )
+  o.src = _.bufferBytesFrom( o.src );
+
+  /* buffer.typed */
+
+  if( _.bufferTypedIs( o.src ) )
+  {
+    if( o.src.constructor === o.bufferConstructor  )
+    return o.src;
+
+    result = new o.bufferConstructor( o.src );
+    return result;
+  }
 
   /* verification */
 
@@ -8569,7 +8584,7 @@ function bufferBytesFrom( buffer )
   {
 
     debugger;
-    _.assert( 0, 'not tested' );
+    // _.assert( 0, 'not tested' );
     result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
 
   }
@@ -8604,7 +8619,7 @@ function bufferNodeFrom( buffer )
 {
 
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ), 'expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
+  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
 
   if( _.bufferNodeIs( buffer ) )
   return buffer;
@@ -8627,8 +8642,9 @@ function bufferNodeFrom( buffer )
 
   if( buffer.length === 0 || buffer.byteLength === 0 )
   {
-    _.assert( 0, 'not tested' );
-    result = new Buffer([]);
+    // _.assert( 0, 'not tested' );
+    // result = new Buffer([]);
+    result = Buffer.from([]);
   }
   else if( _.strIs( buffer ) )
   {
@@ -8641,7 +8657,7 @@ function bufferNodeFrom( buffer )
   }
   else
   {
-    _.assert( 0, 'not tested' );
+    // _.assert( 0, 'not tested' );
     result = Buffer.from( buffer );
   }
 
@@ -10427,7 +10443,7 @@ function arraySlice( srcArray,f,l )
  *
  * @example
  * //Source can be also a Buffer
- * var buffer = new Buffer( '123' );
+ * var buffer = Buffer.from( '123' );
  * var result = _.arrayGrow( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
  * //[ 49, 50, 51, 0, 0 ]
@@ -10558,7 +10574,7 @@ function arrayGrow( array,f,l,val )
  *
  * @example
  * //Source can be also a Buffer
- * var buffer = new Buffer( '123' );
+ * var buffer = Buffer.from( '123' );
  * var result = _.arrayResize( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
  * //[ 49, 50, 51, 0, 0 ]
@@ -11232,7 +11248,7 @@ function arrayCutin( dstArray, range, srcArray )
     }
     else if( _.bufferNodeIs( dstArray ) )
     {
-      result = new Buffer( newLength );
+      result = Buffer.alloc( newLength );
     }
     else
     {
