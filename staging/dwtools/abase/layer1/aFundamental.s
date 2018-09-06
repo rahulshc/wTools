@@ -10372,7 +10372,7 @@ function arraySlice( srcArray,f,l )
  *
  * @example
  * //Source can be also a Buffer
- * var buffer = new Buffer( '123' );
+ * var buffer = Buffer.from( '123' );
  * var result = _.arrayGrow( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
  * //[ 49, 50, 51, 0, 0 ]
@@ -10503,7 +10503,7 @@ function arrayGrow( array,f,l,val )
  *
  * @example
  * //Source can be also a Buffer
- * var buffer = new Buffer( '123' );
+ * var buffer = Buffer.from( '123' );
  * var result = _.arrayResize( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
  * //[ 49, 50, 51, 0, 0 ]
@@ -11177,7 +11177,7 @@ function arrayCutin( dstArray, range, srcArray )
     }
     else if( _.bufferNodeIs( dstArray ) )
     {
-      result = new Buffer( newLength );
+      result = Buffer.alloc( newLength );
     }
     else
     {
