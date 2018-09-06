@@ -347,12 +347,6 @@ function isIncluded( src )
 
 var IncludeHandlersMap = Object.create( null );
 
-IncludeHandlersMap[ 'wTesting' ] =
-{
-  includeAny : [ '../../abase/xtester/aBase.debug.s','abase/xtester/aBase.debug.s','wTesting' ],
-  isIncluded : function(){ return /*typeof _realGlobal_ !== 'undefined' &&*/ _realGlobal_.wTester && _realGlobal_.wTester._isFullImplementation; },
-}
-
 IncludeHandlersMap[ 'wLogger' ] =
 {
   includeAny : [ '../../abase/printer/top/Logger.s','abase/printer/top/Logger.s','wLogger' ],
@@ -425,12 +419,6 @@ IncludeHandlersMap[ 'wExternalFundamentals' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.shell },
 }
 
-// IncludeHandlersMap[ 'wPathFundamentals' ] =
-// {
-//   includeAny : [ '../../abase/layer3/Path.s','abase/layer3/Path.s','wPathFundamentals' ],
-//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.dir },
-// }
-
 IncludeHandlersMap[ 'wPathFundamentals' ] =
 {
   includeAny : [ '../../abase/layer3/Path.s','abase/layer3/Path.s','wpathfundamentals' ],
@@ -497,6 +485,8 @@ IncludeHandlersMap[ 'wStringsExtra' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
 }
 
+//
+
 IncludeHandlersMap[ 'wDomBaseLayer1' ] =
 {
   includeAny : [ '../../abase_dom/l1/Common.js','abase_dom/l1/Common.js','wdombaselayer1' ],
@@ -514,6 +504,8 @@ IncludeHandlersMap[ 'wDomBaseLayer5' ] =
   includeAny : [ '../../abase_dom/l5/Common.js','abase_dom/l5/Common.js','wdombaselayer5' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._domBaselayer5Loaded },
 }
+
+//
 
 IncludeHandlersMap[ 'wRegexpObject' ] =
 {
@@ -705,6 +697,14 @@ IncludeHandlersMap[ 'wStarterMaker' ] =
 {
   includeAny : [ '../../../dwtools/amid/starter/StarterMaker.s','amid/starter/StarterMaker.s','wstartermaker' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
+}
+
+//
+
+IncludeHandlersMap[ 'wTesting' ] =
+{
+  includeAny : [ '../../amid_tester/tester/aBase.debug.s','amid_tester/tester/aBase.debug.s', 'wTesting' ],
+  isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 
 //
