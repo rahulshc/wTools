@@ -185,18 +185,12 @@ function multipleAll( dsts )
   for( var d = 0 ; d < dsts.length ; d++ )
   if( _.arrayIs( dsts[ d ] ) )
   {
-    // debugger;
     length = dsts[ d ].length;
     break;
   }
 
-  // if( length === undefined )
-  // debugger;
-
   if( length === undefined )
   return dsts;
-
-  // debugger;
 
   for( var d = 0 ; d < dsts.length ; d++ )
   dsts[ d ] = _.multiple( dsts[ d ], length );
@@ -4426,11 +4420,12 @@ function routineExtend( dst )
     if( dst.pre && dst.body )
     result = _.routineForPreAndBody( dst.pre, dst.body );
     else
-    result = function call()
-    {
-      debugger;
-      return _.routineForPreAndBody( dst.p );
-    }
+    _.assert( 0, 'not clear how to construct routine' );
+    // result = function call()
+    // {
+    //   debugger;
+    //   return _.routineForPreAndBody( dst.p );
+    // }
 
     _.mapExtend( result, dst );
 
@@ -4547,8 +4542,7 @@ function routineVectorize_functor( o )
 
   if( routineIs( o ) || strIs( o ) )
   o = { routine : o }
-
-  o = routineOptions( routineVectorize_functor,o );
+  o = routineOptions( routineVectorize_functor, o );
 
   var routineName = o.routine.name;
   var routine = o.routine;
@@ -4558,6 +4552,8 @@ function routineVectorize_functor( o )
   var vectorizingMap = o.vectorizingMap;
   var forKey = o.forKey;
   var pre = null;
+  var miltipleArguments = o.miltipleArguments === null ? 1 : o.miltipleArguments;
+  var multiply = miltipleArguments <= 1 ? multiplyNo : multiplyReally;
 
   if( strIs( routine ) )
   routine = function methodCall()
@@ -4568,22 +4564,26 @@ function routineVectorize_functor( o )
 
   _.assert( routineIs( routine ) );
   _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( miltipleArguments >= 1 );
 
   /* */
 
-  var result = vectorize;
+  var resultRoutine = vectorizeArray;
 
   if( forKey === null )
   {
     if( fieldFilter )
-    result = vectorizeWithFilters;
+    resultRoutine = vectorizeWithFilters;
     else if( !vectorizingArray || vectorizingMap )
-    result = vectorizeMapAndArray;
+    resultRoutine = vectorizeMapOrArray;
+    else if( multiply === multiplyNo )
+    resultRoutine = vectorizeArray;
     else
-    result = vectorize;
+    resultRoutine = vectorizeArrayMultiplying;
   }
   else
   {
+    _.assert( multiply === multiplyNo, 'not implemented' );
     if( routine.pre )
     {
       pre = routine.pre;
@@ -4591,52 +4591,114 @@ function routineVectorize_functor( o )
     }
     if( fieldFilter )
     _.assert( 0, 'not implemented' );
-    else if( !vectorizingArray || vectorizingMap )
+    else if( vectorizingArray || !vectorizingMap )
+    resultRoutine = vectorizeWithKey;
+    else
     _.assert( 0, 'not implemented' );
-    else
-    result = vectorizeWithKey;
   }
 
   /* */
 
-  var fields = _.mapFields( routine );
-  for( var f in fields )
+  _.routineExtend( resultRoutine, routine );
+
+  // var fields = _.mapFields( routine );
+  // for( var f in fields )
+  // {
+  //   var field = fields[ f ];
+  //   if( _.objectIs( field ) )
+  //   {
+  //     resultRoutine[ f ] = Object.create( field );
+  //   }
+  //   else
+  //   {
+  //     resultRoutine[ f ] = field;
+  //   }
+  // }
+
+  /* */
+
+  return resultRoutine;
+
+  /* */
+
+  function multiplyNo( args )
   {
-    var field = fields[ f ];
-    if( _.objectIs( field ) )
-    {
-      result[ f ] = Object.create( field );
-    }
-    else
-    {
-      result[ f ] = field;
-    }
+    return args;
   }
 
   /* */
 
-  return result;
+  function multiplyReally( args )
+  {
+    var length;
+
+    args = _.longSlice( args );
+
+    _.assert( args.length === miltipleArguments );
+
+    for( var d = 0 ; d < miltipleArguments ; d++ )
+    if( _.arrayIs( args[ d ] ) )
+    {
+      length = args[ d ].length;
+      break;
+    }
+
+    if( length !== undefined )
+    for( var d = 0 ; d < miltipleArguments ; d++ )
+    args[ d ] = _.multiple( args[ d ], length );
+
+    return args;
+  }
 
   /* */
 
-  function vectorize( src )
+  function vectorizeArray()
   {
 
     // _.assert( arguments.length === 1, 'expects single argument' );
 
+    let args = arguments;
+    let src = args[ 0 ];
+
     if( _.longIs( src ) )
     {
-      var args = _.longSlice( arguments );
+      let args2 = _.longSlice( args );
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       {
-        args[ 0 ] = src[ r ];
-        result[ r ] = routine.apply( this, args );
+        args2[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args2 );
       }
       return result;
     }
 
-    return routine.apply( this, arguments );
+    return routine.apply( this, args );
+  }
+
+  /* */
+
+  function vectorizeArrayMultiplying()
+  {
+
+    // _.assert( arguments.length === 1, 'expects single argument' );
+
+    let args = multiply( arguments );
+    let src = args[ 0 ];
+
+    if( _.longIs( src ) )
+    {
+      let args2 = _.longSlice( args );
+      var result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      {
+        for( var m = 0 ; m < miltipleArguments ; m++ )
+        args2[ m ] = args[ m ][ r ];
+        result[ r ] = routine.apply( this, args2 );
+      }
+      return result;
+    }
+
+    return routine.apply( this, args );
   }
 
   /* */
@@ -4670,53 +4732,61 @@ function routineVectorize_functor( o )
 
   /* */
 
-  function vectorizeMapAndArray( src )
+  function vectorizeMapOrArray( src )
   {
 
     // _.assert( arguments.length === 1, 'expects single argument' );
+    let args = multiply( arguments );
 
     if( vectorizingArray && _.longIs( src ) )
     {
-      var args = _.longSlice( arguments );
+      let args2 = _.longSlice( args );
       var result = [];
       for( var r = 0 ; r < src.length ; r++ )
       {
-        args[ 0 ] = src[ r ];
-        result[ r ] = routine.apply( this, args );
+        for( var m = 0 ; m < miltipleArguments ; m++ )
+        args2[ m ] = args[ m ][ r ];
+        // args2[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args2 );
       }
       return result;
     }
     else if( vectorizingMap && _.mapIs( src ) )
     {
-      var args = _.longSlice( arguments );
+      let args2 = _.longSlice( args );
       debugger;
+      _.assert( 0, 'not tested' );
+      _.assert( miltipleArguments === 1, 'not implemented' );
       var result = Object.create( null );
       for( var r in src )
       {
-        args[ 0 ] = src[ r ];
-        result[ r ] = routine.apply( this, args );
+        args2[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args2 );
       }
       return result;
     }
 
-    return routine.call( this,src );
+    return routine.call( this, src );
   }
 
   /* */
 
   function vectorizeWithFilters( src )
   {
-    debugger;
 
+    _.assert( 0, 'not tested' );
     _.assert( arguments.length === 1, 'expects single argument' );
-      {
-        args[ 0 ] = src[ r ];
-        result[ r ] = routine.apply( this, args );
-      }
+
+    let args = multiply( arguments );
+
+    // {
+    //   args[ 0 ] = src[ r ];
+    //   result[ r ] = routine.apply( this, args );
+    // }
 
     if( vectorizingArray && _.longIs( src ) )
     {
-      var args = _.longSlice( arguments );
+      args = _.longSlice( args );
       var result = [];
       throw _.err( 'not tested' );
       for( var r = 0 ; r < src.length ; r++ )
@@ -4735,7 +4805,7 @@ function routineVectorize_functor( o )
     }
     else if( vectorizingMap && _.mapIs( src ) )
     {
-      var args = _.longSlice( arguments );
+      args = _.longSlice( args );
       var result = Object.create( null );
       throw _.err( 'not tested' );
       for( var r in src )
@@ -4766,6 +4836,7 @@ routineVectorize_functor.defaults =
   vectorizingArray : 1,
   vectorizingMap : 0,
   forKey : null,
+  miltipleArguments : 1,
 }
 
 //
@@ -6530,9 +6601,9 @@ function regexpsAtLeastFirstOnly( o )
   {
     var src = o.sources[ s ];
     if( s < o.sources.length-1 )
-    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + '$)?|';
+    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + '$)|';
     else
-    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + ')?';
+    result += '(?:' + o.sources.slice( 0, s+1 ).join( '' ) + ')';
   }
 
   return new RegExp( result, o.flags || '' );
