@@ -4572,7 +4572,9 @@ function routineVectorize_functor( o )
 
   if( _.numberIs( select ) )
   {
-    if( fieldFilter )
+    if( !vectorizingArray && !vectorizingMap )
+    resultRoutine = routine;
+    else if( fieldFilter )
     resultRoutine = vectorizeWithFilters;
     else if( !vectorizingArray || vectorizingMap )
     resultRoutine = vectorizeMapOrArray;
@@ -4580,6 +4582,13 @@ function routineVectorize_functor( o )
     resultRoutine = vectorizeArray;
     else
     resultRoutine = vectorizeArrayMultiplying;
+
+    /*
+      vectorizeWithFilters : multiply + array/map vectorizing + filter
+      vectorizeArray : array vectorizing
+      vectorizeArrayMultiplying :  multiply + array vectorizing
+      vectorizeMapOrArray :  multiply +  array/map vectorizing
+    */
   }
   else
   {
@@ -4592,7 +4601,12 @@ function routineVectorize_functor( o )
     if( fieldFilter )
     _.assert( 0, 'not implemented' );
     else if( vectorizingArray || !vectorizingMap )
-    resultRoutine = vectorizeForOptionsMap;
+    {
+      if( _.strIs( select ) )
+      resultRoutine = vectorizeForOptionsMap;
+      else
+      resultRoutine = vectorizeForOptionsMapForKeys;
+    }
     else
     _.assert( 0, 'not implemented' );
   }
@@ -4732,6 +4746,20 @@ function routineVectorize_functor( o )
 
   /* */
 
+  function vectorizeForOptionsMapForKeys()
+  {
+    var result = [];
+
+    for( var i = 0; i < o.select.length; i++ )
+    {
+      select = o.select[ i ];
+      result[ i ] = vectorizeForOptionsMap.apply( this, arguments );
+    }
+    return result;
+  }
+
+  /* */
+
   function vectorizeMapOrArray( src )
   {
 
@@ -4755,7 +4783,7 @@ function routineVectorize_functor( o )
     {
       let args2 = _.longSlice( args );
       debugger;
-      _.assert( 0, 'not tested' );
+      // _.assert( 0, 'not tested' );
       _.assert( select === 1, 'not implemented' );
       var result = Object.create( null );
       for( var r in src )
