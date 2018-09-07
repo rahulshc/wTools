@@ -4645,21 +4645,43 @@ function routineVectorize_functor( o )
   function multiplyReally( args )
   {
     var length;
+    var keys;
 
     args = _.longSlice( args );
 
     _.assert( args.length === select );
 
     for( var d = 0 ; d < select ; d++ )
-    if( _.arrayIs( args[ d ] ) )
     {
-      length = args[ d ].length;
-      break;
+      if( vectorizingArray && _.arrayIs( args[ d ] ) )
+      {
+        length = args[ d ].length;
+        break;
+      }
+      if( vectorizingMap && _.mapIs( args[ d ] ) )
+      {
+        keys = _.mapOwnKeys( args[ d ] );
+        break;
+      }
     }
 
     if( length !== undefined )
-    for( var d = 0 ; d < select ; d++ )
-    args[ d ] = _.multiple( args[ d ], length );
+    {
+      for( var d = 0 ; d < select ; d++ )
+      args[ d ] = _.multiple( args[ d ], length );
+    }
+    else if( keys !== undefined )
+    {
+      for( var d = 0 ; d < select ; d++ )
+      if( _.mapIs( args[ d ] ) )
+      _.assert( _.arraySetIdentical( _.mapOwnKeys( args[ d ] ), keys ), 'Maps should have same keys:', keys );
+      else
+      {
+        let arg = Object.create( null );
+        _.mapSetWithKeys( arg, keys, args[ d ] );
+        args[ d ] = arg;
+      }
+    }
 
     return args;
   }
@@ -4784,11 +4806,14 @@ function routineVectorize_functor( o )
       let args2 = _.longSlice( args );
       debugger;
       // _.assert( 0, 'not tested' );
-      _.assert( select === 1, 'not implemented' );
+      // _.assert( select === 1, 'not implemented' );
       var result = Object.create( null );
       for( var r in src )
       {
-        args2[ 0 ] = src[ r ];
+        for( var m = 0 ; m < select ; m++ )
+        args2[ m ] = args[ m ][ r ];
+
+        // args2[ 0 ] = src[ r ];
         result[ r ] = routine.apply( this, args2 );
       }
       return result;
