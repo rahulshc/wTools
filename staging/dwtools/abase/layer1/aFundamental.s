@@ -13926,12 +13926,9 @@ function arrayFlattened( dstArray, insArray )
       var c = _.arrayFlattened( dstArray, insArray[ i ] );
       result += c;
     }
-    else if( insArray[ i ] === undefined )
-    {
-      throw _.err( 'array should have no undefined' );
-    }
     else
     {
+      _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
       dstArray.push( insArray[ i ] );
       result += 1;
     }

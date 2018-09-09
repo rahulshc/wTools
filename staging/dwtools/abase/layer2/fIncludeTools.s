@@ -703,7 +703,7 @@ IncludeHandlersMap[ 'wStarterMaker' ] =
 
 IncludeHandlersMap[ 'wTesting' ] =
 {
-  includeAny : [ '../../amid_tester/tester/aBase.debug.s','amid_tester/tester/aBase.debug.s', 'wTesting' ],
+  includeAny : [ '../../atop/tester/aBase.debug.s','atop/tester/aBase.debug.s', 'wTesting' ],
   isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 
