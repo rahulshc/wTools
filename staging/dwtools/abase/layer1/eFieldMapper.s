@@ -230,6 +230,70 @@ function srcDefined()
 srcDefined.functionFamily = 'field-filter';
 
 // --
+// dst
+// --
+
+function dstNotConstant()
+{
+
+  let routine = function dstNotConstant( dstContainer, srcContainer, key )
+  {
+    let d = Object.getOwnPropertyDescriptor( dstContainer, key );
+    if( !d )
+    return true;
+    if( !d.writable )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstAndSrcOwn.functionFamily = 'field-filter';
+
+//
+
+function dstAndSrcOwn()
+{
+
+  let routine = function dstAndSrcOwn( dstContainer, srcContainer, key )
+  {
+    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    return false;
+    if( !_ObjectHasOwnProperty.call( dstContainer, key ) )
+    return false;
+
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstAndSrcOwn.functionFamily = 'field-filter';
+
+//
+
+function dstUndefinedSrcNotUndefined()
+{
+
+  let routine = function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
+  {
+    if( dstContainer[ key ] !== undefined )
+    return false;
+    if( srcContainer[ key ] === undefined )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+}
+
+dstUndefinedSrcNotUndefined.functionFamily = 'field-filter';
+
+// --
 // dstNotHas
 // --
 
@@ -741,49 +805,6 @@ function dstHasSrcNotOwn()
 dstHasSrcNotOwn.functionFamily = 'field-filter';
 
 // --
-//
-// --
-
-function dstAndSrcOwn()
-{
-
-  let routine = function dstAndSrcOwn( dstContainer, srcContainer, key )
-  {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
-    return false;
-    if( !_ObjectHasOwnProperty.call( dstContainer, key ) )
-    return false;
-
-    return true;
-  }
-
-  routine.functionFamily = 'field-filter';
-  return routine;
-}
-
-dstAndSrcOwn.functionFamily = 'field-filter';
-
-//
-
-function dstUndefinedSrcNotUndefined()
-{
-
-  let routine = function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
-  {
-    if( dstContainer[ key ] !== undefined )
-    return false;
-    if( srcContainer[ key ] === undefined )
-    return false;
-    return true;
-  }
-
-  routine.functionFamily = 'field-filter';
-  return routine;
-}
-
-dstUndefinedSrcNotUndefined.functionFamily = 'field-filter';
-
-// --
 // srcOwn
 // --
 
@@ -1098,6 +1119,12 @@ let make =
 
   srcDefined : srcDefined,
 
+  // dst
+
+  dstNotConstant : dstNotConstant,
+  dstAndSrcOwn : dstAndSrcOwn,
+  dstUndefinedSrcNotUndefined : dstUndefinedSrcNotUndefined,
+
   // dstNotHas
 
   dstNotHas : dstNotHas,
@@ -1130,11 +1157,6 @@ let make =
   dstHasButUndefined : dstHasButUndefined,
   dstHasSrcOwn : dstHasSrcOwn,
   dstHasSrcNotOwn : dstHasSrcNotOwn,
-
-  //
-
-  dstAndSrcOwn : dstAndSrcOwn,
-  dstUndefinedSrcNotUndefined : dstUndefinedSrcNotUndefined,
 
   // srcOwn
 

@@ -52,7 +52,7 @@ function usePathGlobally( paths )
   {
     for( var p = 0 ; p < paths.length ; p++ )
     {
-      paths[ p ] = _.fileProvider.pathNativize( _.path.resolve( paths[ p ] ) );
+      paths[ p ] = _.fileProvider.path.nativize( _.path.resolve( paths[ p ] ) );
       console.log( 'usePathGlobally',paths[ p ] );
     }
   }

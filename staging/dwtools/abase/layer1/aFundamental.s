@@ -2975,6 +2975,37 @@ function promiseIs( src )
 
 //
 
+function typeOf( src )
+{
+  if( src === null || src === undefined )
+  return null
+  else if( numberIs( src ) || boolIs( src ) || strIs( src ) )
+  {
+    return src.constructor;
+  }
+  else if( src.constructor )
+  {
+    _.assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
+    return src.constructor;
+  }
+  else
+  {
+    return null;
+  }
+}
+
+//
+
+function prototypeHas( src, prototype )
+{
+  _.assert( arguments.length === 2, 'expects single argument' );
+  if( src === prototype )
+  return true;
+  return Object.isPrototypeOf.call( prototype, src );
+}
+
+//
+
 /**
  * Is prototype.
  * @function prototypeIs
@@ -3084,27 +3115,6 @@ function instanceLike( src )
   if( src.Composes )
   return true;
   return false;
-}
-
-//
-
-function typeOf( src )
-{
-  if( src === null || src === undefined )
-  return null
-  else if( numberIs( src ) || boolIs( src ) || strIs( src ) )
-  {
-    return src.constructor;
-  }
-  else if( src.constructor )
-  {
-    _.assert( _.routineIs( src.constructor ) && src instanceof src.constructor );
-    return src.constructor;
-  }
-  else
-  {
-    return null;
-  }
 }
 
 //
@@ -4364,78 +4374,138 @@ function routineExtend( dst )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( dst ) || dst === null );
 
-  /* */
+  /* generate dst routine */
 
-  let originalDst = dst;
   if( dst === null )
   {
-    dst = Object.create( null );
+
+    let dstMap = Object.create( null );
+    for( var a = 0 ; a < arguments.length ; a++ )
+    {
+      let src = arguments[ a ];
+      if( src === null )
+      continue
+      _.mapExtend( dstMap, src )
+    }
+
+    if( dstMap.pre && dstMap.body )
+    dst = _.routineForPreAndBody( dstMap.pre, dstMap.body );
+    else
+    _.assert( 0, 'Not clear how to construct the routine' );
   }
 
-  /* */
+  /* shallow clone properties of dst routine */
 
   for( var s in dst )
   {
-    var el = dst[ s ];
-    if( _.mapIs( el ) )
+    var property = dst[ s ];
+    if( _.mapIs( property ) )
     {
-      el = _.mapExtend( null, el );
-      dst[ s ] = el;
+      property = _.mapExtend( null, property );
+      dst[ s ] = property;
     }
   }
 
-  /* */
+  /* extend dst routine */
 
-  for( var a = 1 ; a < arguments.length ; a++ )
+  for( var a = 0 ; a < arguments.length ; a++ )
   {
-    var src = arguments[ a ];
-    _.assert( _.routineIs( src ) || _.mapIs( src ) );
+    let src = arguments[ a ];
+    if( src === null )
+    continue;
     for( var s in src )
     {
-      var el = src[ s ];
-      if( _.objectIs( el ) )
+      var property = src[ s ];
+      let d = Object.getOwnPropertyDescriptor( dst, s );
+      if( d && !d.wratable )
+      continue;
+      if( _.objectIs( property ) )
       {
         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
-        el = Object.create( el );
+        property = Object.create( property );
         if( dst[ s ] )
-        _.mapExtend( el, dst[ s ] );
+        _.mapExtend( property, dst[ s ] );
       }
-      dst[ s ] = el;
+      dst[ s ] = property;
     }
   }
-
-  /* */
-
-  if( originalDst === null )
-  {
-    let routine, result;
-
-    for( var a = 1 ; a < arguments.length ; a++ )
-    if( _.routineIs( arguments[ a ] ) )
-    {
-      routine = arguments[ a ];
-      break;
-    }
-
-    if( dst.pre && dst.body )
-    result = _.routineForPreAndBody( dst.pre, dst.body );
-    else
-    _.assert( 0, 'not clear how to construct routine' );
-    // result = function call()
-    // {
-    //   debugger;
-    //   return _.routineForPreAndBody( dst.p );
-    // }
-
-    _.mapExtend( result, dst );
-
-    dst = result;
-  }
-
-  /* */
 
   return dst;
 }
+
+// function routineExtend( dst )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.routineIs( dst ) || dst === null );
+//
+//   /* */
+//
+//   let originalDst = dst;
+//   if( dst === null )
+//   {
+//     dst = Object.create( null );
+//   }
+//
+//   /* */
+//
+//   for( var s in dst )
+//   {
+//     var el = dst[ s ];
+//     if( _.mapIs( el ) )
+//     {
+//       el = _.mapExtend( null, el );
+//       dst[ s ] = el;
+//     }
+//   }
+//
+//   /* */
+//
+//   for( var a = 1 ; a < arguments.length ; a++ )
+//   {
+//     var src = arguments[ a ];
+//     _.assert( _.routineIs( src ) || _.mapIs( src ) );
+//     for( var s in src )
+//     {
+//       var el = src[ s ];
+//       if( _.objectIs( el ) )
+//       {
+//         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
+//         el = Object.create( el );
+//         if( dst[ s ] )
+//         _.mapExtend( el, dst[ s ] );
+//       }
+//       dst[ s ] = el;
+//     }
+//   }
+//
+//   /* */
+//
+//   if( originalDst === null )
+//   {
+//     let routine, result;
+//
+//     for( var a = 1 ; a < arguments.length ; a++ )
+//     if( _.routineIs( arguments[ a ] ) )
+//     {
+//       routine = arguments[ a ];
+//       break;
+//     }
+//
+//     if( dst.pre && dst.body )
+//     result = _.routineForPreAndBody( dst.pre, dst.body );
+//     else
+//     _.assert( 0, 'Not clear how to construct the routine' );
+//
+//     _.mapExtend( result, dst );
+//
+//     dst = result;
+//   }
+//
+//   /* */
+//
+//   return dst;
+// }
 
 //
 
@@ -5385,10 +5455,9 @@ function numberClamp( src,low,high )
 
 //
 
-function numberMix( ins1,ins2,progress )
+function numberMix( ins1, ins2, progress )
 {
   _.assert( arguments.length === 3, 'expects exactly three argument' );
-
   return ins1*( 1-progress ) + ins2*( progress );
 }
 
@@ -19163,7 +19232,7 @@ function sureMapHasNoUndefine( srcMap, msg )
     debugger;
     throw _err
     ({
-      args : [ 'Object ' + ( msg ? _.strConcat( msg ) : ' should have no undefines, but has' ) + ' : ' + _.strQuote( but ).join( ', ' ) ],
+      args : [ 'Object ' + ( msg ? _.strConcat( msg ) : 'should have no undefines, but has' ) + ' : ' + _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     return false;
@@ -19788,6 +19857,8 @@ var Routines =
   consequenceLike : consequenceLike,
   promiseIs : promiseIs,
 
+  typeOf : typeOf,
+  prototypeHas : prototypeHas,
   prototypeIs : prototypeIs,
   prototypeIsStandard : prototypeIsStandard,
   constructorIs : constructorIs,
@@ -19795,7 +19866,6 @@ var Routines =
   instanceIs : instanceIs,
   instanceIsStandard : instanceIsStandard,
   instanceLike : instanceLike,
-  typeOf : typeOf,
 
   workerIs : workerIs,
   streamIs : streamIs,
