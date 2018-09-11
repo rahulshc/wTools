@@ -4623,6 +4623,7 @@ function routineVectorize_functor( o )
   // var forKey = o.forKey;
   var pre = null;
   var select = o.select === null ? 1 : o.select;
+  var selectAll = o.select === Infinity;
   var multiply = select > 1 ? multiplyReally : multiplyNo;
 
   if( strIs( routine ) )
@@ -4718,6 +4719,9 @@ function routineVectorize_functor( o )
     var keys;
 
     args = _.longSlice( args );
+
+    if( selectAll )
+    select = args.length;
 
     _.assert( args.length === select );
 
@@ -4852,11 +4856,12 @@ function routineVectorize_functor( o )
 
   /* */
 
-  function vectorizeMapOrArray( src )
+  function vectorizeMapOrArray()
   {
 
     // _.assert( arguments.length === 1, 'expects single argument' );
     let args = multiply( arguments );
+    let src = args[ 0 ];
 
     if( vectorizingArray && _.longIs( src ) )
     {
@@ -4889,7 +4894,7 @@ function routineVectorize_functor( o )
       return result;
     }
 
-    return routine.call( this, src );
+    return routine.apply( this, arguments );
   }
 
   /* */
