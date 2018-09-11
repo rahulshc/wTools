@@ -9443,12 +9443,10 @@ function arrayLikeResizable( src )
 
 function arrayLike( src )
 {
-
   if( _.arrayIs( src ) )
   return true;
   if( _.argumentsArrayIs( src ) )
   return true;
-
   return false;
 }
 
