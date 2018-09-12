@@ -4605,8 +4605,6 @@ routineForPreAndBody.defaults = routineForPreAndBody_body.defaults;
 
 //
 
-/* !!! need to complete the routine for all cases, good test coverage is required too  */
-
 function routineVectorize_functor( o )
 {
 
@@ -4614,13 +4612,12 @@ function routineVectorize_functor( o )
   o = { routine : o }
   o = routineOptions( routineVectorize_functor, o );
 
-  var routineName = o.routine.name;
+  var routineName = o.routine;
   var routine = o.routine;
   var fieldFilter = o.fieldFilter;
   var bypassingFilteredOut = o.bypassingFilteredOut;
   var vectorizingArray = o.vectorizingArray;
   var vectorizingMap = o.vectorizingMap;
-  // var forKey = o.forKey;
   var pre = null;
   var select = o.select === null ? 1 : o.select;
   var selectAll = o.select === Infinity;
@@ -4629,7 +4626,7 @@ function routineVectorize_functor( o )
   if( strIs( routine ) )
   routine = function methodCall()
   {
-    debugger;
+    // debugger;
     return this[ routineName ].apply( this, arguments );
   }
 
@@ -4660,6 +4657,7 @@ function routineVectorize_functor( o )
       vectorizeArrayMultiplying :  multiply + array vectorizing
       vectorizeMapOrArray :  multiply +  array/map vectorizing
     */
+
   }
   else
   {
@@ -4685,20 +4683,6 @@ function routineVectorize_functor( o )
   /* */
 
   _.routineExtend( resultRoutine, routine );
-
-  // var fields = _.mapFields( routine );
-  // for( var f in fields )
-  // {
-  //   var field = fields[ f ];
-  //   if( _.objectIs( field ) )
-  //   {
-  //     resultRoutine[ f ] = Object.create( field );
-  //   }
-  //   else
-  //   {
-  //     resultRoutine[ f ] = field;
-  //   }
-  // }
 
   /* */
 
@@ -4964,8 +4948,6 @@ routineVectorize_functor.defaults =
   vectorizingArray : 1,
   vectorizingMap : 0,
   select : 1,
-  // forKey : null,
-  // miltipleArguments : 1,
 }
 
 //
@@ -14930,7 +14912,7 @@ function mapIs( src )
   if( Object.getPrototypeOf( proto ) === null )
   return true;
 
-  _.assert( proto === null || proto,'unexpected' );
+  _.assert( proto === null || !!proto, 'unexpected' );
 
   return false;
 }

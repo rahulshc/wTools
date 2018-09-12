@@ -48,7 +48,7 @@ function mapIs( test )
   test.case = 'no argument';
   var got = _.mapIs();
   var expected = false;
-  test.identical( got, expected );
+  test.identical( got, expected ); 
 
   test.case = 'an array';
   var got = _.mapIs( [  ] );
