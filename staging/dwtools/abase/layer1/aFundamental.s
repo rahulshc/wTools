@@ -4890,7 +4890,7 @@ function routineVectorize_functor( o )
     else if( vectorizingMap && _.mapIs( src ) )
     {
       let args2 = _.longSlice( args );
-      debugger;
+      // debugger;
       // _.assert( 0, 'not tested' );
       // _.assert( select === 1, 'not implemented' );
       var result = Object.create( null );
