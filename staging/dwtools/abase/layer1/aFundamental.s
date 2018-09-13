@@ -4642,7 +4642,7 @@ function routineVectorize_functor( o )
     resultRoutine = routine;
     else if( fieldFilter )
     resultRoutine = vectorizeWithFilters;
-    else if( vectorizeKeys )
+    else if( vectorizingKeys )
     {
       _.assert( !vectorizingMap );
       resultRoutine = vectorizeKeys;
