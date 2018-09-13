@@ -4638,11 +4638,11 @@ function routineVectorize_functor( o )
 
   if( _.numberIs( select ) )
   {
-    if( !vectorizingArray && !vectorizingMap && !vectorizeKeys )
+    if( !vectorizingArray && !vectorizingMap && !vectorizingKeys )
     resultRoutine = routine;
     else if( fieldFilter )
     resultRoutine = vectorizeWithFilters;
-    else if( vectorizeKeys )
+    else if( vectorizingKeys )
     {
       _.assert( !vectorizingMap );
       resultRoutine = vectorizeKeys;
