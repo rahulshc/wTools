@@ -167,7 +167,7 @@ function dup( ins, times, result )
 function multiple( src, times )
 {
   _.assert( arguments.length === 2 );
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   _.assert( src.length === times );
   else
   src = _.dup( src, times );
@@ -1269,7 +1269,7 @@ function entityHasNan( src )
   {
     return isNaN( src );
   }
-  else if( _.arrayIs( src ) )
+  else if( _.arrayLike( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
     if( entityHasNan( src[ s ] ) )
@@ -1321,7 +1321,7 @@ function entityHasUndef( src )
   {
     return true;
   }
-  else if( _.arrayIs( src ) )
+  else if( _.arrayLike( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
     if( entityHasUndef( src[ s ] ) )
@@ -1469,7 +1469,7 @@ function entityValueWithIndex( src,index )
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.numberIs( index ) );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     return src[ index ];
   }
@@ -1523,7 +1523,7 @@ function entityKeyWithValue( src,value )
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     result = src.indexOf( value );
   }
@@ -5372,9 +5372,9 @@ function numbersMake( src,length )
   src = _.vector.slice( src );
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.numberIs( src ) || _.arrayIs( src ) );
+  _.assert( _.numberIs( src ) || _.arrayLike( src ) );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     _.assert( src.length === length );
     var result = _.array.makeArrayOfLength( length );
@@ -5400,9 +5400,9 @@ function numbersFromNumber( src,length )
   src = _.vector.slice( src );
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.numberIs( src ) || _.arrayIs( src ) );
+  _.assert( _.numberIs( src ) || _.arrayLike( src ) );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     _.assert( src.length === length );
     return src;
@@ -5555,7 +5555,7 @@ function strsAre( src )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
     if( !_.strIs( src[ s ] ) )
@@ -5580,7 +5580,7 @@ function strIsNotEmpty( src )
 
 function strsAreNotEmpty( src )
 {
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
     if( !_.strIsNotEmpty( src[ s ] ) )
@@ -5741,7 +5741,7 @@ function strFirst( src, ent )
 
   _.assert( arguments.length === 2 );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
@@ -5866,7 +5866,7 @@ function strLast( src, ent )
 
   _.assert( arguments.length === 2 );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
@@ -5954,7 +5954,7 @@ function strIsolateInsideOrNone( src, begin, end )
 
   _.assert( arguments.length === 3, 'expects exactly three argument' );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
@@ -6004,7 +6004,7 @@ function strIsolateInsideOrAll( src, begin, end )
 
   _.assert( arguments.length === 3, 'expects exactly three argument' );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayLike( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
@@ -6903,7 +6903,7 @@ regexpsAll.defaults =
 function regexpArrayMake( src )
 {
 
-  _.assert( _.regexpLike( src ) || _.arrayIs( src ), 'expects array/regexp/string, got ' + _.strTypeOf( src ) );
+  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'expects array/regexp/string, got ' + _.strTypeOf( src ) );
 
   src = _.arrayFlatten( [], _.arrayAs( src ) );
 
@@ -9722,7 +9722,7 @@ function arrayHasAny( src )
   empty = false;
 
   _.assert( arguments.length >= 1, 'expects at least one argument' );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -9745,7 +9745,7 @@ function arrayHasAny( src )
 function arrayHasAll( src )
 {
   _.assert( arguments.length >= 1, 'expects at least one argument' );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
+  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
@@ -9765,7 +9765,7 @@ function arrayHasAll( src )
 function arrayHasNone( src )
 {
   _.assert( arguments.length >= 1, 'expects at least one argument' );
-  _.assert( _.arrayIs( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
+  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
 
   for( var a = 1 ; a < arguments.length ; a++ )
   {
