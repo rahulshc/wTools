@@ -927,6 +927,7 @@ function routineVectorize_functor( test )
     select : 1
   }
   o.routine = srcRoutine;
+  debugger
   var routine = _.routineVectorize_functor( o );
 
   test.case = 'single argument';
@@ -938,13 +939,13 @@ function routineVectorize_functor( test )
 
   test.case = 'multiple argument';
 
-  test.identical( routine( 1, 0 ), [ 1 ] );
-  test.identical( routine( [ 1,2,3 ], 2 ), [ [ 1,2,3 ] ] );
-  test.identical( routine( 2, [ 1,2,3 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,2 ] ] );
+  test.identical( routine( 1, 0 ), [ 1,0 ] );
+  test.identical( routine( [ 1,2,3 ], 2 ), [ [ 1,2,3 ], 2 ] );
+  test.identical( routine( 2, [ 1,2,3 ] ), [ 2, [ 1,2,3 ] ] );
+  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,2 ], [ 1,2 ] ] );
 
   test.identical( routine( { a : 1 } , 0 ), { a : [ 1,0 ] } );
-  test.identical( routine( 0, { a : 1 } ), [ 0 ] );
+  test.identical( routine( 0, { a : 1 } ), [ 0, { a : 1 } ] );
   test.identical( routine( { a : 1 }, { b : 2 } ), { a : [ 1, { b : 2 } ] } );
 
   test.identical( routine( { a : 1 }, 2, 3 ), { a : [ 1, 2, 3 ] } );
@@ -974,13 +975,13 @@ function routineVectorize_functor( test )
 
   test.case = 'multiple argument';
 
-  test.identical( routine( 1, 0 ), [ 1 ] );
+  test.identical( routine( 1, 0 ), [ 1, 0 ] );
   test.identical( routine( [ 1,2,3 ], 2 ), [ [ 1,2 ], [ 2,2 ], [ 3,2 ] ] );
-  test.identical( routine( 2, [ 1,2,3 ] ), [ 2 ] );
+  test.identical( routine( 2, [ 1,2,3 ] ), [ 2, [ 1,2,3 ] ] );
   test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1, [ 1,2 ] ], [ 2, [ 1,2 ] ] ] );
 
   test.identical( routine( { a : 1 } , 0 ), { a : [ 1,0 ] } );
-  test.identical( routine( 0, { a : 1 } ), [ 0 ] );
+  test.identical( routine( 0, { a : 1 } ), [ 0, { a : 1 } ] );
   test.identical( routine( { a : 1 }, { b : 2 } ), { a : [ 1, { b : 2 } ] } );
 
   test.identical( routine( { a : 1 }, 2, 3 ), { a : [ 1, 2, 3 ] } );
@@ -1009,6 +1010,10 @@ function routineVectorize_functor( test )
 
   test.case = 'single argument';
 
+  test.identical( routine( '1' ), [ '1' ] );
+  test.identical( routine([ 1 ]), [ [ 1 ] ] );
+  test.identical( routine({ a : 0 }), [ { a : 0 } ] );
+  test.identical( routine({ a : 0, b : '1' }), [ { a : 0, b : '1' } ] );
   test.identical( routine({ a : 0, b : [ 1 ] }), [ [ { a : 0, b : 1 } ] ] );
   test.identical( routine({ a : 0, b : [ 1,2 ] }), [ [ { a : 0, b : 1 } ], [ { a : 0, b : 2 } ] ] );
 
@@ -1033,6 +1038,21 @@ function routineVectorize_functor( test )
   var routine = _.routineVectorize_functor( o );
 
   test.case = 'single argument';
+
+  var src = 'a'
+  var got = routine( src );
+  var expected = [ [ src ], [ src ] ];
+  test.identical( got, expected );
+
+  var src = [ 1 ]
+  var got = routine( src );
+  var expected = [ [ src ], [ src ] ];
+  test.identical( got, expected );
+
+  var src = { c : 1 }
+  var got = routine( src );
+  var expected = [ [ src ], [ src ] ];
+  test.identical( got, expected );
 
   var got = routine({ a : 0, b : [ 1 ] });
   var expected =
@@ -1130,13 +1150,13 @@ function routineVectorize_functor( test )
   o.routine = srcRoutine;
   var routine = _.routineVectorize_functor( o );
 
-  test.identical( routine( [ 1,2 ], 3 ), [ [ 1,2 ] ] );
-  test.identical( routine( 1, [ 1,2 ] ), [ 1 ] );
-  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,2 ] ] );
-  test.identical( routine( 1,2 ), [ 1 ] );
+  test.identical( routine( [ 1,2 ], 3 ), [ [ 1,2 ], 3 ] );
+  test.identical( routine( 1, [ 1,2 ] ), [ 1, [ 1,2 ] ] );
+  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,2 ], [ 1,2 ] ] );
+  test.identical( routine( 1,2 ), [ 1,2 ] );
 
   test.identical( routine( { a : 1 }, 1 ), { a : [ 1, 1 ] } );
-  test.identical( routine( 1, { a : 1 } ), [ 1 ] );
+  test.identical( routine( 1, { a : 1 } ), { a : [ 1, 1 ] } );
   test.identical( routine( { a : 1 }, { a : 2 } ), { a : [ 1,2 ] } );
   test.identical( routine( { a : 1, b : 1 }, { b : 2, a : 2 } ), { a : [ 1,2 ], b : [ 1,2 ] } );
 
@@ -1162,26 +1182,124 @@ function routineVectorize_functor( test )
   var routine = _.routineVectorize_functor( o );
 
   test.identical( routine( [ 1,2 ], 3 ), [ [ 1,3 ], [ 2,3 ] ] );
-  test.identical( routine( 1, [ 1,2 ] ), [ 1 ] );
+  test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
   test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,1 ], [ 2,2 ] ] );
-  test.identical( routine( 1,2 ), [ 1 ] );
+  test.identical( routine( 1,2 ), [ 1,2 ] );
 
   test.identical( routine( { a : 1 }, 1 ), { a : [ 1, 1 ] } );
-  test.identical( routine( 1, { a : 1 } ), [ 1 ] );
+  test.identical( routine( 1, { a : 1 } ), { a : [ 1, 1 ] } );
   test.identical( routine( { a : 1 }, { a : 2 } ), { a : [ 1,2 ] } );
   test.identical( routine( { a : 1, b : 1 }, { b : 2, a : 2 } ), { a : [ 1,2 ], b : [ 1,2 ] } );
-
-  test.identical( routine( [ 1,2 ], { a : 1 } ), [ [ 1, { a : 1 } ], [ 2, { a : 1 } ] ] );
-  test.identical( routine( { a : 1 },[ 1,2 ] ), { a : [ 1, [ 1,2 ] ] } );
 
   if( Config.debug )
   {
     test.shouldThrowError( () => routine( [ 1,2 ], [ 1,2,3 ] ) )
     test.shouldThrowError( () => routine( 1,2,3 ) );
     test.shouldThrowError( () => routine( { a : 1 }, { b : 1 } ) );
+    test.shouldThrowError( () => routine( [ 1 ], { b : 1 } ) );
+    test.shouldThrowError( () => routine( { b : 1 }, [ 1 ] ) );
+    test.shouldThrowError( () => routine( 1, [ 1 ], { b : 1 } ) );
+    test.shouldThrowError( () => routine( [ 1 ], 1, { b : 1 } ) );
+    test.shouldThrowError( () => routine( { b : 1 }, 1, [ 1 ] ) );
+    test.shouldThrowError( () => routine( { b : 1 }, [ 1 ], 1 ) );
   }
 
   test.close( 'vectorizingArray : 1, vectorizingMap : 1,select : 2' );
+
+  test.open( ' vectorizingKeys : 1' );
+
+  var o =
+  {
+    vectorizingArray : 0,
+    vectorizingMap : 0,
+    vectorizingKeys : 1,
+    select : 1
+  }
+  o.routine = srcRoutine;
+  var routine = _.routineVectorize_functor( o );
+
+  test.identical( routine( 1  ), [ 1 ] );
+  test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
+  test.identical( routine( { a : 1 } ), { a : 1 } );
+
+  if( Config.debug )
+  test.shouldThrowError( () => routine( 1, 2 ) )
+
+  test.close( ' vectorizingKeys : 1' );
+
+  test.open( 'vectorizingKeys : 1, select : 2' );
+
+  var o =
+  {
+    vectorizingArray : 0,
+    vectorizingMap : 0,
+    vectorizingKeys : 1,
+    select : 2
+  }
+  o.routine = srcRoutine;
+  var routine = _.routineVectorize_functor( o );
+
+  test.identical( routine(  1, 1  ), [ 1, 1 ] );
+  test.identical( routine( [ 1 ], 1 ), [ [ 1 ], 1 ] );
+  test.identical( routine( { a : 1 }, 'b' ), { 'a,b' : 1 } );
+  test.identical( routine( 'a', { b : 1, c : 2 } ), { 'a,b' : 1, 'a,c' : 2 } );
+  test.identical( routine( [ 'a' ], { b : 1, c : 2 } ), { 'a,b' : 1, 'a,c' : 2 } );
+  test.identical( routine( { b : 1, c : 2 }, [ 'a' ] ), { 'b,a' : 1, 'c,a' : 2 } );
+
+  if( Config.debug )
+  test.shouldThrowError( () => routine( 1,2,3 ) );
+
+  test.close( 'vectorizingKeys : 1, select : 2' );
+
+  test.open( 'vectorizingKeys : 1, vectorizingArray : 1, select : 2' );
+
+  var o =
+  {
+    vectorizingArray : 1,
+    vectorizingMap : 0,
+    vectorizingKeys : 1,
+    select : 2
+  }
+  o.routine = srcRoutine;
+  var routine = _.routineVectorize_functor( o );
+
+  test.identical( routine( [ 1,2 ], 3 ), [ [ 1,3 ], [ 2,3 ] ] );
+  test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
+  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,1 ], [ 2,2 ] ] );
+  test.identical( routine( 1,2 ), [ 1,2 ] );
+
+  test.identical( routine( { a : 1 }, 'b' ), { 'a,b' : 1 } );
+  test.identical( routine( 'a', { b : 1, c : 2 } ), { 'a,b' : 1, 'a,c' : 2 } );
+
+  test.identical( routine( { a : 1 }, 1 ), { 'a,1' : 1 } );
+  test.identical( routine( 1, { b : 1, c : 2 } ), { '1,b' : 1, '1,c' : 2 } );
+
+  if( Config.debug )
+  {
+    test.shouldThrowError( () => routine( 1,2,3 ) );
+    test.shouldThrowError( () => routine( { a : 1 }, { b : 1 } ) );
+    test.shouldThrowError( () => routine( [ 1 ], { b : 1 } ) );
+    test.shouldThrowError( () => routine( { b : 1 }, [ 1 ] ) );
+    test.shouldThrowError( () => routine( 1, [ 1 ], { b : 1 } ) );
+    test.shouldThrowError( () => routine( [ 1 ], 1, { b : 1 } ) );
+    test.shouldThrowError( () => routine( { b : 1 }, 1, [ 1 ] ) );
+    test.shouldThrowError( () => routine( { b : 1 }, [ 1 ], 1 ) );
+  }
+
+  test.close( 'vectorizingKeys : 1, vectorizingArray : 1, select : 2' );
+
+  test.open( 'vectorizingKeys : 1, vectorizingArray : 1, vectorizingMap : 1, select : 1' );
+  var o =
+  {
+    vectorizingArray : 1,
+    vectorizingMap : 1,
+    vectorizingKeys : 1,
+    select : 1
+  }
+  o.routine = srcRoutine;
+  test.shouldThrowError( () => _.routineVectorize_functor( o ) );
+
+  test.close( 'vectorizingKeys : 1, vectorizingArray : 1, vectorizingMap : 1, select : 1' );
 }
 
 //
