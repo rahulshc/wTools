@@ -4612,7 +4612,9 @@ function routineVectorize_functor( o )
   o = { routine : o }
   o = routineOptions( routineVectorize_functor, o );
 
-  var routineName = o.routine;
+  if( _.arrayIs( o.routine ) && o.routine.length === 1 )
+  o.routine = o.routine[ 0 ];
+
   var routine = o.routine;
   var fieldFilter = o.fieldFilter;
   var bypassingFilteredOut = o.bypassingFilteredOut;
@@ -4623,12 +4625,7 @@ function routineVectorize_functor( o )
   var selectAll = o.select === Infinity;
   var multiply = select > 1 ? multiplyReally : multiplyNo;
 
-  if( strIs( routine ) )
-  routine = function methodCall()
-  {
-    // debugger;
-    return this[ routineName ].apply( this, arguments );
-  }
+  routine = normalizeRoutine( routine );
 
   _.assert( routineIs( routine ) );
   _.assert( arguments.length === 1, 'expects single argument' );
@@ -4688,14 +4685,38 @@ function routineVectorize_functor( o )
 
   return resultRoutine;
 
-  /* */
+  /* - */
+
+  function normalizeRoutine( routine )
+  {
+
+    if( _.strIs( routine ) )
+    {
+      return function methodCall()
+      {
+        return this[ routine ].apply( this, arguments );
+      }
+    }
+    else if( _.arrayIs( routine ) )
+    {
+      _.assert( routine.length === 2 );
+      return function methodCall()
+      {
+        return this[ routine[ 0 ] ][ routine[ 1 ] ].apply( this, arguments );
+      }
+    }
+
+    return routine;
+  }
+
+  /* - */
 
   function multiplyNo( args )
   {
     return args;
   }
 
-  /* */
+  /* - */
 
   function multiplyReally( args )
   {
@@ -4744,7 +4765,7 @@ function routineVectorize_functor( o )
     return args;
   }
 
-  /* */
+  /* - */
 
   function vectorizeArray()
   {
@@ -4769,7 +4790,7 @@ function routineVectorize_functor( o )
     return routine.apply( this, args );
   }
 
-  /* */
+  /* - */
 
   function vectorizeArrayMultiplying()
   {
@@ -4795,7 +4816,7 @@ function routineVectorize_functor( o )
     return routine.apply( this, args );
   }
 
-  /* */
+  /* - */
 
   function vectorizeForOptionsMap( srcMap )
   {
@@ -4824,7 +4845,7 @@ function routineVectorize_functor( o )
     return routine.apply( this, arguments );
   }
 
-  /* */
+  /* - */
 
   function vectorizeForOptionsMapForKeys()
   {
@@ -4838,7 +4859,7 @@ function routineVectorize_functor( o )
     return result;
   }
 
-  /* */
+  /* - */
 
   function vectorizeMapOrArray()
   {
@@ -4881,7 +4902,7 @@ function routineVectorize_functor( o )
     return routine.apply( this, arguments );
   }
 
-  /* */
+  /* - */
 
   function vectorizeWithFilters( src )
   {
