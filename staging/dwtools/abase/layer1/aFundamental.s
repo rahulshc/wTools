@@ -4620,6 +4620,7 @@ function routineVectorize_functor( o )
   var bypassingFilteredOut = o.bypassingFilteredOut;
   var vectorizingArray = o.vectorizingArray;
   var vectorizingMap = o.vectorizingMap;
+  var vectorizingKeys = o.vectorizingKeys;
   var pre = null;
   var select = o.select === null ? 1 : o.select;
   var selectAll = o.select === Infinity;
@@ -4637,10 +4638,15 @@ function routineVectorize_functor( o )
 
   if( _.numberIs( select ) )
   {
-    if( !vectorizingArray && !vectorizingMap )
+    if( !vectorizingArray && !vectorizingMap && !vectorizeKeys )
     resultRoutine = routine;
     else if( fieldFilter )
     resultRoutine = vectorizeWithFilters;
+    else if( vectorizeKeys )
+    {
+      _.assert( !vectorizingMap );
+      resultRoutine = vectorizeKeys;
+    }
     else if( !vectorizingArray || vectorizingMap )
     resultRoutine = vectorizeMapOrArray;
     else if( multiply === multiplyNo )
@@ -4959,6 +4965,45 @@ function routineVectorize_functor( o )
     return routine.call( this,src );
   }
 
+  /* - */
+
+  function vectorizeKeys()
+  {
+    if( selectAll )
+    select = arguments.length;
+    else
+    _.assert( arguments.length === select );
+
+    let args = _.longSlice( arguments );
+    let map;
+    let mapIndex;
+
+    for( let d = 0; d < select; d++ )
+    if( vectorizeKeys && _.mapIs( args[ d ] ) )
+    {
+      _.assert( map === undefined, 'vectorizeKeys expects single map in arguments' );
+      map = args[ d ];
+      mapIndex = d;
+    }
+
+    if( map )
+    {
+      let result = Object.create( null );
+      let args2 = _.longSlice( args );
+
+      for( let k in map )
+      {
+        args2[ mapIndex ] = k;
+        let key = routine.apply( this, args2 );
+        result[ key ] = map[ k ];
+      }
+
+      return result;
+    }
+
+    return routine.apply( this, arguments );
+  }
+
 }
 
 routineVectorize_functor.defaults =
@@ -4968,6 +5013,7 @@ routineVectorize_functor.defaults =
   bypassingFilteredOut : 1,
   vectorizingArray : 1,
   vectorizingMap : 0,
+  vectorizingKeys : 0,
   select : 1,
 }
 
