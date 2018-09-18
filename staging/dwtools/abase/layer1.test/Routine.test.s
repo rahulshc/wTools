@@ -1274,6 +1274,9 @@ function routineVectorize_functor( test )
   test.identical( routine( { a : 1 }, 1 ), { 'a,1' : 1 } );
   test.identical( routine( 1, { b : 1, c : 2 } ), { '1,b' : 1, '1,c' : 2 } );
 
+  test.identical( routine( [ 1 ], { b : true } ), { '1,b' : true } );
+  test.identical( routine( [ 1,2 ], { b : true } ), { '1,b' : true, '2,b' : true } );
+
   if( Config.debug )
   {
     test.shouldThrowError( () => routine( 1,2,3 ) );
@@ -1287,6 +1290,210 @@ function routineVectorize_functor( test )
   }
 
   test.close( 'vectorizingKeys : 1, vectorizingArray : 1, select : 2' );
+
+  test.open( 'vectorizingKeys : 1, vectorizingArray : 1, select : 3' );
+
+  var o =
+  {
+    vectorizingArray : 1,
+    vectorizingMap : 0,
+    vectorizingKeys : 1,
+    select : 3
+  }
+  o.routine = srcRoutine;
+  var routine = _.routineVectorize_functor( o );
+
+  test.identical( routine( [ 1 ], { b : true }, 'c' ), { '1,b,c' : true } );
+  test.identical( routine( [ 1 ], { b : true }, [ 'c' ] ), { '1,b,c' : true } );
+  test.identical( routine( [ 1 ], { b : true, c : false }, 'd' ), { '1,b,d' : true, '1,c,d' : false } );
+  test.identical( routine( [ 1,2 ], { b : true }, 'c' ), { '1,b,c' : true, '2,b,c' : true } );
+
+  //
+
+  var got =  routine( [ 1,2 ], { b : true, c : false }, [ 'd', 'e' ] );
+  var expected =
+  {
+    '1,b,d' : true,
+    '1,c,d' : false,
+    '2,b,e' : true,
+    '2,c,e' : false
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( [ 1,2 ], [ 'd', 'e' ], { b : true, c : false } );
+  var expected =
+  {
+    '1,d,b' : true,
+    '1,d,c' : false,
+    '2,e,b' : true,
+    '2,e,c' : false
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( { b : true, c : false }, [ 1,2 ], [ 'd', 'e' ]  );
+  var expected =
+  {
+    'b,1,d' : true,
+    'c,1,d' : false,
+    'b,2,e' : true,
+    'c,2,e' : false
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( [ 1,2 ], { b : true, c : false, d : true }, [ 'e', 'f' ] );
+  var expected =
+  {
+    '1,b,e' : true,
+    '1,c,e' : false,
+    '1,d,e' : true,
+    '2,b,f' : true,
+    '2,c,f' : false,
+    '2,d,f' : true
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( [ 1,2 ], [ 'e', 'f' ], { b : true, c : false, d : true } );
+  var expected =
+  {
+    '1,e,b' : true,
+    '1,e,c' : false,
+    '1,e,d' : true,
+    '2,f,b' : true,
+    '2,f,c' : false,
+    '2,f,d' : true
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( { b : true, c : false, d : true }, [ 1,2 ], [ 'e', 'f' ] );
+  var expected =
+  {
+    'b,1,e' : true,
+    'c,1,e' : false,
+    'd,1,e' : true,
+    'b,2,f' : true,
+    'c,2,f' : false,
+    'd,2,f' : true
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( 1, { b : true, c : false, d : true }, 2 );
+  var expected =
+  {
+    '1,b,2' : true,
+    '1,c,2' : false,
+    '1,d,2' : true
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( { b : true, c : false, d : true }, 1, 2 );
+  var expected =
+  {
+    'b,1,2' : true,
+    'c,1,2' : false,
+    'd,1,2' : true
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( 1, 2, { b : true, c : false, d : true } );
+  var expected =
+  {
+    '1,2,b' : true,
+    '1,2,c' : false,
+    '1,2,d' : true
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( [ 1,2 ], { b : true }, 'c' );
+  var expected =
+  {
+    '1,b,c' : true,
+    '2,b,c' : true,
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( { b : true }, [ 1,2 ], 'c' );
+  var expected =
+  {
+    'b,1,c' : true,
+    'b,2,c' : true,
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( [ 1,2 ], 'c', { b : true } );
+  var expected =
+  {
+    '1,c,b' : true,
+    '2,c,b' : true,
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( [ 1,2 ], { b : true, c : false }, 'd' );
+  var expected =
+  {
+    '1,b,d' : true,
+    '1,c,d' : false,
+    '2,b,d' : true,
+    '2,c,d' : false
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( { b : true, c : false }, [ 1,2 ], 'd' );
+  var expected =
+  {
+    'b,1,d' : true,
+    'b,2,d' : true,
+    'c,1,d' : false,
+    'c,2,d' : false
+  }
+  test.identical( got, expected );
+
+  //
+
+  var got =  routine( [ 1,2 ], 'd', { b : true, c : false } );
+  var expected =
+  {
+    '1,d,b' : true,
+    '1,d,c' : false,
+    '2,d,b' : true,
+    '2,d,c' : false
+  }
+  test.identical( got, expected );
+
+  //
+
+  if( Config.debug )
+  {
+    test.shouldThrowError( () => routine( { a : 1 }, 'c', { b : 1 } ) );
+    test.shouldThrowError( () => routine( [ 1 ], { b : true }, [ 'c', 'd' ] ) );
+  }
+
+  test.close( 'vectorizingKeys : 1, vectorizingArray : 1, select : 3' );
 
   test.open( 'vectorizingKeys : 1, vectorizingArray : 1, vectorizingMap : 1, select : 1' );
   var o =

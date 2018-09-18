@@ -5442,6 +5442,7 @@ function routineVectorize_functor( o )
     let result;
     let map;
     let mapIndex;
+    let arr;
 
     _.assert( args.length === select );
 
@@ -5449,11 +5450,9 @@ function routineVectorize_functor( o )
     {
       for( let d = 0; d < select; d++ )
       {
-        // if( vectorizingArray  )
-        // _.assert( !_.longIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' );
-        // _.assert( !_.longIs( args[ d ] ), 'vectorizingKeys: Arguments should not contain array if vectorizingArray is enabled' );
-
-        if( _.mapIs( args[ d ] ) )
+        if( vectorizingArray && _.arrayIs( args[ d ] ) )
+        arr = args[ d ];
+        else if( _.mapIs( args[ d ] ) )
         {
           _.assert( map === undefined, 'vectorizeKeys expects single map in arguments' ); // qqq
           map = args[ d ];
@@ -5467,9 +5466,9 @@ function routineVectorize_functor( o )
       result = Object.create( null );
       args2 = _.longSlice( args );
 
-      if( vectorizingArray && _.arrayIs( src ) )
+      if( vectorizingArray && _.arrayIs( arr ) )
       {
-        for( var i = 0; i < src.length; i++ )
+        for( var i = 0; i < arr.length; i++ )
         {
           for( var m = 0 ; m < select ; m++ )
           args2[ m ] = args[ m ][ i ];
