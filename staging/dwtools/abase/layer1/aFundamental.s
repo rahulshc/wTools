@@ -5084,9 +5084,9 @@ function routineVectorize_functor( o )
 
   routine = normalizeRoutine( routine );
 
-  _.assert( routineIs( routine ) );
+  _.assert( routineIs( routine ), 'expects routine {-o.routine-}, but got', _.strTypeOf( routine ) );
   _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ) );
+  _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ), 'expects {-o.select-} as number >= 1, string or array, but got', select );
 
   /* */
 
@@ -5100,7 +5100,7 @@ function routineVectorize_functor( o )
     resultRoutine = vectorizeWithFilters;
     else if( vectorizingKeys )
     {
-      _.assert( !vectorizingMap );
+      _.assert( !vectorizingMap, '{-o.vectorizingKeys-} and {-o.vectorizingMap-} should not be enabled at same time' );
       resultRoutine = vectorizeKeysOrArray;
     }
     else if( !vectorizingArray || vectorizingMap )
@@ -5210,8 +5210,10 @@ function routineVectorize_functor( o )
     {
       for( var d = 0 ; d < select ; d++ )
       {
-        if( vectorizingMap || vectorizingKeys )
-        _.assert( !_.mapIs( args[ d ] ), 'vectorizingArray: Arguments should not contain map if vectorizingMap/vectorizeKeys is enabled' ); // qqq
+        if( vectorizingMap /* || vectorizingKeys  */)
+        _.assert( !_.mapIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' ); // qqq
+        else if( vectorizingKeys && _.mapIs( args[ d ] ) )
+        continue;
 
         args[ d ] = _.multiple( args[ d ], length );
       }
@@ -5225,7 +5227,7 @@ function routineVectorize_functor( o )
       else
       {
         if( vectorizingArray )
-        _.assert( !_.longIs( args[ d ] ), 'vectorizingMap: Arguments should not contain array if vectorizingArray is enabled' );
+        _.assert( !_.longIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' );
 
         let arg = Object.create( null );
         _.mapSetWithKeys( arg, keys, args[ d ] );
@@ -5436,31 +5438,19 @@ function routineVectorize_functor( o )
   {
     let args = multiply( arguments );
     let src = args[ 0 ];
+    let args2;
+    let result;
+    let map;
+    let mapIndex;
 
-    _.assert( args.length === select )
+    _.assert( args.length === select );
 
-    if( vectorizingArray && _.longIs( src ) )
+    if( vectorizingKeys )
     {
-      let args2 = _.longSlice( args );
-      var result = [];
-      for( var r = 0 ; r < src.length ; r++ )
-      {
-        for( var m = 0 ; m < select ; m++ )
-        args2[ m ] = args[ m ][ r ];
-        // args2[ 0 ] = src[ r ];
-        result[ r ] = routine.apply( this, args2 );
-      }
-      return result;
-    }
-    else if( vectorizingKeys )
-    {
-      let map;
-      let mapIndex;
-
       for( let d = 0; d < select; d++ )
       {
-        if( vectorizingArray  )
-        _.assert( !_.longIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' );
+        // if( vectorizingArray  )
+        // _.assert( !_.longIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' );
         // _.assert( !_.longIs( args[ d ] ), 'vectorizingKeys: Arguments should not contain array if vectorizingArray is enabled' );
 
         if( _.mapIs( args[ d ] ) )
@@ -5470,22 +5460,52 @@ function routineVectorize_functor( o )
           mapIndex = d;
         }
       }
+    }
 
+    if( map )
+    {
+      result = Object.create( null );
+      args2 = _.longSlice( args );
 
-      if( map )
+      if( vectorizeArray && _.arrayIs( src ) )
       {
-        let result = Object.create( null );
-        let args2 = _.longSlice( args );
+        for( var i = 0; i < src.length; i++ )
+        {
+          for( var m = 0 ; m < select ; m++ )
+          args2[ m ] = args[ m ][ i ];
 
+          for( let k in map )
+          {
+            args2[ mapIndex ] = k;
+            let key = routine.apply( this, args2 );
+            result[ key ] = map[ k ];
+          }
+        }
+      }
+      else
+      {
         for( let k in map )
         {
           args2[ mapIndex ] = k;
           let key = routine.apply( this, args2 );
           result[ key ] = map[ k ];
         }
-
-        return result;
       }
+
+      return result;
+    }
+    else if( vectorizingArray && _.longIs( src ) )
+    {
+      args2 = _.longSlice( args );
+      result = [];
+      for( var r = 0 ; r < src.length ; r++ )
+      {
+        for( var m = 0 ; m < select ; m++ )
+        args2[ m ] = args[ m ][ r ];
+        // args2[ 0 ] = src[ r ];
+        result[ r ] = routine.apply( this, args2 );
+      }
+      return result;
     }
 
     return routine.apply( this, arguments );

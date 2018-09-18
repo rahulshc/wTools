@@ -1278,9 +1278,9 @@ function routineVectorize_functor( test )
   {
     test.shouldThrowError( () => routine( 1,2,3 ) );
     test.shouldThrowError( () => routine( { a : 1 }, { b : 1 } ) );
-    test.shouldThrowError( () => routine( [ 1 ], { b : 1 } ) );
-    test.shouldThrowError( () => routine( { b : 1 }, [ 1 ] ) );
-    test.shouldThrowError( () => routine( 1, [ 1 ], { b : 1 } ) );
+    // test.shouldThrowError( () => routine( [ 1 ], { b : 1 } ) );
+    // test.shouldThrowError( () => routine( { b : 1 }, [ 1 ] ) );
+    // test.shouldThrowError( () => routine( 1, [ 1 ], { b : 1 } ) );
     test.shouldThrowError( () => routine( [ 1 ], 1, { b : 1 } ) );
     test.shouldThrowError( () => routine( { b : 1 }, 1, [ 1 ] ) );
     test.shouldThrowError( () => routine( { b : 1 }, [ 1 ], 1 ) );
