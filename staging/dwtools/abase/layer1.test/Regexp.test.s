@@ -469,7 +469,7 @@ function regexpsAtLeastFirst( test )
 
   var r1 = 'abc';
   var r2 = 'def';
-  var expected = /(?:abc(?:def)?)/;
+  var expected = /abc(?:def)?/;
   var got = _.regexpsAtLeastFirst([ r1, r2 ]);
   test.identical( got, expected );
 
@@ -478,7 +478,7 @@ function regexpsAtLeastFirst( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(?:abc(?:def(?:.+)?)?)/i;
+  var expected = /abc(?:def(?:.+)?)?/i;
   var got = _.regexpsAtLeastFirst([ r1, r2, r3 ]);
   test.identical( got, expected );
 
@@ -487,7 +487,7 @@ function regexpsAtLeastFirst( test )
   var r1 = 'abc';
   var r2 = 'def';
   var r3 = /.+/i;
-  var expected = /(?:abc(?:def(?:.+)?)?)/i;
+  var expected = /abc(?:def(?:.+)?)?/i;
   var got = _.regexpsAtLeastFirst({ sources : [ r1, r2, r3 ], flags : 'i' });
   test.identical( got, expected );
 

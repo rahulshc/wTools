@@ -5467,7 +5467,7 @@ function routineVectorize_functor( o )
       result = Object.create( null );
       args2 = _.longSlice( args );
 
-      if( vectorizeArray && _.arrayIs( src ) )
+      if( vectorizingArray && _.arrayIs( src ) )
       {
         for( var i = 0; i < src.length; i++ )
         {
