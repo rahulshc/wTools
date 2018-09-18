@@ -5471,7 +5471,6 @@ function routineVectorize_functor( o )
         }
       }
 
-
       if( map )
       {
         let result = Object.create( null );
