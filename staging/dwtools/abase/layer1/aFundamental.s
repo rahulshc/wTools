@@ -9193,7 +9193,7 @@ function bufferRawFrom( buffer )
   if( buffer instanceof ArrayBuffer )
   return buffer;
 
-  if( _.bufferNodeIs( buffer ) )
+  if( _.bufferNodeIs( buffer ) || _.arrayIs( buffer ) )
   {
 
     // result = buffer.buffer;
@@ -9204,7 +9204,7 @@ function bufferRawFrom( buffer )
   {
 
     debugger;
-    _.assert( 0, 'not implemented' );
+    // _.assert( 0, 'not implemented' );
     result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
     result = result.slice( buffer.byteOffset || 0,buffer.byteLength );

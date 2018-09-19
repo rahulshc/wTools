@@ -328,7 +328,6 @@ function bufferRawFrom( test )
 
   test.case = 'unknown source';
   test.shouldThrowError( () => _.bufferRawFrom( 5 ) );
-  test.shouldThrowError( () => _.bufferRawFrom( [] ) );
   test.shouldThrowError( () => _.bufferRawFrom( {} ) );
 }
 
@@ -340,6 +339,12 @@ function bufferBytesFrom( test )
   var src = new ArrayBuffer( 3 );
   var got = _.bufferBytesFrom( src );
   var expected = new Uint8Array([ 0,0,0 ]);
+  test.identical( got, expected );
+
+  test.case = 'arr';
+  var src = [ 97,98,99 ];
+  var got = _.bufferBytesFrom( src );
+  var expected = new Uint8Array([ 97,98,99 ]);
   test.identical( got, expected );
 
   test.case = 'typed';
@@ -375,7 +380,7 @@ function bufferBytesFrom( test )
 
   test.case = 'unknown source';
   test.shouldThrowError( () => _.bufferBytesFrom( 5 ) );
-  test.shouldThrowError( () => _.bufferBytesFrom( [] ) );
+  // test.shouldThrowError( () => _.bufferBytesFrom( [] ) );
   test.shouldThrowError( () => _.bufferBytesFrom( {} ) );
 
 }
@@ -453,7 +458,7 @@ function bufferNodeFrom( test )
 
   test.case = 'unknown source';
   test.shouldThrowError( () => _.bufferNodeFrom( 5 ) );
-  test.shouldThrowError( () => _.bufferNodeFrom( [] ) );
+  // test.shouldThrowError( () => _.bufferNodeFrom( [] ) );
   test.shouldThrowError( () => _.bufferNodeFrom( {} ) );
 
 }
