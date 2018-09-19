@@ -5190,7 +5190,7 @@ function routineVectorize_functor( o )
     if( selectAll )
     select = args.length;
 
-    _.assert( args.length === select );
+    _.assert( args.length === select, 'expects', select, 'arguments but got:', args.length );
 
     for( var d = 0 ; d < select ; d++ )
     {
@@ -5211,7 +5211,7 @@ function routineVectorize_functor( o )
       for( var d = 0 ; d < select ; d++ )
       {
         if( vectorizingMap /* || vectorizingKeys  */)
-        _.assert( !_.mapIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' ); // qqq
+        _.assert( !_.mapIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both. Incorrect argument:', args[ d ] ); // qqq
         else if( vectorizingKeys && _.mapIs( args[ d ] ) )
         continue;
 
@@ -5227,7 +5227,7 @@ function routineVectorize_functor( o )
       else
       {
         if( vectorizingArray )
-        _.assert( !_.longIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' );
+        _.assert( !_.longIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both. Incorrect argument:', args[ d ] );
 
         let arg = Object.create( null );
         _.mapSetWithKeys( arg, keys, args[ d ] );
@@ -5442,20 +5442,19 @@ function routineVectorize_functor( o )
     let result;
     let map;
     let mapIndex;
+    let arr;
 
-    _.assert( args.length === select );
+    _.assert( args.length === select, 'expects', select, 'arguments but got:', args.length );
 
     if( vectorizingKeys )
     {
       for( let d = 0; d < select; d++ )
       {
-        // if( vectorizingArray  )
-        // _.assert( !_.longIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both' );
-        // _.assert( !_.longIs( args[ d ] ), 'vectorizingKeys: Arguments should not contain array if vectorizingArray is enabled' );
-
-        if( _.mapIs( args[ d ] ) )
+        if( vectorizingArray && _.arrayIs( args[ d ] ) )
+        arr = args[ d ];
+        else if( _.mapIs( args[ d ] ) )
         {
-          _.assert( map === undefined, 'vectorizeKeys expects single map in arguments' ); // qqq
+          _.assert( map === undefined, 'Arguments should have only single map. Incorrect argument:', args[ d ] ); // qqq
           map = args[ d ];
           mapIndex = d;
         }
@@ -5467,9 +5466,9 @@ function routineVectorize_functor( o )
       result = Object.create( null );
       args2 = _.longSlice( args );
 
-      if( vectorizingArray && _.arrayIs( src ) )
+      if( vectorizingArray && _.arrayIs( arr ) )
       {
-        for( var i = 0; i < src.length; i++ )
+        for( var i = 0; i < arr.length; i++ )
         {
           for( var m = 0 ; m < select ; m++ )
           args2[ m ] = args[ m ][ i ];
@@ -9194,7 +9193,7 @@ function bufferRawFrom( buffer )
   if( buffer instanceof ArrayBuffer )
   return buffer;
 
-  if( _.bufferNodeIs( buffer ) )
+  if( _.bufferNodeIs( buffer ) || _.arrayIs( buffer ) )
   {
 
     // result = buffer.buffer;
@@ -9205,7 +9204,7 @@ function bufferRawFrom( buffer )
   {
 
     debugger;
-    _.assert( 0, 'not implemented' );
+    // _.assert( 0, 'not implemented' );
     result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
     result = result.slice( buffer.byteOffset || 0,buffer.byteLength );
