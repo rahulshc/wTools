@@ -5164,7 +5164,8 @@ function routineVectorize_functor( o )
       _.assert( routine.length === 2 );
       return function methodCall()
       {
-        return this[ routine[ 0 ] ][ routine[ 1 ] ].apply( this, arguments );
+        let c = this[ routine[ 0 ] ];
+        return c[ routine[ 1 ] ].apply( c, arguments );
       }
     }
 
