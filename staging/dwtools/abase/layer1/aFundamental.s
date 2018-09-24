@@ -4101,24 +4101,6 @@ function _routinesCall( o )
 
   /* */
 
-  function makeResult()
-  {
-
-    _.assert
-    (
-      _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
-      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
-    );
-
-    if( _.routineIs( routines ) )
-    routines = [ routines ];
-
-    result = _.entityMake( routines );
-
-  }
-
-  /* */
-
   if( o.args.length === 1 )
   {
     var routines = o.args[ 0 ];
@@ -4211,6 +4193,25 @@ function _routinesCall( o )
   else _.assert( 0,'unexpected' );
 
   return result;
+
+  /* */
+
+  function makeResult()
+  {
+
+    _.assert
+    (
+      _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
+      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
+    );
+
+    if( _.routineIs( routines ) )
+    routines = [ routines ];
+
+    result = _.entityMake( routines );
+
+  }
+
 }
 
 _routinesCall.defaults =
@@ -20785,10 +20786,6 @@ var Routines =
   arrayAll : arrayAll,
   arrayAny : arrayAny,
   arrayNone : arrayNone,
-
-  // all : arrayAll,
-  // any : arrayAny,
-  // none : arrayNone,
 
   // array maker
 

@@ -1966,6 +1966,13 @@ function entityDiffExplanation( o )
 
   }
 
+  if( _.objectIs( o.srcs[ 0 ] ) && _.objectIs( o.srcs[ 1 ] ) )
+  {
+    let common = _.filter( o.srcs[ 0 ], ( e, k ) => _.entityIdentical( e, o.srcs[ 1 ][ k ] ) ? e : undefined );
+    o.srcs[ 0 ] = _.mapBut( o.srcs[ 0 ], common );
+    o.srcs[ 1 ] = _.mapBut( o.srcs[ 1 ], common );
+  }
+
   o.srcs[ 0 ] = _.toStr( o.srcs[ 0 ] );
   o.srcs[ 1 ] = _.toStr( o.srcs[ 1 ] );
 
