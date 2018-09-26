@@ -3,8 +3,8 @@ require( 'wTools' );
 var _ = wTools;
 
 
-var regexp = /a/;
-var str = [ 'abcdef', ' a '];
+var regexp = 'a';
+var str = 'abcdef';
 
-var result = _.regexpTestAll( regexp, str );
+var result = _.regexpTestNone( regexp, str );
 console.log( result );
