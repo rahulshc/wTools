@@ -2219,9 +2219,16 @@ function _strSplitsQuote_body( o )
         let split2 = o.splits[ s2 ];
         if( split2 === postfix )
         {
+          if( o.quotingRejoining )
+          {
+            // debugger;
+            s -= 1;
+            s2 += 2;
+          }
+          // debugger;
           let splitNew = o.splits.splice( s, s2-s ).join( '' );
           o.splits[ s ] = splitNew + o.splits[ s ];
-          s2 = s;
+          // debugger;
           break;
         }
       }
@@ -2248,6 +2255,7 @@ _strSplitsQuote_body.defaults =
   quoting : 1,
   quotingPrefixes : null,
   quotingPostfixes : null,
+  quotingRejoining : 0,
   splits : null,
   delimeter : null,
 }
@@ -2266,6 +2274,9 @@ function _strSplitsDropDelimeters_pre( routine, args )
 
   _.routineOptions( routine, o );
 
+  if( _.strIs( o.delimeter ) )
+  o.delimeter = [ o.delimeter ];
+
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
@@ -2283,14 +2294,21 @@ function _strSplitsDropDelimeters_body( o )
 
   /* stripping */
 
+  if( o.delimeter.some( ( d ) => _.regexpIs( d ) ) )
+  debugger;
+
   for( let s = o.splits.length-1 ; s >= 0 ; s-- )
   {
     let split = o.splits[ s ];
 
-    if( s % 2 === 1 )
-    {
-      o.splits.splice( s,1 );
-    }
+    if( _.regexpsTestAny( o.delimeter, split ) )
+    o.splits.splice( s,1 );
+
+    // if( _.arrayHas( o.delimeter, split ) )
+    // o.splits.splice( s,1 );
+    //
+    // if( s % 2 === 1 )
+    // o.splits.splice( s,1 );
 
   }
 
@@ -2300,6 +2318,7 @@ function _strSplitsDropDelimeters_body( o )
 _strSplitsDropDelimeters_body.defaults =
 {
   splits : null,
+  delimeter : null,
 }
 
 //
@@ -2690,6 +2709,7 @@ defaults.preservingDelimeters = 1;
 
 defaults.stripping = 1;
 defaults.quoting = 1;
+defaults.quotingRejoining = 0;
 defaults.quotingPrefixes = null;
 defaults.quotingPostfixes = null;
 

@@ -6956,17 +6956,122 @@ function regexpsAreIdentical( src1,src2 )
 
 //
 
+function _regexpTest( regexp, str )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpLike( regexp ) );
+  _.assert( _.strIs( str ) );
+
+  if( _.strIs( regexp ) )
+  return regexp === str;
+  else
+  return regexp.test( str );
+
+}
+
+//
+
 function regexpTest( regexp, strs )
 {
   _.assert( arguments.length === 2 );
-  _.assert( _.regexpIs( regexp ) );
+  _.assert( _.regexpLike( regexp ) );
 
   if( _.strIs( strs ) )
-  return regexp.test( strs );
+  return _._regexpTest( regexp, strs );
   else if( _.arrayLike( strs ) )
-  return strs.map( ( str ) => regexp.test( str ) )
+  return strs.map( ( str ) => _._regexpTest( regexp, str ) )
   else _.assert( 0 );
 
+}
+
+//
+
+function regexpTestAll( regexp, strs )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpLike( regexp ) );
+
+  if( _.strIs( strs ) )
+  return _._regexpTest( regexp, strs );
+  else if( _.arrayLike( strs ) )
+  return strs.every( ( str ) => _._regexpTest( regexp, str ) )
+  else _.assert( 0 );
+
+}
+
+//
+
+function regexpTestAny( regexp, strs )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpLike( regexp ) );
+
+  if( _.strIs( strs ) )
+  return _._regexpTest( regexp, strs );
+  else if( _.arrayLike( strs ) )
+  return strs.some( ( str ) => _._regexpTest( regexp, str ) )
+  else _.assert( 0 );
+
+}
+
+//
+
+function regexpTestNone( regexp, strs )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpLike( regexp ) );
+
+  if( _.strIs( strs ) )
+  return !_._regexpTest( regexp, strs );
+  else if( _.arrayLike( strs ) )
+  return !strs.some( ( str ) => _._regexpTest( regexp, str ) )
+  else _.assert( 0 );
+
+}
+
+//
+
+/*
+qqq : add test coverage
+*/
+
+//
+
+function regexpsTestAll( regexps, strs )
+{
+  if( !_.arrayIs( regexps ) )
+  return _.regexpTestAll( regexps, strs );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpsLike( regexps ) );
+
+  return regexps.every( ( regexp ) => _.regexpTestAll( regexp, strs ) );
+}
+
+//
+
+function regexpsTestAny( regexps, strs )
+{
+  if( !_.arrayIs( regexps ) )
+  return _.regexpTestAny( regexps, strs );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpsLike( regexps ) );
+
+  return regexps.every( ( regexp ) => _.regexpTestAny( regexp, strs ) );
+}
+
+//
+
+function regexpsTestNone( regexps, strs )
+{
+  if( !_.arrayIs( regexps ) )
+  return _.regexpTestNone( regexps, strs );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.regexpsLike( regexps ) );
+
+  return regexps.every( ( regexp ) => _.regexpTestNone( regexp, strs ) );
 }
 
 //
@@ -7898,7 +8003,7 @@ function timeOnce( delay,onBegin,onEnd )
  * @memberof wTools
  */
 
-function timeOut( delay,onEnd )
+function timeOut( delay, onEnd )
 {
   var con = _.Consequence ? new _.Consequence() : undefined;
   var timer = null;
@@ -8116,6 +8221,28 @@ function _timeNow_functor()
   now = function(){ return Date().getTime() };
 
   return now;
+}
+
+//
+
+function timeFewer_functor( perTime, routine )
+{
+  let lastTime = _.timeNow() - perTime;
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.numberIs( perTime ) );
+  _.assert( _.routineIs( routine ) );
+
+  return function fewer()
+  {
+    let now = _.timeNow();
+    let elapsed = now - lastTime;
+    if( elapsed < perTime )
+    return;
+    lastTime = now;
+    return routine.apply( this, arguments );
+  }
+
 }
 
 //
@@ -20645,7 +20772,21 @@ var Routines =
 
   /* !!! move out */
 
+  /* qqq : add test coverage -> */
+
+  _regexpTest : _regexpTest,
   regexpTest : regexpTest,
+
+  regexpTestAll : regexpTestAll,
+  regexpTestAny : regexpTestAny,
+  regexpTestNone : regexpTestNone,
+
+  regexpsTestAll : regexpsTestAll,
+  regexpsTestAny : regexpsTestAny,
+  regexpsTestNone : regexpsTestNone,
+
+  /* <- qqq : add test coverage */
+
   regexpEscape : regexpEscape,
   regexpsEscape : _.Later( _, routineVectorize_functor, regexpEscape ),
 
@@ -20688,6 +20829,8 @@ var Routines =
 
   _timeNow_functor : _timeNow_functor,
   timeNow : _.Later( _, _timeNow_functor ),
+
+  timeFewer_functor : timeFewer_functor,
 
   timeFrom : timeFrom,
   timeSpent : timeSpent,

@@ -539,7 +539,7 @@ IncludeHandlersMap[ 'wVocabulary' ] =
 
 IncludeHandlersMap[ 'wCommandsAggregator' ] =
 {
-  includeAny : [ '../../amid/layer7/CommandsAggregator.s','amid/layer7/CommandsAggregator.s','wcommandsaggregator' ],
+  includeAny : [ '../../amid/l7/CommandsAggregator.s','amid/l7/CommandsAggregator.s','wcommandsaggregator' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsAggregator },
 }
 
@@ -593,13 +593,13 @@ IncludeHandlersMap[ 'wStateSession' ] =
 
 IncludeHandlersMap[ 'wPathTranslator' ] =
 {
-  includeAny : [ '../../amid/path/PathTranslator.s','amid/path/PathTranslator.s','wpathtranslator' ],
+  includeAny : [ '../../amid/l5/PathTranslator.s','amid/l5/PathTranslator.s','wpathtranslator' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
 }
 
 IncludeHandlersMap[ 'wFileExecutor' ] =
 {
-  includeAny : [ '../../../dwtools/amid/executor/FileExecutor.s','amid/executor/FileExecutor.s','wFileExecutor' ],
+  includeAny : [ '../../../dwtools/amid/l7/executor/FileExecutor.s', 'amid/l7/executor/FileExecutor.s', 'wFileExecutor' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.wFileExecutor },
 }
 

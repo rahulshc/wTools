@@ -947,7 +947,7 @@ function assertOwnNoConstructor( ins )
   args[ 0 ] = _.checkOwnNoConstructor( ins );
 
   if( args.length === 1 )
-  args.push( () => 'entity should not own constructor, but own ' + _.toStrShort( ins ) );
+  args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
 
   _.assert.apply( _, args );
 }
