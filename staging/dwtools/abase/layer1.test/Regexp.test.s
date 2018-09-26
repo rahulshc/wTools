@@ -721,6 +721,99 @@ function regexpsAll( test )
 
 }
 
+//
+
+function _regexpTest( test )
+{
+  var context = this;
+
+  test.case = 'identical strings';
+
+  var r1 = 'abc';
+  var r2 = 'abc';
+  var expected = true;
+  var got = _._regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'different strings';
+
+  var r1 = 'abc';
+  var r2 = 'abcd';
+  var expected = false;
+  var got = _._regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Regexp in string';
+
+  var r1 = /abc/;
+  var r2 = 'abcd';
+  var expected = true;
+  var got = _._regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Regexp not in string';
+
+  var r1 = /.abc/;
+  var r2 = 'abcd';
+  var expected = false;
+  var got = _._regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexp in string';
+
+  var r1 = /\d+(?!\.)/;
+  var r2 = 'abcd3';
+  var expected = true;
+  var got = _._regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexp not in string';
+
+  var r1 = /\d+(?=\.)/;
+  var r2 = 'abcd4';
+  var expected = false;
+  var got = _._regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'none argument';
+
+  test.shouldThrowErrorSync( () => _._regexpTest() );
+
+  test.case = 'not enough arguments';
+
+  test.shouldThrowErrorSync( () => _._regexpTest( 'ab' ) );
+
+  test.case = 'too many arguments';
+
+  test.shouldThrowErrorSync( () => _._regexpTest( 'ab', 'cd', 'ef' ) );
+
+  test.case = 'wrong order of arguments';
+
+  test.shouldThrowErrorSync( () => _._regexpTest([ 'Hello', /o/ ]) );
+
+  test.case = 'null';
+
+  test.shouldThrowErrorSync( () => _._regexpTest([ null, 'Hello' ]) );
+  test.shouldThrowErrorSync( () => _._regexpTest([ 'Hello', null ]) );
+
+  test.case = 'NaN';
+
+  test.shouldThrowErrorSync( () => _._regexpTest([ 'Hello', NaN ]) );
+  test.shouldThrowErrorSync( () => _._regexpTest([ NaN, 'Hello' ]) );
+
+  test.case = 'array';
+
+  test.shouldThrowErrorSync( () => _._regexpTest([ [], /o/ ]) );
+  test.shouldThrowErrorSync( () => _._regexpTest([  /o/, [] ]) );
+
+}
+
+
 // --
 // suite definition
 // --
@@ -743,6 +836,8 @@ var Self =
     regexpsNone : regexpsNone,
     regexpsAny : regexpsAny,
     regexpsAll : regexpsAll,
+
+    _regexpTest : _regexpTest,
 
   }
 
