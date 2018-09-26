@@ -3,8 +3,8 @@ require( 'wTools' );
 var _ = wTools;
 
 
-var regexp = NaN;
-var str = 'abcdef';
+var regexp = /a/;
+var str = [ 'abcdef', ' a '];
 
-var result = _._regexpTest( regexp, str );
+var result = _.regexpTestAll( regexp, str );
 console.log( result );
