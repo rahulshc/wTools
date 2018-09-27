@@ -2431,6 +2431,65 @@ _strSplitsDropEmpty_body.defaults =
 
 let strSplitsDropEmpty = _.routineForPreAndBody( _strSplitsDropEmpty_pre, _strSplitsDropEmpty_body );
 
+//
+
+function strSplitsGroupCoupled( o )
+{
+  o = _.routineOptions( strSplitsGroupCoupled, arguments );
+
+  o.prefix = _.arrayAs( o.prefix );
+  o.postfix = _.arrayAs( o.postfix );
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.regexpsLike( o.prefix ) );
+  _.assert( _.regexpsLike( o.postfix ) );
+
+  let level = 0;
+  let begins = [];
+  for( let i = 0 ; i < o.splits.length ; i++ )
+  {
+    let element = o.splits[ i ];
+
+    if( _.regexpsTestAny( o.prefix, element ) )
+    {
+      begins.push( i );
+    }
+    else if( _.regexpsTestAny( o.postfix, element ) )
+    {
+      if( begins.length === 0 && !o.allowedUncoupledPostfix )
+      throw _.err( _.strQuote( element ), 'does not have complementing openning\n' );
+
+      if( begins.length === 0 )
+      continue;
+
+      let begin = begins.pop();
+      let end = i;
+      let l = end-begin;
+
+      _.assert( l >= 0 )
+      let newElement = o.splits.splice( begin, l+1, null );
+      o.splits[ begin ] = newElement;
+
+      i -= l;
+    }
+
+  }
+
+  if( begins.length && !o.allowedUncoupledPrefix )
+  throw _.err( _.strQuote( begins[ begins.length-1 ] ), 'does not have complementing closing\n' );
+
+  return o.splits;
+}
+
+strSplitsGroupCoupled.defaults =
+{
+  splits : null,
+  prefix : '"',
+  postfix : '"',
+  allowedUncoupledPrefix : 0,
+  allowedUncoupledPostfix : 0,
+}
+
 // --
 //
 // --
@@ -4401,6 +4460,8 @@ let Proto =
   strSplitsDropDelimeters : strSplitsDropDelimeters,
   strSplitsStrip : strSplitsStrip,
   strSplitsDropEmpty : strSplitsDropEmpty,
+
+  strSplitsGroupCoupled : strSplitsGroupCoupled,
 
   strSplitFast : strSplitFast,
   strSplit : strSplit,
