@@ -3139,20 +3139,30 @@ function entityDiffLoose( test )
   var src1 = { a : { a : 1, b : '2' }, b : [ 1,2 ] };
   var src2 = { a : { a : 1, b : '2' } };
   var got = _.entityDiff( src1, src2 );
+//   var expected =
+// `
+// - src1 :
+// {
+//   a : [ Object with 2 elements ],
+//   b : [ Array with 2 elements ]
+// }
+// - src2 :
+// {
+//   a : [ Object with 2 elements ]
+// }
+// - difference :
+// {
+//   a : [ Object with 2 elements ]*`;
   var expected =
-`
-- src1 :
-{
-  a : [ Object with 2 elements ],
-  b : [ Array with 2 elements ]
-}
+  `
+  - src1 :
+  {
+    b : [ Array with 2 elements ]
+  }
 - src2 :
-{
-  a : [ Object with 2 elements ]
-}
+  {}
 - difference :
-{
-  a : [ Object with 2 elements ]*`;
+  {*`
   test.identical( _.strStrip( got ), _.strStrip( expected ) );
 
   /* */
@@ -3175,22 +3185,29 @@ function entityDiffLoose( test )
   }
 
   var got = _.entityDiff( src1, src2 );
+//   var expected =
+// `at /f
+// - src1 :
+// {
+//   f : [ routine f ],
+//   a : 'reducing',
+//   b : [ Array with 2 elements ],
+//   c : true
+// }
+// - src2 :
+// {
+//   f : [ routine f ],
+//   a : 'reducing',
+//   b : [ Array with 2 elements ],
+//   c : true
+// }`;
   var expected =
-`at /f
-- src1 :
-{
-  f : [ routine f ],
-  a : 'reducing',
-  b : [ Array with 2 elements ],
-  c : true
-}
-- src2 :
-{
-  f : [ routine f ],
-  a : 'reducing',
-  b : [ Array with 2 elements ],
-  c : true
-}`;
+  `
+  at /f
+  - src1 :
+  { f : [ routine f ] }
+  - src2 :
+  { f : [ routine f ] }`
   test.identical( _.strStrip( got ), _.strStrip( expected ) );
 
   if( !Config.debug )
