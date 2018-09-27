@@ -7058,7 +7058,7 @@ function regexpsTestAny( regexps, strs )
   _.assert( arguments.length === 2 );
   _.assert( _.regexpsLike( regexps ) );
 
-  return regexps.every( ( regexp ) => _.regexpTestAny( regexp, strs ) );
+  return regexps.some( ( regexp ) => _.regexpTestAny( regexp, strs ) );
 }
 
 //
