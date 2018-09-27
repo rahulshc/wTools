@@ -7039,10 +7039,11 @@ qqq : add test coverage
 
 function regexpsTestAll( regexps, strs )
 {
+  _.assert( arguments.length === 2 );
+
   if( !_.arrayIs( regexps ) )
   return _.regexpTestAll( regexps, strs );
 
-  _.assert( arguments.length === 2 );
   _.assert( _.regexpsLike( regexps ) );
 
   return regexps.every( ( regexp ) => _.regexpTestAll( regexp, strs ) );
@@ -7052,10 +7053,11 @@ function regexpsTestAll( regexps, strs )
 
 function regexpsTestAny( regexps, strs )
 {
+  _.assert( arguments.length === 2 );
+
   if( !_.arrayIs( regexps ) )
   return _.regexpTestAny( regexps, strs );
 
-  _.assert( arguments.length === 2 );
   _.assert( _.regexpsLike( regexps ) );
 
   return regexps.some( ( regexp ) => _.regexpTestAny( regexp, strs ) );
@@ -7065,10 +7067,11 @@ function regexpsTestAny( regexps, strs )
 
 function regexpsTestNone( regexps, strs )
 {
+  _.assert( arguments.length === 2 );
+
   if( !_.arrayIs( regexps ) )
   return _.regexpTestNone( regexps, strs );
 
-  _.assert( arguments.length === 2 );
   _.assert( _.regexpsLike( regexps ) );
 
   return regexps.every( ( regexp ) => _.regexpTestNone( regexp, strs ) );

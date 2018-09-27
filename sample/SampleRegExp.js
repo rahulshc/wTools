@@ -3,8 +3,7 @@ require( 'wTools' );
 var _ = wTools;
 
 
-var regexp = 'a';
-var str = 'abcdef';
-
-var result = _.regexpTestNone( regexp, str );
+var regexp = [ 'abc', 'def' ];;
+var str = [ 'abc', 'def', 'ghi' ];
+var result = _.regexpsTestAny( regexp, str );
 console.log( result );

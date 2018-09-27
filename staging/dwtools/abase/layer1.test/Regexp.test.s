@@ -815,6 +815,98 @@ function _regexpTest( test )
 
 //
 
+function regexpTest( test )
+{
+  var context = this;
+
+  test.case = 'identical strings';
+
+  var r1 = 'hi';
+  var r2 = 'hi';
+  var expected = true;
+  var got = _.regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Regexp not in string';
+
+  var r1 = /^bc/;
+  var r2 = 'abcd';
+  var expected = false;
+  var got = _.regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexp in string array';
+
+  var r1 = /\d+(?!\.)/;
+  var r2 = [ 'abcd3', '2', 'dwq1!c' ];
+  var expected = [ true, true, true ];
+  var got = _.regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexp in part of string array';
+
+  var r1 = /\d+(?=\.)/;
+  var r2 = [ 'abcd4', '1.5768', 'Hi' ];
+  var expected = [ false, true, false ];
+  var got = _.regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Regexp not in string array';
+
+  var r1 = /^abc{2}$/;
+  var r2 = [ 'abcc4', '1.5768', 'bcc', '0abcc' ];
+  var expected = [ false, false, false, false ];
+  var got = _.regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Regexp in string array once';
+
+  var r1 = /^abc{2}$/;
+  var r2 = [ 'abcc4', '1.5768', 'bcc', '0abcc', 'abcc' ];
+  var expected = [ false, false, false, false, true ];
+  var got = _.regexpTest( r1, r2 );
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'none argument';
+
+  test.shouldThrowErrorSync( () => _.regexpTest() );
+
+  test.case = 'not enough arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpTest( 'ab' ) );
+
+  test.case = 'too many arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpTest( 'ab', 'cd', 'ef' ) );
+
+  test.case = 'wrong order of arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpTest([ 'Hello', /o/ ]) );
+
+  test.case = 'null';
+
+  test.shouldThrowErrorSync( () => _.regexpTest([ null, 'Hello' ]) );
+  test.shouldThrowErrorSync( () => _.regexpTest([ 'Hello', null ]) );
+
+  test.case = 'NaN';
+
+  test.shouldThrowErrorSync( () => _.regexpTest([ 'Hello', NaN ]) );
+  test.shouldThrowErrorSync( () => _.regexpTest([ NaN, 'Hello' ]) );
+
+  test.case = 'array';
+
+  test.shouldThrowErrorSync( () => _.regexpTest([ [], 's' ]) );
+  test.shouldThrowErrorSync( () => _.regexpTest([  /o/, [] ]) );
+
+}
+
+//
+
 function regexpTestAll( test )
 {
   var context = this;
@@ -1195,7 +1287,7 @@ function regexpTestNone( test )
 
   test.case = 'Conditional regexp in one string array';
 
-  var r1 = /\d+(?!\.)|\d+(?=\.)/;
+  var r1 = /\d+(?!\.)|\d+(?!\!)/;
   var r2 = [ 'abcd3', 'abcd', 'fgh' ];
   var expected = false;
   var got = _.regexpTestNone( r1, r2 );
@@ -1246,6 +1338,394 @@ function regexpTestNone( test )
 
 }
 
+//
+
+function regexpsTestAll( test )
+{
+  var context = this;
+
+  test.case = 'identical strings';
+
+  var r1 = 'abc';
+  var r2 = 'abc';
+  var expected = true;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'different strings';
+
+  var r1 = 'abc';
+  var r2 = 'abcd';
+  var expected = false;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'identical strings array';
+
+  var r1 = [ 'abc', 'abc' ];
+  var r2 = 'abc';
+  var expected = true;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'different strings array';
+
+  var r1 = [ 'abc', 'a', 'b', 'c' ];
+  var r2 = 'abc';
+  var expected = false;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps in string';
+
+  var r1 = /b/;
+  var r2 = 'abcd';
+  var expected = true;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps not in string';
+
+  var r1 = /.a/;
+  var r2 = 'abcd';
+  var expected = false;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps array in string';
+
+  var r1 = [ /a/, /b/, /c/ ];
+  var r2 = 'abc';
+  var expected = true;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps array not in string';
+
+  var r1 = [ /a/, /b/, /c/, /d/, /e/ ];
+  var r2 = 'abcd';
+  var expected = false ;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexps in string';
+
+  var r1 = /\d|a/;
+  var r2 = 'abcd3';
+  var expected = true;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexps not in string';
+
+  var r1 = /\d(?=\.)/;
+  var r2 = 'abcd4';
+  var expected = false;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexps array not in string';
+
+  var r1 = [ /\d+(?!\.)/, /\d+(?=\.)/ ];
+  var r2 = 'abcd3';
+  var expected = false;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexps array in string';
+
+  var r1 = [ /[^fdh]/, /\d+(?!\.)/ ];
+  var r2 = 'abcd4';
+  var expected = true;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Regexps array in string array';
+
+  var r1 = [ /[^fdh]/, /\d+(?!\.)/ ];
+  var r2 = [ 'abcd4', 'd3,', '7' ];
+  var expected = true;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Regexps array not in part of string array';
+
+  var r1 = [ /[^fdh]/, /\d+(?!\.)/ ];
+  var r2 = [ 'abcd4', 'd3,', '7', 'd' ];
+  var expected = false;
+  var got = _.regexpsTestAll( r1, r2 );
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'none argument';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAll() );
+
+  test.case = 'not enough arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAll( 'ab' ) );
+
+  test.case = 'too many arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAll( 'ab', 'cd', 'ef' ) );
+
+  test.case = 'wrong order of arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAll([ 'Hello', /o/ ]) );
+
+  test.case = 'null';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAll([ null, 'Hello' ]) );
+  test.shouldThrowErrorSync( () => _.regexpsTestAll([ 'Hello', null ]) );
+
+  test.case = 'NaN';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAll([ 'Hello', NaN ]) );
+  test.shouldThrowErrorSync( () => _.regexpsTestAll([ NaN, 'Hello' ]) );
+
+  test.case = 'array';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAll([ 'h', [] ]) );
+
+}
+
+//
+
+function regexpsTestAny( test )
+{
+
+  var context = this;
+
+  test.case = 'One different regexp';
+
+  var r1 = [ 'abc', 'def' ];
+  var r2 = 'abc';
+  var expected = false;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Identical regexp and string arrays';
+
+  var r1 = [ 'abc', 'def' ];
+  var r2 = [ 'abc', 'def' ];
+  var expected = true;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'String array with one no- match';
+
+  var r1 = [ 'abc', 'def' ];
+  var r2 = [ 'abc', 'def', 'ghi' ];
+  var expected = true;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'different regexp array';
+
+  var r1 = [ 'abd', 'a', 'b', 'c' ];
+  var r2 = 'abc';
+  var expected = false;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps in string';
+
+  var r1 = /b/;
+  var r2 = 'abcd';
+  var expected = true;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps not in string';
+
+  var r1 = /.a/;
+  var r2 = 'abcd';
+  var expected = false;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps array with one no-match in string ';
+
+  var r1 = [ /[abc]/, /.a/, /\d/ ];
+  var r2 = 'dabcd';
+  var expected = false;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'No regexps in string -  array';
+
+  var r1 = [ /[abc]/, /.a/, /\d/ ];;
+  var r2 = 'ijkl';
+  var expected = false;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexps in one string array';
+
+  var r1 = [ /\d+(?!\.)/, /\d+(?=\!)/ ];
+  var r2 = [ 'abcd3', 'abcd', 'fg2!h' ];
+  var expected = true;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'Conditional regexps not in string array';
+
+  var r1 = [ /[^f-h]/, /[ab]/ ];
+  var r2 = [ 'fg', 'fh', 'h' ];
+  var expected = false;
+  var got = _.regexpsTestAny( r1, r2 );
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'none argument';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAny() );
+
+  test.case = 'not enough arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAny( 'ab' ) );
+
+  test.case = 'too many arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAny( 'ab', 'cd', 'ef' ) );
+
+  test.case = 'wrong order of arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAny([ 'Hello', /o/ ]) );
+
+  test.case = 'null';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAny([ null, 'Hello' ]) );
+  test.shouldThrowErrorSync( () => _.regexpsTestAny([ 'Hello', null ]) );
+
+  test.case = 'NaN';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAny([ 'Hello', NaN ]) );
+  test.shouldThrowErrorSync( () => _.regexpsTestAny([ NaN, 'Hello' ]) );
+
+  test.case = 'array';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestAny([ 'h', [] ]) );
+
+}
+
+//
+
+function regexpsTestNone( test )
+{
+
+  var context = this;
+
+  test.case = 'identical strings';
+
+  var r1 = 'abc';
+  var r2 = 'abc';
+  var expected = false;
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'different strings';
+
+  var r1 = 'c';
+  var r2 = 'abcd';
+  var expected = true;
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'One identical string, array';
+
+  var r1 = 'abc';
+  var r2 = [ 'abc', 'abcd' ];
+  var expected = false;
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'One identical string, array';
+
+  var r1 = [ 'abc', 'abcd' ];
+  var r2 = 'abc';
+  var expected = false;
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'different strings array';
+
+  var r1 = [ 'abc', /\d/ ];
+  var r2 = [ 'abd', 'a', 'b', 'c' ];
+  var expected = true;
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps in string';
+
+  var r1 = [ /b/, /c$/ ];
+  var r2 = [ 'abc', 'hij', '6' ];
+  var expected = false;
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'regexps not in string';
+
+  var r1 = [ /ba+/, /^\s/ ];
+  var r2 = [ 'bcd', 'a a', '7633.32' ];
+  var expected = true;
+
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  test.case = 'one regexps in only one string array';
+
+  var r1 = [ /.abc/, /\d$/];
+  var r2 = [ 'dabcd', 'efgh', 'ijkl' ];
+  var expected = false;
+  var got = _.regexpsTestNone( r1, r2 );
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'none argument';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestNone() );
+
+  test.case = 'not enough arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestNone( 'ab' ) );
+
+  test.case = 'too many arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestNone( 'ab', 'cd', 'ef' ) );
+
+  test.case = 'wrong order of arguments';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestNone([ 'Hello', /o/ ]) );
+
+  test.case = 'null';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestNone([ null, 'Hello' ]) );
+  test.shouldThrowErrorSync( () => _.regexpsTestNone([ 'Hello', null ]) );
+
+  test.case = 'NaN';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestNone([ 'Hello', NaN ]) );
+  test.shouldThrowErrorSync( () => _.regexpsTestNone([ NaN, 'Hello' ]) );
+
+  test.case = 'array';
+
+  test.shouldThrowErrorSync( () => _.regexpsTestNone([ 'h', [] ]) );
+
+}
+
 
 
 // --
@@ -1272,9 +1752,15 @@ var Self =
     regexpsAll : regexpsAll,
 
     _regexpTest : _regexpTest,
+    regexpTest : regexpTest,
+
     regexpTestAll : regexpTestAll,
     regexpTestAny : regexpTestAny,
     regexpTestNone : regexpTestNone,
+
+    regexpsTestAll : regexpsTestAll,
+    regexpsTestAny : regexpsTestAny,
+    regexpsTestNone : regexpsTestNone,
 
   }
 
