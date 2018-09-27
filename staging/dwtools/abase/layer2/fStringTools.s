@@ -359,59 +359,6 @@ function strRemoveBegin( src,begin )
   return result;
 }
 
-// function strRemoveBegin( src,begin )
-// {
-//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-//   _.assert( _.longIs( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
-//   _.assert( _.longIs( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
-//
-//   let result = [];
-//   let srcIsArray = _.longIs( src );
-//
-//   if( _.strIs( src ) && !_.longIs( begin ) )
-//   return _._strRemovedBegin( src, begin );
-//
-//   src = _.arrayAs( src );
-//   begin = _.arrayAs( begin );
-//   for( let s = 0, slen = src.length ; s < slen ; s++ )
-//   {
-//     // let seen = [];
-//     let beginOf = false;
-//     let src1 = src[ s ]
-//     for( let b = 0, blen = begin.length ; b < blen ; b++ )
-//     {
-//       // if( seen[ b ] )
-//       // continue;
-//
-//       beginOf = _._strBeginOf( src1, begin[ b ] );
-//       if( beginOf !== false )
-//       {
-//         break;
-//       }
-//
-//       // let result1 = _._strRemovedBegin( src1, begin[ b ] );
-//       // if( result1 !== src1 && blen > 1 )
-//       // if( beginOf !== false && blen > 1 )
-//       // {
-//       //   seen[ b ] = 1;
-//       //   b = -1;
-//       // }
-//       // src1 = result1;
-//     }
-//     if( beginOf !== false )
-//     {
-//       // _.assert( beginOf );
-//       src1 = src1.substr( beginOf.length, src1.length );
-//     }
-//     result[ s ] = src1;
-//   }
-//
-//   if( !srcIsArray )
-//   return result[ 0 ];
-//
-//   return result;
-// }
-
 //
 
 function _strRemovedEnd( src, end )
@@ -426,32 +373,6 @@ function _strRemovedEnd( src, end )
 
   return result;
 }
-
-// {
-//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-//   _.assert( _.strIs( src ), 'expects string {-src-}' );
-//
-//   let result = src;
-// xxx
-//   if( _.strIs( end ) )
-//   {
-//     if( _._strEnds( result, end ) )
-//     {
-//       result = result.substr( end.length, result.length );
-//       return result;
-//     }
-//   }
-//   else if( _.regexpIs( end ) )
-//   {
-//     let matched = end.exec( result );
-//     if( matched && matched.index === 0 )
-//     result = result.substring( matched[ 0 ].length, result.length );
-//     return result;
-//   }
-//   else _.assert( 0,'expects string or regexp {-begin-}' );
-//
-//   return result;
-// }
 
 //
 
@@ -2155,9 +2076,8 @@ strSplitChunks.defaults =
 
 //
 
-function _strSplitsQuote_pre( routine, args )
+function _strSplitsQuotedRejoin_pre( routine, args )
 {
-  _.assert( !!args ); // xxx
   let o = args[ 0 ];
 
   _.routineOptions( routine, o );
@@ -2196,7 +2116,7 @@ function _strSplitsQuote_pre( routine, args )
 
 //
 
-function _strSplitsQuote_body( o )
+function _strSplitsQuotedRejoin_body( o )
 {
 
   _.assert( arguments.length === 1 );
@@ -2205,7 +2125,7 @@ function _strSplitsQuote_body( o )
   /* quoting */
 
   if( o.quoting )
-  for( let s = 1 ; s < o.splits.length ; s += 2 )
+  for( let s = 1 ; s < o.splits.length ; s += 1 )
   {
     let split = o.splits[ s ];
     let s2;
@@ -2214,21 +2134,29 @@ function _strSplitsQuote_body( o )
     if( q >= 0 )
     {
       let postfix = o.quotingPostfixes[ q ];
-      for( s2 = s+2 ; s2 < o.splits.length ; s2 += 2 )
+      for( s2 = s+2 ; s2 < o.splits.length ; s2 += 1 )
       {
         let split2 = o.splits[ s2 ];
         if( split2 === postfix )
         {
-          if( o.quotingRejoining )
+          let bextra = 0;
+          let eextra = 0;
+          if( o.inliningQuoting )
           {
-            // debugger;
             s -= 1;
-            s2 += 2;
+            bextra += 1;
+            s2 += 1;
+            eextra += 1;
           }
-          // debugger;
-          let splitNew = o.splits.splice( s, s2-s ).join( '' );
-          o.splits[ s ] = splitNew + o.splits[ s ];
-          // debugger;
+          let splitNew = o.splits.splice( s, s2-s+1, null );
+          if( !o.preservingQuoting )
+          {
+            splitNew.splice( bextra, 1 );
+            splitNew.splice( splitNew.length-1-eextra, 1 );
+          }
+          splitNew = splitNew.join( '' );
+          o.splits[ s ] = splitNew;
+          s2 = s;
           break;
         }
       }
@@ -2243,6 +2171,9 @@ function _strSplitsQuote_body( o )
         let splitNew = o.splits.splice( s, 2 ).join( '' );
         o.splits[ s-1 ] = o.splits[ s-1 ] + splitNew;
       }
+      else
+      {
+      }
     }
 
   }
@@ -2250,19 +2181,21 @@ function _strSplitsQuote_body( o )
   return o.splits;
 }
 
-_strSplitsQuote_body.defaults =
+_strSplitsQuotedRejoin_body.defaults =
 {
   quoting : 1,
   quotingPrefixes : null,
   quotingPostfixes : null,
-  quotingRejoining : 0,
+  preservingQuoting : 1,
+  inliningQuoting : 1,
+  // quotingRejoining : 0,
   splits : null,
   delimeter : null,
 }
 
 //
 
-let strSplitsQuote = _.routineForPreAndBody( _strSplitsQuote_pre, _strSplitsQuote_body );
+let strSplitsQuotedRejoin = _.routineForPreAndBody( _strSplitsQuotedRejoin_pre, _strSplitsQuotedRejoin_body );
 
 // --
 //
@@ -2745,7 +2678,7 @@ function _strSplit_body( o )
   o.splits = _.strSplitFast.body( fastOptions );
 
   if( o.quoting )
-  _.strSplitsQuote.body( o );
+  _.strSplitsQuotedRejoin.body( o );
 
   if( !o.preservingDelimeters )
   _.strSplitsDropDelimeters.body( o );
@@ -2765,10 +2698,12 @@ var defaults = _strSplit_body.defaults = Object.create( _strSplitFast_body.defau
 
 defaults.preservingEmpty = 1;
 defaults.preservingDelimeters = 1;
+defaults.preservingQuoting = 1;
+defaults.inliningQuoting = 1;
 
 defaults.stripping = 1;
 defaults.quoting = 1;
-defaults.quotingRejoining = 0;
+// defaults.quotingRejoining = 0;
 defaults.quotingPrefixes = null;
 defaults.quotingPostfixes = null;
 
@@ -2828,7 +2763,7 @@ defaults.onQuote = null;
  *
  */
 
-let pre = [ strSplitFast.pre, strSplitsQuote.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
+let pre = [ strSplitFast.pre, strSplitsQuotedRejoin.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
 let strSplit = _.routineForPreAndBody( pre, _strSplit_body );
 
 _.assert( strSplit.pre !== strSplitFast.pre );
@@ -4456,7 +4391,7 @@ let Proto =
   strSplitStrNumber : strSplitStrNumber, /* experimental */
   strSplitChunks : strSplitChunks, /* experimental */
 
-  strSplitsQuote : strSplitsQuote,
+  strSplitsQuotedRejoin : strSplitsQuotedRejoin,
   strSplitsDropDelimeters : strSplitsDropDelimeters,
   strSplitsStrip : strSplitsStrip,
   strSplitsDropEmpty : strSplitsDropEmpty,
