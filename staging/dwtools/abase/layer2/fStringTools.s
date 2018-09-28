@@ -367,8 +367,6 @@ function _strRemovedEnd( src, end )
   _.assert( _.strIs( src ), 'expects string {-src-}' );
 
   let result = src;
-  debugger;
-  logger.log('RESULT', result)
   let endOf = _._strEndOf( result, end );
   if( endOf !== false )
   result = result.substr( 0, result.length - endOf.length );
@@ -479,7 +477,8 @@ function strReplaceBegin( src,begin,ins )
   {
     let prefix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( prefix ) );
-    result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
+    //result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
+    result[ k ] = prefix + _.strRemoveBegin( result[ k ] , begin[ j ] );
     break;
   }
 
@@ -505,9 +504,12 @@ function strReplaceEnd( src,end,ins )
   for( let j = 0, endLength = end.length; j < endLength; j++ )
   if( _.strEnds( result[ k ],end[ j ] ) )
   {
+    logger.log( result[ k ] , end[ j ] )
+    logger.log('It ends')
     let postfix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( postfix ) );
-    result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
+    // result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
+    result[ k ] = _.strRemoveEnd( result[ k ] , end[ j ] ) + postfix;
   }
 
   if( result.length === 1 && _.strIs( src ) )

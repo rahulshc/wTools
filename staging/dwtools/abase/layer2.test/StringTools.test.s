@@ -445,6 +445,12 @@ function strRemoveEnd( test )
   expected = 'exa';
   test.identical( got, expected );
 
+  /**/
+
+  got = _.strRemoveEnd( [ 'example', '1example', 'example2', 'exam3ple' ], [ /\d/, /e/, /^3/ ] );
+  expected = [ 'exampl', '1exampl', 'example', 'exam3pl' ];
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -544,13 +550,47 @@ function strReplaceBegin( test )
 
   got = _.strReplaceBegin( [ 'a', 'ab', 'ac' ], 'a', [ 'x', 'y', 'z' ] );
   expected = [ 'x', 'xb', 'xc' ];
+  test.identical( got, expected );  /* - */
+
+  /**/
+
+  test.case = 'RegExp';
+
+  /**/
+
+  got = _.strReplaceBegin( 'example', /exa/, 'si' );
+  expected = 'simple';
   test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'example', /ex$/, 'no' );
+  expected = 'example';
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'example', 'lexical' ], [ /^le/, /ex$/, /\w{3}/ ], [ 'a', 'b', 'si' ]  );
+  expected = [ 'simple', 'axical' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'example', 'lexical' ], [ /^le/, /ex$/, /\w{3}/ ], 'si' );
+  expected = [ 'simple', 'sixical' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'example1', '3example', 'exam4ple' ], /\d/, '2' );
+  expected = [ 'example1', '2example', 'exam4ple' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( [ 'example', '1example', 'example2', 'exam3ple' ], [ /\d/, /e/, /^3/ ], [ '3', '2', '1' ]  );
+  expected = [ '2xample', '3example', '2xample2', '2xam3ple' ];
+  test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
   test.shouldThrowError( () => _.strReplaceBegin() );
   test.shouldThrowError( () => _.strReplaceBegin( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( '' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 1, '', '', '' ) );
   test.shouldThrowError( () => _.strReplaceBegin( 'a', 1, '' ) );
   test.shouldThrowError( () => _.strReplaceBegin( 'a', 'a', 1 ) );
   test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'x', 1 ], 'a' ) );
@@ -621,6 +661,38 @@ function strReplaceEnd( test )
   got = _.strReplaceEnd( [ 'a', 'ab', 'ca' ], 'a', [ 'x', 'y', 'z' ] );
   expected = [ 'x', 'ab', 'cx' ];
   test.identical( got, expected );
+
+  /**/
+
+  test.case = 'RegExp';
+
+  /**/
+
+  got = _.strReplaceEnd( 'example', /ple/, 'en' );
+  expected = 'examen';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'example', /^le/, 'no' );
+  expected = 'example';
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'example', 'lexical' ], [ /^le/, /ex$/, /\w{3}/ ], [ 'a', 'b', 'en' ]  );
+  expected = [ 'examen', 'lexien' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'example', 'lexical' ], [ /al$/, /ex$/, /\w{3}/ ], 'en' );
+  expected = [ 'examen', 'lexien' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'example1', '3example', 'exam4ple' ], /\d/, '2' );
+  expected = [ 'example2', '3example', 'exam4ple' ];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( [ 'example', '1example', 'example2', 'exam2ple' ], [ /\d/, /e/, /^3/ ], [ '3', '2', '1' ]  );
+  expected = [ 'exampl2', '1exampl2', 'example3', 'exam2pl2' ];
+  test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
