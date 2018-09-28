@@ -477,7 +477,8 @@ function strReplaceBegin( src,begin,ins )
   {
     let prefix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( prefix ) );
-    result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
+    //result[ k ] = prefix + result[ k ].substr( begin[ j ].length,result[ k ].length );
+    result[ k ] = prefix + _.strRemoveBegin( result[ k ] , begin[ j ] );
     break;
   }
 
@@ -503,9 +504,12 @@ function strReplaceEnd( src,end,ins )
   for( let j = 0, endLength = end.length; j < endLength; j++ )
   if( _.strEnds( result[ k ],end[ j ] ) )
   {
+    logger.log( result[ k ] , end[ j ] )
+    logger.log('It ends')
     let postfix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( postfix ) );
-    result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
+    // result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length ) + postfix;
+    result[ k ] = _.strRemoveEnd( result[ k ] , end[ j ] ) + postfix;
   }
 
   if( result.length === 1 && _.strIs( src ) )
@@ -537,6 +541,7 @@ function strReplaceEnd( src,end,ins )
 
 function strPrependOnce( src,begin )
 {
+  _.assert( _.strIs( src ) && _.strIs( begin ),'expects {-src-} and {-begin-} as strings' );
   if( src.lastIndexOf( begin,0 ) === 0 )
   return src;
   else
@@ -546,7 +551,7 @@ function strPrependOnce( src,begin )
 //
 
 /**
-  * Appends string( begin ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
+  * Appends string( end ) to the source( src ) if postfix( end ) is not match with last chars of string( src ),
   * otherwise returns original string.
   * @param {string} src - Source string to parse.
   * @param {string} end - String to append.
@@ -566,7 +571,8 @@ function strPrependOnce( src,begin )
 
 function strAppendOnce( src,end )
 {
-  if( src.indexOf( end,src.length - end.length ) !== -1 )
+  _.assert( _.strIs( src ) && _.strIs( end ),'expects {-src-} and {-end-} as strings' );
+  if( src.indexOf( end, src.length - end.length ) !== -1 )
   return src;
   else
   return src + end;

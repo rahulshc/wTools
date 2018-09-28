@@ -6611,9 +6611,12 @@ function _strEndOf( src, end )
   }
   else if( _.regexpIs( end ) )
   {
+    // var matched = end.exec( src );
+    var newEnd = RegExp( end.toString().slice(1,-1) + '$' );
+    var matched = newEnd.exec( src );
     debugger;
-    var matched = end.exec( src );
-    if( matched && matched.index === 0 )
+    //if( matched && matched.index === 0 )
+    if( matched && matched.index + matched[ 0 ].length === src.length )
     return matched[ 0 ];
   }
   else _.assert( 0, 'expects string or regexp' );
