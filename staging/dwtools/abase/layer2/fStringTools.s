@@ -420,6 +420,8 @@ function _strRemovedEnd( src, end )
   _.assert( _.strIs( src ), 'expects string {-src-}' );
 
   let result = src;
+  debugger;
+  logger.log('RESULT', result)
   let endOf = _._strEndOf( result, end );
   if( endOf !== false )
   result = result.substr( 0, result.length - endOf.length );

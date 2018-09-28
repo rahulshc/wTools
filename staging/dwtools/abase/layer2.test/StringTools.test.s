@@ -51,6 +51,11 @@ function strRemoveBegin( test )
   var expected = 'mple';
   test.identical( got,expected );
 
+  test.case = 'returns original if occurence is not at the beginning';
+  var got = _.strRemoveBegin( 'example','ple' );
+  var expected = 'example';
+  test.identical( got,expected );
+
   /* - */
 
   test.case = 'other';
@@ -99,13 +104,13 @@ function strRemoveBegin( test )
 
   /**/
 
-  got = _.strRemoveBegin( 'abc', '' );
-  expected = 'abc';
+  got = _.strRemoveBegin( 'abc', [ 'a', 'b', 'c' ] );
+  expected = 'bc';
   test.identical( got, expected );
 
   /**/
 
-  got = _.strRemoveBegin( 'abc', [ 'a', 'b', 'c' ] );
+  got = _.strRemoveBegin( 'abc', [ 'b', 'c', 'a' ] );
   expected = 'bc';
   test.identical( got, expected );
 
@@ -153,6 +158,12 @@ function strRemoveBegin( test )
 
   /**/
 
+  got = _.strRemoveBegin( [ 'abcabc', 'bcabca', 'cabcab' ], [ 'b', 'c', 'a' ] );
+  expected = [ 'bcabc', 'cabca', 'abcab' ];
+  test.identical( got, expected );
+
+  /**/
+
   got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ 'x' ] );
   expected = [ 'a', 'b', 'c' ];
   test.identical( got, expected );
@@ -168,6 +179,62 @@ function strRemoveBegin( test )
   got = _.strRemoveBegin( [ 'a', 'b', 'c' ], [ ] );
   expected = [ 'a', 'b', 'c' ];
   test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'RegExp';
+
+  /**/
+
+  got = _.strRemoveBegin( 'example', /ex/ );
+  expected = 'ample';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'example', 'examplex' ] , /ex\z/ );
+  expected = [ 'example', 'examplex' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( [ 'example', '1example', 'example2', 'exam3ple' ], /\d/ );
+  expected = [ 'example', 'example', 'example2', 'exam3ple' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'example', [ /am/ ] );
+  expected = 'example';
+  test.identical( got, expected );
+
+
+  /**/
+
+  got = _.strRemoveBegin( 'example', [ /ex/, /\w/ ] );
+  expected = 'ample';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'example', [ /\w/, /ex/ ] );
+  expected = 'xample';
+  test.identical( got, expected );
+
+
+  /**/
+
+  got = _.strRemoveBegin( 'example', /[axe]/ );
+  expected = 'xample';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveBegin( 'example', /\w{4}/ );
+  expected = 'ple';
+  test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -202,6 +269,13 @@ function strRemoveBegin( test )
     _.strRemoveBegin( '1',2 );
   });
 
+  test.case = 'second argument is array with wrong element';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveBegin( '1', [ ' a', 2 ] );
+  });
+
+
 }
 
 //
@@ -217,6 +291,11 @@ function strRemoveEnd( test )
 
   test.case = 'returns original if no occurrence found ';
   var got = _.strRemoveEnd( 'example','' );
+  var expected = 'example';
+  test.identical( got,expected );
+
+  test.case = 'returns original if occurrence is not at the end ';
+  var got = _.strRemoveEnd( 'example','exa' );
   var expected = 'example';
   test.identical( got,expected );
 
@@ -280,6 +359,12 @@ function strRemoveEnd( test )
 
   /**/
 
+  got = _.strRemoveEnd( 'abc', [ '', 'c' ] );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
   got = _.strRemoveEnd( 'abc', [ 'abc', 'a' ] );
   expected = '';
   test.identical( got, expected );
@@ -313,6 +398,54 @@ function strRemoveEnd( test )
   got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ ] );
   expected = [ 'a', 'b', 'c' ];
   test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'RegExp';
+
+  /**/
+
+  got = _.strRemoveEnd( 'example', /ple/ );
+  expected = 'exam';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'example', /le$/ );
+  expected = 'examp';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'example', /^le/ );
+  expected = 'example';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'example', /\d/ );
+  expected = 'example';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'example', /am/ );
+  expected = 'example';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'example', /[axe]/ );
+  expected = 'exampl';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemoveEnd( 'example', /\w{4}/ );
+  expected = 'exa';
+  test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
