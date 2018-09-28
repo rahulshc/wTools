@@ -699,6 +699,8 @@ function strReplaceEnd( test )
 
   test.shouldThrowError( () => _.strReplaceEnd() );
   test.shouldThrowError( () => _.strReplaceEnd( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( '' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 1, '', '', '' ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', 1, '' ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', 'a', 1 ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'x', 1 ], 'a' ) );
@@ -752,6 +754,33 @@ function strPrependOnce( test )
   expected = 'ab';
   test.identical( got, expected );
 
+  /**/
+
+  got = _.strPrependOnce( 'morning', 'Good ' );
+  expected = 'Good morning';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strPrependOnce( 'Good morning', 'Good ' );
+  expected = 'Good morning';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strPrependOnce() );
+  test.shouldThrowError( () => _.strPrependOnce( null, '' ) );
+  test.shouldThrowError( () => _.strPrependOnce( '', null ) );
+  test.shouldThrowError( () => _.strPrependOnce( NaN, '' ) );
+  test.shouldThrowError( () => _.strPrependOnce( '', NaN ) );
+  test.shouldThrowError( () => _.strPrependOnce( 3, '' ) );
+  test.shouldThrowError( () => _.strPrependOnce( '', 3 ) );
+  test.shouldThrowError( () => _.strPrependOnce( [], '' ) );
+  test.shouldThrowError( () => _.strPrependOnce( '', [] ) );
+
 }
 
 //
@@ -799,6 +828,33 @@ function strAppendOnce( test )
   got = _.strAppendOnce( 'ab', '' );
   expected = 'ab';
   test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'Good ', 'morning' );
+  expected = 'Good morning';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strAppendOnce( 'Good morning', 'morning' );
+  expected = 'Good morning';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strAppendOnce() );
+  test.shouldThrowError( () => _.strAppendOnce( null, '' ) );
+  test.shouldThrowError( () => _.strAppendOnce( '', null ) );
+  test.shouldThrowError( () => _.strAppendOnce( NaN, '' ) );
+  test.shouldThrowError( () => _.strAppendOnce( '', NaN ) );
+  test.shouldThrowError( () => _.strAppendOnce( 3, '' ) );
+  test.shouldThrowError( () => _.strAppendOnce( '', 3 ) );
+  test.shouldThrowError( () => _.strAppendOnce( [], '' ) );
+  test.shouldThrowError( () => _.strAppendOnce( '', [] ) );
 
 }
 

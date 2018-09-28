@@ -3,5 +3,5 @@ require( 'wTools' );
 var _ = wTools;
 
 
-got =_.strReplaceEnd( 'example', /ple/, 'en' );
+  got = _.strPrependOnce( [ 'a', 'b' ], 'Good' );
 console.log( got );
