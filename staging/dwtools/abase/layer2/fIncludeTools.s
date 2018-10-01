@@ -605,7 +605,7 @@ IncludeHandlersMap[ 'wFileExecutor' ] =
 
 IncludeHandlersMap[ 'wFileExecutorHtmlFormatters' ] =
 {
-  includeAny : [ '../../../dwtools/amid/executor/HtmlFormatters.s','amid/executor/HtmlFormatters.s','wFileExecutorHtmlFormatters' ],
+  includeAny : [ '../../../dwtools/amid/l7/executor/HtmlFormatters.s','amid/l7/executor/HtmlFormatters.s','wFileExecutorHtmlFormatters' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileExecutorHtmlFormatters },
 }
 
