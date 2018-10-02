@@ -7727,57 +7727,57 @@ function regexpArrayNone( arr, ins, ifEmpty )
   return arr.length ? true : ifEmpty;
 }
 
+// //
 //
-
-/**
- * Make RegexpObject from different type sources.
-    If passed RegexpObject or map with properties similar to RegexpObject but with string in values, then the second
- parameter is not required;
-    All strings in sources will be turned into RegExps.
-    If passed single RegExp/String or array of RegExps/Strings, then routine will return RegexpObject with
- `defaultMode` as key, and array of RegExps created from first parameter as value.
-    If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
- with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
- with `defaultMode` key.
- *
- * @example
-   var src = [
-       /hello/,
-       'world',
-       {
-          includeAny : ['yellow', 'blue', 'red'],
-          includeAll : [/red/, /green/, /brown/],
-          excludeAny : [/yellow/, /white/, /grey/],
-          excludeAll : [/red/, /green/, /blue/]
-       }
-   ];
-   wTools.regexpMakeObject(src, 'excludeAll');
-
-   // {
-   //    includeAny: [/yellow/, /blue/, /red/],
-   //    includeAll: [/red/, /green/, /brown/],
-   //    excludeAny: [/yellow/, /white/, /grey/],
-   //    excludeAll: [/hello/, /world/]
-   // }
- * @param {RegexpObject|String|RegExp|RegexpObject[]|String[]|RegExp[]} src Source for making RegexpObject
- * @param {String} [defaultMode] key for result RegexpObject map. Can be one of next strings: 'includeAny',
- 'includeAll','excludeAny' or 'excludeAll'.
- * @returns {RegexpObject} Result RegexpObject
- * @throws {Error} Missing arguments if call without argument
- * @throws {Error} Missing arguments if passed array without `defaultMode`
- * @throws {Error} Unknown mode `defaultMode`
- * @throws {Error} Unknown src if first argument is not array, map, string or regexp.
- * @throws {Error} Unexpected if type of array element is not string regexp or RegexpObject.
- * @throws {Error} Unknown regexp filters if passed map has unexpected properties (see RegexpObject).
- * @function regexpMakeObject
- * @memberof wTools
- */
-
-function regexpMakeObject( src,defaultMode )
-{
-  _.assert( _.routineIs( _.RegexpObject ) );
-  return _.RegexpObject( src,defaultMode );
-}
+// /**
+//  * Make RegexpObject from different type sources.
+//     If passed RegexpObject or map with properties similar to RegexpObject but with string in values, then the second
+//  parameter is not required;
+//     All strings in sources will be turned into RegExps.
+//     If passed single RegExp/String or array of RegExps/Strings, then routine will return RegexpObject with
+//  `defaultMode` as key, and array of RegExps created from first parameter as value.
+//     If passed array of RegexpObject, mixed with ordinary RegExps/Strings, the result object will be created by merging
+//  with shrinking (see [shrink]{@link wTools#shrink}) RegexpObjects and RegExps that associates
+//  with `defaultMode` key.
+//  *
+//  * @example
+//    var src = [
+//        /hello/,
+//        'world',
+//        {
+//           includeAny : ['yellow', 'blue', 'red'],
+//           includeAll : [/red/, /green/, /brown/],
+//           excludeAny : [/yellow/, /white/, /grey/],
+//           excludeAll : [/red/, /green/, /blue/]
+//        }
+//    ];
+//    wTools.regexpMakeObject(src, 'excludeAll');
+//
+//    // {
+//    //    includeAny: [/yellow/, /blue/, /red/],
+//    //    includeAll: [/red/, /green/, /brown/],
+//    //    excludeAny: [/yellow/, /white/, /grey/],
+//    //    excludeAll: [/hello/, /world/]
+//    // }
+//  * @param {RegexpObject|String|RegExp|RegexpObject[]|String[]|RegExp[]} src Source for making RegexpObject
+//  * @param {String} [defaultMode] key for result RegexpObject map. Can be one of next strings: 'includeAny',
+//  'includeAll','excludeAny' or 'excludeAll'.
+//  * @returns {RegexpObject} Result RegexpObject
+//  * @throws {Error} Missing arguments if call without argument
+//  * @throws {Error} Missing arguments if passed array without `defaultMode`
+//  * @throws {Error} Unknown mode `defaultMode`
+//  * @throws {Error} Unknown src if first argument is not array, map, string or regexp.
+//  * @throws {Error} Unexpected if type of array element is not string regexp or RegexpObject.
+//  * @throws {Error} Unknown regexp filters if passed map has unexpected properties (see RegexpObject).
+//  * @function regexpMakeObject
+//  * @memberof wTools
+//  */
+//
+// function regexpMakeObject( src,defaultMode )
+// {
+//   _.assert( _.routineIs( _.RegexpObject ) );
+//   return _.RegexpObject( src,defaultMode );
+// }
 
 // --
 // time
@@ -20796,7 +20796,7 @@ var Routines =
   regexpEscape : regexpEscape,
   regexpsEscape : _.Later( _, routineVectorize_functor, regexpEscape ),
 
-  regexpMakeObject : regexpMakeObject,
+  // regexpMakeObject : regexpMakeObject,
   regexpMakeArray : regexpArrayMake,
   regexpFrom : regexpFrom,
 

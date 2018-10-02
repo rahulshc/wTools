@@ -6360,10 +6360,21 @@ function strDup( test )
   var expected = 'abcabcabc';
   test.identical( got, expected );
 
-  /**/
+  test.case = 'vectorized input';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 3 );
+  var expected = [ 'ababab', 'cdcdcd', 'efefef' ];
+  test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
+
+  test.case = 'times is not number';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 'ab', [ 3,4 ] );
+  });
 
   test.case = 'invalid arguments count';
   test.shouldThrowError( function()
