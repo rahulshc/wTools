@@ -505,7 +505,7 @@ function eachInMultiRange( o )
   _.assert( _.objectIs( o ) )
   _.assert( _.arrayIs( o.ranges ) || _.objectIs( o.ranges ),'eachInMultiRange :','expects o.ranges as array or object' )
   _.assert( _.routineIs( o.onEach ),'eachInMultiRange :','expects o.onEach as routine' )
-  _.assert( !o.delta || o.delta.length === o.ranges.length,'eachInMultiRange :','o.delta must be same length as ranges' );
+  _.assert( !o.delta || _.strTypeOf( o.delta ) === _.strTypeOf( o.ranges ),'eachInMultiRange :','o.delta must be same type as ranges' );
 
   /* */
 
@@ -524,12 +524,13 @@ function eachInMultiRange( o )
     {
       names[ i ] = r;
       ranges[ i ] = o.ranges[ r ];
-      if( delta )
+      if( o.delta )
       {
         if( !o.delta[ r ] )
         throw _.err( 'no delta for',r );
         delta[ i ] = o.delta[ r ];
       }
+      i += 1;
     }
 
     l = names.length;
@@ -537,8 +538,10 @@ function eachInMultiRange( o )
   }
   else
   {
-    ranges = o.ranges.slice();
+    // ranges = o.ranges.slice();
+    ranges = _.cloneJust( o.ranges );
     delta = _.longIs( o.delta ) ? o.delta.slice() : null;
+    _.assert( !delta || ranges.length === delta.length, 'delta must be same length as ranges'  );
     l = o.ranges.length;
   }
 
@@ -558,6 +561,11 @@ function eachInMultiRange( o )
     _.assert( ranges[ r ].length === 2 );
     _.assert( _.numberIs( ranges[ r ][ 0 ] ) );
     _.assert( _.numberIs( ranges[ r ][ 1 ] ) );
+
+    if( _.numberIsInfinite( ranges[ r ][ 0 ] ) )
+    ranges[ r ][ 0 ] = 1;
+    if( _.numberIsInfinite( ranges[ r ][ 1 ] ) )
+    ranges[ r ][ 1 ] = 1;
 
     iterationNumber *= ranges[ r ][ 1 ] - ranges[ r ][ 0 ];
 
@@ -630,7 +638,10 @@ function eachInMultiRange( o )
       if( c > 0 )
       indexNd[ c-1 ] = ranges[ c-1 ][ 0 ];
       if( delta )
-      indexNd[ c ] += delta[ c ];
+      {
+        _.assert( _.numberIsFinite( delta[ c ] ) && delta[ c ] > 0, 'delta must contain only positive numbers, incorrect element:', delta[ c ] );
+        indexNd[ c ] += delta[ c ];
+      }
       else
       indexNd[ c ] += 1;
       c += 1;
