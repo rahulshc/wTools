@@ -1447,7 +1447,7 @@ strStripRight.defaults.__proto__ = strStrip.defaults;
  *
 */
 
-function strRemoveAllSpaces( src,sub )
+function _strRemoveAllSpaces( src,sub )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1487,7 +1487,7 @@ function strRemoveAllSpaces( src,sub )
  *
  */
 
-function strStripEmptyLines( srcStr )
+function _strStripEmptyLines( srcStr )
 {
   let result = '';
   let lines = srcStr.split( '\n' );
@@ -4408,8 +4408,8 @@ let Proto =
   strStrip : strStrip,
   strStripLeft : strStripLeft,
   strStripRight : strStripRight,
-  strRemoveAllSpaces : strRemoveAllSpaces,
-  strStripEmptyLines : strStripEmptyLines,
+  strRemoveAllSpaces : _.routineVectorize_functor( _strRemoveAllSpaces ),
+  strStripEmptyLines : _.routineVectorize_functor( _strStripEmptyLines ),
 
   // splitter
 

@@ -6069,6 +6069,11 @@ function strStripRight( test )
 function strRemoveAllSpaces( test )
 {
 
+  test.case = 'removes the spaces from the borders';
+  var got = _.strRemoveAllSpaces( '  abcdef  ' );
+  var expected = 'abcdef';
+  test.identical( got, expected );
+
   test.case = 'removes the spaces from the given string';
   var got = _.strRemoveAllSpaces( 'a b c d e f' );
   var expected = 'abcdef';
@@ -6094,6 +6099,11 @@ function strRemoveAllSpaces( test )
   var expected = '';
   test.identical( got,expected );
 
+  test.case = 'sub as word';
+  var got = _.strRemoveAllSpaces( 'a b c', ' and ' );
+  var expected = 'a and b and c';
+  test.identical( got,expected );
+
   test.case = 'sub as number';
   var got = _.strRemoveAllSpaces( 'a b c', 0 );
   var expected = 'a0b0c';
@@ -6103,6 +6113,41 @@ function strRemoveAllSpaces( test )
   var got = _.strRemoveAllSpaces( 'a b c d e', [ 5, 6 ] );
   var expected = 'a5,6b5,6c5,6d5,6e';
   test.identical( got,expected );
+
+  test.case = 'sub as null';
+  var got = _.strRemoveAllSpaces( 'a b c d e', null );
+  var expected = 'anullbnullcnulldnulle';
+  test.identical( got,expected );
+
+  test.case = 'sub as NaN';
+  var got = _.strRemoveAllSpaces( 'a b c d e', NaN );
+  var expected = 'aNaNbNaNcNaNdNaNe';
+  test.identical( got,expected );
+
+  test.case = 'sub as regexp';
+  var got = _.strRemoveAllSpaces( 'a b c d e', /a$/ );
+  var expected = 'a/a$/b/a$/c/a$/d/a$/e';
+  test.identical( got,expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ] );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], '-' );
+  var expected = [ '--a-b-', 'c--d-', '-e-f-' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], 3 );
+  var expected = [ '33a3b3', 'c33d3', '3e3f3' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ 'a b', 'cd ', ' ef' ], [ 0, 1 ] );
+  var expected = [ 'a0,1b', 'cd0,1', '0,1ef' ];
+  test.identical( got, expected );
 
   /**/
 
@@ -6127,18 +6172,6 @@ function strRemoveAllSpaces( test )
     _.strRemoveAllSpaces();
   });
 
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( [  ] );
-  } );
-
   test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
@@ -6149,6 +6182,24 @@ function strRemoveAllSpaces( test )
   test.shouldThrowError( function( )
   {
     _.strRemoveAllSpaces( 'a b c d e f', ',', 'redundant argument' );
+  } );
+
+  test.case = 'Null argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( null );
+  } );
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( NaN );
+  } );
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( /^a/ );
   } );
 
 }
@@ -6178,6 +6229,27 @@ function strStripEmptyLines( test )
   var expected = 'a\nb';
   test.identical( got,expected );
 
+  test.case = 'Lines with spaces';
+  var got = _.strStripEmptyLines( ' line one\n\n line two \n\n line 3 \n' );
+  var expected = ' line one\n line two \n line 3 ';
+  test.identical( got,expected );
+
+  test.case = 'Lines with spaces and tabs';
+  var got = _.strStripEmptyLines( ' line one\n\t\n\n line \t two \n\n line 3 \n' );
+  var expected = ' line one\n line \t two \n line 3 ';
+  test.identical( got,expected );
+
+  test.case = 'Array input';
+  var got = _.strStripEmptyLines( [ '  a \n\n b ', ' \nc  d \n\n\n ' ] );
+  var expected = [ '  a \n b ', 'c  d ' ];
+  test.identical( got,expected );
+
+  test.case = 'Empty array input';
+  var got = _.strStripEmptyLines( [ ] );
+  var expected = [ ];
+  test.identical( got,expected );
+
+
   /**/
 
   if( !Config.debug )
@@ -6199,6 +6271,30 @@ function strStripEmptyLines( test )
   test.shouldThrowError( function()
   {
     _.strStripEmptyLines();
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( NaN );
+  });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( /a?$/ );
+  });
+
+  test.case = 'Array with wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( null, NaN, 3, /a?$/ );
   });
 
 }
