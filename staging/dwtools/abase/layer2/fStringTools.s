@@ -1358,13 +1358,26 @@ strStrip.defaults =
 
 //
 
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only leading whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * //returns 'a '
+ * _.strStripLeft( ' a ' )
+ *
+ * @method strStripLeft
+ * @memberof wTools
+ *
+ */
+
 function strStripLeft( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStrip,o );
+  _.routineOptions( strStripLeft,o );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.strStrip( o );
@@ -1379,13 +1392,26 @@ strStripLeft.defaults.__proto__ = strStrip.defaults;
 
 //
 
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only trailing whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * //returns ' a'
+ * _.strStripRight( ' a ' )
+ *
+ * @method strStripRight
+ * @memberof wTools
+ *
+ */
+
 function strStripRight( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStrip,o );
+  _.routineOptions( strStripRight,o );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.strStrip( o );

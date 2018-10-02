@@ -5587,6 +5587,16 @@ function strStrip( test )
   var expected = [ '' ];
   test.identical( got, expected );
 
+  test.case = 'vectorized input';
+  var got = _.strStrip( [ '\nab  ', ' cd\s', ' ef  ' ] );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input - map argument';
+  var got = _.strStrip( { src : [ '\nab  ', ' cd\s', ' ef  ' ], stripper : [ 'a', 'f' ] }  );
+  var expected = [ 'b', 'cd', 'f' ];
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -5622,16 +5632,16 @@ function strStrip( test )
     _.strStrip();
   });
 
-  test.case = 'no arguments';
+  test.case = 'null argument';
   test.shouldThrowError( function( )
   {
-    _.strStrip( );
+    _.strStrip( null );
   } );
 
-  test.case = 'argument is wrong';
+  test.case = 'NaN argument';
   test.shouldThrowError( function( )
   {
-    _.strStrip( 13 );
+    _.strStrip( NaN );
   } );
 
   test.case = 'too many arguments';
@@ -5656,6 +5666,7 @@ function strStrip( test )
     { src : '   a   ', expected : 'a' },
     { src : ' \0 a \0 ', expected : 'a' },
     { src : '\r\n\t\f\v a \v\r\n\t\f', expected : 'a' },
+    { src : '\r\n\t\f\v hello world \v\r\n\t\f', expected : 'hello world' },
 
     { description : 'stripper contains regexp special symbols' },
     { src : { src : '\\s\\s', stripper : '\\s' } , expected : '' },
@@ -5669,6 +5680,13 @@ function strStrip( test )
     { src : { src : 'gp', stripper : 'a+' } , expected : 'gp' },
     { src : { src : 'hp', stripper : 'b{3}' } , expected : 'hp' },
     { src : { src : 'acbc', stripper : '^[ab]c$' } , expected : 'acbc' },
+
+    { description : 'stripper is regexp' },
+    { src : { src : ' abc', stripper : /[abc]/ } , expected : ' bc' },
+    { src : { src : 'abc', stripper : /\D/ } , expected : 'bc' },
+    { src : { src : 'abc', stripper : /[abc]$/ } , expected : 'ab' },
+    { src : { src : 'abc', stripper : /abc/ } , expected : '' },
+    { src : { src : 'hello', stripper : /lo?/ } , expected : 'helo' },
 
     {
       description : 'defaults, src is an array',
@@ -5809,6 +5827,16 @@ function strStrip( test )
       err : true
     },
     {
+      description : 'null argument',
+      args : [ null ],
+      err : true
+    },
+    {
+      description : 'NaN arguments',
+      args : [ NaN ],
+      err : true
+    },
+    {
       description : 'one string has invalid type',
       args : [ [ 'a', 0, 'b' ] ],
       err : true
@@ -5823,6 +5851,17 @@ function strStrip( test )
       args : [ { src : 'a', stripper : [ 'a', 0 ] } ],
       err : true
     },
+    {
+      description : 'null stripper',
+      args : [ { src : [ 'a', 'b' ], stripper : null } ],
+      err : true
+    },
+    {
+      description : 'NaN stripper',
+      args : [ { src : [ 'a', 'b' ], stripper : NaN } ],
+      err : true
+    },
+
   ]
 
   /**/
@@ -5851,6 +5890,179 @@ function strStrip( test )
   }
 
 }
+
+//
+
+function strStripLeft( test )
+{
+  var cases =
+  [
+    { description : 'defaults, src is a string' },
+    { src : '   a   ', expected : 'a   ' },
+    { src : ' \0 a \0 ', expected : 'a \u0000 ' },
+    { src : '\r\v a \v\r\n\t\f', expected : 'a \u000b\r' },
+    { src : '\0 hello world \0', expected : 'hello world \u0000' },
+
+    {
+      description : 'defaults, src is an array',
+      src :
+      [
+        '',
+        'a',
+        '   a   ',
+        ' \0 a \0 ',
+        '\r\n\t\f\v a \v\r'
+      ],
+      expected :
+      [
+        '',
+        'a',
+        'a   ',
+        'a \u0000 ',
+        'a \u000b\r'
+      ]
+    },
+    {
+      description : 'invalid type',
+      args : 0,
+      err : true
+    },
+    {
+      description : 'too many arguments',
+      args : [ 'a', '' ],
+      err : true
+    },
+    {
+      description : 'null argument',
+      args : [ null ],
+      err : true
+    },
+    {
+      description : 'NaN arguments',
+      args : [ NaN ],
+      err : true
+    },
+    {
+      description : 'one string has invalid type',
+      args : [ [ 'a', 0, 'b' ] ],
+      err : true
+    },
+
+  ]
+
+  /**/
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.description )
+    test.case = c.description;
+
+    if( c.err )
+    test.shouldThrowError( () => _.strStripLeft.apply( _, _.arrayAs( c.args ) ) );
+
+    if( c.src )
+    {
+      var identical = test.identical( _.strStripLeft( c.src ), c.expected );
+      if( !identical )
+      {
+        debugger;
+        test.identical( _.strStripLeft( c.src ), c.expected )
+        debugger;
+      }
+    }
+
+  }
+
+}
+
+//
+
+function strStripRight( test )
+{
+  var cases =
+  [
+    { description : 'defaults, src is a string' },
+    { src : '   ul   ', expected : '   ul' },
+    { src : ' \0 om \0 ', expected : ' \u0000 om' },
+    { src : '\r\v a \v\n\t\f\r', expected : '\r\u000b a' },
+    { src : '\0 hello world \0', expected : '\u0000 hello world' },
+
+    {
+      description : 'defaults, src is an array',
+      src :
+      [
+        '',
+        'a',
+        '   a   ',
+        ' \0 a \0 ',
+        '\r\v a \v\n\t\f\r'
+      ],
+      expected :
+      [
+        '',
+        'a',
+        '   a',
+        ' \u0000 a',
+        '\r\u000b a'
+      ]
+    },
+    {
+      description : 'invalid type',
+      args : 0,
+      err : true
+    },
+    {
+      description : 'too many arguments',
+      args : [ 'a', '' ],
+      err : true
+    },
+    {
+      description : 'null argument',
+      args : [ null ],
+      err : true
+    },
+    {
+      description : 'NaN arguments',
+      args : [ NaN ],
+      err : true
+    },
+    {
+      description : 'one string has invalid type',
+      args : [ [ 'a', 0, 'b' ] ],
+      err : true
+    },
+
+  ]
+
+  /**/
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.description )
+    test.case = c.description;
+
+    if( c.err )
+    test.shouldThrowError( () => _.strStripRight.apply( _, _.arrayAs( c.args ) ) );
+
+    if( c.src )
+    {
+      var identical = test.identical( _.strStripRight( c.src ), c.expected );
+      if( !identical )
+      {
+        debugger;
+        test.identical( _.strStripRight( c.src ), c.expected )
+        debugger;
+      }
+    }
+
+  }
+
+}
+
 
 //
 
@@ -8124,6 +8336,7 @@ var Self =
 
   name : 'Tools/base/layer2/String',
   silencing : 1,
+  enabled : 1,
 
   tests :
   {
@@ -8158,6 +8371,8 @@ var Self =
     strIsolateBeginOrAll : strIsolateBeginOrAll,
 
     strStrip : strStrip,
+    strStripLeft : strStripLeft,
+    strStripRight : strStripRight,
     strRemoveAllSpaces : strRemoveAllSpaces,
     strStripEmptyLines : strStripEmptyLines,
     strReplaceWords : strReplaceWords,
