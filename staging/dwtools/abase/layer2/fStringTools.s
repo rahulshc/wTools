@@ -3649,7 +3649,7 @@ strConcat.defaults =
  *
  */
 
-function strUnjoin( srcStr,maskArray )
+function strUnjoin( srcStr, maskArray )
 {
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -4448,6 +4448,8 @@ delete require.cache[ module.id ];
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
 
+  // qqq
+  //
   // strStrip : strStrip,
   // strStripLeft : strStripLeft,
   // strStripRight : strStripRight,
