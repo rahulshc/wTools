@@ -6360,7 +6360,7 @@ function strDup( test )
   var expected = 'abcabcabc';
   test.identical( got, expected );
 
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;

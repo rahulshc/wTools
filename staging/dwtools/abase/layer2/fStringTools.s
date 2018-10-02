@@ -3543,7 +3543,6 @@ function strJoin()
 function strConcat( srcs, o )
 {
 
-  // let o = _.routineOptionsFromThis( strConcat,this,Self );
   o = _.routineOptions( strConcat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.strConcat === strConcat );
@@ -4421,7 +4420,7 @@ let Proto =
   strDup : strDup, /* document me */
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
-  strConcat : strConcat, /* document me */
+  strConcat : strConcat,
 
   // liner
 
@@ -4448,5 +4447,17 @@ delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
+
+  // strStrip : strStrip,
+  // strStripLeft : strStripLeft,
+  // strStripRight : strStripRight,
+  // strRemoveAllSpaces : strRemoveAllSpaces,
+  // strStripEmptyLines : strStripEmptyLines,
+  //
+  // strSub : strSub,
+  //
+  // strDup : strDup, /* document me */
+  // strJoin : strJoin, /* document me */
+  // strUnjoin : strUnjoin, /* document me */
 
 })();
