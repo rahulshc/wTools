@@ -1504,7 +1504,7 @@ function regexpsTestAny( test )
 
   var r1 = [ 'abc', 'def' ];
   var r2 = 'abc';
-  var expected = false;
+  var expected = true;
   var got = _.regexpsTestAny( r1, r2 );
   test.identical( got, expected );
 
@@ -1552,7 +1552,7 @@ function regexpsTestAny( test )
 
   var r1 = [ /[abc]/, /.a/, /\d/ ];
   var r2 = 'dabcd';
-  var expected = false;
+  var expected = true;
   var got = _.regexpsTestAny( r1, r2 );
   test.identical( got, expected );
 
