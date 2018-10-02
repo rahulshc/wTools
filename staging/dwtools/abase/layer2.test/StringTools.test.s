@@ -6294,7 +6294,162 @@ function strStripEmptyLines( test )
   test.case = 'Array with wrong arguments';
   test.shouldThrowError( function()
   {
-    _.strStripEmptyLines( null, NaN, 3, /a?$/ );
+    _.strStripEmptyLines( [ null, NaN, 3, /a?$/ ] );
+  });
+
+}
+
+//
+
+function strSub( test )
+{
+
+  test.case = 'simple string - get all';
+  var got = _.strSub( 'Hello', [ 0, 5 ] );
+  var expected = 'Hello';
+  test.identical( got,expected );
+
+  test.case = 'simple string - range bigger than length';
+  var got = _.strSub( 'Hello', [ 0, 8 ] );
+  var expected = 'Hello';
+  test.identical( got,expected );
+
+  test.case = 'simple string - get subString';
+  var got = _.strSub( 'Hello', [ 0, 4 ] );
+  var expected = 'Hell';
+  test.identical( got,expected );
+
+  test.case = 'simple string - get end of string';
+  var got = _.strSub( 'Hello', [ 3, 5 ] );
+  var expected = 'lo';
+  test.identical( got,expected );
+
+  test.case = 'simple string - range reversed';
+  var got = _.strSub( 'Hello', [ 4, 0 ] );
+  var expected = 'Hell';
+  test.identical( got,expected );
+
+  test.case = 'simple string - range in the middle of the string';
+  var got = _.strSub( 'Hello', [ 2, 3 ] );
+  var expected = 'l';
+  test.identical( got,expected );
+
+  test.case = 'empty string';
+  var got = _.strSub( '', [ 2, 3 ] );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.case = 'Input array';
+  var got = _.strSub( [ 'Hello', 'World'], [ 3, 4 ] );
+  var expected = [ 'l', 'l' ];
+  test.identical( got,expected );
+
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub();
+  });
+
+  test.case = 'Too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( '1', '2', '3' );
+  });
+
+  test.case = 'Too many ranges';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'Hello world', [ 0, 1 ], [ 2, 3 ] );
+  });
+
+  test.case = 'Not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( '1' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 123, [ 0, 1 ] );
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strSub( null, [ 0, 1 ] );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strSub( NaN, [ 0, 1 ] );
+  });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strSub( /a?$/, [ 0, 1 ] );
+  });
+
+  test.case = 'invalid argument range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'hi ', 123 );
+  });
+
+  test.case = 'null range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'good morning', null );
+  });
+
+  test.case = 'NaN range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'good afternoon', NaN );
+  });
+
+  test.case = 'Regexp range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'good night', /a?$/ );
+  });
+
+  test.case = 'Array with wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ null, NaN, 3, /a?$/ ], [ 0, 1 ] );
+  });
+
+  test.case = 'Range array with wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ null, NaN ] );
+  });
+
+  test.case = 'Range array empty';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ ] );
+  });
+
+  test.case = 'Range array with not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ 2 ] );
+  });
+
+  test.case = 'Range array with too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ 2, 3, 4 ] );
   });
 
 }
@@ -8471,6 +8626,7 @@ var Self =
     strStripRight : strStripRight,
     strRemoveAllSpaces : strRemoveAllSpaces,
     strStripEmptyLines : strStripEmptyLines,
+    strSub : strSub,
     strReplaceWords : strReplaceWords,
     strJoin : strJoin,
     strUnjoin : strUnjoin,

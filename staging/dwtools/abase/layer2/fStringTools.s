@@ -3084,7 +3084,29 @@ _.assert( _.objectIs( strSplitNaive.defaults ) );
 // extractor
 // --
 
-function strSub( srcStr, range )
+
+/**
+ * Gets substring out of source string according to a given range.
+ * The end value of the range is not included in the substring.
+ * Returns result as string.
+ *
+ * @param {string} srcStr - Source string.
+ * @param {range} range - Source range.
+ * @returns {string} Returns the corresponding substring.
+ *
+ * @example
+ * //returns [ 'first', [ 0, 2 ] ]
+ * _.strSub( 'fi' );
+ *
+ * @method strSub
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( range ) is not a range.
+ * @memberof wTools
+ *
+ */
+
+function _strSub( srcStr, range )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
@@ -4437,7 +4459,7 @@ let Proto =
 
 // extractor
 
-  strSub : strSub,
+  strSub : _.routineVectorize_functor( _strSub ),
   strExtractInlined : strExtractInlined,
   strExtractInlinedStereo : strExtractInlinedStereo,
 
