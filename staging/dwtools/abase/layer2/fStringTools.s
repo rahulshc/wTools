@@ -3438,7 +3438,7 @@ strExtractInlinedStereo.defaults =
  *
  */
 
-function strDup( s,times )
+function _strDup( s,times )
 {
   let result = '';
 
@@ -4417,7 +4417,7 @@ let Proto =
 
   // joiner
 
-  strDup : strDup, /* document me */
+  strDup : _.routineVectorize_functor( _strDup ), /* document me */
   strJoin : strJoin, /* document me */
   strUnjoin : strUnjoin, /* document me */
   strConcat : strConcat,
