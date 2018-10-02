@@ -638,7 +638,10 @@ function eachInMultiRange( o )
       if( c > 0 )
       indexNd[ c-1 ] = ranges[ c-1 ][ 0 ];
       if( delta )
-      indexNd[ c ] += delta[ c ];
+      {
+        _.assert( _.numberIsFinite( delta[ c ] ) && delta[ c ] > 0, 'delta must contain only positive numbers, incorrect element:', delta[ c ] );
+        indexNd[ c ] += delta[ c ];
+      }
       else
       indexNd[ c ] += 1;
       c += 1;

@@ -1482,6 +1482,123 @@ function eachInMultiRange( test )
   test.identical( o.delta, null );
   test.identical( o.estimate, 0 );
 
+  var o =
+  {
+    ranges : [ [ Infinity,Infinity ], [ Infinity,Infinity ] ],
+    onEach : null,
+    result : [],
+    delta : null,
+    estimate : 0
+  }
+  var expected =
+  [
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ [ Infinity,Infinity ], [ Infinity,Infinity ] ] );
+  test.identical( o.delta, null );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ Infinity, 1 ],
+    onEach : null,
+    result : [],
+    delta : null,
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 0,0 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ Infinity,1 ] );
+  test.identical( o.delta, null );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ 1, Infinity ],
+    onEach : null,
+    result : [],
+    delta : null,
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 0,0 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ 1,Infinity ] );
+  test.identical( o.delta, null );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ [ Infinity, 2 ], Infinity ],
+    onEach : null,
+    result : [],
+    delta : null,
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 1,0 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ [ Infinity, 2 ], Infinity ] );
+  test.identical( o.delta, null );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ [ Infinity, 2 ], [ Infinity, 2 ] ],
+    onEach : null,
+    result : [],
+    delta : null,
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 1,1 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ [ Infinity, 2 ], [ Infinity, 2 ] ] );
+  test.identical( o.delta, null );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ [ Infinity, 2 ], [ Infinity, 2 ] ],
+    onEach : null,
+    result : [],
+    delta : null,
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 1,1 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ [ Infinity, 2 ], [ Infinity, 2 ] ] );
+  test.identical( o.delta, null );
+  test.identical( o.estimate, 0 );
+
   //
 
   var o =
@@ -1504,6 +1621,31 @@ function eachInMultiRange( test )
   _.eachInMultiRange( o );
   test.identical( o.result, expected )
   test.identical( o.ranges, [ [ 0,1 ],[ 0,2 ],[ 0,3 ] ] );
+  test.identical( o.delta, null );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ [ 0,Infinity ],[ 0,2 ],[ 0,3 ] ],
+    onEach : null,
+    result : [],
+    delta : null,
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 0, 0, 0 ],
+    [ 0, 1, 0 ],
+    [ 0, 0, 1 ],
+    [ 0, 1, 1 ],
+    [ 0, 0, 2 ],
+    [ 0, 1, 2 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ [ 0,Infinity ],[ 0,2 ],[ 0,3 ] ] );
   test.identical( o.delta, null );
   test.identical( o.estimate, 0 );
 
@@ -2013,6 +2155,90 @@ function eachInMultiRange( test )
   test.identical( o.delta, { 0 : 2, 1 : 1 } );
   test.identical( o.estimate, 0 );
 
+  //
+
+  var o =
+  {
+    ranges : [ 6 ],
+    onEach : null,
+    result : [],
+    delta : [ 3 ],
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 0 ],
+    [ 3 ],
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ 6 ] );
+  test.identical( o.delta, [ 3 ] );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ 6 ],
+    onEach : null,
+    result : [],
+    delta : [ 10 ],
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 0 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ 6 ] );
+  test.identical( o.delta, [ 10 ] );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ 5, 10, 15 ],
+    onEach : null,
+    result : [],
+    delta : [ 6, 11, 16 ],
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 0, 0, 0 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ 5, 10, 15 ] );
+  test.identical( o.delta, [ 6, 11, 16 ] );
+  test.identical( o.estimate, 0 );
+
+  //
+
+  var o =
+  {
+    ranges : [ [ 1, 3 ], [ 2, 6 ], [ 4, 8 ] ],
+    onEach : null,
+    result : [],
+    delta : [ 1, 3, 4 ],
+    estimate : 0
+  }
+  var expected =
+  [
+    [ 1, 2, 4 ],
+    [ 2, 2, 4 ],
+    [ 1, 5, 4 ],
+    [ 2, 5, 4 ]
+  ]
+  _.eachInMultiRange( o );
+  test.identical( o.result, expected )
+  test.identical( o.ranges, [ [ 1, 3 ], [ 2, 6 ], [ 4, 8 ] ] );
+  test.identical( o.delta, [ 1, 3, 4 ] );
+  test.identical( o.estimate, 0 );
+
   /* estimate */
 
   var o =
@@ -2246,6 +2472,45 @@ function eachInMultiRange( test )
       ranges : { 0 : 2 },
       delta : { a : 1 }
     })
+  });
+
+  test.shouldThrowError( () =>
+  {
+    var o =
+    {
+      ranges : [ 6 ],
+      onEach : null,
+      result : [],
+      delta : [ 0 ],
+      estimate : 0
+    }
+    _.eachInMultiRange( o );
+  });
+
+  test.shouldThrowError( () =>
+  {
+    var o =
+    {
+      ranges : [ 6 ],
+      onEach : null,
+      result : [],
+      delta : [ Infinity ],
+      estimate : 0
+    }
+    _.eachInMultiRange( o );
+  });
+
+  test.shouldThrowError( () =>
+  {
+    var o =
+    {
+      ranges : [ 6 ],
+      onEach : null,
+      result : [],
+      delta : [ -1 ],
+      estimate : 0
+    }
+    _.eachInMultiRange( o );
   });
 }
 
