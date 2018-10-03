@@ -3507,7 +3507,7 @@ function _strDup( s,times )
  * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
  * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ '13', '23' ] ),
- * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '23' ] ).
+ * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '22' ] ).
  *
  * @param {array-like} arguments - Contains provided objects.
  * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.

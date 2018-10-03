@@ -6516,14 +6516,29 @@ function strJoin( test )
   var expected = '123';
   test.identical( got,expected );
 
-  test.case = 'join array + string';
-  var got = _.strJoin( [ 1, 2 ], '3' );
-  var expected = [ '13', '23' ];
+  test.case = 'join strings';
+  var got = _.strJoin( '1', '2', '3' );
+  var expected = '123';
   test.identical( got,expected );
 
   test.case = 'join two arrays';
   var got = _.strJoin( [ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = [ 'bx', 'cy' ];
+  test.identical( got,expected );
+
+  test.case = 'join string + number';
+  var got = _.strJoin( 1, 2, '3' );
+  var expected = '123';
+  test.identical( got,expected );
+
+  test.case = 'join array + string';
+  var got = _.strJoin( [ 1, 2 ], '3' );
+  var expected = [ '13', '23' ];
+  test.identical( got,expected );
+
+  test.case = 'join array + number';
+  var got = _.strJoin( [ 1, 2 ], 3 );
+  var expected = [ '13', '23' ];
   test.identical( got,expected );
 
   test.case = 'no arguments';
@@ -6536,9 +6551,19 @@ function strJoin( test )
   var expected = '1';
   test.identical( got,expected );
 
+  test.case = 'NaN argument';
+  var got = _.strJoin( '1', NaN );
+  var expected = '1NaN';
+  test.identical( got,expected );
+
   test.case = 'different types';
   var got = _.strJoin( 1, '2', [ '3', 4 ], 5, '6' );
   var expected = [ "12356", "12456" ];
+  test.identical( got,expected );
+
+  test.case = 'different types with two arrays';
+  var got = _.strJoin( '1', 2, [ 3, 4, 5 ], [ 6, 7, 8 ] );
+  var expected = [ "1236", "1247", "1258" ];
   test.identical( got,expected );
 
   /**/
@@ -6550,6 +6575,18 @@ function strJoin( test )
   test.shouldThrowError( function()
   {
     _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', null );
+  });
+
+  test.case = 'RegExp argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', /a?/ );
   });
 
   test.case = 'arrays with different length';
@@ -6601,12 +6638,17 @@ function strUnjoin( test )
   var expected = [ "a", "bc" ];
   test.identical( got,expected );
 
+  test.case = 'case 5b';
+  var got = _.strUnjoin( 'abc', [ any, 'a'  ] );
+  var expected = undefined;
+  test.identical( got,expected );
+
   test.case = 'case 6';
   var got = _.strUnjoin( 'abc', [ 'b', any ] );
   var expected = undefined;
   test.identical( got,expected );
 
-  test.case = 'case 7';
+  test.case = 'case 6b';
   var got = _.strUnjoin( 'abc', [ any, 'b' ] );
   var expected = undefined;
   test.identical( got,expected );
@@ -6616,12 +6658,44 @@ function strUnjoin( test )
   var expected = [ "ab", "c" ];
   test.identical( got,expected );
 
+  test.case = 'case 7b';
+  var got = _.strUnjoin( 'abc', [ 'c', any ] );
+  var expected = undefined;
+  test.identical( got,expected );
+
+  test.case = 'case 8';
+  var got = _.strUnjoin( 'abc', [ 'a', any, 'c' ] );
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got,expected );
+
+  test.case = 'case 9';
+  var got = _.strUnjoin( 'abc', [ any, 'b', any ] );
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got,expected );
+
+  test.case = 'case 9b';
+  var got = _.strUnjoin( 'abc', [ any, 'c', any ] );
+  var expected = [ 'ab', 'c', '' ];
+  test.identical( got,expected );
+
   /**/
 
   if( !Config.debug )
   return;
 
-  test.case = 'invalid arguments count';
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin();
+  });
+
+  test.case = 'Not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( '1' );
+  });
+
+  test.case = 'Too many arguments';
   test.shouldThrowError( function()
   {
     _.strUnjoin( '1', '2', '3' );
@@ -6645,10 +6719,58 @@ function strUnjoin( test )
     _.strUnjoin( 'one two', [ 1, 'two' ] );
   });
 
-  test.case = 'no arguments';
+  test.case = 'null first argument type';
   test.shouldThrowError( function()
   {
-    _.strUnjoin();
+    _.strUnjoin( null, [] );
+  });
+
+  test.case = 'null second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', null );
+  });
+
+  test.case = 'null array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ null, 'two' ] );
+  });
+
+  test.case = 'NaN first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( NaN, [] );
+  });
+
+  test.case = 'NaN second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', NaN );
+  });
+
+  test.case = 'NaN array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ NaN, 'two' ] );
+  });
+
+  test.case = 'RegExp first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( /\d$/, [] );
+  });
+
+  test.case = 'RegExp second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', /\D$/ );
+  });
+
+  test.case = 'RegExp array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ /^\d/, 'two' ] );
   });
 
 }
@@ -6798,6 +6920,11 @@ function strDup( test )
   var expected = 'aa';
   test.identical( got,expected );
 
+  test.case = 'Two words with a spaces';
+  var got = _.strDup( 'Hi world ', 2 );
+  var expected = 'Hi world Hi world ';
+  test.identical( got,expected );
+
   test.case = 'one space';
   var got = _.strDup( ' ', 2 );
   var expected = '  ';
@@ -6821,6 +6948,11 @@ function strDup( test )
   test.case = 'copies and concatenates first argument three times';
   var got = _.strDup( 'abc', 3 );
   var expected = 'abcabcabc';
+  test.identical( got, expected );
+
+  test.case = 'Second argument NaN';
+  var got = _.strDup( 'abc', NaN );
+  var expected = '';
   test.identical( got, expected );
 
   test.case = 'vectorized input';
@@ -6863,12 +6995,6 @@ function strDup( test )
     _.strDup();
   });
 
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strDup( );
-  } );
-
   test.case = 'second argument is wrong';
   test.shouldThrowError( function( )
   {
@@ -6890,7 +7016,7 @@ function strDup( test )
   test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strDup( 1,2 );
+    _.strDup( 1, 2 );
   });
 
   test.case = 'invalid second argument type';
@@ -6899,11 +7025,36 @@ function strDup( test )
     _.strDup( '1', '2' );
   });
 
-  test.case = 'no arguments';
+  test.case = 'null argument';
   test.shouldThrowError( function()
   {
-    _.strDup();
+    _.strDup( null, 2 );
   });
+
+  test.case = 'null second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( NaN, 2 );
+  });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( /^\d/, 2 );
+  });
+
+  test.case = 'regExp second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', /^\d/ );
+  });
+
 
 }
 
