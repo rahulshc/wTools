@@ -539,8 +539,14 @@ IncludeHandlersMap[ 'wVocabulary' ] =
 
 IncludeHandlersMap[ 'wCommandsAggregator' ] =
 {
-  includeAny : [ '../../amid/l7/CommandsAggregator.s','amid/l7/CommandsAggregator.s','wcommandsaggregator' ],
+  includeAny : [ '../../amid/l7/Commands/CommandsAggregator.s','amid/l7/Commands/CommandsAggregator.s','wcommandsaggregator' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsAggregator },
+}
+
+IncludeHandlersMap[ 'wCommandsConfigMixin' ] =
+{
+  includeAny : [ '../../amid/l7/Commands/CommandsConfigMixin.s','amid/l7/Commands/CommandsConfigMixin.s','wcommandsconfigmixin' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsConfigMixin },
 }
 
 IncludeHandlersMap[ 'wFiles' ] =
