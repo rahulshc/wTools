@@ -1968,7 +1968,7 @@ function entityDiffExplanation( o )
 
   if( _.objectIs( o.srcs[ 0 ] ) && _.objectIs( o.srcs[ 1 ] ) )
   {
-    let common = _.filter( o.srcs[ 0 ], ( e, k ) => _.entityIdentical( e, o.srcs[ 1 ][ k ] ) ? e : undefined );
+    let common = _.filter( _.mapFields( o.srcs[ 0 ] ), ( e, k ) => _.entityIdentical( e, o.srcs[ 1 ][ k ] ) ? e : undefined );
     o.srcs[ 0 ] = _.mapBut( o.srcs[ 0 ], common );
     o.srcs[ 1 ] = _.mapBut( o.srcs[ 1 ], common );
   }
