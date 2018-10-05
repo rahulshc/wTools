@@ -88,10 +88,29 @@ hiding.functionFamily = 'field-mapper';
 
 //
 
-function appending()
+function appendingAnything()
 {
 
-  let routine = function appending( dstContainer, srcContainer, key )
+  let routine = function appendingAnything( dstContainer, srcContainer, key )
+  {
+    if( dstContainer[ key ] === undefined )
+    dstContainer[ key ] = srcContainer[ key ];
+    else
+    dstContainer[ key ] = _.arrayAppendArrays( [], [ dstContainer[ key ], srcContainer[ key ] ] );
+  }
+
+  routine.functionFamily = 'field-mapper';
+  return routine;
+}
+
+appendingAnything.functionFamily = 'field-mapper';
+
+//
+
+function appendingArrays()
+{
+
+  let routine = function appendingArrays( dstContainer, srcContainer, key )
   {
     if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
     _.arrayAppendArray( dstContainer[ key ], srcContainer[ key ] );
@@ -103,7 +122,7 @@ function appending()
   return routine;
 }
 
-appending.functionFamily = 'field-mapper';
+appendingArrays.functionFamily = 'field-mapper';
 
 //
 
@@ -1110,7 +1129,8 @@ let make =
   assigning : assigning,
   primitive : primitive,
   hiding : hiding,
-  appending : appending,
+  appendingAnything : appendingAnything,
+  appendingArrays : appendingArrays,
   appendingOnce : appendingOnce,
   removing : removing,
   notPrimitiveAssigning : notPrimitiveAssigning,

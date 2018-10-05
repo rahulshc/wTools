@@ -16739,23 +16739,44 @@ function mapsExtendHiding( dstMap, srcMaps )
 
 //
 
-function mapExtendAppending( dstMap )
+function mapExtendAppendingAnything( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
   return _.mapExtend( null, srcMap );
   var args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.appending );
+  args.unshift( _.field.mapper.appendingAnything );
   return _.mapExtendConditional.apply( this,args );
 }
 
 //
 
-function mapsExtendAppending( dstMap, srcMaps )
+function mapsExtendAppendingAnything( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
-  return _.mapsExtendConditional( _.field.mapper.appending, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.appendingAnything, dstMap, srcMaps );
+}
+
+//
+
+function mapExtendAppendingArrays( dstMap )
+{
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( null, srcMap );
+  var args = _.longSlice( arguments );
+  args.unshift( _.field.mapper.appendingArrays );
+  return _.mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapsExtendAppendingArrays( dstMap, srcMaps )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  if( dstMap === null )
+  return _.mapExtend( null, srcMaps[ 0 ] );
+  return _.mapsExtendConditional( _.field.mapper.appendingArrays, dstMap, srcMaps );
 }
 
 //
@@ -16765,7 +16786,7 @@ function mapExtendByDefined( dstMap )
   if( dstMap === null && arguments.length === 2 )
   return _.mapExtend( null, srcMap );
   var args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.appending );
+  args.unshift( _.field.mapper.dstUndefinedSrcNotUndefined );
   return _.mapExtendConditional.apply( this,args );
 }
 
@@ -16774,7 +16795,7 @@ function mapExtendByDefined( dstMap )
 function mapsExtendByDefined( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  return _.mapsExtendConditional( _.field.mapper.appending, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.dstUndefinedSrcNotUndefined, dstMap, srcMaps );
 }
 
 //
@@ -17162,11 +17183,11 @@ function _mapExtendRecursive( dstMap,srcMap )
 
 //
 
-function mapExtendAppendingRecursive( dstMap, srcMap )
+function mapExtendAppendingAnythingRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
   _.assert( arguments.length >= 2, 'expects at least two arguments' );
-  var filters = { onField : _.field.mapper.appending, onUpFilter : true };
+  var filters = { onField : _.field.mapper.appendingAnything, onUpFilter : true };
   var args = _.longSlice( arguments );
   args.unshift( filters );
   return _.mapExtendRecursiveConditional.apply( _,args );
@@ -17174,11 +17195,33 @@ function mapExtendAppendingRecursive( dstMap, srcMap )
 
 //
 
-function mapsExtendAppendingRecursive( dstMap, srcMaps )
+function mapsExtendAppendingAnythingRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  var filters = { onField : _.field.mapper.appending, onUpFilter : true };
+  var filters = { onField : _.field.mapper.appendingAnything, onUpFilter : true };
+  return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
+}
+
+//
+
+function mapExtendAppendingArraysRecursive( dstMap, srcMap )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  var filters = { onField : _.field.mapper.appendingArrays, onUpFilter : true };
+  var args = _.longSlice( arguments );
+  args.unshift( filters );
+  return _.mapExtendRecursiveConditional.apply( _,args );
+}
+
+//
+
+function mapsExtendAppendingArraysRecursive( dstMap, srcMaps )
+{
+  _.assert( this === Self );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  var filters = { onField : _.field.mapper.appendingArrays, onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
@@ -21198,8 +21241,10 @@ var Routines =
 
   mapExtendHiding : mapExtendHiding,
   mapsExtendHiding : mapsExtendHiding,
-  mapExtendAppending : mapExtendAppending,
-  mapsExtendAppending : mapsExtendAppending,
+  mapExtendAppendingAnything : mapExtendAppendingAnything,
+  mapsExtendAppendingAnything : mapsExtendAppendingAnything,
+  mapExtendAppendingArrays : mapExtendAppendingArrays,
+  mapsExtendAppendingArrays : mapsExtendAppendingArrays,
   mapExtendByDefined : mapExtendByDefined,
   mapsExtendByDefined : mapsExtendByDefined,
 
@@ -21233,8 +21278,10 @@ var Routines =
   mapsExtendRecursive : mapsExtendRecursive,
   _mapExtendRecursive : _mapExtendRecursive,
 
-  mapExtendAppendingRecursive : mapExtendAppendingRecursive,
-  mapsExtendAppendingRecursive : mapsExtendAppendingRecursive,
+  mapExtendAppendingAnythingRecursive : mapExtendAppendingAnythingRecursive,
+  mapsExtendAppendingAnythingRecursive : mapsExtendAppendingAnythingRecursive,
+  mapExtendAppendingArraysRecursive : mapExtendAppendingArraysRecursive,
+  mapsExtendAppendingArraysRecursive : mapsExtendAppendingArraysRecursive,
   mapExtendAppendingOnceRecursive : mapExtendAppendingOnceRecursive,
   mapsExtendAppendingOnceRecursive : mapsExtendAppendingOnceRecursive,
 
