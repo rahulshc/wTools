@@ -2,15 +2,14 @@
 
 'use strict';
 
-var _global = _global_;
-var Self = _global_.wTools;
-var _global = _global_;
-var _ = _global_.wTools;
+let _global = _global_;
+let Self = _global_.wTools;
+let _ = _global_.wTools;
 
-var _ArraySlice = Array.prototype.slice;
-var _FunctionBind = Function.prototype.bind;
-var _ObjectToString = Object.prototype.toString;
-var _ObjectHasOwnProperty = Object.hasOwnProperty;
+let _ArraySlice = Array.prototype.slice;
+let _FunctionBind = Function.prototype.bind;
+let _ObjectToString = Object.prototype.toString;
+let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 _.assert( !!_realGlobal_ );
 
@@ -18,7 +17,7 @@ _.assert( !!_realGlobal_ );
 // look
 // --
 
-var LookDefaults =
+let LookDefaults =
 {
 
   onUp : function( e,k,it ){ return it.looking },
@@ -50,7 +49,7 @@ var LookDefaults =
 
 //
 
-var LookIterator = Object.create( null );
+let LookIterator = Object.create( null );
 
 LookIterator.begin = _lookIterationBegin;
 LookIterator.select = _lookIterationSelect;
@@ -62,7 +61,7 @@ _realGlobal_.wTools.LookIterator = LookIterator;
 
 //
 
-var LookIteration = Object.create( null );
+let LookIteration = Object.create( null );
 
 LookIteration.hasChildren = 0;
 LookIteration.level = 0,
@@ -82,13 +81,13 @@ LookIteration.down = null;
 
 function _lookIterationBegin()
 {
-  var it = this;
+  let it = this;
 
   _.assert( arguments.length === 0 );
   _.assert( it.level >= 0 );
   _.assert( _.objectIs( it.iterator ) );
 
-  var newIt = Object.create( it.iterator );
+  let newIt = Object.create( it.iterator );
   _.mapExtend( newIt, LookIteration );
   Object.preventExtensions( newIt );
 
@@ -105,7 +104,7 @@ function _lookIterationBegin()
 
 function _lookIterationSelect( k )
 {
-  var it = this;
+  let it = this;
 
   _.assert( arguments.length === 1, 'expects exactly two arguments' );
   _.assert( it.level >= 0 );
@@ -130,7 +129,7 @@ function _lookIterationSelect( k )
 
 function __look_lookBegin( routine, args )
 {
-  var o = args[ 0 ];
+  let o = args[ 0 ];
 
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -139,7 +138,7 @@ function __look_lookBegin( routine, args )
 
   /* */
 
-  var iterator = Object.create( LookIterator );
+  let iterator = Object.create( LookIterator );
   _.mapExtend( iterator, o );
 
   iterator.iterator = iterator;
@@ -169,7 +168,7 @@ function __look_lookBegin( routine, args )
   _.assert( iterator.path !== undefined );
   _.assert( _.strIs( iterator.lastPath ) );
 
-  var it = Object.create( iterator );
+  let it = Object.create( iterator );
   _.mapExtend( it, LookIteration );
   Object.preventExtensions( it );
 
@@ -193,7 +192,7 @@ function __look_lookIt( it )
 
   /* level */
 
-  var keepLooking = true;
+  let keepLooking = true;
   if( it.levelLimit !== 0 )
   if( !( it.level < it.levelLimit ) )
   {
@@ -205,11 +204,11 @@ function __look_lookIt( it )
 
   /* iterate */
 
-  // var index = 0;
+  // let index = 0;
   if( _.arrayIs( it.src ) || _.argumentsArrayIs( it.src ) )
   {
 
-    for( var k = 0 ; k < it.src.length ; k++ )
+    for( let k = 0 ; k < it.src.length ; k++ )
     {
 
       handleElement( k );
@@ -223,7 +222,7 @@ function __look_lookIt( it )
   else if( _.objectLike( it.src ) )
   {
 
-    for( var k in it.src )
+    for( let k in it.src )
     {
 
       if( it.own )
@@ -255,7 +254,7 @@ function __look_lookIt( it )
 
     if( it.recursive || it.root === it.src )
     {
-      var itNew = it.begin().select( k/*,index*/ );
+      let itNew = it.begin().select( k/*,index*/ );
       __look_lookIt( itNew );
     }
 
@@ -319,7 +318,7 @@ function __look_lookIt( it )
 
 function __look_lookContinue( routine, args )
 {
-  var it = args[ args.length - 1 ];
+  let it = args[ args.length - 1 ];
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
@@ -335,7 +334,7 @@ function __look_lookContinue( routine, args )
 
 function _look_pre( routine, args )
 {
-  var o;
+  let o;
 
   if( args.length === 1 )
   {
@@ -360,7 +359,7 @@ function _look_pre( routine, args )
   _.assert( o.onUp === null || o.onUp.length === 0 || o.onUp.length === 3, 'onUp should expects exactly three arguments' );
   _.assert( o.onDown === null || o.onDown.length === 0 || o.onDown.length === 3, 'onUp should expects exactly three arguments' );
 
-  var it = look.lookBegin( routine, [ o ] );
+  let it = look.lookBegin( routine, [ o ] );
 
   return it;
 }
@@ -379,7 +378,7 @@ _look_body.defaults = Object.create( LookDefaults );
 
 function look( o )
 {
-  var o = look.pre.call( _, look, arguments );
+  let o = look.pre.call( _, look, arguments );
   return look.body.call( _, o );
 }
 
@@ -397,7 +396,7 @@ defaults.own = 0;
 
 function lookOwn( o )
 {
-  var o = lookOwn.pre.call( _, look, arguments );
+  let o = lookOwn.pre.call( _, look, arguments );
   _.assert( o.own );
   return lookOwn.body.call( _, o );
 }
@@ -416,7 +415,7 @@ defaults.recursive = 1;
 
 function entityWrap( o )
 {
-  var result = o.dst;
+  let result = o.dst;
 
   debugger;
 
@@ -439,7 +438,7 @@ function entityWrap( o )
 
     if( o.onWrap )
     {
-      var newElement = o.onWrap.call( this,e,k,it );
+      let newElement = o.onWrap.call( this,e,k,it );
 
       if( newElement !== e )
       {
@@ -453,7 +452,7 @@ function entityWrap( o )
     else
     {
 
-      var newElement = { _ : e };
+      let newElement = { _ : e };
       if( e === result )
       result = newElement;
       else
@@ -491,7 +490,7 @@ entityWrap.defaults =
 
 function entitySearch( o )
 {
-  var result = Object.create( null );
+  let result = Object.create( null );
 
   if( arguments.length === 2 )
   {
@@ -506,7 +505,7 @@ function entitySearch( o )
   _.assert( o.onDown.length === 0 || o.onDown.length === 3 );
   _.assert( o.onUp.length === 0 || o.onUp.length === 3 );
 
-  var strIns,regexpIns;
+  let strIns,regexpIns;
   strIns = String( o.ins );
 
   if( o.searchingCaseInsensitive && _.strIs( o.ins ) )
@@ -523,7 +522,7 @@ function entitySearch( o )
   function checkCandidate( e,k,it,r,path )
   {
 
-    var c = true;
+    let c = true;
     if( o.condition )
     {
       c = o.condition.call( this,e,k,it );
@@ -550,7 +549,7 @@ function entitySearch( o )
 
   /* */
 
-  var onUp = o.onUp;
+  let onUp = o.onUp;
   function handleUp( e,k,it )
   {
 
@@ -558,9 +557,9 @@ function entitySearch( o )
     if( onUp.call( this,e,k,it ) === false )
     return false;
 
-    var path = it.path;
+    let path = it.path;
 
-    var r;
+    let r;
     if( o.returnParent && it.down )
     {
       r = it.down.src;
@@ -586,7 +585,7 @@ function entitySearch( o )
 
   /* */
 
-  var lookOptions = _.mapOnly( o, _.look.defaults )
+  let lookOptions = _.mapOnly( o, _.look.defaults )
   lookOptions.onUp = handleUp;
 
   _.look( lookOptions );
@@ -623,7 +622,7 @@ entitySearch.defaults.__proto__ = look.defaults;
 
 function entityFreezeRecursive( src )
 {
-  var lookOptions = Object.create( null );
+  let lookOptions = Object.create( null );
 
   lookOptions.src = src;
   lookOptions.onUp = function handleUp( e, k, it )
@@ -667,7 +666,7 @@ function _entitySelectOptions( o )
 
   if( arguments[ 1 ] !== undefined )
   {
-    var o = Object.create( null );
+    o = Object.create( null );
     o.container = arguments[ 0 ];
     o.query = arguments[ 1 ];
   }
@@ -676,14 +675,14 @@ function _entitySelectOptions( o )
   o.usingSet = 1;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.routineOptionsPreservingUndefines( _entitySelectOptions,o );
+  _.routineOptionsPreservingUndefines( _entitySelectOptions, o );
   _.assert( _.strIs( o.query ) || _.numberIs( o.query ) || _.arrayIs( o.query ) );
 
   /* makeQarrey */
 
   function makeQarrey( query )
   {
-    var qarrey;
+    let qarrey;
 
     if( _.numberIs( query ) )
     qarrey = [ query ];
@@ -708,7 +707,7 @@ function _entitySelectOptions( o )
   if( _.arrayIs( o.query ) )
   {
     o.qarrey = [];
-    for( var i = 0 ; i < o.query.length ; i++ )
+    for( let i = 0 ; i < o.query.length ; i++ )
     o.qarrey[ i ] = makeQarrey( o.query[ i ] );
   }
   else
@@ -735,22 +734,22 @@ _entitySelectOptions.defaults =
 
 function _entitySelect( o )
 {
-  var result;
+  let result;
 
   if( _.arrayIs( o.query ) )
   {
     debugger;
 
     result = Object.create( null );
-    for( var i = 0 ; i < o.query.length ; i++ )
+    for( let i = 0 ; i < o.query.length ; i++ )
     {
 
-      // var it = Object.create( null );
+      // let it = Object.create( null );
       // it.qarrey = o.qarrey[ i ];
       // it.container = o.container;
       // iterator.query = o.query[ i ];
 
-      var optionsForSelect = _.mapExtend( null,o );
+      let optionsForSelect = _.mapExtend( null,o );
       optionsForSelect.query = optionsForSelect.query[ i ];
 
       // it.qarrey = o.qarrey[ i ];
@@ -768,7 +767,7 @@ function _entitySelect( o )
   // debugger;
   o = _entitySelectOptions( o );
 
-  var iterator = Object.create( null );
+  let iterator = Object.create( null );
   iterator.set = o.set;
   iterator.delimeter = o.delimeter;
   iterator.usingUndefinedForMissing = o.usingUndefinedForMissing;
@@ -777,7 +776,7 @@ function _entitySelect( o )
   iterator.usingSet = o.usingSet;
   iterator.query = o.query;
 
-  var it = Object.create( null );
+  let it = Object.create( null );
   it.qarrey = o.qarrey;
   it.container = o.container;
   it.up = null;
@@ -808,11 +807,11 @@ function _entitySelect( o )
 function _entitySelectAct( it,iterator )
 {
 
-  var result;
-  var container = it.container;
+  let result;
+  let container = it.container;
 
-  var key = it.qarrey[ 0 ];
-  var key2 = it.qarrey[ 1 ];
+  let key = it.qarrey[ 0 ];
+  let key2 = it.qarrey[ 1 ];
 
   if( !it.qarrey.length )
   {
@@ -834,7 +833,7 @@ function _entitySelectAct( it,iterator )
     throw _.err( 'cant select',it.qarrey.join( '.' ),'from atomic',_.strTypeOf( container ) );
   }
 
-  var qarrey = it.qarrey.slice( 1 );
+  let qarrey = it.qarrey.slice( 1 );
 
   /* */
 
@@ -849,7 +848,7 @@ function _entitySelectAct( it,iterator )
       container[ key ] = iterator.set;
     }
 
-    var field;
+    let field;
     if( iterator.usingMapIndexedAccess && _.numberIs( key ) && _.objectIs( container ) )
     field = _.mapValWithIndex( container, key );
     else
@@ -870,7 +869,7 @@ function _entitySelectAct( it,iterator )
     if( field === undefined )
     return;
 
-    var newIteration = Object.create( null );
+    let newIteration = Object.create( null );
     newIteration.container = field;
     newIteration.qarrey = qarrey;
     newIteration.up = container;
@@ -907,14 +906,14 @@ function entitySelect( o )
 
   if( arguments[ 1 ] !== undefined )
   {
-    var o = Object.create( null );
+    o = Object.create( null );
     o.container = arguments[ 0 ];
     o.query = arguments[ 1 ];
   }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var result = _entitySelect( o );
+  let result = _entitySelect( o );
 
   return result;
 }
@@ -934,23 +933,19 @@ function entitySelectSet( o )
 
   if( arguments[ 1 ] !== undefined || arguments[ 2 ] !== undefined )
   {
-    var o = Object.create( null );
+    o = Object.create( null );
     o.container = arguments[ 0 ];
     o.query = arguments[ 1 ];
     o.set = arguments[ 2 ];
-    // var o = _entitySelectOptions( arguments[ 0 ],arguments[ 1 ] );
-    // o.set = value;
   }
   else
   {
-    // var o = Object.create( null );
-    // var o = _entitySelectOptions( arguments[ 0 ] );
     _.assert( _.mapOwnKey( o,{ set : 'set' } ) );
   }
 
   o.usingSet = 1;
 
-  var result = _entitySelect( o );
+  let result = _entitySelect( o );
 
   return result;
 }
@@ -970,7 +965,7 @@ function entitySelectUnique( o )
 
   if( arguments[ 1 ] !== undefined )
   {
-    var o = Object.create( null );
+    o = Object.create( null );
     o.container = arguments[ 0 ];
     o.query = arguments[ 1 ];
   }
@@ -981,7 +976,7 @@ function entitySelectUnique( o )
   // _.assert( _.arrayCount( o.qarrey,'*' ) <= 1,'not implemented' );
   // debugger;
 
-  var result = _entitySelect( o );
+  let result = _entitySelect( o );
 
   // debugger;
 
@@ -1015,9 +1010,9 @@ function _entityProbeReport( o )
     if( !_.strIs( o.report ) )
     o.report = '';
     o.report += o.title + ' : ' + o.total + '\n';
-    for( var r in o.result )
+    for( let r in o.result )
     {
-      var d = o.result[ r ];
+      let d = o.result[ r ];
       o.report += o.tab;
       if( o.prependingByAsterisk )
       o.report += '*.';
@@ -1048,7 +1043,7 @@ function entityProbeField( o )
 
   if( arguments[ 1 ] !== undefined )
   {
-    var o = Object.create( null );
+    o = Object.create( null );
     o.container = arguments[ 0 ];
     o.query = arguments[ 1 ];
   }
@@ -1063,27 +1058,27 @@ function entityProbeField( o )
 
   /* */
 
-  for( var i = 0 ; i < o.all.length ; i++ )
+  for( let i = 0 ; i < o.all.length ; i++ )
   {
-    var val = o.all[ i ];
+    let val = o.all[ i ];
     if( !o.result[ val ] )
     {
-      var d = o.result[ val ] = Object.create( null );
+      let d = o.result[ val ] = Object.create( null );
       d.having = [];
       d.notHaving = [];
       d.value = val;
     }
-    var d = o.result[ val ];
+    let d = o.result[ val ];
     d.having.push( o.parents[ i ] );
   }
 
-  for( var k in o.result )
+  for( let k in o.result )
   {
-    var d = o.result[ k ];
-    for( var i = 0 ; i < o.all.length ; i++ )
+    let d = o.result[ k ];
+    for( let i = 0 ; i < o.all.length ; i++ )
     {
-      var element = o.all[ i ];
-      var parent = o.parents[ i ];
+      let element = o.all[ i ];
+      let parent = o.parents[ i ];
       if( !_.arrayHas( d.having, parent ) )
       d.notHaving.push( parent );
     }
@@ -1141,19 +1136,19 @@ function entityProbe( o )
     if( o.assertingUniqueness )
     _.assertMapHasNone( result,src );
 
-    for( var s in src )
+    for( let s in src )
     {
       if( !result[ s ] )
       {
-        var r = result[ s ] = Object.create( null );
+        let r = result[ s ] = Object.create( null );
         r.times = 0;
         r.values = [];
         r.having = [];
         r.notHaving = [];
       }
-      var r = result[ s ];
+      let r = result[ s ];
       r.times += 1;
-      var added = _.arrayAppendedOnce( r.values,src[ s ] ) !== -1;
+      let added = _.arrayAppendedOnce( r.values,src[ s ] ) !== -1;
       r.having.push( src );
     }
 
@@ -1174,7 +1169,7 @@ function entityProbe( o )
       return src;
     }
 
-    for( var s = 0 ; s < src.length ; s++ )
+    for( let s = 0 ; s < src.length ; s++ )
     {
       if( _.arrayIs( src[ s ] ) )
       entityProbe
@@ -1194,12 +1189,12 @@ function entityProbe( o )
 
   /* not having */
 
-  for( var a = 0 ; a < o.all.length ; a++ )
+  for( let a = 0 ; a < o.all.length ; a++ )
   {
-    var map = o.all[ a ];
-    for( var r in o.result )
+    let map = o.all[ a ];
+    for( let r in o.result )
     {
-      var field = o.result[ r ];
+      let field = o.result[ r ];
       if( !_.arrayHas( field.having,map ) )
       field.notHaving.push( map );
     }
@@ -1271,7 +1266,7 @@ entityProbe.defaults =
 
 function entityGroup( o )
 {
-  var o = o || Object.create( null );
+  let o = o || Object.create( null );
 
   /* key */
 
@@ -1290,7 +1285,7 @@ function entityGroup( o )
 
   /* */
 
-  var o = _.routineOptions( entityGroup,o );
+  let o = _.routineOptions( entityGroup,o );
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
@@ -1305,8 +1300,8 @@ function entityGroup( o )
     _.each( o.src, function( e,k )
     {
 
-      var value = o.usingOriginal ? o.src[ k ] : o.src[ k ][ key ];
-      var dstKey = o.usingOriginal ? o.src[ k ][ key ] : k;
+      let value = o.usingOriginal ? o.src[ k ] : o.src[ k ][ key ];
+      let dstKey = o.usingOriginal ? o.src[ k ][ key ] : k;
 
       if( o.usingOriginal )
       {
@@ -1326,15 +1321,15 @@ function entityGroup( o )
 
   /* */
 
-  var result;
+  let result;
   if( _.arrayIs( o.key ) )
   {
 
     result = Object.create( null );
-    for( var k = 0 ; k < o.key.length ; k++ )
+    for( let k = 0 ; k < o.key.length ; k++ )
     {
       debugger;
-      var r = o.usingOriginal ? Object.create( null ) : _.entityMake( o.src );
+      let r = o.usingOriginal ? Object.create( null ) : _.entityMake( o.src );
       result[ o.key[ k ] ] = groupForKey( o.key[ k ],r );
     }
 
@@ -1559,7 +1554,7 @@ function __entityEqualCycle( e, k, it )
     /* if opposite branch was cycled earlier */
     if( it.down.src2 !== undefined )
     {
-      var i = it.src2Visited.indexOf( it.down.src2 );
+      let i = it.src2Visited.indexOf( it.down.src2 );
       if( 0 <= i && i <= it.src2Visited.length-3 )
       it.result = false;
     }
@@ -1575,7 +1570,7 @@ function __entityEqualCycle( e, k, it )
   if( it.wasVisited )
   if( it.levelLimit && it.level < it.levelLimit )
   {
-    var o2 = _.mapExtend( null, it.context );
+    let o2 = _.mapExtend( null, it.context );
     o2.src1 = it.src2;
     o2.src2 = it.src;
     o2.levelLimit = 1;
@@ -1589,7 +1584,7 @@ function __entityEqualCycle( e, k, it )
 
 function _entityEqual_lookBegin( routine, args )
 {
-  var o = args[ 0 ];
+  let o = args[ 0 ];
 
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -1598,7 +1593,7 @@ function _entityEqual_lookBegin( routine, args )
 
   /* */
 
-  var lookOptions = Object.create( null );
+  let lookOptions = Object.create( null );
   lookOptions.src = o.src2;
   lookOptions.src2 = o.src1;
   lookOptions.levelLimit = o.levelLimit;
@@ -1606,7 +1601,7 @@ function _entityEqual_lookBegin( routine, args )
   lookOptions.onUp = _.routinesComposeReturningLast([ __entityEqualUp, o.onUp ]);
   lookOptions.onDown = _.routinesComposeReturningLast([ __entityEqualDown, o.onDown ]);
 
-  var it = _.look.pre( _.look, [ lookOptions ] );
+  let it = _.look.pre( _.look, [ lookOptions ] );
   o.iterator = it.iterator;
 
   return it;
@@ -1614,11 +1609,11 @@ function _entityEqual_lookBegin( routine, args )
 
 //
 
-var _entityEqual_lookIt = look.lookIt;
+let _entityEqual_lookIt = look.lookIt;
 
 //
 
-var _entityEqual_lookContinue = __look_lookContinue;
+let _entityEqual_lookContinue = __look_lookContinue;
 
 //
 
@@ -1628,8 +1623,8 @@ function _entityEqual_pre( routine, args )
   _.assert( args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
 
-  var o = _.routineOptionsPreservingUndefines( routine, args[ 2 ] || Object.create( null ) );
-  var accuracy = o.accuracy;
+  let o = _.routineOptionsPreservingUndefines( routine, args[ 2 ] || Object.create( null ) );
+  let accuracy = o.accuracy;
 
   o.src1 = args[ 0 ];
   o.src2 = args[ 1 ];
@@ -1642,7 +1637,7 @@ function _entityEqual_pre( routine, args )
   else
   o.onNumbersAreEqual = numbersAreEquivalent;
 
-  var it = _._entityEqual.lookBegin( routine, [ o ] );
+  let it = _._entityEqual.lookBegin( routine, [ o ] );
 
   return it;
 
@@ -1718,7 +1713,7 @@ _entityEqual_body.defaults =
  *
  * @example
  * //returns ".a.b"
- * var o = { containing : 1 };
+ * let o = { containing : 1 };
  * _._entityEqual( { a : { b : 1 }, b : 1 } , { a : { b : 1 } }, o );
  * console.log( o.lastPath );
  *
@@ -1731,8 +1726,8 @@ _entityEqual_body.defaults =
 
 function _entityEqual( src1, src2, options )
 {
-  var it = _entityEqual.pre.call( this, _entityEqual, arguments );
-  var result = _entityEqual.body.call( this, it );
+  let it = _entityEqual.pre.call( this, _entityEqual, arguments );
+  let result = _entityEqual.body.call( this, it );
   return result;
 }
 
@@ -1759,14 +1754,14 @@ var defaults = _entityEqual.defaults = Object.create( _entityEqual_body.defaults
  *
  * @example
  * //returns true
- * var src1 = { a : 1, b : { a : 1, b : 2 } };
- * var src2 = { a : 1, b : { a : 1, b : 2 } };
+ * let src1 = { a : 1, b : { a : 1, b : 2 } };
+ * let src2 = { a : 1, b : { a : 1, b : 2 } };
  * _.entityIdentical( src1, src2 ) ;
  *
  * @example
  * //returns false
- * var src1 = { a : '1', b : { a : 1, b : '2' } };
- * var src2 = { a : 1, b : { a : 1, b : 2 } };
+ * let src1 = { a : '1', b : { a : 1, b : '2' } };
+ * let src2 = { a : 1, b : { a : 1, b : 2 } };
  * _.entityIdentical( src1, src2 ) ;
  *
  * @function entityIdentical
@@ -1777,8 +1772,8 @@ var defaults = _entityEqual.defaults = Object.create( _entityEqual_body.defaults
 
 function entityIdentical( src1, src2, options )
 {
-  var it = _entityEqual.pre.call( this, entityIdentical, arguments );
-  var result = _entityEqual.body.call( this, it );
+  let it = _entityEqual.pre.call( this, entityIdentical, arguments );
+  let result = _entityEqual.body.call( this, it );
   return result;
 }
 
@@ -1821,8 +1816,8 @@ defaults.strictCycling = 1;
 
 function entityEquivalent( src1, src2, options )
 {
-  var it = _entityEqual.pre.call( this, entityEquivalent, arguments );
-  var result = _entityEqual.body.call( this, it );
+  let it = _entityEqual.pre.call( this, entityEquivalent, arguments );
+  let result = _entityEqual.body.call( this, it );
   return result;
 }
 
@@ -1867,8 +1862,8 @@ defaults.strictCycling = 0;
 
 function entityContains( src1, src2, options )
 {
-  var it = _entityEqual.pre.call( this, entityContains, arguments );
-  var result = _entityEqual.body.call( this, it );
+  let it = _entityEqual.pre.call( this, entityContains, arguments );
+  let result = _entityEqual.body.call( this, it );
   return result;
 }
 
@@ -1922,14 +1917,14 @@ defaults.strictCycling = 1;
 function entityDiff( src1, src2, o )
 {
 
-  var o = o || Object.create( null );
+  let o = o || Object.create( null );
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
-  var equal = _._entityEqual( src1, src2, o );
+  let equal = _._entityEqual( src1, src2, o );
 
   if( equal )
   return false;
 
-  var result = _.entityDiffExplanation
+  let result = _.entityDiffExplanation
   ({
     srcs : [ src1, src2 ],
     path : o.iterator.lastPath,
@@ -1942,17 +1937,16 @@ function entityDiff( src1, src2, o )
 
 function entityDiffExplanation( o )
 {
+  let result = '';
 
   o = _.routineOptions( entityDiffExplanation, arguments );
   _.assert( _.arrayIs( o.srcs ) );
   _.assert( o.srcs.length === 2 );
 
-  var result = '';
-
   if( o.path )
   {
 
-    var dir = _.strIsolateEndOrNone( o.path, '/' )[ 0 ];
+    let dir = _.strIsolateEndOrNone( o.path, '/' )[ 0 ];
     if( !dir )
     dir = '/';
 
@@ -1973,8 +1967,8 @@ function entityDiffExplanation( o )
     o.srcs[ 1 ] = _.mapBut( o.srcs[ 1 ], common );
   }
 
-  o.srcs[ 0 ] = _.toStr( o.srcs[ 0 ] );
-  o.srcs[ 1 ] = _.toStr( o.srcs[ 1 ] );
+  o.srcs[ 0 ] = _.toStr( o.srcs[ 0 ], { levels : 2 } );
+  o.srcs[ 1 ] = _.toStr( o.srcs[ 1 ], { levels : 2 } );
 
   o.srcs[ 0 ] = _.strIndentation( o.srcs[ 0 ], '  ' );
   o.srcs[ 1 ] = _.strIndentation( o.srcs[ 1 ], '  ' );
@@ -1983,7 +1977,7 @@ function entityDiffExplanation( o )
 
   /* */
 
-  var strDiff = _.strDifference( o.srcs[ 0 ], o.srcs[ 1 ] );
+  let strDiff = _.strDifference( o.srcs[ 0 ], o.srcs[ 1 ] );
   if( strDiff !== false )
   {
     result += ( '\n' + o.differenceName + ' :\n' + strDiff );
@@ -2011,7 +2005,7 @@ defaults.accuracy = null;
 // declare
 // --
 
-var Proto =
+let Proto =
 {
 
   // look

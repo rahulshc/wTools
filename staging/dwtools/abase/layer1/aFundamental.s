@@ -16786,7 +16786,7 @@ function mapExtendByDefined( dstMap )
   if( dstMap === null && arguments.length === 2 )
   return _.mapExtend( null, srcMap );
   var args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.dstUndefinedSrcNotUndefined );
+  args.unshift( _.field.mapper.srcDefined );
   return _.mapExtendConditional.apply( this,args );
 }
 
@@ -16795,7 +16795,7 @@ function mapExtendByDefined( dstMap )
 function mapsExtendByDefined( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  return _.mapsExtendConditional( _.field.mapper.dstUndefinedSrcNotUndefined, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.srcDefined, dstMap, srcMaps );
 }
 
 //
