@@ -423,7 +423,7 @@ function entityWrap( o )
   _.assert( arguments.length === 1, 'expects single argument' );
 
   if( o.onCondition )
-  o.onCondition = _selectorMake( o.onCondition,1 );
+  o.onCondition = _filter_functor( o.onCondition,1 );
 
   /* */
 
@@ -513,7 +513,7 @@ function entitySearch( o )
 
   if( o.condition )
   {
-    o.condition = _selectorMake( o.condition,1 );
+    o.condition = _filter_functor( o.condition,1 );
     _.assert( o.condition.length === 0 || o.condition.length === 3 );
   }
 

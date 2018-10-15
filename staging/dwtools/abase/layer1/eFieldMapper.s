@@ -230,7 +230,9 @@ function drop( dropContainer )
 
 drop.functionFamily = 'field-filter';
 
-//
+// --
+// src
+// --
 
 function srcDefined()
 {
@@ -247,6 +249,24 @@ function srcDefined()
 }
 
 srcDefined.functionFamily = 'field-filter';
+
+//
+
+function srcNull()
+{
+
+  let routine = function srcNull( dstContainer, srcContainer, key )
+  {
+    if( srcContainer[ key ] !== null )
+    return false;
+    return true;
+  }
+
+  routine.functionFamily = 'field-filter'; ;
+  return routine;
+}
+
+srcNull.functionFamily = 'field-filter';
 
 // --
 // dst
@@ -1137,7 +1157,10 @@ let make =
   assigningRecursive : assigningRecursive,
   drop : drop,
 
+  // src
+
   srcDefined : srcDefined,
+  srcNull : srcNull,
 
   // dst
 

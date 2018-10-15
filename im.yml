@@ -1,7 +1,7 @@
 
-modules :
+module :
 
-paths :
+path :
   proto : './proto'
   debug : './staging'
   release : './production'
@@ -36,25 +36,26 @@ files :
         - !regexp '/\.production($|\.|\/)/i'
         - !regexp '/(^|\/)-/'
 
-builds :
+build :
 
-'.staging.debug' :
-  settings :
-    debug : 1
-    staging : 1
-  composes :
-    StagingFiles : staging
-    wTools : staging
-    wProto : staging
-    wMathScalar : staging
+  '.staging.debug' :
+    default : 1
+    settings :
+      debug : 1
+      staging : 1
+    composes :
+      StagingFiles : staging
+      wTools : staging
+      wProto : staging
+      wMathScalar : staging
 
-'.staging.release' :
-  default : 1
-  settings :
-    debug : 0
-    staging : 1
-  composes :
-    StagingFiles : staging.release
-    wTools : staging.release
-    wProto : staging.release
-    wMathScalar : staging.release
+  '.staging.release' :
+    default : 0
+    settings :
+      debug : 0
+      staging : 1
+    composes :
+      StagingFiles : staging.release
+      wTools : staging.release
+      wProto : staging.release
+      wMathScalar : staging.release

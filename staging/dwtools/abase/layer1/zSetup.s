@@ -188,7 +188,7 @@ function _setupTesterPlaceholder()
     if( !testSuit.suiteFileLocation )
     testSuit.suiteFileLocation = _.diagnosticLocation( 1 ).full;
 
-    _.assert( _.strIsNotEmpty( testSuit.suiteFileLocation ),'Test suit expects a mandatory option ( suiteFileLocation )' );
+    _.assert( _.strDefined( testSuit.suiteFileLocation ),'Test suit expects a mandatory option ( suiteFileLocation )' );
     _.assert( _.objectIs( testSuit ) );
 
     // if( testSuit.name === 'Chaining test' )

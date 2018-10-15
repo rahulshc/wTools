@@ -1167,10 +1167,69 @@ function entityMap( src,onEach )
 
 //
 
+/**
+ * Returns generated function that takes single argument( e ) and can be called to check if object( e )
+ * has at least one key/value pair that is represented in( condition ).
+ * If( condition ) is provided as routine, routine uses it to check condition.
+ * Generated function returns origin( e ) if conditions is true, else undefined.
+ *
+ * @param {object|function} condition - Map to compare with( e ) or custom function.
+ * @returns {function} Returns condition check function.
+ *
+ * @example
+ * //returns Object {a: 1}
+ * var check = _._filter_functor( { a : 1, b : 1, c : 1 } );
+ * check( { a : 1 } );
+ *
+ * @example
+ * //returns false
+ * function condition( src ){ return src.y === 1 }
+ * var check = _._filter_functor( condition );
+ * check( { a : 2 } );
+ *
+ * @function _filter_functor
+ * @throws {exception} If no argument provided.
+ * @throws {exception} If( condition ) is not a Routine or Object.
+ * @memberof wTools
+*/
+
+function _filter_functor( condition, levels )
+{
+  var result;
+
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
+
+  if( _.objectIs( condition ) )
+  {
+    var template = condition;
+    condition = function selector( e, k, src )
+    {
+      _.assert( arguments.length === 3 );
+      if( e === template )
+      return e;
+      if( !_.objectLike( e ) )
+      return;
+      var satisfied = _.mapSatisfy
+      ({
+        template : template,
+        src : e,
+        levels : levels
+      });
+      if( satisfied )
+      return e;
+    };
+  }
+
+  return condition;
+}
+
+//
+
 function entityFilter( src, onEach )
 {
   var result;
-  onEach = _selectorMake( onEach, 1 );
+  onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
   _.assert( _.objectLike( src ) || _.longIs( src ), () => 'expects objectLike or longIs src, but got ' + _.strTypeOf( src ) );
@@ -1214,7 +1273,7 @@ function _entityFilterDeep( o )
 {
 
   var result;
-  var onEach = _selectorMake( o.onEach,o.conditionLevels );
+  var onEach = _._filter_functor( o.onEach,o.conditionLevels );
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.objectLike( o.src ) || _.longIs( o.src ),'entityFilter : expects objectLike or longIs src, but got',_.strTypeOf( o.src ) );
@@ -2012,64 +2071,6 @@ function entityKeyWithValue( src,value )
   result = null;
 
   return result;
-}
-
-//
-
-/**
- * Returns generated function that takes single argument( e ) and can be called to check if object( e )
- * has at least one key/value pair that is represented in( condition ).
- * If( condition ) is provided as routine, routine uses it to check condition.
- * Generated function returns origin( e ) if conditions is true, else undefined.
- *
- * @param {object|function} condition - Map to compare with( e ) or custom function.
- * @returns {function} Returns condition check function.
- *
- * @example
- * //returns Object {a: 1}
- * var check = _._selectorMake( { a : 1, b : 1, c : 1 } );
- * check( { a : 1 } );
- *
- * @example
- * //returns false
- * function condition( src ){ return src.y === 1 }
- * var check = _._selectorMake( condition );
- * check( { a : 2 } );
- *
- * @function _selectorMake
- * @throws {exception} If no argument provided.
- * @throws {exception} If( condition ) is not a Routine or Object.
- * @memberof wTools
-*/
-
-function _selectorMake( condition, levels )
-{
-  var result;
-
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.routineIs( condition ) || _.objectIs( condition ) );
-
-  if( _.objectIs( condition ) )
-  {
-    var template = condition;
-    condition = function selector( e )
-    {
-      if( e === template )
-      return e;
-      if( !_.objectLike( e ) )
-      return;
-      var satisfied = _.mapSatisfy
-      ({
-        template : template,
-        src : e,
-        levels : levels
-      });
-      if( satisfied )
-      return e;
-    };
-  }
-
-  return condition;
 }
 
 //
@@ -6133,7 +6134,7 @@ function strsAre( src )
 
 //
 
-function strIsNotEmpty( src )
+function strDefined( src )
 {
   if( !src )
   return false;
@@ -6148,7 +6149,7 @@ function strsAreNotEmpty( src )
   if( _.arrayLike( src ) )
   {
     for( var s = 0 ; s < src.length ; s++ )
-    if( !_.strIsNotEmpty( src[ s ] ) )
+    if( !_.strDefined( src[ s ] ) )
     return false;
     return true;
   }
@@ -16800,6 +16801,23 @@ function mapsExtendByDefined( dstMap, srcMaps )
 
 //
 
+function mapExtendNulls( dstMap )
+{
+  var args = _.longSlice( arguments );
+  args.unshift( _.field.mapper.srcNull );
+  return _.mapExtendConditional.apply( this,args );
+}
+
+//
+
+function mapsExtendNulls( dstMap, srcMaps )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  return _.mapsExtendConditional( _.field.mapper.srcNull, dstMap, srcMaps );
+}
+
+//
+
 /**
  * The mapSupplement() supplement destination map by source maps.
  * Pairs of destination map are not overwritten by pairs of source maps if any overlap.
@@ -19033,7 +19051,7 @@ function mapIndexWithKey( srcMap, key )
 
 //
 
-function mapIndexWithValue( srcMap,value )
+function mapIndexWithValue( srcMap, value )
 {
 
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
@@ -19046,6 +19064,24 @@ function mapIndexWithValue( srcMap,value )
   }
 
   return;
+}
+
+//
+
+function mapNulls( srcMap )
+{
+  let result = Object.create( null );
+
+  _.assert( arguments.length === 1 );
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  for( let s in srcMap )
+  {
+    if( srcMap[ s ] === null )
+    result[ s ] = null;
+  }
+
+  return result;
 }
 
 // --
@@ -20573,6 +20609,7 @@ var Routines =
   entityNone : entityNone,
 
   entityMap : entityMap,
+  _filter_functor : _filter_functor,
   entityFilter : entityFilter,
   _entityFilterDeep : _entityFilterDeep,
   entityFilterDeep : entityFilterDeep,
@@ -20616,8 +20653,6 @@ var Routines =
 
   entityValueWithIndex : entityValueWithIndex, /* dubious */
   entityKeyWithValue : entityKeyWithValue, /* dubious */
-
-  _selectorMake : _selectorMake,
 
   entityVals : entityVals,
 
@@ -20789,7 +20824,7 @@ var Routines =
 
   strIs : strIs,
   strsAre : strsAre,
-  strIsNotEmpty : strIsNotEmpty,
+  strDefined : strDefined,
   strsAreNotEmpty : strsAreNotEmpty,
 
   strTypeOf : strTypeOf,
@@ -21247,6 +21282,8 @@ var Routines =
   mapsExtendAppendingArrays : mapsExtendAppendingArrays,
   mapExtendByDefined : mapExtendByDefined,
   mapsExtendByDefined : mapsExtendByDefined,
+  mapExtendNulls : mapExtendNulls,
+  mapsExtendNulls : mapsExtendNulls,
 
   mapSupplement : mapSupplement,
   mapSupplementNulls : mapSupplementNulls,
@@ -21352,6 +21389,8 @@ var Routines =
   mapKeyWithValue : mapKeyWithValue,
   mapIndexWithKey : mapIndexWithKey,
   mapIndexWithValue : mapIndexWithValue,
+
+  mapNulls : mapNulls,
 
   // map logic operator
 
