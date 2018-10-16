@@ -378,7 +378,7 @@ _look_body.defaults = Object.create( LookDefaults );
 
 function look( o )
 {
-  let o = look.pre.call( _, look, arguments );
+  o = look.pre.call( _, look, arguments );
   return look.body.call( _, o );
 }
 
@@ -396,7 +396,7 @@ defaults.own = 0;
 
 function lookOwn( o )
 {
-  let o = lookOwn.pre.call( _, look, arguments );
+  o = lookOwn.pre.call( _, look, arguments );
   _.assert( o.own );
   return lookOwn.body.call( _, o );
 }
@@ -1266,7 +1266,7 @@ entityProbe.defaults =
 
 function entityGroup( o )
 {
-  let o = o || Object.create( null );
+  o = o || Object.create( null );
 
   /* key */
 
@@ -1285,7 +1285,7 @@ function entityGroup( o )
 
   /* */
 
-  let o = _.routineOptions( entityGroup,o );
+  o = _.routineOptions( entityGroup,o );
 
   _.assert( arguments.length === 1, 'expects single argument' );
   _.assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
@@ -1917,7 +1917,7 @@ defaults.strictCycling = 1;
 function entityDiff( src1, src2, o )
 {
 
-  let o = o || Object.create( null );
+  o = o || Object.create( null );
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   let equal = _._entityEqual( src1, src2, o );
 
