@@ -4790,6 +4790,16 @@ function strStrip( test )
   var expected = [ '' ];
   test.identical( got, expected );
 
+  test.case = 'vectorized input';
+  var got = _.strStrip( [ '\nab  ', ' cd\s', ' ef  ' ] );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input - map argument';
+  var got = _.strStrip( { src : [ '\nab  ', ' cd\s', ' ef  ' ], stripper : [ 'a', 'f' ] }  );
+  var expected = [ 'b', 'cd', 'f' ];
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -4825,16 +4835,16 @@ function strStrip( test )
     _.strStrip();
   });
 
-  test.case = 'no arguments';
+  test.case = 'null argument';
   test.shouldThrowError( function( )
   {
-    _.strStrip( );
+    _.strStrip( null );
   } );
 
-  test.case = 'argument is wrong';
+  test.case = 'NaN argument';
   test.shouldThrowError( function( )
   {
-    _.strStrip( 13 );
+    _.strStrip( NaN );
   } );
 
   test.case = 'too many arguments';
@@ -4859,6 +4869,7 @@ function strStrip( test )
     { src : '   a   ', expected : 'a' },
     { src : ' \0 a \0 ', expected : 'a' },
     { src : '\r\n\t\f\v a \v\r\n\t\f', expected : 'a' },
+    { src : '\r\n\t\f\v hello world \v\r\n\t\f', expected : 'hello world' },
 
     { description : 'stripper contains regexp special symbols' },
     { src : { src : '\\s\\s', stripper : '\\s' } , expected : '' },
@@ -4872,6 +4883,13 @@ function strStrip( test )
     { src : { src : 'gp', stripper : 'a+' } , expected : 'gp' },
     { src : { src : 'hp', stripper : 'b{3}' } , expected : 'hp' },
     { src : { src : 'acbc', stripper : '^[ab]c$' } , expected : 'acbc' },
+
+    { description : 'stripper is regexp' },
+    { src : { src : ' abc', stripper : /[abc]/ } , expected : ' bc' },
+    { src : { src : 'abc', stripper : /\D/ } , expected : 'bc' },
+    { src : { src : 'abc', stripper : /[abc]$/ } , expected : 'ab' },
+    { src : { src : 'abc', stripper : /abc/ } , expected : '' },
+    { src : { src : 'hello', stripper : /lo?/ } , expected : 'helo' },
 
     {
       description : 'defaults, src is an array',
@@ -5012,6 +5030,16 @@ function strStrip( test )
       err : true
     },
     {
+      description : 'null argument',
+      args : [ null ],
+      err : true
+    },
+    {
+      description : 'NaN arguments',
+      args : [ NaN ],
+      err : true
+    },
+    {
       description : 'one string has invalid type',
       args : [ [ 'a', 0, 'b' ] ],
       err : true
@@ -5026,6 +5054,17 @@ function strStrip( test )
       args : [ { src : 'a', stripper : [ 'a', 0 ] } ],
       err : true
     },
+    {
+      description : 'null stripper',
+      args : [ { src : [ 'a', 'b' ], stripper : null } ],
+      err : true
+    },
+    {
+      description : 'NaN stripper',
+      args : [ { src : [ 'a', 'b' ], stripper : NaN } ],
+      err : true
+    },
+
   ]
 
   /**/
@@ -5057,8 +5096,186 @@ function strStrip( test )
 
 //
 
+function strStripLeft( test )
+{
+  var cases =
+  [
+    { description : 'defaults, src is a string' },
+    { src : '   a   ', expected : 'a   ' },
+    { src : ' \0 a \0 ', expected : 'a \u0000 ' },
+    { src : '\r\v a \v\r\n\t\f', expected : 'a \u000b\r' },
+    { src : '\0 hello world \0', expected : 'hello world \u0000' },
+
+    {
+      description : 'defaults, src is an array',
+      src :
+      [
+        '',
+        'a',
+        '   a   ',
+        ' \0 a \0 ',
+        '\r\n\t\f\v a \v\r'
+      ],
+      expected :
+      [
+        '',
+        'a',
+        'a   ',
+        'a \u0000 ',
+        'a \u000b\r'
+      ]
+    },
+    {
+      description : 'invalid type',
+      args : 0,
+      err : true
+    },
+    {
+      description : 'too many arguments',
+      args : [ 'a', '' ],
+      err : true
+    },
+    {
+      description : 'null argument',
+      args : [ null ],
+      err : true
+    },
+    {
+      description : 'NaN arguments',
+      args : [ NaN ],
+      err : true
+    },
+    {
+      description : 'one string has invalid type',
+      args : [ [ 'a', 0, 'b' ] ],
+      err : true
+    },
+
+  ]
+
+  /**/
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.description )
+    test.case = c.description;
+
+    if( c.err )
+    test.shouldThrowError( () => _.strStripLeft.apply( _, _.arrayAs( c.args ) ) );
+
+    if( c.src )
+    {
+      var identical = test.identical( _.strStripLeft( c.src ), c.expected );
+      if( !identical )
+      {
+        debugger;
+        test.identical( _.strStripLeft( c.src ), c.expected )
+        debugger;
+      }
+    }
+
+  }
+
+}
+
+//
+
+function strStripRight( test )
+{
+  var cases =
+  [
+    { description : 'defaults, src is a string' },
+    { src : '   ul   ', expected : '   ul' },
+    { src : ' \0 om \0 ', expected : ' \u0000 om' },
+    { src : '\r\v a \v\n\t\f\r', expected : '\r\u000b a' },
+    { src : '\0 hello world \0', expected : '\u0000 hello world' },
+
+    {
+      description : 'defaults, src is an array',
+      src :
+      [
+        '',
+        'a',
+        '   a   ',
+        ' \0 a \0 ',
+        '\r\v a \v\n\t\f\r'
+      ],
+      expected :
+      [
+        '',
+        'a',
+        '   a',
+        ' \u0000 a',
+        '\r\u000b a'
+      ]
+    },
+    {
+      description : 'invalid type',
+      args : 0,
+      err : true
+    },
+    {
+      description : 'too many arguments',
+      args : [ 'a', '' ],
+      err : true
+    },
+    {
+      description : 'null argument',
+      args : [ null ],
+      err : true
+    },
+    {
+      description : 'NaN arguments',
+      args : [ NaN ],
+      err : true
+    },
+    {
+      description : 'one string has invalid type',
+      args : [ [ 'a', 0, 'b' ] ],
+      err : true
+    },
+
+  ]
+
+  /**/
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.description )
+    test.case = c.description;
+
+    if( c.err )
+    test.shouldThrowError( () => _.strStripRight.apply( _, _.arrayAs( c.args ) ) );
+
+    if( c.src )
+    {
+      var identical = test.identical( _.strStripRight( c.src ), c.expected );
+      if( !identical )
+      {
+        debugger;
+        test.identical( _.strStripRight( c.src ), c.expected )
+        debugger;
+      }
+    }
+
+  }
+
+}
+
+
+//
+
 function strRemoveAllSpaces( test )
 {
+
+  test.case = 'removes the spaces from the borders';
+  var got = _.strRemoveAllSpaces( '  abcdef  ' );
+  var expected = 'abcdef';
+  test.identical( got, expected );
 
   test.case = 'removes the spaces from the given string';
   var got = _.strRemoveAllSpaces( 'a b c d e f' );
@@ -5085,6 +5302,11 @@ function strRemoveAllSpaces( test )
   var expected = '';
   test.identical( got,expected );
 
+  test.case = 'sub as word';
+  var got = _.strRemoveAllSpaces( 'a b c', ' and ' );
+  var expected = 'a and b and c';
+  test.identical( got,expected );
+
   test.case = 'sub as number';
   var got = _.strRemoveAllSpaces( 'a b c', 0 );
   var expected = 'a0b0c';
@@ -5094,6 +5316,41 @@ function strRemoveAllSpaces( test )
   var got = _.strRemoveAllSpaces( 'a b c d e', [ 5, 6 ] );
   var expected = 'a5,6b5,6c5,6d5,6e';
   test.identical( got,expected );
+
+  test.case = 'sub as null';
+  var got = _.strRemoveAllSpaces( 'a b c d e', null );
+  var expected = 'anullbnullcnulldnulle';
+  test.identical( got,expected );
+
+  test.case = 'sub as NaN';
+  var got = _.strRemoveAllSpaces( 'a b c d e', NaN );
+  var expected = 'aNaNbNaNcNaNdNaNe';
+  test.identical( got,expected );
+
+  test.case = 'sub as regexp';
+  var got = _.strRemoveAllSpaces( 'a b c d e', /a$/ );
+  var expected = 'a/a$/b/a$/c/a$/d/a$/e';
+  test.identical( got,expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ] );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], '-' );
+  var expected = [ '--a-b-', 'c--d-', '-e-f-' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], 3 );
+  var expected = [ '33a3b3', 'c33d3', '3e3f3' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ 'a b', 'cd ', ' ef' ], [ 0, 1 ] );
+  var expected = [ 'a0,1b', 'cd0,1', '0,1ef' ];
+  test.identical( got, expected );
 
   /**/
 
@@ -5118,18 +5375,6 @@ function strRemoveAllSpaces( test )
     _.strRemoveAllSpaces();
   });
 
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( [  ] );
-  } );
-
   test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
@@ -5140,6 +5385,24 @@ function strRemoveAllSpaces( test )
   test.shouldThrowError( function( )
   {
     _.strRemoveAllSpaces( 'a b c d e f', ',', 'redundant argument' );
+  } );
+
+  test.case = 'Null argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( null );
+  } );
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( NaN );
+  } );
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( /^a/ );
   } );
 
 }
@@ -5169,6 +5432,27 @@ function strStripEmptyLines( test )
   var expected = 'a\nb';
   test.identical( got,expected );
 
+  test.case = 'Lines with spaces';
+  var got = _.strStripEmptyLines( ' line one\n\n line two \n\n line 3 \n' );
+  var expected = ' line one\n line two \n line 3 ';
+  test.identical( got,expected );
+
+  test.case = 'Lines with spaces and tabs';
+  var got = _.strStripEmptyLines( ' line one\n\t\n\n line \t two \n\n line 3 \n' );
+  var expected = ' line one\n line \t two \n line 3 ';
+  test.identical( got,expected );
+
+  test.case = 'Array input';
+  var got = _.strStripEmptyLines( [ '  a \n\n b ', ' \nc  d \n\n\n ' ] );
+  var expected = [ '  a \n b ', 'c  d ' ];
+  test.identical( got,expected );
+
+  test.case = 'Empty array input';
+  var got = _.strStripEmptyLines( [ ] );
+  var expected = [ ];
+  test.identical( got,expected );
+
+
   /**/
 
   if( !Config.debug )
@@ -5190,6 +5474,185 @@ function strStripEmptyLines( test )
   test.shouldThrowError( function()
   {
     _.strStripEmptyLines();
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( NaN );
+  });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( /a?$/ );
+  });
+
+  test.case = 'Array with wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( [ null, NaN, 3, /a?$/ ] );
+  });
+
+}
+
+//
+
+function strSub( test )
+{
+
+  test.case = 'simple string - get all';
+  var got = _.strSub( 'Hello', [ 0, 5 ] );
+  var expected = 'Hello';
+  test.identical( got,expected );
+
+  test.case = 'simple string - range bigger than length';
+  var got = _.strSub( 'Hello', [ 0, 8 ] );
+  var expected = 'Hello';
+  test.identical( got,expected );
+
+  test.case = 'simple string - get subString';
+  var got = _.strSub( 'Hello', [ 0, 4 ] );
+  var expected = 'Hell';
+  test.identical( got,expected );
+
+  test.case = 'simple string - get end of string';
+  var got = _.strSub( 'Hello', [ 3, 5 ] );
+  var expected = 'lo';
+  test.identical( got,expected );
+
+  test.case = 'simple string - range reversed';
+  var got = _.strSub( 'Hello', [ 4, 0 ] );
+  var expected = 'Hell';
+  test.identical( got,expected );
+
+  test.case = 'simple string - range in the middle of the string';
+  var got = _.strSub( 'Hello', [ 2, 3 ] );
+  var expected = 'l';
+  test.identical( got,expected );
+
+  test.case = 'empty string';
+  var got = _.strSub( '', [ 2, 3 ] );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.case = 'Input array';
+  var got = _.strSub( [ 'Hello', 'World'], [ 3, 4 ] );
+  var expected = [ 'l', 'l' ];
+  test.identical( got,expected );
+
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub();
+  });
+
+  test.case = 'Too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( '1', '2', '3' );
+  });
+
+  test.case = 'Too many ranges';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'Hello world', [ 0, 1 ], [ 2, 3 ] );
+  });
+
+  test.case = 'Not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( '1' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 123, [ 0, 1 ] );
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strSub( null, [ 0, 1 ] );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strSub( NaN, [ 0, 1 ] );
+  });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strSub( /a?$/, [ 0, 1 ] );
+  });
+
+  test.case = 'invalid argument range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'hi ', 123 );
+  });
+
+  test.case = 'null range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'good morning', null );
+  });
+
+  test.case = 'NaN range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'good afternoon', NaN );
+  });
+
+  test.case = 'Regexp range';
+  test.shouldThrowError( function()
+  {
+    _.strSub( 'good night', /a?$/ );
+  });
+
+  test.case = 'Array with wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ null, NaN, 3, /a?$/ ], [ 0, 1 ] );
+  });
+
+  test.case = 'Range array with wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ null, NaN ] );
+  });
+
+  test.case = 'Range array empty';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ ] );
+  });
+
+  test.case = 'Range array with not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ 2 ] );
+  });
+
+  test.case = 'Range array with too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strSub( [ 'Hello', 'world' ], [ 2, 3, 4 ] );
   });
 
 }
@@ -5256,14 +5719,29 @@ function strJoin( test )
   var expected = '123';
   test.identical( got,expected );
 
-  test.case = 'join array + string';
-  var got = _.strJoin( [ 1, 2 ], '3' );
-  var expected = [ '13', '23' ];
+  test.case = 'join strings';
+  var got = _.strJoin( '1', '2', '3' );
+  var expected = '123';
   test.identical( got,expected );
 
   test.case = 'join two arrays';
   var got = _.strJoin( [ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = [ 'bx', 'cy' ];
+  test.identical( got,expected );
+
+  test.case = 'join string + number';
+  var got = _.strJoin( 1, 2, '3' );
+  var expected = '123';
+  test.identical( got,expected );
+
+  test.case = 'join array + string';
+  var got = _.strJoin( [ 1, 2 ], '3' );
+  var expected = [ '13', '23' ];
+  test.identical( got,expected );
+
+  test.case = 'join array + number';
+  var got = _.strJoin( [ 1, 2 ], 3 );
+  var expected = [ '13', '23' ];
   test.identical( got,expected );
 
   test.case = 'no arguments';
@@ -5276,9 +5754,19 @@ function strJoin( test )
   var expected = '1';
   test.identical( got,expected );
 
+  test.case = 'NaN argument';
+  var got = _.strJoin( '1', NaN );
+  var expected = '1NaN';
+  test.identical( got,expected );
+
   test.case = 'different types';
   var got = _.strJoin( 1, '2', [ '3', 4 ], 5, '6' );
   var expected = [ "12356", "12456" ];
+  test.identical( got,expected );
+
+  test.case = 'different types with two arrays';
+  var got = _.strJoin( '1', 2, [ 3, 4, 5 ], [ 6, 7, 8 ] );
+  var expected = [ "1236", "1247", "1258" ];
   test.identical( got,expected );
 
   /**/
@@ -5290,6 +5778,18 @@ function strJoin( test )
   test.shouldThrowError( function()
   {
     _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', null );
+  });
+
+  test.case = 'RegExp argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', /a?/ );
   });
 
   test.case = 'arrays with different length';
@@ -5341,12 +5841,17 @@ function strUnjoin( test )
   var expected = [ "a", "bc" ];
   test.identical( got,expected );
 
+  test.case = 'case 5b';
+  var got = _.strUnjoin( 'abc', [ any, 'a'  ] );
+  var expected = undefined;
+  test.identical( got,expected );
+
   test.case = 'case 6';
   var got = _.strUnjoin( 'abc', [ 'b', any ] );
   var expected = undefined;
   test.identical( got,expected );
 
-  test.case = 'case 7';
+  test.case = 'case 6b';
   var got = _.strUnjoin( 'abc', [ any, 'b' ] );
   var expected = undefined;
   test.identical( got,expected );
@@ -5356,12 +5861,44 @@ function strUnjoin( test )
   var expected = [ "ab", "c" ];
   test.identical( got,expected );
 
+  test.case = 'case 7b';
+  var got = _.strUnjoin( 'abc', [ 'c', any ] );
+  var expected = undefined;
+  test.identical( got,expected );
+
+  test.case = 'case 8';
+  var got = _.strUnjoin( 'abc', [ 'a', any, 'c' ] );
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got,expected );
+
+  test.case = 'case 9';
+  var got = _.strUnjoin( 'abc', [ any, 'b', any ] );
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got,expected );
+
+  test.case = 'case 9b';
+  var got = _.strUnjoin( 'abc', [ any, 'c', any ] );
+  var expected = [ 'ab', 'c', '' ];
+  test.identical( got,expected );
+
   /**/
 
   if( !Config.debug )
   return;
 
-  test.case = 'invalid arguments count';
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin();
+  });
+
+  test.case = 'Not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( '1' );
+  });
+
+  test.case = 'Too many arguments';
   test.shouldThrowError( function()
   {
     _.strUnjoin( '1', '2', '3' );
@@ -5385,10 +5922,58 @@ function strUnjoin( test )
     _.strUnjoin( 'one two', [ 1, 'two' ] );
   });
 
-  test.case = 'no arguments';
+  test.case = 'null first argument type';
   test.shouldThrowError( function()
   {
-    _.strUnjoin();
+    _.strUnjoin( null, [] );
+  });
+
+  test.case = 'null second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', null );
+  });
+
+  test.case = 'null array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ null, 'two' ] );
+  });
+
+  test.case = 'NaN first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( NaN, [] );
+  });
+
+  test.case = 'NaN second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', NaN );
+  });
+
+  test.case = 'NaN array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ NaN, 'two' ] );
+  });
+
+  test.case = 'RegExp first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( /\d$/, [] );
+  });
+
+  test.case = 'RegExp second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', /\D$/ );
+  });
+
+  test.case = 'RegExp array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ /^\d/, 'two' ] );
   });
 
 }
@@ -5538,6 +6123,11 @@ function strDup( test )
   var expected = 'aa';
   test.identical( got,expected );
 
+  test.case = 'Two words with a spaces';
+  var got = _.strDup( 'Hi world ', 2 );
+  var expected = 'Hi world Hi world ';
+  test.identical( got,expected );
+
   test.case = 'one space';
   var got = _.strDup( ' ', 2 );
   var expected = '  ';
@@ -5561,6 +6151,11 @@ function strDup( test )
   test.case = 'copies and concatenates first argument three times';
   var got = _.strDup( 'abc', 3 );
   var expected = 'abcabcabc';
+  test.identical( got, expected );
+
+  test.case = 'Second argument NaN';
+  var got = _.strDup( 'abc', NaN );
+  var expected = '';
   test.identical( got, expected );
 
   test.case = 'vectorized input';
@@ -5603,12 +6198,6 @@ function strDup( test )
     _.strDup();
   });
 
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strDup( );
-  } );
-
   test.case = 'second argument is wrong';
   test.shouldThrowError( function( )
   {
@@ -5630,7 +6219,7 @@ function strDup( test )
   test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strDup( 1,2 );
+    _.strDup( 1, 2 );
   });
 
   test.case = 'invalid second argument type';
@@ -5639,11 +6228,36 @@ function strDup( test )
     _.strDup( '1', '2' );
   });
 
-  test.case = 'no arguments';
+  test.case = 'null argument';
   test.shouldThrowError( function()
   {
-    _.strDup();
+    _.strDup( null, 2 );
   });
+
+  test.case = 'null second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( NaN, 2 );
+  });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( /^\d/, 2 );
+  });
+
+  test.case = 'regExp second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', /^\d/ );
+  });
+
 
 }
 
@@ -7327,6 +7941,7 @@ var Self =
 
   name : 'Tools/base/layer2/String',
   silencing : 1,
+  enabled : 1,
 
   tests :
   {
@@ -7361,8 +7976,11 @@ var Self =
     strIsolateBeginOrAll : strIsolateBeginOrAll,
 
     strStrip : strStrip,
+    strStripLeft : strStripLeft,
+    strStripRight : strStripRight,
     strRemoveAllSpaces : strRemoveAllSpaces,
     strStripEmptyLines : strStripEmptyLines,
+    strSub : strSub,
     strReplaceWords : strReplaceWords,
     strJoin : strJoin,
     strUnjoin : strUnjoin,

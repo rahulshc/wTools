@@ -1358,13 +1358,26 @@ strStrip.defaults =
 
 //
 
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only leading whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * //returns 'a '
+ * _.strStripLeft( ' a ' )
+ *
+ * @method strStripLeft
+ * @memberof wTools
+ *
+ */
+
 function strStripLeft( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStrip,o );
+  _.routineOptions( strStripLeft,o );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.strStrip( o );
@@ -1379,13 +1392,26 @@ strStripLeft.defaults.__proto__ = strStrip.defaults;
 
 //
 
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only trailing whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * //returns ' a'
+ * _.strStripRight( ' a ' )
+ *
+ * @method strStripRight
+ * @memberof wTools
+ *
+ */
+
 function strStripRight( o )
 {
 
   if( _.strIs( o ) || _.arrayIs( o ) )
   o = { src : o };
 
-  _.routineOptions( strStrip,o );
+  _.routineOptions( strStripRight,o );
   _.assert( arguments.length === 1, 'expects single argument' );
 
   return _.strStrip( o );
@@ -1421,7 +1447,7 @@ strStripRight.defaults.__proto__ = strStrip.defaults;
  *
 */
 
-function strRemoveAllSpaces( src,sub )
+function _strRemoveAllSpaces( src,sub )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -1461,7 +1487,7 @@ function strRemoveAllSpaces( src,sub )
  *
  */
 
-function strStripEmptyLines( srcStr )
+function _strStripEmptyLines( srcStr )
 {
   let result = '';
   let lines = srcStr.split( '\n' );
@@ -2667,7 +2693,29 @@ _.assert( _.objectIs( strSplitNaive.defaults ) );
 // extractor
 // --
 
-function strSub( srcStr, range )
+
+/**
+ * Gets substring out of source string according to a given range.
+ * The end value of the range is not included in the substring.
+ * Returns result as string.
+ *
+ * @param {string} srcStr - Source string.
+ * @param {range} range - Source range.
+ * @returns {string} Returns the corresponding substring.
+ *
+ * @example
+ * //returns [ 'first', [ 0, 2 ] ]
+ * _.strSub( 'fi' );
+ *
+ * @method strSub
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( range ) is not a range.
+ * @memberof wTools
+ *
+ */
+
+function _strSub( srcStr, range )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
@@ -3068,7 +3116,7 @@ function _strDup( s,times )
  * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
  * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ '13', '23' ] ),
- * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '23' ] ).
+ * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '22' ] ).
  *
  * @param {array-like} arguments - Contains provided objects.
  * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
@@ -3991,8 +4039,8 @@ let Proto =
   strStrip : strStrip,
   strStripLeft : strStripLeft,
   strStripRight : strStripRight,
-  strRemoveAllSpaces : strRemoveAllSpaces,
-  strStripEmptyLines : strStripEmptyLines,
+  strRemoveAllSpaces : _.routineVectorize_functor( _strRemoveAllSpaces ),
+  strStripEmptyLines : _.routineVectorize_functor( _strStripEmptyLines ),
 
   // splitter
 
@@ -4020,7 +4068,7 @@ let Proto =
 
 // extractor
 
-  strSub : strSub,
+  strSub : _.routineVectorize_functor( _strSub ),
   strExtractInlined : strExtractInlined,
   strExtractInlinedStereo : strExtractInlinedStereo,
 
