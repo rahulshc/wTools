@@ -1917,7 +1917,7 @@ defaults.strictCycling = 1;
 function entityDiff( src1, src2, o )
 {
 
-  let o = o || Object.create( null );
+  o = o || Object.create( null );
   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
   let equal = _._entityEqual( src1, src2, o );
 
