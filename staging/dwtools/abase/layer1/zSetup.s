@@ -234,23 +234,10 @@ function _setupLater()
 {
 
   _.assert( _.objectIs( _.regexpsEscape ) );
+  _.assert( _.objectIs( _.strIsolateBeginOrAll ) )
   _.Later.for( _ );
   _.assert( _.routineIs( _.regexpsEscape ) );
-
-  // for( var l in _.Later )
-  // {
-  //   var later = _.Later[ l ];
-  //   delete _.Later[ l ];
-  //
-  //   _.assert( _[ l ] === null );
-  //
-  //   if( later.length === 3 )
-  //   if( !_.arrayIs( later[ 2 ] ) )
-  //   later[ 2 ] = [ later[ 2 ] ];
-  //
-  //   _[ l ] = _.routineCall.apply( _,later );
-  //
-  // }
+  _.assert( _.routineIs( _.strIsolateBeginOrAll ) )
 
 }
 

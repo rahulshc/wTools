@@ -5618,6 +5618,46 @@ function boolFrom( src )
   return Boolean( src );
 }
 
+//
+
+function boolsAre( src )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.arrayLike( src ) )
+  return false;
+  return src.filter( ( e ) => _.boolIs( e ) );
+}
+
+//
+
+function boolsAllAre( src )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.arrayIs( src ) )
+  return _.boolIs( src );
+  return _.all( src.filter( ( e ) => _.boolIs( e ) ) );
+}
+
+//
+
+function boolsAnyAre( src )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.arrayIs( src ) )
+  return _.boolIs( src );
+  return _.any( src.filter( ( e ) => _.boolIs( e ) ) );
+}
+
+//
+
+function boolsNoneAre( src )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.arrayIs( src ) )
+  return _.boolIs( src );
+  return _.none( src.filter( ( e ) => _.boolIs( e ) ) );
+}
+
 // --
 // number
 // --
@@ -6445,6 +6485,352 @@ function strLast( src, ent )
   }
 
 }
+
+//
+
+function _strCutOff_pre( routine, args )
+{
+  let o;
+
+  if( args.length > 1 )
+  {
+    o = { src : args[ 0 ], delimeter : args[ 1 ], number : args[ 2 ] };
+  }
+  else
+  {
+    o = args[ 0 ];
+    _.assert( args.length === 1, 'expects single argument' );
+  }
+
+  _.routineOptions( routine, o );
+  _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
+
+  return o;
+}
+
+//
+
+/**
+* @typedef {object} wTools~toStrInhalfOptions
+* @property {string} [ o.src=null ] - Source string.
+* @property {string | array} [ o.delimeter=' ' ] - Splitter of the string.
+* @property {boolean} [ o.left=1 ] - Finds occurrence from begining of the string.
+*/
+
+/**
+ * Finds occurrence of delimeter( o.delimeter ) in source( o.src ) and splits string in finded position by half.
+ * If function finds  more then one occurrence, it separates string in the position of the last.
+ *
+ * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
+ * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
+ *
+ * @example
+ * //returns [ 'sample', 'string' ]
+ * _._strIsolate( { src : 'sample,string', delimeter : [ ',' ] } );
+ *
+ * @example
+ * //returns [ 'sample', 'string' ]
+ *_._strIsolate( { src : 'sample string', delimeter : ' ' } )
+ *
+ * @example
+ * //returns [ 'sample string,name', 'string' ]
+ * _._strIsolate( { src : 'sample string,name string', delimeter : [ ',', ' ' ] } )
+ *
+ * @method _strIsolate
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o ) is not a Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.delimeter ) is not a Array or String.
+ * @throws { Exception } Throw an exception if( o ) is extended by uknown property.
+ * @memberof wTools
+ *
+ */
+
+function _strIsolate( o )
+{
+  let result = [];
+  let number = o.number;
+  let delimeter
+  let index = o.left ? -1 : o.src.length;
+
+  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+
+  _.assertRoutineOptions( _strIsolate, o );
+  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( _.strIs( o.src ), 'expects string {-o.src-}, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
+  _.assert( _.numberIs( o.number ) );
+
+  /* */
+
+  if( !( number >= 1 ) )
+  {
+    // debugger;
+    return whatLeft( o.left ^ o.none );
+  }
+
+  if( _.arrayIs( o.delimeter ) && o.delimeter.length === 1 )
+  o.delimeter = o.delimeter[ 0 ];
+
+  let closest = o.left ? entityMin : entityMax;
+
+  /* */
+
+  while( number > 0 )
+  {
+
+    index += o.left ? +1 : -1;
+
+    if( _.arrayIs( o.delimeter ) )
+    {
+
+      if( !o.delimeter.length )
+      {
+        // debugger;
+        return whatLeft( o.left ^ o.none );
+      }
+
+      let c = closest( index )
+
+      delimeter = c.element;
+      index = c.value;
+
+      if( o.number === 1 && index === o.src.length && o.left )
+      index = -1;
+
+    }
+    else
+    {
+
+      delimeter = o.delimeter;
+      index = o.left ? o.src.indexOf( delimeter,index ) : o.src.lastIndexOf( delimeter,index );
+
+      if( o.left && !( index >= 0 ) && o.number > 1 )
+      {
+        index = o.src.length;
+        break;
+      }
+
+    }
+
+    /* */
+
+    if( !o.left && number > 1 && index === 0  )
+    {
+      // debugger;
+      return whatLeft( !o.none )
+    }
+
+    if( !( index >= 0 ) && o.number === 1 )
+    {
+      // debugger;
+      return whatLeft( o.left ^ o.none )
+    }
+
+    number -= 1;
+
+  }
+
+  /* */
+
+  result.push( o.src.substring( 0,index ) );
+  result.push( delimeter );
+  result.push( o.src.substring( index + delimeter.length ) );
+
+  return result;
+
+  /* */
+
+  function whatLeft( side )
+  {
+    return ( side ) ? [ o.src, '', '' ] : [ '', '', o.src ];
+  }
+
+  /* */
+
+  function entityMin( index )
+  {
+    return _.entityMin( o.delimeter,function( a )
+    {
+      let i = o.src.indexOf( a,index );
+      if( i === -1 )
+      return o.src.length;
+      return i;
+    });
+  }
+
+  /* */
+
+  function entityMax( index )
+  {
+    return _.entityMax( o.delimeter,function( a )
+    {
+      let i = o.src.lastIndexOf( a,index );
+      return i;
+    });
+  }
+
+}
+
+_strIsolate.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  left : 1,
+  number : 1,
+  none : 1,
+}
+
+//
+
+/**
+ * Short-cut for _strIsolate function.
+ * Finds occurrence of delimeter( o.delimeter ) from begining of ( o.src ) and splits string in finded position by half.
+ *
+ * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
+ * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
+ *
+ * @example
+ * //returns [ 'sample', 'string' ]
+ * _.strIsolateBeginOrNone( { src : 'sample,string', delimeter : [ ',' ] } );
+ *
+ * @example
+ * //returns [ 'sample', 'string' ]
+ *_.strIsolateBeginOrNone( { src : 'sample string', delimeter : ' ' } )
+ *
+ * @example
+ * //returns [ 'sample string,name', 'string' ]
+ * _.strIsolateBeginOrNone( 'sample string,name string', ',' )
+ *
+ * @method strIsolateBeginOrNone
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o ) is not a Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @memberof wTools
+ *
+ */
+
+function _strIsolateBeginOrNone_body( o )
+{
+  o.left = 1;
+  o.none = 1;
+  let result = _strIsolate( o );
+  return result;
+}
+
+_strIsolateBeginOrNone_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  number : 1,
+}
+
+// let strIsolateBeginOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
+
+//
+
+/**
+ * Short-cut for _strIsolate function.
+ * Finds occurrence of delimeter( o.delimeter ) from end of ( o.src ) and splits string in finded position by half.
+ *
+ * @param {wTools~toStrInhalfOptions} o - Contains data and options {@link wTools~toStrInhalfOptions}.
+ * @returns {array} Returns array with separated parts of string( o.src ) or original string if nothing finded.
+ *
+ * @example
+ * //returns [ 'sample', 'string' ]
+ * _.strIsolateEndOrNone( { src : 'sample,string', delimeter : [ ',' ] } );
+ *
+ * @example
+ * //returns [ 'sample', 'string' ]
+ *_.strIsolateEndOrNone( { src : 'sample string', delimeter : ' ' } )
+ *
+ * @example
+ * //returns [ 'sample, ', 'string' ]
+ * _.strIsolateEndOrNone( { src : 'sample,  string', delimeter : [ ',', ' ' ] } )
+ *
+ * @method strIsolateEndOrNone
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o ) is not a Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @memberof wTools
+ *
+ */
+
+function _strIsolateEndOrNone_body( o )
+{
+  o.left = 0;
+  o.none = 1;
+  let result = _strIsolate( o );
+  return result;
+}
+
+_strIsolateEndOrNone_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  number : 1,
+}
+
+// let strIsolateEndOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
+
+//
+
+function _strIsolateEndOrAll_body( o )
+{
+  o.left = 0;
+  o.none = 0;
+  let result = _strIsolate( o );
+  return result;
+
+  // let i = o.src.lastIndexOf( o.delimeter );
+  //
+  // if( i === -1 )
+  // return [ '', '', o.src ];
+  //
+  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  //
+  // return result;
+}
+
+_strIsolateEndOrAll_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  number : 1,
+}
+
+// let strIsolateEndOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
+
+//
+
+function _strIsolateBeginOrAll_body( o )
+{
+  o.left = 1;
+  o.none = 0;
+  let result = _strIsolate( o );
+  return result;
+
+  // let i = o.src.indexOf( o.delimeter );
+  //
+  // if( i === -1 )
+  // return [ o.src, '', '' ];
+  //
+  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  //
+  // return result;
+}
+
+_strIsolateBeginOrAll_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  number : 1,
+}
+
+// let strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
 
 //
 
@@ -20783,6 +21169,11 @@ var Routines =
   boolLike : boolLike,
   boolFrom : boolFrom,
 
+  boolsAre : boolsAre,
+  boolsAllAre : boolsAllAre,
+  boolsAnyAre : boolsAnyAre,
+  boolsNoneAre : boolsNoneAre,
+
   // number
 
   numberIs : numberIs,
@@ -20839,6 +21230,21 @@ var Routines =
   strFirst : strFirst,
   _strLast : _strLast,
   strLast : strLast,
+
+  _strIsolate : _strIsolate,
+
+// let strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
+// regexpsEscape : _.Later( _, routineVectorize_functor, regexpEscape ),
+
+  strIsolateBeginOrNone : _.Later( _, routineForPreAndBody, [ _strCutOff_pre, _strIsolateBeginOrNone_body ] ),
+  strIsolateEndOrNone : _.Later( _, routineForPreAndBody, [ _strCutOff_pre, _strIsolateEndOrNone_body ] ),
+  strIsolateEndOrAll : _.Later( _, routineForPreAndBody, [ _strCutOff_pre, _strIsolateEndOrAll_body ] ),
+  strIsolateBeginOrAll : _.Later( _, routineForPreAndBody, [ _strCutOff_pre, _strIsolateBeginOrAll_body ] ),
+
+  // strIsolateBeginOrNone : strIsolateBeginOrNone,
+  // strIsolateEndOrNone : strIsolateEndOrNone,
+  // strIsolateEndOrAll : strIsolateEndOrAll,
+  // strIsolateBeginOrAll : strIsolateBeginOrAll,
 
   _strIsolateInsideOrNone : _strIsolateInsideOrNone,
   strIsolateInsideOrNone : strIsolateInsideOrNone,
@@ -21447,9 +21853,9 @@ _.assert( !Self.Array );
 _.assert( !Self.array );
 _.assert( !Self.withArray );
 
+_.assert( _.objectIs( _.strIsolateBeginOrAll ) )
 _.assert( _.objectIs( _.regexpsEscape ) );
 _.Later.replace( Self );
-_.assert( _.objectIs( _.regexpsEscape ) );
 
 // --
 // export
