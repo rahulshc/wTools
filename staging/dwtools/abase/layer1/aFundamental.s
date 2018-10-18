@@ -19470,6 +19470,23 @@ function mapNulls( srcMap )
   return result;
 }
 
+//
+
+function mapButNulls( srcMap )
+{
+  let result = Object.create( null );
+
+  _.assert( arguments.length === 1 );
+  _.assert( !_.primitiveIs( srcMap ) );
+
+  for( let s in srcMap )
+  {
+    if( srcMap[ s ] !== null )
+    result[ s ] = srcMap[ s ];
+  }
+
+  return result;
+}
 // --
 // map logic operator
 // --
@@ -21797,6 +21814,7 @@ var Routines =
   mapIndexWithValue : mapIndexWithValue,
 
   mapNulls : mapNulls,
+  mapButNulls : mapButNulls,
 
   // map logic operator
 
