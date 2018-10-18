@@ -3157,7 +3157,7 @@ function entityDiffLoose( test )
   `
   - src1 :
   {
-    b : [ Array with 2 elements ]
+    b : [ 1, 2 ]
   }
 - src2 :
   {}
