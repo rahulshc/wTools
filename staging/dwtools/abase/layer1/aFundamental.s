@@ -3043,6 +3043,47 @@ function sure( condition )
 
 //
 
+function sureBriefly( condition )
+{
+
+  if( !condition || !boolLike( condition ) )
+  {
+    _sureDebugger( condition );
+    if( arguments.length === 1 )
+    throw _err
+    ({
+      args : [ 'Assertion failed' ],
+      level : 2,
+      briefly : 1,
+    });
+    else if( arguments.length === 2 )
+    throw _err
+    ({
+      args : [ arguments[ 1 ] ],
+      level : 2,
+      briefly : 1,
+    });
+    else
+    throw _err
+    ({
+      args : _.longSlice( arguments,1 ),
+      level : 2,
+      briefly : 1,
+    });
+  }
+
+  return;
+
+  function boolLike( src )
+  {
+    var type = _ObjectToString.call( src );
+    return type === '[object Boolean]' || type === '[object Number]';
+  }
+
+}
+
+//
+
 function sureWithoutDebugger( condition )
 {
 
@@ -5225,7 +5266,7 @@ function routineVectorize_functor( o )
       for( var d = 0 ; d < select ; d++ )
       {
         if( vectorizingMap /* || vectorizingKeys  */)
-        _.assert( !_.mapIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both. Incorrect argument:', args[ d ] ); // qqq
+        _.assert( !_.mapIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both. Incorrect argument:', args[ d ] );
         else if( vectorizingKeys && _.mapIs( args[ d ] ) )
         continue;
 
@@ -5468,7 +5509,7 @@ function routineVectorize_functor( o )
         arr = args[ d ];
         else if( _.mapIs( args[ d ] ) )
         {
-          _.assert( map === undefined, 'Arguments should have only single map. Incorrect argument:', args[ d ] ); // qqq
+          _.assert( map === undefined, 'Arguments should have only single map. Incorrect argument:', args[ d ] );
           map = args[ d ];
           mapIndex = d;
         }
@@ -5826,6 +5867,10 @@ function numberInRange( n,range )
 {
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( range.length === 2 );
+  _.assert( _.numberIs( range[ 0 ] ) );
+  _.assert( _.numberIs( range[ 1 ] ) );
+  if( !_.numberIs( n ) )
+  return false;
   return range[ 0 ] <= n && n <= range[ 1 ];
 }
 
@@ -7432,12 +7477,6 @@ function regexpTestNone( regexp, strs )
 
 //
 
-/*
-qqq : add test coverage
-*/
-
-//
-
 function regexpsTestAll( regexps, strs )
 {
   _.assert( arguments.length === 2 );
@@ -7497,8 +7536,6 @@ function regexpEscape( src )
   _.assert( arguments.length === 1, 'expects single argument' );
   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 }
-
-/* qqq : /(\s*)var _global \= _global_; var _ \= _global_\.wTools;/g */
 
 //
 
@@ -8663,22 +8700,22 @@ function timeFrom( time )
 
 //
 
-function timeSpent( description,time )
+function timeSpent( description, time )
 {
   var now = _.timeNow();
 
   if( arguments.length === 1 )
   {
     time = arguments[ 0 ];
-    description = 'Spent ';
+    description = '';
   }
 
   _.assert( 1 <= arguments.length && arguments.length <= 2 );
   _.assert( _.numberIs( time ) );
   _.assert( _.strIs( description ) );
 
-  if( description && description !== ' ' )
-  description = description;
+  // if( description && description !== ' ' )
+  // description = description;
 
   var result = description + _.timeSpentFormat( now-time );
 
@@ -15143,23 +15180,30 @@ function arrayFlattened( dstArray, insArray )
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
-  _.assert( _.longIs( insArray ) );
+  // _.assert( _.longIs( insArray ) );
 
   var result = 0;
 
-  for( var i = 0, len = insArray.length; i < len; i++ )
+  if( _.longIs( insArray ) )
   {
-    if( _.longIs( insArray[ i ] ) )
+    for( var i = 0, len = insArray.length; i < len; i++ )
     {
-      var c = _.arrayFlattened( dstArray, insArray[ i ] );
-      result += c;
+      if( _.longIs( insArray[ i ] ) )
+      {
+        var c = _.arrayFlattened( dstArray, insArray[ i ] );
+        result += c;
+      }
+      else
+      {
+        _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
+        dstArray.push( insArray[ i ] );
+        result += 1;
+      }
     }
-    else
-    {
-      _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
-      dstArray.push( insArray[ i ] );
-      result += 1;
-    }
+  }
+  else
+  {
+    dstArray.push( insArray );
   }
 
   return result;
@@ -15171,26 +15215,38 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
-  _.assert( _.longIs( insArray ) );
+  // _.assert( _.longIs( insArray ) );
 
   var result = 0;
 
-  for( var i = 0, len = insArray.length; i < len; i++ )
+  if( _.longIs( insArray ) )
   {
-    _.assert( insArray[ i ] !== undefined );
-    if( _.longIs( insArray[ i ] ) )
+    for( var i = 0, len = insArray.length; i < len; i++ )
     {
-      var c = _.arrayFlattenedOnce( dstArray, insArray[ i ], evaluator1, evaluator2 );
-      result += c;
-    }
-    else
-    {
-      var index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
-      if( index === -1 )
+      _.assert( insArray[ i ] !== undefined );
+      if( _.longIs( insArray[ i ] ) )
       {
-        dstArray.push( insArray[ i ] );
-        result += 1;
+        var c = _.arrayFlattenedOnce( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        result += c;
       }
+      else
+      {
+        var index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        if( index === -1 )
+        {
+          dstArray.push( insArray[ i ] );
+          result += 1;
+        }
+      }
+    }
+  }
+  else
+  {
+    var index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+    if( index === -1 )
+    {
+      dstArray.push( insArray[ i ] );
+      result += 1;
     }
   }
 
@@ -21084,6 +21140,7 @@ var Routines =
   // sure
 
   sure : sure,
+  sureBriefly : sureBriefly,
   sureWithoutDebugger : sureWithoutDebugger,
 
   // assert
@@ -21290,8 +21347,6 @@ var Routines =
 
   /* !!! move out */
 
-  /* qqq : add test coverage -> */
-
   _regexpTest : _regexpTest,
   regexpTest : regexpTest,
 
@@ -21302,8 +21357,6 @@ var Routines =
   regexpsTestAll : regexpsTestAll,
   regexpsTestAny : regexpsTestAny,
   regexpsTestNone : regexpsTestNone,
-
-  /* <- qqq : add test coverage */
 
   regexpEscape : regexpEscape,
   regexpsEscape : _.Later( _, routineVectorize_functor, regexpEscape ),
@@ -21763,7 +21816,7 @@ var Routines =
   mapInvertDroppingDuplicates : mapInvertDroppingDuplicates,
   mapsFlatten : mapsFlatten,
 
-  mapToArray : mapToArray, /* qqq : test rquired */
+  mapToArray : mapToArray, /* qqq : test required */
   mapToStr : mapToStr, /* experimental */
 
   // map selector

@@ -543,10 +543,10 @@ IncludeHandlersMap[ 'wCommandsAggregator' ] =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsAggregator },
 }
 
-IncludeHandlersMap[ 'wCommandsConfigMixin' ] =
+IncludeHandlersMap[ 'wCommandsConfig' ] =
 {
-  includeAny : [ '../../amid/l7/Commands/CommandsConfigMixin.s','amid/l7/Commands/CommandsConfigMixin.s','wcommandsconfigmixin' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsConfigMixin },
+  includeAny : [ '../../amid/l7/commands/mixin/CommandsConfig.s','amid/l7/commands/l7/CommandsConfig.s','wcommandsconfig' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsConfig },
 }
 
 IncludeHandlersMap[ 'wFiles' ] =
@@ -613,6 +613,12 @@ IncludeHandlersMap[ 'wFileExecutorHtmlFormatters' ] =
 {
   includeAny : [ '../../../dwtools/amid/l7/executor/HtmlFormatters.s','amid/l7/executor/HtmlFormatters.s','wFileExecutorHtmlFormatters' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileExecutorHtmlFormatters },
+}
+
+IncludeHandlersMap[ 'wTranspilationStrategy' ] =
+{
+  includeAny : [ '../../../dwtools/amid/l9/transpliationStrategy/HtmlFormatters.s','amid/l9/transpliationStrategy/HtmlFormatters.s','wtranspilationstrategy' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
 }
 
 IncludeHandlersMap[ 'wStarterMaker' ] =
