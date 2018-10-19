@@ -14733,7 +14733,8 @@ function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   var result = arrayRemovedOnce.apply( this, arguments );
   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
-  return dstArray;
+//  return dstArray;  // same as arrayRemoveOnceStrictly
+  return result;
 }
 
 //
