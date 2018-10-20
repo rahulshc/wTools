@@ -10,8 +10,6 @@
  * @file aFundamental.s.
  */
 
-/* experiment() */
-
 // global
 
 var _global = undefined;
@@ -26,7 +24,7 @@ _global = _global._global_;
 _global._global_ = _global;
 _realGlobal._realGlobal_ = _realGlobal;
 
-// veification
+// verification
 
 if( !_global_.WTOOLS_PRIVATE  )
 {
@@ -70,13 +68,15 @@ if(  !_global_.WTOOLS_PRIVATE  )
 if( !_global_.Underscore && _global_._ )
 _global_.Underscore = _global_._;
 
+if( _global !== _realGlobal_ && !!_global.wTools )
+throw 'Multiple inclusions of Fundamental.s';
+
+//
+
 /**
  * wTools - Generic purpose tools of base level for solving problems in Java Script.
  * @class wTools
  */
-
-if( _global !== _realGlobal_ && !!_global.wTools )
-throw 'Multiple inclusions of Fundamental.s';
 
 _global.wTools = _global.wTools || Object.create( null );
 _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
@@ -88,17 +88,11 @@ var _ = Self;
 if( !_realGlobal_.def  )
 {
   _realGlobal_.def = Symbol.for( 'default' );
-  // _global_.all = Symbol.for( 'all' );
-  // _global_.any = Symbol.for( 'any' );
-  // _global_.none = Symbol.for( 'none' );
   _realGlobal_.nothing = Symbol.for( 'nothing' );
   _realGlobal_.dont = Symbol.for( 'dont' );
 }
 
 Self.def = _global_.def;
-// Self.all = _global_.all;
-// Self.any = _global_.any;
-// Self.none = _global_.none;
 Self.nothing = _global_.nothing;
 Self.dont = _global_.dont;
 
@@ -118,7 +112,7 @@ _global_.F64x = Float64Array;
 _global_.F32x = Float32Array;
 _global_.Fx = _global_.F32x;
 
-//
+// fast access
 
 var _ArrayIndexOf = Array.prototype.indexOf;
 var _ArrayLastIndexOf = Array.prototype.lastIndexOf;
@@ -3834,12 +3828,17 @@ function _routineJoin( o )
   _.assert( _.boolIs( o.seal ) );
   _.assert( _.routineIs( o.routine ),'expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
+  _.assert( _.routineIs( _FunctionBind ) );
 
   var routine = o.routine;
   var args = o.args;
   var context = o.context;
 
-  if( _FunctionBind )
+  var result = act();
+  _.mapExtend( result, routine );
+  return result;
+
+  function act()
   {
 
     if( context !== undefined && args === undefined )
@@ -3894,12 +3893,7 @@ function _routineJoin( o )
       }
 
     }
-
   }
-
-  /* */
-
-  _.assert( 0,'not implemented' );
 
 }
 
@@ -21923,9 +21917,9 @@ Object.assign( Self, Fields );
 _.assert( !Self.Array );
 _.assert( !Self.array );
 _.assert( !Self.withArray );
-
 _.assert( _.objectIs( _.strIsolateBeginOrAll ) )
 _.assert( _.objectIs( _.regexpsEscape ) );
+
 _.Later.replace( Self );
 
 // --
