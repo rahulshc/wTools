@@ -617,7 +617,7 @@ IncludeHandlersMap[ 'wFileExecutorHtmlFormatters' ] =
 
 IncludeHandlersMap[ 'wTranspilationStrategy' ] =
 {
-  includeAny : [ '../../../dwtools/amid/l9/transpliationStrategy/HtmlFormatters.s','amid/l9/transpliationStrategy/HtmlFormatters.s','wtranspilationstrategy' ],
+  includeAny : [ '../../../dwtools/amid/l9/transpilationStrategy/MainBase.s','amid/l9/transpilationStrategy/MainBase.s','wtranspilationstrategy' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
 }
 
