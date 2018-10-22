@@ -5027,9 +5027,7 @@ function routineForPreAndBody_pre( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ) );
   _.assert( _.routineIs( o.body ) );
-  _.assert( !!o.body.defaults, 'body should have defaults' );
-  // _.assertMapHasOnly( o.pre, o.preProperties, '{-pre-} should not have such properties' );
-  // _.assertMapHasOnly( o.body, o.bodyProperties, '{-body-} should not have such properties' );
+  _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
 }
@@ -5043,15 +5041,12 @@ function routineForPreAndBody_body( o )
 
   if( !_.routineIs( o.pre ) )
   {
-    // o.pre = _.routinesChain( o.pre );
     let _pre = _.routinesCompose( o.pre, function( element, index, args, op )
     {
-      // debugger;
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( element ) );
       _.assert( _.objectIs( element ) );
       return _.unrollAppend([ callPreAndBody, [ element ] ]);
-      // return args;
     });
     o.pre = function pre()
     {
