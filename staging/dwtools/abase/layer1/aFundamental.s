@@ -8749,6 +8749,40 @@ function dateToStr( date )
   return result;
 }
 
+//
+
+let _timeSleepBuffer = new Uint32Array([ 0 ]);
+function timeSleep( time )
+{
+  _.assert( time >= 0 );
+  Atomics.wait( _timeSleepUntilBuffer, 0, 1, time );
+}
+
+//
+
+function timeSleepUntil()
+{
+  if( _.routineIs( o ) )
+  o = { onCodition : onCondition }
+
+  if( o.periodicity === undefined )
+  o.periodicity = timeSleepUntil.defaults.periodicity;
+
+  let i = 0;
+  while( !onCondition() )
+  {
+    _.timeSleep( o.periodicity );
+  }
+
+  return true;
+}
+
+timeSleepUntil.defaults =
+{
+  onCondition : null,
+  periodicity : 100,
+}
+
 // --
 // buffer
 // --
@@ -21431,6 +21465,9 @@ var Routines =
   timeSpent : timeSpent,
   timeSpentFormat : timeSpentFormat,
   dateToStr : dateToStr,
+
+  timeSleep : timeSleep,
+  timeSleepUntil : timeSleepUntil,
 
   // buffer
 
