@@ -8618,6 +8618,11 @@ function arrayRemovedAll( test )
 
 function arrayFlatten( test )
 {
+  test.case = 'Empty';
+
+  var got  = _.arrayFlatten( );
+  test.identical( got, [] );
+
   test.case = 'make array flat, dst is empty';
 
   var got  = _.arrayFlatten( [], [] );
@@ -8634,6 +8639,9 @@ function arrayFlatten( test )
 
   var got  = _.arrayFlatten( [], [ [ [ [ [ 1 ] ] ] ] ]  )
   test.identical( got, [ 1 ] );
+
+  var got  = _.arrayFlatten( [], 1, 2, '3'  )
+  test.identical( got, [ 1, 2, '3' ] );
 
   test.case = 'make array flat, dst is not empty';
 
@@ -8652,6 +8660,9 @@ function arrayFlatten( test )
   var got  = _.arrayFlatten( [ 1 ],[ [ [ [ [ 1 ] ] ] ] ]  )
   test.identical( got, [ 1, 1 ] );
 
+  var got  = _.arrayFlatten( [ 1 ], 2, 3 )
+  test.identical( got, [ 1, 2, 3 ] );
+
   test.case = 'make array flat from multiple arrays as one arg';
 
   var got  = _.arrayFlatten
@@ -8665,25 +8676,25 @@ function arrayFlatten( test )
   );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
+  test.case = 'make array flat from different inputs';
+
+  var got  =  _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
+  test.identical( got, [ 'str', {}, 1, 2, 5, true ] );
+
+  test.case = 'Undefined elements are removed';
+
+  var got  =  _.arrayFlatten( 'str', {}, undefined, [ 1, 2 ], 5, true );
+  test.identical( got, [ 'str', {}, 1, 2, 5, true ] );
+
+  //
+
   if( !Config.debug )
   return;
 
-  test.case = 'not enough arguments';
+  test.case = 'Undefined element ina array';
   test.shouldThrowError( function()
   {
-    _.arrayFlatten();
-  });
-
-  test.case = 'first is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlatten( 1, [ 1 ] );
-  });
-
-  test.case = 'second is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlatten( [], 1 );
+    _.arrayFlatten( [], [ 1, undefined ] );
   });
 }
 
@@ -8758,13 +8769,6 @@ function arrayFlattenOnce( test )
   test.shouldThrowError( function()
   {
     _.arrayFlattenOnce( 1, [ 1 ] );
-  });
-
-  test.case = 'second is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlattenOnce( [], 1 );
-
   });
 
   test.case = 'onEqualize is not a routine';
@@ -8963,6 +8967,15 @@ function arrayFlattened( test )
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 4 );
 
+
+  test.case = 'Second is not long';
+
+  var dst = [];
+  var got  = _.arrayFlattened( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 0 );
+
+
   if( !Config.debug )
   return;
 
@@ -8976,12 +8989,6 @@ function arrayFlattened( test )
   test.shouldThrowError( function()
   {
     _.arrayFlattened( 1, [ 1 ] );
-  });
-
-  test.case = 'second is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlattened( [], 1 );
   });
 }
 
@@ -9074,6 +9081,13 @@ function arrayFlattenedOnce( test )
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 1 );
 
+  test.case = 'Second arg is not long';
+
+  var dst = [];
+  var got = _.arrayFlattenedOnce( dst, 2 );
+  test.identical( dst, [ undefined ] );
+  test.identical( got, 1 );
+
   if( !Config.debug )
   return;
 
@@ -9089,11 +9103,10 @@ function arrayFlattenedOnce( test )
     _.arrayFlattenedOnce( 1, [ 1 ] );
   });
 
-  test.case = 'second is not longIs';
+  test.case = 'Too many args';
   test.shouldThrowError( function()
   {
-    _.arrayFlattenedOnce( [], 1 );
-
+    _.arrayFlattenedOnce( [ 1 ], 2, 3  );
   });
 
   test.case = 'onEqualize is not a routine';
@@ -9118,14 +9131,17 @@ function arrayFlatten2( test )
   var expected = [ 1, 2, 3, 13, 'abc', null ];
   test.identical( got, expected );
 
+  test.case = 'Args are not long';
+  var got = _.arrayFlatten( [ 1, 2 ], 13, 'abc', {} );
+  var expected = [ 1, 2, 13, 'abc', {} ];
+  test.identical( got, expected );
+
+
   test.case = 'bad arguments'; /* */
 
   if( !Config.debug )
   return;
 
-  test.shouldThrowError( () => _.arrayFlatten() );
-  test.shouldThrowError( () => _.arrayFlatten( [] ) );
-  test.shouldThrowError( () => _.arrayFlatten( [ 1, 2 ], 13, 'abc', {} ) );
   test.shouldThrowError( () => _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
 
 }
