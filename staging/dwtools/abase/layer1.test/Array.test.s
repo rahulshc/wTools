@@ -7396,6 +7396,96 @@ function arrayRemovedOnceStrictly( test )
 
 //
 
+function arrayRemovedOnceElement( test )
+{
+  test.case = 'simple';
+
+  var dst = [ 1 ];
+  var got = _.arrayRemovedOnceElement( dst, 1 );
+  test.identical( dst, [ ] );
+  test.identical( got, 1 );
+
+  var dst = [ 2,2,1 ];
+  var got = _.arrayRemovedOnceElement( dst, 2 );
+  test.identical( dst, [ 2,1 ] );
+  test.identical( got, 2 );
+
+  var dst = [ ];
+  var got = _.arrayRemovedOnceElement( dst, 1 );
+  test.identical( dst, [  ] );
+  test.identical( got, undefined );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemovedOnceElement( dst, '1' );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, undefined );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemovedOnceElement( dst, - 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, undefined );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemovedOnceElement( dst, [ 1 ] );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, undefined );
+
+  var dst = [ 1 ];
+  var got = _.arrayRemovedOnceElement( dst, 2 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, undefined );
+
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayRemovedOnceElement( dst, { num : 3 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 } ] );
+  test.identical( got, { num : 3 } );
+
+  var got = _.arrayRemovedOnceElement( dst, { num : 3 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 } ] );
+  test.identical( got, undefined );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var got = _.arrayRemovedOnceElement( dst, 1, ( e ) => e.num, ( e ) => e );
+  test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+  test.identical( got, { num : 1 } );
+
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElement();
+  })
+
+  test.case = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElement( [], 1, 1 );
+  })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElement( 1, 1 );
+  })
+
+}
+
+//
+
 function arrayRemoveArray( test )
 {
 
@@ -11832,6 +11922,7 @@ var Self =
     // _arrayRemoved : _arrayRemoved,
     arrayRemovedOnce : arrayRemovedOnce,
     arrayRemovedOnceStrictly : arrayRemovedOnceStrictly,
+    arrayRemovedOnceElement : arrayRemovedOnceElement,
     arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
 
     arrayRemoveArray : arrayRemoveArray,
