@@ -7486,6 +7486,104 @@ function arrayRemovedOnceElement( test )
 
 //
 
+function arrayRemovedOnceElementStrictly( test )
+{
+  test.case = 'simple';
+
+  var dst = [ 1 ];
+  var got = _.arrayRemovedOnceElementStrictly( dst, 1 );
+  test.identical( dst, [ ] );
+  test.identical( got, 1 );
+
+  var dst = [ 2,2,1 ];
+  var got = _.arrayRemovedOnceElementStrictly( dst, 2 );
+  test.identical( dst, [ 2,1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayRemovedOnceElementStrictly( dst, { num : 3 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 } ] );
+  test.identical( got, { num : 3 } );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var got = _.arrayRemovedOnceElementStrictly( dst, 1, ( e ) => e.num, ( e ) => e );
+  test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+  test.identical( got, { num : 1 } );
+
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly();
+  })
+
+  test.case = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( [], 1, 1 );
+  })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( 1, 1 );
+  })
+
+  test.case = 'Simple no match element';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( [ ], 1 );
+  })
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( [ 1 ], '1' );
+  })
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( [ 1 ], - 1 );
+  })
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( [ 1 ], [ 1 ] );
+  })
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( [ 1 ], 2 );
+  })
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( [ 1 ], - 1 );
+  })
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  test.shouldThrowError( function()
+  {
+    _.arrayRemovedOnceElementStrictly( dst, { num : 4 }, onEqualize );
+  })
+
+}
+
+//
+
 function arrayRemoveArray( test )
 {
 
@@ -11923,6 +12021,7 @@ var Self =
     arrayRemovedOnce : arrayRemovedOnce,
     arrayRemovedOnceStrictly : arrayRemovedOnceStrictly,
     arrayRemovedOnceElement : arrayRemovedOnceElement,
+    arrayRemovedOnceElementStrictly : arrayRemovedOnceElementStrictly,
     arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
 
     arrayRemoveArray : arrayRemoveArray,
