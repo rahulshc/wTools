@@ -15102,43 +15102,56 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
  * @memberof wTools
  */
 
-function arrayFlatten()
-{
-  var result = _.arrayIs( this ) ? this : [];
-
-  for( var a = 0 ; a < arguments.length ; a++ )
-  {
-
-    var src = arguments[ a ];
-
-    if( !_.longIs( src ) )
-    {
-      if( src !== undefined ) result.push( src );
-      continue;
-    }
-
-    for( var s = 0 ; s < src.length ; s++ )
-    {
-      if( _.arrayIs( src[ s ] ) )
-      _.arrayFlatten.call( result,src[ s ] );
-      else if( src[ s ] !== undefined )
-      result.push( src[ s ] );
-      else if( src[ s ] === undefined )
-      throw _.err( 'array should have no undefined' );
-    }
-  }
-
-   return result;
- }
+// function arrayFlatten()
+// {
+//   var result = _.arrayIs( this ) ? this : [];
+//
+//   for( var a = 0 ; a < arguments.length ; a++ )
+//   {
+//
+//     var src = arguments[ a ];
+//
+//     if( !_.longIs( src ) )
+//     {
+//       if( src !== undefined ) result.push( src );
+//       continue;
+//     }
+//
+//     for( var s = 0 ; s < src.length ; s++ )
+//     {
+//       if( _.arrayIs( src[ s ] ) )
+//       _.arrayFlatten.call( result,src[ s ] );
+//       else if( src[ s ] !== undefined )
+//       result.push( src[ s ] );
+//       else if( src[ s ] === undefined )
+//       throw _.err( 'array should have no undefined' );
+//     }
+//
+//   }
+//
+//   return result;
+// }
+//
 //
 
-// function arrayFlatten( dstArray, insArray )
-// {
-//  if( dstArray === null )
-//  dstArray = [];
-//  _.arrayFlattened.call( this, dstArray, insArray );
-//  return dstArray;
-// }
+function arrayFlatten( dstArray, insArray )
+{
+  _.assert( arguments.length > 0 );
+  if( dstArray === null )
+  dstArray = [];
+
+  if( arguments.length === 2 )
+  {
+    _.arrayFlattened.call( this, dstArray, insArray );
+    return dstArray;
+  }
+  else
+  {
+    for (var i = 1; i < arguments.length; i++)
+    _.arrayFlattened.call( this, dstArray, arguments[ i ] );
+    return dstArray;
+  }
+}
 
 //
 
@@ -15176,33 +15189,45 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattened( dstArray, insArray )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
+  //_.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length > 0 );
   // _.assert( _.longIs( insArray ) );
 
   var result = 0;
 
-  if( _.longIs( insArray ) )
+  if( arguments.length === 2 )
   {
-    for( var i = 0, len = insArray.length; i < len; i++ )
+    if( _.longIs( insArray ) )
     {
-      if( _.longIs( insArray[ i ] ) )
+      for( var i = 0, len = insArray.length; i < len; i++ )
       {
-        var c = _.arrayFlattened( dstArray, insArray[ i ] );
-        result += c;
+        if( _.longIs( insArray[ i ] ) )
+        {
+          var c = _.arrayFlattened( dstArray, insArray[ i ] );
+          result += c;
+        }
+        else
+        {
+          _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
+          dstArray.push( insArray[ i ] );
+          result += 1;
+        }
       }
-      else
-      {
-        _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
-        dstArray.push( insArray[ i ] );
-        result += 1;
-      }
+    }
+    else
+    {
+      dstArray.push( insArray );
     }
   }
   else
   {
-    dstArray.push( insArray );
+    for( var a = 1 ; a < arguments.length ; a++ )
+    {
+      var src = arguments[ a ];
+      dstArray.push( src );
+    }
   }
 
   return result;

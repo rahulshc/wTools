@@ -8618,11 +8618,6 @@ function arrayRemovedAll( test )
 
 function arrayFlatten( test )
 {
-  test.case = 'Empty';
-
-  var got  = _.arrayFlatten( );
-  test.identical( got, [] );
-
   test.case = 'make array flat, dst is empty';
 
   var got  = _.arrayFlatten( [], [] );
@@ -8676,20 +8671,21 @@ function arrayFlatten( test )
   );
   test.identical( got, [ 1, 2, 3, 4 ] );
 
-  test.case = 'make array flat from different inputs';
+  test.case = 'make array flat from different inputs -  null dstArray';
 
-  var got  =  _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
-  test.identical( got, [ 'str', {}, 1, 2, 5, true ] );
-
-  test.case = 'Undefined elements are removed';
-
-  var got  =  _.arrayFlatten( 'str', {}, undefined, [ 1, 2 ], 5, true );
+  var got  =  _.arrayFlatten( null, 'str', {}, [ 1, 2 ], 5, true );
   test.identical( got, [ 'str', {}, 1, 2, 5, true ] );
 
   //
 
   if( !Config.debug )
   return;
+
+  test.case = 'Empty';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlatten( );
+  });
 
   test.case = 'Undefined element ina array';
   test.shouldThrowError( function()
@@ -8973,6 +8969,14 @@ function arrayFlattened( test )
   var dst = [];
   var got  = _.arrayFlattened( dst, 1 );
   test.identical( dst, [ 1 ] );
+  test.identical( got, 0 );
+
+
+  test.case = 'Second is not long';
+
+  var dst = [];
+  var got  = _.arrayFlattened( dst, 1, 2, '3' );
+  test.identical( dst, [ 1, 2, '3' ] );
   test.identical( got, 0 );
 
 
