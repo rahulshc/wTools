@@ -5028,8 +5028,8 @@ function routineForPreAndBody_pre( routine, args )
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2, 'expects exactly two arguments' );
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ) );
-  _.assert( _.routineIs( o.body ) );
+  _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ), 'Expects routine or routines {-o.pre-}' );
+  _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' ); 
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
