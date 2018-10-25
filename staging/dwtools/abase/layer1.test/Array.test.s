@@ -8326,8 +8326,14 @@ function arrayFlatten( test )
 {
   test.case = 'make array flat, dst is empty';
 
+  var got  = _.arrayFlatten( null, [] );
+  test.identical( got, [] );
+
   var got  = _.arrayFlatten( [], [] );
   test.identical( got, [] );
+
+  var got  = _.arrayFlatten( null, [ 1, 2, 3 ] )
+  test.identical( got, [ 1, 2, 3 ] );
 
   var got  = _.arrayFlatten( [], [ 1, 2, 3 ] )
   test.identical( got, [ 1, 2, 3 ] );
@@ -8358,6 +8364,9 @@ function arrayFlatten( test )
   var got  = _.arrayFlatten( [ 1 ],[ [ [ [ [ 1 ] ] ] ] ]  )
   test.identical( got, [ 1, 1 ] );
 
+  var got = _.arrayFlatten( [], 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'make array flat from multiple arrays as one arg';
 
   var got  = _.arrayFlatten
@@ -8384,12 +8393,6 @@ function arrayFlatten( test )
   test.shouldThrowError( function()
   {
     _.arrayFlatten( 1, [ 1 ] );
-  });
-
-  test.case = 'second is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlatten( [], 1 );
   });
 }
 
@@ -8451,6 +8454,10 @@ function arrayFlattenOnce( test )
   });
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
+  debugger
+  var got = _.arrayFlattenOnce( [], 1 )
+  test.identical( got, [ 1 ] );
+
   if( !Config.debug )
   return;
 
@@ -8464,13 +8471,6 @@ function arrayFlattenOnce( test )
   test.shouldThrowError( function()
   {
     _.arrayFlattenOnce( 1, [ 1 ] );
-  });
-
-  test.case = 'second is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlattenOnce( [], 1 );
-
   });
 
   test.case = 'onEqualize is not a routine';
@@ -8669,6 +8669,11 @@ function arrayFlattened( test )
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 4 );
 
+  var dst = [];
+  var got = _.arrayFlattened( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 1 );
+
   if( !Config.debug )
   return;
 
@@ -8684,11 +8689,6 @@ function arrayFlattened( test )
     _.arrayFlattened( 1, [ 1 ] );
   });
 
-  test.case = 'second is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlattened( [], 1 );
-  });
 }
 
 //
@@ -8780,6 +8780,11 @@ function arrayFlattenedOnce( test )
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 1 );
 
+  var dst = [];
+  var got = _.arrayFlattenedOnce( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 1 );
+
   if( !Config.debug )
   return;
 
@@ -8793,13 +8798,6 @@ function arrayFlattenedOnce( test )
   test.shouldThrowError( function()
   {
     _.arrayFlattenedOnce( 1, [ 1 ] );
-  });
-
-  test.case = 'second is not longIs';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlattenedOnce( [], 1 );
-
   });
 
   test.case = 'onEqualize is not a routine';
