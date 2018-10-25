@@ -3467,13 +3467,16 @@ function promiseIs( src )
 {
   if( !src )
   return false;
+  return src instanceof Promise;
+}
 
-  var prototype = Object.getPrototypeOf( src );
+//
 
-  if( !prototype )
+function promiseLike( src )
+{
+  if( !src )
   return false;
-
-  return prototype.constructor.name === 'Promise' && src instanceof Promise;
+  return _.routineIs( src.then ) && _.routineIs( src.catch );
 }
 
 //
@@ -5025,8 +5028,8 @@ function routineForPreAndBody_pre( routine, args )
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2, 'expects exactly two arguments' );
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ) );
-  _.assert( _.routineIs( o.body ) );
+  _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ), 'Expects routine or routines {-o.pre-}' );
+  _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -8740,25 +8743,25 @@ function dateToStr( date )
 
 //
 
-let _timeSleepBuffer = new Uint32Array([ 0 ]);
+let _timeSleepBuffer = new Int32Array( new SharedArrayBuffer( 4 ) );
 function timeSleep( time )
 {
   _.assert( time >= 0 );
-  Atomics.wait( _timeSleepUntilBuffer, 0, 1, time );
+  Atomics.wait( _timeSleepBuffer, 0, 1, time );
 }
 
 //
 
-function timeSleepUntil()
+function timeSleepUntil( o )
 {
   if( _.routineIs( o ) )
-  o = { onCodition : onCondition }
+  o = { onCondition : o }
 
   if( o.periodicity === undefined )
   o.periodicity = timeSleepUntil.defaults.periodicity;
 
   let i = 0;
-  while( !onCondition() )
+  while( !o.onCondition() )
   {
     _.timeSleep( o.periodicity );
   }
@@ -15159,21 +15162,11 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 
 function arrayFlatten( dstArray, insArray )
 {
-  _.assert( arguments.length > 0 );
-  if( dstArray === null )
-  dstArray = [];
+  if( arguments[ 0 ] === null )
+  arguments[ 0 ] = [];
+  _.arrayFlattened.apply( this, arguments );
+  return arguments[ 0 ];
 
-  if( arguments.length === 2 )
-  {
-    _.arrayFlattened.call( this, dstArray, insArray );
-    return dstArray;
-  }
-  else
-  {
-    for (var i = 1; i < arguments.length; i++)
-    _.arrayFlattened.call( this, dstArray, arguments[ i ] );
-    return dstArray;
-  }
 }
 
 //
@@ -15242,6 +15235,7 @@ function arrayFlattened( dstArray, insArray )
     else
     {
       dstArray.push( insArray );
+      result += 1;
     }
   }
   else
@@ -15249,7 +15243,8 @@ function arrayFlattened( dstArray, insArray )
     for( var a = 1 ; a < arguments.length ; a++ )
     {
       var src = arguments[ a ];
-      dstArray.push( src );
+      _.arrayFlattened( dstArray, src );
+      result += 1;
     }
   }
 
@@ -15289,10 +15284,10 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
   else
   {
-    var index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+    var index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
     if( index === -1 )
     {
-      dstArray.push( insArray[ i ] );
+      dstArray.push( insArray );
       result += 1;
     }
   }
@@ -21218,6 +21213,7 @@ var Routines =
   consequenceIs : consequenceIs,
   consequenceLike : consequenceLike,
   promiseIs : promiseIs,
+  promiseLike : promiseLike,
 
   typeOf : typeOf,
   prototypeHas : prototypeHas,

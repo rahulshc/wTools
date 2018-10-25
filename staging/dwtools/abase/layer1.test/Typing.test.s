@@ -94,7 +94,7 @@ function consequenceLike( test )
 
   var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
   test.is( _.consequenceLike( promise ) );
-  test.is( _.consequenceLike( wConsequence.from( promise ) ) );
+  test.is( _.consequenceLike( _.Consequence.From( promise ) ) );
 
 }
 
