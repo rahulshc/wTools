@@ -15158,9 +15158,9 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 
 function arrayFlatten( dstArray, insArray )
 {
-  if( dstArray === null )
-  dstArray = [];
-  _.arrayFlattened.call( this, dstArray, insArray );
+  if( arguments[ 0 ] === null )
+  arguments[ 0 ] = [];
+  _.arrayFlattened.apply( this, arguments );
   return dstArray;
 }
 
@@ -15227,6 +15227,7 @@ function arrayFlattened( dstArray, insArray )
   else
   {
     dstArray.push( insArray );
+    result += 1;
   }
 
   return result;
@@ -15265,10 +15266,10 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
   else
   {
-    var index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+    var index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
     if( index === -1 )
     {
-      dstArray.push( insArray[ i ] );
+      dstArray.push( insArray );
       result += 1;
     }
   }
