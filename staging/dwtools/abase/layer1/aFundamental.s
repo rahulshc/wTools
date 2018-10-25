@@ -3467,13 +3467,16 @@ function promiseIs( src )
 {
   if( !src )
   return false;
+  return src instanceof Promise;
+}
 
-  var prototype = Object.getPrototypeOf( src );
+//
 
-  if( !prototype )
+function promiseLike( src )
+{
+  if( !src )
   return false;
-
-  return prototype.constructor.name === 'Promise' && src instanceof Promise;
+  return _.routineIs( src.then ) && _.routineIs( src.catch );
 }
 
 //
@@ -8740,25 +8743,25 @@ function dateToStr( date )
 
 //
 
-let _timeSleepBuffer = new Uint32Array([ 0 ]);
+let _timeSleepBuffer = new Int32Array( new SharedArrayBuffer( 4 ) );
 function timeSleep( time )
 {
   _.assert( time >= 0 );
-  Atomics.wait( _timeSleepUntilBuffer, 0, 1, time );
+  Atomics.wait( _timeSleepBuffer, 0, 1, time );
 }
 
 //
 
-function timeSleepUntil()
+function timeSleepUntil( o )
 {
   if( _.routineIs( o ) )
-  o = { onCodition : onCondition }
+  o = { onCondition : o }
 
   if( o.periodicity === undefined )
   o.periodicity = timeSleepUntil.defaults.periodicity;
 
   let i = 0;
-  while( !onCondition() )
+  while( !o.onCondition() )
   {
     _.timeSleep( o.periodicity );
   }
@@ -21194,6 +21197,7 @@ var Routines =
   consequenceIs : consequenceIs,
   consequenceLike : consequenceLike,
   promiseIs : promiseIs,
+  promiseLike : promiseLike,
 
   typeOf : typeOf,
   prototypeHas : prototypeHas,
