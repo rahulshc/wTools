@@ -7970,11 +7970,6 @@ var Self =
 
     strSplitStrNumber : strSplitStrNumber,
 
-    strIsolateBeginOrNone : strIsolateBeginOrNone,
-    strIsolateEndOrNone : strIsolateEndOrNone,
-    strIsolateEndOrAll : strIsolateEndOrAll,
-    strIsolateBeginOrAll : strIsolateBeginOrAll,
-
     strStrip : strStrip,
     strStripLeft : strStripLeft,
     strStripRight : strStripRight,
