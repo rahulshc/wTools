@@ -38,7 +38,6 @@
     "url": "https://github.com/Wandalen/wTools/issues"
   },
   "dependencies": {
-    "wTesting": "^0.4.175"
   },
   "devDependencies": {
     "wTesting": "",
