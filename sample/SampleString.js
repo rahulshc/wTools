@@ -5,8 +5,8 @@ var _ = wTools;
 
 
 
-let str = 'abcdAabaefab';
+let str = [ 'abcdAabaefab', 'kjbkjbadKBDKbkfffcc' ];
 let ins = [ /[a]/i, 'f', /[c]/ ];
 
-let result = _._strRemoved( str, ins )
+let result = _.strRemove( str, ins )
 logger.log( result )

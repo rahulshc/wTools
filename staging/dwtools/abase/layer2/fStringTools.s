@@ -540,8 +540,15 @@ function strRemove( srcStr, insStr )
   return _._strRemoved( srcStr, insStr );
 
   srcStr = _.arrayAs( srcStr );
-  insStr = _.arrayAs( insStr );
 
+  for( let s = 0; s < srcStr.length; s++ )
+  {
+    let src = srcStr[ s ];
+    result[ s ] = _._strRemoved( src, insStr );
+  }
+
+  if( !srcIsArray )
+  return result[ 0 ];
 
   return result;
 }
