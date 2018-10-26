@@ -509,9 +509,9 @@ function strRemove( test )
   var expected = 'Ole';
   test.identical( got,expected );
 
-  test.case = 'returns string with removed occurrences';
+  test.case = 'returns string with removed first occurrence';
   var got = _.strRemove( 'One example','e' );
-  var expected = 'On xampl';
+  var expected = 'On example';
   test.identical( got,expected );
 
   test.case = 'returns original if no occurrence found ';
@@ -543,7 +543,7 @@ function strRemove( test )
   /**/
 
   got = _.strRemove( 'cacbc', 'c' );
-  expected = 'ab';
+  expected = 'acbc';
   test.identical( got, expected );
 
   /**/
@@ -561,7 +561,7 @@ function strRemove( test )
   /**/
 
   got = _.strRemove( 'abcabc', 'abc' );
-  expected = '';
+  expected = 'abc';
   test.identical( got, expected );
 
   /**/
@@ -578,8 +578,8 @@ function strRemove( test )
 
   /**/
 
-  got = _.strRemove( 'abcabca', [ '', 'a' ] );
-  expected = 'bcbc';
+  got = _.strRemove( 'bcabca', [ '', 'a' ] );
+  expected = 'bcbca';
   test.identical( got, expected );
 
   /**/
@@ -619,7 +619,7 @@ function strRemove( test )
   /**/
 
   got = _.strRemove( 'One example', /e/ );
-  expected = 'On xampl';
+  expected = 'On example';
   test.identical( got, expected );
 
   /**/
@@ -642,26 +642,26 @@ function strRemove( test )
 
   /**/
 
-  got = _.strRemove( '0ex1am2pl3e4', /\d/ );
-  expected = 'example';
+  got = _.strRemove( 'ex1am2pl3e4', /\d/ );
+  expected = 'exam2pl3e4';
   test.identical( got, expected );
 
   /**/
 
   got = _.strRemove( 'example', /[axe]/ );
-  expected = 'mpl';
+  expected = 'xample';
   test.identical( got, expected );
 
   /**/
 
   got = _.strRemove( 'example', /[a-z]/ );
-  expected = '';
+  expected = 'xample';
   test.identical( got, expected );
 
   /**/
 
-  got = _.strRemove( [ 'example', '1example', 'example2', 'exam3ple' ], [ /\d/, /e/, /^3/ ] );
-  expected = [ 'xampl', 'xampl', 'xampl', 'xampl' ];
+  got = _.strRemove( [ 'example', '1example', 'example2', 'xam3ple' ], [ /\d/, /e/, /^3/ ] );
+  expected = [ 'xample', 'xample', 'xample', 'xampl' ];
   test.identical( got, expected );
 
   /* - */
@@ -946,7 +946,7 @@ function strReplace( test )
   test.identical( got, expected );
 
   got = _.strReplace( 'bcabcabc', 'bc', 'c' );
-  expected = 'cacac';
+  expected = 'cabcabc';
   test.identical( got, expected );
 
   got = _.strReplace( [], '', '' );
@@ -954,7 +954,7 @@ function strReplace( test )
   test.identical( got, expected );
 
   got = _.strReplace( [ 'aaa', 'ba', 'c' ], 'a', 'c' );
-  expected = [ 'ccc', 'bc', 'c' ];
+  expected = [ 'caa', 'bc', 'c' ];
   test.identical( got, expected );
 
   got = _.strReplace( [ 'abc', 'cab', 'cba' ], [ 'a', 'b', 'c' ], [ 'c', 'c', 'c' ] );
@@ -970,7 +970,7 @@ function strReplace( test )
   test.identical( got, expected );
 
   got = _.strReplace( [ 'aa', 'bb', 'cc' ], [ 'y', 'z', 'c' ], [ 'x', 'y', 'z' ] );
-  expected = [ 'aa', 'bb', 'zz' ];
+  expected = [ 'aa', 'bb', 'zc' ];
   test.identical( got, expected );
 
   got = _.strReplace( [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ], [ '1', '2', '3' ] );
@@ -1008,7 +1008,7 @@ function strReplace( test )
   test.identical( got, expected );
 
   got = _.strReplace( [ '3example', '1example', 'example2', 'exam2ple' ], [ /\d/, /e/, /^3/ ], [ '3', '2', '1' ]  );
-  expected = [ '12xampl2', '12xampl2', '2xampl23', '2xam3pl2' ];
+  expected = [ '12xample', '12xample', '2xample3', '2xam3ple' ];
   test.identical( got, expected );
 
   /* - */

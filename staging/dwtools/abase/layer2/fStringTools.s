@@ -470,31 +470,13 @@ function _strRemoved( srcStr, insStr )
 
   if( !_.longIs( insStr ) )
   {
-    let flags = 'g';
-
-    if( !_.strIs( insStr ) )
-    {
-      let oldFlags = insStr.flags;
-      flags = oldFlags + flags;
-    }
-
-    var insRegExp = new RegExp( insStr, flags );
-    result = result.replace( insRegExp, '' );
+    result = result.replace( insStr, '' );
   }
   else
   {
     for( let i = 0; i < insStr.length; i++ )
     {
-      let flags = 'g';
-
-      if( !_.strIs( insStr[ i ] ) )
-      {
-        let oldFlags = insStr[ i ].flags;
-        flags = oldFlags + flags;
-      }
-
-      var insRegExp = new RegExp( insStr[ i ], flags );
-      result = result.replace( insRegExp, '' );
+      result = result.replace( insStr[ i ], '' );
     }
   }
 
@@ -625,16 +607,8 @@ function _strReplaced( srcStr, insStr, subStr )
   if( !_.longIs( insStr ) )
   {
     _.assert( _.strIs( subStr ), 'expects string {-sub-}' );
-    let flags = 'g';
 
-    if( !_.strIs( insStr ) )
-    {
-      let oldFlags = insStr.flags;
-      flags = oldFlags + flags;
-    }
-
-    var insRegExp = new RegExp( insStr, flags );
-    result = result.replace( insRegExp, subStr );
+    result = result.replace( insStr, subStr );
   }
   else
   {
@@ -642,16 +616,8 @@ function _strReplaced( srcStr, insStr, subStr )
     for( let i = 0; i < insStr.length; i++ )
     {
       _.assert( _.strIs( subStr[ i ] ), 'expects string {-sub-}' );
-      let flags = 'g';
 
-      if( !_.strIs( insStr[ i ] ) )
-      {
-        let oldFlags = insStr[ i ].flags;
-        flags = oldFlags + flags;
-      }
-
-      var insRegExp = new RegExp( insStr[ i ], flags );
-      result = result.replace( insRegExp, subStr[ i ] );
+      result = result.replace( insStr[ i ], subStr[ i ] );
     }
   }
 
