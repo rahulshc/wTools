@@ -614,6 +614,107 @@ function strReplaceEnd( src,end,ins )
 
 //
 
+function _strReplaced( srcStr, insStr, subStr )
+{
+  _.assert( arguments.length === 3, 'expects exactly three arguments' );
+  _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
+
+  let result = srcStr;
+  debugger;
+
+  if( !_.longIs( insStr ) )
+  {
+    _.assert( _.strIs( subStr ), 'expects string {-sub-}' );
+    let flags = 'g';
+
+    if( !_.strIs( insStr ) )
+    {
+      let oldFlags = insStr.flags;
+      flags = oldFlags + flags;
+    }
+
+    var insRegExp = new RegExp( insStr, flags );
+    result = result.replace( insRegExp, subStr );
+  }
+  else
+  {
+    _.assert( insStr.length === subStr.length, 'Search and replace strings must have same length' );
+    for( let i = 0; i < insStr.length; i++ )
+    {
+      let flags = 'g';
+
+      if( !_.strIs( insStr[ i ] ) )
+      {
+        let oldFlags = insStr[ i ].flags;
+        flags = oldFlags + flags;
+      }
+
+      var insRegExp = new RegExp( insStr[ i ], flags );
+      result = result.replace( insRegExp, subStr[ i ] );
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+* Finds substring or regexp ( insStr ) occurrences from the source string ( srcStr ) and replaces them
+* with the subStr values.
+* Returns original string if source( src ) does not have occurrence of ( insStr ).
+*
+* @param { String } srcStr - Source string to parse.
+* @param { String } insStr - String/RegExp that is to be replaced.
+* @param { String } subStr - Replacement String/RegExp.
+* @returns { String } Returns string with result of substring replacement.
+*
+* @example
+* //returns Source String
+* _.strReplace( 'source string','s', 'S' );
+*
+* @example
+* //returns example
+* _.strReplace( 'example','s' );
+*
+* @function strReplace
+* @throws { Exception } Throws a exception if( srcStr ) is not a String.
+* @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
+* @throws { Exception } Throws a exception if( subStr ) is not a String.
+* @throws { Exception } Throws a exception if( arguments.length ) is not equal 3.
+* @memberof wTools
+*
+*/
+
+function strReplace( srcStr, insStr )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.longIs( srcStr ) || _.strIs( srcStr ), 'expects string or array of strings {-src-}' );
+  _.assert( _.longIs( insStr ) || _.strIs( insStr ) || _.regexpIs( insStr ), 'expects string/regexp or array of strings/regexps {-begin-}' );
+
+  let result = [];
+  let srcIsArray = _.longIs( srcStr );
+
+  if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
+  return _._strRemoved( srcStr, insStr );
+
+  srcStr = _.arrayAs( srcStr );
+
+  for( let s = 0; s < srcStr.length; s++ )
+  {
+    let src = srcStr[ s ];
+    result[ s ] = _._strRemoved( src, insStr );
+  }
+
+  if( !srcIsArray )
+  return result[ 0 ];
+
+  return result;
+}
+
+
+//
+
 /**
   * Prepends string( begin ) to the source( src ) if prefix( begin ) is not match with first chars of string( src ),
   * otherwise returns original string.
@@ -4103,6 +4204,8 @@ let Proto =
 
   strReplaceBegin : strReplaceBegin,
   strReplaceEnd : strReplaceEnd,
+  _strReplaced : _strReplaced,
+  strReplace : strReplace,
 
   strPrependOnce : strPrependOnce,
   strAppendOnce : strAppendOnce,
