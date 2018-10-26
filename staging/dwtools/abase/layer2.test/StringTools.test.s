@@ -923,6 +923,112 @@ function strReplaceEnd( test )
 
 //
 
+function strReplace( test )
+{
+  /**/
+
+  var got,expected;
+
+  got = _.strReplace( '', '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  got = _.strReplace( '', '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'a', 'a', 'b' );
+  expected = 'b';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'a', 'x', 'b' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'bcabcabc', 'bc', 'c' );
+  expected = 'cacac';
+  test.identical( got, expected );
+
+  got = _.strReplace( [], '', '' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'aaa', 'ba', 'c' ], 'a', 'c' );
+  expected = [ 'ccc', 'bc', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'abc', 'cab', 'cba' ], [ 'a', 'b', 'c' ], [ 'c', 'c', 'c' ] );
+  expected = [ 'ccc', 'ccc', 'ccc' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'y', 'z' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'ab', 'bc', 'ca' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'xy', 'yz', 'zx' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'aa', 'bb', 'cc' ], [ 'y', 'z', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'aa', 'bb', 'zz' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ], [ '1', '2', '3' ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'a', 'bab', 'ca' ], 'a', 'x' );
+  expected = [ 'x', 'bxb', 'cx' ];
+  test.identical( got, expected );
+
+  /**/
+
+  test.case = 'RegExp';
+
+  /**/
+
+  got = _.strReplace( 'example', /ple/, 'en' );
+  expected = 'examen';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'example', /^le/, 'no' );
+  expected = 'example';
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'example', 'lex11ical' ], [ /^le/, /ex$/, /\d{2}/ ], [ 'a', 'b', 'en' ]  );
+  expected = [ 'example', 'axenical' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'example', 'lexical' ], [ /al$/, /^ex/ ], [ '1', '2' ] );
+  expected = [ '2ample', 'lexic1' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'example1', '3example', 'exam4ple' ], /\d/, '2' );
+  expected = [ 'example2', '2example', 'exam2ple' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ '3example', '1example', 'example2', 'exam2ple' ], [ /\d/, /e/, /^3/ ], [ '3', '2', '1' ]  );
+  expected = [ '12xampl2', '12xampl2', '2xampl23', '2xam3pl2' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strReplace() );
+  test.shouldThrowError( () => _.strReplace( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplace( '' ) );
+  test.shouldThrowError( () => _.strReplace( 1, '', '', '' ) );
+  test.shouldThrowError( () => _.strReplace( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strReplace( 'a', 'a', 1 ) );
+  test.shouldThrowError( () => _.strReplace( 'a', [ 'x', 1 ], 'a' ) );
+  test.shouldThrowError( () => _.strReplace( 'a', [ 'a' ], [ 1 ] ) );
+  test.shouldThrowError( () => _.strReplace( 'a', [ 'b', 'c' ], [ 'c' ] ) );
+}
+
+//
+
 function strPrependOnce( test )
 {
   var got,expected;
@@ -8165,6 +8271,7 @@ var Self =
 
     strReplaceBegin : strReplaceBegin,
     strReplaceEnd : strReplaceEnd,
+    strReplace : strReplace,
 
     strPrependOnce : strPrependOnce,
     strAppendOnce : strAppendOnce,

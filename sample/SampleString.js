@@ -9,5 +9,5 @@ let str = 'aAafffAAAcccFF';
 let ins = [ /[a]/i, 'f', /[c]/ ];
 let sub = [ '1', '2', '3' ];
 
-let result = _._strReplaced( str, ins, sub )
+let result = _.strReplace( str, ins, sub )
 logger.log( result )

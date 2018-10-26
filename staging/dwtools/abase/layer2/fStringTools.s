@@ -641,6 +641,7 @@ function _strReplaced( srcStr, insStr, subStr )
     _.assert( insStr.length === subStr.length, 'Search and replace strings must have same length' );
     for( let i = 0; i < insStr.length; i++ )
     {
+      _.assert( _.strIs( subStr[ i ] ), 'expects string {-sub-}' );
       let flags = 'g';
 
       if( !_.strIs( insStr[ i ] ) )
@@ -686,24 +687,25 @@ function _strReplaced( srcStr, insStr, subStr )
 *
 */
 
-function strReplace( srcStr, insStr )
+function strReplace( srcStr, insStr, subStr )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 3, 'expects exactly three arguments' );
   _.assert( _.longIs( srcStr ) || _.strIs( srcStr ), 'expects string or array of strings {-src-}' );
   _.assert( _.longIs( insStr ) || _.strIs( insStr ) || _.regexpIs( insStr ), 'expects string/regexp or array of strings/regexps {-begin-}' );
+  _.assert( _.longIs( subStr ) || _.strIs( subStr ), 'expects string or array of strings {-src-}' );
 
   let result = [];
   let srcIsArray = _.longIs( srcStr );
 
   if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
-  return _._strRemoved( srcStr, insStr );
+  return _._strReplaced( srcStr, insStr, subStr );
 
   srcStr = _.arrayAs( srcStr );
 
   for( let s = 0; s < srcStr.length; s++ )
   {
     let src = srcStr[ s ];
-    result[ s ] = _._strRemoved( src, insStr );
+    result[ s ] = _._strReplaced( src, insStr, subStr );
   }
 
   if( !srcIsArray )
