@@ -461,6 +461,8 @@ function strRemoveEnd( src, end )
 
 //
 
+/* qqq : begin could be regexp + coverage */
+
 function strReplaceBegin( src,begin,ins )
 {
   _.assert( arguments.length === 3, 'expects exactly three argument' );
@@ -4104,19 +4106,5 @@ delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
-
-  // qqq
-  //
-  // strStrip : strStrip,
-  // strStripLeft : strStripLeft,
-  // strStripRight : strStripRight,
-  // strRemoveAllSpaces : strRemoveAllSpaces,
-  // strStripEmptyLines : strStripEmptyLines,
-  //
-  // strSub : strSub,
-  //
-  // strDup : strDup, /* document me */
-  // strJoin : strJoin, /* document me */
-  // strUnjoin : strUnjoin, /* document me */
 
 })();

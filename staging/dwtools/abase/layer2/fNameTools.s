@@ -139,30 +139,28 @@ function idWithDate( prefix,postfix,fast )
 
 //
 
-var idWithGuid = (function()
+/* qqq : reimplement it more properly */
+
+function idWithGuid()
 {
+
+  var result =
+  [
+    s4() + s4(),
+    s4(),
+    s4(),
+    s4(),
+    s4() + s4() + s4(),
+  ].join( '-' );
+
+  return result;
 
   function s4()
   {
     return Math.floor( ( 1 + Math.random() ) * 0x10000 ).toString( 16 ).substring( 1 );
   }
 
-  return function()
-  {
-
-    var result =
-    [
-      s4() + s4(),
-      s4(),
-      s4(),
-      s4(),
-      s4() + s4() + s4(),
-    ].join( '-' );
-
-    return result;
-  };
-
-})();
+}
 
 //
 
@@ -192,7 +190,6 @@ var Proto =
   nameFielded : nameFielded, /* experimental */
   nameUnfielded : nameUnfielded, /* experimental */
   namesCoded : namesCoded, /* experimental */
-
 
   // id
 
