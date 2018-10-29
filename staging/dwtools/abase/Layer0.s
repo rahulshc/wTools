@@ -15,6 +15,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './l0/fLong.s' );
   require( './l0/fMap.s' );
   require( './l0/fNumber.s' );
+  require( './l0/fRange.s' );
   require( './l0/fRegexp.s' );
   require( './l0/fRoutine.s' );
   require( './l0/fString.s' );

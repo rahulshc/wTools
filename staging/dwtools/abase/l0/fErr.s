@@ -750,7 +750,7 @@ function errLog()
 function errLogOnce( err )
 {
   let c = _global.logger || _global.console;
-  let err = _err
+  err = _err
   ({
     args : arguments,
     level : 2,
