@@ -1038,8 +1038,8 @@ let Routines =
   // routinesCompose : routinesCompose,
   // routinesComposeReturningLast : routinesComposeReturningLast,
   // routinesComposeReturningBeforeLast : routinesComposeReturningBeforeLast,
-  // routinesComposeEvery : routinesComposeEvery,
-  // routinesComposeEveryReturningLast : routinesComposeEveryReturningLast,
+  // routinesComposeAll : routinesComposeAll,
+  // routinesComposeAllReturningLast : routinesComposeAllReturningLast,
   // routinesChain : routinesChain,
 
   routineOptions : routineOptions,

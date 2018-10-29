@@ -597,14 +597,14 @@ function routinesCompose( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery() );
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll() );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){}, function(){} ) );
 
 }
 
 //
 
-function routinesComposeEvery( test )
+function routinesComposeAll( test )
 {
 
   function routineUnrolling()
@@ -645,7 +645,7 @@ function routinesComposeEvery( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
-  var composition = _.routinesComposeEvery( routines );
+  var composition = _.routinesComposeAll( routines );
   var got = composition( 1,2,3 );
   var expected = [ 1,2,3,16,128 ];
   test.identical( got, expected );
@@ -655,7 +655,7 @@ function routinesComposeEvery( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing ];
-  var composition = _.routinesComposeEvery( routines );
+  var composition = _.routinesComposeAll( routines );
   var got = composition( 1,2,3 );
   var expected = [ 1,2,3,16 ];
   test.identical( got, expected );
@@ -665,7 +665,7 @@ function routinesComposeEvery( test )
 
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _nothing ];
-  var composition = _.routinesComposeEvery( routines );
+  var composition = _.routinesComposeAll( routines );
   var got = composition( 1,2,3 );
   var expected = [ [ 1,2,3,16 ] ];
   test.identical( got, expected );
@@ -675,7 +675,7 @@ function routinesComposeEvery( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
-  var composition = _.routinesComposeEvery( routines );
+  var composition = _.routinesComposeAll( routines );
   debugger;
   var got = composition( 1,2,3 );
   debugger;
@@ -688,15 +688,15 @@ function routinesComposeEvery( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery() );
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){} ) );
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll() );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){}, function(){} ) );
 
 }
 
 //
 
-function routinesComposeEveryReturningLast( test )
+function routinesComposeAllReturningLast( test )
 {
 
   function routineUnrolling()
@@ -739,7 +739,7 @@ function routinesComposeEveryReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
-  var composition = _.routinesComposeEveryReturningLast( routines );
+  var composition = _.routinesComposeAllReturningLast( routines );
   var got = composition( 1,2,3 );
   var expected = 128;
   test.identical( got, expected );
@@ -749,7 +749,7 @@ function routinesComposeEveryReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing ];
-  var composition = _.routinesComposeEveryReturningLast( routines );
+  var composition = _.routinesComposeAllReturningLast( routines );
   var got = composition( 1,2,3 );
   var expected = 16;
   test.identical( got, expected );
@@ -759,7 +759,7 @@ function routinesComposeEveryReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _nothing ];
-  var composition = _.routinesComposeEveryReturningLast( routines );
+  var composition = _.routinesComposeAllReturningLast( routines );
   var got = composition( 1,2,3 );
   var expected = [ 1,2,3,16 ];
   test.identical( got, expected );
@@ -769,7 +769,7 @@ function routinesComposeEveryReturningLast( test )
 
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
-  var composition = _.routinesComposeEveryReturningLast( routines );
+  var composition = _.routinesComposeAllReturningLast( routines );
   var got = composition( 1,2,3 );
   var expected = dont;
   test.identical( got, expected );
@@ -780,9 +780,9 @@ function routinesComposeEveryReturningLast( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeEveryReturningLast() );
-  test.shouldThrowErrorSync( () => _.routinesComposeEveryReturningLast( routines, function(){} ) );
-  test.shouldThrowErrorSync( () => _.routinesComposeEveryReturningLast( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeAllReturningLast() );
+  test.shouldThrowErrorSync( () => _.routinesComposeAllReturningLast( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeAllReturningLast( routines, function(){}, function(){} ) );
 
 }
 
@@ -858,9 +858,9 @@ function routinesChain( test )
 
   test.case = 'bad arguments';
 
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery() );
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){} ) );
-  test.shouldThrowErrorSync( () => _.routinesComposeEvery( routines, function(){}, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll() );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){} ) );
+  test.shouldThrowErrorSync( () => _.routinesComposeAll( routines, function(){}, function(){} ) );
 
 }
 
@@ -1527,8 +1527,8 @@ var Self =
     routinesCall : routinesCall,
 
     routinesCompose : routinesCompose,
-    routinesComposeEvery : routinesComposeEvery,
-    routinesComposeEveryReturningLast : routinesComposeEveryReturningLast,
+    routinesComposeAll : routinesComposeAll,
+    routinesComposeAllReturningLast : routinesComposeAllReturningLast,
     routinesChain : routinesChain,
 
     routineVectorize_functor : routineVectorize_functor,
