@@ -43,7 +43,7 @@ function strIsMultilined( src )
 
 function strHas( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -54,7 +54,7 @@ function strHas( src,ins )
 
 function strHasAny( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
@@ -71,7 +71,7 @@ function strHasAny( src,ins )
 
 function strHasAll( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
@@ -88,7 +88,7 @@ function strHasAll( src,ins )
 
 function strHasNone( src,ins )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
@@ -107,7 +107,7 @@ function strHasSeveral( src,ins )
 {
   let result = 0;
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.arrayIs( ins ) )
   {
@@ -192,7 +192,7 @@ function strCount( src,ins )
 {
   let result = -1;
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -216,7 +216,7 @@ function strCountLeft( src,ins )
 {
   let result = 0;
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -242,7 +242,7 @@ function strCountRight( src,ins )
 {
   let result = 0;
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.strIs( ins ) );
 
@@ -270,7 +270,7 @@ function strCountRight( src,ins )
 
 function _strRemovedBegin( src,begin )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'expects string {-src-}' );
 
   let result = src;
@@ -326,7 +326,7 @@ function _strRemovedBegin( src,begin )
 
 function strRemoveBegin( src,begin )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
   _.assert( _.longIs( begin ) || _.strIs( begin ) || _.regexpIs( begin ), 'expects string/regexp or array of strings/regexps {-begin-}' );
 
@@ -363,7 +363,7 @@ function strRemoveBegin( src,begin )
 
 function _strRemovedEnd( src, end )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( src ), 'expects string {-src-}' );
 
   let result = src;
@@ -401,7 +401,7 @@ function _strRemovedEnd( src, end )
 
 function strRemoveEnd( src, end )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src ) || _.strIs( src ), 'expects string or array of strings {-src-}' );
   _.assert( _.longIs( end ) || _.strIs( end ) || _.regexpIs( end ), 'expects string/regexp or array of strings/regexps {-end-}' );
 
@@ -437,7 +437,7 @@ function strRemoveEnd( src, end )
 
 // function strRemoveEnd( src,end )
 // {
-//   _.assert( arguments.length === 2, 'expects exactly two arguments' );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //   _.assert( _.longIs( src ) || _.strIs( src ) );
 //   _.assert( _.longIs( end ) || _.strIs( end ) );
 //
@@ -465,7 +465,7 @@ function strRemoveEnd( src, end )
 
 function strReplaceBegin( src,begin,ins )
 {
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.strIs( ins ) || _.longIs( ins ),'expects {-ins-} as string/array of strings' );
   if( _.longIs( begin ) && _.longIs( ins ) )
   _.assert( begin.length === ins.length );
@@ -494,7 +494,7 @@ function strReplaceBegin( src,begin,ins )
 
 function strReplaceEnd( src,end,ins )
 {
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.strIs( ins ) || _.longIs( ins ),'expects {-ins-} as string/array of strings' );
   if( _.longIs( end ) && _.longIs( ins ) )
   _.assert( end.length === ins.length );
@@ -607,7 +607,7 @@ function strAppendOnce( src,end )
 
 function strReplaceWords( src,ins,sub )
 {
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.strIs( src ) );
   _.assert( _.arrayIs( ins ) );
   _.assert( _.arrayIs( sub ) );
@@ -1724,7 +1724,7 @@ function _strSplitsQuotedRejoin_pre( routine, args )
   let o = args[ 0 ];
 
   _.routineOptions( routine, o );
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1, 'expects one or two arguments' );
   _.assert( _.objectIs( o ) );
 
@@ -1853,7 +1853,7 @@ function _strSplitsDropDelimeters_pre( routine, args )
   if( _.strIs( o.delimeter ) )
   o.delimeter = [ o.delimeter ];
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
 
@@ -1914,7 +1914,7 @@ function _strSplitsStrip_pre( routine, args )
   if( o.stripping && _.boolLike( o.stripping ) )
   o.stripping = _.strStrip.defaults.stripper;
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
   _.assert( !o.stripping || _.strIs( o.stripping ) || _.regexpIs( o.stripping ) );
@@ -1966,7 +1966,7 @@ function _strSplitsDropEmpty_pre( routine, args )
 
   _.routineOptions( routine, o );
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 );
   _.assert( _.objectIs( o ) );
 
@@ -2081,7 +2081,7 @@ function _strSplitFast_pre( routine, args )
 
   _.routineOptions( routine, o );
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2, 'expects one or two arguments' );
   _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
@@ -2719,7 +2719,7 @@ _.assert( _.objectIs( strSplitNaive.defaults ) );
 
 function _strSub( srcStr, range )
 {
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
   _.assert( _.rangeIs( range ) );
 
@@ -3101,7 +3101,7 @@ function _strDup( s,times )
 {
   let result = '';
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( s ) );
   _.assert( _.numberIs( times ) );
 
@@ -3311,7 +3311,7 @@ strConcat.defaults =
 function strUnjoin( srcStr, maskArray )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
   _.assert( _.arrayIs( maskArray ) );
 
@@ -3572,7 +3572,7 @@ strLinesNumber.defaults =
 
 // function strLinesAt( code,line,radius )
 // {
-//   _.assert( arguments.length === 3, 'expects exactly three argument' );
+//   _.assert( arguments.length === 3, 'Expects exactly three argument' );
 //   _.assert( _.strIs( code ) || _.arrayIs( code ) );
 //   _.assert( _.numberIs( line ) );
 //

@@ -485,9 +485,9 @@ function routinesCompose( test )
     return undefined;
   }
 
-  function chainer1( e, k, args, op )
+  function chainer1( args, result, o, k )
   {
-    return e;
+    return result;
   }
 
   /* - */

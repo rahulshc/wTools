@@ -7,15 +7,20 @@ if( typeof module !== 'undefined' && module !== null )
 
   require( './Layer1.s' );
 
-  var _ = _global_.wTools;
-  var Self = _global_.wTools;
+  require( './l2/bLookTools.s' );
+  require( './l2/fIncludeTools.s' );
+  require( './l2/fNameTools.s' );
+  require( './l2/fStringTools.s' );
 
-  require( './layer2/bLookTools.s' );
-  require( './layer2/fIncludeTools.s' );
-  require( './layer2/fNameTools.s' );
-  require( './layer2/fStringTools.s' );
+  let _global = _global_;
+  let _ = _global_.wTools;
+  let Self = _global_.wTools;
 
 }
+
+let _global = _global_;
+let _ = _global_.wTools;
+let Self = _global_.wTools;
 
 // --
 // export

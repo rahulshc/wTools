@@ -2,9 +2,9 @@
 
 'use strict';
 
-var _global = _global_;
-var _ = _global.wTools;
-var Self = _global.wTools;
+let _global = _global_;
+let _ = _global.wTools;
+let Self = _global.wTools;
 
 // --
 // setup
@@ -38,7 +38,7 @@ function _setupUnhandledErrorHandler()
 
   _global._setupUnhandledErrorHandlerDone = true;
 
-  var handlerWas = null;
+  let handlerWas = null;
 
   // console.info( 'REMINDER : fix unhandled error handler' );
 
@@ -56,8 +56,10 @@ function _setupUnhandledErrorHandler()
 
   function handleBrowserError( message, sourcePath, lineno, colno, error )
   {
+
+    let err = error;
     if( _._err )
-    var err = _._err
+    err = _._err
     ({
       args : [ error ],
       level : 1,
@@ -233,9 +235,9 @@ function _setupTesterPlaceholder()
 function _setupLater()
 {
 
-  _.assert( _.objectIs( _.regexpsEscape ) );
-  _.assert( _.objectIs( _.strIsolateBeginOrAll ) )
-  _.Later.for( _ );
+  // _.assert( _.objectIs( _.regexpsEscape ) );
+  // _.assert( _.objectIs( _.strIsolateBeginOrAll ) )
+  // _.Later.for( _ );
   _.assert( _.routineIs( _.regexpsEscape ) );
   _.assert( _.routineIs( _.strIsolateBeginOrAll ) )
 
@@ -266,7 +268,7 @@ function _setup()
 // routines
 // --
 
-var Routines =
+let Routines =
 {
 
   _setupConfig : _setupConfig,

@@ -65,7 +65,7 @@ function usePathGlobally( paths )
 function _usePathGlobally( _module,paths,visited )
 {
 
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )
@@ -91,7 +91,7 @@ function _usePathGlobally( _module,paths,visited )
 function _usePathGloballyChildren( _module,paths,visited )
 {
 
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )

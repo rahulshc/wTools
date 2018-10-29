@@ -21,8 +21,10 @@
   ],
   "main": "staging/dwtools/abase/Layer2.s",
   "files": [
-    "staging/dwtools/abase/layer1",
-    "staging/dwtools/abase/layer2",
+    "staging/dwtools/abase/l0",
+    "staging/dwtools/abase/l1",
+    "staging/dwtools/abase/l2",
+    "staging/dwtools/abase/Layer0.s",
     "staging/dwtools/abase/Layer1.s",
     "staging/dwtools/abase/Layer2.s"
   ],
