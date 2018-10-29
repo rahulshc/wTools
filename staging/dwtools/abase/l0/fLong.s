@@ -4719,7 +4719,7 @@ function arrayCount( src,instance )
 function arrayCountUnique( src, onEvaluate )
 {
   let found = [];
-  let onEvaluate = onEvaluate || function( e ){ return e };
+  onEvaluate = onEvaluate || function( e ){ return e };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.longIs( src ),'arrayCountUnique :','expects ArrayLike' );
