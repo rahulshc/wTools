@@ -25,7 +25,7 @@ let Self = _global_.wTools;
 function routineDelayed( delay,routine )
 {
 
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   _.assert( _.numberIs( delay ) );
   _.assert( _.routineIs( routine ) );
 
@@ -163,7 +163,7 @@ function _routinesCall( o )
 {
   let result, context, routines, args;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.args.length >= 1 && o.args.length <= 3 );
 
   /* */
@@ -269,7 +269,7 @@ function _routinesCall( o )
     _.assert
     (
       _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
-      'expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
+      'Expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
     );
 
     if( _.routineIs( routines ) )
@@ -361,7 +361,7 @@ function methodsCall( contexts,methods,args )
   let l = Math.max( l1,l2 );
 
   _.assert( l >= 0 );
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( !l )
   return result;
@@ -770,7 +770,7 @@ function _equalizerFromMapper( mapper )
   mapper = function mapper( a,b ){ return a === b };
 
   _.assert( 0,'not tested' )
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( mapper.length === 1 || mapper.length === 2 );
 
   if( mapper.length === 1 )
@@ -793,7 +793,7 @@ function _comparatorFromEvaluator( evaluator )
   if( evaluator === undefined )
   evaluator = function comparator( a,b ){ return a-b };
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( evaluator.length === 1 || evaluator.length === 2 );
 
   if( evaluator.length === 1 )

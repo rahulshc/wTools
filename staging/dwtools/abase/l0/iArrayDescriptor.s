@@ -96,7 +96,7 @@ function makeArrayOfLengthZeroed( length )
 function arrayFromCoercing( src )
 {
   _.assert( _.longIs( src ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( src.constructor === this.array.ArrayType )
   return src;

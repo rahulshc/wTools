@@ -212,7 +212,7 @@ function buffersNodeAreIdentical( src1, src2 )
 function buffersAreEquivalent( src1, src2, accuracy )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( _.bufferTypedIs( src1 ) )
   return _.buffersTypedAreEquivalent( src1 ,src2, accuracy );
@@ -556,7 +556,7 @@ function bufferJoin()
       srcs.push( new Uint8Array( src.buffer,src.byteOffset,src.byteLength ) );
     }
 
-    _.assert( src.byteLength >= 0,'expects buffers, but got',_.strTypeOf( src ) );
+    _.assert( src.byteLength >= 0,'Expects buffers, but got',_.strTypeOf( src ) );
 
     size += src.byteLength;
   }
@@ -666,7 +666,7 @@ function bufferToStr( src )
   if( src instanceof ArrayBuffer )
   src = new Uint8Array( src,0,src.byteLength );
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.bufferAnyIs( src ) );
 
   if( bufferNodeIs( src ) )
@@ -894,7 +894,7 @@ function bufferFrom( o )
 
   _.assert( arguments.length === 1 );
   _.assert( _.objectIs( o ) );
-  _.assert( _.routineIs( o.bufferConstructor ),'expects bufferConstructor' );
+  _.assert( _.routineIs( o.bufferConstructor ),'Expects bufferConstructor' );
   _.assertMapHasOnly( o,bufferFrom.defaults );
 
   /* same */
@@ -1004,7 +1004,7 @@ bufferFrom.defaults =
 function bufferRawFromTyped( buffer )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) );
 
   if( _.bufferRawIs( buffer ) )
@@ -1026,7 +1026,7 @@ function bufferRawFrom( buffer )
 {
   let result;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( buffer instanceof ArrayBuffer )
   return buffer;
@@ -1080,7 +1080,7 @@ function bufferBytesFrom( buffer )
 {
   let result;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.bufferNodeIs( buffer ) )
   {
@@ -1139,8 +1139,8 @@ qqq : cover it
 function bufferNodeFrom( buffer )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
 
   if( _.bufferNodeIs( buffer ) )
   return buffer;
@@ -1236,7 +1236,7 @@ function buffersSerialize( o )
     let attribute = attributes[ a ][ 1 ];
     let buffer = o.onBufferGet.call( o.context,attribute );
 
-    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'Expects buffer or null, got : ' + _.strTypeOf( buffer ) );
 
     let bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
@@ -1728,7 +1728,7 @@ function longButRange( src, range, ins )
 //
 // function argumentsArrayFrom( args )
 // {
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   if( _.argumentsArrayIs( args ) )
 //   return args;
 //   return _argumentsArrayMake.apply( this, args );
@@ -1751,7 +1751,7 @@ function longButRange( src, range, ins )
 // function unrollPrepend( dstArray )
 // {
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
 //
 //   dstArray = dstArray || [];
 //
@@ -1777,7 +1777,7 @@ function longButRange( src, range, ins )
 // function unrollAppend( dstArray )
 // {
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
 //
 //   dstArray = dstArray || [];
 //
@@ -2126,7 +2126,7 @@ function longButRange( src, range, ins )
 //   let empty = true;
 //   empty = false;
 //
-//   _.assert( arguments.length >= 1, 'expects at least one argument' );
+//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
 //   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
 //
 //   for( let a = 1 ; a < arguments.length ; a++ )
@@ -2149,7 +2149,7 @@ function longButRange( src, range, ins )
 //
 // function arrayHasAll( src )
 // {
-//   _.assert( arguments.length >= 1, 'expects at least one argument' );
+//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
 //   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
 //
 //   for( let a = 1 ; a < arguments.length ; a++ )
@@ -2169,7 +2169,7 @@ function longButRange( src, range, ins )
 //
 // function arrayHasNone( src )
 // {
-//   _.assert( arguments.length >= 1, 'expects at least one argument' );
+//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
 //   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
 //
 //   for( let a = 1 ; a < arguments.length ; a++ )
@@ -2190,7 +2190,7 @@ function longButRange( src, range, ins )
 // function arrayAll( src )
 // {
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.longIs( src ) );
 //
 //   for( let s = 0 ; s < src.length ; s += 1 )
@@ -2206,7 +2206,7 @@ function longButRange( src, range, ins )
 //
 // function arrayAny( src )
 // {
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.longIs( src ) );
 //
 //   debugger;
@@ -2222,7 +2222,7 @@ function longButRange( src, range, ins )
 //
 // function arrayNone( src )
 // {
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.longIs( src ) );
 //
 //   for( let s = 0 ; s < src.length ; s += 1 )
@@ -2288,7 +2288,7 @@ function arrayMakeRandom( o )
     o = { length : o };
   }
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( arrayMakeRandom,o );
 
   debugger;
@@ -2332,7 +2332,7 @@ arrayMakeRandom.defaults =
 // function arrayNewOfSameLength( ins )
 // {
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   if( _.primitiveIs( ins ) ) return;
 //   if( !_.arrayIs( ins ) && !_.bufferTypedIs( ins ) ) return;
@@ -2378,7 +2378,7 @@ function arrayFromNumber( dst,length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
+  _.assert( _.numberIs( dst ) || _.arrayIs( dst ),'Expects array of number as argument' );
   _.assert( length >= 0 );
 
   if( _.numberIs( dst ) )
@@ -2387,7 +2387,7 @@ function arrayFromNumber( dst,length )
   }
   else
   {
-    _.assert( dst.length === length,'expects array of length',length,'but got',dst );
+    _.assert( dst.length === length,'Expects array of length',length,'but got',dst );
   }
 
   return dst;
@@ -2428,7 +2428,7 @@ function arrayFromNumber( dst,length )
 function arrayFrom( src )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.arrayIs( src ) )
   return src;
@@ -2482,7 +2482,7 @@ function arrayFromRange( range )
   if( _.numberIs( range ) )
   range = [ 0,range ];
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( range.length === 2 );
   _.assert( _.longIs( range ) );
 
@@ -2646,7 +2646,7 @@ function arrayAs( src )
 function _longClone( src )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longIs( src ) || _.bufferAnyIs( src ) );
   _.assert( !_.bufferNodeIs( src ), 'not tested' );
 
@@ -2770,7 +2770,7 @@ function arrayToMap( array )
 {
   let result = Object.create( null );
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longIs( array ) );
 
   for( let a = 0 ; a < array.length ; a++ )
@@ -3183,7 +3183,7 @@ function arrayMultislice()
     let f = src[ 1 ];
     let l = src[ 2 ];
 
-    _.assert( _.longIs( src ) && _.longIs( src[ 0 ] ),'expects array of array' );
+    _.assert( _.longIs( src ) && _.longIs( src[ 0 ] ),'Expects array of array' );
     f = f !== undefined ? f : 0;
     l = l !== undefined ? l : src[ 0 ].length;
     if( l < f )
@@ -3382,12 +3382,12 @@ function arrayMask( srcArray, mask )
   let length = srcArray.length / atomsPerElement;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.longIs( srcArray ),'arrayMask :','expects array-like as srcArray' );
-  _.assert( _.longIs( mask ),'arrayMask :','expects array-like as mask' );
+  _.assert( _.longIs( srcArray ),'arrayMask :','Expects array-like as srcArray' );
+  _.assert( _.longIs( mask ),'arrayMask :','Expects array-like as mask' );
   _.assert
   (
     _.numberIsInt( length ),
-    'arrayMask :','expects mask that has component for each atom of srcArray',
+    'arrayMask :','Expects mask that has component for each atom of srcArray',
     _.toStr
     ({
       'atomsPerElement' : atomsPerElement,
@@ -3443,7 +3443,7 @@ function arrayUnmask( o )
 
   let length = o.src.length / atomsPerElementPreserved;
   if( Math.floor( length ) !== length )
-  throw _.err( 'arrayMask :','expects mask that has component for each atom of o.src',_.toStr({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
+  throw _.err( 'arrayMask :','Expects mask that has component for each atom of o.src',_.toStr({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
 
   let dstArray = new o.src.constructor( atomsPerElement*length );
 
@@ -3488,7 +3488,7 @@ function arrayInvestigateUniqueMap( o )
   if( _.longIs( o ) )
   o = { src : o };
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longIs( o.src ) );
   _.assertMapHasOnly( o,arrayInvestigateUniqueMap.defaults );
 
@@ -3745,7 +3745,7 @@ function arrayCutin( dstArray, range, srcArray )
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
   _.assert( _.arrayIs( range ) );
   _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
@@ -3847,7 +3847,7 @@ function arrayCutin( dstArray, range, srcArray )
 
 function arrayPut( dstArray, dstOffset )
 {
-  _.assert( arguments.length >= 1, 'expects at least one argument' );
+  _.assert( arguments.length >= 1, 'Expects at least one argument' );
   _.assert( _.longIs( dstArray ) );
   _.assert( _.numberIs( dstOffset ) );
 
@@ -3914,7 +3914,7 @@ function arrayPut( dstArray, dstOffset )
 function arrayFillTimes( result,times,value )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.longIs( result ) );
 
   if( value === undefined )
@@ -3954,7 +3954,7 @@ function arrayFillWhole( result,value )
 }
 
 // {
-//   _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 //   _.assert( _.objectIs( o ) || _.numberIs( o ) || _.arrayIs( o ),'arrayFill :','"o" must be object' );
 //
 //   if( arguments.length === 1 )
@@ -4034,7 +4034,7 @@ function arraySupplement( dstArray )
   result = [];
 
   let length = result.length;
-  _.assert( _.longIs( result ) || _.numberIs( result ),'expects object as argument' );
+  _.assert( _.longIs( result ) || _.numberIs( result ),'Expects object as argument' );
 
   for( let a = arguments.length-1 ; a >= 1 ; a-- )
   {
@@ -4112,8 +4112,8 @@ function arrayExtendScreening( screenArray,dstArray )
   let result = dstArray;
   if( result === null ) result = [];
 
-  _.assert( _.longIs( screenArray ),'expects object as screenArray' );
-  _.assert( _.longIs( result ),'expects object as argument' );
+  _.assert( _.longIs( screenArray ),'Expects object as screenArray' );
+  _.assert( _.longIs( result ),'Expects object as argument' );
   for( let a = arguments.length-1 ; a >= 2 ; a-- )
   _.assert( arguments[ a ],'argument is not defined :',a );
 
@@ -4302,7 +4302,7 @@ function arraySum( src,onEvaluate )
   let result = 0;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.longIs( src ),'arraySum :','expects ArrayLike' );
+  _.assert( _.longIs( src ),'arraySum :','Expects ArrayLike' );
 
   if( onEvaluate === undefined )
   onEvaluate = function( e ){ return e; };
@@ -4641,7 +4641,7 @@ function arraySum( src,onEvaluate )
 // function arrayLeftDefined( arr )
 // {
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   return _.arrayLeft( arr,true,function( e ){ return e !== undefined; } );
 // }
@@ -4651,7 +4651,7 @@ function arraySum( src,onEvaluate )
 // function arrayRightDefined( arr )
 // {
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   return _.arrayRight( arr,true,function( e ){ return e !== undefined; } );
 // }
@@ -4680,7 +4680,7 @@ function arraySum( src,onEvaluate )
 //   let result = 0;
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.longIs( src ),'arrayCount :','expects ArrayLike' );
+//   _.assert( _.longIs( src ),'arrayCount :','Expects ArrayLike' );
 //
 //   let index = src.indexOf( instance );
 //   while( index !== -1 )
@@ -4722,7 +4722,7 @@ function arraySum( src,onEvaluate )
 //   let onEvaluate = onEvaluate || function( e ){ return e };
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.longIs( src ),'arrayCountUnique :','expects ArrayLike' );
+//   _.assert( _.longIs( src ),'arrayCountUnique :','Expects ArrayLike' );
 //   _.assert( _.routineIs( onEvaluate ) );
 //   _.assert( onEvaluate.length === 1 );
 //
@@ -4756,7 +4756,7 @@ function arraySum( src,onEvaluate )
 // function _arrayPrependUnrolling( dstArray, srcArray )
 // {
 //   _.assert( arguments.length === 2 );
-//   _.assert( _.arrayIs( dstArray ), 'expects array' );
+//   _.assert( _.arrayIs( dstArray ), 'Expects array' );
 //
 //   for( let a = srcArray.length - 1 ; a >= 0 ; a-- )
 //   {
@@ -4778,7 +4778,7 @@ function arraySum( src,onEvaluate )
 // function arrayPrependUnrolling( dstArray )
 // {
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
 //
 //   dstArray = dstArray || [];
 //
@@ -4792,7 +4792,7 @@ function arraySum( src,onEvaluate )
 // function arrayPrepend_( dstArray )
 // {
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
 //
 //   dstArray = dstArray || [];
 //
@@ -5176,8 +5176,8 @@ function arraySum( src,onEvaluate )
 // function arrayPrependedArray( dstArray, insArray )
 // {
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','expects array' );
-//   _.assert( _.longIs( insArray ),'arrayPrependedArray :','expects longIs' );
+//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','Expects array' );
+//   _.assert( _.longIs( insArray ),'arrayPrependedArray :','Expects longIs' );
 //
 //   dstArray.unshift.apply( dstArray,insArray );
 //   return insArray.length;
@@ -5410,8 +5410,8 @@ function arraySum( src,onEvaluate )
 // function arrayPrependedArrays( dstArray, insArray )
 // {
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','expects array' );
-//   _.assert( _.longIs( insArray ),'arrayPrependedArrays :','expects longIs entity' );
+//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','Expects array' );
+//   _.assert( _.longIs( insArray ),'arrayPrependedArrays :','Expects longIs entity' );
 //
 //   let result = 0;
 //
@@ -5467,8 +5467,8 @@ function arraySum( src,onEvaluate )
 // function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // {
 //   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArraysOnce :','expects array' );
-//   _.assert( _.longIs( insArray ),'arrayPrependedArraysOnce :','expects longIs entity' );
+//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArraysOnce :','Expects array' );
+//   _.assert( _.longIs( insArray ),'arrayPrependedArraysOnce :','Expects longIs entity' );
 //
 //   let result = 0;
 //
@@ -5509,7 +5509,7 @@ function arraySum( src,onEvaluate )
 // function _arrayAppendUnrolling( dstArray, srcArray )
 // {
 //   _.assert( arguments.length === 2 );
-//   _.assert( _.arrayIs( dstArray ), 'expects array' );
+//   _.assert( _.arrayIs( dstArray ), 'Expects array' );
 //
 //   for( let a = 0, len = srcArray.length ; a < len; a++ )
 //   {
@@ -5531,7 +5531,7 @@ function arraySum( src,onEvaluate )
 // function arrayAppendUnrolling( dstArray )
 // {
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
 //
 //   dstArray = dstArray || [];
 //
@@ -5545,7 +5545,7 @@ function arraySum( src,onEvaluate )
 // function arrayAppend_( dstArray )
 // {
 //   _.assert( arguments.length >= 1 );
-//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'expects array' );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
 //
 //   dstArray = dstArray || [];
 //
@@ -5696,8 +5696,8 @@ function arraySum( src,onEvaluate )
 // function arrayAppendedArray( dstArray, insArray )
 // {
 //   _.assert( arguments.length === 2 )
-//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','expects array' );
-//   _.assert( _.longIs( insArray ),'arrayPrependedArray :','expects longIs' );
+//   _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','Expects array' );
+//   _.assert( _.longIs( insArray ),'arrayPrependedArray :','Expects longIs' );
 //
 //   dstArray.push.apply( dstArray,insArray );
 //   return insArray.length;
@@ -5806,8 +5806,8 @@ function arraySum( src,onEvaluate )
 // {
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.arrayIs( dstArray ), 'expects array' );
-//   _.assert( _.longIs( insArray ), 'expects longIs entity' );
+//   _.assert( _.arrayIs( dstArray ), 'Expects array' );
+//   _.assert( _.longIs( insArray ), 'Expects longIs entity' );
 //
 //   let result = 0;
 //
@@ -5833,8 +5833,8 @@ function arraySum( src,onEvaluate )
 // function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // {
 //   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','expects array' );
-//   _.assert( _.longIs( insArray ),'arrayAppendedArraysOnce :','expects longIs entity' );
+//   _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','Expects array' );
+//   _.assert( _.longIs( insArray ),'arrayAppendedArraysOnce :','Expects longIs entity' );
 //
 //   let result = 0;
 //
@@ -6206,8 +6206,8 @@ function arraySum( src,onEvaluate )
 // function arrayRemovedArrays( dstArray, insArray )
 // {
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','expects array' );
-//   _.assert( _.longIs( insArray ),'arrayRemovedArrays :','expects longIs entity' );
+//   _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','Expects array' );
+//   _.assert( _.longIs( insArray ),'arrayRemovedArrays :','Expects longIs entity' );
 //
 //   let result = 0;
 //
@@ -6244,8 +6244,8 @@ function arraySum( src,onEvaluate )
 // function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // {
 //   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( dstArray ),'arrayRemovedArraysOnce :','expects array' );
-//   _.assert( _.longIs( insArray ),'arrayRemovedArraysOnce :','expects longIs entity' );
+//   _.assert( _.arrayIs( dstArray ),'arrayRemovedArraysOnce :','Expects array' );
+//   _.assert( _.longIs( insArray ),'arrayRemovedArraysOnce :','Expects longIs entity' );
 //
 //   let result = 0;
 //
@@ -6812,7 +6812,7 @@ function arraySetBut( dst )
 
   args[ 0 ] = dst;
 
-  _.assert( arguments.length >= 1, 'expects at least one argument' );
+  _.assert( arguments.length >= 1, 'Expects at least one argument' );
   for( let a = 0 ; a < args.length ; a++ )
   _.assert( _.longIs( args[ a ] ) );
 
@@ -6869,7 +6869,7 @@ function arraySetIntersection( dst )
     return [];
   }
 
-  _.assert( arguments.length >= 1, 'expects at least one argument' );
+  _.assert( arguments.length >= 1, 'Expects at least one argument' );
   _.assert( _.longIs( dst ) );
   for( let a = 1 ; a < arguments.length ; a++ )
   _.assert( _.longIs( arguments[ a ] ) );
@@ -6910,7 +6910,7 @@ function arraySetUnion( dst )
     return [];
   }
 
-  _.assert( arguments.length >= 1, 'expects at least one argument' );
+  _.assert( arguments.length >= 1, 'Expects at least one argument' );
   _.assert( _.longIs( dst ) );
   for( let a = 1 ; a < args.length ; a++ )
   _.assert( _.longIs( args[ a ] ) );

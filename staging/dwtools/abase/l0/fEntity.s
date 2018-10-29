@@ -17,7 +17,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 function dup( ins, times, result )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.numberIs( times ) || _.longIs( times ),'dup expects times as number or array' );
 
   if( _.numberIs( times ) )
@@ -246,7 +246,7 @@ function eachInRange( o )
   if( _.numberIs( o.range ) )
   o.range = [ 0,o.range ];
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.range.length === 2 );
   _.assert( o.increment >= 0 );
 
@@ -331,7 +331,7 @@ function eachInManyRanges( o )
   o = { range : o };
 
   _.routineOptions( eachInManyRanges,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( o.range ) );
 
   /* estimate */
@@ -383,8 +383,8 @@ function eachInMultiRange( o )
 
   _.routineOptions( eachInMultiRange,o );
   _.assert( _.objectIs( o ) )
-  _.assert( _.arrayIs( o.ranges ) || _.objectIs( o.ranges ),'eachInMultiRange :','expects o.ranges as array or object' )
-  _.assert( _.routineIs( o.onEach ),'eachInMultiRange :','expects o.onEach as routine' )
+  _.assert( _.arrayIs( o.ranges ) || _.objectIs( o.ranges ),'eachInMultiRange :','Expects o.ranges as array or object' )
+  _.assert( _.routineIs( o.onEach ),'eachInMultiRange :','Expects o.onEach as routine' )
   _.assert( !o.delta || _.strTypeOf( o.delta ) === _.strTypeOf( o.ranges ),'eachInMultiRange :','o.delta must be same type as ranges' );
 
   /* */
@@ -436,7 +436,7 @@ function eachInMultiRange( o )
     ranges[ r ] = [ 0,ranges[ r ] ];
 
     if( !_.longIs( ranges[ r ] ) )
-    throw _.err( 'expects range as array :',ranges[ r ] );
+    throw _.err( 'Expects range as array :',ranges[ r ] );
 
     _.assert( ranges[ r ].length === 2 );
     _.assert( _.numberIs( ranges[ r ][ 0 ] ) );
@@ -1112,7 +1112,7 @@ function entityFilter( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.longIs( src ), () => 'expects objectLike or longIs src, but got ' + _.strTypeOf( src ) );
+  _.assert( _.objectLike( src ) || _.longIs( src ), () => 'Expects objectLike or longIs src, but got ' + _.strTypeOf( src ) );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -1156,7 +1156,7 @@ function _entityFilterDeep( o )
   let result;
   let onEach = _._filter_functor( o.onEach,o.conditionLevels );
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.objectLike( o.src ) || _.longIs( o.src ),'entityFilter : expects objectLike or longIs src, but got',_.strTypeOf( o.src ) );
   _.assert( _.routineIs( onEach ) );
 
@@ -1392,7 +1392,7 @@ function entityAssign( dst,src,onRecursive )
 {
   let result;
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length < 3 || _.routineIs( onRecursive ) );
 
   if( src === null )
@@ -1716,7 +1716,7 @@ function entityFreeze( src )
 //
 // function entitySize( src )
 // {
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   if( _.strIs( src ) )
 //   return src.length;
@@ -1849,7 +1849,7 @@ function entityFreeze( src )
 // {
 //   let result = [];
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( !_.primitiveIs( src ) );
 //
 //   if( _.longIs( src ) )
@@ -2064,7 +2064,7 @@ function entityFreeze( src )
 
 function entityHasNan( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   let result = false;
   if( src === undefined )
@@ -2120,7 +2120,7 @@ function entityHasNan( src )
 
 function entityHasUndef( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   let result = false;
   if( src === undefined )

@@ -116,7 +116,7 @@ function numbersAreIdentical( src1, src2 )
 
 function numbersAreEquivalent( src1, src2, accuracy )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   if( accuracy === undefined )
   accuracy = _.accuracy;
   return Math.abs( src1-src2 ) <= accuracy;
@@ -198,7 +198,7 @@ function numberInRange( n,range )
 // {
 //   let result = 0;
 //   _.assert( _.longIs( numbers ) );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   for( let n = 0 ; n < numbers.length ; n++ )
 //   {
 //     let number = numbers[ n ];
@@ -256,7 +256,7 @@ function numberInRange( n,range )
 // function numberRandomInRange( range )
 // {
 //
-//   _.assert( arguments.length === 1 && _.arrayIs( range ),'numberRandomInRange :','expects range( array ) as argument' );
+//   _.assert( arguments.length === 1 && _.arrayIs( range ),'numberRandomInRange :','Expects range( array ) as argument' );
 //   _.assert( range.length === 2 );
 //
 //   return _random()*( range[ 1 ] - range[ 0 ] ) + range[ 0 ];
@@ -272,7 +272,7 @@ function numberInRange( n,range )
 //   range = range >= 0 ? [ 0,range ] : [ range,0 ];
 //   else if( _.arrayIs( range ) )
 //   range = range;
-//   else _.assert( 0,'numberRandomInt','expects range' );
+//   else _.assert( 0,'numberRandomInt','Expects range' );
 //
 //   _.assert( _.arrayIs( range ) || _.numberIs( range ) );
 //   _.assert( range.length === 2 );
@@ -390,7 +390,7 @@ function numberInRange( n,range )
 // {
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.numberIsInt( dst ) || _.arrayIs( dst ),'expects array of number as argument' );
+//   _.assert( _.numberIsInt( dst ) || _.arrayIs( dst ),'Expects array of number as argument' );
 //   _.assert( length >= 0 );
 //
 //   if( _.numberIs( dst ) )
@@ -400,8 +400,8 @@ function numberInRange( n,range )
 //   else
 //   {
 //     for( let i = 0 ; i < dst.length ; i++ )
-//     _.assert( _.numberIsInt( dst[ i ] ),'expects integer, but got',dst[ i ] );
-//     _.assert( dst.length === length,'expects array of length',length,'but got',dst );
+//     _.assert( _.numberIsInt( dst[ i ] ),'Expects integer, but got',dst[ i ] );
+//     _.assert( dst.length === length,'Expects array of length',length,'but got',dst );
 //   }
 //
 //   return dst;
@@ -413,7 +413,7 @@ function numberInRange( n,range )
 // {
 //   let _ = this;
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.numberIs( length ) );
 //
 //   function numbersMake( src )
@@ -430,7 +430,7 @@ function numberInRange( n,range )
 // {
 //   let _ = this;
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.numberIs( length ) );
 //
 //   function numbersFromNumber( src )
@@ -445,7 +445,7 @@ function numberInRange( n,range )
 
 function numberClamp( src,low,high )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( arguments.length === 2 )
   {

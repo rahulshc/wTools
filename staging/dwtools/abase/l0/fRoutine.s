@@ -30,7 +30,7 @@ function routineIs( src )
 
 function routinesAre( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.longIs( src ) )
   {
@@ -78,9 +78,9 @@ function routineHasName( src )
 function _routineJoin( o )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.boolIs( o.seal ) );
-  _.assert( _.routineIs( o.routine ),'expects routine' );
+  _.assert( _.routineIs( o.routine ),'Expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
   _.assert( _.routineIs( _FunctionBind ) );
 
@@ -182,7 +182,7 @@ function _routineJoin( o )
  calling of target function. Must be wraped into array.
  * @returns {Function} New created function with preceding this, and args.
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
- * @thorws {Error} If passed arguments more than 3 throws error with text 'expects 3 or less arguments'
+ * @thorws {Error} If passed arguments more than 3 throws error with text 'Expects 3 or less arguments'
  * @function routineJoin
  * @memberof wTools
  */
@@ -191,7 +191,7 @@ function routineJoin( context, routine, args )
 {
 
   _.assert( _.routineIs( routine ),'routineJoin :','second argument must be a routine' );
-  _.assert( arguments.length <= 3,'routineJoin :','expects 3 or less arguments' );
+  _.assert( arguments.length <= 3,'routineJoin :','Expects 3 or less arguments' );
 
   return _routineJoin
   ({
@@ -230,7 +230,7 @@ function routineSeal( context, routine, args )
 {
 
   _.assert( _.routineIs( routine ),'routineSeal :','second argument must be a routine' );
-  _.assert( arguments.length <= 3,'routineSeal :','expects 3 or less arguments' );
+  _.assert( arguments.length <= 3,'routineSeal :','Expects 3 or less arguments' );
 
   return _routineJoin
   ({
@@ -254,11 +254,11 @@ function routineOptions( routine, args, defaults )
   options = Object.create( null );
   defaults = defaults || routine.defaults;
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'expects routine' );
-  _.assert( _.objectIs( defaults ), 'expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ), 'Expects routine' );
+  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options, defaults );
   _.mapComplement( options, defaults );
@@ -277,11 +277,11 @@ function assertRoutineOptions( routine,args,defaults )
   let options = args[ 0 ];
   defaults = defaults || routine.defaults;
 
-  _.assert( arguments.length === 2 || arguments.length === 3,'expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ),'expects routine' );
-  _.assert( _.objectIs( defaults ),'expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ),'expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3,'Expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ),'Expects routine' );
+  _.assert( _.objectIs( defaults ),'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ),'Expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options, defaults );
   _.assertMapHasAll( options, defaults );
@@ -302,10 +302,10 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   options = Object.create( null );
   defaults = defaults || routine.defaults;
 
-  _.assert( arguments.length === 2 || arguments.length === 3,'expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ),'expects routine' );
-  _.assert( _.objectIs( defaults ),'expects routine with defined defaults' );
-  _.assert( _.objectIs( options ),'expects object' );
+  _.assert( arguments.length === 2 || arguments.length === 3,'Expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ),'Expects routine' );
+  _.assert( _.objectIs( defaults ),'Expects routine with defined defaults' );
+  _.assert( _.objectIs( options ),'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options, defaults );
@@ -326,11 +326,11 @@ function routineOptionsReplacingUndefines( routine, args, defaults )
   options = Object.create( null );
   defaults = defaults || routine.defaults;
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ), 'expects routine' );
-  _.assert( _.objectIs( defaults ), 'expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ), 'expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ), 'Expects routine' );
+  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ), 'Expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options, defaults );
   _.mapComplementReplacingUndefines( options, defaults );
@@ -348,11 +348,11 @@ function assertRoutineOptionsPreservingUndefines( routine, args, defaults )
   let options = args[ 0 ];
   defaults = defaults || routine.defaults;
 
-  _.assert( arguments.length === 2 || arguments.length === 3,'expects 2 or 3 arguments' );
-  _.assert( _.routineIs( routine ),'expects routine' );
-  _.assert( _.objectIs( defaults ),'expects routine with defined defaults or defaults in third argument' );
-  _.assert( _.objectIs( options ),'expects object' );
-  _.assert( args.length === 0 || args.length === 1, 'expects single options map, but got',args.length,'arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3,'Expects 2 or 3 arguments' );
+  _.assert( _.routineIs( routine ),'Expects routine' );
+  _.assert( _.objectIs( defaults ),'Expects routine with defined defaults or defaults in third argument' );
+  _.assert( _.objectIs( options ),'Expects object' );
+  _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options,defaults );
   _.assertMapHasAll( options,defaults );
@@ -560,9 +560,9 @@ function routineVectorize_functor( o )
 
   routine = normalizeRoutine( routine );
 
-  _.assert( _.routineIs( routine ), 'expects routine {-o.routine-}, but got', _.strTypeOf( routine ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ), 'expects {-o.select-} as number >= 1, string or array, but got', select );
+  _.assert( _.routineIs( routine ), 'Expects routine {-o.routine-}, but got', _.strTypeOf( routine ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ), 'Expects {-o.select-} as number >= 1, string or array, but got', select );
 
   /* */
 
@@ -720,7 +720,7 @@ function routineVectorize_functor( o )
   function vectorizeArray()
   {
 
-    // _.assert( arguments.length === 1, 'expects single argument' );
+    // _.assert( arguments.length === 1, 'Expects single argument' );
 
     let args = arguments;
     let src = args[ 0 ];
@@ -745,7 +745,7 @@ function routineVectorize_functor( o )
   function vectorizeArrayMultiplying()
   {
 
-    // _.assert( arguments.length === 1, 'expects single argument' );
+    // _.assert( arguments.length === 1, 'Expects single argument' );
 
     let args = multiply( arguments );
     let src = args[ 0 ];
@@ -772,7 +772,7 @@ function routineVectorize_functor( o )
   {
     let src = srcMap[ select ];
 
-    _.assert( arguments.length === 1, 'expects single argument' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
 
     if( _.longIs( src ) )
     {
@@ -814,7 +814,7 @@ function routineVectorize_functor( o )
   function vectorizeMapOrArray()
   {
 
-    // _.assert( arguments.length === 1, 'expects single argument' );
+    // _.assert( arguments.length === 1, 'Expects single argument' );
     let args = multiply( arguments );
     let src = args[ 0 ];
 
@@ -858,7 +858,7 @@ function routineVectorize_functor( o )
   {
 
     _.assert( 0, 'not tested' );
-    _.assert( arguments.length === 1, 'expects single argument' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
 
     let args = multiply( arguments );
 

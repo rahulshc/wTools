@@ -201,7 +201,7 @@ function typeOf( src )
 
 function prototypeHas( src, prototype )
 {
-  _.assert( arguments.length === 2, 'expects single argument' );
+  _.assert( arguments.length === 2, 'Expects single argument' );
   if( src === prototype )
   return true;
   return Object.isPrototypeOf.call( prototype, src );
@@ -218,7 +218,7 @@ function prototypeHas( src, prototype )
 
 function prototypeIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.primitiveIs( src ) )
   return false;
   return _ObjectHasOwnProperty.call( src, 'constructor' );
@@ -249,7 +249,7 @@ function prototypeIsStandard( src )
 
 function constructorIs( cls )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   return _.routineIs( cls ) && !instanceIs( cls );
 }
 
@@ -274,7 +274,7 @@ function constructorIsStandard( cls )
 
 function instanceIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.primitiveIs( src ) )
   return false;
@@ -296,7 +296,7 @@ function instanceIs( src )
 
 function instanceIsStandard( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( !_.instanceIs( src ) )
   return false;
@@ -343,7 +343,7 @@ function workerIs( src )
 
 function streamIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   return _.objectIs( src ) && _.routineIs( src.pipe )
 }
@@ -352,7 +352,7 @@ function streamIs( src )
 
 function consoleIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( console.Console )
   if( src && src instanceof console.Console )
@@ -372,7 +372,7 @@ function consoleIs( src )
 
 function printerLike( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( printerIs( src ) )
   return true;
@@ -388,7 +388,7 @@ function printerLike( src )
 
 function printerIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( !src )
   return false;
@@ -407,7 +407,7 @@ function printerIs( src )
 
 function loggerIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( !_.Logger )
   return false;
@@ -422,7 +422,7 @@ function loggerIs( src )
 
 function processIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   let typeOf = _.strTypeOf( src );
   if( typeOf === 'ChildProcess' || typeOf === 'process' )
@@ -452,7 +452,7 @@ function processIsDebugged()
 
 function definitionIs( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( !src )
   return false;

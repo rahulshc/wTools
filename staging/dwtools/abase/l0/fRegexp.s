@@ -201,7 +201,7 @@ function regexpsTestNone( regexps, strs )
 // function regexpEscape( src )
 // {
 //   _.assert( _.strIs( src ) );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
 // }
 //
@@ -245,7 +245,7 @@ function regexpsTestNone( regexps, strs )
 //   if( !_.objectIs( o ) )
 //   o = { srcStr : arguments[ 0 ] }
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.strIs( o.srcStr ) || _.regexpIs( o.srcStr ) );
 //   _.routineOptions( regexpMaybeFrom, o );
 //
@@ -328,7 +328,7 @@ function regexpsTestNone( regexps, strs )
 //   if( o.flags === undefined )
 //   o.flags = null;
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.routineOptions( regexpsSources, o );
 //
 //   /* */
@@ -371,7 +371,7 @@ function regexpsTestNone( regexps, strs )
 //   o = { sources : o }
 //
 //   _.routineOptions( regexpsJoin, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   let src = o.sources[ 0 ];
 //   o = _.regexpsSources( o );
@@ -398,7 +398,7 @@ function regexpsTestNone( regexps, strs )
 //   o = { sources : o }
 //
 //   _.routineOptions( regexpsJoinEscaping, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( !!o.escaping );
 //
 //   return _.regexpsJoin( o );
@@ -417,7 +417,7 @@ function regexpsTestNone( regexps, strs )
 //   o = { sources : o }
 //
 //   _.routineOptions( regexpsAtLeastFirst, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   let src = o.sources[ 0 ];
 //   o = _.regexpsSources( o );
@@ -464,7 +464,7 @@ function regexpsTestNone( regexps, strs )
 //   o = { sources : o }
 //
 //   _.routineOptions( regexpsAtLeastFirst, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   let src = o.sources[ 0 ];
 //   o = _.regexpsSources( o );
@@ -530,7 +530,7 @@ function regexpsTestNone( regexps, strs )
 //   o = { sources : o }
 //
 //   _.routineOptions( regexpsNone, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   o = _.regexpsSources( o );
 //
@@ -558,7 +558,7 @@ function regexpsTestNone( regexps, strs )
 //   o = { sources : o }
 //
 //   _.routineOptions( regexpsAny, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   if( _.regexpIs( o.sources ) )
 //   {
@@ -594,7 +594,7 @@ function regexpsTestNone( regexps, strs )
 //   o = { sources : o }
 //
 //   _.routineOptions( regexpsAll, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //
 //   if( _.regexpIs( o.sources ) )
 //   {
@@ -652,7 +652,7 @@ function regexpsTestNone( regexps, strs )
 // function regexpArrayMake( src )
 // {
 //
-//   _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'expects array/regexp/string, got ' + _.strTypeOf( src ) );
+//   _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.strTypeOf( src ) );
 //
 //   src = _.arrayFlatten( [], _.arrayAs( src ) );
 //
