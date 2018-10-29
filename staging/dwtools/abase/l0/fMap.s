@@ -456,17 +456,8 @@ function mapHasKey( object,key )
 function mapOwnKey( object, key )
 {
 
-  // if( arguments.length === 1 )
-  // {
-  //   let result = _.mapExtendConditional( _.field.mapper.srcOwn,Object.create( null ),object );
-  //   return result;
-  // }
-
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  if( !_.strIs )
-  debugger;
 
-  debugger;
   if( _.strIs( key ) )
   return _ObjectHasOwnProperty.call( object, key );
   else if( _.mapIs( key ) )

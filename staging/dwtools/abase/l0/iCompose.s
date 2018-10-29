@@ -1,4 +1,4 @@
-( function _Field_s_() {
+( function _iCompose_s_() {
 
 'use strict';
 
@@ -17,7 +17,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 function originaChainer( args, result, op, k )
 {
-  _.assert( result !== false && result !== undefined );
+  _.assert( result !== false );
   return args;
 }
 

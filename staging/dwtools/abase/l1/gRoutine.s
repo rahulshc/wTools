@@ -396,19 +396,19 @@ function _routinesCompose_pre( routine, args )
   let o = args[ 0 ];
 
   if( !_.mapIs( o ) )
-  o = { srcs : args[ 0 ] }
+  o = { elements : args[ 0 ] }
   if( args[ 1 ] !== undefined )
   o.chainer = args[ 1 ];
 
-  o.srcs = _.arrayAppendArrays( [], [ o.srcs ] );
-  o.srcs = o.srcs.filter( ( e ) => e === null ? false : e );
+  o.elements = _.arrayAppendArrays( [], [ o.elements ] );
+  o.elements = o.elements.filter( ( e ) => e === null ? false : e );
 
   _.routineOptions( routine, o );
-  _.assert( _.routinesAre( o.srcs ) );
+  _.assert( _.routinesAre( o.elements ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( args.length === 1 || args.length === 2 );
   _.assert( args.length === 1 || !_.objectIs( args[ 0 ] ) );
-  _.assert( _.arrayIs( o.srcs ) || _.routineIs( o.srcs ) );
+  _.assert( _.arrayIs( o.elements ) || _.routineIs( o.elements ) );
   _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
   _.assert( o.chainer === null || _.routineIs( o.chainer ) );
   _.assert( o.supervisor === null || _.routineIs( o.supervisor ) );
@@ -436,29 +436,29 @@ function _routinesCompose_body( o )
   if( o.chainer === null )
   o.chainer = _.compose.chainer.original;
 
-  o.srcs = _.arrayFlatten( null, o.srcs ); /* qqq xxx : single argument call should be ( no-copy call ) */
-  let srcs = [];
-  for( let s = 0 ; s < o.srcs.length ; s++ )
+  o.elements = _.arrayFlatten( null, o.elements ); /* qqq xxx : single argument call should be ( no-copy call ) */
+  let elements = [];
+  for( let s = 0 ; s < o.elements.length ; s++ )
   {
-    let src = o.srcs[ s ];
+    let src = o.elements[ s ];
     _.assert( _.routineIs( src ) );
     if( src.composed )
     {
-      if( src.chainer === o.chainer && src.supervisor === o.supervisor )
+      if( src.composed.chainer === o.chainer && src.composed.supervisor === o.supervisor )
       {
-        _.arrayAppendArray( srcs, src.composed );
+        _.arrayAppendArray( elements, src.composed.elements );
       }
       else
       {
         debugger;
-        _.arrayAppendElement( srcs, src );
+        _.arrayAppendElement( elements, src );
       }
     }
     else
-    _.arrayAppendElement( srcs, src );
+    _.arrayAppendElement( elements, src );
   }
 
-  o.srcs = srcs;
+  o.elements = elements;
 
   let supervisor = o.supervisor;
   let chainer = o.chainer;
@@ -469,23 +469,23 @@ function _routinesCompose_body( o )
 
   /* */
 
-  if( srcs.length === 0 )
+  if( elements.length === 0 )
   act = function empty()
   {
     return [];
   }
-  // else if( srcs.length === 1 ) /* xxx : optimize the case */
+  // else if( elements.length === 1 ) /* xxx : optimize the case */
   // {
-  //   act = srcs[ 0 ];
+  //   act = elements[ 0 ];
   // }
   else act = function composition()
   {
     let result = [];
     let args = _.unrollAppend( null, arguments );
-    for( let k = 0 ; k < srcs.length ; k++ )
+    for( let k = 0 ; k < elements.length ; k++ )
     {
       _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
-      let routine = srcs[ k ];
+      let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false && r !== undefined, 'Temporally forbidden type of result', r );
       _.assert( !_.argumentsArrayIs( r ) );
@@ -502,10 +502,8 @@ function _routinesCompose_body( o )
     return result;
   }
 
-  act.composed = srcs;
-  act.chainer = chainer;
-  act.act = act;
-  act.supervisor = supervisor;
+  o.act = act;
+  act.composed = o;
 
   if( supervisor )
   {
@@ -523,7 +521,7 @@ function _routinesCompose_body( o )
 
 _routinesCompose_body.defaults =
 {
-  srcs : null,
+  elements : null,
   chainer : null,
   supervisor : null,
 }
@@ -546,9 +544,9 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 // function _routinesComposeReturningLast_body( o )
 // {
 //
-//   if( o.srcs.length === 1 )
+//   if( o.elements.length === 1 )
 //   {
-//     return o.srcs[ 0 ];
+//     return o.elements[ 0 ];
 //   }
 //
 //   let routine = _.routinesCompose.body( o );
@@ -585,13 +583,13 @@ routinesComposeReturningLast.defaults.supervisor = _.compose.supervisor.returnin
 // function _routinesComposeEvery_body( o )
 // {
 //
-//   if( o.srcs.length === 0 )
+//   if( o.elements.length === 0 )
 //   debugger;
 //
-//   if( o.srcs.length === 1 )
+//   if( o.elements.length === 1 )
 //   {
-//     _.assert( _.routineIs( o.srcs[ 0 ] ) );
-//     return o.srcs[ 0 ];
+//     _.assert( _.routineIs( o.elements[ 0 ] ) );
+//     return o.elements[ 0 ];
 //   }
 //
 //   o.chainer = function chainer( args, result, op, k )
@@ -651,13 +649,13 @@ _.assert( _.routineIs( _.compose.supervisor.all ) );
 // function _routinesComposeEveryReturningLast_body( o )
 // {
 //
-//   if( o.srcs.length === 0 )
+//   if( o.elements.length === 0 )
 //   debugger;
 //
-//   if( o.srcs.length === 1 )
+//   if( o.elements.length === 1 )
 //   {
-//     _.assert( _.routineIs( o.srcs[ 0 ] ) );
-//     return o.srcs[ 0 ];
+//     _.assert( _.routineIs( o.elements[ 0 ] ) );
+//     return o.elements[ 0 ];
 //   }
 //
 //   o.chainer = function chainer( args, result, op, k )
@@ -708,9 +706,9 @@ defaults.supervisor = _.compose.supervisor.returningLast;
 // function _routinesChain_body( o )
 // {
 //
-//   if( o.srcs.length === 0 )
+//   if( o.elements.length === 0 )
 //   debugger;
-//   else if( o.srcs.length === 1 )
+//   else if( o.elements.length === 1 )
 //   debugger;
 //   else
 //   {};
@@ -740,7 +738,7 @@ defaults.supervisor = _.compose.supervisor.returningLast;
 //
 // _routinesChain_body.defaults =
 // {
-//   srcs : null,
+//   elements : null,
 // }
 //
 //

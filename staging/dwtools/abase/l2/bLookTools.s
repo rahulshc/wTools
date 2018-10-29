@@ -199,6 +199,8 @@ function __look_lookIt( it )
     keepLooking = false;
   }
 
+  _.assert( _.boolIs( it.looking ) );
+  _.assert( _.boolIs( it.iterator.looking ) );
   if( keepLooking === false || it.looking === false || it.looking === _.dont || it.iterator.looking === false ||  it.iterator.looking === _.dont || it.wasVisited )
   return down();
 
@@ -284,7 +286,9 @@ function __look_lookIt( it )
       it.looking = it.onUp.call( it, it.src, it.key, it );
       if( it.looking === undefined )
       it.looking = true;
-      _.assert( _.boolIs( it.looking ) || it.looking === _.dont, () => 'expects it.onUp returns boolean, but got ' + _.strTypeOf( it.looking ) );
+      if( it.looking === _.dont )
+      it.looking = false;
+      _.assert( _.boolIs( it.looking ), () => 'expects it.onUp returns boolean, but got ' + _.strTypeOf( it.looking ) );
     }
 
   }
@@ -1672,7 +1676,8 @@ function _entityEqual_body( it )
 {
   _.assert( arguments.length === 1, 'expects single argument' );
    _._entityEqual.lookIt( it );
-  return it.result;
+  _.assert( it.result === _.dont || _.boolIs( it.result ) );
+  return it.result === _.dont ? false : it.result;
 }
 
 _entityEqual_body.defaults =
