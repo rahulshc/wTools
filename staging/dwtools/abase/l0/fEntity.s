@@ -2085,7 +2085,7 @@ function entityHasNan( src )
   }
   else if( _.objectIs( src ) )
   {
-    for( s in src )
+    for( let s in src )
     if( entityHasNan( src[ s ] ) )
     {
       return true;
@@ -2137,7 +2137,7 @@ function entityHasUndef( src )
   }
   else if( _.objectIs( src ) )
   {
-    for( s in src )
+    for( let s in src )
     if( entityHasUndef( src[ s ] ) )
     {
       return true;
