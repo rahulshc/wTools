@@ -25,6 +25,7 @@ if( typeof module !== 'undefined' )
   var _ = _global_.wTools;
 
   _.include( 'wTesting' );
+  _.include( 'wConsequence' );
 
 }
 var _global = _global_;
