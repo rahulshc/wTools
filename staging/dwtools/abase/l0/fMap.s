@@ -453,7 +453,7 @@ function mapHasKey( object,key )
 
 //
 
-function mapOwnKey( object,key )
+function mapOwnKey( object, key )
 {
 
   // if( arguments.length === 1 )
@@ -463,7 +463,10 @@ function mapOwnKey( object,key )
   // }
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  if( !_.strIs )
+  debugger;
 
+  debugger;
   if( _.strIs( key ) )
   return _ObjectHasOwnProperty.call( object, key );
   else if( _.mapIs( key ) )

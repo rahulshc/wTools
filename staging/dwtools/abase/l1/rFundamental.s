@@ -155,10 +155,6 @@ _.assert( !Self.Array );
 // export
 // --
 
-_global[ 'wTools' ] = Self;
-_global.wTools = Self;
-_global.wBase = Self;
-
 if( typeof module !== 'undefined' )
 if( _global.WTOOLS_PRIVATE )
 delete require.cache[ module.id ];
