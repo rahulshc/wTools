@@ -2809,7 +2809,7 @@ function arrayToStr( src,options )
 {
 
   let result = '';
-  let options = options || Object.create( null );
+  options = options || Object.create( null );
 
   if( options.precission === undefined ) options.precission = 5;
   if( options.type === undefined ) options.type = 'mixed';
@@ -2818,7 +2818,7 @@ function arrayToStr( src,options )
 
   if( options.type === 'float' )
   {
-    for( let s = 0 ; s < src.length-1 ; s++ )
+    for( var s = 0 ; s < src.length-1 ; s++ )
     {
       result += src[ s ].toPrecision( options.precission ) + ' ';
     }
@@ -2826,7 +2826,7 @@ function arrayToStr( src,options )
   }
   else if( options.type === 'int' )
   {
-    for( let s = 0 ; s < src.length-1 ; s++ )
+    for( var s = 0 ; s < src.length-1 ; s++ )
     {
       result += String( src[ s ] ) + ' ';
     }
@@ -4036,7 +4036,7 @@ function arraySupplement( dstArray )
   let length = result.length;
   _.assert( _.longIs( result ) || _.numberIs( result ),'expects object as argument' );
 
-  for( a = arguments.length-1 ; a >= 1 ; a-- )
+  for( let a = arguments.length-1 ; a >= 1 ; a-- )
   {
     _.assert( _.longIs( arguments[ a ] ),'argument is not defined :',a );
     length = Math.max( length,arguments[ a ].length );
@@ -4114,7 +4114,7 @@ function arrayExtendScreening( screenArray,dstArray )
 
   _.assert( _.longIs( screenArray ),'expects object as screenArray' );
   _.assert( _.longIs( result ),'expects object as argument' );
-  for( a = arguments.length-1 ; a >= 2 ; a-- )
+  for( let a = arguments.length-1 ; a >= 2 ; a-- )
   _.assert( arguments[ a ],'argument is not defined :',a );
 
   for( let k = 0 ; k < screenArray.length ; k++ )
@@ -7052,7 +7052,8 @@ function arraySetContainAny( src )
   {
     let ins = arguments[ a ];
 
-    for( let i = 0 ; i < ins.length ; i++ )
+    let i;
+    for( i = 0 ; i < ins.length ; i++ )
     {
       if( src.indexOf( ins[ i ] ) !== -1 )
       break;
