@@ -319,7 +319,7 @@ function regexpsSources( o )
 {
   if( _.arrayIs( arguments[ 0 ] ) )
   {
-    let o = Object.create( null );
+    o = Object.create( null );
     o.sources = arguments[ 0 ];
   }
 
