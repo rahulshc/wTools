@@ -25,6 +25,7 @@ if( typeof module !== 'undefined' )
   var _ = _global_.wTools;
 
   _.include( 'wTesting' );
+  _.include( 'wConsequence' );
 
 
   /* qqq : what for _.include( 'wTesting' )? */
