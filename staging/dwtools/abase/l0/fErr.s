@@ -961,7 +961,7 @@ function sureOwnNoConstructor( ins )
  *
  * @example
  * let x = 1;
- * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'expects string' );
+ * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'Expects string' );
  *
  * // caught eval (<anonymous>:2:8)
  * // incorrect variable type-> number expects string

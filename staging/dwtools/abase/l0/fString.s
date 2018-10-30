@@ -95,7 +95,7 @@ function strsAreNotEmpty( src )
 function strTypeOf( src )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( !_.primitiveIs( src ) )
   if( src.constructor && src.constructor.name )
@@ -217,7 +217,7 @@ function _strFirst( src, ent )
         result.entry = found[ 0 ];
       }
     }
-    else _.assert( 0, 'expects string or regexp' );
+    else _.assert( 0, 'Expects string or regexp' );
   }
 
   return result;
@@ -342,7 +342,7 @@ function _strLast( src, ent )
       }
 
     }
-    else _.assert( 0, 'expects string or regexp' );
+    else _.assert( 0, 'Expects string or regexp' );
   }
 
   return result;
@@ -382,7 +382,7 @@ function _strCutOff_pre( routine, args )
   else
   {
     o = args[ 0 ];
-    _.assert( args.length === 1, 'expects single argument' );
+    _.assert( args.length === 1, 'Expects single argument' );
   }
 
   _.routineOptions( routine, o );
@@ -442,8 +442,8 @@ function _strCutOff_pre( routine, args )
 //   // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
 //
 //   _.assertRoutineOptions( _strIsolate, o );
-//   _.assert( arguments.length === 1, 'expects single argument' );
-//   _.assert( _.strIs( o.src ), 'expects string {-o.src-}, got',_.strTypeOf( o.src ) );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got',_.strTypeOf( o.src ) );
 //   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
 //   _.assert( _.numberIs( o.number ) );
 //
@@ -761,7 +761,7 @@ function _strCutOff_pre( routine, args )
 // function _strIsolateInsideOrNone( src, begin, end )
 // {
 //
-//   _.assert( _.strIs( src ), 'expects string {-src-}' );
+//   _.assert( _.strIs( src ), 'Expects string {-src-}' );
 //   _.assert( arguments.length === 3, 'Expects exactly three argument' );
 //
 //   let b = _.strFirst( src, begin );
@@ -808,7 +808,7 @@ function _strCutOff_pre( routine, args )
 // function _strIsolateInsideOrAll( src, begin, end )
 // {
 //
-//   _.assert( _.strIs( src ), 'expects string {-src-}' );
+//   _.assert( _.strIs( src ), 'Expects string {-src-}' );
 //   _.assert( arguments.length === 3, 'Expects exactly three argument' );
 //
 //   let b = _.strFirst( src, begin );
@@ -858,7 +858,7 @@ function _strCutOff_pre( routine, args )
 function _strBeginOf( src,begin )
 {
 
-  _.assert( _.strIs( src ), 'expects string' );
+  _.assert( _.strIs( src ), 'Expects string' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.strIs( begin ) )
@@ -872,7 +872,7 @@ function _strBeginOf( src,begin )
     if( matched && matched.index === 0 )
     return matched[ 0 ];
   }
-  else _.assert( 0,'expects string or regexp' );
+  else _.assert( 0,'Expects string or regexp' );
 
   return false;
 }
@@ -882,7 +882,7 @@ function _strBeginOf( src,begin )
 function _strEndOf( src, end )
 {
 
-  _.assert( _.strIs( src ), 'expects string' );
+  _.assert( _.strIs( src ), 'Expects string' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.strIs( end ) )
@@ -900,7 +900,7 @@ function _strEndOf( src, end )
     if( matched && matched.index + matched[ 0 ].length === src.length )
     return matched[ 0 ];
   }
-  else _.assert( 0, 'expects string or regexp' );
+  else _.assert( 0, 'Expects string or regexp' );
 
   return false;
 }
@@ -930,8 +930,8 @@ function _strEndOf( src, end )
 function strBegins( src, begin )
 {
 
-  _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( begin ) || _.regexpIs( begin ) || _.longIs( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
+  _.assert( _.strIs( src ),'Expects string {-src-}' );
+  _.assert( _.strIs( begin ) || _.regexpIs( begin ) || _.longIs( begin ),'Expects string/regexp or array of strings/regexps {-begin-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( !_.longIs( begin ) )
@@ -975,8 +975,8 @@ function strBegins( src, begin )
 function strEnds( src, end )
 {
 
-  _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ),'expects string/regexp or array of strings/regexps {-end-}' );
+  _.assert( _.strIs( src ),'Expects string {-src-}' );
+  _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ),'Expects string/regexp or array of strings/regexps {-end-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( !_.longIs( end ) )
@@ -1022,8 +1022,8 @@ function strEnds( src, end )
 function strBeginOf( src, begin )
 {
 
-  _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( begin ) || _.regexpIs( begin ) || _.longIs( begin ),'expects string/regexp or array of strings/regexps {-begin-}' );
+  _.assert( _.strIs( src ),'Expects string {-src-}' );
+  _.assert( _.strIs( begin ) || _.regexpIs( begin ) || _.longIs( begin ),'Expects string/regexp or array of strings/regexps {-begin-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
 
@@ -1074,8 +1074,8 @@ function strBeginOf( src, begin )
 function strEndOf( src, end )
 {
 
-  _.assert( _.strIs( src ),'expects string {-src-}' );
-  _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ),'expects string/regexp or array of strings/regexps {-end-}' );
+  _.assert( _.strIs( src ),'Expects string {-src-}' );
+  _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ),'Expects string/regexp or array of strings/regexps {-end-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   debugger;
@@ -1142,7 +1142,7 @@ function strEndOf( src, end )
 function strInsideOf( src, begin, end )
 {
 
-  _.assert( _.strIs( src ), 'expects string {-src-}' );
+  _.assert( _.strIs( src ), 'Expects string {-src-}' );
   _.assert( arguments.length === 3, 'Expects exactly three argument' );
 
   let beginOf, endOf;
@@ -1169,7 +1169,7 @@ function strInsideOf( src, begin, end )
 function strOutsideOf( src, begin, end )
 {
 
-  _.assert( _.strIs( src ), 'expects string {-src-}' );
+  _.assert( _.strIs( src ), 'Expects string {-src-}' );
   _.assert( arguments.length === 3, 'Expects exactly three argument' );
 
   let beginOf, endOf;

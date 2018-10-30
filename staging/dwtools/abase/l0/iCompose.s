@@ -26,7 +26,7 @@ function originaChainer( args, result, op, k )
 function originalWithDontChainer( args, result, op, k )
 {
   _.assert( result !== false );
-  _.assert( result !== false && result !== undefined );
+  // _.assert( result !== false && result !== undefined );
   if( result === _.dont )
   return _.dont;
   // return undefined;
@@ -35,15 +35,30 @@ function originalWithDontChainer( args, result, op, k )
 
 //
 
+function composeAllChainer( args, result, op, k )
+{
+  _.assert( result !== false );
+  // if( result === undefined )
+  // return args;
+  if( result === _.dont )
+  return _.dont;
+  // return undefined;
+  // return _.unrollFrom( result );
+  return args;
+}
+
+//
+
 function chainingChainer( args, result, op, k )
 {
-  _.assert( result !== false && result !== undefined );
+  _.assert( result !== false );
   if( result === undefined )
   return args;
   if( result === _.dont )
   return _.dont;
   // return undefined;
   return _.unrollFrom( result );
+  // return args;
 }
 
 // --
@@ -58,12 +73,12 @@ function returningLastSupervisor( self, args, act, op )
 
 //
 
-function allSupervisor( self, args, act, op )
+function composeAllSupervisor( self, args, act, op )
 {
   let result = act.apply( self, args );
   _.assert( !!result );
   if( !result.length )
-  return;
+  return result;
   if( result[ result.length-1 ] === dont )
   return false;
   if( !_.all( result ) )
@@ -75,7 +90,7 @@ function allSupervisor( self, args, act, op )
 
 function chainingSupervisor( self, args, act, op )
 {
-  let result = routine.apply( this, arguments );
+  let result = act.apply( self, args );
   if( result[ result.length-1 ] === _.dont )
   result.pop();
   return result;
@@ -89,13 +104,14 @@ let chainer =
 {
   original : originaChainer,
   originalWithDont : originalWithDontChainer,
+  composeAll : composeAllChainer,
   chaining : chainingChainer,
 }
 
 let supervisor =
 {
   returningLast : returningLastSupervisor,
-  all : allSupervisor,
+  composeAll : composeAllSupervisor,
   chaining : chainingSupervisor,
 }
 

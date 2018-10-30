@@ -982,8 +982,8 @@ function mapCloneAssigning( o )
   o.dstMap = o.dstMap || Object.create( null );
 
   _.assert( _.mapIs( o ) );
-  _.assert( arguments.length === 1,'mapCloneAssigning :','expects {-srcMap-} as argument' );
-  _.assert( _.objectLike( o.srcMap ),'mapCloneAssigning :','expects {-srcMap-} as argument' );
+  _.assert( arguments.length === 1,'mapCloneAssigning :','Expects {-srcMap-} as argument' );
+  _.assert( _.objectLike( o.srcMap ),'mapCloneAssigning :','Expects {-srcMap-} as argument' );
   _.routineOptions( mapCloneAssigning, o );
 
   if( !o.onField )
@@ -1046,14 +1046,14 @@ function mapExtend( dstMap, srcMap )
   if( arguments.length === 2 && Object.getPrototypeOf( srcMap ) === null )
   return Object.assign( dstMap, srcMap );
 
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
-  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
+  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as the first argument' );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
     let srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'expects non primitive' );
+    _.assert( !_.primitiveIs( srcMap ),'Expects non primitive' );
 
     if( Object.getPrototypeOf( srcMap ) === null )
     Object.assign( dstMap, srcMap );
@@ -1084,13 +1084,13 @@ function mapsExtend( dstMap, srcMaps )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.arrayLike( srcMaps ) );
-  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as the first argument' );
+  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as the first argument' );
 
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'expects non primitive' );
+    _.assert( !_.primitiveIs( srcMap ),'Expects non primitive' );
 
     if( Object.getPrototypeOf( srcMap ) === null )
     Object.assign( dstMap, srcMap );
@@ -1138,9 +1138,9 @@ function mapExtendConditional( filter,dstMap )
 
   _.assert( !!filter );
   _.assert( filter.functionFamily === 'field-mapper' );
-  _.assert( arguments.length >= 3,'expects more arguments' );
-  _.assert( _.routineIs( filter ),'expects filter' );
-  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as argument' );
+  _.assert( arguments.length >= 3,'Expects more arguments' );
+  _.assert( _.routineIs( filter ),'Expects filter' );
+  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as argument' );
 
   for( let a = 2 ; a < arguments.length ; a++ )
   {
@@ -1171,14 +1171,14 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   _.assert( !!filter );
   _.assert( filter.functionFamily === 'field-mapper' );
   _.assert( arguments.length === 3,'Expects exactly three arguments' );
-  _.assert( _.routineIs( filter ),'expects filter' );
-  _.assert( !_.primitiveIs( dstMap ),'expects non primitive as argument' );
+  _.assert( _.routineIs( filter ),'Expects filter' );
+  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as argument' );
 
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ),'Expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -1526,7 +1526,7 @@ function mapDelete( dstMap, ins )
 
 function mapExtendRecursiveConditional( filters, dstMap, srcMap )
 {
-  _.assert( arguments.length >= 3, 'expects at least three arguments' );
+  _.assert( arguments.length >= 3, 'Expects at least three arguments' );
   _.assert( this === Self );
   let srcMaps = _.longSlice( arguments,2 );
   return _.mapsExtendRecursiveConditional( filters, dstMap, srcMaps );
@@ -1612,7 +1612,7 @@ function _mapExtendRecursiveConditional( filters, dstMap, srcMap )
 function mapExtendRecursive( dstMap,srcMap )
 {
 
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   _.assert( this === Self );
 
   for( let a = 1 ; a < arguments.length ; a++ )
@@ -1675,7 +1675,7 @@ function _mapExtendRecursive( dstMap,srcMap )
 function mapExtendAppendingAnythingRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.field.mapper.appendingAnything, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
@@ -1697,7 +1697,7 @@ function mapsExtendAppendingAnythingRecursive( dstMap, srcMaps )
 function mapExtendAppendingArraysRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.field.mapper.appendingArrays, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
@@ -1719,7 +1719,7 @@ function mapsExtendAppendingArraysRecursive( dstMap, srcMaps )
 function mapExtendAppendingOnceRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
@@ -1741,7 +1741,7 @@ function mapsExtendAppendingOnceRecursive( dstMap, srcMaps )
 function mapSupplementRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
@@ -1763,7 +1763,7 @@ function mapSupplementByMapsRecursive( dstMap, srcMaps )
 function mapSupplementOwnRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
@@ -1785,7 +1785,7 @@ function mapsSupplementOwnRecursive( dstMap, srcMaps )
 function mapSupplementRemovingRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
-  _.assert( arguments.length >= 2, 'expects at least two arguments' );
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
   let filters = { onField : _.field.mapper.removing, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
@@ -1920,7 +1920,7 @@ function mapsFlatten( o )
   if( _.arrayIs( o ) )
   o = { src : o }
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapsFlatten,o );
   _.assert( _.arrayIs( o.src ) )
 
@@ -2046,7 +2046,7 @@ function mapToStr( o )
   o = { src : o }
 
   _.routineOptions( mapToStr,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   let result = '';
   for( let s in o.src )
@@ -2100,7 +2100,7 @@ function _mapKeys( o )
   let result = [];
 
   _.routineOptions( _mapKeys,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.objectLike( o ) );
   _.assert( !( o.srcMap instanceof Map ),'not implemented' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
@@ -2203,7 +2203,7 @@ function mapKeys( srcMap )
   let result;
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
@@ -2256,7 +2256,7 @@ function mapOwnKeys( srcMap )
   let result;
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assertMapHasOnly( o,mapOwnKeys.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
@@ -2305,7 +2305,7 @@ function mapAllKeys( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assertMapHasOnly( o,mapAllKeys.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
@@ -2329,7 +2329,7 @@ function _mapVals( o )
 {
 
   _.routineOptions( _mapVals,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
   _.assert( o.selectFilter === null );
 
@@ -2402,7 +2402,7 @@ function mapVals( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
@@ -2458,7 +2458,7 @@ function mapOwnVals( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assertMapHasOnly( o,mapVals.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
@@ -2504,7 +2504,7 @@ function mapAllVals( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assertMapHasOnly( o,mapAllVals.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
@@ -2528,7 +2528,7 @@ function _mapPairs( o )
 {
 
   _.routineOptions( _mapPairs,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
   _.assert( !_.primitiveIs( o.srcMap ) );
 
@@ -2593,7 +2593,7 @@ function mapPairs( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assertMapHasOnly( o,mapPairs.defaults );
 
   o.srcMap = srcMap;
@@ -2650,7 +2650,7 @@ function mapOwnPairs( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assertMapHasOnly( o,mapPairs.defaults );
 
   o.srcMap = srcMap;
@@ -2700,7 +2700,7 @@ function mapAllPairs( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assertMapHasOnly( o,mapAllPairs.defaults );
 
   o.srcMap = srcMap;
@@ -2724,7 +2724,7 @@ function _mapProperties( o )
   let result = Object.create( null );
 
   _.routineOptions( _mapProperties,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !_.primitiveIs( o.srcMap ) );
 
   let keys = _._mapKeys( o );
@@ -2790,7 +2790,7 @@ function mapProperties( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapProperties,o );
 
   o.srcMap = srcMap;
@@ -2848,7 +2848,7 @@ function mapOwnProperties( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapOwnProperties,o );
 
   o.srcMap = srcMap;
@@ -2898,7 +2898,7 @@ function mapAllProperties( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapAllProperties,o );
 
   o.srcMap = srcMap;
@@ -2958,7 +2958,7 @@ function mapRoutines( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapRoutines,o );
 
   o.srcMap = srcMap;
@@ -3023,7 +3023,7 @@ function mapOwnRoutines( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapOwnRoutines,o );
 
   o.srcMap = srcMap;
@@ -3081,7 +3081,7 @@ function mapAllRoutines( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapAllRoutines,o );
 
   o.srcMap = srcMap;
@@ -3147,7 +3147,7 @@ function mapFields( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapFields,o );
 
   o.srcMap = srcMap;
@@ -3209,7 +3209,7 @@ function mapOwnFields( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapOwnFields,o );
 
   o.srcMap = srcMap;
@@ -3269,7 +3269,7 @@ function mapAllFields( srcMap )
 {
   let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( mapAllFields,o );
 
   o.srcMap = srcMap;
@@ -3331,7 +3331,7 @@ mapAllFields.defaults =
 
 function mapOnlyPrimitives( srcMap )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !_.primitiveIs( srcMap ) );
 
   let result = _.mapExtendConditional( _.field.mapper.primitive, Object.create( null ), srcMap );
@@ -3366,7 +3366,7 @@ function mapOnlyPrimitives( srcMap )
 function mapFirstPair( srcMap )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.objectLike( srcMap ) );
 
   for( let s in srcMap )
@@ -3608,9 +3608,9 @@ function mapButConditional( fieldFilter, srcMap, butMap )
   let result = Object.create( null );
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
-  _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'expects map {-srcMap-}' );
-  _.assert( fieldFilter && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'expects field-filter {-fieldFilter-}' );
+  _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
+  _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( fieldFilter && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'Expects field-filter {-fieldFilter-}' );
 
   if( _.arrayLike( butMap ) )
   {
@@ -3686,8 +3686,8 @@ function mapBut( srcMap, butMap )
   srcMap = _.mapMake.apply( this, srcMap );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
-  _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'expects map {-srcMap-}' );
+  _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
+  _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
 
   if( _.arrayLike( butMap ) )
   {
@@ -3769,8 +3769,8 @@ function mapButIgnoringUndefines( srcMap, butMap )
 //   let result = Object.create( null );
 //
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( !_.primitiveIs( butMap ), 'expects map {-butMap-}' );
-//   _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'expects map {-srcMap-}' );
+//   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
+//   _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'Expects map {-srcMap-}' );
 //
 //   if( _.arrayLike( butMap ) )
 //   {
@@ -3822,7 +3822,7 @@ function mapButIgnoringUndefines( srcMap, butMap )
 //   let a,k;
 //
 //   _.assert( arguments.length >= 2 );
-//   _.assert( !_.primitiveIs( srcMap ), 'expects object as argument' );
+//   _.assert( !_.primitiveIs( srcMap ), 'Expects object as argument' );
 //
 //   for( k in srcMap )
 //   {
@@ -3855,7 +3855,7 @@ function mapButIgnoringUndefines( srcMap, butMap )
 //   let a,k;
 //
 //   _.assert( arguments.length >= 2 );
-//   _.assert( !_.primitiveIs( srcMap ),'mapBut :','expects object as argument' );
+//   _.assert( !_.primitiveIs( srcMap ),'mapBut :','Expects object as argument' );
 //
 //   for( k in srcMap )
 //   {
@@ -3954,7 +3954,7 @@ function mapOnly( srcMaps, screenMaps )
   if( arguments.length === 1 )
   return _.mapsExtend( null, srcMaps );
 
-  _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
 
   return _mapOnly
   ({
@@ -3973,7 +3973,7 @@ function mapOnlyOwn( srcMaps, screenMaps )
   if( arguments.length === 1 )
   return _.mapsExtendConditional( _.field.mapper.srcOwn, null, srcMaps );
 
-  _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
 
   return _mapOnly
   ({
@@ -3990,7 +3990,7 @@ function mapOnlyOwn( srcMaps, screenMaps )
 function mapOnlyComplementing( srcMaps, screenMaps )
 {
 
-  _.assert( arguments.length === 1 || arguments.length === 2, 'expects single or two arguments' );
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single or two arguments' );
 
   return _mapOnly
   ({
@@ -4070,14 +4070,14 @@ function _mapOnly( o )
   {
 
     _.assert( o.filter.functionFamily === 'field-mapper' );
-    _.assert( arguments.length === 1, 'expects single argument' );
-    _.assert( _.objectLike( dstMap ), 'expects object-like {-dstMap-}' );
-    _.assert( !_.primitiveIs( screenMap ), 'expects not primitive {-screenMap-}' );
-    _.assert( _.arrayIs( srcMaps ), 'expects array {-srcMaps-}' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
+    _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
+    _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
+    _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
     _.assertMapHasOnly( o,_mapOnly.defaults );
 
     for( let s = srcMaps.length-1 ; s >= 0 ; s-- )
-    _.assert( !_.primitiveIs( srcMaps[ s ] ), 'expects {-srcMaps-}' );
+    _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
 
   }
 
@@ -4185,7 +4185,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
   let l = arguments.length;
@@ -4260,7 +4260,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
 function sureMapOwnOnly( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
   let l = arguments.length;
@@ -4333,7 +4333,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
 function sureMapHasAll( srcMap, all, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   // let l = arguments.length;
@@ -4403,7 +4403,7 @@ function sureMapHasAll( srcMap, all, msg )
 function sureMapOwnAll( srcMap, all, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   // let l = arguments.length;
@@ -4474,7 +4474,7 @@ function sureMapOwnAll( srcMap, all, msg )
 function sureMapHasNone( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
 
   let but = _.mapOnly( srcMap, screenMaps );
@@ -4498,7 +4498,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
 function sureMapOwnNone( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   // let l = arguments.length;

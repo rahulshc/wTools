@@ -48,7 +48,7 @@ function rangeFrom( range )
 function rangeClamp( dstRange, clampRange )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.rangeIs( dstRange ) );
   _.assert( _.rangeIs( clampRange ) );
 

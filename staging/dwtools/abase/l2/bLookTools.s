@@ -184,7 +184,7 @@ function __look_lookIt( it )
 {
 
   _.assert( it.level >= 0 );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   /* up */
 
@@ -288,7 +288,7 @@ function __look_lookIt( it )
       it.looking = true;
       if( it.looking === _.dont )
       it.looking = false;
-      _.assert( _.boolIs( it.looking ), () => 'expects it.onUp returns boolean, but got ' + _.strTypeOf( it.looking ) );
+      _.assert( _.boolIs( it.looking ), () => 'Expects it.onUp returns boolean, but got ' + _.strTypeOf( it.looking ) );
     }
 
   }
@@ -372,7 +372,7 @@ function _look_pre( routine, args )
 
 function _look_body( it )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   return look.lookIt( it );
 }
 
@@ -424,7 +424,7 @@ function entityWrap( o )
   debugger;
 
   _.routineOptions( entityWrap,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( o.onCondition )
   o.onCondition = _filter_functor( o.onCondition,1 );
@@ -1123,7 +1123,7 @@ function entityProbe( o )
   if( _.arrayIs( o ) )
   o = { src : o }
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( entityProbe,o );
   _.assert( _.arrayIs( o.src ) || _.objectIs( o.src ) );
 
@@ -1291,7 +1291,7 @@ function entityGroup( o )
 
   o = _.routineOptions( entityGroup,o );
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
   _.assert( _.objectLike( o.src ) || _.longIs( o.src ) );
   _.assert( _.arrayIs( o.src ),'not tested' );
@@ -1674,7 +1674,7 @@ function _entityEqual_pre( routine, args )
 
 function _entityEqual_body( it )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
    _._entityEqual.lookIt( it );
   _.assert( it.result === _.dont || _.boolIs( it.result ) );
   return it.result === _.dont ? false : it.result;
@@ -1926,7 +1926,7 @@ function entityDiff( src1, src2, o )
 {
 
   o = o || Object.create( null );
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   let equal = _._entityEqual( src1, src2, o );
 
   if( equal )

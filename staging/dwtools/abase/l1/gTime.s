@@ -121,7 +121,7 @@ function timeOnce( delay,onBegin,onEnd )
   if( _.objectIs( delay ) )
   {
     options = delay;
-    _.assert( arguments.length === 1, 'expects single argument' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
     _.assertMapHasOnly( options,optionsDefault );
     delay = options.delay;
     onBegin = options.onBegin;

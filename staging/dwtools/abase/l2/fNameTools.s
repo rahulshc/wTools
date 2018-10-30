@@ -39,7 +39,7 @@ function nameFielded( nameString )
     name[ nameString ] = nameString;
     return name;
   }
-  else _.assert( 0,'nameFielded :','expects string or ' );
+  else _.assert( 0,'nameFielded :','Expects string or ' );
 
 }
 

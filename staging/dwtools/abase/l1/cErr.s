@@ -89,7 +89,7 @@ let Self = _;
 
 function _diagnosticStripPath( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.strIs( src ) )
   {
@@ -681,9 +681,9 @@ function diagnosticStackPurify( stack )
 {
 
   if( arguments.length !== 1 )
-  throw 'expects single arguments';
+  throw 'Expects single arguments';
   if( !_.strIs( stack ) )
-  throw 'expects string';
+  throw 'Expects string';
 
   stack = stack.split( '\n' );
 
