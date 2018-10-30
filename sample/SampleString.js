@@ -5,9 +5,9 @@ var _ = wTools;
 
 
 
-let str = [ 'exexample', 'example', 'ample' ];
-let ins = [ 'ex', 'am' ];
-let sub = [ '1', '2' ];
-let expected = [ '1example', '1ample', '2ple' ];
-let result = _.strReplaceBegin( str, ins, sub );
+let str = 'exexample';
+let ins = 'ex';
+let sub = '1';
+
+let result = _.strReplaceBegin( [ 'exexample', 'example', 'ample' ], [ 'ex', 'am' ], [ '1', '2' ] ) 
 logger.log( result )

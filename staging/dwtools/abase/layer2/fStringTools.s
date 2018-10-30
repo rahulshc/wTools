@@ -494,7 +494,7 @@ function _strRemoved( srcStr, insStr )
 * @returns { String } Returns string with result of substring removement.
 *
 * @example
-* //returns ource tring
+* //returns ource string
 * _.strRemove( 'source string','s' );
 *
 * @example
@@ -627,7 +627,7 @@ function _strReplaced( srcStr, insStr, subStr )
 //
 
 /**
-* Finds substring or regexp ( insStr ) occurrences from the source string ( srcStr ) and replaces them
+* Finds substring or regexp ( insStr ) occurrence from the source string ( srcStr ) and replaces them
 * with the subStr values.
 * Returns original string if source( src ) does not have occurrence of ( insStr ).
 *
@@ -637,7 +637,7 @@ function _strReplaced( srcStr, insStr, subStr )
 * @returns { String } Returns string with result of substring replacement.
 *
 * @example
-* //returns Source String
+* //returns Source string
 * _.strReplace( 'source string','s', 'S' );
 *
 * @example
