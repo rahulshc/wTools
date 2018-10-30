@@ -4247,15 +4247,35 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
   let index = _.arrayLeftIndex.apply( _, arguments );
 
-  /* qqq : this is not correct! */
+  let removedElements = 0;
 
+  for( let i = 0; i < dstArray.length; i++ )
+  {
+    if( index !== -1 )
+    {
+      dstArray.splice( index, 1 );
+      removedElements = removedElements + 1;
+    }
+    index = _.arrayLeftIndex.apply( _, arguments );
+  }
+  return removedElements;
+}
+
+/*
+function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
+{
+  let index = _.arrayLeftIndex.apply( _, arguments );
+
+  /* qqq : this is not correct! */
+/*
   if( index !== -1 )
   {
-    dstArray.splice( index,1 );
+    dstArray.splice( index, 1 );
   }
 
   return index;
 }
+*/
 
 //
 

@@ -6730,7 +6730,7 @@ function arrayRemoveElement( test )
 
   var dst = [ 2,2,1 ];
   var got = _.arrayRemoveElement( dst, 2 );
-  test.identical( dst, [ 2,1 ] );
+  test.identical( dst, [ 1 ] );
 
   var dst = [ 2,2,1 ];
   var got = _.arrayRemoveElement( dst, 1 );
@@ -6815,42 +6815,42 @@ function arrayRemovedElement( test )
   var dst = [];
   var got = _.arrayRemovedElement( dst, 1 );
   test.identical( dst, [ ] );
-  test.identical( got, -1 );
+  test.identical( got, 0 );
 
   var dst = [ 1 ];
   var got = _.arrayRemovedElement( dst, 1 );
   test.identical( dst, [  ] );
-  test.identical( got, 0 );
+  test.identical( got, 1 );
 
   var dst = [ 2,2,1 ];
   var got = _.arrayRemovedElement( dst, 2 );
-  test.identical( dst, [ 2,1 ] );
-  test.identical( got, 0 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 2 );
 
   var dst = [ 2,2,1 ];
   var got = _.arrayRemovedElement( dst, 1 );
   test.identical( dst, [ 2,2 ] );
-  test.identical( got, 2 );
+  test.identical( got, 1 );
 
   var dst = [ 1 ];
   var got = _.arrayRemovedElement( dst, '1' );
   test.identical( dst, [ 1 ] );
-  test.identical( got, -1 );
+  test.identical( got, 0 );
 
   var dst = [ 1 ];
   var got = _.arrayRemovedElement( dst, -1 );
   test.identical( dst, [ 1 ] );
-  test.identical( got, -1 );
+  test.identical( got, 0 );
 
   var dst = [ 1 ];
   var got = _.arrayRemovedElement( dst, [ 1 ] );
   test.identical( dst, [ 1 ] );
-  test.identical( got, -1 );
+  test.identical( got, 0 );
 
   var dst = [ { x : 1 } ];
   var got = _.arrayRemovedElement( dst, { x : 1 } );
   test.identical( dst, [ { x : 1 } ] );
-  test.identical( got, -1 );
+  test.identical( got, 0 );
 
   test.case = 'equalizer 2 args';
 
@@ -6861,7 +6861,7 @@ function arrayRemovedElement( test )
   }
   var got = _.arrayRemovedElement( dst, { num : 4 }, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
-  test.identical( got, -1 );
+  test.identical( got, 0 );
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var onEqualize = function( a, b )
@@ -6870,7 +6870,7 @@ function arrayRemovedElement( test )
   }
   var got = _.arrayRemovedElement( dst, { num : 1 }, onEqualize );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
-  test.identical( got, 0 );
+  test.identical( got, 1 );
 
 
   test.case = 'equalizer 1 arg';
@@ -6882,13 +6882,13 @@ function arrayRemovedElement( test )
   }
   var got = _.arrayRemovedElement( dst, 4, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
-  test.identical( got, -1 );
+  test.identical( got, 0 );
 
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var got = _.arrayRemovedElement( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
-  test.identical( got, 0 );
+  test.identical( got, 1 );
 
 
   if( !Config.debug )
