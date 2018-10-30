@@ -5869,24 +5869,24 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // array remove
 // --
 
-function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayRemoved.apply( this, arguments );
+  arrayRemovedElement.apply( this, arguments );
   return dstArray;
 }
 
 //
 
 /**
- * The arrayRemoveOnce() routine removes the first matching element from (dstArray)
+ * The arrayRemoveElementOnce() routine removes the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and returns a modified array.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
  * checks if arguments passed two, it calls the routine
- * [arrayRemovedOnce( dstArray, ins )]{@link wTools.arrayRemovedOnce}
+ * [arrayRemovedElementOnce( dstArray, ins )]{@link wTools.arrayRemovedElementOnce}
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayRemovedOnce( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedOnce}
- * @see  wTools.arrayRemovedOnce
+ * [arrayRemovedElementOnce( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedElementOnce}
+ * @see  wTools.arrayRemovedElementOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
  * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
@@ -5894,40 +5894,40 @@ function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
  *
  * @example
  * // returns [ 1, 2, 3, 'str' ]
- * let arr = _.arrayRemoveOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
+ * let arr = _.arrayRemoveElementOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
  *
  * @example
  * // returns [ 3, 7, 13, 33 ]
- * let arr = _.arrayRemoveOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
+ * let arr = _.arrayRemoveElementOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
  *   return el > ins;
  * });
  *
  * @returns { Array } - Returns the modified (dstArray) array with the new length.
- * @function arrayRemoveOnce
+ * @function arrayRemoveElementOnce
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
  * @memberof wTools
  */
 
-function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayRemovedOnce.apply( this, arguments );
+  arrayRemovedElementOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-  let result = arrayRemovedOnce.apply( this, arguments );
+  let result = arrayRemovedElementOnce.apply( this, arguments );
   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   return dstArray;
 }
 
 //
 
-function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
   let index = _.arrayLeftIndex.apply( _, arguments );
 
@@ -5952,7 +5952,7 @@ function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
  */
 
 /**
- * The arrayRemovedOnce() routine returns the index of the first matching element from (dstArray)
+ * The arrayRemovedElementOnce() routine returns the index of the first matching element from (dstArray)
  * that corresponds to the condition in the callback function and remove this element.
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
@@ -5971,23 +5971,23 @@ function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
  *
  * @example
  * // returns 1
- * let arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 4, function( el ) {
+ * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 4, function( el ) {
  *   return el;
  * });
  *
  * @example
  * // returns 0
- * let arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 2 );
+ * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 2 );
  *
  * @returns { Number } - Returns the index of the value (ins) that was removed from (dstArray).
- * @function arrayRemovedOnce
+ * @function arrayRemovedElementOnce
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
  * @memberof wTools
  */
 
-function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let index = _.arrayLeftIndex.apply( _, arguments );
@@ -5999,32 +5999,7 @@ function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
-{
-  let result = arrayRemovedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
-  return dstArray;
-}
-
-//
-
-function arrayRemovedOnceElement( dstArray, ins, evaluator1, evaluator2 )
-{
-
-  let result;
-  let index = _.arrayLeftIndex.apply( _, arguments );
-  if( index >= 0 )
-  {
-    result = dstArray[ index ];
-    dstArray.splice( index, 1 );
-  }
-
-  return result;
-}
-
-//
-
-function arrayRemovedOnceElementStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result;
@@ -6038,6 +6013,49 @@ function arrayRemovedOnceElementStrictly( dstArray, ins, evaluator1, evaluator2 
 
   return result;
 }
+
+//
+
+// function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+// {
+//   let result = arrayRemovedElementOnce.apply( this, arguments );
+//   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+//   return dstArray;
+// }
+
+//
+//
+// function arrayRemovedOnceElement( dstArray, ins, evaluator1, evaluator2 )
+// {
+//
+//   let result;
+//   let index = _.arrayLeftIndex.apply( _, arguments );
+//   if( index >= 0 )
+//   {
+//     result = dstArray[ index ];
+//     dstArray.splice( index, 1 );
+//   }
+//
+//   return result;
+// }
+//
+// //
+//
+// function arrayRemovedOnceElementStrictly( dstArray, ins, evaluator1, evaluator2 )
+// {
+//
+//   let result;
+//   let index = _.arrayLeftIndex.apply( _, arguments );
+//   if( index >= 0 )
+//   {
+//     result = dstArray[ index ];
+//     dstArray.splice( index, 1 );
+//   }
+//   else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+//
+//   return result;
+// }
+
 //
 
 function arrayRemoveArray( dstArray, insArray )
@@ -6292,11 +6310,11 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  *
  * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
  * checks if arguments passed two, it calls the routine
- * [arrayRemoved( dstArray, ins )]{@link wTools.arrayRemoved}
+ * [arrayRemovedElement( dstArray, ins )]{@link wTools.arrayRemovedElement}
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayRemoved( dstArray, ins, onEvaluate )]{@link wTools.arrayRemoved}
+ * [arrayRemovedElement( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedElement}
  *
- * @see wTools.arrayRemoved
+ * @see wTools.arrayRemovedElement
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
@@ -6451,34 +6469,42 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 function arrayFlattened( dstArray, insArray )
 {
 
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  /* xxx : reuse arrayRemoveDuplicates for single argument call */
+
+  _.assert( arguments.length >= 2 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
 
   let result = 0;
 
-  if( _.longIs( insArray ) )
+  for( let a = 1 ; a < arguments.length ; a++ )
   {
-    for( let i = 0, len = insArray.length; i < len; i++ )
+    let insArray = arguments[ a ];
+
+    if( _.longIs( insArray ) )
     {
-      if( _.longIs( insArray[ i ] ) )
+      for( let i = 0, len = insArray.length; i < len; i++ )
       {
-        let c = _.arrayFlattened( dstArray, insArray[ i ] );
-        result += c;
-      }
-      else
-      {
-        _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
-        dstArray.push( insArray[ i ] );
-        result += 1;
+        if( _.longIs( insArray[ i ] ) )
+        {
+          let c = _.arrayFlattened( dstArray, insArray[ i ] );
+          result += c;
+        }
+        else
+        {
+          _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
+          dstArray.push( insArray[ i ] );
+          result += 1;
+        }
       }
     }
-  }
-  else
-  {
-    dstArray.push( insArray );
-    result += 1;
+    else
+    {
+      dstArray.push( insArray );
+      result += 1;
+    }
+
   }
 
   return result;
@@ -7376,14 +7402,17 @@ let Routines =
 
   // array remove
 
-  arrayRemove : arrayRemove,
-  arrayRemoveOnce : arrayRemoveOnce,
-  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
-  arrayRemoved : arrayRemoved,
-  arrayRemovedOnce : arrayRemovedOnce,
-  arrayRemovedOnceStrictly : arrayRemovedOnceStrictly, /* qqq : test required */
-  arrayRemovedOnceElement : arrayRemovedOnceElement, /* qqq : test required */
-  arrayRemovedOnceElementStrictly : arrayRemovedOnceElementStrictly, /* qqq : test required */
+  arrayRemoveElement : arrayRemoveElement, /* should remove all */
+  arrayRemoveElementOnce : arrayRemoveElementOnce,
+  arrayRemoveElementOnceStrictly : arrayRemoveElementOnceStrictly,
+
+  arrayRemovedElement : arrayRemovedElement,
+  arrayRemovedElementOnce : arrayRemovedElementOnce,
+  arrayRemovedElementOnceStrictly : arrayRemovedElementOnceStrictly,
+
+  // arrayRemovedOnceStrictly : arrayRemovedOnceStrictly, /* qqq : test required */
+  // arrayRemovedOnceElement : arrayRemovedOnceElement, /* qqq : test required */
+  // arrayRemovedOnceElementStrictly : arrayRemovedOnceElementStrictly, /* qqq : test required */
 
   arrayRemoveArray : arrayRemoveArray,
   arrayRemoveArrayOnce : arrayRemoveArrayOnce,

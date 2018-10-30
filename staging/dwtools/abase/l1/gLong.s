@@ -5869,24 +5869,24 @@ function arraySum( src,onEvaluate )
 // // array remove
 // // --
 //
-// function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
+// function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 // {
-//   arrayRemoved.apply( this, arguments );
+//   arrayRemovedElement.apply( this, arguments );
 //   return dstArray;
 // }
 //
 // //
 //
 // /**
-//  * The arrayRemoveOnce() routine removes the first matching element from (dstArray)
+//  * The arrayRemoveElementOnce() routine removes the first matching element from (dstArray)
 //  * that corresponds to the condition in the callback function and returns a modified array.
 //  *
 //  * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
 //  * checks if arguments passed two, it calls the routine
-//  * [arrayRemovedOnce( dstArray, ins )]{@link wTools.arrayRemovedOnce}
+//  * [arrayRemovedElementOnce( dstArray, ins )]{@link wTools.arrayRemovedElementOnce}
 //  * Otherwise, if passed three arguments, it calls the routine
-//  * [arrayRemovedOnce( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedOnce}
-//  * @see  wTools.arrayRemovedOnce
+//  * [arrayRemovedElementOnce( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedElementOnce}
+//  * @see  wTools.arrayRemovedElementOnce
 //  * @param { Array } dstArray - The source array.
 //  * @param { * } ins - The value to remove.
 //  * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
@@ -5894,40 +5894,40 @@ function arraySum( src,onEvaluate )
 //  *
 //  * @example
 //  * // returns [ 1, 2, 3, 'str' ]
-//  * let arr = _.arrayRemoveOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
+//  * let arr = _.arrayRemoveElementOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
 //  *
 //  * @example
 //  * // returns [ 3, 7, 13, 33 ]
-//  * let arr = _.arrayRemoveOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
+//  * let arr = _.arrayRemoveElementOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
 //  *   return el > ins;
 //  * });
 //  *
 //  * @returns { Array } - Returns the modified (dstArray) array with the new length.
-//  * @function arrayRemoveOnce
+//  * @function arrayRemoveElementOnce
 //  * @throws { Error } If the first argument is not an array.
 //  * @throws { Error } If passed less than two or more than three arguments.
 //  * @throws { Error } If the third argument is not a function.
 //  * @memberof wTools
 //  */
 //
-// function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
+// function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 // {
-//   arrayRemovedOnce.apply( this, arguments );
+//   arrayRemovedElementOnce.apply( this, arguments );
 //   return dstArray;
 // }
 //
 // //
 //
-// function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+// function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 // {
-//   let result = arrayRemovedOnce.apply( this, arguments );
+//   let result = arrayRemovedElementOnce.apply( this, arguments );
 //   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
 //   return dstArray;
 // }
 //
 // //
 //
-// function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
+// function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 // {
 //   let index = _.arrayLeftIndex.apply( _, arguments );
 //
@@ -5952,7 +5952,7 @@ function arraySum( src,onEvaluate )
 //  */
 //
 // /**
-//  * The arrayRemovedOnce() routine returns the index of the first matching element from (dstArray)
+//  * The arrayRemovedElementOnce() routine returns the index of the first matching element from (dstArray)
 //  * that corresponds to the condition in the callback function and remove this element.
 //  *
 //  * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
@@ -5971,23 +5971,23 @@ function arraySum( src,onEvaluate )
 //  *
 //  * @example
 //  * // returns 1
-//  * let arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 4, function( el ) {
+//  * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 4, function( el ) {
 //  *   return el;
 //  * });
 //  *
 //  * @example
 //  * // returns 0
-//  * let arr = _.arrayRemovedOnce( [ 2, 4, 6 ], 2 );
+//  * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 2 );
 //  *
 //  * @returns { Number } - Returns the index of the value (ins) that was removed from (dstArray).
-//  * @function arrayRemovedOnce
+//  * @function arrayRemovedElementOnce
 //  * @throws { Error } If the first argument is not an array-like.
 //  * @throws { Error } If passed less than two or more than three arguments.
 //  * @throws { Error } If the third argument is not a function.
 //  * @memberof wTools
 //  */
 //
-// function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
+// function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 // {
 //
 //   let index = _.arrayLeftIndex.apply( _, arguments );
@@ -6001,7 +6001,7 @@ function arraySum( src,onEvaluate )
 //
 // function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 // {
-//   let result = arrayRemovedOnce.apply( this, arguments );
+//   let result = arrayRemovedElementOnce.apply( this, arguments );
 //   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
 //   return dstArray;
 // }
@@ -6292,11 +6292,11 @@ function arraySum( src,onEvaluate )
 //  *
 //  * It takes two (dstArray, ins) or three (dstArray, ins, onEvaluate) arguments,
 //  * checks if arguments passed two, it calls the routine
-//  * [arrayRemoved( dstArray, ins )]{@link wTools.arrayRemoved}
+//  * [arrayRemovedElement( dstArray, ins )]{@link wTools.arrayRemovedElement}
 //  * Otherwise, if passed three arguments, it calls the routine
-//  * [arrayRemoved( dstArray, ins, onEvaluate )]{@link wTools.arrayRemoved}
+//  * [arrayRemovedElement( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedElement}
 //  *
-//  * @see wTools.arrayRemoved
+//  * @see wTools.arrayRemovedElement
 //  *
 //  * @param { Array } dstArray - The source array.
 //  * @param { * } ins - The value to remove.
@@ -7371,11 +7371,11 @@ let Routines =
   //
   // // array remove
   //
-  // arrayRemove : arrayRemove,
-  // arrayRemoveOnce : arrayRemoveOnce,
-  // arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
-  // arrayRemoved : arrayRemoved,
-  // arrayRemovedOnce : arrayRemovedOnce,
+  // arrayRemoveElement : arrayRemoveElement,
+  // arrayRemoveElementOnce : arrayRemoveElementOnce,
+  // arrayRemoveElementOnceStrictly : arrayRemoveElementOnceStrictly,
+  // arrayRemovedElement : arrayRemovedElement,
+  // arrayRemovedElementOnce : arrayRemovedElementOnce,
   // arrayRemovedOnceStrictly : arrayRemovedOnceStrictly, /* qqq : test required */
   // arrayRemovedOnceElement : arrayRemovedOnceElement, /* qqq : test required */
   // arrayRemovedOnceElementStrictly : arrayRemovedOnceElementStrictly, /* qqq : test required */
