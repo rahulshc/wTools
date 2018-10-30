@@ -106,7 +106,7 @@ function _lookIterationSelect( k )
 {
   let it = this;
 
-  _.assert( arguments.length === 1, 'expects exactly two arguments' );
+  _.assert( arguments.length === 1, 'Expects exactly two arguments' );
   _.assert( it.level >= 0 );
   _.assert( _.objectIs( it.down ) );
 
@@ -132,7 +132,7 @@ function __look_lookBegin( routine, args )
   let o = args[ 0 ];
 
   _.assert( args.length === 1 );
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assertRoutineOptionsPreservingUndefines( routine, o );
   _.assert( routine.lookBegin === __look_lookBegin );
 
@@ -184,7 +184,7 @@ function __look_lookIt( it )
 {
 
   _.assert( it.level >= 0 );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   /* up */
 
@@ -199,7 +199,9 @@ function __look_lookIt( it )
     keepLooking = false;
   }
 
-  if( keepLooking === false || it.looking === false || it.iterator.looking === false || it.wasVisited )
+  _.assert( _.boolIs( it.looking ) );
+  _.assert( _.boolIs( it.iterator.looking ) );
+  if( keepLooking === false || it.looking === false || it.looking === _.dont || it.iterator.looking === false ||  it.iterator.looking === _.dont || it.wasVisited )
   return down();
 
   /* iterate */
@@ -213,7 +215,7 @@ function __look_lookIt( it )
 
       handleElement( k );
 
-      if( !it.iterator.looking )
+      if( !it.iterator.looking || it.iterator.looking === _.dont )
       break;
 
     }
@@ -231,7 +233,7 @@ function __look_lookIt( it )
 
       handleElement( k );
 
-      if( !it.iterator.looking )
+      if( !it.iterator.looking || it.iterator.looking === _.dont )
       break;
 
     }
@@ -284,7 +286,9 @@ function __look_lookIt( it )
       it.looking = it.onUp.call( it, it.src, it.key, it );
       if( it.looking === undefined )
       it.looking = true;
-      _.assert( _.boolIs( it.looking ),'expects it.onUp returns boolean, but got',_.strTypeOf( it.looking ) );
+      if( it.looking === _.dont )
+      it.looking = false;
+      _.assert( _.boolIs( it.looking ), () => 'Expects it.onUp returns boolean, but got ' + _.strTypeOf( it.looking ) );
     }
 
   }
@@ -320,7 +324,7 @@ function __look_lookContinue( routine, args )
 {
   let it = args[ args.length - 1 ];
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( !Object.isPrototypeOf.call( LookIterator, it ) )
   {
@@ -355,9 +359,9 @@ function _look_pre( routine, args )
 
   _.routineOptionsPreservingUndefines( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( o.onUp === null || o.onUp.length === 0 || o.onUp.length === 3, 'onUp should expects exactly three arguments' );
-  _.assert( o.onDown === null || o.onDown.length === 0 || o.onDown.length === 3, 'onUp should expects exactly three arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( o.onUp === null || o.onUp.length === 0 || o.onUp.length === 3, 'onUp should Expects exactly three arguments' );
+  _.assert( o.onDown === null || o.onDown.length === 0 || o.onDown.length === 3, 'onUp should Expects exactly three arguments' );
 
   let it = look.lookBegin( routine, [ o ] );
 
@@ -368,7 +372,7 @@ function _look_pre( routine, args )
 
 function _look_body( it )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   return look.lookIt( it );
 }
 
@@ -420,7 +424,7 @@ function entityWrap( o )
   debugger;
 
   _.routineOptions( entityWrap,o );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( o.onCondition )
   o.onCondition = _filter_functor( o.onCondition,1 );
@@ -823,7 +827,7 @@ function _entitySelectAct( it,iterator )
 
   _.assert( Object.keys( iterator ).length === 7 );
   _.assert( Object.keys( it ).length === 3 );
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.primitiveIs( container ) )
   {
@@ -1119,7 +1123,7 @@ function entityProbe( o )
   if( _.arrayIs( o ) )
   o = { src : o }
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( entityProbe,o );
   _.assert( _.arrayIs( o.src ) || _.objectIs( o.src ) );
 
@@ -1287,7 +1291,7 @@ function entityGroup( o )
 
   o = _.routineOptions( entityGroup,o );
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( o.key ) || _.arrayIs( o.key ) );
   _.assert( _.objectLike( o.src ) || _.longIs( o.src ) );
   _.assert( _.arrayIs( o.src ),'not tested' );
@@ -1359,7 +1363,7 @@ entityGroup.defaults =
 function __entityEqualUp( e, k, it )
 {
 
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
 
   /* if containing mode then src2 could even don't have such entry */
 
@@ -1514,7 +1518,7 @@ function __entityEqualUp( e, k, it )
 
     _.assert( arguments.length === 0 );
 
-    return it.looking;
+    return it.looking ? it.looking : _.dont;
   }
 
 }
@@ -1534,6 +1538,9 @@ function __entityEqualDown( e, k, it )
   {
     it.down.result = it.result;
   }
+
+  if( it.result === false )
+  return _.dont;
 
   return it.result;
 }
@@ -1587,7 +1594,7 @@ function _entityEqual_lookBegin( routine, args )
   let o = args[ 0 ];
 
   _.assert( args.length === 1 );
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assertRoutineOptionsPreservingUndefines( routine, o );
   _.assert( routine.lookBegin === _entityEqual_lookBegin );
 
@@ -1621,7 +1628,7 @@ function _entityEqual_pre( routine, args )
 {
 
   _.assert( args.length === 2 || args.length === 3 );
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   let o = _.routineOptionsPreservingUndefines( routine, args[ 2 ] || Object.create( null ) );
   let accuracy = o.accuracy;
@@ -1667,9 +1674,10 @@ function _entityEqual_pre( routine, args )
 
 function _entityEqual_body( it )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
    _._entityEqual.lookIt( it );
-  return it.result;
+  _.assert( it.result === _.dont || _.boolIs( it.result ) );
+  return it.result === _.dont ? false : it.result;
 }
 
 _entityEqual_body.defaults =
@@ -1918,7 +1926,7 @@ function entityDiff( src1, src2, o )
 {
 
   o = o || Object.create( null );
-  _.assert( arguments.length === 2 || arguments.length === 3, 'expects two or three arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   let equal = _._entityEqual( src1, src2, o );
 
   if( equal )

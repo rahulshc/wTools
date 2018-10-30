@@ -1,8 +1,8 @@
-( function _FieldMapper_s_() {
+( function _Field_s_() {
 
 'use strict';
 
-let Self = _global_.wTools;
+let Self = _global_.wTools.field = _global_.wTools.field || Object.create( null );
 let _global = _global_;
 let _ = _global_.wTools;
 
@@ -1007,7 +1007,7 @@ function and()
     filters.push( routine );
     else if( routine.functionFamily === 'field-mapper' )
     mappers.push( routine );
-    else throw _.err( 'expects routine.functionFamily' );
+    else throw _.err( 'Expects routine.functionFamily' );
   }
 
   if( mappers.length > 1 )
@@ -1047,8 +1047,8 @@ function and()
 function mapperFromFilter( routine )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
-  _.assert( _.routineIs( routine ),'expects routine but got',_.strTypeOf( routine ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.routineIs( routine ), 'Expects routine but got', _.strTypeOf( routine ) );
   _.assert( _.strIs( routine.functionFamily ) );
 
   if( routine.functionFamily === 'field-filter' )
@@ -1068,7 +1068,7 @@ function mapperFromFilter( routine )
   {
     return routine;
   }
-  else _.assert( 0,'expects routine.functionFamily' );
+  else _.assert( 0,'Expects routine.functionFamily' );
 
 }
 
@@ -1077,7 +1077,7 @@ function mapperFromFilter( routine )
 // function mapperFromFilterRecursive( routine )
 // {
 //
-//   _.assert( arguments.length === 1, 'expects single argument' );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
 //   _.assert( _.routineIs( routine ) );
 //   _.assert( _.strIs( routine.functionFamily ) );
 //
@@ -1101,7 +1101,7 @@ function mapperFromFilter( routine )
 //   {
 //     return routine;
 //   }
-//   else throw _.err( 'expects routine.functionFamily' );
+//   else throw _.err( 'Expects routine.functionFamily' );
 //
 // }
 
@@ -1123,12 +1123,12 @@ function setup()
 
     if( fi.functionFamily === 'field-mapper' )
     {
-      field.mapper[ f ] = fi;
+      Extend.mapper[ f ] = fi;
     }
     else if( fi.functionFamily === 'field-filter' )
     {
-      field.filter[ f ] = fi;
-      field.mapper[ f ] = mapperFromFilter( fi );
+      Extend.filter[ f ] = fi;
+      Extend.mapper[ f ] = mapperFromFilter( fi );
     }
     else _.assert( 0,'unexpected' );
 
@@ -1214,32 +1214,23 @@ let make =
 }
 
 // --
-// namespace
-// --
-
-let field =
-{
-  make : make,
-  mapper : Object.create( null ),
-  filter : Object.create( null ),
-  and : and,
-  mapperFromFilter : mapperFromFilter,
-}
-
-setup();
-
-// --
 // extend
 // --
 
 let Extend =
 {
 
-  field : field,
+  make : make,
+  mapper : Object.create( null ),
+  filter : Object.create( null ),
+  and : and,
+  mapperFromFilter : mapperFromFilter,
 
 }
 
-Object.assign( Self,Extend );
+setup();
+
+Object.assign( Self, Extend );
 
 // --
 // export

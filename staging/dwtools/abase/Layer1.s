@@ -6,16 +6,34 @@
 if( typeof module !== 'undefined' && module !== null )
 {
 
-  require( './layer1/aFundamental.s' );
-  require( './layer1/cDiagnostics.s' );
-  require( './layer1/eFieldMapper.s' );
-  require( './layer1/kArrayDescriptor.s' );
-  require( './layer1/zSetup.s' );
-  var _global = _global_;
-  var _ = _global_.wTools;
-  var Self = _global_.wTools;
+  require( './Layer0.s' );
+
+  require( './l1/cErr.s' );
+
+  require( './l1/gBool.s' );
+  require( './l1/gEntity.s' );
+  require( './l1/gLong.s' );
+  require( './l1/gMap.s' );
+  require( './l1/gNumber.s' );
+  require( './l1/gRange.s' );
+  require( './l1/gRegexp.s' );
+  require( './l1/gRoutine.s' );
+  require( './l1/gString.s' );
+  require( './l1/gTime.s' );
+
+  require( './l1/rFundamental.s' );
+
+  require( './l1/zSetup.s' );
+
+  let _global = _global_;
+  let _ = _global_.wTools;
+  let Self = _global_.wTools;
 
 }
+
+let _global = _global_;
+let _ = _global_.wTools;
+let Self = _global_.wTools;
 
 // --
 // export

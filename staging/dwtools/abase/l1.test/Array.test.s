@@ -8989,7 +8989,7 @@ function arrayFlattened( test )
   var got  = _.arrayFlattened( dst, 1, 2, '3' );
   test.identical( dst, [ 1, 2, '3' ] );
   test.identical( got, 3 );
-  
+
 
   if( !Config.debug )
   return;

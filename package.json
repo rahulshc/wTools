@@ -1,11 +1,10 @@
 {
   "name": "wTools",
-  "version": "0.8.272",
+  "version": "0.8.280",
   "engine": "node >= 6.0.0",
   "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind",
   "license": "MIT",
   "author": "Kostiantyn Wandalen <wanalen@willbe.so>",
-
   "contributors": [
     {
       "name": "Kostiantyn Wandalen",
@@ -22,8 +21,10 @@
   ],
   "main": "staging/dwtools/abase/Layer2.s",
   "files": [
-    "staging/dwtools/abase/layer1",
-    "staging/dwtools/abase/layer2",
+    "staging/dwtools/abase/l0",
+    "staging/dwtools/abase/l1",
+    "staging/dwtools/abase/l2",
+    "staging/dwtools/abase/Layer0.s",
     "staging/dwtools/abase/Layer1.s",
     "staging/dwtools/abase/Layer2.s"
   ],

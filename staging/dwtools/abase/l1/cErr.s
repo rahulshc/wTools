@@ -1,87 +1,87 @@
-(function _Diagnostics_s_() {
+(function _cErr_s_() {
 
 'use strict';
 
-var _ArraySlice = Array.prototype.slice;
-var _FunctionBind = Function.prototype.bind;
-var _ObjectToString = Object.prototype.toString;
-var _ObjectHasOwnProperty = Object.hasOwnProperty;
-var _propertyIsEumerable = Object.propertyIsEnumerable;
-var _ceil = Math.ceil;
-var _floor = Math.floor;
+let _ArraySlice = Array.prototype.slice;
+let _FunctionBind = Function.prototype.bind;
+let _ObjectToString = Object.prototype.toString;
+let _ObjectHasOwnProperty = Object.hasOwnProperty;
+let _propertyIsEumerable = Object.propertyIsEnumerable;
+let _ceil = Math.ceil;
+let _floor = Math.floor;
 
-var _global = _global_;
-var _ = _global.wTools;
-var _err = _._err;
-var Self = _;
+let _global = _global_;
+let _ = _global.wTools;
+let _err = _._err;
+let Self = _;
 
 //
 
-function diagnosticVariate( o )
-{
-  _.routineOptions( diagnosticVariate,o );
-
-  if( _.arrayIs( o.routine ) )
-  {
-    _.assert( _.routineIs( o.routine[ 1 ] ) );
-    if( !o.variates && o.routine[ 1 ].variates )
-    o.variates = o.routine[ 1 ].variates;
-    o.routine = _.routineJoin.apply( _,o.routine );
-  }
-
-  _.assert( _.routineIs( o.routine ) );
-  _.assert( _.objectIs( o.variates ) );
-
-  var vals = _.mapExtend( null,o.variates );
-  vals = _.proxyNoUndefined( vals );
-
-  if( o.test === null )
-  o.test = function vtest( got,o )
-  {
-    return _.entityEquivalent( got,o.expected,{ /*eps*/accuracy : o./*eps*/accuracy } );
-  }
-
-  var found = 0;
-  var nsamples = _.eachSample
-  ({
-
-    onEach : function( sample,i )
-    {
-      var got = o.routine( sample );
-      var res = o.test( got,o );
-      if( res )
-      found += 1;
-      if( res || !o.printingValidOnly )
-      {
-        logger.log( 'routine',o.routine.name,'gave',got,'expected',o.expected,'#',i );
-        if( res )
-        {
-          logger.log( 'sample :',sample );
-          logger.log( got );
-        }
-      }
-    },
-
-    sets : o.variates,
-    sample : vals,
-    result : null,
-
-  });
-
-  logger.log( 'Found',found,'/',nsamples );
-
-}
-
-diagnosticVariate.defaults =
-{
-  routine : null,
-  test : null,
-
-  expected : null,
-  variates : null,
-  /*eps*/accuracy : 1e-3,
-  printingValidOnly : 1,
-}
+// function diagnosticVariate( o )
+// {
+//   _.routineOptions( diagnosticVariate,o );
+//
+//   if( _.arrayIs( o.routine ) )
+//   {
+//     _.assert( _.routineIs( o.routine[ 1 ] ) );
+//     if( !o.variates && o.routine[ 1 ].variates )
+//     o.variates = o.routine[ 1 ].variates;
+//     o.routine = _.routineJoin.apply( _,o.routine );
+//   }
+//
+//   _.assert( _.routineIs( o.routine ) );
+//   _.assert( _.objectIs( o.variates ) );
+//
+//   let vals = _.mapExtend( null,o.variates );
+//   vals = _.proxyNoUndefined( vals );
+//
+//   if( o.test === null )
+//   o.test = function vtest( got,o )
+//   {
+//     return _.entityEquivalent( got,o.expected,{ /*eps*/accuracy : o./*eps*/accuracy } );
+//   }
+//
+//   let found = 0;
+//   let nsamples = _.eachSample
+//   ({
+//
+//     onEach : function( sample,i )
+//     {
+//       let got = o.routine( sample );
+//       let res = o.test( got,o );
+//       if( res )
+//       found += 1;
+//       if( res || !o.printingValidOnly )
+//       {
+//         logger.log( 'routine',o.routine.name,'gave',got,'expected',o.expected,'#',i );
+//         if( res )
+//         {
+//           logger.log( 'sample :',sample );
+//           logger.log( got );
+//         }
+//       }
+//     },
+//
+//     sets : o.variates,
+//     sample : vals,
+//     result : null,
+//
+//   });
+//
+//   logger.log( 'Found',found,'/',nsamples );
+//
+// }
+//
+// diagnosticVariate.defaults =
+// {
+//   routine : null,
+//   test : null,
+//
+//   expected : null,
+//   variates : null,
+//   accuracy : 1e-3,
+//   printingValidOnly : 1,
+// }
 
 // --
 // diagnostics
@@ -89,7 +89,7 @@ diagnosticVariate.defaults =
 
 function _diagnosticStripPath( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.strIs( src ) )
   {
@@ -108,8 +108,8 @@ function _diagnosticStripPath( src )
 //
 //   if( typeof document !== 'undefined' && document.scripts )
 //   {
-//     var scripts = document.scripts;
-//     for( var s = 0 ; s < scripts.length ; s++ )
+//     let scripts = document.scripts;
+//     for( let s = 0 ; s < scripts.length ; s++ )
 //     if( scripts[ s ].src === path )
 //     return scripts[ s ];
 //   }
@@ -136,13 +136,13 @@ function diagnosticLocation( o )
 
   /* */
 
-  for( var e in o )
+  for( let e in o )
   {
     if( diagnosticLocation.defaults[ e ] === undefined )
     throw 'Unknown option ' + e;
   }
 
-  for( var e in diagnosticLocation.defaults )
+  for( let e in diagnosticLocation.defaults )
   {
     if( o[ e ] === undefined )
     o[ e ] = diagnosticLocation.defaults[ e ];
@@ -167,7 +167,7 @@ function diagnosticLocation( o )
 
   if( o.error )
   {
-    var location2 = o.error.location || Object.create( null );
+    let location2 = o.error.location || Object.create( null );
 
     o.location.path = _.arrayLeftDefined([ location2.path, o.location.path, o.error.filename, o.error.fileName ]).element;
     o.location.line = _.arrayLeftDefined([ location2.line, o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
@@ -194,7 +194,7 @@ function diagnosticLocation( o )
 
   routineFromStack( o.stack );
 
-  var had = !!o.location.path;
+  let had = !!o.location.path;
   if( !had )
   o.location.path = fromStack( o.stack );
 
@@ -206,7 +206,7 @@ function diagnosticLocation( o )
 
   if( !_.numberIs( o.location.line ) && had )
   {
-    var path = fromStack( o.stack );
+    let path = fromStack( o.stack );
     if( path )
     lineColFromPath( path );
   }
@@ -218,7 +218,7 @@ function diagnosticLocation( o )
   function end()
   {
 
-    var path = o.location.path;
+    let path = o.location.path;
 
     /* full */
 
@@ -240,8 +240,8 @@ function diagnosticLocation( o )
 
     if( path )
     {
-      var name = path;
-      var i = name.lastIndexOf( '/' );
+      let name = path;
+      let i = name.lastIndexOf( '/' );
       if( i !== -1 )
       name = name.substr( i+1 );
       o.location.name = name;
@@ -251,7 +251,7 @@ function diagnosticLocation( o )
 
     if( path )
     {
-      var nameLong = o.location.name;
+      let nameLong = o.location.name;
       if( o.location.line !== undefined )
       {
         nameLong += ':' + o.location.line;
@@ -268,7 +268,7 @@ function diagnosticLocation( o )
 
   function routineFromStack( stack )
   {
-    var path;
+    let path;
 
     if( !stack )
     return;
@@ -283,8 +283,8 @@ function diagnosticLocation( o )
 
     // debugger;
 
-    var t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
-    var executed = t.exec( path );
+    let t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
+    let executed = t.exec( path );
     if( executed )
     path = executed[ 2 ] || '';
 
@@ -307,7 +307,7 @@ function diagnosticLocation( o )
 
   function fromStack( stack )
   {
-    var path;
+    let path;
 
     if( !stack )
     return;
@@ -326,8 +326,13 @@ function diagnosticLocation( o )
     path = path.replace( /^\s+/,'' );
     path = path.replace( /\s+$/,'' );
 
-    if( _.strEnds( path,')' ) )
-    path = _.strIsolateInsideOrAll( path,'(',')' )[ 2 ];
+    let regexp = /^.*\((.*)\)$/;
+    var parsed = regexp.exec( path );
+    if( parsed )
+    path = parsed[ 1 ];
+
+    // if( _.strEnds( path,')' ) )
+    // path = _.strIsolateInsideOrAll( path,'(',')' )[ 2 ];
 
     return path;
   }
@@ -337,9 +342,9 @@ function diagnosticLocation( o )
   function lineColFromPath( path )
   {
 
-    var lineNumber,colNumber;
-    var postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
-    var parsed = postfix.exec( path );
+    let lineNumber,colNumber;
+    let postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
+    let parsed = postfix.exec( path );
 
     if( parsed )
     {
@@ -348,7 +353,7 @@ function diagnosticLocation( o )
       colNumber = parsed[ 3 ];
     }
 
-    // var postfix = /:(\d+)$/;
+    // let postfix = /:(\d+)$/;
     // colNumber = postfix.exec( o.location.path );
     // if( colNumber )
     // {
@@ -424,7 +429,7 @@ function diagnosticCode( o )
       if( !o.location.path )
       return end();
 
-      var codeProvider = _.codeProvider || _.fileProvider;
+      let codeProvider = _.codeProvider || _.fileProvider;
 
       if( !codeProvider )
       return end();
@@ -457,7 +462,7 @@ function diagnosticCode( o )
 
     /* */
 
-    var result = _.strLinesSelect
+    let result = _.strLinesSelect
     ({
       src : o.sourceCode,
       line : o.location.line,
@@ -506,7 +511,7 @@ diagnosticCode.defaults =
 /**
  * Return stack trace as string.
  * @example
-  var stack;
+  let stack;
   function function1()
   {
     function2();
@@ -534,7 +539,7 @@ diagnosticCode.defaults =
  * @memberof wTools
  */
 
-function diagnosticStack( stack,first,last )
+function diagnosticStack( stack, first, last )
 {
 
   if( last-first === 1 )
@@ -543,8 +548,8 @@ function diagnosticStack( stack,first,last )
   if( _.numberIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined )
   {
 
-    var first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
-    var last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
+    first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
+    last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
 
     return diagnosticStack( new Error(),first,last );
   }
@@ -567,7 +572,7 @@ function diagnosticStack( stack,first,last )
     throw Error( 'diagnosticStack : expects number {-last-}, got' + _.strTypeOf( last ) );
   }
 
-  var errIs = 0;
+  let errIs = 0;
   if( _.errIs( stack ) )
   {
     stack = stack.stack;
@@ -600,7 +605,7 @@ function diagnosticStack( stack,first,last )
     // debugger;
     while( stack.length )
     {
-      var splice = 0;
+      let splice = 0;
       // if( stack[ 0 ].indexOf( '@' ) !== -1 )
       // debugger;
       // if( stack[ 0 ].indexOf( '@' ) !== -1 )
@@ -632,8 +637,8 @@ function diagnosticStack( stack,first,last )
 
   /* */
 
-  var first = first === undefined ? 0 : first;
-  var last = last === undefined ? stack.length : last;
+  first = first === undefined ? 0 : first;
+  last = last === undefined ? stack.length : last;
 
   if( _.numberIs( first ) )
   if( first < 0 )
@@ -676,20 +681,20 @@ function diagnosticStackPurify( stack )
 {
 
   if( arguments.length !== 1 )
-  throw 'expects single arguments';
+  throw 'Expects single arguments';
   if( !_.strIs( stack ) )
-  throw 'expects string';
+  throw 'Expects string';
 
   stack = stack.split( '\n' );
 
-  for( var s = 1 ; s < stack.length ; s++ )
+  for( let s = 1 ; s < stack.length ; s++ )
   if( /(\w)_entry(\W|$)/.test( stack[ s ] ) )
   {
     stack.splice( s+1,stack.length );
     break;
   }
 
-  for( var s = stack.length-1 ; s >= 1 ; s-- )
+  for( let s = stack.length-1 ; s >= 1 ; s-- )
   {
     if( /(\W|^)__\w+/.test( stack[ s ] ) )
     stack.splice( s,1 )
@@ -750,20 +755,20 @@ function diagnosticWatchFields( o )
   _.assert( _.objectLike( o.target ) );
   _.assert( _.objectLike( o.names ) );
 
-  for( var f in o.names ) ( function()
+  for( let f in o.names ) ( function()
   {
 
-    var fieldName = f;
-    var fieldSymbol = Symbol.for( f );
+    let fieldName = f;
+    let fieldSymbol = Symbol.for( f );
     //o.target[ fieldSymbol ] = o.target[ f ];
-    var val = o.target[ f ];
+    let val = o.target[ f ];
 
     /* */
 
     function read()
     {
-      //var result = o.target[ fieldSymbol ];
-      var result = val;
+      //let result = o.target[ fieldSymbol ];
+      let result = val;
       if( o.verbosity > 1 )
       console.log( 'reading ' + fieldName + ' ' + _.toStr( result ) );
       else
@@ -845,7 +850,7 @@ function diagnosticProxyFields( o )
   _.assert( _.objectLike( o.target ) );
   _.assert( _.objectLike( o.names ) || o.names === null );
 
-  var handler =
+  let handler =
   {
     set : function( obj, k, e )
     {
@@ -862,7 +867,7 @@ function diagnosticProxyFields( o )
     }
   }
 
-  var result = new Proxy( o.target, handler );
+  let result = new Proxy( o.target, handler );
   if( o.verbosity > 1 )
   console.log( 'watching for',o.target );
 
@@ -886,80 +891,12 @@ function beep()
   console.log( '\x07' );
 }
 
-//
-
-function checkInstanceOrClass( _constructor, _this )
-{
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  debugger;
-  var result =
-  (
-    _this === _constructor ||
-    _this instanceof _constructor ||
-    Object.isPrototypeOf.call( _constructor,_this ) ||
-    Object.isPrototypeOf.call( _constructor,_this.prototype )
-  );
-  return result;
-}
-
-//
-
-function sureInstanceOrClass( _constructor, _this )
-{
-  _.sure( arguments.length === 2, 'expects exactly two arguments' );
-  _.sure( _.checkInstanceOrClass( _constructor, _this ) );
-}
-
-//
-
-function assertInstanceOrClass( _constructor, _this )
-{
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
-  _.assert( _.checkInstanceOrClass( _constructor, _this ) );
-}
-
-//
-
-function checkOwnNoConstructor( ins )
-{
-  _.assert( _.objectLikeOrRoutine( ins ) );
-  _.assert( arguments.length === 1 );
-  var result = !_ObjectHasOwnProperty.call( ins,'constructor' );
-  return result;
-}
-
-//
-
-function sureOwnNoConstructor( ins )
-{
-  _.sure( _.objectLikeOrRoutine( ins ) );
-  var args = _.longSlice( arguments );
-  args[ 0 ] = _.checkOwnNoConstructor( ins );
-  _.sure.apply( _, args );
-}
-
-//
-
-function assertOwnNoConstructor( ins )
-{
-  _.assert( _.objectLikeOrRoutine( ins ) );
-  var args = _.longSlice( arguments );
-  args[ 0 ] = _.checkOwnNoConstructor( ins );
-
-  if( args.length === 1 )
-  args.push( () => 'Entity should not own constructor, but own ' + _.toStrShort( ins ) );
-
-  _.assert.apply( _, args );
-}
-
 // --
 // declare
 // --
 
-var Proto =
+let Proto =
 {
-
-  diagnosticVariate : diagnosticVariate,
 
   _diagnosticStripPath : _diagnosticStripPath,
   diagnosticLocation : diagnosticLocation,
@@ -971,17 +908,9 @@ var Proto =
 
   beep : beep,
 
-  checkInstanceOrClass : checkInstanceOrClass,
-  sureInstanceOrClass : sureInstanceOrClass,
-  assertInstanceOrClass : assertInstanceOrClass,
-
-  checkOwnNoConstructor : checkOwnNoConstructor,
-  sureOwnNoConstructor : sureOwnNoConstructor,
-  assertOwnNoConstructor : assertOwnNoConstructor,
-
 }
 
-Object.assign( Self,Proto );
+Object.assign( Self, Proto );
 
 // --
 // export

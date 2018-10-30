@@ -43,18 +43,17 @@ function entityIdenticalSimple( test )
   test.case = 'null - undefined';
 
   var expected = true;
-  debugger;
   var got = _.entityIdentical( null, null );
-  debugger;
   test.identical( got, expected );
-  debugger;
 
   var expected = true;
   var got = _.entityIdentical( undefined, undefined );
   test.identical( got, expected );
 
   var expected = false;
+  debugger;
   var got = _.entityIdentical( null, undefined );
+  debugger;
   test.identical( got, expected );
 
   var expected = false;
@@ -2048,7 +2047,7 @@ function entityIdenticalCycledWithOptions( test )
   function onUp( e, k, it )
   {
     onUpPaths.push( it.path );
-    return it.result;
+    return !it.result ? _.dont : it.result;
   }
 
   /* */
@@ -2057,7 +2056,7 @@ function entityIdenticalCycledWithOptions( test )
   function onDown( e, k, it )
   {
     onDownPaths.push( it.path );
-    return it.result;
+    return !it.result ? _.dont : it.result;
   }
 
   /* */

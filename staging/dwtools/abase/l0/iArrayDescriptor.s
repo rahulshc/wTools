@@ -2,9 +2,9 @@
 
 'use strict';
 
-var _global = _global_;
-var _ = _global.wTools;
-var Self = _global.wTools;
+let _global = _global_;
+let _ = _global.wTools;
+let Self = _global.wTools;
 
 _.assert( !_.Array );
 _.assert( !_.array );
@@ -15,14 +15,14 @@ _.assert( !_.withArray );
 function _arrayNameSpaceApplyTo( dst,def )
 {
 
-  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.mapOwnKey( dst,'withArray' ) );
   _.assert( !_.mapOwnKey( dst,'array' ) );
   _.assert( !!ArrayNameSpaces[ def ] );
 
   dst.withArray = Object.create( null );
 
-  for( var d in ArrayNameSpaces )
+  for( let d in ArrayNameSpaces )
   {
     dst.withArray[ d ] = Object.create( dst );
     _.mapExtend( dst.withArray[ d ], ArrayNameSpaces[ d ] );
@@ -40,8 +40,8 @@ function _arrayNameSpaceApplyTo( dst,def )
 function _declare( nameSpace )
 {
 
-var ArrayType = nameSpace.ArrayType;
-var ArrayName = nameSpace.ArrayName;
+let ArrayType = nameSpace.ArrayType;
+let ArrayName = nameSpace.ArrayName;
 
 nameSpace = _.mapExtend( null,nameSpace );
 
@@ -51,7 +51,7 @@ function makeSimilar( src,length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  var result = _.longMakeSimilar( src,length );
+  let result = _.longMakeSimilar( src,length );
 
   return result;
 }
@@ -67,7 +67,7 @@ function makeArrayOfLength( length )
   _.assert( length === undefined || length >= 0 );
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  var result = new this.array.ArrayType( length );
+  let result = new this.array.ArrayType( length );
 
   return result;
 }
@@ -82,10 +82,10 @@ function makeArrayOfLengthZeroed( length )
   _.assert( length === undefined || length >= 0 );
   _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  var result = new this.array.ArrayType( length );
+  let result = new this.array.ArrayType( length );
 
   if( this.array.ArrayType === Array )
-  for( var i = 0 ; i < length ; i++ )
+  for( let i = 0 ; i < length ; i++ )
   result[ i ] = 0;
 
   return result;
@@ -96,12 +96,12 @@ function makeArrayOfLengthZeroed( length )
 function arrayFromCoercing( src )
 {
   _.assert( _.longIs( src ) );
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( src.constructor === this.array.ArrayType )
   return src;
 
-  var result;
+  let result;
 
   if( this.array.ArrayType === Array )
   result = new( _.routineJoin( this.array.ArrayType, this.array.ArrayType, src ) );
@@ -115,7 +115,7 @@ function arrayFromCoercing( src )
 //
 // --
 
-var Extend =
+let Extend =
 {
 
   makeSimilar : makeSimilar,
@@ -142,7 +142,7 @@ return nameSpace;
 //
 // --
 
-var _ArrayNameSpaces =
+let _ArrayNameSpaces =
 [
   { ArrayType : Float32Array, ArrayName : 'Float32' },
   { ArrayType : Uint32Array, ArrayName : 'Wrd32' },
@@ -159,11 +159,11 @@ _.assert( !_.Array );
 _.assert( !_.array );
 _.assert( !_.withArray );
 
-var ArrayNameSpaces = Object.create( null );
+let ArrayNameSpaces = Object.create( null );
 
 _._arrayNameSpaceApplyTo = _arrayNameSpaceApplyTo;
 
-for( var d = 0 ; d < _ArrayNameSpaces.length ; d++ )
+for( let d = 0 ; d < _ArrayNameSpaces.length ; d++ )
 _declare( _ArrayNameSpaces[ d ] );
 
 _arrayNameSpaceApplyTo( _,'Array' );

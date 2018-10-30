@@ -26,7 +26,7 @@ __include = _global._remoteRequire;
 function usePath( src )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) );
 
   if( _.path && _.path.refine )
@@ -45,7 +45,7 @@ function usePathGlobally( paths )
   if( _.strIs( paths ) )
   paths = [ paths ];
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( _.fileProvider && _.path.refine )
@@ -65,7 +65,7 @@ function usePathGlobally( paths )
 function _usePathGlobally( _module,paths,visited )
 {
 
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )
@@ -91,7 +91,7 @@ function _usePathGlobally( _module,paths,visited )
 function _usePathGloballyChildren( _module,paths,visited )
 {
 
-  _.assert( arguments.length === 3, 'expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )
@@ -113,7 +113,7 @@ function _usePathGloballyChildren( _module,paths,visited )
 function _includeWithRequireAct( src )
 {
 
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ),'include expects string' );
 
   /* console.log( '_includeWithRequireAct', '"' + src + '"' ); */
@@ -137,7 +137,7 @@ function _includeWithRequireAct( src )
 
 function _includeAct( src )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) );
 
   var handler;
@@ -176,7 +176,7 @@ function _includeAct( src )
 
 function _includeAnyAct( srcs )
 {
-  _.assert( arguments.length === 1, 'expects single argument' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longIs( srcs ) );
 
   /* */
