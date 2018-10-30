@@ -7712,6 +7712,11 @@ function arrayRemoveArray( test )
   test.identical( dst, [ ] );
   test.identical( got, dst );
 
+  var dst = [ 1, 1, 1 ];
+  var got = _.arrayRemoveArray( dst, [ 1 ] );
+  test.identical( dst, [ ] );
+  test.identical( got, dst );
+
   test.case = 'array has undefined';
   var dst = [ 1 ];
   var got = _.arrayRemoveArray( dst, [ undefined, 2 ] );
@@ -8715,6 +8720,88 @@ function arrayRemovedAll( test )
 
 //
 
+function arrayRemoveDuplicates( test )
+{
+  test.case = 'empty';
+
+  var dst = [];
+  var got = _.arrayRemoveDuplicates( dst );
+  var expected = [];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'No duplicates - One element';
+
+  var dst = [ 1 ];
+  var got = _.arrayRemoveDuplicates( dst );
+  var expected = [ 1 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'No duplicates - Several elements';
+
+  var dst = [ 1, 2, 3, '4', '5' ];
+  var got = _.arrayRemoveDuplicates( dst );
+  var expected = [ 1, 2, 3, '4', '5' ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'One duplicated element';
+
+  var dst = [ 1, 2, 2 ];
+  var got = _.arrayRemoveDuplicates( dst );
+  var expected = [ 1, 2 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'One duplicated element - Several elements';
+
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemoveDuplicates( dst );
+  var expected = [ 1, 2 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'Several duplicates several times';
+
+  var dst = [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ];
+  var got = _.arrayRemoveDuplicates( dst );
+  var expected = [ 1, 2, 3, '4', 5 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoveDuplicates();
+  })
+
+  test.case = 'more than two args';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoveDuplicates( [ 1 ], 1, 1 );
+  })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoveDuplicates( 1 );
+  })
+
+  test.case = 'second arg is not a function';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoveDuplicates( 1, 1 );
+  })
+}
+
+//
+
 function arrayFlatten( test )
 {
   test.case = 'make array flat, dst is empty';
@@ -9288,9 +9375,8 @@ function arrayReplaceOnce( test )
   test.identical( got, expected );
 
   test.case = 'fourth element';
-  var got = _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
-  var expected = [ true, true, true, true, true ];
-  test.identical( got, expected );
+  var got = _.arrayReplaceOnce( [ true, true, true, true, false, false ], false, true );
+  var expected = [ true, true, true, true, true, false ];
 
   test.case = 'element not exists';
   var got = _.arrayReplaceOnce( [ 1,2,3 ], [ 1 ], [ 4 ] );
@@ -12211,6 +12297,8 @@ var Self =
     arrayRemoveAll : arrayRemoveAll,
     // arrayRemoveAll : arrayRemoveAll,
     arrayRemovedAll : arrayRemovedAll,
+
+    arrayRemoveDuplicates : arrayRemoveDuplicates,
 
     // array flatten
 

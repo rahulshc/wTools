@@ -4734,36 +4734,21 @@ function arrayRemoveDuplicates( dstArray, onEvaluate )
 
   for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
   {
-    logger.log('DST', dstArray)
     let element1 = onEvaluate( dstArray[ i1 ] );
-    logger.log( 'E1', element1, 'in', i1 )
-    logger.log( 'found index', found.indexOf( element1 ) )
-    if( found.indexOf( element1 ) === -1 )
+
+    for( let i2 = i1 + 1 ; i2 < dstArray.length ; i2++ )
     {
-      found.push( element1 );
-    }
-    else
-    {
-      for( let i2 = i1 + 1 ; i2 < dstArray.length ; i2++ )
+
+      let element2 = onEvaluate( dstArray[ i2 ] );
+
+      if( element1 === element2 )
       {
-
-        let element2 = onEvaluate( dstArray[ i2 ] );
-        if( found.indexOf( element2 ) !== -1 )
-        continue;
-
-        logger.log( 'E2', element2, 'in', dstArray.indexOf( element2, i2 ), 'as', element1 )
-        if( element1 === element2 )
-        {
-          let index = dstArray.indexOf( element2, i2 );
-          dstArray.splice( index, 1 );
-          found.push( element1 );
-          logger.log('newDST', dstArray)
-        }
-
+        let index = dstArray.indexOf( element2, i2 );
+        dstArray.splice( index, 1 );
+        found.push( element1 );
+        i2 = i2 - 1
       }
     }
-    logger.log('')
-
   }
 
   return dstArray;
