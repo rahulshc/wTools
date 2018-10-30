@@ -25,7 +25,6 @@ if( typeof module !== 'undefined' )
   var _ = _global_.wTools;
 
   _.include( 'wTesting' );
-  _.include( 'wConsequence' );
 
 
   /* qqq : what for _.include( 'wTesting' )? */
@@ -88,16 +87,10 @@ function consequenceLike( test )
 
   test.is( !_.consequenceLike() );
   test.is( !_.consequenceLike( {} ) );
-  if( _.Consequence )
-  {
-    test.is( _.consequenceLike( new _.Consequence() ) );
-    test.is( _.consequenceLike( _.Consequence() ) );
-  }
   test.is( _.consequenceLike( Promise.resolve( 0 ) ) );
 
   var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
   test.is( _.consequenceLike( promise ) );
-  test.is( _.consequenceLike( _.Consequence.From( promise ) ) );
 
 }
 
