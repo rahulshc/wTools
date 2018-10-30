@@ -487,7 +487,7 @@ function _routinesCompose_body( o )
       _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
       let routine = elements[ k ];
       let r = routine.apply( this, args );
-      _.assert( r !== false && r !== undefined, 'Temporally forbidden type of result', r );
+      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
       _.assert( !_.argumentsArrayIs( r ) );
       if( r !== undefined )
       _.arrayAppendUnrolling( result, r );
