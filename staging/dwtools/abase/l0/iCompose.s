@@ -26,7 +26,7 @@ function originaChainer( args, result, op, k )
 function originalWithDontChainer( args, result, op, k )
 {
   _.assert( result !== false );
-  _.assert( result !== false /* && result !== undefined */ );
+  _.assert( result !== false && result !== undefined );
   if( result === _.dont )
   return _.dont;
   // return undefined;
@@ -37,7 +37,7 @@ function originalWithDontChainer( args, result, op, k )
 
 function chainingChainer( args, result, op, k )
 {
-  _.assert( result !== false /* && result !== undefined */ );
+  _.assert( result !== false && result !== undefined );
   if( result === undefined )
   return args;
   if( result === _.dont )
@@ -75,7 +75,7 @@ function allSupervisor( self, args, act, op )
 
 function chainingSupervisor( self, args, act, op )
 {
-  let result = act.apply( self, args );
+  let result = routine.apply( this, arguments );
   if( result[ result.length-1 ] === _.dont )
   result.pop();
   return result;

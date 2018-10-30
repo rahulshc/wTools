@@ -647,9 +647,9 @@ function routinesComposeEvery( test )
   var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
   var composition = _.routinesComposeEvery( routines );
   var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16,160 ];
+  var expected = [ 1,2,3,16,128 ];
   test.identical( got, expected );
-  test.identical( counter, 160 );
+  test.identical( counter, 128 );
 
   test.case = 'last nothing';
 
@@ -679,7 +679,7 @@ function routinesComposeEvery( test )
   debugger;
   var got = composition( 1,2,3 );
   debugger;
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected );
   test.identical( counter, 16 );
 
