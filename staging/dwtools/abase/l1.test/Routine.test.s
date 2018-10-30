@@ -676,10 +676,8 @@ function routinesComposeAll( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
   var composition = _.routinesComposeAll( routines );
-  debugger;
   var got = composition( 1,2,3 );
-  debugger;
-  var expected = undefined;
+  var expected = false;
   test.identical( got, expected );
   test.identical( counter, 16 );
 

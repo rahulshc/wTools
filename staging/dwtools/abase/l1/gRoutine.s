@@ -493,7 +493,7 @@ function _routinesCompose_body( o )
       _.arrayAppendUnrolling( result, r );
       // args = chainer( r, k, args, o );
       args = chainer( args, r, o, k );
-      _.assert( args !== undefined );
+      _.assert( args !== undefined && args !== false );
       // if( args === undefined )
       if( args === _.dont )
       break;
@@ -638,11 +638,11 @@ routinesComposeAll.pre = _routinesComposeWithSingleArgument_pre;
 routinesComposeAll.body = _routinesCompose_body;
 
 var defaults = routinesComposeAll.defaults = Object.create( routinesCompose.defaults );
-defaults.chainer = _.compose.chainer.chaining;
-defaults.supervisor = _.compose.supervisor.all;
+defaults.chainer = _.compose.chainer.composeAll;
+defaults.supervisor = _.compose.supervisor.composeAll;
 
 _.assert( _.routineIs( _.compose.chainer.originalWithDont ) );
-_.assert( _.routineIs( _.compose.supervisor.all ) );
+_.assert( _.routineIs( _.compose.supervisor.composeAll ) );
 
 //
 //
