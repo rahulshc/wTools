@@ -461,6 +461,84 @@ function strRemoveEnd( src, end )
 
 //
 
+//
+
+function _strRemoved( srcStr, insStr )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
+  let result = srcStr;
+  debugger;
+
+  if( !_.longIs( insStr ) )
+  {
+    result = result.replace( insStr, '' );
+  }
+  else
+  {
+    for( let i = 0; i < insStr.length; i++ )
+    {
+      result = result.replace( insStr[ i ], '' );
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+* Finds substring or regexp ( insStr ) occurrences from the source string ( srcStr ) and removes them.
+* Returns original string if source( src ) does not have occurrence of ( insStr ).
+*
+* @param { String } srcStr - Source string to parse.
+* @param { String } insStr - String/RegExp that is to be dropped.
+* @returns { String } Returns string with result of substring removement.
+*
+* @example
+* //returns ource tring
+* _.strRemove( 'source string','s' );
+*
+* @example
+* //returns example
+* _.strRemove( 'example','s' );
+*
+* @function strRemove
+* @throws { Exception } Throws a exception if( srcStr ) is not a String.
+* @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
+* @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+* @memberof wTools
+*
+*/
+
+function strRemove( srcStr, insStr )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.longIs( srcStr ) || _.strIs( srcStr ), 'expects string or array of strings {-src-}' );
+  _.assert( _.longIs( insStr ) || _.strIs( insStr ) || _.regexpIs( insStr ), 'expects string/regexp or array of strings/regexps {-begin-}' );
+
+  let result = [];
+  let srcIsArray = _.longIs( srcStr );
+
+  if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
+  return _._strRemoved( srcStr, insStr );
+
+  srcStr = _.arrayAs( srcStr );
+
+  for( let s = 0; s < srcStr.length; s++ )
+  {
+    let src = srcStr[ s ];
+    result[ s ] = _._strRemoved( src, insStr );
+  }
+
+  if( !srcIsArray )
+  return result[ 0 ];
+
+  return result;
+}
+
+//
+
 /* qqq : begin could be regexp + coverage */
 
 function strReplaceBegin( src,begin,ins )
@@ -519,6 +597,93 @@ function strReplaceEnd( src,end,ins )
 
   return result;
 }
+
+//
+
+function _strReplaced( srcStr, insStr, subStr )
+{
+  _.assert( arguments.length === 3, 'expects exactly three arguments' );
+  _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
+
+  let result = srcStr;
+  debugger;
+
+  if( !_.longIs( insStr ) )
+  {
+    _.assert( _.strIs( subStr ), 'expects string {-sub-}' );
+
+    result = result.replace( insStr, subStr );
+  }
+  else
+  {
+    _.assert( insStr.length === subStr.length, 'Search and replace strings must have same length' );
+    for( let i = 0; i < insStr.length; i++ )
+    {
+      _.assert( _.strIs( subStr[ i ] ), 'expects string {-sub-}' );
+
+      result = result.replace( insStr[ i ], subStr[ i ] );
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+* Finds substring or regexp ( insStr ) occurrence from the source string ( srcStr ) and replaces them
+* with the subStr values.
+* Returns original string if source( src ) does not have occurrence of ( insStr ).
+*
+* @param { String } srcStr - Source string to parse.
+* @param { String } insStr - String/RegExp that is to be replaced.
+* @param { String } subStr - Replacement String/RegExp.
+* @returns { String } Returns string with result of substring replacement.
+*
+* @example
+* //returns Source string
+* _.strReplace( 'source string','s', 'S' );
+*
+* @example
+* //returns example
+* _.strReplace( 'example','s' );
+*
+* @function strReplace
+* @throws { Exception } Throws a exception if( srcStr ) is not a String.
+* @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
+* @throws { Exception } Throws a exception if( subStr ) is not a String.
+* @throws { Exception } Throws a exception if( arguments.length ) is not equal 3.
+* @memberof wTools
+*
+*/
+
+function strReplace( srcStr, insStr, subStr )
+{
+  _.assert( arguments.length === 3, 'expects exactly three arguments' );
+  _.assert( _.longIs( srcStr ) || _.strIs( srcStr ), 'expects string or array of strings {-src-}' );
+  _.assert( _.longIs( insStr ) || _.strIs( insStr ) || _.regexpIs( insStr ), 'expects string/regexp or array of strings/regexps {-begin-}' );
+  _.assert( _.longIs( subStr ) || _.strIs( subStr ), 'expects string or array of strings {-src-}' );
+
+  let result = [];
+  let srcIsArray = _.longIs( srcStr );
+
+  if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
+  return _._strReplaced( srcStr, insStr, subStr );
+
+  srcStr = _.arrayAs( srcStr );
+
+  for( let s = 0; s < srcStr.length; s++ )
+  {
+    let src = srcStr[ s ];
+    result[ s ] = _._strReplaced( src, insStr, subStr );
+  }
+
+  if( !srcIsArray )
+  return result[ 0 ];
+
+  return result;
+}
+
 
 //
 
@@ -4006,9 +4171,13 @@ let Proto =
   strRemoveBegin : strRemoveBegin,
   _strRemovedEnd : _strRemovedEnd,
   strRemoveEnd : strRemoveEnd,
+  _strRemoved : _strRemoved,
+  strRemove : strRemove,
 
   strReplaceBegin : strReplaceBegin,
   strReplaceEnd : strReplaceEnd,
+  _strReplaced : _strReplaced,
+  strReplace : strReplace,
 
   strPrependOnce : strPrependOnce,
   strAppendOnce : strAppendOnce,
