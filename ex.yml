@@ -1,28 +1,45 @@
 
-name : wTools
-description : Collection of routines for vector math
-keywords :
-- wTools
-- math
-- vector
-- dot product
-- convolution
+about :
 
-license : MIT
-author : Kostiantyn Wandalen <wanalen@willbe.so>
-contributors :
-- name : Kostiantyn Wandalen
-  email : wanalen@willbe.so>
-- name : Volodymyr M.
-  email : volodymyr.migdal@gmail.com
-- name : Ihor O.
-  email : iostashvxi@gmail.com
+  name : wTools
+  description : Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind
+  version : 0.8.283
+  enabled : 1
+  interpreters :
+  - node >= 6.0.0
+  - chrome >= 60.0.0
+  keywords :
+  - base
+  - basic
+  - core
+  - platform
+  - tools
+  - wTools
+  - wBase
+  - generic
 
-interpreter : node >= 6.0.0
-scripts :
-  test : wtest staging
-  make_doc : wdoc staging
-repository : git+https://github.com/Wandalen/wTools.git
-bugs : https://github.com/Wandalen/wTools/issues
-composition : ./im.yml
-registry : ./.wTools.wimex
+execution :
+
+  scripts :
+    test : wtest staging
+    docgen : wdocgen staging
+
+path :
+
+  repository : git+https://github.com/Wandalen/wTools.git
+  bugs : https://github.com/Wandalen/wTools/issues
+
+export :
+
+  .debug.raw :
+    default : 1
+    files : path:out.debug
+    settings :
+      debug : 1
+      raw : 1
+
+  .release.min :
+    files : path:out.release
+    settings :
+      debug : 0
+      raw : 0

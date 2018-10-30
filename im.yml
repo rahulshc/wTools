@@ -1,61 +1,126 @@
 
-module :
+submodule :
 
 path :
+
   proto : './proto'
-  debug : './staging'
-  release : './production'
+  out.debug : './out.debug'
+  out.release : './out.release'
 
-files :
+reflector :
 
-  'common' :
-    basePath : './proto'
-    srcPath : './dwtools'
-    filter :
-      mask :
+  .default.common :
+    srcFilter :
+      basePath : './proto'
+      maskAll :
         excludeAny :
-        - !regexp '/(^|\/)-/'
+        - !!js/regexp '/(^|\/)-/'
 
-  'staging.debug' :
-    inherit : common
-    filter :
-      mask :
+  .default.debug :
+    inherit : .default.common
+    srcFilter :
+      maskAll :
         excludeAny :
-        - !regexp '/\.release($|\.|\/)/i'
-        - !regexp '/\.production($|\.|\/)/i'
-        - !regexp '/(^|\/)-/'
+        - !!js/regexp '/\.release($|\.|\/)/i'
+        - !!js/regexp '/(^|\/)-/'
 
-  'staging.release' :
-    inherit : common
-    filter :
-      mask :
+  .default.release :
+    inherit : .default.common
+    srcFilter :
+      maskAll :
         excludeAny :
-        - !regexp '/\.debug($|\.|\/)/i'
-        - !regexp '/\.test($|\.|\/)/i'
-        - !regexp '/\.experiment($|\.|\/)/i'
-        - !regexp '/\.production($|\.|\/)/i'
-        - !regexp '/(^|\/)-/'
+        - !!js/regexp '/\.debug($|\.|\/)/i'
+        - !!js/regexp '/\.test($|\.|\/)/i'
+        - !!js/regexp '/\.experiment($|\.|\/)/i'
+        - !!js/regexp '/(^|\/)-/'
+
+  .current :
+    reflectMap :
+    - ./dwtools/abase/layer1
+    - ./dwtools/abase/layer2
+
+  .debug :
+    inherit :
+      - .default.debug
+      - .current
+
+  .release :
+    inherit :
+      - .default.release
+      - .current
+
+  grab.release :
+    reflectMap :
+      reflector:.release :
+      - path:out.release
+
+  grab.debug :
+    reflectMap :
+      reflector:.debug :
+      - path:out.debug
+
+  out.debug :
+    srcFilter :
+      basePath : .
+    reflectMap :
+      - path:out.debug
+
+  out.release :
+    srcFilter :
+      basePath : .
+    reflectMap :
+      - path:out.release
+
+step :
+
+  grab.debug :
+    inherit : grab
+    reflector : reflector:grab.debug
+  grab.release :
+    inherit : grab
+    reflector : reflector:grab.release
 
 build :
 
-  '.staging.debug' :
+  .debug :
     default : 1
     settings :
       debug : 1
-      staging : 1
-    composes :
-      StagingFiles : staging
-      wTools : staging
-      wProto : staging
-      wMathScalar : staging
+      raw : 1
+      release : 0
+      compiled : 0
+    steps :
+      - step:grab.debug
 
-  '.staging.release' :
-    default : 0
+  .debug.compiled :
+    settings :
+      debug : 1
+      raw : 0
+      release : 0
+      compiled : 1
+    steps :
+      - step:grab.debug
+
+  .release.raw :
     settings :
       debug : 0
-      staging : 1
-    composes :
-      StagingFiles : staging.release
-      wTools : staging.release
-      wProto : staging.release
-      wMathScalar : staging.release
+      raw : 1
+      release : 1
+      compiled : 0
+    steps :
+      - step:grab.release
+
+  .release.compiled :
+    settings :
+      debug : 0
+      raw : 0
+      release : 1
+      compiled : 1
+    steps :
+      - step:grab.release
+
+  all :
+    steps :
+      - concurrent :
+        - build:.debug
+        - build:.release.compiled

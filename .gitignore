@@ -6,7 +6,6 @@
 *.bat
 build
 builder
-proto
 html.build.coffee
 node_modules
 package-lock.json
