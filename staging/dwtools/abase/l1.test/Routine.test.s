@@ -482,7 +482,7 @@ function routinesCompose( test )
 
   function _break()
   {
-    return _.dont;
+    return undefined;
   }
 
   function chainer1( args, result, o, k )
@@ -538,7 +538,7 @@ function routinesCompose( test )
   var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
   var composition = _.routinesCompose( routines, chainer1 );
   var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16,_.dont ];
+  var expected = [ 1,2,3,16 ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
@@ -582,7 +582,7 @@ function routinesCompose( test )
   var routines = [ null, routineNotUnrolling, null, _break, null, r2, null ];
   var composition = _.routinesCompose( routines, chainer1 );
   var got = composition( 1,2,3 );
-  var expected = [ [ 1,2,3,16 ],_.dont ];
+  var expected = [ [ 1,2,3,16 ] ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
