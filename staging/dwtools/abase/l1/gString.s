@@ -562,6 +562,7 @@ _strIsolate.defaults =
 {
   src : null,
   delimeter : ' ',
+  quoting : null,
   left : 1,
   number : 1,
   none : 1,
@@ -609,6 +610,7 @@ _strIsolateBeginOrNone_body.defaults =
   src : null,
   delimeter : ' ',
   number : 1,
+  quoting : null,
 }
 
 // let strIsolateBeginOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
@@ -655,6 +657,7 @@ _strIsolateEndOrNone_body.defaults =
   src : null,
   delimeter : ' ',
   number : 1,
+  quoting : null,
 }
 
 // let strIsolateEndOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
@@ -683,6 +686,7 @@ _strIsolateEndOrAll_body.defaults =
   src : null,
   delimeter : ' ',
   number : 1,
+  quoting : null,
 }
 
 // let strIsolateEndOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
@@ -711,6 +715,7 @@ _strIsolateBeginOrAll_body.defaults =
   src : null,
   delimeter : ' ',
   number : 1,
+  quoting : null,
 }
 
 // let strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
@@ -1198,6 +1203,7 @@ let Fields =
 // --
 // routines
 // --
+
 
 let Routines =
 {
