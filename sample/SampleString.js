@@ -5,7 +5,9 @@ var _ = wTools;
 
 
 
-got = _.path.s.name( [ '‪C:/Users/pabel/Desktop/Trabajo/cara.jpg', '‪C:/Users/pabel/Desktop/Trabajo/cara.jpg' ] );
-console.log( got );
-got = _.strStripRight(   '   a   '   );
-console.log( got );
+let str = 'exexample';
+let ins = 'ex';
+let sub = '1';
+
+let result = _.strReplaceBegin( [ 'exexample', 'example', 'ample' ], [ 'ex', 'am' ], [ '1', '2' ] ) 
+logger.log( result )
