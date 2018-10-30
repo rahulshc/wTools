@@ -39,7 +39,8 @@
   "bugs": {
     "url": "https://github.com/Wandalen/wTools/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "wTesting": "",
     "wFiles": "",

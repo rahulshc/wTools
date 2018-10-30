@@ -490,6 +490,219 @@ function strRemoveEnd( test )
 
 //
 
+function strRemove( test )
+{
+  var got,expected;
+
+  test.case = 'returns string with removed occurrence at the beggining';
+  var got = _.strRemove( 'One example','On' );
+  var expected = 'e example';
+  test.identical( got,expected );
+
+  test.case = 'returns string with removed occurrence at the end';
+  var got = _.strRemove( 'One example','ple' );
+  var expected = 'One exam';
+  test.identical( got,expected );
+
+  test.case = 'returns string with removed occurrence in the middle';
+  var got = _.strRemove( 'One example','ne examp' );
+  var expected = 'Ole';
+  test.identical( got,expected );
+
+  test.case = 'returns string with removed first occurrence';
+  var got = _.strRemove( 'One example','e' );
+  var expected = 'On example';
+  test.identical( got,expected );
+
+  test.case = 'returns original if no occurrence found ';
+  var got = _.strRemove( 'example','y' );
+  var expected = 'example';
+  test.identical( got,expected );
+
+  test.case = 'returns original if no occurrence found ';
+  var got = _.strRemove( 'example','ma' );
+  var expected = 'example';
+  test.identical( got,expected );
+
+  /* - */
+
+  test.case = 'other';
+
+  /**/
+
+  got = _.strRemove( '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( '', 'x' );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'cacbc', 'c' );
+  expected = 'acbc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'abca', 'bc' );
+  expected = 'aa';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'abc', 'x' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'abcabc', 'abc' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'abc', '' );
+  expected = 'abc';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'abc', [ 'a', 'b', 'c' ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'bcabca', [ '', 'a' ] );
+  expected = 'bcbca';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'abc', [ 'abc', 'a' ] );
+  expected = '';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( [ 'abc', 'bca', 'cab' ], [ 'a', 'd' ] );
+  expected = [ 'bc', 'bc', 'cb' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( [ 'abc', 'bca', 'cab' ], [ 'a', 'b', 'c' ] );
+  expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( [ 'a', 'b', 'c' ], [ 'x' ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( [ 'a', 'b', 'c' ], [ ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'RegExp';
+
+  /**/
+
+  got = _.strRemove( 'One example', /e/ );
+  expected = 'On example';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'le example', /le$/ );
+  expected = 'le examp';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'example', /^le/ );
+  expected = 'example';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'example', /\d/ );
+  expected = 'example';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'ex1am2pl3e4', /\d/ );
+  expected = 'exam2pl3e4';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'example', /[axe]/ );
+  expected = 'xample';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( 'example', /[a-z]/ );
+  expected = 'xample';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strRemove( [ 'example', '1example', 'example2', 'xam3ple' ], [ /\d/, /e/, /^3/ ] );
+  expected = [ 'xample', 'xample', 'xample', 'xampl' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strRemove( 1, '' ) );
+  test.shouldThrowError( () => _.strRemove( 'a', 1 ) );
+  test.shouldThrowError( () => _.strRemove() );
+  test.shouldThrowError( () => _.strRemove( undefined, undefined ) );
+  test.shouldThrowError( () => _.strRemove( null, null ) );
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strRemove( 'one','two','three' );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strRemove( );
+  });
+
+  test.case = 'first argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemove( 1,'second' );
+  });
+
+  test.case = 'second argument is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strRemove( 'first',2 );
+  });
+
+}
+
+//
+
 function strReplaceBegin( test )
 {
   /**/
@@ -706,6 +919,112 @@ function strReplaceEnd( test )
   test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'x', 1 ], 'a' ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'a' ], [ 1 ] ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'b', 'c' ], [ 'c' ] ) );
+}
+
+//
+
+function strReplace( test )
+{
+  /**/
+
+  var got,expected;
+
+  got = _.strReplace( '', '', '' );
+  expected = '';
+  test.identical( got, expected );
+
+  got = _.strReplace( '', '', 'a' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'a', 'a', 'b' );
+  expected = 'b';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'a', 'x', 'b' );
+  expected = 'a';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'bcabcabc', 'bc', 'c' );
+  expected = 'cabcabc';
+  test.identical( got, expected );
+
+  got = _.strReplace( [], '', '' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'aaa', 'ba', 'c' ], 'a', 'c' );
+  expected = [ 'caa', 'bc', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'abc', 'cab', 'cba' ], [ 'a', 'b', 'c' ], [ 'c', 'c', 'c' ] );
+  expected = [ 'ccc', 'ccc', 'ccc' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'x', 'y', 'z' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'ab', 'bc', 'ca' ], [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'xy', 'yz', 'zx' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'aa', 'bb', 'cc' ], [ 'y', 'z', 'c' ], [ 'x', 'y', 'z' ] );
+  expected = [ 'aa', 'bb', 'zc' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'a', 'b', 'c' ], [ 'x', 'y', 'z' ], [ '1', '2', '3' ] );
+  expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'a', 'bab', 'ca' ], 'a', 'x' );
+  expected = [ 'x', 'bxb', 'cx' ];
+  test.identical( got, expected );
+
+  /**/
+
+  test.case = 'RegExp';
+
+  /**/
+
+  got = _.strReplace( 'example', /ple/, 'en' );
+  expected = 'examen';
+  test.identical( got, expected );
+
+  got = _.strReplace( 'example', /^le/, 'no' );
+  expected = 'example';
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'example', 'lex11ical' ], [ /^le/, /ex$/, /\d{2}/ ], [ 'a', 'b', 'en' ]  );
+  expected = [ 'example', 'axenical' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'example', 'lexical' ], [ /al$/, /^ex/ ], [ '1', '2' ] );
+  expected = [ '2ample', 'lexic1' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ 'example1', '3example', 'exam4ple' ], /\d/, '2' );
+  expected = [ 'example2', '2example', 'exam2ple' ];
+  test.identical( got, expected );
+
+  got = _.strReplace( [ '3example', '1example', 'example2', 'exam2ple' ], [ /\d/, /e/, /^3/ ], [ '3', '2', '1' ]  );
+  expected = [ '12xample', '12xample', '2xample3', '2xam3ple' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.strReplace() );
+  test.shouldThrowError( () => _.strReplace( 1, '', '' ) );
+  test.shouldThrowError( () => _.strReplace( '' ) );
+  test.shouldThrowError( () => _.strReplace( 1, '', '', '' ) );
+  test.shouldThrowError( () => _.strReplace( 'a', 1, '' ) );
+  test.shouldThrowError( () => _.strReplace( 'a', 'a', 1 ) );
+  test.shouldThrowError( () => _.strReplace( 'a', [ 'x', 1 ], 'a' ) );
+  test.shouldThrowError( () => _.strReplace( 'a', [ 'a' ], [ 1 ] ) );
+  test.shouldThrowError( () => _.strReplace( 'a', [ 'b', 'c' ], [ 'c' ] ) );
 }
 
 //
@@ -7948,9 +8267,11 @@ var Self =
 
     strRemoveBegin : strRemoveBegin,
     strRemoveEnd : strRemoveEnd,
+    strRemove : strRemove,
 
     strReplaceBegin : strReplaceBegin,
     strReplaceEnd : strReplaceEnd,
+    strReplace : strReplace,
 
     strPrependOnce : strPrependOnce,
     strAppendOnce : strAppendOnce,
@@ -7969,11 +8290,6 @@ var Self =
     strSplitNaive : strSplitNaive,
 
     strSplitStrNumber : strSplitStrNumber,
-
-    strIsolateBeginOrNone : strIsolateBeginOrNone,
-    strIsolateEndOrNone : strIsolateEndOrNone,
-    strIsolateEndOrAll : strIsolateEndOrAll,
-    strIsolateBeginOrAll : strIsolateBeginOrAll,
 
     strStrip : strStrip,
     strStripLeft : strStripLeft,
