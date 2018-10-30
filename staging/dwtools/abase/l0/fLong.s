@@ -6344,6 +6344,79 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
   return result;
 }
 
+//
+
+/**
+ * The arrayRemoveDuplicates( dstArray, onEvaluator ) routine returns the dstArray with the duplicated elements removed.
+ *
+ * @param { ArrayIs } dstArray - The source and destination array.
+ * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
+ *
+ * @example
+ * // returns [ 1, 2, 'abc', 4, true ]
+ * _.arrayRemoveDuplicates( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ *
+ * @example
+ * // [ 1, 2, 3, 4, 5 ]
+ * _.arrayRemoveDuplicates( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @returns { Number } - Returns the source array without the duplicated elements.
+ * @function arrayRemoveDuplicates
+ * @throws { Error } If passed arguments is less than one or more than two.
+ * @throws { Error } If the first argument is not an array.
+ * @throws { Error } If the second argument is not a Function.
+ * @memberof wTools
+ */
+
+function arrayRemoveDuplicates( dstArray, onEvaluate )
+{
+  let found = [];
+  onEvaluate = onEvaluate || function( e ){ return e };
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
+  _.assert( _.routineIs( onEvaluate ) );
+  _.assert( onEvaluate.length === 1 );
+
+  for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
+  {
+    logger.log('DST', dstArray)
+    let element1 = onEvaluate( dstArray[ i1 ] );
+    logger.log( 'E1', element1, 'in', i1 )
+    logger.log( 'found index', found.indexOf( element1 ) )
+    if( found.indexOf( element1 ) === -1 )
+    {
+      found.push( element1 );
+    }
+    else
+    {
+      for( let i2 = i1 + 1 ; i2 < dstArray.length ; i2++ )
+      {
+
+        let element2 = onEvaluate( dstArray[ i2 ] );
+        if( found.indexOf( element2 ) !== -1 )
+        continue;
+
+        logger.log( 'E2', element2, 'in', dstArray.indexOf( element2, i2 ), 'as', element1 )
+        if( element1 === element2 )
+        {
+          let index = dstArray.indexOf( element2, i2 );
+          dstArray.splice( index, 1 );
+          found.push( element1 );
+          logger.log('newDST', dstArray)
+        }
+
+      }
+    }
+    logger.log('')
+
+  }
+
+  return dstArray;
+}
+
+//
+
 // --
 // array flatten
 // --
@@ -7399,6 +7472,8 @@ let Routines =
 
   arrayRemoveAll : arrayRemoveAll,
   arrayRemovedAll : arrayRemovedAll,
+
+  arrayRemoveDuplicates : arrayRemoveDuplicates,
 
   // array flatten
 

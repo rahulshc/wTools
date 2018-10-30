@@ -2,9 +2,8 @@ if( typeof module !== 'undefined' )
 require( 'wTools' );
 var _ = wTools;
 
-var dst = [];
-result = _.arrayFlatten( dst, 1, 2, '3'  )
-console.log( result, dst );
+var dstArray = [ 0, 0, '1', 2, '1', 2, 0, 0, 'HI' ];
+let r = _.arrayRemoveDuplicates( dstArray );
 
-result = _.arrayFlatten( null, 1, 2, '3'  )
-console.log( result );
+logger.log( dstArray )
+logger.log( r )
