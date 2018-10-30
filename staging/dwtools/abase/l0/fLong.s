@@ -5017,6 +5017,15 @@ function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
+function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  let result = arrayReplacedOnce.apply( this, arguments );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  return result;
+}
+
+//
+
 function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
 {
   arrayReplacedArrayOnce.apply( this,arguments );
@@ -5039,6 +5048,7 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( ins ) );
   _.assert( _.longIs( sub ) );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  )
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -5775,7 +5785,7 @@ let Routines =
   arrayReplaceOnceStrictly : arrayReplaceOnceStrictly,
 
   arrayReplacedOnce : arrayReplacedOnce,
-  // arrayReplacedOnceStrictly : arrayReplacedOnceStrictly, /* qqq implement */
+  arrayReplacedOnceStrictly : arrayReplacedOnceStrictly, /* qqq implement */
 
   arrayReplaceArrayOnce : arrayReplaceArrayOnce,
   arrayReplaceArrayOnceStrictly : arrayReplaceArrayOnceStrictly,
