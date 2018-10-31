@@ -4060,6 +4060,10 @@ function arrayPrependOnceStrictly( test )
   var got = _.arrayPrependOnceStrictly( dst, [ 1 ] );
   test.identical( got, [ [ 1 ], 1 ] );
 
+  var dst = [ 1, 2, 2, 3, 3 ];
+  var got = _.arrayPrependOnceStrictly( dst, 0 );
+  test.identical( got, [ 0, 1, 2, 2, 3, 3 ] );
+
   test.case = 'equalizer 2 args';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
@@ -4467,6 +4471,11 @@ function arrayPrependArrayOnceStrictly( test )
   var dst = [ 1, 2, 3 ];
   var got = _.arrayPrependArrayOnceStrictly( dst, [ 4, 5 ] );
   test.identical( dst, [ 4, 5, 1, 2, 3 ] );
+  test.identical( got, dst );
+
+  var dst = [ 1, 2, 3, 1, 2, 3 ];
+  var got = _.arrayPrependArrayOnceStrictly( dst, [ 4, 5 ] );
+  test.identical( dst, [ 4, 5, 1, 2, 3, 1, 2, 3 ] );
   test.identical( got, dst );
 
   test.case = 'argument is undefined';
