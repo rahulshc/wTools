@@ -36,8 +36,7 @@ reflector :
 
   .current :
     reflectMap :
-    - ./dwtools/abase/layer1
-    - ./dwtools/abase/layer2
+    - .
 
   .debug :
     inherit :
@@ -51,13 +50,11 @@ reflector :
 
   grab.release :
     reflectMap :
-      reflector:.release :
-      - path:out.release
+      reflector:.release : path:out.release
 
   grab.debug :
     reflectMap :
-      reflector:.debug :
-      - path:out.debug
+      reflector:.debug : path:out.debug
 
   out.debug :
     srcFilter :

@@ -19,17 +19,17 @@
       "email": "iostashvxi@gmail.com"
     }
   ],
-  "main": "staging/dwtools/abase/Layer2.s",
+  "main": "out.debug/dwtools/abase/Layer2.s",
   "files": [
-    "staging/dwtools/abase/l0",
-    "staging/dwtools/abase/l1",
-    "staging/dwtools/abase/l2",
-    "staging/dwtools/abase/Layer0.s",
-    "staging/dwtools/abase/Layer1.s",
-    "staging/dwtools/abase/Layer2.s"
+    "out.debug/dwtools/abase/l0",
+    "out.debug/dwtools/abase/l1",
+    "out.debug/dwtools/abase/l2",
+    "out.debug/dwtools/abase/Layer0.s",
+    "out.debug/dwtools/abase/Layer1.s",
+    "out.debug/dwtools/abase/Layer2.s"
   ],
   "scripts": {
-    "test": "wtest staging",
+    "test": "wtest out.debug",
     "make_doc": "./doc.sh"
   },
   "repository": {
