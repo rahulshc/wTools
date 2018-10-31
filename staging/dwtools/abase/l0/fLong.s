@@ -3965,6 +3965,40 @@ function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
 //
 
 /**
+* The arrayAppendArray() routine adds one or more elements to the end of the (dst) array
+* and returns the new length of the array.
+*
+* It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
+* iterate over array-like object (arguments[]) and assigns to the (argument) each element,
+* checks, if (argument) is equal to the 'undefined'.
+* If true, it throws an Error.
+* If (argument) is an array-like.
+* If true, it merges the (argument) into the (result) array.
+* Otherwise, it adds element to the result.
+*
+* @param { Array } dst - Initial array.
+* @param {*} arguments[] - One or more argument(s) to add to the end of the (dst) array.
+*
+* @example
+* // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
+* let arr = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+*
+* @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
+* @function arrayAppendArray
+* @throws { Error } If the first argument is not an array.
+* @throws { Error } If type of the argument is equal undefined.
+* @memberof wTools
+*/
+
+function arrayAppendArray( dstArray, insArray )
+{
+  arrayAppendedArray.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+/**
  * The arrayAppendArrayOnce() routine returns an array of elements from (dst)
  * and appending only unique following arguments to the end.
  *
@@ -4039,40 +4073,6 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   return result;
-}
-
-//
-
-/**
- * The arrayAppendArray() routine adds one or more elements to the end of the (dst) array
- * and returns the new length of the array.
- *
- * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
- * iterate over array-like object (arguments[]) and assigns to the (argument) each element,
- * checks, if (argument) is equal to the 'undefined'.
- * If true, it throws an Error.
- * If (argument) is an array-like.
- * If true, it merges the (argument) into the (result) array.
- * Otherwise, it adds element to the result.
- *
- * @param { Array } dst - Initial array.
- * @param {*} arguments[] - One or more argument(s) to add to the end of the (dst) array.
- *
- * @example
- * // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
- * let arr = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
- *
- * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
- * @function arrayAppendArray
- * @throws { Error } If the first argument is not an array.
- * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools
- */
-
-function arrayAppendArray( dstArray, insArray )
-{
-  arrayAppendedArray.apply( this, arguments );
-  return dstArray;
 }
 
 //

@@ -6964,24 +6964,25 @@ function arraySetContainAll( src )
 */
 //
   /**
-   * The arraySetContainAll() routine returns true, if at least one of the following arrays (arguments[...]),
-   * contains all the same values as in the {-srcMap-} array.
+   * The arraySetContainAll() routine returns true, if all of the following arrays (arguments[...]),
+   * contain all the same values as in the {-srcMap-} array ( and no-one different ).
    *
    * @param { longIs } src - The source array.
    * @param { ...longIs } arguments[...] - The target array.
    *
    * @example
    * // returns true
+   * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 'b', 'c' ] );
+   *
+   * // returns false
    * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
    *
    * @example
    * // returns false
    * _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
    *
-   * @returns { boolean } Returns true, if at least one of the following arrays (arguments[...]),
-   * contains all the same values as in the {-srcMap-} array.
-   * If length of the {-srcMap-} is more than the next argument, it returns false.
-   * Otherwise, it returns false.
+   * @returns { boolean } Returns true, if all the following arrays (arguments[...]),
+   * contain all the same values as in the {-srcMap-} array.
    * @function arraySetContainAll
    * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
