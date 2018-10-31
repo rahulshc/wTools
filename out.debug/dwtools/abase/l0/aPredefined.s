@@ -86,11 +86,15 @@ if( !_realGlobal_.def  )
   _realGlobal_.def = Symbol.for( 'default' );
   _realGlobal_.nothing = Symbol.for( 'nothing' );
   _realGlobal_.dont = Symbol.for( 'dont' );
+  _realGlobal_.dontUp = Symbol.for( 'dontUp' );
+  _realGlobal_.dontSibling = Symbol.for( 'dontSibling' );
 }
 
 Self.def = _global_.def;
 Self.nothing = _global_.nothing;
 Self.dont = _global_.dont;
+Self.dontUp = _global_.dontUp;
+Self.dontSibling = _global_.dontSibling;
 
 // type aliases
 
