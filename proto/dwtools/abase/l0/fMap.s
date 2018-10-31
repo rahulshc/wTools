@@ -4186,7 +4186,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
   let l = arguments.length;
   let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
@@ -4261,7 +4261,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
   let l = arguments.length;
   let but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
@@ -4475,7 +4475,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
   let but = _.mapOnly( srcMap, screenMaps );
   let keys = Object.keys( but );

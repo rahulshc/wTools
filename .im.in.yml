@@ -11,7 +11,8 @@ reflector :
 
   .default.common :
     srcFilter :
-      basePath : './proto'
+      basePath : '.'
+      prefixPath : './proto'
       maskAll :
         excludeAny :
         - !!js/regexp '/(^|\/)-/'
@@ -81,7 +82,7 @@ build :
 
   .debug :
     default : 1
-    settings :
+    setting :
       debug : 1
       raw : 1
       release : 0
@@ -90,7 +91,7 @@ build :
       - step:grab.debug
 
   .debug.compiled :
-    settings :
+    setting :
       debug : 1
       raw : 0
       release : 0
@@ -99,7 +100,7 @@ build :
       - step:grab.debug
 
   .release.raw :
-    settings :
+    setting :
       debug : 0
       raw : 1
       release : 1
@@ -108,7 +109,7 @@ build :
       - step:grab.release
 
   .release.compiled :
-    settings :
+    setting :
       debug : 0
       raw : 0
       release : 1

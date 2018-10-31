@@ -3372,6 +3372,9 @@ function strConcat( srcs, o )
   _.assert( this.strConcat === strConcat );
   o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
 
+  if( _.routineIs( srcs ) )
+  return srcs();
+
   if( !_.arrayLike( srcs ) )
   srcs = [ srcs ];
 
