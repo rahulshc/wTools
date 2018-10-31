@@ -1886,7 +1886,7 @@ mapInvert.defaults =
 
 function mapInvertDroppingDuplicates( src,dst )
 {
-  let dst = dst || Object.create( null );
+  dst = dst || Object.create( null );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectLike( src ) );
