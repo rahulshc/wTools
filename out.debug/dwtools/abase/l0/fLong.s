@@ -4245,8 +4245,8 @@ function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
-  let index = _.arrayLeftIndex.apply( _, arguments );
-
+  let index = _.arrayLeftIndex.apply( this, arguments );
+  logger.log( index )
   let removedElements = 0;
 
   for( let i = 0; i < dstArray.length; i++ )
@@ -4255,8 +4255,9 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
     {
       dstArray.splice( index, 1 );
       removedElements = removedElements + 1;
+      i = i - 1 ;
     }
-    index = _.arrayLeftIndex.apply( _, arguments );
+    index = _.arrayLeftIndex.apply( this, arguments );
   }
   return removedElements;
 }
