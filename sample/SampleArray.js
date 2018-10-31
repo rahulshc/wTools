@@ -7,6 +7,6 @@ var onEqualize = function( a )
 {
   return a[ 0 ];
 }
-var got = _.arrayRemoveDuplicates( dst, onEqualize );
+var got = _.arrayMakeRandom( 3 );
 
 logger.log( got )
