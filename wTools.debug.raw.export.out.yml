@@ -4,27 +4,21 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.283
+  version: 0.8.287
   enabled: 1
   interpreters:
-    - node >= 6.0.0
+    - nodejs >= 6.0.0
     - chrome >= 60.0.0
+    - firefox >= 60.0.0
   keywords:
-    - base
-    - basic
-    - core
-    - platform
-    - tools
     - wTools
-    - wBase
-    - generic
 execution:
   scripts:
     test: wtest staging
     docgen: wdocgen staging
 exported:
   formatVersion: 1.0.0
-  version: 0.8.283
+  version: 0.8.287
   files:
     - ./out.debug
     - ./out.debug/dwtools
@@ -88,6 +82,8 @@ path:
   out.release: ./out.release
   repository: 'git+https://github.com/Wandalen/wTools.git'
   bugs: 'https://github.com/Wandalen/wTools/issues'
+  entry.debug: '{path::out.debug}/dwtools/abase/____'
+  entry.release: '{path::out.release}/dwtools/abase/____'
 submodule: {}
 reflector:
   .default.common:
@@ -101,7 +97,7 @@ reflector:
     srcFilter:
       maskAll:
         excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.release($|.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
       basePath: .
@@ -112,9 +108,9 @@ reflector:
     srcFilter:
       maskAll:
         excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.debug($|.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.test($|.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.experiment($|.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
       basePath: .
@@ -130,7 +126,7 @@ reflector:
     srcFilter:
       maskAll:
         excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.release($|.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
       basePath: .
@@ -144,9 +140,9 @@ reflector:
     srcFilter:
       maskAll:
         excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.debug($|.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.test($|.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.experiment($|.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
       basePath: .
@@ -160,9 +156,9 @@ reflector:
     srcFilter:
       maskAll:
         excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.debug($|.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.test($|.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.experiment($|.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
       basePath: .
@@ -173,30 +169,30 @@ reflector:
     srcFilter:
       maskAll:
         excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /.release($|.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
       basePath: .
       prefixPath: ./proto
   out.debug:
     reflectMap:
-      ./out.debug: true
+      'path:out.debug': true
     srcFilter:
       basePath: .
   out.release:
     reflectMap:
-      ./out.release: true
+      'path:out.release': true
     srcFilter:
       basePath: .
 step:
   grab.debug:
     setting:
-      reflector: 'reflector:grab.debug'
+      reflector: 'reflector::grab.debug'
     inherit:
       - grab
   grab.release:
     setting:
-      reflector: 'reflector:grab.release'
+      reflector: 'reflector::grab.release'
     inherit:
       - grab
 build:
@@ -207,7 +203,7 @@ build:
       release: 0
       compiled: 0
     steps:
-      - 'step:grab.debug'
+      - 'step::grab.debug'
     default: 1
   .debug.compiled:
     setting:
@@ -216,7 +212,7 @@ build:
       release: 0
       compiled: 1
     steps:
-      - 'step:grab.debug'
+      - 'step::grab.debug'
     default: 0
   .release.raw:
     setting:
@@ -225,7 +221,7 @@ build:
       release: 1
       compiled: 0
     steps:
-      - 'step:grab.release'
+      - 'step::grab.release'
     default: 0
   .release.compiled:
     setting:
@@ -234,31 +230,33 @@ build:
       release: 1
       compiled: 1
     steps:
-      - 'step:grab.release'
+      - 'step::grab.release'
     default: 0
   all:
     steps:
       - concurrent:
-          - 'build:.debug'
-          - 'build:.release.compiled'
+          - 'build::.debug'
+          - 'build::.release.compiled'
     default: 0
   .debug.raw.export:
     setting:
       debug: 1
       raw: 1
       export: 1
-      filesPath: 'path:out.debug'
     steps:
-      - 'build:.debug'
-      - 'step:export'
+      - 'build::.debug'
+      - 'step::export'
     default: 1
+    filesPath: 'path::out.debug'
+    entryPath: 'path::entry.debug'
   .release.compiled.export:
     setting:
       debug: 0
       raw: 0
       export: 1
-      filesPath: 'path:out.release'
     steps:
-      - 'build:.release.compiled'
-      - 'step:export'
+      - 'build::.release.compiled'
+      - 'step::export'
     default: 0
+    filesPath: 'path::out.release'
+    entryPath: 'path::entry.release'
