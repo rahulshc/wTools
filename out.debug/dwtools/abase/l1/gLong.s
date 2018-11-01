@@ -1345,7 +1345,7 @@ buffersSerialize.defaults =
 
 function buffersDeserialize( o )
 {
-  let o = o || Object.create( null );
+  o = o || Object.create( null );
   let store = o.store;
   let commonBuffer = store[ 'buffer' ];
 
