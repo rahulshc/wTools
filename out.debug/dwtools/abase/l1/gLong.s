@@ -1350,8 +1350,8 @@ function buffersDeserialize( o )
   let commonBuffer = store[ 'buffer' ];
 
   _.assertMapHasNoUndefine( o );
-  _.assertMapHasOnly( o,buffersDeserialize.defaults );
-  _.mapComplement( o,buffersDeserialize.defaults );
+  _.assertMapHasOnly( o, buffersDeserialize.defaults );
+  _.mapComplement( o, buffersDeserialize.defaults );
   _.assert( _.objectIs( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
 
