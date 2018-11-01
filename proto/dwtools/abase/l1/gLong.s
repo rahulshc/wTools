@@ -314,7 +314,7 @@ function bufferMakeSimilar( ins,src )
 
     if( ins.constructor === Array )
     {
-      result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+      result = new( _.constructorJoin( ins.constructor, src ) );
     }
     else if( _.routineIs( ins ) )
     {
@@ -1462,7 +1462,7 @@ function longMakeSimilar( ins,src )
     // debugger;
 
     if( ins.constructor === Array )
-    result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+    result = new( _.constructorJoin( ins.constructor, src ) );
     else if( _.routineIs( ins ) )
     {
       if( ins.prototype.constructor.name === 'Array' )
@@ -1525,7 +1525,7 @@ function longMakeSimilarZeroed( ins,src )
   //
   //   if( ins.constructor === Array )
   //   {
-  //     result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+  //     result = new( _.constructorJoin( ins.constructor, src ) );
   //   }
   //   else
   //   {
