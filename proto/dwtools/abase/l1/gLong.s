@@ -1215,7 +1215,7 @@ function buffersSerialize( o )
 {
   let self = this;
   let size = 0;
-  let o = o || Object.create( null );
+  o = o || Object.create( null );
 
   _.assertMapHasNoUndefine( o );
   _.assertMapHasOnly( o,buffersSerialize.defaults );
