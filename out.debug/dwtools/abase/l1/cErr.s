@@ -747,7 +747,8 @@ function diagnosticWatchFields( o )
   o = _.routineOptions( diagnosticWatchFields,o );
 
   if( o.names )
-  o.names = _.nameFielded( o.names );
+  o.names = o.names;
+  // o.names = _.nameFielded( o.names );
   else
   o.names = o.target;
 
