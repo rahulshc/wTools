@@ -2,10 +2,17 @@ if( typeof module !== 'undefined' )
 require( 'wTools' );
 var _ = wTools;
 
+var typedArray = new Uint8Array([1, 2, 3, 4, 5, 5 ]);
 
 // Input element
-var ins = [];
-var src = _.arrayFillWhole( Buffer.alloc( 5 ), 1 );
-logger.log('SRC', src)
-var got = _.longMakeSimilar( ins, src );
+var got = _.longRemoveDuplicates( typedArray );
 logger.log( 'result', got )
+
+function returnArgs( )
+{
+  let got = _.longRemoveDuplicates( arguments );
+  return got;
+}
+
+var got = returnArgs( 1, '2', 3 );
+logger.log( got );

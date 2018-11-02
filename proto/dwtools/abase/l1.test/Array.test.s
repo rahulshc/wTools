@@ -8861,10 +8861,174 @@ function arrayRemoveDuplicates( test )
     _.arrayRemoveDuplicates( 1 );
   })
 
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayRemoveDuplicates( new Uint8Array([1, 2, 3, 4, 5]) );
+  })
+
   test.case = 'second arg is not a function';
   test.shouldThrowError( function()
   {
     _.arrayRemoveDuplicates( 1, 1 );
+  })
+}
+
+//
+
+function longRemoveDuplicates( test )
+{
+
+  // dst is an array
+
+  test.case = 'empty';
+
+  var dst = [];
+  var got = _.longRemoveDuplicates( dst );
+  var expected = [];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'No duplicates - One element';
+
+  var dst = [ 1 ];
+  var got = _.longRemoveDuplicates( dst );
+  var expected = [ 1 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'No duplicates - Several elements';
+
+  var dst = [ 1, 2, 3, '4', '5' ];
+  var got = _.longRemoveDuplicates( dst );
+  var expected = [ 1, 2, 3, '4', '5' ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'One duplicated element';
+
+  var dst = [ 1, 2, 2 ];
+  var got = _.longRemoveDuplicates( dst );
+  var expected = [ 1, 2 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'One duplicated element - Several elements';
+
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.longRemoveDuplicates( dst );
+  var expected = [ 1, 2 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'Several duplicates several times';
+
+  var dst = [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ];
+  var got = _.longRemoveDuplicates( dst );
+  var expected = [ 1, 2, 3, '4', 5 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  // dst is a typed array
+
+  test.case = 'empty';
+
+  var dst =  new Uint8Array( 0 );
+  var got = _.longRemoveDuplicates( dst );
+  var expected = new Uint8Array( [] );
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'No duplicates - One element';
+
+  var dst = new Uint8ClampedArray( [ 300 ] );
+  var got = _.longRemoveDuplicates( dst );
+  var expected = new Uint8ClampedArray( [ 255 ] );
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'No duplicates - Several elements';
+
+  var dst = new Int8Array( [ 1, 2, 3, '4', '5' ] );
+  var got = _.longRemoveDuplicates( dst );
+  var expected = new Int8Array( [ 1, 2, 3, '4', '5' ] );
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'One duplicated element - new returned instance';
+
+  var dst = new Int8Array( [ 1, 2, 2 ] );
+  var got = _.longRemoveDuplicates( dst );
+  var expected = new Int8Array( [ 1, 2 ] );
+  test.identical( got, expected );
+  test.is( dst !== got );
+
+  test.case = 'One duplicated element - Several elements';
+
+  var dst =  new Uint8ClampedArray( [ -12, 2, - 1, 0, - 11 ] );
+  var got = _.longRemoveDuplicates( dst );
+  var expected =  new Uint8ClampedArray( [ 0, 2 ] );
+  test.identical( got, expected );
+  test.is( dst !== got );
+
+  test.case = 'Several duplicates several times';
+
+  var dst = new Int8Array( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
+  var got = _.longRemoveDuplicates( dst );
+  var expected = new Int8Array( [ 1, 2, 3, '4', 5 ] );
+  test.identical( got, expected );
+  test.is( dst !== got );
+
+    // dst is arguments
+
+  function returnArgs( )
+  {
+    let got = _.longRemoveDuplicates( arguments );
+    return got;
+  }
+
+  test.case = 'No duplicates';
+
+  var got = returnArgs( 1, '2', 3 );
+  var expected = [ 1, '2', 3 ];
+  test.identical( got.length, expected.length );
+  test.identical( got[ 0 ], expected[ 0 ] );
+  test.identical( got[ 1 ], expected[ 1 ] );
+  test.identical( got[ 2 ], expected[ 2 ] );
+
+  test.case = 'Duplicates';
+
+  var got = returnArgs( 1, '2', 3, 1, '2', 3 );
+  var expected = [ 1, '2', 3 ];
+  test.identical( got, expected );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.longRemoveDuplicates();
+  })
+
+  test.case = 'more than two args';
+  test.shouldThrowError( function()
+  {
+    _.longRemoveDuplicates( [ 1 ], 1, 1 );
+  })
+
+  test.case = 'dst is not an long';
+  test.shouldThrowError( function()
+  {
+    _.longRemoveDuplicates( 1 );
+  })
+
+  test.case = 'second arg is not a function';
+  test.shouldThrowError( function()
+  {
+    _.longRemoveDuplicates( 1, 1 );
   })
 }
 
@@ -12353,6 +12517,7 @@ var Self =
     arrayRemovedAll : arrayRemovedAll,
 
     arrayRemoveDuplicates : arrayRemoveDuplicates,
+    longRemoveDuplicates : longRemoveDuplicates,
 
     // array flatten
 

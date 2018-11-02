@@ -4756,6 +4756,60 @@ function arrayRemoveDuplicates( dstArray, onEvaluate )
 
 //
 
+/**
+ * The longRemoveDuplicates( dstLong, onEvaluator ) routine returns the dstlong with the duplicated elements removed.
+ * The dstLong instance will be returned when possible, if not a new instance of the same type is created.
+ *
+ * @param { longIs } dstLong - The source and destination long.
+ * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
+ *
+ * @example
+ * // returns [ 1, 2, 'abc', 4, true ]
+ * _.longRemoveDuplicates( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ *
+ * @example
+ * // [ 1, 2, 3, 4, 5 ]
+ * _.longRemoveDuplicates( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @returns { Number } - Returns the source long without the duplicated elements.
+ * @function longRemoveDuplicates
+ * @throws { Error } If passed arguments is less than one or more than two.
+ * @throws { Error } If the first argument is not an long.
+ * @throws { Error } If the second argument is not a Function.
+ * @memberof wTools
+ */
+
+function longRemoveDuplicates( dstLong, onEvaluate )
+{
+  onEvaluate = onEvaluate || function( e ){ return e };
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+  _.assert( _.routineIs( onEvaluate ) );
+  _.assert( onEvaluate.length === 1 );
+
+
+  if( _.arrayIs( dstLong ) )
+  {
+    _.arrayRemoveDuplicates( dstLong, onEvaluate )
+    return dstLong;
+  }
+
+  let array = Array.from( dstLong );
+  _.arrayRemoveDuplicates( array, onEvaluate )
+
+  if( array.length === dstLong.length )
+  {
+    return dstLong;
+  }
+  else
+  {
+    return new dstLong.constructor( array );
+  }
+}
+
+//
+
 // --
 // array flatten
 // --
@@ -5009,6 +5063,12 @@ function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
+
+  if( _.longIs( ins ) )
+  {
+    _.assert( _.longIs( sub ) );
+    _.assert( ins.length === sub.length );
+  }
 
   let index = -1;
 
@@ -5775,6 +5835,7 @@ let Routines =
   arrayRemovedAll : arrayRemovedAll,
 
   arrayRemoveDuplicates : arrayRemoveDuplicates,
+  longRemoveDuplicates : longRemoveDuplicates,
 
   // array flatten
 
