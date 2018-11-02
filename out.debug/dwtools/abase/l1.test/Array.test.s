@@ -757,7 +757,7 @@ function longMakeSimilar( test )
 
   var ins = [];
   var src = _.arrayFillWhole( Buffer.alloc( 5 ), 1 );
-  var got = _.longMakeSimilar( ins, src );
+  var got = _.longMakeSimilar( ins, Array.from( src ) );
   test.identical( got.length, 5 );
   test.is( _.arrayIs( got ) );
   test.identical( got, [ 1,1,1,1,1 ] );
@@ -819,7 +819,7 @@ function longMakeSimilar( test )
   var src = Buffer.alloc(10);
   for( var i = 0; i < src.length; i++ )
   src[ i ] = i;
-  var got = _.longMakeSimilar( [], src );
+  var got = _.longMakeSimilar( [], Array.from( src ) );
   test.is( _.arrayIs( got ) );
   test.identical( got.length, src.length );
   var isEqual = true;
@@ -12198,6 +12198,7 @@ var Self =
 
   name : 'Tools/base/layer1/Array',
   silencing : 1,
+  enabled : 1,
   // verbosity : 7,
   // routine : 'bufferRelen',
 

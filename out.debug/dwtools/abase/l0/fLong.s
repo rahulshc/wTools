@@ -4246,7 +4246,6 @@ function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
   let index = _.arrayLeftIndex.apply( this, arguments );
-  
   let removedElements = 0;
 
   for( let i = 0; i < dstArray.length; i++ )
