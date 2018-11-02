@@ -8838,6 +8838,28 @@ function arrayRemoveDuplicates( test )
   test.identical( dst, expected );
   test.identical( got, expected );
 
+  test.case = 'onEqualize';
+  var dst = [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ];
+
+  var got  = _.arrayRemoveDuplicates( dst, function( a, b )
+  {
+    return  a === b;
+  });
+  var expected = [ 1, 2, 3, '4', 5 ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
+  test.case = 'Evaluator';
+  var dst = [ { 'num' : 0 }, { 'num' : 1 }, { 'num' : 2 }, { 'num' : 0 } ];
+
+  var got  = _.arrayRemoveDuplicates( dst, function( a )
+  {
+    return  a.num;
+  });
+  var expected = [ { 'num' : 0 }, { 'num' : 1 }, { 'num' : 2 } ];
+  test.identical( dst, expected );
+  test.identical( got, expected );
+
   //
 
   if( !Config.debug )
@@ -9001,6 +9023,30 @@ function longRemoveDuplicates( test )
   var got = returnArgs( 1, '2', 3, 1, '2', 3 );
   var expected = [ 1, '2', 3 ];
   test.identical( got, expected );
+
+  // Evaluators
+
+  test.case = 'onEqualize';
+  var dst =  new Int8Array( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
+
+  var got  = _.longRemoveDuplicates( dst, function( a, b )
+  {
+    return  a === b;
+  });
+  var expected =  new Int8Array( [ 1, 2, 3, '4', 5 ] );
+  test.identical( got, expected );
+  test.is( dst !== got );
+
+  test.case = 'Evaluator';
+  var dst =  new Float32Array( [ 1, 1.1, 1.48483, 1.5782920, 1.9 ] );
+
+  var got  = _.longRemoveDuplicates( dst, function( a )
+  {
+    return  Math.floor( a );;
+  });
+  var expected =  new Float32Array( [ 1 ] );
+  test.identical( got, expected );
+  test.is( dst !== got );
 
   //
 

@@ -4722,32 +4722,20 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
  * @memberof wTools
  */
 
-function arrayRemoveDuplicates( dstArray, onEvaluate )
+function arrayRemoveDuplicates( dstArray, evaluator1, evaluator2 )
 {
-  let found = [];
-  onEvaluate = onEvaluate || function( e ){ return e };
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( 1 <= arguments.length || arguments.length <= 3 );
   _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
-  _.assert( _.routineIs( onEvaluate ) );
-  _.assert( onEvaluate.length === 1 );
 
   for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
   {
-    let element1 = onEvaluate( dstArray[ i1 ] );
+    let element1 = dstArray[ i1 ];
+    let index = _.arrayRightIndex( dstArray, element1, evaluator1, evaluator2 );
 
-    for( let i2 = i1 + 1 ; i2 < dstArray.length ; i2++ )
+    while ( index !== i1 )
     {
-
-      let element2 = onEvaluate( dstArray[ i2 ] );
-
-      if( element1 === element2 )
-      {
-        let index = dstArray.indexOf( element2, i2 );
-        dstArray.splice( index, 1 );
-        found.push( element1 );
-        i2 = i2 - 1
-      }
+      dstArray.splice( index, 1 );
+      index = _.arrayRightIndex( dstArray, element1, evaluator1, evaluator2 );
     }
   }
 
@@ -4781,13 +4769,8 @@ function arrayRemoveDuplicates( dstArray, onEvaluate )
 
 function longRemoveDuplicates( dstLong, onEvaluate )
 {
-  onEvaluate = onEvaluate || function( e ){ return e };
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( 1 <= arguments.length || arguments.length <= 3 );
   _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
-  _.assert( _.routineIs( onEvaluate ) );
-  _.assert( onEvaluate.length === 1 );
-
 
   if( _.arrayIs( dstLong ) )
   {
