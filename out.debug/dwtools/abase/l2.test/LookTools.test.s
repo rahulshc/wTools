@@ -1,4 +1,4 @@
-( function _Look_tools_test_s_() {
+( function _Looker_test_s_() {
 
 'use strict';
 
