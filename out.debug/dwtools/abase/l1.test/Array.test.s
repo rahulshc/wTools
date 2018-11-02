@@ -9197,7 +9197,7 @@ function arrayFlattenedOnce( test )
 
   /*
   test.case = 'Second arg is not long';
-  
+
   var dst = [];
   var got = _.arrayFlattenedOnce( dst, 2 );
   test.identical( dst, [ undefined ] );
