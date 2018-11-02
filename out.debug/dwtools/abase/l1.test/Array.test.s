@@ -6736,6 +6736,14 @@ function arrayRemoveElement( test )
   var got = _.arrayRemoveElement( dst, 1 );
   test.identical( dst, [ 2,2 ] );
 
+  var dst = [ 1, 1, 1 ];
+  var got = _.arrayRemoveElement( dst, 1 );
+  test.identical( dst, [ ] );
+
+  var dst = [ 1, 1, 1 ];
+  var got = _.arrayRemoveElement( dst, [ 1 ] );
+  test.identical( dst, [ 1, 1, 1 ] );
+
   var dst = [ 1 ];
   var got = _.arrayRemoveElement( dst, '1' );
   test.identical( dst, [ 1 ] );
@@ -6783,6 +6791,30 @@ function arrayRemoveElement( test )
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var got = _.arrayRemoveElement( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ [ 1 ], [ 1 ], [ 1 ] ];
+  var onEqualize = function( a )
+  {
+    return a[ 0 ];
+  }
+  var got = _.arrayRemoveElement( dst, [ 1 ], onEqualize );
+  test.identical( dst, [ ] );
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ [ 1 ], [ 1 ], [ 1 ] ];
+  var onEqualize = function( a )
+  {
+    return a[ 0 ];
+  }
+  var onEqualize2 = function( a )
+  {
+    return a;
+  }
+  var got = _.arrayRemoveElement( dst, 1, onEqualize, onEqualize2 );
+  test.identical( dst, [ ] );
 
   if( !Config.debug )
   return;
@@ -6833,7 +6865,7 @@ function arrayRemoveElementOnce( test )
   var got = _.arrayRemoveElementOnce( [ 1 ], [ 1 ] );
   test.identical( got, [ 1 ] );
 
-  test.case = 'equalizer 2 args';
+  test.case = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var onEqualize = function( a, b )
@@ -6851,12 +6883,16 @@ function arrayRemoveElementOnce( test )
   var got = _.arrayRemoveElementOnce( dst, { num : 1 }, onEqualize );
   test.identical( got, [ { num : 2 },{ num : 3 } ] );
 
-  test.case = 'equalizer 1 arg';
+  test.case = 'equalizer 2 args';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var onEqualize = function( a )
   {
     return a.num;
+  }
+  var onEqualize2 = function( a )
+  {
+    return a;
   }
   var got = _.arrayRemoveElementOnce( dst, 4, onEqualize );
   test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
@@ -6864,6 +6900,10 @@ function arrayRemoveElementOnce( test )
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var got = _.arrayRemoveElementOnce( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( got, [ { num : 2 },{ num : 3 } ] );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 1 },{ num : 3 } ];
+  var got = _.arrayRemoveElementOnce( dst, 1, onEqualize, onEqualize2 );
+  test.identical( got, [ { num : 2 },{ num : 1 },{ num : 3 } ] );
 
   //
 
@@ -7071,12 +7111,22 @@ function arrayRemovedElement( test )
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
+  var dst = [ 1, 1, 1 ];
+  var got = _.arrayRemovedElement( dst, 1 );
+  test.identical( dst, [ ] );
+  test.identical( got, 3 );
+
+  var dst = [ 1, 1, 1 ];
+  var got = _.arrayRemovedElement( dst, [ 1 ] );
+  test.identical( dst, [ 1, 1, 1 ] );
+  test.identical( got, 0 );
+
   var dst = [ { x : 1 } ];
   var got = _.arrayRemovedElement( dst, { x : 1 } );
   test.identical( dst, [ { x : 1 } ] );
   test.identical( got, 0 );
 
-  test.case = 'equalizer 2 args';
+  test.case = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var onEqualize = function( a, b )
@@ -7097,14 +7147,18 @@ function arrayRemovedElement( test )
   test.identical( got, 1 );
 
 
-  test.case = 'equalizer 1 arg';
+  test.case = 'evaluator 2 args';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
-  var onEqualize = function( a )
+  var evaluator1 = function( a )
   {
     return a.num;
   }
-  var got = _.arrayRemovedElement( dst, 4, onEqualize );
+  var evaluator2 = function( a )
+  {
+    return a;
+  }
+  var got = _.arrayRemovedElement( dst, 4, evaluator1 );
   test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
   test.identical( got, 0 );
 
@@ -7114,6 +7168,11 @@ function arrayRemovedElement( test )
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
   test.identical( got, 1 );
 
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 1 },{ num : 3 } ];
+  var got = _.arrayRemovedElement( dst, 1, evaluator1, evaluator2 );
+  test.identical( dst, [ { num : 2 },{ num : 3 } ] );
+  test.identical( got, 2 );
 
   if( !Config.debug )
   return;
