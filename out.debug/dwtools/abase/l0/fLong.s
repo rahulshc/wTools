@@ -3965,40 +3965,6 @@ function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
 //
 
 /**
-* The arrayAppendArray() routine adds one or more elements to the end of the (dst) array
-* and returns the new length of the array.
-*
-* It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
-* iterate over array-like object (arguments[]) and assigns to the (argument) each element,
-* checks, if (argument) is equal to the 'undefined'.
-* If true, it throws an Error.
-* If (argument) is an array-like.
-* If true, it merges the (argument) into the (result) array.
-* Otherwise, it adds element to the result.
-*
-* @param { Array } dst - Initial array.
-* @param {*} arguments[] - One or more argument(s) to add to the end of the (dst) array.
-*
-* @example
-* // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
-* let arr = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
-*
-* @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
-* @function arrayAppendArray
-* @throws { Error } If the first argument is not an array.
-* @throws { Error } If type of the argument is equal undefined.
-* @memberof wTools
-*/
-
-function arrayAppendArray( dstArray, insArray )
-{
-  arrayAppendedArray.apply( this, arguments );
-  return dstArray;
-}
-
-//
-
-/**
  * The arrayAppendArrayOnce() routine returns an array of elements from (dst)
  * and appending only unique following arguments to the end.
  *
@@ -4073,6 +4039,40 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   return result;
+}
+
+//
+
+/**
+ * The arrayAppendArray() routine adds one or more elements to the end of the (dst) array
+ * and returns the new length of the array.
+ *
+ * It creates two variables the (result) - array and the (argument) - elements of array-like object (arguments[]),
+ * iterate over array-like object (arguments[]) and assigns to the (argument) each element,
+ * checks, if (argument) is equal to the 'undefined'.
+ * If true, it throws an Error.
+ * If (argument) is an array-like.
+ * If true, it merges the (argument) into the (result) array.
+ * Otherwise, it adds element to the result.
+ *
+ * @param { Array } dst - Initial array.
+ * @param {*} arguments[] - One or more argument(s) to add to the end of the (dst) array.
+ *
+ * @example
+ * // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
+ * let arr = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
+ *
+ * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
+ * @function arrayAppendArray
+ * @throws { Error } If the first argument is not an array.
+ * @throws { Error } If type of the argument is equal undefined.
+ * @memberof wTools
+ */
+
+function arrayAppendArray( dstArray, insArray )
+{
+  arrayAppendedArray.apply( this, arguments );
+  return dstArray;
 }
 
 //
@@ -4245,37 +4245,17 @@ function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
-  let index = _.arrayLeftIndex.apply( this, arguments );
-  let removedElements = 0;
-
-  for( let i = 0; i < dstArray.length; i++ )
-  {
-    if( index !== -1 )
-    {
-      dstArray.splice( index, 1 );
-      removedElements = removedElements + 1;
-      i = i - 1 ;
-    }
-    index = _.arrayLeftIndex.apply( this, arguments );
-  }
-  return removedElements;
-}
-
-/*
-function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
-{
   let index = _.arrayLeftIndex.apply( _, arguments );
 
   /* qqq : this is not correct! */
-/*
+
   if( index !== -1 )
   {
-    dstArray.splice( index, 1 );
+    dstArray.splice( index,1 );
   }
 
   return index;
 }
-*/
 
 //
 
@@ -4698,64 +4678,6 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
   return result;
 }
 
-//
-
-/**
- * The arrayRemoveDuplicates( dstArray, onEvaluator ) routine returns the dstArray with the duplicated elements removed.
- *
- * @param { ArrayIs } dstArray - The source and destination array.
- * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
- *
- * @example
- * // returns [ 1, 2, 'abc', 4, true ]
- * _.arrayRemoveDuplicates( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
- *
- * @example
- * // [ 1, 2, 3, 4, 5 ]
- * _.arrayRemoveDuplicates( [ 1, 2, 3, 4, 5 ] );
- *
- * @returns { Number } - Returns the source array without the duplicated elements.
- * @function arrayRemoveDuplicates
- * @throws { Error } If passed arguments is less than one or more than two.
- * @throws { Error } If the first argument is not an array.
- * @throws { Error } If the second argument is not a Function.
- * @memberof wTools
- */
-
-function arrayRemoveDuplicates( dstArray, onEvaluate )
-{
-  let found = [];
-  onEvaluate = onEvaluate || function( e ){ return e };
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
-  _.assert( _.routineIs( onEvaluate ) );
-  _.assert( onEvaluate.length === 1 );
-
-  for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
-  {
-    let element1 = onEvaluate( dstArray[ i1 ] );
-
-    for( let i2 = i1 + 1 ; i2 < dstArray.length ; i2++ )
-    {
-
-      let element2 = onEvaluate( dstArray[ i2 ] );
-
-      if( element1 === element2 )
-      {
-        let index = dstArray.indexOf( element2, i2 );
-        dstArray.splice( index, 1 );
-        found.push( element1 );
-        i2 = i2 - 1
-      }
-    }
-  }
-
-  return dstArray;
-}
-
-//
-
 // --
 // array flatten
 // --
@@ -5022,15 +4944,6 @@ function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
-{
-  let result = arrayReplacedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
-  return result;
-}
-
-//
-
 function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
 {
   arrayReplacedArrayOnce.apply( this,arguments );
@@ -5053,7 +4966,6 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( ins ) );
   _.assert( _.longIs( sub ) );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  )
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -5774,8 +5686,6 @@ let Routines =
   arrayRemoveAll : arrayRemoveAll,
   arrayRemovedAll : arrayRemovedAll,
 
-  arrayRemoveDuplicates : arrayRemoveDuplicates,
-
   // array flatten
 
   arrayFlatten : arrayFlatten,
@@ -5790,7 +5700,7 @@ let Routines =
   arrayReplaceOnceStrictly : arrayReplaceOnceStrictly,
 
   arrayReplacedOnce : arrayReplacedOnce,
-  arrayReplacedOnceStrictly : arrayReplacedOnceStrictly, /* qqq implement */
+  // arrayReplacedOnceStrictly : arrayReplacedOnceStrictly, /* qqq implement */
 
   arrayReplaceArrayOnce : arrayReplaceArrayOnce,
   arrayReplaceArrayOnceStrictly : arrayReplaceArrayOnceStrictly,
