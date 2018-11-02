@@ -1,4 +1,4 @@
-function _gLong_s_() {
+( function _gLong_s_() {
 
 'use strict';
 
@@ -1565,6 +1565,7 @@ function longMakeSimilarZeroed( ins,src )
  * If ( l ) is omitted or ( l ) > ( array.length ), longSlice extracts through the end of the sequence ( array.length ).
  * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
  * If ( f ) < 0, zero is assigned to begin index( f ).
+
  * @param { Array/Buffer } array - Source array or buffer.
  * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
  * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
@@ -2236,15 +2237,20 @@ function longButRange( src, range, ins )
 // --
 
 /*
+
 alteration Routines :
+
 - array { Op } { Tense } { How }
 - array { Op } { Tense } Array { How }
 - array { Op } { Tense } Arrays { How }
 - arrayFlatten { Tense } { How }
+
 alteration Op : Append , Prepend , Remove
 alteration Tense : - , ed
 alteration How : - , Once , OnceStrictly
+
 // 60 routines
+
 */
 
 // --
@@ -6928,22 +6934,31 @@ function arraySetUnion( dst )
 function arraySetContainAll( src )
 {
   let result = [];
+
   _.assert( _.longIs( src ) );
+
   for( let a = 1 ; a < arguments.length ; a++ )
   {
+
     _.assert( _.longIs( arguments[ a ] ) );
+
     if( src.length > arguments[ a ].length )
     return false;
+
     for( let i = 0 ; i < src.length ; i++ )
     {
+
       throw _.err( 'Not tested' );
       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
       {
         throw _.err( 'Not tested' );
         return false;
       }
+
     }
+
   }
+  
   return true;
 }
 */
