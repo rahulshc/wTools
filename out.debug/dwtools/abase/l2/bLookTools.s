@@ -1,6 +1,36 @@
-( function _cInvestigator_s_() {
+( function _LookerComparator_s_() {
 
 'use strict';
+
+/**
+  @module Tools/base/LookerExtra - Collection of routines to compare two complex structures. The module can answer questions: are two structures equivalent? are them identical? what is the difference between each other? Use the module avoid manually work and cherry picking.
+*/
+
+/**
+ * @file Looker.s.
+ */
+
+if( typeof module !== 'undefined' )
+{
+
+  if( typeof _global_ === 'undefined' || !_global_.wBase )
+  {
+    let toolsPath = '../../../dwtools/Base.s';
+    let toolsExternal = 0;
+    try
+    {
+      toolsPath = require.resolve( toolsPath );
+    }
+    catch( err )
+    {
+      toolsExternal = 1;
+      require( 'wTools' );
+    }
+    if( !toolsExternal )
+    require( toolsPath );
+  }
+
+}
 
 let _global = _global_;
 let Self = _global_.wTools;
