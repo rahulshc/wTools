@@ -1,4 +1,4 @@
-( function _gLong_s_() {
+function _gLong_s_() {
 
 'use strict';
 
@@ -314,7 +314,7 @@ function bufferMakeSimilar( ins,src )
 
     if( ins.constructor === Array )
     {
-      result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+      result = new( _.constructorJoin( ins.constructor, src ) );
     }
     else if( _.routineIs( ins ) )
     {
@@ -1215,7 +1215,7 @@ function buffersSerialize( o )
 {
   let self = this;
   let size = 0;
-  let o = o || Object.create( null );
+  o = o || Object.create( null );
 
   _.assertMapHasNoUndefine( o );
   _.assertMapHasOnly( o,buffersSerialize.defaults );
@@ -1345,13 +1345,13 @@ buffersSerialize.defaults =
 
 function buffersDeserialize( o )
 {
-  let o = o || Object.create( null );
+  o = o || Object.create( null );
   let store = o.store;
   let commonBuffer = store[ 'buffer' ];
 
   _.assertMapHasNoUndefine( o );
-  _.assertMapHasOnly( o,buffersDeserialize.defaults );
-  _.mapComplement( o,buffersDeserialize.defaults );
+  _.assertMapHasOnly( o, buffersDeserialize.defaults );
+  _.mapComplement( o, buffersDeserialize.defaults );
   _.assert( _.objectIs( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
 
@@ -1462,7 +1462,7 @@ function longMakeSimilar( ins,src )
     // debugger;
 
     if( ins.constructor === Array )
-    result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+    result = new( _.constructorJoin( ins.constructor, src ) );
     else if( _.routineIs( ins ) )
     {
       if( ins.prototype.constructor.name === 'Array' )
@@ -1525,7 +1525,7 @@ function longMakeSimilarZeroed( ins,src )
   //
   //   if( ins.constructor === Array )
   //   {
-  //     result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
+  //     result = new( _.constructorJoin( ins.constructor, src ) );
   //   }
   //   else
   //   {
@@ -1565,7 +1565,6 @@ function longMakeSimilarZeroed( ins,src )
  * If ( l ) is omitted or ( l ) > ( array.length ), longSlice extracts through the end of the sequence ( array.length ).
  * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
  * If ( f ) < 0, zero is assigned to begin index( f ).
-
  * @param { Array/Buffer } array - Source array or buffer.
  * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
  * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
@@ -2237,20 +2236,15 @@ function longButRange( src, range, ins )
 // --
 
 /*
-
 alteration Routines :
-
 - array { Op } { Tense } { How }
 - array { Op } { Tense } Array { How }
 - array { Op } { Tense } Arrays { How }
 - arrayFlatten { Tense } { How }
-
 alteration Op : Append , Prepend , Remove
 alteration Tense : - , ed
 alteration How : - , Once , OnceStrictly
-
 // 60 routines
-
 */
 
 // --
@@ -6934,55 +6928,45 @@ function arraySetUnion( dst )
 function arraySetContainAll( src )
 {
   let result = [];
-
   _.assert( _.longIs( src ) );
-
   for( let a = 1 ; a < arguments.length ; a++ )
   {
-
     _.assert( _.longIs( arguments[ a ] ) );
-
     if( src.length > arguments[ a ].length )
     return false;
-
     for( let i = 0 ; i < src.length ; i++ )
     {
-
       throw _.err( 'Not tested' );
       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
       {
         throw _.err( 'Not tested' );
         return false;
       }
-
     }
-
   }
-
   return true;
 }
 */
 //
   /**
-   * The arraySetContainAll() routine returns true, if all of the following arrays (arguments[...]),
-   * contain all the same values as in the {-srcMap-} array ( and no-one different ).
+   * The arraySetContainAll() routine returns true, if at least one of the following arrays (arguments[...]),
+   * contains all the same values as in the {-srcMap-} array.
    *
    * @param { longIs } src - The source array.
    * @param { ...longIs } arguments[...] - The target array.
    *
    * @example
    * // returns true
-   * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 'b', 'c' ] );
-   *
-   * // returns false
    * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
    *
    * @example
    * // returns false
    * _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
    *
-   * @returns { boolean } Returns true, if all the following arrays (arguments[...]),
-   * contain all the same values as in the {-srcMap-} array.
+   * @returns { boolean } Returns true, if at least one of the following arrays (arguments[...]),
+   * contains all the same values as in the {-srcMap-} array.
+   * If length of the {-srcMap-} is more than the next argument, it returns false.
+   * Otherwise, it returns false.
    * @function arraySetContainAll
    * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
