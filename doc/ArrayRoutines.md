@@ -100,5 +100,5 @@
 ```
 npm install
 node sample/SampleArrayPrepend.js
-node sample/SampleArrayRemove.js
+node sample/SampleArrayRemove.s
 ```
