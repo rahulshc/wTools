@@ -226,15 +226,17 @@ function numbersFrom( src )
   if( _.strIs( src ) )
   return _.numberFrom( src );
 
+  let result;
+
   if( _.longIs( src ) )
   {
-    let result = [];
+    result = [];
     for( let s = 0 ; s < src.length ; s++ )
     result[ s ] = _.numberFrom( src[ s ] );
   }
   else if( _.objectIs( src ) )
   {
-    let result = Object.create( null );
+    result = Object.create( null );
     for( let s in src )
     result[ s ] = _.numberFrom( src[ s ] );
   }
@@ -346,13 +348,13 @@ function numbersMake( src,length )
   if( _.arrayLike( src ) )
   {
     _.assert( src.length === length );
-    let result = _.array.makeArrayOfLength( length );
+    result = _.array.makeArrayOfLength( length );
     for( let i = 0 ; i < length ; i++ )
     result[ i ] = src[ i ];
   }
   else
   {
-    let result = _.array.makeArrayOfLength( length );
+    result = _.array.makeArrayOfLength( length );
     for( let i = 0 ; i < length ; i++ )
     result[ i ] = src;
   }
@@ -504,7 +506,7 @@ let Routines =
   numbersTotal : numbersTotal,
 
   numberFrom : numberFrom,
-  numbersFrom : numbersFrom,
+  numbersFrom : numbersFrom, /* qqq : add test coverage */
 
   numbersSlice : numbersSlice,
 

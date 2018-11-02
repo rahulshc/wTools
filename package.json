@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.8.284",
+  "version": "0.8.292",
   "engine": "node >= 6.0.0",
   "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind",
   "license": "MIT",
@@ -19,17 +19,17 @@
       "email": "iostashvxi@gmail.com"
     }
   ],
-  "main": "out.debug/dwtools/abase/Layer2.s",
+  "main": "proto/dwtools/abase/Layer2.s",
   "files": [
-    "out.debug/dwtools/abase/l0",
-    "out.debug/dwtools/abase/l1",
-    "out.debug/dwtools/abase/l2",
-    "out.debug/dwtools/abase/Layer0.s",
-    "out.debug/dwtools/abase/Layer1.s",
-    "out.debug/dwtools/abase/Layer2.s"
+    "proto/dwtools/abase/l0",
+    "proto/dwtools/abase/l1",
+    "proto/dwtools/abase/l2",
+    "proto/dwtools/abase/Layer0.s",
+    "proto/dwtools/abase/Layer1.s",
+    "proto/dwtools/abase/Layer2.s"
   ],
   "scripts": {
-    "test": "wtest out.debug",
+    "test": "wtest proto",
     "make_doc": "./doc.sh"
   },
   "repository": {

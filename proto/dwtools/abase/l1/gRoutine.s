@@ -391,36 +391,9 @@ function methodsCall( contexts,methods,args )
 
 //
 
-function _routinesCompose_pre( routine, args )
-{
-  let o = args[ 0 ];
-
-  if( !_.mapIs( o ) )
-  o = { elements : args[ 0 ] }
-  if( args[ 1 ] !== undefined )
-  o.chainer = args[ 1 ];
-
-  o.elements = _.arrayAppendArrays( [], [ o.elements ] );
-  o.elements = o.elements.filter( ( e ) => e === null ? false : e );
-
-  _.routineOptions( routine, o );
-  _.assert( _.routinesAre( o.elements ) );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( args.length === 1 || args.length === 2 );
-  _.assert( args.length === 1 || !_.objectIs( args[ 0 ] ) );
-  _.assert( _.arrayIs( o.elements ) || _.routineIs( o.elements ) );
-  _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
-  _.assert( o.chainer === null || _.routineIs( o.chainer ) );
-  _.assert( o.supervisor === null || _.routineIs( o.supervisor ) );
-
-  return o;
-}
-
-//
-
 function _routinesComposeWithSingleArgument_pre( routine, args )
 {
-  let o = _routinesCompose_pre( routine, args );
+  let o = _.routinesCompose.pre.call( this, routine, args );
 
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -428,116 +401,155 @@ function _routinesComposeWithSingleArgument_pre( routine, args )
   return o;
 }
 
+// //
 //
-
-function _routinesCompose_body( o )
-{
-
-  if( o.chainer === null )
-  o.chainer = _.compose.chainer.original;
-
-  o.elements = _.arrayFlatten( null, o.elements ); /* qqq xxx : single argument call should be ( no-copy call ) */
-  let elements = [];
-  for( let s = 0 ; s < o.elements.length ; s++ )
-  {
-    let src = o.elements[ s ];
-    _.assert( _.routineIs( src ) );
-    if( src.composed )
-    {
-      if( src.composed.chainer === o.chainer && src.composed.supervisor === o.supervisor )
-      {
-        _.arrayAppendArray( elements, src.composed.elements );
-      }
-      else
-      {
-        debugger;
-        _.arrayAppendElement( elements, src );
-      }
-    }
-    else
-    _.arrayAppendElement( elements, src );
-  }
-
-  o.elements = elements;
-
-  let supervisor = o.supervisor;
-  let chainer = o.chainer;
-  let act;
-
-  _.assert( _.routineIs( chainer ) );
-  _.assert( supervisor === null || _.routineIs( supervisor ) );
-
-  /* */
-
-  if( elements.length === 0 )
-  act = function empty()
-  {
-    return [];
-  }
-  // else if( elements.length === 1 ) /* xxx : optimize the case */
-  // {
-  //   act = elements[ 0 ];
-  // }
-  else act = function composition()
-  {
-    let result = [];
-    let args = _.unrollAppend( null, arguments );
-    for( let k = 0 ; k < elements.length ; k++ )
-    {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
-      let routine = elements[ k ];
-      let r = routine.apply( this, args );
-      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
-      _.assert( !_.argumentsArrayIs( r ) );
-      if( r !== undefined )
-      _.arrayAppendUnrolling( result, r );
-      // args = chainer( r, k, args, o );
-      args = chainer( args, r, o, k );
-      _.assert( args !== undefined && args !== false );
-      // if( args === undefined )
-      if( args === _.dont )
-      break;
-      args = _.unrollFrom( args );
-    }
-    return result;
-  }
-
-  o.act = act;
-  act.composed = o;
-
-  if( supervisor )
-  {
-    function compositionSupervise()
-    {
-      let result = supervisor( this, arguments, act, o );
-      return result;
-    }
-    _.routineExtend( compositionSupervise, act );
-    return compositionSupervise;
-  }
-
-  return act;
-}
-
-_routinesCompose_body.defaults =
-{
-  elements : null,
-  chainer : null,
-  supervisor : null,
-}
-
+// function _routinesCompose_pre( routine, args )
+// {
+//   let o = args[ 0 ];
 //
-
-function routinesCompose()
-{
-  let o = _.routinesCompose.pre( routinesCompose, arguments );
-  let result = _.routinesCompose.body( o );
-  return result;
-}
-
-routinesCompose.pre = _routinesCompose_pre;
-routinesCompose.body = _routinesCompose_body;
-routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
+//   if( !_.mapIs( o ) )
+//   o = { elements : args[ 0 ] }
+//   if( args[ 1 ] !== undefined )
+//   o.chainer = args[ 1 ];
+//
+//   o.elements = _.arrayAppendArrays( [], [ o.elements ] );
+//   o.elements = o.elements.filter( ( e ) => e === null ? false : e );
+//
+//   _.routineOptions( routine, o );
+//   _.assert( _.routinesAre( o.elements ) );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( args.length === 1 || args.length === 2 );
+//   _.assert( args.length === 1 || !_.objectIs( args[ 0 ] ) );
+//   _.assert( _.arrayIs( o.elements ) || _.routineIs( o.elements ) );
+//   _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
+//   _.assert( o.chainer === null || _.routineIs( o.chainer ) );
+//   _.assert( o.supervisor === null || _.routineIs( o.supervisor ) );
+//
+//   return o;
+// }
+//
+// //
+//
+// function _routinesComposeWithSingleArgument_pre( routine, args )
+// {
+//   let o = _routinesCompose_pre( routine, args );
+//
+//   _.assert( args.length === 1 );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   return o;
+// }
+//
+// //
+//
+// function _routinesCompose_body( o )
+// {
+//
+//   if( o.chainer === null )
+//   o.chainer = _.compose.chainer.original;
+//
+//   o.elements = _.arrayFlatten( null, o.elements ); /* qqq xxx : single argument call should be ( no-copy call ) */
+//   let elements = [];
+//   for( let s = 0 ; s < o.elements.length ; s++ )
+//   {
+//     let src = o.elements[ s ];
+//     _.assert( _.routineIs( src ) );
+//     if( src.composed )
+//     {
+//       if( src.composed.chainer === o.chainer && src.composed.supervisor === o.supervisor )
+//       {
+//         _.arrayAppendArray( elements, src.composed.elements );
+//       }
+//       else
+//       {
+//         debugger;
+//         _.arrayAppendElement( elements, src );
+//       }
+//     }
+//     else
+//     _.arrayAppendElement( elements, src );
+//   }
+//
+//   o.elements = elements;
+//
+//   let supervisor = o.supervisor;
+//   let chainer = o.chainer;
+//   let act;
+//
+//   _.assert( _.routineIs( chainer ) );
+//   _.assert( supervisor === null || _.routineIs( supervisor ) );
+//
+//   /* */
+//
+//   if( elements.length === 0 )
+//   act = function empty()
+//   {
+//     return [];
+//   }
+//   // else if( elements.length === 1 ) /* xxx : optimize the case */
+//   // {
+//   //   act = elements[ 0 ];
+//   // }
+//   else act = function composition()
+//   {
+//     let result = [];
+//     let args = _.unrollAppend( null, arguments );
+//     for( let k = 0 ; k < elements.length ; k++ )
+//     {
+//       _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
+//       let routine = elements[ k ];
+//       let r = routine.apply( this, args );
+//       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
+//       _.assert( !_.argumentsArrayIs( r ) );
+//       if( r !== undefined )
+//       _.arrayAppendUnrolling( result, r );
+//       // args = chainer( r, k, args, o );
+//       args = chainer( args, r, o, k );
+//       _.assert( args !== undefined && args !== false );
+//       // if( args === undefined )
+//       if( args === _.dont )
+//       break;
+//       args = _.unrollFrom( args );
+//     }
+//     return result;
+//   }
+//
+//   o.act = act;
+//   act.composed = o;
+//
+//   if( supervisor )
+//   {
+//     function compositionSupervise()
+//     {
+//       let result = supervisor( this, arguments, act, o );
+//       return result;
+//     }
+//     _.routineExtend( compositionSupervise, act );
+//     return compositionSupervise;
+//   }
+//
+//   return act;
+// }
+//
+// _routinesCompose_body.defaults =
+// {
+//   elements : null,
+//   chainer : null,
+//   supervisor : null,
+// }
+//
+// //
+//
+// function routinesCompose()
+// {
+//   let o = _.routinesCompose.pre( routinesCompose, arguments );
+//   let result = _.routinesCompose.body( o );
+//   return result;
+// }
+//
+// routinesCompose.pre = _routinesCompose_pre;
+// routinesCompose.body = _routinesCompose_body;
+// routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 //
 //
@@ -573,9 +585,9 @@ function routinesComposeReturningLast()
   return result;
 }
 
-routinesComposeReturningLast.pre = _routinesCompose_pre;
-routinesComposeReturningLast.body = _routinesCompose_body;
-routinesComposeReturningLast.defaults = Object.create( routinesCompose.defaults );
+routinesComposeReturningLast.pre = _.routinesCompose.pre;
+routinesComposeReturningLast.body = _.routinesCompose.body;
+routinesComposeReturningLast.defaults = Object.create( _.routinesCompose.defaults );
 
 routinesComposeReturningLast.defaults.supervisor = _.compose.supervisor.returningLast;
 
@@ -635,9 +647,9 @@ function routinesComposeAll()
 // routinesComposeAll.defaults = Object.create( routinesComposeAll.body.defaults );
 
 routinesComposeAll.pre = _routinesComposeWithSingleArgument_pre;
-routinesComposeAll.body = _routinesCompose_body;
+routinesComposeAll.body = _.routinesCompose.body;
 
-var defaults = routinesComposeAll.defaults = Object.create( routinesCompose.defaults );
+var defaults = routinesComposeAll.defaults = Object.create( _.routinesCompose.defaults );
 defaults.chainer = _.compose.chainer.composeAll;
 defaults.supervisor = _.compose.supervisor.composeAll;
 
@@ -695,9 +707,9 @@ function routinesComposeAllReturningLast()
 // routinesComposeAllReturningLast.defaults = Object.create( routinesComposeAllReturningLast.body.defaults );
 
 routinesComposeAllReturningLast.pre = _routinesComposeWithSingleArgument_pre;
-routinesComposeAllReturningLast.body = _routinesCompose_body;
+routinesComposeAllReturningLast.body = _.routinesCompose.body;
 
-var defaults = routinesComposeAllReturningLast.defaults = Object.create( routinesCompose.defaults );
+var defaults = routinesComposeAllReturningLast.defaults = Object.create( _.routinesCompose.defaults );
 defaults.chainer = _.compose.chainer.originalWithDont;
 defaults.supervisor = _.compose.supervisor.returningLast;
 
@@ -755,9 +767,9 @@ function routinesChain()
 // routinesChain.defaults = Object.create( routinesChain.body.defaults );
 
 routinesChain.pre = _routinesComposeWithSingleArgument_pre;
-routinesChain.body = _routinesCompose_body;
+routinesChain.body = _.routinesCompose.body;
 
-var defaults = routinesChain.defaults = Object.create( routinesCompose.defaults );
+var defaults = routinesChain.defaults = Object.create( _.routinesCompose.defaults );
 defaults.chainer = _.compose.chainer.chaining;
 defaults.supervisor = _.compose.supervisor.chaining;
 
@@ -834,7 +846,7 @@ let Routines =
   routinesCallEvery : routinesCallEvery,
   methodsCall : methodsCall,
 
-  routinesCompose : routinesCompose,
+  // routinesCompose : routinesCompose,
   routinesComposeReturningLast : routinesComposeReturningLast,
   routinesComposeAll : routinesComposeAll,
   routinesComposeAllReturningLast : routinesComposeAllReturningLast,

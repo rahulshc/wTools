@@ -79,7 +79,8 @@ function _routineJoin( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.boolIs( o.seal ) );
+  _.assert( _.boolIs( o.sealing ) );
+  _.assert( _.boolIs( o.extending ) );
   _.assert( _.routineIs( o.routine ),'Expects routine' );
   _.assert( _.longIs( o.args ) || o.args === undefined );
   _.assert( _.routineIs( _FunctionBind ) );
@@ -89,7 +90,10 @@ function _routineJoin( o )
   let context = o.context;
 
   let result = act();
+
+  if( o.extending )
   _.mapExtend( result, routine );
+
   return result;
 
   function act()
@@ -97,7 +101,7 @@ function _routineJoin( o )
 
     if( context !== undefined && args === undefined )
     {
-      if( o.seal === true )
+      if( o.sealing === true )
       {
         return function __sealedContext()
         {
@@ -111,7 +115,7 @@ function _routineJoin( o )
     }
     else if( context !== undefined )
     {
-      if( o.seal === true )
+      if( o.sealing === true )
       {
         return function __sealedContextAndArguments()
         {
@@ -124,7 +128,7 @@ function _routineJoin( o )
         return _FunctionBind.apply( routine, a );
       }
     }
-    else if( args === undefined && !o.seal )
+    else if( args === undefined && !o.sealing )
     {
       return routine;
     }
@@ -133,7 +137,7 @@ function _routineJoin( o )
       if( !args )
       args = [];
 
-      if( o.seal === true )
+      if( o.sealing === true )
       return function __sealedArguments()
       {
         return routine.apply( undefined, args );
@@ -148,6 +152,79 @@ function _routineJoin( o )
 
     }
   }
+
+}
+
+//
+
+function constructorJoin( routine, args )
+{
+
+  _.assert( _.routineIs( routine ), 'Expects routine in the first argument' );
+  _.assert( _.arrayLike( args ), 'Expects array-like in the second argument' );
+  _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
+
+  return _routineJoin
+  ({
+    routine : routine,
+    context : routine,
+    args : args,
+    sealing : false,
+    extending : false,
+  });
+
+}
+
+//
+
+/**
+ * The routineJoin() routine creates a new function with its 'this' ( context ) set to the provided `context`
+ value. Argumetns `args` of target function which are passed before arguments of binded function during
+ calling of target function. Unlike bind routine, position of `context` parameter is more intuitive.
+ * @example
+   let o = {
+        z: 5
+    };
+
+   let y = 4;
+
+   function sum(x, y) {
+       return x + y + this.z;
+    }
+   let newSum = wTools.routineJoin(o, sum, [3]);
+   newSum(y); // 12
+
+   function f1(){ console.log( this ) };
+   let f2 = f1.bind( undefined ); // context of new function sealed to undefined (or global object);
+   f2.call( o ); // try to call new function with context set to { z: 5 }
+   let f3 = _.routineJoin( undefined,f1 ); // new function.
+   f3.call( o ) // print  { z: 5 }
+
+ * @param {Object} context The value that will be set as 'this' keyword in new function
+ * @param {Function} routine Function which will be used as base for result function.
+ * @param {Array<*>} args Argumetns of target function which are passed before arguments of binded function during
+ calling of target function. Must be wraped into array.
+ * @returns {Function} New created function with preceding this, and args.
+ * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
+ * @thorws {Error} If passed arguments more than 3 throws error with text 'Expects 3 or less arguments'
+ * @function routineJoin
+ * @memberof wTools
+ */
+
+function routineJoin( context, routine, args )
+{
+
+  _.assert( _.routineIs( routine ), 'routineJoin :', 'Second argument must be a routine' );
+  _.assert( arguments.length <= 3, 'routineJoin :', 'Expects 3 or less arguments' );
+
+  return _routineJoin
+  ({
+    routine : routine,
+    context : context,
+    args : args,
+    sealing : false,
+    extending : true,
+  });
 
 }
 
@@ -198,7 +275,8 @@ function routineJoin( context, routine, args )
     routine : routine,
     context : context,
     args : args,
-    seal : false,
+    sealing : false,
+    extending : true,
   });
 
 }
@@ -237,7 +315,8 @@ function routineSeal( context, routine, args )
     routine : routine,
     context : context,
     args : args,
-    seal : true,
+    sealing : true,
+    extending : true,
   });
 
 }
@@ -373,6 +452,155 @@ function routineOptionsFromThis( routine, _this, constructor )
 
   return _.routineOptions( routine,options );
 }
+//
+
+function _routinesCompose_pre( routine, args )
+{
+  let o = args[ 0 ];
+
+  if( !_.mapIs( o ) )
+  o = { elements : args[ 0 ] }
+  if( args[ 1 ] !== undefined )
+  o.chainer = args[ 1 ];
+
+  o.elements = _.arrayAppendArrays( [], [ o.elements ] );
+  o.elements = o.elements.filter( ( e ) => e === null ? false : e );
+
+  _.routineOptions( routine, o );
+  _.assert( _.routinesAre( o.elements ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( args.length === 1 || args.length === 2 );
+  _.assert( args.length === 1 || !_.objectIs( args[ 0 ] ) );
+  _.assert( _.arrayIs( o.elements ) || _.routineIs( o.elements ) );
+  _.assert( _.routineIs( args[ 1 ] ) || args[ 1 ] === undefined || args[ 1 ] === null );
+  _.assert( o.chainer === null || _.routineIs( o.chainer ) );
+  _.assert( o.supervisor === null || _.routineIs( o.supervisor ) );
+
+  return o;
+}
+
+// //
+//
+// function _routinesComposeWithSingleArgument_pre( routine, args )
+// {
+//   let o = _routinesCompose_pre( routine, args );
+//
+//   _.assert( args.length === 1 );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   return o;
+// }
+
+//
+
+function _routinesCompose_body( o )
+{
+
+  if( o.chainer === null )
+  o.chainer = _.compose.chainer.original;
+
+  o.elements = _.arrayFlatten( null, o.elements ); /* qqq xxx : single argument call should be ( no-copy call ) */
+  let elements = [];
+  for( let s = 0 ; s < o.elements.length ; s++ )
+  {
+    let src = o.elements[ s ];
+    _.assert( _.routineIs( src ) );
+    if( src.composed )
+    {
+      if( src.composed.chainer === o.chainer && src.composed.supervisor === o.supervisor )
+      {
+        _.arrayAppendArray( elements, src.composed.elements );
+      }
+      else
+      {
+        debugger;
+        _.arrayAppendElement( elements, src );
+      }
+    }
+    else
+    _.arrayAppendElement( elements, src );
+  }
+
+  o.elements = elements;
+
+  let supervisor = o.supervisor;
+  let chainer = o.chainer;
+  let act;
+
+  _.assert( _.routineIs( chainer ) );
+  _.assert( supervisor === null || _.routineIs( supervisor ) );
+
+  /* */
+
+  if( elements.length === 0 )
+  act = function empty()
+  {
+    return [];
+  }
+  // else if( elements.length === 1 ) /* xxx : optimize the case */
+  // {
+  //   act = elements[ 0 ];
+  // }
+  else act = function composition()
+  {
+    let result = [];
+    let args = _.unrollAppend( null, arguments );
+    for( let k = 0 ; k < elements.length ; k++ )
+    {
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
+      let routine = elements[ k ];
+      let r = routine.apply( this, args );
+      _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
+      _.assert( !_.argumentsArrayIs( r ) );
+      if( r !== undefined )
+      _.arrayAppendUnrolling( result, r );
+      // args = chainer( r, k, args, o );
+      args = chainer( args, r, o, k );
+      _.assert( args !== undefined && args !== false );
+      // if( args === undefined )
+      if( args === _.dont )
+      break;
+      args = _.unrollFrom( args );
+    }
+    return result;
+  }
+
+  o.act = act;
+  act.composed = o;
+
+  if( supervisor )
+  {
+    function compositionSupervise()
+    {
+      let result = supervisor( this, arguments, act, o );
+      return result;
+    }
+    _.routineExtend( compositionSupervise, act );
+    return compositionSupervise;
+  }
+
+  return act;
+}
+
+_routinesCompose_body.defaults =
+{
+  elements : null,
+  chainer : null,
+  supervisor : null,
+}
+
+//
+
+function routinesCompose()
+{
+  let o = _.routinesCompose.pre( routinesCompose, arguments );
+  let result = _.routinesCompose.body( o );
+  return result;
+}
+
+routinesCompose.pre = _routinesCompose_pre;
+routinesCompose.body = _routinesCompose_body;
+routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 //
 
@@ -471,7 +699,6 @@ function routineForPreAndBody_body( o )
 
   if( !_.routineIs( o.pre ) )
   {
-    // let _pre = _.routinesCompose( o.pre, function( element, index, args, op )
     let _pre = _.routinesCompose( o.pre, function( args, result, op, k )
     {
       _.assert( arguments.length === 4 );
@@ -1021,26 +1248,9 @@ let Routines =
   routineHasName : routineHasName,
 
   _routineJoin : _routineJoin,
+  constructorJoin : constructorJoin,
   routineJoin : routineJoin,
   routineSeal : routineSeal,
-
-  // routineDelayed : routineDelayed,
-  //
-  // routineCall : routineCall,
-  // routineTolerantCall : routineTolerantCall,
-  //
-  // routinesJoin : routinesJoin,
-  // _routinesCall : _routinesCall,
-  // routinesCall : routinesCall,
-  // routinesCallEvery : routinesCallEvery,
-  // methodsCall : methodsCall,
-  //
-  // routinesCompose : routinesCompose,
-  // routinesComposeReturningLast : routinesComposeReturningLast,
-  // routinesComposeReturningBeforeLast : routinesComposeReturningBeforeLast,
-  // routinesComposeAll : routinesComposeAll,
-  // routinesComposeAllReturningLast : routinesComposeAllReturningLast,
-  // routinesChain : routinesChain,
 
   routineOptions : routineOptions,
   assertRoutineOptions : assertRoutineOptions,
@@ -1048,6 +1258,7 @@ let Routines =
   assertRoutineOptionsPreservingUndefines : assertRoutineOptionsPreservingUndefines,
   routineOptionsFromThis : routineOptionsFromThis,
 
+  routinesCompose : routinesCompose,
   routineExtend : routineExtend,
   routineForPreAndBody : routineForPreAndBody,
 

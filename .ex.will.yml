@@ -1,0 +1,70 @@
+
+about :
+
+  name : wTools
+  description : Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind
+  version : 0.8.285
+  enabled : 1
+  interpreters :
+  - nodejs >= 6.0.0
+  - chrome >= 60.0.0
+  - firefox >= 60.0.0
+  keywords :
+  - wTools
+
+execution :
+
+  scripts :
+    test : wtest staging
+    docgen : wdocgen staging
+
+path :
+
+  repository : git+https://github.com/Wandalen/wTools.git
+  bugs : https://github.com/Wandalen/wTools/issues
+  entry.debug : '{path::out.debug}/dwtools/abase/____'
+  entry.release : '{path::out.release}/dwtools/abase/____'
+  entry.proto : '{path::out.proto}/dwtools/abase/____'
+
+build :
+
+  .proto.export :
+    filesPath : path::out.proto
+    entryPath : path::entry.proto
+    criterion :
+      proto : 1
+      export : 1
+      tar : 1
+    steps :
+      - step::export
+
+  .debug.raw.export :
+    default : 1
+    filesPath : path::out.debug
+    entryPath : path::entry.debug
+    criterion :
+      debug : 1
+      raw : 1
+      export : 1
+      tar : 1
+    steps :
+      - build::.debug
+      - step::export
+
+  .release.compiled.export :
+    filesPath : path::out.release
+    entryPath : path::entry.release
+    criterion :
+      debug : 0
+      raw : 0
+      export : 1
+      tar : 1
+    steps :
+      - build::.release.compiled
+      - step::export
+
+  export.all :
+    steps :
+      - .proto.export
+      - .debug.raw.export
+      - .release.compiled.export

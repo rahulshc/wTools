@@ -104,7 +104,7 @@ function arrayFromCoercing( src )
   let result;
 
   if( this.array.ArrayType === Array )
-  result = new( _.routineJoin( this.array.ArrayType, this.array.ArrayType, src ) );
+  result = new( _.constructorJoin( this.array.ArrayType, src ) );
   else
   result = new this.array.ArrayType( src );
 
