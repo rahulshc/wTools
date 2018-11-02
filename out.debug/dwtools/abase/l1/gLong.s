@@ -314,7 +314,7 @@ function bufferMakeSimilar( ins,src )
 
     if( ins.constructor === Array )
     {
-      result = new( _.constructorJoin( ins.constructor, src ) );
+      result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
     }
     else if( _.routineIs( ins ) )
     {
@@ -1215,7 +1215,7 @@ function buffersSerialize( o )
 {
   let self = this;
   let size = 0;
-  o = o || Object.create( null );
+  let o = o || Object.create( null );
 
   _.assertMapHasNoUndefine( o );
   _.assertMapHasOnly( o,buffersSerialize.defaults );
@@ -1345,13 +1345,13 @@ buffersSerialize.defaults =
 
 function buffersDeserialize( o )
 {
-  o = o || Object.create( null );
+  let o = o || Object.create( null );
   let store = o.store;
   let commonBuffer = store[ 'buffer' ];
 
   _.assertMapHasNoUndefine( o );
-  _.assertMapHasOnly( o, buffersDeserialize.defaults );
-  _.mapComplement( o, buffersDeserialize.defaults );
+  _.assertMapHasOnly( o,buffersDeserialize.defaults );
+  _.mapComplement( o,buffersDeserialize.defaults );
   _.assert( _.objectIs( o.store ) );
   _.assert( _.bufferRawIs( commonBuffer ) || _.bufferTypedIs( commonBuffer ) );
 
@@ -1462,7 +1462,7 @@ function longMakeSimilar( ins,src )
     // debugger;
 
     if( ins.constructor === Array )
-    result = new( _.constructorJoin( ins.constructor, src ) );
+    result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
     else if( _.routineIs( ins ) )
     {
       if( ins.prototype.constructor.name === 'Array' )
@@ -1525,7 +1525,7 @@ function longMakeSimilarZeroed( ins,src )
   //
   //   if( ins.constructor === Array )
   //   {
-  //     result = new( _.constructorJoin( ins.constructor, src ) );
+  //     result = new( _.routineJoin( ins.constructor, ins.constructor, src ) );
   //   }
   //   else
   //   {
