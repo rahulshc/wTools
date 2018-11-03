@@ -3,13 +3,17 @@
 'use strict';
 
 let _global = _global_;
-let Self = _global_.ModulesRegistry = _global_.ModulesRegistry || Object.create( null );
+if( !Object.hasOwnProperty.call( _global, 'ModuleRegistry' ) )
+_global.ModulesRegistry = Object.create( null );
+let Self = _global.ModulesRegistry;
 
 // --
 // include map
 // --
 
 // base
+
+/* qqq : use only 2 paths instead of 3 */
 
 let wLogger =
 {
@@ -97,65 +101,65 @@ let wSelector =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entitySelect; },
 }
 
+let wStringer =
+{
+  includeAny : [ '../../abase/l3/Stringer.s','abase/l3/Stringer.s','wstringer' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stringer; },
+}
+
 // base/l4
 
 let wArraySorted =
 {
-  includeAny : [ '../../abase/layer4/ArraySorted.s','abase/layer4/ArraySorted.s','warraysorted' ],
+  includeAny : [ '../../abase/l4/ArraySorted.s','abase/l4/ArraySorted.s','warraysorted' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.sorted },
 }
 
 let wArraySparse =
 {
-  includeAny : [ '../../abase/layer4/ArraySparse.s','abase/layer4/ArraySparse.s','warraysparse' ],
+  includeAny : [ '../../abase/l4/ArraySparse.s','abase/l4/ArraySparse.s','warraysparse' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.sparse },
 }
 
 let wExternalFundamentals =
 {
-  includeAny : [ '../../abase/layer4/External.s','abase/layer4/External.s','wexternalfundamentals' ],
+  includeAny : [ '../../abase/l4/External.s','abase/l4/External.s','wexternalfundamentals' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.shell },
 }
 
 let wUriFundamentals =
 {
-  includeAny : [ '../../abase/layer4/Uri.s','abase/layer4/Uri.s','wurifundamentals' ],
+  includeAny : [ '../../abase/l4/Uri.s','abase/l4/Uri.s','wurifundamentals' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.uri },
 }
 
 let wComparator =
 {
-  includeAny : [ '../../abase/layer4/LookerComparator.s','abase/layer4/LookerComparator.s','wcomparator' ],
+  includeAny : [ '../../abase/l4/LookerComparator.s','abase/l4/LookerComparator.s','wcomparator' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityIdentical },
 }
 
 let wLookerExtra =
 {
-  includeAny : [ '../../abase/layer4/LookerExtra.s','abase/layer4/LookerExtra.s','wlookerextra' ],
+  includeAny : [ '../../abase/l4/LookerExtra.s','abase/l4/LookerExtra.s','wlookerextra' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entitySearch },
 }
 
 let wTraverser =
 {
-  includeAny : [ '../../abase/layer4/Traverser.s','abase/layer4/Traverser.s','wtraverser' ],
+  includeAny : [ '../../abase/l4/Traverser.s','abase/l4/Traverser.s','wtraverser' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._traverse },
 }
 
 let wBaseEncoder =
 {
-  includeAny : [ '../../abase/layer4/Encoder.s','abase/layer4/Encoder.s','wbaseencoder' ],
+  includeAny : [ '../../abase/l4/Encoder.s','abase/l4/Encoder.s','wbaseencoder' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
-}
-
-let wStringer =
-{
-  includeAny : [ '../../abase/layer4/aStringer.s','abase/layer4/aStringer.s','wstringer' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stringer; },
 }
 
 let wRoutineTransform =
 {
-  includeAny : [ '../../abase/layer4/RoutineTransform.s','abase/RoutineTransform/Cloner.s','wroutinetransform' ],
+  includeAny : [ '../../abase/l4/RoutineTransform.s','abase/RoutineTransform/Cloner.s','wroutinetransform' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
 }
 
@@ -163,19 +167,19 @@ let wRoutineTransform =
 
 let wWebUriFundamentals =
 {
-  includeAny : [ '../../abase/layer5/WebUri.s','abase/layer5/WebUri.s','wweburifundamentals' ],
+  includeAny : [ '../../abase/l5/WebUri.s','abase/l5/WebUri.s','wweburifundamentals' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.weburi },
 }
 
 let wCloner =
 {
-  includeAny : [ '../../abase/layer5/Cloner.s','abase/layer5/Cloner.s','wcloner' ],
+  includeAny : [ '../../abase/l5/Cloner.s','abase/l5/Cloner.s','wcloner' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._clone },
 }
 
 let wStringsExtra =
 {
-  includeAny : [ '../../abase/layer5/StringTools.s','abase/layer5/StringTools.s','wstringsextra' ],
+  includeAny : [ '../../abase/l5/StringTools.s','abase/l5/StringTools.s','wstringsextra' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
 }
 
@@ -195,8 +199,8 @@ let wDomBaseLayer3 =
 
 let wDomBaseLayer5 =
 {
-  includeAny : [ '../../abase_dom/l5/Common.js','abase_dom/l5/Common.js','wdombaselayer5' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._domBaselayer5Loaded },
+  includeAny : [ '../../abase_dom/l5/Common.js','abase_dom/l5/Common.js','wdombasel5' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._domBasel5Loaded },
 }
 
 // amid
@@ -423,7 +427,7 @@ let wMathConcepts =
 
 let wTesting =
 {
-  includeAny : [ '../../atop/tester/aBase.debug.s','atop/tester/aBase.debug.s', 'wTesting' ],
+  includeAny : [ '../../atop/tester/Main.mid.s','atop/tester/Main.mid.s', 'wTesting' ],
   isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 
