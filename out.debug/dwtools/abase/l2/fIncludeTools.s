@@ -1,4 +1,4 @@
-( function _Include_s_() {
+( function _IncludeTools_s_() {
 
 'use strict';
 
@@ -135,7 +135,7 @@ function _includeWithRequireAct( src )
   catch( err )
   {
     debugger;
-    throw _.err( err,'\n','Cant require',src );
+    throw _.err( err, '\n', 'Cant require', src );
   }
   else throw _.err( 'Cant include, no "require".' );
 
@@ -356,8 +356,9 @@ function isIncluded( src )
 var Proto =
 {
 
-  usePath : usePath,
+  /* qqq : comment out maybe !!! */
 
+  usePath : usePath,
   usePathGlobally : usePathGlobally,
   _usePathGlobally : _usePathGlobally,
   _usePathGloballyChildren : _usePathGloballyChildren,

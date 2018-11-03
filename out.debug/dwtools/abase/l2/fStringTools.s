@@ -1,4 +1,4 @@
-(function _fStringTools_s_() {
+(function _StringTools_s_() {
 
 'use strict';
 
@@ -1129,6 +1129,23 @@ strQuote.defaults =
 {
   src : null,
   quote : '"',
+}
+
+//
+
+function strDifference( src1,src2,o )
+{
+  _.assert( _.strIs( src1 ) );
+  _.assert( _.strIs( src2 ) );
+
+  if( src1 === src2 )
+  return false;
+
+  for( var i = 0, l = Math.min( src1.length, src2.length ) ; i < l ; i++ )
+  if( src1[ i ] !== src2[ i ] )
+  return src1.substr( 0,i ) + '*';
+
+  return src1.substr( 0,i ) + '*';
 }
 
 // --
@@ -4198,6 +4215,7 @@ let Proto =
   strForCall : strForCall, /* experimental */
   strShortSrt : strShortSrt,
   strQuote : strQuote,
+  strDifference : strDifference,
 
   // transformer
 
@@ -4240,7 +4258,7 @@ let Proto =
 
   strSplitNaive : strSplitNaive,
 
-// extractor
+  // extractor
 
   strSub : _.routineVectorize_functor( _strSub ),
   strExtractInlined : strExtractInlined,

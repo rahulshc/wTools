@@ -14,9 +14,9 @@ if( typeof module !== 'undefined' && module !== null )
   // require( './l2/cLookerComparator.s' );
   // require( './l2/cLookerExtra.s' );
 
-  require( './l2/fIncludeTools.s' );
-  require( './l2/fNameTools.s' );
-  require( './l2/fStringTools.s' );
+  require( './l2/IncludeTools.s' );
+  require( './l2/NameTools.s' );
+  require( './l2/StringTools.s' );
   require( './l2/ModulesRegistry.s' );
 
   let _global = _global_;

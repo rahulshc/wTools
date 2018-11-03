@@ -35,13 +35,17 @@ if( typeof module !== 'undefined' )
 let _global = _global_;
 let Self = _global_.wTools;
 let _ = _global_.wTools;
-
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
+_.include( 'wLooker' );
+_.include( 'wSelector' );
+
 _.assert( !!_realGlobal_ );
+_.assert( !!_.look );
+_.assert( !!_.entitySelect );
 
 // --
 // entity investigator
@@ -77,8 +81,7 @@ function __entityEqualUp( e, k, it )
   else
   {
     if( _.primitiveIs( it.src ) || _.primitiveIs( it.src2 ) )
-    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.src2 ) )
-    {
+    if( _ObjectToString.call( it.src ) !== _ObjectToString.call( it.src2 ) ) {
       if( it.context.strictNumbering )
       return clearEnd( false );
       return clearEnd( it.src == it.src2 );
@@ -361,6 +364,9 @@ function _entityEqual_pre( routine, args )
   else
   o.onNumbersAreEqual = numbersAreEquivalent;
 
+  // if( _global )
+  // debugger;
+  // debugger;
   // let it = _._entityEqual.lookBegin( routine, [ o ] );
   return _.look.pre( _.look, [ _optionsTransform( o ) ] );
   // return it;

@@ -210,20 +210,22 @@ function _setupTesterPlaceholder()
 
   /* */
 
-  if( !_.Tester )
+  if( !_realGlobal_.wTester )
   {
-    _.Tester = Object.create( null );
-    _.Tester.test = function test( testSuitName )
+    _realGlobal_.wTester = Object.create( null );
+    _realGlobal_.wTester.test = function test( testSuitName )
     {
       if( _.workerIs() )
       return;
       _.assert( arguments.length === 0 || arguments.length === 1 );
-      _.assert( _.strIs( testSuitName ) || testSuitName === undefined,'test : expects string {-testSuitName-}' );
+      _.assert( _.strIs( testSuitName ) || testSuitName === undefined, 'test : expects string {-testSuitName-}' );
+      debugger;
       _.timeReady( function()
       {
-        if( _.Tester.test === test )
+        debugger;
+        if( /*_.*/_realGlobal_.wTester.test === test )
         throw _.err( 'Cant wTesting.test, missing wTesting package' );
-        _.Tester.test.call( _.Tester,testSuitName );
+        /*_.*/_realGlobal_.wTester.test.call( /*_.*/_realGlobal_.wTester, testSuitName );
       });
     }
   }
@@ -232,16 +234,16 @@ function _setupTesterPlaceholder()
 
 //
 
-function _setupLater()
-{
-
-  // _.assert( _.objectIs( _.regexpsEscape ) );
-  // _.assert( _.objectIs( _.strIsolateBeginOrAll ) )
-  // _.Later.for( _ );
-  _.assert( _.routineIs( _.regexpsEscape ) );
-  _.assert( _.routineIs( _.strIsolateBeginOrAll ) )
-
-}
+// function _setupLater()
+// {
+//
+//   // _.assert( _.objectIs( _.regexpsEscape ) );
+//   // _.assert( _.objectIs( _.strIsolateBeginOrAll ) )
+//   // _.Later.for( _ );
+//   _.assert( _.routineIs( _.regexpsEscape ) );
+//   _.assert( _.routineIs( _.strIsolateBeginOrAll ) )
+//
+// }
 
 //
 
@@ -257,7 +259,7 @@ function _setup()
     _._setupUnhandledErrorHandler();
     _._setupLoggerPlaceholder();
     _._setupTesterPlaceholder();
-    _._setupLater();
+    // _._setupLater();
   }
 
   _.assert( !!Self.timeNow );
@@ -277,7 +279,7 @@ let Routines =
   _setupLoggerPlaceholder : _setupLoggerPlaceholder,
   _setupTesterPlaceholder : _setupTesterPlaceholder,
 
-  _setupLater : _setupLater,
+  // _setupLater : _setupLater,
 
   _setup : _setup,
 
