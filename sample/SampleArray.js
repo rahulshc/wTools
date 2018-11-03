@@ -2,9 +2,8 @@ if( typeof module !== 'undefined' )
 require( 'wTools' );
 var _ = wTools;
 
-var dst = [];
-result = _.arrayFlatten( dst, 1, 2, '3'  )
-console.log( result, dst );
+var typedArray = new Uint8Array([1, 2, 3, 4, 5, 5 ]);
 
-result = _.arrayFlatten( null, 1, 2, '3'  )
-console.log( result );
+// Input element
+var got = _.longRemoveDuplicates( typedArray );
+logger.log( 'result', got )
