@@ -17,55 +17,55 @@ let Self = _global.ModulesRegistry;
 
 let wLogger =
 {
-  includeAny : [ '../../abase/printer/top/Logger.s','abase/printer/top/Logger.s','wLogger' ],
+  includeAny : [ '../../abase/l9/printer/top/Logger.s','abase/l9/printer/top/Logger.s','wLogger' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Logger; },
 }
 
 let wPrinterToFile =
 {
-  includeAny : [ '../../abase/printer/top/ToFile.ss','abase/printer/top/ToFile.ss','wloggertofile' ],
+  includeAny : [ '../../abase/l9/printer/top/ToFile.ss','abase/l9/printer/top/ToFile.ss','wloggertofile' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToFile; },
 }
 
 let wPrinterToJs =
 {
-  includeAny : [ '../../abase/printer/top/ToJstructure.s','abase/printer/top/ToJstructure.s','wloggertojs' ],
+  includeAny : [ '../../abase/l9/printer/top/ToJstructure.s','abase/l9/printer/top/ToJstructure.s','wloggertojs' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
 }
 
 let wConsequence =
 {
-  includeAny : [ '../../abase/oclass/Consequence.s','abase/oclass/Consequence.s','wConsequence' ],
+  includeAny : [ '../../abase/l9/consequence/Consequence.s','abase/l9/consequence/Consequence.s','wConsequence' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequence; },
 }
 
 let wConsequizer =
 {
-  includeAny : [ '../../abase/mixin/Consequizer.s','abase/mixin/Consequizer.','wconsequizer' ],
+  includeAny : [ '../../abase/l7/Consequizer.s','abase/l7/Consequizer.','wconsequizer' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequizer; },
 }
 
 let wCopyable =
 {
-  includeAny : [ '../../abase/mixin/Copyable.s','abase/mixin/Copyable.s','wCopyable' ],
+  includeAny : [ '../../abase/l7/Copyable.s','abase/l7/Copyable.s','wCopyable' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Copyable; },
 }
 
 let wInstancing =
 {
-  includeAny : [ '../../abase/mixin/Instancing.s','abase/mixin/Instancing.s','winstancing' ],
+  includeAny : [ '../../abase/l7/Instancing.s','abase/l7/Instancing.s','winstancing' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Instancing; },
 }
 
 let wEventHandler =
 {
-  includeAny : [ '../../abase/mixin/EventHandler.s','abase/mixin/EventHandler.s','wEventHandler' ],
+  includeAny : [ '../../abase/l7/EventHandler.s','abase/l7/EventHandler.s','wEventHandler' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.EventHandler; },
 }
 
 let wFieldsStack =
 {
-  includeAny : [ '../../abase/mixin/FieldsStack.s','abase/mixin/FieldsStack.s','wfieldsstack' ],
+  includeAny : [ '../../abase/l7/FieldsStack.s','abase/l7/FieldsStack.s','wfieldsstack' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FieldsStack; },
 }
 
@@ -401,25 +401,25 @@ let wStarterMaker =
 
 let wMathScalar =
 {
-  includeAny : [ '../../../dwtools/amath/arithmetic/cScalar.s','amath/arithmetic/cScalar.s','wmathscalar' ],
+  includeAny : [ '../../../dwtools/amath/l1/Scalar.s','amath/l1/Scalar.s','wmathscalar' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.clamp },
 }
 
 let wMathVector =
 {
-  includeAny : [ '../../../dwtools/amath/cvector/Base.s','amath/cvector/Base.s','wmathvector' ],
+  includeAny : [ '../../../dwtools/amath/l3_vector/Main.s','amath/l3_vector/Main.s','wmathvector' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.vector },
 }
 
 let wMathSpace =
 {
-  includeAny : [ '../../../dwtools/amath/space/wSpace.s','amath/space/wSpace.s','wmathspace' ],
+  includeAny : [ '../../../dwtools/amath/l5_space/Main.s','amath/l5_space/Main.s','wmathspace' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Space },
 }
 
 let wMathConcepts =
 {
-  includeAny : [ '../../../dwtools/amath/geometric/aConcepts.s','amath/geometric/aConcepts.ss','wmathconcepts' ],
+  includeAny : [ '../../../dwtools/amath/l8/Concepts.s','amath/l8/Concepts.ss','wmathconcepts' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.box },
 }
 

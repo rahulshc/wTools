@@ -3,11 +3,11 @@
 'use strict';
 
 /**
-  @module Tools/base/LookerExtra - Collection of routines to compare two complex structures. The module can answer questions: are two structures equivalent? are them identical? what is the difference between each other? Use the module avoid manually work and cherry picking.
+  @module Tools/base/Comparator - Collection of routines to compare two complex structures. The module can answer questions: are two structures equivalent? are them identical? what is the difference between each other? Use the module avoid manually work and cherry picking.
 */
 
 /**
- * @file Looker.s.
+ * @file LookerComparator.s.
  */
 
 if( typeof module !== 'undefined' )
@@ -202,7 +202,6 @@ function __entityEqualUp( e, k, it )
 
     if( !it.result )
     {
-      debugger;
       it.iterator.looking = false;
       it.looking = false;
     }
@@ -282,74 +281,22 @@ function __entityEqualCycle( e, k, it )
 
 //
 
-// function _entityEqual_lookBegin( routine, args )
-// {
-//   let o = args[ 0 ];
-//
-//   _.assert( args.length === 1 );
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assertRoutineOptionsPreservingUndefines( routine, o );
-//   _.assert( routine.lookBegin === _entityEqual_lookBegin );
-//
-//   /* */
-//
-//   let lookOptions = Object.create( null );
-//   lookOptions.src = o.src2;
-//   lookOptions.src2 = o.src1;
-//   lookOptions.levelLimit = o.levelLimit;
-//   lookOptions.context = o;
-//   lookOptions.onUp = _.routinesComposeReturningLast([ __entityEqualUp, o.onUp ]);
-//   lookOptions.onDown = _.routinesComposeReturningLast([ __entityEqualDown, o.onDown ]);
-//
-//   let it = _.look.pre( _.look, [ lookOptions ] );
-//   o.iterator = it.iterator;
-//
-//   return it;
-// }
-//
-// //
-//
-// _.assert( _.routineIs( _.look.lookIt ) );
-// _.assert( _.routineIs( _.look.lookContinue ) );
-//
-// let _entityEqual_lookIt = _.look.lookIt;
-// let _entityEqual_lookContinue = _.look.lookContinue;
-
-function _optionsTransform( o )
-{
-  /**/
-
-  // _.assert( args.length === 1 );
-  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( arguments.length === 1, 'Expects exactly two arguments' );
-  // _.assertRoutineOptionsPreservingUndefines( routine, o );
-  // _.assert( routine.lookBegin === _entityEqual_lookBegin );
-
-  let lookOptions = Object.create( null );
-  lookOptions.src = o.src2;
-  lookOptions.src2 = o.src1;
-  lookOptions.levelLimit = o.levelLimit;
-  lookOptions.context = o;
-  lookOptions.onUp = _.routinesComposeReturningLast([ __entityEqualUp, o.onUp ]);
-  lookOptions.onDown = _.routinesComposeReturningLast([ __entityEqualDown, o.onDown ]);
-
-  // let it = _.look.pre( _.look, [ lookOptions ] );
-  // o.iterator = it.iterator;
-
-  /**/
-
-  return lookOptions;
-}
-
-//
-
 function _entityEqual_pre( routine, args )
 {
 
   _.assert( args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  let o = _.routineOptionsPreservingUndefines( routine, args[ 2 ] || Object.create( null ) );
+  let o = args[ 2 ] || Object.create( null );
+
+  if( o.looker && _.prototypeOf( o.looker, o ) )
+  {
+    _.assert( o.src === args[ 0 ] );
+    _.assert( o.src2 === args[ 1 ] );
+    return o;
+  }
+
+  o = _.routineOptionsPreservingUndefines( routine, args[ 2 ] || Object.create( null ) );
 
   let accuracy = o.accuracy;
 
@@ -364,12 +311,7 @@ function _entityEqual_pre( routine, args )
   else
   o.onNumbersAreEqual = numbersAreEquivalent;
 
-  // if( _global )
-  // debugger;
-  // debugger;
-  // let it = _._entityEqual.lookBegin( routine, [ o ] );
   return _.look.pre( _.look, [ _optionsTransform( o ) ] );
-  // return it;
 
   /* */
 
@@ -391,6 +333,33 @@ function _entityEqual_pre( routine, args )
     return Math.abs( a-b ) <= accuracy;
   }
 
+
+  function _optionsTransform( o )
+  {
+    /**/
+
+    // _.assert( args.length === 1 );
+    // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+    _.assert( arguments.length === 1, 'Expects exactly two arguments' );
+    // _.assertRoutineOptionsPreservingUndefines( routine, o );
+    // _.assert( routine.lookBegin === _entityEqual_lookBegin );
+
+    let lookOptions = Object.create( null );
+    lookOptions.src = o.src2;
+    lookOptions.src2 = o.src1;
+    lookOptions.levelLimit = o.levelLimit;
+    lookOptions.context = o;
+    lookOptions.onUp = _.routinesComposeReturningLast([ __entityEqualUp, o.onUp ]);
+    lookOptions.onDown = _.routinesComposeReturningLast([ __entityEqualDown, o.onDown ]);
+
+    // let it = _.look.pre( _.look, [ lookOptions ] );
+    // o.iterator = it.iterator;
+
+    /**/
+
+    return lookOptions;
+  }
+
 }
 
 //
@@ -398,11 +367,10 @@ function _entityEqual_pre( routine, args )
 function _entityEqual_body( o )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  // debugger;
-  // _._entityEqual.lookIt( it );
+
   let it = o.iteration = o.context.iteration = _.look.body( o );
-  o.iterator = o.context.iterator = it.iterator;
-  // debugger;
+  // o.iterator = o.context.iterator = it.iterator;
+
   _.assert( it.iterator !== it );
   _.assert( it.result === _.dont || _.boolIs( it.result ) );
   return it.result === _.dont ? false : it.result;
@@ -460,23 +428,6 @@ _entityEqual_body.defaults =
  * @memberof wTools
  */
 
-// function _entityEqual( src1, src2, options )
-// {
-//   debugger; xxx
-//   let it = _entityEqual.pre.call( this, _entityEqual, arguments );
-//   let result = _entityEqual.body.call( this, it );
-//   return result;
-// }
-//
-// // _entityEqual.lookBegin = _entityEqual_lookBegin;
-// // _entityEqual.lookIt = _entityEqual_lookIt;
-// // _entityEqual.lookContinue = _entityEqual_lookContinue;
-//
-// _entityEqual.pre = _entityEqual_pre;
-// _entityEqual.body = _entityEqual_body;
-//
-// var defaults = _entityEqual.defaults = Object.create( _entityEqual_body.defaults );
-
 let _entityEqual = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body );
 
 //
@@ -508,15 +459,6 @@ let _entityEqual = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body )
  * @throws {exception} If( options ) is extended by unknown property.
  * @memberof wTools
 */
-
-// function entityIdentical( src1, src2, options )
-// {
-//   let it = _entityEqual.pre.call( this, entityIdentical, arguments );
-//   let result = _entityEqual.body.call( this, it );
-//   return result;
-// }
-//
-// _.routineExtend( entityIdentical, _entityEqual );
 
 let entityIdentical = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body );
 
@@ -555,15 +497,6 @@ defaults.strictCycling = 1;
  * @memberof wTools
 */
 
-// function entityEquivalent( src1, src2, options )
-// {
-//   let it = _entityEqual.pre.call( this, entityEquivalent, arguments );
-//   let result = _entityEqual.body.call( this, it );
-//   return result;
-// }
-//
-// _.routineExtend( entityEquivalent, _entityEqual );
-
 let entityEquivalent = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body );
 
 var defaults = entityEquivalent.defaults;
@@ -580,9 +513,9 @@ defaults.strictCycling = 0;
  *
  * @param {*} src1 - Entity for comparison.
  * @param {*} src2 - Entity for comparison.
- * @param {wTools~entityEqualOptions} options - Comparsion options {@link wTools~entityEqualOptions}.
- * @param {boolean} [ options.strict = true ] - Method uses strict( '===' ) equality mode .
- * @param {boolean} [ options.containing = true ] - Check if( src1 ) contains  keys/indexes and same appropriates values from( src2 ).
+ * @param {wTools~entityEqualOptions} opts - Comparsion options {@link wTools~entityEqualOptions}.
+ * @param {boolean} [ opts.strict = true ] - Method uses strict( '===' ) equality mode .
+ * @param {boolean} [ opts.containing = true ] - Check if( src1 ) contains  keys/indexes and same appropriates values from( src2 ).
  * @returns {boolean} Returns boolean result of comparison.
  *
  * @example
@@ -599,11 +532,11 @@ defaults.strictCycling = 0;
  *
  * @function entityContains
  * @throws {exception} If( arguments.length ) is not equal 2 or 3.
- * @throws {exception} If( options ) is extended by unknown property.
+ * @throws {exception} If( opts ) is extended by unknown property.
  * @memberof wTools
 */
 
-function entityContains( src1, src2, options )
+function entityContains( src1, src2, opts )
 {
   let it = _entityEqual.pre.call( this, entityContains, arguments );
   let result = _entityEqual.body.call( this, it );
@@ -657,12 +590,12 @@ defaults.strictCycling = 1;
   * @memberof wTools
   */
 
-function entityDiff( src1, src2, o )
+function entityDiff( src1, src2, opts )
 {
 
-  o = o || Object.create( null );
+  opts = opts || Object.create( null );
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  let equal = _._entityEqual( src1, src2, o );
+  let equal = _._entityEqual( src1, src2, opts );
 
   if( equal )
   return false;
@@ -670,7 +603,7 @@ function entityDiff( src1, src2, o )
   let result = _.entityDiffExplanation
   ({
     srcs : [ src1, src2 ],
-    path : o.iteration.lastPath,
+    path : opts.iteration.lastPath,
   });
 
   return result;
@@ -703,7 +636,7 @@ function entityDiffExplanation( o )
 
   }
 
-  if( _.objectIs( o.srcs[ 0 ] ) && _.objectIs( o.srcs[ 1 ] ) )
+  if( _.mapIs( o.srcs[ 0 ] ) && _.mapIs( o.srcs[ 1 ] ) )
   {
     let common = _.filter( _.mapFields( o.srcs[ 0 ] ), ( e, k ) => _.entityIdentical( e, o.srcs[ 1 ][ k ] ) ? e : undefined );
     o.srcs[ 0 ] = _.mapBut( o.srcs[ 0 ], common );
@@ -757,12 +690,6 @@ let Proto =
   __entityEqualDown : __entityEqualDown,
   __entityEqualCycle : __entityEqualCycle,
 
-  // _entityEqual_lookBegin : _entityEqual_lookBegin,
-  // _entityEqual_lookIt : _entityEqual_lookIt,
-  // _entityEqual_lookContinue : _entityEqual_lookContinue,
-
-  // _entityEqual_pre : _entityEqual_pre,
-  // _entityEqual_body : _entityEqual_body,
   _entityEqual : _entityEqual,
 
   entityIdentical : entityIdentical,

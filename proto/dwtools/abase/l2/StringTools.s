@@ -3662,9 +3662,44 @@ function strIndentation( src,tab )
 function strLinesSplit( src )
 {
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
+  _.assert( arguments.length === 1 );
   if( _.arrayIs( src ) )
   return src;
   return src.split( '\n' );
+}
+
+//
+
+function strLinesJoin( src )
+{
+  _.assert( _.strIs( src ) || _.arrayIs( src ) );
+  _.assert( arguments.length === 1 );
+  let result = src;
+  if( _.arrayIs( src ) )
+  result = src.join( '\n' );
+  return result;
+}
+
+//
+
+function strLinesStrip( src )
+{
+
+  if( arguments.length > 1 )
+  {
+    let result = _.unrollAppend([]);
+    for( let a = 0 ; a < arguments.length ; a++ )
+    result[ a ] = strLinesStrip( arguments[ a ] );
+    return result;
+  }
+
+  _.assert( _.strIs( src ) || _.arrayIs( src ) );
+  _.assert( arguments.length === 1 );
+  let lines = _.strLinesSplit( src );
+  lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
+  if( _.strIs( src ) )
+  lines = _.strLinesJoin( lines );
+  return lines;
 }
 
 //
@@ -4229,8 +4264,11 @@ let Proto =
   // stripper
 
   strStrip : strStrip,
+  strsStrip : _.routineVectorize_functor( strStrip ),
   strStripLeft : strStripLeft,
+  strsStripLeft : _.routineVectorize_functor( strStripLeft ),
   strStripRight : strStripRight,
+  strsStripRight : _.routineVectorize_functor( strStripRight ),
   strRemoveAllSpaces : _.routineVectorize_functor( _strRemoveAllSpaces ),
   strStripEmptyLines : _.routineVectorize_functor( _strStripEmptyLines ),
 
@@ -4275,6 +4313,8 @@ let Proto =
 
   strIndentation : strIndentation,
   strLinesSplit : strLinesSplit,
+  strLinesJoin : strLinesJoin,
+  strLinesStrip : strLinesStrip, /* qqq : test coverage */
   strLinesNumber : strLinesNumber,
   strLinesSelect : strLinesSelect,
   strLinesNearest : strLinesNearest,
