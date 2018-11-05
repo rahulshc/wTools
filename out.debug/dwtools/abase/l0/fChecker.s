@@ -178,8 +178,15 @@ function promiseLike( src )
 
 //
 
-function typeOf( src )
+function typeOf( src, constructor )
 {
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single argument' );
+
+  if( arguments.length === 2 )
+  {
+    return _.typeOf( src ) === constructor;
+  }
+
   if( src === null || src === undefined )
   return null
   else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) )
@@ -199,12 +206,24 @@ function typeOf( src )
 
 //
 
-function prototypeHas( src, prototype )
+function prototypeOf( subPrototype, superPrototype )
 {
   _.assert( arguments.length === 2, 'Expects single argument' );
-  if( src === prototype )
+  if( subPrototype === superPrototype )
   return true;
-  return Object.isPrototypeOf.call( prototype, src );
+  if( !subPrototype )
+  return false;
+  if( !superPrototype )
+  return false;
+  return Object.isPrototypeOf.call( subPrototype, superPrototype );
+}
+
+//
+
+function prototypeHas( superPrototype, subPrototype )
+{
+  _.assert( arguments.length === 2, 'Expects single argument' );
+  return _.prototypeOf( subPrototype, superPrototype );
 }
 
 //
@@ -500,6 +519,7 @@ let Routines =
   promiseLike : promiseLike,
 
   typeOf : typeOf,
+  prototypeOf : prototypeOf,
   prototypeHas : prototypeHas,
   prototypeIs : prototypeIs,
   prototypeIsStandard : prototypeIsStandard,

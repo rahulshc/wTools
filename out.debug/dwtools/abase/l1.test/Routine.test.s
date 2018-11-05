@@ -68,52 +68,59 @@ function _routineJoin( test )
     testParam2 = 4,
     options1 =
     {
-      seal : false,
+      sealing : false,
       routine : testFunction1,
-      args : [ testParam2 ] // x
+      args : [ testParam2 ], // x
+      extending : true
     },
     options2 =
     {
-      seal : true,
+      sealing : true,
       routine : testFunction2,
-      args : [ testParam2 ] // x
+      args : [ testParam2 ], // x
+      extending : true
     },
 
     options3 =
     {
-      seal : false,
+      sealing : false,
       routine : testFunction3,
       args : [ testParam2 ], // x
-      context : context3
+      context : context3,
+      extending : true
     },
     options4 =
     {
-      seal : false,
+      sealing : false,
       routine : testFunction4,
       args : [ testParam2 ], // x
-      context : context3
+      context : context3,
+      extending : true
     },
 
     options5 =
     {
-      seal : true,
+      sealing : true,
       routine : testFunction3,
       args : [ testParam1, testParam2 ], // x
-      context : context3
+      context : context3,
+      extending : true
     },
 
     wrongOpt1 = {
-      seal : true,
+      sealing : true,
       routine : {},
       args : [ testParam1, testParam2 ], // x
-      context : context3
+      context : context3,
+      extending : true
     },
 
     wrongOpt2 = {
-      seal : true,
+      sealing : true,
       routine : testFunction3,
       args : 'wrong', // x
-      context : context3
+      context : context3,
+      extending : true
     },
 
     expected1 = 6,
@@ -1537,6 +1544,6 @@ var Self =
 
 Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-_.Tester.test( Self.name );
+/*_.*/wTester.test( Self.name );
 
 } )( );

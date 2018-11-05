@@ -161,7 +161,7 @@ function constructorJoin( routine, args )
 {
 
   _.assert( _.routineIs( routine ), 'Expects routine in the first argument' );
-  _.assert( _.arrayLike( args ), 'Expects array-like in the second argument' );
+  _.assert( _.longIs( args ), 'Expects array-like in the second argument' );
   _.assert( arguments.length === 2, 'Expects exactly 2 arguments' );
 
   return _routineJoin

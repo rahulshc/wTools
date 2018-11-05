@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.8.292",
+  "version": "0.8.300",
   "engine": "node >= 6.0.0",
   "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind",
   "license": "MIT",
@@ -30,7 +30,7 @@
   ],
   "scripts": {
     "test": "wtest proto",
-    "make_doc": "./doc.sh"
+    "docgen": "wdocgen proto"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-( function _aFundamental_s_() {
+( function _aPredefined_s_() {
 
 'use strict';
 
@@ -15,7 +15,6 @@
  * @class wTools
  */
 
-
 // global
 
 let _global = undefined;
@@ -23,16 +22,14 @@ if( !_global && typeof Global !== 'undefined' && Global.Global === Global ) _glo
 if( !_global && typeof global !== 'undefined' && global.global === global ) _global = global;
 if( !_global && typeof window !== 'undefined' && window.window === window ) _global = window;
 if( !_global && typeof self   !== 'undefined' && self.self === self ) _global = self;
-let _realGlobal = _global;
-let _globalWas = _global._global_ || _global;
-if( _global._global_ )
-_global = _global._global_;
-_global._global_ = _global;
-_realGlobal._realGlobal_ = _realGlobal;
+let _realGlobal = _global._realGlobal_ = _global;
+let _wasGlobal = _global._global_ || _global;
+_global = _wasGlobal;
+_global._global_ = _wasGlobal;
 
 // verification
 
-if( !_global_.WTOOLS_PRIVATE  )
+if( !_global_.WTOOLS_PRIVATE )
 {
 
   if( _global_.wBase )
@@ -51,6 +48,9 @@ if( !_global_.WTOOLS_PRIVATE  )
 }
 
 // config
+
+if( !_realGlobal.__which__ )
+_realGlobal.__which__ = 'real';
 
 if( !_realGlobal.Config )
 _realGlobal.Config = { debug : true }
@@ -74,17 +74,22 @@ if(  !_global_.WTOOLS_PRIVATE  )
 if( !_global_.Underscore && _global_._ )
 _global_.Underscore = _global_._;
 
-if( _global !== _realGlobal_ && !!_global.wTools )
-throw 'Multiple inclusions of Fundamental.s';
+// debugger;
+// if( _global !== _realGlobal_ /*&& !!_global.wTools*/ )
+// throw 'Multiple inclusions of Base';
+if( Object.hasOwnProperty.call( _global, 'wTools' ) && _global !== _realGlobal_ )
+throw 'wTools was already defined';
 
 //
 
-_global.wTools = _global.wTools || Object.create( null );
+_global.wTools = Object.create( null );
 _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
 let Self = _global.wTools;
 let _ = Self;
 
-// specia globals
+Self.__which__ = _global.__which__;
+
+// special globals
 
 if( !_realGlobal_.def  )
 {
