@@ -153,6 +153,17 @@ function _routineJoin( test )
   var got = gotfn( testParam1 );
   test.identical( got, expected5 );
 
+  test.case = 'simple function with context and arguments : result check, seal == true ';
+  var gotfn = _._routineJoin(options5);
+  var got = gotfn( 0,0 );
+  test.identical( got, expected5 );
+
+  test.case = 'extending';
+  function srcRoutine(){}
+  srcRoutine.defaults = { a : 10 };
+  var gotfn = _.routineJoin( undefined, srcRoutine, [] );
+  test.identical( gotfn.defaults, srcRoutine.defaults );
+
   /**/
 
   if( !Config.debug )
@@ -246,6 +257,90 @@ function _routineJoin( test )
 
 //
 
+function constructorJoin( test )
+{
+  function srcRoutine()
+  {
+    var result =
+    {
+      context : this,
+      args : _.longSlice( arguments )
+    }
+    return result;
+  }
+
+  srcRoutine.prop = true;
+
+  var args = [];
+  var got = _.constructorJoin( srcRoutine,args );
+  test.is( _.routineIs( got ) );
+  var result = got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, args );
+  test.identical( result.context, srcRoutine );
+  test.isNot( result.context instanceof srcRoutine );
+
+  var args = [];
+  var got = _.constructorJoin( srcRoutine,args );
+  test.is( _.routineIs( got ) );
+  var result = new got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, args );
+  test.notIdentical( result.context, srcRoutine );
+  test.is( result.context instanceof srcRoutine );
+
+  var args = [ { a : 1 } ];
+  var got = _.constructorJoin( srcRoutine,args );
+  test.is( _.routineIs( got ) );
+  var result = got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, args );
+  test.identical( result.context, srcRoutine );
+  test.isNot( result.context instanceof srcRoutine );
+
+  var args = [ { a : 1 } ];
+  var got = _.constructorJoin( srcRoutine,args );
+  test.is( _.routineIs( got ) );
+  var result = got({ b : 1 });
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, [ { a : 1 }, { b : 1 } ] );
+  test.identical( result.context, srcRoutine );
+  test.isNot( result.context instanceof srcRoutine );
+
+  var args = [ { a : 1 } ];
+  var got = _.constructorJoin( srcRoutine,args );
+  test.is( _.routineIs( got ) );
+  var result = new got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, args );
+  test.notIdentical( result.context, srcRoutine );
+  test.is( result.context instanceof srcRoutine );
+
+  var args = [ { a : 1 } ];
+  var got = _.constructorJoin( srcRoutine,args );
+  test.is( _.routineIs( got ) );
+  var result = new got({ b : 1 });
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, [ { a : 1 }, { b : 1 } ] );
+  test.notIdentical( result.context, srcRoutine );
+  test.is( result.context instanceof srcRoutine );
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowError( () => _.constructorJoin() )
+  test.shouldThrowError( () => _.constructorJoin( [], [] ) )
+  test.shouldThrowError( () => _.constructorJoin( srcRoutine, srcRoutine ) )
+}
+
+//
+
 function routineJoin( test )
 {
 
@@ -274,6 +369,12 @@ function routineJoin( test )
   var gotfn = _.routineJoin(context3, testFunction4, [ testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
+
+  test.case = 'extending'
+  function srcRoutine(){}
+  srcRoutine.defaults = { a : 10 };
+  var gotfn = _.routineJoin( undefined, srcRoutine, [] );
+  test.identical( gotfn.defaults, srcRoutine.defaults );
 
   if( !Config.debug )
   return;
@@ -334,6 +435,17 @@ function routineSeal(test)
   var gotfn = _.routineSeal(context3, testFunction4, [testParam1, testParam2]);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
+
+  test.case = 'simple function with seal context and arguments : result check';
+  var gotfn = _.routineSeal(context3, testFunction3, [testParam1, testParam2]);
+  var got = gotfn( 0,0 );
+  test.identical( got, expected3 );
+
+  test.case = 'extending';
+  function srcRoutine(){}
+  srcRoutine.defaults = { a : 10 };
+  var gotfn = _.routineJoin( undefined, srcRoutine, [] );
+  test.identical( gotfn.defaults, srcRoutine.defaults );
 
   if( !Config.debug )
   return;
@@ -1529,6 +1641,7 @@ var Self =
 
     _routineJoin : _routineJoin,
     // routineBind  : routineBind,
+    constructorJoin : constructorJoin,
     routineJoin  : routineJoin,
     routineSeal  : routineSeal,
     routinesCall : routinesCall,
