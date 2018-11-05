@@ -9,7 +9,7 @@
 ### Methods:
 * `arrayIs( src )` - Checks if src is an array.
 * `arrayleftIndex/arrayRightIndex( arr, ins, evaluator1, evaluator2 )` - Returns the index of the first/last matching (ins) element of an array (arr).
-  ( see evaluators on ### Patterns # 5 )
+  ( see evaluators on ### EVALUATORS )
 * `arrayRight/arrayLeft( arr, ins, evaluator1, evaluator2 )` - Returns a new object containing the properties, (index, element), corresponding to
   a found value (ins) of an array (arr).
 * `arrayCount( src, instance )` - Returns the count of matched elements with ( instance ) of an array ( src ).
@@ -36,13 +36,11 @@
 
 #2: Function contains `*Once` :
 
-  If the function contains `*Once`, the action will be performed only on the first matching element.
+  If the function contains `*Once`, the action will be performed only on the first matching element, or when
+  the destination array ( dstArray ) doesn't have the value of ( ins ).
   @Example:
   - arrayRemoveElement( [ 1, 2, 1 ], 1 ) -> [ 2 ]
   - arrayRemoveElementOnce( [ 1, 2, 1 ], 1 ) -> [ 2, 1 ]
-
-  There are some exceptions, like arrayPrepend/arrayAppend: if they have `*Once`, the action will only be performed if
-  the destination array ( dstArray ) doesn't have the value of ( ins ).
   @Example:
   - arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 ) -> [ 5, 1, 2, 3, 4, 5 ]
   - arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 ) -> [ 1, 2, 3, 4, 5 ]
@@ -74,26 +72,49 @@
   @Example:
   - arrayRemoveArrays( [ 1, 2, 3, 4 ], [ [ 3 ], [ 4, 5 ] ] ) -> [ 1, 2 ]
 
-#5: Evaluators :
 
-  Most of the routines can take additional routine parameters to evaluate and compare the input elements:
+###: EVALUATORS :
 
-  Evaluators: Check ( src ) and ( ins ) values.  
+  Most of the routines can take additional routine parameters to evaluate and compare the input elements, there are four options:
+
+  | **Type of Evaluator** | **Action** | **Applies to** | **Possible Outputs** |
+  | :---: | :---: | :---: | :---: |
+  | Evaluator | Check | One value | true/false |
+  | Tandem of Evaluators| Check | Two values | true/false - true/false |
+  | Equalizers | Compare | Two values | true/false |
+  | Comparator | Compare | Two values | - 1 / 0 / + 1 |
+
+#1: Evaluators:
+
+  Check ( src ) and ( ins ) values with the evaluator function.  
   @Example:
   - arrayRemoveElement( [ [ 1 ], [ 2 ] ], [ 1 ], ( e ) => e[ 0 ] ) -> [ [ 2 ] ]
   - arrayRemoveElement( [ [ 1 ], [ 2 ] ], 1, ( e ) => e[ 0 ] ) -> [ [ 1 ], [ 2 ] ]
 
-  Tandem of evaluators: One evaluator to check ( src ) and a different one to check ( ins ).
+#2: Tandem of evaluators:
+
+  One evaluator to check ( src ) and a different one to check ( ins ).
   @Example:
   - arrayRemoveElement( [ [ 1 ], [ 2 ] ], 1, ( e ) => e[ 0 ], ( e ) => e ) -> [ [ 2 ] ]
 
-  Equalizers: Compare ( src ) and ( ins ) values.  
+#3: Equalizers:
+
+  Compare ( src ) and ( ins ) values with the equalizer function: returns true or false for a two values comparison.
   @Example:
   - var onEqualize = function( a, b )
     {
       return a.num === b.num;
     }
     arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 }, onEqualize ) -> [ { num : 1 }, { num : 3 } ]
+
+#4: Comparator:
+
+  Compare ( src ) and ( ins ) values with the comparator function: returns + 1, 0 or - 1 for a two values comparison ( smaller, equal, bigger ).
+
+
+
+
+
 
 
 ### Try out  
