@@ -96,6 +96,7 @@
 #### 1: Evaluators:
 
   Check ( src ) and ( ins ) values with the evaluator function.  
+
   @Example:
   - arrayRemoveElement( [ [ 1 ], [ 2 ] ], [ 1 ], ( e ) => e[ 0 ] ) -> [ [ 2 ] ]
   - arrayRemoveElement( [ [ 1 ], [ 2 ] ], 1, ( e ) => e[ 0 ] ) -> [ [ 1 ], [ 2 ] ]
@@ -103,22 +104,26 @@
 #### 2: Tandem of evaluators:
 
   One evaluator to check ( src ) and a different one to check ( ins ).
+
   @Example:
   - arrayRemoveElement( [ [ 1 ], [ 2 ] ], 1, ( e ) => e[ 0 ], ( e ) => e ) -> [ [ 2 ] ]
 
 #### 3: Equalizers:
 
   Compare ( src ) and ( ins ) values with the equalizer function: returns true or false for a two values comparison.
+
   @Example:
   - var onEqualize = function( a, b )
     {
       return a.num === b.num;
     }
+
     arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 }, onEqualize ) -> [ { num : 1 }, { num : 3 } ]
 
 #### 4: Comparator:
 
   Compare ( src ) and ( ins ) values with the comparator function: returns + 1, 0 or - 1 for a two values comparison.
+
   @Example:
   - function compare(a, b) {
       if ( a % 2 === 0 ) {
@@ -129,7 +134,9 @@
       }
       return 0;
     }
+
     var arr = [ 0, 1, 2, 3, 4, 5 ];
+
     arr.sort( compare ) -> [ 0, 2, 4, 1, 3, 5 ];
 
 
