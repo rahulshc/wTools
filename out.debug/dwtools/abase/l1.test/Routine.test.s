@@ -1525,6 +1525,8 @@ var Self =
   tests :
   {
 
+    /* qqq : tests for constructorJoin, extend tests for routineJoin */
+
     _routineJoin : _routineJoin,
     // routineBind  : routineBind,
     routineJoin  : routineJoin,

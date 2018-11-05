@@ -345,7 +345,7 @@ function bufferMakeSimilar( ins,src )
 function bufferButRange( src, range, ins )
 {
   let result;
-  let range = _.rangeFrom( range );
+  range = _.rangeFrom( range );
 
   _.assert( _.bufferTypedIs( src ) );
   _.assert( ins === undefined || _.longIs( ins ) );
@@ -849,8 +849,8 @@ function bufferFromArrayOfArray( array,options )
     array = options.buffer;
   }
 
-  let options = options || Object.create( null );
-  let array = options.buffer = array || options.buffer;
+  options = options || Object.create( null );
+  array = options.buffer = array || options.buffer;
 
   //
 
@@ -1638,13 +1638,13 @@ function longButRange( src, range, ins )
   return _.arrayButRange( src, range, ins );
 
   let result;
-  let range = _.rangeFrom( range );
+  range = _.rangeFrom( range );
 
   _.rangeClamp( range, [ 0, src.length ] );
   let d = range[ 1 ] - range[ 0 ];
   let l = src.length - d + ( ins ? ins.length : 0 );
 
-  let result = _.longMakeSimilar( src, l );
+  result = _.longMakeSimilar( src, l );
 
   debugger;
   _.assert( 0,'not tested' )
