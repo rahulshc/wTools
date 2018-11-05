@@ -109,9 +109,19 @@
 
 #4: Comparator:
 
-  Compare ( src ) and ( ins ) values with the comparator function: returns + 1, 0 or - 1 for a two values comparison ( smaller, equal, bigger ).
-
-
+  Compare ( src ) and ( ins ) values with the comparator function: returns + 1, 0 or - 1 for a two values comparison.
+  @Example:
+  - function compare(a, b) {
+      if ( a % 2 === 0 ) {
+        return -1;
+      }
+      if ( b % 2 === 0 ) {
+        return 1;
+      }
+      return 0;
+    }
+    var arr = [ 0, 1, 2, 3, 4, 5 ];
+    arr.sort( compare ) -> [ 0, 2, 4, 1, 3, 5 ];
 
 
 
