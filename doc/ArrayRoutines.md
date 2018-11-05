@@ -32,10 +32,13 @@
 
     The format of a function name will be: array { Op } { Tense } { Second } { How }, where:
 
-  { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
-  { Tense } can be - ( nothing ) or ed, giving information on what to return ( the output value ).
-  { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
-  { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
+    { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
+
+    { Tense } can be - ( nothing ) or ed, giving information on what to return ( the output value ).
+
+    { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
+
+    { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
 
 #### 1: Function contains `*ed`
 
