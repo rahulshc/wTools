@@ -1,4 +1,3 @@
-
 ## fLong.s Array Methods Usage [![Array methods](https://travis-ci.org/Wandalen/wTools.svg?branch=master)](https://github.com/Wandalen/wTools/blob/master/out.debug/dwtools/abase/l0/fLong.s)
 
 
@@ -18,7 +17,7 @@
   * `arrayCountUnique( src, onEvaluate )` - Returns the count of matched pairs of an array ( src ).
   * `arrayPrepend*` - Adds a value of argument( ins ) to the beginning of an array( dstArray ).
     ( see options for * on ### Patterns )
-  * `arrayAppend*` - Adds a value of argument( ins ) at the end of an array( dstArray ).
+  * `arrayAppend*` - Adds the value of argument( ins ) at the end of an array( dstArray ).
   * `arrayRemove*` - Removes the matching elements ( ins ) of an array (dstArray).
   * `arrayRemoveDuplicates( dstArray, onEvaluate )` - Removes the duplicated elements of an array (dstArray).
   * `arrayFlatten*` - Returns an array that contains all the passed arguments.
@@ -31,9 +30,9 @@
   Many function names contain patterns to help us understand the behaviour of each routine, here comes a quick summary of the information a function name can
   give us:
 
-  | **Name :** | array | **Opeartion** | **Tense** | **Second** | **How** |
+  | **Name :** | array | **Operation** | **Tense** | **Second** | **How** |
   | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **Name expansions** | | [ Append, Prepend, Remove, Flatten, Replace ] | [ - , ed ] | [ - , element, array, arrays ] | [ - , Once, OnceStrictly ] |
+  | **Options for name** | | [ Append, Prepend, Remove, Flatten, Replace ] | [ - , ed ] | [ - , element, array, arrays ] | [ - , Once, OnceStrictly ] |
   | **Meaning** | | Action to perform | What to return | How to treat src arguments | How to treat repeats |
 
 #### 1: Function contains `*ed` :
