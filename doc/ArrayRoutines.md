@@ -86,12 +86,12 @@
 
   Most of the routines can take additional routine parameters to evaluate and compare the input elements, there are four options:
 
-  | **Type of Evaluator** | **Action** | **Applies to** | **Possible Outputs** |
-  | :---: | :---: | :---: | :---: |
-  | Evaluator | Check | One value | true/false |
-  | Tandem of Evaluators| Check | Two values | true/false - true/false |
-  | Equalizers | Compare | Two values | true/false |
-  | Comparator | Compare | Two values | - 1 / 0 / + 1 |
+  | **Type of Evaluator** | **Applies to** | **Possible Outputs** |
+  | :---: | :---: | :---: |
+  | Evaluator | One value | true/false |
+  | Tandem of Evaluators| Two values | true/false - true/false |
+  | Equalizers | Two values | true/false |
+  | Comparator | Two values | - 1 / 0 / + 1 |
 
 #### 1: Evaluators:
 
