@@ -129,6 +129,7 @@ function _includeWithRequireAct( src )
   if( typeof module !== 'undefined' )
   try
   {
+    // if( _.strHas( src, 'Consequence' ) )
     // debugger;
     return __include( src );
   }
@@ -390,7 +391,7 @@ _.usePath( __dirname + '/../..' );
 
 if( typeof module !== 'undefined' )
 if( _global_.WTOOLS_PRIVATE )
-delete require.cache[ module.id ];
+{ /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

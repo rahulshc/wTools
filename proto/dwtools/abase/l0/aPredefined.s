@@ -82,6 +82,8 @@ throw 'wTools was already defined';
 
 //
 
+debugger;
+
 _global.wTools = Object.create( null );
 _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
 let Self = _global.wTools;
@@ -132,7 +134,7 @@ _global.wBase = Self;
 
 if( typeof module !== 'undefined' )
 if( _global.WTOOLS_PRIVATE )
-delete require.cache[ module.id ];
+{ /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
