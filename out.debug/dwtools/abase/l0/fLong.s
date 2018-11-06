@@ -2147,8 +2147,8 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-
   let result;
+
   if( Config.debug )
   {
     result = _.arrayRemovedElementOnce.apply( _, arguments )
@@ -2158,6 +2158,7 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   {
     result = _.arrayRemovedElement.apply( _, arguments )
   }
+
   return result;
 }
 
