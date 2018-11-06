@@ -835,7 +835,7 @@ function arrayCountUnique( src, onEvaluate )
 
 /*
 
-qqq : optimize *ed* routines
+qqq : optimize *OnlyStrict* routines
 qqq : use for documentation
 
 alteration Routines :
