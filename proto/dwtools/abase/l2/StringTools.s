@@ -2020,7 +2020,7 @@ _strSplitsQuotedRejoin_body.defaults =
 
 //
 
-let strSplitsQuotedRejoin = _.routineForPreAndBody( _strSplitsQuotedRejoin_pre, _strSplitsQuotedRejoin_body );
+let strSplitsQuotedRejoin = _.routineFromPreAndBody( _strSplitsQuotedRejoin_pre, _strSplitsQuotedRejoin_body );
 
 // --
 //
@@ -2081,7 +2081,7 @@ _strSplitsDropDelimeters_body.defaults =
 
 //
 
-let strSplitsDropDelimeters = _.routineForPreAndBody( _strSplitsDropDelimeters_pre, _strSplitsDropDelimeters_body );
+let strSplitsDropDelimeters = _.routineFromPreAndBody( _strSplitsDropDelimeters_pre, _strSplitsDropDelimeters_body );
 
 // --
 //
@@ -2136,7 +2136,7 @@ _strSplitsStrip_body.defaults =
 
 //
 
-let strSplitsStrip = _.routineForPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
+let strSplitsStrip = _.routineFromPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
 
 // --
 //
@@ -2187,7 +2187,7 @@ _strSplitsDropEmpty_body.defaults =
 
 //
 
-let strSplitsDropEmpty = _.routineForPreAndBody( _strSplitsDropEmpty_pre, _strSplitsDropEmpty_body );
+let strSplitsDropEmpty = _.routineFromPreAndBody( _strSplitsDropEmpty_pre, _strSplitsDropEmpty_body );
 
 //
 
@@ -2468,7 +2468,7 @@ _strSplitFast_body.defaults =
  *
  */
 
-let strSplitFast = _.routineForPreAndBody( _strSplitFast_pre, _strSplitFast_body );
+let strSplitFast = _.routineFromPreAndBody( _strSplitFast_pre, _strSplitFast_body );
 
 _.assert( strSplitFast.pre === _strSplitFast_pre );
 _.assert( strSplitFast.body === _strSplitFast_body );
@@ -2589,7 +2589,7 @@ defaults.onQuote = null;
  */
 
 let pre = [ strSplitFast.pre, strSplitsQuotedRejoin.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
-let strSplit = _.routineForPreAndBody( pre, _strSplit_body );
+let strSplit = _.routineFromPreAndBody( pre, _strSplit_body );
 
 _.assert( strSplit.pre !== strSplitFast.pre );
 _.assert( _.routineIs( strSplit.pre ) );
@@ -2598,7 +2598,7 @@ _.assert( _.objectIs( strSplit.defaults ) );
 
 //
 
-let strSplitNonPreserving = _.routineForPreAndBody( strSplit.pre, strSplit.body );
+let strSplitNonPreserving = _.routineFromPreAndBody( strSplit.pre, strSplit.body );
 
 var defaults = strSplitNonPreserving.defaults;
 
@@ -2867,7 +2867,7 @@ _strSplitNaive_body.defaults =
  *
  */
 
-let strSplitNaive = _.routineForPreAndBody( _strSplitFast_pre, _strSplitNaive_body );
+let strSplitNaive = _.routineFromPreAndBody( _strSplitFast_pre, _strSplitNaive_body );
 
 _.assert( strSplitNaive.pre === _strSplitFast_pre );
 _.assert( strSplitNaive.body === _strSplitNaive_body );
@@ -3047,7 +3047,7 @@ _strExtractInlined_body.defaults =
 
 //
 
-let strExtractInlined = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlined_body );
+let strExtractInlined = _.routineFromPreAndBody( _strSplitFast_pre, _strExtractInlined_body );
 
 //
 
@@ -3186,7 +3186,7 @@ _strExtractInlinedStereo_body.defaults =
  *
  */
 
-// let strExtractInlinedStereo = _.routineForPreAndBody( _strSplitFast_pre, _strExtractInlinedStereo_body );
+// let strExtractInlinedStereo = _.routineFromPreAndBody( _strSplitFast_pre, _strExtractInlinedStereo_body );
 
 function strExtractInlinedStereo( o )
 {
@@ -4071,7 +4071,7 @@ strLinesNearest_body.defaults =
   numberOfLines : 3,
 }
 
-let strLinesNearest = _.routineForPreAndBody( strLinesNearest_pre, strLinesNearest_body );
+let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearest_body );
 
 //
 
@@ -4144,7 +4144,7 @@ strLinesRangeWithCharRange_body.defaults =
   charsRange : null,
 }
 
-let strLinesRangeWithCharRange = _.routineForPreAndBody( strLinesRangeWithCharRange_pre, strLinesRangeWithCharRange_body );
+let strLinesRangeWithCharRange = _.routineFromPreAndBody( strLinesRangeWithCharRange_pre, strLinesRangeWithCharRange_body );
 
 //
 
@@ -4192,7 +4192,7 @@ strLinesNearestReport_body.defaults =
   gray : 0,
 }
 
-let strLinesNearestReport = _.routineForPreAndBody( strLinesNearest_pre, strLinesNearestReport_body );
+let strLinesNearestReport = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearestReport_body );
 
 // --
 // declare

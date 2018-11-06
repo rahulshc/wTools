@@ -311,7 +311,7 @@ function _entityEqual_pre( routine, args )
   else
   o.onNumbersAreEqual = numbersAreEquivalent;
 
-  return _.look.pre( _.look, [ _optionsTransform( o ) ] );
+  return _.look.pre( _.look, [ optionsFor( o ) ] );
 
   /* */
 
@@ -333,31 +333,22 @@ function _entityEqual_pre( routine, args )
     return Math.abs( a-b ) <= accuracy;
   }
 
+  /* */
 
-  function _optionsTransform( o )
+  function optionsFor( o )
   {
-    /**/
 
-    // _.assert( args.length === 1 );
-    // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-    _.assert( arguments.length === 1, 'Expects exactly two arguments' );
-    // _.assertRoutineOptionsPreservingUndefines( routine, o );
-    // _.assert( routine.lookBegin === _entityEqual_lookBegin );
+    _.assert( arguments.length === 1 );
 
-    let lookOptions = Object.create( null );
-    lookOptions.src = o.src2;
-    lookOptions.src2 = o.src1;
-    lookOptions.levelLimit = o.levelLimit;
-    lookOptions.context = o;
-    lookOptions.onUp = _.routinesComposeReturningLast([ __entityEqualUp, o.onUp ]);
-    lookOptions.onDown = _.routinesComposeReturningLast([ __entityEqualDown, o.onDown ]);
+    let o2 = Object.create( null );
+    o2.src = o.src2;
+    o2.src2 = o.src1;
+    o2.levelLimit = o.levelLimit;
+    o2.context = o;
+    o2.onUp = _.routinesComposeReturningLast([ __entityEqualUp, o.onUp ]);
+    o2.onDown = _.routinesComposeReturningLast([ __entityEqualDown, o.onDown ]);
 
-    // let it = _.look.pre( _.look, [ lookOptions ] );
-    // o.iterator = it.iterator;
-
-    /**/
-
-    return lookOptions;
+    return o2;
   }
 
 }
@@ -428,7 +419,7 @@ _entityEqual_body.defaults =
  * @memberof wTools
  */
 
-let _entityEqual = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body );
+let _entityEqual = _.routineFromPreAndBody( _entityEqual_pre, _entityEqual_body );
 
 //
 
@@ -460,7 +451,7 @@ let _entityEqual = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body )
  * @memberof wTools
 */
 
-let entityIdentical = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body );
+let entityIdentical = _.routineFromPreAndBody( _entityEqual_pre, _entityEqual_body );
 
 var defaults = entityIdentical.defaults;
 
@@ -497,7 +488,7 @@ defaults.strictCycling = 1;
  * @memberof wTools
 */
 
-let entityEquivalent = _.routineForPreAndBody( _entityEqual_pre, _entityEqual_body );
+let entityEquivalent = _.routineFromPreAndBody( _entityEqual_pre, _entityEqual_body );
 
 var defaults = entityEquivalent.defaults;
 

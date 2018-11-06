@@ -7310,12 +7310,12 @@ function arrayRemovedElementOnceStrictly( test )
   var dst = [ 1 ];
   var got = _.arrayRemovedElementOnceStrictly( dst, 1 );
   test.identical( dst, [ ] );
-  test.identical( got, 1 );
+  test.identical( got, 0 );
 
   var dst = [ 2,2,1 ];
   var got = _.arrayRemovedElementOnceStrictly( dst, 2 );
   test.identical( dst, [ 2,1 ] );
-  test.identical( got, 2 );
+  test.identical( got, 0 );
 
   test.case = 'equalizer 2 args';
 
@@ -7326,14 +7326,14 @@ function arrayRemovedElementOnceStrictly( test )
   }
   var got = _.arrayRemovedElementOnceStrictly( dst, { num : 3 }, onEqualize );
   test.identical( dst, [ { num : 1 },{ num : 2 } ] );
-  test.identical( got, { num : 3 } );
+  test.identical( got, 2 );
 
   test.case = 'equalizer 1 arg';
 
   var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
   var got = _.arrayRemovedElementOnceStrictly( dst, 1, ( e ) => e.num, ( e ) => e );
   test.identical( dst, [ { num : 2 },{ num : 3 } ] );
-  test.identical( got, { num : 1 } );
+  test.identical( got, 0 );
 
   //
 

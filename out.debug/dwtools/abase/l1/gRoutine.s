@@ -849,7 +849,7 @@ let Routines =
   // routinesCompose : routinesCompose,
   routinesComposeReturningLast : routinesComposeReturningLast,
   routinesComposeAll : routinesComposeAll,
-  routinesComposeAllReturningLast : routinesComposeAllReturningLast,
+  routinesComposeAllReturningLast : routinesComposeAllReturningLast, /* ??? */
   routinesChain : routinesChain,
 
   _equalizerFromMapper : _equalizerFromMapper,

@@ -82,8 +82,6 @@ throw 'wTools was already defined';
 
 //
 
-debugger;
-
 _global.wTools = Object.create( null );
 _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
 let Self = _global.wTools;

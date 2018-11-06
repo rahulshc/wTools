@@ -212,6 +212,7 @@ function numbersTotal( numbers )
 
 function numberFrom( src )
 {
+  _.assert( arguments.length === 1 );
   if( _.strIs( src ) )
   {
     return parseFloat( src );
@@ -241,6 +242,16 @@ function numbersFrom( src )
     result[ s ] = _.numberFrom( src[ s ] );
   }
 
+  return result;
+}
+
+//
+
+function numberFromStr( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) )
+  let result = parseFloat( src );
   return result;
 }
 
@@ -507,6 +518,7 @@ let Routines =
 
   numberFrom : numberFrom,
   numbersFrom : numbersFrom, /* qqq : add test coverage */
+  numberFromStr : numberFromStr,
 
   numbersSlice : numbersSlice,
 
