@@ -835,7 +835,7 @@ function arrayCountUnique( src, onEvaluate )
 
 /*
 
-qqq : optimize *OnlyStrict* routines
+qqq : optimize *ed* routines
 qqq : use for documentation
 
 alteration Routines :
@@ -1036,17 +1036,9 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-  let result;
-  if ( Config.debug )
-  {
-    debugger;
-    result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0,'array should have only unique elements, but has several',ins );
-  }
-  else
-  {
-    result = arrayPrependedElement.apply( this, arguments );
-  }
+
+  let result = arrayPrependedOnce.apply( this, arguments );
+  _.assert( result >= 0,'array should have only unique elements, but has several',ins );
 
   return dstArray;
 }
@@ -1250,17 +1242,8 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result;
-  if( Config.debug )
-  {
-    result = arrayPrependedArrayOnce.apply( this, arguments );
-    _.assert( result === insArray.length );
-  }
-  else
-  {
-    result = arrayPrependedArray.apply( this, arguments );
-  }
-
+  let result = arrayPrependedArrayOnce.apply( this, arguments );
+  _.assert( result === insArray.length );
   return dstArray;
 }
 
@@ -1473,11 +1456,12 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result;
+  let result = arrayPrependedArraysOnce.apply( this, arguments );
+  let expected = 0;
+
   if( Config.debug )
   {
-    result = arrayPrependedArraysOnce.apply( this, arguments );
-    let expected = 0;
+
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
       if( _.longIs( insArray[ i ] ) )
@@ -1485,11 +1469,9 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
       else
       expected += 1;
     }
+
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
-  }
-  else
-  {
-    result = arrayPrependedArrays.apply( this, arguments );
+
   }
 
   return dstArray;
@@ -1731,16 +1713,9 @@ function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-  let result;
-  if( Config.debug )
-  {
-    result = arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0,'array should have only unique elements, but has several', ins );
-  }
-  else
-  {
-    result = arrayAppendedElement.apply( this, arguments );
-  }
+
+  let result = arrayAppendedOnce.apply( this, arguments );
+  _.assert( result >= 0,'array should have only unique elements, but has several', ins );
   return dstArray;
 }
 
@@ -1843,16 +1818,8 @@ function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result;
-  if( Config.debug )
-  {
-    result = arrayAppendedArrayOnce.apply( this,arguments )
-    _.assert( result === insArray.length );
-  }
-  else
-  {
-    result = arrayAppendedArray.apply( this,arguments )
-  }
+  let result = arrayAppendedArrayOnce.apply( this,arguments )
+  _.assert( result === insArray.length );
   return dstArray;
 }
 
@@ -1910,11 +1877,10 @@ function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result;
+  let result = arrayAppendedArraysOnce.apply( this, arguments );
+
   if( Config.debug )
   {
-
-    result = arrayAppendedArraysOnce.apply( this, arguments );
 
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
@@ -1924,11 +1890,9 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
       else
       expected += 1;
     }
+
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
-  }
-  else
-  {
-    result = arrayAppendedArrays.apply( this, arguments );
+
   }
 
   return dstArray;
@@ -2054,16 +2018,8 @@ function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-  let result;
-  if( Config.debug )
-  {
-    let result = arrayRemovedElementOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
-  }
-  else
-  {
-    let result = arrayRemovedElement.apply( this, arguments );
-  }
+  let result = arrayRemovedElementOnce.apply( this, arguments );
+  _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   return dstArray;
 }
 
@@ -2147,17 +2103,15 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-  let result;
 
-  if( Config.debug )
+  let result;
+  let index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
   {
-    result = _.arrayRemovedElementOnce.apply( _, arguments )
-    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    result = dstArray[ index ];
+    dstArray.splice( index, 1 );
   }
-  else
-  {
-    result = _.arrayRemovedElement.apply( _, arguments )
-  }
+  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
 
   return result;
 }
@@ -2182,17 +2136,8 @@ function arrayRemoveArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result;
-  if( Config.debug )
-  {
-    result = arrayRemovedArrayOnce.apply( this, arguments );
-    _.assert( result === insArray.length );
-
-  }
-  else
-  {
-    result = arrayRemovedArray.apply( this, arguments );
-  }
+  let result = arrayRemovedArrayOnce.apply( this, arguments );
+  _.assert( result === insArray.length );
   return dstArray;
 }
 
@@ -2318,26 +2263,18 @@ function arrayRemoveArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result;
-  if( Config.debug )
-  {
-    result = arrayRemovedArraysOnce.apply( this, arguments );
+  let result = arrayRemovedArraysOnce.apply( this, arguments );
 
-    let expected = 0;
-    for( let i = insArray.length - 1; i >= 0; i-- )
-    {
-      if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
-      else
-      expected += 1;
-    }
-
-    _.assert( result === expected );
-  }
-  else
+  let expected = 0;
+  for( let i = insArray.length - 1; i >= 0; i-- )
   {
-    result = arrayRemovedArrays.apply( this, arguments );
+    if( _.longIs( insArray[ i ] ) )
+    expected += insArray[ i ].length;
+    else
+    expected += 1;
   }
+
+  _.assert( result === expected );
 
   return dstArray;
 }
@@ -2663,30 +2600,22 @@ function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result;
-  if( Config.debug )
-  {
-    result = arrayFlattenedOnce.apply( this, arguments );
+  let result = arrayFlattenedOnce.apply( this, arguments );
 
-    function _count( arr )
+  function _count( arr )
+  {
+    let expected = 0;
+    for( let i = arr.length - 1; i >= 0; i-- )
     {
-      let expected = 0;
-      for( let i = arr.length - 1; i >= 0; i-- )
-      {
-        if( _.longIs( arr[ i ] ) )
-        expected += _count( arr[ i ] );
-        else
-        expected += 1;
-      }
-      return expected;
+      if( _.longIs( arr[ i ] ) )
+      expected += _count( arr[ i ] );
+      else
+      expected += 1;
     }
+    return expected;
+  }
 
-    _.assert( result === _count( insArray ) );
-  }
-  else
-  {
-    result = arrayFlattened.apply( this, arguments );
-  }
+ _.assert( result === _count( insArray ) );
 
  return dstArray;
 }
@@ -3185,9 +3114,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
