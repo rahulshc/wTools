@@ -625,7 +625,7 @@ function routineExtend( dst )
     }
 
     if( dstMap.pre && dstMap.body )
-    dst = _.routineForPreAndBody( dstMap.pre, dstMap.body );
+    dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
     else
     _.assert( 0, 'Not clear how to construct the routine' );
   }
@@ -671,7 +671,7 @@ function routineExtend( dst )
 
 //
 
-function routineForPreAndBody_pre( routine, args )
+function routineFromPreAndBody_pre( routine, args )
 {
   let o = args[ 0 ];
 
@@ -692,7 +692,7 @@ function routineForPreAndBody_pre( routine, args )
 
 //
 
-function routineForPreAndBody_body( o )
+function routineFromPreAndBody_body( o )
 {
 
   _.assert( arguments.length === 1 ); // args, r, o, k
@@ -741,7 +741,7 @@ function routineForPreAndBody_body( o )
 
 }
 
-routineForPreAndBody_body.defaults =
+routineFromPreAndBody_body.defaults =
 {
   pre : null,
   body : null,
@@ -751,16 +751,16 @@ routineForPreAndBody_body.defaults =
 
 //
 
-function routineForPreAndBody()
+function routineFromPreAndBody()
 {
-  let o = routineForPreAndBody.pre.call( this, routineForPreAndBody, arguments );
-  let result = routineForPreAndBody.body.call( this, o );
+  let o = routineFromPreAndBody.pre.call( this, routineFromPreAndBody, arguments );
+  let result = routineFromPreAndBody.body.call( this, o );
   return result;
 }
 
-routineForPreAndBody.pre = routineForPreAndBody_pre;
-routineForPreAndBody.body = routineForPreAndBody_body;
-routineForPreAndBody.defaults = routineForPreAndBody_body.defaults;
+routineFromPreAndBody.pre = routineFromPreAndBody_pre;
+routineFromPreAndBody.body = routineFromPreAndBody_body;
+routineFromPreAndBody.defaults = routineFromPreAndBody_body.defaults;
 
 //
 
@@ -1260,7 +1260,7 @@ let Routines =
 
   routinesCompose : routinesCompose,
   routineExtend : routineExtend,
-  routineForPreAndBody : routineForPreAndBody,
+  routineFromPreAndBody : routineFromPreAndBody,
 
   routineVectorize_functor : routineVectorize_functor,
 

@@ -257,7 +257,7 @@ _strIsolateBeginOrNone_body.defaults =
   quoting : null,
 }
 
-// let strIsolateBeginOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
+// let strIsolateBeginOrNone = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
 
 //
 
@@ -304,7 +304,7 @@ _strIsolateEndOrNone_body.defaults =
   quoting : null,
 }
 
-// let strIsolateEndOrNone = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
+// let strIsolateEndOrNone = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
 
 //
 
@@ -333,7 +333,7 @@ _strIsolateEndOrAll_body.defaults =
   quoting : null,
 }
 
-// let strIsolateEndOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
+// let strIsolateEndOrAll = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
 
 //
 
@@ -362,7 +362,7 @@ _strIsolateBeginOrAll_body.defaults =
   quoting : null,
 }
 
-// let strIsolateBeginOrAll = _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
+// let strIsolateBeginOrAll = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
 
 //
 
@@ -520,10 +520,10 @@ let Routines =
 
   _strIsolate : _strIsolate,
 
-  strIsolateBeginOrNone : _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body ),
-  strIsolateEndOrNone : _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body ),
-  strIsolateEndOrAll : _.routineForPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body ),
-  strIsolateBeginOrAll : _.routineForPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body ),
+  strIsolateBeginOrNone : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body ),
+  strIsolateEndOrNone : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body ),
+  strIsolateEndOrAll : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body ),
+  strIsolateBeginOrAll : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body ),
 
   _strIsolateInsideOrNone : _strIsolateInsideOrNone,
   strIsolateInsideOrNone : strIsolateInsideOrNone,
