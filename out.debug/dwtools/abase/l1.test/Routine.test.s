@@ -1659,6 +1659,6 @@ var Self =
 
 Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
-/*_.*/wTester.test( Self.name );
+wTester.test( Self.name );
 
 } )( );
