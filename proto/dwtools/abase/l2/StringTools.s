@@ -264,6 +264,28 @@ function strCountRight( src,ins )
   return result;
 }
 
+//
+
+function strsShortest( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) || _.arrayLike( src ) );
+  if( _.strIs( src ) )
+  return src;
+  return src.sort( ( a,b ) => a.length - b.length )[ 0 ];
+}
+
+//
+
+function strsLongest()
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.strIs( src ) || _.arrayLike( src ) );
+  if( _.strIs( src ) )
+  return src;
+  return src.sort( ( a,b ) => b.length - a.length )[ 0 ];
+}
+
 // --
 // replacer
 // --
@@ -4219,6 +4241,8 @@ let Proto =
   strCount : strCount,
   strCountLeft : strCountLeft,
   strCountRight : strCountRight,
+  strsShortest : strsShortest,
+  strsLongest : strsLongest,
 
   // replacer
 
