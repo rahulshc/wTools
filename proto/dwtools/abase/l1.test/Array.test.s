@@ -7230,6 +7230,11 @@ function arrayRemovedElementOnce( test )
   test.identical( dst, [  ] );
   test.identical( got, 0 );
 
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayRemovedElementOnce( dst, 3 );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 2 );
+
   var dst = [ 2,2,1 ];
   var got = _.arrayRemovedElementOnce( dst, 2 );
   test.identical( dst, [ 2,1 ] );
