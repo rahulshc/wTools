@@ -2642,10 +2642,10 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 //
 
 /**
- * The arrayRemoveDuplicates( dstArray, onEvaluator ) routine returns the dstArray with the duplicated elements removed.
+ * The arrayRemoveDuplicates( dstArray, evaluator ) routine returns the dstArray with the duplicated elements removed.
  *
  * @param { ArrayIs } dstArray - The source and destination array.
- * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
+ * @param { Function } [ evaluator = function( e ) { return e } ] - A callback function.
  *
  * @example
  * // returns [ 1, 2, 'abc', 4, true ]
@@ -2663,20 +2663,20 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
  * @memberof wTools
  */
 
-function arrayRemoveDuplicates( dstArray, evaluator1, evaluator2 )
+function arrayRemoveDuplicates( dstArray, evaluator )
 {
-  _.assert( 1 <= arguments.length || arguments.length <= 3 );
+  _.assert( 1 <= arguments.length || arguments.length <= 2 );
   _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
 
   for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
   {
     let element1 = dstArray[ i1 ];
-    let index = _.arrayRightIndex( dstArray, element1, evaluator1, evaluator2 ); /* qqq : use do .. while instead */
+    let index = _.arrayRightIndex( dstArray, element1, evaluator ); /* qqq : use do .. while instead */
 
     while ( index !== i1 )
     {
       dstArray.splice( index, 1 );
-      index = _.arrayRightIndex( dstArray, element1, evaluator1, evaluator2 );
+      index = _.arrayRightIndex( dstArray, element1, evaluator );
     }
   }
 
