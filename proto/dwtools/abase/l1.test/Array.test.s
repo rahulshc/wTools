@@ -7960,7 +7960,7 @@ function arrayRemovedElementOnceStrictly( test )
 
   var dst = [ 1 ];
   var got = _.arrayRemovedElementOnceStrictly( dst, 1 );
-  test.identical( dst, [ ] );
+  test.identical( dst, [] );
   test.identical( got, 1 );
 
   var dst = [ 1, 2, 3 ];
