@@ -2241,6 +2241,19 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
   dstArray.splice( index, 1 );
 
   return index;
+
+  /* // arrayRemovedElementOnce should return the removed element
+  let result;
+  let index = _.arrayLeftIndex.apply( _, arguments );
+
+  if( index >= 0 )
+  {
+    result = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+
+  return result;
+  */
 }
 
 //
