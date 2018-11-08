@@ -98,7 +98,7 @@ let wProto =
 let wSelector =
 {
   includeAny : [ '../../abase/l3/Selector.s','abase/l3/Selector.s','wselector' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entitySelect; },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.select; },
 }
 
 let wStringer =
