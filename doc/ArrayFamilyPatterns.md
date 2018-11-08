@@ -37,13 +37,11 @@
 
   | **arrayReplace** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - | dstArray | dstArray | - | Position ( index ) of the removed element | Position ( index ) of the removed element |
+  | **-** | - | dstArray | dstArray | - | Position ( index ) of the replaced element | Position ( index ) of the replaced element |
   | **Element** | - | - | - | - | - |  - |
   | **Array** | - | dstArray | dstArray | - | Number of replaced elements | - |
   | **Arrays** | - | - | - | - | - | - |
   | **All** | dstArray | - | - | Number of replaced elements | - | - |
-
-  (NI) - Not Implemented ( yet ).
 
 
 ## Try out
