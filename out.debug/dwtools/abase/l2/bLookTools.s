@@ -13,22 +13,7 @@
 if( typeof module !== 'undefined' )
 {
 
-  if( typeof _global_ === 'undefined' || !_global_.wBase )
-  {
-    let toolsPath = '../../../dwtools/Base.s';
-    let toolsExternal = 0;
-    try
-    {
-      toolsPath = require.resolve( toolsPath );
-    }
-    catch( err )
-    {
-      toolsExternal = 1;
-      require( 'wTools' );
-    }
-    if( !toolsExternal )
-    require( toolsPath );
-  }
+  let _ = require( '../../Tools.s' );
 
 }
 
@@ -242,19 +227,19 @@ function __entityEqualCycle( e, k, it )
 
   if( !it.visitedManyTimes )
   return;
+  if( !it.result )
+  return;
 
   debugger;
 
   /* if cycled and strict cycling */
-  if( it.result )
   if( it.context.strictCycling )
-  if( it.visitedManyTimes )
   {
     /* if opposite branch was cycled earlier */
     if( it.down.src2 !== undefined )
     {
       let i = it.visited2.indexOf( it.down.src2 );
-      if( 0 <= i && i <= it.visited2.length-3 )
+      if( 0 <= i && i <= it.visited2.length-2 )
       it.result = false;
     }
     /* or not yet cycled */
@@ -262,19 +247,17 @@ function __entityEqualCycle( e, k, it )
     it.result = it.visited2[ it.visited.indexOf( it.src ) ] === it.src2;
     /* then not equal otherwise equal */
   }
-
-  /* if cycled and loose cycling */
-  if( it.result )
-  if( !it.context.strictCycling )
-  if( it.visitedManyTimes )
-  if( it.levelLimit && it.level < it.levelLimit )
+  else
   {
-    let o2 = _.mapExtend( null, it.context );
-    o2.src1 = it.src2;
-    o2.src2 = it.src;
-    o2.levelLimit = 1;
-    debugger;
-    it.result = _._entityEqual.body( o2 );
+    if( it.levelLimit && it.level < it.levelLimit )
+    {
+      let o2 = _.mapExtend( null, it.context );
+      o2.src1 = it.src2;
+      o2.src2 = it.src;
+      o2.levelLimit = 1;
+      debugger;
+      it.result = _._entityEqual.body( o2 );
+    }
   }
 
 }
