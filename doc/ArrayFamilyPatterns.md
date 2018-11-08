@@ -12,10 +12,17 @@
 
   | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - | dstArray | dstArray | - | Position ( index ) of the appended element | - |
-  | **Element** | dstArray | - | - | Position ( index ) of the appended element| - | - |
-  | **Array** | dstArray | dstArray | dstArray | Number of appended elements | Number of appended elements | - |
-  | **Arrays** | dstArray | dstArray | dstArray | Number of appended elements | Number of appended elements | - |
+  | **-** | - | dst | dst | - | index | - |
+  | **Element** | dst | - | - | index \| appended element | - | - |
+  | **Array** | dst | dst | dst | number | number | - |
+  | **Arrays** | dst | dst | dst | number | number | - |
+
+  Where:
+  - *dst* corresponds to the destination array with the appended element( s ).
+  - *index* corresponds to the position of the appended element in the destination array ( -1 if not appended ).
+  - *number* corresponds to the number of appended elements.
+  - *index* | *appended element* means that the corresponding function currently returns *index*, but should
+  return *appended element*.
 
 ## Methods of arrayRemove
 
@@ -23,11 +30,11 @@
 
   | **arrayRemove** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | dstArray | dstArray | dstArray | Number of removed element | Position ( index ) of the removed element | Position ( index ) of the removed element |
-  | **Element** | dstArray | dstArray | dstArray | Number of removed elements | Position ( index ) of the removed element - Should be removed element |  Removed element |
-  | **Array** | dstArray | dstArray | dstArray | Number of removed elements | Number of removed elements | Number of removed elements |
-  | **Arrays** | dstArray | dstArray | dstArray | Number of removed elements | Number of removed elements | Number of removed elements |
-  | **All** | dstArray | - | - | Number of removed elements | - | - |
+  | **-** | dst | dst | dst | number | index | index |
+  | **Element** | dst | dst | dst | number | index \| removed element | removed element |
+  | **Array** | dst | dst | dst | number | number | number |
+  | **Arrays** | dst | dst | dst | number | number | number |
+  | **All** | dst | - | - | number | - | - |
 
 ## Methods of arrayReplace
 
@@ -35,11 +42,11 @@
 
   | **arrayReplace** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - | dstArray | dstArray | - | Position ( index ) of the replaced element | Position ( index ) of the replaced element |
+  | **-** | - | dst | dst | - | index | index |
   | **Element** | - | - | - | - | - |  - |
-  | **Array** | - | dstArray | dstArray | - | Number of replaced elements | - |
+  | **Array** | - | dst | dst | - | number | - |
   | **Arrays** | - | - | - | - | - | - |
-  | **All** | dstArray | - | - | Number of replaced elements | - | - |
+  | **All** | dst | - | - | number | - | - |
 
 
 ## Try out
