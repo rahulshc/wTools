@@ -2092,6 +2092,76 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // array remove
 // --
 
+/**
+ * ArrayRemove, arrayRemoveOnce, arrayRemoveOnceStrictly and arrayRemoved behave just like
+ * arrayRemoveElement, arrayRemoveElementOnce, arrayRemoveElementOnceStrictly and arrayRemovedElement.
+ */
+
+function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayRemoved.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayRemovedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayRemoveElementOnceStrictly.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElements = arrayRemovedElement.apply( this, arguments );
+  return removedElements;
+}
+
+//
+
+/**
+ * ArrayRemovedOnce and arrayRemovedOnceStrictly behave just like arrayRemovedElementOnce and arrayRemovedElementOnceStrictly,
+ * but return the index of the removed element, instead of the removed element
+ */
+
+function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  let index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  dstArray.splice( index, 1 );
+
+  return index;
+}
+
+//
+
+function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    dstArray.splice( index, 1 );
+  }
+  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+
+  let newIndex = _.arrayLeftIndex.apply( _, arguments );
+  _.assert( newIndex < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+
+  return index;
+}
+
+//
+
 function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemovedElement.apply( this, arguments );
@@ -3470,6 +3540,14 @@ let Routines =
   arrayAppendedArraysOnce : arrayAppendedArraysOnce,
 
   // array remove
+
+  arrayRemove : arrayRemove,
+  arrayRemoveOnce : arrayRemoveOnce,
+  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
+
+  arrayRemoved : arrayRemoved,
+  arrayRemovedOnce : arrayRemovedOnce,
+  arrayRemovedOnceStrictly : arrayRemovedOnceStrictly,
 
   arrayRemoveElement : arrayRemoveElement, /* should remove all */
   arrayRemoveElementOnce : arrayRemoveElementOnce,
