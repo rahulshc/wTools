@@ -2516,6 +2516,30 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
+function arrayRemovedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayRemovedArrayOnce.apply( this, arguments );
+    let index = - 1;
+    for( let i = 0, len = insArray.length; i < len ; i++ )
+    {
+      index = dstArray.indexOf( insArray[ i ] );
+      _.assert( index < 0 );
+    }
+    _.assert( result === insArray.length );
+
+  }
+  else
+  {
+    result = arrayRemovedArray.apply( this, [ dstArray, insArray ] );
+  }
+  return result;
+}
+
+//
+
 function arrayRemoveArrays( dstArray, insArray )
 {
   arrayRemovedArrays.apply( this, arguments );
@@ -2649,6 +2673,35 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
     {
       _removeOnce( insArray[ a ] );
     }
+  }
+
+  return result;
+}
+
+//
+
+function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayRemovedArraysOnce.apply( this, arguments );
+
+    let expected = 0;
+    for( let i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      expected += insArray[ i ].length;
+      else
+      expected += 1;
+    }
+
+    _.assert( result === expected );
+    _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
+  }
+  else
+  {
+    result = arrayRemovedArrays.apply( this, [ dstArray, insArray ] );
   }
 
   return result;
@@ -3562,12 +3615,14 @@ let Routines =
   arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
   arrayRemovedArray : arrayRemovedArray,
   arrayRemovedArrayOnce : arrayRemovedArrayOnce,
+  arrayRemovedArrayOnceStrictly : arrayRemovedArrayOnceStrictly,
 
   arrayRemoveArrays : arrayRemoveArrays,
   arrayRemoveArraysOnce : arrayRemoveArraysOnce,
   arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
   arrayRemovedArrays : arrayRemovedArrays,
   arrayRemovedArraysOnce : arrayRemovedArraysOnce,
+  arrayRemovedArraysOnceStrictly : arrayRemovedArraysOnceStrictly,
 
   arrayRemoveAll : arrayRemoveAll,
   arrayRemovedAll : arrayRemovedAll,

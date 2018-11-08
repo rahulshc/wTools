@@ -25,11 +25,9 @@
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
   | **-** | dstArray | dstArray | dstArray | Number of removed element | Position ( index ) of the removed element | Position ( index ) of the removed element |
   | **Element** | dstArray | dstArray | dstArray | Number of removed elements | Position ( index ) of the removed element - Should be removed element |  Removed element |
-  | **Array** | dstArray | dstArray | dstArray | Number of removed elements | Number of removed elements | (NI) |
-  | **Arrays** | dstArray | dstArray | dstArray | Number of removed elements | Number of removed elements | (NI) |
+  | **Array** | dstArray | dstArray | dstArray | Number of removed elements | Number of removed elements | Number of removed elements |
+  | **Arrays** | dstArray | dstArray | dstArray | Number of removed elements | Number of removed elements | Number of removed elements |
   | **All** | dstArray | - | - | Number of removed elements | - | - |
-
-  (NI) - Not Implemented ( yet ).
 
 ## Methods of arrayReplace
 
