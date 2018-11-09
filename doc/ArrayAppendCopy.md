@@ -1,3 +1,5 @@
+# Array Append Family of Routines [![Array methods](https://travis-ci.org/Wandalen/wTools.svg?branch=master)]
+
 ## Methods of arrayAppend
 
   The following table shows what the outputs of the functions should be, not what they currently are ( for that see
@@ -33,5 +35,18 @@
   { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
 
   { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
+
+  @Example:
+  ```
+  arrayFlattenOnce -> { op } = Flatten -> Includes the arguments to the destination array.   
+                      { Tense } = '-'  -> The output will be the destination array.
+                      { Second } = '-' -> No special treatment to the src argument.
+                      { How } = 'Once' -> Repetead elements will not be included.
+
+  In conclusion, arrayFlattenOnce will include to the destination array all arguments, as long as they are not repeated,
+  and will return the destination array.
+  arrayFlattenOnce( [ 1, 2, 3 ], [ 1, 2, 3, [ [ 4 ] ] ] ) -> [ 1, 2, 3, 4 ]
+
+  ```
 
   For more information on these patters please see *ArrayRoutines.md*.
