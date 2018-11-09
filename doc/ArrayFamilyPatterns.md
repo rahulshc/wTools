@@ -8,16 +8,19 @@
 
 ## Methods of arrayAppend
 
-  Let´s see now all the different functions that cover the functionality of appending elements to an the array:
+  Let´s see now all the different functions that cover the functionality of appending elements to an the array
+  ( the small family of arrayFlatten methods has been included in the last row - it is not related with arrayAppend ):
 
   | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - | dst | dst | - | index | - |
-  | **Element** | dst | - | - | index \| appended element | - | - |
-  | **Array** | dst | dst | dst | number | number | - |
-  | **Arrays** | dst | dst | dst | number | number | - |
+  | **-** | - \| dst | dst | dst | - \| index | index | - \| index |
+  | **Element** | dst | - \| dst | - \| dst | index \| appended element | - \| appended element | - \| appended element |
+  | **Array** | dst | dst | dst | number | number | - \| number |
+  | **Arrays** | dst | dst | dst | number | number | - \| number |
+  | **arrayFlatten** | dst | dst | dst | number | number | - \| number |
 
   Where:
+  - *-* means thet the corresponding function hasn´t been developped.
   - *dst* corresponds to the destination array with the appended element( s ).
   - *index* corresponds to the position of the appended element in the destination array ( -1 if not appended ).
   - *number* corresponds to the number of appended elements.
@@ -34,7 +37,7 @@
   | **Element** | dst | dst | dst | number | index \| removed element | removed element |
   | **Array** | dst | dst | dst | number | number | number |
   | **Arrays** | dst | dst | dst | number | number | number |
-  | **All** | dst | - | - | number | - | - |
+  | **All** | dst \| - | - | - | number \| - | - | - |
 
 ## Methods of arrayReplace
 
@@ -42,11 +45,11 @@
 
   | **arrayReplace** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - | dst | dst | - | index | index |
-  | **Element** | - | - | - | - | - |  - |
-  | **Array** | - | dst | dst | - | number | - |
-  | **Arrays** | - | - | - | - | - | - |
-  | **All** | dst | - | - | number | - | - |
+  | **-** | - \| dst | dst | dst | - \| number | index | index |
+  | **Element** | - \| dst | - \| dst | - \| dst | - \| number | - \| replaced element |  - \| replaced element |
+  | **Array** | - \| dst | dst | dst | - \| number | number | - \| number |
+  | **Arrays** | - \| dst | - \| dst | - \| dst | - \| number | - \| number | - \| number |
+  | **All** | dst \| - | - | - | number \| - | - | - |
 
 
 ## Try out
