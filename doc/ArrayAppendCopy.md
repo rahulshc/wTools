@@ -5,7 +5,7 @@
   The following table shows what the outputs of the functions should be, not what they currently are ( for that see
   *ArrayFamilyPatterns.md* ).
   Let´s see now all the different functions that cover the functionality of appending elements to an the array
-  ( the small family of arrayFlatten methods has been included in the last row - it is not related with arrayAppend ):
+  ( the small family of arrayFlatten methods has been included in the last row *Flatten* - it is not related with arrayAppend ):
 
   | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -13,7 +13,7 @@
   | **Element** | dst | dst | dst | appended element | appended element | appended element |
   | **Array** | dst | dst | dst | number | number | number |
   | **Arrays** | dst | dst | dst | number | number | number |
-  | **arrayFlatten** | dst | dst | dst | number | number | number |
+  | **Flatten** | dst | dst | dst | number | number | number |
 
   Where:
   - *dst* corresponds to the input array with the appended element( s ) included at its end.
@@ -36,16 +36,39 @@
 
   { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
 
+## Examples
+
+  Let´s see now a couple of examples of how to get all the information out of a function name, that contains
+  the previous patterns:
+
   @Example:
   ```
-  arrayFlattenOnce -> { op } = Flatten -> Includes the arguments to the destination array.   
-                      { Tense } = '-'  -> The output will be the destination array.
-                      { Second } = '-' -> No special treatment to the src argument.
-                      { How } = 'Once' -> Repetead elements will not be included.
+  arrayPrependArrayOnceStrictly ->
 
-  In conclusion, arrayFlattenOnce will include to the destination array all arguments, as long as they are not
-  repeated, and will return the destination array.
-  arrayFlattenOnce( [ 1, 2, 3 ], [ 1, 2, 3, [ [ 4 ] ] ] ) -> [ 1, 2, 3, 4 ]
+  { op } = Prepend -> Includes the arguments to the beggining of the destination array.   
+  { Tense } = '-'  -> The output is the destination array.
+  { Second } = 'Array' -> Arguments are treated as arrays ( function will iterate over its elements ).
+  { How } = 'OnceStrictly' -> The action is done, and only once ( repetead elements will not be included ).
+
+  In conclusion, arrayPrependArrayOnceStrictly includes to the beggining of the destination array all elements
+  of the arguments ( treated as arrays ), as long as they are not repeated, and returns the destination array.
+  _.arrayPrependArrayOnceStrictly( [ 1, 2, 3 ], [ 4, 5 ] ) -> [ 4, 5, 1, 2, 3 ]
+
+  ```
+
+  @Example:
+  ```
+  arrayRemovedElement ->
+
+  { op } = Remove -> Removes the arguments from the destination array.   
+  { Tense } = 'ed'  -> The output is the number of removed elements.
+  { Second } = 'Element' -> Second argument is treated as a scalar.
+  { How } = '-' -> There are no limitations on how the action is done.
+
+  In conclusion, arrayRemovedElement removes from the destination array the element
+  in the second argument ( treated as a scalar ), and returns the number of removed elements.
+  var dstArray = [ 1, 2, 2, 2, 3, 4 ];
+  _.arrayRemovedElement( dstArray, 2 ) -> 3   ( dstArray = [ 1, 3, 4 ] )
 
   ```
 
