@@ -1,15 +1,10 @@
-# Array Append Family of Routines [![Array methods](https://travis-ci.org/Wandalen/wTools.svg?branch=master)]
-(https://github.com/Wandalen/wTools/blob/master/out.debug/dwtools/abase/l0/fLong.s)
-
-
-
 ## Naming patterns
 
   The table rows and columns correspond to naming patterns, and by combining them we get the full function names. For example the cell of the row *'Array'* and the column *'edOnce'* corresponds to the function *arrayAppendedArrayOnce*. The values inside the cells are the expected outputs of these functions ( for the example *arrayAppendedArrayOnce* returns the number of appended elements ).
 
   Many function names contain patterns to help us understand the behaviour of each routine, here comes a quick summary of the information a function name can give us:
 
-  The format of a function name will be: array { Op } { Tense } { Second } { How }, where:
+  The format of a function name is: array { Op } { Tense } { Second } { How }, where:
 
   { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
 
