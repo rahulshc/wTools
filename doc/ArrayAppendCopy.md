@@ -49,4 +49,4 @@
 
   ```
 
-  For more information on these patters please see *ArrayRoutines.md*.
+  For more information on these patterns, please see *ArrayRoutines.md*.
