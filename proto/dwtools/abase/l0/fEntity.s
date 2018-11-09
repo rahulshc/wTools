@@ -118,24 +118,59 @@ function eachSample( o )
   /* sets */
 
   let sindex = 0;
-  _.each( o.sets, function( e,k )
+
+  // _.each( o.sets, function( e,k )
+  // {
+  //   let set = o.sets[ k ];
+  //   _.assert( _.longIs( set ) || _.primitiveIs( set ) );
+  //
+  //   if( _.primitiveIs( set ) )
+  //   o.sets[ k ] = [ set ]; /* qqq : should not change input data */
+  //
+  //   len[ sindex ] = _.entityLength( o.sets[ k ] );
+  //   indexnd[ sindex ] = 0;
+  //   sindex += 1;
+  // });
+
+  /* qqq : add tests */
+
+  o.sets = _.filter( o.sets, function( set, k )
   {
-    let set = o.sets[ k ];
     _.assert( _.longIs( set ) || _.primitiveIs( set ) );
+
     if( _.primitiveIs( set ) )
-    o.sets[ k ] = [ set ];
+    set = [ set ]; /* qqq : should not change input data */
 
     len[ sindex ] = _.entityLength( o.sets[ k ] );
     indexnd[ sindex ] = 0;
     sindex += 1;
+
+    return set;
   });
+
+  /* */
+
+  if( !firstSample() )
+  return o.result;
+
+  do
+  {
+    if( o.onEach )
+    o.onEach.call( o.sample, o.sample, index );
+  }
+  while( iterate() );
+
+  if( o.result )
+  return o.result;
+  else
+  return index;
 
   /* */
 
   function firstSample()
   {
-
     let sindex = 0;
+
     _.each( o.sets, function( e,k )
     {
       o.sample[ k ] = o.sets[ k ][ indexnd[ sindex ] ];
@@ -203,22 +238,6 @@ function eachSample( o )
     return 0;
   }
 
-  /* */
-
-  if( !firstSample() )
-  return o.result;
-
-  do
-  {
-    if( o.onEach )
-    o.onEach.call( o.sample, o.sample, index );
-  }
-  while( iterate() );
-
-  if( o.result )
-  return o.result;
-  else
-  return index;
 }
 
 eachSample.defaults =
