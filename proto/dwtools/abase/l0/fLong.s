@@ -1036,12 +1036,31 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
+  let result;
+  if ( Config.debug )
+  {
+    debugger;
+    result = arrayPrependedOnce.apply( this, arguments );
+    _.assert( result >= 0,'array should have only unique elements, but has several',ins );
+  }
+  else
+  {
+    result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+  }
+
+  return dstArray;
+}
+
+/*
+function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
 
   let result = arrayPrependedOnce.apply( this, arguments );
   _.assert( result >= 0,'array should have only unique elements, but has several',ins );
 
   return dstArray;
 }
+*/
 
 //
 
@@ -1242,10 +1261,28 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayPrependedArrayOnce.apply( this, arguments );
+    _.assert( result === insArray.length );
+  }
+  else
+  {
+    result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
+  }
+
+  return dstArray;
+}
+
+/*
+function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   let result = arrayPrependedArrayOnce.apply( this, arguments );
   _.assert( result === insArray.length );
   return dstArray;
 }
+*/
 
 //
 
@@ -1456,6 +1493,31 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayPrependedArraysOnce.apply( this, arguments );
+    let expected = 0;
+    for( let i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      expected += insArray[ i ].length;
+      else
+      expected += 1;
+    }
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+  }
+  else
+  {
+    result = arrayPrependedArrays.apply( this, [ dstArray, insArray ] );
+  }
+
+  return dstArray;
+}
+
+/*
+function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   let result = arrayPrependedArraysOnce.apply( this, arguments );
   let expected = 0;
 
@@ -1476,6 +1538,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 
   return dstArray;
 }
+*/
 
 //
 
@@ -1713,11 +1776,28 @@ function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedOnce.apply( this, arguments );
+    _.assert( result >= 0,'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+  }
+  return dstArray;
+}
+
+/*
+function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
 
   let result = arrayAppendedOnce.apply( this, arguments );
   _.assert( result >= 0,'array should have only unique elements, but has several', ins );
   return dstArray;
 }
+*/
 
 //
 
@@ -1818,10 +1898,27 @@ function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedArrayOnce.apply( this,arguments )
+    _.assert( result === insArray.length );
+  }
+  else
+  {
+    result = arrayAppendedArray.apply( this, [ dstArray, insArray ] )
+  }
+  return dstArray;
+}
+
+/*
+function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   let result = arrayAppendedArrayOnce.apply( this,arguments )
   _.assert( result === insArray.length );
   return dstArray;
 }
+*/
 
 //
 
@@ -1877,6 +1974,33 @@ function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+
+    result = arrayAppendedArraysOnce.apply( this, arguments );
+
+    let expected = 0;
+    for( let i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      expected += insArray[ i ].length;
+      else
+      expected += 1;
+    }
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+  }
+  else
+  {
+    result = arrayAppendedArrays.apply( this, [ dstArray, insArray ] );
+  }
+
+  return dstArray;
+}
+
+/*
+function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   let result = arrayAppendedArraysOnce.apply( this, arguments );
 
   if( Config.debug )
@@ -1897,6 +2021,7 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
   return dstArray;
 }
+*/
 
 //
 
@@ -1967,6 +2092,76 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 // array remove
 // --
 
+/**
+ * ArrayRemove, arrayRemoveOnce, arrayRemoveOnceStrictly and arrayRemoved behave just like
+ * arrayRemoveElement, arrayRemoveElementOnce, arrayRemoveElementOnceStrictly and arrayRemovedElement.
+ */
+
+function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayRemoved.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayRemovedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayRemoveElementOnceStrictly.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElements = arrayRemovedElement.apply( this, arguments );
+  return removedElements;
+}
+
+//
+
+/**
+ * ArrayRemovedOnce and arrayRemovedOnceStrictly behave just like arrayRemovedElementOnce and arrayRemovedElementOnceStrictly,
+ * but return the index of the removed element, instead of the removed element
+ */
+
+function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  let index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  dstArray.splice( index, 1 );
+
+  return index;
+}
+
+//
+
+function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    dstArray.splice( index, 1 );
+  }
+  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+
+  let newIndex = _.arrayLeftIndex.apply( _, arguments );
+  _.assert( newIndex < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+
+  return index;
+}
+
+//
+
 function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemovedElement.apply( this, arguments );
@@ -2018,10 +2213,29 @@ function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    let result = arrayRemovedElementOnce.apply( this, arguments );
+    let index = _.arrayLeftIndex.apply( _, arguments );
+    _.assert( index < 0 );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+  }
+  else
+  {
+    let result = arrayRemovedElement.apply( this, [ dstArray, ins ] );
+  }
+  return dstArray;
+}
+
+/*
+function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
   let result = arrayRemovedElementOnce.apply( this, arguments );
   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   return dstArray;
 }
+*/
 
 //
 
@@ -2097,6 +2311,19 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
   dstArray.splice( index, 1 );
 
   return index;
+
+  /* // arrayRemovedElementOnce should return the removed element
+  let result;
+  let index = _.arrayLeftIndex.apply( _, arguments );
+
+  if( index >= 0 )
+  {
+    result = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+
+  return result;
+  */
 }
 
 //
@@ -2113,8 +2340,28 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   }
   else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
 
+  index = _.arrayLeftIndex.apply( _, arguments );
+  _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+
   return result;
 }
+
+/*
+function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+
+  let result;
+  let index = _.arrayLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    result = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+
+  return result;
+}
+*/
 
 //
 
@@ -2136,10 +2383,34 @@ function arrayRemoveArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayRemovedArrayOnce.apply( this, arguments );
+    let index = - 1;
+    for( let i = 0, len = insArray.length; i < len ; i++ )
+    {
+      index = dstArray.indexOf( insArray[ i ] );
+      _.assert( index < 0 );
+    }
+    _.assert( result === insArray.length );
+
+  }
+  else
+  {
+    result = arrayRemovedArray.apply( this, [ dstArray, insArray ] );
+  }
+  return dstArray;
+}
+
+/*
+function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   let result = arrayRemovedArrayOnce.apply( this, arguments );
   _.assert( result === insArray.length );
   return dstArray;
 }
+*/
 
 //
 
@@ -2245,6 +2516,30 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
+function arrayRemovedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayRemovedArrayOnce.apply( this, arguments );
+    let index = - 1;
+    for( let i = 0, len = insArray.length; i < len ; i++ )
+    {
+      index = dstArray.indexOf( insArray[ i ] );
+      _.assert( index < 0 );
+    }
+    _.assert( result === insArray.length );
+
+  }
+  else
+  {
+    result = arrayRemovedArray.apply( this, [ dstArray, insArray ] );
+  }
+  return result;
+}
+
+//
+
 function arrayRemoveArrays( dstArray, insArray )
 {
   arrayRemovedArrays.apply( this, arguments );
@@ -2263,6 +2558,34 @@ function arrayRemoveArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayRemovedArraysOnce.apply( this, arguments );
+
+    let expected = 0;
+    for( let i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      expected += insArray[ i ].length;
+      else
+      expected += 1;
+    }
+
+    _.assert( result === expected );
+    _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
+  }
+  else
+  {
+    result = arrayRemovedArrays.apply( this, [ dstArray, insArray ] );
+  }
+
+  return dstArray;
+}
+
+/*
+function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   let result = arrayRemovedArraysOnce.apply( this, arguments );
 
   let expected = 0;
@@ -2278,6 +2601,7 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 
   return dstArray;
 }
+*/
 
 //
 
@@ -2356,6 +2680,35 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
+function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayRemovedArraysOnce.apply( this, arguments );
+
+    let expected = 0;
+    for( let i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      expected += insArray[ i ].length;
+      else
+      expected += 1;
+    }
+
+    _.assert( result === expected );
+    _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
+  }
+  else
+  {
+    result = arrayRemovedArrays.apply( this, [ dstArray, insArray ] );
+  }
+
+  return result;
+}
+
+//
+
 /**
  * Callback for compare two value.
  *
@@ -2425,10 +2778,10 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 //
 
 /**
- * The arrayRemoveDuplicates( dstArray, onEvaluator ) routine returns the dstArray with the duplicated elements removed.
+ * The arrayRemoveDuplicates( dstArray, evaluator ) routine returns the dstArray with the duplicated elements removed.
  *
  * @param { ArrayIs } dstArray - The source and destination array.
- * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
+ * @param { Function } [ evaluator = function( e ) { return e } ] - A callback function.
  *
  * @example
  * // returns [ 1, 2, 'abc', 4, true ]
@@ -2446,25 +2799,51 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
  * @memberof wTools
  */
 
-function arrayRemoveDuplicates( dstArray, evaluator1, evaluator2 )
+function arrayRemoveDuplicates( dstArray, evaluator )
 {
-  _.assert( 1 <= arguments.length || arguments.length <= 3 );
+  _.assert( 1 <= arguments.length || arguments.length <= 2 );
+  _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
+
+  let element;
+  for( let i = 0 ; i < dstArray.length ; i++ )
+  {
+    let index;
+    do
+    {
+      element = dstArray[ i ];
+      index = _.arrayRightIndex( dstArray, element, evaluator );
+      if( index !== i )
+      {
+        dstArray.splice( index, 1 );
+      }
+    } while ( index !== i );
+  }
+
+  return dstArray;
+}
+
+/* qqq : use do .. while instead */
+/*
+function arrayRemoveDuplicates( dstArray, evaluator )
+{
+  _.assert( 1 <= arguments.length || arguments.length <= 2 );
   _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
 
   for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
   {
     let element1 = dstArray[ i1 ];
-    let index = _.arrayRightIndex( dstArray, element1, evaluator1, evaluator2 ); /* qqq : use do .. while instead */
+    let index = _.arrayRightIndex( dstArray, element1, evaluator );
 
     while ( index !== i1 )
     {
       dstArray.splice( index, 1 );
-      index = _.arrayRightIndex( dstArray, element1, evaluator1, evaluator2 );
+      index = _.arrayRightIndex( dstArray, element1, evaluator );
     }
   }
 
   return dstArray;
 }
+*/
 
 //
 
@@ -2498,11 +2877,82 @@ function longRemoveDuplicates( dstLong, onEvaluate )
 
   if( _.arrayIs( dstLong ) )
   {
+    _.arrayRemoveDuplicates( dstLong, onEvaluate );
+  }
+  else if( Object.prototype.toString.call( dstLong ) === "[object Arguments]")
+  {
+    let newElement;
+    for( let i = 0; i < dstLong.length; i++ )
+    {
+      newElement = dstLong[ i ];
+      for( let j = i + 1; j < dstLong.length; j++ )
+      {
+        if( newElement === dstLong[ j ] )
+        {
+          let array = Array.from( dstLong );
+          _.arrayRemoveDuplicates( array, onEvaluate );
+          dstLong = new dstLong.constructor( array );
+        }
+      }
+    }
+  }
+  else
+  {
+    if( !onEvaluate )
+    {
+      for( let i = 0 ; i < dstLong.length ; i++ )
+      {
+        function isDuplicated( element, index, array )
+        {
+          return ( element !== dstLong[ i ] || index === i );
+        }
+        dstLong = dstLong.filter( isDuplicated );
+      }
+    }
+    else
+    {
+      if( onEvaluate.length === 2 )
+      {
+        for( let i = 0 ; i < dstLong.length ; i++ )
+        {
+          function isDuplicated( element, index, array )
+          {
+            return ( !onEvaluate( element, dstLong[ i ] ) || index === i );
+          }
+          dstLong = dstLong.filter( isDuplicated );
+        }
+      }
+      else
+      {
+        for( let i = 0 ; i < dstLong.length ; i++ )
+        {
+          function isDuplicated( element, index, array )
+          {
+            return ( onEvaluate( element ) !== onEvaluate( dstLong[ i ] ) || index === i );
+          }
+          dstLong = dstLong.filter( isDuplicated );
+        }
+      }
+    }
+  }
+
+  return dstLong;
+}
+
+/* qqq : not optimal, no redundant copy */
+/*
+function longRemoveDuplicates( dstLong, onEvaluate )
+{
+  _.assert( 1 <= arguments.length || arguments.length <= 3 );
+  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+
+  if( _.arrayIs( dstLong ) )
+  {
     _.arrayRemoveDuplicates( dstLong, onEvaluate )
     return dstLong;
   }
 
-  let array = Array.from( dstLong ); /* qqq : not optimal, no redundant copy */
+  let array = Array.from( dstLong );
   _.arrayRemoveDuplicates( array, onEvaluate )
 
   if( array.length === dstLong.length )
@@ -2515,7 +2965,7 @@ function longRemoveDuplicates( dstLong, onEvaluate )
   }
 
 }
-
+*/
 //
 
 // --
@@ -2600,6 +3050,37 @@ function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayFlattenedOnce.apply( this, arguments );
+
+    function _count( arr )
+    {
+      let expected = 0;
+      for( let i = arr.length - 1; i >= 0; i-- )
+      {
+        if( _.longIs( arr[ i ] ) )
+        expected += _count( arr[ i ] );
+        else
+        expected += 1;
+      }
+      return expected;
+    }
+
+    _.assert( result === _count( insArray ) );
+  }
+  else
+  {
+    result = arrayFlattened.apply( this, [ dstArray, insArray ] );
+  }
+
+ return dstArray;
+}
+
+/*
+function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   let result = arrayFlattenedOnce.apply( this, arguments );
 
   function _count( arr )
@@ -2619,6 +3100,7 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 
  return dstArray;
 }
+*/
 
 //
 
@@ -2761,10 +3243,29 @@ function arrayReplaceOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedOnce.apply( this, arguments );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    result = arrayReplacedOnce.apply( this, arguments );
+    _.assert( result < 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedOnce.apply( this, arguments );
+  }
+  return dstArray;
+}
+
+/*
+function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+{
   let result = arrayReplacedOnce.apply( this, arguments );
   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   return dstArray;
 }
+*/
 
 //
 
@@ -2792,10 +3293,30 @@ function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedOnce.apply( this, arguments );
+    _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    let newResult = arrayReplacedOnce.apply( this, arguments );
+    _.assert( newResult < 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedOnce.apply( this, arguments );
+  }
+
+  return result;
+}
+
+/*
+function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+{
   let result = arrayReplacedOnce.apply( this, arguments );
   _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   return result;
 }
+*/
 
 //
 
@@ -2809,11 +3330,32 @@ function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
 
 function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
 {
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedArrayOnce.apply( this,arguments );
+    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    let newResult = arrayReplacedArrayOnce.apply( this, arguments );
+    _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedArrayOnce.apply( this,arguments );
+  }
+
+  return dstArray;
+}
+
+/*
+function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+{
   let result = arrayReplacedArrayOnce.apply( this,arguments );
   _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
   return dstArray;
 }
+*/
 
 //
 
@@ -3052,6 +3594,14 @@ let Routines =
 
   // array remove
 
+  arrayRemove : arrayRemove,
+  arrayRemoveOnce : arrayRemoveOnce,
+  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
+
+  arrayRemoved : arrayRemoved,
+  arrayRemovedOnce : arrayRemovedOnce,
+  arrayRemovedOnceStrictly : arrayRemovedOnceStrictly,
+
   arrayRemoveElement : arrayRemoveElement, /* should remove all */
   arrayRemoveElementOnce : arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly : arrayRemoveElementOnceStrictly,
@@ -3065,12 +3615,14 @@ let Routines =
   arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
   arrayRemovedArray : arrayRemovedArray,
   arrayRemovedArrayOnce : arrayRemovedArrayOnce,
+  arrayRemovedArrayOnceStrictly : arrayRemovedArrayOnceStrictly,
 
   arrayRemoveArrays : arrayRemoveArrays,
   arrayRemoveArraysOnce : arrayRemoveArraysOnce,
   arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
   arrayRemovedArrays : arrayRemovedArrays,
   arrayRemovedArraysOnce : arrayRemovedArraysOnce,
+  arrayRemovedArraysOnceStrictly : arrayRemovedArraysOnceStrictly,
 
   arrayRemoveAll : arrayRemoveAll,
   arrayRemovedAll : arrayRemovedAll,

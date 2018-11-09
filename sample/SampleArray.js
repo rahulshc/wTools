@@ -5,9 +5,11 @@ var _ = wTools;
 var typedArray = new Uint8Array([1, 2, 3, 4, 5, 5 ]);
 
 // Input element
-var got = _.longRemoveDuplicates( typedArray );
-logger.log( 'result', got )
+var dst =  new Int8Array( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
 
+var got  = _.longRemoveDuplicates( dst, function( a, b )
+{
+  return  a === b;
+});
 
-var got = _.arrayPrependOnceStrictly( [ 0, 1, 1 ], 2 );
-logger.log( 'result', got )
+logger.log( got )
