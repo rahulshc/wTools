@@ -43,8 +43,8 @@
                       { Second } = '-' -> No special treatment to the src argument.
                       { How } = 'Once' -> Repetead elements will not be included.
 
-  In conclusion, arrayFlattenOnce will include to the destination array all arguments, as long as they are not repeated,
-  and will return the destination array.
+  In conclusion, arrayFlattenOnce will include to the destination array all arguments, as long as they are not
+  repeated, and will return the destination array.
   arrayFlattenOnce( [ 1, 2, 3 ], [ 1, 2, 3, [ [ 4 ] ] ] ) -> [ 1, 2, 3, 4 ]
 
   ```
