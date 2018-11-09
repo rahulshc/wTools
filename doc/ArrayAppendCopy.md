@@ -3,7 +3,7 @@
 
 ## Methods of arrayAppend
 
-  The following table shows what the outputs of the functions should be, not what the currently are ( for that see
+  The following table shows what the outputs of the functions should be, not what they currently are ( for that see
   *ArrayFamilyPatterns.md* ).
   Let´s see now all the different functions that cover the functionality of appending elements to an the array
   ( the small family of arrayFlatten methods has been included in the last row - it is not related with arrayAppend ):
