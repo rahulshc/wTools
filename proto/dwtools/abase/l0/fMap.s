@@ -4198,7 +4198,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     debugger;
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : _.strTypeOf( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     return false;
@@ -4484,7 +4484,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
     debugger;
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : _.strTypeOf( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     return false;
