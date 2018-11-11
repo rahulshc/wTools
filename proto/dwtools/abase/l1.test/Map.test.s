@@ -48,7 +48,7 @@ function mapIs( test )
   test.case = 'no argument';
   var got = _.mapIs();
   var expected = false;
-  test.identical( got, expected ); 
+  test.identical( got, expected );
 
   test.case = 'an array';
   var got = _.mapIs( [  ] );
@@ -807,8 +807,24 @@ function mapToStr( test )
 
 //
 
+function mapsFlatten2( test )
+{
+
+  test.case = 'trivial';
+
+  let expected = { a : 1, 'b.c' : 1, 'b.d' : 1, e : 2, 'f.g.h' : 2 }
+  debugger;
+  let got = _.mapsFlatten2([ { a : 1, b : { c : 1, d : 1 } }, { e : 2, f : { g : { h : 2 } } } ]);
+  debugger;
+  test.identical( got, expected );
+
+}
+
+//
+
 function mapKeys( test )
 {
+
   test.case = 'trivial';
 
   var got = _.mapKeys( {} );
@@ -3862,6 +3878,8 @@ var Self =
     mapValWithIndex : mapValWithIndex,
     mapKeyWithIndex : mapKeyWithIndex,
     mapToStr : mapToStr,
+
+    mapsFlatten2 : mapsFlatten2,
 
     // map properties
 

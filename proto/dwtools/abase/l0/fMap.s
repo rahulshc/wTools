@@ -1953,21 +1953,6 @@ function mapsFlatten( o )
       assertingUniqueness : o.assertingUniqueness,
     });
 
-    // for( let s = 0 ; s < src.length ; s++ )
-    // {
-    //   if( _.arrayIs( src[ s ] ) )
-    //   mapsFlatten
-    //   ({
-    //     src : src[ s ],
-    //     result : o.result,
-    //     assertingUniqueness : o.assertingUniqueness,
-    //   });
-    //   else if( _.objectIs( src[ s ] ) )
-    //   extend( o.result, src );
-    //   else
-    //   throw _.err( 'array should have only maps' );
-    // }
-
   }
 
   return o.result;
@@ -1978,6 +1963,100 @@ mapsFlatten.defaults =
   src : null,
   result : null,
   assertingUniqueness : 1,
+}
+
+//
+
+/*
+xxx : attention required !!!
+*/
+
+function mapsFlatten2( o )
+{
+
+  if( _.arrayIs( o ) )
+  o = { src : o }
+
+  _.routineOptions( mapsFlatten2, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( o.prefix === false || o.prefix === 0 || _.strIs( o.prefix ) );
+  _.assert( _.arrayLike( o.src ) || _.mapLike( o.src ) )
+
+  o.result = o.result || Object.create( null );
+
+  if( _.arrayLike( o.src ) )
+  for( let a = 0 ; a < o.src.length ; a++ )
+  {
+    let src = o.src[ a ];
+
+    mapsFlatten2
+    ({
+      src : src,
+      result : o.result,
+      assertingUniqueness : o.assertingUniqueness,
+      prefix : o.prefix,
+    });
+
+  }
+  else
+  {
+    extend( o.result, o.src );
+  }
+
+  return o.result;
+
+  /* */
+
+  function extend( dst, src )
+  {
+    _.assert( _.objectLike( dst ) );
+    _.assert( _.objectLike( src ) );
+
+    if( o.assertingUniqueness )
+    _.assertMapHasNone( dst, src );
+
+    if( _.strIs( o.prefix ) )
+    {
+      for( let k in src )
+      {
+        let key = o.prefix + ( o.prefix ? '.' : '' ) + k;
+        if( _.mapIs( src[ k ] ) )
+        mapsFlatten2
+        ({
+          src : src[ k ],
+          result : o.result,
+          assertingUniqueness : o.assertingUniqueness,
+          prefix : key,
+        });
+        else
+        dst[ key ] = src[ k ];
+      }
+    }
+    else
+    {
+      for( let k in src )
+      if( _.mapIs( src[ k ] ) )
+      mapsFlatten2
+      ({
+        src : src[ k ],
+        result : o.result,
+        assertingUniqueness : o.assertingUniqueness,
+        prefix : o.prefix,
+      });
+      else
+      dst[ k ] = src[ k ];
+    }
+
+  }
+
+}
+
+mapsFlatten2.defaults =
+{
+  src : null,
+  result : null,
+  assertingUniqueness : 1,
+  prefix : '',
 }
 
 //
@@ -4090,7 +4169,7 @@ function _mapOnly( o )
     let s;
     for( s = srcMaps.length-1 ; s >= 0 ; s-- )
     if( k in srcMaps[ s ] )
-    if( srcMaps[ s ][ k ] !== undefined )
+    // if( k in srcMaps[ s ][ k ] !== undefined ) /* xxx */
     break;
 
     if( s === -1 )
@@ -5062,6 +5141,7 @@ let Routines =
   mapInvert : mapInvert,
   mapInvertDroppingDuplicates : mapInvertDroppingDuplicates,
   mapsFlatten : mapsFlatten,
+  mapsFlatten2 : mapsFlatten2,
 
   mapToArray : mapToArray, /* qqq : test required */
   mapToStr : mapToStr, /* experimental */
