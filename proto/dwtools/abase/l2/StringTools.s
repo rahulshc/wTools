@@ -3273,204 +3273,6 @@ strExtractInlinedStereo.defaults =
   onInlined : null,
 }
 
-// --
-// joiner
-// --
-
-/**
- * Appends string to it itself n-times.
- * Expects two object: source string( s ) and number of concatenations( times ).
- *
- * @param {string} s - Source string.
- * @param {number} times - Number of concatenation cycles.
- * @returns {String} Returns a string concatenated n-times.
- *
- * @example
- * //returns WordWordWordWordWord
- * _.strDup( 'Word',5 );
- *
- * @example
- * //returns 1 21 2
- * _.strDup( '1 '+'2',2 );
- *
- * @method strDup
- * @throws { Exception } Throw an exception if( s ) is not a String.
- * @throws { Exception } Throw an exception if( times ) is not a Number.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @memberof wTools
- *
- */
-
-function _strDup( s,times )
-{
-  let result = '';
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.strIs( s ) );
-  _.assert( _.numberIs( times ) );
-
-  for( let t = 0 ; t < times ; t++ )
-  result += s;
-
-  return result;
-}
-
-//
-
-/**
- * Joins objects from arguments list together by concatenating their values in orded that they are specified.
- * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
- * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
- * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ '13', '23' ] ),
- * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '22' ] ).
- *
- * @param {array-like} arguments - Contains provided objects.
- * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
- *
- * @example
- * //returns '123'
- * _.strJoin( 1, 2, 3 );
- *
- * @example
- * //returns [ '12', '22', '32' ]
- * _.strJoin( [ 1, 2, 3 ], 2 );
- *
- * @example
- * //returns [ '11', '23' ]
- * _.strJoin( [ 1, 2 ], [ 1, 3 ] );
- *
- * @example
- * //returns [ '1236', '1247', '1258' ]
- * _.strJoin( 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] );
- *
- * @method strJoin
- * @throws { Exception } If some object from( arguments ) is not a Array, String or Number.
- * @throws { Exception } If length of arrays passed as arguments is different.
- * @memberof wTools
- *
- */
-
-function strJoin()
-{
-  let result = [ '' ];
-  let arrayEncountered = 0;
-  let arrayLength;
-
-  function join( s,src )
-  {
-    result[ s ] += src;
-  }
-
-  /**/
-
-  for( let a = 0 ; a < arguments.length ; a++ )
-  {
-    let src = arguments[ a ];
-
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
-
-    if( _.arrayIs( src ) )
-    {
-
-      if( arrayEncountered === 0 )
-      for( let s = 1 ; s < src.length ; s++ )
-      result[ s ] = result[ 0 ];
-
-      _.assert( arrayLength === undefined || arrayLength === src.length, 'strJoin : all arrays should has same length' );
-      arrayLength = src.length;
-
-      arrayEncountered = 1;
-      for( let s = 0 ; s < src.length ; s++ )
-      join( s,src[ s ] );
-
-    }
-    else
-    {
-
-      for( let s = 0 ; s < result.length ; s++ )
-      join( s,src );
-
-    }
-
-  }
-
-  if( arrayEncountered )
-  return result;
-  else
-  return result[ 0 ];
-
-}
-
-//
-
-function strConcat( srcs, o )
-{
-
-  o = _.routineOptions( strConcat, o || Object.create( null ) );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( this.strConcat === strConcat );
-  o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
-
-  if( _.routineIs( srcs ) )
-  return srcs();
-
-  if( !_.arrayLike( srcs ) )
-  srcs = [ srcs ];
-
-  let result = '';
-  if( !srcs.length )
-  return result;
-
-  /* */
-
-  let nl = 1;
-  for( let a = 0 ; a < srcs.length ; a++ )
-  {
-    let src = srcs[ a ];
-    src = _.toStr( src,o.optionsForToStr );
-    if( !nl )
-    {
-      let i = src.lastIndexOf( o.lineDelimter );
-      if( i === -1 )
-      {
-        result += o.delimeter;
-      }
-      else
-      {
-        if( i !== 0 )
-        result += o.lineDelimter;
-      }
-    }
-    if( src.length )
-    nl = src[ src.length-1 ] === o.lineDelimter;
-    result += src;
-  }
-
-  /* */
-
-  if( o.linePrefix || o.linePostfix )
-  {
-    result = result.split( o.lineDelimter );
-    result = o.linePrefix + result.join( o.linePostfix + o.lineDelimter + o.linePrefix ) + o.linePostfix;
-  }
-
-  /* */
-
-  return result;
-}
-
-strConcat.defaults =
-{
-  linePrefix : '',
-  linePostfix : '',
-  lineDelimter : '\n',
-  delimeter : ' ',
-  optionsForToStr :
-  {
-    stringWrapper : '',
-  },
-}
-
 //
 
 /**
@@ -3604,6 +3406,287 @@ function strUnjoin( srcStr, maskArray )
 
 strUnjoin.any = _.any;
 _.assert( _.routineIs( strUnjoin.any ) );
+
+// --
+// joiner
+// --
+
+/**
+ * Appends string to it itself n-times.
+ * Expects two object: source string( s ) and number of concatenations( times ).
+ *
+ * @param {string} s - Source string.
+ * @param {number} times - Number of concatenation cycles.
+ * @returns {String} Returns a string concatenated n-times.
+ *
+ * @example
+ * //returns WordWordWordWordWord
+ * _.strDup( 'Word',5 );
+ *
+ * @example
+ * //returns 1 21 2
+ * _.strDup( '1 '+'2',2 );
+ *
+ * @method strDup
+ * @throws { Exception } Throw an exception if( s ) is not a String.
+ * @throws { Exception } Throw an exception if( times ) is not a Number.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
+
+function _strDup( s,times )
+{
+  let result = '';
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.strIs( s ) );
+  _.assert( _.numberIs( times ) );
+
+  for( let t = 0 ; t < times ; t++ )
+  result += s;
+
+  return result;
+}
+
+//
+
+/**
+ * Joins objects from arguments list together by concatenating their values in orded that they are specified.
+ * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
+ * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ '13', '23' ] ),
+ * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '22' ] ).
+ *
+ * @param {array-like} arguments - Contains provided objects.
+ * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
+ *
+ * @example
+ * //returns '123'
+ * _.strJoin([ 1, 2, 3 ]);
+ *
+ * @example
+ * //returns [ '12', '22', '32' ]
+ * _.strJoin([ [ 1, 2, 3 ], 2 ]);
+ *
+ * @example
+ * //returns [ '11', '23' ]
+ * _.strJoin([ [ 1, 2 ], [ 1, 3 ] ]);
+ *
+ * @example
+ * //returns [ '1236', '1247', '1258' ]
+ * _.strJoin([ 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] ]);
+ *
+ * @method strJoin
+ * @throws { Exception } If some object from( arguments ) is not a Array, String or Number.
+ * @throws { Exception } If length of arrays passed as arguments is different.
+ * @memberof wTools
+ *
+ */
+
+function strJoin( srcs, joiner )
+{
+  let result = [ '' ];
+  let arrayEncountered = 0;
+  let arrayLength;
+
+  _.assert( arguments.length === 1 || arguments.length === 2, () => 'Expects an array of string and optional joiner, but got ' + arguments.length + ' arguments' );
+  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strTypeOf( srcs ) );
+  _.assert( joiner === undefined || _.strIs( joiner ), () => 'Expects optional joiner, but got ' + _.strTypeOf( joiner ) );
+
+  /* xxx */
+
+  for( let a = 0 ; a < srcs.length ; a++ )
+  {
+    let src = srcs[ a ];
+
+    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+
+    if( _.arrayIs( src ) )
+    {
+
+      if( arrayEncountered === 0 )
+      for( let s = 1 ; s < src.length ; s++ )
+      result[ s ] = result[ 0 ];
+
+      _.assert( arrayLength === undefined || arrayLength === src.length, 'All arrays should have the same length' );
+      arrayLength = src.length;
+
+      arrayEncountered = 1;
+      for( let s = 0 ; s < src.length ; s++ )
+      join( src[ s ], s, a );
+
+    }
+    else
+    {
+
+      for( let s = 0 ; s < result.length ; s++ )
+      join( src, s, a );
+
+    }
+
+  }
+
+  if( arrayEncountered )
+  return result;
+  else
+  return result[ 0 ];
+
+  /* */
+
+  function join( src, s, a )
+  {
+    if( joiner && a > 0 )
+    result[ s ] += joiner + src;
+    else
+    result[ s ] += src;
+  }
+
+}
+
+//
+
+function strJoinPath( srcs, joiner )
+{
+  let result = [ '' ];
+  let arrayEncountered = 0;
+  let arrayLength;
+
+  _.assert( arguments.length === 2, () => 'Expects an array of string and joiner, but got ' + arguments.length + ' arguments' );
+  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strTypeOf( srcs ) );
+  _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.strTypeOf( joiner ) );
+
+  /* xxx */
+
+  for( let a = 0 ; a < srcs.length ; a++ )
+  {
+    let src = srcs[ a ];
+
+    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+
+    if( _.arrayIs( src ) )
+    {
+
+      if( arrayEncountered === 0 )
+      for( let s = 1 ; s < src.length ; s++ )
+      result[ s ] = result[ 0 ];
+
+      _.assert( arrayLength === undefined || arrayLength === src.length, 'All arrays should have the same length' );
+      arrayLength = src.length;
+
+      arrayEncountered = 1;
+      for( let s = 0 ; s < src.length ; s++ )
+      join( src[ s ], s, a );
+
+    }
+    else
+    {
+
+      for( let s = 0 ; s < result.length ; s++ )
+      join( src, s, a );
+
+    }
+
+  }
+
+  if( arrayEncountered )
+  return result;
+  else
+  return result[ 0 ];
+
+  /* */
+
+  function join( src, s, a )
+  {
+    if( a > 0 && joiner )
+    {
+      let ends = _.strEnds( result[ s ], joiner );
+      let begins = _.strBegins( src, joiner );
+      if( begins && ends )
+      result[ s ] = _.strRemoveEnd( result[ s ], joiner ) + src;
+      else if( begins || ends )
+      result[ s ] += src;
+      else
+      result[ s ] += joiner + src;
+    }
+    else
+    {
+      result[ s ] += src;
+    }
+  }
+
+}
+
+
+//
+
+function strConcat( srcs, o )
+{
+
+  o = _.routineOptions( strConcat, o || Object.create( null ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( this.strConcat === strConcat );
+  o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
+
+  if( _.routineIs( srcs ) )
+  return srcs();
+
+  if( !_.arrayLike( srcs ) )
+  srcs = [ srcs ];
+
+  let result = '';
+  if( !srcs.length )
+  return result;
+
+  /* */
+
+  let nl = 1;
+  for( let a = 0 ; a < srcs.length ; a++ )
+  {
+    let src = srcs[ a ];
+    src = _.toStr( src,o.optionsForToStr );
+    if( !nl )
+    {
+      let i = src.lastIndexOf( o.lineDelimter );
+      if( i === -1 )
+      {
+        result += o.delimeter;
+      }
+      else
+      {
+        if( i !== 0 )
+        result += o.lineDelimter;
+      }
+    }
+    if( src.length )
+    nl = src[ src.length-1 ] === o.lineDelimter;
+    result += src;
+  }
+
+  /* */
+
+  if( o.linePrefix || o.linePostfix )
+  {
+    result = result.split( o.lineDelimter );
+    result = o.linePrefix + result.join( o.linePostfix + o.lineDelimter + o.linePrefix ) + o.linePostfix;
+  }
+
+  /* */
+
+  return result;
+}
+
+strConcat.defaults =
+{
+  linePrefix : '',
+  linePostfix : '',
+  lineDelimter : '\n',
+  delimeter : ' ',
+  optionsForToStr :
+  {
+    stringWrapper : '',
+  },
+}
 
 // --
 // liner
@@ -4299,7 +4382,7 @@ let Proto =
   // splitter
 
   // _strIsolate : _strIsolate,
-  // strIsolateBeginOrNone : strIsolateBeginOrNone,
+  // strIsolateBeginOrNone : strIsolateBeginOrNone, /* xxx : used in the file! */
   // strIsolateEndOrNone : strIsolateEndOrNone,
   // strIsolateEndOrAll : strIsolateEndOrAll,
   // strIsolateBeginOrAll : strIsolateBeginOrAll,
@@ -4325,12 +4408,13 @@ let Proto =
   strSub : _.routineVectorize_functor( _strSub ),
   strExtractInlined : strExtractInlined,
   strExtractInlinedStereo : strExtractInlinedStereo,
+  strUnjoin : strUnjoin, /* document me */
 
   // joiner
 
   strDup : _.routineVectorize_functor( _strDup ), /* document me */
   strJoin : strJoin, /* document me */
-  strUnjoin : strUnjoin, /* document me */
+  strJoinPath : strJoinPath, /* qqq : cover and document me */
   strConcat : strConcat,
 
   // liner

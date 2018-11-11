@@ -4194,7 +4194,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( _.strJoin && !msg )
-    console.error( 'Consider extending object by :\n' + _.strJoin( '  ', but, ' : null,' ).join( '\n' ) );
+    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null,' ]).join( '\n' ) );
     debugger;
     throw _._err
     ({
@@ -4269,7 +4269,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( _.strJoin && !msg )
-    console.error( 'Consider extending object by :\n' + _.strJoin( '  ',but,' : null,' ).join( '\n' ) );
+    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ',but,' : null,' ]).join( '\n' ) );
     debugger;
     throw _._err
     ({

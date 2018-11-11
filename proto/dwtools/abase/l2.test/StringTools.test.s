@@ -6034,57 +6034,57 @@ function strJoin( test )
 {
 
   test.case = 'join numbers';
-  var got = _.strJoin( 1, 2, 3 );
+  var got = _.strJoin([ 1, 2, 3 ]);
   var expected = '123';
   test.identical( got,expected );
 
   test.case = 'join strings';
-  var got = _.strJoin( '1', '2', '3' );
+  var got = _.strJoin([ '1', '2', '3' ]);
   var expected = '123';
   test.identical( got,expected );
 
   test.case = 'join two arrays';
-  var got = _.strJoin( [ 'b', 'c' ], [ 'x', 'y' ] );
+  var got = _.strJoin([ [ 'b', 'c' ], [ 'x', 'y' ] ]);
   var expected = [ 'bx', 'cy' ];
   test.identical( got,expected );
 
   test.case = 'join string + number';
-  var got = _.strJoin( 1, 2, '3' );
+  var got = _.strJoin([ 1, 2, '3' ]);
   var expected = '123';
   test.identical( got,expected );
 
   test.case = 'join array + string';
-  var got = _.strJoin( [ 1, 2 ], '3' );
+  var got = _.strJoin([ [ 1, 2 ], '3' ]);
   var expected = [ '13', '23' ];
   test.identical( got,expected );
 
   test.case = 'join array + number';
-  var got = _.strJoin( [ 1, 2 ], 3 );
+  var got = _.strJoin([ [ 1, 2 ], 3 ]);
   var expected = [ '13', '23' ];
   test.identical( got,expected );
 
   test.case = 'no arguments';
-  var got = _.strJoin( );
+  var got = _.strJoin([]);
   var expected = '';
   test.identical( got,expected );
 
   test.case = 'one argument';
-  var got = _.strJoin( '1' );
+  var got = _.strJoin([ '1' ]);
   var expected = '1';
   test.identical( got,expected );
 
   test.case = 'NaN argument';
-  var got = _.strJoin( '1', NaN );
+  var got = _.strJoin([ '1', NaN ]);
   var expected = '1NaN';
   test.identical( got,expected );
 
   test.case = 'different types';
-  var got = _.strJoin( 1, '2', [ '3', 4 ], 5, '6' );
+  var got = _.strJoin([ 1, '2', [ '3', 4 ], 5, '6' ]);
   var expected = [ "12356", "12456" ];
   test.identical( got,expected );
 
   test.case = 'different types with two arrays';
-  var got = _.strJoin( '1', 2, [ 3, 4, 5 ], [ 6, 7, 8 ] );
+  var got = _.strJoin([ '1', 2, [ 3, 4, 5 ], [ 6, 7, 8 ] ]);
   var expected = [ "1236", "1247", "1258" ];
   test.identical( got,expected );
 
@@ -6092,6 +6092,30 @@ function strJoin( test )
 
   if( !Config.debug )
   return;
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strJoin([ { a : 1 }, [ 1 ], [ 2 ] ]);
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin([ '1', null ]);
+  });
+
+  test.case = 'RegExp argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin([ '1', /a?/ ]);
+  });
+
+  test.case = 'arrays with different length';
+  test.shouldThrowError( function()
+  {
+    _.strJoin([ [ 1, 2 ], [ 1 ], [ 2 ] ]);
+  });
 
   test.case = 'invalid argument type';
   test.shouldThrowError( function()
