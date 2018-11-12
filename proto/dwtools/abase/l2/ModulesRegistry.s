@@ -261,7 +261,7 @@ let wFilesArchive =
 
 let wFilesTransformers =
 {
-  includeAny : [ '../../amid/files/l9/FilesTransformers.s','amid/files/l9/FilesTransformers.s','wfilestransformers' ],
+  includeAny : [ '../../amid/files/l1/EncodersExtended.s','amid/files/l1/EncodersExtended.s','wfilestransformers' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileTransformers },
 }
 
