@@ -100,7 +100,7 @@ step:
     opts:
       reflector: 'reflector::reflect.proto.*=1'
     inherit:
-      - reflect
+      - predefined.reflect
   reflect.proto.1:
     criterion:
       debug: 1
@@ -108,7 +108,7 @@ step:
     opts:
       reflector: 'reflector::reflect.proto.*=1'
     inherit:
-      - reflect
+      - predefined.reflect
   reflect.proto.2:
     criterion:
       debug: 0
@@ -116,7 +116,7 @@ step:
     opts:
       reflector: 'reflector::reflect.proto.*=1'
     inherit:
-      - reflect
+      - predefined.reflect
   reflect.proto.3:
     criterion:
       debug: 1
@@ -124,7 +124,7 @@ step:
     opts:
       reflector: 'reflector::reflect.proto.*=1'
     inherit:
-      - reflect
+      - predefined.reflect
   reflect.submodules.0:
     criterion:
       debug: 1
@@ -132,7 +132,7 @@ step:
     opts:
       reflector: 'reflector::reflect.submodules*=1'
     inherit:
-      - reflect
+      - predefined.reflect
   reflect.submodules.1:
     criterion:
       debug: 1
@@ -140,7 +140,7 @@ step:
     opts:
       reflector: 'reflector::reflect.submodules*=1'
     inherit:
-      - reflect
+      - predefined.reflect
 build:
   debug.raw:
     criterion:
