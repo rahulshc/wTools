@@ -36,6 +36,8 @@ path:
     path: 'git+https://github.com/Wandalen/wTools.git'
   bugs:
     path: 'https://github.com/Wandalen/wTools/issues'
+  baseDir:
+    path: ..
   exportedDir.0:
     path: ./out.debug
     criterion:
