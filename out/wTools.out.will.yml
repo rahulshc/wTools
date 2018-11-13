@@ -1,0 +1,266 @@
+format: willfile-1.0.0
+about:
+  name: wTools
+  description: >-
+    Collection of general purpose tools for solving problems. Fundamentally
+    extend JavaScript without corrupting it, so may be used solely or in
+    conjunction with another module of such kind
+  version: 0.8.318
+  enabled: 1
+  interpreters:
+    - nodejs >= 6.0.0
+    - chrome >= 60.0.0
+    - firefox >= 60.0.0
+  keywords:
+    - wTools
+execution:
+  scripts:
+    test: wtest staging
+    docgen: wdocgen staging
+path:
+  proto:
+    path: ./proto
+  in:
+    path: .
+  out:
+    path: out
+  out.debug:
+    path: ./out.debug
+    criterion:
+      debug: 1
+  out.release:
+    path: ./out.release
+    criterion:
+      debug: 0
+  repository:
+    path: 'git+https://github.com/Wandalen/wTools.git'
+  bugs:
+    path: 'https://github.com/Wandalen/wTools/issues'
+  baseDir:
+    path: ..
+  exportedDir.0:
+    path: ./out.debug
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      export: 1
+      tar: 1
+  archiveFile.0:
+    path: ./out/wTools.debug.raw.export.out.tgs
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      export: 1
+      tar: 1
+submodule: {}
+reflector:
+  reflect.proto.0:
+    reflectMap:
+      ./proto: ./out.release
+    srcFilter:
+      maskAll:
+        excludeAny:
+          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
+          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
+          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
+    criterion:
+      debug: 0
+    inherit:
+      - predefined.*
+  reflect.proto.1:
+    reflectMap:
+      ./proto: ./out.debug
+    srcFilter:
+      maskAll:
+        excludeAny:
+          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
+          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
+    criterion:
+      debug: 1
+    inherit:
+      - predefined.*
+  reflect.submodules:
+    srcFilter:
+      maskAll:
+        excludeAny:
+          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
+          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
+    criterion:
+      debug: 1
+    inherit:
+      - predefined.*
+step:
+  reflect.proto.0:
+    criterion:
+      debug: 0
+      raw: 0
+    opts:
+      reflector: 'reflector::reflect.proto.*=1'
+    inherit:
+      - predefined.reflect
+  reflect.proto.1:
+    criterion:
+      debug: 1
+      raw: 0
+    opts:
+      reflector: 'reflector::reflect.proto.*=1'
+    inherit:
+      - predefined.reflect
+  reflect.proto.2:
+    criterion:
+      debug: 0
+      raw: 1
+    opts:
+      reflector: 'reflector::reflect.proto.*=1'
+    inherit:
+      - predefined.reflect
+  reflect.proto.3:
+    criterion:
+      debug: 1
+      raw: 1
+    opts:
+      reflector: 'reflector::reflect.proto.*=1'
+    inherit:
+      - predefined.reflect
+  reflect.submodules.0:
+    criterion:
+      debug: 1
+      raw: 0
+    opts:
+      reflector: 'reflector::reflect.submodules*=1'
+    inherit:
+      - predefined.reflect
+  reflect.submodules.1:
+    criterion:
+      debug: 1
+      raw: 1
+    opts:
+      reflector: 'reflector::reflect.submodules*=1'
+    inherit:
+      - predefined.reflect
+build:
+  debug.raw:
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+    steps:
+      - 'step::reflect.proto.*=1'
+  debug.compiled:
+    criterion:
+      debug: 1
+      raw: 0
+    steps:
+      - 'step::reflect.proto.*=1'
+  release.raw:
+    criterion:
+      debug: 0
+      raw: 1
+    steps:
+      - 'step::reflect.proto.*=1'
+  release.compiled:
+    criterion:
+      debug: 0
+      raw: 0
+    steps:
+      - 'step::reflect.proto.*=1'
+  all:
+    steps:
+      - 'build::debug.raw'
+      - 'build::release.compiled'
+  debug.raw.export:
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      export: 1
+      tar: 1
+    steps:
+      - 'build::debug.raw'
+      - 'step::export'
+    exportDirPath: 'path::out.debug'
+  release.compiled.export:
+    criterion:
+      debug: 0
+      raw: 0
+      export: 1
+      tar: 1
+    steps:
+      - 'build::release.compiled'
+      - 'step::export'
+    exportDirPath: 'path::out.release'
+  export.all:
+    steps:
+      - 'build::debug.raw.export'
+      - 'build::release.compiled.export'
+exported:
+  debug.raw.export:
+    version: 0.8.318
+    exportedDirPath: 'path::exportedDir.0'
+    archiveFilePath: 'path::archiveFile.0'
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      export: 1
+      tar: 1
+    files:
+      - .
+      - ./dwtools
+      - ./dwtools/Tools.s
+      - ./dwtools/abase
+      - ./dwtools/abase/Layer0.s
+      - ./dwtools/abase/Layer1.s
+      - ./dwtools/abase/Layer2.s
+      - ./dwtools/abase/l0
+      - ./dwtools/abase/l0/aPredefined.s
+      - ./dwtools/abase/l0/fBool.s
+      - ./dwtools/abase/l0/fChecker.s
+      - ./dwtools/abase/l0/fEntity.s
+      - ./dwtools/abase/l0/fErr.s
+      - ./dwtools/abase/l0/fLong.s
+      - ./dwtools/abase/l0/fMap.s
+      - ./dwtools/abase/l0/fNumber.s
+      - ./dwtools/abase/l0/fRange.s
+      - ./dwtools/abase/l0/fRegexp.s
+      - ./dwtools/abase/l0/fRoutine.s
+      - ./dwtools/abase/l0/fString.s
+      - ./dwtools/abase/l0/fTime.s
+      - ./dwtools/abase/l0/iArrayDescriptor.s
+      - ./dwtools/abase/l0/iCompose.s
+      - ./dwtools/abase/l0/iField.s
+      - ./dwtools/abase/l1
+      - ./dwtools/abase/l1/cErr.s
+      - ./dwtools/abase/l1/gBool.s
+      - ./dwtools/abase/l1/gEntity.s
+      - ./dwtools/abase/l1/gLong.s
+      - ./dwtools/abase/l1/gMap.s
+      - ./dwtools/abase/l1/gNumber.s
+      - ./dwtools/abase/l1/gRange.s
+      - ./dwtools/abase/l1/gRegexp.s
+      - ./dwtools/abase/l1/gRoutine.s
+      - ./dwtools/abase/l1/gString.s
+      - ./dwtools/abase/l1/gTime.s
+      - ./dwtools/abase/l1/rFundamental.s
+      - ./dwtools/abase/l1/zSetup.s
+      - ./dwtools/abase/l1.test
+      - ./dwtools/abase/l1.test/Array.test.s
+      - ./dwtools/abase/l1.test/Diagnostics.test.s
+      - ./dwtools/abase/l1.test/Entity.test.s
+      - ./dwtools/abase/l1.test/Map.test.s
+      - ./dwtools/abase/l1.test/Regexp.test.s
+      - ./dwtools/abase/l1.test/Routine.test.s
+      - ./dwtools/abase/l1.test/String.test.s
+      - ./dwtools/abase/l1.test/Typing.test.s
+      - ./dwtools/abase/l2
+      - ./dwtools/abase/l2/IncludeTools.s
+      - ./dwtools/abase/l2/ModulesRegistry.s
+      - ./dwtools/abase/l2/NameTools.s
+      - ./dwtools/abase/l2/StringTools.s
+      - ./dwtools/abase/l2.test
+      - ./dwtools/abase/l2.test/StringTools.test.s
+      - ./dwtools/amid
+      - ./dwtools/atop
