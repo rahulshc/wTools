@@ -510,7 +510,7 @@ function _strRemoved( srcStr, insStr )
 //
 
 /**
-* Finds substring or regexp ( insStr ) occurrences from the source string ( srcStr ) and removes them.
+* Finds substring or regexp ( insStr ) first occurrence from the source string ( srcStr ) and removes it.
 * Returns original string if source( src ) does not have occurrence of ( insStr ).
 *
 * @param { String } srcStr - Source string to parse.
