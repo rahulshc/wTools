@@ -12,9 +12,11 @@
 
   `array{ Op }{ Tense }{ Second }{ How }`
 
-  Example
+### Example
 
-  `array{Append}{ed}{Element}{Once}`
+```
+  array{Append}{ed}{Element}{Once}
+```
 
 ### Where
 
