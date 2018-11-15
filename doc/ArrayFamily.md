@@ -12,12 +12,14 @@
 
   `array{ Op }{ Tense }{ Second }{ How }`
 
-  Where
+### Where
 
   { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ].  
   { Tense } can be one of [ `-`, `ed` ].  
   { Second } can be one of [ `-` , `element`, `array`, `arrays` ].  
   { How } can be one of [ `-` , `Once`, `OnceStrictly` ].  
+
+### So
 
   { Op } corresponds to the action to perform.  
 
