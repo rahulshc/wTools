@@ -795,6 +795,20 @@ function strReplaceBegin( test )
   expected = [ '2xample', '3example', '2xample2', '2xam3ple' ];
   test.identical( got, expected );
 
+  /**/
+
+  test.case = 'Null';
+
+  /**/
+
+  got = _.strReplaceBegin( null, /exa/, 'si' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplaceBegin( 'example', null, 'no' );
+  expected = 'example';
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -809,6 +823,10 @@ function strReplaceBegin( test )
   test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'x', 1 ], 'a' ) );
   test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'b', 'a' ], [ 'x', 1 ] ) );
   test.shouldThrowError( () => _.strReplaceBegin( 'a', [ 'a' ], [ 'x', '1' ] ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'string', 'begin', null ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'string', 'begin', undefined ) );
+  test.shouldThrowError( () => _.strReplaceBegin( 'string', undefined, 'ins' ) );
+  test.shouldThrowError( () => _.strReplaceBegin( undefined, 'begin', 'ins' ) );
 }
 
 //
@@ -905,6 +923,20 @@ function strReplaceEnd( test )
   expected = [ 'exampl2', '1exampl2', 'example3', 'exam2pl2' ];
   test.identical( got, expected );
 
+  /**/
+
+  test.case = 'Null';
+
+  /**/
+
+  got = _.strReplaceEnd( null, /le/, 'si' );
+  expected = [];
+  test.identical( got, expected );
+
+  got = _.strReplaceEnd( 'example', null, 'no' );
+  expected = 'example';
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -919,6 +951,10 @@ function strReplaceEnd( test )
   test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'x', 1 ], 'a' ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'a' ], [ 1 ] ) );
   test.shouldThrowError( () => _.strReplaceEnd( 'a', [ 'b', 'c' ], [ 'c' ] ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'string', 'end', null ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'string', 'end', undefined ) );
+  test.shouldThrowError( () => _.strReplaceEnd( 'string', undefined, 'ins' ) );
+  test.shouldThrowError( () => _.strReplaceEnd( undefined, 'end', 'ins' ) );
 }
 
 //
@@ -1025,6 +1061,12 @@ function strReplace( test )
   test.shouldThrowError( () => _.strReplace( 'a', [ 'x', 1 ], 'a' ) );
   test.shouldThrowError( () => _.strReplace( 'a', [ 'a' ], [ 1 ] ) );
   test.shouldThrowError( () => _.strReplace( 'a', [ 'b', 'c' ], [ 'c' ] ) );
+  test.shouldThrowError( () => _.strReplace( 'string', 'sub', null ) );
+  test.shouldThrowError( () => _.strReplace( 'string', 'sub', undefined ) );
+  test.shouldThrowError( () => _.strReplace( 'string', null, 'ins' ) );
+  test.shouldThrowError( () => _.strReplace( 'string', undefined, 'ins' ) );
+  test.shouldThrowError( () => _.strReplace( null, 'sub', 'ins' ) );
+  test.shouldThrowError( () => _.strReplace( undefined, 'sub', 'ins' ) );
 }
 
 //
