@@ -12,6 +12,10 @@
 
   `array{ Op }{ Tense }{ Second }{ How }`
 
+  Example
+
+  `array{Append}{ed}{Element}{Once}`
+
 ### Where
 
   { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ].  
