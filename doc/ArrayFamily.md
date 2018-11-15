@@ -75,11 +75,3 @@
   | **Array** | - \| dst | dst | dst | - \| number | number | - \| number |
   | **Arrays** | - \| dst | - \| dst | - \| dst | - \| number | - \| number | - \| number |
   | **All** | dst \| - | - | - | number \| - | - | - |
-
-
-## Try out
-
-```
-npm install
-node sample/SampleArrayRemove.s
-```
