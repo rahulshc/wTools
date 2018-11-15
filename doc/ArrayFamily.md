@@ -4,7 +4,7 @@
 
   wTools provides a collection of functions to work with arrays.
   Among such routines you may find several families: append, prepend, remove, replace.
-  In this file, we are going to see the families naming patterns work, and see the differences between the functions of a the same family.
+  In this file, we are going to see the families naming patterns work, and see the differences between the functions of a same family.
 
 ## Naming patterns
 
@@ -33,11 +33,16 @@
   - `-` for dst array,
   - `ed` for index, number of elements or element itself.
 
-  { Second } give a hint how the routine treat the second argument.  
+  { Second } gives a hint on how the routine treats the second argument.  
   - `-` treat the second argument
-  - `element` xxx
+  - `element` treat the second argument as a scalar
+  - `array` treat the second argument as an array
+  - `arrays` treat the second argument as an array of Arrays
 
-  { How } and tell us how to treat the repeats.  
+  { How } tells us how the routine treats the repeats.  
+  - `-` the routine performs the action for every match
+  - `Once` the routine performs the action on the first matching element
+  - `OnceStrictly` the routine will perform the action once, and only once
 
   For more information on these patters please see *ArrayRoutines.md*.
 
@@ -46,7 +51,7 @@
   Let´s see now all the different functions that cover the functionality of appending elements to an the array
   ( the small family of arrayFlatten methods has been included in the last row - it is not related with arrayAppend ):
 
-  The table rows and columns correspond to naming patterns, and by combining them we get the full function names. For example the cell of the row *'Array'* and the column *'edOnce'* corresponds to the function *arrayAppendedArrayOnce*. The values inside the cells are the outputs of these functions ( for the example *arrayAppendedArrayOnce* returns the number of appended elements ).
+  The table rows and columns correspond to naming patterns, and by combining them we get the full function names. For example the cell of the row `Array` and the column `edOnce` corresponds to the function *arrayAppendedArrayOnce*. The values inside the cells are the outputs of these functions ( for the example *arrayAppendedArrayOnce* returns the number of appended elements ).
 
   | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -56,13 +61,14 @@
   | **Arrays** | dst | dst | dst | number | number | - \| number |
   | **arrayFlatten** | dst | dst | dst | number | number | - \| number |
 
-  Where:
-  - *-* means thet the corresponding function hasn´t been developped.
-  - *dst* corresponds to the input array with the appended element( s ) included at its end.
-  - *index* corresponds to the position of the appended element in the destination array ( -1 if not appended ).
-  - *number* corresponds to the number of appended elements.
-  - *index* | *appended element* means that the corresponding function currently returns *index*, but should
-  return *appended element*.
+### Where
+
+  - `-` means that the corresponding function hasn´t been developped.
+  - `dst` corresponds to the input array with the appended element( s ) included at its end.
+  - `index` corresponds to the position of the appended element in the destination array ( -1 if not appended ).
+  - `number` corresponds to the number of appended elements.
+  - `index | appended element` means that the corresponding function currently returns `index`, but should
+  return `appended element`.
 
 ## Methods of arrayRemove
 
