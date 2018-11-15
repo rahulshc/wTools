@@ -14,10 +14,18 @@
 
   Where
 
-  { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
-  { Tense } can be - ( nothing ) or ed, giving information on what to return ( the output value ).
-  { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
-  { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
+  { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ]
+  { Tense } can be one of [ `-`, `ed` ]
+  { Second } can be one of [ `-` , `element`, `array`, `arrays` ]
+  { How } can be one of [ `-` , `Once`, `OnceStrictly` ]
+
+  { Op } corresponds to the action to perform.
+  { Tense } gives information on what to return ( the output value ).
+    - `-` for dst array,
+    - `ed` for index, number of elements or element itself.
+  { Second } give a hint how the routine treat the second argument.
+    - `-` treat the second argument
+  { How } and tell us how to treat the repeats.
 
   For more information on these patters please see *ArrayRoutines.md*.
 
