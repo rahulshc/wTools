@@ -1,10 +1,8 @@
-# Array Methods Usage [![Array methods](https://travis-ci.org/Wandalen/wTools.svg?branch=master)](https://github.com/Wandalen/wTools/blob/master/out.debug/dwtools/abase/l0/fLong.s)
-
+# Array Methods Usage
 
 ## Definition
 
-  fLong.s contains a collection of functions to work with arrays ( Append, remove or replace elements are some of the functionalities covered ).
-
+  wTools provides a collection of functions to work with arrays.
 
 ## Methods
 

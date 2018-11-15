@@ -1,23 +1,22 @@
-# Array Families of routines [![Array methods](https://travis-ci.org/Wandalen/wTools.svg?branch=master)]
-(https://github.com/Wandalen/wTools/blob/master/out.debug/dwtools/abase/l0/fLong.s)
+# Array Families
 
-## Definition
+## Abstract
 
-  fLong.s contains a collection of functions to work with arrays ( Append, remove or replace elements are some of the functionalities covered ).
-  In this file, we are going to see the families of arrayRemove, arrayAppend and arrayReplace methods, in order to better understand how the naming patterns work, and see the differences between the functions of a same family.
+  wTools provides a collection of functions to work with arrays.
+  Among such routines you may find several families: append, prepend, remove, replace.
+  In this file, we are going to see the families naming patterns work, and see the differences between the functions of a the same family.
 
 ## Naming patterns
 
-  Many function names contain patterns to help us understand the behaviour of each routine, here comes a quick summary of the information a function name can give us:
+  Names of routines of this families have patterns for better understand the behavior of each routine, here comes a quick summary of the information a function name can give us:
 
-  The format of a function name will be: array { Op } { Tense } { Second } { How }, where:
+  `array{ Op }{ Tense }{ Second }{ How }`
+
+  Where
 
   { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
-
   { Tense } can be - ( nothing ) or ed, giving information on what to return ( the output value ).
-
   { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
-
   { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
 
   For more information on these patters please see *ArrayRoutines.md*.
