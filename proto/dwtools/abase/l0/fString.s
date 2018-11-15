@@ -140,6 +140,46 @@ function strPrimitiveTypeOf( src )
 
 //
 
+function strQuote( o )
+{
+
+  if( !_.mapIs( o ) )
+  o = { src : o };
+
+  if( o.quote === undefined || o.quote === null )
+  o.quote = strQuote.defaults.quote;
+
+  _.assertMapHasOnly( o, strQuote.defaults );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( _.arrayIs( o.src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < o.src.length ; s++ )
+    result.push( _.strQuote({ src : o.src[ s ], quote : o.quote }) );
+    return result;
+  }
+
+  let src = o.src;
+
+  if( !_.primitiveIs( src ) )
+  src = _.toStr( src );
+
+  _.assert( _.primitiveIs( src ) );
+
+  let result = o.quote + String( src ) + o.quote;
+
+  return result;
+}
+
+strQuote.defaults =
+{
+  src : null,
+  quote : '"',
+}
+
+//
+
 /**
   * Return in one string value of all arguments.
   * @example
@@ -925,35 +965,37 @@ let Fields =
 let Routines =
 {
 
-  strIs : strIs,
-  strsAre : strsAre,
-  strDefined : strDefined,
-  strsAreNotEmpty : strsAreNotEmpty,
+  strIs,
+  strsAre,
+  strDefined,
+  strsAreNotEmpty,
 
-  strTypeOf : strTypeOf,
-  strPrimitiveTypeOf : strPrimitiveTypeOf,
+  strTypeOf,
+  strPrimitiveTypeOf,
+  strQuote,
 
-  str : str,
-  toStr : toStr,
+  str,
+  toStr,
   toStrShort : toStr,
   strFrom : toStr,
 
-  _strFirst : _strFirst,
-  strFirst : strFirst,
-  _strLast : _strLast,
-  strLast : strLast,
+  _strFirst,
+  strFirst,
+  _strLast,
+  strLast,
 
-  _strBeginOf : _strBeginOf,
-  _strEndOf : _strEndOf,
+  _strBeginOf,
+  _strEndOf,
 
-  strBegins : strBegins,
-  strEnds : strEnds,
+  strBegins,
+  strEnds,
 
-  strBeginOf : strBeginOf,
-  strEndOf : strEndOf,
+  strBeginOf,
+  strEndOf,
 
-  strInsideOf : strInsideOf,
-  strOutsideOf : strOutsideOf,
+  strInsideOf,
+  strOutsideOf,
+
 
   strRemoveBegin : strRemoveBegin,
   strRemoveEnd : strRemoveEnd,

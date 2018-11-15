@@ -346,7 +346,7 @@ function _strRemovedBegin( src,begin )
  *
  */
 
-function strRemoveBegin( src,begin )
+function strRemoveBegin( src, begin )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src ) || _.strIs( src ), 'Expects string or array of strings {-src-}' );
@@ -998,33 +998,33 @@ function strForCall( nameOfRoutine,args,ret,o )
  *
  * @example
  * //returns ''st' ... 'ng''
- * _.strShortSrt( 'string', 4 );
+ * _.strStrShort( 'string', 4 );
  *
  * @example
  * //returns ''s' ... 'ng''
- * _.strShortSrt( 's\ntring', 4 );
+ * _.strStrShort( 's\ntring', 4 );
  *
  * @example
  * //returns 'string'
- * _.strShortSrt( 'string', 0 );
+ * _.strStrShort( 'string', 0 );
  *
  * @example
  * //returns ''st' ... 'ng''
- * _.strShortSrt( { src : 'string', limit : 4, wrap : '\'' } );
+ * _.strStrShort( { src : 'string', limit : 4, wrap : '\'' } );
  *
  * @example
  * //returns 'si ... le'
- *  _.strShortSrt( { src : 'simple', limit : 4, wrap : 0 } );
+ *  _.strStrShort( { src : 'simple', limit : 4, wrap : 0 } );
  *
  * @example
  * //returns ''si' ... 'le''
- *  _.strShortSrt( { src : 'si\x01mple', limit : 5, wrap : '\'' } );
+ *  _.strStrShort( { src : 'si\x01mple', limit : 5, wrap : '\'' } );
  *
  * @example
  * //returns ''s\u0001' ... ' string''
- *  _.strShortSrt( 's\x01t\x01ing string string', 14 );
+ *  _.strStrShort( 's\x01t\x01ing string string', 14 );
  *
- * @method strShortSrt
+ * @method strStrShort
  * @throws { Exception } If no argument provided.
  * @throws { Exception } If( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } If( o ) is extended with unknown property.
@@ -1036,7 +1036,7 @@ function strForCall( nameOfRoutine,args,ret,o )
  *
  */
 
-function strShortSrt( o )
+function strStrShort( o )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
@@ -1046,7 +1046,7 @@ function strShortSrt( o )
   if( _.strIs( o ) )
   o = { src : arguments[ 0 ] };
 
-  _.routineOptions( strShortSrt, o );
+  _.routineOptions( strStrShort, o );
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
 
@@ -1105,52 +1105,12 @@ function strShortSrt( o )
   return str;
 }
 
-strShortSrt.defaults =
+strStrShort.defaults =
 {
   src : null,
   limit : 40,
   wrap : '\'',
   escaping : 1
-}
-
-//
-
-function strQuote( o )
-{
-
-  if( !_.mapIs( o ) )
-  o = { src : o };
-
-  if( o.quote === undefined || o.quote === null )
-  o.quote = strQuote.defaults.quote;
-
-  _.assertMapHasOnly( o, strQuote.defaults );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( _.arrayIs( o.src ) )
-  {
-    let result = [];
-    for( let s = 0 ; s < o.src.length ; s++ )
-    result.push( _.strQuote({ src : o.src[ s ], quote : o.quote }) );
-    return result;
-  }
-
-  let src = o.src;
-
-  if( !_.primitiveIs( src ) )
-  src = _.toStr( src );
-
-  _.assert( _.primitiveIs( src ) );
-
-  let result = o.quote + String( src ) + o.quote;
-
-  return result;
-}
-
-strQuote.defaults =
-{
-  src : null,
-  quote : '"',
 }
 
 //
@@ -4355,8 +4315,7 @@ let Proto =
 
   strForRange : strForRange, /* experimental */
   strForCall : strForCall, /* experimental */
-  strShortSrt : strShortSrt,
-  strQuote : strQuote,
+  strStrShort : strStrShort,
   strDifference : strDifference,
 
   // transformer

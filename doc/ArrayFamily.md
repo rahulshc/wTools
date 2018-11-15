@@ -1,24 +1,43 @@
-# Array Families of routines [![Array methods](https://travis-ci.org/Wandalen/wTools.svg?branch=master)]
-(https://github.com/Wandalen/wTools/blob/master/out.debug/dwtools/abase/l0/fLong.s)
+# Array Families
 
-## Definition
+## Abstract
 
-  fLong.s contains a collection of functions to work with arrays ( Append, remove or replace elements are some of the functionalities covered ).
-  In this file, we are going to see the families of arrayRemove, arrayAppend and arrayReplace methods, in order to better understand how the naming patterns work, and see the differences between the functions of a same family.
+  wTools provides a collection of functions to work with arrays.
+  Among such routines you may find several families: append, prepend, remove, replace.
+  In this file, we are going to see the families naming patterns work, and see the differences between the functions of a the same family.
 
 ## Naming patterns
 
-  Many function names contain patterns to help us understand the behaviour of each routine, here comes a quick summary of the information a function name can give us:
+  Names of routines of this families have patterns for better understand the behavior of each routine, here comes a quick summary of the information a function name can give us:
 
-  The format of a function name will be: array { Op } { Tense } { Second } { How }, where:
+  `array{ Op }{ Tense }{ Second }{ How }`
 
-  { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
+### Example
 
-  { Tense } can be - ( nothing ) or ed, giving information on what to return ( the output value ).
+```
+  array{Append}{ed}{Element}{Once}
+```
 
-  { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
+### Where
 
-  { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
+  { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ].  
+  { Tense } can be one of [ `-`, `ed` ].  
+  { Second } can be one of [ `-` , `element`, `array`, `arrays` ].  
+  { How } can be one of [ `-` , `Once`, `OnceStrictly` ].  
+
+### So
+
+  { Op } corresponds to the action to perform.  
+
+  { Tense } gives information on what to return ( the output value ).  
+  - `-` for dst array,
+  - `ed` for index, number of elements or element itself.
+
+  { Second } give a hint how the routine treat the second argument.  
+  - `-` treat the second argument
+  - `element` xxx
+
+  { How } and tell us how to treat the repeats.  
 
   For more information on these patters please see *ArrayRoutines.md*.
 
@@ -68,11 +87,3 @@
   | **Array** | - \| dst | dst | dst | - \| number | number | - \| number |
   | **Arrays** | - \| dst | - \| dst | - \| dst | - \| number | - \| number | - \| number |
   | **All** | dst \| - | - | - | number \| - | - | - |
-
-
-## Try out
-
-```
-npm install
-node sample/SampleArrayRemove.s
-```

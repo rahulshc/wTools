@@ -4275,11 +4275,12 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     if( _.strJoin && !msg )
     console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null,' ]).join( '\n' ) );
     debugger;
-    throw _._err
+    let err = _._err
     ({
       args : [ ( msg ? _.strConcat( msg ) : _.strTypeOf( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    throw err;
     return false;
   }
 

@@ -652,7 +652,7 @@ function errAttend( err )
   }
   catch( err )
   {
-    c.warn( 'cant assign attentionRequested / attentionGiven properties' );
+    logger.warn( 'cant assign attentionRequested / attentionGiven properties' );
   }
 
   /* */
@@ -674,6 +674,70 @@ function errRestack( err,level )
   });
 
   return _.err( err2,err );
+}
+
+//
+
+function error_functor( name, onMake )
+{
+
+  if( _.strIs( onMake ) || _.arrayIs( onMake ) )
+  {
+    let prepend = onMake;
+    onMake = function onErrorMake( )
+    {
+      debugger;
+      let args = _.arrayAppendArrays( [], [ prepend, args ] );
+      return _.err.apply( _, arguments );
+    }
+  }
+  else if( !onMake )
+  onMake = function onErrorMake( )
+  {
+    debugger;
+    return _.err.apply( _, arguments );
+  }
+
+  let wrap =
+  {
+    [ name ] : function()
+    {
+      return act.apply( this, arguments );
+    }
+  }
+
+  let Error1 = wrap[ name ]
+
+  _.assert( Error1.name === name, 'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.' );
+
+  Error1.prototype = Object.create( Error.prototype );
+  Error1.prototype.constructor = Error1;
+  Error1.constructor = Error1;
+
+  return Error1;
+
+  /* */
+
+  function act()
+  {
+
+    if( !( this instanceof Error1 ) )
+    {
+      let err1 = new Error1();
+      let args = _.arrayAppendArrays( [], [ arguments, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
+      let err2 = onMake.apply( this, args );
+
+      _.assert( err2 instanceof Error );
+      _.assert( err2 instanceof Error1 );
+      _.assert( !!err2.stack );
+
+      return err2;
+    }
+
+    _.assert( arguments.length === 0 );
+    return this;
+  }
+
 }
 
 //
@@ -1227,6 +1291,8 @@ let Routines =
   errBriefly : errBriefly,
   errAttend : errAttend,
   errRestack : errRestack,
+  error_functor : error_functor,
+
   errLog : errLog,
   errLogOnce : errLogOnce,
 
@@ -1267,9 +1333,9 @@ Error.stackTraceLimit = Infinity;
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

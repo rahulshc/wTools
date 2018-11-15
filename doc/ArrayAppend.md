@@ -1,6 +1,6 @@
-# Array Append Family of Routines [![Array methods](https://travis-ci.org/Wandalen/wTools.svg?branch=master)]
+# ArrayAppend
 
-## Methods of arrayAppend
+## Schema
 
   The following table shows what the outputs of the functions should be, not what they currently are ( for that see
   *ArrayFamilyPatterns.md* ).
@@ -29,11 +29,8 @@
   The format of a function name is: array { Op } { Tense } { Second } { How }, where:
 
   { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
-
   { Tense } can be - ( nothing ) or ed, giving information on what to return ( the output value ).
-
   { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
-
   { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
 
 ## Examples
