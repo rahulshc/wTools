@@ -781,6 +781,175 @@ function strOutsideOf( src, begin, end )
   return result;
 }
 
+//
+
+/**
+ * Finds substring prefix ( begin ) occurrence from the very begining of source ( src ) and removes it.
+ * Returns original string if source( src ) does not have occurrence of ( prefix ).
+ *
+ * @param { String } src - Source string to parse.
+ * @param { String } prefix - String that is to be dropped.
+ * @returns { String } Returns string with result of prefix removement.
+ *
+ * @example
+ * //returns mple
+ * _.strRemoveBegin( 'example','exa' );
+ *
+ * @example
+ * //returns example
+ * _.strRemoveBegin( 'example','abc' );
+ *
+ * @function strRemoveBegin
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( prefix ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
+
+function strRemoveBegin( src,begin )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.strIs( src ), 'Expects string {-src-}' );
+  _.assert( _.strIs( begin ) || _.regexpIs( begin ), 'Expects string/regexp {-begin-}'  );
+
+  let result = src;
+  let beginOf = _._strBeginOf( result, begin );
+  if( beginOf !== false )
+  result = result.substr( beginOf.length, result.length );
+  return result;
+}
+
+//
+
+/**
+ * Removes occurrence of postfix ( end ) from the very end of string( src ).
+ * Returns original string if no occurrence finded.
+ * @param { String } src - Source string to parse.
+ * @param { String } postfix - String that is to be dropped.
+ * @returns { String } Returns string with result of postfix removement.
+ *
+ * @example
+ * //returns examp
+ * _.strRemoveEnd( 'example','le' );
+ *
+ * @example
+ * //returns example
+ * _.strRemoveEnd( 'example','abc' );
+ *
+ * @function strRemoveEnd
+ * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @throws { Exception } Throws a exception if( postfix ) is not a String.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
+
+function strRemoveEnd( src, end )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.strIs( src ), 'Expects string {-src-}' );
+  _.assert( _.strIs( end ) || _.regexpIs( end ), 'Expects string/regexp {-end-}' );
+
+  let result = src;
+  let endOf = _._strEndOf( result, end );
+  if( endOf !== false )
+  result = result.substr( 0, result.length - endOf.length );
+
+  return result;
+}
+
+/**
+* Finds substring or regexp ( insStr ) first occurrence from the source string ( srcStr ) and removes it.
+* Returns original string if source( src ) does not have occurrence of ( insStr ).
+*
+* @param { String } srcStr - Source string to parse.
+* @param { String } insStr - String/RegExp that is to be dropped.
+* @returns { String } Returns string with result of substring removement.
+*
+* @example
+* //returns ource tring
+* _.strRemove( 'source string','s' );
+*
+* @example
+* //returns example
+* _.strRemove( 'example','s' );
+*
+* @function strRemove
+* @throws { Exception } Throws a exception if( srcStr ) is not a String.
+* @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
+* @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+* @memberof wTools
+*
+*/
+
+function strRemove( srcStr, insStr )
+{
+  _.assert( arguments.length === 2, 'expects exactly two arguments' );
+  _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
+  _.assert( _.strIs( insStr ) || _.regexpIs( insStr ), 'expects string/regexp {-begin-}' );
+
+  let result = srcStr;
+  debugger;
+
+  result = result.replace( insStr, '' );
+
+  return result;
+}
+
+//
+
+function strReplaceBegin( src, begin, ins )
+{
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( _.strIs( ins ),'Expects {-ins-} as string' );
+  _.assert( _.strIs( src ) );
+
+  let result = src;
+  if( _.strBegins( result , begin ) )
+  {
+    let prefix = ins;
+    result = prefix + _.strRemoveBegin( result, begin );
+  }
+
+  return result;
+}
+
+//
+
+function strReplaceEnd( src, end, ins )
+{
+  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( _.strIs( ins ),'Expects {-ins-} as string' );
+  _.assert( _.strIs( src ) );
+
+  let result = src;
+  if( _.strEnds( result, end ) )
+  {
+    let postfix = ins;
+    result = _.strRemoveEnd( result , end ) + postfix;
+  }
+
+  return result;
+}
+
+//
+
+function strReplace( srcStr, insStr, subStr )
+{
+  _.assert( arguments.length === 3, 'expects exactly three arguments' );
+  _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
+  _.assert( _.strIs( subStr ), 'expects string {-sub-}' );
+
+  let result = srcStr;
+  debugger;
+
+  result = result.replace( insStr, subStr );
+
+  return result;
+}
+
+
 // --
 // fields
 // --
@@ -827,6 +996,14 @@ let Routines =
   strInsideOf,
   strOutsideOf,
 
+
+  strRemoveBegin : strRemoveBegin,
+  strRemoveEnd : strRemoveEnd,
+  strRemove : strRemove,
+
+  strReplaceBegin : strReplaceBegin,
+  strReplaceEnd : strReplaceEnd,
+  strReplace : strReplace,
 
 }
 

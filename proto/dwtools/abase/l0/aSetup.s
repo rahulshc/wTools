@@ -26,7 +26,7 @@ function _setupUnhandledErrorHandler0()
     handlerWas = _global.process.onUncaughtException;
     _global.process.on( 'uncaughtException', handleNodeError );
     Self._handleUnhandledError0 = handleNodeError;
-    debugger;
+    // debugger;
     if( handlerWas )
     throw 'not tested';
   }
