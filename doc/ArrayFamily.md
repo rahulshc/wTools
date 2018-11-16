@@ -51,8 +51,6 @@
   Let´s see now all the different functions that cover the functionality of appending elements to an the array
   ( the small family of arrayFlatten methods has been included in the last row - it is not related with arrayAppend ):
 
-  The table rows and columns correspond to naming patterns, and by combining them we get the full function names. For example the cell of the row `Array` and the column `edOnce` corresponds to the function *arrayAppendedArrayOnce*. The values inside the cells are the outputs of these functions ( for the example *arrayAppendedArrayOnce* returns the number of appended elements ).
-
   | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
   | **-** | - \| dst | dst | dst | - \| index | index | - \| index |
@@ -69,6 +67,12 @@
   - `number` corresponds to the number of appended elements.
   - `index | appended element` means that the corresponding function currently returns `index`, but should
   return `appended element`.
+
+### Example
+
+  The table rows and columns correspond to naming patterns, and by combining them we get the full function names. If we take the cell of the row `Array` and the column `edOnce`, it corresponds to the function `arrayAppendedArrayOnce`.
+  The values inside the cells are the outputs of these functions, in our case `number`.
+  Therefore `arrayAppendedArrayOnce` returns the number of appended elements.
 
 ## Methods of arrayRemove
 
