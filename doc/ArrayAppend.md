@@ -3,7 +3,7 @@
 ## Schema
 
   The following table shows what the outputs of the functions should be, not what they currently are ( for that see
-  *ArrayFamilyPatterns.md* ).  
+  `ArrayFamilyPatterns.md` ).  
   Let´s see now all the different functions that cover the functionality of appending elements to an the array
   ( the small family of `arrayFlatten` methods has been included in the last row `Flatten` - it is not related with `arrayAppend` ):
 
@@ -31,9 +31,9 @@ The format of a function name is:
 ### Where
 
 { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.  
-{ Tense } can be one of [ `-`, `ed` ], giving information on what to return ( the output value ).
-{ Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the src argument.
-{ How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.
+{ Tense } can be one of [ `-`, `ed` ], giving information on what to return ( the output value ).  
+{ Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the src argument.  
+{ How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.  
 
 ### Example
 
