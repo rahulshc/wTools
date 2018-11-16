@@ -72,7 +72,7 @@
 
   The table rows and columns correspond to naming patterns, and by combining them we get the full function names. If we take the cell of the row `Array` and the column `edOnce`, it corresponds to the function `arrayAppendedArrayOnce`.
   The values inside the cells are the outputs of these functions, in our case `number`.
-  Therefore `arrayAppendedArrayOnce` returns the number of appended elements.
+  Therefore, `arrayAppendedArrayOnce` returns the number of appended elements.
 
 ## Methods of arrayRemove
 
