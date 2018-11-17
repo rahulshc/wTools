@@ -886,17 +886,28 @@ diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
 
 //
 
-function beep()
+function diagnosticBeep()
 {
   // console.log( _.diagnosticStack() );
   console.log( '\x07' );
 }
 
 // --
+// errrors
+// --
+
+let ErrorAbort = _.error_functor( 'ErrorAbort' );
+
+// --
 // declare
 // --
 
-let Proto =
+let error =
+{
+  ErrorAbort : ErrorAbort,
+}
+
+let Extend =
 {
 
   _diagnosticStripPath : _diagnosticStripPath,
@@ -907,19 +918,20 @@ let Proto =
   diagnosticWatchFields : diagnosticWatchFields, /* experimental */
   diagnosticProxyFields : diagnosticProxyFields, /* experimental */
 
-  beep : beep,
+  diagnosticBeep : diagnosticBeep,
 
 }
 
-Object.assign( Self, Proto );
+Object.assign( Self, Extend );
+Object.assign( Self.error, error );
 
 // --
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global_.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global_.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

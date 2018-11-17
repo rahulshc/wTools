@@ -151,7 +151,7 @@ function timeOnce( delay,onBegin,onEnd )
       if( _.routineIs( onBegin ) ) onBegin.apply( this,arguments );
       else if( _.objectIs( onBegin ) ) onBegin.give( arguments );
       if( con )
-      con.give();
+      con.give( null );
     }
 
     _.timeOut( delay,function()
@@ -162,7 +162,7 @@ function timeOnce( delay,onBegin,onEnd )
         if( _.routineIs( onEnd ) ) onEnd.apply( this,arguments );
         else if( _.objectIs( onEnd ) ) onEnd.give( arguments );
         if( con )
-        con.give();
+        con.give( null );
       }
       taken = false;
 
