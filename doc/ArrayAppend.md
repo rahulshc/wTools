@@ -3,7 +3,7 @@
 ## Schema
 
   The following table shows what the outputs of the functions should be, not what they currently are ( for that see
-  `ArrayFamilyPatterns.md` ).  
+  [ ArrayFamily.md ](ArrayFamily.md) ).  
   Let´s see now all the different functions that cover the functionality of appending elements to an the array
   ( the small family of `arrayFlatten` methods has been included in the last row `Flatten` - it is not related with `arrayAppend` ):
 
@@ -102,4 +102,4 @@ array{Append}{ed}{Array}{Once}
 
   ```
 
-  For more information on these patterns, please see `ArrayRoutines.md`.
+  For more information on these patterns, please see [ ArrayRoutines.md ](ArrayRoutines.md).

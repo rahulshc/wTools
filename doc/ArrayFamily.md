@@ -47,7 +47,7 @@
     - `Once` the routine performs the action on the first matching element
     - `OnceStrictly` the routine will perform the action once, and only once
 
-  For more information on these patters please see *ArrayRoutines.md*.
+  For more information on these patters please see [ ArrayRoutines.md ](ArrayRoutines.md).
 
 ## Methods of arrayAppend
 
