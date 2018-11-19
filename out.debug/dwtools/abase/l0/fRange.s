@@ -126,6 +126,15 @@ function rangeLastGet( range,options )
 
 }
 
+//
+
+function rangeToStr( range )
+{
+  _.assert( _.rangeIs( range ) );
+  _.assert( arguments.length === 1 );
+  return range[ 0 ] + '..' + range[ 1 ];
+}
+
 // --
 // fields
 // --
@@ -149,6 +158,8 @@ let Routines =
   rangeNumberElements : rangeNumberElements,
   rangeFirstGet : rangeFirstGet,
   rangeLastGet : rangeLastGet,
+
+  rangeToStr : rangeToStr,
 
 }
 

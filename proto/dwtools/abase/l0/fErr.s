@@ -144,6 +144,7 @@ function _err( o )
   o.purifingStack = _err.defaults.purifingStack;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
+  if( _.debuggerEnabled )
   debugger;
 
   /* let */
@@ -301,8 +302,10 @@ function _err( o )
     if( argument && !_.primitiveIs( argument ) )
     {
 
-      if( _.primitiveIs( argument ) ) str = String( argument );
-      else if( _.routineIs( argument.toStr ) ) str = argument.toStr();
+      if( _.primitiveIs( argument ) )
+      str = String( argument );
+      else if( _.routineIs( argument.toStr ) )
+      str = argument.toStr();
       else if( _.errIs( argument ) || _.strIs( argument.message ) )
       {
         if( _.strIs( argument.originalMessage ) ) str = argument.originalMessage;
@@ -429,6 +432,7 @@ function _err( o )
   }
   catch( e )
   {
+    if( _.debuggerEnabled )
     debugger;
     result = new Error( message );
   }
@@ -874,6 +878,7 @@ function checkOwnNoConstructor( ins )
 
 function _sureDebugger( condition )
 {
+  if( _.debuggerEnabled )
   debugger;
 }
 
@@ -1073,12 +1078,13 @@ function sureOwnNoConstructor( ins )
 
 function _assertDebugger( condition, args )
 {
+  if( !_.debuggerEnabled )
+  return;
   let err = _err
   ({
     args : _.longSlice( args, 1 ),
     level : 3,
   });
-  // console.error( 'Assert failed' );
   console.error( 'Assert failed :', _.errBriefly( err ).toString() );
   debugger;
 }
@@ -1088,17 +1094,11 @@ function _assertDebugger( condition, args )
 function assert( condition )
 {
 
-  /*return;*/
-
   if( Config.debug === false )
   return true;
 
-  /*
-    assert is going to become stricter
-    assert will treat as true only bool like argument
-  */
-  if( !boolLike( condition ) )
-  debugger;
+  // if( !boolLike( condition ) )
+  // debugger;
 
   // if( !condition || !boolLike( condition ) )
   if( !condition )
@@ -1174,6 +1174,7 @@ function assertWithoutBreakpoint( condition )
 function assertNotTested( src )
 {
 
+  if( _.debuggerEnabled )
   debugger;
   _.assert( false,'not tested : ' + stack( 1 ) );
 
@@ -1243,25 +1244,31 @@ function assertOwnNoConstructor( ins )
  * @memberof wTools
  */
 
-function ErrorAbort()
-{
-  this.message = arguments.length ? _.arrayFrom( arguments ) : 'Aborted';
-}
+// function ErrorAbort()
+// {
+//   this.message = arguments.length ? _.arrayFrom( arguments ) : 'Aborted';
+// }
+//
+// ErrorAbort.prototype = Object.create( Error.prototype );
 
-ErrorAbort.prototype = Object.create( Error.prototype );
-
-let error =
-{
-  ErrorAbort : ErrorAbort,
-}
+// let ErrorAbort = error_functor( 'ErrorAbort' );
+//
+// let error =
+// {
+//   ErrorAbort : ErrorAbort,
+// }
 
 // --
 // fields
 // --
 
+// let error = Object.create( null );
+
 let Fields =
 {
-  error : error,
+  // error : error,
+  error : Object.create( null ),
+  debuggerEnabled : !!Config.debug,
 }
 
 // --
@@ -1326,7 +1333,6 @@ let Routines =
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
 
-// if( !_global.WTOOLS_PRIVATE )
 Error.stackTraceLimit = Infinity;
 
 // --

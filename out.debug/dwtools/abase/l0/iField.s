@@ -725,6 +725,9 @@ function dstNotOwnFromDefinition()
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
 
+    if( _ObjectHasOwnProperty.call( dstContainer, Symbol.for( key ) ) )
+    return;
+
     let srcElement = srcContainer[ key ];
     if( _.definitionIs( srcElement ) )
     dstContainer[ key ] = srcElement.valueGet();
@@ -746,6 +749,9 @@ function dstNotOwnFromDefinitionStrictlyPrimitive()
   {
 
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    return;
+
+    if( _ObjectHasOwnProperty.call( dstContainer, Symbol.for( key ) ) )
     return;
 
     let srcElement = srcContainer[ key ];
