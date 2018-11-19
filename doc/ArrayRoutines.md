@@ -31,13 +31,13 @@
 
 ### Where:
 
-  { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
+    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
 
-  { Tense } can be `-`, or `ed`, giving information on what to return ( the output value ).
+    { Tense } can be `-`, or `ed`, giving information on what to return ( the output value ).
 
-  { Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the source argument.
+    { Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the source argument.
 
-  { How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.
+    { How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.
 
 ### 1: Function contains `*ed`
 

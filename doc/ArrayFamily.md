@@ -20,29 +20,32 @@
 
 ### Where
 
-  { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ].  
-  { Tense } can be one of [ `-`, `ed` ].  
-  { Second } can be one of [ `-` , `element`, `array`, `arrays` ].  
-  { How } can be one of [ `-` , `Once`, `OnceStrictly` ].  
+    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ].
+
+    { Tense } can be one of [ `-`, `ed` ].
+
+    { Second } can be one of [ `-` , `element`, `array`, `arrays` ].
+
+    { How } can be one of [ `-` , `Once`, `OnceStrictly` ].
 
 ### So
 
-  { Op } corresponds to the action to perform.  
+  * { Op } corresponds to the action to perform.  
 
-  { Tense } gives information on what to return ( the output value ).  
-  - `-` for dst array,
-  - `ed` for index, number of elements or element itself.
+  * { Tense } gives information on what to return ( the output value ).  
+    - `-` for dst array,
+    - `ed` for index, number of elements or element itself.
 
-  { Second } gives a hint on how the routine treats the second argument.  
-  - `-` treat the second argument
-  - `element` treat the second argument as a scalar
-  - `array` treat the second argument as an array
-  - `arrays` treat the second argument as an array of Arrays
+  * { Second } gives a hint on how the routine treats the second argument.  
+    - `-` treat the second argument
+    - `element` treat the second argument as a scalar
+    - `array` treat the second argument as an array
+    - `arrays` treat the second argument as an array of Arrays
 
-  { How } tells us how the routine treats the repeats.  
-  - `-` the routine performs the action for every match
-  - `Once` the routine performs the action on the first matching element
-  - `OnceStrictly` the routine will perform the action once, and only once
+  * { How } tells us how the routine treats the repeats.  
+    - `-` the routine performs the action for every match
+    - `Once` the routine performs the action on the first matching element
+    - `OnceStrictly` the routine will perform the action once, and only once
 
   For more information on these patters please see *ArrayRoutines.md*.
 
@@ -61,12 +64,16 @@
 
 ### Where
 
-  - `-` means that the corresponding function hasn´t been developped.
-  - `dst` corresponds to the input array with the appended element( s ) included at its end.
-  - `index` corresponds to the position of the appended element in the destination array ( -1 if not appended ).
-  - `number` corresponds to the number of appended elements.
-  - `index | appended element` means that the corresponding function currently returns `index`, but should
-  return `appended element`.
+    `-` means that the corresponding function hasn´t been developped.
+
+    `dst` corresponds to the input array with the appended element( s ) included at its end.
+
+    `index` corresponds to the position of the appended element in the destination array ( -1 if not appended ).
+
+    `number` corresponds to the number of appended elements.
+
+    `index | appended element` means that the corresponding function currently returns `index`,
+    but should return `appended element`.
 
 ### Example
 

@@ -16,9 +16,12 @@
   | **Flatten** | dst | dst | dst | number | number | number |
 
 ### Where:
-  - `dst` corresponds to the input array with the appended element( s ) included at its end.
-  - `index` corresponds to the position of the appended element in the destination array ( -1 if not appended ).
-  - `number` corresponds to the number of appended ( flattened ) elements.
+
+    `dst` corresponds to the input array with the appended element( s ) included at its end.
+
+    `index` corresponds to the position of the appended element in the destination array ( -1 if not appended ).
+
+    `number` corresponds to the number of appended ( flattened ) elements.
 
 ## Naming patterns
 
@@ -30,10 +33,13 @@ The format of a function name is:
 
 ### Where
 
-{ Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.  
-{ Tense } can be one of [ `-`, `ed` ], giving information on what to return ( the output value ).  
-{ Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the src argument.  
-{ How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.  
+    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
+
+    { Tense } can be one of [ `-`, `ed` ], giving information on what to return ( the output value ).
+
+    { Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the src argument.
+
+    { How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.
 
 ### Example
 
