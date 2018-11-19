@@ -31,7 +31,7 @@
 
 ### Where:
 
-    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.  
+    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
 
     { Tense } can be `-`, or `ed`, giving information on what to return ( the output value ).
 
@@ -47,10 +47,10 @@
 #### Example
 
   ```
-  arrayFlatten( [], [ 1, 2, 3 ] )   
-  returns ->   [ 1, 2, 3 ]
+  arrayFlatten( [ 0 ], [ 1, 2, 3 ] )   
+  returns ->   [ 0, 1, 2, 3 ]  ( the destination array )
 
-  arrayFlattened( [], [ 1, 2, 3 ] )   
+  arrayFlattened( [ 0 ], [ 1, 2, 3 ] )   
   returns ->   3 ( the count of the added elements )
   ```
 
@@ -63,21 +63,21 @@
 
   ```
   arrayRemoveElement( [ 1, 2, 1 ], 1 )  
-  returns ->    [ 2 ]
+  returns ->    [ 2 ] ( the destination array with the removed elements )
 
   arrayRemoveElementOnce( [ 1, 2, 1 ], 1 )  
-  returns ->    [ 2, 1 ]
+  returns ->    [ 2, 1 ] ( the destination array with only one removed element )
 
   arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 )  
-  returns ->    [ 5, 1, 2, 3, 4, 5 ]
+  returns ->    [ 5, 1, 2, 3, 4, 5 ] ( the destination array with the prepended element )
 
   arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 )  
-  returns ->    [ 1, 2, 3, 4, 5 ]
+  returns ->    [ 1, 2, 3, 4, 5 ] ( Element is not prepended because it already is in the array )
   ```
 
 ### 3: Function contains `*OnceStrictly`
 
-  If the function contains `*OnceStrictly` expects that the action will be done, and only once: an error will be thrown if there are no matching elements or elements are not unique ( they are both in `src` and `ins` ).
+  If the function contains `*OnceStrictly`, it expects that the action will be done, and only once: an error will be thrown if there are no matching elements or elements are not unique ( they are both in `src` and `ins` ).
 
 #### Example
 
@@ -95,10 +95,10 @@
 
   ```
   arrayAppendOnce( [ 1, 2, 3 ], 3 )    
-  returns ->    [ 1, 2, 3 ]
+  returns ->    [ 1, 2, 3 ]  ( The ins element is already in the array )
 
   arrayReplaceOnce( [ 1, 2, 3 ], 4, 5 );    
-  returns ->    [ 1, 2, 3 ]
+  returns ->    [ 1, 2, 3 ]  ( No match for the ins element )
   ```
 
 ### 4: Function contains `*Element`, `*Array`, `*Arrays`
@@ -112,7 +112,7 @@
   returns ->    [ 1, 2, 4 ]
 
   - arrayRemoveElement( [ 1, 2, 3, 4 ], [ 3 ] )    
-  returns ->    [ 1, 2, 3, 4 ]
+  returns ->    [ 1, 2, 3, 4 ]  ( 3 !== [ 3 ] - no match )
   ```
 
   If the function contains `*Array`, the argument `ins` is expected to be an array, and it will iterate over its elements.
@@ -150,7 +150,7 @@
 
 ### 1: Evaluators
 
-  Check `src` and `ins` values with the evaluator function.  
+  Check `src` and `ins` values with the evaluator function ( the third argument ).  
 
 #### Example
 
@@ -164,7 +164,7 @@
 
 ### 2: Tandem of evaluators
 
-  One evaluator to check `src` and a different one to check `ins`.
+  One evaluator to check `src` ( the third argument ) and a different one to check `ins` ( the fourth argument ).
 
 #### Example
 
@@ -187,6 +187,10 @@
 
   arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 }, onEqualize )    
   returns ->    [ { num : 1 }, { num : 3 } ]
+
+  Without equalizer  
+  arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 } )    
+  returns ->    [ { num : 1 }, { num : 2 }, { num : 3 } ]
   ```
 
 ### 4: Comparator
