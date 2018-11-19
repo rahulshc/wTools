@@ -33,7 +33,8 @@ The format of a function name is:
 
 ### Where
 
-    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
+    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ],
+    corresponding to the action to perform.
 
     { Tense } can be one of [ `-`, `ed` ], giving information on what to return ( the output value ).
 
@@ -74,12 +75,12 @@ array{Append}{ed}{Array}{Once}
   { Tense } = '-'  -> The output is the destination array.
   { Second } = 'Array' -> Arguments are treated as arrays ( function will iterate over its elements ).
   { How } = 'OnceStrictly' -> The action is done, and only once ( repetead elements will not be included ).
-
+  ```
   In conclusion, arrayPrependArrayOnceStrictly includes to the beggining of the destination array all elements
   of the arguments ( treated as arrays ), as long as they are not repeated. It returns the destination array.
 
+  ```
   _.arrayPrependArrayOnceStrictly( [ 1, 2, 3 ], [ 4, 5 ] ) -> [ 4, 5, 1, 2, 3 ]
-
   ```
 
 ### Example2:
@@ -91,10 +92,11 @@ array{Append}{ed}{Array}{Once}
   { Tense } = 'ed'  -> The output is the number of removed elements.
   { Second } = 'Element' -> Second argument is treated as a scalar.
   { How } = '-' -> There are no limitations on how the action is done.
-
+  ```
   In conclusion, arrayRemovedElement removes, from the destination array, the element
   in the second argument ( treated as a scalar ). It returns the number of removed elements.
 
+  ```
   var dstArray = [ 1, 2, 2, 2, 3, 4 ];  
   _.arrayRemovedElement( dstArray, 2 ) -> 3   ( dstArray = [ 1, 3, 4 ] )
 

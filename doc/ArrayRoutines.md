@@ -31,7 +31,8 @@
 
 ### Where:
 
-    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
+    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ],
+    corresponding to the action to perform.
 
     { Tense } can be `-`, or `ed`, giving information on what to return ( the output value ).
 
