@@ -28,6 +28,7 @@ _global = _wasGlobal;
 _global._global_ = _wasGlobal;
 
 
+
 // verification
 
 if( !_global_.WTOOLS_PRIVATE )
