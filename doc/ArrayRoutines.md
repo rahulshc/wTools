@@ -31,13 +31,13 @@
 
 ### Where:
 
-    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
+  { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ], corresponding to the action to perform.
 
-    { Tense } can be `-`, or `ed`, giving information on what to return ( the output value ).
+  { Tense } can be `-`, or `ed`, giving information on what to return ( the output value ).
 
-    { Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the source argument.
+  { Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the source argument.
 
-    { How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.
+  { How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.
 
 ### 1: Function contains `*ed`
 
@@ -141,12 +141,12 @@
 
   Most of the routines can take additional routine parameters to evaluate and compare the input elements, there are four options:
 
-    | **Type of Evaluator** | **Applies to** | **Possible Outputs** |
-    | :---: | :---: | :---: |
-    | Evaluator | One value | true/false |
-    | Tandem of Evaluators| Two values | true/false - true/false |
-    | Equalizers | Two values | true/false |
-    | Comparator |mm  Two values | - 1 / 0 / + 1 |
+  | **Type of Evaluator** | **Applies to** | **Possible Outputs** |
+  | :---: | :---: | :---: |
+  | Evaluator | One value | true/false |
+  | Tandem of Evaluators| Two values | true/false - true/false |
+  | Equalizers | Two values | true/false |
+  | Comparator |mm  Two values | - 1 / 0 / + 1 |
 
 ### 1: Evaluators
 
