@@ -141,12 +141,12 @@
 
   Most of the routines can take additional routine parameters to evaluate and compare the input elements, there are four options:
 
-  | **Type of Evaluator** | **Applies to** | **Possible Outputs** |
-  | :---: | :---: | :---: |
-  | Evaluator | One value | true/false |
-  | Tandem of Evaluators| Two values | true/false - true/false |
-  | Equalizers | Two values | true/false |
-  | Comparator |mm  Two values | - 1 / 0 / + 1 |
+    | **Type of Evaluator** | **Applies to** | **Possible Outputs** |
+    | :---: | :---: | :---: |
+    | Evaluator | One value | true/false |
+    | Tandem of Evaluators| Two values | true/false - true/false |
+    | Equalizers | Two values | true/false |
+    | Comparator |mm  Two values | - 1 / 0 / + 1 |
 
 ### 1: Evaluators
 
@@ -188,7 +188,7 @@
   arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 }, onEqualize )    
   returns ->    [ { num : 1 }, { num : 3 } ]
 
-  Without equalizer  
+  Without equalizer:  
   arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 } )    
   returns ->    [ { num : 1 }, { num : 2 }, { num : 3 } ]
   ```
