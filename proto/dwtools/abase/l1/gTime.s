@@ -283,6 +283,20 @@ function timeOut( delay, onEnd )
   else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
   _.assert( _.routineIs( arguments[ 2 ] ) );
 
+  if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
+  {
+    onEnd = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
+  }
+
+  if( delay > 0 )
+  timer = setTimeout( timeEnd,delay );
+  else
+  timeSoon( timeEnd );
+
+  return con;
+
+  /* */
+
   function timeEnd()
   {
     let result;
@@ -303,17 +317,6 @@ function timeOut( delay, onEnd )
 
   }
 
-  if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
-  {
-    onEnd = _.routineJoin.call( _,arguments[ 1 ],arguments[ 2 ],arguments[ 3 ] );
-  }
-
-  if( delay > 0 )
-  timer = setTimeout( timeEnd,delay );
-  else
-  timeSoon( timeEnd );
-
-  return con;
 }
 
 //
@@ -370,9 +373,8 @@ function timeOutError( delay, onReady )
 
   let result = _.timeOut.apply( this,arguments );
 
-  result.doThen( function( err,arg )
+  result.doThen( function( err, arg )
   {
-
     if( err )
     return _.Consequence().error( err );
 
