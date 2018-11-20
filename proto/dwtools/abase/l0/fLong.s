@@ -2829,7 +2829,7 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 function arrayRemoveDuplicates( dstArray, evaluator )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 2 );
-  _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
+  _.assert( _.arrayIs( dstArray ), 'Expects Array' );
 
   let element;
   for( let i = 0 ; i < dstArray.length ; i++ )
