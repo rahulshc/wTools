@@ -2971,73 +2971,54 @@ function longRemoveDuplicates( dstLong, onEvaluate )
   _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
 
   if( _.arrayIs( dstLong ) )
-  {
-    _.arrayRemoveDuplicates( dstLong, onEvaluate );
-  }
-  else
-  {
+  return _.arrayRemoveDuplicates( dstLong, onEvaluate );
 
-    if( !dstLong.length )
-    return dstLong;
-
-    let evaluator = evaluatorMake();
-    let uniqueIndexes = [];
-
-    for( let i = 0; i < dstLong.length; i++ )
-    {
-      let unique = true;
-
-      for( let j = 0; j < uniqueIndexes.length; j++ )
-      {
-        if( evaluator( dstLong[ uniqueIndexes[ j ] ], dstLong[ i ] ) )
-        {
-          unique = false; break;
-        }
-      }
-
-      if( unique )
-      uniqueIndexes.push( i );
-    }
-
-    let result;
-
-    if( _.argumentsArrayIs( dstLong ) )
-    result = _.argumentsArrayFrom( uniqueIndexes );
-    else
-    result = new dstLong.constructor( uniqueIndexes.length );
-
-    for( let j = 0; j < uniqueIndexes.length; j++ )
-    result[ j ] = dstLong[ uniqueIndexes[ j ] ];
-
-    return result;
-  }
-
+  if( !dstLong.length )
   return dstLong;
 
-  /**/
+  let length = dstLong.length;
 
-  function evaluatorMake()
+  for( let i = 0; i < dstLong.length; i++ )
   {
-    if( !onEvaluate )
-    return function none( a, b )
+    if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
+    length--;
+    else if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
+    length--;
+  }
+
+  if( length === dstLong.length )
+  return dstLong;
+
+  let result;
+
+  if( _.argumentsArrayIs( dstLong ) )
+  result = _.argumentsArrayFrom( new Array( length ) );
+  else
+  result = new dstLong.constructor( length );
+
+  let j = 0;
+  let index;
+  let initialValueUsed = false;
+  let initialValue = result[ 0 ];
+
+  for( let i = 0; i < dstLong.length || j < length; i++ )
+  {
+    index = _.arrayLeftIndex( result, dstLong[ i ], onEvaluate );
+    if( index === -1 )
     {
-      return a === b;
+      result[ j ] = dstLong[ i ];
+      j++;
     }
-
-    _.assert( _.routineIs( onEvaluate ) );
-
-    if( onEvaluate.length === 1 )
-    return function single( a, b )
+    else if( !initialValueUsed && dstLong[ i ] === initialValue )
     {
-      return onEvaluate( a ) === onEvaluate( b )
-    }
-
-    if( onEvaluate.length === 2 )
-    return function two( a, b )
-    {
-      return onEvaluate( a, b );
+      j++;
+      initialValueUsed = true;
     }
   }
+
+  _.assert( j === length );
+
+  return result;
 }
 
 /* qqq : not optimal, no redundant copy */
