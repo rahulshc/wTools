@@ -2843,7 +2843,8 @@ function arrayRemoveDuplicates( dstArray, evaluator )
       {
         dstArray.splice( index, 1 );
       }
-    } while ( index !== i );
+    }
+    while( index !== i );
   }
 
   return dstArray;
@@ -3135,6 +3136,9 @@ function arrayFlattened( dstArray, insArray )
 {
 
   /* xxx : reuse arrayRemoveDuplicates for single argument call */
+
+  if( arguments.length <= 2 && insArray === undefined )
+  return _.arrayRemoveDuplicates( dstArray );
 
   _.assert( arguments.length >= 2 );
   _.assert( _.objectIs( this ) );
