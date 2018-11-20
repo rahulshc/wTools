@@ -144,6 +144,15 @@ function mapIsPure( src )
 
 //
 
+function mapIsPopulated( src )
+{
+  if( !_.mapIs( src ) )
+  return false;
+  return Object.keys( src ).length > 0;
+}
+
+//
+
 function mapLike( src )
 {
 
@@ -5031,6 +5040,7 @@ let Routines =
   objectLikeOrRoutine : objectLikeOrRoutine,
   mapIs : mapIs,
   mapIsPure : mapIsPure,
+  mapIsPopulated : mapIsPopulated,
   mapLike : mapLike,
 
   mapIdentical : mapIdentical,

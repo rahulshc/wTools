@@ -148,6 +148,15 @@ function arrayIs( src )
 
 //
 
+function arrayIsPopulated( src )
+{
+  if( !_.arrayIs( src ) )
+  return false;
+  return src.length > 0;
+}
+
+//
+
 function arrayLikeResizable( src )
 {
   if( _ObjectToString.call( src ) === '[object Array]' )
@@ -217,11 +226,29 @@ function longIs( src )
 
 //
 
+function longIsPopulated( src )
+{
+  if( !_.longIs( src ) )
+  return false;
+  return src.length > 0;
+}
+
+//
+
 function unrollIs( src )
 {
   if( !_.arrayIs( src ) )
   return false;
   return !!src[ unrollSymbol ];
+}
+
+//
+
+function unrollIsPopulated( src )
+{
+  if( !_.unrollIs( src ) )
+  return false;
+  return src.length > 0;
 }
 
 //
@@ -3509,10 +3536,15 @@ let Routines =
   // array checker
 
   arrayIs : arrayIs,
+  arrayIsPopulated : arrayIsPopulated,
   arrayLikeResizable : arrayLikeResizable,
   arrayLike : arrayLike,
+
   longIs : longIs,
+  longIsPopulated : longIsPopulated,
+
   unrollIs : unrollIs,
+  unrollIsPopulated : unrollIsPopulated,
 
   constructorLikeArray : constructorLikeArray,
   hasLength : hasLength,
