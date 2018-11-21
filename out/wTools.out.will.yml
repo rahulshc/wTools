@@ -5,7 +5,7 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.318
+  version: 0.8.351
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -47,15 +47,6 @@ path:
       tar: 1
   baseDir:
     path: ..
-  archiveFile.0:
-    path: ./out/wTools.proto.export.out.tgs
-    criterion:
-      default: 1
-      debug: 1
-      raw: 1
-      proto: 1
-      export: 1
-      tar: 1
   exportedFiles.0:
     path:
       - .
@@ -368,7 +359,7 @@ step:
       proto: 1
     opts:
       export: 'path::proto'
-      tar: 1
+      tar: 0
     inherit:
       - export
 build:
@@ -414,7 +405,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.8.318
+    version: 0.8.351
     criterion:
       default: 1
       debug: 1
@@ -482,4 +473,3 @@ exported:
         proto: 1
         export: 1
         tar: 1
-    archiveFilePath: 'path::archiveFile.0'
