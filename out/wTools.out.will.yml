@@ -189,10 +189,12 @@ reflector:
     reflectMap:
       ./proto: true
   exportedFiles.0:
+    recursive: 0
     reflectMap:
       'path::exportedFiles.0': true
-    recursive: 0
     srcFilter:
+      basePath: .
+    dstFilter:
       basePath: .
 step:
   reflect.proto.0:
