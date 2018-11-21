@@ -602,15 +602,10 @@ function diagnosticStack( stack, first, last )
 
   if( errIs )
   {
-    // debugger;
     while( stack.length )
     {
       let splice = 0;
-      // if( stack[ 0 ].indexOf( '@' ) !== -1 )
-      // debugger;
-      // if( stack[ 0 ].indexOf( '@' ) !== -1 )
-      // return '';
-      splice |= ( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 );
+      splice |= ( stack[ 0 ].indexOf( '  at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 );
       splice |= stack[ 0 ].indexOf( '(vm.js:' ) !== -1;
       splice |= stack[ 0 ].indexOf( '(module.js:' ) !== -1;
       splice |= stack[ 0 ].indexOf( '(internal/module.js:' ) !== -1;
@@ -618,7 +613,6 @@ function diagnosticStack( stack, first, last )
       stack.splice( 0,1 );
       else break;
     }
-    // debugger;
   }
 
   // if( stack[ 0 ].indexOf( '@' ) === -1 )

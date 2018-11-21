@@ -698,7 +698,6 @@ function error_functor( name, onMake )
   else if( !onMake )
   onMake = function onErrorMake( )
   {
-    debugger;
     return _.err.apply( _, arguments );
   }
 

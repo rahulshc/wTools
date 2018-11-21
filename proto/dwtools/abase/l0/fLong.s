@@ -148,6 +148,15 @@ function arrayIs( src )
 
 //
 
+function arrayIsPopulated( src )
+{
+  if( !_.arrayIs( src ) )
+  return false;
+  return src.length > 0;
+}
+
+//
+
 function arrayLikeResizable( src )
 {
   if( _ObjectToString.call( src ) === '[object Array]' )
@@ -217,11 +226,29 @@ function longIs( src )
 
 //
 
+function longIsPopulated( src )
+{
+  if( !_.longIs( src ) )
+  return false;
+  return src.length > 0;
+}
+
+//
+
 function unrollIs( src )
 {
   if( !_.arrayIs( src ) )
   return false;
   return !!src[ unrollSymbol ];
+}
+
+//
+
+function unrollIsPopulated( src )
+{
+  if( !_.unrollIs( src ) )
+  return false;
+  return src.length > 0;
 }
 
 //
@@ -2802,21 +2829,20 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 function arrayRemoveDuplicates( dstArray, evaluator )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 2 );
-  _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
+  _.assert( _.arrayIs( dstArray ), 'Expects Array' );
 
-  let element;
   for( let i = 0 ; i < dstArray.length ; i++ )
   {
     let index;
     do
     {
-      element = dstArray[ i ];
-      index = _.arrayRightIndex( dstArray, element, evaluator );
+      index = _.arrayRightIndex( dstArray, dstArray[ i ], evaluator );
       if( index !== i )
       {
         dstArray.splice( index, 1 );
       }
-    } while ( index !== i );
+    }
+    while( index !== i );
   }
 
   return dstArray;
@@ -2870,73 +2896,129 @@ function arrayRemoveDuplicates( dstArray, evaluator )
  * @memberof wTools
  */
 
+// function longRemoveDuplicates( dstLong, onEvaluate )
+// {
+//   _.assert( 1 <= arguments.length || arguments.length <= 3 );
+//   _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+
+//   if( _.arrayIs( dstLong ) )
+//   {
+//     _.arrayRemoveDuplicates( dstLong, onEvaluate );
+//   }
+//   else if( Object.prototype.toString.call( dstLong ) === "[object Arguments]")
+//   {
+//     let newElement;
+//     for( let i = 0; i < dstLong.length; i++ )
+//     {
+//       newElement = dstLong[ i ];
+//       for( let j = i + 1; j < dstLong.length; j++ )
+//       {
+//         if( newElement === dstLong[ j ] )
+//         {
+//           let array = Array.from( dstLong );
+//           _.arrayRemoveDuplicates( array, onEvaluate );
+//           dstLong = new dstLong.constructor( array );
+//         }
+//       }
+//     }
+//   }
+//   else
+//   {
+//     if( !onEvaluate )
+//     {
+//       for( let i = 0 ; i < dstLong.length ; i++ )
+//       {
+//         function isDuplicated( element, index, array )
+//         {
+//           return ( element !== dstLong[ i ] || index === i );
+//         }
+//         dstLong = dstLong.filter( isDuplicated );
+//       }
+//     }
+//     else
+//     {
+//       if( onEvaluate.length === 2 )
+//       {
+//         for( let i = 0 ; i < dstLong.length ; i++ )
+//         {
+//           function isDuplicated( element, index, array )
+//           {
+//             return ( !onEvaluate( element, dstLong[ i ] ) || index === i );
+//           }
+//           dstLong = dstLong.filter( isDuplicated );
+//         }
+//       }
+//       else
+//       {
+//         for( let i = 0 ; i < dstLong.length ; i++ )
+//         {
+//           function isDuplicated( element, index, array )
+//           {
+//             return ( onEvaluate( element ) !== onEvaluate( dstLong[ i ] ) || index === i );
+//           }
+//           dstLong = dstLong.filter( isDuplicated );
+//         }
+//       }
+//     }
+//   }
+
+//   return dstLong;
+// }
+
 function longRemoveDuplicates( dstLong, onEvaluate )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 3 );
   _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
 
   if( _.arrayIs( dstLong ) )
+  return _.arrayRemoveDuplicates( dstLong, onEvaluate );
+
+  if( !dstLong.length )
+  return dstLong;
+
+  let length = dstLong.length;
+
+  for( let i = 0; i < dstLong.length; i++ )
   {
-    _.arrayRemoveDuplicates( dstLong, onEvaluate );
+    if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
+    length--;
+    else if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
+    length--;
   }
-  else if( Object.prototype.toString.call( dstLong ) === "[object Arguments]")
-  {
-    let newElement;
-    for( let i = 0; i < dstLong.length; i++ )
-    {
-      newElement = dstLong[ i ];
-      for( let j = i + 1; j < dstLong.length; j++ )
-      {
-        if( newElement === dstLong[ j ] )
-        {
-          let array = Array.from( dstLong );
-          _.arrayRemoveDuplicates( array, onEvaluate );
-          dstLong = new dstLong.constructor( array );
-        }
-      }
-    }
-  }
+
+  if( length === dstLong.length )
+  return dstLong;
+
+  let result;
+
+  if( _.argumentsArrayIs( dstLong ) )
+  result = _.argumentsArrayFrom( new Array( length ) );
   else
+  result = new dstLong.constructor( length );
+
+  let j = 0;
+  let index;
+  let initialValueUsed = false;
+  let initialValue = result[ 0 ];
+
+  for( let i = 0; i < dstLong.length || j < length; i++ )
   {
-    if( !onEvaluate )
+    index = _.arrayLeftIndex( result, dstLong[ i ], onEvaluate );
+    if( index === -1 )
     {
-      for( let i = 0 ; i < dstLong.length ; i++ )
-      {
-        function isDuplicated( element, index, array )
-        {
-          return ( element !== dstLong[ i ] || index === i );
-        }
-        dstLong = dstLong.filter( isDuplicated );
-      }
+      result[ j ] = dstLong[ i ];
+      j++;
     }
-    else
+    else if( !initialValueUsed && dstLong[ i ] === initialValue )
     {
-      if( onEvaluate.length === 2 )
-      {
-        for( let i = 0 ; i < dstLong.length ; i++ )
-        {
-          function isDuplicated( element, index, array )
-          {
-            return ( !onEvaluate( element, dstLong[ i ] ) || index === i );
-          }
-          dstLong = dstLong.filter( isDuplicated );
-        }
-      }
-      else
-      {
-        for( let i = 0 ; i < dstLong.length ; i++ )
-        {
-          function isDuplicated( element, index, array )
-          {
-            return ( onEvaluate( element ) !== onEvaluate( dstLong[ i ] ) || index === i );
-          }
-          dstLong = dstLong.filter( isDuplicated );
-        }
-      }
+      j++;
+      initialValueUsed = true;
     }
   }
 
-  return dstLong;
+  _.assert( j === length );
+
+  return result;
 }
 
 /* qqq : not optimal, no redundant copy */
@@ -3108,6 +3190,9 @@ function arrayFlattened( dstArray, insArray )
 {
 
   /* xxx : reuse arrayRemoveDuplicates for single argument call */
+
+  if( arguments.length <= 2 && insArray === undefined )
+  return _.arrayRemoveDuplicates( dstArray );
 
   _.assert( arguments.length >= 2 );
   _.assert( _.objectIs( this ) );
@@ -3509,10 +3594,15 @@ let Routines =
   // array checker
 
   arrayIs : arrayIs,
+  arrayIsPopulated : arrayIsPopulated,
   arrayLikeResizable : arrayLikeResizable,
   arrayLike : arrayLike,
+
   longIs : longIs,
+  longIsPopulated : longIsPopulated,
+
   unrollIs : unrollIs,
+  unrollIsPopulated : unrollIsPopulated,
 
   constructorLikeArray : constructorLikeArray,
   hasLength : hasLength,

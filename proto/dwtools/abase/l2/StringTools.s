@@ -3826,7 +3826,25 @@ function strLinesNumber( o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( o.src ) || _.strsAre( o.src ),'Expects string or strings {-o.src-}' );
 
+  /* */
+
+  if( o.first === null  )
+  {
+    if( o.firstChar === null )
+    o.first = 1;
+    else if( _.numberIs( o.firstChar ) )
+    {
+      debugger;
+      let src = _.arrayIs( o.src ) ? o.src.join( '\n' ) : o.src;
+      o.first = _.strLinesCount( src.substring( 0, o.firstChar+1 ) );
+    }
+  }
+
+  /* */
+
   let lines = _.strIs( o.src ) ? o.src.split( '\n' ) : o.src;
+
+  /* */
 
   if( o.onLine ) for( let l = 0; l < lines.length; l += 1 )
   {
@@ -3849,7 +3867,8 @@ function strLinesNumber( o )
 strLinesNumber.defaults =
 {
   src : null,
-  first : 1,
+  first : null,
+  firstChar : null,
   onLine : null,
 }
 
@@ -4059,6 +4078,12 @@ function strLinesNearest_pre( routine, args )
 
   _.routineOptions( routine, o );
 
+  if( _.numberIs( o.charsRange ) )
+  o.charsRange = [ o.charsRange, o.charsRange+1 ];
+
+  _.assert( _.rangeIs( o.charsRange ) );
+  // _.assert( _.arrayHas( [ 'map', 'array' ], o.outputFormat ) ) ;
+
   return o;
 }
 
@@ -4066,18 +4091,21 @@ function strLinesNearest_pre( routine, args )
 
 function strLinesNearest_body( o )
 {
-  let result;
-  let resultCharRange = [];
+  let result = Object.create( null );
+  // let resultCharRange = [];
   let i, numberOfLines;
+
+  result.splits = [];
+  result.spans = [ o.charsRange[ 0 ], o.charsRange[ 0 ], o.charsRange[ 1 ], o.charsRange[ 1 ] ];
 
   /* */
 
   if( o.numberOfLines === 0 )
   {
     result = [];
-    result[ 0 ] = '';
-    result[ 1 ] = o.src.substring( o.charsRange[ 0 ],o.charsRange[ 1 ] );
-    result[ 2 ] = '';
+    result.splits[ 0 ] = '';
+    result.splits[ 1 ] = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
+    result.splits[ 2 ] = '';
     return result;
   }
 
@@ -4096,7 +4124,7 @@ function strLinesNearest_body( o )
     }
     i = i+1;
   }
-  resultCharRange[ 0 ] = i;
+  result.spans[ 0 ] = i;
 
   // 0 -> 0 + 0 = 0
   // 1 -> 1 + 1 = 2
@@ -4117,14 +4145,17 @@ function strLinesNearest_body( o )
       break;
     }
   }
-  resultCharRange[ 1 ] = i;
+  result.spans[ 3 ] = i;
 
   /* */
 
-  result = [];
-  result[ 0 ] = o.src.substring( resultCharRange[ 0 ],o.charsRange[ 0 ] );
-  result[ 1 ] = o.src.substring( o.charsRange[ 0 ],o.charsRange[ 1 ] );
-  result[ 2 ] = o.src.substring( o.charsRange[ 1 ],resultCharRange[ 1 ] );
+  result.splits[ 0 ] = o.src.substring( result.spans[ 0 ], result.spans[ 1 ] );
+  result.splits[ 1 ] = o.src.substring( result.spans[ 1 ], result.spans[ 2 ] );
+  result.splits[ 2 ] = o.src.substring( result.spans[ 2 ], result.spans[ 3 ] );
+
+  // result.splits[ 0 ] = o.src.substring( resultCharRange[ 0 ],o.charsRange[ 0 ] );
+  // result.splits[ 1 ] = o.src.substring( o.charsRange[ 0 ],o.charsRange[ 1 ] );
+  // result.splits[ 2 ] = o.src.substring( o.charsRange[ 1 ],resultCharRange[ 1 ] );
 
   return result;
 }
@@ -4134,9 +4165,59 @@ strLinesNearest_body.defaults =
   src : null,
   charsRange : null,
   numberOfLines : 3,
+  // outputFormat : 'map',
 }
 
 let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearest_body );
+
+//
+
+function strLinesNearestReport_body( o )
+{
+  let result = Object.create( null );
+
+  debugger;
+  result.nearest = _.strLinesNearest.body( o ).splits;
+  // result.linesRange = _.strLinesRangeWithCharRange.body( o );
+
+  result.report = result.nearest.slice();
+  if( !o.gray )
+  result.report[ 1 ] = _.color.strUnescape( _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } ) );
+  result.report = result.report.join( '' );
+
+  result.report = _.strLinesSplit( result.report );
+  if( !o.gray )
+  result.report = _.color.strEscape( result.report );
+
+  let f = _.strLinesCount( o.src.substring( 0, o.charsRange[ 0 ] ) )-1;
+  result.report = _.strLinesNumber
+  ({
+    src : result.report,
+    first : f,
+    onLine : ( line ) =>
+    {
+      if( !o.gray )
+      {
+        line[ 0 ] = _.color.strFormat( line[ 0 ], { fg : 'bright black' } );
+        line[ 1 ] = _.color.strFormat( line[ 1 ], { fg : 'bright black' } );
+      }
+      return line.join( '' );
+    }
+  });
+
+  debugger;
+  return result;
+}
+
+strLinesNearestReport_body.defaults =
+{
+  src : null,
+  charsRange : null,
+  numberOfLines : 3,
+  gray : 0,
+}
+
+let strLinesNearestReport = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearestReport_body );
 
 //
 
@@ -4210,54 +4291,6 @@ strLinesRangeWithCharRange_body.defaults =
 }
 
 let strLinesRangeWithCharRange = _.routineFromPreAndBody( strLinesRangeWithCharRange_pre, strLinesRangeWithCharRange_body );
-
-//
-
-function strLinesNearestReport_body( o )
-{
-  let result = Object.create( null );
-
-  result.nearest = _.strLinesNearest.body( o );
-  // result.linesRange = _.strLinesRangeWithCharRange.body( o );
-
-  result.report = result.nearest.slice();
-  if( !o.gray )
-  result.report[ 1 ] = _.color.strUnescape( _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } ) );
-  result.report = result.report.join( '' );
-
-  result.report = _.strLinesSplit( result.report );
-  if( !o.gray )
-  result.report = _.color.strEscape( result.report );
-
-  let f = _.strLinesCount( o.src.substring( 0, o.charsRange[ 0 ] ) )-1;
-  result.report = _.strLinesNumber
-  ({
-    src : result.report,
-    first : f,
-    onLine : ( line ) =>
-    {
-      if( !o.gray )
-      {
-        line[ 0 ] = _.color.strFormat( line[ 0 ], { fg : 'bright black' } );
-        line[ 1 ] = _.color.strFormat( line[ 1 ], { fg : 'bright black' } );
-      }
-      return line.join( '' );
-    }
-  });
-
-  debugger;
-  return result;
-}
-
-strLinesNearestReport_body.defaults =
-{
-  src : null,
-  charsRange : null,
-  numberOfLines : 3,
-  gray : 0,
-}
-
-let strLinesNearestReport = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearestReport_body );
 
 // --
 // declare
@@ -4384,10 +4417,10 @@ let Proto =
   strLinesStrip : strLinesStrip, /* qqq : test coverage */
   strLinesNumber : strLinesNumber,
   strLinesSelect : strLinesSelect,
-  strLinesNearest : strLinesNearest,
+  strLinesNearest : strLinesNearest, /* qqq : check coverage */
+  strLinesNearestReport : strLinesNearestReport,
   strLinesCount : strLinesCount,
   strLinesRangeWithCharRange : strLinesRangeWithCharRange,
-  strLinesNearestReport : strLinesNearestReport,
 
 }
 
