@@ -188,6 +188,10 @@ reflector:
   exported.0:
     reflectMap:
       ./proto: true
+  exportedFiles.0:
+    reflectMap:
+      'path::exportedFiles.0': true
+    recursive: 0
 step:
   reflect.proto.0:
     criterion:
@@ -290,10 +294,6 @@ build:
 exported:
   proto.export:
     version: 0.8.318
-    exportedReflector: 'reflector::exported.0'
-    exportedDirPath: 'path::exportedDir.0'
-    exportedFilesPath: 'path::exportedFiles.0'
-    archiveFilePath: 'path::archiveFile.0'
     criterion:
       default: 1
       debug: 1
@@ -301,3 +301,8 @@ exported:
       proto: 1
       export: 1
       tar: 1
+    exportedReflector: 'reflector::exported.0'
+    exportedFilesReflector: 'reflector::exportedFiles.0'
+    exportedDirPath: 'path::exportedDir.0'
+    exportedFilesPath: 'path::exportedFiles.0'
+    archiveFilePath: 'path::archiveFile.0'
