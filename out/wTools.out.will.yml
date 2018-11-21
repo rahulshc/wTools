@@ -141,6 +141,9 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
+      prefixPath: .
+    dstFilter:
+      prefixPath: .
     criterion:
       debug: 0
     inherit:
@@ -162,6 +165,9 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
+      prefixPath: .
+    dstFilter:
+      prefixPath: .
     criterion:
       debug: 1
     inherit:
@@ -181,6 +187,9 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
+      prefixPath: .
+    dstFilter:
+      prefixPath: .
     criterion:
       debug: 1
     inherit:
@@ -188,14 +197,76 @@ reflector:
   exported.0:
     reflectMap:
       ./proto: true
+    srcFilter:
+      prefixPath: .
+    dstFilter:
+      prefixPath: .
   exportedFiles.0:
     recursive: 0
     reflectMap:
-      'path::exportedFiles.0': true
+      .: true
+      ./dwtools: true
+      ./dwtools/Tools.s: true
+      ./dwtools/abase: true
+      ./dwtools/abase/Layer0.s: true
+      ./dwtools/abase/Layer1.s: true
+      ./dwtools/abase/Layer2.s: true
+      ./dwtools/abase/l0: true
+      ./dwtools/abase/l0/aPredefined.s: true
+      ./dwtools/abase/l0/aSetup.s: true
+      ./dwtools/abase/l0/fBool.s: true
+      ./dwtools/abase/l0/fChecker.s: true
+      ./dwtools/abase/l0/fEntity.s: true
+      ./dwtools/abase/l0/fErr.s: true
+      ./dwtools/abase/l0/fLong.s: true
+      ./dwtools/abase/l0/fMap.s: true
+      ./dwtools/abase/l0/fNumber.s: true
+      ./dwtools/abase/l0/fRange.s: true
+      ./dwtools/abase/l0/fRegexp.s: true
+      ./dwtools/abase/l0/fRoutine.s: true
+      ./dwtools/abase/l0/fString.s: true
+      ./dwtools/abase/l0/fTime.s: true
+      ./dwtools/abase/l0/iArrayDescriptor.s: true
+      ./dwtools/abase/l0/iCompose.s: true
+      ./dwtools/abase/l0/iField.s: true
+      ./dwtools/abase/l1: true
+      ./dwtools/abase/l1/cErr.s: true
+      ./dwtools/abase/l1/gBool.s: true
+      ./dwtools/abase/l1/gEntity.s: true
+      ./dwtools/abase/l1/gLong.s: true
+      ./dwtools/abase/l1/gMap.s: true
+      ./dwtools/abase/l1/gNumber.s: true
+      ./dwtools/abase/l1/gRange.s: true
+      ./dwtools/abase/l1/gRegexp.s: true
+      ./dwtools/abase/l1/gRoutine.s: true
+      ./dwtools/abase/l1/gString.s: true
+      ./dwtools/abase/l1/gTime.s: true
+      ./dwtools/abase/l1/rFundamental.s: true
+      ./dwtools/abase/l1/zSetup.s: true
+      ./dwtools/abase/l1.test: true
+      ./dwtools/abase/l1.test/Array.test.s: true
+      ./dwtools/abase/l1.test/Diagnostics.test.s: true
+      ./dwtools/abase/l1.test/Entity.test.s: true
+      ./dwtools/abase/l1.test/Map.test.s: true
+      ./dwtools/abase/l1.test/Regexp.test.s: true
+      ./dwtools/abase/l1.test/Routine.test.s: true
+      ./dwtools/abase/l1.test/String.test.s: true
+      ./dwtools/abase/l1.test/Typing.test.s: true
+      ./dwtools/abase/l2: true
+      ./dwtools/abase/l2/IncludeTools.s: true
+      ./dwtools/abase/l2/ModulesRegistry.s: true
+      ./dwtools/abase/l2/NameTools.s: true
+      ./dwtools/abase/l2/StringTools.s: true
+      ./dwtools/abase/l2.test: true
+      ./dwtools/abase/l2.test/StringTools.test.s: true
+      ./dwtools/amid: true
+      ./dwtools/atop: true
     srcFilter:
-      basePath: 'path::exportedDir.0'
+      basePath: ./proto
+      prefixPath: proto
     dstFilter:
       basePath: .
+      prefixPath: .
 step:
   reflect.proto.0:
     criterion:
