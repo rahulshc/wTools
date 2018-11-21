@@ -193,7 +193,7 @@ reflector:
     reflectMap:
       'path::exportedFiles.0': true
     srcFilter:
-      basePath: .
+      basePath: 'path::exportedDir.0'
     dstFilter:
       basePath: .
 step:
