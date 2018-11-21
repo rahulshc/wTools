@@ -192,6 +192,8 @@ reflector:
     reflectMap:
       'path::exportedFiles.0': true
     recursive: 0
+    srcFilter:
+      basePath: .
 step:
   reflect.proto.0:
     criterion:
