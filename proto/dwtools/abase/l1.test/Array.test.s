@@ -10075,6 +10075,49 @@ function arrayFlatten( test )
 
   //
 
+  test.open( 'single argument' );
+
+  var got = _.arrayFlatten([ 0,1,2,3 ])
+  var expected = [ 0,1,2,3 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ 0,1,1,2 ])
+  var expected = [ 0,1,2 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ 0,1,0,1 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ 0,1,1,0 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ 0,1,'1',0 ])
+  var expected = [ 0,1,'1' ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ [ 0,0,1,1 ] ])
+  var expected = [ [ 0,0,1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ [ 0,0 ],[ 1,1 ] ])
+  var expected = [ [ 0,0 ],[ 1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ [ 0 ],[ 1 ],0,1,0,1 ])
+  var expected = [ [ 0 ],[ 1 ],0,1 ]
+  test.identical( got, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var got = _.arrayFlatten([ 0,1,'0','1' ], f )
+  var expected = [ 0,1,'0','1',f ]
+  test.identical( got, expected );
+
+  test.close( 'single argument' );
+
+  //
+
   if( !Config.debug )
   return;
 
@@ -10153,6 +10196,54 @@ function arrayFlattenOnce( test )
   debugger
   var got = _.arrayFlattenOnce( [], 1 )
   test.identical( got, [ 1 ] );
+
+  //
+
+  test.open( 'single argument' );
+
+  var got = _.arrayFlattenOnce([ 0,1,2,3 ])
+  var expected = [ 0,1,2,3 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ 0,1,1,2 ])
+  var expected = [ 0,1,2 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ 0,1,0,1 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ 0,1,1,0 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ 0,1,'1',0 ])
+  var expected = [ 0,1,'1' ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ [ 0,0,1,1 ] ])
+  var expected = [ [ 0,0,1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ [ 0,0 ],[ 1,1 ] ])
+  var expected = [ [ 0,0 ],[ 1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ [ 0 ],[ 1 ],0,1,0,1 ])
+  var expected = [ [ 0 ],[ 1 ],0,1 ]
+  test.identical( got, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var got = _.arrayFlattenOnce([ 0,1,'0','1' ], f )
+  var expected = [ 0,1,'0','1',f ]
+  test.identical( got, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var got = _.arrayFlattenOnce([ 0,1,'0','1' ], undefined, f )
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  test.close( 'single argument' );
 
   if( !Config.debug )
   return;
@@ -10234,6 +10325,54 @@ function arrayFlattenOnceStrictly( test )
     return  a === b;
   });
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
+
+  //
+
+  test.open( 'single argument' );
+
+  var got = _.arrayFlattenOnceStrictly([ 0,1,2,3 ])
+  var expected = [ 0,1,2,3 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ 0,1,1,2 ])
+  var expected = [ 0,1,2 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ 0,1,0,1 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ 0,1,1,0 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ 0,1,'1',0 ])
+  var expected = [ 0,1,'1' ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ [ 0,0,1,1 ] ])
+  var expected = [ [ 0,0,1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ [ 0,0 ],[ 1,1 ] ])
+  var expected = [ [ 0,0 ],[ 1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ [ 0 ],[ 1 ],0,1,0,1 ])
+  var expected = [ [ 0 ],[ 1 ],0,1 ]
+  test.identical( got, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var got = _.arrayFlattenOnceStrictly([ 0,1,'0','1' ], f )
+  var expected = [ 0,1,'0','1',f ]
+  test.identical( got, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var got = _.arrayFlattenOnceStrictly([ 0,1,'0','1' ], undefined, f )
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  test.close( 'single argument' );
 
   if( !Config.debug )
   return;
@@ -10377,6 +10516,58 @@ function arrayFlattened( test )
   test.identical( dst, [ 1, 2, '3' ] );
   test.identical( got, 3 );
 
+  //
+
+  test.open( 'single argument' );
+
+  var got = _.arrayFlattened([ 0,1,2,3 ])
+  var expected = [ 0,1,2,3 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattened([ 0,1,1,2 ])
+  var expected = [ 0,1,2 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattened([ 0,1,0,1 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattened([ 0,1,1,0 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattened([ 0,1,'1',0 ])
+  var expected = [ 0,1,'1' ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattened([ [ 0,0,1,1 ] ])
+  var expected = [ [ 0,0,1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattened([ [ 0,0 ],[ 1,1 ] ])
+  var expected = [ [ 0,0 ],[ 1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattened([ [ 0 ],[ 1 ],0,1,0,1 ])
+  var expected = [ [ 0 ],[ 1 ],0,1 ]
+  test.identical( got, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var dst = [ 0,1,'0','1' ];
+  var got = _.arrayFlattened( dst,f );
+  var expected = [ 0,1,'0','1',f ]
+  test.identical( got, 1 );
+  test.identical( dst, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var dst = [ 0,1,'0','1' ];
+  var got = _.arrayFlattened( dst,undefined,f );
+  var expected = [ 0,1,'0','1',f ]
+  test.identical( got, 1 );
+  test.identical( dst, expected );
+
+  test.close( 'single argument' );
+
   if( !Config.debug )
   return;
 
@@ -10482,6 +10673,57 @@ function arrayFlattenedOnce( test )
   });
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 1 );
+
+  //
+
+  test.open( 'single argument' );
+
+  var got = _.arrayFlattenedOnce([ 0,1,2,3 ])
+  var expected = [ 0,1,2,3 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ 0,1,1,2 ])
+  var expected = [ 0,1,2 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ 0,1,0,1 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ 0,1,1,0 ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ 0,1,'1',0 ])
+  var expected = [ 0,1,'1' ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ [ 0,0,1,1 ] ])
+  var expected = [ [ 0,0,1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ [ 0,0 ],[ 1,1 ] ])
+  var expected = [ [ 0,0 ],[ 1,1 ] ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ [ 0 ],[ 1 ],0,1,0,1 ])
+  var expected = [ [ 0 ],[ 1 ],0,1 ]
+  test.identical( got, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var dst = [ 0,1,'0','1' ];
+  var got = _.arrayFlattenedOnce( dst,f );
+  var expected = [ 0,1,'0','1',f ]
+  test.identical( got, 1 );
+  test.identical( dst, expected );
+
+  var f = ( e ) => _.numberFrom( e );
+  var dst = [ 0,1,'0','1' ];
+  var got = _.arrayFlattenedOnce( dst,undefined,f );
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  test.close( 'single argument' );
 
   /*
   test.case = 'Second arg is not long';
