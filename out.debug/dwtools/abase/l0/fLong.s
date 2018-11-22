@@ -750,7 +750,7 @@ function arrayLeftDefined( arr )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  return _.arrayLeft( arr,true,function( e ){ return e !== undefined; } );
+  return _.arrayLeft( arr, true, function( e ){ return e !== undefined; } );
 }
 
 //
@@ -760,7 +760,7 @@ function arrayRightDefined( arr )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  return _.arrayRight( arr,true,function( e ){ return e !== undefined; } );
+  return _.arrayRight( arr, true, function( e ){ return e !== undefined; } );
 }
 
 //
