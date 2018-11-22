@@ -3700,12 +3700,12 @@ strConcat.defaults =
  *
  */
 
-function strIndentation( src,tab )
+function strIndentation( src, tab )
 {
 
-  _.assert( _.strIs( src ) || _.arrayIs( src ),'strIndentation : expects src as string or array' );
-  _.assert( _.strIs( tab ),'strIndentation : expects string tab' );
-  _.assert( arguments.length === 2,'strIndentation : expects two arguments' );
+  _.assert( _.strIs( src ) || _.arrayIs( src ), 'Expects src as string or array' );
+  _.assert( _.strIs( tab ), 'Expects string tab' );
+  _.assert( arguments.length === 2, 'Expects two arguments' );
 
   if( _.strIs( src ) )
   {
@@ -4405,7 +4405,7 @@ let Proto =
   // joiner
 
   strDup : _.routineVectorize_functor( _strDup ), /* document me */
-  strJoin : strJoin, /* document me */
+  strJoin : strJoin,
   strJoinPath : strJoinPath, /* qqq : cover and document me */
   strConcat : strConcat,
 
@@ -4430,11 +4430,28 @@ _.mapExtend( Self, Proto );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global_.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global_.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
+
+/*
+
+qqq :
+
+  strDup,
+  strJoin
+  strJoinPath,
+
+  strCommonLeft
+  strCommonRight
+
+  strLinesStrip
+  strLinesNearest
+
+*/
+
 
 })();

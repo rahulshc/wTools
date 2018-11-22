@@ -472,6 +472,9 @@ function diagnosticCode( o )
       number : 1,
     });
 
+    if( result && _.strIndentation )
+    result = _.strIndentation( result, o.identation );
+
     if( o.withPath )
     result = o.location.full + '\n' + result;
 
@@ -500,6 +503,7 @@ diagnosticCode.defaults =
   numberOfLines : 3,
   withPath : 1,
   selectMode : 'center',
+  identation : '    ',
   stack : null,
   error : null,
   location : null,
@@ -671,7 +675,7 @@ function diagnosticStack( stack, first, last )
 
 //
 
-function diagnosticStackPurify( stack )
+function diagnosticStackCondense( stack )
 {
 
   if( arguments.length !== 1 )
@@ -908,7 +912,7 @@ let Extend =
   diagnosticLocation : diagnosticLocation,
   diagnosticCode : diagnosticCode,
   diagnosticStack : diagnosticStack,
-  diagnosticStackPurify : diagnosticStackPurify,
+  diagnosticStackCondense : diagnosticStackCondense,
   diagnosticWatchFields : diagnosticWatchFields, /* experimental */
   diagnosticProxyFields : diagnosticProxyFields, /* experimental */
 
