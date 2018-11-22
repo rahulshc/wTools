@@ -1,10 +1,9 @@
 
-
 about :
 
   name : wTools
-  description : Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind
-  version : 0.8.318
+  description : 'Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind'
+  version : 0.8.355
   enabled : 1
   interpreters :
   - nodejs >= 6.0.0
@@ -29,7 +28,7 @@ step :
   export.proto :
     inherit : export
     export : path::proto
-    tar : 1
+    tar : 0
     criterion :
       debug : 1
       proto : 1
@@ -47,3 +46,4 @@ build :
     steps :
       - build::debug.raw
       - step::export.proto
+
