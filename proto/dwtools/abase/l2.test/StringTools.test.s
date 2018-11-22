@@ -7374,7 +7374,234 @@ ghij
 
   /* - */
 
+  test.open( 'Range is a number' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 0' );
+
+  var crange = 6;
+  var sub = _.strSub( srcStr, [ crange, crange + 1 ] );
+
+  var expectedSplits =
+  [
+    '',
+    'd',
+    '',
+  ];
+  var expectedSpans = [ 6, 6, 7, 7 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 0,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+  test.will = 'check strSub';
+  test.identical( sub, 'd' );
+
+  test.close( 'numberOfLines : 0' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 1' );
+
+  var crange = 6;
+
+  var expectedSplits =
+  [
+    '',
+    'd',
+    'ef',
+  ];
+  var expectedSpans = [ 6, 6, 7, 9 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 1,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : 1' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 2' );
+
+  var crange = 6;
+
+  var expectedSplits =
+  [
+    'bc\n',
+    'd',
+    'ef',
+  ];
+  var expectedSpans = [ 3, 6, 7, 9 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 2,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : 2' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 8 ( > all lines )' );
+
+  var crange = 6;
+
+  var expectedSplits =
+  [
+    '\na\nbc\n',
+    'd',
+    'ef\nghij\n\n',
+  ];
+  var expectedSpans = [ 0, 6, 7, 16 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 8,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : 8 ( > all lines )' );
+
+  /*  */
+
+  test.open( 'NaN range' );
+
+  var crange = NaN;
+
+  var expectedSplits =
+  [
+    '',
+    '',
+    '',
+  ];
+  var expectedSpans = [ NaN, NaN, NaN, NaN ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 8,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'NaN range' );
+
+  /*  */
+
+  test.close( 'Range is a number' );
+
+  /* - */
+
   test.open( 'aligned range, single line' );
+
+  /*  */
+
+  test.open( 'numberOfLines not defined ( = 3 )' );
+
+  var crange = [ 3, 5 ];
+
+  var expectedSplits =
+  [
+    'a\n',
+    'bc',
+    '\ndef',
+  ];
+  var expectedSpans = [ 1, 3, 5, 9 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : undefined,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines not defined ( = 3 )' );
+
+  /*  */
+
+  test.open( 'numberOfLines : NaN' );
+
+  var crange = [ 3, 5 ];
+
+  var expectedSplits =
+  [
+    '\na\n',
+    'bc',
+    '\ndef\nghij\n\n',
+  ];
+  var expectedSpans = [ undefined, 3, 5, undefined ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : NaN,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : NaN' );
+
+  /*  */
+
+  test.open( 'numberOfLines : null' );
+
+  var crange = [ 3, 5 ];
+
+  var expectedSplits =
+  [
+    '',
+    'bc',
+    'bc',
+  ];
+  var expectedSpans = [ 3, 3, 5, 3 ];  // Could be wrong?
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : null,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : null' );
 
   /*  */
 
@@ -7692,6 +7919,114 @@ ghij
 
   console.log( 'done1' );
   logger.log( 'done2' );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.open( 'Wrong range' );
+
+  var crange = [ 4, 11, 12 ];
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : null,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : 'crange',
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    numberOfLines : 4,
+  }));
+
+  test.close( 'Wrong range' );
+
+  /*  */
+
+  test.open( 'Wrong src' );
+
+  var crange = [ 4, 11 ];
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : null,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : NaN,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : undefined,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : 3,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : [ 'abd', 'ef' ],
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.close( 'Wrong src' );
+
+  /*  */
+
+  test.open( 'Wrong arg' );
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( 3 ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( [ 3, 4 ] ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( null ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( undefined ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( NaN ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( 'args' ));
+
+  let o =
+  {
+    src : [ 'abd', 'ef' ],
+    charsRange : crange,
+    numberOfLines : 4,
+  };
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest(  ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( o, o ));
+
+
+  test.close( 'Wrong arg' );
 
 }
 

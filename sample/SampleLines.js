@@ -5,17 +5,10 @@ require( 'wTools' );
 var _ = wTools;
 
 var srcStr =
-`
-a
-bc
-def
-ghij
-
-`
+`\na\nbc\ndef\nghij\n\n`
 ;
 
-var crange = [ 0, 4 ];
-var sub = _.strSub( srcStr,crange );
+var crange = [ 3, 5];
 
 var expected =
 [
@@ -23,12 +16,11 @@ var expected =
   'def',
   '',
 ]
-console.log( sub );
 
 var got = _.strLinesNearest
 ({
   src : srcStr,
-  charsRange : crange,
-  numberOfLines : 0,
+  charsRange : 3,
+  numberOfLines : 2,
 });
 console.log('GOT', got );

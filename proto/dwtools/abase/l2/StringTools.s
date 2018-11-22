@@ -4069,6 +4069,53 @@ strLinesSelect.defaults =
 
 //
 
+/**
+ * Get the nearest ( o.numberOfLines ) lines to the range ( o.charsRange ) from source string( o.src ).
+ * Returns object with two elements: .
+ * Can be called in two ways:
+ * - First by passing all parameters in one options object( o ) ;
+ * - Second by passing source string( o.src ) and range( o.range ) as array or number;
+ *
+ * @param { Object } o - Options.
+ * @param { String } [ o.src ] - Source string.
+ * @param { Array|Number } [ o.range ] - Sets range of lines to select from( o.src ) or single line number.
+ * @param { Number } [ o.numberOfLines ] - Sets number of lines to select.
+ * @returns { Object } o - Returns object with Options with fields:
+ * @returns { Array } [ o.splits ] - Array with three entries:
+ * o.splits[ 0 ] and o.splits[ 2 ] contains a string with the nearest lines,
+ * and o.splits[ 1 ] contains the substring corresponding to the range.
+ * @returns { Array } [ o.spans ] - Array with indexes of begin and end of nearest lines.
+ *
+ * @example
+ * //selecting single line
+ * _.strLinesNearest
+ * ({
+ *   src : `\na\nbc\ndef\nghij\n\n`,
+ *   charsRange : [ 2, 4 ],
+ *   numberOfLines : 1,
+ * });
+ * //returns o.splits = [ 'a', '\nb', 'c' ];
+ * //returns o.spans = [ 1, 2, 4, 5 ];
+ *
+ * @example
+ * //selecting single line
+ * _.strLinesNearest
+ * ({
+ *   src : `\na\nbc\ndef\nghij\n\n`,
+ *   charsRange : 3,
+ *   numberOfLines : 2,
+ * });
+ * //returns o.splits = [ 'a\n', 'b', 'c' ];
+ * //returns o.spans = [ 1, 3, 4, 5 ];
+ *
+ * @method strLinesNearest
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.charsRange ) is not a Array or Number.
+ * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
+ * @memberof wTools
+ */
+ 
 function strLinesNearest_pre( routine, args )
 {
 
