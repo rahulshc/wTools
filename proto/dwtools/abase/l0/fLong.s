@@ -583,9 +583,18 @@ function arrayNone( src )
 
 function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 {
+  let fromIndex = 0;
 
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  if( _.numberIs( arguments[ 2 ] ) )
+  {
+    fromIndex = arguments[ 2 ];
+    evaluator1 = arguments[ 3 ];
+    evaluator2 = arguments[ 4 ];
+  }
+
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( arr ) );
+  _.assert( _.numberIs( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -594,12 +603,12 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
   if( !evaluator1 )
   {
     _.assert( !evaluator2 );
-    return _ArrayIndexOf.call( arr, ins );
+    return _ArrayIndexOf.call( arr, ins, fromIndex );
   }
   else if( evaluator1.length === 2 )
   {
     _.assert( !evaluator2 );
-    for( let a = 0 ; a < arr.length ; a++ )
+    for( let a = fromIndex ; a < arr.length ; a++ )
     {
 
       if( evaluator1( arr[ a ],ins ) )
@@ -615,7 +624,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    for( let a = 0 ; a < arr.length ; a++ )
+    for( let a = fromIndex; a < arr.length ; a++ )
     {
       if( evaluator1( arr[ a ] ) === ins )
       return a;
@@ -630,11 +639,20 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 
 function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 {
-
   if( ins === undefined )
   debugger;
 
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  let fromIndex = arr.length-1;
+
+  if( _.numberIs( arguments[ 2 ] ) )
+  {
+    fromIndex = arguments[ 2 ];
+    evaluator1 = arguments[ 3 ];
+    evaluator2 = arguments[ 4 ];
+  }
+
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.numberIs( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -645,12 +663,12 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     _.assert( !evaluator2 );
     if( !_.arrayIs( arr ) )
     debugger;
-    return _ArrayLastIndexOf.call( arr, ins );
+    return _ArrayLastIndexOf.call( arr, ins, fromIndex );
   }
   else if( evaluator1.length === 2 )
   {
     _.assert( !evaluator2 );
-    for( let a = arr.length-1 ; a >= 0 ; a-- )
+    for( let a = fromIndex ; a >= 0 ; a-- )
     {
       if( evaluator1( arr[ a ],ins ) )
       return a;
@@ -664,7 +682,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    for( let a = arr.length-1 ; a >= 0 ; a-- )
+    for( let a = fromIndex ; a >= 0 ; a-- )
     {
       if( evaluator1( arr[ a ] ) === ins )
       return a;
