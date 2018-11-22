@@ -7383,12 +7383,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     '',
     'def',
     '',
-  ]
+  ];
+  var expectedSpans = [ 6, 6, 9, 9 ];
 
   var got = _.strLinesNearest
   ({
@@ -7398,7 +7399,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7411,12 +7413,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     '',
     'def',
     '',
-  ]
+  ];
+  var expectedSpans = [ 6, 6, 9, 9 ];
 
   var got = _.strLinesNearest
   ({
@@ -7426,7 +7429,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7439,12 +7443,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'bc\n',
     'def',
     '',
-  ]
+  ];
+  var expectedSpans = [ 3, 6, 9, 9 ];
 
   var got = _.strLinesNearest
   ({
@@ -7454,7 +7459,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7467,12 +7473,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'bc\n',
     'def',
     '\nghij',
-  ]
+  ];
+  var expectedSpans = [ 3, 6, 9, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7482,7 +7489,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7495,12 +7503,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'a\nbc\n',
     'def',
     '\nghij',
-  ]
+  ];
+  var expectedSpans = [ 1, 6, 9, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7510,7 +7519,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7531,12 +7541,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     '',
     'c\ndef\ng',
     '',
-  ]
+  ];
+  var expectedSpans = [ 4, 4, 11, 11 ];
 
   var got = _.strLinesNearest
   ({
@@ -7546,7 +7557,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7559,12 +7571,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'b',
     'c\ndef\ng',
     'hij',
-  ]
+  ];
+  var expectedSpans = [ 3, 4, 11, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7574,7 +7587,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7587,12 +7601,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'a\nb',
     'c\ndef\ng',
     'hij',
-  ]
+  ];
+  var expectedSpans = [ 1, 4, 11, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7602,7 +7617,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7615,12 +7631,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'a\nb',
     'c\ndef\ng',
     'hij\n',
-  ]
+  ];
+  var expectedSpans = [ 1, 4, 11, 15 ];
 
   var got = _.strLinesNearest
   ({
@@ -7630,7 +7647,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7643,12 +7661,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     '\na\nb',
     'c\ndef\ng',
     'hij\n',
-  ]
+  ];
+  var expectedSpans = [ 0, 4, 11, 15 ];
 
   var got = _.strLinesNearest
   ({
@@ -7658,7 +7677,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
