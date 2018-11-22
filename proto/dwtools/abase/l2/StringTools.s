@@ -4083,7 +4083,7 @@ function strLinesNearest_pre( routine, args )
 
   _.assert( _.rangeIs( o.charsRange ) );
   // _.assert( _.arrayHas( [ 'map', 'array' ], o.outputFormat ) ) ;
-
+  logger.log( o )
   return o;
 }
 
@@ -4097,12 +4097,14 @@ function strLinesNearest_body( o )
 
   result.splits = [];
   result.spans = [ o.charsRange[ 0 ], o.charsRange[ 0 ], o.charsRange[ 1 ], o.charsRange[ 1 ] ];
-
+  logger.log( 'Result', result )
+  logger.log( )
   /* */
 
   if( o.numberOfLines === 0 )
   {
-    result = [];
+    // result = [];
+    result.splits = [];
     result.splits[ 0 ] = '';
     result.splits[ 1 ] = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
     result.splits[ 2 ] = '';
