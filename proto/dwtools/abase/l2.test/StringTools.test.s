@@ -6075,6 +6075,7 @@ function strReplaceWords( test )
 function strJoin( test )
 {
 
+  // One input array
   test.case = 'join numbers';
   var got = _.strJoin([ 1, 2, 3 ]);
   var expected = '123';
@@ -6130,30 +6131,95 @@ function strJoin( test )
   var expected = [ "1236", "1247", "1258" ];
   test.identical( got,expected );
 
+  // Second arg joiner
+  test.case = 'join number array with joiner';
+  var got = _.strJoin( [ 1, 2 ], '3' );
+  var expected = '132';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoin( [ 'b', 'c' ], '0' );
+  var expected = 'b0c';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoin( [ 'Hello', 'world', '!' ], ' ' );
+  var expected = 'Hello world !';
+  test.identical( got,expected );
+
+  test.case = 'join array and joiner';
+  var got = _.strJoin( [ 0, [ '1', '2' ] ], '3' );
+  var expected = [ '031', '032' ];
+  test.identical( got,expected );
+
+  test.case = 'join arrays and joiner';
+  var got = _.strJoin( [ 0, [ '1', '2' ], [ 'a', 'b'] ], '-' );
+  var expected = [ '0-1-a', '0-2-b' ];
+  test.identical( got,expected );
+
+  test.case = 'join umber arrays and joiner';
+  var got = _.strJoin( [ [ 0, 3, 6 ], [ 1, 4, 7 ], [ 2, 5, 8 ] ], 'x' );
+  var expected = [ '0x1x2', '3x4x5', '6x7x8' ];
+  test.identical( got,expected );
+
+  test.case = 'join array + string + joiner';
+  var got = _.strJoin([ [ 1, 2 ], '3' ], '__');
+  var expected = [ '1__3', '2__3' ];
+  test.identical( got,expected );
+
+  test.case = 'Undefined joiner';
+  var got = _.strJoin([ [ 1, 2 ], '3' ], undefined );
+  var expected = [ '13', '23' ];
+  test.identical( got,expected );
+
   /**/
 
   if( !Config.debug )
   return;
 
-  test.case = 'invalid argument type';
+  test.case = 'No arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( );
+  });
+
+  test.case = 'Too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', '2', '3' );
+  });
+
+  test.case = 'Empty arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( [ ], [ ] );
+  });
+
+  test.case = 'invalid argument type in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ { a : 1 }, [ 1 ], [ 2 ] ]);
   });
 
-  test.case = 'null argument';
+  test.case = 'null argument in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ '1', null ]);
   });
 
-  test.case = 'RegExp argument';
+  test.case = 'null argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoin([ '1', undefined ]);
+  });
+
+  test.case = 'RegExp argument in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ '1', /a?/ ]);
   });
 
-  test.case = 'arrays with different length';
+  test.case = 'arrays with different lengths in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ [ 1, 2 ], [ 1 ], [ 2 ] ]);
@@ -6162,13 +6228,25 @@ function strJoin( test )
   test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
-    _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
+    _.strJoin( { a : 1 }, [ 1 ] );
   });
 
   test.case = 'null argument';
   test.shouldThrowError( function()
   {
-    _.strJoin( '1', null );
+    _.strJoin( [ '1' ], null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( [ '1' ], NaN );
+  });
+
+  test.case = 'Wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', 2 );
   });
 
   test.case = 'RegExp argument';
@@ -6180,7 +6258,7 @@ function strJoin( test )
   test.case = 'arrays with different length';
   test.shouldThrowError( function()
   {
-    _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
+    _.strJoin( [ 1, 2 ], [ 1 ] );
   });
 
 }

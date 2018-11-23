@@ -3417,14 +3417,19 @@ function _strDup( s,times )
 //
 
 /**
- * Joins objects from arguments list together by concatenating their values in orded that they are specified.
- * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
+ * Joins objects from arguments list together by concatenating their values in order that they are specified.
+ * Joins objects inside the source array, by concatenating their values in order that they are specified.
+ * The source array can contain strings, numbers and arrays. If any arrays are provided they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
- * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ '13', '23' ] ),
- * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '22' ] ).
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ [ 1, 2 ], 3 ] ) -> ( [ '13', '23' ] ),
+ * ( [ [ 1, 2 ], [ 1, 2] ] ) -> ( [ '11', '22' ] ).
+ * An optional second string argument can be passed to the function. This argument ( joiner ) defines the string that joins the
+ * srcArray objects.  Examples: ( [ [ 1, 2 ], 3 ], '*' ) -> ( [ '1*3', '2*3' ] ),
+ * ( [ [ 1, 2 ], [ 1, 2 ] ], ' to ' ) -> ( [ '1 to 1', '2 to 2' ] ).
  *
- * @param {array-like} arguments - Contains provided objects.
- * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
+ * @param { Array-like } srcs - Source array with the provided objects.
+ * @param { String } joiner - Optional joiner parameter.
+ * @returns { Object } Returns concatenated objects as string or array. Return type depends from arguments type.
  *
  * @example
  * //returns '123'
@@ -3442,9 +3447,15 @@ function _strDup( s,times )
  * //returns [ '1236', '1247', '1258' ]
  * _.strJoin([ 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] ]);
  *
+ * @example
+ * //returns [ '1 2 3 6', '1 2 4 7', '1 2 5 8' ]
+ * _.strJoin([ 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] ], ' ');
+ *
  * @method strJoin
- * @throws { Exception } If some object from( arguments ) is not a Array, String or Number.
- * @throws { Exception } If length of arrays passed as arguments is different.
+ * @throws { Exception } If ( arguments.length ) is not one or two.
+ * @throws { Exception } If some object from( srcs ) is not a Array, String or Number.
+ * @throws { Exception } If length of arrays in srcs is different.
+ * @throws { Exception } If ( joiner ) is not undefined or a string .
  * @memberof wTools
  *
  */
