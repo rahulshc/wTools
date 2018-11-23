@@ -883,11 +883,11 @@ function strCommonLeft( ins )
 
 /**
  * Finds common symbols from the end of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have same last symbol with pattern( ins ) function returns empty string.
- * Otherwise returns symbol sequence that appears from the end of each string.
+ * If some string doesn`t have same last symbol with pattern( ins ), the function returns an empty string.
+ * Otherwise, it returns the symbol sequence that appears from the end of each string.
  *
- * @param {string} ins - Sequence of possible symbols.
- * @returns {string} Returns found common symbols.
+ * @param { String } ins - Sequence of possible symbols.
+ * @returns { String } Returns found common symbols.
  *
  * @example 'ame'
  * _.strCommonRight( 'ame', 'same', 'name' );

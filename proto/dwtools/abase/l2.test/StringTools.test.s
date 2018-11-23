@@ -8676,6 +8676,11 @@ function strCommonLeft( test )
   test.identical( got, expected );
 
   test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', /a/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
   var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 'abc' ] );
   var expected = '';
   test.identical( got, expected );
@@ -8698,6 +8703,12 @@ function strCommonLeft( test )
   test.shouldThrowError( function( )
   {
     _.strCommonLeft( 3, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is regExp';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( /^a/, 'abd', 'abc', 'ada' );
   });
 
   test.case = 'ins is NaN';
@@ -8747,7 +8758,17 @@ function strCommonRight( test )
   test.identical( got, expected );
 
   test.case = 'ins is empty string';
-  var got = _.strCommonRight( '', 'a', 'b' );
+  var got = _.strCommonRight( '', 'ab', 'b' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'one string is empty';
+  var got = _.strCommonRight( 'abc', '', 'abc', 'bc' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match';
+  var got = _.strCommonRight( 'abcd', 'abc', 'd' );
   var expected = '';
   test.identical( got, expected );
 
@@ -8756,8 +8777,53 @@ function strCommonRight( test )
   var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'one string is empty';
-  var got = _.strCommonRight( 'abc', '', 'abc', 'ada' );
+  test.case = 'several strings';
+  var got = _.strCommonRight( 'abcd', 'cd', 'abcd', 'd' );
+  var expected = 'd';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'cdef', 'abcdef', 'def', 'bcdef' );
+  var expected = 'def';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'abcdef', 'bcdef', 'cdef', 'def' );
+  var expected = 'def';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'abcd', 'bcd', 'abcd' );
+  var expected = 'bcd';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abc', 'abc', 3 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'acde', 'bcde', NaN );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abcd', 'abd', 'ad', [ 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'c', 'bc', 'abc', /c/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abcd', 'cd', 'bcd', [ 'abcd' ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match case';
+  var got = _.strCommonRight( 'abcd', 'cD', 'AbcD' );
   var expected = '';
   test.identical( got, expected );
 
@@ -8768,6 +8834,48 @@ function strCommonRight( test )
   test.shouldThrowError( function( )
   {
     _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is number';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 3, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is regExp';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( /^a/, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is NaN';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( NaN, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( null, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 'abd', 'abc', 'ada', null );
+  });
+
+  test.case = 'ins is undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( undefined, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 'abd', 'abc', 'ada', undefined );
   });
 
 }
