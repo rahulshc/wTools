@@ -8625,13 +8625,63 @@ function strCommonLeft( test )
   var expected = '';
   test.identical( got, expected );
 
+  test.case = 'one string is empty';
+  var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match';
+  var got = _.strCommonLeft( 'abcd', 'abc', 'd' );
+  var expected = '';
+  test.identical( got, expected );
+
   test.case = 'several strings';
   var got = _.strCommonLeft( 'abc', 'abd', 'abc', 'ada' );
   var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'one string is empty';
-  var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
+  test.case = 'several strings';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abc', 'abcd', 'abcde', 'abcdef' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abcdef', 'abcd', 'abcde', 'abc' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abcd', 'abc', 'abcd' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'abc', 3 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'abc', NaN );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 'abc' ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match case';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'Abc' );
   var expected = '';
   test.identical( got, expected );
 
@@ -8642,6 +8692,42 @@ function strCommonLeft( test )
   test.shouldThrowError( function( )
   {
     _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is number';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 3, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is NaN';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( NaN, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( null, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 'abd', 'abc', 'ada', null );
+  });
+
+  test.case = 'ins is undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( undefined, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 'abd', 'abc', 'ada', undefined );
   });
 
 }

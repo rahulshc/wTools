@@ -824,24 +824,27 @@ function strReplaceWords( src,ins,sub )
 // --
 
 /**
- * Finds common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have same first symbol with pattern( ins ) function returns empty string.
- * Otherwise returns symbol sequence that appears from the start of each string.
+ * Find common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have the same first symbols as the pattern ( ins ), the function returns an empty string.
+ * Otherwise, it returns the symbol sequence that appears from the start of each string.
  *
  * @param {string} ins - Sequence of possible symbols.
  * @returns {string} Returns found common symbols.
  *
- * @example 'a'
+ * @example
+ * //returns 'a'
  * _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
  *
- * @example 'abc'
+ * @example
+ * //returns 'abc'
  * _.strCommonLeft( 'abcd', 'abc', 'abcd' );
  *
- * @example ''
+ * @example
+ * //returns ''
  * _.strCommonLeft( 'abcd', 'abc', 'd' )
  *
  * @method strCommonLeft
- * @throws {exception} If( ins ) is not a String.
+ * @throws {exception} If ( ins ) is not a String.
  * @memberof wTools
  *
  */
