@@ -6265,6 +6265,181 @@ function strJoin( test )
 
 //
 
+function strJoinPath( test )
+{
+  // Simple
+  test.case = 'Empty';
+  var got = _.strJoinPath( [ ], '' );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoinPath( [ 'b', 'c' ], '0' );
+  var expected = 'b0c';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoinPath( [ 'Hello', 'world', '!' ], ' ' );
+  var expected = 'Hello world !';
+  test.identical( got,expected );
+
+  test.case = 'join array with joiner';
+  var got = _.strJoinPath( [ '1', '2', '4' ], '/' );
+  var expected = '1/2/4';
+  test.identical( got,expected );
+
+  test.case = 'join array and joiner';
+  var got = _.strJoinPath( [ '0', [ '1', '2' ] ], '3' );
+  var expected = [ '031', '032' ];
+  test.identical( got,expected );
+
+  test.case = 'join arrays and joiner';
+  var got = _.strJoinPath( [ '0', [ '1', '2' ], [ 'a', 'b'] ], '-' );
+  var expected = [ '0-1-a', '0-2-b' ];
+  test.identical( got,expected );
+
+  test.case = 'join arrays and joiner';
+  var got = _.strJoinPath( [ [ '0', '3', '6' ], [ '1', '4', '7' ], [ '2', '5', '8' ] ], 'x' );
+  var expected = [ '0x1x2', '3x4x5', '6x7x8' ];
+  test.identical( got,expected );
+
+  test.case = 'join array + string + joiner';
+  var got = _.strJoinPath([ [ '1', '2' ], '3' ], '__');
+  var expected = [ '1__3', '2__3' ];
+  test.identical( got,expected );
+
+  //Joiner in src strings
+
+  test.case = 'String does not end with joiner';
+  var got = _.strJoinPath( [ 'Hi,', 'world' ], '/' );
+  var expected = 'Hi,/world';
+  test.identical( got,expected );
+
+  test.case = 'String ends with joiner';
+  var got = _.strJoinPath( [ 'Hi,', 'world' ], ',' );
+  var expected = 'Hi,world';
+  test.identical( got,expected );
+
+  test.case = 'String does not begin with joiner';
+  var got = _.strJoinPath( [ 'Hi', ',world' ], '/' );
+  var expected = 'Hi/,world';
+  test.identical( got,expected );
+
+  test.case = 'String begins with joiner';
+  var got = _.strJoinPath( [ 'Hi', ',world' ], ',' );
+  var expected = 'Hi,world';
+  test.identical( got,expected );
+
+  test.case = 'String begins and ends with joiner';
+  var got = _.strJoinPath( [ '/1/', '/2/', '/4/' ], '/' );
+  var expected = '/1/2/4/';
+  test.identical( got,expected );
+
+  test.case = 'String begins and ends with joiner';
+  var got = _.strJoinPath( [ '/1//', '/2//', '//4/' ], '/' );
+  var expected = '/1//2///4/';
+  test.identical( got,expected );
+
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'No arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( );
+  });
+
+  test.case = 'Too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ] );
+  });
+
+  test.case = 'Too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ], '2', '3' );
+  });
+
+  test.case = 'invalid argument type in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ 0, [ '1' ], [ '2' ] ], '/' );
+  });
+
+  test.case = 'invalid argument type in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ { a : 1 }, [ '1' ], [ '2' ] ], '/' );
+  });
+
+  test.case = 'null argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ '1', null ], '/' );
+  });
+
+  test.case = 'null argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ '1', undefined ], '/' );
+  });
+
+  test.case = 'RegExp argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ '1', /a?/ ], '/' );
+  });
+
+  test.case = 'arrays with different lengths in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ [ 1, 2 ], [ 1 ], [ 2 ] ], '/' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( { a : 1 }, [ 1 ] );
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ], null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ], NaN );
+  });
+
+  test.case = 'Wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( '1', 2 );
+  });
+
+  test.case = 'RegExp argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( '1', /a?/ );
+  });
+
+  test.case = 'arrays with different length';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ [ 1, 2 ], [ 1 ] ], '/' );
+  });
+
+}
+
+//
+
 function strUnjoin( test )
 {
   var any = _.strUnjoin.any;
@@ -8873,6 +9048,7 @@ var Self =
     strSub : strSub,
     strReplaceWords : strReplaceWords,
     strJoin : strJoin,
+    strJoinPath : strJoinPath,
     strUnjoin : strUnjoin,
     strUnicodeEscape : strUnicodeEscape,
     strCount : strCount,

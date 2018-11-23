@@ -23,4 +23,5 @@ var got = _.strLinesNearest
   charsRange : 3,
   numberOfLines : 2,
 });
-console.log('GOT', got );
+console.log('GOT', _.strJoin( [ 'a', 'b' ] ) );
+console.log('GOT Path', _.strJoinPath( [ 'a', 'b' ], 'x' ) );

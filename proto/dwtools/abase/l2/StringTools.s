@@ -3417,9 +3417,8 @@ function _strDup( s,times )
 //
 
 /**
- * Joins objects from arguments list together by concatenating their values in order that they are specified.
  * Joins objects inside the source array, by concatenating their values in order that they are specified.
- * The source array can contain strings, numbers and arrays. If any arrays are provided they must have same length.
+ * The source array can contain strings, numbers and arrays. If arrays are provided, they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
  * Joins array with other object by concatenating each array element with that object value. Examples: ( [ [ 1, 2 ], 3 ] ) -> ( [ '13', '23' ] ),
  * ( [ [ 1, 2 ], [ 1, 2] ] ) -> ( [ '11', '22' ] ).
@@ -3459,7 +3458,6 @@ function _strDup( s,times )
  * @memberof wTools
  *
  */
-
 function strJoin( srcs, joiner )
 {
   let result = [ '' ];
@@ -3522,6 +3520,48 @@ function strJoin( srcs, joiner )
 
 //
 
+//
+
+/**
+ * Joins objects inside the source array, by concatenating their values in order that they are specified.
+ * The source array can contain strings and arrays of strings. If arrays are provided, they must have same length.
+ * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ [ '1', '2' ], '3' ] ) -> ( [ '13', '23' ] ),
+ * ( [ [ '1', '2' ], [ '1', '2' ] ] ) -> ( [ '11', '22' ] ).
+ * The ( joiner ) string argument defines the string that joins the srcArray objects. If the srcArray objects start or end with the joiner,
+ * this one is not concatenated ( so it is not repeated ).
+ * Examples: ( [ [ '1', '2' ], '3 ''], '*' ) -> ( [ '1*3', '2*3' ] ),
+ * ( [ [ '1', '2' ], [ '1', '2' ] ], ' to ' ) -> ( [ '1 to 1', '2 to 2' ] ).
+ * ( [ '1/', '/2' ], '/' ) -> ( [ '1/2' ] ).
+ *
+ * @param { Array-like } srcs - Source array with the provided objects.
+ * @param { String } joiner - Joiner parameter.
+ * @returns { Object } Returns concatenated objects as string or array. Return type depends from arguments type.
+ *
+ * @example
+ * //returns '123'
+ * _.strJoin([ '1', '2', '3' ], '' );
+ *
+ * @example
+ * //returns [ '123', '23', '323' ]
+ * _.strJoin([ [ '1', '2', '3' ], '3' ], '2');
+ *
+ * @example
+ * //returns [ '1/1', '2/3' ]
+ * _.strJoin([ [ '1', '2' ], [ '1', '3' ] ], '/');
+ *
+ * @example
+ * //returns [ '1/2/3/6', '1/2/4/7', '1/2/5/8' ]
+ * _.strJoin([ '1', '2', [ '3/', '4/', '5/' ], [ '/6', '/7', '/8' ] ], '/');
+ *
+ * @method strJoin
+ * @throws { Exception } If ( arguments.length ) is not two.
+ * @throws { Exception } If some object from( srcs ) is not a Array or String.
+ * @throws { Exception } If length of arrays in srcs is different.
+ * @throws { Exception } If ( joiner ) is not a string .
+ * @memberof wTools
+ *
+ */
 function strJoinPath( srcs, joiner )
 {
   let result = [ '' ];
@@ -3538,7 +3578,8 @@ function strJoinPath( srcs, joiner )
   {
     let src = srcs[ a ];
 
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    //_.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -3590,7 +3631,6 @@ function strJoinPath( srcs, joiner )
       result[ s ] += src;
     }
   }
-
 }
 
 
