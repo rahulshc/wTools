@@ -255,21 +255,25 @@ function timeOut( delay, onEnd )
 
   /* */
 
+  if( onEnd !== undefined && !_.routineIs( onEnd ) && !_.consequenceIs( onEnd ) )
+  {
+    _.assert( arguments.length === 2, 'Expects two arguments if second one is not callable' );
+
+    let returnOnEnd = onEnd;
+    onEnd = function onEnd()
+    {
+      return returnOnEnd;
+    }
+
+  }
+
+  /* */
+
   if( con )
   con.got( function timeGot( err,arg )
   {
-    // if( err )
-    // debugger;
-
     if( err )
     clearTimeout( timer );
-
-    // if( err && !handleCalled )
-    // {
-    //   arg = err;
-    //   err = undefined;
-    // }
-
     con.give( err,arg );
   });
 

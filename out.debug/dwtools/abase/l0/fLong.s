@@ -3189,10 +3189,10 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 function arrayFlattened( dstArray, insArray )
 {
 
-  /* xxx : reuse arrayRemoveDuplicates for single argument call */
+  /* !!! xxx : reuse arrayRemoveDuplicates for single argument call */
 
-  if( arguments.length <= 2 && insArray === undefined )
-  return _.arrayRemoveDuplicates( dstArray );
+  // if( arguments.length <= 2 && insArray === undefined )
+  // return _.arrayRemoveDuplicates( dstArray );
 
   _.assert( arguments.length >= 2 );
   _.assert( _.objectIs( this ) );
@@ -3240,6 +3240,10 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
+
+  // !!!
+  // if( arguments.length <= 2 && insArray === undefined )
+  // return _.arrayRemoveDuplicates( dstArray );
 
   let result = 0;
 
