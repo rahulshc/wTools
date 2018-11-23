@@ -6493,9 +6493,28 @@ function strCount( test )
 function strDup( test )
 {
 
+  test.case = 'srcString  and number of times remain unchanged';
+  var srcString = 'Hi, ';
+  var times = 3;
+  var got = _.strDup( srcString, times );
+
+  var expected = 'Hi, Hi, Hi, ';
+  test.identical( got, expected );
+
+  var oldSrcString = 'Hi, ';
+  test.identical( srcString, oldSrcString );
+
+  var oldTimes = 3;
+  test.identical( times, oldTimes );
+
   test.case = 'concatenation test';
   var got = _.strDup( 'a', 2 );
   var expected = 'aa';
+  test.identical( got,expected );
+
+  test.case = 'simple string';
+  var got = _.strDup( 'ab', 2 );
+  var expected = 'abab';
   test.identical( got,expected );
 
   test.case = 'invalid times value';
@@ -6503,10 +6522,20 @@ function strDup( test )
   var expected = '';
   test.identical( got,expected );
 
-  test.case = 'simple string';
-  var got = _.strDup( 'a', 2 );
-  var expected = 'aa';
+  test.case = 'zero times';
+  var got = _.strDup( 'a', 0 );
+  var expected = '';
   test.identical( got,expected );
+
+  test.case = 'returns the empty string';
+  var got = _.strDup( 'abc ', 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'Second argument NaN';
+  var got = _.strDup( 'abc', NaN );
+  var expected = '';
+  test.identical( got, expected );
 
   test.case = 'Two words with a spaces';
   var got = _.strDup( 'Hi world ', 2 );
@@ -6518,16 +6547,6 @@ function strDup( test )
   var expected = '  ';
   test.identical( got,expected );
 
-  test.case = 'zero times';
-  var got = _.strDup( 'a', 0 );
-  var expected = '';
-  test.identical( got,expected );
-
-  test.case = 'returns the empty string';
-  var got = _.strDup( 'abc', 0 );
-  var expected = '';
-  test.identical( got, expected );
-
   test.case = 'returns the first copy of the given string';
   var got = _.strDup( 'abc', 1 );
   var expected = 'abc';
@@ -6538,14 +6557,34 @@ function strDup( test )
   var expected = 'abcabcabc';
   test.identical( got, expected );
 
-  test.case = 'Second argument NaN';
-  var got = _.strDup( 'abc', NaN );
-  var expected = '';
+  test.case = 'copies and concatenates first argument 10 times';
+  var got = _.strDup( '1', 10 );
+  var expected = '1111111111';
   test.identical( got, expected );
 
-  test.case = 'vectorized input';
+  test.case = 'vectorized input concatenated negative times';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], - 2 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated zero times';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 0 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated one time';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 1 );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated 3 times';
   var got = _.strDup( [ 'ab', 'cd', 'ef' ], 3 );
   var expected = [ 'ababab', 'cdcdcd', 'efefef' ];
+  test.identical( got, expected );
+
+  test.case = 'Empty vectorized input';
+  var got = _.strDup( [ ], 3 );
+  var expected = [];
   test.identical( got, expected );
 
   /* - */
@@ -6553,10 +6592,34 @@ function strDup( test )
   if( !Config.debug )
   return;
 
-  test.case = 'times is not number';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strDup( 'ab', [ 3,4 ] );
+    _.strDup();
+  });
+
+  test.case = 'second argument is not provided';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 'a' );
+  } );
+
+  test.case = 'first argument is not provided';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 3 );
+  } );
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1' );
+  });
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1', '2', 3 );
   });
 
   test.case = 'invalid arguments count';
@@ -6571,16 +6634,16 @@ function strDup( test )
     _.strDup( 123, 1 );
   });
 
+  test.case = 'times is not number';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 'ab', [ 3, 4 ] );
+  });
+
   test.case = 'invalid second arg type';
   test.shouldThrowError( function()
   {
     _.strDup( 'one', 'two'  );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strDup();
   });
 
   test.case = 'second argument is wrong';
@@ -6589,22 +6652,22 @@ function strDup( test )
     _.strDup( 'a', 'wrong argument' );
   } );
 
-  test.case = 'second argument is not provided';
-  test.shouldThrowError( function( )
-  {
-    _.strDup( 'a' );
-  } );
-
-  test.case = 'invalid arguments count';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strDup( '1' );
+    _.strDup( 1, 2 );
   });
 
   test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strDup( 1, 2 );
+    _.strDup( [ 1, 2 ], 2 );
+  });
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( [ '1', 2 ], 2 );
   });
 
   test.case = 'invalid second argument type';
@@ -6623,6 +6686,18 @@ function strDup( test )
   test.shouldThrowError( function()
   {
     _.strDup( '2', null );
+  });
+
+  test.case = 'undefined argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( undefined, 2 );
+  });
+
+  test.case = 'undefined second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', undefined );
   });
 
   test.case = 'NaN argument';

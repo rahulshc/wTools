@@ -3372,12 +3372,13 @@ _.assert( _.routineIs( strUnjoin.any ) );
 // --
 
 /**
- * Appends string to it itself n-times.
- * Expects two object: source string( s ) and number of concatenations( times ).
+ * Returns a string with the source string appended to itself n-times.
+ * Expects two objects: source string( s ) ( or array of strings ) and number of concatenations( times ).
+ * The string ( s ) and the number ( times ) remain unchanged.
  *
- * @param {string} s - Source string.
- * @param {number} times - Number of concatenation cycles.
- * @returns {String} Returns a string concatenated n-times.
+ * @param { Array/String } s - Source array of strings / source string.
+ * @param { Number } times - Number of concatenation cycles.
+ * @returns { String } - Returns a string containing the src string concatenated n-times.
  *
  * @example
  * //returns WordWordWordWordWord
@@ -3387,8 +3388,12 @@ _.assert( _.routineIs( strUnjoin.any ) );
  * //returns 1 21 2
  * _.strDup( '1 '+'2',2 );
  *
+ * @example
+ * //returns [ 'abab', 'dd', '3 43 4']
+ * _.strDup( [ 'ab', 'd', '3 4'], 2 );
+ *
  * @method strDup
- * @throws { Exception } Throw an exception if( s ) is not a String.
+ * @throws { Exception } Throw an exception if( s ) is not a String or an array of strings.
  * @throws { Exception } Throw an exception if( times ) is not a Number.
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
@@ -4115,7 +4120,7 @@ strLinesSelect.defaults =
  * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
  * @memberof wTools
  */
- 
+
 function strLinesNearest_pre( routine, args )
 {
 
