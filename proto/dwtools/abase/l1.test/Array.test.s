@@ -10068,7 +10068,7 @@ function longRemoveDuplicates( test )
   test.case = 'Duplicates';
 
   var got = returnArgs( 1, '2', 3, 1, '2', 3 );
-  var expected = _.argumentsArrayFrom([ 1, '2', 3 ] );
+  var expected = [ 1, '2', 3 ];
   test.identical( got, expected );
 
   // Evaluators

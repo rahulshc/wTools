@@ -2997,42 +2997,19 @@ function longRemoveDuplicates( dstLong, onEvaluate )
   let length = dstLong.length;
 
   for( let i = 0; i < dstLong.length; i++ )
-  {
-    if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
-    length--;
-    else if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
-    length--;
-  }
+  if( _.arrayLeftIndex( dstLong, dstLong[ i ], i+1, onEvaluate ) !== -1 )
+  length--;
 
   if( length === dstLong.length )
   return dstLong;
 
-  let result;
+  let result = _.entityMake( dstLong, length );
+  result[ 0 ] = dstLong[ 0 ];
 
-  if( _.argumentsArrayIs( dstLong ) )
-  result = _.argumentsArrayFrom( new Array( length ) );
-  else
-  result = new dstLong.constructor( length );
-
-  let j = 0;
-  let index;
-  let initialValueUsed = false;
-  let initialValue = result[ 0 ];
-
-  for( let i = 0; i < dstLong.length && j < length; i++ )
-  {
-    index = _.arrayLeftIndex( result, dstLong[ i ], onEvaluate );
-    if( index === -1 )
-    {
-      result[ j ] = dstLong[ i ];
-      j++;
-    }
-    else if( !initialValueUsed && dstLong[ i ] === initialValue )
-    {
-      j++;
-      initialValueUsed = true;
-    }
-  }
+  let j = 1;
+  for( let i = 1; i < dstLong.length && j < length; i++ )
+  if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
+  result[ j++ ] = dstLong[ i ];
 
   _.assert( j === length );
 
