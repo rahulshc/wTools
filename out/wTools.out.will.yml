@@ -5,7 +5,7 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.355
+  version: 0.8.356
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -172,7 +172,7 @@ path:
 submodule: {}
 reflector:
   reflect.proto.0:
-    reflectMap:
+    filePath:
       ./proto: ./out.release
     srcFilter:
       maskAll:
@@ -196,7 +196,7 @@ reflector:
     inherit:
       - predefined.*
   reflect.proto.1:
-    reflectMap:
+    filePath:
       ./proto: ./out.debug
     srcFilter:
       maskAll:
@@ -242,15 +242,14 @@ reflector:
     inherit:
       - predefined.*
   exported.0:
-    reflectMap:
-      ./proto: true
+    filePath: ./proto
     srcFilter:
       prefixPath: .
     dstFilter:
       prefixPath: .
   exportedFiles.0:
     recursive: 0
-    reflectMap:
+    filePath:
       ./dwtools/Tools.s: true
       ./dwtools/abase/Layer0.s: true
       ./dwtools/abase/Layer1.s: true
@@ -405,7 +404,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.8.355
+    version: 0.8.356
     criterion:
       default: 1
       debug: 1
