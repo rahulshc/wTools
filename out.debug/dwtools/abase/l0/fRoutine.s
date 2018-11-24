@@ -682,7 +682,7 @@ function routineFromPreAndBody_pre( routine, args )
   }
 
   _.routineOptions( routine, o );
-  _.assert( args.length === 1 || args.length === 2 || args.length === 3, 'Expects exactly two arguments' );
+  _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ), 'Expects routine or routines {-o.pre-}' );
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );

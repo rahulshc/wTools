@@ -418,7 +418,7 @@ function bufferRelen( src,len )
 
   if( len > src.length )
   {
-    result = longMakeSimilar( src, len );
+    result = _.longMakeSimilar( src, len );
     result.set( src );
   }
   else if( len < src.length )
@@ -1397,286 +1397,6 @@ buffersDeserialize.defaults =
 }
 
 // --
-// long
-// --
-
-/**
- * The longMakeSimilar() routine returns a new array or a new TypedArray with length equal (length)
- * or new TypedArray with the same length of the initial array if second argument is not provided.
- *
- * @param { longIs } ins - The instance of an array.
- * @param { Number } [ length = ins.length ] - The length of the new array.
- *
- * @example
- * // returns [ , ,  ]
- * let arr = _.longMakeSimilar( [ 1, 2, 3 ] );
- *
- * @example
- * // returns [ , , ,  ]
- * let arr = _.longMakeSimilar( [ 1, 2, 3 ], 4 );
- *
- * @returns { longIs }  Returns an array with a certain (length).
- * @function longMakeSimilar
- * @throws { Error } If the passed arguments is less than two.
- * @throws { Error } If the (length) is not a number.
- * @throws { Error } If the first argument in not an array like object.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
- * @memberof wTools
- */
-
-function longMakeSimilar( ins,src )
-{
-  let result, length;
-
-  if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( src === undefined )
-  {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
-  }
-  else
-  {
-    if( _.longIs( src ) )
-    length = src.length;
-    // else if( _.bufferRawIs( src ) )
-    // length = src.byteLength;
-    else if( _.numberIs( src ) )
-    length = src;
-    else _.assert( 0 );
-  }
-
-  if( _.argumentsArrayIs( ins ) )
-  ins = [];
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
-
-  if( _.longIs( src ) )
-  {
-
-    // if( ins.constructor === Array )
-    // debugger;
-    // else
-    // debugger;
-
-    if( ins.constructor === Array )
-    result = new( _.constructorJoin( ins.constructor, src ) );
-    else if( _.routineIs( ins ) )
-    {
-      if( ins.prototype.constructor.name === 'Array' )
-      result = _ArraySlice.call( src );
-      else
-      result = new ins( src );
-    }
-    else
-    result = new ins.constructor( src );
-
-  }
-  else
-  {
-    if( _.routineIs( ins ) )
-    result = new ins( length );
-    else
-    result = new ins.constructor( length );
-  }
-
-  return result;
-}
-
-//
-
-function longMakeSimilarZeroed( ins,src )
-{
-  let result, length;
-
-  if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( src === undefined )
-  {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
-  }
-  else
-  {
-    if( _.longIs( src ) )
-    length = src.length;
-    else if( _.bufferRawIs( src ) )
-    length = src.byteLength;
-    else
-    length = src
-  }
-
-  if( _.argumentsArrayIs( ins ) )
-  ins = [];
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
-
-    if( _.routineIs( ins ) )
-    {
-      result = new ins( length );
-    }
-    else
-    {
-      result = new ins.constructor( length );
-    }
-
-    if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
-    for( let i = 0 ; i < length ; i++ )
-    result[ i ] = 0;
-
-  // }
-
-  return result;
-}
-
-//
-
-/**
- * Returns a copy of original array( array ) that contains elements from index( f ) to index( l ),
- * but not including ( l ).
- *
- * If ( l ) is omitted or ( l ) > ( array.length ), longSlice extracts through the end of the sequence ( array.length ).
- * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
- * If ( f ) < 0, zero is assigned to begin index( f ).
-
- * @param { Array/Buffer } array - Source array or buffer.
- * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
- * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
- *
- * @example
- * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
- * // returns [ 3, 4, 5, 6 ]
- *
- * @example
- * // begin index is less then zero
- * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
- * // returns [ 1, 2 ]
- *
- * @example
- * //end index is bigger then length of array
- * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
- * // returns [ 6, 7 ]
- *
- * @returns { Array } Returns a shallow copy of elements from the original array.
- * @function longSlice
- * @throws { Error } Will throw an Error if ( array ) is not an Array or Buffer.
- * @throws { Error } Will throw an Error if ( f ) is not a Number.
- * @throws { Error } Will throw an Error if ( l ) is not a Number.
- * @throws { Error } Will throw an Error if no arguments provided.
- * @memberof wTools
-*/
-
-function longSlice( array,f,l )
-{
-  let result;
-
-  if( _.argumentsArrayIs( array ) )
-  if( f === undefined && l === undefined )
-  {
-    if( array.length === 2 )
-    return [ array[ 0 ],array[ 1 ] ];
-    else if( array.length === 1 )
-    return [ array[ 0 ] ];
-    else if( array.length === 0 )
-    return [];
-  }
-
-  _.assert( _.longIs( array ) );
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( _.arrayLikeResizable( array ) )
-  {
-    _.assert( f === undefined || _.numberIs( f ) );
-    _.assert( l === undefined || _.numberIs( l ) );
-    result = array.slice( f,l );
-    return result;
-  }
-
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : array.length;
-
-  _.assert( _.numberIs( f ) );
-  _.assert( _.numberIs( l ) );
-
-  if( f < 0 )
-  f = array.length + f;
-  if( l < 0 )
-  l = array.length + l;
-
-  if( f < 0 )
-  f = 0;
-  if( l > array.length )
-  l = array.length;
-  if( l < f )
-  l = f;
-
-  if( _.bufferTypedIs( array ) )
-  result = new array.constructor( l-f );
-  else
-  result = new Array( l-f );
-
-  for( let r = f ; r < l ; r++ )
-  result[ r-f ] = array[ r ];
-
-  return result;
-}
-
-//
-
-function longButRange( src, range, ins )
-{
-
-  _.assert( _.longIs( src ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-
-  if( _.arrayIs( src ) )
-  return _.arrayButRange( src, range, ins );
-
-  let result;
-  range = _.rangeFrom( range );
-
-  _.rangeClamp( range, [ 0, src.length ] );
-  let d = range[ 1 ] - range[ 0 ];
-  let l = src.length - d + ( ins ? ins.length : 0 );
-
-  result = _.longMakeSimilar( src, l );
-
-  debugger;
-  _.assert( 0,'not tested' )
-
-  for( let i = 0 ; i < range[ 0 ] ; i++ )
-  result[ i ] = src[ i ];
-
-  for( let i = range[ 1 ] ; i < l ; i++ )
-  result[ i-d ] = src[ i ];
-
-  return result;
-}
-
-/*
-
-qqq
-alteration Routines :
-
-- array { Op } { Tense } { How }
-- array { Op } { Tense } Array { How }
-- array { Op } { Tense } Arrays { How }
-- arrayFlatten { Tense } { How }
-
-alteration Op : Append , Prepend , Remove
-alteration Tense : - , ed
-alteration How : - "" , Once , OnceStrictly
-
-// 60 routines
-
-*/
-
-// --
 // array maker
 // --
 
@@ -1732,36 +1452,6 @@ arrayMakeRandom.defaults =
   range : [ 0,1 ],
   length : 1,
 }
-
-//
-
-// /**
-//  * The arrayNewOfSameLength() routine returns a new empty array
-//  * or a new TypedArray with the same length as in (ins).
-//  *
-//  * @param { longIs } ins - The instance of an array.
-//  *
-//  * @example
-//  * // returns [ , , , , ]
-//  * let arr = _.arrayNewOfSameLength( [ 1, 2, 3, 4, 5 ] );
-//  *
-//  * @returns { longIs } - The new empty array with the same length as in (ins).
-//  * @function arrayNewOfSameLength
-//  * @throws { Error } If missed argument, or got more than one argument.
-//  * @throws { Error } If the first argument in not array like object.
-//  * @memberof wTools
-//  */
-
-// function arrayNewOfSameLength( ins )
-// {
-//
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//
-//   if( _.primitiveIs( ins ) ) return;
-//   if( !_.arrayIs( ins ) && !_.bufferTypedIs( ins ) ) return;
-//   let result = longMakeSimilar( ins,ins.length );
-//   return result;
-// }
 
 //
 
@@ -2062,101 +1752,6 @@ function arrayAs( src )
   else
   return [ src ];
 
-}
-
-//
-
-function _longClone( src )
-{
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.longIs( src ) || _.bufferAnyIs( src ) );
-  _.assert( !_.bufferNodeIs( src ), 'not tested' );
-
-  if( _.bufferViewIs( src ) )
-  debugger;
-
-  if( _.bufferRawIs( src ) )
-  return new Uint8Array( new Uint8Array( src ) ).buffer;
-  else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
-  return new src.constructor( src );
-  else if( _.arrayIs( src ) )
-  return src.slice();
-  else if( _.bufferViewIs( src ) )
-  return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
-
-  _.assert( 0, 'unknown kind of buffer', _.strTypeOf( src ) );
-}
-
-//
-
-function longShallowClone()
-{
-  let result;
-  let length = 0;
-
-  if( arguments.length === 1 )
-  {
-    return _._longClone( arguments[ 0 ] );
-  }
-
-  /* eval length */
-
-  for( let a = 0 ; a < arguments.length ; a++ )
-  {
-    let argument = arguments[ a ];
-
-    if( argument === undefined )
-    throw _.err( 'longShallowClone','argument is not defined' );
-
-    if( _.longIs( argument ) ) length += argument.length;
-    else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
-    else length += 1;
-  }
-
-  /* make result */
-
-  if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
-  result = longMakeSimilar( arguments[ 0 ],length );
-  else if( _.bufferRawIs( arguments[ 0 ] ) )
-  result = new ArrayBuffer( length );
-
-  let bufferDst;
-  let offset = 0;
-  if( _.bufferRawIs( arguments[ 0 ] ) )
-  {
-    bufferDst = new Uint8Array( result );
-  }
-
-  /* copy */
-
-  for( let a = 0, c = 0 ; a < arguments.length ; a++ )
-  {
-    let argument = arguments[ a ];
-    if( _.bufferRawIs( argument ) )
-    {
-      bufferDst.set( new Uint8Array( argument ), offset );
-      offset += argument.byteLength;
-    }
-    else if( _.bufferTypedIs( arguments[ 0 ] ) )
-    {
-      result.set( argument, offset );
-      offset += argument.length;
-    }
-    else if( _.longIs( argument ) )
-    for( let i = 0 ; i < argument.length ; i++ )
-    {
-      result[ c ] = argument[ i ];
-      c += 1;
-    }
-    else
-    {
-      result[ c ] = argument;
-      c += 1;
-    }
-  }
-
-  return result;
 }
 
 // --
@@ -2726,7 +2321,7 @@ function arrayDuplicate( o )
   if( o.result )
   _.assert( o.result.length >= length );
 
-  o.result = o.result || longMakeSimilar( o.src,length );
+  o.result = o.result || _.longMakeSimilar( o.src,length );
 
   let rlength = o.result.length;
 
@@ -2915,14 +2510,14 @@ function arrayInvestigateUniqueMap( o )
   _.assert( _.longIs( o.src ) );
   _.assertMapHasOnly( o,arrayInvestigateUniqueMap.defaults );
 
-  /**/
+  /* */
 
   if( o.onEvaluate )
   {
     o.src = _.entityMap( o.src,( e ) => o.onEvaluate( e ) );
   }
 
-  /**/
+  /* */
 
   let number = o.src.length;
   let isUnique = _.longMakeSimilar( o.src );
@@ -2978,14 +2573,14 @@ function arrayUnique( src, onEvaluate )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  let isUnique = arrayInvestigateUniqueMap
+  let isUnique = _.arrayInvestigateUniqueMap
   ({
     src : src,
     onEvaluate : onEvaluate,
     includeFirst : 1,
   });
 
-  let result = longMakeSimilar( src,isUnique.number );
+  let result = _.longMakeSimilar( src, isUnique.number );
 
   let c = 0;
   for( let i = 0 ; i < src.length ; i++ )
@@ -3211,7 +2806,7 @@ function arrayCutin( dstArray, range, srcArray )
     }
     else
     {
-      result = longMakeSimilar( dstArray, newLength );
+      result = _.longMakeSimilar( dstArray, newLength );
     }
 
     if( first > 0 )
@@ -4177,23 +3772,12 @@ let Routines =
   buffersSerialize : buffersSerialize, /* deprecated */
   buffersDeserialize : buffersDeserialize, /* deprecated */
 
-  // long
-
-  longMakeSimilar : longMakeSimilar,
-  longMakeSimilarZeroed : longMakeSimilarZeroed,
-
-  longSlice : longSlice,
-  longButRange : longButRange,
-
   // array maker
 
   arrayMakeRandom : arrayMakeRandom,
   arrayFromNumber : arrayFromNumber,
   arrayFrom : arrayFrom,
   arrayAs : arrayAs,
-
-  _longClone : _longClone,
-  longShallowClone : longShallowClone,
 
   arrayFromRange : arrayFromRange,
   arrayFromProgressionArithmetic : arrayFromProgressionArithmetic,

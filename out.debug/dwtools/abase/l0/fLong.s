@@ -56,6 +56,24 @@ function argumentsArrayFrom( args )
 // unroll
 // --
 
+function unrollIs( src )
+{
+  if( !_.arrayIs( src ) )
+  return false;
+  return !!src[ unrollSymbol ];
+}
+
+//
+
+function unrollIsPopulated( src )
+{
+  if( !_.unrollIs( src ) )
+  return false;
+  return src.length > 0;
+}
+
+//
+
 function unrollFrom( unrollMaybe )
 {
   _.assert( arguments.length === 1 );
@@ -117,63 +135,8 @@ function unrollAppend( dstArray )
 }
 
 // --
-// array checker
+// long
 // --
-
-/**
- * The arrayIs() routine determines whether the passed value is an Array.
- *
- * If the {-srcMap-} is an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayIs( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayIs( 10 );
- *
- * @returns { boolean } Returns true if {-srcMap-} is an Array.
- * @function arrayIs
- * @memberof wTools
- */
-
-function arrayIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Array]';
-}
-
-//
-
-function arrayIsPopulated( src )
-{
-  if( !_.arrayIs( src ) )
-  return false;
-  return src.length > 0;
-}
-
-//
-
-function arrayLikeResizable( src )
-{
-  if( _ObjectToString.call( src ) === '[object Array]' )
-  return true;
-  return false;
-}
-
-//
-
-function arrayLike( src )
-{
-  if( _.arrayIs( src ) )
-  return true;
-  if( _.argumentsArrayIs( src ) )
-  return true;
-  return false;
-}
 
 //
 
@@ -235,20 +198,418 @@ function longIsPopulated( src )
 
 //
 
-function unrollIs( src )
+/**
+ * The longMakeSimilar() routine returns a new array or a new TypedArray with length equal (length)
+ * or new TypedArray with the same length of the initial array if second argument is not provided.
+ *
+ * @param { longIs } ins - The instance of an array.
+ * @param { Number } [ length = ins.length ] - The length of the new array.
+ *
+ * @example
+ * // returns [ , ,  ]
+ * let arr = _.longMakeSimilar( [ 1, 2, 3 ] );
+ *
+ * @example
+ * // returns [ , , ,  ]
+ * let arr = _.longMakeSimilar( [ 1, 2, 3 ], 4 );
+ *
+ * @returns { longIs }  Returns an array with a certain (length).
+ * @function longMakeSimilar
+ * @throws { Error } If the passed arguments is less than two.
+ * @throws { Error } If the (length) is not a number.
+ * @throws { Error } If the first argument in not an array like object.
+ * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @memberof wTools
+ */
+
+function longMakeSimilar( ins,src )
 {
-  if( !_.arrayIs( src ) )
-  return false;
-  return !!src[ unrollSymbol ];
+  let result, length;
+
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( src === undefined )
+  {
+    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+  }
+  else
+  {
+    if( _.longIs( src ) )
+    length = src.length;
+    // else if( _.bufferRawIs( src ) )
+    // length = src.byteLength;
+    else if( _.numberIs( src ) )
+    length = src;
+    else _.assert( 0 );
+  }
+
+  if( _.argumentsArrayIs( ins ) )
+  ins = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
+
+  if( _.longIs( src ) )
+  {
+
+    // if( ins.constructor === Array )
+    // debugger;
+    // else
+    // debugger;
+
+    if( ins.constructor === Array )
+    result = new( _.constructorJoin( ins.constructor, src ) );
+    else if( _.routineIs( ins ) )
+    {
+      if( ins.prototype.constructor.name === 'Array' )
+      result = _ArraySlice.call( src );
+      else
+      result = new ins( src );
+    }
+    else
+    result = new ins.constructor( src );
+
+  }
+  else
+  {
+    if( _.routineIs( ins ) )
+    result = new ins( length );
+    else
+    result = new ins.constructor( length );
+  }
+
+  return result;
 }
 
 //
 
-function unrollIsPopulated( src )
+function longMakeSimilarZeroed( ins,src )
 {
-  if( !_.unrollIs( src ) )
+  let result, length;
+
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( src === undefined )
+  {
+    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+  }
+  else
+  {
+    if( _.longIs( src ) )
+    length = src.length;
+    else if( _.bufferRawIs( src ) )
+    length = src.byteLength;
+    else
+    length = src
+  }
+
+  if( _.argumentsArrayIs( ins ) )
+  ins = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIs( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
+
+  if( _.routineIs( ins ) )
+  {
+    result = new ins( length );
+  }
+  else
+  {
+    result = new ins.constructor( length );
+  }
+
+  if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
+  for( let i = 0 ; i < length ; i++ )
+  result[ i ] = 0;
+
+  return result;
+}
+
+//
+
+function _longClone( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.longIs( src ) || _.bufferAnyIs( src ) );
+  _.assert( !_.bufferNodeIs( src ), 'not tested' );
+
+  if( _.bufferViewIs( src ) )
+  debugger;
+
+  if( _.bufferRawIs( src ) )
+  return new Uint8Array( new Uint8Array( src ) ).buffer;
+  else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
+  return new src.constructor( src );
+  else if( _.arrayIs( src ) )
+  return src.slice();
+  else if( _.bufferViewIs( src ) )
+  return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
+
+  _.assert( 0, 'unknown kind of buffer', _.strTypeOf( src ) );
+}
+
+//
+
+function longShallowClone()
+{
+  let result;
+  let length = 0;
+
+  if( arguments.length === 1 )
+  {
+    return _._longClone( arguments[ 0 ] );
+  }
+
+  /* eval length */
+
+  for( let a = 0 ; a < arguments.length ; a++ )
+  {
+    let argument = arguments[ a ];
+
+    if( argument === undefined )
+    throw _.err( 'argument is not defined' );
+
+    if( _.longIs( argument ) ) length += argument.length;
+    else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
+    else length += 1;
+  }
+
+  /* make result */
+
+  if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
+  result = _.longMakeSimilar( arguments[ 0 ],length );
+  else if( _.bufferRawIs( arguments[ 0 ] ) )
+  result = new ArrayBuffer( length );
+
+  let bufferDst;
+  let offset = 0;
+  if( _.bufferRawIs( arguments[ 0 ] ) )
+  {
+    bufferDst = new Uint8Array( result );
+  }
+
+  /* copy */
+
+  for( let a = 0, c = 0 ; a < arguments.length ; a++ )
+  {
+    let argument = arguments[ a ];
+    if( _.bufferRawIs( argument ) )
+    {
+      bufferDst.set( new Uint8Array( argument ), offset );
+      offset += argument.byteLength;
+    }
+    else if( _.bufferTypedIs( arguments[ 0 ] ) )
+    {
+      result.set( argument, offset );
+      offset += argument.length;
+    }
+    else if( _.longIs( argument ) )
+    for( let i = 0 ; i < argument.length ; i++ )
+    {
+      result[ c ] = argument[ i ];
+      c += 1;
+    }
+    else
+    {
+      result[ c ] = argument;
+      c += 1;
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * Returns a copy of original array( array ) that contains elements from index( f ) to index( l ),
+ * but not including ( l ).
+ *
+ * If ( l ) is omitted or ( l ) > ( array.length ), longSlice extracts through the end of the sequence ( array.length ).
+ * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
+ * If ( f ) < 0, zero is assigned to begin index( f ).
+
+ * @param { Array/Buffer } array - Source array or buffer.
+ * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
+ * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
+ *
+ * @example
+ * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
+ * // returns [ 3, 4, 5, 6 ]
+ *
+ * @example
+ * // begin index is less then zero
+ * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * //end index is bigger then length of array
+ * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
+ * // returns [ 6, 7 ]
+ *
+ * @returns { Array } Returns a shallow copy of elements from the original array.
+ * @function longSlice
+ * @throws { Error } Will throw an Error if ( array ) is not an Array or Buffer.
+ * @throws { Error } Will throw an Error if ( f ) is not a Number.
+ * @throws { Error } Will throw an Error if ( l ) is not a Number.
+ * @throws { Error } Will throw an Error if no arguments provided.
+ * @memberof wTools
+*/
+
+function longSlice( array,f,l )
+{
+  let result;
+
+  if( _.argumentsArrayIs( array ) )
+  if( f === undefined && l === undefined )
+  {
+    if( array.length === 2 )
+    return [ array[ 0 ],array[ 1 ] ];
+    else if( array.length === 1 )
+    return [ array[ 0 ] ];
+    else if( array.length === 0 )
+    return [];
+  }
+
+  _.assert( _.longIs( array ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( _.arrayLikeResizable( array ) )
+  {
+    _.assert( f === undefined || _.numberIs( f ) );
+    _.assert( l === undefined || _.numberIs( l ) );
+    result = array.slice( f,l );
+    return result;
+  }
+
+  f = f !== undefined ? f : 0;
+  l = l !== undefined ? l : array.length;
+
+  _.assert( _.numberIs( f ) );
+  _.assert( _.numberIs( l ) );
+
+  if( f < 0 )
+  f = array.length + f;
+  if( l < 0 )
+  l = array.length + l;
+
+  if( f < 0 )
+  f = 0;
+  if( l > array.length )
+  l = array.length;
+  if( l < f )
+  l = f;
+
+  if( _.bufferTypedIs( array ) )
+  result = new array.constructor( l-f );
+  else
+  result = new Array( l-f );
+
+  for( let r = f ; r < l ; r++ )
+  result[ r-f ] = array[ r ];
+
+  return result;
+}
+
+//
+
+function longButRange( src, range, ins )
+{
+
+  _.assert( _.longIs( src ) );
+  _.assert( ins === undefined || _.longIs( ins ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( _.arrayIs( src ) )
+  return _.arrayButRange( src, range, ins );
+
+  let result;
+  range = _.rangeFrom( range );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  let d = range[ 1 ] - range[ 0 ];
+  let l = src.length - d + ( ins ? ins.length : 0 );
+
+  result = _.longMakeSimilar( src, l );
+
+  debugger;
+  _.assert( 0,'not tested' )
+
+  for( let i = 0 ; i < range[ 0 ] ; i++ )
+  result[ i ] = src[ i ];
+
+  for( let i = range[ 1 ] ; i < l ; i++ )
+  result[ i-d ] = src[ i ];
+
+  return result;
+}
+
+//
+
+longRemoveDuplicates
+
+// --
+// array checker
+// --
+
+/**
+ * The arrayIs() routine determines whether the passed value is an Array.
+ *
+ * If the {-srcMap-} is an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayIs( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayIs( 10 );
+ *
+ * @returns { boolean } Returns true if {-srcMap-} is an Array.
+ * @function arrayIs
+ * @memberof wTools
+ */
+
+function arrayIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Array]';
+}
+
+//
+
+function arrayIsPopulated( src )
+{
+  if( !_.arrayIs( src ) )
   return false;
   return src.length > 0;
+}
+
+//
+
+function arrayLikeResizable( src )
+{
+  if( _ObjectToString.call( src ) === '[object Array]' )
+  return true;
+  return false;
+}
+
+//
+
+function arrayLike( src )
+{
+  if( _.arrayIs( src ) )
+  return true;
+  if( _.argumentsArrayIs( src ) )
+  return true;
+  return false;
 }
 
 //
@@ -358,7 +719,7 @@ function arrayHasArray( arr )
  * @memberof wTools
  */
 
-function arrayCompare( src1,src2 )
+function arrayCompare( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src1 ) && _.longIs( src2 ) );
@@ -396,7 +757,7 @@ function arrayCompare( src1,src2 )
  * @memberof wTools
  */
 
-function arrayIdentical( src1,src2 )
+function arrayIdentical( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src1 ) );
@@ -419,6 +780,77 @@ function arrayIdentical( src1,src2 )
 
   return result;
 }
+
+//
+
+function arrayAreUnique( srcArray )
+{
+  let isUnique = _.longMakeSimilar( o.src );
+
+  x
+
+  // if( _.longIs( o ) )
+  // o = { src : o };
+  //
+  // _.assert( arguments.length === 1, 'Expects single argument' );
+  // _.assert( _.longIs( o.src ) );
+  // _.assertMapHasOnly( o,arrayInvestigateUniqueMap.defaults );
+  //
+  // /* */
+  //
+  // if( o.onEvaluate )
+  // {
+  //   o.src = _.entityMap( o.src,( e ) => o.onEvaluate( e ) );
+  // }
+  //
+  // /* */
+  //
+  // let number = o.src.length;
+  // let isUnique = _.longMakeSimilar( o.src );
+  // let index;
+  //
+  // for( let i = 0 ; i < o.src.length ; i++ )
+  // isUnique[ i ] = 1;
+  //
+  // for( let i = 0 ; i < o.src.length ; i++ )
+  // {
+  //
+  //   index = i;
+  //
+  //   if( !isUnique[ i ] )
+  //   continue;
+  //
+  //   let currentUnique = 1;
+  //   do
+  //   {
+  //     index = o.src.indexOf( o.src[ i ],index+1 );
+  //     if( index !== -1 )
+  //     {
+  //       isUnique[ index ] = 0;
+  //       number -= 1;
+  //       currentUnique = 0;
+  //     }
+  //   }
+  //   while( index !== -1 );
+  //
+  //   if( !o.includeFirst )
+  //   if( !currentUnique )
+  //   {
+  //     isUnique[ i ] = 0;
+  //     number -= 1;
+  //   }
+  //
+  // }
+  //
+  // return { number : number, array : isUnique };
+}
+
+// arrayInvestigateUniqueMap.defaults =
+// {
+//   src : null,
+//   onEvaluate : null,
+//   includeFirst : 0,
+// }
 
 //
 
@@ -3189,10 +3621,10 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 function arrayFlattened( dstArray, insArray )
 {
 
-  /* xxx : reuse arrayRemoveDuplicates for single argument call */
+  /* !!! xxx : reuse arrayRemoveDuplicates for single argument call */
 
-  if( arguments.length <= 2 && insArray === undefined )
-  return _.arrayRemoveDuplicates( dstArray );
+  // if( arguments.length <= 2 && insArray === undefined )
+  // return _.arrayRemoveDuplicates( dstArray );
 
   _.assert( arguments.length >= 2 );
   _.assert( _.objectIs( this ) );
@@ -3240,6 +3672,10 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
+
+  // !!!
+  // if( arguments.length <= 2 && insArray === undefined )
+  // return _.arrayRemoveDuplicates( dstArray );
 
   let result = 0;
 
@@ -3587,9 +4023,33 @@ let Routines =
 
   // unroll
 
+  unrollIs : unrollIs,
+  unrollIsPopulated : unrollIsPopulated,
+
   unrollFrom : unrollFrom,
   unrollPrepend : unrollPrepend,
   unrollAppend : unrollAppend,
+
+  // long
+
+  longIs : longIs,
+  longIsPopulated : longIsPopulated,
+
+  longMakeSimilar : longMakeSimilar,
+  longMakeSimilarZeroed : longMakeSimilarZeroed,
+
+  _longClone : _longClone,
+  longShallowClone : longShallowClone,
+
+  longSlice : longSlice,
+  longButRange : longButRange,
+
+  longRemoveDuplicates : longRemoveDuplicates,
+
+  // longAreUnique : longAreUnique,
+  // longAllAreUnique : longAllAreUnique,
+  // longAnyAreUnique : longAnyAreUnique,
+  // longNoneAreUnique : longNoneAreUnique,
 
   // array checker
 
@@ -3597,12 +4057,6 @@ let Routines =
   arrayIsPopulated : arrayIsPopulated,
   arrayLikeResizable : arrayLikeResizable,
   arrayLike : arrayLike,
-
-  longIs : longIs,
-  longIsPopulated : longIsPopulated,
-
-  unrollIs : unrollIs,
-  unrollIsPopulated : unrollIsPopulated,
 
   constructorLikeArray : constructorLikeArray,
   hasLength : hasLength,
@@ -3718,7 +4172,6 @@ let Routines =
   arrayRemovedAll : arrayRemovedAll,
 
   arrayRemoveDuplicates : arrayRemoveDuplicates,
-  longRemoveDuplicates : longRemoveDuplicates,
 
   // array flatten
 
