@@ -1015,9 +1015,18 @@ function arrayNone( src )
 
 function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 {
+  let fromIndex = 0;
 
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  if( _.numberIs( arguments[ 2 ] ) )
+  {
+    fromIndex = arguments[ 2 ];
+    evaluator1 = arguments[ 3 ];
+    evaluator2 = arguments[ 4 ];
+  }
+
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( arr ) );
+  _.assert( _.numberIs( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -1026,12 +1035,12 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
   if( !evaluator1 )
   {
     _.assert( !evaluator2 );
-    return _ArrayIndexOf.call( arr, ins );
+    return _ArrayIndexOf.call( arr, ins, fromIndex );
   }
   else if( evaluator1.length === 2 )
   {
     _.assert( !evaluator2 );
-    for( let a = 0 ; a < arr.length ; a++ )
+    for( let a = fromIndex ; a < arr.length ; a++ )
     {
 
       if( evaluator1( arr[ a ],ins ) )
@@ -1047,7 +1056,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    for( let a = 0 ; a < arr.length ; a++ )
+    for( let a = fromIndex; a < arr.length ; a++ )
     {
       if( evaluator1( arr[ a ] ) === ins )
       return a;
@@ -1062,11 +1071,20 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 
 function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 {
-
   if( ins === undefined )
   debugger;
 
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  let fromIndex = arr.length-1;
+
+  if( _.numberIs( arguments[ 2 ] ) )
+  {
+    fromIndex = arguments[ 2 ];
+    evaluator1 = arguments[ 3 ];
+    evaluator2 = arguments[ 4 ];
+  }
+
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.numberIs( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -1077,12 +1095,12 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     _.assert( !evaluator2 );
     if( !_.arrayIs( arr ) )
     debugger;
-    return _ArrayLastIndexOf.call( arr, ins );
+    return _ArrayLastIndexOf.call( arr, ins, fromIndex );
   }
   else if( evaluator1.length === 2 )
   {
     _.assert( !evaluator2 );
-    for( let a = arr.length-1 ; a >= 0 ; a-- )
+    for( let a = fromIndex ; a >= 0 ; a-- )
     {
       if( evaluator1( arr[ a ],ins ) )
       return a;
@@ -1096,7 +1114,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    for( let a = arr.length-1 ; a >= 0 ; a-- )
+    for( let a = fromIndex ; a >= 0 ; a-- )
     {
       if( evaluator1( arr[ a ] ) === ins )
       return a;
@@ -3411,42 +3429,19 @@ function longRemoveDuplicates( dstLong, onEvaluate )
   let length = dstLong.length;
 
   for( let i = 0; i < dstLong.length; i++ )
-  {
-    if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
-    length--;
-    else if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
-    length--;
-  }
+  if( _.arrayLeftIndex( dstLong, dstLong[ i ], i+1, onEvaluate ) !== -1 )
+  length--;
 
   if( length === dstLong.length )
   return dstLong;
 
-  let result;
+  let result = _.entityMake( dstLong, length );
+  result[ 0 ] = dstLong[ 0 ];
 
-  if( _.argumentsArrayIs( dstLong ) )
-  result = _.argumentsArrayFrom( new Array( length ) );
-  else
-  result = new dstLong.constructor( length );
-
-  let j = 0;
-  let index;
-  let initialValueUsed = false;
-  let initialValue = result[ 0 ];
-
-  for( let i = 0; i < dstLong.length || j < length; i++ )
-  {
-    index = _.arrayLeftIndex( result, dstLong[ i ], onEvaluate );
-    if( index === -1 )
-    {
-      result[ j ] = dstLong[ i ];
-      j++;
-    }
-    else if( !initialValueUsed && dstLong[ i ] === initialValue )
-    {
-      j++;
-      initialValueUsed = true;
-    }
-  }
+  let j = 1;
+  for( let i = 1; i < dstLong.length && j < length; i++ )
+  if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
+  result[ j++ ] = dstLong[ i ];
 
   _.assert( j === length );
 
@@ -3548,7 +3543,11 @@ function arrayFlatten( dstArray, insArray )
     dstArray = [];
     arguments[ 0 ] = dstArray;
   }
-  _.arrayFlattened.apply( this, arguments );
+
+  let result = _.arrayFlattened.apply( this, arguments );
+  if( _.longIs( result ) )
+  return result;
+
   return dstArray;
 }
 
@@ -3556,7 +3555,9 @@ function arrayFlatten( dstArray, insArray )
 
 function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  arrayFlattenedOnce.apply( this, arguments );
+  let result = arrayFlattenedOnce.apply( this, arguments );
+  if( _.longIs( result ) )
+  return result;
   return dstArray;
 }
 
@@ -3568,6 +3569,9 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
   if( Config.debug )
   {
     result = arrayFlattenedOnce.apply( this, arguments );
+
+    if( _.longIs( result ) )
+    return result;
 
     function _count( arr )
     {
@@ -3587,6 +3591,8 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
   else
   {
     result = arrayFlattened.apply( this, [ dstArray, insArray ] );
+    if( _.longIs( result ) )
+    return result;
   }
 
  return dstArray;
@@ -3624,7 +3630,7 @@ function arrayFlattened( dstArray, insArray )
   /* !!! xxx : reuse arrayRemoveDuplicates for single argument call */
 
   // if( arguments.length <= 2 && insArray === undefined )
-  // return _.arrayRemoveDuplicates( dstArray );
+  // return _.longRemoveDuplicates( dstArray );
 
   _.assert( arguments.length >= 2 );
   _.assert( _.objectIs( this ) );
@@ -3669,13 +3675,12 @@ function arrayFlattened( dstArray, insArray )
 
 function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
 
-  // !!!
   // if( arguments.length <= 2 && insArray === undefined )
-  // return _.arrayRemoveDuplicates( dstArray );
+  // return _.longRemoveDuplicates( dstArray );
 
   let result = 0;
 
