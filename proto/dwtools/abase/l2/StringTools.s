@@ -3805,6 +3805,35 @@ function strLinesJoin( src )
 
 //
 
+/**
+ * Remove espace characters and white spaces at the begin or at the end of each line.
+ * Input arguments can be strings or arrays of strings. If input is a string, it splits it in lines and
+ * removes the white/escape characters from the beggining and the end of each line. If input is an array,
+ * it removes the white/escape characters only from the beggining and the end of the strings.
+ *
+ * @param { String/Array } [ src ] - Source string or array of strings.
+ * @returns { String/Array } Returns string/array with empty lines and spaces removed.
+ *
+ * @example input string
+ * _.strLinesStrip( '  Hello \r\n\t World \n\n ' );
+ * //returns 'Hello\nWorld'
+ *
+ * @example input array
+ * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
+ * //returns  [ 'Hello \r\n\t world', '\n! \n' ]
+ *
+ * @example input strings
+ * _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
+ * //returns [ 'Hello', 'World\n!', '' ]
+ *
+ * @example input arrays
+ * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou \n? \n'], [ '\t\r\n  ' ] );
+ * //returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you \n?' ], [] ]
+ *
+ * @method strLinesStrip
+ * @throws { Exception } Throw an exception if( src ) is not a String or Array.
+ * @memberof wTools
+ */
 function strLinesStrip( src )
 {
 
@@ -3819,9 +3848,8 @@ function strLinesStrip( src )
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1 );
   let lines = _.strLinesSplit( src );
-  logger.log('Split', lines )
   lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
-  logger.log('Trim', lines )
+
   if( _.strIs( src ) )
   lines = _.strLinesJoin( lines );
   return lines;

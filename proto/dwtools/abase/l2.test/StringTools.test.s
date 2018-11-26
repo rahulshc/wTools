@@ -7505,63 +7505,82 @@ function strLinesStrip( test )
   test.identical( got, expected );
 
   //
-    test.case = 'Argument is only one array';
 
-    test.case = 'Src stays unchanged';
-    var srcArray = [ '\na\n\nbc\ndef\n' ];
-    var got = _.strLinesStrip( srcArray );
+  test.case = 'Argument is only one array';
 
-    var expected = [ 'a\n\nbc\ndef' ];
-    test.identical( got, expected );
+  test.case = 'Src stays unchanged';
+  var srcArray = [ '\na\n\nbc\ndef\n' ];
+  var got = _.strLinesStrip( srcArray );
 
-    var oldSrcArray = [ '\na\n\nbc\ndef\n' ];
-    test.identical( srcArray, oldSrcArray );
+  var expected = [ 'a\n\nbc\ndef' ];
+  test.identical( got, expected );
 
-    test.case = 'Empty array';
-    var got = _.strLinesStrip( [] );
-    var expected = [];
-    test.identical( got, expected );
+  var oldSrcArray = [ '\na\n\nbc\ndef\n' ];
+  test.identical( srcArray, oldSrcArray );
 
-    test.case = 'Empty array with empty string';
-    var got = _.strLinesStrip( [ '' ] );
-    var expected = [ ];
-    test.identical( got, expected );
+  test.case = 'Empty array';
+  var got = _.strLinesStrip( [] );
+  var expected = [];
+  test.identical( got, expected );
 
-    test.case = 'Only escape sequences';
-    var got = _.strLinesStrip( [ '', '\t\r\n' ] );
-    var expected = [ ];
-    test.identical( got, expected );
+  test.case = 'Empty array with empty string';
+  var got = _.strLinesStrip( [ '' ] );
+  var expected = [ ];
+  test.identical( got, expected );
 
-    test.case = 'String without escape sequences and begin/end spaces';
-    var got = _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] );
-    var expected = [ 'Hello world' ];
-    test.identical( got, expected );
+  test.case = 'Only escape sequences';
+  var got = _.strLinesStrip( [ '', '\t\r\n' ] );
+  var expected = [ ];
+  test.identical( got, expected );
 
-    test.case = 'String with begin/end spaces';
-    var got = _.strLinesStrip( [ '  Hello ', ' world   ' ] );
-    var expected = [ 'Hello', 'world' ];
-    test.identical( got, expected );
+  test.case = 'String without escape sequences and begin/end spaces';
+  var got = _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] );
+  var expected = [ 'Hello world' ];
+  test.identical( got, expected );
 
-    test.case = 'String with begin/end escape sequences';
-    var got = _.strLinesStrip( [ '\t\r\nHello  ', '  world\r\n\t' ] );
-    var expected = [ 'Hello', 'world' ];
-    test.identical( got, expected );
+  test.case = 'String with begin/end spaces';
+  var got = _.strLinesStrip( [ '  Hello ', ' world   ' ] );
+  var expected = [ 'Hello', 'world' ];
+  test.identical( got, expected );
 
-    test.case = 'String with escape sequences';
-    var got = _.strLinesStrip( [ '\n\tHello\r\n\tworld\r\n' ] );
-    var expected = [ 'Hello\r\n\tworld' ];
-    test.identical( got, expected );
+  test.case = 'String with begin/end escape sequences';
+  var got = _.strLinesStrip( [ '\t\r\nHello  ', '  world\r\n\t' ] );
+  var expected = [ 'Hello', 'world' ];
+  test.identical( got, expected );
 
-    test.case = 'String with escape sequences';
-    var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
-    var expected = 'Hello\nworld';
-    test.identical( got, expected );
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( [ '\n\tHello\r\n\tworld\r\n' ] );
+  var expected = [ 'Hello\r\n\tworld' ];
+  test.identical( got, expected );
 
-    test.case = 'String with escape sequences and spaces';
-    var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t', '  \nHow are you?  \r  \n  \t  ' ] );
-    var expected = [ 'Hello  \r\n\t\t\r\n World \t\r\n!', 'How are you?' ] ;
-    test.identical( got, expected );
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
+  var expected = 'Hello\nworld';
+  test.identical( got, expected );
 
+  test.case = 'String with escape sequences and spaces';
+  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t', '  \nHow are you?  \r  \n  \t  ' ] );
+  var expected = [ 'Hello  \r\n\t\t\r\n World \t\r\n!', 'How are you?' ] ;
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'Several arguments';
+
+  test.case = 'Several strings';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n',' World \t\r\n! \r\n\t', ' \nHow are you?  ' );
+  var expected = [ 'Hello', 'World\n!', 'How are you?' ] ;
+  test.identical( got, expected );
+
+  test.case = 'Several arrays';
+  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n', ' World \t\r\n! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], [ '  \n\r\t ' ]  );
+  var expected = [ [ 'Hello', 'World \t\r\n!' ], [ 'How', 'are', 'you \n ?' ], [ ] ];
+  test.identical( got, expected );
+
+  test.case = 'Several strings and arrays';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n', [ ' World \t\r\n ', ' ! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], ' I am \n\r\t good \n\n ' );
+  var expected = [ 'Hello', [ 'World', '!' ], [ 'How', 'are', 'you \n ?' ], 'I am\ngood' ];
+  test.identical( got, expected );
 
 
   /* - */

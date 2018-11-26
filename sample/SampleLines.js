@@ -25,7 +25,6 @@ var got = _.strLinesNearest
 });
 
 console.log( 'String' )
-console.log( 'GOT',  [ _.strLinesStrip( '\b\t\r' ) ]  , 'end'  );
+console.log( 'GOT',  [ _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' ) ]  , 'end'  );
 console.log( 'Array' )
-//console.log( 'GOT', _.strLinesStrip( [ '\na\n\nbc' ], [ '\ndef\n' ] ), 'end'  );
-logger.log( _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] ) )
+console.log( 'GOT', _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou \n? \n'] ), 'end'  );
