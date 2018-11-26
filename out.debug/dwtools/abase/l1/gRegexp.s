@@ -652,7 +652,7 @@ regexpsAll.defaults =
 function regexpArrayMake( src )
 {
 
-  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.strTypeOf( src ) );
+  _.assert( _.regexpLike( src ) || _.arrayLike( src ), 'Expects array/regexp/string, got ' + _.strType( src ) );
 
   src = _.arrayFlatten( [], _.arrayAs( src ) );
 

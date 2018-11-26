@@ -23,16 +23,18 @@ let _propertyIsEumerable = Object.propertyIsEnumerable;
 
 function diagnosticStack( stack )
 {
-  // return '-- diagnosticStack -';
-  return stack || new Error().stack;
+  if( stack )
+  return stack.stack || stack;
+  return new Error().stack;
 }
 
 //
 
 function diagnosticStackCondense( stack )
 {
-  // return '-- diagnosticStackCondense -';
-  return stack || new Error().stack;
+  if( stack )
+  return stack.stack || stack;
+  return new Error().stack;
 }
 
 //
@@ -290,7 +292,7 @@ function _err( o )
   if( !stack )
   stack = o.fallBackStack;
 
-  if( !_.strEnds( stack, '\n' ) )
+  if( _.strIs( stack ) && !_.strEnds( stack, '\n' ) )
   stack = stack + '\n';
 
   if( stack && !stackCondensed )
@@ -740,58 +742,95 @@ function error_functor( name, onMake )
   if( _.strIs( onMake ) || _.arrayIs( onMake ) )
   {
     let prepend = onMake;
-    onMake = function onErrorMake( )
+    onMake = function onErrorMake()
     {
       debugger;
-      let args = _.arrayAppendArrays( [], [ prepend, args ] );
-      return _.err.apply( _, arguments );
+      let arg = _.arrayAppendArrays( [], [ prepend, arguments ] );
+      return args;
+      // return _.err.apply( _, arguments );
     }
   }
   else if( !onMake )
-  onMake = function onErrorMake( )
+  onMake = function onErrorMake()
   {
-    return _.err.apply( _, arguments );
+    return arguments;
+    // return _.err.apply( _, arguments );
   }
 
-  let wrap =
+  let Error =
   {
     [ name ] : function()
     {
-      return act.apply( this, arguments );
+      // console.log( name );
+      // debugger;
+
+      if( !( this instanceof ErrorConstructor ) )
+      {
+        let err1 = new ErrorConstructor();
+        let args1 = onMake.apply( err1, arguments );
+        _.assert( _.arrayLike( args1 ) );
+        let args2 = _.arrayAppendArrays( [], [ args1, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
+        let err2 = _.err.apply( _, args2 );
+
+        _.assert( err1 === err2 );
+        _.assert( err2 instanceof _global.Error );
+        _.assert( err2 instanceof ErrorConstructor );
+        _.assert( !!err2.stack );
+
+        return err2;
+      }
+      else
+      {
+        // debugger;
+        // let r = Error.call( this );
+        // debugger;
+        _.assert( arguments.length === 0 );
+        return this;
+      }
     }
   }
 
-  let Error1 = wrap[ name ]
+  // let wrap =
+  // {
+  //   [ name ] : function()
+  //   {
+  //     console.log( name );
+  //     debugger;
+  //     return act.apply( this, arguments );
+  //   }
+  // }
 
-  _.assert( Error1.name === name, 'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.' );
+  let ErrorConstructor = Error[ name ];
 
-  Error1.prototype = Object.create( Error.prototype );
-  Error1.prototype.constructor = Error1;
-  Error1.constructor = Error1;
+  _.assert( ErrorConstructor.name === name, 'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.' );
 
-  return Error1;
+  ErrorConstructor.prototype = Object.create( _global.Error.prototype );
+  ErrorConstructor.prototype.constructor = ErrorConstructor;
+  ErrorConstructor.constructor = ErrorConstructor;
+
+  return ErrorConstructor;
 
   /* */
 
-  function act()
-  {
-
-    if( !( this instanceof Error1 ) )
-    {
-      let err1 = new Error1();
-      let args = _.arrayAppendArrays( [], [ arguments, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
-      let err2 = onMake.apply( this, args );
-
-      _.assert( err2 instanceof Error );
-      _.assert( err2 instanceof Error1 );
-      _.assert( !!err2.stack );
-
-      return err2;
-    }
-
-    _.assert( arguments.length === 0 );
-    return this;
-  }
+  // function act()
+  // {
+  //
+  //   if( !( this instanceof Error1 ) )
+  //   {
+  //     let err1 = new Error1();
+  //     let args = _.arrayAppendArrays( [], [ arguments, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
+  //     let err2 = onMake.apply( this, args );
+  //
+  //     _.assert( err2 instanceof Error );
+  //     _.assert( err2 instanceof Error1 );
+  //     _.assert( !!err2.stack );
+  //
+  //     return err2;
+  //   }
+  //
+  //   _.assert( arguments.length === 0 );
+  //   return this;
+  // }
 
 }
 

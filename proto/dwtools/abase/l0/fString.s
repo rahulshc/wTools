@@ -84,15 +84,15 @@ function strsAreNotEmpty( src )
 /**
   * Return type of src.
   * @example
-      let str = _.strTypeOf( 'testing' );
+      let str = _.strType( 'testing' );
   * @param {*} src
   * @return {string}
   * string name of type src
-  * @function strTypeOf
+  * @function strType
   * @memberof wTools
   */
 
-function strTypeOf( src )
+function strType( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -134,7 +134,7 @@ function strPrimitiveTypeOf( src )
   let result = /\[(\w+) (\w+)\]/.exec( name );
 
   if( !result )
-  throw _.err( 'strTypeOf :','unknown type',name );
+  throw _.err( 'strType :','unknown type',name );
   return result[ 2 ];
 }
 
@@ -210,7 +210,7 @@ function str()
     }
     catch( err )
     {
-      line = _.strTypeOf( src );
+      line = _.strType( src );
     }
 
     result += line + ' ';
@@ -970,7 +970,7 @@ let Routines =
   strDefined,
   strsAreNotEmpty,
 
-  strTypeOf,
+  strType,
   strPrimitiveTypeOf,
   strQuote,
 

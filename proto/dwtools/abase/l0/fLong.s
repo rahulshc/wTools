@@ -28,40 +28,81 @@ function argumentsArrayIs( src )
 
 //
 
+function argumentsArrayMake( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.numberIs( src ) || _.longIs( src ) );
+  if( _.numberIs( src ) )
+  return _argumentsArrayMake.apply( _, Array( src ) );
+  else
+  return _argumentsArrayMake.apply( _, src );
+}
+
+//
+
 function _argumentsArrayMake()
 {
   return arguments;
 }
 
 //
-
-function argumentsArrayOfLength( length )
-{
-  debugger; xxx
-  let a = new Arguments( length );
-  return a;
-}
-
+//
+// function argumentsArrayOfLength( length )
+// {
+//   debugger; xxx
+//   let a = new Arguments( length );
+//   return a;
+// }
+//
 //
 
-function argumentsArrayFrom( args )
+function argumentsArrayFrom( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  if( _.argumentsArrayIs( args ) )
-  return args;
-  return _argumentsArrayMake.apply( this, args );
+  if( _.argumentsArrayIs( src ) )
+  return src;
+  return _.argumentsArrayMake( src );
 }
 
 // --
 // unroll
 // --
 
-function unrollFrom( unrollMaybe )
+function unrollIs( src )
+{
+  if( !_.arrayIs( src ) )
+  return false;
+  return !!src[ unrollSymbol ];
+}
+
+//
+
+function unrollIsPopulated( src )
+{
+  if( !_.unrollIs( src ) )
+  return false;
+  return src.length > 0;
+}
+
+//
+
+function unrollMake( src )
+{
+  let result = _.arrayMake( src );
+  _.assert( arguments.length === 1 );
+  _.assert( _.arrayIs( result ) );
+  result[ unrollSymbol ] = true;
+  return result;
+}
+
+//
+
+function unrollFrom( src )
 {
   _.assert( arguments.length === 1 );
-  if( _.unrollIs( unrollMaybe ) )
-  return unrollMaybe;
-  return _.unrollAppend( null, unrollMaybe );
+  if( _.unrollIs( src ) )
+  return src;
+  return _.unrollMake( src );
 }
 
 //
@@ -117,63 +158,8 @@ function unrollAppend( dstArray )
 }
 
 // --
-// array checker
+// long
 // --
-
-/**
- * The arrayIs() routine determines whether the passed value is an Array.
- *
- * If the {-srcMap-} is an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * // returns true
- * arrayIs( [ 1, 2 ] );
- *
- * @example
- * // returns false
- * arrayIs( 10 );
- *
- * @returns { boolean } Returns true if {-srcMap-} is an Array.
- * @function arrayIs
- * @memberof wTools
- */
-
-function arrayIs( src )
-{
-  return _ObjectToString.call( src ) === '[object Array]';
-}
-
-//
-
-function arrayIsPopulated( src )
-{
-  if( !_.arrayIs( src ) )
-  return false;
-  return src.length > 0;
-}
-
-//
-
-function arrayLikeResizable( src )
-{
-  if( _ObjectToString.call( src ) === '[object Array]' )
-  return true;
-  return false;
-}
-
-//
-
-function arrayLike( src )
-{
-  if( _.arrayIs( src ) )
-  return true;
-  if( _.argumentsArrayIs( src ) )
-  return true;
-  return false;
-}
 
 //
 
@@ -235,20 +221,761 @@ function longIsPopulated( src )
 
 //
 
-function unrollIs( src )
+/**
+ * The longMake() routine returns a new array or a new TypedArray with length equal (length)
+ * or new TypedArray with the same length of the initial array if second argument is not provided.
+ *
+ * @param { longIs } ins - The instance of an array.
+ * @param { Number } [ length = ins.length ] - The length of the new array.
+ *
+ * @example
+ * // returns [ , ,  ]
+ * let arr = _.longMake( [ 1, 2, 3 ] );
+ *
+ * @example
+ * // returns [ , , ,  ]
+ * let arr = _.longMake( [ 1, 2, 3 ], 4 );
+ *
+ * @returns { longIs }  Returns an array with a certain (length).
+ * @function longMake
+ * @throws { Error } If the passed arguments is less than two.
+ * @throws { Error } If the (length) is not a number.
+ * @throws { Error } If the first argument in not an array like object.
+ * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @memberof wTools
+ */
+
+function longMake( ins, src )
 {
-  if( !_.arrayIs( src ) )
-  return false;
-  return !!src[ unrollSymbol ];
+  let result, length;
+
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( src === undefined )
+  {
+    length = ins.length;
+  }
+  else
+  {
+    if( _.longIs( src ) )
+    length = src.length;
+    else if( _.numberIs( src ) )
+    length = src;
+    else _.assert( 0 );
+  }
+
+  if( _.argumentsArrayIs( ins ) )
+  ins = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strType( ins ) );
+
+  if( _.longIs( src ) )
+  {
+
+    if( ins.constructor === Array )
+    result = new( _.constructorJoin( ins.constructor, src ) );
+    else if( _.routineIs( ins ) )
+    {
+      if( ins.prototype.constructor.name === 'Array' )
+      result = _ArraySlice.call( src );
+      else
+      result = new ins( src );
+    }
+    else
+    result = new ins.constructor( src );
+
+  }
+  else
+  {
+    if( _.routineIs( ins ) )
+    result = new ins( length );
+    else
+    result = new ins.constructor( length );
+  }
+
+  return result;
 }
 
 //
 
-function unrollIsPopulated( src )
+function longMakeZeroed( ins, src )
 {
-  if( !_.unrollIs( src ) )
+  let result, length;
+
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( src === undefined )
+  {
+    length = ins.length;
+  }
+  else
+  {
+    if( _.longIs( src ) )
+    length = src.length;
+    else if( _.numberIs( src ) )
+    length = src;
+    else _.assert( 0, 'Expects long or number as the second argument, got', _.strType( src ) );
+  }
+
+  if( _.argumentsArrayIs( ins ) )
+  ins = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIs( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strType( ins ) );
+
+  if( _.routineIs( ins ) )
+  {
+    result = new ins( length );
+  }
+  else
+  {
+    result = new ins.constructor( length );
+  }
+
+  if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
+  for( let i = 0 ; i < length ; i++ )
+  result[ i ] = 0;
+
+  return result;
+}
+
+//
+
+function _longClone( src )
+{
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.longIs( src ) || _.bufferAnyIs( src ) );
+  _.assert( !_.bufferNodeIs( src ), 'not tested' );
+
+  if( _.bufferViewIs( src ) )
+  debugger;
+
+  if( _.bufferRawIs( src ) )
+  return new Uint8Array( new Uint8Array( src ) ).buffer;
+  else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
+  return new src.constructor( src );
+  else if( _.arrayIs( src ) )
+  return src.slice();
+  else if( _.bufferViewIs( src ) )
+  return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
+
+  _.assert( 0, 'unknown kind of buffer', _.strType( src ) );
+}
+
+//
+
+function longShallowClone()
+{
+  let result;
+  let length = 0;
+
+  if( arguments.length === 1 )
+  {
+    return _._longClone( arguments[ 0 ] );
+  }
+
+  /* eval length */
+
+  for( let a = 0 ; a < arguments.length ; a++ )
+  {
+    let argument = arguments[ a ];
+
+    if( argument === undefined )
+    throw _.err( 'argument is not defined' );
+
+    if( _.longIs( argument ) ) length += argument.length;
+    else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
+    else length += 1;
+  }
+
+  /* make result */
+
+  if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
+  result = _.longMake( arguments[ 0 ],length );
+  else if( _.bufferRawIs( arguments[ 0 ] ) )
+  result = new ArrayBuffer( length );
+
+  let bufferDst;
+  let offset = 0;
+  if( _.bufferRawIs( arguments[ 0 ] ) )
+  {
+    bufferDst = new Uint8Array( result );
+  }
+
+  /* copy */
+
+  for( let a = 0, c = 0 ; a < arguments.length ; a++ )
+  {
+    let argument = arguments[ a ];
+    if( _.bufferRawIs( argument ) )
+    {
+      bufferDst.set( new Uint8Array( argument ), offset );
+      offset += argument.byteLength;
+    }
+    else if( _.bufferTypedIs( arguments[ 0 ] ) )
+    {
+      result.set( argument, offset );
+      offset += argument.length;
+    }
+    else if( _.longIs( argument ) )
+    for( let i = 0 ; i < argument.length ; i++ )
+    {
+      result[ c ] = argument[ i ];
+      c += 1;
+    }
+    else
+    {
+      result[ c ] = argument;
+      c += 1;
+    }
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * Returns a copy of original array( array ) that contains elements from index( f ) to index( l ),
+ * but not including ( l ).
+ *
+ * If ( l ) is omitted or ( l ) > ( array.length ), longSlice extracts through the end of the sequence ( array.length ).
+ * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
+ * If ( f ) < 0, zero is assigned to begin index( f ).
+
+ * @param { Array/Buffer } array - Source array or buffer.
+ * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
+ * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
+ *
+ * @example
+ * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 2, 6 );
+ * // returns [ 3, 4, 5, 6 ]
+ *
+ * @example
+ * // begin index is less then zero
+ * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], -1, 2 );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * //end index is bigger then length of array
+ * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
+ * // returns [ 6, 7 ]
+ *
+ * @returns { Array } Returns a shallow copy of elements from the original array.
+ * @function longSlice
+ * @throws { Error } Will throw an Error if ( array ) is not an Array or Buffer.
+ * @throws { Error } Will throw an Error if ( f ) is not a Number.
+ * @throws { Error } Will throw an Error if ( l ) is not a Number.
+ * @throws { Error } Will throw an Error if no arguments provided.
+ * @memberof wTools
+*/
+
+function longSlice( array,f,l )
+{
+  let result;
+
+  if( _.argumentsArrayIs( array ) )
+  if( f === undefined && l === undefined )
+  {
+    if( array.length === 2 )
+    return [ array[ 0 ],array[ 1 ] ];
+    else if( array.length === 1 )
+    return [ array[ 0 ] ];
+    else if( array.length === 0 )
+    return [];
+  }
+
+  _.assert( _.longIs( array ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( _.arrayLikeResizable( array ) )
+  {
+    _.assert( f === undefined || _.numberIs( f ) );
+    _.assert( l === undefined || _.numberIs( l ) );
+    result = array.slice( f,l );
+    return result;
+  }
+
+  f = f !== undefined ? f : 0;
+  l = l !== undefined ? l : array.length;
+
+  _.assert( _.numberIs( f ) );
+  _.assert( _.numberIs( l ) );
+
+  if( f < 0 )
+  f = array.length + f;
+  if( l < 0 )
+  l = array.length + l;
+
+  if( f < 0 )
+  f = 0;
+  if( l > array.length )
+  l = array.length;
+  if( l < f )
+  l = f;
+
+  if( _.bufferTypedIs( array ) )
+  result = new array.constructor( l-f );
+  else
+  result = new Array( l-f );
+
+  for( let r = f ; r < l ; r++ )
+  result[ r-f ] = array[ r ];
+
+  return result;
+}
+
+//
+
+function longButRange( src, range, ins )
+{
+
+  _.assert( _.longIs( src ) );
+  _.assert( ins === undefined || _.longIs( ins ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( _.arrayIs( src ) )
+  return _.arrayButRange( src, range, ins );
+
+  let result;
+  range = _.rangeFrom( range );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  let d = range[ 1 ] - range[ 0 ];
+  let l = src.length - d + ( ins ? ins.length : 0 );
+
+  result = _.longMake( src, l );
+
+  debugger;
+  _.assert( 0,'not tested' )
+
+  for( let i = 0 ; i < range[ 0 ] ; i++ )
+  result[ i ] = src[ i ];
+
+  for( let i = range[ 1 ] ; i < l ; i++ )
+  result[ i-d ] = src[ i ];
+
+  return result;
+}
+
+//
+
+/**
+ * The longRemoveDuplicates( dstLong, onEvaluator ) routine returns the dstlong with the duplicated elements removed.
+ * The dstLong instance will be returned when possible, if not a new instance of the same type is created.
+ *
+ * @param { longIs } dstLong - The source and destination long.
+ * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
+ *
+ * @example
+ * // returns [ 1, 2, 'abc', 4, true ]
+ * _.longRemoveDuplicates( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ *
+ * @example
+ * // [ 1, 2, 3, 4, 5 ]
+ * _.longRemoveDuplicates( [ 1, 2, 3, 4, 5 ] );
+ *
+ * @returns { Number } - Returns the source long without the duplicated elements.
+ * @function longRemoveDuplicates
+ * @throws { Error } If passed arguments is less than one or more than two.
+ * @throws { Error } If the first argument is not an long.
+ * @throws { Error } If the second argument is not a Function.
+ * @memberof wTools
+ */
+
+// function longRemoveDuplicates( dstLong, onEvaluate )
+// {
+//   _.assert( 1 <= arguments.length || arguments.length <= 3 );
+//   _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+
+//   if( _.arrayIs( dstLong ) )
+//   {
+//     _.arrayRemoveDuplicates( dstLong, onEvaluate );
+//   }
+//   else if( Object.prototype.toString.call( dstLong ) === "[object Arguments]")
+//   {
+//     let newElement;
+//     for( let i = 0; i < dstLong.length; i++ )
+//     {
+//       newElement = dstLong[ i ];
+//       for( let j = i + 1; j < dstLong.length; j++ )
+//       {
+//         if( newElement === dstLong[ j ] )
+//         {
+//           let array = Array.from( dstLong );
+//           _.arrayRemoveDuplicates( array, onEvaluate );
+//           dstLong = new dstLong.constructor( array );
+//         }
+//       }
+//     }
+//   }
+//   else
+//   {
+//     if( !onEvaluate )
+//     {
+//       for( let i = 0 ; i < dstLong.length ; i++ )
+//       {
+//         function isDuplicated( element, index, array )
+//         {
+//           return ( element !== dstLong[ i ] || index === i );
+//         }
+//         dstLong = dstLong.filter( isDuplicated );
+//       }
+//     }
+//     else
+//     {
+//       if( onEvaluate.length === 2 )
+//       {
+//         for( let i = 0 ; i < dstLong.length ; i++ )
+//         {
+//           function isDuplicated( element, index, array )
+//           {
+//             return ( !onEvaluate( element, dstLong[ i ] ) || index === i );
+//           }
+//           dstLong = dstLong.filter( isDuplicated );
+//         }
+//       }
+//       else
+//       {
+//         for( let i = 0 ; i < dstLong.length ; i++ )
+//         {
+//           function isDuplicated( element, index, array )
+//           {
+//             return ( onEvaluate( element ) !== onEvaluate( dstLong[ i ] ) || index === i );
+//           }
+//           dstLong = dstLong.filter( isDuplicated );
+//         }
+//       }
+//     }
+//   }
+
+//   return dstLong;
+// }
+
+function longRemoveDuplicates( dstLong, onEvaluate )
+{
+  _.assert( 1 <= arguments.length || arguments.length <= 3 );
+  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+
+  if( _.arrayIs( dstLong ) )
+  return _.arrayRemoveDuplicates( dstLong, onEvaluate );
+
+  if( !dstLong.length )
+  return dstLong;
+
+  let length = dstLong.length;
+
+  for( let i = 0; i < dstLong.length; i++ )
+  if( _.arrayLeftIndex( dstLong, dstLong[ i ], i+1, onEvaluate ) !== -1 )
+  length--;
+
+  if( length === dstLong.length )
+  return dstLong;
+
+  let result = _.longMake( dstLong, length );
+  result[ 0 ] = dstLong[ 0 ];
+
+  let j = 1;
+  for( let i = 1; i < dstLong.length && j < length; i++ )
+  if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
+  result[ j++ ] = dstLong[ i ];
+
+  _.assert( j === length );
+
+  return result;
+}
+
+/* qqq : not optimal, no redundant copy */
+/*
+function longRemoveDuplicates( dstLong, onEvaluate )
+{
+  _.assert( 1 <= arguments.length || arguments.length <= 3 );
+  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+
+  if( _.arrayIs( dstLong ) )
+  {
+    _.arrayRemoveDuplicates( dstLong, onEvaluate )
+    return dstLong;
+  }
+
+  let array = Array.from( dstLong );
+  _.arrayRemoveDuplicates( array, onEvaluate )
+
+  if( array.length === dstLong.length )
+  {
+    return dstLong;
+  }
+  else
+  {
+    return new dstLong.constructor( array );
+  }
+
+}
+*/
+//
+
+//
+
+function longAreRepeatedProbe( srcArray, onEvaluate )
+{
+  let isUnique = _.longMake( srcArray );
+  let result = Object.create( null );
+  result.array = _.arrayMake( srcArray.length );
+  result.uniques = srcArray.length;
+  result.condensed = srcArray.length;
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.longIs( srcArray ) );
+
+  for( let i = 0 ; i < srcArray.length ; i++ )
+  {
+    let element = srcArray[ i ];
+
+    if( result.array[ i ] > 0 )
+    continue;
+
+    result.array[ i ] = 0;
+
+    let left = _.arrayLeftIndex( srcArray, element, i+1, onEvaluate );
+    if( left >= 0 )
+    {
+      result.array[ i ] = 1;
+      result.uniques -= 1;
+      do
+      {
+        result.uniques -= 1;
+        result.condensed -= 1;
+        result.array[ left ] = 1;
+        left = _.arrayLeftIndex( srcArray, element, left+1, onEvaluate );
+      }
+      while( left >= 0 );
+    }
+
+  }
+
+  return result;
+
+  // if( _.longIs( o ) )
+  // o = { src : o };
+  //
+  // _.assert( arguments.length === 1, 'Expects single argument' );
+  // _.assert( _.longIs( o.src ) );
+  // _.assertMapHasOnly( o,arrayInvestigateUniqueMap.defaults );
+  //
+  // /* */
+  //
+  // if( o.onEvaluate )
+  // {
+  //   o.src = _.entityMap( o.src,( e ) => o.onEvaluate( e ) );
+  // }
+  //
+  // /* */
+  //
+  // let number = o.src.length;
+  // let isUnique = _.longMake( o.src );
+  // let index;
+  //
+  // for( let i = 0 ; i < o.src.length ; i++ )
+  // isUnique[ i ] = 1;
+  //
+  // for( let i = 0 ; i < o.src.length ; i++ )
+  // {
+  //
+  //   index = i;
+  //
+  //   if( !isUnique[ i ] )
+  //   continue;
+  //
+  //   let currentUnique = 1;
+  //   do
+  //   {
+  //     index = o.src.indexOf( o.src[ i ],index+1 );
+  //     if( index !== -1 )
+  //     {
+  //       isUnique[ index ] = 0;
+  //       number -= 1;
+  //       currentUnique = 0;
+  //     }
+  //   }
+  //   while( index !== -1 );
+  //
+  //   if( !o.includeFirst )
+  //   if( !currentUnique )
+  //   {
+  //     isUnique[ i ] = 0;
+  //     number -= 1;
+  //   }
+  //
+  // }
+  //
+  // return { number : number, array : isUnique };
+}
+
+// arrayInvestigateUniqueMap.defaults =
+// {
+//   src : null,
+//   onEvaluate : null,
+//   includeFirst : 0,
+// }
+
+//
+
+function longAllAreRepeated( src, onEvalutate )
+{
+  let areRepated = _.longAreRepeatedProbe.apply( this, arguments );
+  return !areRepated.uniques;
+}
+
+//
+
+function longAnyAreRepeated( src, onEvalutate )
+{
+  let areRepated = _.longAreRepeatedProbe.apply( this, arguments );
+  return areRepated.uniques !== src.length;
+}
+
+//
+
+function longNoneAreRepeated( src, onEvalutate )
+{
+  let areRepated = _.longAreRepeatedProbe.apply( this, arguments );
+  return areRepated.uniques === src.length;
+}
+
+// --
+// buffer checker
+// --
+
+function bufferRawIs( src )
+{
+  let type = _ObjectToString.call( src );
+  let result = type === '[object ArrayBuffer]';
+  return result;
+}
+
+//
+
+function bufferTypedIs( src )
+{
+  let type = _ObjectToString.call( src );
+  if( !/\wArray/.test( type ) )
+  return false;
+  if( _.bufferNodeIs( src ) )
+  return false;
+  return true;
+}
+
+//
+
+function bufferViewIs( src )
+{
+  let type = _ObjectToString.call( src );
+  let result = type === '[object DataView]';
+  return result;
+}
+
+//
+
+function bufferNodeIs( src )
+{
+  if( typeof Buffer !== 'undefined' )
+  return src instanceof Buffer;
+  return false;
+}
+
+//
+
+function bufferAnyIs( src )
+{
+  if( !src )
+  return false;
+  return src.byteLength >= 0;
+  // return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
+}
+
+//
+
+function bufferBytesIs( src )
+{
+  if( _.bufferNodeIs( src ) )
+  return false;
+  return src instanceof Uint8Array;
+}
+
+//
+
+function constructorIsBuffer( src )
+{
+  if( !src )
+  return false;
+  if( !_.numberIs( src.BYTES_PER_ELEMENT ) )
+  return false;
+  if( !_.strIs( src.name ) )
+  return false;
+  return src.name.indexOf( 'Array' ) !== -1;
+}
+
+//
+
+/**
+ * The arrayIs() routine determines whether the passed value is an Array.
+ *
+ * If the {-srcMap-} is an Array, true is returned,
+ * otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * arrayIs( [ 1, 2 ] );
+ *
+ * @example
+ * // returns false
+ * arrayIs( 10 );
+ *
+ * @returns { boolean } Returns true if {-srcMap-} is an Array.
+ * @function arrayIs
+ * @memberof wTools
+ */
+
+function arrayIs( src )
+{
+  return _ObjectToString.call( src ) === '[object Array]';
+}
+
+//
+
+function arrayIsPopulated( src )
+{
+  if( !_.arrayIs( src ) )
   return false;
   return src.length > 0;
+}
+
+//
+
+function arrayLikeResizable( src )
+{
+  if( _ObjectToString.call( src ) === '[object Array]' )
+  return true;
+  return false;
+}
+
+//
+
+function arrayLike( src )
+{
+  if( _.arrayIs( src ) )
+  return true;
+  if( _.argumentsArrayIs( src ) )
+  return true;
+  return false;
 }
 
 //
@@ -358,7 +1085,7 @@ function arrayHasArray( arr )
  * @memberof wTools
  */
 
-function arrayCompare( src1,src2 )
+function arrayCompare( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src1 ) && _.longIs( src2 ) );
@@ -396,7 +1123,7 @@ function arrayCompare( src1,src2 )
  * @memberof wTools
  */
 
-function arrayIdentical( src1,src2 )
+function arrayIdentical( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src1 ) );
@@ -578,14 +1305,51 @@ function arrayNone( src )
 }
 
 // --
+// array producer
+// --
+
+function arrayMake( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.numberIs( src ) || _.longIs( src ) );
+
+  if( _.numberIs( src ) )
+  return Array( src );
+
+  if( src.length === 1 )
+  return [ src[ 0 ] ];
+  else
+  return Array.apply( Array, src );
+}
+
+//
+
+function arrayFrom( src )
+{
+  _.assert( arguments.length === 1 );
+  if( _.arrayIs( src ) && !_.unrollIs( src ) )
+  return src;
+  return _.arrayMake.call( _, src );
+}
+
+// --
 // array sequential search
 // --
 
 function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 {
+  let fromIndex = 0;
 
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  if( _.numberIs( arguments[ 2 ] ) )
+  {
+    fromIndex = arguments[ 2 ];
+    evaluator1 = arguments[ 3 ];
+    evaluator2 = arguments[ 4 ];
+  }
+
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( arr ) );
+  _.assert( _.numberIs( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -594,12 +1358,12 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
   if( !evaluator1 )
   {
     _.assert( !evaluator2 );
-    return _ArrayIndexOf.call( arr, ins );
+    return _ArrayIndexOf.call( arr, ins, fromIndex );
   }
   else if( evaluator1.length === 2 )
   {
     _.assert( !evaluator2 );
-    for( let a = 0 ; a < arr.length ; a++ )
+    for( let a = fromIndex ; a < arr.length ; a++ )
     {
 
       if( evaluator1( arr[ a ],ins ) )
@@ -615,7 +1379,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    for( let a = 0 ; a < arr.length ; a++ )
+    for( let a = fromIndex; a < arr.length ; a++ )
     {
       if( evaluator1( arr[ a ] ) === ins )
       return a;
@@ -630,11 +1394,20 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 
 function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 {
-
   if( ins === undefined )
   debugger;
 
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  let fromIndex = arr.length-1;
+
+  if( _.numberIs( arguments[ 2 ] ) )
+  {
+    fromIndex = arguments[ 2 ];
+    evaluator1 = arguments[ 3 ];
+    evaluator2 = arguments[ 4 ];
+  }
+
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.numberIs( fromIndex ) );
   _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
   _.assert( !evaluator2 || evaluator2.length === 1 );
@@ -645,12 +1418,12 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     _.assert( !evaluator2 );
     if( !_.arrayIs( arr ) )
     debugger;
-    return _ArrayLastIndexOf.call( arr, ins );
+    return _ArrayLastIndexOf.call( arr, ins, fromIndex );
   }
   else if( evaluator1.length === 2 )
   {
     _.assert( !evaluator2 );
-    for( let a = arr.length-1 ; a >= 0 ; a-- )
+    for( let a = fromIndex ; a >= 0 ; a-- )
     {
       if( evaluator1( arr[ a ],ins ) )
       return a;
@@ -664,7 +1437,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    for( let a = arr.length-1 ; a >= 0 ; a-- )
+    for( let a = fromIndex ; a >= 0 ; a-- )
     {
       if( evaluator1( arr[ a ] ) === ins )
       return a;
@@ -2871,185 +3644,6 @@ function arrayRemoveDuplicates( dstArray, evaluator )
 }
 */
 
-//
-
-/**
- * The longRemoveDuplicates( dstLong, onEvaluator ) routine returns the dstlong with the duplicated elements removed.
- * The dstLong instance will be returned when possible, if not a new instance of the same type is created.
- *
- * @param { longIs } dstLong - The source and destination long.
- * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
- *
- * @example
- * // returns [ 1, 2, 'abc', 4, true ]
- * _.longRemoveDuplicates( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
- *
- * @example
- * // [ 1, 2, 3, 4, 5 ]
- * _.longRemoveDuplicates( [ 1, 2, 3, 4, 5 ] );
- *
- * @returns { Number } - Returns the source long without the duplicated elements.
- * @function longRemoveDuplicates
- * @throws { Error } If passed arguments is less than one or more than two.
- * @throws { Error } If the first argument is not an long.
- * @throws { Error } If the second argument is not a Function.
- * @memberof wTools
- */
-
-// function longRemoveDuplicates( dstLong, onEvaluate )
-// {
-//   _.assert( 1 <= arguments.length || arguments.length <= 3 );
-//   _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
-
-//   if( _.arrayIs( dstLong ) )
-//   {
-//     _.arrayRemoveDuplicates( dstLong, onEvaluate );
-//   }
-//   else if( Object.prototype.toString.call( dstLong ) === "[object Arguments]")
-//   {
-//     let newElement;
-//     for( let i = 0; i < dstLong.length; i++ )
-//     {
-//       newElement = dstLong[ i ];
-//       for( let j = i + 1; j < dstLong.length; j++ )
-//       {
-//         if( newElement === dstLong[ j ] )
-//         {
-//           let array = Array.from( dstLong );
-//           _.arrayRemoveDuplicates( array, onEvaluate );
-//           dstLong = new dstLong.constructor( array );
-//         }
-//       }
-//     }
-//   }
-//   else
-//   {
-//     if( !onEvaluate )
-//     {
-//       for( let i = 0 ; i < dstLong.length ; i++ )
-//       {
-//         function isDuplicated( element, index, array )
-//         {
-//           return ( element !== dstLong[ i ] || index === i );
-//         }
-//         dstLong = dstLong.filter( isDuplicated );
-//       }
-//     }
-//     else
-//     {
-//       if( onEvaluate.length === 2 )
-//       {
-//         for( let i = 0 ; i < dstLong.length ; i++ )
-//         {
-//           function isDuplicated( element, index, array )
-//           {
-//             return ( !onEvaluate( element, dstLong[ i ] ) || index === i );
-//           }
-//           dstLong = dstLong.filter( isDuplicated );
-//         }
-//       }
-//       else
-//       {
-//         for( let i = 0 ; i < dstLong.length ; i++ )
-//         {
-//           function isDuplicated( element, index, array )
-//           {
-//             return ( onEvaluate( element ) !== onEvaluate( dstLong[ i ] ) || index === i );
-//           }
-//           dstLong = dstLong.filter( isDuplicated );
-//         }
-//       }
-//     }
-//   }
-
-//   return dstLong;
-// }
-
-function longRemoveDuplicates( dstLong, onEvaluate )
-{
-  _.assert( 1 <= arguments.length || arguments.length <= 3 );
-  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
-
-  if( _.arrayIs( dstLong ) )
-  return _.arrayRemoveDuplicates( dstLong, onEvaluate );
-
-  if( !dstLong.length )
-  return dstLong;
-
-  let length = dstLong.length;
-
-  for( let i = 0; i < dstLong.length; i++ )
-  {
-    if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
-    length--;
-    else if( _.arrayLeftIndex( dstLong, dstLong[ i ], onEvaluate ) !== i )
-    length--;
-  }
-
-  if( length === dstLong.length )
-  return dstLong;
-
-  let result;
-
-  if( _.argumentsArrayIs( dstLong ) )
-  result = _.argumentsArrayFrom( new Array( length ) );
-  else
-  result = new dstLong.constructor( length );
-
-  let j = 0;
-  let index;
-  let initialValueUsed = false;
-  let initialValue = result[ 0 ];
-
-  for( let i = 0; i < dstLong.length || j < length; i++ )
-  {
-    index = _.arrayLeftIndex( result, dstLong[ i ], onEvaluate );
-    if( index === -1 )
-    {
-      result[ j ] = dstLong[ i ];
-      j++;
-    }
-    else if( !initialValueUsed && dstLong[ i ] === initialValue )
-    {
-      j++;
-      initialValueUsed = true;
-    }
-  }
-
-  _.assert( j === length );
-
-  return result;
-}
-
-/* qqq : not optimal, no redundant copy */
-/*
-function longRemoveDuplicates( dstLong, onEvaluate )
-{
-  _.assert( 1 <= arguments.length || arguments.length <= 3 );
-  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
-
-  if( _.arrayIs( dstLong ) )
-  {
-    _.arrayRemoveDuplicates( dstLong, onEvaluate )
-    return dstLong;
-  }
-
-  let array = Array.from( dstLong );
-  _.arrayRemoveDuplicates( array, onEvaluate )
-
-  if( array.length === dstLong.length )
-  {
-    return dstLong;
-  }
-  else
-  {
-    return new dstLong.constructor( array );
-  }
-
-}
-*/
-//
-
 // --
 // array flatten
 // --
@@ -3116,7 +3710,11 @@ function arrayFlatten( dstArray, insArray )
     dstArray = [];
     arguments[ 0 ] = dstArray;
   }
-  _.arrayFlattened.apply( this, arguments );
+
+  let result = _.arrayFlattened.apply( this, arguments );
+  if( _.longIs( result ) )
+  return result;
+
   return dstArray;
 }
 
@@ -3124,7 +3722,9 @@ function arrayFlatten( dstArray, insArray )
 
 function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  arrayFlattenedOnce.apply( this, arguments );
+  let result = arrayFlattenedOnce.apply( this, arguments );
+  if( _.longIs( result ) )
+  return result;
   return dstArray;
 }
 
@@ -3136,6 +3736,9 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
   if( Config.debug )
   {
     result = arrayFlattenedOnce.apply( this, arguments );
+
+    if( _.longIs( result ) )
+    return result;
 
     function _count( arr )
     {
@@ -3155,6 +3758,8 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
   else
   {
     result = arrayFlattened.apply( this, [ dstArray, insArray ] );
+    if( _.longIs( result ) )
+    return result;
   }
 
  return dstArray;
@@ -3189,10 +3794,10 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 function arrayFlattened( dstArray, insArray )
 {
 
-  /* xxx : reuse arrayRemoveDuplicates for single argument call */
+  /* !!! xxx : reuse arrayRemoveDuplicates for single argument call */
 
-  if( arguments.length <= 2 && insArray === undefined )
-  return _.arrayRemoveDuplicates( dstArray );
+  // if( arguments.length <= 2 && insArray === undefined )
+  // return _.longRemoveDuplicates( dstArray );
 
   _.assert( arguments.length >= 2 );
   _.assert( _.objectIs( this ) );
@@ -3237,9 +3842,12 @@ function arrayFlattened( dstArray, insArray )
 
 function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
+
+  // if( arguments.length <= 2 && insArray === undefined )
+  // return _.longRemoveDuplicates( dstArray );
 
   let result = 0;
 
@@ -3580,16 +4188,53 @@ let Routines =
   // arguments array
 
   argumentsArrayIs : argumentsArrayIs,
+  argumentsArrayMake : argumentsArrayMake,
   _argumentsArrayMake : _argumentsArrayMake,
-  args : _argumentsArrayMake,
-  argumentsArrayOfLength : argumentsArrayOfLength,
+  // args : _argumentsArrayMake,
+  // argumentsArrayOfLength : argumentsArrayOfLength,
   argumentsArrayFrom : argumentsArrayFrom,
 
   // unroll
 
+  unrollIs : unrollIs,
+  unrollIsPopulated : unrollIsPopulated,
+
+  unrollMake : unrollMake,
   unrollFrom : unrollFrom,
   unrollPrepend : unrollPrepend,
   unrollAppend : unrollAppend,
+
+  // long
+
+  longIs : longIs,
+  longIsPopulated : longIsPopulated,
+
+  longMake : longMake,
+  longMakeZeroed : longMakeZeroed,
+
+  _longClone : _longClone,
+  longShallowClone : longShallowClone,
+
+  longSlice : longSlice,
+  longButRange : longButRange,
+
+  longRemoveDuplicates : longRemoveDuplicates,
+
+  longAreRepeatedProbe : longAreRepeatedProbe,
+  longAllAreRepeated : longAllAreRepeated,
+  longAnyAreRepeated : longAnyAreRepeated,
+  longNoneAreRepeated : longNoneAreRepeated,
+
+  // buffer checker
+
+  bufferRawIs : bufferRawIs,
+  bufferTypedIs : bufferTypedIs,
+  bufferViewIs : bufferViewIs,
+  bufferNodeIs : bufferNodeIs,
+  bufferAnyIs : bufferAnyIs,
+  bufferBytesIs : bufferBytesIs,
+  bytesIs : bufferBytesIs,
+  constructorIsBuffer : constructorIsBuffer,
 
   // array checker
 
@@ -3597,12 +4242,6 @@ let Routines =
   arrayIsPopulated : arrayIsPopulated,
   arrayLikeResizable : arrayLikeResizable,
   arrayLike : arrayLike,
-
-  longIs : longIs,
-  longIsPopulated : longIsPopulated,
-
-  unrollIs : unrollIs,
-  unrollIsPopulated : unrollIsPopulated,
 
   constructorLikeArray : constructorLikeArray,
   hasLength : hasLength,
@@ -3619,6 +4258,11 @@ let Routines =
   arrayAll : arrayAll,
   arrayAny : arrayAny,
   arrayNone : arrayNone,
+
+  // array producer
+
+  arrayMake : arrayMake,
+  arrayFrom : arrayFrom,
 
   // array sequential search
 
@@ -3718,7 +4362,6 @@ let Routines =
   arrayRemovedAll : arrayRemovedAll,
 
   arrayRemoveDuplicates : arrayRemoveDuplicates,
-  longRemoveDuplicates : longRemoveDuplicates,
 
   // array flatten
 

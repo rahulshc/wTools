@@ -86,9 +86,9 @@ function _setupUnhandledErrorHandler0()
 
     try
     {
-      err = err.toString();
+      let errStr = err.toString();
       console.error( prefix );
-      console.error( err );
+      console.error( errStr );
     }
     catch( err2 )
     {

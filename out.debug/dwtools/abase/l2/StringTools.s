@@ -23,7 +23,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // let __assert = _.assert;
 let _arraySlice = _.longSlice;
-let strTypeOf = _.strTypeOf;
+let strType = _.strType;
 
 
 // --
@@ -1241,7 +1241,7 @@ function strEscape( o )
   if( _.strIs( o ) )
   o = { src : o }
 
-  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, but got', _.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, but got', _.strType( o.src ) );
   _.routineOptions( strEscape, o );
 
   let result = '';
@@ -1475,7 +1475,7 @@ function strStrip( o )
     return result;
   }
 
-  _.assert( _.strIs( o.src ),'Expects string or array o.src, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'Expects string or array o.src, got',_.strType( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ),'Expects string or array or regexp ( o.stripper )' );
 
   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
@@ -1745,7 +1745,7 @@ function strSplitChunks( o )
   }
 
   _.routineOptions( strSplitChunks,o );
-  _.assert( _.strIs( o.src ),'Expects string (-o.src-), but got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'Expects string (-o.src-), but got',_.strType( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
   o.prefix = RegExp( _.regexpEscape( o.prefix ),'m' );
@@ -1883,7 +1883,7 @@ strSplitChunks.defaults =
 
 //
 
-function _strSplitsQuotedRejoin_pre( routine, args )
+function strSplitsQuotedRejoin_pre( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1923,7 +1923,7 @@ function _strSplitsQuotedRejoin_pre( routine, args )
 
 //
 
-function _strSplitsQuotedRejoin_body( o )
+function strSplitsQuotedRejoin_body( o )
 {
 
   _.assert( arguments.length === 1 );
@@ -1988,7 +1988,7 @@ function _strSplitsQuotedRejoin_body( o )
   return o.splits;
 }
 
-_strSplitsQuotedRejoin_body.defaults =
+strSplitsQuotedRejoin_body.defaults =
 {
   quoting : 1,
   quotingPrefixes : null,
@@ -2002,13 +2002,13 @@ _strSplitsQuotedRejoin_body.defaults =
 
 //
 
-let strSplitsQuotedRejoin = _.routineFromPreAndBody( _strSplitsQuotedRejoin_pre, _strSplitsQuotedRejoin_body );
+let strSplitsQuotedRejoin = _.routineFromPreAndBody( strSplitsQuotedRejoin_pre, strSplitsQuotedRejoin_body );
 
 // --
 //
 // --
 
-function _strSplitsDropDelimeters_pre( routine, args )
+function strSplitsDropDelimeters_pre( routine, args )
 {
   let o = args[ 0 ];
 
@@ -2026,7 +2026,7 @@ function _strSplitsDropDelimeters_pre( routine, args )
 
 //
 
-function _strSplitsDropDelimeters_body( o )
+function strSplitsDropDelimeters_body( o )
 {
 
   _.assert( arguments.length === 1 );
@@ -2055,7 +2055,7 @@ function _strSplitsDropDelimeters_body( o )
   return o.splits;
 }
 
-_strSplitsDropDelimeters_body.defaults =
+strSplitsDropDelimeters_body.defaults =
 {
   splits : null,
   delimeter : null,
@@ -2063,13 +2063,13 @@ _strSplitsDropDelimeters_body.defaults =
 
 //
 
-let strSplitsDropDelimeters = _.routineFromPreAndBody( _strSplitsDropDelimeters_pre, _strSplitsDropDelimeters_body );
+let strSplitsDropDelimeters = _.routineFromPreAndBody( strSplitsDropDelimeters_pre, strSplitsDropDelimeters_body );
 
 // --
 //
 // --
 
-function _strSplitsStrip_pre( routine, args )
+function strSplitsStrip_pre( routine, args )
 {
   let o = args[ 0 ];
 
@@ -2088,7 +2088,7 @@ function _strSplitsStrip_pre( routine, args )
 
 //
 
-function _strSplitsStrip_body( o )
+function strSplitsStrip_body( o )
 {
 
   _.assert( arguments.length === 1 );
@@ -2110,7 +2110,7 @@ function _strSplitsStrip_body( o )
   return o.splits;
 }
 
-_strSplitsStrip_body.defaults =
+strSplitsStrip_body.defaults =
 {
   stripping : 1,
   splits : null,
@@ -2118,13 +2118,13 @@ _strSplitsStrip_body.defaults =
 
 //
 
-let strSplitsStrip = _.routineFromPreAndBody( _strSplitsStrip_pre, _strSplitsStrip_body );
+let strSplitsStrip = _.routineFromPreAndBody( strSplitsStrip_pre, strSplitsStrip_body );
 
 // --
 //
 // --
 
-function _strSplitsDropEmpty_pre( routine, args )
+function strSplitsDropEmpty_pre( routine, args )
 {
   let o = args[ 0 ];
 
@@ -2139,7 +2139,7 @@ function _strSplitsDropEmpty_pre( routine, args )
 
 //
 
-function _strSplitsDropEmpty_body( o )
+function strSplitsDropEmpty_body( o )
 {
 
   _.assert( arguments.length === 1 );
@@ -2162,14 +2162,14 @@ function _strSplitsDropEmpty_body( o )
   return o.splits;
 }
 
-_strSplitsDropEmpty_body.defaults =
+strSplitsDropEmpty_body.defaults =
 {
   splits : null,
 }
 
 //
 
-let strSplitsDropEmpty = _.routineFromPreAndBody( _strSplitsDropEmpty_pre, _strSplitsDropEmpty_body );
+let strSplitsDropEmpty = _.routineFromPreAndBody( strSplitsDropEmpty_pre, strSplitsDropEmpty_body );
 
 //
 
@@ -2234,7 +2234,7 @@ strSplitsGroupCoupled.defaults =
 //
 // --
 
-function _strSplitFast_pre( routine, args )
+function strSplitFast_pre( routine, args )
 {
   let o = args[ 0 ];
 
@@ -2255,7 +2255,7 @@ function _strSplitFast_pre( routine, args )
 
 //
 
-function _strSplitFast_body( o )
+function strSplitFast_body( o )
 {
   let result;
   let closests;
@@ -2389,7 +2389,7 @@ function _strSplitFast_body( o )
 
 }
 
-_strSplitFast_body.defaults =
+strSplitFast_body.defaults =
 {
   src : null,
   delimeter : ' ',
@@ -2450,15 +2450,15 @@ _strSplitFast_body.defaults =
  *
  */
 
-let strSplitFast = _.routineFromPreAndBody( _strSplitFast_pre, _strSplitFast_body );
+let strSplitFast = _.routineFromPreAndBody( strSplitFast_pre, strSplitFast_body );
 
-_.assert( strSplitFast.pre === _strSplitFast_pre );
-_.assert( strSplitFast.body === _strSplitFast_body );
+_.assert( strSplitFast.pre === strSplitFast_pre );
+_.assert( strSplitFast.body === strSplitFast_body );
 _.assert( _.objectIs( strSplitFast.defaults ) );
 
 //
 
-function _strSplit_body( o )
+function strSplit_body( o )
 {
 
   o.delimeter = _.arrayAs( o.delimeter );
@@ -2501,7 +2501,7 @@ function _strSplit_body( o )
   return o.splits;
 }
 
-var defaults = _strSplit_body.defaults = Object.create( _strSplitFast_body.defaults );
+var defaults = strSplit_body.defaults = Object.create( strSplitFast_body.defaults );
 
 defaults.preservingEmpty = 1;
 defaults.preservingDelimeters = 1;
@@ -2510,7 +2510,6 @@ defaults.inliningQuoting = 1;
 
 defaults.stripping = 1;
 defaults.quoting = 1;
-// defaults.quotingRejoining = 0;
 defaults.quotingPrefixes = null;
 defaults.quotingPostfixes = null;
 
@@ -2571,11 +2570,11 @@ defaults.onQuote = null;
  */
 
 let pre = [ strSplitFast.pre, strSplitsQuotedRejoin.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
-let strSplit = _.routineFromPreAndBody( pre, _strSplit_body );
+let strSplit = _.routineFromPreAndBody( pre, strSplit_body );
 
 _.assert( strSplit.pre !== strSplitFast.pre );
 _.assert( _.routineIs( strSplit.pre ) );
-_.assert( strSplit.body === _strSplit_body );
+_.assert( strSplit.body === strSplit_body );
 _.assert( _.objectIs( strSplit.defaults ) );
 
 //
@@ -2587,273 +2586,273 @@ var defaults = strSplitNonPreserving.defaults;
 defaults.preservingEmpty = 0
 defaults.preservingDelimeters = 0;
 
+// //
 //
-
-function _strSplitNaive_body( o )
-{
-
-  if( o.quoting )
-  {
-    if( _.numberIs( o.quoting ) || _.boolIs( o.quoting ) )
-    o.quoting = '\"';
-    if( o.preservingDelimeters === null || o.preservingDelimeters === undefined )
-    o.preservingDelimeters = 1;
-    _.assert( _.strIs( o.quoting ) );
-  }
-
-  _.assert( arguments.length === 1 );
-
-  o.delimeter = _.arrayAs( o.delimeter );
-  let delimeter = o.delimeter;
-  let preservingDelimeters = o.preservingDelimeters;
-  let preservingEmpty = o.preservingEmpty;
-  let result = [];
-
-  if( o.quoting )
-  {
-    if( o.preservingDelimeters === null )
-    o.preservingDelimeters = 1;
-    _.assert( o.preservingDelimeters );
-    _.arrayAppendOnce( delimeter, o.quoting );
-  }
-
-  if( o.preservingDelimeters === null )
-  o.preservingDelimeters = 0;
-
-  /* */
-
-  if( o.preservingDelimeters )
-  {
-
-    let right = [];
-    let prevPosition = o.src.length;
-
-    for( let s = 0 ; s < delimeter.length ; s++ )
-    right[ s ] = nextDelimeter( s,o.src.length );
-
-    while( true )
-    {
-      let splitterIndex = -1;
-      let position = -1;
-      for( let s = 0 ; s < delimeter.length ; s++ )
-      {
-        /* if one delimeter coontain another one, it's possible right is invalid at this point */
-        if( right[ s ] >= prevPosition )
-        {
-          right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
-        }
-        if( right[ s ] > position )
-        {
-          splitterIndex = s;
-          position = right[ s ];
-        }
-      }
-
-      if( position === -1 )
-      break;
-
-      if( right[ splitterIndex ] > 0 )
-      right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
-      else
-      right[ splitterIndex ] = -1;
-
-      let r = [ position,prevPosition ];
-      if( r[ 0 ] < r[ 1 ] )
-      result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
-      else
-      result.unshift( '' );
-
-      if( delimeter[ splitterIndex ].length )
-      result.unshift( delimeter[ splitterIndex ] );
-
-      prevPosition = position-delimeter[ splitterIndex ].length;
-
-    }
-
-    result.unshift( o.src.substring( 0,prevPosition ) );
-
-  }
-  else
-  {
-
-    result = o.src.split( delimeter[ 0 ] );
-    for( let s = 1 ; s < delimeter.length ; s++ )
-    {
-
-      for( let r = result.length-1 ; r >= 0 ; r-- )
-      {
-
-        let sub = result[ r ].split( delimeter[ s ] );
-        if( sub.length > 1 )
-        _.arrayCutin( result,[ r,r+1 ],sub );
-
-      }
-
-    }
-
-  }
-
-  /* quoting */
-
-  if( o.quoting )
-  {
-    let newResult = [];
-
-    function _sliceAndJoin( l, r )
-    {
-      let arr = result.slice( l,r );
-      let res = '';
-      for( let i = 0; i < arr.length; i++ )
-      {
-        res += arr[ i ];
-      }
-      return res;
-    }
-
-    let l = -1;
-    let r = -1;
-
-    for( let i = 0; i < result.length; i++ )
-    {
-      if( result[ i ] === o.quoting )
-      {
-        if( i === result.length - o.quoting.length )
-        if( l < 0 )
-        {
-          newResult[ newResult.length - 1 ] += o.quoting;
-          break;
-        }
-
-        if( l < 0 )
-        l = i;
-        else
-        r = i;
-      }
-      else if( !result[ i ].length )
-      {
-        if( !preservingEmpty )
-        continue;
-
-        if( result[ i + 1 ] === o.quoting || result[ i - 1 ] === o.quoting )
-        continue;
-      }
-      else if( _.arrayHas( o.delimeter, result[ i ] ) )
-      {
-        if( !preservingDelimeters )
-        continue;
-      }
-
-      if( l >= 0 && r >= 0 )
-      {
-        newResult.push( _sliceAndJoin( l + 1, r ) );
-        l = r = -1;
-      }
-      else
-      if( l < 0 && r < 0 )
-      newResult.push( result[ i ] );
-    }
-
-    result = newResult;
-  }
-
-  /* stripping and removing empty */
-
-  for( let r = result.length-1 ; r >= 0 ; r-- )
-  {
-
-    if( o.stripping )
-    result[ r ] = _.strStrip( result[ r ] );
-
-    if( !o.preservingEmpty )
-    if( !result[ r ] )
-    result.splice( r,1 );
-
-  }
-
-  return result;
-
-  /* */
-
-  function nextDelimeter( d,last )
-  {
-    if( last < 0 )
-    return last;
-    let result = o.src.lastIndexOf( delimeter[ d ],last );
-    if( result >= 0 )
-    result += delimeter[ d ].length;
-    return result;
-  }
-
-}
-
-_strSplitNaive_body.defaults =
-{
-  src : null,
-  delimeter : ' ',
-  stripping : 1,
-  quoting : 0,
-  preservingEmpty : 0,
-  preservingDelimeters : null,
-}
-
+// function strSplitNaive_body( o )
+// {
 //
-
-/**
- * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
- * If( o.stripping ) is true - removes leading and trailing whitespace characters.
- * If( o.preservingEmpty ) is true - empty lines are saved in the result array.
- * If( o.preservingDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
- * Returns result as array of strings.
- *
- * @param {string|object} o - Source string to split or map with source( o.src ) and options.
- * @param {string} [ o.src=null ] - Source string.
- * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
- * @param {boolean} [ o.preservingEmpty=false ] - Leaves empty strings in the result array.
- * @param {boolean} [ o.preservingDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
- * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
- * @returns {object} Returns an array of strings separated by( o.delimeter ).
- *
- * @example
- * //returns [ 'first', 'second', 'third' ]
- * _.strSplitNaive( ' first second third ' );
- *
- * @example
- * //returns [ 'a', 'b', 'c', 'd' ]
- * _.strSplitNaive( { src : 'a,b,c,d', delimeter : ','  } );
- *
- * @example
- * //returns [ 'a', 'b', 'c', 'd' ]
- * _.strSplitNaive( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
- *
- * @example
- * //returns [ '    a', 'b', 'c', 'd   ' ]
-   * _.strSplitNaive( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
- *
- * @example
- * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
- * _.strSplitNaive( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
- *
- * @example
- * //returns [ 'a', '', 'b', '', 'c', '', 'd' ]
- * _.strSplitNaive( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
- *
- * @method strSplitNaive
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @memberof wTools
- *
- */
-
-let strSplitNaive = _.routineFromPreAndBody( _strSplitFast_pre, _strSplitNaive_body );
-
-_.assert( strSplitNaive.pre === _strSplitFast_pre );
-_.assert( strSplitNaive.body === _strSplitNaive_body );
-_.assert( _.objectIs( strSplitNaive.defaults ) );
+//   if( o.quoting )
+//   {
+//     if( _.numberIs( o.quoting ) || _.boolIs( o.quoting ) )
+//     o.quoting = '\"';
+//     if( o.preservingDelimeters === null || o.preservingDelimeters === undefined )
+//     o.preservingDelimeters = 1;
+//     _.assert( _.strIs( o.quoting ) );
+//   }
+//
+//   _.assert( arguments.length === 1 );
+//
+//   o.delimeter = _.arrayAs( o.delimeter );
+//   let delimeter = o.delimeter;
+//   let preservingDelimeters = o.preservingDelimeters;
+//   let preservingEmpty = o.preservingEmpty;
+//   let result = [];
+//
+//   if( o.quoting )
+//   {
+//     if( o.preservingDelimeters === null )
+//     o.preservingDelimeters = 1;
+//     _.assert( o.preservingDelimeters );
+//     _.arrayAppendOnce( delimeter, o.quoting );
+//   }
+//
+//   if( o.preservingDelimeters === null )
+//   o.preservingDelimeters = 0;
+//
+//   /* */
+//
+//   if( o.preservingDelimeters )
+//   {
+//
+//     let right = [];
+//     let prevPosition = o.src.length;
+//
+//     for( let s = 0 ; s < delimeter.length ; s++ )
+//     right[ s ] = nextDelimeter( s,o.src.length );
+//
+//     while( true )
+//     {
+//       let splitterIndex = -1;
+//       let position = -1;
+//       for( let s = 0 ; s < delimeter.length ; s++ )
+//       {
+//         /* if one delimeter coontain another one, it's possible right is invalid at this point */
+//         if( right[ s ] >= prevPosition )
+//         {
+//           right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
+//         }
+//         if( right[ s ] > position )
+//         {
+//           splitterIndex = s;
+//           position = right[ s ];
+//         }
+//       }
+//
+//       if( position === -1 )
+//       break;
+//
+//       if( right[ splitterIndex ] > 0 )
+//       right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
+//       else
+//       right[ splitterIndex ] = -1;
+//
+//       let r = [ position,prevPosition ];
+//       if( r[ 0 ] < r[ 1 ] )
+//       result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
+//       else
+//       result.unshift( '' );
+//
+//       if( delimeter[ splitterIndex ].length )
+//       result.unshift( delimeter[ splitterIndex ] );
+//
+//       prevPosition = position-delimeter[ splitterIndex ].length;
+//
+//     }
+//
+//     result.unshift( o.src.substring( 0,prevPosition ) );
+//
+//   }
+//   else
+//   {
+//
+//     result = o.src.split( delimeter[ 0 ] );
+//     for( let s = 1 ; s < delimeter.length ; s++ )
+//     {
+//
+//       for( let r = result.length-1 ; r >= 0 ; r-- )
+//       {
+//
+//         let sub = result[ r ].split( delimeter[ s ] );
+//         if( sub.length > 1 )
+//         _.arrayCutin( result,[ r,r+1 ],sub );
+//
+//       }
+//
+//     }
+//
+//   }
+//
+//   /* quoting */
+//
+//   if( o.quoting )
+//   {
+//     let newResult = [];
+//
+//     function _sliceAndJoin( l, r )
+//     {
+//       let arr = result.slice( l,r );
+//       let res = '';
+//       for( let i = 0; i < arr.length; i++ )
+//       {
+//         res += arr[ i ];
+//       }
+//       return res;
+//     }
+//
+//     let l = -1;
+//     let r = -1;
+//
+//     for( let i = 0; i < result.length; i++ )
+//     {
+//       if( result[ i ] === o.quoting )
+//       {
+//         if( i === result.length - o.quoting.length )
+//         if( l < 0 )
+//         {
+//           newResult[ newResult.length - 1 ] += o.quoting;
+//           break;
+//         }
+//
+//         if( l < 0 )
+//         l = i;
+//         else
+//         r = i;
+//       }
+//       else if( !result[ i ].length )
+//       {
+//         if( !preservingEmpty )
+//         continue;
+//
+//         if( result[ i + 1 ] === o.quoting || result[ i - 1 ] === o.quoting )
+//         continue;
+//       }
+//       else if( _.arrayHas( o.delimeter, result[ i ] ) )
+//       {
+//         if( !preservingDelimeters )
+//         continue;
+//       }
+//
+//       if( l >= 0 && r >= 0 )
+//       {
+//         newResult.push( _sliceAndJoin( l + 1, r ) );
+//         l = r = -1;
+//       }
+//       else
+//       if( l < 0 && r < 0 )
+//       newResult.push( result[ i ] );
+//     }
+//
+//     result = newResult;
+//   }
+//
+//   /* stripping and removing empty */
+//
+//   for( let r = result.length-1 ; r >= 0 ; r-- )
+//   {
+//
+//     if( o.stripping )
+//     result[ r ] = _.strStrip( result[ r ] );
+//
+//     if( !o.preservingEmpty )
+//     if( !result[ r ] )
+//     result.splice( r,1 );
+//
+//   }
+//
+//   return result;
+//
+//   /* */
+//
+//   function nextDelimeter( d,last )
+//   {
+//     if( last < 0 )
+//     return last;
+//     let result = o.src.lastIndexOf( delimeter[ d ],last );
+//     if( result >= 0 )
+//     result += delimeter[ d ].length;
+//     return result;
+//   }
+//
+// }
+//
+// strSplitNaive_body.defaults =
+// {
+//   src : null,
+//   delimeter : ' ',
+//   stripping : 1,
+//   quoting : 0,
+//   preservingEmpty : 0,
+//   preservingDelimeters : null,
+// }
+//
+// //
+//
+// /**
+//  * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
+//  * If( o.stripping ) is true - removes leading and trailing whitespace characters.
+//  * If( o.preservingEmpty ) is true - empty lines are saved in the result array.
+//  * If( o.preservingDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
+//  * Function can be called in two ways:
+//  * - First to pass only source string and use default options;
+//  * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
+//  * Returns result as array of strings.
+//  *
+//  * @param {string|object} o - Source string to split or map with source( o.src ) and options.
+//  * @param {string} [ o.src=null ] - Source string.
+//  * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
+//  * @param {boolean} [ o.preservingEmpty=false ] - Leaves empty strings in the result array.
+//  * @param {boolean} [ o.preservingDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
+//  * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
+//  * @returns {object} Returns an array of strings separated by( o.delimeter ).
+//  *
+//  * @example
+//  * //returns [ 'first', 'second', 'third' ]
+//  * _.strSplitNaive( ' first second third ' );
+//  *
+//  * @example
+//  * //returns [ 'a', 'b', 'c', 'd' ]
+//  * _.strSplitNaive( { src : 'a,b,c,d', delimeter : ','  } );
+//  *
+//  * @example
+//  * //returns [ 'a', 'b', 'c', 'd' ]
+//  * _.strSplitNaive( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
+//  *
+//  * @example
+//  * //returns [ '    a', 'b', 'c', 'd   ' ]
+//    * _.strSplitNaive( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
+//  *
+//  * @example
+//  * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
+//  * _.strSplitNaive( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
+//  *
+//  * @example
+//  * //returns [ 'a', '', 'b', '', 'c', '', 'd' ]
+//  * _.strSplitNaive( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
+//  *
+//  * @method strSplitNaive
+//  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+//  * @throws { Exception } Throw an exception if( o.src ) is not a String.
+//  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
+//  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+//  * @memberof wTools
+//  *
+//  */
+//
+// let strSplitNaive = _.routineFromPreAndBody( strSplitFast_pre, strSplitNaive_body );
+//
+// _.assert( strSplitNaive.pre === strSplitFast_pre );
+// _.assert( strSplitNaive.body === strSplitNaive_body );
+// _.assert( _.objectIs( strSplitNaive.defaults ) );
 
 // --
 // extractor
@@ -3029,7 +3028,7 @@ _strExtractInlined_body.defaults =
 
 //
 
-let strExtractInlined = _.routineFromPreAndBody( _strSplitFast_pre, _strExtractInlined_body );
+let strExtractInlined = _.routineFromPreAndBody( strSplitFast_pre, _strExtractInlined_body );
 
 //
 
@@ -3168,7 +3167,7 @@ _strExtractInlinedStereo_body.defaults =
  *
  */
 
-// let strExtractInlinedStereo = _.routineFromPreAndBody( _strSplitFast_pre, _strExtractInlinedStereo_body );
+// let strExtractInlinedStereo = _.routineFromPreAndBody( strSplitFast_pre, _strExtractInlinedStereo_body );
 
 function strExtractInlinedStereo( o )
 {
@@ -3335,7 +3334,7 @@ function strUnjoin( srcStr, maskArray )
   function checkMask( mask )
   {
 
-    _.assert( _.strIs( mask ) || mask === strUnjoin.any , 'Expects string or strUnjoin.any, got' , _.strTypeOf( mask ) );
+    _.assert( _.strIs( mask ) || mask === strUnjoin.any , 'Expects string or strUnjoin.any, got' , _.strType( mask ) );
 
     if( _.strIs( mask ) )
     {
@@ -3451,8 +3450,8 @@ function strJoin( srcs, joiner )
   let arrayLength;
 
   _.assert( arguments.length === 1 || arguments.length === 2, () => 'Expects an array of string and optional joiner, but got ' + arguments.length + ' arguments' );
-  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strTypeOf( srcs ) );
-  _.assert( joiner === undefined || _.strIs( joiner ), () => 'Expects optional joiner, but got ' + _.strTypeOf( joiner ) );
+  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strType( srcs ) );
+  _.assert( joiner === undefined || _.strIs( joiner ), () => 'Expects optional joiner, but got ' + _.strType( joiner ) );
 
   /* xxx */
 
@@ -3513,8 +3512,8 @@ function strJoinPath( srcs, joiner )
   let arrayLength;
 
   _.assert( arguments.length === 2, () => 'Expects an array of string and joiner, but got ' + arguments.length + ' arguments' );
-  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strTypeOf( srcs ) );
-  _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.strTypeOf( joiner ) );
+  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strType( srcs ) );
+  _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.strType( joiner ) );
 
   /* xxx */
 
@@ -3980,7 +3979,7 @@ function strLinesSelect( o )
     o = { src : arguments[ 0 ], range : arguments[ 1 ] };
     else if( _.numberIs( arguments[ 1 ] ) )
     o = { src : arguments[ 0 ], range : [ arguments[ 1 ],arguments[ 1 ]+1 ] };
-    else _.assert( 0,'unexpected argument',_.strTypeOf( range ) );
+    else _.assert( 0,'unexpected argument',_.strType( range ) );
 
   }
   else if( arguments.length === 3 )
@@ -4393,7 +4392,7 @@ let Proto =
   strSplit : strSplit,
   strSplitNonPreserving : strSplitNonPreserving,
 
-  strSplitNaive : strSplitNaive,
+  // strSplitNaive : strSplitNaive,
 
   // extractor
 
