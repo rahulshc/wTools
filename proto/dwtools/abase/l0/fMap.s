@@ -431,7 +431,7 @@ function mapHasKey( object,key )
   else if( _.symbolIs( key ) )
   return ( key in object );
 
-  _.assert( 0,'mapHasKey :','unknown type of key :',_.strTypeOf( key ) );
+  _.assert( 0,'mapHasKey :','unknown type of key :',_.strType( key ) );
 }
 
 //
@@ -474,7 +474,7 @@ function mapOwnKey( object, key )
   else if( _.symbolIs( key ) )
   return _ObjectHasOwnProperty.call( object, key );
 
-  _.assert( 0,'mapOwnKey :','unknown type of key :',_.strTypeOf( key ) );
+  _.assert( 0,'mapOwnKey :','unknown type of key :',_.strType( key ) );
 }
 
 //
@@ -1155,7 +1155,7 @@ function mapExtendConditional( filter,dstMap )
   {
     let srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -1187,7 +1187,7 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'Expects object-like entity to extend, but got :',_.strTypeOf( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ),'Expects object-like entity to extend, but got :',_.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -1447,14 +1447,34 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
 
 /* qqq : need to explain how undefined handled and write good documentation */
 
-function mapComplement( dstMap,srcMap )
+function mapComplement( dstMap, srcMap )
 {
-  _.assert( !!_.field.mapper );
+
+  function dstNotOwnOrUndefinedAssigning( dstContainer, srcContainer, key )
+  {
+    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    {
+      if( dstContainer[ key ] !== undefined )
+      return;
+    }
+    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
+  }
+
+  dstNotOwnOrUndefinedAssigning.functionFamily = 'field-mapper';
+
+  // _.assert( !!_.field.mapper );
   if( arguments.length === 2 )
-  return _.mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
+  return _.mapExtendConditional( dstNotOwnOrUndefinedAssigning, dstMap, srcMap );
+
   let args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.dstNotOwnOrUndefinedAssigning );
+  args.unshift( dstNotOwnOrUndefinedAssigning );
   return _.mapExtendConditional.apply( this, args );
+
+  /*
+    filter should be defined explicitly instead of using _.field.mapper.dstNotOwnOrUndefinedAssigning
+    to have mapComplement available as soon as possible
+  */
+
 }
 
 //
@@ -4286,7 +4306,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     debugger;
     let err = _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : _.strTypeOf( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     throw err;
@@ -4573,7 +4593,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
     debugger;
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : _.strTypeOf( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     return false;

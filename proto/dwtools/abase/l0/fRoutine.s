@@ -547,7 +547,7 @@ function _routinesCompose_body( o )
     let args = _.unrollAppend( null, arguments );
     for( let k = 0 ; k < elements.length ; k++ )
     {
-      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
+      _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strType( args ) );
       let routine = elements[ k ];
       let r = routine.apply( this, args );
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
@@ -801,7 +801,7 @@ function routineVectorize_functor( o )
 
   routine = routineNormalize( routine );
 
-  _.assert( _.routineIs( routine ), 'Expects routine {-o.routine-}, but got', _.strTypeOf( routine ) );
+  _.assert( _.routineIs( routine ), 'Expects routine {-o.routine-}, but got', _.strType( routine ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ), 'Expects {-o.select-} as number >= 1, string or array, but got', select );
 

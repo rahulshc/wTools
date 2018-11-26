@@ -87,7 +87,7 @@ function _strIsolate( o )
 
   _.assertRoutineOptions( _strIsolate, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got',_.strType( o.src ) );
   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
   _.assert( _.numberIs( o.number ) );
 

@@ -21,77 +21,6 @@ let _propertyIsEumerable = Object.propertyIsEnumerable;
 // buffer
 // --
 
-function bufferRawIs( src )
-{
-  let type = _ObjectToString.call( src );
-  let result = type === '[object ArrayBuffer]';
-  return result;
-}
-
-//
-
-function bufferTypedIs( src )
-{
-  let type = _ObjectToString.call( src );
-  if( !/\wArray/.test( type ) )
-  return false;
-  if( _.bufferNodeIs( src ) )
-  return false;
-  return true;
-}
-
-//
-
-function bufferViewIs( src )
-{
-  let type = _ObjectToString.call( src );
-  let result = type === '[object DataView]';
-  return result;
-}
-
-//
-
-function bufferNodeIs( src )
-{
-  if( typeof Buffer !== 'undefined' )
-  return src instanceof Buffer;
-  return false;
-}
-
-//
-
-function bufferAnyIs( src )
-{
-  if( !src )
-  return false;
-  return src.byteLength >= 0;
-  // return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
-}
-
-//
-
-function bufferBytesIs( src )
-{
-  if( _.bufferNodeIs( src ) )
-  return false;
-  return src instanceof Uint8Array;
-}
-
-//
-
-function constructorIsBuffer( src )
-{
-  if( !src )
-  return false;
-  if( !_.numberIs( src.BYTES_PER_ELEMENT ) )
-  return false;
-  if( !_.strIs( src.name ) )
-  return false;
-  return src.name.indexOf( 'Array' ) !== -1;
-}
-
-//
-
 function buffersTypedAreEquivalent( src1, src2, accuracy )
 {
 
@@ -307,7 +236,7 @@ function bufferMakeSimilar( ins,src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strTypeOf( ins ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strType( ins ) );
 
   if( _.longIs( src ) || _.bufferAnyIs( src ) )
   {
@@ -358,7 +287,7 @@ function bufferButRange( src, range, ins )
 
   // if( size > src.byteLength )
   // {
-  //   result = longMakeSimilar( src, size );
+  //   result = longMake( src, size );
   //   let resultTyped = new Uint8Array( result,0,result.byteLength );
   //   let srcTyped = new Uint8Array( src,0,src.byteLength );
   //   resultTyped.set( srcTyped );
@@ -377,12 +306,12 @@ function bufferButRange( src, range, ins )
  * The bufferRelen() routine returns a new or the same typed array {-srcMap-} with a new or the same length (len).
  *
  * It creates the variable (result) checks, if (len) is more than (src.length),
- * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function(longMakeSimilar(src, len))
+ * if true, it creates and assigns to (result) a new typed array with the new length (len) by call the function(longMake(src, len))
  * and copies each element from the {-srcMap-} into the (result) array while ensuring only valid data types, if data types are invalid they are replaced with zero.
  * Otherwise, if (len) is less than (src.length) it returns a new typed array from 0 to the (len) indexes, but not including (len).
  * Otherwise, it returns an initial typed array.
  *
- * @see {@link wTools.longMakeSimilar} - See for more information.
+ * @see {@link wTools.longMake} - See for more information.
  *
  * @param { typedArray } src - The source typed array.
  * @param { Number } len - The length of a typed array.
@@ -418,7 +347,7 @@ function bufferRelen( src,len )
 
   if( len > src.length )
   {
-    result = _.longMakeSimilar( src, len );
+    result = _.longMake( src, len );
     result.set( src );
   }
   else if( len < src.length )
@@ -443,7 +372,7 @@ function bufferResize( srcBuffer, size )
 
   if( size > srcBuffer.byteLength )
   {
-    result = _.longMakeSimilar( srcBuffer, size );
+    result = _.longMake( srcBuffer, size );
     let resultTyped = new Uint8Array( result,0,result.byteLength );
     let srcTyped = new Uint8Array( srcBuffer,0,srcBuffer.byteLength );
     resultTyped.set( srcTyped );
@@ -556,7 +485,7 @@ function bufferJoin()
       srcs.push( new Uint8Array( src.buffer,src.byteOffset,src.byteLength ) );
     }
 
-    _.assert( src.byteLength >= 0,'Expects buffers, but got',_.strTypeOf( src ) );
+    _.assert( src.byteLength >= 0,'Expects buffers, but got',_.strType( src ) );
 
     size += src.byteLength;
   }
@@ -669,7 +598,7 @@ function bufferToStr( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.bufferAnyIs( src ) );
 
-  if( bufferNodeIs( src ) )
+  if( _.bufferNodeIs( src ) )
   return src.toString( 'utf8' );
 
   try
@@ -1067,7 +996,7 @@ function bufferRawFrom( buffer )
     result = fileReader.readAsArrayBuffer( buffer );
     _.assert( 0, 'not tested' );
   }
-  else _.assert( 0, () => 'Unknown type of source ' + _.strTypeOf( buffer ) );
+  else _.assert( 0, () => 'Unknown type of source ' + _.strType( buffer ) );
 
   _.assert( _.bufferRawIs( result ) );
 
@@ -1140,7 +1069,7 @@ function bufferNodeFrom( buffer )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects typed or raw buffer, but got',_.strTypeOf( buffer ) );
+  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects typed or raw buffer, but got',_.strType( buffer ) );
 
   if( _.bufferNodeIs( buffer ) )
   return buffer;
@@ -1236,7 +1165,7 @@ function buffersSerialize( o )
     let attribute = attributes[ a ][ 1 ];
     let buffer = o.onBufferGet.call( o.context,attribute );
 
-    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'Expects buffer or null, got : ' + _.strTypeOf( buffer ) );
+    _.assert( _.bufferTypedIs( buffer ) || buffer === null,'Expects buffer or null, got : ' + _.strType( buffer ) );
 
     let bufferSize = buffer ? buffer.length*buffer.BYTES_PER_ELEMENT : 0;
 
@@ -1509,36 +1438,36 @@ function arrayFromNumber( dst,length )
 //
 
 /**
- * The arrayFrom() routine converts an object-like {-srcMap-} into Array.
+ * The arrayFromCoercing() routine converts an object-like {-srcMap-} into Array.
  *
  * @param { * } src - To convert into Array.
  *
  * @example
  * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
- * _.arrayFrom( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * _.arrayFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
  *
  * @example
  * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
- * _.arrayFrom( { a : 3, b : 7, c : 13 } );
+ * _.arrayFromCoercing( { a : 3, b : 7, c : 13 } );
  *
  * @example
  * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
- * _.arrayFrom( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+ * _.arrayFromCoercing( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
  *
  * @example
  * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
  * let args = ( function() {
  *   return arguments;
  * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.arrayFrom( args );
+ * _.arrayFromCoercing( args );
  *
  * @returns { Array } Returns an Array.
- * @function arrayFrom
+ * @function arrayFromCoercing
  * @throws { Error } Will throw an Error if {-srcMap-} is not an object-like.
  * @memberof wTools
  */
 
-function arrayFrom( src )
+function arrayFromCoercing( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1558,7 +1487,7 @@ function arrayFrom( src )
   if( _.argumentsArrayIs( src ) )
   return _ArraySlice.call( src );
 
-  _.assert( 0,'arrayFrom : unknown source : ' + _.strTypeOf( src ) );
+  _.assert( 0, 'Unknown data type : ' + _.strType( src ) );
 }
 
 //
@@ -2321,7 +2250,7 @@ function arrayDuplicate( o )
   if( o.result )
   _.assert( o.result.length >= length );
 
-  o.result = o.result || _.longMakeSimilar( o.src,length );
+  o.result = o.result || _.longMake( o.src,length );
 
   let rlength = o.result.length;
 
@@ -2520,7 +2449,7 @@ function arrayInvestigateUniqueMap( o )
   /* */
 
   let number = o.src.length;
-  let isUnique = _.longMakeSimilar( o.src );
+  let isUnique = _.longMake( o.src );
   let index;
 
   for( let i = 0 ; i < o.src.length ; i++ )
@@ -2580,7 +2509,7 @@ function arrayUnique( src, onEvaluate )
     includeFirst : 1,
   });
 
-  let result = _.longMakeSimilar( src, isUnique.number );
+  let result = _.longMake( src, isUnique.number );
 
   let c = 0;
   for( let i = 0 ; i < src.length ; i++ )
@@ -2806,7 +2735,7 @@ function arrayCutin( dstArray, range, srcArray )
     }
     else
     {
-      result = _.longMakeSimilar( dstArray, newLength );
+      result = _.longMake( dstArray, newLength );
     }
 
     if( first > 0 )
@@ -3727,14 +3656,14 @@ let Routines =
 
   // buffer
 
-  bufferRawIs : bufferRawIs,
-  bufferTypedIs : bufferTypedIs,
-  bufferViewIs : bufferViewIs,
-  bufferNodeIs : bufferNodeIs,
-  bufferAnyIs : bufferAnyIs,
-  bufferBytesIs : bufferBytesIs,
-  bytesIs : bufferBytesIs,
-  constructorIsBuffer : constructorIsBuffer,
+  // bufferRawIs : bufferRawIs,
+  // bufferTypedIs : bufferTypedIs,
+  // bufferViewIs : bufferViewIs,
+  // bufferNodeIs : bufferNodeIs,
+  // bufferAnyIs : bufferAnyIs,
+  // bufferBytesIs : bufferBytesIs,
+  // bytesIs : bufferBytesIs,
+  // constructorIsBuffer : constructorIsBuffer,
 
   buffersTypedAreEquivalent : buffersTypedAreEquivalent,
   buffersTypedAreIdentical : buffersTypedAreIdentical,
@@ -3776,7 +3705,7 @@ let Routines =
 
   arrayMakeRandom : arrayMakeRandom,
   arrayFromNumber : arrayFromNumber,
-  arrayFrom : arrayFrom,
+  arrayFromCoercing : arrayFromCoercing,
   arrayAs : arrayAs,
 
   arrayFromRange : arrayFromRange,
@@ -3852,9 +3781,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

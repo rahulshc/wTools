@@ -504,7 +504,7 @@ function timeFrom( time )
   return time;
   if( _.dateIs( time ) )
   return time.getTime()
-  _.assert( 0, 'Not clear how to coerce to time', _.strTypeOf( time ) );
+  _.assert( 0, 'Not clear how to coerce to time', _.strType( time ) );
 }
 
 //

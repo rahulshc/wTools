@@ -23,7 +23,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // let __assert = _.assert;
 let _arraySlice = _.longSlice;
-let strTypeOf = _.strTypeOf;
+let strType = _.strType;
 
 
 // --
@@ -1241,7 +1241,7 @@ function strEscape( o )
   if( _.strIs( o ) )
   o = { src : o }
 
-  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, but got', _.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, but got', _.strType( o.src ) );
   _.routineOptions( strEscape, o );
 
   let result = '';
@@ -1475,7 +1475,7 @@ function strStrip( o )
     return result;
   }
 
-  _.assert( _.strIs( o.src ),'Expects string or array o.src, got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'Expects string or array o.src, got',_.strType( o.src ) );
   _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ),'Expects string or array or regexp ( o.stripper )' );
 
   if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
@@ -1745,7 +1745,7 @@ function strSplitChunks( o )
   }
 
   _.routineOptions( strSplitChunks,o );
-  _.assert( _.strIs( o.src ),'Expects string (-o.src-), but got',_.strTypeOf( o.src ) );
+  _.assert( _.strIs( o.src ),'Expects string (-o.src-), but got',_.strType( o.src ) );
 
   if( !_.regexpIs( o.prefix ) )
   o.prefix = RegExp( _.regexpEscape( o.prefix ),'m' );
@@ -3334,7 +3334,7 @@ function strUnjoin( srcStr, maskArray )
   function checkMask( mask )
   {
 
-    _.assert( _.strIs( mask ) || mask === strUnjoin.any , 'Expects string or strUnjoin.any, got' , _.strTypeOf( mask ) );
+    _.assert( _.strIs( mask ) || mask === strUnjoin.any , 'Expects string or strUnjoin.any, got' , _.strType( mask ) );
 
     if( _.strIs( mask ) )
     {
@@ -3450,8 +3450,8 @@ function strJoin( srcs, joiner )
   let arrayLength;
 
   _.assert( arguments.length === 1 || arguments.length === 2, () => 'Expects an array of string and optional joiner, but got ' + arguments.length + ' arguments' );
-  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strTypeOf( srcs ) );
-  _.assert( joiner === undefined || _.strIs( joiner ), () => 'Expects optional joiner, but got ' + _.strTypeOf( joiner ) );
+  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strType( srcs ) );
+  _.assert( joiner === undefined || _.strIs( joiner ), () => 'Expects optional joiner, but got ' + _.strType( joiner ) );
 
   /* xxx */
 
@@ -3512,8 +3512,8 @@ function strJoinPath( srcs, joiner )
   let arrayLength;
 
   _.assert( arguments.length === 2, () => 'Expects an array of string and joiner, but got ' + arguments.length + ' arguments' );
-  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strTypeOf( srcs ) );
-  _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.strTypeOf( joiner ) );
+  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strType( srcs ) );
+  _.assert( _.strIs( joiner ), () => 'Expects joiner, but got ' + _.strType( joiner ) );
 
   /* xxx */
 
@@ -3979,7 +3979,7 @@ function strLinesSelect( o )
     o = { src : arguments[ 0 ], range : arguments[ 1 ] };
     else if( _.numberIs( arguments[ 1 ] ) )
     o = { src : arguments[ 0 ], range : [ arguments[ 1 ],arguments[ 1 ]+1 ] };
-    else _.assert( 0,'unexpected argument',_.strTypeOf( range ) );
+    else _.assert( 0,'unexpected argument',_.strType( range ) );
 
   }
   else if( arguments.length === 3 )

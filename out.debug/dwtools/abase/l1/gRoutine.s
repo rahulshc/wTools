@@ -269,7 +269,7 @@ function _routinesCall( o )
     _.assert
     (
       _.objectIs( routines ) || _.arrayIs( routines ) || _.routineIs( routines ),
-      'Expects object, array or routine (-routines-), but got',_.strTypeOf( routines )
+      'Expects object, array or routine (-routines-), but got',_.strType( routines )
     );
 
     if( _.routineIs( routines ) )
@@ -496,7 +496,7 @@ function _routinesComposeWithSingleArgument_pre( routine, args )
 //     let args = _.unrollAppend( null, arguments );
 //     for( let k = 0 ; k < elements.length ; k++ )
 //     {
-//       _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strTypeOf( args ) );
+//       _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strType( args ) );
 //       let routine = elements[ k ];
 //       let r = routine.apply( this, args );
 //       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );

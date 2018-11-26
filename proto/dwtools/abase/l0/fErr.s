@@ -23,16 +23,18 @@ let _propertyIsEumerable = Object.propertyIsEnumerable;
 
 function diagnosticStack( stack )
 {
-  // return '-- diagnosticStack -';
-  return stack || new Error().stack;
+  if( stack )
+  return stack.stack || stack;
+  return new Error().stack;
 }
 
 //
 
 function diagnosticStackCondense( stack )
 {
-  // return '-- diagnosticStackCondense -';
-  return stack || new Error().stack;
+  if( stack )
+  return stack.stack || stack;
+  return new Error().stack;
 }
 
 //
@@ -290,7 +292,7 @@ function _err( o )
   if( !stack )
   stack = o.fallBackStack;
 
-  if( !_.strEnds( stack, '\n' ) )
+  if( _.strIs( stack ) && !_.strEnds( stack, '\n' ) )
   stack = stack + '\n';
 
   if( stack && !stackCondensed )

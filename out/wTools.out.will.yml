@@ -299,7 +299,7 @@ reflector:
       ./dwtools/abase/l2.test/StringTools.test.s: true
     srcFilter:
       basePath: ./proto
-      prefixPath: proto
+      prefixPath: .
     dstFilter:
       basePath: .
       prefixPath: .

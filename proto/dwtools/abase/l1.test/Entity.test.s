@@ -5,30 +5,14 @@
 if( typeof module !== 'undefined' )
 {
 
-  if( typeof _global_ === 'undefined' || !_global_.wBase )
-  {
-    let toolsPath = '../../../dwtools/Base.s';
-    let toolsExternal = 0;
-    try
-    {
-      toolsPath = require.resolve( toolsPath );
-    }
-    catch( err )
-    {
-      toolsExternal = 1;
-      require( 'wTools' );
-    }
-    if( !toolsExternal )
-    require( toolsPath );
-  }
-
-  var _ = _global_.wTools;
+  let _ = require( '../../Tools.s' );
 
   _.include( 'wTesting' );
-  _.include( 'wCloner' );
-  _.include( 'wStringsExtra' );
+  // _.include( 'wCloner' );
+  // _.include( 'wStringsExtra' );
 
 }
+
 var _global = _global_;
 var _ = _global_.wTools;
 var Self = {};
