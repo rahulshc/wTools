@@ -15,7 +15,6 @@
  * @class wTools
  */
 
-
 // global
 
 let _global = undefined;
