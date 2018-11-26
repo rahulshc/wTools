@@ -23,5 +23,9 @@ var got = _.strLinesNearest
   charsRange : 3,
   numberOfLines : 2,
 });
-console.log('GOT', _.strJoin( [ 'a', 'b' ] ) );
-console.log('GOT Path', _.strJoinPath( [ 'a', 'b' ], 'x' ) );
+
+console.log( 'String' )
+console.log( 'GOT',  [ _.strLinesStrip( '\b\t\r' ) ]  , 'end'  );
+console.log( 'Array' )
+//console.log( 'GOT', _.strLinesStrip( [ '\na\n\nbc' ], [ '\ndef\n' ] ), 'end'  );
+logger.log( _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] ) )

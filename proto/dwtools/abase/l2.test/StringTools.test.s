@@ -7470,6 +7470,140 @@ function strLinesSelect( test )
 
 //
 
+function strLinesStrip( test )
+{
+  test.case = 'Argument is only one string';
+
+  test.case = 'Src stays unchanged';
+  var srcString = '\na\n\nbc\ndef\n';
+  var got = _.strLinesStrip( srcString );
+
+  var expected = 'a\nbc\ndef';
+  test.identical( got, expected );
+
+  var oldSrcString = '\na\n\nbc\ndef\n';
+  test.identical( srcString, oldSrcString );
+
+  test.case = 'Empty string';
+  var got = _.strLinesStrip( '' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'Only escape sequences';
+  var got = _.strLinesStrip( '\n\t\r' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'String without escape sequences and begin/end spaces';
+  var got = _.strLinesStrip( 'Hello world' );
+  var expected = 'Hello world';
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end spaces';
+  var got = _.strLinesStrip( '  Hello world   ' );
+  var expected = 'Hello world';
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end escape sequences';
+  var got = _.strLinesStrip( '\t\r\nHello world\r\n\t' );
+  var expected = 'Hello world';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\tworld\r\n' );
+  var expected = 'Hello\nworld';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
+  var expected = 'Hello\nworld';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences and spaces';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t'  );
+  var expected = 'Hello\nWorld\n!';
+  test.identical( got, expected );
+
+  //
+    test.case = 'Argument is only one array';
+
+    test.case = 'Src stays unchanged';
+    var srcArray = [ '\na\n\nbc\ndef\n' ];
+    var got = _.strLinesStrip( srcArray );
+
+    var expected = [ 'a\n\nbc\ndef' ];
+    test.identical( got, expected );
+
+    var oldSrcArray = [ '\na\n\nbc\ndef\n' ];
+    test.identical( srcArray, oldSrcArray );
+
+    test.case = 'Empty array';
+    var got = _.strLinesStrip( [] );
+    var expected = [];
+    test.identical( got, expected );
+
+    test.case = 'Empty array with empty string';
+    var got = _.strLinesStrip( [ '' ] );
+    var expected = [ ];
+    test.identical( got, expected );
+
+    test.case = 'Only escape sequences';
+    var got = _.strLinesStrip( [ '', '\t\r\n' ] );
+    var expected = [ ];
+    test.identical( got, expected );
+
+    test.case = 'String without escape sequences and begin/end spaces';
+    var got = _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] );
+    var expected = [ 'Hello world' ];
+    test.identical( got, expected );
+
+    test.case = 'String with begin/end spaces';
+    var got = _.strLinesStrip( [ '  Hello ', ' world   ' ] );
+    var expected = [ 'Hello', 'world' ];
+    test.identical( got, expected );
+
+    test.case = 'String with begin/end escape sequences';
+    var got = _.strLinesStrip( [ '\t\r\nHello  ', '  world\r\n\t' ] );
+    var expected = [ 'Hello', 'world' ];
+    test.identical( got, expected );
+
+    test.case = 'String with escape sequences';
+    var got = _.strLinesStrip( [ '\n\tHello\r\n\tworld\r\n' ] );
+    var expected = [ 'Hello\r\n\tworld' ];
+    test.identical( got, expected );
+
+    test.case = 'String with escape sequences';
+    var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
+    var expected = 'Hello\nworld';
+    test.identical( got, expected );
+
+    test.case = 'String with escape sequences and spaces';
+    var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t', '  \nHow are you?  \r  \n  \t  ' ] );
+    var expected = [ 'Hello  \r\n\t\t\r\n World \t\r\n!', 'How are you?' ] ;
+    test.identical( got, expected );
+
+
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( () =>  _.strLinesStrip() );
+
+  test.case = 'Wrong type of argument';
+  test.shouldThrowError( () =>  _.strLinesStrip( null ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( undefined ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( NaN ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( 3 ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( [ 3 ] ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( /^a/ ) );
+
+}
+
+//
+
 function strLinesNumber( test )
 {
   var got,expected;
@@ -9249,6 +9383,7 @@ var Self =
     strDup : strDup,
 
     strLinesSelect : strLinesSelect,
+    strLinesStrip : strLinesStrip,
     strLinesNumber : strLinesNumber,
     strLinesCount : strLinesCount,
 

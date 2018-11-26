@@ -3820,7 +3820,9 @@ function strLinesStrip( src )
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1 );
   let lines = _.strLinesSplit( src );
+  logger.log('Split', lines )
   lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
+  logger.log('Trim', lines )
   if( _.strIs( src ) )
   lines = _.strLinesJoin( lines );
   return lines;
