@@ -251,19 +251,19 @@ longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayMa
 longDeclare({ name : 'Unroll', type : Array, make : _.unrollMake, from : _.unrollFrom, is : _.unrollIs, isTyped : false });
 longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _._argumentsArrayMake().constructor, make : _.argumentsArrayFrom, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false });
 
-longDeclare({ name : 'U32x', secondName : 'Uint32', type : U32x, isTyped : true });
-longDeclare({ name : 'U16x', secondName : 'Uint16', type : U16x, isTyped : true });
-longDeclare({ name : 'U8x', secondName : 'Uint8', type : U8x, isTyped : true });
-longDeclare({ name : 'Ux', secondName : 'Uint32', aliasName : 'U32x', type : Ux, isTyped : true });
+longDeclare({ name : 'U32x', secondName : 'Uint32', type : _global.U32x, isTyped : true });
+longDeclare({ name : 'U16x', secondName : 'Uint16', type : _global.U16x, isTyped : true });
+longDeclare({ name : 'U8x', secondName : 'Uint8', type : _global.U8x, isTyped : true });
+longDeclare({ name : 'Ux', secondName : 'Uint32', aliasName : 'U32x', type : _global.Ux, isTyped : true });
 
-longDeclare({ name : 'I32x', secondName : 'Int32', type : I32x, isTyped : true });
-longDeclare({ name : 'I16x', secondName : 'Int16', type : I16x, isTyped : true });
-longDeclare({ name : 'I8x', secondName : 'Int8', type : I8x, isTyped : true });
-longDeclare({ name : 'Ix', secondName : 'Int32', aliasName : 'I32x', type : Ix, isTyped : true });
+longDeclare({ name : 'I32x', secondName : 'Int32', type : _global.I32x, isTyped : true });
+longDeclare({ name : 'I16x', secondName : 'Int16', type : _global.I16x, isTyped : true });
+longDeclare({ name : 'I8x', secondName : 'Int8', type : _global.I8x, isTyped : true });
+longDeclare({ name : 'Ix', secondName : 'Int32', aliasName : 'I32x', type :_global.Ix, isTyped : true });
 
-longDeclare({ name : 'F32x', secondName : 'Float32', type : F32x, isTyped : true });
-longDeclare({ name : 'F64x', secondName : 'Float64', type : F64x, isTyped : true });
-longDeclare({ name : 'Fx', secondName : 'Float32', aliasName : 'F32x', type : Fx, isTyped : true });
+longDeclare({ name : 'F32x', secondName : 'Float32', type : _global.F32x, isTyped : true });
+longDeclare({ name : 'F64x', secondName : 'Float64', type : _global.F64x, isTyped : true });
+longDeclare({ name : 'Fx', secondName : 'Float32', aliasName : 'F32x', type : _global.Fx, isTyped : true });
 
 //
 
