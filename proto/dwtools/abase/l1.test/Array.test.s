@@ -11018,37 +11018,20 @@ function arrayFlatten( test )
   var expected = [ 0,1,2,3 ]
   test.identical( got, expected );
 
-  var got = _.arrayFlatten([ 0,1,1,2 ])
-  var expected = [ 0,1,2 ]
-  test.identical( got, expected );
-
   var got = _.arrayFlatten([ 0,1,0,1 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlatten([ 0,1,1,0 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlatten([ 0,1,'1',0 ])
-  var expected = [ 0,1,'1' ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlatten([ [ 0,0,1,1 ] ])
-  var expected = [ [ 0,0,1,1 ] ]
+  var expected = [ 0,1,0,1 ]
   test.identical( got, expected );
 
   var got = _.arrayFlatten([ [ 0,0 ],[ 1,1 ] ])
-  var expected = [ [ 0,0 ],[ 1,1 ] ]
+  var expected = [ 0,0,1,1 ]
   test.identical( got, expected );
 
-  var got = _.arrayFlatten([ [ 0 ],[ 1 ],0,1,0,1 ])
-  var expected = [ [ 0 ],[ 1 ],0,1 ]
+  var got = _.arrayFlatten([ [ 0 ],0,1,[ 0,1 ] ])
+  var expected = [ 0,0,1,0,1 ]
   test.identical( got, expected );
 
-  var f = ( e ) => _.numberFrom( e );
-  var got = _.arrayFlatten([ 0,1,'0','1' ], f )
-  var expected = [ 0,1,'0','1',f ]
+  var got = _.arrayFlatten([ [ [ 0 ] ] ])
+  var expected = [ 0 ]
   test.identical( got, expected );
 
   test.close( 'single argument' );
@@ -11142,42 +11125,20 @@ function arrayFlattenOnce( test )
   var expected = [ 0,1,2,3 ]
   test.identical( got, expected );
 
-  var got = _.arrayFlattenOnce([ 0,1,1,2 ])
-  var expected = [ 0,1,2 ]
-  test.identical( got, expected );
-
   var got = _.arrayFlattenOnce([ 0,1,0,1 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnce([ 0,1,1,0 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnce([ 0,1,'1',0 ])
-  var expected = [ 0,1,'1' ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnce([ [ 0,0,1,1 ] ])
-  var expected = [ [ 0,0,1,1 ] ]
+  var expected = [ 0,1,0,1 ]
   test.identical( got, expected );
 
   var got = _.arrayFlattenOnce([ [ 0,0 ],[ 1,1 ] ])
-  var expected = [ [ 0,0 ],[ 1,1 ] ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnce([ [ 0 ],[ 1 ],0,1,0,1 ])
-  var expected = [ [ 0 ],[ 1 ],0,1 ]
-  test.identical( got, expected );
-
-  var f = ( e ) => _.numberFrom( e );
-  var got = _.arrayFlattenOnce([ 0,1,'0','1' ], f )
-  var expected = [ 0,1,'0','1',f ]
-  test.identical( got, expected );
-
-  var f = ( e ) => _.numberFrom( e );
-  var got = _.arrayFlattenOnce([ 0,1,'0','1' ], undefined, f )
   var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ [ 0 ],0,1,[ 0,1 ] ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnce([ 1,[ [ 0 ],1 ],1,0 ])
+  var expected = [ 1,1,0 ]
   test.identical( got, expected );
 
   test.close( 'single argument' );
@@ -11271,42 +11232,20 @@ function arrayFlattenOnceStrictly( test )
   var expected = [ 0,1,2,3 ]
   test.identical( got, expected );
 
-  var got = _.arrayFlattenOnceStrictly([ 0,1,1,2 ])
-  var expected = [ 0,1,2 ]
-  test.identical( got, expected );
-
   var got = _.arrayFlattenOnceStrictly([ 0,1,0,1 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnceStrictly([ 0,1,1,0 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnceStrictly([ 0,1,'1',0 ])
-  var expected = [ 0,1,'1' ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnceStrictly([ [ 0,0,1,1 ] ])
-  var expected = [ [ 0,0,1,1 ] ]
+  var expected = [ 0,1,0,1 ]
   test.identical( got, expected );
 
   var got = _.arrayFlattenOnceStrictly([ [ 0,0 ],[ 1,1 ] ])
-  var expected = [ [ 0,0 ],[ 1,1 ] ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenOnceStrictly([ [ 0 ],[ 1 ],0,1,0,1 ])
-  var expected = [ [ 0 ],[ 1 ],0,1 ]
-  test.identical( got, expected );
-
-  var f = ( e ) => _.numberFrom( e );
-  var got = _.arrayFlattenOnceStrictly([ 0,1,'0','1' ], f )
-  var expected = [ 0,1,'0','1',f ]
-  test.identical( got, expected );
-
-  var f = ( e ) => _.numberFrom( e );
-  var got = _.arrayFlattenOnceStrictly([ 0,1,'0','1' ], undefined, f )
   var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ [ 0 ],0,1,[ 0,1 ] ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenOnceStrictly([ 1,[ [ 0 ],1 ],1,0 ])
+  var expected = [ 1,1,0 ]
   test.identical( got, expected );
 
   test.close( 'single argument' );
@@ -11461,47 +11400,21 @@ function arrayFlattened( test )
   var expected = [ 0,1,2,3 ]
   test.identical( got, expected );
 
-  var got = _.arrayFlattened([ 0,1,1,2 ])
-  var expected = [ 0,1,2 ]
-  test.identical( got, expected );
-
   var got = _.arrayFlattened([ 0,1,0,1 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattened([ 0,1,1,0 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattened([ 0,1,'1',0 ])
-  var expected = [ 0,1,'1' ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattened([ [ 0,0,1,1 ] ])
-  var expected = [ [ 0,0,1,1 ] ]
+  var expected = [ 0,1,0,1 ]
   test.identical( got, expected );
 
   var got = _.arrayFlattened([ [ 0,0 ],[ 1,1 ] ])
-  var expected = [ [ 0,0 ],[ 1,1 ] ]
+  var expected = [ 0,0,1,1 ]
   test.identical( got, expected );
 
-  var got = _.arrayFlattened([ [ 0 ],[ 1 ],0,1,0,1 ])
-  var expected = [ [ 0 ],[ 1 ],0,1 ]
+  var got = _.arrayFlattened([ [ 0 ],0,1,[ 0,1 ] ])
+  var expected = [ 0,0,1,0,1 ]
   test.identical( got, expected );
 
-  var f = ( e ) => _.numberFrom( e );
-  var dst = [ 0,1,'0','1' ];
-  var got = _.arrayFlattened( dst,f );
-  var expected = [ 0,1,'0','1',f ]
-  test.identical( got, 1 );
-  test.identical( dst, expected );
-
-  var f = ( e ) => _.numberFrom( e );
-  var dst = [ 0,1,'0','1' ];
-  var got = _.arrayFlattened( dst,undefined,f );
-  var expected = [ 0,1,'0','1',undefined,f ]
-  test.identical( got, 2 );
-  test.identical( dst, expected );
+  var got = _.arrayFlattened([ [ [ 0 ] ] ])
+  var expected = [ 0 ]
+  test.identical( got, expected );
 
   test.close( 'single argument' );
 
@@ -11619,45 +11532,20 @@ function arrayFlattenedOnce( test )
   var expected = [ 0,1,2,3 ]
   test.identical( got, expected );
 
-  var got = _.arrayFlattenedOnce([ 0,1,1,2 ])
-  var expected = [ 0,1,2 ]
-  test.identical( got, expected );
-
   var got = _.arrayFlattenedOnce([ 0,1,0,1 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce([ 0,1,1,0 ])
-  var expected = [ 0,1 ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce([ 0,1,'1',0 ])
-  var expected = [ 0,1,'1' ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce([ [ 0,0,1,1 ] ])
-  var expected = [ [ 0,0,1,1 ] ]
+  var expected = [ 0,1,0,1 ]
   test.identical( got, expected );
 
   var got = _.arrayFlattenedOnce([ [ 0,0 ],[ 1,1 ] ])
-  var expected = [ [ 0,0 ],[ 1,1 ] ]
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce([ [ 0 ],[ 1 ],0,1,0,1 ])
-  var expected = [ [ 0 ],[ 1 ],0,1 ]
-  test.identical( got, expected );
-
-  var f = ( e ) => _.numberFrom( e );
-  var dst = [ 0,1,'0','1' ];
-  var got = _.arrayFlattenedOnce( dst,f );
-  var expected = [ 0,1,'0','1',f ]
-  test.identical( got, 1 );
-  test.identical( dst, expected );
-
-  var f = ( e ) => _.numberFrom( e );
-  var dst = [ 0,1,'0','1' ];
-  var got = _.arrayFlattenedOnce( dst,undefined,f );
   var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ [ 0 ],0,1,[ 0,1 ] ])
+  var expected = [ 0,1 ]
+  test.identical( got, expected );
+
+  var got = _.arrayFlattenedOnce([ 1,[ [ 0 ],1 ],1,0 ])
+  var expected = [ 1,1,0 ]
   test.identical( got, expected );
 
   test.close( 'single argument' );
