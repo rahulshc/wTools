@@ -298,8 +298,8 @@ reflector:
       ./dwtools/abase/l2/StringTools.s: true
       ./dwtools/abase/l2.test/StringTools.test.s: true
     srcFilter:
-      basePath: ./proto
-      prefixPath: .
+      basePath: .
+      prefixPath: proto
     dstFilter:
       basePath: .
       prefixPath: .
