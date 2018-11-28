@@ -3835,6 +3835,7 @@ function strLinesJoin( src )
  * @throws { Exception } Throw an exception if( src ) is not a String or Array.
  * @memberof wTools
  */
+
 function strLinesStrip( src )
 {
 
@@ -3848,6 +3849,7 @@ function strLinesStrip( src )
 
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
   _.assert( arguments.length === 1 );
+
   let lines = _.strLinesSplit( src );
   lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
 
@@ -3855,6 +3857,8 @@ function strLinesStrip( src )
   lines = _.strLinesJoin( lines );
   return lines;
 }
+
+
 
 //
 
