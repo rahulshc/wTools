@@ -6055,6 +6055,7 @@ function strReplaceWords( test )
 function strJoin( test )
 {
 
+  // One input array
   test.case = 'join numbers';
   var got = _.strJoin([ 1, 2, 3 ]);
   var expected = '123';
@@ -6110,30 +6111,95 @@ function strJoin( test )
   var expected = [ "1236", "1247", "1258" ];
   test.identical( got,expected );
 
+  // Second arg joiner
+  test.case = 'join number array with joiner';
+  var got = _.strJoin( [ 1, 2 ], '3' );
+  var expected = '132';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoin( [ 'b', 'c' ], '0' );
+  var expected = 'b0c';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoin( [ 'Hello', 'world', '!' ], ' ' );
+  var expected = 'Hello world !';
+  test.identical( got,expected );
+
+  test.case = 'join array and joiner';
+  var got = _.strJoin( [ 0, [ '1', '2' ] ], '3' );
+  var expected = [ '031', '032' ];
+  test.identical( got,expected );
+
+  test.case = 'join arrays and joiner';
+  var got = _.strJoin( [ 0, [ '1', '2' ], [ 'a', 'b'] ], '-' );
+  var expected = [ '0-1-a', '0-2-b' ];
+  test.identical( got,expected );
+
+  test.case = 'join umber arrays and joiner';
+  var got = _.strJoin( [ [ 0, 3, 6 ], [ 1, 4, 7 ], [ 2, 5, 8 ] ], 'x' );
+  var expected = [ '0x1x2', '3x4x5', '6x7x8' ];
+  test.identical( got,expected );
+
+  test.case = 'join array + string + joiner';
+  var got = _.strJoin([ [ 1, 2 ], '3' ], '__');
+  var expected = [ '1__3', '2__3' ];
+  test.identical( got,expected );
+
+  test.case = 'Undefined joiner';
+  var got = _.strJoin([ [ 1, 2 ], '3' ], undefined );
+  var expected = [ '13', '23' ];
+  test.identical( got,expected );
+
   /**/
 
   if( !Config.debug )
   return;
 
-  test.case = 'invalid argument type';
+  test.case = 'No arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( );
+  });
+
+  test.case = 'Too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', '2', '3' );
+  });
+
+  test.case = 'Empty arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( [ ], [ ] );
+  });
+
+  test.case = 'invalid argument type in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ { a : 1 }, [ 1 ], [ 2 ] ]);
   });
 
-  test.case = 'null argument';
+  test.case = 'null argument in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ '1', null ]);
   });
 
-  test.case = 'RegExp argument';
+  test.case = 'null argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoin([ '1', undefined ]);
+  });
+
+  test.case = 'RegExp argument in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ '1', /a?/ ]);
   });
 
-  test.case = 'arrays with different length';
+  test.case = 'arrays with different lengths in array';
   test.shouldThrowError( function()
   {
     _.strJoin([ [ 1, 2 ], [ 1 ], [ 2 ] ]);
@@ -6142,13 +6208,25 @@ function strJoin( test )
   test.case = 'invalid argument type';
   test.shouldThrowError( function()
   {
-    _.strJoin( { a : 1 }, [ 1 ], [ 2 ] );
+    _.strJoin( { a : 1 }, [ 1 ] );
   });
 
   test.case = 'null argument';
   test.shouldThrowError( function()
   {
-    _.strJoin( '1', null );
+    _.strJoin( [ '1' ], null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( [ '1' ], NaN );
+  });
+
+  test.case = 'Wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoin( '1', 2 );
   });
 
   test.case = 'RegExp argument';
@@ -6160,7 +6238,182 @@ function strJoin( test )
   test.case = 'arrays with different length';
   test.shouldThrowError( function()
   {
-    _.strJoin( [ 1, 2 ], [ 1 ], [ 2 ] );
+    _.strJoin( [ 1, 2 ], [ 1 ] );
+  });
+
+}
+
+//
+
+function strJoinPath( test )
+{
+  // Simple
+  test.case = 'Empty';
+  var got = _.strJoinPath( [ ], '' );
+  var expected = '';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoinPath( [ 'b', 'c' ], '0' );
+  var expected = 'b0c';
+  test.identical( got,expected );
+
+  test.case = 'join string array with joiner';
+  var got = _.strJoinPath( [ 'Hello', 'world', '!' ], ' ' );
+  var expected = 'Hello world !';
+  test.identical( got,expected );
+
+  test.case = 'join array with joiner';
+  var got = _.strJoinPath( [ '1', '2', '4' ], '/' );
+  var expected = '1/2/4';
+  test.identical( got,expected );
+
+  test.case = 'join array and joiner';
+  var got = _.strJoinPath( [ '0', [ '1', '2' ] ], '3' );
+  var expected = [ '031', '032' ];
+  test.identical( got,expected );
+
+  test.case = 'join arrays and joiner';
+  var got = _.strJoinPath( [ '0', [ '1', '2' ], [ 'a', 'b'] ], '-' );
+  var expected = [ '0-1-a', '0-2-b' ];
+  test.identical( got,expected );
+
+  test.case = 'join arrays and joiner';
+  var got = _.strJoinPath( [ [ '0', '3', '6' ], [ '1', '4', '7' ], [ '2', '5', '8' ] ], 'x' );
+  var expected = [ '0x1x2', '3x4x5', '6x7x8' ];
+  test.identical( got,expected );
+
+  test.case = 'join array + string + joiner';
+  var got = _.strJoinPath([ [ '1', '2' ], '3' ], '__');
+  var expected = [ '1__3', '2__3' ];
+  test.identical( got,expected );
+
+  //Joiner in src strings
+
+  test.case = 'String does not end with joiner';
+  var got = _.strJoinPath( [ 'Hi,', 'world' ], '/' );
+  var expected = 'Hi,/world';
+  test.identical( got,expected );
+
+  test.case = 'String ends with joiner';
+  var got = _.strJoinPath( [ 'Hi,', 'world' ], ',' );
+  var expected = 'Hi,world';
+  test.identical( got,expected );
+
+  test.case = 'String does not begin with joiner';
+  var got = _.strJoinPath( [ 'Hi', ',world' ], '/' );
+  var expected = 'Hi/,world';
+  test.identical( got,expected );
+
+  test.case = 'String begins with joiner';
+  var got = _.strJoinPath( [ 'Hi', ',world' ], ',' );
+  var expected = 'Hi,world';
+  test.identical( got,expected );
+
+  test.case = 'String begins and ends with joiner';
+  var got = _.strJoinPath( [ '/1/', '/2/', '/4/' ], '/' );
+  var expected = '/1/2/4/';
+  test.identical( got,expected );
+
+  test.case = 'String begins and ends with joiner';
+  var got = _.strJoinPath( [ '/1//', '/2//', '//4/' ], '/' );
+  var expected = '/1//2///4/';
+  test.identical( got,expected );
+
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'No arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( );
+  });
+
+  test.case = 'Too few arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ] );
+  });
+
+  test.case = 'Too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ], '2', '3' );
+  });
+
+  test.case = 'invalid argument type in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ 0, [ '1' ], [ '2' ] ], '/' );
+  });
+
+  test.case = 'invalid argument type in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ { a : 1 }, [ '1' ], [ '2' ] ], '/' );
+  });
+
+  test.case = 'null argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ '1', null ], '/' );
+  });
+
+  test.case = 'null argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ '1', undefined ], '/' );
+  });
+
+  test.case = 'RegExp argument in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ '1', /a?/ ], '/' );
+  });
+
+  test.case = 'arrays with different lengths in array';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath([ [ 1, 2 ], [ 1 ], [ 2 ] ], '/' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( { a : 1 }, [ 1 ] );
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ], null );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ '1' ], NaN );
+  });
+
+  test.case = 'Wrong argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( '1', 2 );
+  });
+
+  test.case = 'RegExp argument';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( '1', /a?/ );
+  });
+
+  test.case = 'arrays with different length';
+  test.shouldThrowError( function()
+  {
+    _.strJoinPath( [ [ 1, 2 ], [ 1 ] ], '/' );
   });
 
 }
@@ -6473,9 +6726,28 @@ function strCount( test )
 function strDup( test )
 {
 
+  test.case = 'srcString  and number of times remain unchanged';
+  var srcString = 'Hi, ';
+  var times = 3;
+  var got = _.strDup( srcString, times );
+
+  var expected = 'Hi, Hi, Hi, ';
+  test.identical( got, expected );
+
+  var oldSrcString = 'Hi, ';
+  test.identical( srcString, oldSrcString );
+
+  var oldTimes = 3;
+  test.identical( times, oldTimes );
+
   test.case = 'concatenation test';
   var got = _.strDup( 'a', 2 );
   var expected = 'aa';
+  test.identical( got,expected );
+
+  test.case = 'simple string';
+  var got = _.strDup( 'ab', 2 );
+  var expected = 'abab';
   test.identical( got,expected );
 
   test.case = 'invalid times value';
@@ -6483,10 +6755,20 @@ function strDup( test )
   var expected = '';
   test.identical( got,expected );
 
-  test.case = 'simple string';
-  var got = _.strDup( 'a', 2 );
-  var expected = 'aa';
+  test.case = 'zero times';
+  var got = _.strDup( 'a', 0 );
+  var expected = '';
   test.identical( got,expected );
+
+  test.case = 'returns the empty string';
+  var got = _.strDup( 'abc ', 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'Second argument NaN';
+  var got = _.strDup( 'abc', NaN );
+  var expected = '';
+  test.identical( got, expected );
 
   test.case = 'Two words with a spaces';
   var got = _.strDup( 'Hi world ', 2 );
@@ -6498,16 +6780,6 @@ function strDup( test )
   var expected = '  ';
   test.identical( got,expected );
 
-  test.case = 'zero times';
-  var got = _.strDup( 'a', 0 );
-  var expected = '';
-  test.identical( got,expected );
-
-  test.case = 'returns the empty string';
-  var got = _.strDup( 'abc', 0 );
-  var expected = '';
-  test.identical( got, expected );
-
   test.case = 'returns the first copy of the given string';
   var got = _.strDup( 'abc', 1 );
   var expected = 'abc';
@@ -6518,14 +6790,34 @@ function strDup( test )
   var expected = 'abcabcabc';
   test.identical( got, expected );
 
-  test.case = 'Second argument NaN';
-  var got = _.strDup( 'abc', NaN );
-  var expected = '';
+  test.case = 'copies and concatenates first argument 10 times';
+  var got = _.strDup( '1', 10 );
+  var expected = '1111111111';
   test.identical( got, expected );
 
-  test.case = 'vectorized input';
+  test.case = 'vectorized input concatenated negative times';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], - 2 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated zero times';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 0 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated one time';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 1 );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated 3 times';
   var got = _.strDup( [ 'ab', 'cd', 'ef' ], 3 );
   var expected = [ 'ababab', 'cdcdcd', 'efefef' ];
+  test.identical( got, expected );
+
+  test.case = 'Empty vectorized input';
+  var got = _.strDup( [ ], 3 );
+  var expected = [];
   test.identical( got, expected );
 
   /* - */
@@ -6533,10 +6825,34 @@ function strDup( test )
   if( !Config.debug )
   return;
 
-  test.case = 'times is not number';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strDup( 'ab', [ 3,4 ] );
+    _.strDup();
+  });
+
+  test.case = 'second argument is not provided';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 'a' );
+  } );
+
+  test.case = 'first argument is not provided';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 3 );
+  } );
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1' );
+  });
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1', '2', 3 );
   });
 
   test.case = 'invalid arguments count';
@@ -6551,16 +6867,16 @@ function strDup( test )
     _.strDup( 123, 1 );
   });
 
+  test.case = 'times is not number';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 'ab', [ 3, 4 ] );
+  });
+
   test.case = 'invalid second arg type';
   test.shouldThrowError( function()
   {
     _.strDup( 'one', 'two'  );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strDup();
   });
 
   test.case = 'second argument is wrong';
@@ -6569,22 +6885,22 @@ function strDup( test )
     _.strDup( 'a', 'wrong argument' );
   } );
 
-  test.case = 'second argument is not provided';
-  test.shouldThrowError( function( )
-  {
-    _.strDup( 'a' );
-  } );
-
-  test.case = 'invalid arguments count';
+  test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strDup( '1' );
+    _.strDup( 1, 2 );
   });
 
   test.case = 'invalid first argument type';
   test.shouldThrowError( function()
   {
-    _.strDup( 1, 2 );
+    _.strDup( [ 1, 2 ], 2 );
+  });
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( [ '1', 2 ], 2 );
   });
 
   test.case = 'invalid second argument type';
@@ -6603,6 +6919,18 @@ function strDup( test )
   test.shouldThrowError( function()
   {
     _.strDup( '2', null );
+  });
+
+  test.case = 'undefined argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( undefined, 2 );
+  });
+
+  test.case = 'undefined second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', undefined );
   });
 
   test.case = 'NaN argument';
@@ -7122,6 +7450,159 @@ function strLinesSelect( test )
 
 //
 
+function strLinesStrip( test )
+{
+  test.case = 'Argument is only one string';
+
+  test.case = 'Src stays unchanged';
+  var srcString = '\na\n\nbc\ndef\n';
+  var got = _.strLinesStrip( srcString );
+
+  var expected = 'a\nbc\ndef';
+  test.identical( got, expected );
+
+  var oldSrcString = '\na\n\nbc\ndef\n';
+  test.identical( srcString, oldSrcString );
+
+  test.case = 'Empty string';
+  var got = _.strLinesStrip( '' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'Only escape sequences';
+  var got = _.strLinesStrip( '\n\t\r' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'String without escape sequences and begin/end spaces';
+  var got = _.strLinesStrip( 'Hello world' );
+  var expected = 'Hello world';
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end spaces';
+  var got = _.strLinesStrip( '  Hello world   ' );
+  var expected = 'Hello world';
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end escape sequences';
+  var got = _.strLinesStrip( '\t\r\nHello world\r\n\t' );
+  var expected = 'Hello world';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\tworld\r\n' );
+  var expected = 'Hello\nworld';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
+  var expected = 'Hello\nworld';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences and spaces';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t'  );
+  var expected = 'Hello\nWorld\n!';
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'Argument is only one array';
+
+  test.case = 'Src stays unchanged';
+  var srcArray = [ '\na\n\nbc\ndef\n' ];
+  var got = _.strLinesStrip( srcArray );
+
+  var expected = [ 'a\n\nbc\ndef' ];
+  test.identical( got, expected );
+
+  var oldSrcArray = [ '\na\n\nbc\ndef\n' ];
+  test.identical( srcArray, oldSrcArray );
+
+  test.case = 'Empty array';
+  var got = _.strLinesStrip( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'Empty array with empty string';
+  var got = _.strLinesStrip( [ '' ] );
+  var expected = [ ];
+  test.identical( got, expected );
+
+  test.case = 'Only escape sequences';
+  var got = _.strLinesStrip( [ '', '\t\r\n' ] );
+  var expected = [ ];
+  test.identical( got, expected );
+
+  test.case = 'String without escape sequences and begin/end spaces';
+  var got = _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] );
+  var expected = [ 'Hello world' ];
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end spaces';
+  var got = _.strLinesStrip( [ '  Hello ', ' world   ' ] );
+  var expected = [ 'Hello', 'world' ];
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end escape sequences';
+  var got = _.strLinesStrip( [ '\t\r\nHello  ', '  world\r\n\t' ] );
+  var expected = [ 'Hello', 'world' ];
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( [ '\n\tHello\r\n\tworld\r\n' ] );
+  var expected = [ 'Hello\r\n\tworld' ];
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
+  var expected = 'Hello\nworld';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences and spaces';
+  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t', '  \nHow are you?  \r  \n  \t  ' ] );
+  var expected = [ 'Hello  \r\n\t\t\r\n World \t\r\n!', 'How are you?' ] ;
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'Several arguments';
+
+  test.case = 'Several strings';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n',' World \t\r\n! \r\n\t', ' \nHow are you?  ' );
+  var expected = [ 'Hello', 'World\n!', 'How are you?' ] ;
+  test.identical( got, expected );
+
+  test.case = 'Several arrays';
+  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n', ' World \t\r\n! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], [ '  \n\r\t ' ]  );
+  var expected = [ [ 'Hello', 'World \t\r\n!' ], [ 'How', 'are', 'you \n ?' ], [ ] ];
+  test.identical( got, expected );
+
+  test.case = 'Several strings and arrays';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n', [ ' World \t\r\n ', ' ! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], ' I am \n\r\t good \n\n ' );
+  var expected = [ 'Hello', [ 'World', '!' ], [ 'How', 'are', 'you \n ?' ], 'I am\ngood' ];
+  test.identical( got, expected );
+
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( () =>  _.strLinesStrip() );
+
+  test.case = 'Wrong type of argument';
+  test.shouldThrowError( () =>  _.strLinesStrip( null ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( undefined ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( NaN ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( 3 ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( [ 3 ] ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( /^a/ ) );
+
+}
+
+//
+
 function strLinesNumber( test )
 {
   var got,expected;
@@ -7354,21 +7835,22 @@ ghij
 
   /* - */
 
-  test.open( 'aligned range, single line' );
+  test.open( 'Range is a number' );
 
   /*  */
 
   test.open( 'numberOfLines : 0' );
 
-  var crange = [ 6,9 ];
-  var sub = _.strSub( srcStr,crange );
+  var crange = 6;
+  var sub = _.strSub( srcStr, [ crange, crange + 1 ] );
 
-  var expected =
+  var expectedSplits =
   [
     '',
-    'def',
+    'd',
     '',
-  ]
+  ];
+  var expectedSpans = [ 6, 6, 7, 7 ];
 
   var got = _.strLinesNearest
   ({
@@ -7378,7 +7860,235 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+  test.will = 'check strSub';
+  test.identical( sub, 'd' );
+
+  test.close( 'numberOfLines : 0' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 1' );
+
+  var crange = 6;
+
+  var expectedSplits =
+  [
+    '',
+    'd',
+    'ef',
+  ];
+  var expectedSpans = [ 6, 6, 7, 9 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 1,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : 1' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 2' );
+
+  var crange = 6;
+
+  var expectedSplits =
+  [
+    'bc\n',
+    'd',
+    'ef',
+  ];
+  var expectedSpans = [ 3, 6, 7, 9 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 2,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : 2' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 8 ( > all lines )' );
+
+  var crange = 6;
+
+  var expectedSplits =
+  [
+    '\na\nbc\n',
+    'd',
+    'ef\nghij\n\n',
+  ];
+  var expectedSpans = [ 0, 6, 7, 16 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 8,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : 8 ( > all lines )' );
+
+  /*  */
+
+  test.open( 'NaN range' );
+
+  var crange = NaN;
+
+  var expectedSplits =
+  [
+    '',
+    '',
+    '',
+  ];
+  var expectedSpans = [ NaN, NaN, NaN, NaN ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 8,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'NaN range' );
+
+  /*  */
+
+  test.close( 'Range is a number' );
+
+  /* - */
+
+  test.open( 'aligned range, single line' );
+
+  /*  */
+
+  test.open( 'numberOfLines not defined ( = 3 )' );
+
+  var crange = [ 3, 5 ];
+
+  var expectedSplits =
+  [
+    'a\n',
+    'bc',
+    '\ndef',
+  ];
+  var expectedSpans = [ 1, 3, 5, 9 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : undefined,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines not defined ( = 3 )' );
+
+  /*  */
+
+  test.open( 'numberOfLines : NaN' );
+
+  var crange = [ 3, 5 ];
+
+  var expectedSplits =
+  [
+    '\na\n',
+    'bc',
+    '\ndef\nghij\n\n',
+  ];
+  var expectedSpans = [ undefined, 3, 5, undefined ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : NaN,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : NaN' );
+
+  /*  */
+
+  test.open( 'numberOfLines : null' );
+
+  var crange = [ 3, 5 ];
+
+  var expectedSplits =
+  [
+    '',
+    'bc',
+    'bc',
+  ];
+  var expectedSpans = [ 3, 3, 5, 3 ];  // Could be wrong?
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : null,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
+
+  test.close( 'numberOfLines : null' );
+
+  /*  */
+
+  test.open( 'numberOfLines : 0' );
+
+  var crange = [ 6,9 ];
+  var sub = _.strSub( srcStr,crange );
+
+  var expectedSplits =
+  [
+    '',
+    'def',
+    '',
+  ];
+  var expectedSpans = [ 6, 6, 9, 9 ];
+
+  var got = _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 0,
+  });
+
+  test.will = 'check strLinesNearest';
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7391,12 +8101,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     '',
     'def',
     '',
-  ]
+  ];
+  var expectedSpans = [ 6, 6, 9, 9 ];
 
   var got = _.strLinesNearest
   ({
@@ -7406,7 +8117,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7419,12 +8131,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'bc\n',
     'def',
     '',
-  ]
+  ];
+  var expectedSpans = [ 3, 6, 9, 9 ];
 
   var got = _.strLinesNearest
   ({
@@ -7434,7 +8147,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7447,12 +8161,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'bc\n',
     'def',
     '\nghij',
-  ]
+  ];
+  var expectedSpans = [ 3, 6, 9, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7462,7 +8177,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7475,12 +8191,13 @@ ghij
   var crange = [ 6,9 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'a\nbc\n',
     'def',
     '\nghij',
-  ]
+  ];
+  var expectedSpans = [ 1, 6, 9, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7490,7 +8207,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'def' );
 
@@ -7511,12 +8229,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     '',
     'c\ndef\ng',
     '',
-  ]
+  ];
+  var expectedSpans = [ 4, 4, 11, 11 ];
 
   var got = _.strLinesNearest
   ({
@@ -7526,7 +8245,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7539,12 +8259,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'b',
     'c\ndef\ng',
     'hij',
-  ]
+  ];
+  var expectedSpans = [ 3, 4, 11, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7554,7 +8275,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7567,12 +8289,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'a\nb',
     'c\ndef\ng',
     'hij',
-  ]
+  ];
+  var expectedSpans = [ 1, 4, 11, 14 ];
 
   var got = _.strLinesNearest
   ({
@@ -7582,7 +8305,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7595,12 +8319,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     'a\nb',
     'c\ndef\ng',
     'hij\n',
-  ]
+  ];
+  var expectedSpans = [ 1, 4, 11, 15 ];
 
   var got = _.strLinesNearest
   ({
@@ -7610,7 +8335,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7623,12 +8349,13 @@ ghij
   var crange = [ 4,11 ];
   var sub = _.strSub( srcStr,crange );
 
-  var expected =
+  var expectedSplits =
   [
     '\na\nb',
     'c\ndef\ng',
     'hij\n',
-  ]
+  ];
+  var expectedSpans = [ 0, 4, 11, 15 ];
 
   var got = _.strLinesNearest
   ({
@@ -7638,7 +8365,8 @@ ghij
   });
 
   test.will = 'check strLinesNearest';
-  test.identical( got, expected );
+  test.identical( got.splits, expectedSplits );
+  test.identical( got.spans, expectedSpans );
   test.will = 'check strSub';
   test.identical( sub, 'c\ndef\ng' );
 
@@ -7652,6 +8380,114 @@ ghij
 
   console.log( 'done1' );
   logger.log( 'done2' );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.open( 'Wrong range' );
+
+  var crange = [ 4, 11, 12 ];
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : null,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    charsRange : 'crange',
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : srcStr,
+    numberOfLines : 4,
+  }));
+
+  test.close( 'Wrong range' );
+
+  /*  */
+
+  test.open( 'Wrong src' );
+
+  var crange = [ 4, 11 ];
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : null,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : NaN,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : undefined,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : 3,
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest
+  ({
+    src : [ 'abd', 'ef' ],
+    charsRange : crange,
+    numberOfLines : 4,
+  }));
+
+  test.close( 'Wrong src' );
+
+  /*  */
+
+  test.open( 'Wrong arg' );
+
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( 3 ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( [ 3, 4 ] ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( null ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( undefined ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( NaN ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( 'args' ));
+
+  let o =
+  {
+    src : [ 'abd', 'ef' ],
+    charsRange : crange,
+    numberOfLines : 4,
+  };
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest(  ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearest( o, o ));
+
+
+  test.close( 'Wrong arg' );
 
 }
 
@@ -7922,13 +8758,68 @@ function strCommonLeft( test )
   var expected = '';
   test.identical( got, expected );
 
+  test.case = 'one string is empty';
+  var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match';
+  var got = _.strCommonLeft( 'abcd', 'abc', 'd' );
+  var expected = '';
+  test.identical( got, expected );
+
   test.case = 'several strings';
   var got = _.strCommonLeft( 'abc', 'abd', 'abc', 'ada' );
   var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'one string is empty';
-  var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
+  test.case = 'several strings';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abc', 'abcd', 'abcde', 'abcdef' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abcdef', 'abcd', 'abcde', 'abc' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abcd', 'abc', 'abcd' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'abc', 3 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'abc', NaN );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', /a/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 'abc' ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match case';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'Abc' );
   var expected = '';
   test.identical( got, expected );
 
@@ -7939,6 +8830,48 @@ function strCommonLeft( test )
   test.shouldThrowError( function( )
   {
     _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is number';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 3, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is regExp';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( /^a/, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is NaN';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( NaN, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( null, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 'abd', 'abc', 'ada', null );
+  });
+
+  test.case = 'ins is undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( undefined, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 'abd', 'abc', 'ada', undefined );
   });
 
 }
@@ -7958,7 +8891,17 @@ function strCommonRight( test )
   test.identical( got, expected );
 
   test.case = 'ins is empty string';
-  var got = _.strCommonRight( '', 'a', 'b' );
+  var got = _.strCommonRight( '', 'ab', 'b' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'one string is empty';
+  var got = _.strCommonRight( 'abc', '', 'abc', 'bc' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match';
+  var got = _.strCommonRight( 'abcd', 'abc', 'd' );
   var expected = '';
   test.identical( got, expected );
 
@@ -7967,8 +8910,53 @@ function strCommonRight( test )
   var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'one string is empty';
-  var got = _.strCommonRight( 'abc', '', 'abc', 'ada' );
+  test.case = 'several strings';
+  var got = _.strCommonRight( 'abcd', 'cd', 'abcd', 'd' );
+  var expected = 'd';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'cdef', 'abcdef', 'def', 'bcdef' );
+  var expected = 'def';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'abcdef', 'bcdef', 'cdef', 'def' );
+  var expected = 'def';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'abcd', 'bcd', 'abcd' );
+  var expected = 'bcd';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abc', 'abc', 3 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'acde', 'bcde', NaN );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abcd', 'abd', 'ad', [ 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'c', 'bc', 'abc', /c/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abcd', 'cd', 'bcd', [ 'abcd' ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match case';
+  var got = _.strCommonRight( 'abcd', 'cD', 'AbcD' );
   var expected = '';
   test.identical( got, expected );
 
@@ -7979,6 +8967,48 @@ function strCommonRight( test )
   test.shouldThrowError( function( )
   {
     _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is number';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 3, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is regExp';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( /^a/, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is NaN';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( NaN, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( null, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 'abd', 'abc', 'ada', null );
+  });
+
+  test.case = 'ins is undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( undefined, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 'abd', 'abc', 'ada', undefined );
   });
 
 }
@@ -8345,12 +9375,14 @@ var Self =
     strSub : strSub,
     strReplaceWords : strReplaceWords,
     strJoin : strJoin,
+    strJoinPath : strJoinPath,
     strUnjoin : strUnjoin,
     strUnicodeEscape : strUnicodeEscape,
     strCount : strCount,
     strDup : strDup,
 
     strLinesSelect : strLinesSelect,
+    strLinesStrip : strLinesStrip,
     strLinesNumber : strLinesNumber,
     strLinesCount : strLinesCount,
 

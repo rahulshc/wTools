@@ -6,116 +6,120 @@
 
 ## Methods
 
-  * `arrayIs( src )` - Checks if src is an array.
-  * `arrayleftIndex/arrayRightIndex( arr, ins, evaluator1, evaluator2 )` - Returns the index of the first/last matching (ins) element of an array (arr).
-    ( see evaluators on ### EVALUATORS )
-  * `arrayRight/arrayLeft( arr, ins, evaluator1, evaluator2 )` - Returns a new object containing the properties, (index, element), corresponding to
-    a found value (ins) of an array (arr).
-  * `arrayCount( src, instance )` - Returns the count of matched elements with ( instance ) of an array ( src ).  
-  * `arrayCountUnique( src, onEvaluate )` - Returns the count of matched pairs of an array ( src ).
-  * `arrayPrepend*` - Adds a value of argument( ins ) to the beginning of an array( dstArray ).
-    ( see options for * on ### Patterns )
-  * `arrayAppend*` - Adds the value of argument( ins ) at the end of an array( dstArray ).
-  * `arrayRemove*` - Removes the matching elements ( ins ) of an array (dstArray).
-  * `arrayRemoveDuplicates( dstArray, onEvaluate )` - Removes the duplicated elements of an array (dstArray).
+  * `arrayIs( src )` - Checks if `src` is an array.
+  * `arrayleftIndex/arrayRightIndex( arr, ins, evaluator1, evaluator2 )` - Returns the index of the first/last matching `ins` element of an array `arr`.  
+  ( see evaluators on `EVALUATORS` )
+  * `arrayRight/arrayLeft( arr, ins, evaluator1, evaluator2 )` - Returns a new object containing the properties, `index, element`, corresponding to
+    a found value `ins` of an array `arr`.
+  * `arrayCount( src, instance )` - Returns the count of matched elements with `instance` of the array `src`.  
+  * `arrayCountUnique( src, onEvaluate )` - Returns the count of matched pairs of the array `src`.
+  * `arrayPrepend*` - Adds a value of the argument `ins` to the beginning of the array `dstArray`.
+    ( see options for `*` on `Patterns` )
+  * `arrayAppend*` - Adds the value of the argument `ins` at the end of the array `dstArray`.
+  * `arrayRemove*` - Removes the matching elements `ins` of the array `dstArray`.
+  * `arrayRemoveDuplicates( dstArray, onEvaluate )` - Removes the duplicated elements of the array `dstArray`.
   * `arrayFlatten*` - Returns an array that contains all the passed arguments.
-  * `arrayReplace*` - Returns an ( dstArray ) array where the matching elememts of ( ins ) are replaced by the ones in ( sub ).
-  * `arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )` - Adds a value (sub) to an array (dstArray) or replaces a value (ins) of the array (dstArray) by (sub).
+  * `arrayReplace*` - Returns an array where the matching elememts of `ins` are replaced by the ones in `sub`.
+  * `arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )` - Adds a value `sub` to the array `dstArray` or replaces a value `ins` of the array `dstArray` by `sub`.
 
 
 ## Patterns
 
-  Many function names contain patterns to help us understand the behaviour of each routine, here comes a quick summary of the information a function name can
-  give us:
+  Many function names contain patterns to help us understand the behaviour of each routine, here comes a quick summary of the information a function name can give us:
 
-    The format of a function name will be: array { Op } { Tense } { Second } { How }, where:
+    The format of a function name will be: `array { Op } { Tense } { Second } { How }`
 
-    { Op } can be one of [ Append, Prepend, Remove, Flatten, Replace ], corresponding to the action to perform.  
+### Where:
 
-    { Tense } can be - ( nothing ) or ed, giving information on what to return ( the output value ).
+    { Op } can be one of [ `Append`, `Prepend`, `Remove`, `Flatten`, `Replace` ],
+    corresponding to the action to perform.
 
-    { Second } can be one of [ - , element, array, arrays ], refering to how to treat the src argument.
+    { Tense } can be `-`, or `ed`, giving information on what to return ( the output value ).
 
-    { How } can be one of [ - , Once, OnceStrictly ], and tell us how to treat the repeats.
+    { Second } can be one of [ `-` , `element`, `array`, `arrays` ], refering to how to treat the source argument.
 
-#### 1: Function contains `*ed`
+    { How } can be one of [ `-` , `Once`, `OnceStrictly` ], and tell us how to treat the repeats.
 
-  If the function contains `*ed`, instead of returning the destination array ( dstArray ), the returned value will be
-  the index, count or element ( depending on the kind of function ).
+### 1: Function contains `*ed`
 
-  @Example:
+  If the function contains `*ed`, instead of returning the destination array `dstArray`, the returned value will be
+  the index, count or element ( depending on the type of the function ).
+
+#### Example
+
   ```
-  arrayFlatten( [], [ 1, 2, 3 ] )   
-  returns ->   [ 1, 2, 3 ]
-  ```
-  @Example:
-  ```
-  arrayFlattened( [], [ 1, 2, 3 ] )   
+  arrayFlatten( [ 0 ], [ 1, 2, 3 ] )   
+  returns ->   [ 0, 1, 2, 3 ]  ( the destination array )
+
+  arrayFlattened( [ 0 ], [ 1, 2, 3 ] )   
   returns ->   3 ( the count of the added elements )
   ```
 
-#### 2: Function contains `*Once`
+### 2: Function contains `*Once`
 
   If the function contains `*Once`, the action will be performed only on the first matching element, or when
-  the destination array ( dstArray ) doesn't have the value of ( ins ).
+  the destination array `dstArray` doesn't have the value of `ins`.
 
-  @Example:
+#### Example
+
   ```
-  arrayRemoveElement( [ 1, 2, 1 ], 1 )    
-  returns ->    [ 2 ]
+  arrayRemoveElement( [ 1, 2, 1 ], 1 )  
+  returns ->    [ 2 ] ( the destination array with the removed elements )
 
-  arrayRemoveElementOnce( [ 1, 2, 1 ], 1 )    
-  returns ->    [ 2, 1 ]
-  ```
-  @Example:
-  ```
-  arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 )    
-  returns ->    [ 5, 1, 2, 3, 4, 5 ]
+  arrayRemoveElementOnce( [ 1, 2, 1 ], 1 )  
+  returns ->    [ 2, 1 ] ( the destination array with only one removed element )
 
-  arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 )    
-  returns ->    [ 1, 2, 3, 4, 5 ]
+  arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 )  
+  returns ->    [ 5, 1, 2, 3, 4, 5 ] ( the destination array with the prepended element )
+
+  arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 )  
+  returns ->    [ 1, 2, 3, 4, 5 ] ( Element is not prepended because it already is in the array )
   ```
 
-#### 3: Function contains `*OnceStrictly`
+### 3: Function contains `*OnceStrictly`
 
-  If the function contains `*OnceStrictly` expects that the action will be done, and only once: an error will be thrown if there are no matching elements or elements are not unique ( they are both in src and ins ).
+  If the function contains `*OnceStrictly`, it expects that the action will be done, and only once: an error will be thrown if there are no matching elements or elements are not unique ( they are both in `src` and `ins` ).
 
-  @Example:
+#### Example
+
   ```
-  arrayAppendOnceStrictly( [ 1, 2, 3 ], 3 )    
+  arrayAppendOnceStrictly( [ 1, 2, 3 ], 3 )  
   returns ->    'array should have only unique element, but has several 3'
 
-  arrayReplaceOnceStrictly( [ 1, 2, 3 ], 4, 5 );    
+  arrayReplaceOnceStrictly( [ 1, 2, 3 ], 4, 5 )  
   returns ->    'array does not have element 4'
   ```
 
   Without `*Strictly` it would return:
 
-  @Example:
+#### Example
+
   ```
   arrayAppendOnce( [ 1, 2, 3 ], 3 )    
-  returns ->    [ 1, 2, 3 ]
+  returns ->    [ 1, 2, 3 ]  ( The ins element is already in the array )
 
   arrayReplaceOnce( [ 1, 2, 3 ], 4, 5 );    
-  returns ->    [ 1, 2, 3 ]
+  returns ->    [ 1, 2, 3 ]  ( No match for the ins element )
   ```
 
-#### 4: Function contains `*Element`, `*Array`, `*Arrays`
+### 4: Function contains `*Element`, `*Array`, `*Arrays`
 
-  If the function contains `*Element`, ( ins ) is treated as a scalar.
+  If the function contains `*Element`, the argument `ins` is treated as a scalar.
 
-  @Example:
+#### Example
+
   ```
   - arrayRemoveElement( [ 1, 2, 3, 4 ], 3 )    
   returns ->    [ 1, 2, 4 ]
 
   - arrayRemoveElement( [ 1, 2, 3, 4 ], [ 3 ] )    
-  returns ->    [ 1, 2, 3, 4 ]
+  returns ->    [ 1, 2, 3, 4 ]  ( 3 !== [ 3 ] - no match )
   ```
 
-  If the function contains `*Array`, ( ins ) is expected to be an array, and it will iterate over its elements.
+  If the function contains `*Array`, the argument `ins` is expected to be an array, and it will iterate over its elements.
 
-  @Example:
+#### Example
+
   ```
   arrayRemoveArray( [ 1, 2, 3, 4 ], [ 3, 4 ] )    
   returns ->    [ 1, 2 ]
@@ -124,9 +128,10 @@
   returns   ->    [ 1, 2, 3, 4 ]
   ```
 
-  If the function contains `*Arrays`, ( ins ) it will iterate over the elements of elements recursively.
+  If the function contains `*Arrays`, it will iterate over the elements of elements of `ins` recursively ( it is expected to be an array of arrays).
 
-  @Example:
+#### Example
+
   ```
   arrayRemoveArrays( [ 1, 2, 3, 4 ], [ [ 3 ], [ 4, 5 ] ] )    
   returns ->    [ 1, 2 ]
@@ -144,11 +149,12 @@
   | Equalizers | Two values | true/false |
   | Comparator |mm  Two values | - 1 / 0 / + 1 |
 
-#### 1: Evaluators
+### 1: Evaluators
 
-  Check ( src ) and ( ins ) values with the evaluator function.  
+  Check `src` and `ins` values with the evaluator function ( the third argument ).  
 
-  @Example:
+#### Example
+
   ```
   arrayRemoveElement( [ [ 1 ], [ 2 ] ], [ 1 ], ( e ) => e[ 0 ] )    
   returns ->    [ [ 2 ] ]
@@ -157,21 +163,23 @@
   returns ->    [ [ 1 ], [ 2 ] ]
   ```
 
-#### 2: Tandem of evaluators
+### 2: Tandem of evaluators
 
-  One evaluator to check ( src ) and a different one to check ( ins ).
+  One evaluator to check `src` ( the third argument ) and a different one to check `ins` ( the fourth argument ).
 
-  @Example:
+#### Example
+
   ```
   arrayRemoveElement( [ [ 1 ], [ 2 ] ], 1, ( e ) => e[ 0 ], ( e ) => e )    
   returns ->    [ [ 2 ] ]
   ```
 
-#### 3: Equalizers
+### 3: Equalizers
 
-  Compare ( src ) and ( ins ) values with the equalizer function: returns true or false for a two values comparison.
+  Compare `src` and `ins` values with the equalizer function: returns `true` or `false` for a two values comparison.
 
-  @Example:
+#### Example
+
   ```
   var onEqualize = function( a, b )
   {
@@ -180,13 +188,18 @@
 
   arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 }, onEqualize )    
   returns ->    [ { num : 1 }, { num : 3 } ]
+
+  Without equalizer:  
+  arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 } )    
+  returns ->    [ { num : 1 }, { num : 2 }, { num : 3 } ]
   ```
 
-#### 4: Comparator
+### 4: Comparator
 
-  Compare ( src ) and ( ins ) values with the comparator function: returns + 1, 0 or - 1 for a two values comparison.
+  Compare `src` and `ins` values with the comparator function: returns `+ 1`, `0` or `- 1` for a two values comparison.
 
-  @Example:
+#### Example
+
   ```
   function compare(a, b)
   {
