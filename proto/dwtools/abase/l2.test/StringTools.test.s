@@ -6267,7 +6267,12 @@ function strJoinPath( test )
   var got = _.strJoinPath( [ '1', '2', '4' ], '/' );
   var expected = '1/2/4';
   test.identical( got,expected );
-
+  /*
+  test.case = 'join array with joiner ( with numbers )';
+  var got = _.strJoinPath( [ 1, 2, 4 ], '/' );
+  var expected = '1/2/4';
+  test.identical( got,expected );
+  */
   test.case = 'join array and joiner';
   var got = _.strJoinPath( [ '0', [ '1', '2' ] ], '3' );
   var expected = [ '031', '032' ];
@@ -6287,7 +6292,12 @@ function strJoinPath( test )
   var got = _.strJoinPath([ [ '1', '2' ], '3' ], '__');
   var expected = [ '1__3', '2__3' ];
   test.identical( got,expected );
-
+  /*
+  test.case = 'join array + string + joiner ( with numbers )';
+  var got = _.strJoinPath([ [ 1, 2 ], 3, 'string' ], '__');
+  var expected = [ '1__3__string', '2__3__string' ];
+  test.identical( got,expected );
+  */
   //Joiner in src strings
 
   test.case = 'String does not end with joiner';
@@ -7582,6 +7592,54 @@ function strLinesStrip( test )
   var expected = [ 'Hello', [ 'World', '!' ], [ 'How', 'are', 'you \n ?' ], 'I am\ngood' ];
   test.identical( got, expected );
 
+  //
+
+  test.case = 'Compare input string and input array';
+
+  test.case = 'Input String';
+  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t\nHow are you?  ';
+  var gotStr = _.strLinesStrip( str );
+  var expected = [ 'Hello', 'World', '!', 'How are you?'];
+  test.identical( gotStr.split( '\n'), expected );
+
+  test.case = 'Input Array';
+  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t\nHow are you?  ';
+  var arrStr = str.split( '\n' );
+  var gotArr = _.strLinesStrip( arrStr );
+  var expected = [ 'Hello', 'World', '!', 'How are you?'];
+  test.identical( gotArr, expected );
+
+  test.case = 'Input one line string and array'
+  var str = '\tHello  World \t! \r';
+  var arrStr = [ str ];
+
+  var gotStr = _.strLinesStrip( str );
+  var gotArr = _.strLinesStrip( arrStr );
+  test.identical( gotArr[ 0 ], gotStr );
+
+  test.case = 'Input string and array'
+  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t';
+  var arrStr = str.split( '\n' );
+
+  var gotStr = _.strLinesStrip( str );
+  var gotArr = _.strLinesStrip( arrStr );
+  test.identical( gotArr, gotStr.split( '\n' ) );
+
+  test.case = 'Several Inputs string and array'
+  var strOne = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t';
+  var arrStrOne = strOne.split( '\n' );
+
+  var strTwo = '  How \n\n Are \r\n\t you   today \t\r\n? \r\n';
+  var arrStrTwo = strTwo.split( '\n' );
+
+  var strThree = '\n\t  I \t am \r\n\t \t\r\n Great ! ';
+  var arrStrThree = strThree.split( '\n' );
+
+  var gotStr = _.strLinesStrip( strOne, strTwo, strThree );
+  var gotArr = _.strLinesStrip( arrStrOne, arrStrTwo, arrStrThree );
+  test.identical( gotArr[ 0 ], gotStr[ 0 ].split( '\n' ) );
+  test.identical( gotArr[ 1 ], gotStr[ 1 ].split( '\n' ) );
+  test.identical( gotArr[ 2 ], gotStr[ 2 ].split( '\n' ) );
 
   /* - */
 

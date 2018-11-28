@@ -3809,7 +3809,8 @@ function strLinesJoin( src )
  * Remove espace characters and white spaces at the begin or at the end of each line.
  * Input arguments can be strings or arrays of strings. If input is a string, it splits it in lines and
  * removes the white/escape characters from the beggining and the end of each line. If input is an array,
- * it removes the white/escape characters only from the beggining and the end of the strings.
+ * it treats it as a single string split into lines, where each entry corresponds to a line. Therefore,
+ * it removes the white/escape characters only from the beggining and the end of the strings in the array.
  *
  * @param { String/Array } [ src ] - Source string or array of strings.
  * @returns { String/Array } Returns string/array with empty lines and spaces removed.
@@ -3820,15 +3821,15 @@ function strLinesJoin( src )
  *
  * @example input array
  * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
- * //returns  [ 'Hello \r\n\t world', '\n! \n' ]
+ * //returns  [ 'Hello \r\n\t world', '!' ]
  *
  * @example input strings
  * _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
  * //returns [ 'Hello', 'World\n!', '' ]
  *
  * @example input arrays
- * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou \n? \n'], [ '\t\r\n  ' ] );
- * //returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you \n?' ], [] ]
+ * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou ? \n'], [ '\t\r\n  ' ] );
+ * //returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you ?' ], [] ]
  *
  * @method strLinesStrip
  * @throws { Exception } Throw an exception if( src ) is not a String or Array.
