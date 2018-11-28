@@ -6267,12 +6267,18 @@ function strJoinPath( test )
   var got = _.strJoinPath( [ '1', '2', '4' ], '/' );
   var expected = '1/2/4';
   test.identical( got,expected );
-  /*
-  test.case = 'join array with joiner ( with numbers )';
+
+  test.case = 'join array with joiner ( only numbers )';
   var got = _.strJoinPath( [ 1, 2, 4 ], '/' );
   var expected = '1/2/4';
   test.identical( got,expected );
-  */
+
+  test.case = 'join array with joiner ( string and numbers )';
+  var got = _.strJoinPath( [ 1, '4 is smaller than 2', 4 ], '/' );
+  var expected = '1/4 is smaller than 2/4';
+  test.identical( got,expected );
+
+
   test.case = 'join array and joiner';
   var got = _.strJoinPath( [ '0', [ '1', '2' ] ], '3' );
   var expected = [ '031', '032' ];
@@ -6292,12 +6298,12 @@ function strJoinPath( test )
   var got = _.strJoinPath([ [ '1', '2' ], '3' ], '__');
   var expected = [ '1__3', '2__3' ];
   test.identical( got,expected );
-  /*
+
   test.case = 'join array + string + joiner ( with numbers )';
   var got = _.strJoinPath([ [ 1, 2 ], 3, 'string' ], '__');
   var expected = [ '1__3__string', '2__3__string' ];
   test.identical( got,expected );
-  */
+
   //Joiner in src strings
 
   test.case = 'String does not end with joiner';
@@ -6308,6 +6314,11 @@ function strJoinPath( test )
   test.case = 'String ends with joiner';
   var got = _.strJoinPath( [ 'Hi,', 'world' ], ',' );
   var expected = 'Hi,world';
+  test.identical( got,expected );
+
+  test.case = 'String ends with joiner';
+  var got = _.strJoinPath( [ 'Hi,', 'world', 2 ], ',' );
+  var expected = 'Hi,world,2';
   test.identical( got,expected );
 
   test.case = 'String does not begin with joiner';
@@ -6321,8 +6332,8 @@ function strJoinPath( test )
   test.identical( got,expected );
 
   test.case = 'String begins and ends with joiner';
-  var got = _.strJoinPath( [ '/1/', '/2/', '/4/' ], '/' );
-  var expected = '/1/2/4/';
+  var got = _.strJoinPath( [ '/1/', '/2/', '/3/', 4, '/5/' ], '/' );
+  var expected = '/1/2/3/4/5/';
   test.identical( got,expected );
 
   test.case = 'String begins and ends with joiner';
@@ -6352,12 +6363,6 @@ function strJoinPath( test )
   test.shouldThrowError( function()
   {
     _.strJoinPath( [ '1' ], '2', '3' );
-  });
-
-  test.case = 'invalid argument type in array';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath([ 0, [ '1' ], [ '2' ] ], '/' );
   });
 
   test.case = 'invalid argument type in array';

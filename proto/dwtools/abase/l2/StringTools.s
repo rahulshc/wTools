@@ -3526,7 +3526,7 @@ function strJoin( srcs, joiner )
 
 /**
  * Joins objects inside the source array, by concatenating their values in order that they are specified.
- * The source array can contain strings and arrays of strings. If arrays are provided, they must have same length.
+ * The source array can contain strings, numbers and arrays of strings and numbers. If arrays are provided, they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
  * Joins array with other object by concatenating each array element with that object value. Examples: ( [ [ '1', '2' ], '3' ] ) -> ( [ '13', '23' ] ),
  * ( [ [ '1', '2' ], [ '1', '2' ] ] ) -> ( [ '11', '22' ] ).
@@ -3558,7 +3558,7 @@ function strJoin( srcs, joiner )
  *
  * @method strJoin
  * @throws { Exception } If ( arguments.length ) is not two.
- * @throws { Exception } If some object from( srcs ) is not a Array or String.
+ * @throws { Exception } If some object from( srcs ) is not a string, a number or an array of strings/numbers.
  * @throws { Exception } If length of arrays in srcs is different.
  * @throws { Exception } If ( joiner ) is not a string .
  * @memberof wTools
@@ -3580,8 +3580,7 @@ function strJoinPath( srcs, joiner )
   {
     let src = srcs[ a ];
 
-    //_.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
-    _.assert( _.strIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -3617,6 +3616,9 @@ function strJoinPath( srcs, joiner )
 
   function join( src, s, a )
   {
+    if( _.numberIs( src ) )
+    src = src.toString();
+
     if( a > 0 && joiner )
     {
       let ends = _.strEnds( result[ s ], joiner );
