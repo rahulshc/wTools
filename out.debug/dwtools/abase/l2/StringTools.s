@@ -824,24 +824,27 @@ function strReplaceWords( src,ins,sub )
 // --
 
 /**
- * Finds common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have same first symbol with pattern( ins ) function returns empty string.
- * Otherwise returns symbol sequence that appears from the start of each string.
+ * Find common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
+ * If some string doesn`t have the same first symbols as the pattern ( ins ), the function returns an empty string.
+ * Otherwise, it returns the symbol sequence that appears from the start of each string.
  *
  * @param {string} ins - Sequence of possible symbols.
  * @returns {string} Returns found common symbols.
  *
- * @example 'a'
+ * @example
+ * //returns 'a'
  * _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
  *
- * @example 'abc'
+ * @example
+ * //returns 'abc'
  * _.strCommonLeft( 'abcd', 'abc', 'abcd' );
  *
- * @example ''
+ * @example
+ * //returns ''
  * _.strCommonLeft( 'abcd', 'abc', 'd' )
  *
  * @method strCommonLeft
- * @throws {exception} If( ins ) is not a String.
+ * @throws {exception} If ( ins ) is not a String.
  * @memberof wTools
  *
  */
@@ -880,11 +883,11 @@ function strCommonLeft( ins )
 
 /**
  * Finds common symbols from the end of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have same last symbol with pattern( ins ) function returns empty string.
- * Otherwise returns symbol sequence that appears from the end of each string.
+ * If some string doesn`t have same last symbol with pattern( ins ), the function returns an empty string.
+ * Otherwise, it returns the symbol sequence that appears from the end of each string.
  *
- * @param {string} ins - Sequence of possible symbols.
- * @returns {string} Returns found common symbols.
+ * @param { String } ins - Sequence of possible symbols.
+ * @returns { String } Returns found common symbols.
  *
  * @example 'ame'
  * _.strCommonRight( 'ame', 'same', 'name' );
@@ -3371,12 +3374,13 @@ _.assert( _.routineIs( strUnjoin.any ) );
 // --
 
 /**
- * Appends string to it itself n-times.
- * Expects two object: source string( s ) and number of concatenations( times ).
+ * Returns a string with the source string appended to itself n-times.
+ * Expects two objects: source string( s ) ( or array of strings ) and number of concatenations( times ).
+ * The string ( s ) and the number ( times ) remain unchanged.
  *
- * @param {string} s - Source string.
- * @param {number} times - Number of concatenation cycles.
- * @returns {String} Returns a string concatenated n-times.
+ * @param { Array/String } s - Source array of strings / source string.
+ * @param { Number } times - Number of concatenation cycles.
+ * @returns { String } - Returns a string containing the src string concatenated n-times.
  *
  * @example
  * //returns WordWordWordWordWord
@@ -3386,8 +3390,12 @@ _.assert( _.routineIs( strUnjoin.any ) );
  * //returns 1 21 2
  * _.strDup( '1 '+'2',2 );
  *
+ * @example
+ * //returns [ 'abab', 'dd', '3 43 4']
+ * _.strDup( [ 'ab', 'd', '3 4'], 2 );
+ *
  * @method strDup
- * @throws { Exception } Throw an exception if( s ) is not a String.
+ * @throws { Exception } Throw an exception if( s ) is not a String or an array of strings.
  * @throws { Exception } Throw an exception if( times ) is not a Number.
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @memberof wTools
@@ -3411,14 +3419,18 @@ function _strDup( s,times )
 //
 
 /**
- * Joins objects from arguments list together by concatenating their values in orded that they are specified.
- * Function works with strings,numbers and arrays. If any arrays are provided they must have same length.
+ * Joins objects inside the source array, by concatenating their values in order that they are specified.
+ * The source array can contain strings, numbers and arrays. If arrays are provided, they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
- * Joins array with other object by concatenating each array element with that object value. Examples: ( [ 1, 2 ], 3 ) -> ( [ '13', '23' ] ),
- * ( [ 1, 2 ], [ 1, 2] ) -> ( [ '11', '22' ] ).
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ [ 1, 2 ], 3 ] ) -> ( [ '13', '23' ] ),
+ * ( [ [ 1, 2 ], [ 1, 2] ] ) -> ( [ '11', '22' ] ).
+ * An optional second string argument can be passed to the function. This argument ( joiner ) defines the string that joins the
+ * srcArray objects.  Examples: ( [ [ 1, 2 ], 3 ], '*' ) -> ( [ '1*3', '2*3' ] ),
+ * ( [ [ 1, 2 ], [ 1, 2 ] ], ' to ' ) -> ( [ '1 to 1', '2 to 2' ] ).
  *
- * @param {array-like} arguments - Contains provided objects.
- * @returns {object} Returns concatenated objects as string or array. Return type depends from arguments type.
+ * @param { Array-like } srcs - Source array with the provided objects.
+ * @param { String } joiner - Optional joiner parameter.
+ * @returns { Object } Returns concatenated objects as string or array. Return type depends from arguments type.
  *
  * @example
  * //returns '123'
@@ -3436,13 +3448,18 @@ function _strDup( s,times )
  * //returns [ '1236', '1247', '1258' ]
  * _.strJoin([ 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] ]);
  *
+ * @example
+ * //returns [ '1 2 3 6', '1 2 4 7', '1 2 5 8' ]
+ * _.strJoin([ 1, 2, [ 3, 4, 5 ], [ 6, 7, 8 ] ], ' ');
+ *
  * @method strJoin
- * @throws { Exception } If some object from( arguments ) is not a Array, String or Number.
- * @throws { Exception } If length of arrays passed as arguments is different.
+ * @throws { Exception } If ( arguments.length ) is not one or two.
+ * @throws { Exception } If some object from( srcs ) is not a Array, String or Number.
+ * @throws { Exception } If length of arrays in srcs is different.
+ * @throws { Exception } If ( joiner ) is not undefined or a string .
  * @memberof wTools
  *
  */
-
 function strJoin( srcs, joiner )
 {
   let result = [ '' ];
@@ -3505,6 +3522,48 @@ function strJoin( srcs, joiner )
 
 //
 
+//
+
+/**
+ * Joins objects inside the source array, by concatenating their values in order that they are specified.
+ * The source array can contain strings and arrays of strings. If arrays are provided, they must have same length.
+ * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
+ * Joins array with other object by concatenating each array element with that object value. Examples: ( [ [ '1', '2' ], '3' ] ) -> ( [ '13', '23' ] ),
+ * ( [ [ '1', '2' ], [ '1', '2' ] ] ) -> ( [ '11', '22' ] ).
+ * The ( joiner ) string argument defines the string that joins the srcArray objects. If the srcArray objects start or end with the joiner,
+ * this one is not concatenated ( so it is not repeated ).
+ * Examples: ( [ [ '1', '2' ], '3 ''], '*' ) -> ( [ '1*3', '2*3' ] ),
+ * ( [ [ '1', '2' ], [ '1', '2' ] ], ' to ' ) -> ( [ '1 to 1', '2 to 2' ] ).
+ * ( [ '1/', '/2' ], '/' ) -> ( [ '1/2' ] ).
+ *
+ * @param { Array-like } srcs - Source array with the provided objects.
+ * @param { String } joiner - Joiner parameter.
+ * @returns { Object } Returns concatenated objects as string or array. Return type depends from arguments type.
+ *
+ * @example
+ * //returns '123'
+ * _.strJoin([ '1', '2', '3' ], '' );
+ *
+ * @example
+ * //returns [ '123', '23', '323' ]
+ * _.strJoin([ [ '1', '2', '3' ], '3' ], '2');
+ *
+ * @example
+ * //returns [ '1/1', '2/3' ]
+ * _.strJoin([ [ '1', '2' ], [ '1', '3' ] ], '/');
+ *
+ * @example
+ * //returns [ '1/2/3/6', '1/2/4/7', '1/2/5/8' ]
+ * _.strJoin([ '1', '2', [ '3/', '4/', '5/' ], [ '/6', '/7', '/8' ] ], '/');
+ *
+ * @method strJoin
+ * @throws { Exception } If ( arguments.length ) is not two.
+ * @throws { Exception } If some object from( srcs ) is not a Array or String.
+ * @throws { Exception } If length of arrays in srcs is different.
+ * @throws { Exception } If ( joiner ) is not a string .
+ * @memberof wTools
+ *
+ */
 function strJoinPath( srcs, joiner )
 {
   let result = [ '' ];
@@ -3521,7 +3580,8 @@ function strJoinPath( srcs, joiner )
   {
     let src = srcs[ a ];
 
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    //_.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -3573,7 +3633,6 @@ function strJoinPath( srcs, joiner )
       result[ s ] += src;
     }
   }
-
 }
 
 
@@ -3746,6 +3805,35 @@ function strLinesJoin( src )
 
 //
 
+/**
+ * Remove espace characters and white spaces at the begin or at the end of each line.
+ * Input arguments can be strings or arrays of strings. If input is a string, it splits it in lines and
+ * removes the white/escape characters from the beggining and the end of each line. If input is an array,
+ * it removes the white/escape characters only from the beggining and the end of the strings.
+ *
+ * @param { String/Array } [ src ] - Source string or array of strings.
+ * @returns { String/Array } Returns string/array with empty lines and spaces removed.
+ *
+ * @example input string
+ * _.strLinesStrip( '  Hello \r\n\t World \n\n ' );
+ * //returns 'Hello\nWorld'
+ *
+ * @example input array
+ * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ] );
+ * //returns  [ 'Hello \r\n\t world', '\n! \n' ]
+ *
+ * @example input strings
+ * _.strLinesStrip( '  Hello \r\n\t', ' World \n\n  ! \n\n', '\n\n' );
+ * //returns [ 'Hello', 'World\n!', '' ]
+ *
+ * @example input arrays
+ * _.strLinesStrip( [ '  Hello \r\n\t world \n\n ', '\n! \n' ], [ '\n\nHow\n\nAre  ', '  \r\nyou \n? \n'], [ '\t\r\n  ' ] );
+ * //returns [ [ 'Hello \r\n\t world', '!' ], [ 'How\n\nAre', 'you \n?' ], [] ]
+ *
+ * @method strLinesStrip
+ * @throws { Exception } Throw an exception if( src ) is not a String or Array.
+ * @memberof wTools
+ */
 function strLinesStrip( src )
 {
 
@@ -3761,6 +3849,7 @@ function strLinesStrip( src )
   _.assert( arguments.length === 1 );
   let lines = _.strLinesSplit( src );
   lines = lines.map( ( line ) => line.trim() ).filter( ( line ) => line );
+
   if( _.strIs( src ) )
   lines = _.strLinesJoin( lines );
   return lines;
@@ -4068,6 +4157,53 @@ strLinesSelect.defaults =
 
 //
 
+/**
+ * Get the nearest ( o.numberOfLines ) lines to the range ( o.charsRange ) from source string( o.src ).
+ * Returns object with two elements: .
+ * Can be called in two ways:
+ * - First by passing all parameters in one options object( o ) ;
+ * - Second by passing source string( o.src ) and range( o.range ) as array or number;
+ *
+ * @param { Object } o - Options.
+ * @param { String } [ o.src ] - Source string.
+ * @param { Array|Number } [ o.range ] - Sets range of lines to select from( o.src ) or single line number.
+ * @param { Number } [ o.numberOfLines ] - Sets number of lines to select.
+ * @returns { Object } o - Returns object with Options with fields:
+ * @returns { Array } [ o.splits ] - Array with three entries:
+ * o.splits[ 0 ] and o.splits[ 2 ] contains a string with the nearest lines,
+ * and o.splits[ 1 ] contains the substring corresponding to the range.
+ * @returns { Array } [ o.spans ] - Array with indexes of begin and end of nearest lines.
+ *
+ * @example
+ * //selecting single line
+ * _.strLinesNearest
+ * ({
+ *   src : `\na\nbc\ndef\nghij\n\n`,
+ *   charsRange : [ 2, 4 ],
+ *   numberOfLines : 1,
+ * });
+ * //returns o.splits = [ 'a', '\nb', 'c' ];
+ * //returns o.spans = [ 1, 2, 4, 5 ];
+ *
+ * @example
+ * //selecting single line
+ * _.strLinesNearest
+ * ({
+ *   src : `\na\nbc\ndef\nghij\n\n`,
+ *   charsRange : 3,
+ *   numberOfLines : 2,
+ * });
+ * //returns o.splits = [ 'a\n', 'b', 'c' ];
+ * //returns o.spans = [ 1, 3, 4, 5 ];
+ *
+ * @method strLinesNearest
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.charsRange ) is not a Array or Number.
+ * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
+ * @memberof wTools
+ */
+
 function strLinesNearest_pre( routine, args )
 {
 
@@ -4082,7 +4218,7 @@ function strLinesNearest_pre( routine, args )
 
   _.assert( _.rangeIs( o.charsRange ) );
   // _.assert( _.arrayHas( [ 'map', 'array' ], o.outputFormat ) ) ;
-
+  logger.log( o )
   return o;
 }
 
@@ -4096,12 +4232,14 @@ function strLinesNearest_body( o )
 
   result.splits = [];
   result.spans = [ o.charsRange[ 0 ], o.charsRange[ 0 ], o.charsRange[ 1 ], o.charsRange[ 1 ] ];
-
+  logger.log( 'Result', result )
+  logger.log( )
   /* */
 
   if( o.numberOfLines === 0 )
   {
-    result = [];
+    // result = [];
+    result.splits = [];
     result.splits[ 0 ] = '';
     result.splits[ 1 ] = o.src.substring( o.charsRange[ 0 ], o.charsRange[ 1 ] );
     result.splits[ 2 ] = '';

@@ -3711,9 +3711,7 @@ function arrayFlatten( dstArray, insArray )
     arguments[ 0 ] = dstArray;
   }
 
-  let result = _.arrayFlattened.apply( this, arguments );
-  if( _.longIs( result ) )
-  return result;
+  arrayFlattened.apply( this, arguments );
 
   return dstArray;
 }
@@ -3722,9 +3720,7 @@ function arrayFlatten( dstArray, insArray )
 
 function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result = arrayFlattenedOnce.apply( this, arguments );
-  if( _.longIs( result ) )
-  return result;
+  arrayFlattenedOnce.apply( this, arguments );
   return dstArray;
 }
 
@@ -3757,9 +3753,7 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
   }
   else
   {
-    result = arrayFlattened.apply( this, [ dstArray, insArray ] );
-    if( _.longIs( result ) )
-    return result;
+    arrayFlattened.apply( this, [ dstArray, insArray ] );
   }
 
  return dstArray;
@@ -3799,10 +3793,22 @@ function arrayFlattened( dstArray, insArray )
   // if( arguments.length <= 2 && insArray === undefined )
   // return _.longRemoveDuplicates( dstArray );
 
-  _.assert( arguments.length >= 2 );
+  _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
+
+  if( arguments.length === 1 )
+  {
+    for( let i = dstArray.length-1; i >= 0; --i )
+    if( _.longIs( dstArray[ i ] ) )
+    {
+      let insArray = dstArray[ i ];
+      dstArray.splice( i,1 );
+      onLong( insArray, i );
+    }
+    return dstArray;
+  }
 
   let result = 0;
 
@@ -3836,6 +3842,20 @@ function arrayFlattened( dstArray, insArray )
   }
 
   return result;
+
+  /* */
+
+  function onLong( insArray, insIndex )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      onLong( insArray[ i ], insIndex )
+      else
+      dstArray.splice( insIndex++,0,insArray[ i ] );
+    }
+  }
+
 }
 
 //
@@ -3848,6 +3868,18 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   // if( arguments.length <= 2 && insArray === undefined )
   // return _.longRemoveDuplicates( dstArray );
+
+  if( arguments.length === 1 )
+  {
+    for( let i = dstArray.length-1; i >= 0; --i )
+    if( _.longIs( dstArray[ i ] ) )
+    {
+      let insArray = dstArray[ i ];
+      dstArray.splice( i,1 );
+      onLongOnce( insArray, i );
+    }
+    return dstArray;
+  }
 
   let result = 0;
 
@@ -3883,6 +3915,19 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   return result;
+
+  /* */
+
+  function onLongOnce( insArray, insIndex )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      onLongOnce( insArray[ i ], insIndex )
+      else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+      dstArray.splice( insIndex++,0,insArray[ i ] );
+    }
+  }
 }
 
 // --
