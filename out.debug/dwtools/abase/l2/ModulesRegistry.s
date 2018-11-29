@@ -295,12 +295,6 @@ let wStateSession =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StateSession },
 }
 
-let wPathTranslator =
-{
-  includeAny : [ '../../amid/l5/PathTranslator.s', 'amid/l5/PathTranslator.s', 'wpathtranslator' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
-}
-
 let wFileExecutor =
 {
   includeAny : [ '../../../dwtools/amid/l7/executor/FileExecutor.s', 'amid/l7/executor/FileExecutor.s', 'wFileExecutor' ],
@@ -317,6 +311,12 @@ let wTranspilationStrategy =
 {
   includeAny : [ '../../../dwtools/amid/l9/transpilationStrategy/MainBase.s', 'amid/l9/transpilationStrategy/MainBase.s', 'wtranspilationstrategy' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
+}
+
+let wPathTranslator =
+{
+  includeAny : [ '../../amid/l5_mapper/PathTranslator.s', 'amid/l5_mapper/PathTranslator.s', 'wpathtranslator' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
 }
 
 let wNameMapper =
@@ -538,14 +538,16 @@ let Extend =
   wVerbal,
   wStateStorage,
   wStateSession,
-  wPathTranslator,
   wFileExecutor,
   wFileExecutorHtmlFormatters,
   wTranspilationStrategy,
+
+  wPathTranslator,
   wNameMapper,
   wTemplateTreeResolver,
   wTemplateTreeEnvironment,
   wTemplateFileWriter,
+
   wGraph,
   wGraphLive,
   wSchema,
