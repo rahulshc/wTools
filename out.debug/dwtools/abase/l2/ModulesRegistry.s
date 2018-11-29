@@ -41,31 +41,31 @@ let wConsequence =
 
 let wConsequizer =
 {
-  includeAny : [ '../../abase/l7/Consequizer.s', 'abase/l7/Consequizer.', 'wconsequizer' ],
+  includeAny : [ '../../abase/l7_mixin/Consequizer.s', 'abase/l7_mixin/Consequizer.', 'wconsequizer' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequizer; },
 }
 
 let wCopyable =
 {
-  includeAny : [ '../../abase/l7/Copyable.s', 'abase/l7/Copyable.s', 'wCopyable' ],
+  includeAny : [ '../../abase/l7_mixin/Copyable.s', 'abase/l7_mixin/Copyable.s', 'wCopyable' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Copyable; },
 }
 
 let wInstancing =
 {
-  includeAny : [ '../../abase/l7/Instancing.s', 'abase/l7/Instancing.s', 'winstancing' ],
+  includeAny : [ '../../abase/l7_mixin/Instancing.s', 'abase/l7_mixin/Instancing.s', 'winstancing' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Instancing; },
 }
 
 let wEventHandler =
 {
-  includeAny : [ '../../abase/l7/EventHandler.s', 'abase/l7/EventHandler.s', 'wEventHandler' ],
+  includeAny : [ '../../abase/l7_mixin/EventHandler.s', 'abase/l7_mixin/EventHandler.s', 'wEventHandler' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.EventHandler; },
 }
 
 let wFieldsStack =
 {
-  includeAny : [ '../../abase/l7/FieldsStack.s', 'abase/l7/FieldsStack.s', 'wfieldsstack' ],
+  includeAny : [ '../../abase/l7_mixin/FieldsStack.s', 'abase/l7_mixin/FieldsStack.s', 'wfieldsstack' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FieldsStack; },
 }
 
@@ -297,7 +297,7 @@ let wStateSession =
 
 let wPathTranslator =
 {
-  includeAny : [ '../../amid/l5/PathTranslator.s', 'amid/l5/PathTranslator.s', 'wpathtranslator' ], 
+  includeAny : [ '../../amid/l5/PathTranslator.s', 'amid/l5/PathTranslator.s', 'wpathtranslator' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
 }
 
