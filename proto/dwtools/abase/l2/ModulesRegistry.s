@@ -321,7 +321,7 @@ let wTranspilationStrategy =
 
 let wNameMapper =
 {
-  includeAny : [ '../../amid/amapping/NameMapper.s', 'amid/amapping/NameMapper.s', 'wnamemapper' ],
+  includeAny : [ '../../amid/mapper/NameMapper.s', 'amid/mapper/NameMapper.s', 'wnamemapper' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.NameMapper },
 }
 
@@ -339,7 +339,7 @@ let wTemplateTreeEnvironment =
 
 let wTemplateFileWriter =
 {
-  includeAny : [ '../../amid/amapping/TemplateFileWriter.s', 'amid/amapping/TemplateFileWriter.s', 'wtemplatefilewriter' ],
+  includeAny : [ '../../amid/mapping/TemplateFileWriter.s', 'amid/mapping/TemplateFileWriter.s', 'wtemplatefilewriter' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateFileWriter },
 }
 
