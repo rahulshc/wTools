@@ -3921,7 +3921,7 @@ function strSplit( test )
 
   test.open( 'complex' );
 
-  var src = 'Test check // ( Tools/base/layer2/String / strSplit / delimeter:" " > space on the beginning and the end <  ) # 3 ... failed';
+  var src = 'Test check // ( Tools/base/l2/String / strSplit / delimeter:" " > space on the beginning and the end <  ) # 3 ... failed';
 
   test.case = 's:0 q:1 pe:1 pd:1 pq:0 iq:0';
 
@@ -9397,7 +9397,7 @@ function strExtractInlinedStereo( test )
 var Self =
 {
 
-  name : 'Tools/base/layer2/String',
+  name : 'Tools/base/l2/String',
   silencing : 1,
   enabled : 1,
 
