@@ -1571,7 +1571,7 @@ _filterFalse.functionFamily = 'field-filter';
 function mapsExtendRecursiveConditional( filters, dstMap, srcMaps )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( this === Self );
 
   if( _.routineIs( filters ) )
@@ -1840,7 +1840,7 @@ function mapSetWithKeys( dstMap,srcArray,val )
 
   _.assert( _.objectIs( dstMap ) );
   _.assert( _.arrayIs( srcArray ) );
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   for( let s = 0 ; s < srcArray.length ; s++ )
   dstMap[ srcArray[ s ] ] = val;

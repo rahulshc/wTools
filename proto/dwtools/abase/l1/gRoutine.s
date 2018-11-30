@@ -81,7 +81,7 @@ function routineCall( context, routine, args )
 function routineTolerantCall( context,routine,options )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.routineIs( routine ) );
   _.assert( _.objectIs( routine.defaults ) );
   _.assert( _.objectIs( options ) );

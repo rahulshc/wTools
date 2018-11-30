@@ -2584,7 +2584,7 @@ function arraySelect( srcArray,indicesArray )
 
 function arraySet( dst, index, value )
 {
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( dst.length > index );
   dst[ index ] = value;
   return dst;

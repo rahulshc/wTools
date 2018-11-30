@@ -40,7 +40,10 @@ function usePath( src )
   if( _.path && _.path.refine )
   src = _.path.refine( src );
 
-  if( typeof module !== 'undefined' )
+  debugger;
+
+  if( typeof module !== 'undefined' && module.paths )
+  if( module.paths.indexOf( src ) === -1 )
   module.paths.push( src );
 
 }
@@ -56,16 +59,17 @@ function usePathGlobally( paths )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.arrayIs( paths ) );
 
-  if( _.fileProvider && _.path.refine )
+  debugger;
+  if( _.path.nativize && _.path.refine )
   {
     for( var p = 0 ; p < paths.length ; p++ )
     {
-      paths[ p ] = _.fileProvider.path.nativize( _.path.resolve( paths[ p ] ) );
+      paths[ p ] = _.path.nativize( _.path.resolve( paths[ p ] ) );
       console.log( 'usePathGlobally',paths[ p ] );
     }
   }
 
-  return _usePathGlobally( module,paths,[] );
+  return _usePathGlobally( module, paths, [] );
 }
 
 //
@@ -73,7 +77,7 @@ function usePathGlobally( paths )
 function _usePathGlobally( _module,paths,visited )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )
@@ -82,13 +86,17 @@ function _usePathGlobally( _module,paths,visited )
   if( !Module )
   Module = require( 'module' );
 
-  [].push.apply( Module.globalPaths, paths );
+  for( let p = 0 ; p < paths.length ; p++ )
+  if( Module.globalPaths.indexOf( paths[ p ] ) === -1 )
+  Module.globalPaths.push( paths[ p ] );
+
+  // [].push.apply( Module.globalPaths, paths );
 
   /* patch parents */
 
   while( _module )
   {
-    _usePathGloballyChildren( _module,paths,visited );
+    _usePathGloballyChildren( _module, paths, visited );
     _module = _module.parent;
   }
 
@@ -96,23 +104,28 @@ function _usePathGlobally( _module,paths,visited )
 
 //
 
-function _usePathGloballyChildren( _module,paths,visited )
+function _usePathGloballyChildren( _module, paths, visited )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.arrayIs( paths ) );
 
   if( visited.indexOf( _module ) !== -1 )
   return;
 
   visited.push( _module );
-  [].push.apply( _module.paths, paths );
+
+  for( let p = 0 ; p < paths.length ; p++ )
+  if( _module.paths.indexOf( paths[ p ] ) === -1 )
+  _module.paths.push( paths[ p ] );
+
+  // [].push.apply( _module.paths, paths );
 
   /* patch parents */
 
   if( _module.children )
   for( var c = 0 ; c < _module.children.length ; c++ )
-  _usePathGloballyChildren( _module.children[ c ],paths,visited );
+  _usePathGloballyChildren( _module.children[ c ], paths, visited );
 
 }
 

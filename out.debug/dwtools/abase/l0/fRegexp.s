@@ -739,7 +739,7 @@ function regexpsTestNone( regexps, strs )
 // {
 //
 //   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-//   _.assert( arguments.length === 3, 'Expects exactly three argument' );
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //
 //   let arr = _.arrayAs( arr );
 //   for( let m = 0 ; m < arr.length ; m++ )
@@ -780,7 +780,7 @@ function regexpsTestNone( regexps, strs )
 // function regexpArrayAll( arr, ins, ifEmpty )
 // {
 //   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-//   _.assert( arguments.length === 3, 'Expects exactly three argument' );
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //
 //   let arr = _.arrayAs( arr );
 //   for( let m = 0 ; m < arr.length ; m++ )
@@ -798,7 +798,7 @@ function regexpsTestNone( regexps, strs )
 // {
 //
 //   _.assert( _.arrayIs( arr ) || _.regexpIs( src ) );
-//   _.assert( arguments.length === 3, 'Expects exactly three argument' );
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //
 //   let arr = _.arrayAs( arr );
 //   for( let m = 0 ; m < arr.length ; m++ )

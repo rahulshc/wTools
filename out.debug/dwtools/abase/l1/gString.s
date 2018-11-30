@@ -411,7 +411,7 @@ function _strIsolateInsideOrNone( src, begin, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   let b = _.strFirst( src, begin );
 
@@ -436,7 +436,7 @@ function _strIsolateInsideOrNone( src, begin, end )
 function strIsolateInsideOrNone( src, begin, end )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   if( _.arrayLike( src ) )
   {
@@ -458,7 +458,7 @@ function _strIsolateInsideOrAll( src, begin, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   let b = _.strFirst( src, begin );
 
@@ -486,7 +486,7 @@ function _strIsolateInsideOrAll( src, begin, end )
 function strIsolateInsideOrAll( src, begin, end )
 {
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   if( _.arrayLike( src ) )
   {
