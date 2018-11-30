@@ -151,17 +151,17 @@ let wTraverser =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._traverse },
 }
 
-// let wBaseEncoder =
-// {
-//   includeAny : [ '../../abase/l4/Encoder.s', 'abase/l4/Encoder.s', 'wbaseencoder' ],
-//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
-// }
+let wBaseEncoder =
+{
+  includeAny : [ '../../abase/l4/Encoder.s', 'abase/l4/Encoder.s', 'wbaseencoder' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
+}
 
-// let wRoutineTransform =
-// {
-//   includeAny : [ '../../abase/l4/RoutineTransform.s', 'abase/RoutineTransform/Cloner.s', 'wroutinetransform' ],
-//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
-// }
+let wRoutineTransform =
+{
+  includeAny : [ '../../abase/l4/RoutineTransform.s', 'abase/RoutineTransform/Cloner.s', 'wroutinetransform' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
+}
 
 // base/l5
 
@@ -505,9 +505,9 @@ let Extend =
   wTraverser,
   wArraySorted,
   wArraySparse,
-  // wBaseEncoder,
+  wBaseEncoder,
   wStringer,
-  // wRoutineTransform,
+  wRoutineTransform,
 
   // base/l5
 
