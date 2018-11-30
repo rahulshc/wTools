@@ -270,7 +270,7 @@ function diagnosticStack( test )
 var Self =
 {
 
-  name : 'Tools/base/layer1/Diagnostics',
+  name : 'Tools/base/l1/Diagnostics',
   silencing : 1,
 
   tests :

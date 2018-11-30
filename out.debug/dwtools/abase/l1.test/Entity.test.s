@@ -2503,7 +2503,7 @@ function eachInMultiRange( test )
 var Self =
 {
 
-  name : 'Tools/base/layer1/Entity',
+  name : 'Tools/base/l1/Entity',
   silencing : 1,
   // verbosity : 4,
   // importanceOfNegative : 3,

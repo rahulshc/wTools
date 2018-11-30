@@ -262,6 +262,7 @@ function timeOut( delay, onEnd )
     let returnOnEnd = onEnd;
     onEnd = function onEnd()
     {
+      // debugger;
       return returnOnEnd;
     }
 
@@ -270,11 +271,12 @@ function timeOut( delay, onEnd )
   /* */
 
   if( con )
-  con.got( function timeGot( err,arg )
+  con.got( function timeGot( err, arg )
   {
     if( err )
     clearTimeout( timer );
-    con.give( err,arg );
+    // debugger;
+    con.give( err, arg );
   });
 
   /* */

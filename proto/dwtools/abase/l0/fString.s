@@ -737,7 +737,7 @@ function strInsideOf( src, begin, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   let beginOf, endOf;
 
@@ -764,7 +764,7 @@ function strOutsideOf( src, begin, end )
 {
 
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
   let beginOf, endOf;
 
@@ -901,7 +901,7 @@ function strRemove( srcStr, insStr )
 
 function strReplaceBegin( src, begin, ins )
 {
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ),'Expects {-ins-} as string' );
   _.assert( _.strIs( src ) );
 
@@ -919,7 +919,7 @@ function strReplaceBegin( src, begin, ins )
 
 function strReplaceEnd( src, end, ins )
 {
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ),'Expects {-ins-} as string' );
   _.assert( _.strIs( src ) );
 

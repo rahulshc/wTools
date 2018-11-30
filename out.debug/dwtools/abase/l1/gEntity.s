@@ -1906,7 +1906,7 @@ function _entityMost( src, onEvaluate, returnMax )
   if( onEvaluate === undefined )
   onEvaluate = function( element ){ return element; }
 
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( onEvaluate.length === 1,'not mplemented' );
 
   let onCompare = null;

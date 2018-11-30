@@ -2359,7 +2359,7 @@ function strEnds( test )
 var Self =
 {
 
-  name : 'Tools/base/layer1/String',
+  name : 'Tools/base/l1/String',
   silencing : 1,
 
   tests :

@@ -1612,7 +1612,7 @@ function routineVectorize_functor( test )
 var Self =
 {
 
-  name : 'Tools/base/layer1/Routine',
+  name : 'Tools/base/l1/Routine',
   silencing : 1,
 
   tests :

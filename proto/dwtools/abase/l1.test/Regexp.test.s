@@ -1715,7 +1715,7 @@ function regexpsTestNone( test )
 var Self =
 {
 
-  name : 'Tools/base/layer1/Regexp',
+  name : 'Tools/base/l1/Regexp',
   silencing : 1,
 
   tests :

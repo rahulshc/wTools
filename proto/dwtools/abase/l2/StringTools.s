@@ -565,7 +565,7 @@ function strRemove( srcStr, insStr )
 
 function strReplaceBegin( src,begin,ins )
 {
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ) || _.longIs( ins ),'Expects {-ins-} as string/array of strings' );
   if( _.longIs( begin ) && _.longIs( ins ) )
   _.assert( begin.length === ins.length );
@@ -594,7 +594,7 @@ function strReplaceBegin( src,begin,ins )
 
 function strReplaceEnd( src,end,ins )
 {
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( ins ) || _.longIs( ins ),'Expects {-ins-} as string/array of strings' );
   if( _.longIs( end ) && _.longIs( ins ) )
   _.assert( end.length === ins.length );
@@ -794,7 +794,7 @@ function strAppendOnce( src,end )
 
 function strReplaceWords( src,ins,sub )
 {
-  _.assert( arguments.length === 3, 'Expects exactly three argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( src ) );
   _.assert( _.arrayIs( ins ) );
   _.assert( _.arrayIs( sub ) );
@@ -3971,7 +3971,7 @@ strLinesNumber.defaults =
 
 // function strLinesAt( code,line,radius )
 // {
-//   _.assert( arguments.length === 3, 'Expects exactly three argument' );
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //   _.assert( _.strIs( code ) || _.arrayIs( code ) );
 //   _.assert( _.numberIs( line ) );
 //

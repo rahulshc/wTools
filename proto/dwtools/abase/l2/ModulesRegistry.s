@@ -151,17 +151,17 @@ let wTraverser =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._traverse },
 }
 
-// let wBaseEncoder =
-// {
-//   includeAny : [ '../../abase/l4/Encoder.s', 'abase/l4/Encoder.s', 'wbaseencoder' ],
-//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
-// }
+let wBaseEncoder =
+{
+  includeAny : [ '../../abase/l4/Encoder.s', 'abase/l4/Encoder.s', 'wbaseencoder' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
+}
 
-// let wRoutineTransform =
-// {
-//   includeAny : [ '../../abase/l4/RoutineTransform.s', 'abase/RoutineTransform/Cloner.s', 'wroutinetransform' ],
-//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
-// }
+let wRoutineTransform =
+{
+  includeAny : [ '../../abase/l4/RoutineTransform.s', 'abase/RoutineTransform/Cloner.s', 'wroutinetransform' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
+}
 
 // base/l5
 
@@ -295,12 +295,6 @@ let wStateSession =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StateSession },
 }
 
-let wPathTranslator =
-{
-  includeAny : [ '../../amid/l5/PathTranslator.s', 'amid/l5/PathTranslator.s', 'wpathtranslator' ],
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
-}
-
 let wFileExecutor =
 {
   includeAny : [ '../../../dwtools/amid/l7/executor/FileExecutor.s', 'amid/l7/executor/FileExecutor.s', 'wFileExecutor' ],
@@ -319,27 +313,33 @@ let wTranspilationStrategy =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
 }
 
+let wPathTranslator =
+{
+  includeAny : [ '../../amid/l5_mapper/PathTranslator.s', 'amid/l5_mapper/PathTranslator.s', 'wpathtranslator' ],
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
+}
+
 let wNameMapper =
 {
-  includeAny : [ '../../amid/mapper/NameMapper.s', 'amid/mapper/NameMapper.s', 'wnamemapper' ],
+  includeAny : [ '../../amid/l5_mapper/NameMapper.s', 'amid/l5_mapper/NameMapper.s', 'wnamemapper' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.NameMapper },
 }
 
 let wTemplateTreeResolver =
 {
-  includeAny : [ '../../amid/amapping/TemplateTreeAresolver.s', 'amid/amapping/TemplateTreeAresolver.s', 'wtemplatetreeresolver' ],
+  includeAny : [ '../../amid/l5_mapper/TemplateTreeAresolver.s', 'amid/l5_mapper/TemplateTreeAresolver.s', 'wtemplatetreeresolver' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver },
 }
 
 let wTemplateTreeEnvironment =
 {
-  includeAny : [ '../../amid/amapping/TemplateTreeEnvironment.s', 'amid/amapping/TemplateTreeEnvironment.s', 'wtemplatetreeenvironment' ],
+  includeAny : [ '../../amid/l5_mapper/TemplateTreeEnvironment.s', 'amid/l5_mapper/TemplateTreeEnvironment.s', 'wtemplatetreeenvironment' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeEnvironment },
 }
 
 let wTemplateFileWriter =
 {
-  includeAny : [ '../../amid/mapping/TemplateFileWriter.s', 'amid/mapping/TemplateFileWriter.s', 'wtemplatefilewriter' ],
+  includeAny : [ '../../amid/l5_mapper/TemplateFileWriter.s', 'amid/l5_mapper/TemplateFileWriter.s', 'wtemplatefilewriter' ],
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateFileWriter },
 }
 
@@ -505,9 +505,9 @@ let Extend =
   wTraverser,
   wArraySorted,
   wArraySparse,
-  // wBaseEncoder,
+  wBaseEncoder,
   wStringer,
-  // wRoutineTransform,
+  wRoutineTransform,
 
   // base/l5
 
@@ -538,14 +538,16 @@ let Extend =
   wVerbal,
   wStateStorage,
   wStateSession,
-  wPathTranslator,
   wFileExecutor,
   wFileExecutorHtmlFormatters,
   wTranspilationStrategy,
+
+  wPathTranslator,
   wNameMapper,
   wTemplateTreeResolver,
   wTemplateTreeEnvironment,
   wTemplateFileWriter,
+
   wGraph,
   wGraphLive,
   wSchema,
