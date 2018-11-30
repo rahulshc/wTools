@@ -40,8 +40,6 @@ function usePath( src )
   if( _.path && _.path.refine )
   src = _.path.refine( src );
 
-  debugger;
-
   if( typeof module !== 'undefined' && module.paths )
   if( module.paths.indexOf( src ) === -1 )
   module.paths.push( src );
