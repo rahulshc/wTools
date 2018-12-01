@@ -328,7 +328,7 @@ function _includeWithRequireAny( src )
     if( a === arguments.length-1 && src === '' )
     return;
 
-    var result = _includeWithRequireAct( src );
+    var result = _includeWithRequireAct( arguments[ 0 ] );
     return result;
 
   }
@@ -400,9 +400,9 @@ _.usePath( __dirname + '/../..' );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global_.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global_.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
