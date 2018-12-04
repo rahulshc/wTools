@@ -312,12 +312,13 @@ function _includeWithRequireAny( src )
   for( var a = 0 ; a < arguments.length ; a++ )
   {
     var src = arguments[ a ];
+    var resolved;
 
     if( src !== '' )
     try
     {
-      var resolved = __include.resolve( src );
-      src = resolved;
+      resolved = __include.resolve( src );
+      // src = resolved;
     }
     catch( err )
     {
@@ -328,7 +329,7 @@ function _includeWithRequireAny( src )
     if( a === arguments.length-1 && src === '' )
     return;
 
-    var result = _includeWithRequireAct( src );
+    var result = _includeWithRequireAct( resolved || arguments[ 0 ] );
     return result;
 
   }
