@@ -328,7 +328,7 @@ function _includeWithRequireAny( src )
     if( a === arguments.length-1 && src === '' )
     return;
 
-    var result = _includeWithRequireAct( arguments[ 0 ] );
+    var result = _includeWithRequireAct( src );
     return result;
 
   }
