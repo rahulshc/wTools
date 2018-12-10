@@ -2546,7 +2546,7 @@ function arrayUnique( src, onEvaluate )
  * @memberof wTools
  */
 
-function arraySelect( srcArray,indicesArray )
+function arraySelect( srcArray, indicesArray )
 {
   let atomsPerElement = 1;
 
