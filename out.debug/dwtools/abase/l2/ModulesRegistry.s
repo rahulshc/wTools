@@ -168,7 +168,7 @@ let wBaseEncoder =
 
 let wRoutineTransform =
 {
-  includeAny : includeAny( 'abase/RoutineTransform/Cloner.s', 'wroutinetransform' ),
+  includeAny : includeAny( 'abase/l4/RoutineTransform.s', 'wroutinetransform' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
 }
 
