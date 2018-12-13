@@ -2159,7 +2159,7 @@ function mapToStr( o )
   let result = '';
   for( let s in o.src )
   {
-    result += s + o.valKeyDelimeter + o.src[ s ] + o.entryDelimeter;
+    result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
   }
 
   result = result.substr( 0,result.length-o.entryDelimeter.length );
@@ -2170,7 +2170,7 @@ function mapToStr( o )
 mapToStr.defaults =
 {
   src : null,
-  valKeyDelimeter : ':',
+  keyValDelimeter : ':',
   entryDelimeter : ';',
 }
 
