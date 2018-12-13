@@ -264,7 +264,7 @@ let wFiles =
 
 let wFilesArchive =
 {
-  includeAny : includeAny( 'amid/files/UseFilesArchive.s', 'wfilesarchive' ),
+  includeAny : includeAny( 'amid/files/IncludeArchive.s', 'wfilesarchive' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesArchive },
 }
 
