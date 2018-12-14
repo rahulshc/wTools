@@ -30,6 +30,18 @@ let strType = _.strType;
 // checker
 // --
 
+function strIsHex( src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1 );
+  let parsed = parseInt( src, 16 )
+  if( isNaN( parsed ) )
+  return false;
+  return parsed.toString( 16 ).length === src.length;
+}
+
+//
+
 function strIsMultilined( src )
 {
   if( !_.strIs( src ) )
@@ -4445,72 +4457,73 @@ let Proto =
 
   // checker
 
-  strIsMultilined : strIsMultilined,
-  strHas : strHas,
-  strHasAny : strHasAny,
-  strHasAll : strHasAll,
-  strHasNone : strHasNone,
-  strHasSeveral : strHasSeveral,
+  strIsHex,
+  strIsMultilined,
+  strHas,
+  strHasAny,
+  strHasAll,
+  strHasNone,
+  strHasSeveral,
 
-  strsAnyHas : strsAnyHas,
-  strsAllHas : strsAllHas,
-  strsNoneHas : strsNoneHas,
+  strsAnyHas,
+  strsAllHas,
+  strsNoneHas,
 
   // evaluator
 
-  strCount : strCount,
-  strCountLeft : strCountLeft,
-  strCountRight : strCountRight,
-  strsShortest : strsShortest,
-  strsLongest : strsLongest,
+  strCount,
+  strCountLeft,
+  strCountRight,
+  strsShortest,
+  strsLongest,
 
   // replacer
 
-  _strRemovedBegin : _strRemovedBegin,
-  strRemoveBegin : strRemoveBegin,
-  _strRemovedEnd : _strRemovedEnd,
-  strRemoveEnd : strRemoveEnd,
-  _strRemoved : _strRemoved,
-  strRemove : strRemove,
+  _strRemovedBegin,
+  strRemoveBegin,
+  _strRemovedEnd,
+  strRemoveEnd,
+  _strRemoved,
+  strRemove,
 
-  strReplaceBegin : strReplaceBegin,
-  strReplaceEnd : strReplaceEnd,
-  _strReplaced : _strReplaced,
-  strReplace : strReplace,
+  strReplaceBegin,
+  strReplaceEnd,
+  _strReplaced,
+  strReplace,
 
-  strPrependOnce : strPrependOnce,
-  strAppendOnce : strAppendOnce,
+  strPrependOnce,
+  strAppendOnce,
 
-  strReplaceWords : strReplaceWords,
+  strReplaceWords,
 
   // etc
 
-  strCommonLeft : strCommonLeft, /* document me */
-  strCommonRight : strCommonRight, /* document me */
+  strCommonLeft, /* document me */
+  strCommonRight, /* document me */
 
   // formatter
 
-  strForRange : strForRange, /* experimental */
-  strForCall : strForCall, /* experimental */
-  strStrShort : strStrShort,
-  strDifference : strDifference,
+  strForRange, /* experimental */
+  strForCall, /* experimental */
+  strStrShort,
+  strDifference,
 
   // transformer
 
-  strCapitalize : strCapitalize,
-  strDecapitalize : strDecapitalize,
-  strEscape : strEscape,
-  strCodeUnicodeEscape : strCodeUnicodeEscape,
-  strUnicodeEscape : strUnicodeEscape, /* document me */
-  strReverse : strReverse,
+  strCapitalize,
+  strDecapitalize,
+  strEscape,
+  strCodeUnicodeEscape,
+  strUnicodeEscape, /* document me */
+  strReverse,
 
   // stripper
 
-  strStrip : strStrip,
+  strStrip,
   strsStrip : _.routineVectorize_functor( strStrip ),
-  strStripLeft : strStripLeft,
+  strStripLeft,
   strsStripLeft : _.routineVectorize_functor( strStripLeft ),
-  strStripRight : strStripRight,
+  strStripRight,
   strsStripRight : _.routineVectorize_functor( strStripRight ),
   strRemoveAllSpaces : _.routineVectorize_functor( _strRemoveAllSpaces ),
   strStripEmptyLines : _.routineVectorize_functor( _strStripEmptyLines ),
@@ -4523,48 +4536,48 @@ let Proto =
   // strIsolateEndOrAll : strIsolateEndOrAll,
   // strIsolateBeginOrAll : strIsolateBeginOrAll,
 
-  strSplitStrNumber : strSplitStrNumber, /* experimental */
-  strSplitChunks : strSplitChunks, /* experimental */
+  strSplitStrNumber, /* experimental */
+  strSplitChunks, /* experimental */
 
-  strSplitsQuotedRejoin : strSplitsQuotedRejoin,
-  strSplitsDropDelimeters : strSplitsDropDelimeters,
-  strSplitsStrip : strSplitsStrip,
-  strSplitsDropEmpty : strSplitsDropEmpty,
+  strSplitsQuotedRejoin,
+  strSplitsDropDelimeters,
+  strSplitsStrip,
+  strSplitsDropEmpty,
 
-  strSplitsGroupCoupled : strSplitsGroupCoupled,
+  strSplitsGroupCoupled,
 
-  strSplitFast : strSplitFast,
-  strSplit : strSplit,
-  strSplitNonPreserving : strSplitNonPreserving,
+  strSplitFast,
+  strSplit,
+  strSplitNonPreserving,
 
   // strSplitNaive : strSplitNaive,
 
   // extractor
 
   strSub : _.routineVectorize_functor( _strSub ),
-  strExtractInlined : strExtractInlined,
-  strExtractInlinedStereo : strExtractInlinedStereo,
-  strUnjoin : strUnjoin, /* document me */
+  strExtractInlined,
+  strExtractInlinedStereo,
+  strUnjoin, /* document me */
 
   // joiner
 
   strDup : _.routineVectorize_functor( _strDup ), /* document me */
-  strJoin : strJoin,
-  strJoinPath : strJoinPath, /* qqq : cover and document me */
-  strConcat : strConcat,
+  strJoin,
+  strJoinPath, /* qqq : cover and document me */
+  strConcat,
 
   // liner
 
-  strIndentation : strIndentation,
-  strLinesSplit : strLinesSplit,
-  strLinesJoin : strLinesJoin,
-  strLinesStrip : strLinesStrip, /* qqq : test coverage */
-  strLinesNumber : strLinesNumber,
-  strLinesSelect : strLinesSelect,
-  strLinesNearest : strLinesNearest, /* qqq : check coverage */
-  strLinesNearestReport : strLinesNearestReport,
-  strLinesCount : strLinesCount,
-  strLinesRangeWithCharRange : strLinesRangeWithCharRange,
+  strIndentation,
+  strLinesSplit,
+  strLinesJoin,
+  strLinesStrip, /* qqq : test coverage */
+  strLinesNumber,
+  strLinesSelect,
+  strLinesNearest, /* qqq : check coverage */
+  strLinesNearestReport,
+  strLinesCount,
+  strLinesRangeWithCharRange,
 
 }
 
