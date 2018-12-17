@@ -441,9 +441,8 @@ function diagnosticCode( o )
         // debugger;
         // if( _global._starter_ )
         // _global._starter_.fileProvider.fileRead( _.weburi.parse( o.location.path ).localPath );
-
-        o.location.path = codeProvider.path.normalize( o.location.path );
-        if( codeProvider.path.isAbsolute( o.location.path ) )
+        // o.location.path = codeProvider.path.normalize( o.location.path );
+        if( codeProvider.path.isAbsolute( codeProvider.path.normalize( o.location.path ) ) )
         o.sourceCode = codeProvider.fileRead
         ({
           filePath : o.location.path,
