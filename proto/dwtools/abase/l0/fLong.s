@@ -1539,18 +1539,23 @@ function arrayRightDefined( arr )
 //
 
 /**
- * The arrayCountElement() routine returns the count of matched elements in the {-srcMap-} array.
+ * The arrayCountElement() routine returns the count of matched elements in the {-srcArray-} array with the input { element }.
+ * Returns 0 if no { element } is provided. It can take evaluators for the routine equalities.
  *
  * @param { Array } src - The source array.
- * @param { * } instance - The value to search.
+ * @param { * } element - The value to search.
  *
  * @example
  * // returns 2
  * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
  *
- * @returns { Number } - Returns the count of matched elements in the {-srcMap-}.
+ * @example
+ * // returns 4
+ * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ *
+ * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
  * @function arrayCountElement
- * @throws { Error } If passed arguments is less than two or more than two.
+ * @throws { Error } If passed arguments is less than two or more than four.
  * @throws { Error } If the first argument is not an array-like object.
  * @memberof wTools
  */
@@ -1564,6 +1569,7 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 
   let left = _.arrayLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
   // let index = srcArray.indexOf( element );
+  logger.log( left )
   while( left >= 0 )
   {
     result += 1;
@@ -1575,6 +1581,28 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 }
 
 //
+
+/**
+ * The arrayCountTotal() adds all the elements in { -srcArray- }, when all the elements are numbers or booleans ( considers them 0 or 1 ).
+ * If some element is not a number, from then on it will concatenate the elements in a string. If the first element is not a number,
+ * a '0' will be concatenated first.
+ *
+ * @param { Array } srcArray - The source array.
+ *
+ * @example
+ * // returns 23;
+ * let arr = _.arrayCountTotal( [ 1, 2, 10, 10 ] );
+ *
+ * @example
+ * // returns 3<10;
+ * let arr = _.arrayCountTotal( [ 1, 2, '<', 10 ] );
+ *
+ * @returns { Number/String } - Returns the sum or concatenation of the elements in { srcArray }.
+ * @function arrayCountTotal
+ * @throws { Error } If passed arguments is different than one.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @memberof wTools
+ */
 
 function arrayCountTotal( srcArray )
 {

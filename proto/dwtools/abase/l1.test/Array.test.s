@@ -4679,19 +4679,53 @@ function arrayLeft( test )
 function arrayCountElement( test )
 {
 
-  test.case = 'nothing';
-  var got = _.arrayCountElement( [  ], 3 );
-  var expected = 0;
-  test.identical( got, expected );
+  // One argument
 
-  test.case = 'nothing';
+  test.case = 'One argument';
   var got = _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
   var expected = 0;
   test.identical( got, expected );
 
-  test.case = 'two matching';
+  test.case = 'One argument with repeated elements';
+  var got = _.arrayCountElement( [ 1, 1, 1, 'abc', 'abc' ] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  // Two arguments
+
+  test.case = 'Empty array';
+  var got = _.arrayCountElement( [  ], 3 );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'Undefined element';
+  var got = _.arrayCountElement( [  ], undefined );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'Null element';
+  var got = _.arrayCountElement( [  ], null );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'No match';
+  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 'hi' );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'One match - bool';
+  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], true );
+  var expected = 1;
+  test.identical( got, expected );
+
+  test.case = 'Two matching - number';
   var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
   var expected = 2;
+  test.identical( got, expected );
+
+  test.case = 'Three matching - string';
+  var got = _.arrayCountElement( [ 'str', 10, 'str', 10, true, 'str' ], 'str' );
+  var expected = 3;
   test.identical( got, expected );
 
   test.case = 'longIs';
@@ -4699,6 +4733,33 @@ function arrayCountElement( test )
   src[ 'a' ] = 1;
   var got = _.arrayCountElement( src, 1 );
   var expected = 1;
+  test.identical( got, expected );
+
+  // Evaluators
+
+  test.case = 'Without evaluators - no match';
+  var got = _.arrayCountElement( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ], 0 );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'With evaluators - 4 matches';
+  var got = _.arrayCountElement( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ], 0, ( e ) => e[ 0 ], ( e ) => e );
+  var expected = 4;
+  test.identical( got, expected );
+
+  test.case = 'Without equalizer - two matches';
+  var got = _.arrayCountElement( [ true, false, true, false ], true );
+  var expected = 2;
+  test.identical( got, expected );
+
+  test.case = 'With equalizer - 4 matches';
+  var got = _.arrayCountElement( [ true, false, true, false ], true, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+  var expected = 4;
+  test.identical( got, expected );
+
+  test.case = 'With equalizer - 4 matches';
+  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+  var expected = 4;
   test.identical( got, expected );
 
   /**/
@@ -4724,10 +4785,184 @@ function arrayCountElement( test )
     _.arrayCountElement( [ 1, 2, 3, true ], true, 'redundant argument' );
   });
 
-  test.case = 'first argument is wrong';
+  test.case = 'first argument is wrong - undefined';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( undefined, true );
+  });
+
+  test.case = 'first argument is wrong - null';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( null, true );
+  });
+
+  test.case = 'first argument is wrong - string';
   test.shouldThrowError( function()
   {
     _.arrayCountElement( 'wrong argument', true );
+  });
+
+  test.case = 'first argument is wrong - number';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( 3, true );
+  });
+
+};
+
+//
+
+function arrayCountTotal( test )
+{
+
+  test.case = 'Empty array';
+  var got = _.arrayCountTotal( [] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  // Array elements are numbers
+
+  test.case = 'Zero';
+  var got = _.arrayCountTotal( [ 0, 0, 0, 0 ] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'Sum of no repeated elements';
+  var got = _.arrayCountTotal( [ 1, 3, 5, 7, 9 ] );
+  var expected = 25;
+  test.identical( got, expected );
+
+  test.case = 'Sum of repeated elements';
+  var got = _.arrayCountTotal( [ 2, 2, 4, 4, 6, 6 ] );
+  var expected = 24;
+  test.identical( got, expected );
+
+  // Array elements are booleans
+
+  test.case = 'All true';
+  var got = _.arrayCountTotal( [ true, true, true, true ] );
+  var expected = 4;
+  test.identical( got, expected );
+
+  test.case = 'All false';
+  var got = _.arrayCountTotal( [ false, false, false, false, false ] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'Mix of true and false';
+  var got = _.arrayCountTotal( [ false, false, true, false, true, false, false, true ] );
+  var expected = 3;
+  test.identical( got, expected );
+
+  // Array elements are numbers and booleans
+
+  test.case = 'All true and numbers';
+  var got = _.arrayCountTotal( [ true, 2, 1, true, true, 0, true ] );
+  var expected = 7;
+  test.identical( got, expected );
+
+  test.case = 'All false and numbers';
+  var got = _.arrayCountTotal( [ 1, false, 0, false, false, 4, 3, false, false ] );
+  var expected = 8;
+  test.identical( got, expected );
+
+  test.case = 'Mix of true, false and numbers';
+  var got = _.arrayCountTotal( [ false, false, 0, true, false, 10, true, false, false, true, 2 ] );
+  var expected = 15;
+  test.identical( got, expected );
+
+  test.case = 'Mix of true, false, numbers and null';
+  var got = _.arrayCountTotal( [ null, false, false, 0, true, null, false, 10, true, false, false, true, 2, null ] );
+  var expected = 15;
+  test.identical( got, expected );
+
+  // Array elements are arrays
+
+  test.case = 'Zero';
+  var got = _.arrayCountTotal( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ] ] );
+  var expected = '00000';
+  test.identical( got, expected );
+
+  test.case = 'No repeated elements';
+  var got = _.arrayCountTotal( [ [ 1 ], [ 3 ], [ 5 ], [ 7 ], [ 9 ] ] );
+  var expected = '013579';
+  test.identical( got, expected );
+
+  test.case = 'Repeated elements';
+  var got = _.arrayCountTotal( [ [ 2 ], [ 2 ], [ 4 ], [ 4 ], [ 6 ], [ 6 ] ] );
+  var expected = '0224466';
+  test.identical( got, expected );
+
+  // Array elements are strings
+
+  test.case = 'All strings';
+  var got = _.arrayCountTotal( [ 'h', 'e', 'l', 'l', 'o' ] );
+  var expected = '0hello';
+  test.identical( got, expected );
+
+  test.case = 'strings and null';
+  var got = _.arrayCountTotal( [ ' is ', 'not ', null ] );
+  var expected = '0 is not null';
+  test.identical( got, expected );
+
+  test.case = 'If null is first el., it is added to 0';
+  var got = _.arrayCountTotal( [ null, ' is ', 'not ', null ] );
+  var expected = '0 is not null';
+  test.identical( got, expected );
+
+  test.case = 'strings and bool';
+  var got = _.arrayCountTotal( [ false, ' corresponds', ' to ', false ] );
+  var expected = '0 corresponds to false';
+  test.identical( got, expected );
+
+  // Mix of everything
+
+  test.case = 'All strings';
+  var got = _.arrayCountTotal( [ null, 0, true, 3, false, ', ', [ 3 ], ', ', 2, ', 1, ',false ] );
+  var expected = '4, 3, 2, 1, false';
+  test.identical( got, expected );
+
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal();
+  });
+
+  test.case = 'Too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal( [ 1, 2, 3, 'abc', 13 ], [] );
+  });
+
+  test.case = 'srcArray is undefined';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal( undefined );
+  });
+
+  test.case = 'srcArray is null';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal( null  );
+  });
+
+  test.case = 'srcArray is string';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal( 'wrong argument' );
+  });
+
+  test.case = 'srcArray is number';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal( 3 );
   });
 
 };
@@ -14568,6 +14803,7 @@ var Self =
     arrayLeft : arrayLeft,
 
     arrayCountElement : arrayCountElement,
+    arrayCountTotal : arrayCountTotal,
     arrayCountUnique : arrayCountUnique,
 
     // array etc
