@@ -1569,7 +1569,7 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 
   let left = _.arrayLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
   // let index = srcArray.indexOf( element );
-  logger.log( left )
+  
   while( left >= 0 )
   {
     result += 1;
