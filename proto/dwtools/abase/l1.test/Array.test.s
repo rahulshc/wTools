@@ -4684,6 +4684,11 @@ function arrayCountElement( test )
   var expected = 0;
   test.identical( got, expected );
 
+  test.case = 'nothing';
+  var got = _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
+  var expected = 0;
+  test.identical( got, expected );
+
   test.case = 'two matching';
   var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
   var expected = 2;
@@ -4707,11 +4712,11 @@ function arrayCountElement( test )
     _.arrayCountElement();
   });
 
-  test.case = 'not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
-  });
+  // test.case = 'not enough arguments';
+  // test.shouldThrowError( function()
+  // {
+  //   _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
+  // });
 
   test.case = 'extra argument';
   test.shouldThrowError( function()
