@@ -270,7 +270,7 @@ function longMake( ins, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strType( ins ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
 
   if( _.longIs( src ) )
   {
@@ -326,7 +326,7 @@ function longMakeZeroed( ins, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ),'unknown type of array',_.strType( ins ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
 
   if( _.routineIs( ins ) )
   {
@@ -363,7 +363,7 @@ function _longClone( src )
   else if( _.arrayIs( src ) )
   return src.slice();
   else if( _.bufferViewIs( src ) )
-  return new src.constructor( src.buffer,src.byteOffset,src.byteLength );
+  return new src.constructor( src.buffer, src.byteOffset, src.byteLength );
 
   _.assert( 0, 'unknown kind of buffer', _.strType( src ) );
 }
@@ -397,7 +397,7 @@ function longShallowClone()
   /* make result */
 
   if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
-  result = _.longMake( arguments[ 0 ],length );
+  result = _.longMake( arguments[ 0 ], length );
   else if( _.bufferRawIs( arguments[ 0 ] ) )
   result = new ArrayBuffer( length );
 
@@ -476,7 +476,7 @@ function longShallowClone()
  * @memberof wTools
 */
 
-function longSlice( array,f,l )
+function longSlice( array, f, l )
 {
   let result;
 
@@ -484,7 +484,7 @@ function longSlice( array,f,l )
   if( f === undefined && l === undefined )
   {
     if( array.length === 2 )
-    return [ array[ 0 ],array[ 1 ] ];
+    return [ array[ 0 ], array[ 1 ] ];
     else if( array.length === 1 )
     return [ array[ 0 ] ];
     else if( array.length === 0 )
@@ -498,7 +498,7 @@ function longSlice( array,f,l )
   {
     _.assert( f === undefined || _.numberIs( f ) );
     _.assert( l === undefined || _.numberIs( l ) );
-    result = array.slice( f,l );
+    result = array.slice( f, l );
     return result;
   }
 
@@ -553,7 +553,7 @@ function longButRange( src, range, ins )
   result = _.longMake( src, l );
 
   debugger;
-  _.assert( 0,'not tested' )
+  _.assert( 0, 'not tested' )
 
   for( let i = 0 ; i < range[ 0 ] ; i++ )
   result[ i ] = src[ i ];
@@ -592,7 +592,7 @@ function longButRange( src, range, ins )
 // function longRemoveDuplicates( dstLong, onEvaluate )
 // {
 //   _.assert( 1 <= arguments.length || arguments.length <= 3 );
-//   _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+//   _.assert( _.longIs( dstLong ), 'longRemoveDuplicates :', 'Expects Long' );
 
 //   if( _.arrayIs( dstLong ) )
 //   {
@@ -661,7 +661,7 @@ function longButRange( src, range, ins )
 function longRemoveDuplicates( dstLong, onEvaluate )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 3 );
-  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+  _.assert( _.longIs( dstLong ), 'longRemoveDuplicates :', 'Expects Long' );
 
   if( _.arrayIs( dstLong ) )
   return _.arrayRemoveDuplicates( dstLong, onEvaluate );
@@ -696,7 +696,7 @@ function longRemoveDuplicates( dstLong, onEvaluate )
 function longRemoveDuplicates( dstLong, onEvaluate )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 3 );
-  _.assert( _.longIs( dstLong ),'longRemoveDuplicates :','Expects Long' );
+  _.assert( _.longIs( dstLong ), 'longRemoveDuplicates :', 'Expects Long' );
 
   if( _.arrayIs( dstLong ) )
   {
@@ -766,13 +766,13 @@ function longAreRepeatedProbe( srcArray, onEvaluate )
   //
   // _.assert( arguments.length === 1, 'Expects single argument' );
   // _.assert( _.longIs( o.src ) );
-  // _.assertMapHasOnly( o,arrayInvestigateUniqueMap.defaults );
+  // _.assertMapHasOnly( o, arrayInvestigateUniqueMap.defaults );
   //
   // /* */
   //
   // if( o.onEvaluate )
   // {
-  //   o.src = _.entityMap( o.src,( e ) => o.onEvaluate( e ) );
+  //   o.src = _.entityMap( o.src, ( e ) => o.onEvaluate( e ) );
   // }
   //
   // /* */
@@ -795,7 +795,7 @@ function longAreRepeatedProbe( srcArray, onEvaluate )
   //   let currentUnique = 1;
   //   do
   //   {
-  //     index = o.src.indexOf( o.src[ i ],index+1 );
+  //     index = o.src.indexOf( o.src[ i ], index+1 );
   //     if( index !== -1 )
   //     {
   //       isUnique[ index ] = 0;
@@ -997,7 +997,7 @@ function constructorLikeArray( src )
 
   if( !( 'length' in src.prototype ) )
   return false;
-  if( Object.propertyIsEnumerable.call( src.prototype,'length' ) )
+  if( Object.propertyIsEnumerable.call( src.prototype, 'length' ) )
   return false;
 
   return true;
@@ -1199,7 +1199,7 @@ function arrayHasAny( src )
   empty = false;
 
   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasAny :','array expected' );
+  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAny :', 'array expected' );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
@@ -1222,7 +1222,7 @@ function arrayHasAny( src )
 function arrayHasAll( src )
 {
   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasAll :','array expected' );
+  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAll :', 'array expected' );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
@@ -1242,7 +1242,7 @@ function arrayHasAll( src )
 function arrayHasNone( src )
 {
   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ),'arrayHasNone :','array expected' );
+  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasNone :', 'array expected' );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
@@ -1366,7 +1366,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
     for( let a = fromIndex ; a < arr.length ; a++ )
     {
 
-      if( evaluator1( arr[ a ],ins ) )
+      if( evaluator1( arr[ a ], ins ) )
       return a;
 
     }
@@ -1425,7 +1425,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     _.assert( !evaluator2 );
     for( let a = fromIndex ; a >= 0 ; a-- )
     {
-      if( evaluator1( arr[ a ],ins ) )
+      if( evaluator1( arr[ a ], ins ) )
       return a;
     }
   }
@@ -1539,35 +1539,52 @@ function arrayRightDefined( arr )
 //
 
 /**
- * The arrayCount() routine returns the count of matched elements in the {-srcMap-} array.
+ * The arrayCountElement() routine returns the count of matched elements in the {-srcMap-} array.
  *
  * @param { Array } src - The source array.
  * @param { * } instance - The value to search.
  *
  * @example
  * // returns 2
- * let arr = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );
+ * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
  *
  * @returns { Number } - Returns the count of matched elements in the {-srcMap-}.
- * @function arrayCount
+ * @function arrayCountElement
  * @throws { Error } If passed arguments is less than two or more than two.
  * @throws { Error } If the first argument is not an array-like object.
  * @memberof wTools
  */
 
-function arrayCount( src,instance )
+function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 {
   let result = 0;
 
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.longIs( src ),'arrayCount :','Expects ArrayLike' );
+  _.assert( 0 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.longIs( srcArray ), 'Expects long' );
 
-  let index = src.indexOf( instance );
-  while( index !== -1 )
+  let left = _.arrayLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
+  // let index = srcArray.indexOf( element );
+  while( index >= 0 )
   {
     result += 1;
-    index = src.indexOf( instance,index+1 );
+    left = _.arrayLeftIndex( srcArray, element, left+1, onEvaluate1, onEvaluate2 );
+    // index = srcArray.indexOf( element, index+1 );
   }
+
+  return result;
+}
+
+//
+
+function arrayCountTotal( srcArray )
+{
+  let result = 0;
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.longIs( srcArray ), 'Expects long' );
+
+  for( let i = 0 ; i < srcArray.length ; i++ )
+  result += srcArray[ i ];
 
   return result;
 }
@@ -1602,7 +1619,7 @@ function arrayCountUnique( src, onEvaluate )
   onEvaluate = onEvaluate || function( e ){ return e };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.longIs( src ),'arrayCountUnique :','Expects ArrayLike' );
+  _.assert( _.longIs( src ), 'arrayCountUnique :', 'Expects ArrayLike' );
   _.assert( _.routineIs( onEvaluate ) );
   _.assert( onEvaluate.length === 1 );
 
@@ -1734,7 +1751,7 @@ function arrayPrepend_( dstArray )
 
 function arrayPrependElement( dstArray, ins )
 {
-  arrayPrependedElement.apply( this,arguments );
+  arrayPrependedElement.apply( this, arguments );
   return dstArray;
 }
 
@@ -1784,7 +1801,7 @@ function arrayPrependElement( dstArray, ins )
 
 function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayPrependedOnce.apply( this,arguments );
+  arrayPrependedOnce.apply( this, arguments );
   return dstArray;
 }
 
@@ -1841,7 +1858,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0,'array should have only unique elements, but has several',ins );
+    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -1856,7 +1873,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0,'array should have only unique elements, but has several',ins );
+  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
 
   return dstArray;
 }
@@ -2111,10 +2128,10 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
 function arrayPrependedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','Expects array' );
-  _.assert( _.longIs( insArray ),'arrayPrependedArray :','Expects longIs' );
+  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
+  _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
 
-  dstArray.unshift.apply( dstArray,insArray );
+  dstArray.unshift.apply( dstArray, insArray );
   return insArray.length;
 }
 
@@ -2371,8 +2388,8 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 function arrayPrependedArrays( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.arrayIs( dstArray ),'arrayPrependedArrays :','Expects array' );
-  _.assert( _.longIs( insArray ),'arrayPrependedArrays :','Expects longIs entity' );
+  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArrays :', 'Expects array' );
+  _.assert( _.longIs( insArray ), 'arrayPrependedArrays :', 'Expects longIs entity' );
 
   let result = 0;
 
@@ -2428,8 +2445,8 @@ function arrayPrependedArrays( dstArray, insArray )
 function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ),'arrayPrependedArraysOnce :','Expects array' );
-  _.assert( _.longIs( insArray ),'arrayPrependedArraysOnce :','Expects longIs entity' );
+  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArraysOnce :', 'Expects array' );
+  _.assert( _.longIs( insArray ), 'arrayPrependedArraysOnce :', 'Expects longIs entity' );
 
   let result = 0;
 
@@ -2580,7 +2597,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   if( Config.debug )
   {
     result = arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0,'array should have only unique elements, but has several', ins );
+    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -2594,7 +2611,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayAppendedOnce.apply( this, arguments );
-  _.assert( result >= 0,'array should have only unique elements, but has several', ins );
+  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
   return dstArray;
 }
 */
@@ -2690,7 +2707,7 @@ function arrayAppendArray( dstArray, insArray )
 
 function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  arrayAppendedArrayOnce.apply( this,arguments )
+  arrayAppendedArrayOnce.apply( this, arguments )
   return dstArray;
 }
 
@@ -2701,7 +2718,7 @@ function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
   let result;
   if( Config.debug )
   {
-    result = arrayAppendedArrayOnce.apply( this,arguments )
+    result = arrayAppendedArrayOnce.apply( this, arguments )
     _.assert( result === insArray.length );
   }
   else
@@ -2714,7 +2731,7 @@ function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
 /*
 function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  let result = arrayAppendedArrayOnce.apply( this,arguments )
+  let result = arrayAppendedArrayOnce.apply( this, arguments )
   _.assert( result === insArray.length );
   return dstArray;
 }
@@ -2725,10 +2742,10 @@ function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
 function arrayAppendedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2 )
-  _.assert( _.arrayIs( dstArray ),'arrayPrependedArray :','Expects array' );
-  _.assert( _.longIs( insArray ),'arrayPrependedArray :','Expects longIs' );
+  _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
+  _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
 
-  dstArray.push.apply( dstArray,insArray );
+  dstArray.push.apply( dstArray, insArray );
   return insArray.length;
 }
 
@@ -2856,8 +2873,8 @@ function arrayAppendedArrays( dstArray, insArray )
 function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ),'arrayAppendedArraysOnce :','Expects array' );
-  _.assert( _.longIs( insArray ),'arrayAppendedArraysOnce :','Expects longIs entity' );
+  _.assert( _.arrayIs( dstArray ), 'arrayAppendedArraysOnce :', 'Expects array' );
+  _.assert( _.longIs( insArray ), 'arrayAppendedArraysOnce :', 'Expects longIs entity' );
 
   let result = 0;
 
@@ -3229,7 +3246,7 @@ function arrayRemovedArray( dstArray, insArray )
     index = dstArray.indexOf( insArray[ i ] );
     while( index !== -1 )
     {
-      dstArray.splice( index,1 );
+      dstArray.splice( index, 1 );
       result += 1;
       index = dstArray.indexOf( insArray[ i ], index );
     }
@@ -3306,7 +3323,7 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
     if( index >= 0 )
     {
-      dstArray.splice( index,1 );
+      dstArray.splice( index, 1 );
       result += 1;
     }
   }
@@ -3408,8 +3425,8 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
 function arrayRemovedArrays( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.arrayIs( dstArray ),'arrayRemovedArrays :','Expects array' );
-  _.assert( _.longIs( insArray ),'arrayRemovedArrays :','Expects longIs entity' );
+  _.assert( _.arrayIs( dstArray ), 'arrayRemovedArrays :', 'Expects array' );
+  _.assert( _.longIs( insArray ), 'arrayRemovedArrays :', 'Expects longIs entity' );
 
   let result = 0;
 
@@ -3418,7 +3435,7 @@ function arrayRemovedArrays( dstArray, insArray )
     let index = dstArray.indexOf( argument );
     while( index !== -1 )
     {
-      dstArray.splice( index,1 );
+      dstArray.splice( index, 1 );
       result += 1;
       index = dstArray.indexOf( argument, index );
     }
@@ -3446,8 +3463,8 @@ function arrayRemovedArrays( dstArray, insArray )
 function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ),'arrayRemovedArraysOnce :','Expects array' );
-  _.assert( _.longIs( insArray ),'arrayRemovedArraysOnce :','Expects longIs entity' );
+  _.assert( _.arrayIs( dstArray ), 'arrayRemovedArraysOnce :', 'Expects array' );
+  _.assert( _.longIs( insArray ), 'arrayRemovedArraysOnce :', 'Expects longIs entity' );
 
   let result = 0;
 
@@ -3567,7 +3584,7 @@ function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
 
   while( index >= 0 )
   {
-    dstArray.splice( index,1 );
+    dstArray.splice( index, 1 );
     result += 1;
     index = _.arrayLeftIndex.apply( _, arguments );
   }
@@ -3626,7 +3643,7 @@ function arrayRemoveDuplicates( dstArray, evaluator )
 function arrayRemoveDuplicates( dstArray, evaluator )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 2 );
-  _.assert( _.arrayIs( dstArray ),'arrayRemoveDuplicates :','Expects Array' );
+  _.assert( _.arrayIs( dstArray ), 'arrayRemoveDuplicates :', 'Expects Array' );
 
   for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
   {
@@ -3689,7 +3706,7 @@ function arrayRemoveDuplicates( dstArray, evaluator )
 //     for( let s = 0 ; s < src.length ; s++ )
 //     {
 //       if( _.arrayIs( src[ s ] ) )
-//       _.arrayFlatten.call( result,src[ s ] );
+//       _.arrayFlatten.call( result, src[ s ] );
 //       else if( src[ s ] !== undefined )
 //       result.push( src[ s ] );
 //       else if( src[ s ] === undefined )
@@ -3823,7 +3840,7 @@ function arrayFlattened( dstArray, insArray )
     if( _.longIs( dstArray[ i ] ) )
     {
       let insArray = dstArray[ i ];
-      dstArray.splice( i,1 );
+      dstArray.splice( i, 1 );
       onLong( insArray, i );
     }
     return dstArray;
@@ -3871,7 +3888,7 @@ function arrayFlattened( dstArray, insArray )
       if( _.longIs( insArray[ i ] ) )
       onLong( insArray[ i ], insIndex )
       else
-      dstArray.splice( insIndex++,0,insArray[ i ] );
+      dstArray.splice( insIndex++, 0, insArray[ i ] );
     }
   }
 
@@ -3896,7 +3913,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
     if( _.longIs( dstArray[ i ] ) )
     {
       let insArray = dstArray[ i ];
-      dstArray.splice( i,1 );
+      dstArray.splice( i, 1 );
       onLongOnce( insArray, i );
     }
     return dstArray;
@@ -3946,7 +3963,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
       if( _.longIs( insArray[ i ] ) )
       onLongOnce( insArray[ i ], insIndex )
       else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
-      dstArray.splice( insIndex++,0,insArray[ i ] );
+      dstArray.splice( insIndex++, 0, insArray[ i ] );
     }
   }
 }
@@ -4081,7 +4098,7 @@ function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 
 function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
 {
-  arrayReplacedArrayOnce.apply( this,arguments );
+  arrayReplacedArrayOnce.apply( this, arguments );
   return dstArray;
 }
 
@@ -4092,7 +4109,7 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
-    result = arrayReplacedArrayOnce.apply( this,arguments );
+    result = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
@@ -4100,7 +4117,7 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
   }
   else
   {
-    result = arrayReplacedArrayOnce.apply( this,arguments );
+    result = arrayReplacedArrayOnce.apply( this, arguments );
   }
 
   return dstArray;
@@ -4109,7 +4126,7 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
 /*
 function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
 {
-  let result = arrayReplacedArrayOnce.apply( this,arguments );
+  let result = arrayReplacedArrayOnce.apply( this, arguments );
   _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
   return dstArray;
@@ -4166,7 +4183,7 @@ function arrayReplacedAll( dstArray, ins, sub, evaluator1, evaluator2 )
 
   while( index !== -1 )
   {
-    dstArray.splice( index,1,sub );
+    dstArray.splice( index, 1, sub );
     result += 1;
     index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
   }
@@ -4253,206 +4270,205 @@ let Routines =
 
   // arguments array
 
-  argumentsArrayIs : argumentsArrayIs,
-  argumentsArrayMake : argumentsArrayMake,
-  _argumentsArrayMake : _argumentsArrayMake,
-  // args : _argumentsArrayMake,
-  // argumentsArrayOfLength : argumentsArrayOfLength,
-  argumentsArrayFrom : argumentsArrayFrom,
+  argumentsArrayIs,
+  argumentsArrayMake,
+  _argumentsArrayMake,
+  argumentsArrayFrom,
 
   // unroll
 
-  unrollIs : unrollIs,
-  unrollIsPopulated : unrollIsPopulated,
+  unrollIs,
+  unrollIsPopulated,
 
-  unrollMake : unrollMake,
-  unrollFrom : unrollFrom,
-  unrollPrepend : unrollPrepend,
-  unrollAppend : unrollAppend,
+  unrollMake,
+  unrollFrom,
+  unrollPrepend,
+  unrollAppend,
 
   // long
 
-  longIs : longIs,
-  longIsPopulated : longIsPopulated,
+  longIs,
+  longIsPopulated,
 
-  longMake : longMake,
-  longMakeZeroed : longMakeZeroed,
+  longMake,
+  longMakeZeroed,
 
-  _longClone : _longClone,
-  longShallowClone : longShallowClone,
+  _longClone,
+  longShallowClone,
 
-  longSlice : longSlice,
-  longButRange : longButRange,
+  longSlice,
+  longButRange,
 
-  longRemoveDuplicates : longRemoveDuplicates,
+  longRemoveDuplicates,
 
-  longAreRepeatedProbe : longAreRepeatedProbe,
-  longAllAreRepeated : longAllAreRepeated,
-  longAnyAreRepeated : longAnyAreRepeated,
-  longNoneAreRepeated : longNoneAreRepeated,
+  longAreRepeatedProbe,
+  longAllAreRepeated,
+  longAnyAreRepeated,
+  longNoneAreRepeated,
 
   // buffer checker
 
-  bufferRawIs : bufferRawIs,
-  bufferTypedIs : bufferTypedIs,
-  bufferViewIs : bufferViewIs,
-  bufferNodeIs : bufferNodeIs,
-  bufferAnyIs : bufferAnyIs,
-  bufferBytesIs : bufferBytesIs,
-  bytesIs : bufferBytesIs,
-  constructorIsBuffer : constructorIsBuffer,
+  bufferRawIs,
+  bufferTypedIs,
+  bufferViewIs,
+  bufferNodeIs,
+  bufferAnyIs,
+  bufferBytesIs,
+  bufferBytesIs,
+  constructorIsBuffer,
 
   // array checker
 
-  arrayIs : arrayIs,
-  arrayIsPopulated : arrayIsPopulated,
-  arrayLikeResizable : arrayLikeResizable,
-  arrayLike : arrayLike,
+  arrayIs,
+  arrayIsPopulated,
+  arrayLikeResizable,
+  arrayLike,
 
-  constructorLikeArray : constructorLikeArray,
-  hasLength : hasLength,
-  arrayHasArray : arrayHasArray,
+  constructorLikeArray,
+  hasLength,
+  arrayHasArray,
 
-  arrayCompare : arrayCompare,
-  arrayIdentical : arrayIdentical,
+  arrayCompare,
+  arrayIdentical,
 
-  arrayHas : arrayHas, /* dubious */
-  arrayHasAny : arrayHasAny, /* dubious */
-  arrayHasAll : arrayHasAll, /* dubious */
-  arrayHasNone : arrayHasNone, /* dubious */
+  arrayHas, /* dubious */
+  arrayHasAny, /* dubious */
+  arrayHasAll, /* dubious */
+  arrayHasNone, /* dubious */
 
-  arrayAll : arrayAll,
-  arrayAny : arrayAny,
-  arrayNone : arrayNone,
+  arrayAll,
+  arrayAny,
+  arrayNone,
 
   // array producer
 
-  arrayMake : arrayMake,
-  arrayFrom : arrayFrom,
+  arrayMake,
+  arrayFrom,
 
   // array sequential search
 
-  arrayLeftIndex : arrayLeftIndex,
-  arrayRightIndex : arrayRightIndex,
+  arrayLeftIndex,
+  arrayRightIndex,
 
-  arrayLeft : arrayLeft,
-  arrayRight : arrayRight,
+  arrayLeft,
+  arrayRight,
 
-  arrayLeftDefined : arrayLeftDefined,
-  arrayRightDefined : arrayRightDefined,
+  arrayLeftDefined,
+  arrayRightDefined,
 
-  arrayCount : arrayCount,
-  arrayCountUnique : arrayCountUnique,
+  arrayCountElement, /* qqq : cover by tests */
+  arrayCountTotal, /* qqq : cover by tests */
+  arrayCountUnique,
 
   // array prepend
 
-  _arrayPrependUnrolling : _arrayPrependUnrolling,
-  arrayPrependUnrolling : arrayPrependUnrolling,
-  arrayPrepend_ : arrayPrepend_,
+  _arrayPrependUnrolling,
+  arrayPrependUnrolling,
+  arrayPrepend_,
 
-  arrayPrependElement : arrayPrependElement,
-  arrayPrependOnce : arrayPrependOnce,
-  arrayPrependOnceStrictly : arrayPrependOnceStrictly,
-  arrayPrependedElement : arrayPrependedElement,
-  arrayPrependedOnce : arrayPrependedOnce,
+  arrayPrependElement,
+  arrayPrependOnce,
+  arrayPrependOnceStrictly,
+  arrayPrependedElement,
+  arrayPrependedOnce,
 
-  arrayPrependArray : arrayPrependArray,
-  arrayPrependArrayOnce : arrayPrependArrayOnce,
-  arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
-  arrayPrependedArray : arrayPrependedArray,
-  arrayPrependedArrayOnce : arrayPrependedArrayOnce,
+  arrayPrependArray,
+  arrayPrependArrayOnce,
+  arrayPrependArrayOnceStrictly,
+  arrayPrependedArray,
+  arrayPrependedArrayOnce,
 
-  arrayPrependArrays : arrayPrependArrays,
-  arrayPrependArraysOnce : arrayPrependArraysOnce,
-  arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
-  arrayPrependedArrays : arrayPrependedArrays,
-  arrayPrependedArraysOnce : arrayPrependedArraysOnce,
+  arrayPrependArrays,
+  arrayPrependArraysOnce,
+  arrayPrependArraysOnceStrictly,
+  arrayPrependedArrays,
+  arrayPrependedArraysOnce,
 
   // array append
 
-  _arrayAppendUnrolling : _arrayAppendUnrolling,
-  arrayAppendUnrolling : arrayAppendUnrolling,
-  arrayAppend_ : arrayAppend_,
+  _arrayAppendUnrolling,
+  arrayAppendUnrolling,
+  arrayAppend_,
 
-  arrayAppendElement : arrayAppendElement,
-  arrayAppendOnce : arrayAppendOnce,
-  arrayAppendOnceStrictly : arrayAppendOnceStrictly,
-  arrayAppendedElement : arrayAppendedElement,
-  arrayAppendedOnce : arrayAppendedOnce,
+  arrayAppendElement, /* qqq : fill gaps */
+  arrayAppendOnce,
+  arrayAppendOnceStrictly,
+  arrayAppendedElement,
+  arrayAppendedOnce,
 
-  arrayAppendArray : arrayAppendArray,
-  arrayAppendArrayOnce : arrayAppendArrayOnce,
-  arrayAppendArrayOnceStrictly : arrayAppendArrayOnceStrictly,
-  arrayAppendedArray : arrayAppendedArray,
-  arrayAppendedArrayOnce : arrayAppendedArrayOnce,
+  arrayAppendArray,
+  arrayAppendArrayOnce,
+  arrayAppendArrayOnceStrictly,
+  arrayAppendedArray,
+  arrayAppendedArrayOnce,
 
-  arrayAppendArrays : arrayAppendArrays,
-  arrayAppendArraysOnce : arrayAppendArraysOnce,
-  arrayAppendArraysOnceStrictly : arrayAppendArraysOnceStrictly,
-  arrayAppendedArrays : arrayAppendedArrays,
-  arrayAppendedArraysOnce : arrayAppendedArraysOnce,
+  arrayAppendArrays,
+  arrayAppendArraysOnce,
+  arrayAppendArraysOnceStrictly,
+  arrayAppendedArrays,
+  arrayAppendedArraysOnce,
 
   // array remove
 
-  arrayRemove : arrayRemove,
-  arrayRemoveOnce : arrayRemoveOnce,
-  arrayRemoveOnceStrictly : arrayRemoveOnceStrictly,
+  arrayRemove,
+  arrayRemoveOnce,
+  arrayRemoveOnceStrictly,
 
-  arrayRemoved : arrayRemoved,
-  arrayRemovedOnce : arrayRemovedOnce,
-  arrayRemovedOnceStrictly : arrayRemovedOnceStrictly,
+  arrayRemoved,
+  arrayRemovedOnce,
+  arrayRemovedOnceStrictly,
 
-  arrayRemoveElement : arrayRemoveElement, /* should remove all */
-  arrayRemoveElementOnce : arrayRemoveElementOnce,
-  arrayRemoveElementOnceStrictly : arrayRemoveElementOnceStrictly,
+  arrayRemoveElement, /* should remove all */
+  arrayRemoveElementOnce,
+  arrayRemoveElementOnceStrictly,
 
-  arrayRemovedElement : arrayRemovedElement,
-  arrayRemovedElementOnce : arrayRemovedElementOnce,
-  arrayRemovedElementOnceStrictly : arrayRemovedElementOnceStrictly,
+  arrayRemovedElement,
+  arrayRemovedElementOnce,
+  arrayRemovedElementOnceStrictly,
 
-  arrayRemoveArray : arrayRemoveArray,
-  arrayRemoveArrayOnce : arrayRemoveArrayOnce,
-  arrayRemoveArrayOnceStrictly : arrayRemoveArrayOnceStrictly,
-  arrayRemovedArray : arrayRemovedArray,
-  arrayRemovedArrayOnce : arrayRemovedArrayOnce,
-  arrayRemovedArrayOnceStrictly : arrayRemovedArrayOnceStrictly,
+  arrayRemoveArray,
+  arrayRemoveArrayOnce,
+  arrayRemoveArrayOnceStrictly,
+  arrayRemovedArray,
+  arrayRemovedArrayOnce,
+  arrayRemovedArrayOnceStrictly,
 
-  arrayRemoveArrays : arrayRemoveArrays,
-  arrayRemoveArraysOnce : arrayRemoveArraysOnce,
-  arrayRemoveArraysOnceStrictly : arrayRemoveArraysOnceStrictly,
-  arrayRemovedArrays : arrayRemovedArrays,
-  arrayRemovedArraysOnce : arrayRemovedArraysOnce,
-  arrayRemovedArraysOnceStrictly : arrayRemovedArraysOnceStrictly,
+  arrayRemoveArrays,
+  arrayRemoveArraysOnce,
+  arrayRemoveArraysOnceStrictly,
+  arrayRemovedArrays,
+  arrayRemovedArraysOnce,
+  arrayRemovedArraysOnceStrictly,
 
-  arrayRemoveAll : arrayRemoveAll,
-  arrayRemovedAll : arrayRemovedAll,
+  arrayRemoveAll,
+  arrayRemovedAll,
 
-  arrayRemoveDuplicates : arrayRemoveDuplicates,
+  arrayRemoveDuplicates,
 
   // array flatten
 
-  arrayFlatten : arrayFlatten,
-  arrayFlattenOnce : arrayFlattenOnce,
-  arrayFlattenOnceStrictly : arrayFlattenOnceStrictly,
-  arrayFlattened : arrayFlattened,
-  arrayFlattenedOnce : arrayFlattenedOnce,
+  arrayFlatten,
+  arrayFlattenOnce,
+  arrayFlattenOnceStrictly,
+  arrayFlattened,
+  arrayFlattenedOnce,
 
   // array replace
 
-  arrayReplaceOnce : arrayReplaceOnce,
-  arrayReplaceOnceStrictly : arrayReplaceOnceStrictly,
+  arrayReplaceOnce,
+  arrayReplaceOnceStrictly,
 
-  arrayReplacedOnce : arrayReplacedOnce,
-  arrayReplacedOnceStrictly : arrayReplacedOnceStrictly, /* qqq implement */
+  arrayReplacedOnce,
+  arrayReplacedOnceStrictly, /* qqq implement */
 
-  arrayReplaceArrayOnce : arrayReplaceArrayOnce,
-  arrayReplaceArrayOnceStrictly : arrayReplaceArrayOnceStrictly,
-  arrayReplacedArrayOnce : arrayReplacedArrayOnce,
+  arrayReplaceArrayOnce,
+  arrayReplaceArrayOnceStrictly,
+  arrayReplacedArrayOnce,
 
-  arrayReplaceAll : arrayReplaceAll,
-  arrayReplacedAll : arrayReplacedAll,
+  arrayReplaceAll,
+  arrayReplacedAll,
 
-  arrayUpdate : arrayUpdate,
+  arrayUpdate,
 
 }
 

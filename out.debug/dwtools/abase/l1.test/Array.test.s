@@ -4676,23 +4676,23 @@ function arrayLeft( test )
 
 //
 
-function arrayCount( test )
+function arrayCountElement( test )
 {
 
   test.case = 'nothing';
-  var got = _.arrayCount( [  ], 3 );
+  var got = _.arrayCountElement( [  ], 3 );
   var expected = 0;
   test.identical( got, expected );
 
   test.case = 'two matching';
-  var got = _.arrayCount( [ 1, 2, 'str', 10, 10, true ], 10 );
+  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
   var expected = 2;
   test.identical( got, expected );
 
   test.case = 'longIs';
   var src = [ 1, 2, 3 ];
   src[ 'a' ] = 1;
-  var got = _.arrayCount( src, 1 );
+  var got = _.arrayCountElement( src, 1 );
   var expected = 1;
   test.identical( got, expected );
 
@@ -4704,25 +4704,25 @@ function arrayCount( test )
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayCount();
+    _.arrayCountElement();
   });
 
   test.case = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.arrayCount( [ 1, 2, 3, 'abc', 13 ] );
+    _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
   });
 
   test.case = 'extra argument';
   test.shouldThrowError( function()
   {
-    _.arrayCount( [ 1, 2, 3, true ], true, 'redundant argument' );
+    _.arrayCountElement( [ 1, 2, 3, true ], true, 'redundant argument' );
   });
 
   test.case = 'first argument is wrong';
   test.shouldThrowError( function()
   {
-    _.arrayCount( 'wrong argument', true );
+    _.arrayCountElement( 'wrong argument', true );
   });
 
 };
@@ -14562,7 +14562,7 @@ var Self =
 
     arrayLeft : arrayLeft,
 
-    arrayCount : arrayCount,
+    arrayCountElement : arrayCountElement,
     arrayCountUnique : arrayCountUnique,
 
     // array etc
