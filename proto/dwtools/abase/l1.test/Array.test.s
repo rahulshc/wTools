@@ -4679,20 +4679,6 @@ function arrayLeft( test )
 function arrayCountElement( test )
 {
 
-  // One argument
-
-  test.case = 'One argument';
-  var got = _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'One argument with repeated elements';
-  var got = _.arrayCountElement( [ 1, 1, 1, 'abc', 'abc' ] );
-  var expected = 0;
-  test.identical( got, expected );
-
-  // Two arguments
-
   test.case = 'Empty array';
   var got = _.arrayCountElement( [  ], 3 );
   var expected = 0;
@@ -4773,11 +4759,11 @@ function arrayCountElement( test )
     _.arrayCountElement();
   });
 
-  // test.case = 'not enough arguments';
-  // test.shouldThrowError( function()
-  // {
-  //   _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
-  // });
+  test.case = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
+  });
 
   test.case = 'extra argument';
   test.shouldThrowError( function()
@@ -4815,18 +4801,39 @@ function arrayCountElement( test )
 
 function arrayCountTotal( test )
 {
+  // Zero
 
   test.case = 'Empty array';
   var got = _.arrayCountTotal( [] );
   var expected = 0;
   test.identical( got, expected );
 
-  // Array elements are numbers
+  test.case = 'null';
+  var got = _.arrayCountTotal( [ null ] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'several nulls';
+  var got = _.arrayCountTotal( [ null, null, null ] );
+  var expected = 0;
+  test.identical( got, expected );
 
   test.case = 'Zero';
+  var got = _.arrayCountTotal( [ 0 ] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'Several zeros';
   var got = _.arrayCountTotal( [ 0, 0, 0, 0 ] );
   var expected = 0;
   test.identical( got, expected );
+
+  test.case = 'Mix of nulls and zeros';
+  var got = _.arrayCountTotal( [ 0, null, null, 0, 0, 0, null ] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  // Array elements are numbers
 
   test.case = 'Sum of no repeated elements';
   var got = _.arrayCountTotal( [ 1, 3, 5, 7, 9 ] );
@@ -4836,6 +4843,21 @@ function arrayCountTotal( test )
   test.case = 'Sum of repeated elements';
   var got = _.arrayCountTotal( [ 2, 2, 4, 4, 6, 6 ] );
   var expected = 24;
+  test.identical( got, expected );
+
+  test.case = 'Sum with negative numbers';
+  var got = _.arrayCountTotal( [ 2, -3, 4, -4, 6, -7, 8 ] );
+  var expected = 6;
+  test.identical( got, expected );
+
+  test.case = 'Negative result';
+  var got = _.arrayCountTotal( [ 2, -3, 4, -4, 6, -7 ] );
+  var expected = -2;
+  test.identical( got, expected );
+
+  test.case = 'Zero';
+  var got = _.arrayCountTotal( [ 2, -2, 4, -4, 6, -6 ] );
+  var expected = 0;
   test.identical( got, expected );
 
   // Array elements are booleans
@@ -4877,52 +4899,10 @@ function arrayCountTotal( test )
   var expected = 15;
   test.identical( got, expected );
 
-  // Array elements are arrays
-
-  test.case = 'Zero';
-  var got = _.arrayCountTotal( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ] ] );
-  var expected = '00000';
+  test.case = 'Mix of true, false, numbers and null - negative result';
+  var got = _.arrayCountTotal( [ null, false, false, 0, true, null, -8, false, 10, true, false, -9, false, true, 2, null ] );
+  var expected = -2;
   test.identical( got, expected );
-
-  test.case = 'No repeated elements';
-  var got = _.arrayCountTotal( [ [ 1 ], [ 3 ], [ 5 ], [ 7 ], [ 9 ] ] );
-  var expected = '013579';
-  test.identical( got, expected );
-
-  test.case = 'Repeated elements';
-  var got = _.arrayCountTotal( [ [ 2 ], [ 2 ], [ 4 ], [ 4 ], [ 6 ], [ 6 ] ] );
-  var expected = '0224466';
-  test.identical( got, expected );
-
-  // Array elements are strings
-
-  test.case = 'All strings';
-  var got = _.arrayCountTotal( [ 'h', 'e', 'l', 'l', 'o' ] );
-  var expected = '0hello';
-  test.identical( got, expected );
-
-  test.case = 'strings and null';
-  var got = _.arrayCountTotal( [ ' is ', 'not ', null ] );
-  var expected = '0 is not null';
-  test.identical( got, expected );
-
-  test.case = 'If null is first el., it is added to 0';
-  var got = _.arrayCountTotal( [ null, ' is ', 'not ', null ] );
-  var expected = '0 is not null';
-  test.identical( got, expected );
-
-  test.case = 'strings and bool';
-  var got = _.arrayCountTotal( [ false, ' corresponds', ' to ', false ] );
-  var expected = '0 corresponds to false';
-  test.identical( got, expected );
-
-  // Mix of everything
-
-  test.case = 'All strings';
-  var got = _.arrayCountTotal( [ null, 0, true, 3, false, ', ', [ 3 ], ', ', 2, ', 1, ',false ] );
-  var expected = '4, 3, 2, 1, false';
-  test.identical( got, expected );
-
 
   /**/
 
@@ -4963,6 +4943,18 @@ function arrayCountTotal( test )
   test.shouldThrowError( function()
   {
     _.arrayCountTotal( 3 );
+  });
+
+  test.case = 'srcArray contains strings';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal( [ 1, '2', 3, 'a' ] );
+  });
+
+  test.case = 'srcArray contains arrays';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountTotal( [ 1, [ 2 ], 3, [ null ] ] );
   });
 
 };

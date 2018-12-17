@@ -1564,12 +1564,12 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 {
   let result = 0;
 
-  _.assert( 0 <= arguments.length && arguments.length <= 4 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longIs( srcArray ), 'Expects long' );
 
   let left = _.arrayLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
   // let index = srcArray.indexOf( element );
-  
+
   while( left >= 0 )
   {
     result += 1;
@@ -1583,9 +1583,7 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 //
 
 /**
- * The arrayCountTotal() adds all the elements in { -srcArray- }, when all the elements are numbers or booleans ( considers them 0 or 1 ).
- * If some element is not a number, from then on it will concatenate the elements in a string. If the first element is not a number,
- * a '0' will be concatenated first.
+ * The arrayCountTotal() adds all the elements in { -srcArray- }, elements can be numbers or booleans ( it considers them 0 or 1 ).
  *
  * @param { Array } srcArray - The source array.
  *
@@ -1594,13 +1592,14 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
  * let arr = _.arrayCountTotal( [ 1, 2, 10, 10 ] );
  *
  * @example
- * // returns 3<10;
- * let arr = _.arrayCountTotal( [ 1, 2, '<', 10 ] );
+ * // returns 1;
+ * let arr = _.arrayCountTotal( [ true, false, false ] );
  *
- * @returns { Number/String } - Returns the sum or concatenation of the elements in { srcArray }.
+ * @returns { Number } - Returns the sum of the elements in { srcArray }.
  * @function arrayCountTotal
  * @throws { Error } If passed arguments is different than one.
  * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If { srcArray} doesn´t contain number-like elements.
  * @memberof wTools
  */
 
@@ -1612,7 +1611,10 @@ function arrayCountTotal( srcArray )
   _.assert( _.longIs( srcArray ), 'Expects long' );
 
   for( let i = 0 ; i < srcArray.length ; i++ )
-  result += srcArray[ i ];
+  {
+    _.assert( _.boolIs( srcArray[ i ] ) || _.numberIs( srcArray[ i ] )|| srcArray[ i ] === null );
+    result += srcArray[ i ];
+  }
 
   return result;
 }
