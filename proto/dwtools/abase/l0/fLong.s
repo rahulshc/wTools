@@ -1564,7 +1564,7 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 
   let left = _.arrayLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
   // let index = srcArray.indexOf( element );
-  while( index >= 0 )
+  while( left >= 0 )
   {
     result += 1;
     left = _.arrayLeftIndex( srcArray, element, left+1, onEvaluate1, onEvaluate2 );
