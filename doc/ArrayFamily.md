@@ -60,7 +60,7 @@
   | **Element** | dst | dst | dst | appended element | appended element | appended element |
   | **Array** | dst | dst | dst | number | number | number |
   | **Arrays** | dst | dst | dst | number | number | number |
-  | **arrayFlatten** | dst | dst | dst | number | number | - \| number |
+  | **arrayFlatten** | dst | dst | dst | number | number | number |
 
 ### Where
 

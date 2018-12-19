@@ -2734,6 +2734,7 @@ function arrayAppendedElementOnce( dstArray, ins )
   }
 
   return false;  // Pablo: if input ins is -1, 'no appended' result can not be -1.
+  // return -1;
 }
 
 //
@@ -3906,6 +3907,13 @@ function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  arrayFlattenedOnceStrictly.apply( this, arguments );
+  return dstArray;
+}
+//
+/*
+function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   if( dstArray === null )
   {
     dstArray = [];
@@ -3934,12 +3942,12 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
       }
       return expected;
     } */
-
+/*
     let expected = 1;
 
-    if( _.longIs( insArray  ) )
+    if( _.longIs( insArray ) )
     expected = _.arrayFlattenOnce( insArray ).length;
-
+    logger.log( result, expected)
     _.assert( result === expected );
   }
   else
@@ -3949,7 +3957,7 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 
  return dstArray;
 }
-
+*/
 /*
 function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
@@ -3984,20 +3992,28 @@ function arrayFlattened( dstArray, insArray )
   // if( arguments.length <= 2 && insArray === undefined )
   // return _.longRemoveDuplicates( dstArray );
 
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
+
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
 
+  for( let i = dstArray.length-1; i >= 0; --i )
+  if( _.longIs( dstArray[ i ] ) )
+  {
+    let insArray = dstArray[ i ];
+    dstArray.splice( i, 1 );
+    onLong( insArray, i );
+  }
+
   if( arguments.length === 1 )
   {
-    for( let i = dstArray.length-1; i >= 0; --i )
-    if( _.longIs( dstArray[ i ] ) )
-    {
-      let insArray = dstArray[ i ];
-      dstArray.splice( i, 1 );
-      onLong( insArray, i );
-    }
     return dstArray;
   }
 
@@ -4053,6 +4069,13 @@ function arrayFlattened( dstArray, insArray )
 
 function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   _.assert( arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
@@ -4060,17 +4083,18 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   // if( arguments.length <= 2 && insArray === undefined )
   // return _.longRemoveDuplicates( dstArray );
 
+  _.arrayRemoveDuplicates( dstArray );
+
+  for( let i = dstArray.length-1; i >= 0; --i )
+  if( _.longIs( dstArray[ i ] ) )
+  {
+    let insArray = dstArray[ i ];
+    dstArray.splice( i, 1 );
+    onLongOnce( insArray, i );
+  }
+
   if( arguments.length === 1 )
   {
-    _.arrayRemoveDuplicates( dstArray );
-
-    for( let i = dstArray.length-1; i >= 0; --i )
-    if( _.longIs( dstArray[ i ] ) )
-    {
-      let insArray = dstArray[ i ];
-      dstArray.splice( i, 1 );
-      onLongOnce( insArray, i );
-    }
     return dstArray;
   }
 
@@ -4099,6 +4123,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
   else
   {
+
     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
     if( index === -1 )
     {
@@ -4119,6 +4144,96 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
       onLongOnce( insArray[ i ], insIndex )
       else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
       dstArray.splice( insIndex++, 0, insArray[ i ] );
+    }
+  }
+}
+
+//
+
+function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
+  _.assert( arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( dstArray ) );
+
+  let oldLength = dstArray.length;
+  _.arrayRemoveDuplicates( dstArray );
+  let newLength = dstArray.length;
+  if( Config.debug )
+  _.assert( oldLength === newLength, 'Elements in dstArray must not be repeated' );
+
+  for( let i = dstArray.length-1; i >= 0; --i )
+  if( _.longIs( dstArray[ i ] ) )
+  {
+    let insArray = dstArray[ i ];
+    dstArray.splice( i, 1 );
+    onLongOnce( insArray, i );
+  }
+
+  if( arguments.length === 1 )
+  {
+    return dstArray;
+  }
+
+  let result = 0;
+
+  if( _.longIs( insArray ) )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      _.assert( insArray[ i ] !== undefined );
+      if( _.longIs( insArray[ i ] ) )
+      {
+        let c = _.arrayFlattenedOnceStrictly( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        result += c;
+      }
+      else
+      {
+        let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        if( Config.debug )
+        _.assert( index === -1, 'Elements must not be repeated' );
+
+        if( index === -1 )
+        {
+          dstArray.push( insArray[ i ] );
+          result += 1;
+        }
+      }
+    }
+  }
+  else
+  {
+    let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+    if( Config.debug )
+    _.assert( index === -1, 'Elements must not be repeated' );
+
+    if( index === -1 )
+    {
+      dstArray.push( insArray );
+      result += 1;
+    }
+  }
+
+  return result;
+
+  /* */
+
+  function onLongOnce( insArray, insIndex )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      onLongOnce( insArray[ i ], insIndex )
+      else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+      dstArray.splice( insIndex++, 0, insArray[ i ] );
+      else if( Config.debug )
+      _.assert( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1, 'Elements must not be repeated' );
     }
   }
 }
@@ -4617,6 +4732,7 @@ let Routines =
   arrayFlattenOnceStrictly,
   arrayFlattened,
   arrayFlattenedOnce,
+  arrayFlattenedOnceStrictly,
 
   // array replace
 
