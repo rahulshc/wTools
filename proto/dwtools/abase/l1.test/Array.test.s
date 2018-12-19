@@ -8015,6 +8015,85 @@ function arrayAppendedArrayOnceWithSelector( test )
 
 //
 
+function arrayAppendedArrayOnceStrictly( test )
+{
+  test.case = 'nothing';
+
+  var got = _.arrayAppendedArrayOnceStrictly( [], [] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayAppendedArrayOnceStrictly( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayAppendedArrayOnceStrictly( dst, [ 4, 5 ] );
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, 2 );
+
+  test.case = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayAppendedArrayOnceStrictly( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
+
+  test.case = 'array has undefined';
+  var dst = [ 1 ];
+  test.mustNotThrowError( function ()
+  {
+    _.arrayAppendedArrayOnceStrictly( dst, [ undefined, 2 ] );
+  });
+  test.identical( dst, [ 1, undefined, 2 ] );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedArrayOnceStrictly();
+  });
+
+  test.case = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
+
+  test.case = 'second args is not longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedArrayOnceStrictly( [ 1, 2 ], 2 );
+  });
+
+  test.case = 'one of elements is not unique';
+
+  var dst = [ 1,2,3 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayAppendedArrayOnceStrictly( dst, [ 4, 5, 2 ] );
+  })
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] );
+
+  var dst = [ 1, 1, 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayAppendedArrayOnceStrictly( dst, [ 1 ] );
+  })
+  test.identical( dst, [ 1, 1, 1 ] );
+
+}
+
+//
+
 function arrayAppendArrays( test )
 {
 
@@ -8509,6 +8588,112 @@ function arrayAppendedArraysOnce( test )
   test.shouldThrowError( function()
   {
     _.arrayAppendedArraysOnce( [], 1 );
+  });
+
+}
+
+//
+
+function arrayAppendedArraysOnceStrictly( test )
+{
+  test.case = 'nothing';
+
+  var got = _.arrayAppendedArraysOnceStrictly( [], [] );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayAppendedArraysOnceStrictly( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  test.case = 'mixed arguments types';
+  var dst = [ 1 ];
+  var insArray = [ [ 'a' ],[ { a : 1 } ], { b : 2 } ];
+  var got = _.arrayAppendedArraysOnceStrictly( dst, insArray );
+  test.identical( dst, [ 1, 'a', { a : 1 }, { b : 2 } ] );
+  test.identical( got, 3 );
+
+  var dst = [ 0 ];
+  var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ], 6 ] ];
+  var got = _.arrayAppendedArraysOnceStrictly( dst, insArray );
+  test.identical( dst, [ 0, 1, 2, 3, [ 4, [ 5 ] ], 6 ] );
+  test.identical( got, 5 );
+
+  test.case = 'onEqualize';
+
+  var onEqualize = function onEqualize( a, b )
+  {
+    return a === b;
+  }
+
+  var dst = [ 4,5 ];
+  var got = _.arrayAppendedArraysOnceStrictly( dst, [ 1, 2, 3 ], onEqualize );
+  test.identical( dst, [ 4, 5, 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  test.case = 'ins has existing element';
+
+  test.case = 'array has undefined';
+  var dst = [ 1 ];
+  test.mustNotThrowError( function ()
+  {
+    _.arrayAppendedArraysOnceStrictly( dst, [ undefined, 2 ] );
+  });
+  test.identical( dst, [ 1, undefined, 2 ] );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedArraysOnceStrictly();
+  });
+
+  test.case = 'dst is not a array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedArraysOnceStrictly( 1, [ 2 ] );
+  });
+
+  test.case = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedArraysOnceStrictly( [], [ 1, 2, 3 ], [] )
+  });
+
+  test.case = 'One of ins elements is not unique';
+  var dst = [ 1, 2, 3 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayAppendedArraysOnceStrictly( dst, [ 4, 2, 5 ] );
+  })
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] )
+
+  var dst = [ 1, 1, 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayAppendedArraysOnceStrictly( dst, [ 1 ] );
+  })
+  test.identical( dst, [ 1, 1, 1 ] );
+
+  test.case = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayAppendedArraysOnceStrictly( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
+
+  test.case = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedArraysOnceStrictly( [], 1 );
   });
 
 }
@@ -15451,6 +15636,7 @@ var Self =
     arrayAppended : arrayAppended,
     arrayAppendedOnce : arrayAppendedOnce,
     arrayAppendedOnceStrictly : arrayAppendedOnceStrictly,
+
     arrayAppendElement : arrayAppendElement,
     arrayAppendElementOnce : arrayAppendElementOnce,
     arrayAppendElementOnceStrictly : arrayAppendElementOnceStrictly,
@@ -15464,12 +15650,14 @@ var Self =
     arrayAppendedArray : arrayAppendedArray,
     arrayAppendedArrayOnce : arrayAppendedArrayOnce,
     arrayAppendedArrayOnceWithSelector : arrayAppendedArrayOnceWithSelector,
+    arrayAppendedArrayOnceStrictly : arrayAppendedArrayOnceStrictly,
 
     arrayAppendArrays : arrayAppendArrays,
     arrayAppendArraysOnce : arrayAppendArraysOnce,
     arrayAppendArraysOnceStrictly : arrayAppendArraysOnceStrictly,
     arrayAppendedArrays : arrayAppendedArrays,
     arrayAppendedArraysOnce : arrayAppendedArraysOnce,
+    arrayAppendedArraysOnceStrictly : arrayAppendedArraysOnceStrictly,
 
     // array remove
 

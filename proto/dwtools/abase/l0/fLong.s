@@ -2750,7 +2750,7 @@ function arrayAppendedElementOnceStrictly( dstArray, ins )
   {
     result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
   }
-  return dstArray[ dstArray.length - 1 ];
+  return result;
 }
 
 //
@@ -2885,6 +2885,23 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
+function arrayAppendedArrayOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedArrayOnce.apply( this, arguments );
+    _.assert( result === ins.length , 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+  }
+  return result;
+}
+
+//
+
 function arrayAppendArrays( dstArray )
 {
   arrayAppendedArrays.apply( this, arguments );
@@ -3012,6 +3029,32 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
     {
       _appendOnce( insArray[ a ] );
     }
+  }
+
+  return result;
+}
+
+//
+
+function arrayAppendedArraysOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedArraysOnce.apply( this, arguments );
+    let expected = 0;
+    for( let i = ins.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( ins[ i ] ) )
+      expected += ins[ i ].length;
+      else
+      expected += 1;
+    }
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+  }
+  else
+  {
+    result = arrayAppendedArrays.apply( this, [ dstArray, ins ] );
   }
 
   return result;
@@ -4508,6 +4551,7 @@ let Routines =
   arrayAppended,
   arrayAppendedOnce,
   arrayAppendedOnceStrictly,
+
   arrayAppendElement, /* qqq : fill gaps */
   arrayAppendElementOnce,
   arrayAppendElementOnceStrictly,
@@ -4520,12 +4564,14 @@ let Routines =
   arrayAppendArrayOnceStrictly,
   arrayAppendedArray,
   arrayAppendedArrayOnce,
+  arrayAppendedArrayOnceStrictly,
 
   arrayAppendArrays,
   arrayAppendArraysOnce,
   arrayAppendArraysOnceStrictly,
   arrayAppendedArrays,
   arrayAppendedArraysOnce,
+  arrayAppendedArraysOnceStrictly,
 
   // array remove
 
