@@ -6406,29 +6406,29 @@ function arrayPrependedArraysOnce( test )
 
 //
 
-function arrayAppendElement( test )
+function arrayAppend( test )
 {
   test.case = 'simple';
 
-  var got = _.arrayAppendElement( [], 1 );
+  var got = _.arrayAppend( [], 1 );
   test.identical( got, [ 1 ] );
 
-  var got = _.arrayAppendElement( [ 1 ], 1 );
+  var got = _.arrayAppend( [ 1 ], 1 );
   test.identical( got, [ 1, 1 ] );
 
-  var got = _.arrayAppendElement( [ 1 ], 2 );
+  var got = _.arrayAppend( [ 1 ], 2 );
   test.identical( got, [ 1,2 ] );
 
-  var got = _.arrayAppendElement( [ 1,2,3 ], 3 );
+  var got = _.arrayAppend( [ 1,2,3 ], 3 );
   test.identical( got, [ 1,2,3,3 ] );
 
-  var got = _.arrayAppendElement( [ 1 ], '1' );
+  var got = _.arrayAppend( [ 1 ], '1' );
   test.identical( got, [ 1, '1' ] );
 
-  var got = _.arrayAppendElement( [ 1 ], -1 );
+  var got = _.arrayAppend( [ 1 ], -1 );
   test.identical( got, [  1, -1 ] );
 
-  var got = _.arrayAppendElement( [ 1 ], [ 1 ] );
+  var got = _.arrayAppend( [ 1 ], [ 1 ] );
   test.identical( got, [  1,[ 1 ] ] );
 
   //
@@ -6439,19 +6439,19 @@ function arrayAppendElement( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayAppendElement();
+    _.arrayAppend();
   })
 
   test.case = 'too many args';
   test.shouldThrowError( function()
   {
-    _.arrayAppendElement( [], 1, 1 );
+    _.arrayAppend( [], 1, 1 );
   })
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayAppendElement( 1, 1 );
+    _.arrayAppend( 1, 1 );
   })
 }
 
@@ -6640,42 +6640,42 @@ function arrayAppendOnceStrictly( test )
 
 //
 
-function arrayAppendedElement( test )
+function arrayAppended( test )
 {
   test.case = 'simple';
 
   var dst = [];
-  var got = _.arrayAppendedElement( dst, 1 );
+  var got = _.arrayAppended( dst, 1 );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppendedElement( dst, 1 );
+  var got = _.arrayAppended( dst, 1 );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppendedElement( dst, 2 );
+  var got = _.arrayAppended( dst, 2 );
   test.identical( dst, [ 1, 2 ] );
   test.identical( got, 1 );
 
   var dst = [ 1,2,3 ];
-  var got = _.arrayAppendedElement( dst, 3 );
+  var got = _.arrayAppended( dst, 3 );
   test.identical( dst, [ 1,2,3,3 ] );
   test.identical( got, 3 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppendedElement( dst, '1' );
+  var got = _.arrayAppended( dst, '1' );
   test.identical( dst, [ 1, '1' ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppendedElement( dst, -1 );
+  var got = _.arrayAppended( dst, -1 );
   test.identical( dst, [ 1, -1 ] );
   test.identical( got, 1 );
 
   var dst = [ 1 ];
-  var got = _.arrayAppendedElement( dst, [ 1 ] );
+  var got = _.arrayAppended( dst, [ 1 ] );
   test.identical( dst, [ 1, [ 1 ] ] );
   test.identical( got, 1 );
 
@@ -6687,19 +6687,19 @@ function arrayAppendedElement( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayAppendedElement();
+    _.arrayAppended();
   });
 
   test.case = 'too many args';
   test.shouldThrowError( function()
   {
-    _.arrayAppendedElement( [], 1, 1 );
+    _.arrayAppended( [], 1, 1 );
   });
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayAppendedElement( 1, 1 );
+    _.arrayAppended( 1, 1 );
   });
 }
 
@@ -6808,6 +6808,227 @@ function arrayAppendedOnce( test )
   {
     _.arrayAppendedOnce( 1, 1, 1 );
   })
+}
+
+//
+
+function arrayAppendedOnceStrictly( test )
+{
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayAppendedOnceStrictly( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 0 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedOnceStrictly( dst, 2 );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedOnceStrictly( dst, '1' );
+  test.identical( dst, [ 1,'1' ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedOnceStrictly( dst, -1 );
+  test.identical( dst, [ 1,-1 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedOnceStrictly( dst, [ 1 ] );
+  test.identical( dst, [ 1,[ 1 ] ] );
+  test.identical( got, 1 );
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayAppendedOnceStrictly( dst, { num : 4 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
+  test.identical( got, 3 );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayAppendedOnceStrictly( dst, 4, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
+  test.identical( got, 3 );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedOnceStrictly();
+  })
+
+  // test.case = 'third is not a routine';
+  // test.shouldThrowError( function()
+  // {
+  //   _.arrayAppendedOnceStrictly( [], 1, 1 );
+  // })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedOnceStrictly( 1, 1 );
+  })
+
+  test.case = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedOnceStrictly( 1, 1, 1 );
+  })
+
+  test.case = 'ins already exists in dst';
+
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedOnceStrictly( [ 1 ], 1 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedOnceStrictly( [ 1,2,3 ], 3 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+    var onEqualize = function( a, b )
+    {
+      return a.num === b.num;
+    }
+    _.arrayAppendedOnceStrictly( dst, { num : 1 }, onEqualize );
+  });
+}
+
+//
+
+function arrayAppendElement( test )
+{
+  test.case = 'simple';
+
+  var got = _.arrayAppendElement( [], 1 );
+  test.identical( got, [ 1 ] );
+
+  var got = _.arrayAppendElement( [ 1 ], 1 );
+  test.identical( got, [ 1, 1 ] );
+
+  var got = _.arrayAppendElement( [ 1 ], 2 );
+  test.identical( got, [ 1,2 ] );
+
+  var got = _.arrayAppendElement( [ 1,2,3 ], 3 );
+  test.identical( got, [ 1,2,3,3 ] );
+
+  var got = _.arrayAppendElement( [ 1 ], '1' );
+  test.identical( got, [ 1, '1' ] );
+
+  var got = _.arrayAppendElement( [ 1 ], -1 );
+  test.identical( got, [  1, -1 ] );
+
+  var got = _.arrayAppendElement( [ 1 ], [ 1 ] );
+  test.identical( got, [  1,[ 1 ] ] );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElement();
+  })
+
+  test.case = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElement( [], 1, 1 );
+  })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElement( 1, 1 );
+  })
+}
+
+//
+
+function arrayAppendedElement( test )
+{
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayAppendedElement( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 0 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElement( dst, 1 );
+  test.identical( dst, [ 1, 1 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElement( dst, 2 );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1,2,3 ];
+  var got = _.arrayAppendedElement( dst, 3 );
+  test.identical( dst, [ 1,2,3,3 ] );
+  test.identical( got, 3 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElement( dst, '1' );
+  test.identical( dst, [ 1, '1' ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElement( dst, -1 );
+  test.identical( dst, [ 1, -1 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElement( dst, [ 1 ] );
+  test.identical( dst, [ 1, [ 1 ] ] );
+  test.identical( got, 1 );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElement();
+  });
+
+  test.case = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElement( [], 1, 1 );
+  });
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElement( 1, 1 );
+  });
 }
 
 // //
@@ -14824,11 +15045,14 @@ var Self =
 
     // array append
 
-    arrayAppendElement : arrayAppendElement,
+    arrayAppend : arrayAppend,
     arrayAppendOnce : arrayAppendOnce,
     arrayAppendOnceStrictly : arrayAppendOnceStrictly,
-    arrayAppendedElement : arrayAppendedElement,
+    arrayAppended : arrayAppended,
     arrayAppendedOnce : arrayAppendedOnce,
+    arrayAppendedOnceStrictly : arrayAppendedOnceStrictly,
+    arrayAppendElement : arrayAppendElement,
+    arrayAppendedElement : arrayAppendedElement,
 
     arrayAppendArray : arrayAppendArray,
     arrayAppendArrayOnce : arrayAppendArrayOnce,

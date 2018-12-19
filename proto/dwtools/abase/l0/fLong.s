@@ -2574,9 +2574,9 @@ function arrayAppend_( dstArray )
 
 //
 
-function arrayAppendElement( dstArray, ins )
+function arrayAppend( dstArray, ins )
 {
-  arrayAppendedElement.apply( this, arguments );
+  arrayAppended.apply( this, arguments );
   return dstArray;
 }
 
@@ -2631,24 +2631,14 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   }
   else
   {
-    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+    result = arrayAppended.apply( this, [ dstArray, ins ] );
   }
   return dstArray;
 }
 
-/*
-function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
-{
-
-  let result = arrayAppendedOnce.apply( this, arguments );
-  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
-  return dstArray;
-}
-*/
-
 //
 
-function arrayAppendedElement( dstArray, ins )
+function arrayAppended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
   _.assert( _.arrayIs( dstArray ) );
@@ -2669,6 +2659,41 @@ function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
   }
 
   return -1;
+}
+
+
+function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedOnce.apply( this, arguments );
+    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppended.apply( this, [ dstArray, ins ] );
+  }
+  return result;
+}
+
+
+//
+
+function arrayAppendElement( dstArray, ins )
+{
+  arrayAppendedElement.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendedElement( dstArray, ins )
+{
+  _.assert( arguments.length === 2  );
+  _.assert( _.arrayIs( dstArray ) );
+  dstArray.push( ins );
+  return dstArray.length - 1;
 }
 
 //
@@ -4420,11 +4445,14 @@ let Routines =
   arrayAppendUnrolling,
   arrayAppend_,
 
-  arrayAppendElement, /* qqq : fill gaps */
+  arrayAppend,
   arrayAppendOnce,
   arrayAppendOnceStrictly,
-  arrayAppendedElement,
+  arrayAppended,
   arrayAppendedOnce,
+  arrayAppendedOnceStrictly,
+  arrayAppendElement, /* qqq : fill gaps */
+  arrayAppendedElement,
 
   arrayAppendArray,
   arrayAppendArrayOnce,
