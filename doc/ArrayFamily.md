@@ -56,8 +56,8 @@
 
   | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - \| dst | dst | dst | - \| index | index | - \| index |
-  | **Element** | dst | - \| dst | - \| dst | index \| appended element | - \| appended element | - \| appended element |
+  | **-** | dst | dst | dst | index | index | index |
+  | **Element** | dst | dst | dst | appended element | appended element | appended element |
   | **Array** | dst | dst | dst | number | number | - \| number |
   | **Arrays** | dst | dst | dst | number | number | - \| number |
   | **arrayFlatten** | dst | dst | dst | number | number | - \| number |

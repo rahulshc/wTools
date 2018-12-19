@@ -2688,12 +2688,69 @@ function arrayAppendElement( dstArray, ins )
 
 //
 
+function arrayAppendElementOnce( dstArray, ins )
+{
+  arrayAppendedElementOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendElementOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedElementOnce.apply( this, arguments );
+    _.assert( result !== false, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+  }
+  return dstArray;
+}
+
+//
+
 function arrayAppendedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
   _.assert( _.arrayIs( dstArray ) );
   dstArray.push( ins );
-  return dstArray.length - 1;
+  return dstArray[ dstArray.length - 1 ];
+}
+
+//
+
+function arrayAppendedElementOnce( dstArray, ins )
+{
+  let i = _.arrayLeftIndex.apply( _, arguments );
+
+  if( i === -1 )
+  {
+    dstArray.push( ins );
+    return dstArray[ dstArray.length - 1 ];
+  }
+
+  return false;  // Pablo: if input ins is -1, 'no appended' result can not be -1.
+}
+
+//
+
+function arrayAppendedElementOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedElementOnce.apply( this, arguments );
+    _.assert( result !== false, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+  }
+  return dstArray[ dstArray.length - 1 ];
 }
 
 //
@@ -4452,7 +4509,11 @@ let Routines =
   arrayAppendedOnce,
   arrayAppendedOnceStrictly,
   arrayAppendElement, /* qqq : fill gaps */
+  arrayAppendElementOnce,
+  arrayAppendElementOnceStrictly,
   arrayAppendedElement,
+  arrayAppendedElementOnce,
+  arrayAppendedElementOnceStrictly,
 
   arrayAppendArray,
   arrayAppendArrayOnce,

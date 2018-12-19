@@ -6968,6 +6968,189 @@ function arrayAppendElement( test )
 
 //
 
+function arrayAppendElementOnce( test )
+{
+  test.case = 'simple';
+
+  var got = _.arrayAppendElementOnce( [], 1 );
+  test.identical( got, [ 1 ] );
+
+  var got = _.arrayAppendElementOnce( [ 1 ], 1 );
+  test.identical( got, [ 1 ] );
+
+  var got = _.arrayAppendElementOnce( [ 1 ], 2 );
+  test.identical( got, [ 1,2 ] );
+
+  var got = _.arrayAppendElementOnce( [ 1,2,3 ], 3 );
+  test.identical( got, [ 1,2,3 ] );
+
+  var got = _.arrayAppendElementOnce( [ 1 ], '1' );
+  test.identical( got, [ 1, '1' ] );
+
+  var got = _.arrayAppendElementOnce( [ 1 ], -1 );
+  test.identical( got, [ 1, -1 ] );
+
+  var got = _.arrayAppendElementOnce( [ 1 ], [ 1 ] );
+  test.identical( got, [ 1, [ 1 ] ] );
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayAppendElementOnce( dst, { num : 4 }, onEqualize );
+  test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayAppendElementOnce( dst, { num : 1 }, onEqualize );
+  test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayAppendElementOnce( dst, 4, onEqualize );
+  test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var got = _.arrayAppendElementOnce( dst, 1, ( e ) => e.num, ( e ) => e );
+  test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElementOnce();
+  })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElementOnce( 1, 1 );
+  })
+
+  test.case = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElementOnce( 1, 1, 1 );
+  })
+}
+
+//
+
+function arrayAppendElementOnceStrictly( test )
+{
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayAppendElementOnceStrictly( dst , 1 );
+  test.identical( got, [ 1 ] );
+  test.identical( got, dst );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendElementOnceStrictly( dst, 2 );
+  test.identical( got, [ 1,2 ] );
+  test.identical( got, dst );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendElementOnceStrictly( dst, '1' );
+  test.identical( got, [ 1,'1' ] );
+  test.identical( got, dst );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendElementOnceStrictly( dst, -1 );
+  test.identical( got, [ 1, -1 ] );
+  test.identical( got, dst );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendElementOnceStrictly( dst, [ 1 ] );
+  test.identical( got, [ 1, [ 1 ] ] );
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayAppendElementOnceStrictly( dst,{ num : 4 }, onEqualize );
+  test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
+  test.identical( got, dst );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayAppendElementOnceStrictly( dst, 4, onEqualize );
+  test.identical( got, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
+  test.identical( got, dst );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElementOnceStrictly();
+  })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElementOnceStrictly( 1, 1 );
+  })
+
+  test.case = 'ins already exists in dst';
+
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElementOnceStrictly( [ 1 ], 1 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendElementOnceStrictly( [ 1,2,3 ], 3 );
+  });
+
+  // test.case = 'onEqualize is not a routine';
+
+  // test.shouldThrowError( function()
+  // {
+  //   _.arrayAppendOnceStrictly( [ 1,2,3 ], 3, 3 );
+  // });
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+    var onEqualize = function( a, b )
+    {
+      return a.num === b.num;
+    }
+    _.arrayAppendElementOnceStrictly( dst, { num : 1 }, onEqualize );
+  });
+
+}
+
+//
+
 function arrayAppendedElement( test )
 {
   test.case = 'simple';
@@ -6975,7 +7158,7 @@ function arrayAppendedElement( test )
   var dst = [];
   var got = _.arrayAppendedElement( dst, 1 );
   test.identical( dst, [ 1 ] );
-  test.identical( got, 0 );
+  test.identical( got, 1 );
 
   var dst = [ 1 ];
   var got = _.arrayAppendedElement( dst, 1 );
@@ -6985,7 +7168,7 @@ function arrayAppendedElement( test )
   var dst = [ 1 ];
   var got = _.arrayAppendedElement( dst, 2 );
   test.identical( dst, [ 1, 2 ] );
-  test.identical( got, 1 );
+  test.identical( got, 2 );
 
   var dst = [ 1,2,3 ];
   var got = _.arrayAppendedElement( dst, 3 );
@@ -6995,17 +7178,17 @@ function arrayAppendedElement( test )
   var dst = [ 1 ];
   var got = _.arrayAppendedElement( dst, '1' );
   test.identical( dst, [ 1, '1' ] );
-  test.identical( got, 1 );
+  test.identical( got, '1' );
 
   var dst = [ 1 ];
   var got = _.arrayAppendedElement( dst, -1 );
   test.identical( dst, [ 1, -1 ] );
-  test.identical( got, 1 );
+  test.identical( got, -1 );
 
   var dst = [ 1 ];
   var got = _.arrayAppendedElement( dst, [ 1 ] );
   test.identical( dst, [ 1, [ 1 ] ] );
-  test.identical( got, 1 );
+  test.identical( got, [ 1 ] );
 
   //
 
@@ -7028,6 +7211,223 @@ function arrayAppendedElement( test )
   test.shouldThrowError( function()
   {
     _.arrayAppendedElement( 1, 1 );
+  });
+}
+
+//
+
+function arrayAppendedElementOnce( test )
+{
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayAppendedElementOnce( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnce( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, false );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnce( dst, 2 );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 1,2,3 ];
+  var got = _.arrayAppendedElementOnce( dst, 3 );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, false );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnce( dst, '1' );
+  test.identical( dst, [ 1, '1' ] );
+  test.identical( got, '1' );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnce( dst, -1 );
+  test.identical( dst, [ 1,-1 ] );
+  test.identical( got, -1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnce( dst, [ 1 ] );
+  test.identical( dst, [ 1,[ 1 ] ] );
+  test.identical( got, [ 1 ] );
+
+  var dst = [ 0, 1, 2 ];
+  var got = _.arrayAppendedElementOnce( dst, NaN );
+  test.identical( dst, [ 0, 1, 2, NaN ] );
+  test.identical( got, NaN );
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayAppendedElementOnce( dst, { num : 4 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
+  test.identical( got, { num : 4 } );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayAppendedElementOnce( dst, { num : 1 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+  test.identical( got, false );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayAppendedElementOnce( dst, 4, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
+  test.identical( got, 4 );
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var got = _.arrayAppendedElementOnce( dst, 1, ( e ) => e.num, ( e ) => e );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] );
+  test.identical( got, false );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnce();
+  })
+
+  // test.case = 'third is not a routine';
+  // test.shouldThrowError( function()
+  // {
+  //   _.arrayAppendedElementOnce( [], 1, 1 );
+  // })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnce( 1, 1 );
+  })
+
+  test.case = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnce( 1, 1, 1 );
+  })
+}
+
+//
+
+function arrayAppendedElementOnceStrictly( test )
+{
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayAppendedElementOnceStrictly( dst, 1 );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnceStrictly( dst, 2 );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnceStrictly( dst, '1' );
+  test.identical( dst, [ 1,'1' ] );
+  test.identical( got, '1' );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnceStrictly( dst, -1 );
+  test.identical( dst, [ 1,-1 ] );
+  test.identical( got, -1 );
+
+  var dst = [ 1 ];
+  var got = _.arrayAppendedElementOnceStrictly( dst, [ 1 ] );
+  test.identical( dst, [ 1,[ 1 ] ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'equalizer 2 args';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a, b )
+  {
+    return a.num === b.num;
+  }
+  var got = _.arrayAppendedElementOnceStrictly( dst, { num : 4 }, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 },{ num : 4 } ] );
+  test.identical( got, { num : 4 } );
+
+  test.case = 'equalizer 1 arg';
+
+  var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+  var onEqualize = function( a )
+  {
+    return a.num;
+  }
+  var got = _.arrayAppendedElementOnceStrictly( dst, 4, onEqualize );
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 }, 4 ] );
+  test.identical( got, 4 );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnceStrictly();
+  })
+
+  // test.case = 'third is not a routine';
+  // test.shouldThrowError( function()
+  // {
+  //   _.arrayAppendedOnceStrictly( [], 1, 1 );
+  // })
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnceStrictly( 1, 1 );
+  })
+
+  test.case = 'onEqualize is not a function';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnceStrictly( 1, 1, 1 );
+  })
+
+  test.case = 'ins already exists in dst';
+
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnceStrictly( [ 1 ], 1 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendedElementOnceStrictly( [ 1,2,3 ], 3 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    var dst = [ { num : 1 },{ num : 2 },{ num : 3 } ];
+    var onEqualize = function( a, b )
+    {
+      return a.num === b.num;
+    }
+    _.arrayAppendedElementOnceStrictly( dst, { num : 1 }, onEqualize );
   });
 }
 
@@ -15052,7 +15452,11 @@ var Self =
     arrayAppendedOnce : arrayAppendedOnce,
     arrayAppendedOnceStrictly : arrayAppendedOnceStrictly,
     arrayAppendElement : arrayAppendElement,
+    arrayAppendElementOnce : arrayAppendElementOnce,
+    arrayAppendElementOnceStrictly : arrayAppendElementOnceStrictly,
     arrayAppendedElement : arrayAppendedElement,
+    arrayAppendedElementOnce : arrayAppendedElementOnce,
+    arrayAppendedElementOnceStrictly : arrayAppendedElementOnceStrictly,
 
     arrayAppendArray : arrayAppendArray,
     arrayAppendArrayOnce : arrayAppendArrayOnce,
