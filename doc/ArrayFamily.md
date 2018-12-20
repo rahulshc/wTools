@@ -103,6 +103,6 @@
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
   | **-** | dst + | dst | dst | number + | index | index |
   | **Element** | dst + | dst + | dst + | number + | replaced element + | replaced element + |
-  | **Array** | - \| dst | dst | dst | - \| number | number | - \| number |
+  | **Array** | dst + | dst | dst | number + | number | number + |
   | **Arrays** | - \| dst | - \| dst | - \| dst | - \| number | - \| number | - \| number |
   | **All** | dst \| - | - | - | number \| - | - | - |

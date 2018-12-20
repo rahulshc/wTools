@@ -4505,6 +4505,14 @@ function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
+function arrayReplaceArray( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  arrayReplacedArray.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
 function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
 {
   arrayReplacedArrayOnce.apply( this, arguments );
@@ -4544,6 +4552,36 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
 
 //
 
+function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.longIs( ins ) );
+  _.assert( _.longIs( sub ) );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  )
+
+  let index = -1;
+  let result = 0;
+
+  for( let i = 0, len = ins.length; i < len; i++ )
+  {
+    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
+    while( index !== -1 )
+    {
+      let subValue = sub[ i ];
+      if( subValue === undefined )
+      dstArray.splice( index, 1 );
+      else
+      dstArray.splice( index, 1, subValue );
+      result += 1;
+      index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
+    }
+  }
+
+  return result;
+}
+
+//
+
 function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( ins ) );
@@ -4566,6 +4604,27 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
       dstArray.splice( index, 1, subValue );
       result += 1;
     }
+  }
+
+  return result;
+}
+
+//
+
+function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedArrayOnce.apply( this, arguments );
+    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    let newResult = arrayReplacedArrayOnce.apply( this, arguments );
+    _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedArrayOnce.apply( this, arguments );
   }
 
   return result;
@@ -4876,7 +4935,6 @@ let Routines =
   arrayReplace,
   arrayReplaceOnce,
   arrayReplaceOnceStrictly,
-
   arrayReplaced,
   arrayReplacedOnce,
   arrayReplacedOnceStrictly, /* qqq implement */
@@ -4884,14 +4942,16 @@ let Routines =
   arrayReplaceElement,
   arrayReplaceElementOnce,
   arrayReplaceElementOnceStrictly,
-
   arrayReplacedElement,
   arrayReplacedElementOnce,
   arrayReplacedElementOnceStrictly,
 
+  arrayReplaceArray,
   arrayReplaceArrayOnce,
   arrayReplaceArrayOnceStrictly,
+  arrayReplacedArray,
   arrayReplacedArrayOnce,
+  arrayReplacedArrayOnceStrictly,
 
   arrayReplaceAll,
   arrayReplacedAll,
