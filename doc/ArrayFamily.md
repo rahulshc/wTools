@@ -56,15 +56,17 @@
 
   | **arrayAppend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | dst | dst | dst | index | index | index |
-  | **Element** | dst | dst | dst | appended element | appended element | appended element |
-  | **Array** | dst | dst | dst | number | number | number |
-  | **Arrays** | dst | dst | dst | number | number | number |
-  | **arrayFlatten** | dst | dst | dst | number | number | number |
+  | **-** | dst + | dst | dst | index + | index | index + |
+  | **Element** | dst | dst + | dst + | index | appended element | appended element + | appended element + |
+  | **Array** | dst | dst | dst | number | number | number + |
+  | **Arrays** | dst | dst | dst | number | number | number + |
+  | **arrayFlatten** | dst | dst | dst | number | number | number + |
 
 ### Where
 
     `-` means that the corresponding function hasn´t been developped.
+
+    `+` means that the corresponding function has been recently developped.
 
     `dst` corresponds to the input array with the appended element( s ) included at its end.
 
@@ -99,8 +101,8 @@
 
   | **arrayReplace** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - \| dst | dst | dst | - \| number | index | index |
-  | **Element** | - \| dst | - \| dst | - \| dst | - \| number | - \| replaced element |  - \| replaced element |
+  | **-** | dst + | dst | dst | number + | index | index |
+  | **Element** | dst + | dst + | dst + | number + | replaced element + | replaced element + |
   | **Array** | - \| dst | dst | dst | - \| number | number | - \| number |
   | **Arrays** | - \| dst | - \| dst | - \| dst | - \| number | - \| number | - \| number |
   | **All** | dst \| - | - | - | number \| - | - | - |
