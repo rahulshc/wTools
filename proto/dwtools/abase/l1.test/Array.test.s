@@ -14758,25 +14758,25 @@ function arrayReplacedArrayOnceStrictly( test )
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnceStrictly();
-  })
+  });
 
   test.case = 'sub is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnceStrictly( [ 1 ], [ 1 ], 1 );
-  })
+  });
 
   test.case = 'dstArray is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnceStrictly( 1, [ 1 ], [ 1 ] );
-  })
+  });
 
   test.case = 'ins is not a longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnceStrictly( [ 1, 2 ], 1, [ 1 ] );
-  })
+  });
 
   test.case = 'onEqualize is not a routine';
   test.shouldThrowError( function()
@@ -14812,6 +14812,257 @@ function arrayReplacedArrayOnceStrictly( test )
   test.shouldThrowError( function()
   {
     _.arrayReplacedArrayOnceStrictly( [ 1, 2, 3, 4, 3, 2, 1 ], [ undefined ], [ 10 ] );
+  });
+
+}
+
+//
+
+function arrayReplaceArrays( test )
+{
+
+  test.case = 'dst, ins, sub are empty';
+
+  var dst = [];
+  var got = _.arrayReplaceArrays( dst, [], [] );
+  test.identical( got, [] );
+
+  test.case = 'ins, sub are empty, dst is not';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArrays( dst, [], [] );
+  test.identical( got, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'other';
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArrays( dst, [ 1 ], [ 2 ] );
+  test.identical( got, [ 2, 2, 3 ] );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArrays( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( got, [ 3, 4, 3 ] );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArrays( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( got, [ 3, 2, 3 ] );
+
+  test.case = 'Repeated elements in dstArray';
+
+  var dst = [ 1, 2, 3, 1, 2, 3 ];
+  var got = _.arrayReplaceArrays( dst, [ 1 ], [ 2 ] );
+  test.identical( got, [ 2, 2, 3, 2, 2, 3 ] );
+
+  var dst = [ 1, 2, 3, 4, 3, 2, 1 ];
+  var got = _.arrayReplaceArrays( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( got, [ 3, 4, 3, 4, 3, 4, 3 ] );
+
+  var dst = [ 0, 0, 1, 1, 2, 2, 3, 3, 4, 4 ];
+  var got = _.arrayReplaceArrays( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( got, [ 5, 5, 3, 3, 2, 2, 3, 3, 6, 6 ] );
+
+  test.case = 'ins has undefined';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArrays( dst, [ undefined ], [ 0 ] );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'ins and dst has undefined';
+  var dst = [ 1, undefined, 3 ];
+  var got = _.arrayReplaceArrays( dst, [ undefined ], [ 0 ] );
+  test.identical( got, [ 1, 0, 3 ] );
+
+  test.case = 'sub has undefined';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArrays( dst, [ 2 ], [ undefined ] );
+  test.identical( got, [ 1, undefined, 3 ] );
+
+  test.case = 'onEqualize'
+
+  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
+  function onEqualize1( a, b )
+  {
+    return a[ 0 ] === b;
+  }
+  var got = _.arrayReplaceArrays( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize1 );
+  test.identical( got, [ 0, [ 2 ], [ 3 ] ] );
+
+  test.case = 'onEqualize'
+
+  var dst = [ 1, 2, 3 ];
+  function onEqualize( a, b )
+  {
+    return a === b[ 0 ];
+  }
+  var got = _.arrayReplaceArrays( dst, [ [ [ 1 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+  test.identical( got, [ [ 0 ], 2, 3 ] );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArrays();
+  });
+
+  test.case = 'sub is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArrays( [ 1 ], [ 1 ], 1 );
+  });
+
+  test.case = 'dstArray is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArrays( 1, [ 1 ], [ 1 ] );
+  });
+
+  test.case = 'ins is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArrays( [ 1, 2 ], 1, [ 1 ] );
+  });
+
+  test.case = 'ins and sub don´t have the same length ';
+  test.shouldThrowError( function()
+  {
+     _.arrayReplaceArrays( [ 'a', 'b', 'c', 'd' ], [ 'a', 'b', 'c' ], [ 'x', 'y' ] );
+  });
+
+}
+
+//
+
+function arrayReplacedArrays( test )
+{
+
+  test.case = 'dst, ins, sub are empty';
+
+  var dst = [];
+  var got = _.arrayReplacedArrays( dst, [], [] );
+  test.identical( dst, [] );
+  test.identical( got, 0 );
+
+  test.case = 'ins, sub are empty, dst is not';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplacedArrays( dst, [], [] );
+  test.identical( dst, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( got, 0 );
+
+  test.case = 'other';
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArrays( dst, [ 1 ], [ 2 ] );
+  test.identical( dst, [ 2, 2, 3 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArrays( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( dst, [ 3, 4, 3 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArrays( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( dst, [ 3, 2, 3 ] );
+  test.identical( got, 1 );
+
+  test.case = 'Repeated elements in dstArray';
+
+  var dst = [ 1, 2, 3, 1, 2, 3 ];
+  var got = _.arrayReplacedArrays( dst, [ 1 ], [ 2 ] );
+  test.identical( dst, [ 2, 2, 3, 2, 2, 3 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 1, 2, 3, 4, 3, 2, 1 ];
+  var got = _.arrayReplacedArrays( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( dst, [ 3, 4, 3, 4, 3, 4, 3 ] );
+  test.identical( got, 4 );
+
+  var dst = [ 0, 0, 1, 1, 2, 2, 3, 3, 4, 4 ];
+  var got = _.arrayReplacedArrays( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( dst, [ 5, 5, 3, 3, 2, 2, 3, 3, 6, 6 ] );
+  test.identical( got, 6 );
+
+
+  test.case = 'ins has undefined';
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArrays( dst, [ undefined ], [ 0 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'ins and dst has undefined';
+
+  var dst = [ 1, undefined, 3 ];
+  var got = _.arrayReplacedArrays( dst, [ undefined ], [ 0 ] );
+  test.identical( dst, [ 1, 0, 3 ] );
+  test.identical( got, 1 );
+
+  test.case = 'sub has undefined';
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArrays( dst, [ 2 ], [ undefined ] );
+  test.identical( dst, [ 1, undefined, 3 ] );
+  test.identical( got, 1 );
+
+  test.case = 'onEqualize'
+
+  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
+  function onEqualize1( a, b )
+  {
+    return a[ 0 ] === b;
+  }
+  var got = _.arrayReplacedArrays( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize1 );
+  test.identical( dst, [ 0, [ 2 ], [ 3 ] ] );
+  test.identical( got, 1 );
+
+  test.case = 'onEqualize'
+
+  var dst = [ 1, 2, 3 ];
+  function onEqualize( a, b )
+  {
+    return a === b[ 0 ];
+  }
+  var got = _.arrayReplacedArrays( dst, [ [ [ 1 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+  test.identical( dst, [ [ 0 ], 2, 3 ] );
+  test.identical( got, 1 );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArrays();
+  });
+
+  test.case = 'sub is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArrays( [ 1 ], [ 1 ], 1 );
+  });
+
+  test.case = 'dstArray is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArrays( 1, [ 1 ], [ 1 ] );
+  });
+
+  test.case = 'ins is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArrays( [ 1, 2 ], 1, [ 1 ] );
+  });
+
+  test.case = 'ins and sub don´t have the same length ';
+  test.shouldThrowError( function()
+  {
+     _.arrayReplacedArrays( [ 'a', 'b', 'c', 'd' ], [ 'a', 'b', 'c' ], [ 'x', 'y' ] );
   });
 
 }
@@ -15204,19 +15455,19 @@ function arrayReplaceAll( test )
   test.shouldThrowError( function()
   {
     _.arrayReplaceAll( );
-  })
+  });
 
   test.case = 'first arg is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayReplaceAll( 1, 1, 1 );
-  })
+  });
 
   test.case = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
     _.arrayReplaceAll( 1, 1, 1, 1);
-  })
+  });
 }
 
 //
@@ -15262,7 +15513,7 @@ function arrayReplacedAll( test )
   test.shouldThrowError( function()
   {
     _.arrayReplacedAll( );
-  })
+  });
 
   test.case = 'first arg is not longIs';
   debugger;
@@ -15270,14 +15521,14 @@ function arrayReplacedAll( test )
   {
     debugger;
     _.arrayReplacedAll( 1, 1, 1 );
-  })
+  });
   debugger;
 
   test.case = 'fourth argument is not a routine';
   test.shouldThrowError( function()
   {
     _.arrayReplacedAll( 1, 1, 1, 1 );
-  })
+  });
 
 }
 
@@ -17123,8 +17374,10 @@ var Self =
     arrayReplacedArrayOnce : arrayReplacedArrayOnce,
     arrayReplacedArrayOnceStrictly : arrayReplacedArrayOnceStrictly,
 
+    arrayReplaceArrays : arrayReplaceArrays,
     // arrayReplaceArraysOnce : arrayReplaceArraysOnce,
     // arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
+    arrayReplacedArrays : arrayReplacedArrays,
     // arrayReplacedArraysOnce : arrayReplacedArraysOnce,
 
     arrayReplaceAll : arrayReplaceAll,

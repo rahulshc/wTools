@@ -4557,7 +4557,7 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( ins ) );
   _.assert( _.longIs( sub ) );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  )
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let index = -1;
   let result = 0;
@@ -4586,7 +4586,7 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( ins ) );
   _.assert( _.longIs( sub ) );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  )
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -4594,7 +4594,7 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
   for( let i = 0, len = ins.length; i < len; i++ )
   {
-    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 )
+    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
     if( index >= 0 )
     {
       let subValue = sub[ i ];
@@ -4625,6 +4625,56 @@ function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
   else
   {
     result = arrayReplacedArrayOnce.apply( this, arguments );
+  }
+
+  return result;
+}
+
+function arrayReplaceArrays( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  arrayReplacedArrays.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
+  _.assert( _.longIs( sub ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( _.longIs( ins ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+
+  let result = 0;
+
+  function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
+  {
+    //let index = dstArray.indexOf( argument );
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+
+    while( index !== -1 )
+    {
+      dstArray.splice( index, 1, subValue );
+      result += 1;
+      index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    }
+  }
+
+  for( let a = ins.length - 1; a >= 0; a-- )
+  {
+    if( _.longIs( ins[ a ] ) )
+    {
+      let insArray = ins[ a ];
+      let subArray = sub[ a ];
+
+      for( let i = insArray.length - 1; i >= 0; i-- )
+      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
+    }
+    else
+    {
+      _replace( dstArray, ins[ a ], sub[ a ], evaluator1, evaluator2 );
+    }
   }
 
   return result;
@@ -4952,6 +5002,9 @@ let Routines =
   arrayReplacedArray,
   arrayReplacedArrayOnce,
   arrayReplacedArrayOnceStrictly,
+
+  arrayReplaceArrays,
+  arrayReplacedArrays,
 
   arrayReplaceAll,
   arrayReplacedAll,
