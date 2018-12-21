@@ -1758,30 +1758,9 @@ function arrayPrepend_( dstArray )
 
 //
 
-/**
- * Routine adds a value of argument( ins ) to the beginning of an array( dstArray ).
- *
- * @param { Array } dstArray - The destination array.
- * @param { * } ins - The element to add.
- *
- * @example
- * // returns [ 5, 1, 2, 3, 4 ]
- * _.arrayPrependElement( [ 1, 2, 3, 4 ], 5 );
- *
- * @example
- * // returns [ 5, 1, 2, 3, 4, 5 ]
- * _.arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 );
- *
- * @returns { Array } Returns updated array, that contains new element( ins ).
- * @function arrayPrependElement
- * @throws { Error } An Error if ( dstArray ) is not an Array.
- * @throws { Error } An Error if ( arguments.length ) is less or more than two.
- * @memberof wTools
- */
-
-function arrayPrependElement( dstArray, ins )
+function arrayPrepend( dstArray, ins )
 {
-  arrayPrependedElement.apply( this, arguments );
+  arrayPrepended.apply( this, arguments );
   return dstArray;
 }
 
@@ -1898,44 +1877,15 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   return dstArray;
 }
 
-/*
-function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
-{
-
-  let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
-
-  return dstArray;
-}
-*/
-
 //
 
-/**
- * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
- * and returns zero if value was succesfully added.
- *
- * @param { Array } dstArray - The destination array.
- * @param { * } ins - The element to add.
- *
- * @example
- * // returns 0
- * _.arrayPrependedElement( [ 1, 2, 3, 4 ], 5 );
- *
- * @returns { Array } Returns updated array, that contains new element( ins ).
- * @function arrayPrependedElement
- * @throws { Error } An Error if ( dstArray ) is not an Array.
- * @throws { Error } An Error if ( arguments.length ) is not equal to two.
- * @memberof wTools
- */
-
-function arrayPrependedElement( dstArray, ins )
+function arrayPrepended( dstArray, ins )
 {
-  _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ) );
+ _.assert( arguments.length === 2  );
+ _.assert( _.arrayIs( dstArray ) );
 
-  dstArray.unshift( ins );
-  return 0;
+ dstArray.unshift( ins );
+ return 0;
 }
 
 //
@@ -1994,6 +1944,94 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
     return 0;
   }
   return -1;
+}
+
+//
+
+function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+ let result;
+ if ( Config.debug )
+ {
+   debugger;
+   result = arrayPrependedOnce.apply( this, arguments );
+   _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+ }
+ else
+ {
+   result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+ }
+
+ return result;
+}
+
+//
+
+/**
+ * Routine adds a value of argument( ins ) to the beginning of an array( dstArray ).
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The element to add.
+ *
+ * @example
+ * // returns [ 5, 1, 2, 3, 4 ]
+ * _.arrayPrependElement( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @example
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
+ * _.arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 );
+ *
+ * @returns { Array } Returns updated array, that contains new element( ins ).
+ * @function arrayPrependElement
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( arguments.length ) is less or more than two.
+ * @memberof wTools
+ */
+
+function arrayPrependElement( dstArray, ins )
+{
+  arrayPrependedElement.apply( this, arguments );
+  return dstArray;
+}
+
+/*
+function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+
+  let result = arrayPrependedOnce.apply( this, arguments );
+  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+
+  return dstArray;
+}
+*/
+
+//
+
+/**
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * and returns zero if value was succesfully added.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The element to add.
+ *
+ * @example
+ * // returns 0
+ * _.arrayPrependedElement( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @returns { Array } Returns updated array, that contains new element( ins ).
+ * @function arrayPrependedElement
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( arguments.length ) is not equal to two.
+ * @memberof wTools
+ */
+
+function arrayPrependedElement( dstArray, ins )
+{
+  _.assert( arguments.length === 2  );
+  _.assert( _.arrayIs( dstArray ) );
+
+  dstArray.unshift( ins );
+  return 0;
 }
 
 //
@@ -5017,11 +5055,15 @@ let Routines =
   arrayPrependUnrolling,
   arrayPrepend_,
 
-  arrayPrependElement,
+  arrayPrepend,
   arrayPrependOnce,
   arrayPrependOnceStrictly,
-  arrayPrependedElement,
+  arrayPrepended,
   arrayPrependedOnce,
+  arrayPrependedOnceStrictly,
+
+  arrayPrependElement,
+  arrayPrependedElement,
 
   arrayPrependArray,
   arrayPrependArrayOnce,

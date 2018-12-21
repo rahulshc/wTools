@@ -113,7 +113,7 @@
 
   | **arraPrepend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-  | **-** | - \| dst | dst | dst | - \| index | index | - \| index |
+  | **-** | dst + | dst | dst | index + | index | index + |
   | **Element** | dst | - \| dst | - \| dst | index \| prepended element |  - \| prepended element |  - \| prepended element |
   | **Array** | dst | dst | dst | number | number |  - \| number |
   | **Arrays** | dst | dst | dst | number | number |  - \| number |
