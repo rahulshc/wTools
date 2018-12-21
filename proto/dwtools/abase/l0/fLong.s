@@ -4561,19 +4561,27 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
 
   let index = -1;
   let result = 0;
-
+  let oldDstArray = dstArray.slice();  // Array with src values stored
   for( let i = 0, len = ins.length; i < len; i++ )
   {
-    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
+    let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
+    index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
     while( index !== -1 )
     {
       let subValue = sub[ i ];
       if( subValue === undefined )
-      dstArray.splice( index, 1 );
+      {
+        dstArray.splice( index, 1 );
+        dstArray2.splice( index, 1 );
+      }
       else
-      dstArray.splice( index, 1, subValue );
+      {
+        dstArray.splice( index, 1, subValue );
+        dstArray2.splice( index, 1, subValue );
+      }
+
       result += 1;
-      index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
+      index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
     }
   }
 
@@ -4630,9 +4638,17 @@ function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
   return result;
 }
 
+//
+
 function arrayReplaceArrays( dstArray, ins, sub, evaluator1, evaluator2  )
 {
   arrayReplacedArrays.apply( this, arguments );
+  return dstArray;
+}
+
+function arrayReplaceArraysOnce( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  arrayReplacedArraysOnce.apply( this, arguments );
   return dstArray;
 }
 
@@ -4647,17 +4663,66 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
+  let oldDstArray = dstArray.slice();  // Array with src values stored
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
+    let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
 
     while( index !== -1 )
     {
+      dstArray2.splice( index, 1, subValue );
       dstArray.splice( index, 1, subValue );
       result += 1;
-      index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+      index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    }
+  }
+
+  for( let a = ins.length - 1; a >= 0; a-- )
+  {
+    if( _.longIs( ins[ a ] ) )
+    {
+      let insArray = ins[ a ];
+      let subArray = sub[ a ];
+
+      for( let i = insArray.length - 1; i >= 0; i-- )
+      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
+    }
+    else
+    {
+      _replace( dstArray, ins[ a ], sub[ a ], evaluator1, evaluator2 );
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
+  _.assert( _.longIs( sub ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( _.longIs( ins ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+
+  let result = 0;
+  let oldDstArray = dstArray.slice();  // Array with src values stored
+
+  function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
+  {
+    let dstArray2 = oldDstArray.slice();
+    //let index = dstArray.indexOf( argument );
+    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+
+    if( index !== -1 )
+    {
+      dstArray2.splice( index, 1, subValue );
+      dstArray.splice( index, 1, subValue );
+      result += 1;
     }
   }
 
@@ -5004,7 +5069,9 @@ let Routines =
   arrayReplacedArrayOnceStrictly,
 
   arrayReplaceArrays,
+  arrayReplaceArraysOnce,
   arrayReplacedArrays,
+  arrayReplacedArraysOnce,
 
   arrayReplaceAll,
   arrayReplacedAll,

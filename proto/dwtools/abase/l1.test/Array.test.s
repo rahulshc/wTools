@@ -14068,7 +14068,6 @@ function arrayReplaceArray( test )
   test.identical( got, dst );
 
   test.case = 'ins has undefined';
-
   var dst = [ 1, 2, 3 ];
   var got = _.arrayReplaceArray( dst, [ undefined ], [ 0 ] );
   test.identical( got, [ 1, 2, 3 ] );
@@ -14076,7 +14075,6 @@ function arrayReplaceArray( test )
   test.is( got === dst );
 
   test.case = 'ins and dst have undefined';
-
   var dst = [ 1, undefined, 3 ];
   var got = _.arrayReplaceArray( dst, [ undefined ], [ 0 ] );
   test.identical( got, [ 1, 0, 3 ] );
@@ -14084,11 +14082,21 @@ function arrayReplaceArray( test )
   test.is( got === dst );
 
   test.case = 'sub has undefined';
-
   var dst = [ 1, 2, 3 ];
   var got = _.arrayReplaceArray( dst, [ 1 ], [ undefined ] );
   test.identical( got, [ 2, 3 ] );
   test.identical( got, dst );
+  test.is( got === dst );
+
+  test.case = 'ins and sub have mirror elements';
+  var dst = [ 0, 0, 0, 1, 1, 1, 0, 1 ];
+  var got = _.arrayReplaceArray( dst, [ 1, 0 ], [ 0, 1 ] );
+  test.identical( got, [ 1, 1, 1, 0, 0, 0, 1, 0 ] );
+  test.is( got === dst );
+
+  var dst = [ 'a', 'b', 'c', false, 'c', 'b', 'a', true, 2 ];
+  var got = _.arrayReplaceArray( dst, [ 'a', 'b', 'c', false, true ], [ 'c', 'a', 'b', true, false ] );
+  test.identical( got, [ 'c', 'a', 'b', true, 'b', 'a', 'c', false, 2 ] );
   test.is( got === dst );
 
   test.case = 'onEqualize'
@@ -14220,6 +14228,12 @@ function arrayReplaceArrayOnce( test )
   var got = _.arrayReplaceArrayOnce( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize );
   test.identical( got, [ [ 0 ], [ 2 ], [ 3 ] ] );
   test.identical( got, dst );
+  test.is( got === dst );
+
+  test.case = 'ins and sub have mirror elements';
+  var dst = [ 0, 0, 0, 1, 1, 1, 0, 1 ];
+  var got = _.arrayReplaceArrayOnce( dst, [ 1, 0 ], [ 0, 1 ] );
+  test.identical( got, [ 1, 0, 0, 0, 1, 1, 0, 1 ] );
   test.is( got === dst );
 
   /* */
@@ -14491,25 +14505,45 @@ function arrayReplacedArray( test )
 
 
   test.case = 'ins has undefined';
-
   var dst = [ 1, 2, 3 ];
   var got = _.arrayReplacedArray( dst, [ undefined ], [ 0 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 0 );
 
   test.case = 'ins and dst has undefined';
-
   var dst = [ 1, undefined, 3 ];
   var got = _.arrayReplacedArray( dst, [ undefined ], [ 0 ] );
   test.identical( dst, [ 1, 0, 3 ] );
   test.identical( got, 1 );
 
   test.case = 'sub has undefined';
-
   var dst = [ 1, 2, 3 ];
   var got = _.arrayReplacedArray( dst, [ 2 ], [ undefined ] );
   test.identical( dst, [ 1, 3 ] );
   test.identical( got, 1 );
+
+  test.case = 'Element repeated in ins';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArray( dst, [ 2, 2, 2 ], [ 'a', 'b', 'c' ] );
+  test.identical( dst, [ 1, 'c', 3 ] );
+  test.identical( got, 3 );
+
+  test.case = 'ins and sub have mirror elements';
+  var dst = [ 0, 0, 0, 1, 1, 1 ];
+  var got = _.arrayReplacedArray( dst, [ 0, 1 ], [ 1, 0 ] );
+  test.identical( dst, [ 1, 1, 1, 0, 0, 0 ] );
+  test.identical( got, 6 );
+
+  var dst = [ 0, 0, 0, 1, 1, 1, 0, 1 ];
+  var got = _.arrayReplacedArray( dst, [ 1, 0 ], [ 0, 1 ] );
+  test.identical( dst, [ 1, 1, 1, 0, 0, 0, 1, 0 ] );
+  test.identical( got, 8 );
+
+  var dst = [ 'a', 'b', 'c', false, 'c', 'b', 'a', true, 2 ];
+  var got = _.arrayReplacedArray( dst, [ 'a', 'b', 'c', false, true ], [ 'c', 'a', 'b', true, false ] );
+  test.identical( dst, [ 'c', 'a', 'b', true, 'b', 'a', 'c', false, 2 ] );
+  test.identical( got, 8 );
+
 
   test.case = 'onEqualize'
 
@@ -14876,6 +14910,36 @@ function arrayReplaceArrays( test )
   var got = _.arrayReplaceArrays( dst, [ 2 ], [ undefined ] );
   test.identical( got, [ 1, undefined, 3 ] );
 
+  test.case = 'ins and sub Array of arrays';
+  var dst = [ 0, 1, 2, 3, 4, 5, 0 ];
+  var got = _.arrayReplaceArrays( dst, [ [ 0, 1 ], 2, [ 5 ] ], [ [ '0', '1' ], '2', [ '5' ] ] );
+  test.identical( got, [ '0', '1', '2', 3, 4, '5', '0' ] );
+
+  var dst = [ 0, 'a', 'b', false, true, 'c', 0 ];
+  var got = _.arrayReplaceArrays( dst, [ [ 0, false ] ], [ [ 1, true ] ] );
+  test.identical( got, [ 1, 'a', 'b', true, true, 'c', 1 ] );
+
+  var dst = [ 0, 0, 0, 2, 1, 0, 0 ];
+  var got = _.arrayReplaceArrays( dst, [ [ 0, 1 ], 0 ], [ [ 1, 0 ], '0' ] );
+  test.identical( got, [ 1, 1, 1, 2, 0, 1, 1 ] );
+
+  test.case = 'ins and sub Array of arrays with mirror elements';
+  var dst = [ 1, 1, 0, 0 ];
+  var got = _.arrayReplaceArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ 0, 0, 1, 1 ] );
+
+  var dst = [ 'a', 'b', 'c' ];
+  var got = _.arrayReplaceArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ 'b', 'a', 'c' ] );
+
+  var dst = [ true, false, true, false ];
+  var got = _.arrayReplaceArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ false, true, false, true ] );
+
+  var dst = [ 0, 'a', true, 2, 'c', false, 'b', 1 ];
+  var got = _.arrayReplaceArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ 1, 'b', false, 2, 'c', true, 'a', 0 ] );
+
   test.case = 'onEqualize'
 
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
@@ -14935,6 +14999,151 @@ function arrayReplaceArrays( test )
 
 //
 
+function arrayReplaceArraysOnce( test )
+{
+
+  test.case = 'dst, ins, sub are empty';
+
+  var dst = [];
+  var got = _.arrayReplaceArraysOnce( dst, [], [] );
+  test.identical( got, [] );
+
+  test.case = 'ins, sub are empty, dst is not';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplaceArraysOnce( dst, [], [] );
+  test.identical( got, [ 'a', 'b', 'c', 'd' ] );
+
+  test.case = 'other';
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ 1 ], [ 2 ] );
+  test.identical( got, [ 2, 2, 3 ] );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( got, [ 3, 4, 3 ] );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( got, [ 3, 2, 3 ] );
+
+  test.case = 'Repeated elements in dstArray';
+
+  var dst = [ 1, 2, 3, 1, 2, 3 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ 1 ], [ 2 ] );
+  test.identical( got, [ 2, 2, 3, 1, 2, 3 ] );
+
+  var dst = [ 1, 2, 3, 4, 3, 2, 1 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( got, [ 3, 4, 3, 4, 3, 2, 1 ] );
+
+  var dst = [ 0, 0, 1, 1, 2, 2, 3, 3, 4, 4 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( got, [ 5, 0, 3, 1, 2, 2, 3, 3, 6, 4 ] );
+
+  test.case = 'ins has undefined';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ undefined ], [ 0 ] );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'ins and dst has undefined';
+  var dst = [ 1, undefined, 3 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ undefined ], [ 0 ] );
+  test.identical( got, [ 1, 0, 3 ] );
+
+  test.case = 'sub has undefined';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ 2 ], [ undefined ] );
+  test.identical( got, [ 1, undefined, 3 ] );
+
+  test.case = 'ins and sub Array of arrays';
+  var dst = [ 0, 1, 2, 3, 4, 5, 0 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 0, 1 ], 2, [ 5 ] ], [ [ '0', '1' ], '2', [ '5' ] ] );
+  test.identical( got, [ '0', '1', '2', 3, 4, '5', 0 ] );
+
+  var dst = [ 0, 'a', 'b', false, true, 'c', 0 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 0, false ] ], [ [ 1, true ] ] );
+  test.identical( got, [ 1, 'a', 'b', true, true, 'c', 0 ] );
+
+  var dst = [ 0, 0, 0, 2, 1, 0, 0 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 0, 1 ], 0 ], [ [ 1, 0 ], '0' ] );
+  test.identical( got, [ 1, 0, 0, 2, 0, 0, 0 ] );
+
+  test.case = 'ins and sub Array of arrays with mirror elements';
+  var dst = [ 1, 1, 0, 0 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ 0, 1, 1, 0 ] );
+
+  var dst = [ 'a', 'b', 'c' ];
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ 'b', 'a', 'c' ] );
+
+  var dst = [ true, false, true, false ];
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ false, true, true, false ] );
+
+  var dst = [ 0, 'a', true, 2, 'c', false, 'b', 1 ];
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( got, [ 1, 'b', false, 2, 'c', true, 'a', 0 ] );
+
+  test.case = 'onEqualize'
+  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
+  function onEqualize1( a, b )
+  {
+    return a[ 0 ] === b;
+  }
+  var got = _.arrayReplaceArraysOnce( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize1 );
+  test.identical( got, [ 0, [ 2 ], [ 3 ] ] );
+
+  test.case = 'onEqualize'
+  var dst = [ 1, 2, 3 ];
+  function onEqualize( a, b )
+  {
+    return a === b[ 0 ];
+  }
+  var got = _.arrayReplaceArraysOnce( dst, [ [ [ 1 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+  test.identical( got, [ [ 0 ], 2, 3 ] );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArraysOnce();
+  });
+
+  test.case = 'sub is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArraysOnce( [ 1 ], [ 1 ], 1 );
+  });
+
+  test.case = 'dstArray is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArraysOnce( 1, [ 1 ], [ 1 ] );
+  });
+
+  test.case = 'ins is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplaceArraysOnce( [ 1, 2 ], 1, [ 1 ] );
+  });
+
+  test.case = 'ins and sub don´t have the same length ';
+  test.shouldThrowError( function()
+  {
+     _.arrayReplaceArraysOnce( [ 'a', 'b', 'c', 'd' ], [ 'a', 'b', 'c' ], [ 'x', 'y' ] );
+  });
+
+}
+
+//
+
 function arrayReplacedArrays( test )
 {
 
@@ -14988,28 +15197,61 @@ function arrayReplacedArrays( test )
 
 
   test.case = 'ins has undefined';
-
   var dst = [ 1, 2, 3 ];
   var got = _.arrayReplacedArrays( dst, [ undefined ], [ 0 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 0 );
 
   test.case = 'ins and dst has undefined';
-
   var dst = [ 1, undefined, 3 ];
   var got = _.arrayReplacedArrays( dst, [ undefined ], [ 0 ] );
   test.identical( dst, [ 1, 0, 3 ] );
   test.identical( got, 1 );
 
   test.case = 'sub has undefined';
-
   var dst = [ 1, 2, 3 ];
   var got = _.arrayReplacedArrays( dst, [ 2 ], [ undefined ] );
   test.identical( dst, [ 1, undefined, 3 ] );
   test.identical( got, 1 );
 
-  test.case = 'onEqualize'
+  test.case = 'ins and sub Array of arrays';
+  var dst = [ 0, 1, 2, 3, 4, 5, 0 ];
+  var got = _.arrayReplacedArrays( dst, [ [ 0, 1 ], 2, [ 5 ] ], [ [ '0', '1' ], '2', [ '5' ] ] );
+  test.identical( dst, [ '0', '1', '2', 3, 4, '5', '0' ] );
+  test.identical( got, 5 );
 
+  var dst = [ 0, 'a', 'b', false, true, 'c', 0 ];
+  var got = _.arrayReplacedArrays( dst, [ [ 0, false ] ], [ [ 1, true ] ] );
+  test.identical( dst, [ 1, 'a', 'b', true, true, 'c', 1 ] );
+  test.identical( got, 3 );
+
+  var dst = [ 0, 0, 0, 2, 1, 0, 0 ];
+  var got = _.arrayReplacedArrays( dst, [ [ 0, 1 ], 0 ], [ [ 1, 0 ], '0' ] );
+  test.identical( dst, [ 1, 1, 1, 2, 0, 1, 1 ] );
+  test.identical( got, 11 );
+
+  test.case = 'ins and sub Array of arrays with mirror elements';
+  var dst = [ 1, 1, 0, 0 ];
+  var got = _.arrayReplacedArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ 0, 0, 1, 1 ] );
+  test.identical( got, 4 );
+
+  var dst = [ 'a', 'b', 'c' ];
+  var got = _.arrayReplacedArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ 'b', 'a', 'c' ] );
+  test.identical( got, 2 );
+
+  var dst = [ true, false, true, false ];
+  var got = _.arrayReplacedArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ false, true, false, true ] );
+  test.identical( got, 4 );
+
+  var dst = [ 0, 'a', true, 2, 'c', false, 'b', 1 ];
+  var got = _.arrayReplacedArrays( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ 1, 'b', false, 2, 'c', true, 'a', 0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'onEqualize'
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
   function onEqualize1( a, b )
   {
@@ -15020,7 +15262,6 @@ function arrayReplacedArrays( test )
   test.identical( got, 1 );
 
   test.case = 'onEqualize'
-
   var dst = [ 1, 2, 3 ];
   function onEqualize( a, b )
   {
@@ -15063,6 +15304,172 @@ function arrayReplacedArrays( test )
   test.shouldThrowError( function()
   {
      _.arrayReplacedArrays( [ 'a', 'b', 'c', 'd' ], [ 'a', 'b', 'c' ], [ 'x', 'y' ] );
+  });
+
+}
+
+//
+
+function arrayReplacedArraysOnce( test )
+{
+
+  test.case = 'dst, ins, sub are empty';
+
+  var dst = [];
+  var got = _.arrayReplacedArraysOnce( dst, [], [] );
+  test.identical( dst, [] );
+  test.identical( got, 0 );
+
+  test.case = 'ins, sub are empty, dst is not';
+
+  var dst = [ 'a', 'b', 'c', 'd' ];
+  var got = _.arrayReplacedArraysOnce( dst, [], [] );
+  test.identical( dst, [ 'a', 'b', 'c', 'd' ] );
+  test.identical( got, 0 );
+
+  test.case = 'other';
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ 1 ], [ 2 ] );
+  test.identical( dst, [ 2, 2, 3 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( dst, [ 3, 4, 3 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( dst, [ 3, 2, 3 ] );
+  test.identical( got, 1 );
+
+  test.case = 'Repeated elements in dstArray';
+
+  var dst = [ 1, 2, 3, 1, 2, 3 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ 1 ], [ 2 ] );
+  test.identical( dst, [ 2, 2, 3, 1, 2, 3 ] );
+  test.identical( got, 1 );
+
+  var dst = [ 1, 2, 3, 4, 3, 2, 1 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ 1, 2 ], [ 3, 4 ] );
+  test.identical( dst, [ 3, 4, 3, 4, 3, 2, 1 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 0, 0, 1, 1, 2, 2, 3, 3, 4, 4 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ 1, 0, 4 ], [ 3, 5, 6 ] );
+  test.identical( dst, [ 5, 0, 3, 1, 2, 2, 3, 3, 6, 4 ] );
+  test.identical( got, 3 );
+
+
+  test.case = 'ins has undefined';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ undefined ], [ 0 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'ins and dst has undefined';
+  var dst = [ 1, undefined, 3 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ undefined ], [ 0 ] );
+  test.identical( dst, [ 1, 0, 3 ] );
+  test.identical( got, 1 );
+
+  test.case = 'sub has undefined';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ 2 ], [ undefined ] );
+  test.identical( dst, [ 1, undefined, 3 ] );
+  test.identical( got, 1 );
+
+  test.case = 'ins and sub Array of arrays';
+  var dst = [ 0, 1, 2, 3, 4, 5, 0 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 0, 1 ], 2, [ 5 ] ], [ [ '0', '1' ], '2', [ '5' ] ] );
+  test.identical( dst, [ '0', '1', '2', 3, 4, '5', 0 ] );
+  test.identical( got, 4 );
+
+  var dst = [ 0, 'a', 'b', false, true, 'c', 0 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 0, false ] ], [ [ 1, true ] ] );
+  test.identical( dst, [ 1, 'a', 'b', true, true, 'c', 0 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 0, 0, 0, 2, 1, 0, 0 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 0, 1 ], 0 ], [ [ 1, 0 ], '0' ] );
+  test.identical( dst, [ 1, 0, 0, 2, 0, 0, 0 ] );
+  test.identical( got, 3 );
+
+  test.case = 'ins and sub Array of arrays with mirror elements';
+  var dst = [ 1, 1, 0, 0 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ 0, 1, 1, 0 ] );
+  test.identical( got, 2 );
+
+  var dst = [ 'a', 'b', 'c' ];
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ 'b', 'a', 'c' ] );
+  test.identical( got, 2 );
+
+  var dst = [ true, false, true, false ];
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ false, true, true, false ] );
+  test.identical( got, 2 );
+
+  var dst = [ 0, 'a', true, 2, 'c', false, 'b', 1 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 0, 1 ], [ 'a', 'b' ], [ true, false ] ], [ [ 1, 0 ], [ 'b', 'a' ], [ false, true ] ] );
+  test.identical( dst, [ 1, 'b', false, 2, 'c', true, 'a', 0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'onEqualize'
+  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
+  function onEqualize1( a, b )
+  {
+    return a[ 0 ] === b;
+  }
+  var got = _.arrayReplacedArraysOnce( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize1 );
+  test.identical( dst, [ 0, [ 2 ], [ 3 ] ] );
+  test.identical( got, 1 );
+
+  test.case = 'onEqualize'
+  var dst = [ 1, 2, 3 ];
+  function onEqualize( a, b )
+  {
+    return a === b[ 0 ];
+  }
+  var got = _.arrayReplacedArraysOnce( dst, [ [ [ 1 ] ] ], [ [ [ 0 ] ] ], onEqualize );
+  test.identical( dst, [ [ 0 ], 2, 3 ] );
+  test.identical( got, 1 );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArraysOnce();
+  });
+
+  test.case = 'sub is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArraysOnce( [ 1 ], [ 1 ], 1 );
+  });
+
+  test.case = 'dstArray is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArraysOnce( 1, [ 1 ], [ 1 ] );
+  });
+
+  test.case = 'ins is not a longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayReplacedArraysOnce( [ 1, 2 ], 1, [ 1 ] );
+  });
+
+  test.case = 'ins and sub don´t have the same length ';
+  test.shouldThrowError( function()
+  {
+     _.arrayReplacedArraysOnce( [ 'a', 'b', 'c', 'd' ], [ 'a', 'b', 'c' ], [ 'x', 'y' ] );
   });
 
 }
@@ -17375,10 +17782,10 @@ var Self =
     arrayReplacedArrayOnceStrictly : arrayReplacedArrayOnceStrictly,
 
     arrayReplaceArrays : arrayReplaceArrays,
-    // arrayReplaceArraysOnce : arrayReplaceArraysOnce,
+    arrayReplaceArraysOnce : arrayReplaceArraysOnce,
     // arrayReplaceArraysOnceStrictly : arrayReplaceArraysOnceStrictly,
     arrayReplacedArrays : arrayReplacedArrays,
-    // arrayReplacedArraysOnce : arrayReplacedArraysOnce,
+    arrayReplacedArraysOnce : arrayReplacedArraysOnce,
 
     arrayReplaceAll : arrayReplaceAll,
     arrayReplacedAll : arrayReplacedAll,

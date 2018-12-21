@@ -23,18 +23,13 @@ var got = _.arrayReplacedOnceStrictly( [ 1, 2, 3, 4 ], 3, 5 );
 logger.log( 'Two elements Replaced', got )
 
 
-var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
-function onEqualize1( a, b )
-{
-  return a[ 0 ] === b;
-}
-var got = _.arrayReplacedArrays( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize1 );
-logger.log( 'Arrays Replaced', got );
+logger.log( 'Question' )
 
-var dst = [ 1, 2, 3 ];
-function onEqualize( a, b )
-{
-  return a === b[ 0 ];
-}
-var got = _.arrayReplacedArrays( dst, [ [ [ 1 ] ] ], [ [ [ 0 ] ] ], onEqualize );
-logger.log( 'Arrays Replaced', got );
+//Q Pablo
+var dst = [ 0, 1, 2 ];
+var got = _.arrayReplaceArrayOnce( dst, [ 0, 1, 2 ], [ 2, 0, 1 ] );
+logger.log( 'Arrays Replaced', got ); // Output: [ 1, 0, 2 ] - Shouldn´t the expected output be [ 2, 0, 1 ]?
+
+var dst = [ 0, 1, 2 ];
+var got = _.arrayReplaceArraysOnce( dst, [ 0, 1, 2 ], [ 2, 0, 1 ] );
+logger.log( 'Arrays Replaced', got ); // Output: [ 2, 0, 1 ] - but need to slice the array
