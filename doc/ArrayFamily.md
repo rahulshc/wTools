@@ -106,3 +106,14 @@
   | **Array** | dst + | dst | dst | number + | number | number + |
   | **Arrays** | dst + | dst + | dst + | number + | number + | number + |
   | **All** | dst \| - | - | - | number \| - | - | - |
+
+## Methods of arrayPrepend
+
+  Let´s see now all the different functions that cover the functionality of prepending elements to an the array:
+
+  | **arraPrepend** | **-** | **Once** | **OnceStrictly** | **ed** | **edOnce** | **edOnceStrictly** |
+  | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+  | **-** | - \| dst | dst | dst | - \| index | index | - \| index |
+  | **Element** | dst | - \| dst | - \| dst | index \| prepended element |  - \| prepended element |  - \| prepended element |
+  | **Array** | dst | dst | dst | number | number |  - \| number |
+  | **Arrays** | dst | dst | dst | number | number |  - \| number |
