@@ -1871,7 +1871,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   }
   else
   {
-    result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+    result = arrayPrepended.apply( this, [ dstArray, ins ] );
   }
 
   return dstArray;
@@ -1881,11 +1881,11 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrepended( dstArray, ins )
 {
- _.assert( arguments.length === 2  );
- _.assert( _.arrayIs( dstArray ) );
+  _.assert( arguments.length === 2  );
+  _.assert( _.arrayIs( dstArray ) );
 
- dstArray.unshift( ins );
- return 0;
+  dstArray.unshift( ins );
+  return 0;
 }
 
 //
@@ -1950,19 +1950,19 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
- let result;
- if ( Config.debug )
- {
-   debugger;
-   result = arrayPrependedOnce.apply( this, arguments );
-   _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
- }
- else
- {
-   result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
- }
+  let result;
+  if ( Config.debug )
+  {
+    debugger;
+    result = arrayPrependedOnce.apply( this, arguments );
+    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayPrepended.apply( this, [ dstArray, ins ] );
+  }
 
- return result;
+  return result;
 }
 
 //
@@ -1991,6 +1991,33 @@ function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependElement( dstArray, ins )
 {
   arrayPrependedElement.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayPrependedElementOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let result;
+  if ( Config.debug )
+  {
+    debugger;
+    result = arrayPrependedElementOnce.apply( this, arguments );
+    _.assert( result !== undefined, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+  }
+
   return dstArray;
 }
 
@@ -2032,6 +2059,41 @@ function arrayPrependedElement( dstArray, ins )
 
   dstArray.unshift( ins );
   return 0;
+}
+
+//
+
+function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  _.assert( _.arrayIs( dstArray ) );
+
+  let i = _.arrayLeftIndex.apply( _, arguments );
+
+  if( i === -1 )
+  {
+    dstArray.unshift( ins );
+    return dstArray[ 0 ];
+  }
+  return undefined;
+}
+
+//
+
+function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let result;
+  if ( Config.debug )
+  {
+    debugger;
+    result = arrayPrependedElementOnce.apply( this, arguments );
+    _.assert( result !== undefined, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+  }
+
+  return result;
 }
 
 //
@@ -5063,7 +5125,11 @@ let Routines =
   arrayPrependedOnceStrictly,
 
   arrayPrependElement,
+  arrayPrependElementOnce,
+  arrayPrependElementOnceStrictly,
   arrayPrependedElement,
+  arrayPrependedElementOnce,
+  arrayPrependedElementOnceStrictly,
 
   arrayPrependArray,
   arrayPrependArrayOnce,
