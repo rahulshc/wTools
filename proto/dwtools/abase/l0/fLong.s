@@ -2328,6 +2328,24 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
+function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+ let result;
+ if( Config.debug )
+ {
+   result = arrayPrependedArrayOnce.apply( this, arguments );
+   _.assert( result === insArray.length );
+ }
+ else
+ {
+   result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
+ }
+
+ return result;
+}
+
+//
+
 /**
  * Method adds all elements from provided arrays to the beginning of an array( dstArray ) in same order
  * that they are in( arguments ).
@@ -2608,6 +2626,32 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   return result;
+}
+
+//
+
+function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+ let result;
+ if( Config.debug )
+ {
+   result = arrayPrependedArraysOnce.apply( this, arguments );
+   let expected = 0;
+   for( let i = insArray.length - 1; i >= 0; i-- )
+   {
+     if( _.longIs( insArray[ i ] ) )
+     expected += insArray[ i ].length;
+     else
+     expected += 1;
+   }
+   _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+ }
+ else
+ {
+   result = arrayPrependedArrays.apply( this, [ dstArray, insArray ] );
+ }
+
+ return result;
 }
 
 // --
@@ -4629,9 +4673,9 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
     result = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
-    logger.log( result, dstArray );
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
-    logger.log( newResult, dstArray )
+
     _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
@@ -4773,7 +4817,7 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
       else
       expected += 1;
     }
-    logger.log( result, expected )
+
     _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
@@ -5136,12 +5180,14 @@ let Routines =
   arrayPrependArrayOnceStrictly,
   arrayPrependedArray,
   arrayPrependedArrayOnce,
+  arrayPrependedArrayOnceStrictly,
 
   arrayPrependArrays,
   arrayPrependArraysOnce,
   arrayPrependArraysOnceStrictly,
   arrayPrependedArrays,
   arrayPrependedArraysOnce,
+  arrayPrependedArraysOnceStrictly,
 
   // array append
 

@@ -115,5 +115,5 @@
   | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
   | **-** | dst + | dst | dst | index + | index | index + |
   | **Element** | dst | dst + | dst + | index \| prepended element | prepended element + | prepended element + |
-  | **Array** | dst | dst | dst | number | number |  - \| number |
-  | **Arrays** | dst | dst | dst | number | number |  - \| number |
+  | **Array** | dst | dst | dst | number | number |  number + |
+  | **Arrays** | dst | dst | dst | number | number | number + |

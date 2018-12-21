@@ -6599,6 +6599,94 @@ function arrayPrependedArrayOnce( test )
   // });
 }
 
+//
+
+function arrayPrependedArrayOnceStrictly( test )
+{
+  test.case = 'nothing';
+
+  var dst = [];
+  var got = _.arrayPrependedArrayOnceStrictly( dst, [] );
+  test.identical( dst, [] );
+  test.identical( got, 0 );
+
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayPrependedArrayOnceStrictly( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  test.case = 'prepends only if all elements are unique';
+
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependedArrayOnceStrictly( dst, [ 3.5, 4, 5 ] );
+  test.identical( dst, [ 3.5, 4, 5, 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  var dst = [ 1, 1, 1 ];
+  var got = _.arrayPrependedArrayOnceStrictly( dst, [ 0 ] );
+  test.identical( dst, [ 0, 1, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'mixed arguments types';
+  var dst = [ 1 ];
+  var got = _.arrayPrependedArrayOnceStrictly( dst, [ 'a', 0, [ { a : 1 } ], { b : 2 } ] );
+  test.identical( dst, [ 'a', 0, [ { a : 1 } ], { b : 2 }, 1  ] );
+  test.identical( got, 4 );
+
+  test.case = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayPrependedArrayOnceStrictly( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
+
+  test.case = 'array has undefined';
+  var dst = [ 1 ];
+  test.mustNotThrowError( function ()
+  {
+    _.arrayPrependedArrayOnceStrictly( dst, [ undefined, 2 ] );
+  });
+  test.identical( dst, [ undefined, 2, 1 ] );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArrayOnceStrictly();
+  });
+
+  test.case = 'too many args';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArrayOnceStrictly( [ 1, 2 ],[ 1 ], [ 2 ] );
+  });
+
+  test.case = 'second args is not longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArrayOnceStrictly( [ 1, 2 ], 2 );
+  });
+
+  test.case = 'One of args is not unique';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArrayOnceStrictly( [ 1, 1, 1 ], [ 1 ] );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArrayOnceStrictly( [ 1, 2, 3 ], [ 2, 4, 5 ] );
+  });
+
+}
+
 // --
 //arrayPrependElement*Arrays*
 // --
@@ -7131,6 +7219,138 @@ function arrayPrependedArraysOnce( test )
   test.shouldThrowError( function()
   {
     _.arrayPrependedArraysOnce( [ 1 ], 2 );
+  });
+
+}
+
+//
+
+function arrayPrependedArraysOnceStrictly( test )
+{
+
+  test.case = 'nothing';
+
+  var dst = [];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [] );
+  var expected = [];
+  test.identical( dst, expected );
+  test.identical( got, 0 );
+
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  test.case = 'simple';
+
+  var dst = [];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  test.case = 'prepends only unique elements';
+
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ 4, 5, 6 ] );
+  test.identical( dst, [ 4, 5, 6, 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  var dst = [ 0, 0, 0 ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ 1 ] );
+  test.identical( dst, [ 1, 0, 0, 0 ] );
+  test.identical( got, 1 );
+
+  test.case = 'mixed arguments types';
+  var dst = [ 1 ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ 'a', 0, [ { a : 1 } ], { b : 2 } ] );
+  test.identical( dst, [ 'a', 0,{ a : 1 }, { b : 2 }, 1  ] );
+  test.identical( got, 4 );
+
+  var dst = [];
+  var insArray = [ [ 1 ], [ 2 ], [ 3, [ 4, [ 5 ] ] ] ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, insArray );
+  test.identical( dst, [ 1, 2, 3, [ 4, [ 5 ] ] ] );
+  test.identical( got, 4 );
+
+  var dst = [ '1', '3' ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3, '1', '3' ] );
+  test.identical( got, 3 );
+
+  test.case = 'onEqualize';
+
+  var onEqualize = function onEqualize( a, b )
+  {
+    return a === b;
+  }
+  var dst = [ 1, 3 ];
+  var insArray = [ 0, 2, 4 ]
+  var got = _.arrayPrependedArraysOnceStrictly( dst, insArray, onEqualize );
+  test.identical( dst, [ 0, 2, 4, 1, 3 ] );
+  test.identical( got, 3 );
+
+  test.case = 'argument is undefined';
+  var dst = [ 1 ];
+  test.shouldThrowError( function ()
+  {
+    _.arrayPrependedArraysOnceStrictly( dst, undefined );
+  });
+  test.identical( dst, [ 1 ] );
+
+  test.case = 'array has undefined';
+  var dst = [ 1 ];
+  test.mustNotThrowError( function ()
+  {
+    _.arrayPrependedArraysOnceStrictly( dst, [ undefined, 2 ] );
+  });
+  test.identical( dst, [ undefined, 2, 1 ] );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArraysOnceStrictly();
+  });
+
+  // test.case = 'dst is not a array';
+  // test.shouldThrowError( function()
+  // {
+  //   _.arrayPrependedArraysOnceStrictly( 1, [ 2 ] );
+  // }); sfkldb fiubds lkfbds gbkdsfb gkldsfg fdsbfkldsfbdsl gbjs,fn kgn d
+
+  test.case = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArraysOnceStrictly( [], [ 1, 2, 3 ], [] )
+  });
+
+  test.case = 'second arg is not a ArrayLike entity';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArraysOnceStrictly( [ 1 ], 2 );
+  });
+
+  test.case = 'Elements must be unique';
+
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArraysOnceStrictly( [ 1, 1, 1 ], [ [ 1 ] ] );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArraysOnceStrictly( [ 1, 2, 3 ], [ [ 4, 5 ], 2 ] );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependedArraysOnceStrictly( [ 6 ], [ [ 1,2 ], 3, [ 6,4,5,1,2,3 ] ] );
   });
 
 }
@@ -18842,12 +19062,14 @@ var Self =
     arrayPrependArrayOnceStrictly : arrayPrependArrayOnceStrictly,
     arrayPrependedArray : arrayPrependedArray,
     arrayPrependedArrayOnce : arrayPrependedArrayOnce,
+    arrayPrependedArrayOnceStrictly : arrayPrependedArrayOnceStrictly,
 
     arrayPrependArrays : arrayPrependArrays,
     arrayPrependArraysOnce : arrayPrependArraysOnce,
     arrayPrependArraysOnceStrictly : arrayPrependArraysOnceStrictly,
     arrayPrependedArrays : arrayPrependedArrays,
     arrayPrependedArraysOnce : arrayPrependedArraysOnce,
+    arrayPrependedArraysOnceStrictly : arrayPrependedArraysOnceStrictly,
 
     // array append
 
