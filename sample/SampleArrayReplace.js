@@ -33,3 +33,7 @@ logger.log( 'Arrays Replaced', got ); // Output: [ 1, 0, 2 ] - Shouldn´t the ex
 var dst = [ 0, 1, 2 ];
 var got = _.arrayReplaceArraysOnce( dst, [ 0, 1, 2 ], [ 2, 0, 1 ] );
 logger.log( 'Arrays Replaced', got ); // Output: [ 2, 0, 1 ] - but need to slice the array
+
+var dst = [ 'a', 'b', 'c', 'd' ];
+var got = _.arrayReplaceArrayOnce( dst, [ 'a', 'b', 'c' ], [ undefined, undefined, undefined ] );
+logger.log( 'Arrays Replaced', got ); // Output: [ 2, 0, 1 ] - but need to slice the array
