@@ -23,7 +23,7 @@ let _propertyIsEumerable = Object.propertyIsEnumerable;
 
 function diagnosticStack( stack )
 {
-  if( stack )
+  if( _.errIs( stack ) )
   return stack.stack || stack;
   return new Error().stack;
 }
@@ -32,7 +32,7 @@ function diagnosticStack( stack )
 
 function diagnosticStackCondense( stack )
 {
-  if( stack )
+  if( _.errIs( stack ) )
   return stack.stack || stack;
   return new Error().stack;
 }
@@ -264,7 +264,7 @@ function _err( o )
     result = new Error( originalMessage + '\n' );
     if( !stack )
     {
-      stack = _.diagnosticStack( result,o.level,-1 );
+      stack = _.diagnosticStack( result, [ o.level, -1 ] );
       if( o.location.full && stack.indexOf( '\n' ) === -1 )
       stack = o.location.full;
     }
@@ -280,12 +280,13 @@ function _err( o )
       }
       else
       {
+        debugger;
         stack = _.diagnosticStack( result );
       }
     }
     else
     {
-      stack = _.diagnosticStack( o.level,-1 );
+      stack = _.diagnosticStack([ o.level, Infinity ]);
     }
   }
 
@@ -662,22 +663,6 @@ function errBriefly()
 function errAttend( err, val )
 {
 
-  // if( arguments.length < 1 || arguments.length > 2 )
-  // {
-  //   debugger;
-  //   throw 'errAttend : Expects one or two arguments';
-  // }
-  // if( !_.errIs( err ) )
-  // throw 'errAttend : Expects error as the first argument';
-  // if( val !== undefined && !_.boolLike( val ) && !_.strIs( val ) )
-  // throw 'errAttend : Expects bool-like or stack as the second argument'
-  //
-  // if( val === undefined )
-  // val = true;
-  //
-  // if( _.boolLike( val ) )
-  // val = Config.debug ? _.diagnosticStack( 1,-1 ) : 1;
-
   if( arguments.length !== 1 || !_.errIsRefined( err ) )
   err = _err
   ({
@@ -704,7 +689,7 @@ function errAttend( err, val )
       enumerable : false,
       configurable : true,
       writable : true,
-      value : Config.debug ? _.diagnosticStack( 1,-1 ) : 1,
+      value : Config.debug ? _.diagnosticStack([ 1, Infinity ]) : 1,
     });
 
   }
@@ -1370,51 +1355,51 @@ let Routines =
 
   // stub
 
-  diagnosticStack : diagnosticStack,
-  diagnosticStackCondense : diagnosticStackCondense,
-  diagnosticLocation : diagnosticLocation,
-  diagnosticCode : diagnosticCode,
+  diagnosticStack,
+  diagnosticStackCondense,
+  diagnosticLocation,
+  diagnosticCode,
 
   // error
 
-  errIs : errIs,
-  errIsRefined : errIsRefined,
-  errIsAttended : errIsAttended,
-  errIsAttentionRequested : errIsAttentionRequested,
-  errAttentionRequest : errAttentionRequest,
+  errIs,
+  errIsRefined,
+  errIsAttended,
+  errIsAttentionRequested,
+  errAttentionRequest,
 
-  _err : _err,
-  err : err,
-  errBriefly : errBriefly,
-  errAttend : errAttend,
-  errRestack : errRestack,
-  error_functor : error_functor,
+  _err,
+  err,
+  errBriefly,
+  errAttend,
+  errRestack,
+  error_functor,
 
-  errLog : errLog,
-  errLogOnce : errLogOnce,
+  errLog,
+  errLogOnce,
 
   // checker
 
-  checkInstanceOrClass : checkInstanceOrClass,
-  checkOwnNoConstructor : checkOwnNoConstructor,
+  checkInstanceOrClass,
+  checkOwnNoConstructor,
 
   // sure
 
-  sure : sure,
-  sureBriefly : sureBriefly,
-  sureWithoutDebugger : sureWithoutDebugger,
-  sureInstanceOrClass : sureInstanceOrClass,
-  sureOwnNoConstructor : sureOwnNoConstructor,
+  sure,
+  sureBriefly,
+  sureWithoutDebugger,
+  sureInstanceOrClass,
+  sureOwnNoConstructor,
 
   // assert
 
-  assert : assert,
-  assertWithoutBreakpoint : assertWithoutBreakpoint,
-  assertNotTested : assertNotTested,
-  assertWarn : assertWarn,
+  assert,
+  assertWithoutBreakpoint,
+  assertNotTested,
+  assertWarn,
 
-  assertInstanceOrClass : assertInstanceOrClass,
-  assertOwnNoConstructor : assertOwnNoConstructor,
+  assertInstanceOrClass,
+  assertOwnNoConstructor,
 
 }
 

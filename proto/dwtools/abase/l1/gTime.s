@@ -21,27 +21,49 @@ let _floor = Math.floor;
 // time
 // --
 
-// function dateIs( src )
-// {
-//   return _ObjectToString.call( src ) === '[object Date]';
-// }
 //
-// //
+
+let _TimeInfinity = Math.pow( 2, 31 )-1;
+function timeBegin( delay, onEnd )
+{
+  let timer = null;
+
+  if( delay === undefined )
+  delay = Infinity;
+
+  if( delay >= _TimeInfinity )
+  delay = _TimeInfinity;
+
+  _.assert( arguments.length <= 4 );
+  _.assert( _.numberIs( delay ) );
+
+  if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
+  onEnd = _.routineJoin.call( _, arguments[ 1 ], arguments[ 2 ], arguments[ 3 ] );
+
+  if( delay > 0 )
+  timer = setTimeout( out, delay );
+  else
+  timer = timeSoon( out );
+
+  return timer;
+
+  /* */
+
+  function out()
+  {
+    if( onEnd )
+    onEnd( timer );
+  }
+
+}
+
 //
-// function datesAreIdentical( src1, src2 )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   if( !_.dateIs( src1 ) )
-//   return false;
-//   if( !_.dateIs( src2 ) )
-//   return false;
-//
-//   src1 = src1.getTime();
-//   src2 = src2.getTime();
-//
-//   return src1 === src2;
-// }
+
+function timeEnd( timer )
+{
+  clearTimeout( timer );
+  return timer;
+}
 
 //
 
@@ -60,7 +82,7 @@ function timeReady( onReady )
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
-    let con = _.Consequence ? new _.Consequence() : null;
+    let con = _.Consequence ? new _.Consequence({ tag : 'timeReady' }) : null;
 
     function handleReady()
     {
@@ -247,62 +269,97 @@ function timeOnce( delay, onBegin, onEnd )
  * @memberof wTools
  */
 
-function timeOut( delay, onEnd )
+function timeOut_pre( routine, args )
+{
+  let o;
+
+  _.assert( arguments.length === 2 );
+  _.assert( args );
+
+  // debugger;
+
+  if( !_.mapIs( args[ 0 ] ) || args.length !== 1 )
+  {
+    let delay = args[ 0 ];
+    let onEnd = args[ 1 ];
+
+    if( onEnd !== undefined && !_.routineIs( onEnd ) && !_.consequenceIs( onEnd ) )
+    {
+      _.assert( args.length === 2, 'Expects two arguments if second one is not callable' );
+      let returnOnEnd = onEnd;
+      onEnd = function onEnd()
+      {
+        return returnOnEnd;
+      }
+    }
+    else if( _.routineIs( onEnd ) && !_.consequenceIs( onEnd ) )
+    {
+      let _onEnd = onEnd;
+      onEnd = function timeOutEnd()
+      {
+        let result = _onEnd.apply( this, arguments );
+        return result === undefined ? null : result;
+      }
+    }
+
+    _.assert( args.length <= 4 );
+
+    if( args[ 1 ] !== undefined && args[ 2 ] === undefined && args[ 3 ] === undefined )
+    _.assert( _.routineIs( onEnd ) || _.consequenceIs( onEnd ) );
+    else if( args[ 2 ] !== undefined || args[ 3 ] !== undefined )
+    _.assert( _.routineIs( args[ 2 ] ) );
+
+    // if( args[ 2 ] !== undefined || args[ 3 ] !== undefined )
+    // debugger;
+    if( args[ 2 ] !== undefined || args[ 3 ] !== undefined )
+    onEnd = _.routineJoin.call( _, args[ 1 ], args[ 2 ], args[ 3 ] );
+
+    o = { delay : delay, onEnd : onEnd }
+
+  }
+  else
+  {
+    o = args[ 0 ];
+  }
+
+  // debugger;
+
+  _.routineOptions( routine, o );
+  _.assert( _.numberIs( o.delay ) );
+  _.assert( o.onEnd === null || _.routineIs( o.onEnd ) );
+
+  return o;
+}
+
+//
+
+function timeOut_body( o )
 {
   let con = _.Consequence ? new _.Consequence() : undefined;
   let timer = null;
   let handleCalled = false;
 
-  /* */
-
-  if( onEnd !== undefined && !_.routineIs( onEnd ) && !_.consequenceIs( onEnd ) )
-  {
-    _.assert( arguments.length === 2, 'Expects two arguments if second one is not callable' );
-
-    let returnOnEnd = onEnd;
-    onEnd = function onEnd()
-    {
-      return returnOnEnd;
-    }
-
-  }
-  else if( _.routineIs( onEnd ) && !_.consequenceIs( onEnd ) )
-  {
-    let _onEnd = onEnd;
-    onEnd = function onEnd()
-    {
-      let result = _onEnd.apply( this, arguments );
-      return result === undefined ? null : result;
-    }
-  }
+  _.assertRoutineOptions( timeOut_body, arguments );
 
   /* */
 
   if( con )
-  con.got( function timeGot( err, arg )
   {
-    if( err )
-    clearTimeout( timer );
-    con.take( err, arg );
-  });
+    // debugger;
+    con.procedure( 'timeOut' ).sourcePath( o.stackLevel + 2 );
+    // debugger;
+    con.got( function timeGot( err, arg )
+    {
+      if( err )
+      clearTimeout( timer );
+      con.take( err, arg );
+    });
+  }
 
   /* */
 
-  _.assert( arguments.length <= 4 );
-  _.assert( _.numberIs( delay ) );
-
-  if( arguments[ 1 ] !== undefined && arguments[ 2 ] === undefined && arguments[ 3 ] === undefined )
-  _.assert( _.routineIs( onEnd ) || _.consequenceIs( onEnd ) );
-  else if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
-  _.assert( _.routineIs( arguments[ 2 ] ) );
-
-  if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
-  {
-    onEnd = _.routineJoin.call( _, arguments[ 1 ], arguments[ 2 ], arguments[ 3 ] );
-  }
-
-  if( delay > 0 )
-  timer = setTimeout( timeEnd, delay );
+  if( o.delay > 0 )
+  timer = setTimeout( timeEnd, o.delay );
   else
   timeSoon( timeEnd );
 
@@ -318,19 +375,28 @@ function timeOut( delay, onEnd )
 
     if( con )
     {
-      if( onEnd )
-      con.first( onEnd );
+      if( o.onEnd )
+      con.first( o.onEnd );
       else
       con.take( timeOut );
     }
     else
     {
-      onEnd();
+      o.onEnd();
     }
 
   }
 
 }
+
+timeOut_body.defaults =
+{
+  delay : null,
+  onEnd : null,
+  stackLevel : 1,
+}
+
+let timeOut = _.routineFromPreAndBody( timeOut_pre, timeOut_body );
 
 //
 
@@ -361,11 +427,11 @@ let timeSoon = typeof process === 'undefined' ? function( h ){ return setTimeout
  * {
  *   return _.timeOut( time );
  * }
- * // eitherKeepSplit waits until one of provided consequences will resolve the message.
- * // In our example single timeOutError consequence was added, so eitherKeepSplit adds own context consequence to the queue.
+ * // orKeepingSplit waits until one of provided consequences will resolve the message.
+ * // In our example single timeOutError consequence was added, so orKeepingSplit adds own context consequence to the queue.
  * // Consequence returned by 'routine' resolves message in 5000 ms, but timeOutError will do the same in 2500 ms and 'timeOut'.
  * routine()
- * .eitherKeepSplit( _.timeOutError( timeOut ) )
+ * .orKeepingSplit( _.timeOutError( timeOut ) )
  * .got( function( err, got )
  * {
  *   if( err )
@@ -380,13 +446,19 @@ let timeSoon = typeof process === 'undefined' ? function( h ){ return setTimeout
  * @memberof wTools
  */
 
-function timeOutError( delay, onReady )
+function timeOutError_body( o )
 {
   _.assert( _.routineIs( _.Consequence ) );
+  _.assertRoutineOptions( timeOutError_body, arguments );
 
-  let result = _.timeOut.apply( this, arguments );
+  let stackLevel = o.stackLevel;
 
-  result.finally( function( err, arg )
+  o.stackLevel += 1;
+  let con = _.timeOut.body.call( _, o );
+
+  con.tag = 'TimeOutError';
+  con.procedure( 'timeOutError' ).sourcePath( stackLevel + 2 );
+  con.finally( function( err, arg )
   {
     if( err )
     return _.Consequence().error( err );
@@ -404,8 +476,12 @@ function timeOutError( delay, onReady )
     return _.Consequence().error( err );
   });
 
-  return result;
+  return con;
 }
+
+timeOutError_body.defaults = Object.create( timeOut_body.defaults );
+
+let timeOutError = _.routineFromPreAndBody( timeOut_pre, timeOutError_body );
 
 //
 
@@ -616,31 +692,30 @@ let Fields =
 let Routines =
 {
 
-  // dateIs : dateIs,
-  // datesAreIdentical : datesAreIdentical,
+  timeBegin,
+  timeEnd,
 
-  timeReady : timeReady,
-  timeReadyJoin : timeReadyJoin,
-  timeOnce : timeOnce,
-  timeOut : timeOut,
-  timeSoon : timeSoon,
-  timeOutError : timeOutError,
+  timeReady,
+  timeReadyJoin,
+  timeOnce,
+  timeOut,
+  timeSoon,
+  timeOutError,
 
-  timePeriodic : timePeriodic, /* dubious */
+  timePeriodic, /* dubious */
 
-  _timeNow_functor : _timeNow_functor,
+  _timeNow_functor,
   timeNow : _timeNow_functor(),
-  // timeNow : _.Later( _, _timeNow_functor ),
 
-  timeFewer_functor : timeFewer_functor,
+  timeFewer_functor,
 
-  timeFrom : timeFrom,
-  timeSpent : timeSpent,
-  timeSpentFormat : timeSpentFormat,
-  dateToStr : dateToStr,
+  timeFrom,
+  timeSpent,
+  timeSpentFormat,
+  dateToStr,
 
-  timeSleep : timeSleep,
-  timeSleepUntil : timeSleepUntil,
+  timeSleep, /* experimental */
+  timeSleepUntil, /* experimental */
 
 }
 
@@ -653,9 +728,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

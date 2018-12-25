@@ -88,11 +88,33 @@ function _routineJoin( o )
   let routine = o.routine;
   let args = o.args;
   let context = o.context;
-
   let result = act();
 
   if( o.extending )
-  _.mapExtend( result, routine );
+  {
+    _.mapExtend( result, routine );
+
+    Object.defineProperty( result, 'originalRoutine',
+    {
+      value : routine,
+      enumerable : false,
+    });
+
+    if( context !== undefined )
+    Object.defineProperty( result, 'boundContext',
+    {
+      value : context,
+      enumerable : false,
+    });
+
+    if( args !== undefined )
+    Object.defineProperty( result, 'boundArguments',
+    {
+      value : args,
+      enumerable : false,
+    });
+
+  }
 
   return result;
 
@@ -103,10 +125,15 @@ function _routineJoin( o )
     {
       if( o.sealing === true )
       {
-        return function __sealedContext()
+        let name = routine.name || '__sealedContext';
+        let __sealedContext =
         {
-          return routine.call( context );
+          [ name ] : function()
+          {
+            return routine.call( context );
+          }
         }
+        return __sealedContext[ name ];
       }
       else
       {
@@ -117,10 +144,16 @@ function _routineJoin( o )
     {
       if( o.sealing === true )
       {
-        return function __sealedContextAndArguments()
+        let name = routine.name || '__sealedContextAndArguments';
+        _.assert( _.strIs( name ) ); 
+        let __sealedContextAndArguments =
         {
-          return routine.apply( context, args );
+          [ name ] : function()
+          {
+            return routine.apply( context, args );
+          }
         }
+        return __sealedContextAndArguments[ name ];
       }
       else
       {
@@ -138,16 +171,30 @@ function _routineJoin( o )
       args = [];
 
       if( o.sealing === true )
-      return function __sealedArguments()
       {
-        return routine.apply( undefined, args );
+        let name = routine.name || '__sealedArguments';
+        let __sealedArguments =
+        {
+          [ name ] : function()
+          {
+            return routine.apply( undefined, args );
+          }
+        }
+        return __sealedArguments[ name ];
       }
       else
-      return function __joinedArguments()
       {
-        let a = args.slice();
-        _.arrayAppendArray( a,arguments );
-        return routine.apply( this, a );
+        let name = routine.name || '__joinedArguments';
+        let __joinedArguments =
+        {
+          [ name ] : function()
+          {
+            let a = args.slice();
+            _.arrayAppendArray( a,arguments );
+            return routine.apply( this, a );
+          }
+        }
+        return __joinedArguments[ name ];
       }
 
     }

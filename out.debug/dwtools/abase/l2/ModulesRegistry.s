@@ -22,63 +22,7 @@ function includeAny( filePath, name )
 // include map
 // --
 
-// base
-
-let wLogger =
-{
-  includeAny : includeAny( 'abase/l9/printer/top/Logger.s', 'wLogger' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Logger; },
-}
-
-let wPrinterToFile =
-{
-  includeAny : includeAny( 'abase/l9/printer/top/ToFile.ss', 'wloggertofile' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToFile; },
-}
-
-let wPrinterToJs =
-{
-  includeAny : includeAny( 'abase/l9/printer/top/ToJstructure.s', 'wloggertojs' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
-}
-
-let wConsequence =
-{
-  includeAny : includeAny( 'abase/l9/consequence/Consequence.s', 'wConsequence' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequence; },
-}
-
-let wConsequizer =
-{
-  includeAny : includeAny( 'abase/l7_mixin/Consequizer.', 'wconsequizer' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequizer; },
-}
-
-let wCopyable =
-{
-  includeAny : includeAny( 'abase/l7_mixin/Copyable.s', 'wCopyable' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Copyable; },
-}
-
-let wInstancing =
-{
-  includeAny : includeAny( 'abase/l7_mixin/Instancing.s', 'winstancing' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Instancing; },
-}
-
-let wEventHandler =
-{
-  includeAny : includeAny( 'abase/l7_mixin/EventHandler.s', 'wEventHandler' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.EventHandler; },
-}
-
-let wFieldsStack =
-{
-  includeAny : includeAny( 'abase/l7_mixin/FieldsStack.s', 'wfieldsstack' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FieldsStack; },
-}
-
-// base/l3
+// base / l3
 
 // let wNameTools =
 // {
@@ -116,7 +60,7 @@ let wStringer =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stringer; },
 }
 
-// base/l4
+// base / l4
 
 let wArraySorted =
 {
@@ -172,7 +116,7 @@ let wRoutineTransform =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
 }
 
-// base/l5
+// base / l5
 
 let wWebUriFundamentals =
 {
@@ -190,6 +134,72 @@ let wStringsExtra =
 {
   includeAny : includeAny( 'abase/l5/StringTools.s', 'wstringsextra' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
+}
+
+// base / l7_mixin
+
+let wConsequizer =
+{
+  includeAny : includeAny( 'abase/l7_mixin/Consequizer.', 'wconsequizer' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequizer; },
+}
+
+let wCopyable =
+{
+  includeAny : includeAny( 'abase/l7_mixin/Copyable.s', 'wCopyable' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Copyable; },
+}
+
+let wInstancing =
+{
+  includeAny : includeAny( 'abase/l7_mixin/Instancing.s', 'winstancing' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Instancing; },
+}
+
+let wEventHandler =
+{
+  includeAny : includeAny( 'abase/l7_mixin/EventHandler.s', 'wEventHandler' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.EventHandler; },
+}
+
+let wFieldsStack =
+{
+  includeAny : includeAny( 'abase/l7_mixin/FieldsStack.s', 'wfieldsstack' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FieldsStack; },
+}
+
+// base / l8
+
+let wProcedure =
+{
+  includeAny : includeAny( 'abase/l8/Procedure.s', 'wprocedure' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.procedure },
+}
+
+// base / l9
+
+let wLogger =
+{
+  includeAny : includeAny( 'abase/l9/printer/top/Logger.s', 'wLogger' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Logger; },
+}
+
+let wPrinterToFile =
+{
+  includeAny : includeAny( 'abase/l9/printer/top/ToFile.ss', 'wloggertofile' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToFile; },
+}
+
+let wPrinterToJs =
+{
+  includeAny : includeAny( 'abase/l9/printer/top/ToJstructure.s', 'wloggertojs' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
+}
+
+let wConsequence =
+{
+  includeAny : includeAny( 'abase/l9/consequence/Consequence.s', 'wConsequence' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequence; },
 }
 
 // abase_dom
@@ -302,6 +312,12 @@ let wStateSession =
 {
   includeAny : includeAny( 'amid/amixin/StateSession.s', 'wstatesession' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StateSession },
+}
+
+let wStager =
+{
+  includeAny : includeAny( 'amid/l3/stager/Stager.s', 'wstager' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Stager },
 }
 
 let wFileExecutor =
@@ -485,44 +501,50 @@ let wServlet =
 let Extend =
 {
 
-  // base
+  // base / l3
 
-  wLogger,
-  wPrinterToFile,
-  wPrinterToJs,
-  wConsequence,
+  wLooker,
+  wPathFundamentals,
+  wProto,
+  wSelector,
+
+  // base / l4
+
+  wArraySorted,
+  wArraySparse,
+  wExternalFundamentals,
+  wUriFundamentals,
+  wComparator,
+  wLookerExtra,
+  wTraverser,
+  wBaseEncoder,
+  wStringer,
+  wRoutineTransform,
+
+  // base / l5
+
+  wWebUriFundamentals,
+  wCloner,
+  wStringsExtra,
+
+  // base / l7_mixin
+
   wConsequizer,
   wCopyable,
   wInstancing,
   wEventHandler,
   wFieldsStack,
 
-  // base/l3
+  // base / l8
 
-  // wNameTools,
-  wLooker,
-  wPathFundamentals,
-  wProto,
-  wSelector,
+  wProcedure,
 
-  // base/l4
+  // base / l9
 
-  wExternalFundamentals,
-  wUriFundamentals,
-  wComparator,
-  wLookerExtra,
-  wTraverser,
-  wArraySorted,
-  wArraySparse,
-  wBaseEncoder,
-  wStringer,
-  wRoutineTransform,
-
-  // base/l5
-
-  wWebUriFundamentals,
-  wCloner,
-  wStringsExtra,
+  wLogger,
+  wPrinterToFile,
+  wPrinterToJs,
+  wConsequence,
 
   // base_dom
 
@@ -547,6 +569,7 @@ let Extend =
   wVerbal,
   wStateStorage,
   wStateSession,
+  wStager,
   wFileExecutor,
   wFileExecutorHtmlFormatters,
   wTranspilationStrategy,

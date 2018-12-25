@@ -15,6 +15,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './l1/gLong.s' );
   require( './l1/gMap.s' );
   require( './l1/gNumber.s' );
+  // require( './l1/gProcedure.s' );
   require( './l1/gRange.s' );
   require( './l1/gRegexp.s' );
   require( './l1/gRoutine.s' );
@@ -39,9 +40,9 @@ let Self = _global_.wTools;
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global_.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global_.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

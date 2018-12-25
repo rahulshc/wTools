@@ -35,6 +35,8 @@ function _err( test )
       args : [ errMsg1, errObj2 ]
     };
 
+  /* - */
+
   test.case = 'single string passed as args property : result should be Error obj';
   var optionsObj2 =
   {
@@ -63,22 +65,24 @@ function _err( test )
   test.case = 'single error instance passed as args property : result message should contains file name';
   test.identical( _.strHas( got.message, errObj1.location.path ), true );
 
-  test.case = 'several error instances/messages passed as args property : result should be Error obj';
+  /* - */
+
+  test.open( 'several error instances/messages passed as args property' );
   var got = _._err( optionsObj4 );
   test.identical( got instanceof Error, true );
 
-  test.case = 'several error instances/messages passed as args : result message should contains all ' +
-    'passed string';
-  var expectMsg1 = new RegExp( errMsg3 ),
-    expectMsg2 = new RegExp( errMsg1 );
+  test.case = 'result message should contains all passed string';
+  var expectMsg1 = new RegExp( errMsg3 );
+  var expectMsg2 = new RegExp( errMsg1 );
   test.identical( [ expectMsg1.test( got.message ), expectMsg2.test( got.message ) ], [ true, true ] );
 
-  test.case = 'several error instances/messages passed as args property : result message should contains ' +
-    'file name';
+  test.case = 'result message should contains file name';
   var expectFileName = new RegExp( strName );
   test.identical( expectFileName.test( got.message ), true );
 
-  /**/
+  test.close( 'several error instances/messages passed as args property' );
+
+  /* - */
 
   var optionsObj1 =
   {
@@ -119,7 +123,6 @@ function err( test )
     errMsg2 = errObj1.message,
     errObj2 = new Error( 'Error #3' ),
     errMsg3 = errObj2.message;
-
 
   test.case = 'single string passed as args property : result should be Error obj';
   var got = _.err( errMsg1 );
@@ -247,21 +250,37 @@ function diagnosticStack( test )
 
   function function3( )
   {
-    return _.diagnosticStack( );
+    debugger;
+    return _.diagnosticStack();
   }
 
-  var expectedTrace = [ 'function3', 'function2', 'function1', 'Diagnostics.test.s' ];
+  /* - */
 
-  test.case = 'test diagnosticStack function sequence';
+  test.case = 'trivial';
+  var expectedTrace = [ 'function3', 'function2', 'function1', 'Diagnostics.test.s' ];
   var got = function1();
   got = got.split( '\n' );
-  console.log( got.length );
-  expectedTrace.forEach( function( v, i )
+  debugger;
+  expectedTrace.forEach( function( expectedStr, i )
   {
-    var rg = new RegExp( v );
-    test.identical( rg.test( got[ i ] ), true );
+    var expectedRegexp = new RegExp( expectedStr );
+    test.description = expectedStr;
+    test.identical( expectedRegexp.test( got[ i ] ), true );
   });
+  debugger;
 
+  /* - */
+
+  // test.case = 'second';
+  // var got = function1();
+  // debugger;
+  // got = got.split( '\n' ).slice( -5, -1 ).join( '\n' );
+  // debugger;
+  // expectedTrace.forEach( function( expectedStr, i )
+  // {
+  //   var expectedRegexp = new RegExp( expectedStr );
+  //   test.identical( expectedRegexp.test( got[ i ] ), true );
+  // });
 
 };
 

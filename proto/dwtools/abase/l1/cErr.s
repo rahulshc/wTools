@@ -132,7 +132,7 @@ function diagnosticLocation( o )
   else if( _.errIs( o ) )
   o = { error : o, level : 0 }
   else if( o === undefined )
-  o = { stack : _.diagnosticStack( 1 ) };
+  o = { stack : _.diagnosticStack([ 1, Infinity ]) };
 
   /* */
 
@@ -183,7 +183,7 @@ function diagnosticLocation( o )
   {
     if( o.error )
     {
-      o.stack = _.diagnosticStack( o.error );
+      o.stack = _.diagnosticStack( o.error, undefined );
     }
     else
     {
@@ -544,37 +544,78 @@ diagnosticCode.defaults =
  * @memberof wTools
  */
 
-function diagnosticStack( stack, first, last )
+// function diagnosticStack( stack, first, last )
+function diagnosticStack( stack, range )
 {
 
-  if( last-first === 1 )
-  debugger;
-
-  if( _.numberIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined )
+  if( arguments.length === 1 )
   {
-
-    first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
-    last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
-
-    return diagnosticStack( new Error(),first,last );
+    if( !_.errIs( stack ) )
+    {
+      range = arguments[ 0 ];
+      stack = undefined;
+    }
   }
 
-  if( arguments.length !== 1 && arguments.length !== 2 && arguments.length !== 3 )
+  if( stack === undefined )
   {
-    debugger;
-    throw Error( 'diagnosticStack : expects one, two or three arguments if error provided' );
+    stack = new Error();
+    if( range === undefined )
+    range = [ 1, Infinity ];
   }
 
-  if( !_.numberIs( first ) && first !== undefined )
+  if( range === undefined )
+  range = [ 0, Infinity ];
+
+  // if( last-first === 1 )
+  // debugger;
+
+  // if( _.numberIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined )
+  // {
+  //
+  //   first = arguments[ 0 ] ? arguments[ 0 ] + 1 : 1;
+  //   last = arguments[ 1 ] >= 0 ? arguments[ 1 ] + 1 : arguments[ 1 ];
+  //
+  //   return diagnosticStack( new Error(), first, last );
+  // }
+
+  if( arguments.length !== 0 && arguments.length !== 1 && arguments.length !== 2 )
   {
     debugger;
-    throw Error( 'diagnosticStack : expects number {-first-}, got ' + _.strType( first ) );
+    throw Error( 'diagnosticStack : expects one or two or none arguments' );
   }
 
-  if( !_.numberIs( last ) && last !== undefined )
+  // if( !_.numberIs( first ) && first !== undefined )
+  // {
+  //   debugger;
+  //   throw Error( 'diagnosticStack : expects number {-first-}, got ' + _.strType( first ) );
+  // }
+  //
+  // if( !_.numberIs( last ) && last !== undefined )
+  // {
+  //   debugger;
+  //   throw Error( 'diagnosticStack : expects number {-last-}, got ' + _.strType( last ) );
+  // }
+
+  if( !_.rangeIs( range ) )
   {
     debugger;
-    throw Error( 'diagnosticStack : expects number {-last-}, got' + _.strType( last ) );
+    throw Error( 'diagnosticStack : expects range but, got ' + _.strType( range ) );
+  }
+
+  let first = range[ 0 ];
+  let last = range[ 1 ];
+
+  if( !_.numberIs( first ) )
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects number range[ 0 ], but got ' + _.strType( first ) );
+  }
+
+  if( !_.numberIs( last ) )
+  {
+    debugger;
+    throw Error( 'diagnosticStack : expects number range[ 0 ], but got ' + _.strType( last ) );
   }
 
   let errIs = 0;
@@ -591,9 +632,12 @@ function diagnosticStack( stack, first, last )
   return;
 
   if( !_.arrayIs( stack ) && !_.strIs( stack ) )
-  debugger;
-  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
-  throw 'diagnosticStack expects array or string';
+  {
+    debugger;
+    throw Error( 'diagnosticStack expects array or string' );
+  }
+
+  // debugger;
 
   if( !_.arrayIs( stack ) )
   stack = stack.split( '\n' );
@@ -681,6 +725,7 @@ function diagnosticStackCondense( stack )
 
   if( arguments.length !== 1 )
   throw 'Expects single arguments';
+
   if( !_.strIs( stack ) )
   throw 'Expects string';
 

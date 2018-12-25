@@ -276,7 +276,7 @@ function _setup1()
 {
 
   // Self.timeNow = Self._timeNow_functor();
-  Self._sourcePath = _.diagnosticStack( 1 );
+  Self._sourcePath = _.diagnosticStack([ 1, Infinity ]);
 
   _.assert( _global._WTOOLS_SETUP_EXPECTED_ !== false );
 
