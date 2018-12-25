@@ -20,4 +20,4 @@ logger.log( 'Element prepended with OnceStrictly', got )
 
 // Decomment to test - Should throw error because of *Strictly
 //var got = _.arrayPrependOnceStrictly( [ 1, 2, 3, 4 ], 1 );
-logger.log( 'Should throw error', got )
+//logger.log( 'Should throw error', got )
