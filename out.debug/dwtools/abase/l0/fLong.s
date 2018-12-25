@@ -1539,18 +1539,23 @@ function arrayRightDefined( arr )
 //
 
 /**
- * The arrayCountElement() routine returns the count of matched elements in the {-srcMap-} array.
+ * The arrayCountElement() routine returns the count of matched elements in the {-srcArray-} array with the input { element }.
+ * Returns 0 if no { element } is provided. It can take evaluators for the routine equalities.
  *
  * @param { Array } src - The source array.
- * @param { * } instance - The value to search.
+ * @param { * } element - The value to search.
  *
  * @example
  * // returns 2
  * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
  *
- * @returns { Number } - Returns the count of matched elements in the {-srcMap-}.
+ * @example
+ * // returns 4
+ * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ *
+ * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
  * @function arrayCountElement
- * @throws { Error } If passed arguments is less than two or more than two.
+ * @throws { Error } If passed arguments is less than two or more than four.
  * @throws { Error } If the first argument is not an array-like object.
  * @memberof wTools
  */
@@ -1559,11 +1564,12 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 {
   let result = 0;
 
-  _.assert( 0 <= arguments.length && arguments.length <= 4 );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longIs( srcArray ), 'Expects long' );
 
   let left = _.arrayLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
   // let index = srcArray.indexOf( element );
+
   while( left >= 0 )
   {
     result += 1;
@@ -1576,6 +1582,27 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 
 //
 
+/**
+ * The arrayCountTotal() adds all the elements in { -srcArray- }, elements can be numbers or booleans ( it considers them 0 or 1 ).
+ *
+ * @param { Array } srcArray - The source array.
+ *
+ * @example
+ * // returns 23;
+ * let arr = _.arrayCountTotal( [ 1, 2, 10, 10 ] );
+ *
+ * @example
+ * // returns 1;
+ * let arr = _.arrayCountTotal( [ true, false, false ] );
+ *
+ * @returns { Number } - Returns the sum of the elements in { srcArray }.
+ * @function arrayCountTotal
+ * @throws { Error } If passed arguments is different than one.
+ * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If { srcArray} doesn´t contain number-like elements.
+ * @memberof wTools
+ */
+
 function arrayCountTotal( srcArray )
 {
   let result = 0;
@@ -1584,7 +1611,10 @@ function arrayCountTotal( srcArray )
   _.assert( _.longIs( srcArray ), 'Expects long' );
 
   for( let i = 0 ; i < srcArray.length ; i++ )
-  result += srcArray[ i ];
+  {
+    _.assert( _.boolIs( srcArray[ i ] ) || _.numberIs( srcArray[ i ] )|| srcArray[ i ] === null );
+    result += srcArray[ i ];
+  }
 
   return result;
 }
@@ -1728,30 +1758,9 @@ function arrayPrepend_( dstArray )
 
 //
 
-/**
- * Routine adds a value of argument( ins ) to the beginning of an array( dstArray ).
- *
- * @param { Array } dstArray - The destination array.
- * @param { * } ins - The element to add.
- *
- * @example
- * // returns [ 5, 1, 2, 3, 4 ]
- * _.arrayPrependElement( [ 1, 2, 3, 4 ], 5 );
- *
- * @example
- * // returns [ 5, 1, 2, 3, 4, 5 ]
- * _.arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 );
- *
- * @returns { Array } Returns updated array, that contains new element( ins ).
- * @function arrayPrependElement
- * @throws { Error } An Error if ( dstArray ) is not an Array.
- * @throws { Error } An Error if ( arguments.length ) is less or more than two.
- * @memberof wTools
- */
-
-function arrayPrependElement( dstArray, ins )
+function arrayPrepend( dstArray, ins )
 {
-  arrayPrependedElement.apply( this, arguments );
+  arrayPrepended.apply( this, arguments );
   return dstArray;
 }
 
@@ -1862,44 +1871,15 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   }
   else
   {
-    result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+    result = arrayPrepended.apply( this, [ dstArray, ins ] );
   }
 
   return dstArray;
 }
 
-/*
-function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
-{
-
-  let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
-
-  return dstArray;
-}
-*/
-
 //
 
-/**
- * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
- * and returns zero if value was succesfully added.
- *
- * @param { Array } dstArray - The destination array.
- * @param { * } ins - The element to add.
- *
- * @example
- * // returns 0
- * _.arrayPrependedElement( [ 1, 2, 3, 4 ], 5 );
- *
- * @returns { Array } Returns updated array, that contains new element( ins ).
- * @function arrayPrependedElement
- * @throws { Error } An Error if ( dstArray ) is not an Array.
- * @throws { Error } An Error if ( arguments.length ) is not equal to two.
- * @memberof wTools
- */
-
-function arrayPrependedElement( dstArray, ins )
+function arrayPrepended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
   _.assert( _.arrayIs( dstArray ) );
@@ -1964,6 +1944,156 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
     return 0;
   }
   return -1;
+}
+
+//
+
+function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let result;
+  if ( Config.debug )
+  {
+    debugger;
+    result = arrayPrependedOnce.apply( this, arguments );
+    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayPrepended.apply( this, [ dstArray, ins ] );
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * Routine adds a value of argument( ins ) to the beginning of an array( dstArray ).
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The element to add.
+ *
+ * @example
+ * // returns [ 5, 1, 2, 3, 4 ]
+ * _.arrayPrependElement( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @example
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
+ * _.arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 );
+ *
+ * @returns { Array } Returns updated array, that contains new element( ins ).
+ * @function arrayPrependElement
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( arguments.length ) is less or more than two.
+ * @memberof wTools
+ */
+
+function arrayPrependElement( dstArray, ins )
+{
+  arrayPrependedElement.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  arrayPrependedElementOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let result;
+  if ( Config.debug )
+  {
+    debugger;
+    result = arrayPrependedElementOnce.apply( this, arguments );
+    _.assert( result !== undefined, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+  }
+
+  return dstArray;
+}
+
+/*
+function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+
+  let result = arrayPrependedOnce.apply( this, arguments );
+  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+
+  return dstArray;
+}
+*/
+
+//
+
+/**
+ * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
+ * and returns zero if value was succesfully added.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } ins - The element to add.
+ *
+ * @example
+ * // returns 0
+ * _.arrayPrependedElement( [ 1, 2, 3, 4 ], 5 );
+ *
+ * @returns { Array } Returns updated array, that contains new element( ins ).
+ * @function arrayPrependedElement
+ * @throws { Error } An Error if ( dstArray ) is not an Array.
+ * @throws { Error } An Error if ( arguments.length ) is not equal to two.
+ * @memberof wTools
+ */
+
+function arrayPrependedElement( dstArray, ins )
+{
+  _.assert( arguments.length === 2  );
+  _.assert( _.arrayIs( dstArray ) );
+
+  dstArray.unshift( ins );
+  return 0;
+}
+
+//
+
+function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  _.assert( _.arrayIs( dstArray ) );
+
+  let i = _.arrayLeftIndex.apply( _, arguments );
+
+  if( i === -1 )
+  {
+    dstArray.unshift( ins );
+    return dstArray[ 0 ];
+  }
+  return undefined;
+}
+
+//
+
+function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let result;
+  if ( Config.debug )
+  {
+    debugger;
+    result = arrayPrependedElementOnce.apply( this, arguments );
+    _.assert( result !== undefined, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayPrependedElement.apply( this, [ dstArray, ins ] );
+  }
+
+  return result;
 }
 
 //
@@ -2194,6 +2324,24 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   return result;
+}
+
+//
+
+function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+ let result;
+ if( Config.debug )
+ {
+   result = arrayPrependedArrayOnce.apply( this, arguments );
+   _.assert( result === insArray.length );
+ }
+ else
+ {
+   result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
+ }
+
+ return result;
 }
 
 //
@@ -2480,6 +2628,32 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   return result;
 }
 
+//
+
+function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+ let result;
+ if( Config.debug )
+ {
+   result = arrayPrependedArraysOnce.apply( this, arguments );
+   let expected = 0;
+   for( let i = insArray.length - 1; i >= 0; i-- )
+   {
+     if( _.longIs( insArray[ i ] ) )
+     expected += insArray[ i ].length;
+     else
+     expected += 1;
+   }
+   _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+ }
+ else
+ {
+   result = arrayPrependedArrays.apply( this, [ dstArray, insArray ] );
+ }
+
+ return result;
+}
+
 // --
 // array append
 // --
@@ -2544,9 +2718,9 @@ function arrayAppend_( dstArray )
 
 //
 
-function arrayAppendElement( dstArray, ins )
+function arrayAppend( dstArray, ins )
 {
-  arrayAppendedElement.apply( this, arguments );
+  arrayAppended.apply( this, arguments );
   return dstArray;
 }
 
@@ -2601,24 +2775,14 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   }
   else
   {
-    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+    result = arrayAppended.apply( this, [ dstArray, ins ] );
   }
   return dstArray;
 }
 
-/*
-function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
-{
-
-  let result = arrayAppendedOnce.apply( this, arguments );
-  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
-  return dstArray;
-}
-*/
-
 //
 
-function arrayAppendedElement( dstArray, ins )
+function arrayAppended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
   _.assert( _.arrayIs( dstArray ) );
@@ -2639,6 +2803,99 @@ function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
   }
 
   return -1;
+}
+
+
+function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedOnce.apply( this, arguments );
+    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppended.apply( this, [ dstArray, ins ] );
+  }
+  return result;
+}
+
+
+//
+
+function arrayAppendElement( dstArray, ins )
+{
+  arrayAppendedElement.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendElementOnce( dstArray, ins )
+{
+  arrayAppendedElementOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayAppendElementOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedElementOnce.apply( this, arguments );
+    _.assert( result !== false, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+  }
+  return dstArray;
+}
+
+//
+
+function arrayAppendedElement( dstArray, ins )
+{
+  _.assert( arguments.length === 2  );
+  _.assert( _.arrayIs( dstArray ) );
+  dstArray.push( ins );
+  return dstArray.length - 1;
+}
+
+//
+
+function arrayAppendedElementOnce( dstArray, ins )
+{
+  let i = _.arrayLeftIndex.apply( _, arguments );
+
+  if( i === -1 )
+  {
+    dstArray.push( ins );
+    return dstArray[ dstArray.length - 1 ];
+  }
+
+  return false;
+  // return -1;
+}
+
+//
+
+function arrayAppendedElementOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedElementOnce.apply( this, arguments );
+    _.assert( result !== false, 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+  }
+  return result;
 }
 
 //
@@ -2773,6 +3030,23 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
+function arrayAppendedArrayOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedArrayOnce.apply( this, arguments );
+    _.assert( result === ins.length , 'array should have only unique elements, but has several', ins );
+  }
+  else
+  {
+    result = arrayAppendedElement.apply( this, [ dstArray, ins ] );
+  }
+  return result;
+}
+
+//
+
 function arrayAppendArrays( dstArray )
 {
   arrayAppendedArrays.apply( this, arguments );
@@ -2900,6 +3174,32 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
     {
       _appendOnce( insArray[ a ] );
     }
+  }
+
+  return result;
+}
+
+//
+
+function arrayAppendedArraysOnceStrictly( dstArray, ins )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayAppendedArraysOnce.apply( this, arguments );
+    let expected = 0;
+    for( let i = ins.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( ins[ i ] ) )
+      expected += ins[ i ].length;
+      else
+      expected += 1;
+    }
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+  }
+  else
+  {
+    result = arrayAppendedArrays.apply( this, [ dstArray, ins ] );
   }
 
   return result;
@@ -3751,6 +4051,14 @@ function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  arrayFlattenedOnceStrictly.apply( this, arguments );
+  return dstArray;
+}
+
+//
+/*
+function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
   if( dstArray === null )
   {
     dstArray = [];
@@ -3779,12 +4087,12 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
       }
       return expected;
     } */
-
+/*
     let expected = 1;
 
-    if( _.longIs( insArray  ) )
+    if( _.longIs( insArray ) )
     expected = _.arrayFlattenOnce( insArray ).length;
-
+    logger.log( result, expected)
     _.assert( result === expected );
   }
   else
@@ -3829,10 +4137,12 @@ function arrayFlattened( dstArray, insArray )
   // if( arguments.length <= 2 && insArray === undefined )
   // return _.longRemoveDuplicates( dstArray );
 
+
   _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
+
 
   if( arguments.length === 1 )
   {
@@ -3898,12 +4208,15 @@ function arrayFlattened( dstArray, insArray )
 
 function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+
   _.assert( arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
   // _.assert( _.longIs( insArray ) );
 
   // if( arguments.length <= 2 && insArray === undefined )
   // return _.longRemoveDuplicates( dstArray );
+
+
 
   if( arguments.length === 1 )
   {
@@ -3944,6 +4257,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
   else
   {
+
     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
     if( index === -1 )
     {
@@ -3968,9 +4282,114 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 }
 
+//
+
+function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+
+  _.assert( arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( dstArray ) );
+
+  let oldLength = dstArray.length;
+  _.arrayRemoveDuplicates( dstArray );
+  let newLength = dstArray.length;
+  if( Config.debug )
+  _.assert( oldLength === newLength, 'Elements in dstArray must not be repeated' );
+
+
+  if( arguments.length === 1 )
+  {
+    for( let i = dstArray.length-1; i >= 0; --i )
+    if( _.longIs( dstArray[ i ] ) )
+    {
+      let insArray = dstArray[ i ];
+      dstArray.splice( i, 1 );
+      onLongOnce( insArray, i );
+    }
+    return dstArray;
+  }
+
+  let result = 0;
+
+  if( _.longIs( insArray ) )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      _.assert( insArray[ i ] !== undefined );
+      if( _.longIs( insArray[ i ] ) )
+      {
+        let c = _.arrayFlattenedOnceStrictly( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        result += c;
+      }
+      else
+      {
+        let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        if( Config.debug )
+        _.assert( index === -1, 'Elements must not be repeated' );
+
+        if( index === -1 )
+        {
+          dstArray.push( insArray[ i ] );
+          result += 1;
+        }
+      }
+    }
+  }
+  else
+  {
+    let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+    if( Config.debug )
+    _.assert( index === -1, 'Elements must not be repeated' );
+
+    if( index === -1 )
+    {
+      dstArray.push( insArray );
+      result += 1;
+    }
+  }
+
+  return result;
+
+  /* */
+
+  function onLongOnce( insArray, insIndex )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      onLongOnce( insArray[ i ], insIndex )
+      else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+      dstArray.splice( insIndex++, 0, insArray[ i ] );
+      else if( Config.debug )
+      _.assert( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1, 'Elements must not be repeated' );
+    }
+  }
+}
+
 // --
 // array replace
 // --
+
+//
+
+function arrayReplace( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+
+  let index = -1;
+  let result = 0;
+
+  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+
+  while( index !== -1 )
+  {
+    dstArray.splice( index, 1, sub );
+    result += 1;
+    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  }
+
+  return dstArray;
+}
 
 /**
  * The arrayReplaceOnce() routine returns the index of the (dstArray) array which will be replaced by (sub),
@@ -4045,6 +4464,27 @@ function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
+function arrayReplaced( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+
+  let index = -1;
+  let result = 0;
+
+  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+
+  while( index !== -1 )
+  {
+    dstArray.splice( index, 1, sub );
+    result += 1;
+    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  }
+
+  return result;
+}
+
+//
+
 function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
@@ -4085,6 +4525,119 @@ function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
   return result;
 }
 
+//
+
+function arrayReplaceElement( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+
+  let index = -1;
+  let result = 0;
+
+  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+
+  while( index !== -1 )
+  {
+    dstArray.splice( index, 1, sub );
+    result += 1;
+    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  }
+
+  return dstArray;
+}
+
+//
+
+function arrayReplaceElementOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  arrayReplacedElementOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayReplaceElementOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedElementOnce.apply( this, arguments );
+    _.assert( result !== undefined, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    result = arrayReplacedElementOnce.apply( this, arguments );
+    _.assert( result === undefined, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedElementOnce.apply( this, arguments );
+  }
+  return dstArray;
+}
+
+//
+
+function arrayReplacedElement( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+
+  let index = -1;
+  let result = 0;
+
+  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+
+  while( index !== -1 )
+  {
+    dstArray.splice( index, 1, sub );
+    result += 1;
+    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  }
+
+  return result;
+}
+
+//
+
+function arrayReplacedElementOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+
+  if( _.longIs( ins ) )
+  {
+    _.assert( _.longIs( sub ) );
+    _.assert( ins.length === sub.length );
+  }
+
+  let index = -1;
+
+  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+
+  if( index >= 0 )
+  dstArray.splice( index, 1, sub );
+  else
+  return undefined;
+
+  return ins;
+}
+
+//
+
+function arrayReplacedElementOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedElementOnce.apply( this, arguments );
+    _.assert( result !== undefined, () => 'Array does not have element ' + _.toStrShort( ins ) );
+    let newResult = arrayReplacedElementOnce.apply( this, arguments );
+    _.assert( newResult === undefined, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedElementOnce.apply( this, arguments );
+  }
+
+  return result;
+}
+
 /*
 function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
@@ -4093,6 +4646,14 @@ function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
   return result;
 }
 */
+
+//
+
+function arrayReplaceArray( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  arrayReplacedArray.apply( this, arguments );
+  return dstArray;
+}
 
 //
 
@@ -4112,7 +4673,9 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
     result = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
+
     _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
@@ -4135,19 +4698,57 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
 
 //
 
+function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.longIs( ins ) );
+  _.assert( _.longIs( sub ) );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+
+  let index = -1;
+  let result = 0;
+  let oldDstArray = dstArray.slice();  // Array with src values stored
+  for( let i = 0, len = ins.length; i < len; i++ )
+  {
+    let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
+    index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+    while( index !== -1 )
+    {
+      let subValue = sub[ i ];
+      if( subValue === undefined )
+      {
+        dstArray.splice( index, 1 );
+        dstArray2.splice( index, 1 );
+      }
+      else
+      {
+        dstArray.splice( index, 1, subValue );
+        dstArray2.splice( index, 1, subValue );
+      }
+
+      result += 1;
+      index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+    }
+  }
+
+  return result;
+}
+
+//
+
 function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( ins ) );
   _.assert( _.longIs( sub ) );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  )
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
   let result = 0;
-
+  //let oldDstArray = dstArray.slice();  // Array with src values stored
   for( let i = 0, len = ins.length; i < len; i++ )
   {
-    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 )
+    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
     if( index >= 0 )
     {
       let subValue = sub[ i ];
@@ -4160,6 +4761,200 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   }
 
   return result;
+}
+
+//
+
+function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedArrayOnce.apply( this, arguments );
+    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    let newResult = arrayReplacedArrayOnce.apply( this, arguments );
+    _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedArrayOnce.apply( this, arguments );
+  }
+
+  return result;
+}
+
+//
+
+function arrayReplaceArrays( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  arrayReplacedArrays.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayReplaceArraysOnce( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  arrayReplacedArraysOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedArraysOnce.apply( this, arguments );
+
+    let expected = 0;
+    for( let i = ins.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( ins[ i ] ) )
+      expected += ins[ i ].length;
+      else
+      expected += 1;
+    }
+
+    _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    let newResult = arrayReplacedArrayOnce.apply( this, arguments );
+    _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedArrayOnce.apply( this, arguments );
+  }
+
+  return dstArray;
+
+}
+
+//
+
+function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
+  _.assert( _.longIs( sub ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( _.longIs( ins ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+
+  let result = 0;
+  let oldDstArray = dstArray.slice();  // Array with src values stored
+
+  function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
+  {
+    let dstArray2 = oldDstArray.slice();
+    //let index = dstArray.indexOf( argument );
+    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+
+    while( index !== -1 )
+    {
+      dstArray2.splice( index, 1, subValue );
+      dstArray.splice( index, 1, subValue );
+      result += 1;
+      index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    }
+  }
+
+  for( let a = ins.length - 1; a >= 0; a-- )
+  {
+    if( _.longIs( ins[ a ] ) )
+    {
+      let insArray = ins[ a ];
+      let subArray = sub[ a ];
+
+      for( let i = insArray.length - 1; i >= 0; i-- )
+      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
+    }
+    else
+    {
+      _replace( dstArray, ins[ a ], sub[ a ], evaluator1, evaluator2 );
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+{
+  _.assert( 3 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
+  _.assert( _.longIs( sub ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( _.longIs( ins ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+
+  let result = 0;
+  let oldDstArray = dstArray.slice();  // Array with src values stored
+
+  function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
+  {
+    let dstArray2 = oldDstArray.slice();
+    //let index = dstArray.indexOf( argument );
+    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+
+    if( index !== -1 )
+    {
+      dstArray2.splice( index, 1, subValue );
+      dstArray.splice( index, 1, subValue );
+      result += 1;
+    }
+  }
+
+  for( let a = ins.length - 1; a >= 0; a-- )
+  {
+    if( _.longIs( ins[ a ] ) )
+    {
+      let insArray = ins[ a ];
+      let subArray = sub[ a ];
+
+      for( let i = insArray.length - 1; i >= 0; i-- )
+      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
+    }
+    else
+    {
+      _replace( dstArray, ins[ a ], sub[ a ], evaluator1, evaluator2 );
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+{
+  let result;
+  if( Config.debug )
+  {
+    result = arrayReplacedArraysOnce.apply( this, arguments );
+
+    let expected = 0;
+    for( let i = ins.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( ins[ i ] ) )
+      expected += ins[ i ].length;
+      else
+      expected += 1;
+    }
+
+    _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    let newResult = arrayReplacedArrayOnce.apply( this, arguments );
+    _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
+  }
+  else
+  {
+    result = arrayReplacedArrayOnce.apply( this, arguments );
+  }
+
+  return result;
+
 }
 
 //
@@ -4366,23 +5161,33 @@ let Routines =
   arrayPrependUnrolling,
   arrayPrepend_,
 
-  arrayPrependElement,
+  arrayPrepend,
   arrayPrependOnce,
   arrayPrependOnceStrictly,
-  arrayPrependedElement,
+  arrayPrepended,
   arrayPrependedOnce,
+  arrayPrependedOnceStrictly,
+
+  arrayPrependElement,
+  arrayPrependElementOnce,
+  arrayPrependElementOnceStrictly,
+  arrayPrependedElement,
+  arrayPrependedElementOnce,
+  arrayPrependedElementOnceStrictly,
 
   arrayPrependArray,
   arrayPrependArrayOnce,
   arrayPrependArrayOnceStrictly,
   arrayPrependedArray,
   arrayPrependedArrayOnce,
+  arrayPrependedArrayOnceStrictly,
 
   arrayPrependArrays,
   arrayPrependArraysOnce,
   arrayPrependArraysOnceStrictly,
   arrayPrependedArrays,
   arrayPrependedArraysOnce,
+  arrayPrependedArraysOnceStrictly,
 
   // array append
 
@@ -4390,30 +5195,39 @@ let Routines =
   arrayAppendUnrolling,
   arrayAppend_,
 
-  arrayAppendElement, /* qqq : fill gaps */
+  arrayAppend,
   arrayAppendOnce,
   arrayAppendOnceStrictly,
-  arrayAppendedElement,
+  arrayAppended,
   arrayAppendedOnce,
+  arrayAppendedOnceStrictly,
+
+  arrayAppendElement, /* qqq : fill gaps */
+  arrayAppendElementOnce,
+  arrayAppendElementOnceStrictly,
+  arrayAppendedElement,
+  arrayAppendedElementOnce,
+  arrayAppendedElementOnceStrictly,
 
   arrayAppendArray,
   arrayAppendArrayOnce,
   arrayAppendArrayOnceStrictly,
   arrayAppendedArray,
   arrayAppendedArrayOnce,
+  arrayAppendedArrayOnceStrictly,
 
   arrayAppendArrays,
   arrayAppendArraysOnce,
   arrayAppendArraysOnceStrictly,
   arrayAppendedArrays,
   arrayAppendedArraysOnce,
+  arrayAppendedArraysOnceStrictly,
 
   // array remove
 
   arrayRemove,
   arrayRemoveOnce,
   arrayRemoveOnceStrictly,
-
   arrayRemoved,
   arrayRemovedOnce,
   arrayRemovedOnceStrictly,
@@ -4421,7 +5235,6 @@ let Routines =
   arrayRemoveElement, /* should remove all */
   arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly,
-
   arrayRemovedElement,
   arrayRemovedElementOnce,
   arrayRemovedElementOnceStrictly,
@@ -4452,18 +5265,37 @@ let Routines =
   arrayFlattenOnceStrictly,
   arrayFlattened,
   arrayFlattenedOnce,
+  arrayFlattenedOnceStrictly,
 
   // array replace
 
+  arrayReplace,
   arrayReplaceOnce,
   arrayReplaceOnceStrictly,
-
+  arrayReplaced,
   arrayReplacedOnce,
   arrayReplacedOnceStrictly, /* qqq implement */
 
+  arrayReplaceElement,
+  arrayReplaceElementOnce,
+  arrayReplaceElementOnceStrictly,
+  arrayReplacedElement,
+  arrayReplacedElementOnce,
+  arrayReplacedElementOnceStrictly,
+
+  arrayReplaceArray,
   arrayReplaceArrayOnce,
   arrayReplaceArrayOnceStrictly,
+  arrayReplacedArray,
   arrayReplacedArrayOnce,
+  arrayReplacedArrayOnceStrictly,
+
+  arrayReplaceArrays,
+  arrayReplaceArraysOnce,
+  arrayReplaceArraysOnceStrictly,
+  arrayReplacedArrays,
+  arrayReplacedArraysOnce,
+  arrayReplacedArraysOnceStrictly,
 
   arrayReplaceAll,
   arrayReplacedAll,
