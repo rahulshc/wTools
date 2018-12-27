@@ -42,11 +42,10 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "wTesting": "",
     "wFiles": "",
     "wcloner": "",
     "wstringer": "",
-    "wTools": "."
+    "wTesting": ""
   },
   "keywords": [
     "base",
