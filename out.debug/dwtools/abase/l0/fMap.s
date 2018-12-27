@@ -1835,7 +1835,7 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 // map manipulator
 // --
 
-function mapSetWithKeys( dstMap,srcArray,val )
+function mapSetWithKeys( dstMap, srcArray, val )
 {
 
   _.assert( _.objectIs( dstMap ) );
@@ -5055,221 +5055,222 @@ let Routines =
 
   // map checker
 
-  objectIs : objectIs,
-  objectLike : objectLike,
-  objectLikeOrRoutine : objectLikeOrRoutine,
-  mapIs : mapIs,
-  mapIsPure : mapIsPure,
-  mapIsPopulated : mapIsPopulated,
-  mapLike : mapLike,
+  objectIs,
+  objectLike,
+  objectLikeOrRoutine,
+  mapIs,
+  mapIsPure,
+  mapIsPopulated,
+  mapLike,
 
-  mapIdentical : mapIdentical,
-  mapContain : mapContain,
+  mapIdentical,
+  mapContain,
 
-  mapSatisfy : mapSatisfy,
-  _mapSatisfy : _mapSatisfy,
+  mapSatisfy,
+  _mapSatisfy,
 
   mapHas : mapHasKey,
-  mapHasKey : mapHasKey,
-  mapOwnKey : mapOwnKey,
-  mapHasVal : mapHasVal,
-  mapOwnVal : mapOwnVal,
+  mapHasKey,
+  mapOwnKey,
+  mapHasVal,
+  mapOwnVal,
 
-  mapHasAll : mapHasAll,
-  mapHasAny : mapHasAny,
-  mapHasNone : mapHasNone,
+  mapHasAll,
+  mapHasAny,
+  mapHasNone,
 
-  mapOwnAll : mapOwnAll,
-  mapOwnAny : mapOwnAny,
-  mapOwnNone : mapOwnNone,
+  mapOwnAll,
+  mapOwnAny,
+  mapOwnNone,
 
-  mapHasExactly : mapHasExactly,
-  mapOwnExactly : mapOwnExactly,
+  mapHasExactly,
+  mapOwnExactly,
 
-  mapHasOnly : mapHasOnly,
-  mapOwnOnly : mapOwnOnly,
+  mapHasOnly,
+  mapOwnOnly,
 
-  // mapHasAll : mapHasAll,
-  // mapOwnAll : mapOwnAll,
-  // mapHasNone : mapHasNone,
-  // mapOwnNone : mapOwnNone,
+  // mapHasAll,
+  // mapOwnAll,
+  // mapHasNone,
+  // mapOwnNone,
 
-  mapHasNoUndefine : mapHasNoUndefine,
+  mapHasNoUndefine,
 
   // map extend
 
-  mapMake : mapMake,
-  mapShallowClone : mapShallowClone,
-  mapCloneAssigning : mapCloneAssigning, /* dubious */
+  mapMake,
+  mapShallowClone,
+  mapCloneAssigning, /* dubious */
 
-  mapExtend : mapExtend,
-  mapsExtend : mapsExtend,
-  mapExtendConditional : mapExtendConditional,
-  mapsExtendConditional : mapsExtendConditional,
+  mapExtend,
+  mapsExtend,
+  mapExtendConditional,
+  mapsExtendConditional,
 
-  mapExtendHiding : mapExtendHiding,
-  mapsExtendHiding : mapsExtendHiding,
-  mapExtendAppendingAnything : mapExtendAppendingAnything,
-  mapsExtendAppendingAnything : mapsExtendAppendingAnything,
-  mapExtendAppendingArrays : mapExtendAppendingArrays,
-  mapsExtendAppendingArrays : mapsExtendAppendingArrays,
-  mapExtendByDefined : mapExtendByDefined,
-  mapsExtendByDefined : mapsExtendByDefined,
-  mapExtendNulls : mapExtendNulls,
-  mapsExtendNulls : mapsExtendNulls,
+  mapExtendHiding,
+  mapsExtendHiding,
+  mapExtendAppendingAnything,
+  mapsExtendAppendingAnything,
+  mapExtendAppendingArrays,
+  mapsExtendAppendingArrays,
+  mapExtendByDefined,
+  mapsExtendByDefined,
+  mapExtendNulls,
+  mapsExtendNulls,
 
-  mapSupplement : mapSupplement,
-  mapSupplementNulls : mapSupplementNulls,
-  mapSupplementNils : mapSupplementNils,
-  mapSupplementAssigning : mapSupplementAssigning,
-  mapSupplementAppending : mapSupplementAppending,
-  mapsSupplementAppending : mapsSupplementAppending,
+  mapSupplement,
+  mapSupplementNulls,
+  mapSupplementNils,
+  mapSupplementAssigning,
+  mapSupplementAppending,
+  mapsSupplementAppending,
 
-  mapSupplementOwn : mapSupplementOwn,
-  mapsSupplementOwn : mapsSupplementOwn,
-  mapSupplementOwnAssigning : mapSupplementOwnAssigning,
-  mapSupplementOwnFromDefinition : mapSupplementOwnFromDefinition,
-  mapSupplementOwnFromDefinitionStrictlyPrimitives : mapSupplementOwnFromDefinitionStrictlyPrimitives,
+  mapSupplementOwn,
+  mapsSupplementOwn,
+  mapSupplementOwnAssigning,
+  mapSupplementOwnFromDefinition,
+  mapSupplementOwnFromDefinitionStrictlyPrimitives,
 
-  mapComplement : mapComplement,
-  mapsComplement : mapsComplement,
-  mapComplementReplacingUndefines : mapComplementReplacingUndefines,
-  mapsComplementReplacingUndefines : mapsComplementReplacingUndefines,
-  mapComplementPreservingUndefines : mapComplementPreservingUndefines,
-  mapsComplementPreservingUndefines : mapsComplementPreservingUndefines,
+  mapComplement,
+  mapsComplement,
+  mapComplementReplacingUndefines,
+  mapsComplementReplacingUndefines,
+  mapComplementPreservingUndefines,
+  mapsComplementPreservingUndefines,
 
   // map extend recursive
 
-  mapExtendRecursiveConditional : mapExtendRecursiveConditional,
-  mapsExtendRecursiveConditional : mapsExtendRecursiveConditional,
-  _mapExtendRecursiveConditional : _mapExtendRecursiveConditional,
+  mapExtendRecursiveConditional,
+  mapsExtendRecursiveConditional,
+  _mapExtendRecursiveConditional,
 
-  mapExtendRecursive : mapExtendRecursive,
-  mapsExtendRecursive : mapsExtendRecursive,
-  _mapExtendRecursive : _mapExtendRecursive,
+  mapExtendRecursive,
+  mapsExtendRecursive,
+  _mapExtendRecursive,
 
-  mapExtendAppendingAnythingRecursive : mapExtendAppendingAnythingRecursive,
-  mapsExtendAppendingAnythingRecursive : mapsExtendAppendingAnythingRecursive,
-  mapExtendAppendingArraysRecursive : mapExtendAppendingArraysRecursive,
-  mapsExtendAppendingArraysRecursive : mapsExtendAppendingArraysRecursive,
-  mapExtendAppendingOnceRecursive : mapExtendAppendingOnceRecursive,
-  mapsExtendAppendingOnceRecursive : mapsExtendAppendingOnceRecursive,
+  mapExtendAppendingAnythingRecursive,
+  mapsExtendAppendingAnythingRecursive,
+  mapExtendAppendingArraysRecursive,
+  mapsExtendAppendingArraysRecursive,
+  mapExtendAppendingOnceRecursive,
+  mapsExtendAppendingOnceRecursive,
 
-  mapSupplementRecursive : mapSupplementRecursive,
-  mapSupplementByMapsRecursive : mapSupplementByMapsRecursive,
-  mapSupplementOwnRecursive : mapSupplementOwnRecursive,
-  mapsSupplementOwnRecursive : mapsSupplementOwnRecursive,
-  mapSupplementRemovingRecursive : mapSupplementRemovingRecursive,
-  mapSupplementByMapsRemovingRecursive : mapSupplementByMapsRemovingRecursive,
+  mapSupplementRecursive,
+  mapSupplementByMapsRecursive,
+  mapSupplementOwnRecursive,
+  mapsSupplementOwnRecursive,
+  mapSupplementRemovingRecursive,
+  mapSupplementByMapsRemovingRecursive,
 
   // map manipulator
 
-  mapSetWithKeys : mapSetWithKeys,
-  mapDelete : mapDelete,
+  mapSetWithKeys,
+  mapSet : mapSetWithKeys,
+  mapDelete,
 
   // map transformer
 
-  mapInvert : mapInvert,
-  mapInvertDroppingDuplicates : mapInvertDroppingDuplicates,
-  mapsFlatten : mapsFlatten,
-  mapsFlatten2 : mapsFlatten2,
+  mapInvert,
+  mapInvertDroppingDuplicates,
+  mapsFlatten,
+  mapsFlatten2,
 
-  mapToArray : mapToArray, /* qqq : test required */
-  mapToStr : mapToStr, /* experimental */
+  mapToArray, /* qqq : test required */
+  mapToStr, /* experimental */
 
   // map selector
 
-  _mapEnumerableKeys : _mapEnumerableKeys,
+  _mapEnumerableKeys,
 
-  _mapKeys : _mapKeys,
-  mapKeys : mapKeys,
-  mapOwnKeys : mapOwnKeys,
-  mapAllKeys : mapAllKeys,
+  _mapKeys,
+  mapKeys,
+  mapOwnKeys,
+  mapAllKeys,
 
-  _mapVals : _mapVals,
-  mapVals : mapVals,
-  mapOwnVals : mapOwnVals,
-  mapAllVals : mapAllVals,
+  _mapVals,
+  mapVals,
+  mapOwnVals,
+  mapAllVals,
 
-  _mapPairs : _mapPairs,
-  mapPairs : mapPairs,
-  mapOwnPairs : mapOwnPairs,
-  mapAllPairs : mapAllPairs,
+  _mapPairs,
+  mapPairs,
+  mapOwnPairs,
+  mapAllPairs,
 
-  _mapProperties : _mapProperties,
+  _mapProperties,
 
-  properties : mapProperties,
-  mapProperties : mapProperties,
-  mapOwnProperties : mapOwnProperties,
-  mapAllProperties : mapAllProperties,
+  mapProperties,
+  mapProperties,
+  mapOwnProperties,
+  mapAllProperties,
 
-  routines : mapRoutines,
-  mapRoutines : mapRoutines,
-  mapOwnRoutines : mapOwnRoutines,
-  mapAllRoutines : mapAllRoutines,
+  mapRoutines,
+  mapRoutines,
+  mapOwnRoutines,
+  mapAllRoutines,
 
-  fields : mapFields,
-  mapFields : mapFields,
-  mapOwnFields : mapOwnFields,
-  mapAllFields : mapAllFields,
+  mapFields,
+  mapFields,
+  mapOwnFields,
+  mapAllFields,
 
-  mapOnlyPrimitives : mapOnlyPrimitives,
-  mapFirstPair : mapFirstPair,
-  mapValsSet : mapValsSet,
-  mapSelect : mapSelect,
+  mapOnlyPrimitives,
+  mapFirstPair,
+  mapValsSet,
+  mapSelect,
 
-  mapValWithIndex : mapValWithIndex,
-  mapKeyWithIndex : mapKeyWithIndex,
-  mapKeyWithValue : mapKeyWithValue,
-  mapIndexWithKey : mapIndexWithKey,
-  mapIndexWithValue : mapIndexWithValue,
+  mapValWithIndex,
+  mapKeyWithIndex,
+  mapKeyWithValue,
+  mapIndexWithKey,
+  mapIndexWithValue,
 
-  mapNulls : mapNulls,
-  mapButNulls : mapButNulls,
+  mapNulls,
+  mapButNulls,
 
   // map logic operator
 
-  mapButConditional : mapButConditional,
-  mapBut : mapBut,
-  mapButIgnoringUndefines : mapButIgnoringUndefines,
-  mapOwnBut : mapOwnBut,
+  mapButConditional,
+  mapBut,
+  mapButIgnoringUndefines,
+  mapOwnBut,
 
-  mapOnly : mapOnly,
-  mapOnlyOwn : mapOnlyOwn,
-  mapOnlyComplementing : mapOnlyComplementing,
-  _mapOnly : _mapOnly,
+  mapOnly,
+  mapOnlyOwn,
+  mapOnlyComplementing,
+  _mapOnly,
 
   // map surer
 
-  sureMapHasExactly : sureMapHasExactly,
-  sureMapOwnExactly : sureMapOwnExactly,
+  sureMapHasExactly,
+  sureMapOwnExactly,
 
-  sureMapHasOnly : sureMapHasOnly,
-  sureMapOwnOnly : sureMapOwnOnly,
+  sureMapHasOnly,
+  sureMapOwnOnly,
 
-  sureMapHasAll : sureMapHasAll,
-  sureMapOwnAll : sureMapOwnAll,
+  sureMapHasAll,
+  sureMapOwnAll,
 
-  sureMapHasNone : sureMapHasNone,
-  sureMapOwnNone : sureMapOwnNone,
+  sureMapHasNone,
+  sureMapOwnNone,
 
-  sureMapHasNoUndefine : sureMapHasNoUndefine,
+  sureMapHasNoUndefine,
 
   // map assert
 
-  assertMapHasFields : assertMapHasFields,
-  assertMapOwnFields : assertMapOwnFields,
+  assertMapHasFields,
+  assertMapOwnFields,
 
-  assertMapHasOnly : assertMapHasOnly,
-  assertMapOwnOnly : assertMapOwnOnly,
+  assertMapHasOnly,
+  assertMapOwnOnly,
 
-  assertMapHasNone : assertMapHasNone,
-  assertMapOwnNone : assertMapOwnNone,
+  assertMapHasNone,
+  assertMapOwnNone,
 
-  assertMapHasAll : assertMapHasAll,
-  assertMapOwnAll : assertMapOwnAll,
+  assertMapHasAll,
+  assertMapOwnAll,
 
-  assertMapHasNoUndefine : assertMapHasNoUndefine,
+  assertMapHasNoUndefine,
 
 }
 
