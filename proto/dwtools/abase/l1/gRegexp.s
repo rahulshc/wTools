@@ -831,48 +831,30 @@ let Routines =
 
   // regexp
 
-  // regexpIs : regexpIs,
-  // regexpObjectIs : regexpObjectIs,
-  // regexpLike : regexpLike,
-  // regexpsLike : regexpsLike,
-  // regexpsAreIdentical : regexpsAreIdentical,
-  //
-  // _regexpTest : _regexpTest,
-  // regexpTest : regexpTest,
-  //
-  // regexpTestAll : regexpTestAll,
-  // regexpTestAny : regexpTestAny,
-  // regexpTestNone : regexpTestNone,
-  //
-  // regexpsTestAll : regexpsTestAll,
-  // regexpsTestAny : regexpsTestAny,
-  // regexpsTestNone : regexpsTestNone,
-
-  regexpEscape : regexpEscape,
+  regexpEscape,
   regexpsEscape : _.routineVectorize_functor( regexpEscape ),
 
-  regexpMakeArray : regexpArrayMake,
-  regexpFrom : regexpFrom,
+  regexpArrayMake,
+  regexpFrom,
 
-  regexpMaybeFrom : regexpMaybeFrom,
+  regexpMaybeFrom,
   regexpsMaybeFrom : _.routineVectorize_functor({ routine : regexpMaybeFrom, select : 'srcStr' }),
-  // regexpsMaybeFrom : _.Later( _, _.routineVectorize_functor, { routine : regexpMaybeFrom, select : 'srcStr' } ),
 
-  regexpsSources : regexpsSources,
-  regexpsJoin : regexpsJoin,
-  regexpsJoinEscaping : regexpsJoinEscaping,
-  regexpsAtLeastFirst : regexpsAtLeastFirst,
-  regexpsAtLeastFirstOnly : regexpsAtLeastFirstOnly,
+  regexpsSources,
+  regexpsJoin,
+  regexpsJoinEscaping,
+  regexpsAtLeastFirst,
+  regexpsAtLeastFirstOnly,
 
-  regexpsNone : regexpsNone,
-  regexpsAny : regexpsAny,
-  regexpsAll : regexpsAll,
+  regexpsNone,
+  regexpsAny,
+  regexpsAll,
 
-  regexpArrayMake : regexpArrayMake,
-  regexpArrayIndex : regexpArrayIndex,
-  regexpArrayAny : regexpArrayAny,
-  regexpArrayAll : regexpArrayAll,
-  regexpArrayNone : regexpArrayNone,
+  regexpArrayMake,
+  regexpArrayIndex,
+  regexpArrayAny,
+  regexpArrayAll,
+  regexpArrayNone,
 
 }
 
@@ -885,9 +867,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
