@@ -92,20 +92,22 @@ Self.__which__ = _global.__which__;
 
 // special globals
 
-if( !_realGlobal_.def  )
-{
-  _realGlobal_.def = Symbol.for( 'default' );
-  _realGlobal_.nothing = Symbol.for( 'nothing' );
-  _realGlobal_.dont = Symbol.for( 'dont' );
-  _realGlobal_.dontUp = Symbol.for( 'dontUp' );
-  _realGlobal_.dontSibling = Symbol.for( 'dontSibling' );
-}
+Self.def = Symbol.for( 'def' );
+Self.nothing = Symbol.for( 'nothing' );
+Self.maybe = Symbol.for( 'maybe' );
+Self.dont = Symbol.for( 'dont' );
+Self.dontUp = Symbol.for( 'dontUp' );
+Self.dontSibling = Symbol.for( 'dontSibling' );
 
-Self.def = _global_.def;
-Self.nothing = _global_.nothing;
-Self.dont = _global_.dont;
-Self.dontUp = _global_.dontUp;
-Self.dontSibling = _global_.dontSibling;
+// if( !_realGlobal_.def  )
+// {
+//   _realGlobal_.def = Self.def;
+//   _realGlobal_.nothing = Self.nothing;
+//   _realGlobal_.maybe = Self.maybe;
+//   _realGlobal_.dont = Self.dont;
+//   _realGlobal_.dontUp = Self.dontUp;
+//   _realGlobal_.dontSibling = Self.dontSibling;
+// }
 
 // type aliases
 

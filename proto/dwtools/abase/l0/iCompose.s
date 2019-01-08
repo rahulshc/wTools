@@ -79,7 +79,7 @@ function composeAllSupervisor( self, args, act, op )
   _.assert( !!result );
   if( !result.length )
   return result;
-  if( result[ result.length-1 ] === dont )
+  if( result[ result.length-1 ] === _.dont )
   return false;
   if( !_.all( result ) )
   return false;
