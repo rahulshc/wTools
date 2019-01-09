@@ -37,7 +37,7 @@ function objectIs( src )
 {
   // if( !src )
   // return false;
-  // if( _ObjectHasOwnProperty.call( src,'callee' ) )
+  // if( _ObjectHasOwnProperty.call( src, 'callee' ) )
   // return false;
   // if( src instanceof Array )
   // return true;
@@ -201,7 +201,7 @@ function mapLike( src )
  * @memberof wTools
  */
 
-function mapIdentical( src1,src2 )
+function mapIdentical( src1, src2 )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -251,7 +251,7 @@ function mapIdentical( src1,src2 )
  * @memberof wTools
  */
 
-function mapContain( src,ins )
+function mapContain( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -276,11 +276,11 @@ function mapContain( src,ins )
 
 //
 //
-// function mapHas( object,name )
+// function mapHas( object, name )
 // {
 //   let name = _.nameUnfielded( name ).coded;
 //
-//   let descriptor = Object.getOwnPropertyDescriptor( object,name );
+//   let descriptor = Object.getOwnPropertyDescriptor( object, name );
 //
 //   if( !descriptor )
 //   return false;
@@ -332,7 +332,7 @@ function mapSatisfy( o )
   _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
   _.assert( o.src !== undefined );
 
-  _.routineOptions( mapSatisfy,o );
+  _.routineOptions( mapSatisfy, o );
 
   return _mapSatisfy( o.template, o.src, o.src, o.levels );
 }
@@ -419,7 +419,7 @@ function _mapSatisfy( template, src, root, levels )
 
 //
 
-function mapHasKey( object,key )
+function mapHasKey( object, key )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -431,7 +431,7 @@ function mapHasKey( object,key )
   else if( _.symbolIs( key ) )
   return ( key in object );
 
-  _.assert( 0,'mapHasKey :','unknown type of key :',_.strType( key ) );
+  _.assert( 0, 'mapHasKey :', 'unknown type of key :', _.strType( key ) );
 }
 
 //
@@ -474,12 +474,12 @@ function mapOwnKey( object, key )
   else if( _.symbolIs( key ) )
   return _ObjectHasOwnProperty.call( object, key );
 
-  _.assert( 0,'mapOwnKey :','unknown type of key :',_.strType( key ) );
+  _.assert( 0, 'mapOwnKey :', 'unknown type of key :', _.strType( key ) );
 }
 
 //
 
-function mapHasVal( object,val )
+function mapHasVal( object, val )
 {
   let vals = _.mapVals( object );
   return vals.indexOf( val ) !== -1;
@@ -487,7 +487,7 @@ function mapHasVal( object,val )
 
 //
 
-function mapOwnVal( object,val )
+function mapOwnVal( object, val )
 {
   let vals = _.mapOwnVals( object );
   return vals.indexOf( val ) !== -1;
@@ -519,7 +519,7 @@ function mapOwnVal( object,val )
  * @memberof wTools
  */
 
-function mapHasAll( src,screen )
+function mapHasAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.objectLike( src ) );
@@ -563,7 +563,7 @@ function mapHasAll( src,screen )
  * @memberof wTools
  */
 
-function mapHasAny( src,screen )
+function mapHasAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.objectLike( src ) );
@@ -654,7 +654,7 @@ function mapHasNone( src, screen )
  * @memberof wTools
  */
 
-function mapOwnAll( src,screen )
+function mapOwnAll( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
@@ -662,9 +662,9 @@ function mapOwnAll( src,screen )
 
   for( let k in screen )
   {
-    if( !_ObjectHasOwnProperty.call( src,k ) )
+    if( !_ObjectHasOwnProperty.call( src, k ) )
     debugger;
-    if( !_ObjectHasOwnProperty.call( src,k ) )
+    if( !_ObjectHasOwnProperty.call( src, k ) )
     return false;
   }
 
@@ -701,7 +701,7 @@ function mapOwnAll( src,screen )
  * @memberof wTools
  */
 
-function mapOwnAny( src,screen )
+function mapOwnAny( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
@@ -709,9 +709,9 @@ function mapOwnAny( src,screen )
 
   for( let k in screen )
   {
-    if( _ObjectHasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src, k ) )
     debugger;
-    if( _ObjectHasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src, k ) )
     return true;
   }
 
@@ -748,7 +748,7 @@ function mapOwnAny( src,screen )
  * @memberof wTools
  */
 
-function mapOwnNone( src,screen )
+function mapOwnNone( src, screen )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.mapIs( src ) );
@@ -756,9 +756,9 @@ function mapOwnNone( src,screen )
 
   for( let k in screen )
   {
-    if( _ObjectHasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src, k ) )
     debugger;
-    if( _ObjectHasOwnProperty.call( src,k ) )
+    if( _ObjectHasOwnProperty.call( src, k ) )
     return false;
   }
 
@@ -833,7 +833,7 @@ function mapOwnOnly( srcMap, screenMaps )
 //
 //   _.assert( arguments.length === 2 );
 //
-//   let but = Object.keys( _.mapBut( all,srcMap ) );
+//   let but = Object.keys( _.mapBut( all, srcMap ) );
 //
 //   if( but.length > 0 )
 //   return false;
@@ -848,7 +848,7 @@ function mapOwnOnly( srcMap, screenMaps )
 //
 //   _.assert( arguments.length === 2 );
 //
-//   let but = Object.keys( _.mapOwnBut( all,srcMap ) );
+//   let but = Object.keys( _.mapOwnBut( all, srcMap ) );
 //
 //   if( but.length > 0 )
 //   return false;
@@ -931,7 +931,7 @@ function mapMake()
   let args = _.longSlice( arguments );
   args.unshift( Object.create( null ) );
   _.assert( !_.primitiveIs( arguments[ 0 ] ) || arguments[ 0 ] === null );
-  return _.mapExtend.apply( _,args );
+  return _.mapExtend.apply( _, args );
 }
 
 //
@@ -991,12 +991,12 @@ function mapCloneAssigning( o )
   o.dstMap = o.dstMap || Object.create( null );
 
   _.assert( _.mapIs( o ) );
-  _.assert( arguments.length === 1,'mapCloneAssigning :','Expects {-srcMap-} as argument' );
-  _.assert( _.objectLike( o.srcMap ),'mapCloneAssigning :','Expects {-srcMap-} as argument' );
+  _.assert( arguments.length === 1, 'mapCloneAssigning :', 'Expects {-srcMap-} as argument' );
+  _.assert( _.objectLike( o.srcMap ), 'mapCloneAssigning :', 'Expects {-srcMap-} as argument' );
   _.routineOptions( mapCloneAssigning, o );
 
   if( !o.onField )
-  o.onField = function onField( dstContainer,srcContainer,key )
+  o.onField = function onField( dstContainer, srcContainer, key )
   {
     _.assert( _.strIs( key ) );
     dstContainer[ key ] = srcContainer[ key ];
@@ -1004,8 +1004,8 @@ function mapCloneAssigning( o )
 
   for( let k in o.srcMap )
   {
-    if( _ObjectHasOwnProperty.call( o.srcMap,k ) )
-    o.onField( o.dstMap,o.srcMap,k,o.onField );
+    if( _ObjectHasOwnProperty.call( o.srcMap, k ) )
+    o.onField( o.dstMap, o.srcMap, k, o.onField );
   }
 
   Object.setPrototypeOf( o.dstMap, Object.getPrototypeOf( o.srcMap ) );
@@ -1056,13 +1056,13 @@ function mapExtend( dstMap, srcMap )
   return Object.assign( dstMap, srcMap );
 
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as the first argument' );
+  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as the first argument' );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
     let srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'Expects non primitive' );
+    _.assert( !_.primitiveIs( srcMap ), 'Expects non primitive' );
 
     if( Object.getPrototypeOf( srcMap ) === null )
     Object.assign( dstMap, srcMap );
@@ -1086,20 +1086,20 @@ function mapsExtend( dstMap, srcMaps )
   dstMap = Object.create( null );
 
   if( srcMaps.length === 1 && Object.getPrototypeOf( srcMaps[ 0 ] ) === null )
-  return Object.assign( dstMap,srcMaps[ 0 ] );
+  return Object.assign( dstMap, srcMaps[ 0 ] );
 
   if( !_.arrayLike( srcMaps ) )
   srcMaps = [ srcMaps ];
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.arrayLike( srcMaps ) );
-  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as the first argument' );
+  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as the first argument' );
 
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'Expects non primitive' );
+    _.assert( !_.primitiveIs( srcMap ), 'Expects non primitive' );
 
     if( Object.getPrototypeOf( srcMap ) === null )
     Object.assign( dstMap, srcMap );
@@ -1139,7 +1139,7 @@ function mapsExtend( dstMap, srcMaps )
  * @memberof wTools
  */
 
-function mapExtendConditional( filter,dstMap )
+function mapExtendConditional( filter, dstMap )
 {
 
   if( dstMap === null )
@@ -1147,15 +1147,15 @@ function mapExtendConditional( filter,dstMap )
 
   _.assert( !!filter );
   _.assert( filter.functionFamily === 'field-mapper' );
-  _.assert( arguments.length >= 3,'Expects more arguments' );
-  _.assert( _.routineIs( filter ),'Expects filter' );
-  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as argument' );
+  _.assert( arguments.length >= 3, 'Expects more arguments' );
+  _.assert( _.routineIs( filter ), 'Expects filter' );
+  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as argument' );
 
   for( let a = 2 ; a < arguments.length ; a++ )
   {
     let srcMap = arguments[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'mapExtendConditional : expects object-like entity to extend, but got :',_.strType( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -1179,15 +1179,15 @@ function mapsExtendConditional( filter, dstMap, srcMaps )
 
   _.assert( !!filter );
   _.assert( filter.functionFamily === 'field-mapper' );
-  _.assert( arguments.length === 3,'Expects exactly three arguments' );
-  _.assert( _.routineIs( filter ),'Expects filter' );
-  _.assert( !_.primitiveIs( dstMap ),'Expects non primitive as argument' );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+  _.assert( _.routineIs( filter ), 'Expects filter' );
+  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as argument' );
 
   for( let a = 0 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
 
-    _.assert( !_.primitiveIs( srcMap ),'Expects object-like entity to extend, but got :',_.strType( srcMap ) );
+    _.assert( !_.primitiveIs( srcMap ), () => 'Expects object-like entity to extend, but got : ' + _.strType( srcMap ) );
 
     for( let k in srcMap )
     {
@@ -1207,7 +1207,7 @@ function mapExtendHiding( dstMap )
 {
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.hiding );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1226,7 +1226,7 @@ function mapExtendAppendingAnything( dstMap )
   return _.mapExtend( null, srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.appendingAnything );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1247,7 +1247,7 @@ function mapExtendAppendingArrays( dstMap )
   return _.mapExtend( null, srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.appendingArrays );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1268,7 +1268,7 @@ function mapExtendByDefined( dstMap )
   return _.mapExtend( null, srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.srcDefined );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1285,7 +1285,7 @@ function mapExtendNulls( dstMap )
 {
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.srcNull );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1314,13 +1314,13 @@ function mapsExtendNulls( dstMap, srcMaps )
  * @memberof wTools
  */
 
-function mapSupplement( dstMap,srcMap )
+function mapSupplement( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
   return _.mapExtend( null, srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotHas );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1339,7 +1339,7 @@ function mapSupplementNulls( dstMap )
 {
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotHasOrHasNull );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1348,7 +1348,7 @@ function mapSupplementNils( dstMap )
 {
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotHasOrHasNil );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1358,7 +1358,7 @@ function mapSupplementAssigning( dstMap )
   let args = _.longSlice( arguments );
   // args.unshift( _.field.mapper.dstNotOwnAssigning );
   args.unshift( _.field.mapper.dstNotHasAssigning );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1369,7 +1369,7 @@ function mapSupplementAppending( dstMap )
   return _.mapExtend( null, srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotHasAppending );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1386,10 +1386,10 @@ function mapsSupplementAppending( dstMap, srcMaps )
 function mapSupplementOwn( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( dstMap,srcMap );
+  return _.mapExtend( dstMap, srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotOwn );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1408,7 +1408,7 @@ function mapSupplementOwnAssigning( dstMap )
 {
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnAssigning );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1487,11 +1487,11 @@ function mapsComplement( dstMap, srcMaps )
 
 //
 
-function mapComplementReplacingUndefines( dstMap,srcMap )
+function mapComplementReplacingUndefines( dstMap, srcMap )
 {
   _.assert( !!_.field.mapper );
   if( arguments.length === 2 )
-  return _.mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning,dstMap,srcMap );
+  return _.mapExtendConditional( _.field.mapper.dstNotOwnOrUndefinedAssigning, dstMap, srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnOrUndefinedAssigning );
   return _.mapExtendConditional.apply( this, args );
@@ -1511,7 +1511,7 @@ function mapComplementPreservingUndefines( dstMap )
 {
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotOwnAssigning );
-  return _.mapExtendConditional.apply( this,args );
+  return _.mapExtendConditional.apply( this, args );
 }
 
 //
@@ -1557,7 +1557,7 @@ function mapExtendRecursiveConditional( filters, dstMap, srcMap )
 {
   _.assert( arguments.length >= 3, 'Expects at least three arguments' );
   _.assert( this === Self );
-  let srcMaps = _.longSlice( arguments,2 );
+  let srcMaps = _.longSlice( arguments, 2 );
   return _.mapsExtendRecursiveConditional( filters, dstMap, srcMaps );
 }
 
@@ -1616,18 +1616,18 @@ function _mapExtendRecursiveConditional( filters, dstMap, srcMap )
     if( _.mapIs( srcMap[ s ] ) )
     {
 
-      if( filters.onUpFilter( dstMap,srcMap,s ) === true )
+      if( filters.onUpFilter( dstMap, srcMap, s ) === true )
       {
         if( !_.objectIs( dstMap[ s ] ) )
         dstMap[ s ] = Object.create( null );
-        _mapExtendRecursiveConditional( filters,dstMap[ s ],srcMap[ s ] );
+        _mapExtendRecursiveConditional( filters, dstMap[ s ], srcMap[ s ] );
       }
 
     }
     else
     {
 
-      if( filters.onField( dstMap,srcMap,s ) === true )
+      if( filters.onField( dstMap, srcMap, s ) === true )
       dstMap[ s ] = srcMap[ s ];
 
     }
@@ -1638,7 +1638,7 @@ function _mapExtendRecursiveConditional( filters, dstMap, srcMap )
 
 //
 
-function mapExtendRecursive( dstMap,srcMap )
+function mapExtendRecursive( dstMap, srcMap )
 {
 
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
@@ -1647,7 +1647,7 @@ function mapExtendRecursive( dstMap,srcMap )
   for( let a = 1 ; a < arguments.length ; a++ )
   {
     srcMap = arguments[ a ];
-    _mapExtendRecursive( dstMap,srcMap );
+    _mapExtendRecursive( dstMap, srcMap );
   }
 
   return dstMap;
@@ -1655,7 +1655,7 @@ function mapExtendRecursive( dstMap,srcMap )
 
 //
 
-function mapsExtendRecursive( dstMap,srcMaps )
+function mapsExtendRecursive( dstMap, srcMaps )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -1664,7 +1664,7 @@ function mapsExtendRecursive( dstMap,srcMaps )
   for( let a = 1 ; a < srcMaps.length ; a++ )
   {
     let srcMap = srcMaps[ a ];
-    _mapExtendRecursive( dstMap,srcMap );
+    _mapExtendRecursive( dstMap, srcMap );
   }
 
   return dstMap;
@@ -1672,7 +1672,7 @@ function mapsExtendRecursive( dstMap,srcMaps )
 
 //
 
-function _mapExtendRecursive( dstMap,srcMap )
+function _mapExtendRecursive( dstMap, srcMap )
 {
 
   _.assert( _.objectIs( srcMap ) );
@@ -1685,7 +1685,7 @@ function _mapExtendRecursive( dstMap,srcMap )
 
       if( !_.objectIs( dstMap[ s ] ) )
       dstMap[ s ] = Object.create( null );
-      _mapExtendRecursive( dstMap[ s ],srcMap[ s ] );
+      _mapExtendRecursive( dstMap[ s ], srcMap[ s ] );
 
     }
     else
@@ -1708,7 +1708,7 @@ function mapExtendAppendingAnythingRecursive( dstMap, srcMap )
   let filters = { onField : _.field.mapper.appendingAnything, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
-  return _.mapExtendRecursiveConditional.apply( _,args );
+  return _.mapExtendRecursiveConditional.apply( _, args );
 }
 
 //
@@ -1730,7 +1730,7 @@ function mapExtendAppendingArraysRecursive( dstMap, srcMap )
   let filters = { onField : _.field.mapper.appendingArrays, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
-  return _.mapExtendRecursiveConditional.apply( _,args );
+  return _.mapExtendRecursiveConditional.apply( _, args );
 }
 
 //
@@ -1752,7 +1752,7 @@ function mapExtendAppendingOnceRecursive( dstMap, srcMap )
   let filters = { onField : _.field.mapper.appendingOnce, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
-  return _.mapExtendRecursiveConditional.apply( _,args );
+  return _.mapExtendRecursiveConditional.apply( _, args );
 }
 
 //
@@ -1774,7 +1774,7 @@ function mapSupplementRecursive( dstMap, srcMap )
   let filters = { onField : _.field.mapper.dstNotHas, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
-  return _.mapExtendRecursiveConditional.apply( _,args );
+  return _.mapExtendRecursiveConditional.apply( _, args );
 }
 
 //
@@ -1796,7 +1796,7 @@ function mapSupplementOwnRecursive( dstMap, srcMap )
   let filters = { onField : _.field.mapper.dstNotOwn, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
-  return _.mapExtendRecursiveConditional.apply( _,args );
+  return _.mapExtendRecursiveConditional.apply( _, args );
 }
 
 //
@@ -1818,7 +1818,7 @@ function mapSupplementRemovingRecursive( dstMap, srcMap )
   let filters = { onField : _.field.mapper.removing, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
-  return _.mapExtendRecursiveConditional.apply( _,args );
+  return _.mapExtendRecursiveConditional.apply( _, args );
 }
 
 //
@@ -1861,7 +1861,7 @@ function mapInvert( src, dst )
   if( dst )
   o.dst = dst;
 
-  _.routineOptions( mapInvert,o );
+  _.routineOptions( mapInvert, o );
 
   o.dst = o.dst || Object.create( null );
 
@@ -1891,7 +1891,7 @@ function mapInvert( src, dst )
     }
     else
     {
-      _.assert( o.dst[ e ] === undefined,'Cant invert the map, it has several keys with value',o.src[ k ] );
+      _.assert( o.dst[ e ] === undefined, 'Cant invert the map, it has several keys with value', o.src[ k ] );
       o.dst[ e ] = k;
     }
   }
@@ -1899,7 +1899,7 @@ function mapInvert( src, dst )
   /* */
 
   if( o.duplicate === 'delete' )
-  _.mapDelete( o.dst,del );
+  _.mapDelete( o.dst, del );
 
   return o.dst;
 }
@@ -1913,7 +1913,7 @@ mapInvert.defaults =
 
 //
 
-function mapInvertDroppingDuplicates( src,dst )
+function mapInvertDroppingDuplicates( src, dst )
 {
   dst = dst || Object.create( null );
 
@@ -1950,16 +1950,16 @@ function mapsFlatten( o )
   o = { src : o }
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapsFlatten,o );
+  _.routineOptions( mapsFlatten, o );
   _.assert( _.arrayIs( o.src ) )
 
   o.result = o.result || Object.create( null );
 
-  function extend( r,s )
+  function extend( r, s )
   {
     if( o.assertingUniqueness )
-    _.assertMapHasNone( r,s );
-    _.mapExtend( r,s );
+    _.assertMapHasNone( r, s );
+    _.mapExtend( r, s );
   }
 
   for( let a = 0 ; a < o.src.length ; a++ )
@@ -2153,7 +2153,7 @@ function mapToStr( o )
   if( _.strIs( o ) )
   o = { src : o }
 
-  _.routineOptions( mapToStr,o );
+  _.routineOptions( mapToStr, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   let result = '';
@@ -2162,7 +2162,7 @@ function mapToStr( o )
     result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
   }
 
-  result = result.substr( 0,result.length-o.entryDelimeter.length );
+  result = result.substr( 0, result.length-o.entryDelimeter.length );
 
   return result
 }
@@ -2178,7 +2178,7 @@ mapToStr.defaults =
 // map selector
 // --
 
-function _mapEnumerableKeys( srcMap,own )
+function _mapEnumerableKeys( srcMap, own )
 {
   let result = [];
 
@@ -2188,7 +2188,7 @@ function _mapEnumerableKeys( srcMap,own )
   if( own )
   {
     for( let k in srcMap )
-    if( _ObjectHasOwnProperty.call( srcMap,k ) )
+    if( _ObjectHasOwnProperty.call( srcMap, k ) )
     result.push( k );
   }
   else
@@ -2207,26 +2207,26 @@ function _mapKeys( o )
 {
   let result = [];
 
-  _.routineOptions( _mapKeys,o );
+  _.routineOptions( _mapKeys, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.objectLike( o ) );
-  _.assert( !( o.srcMap instanceof Map ),'not implemented' );
+  _.assert( !( o.srcMap instanceof Map ), 'not implemented' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
 
   /* */
 
-  function filter( srcMap,keys )
+  function filter( srcMap, keys )
   {
 
     if( !o.selectFilter )
     {
-      _.arrayAppendArrayOnce( result,keys );
+      _.arrayAppendArrayOnce( result, keys );
     }
     else for( let k = 0 ; k < keys.length ; k++ )
     {
-      let e = o.selectFilter( srcMap,keys[ k ] );
+      let e = o.selectFilter( srcMap, keys[ k ] );
       if( e !== undefined )
-      _.arrayAppendOnce( result,e );
+      _.arrayAppendOnce( result, e );
     }
   }
 
@@ -2235,7 +2235,7 @@ function _mapKeys( o )
   if( o.enumerable )
   {
 
-    filter( o.srcMap,_._mapEnumerableKeys( o.srcMap,o.own ) );
+    filter( o.srcMap, _._mapEnumerableKeys( o.srcMap, o.own ) );
 
   }
   else
@@ -2243,7 +2243,7 @@ function _mapKeys( o )
 
     if( o.own  )
     {
-      filter( o.srcMap,Object.getOwnPropertyNames( o.srcMap ) );
+      filter( o.srcMap, Object.getOwnPropertyNames( o.srcMap ) );
     }
     else
     {
@@ -2251,7 +2251,7 @@ function _mapKeys( o )
       result = [];
       do
       {
-        filter( proto,Object.getOwnPropertyNames( proto ) );
+        filter( proto, Object.getOwnPropertyNames( proto ) );
         proto = Object.getPrototypeOf( proto );
       }
       while( proto );
@@ -2365,14 +2365,14 @@ function mapOwnKeys( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o,mapOwnKeys.defaults );
+  _.assertMapHasOnly( o, mapOwnKeys.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
   o.own = 1;
 
   if( o.enumerable )
-  result = _._mapEnumerableKeys( o.srcMap,o.own );
+  result = _._mapEnumerableKeys( o.srcMap, o.own );
   else
   result = _._mapKeys( o );
 
@@ -2414,7 +2414,7 @@ function mapAllKeys( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o,mapAllKeys.defaults );
+  _.assertMapHasOnly( o, mapAllKeys.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -2436,7 +2436,7 @@ mapAllKeys.defaults =
 function _mapVals( o )
 {
 
-  _.routineOptions( _mapVals,o );
+  _.routineOptions( _mapVals, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
   _.assert( o.selectFilter === null );
@@ -2447,7 +2447,7 @@ function _mapVals( o )
   // debugger;
   //
   // if( !o.selectFilter )
-  // o.selectFilter = function getVal( srcMap,k )
+  // o.selectFilter = function getVal( srcMap, k )
   // {
   //   return srcMap[ k ]
   // }
@@ -2567,7 +2567,7 @@ function mapOwnVals( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o,mapVals.defaults );
+  _.assertMapHasOnly( o, mapVals.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -2613,7 +2613,7 @@ function mapAllVals( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o,mapAllVals.defaults );
+  _.assertMapHasOnly( o, mapAllVals.defaults );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -2635,7 +2635,7 @@ mapAllVals.defaults =
 function _mapPairs( o )
 {
 
-  _.routineOptions( _mapPairs,o );
+  _.routineOptions( _mapPairs, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
   _.assert( !_.primitiveIs( o.srcMap ) );
@@ -2646,9 +2646,9 @@ function _mapPairs( o )
   debugger;
 
   if( !o.selectFilter )
-  o.selectFilter = function getVal( srcMap,k )
+  o.selectFilter = function getVal( srcMap, k )
   {
-    return [ k,srcMap[ k ] ];
+    return [ k, srcMap[ k ] ];
   }
 
   let result = _._mapKeys( o );
@@ -2702,7 +2702,7 @@ function mapPairs( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o,mapPairs.defaults );
+  _.assertMapHasOnly( o, mapPairs.defaults );
 
   o.srcMap = srcMap;
 
@@ -2759,7 +2759,7 @@ function mapOwnPairs( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o,mapPairs.defaults );
+  _.assertMapHasOnly( o, mapPairs.defaults );
 
   o.srcMap = srcMap;
   o.own = 1;
@@ -2796,7 +2796,7 @@ mapOwnPairs.defaults =
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapAllPairs( a );
- * //returns [ [ "a", 1 ],[ "b", 2 ], ... [ "isPrototypeOf", function isPrototypeOf() ]  ]
+ * //returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function isPrototypeOf() ]  ]
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
@@ -2809,7 +2809,7 @@ function mapAllPairs( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o,mapAllPairs.defaults );
+  _.assertMapHasOnly( o, mapAllPairs.defaults );
 
   o.srcMap = srcMap;
   o.own = 0;
@@ -2831,7 +2831,7 @@ function _mapProperties( o )
 {
   let result = Object.create( null );
 
-  _.routineOptions( _mapProperties,o );
+  _.routineOptions( _mapProperties, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( !_.primitiveIs( o.srcMap ) );
 
@@ -2899,7 +2899,7 @@ function mapProperties( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapProperties,o );
+  _.routineOptions( mapProperties, o );
 
   o.srcMap = srcMap;
 
@@ -2957,7 +2957,7 @@ function mapOwnProperties( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapOwnProperties,o );
+  _.routineOptions( mapOwnProperties, o );
 
   o.srcMap = srcMap;
   o.own = 1;
@@ -3007,7 +3007,7 @@ function mapAllProperties( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapAllProperties,o );
+  _.routineOptions( mapAllProperties, o );
 
   o.srcMap = srcMap;
   o.own = 0;
@@ -3067,7 +3067,7 @@ function mapRoutines( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapRoutines,o );
+  _.routineOptions( mapRoutines, o );
 
   o.srcMap = srcMap;
   o.selectFilter = function selectRoutine( srcMap, k )
@@ -3132,11 +3132,11 @@ function mapOwnRoutines( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapOwnRoutines,o );
+  _.routineOptions( mapOwnRoutines, o );
 
   o.srcMap = srcMap;
   o.own = 1;
-  o.selectFilter = function selectRoutine( srcMap,k )
+  o.selectFilter = function selectRoutine( srcMap, k )
   {
     debugger;
     if( _.routineIs( srcMap[ k ] ) )
@@ -3190,12 +3190,12 @@ function mapAllRoutines( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapAllRoutines,o );
+  _.routineOptions( mapAllRoutines, o );
 
   o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
-  o.selectFilter = function selectRoutine( srcMap,k )
+  o.selectFilter = function selectRoutine( srcMap, k )
   {
     debugger;
     if( _.routineIs( srcMap[ k ] ) )
@@ -3256,10 +3256,10 @@ function mapFields( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapFields,o );
+  _.routineOptions( mapFields, o );
 
   o.srcMap = srcMap;
-  o.selectFilter = function selectRoutine( srcMap,k )
+  o.selectFilter = function selectRoutine( srcMap, k )
   {
     if( !_.routineIs( srcMap[ k ] ) )
     return k;
@@ -3318,11 +3318,11 @@ function mapOwnFields( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapOwnFields,o );
+  _.routineOptions( mapOwnFields, o );
 
   o.srcMap = srcMap;
   o.own = 1;
-  o.selectFilter = function selectRoutine( srcMap,k )
+  o.selectFilter = function selectRoutine( srcMap, k )
   {
     if( !_.routineIs( srcMap[ k ] ) )
     return k;
@@ -3378,19 +3378,19 @@ function mapAllFields( srcMap )
   let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapAllFields,o );
+  _.routineOptions( mapAllFields, o );
 
   o.srcMap = srcMap;
   o.own = 0;
   o.enumerable = 0;
-  o.selectFilter = function selectRoutine( srcMap,k )
+  o.selectFilter = function selectRoutine( srcMap, k )
   {
     if( !_.routineIs( srcMap[ k ] ) )
     return k;
   }
 
   if( _.routineIs( srcMap ) )
-  o.selectFilter = function selectRoutine( srcMap,k )
+  o.selectFilter = function selectRoutine( srcMap, k )
   {
     if( _.arrayHas( [ 'arguments', 'caller' ], k ) )
     return;
@@ -3409,7 +3409,7 @@ mapAllFields.defaults =
 //
 
 /**
- * The mapOnlyPrimitives() gets all object`s {-srcMap-} enumerable atomic fields( null,undef,number,string,symbol ) and returns them as new map.
+ * The mapOnlyPrimitives() gets all object`s {-srcMap-} enumerable atomic fields( null, undef, number, string, symbol ) and returns them as new map.
  *
  * It takes an object {-srcMap-} creates an empty map,
  * checks if {-srcMap-} is an object.
@@ -3479,7 +3479,7 @@ function mapFirstPair( srcMap )
 
   for( let s in srcMap )
   {
-    return [ s,srcMap[ s ] ];
+    return [ s, srcMap[ s ] ];
   }
 
   return [];
@@ -3542,7 +3542,7 @@ function mapSelect( srcMap, keys )
  * @memberof wTools
  */
 
-function mapValWithIndex( srcMap,index )
+function mapValWithIndex( srcMap, index )
 {
 
  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -3927,7 +3927,7 @@ function mapButIgnoringUndefines( srcMap, butMap )
 // function mapButIgnoringUndefines( srcMap )
 // {
 //   let result = Object.create( null );
-//   let a,k;
+//   let a, k;
 //
 //   _.assert( arguments.length >= 2 );
 //   _.assert( !_.primitiveIs( srcMap ), 'Expects object as argument' );
@@ -3939,7 +3939,7 @@ function mapButIgnoringUndefines( srcMap, butMap )
 //     {
 //       let argument = arguments[ a ];
 //
-//       _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
+//       _.assert( !_.primitiveIs( argument ), 'argument', '#'+a, 'is not object' );
 //
 //       if( k in argument )
 //       if( argument[ k ] !== undefined )
@@ -3960,10 +3960,10 @@ function mapButIgnoringUndefines( srcMap, butMap )
 // function mapBut( srcMap )
 // {
 //   let result = Object.create( null );
-//   let a,k;
+//   let a, k;
 //
 //   _.assert( arguments.length >= 2 );
-//   _.assert( !_.primitiveIs( srcMap ),'mapBut :','Expects object as argument' );
+//   _.assert( !_.primitiveIs( srcMap ), 'mapBut :', 'Expects object as argument' );
 //
 //   for( k in srcMap )
 //   {
@@ -3971,7 +3971,7 @@ function mapButIgnoringUndefines( srcMap, butMap )
 //     {
 //       let argument = arguments[ a ];
 //
-//       _.assert( !_.primitiveIs( argument ),'argument','#'+a,'is not object' );
+//       _.assert( !_.primitiveIs( argument ), 'argument', '#'+a, 'is not object' );
 //
 //       if( k in argument )
 //       break;
@@ -4028,7 +4028,7 @@ function mapOwnBut( srcMap, butMap )
 /**
  * @namespace
  * @property { objectLike } screenMaps.screenMap - The first object.
- * @property { ...objectLike } srcMap.arguments[1,...] -
+ * @property { ...objectLike } srcMap.arguments[1, ...] -
  * The pseudo array (arguments[]) from the first [1] index to the end.
  * @property { object } dstMap - The empty object.
  */
@@ -4166,7 +4166,7 @@ function _mapOnly( o )
   let srcMaps = o.srcMaps;
 
   if( _.arrayIs( screenMap ) )
-  screenMap = _.mapMake.apply( this,screenMap );
+  screenMap = _.mapMake.apply( this, screenMap );
 
   if( !_.arrayIs( srcMaps ) )
   srcMaps = [ srcMaps ];
@@ -4182,7 +4182,7 @@ function _mapOnly( o )
     _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
     _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
-    _.assertMapHasOnly( o,_mapOnly.defaults );
+    _.assertMapHasOnly( o, _mapOnly.defaults );
 
     for( let s = srcMaps.length-1 ; s >= 0 ; s-- )
     _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
@@ -4302,7 +4302,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( _.strJoin && !msg )
-    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null,' ]).join( '\n' ) );
+    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
     debugger;
     let err = _._err
     ({
@@ -4354,7 +4354,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * wTools.sureMapOwnOnly( a, b, 'error msg' );
  *
  * // caught <anonymous>:4:8
- * // error msg Object should have no own fields : x,y
+ * // error msg Object should have no own fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
@@ -4378,7 +4378,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
   if( but.length > 0 )
   {
     if( _.strJoin && !msg )
-    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ',but,' : null,' ]).join( '\n' ) );
+    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
     debugger;
     throw _._err
     ({
@@ -4446,7 +4446,7 @@ function sureMapHasAll( srcMap, all, msg )
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   // let l = arguments.length;
-  let but = Object.keys( _.mapBut( all,srcMap ) );
+  let but = Object.keys( _.mapBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
@@ -4516,7 +4516,7 @@ function sureMapOwnAll( srcMap, all, msg )
   _.assert( arguments.length === 2 || _.strIs( msg ) );
 
   // let l = arguments.length;
-  let but = Object.keys( _.mapOwnBut( all,srcMap ) );
+  let but = Object.keys( _.mapOwnBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
@@ -4568,7 +4568,7 @@ function sureMapOwnAll( srcMap, all, msg )
  * wTools.sureMapHasNone( a, b, 'error msg' );
  *
  * // caught <anonymous>:3:9
- * // error msg Object should have no fields : x,y
+ * // error msg Object should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
@@ -4800,7 +4800,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * wTools.assertMapOwnOnly( a, b, 'error msg' );
  *
  * // caught <anonymous>:4:8
- * // error msg Object should have no own fields : x,y
+ * // error msg Object should have no own fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
@@ -4855,7 +4855,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * wTools.assertMapHasNone( a, b, 'error msg' );
  *
  * // caught <anonymous>:3:9
- * // error msg Object should have no fields : x,y
+ * // error msg Object should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapHasNone (file:///.../wTools/staging/Base.s:4518)
