@@ -87,19 +87,19 @@ let Self = _;
 // diagnostics
 // --
 
-function _diagnosticStripPath( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( _.strIs( src ) )
-  {
-    src = src.replace( /^\s+/,'' );
-    // src = src.replace( /^at/,'' );
-    // src = src.replace( /^\s+/,'' );
-  }
-
-  return src;
-}
+// function _diagnosticStripPath( src )
+// {
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//
+//   if( _.strIs( src ) )
+//   {
+//     src = src.replace( /^\s+/,'' );
+//     // src = src.replace( /^at/,'' );
+//     // src = src.replace( /^\s+/,'' );
+//   }
+//
+//   return src;
+// }
 
 //
 
@@ -1063,18 +1063,17 @@ let error =
 let Extend =
 {
 
-  _diagnosticStripPath : _diagnosticStripPath,
-  diagnosticLocation : diagnosticLocation,
-  diagnosticCode : diagnosticCode,
-  diagnosticStack : diagnosticStack,
-  diagnosticStackCondense : diagnosticStackCondense,
-  diagnosticWatchFields : diagnosticWatchFields, /* experimental */
-  diagnosticProxyFields : diagnosticProxyFields, /* experimental */
+  // _diagnosticStripPath,
+  diagnosticLocation,
+  diagnosticCode,
+  diagnosticStack,
+  diagnosticStackCondense,
+  diagnosticBeep,
 
-  diasgnosticEachLongType : diasgnosticEachLongType,
-  diasgnosticEachElementComparator : diasgnosticEachElementComparator,
-
-  diagnosticBeep : diagnosticBeep,
+  diagnosticWatchFields, /* experimental */
+  diagnosticProxyFields, /* experimental */
+  diasgnosticEachLongType,
+  diasgnosticEachElementComparator,
 
 }
 
