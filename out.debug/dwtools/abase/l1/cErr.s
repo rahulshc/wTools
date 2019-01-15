@@ -749,6 +749,54 @@ function diagnosticStackCondense( stack )
 
 //
 
+function diagnosticBeep()
+{
+  console.log( '\x07' );
+}
+
+//
+
+function diagnosticApplicationEntryPointData()
+{
+  let result = Object.create( null );
+  debugger;
+  if( _global.process !== undefined )
+  {
+    if( _global.process.argv )
+    result.execPath = _global.process.argv.join( ' ' );
+    if( _.routineIs( _global.process.cwd ) )
+    result.currentPath = _global.process.cwd();
+  }
+  return result;
+}
+
+//
+
+function diagnosticApplicationEntryPointInfo()
+{
+  let data = _.diagnosticApplicationEntryPointData();
+  let result = '';
+
+  if( data.execPath )
+  result = join( 'Exec path', data.execPath );
+  if( data.currentPath )
+  result = join( 'Current path', data.currentPath );
+
+  return result;
+
+  /* */
+
+  function join( left, right )
+  {
+    if( result )
+    result += '\n';
+    result += left + ' : ' + right;
+    return result;
+  }
+}
+
+//
+
 /*
 
 _.diagnosticWatchFields
@@ -930,13 +978,13 @@ diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
 
 //
 
-function diasgnosticEachLongType( o )
+function diagnosticEachLongType( o )
 {
   let result = Object.create( null );
 
   if( _.routineIs( o ) )
   o = { onEach : o }
-  o = _.routineOptions( diasgnosticEachLongType, o );
+  o = _.routineOptions( diagnosticEachLongType, o );
 
   if( o.onEach === null )
   o.onEach = function onEach( make, descriptor )
@@ -960,14 +1008,14 @@ function diasgnosticEachLongType( o )
   return result;
 }
 
-diasgnosticEachLongType.defaults =
+diagnosticEachLongType.defaults =
 {
   onEach : null,
 }
 
 //
 
-function diasgnosticEachElementComparator( o )
+function diagnosticEachElementComparator( o )
 {
   let result = [];
 
@@ -976,7 +1024,7 @@ function diasgnosticEachElementComparator( o )
   else if( _.routineIs( arguments[ 0 ] ) )
   o = { onEach : arguments[ 1 ] }
 
-  o = _.routineOptions( diasgnosticEachElementComparator, o );
+  o = _.routineOptions( diagnosticEachElementComparator, o );
 
   if( o.onEach === null )
   o.onEach = function onEach( make, evaluate, description )
@@ -1031,18 +1079,10 @@ function diasgnosticEachElementComparator( o )
 
 }
 
-diasgnosticEachElementComparator.defaults =
+diagnosticEachElementComparator.defaults =
 {
   onMake : null,
   onEach : null,
-}
-
-//
-
-function diagnosticBeep()
-{
-  // console.log( _.diagnosticStack() );
-  console.log( '\x07' );
 }
 
 // --
@@ -1070,10 +1110,13 @@ let Extend =
   diagnosticStackCondense,
   diagnosticBeep,
 
+  diagnosticApplicationEntryPointData,
+  diagnosticApplicationEntryPointInfo,
+
   diagnosticWatchFields, /* experimental */
   diagnosticProxyFields, /* experimental */
-  diasgnosticEachLongType,
-  diasgnosticEachElementComparator,
+  diagnosticEachLongType,
+  diagnosticEachElementComparator,
 
 }
 

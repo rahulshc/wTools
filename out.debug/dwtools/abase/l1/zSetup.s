@@ -24,19 +24,6 @@ function _setupUnhandledErrorHandler1()
 
   _global._setupUnhandledErrorHandlerDone = 2;
 
-  // let handlerWas = null;
-  // console.info( 'REMINDER : fix unhandled error handler' );
-
-  // if( _global.process && _.routineIs( _global.process.on ) )
-  // {
-  //   _global.process.on( 'uncaughtException', handleError );
-  // }
-  // else if( Object.hasOwnProperty.call( _global,'onerror' ) )
-  // {
-  //   // handlerWas = _global.onerror;
-  //   _global.onerror = handleBrowserError;
-  // }
-
   /* */
 
   if( _global.process && _.routineIs( _global.process.on ) )
@@ -69,9 +56,6 @@ function _setupUnhandledErrorHandler1()
     });
 
     return handleError( err );
-
-    // if( handlerWas )
-    // handlerWas.call( this, message, sourcePath, lineno, colno, error );
   }
 
   /* */
@@ -120,6 +104,19 @@ function _setupUnhandledErrorHandler1()
 
     /* */
 
+    try
+    {
+      console.error( ' * Application' );
+      console.error( _.diagnosticApplicationEntryPointInfo() + '\n' );
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.error( err2 );
+    }
+
+    /* */
+
     if( !err.originalMessage && _.objectLike && _.objectLike( err ) )
     try
     {
@@ -160,8 +157,6 @@ function _setupConfig()
 
   if( _global.WTOOLS_PRIVATE )
   return;
-
-  /* config */
 
   if( !_global.Config )
   _global.Config = Object.create( null );
@@ -218,9 +213,6 @@ function _setupTesterPlaceholder()
     _.assert( _.strDefined( testSuit.suiteFileLocation ),'Test suit expects a mandatory option ( suiteFileLocation )' );
     _.assert( _.objectIs( testSuit ) );
 
-    // if( testSuit.name === 'Chaining test' )
-    // debugger;
-
     if( !testSuit.abstract )
     _.assert( !_realGlobal_.wTests[ testSuit.name ],'Test suit with name "' + testSuit.name + '" already registered!' );
     _realGlobal_.wTests[ testSuit.name ] = testSuit;
@@ -248,9 +240,9 @@ function _setupTesterPlaceholder()
       _.timeReady( function()
       {
         debugger;
-        if( /*_.*/_realGlobal_.wTester.test === test )
+        if( _realGlobal_.wTester.test === test )
         throw _.err( 'Cant wTesting.test, missing wTesting package' );
-        /*_.*/_realGlobal_.wTester.test.call( /*_.*/_realGlobal_.wTester, testSuitName );
+        _realGlobal_.wTester.test.call( _realGlobal_.wTester, testSuitName );
       });
     }
   }
@@ -259,23 +251,9 @@ function _setupTesterPlaceholder()
 
 //
 
-// function _setupLater()
-// {
-//
-//   // _.assert( _.objectIs( _.regexpsEscape ) );
-//   // _.assert( _.objectIs( _.strIsolateBeginOrAll ) )
-//   // _.Later.for( _ );
-//   _.assert( _.routineIs( _.regexpsEscape ) );
-//   _.assert( _.routineIs( _.strIsolateBeginOrAll ) )
-//
-// }
-
-//
-
 function _setup1()
 {
 
-  // Self.timeNow = Self._timeNow_functor();
   Self._sourcePath = _.diagnosticStack([ 1, Infinity ]);
 
   _.assert( _global._WTOOLS_SETUP_EXPECTED_ !== false );
@@ -286,7 +264,6 @@ function _setup1()
     _._setupUnhandledErrorHandler1();
     _._setupLoggerPlaceholder();
     _._setupTesterPlaceholder();
-    // _._setupLater();
   }
 
   _.assert( !!Self.timeNow );
