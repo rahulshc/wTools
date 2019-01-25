@@ -39,7 +39,7 @@ function nameFielded( nameString )
     name[ nameString ] = nameString;
     return name;
   }
-  else _.assert( 0,'nameFielded :','Expects string or ' );
+  else _.assert( 0, 'nameFielded :', 'Expects string or ' );
 
 }
 
@@ -74,11 +74,11 @@ function nameUnfielded( nameObject )
     name.raw = nameObject;
     name.coded = nameObject;
   }
-  else _.assert( 0,'nameUnfielded :','Unknown arguments' );
+  else _.assert( 0, 'nameUnfielded :', 'Unknown arguments' );
 
   // _.assert( arguments.length === 1 );
-  // _.assert( _.strIs( name.raw ) || _.symbolIs( name.raw ),'nameUnfielded :','not a string, something wrong :',nameObject );
-  // _.assert( _.strIs( name.coded ) || _.symbolIs( name.coded ),'nameUnfielded :','not a string, something wrong :',nameObject );
+  // _.assert( _.strIs( name.raw ) || _.symbolIs( name.raw ), 'nameUnfielded :', 'not a string, something wrong :', nameObject );
+  // _.assert( _.strIs( name.coded ) || _.symbolIs( name.coded ), 'nameUnfielded :', 'not a string, something wrong :', nameObject );
 
   return name;
 }
@@ -112,15 +112,15 @@ function namesCoded( namesMap )
 // id
 // --
 
-function idWithDate( prefix,postfix,fast )
+function idWithDate( prefix, postfix, fast )
 {
-
   var date = new Date;
 
   prefix = prefix ? prefix : '';
   postfix = postfix ? postfix : '';
 
-  if( fast ) return prefix + date.valueOf() + postfix;
+  if( fast )
+  return prefix + date.valueOf() + postfix;
 
   var d =
   [
@@ -131,7 +131,26 @@ function idWithDate( prefix,postfix,fast )
     date.getMinutes(),
     date.getSeconds(),
     date.getMilliseconds(),
-    Math.floor( 1 + Math.random()*0x100000000 ).toString(16),
+    Math.floor( Math.random()*0x10000 ).toString( 16 ),
+  ].join( '-' );
+
+  return prefix + d + postfix
+}
+
+//
+
+function idWithTime( prefix, postfix )
+{
+  var date = new Date;
+
+  prefix = prefix ? prefix : '';
+  postfix = postfix ? postfix : '';
+
+  var d =
+  [
+    String( date.getHours() ) + String( date.getMinutes() ) + String( date.getSeconds() ),
+    String( date.getMilliseconds() ),
+    Math.floor( Math.random()*0x10000 ).toString( 16 ),
   ].join( '-' );
 
   return prefix + d + postfix
@@ -187,15 +206,16 @@ var Proto =
 
   // name and symbol
 
-  nameFielded : nameFielded, /* experimental */
-  nameUnfielded : nameUnfielded, /* experimental */
-  namesCoded : namesCoded, /* experimental */
+  nameFielded, /* experimental */
+  nameUnfielded, /* experimental */
+  namesCoded, /* experimental */
 
   // id
 
-  idWithDate : idWithDate,
-  idWithGuid : idWithGuid,
-  idWithInt : idWithInt,
+  idWithDate,
+  idWithTime,
+  idWithGuid,
+  idWithInt,
 
 }
 
