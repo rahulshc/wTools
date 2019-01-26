@@ -145,7 +145,7 @@ function _routineJoin( o )
       if( o.sealing === true )
       {
         let name = routine.name || '__sealedContextAndArguments';
-        _.assert( _.strIs( name ) ); 
+        _.assert( _.strIs( name ) );
         let __sealedContextAndArguments =
         {
           [ name ] : function()
@@ -1268,7 +1268,7 @@ function routineVectorize_functor( o )
 
 }
 
-routineVectorize_functor.defaults =
+routineVectorize_functor.defaults = /* qqq : implement options combination vectorizingMap : 1, vectorizingKeys : 1, vectorizingArray : [ 0, 1 ] */
 {
   routine : null,
   fieldFilter : null,
@@ -1294,30 +1294,27 @@ let Fields =
 let Routines =
 {
 
-  routineIs : routineIs,
-  routinesAre : routinesAre,
-  routineIsPure : routineIsPure,
-  routineHasName : routineHasName,
+  routineIs,
+  routinesAre,
+  routineIsPure,
+  routineHasName,
 
-  _routineJoin : _routineJoin,
-  constructorJoin : constructorJoin,
-  routineJoin : routineJoin,
-  routineSeal : routineSeal,
+  _routineJoin,
+  constructorJoin,
+  routineJoin,
+  routineSeal,
 
-  routineOptions : routineOptions,
-  assertRoutineOptions : assertRoutineOptions,
-  routineOptionsPreservingUndefines : routineOptionsPreservingUndefines,
-  assertRoutineOptionsPreservingUndefines : assertRoutineOptionsPreservingUndefines,
-  routineOptionsFromThis : routineOptionsFromThis,
+  routineOptions,
+  assertRoutineOptions,
+  routineOptionsPreservingUndefines,
+  assertRoutineOptionsPreservingUndefines,
+  routineOptionsFromThis,
 
-  routinesCompose : routinesCompose,
-  routineExtend : routineExtend,
-  routineFromPreAndBody : routineFromPreAndBody,
+  routinesCompose,
+  routineExtend,
+  routineFromPreAndBody,
 
-  routineVectorize_functor : routineVectorize_functor,
-
-  // _equalizerFromMapper : _equalizerFromMapper,
-  // _comparatorFromEvaluator : _comparatorFromEvaluator,
+  routineVectorize_functor,
 
   bind : null,
 
