@@ -1,6 +1,6 @@
 {
   "name": "wTools",
-  "version": "0.8.400",
+  "version": "0.8.401",
   "engine": "node >= 6.0.0",
   "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind",
   "license": "MIT",
