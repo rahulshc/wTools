@@ -738,7 +738,7 @@ function routinesComposeAll( test )
 
   function _dont()
   {
-    return dont;
+    return _.dont;
   }
 
   test.case = 'with nothing';
@@ -830,7 +830,7 @@ function routinesComposeAllReturningLast( test )
 
   function _dont()
   {
-    return dont;
+    return _.dont;
   }
 
   test.case = 'with nothing';
@@ -869,7 +869,7 @@ function routinesComposeAllReturningLast( test )
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
   var composition = _.routinesComposeAllReturningLast( routines );
   var got = composition( 1,2,3 );
-  var expected = dont;
+  var expected = _.dont;
   test.identical( got, expected );
   test.identical( counter, 16 );
 
