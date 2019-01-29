@@ -2236,9 +2236,9 @@ function arrayToStr( test )
 function longAreRepeatedProbe( test )
 {
 
-  _.diasgnosticEachLongType( ( make, descriptor ) =>
+  _.diagnosticEachLongType( ( make, descriptor ) =>
   {
-    _.diasgnosticEachElementComparator( make, ( make, evaluate, description ) =>
+    _.diagnosticEachElementComparator( make, ( make, evaluate, description ) =>
     {
       if( _.arrayIs( evaluate ) )
       return;
