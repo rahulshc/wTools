@@ -1594,6 +1594,10 @@ function routineVectorize_functor( test )
   test.close( 'vectorizingKeys : 1, vectorizingArray : 1, select : 3' );
 
   test.open( 'vectorizingKeys : 1, vectorizingArray : 1, vectorizingMap : 1, select : 1' );
+  function srcRoutine2( src )
+  {
+    return src + 1;
+  }
   var o =
   {
     vectorizingArray : 1,
@@ -1601,8 +1605,13 @@ function routineVectorize_functor( test )
     vectorizingKeys : 1,
     select : 1
   }
-  o.routine = srcRoutine;
-  test.shouldThrowError( () => _.routineVectorize_functor( o ) );
+  o.routine = srcRoutine2;
+  var routine = _.routineVectorize_functor( o );
+
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), [ 2 ] );
+  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
 
   test.close( 'vectorizingKeys : 1, vectorizingArray : 1, vectorizingMap : 1, select : 1' );
 }

@@ -864,8 +864,17 @@ function routineVectorize_functor( o )
     resultRoutine = vectorizeWithFilters;
     else if( vectorizingKeys )
     {
-      _.assert( !vectorizingMap, '{-o.vectorizingKeys-} and {-o.vectorizingMap-} should not be enabled at the same time' );
-      resultRoutine = vectorizeKeysOrArray;
+      // _.assert( !vectorizingMap, '{-o.vectorizingKeys-} and {-o.vectorizingMap-} should not be enabled at the same time' );
+
+      if( vectorizingMap )
+      {
+        _.assert( select === 1, 'Only single argument is allowed if {-o.vectorizingKeys-} and {-o.vectorizingMap-} are enabled.' );
+        resultRoutine = vectorizeMapWithKeysOrArray;
+      }
+      else
+      {
+        resultRoutine = vectorizeKeysOrArray;
+      }
     }
     else if( !vectorizingArray || vectorizingMap )
     resultRoutine = vectorizeMapOrArray;
@@ -1131,6 +1140,37 @@ function routineVectorize_functor( o )
 
         result[ r ] = routine.apply( this, args2 );
       }
+      return result;
+    }
+
+    return routine.apply( this, arguments );
+  }
+
+  /* - */
+
+  function vectorizeMapWithKeysOrArray()
+  {
+    let args = multiply( arguments );
+    let srcs = args[ 0 ];
+
+    _.assert( args.length === select, 'expects', select, 'arguments but got:', args.length );
+
+    if( vectorizingKeys && vectorizingMap &&_.mapIs( srcs ) )
+    {
+      let result = Object.create( null );
+      for( let s in srcs )
+      {
+        let val = routine.call( this, srcs[ s ] );
+        let key = routine.call( this, s );
+        result[ key ] = val;
+      }
+      return result;
+    }
+    else if( vectorizingArray && _.arrayIs( srcs ) )
+    {
+      let result = [];
+      for( let s = 0 ; s < srcs.length ; s++ )
+      result[ s ] = routine.call( this, srcs[ s ] );
       return result;
     }
 
