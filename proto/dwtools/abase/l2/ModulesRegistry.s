@@ -176,6 +176,12 @@ let wProcedure =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.procedure },
 }
 
+let wEncoderStrategy =
+{
+  includeAny : includeAny( 'abase/l8/Procedure.s', 'wprocedure' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Encoder },
+}
+
 // base / l9
 
 let wLogger =
@@ -538,6 +544,7 @@ let Extend =
   // base / l8
 
   wProcedure,
+  wEncoderStrategy,
 
   // base / l9
 
