@@ -867,9 +867,14 @@ function routineVectorize_functor( o )
       // _.assert( !vectorizingMap, '{-o.vectorizingKeys-} and {-o.vectorizingMap-} should not be enabled at the same time' );
 
       if( vectorizingMap )
-      resultRoutine = vectorizeMapWithKeysOrArray;
+      {
+        _.assert( select === 1, 'Only single argument is allowed if {-o.vectorizingKeys-} and {-o.vectorizingMap-} are enabled.' );
+        resultRoutine = vectorizeMapWithKeysOrArray;
+      }
       else
-      resultRoutine = vectorizeKeysOrArray;
+      {
+        resultRoutine = vectorizeKeysOrArray;
+      }
     }
     else if( !vectorizingArray || vectorizingMap )
     resultRoutine = vectorizeMapOrArray;
