@@ -1760,6 +1760,12 @@ function arrayPrepend_( dstArray )
 
 function arrayPrepend( dstArray, ins )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrepended.apply( this, arguments );
   return dstArray;
 }
@@ -1810,6 +1816,12 @@ function arrayPrepend( dstArray, ins )
 
 function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrependedOnce.apply( this, arguments );
   return dstArray;
 }
@@ -1862,6 +1874,12 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if ( Config.debug )
   {
@@ -1990,6 +2008,12 @@ function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependElement( dstArray, ins )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrependedElement.apply( this, arguments );
   return dstArray;
 }
@@ -1998,6 +2022,12 @@ function arrayPrependElement( dstArray, ins )
 
 function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrependedElementOnce.apply( this, arguments );
   return dstArray;
 }
@@ -2006,6 +2036,12 @@ function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if ( Config.debug )
   {
@@ -2122,6 +2158,12 @@ function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator
 
 function arrayPrependArray( dstArray, insArray )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrependedArray.apply( this, arguments );
   return dstArray;
 }
@@ -2163,6 +2205,12 @@ function arrayPrependArray( dstArray, insArray )
 
 function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrependedArrayOnce.apply( this, arguments );
   return dstArray;
 }
@@ -2208,6 +2256,12 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if( Config.debug )
   {
@@ -2375,6 +2429,12 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
 
 function arrayPrependArrays( dstArray, insArray )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrependedArrays.apply( this, arguments );
   return dstArray;
 }
@@ -2410,6 +2470,12 @@ function arrayPrependArrays( dstArray, insArray )
 
 function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayPrependedArraysOnce.apply( this, arguments );
   return dstArray;
 }
@@ -2458,6 +2524,12 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if( Config.debug )
   {
@@ -2720,6 +2792,12 @@ function arrayAppend_( dstArray )
 
 function arrayAppend( dstArray, ins )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppended.apply( this, arguments );
   return dstArray;
 }
@@ -2759,6 +2837,12 @@ function arrayAppend( dstArray, ins )
 
 function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppendedOnce.apply( this, arguments );
   return dstArray;
 }
@@ -2767,6 +2851,12 @@ function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if( Config.debug )
   {
@@ -2826,6 +2916,12 @@ function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayAppendElement( dstArray, ins )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppendedElement.apply( this, arguments );
   return dstArray;
 }
@@ -2834,6 +2930,12 @@ function arrayAppendElement( dstArray, ins )
 
 function arrayAppendElementOnce( dstArray, ins )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppendedElementOnce.apply( this, arguments );
   return dstArray;
 }
@@ -2842,6 +2944,12 @@ function arrayAppendElementOnce( dstArray, ins )
 
 function arrayAppendElementOnceStrictly( dstArray, ins )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if( Config.debug )
   {
@@ -2928,6 +3036,12 @@ function arrayAppendedElementOnceStrictly( dstArray, ins )
 
 function arrayAppendArray( dstArray, insArray )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppendedArray.apply( this, arguments );
   return dstArray;
 }
@@ -2964,6 +3078,12 @@ function arrayAppendArray( dstArray, insArray )
 
 function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppendedArrayOnce.apply( this, arguments )
   return dstArray;
 }
@@ -2972,6 +3092,12 @@ function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if( Config.debug )
   {
@@ -3049,6 +3175,12 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
 
 function arrayAppendArrays( dstArray )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppendedArrays.apply( this, arguments );
   return dstArray;
 }
@@ -3057,6 +3189,12 @@ function arrayAppendArrays( dstArray )
 
 function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   arrayAppendedArraysOnce.apply( this, arguments );
   return dstArray;
 }
@@ -3065,6 +3203,12 @@ function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
   let result;
   if( Config.debug )
   {
