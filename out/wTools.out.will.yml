@@ -5,7 +5,7 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.408
+  version: 0.8.409
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -115,7 +115,7 @@ path:
       public: 1
 submodule: {}
 reflector:
-  reflect.proto:
+  reflect.proto.:
     filePath:
       ./proto: ./out.release
     srcFilter:
@@ -303,7 +303,7 @@ reflector:
       basePath: .
       prefixPath: proto
 step:
-  clean.out:
+  clean.out.:
     criterion:
       debug: 0
     opts:
@@ -317,7 +317,7 @@ step:
       filePath: 'path::out.debug'
     inherit:
       - predefined.delete
-  reflect.proto:
+  reflect.proto.:
     criterion:
       debug: 0
       raw: 0
@@ -422,7 +422,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.8.408
+    version: 0.8.409
     criterion:
       default: 1
       debug: 1
