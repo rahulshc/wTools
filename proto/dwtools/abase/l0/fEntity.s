@@ -1090,7 +1090,7 @@ function entityMap( src,onEach )
  * @throws {exception} If no argument provided.
  * @throws {exception} If( condition ) is not a Routine or Object.
  * @memberof wTools
-*/
+ */
 
 function _filter_functor( condition, levels )
 {
@@ -1128,6 +1128,7 @@ function _filter_functor( condition, levels )
 function entityFilter( src, onEach )
 {
   let result;
+
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
@@ -1139,7 +1140,7 @@ function entityFilter( src, onEach )
   if( _.longIs( src ) )
   {
     result = _.longMake( src,0 );
-    let s,d;
+    let s, d;
     for( s = 0, d = 0 ; s < src.length ; s++, d++ )
     {
       let r = onEach.call( src,src[ s ],s,src );

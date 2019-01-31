@@ -104,12 +104,6 @@ let wTraverser =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._traverse },
 }
 
-let wBaseEncoder =
-{
-  includeAny : includeAny( 'abase/l4/Encoder.s', 'wbaseencoder' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
-}
-
 let wRoutineTransform =
 {
   includeAny : includeAny( 'abase/l4/RoutineTransform.s', 'wroutinetransform' ),
@@ -176,10 +170,16 @@ let wProcedure =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.procedure },
 }
 
-let wEncoderStrategy =
+let wGdfStrategy =
 {
-  includeAny : includeAny( 'abase/l8/Procedure.s', 'wprocedure' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Encoder },
+  includeAny : includeAny( 'abase/l8/GdfConverter.s', 'wGdfStrategy' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Gdf },
+}
+
+let wBaseEncoder =
+{
+  includeAny : includeAny( 'abase/l4/Encoder.s', 'wbaseencoder' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.encode },
 }
 
 // base / l9
@@ -523,7 +523,6 @@ let Extend =
   wComparator,
   wLookerExtra,
   wTraverser,
-  wBaseEncoder,
   wStringer,
   wRoutineTransform,
 
@@ -544,7 +543,8 @@ let Extend =
   // base / l8
 
   wProcedure,
-  wEncoderStrategy,
+  wGdfStrategy,
+  wBaseEncoder,
 
   // base / l9
 
