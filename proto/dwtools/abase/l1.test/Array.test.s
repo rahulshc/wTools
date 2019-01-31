@@ -5074,6 +5074,9 @@ function arraySum( test )
 
 function arrayPrepend( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrepend( null, 1 );
+  test.identical( got, [ 1 ] );
 
   test.case = 'dstArray is empty';
 
@@ -5174,6 +5177,10 @@ function arrayPrepend( test )
 
 function arrayPrependOnce( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependOnce( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var dst = [];
@@ -5272,6 +5279,10 @@ function arrayPrependOnce( test )
 
 function arrayPrependOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependOnceStrictly( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var dst = [];
@@ -5663,6 +5674,10 @@ function arrayPrependedOnceStrictly( test )
 
 function arrayPrependElement( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependElement( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var dst = [];
@@ -5728,6 +5743,10 @@ function arrayPrependElement( test )
 
 function arrayPrependElementOnce( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependElementOnce( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var dst = [ ];
@@ -5833,6 +5852,14 @@ function arrayPrependElementOnce( test )
 
 function arrayPrependElementOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependElementOnceStrictly( null, 1 );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependElementOnceStrictly( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var dst = [];
@@ -6204,6 +6231,9 @@ function arrayPrependedElementOnceStrictly( test )
 
 function arrayPrependArray( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependArray( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
 
   test.case = 'nothing';
   var got = _.arrayPrependArray( [], [] );
@@ -6274,6 +6304,10 @@ function arrayPrependArray( test )
 
 function arrayPrependArrayOnce( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependArrayOnce( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayPrependArrayOnce( [], [] );
@@ -6355,6 +6389,10 @@ function arrayPrependArrayOnce( test )
 
 function arrayPrependArrayOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependArrayOnceStrictly( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayPrependArrayOnceStrictly( [], [] );
@@ -6694,6 +6732,10 @@ function arrayPrependedArrayOnceStrictly( test )
 function arrayPrependArrays( test )
 {
 
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependArrays( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
   var got = _.arrayPrependArrays( [], [] );
   var expected = [  ];
@@ -6784,6 +6826,11 @@ function arrayPrependArrays( test )
 
 function arrayPrependArraysOnce( test )
 {
+
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependArraysOnce( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayPrependArraysOnce( [], [] );
@@ -6899,6 +6946,10 @@ function arrayPrependArraysOnce( test )
 
 function arrayPrependArraysOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependArraysOnceStrictly( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayPrependArraysOnceStrictly( [], [] );
@@ -7359,6 +7410,10 @@ function arrayPrependedArraysOnceStrictly( test )
 
 function arrayAppend( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppend( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var got = _.arrayAppend( [], 1 );
@@ -7410,6 +7465,10 @@ function arrayAppend( test )
 
 function arrayAppendOnce( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendOnce( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var got = _.arrayAppendOnce( [], 1 );
@@ -7493,6 +7552,10 @@ function arrayAppendOnce( test )
 
 function arrayAppendOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendOnceStrictly( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var dst = [];
@@ -7870,6 +7933,10 @@ function arrayAppendedOnceStrictly( test )
 
 function arrayAppendElement( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendElement( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var got = _.arrayAppendElement( [], 1 );
@@ -7921,6 +7988,10 @@ function arrayAppendElement( test )
 
 function arrayAppendElementOnce( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendElementOnce( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var got = _.arrayAppendElementOnce( [], 1 );
@@ -8004,6 +8075,10 @@ function arrayAppendElementOnce( test )
 
 function arrayAppendElementOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendElementOnceStrictly( null, 1 );
+  test.identical( got, [ 1 ] );
+
   test.case = 'simple';
 
   var dst = [];
@@ -8431,6 +8506,9 @@ function arrayAppendedElementOnceStrictly( test )
 
 function arrayAppendArray( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendArray( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
 
   test.case = 'nothing';
   var got = _.arrayAppendArray( [], [] );
@@ -8501,6 +8579,10 @@ function arrayAppendArray( test )
 
 function arrayAppendArrayOnce( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendArrayOnce( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayAppendArrayOnce( [], [] );
@@ -8583,6 +8665,10 @@ function arrayAppendArrayOnce( test )
 
 function arrayAppendArrayOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendArrayOnceStrictly( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayAppendArrayOnceStrictly( [], [] );
@@ -9047,6 +9133,9 @@ function arrayAppendedArrayOnceStrictly( test )
 
 function arrayAppendArrays( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendArrays( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
 
   test.case = 'nothing';
   var got = _.arrayAppendArrays( [], [] );
@@ -9136,6 +9225,10 @@ function arrayAppendArrays( test )
 
 function arrayAppendArraysOnce( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendArraysOnce( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayAppendArraysOnce( [], [] );
@@ -9242,6 +9335,10 @@ function arrayAppendArraysOnce( test )
 
 function arrayAppendArraysOnceStrictly( test )
 {
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendArraysOnceStrictly( null, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
   test.case = 'nothing';
 
   var got = _.arrayAppendArraysOnceStrictly( [], [] );
