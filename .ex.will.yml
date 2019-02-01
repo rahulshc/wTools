@@ -4,7 +4,7 @@ about :
 
   name : "wTools"
   description : "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind"
-  version : "0.8.409"
+  version : "0.8.410"
   enabled : 1
   interpreters :
   - nodejs >= 6.0.0
