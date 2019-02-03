@@ -42,6 +42,12 @@ let wPathFundamentals =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.path },
 }
 
+let wRoutineFundamentals =
+{
+  includeAny : includeAny( 'abase/l3/RoutineFundamentals.s', 'wroutinefundamentals' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.exec },
+}
+
 let wProto =
 {
   includeAny : includeAny( 'abase/l3/Proto.s', 'wProto' ),
@@ -511,6 +517,7 @@ let Extend =
 
   wLooker,
   wPathFundamentals,
+  wRoutineFundamentals,
   wProto,
   wSelector,
 
