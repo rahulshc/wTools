@@ -40,7 +40,7 @@ function strIs( src )
 
 //
 
-function strsAre( src )
+function strsAreAll( src )
 {
   _.assert( arguments.length === 1 );
 
@@ -966,7 +966,7 @@ let Routines =
 {
 
   strIs,
-  strsAre,
+  strsAreAll,
   strDefined,
   strsAreNotEmpty,
 

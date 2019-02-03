@@ -1318,10 +1318,64 @@ function mapSupplement( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
   return _.mapExtend( null, srcMap );
-  let args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.dstNotHas );
-  return _.mapExtendConditional.apply( this, args );
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  for( let a = 1 ; a < arguments.length ; a++ )
+  {
+    srcMap = arguments[ a ];
+    for( let s in srcMap )
+    {
+      if( s in dstMap )
+      continue;
+      dstMap[ s ] = srcMap[ s ];
+    }
+  }
+
+  return dstMap
 }
+
+//
+
+function mapSupplementStructureless( dstMap, srcMap )
+{
+  if( dstMap === null && arguments.length === 2 )
+  return _.mapExtend( null, srcMap );
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  for( let a = 1 ; a < arguments.length ; a++ )
+  {
+    srcMap = arguments[ a ];
+    for( let s in srcMap )
+    {
+      if( dstMap[ s ] !== undefined )
+      continue;
+      // if( s in dstMap )
+      // continue;
+      // _.assert( !_.objectLike( srcMap[ s ] ) && !_.arrayLike( srcMap[ s ] ), () => 'Source map should have only primitive elements, but have ' + _.strType( srcMap ) );
+      if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+      {
+        debugger;
+        throw 'Source map should have only primitive elements, but have ' + _.strType( srcMap );
+      }
+      dstMap[ s ] = srcMap[ s ];
+    }
+  }
+
+  return dstMap
+}
+
+// function mapSupplement( dstMap, srcMap )
+// {
+//   if( dstMap === null && arguments.length === 2 )
+//   return _.mapExtend( null, srcMap );
+//   let args = _.longSlice( arguments );
+//   args.unshift( _.field.mapper.dstNotHas );
+//   return _.mapExtendConditional.apply( this, args );
+// }
 
 //
 
@@ -4681,9 +4735,10 @@ function sureMapHasNoUndefine( srcMap, msg )
   if( but.length )
   {
     debugger;
+    let listStr = _.strQuote ? _.strQuote( but ).join( ', ' ) : String( but );
     throw _._err
     ({
-      args : [ 'Object ' + ( msg ? _.strConcat( msg ) : 'should have no undefines, but has' ) + ' : ' + _.strQuote( but ).join( ', ' ) ],
+      args : [ 'Object ' + ( msg ? _.strConcat( msg ) : 'should have no undefines, but has' ) + ' : ' + listStr ],
       level : 2,
     });
     return false;
@@ -5119,6 +5174,7 @@ let Routines =
   mapsExtendNulls,
 
   mapSupplement,
+  mapSupplementStructureless,
   mapSupplementNulls,
   mapSupplementNils,
   mapSupplementAssigning,

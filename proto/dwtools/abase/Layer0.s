@@ -8,6 +8,7 @@ if( typeof module !== 'undefined' && module !== null )
 
   require( './l0/aPredefined.s' );
   require( './l0/aSetup.s' );
+  // require( './l0/bPrerequisites.s' );
 
   require( './l0/fBool.s' );
   require( './l0/fChecker.s' );

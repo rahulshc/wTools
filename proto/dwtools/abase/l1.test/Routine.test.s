@@ -8,6 +8,8 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
+debugger;
+
 var _global = _global_;
 var _ = _global_.wTools;
 
@@ -964,7 +966,7 @@ function routinesChain( test )
 
 //
 
-function routineVectorize_functor( test )
+function vectorize( test )
 {
   function srcRoutine( a,b )
   {
@@ -980,7 +982,7 @@ function routineVectorize_functor( test )
     select : 1
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.case = 'single argument';
 
@@ -1008,7 +1010,7 @@ function routineVectorize_functor( test )
     select : 1
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine, srcRoutine )
 
@@ -1026,7 +1028,7 @@ function routineVectorize_functor( test )
   }
   o.routine = srcRoutine;
   debugger
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.case = 'single argument';
 
@@ -1062,7 +1064,7 @@ function routineVectorize_functor( test )
     select : 1
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.case = 'single argument';
 
@@ -1104,7 +1106,7 @@ function routineVectorize_functor( test )
     select : 'b'
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.case = 'single argument';
 
@@ -1133,7 +1135,7 @@ function routineVectorize_functor( test )
     select : [ 'a', 'b' ]
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.case = 'single argument';
 
@@ -1210,7 +1212,7 @@ function routineVectorize_functor( test )
     select : 2
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine( [ 1,2 ], 1 ), [ [ 1,1 ], [ 2,1 ] ] );
   test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
@@ -1246,7 +1248,7 @@ function routineVectorize_functor( test )
     select : 2
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine( [ 1,2 ], 3 ), [ [ 1,2 ], 3 ] );
   test.identical( routine( 1, [ 1,2 ] ), [ 1, [ 1,2 ] ] );
@@ -1277,7 +1279,7 @@ function routineVectorize_functor( test )
     select : 2
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine( [ 1,2 ], 3 ), [ [ 1,3 ], [ 2,3 ] ] );
   test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
@@ -1314,7 +1316,7 @@ function routineVectorize_functor( test )
     select : 1
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine( 1  ), [ 1 ] );
   test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
@@ -1335,7 +1337,7 @@ function routineVectorize_functor( test )
     select : 2
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine(  1, 1  ), [ 1, 1 ] );
   test.identical( routine( [ 1 ], 1 ), [ [ 1 ], 1 ] );
@@ -1359,7 +1361,7 @@ function routineVectorize_functor( test )
     select : 2
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine( [ 1,2 ], 3 ), [ [ 1,3 ], [ 2,3 ] ] );
   test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
@@ -1399,7 +1401,7 @@ function routineVectorize_functor( test )
     select : 3
   }
   o.routine = srcRoutine;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine( [ 1 ], { b : true }, 'c' ), { '1,b,c' : true } );
   test.identical( routine( [ 1 ], { b : true }, [ 'c' ] ), { '1,b,c' : true } );
@@ -1606,7 +1608,7 @@ function routineVectorize_functor( test )
     select : 1
   }
   o.routine = srcRoutine2;
-  var routine = _.routineVectorize_functor( o );
+  var routine = _.vectorize( o );
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
@@ -1629,19 +1631,20 @@ var Self =
 
     /* qqq : tests for constructorJoin, extend tests for routineJoin */
 
-    _routineJoin : _routineJoin,
-    // routineBind  : routineBind,
-    constructorJoin : constructorJoin,
-    routineJoin  : routineJoin,
-    routineSeal  : routineSeal,
-    routinesCall : routinesCall,
+    _routineJoin,
+    constructorJoin,
+    routineJoin,
+    routineSeal,
+    routinesCall,
 
-    routinesCompose : routinesCompose,
-    routinesComposeAll : routinesComposeAll,
-    routinesComposeAllReturningLast : routinesComposeAllReturningLast,
-    routinesChain : routinesChain,
+    routinesCompose,
+    routinesComposeAll,
+    routinesComposeAllReturningLast,
+    routinesChain,
 
-    routineVectorize_functor : routineVectorize_functor,
+    vectorize,
+    /* qqq : split test routine vectorize */
+    /* qqq : add tests for vectorize* routines */
 
   }
 

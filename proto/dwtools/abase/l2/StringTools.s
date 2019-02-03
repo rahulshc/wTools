@@ -136,7 +136,7 @@ function strHasSeveral( src,ins )
 
 function strsAnyHas( srcs, ins )
 {
-  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( srcs ) || _.strsAreAll( srcs ) );
   _.assert( _.strIs( ins ) );
 
   if( _.strIs( srcs ) )
@@ -149,7 +149,7 @@ function strsAnyHas( srcs, ins )
 
 function strsAllHas( srcs, ins )
 {
-  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( srcs ) || _.strsAreAll( srcs ) );
   _.assert( _.strIs( ins ) );
 
   if( _.strIs( srcs ) )
@@ -162,7 +162,7 @@ function strsAllHas( srcs, ins )
 
 function strsNoneHas( srcs, ins )
 {
-  _.assert( _.strIs( srcs ) || _.strsAre( srcs ) );
+  _.assert( _.strIs( srcs ) || _.strsAreAll( srcs ) );
   _.assert( _.strIs( ins ) );
 
   if( _.strIs( srcs ) )
@@ -3658,7 +3658,13 @@ function strConcat( srcs, o )
   o = _.routineOptions( strConcat, o || Object.create( null ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( this.strConcat === strConcat );
-  o.optionsForToStr = _.mapSupplement( null, o.optionsForToStr, strConcat.defaults.optionsForToStr );
+
+  let defaultOptionsForToStr =
+  {
+    stringWrapper : '',
+  }
+
+  o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
 
   if( _.routineIs( srcs ) )
   return srcs();
@@ -3714,10 +3720,7 @@ strConcat.defaults =
   linePostfix : '',
   lineDelimter : '\n',
   delimeter : ' ',
-  optionsForToStr :
-  {
-    stringWrapper : '',
-  },
+  optionsForToStr : null,
 }
 
 // --
@@ -3931,7 +3934,7 @@ function strLinesNumber( o )
 
   _.routineOptions( strLinesNumber,o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( o.src ) || _.strsAre( o.src ),'Expects string or strings {-o.src-}' );
+  _.assert( _.strIs( o.src ) || _.strsAreAll( o.src ),'Expects string or strings {-o.src-}' );
 
   /* */
 

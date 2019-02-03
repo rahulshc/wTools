@@ -387,6 +387,7 @@ function routineOptions( routine, args, defaults )
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got',args.length,'arguments' );
 
   _.assertMapHasOnly( options, defaults );
+  // _.mapSupplementStructureless( options, defaults ); /* xxx qqq : use instead of mapComplement */
   _.mapComplement( options, defaults );
   _.assertMapHasNoUndefine( options );
 
@@ -499,6 +500,7 @@ function routineOptionsFromThis( routine, _this, constructor )
 
   return _.routineOptions( routine,options );
 }
+
 //
 
 function _routinesCompose_pre( routine, args )
@@ -525,18 +527,6 @@ function _routinesCompose_pre( routine, args )
 
   return o;
 }
-
-// //
-//
-// function _routinesComposeWithSingleArgument_pre( routine, args )
-// {
-//   let o = _routinesCompose_pre( routine, args );
-//
-//   _.assert( args.length === 1 );
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   return o;
-// }
 
 //
 
@@ -806,8 +796,6 @@ routineFromPreAndBody_body.defaults =
   pre : null,
   body : null,
   name : null,
-  // preProperties : {},
-  // bodyProperties : { defaults : null },
 }
 
 //
@@ -821,16 +809,36 @@ function routineFromPreAndBody()
 
 routineFromPreAndBody.pre = routineFromPreAndBody_pre;
 routineFromPreAndBody.body = routineFromPreAndBody_body;
-routineFromPreAndBody.defaults = routineFromPreAndBody_body.defaults;
+routineFromPreAndBody.defaults = Object.create( routineFromPreAndBody_body.defaults );
 
 //
 
-function routineVectorize_functor( o )
+function vectorize_pre( routine, args )
 {
+  let o = args[ 0 ];
 
   if( _.routineIs( o ) || _.strIs( o ) )
   o = { routine : o }
-  o = _.routineOptions( routineVectorize_functor, o );
+
+  _.routineOptions( routine, o );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.routineIs( o.routine ) || _.strIs( o.routine ) || _.strsAreAll( o.routine ), 'Expects routine {-o.routine-}, but got', _.strType( o.routine ) );
+  _.assert( args.length === 1, 'Expects single argument' );
+  _.assert( o.select >= 1 || _.strIs( o.select ) || _.arrayIs( o.select ), 'Expects {-o.select-} as number >= 1, string or array, but got', o.select );
+
+  return o;
+}
+
+//
+
+function vectorize_body( o )
+{
+
+  // if( _.routineIs( o ) || _.strIs( o ) )
+  // o = { routine : o }
+  // o = _.routineOptions( vectorize, o );
+
+  _.assertRoutineOptions( vectorize_body, arguments );
 
   if( _.arrayIs( o.routine ) && o.routine.length === 1 )
   o.routine = o.routine[ 0 ];
@@ -849,8 +857,8 @@ function routineVectorize_functor( o )
   routine = routineNormalize( routine );
 
   _.assert( _.routineIs( routine ), 'Expects routine {-o.routine-}, but got', _.strType( routine ) );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ), 'Expects {-o.select-} as number >= 1, string or array, but got', select );
+  // _.assert( arguments.length === 1, 'Expects single argument' );
+  // _.assert( select >= 1 || _.strIs( select ) || _.arrayIs( select ), 'Expects {-o.select-} as number >= 1, string or array, but got', select );
 
   /* */
 
@@ -1308,7 +1316,10 @@ function routineVectorize_functor( o )
 
 }
 
-routineVectorize_functor.defaults = /* qqq : implement options combination vectorizingMap : 1, vectorizingKeys : 1, vectorizingArray : [ 0, 1 ] */
+/* qqq : implement options combination vectorizingMap : 1, vectorizingKeys : 1, vectorizingArray : [ 0, 1 ] */
+/* qqq : cover it */
+
+vectorize_body.defaults =
 {
   routine : null,
   fieldFilter : null,
@@ -1318,6 +1329,118 @@ routineVectorize_functor.defaults = /* qqq : implement options combination vecto
   vectorizingKeys : 0,
   select : 1,
 }
+
+//
+
+function vectorize()
+{
+  let o = vectorize.pre.call( this, vectorize, arguments );
+  let result = vectorize.body.call( this, o );
+  return result;
+}
+
+vectorize.pre = vectorize_pre;
+vectorize.body = vectorize_body;
+vectorize.defaults = Object.create( vectorize_body.defaults );
+
+//
+
+function vectorizeAll_body( o )
+{
+  _.assertRoutineOptions( vectorize, arguments );
+
+  let routine1 = _.vectorize.body.call( this, o );
+
+  return all;
+
+  function all()
+  {
+    let result = routine1.apply( this, arguments );
+    return _.all( result );
+  }
+
+}
+
+vectorizeAll_body.defaults = Object.create( vectorize_body.defaults );
+
+//
+
+function vectorizeAll()
+{
+  let o = vectorize.pre.call( this, vectorize, arguments );
+  let result = vectorize.body.call( this, o );
+  return result;
+}
+
+vectorizeAll.pre = vectorize_pre;
+vectorizeAll.body = vectorizeAll_body;
+vectorizeAll.defaults = Object.create( vectorizeAll_body.defaults );
+
+//
+
+function vectorizeAny_body( o )
+{
+  _.assertRoutineOptions( vectorize, arguments );
+
+  let routine1 = _.vectorize.body.call( this, o );
+
+  return all;
+
+  function all()
+  {
+    let result = routine1.apply( this, arguments );
+    return _.all( result );
+  }
+
+}
+
+vectorizeAny_body.defaults = Object.create( vectorize_body.defaults );
+
+//
+
+function vectorizeAny()
+{
+  let o = vectorize.pre.call( this, vectorize, arguments );
+  let result = vectorize.body.call( this, o );
+  return result;
+}
+
+vectorizeAny.pre = vectorize_pre;
+vectorizeAny.body = vectorizeAny_body;
+vectorizeAny.defaults = Object.create( vectorizeAny_body.defaults );
+
+//
+
+function vectorizeNone_body( o )
+{
+  _.assertRoutineOptions( vectorize, arguments );
+
+  let routine1 = _.vectorize.body.call( this, o );
+
+  return all;
+
+  function all()
+  {
+    let result = routine1.apply( this, arguments );
+    return _.all( result );
+  }
+
+}
+
+vectorizeNone_body.defaults = Object.create( vectorize_body.defaults );
+
+//
+
+function vectorizeNone()
+{
+  let o = vectorize.pre.call( this, vectorize, arguments );
+  let result = vectorize.body.call( this, o );
+  return result;
+}
+
+vectorizeNone.pre = vectorize_pre;
+vectorizeNone.body = vectorizeNone_body;
+vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
 
 // --
 // fields
@@ -1354,7 +1477,11 @@ let Routines =
   routineExtend,
   routineFromPreAndBody,
 
-  routineVectorize_functor,
+  routineVectorize_functor : vectorize,
+  vectorize,
+  vectorizeAll,
+  vectorizeAny,
+  vectorizeNone,
 
   bind : null,
 
@@ -1369,9 +1496,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
