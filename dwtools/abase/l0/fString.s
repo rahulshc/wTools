@@ -38,6 +38,7 @@ function strIs( src )
   return result;
 }
 
+
 //
 
 function strsAreAll( src )
