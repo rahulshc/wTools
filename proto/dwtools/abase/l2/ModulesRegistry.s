@@ -178,7 +178,7 @@ let wProcedure =
 
 let wGdfStrategy =
 {
-  includeAny : includeAny( 'abase/l8/GdfConverter.s', 'wGdfStrategy' ),
+  includeAny : includeAny( 'abase/l8/GdfConverter.s', 'wgdfstrategy' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Gdf },
 }
 
