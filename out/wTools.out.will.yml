@@ -5,7 +5,7 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.412
+  version: 0.8.415
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -25,11 +25,11 @@ path:
   out:
     path: out
   out.debug:
-    path: ./out.debug
+    path: ./out/debug
     criterion:
       debug: 1
   out.release:
-    path: ./out.release
+    path: ./out/release
     criterion:
       debug: 0
   repository:
@@ -48,63 +48,63 @@ path:
       public: 1
   exportedFiles.proto.export:
     path:
-      - .
-      - ./dwtools
-      - ./dwtools/Tools.s
-      - ./dwtools/abase
-      - ./dwtools/abase/Layer0.s
-      - ./dwtools/abase/Layer1.s
-      - ./dwtools/abase/Layer2.s
-      - ./dwtools/abase/l0
-      - ./dwtools/abase/l0/aPredefined.s
-      - ./dwtools/abase/l0/aSetup.s
-      - ./dwtools/abase/l0/fBool.s
-      - ./dwtools/abase/l0/fChecker.s
-      - ./dwtools/abase/l0/fEntity.s
-      - ./dwtools/abase/l0/fErr.s
-      - ./dwtools/abase/l0/fLong.s
-      - ./dwtools/abase/l0/fMap.s
-      - ./dwtools/abase/l0/fNumber.s
-      - ./dwtools/abase/l0/fRange.s
-      - ./dwtools/abase/l0/fRegexp.s
-      - ./dwtools/abase/l0/fRoutine.s
-      - ./dwtools/abase/l0/fString.s
-      - ./dwtools/abase/l0/fTime.s
-      - ./dwtools/abase/l0/iArrayDescriptor.s
-      - ./dwtools/abase/l0/iCompose.s
-      - ./dwtools/abase/l0/iField.s
-      - ./dwtools/abase/l1
-      - ./dwtools/abase/l1/cErr.s
-      - ./dwtools/abase/l1/gBool.s
-      - ./dwtools/abase/l1/gEntity.s
-      - ./dwtools/abase/l1/gLong.s
-      - ./dwtools/abase/l1/gMap.s
-      - ./dwtools/abase/l1/gNumber.s
-      - ./dwtools/abase/l1/gRange.s
-      - ./dwtools/abase/l1/gRegexp.s
-      - ./dwtools/abase/l1/gRoutine.s
-      - ./dwtools/abase/l1/gString.s
-      - ./dwtools/abase/l1/gTime.s
-      - ./dwtools/abase/l1/rFundamental.s
-      - ./dwtools/abase/l1/zSetup.s
-      - ./dwtools/abase/l1.test
-      - ./dwtools/abase/l1.test/Array.test.s
-      - ./dwtools/abase/l1.test/Diagnostics.test.s
-      - ./dwtools/abase/l1.test/Entity.test.s
-      - ./dwtools/abase/l1.test/Map.test.s
-      - ./dwtools/abase/l1.test/Regexp.test.s
-      - ./dwtools/abase/l1.test/Routine.test.s
-      - ./dwtools/abase/l1.test/String.test.s
-      - ./dwtools/abase/l1.test/Typing.test.s
-      - ./dwtools/abase/l2
-      - ./dwtools/abase/l2/IncludeTools.s
-      - ./dwtools/abase/l2/ModulesRegistry.s
-      - ./dwtools/abase/l2/NameTools.s
-      - ./dwtools/abase/l2/StringTools.s
-      - ./dwtools/abase/l2.test
-      - ./dwtools/abase/l2.test/StringTools.test.s
-      - ./dwtools/amid
-      - ./dwtools/atop
+      - proto
+      - proto/dwtools
+      - proto/dwtools/Tools.s
+      - proto/dwtools/abase
+      - proto/dwtools/abase/Layer0.s
+      - proto/dwtools/abase/Layer1.s
+      - proto/dwtools/abase/Layer2.s
+      - proto/dwtools/abase/l0
+      - proto/dwtools/abase/l0/aPredefined.s
+      - proto/dwtools/abase/l0/aSetup.s
+      - proto/dwtools/abase/l0/fBool.s
+      - proto/dwtools/abase/l0/fChecker.s
+      - proto/dwtools/abase/l0/fEntity.s
+      - proto/dwtools/abase/l0/fErr.s
+      - proto/dwtools/abase/l0/fLong.s
+      - proto/dwtools/abase/l0/fMap.s
+      - proto/dwtools/abase/l0/fNumber.s
+      - proto/dwtools/abase/l0/fRange.s
+      - proto/dwtools/abase/l0/fRegexp.s
+      - proto/dwtools/abase/l0/fRoutine.s
+      - proto/dwtools/abase/l0/fString.s
+      - proto/dwtools/abase/l0/fTime.s
+      - proto/dwtools/abase/l0/iArrayDescriptor.s
+      - proto/dwtools/abase/l0/iCompose.s
+      - proto/dwtools/abase/l0/iField.s
+      - proto/dwtools/abase/l1
+      - proto/dwtools/abase/l1/cErr.s
+      - proto/dwtools/abase/l1/gBool.s
+      - proto/dwtools/abase/l1/gEntity.s
+      - proto/dwtools/abase/l1/gLong.s
+      - proto/dwtools/abase/l1/gMap.s
+      - proto/dwtools/abase/l1/gNumber.s
+      - proto/dwtools/abase/l1/gRange.s
+      - proto/dwtools/abase/l1/gRegexp.s
+      - proto/dwtools/abase/l1/gRoutine.s
+      - proto/dwtools/abase/l1/gString.s
+      - proto/dwtools/abase/l1/gTime.s
+      - proto/dwtools/abase/l1/rFundamental.s
+      - proto/dwtools/abase/l1/zSetup.s
+      - proto/dwtools/abase/l1.test
+      - proto/dwtools/abase/l1.test/Array.test.s
+      - proto/dwtools/abase/l1.test/Diagnostics.test.s
+      - proto/dwtools/abase/l1.test/Entity.test.s
+      - proto/dwtools/abase/l1.test/Map.test.s
+      - proto/dwtools/abase/l1.test/Regexp.test.s
+      - proto/dwtools/abase/l1.test/Routine.test.s
+      - proto/dwtools/abase/l1.test/String.test.s
+      - proto/dwtools/abase/l1.test/Typing.test.s
+      - proto/dwtools/abase/l2
+      - proto/dwtools/abase/l2/IncludeTools.s
+      - proto/dwtools/abase/l2/ModulesRegistry.s
+      - proto/dwtools/abase/l2/NameTools.s
+      - proto/dwtools/abase/l2/StringTools.s
+      - proto/dwtools/abase/l2.test
+      - proto/dwtools/abase/l2.test/StringTools.test.s
+      - proto/dwtools/amid
+      - proto/dwtools/atop
     criterion:
       default: 1
       debug: 1
@@ -118,7 +118,7 @@ reflector:
   reflect.proto.:
     srcFilter:
       filePath:
-        ./proto: ./out.release
+        ./proto: ./out/release
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -139,7 +139,7 @@ reflector:
   reflect.proto.debug:
     srcFilter:
       filePath:
-        ./proto: ./out.debug
+        ./proto: ./out/debug
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -174,71 +174,88 @@ reflector:
       - predefined.*
   exported.proto.export:
     srcFilter:
-      filePath: ./proto
+      filePath:
+        ./proto: true
       prefixPath: .
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      proto: 1
+      export: 1
+      tar: 1
+      public: 1
   exportedFiles.proto.export:
     recursive: 0
     srcFilter:
       filePath:
         .: true
-        ./dwtools: true
-        ./dwtools/Tools.s: true
-        ./dwtools/abase: true
-        ./dwtools/abase/Layer0.s: true
-        ./dwtools/abase/Layer1.s: true
-        ./dwtools/abase/Layer2.s: true
-        ./dwtools/abase/l0: true
-        ./dwtools/abase/l0/aPredefined.s: true
-        ./dwtools/abase/l0/aSetup.s: true
-        ./dwtools/abase/l0/fBool.s: true
-        ./dwtools/abase/l0/fChecker.s: true
-        ./dwtools/abase/l0/fEntity.s: true
-        ./dwtools/abase/l0/fErr.s: true
-        ./dwtools/abase/l0/fLong.s: true
-        ./dwtools/abase/l0/fMap.s: true
-        ./dwtools/abase/l0/fNumber.s: true
-        ./dwtools/abase/l0/fRange.s: true
-        ./dwtools/abase/l0/fRegexp.s: true
-        ./dwtools/abase/l0/fRoutine.s: true
-        ./dwtools/abase/l0/fString.s: true
-        ./dwtools/abase/l0/fTime.s: true
-        ./dwtools/abase/l0/iArrayDescriptor.s: true
-        ./dwtools/abase/l0/iCompose.s: true
-        ./dwtools/abase/l0/iField.s: true
-        ./dwtools/abase/l1: true
-        ./dwtools/abase/l1/cErr.s: true
-        ./dwtools/abase/l1/gBool.s: true
-        ./dwtools/abase/l1/gEntity.s: true
-        ./dwtools/abase/l1/gLong.s: true
-        ./dwtools/abase/l1/gMap.s: true
-        ./dwtools/abase/l1/gNumber.s: true
-        ./dwtools/abase/l1/gRange.s: true
-        ./dwtools/abase/l1/gRegexp.s: true
-        ./dwtools/abase/l1/gRoutine.s: true
-        ./dwtools/abase/l1/gString.s: true
-        ./dwtools/abase/l1/gTime.s: true
-        ./dwtools/abase/l1/rFundamental.s: true
-        ./dwtools/abase/l1/zSetup.s: true
-        ./dwtools/abase/l1.test: true
-        ./dwtools/abase/l1.test/Array.test.s: true
-        ./dwtools/abase/l1.test/Diagnostics.test.s: true
-        ./dwtools/abase/l1.test/Entity.test.s: true
-        ./dwtools/abase/l1.test/Map.test.s: true
-        ./dwtools/abase/l1.test/Regexp.test.s: true
-        ./dwtools/abase/l1.test/Routine.test.s: true
-        ./dwtools/abase/l1.test/String.test.s: true
-        ./dwtools/abase/l1.test/Typing.test.s: true
-        ./dwtools/abase/l2: true
-        ./dwtools/abase/l2/IncludeTools.s: true
-        ./dwtools/abase/l2/ModulesRegistry.s: true
-        ./dwtools/abase/l2/NameTools.s: true
-        ./dwtools/abase/l2/StringTools.s: true
-        ./dwtools/abase/l2.test: true
-        ./dwtools/abase/l2.test/StringTools.test.s: true
-        ./dwtools/amid: true
-        ./dwtools/atop: true
+        dwtools: true
+        dwtools/Tools.s: true
+        dwtools/abase: true
+        dwtools/abase/Layer0.s: true
+        dwtools/abase/Layer1.s: true
+        dwtools/abase/Layer2.s: true
+        dwtools/abase/l0: true
+        dwtools/abase/l0/aPredefined.s: true
+        dwtools/abase/l0/aSetup.s: true
+        dwtools/abase/l0/fBool.s: true
+        dwtools/abase/l0/fChecker.s: true
+        dwtools/abase/l0/fEntity.s: true
+        dwtools/abase/l0/fErr.s: true
+        dwtools/abase/l0/fLong.s: true
+        dwtools/abase/l0/fMap.s: true
+        dwtools/abase/l0/fNumber.s: true
+        dwtools/abase/l0/fRange.s: true
+        dwtools/abase/l0/fRegexp.s: true
+        dwtools/abase/l0/fRoutine.s: true
+        dwtools/abase/l0/fString.s: true
+        dwtools/abase/l0/fTime.s: true
+        dwtools/abase/l0/iArrayDescriptor.s: true
+        dwtools/abase/l0/iCompose.s: true
+        dwtools/abase/l0/iField.s: true
+        dwtools/abase/l1: true
+        dwtools/abase/l1/cErr.s: true
+        dwtools/abase/l1/gBool.s: true
+        dwtools/abase/l1/gEntity.s: true
+        dwtools/abase/l1/gLong.s: true
+        dwtools/abase/l1/gMap.s: true
+        dwtools/abase/l1/gNumber.s: true
+        dwtools/abase/l1/gRange.s: true
+        dwtools/abase/l1/gRegexp.s: true
+        dwtools/abase/l1/gRoutine.s: true
+        dwtools/abase/l1/gString.s: true
+        dwtools/abase/l1/gTime.s: true
+        dwtools/abase/l1/rFundamental.s: true
+        dwtools/abase/l1/zSetup.s: true
+        dwtools/abase/l1.test: true
+        dwtools/abase/l1.test/Array.test.s: true
+        dwtools/abase/l1.test/Diagnostics.test.s: true
+        dwtools/abase/l1.test/Entity.test.s: true
+        dwtools/abase/l1.test/Map.test.s: true
+        dwtools/abase/l1.test/Regexp.test.s: true
+        dwtools/abase/l1.test/Routine.test.s: true
+        dwtools/abase/l1.test/String.test.s: true
+        dwtools/abase/l1.test/Typing.test.s: true
+        dwtools/abase/l2: true
+        dwtools/abase/l2/IncludeTools.s: true
+        dwtools/abase/l2/ModulesRegistry.s: true
+        dwtools/abase/l2/NameTools.s: true
+        dwtools/abase/l2/StringTools.s: true
+        dwtools/abase/l2.test: true
+        dwtools/abase/l2.test/StringTools.test.s: true
+        dwtools/amid: true
+        dwtools/atop: true
       basePath: .
       prefixPath: proto
+    criterion:
+      default: 1
+      debug: 1
+      raw: 1
+      proto: 1
+      export: 1
+      tar: 1
+      public: 1
 step:
   clean.out.:
     criterion:
@@ -359,7 +376,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.8.412
+    version: 0.8.415
     criterion:
       default: 1
       debug: 1
