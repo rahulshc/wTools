@@ -847,8 +847,8 @@ function vectorize_body( o )
   let fieldFilter = o.fieldFilter;
   let bypassingFilteredOut = o.bypassingFilteredOut;
   let vectorizingArray = o.vectorizingArray;
-  let vectorizingMap = o.vectorizingMap;
-  let vectorizingKeys = o.vectorizingKeys;
+  let vectorizingMapVals = o.vectorizingMapVals;
+  let vectorizingMapKeys = o.vectorizingMapKeys;
   let pre = null;
   let select = o.select === null ? 1 : o.select;
   let selectAll = o.select === Infinity;
@@ -866,17 +866,17 @@ function vectorize_body( o )
 
   if( _.numberIs( select ) )
   {
-    if( !vectorizingArray && !vectorizingMap && !vectorizingKeys )
+    if( !vectorizingArray && !vectorizingMapVals && !vectorizingMapKeys )
     resultRoutine = routine;
     else if( fieldFilter )
     resultRoutine = vectorizeWithFilters;
-    else if( vectorizingKeys )
+    else if( vectorizingMapKeys )
     {
-      // _.assert( !vectorizingMap, '{-o.vectorizingKeys-} and {-o.vectorizingMap-} should not be enabled at the same time' );
+      // _.assert( !vectorizingMapVals, '{-o.vectorizingMapKeys-} and {-o.vectorizingMapVals-} should not be enabled at the same time' );
 
-      if( vectorizingMap )
+      if( vectorizingMapVals )
       {
-        _.assert( select === 1, 'Only single argument is allowed if {-o.vectorizingKeys-} and {-o.vectorizingMap-} are enabled.' );
+        _.assert( select === 1, 'Only single argument is allowed if {-o.vectorizingMapKeys-} and {-o.vectorizingMapVals-} are enabled.' );
         resultRoutine = vectorizeMapWithKeysOrArray;
       }
       else
@@ -884,7 +884,7 @@ function vectorize_body( o )
         resultRoutine = vectorizeKeysOrArray;
       }
     }
-    else if( !vectorizingArray || vectorizingMap )
+    else if( !vectorizingArray || vectorizingMapVals )
     resultRoutine = vectorizeMapOrArray;
     else if( multiply === multiplyNo )
     resultRoutine = vectorizeArray;
@@ -909,7 +909,7 @@ function vectorize_body( o )
     }
     if( fieldFilter )
     _.assert( 0, 'not implemented' );
-    else if( vectorizingArray || !vectorizingMap )
+    else if( vectorizingArray || !vectorizingMapVals )
     {
       if( _.strIs( select ) )
       resultRoutine = vectorizeForOptionsMap;
@@ -983,7 +983,7 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      if( vectorizingMap && _.mapIs( args[ d ] ) )
+      if( vectorizingMapVals && _.mapIs( args[ d ] ) )
       {
         keys = _.mapOwnKeys( args[ d ] );
         break;
@@ -994,9 +994,9 @@ function vectorize_body( o )
     {
       for( let d = 0 ; d < select ; d++ )
       {
-        if( vectorizingMap /* || vectorizingKeys  */)
+        if( vectorizingMapVals /* || vectorizingMapKeys  */)
         _.assert( !_.mapIs( args[ d ] ), 'Arguments should have only arrays or only maps, but not both. Incorrect argument:', args[ d ] );
-        else if( vectorizingKeys && _.mapIs( args[ d ] ) )
+        else if( vectorizingMapKeys && _.mapIs( args[ d ] ) )
         continue;
 
         args[ d ] = _.multiple( args[ d ], length );
@@ -1137,7 +1137,7 @@ function vectorize_body( o )
       }
       return result;
     }
-    else if( vectorizingMap && _.mapIs( src ) )
+    else if( vectorizingMapVals && _.mapIs( src ) )
     {
       let args2 = _.longSlice( args );
       let result = Object.create( null );
@@ -1163,7 +1163,7 @@ function vectorize_body( o )
 
     _.assert( args.length === select, 'expects', select, 'arguments but got:', args.length );
 
-    if( vectorizingKeys && vectorizingMap &&_.mapIs( srcs ) )
+    if( vectorizingMapKeys && vectorizingMapVals &&_.mapIs( srcs ) )
     {
       let result = Object.create( null );
       for( let s in srcs )
@@ -1214,7 +1214,7 @@ function vectorize_body( o )
       }
       return result;
     }
-    else if( vectorizingMap && _.mapIs( src ) )
+    else if( vectorizingMapVals && _.mapIs( src ) )
     {
       args = _.longSlice( args );
       let result = Object.create( null );
@@ -1251,7 +1251,7 @@ function vectorize_body( o )
 
     _.assert( args.length === select, 'expects', select, 'arguments but got:', args.length );
 
-    if( vectorizingKeys )
+    if( vectorizingMapKeys )
     {
       for( let d = 0; d < select; d++ )
       {
@@ -1316,7 +1316,7 @@ function vectorize_body( o )
 
 }
 
-/* qqq : implement options combination vectorizingMap : 1, vectorizingKeys : 1, vectorizingArray : [ 0, 1 ] */
+/* qqq : implement options combination vectorizingMapVals : 1, vectorizingMapKeys : 1, vectorizingArray : [ 0, 1 ] */
 /* qqq : cover it */
 
 vectorize_body.defaults =
@@ -1325,8 +1325,8 @@ vectorize_body.defaults =
   fieldFilter : null,
   bypassingFilteredOut : 1,
   vectorizingArray : 1,
-  vectorizingMap : 0,
-  vectorizingKeys : 0,
+  vectorizingMapVals : 0,
+  vectorizingMapKeys : 0,
   select : 1,
 }
 

@@ -978,7 +978,7 @@ function vectorize( test )
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 0,
+    vectorizingMapVals : 0,
     select : 1
   }
   o.routine = srcRoutine;
@@ -1006,7 +1006,7 @@ function vectorize( test )
   var o =
   {
     vectorizingArray : 0,
-    vectorizingMap : 0,
+    vectorizingMapVals : 0,
     select : 1
   }
   o.routine = srcRoutine;
@@ -1018,12 +1018,12 @@ function vectorize( test )
 
   //
 
-  test.open( 'vectorizingMap : 1' );
+  test.open( 'vectorizingMapVals : 1' );
 
   var o =
   {
     vectorizingArray : 0,
-    vectorizingMap : 1,
+    vectorizingMapVals : 1,
     select : 1
   }
   o.routine = srcRoutine;
@@ -1051,16 +1051,16 @@ function vectorize( test )
   test.identical( routine( { a : 1 }, 2, 3 ), { a : [ 1, 2, 3 ] } );
   test.identical( routine( { a : 1 }, { b : 2 }, { c : 3 } ), { a : [ 1, { b : 2 }, { c : 3 } ] } );
 
-  test.close( 'vectorizingMap : 1' );
+  test.close( 'vectorizingMapVals : 1' );
 
   //
 
-  test.open( 'vectorizingArray : 1, vectorizingMap : 1' );
+  test.open( 'vectorizingArray : 1, vectorizingMapVals : 1' );
 
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 1,
+    vectorizingMapVals : 1,
     select : 1
   }
   o.routine = srcRoutine;
@@ -1093,7 +1093,7 @@ function vectorize( test )
   test.identical( routine( [ 1 ] , { a : 2 }, 3 ), [ [ 1, { a : 2 }, 3 ] ] );
   test.identical( routine( { a : 1 }, [ 2 ], 3 ), { a : [ 1, [ 2 ], 3 ] } );
 
-  test.close( 'vectorizingArray : 1, vectorizingMap : 1' );
+  test.close( 'vectorizingArray : 1, vectorizingMapVals : 1' );
 
   //
 
@@ -1102,7 +1102,7 @@ function vectorize( test )
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 0,
+    vectorizingMapVals : 0,
     select : 'b'
   }
   o.routine = srcRoutine;
@@ -1131,7 +1131,7 @@ function vectorize( test )
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 0,
+    vectorizingMapVals : 0,
     select : [ 'a', 'b' ]
   }
   o.routine = srcRoutine;
@@ -1208,7 +1208,7 @@ function vectorize( test )
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 0,
+    vectorizingMapVals : 0,
     select : 2
   }
   o.routine = srcRoutine;
@@ -1239,12 +1239,12 @@ function vectorize( test )
 
   //
 
-  test.open( 'vectorizingMap : 1,select : 2' );
+  test.open( 'vectorizingMapVals : 1,select : 2' );
 
   var o =
   {
     vectorizingArray : 0,
-    vectorizingMap : 1,
+    vectorizingMapVals : 1,
     select : 2
   }
   o.routine = srcRoutine;
@@ -1266,16 +1266,16 @@ function vectorize( test )
     test.shouldThrowError( () => routine( { a : 1 }, { b : 1 } ) );
   }
 
-  test.close( 'vectorizingMap : 1,select : 2' );
+  test.close( 'vectorizingMapVals : 1,select : 2' );
 
   //
 
-  test.open( 'vectorizingArray : 1, vectorizingMap : 1,select : 2' );
+  test.open( 'vectorizingArray : 1, vectorizingMapVals : 1,select : 2' );
 
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 1,
+    vectorizingMapVals : 1,
     select : 2
   }
   o.routine = srcRoutine;
@@ -1304,15 +1304,15 @@ function vectorize( test )
     test.shouldThrowError( () => routine( { b : 1 }, [ 1 ], 1 ) );
   }
 
-  test.close( 'vectorizingArray : 1, vectorizingMap : 1,select : 2' );
+  test.close( 'vectorizingArray : 1, vectorizingMapVals : 1,select : 2' );
 
-  test.open( ' vectorizingKeys : 1' );
+  test.open( ' vectorizingMapKeys : 1' );
 
   var o =
   {
     vectorizingArray : 0,
-    vectorizingMap : 0,
-    vectorizingKeys : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
     select : 1
   }
   o.routine = srcRoutine;
@@ -1325,15 +1325,15 @@ function vectorize( test )
   if( Config.debug )
   test.shouldThrowError( () => routine( 1, 2 ) )
 
-  test.close( ' vectorizingKeys : 1' );
+  test.close( ' vectorizingMapKeys : 1' );
 
-  test.open( 'vectorizingKeys : 1, select : 2' );
+  test.open( 'vectorizingMapKeys : 1, select : 2' );
 
   var o =
   {
     vectorizingArray : 0,
-    vectorizingMap : 0,
-    vectorizingKeys : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
     select : 2
   }
   o.routine = srcRoutine;
@@ -1349,15 +1349,15 @@ function vectorize( test )
   if( Config.debug )
   test.shouldThrowError( () => routine( 1,2,3 ) );
 
-  test.close( 'vectorizingKeys : 1, select : 2' );
+  test.close( 'vectorizingMapKeys : 1, select : 2' );
 
-  test.open( 'vectorizingKeys : 1, vectorizingArray : 1, select : 2' );
+  test.open( 'vectorizingMapKeys : 1, vectorizingArray : 1, select : 2' );
 
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 0,
-    vectorizingKeys : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
     select : 2
   }
   o.routine = srcRoutine;
@@ -1389,15 +1389,15 @@ function vectorize( test )
     test.shouldThrowError( () => routine( { b : 1 }, [ 1 ], 1 ) );
   }
 
-  test.close( 'vectorizingKeys : 1, vectorizingArray : 1, select : 2' );
+  test.close( 'vectorizingMapKeys : 1, vectorizingArray : 1, select : 2' );
 
-  test.open( 'vectorizingKeys : 1, vectorizingArray : 1, select : 3' );
+  test.open( 'vectorizingMapKeys : 1, vectorizingArray : 1, select : 3' );
 
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 0,
-    vectorizingKeys : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
     select : 3
   }
   o.routine = srcRoutine;
@@ -1593,9 +1593,9 @@ function vectorize( test )
     test.shouldThrowError( () => routine( [ 1 ], { b : true }, [ 'c', 'd' ] ) );
   }
 
-  test.close( 'vectorizingKeys : 1, vectorizingArray : 1, select : 3' );
+  test.close( 'vectorizingMapKeys : 1, vectorizingArray : 1, select : 3' );
 
-  test.open( 'vectorizingKeys : 1, vectorizingArray : 1, vectorizingMap : 1, select : 1' );
+  test.open( 'vectorizingMapKeys : 1, vectorizingArray : 1, vectorizingMapVals : 1, select : 1' );
   function srcRoutine2( src )
   {
     return src + 1;
@@ -1603,8 +1603,8 @@ function vectorize( test )
   var o =
   {
     vectorizingArray : 1,
-    vectorizingMap : 1,
-    vectorizingKeys : 1,
+    vectorizingMapVals : 1,
+    vectorizingMapKeys : 1,
     select : 1
   }
   o.routine = srcRoutine2;
@@ -1615,7 +1615,7 @@ function vectorize( test )
   test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
   test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
 
-  test.close( 'vectorizingKeys : 1, vectorizingArray : 1, vectorizingMap : 1, select : 1' );
+  test.close( 'vectorizingMapKeys : 1, vectorizingArray : 1, vectorizingMapVals : 1, select : 1' );
 }
 
 //
