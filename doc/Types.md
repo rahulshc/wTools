@@ -5,10 +5,10 @@
 | boolLike  | types convertable to boolean: number and bool
 | array | sequence of elements with index access
 | arrayLike | object that has indexed access to elements and length property
-| object    | data sctructure of key:value pairs
-| map   | object with key access to values, but without Object's function
+| object    | collection of user defined properties( key:value pairs) and default properties inherited from Object's prototype
+| map   | dictionary type of data collection in which, data is stored in a form of key:value pairs, doesn't have a prototype, usually is used to store options of the routine, example of empty map : ```let map = Object.create( null )```
 | objectLike  |
-| mapLike   | object or map
+| mapLike   |
 | RegExp    | regular expression for matching text
 | Range | array-like object with two values : indecies of first and last + 1 element
 | Time  | Date object or number and string that are convertable to Date object
