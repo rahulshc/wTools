@@ -777,10 +777,10 @@ function diagnosticApplicationEntryPointInfo()
   let data = _.diagnosticApplicationEntryPointData();
   let result = '';
 
-  if( data.execPath )
-  result = join( 'Exec path', data.execPath );
   if( data.currentPath )
   result = join( 'Current path', data.currentPath );
+  if( data.execPath )
+  result = join( 'Exec path', data.execPath );
 
   return result;
 

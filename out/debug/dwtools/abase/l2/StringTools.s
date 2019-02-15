@@ -2278,8 +2278,11 @@ function strSplitFast_body( o )
   let closestPosition;
   let closestIndex;
   let hasEmptyDelimeter;
+  let delimeter
 
   o.delimeter = _.arrayAs( o.delimeter );
+
+  let foundDelimeters = o.delimeter.slice();
 
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.delimeter ) );
@@ -2314,12 +2317,23 @@ function strSplitFast_body( o )
 
     for( let d = 0 ; d < o.delimeter.length ; d++ )
     {
-      if( o.delimeter[ d ].length === 0 )
-      hasEmptyDelimeter = true;
+      let delimeter = o.delimeter[ d ];
+      if( _.regexpIs( delimeter ) )
+      {
+        _.assert( !delimeter.sticky );
+        if( delimeter.source === '' || delimeter.source === '()' || delimeter.source === '(?:)' )
+        hasEmptyDelimeter = true;
+        // debugger;
+      }
+      else
+      {
+        if( delimeter.length === 0 )
+        hasEmptyDelimeter = true;
+      }
       closests[ d ] = delimeterNext( d, position );
     }
 
-    let delimeter;
+    // let delimeter;
 
     do
     {
@@ -2327,8 +2341,6 @@ function strSplitFast_body( o )
 
       if( closestPosition === o.src.length )
       break;
-
-      delimeter = o.delimeter[ closestIndex ];
 
       if( !delimeter.length )
       position += 1;
@@ -2340,9 +2352,11 @@ function strSplitFast_body( o )
 
       position = closests[ closestIndex ] + ( delimeter.length ? delimeter.length : 1 );
 
+      // debugger;
       for( let d = 0 ; d < o.delimeter.length ; d++ )
       if( closests[ d ] < position )
       closests[ d ] = delimeterNext( d, position );
+      // debugger;
 
     }
     while( position < o.src.length );
@@ -2361,7 +2375,14 @@ function strSplitFast_body( o )
 
     if( o.preservingDelimeters )
     if( o.preservingEmpty || delimeter )
-    result.push( delimeter );
+    {
+      result.push( delimeter );
+      // if( _.regexpIs( delimeter ) )
+      // result.push( delimeter );
+      // o.src.substring( position, closestPosition )
+      // else
+      // result.push( delimeter );
+    }
 
   }
 
@@ -2389,6 +2410,8 @@ function strSplitFast_body( o )
       }
     }
 
+    delimeter = foundDelimeters[ closestIndex ];
+
   }
 
   /* */
@@ -2396,7 +2419,23 @@ function strSplitFast_body( o )
   function delimeterNext( d, position )
   {
     _.assert( position <= o.src.length );
-    let result = o.src.indexOf( o.delimeter[ d ], position );
+    let delimeter = o.delimeter[ d ];
+    let result;
+
+    if( _.strIs( delimeter ) )
+    {
+      result = o.src.indexOf( delimeter, position );
+    }
+    else
+    {
+      let execed = delimeter.exec( o.src.substring( position ) );
+      if( execed )
+      {
+        result = execed.index + position;
+        foundDelimeters[ d ] = execed[ 0 ];
+      }
+    }
+
     if( result === -1 )
     return o.src.length;
     return result;
