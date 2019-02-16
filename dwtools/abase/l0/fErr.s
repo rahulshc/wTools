@@ -755,7 +755,9 @@ function error_functor( name, onMake )
         let args1 = onMake.apply( err1, arguments );
         _.assert( _.arrayLike( args1 ) );
         let args2 = _.arrayAppendArrays( [], [ args1, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
-        let err2 = _.err.apply( _, args2 );
+        let err2 = _._err({ args : args2, level : 3 });
+        // let err2 = _.err.apply( _, args2 );
+        // let err = _._err({ args : [ o.err ], level : _.numberIs( o.level ) ? o.level+1 : o.level });
 
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );
