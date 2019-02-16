@@ -5,7 +5,7 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.416
+  version: 0.8.422
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -18,10 +18,10 @@ execution:
     test: wtest staging
     docgen: wdocgen staging
 path:
-  proto:
-    path: ./proto
   in:
     path: .
+  temp:
+    path: out
   out:
     path: out
   out.debug:
@@ -32,6 +32,8 @@ path:
     path: ./out/release
     criterion:
       debug: 0
+  proto:
+    path: ./proto
   repository:
     path: 'git+https://github.com/Wandalen/wTools.git'
   bugs:
@@ -376,7 +378,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.8.416
+    version: 0.8.422
     criterion:
       default: 1
       debug: 1
