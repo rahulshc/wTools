@@ -5,7 +5,7 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.422
+  version: 0.8.425
   enabled: 1
   interpreters:
     - nodejs >= 6.0.0
@@ -378,7 +378,7 @@ build:
       - 'step::export.proto'
 exported:
   proto.export:
-    version: 0.8.422
+    version: 0.8.425
     criterion:
       default: 1
       debug: 1
