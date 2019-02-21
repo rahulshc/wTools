@@ -150,6 +150,12 @@ let wComparator =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityIdentical },
 }
 
+let wSelectorExtra =
+{
+  includeAny : includeAny( 'abase/l6/SelectorExtra.s', 'wselectorextra' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityProbe; },
+}
+
 // base / l7_mixin
 
 let wConsequizer =
@@ -556,6 +562,7 @@ let Extend =
   // base / l6
 
   wComparator,
+  wSelectorExtra,
 
   // base / l7_mixin
 
