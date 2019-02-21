@@ -159,8 +159,8 @@ function mapLike( src )
   if( mapIs( src ) )
   return true;
 
-  // if( src.constructor === Object || src.constructor === null )
-  // debugger;
+  if( !src )
+  return false;
 
   if( src.constructor === Object || src.constructor === null )
   return true;
@@ -1321,6 +1321,8 @@ function mapSupplement( dstMap, srcMap )
 
   if( dstMap === null )
   dstMap = Object.create( null );
+
+  _.assert( !_.primitiveIs( dstMap ) );
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {

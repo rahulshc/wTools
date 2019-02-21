@@ -442,11 +442,11 @@ function mapSupplement( test )
     _.mapSupplement();
   });
 
-  test.case = 'wrong type of array';
-  test.shouldThrowError( function()
-  {
-    _.mapSupplement( [] );
-  });
+  // test.case = 'wrong type of array';
+  // test.shouldThrowError( function()
+  // {
+  //   _.mapSupplement( [] );
+  // });
 
   test.case = 'wrong type of arguments';
   test.shouldThrowError( function()
@@ -3840,77 +3840,77 @@ var Self =
 
     // map tester
 
-    mapIs : mapIs,
+    mapIs,
 
     // map move
 
-    mapCloneAssigning : mapCloneAssigning,
+    mapCloneAssigning,
 
-    mapExtendConditional : mapExtendConditional,
-    mapExtend : mapExtend,
-    mapSupplement : mapSupplement,
-    mapComplement : mapComplement,
+    mapExtendConditional,
+    mapExtend,
+    mapSupplement,
+    mapComplement,
 
-    mapMake : mapMake,
+    mapMake,
 
     // map convert
 
-    mapFirstPair : mapFirstPair,
-    mapValWithIndex : mapValWithIndex,
-    mapKeyWithIndex : mapKeyWithIndex,
-    mapToStr : mapToStr,
+    mapFirstPair,
+    mapValWithIndex,
+    mapKeyWithIndex,
+    mapToStr,
 
-    mapsFlatten2 : mapsFlatten2,
+    mapsFlatten2,
 
     // map properties
 
-    mapKeys : mapKeys,
-    mapOwnKeys : mapOwnKeys,
-    mapAllKeys : mapAllKeys,
+    mapKeys,
+    mapOwnKeys,
+    mapAllKeys,
 
-    mapVals : mapVals,
-    mapOwnVals : mapOwnVals,
-    mapAllVals : mapAllVals,
+    mapVals,
+    mapOwnVals,
+    mapAllVals,
 
-    mapPairs : mapPairs,
-    mapOwnPairs : mapOwnPairs,
-    mapAllPairs : mapAllPairs,
+    mapPairs,
+    mapOwnPairs,
+    mapAllPairs,
 
-    mapProperties : mapProperties,
-    mapOwnProperties : mapOwnProperties,
-    mapAllProperties : mapAllProperties,
+    mapProperties,
+    mapOwnProperties,
+    mapAllProperties,
 
-    mapRoutines : mapRoutines,
-    mapOwnRoutines : mapOwnRoutines,
-    mapAllRoutines : mapAllRoutines,
+    mapRoutines,
+    mapOwnRoutines,
+    mapAllRoutines,
 
-    mapFields : mapFields,
-    mapOwnFields : mapOwnFields,
-    mapAllFields : mapAllFields,
+    mapFields,
+    mapOwnFields,
+    mapAllFields,
 
-    mapOnlyPrimitives : mapOnlyPrimitives,
+    mapOnlyPrimitives,
 
     // map logic
 
-    mapButConditional : mapButConditional,
-    mapBut : mapBut,
-    mapOwnBut : mapOwnBut,
+    mapButConditional,
+    mapBut,
+    mapOwnBut,
 
-    mapOnly : mapOnly,
-    _mapOnly : _mapOnly,
+    mapOnly,
+    _mapOnly,
 
-    mapIdentical : mapIdentical,
-    mapContain : mapContain,
+    mapIdentical,
+    mapContain,
 
-    mapOwnKey : mapOwnKey,
+    mapOwnKey,
 
-    mapHasAll : mapHasAll,
-    mapHasAny : mapHasAny,
-    mapHasNone : mapHasNone,
+    mapHasAll,
+    mapHasAny,
+    mapHasNone,
 
-    mapOwnAll : mapOwnAll,
-    mapOwnAny : mapOwnAny,
-    mapOwnNone : mapOwnNone,
+    mapOwnAll,
+    mapOwnAny,
+    mapOwnNone,
 
   }
 

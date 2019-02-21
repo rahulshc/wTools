@@ -1384,12 +1384,12 @@ function vectorizeAny_body( o )
 
   let routine1 = _.vectorize.body.call( this, o );
 
-  return all;
+  return any;
 
-  function all()
+  function any()
   {
     let result = routine1.apply( this, arguments );
-    return _.all( result );
+    return _.any( result );
   }
 
 }
@@ -1417,12 +1417,12 @@ function vectorizeNone_body( o )
 
   let routine1 = _.vectorize.body.call( this, o );
 
-  return all;
+  return none;
 
-  function all()
+  function none()
   {
     let result = routine1.apply( this, arguments );
-    return _.all( result );
+    return _.none( result );
   }
 
 }

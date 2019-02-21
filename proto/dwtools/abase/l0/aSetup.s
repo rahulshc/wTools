@@ -25,7 +25,6 @@ function _setupUnhandledErrorHandler0()
     handlerWas = _global.process.onUncaughtException;
     _global.process.on( 'uncaughtException', handleNodeError );
     Self._handleUnhandledError0 = handleNodeError;
-    // debugger;
     if( handlerWas )
     throw 'not tested';
   }
@@ -67,6 +66,9 @@ function _setupUnhandledErrorHandler0()
     if( handlerWas )
     handlerWas.apply( this, arguments );
 
+    if( _appExitError )
+    _appExitError( -1 );
+
     if( Self._handleUnhandledError1 )
     return result;
   }
@@ -95,6 +97,23 @@ function _setupUnhandledErrorHandler0()
     console.error( postfix );
     debugger;
 
+  }
+
+  /* */
+
+  function _appExitError()
+  {
+    try
+    {
+      if( _global.process )
+      {
+        if( !process.exitCode )
+        process.exitCode = -1;
+      }
+    }
+    catch( err )
+    {
+    }
   }
 
 }

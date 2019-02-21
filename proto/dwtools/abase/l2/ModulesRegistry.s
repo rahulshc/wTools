@@ -30,6 +30,12 @@ function includeAny( filePath, name )
 //   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.idWithInt; },
 // }
 
+let wEntityFundamentals =
+{
+  includeAny : includeAny( 'abase/l3/Entity.s', 'wentityfundamentals' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityVals; },
+}
+
 let wLooker =
 {
   includeAny : includeAny( 'abase/l3/Looker.s', 'wlooker' ),
@@ -54,12 +60,6 @@ let wProto =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.mixinDelcare },
 }
 
-let wSelector =
-{
-  includeAny : includeAny( 'abase/l3/Selector.s', 'wselector' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.select; },
-}
-
 let wStringer =
 {
   includeAny : includeAny( 'abase/l3/Stringer.s', 'wstringer' ),
@@ -67,6 +67,18 @@ let wStringer =
 }
 
 // base / l4
+
+let wReplicator =
+{
+  includeAny : includeAny( 'abase/l4/Replicator.s', 'wreplicator' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.replicate; },
+}
+
+let wLookerExtra =
+{
+  includeAny : includeAny( 'abase/l4/LookerExtra.s', 'wlookerextra' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entitySearch },
+}
 
 let wArraySorted =
 {
@@ -92,18 +104,6 @@ let wUriFundamentals =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.uri },
 }
 
-let wComparator =
-{
-  includeAny : includeAny( 'abase/l4/LookerComparator.s', 'wcomparator' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityIdentical },
-}
-
-let wLookerExtra =
-{
-  includeAny : includeAny( 'abase/l4/LookerExtra.s', 'wlookerextra' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entitySearch },
-}
-
 let wTraverser =
 {
   includeAny : includeAny( 'abase/l4/Traverser.s', 'wtraverser' ),
@@ -117,6 +117,12 @@ let wRoutineTransform =
 }
 
 // base / l5
+
+let wSelector =
+{
+  includeAny : includeAny( 'abase/l5/Selector.s', 'wselector' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.select; },
+}
 
 let wWebUriFundamentals =
 {
@@ -134,6 +140,14 @@ let wStringsExtra =
 {
   includeAny : includeAny( 'abase/l5/StringTools.s', 'wstringsextra' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
+}
+
+// base / l6
+
+let wComparator =
+{
+  includeAny : includeAny( 'abase/l6/LookerComparator.s', 'wcomparator' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityIdentical },
 }
 
 // base / l7_mixin
@@ -519,25 +533,29 @@ let Extend =
   wPathFundamentals,
   wRoutineFundamentals,
   wProto,
-  wSelector,
 
   // base / l4
 
+  wReplicator,
+  wLookerExtra,
   wArraySorted,
   wArraySparse,
   wExternalFundamentals,
   wUriFundamentals,
-  wComparator,
-  wLookerExtra,
   wTraverser,
   wStringer,
   wRoutineTransform,
 
   // base / l5
 
+  wSelector,
   wWebUriFundamentals,
   wCloner,
   wStringsExtra,
+
+  // base / l6
+
+  wComparator,
 
   // base / l7_mixin
 

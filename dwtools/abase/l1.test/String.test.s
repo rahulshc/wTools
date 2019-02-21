@@ -887,7 +887,7 @@ function strIsolateBeginOrNone( test )
   test.case = 'invalid option';
   test.shouldThrowErrorSync( function()
   {
-    _.strIsolateBeginOrNone({ src : 'abc', delimeter : 'a', query : 'a' });
+    _.strIsolateBeginOrNone({ src : 'abc', delimeter : 'a', x : 'a' });
   })
 
   test.case = 'changing of left option not allowed';
@@ -1226,7 +1226,7 @@ function strIsolateEndOrNone( test )
   test.case = 'invalid option';
   test.shouldThrowErrorSync( function()
   {
-    _.strIsolateEndOrNone({ src : 'abc', delimeter : 'a', query : 'a' });
+    _.strIsolateEndOrNone({ src : 'abc', delimeter : 'a', x : 'a' });
   });
 
   test.case = 'changing of left option not allowed';
