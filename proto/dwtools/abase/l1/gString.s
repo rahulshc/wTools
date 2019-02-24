@@ -518,17 +518,17 @@ let Fields =
 let Routines =
 {
 
-  _strIsolate : _strIsolate,
+  _strIsolate,
 
   strIsolateBeginOrNone : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body ),
   strIsolateEndOrNone : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body ),
   strIsolateEndOrAll : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body ),
   strIsolateBeginOrAll : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body ),
 
-  _strIsolateInsideOrNone : _strIsolateInsideOrNone,
-  strIsolateInsideOrNone : strIsolateInsideOrNone,
-  _strIsolateInsideOrAll : _strIsolateInsideOrAll,
-  strIsolateInsideOrAll : strIsolateInsideOrAll,
+  _strIsolateInsideOrNone,
+  strIsolateInsideOrNone,
+  _strIsolateInsideOrAll,
+  strIsolateInsideOrAll,
 
 }
 
@@ -541,9 +541,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

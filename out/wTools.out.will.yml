@@ -60,6 +60,7 @@ path:
       - proto/dwtools/abase/l0
       - proto/dwtools/abase/l0/aPredefined.s
       - proto/dwtools/abase/l0/aSetup.s
+      - proto/dwtools/abase/l0/bPremature.s
       - proto/dwtools/abase/l0/fBool.s
       - proto/dwtools/abase/l0/fChecker.s
       - proto/dwtools/abase/l0/fEntity.s
@@ -201,6 +202,7 @@ reflector:
         dwtools/abase/l0: true
         dwtools/abase/l0/aPredefined.s: true
         dwtools/abase/l0/aSetup.s: true
+        dwtools/abase/l0/bPremature.s: true
         dwtools/abase/l0/fBool.s: true
         dwtools/abase/l0/fChecker.s: true
         dwtools/abase/l0/fEntity.s: true

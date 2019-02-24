@@ -48,7 +48,7 @@ function multiple( src, times )
 {
   _.assert( arguments.length === 2 );
   if( _.arrayLike( src ) )
-  _.assert( src.length === times );
+  _.assert( src.length === times, () => 'Vecotr should have ' + times + ' elements, but have ' + src.length );
   else
   src = _.dup( src, times );
   return src;

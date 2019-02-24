@@ -1405,14 +1405,14 @@ function strIndentation( test )
 
 //
 
-function strSplitsGroupCoupled( test )
+function strSplitsCoupledGroup( test )
 {
 
   test.open( 'trivial' );
 
   test.case = 'empty';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', '<<-', 'dd' ],
     prefix : '>>',
@@ -1423,7 +1423,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'middle';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', 'bb', 'cc', '<<-', 'dd' ],
     prefix : '>>',
@@ -1434,7 +1434,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'left';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ '>>', 'bb', 'cc', '<<-', 'dd' ],
     prefix : '>>',
@@ -1445,7 +1445,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'right';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', 'bb', 'cc', '<<-' ],
     prefix : '>>',
@@ -1463,7 +1463,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'empty';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', '<<-', '>>', '<<-', 'dd' ],
     prefix : '>>',
@@ -1474,7 +1474,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'middle';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', 'bb', 'cc', '<<-', 'dd', '>>', 'ee', 'ff', '<<-', 'gg' ],
     prefix : '>>',
@@ -1485,7 +1485,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'left';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ '>>', 'bb', 'cc', '<<-', '>>', 'ee', 'ff', '<<-', 'gg' ],
     prefix : '>>',
@@ -1496,7 +1496,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'right';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', 'bb', 'cc', '<<-', '>>', 'ee', 'ff', '<<-' ],
     prefix : '>>',
@@ -1512,7 +1512,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'empty';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', '>>', '<<=', '<<-', 'dd' ],
     prefix : '>>',
@@ -1523,7 +1523,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'middle';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', 'bb', '>>', 'cc', 'dd', '<<=', 'ee', '<<-', 'ff',  ],
     prefix : '>>',
@@ -1534,7 +1534,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'left';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ '>>', '>>', 'cc', 'dd', '<<=', 'ee', '<<-', 'ff',  ],
     prefix : '>>',
@@ -1545,7 +1545,7 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'right';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', 'bb', '>>', 'cc', 'dd', '<<=', '<<-'  ],
     prefix : '>>',
@@ -1561,48 +1561,48 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'empty';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', '>>', '<<-', 'dd' ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPrefix : 1,
+    allowingUncoupledPrefix : 1,
   });
   var expected = [ 'aa', '>>', [ '>>', '<<-' ], 'dd' ];
   test.identical( got, expected );
 
   test.case = 'middle';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', 'bb', '>>', 'cc', '>>', 'dd', '<<=', 'ee', 'ff',  ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPrefix : 1,
+    allowingUncoupledPrefix : 1,
   });
   var expected = [ 'aa', 'bb', '>>', 'cc', [ '>>', 'dd', '<<=' ], 'ee', 'ff' ];
   test.identical( got, expected );
 
   test.case = 'left';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ '>>', '>>', 'dd', '<<=', 'ee', 'ff',  ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPrefix : 1,
+    allowingUncoupledPrefix : 1,
   });
   var expected = [ '>>', [ '>>', 'dd', '<<=' ], 'ee', 'ff' ];
   test.identical( got, expected );
 
   test.case = 'right';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', 'bb', '>>', 'cc', '>>', '<<=' ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPrefix : 1,
+    allowingUncoupledPrefix : 1,
   });
   var expected = [ 'aa', 'bb', '>>', 'cc', [ '>>', '<<=' ] ];
   test.identical( got, expected );
@@ -1616,48 +1616,48 @@ function strSplitsGroupCoupled( test )
 
   test.case = 'empty';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', '>>', '<<=', '<<-', 'dd' ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPostfix : 1,
+    allowingUncoupledPostfix : 1,
   });
   var expected = [ 'aa', [ '>>', '<<=' ], '<<-', 'dd' ];
   test.identical( got, expected );
 
   test.case = 'middle';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', 'bb', '>>', 'cc', 'dd', '<<=', 'ee', '<<-', 'ff',  ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPostfix : 1,
+    allowingUncoupledPostfix : 1,
   });
   var expected = [ 'aa', 'bb', [ '>>', 'cc', 'dd', '<<=' ], 'ee', '<<-', 'ff' ];
   test.identical( got, expected );
 
   test.case = 'left';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ '>>', 'cc', 'dd', '<<=', 'ee', '<<-', 'ff',  ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPostfix : 1,
+    allowingUncoupledPostfix : 1,
   });
   var expected = [ [ '>>', 'cc', 'dd', '<<=' ], 'ee', '<<-', 'ff' ];
   test.identical( got, expected );
 
   test.case = 'right';
 
-  var got = _.strSplitsGroupCoupled
+  var got = _.strSplitsCoupledGroup
   ({
     splits : [ 'aa', 'bb', '>>', 'cc', 'dd', '<<=', '<<-'  ],
     prefix : '>>',
     postfix : /^<</,
-    allowedUncoupledPostfix : 1,
+    allowingUncoupledPostfix : 1,
   });
   var expected = [ 'aa', 'bb', [ '>>', 'cc', 'dd', '<<=' ], '<<-'  ];
   test.identical( got, expected );
@@ -1672,7 +1672,7 @@ function strSplitsGroupCoupled( test )
   test.case = 'uncoupled postfix';
   test.shouldThrowError( () =>
   {
-    _.strSplitsGroupCoupled
+    _.strSplitsCoupledGroup
     ({
       splits : [ 'aa', '>>', '<<=', '<<-', 'dd' ],
       prefix : '>>',
@@ -1683,7 +1683,7 @@ function strSplitsGroupCoupled( test )
   test.case = 'uncoupled prefix';
   test.shouldThrowError( () =>
   {
-    _.strSplitsGroupCoupled
+    _.strSplitsCoupledGroup
     ({
       splits : [ 'aa', '>>', '>>', '<<=', 'dd' ],
       prefix : '>>',
@@ -7179,7 +7179,7 @@ function strJoin( test )
   test.case = 'null argument';
   test.shouldThrowError( function()
   {
-    _.strJoin( [ '1' ], null );
+    _.strJoin( [ '1' ], null, null );
   });
 
   test.case = 'NaN argument';
@@ -10387,7 +10387,7 @@ var Self =
 
     strIndentation,
 
-    strSplitsGroupCoupled,
+    strSplitsCoupledGroup,
 
     strSplitFast,
     strSplitFastRegexp,

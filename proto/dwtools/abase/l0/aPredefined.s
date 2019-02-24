@@ -71,15 +71,12 @@ _global_.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof proce
 if( _global_.Config.isWorker === undefined )
 _global_.Config.isWorker = !!( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' );
 
-if(  !_global_.WTOOLS_PRIVATE  )
+if( !_global_.WTOOLS_PRIVATE  )
 if( !_global_.Underscore && _global_._ )
 _global_.Underscore = _global_._;
 
-// debugger;
-// if( _global !== _realGlobal_ /*&& !!_global.wTools*/ )
-// throw 'Multiple inclusions of Base';
 if( Object.hasOwnProperty.call( _global, 'wTools' ) && _global !== _realGlobal_ )
-throw 'wTools was already defined';
+throw Error( 'wTools was already defined' );
 
 //
 
@@ -96,18 +93,8 @@ Self.def = Symbol.for( 'def' );
 Self.nothing = Symbol.for( 'nothing' );
 Self.maybe = Symbol.for( 'maybe' );
 Self.dont = Symbol.for( 'dont' );
-Self.dontUp = Symbol.for( 'dontUp' );
-Self.dontSibling = Symbol.for( 'dontSibling' );
-
-// if( !_realGlobal_.def  )
-// {
-//   _realGlobal_.def = Self.def;
-//   _realGlobal_.nothing = Self.nothing;
-//   _realGlobal_.maybe = Self.maybe;
-//   _realGlobal_.dont = Self.dont;
-//   _realGlobal_.dontUp = Self.dontUp;
-//   _realGlobal_.dontSibling = Self.dontSibling;
-// }
+Self.unroll = Symbol.for( 'unroll' );
+Self.hold = Symbol.for( 'hold' );
 
 // type aliases
 
@@ -133,9 +120,9 @@ _global[ 'wTools' ] = Self;
 _global.wTools = Self;
 _global.wBase = Self;
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

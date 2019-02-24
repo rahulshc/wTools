@@ -1223,7 +1223,7 @@ function mapsExtendHiding( dstMap, srcMaps )
 function mapExtendAppendingAnything( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( null, srcMap );
+  return Object.assign( Object.create( null ), srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.appendingAnything );
   return _.mapExtendConditional.apply( this, args );
@@ -1244,7 +1244,7 @@ function mapsExtendAppendingAnything( dstMap, srcMaps )
 function mapExtendAppendingArrays( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( null, srcMap );
+  return Object.assign( Object.create( null ), srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.appendingArrays );
   return _.mapExtendConditional.apply( this, args );
@@ -1265,7 +1265,7 @@ function mapsExtendAppendingArrays( dstMap, srcMaps )
 function mapExtendByDefined( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( null, srcMap );
+  return Object.assign( Object.create( null ), srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.srcDefined );
   return _.mapExtendConditional.apply( this, args );
@@ -1317,7 +1317,7 @@ function mapsExtendNulls( dstMap, srcMaps )
 function mapSupplement( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( null, srcMap );
+  return Object.assign( Object.create( null ), srcMap );
 
   if( dstMap === null )
   dstMap = Object.create( null );
@@ -1343,7 +1343,7 @@ function mapSupplement( dstMap, srcMap )
 function mapSupplementStructureless( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( null, srcMap );
+  return Object.assign( Object.create( null ), srcMap );
 
   if( dstMap === null )
   dstMap = Object.create( null );
@@ -1355,13 +1355,10 @@ function mapSupplementStructureless( dstMap, srcMap )
     {
       if( dstMap[ s ] !== undefined )
       continue;
-      // if( s in dstMap )
-      // continue;
-      // _.assert( !_.objectLike( srcMap[ s ] ) && !_.arrayLike( srcMap[ s ] ), () => 'Source map should have only primitive elements, but have ' + _.strType( srcMap ) );
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
       {
         debugger;
-        throw 'Source map should have only primitive elements, but have ' + _.strType( srcMap );
+        throw Error( 'Source map should have only primitive elements, but have ' + _.strType( srcMap ) );
       }
       dstMap[ s ] = srcMap[ s ];
     }
@@ -1369,15 +1366,6 @@ function mapSupplementStructureless( dstMap, srcMap )
 
   return dstMap
 }
-
-// function mapSupplement( dstMap, srcMap )
-// {
-//   if( dstMap === null && arguments.length === 2 )
-//   return _.mapExtend( null, srcMap );
-//   let args = _.longSlice( arguments );
-//   args.unshift( _.field.mapper.dstNotHas );
-//   return _.mapExtendConditional.apply( this, args );
-// }
 
 //
 
@@ -1422,7 +1410,7 @@ function mapSupplementAssigning( dstMap )
 function mapSupplementAppending( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
-  return _.mapExtend( null, srcMap );
+  return Object.assign( Object.create( null ), srcMap );
   let args = _.longSlice( arguments );
   args.unshift( _.field.mapper.dstNotHasAppending );
   return _.mapExtendConditional.apply( this, args );
@@ -4357,9 +4345,15 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
-    if( _.strJoin && !msg )
-    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
-    debugger;
+    if( !msg )
+    {
+      let butArray = [];
+      for( let b = 0 ; b < but.length ; b++ )
+      butArray[ b ] = '  ', but[ b ], ' : null, ';
+      console.error( 'Consider extending object by :\n' + butArray.join( '\n' ) );
+    }
+    // if( _.strJoin && !msg )
+    // console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
     let err = _._err
     ({
       args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
@@ -4433,8 +4427,15 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
 
   if( but.length > 0 )
   {
-    if( _.strJoin && !msg )
-    console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
+    if( !msg )
+    {
+      let butArray = [];
+      for( let b = 0 ; b < but.length ; b++ )
+      butArray[ b ] = '  ', but[ b ], ' : null, ';
+      console.error( 'Consider extending object by :\n' + butArray.join( '\n' ) );
+    }
+    // if( _.strJoin && !msg )
+    // console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
     debugger;
     throw _._err
     ({
@@ -5115,6 +5116,7 @@ let Routines =
   objectIs,
   objectLike,
   objectLikeOrRoutine,
+
   mapIs,
   mapIsPure,
   mapIsPopulated,

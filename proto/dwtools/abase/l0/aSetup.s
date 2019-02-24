@@ -26,7 +26,7 @@ function _setupUnhandledErrorHandler0()
     _global.process.on( 'uncaughtException', handleNodeError );
     Self._handleUnhandledError0 = handleNodeError;
     if( handlerWas )
-    throw 'not tested';
+    throw Error( 'not tested' );
   }
   else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
   {
@@ -79,21 +79,21 @@ function _setupUnhandledErrorHandler0()
   {
     let prefix = '------------------------------- unhandled errorr ------------------------------->\n';
     let postfix = '------------------------------- unhandled errorr -------------------------------<\n';
+    let errStr = err.toString();
 
     try
     {
-      let errStr = err.toString();
-      console.error( prefix );
-      console.error( errStr );
+      errStr = err.toString();
     }
     catch( err2 )
     {
       debugger;
       console.error( err2 );
-      console.error( prefix );
-      console.error( err2 );
     }
 
+    console.error( prefix );
+    console.error( errStr );
+    console.error( err ? err.stack : '' );
     console.error( postfix );
     debugger;
 

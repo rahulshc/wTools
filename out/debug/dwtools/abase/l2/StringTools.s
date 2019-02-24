@@ -312,23 +312,6 @@ function _strRemovedBegin( src,begin )
   if( beginOf !== false )
   result = result.substr( beginOf.length, result.length );
 
-  // if( _.strIs( begin ) )
-  // {
-  //   if( _._strBeginOf( result, begin ) !== false )
-  //   {
-  //     result = result.substr( begin.length, result.length );
-  //     return result;
-  //   }
-  // }
-  // else if( _.regexpIs( begin ) )
-  // {
-  //   let matched = begin.exec( result );
-  //   if( matched && matched.index === 0 )
-  //   result = result.substring( matched[ 0 ].length, result.length );
-  //   return result;
-  // }
-  // else _.assert( 0,'Expects string or regexp {-begin-}' );
-
   return result;
 }
 
@@ -469,40 +452,16 @@ function strRemoveEnd( src, end )
   return result;
 }
 
-// function strRemoveEnd( src,end )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.longIs( src ) || _.strIs( src ) );
-//   _.assert( _.longIs( end ) || _.strIs( end ) );
-//
-//   end = _.arrayAs( end );
-//
-//   let result = _.arrayAs( src ).slice();
-//
-//   for( let k = 0, srcLength = result.length; k < srcLength; k++ )
-//   for( let j = 0, endLength = end.length; j < endLength; j++ )
-//   if( _.strEnds( result[ k ],end[ j ] ) )
-//   {
-//     result[ k ] = result[ k ].substring( 0,result[ k ].length-end[ j ].length )
-//     break;
-//   }
-//
-//   if( result.length === 1 && _.strIs( src ) )
-//   return result[ 0 ];
-//
-//   return result;
-// }
-
-//
-
 //
 
 function _strRemoved( srcStr, insStr )
 {
+  let result = srcStr;
+
+  debugger;
+
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
-  let result = srcStr;
-  debugger;
 
   if( !_.longIs( insStr ) )
   {
@@ -1898,6 +1857,69 @@ strSplitChunks.defaults =
 
 //
 
+function strSplitsCoupledGroup( o )
+{
+
+  if( _.arrayIs( o ) )
+  o = { splits : o }
+
+  o = _.routineOptions( strSplitsCoupledGroup, o );
+
+  o.prefix = _.arrayAs( o.prefix );
+  o.postfix = _.arrayAs( o.postfix );
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.regexpsLike( o.prefix ) );
+  _.assert( _.regexpsLike( o.postfix ) );
+
+  let level = 0;
+  let begins = [];
+  for( let i = 0 ; i < o.splits.length ; i++ )
+  {
+    let element = o.splits[ i ];
+
+    if( _.regexpsTestAny( o.prefix, element ) )
+    {
+      begins.push( i );
+    }
+    else if( _.regexpsTestAny( o.postfix, element ) )
+    {
+      if( begins.length === 0 && !o.allowingUncoupledPostfix )
+      throw _.err( _.strQuote( element ), 'does not have complementing openning\n' );
+
+      if( begins.length === 0 )
+      continue;
+
+      let begin = begins.pop();
+      let end = i;
+      let l = end-begin;
+
+      _.assert( l >= 0 )
+      let newElement = o.splits.splice( begin, l+1, null );
+      o.splits[ begin ] = newElement;
+
+      i -= l;
+    }
+
+  }
+
+  if( begins.length && !o.allowingUncoupledPrefix )
+  throw _.err( _.strQuote( begins[ begins.length-1 ] ), 'does not have complementing closing\n' );
+
+  return o.splits;
+}
+
+strSplitsCoupledGroup.defaults =
+{
+  splits : null,
+  prefix : '"',
+  postfix : '"',
+  allowingUncoupledPrefix : 0,
+  allowingUncoupledPostfix : 0,
+}
+
+//
+
 function strSplitsQuotedRejoin_pre( routine, args )
 {
   let o = args[ 0 ];
@@ -2010,7 +2032,6 @@ strSplitsQuotedRejoin_body.defaults =
   quotingPostfixes : null,
   preservingQuoting : 1,
   inliningQuoting : 1,
-  // quotingRejoining : 0,
   splits : null,
   delimeter : null,
 }
@@ -2185,65 +2206,6 @@ strSplitsDropEmpty_body.defaults =
 //
 
 let strSplitsDropEmpty = _.routineFromPreAndBody( strSplitsDropEmpty_pre, strSplitsDropEmpty_body );
-
-//
-
-function strSplitsGroupCoupled( o )
-{
-  o = _.routineOptions( strSplitsGroupCoupled, arguments );
-
-  o.prefix = _.arrayAs( o.prefix );
-  o.postfix = _.arrayAs( o.postfix );
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.regexpsLike( o.prefix ) );
-  _.assert( _.regexpsLike( o.postfix ) );
-
-  let level = 0;
-  let begins = [];
-  for( let i = 0 ; i < o.splits.length ; i++ )
-  {
-    let element = o.splits[ i ];
-
-    if( _.regexpsTestAny( o.prefix, element ) )
-    {
-      begins.push( i );
-    }
-    else if( _.regexpsTestAny( o.postfix, element ) )
-    {
-      if( begins.length === 0 && !o.allowedUncoupledPostfix )
-      throw _.err( _.strQuote( element ), 'does not have complementing openning\n' );
-
-      if( begins.length === 0 )
-      continue;
-
-      let begin = begins.pop();
-      let end = i;
-      let l = end-begin;
-
-      _.assert( l >= 0 )
-      let newElement = o.splits.splice( begin, l+1, null );
-      o.splits[ begin ] = newElement;
-
-      i -= l;
-    }
-
-  }
-
-  if( begins.length && !o.allowedUncoupledPrefix )
-  throw _.err( _.strQuote( begins[ begins.length-1 ] ), 'does not have complementing closing\n' );
-
-  return o.splits;
-}
-
-strSplitsGroupCoupled.defaults =
-{
-  splits : null,
-  prefix : '"',
-  postfix : '"',
-  allowedUncoupledPrefix : 0,
-  allowedUncoupledPostfix : 0,
-}
 
 // --
 //
@@ -2640,278 +2602,9 @@ var defaults = strSplitNonPreserving.defaults;
 defaults.preservingEmpty = 0
 defaults.preservingDelimeters = 0;
 
-// //
-//
-// function strSplitNaive_body( o )
-// {
-//
-//   if( o.quoting )
-//   {
-//     if( _.numberIs( o.quoting ) || _.boolIs( o.quoting ) )
-//     o.quoting = '\"';
-//     if( o.preservingDelimeters === null || o.preservingDelimeters === undefined )
-//     o.preservingDelimeters = 1;
-//     _.assert( _.strIs( o.quoting ) );
-//   }
-//
-//   _.assert( arguments.length === 1 );
-//
-//   o.delimeter = _.arrayAs( o.delimeter );
-//   let delimeter = o.delimeter;
-//   let preservingDelimeters = o.preservingDelimeters;
-//   let preservingEmpty = o.preservingEmpty;
-//   let result = [];
-//
-//   if( o.quoting )
-//   {
-//     if( o.preservingDelimeters === null )
-//     o.preservingDelimeters = 1;
-//     _.assert( o.preservingDelimeters );
-//     _.arrayAppendOnce( delimeter, o.quoting );
-//   }
-//
-//   if( o.preservingDelimeters === null )
-//   o.preservingDelimeters = 0;
-//
-//   /* */
-//
-//   if( o.preservingDelimeters )
-//   {
-//
-//     let right = [];
-//     let prevPosition = o.src.length;
-//
-//     for( let s = 0 ; s < delimeter.length ; s++ )
-//     right[ s ] = nextDelimeter( s,o.src.length );
-//
-//     while( true )
-//     {
-//       let splitterIndex = -1;
-//       let position = -1;
-//       for( let s = 0 ; s < delimeter.length ; s++ )
-//       {
-//         /* if one delimeter coontain another one, it's possible right is invalid at this point */
-//         if( right[ s ] >= prevPosition )
-//         {
-//           right[ s ] = nextDelimeter( s,prevPosition-delimeter[ s ].length );
-//         }
-//         if( right[ s ] > position )
-//         {
-//           splitterIndex = s;
-//           position = right[ s ];
-//         }
-//       }
-//
-//       if( position === -1 )
-//       break;
-//
-//       if( right[ splitterIndex ] > 0 )
-//       right[ splitterIndex ] = nextDelimeter( splitterIndex,right[ splitterIndex ]-delimeter[ splitterIndex ].length*2 );
-//       else
-//       right[ splitterIndex ] = -1;
-//
-//       let r = [ position,prevPosition ];
-//       if( r[ 0 ] < r[ 1 ] )
-//       result.unshift( o.src.substring( r[ 0 ],r[ 1 ] ) );
-//       else
-//       result.unshift( '' );
-//
-//       if( delimeter[ splitterIndex ].length )
-//       result.unshift( delimeter[ splitterIndex ] );
-//
-//       prevPosition = position-delimeter[ splitterIndex ].length;
-//
-//     }
-//
-//     result.unshift( o.src.substring( 0,prevPosition ) );
-//
-//   }
-//   else
-//   {
-//
-//     result = o.src.split( delimeter[ 0 ] );
-//     for( let s = 1 ; s < delimeter.length ; s++ )
-//     {
-//
-//       for( let r = result.length-1 ; r >= 0 ; r-- )
-//       {
-//
-//         let sub = result[ r ].split( delimeter[ s ] );
-//         if( sub.length > 1 )
-//         _.arrayCutin( result,[ r,r+1 ],sub );
-//
-//       }
-//
-//     }
-//
-//   }
-//
-//   /* quoting */
-//
-//   if( o.quoting )
-//   {
-//     let newResult = [];
-//
-//     function _sliceAndJoin( l, r )
-//     {
-//       let arr = result.slice( l,r );
-//       let res = '';
-//       for( let i = 0; i < arr.length; i++ )
-//       {
-//         res += arr[ i ];
-//       }
-//       return res;
-//     }
-//
-//     let l = -1;
-//     let r = -1;
-//
-//     for( let i = 0; i < result.length; i++ )
-//     {
-//       if( result[ i ] === o.quoting )
-//       {
-//         if( i === result.length - o.quoting.length )
-//         if( l < 0 )
-//         {
-//           newResult[ newResult.length - 1 ] += o.quoting;
-//           break;
-//         }
-//
-//         if( l < 0 )
-//         l = i;
-//         else
-//         r = i;
-//       }
-//       else if( !result[ i ].length )
-//       {
-//         if( !preservingEmpty )
-//         continue;
-//
-//         if( result[ i + 1 ] === o.quoting || result[ i - 1 ] === o.quoting )
-//         continue;
-//       }
-//       else if( _.arrayHas( o.delimeter, result[ i ] ) )
-//       {
-//         if( !preservingDelimeters )
-//         continue;
-//       }
-//
-//       if( l >= 0 && r >= 0 )
-//       {
-//         newResult.push( _sliceAndJoin( l + 1, r ) );
-//         l = r = -1;
-//       }
-//       else
-//       if( l < 0 && r < 0 )
-//       newResult.push( result[ i ] );
-//     }
-//
-//     result = newResult;
-//   }
-//
-//   /* stripping and removing empty */
-//
-//   for( let r = result.length-1 ; r >= 0 ; r-- )
-//   {
-//
-//     if( o.stripping )
-//     result[ r ] = _.strStrip( result[ r ] );
-//
-//     if( !o.preservingEmpty )
-//     if( !result[ r ] )
-//     result.splice( r,1 );
-//
-//   }
-//
-//   return result;
-//
-//   /* */
-//
-//   function nextDelimeter( d,last )
-//   {
-//     if( last < 0 )
-//     return last;
-//     let result = o.src.lastIndexOf( delimeter[ d ],last );
-//     if( result >= 0 )
-//     result += delimeter[ d ].length;
-//     return result;
-//   }
-//
-// }
-//
-// strSplitNaive_body.defaults =
-// {
-//   src : null,
-//   delimeter : ' ',
-//   stripping : 1,
-//   quoting : 0,
-//   preservingEmpty : 0,
-//   preservingDelimeters : null,
-// }
-//
-// //
-//
-// /**
-//  * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
-//  * If( o.stripping ) is true - removes leading and trailing whitespace characters.
-//  * If( o.preservingEmpty ) is true - empty lines are saved in the result array.
-//  * If( o.preservingDelimeters ) is true - leaves word delimeters in result array, otherwise removes them.
-//  * Function can be called in two ways:
-//  * - First to pass only source string and use default options;
-//  * - Second to pass map like ( { src : 'a,b,c', delimeter : ',', stripping : 1 } ).
-//  * Returns result as array of strings.
-//  *
-//  * @param {string|object} o - Source string to split or map with source( o.src ) and options.
-//  * @param {string} [ o.src=null ] - Source string.
-//  * @param {string|array} [ o.delimeter=' ' ] - Word divider in source string.
-//  * @param {boolean} [ o.preservingEmpty=false ] - Leaves empty strings in the result array.
-//  * @param {boolean} [ o.preservingDelimeters=false ] - Puts delimeters into result array in same order how they was in the source string.
-//  * @param {boolean} [ o.stripping=true ] - Removes leading and trailing whitespace characters occurrences from source string.
-//  * @returns {object} Returns an array of strings separated by( o.delimeter ).
-//  *
-//  * @example
-//  * //returns [ 'first', 'second', 'third' ]
-//  * _.strSplitNaive( ' first second third ' );
-//  *
-//  * @example
-//  * //returns [ 'a', 'b', 'c', 'd' ]
-//  * _.strSplitNaive( { src : 'a,b,c,d', delimeter : ','  } );
-//  *
-//  * @example
-//  * //returns [ 'a', 'b', 'c', 'd' ]
-//  * _.strSplitNaive( { src : 'a.b,c.d', delimeter : [ '.', ',' ]  } );
-//  *
-//  * @example
-//  * //returns [ '    a', 'b', 'c', 'd   ' ]
-//    * _.strSplitNaive( { src : '    a,b,c,d   ', delimeter : [ ',' ], stripping : 0  } );
-//  *
-//  * @example
-//  * //returns [ 'a', ',', 'b', ',', 'c', ',', 'd' ]
-//  * _.strSplitNaive( { src : 'a,b,c,d', delimeter : [ ',' ], preservingDelimeters : 1  } );
-//  *
-//  * @example
-//  * //returns [ 'a', '', 'b', '', 'c', '', 'd' ]
-//  * _.strSplitNaive( { src : 'a ., b ., c ., d', delimeter : [ ',', '.' ], preservingEmpty : 1  } );
-//  *
-//  * @method strSplitNaive
-//  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
-//  * @throws { Exception } Throw an exception if( o.src ) is not a String.
-//  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
-//  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
-//  * @memberof wTools
-//  *
-//  */
-//
-// let strSplitNaive = _.routineFromPreAndBody( strSplitFast_pre, strSplitNaive_body );
-//
-// _.assert( strSplitNaive.pre === strSplitFast_pre );
-// _.assert( strSplitNaive.body === strSplitNaive_body );
-// _.assert( _.objectIs( strSplitNaive.defaults ) );
-
 // --
 // extractor
 // --
-
 
 /**
  * Gets substring out of source string according to a given range.
@@ -3511,23 +3204,45 @@ function _strDup( s,times )
  * @memberof wTools
  *
  */
-function strJoin( srcs, joiner )
+
+function strJoin_pre( routine, args )
+{
+
+  let o = args[ 0 ];
+  if( args[ 1 ] !== undefined || _.arrayLike( args[ 0 ] ) )
+  o = { srcs : args[ 0 ], join : args[ 1 ] };
+
+  _.routineOptions( routine, o );
+  _.assert( arguments.length === 2 );
+  _.assert( args.length === 1 || args.length === 2, () => 'Expects an array of string and optional join, but got ' + args.length + ' arguments' );
+  _.assert( _.arrayLike( o.srcs ), () => 'Expects an array of strings, but got ' + _.strType( o.srcs ) );
+  _.assert( o.join === null || _.strIs( o.join ), () => 'Expects optional join, but got ' + _.strType( o.join ) );
+
+  return o;
+}
+
+//
+
+// function strJoin_body( srcs, delimeter )
+function strJoin_body( o )
 {
   let result = [ '' ];
   let arrayEncountered = 0;
   let arrayLength;
 
-  _.assert( arguments.length === 1 || arguments.length === 2, () => 'Expects an array of string and optional joiner, but got ' + arguments.length + ' arguments' );
-  _.assert( _.arrayLike( srcs ), () => 'Expects an array of strings, but got ' + _.strType( srcs ) );
-  _.assert( joiner === undefined || _.strIs( joiner ), () => 'Expects optional joiner, but got ' + _.strType( joiner ) );
+  _.assertRoutineOptions( strJoin_body, arguments );
 
-  /* xxx */
+  let delimeter = o.join || '';
+  if( o.join === null || _.strIs( o.join ) )
+  o.join = join;
 
-  for( let a = 0 ; a < srcs.length ; a++ )
+  for( let a = 0 ; a < o.srcs.length ; a++ )
   {
-    let src = srcs[ a ];
+    let src = o.srcs[ a ];
+    let srcStr = o.str( src );
 
-    _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+    _.assert( _.strIs( srcStr ) || _.arrayIs( src ), () => 'Expects ptimitive or array, but got ' + _.strType( src ) );
+    // _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
@@ -3541,14 +3256,14 @@ function strJoin( srcs, joiner )
 
       arrayEncountered = 1;
       for( let s = 0 ; s < src.length ; s++ )
-      join( src[ s ], s, a );
+      result[ s ] = o.join( result[ s ], src[ s ], a );
 
     }
     else
     {
 
       for( let s = 0 ; s < result.length ; s++ )
-      join( src, s, a );
+      result[ s ] = o.join( result[ s ], srcStr, a );
 
     }
 
@@ -3561,60 +3276,27 @@ function strJoin( srcs, joiner )
 
   /* */
 
-  function join( src, s, a )
+  function join( result, src, a )
   {
-    if( joiner && a > 0 )
-    result[ s ] += joiner + src;
+    if( delimeter && a > 0 )
+    return result + delimeter + src;
     else
-    result[ s ] += src;
+    return result + src;
   }
 
 }
 
-//
+strJoin_body.defaults =
+{
+  srcs : null,
+  join : null,
+  str : _.strPrimitive,
+}
+
+let strJoin = _.routineFromPreAndBody( strJoin_pre, strJoin_body );
 
 //
 
-/**
- * Joins objects inside the source array, by concatenating their values in order that they are specified.
- * The source array can contain strings, numbers and arrays of strings and numbers. If arrays are provided, they must have same length.
- * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
- * Joins array with other object by concatenating each array element with that object value. Examples: ( [ [ '1', '2' ], '3' ] ) -> ( [ '13', '23' ] ),
- * ( [ [ '1', '2' ], [ '1', '2' ] ] ) -> ( [ '11', '22' ] ).
- * The ( joiner ) string argument defines the string that joins the srcArray objects. If the srcArray objects start or end with the joiner,
- * this one is not concatenated ( so it is not repeated ).
- * Examples: ( [ [ '1', '2' ], '3 ''], '*' ) -> ( [ '1*3', '2*3' ] ),
- * ( [ [ '1', '2' ], [ '1', '2' ] ], ' to ' ) -> ( [ '1 to 1', '2 to 2' ] ).
- * ( [ '1/', '/2' ], '/' ) -> ( [ '1/2' ] ).
- *
- * @param { Array-like } srcs - Source array with the provided objects.
- * @param { String } joiner - Joiner parameter.
- * @returns { Object } Returns concatenated objects as string or array. Return type depends from arguments type.
- *
- * @example
- * //returns '123'
- * _.strJoin([ '1', '2', '3' ], '' );
- *
- * @example
- * //returns [ '123', '23', '323' ]
- * _.strJoin([ [ '1', '2', '3' ], '3' ], '2');
- *
- * @example
- * //returns [ '1/1', '2/3' ]
- * _.strJoin([ [ '1', '2' ], [ '1', '3' ] ], '/');
- *
- * @example
- * //returns [ '1/2/3/6', '1/2/4/7', '1/2/5/8' ]
- * _.strJoin([ '1', '2', [ '3/', '4/', '5/' ], [ '/6', '/7', '/8' ] ], '/');
- *
- * @method strJoin
- * @throws { Exception } If ( arguments.length ) is not two.
- * @throws { Exception } If some object from( srcs ) is not a string, a number or an array of strings/numbers.
- * @throws { Exception } If length of arrays in srcs is different.
- * @throws { Exception } If ( joiner ) is not a string .
- * @memberof wTools
- *
- */
 function strJoinPath( srcs, joiner )
 {
   let result = [ '' ];
@@ -4278,8 +3960,7 @@ function strLinesNearest_pre( routine, args )
   o.charsRange = [ o.charsRange, o.charsRange+1 ];
 
   _.assert( _.rangeIs( o.charsRange ) );
-  // _.assert( _.arrayHas( [ 'map', 'array' ], o.outputFormat ) ) ;
-  logger.log( o )
+
   return o;
 }
 
@@ -4572,21 +4253,14 @@ let Proto =
 
   // splitter
 
-  // _strIsolate : _strIsolate,
-  // strIsolateBeginOrNone : strIsolateBeginOrNone, /* xxx : used in the file! */
-  // strIsolateEndOrNone : strIsolateEndOrNone,
-  // strIsolateEndOrAll : strIsolateEndOrAll,
-  // strIsolateBeginOrAll : strIsolateBeginOrAll,
-
   strSplitStrNumber, /* experimental */
   strSplitChunks, /* experimental */
 
+  strSplitsCoupledGroup,
   strSplitsQuotedRejoin,
   strSplitsDropDelimeters,
   strSplitsStrip,
   strSplitsDropEmpty,
-
-  strSplitsGroupCoupled,
 
   strSplitFast,
   strSplit,
