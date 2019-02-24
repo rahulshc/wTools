@@ -1023,6 +1023,8 @@ function strRemoveEnd( src, end )
   return result;
 }
 
+//
+
 /**
 * Finds substring or regexp ( insStr ) first occurrence from the source string ( srcStr ) and removes it.
 * Returns original string if source( src ) does not have occurrence of ( insStr ).
