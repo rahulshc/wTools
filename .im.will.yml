@@ -4,10 +4,9 @@ submodule :
 
 path :
 
-  in : 'out'
+  in : '.'
   temp : 'out'
   out : 'out'
-
   out.debug :
     path : './out/debug'
     criterion :
@@ -67,7 +66,7 @@ build :
       raw : 1
     steps :
       - step::clean.out*=1
-      # - step::reflect.proto.*=1
+      - step::reflect.proto.*=1
       # - step::reflect.submodules*=1
 
   debug.compiled :
