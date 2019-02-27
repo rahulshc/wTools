@@ -40,17 +40,6 @@ function strIs( src )
 
 //
 
-function strLike( src )
-{
-  if( _.strIs( src ) )
-  return true;
-  if( _.regexpIs( src ) )
-  return true;
-  return false
-}
-
-//
-
 function strsAreAll( src )
 {
   _.assert( arguments.length === 1 );
@@ -63,7 +52,35 @@ function strsAreAll( src )
     return true;
   }
 
-  return false;
+  return strIs( src );
+}
+
+//
+
+function strLike( src )
+{
+  if( _.strIs( src ) )
+  return true;
+  if( _.regexpIs( src ) )
+  return true;
+  return false
+}
+
+//
+
+function strsLikeAll( src )
+{
+  _.assert( arguments.length === 1 );
+
+  if( _.arrayLike( src ) )
+  {
+    for( let s = 0 ; s < src.length ; s++ )
+    if( !_.strLike( src[ s ] ) )
+    return false;
+    return true;
+  }
+
+  return strLike( src );
 }
 
 //
@@ -316,17 +333,35 @@ strQuote.defaults =
 //
 // --
 
-function _strFirstSingle( src, ins )
+function _strLeftSingle( src, ins, first, last )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
   _.assert( _.strIs( src ) );
+  _.assert( first === undefined || _.numberIs( first ) );
+  _.assert( last === undefined || _.numberIs( last ) );
 
   ins = _.arrayAs( ins );
 
+  let olength = src.length;
   let result = Object.create( null );
-  result.index = src.length;
+  result.index = olength;
   result.entry = undefined;
+
+  if( first !== undefined || last !== undefined )
+  {
+    if( first === undefined )
+    first = 0;
+    if( last === undefined )
+    last = src.length;
+    if( first < 0 )
+    first = src.length + first;
+    if( last < 0 )
+    last = src.length + last;
+    _.assert( 0 <= first && first <= src.length );
+    _.assert( 0 <= last && last <= src.length );
+    src = src.substring( first, last );
+  }
 
   for( let k = 0, len = ins.length ; k < len ; k++ )
   {
@@ -352,26 +387,29 @@ function _strFirstSingle( src, ins )
     else _.assert( 0, 'Expects string-like ( string or regexp )' );
   }
 
+  if( first !== undefined && result.index !== olength )
+  result.index += first;
+
   return result;
 }
 
 //
 
-function strFirst( src, ins )
+function strLeft( src, ins, first, last )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
 
   if( _.arrayLike( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
-    result[ s ] = _._strFirstSingle( src[ s ], ins );
+    result[ s ] = _._strLeftSingle( src[ s ], ins, first, last );
     return result;
   }
   else
   {
-    return _._strFirstSingle( src, ins );
+    return _._strLeftSingle( src, ins, first, last );
   }
 
 }
@@ -394,17 +432,35 @@ aaa_bbb_bb|b|_ccc_ccc
 
 */
 
-function _strLastSingle( src, ins )
+function _strRightSingle( src, ins, first, last )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
   _.assert( _.strIs( src ) );
+  _.assert( first === undefined || _.numberIs( first ) );
+  _.assert( last === undefined || _.numberIs( last ) );
 
   ins = _.arrayAs( ins );
 
+  let olength = src.length;
   let result = Object.create( null );
   result.index = -1;
   result.entry = undefined;
+
+  if( first !== undefined || last !== undefined )
+  {
+    if( first === undefined )
+    first = 0;
+    if( last === undefined )
+    last = src.length;
+    if( first < 0 )
+    first = src.length + first;
+    if( last < 0 )
+    last = src.length + last;
+    _.assert( 0 <= first && first <= src.length );
+    _.assert( 0 <= last && last <= src.length );
+    src = src.substring( first, last );
+  }
 
   for( let k = 0, len = ins.length ; k < len ; k++ )
   {
@@ -424,7 +480,7 @@ function _strLastSingle( src, ins )
       // entry = _.regexpsJoin([ entry, '(?!(?=.).*(?:))' ]);
       // debugger;
 
-      let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]);
+      let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]); // xxx
       let match1 = src.match( regexp1 );
       if( !match1 )
       continue;
@@ -477,54 +533,57 @@ function _strLastSingle( src, ins )
     else _.assert( 0, 'Expects string-like ( string or regexp )' );
   }
 
+  if( first !== undefined && result.index !== -1 )
+  result.index += first;
+
   return result;
 }
 
 //
 
-function strLast( src, ins )
+function strRight( src, ins, first, last )
 {
 
-  _.assert( arguments.length === 2 );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
 
   if( _.arrayLike( src ) )
   {
     let result = [];
     for( let s = 0 ; s < src.length ; s++ )
-    result[ s ] = _._strLastSingle( src[ s ], ins );
+    result[ s ] = _._strRightSingle( src[ s ], ins, first, last );
     return result;
   }
   else
   {
-    return _._strLastSingle( src, ins );
+    return _._strRightSingle( src, ins, first, last );
   }
 
 }
 
+// //
 //
-
-function _strCutOff_pre( routine, args )
-{
-  let o;
-
-  if( args.length > 1 )
-  {
-    o = { src : args[ 0 ], delimeter : args[ 1 ], number : args[ 2 ] };
-  }
-  else
-  {
-    o = args[ 0 ];
-    _.assert( args.length === 1, 'Expects single argument' );
-  }
-
-  _.routineOptions( routine, o );
-  _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
-
-  return o;
-}
+// function _strCutOff_pre( routine, args )
+// {
+//   let o;
+//
+//   if( args.length > 1 )
+//   {
+//     o = { src : args[ 0 ], delimeter : args[ 1 ], number : args[ 2 ] };
+//   }
+//   else
+//   {
+//     o = args[ 0 ];
+//     _.assert( args.length === 1, 'Expects single argument' );
+//   }
+//
+//   _.routineOptions( routine, o );
+//   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _.strIs( o.src ) );
+//   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
+//
+//   return o;
+// }
 
 //
 
@@ -1132,8 +1191,9 @@ let Routines =
 {
 
   strIs,
-  strLike,
   strsAreAll,
+  strLike,
+  strsLikeAll,
   strDefined,
   strsAreNotEmpty,
 
@@ -1155,10 +1215,10 @@ let Routines =
 
   //
 
-  _strFirstSingle,
-  strFirst,
-  _strLastSingle,
-  strLast,
+  _strLeftSingle,
+  strLeft,
+  _strRightSingle,
+  strRight,
 
   strEquivalent,
   strsEquivalent : _.vectorize( strEquivalent, 2 ),

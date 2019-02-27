@@ -2042,6 +2042,7 @@ mapsFlatten.defaults =
 
 /*
 xxx : attention required !!!
+qqq : tests require
 */
 
 function mapsFlatten2( o )
@@ -2068,6 +2069,7 @@ function mapsFlatten2( o )
       result : o.result,
       assertingUniqueness : o.assertingUniqueness,
       prefix : o.prefix,
+      delimeter : o.delimeter,
     });
 
   }
@@ -2092,7 +2094,7 @@ function mapsFlatten2( o )
     {
       for( let k in src )
       {
-        let key = o.prefix + ( o.prefix ? '.' : '' ) + k;
+        let key = o.prefix + ( o.prefix ? o.delimeter : '' ) + k;
         if( _.mapIs( src[ k ] ) )
         mapsFlatten2
         ({
@@ -2100,6 +2102,7 @@ function mapsFlatten2( o )
           result : o.result,
           assertingUniqueness : o.assertingUniqueness,
           prefix : key,
+          delimeter : o.delimeter,
         });
         else
         dst[ key ] = src[ k ];
@@ -2107,6 +2110,7 @@ function mapsFlatten2( o )
     }
     else
     {
+      debugger;
       for( let k in src )
       if( _.mapIs( src[ k ] ) )
       mapsFlatten2
@@ -2115,6 +2119,7 @@ function mapsFlatten2( o )
         result : o.result,
         assertingUniqueness : o.assertingUniqueness,
         prefix : o.prefix,
+        delimeter : o.delimeter,
       });
       else
       dst[ k ] = src[ k ];
@@ -2130,6 +2135,7 @@ mapsFlatten2.defaults =
   result : null,
   assertingUniqueness : 1,
   prefix : '',
+  delimeter : '/',
 }
 
 //

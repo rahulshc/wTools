@@ -15,7 +15,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 // str
 // --
 
-function _strCutOff_pre( routine, args )
+function strIsolate_pre( routine, args )
 {
   let o;
 
@@ -33,7 +33,8 @@ function _strCutOff_pre( routine, args )
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( o.src ) );
-  _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
+  _.assert( _.strsLikeAll( o.delimeter ) )
+  // _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
 
   return o;
 }
@@ -56,15 +57,15 @@ function _strCutOff_pre( routine, args )
  *
  * @example
  * //returns [ 'sample', 'string' ]
- * _._strIsolate( { src : 'sample,string', delimeter : [ ',' ] } );
+ * _._strIsolate( { src : 'sample, string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ 'sample', 'string' ]
  *_._strIsolate( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
- * //returns [ 'sample string,name', 'string' ]
- * _._strIsolate( { src : 'sample string,name string', delimeter : [ ',', ' ' ] } )
+ * //returns [ 'sample string, name', 'string' ]
+ * _._strIsolate( { src : 'sample string, name string', delimeter : [ ',', ' ' ] } )
  *
  * @method _strIsolate
  * @throws { Exception } Throw an exception if no argument provided.
@@ -83,11 +84,9 @@ function _strIsolate( o )
   let delimeter
   let index = o.left ? -1 : o.src.length;
 
-  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
-
   _.assertRoutineOptions( _strIsolate, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got',_.strType( o.src ) );
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got', _.strType( o.src ) );
   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
   _.assert( _.numberIs( o.number ) );
 
@@ -95,14 +94,13 @@ function _strIsolate( o )
 
   if( !( number >= 1 ) )
   {
-    // debugger;
     return whatLeft( o.left ^ o.none );
   }
 
   if( _.arrayIs( o.delimeter ) && o.delimeter.length === 1 )
   o.delimeter = o.delimeter[ 0 ];
 
-  let closest = o.left ? entityMin : entityMax;
+  let closest = o.left ? strLeft : strRight;
 
   /* */
 
@@ -116,11 +114,10 @@ function _strIsolate( o )
 
       if( !o.delimeter.length )
       {
-        // debugger;
         return whatLeft( o.left ^ o.none );
       }
 
-      let c = closest( index )
+      let c = closest( index );
 
       delimeter = c.element;
       index = c.value;
@@ -133,7 +130,7 @@ function _strIsolate( o )
     {
 
       delimeter = o.delimeter;
-      index = o.left ? o.src.indexOf( delimeter,index ) : o.src.lastIndexOf( delimeter,index );
+      index = o.left ? o.src.indexOf( delimeter, index ) : o.src.lastIndexOf( delimeter, index );
 
       if( o.left && !( index >= 0 ) && o.number > 1 )
       {
@@ -147,13 +144,11 @@ function _strIsolate( o )
 
     if( !o.left && number > 1 && index === 0  )
     {
-      // debugger;
       return whatLeft( !o.none )
     }
 
     if( !( index >= 0 ) && o.number === 1 )
     {
-      // debugger;
       return whatLeft( o.left ^ o.none )
     }
 
@@ -163,7 +158,7 @@ function _strIsolate( o )
 
   /* */
 
-  result.push( o.src.substring( 0,index ) );
+  result.push( o.src.substring( 0, index ) );
   result.push( delimeter );
   result.push( o.src.substring( index + delimeter.length ) );
 
@@ -178,11 +173,11 @@ function _strIsolate( o )
 
   /* */
 
-  function entityMin( index )
+  function strLeft( index )
   {
-    return _.entityMin( o.delimeter,function( a )
+    return _.entityMin( o.delimeter, function( a )
     {
-      let i = o.src.indexOf( a,index );
+      let i = o.src.indexOf( a, index );
       if( i === -1 )
       return o.src.length;
       return i;
@@ -191,11 +186,11 @@ function _strIsolate( o )
 
   /* */
 
-  function entityMax( index )
+  function strRight( index )
   {
-    return _.entityMax( o.delimeter,function( a )
+    return _.entityMax( o.delimeter, function( a )
     {
-      let i = o.src.lastIndexOf( a,index );
+      let i = o.src.lastIndexOf( a, index );
       return i;
     });
   }
@@ -212,6 +207,211 @@ _strIsolate.defaults =
   none : 1,
 }
 
+// function _strIsolate( o )
+// {
+//   let result = [];
+//   let number = o.number;
+//   let delimeter
+//   let index = o.left ? -1 : o.src.length;
+//
+//   _.assertRoutineOptions( _strIsolate, o );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.assert( _.strIs( o.src ), 'Expects string {-o.src-}, got', _.strType( o.src ) );
+//   _.assert( _.strIs( o.delimeter ) || _.arrayIs( o.delimeter ) );
+//   _.assert( _.numberIs( o.number ) );
+//
+//   /* */
+//
+//   if( !( number >= 1 ) )
+//   {
+//     return whatLeft( o.left ^ o.none );
+//   }
+//
+//   if( _.arrayIs( o.delimeter ) && o.delimeter.length === 1 )
+//   o.delimeter = o.delimeter[ 0 ];
+//
+//   let closest = o.left ? strLeft : strRight;
+//
+//   debugger;
+//
+//   /* */
+//
+//   while( number > 0 )
+//   {
+//
+//     index += o.left ? +1 : -1;
+//
+//     if( _.arrayIs( o.delimeter ) )
+//     {
+//
+//       if( !o.delimeter.length )
+//       {
+//         return whatLeft( o.left ^ o.none );
+//       }
+//
+//       let c = closest( index ); debugger;
+//
+//       // delimeter = c.element;
+//       // index = c.value;
+//
+//       delimeter = c.entry;
+//       index = c.index;
+//
+//       // if( o.number === 1 && index === o.src.length && o.left )
+//       // index = -1;
+//
+//     }
+//     else
+//     {
+//
+//       delimeter = o.delimeter;
+//       // index = o.left ? o.src.indexOf( delimeter, index ) : o.src.lastIndexOf( delimeter, index );
+//       let c = closest( index ); debugger;
+//       index = c.index;
+//
+//       if( c.entry === undefined )
+//       break;
+//
+//       // if( o.left && !( index >= 0 ) && o.number > 1 )
+//       // {
+//       //   index = o.src.length;
+//       //   break;
+//       // }
+//
+//     }
+//
+//     /* */
+//
+//     if( !o.left && number > 1 && index === 0  )
+//     {
+//       return whatLeft( !o.none )
+//     }
+//
+//     if( !( index >= 0 ) && o.number === 1 )
+//     {
+//       return whatLeft( o.left ^ o.none )
+//     }
+//
+//     number -= 1;
+//
+//   }
+//
+//   // while( number > 0 )
+//   // {
+//   //
+//   //   index += o.left ? +1 : -1;
+//   //
+//   //   if( _.arrayIs( o.delimeter ) )
+//   //   {
+//   //
+//   //     if( !o.delimeter.length )
+//   //     {
+//   //       return whatLeft( o.left ^ o.none );
+//   //     }
+//   //
+//   //     let c = closest( index ); debugger;
+//   //
+//   //     // delimeter = c.element;
+//   //     // index = c.value;
+//   //
+//   //     delimeter = c.entry;
+//   //     index = c.index;
+//   //
+//   //     // if( o.number === 1 && index === o.src.length && o.left )
+//   //     // index = -1;
+//   //
+//   //   }
+//   //   else
+//   //   {
+//   //
+//   //     delimeter = o.delimeter;
+//   //     // index = o.left ? o.src.indexOf( delimeter, index ) : o.src.lastIndexOf( delimeter, index );
+//   //     let c = closest( index ); debugger;
+//   //     index = c.index;
+//   //
+//   //     if( c.entry === undefined )
+//   //     break;
+//   //
+//   //     // if( o.left && !( index >= 0 ) && o.number > 1 )
+//   //     // {
+//   //     //   index = o.src.length;
+//   //     //   break;
+//   //     // }
+//   //
+//   //   }
+//   //
+//   //   /* */
+//   //
+//   //   if( !o.left && number > 1 && index === 0  )
+//   //   {
+//   //     return whatLeft( !o.none )
+//   //   }
+//   //
+//   //   if( !( index >= 0 ) && o.number === 1 )
+//   //   {
+//   //     return whatLeft( o.left ^ o.none )
+//   //   }
+//   //
+//   //   number -= 1;
+//   //
+//   // }
+//
+//   /* */
+//
+//   result.push( o.src.substring( 0, index ) );
+//   result.push( delimeter );
+//   result.push( o.src.substring( index + delimeter.length ) );
+//
+//   return result;
+//
+//   /* */
+//
+//   function whatLeft( side )
+//   {
+//     return ( side ) ? [ o.src, '', '' ] : [ '', '', o.src ];
+//   }
+//
+//   /* */
+//
+//   function strLeft( index )
+//   {
+//     return _._strLeftSingle( o.src, o.delimeter, index, undefined );
+//     // return _.entityMin( o.delimeter, function( delimeter )
+//     // {
+//     //   debugger;
+//     //   // let i = o.src.indexOf( a, index );
+//     //   // if( i === -1 )
+//     //   // return o.src.length;
+//     //   // return i;
+//     // });
+//   }
+//
+//   /* */
+//
+//   function strRight( index )
+//   {
+//     return _._strRightSingle( o.src, o.delimeter, undefined, index );
+//     // return _.entityMax( o.delimeter, function( a )
+//     // {
+//     //   debugger;
+//     //   return _._strRightSingle( o.src, o.delimeter[ delimeter ] );
+//     //   // let i = o.src.lastIndexOf( a, index );
+//     //   // return i;
+//     // });
+//   }
+//
+// }
+//
+// _strIsolate.defaults =
+// {
+//   src : null,
+//   delimeter : ' ',
+//   quoting : null,
+//   left : 1,
+//   number : 1,
+//   none : 1,
+// }
+
 //
 
 /**
@@ -223,15 +423,15 @@ _strIsolate.defaults =
  *
  * @example
  * //returns [ 'sample', 'string' ]
- * _.strIsolateBeginOrNone( { src : 'sample,string', delimeter : [ ',' ] } );
+ * _.strIsolateBeginOrNone( { src : 'sample, string', delimeter : [ ', ' ] } );
  *
  * @example
  * //returns [ 'sample', 'string' ]
  *_.strIsolateBeginOrNone( { src : 'sample string', delimeter : ' ' } )
  *
  * @example
- * //returns [ 'sample string,name', 'string' ]
- * _.strIsolateBeginOrNone( 'sample string,name string', ',' )
+ * //returns [ 'sample string, name', 'string' ]
+ * _.strIsolateBeginOrNone( 'sample string, name string', ',' )
  *
  * @method strIsolateBeginOrNone
  * @throws { Exception } Throw an exception if no argument provided.
@@ -257,7 +457,7 @@ _strIsolateBeginOrNone_body.defaults =
   quoting : null,
 }
 
-// let strIsolateBeginOrNone = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body );
+// let strIsolateBeginOrNone = _.routineFromPreAndBody( strIsolate_pre, _strIsolateBeginOrNone_body );
 
 //
 
@@ -270,15 +470,11 @@ _strIsolateBeginOrNone_body.defaults =
  *
  * @example
  * //returns [ 'sample', 'string' ]
- * _.strIsolateEndOrNone( { src : 'sample,string', delimeter : [ ',' ] } );
+ * _.strIsolateEndOrNone( { src : 'sample, string', delimeter : [ ',' ] } );
  *
  * @example
  * //returns [ 'sample', 'string' ]
  *_.strIsolateEndOrNone( { src : 'sample string', delimeter : ' ' } )
- *
- * @example
- * //returns [ 'sample, ', 'string' ]
- * _.strIsolateEndOrNone( { src : 'sample,  string', delimeter : [ ',', ' ' ] } )
  *
  * @method strIsolateEndOrNone
  * @throws { Exception } Throw an exception if no argument provided.
@@ -304,7 +500,7 @@ _strIsolateEndOrNone_body.defaults =
   quoting : null,
 }
 
-// let strIsolateEndOrNone = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body );
+// let strIsolateEndOrNone = _.routineFromPreAndBody( strIsolate_pre, _strIsolateEndOrNone_body );
 
 //
 
@@ -320,7 +516,7 @@ function _strIsolateEndOrAll_body( o )
   // if( i === -1 )
   // return [ '', '', o.src ];
   //
-  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  // let result = [ o.src.substring( 0, i ), o.delimeter, o.src.substring( i+o.delimeter.length, o.src.length ) ];
   //
   // return result;
 }
@@ -333,7 +529,7 @@ _strIsolateEndOrAll_body.defaults =
   quoting : null,
 }
 
-// let strIsolateEndOrAll = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body );
+// let strIsolateEndOrAll = _.routineFromPreAndBody( strIsolate_pre, _strIsolateEndOrAll_body );
 
 //
 
@@ -349,7 +545,7 @@ function _strIsolateBeginOrAll_body( o )
   // if( i === -1 )
   // return [ o.src, '', '' ];
   //
-  // let result = [ o.src.substring( 0,i ), o.delimeter, o.src.substring( i+o.delimeter.length,o.src.length ) ];
+  // let result = [ o.src.substring( 0, i ), o.delimeter, o.src.substring( i+o.delimeter.length, o.src.length ) ];
   //
   // return result;
 }
@@ -362,7 +558,7 @@ _strIsolateBeginOrAll_body.defaults =
   quoting : null,
 }
 
-// let strIsolateBeginOrAll = _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body );
+// let strIsolateBeginOrAll = _.routineFromPreAndBody( strIsolate_pre, _strIsolateBeginOrAll_body );
 
 //
 
@@ -413,12 +609,12 @@ function _strIsolateInsideOrNone( src, begin, end )
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  let b = _.strFirst( src, begin );
+  let b = _.strLeft( src, begin );
 
   if( b.entry === undefined )
   return;
 
-  let e = _.strLast( src, end );
+  let e = _.strRight( src, end );
 
   if( e.entry === undefined )
   return;
@@ -460,12 +656,12 @@ function _strIsolateInsideOrAll( src, begin, end )
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  let b = _.strFirst( src, begin );
+  let b = _.strLeft( src, begin );
 
   if( b.entry === undefined )
   b = { entry : '', index : 0 }
 
-  let e = _.strLast( src, end );
+  let e = _.strRight( src, end );
 
   if( e.entry === undefined )
   e = { entry : '', index : src.length }
@@ -520,10 +716,10 @@ let Routines =
 
   _strIsolate,
 
-  strIsolateBeginOrNone : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrNone_body ),
-  strIsolateEndOrNone : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrNone_body ),
-  strIsolateEndOrAll : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateEndOrAll_body ),
-  strIsolateBeginOrAll : _.routineFromPreAndBody( _strCutOff_pre, _strIsolateBeginOrAll_body ),
+  strIsolateBeginOrNone : _.routineFromPreAndBody( strIsolate_pre, _strIsolateBeginOrNone_body ),
+  strIsolateEndOrNone : _.routineFromPreAndBody( strIsolate_pre, _strIsolateEndOrNone_body ),
+  strIsolateEndOrAll : _.routineFromPreAndBody( strIsolate_pre, _strIsolateEndOrAll_body ),
+  strIsolateBeginOrAll : _.routineFromPreAndBody( strIsolate_pre, _strIsolateBeginOrAll_body ),
 
   _strIsolateInsideOrNone,
   strIsolateInsideOrNone,
