@@ -2048,7 +2048,6 @@ function mapsFlatten( o )
 
   _.routineOptions( mapsFlatten, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  // _.assert( o.prefix === false || o.prefix === 0 || _.strIs( o.prefix ) );
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
   _.assert( _.arrayLike( o.src ) || _.mapLike( o.src ) )
 
