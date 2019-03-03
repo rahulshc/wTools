@@ -2051,7 +2051,6 @@ function mapsFlatten( o )
   _.assert( o.delimeter === false || o.delimeter === 0 || _.strIs( o.delimeter ) );
   _.assert( _.arrayLike( o.src ) || _.mapLike( o.src ) )
 
-  debugger;
   o.dst = o.dst || Object.create( null );
   extend( o.src, '' );
 
