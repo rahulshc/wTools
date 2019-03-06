@@ -1085,6 +1085,186 @@ diagnosticEachElementComparator.defaults =
   onEach : null,
 }
 
+//
+
+function diagnosticsStructureGenerate( o )
+{
+  _.assert( arguments.length === 1 )
+  _.routineOptions( diagnosticsStructureGenerate, o );
+  _.assert( _.numberIs( o.breadth ) );
+  _.assert( _.numberIs( o.depth ) );
+
+  /*  */
+
+  o.structure = Object.create( null );
+
+  for( let b = 0; b < o.breadth; b++ )
+  {
+    o.structure[ b ] = singleLevelMake();
+  }
+
+  o.size = entitySize( o.structure );
+
+  // console.log( 'entitySize:', _.strMetricFormatBytes( o.size ) );
+
+  return o;
+
+  /*  */
+
+  function singleLevelMake()
+  {
+    let singleLevel = Object.create( null );
+
+    if( o.boolean )
+    singleLevel[ 'boolean' ] = true;
+
+    if( o.number )
+    singleLevel[ 'number' ] = 0;
+
+    if( o.signedNumber )
+    {
+      singleLevel[ '-0' ] = -0;
+      singleLevel[ '+0' ] = +0;
+    }
+
+    if( o.string )
+    singleLevel[ 'string' ] = _.strDup( 'a', o.stringSize || o.fieldSize );
+
+    if( o.null )
+    singleLevel[ 'null' ] = null;
+
+    if( o.infinity )
+    {
+      singleLevel[ '+infinity' ] = +Infinity;
+      singleLevel[ '-infinity' ] = -Infinity;
+    }
+
+    if( o.nan )
+    singleLevel[ 'nan' ] = NaN;
+
+    if( o.undefined )
+    singleLevel[ 'undefined' ] = undefined;
+
+    if( o.date )
+    singleLevel[ 'date' ] = new Date();
+
+    if( o.bigInt )
+    if( typeof BigInt !== 'undefined' )
+    singleLevel[ 'bigInt' ] = BigInt( 1 );
+
+    if( o.regexp )
+    {
+      singleLevel[ 'regexp1'] = /ab|cd/,
+      singleLevel[ 'regexp2'] = /a[bc]d/,
+      singleLevel[ 'regexp3'] = /ab{1,}bc/,
+      singleLevel[ 'regexp4'] = /\.js$/,
+      singleLevel[ 'regexp5'] = /.regexp/
+    }
+
+    if( o.regexpComplex )
+    {
+      singleLevel[ 'complexRegexp0' ] = /^(?:(?!ab|cd).)+$/gm,
+      singleLevel[ 'complexRegexp1' ] = /\/\*[\s\S]*?\*\/|\/\/.*/g,
+      singleLevel[ 'complexRegexp2' ] = /^[1-9]+[0-9]*$/gm,
+      singleLevel[ 'complexRegexp3' ] = /aBc/i,
+      singleLevel[ 'complexRegexp4' ] = /^\d+/gm,
+      singleLevel[ 'complexRegexp5' ] = /^a.*c$/g,
+      singleLevel[ 'complexRegexp6' ] = /[a-z]/m,
+      singleLevel[ 'complexRegexp7' ] = /^[A-Za-z0-9]$/
+    }
+
+    let bufferSrc = _.arrayFillTimes( [], o.bufferSize || o.fieldSize, 0 );
+
+    if( o.bufferNode )
+    if( typeof Buffer !== 'undefined' )
+    singleLevel[ 'bufferNode'] = Buffer.from( bufferSrc );
+
+    if( o.bufferRaw )
+    singleLevel[ 'bufferRaw'] = new ArrayBuffer( bufferSrc );
+
+    if( o.bufferBytes )
+    singleLevel[ 'bufferBytes'] = new Uint8Array( bufferSrc );
+
+    if( o.map )
+    singleLevel[ 'map' ] = { a : 'string', b : 1, c : true  };
+
+    if( o.mapComplex )
+    singleLevel[ 'mapComplex' ] = { a : '1', dir : { b : 2 }, c : [ 1,2,3 ] };
+
+    if( o.array )
+    singleLevel[ 'array' ] = _.arrayFillTimes( [], o.arraySize || o.fieldSize, 0 )
+
+    if( o.arrayComplex )
+    singleLevel[ 'arrayComplex' ] = [ { a : '1', dir : { b : 2 }, c : [ 1,2,3 ] } ]
+
+    if( o.recursion )
+    {
+      //
+    }
+
+    if( !o.depth )
+    return singleLevel;
+
+    /**/
+
+    let currentLevel = singleLevel;
+    let srcMap = _.mapExtend( null, singleLevel );
+
+    for( let d = 0; d < o.depth; d++ )
+    {
+      let level = 'level' + d;
+      currentLevel[ level ] = _.mapExtend( null, srcMap );
+      currentLevel = currentLevel[ level ];
+    }
+
+    return singleLevel;
+  }
+
+}
+
+diagnosticsStructureGenerate.defaults =
+{
+  depth : null,
+  breadth : null,
+  size : null,
+
+  /**/
+
+  boolean : null,
+  number : null,
+  signedNumber : null,
+  string : null,
+  null : null,
+  infinity : null,
+  nan : null,
+  undefined : null,
+  date : null,
+  bigInt : null,
+
+  regexp : null,
+  regexpComplex : null,
+
+  bufferNode : null,
+  bufferRaw : null,
+  bufferBytes : null,
+
+  array : null,
+  arrayComplex : null,
+  map : null,
+  mapComplex : null,
+
+  /* */
+
+  stringSize : null,
+  bufferSize : null,
+  regexpSize : null,
+  arraySize : null,
+  mapSize : null,
+
+  fieldSize : 50
+
+}
+
 // --
 // errrors
 // --
@@ -1117,6 +1297,8 @@ let Extend =
   diagnosticProxyFields, /* experimental */
   diagnosticEachLongType,
   diagnosticEachElementComparator,
+
+  diagnosticsStructureGenerate
 
 }
 
