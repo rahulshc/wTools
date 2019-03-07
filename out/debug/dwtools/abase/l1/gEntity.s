@@ -88,18 +88,53 @@ function entitySize( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.strIs( src ) )
-  return src.length;
+  {
+    if( src.length )
+    return _.bufferBytesFrom( src ).byteLength;
+    return src.length;
+  }
 
-  if( _.primitiveIs( src ) )
-  return null;
+  if( _.numberIs( src ) )
+  return 8;
+
+  if( !_.definedIs( src ) )
+  return 8;
+
+  if( _.boolIs( src ) || _.dateIs( src ) )
+  return 8;
 
   if( _.numberIs( src.byteLength ) )
   return src.byteLength;
 
-  if( _.longIs( src ) )
-  return src.length;
+  if( _.regexpIs( src ) )
+  return entitySize( src.source ) + src.flags.length * 2;
 
-  return null;
+  if( _.longIs( src ) )
+  {
+    let result = 0;
+    for( let i = 0; i < src.length; i++ )
+    {
+      result += _.entitySize( src[ i ] );
+      if( isNaN( result ) )
+      break;
+    }
+    return result;
+  }
+
+  if( _.mapIs( src ) )
+  {
+    let result = 0;
+    for( let k in src )
+    {
+      result += _.entitySize( k );
+      result += _.entitySize( src[ k ] );
+      if( isNaN( result ) )
+      break;
+    }
+    return result;
+  }
+
+  return NaN;
 }
 
 // --
