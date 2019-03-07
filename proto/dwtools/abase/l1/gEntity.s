@@ -114,7 +114,7 @@ function entitySize( src )
     let result = 0;
     for( let i = 0; i < src.length; i++ )
     {
-      result += entitySize( src[ i ] );
+      result += _.entitySize( src[ i ] );
       if( isNaN( result ) )
       break;
     }
@@ -126,8 +126,8 @@ function entitySize( src )
     let result = 0;
     for( let k in src )
     {
-      result += entitySize( k );
-      result += entitySize( src[ k ] );
+      result += _.entitySize( k );
+      result += _.entitySize( src[ k ] );
       if( isNaN( result ) )
       break;
     }

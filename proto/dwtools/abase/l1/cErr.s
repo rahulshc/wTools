@@ -1103,7 +1103,7 @@ function diagnosticsStructureGenerate( o )
     o.structure[ b ] = singleLevelMake();
   }
 
-  o.size = entitySize( o.structure );
+  o.size = _.entitySize( o.structure );
 
   // console.log( 'entitySize:', _.strMetricFormatBytes( o.size ) );
 
