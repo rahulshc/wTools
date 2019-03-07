@@ -3241,7 +3241,7 @@ function strJoin_body( o )
     let src = o.srcs[ a ];
     let srcStr = o.str( src );
 
-    _.assert( _.strIs( srcStr ) || _.arrayIs( src ), () => 'Expects ptimitive or array, but got ' + _.strType( src ) );
+    _.assert( _.strIs( srcStr ) || _.arrayIs( src ), () => 'Expects primitive or array, but got ' + _.strType( src ) );
     // _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
