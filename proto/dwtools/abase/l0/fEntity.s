@@ -812,6 +812,11 @@ function entityMap( src, onEach )
 
 //
 
+/* qqq :
+cover entityFilter and entityFilterDeep
+take into account unroll cases
+*/
+
 function entityFilter( src, onEach )
 {
   let result;
@@ -828,13 +833,19 @@ function entityFilter( src, onEach )
   {
     result = _.longMake( src, 0 );
     let s, d;
-    for( s = 0, d = 0 ; s < src.length ; s++, d++ )
+    for( s = 0, d = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
-      if( r === undefined )
-      d--;
-      else
-      result[ d ] = r;
+      if( _.unrollIs( r ) )
+      {
+        _.arrayAppendArray( result, r );
+        d += r.length;
+      }
+      else if( r !== undefined )
+      {
+        result[ d ] = r;
+        d += 1;
+      }
     }
     if( d < src.length )
     result = _.arraySlice( result, 0, d );
@@ -875,10 +886,23 @@ function _entityFilterDeep( o )
     for( let s = 0, d = 0 ; s < o.src.length ; s++, d++ )
     {
       let r = onEach.call( o.src, o.src[ s ], s, o.src );
-      if( r === undefined )
-      d--;
-      else
-      result[ d ] = r;
+
+      if( _.unrollIs( r ) )
+      {
+        _.arrayAppendArray( result, r );
+        d += r.length;
+      }
+      else if( r !== undefined )
+      {
+        result[ d ] = r;
+        d += 1;
+      }
+
+      // if( r === undefined )
+      // d--;
+      // else
+      // result[ d ] = r;
+
     }
     debugger;
     if( d < o.src.length )
