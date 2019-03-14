@@ -122,6 +122,7 @@ reflector:
     src:
       filePath:
         .: .
+      prefixPath: proto
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -134,7 +135,6 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
           - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
-      prefixPath: proto
     dst:
       prefixPath: out/release
     criterion:
@@ -145,6 +145,7 @@ reflector:
     src:
       filePath:
         .: .
+      prefixPath: proto
       maskAll:
         excludeAny:
           - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
@@ -155,7 +156,6 @@ reflector:
           - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
           - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
           - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
-      prefixPath: proto
     dst:
       prefixPath: out/debug
     criterion:
@@ -181,7 +181,7 @@ reflector:
   exported.proto.export:
     src:
       filePath:
-        .: true
+        .: null
       prefixPath: proto
     criterion:
       default: 1
@@ -195,64 +195,64 @@ reflector:
     recursive: 0
     src:
       filePath:
-        .: true
-        dwtools: true
-        dwtools/Tools.s: true
-        dwtools/abase: true
-        dwtools/abase/Layer0.s: true
-        dwtools/abase/Layer1.s: true
-        dwtools/abase/Layer2.s: true
-        dwtools/abase/l0: true
-        dwtools/abase/l0/aPredefined.s: true
-        dwtools/abase/l0/aSetup.s: true
-        dwtools/abase/l0/bPremature.s: true
-        dwtools/abase/l0/fBool.s: true
-        dwtools/abase/l0/fChecker.s: true
-        dwtools/abase/l0/fEntity.s: true
-        dwtools/abase/l0/fErr.s: true
-        dwtools/abase/l0/fLong.s: true
-        dwtools/abase/l0/fMap.s: true
-        dwtools/abase/l0/fNumber.s: true
-        dwtools/abase/l0/fRange.s: true
-        dwtools/abase/l0/fRegexp.s: true
-        dwtools/abase/l0/fRoutine.s: true
-        dwtools/abase/l0/fString.s: true
-        dwtools/abase/l0/fTime.s: true
-        dwtools/abase/l0/iArrayDescriptor.s: true
-        dwtools/abase/l0/iCompose.s: true
-        dwtools/abase/l0/iField.s: true
-        dwtools/abase/l1: true
-        dwtools/abase/l1/cErr.s: true
-        dwtools/abase/l1/gBool.s: true
-        dwtools/abase/l1/gEntity.s: true
-        dwtools/abase/l1/gLong.s: true
-        dwtools/abase/l1/gMap.s: true
-        dwtools/abase/l1/gNumber.s: true
-        dwtools/abase/l1/gRange.s: true
-        dwtools/abase/l1/gRegexp.s: true
-        dwtools/abase/l1/gRoutine.s: true
-        dwtools/abase/l1/gString.s: true
-        dwtools/abase/l1/gTime.s: true
-        dwtools/abase/l1/rFundamental.s: true
-        dwtools/abase/l1/zSetup.s: true
-        dwtools/abase/l1.test: true
-        dwtools/abase/l1.test/Array.test.s: true
-        dwtools/abase/l1.test/Diagnostics.test.s: true
-        dwtools/abase/l1.test/Entity.test.s: true
-        dwtools/abase/l1.test/Map.test.s: true
-        dwtools/abase/l1.test/Regexp.test.s: true
-        dwtools/abase/l1.test/Routine.test.s: true
-        dwtools/abase/l1.test/String.test.s: true
-        dwtools/abase/l1.test/Typing.test.s: true
-        dwtools/abase/l2: true
-        dwtools/abase/l2/IncludeTools.s: true
-        dwtools/abase/l2/ModulesRegistry.s: true
-        dwtools/abase/l2/NameTools.s: true
-        dwtools/abase/l2/StringTools.s: true
-        dwtools/abase/l2.test: true
-        dwtools/abase/l2.test/StringTools.test.s: true
-        dwtools/amid: true
-        dwtools/atop: true
+        .: null
+        dwtools: null
+        dwtools/Tools.s: null
+        dwtools/abase: null
+        dwtools/abase/Layer0.s: null
+        dwtools/abase/Layer1.s: null
+        dwtools/abase/Layer2.s: null
+        dwtools/abase/l0: null
+        dwtools/abase/l0/aPredefined.s: null
+        dwtools/abase/l0/aSetup.s: null
+        dwtools/abase/l0/bPremature.s: null
+        dwtools/abase/l0/fBool.s: null
+        dwtools/abase/l0/fChecker.s: null
+        dwtools/abase/l0/fEntity.s: null
+        dwtools/abase/l0/fErr.s: null
+        dwtools/abase/l0/fLong.s: null
+        dwtools/abase/l0/fMap.s: null
+        dwtools/abase/l0/fNumber.s: null
+        dwtools/abase/l0/fRange.s: null
+        dwtools/abase/l0/fRegexp.s: null
+        dwtools/abase/l0/fRoutine.s: null
+        dwtools/abase/l0/fString.s: null
+        dwtools/abase/l0/fTime.s: null
+        dwtools/abase/l0/iArrayDescriptor.s: null
+        dwtools/abase/l0/iCompose.s: null
+        dwtools/abase/l0/iField.s: null
+        dwtools/abase/l1: null
+        dwtools/abase/l1/cErr.s: null
+        dwtools/abase/l1/gBool.s: null
+        dwtools/abase/l1/gEntity.s: null
+        dwtools/abase/l1/gLong.s: null
+        dwtools/abase/l1/gMap.s: null
+        dwtools/abase/l1/gNumber.s: null
+        dwtools/abase/l1/gRange.s: null
+        dwtools/abase/l1/gRegexp.s: null
+        dwtools/abase/l1/gRoutine.s: null
+        dwtools/abase/l1/gString.s: null
+        dwtools/abase/l1/gTime.s: null
+        dwtools/abase/l1/rFundamental.s: null
+        dwtools/abase/l1/zSetup.s: null
+        dwtools/abase/l1.test: null
+        dwtools/abase/l1.test/Array.test.s: null
+        dwtools/abase/l1.test/Diagnostics.test.s: null
+        dwtools/abase/l1.test/Entity.test.s: null
+        dwtools/abase/l1.test/Map.test.s: null
+        dwtools/abase/l1.test/Regexp.test.s: null
+        dwtools/abase/l1.test/Routine.test.s: null
+        dwtools/abase/l1.test/String.test.s: null
+        dwtools/abase/l1.test/Typing.test.s: null
+        dwtools/abase/l2: null
+        dwtools/abase/l2/IncludeTools.s: null
+        dwtools/abase/l2/ModulesRegistry.s: null
+        dwtools/abase/l2/NameTools.s: null
+        dwtools/abase/l2/StringTools.s: null
+        dwtools/abase/l2.test: null
+        dwtools/abase/l2.test/StringTools.test.s: null
+        dwtools/amid: null
+        dwtools/atop: null
       basePath: .
       prefixPath: proto
     criterion:
