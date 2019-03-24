@@ -4328,6 +4328,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
       args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    debugger;
     throw err;
     return false;
   }

@@ -364,12 +364,6 @@ let wFileExecutorHtmlFormatters =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileExecutorHtmlFormatters },
 }
 
-let wTranspilationStrategy =
-{
-  includeAny : includeAny( 'amid/l9/transpilationStrategy/MainBase.s', 'wtranspilationstrategy' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
-}
-
 let wPathTranslator =
 {
   includeAny : includeAny( 'amid/l5_mapper/PathTranslator.s', 'wpathtranslator' ),
@@ -488,7 +482,11 @@ let wTesting =
   isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 
-//
+let wTranspilationStrategy =
+{
+  includeAny : includeAny( 'atop/transpilationStrategy/MainBase.s', 'wtranspilationstrategy' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
+}
 
 let wFilesOperationsDirector =
 {
@@ -611,7 +609,6 @@ let Extend =
   wStager,
   wFileExecutor,
   wFileExecutorHtmlFormatters,
-  wTranspilationStrategy,
 
   wPathTranslator,
   wNameMapper,
@@ -639,6 +636,7 @@ let Extend =
   // top
 
   wTesting,
+  wTranspilationStrategy,
   wFilesOperationsDirector,
   wFilesLinker,
   wBaker,
