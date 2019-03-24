@@ -121,22 +121,7 @@ reflector:
   reflect.proto.:
     src:
       filePath:
-        .: .
-      prefixPath: proto
-      maskAll:
-        excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
-          - !<tag:yaml.org,2002:js/regexp> /\.unique$/
-          - !<tag:yaml.org,2002:js/regexp> /\.git$/
-          - !<tag:yaml.org,2002:js/regexp> /\.svn$/
-          - !<tag:yaml.org,2002:js/regexp> /\.hg$/
-          - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
-          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
-          - !<tag:yaml.org,2002:js/regexp> /\.debug($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.test($|\.|\/)/i
-          - !<tag:yaml.org,2002:js/regexp> /\.experiment($|\.|\/)/i
-    dst:
-      prefixPath: out/release
+        'path::proto': 'path::out.*=1'
     criterion:
       debug: 0
     inherit:
@@ -144,36 +129,15 @@ reflector:
   reflect.proto.debug:
     src:
       filePath:
-        .: .
-      prefixPath: proto
-      maskAll:
-        excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
-          - !<tag:yaml.org,2002:js/regexp> /\.unique$/
-          - !<tag:yaml.org,2002:js/regexp> /\.git$/
-          - !<tag:yaml.org,2002:js/regexp> /\.svn$/
-          - !<tag:yaml.org,2002:js/regexp> /\.hg$/
-          - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
-          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
-    dst:
-      prefixPath: out/debug
+        'path::proto': 'path::out.*=1'
     criterion:
       debug: 1
     inherit:
       - predefined.*
   reflect.submodules:
     src:
-      maskAll:
-        excludeAny:
-          - !<tag:yaml.org,2002:js/regexp> /(\W|^)node_modules(\W|$)/
-          - !<tag:yaml.org,2002:js/regexp> /\.unique$/
-          - !<tag:yaml.org,2002:js/regexp> /\.git$/
-          - !<tag:yaml.org,2002:js/regexp> /\.svn$/
-          - !<tag:yaml.org,2002:js/regexp> /\.hg$/
-          - !<tag:yaml.org,2002:js/regexp> /\.DS_Store$/
-          - !<tag:yaml.org,2002:js/regexp> /(^|\/)-/
-          - !<tag:yaml.org,2002:js/regexp> /\.release($|\.|\/)/i
+      filePath:
+        'submodule::*/exported::*=1/path::exportedDir*=1': 'path::out.*=1'
     criterion:
       debug: 1
     inherit:
@@ -194,67 +158,9 @@ reflector:
   exportedFiles.proto.export:
     recursive: 0
     src:
-      filePath:
-        .: null
-        dwtools: null
-        dwtools/Tools.s: null
-        dwtools/abase: null
-        dwtools/abase/Layer0.s: null
-        dwtools/abase/Layer1.s: null
-        dwtools/abase/Layer2.s: null
-        dwtools/abase/l0: null
-        dwtools/abase/l0/aPredefined.s: null
-        dwtools/abase/l0/aSetup.s: null
-        dwtools/abase/l0/bPremature.s: null
-        dwtools/abase/l0/fBool.s: null
-        dwtools/abase/l0/fChecker.s: null
-        dwtools/abase/l0/fEntity.s: null
-        dwtools/abase/l0/fErr.s: null
-        dwtools/abase/l0/fLong.s: null
-        dwtools/abase/l0/fMap.s: null
-        dwtools/abase/l0/fNumber.s: null
-        dwtools/abase/l0/fRange.s: null
-        dwtools/abase/l0/fRegexp.s: null
-        dwtools/abase/l0/fRoutine.s: null
-        dwtools/abase/l0/fString.s: null
-        dwtools/abase/l0/fTime.s: null
-        dwtools/abase/l0/iArrayDescriptor.s: null
-        dwtools/abase/l0/iCompose.s: null
-        dwtools/abase/l0/iField.s: null
-        dwtools/abase/l1: null
-        dwtools/abase/l1/cErr.s: null
-        dwtools/abase/l1/gBool.s: null
-        dwtools/abase/l1/gEntity.s: null
-        dwtools/abase/l1/gLong.s: null
-        dwtools/abase/l1/gMap.s: null
-        dwtools/abase/l1/gNumber.s: null
-        dwtools/abase/l1/gRange.s: null
-        dwtools/abase/l1/gRegexp.s: null
-        dwtools/abase/l1/gRoutine.s: null
-        dwtools/abase/l1/gString.s: null
-        dwtools/abase/l1/gTime.s: null
-        dwtools/abase/l1/rFundamental.s: null
-        dwtools/abase/l1/zSetup.s: null
-        dwtools/abase/l1.test: null
-        dwtools/abase/l1.test/Array.test.s: null
-        dwtools/abase/l1.test/Diagnostics.test.s: null
-        dwtools/abase/l1.test/Entity.test.s: null
-        dwtools/abase/l1.test/Map.test.s: null
-        dwtools/abase/l1.test/Regexp.test.s: null
-        dwtools/abase/l1.test/Routine.test.s: null
-        dwtools/abase/l1.test/String.test.s: null
-        dwtools/abase/l1.test/Typing.test.s: null
-        dwtools/abase/l2: null
-        dwtools/abase/l2/IncludeTools.s: null
-        dwtools/abase/l2/ModulesRegistry.s: null
-        dwtools/abase/l2/NameTools.s: null
-        dwtools/abase/l2/StringTools.s: null
-        dwtools/abase/l2.test: null
-        dwtools/abase/l2.test/StringTools.test.s: null
-        dwtools/amid: null
-        dwtools/atop: null
+      filePath: 'path::exportedFiles.proto.export'
       basePath: .
-      prefixPath: proto
+      prefixPath: 'path::exportedDir.proto.export'
     criterion:
       default: 1
       debug: 1
@@ -324,6 +230,13 @@ step:
       raw: 1
     opts:
       reflector: 'reflector::reflect.submodules*=1'
+    inherit:
+      - predefined.reflect
+  reflect.submodules:
+    criterion:
+      debug: 1
+    opts:
+      reflector: 'reflector::reflect.submodules*'
     inherit:
       - predefined.reflect
   export.proto:
