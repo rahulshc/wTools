@@ -1093,16 +1093,15 @@ function diagnosticsStructureGenerate( o )
   _.routineOptions( diagnosticsStructureGenerate, o );
   _.assert( _.numberIs( o.breadth ) );
   _.assert( _.numberIs( o.depth ) );
+  _.assert( o._pre === null || _.routineIs( o._pre ) );
 
-  /*  */
+  /* qqq: pre */
 
-  o.structure = Object.create( null );
+  /**/
 
-  for( let b = 0; b < o.breadth; b++ )
-  {
-    o.structure[ b ] = singleLevelMake();
-  }
+  let depth = 0;
 
+  o.structure = structureMake();
   o.size = _.entitySize( o.structure );
 
   // console.log( 'entitySize:', _.strMetricFormatBytes( o.size ) );
@@ -1111,122 +1110,150 @@ function diagnosticsStructureGenerate( o )
 
   /*  */
 
-  function singleLevelMake()
+  function structureMake()
   {
-    let singleLevel = Object.create( null );
+    let currentLevel = Object.create( null );
 
-    if( o.boolean )
-    singleLevel[ 'boolean' ] = true;
+    let string = _.strDup( 'a', o.stringSize || o.fieldSize );
 
-    if( o.number )
-    singleLevel[ 'number' ] = 0;
+    if( o.boolean || o.primitive )
+    currentLevel[ 'boolean' ] = true;
 
-    if( o.signedNumber )
+    if( o.number || o.primitive )
+    currentLevel[ 'number' ] = 0;
+
+    if( o.signedNumber || o.primitive > 2 )
     {
-      singleLevel[ '-0' ] = -0;
-      singleLevel[ '+0' ] = +0;
+      currentLevel[ '-0' ] = -0;
+      currentLevel[ '+0' ] = +0;
     }
 
-    if( o.string )
-    singleLevel[ 'string' ] = _.strDup( 'a', o.stringSize || o.fieldSize );
+    if( o.string || o.primitive )
+    currentLevel[ 'string' ] = string;
 
-    if( o.null )
-    singleLevel[ 'null' ] = null;
+    if( o.null || o.primitive > 1 )
+    currentLevel[ 'null' ] = null;
 
-    if( o.infinity )
+    if( o.infinity || o.primitive > 1 )
     {
-      singleLevel[ '+infinity' ] = +Infinity;
-      singleLevel[ '-infinity' ] = -Infinity;
+      currentLevel[ '+infinity' ] = +Infinity;
+      currentLevel[ '-infinity' ] = -Infinity;
     }
 
-    if( o.nan )
-    singleLevel[ 'nan' ] = NaN;
+    if( o.nan || o.primitive > 1 )
+    currentLevel[ 'nan' ] = NaN;
 
-    if( o.undefined )
-    singleLevel[ 'undefined' ] = undefined;
+    if( o.undefined || o.primitive > 2 )
+    currentLevel[ 'undefined' ] = undefined;
 
-    if( o.date )
-    singleLevel[ 'date' ] = new Date();
+    if( o.date || o.primitive > 2 )
+    currentLevel[ 'date' ] = new Date();
 
-    if( o.bigInt )
+    if( o.bigInt || o.primitive > 2 )
     if( typeof BigInt !== 'undefined' )
-    singleLevel[ 'bigInt' ] = BigInt( 1 );
+    currentLevel[ 'bigInt' ] = BigInt( 1 );
 
     if( o.regexp )
     {
-      singleLevel[ 'regexp1'] = /ab|cd/,
-      singleLevel[ 'regexp2'] = /a[bc]d/,
-      singleLevel[ 'regexp3'] = /ab{1,}bc/,
-      singleLevel[ 'regexp4'] = /\.js$/,
-      singleLevel[ 'regexp5'] = /.regexp/
+      currentLevel[ 'regexp1'] = /ab|cd/,
+      currentLevel[ 'regexp2'] = /a[bc]d/,
+      currentLevel[ 'regexp3'] = /ab{1,}bc/,
+      currentLevel[ 'regexp4'] = /\.js$/,
+      currentLevel[ 'regexp5'] = /.regexp/
     }
 
-    if( o.regexpComplex )
+    if( o.regexpComplex || o.regexp > 1 )
     {
-      singleLevel[ 'complexRegexp0' ] = /^(?:(?!ab|cd).)+$/gm,
-      singleLevel[ 'complexRegexp1' ] = /\/\*[\s\S]*?\*\/|\/\/.*/g,
-      singleLevel[ 'complexRegexp2' ] = /^[1-9]+[0-9]*$/gm,
-      singleLevel[ 'complexRegexp3' ] = /aBc/i,
-      singleLevel[ 'complexRegexp4' ] = /^\d+/gm,
-      singleLevel[ 'complexRegexp5' ] = /^a.*c$/g,
-      singleLevel[ 'complexRegexp6' ] = /[a-z]/m,
-      singleLevel[ 'complexRegexp7' ] = /^[A-Za-z0-9]$/
+      currentLevel[ 'complexRegexp0' ] = /^(?:(?!ab|cd).)+$/gm,
+      currentLevel[ 'complexRegexp1' ] = /\/\*[\s\S]*?\*\/|\/\/.*/g,
+      currentLevel[ 'complexRegexp2' ] = /^[1-9]+[0-9]*$/gm,
+      currentLevel[ 'complexRegexp3' ] = /aBc/i,
+      currentLevel[ 'complexRegexp4' ] = /^\d+/gm,
+      currentLevel[ 'complexRegexp5' ] = /^a.*c$/g,
+      currentLevel[ 'complexRegexp6' ] = /[a-z]/m,
+      currentLevel[ 'complexRegexp7' ] = /^[A-Za-z0-9]$/
     }
 
     let bufferSrc = _.arrayFillTimes( [], o.bufferSize || o.fieldSize, 0 );
 
-    if( o.bufferNode )
+    if( o.bufferNode || o.buffer && o.buffer !== 2 )
     if( typeof Buffer !== 'undefined' )
-    singleLevel[ 'bufferNode'] = Buffer.from( bufferSrc );
+    currentLevel[ 'bufferNode'] = Buffer.from( bufferSrc );
 
-    if( o.bufferRaw )
-    singleLevel[ 'bufferRaw'] = new ArrayBuffer( bufferSrc );
+    if( o.bufferRaw || o.buffer )
+    currentLevel[ 'bufferRaw'] = new ArrayBuffer( bufferSrc );
 
-    if( o.bufferBytes )
-    singleLevel[ 'bufferBytes'] = new Uint8Array( bufferSrc );
+    if( o.bufferBytes || o.buffer && o.buffer !== 2)
+    currentLevel[ 'bufferBytes'] = new Uint8Array( bufferSrc );
 
-    if( o.map )
-    singleLevel[ 'map' ] = { a : 'string', b : 1, c : true  };
-
-    if( o.mapComplex )
-    singleLevel[ 'mapComplex' ] = { a : '1', dir : { b : 2 }, c : [ 1,2,3 ] };
-
-    if( o.array )
-    singleLevel[ 'array' ] = _.arrayFillTimes( [], o.arraySize || o.fieldSize, 0 )
-
-    if( o.arrayComplex )
-    singleLevel[ 'arrayComplex' ] = [ { a : '1', dir : { b : 2 }, c : [ 1,2,3 ] } ]
-
-    if( o.recursion )
+    if( o.map || o.structure )
     {
-      //
+      let map = currentLevel[ 'map' ] = { 0 : string, 1 : 1, 2 : true  };
+      if( o.mapSize )
+      currentLevel[ 'map' ] = mapForSize( map, [ 0, 3 ] );
     }
 
-    if( !o.depth )
-    return singleLevel;
+    if( o.mapComplex || o.structure > 1 )
+    {
+      let map = currentLevel[ 'mapComplex' ] = { 0 : '1', 1 : { b : 2 }, 2 : [ 1,2,3 ] };
+      if( o.mapSize )
+      currentLevel[ 'mapComplex' ] = mapForSize( map, [ 0, 3 ] );
+    }
+
+    if( o.array || o.structure )
+    currentLevel[ 'array' ] = _.arrayFillTimes( [], o.arraySize || o.fieldSize, 0 )
+
+    if( o.arrayComplex || o.structure > 1 )
+    {
+      let src = { a : '1', dir : { b : 2 }, c : [ 1,2,3 ] }
+      currentLevel[ 'arrayComplex' ] = _.arrayFillTimes( [], o.arraySize || o.fieldSize, src )
+    }
+
+    if( o.recursion || o.structure > 2 )
+    {
+      currentLevel.recursion = currentLevel;
+    }
+
+    var srcMap = _.mapExtend( null, currentLevel );
 
     /**/
 
-    let currentLevel = singleLevel;
-    let srcMap = _.mapExtend( null, singleLevel );
-
-    for( let d = 0; d < o.depth; d++ )
+    for( var b = 0; b < o.breadth; b++ )
     {
-      let level = 'level' + d;
-      currentLevel[ level ] = _.mapExtend( null, srcMap );
-      currentLevel = currentLevel[ level ];
+      currentLevel[ 'breadth' + b ] = _.mapExtend( null, srcMap );
     }
 
-    return singleLevel;
+    /*  */
+
+    if( depth < o.depth - 1 )
+    {
+      depth += 1;
+      currentLevel[ 'depth' + depth ] = structureMake();
+    }
+
+    return currentLevel;
+
+    /*  */
+
+    function mapForSize( src, range )
+    {
+      let map = {};
+      for( var i = 0; i < o.mapSize; i++ )
+      {
+        let k = _.numberRandomInt( range );
+        map[ i ] = src[ k ];
+      }
+      return map;
+    }
   }
 
 }
 
 diagnosticsStructureGenerate.defaults =
 {
+  _pre : null,
   depth : null,
   breadth : null,
-  size : null,
 
   /**/
 
@@ -1252,6 +1279,12 @@ diagnosticsStructureGenerate.defaults =
   arrayComplex : null,
   map : null,
   mapComplex : null,
+
+  /*  */
+
+  primitive : null,
+  buffer : null,
+  structure : null,
 
   /* */
 
