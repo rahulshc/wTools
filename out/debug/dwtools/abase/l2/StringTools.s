@@ -3229,8 +3229,8 @@ function strJoin_pre( routine, args )
 // function strJoin_body( srcs, delimeter )
 function strJoin_body( o )
 {
-  let result = [ '' ];
-  let arrayEncountered = 0;
+  // let result = [ '' ];
+  // let arrayEncountered = 0;
   let arrayLength;
 
   _.assertRoutineOptions( strJoin_body, arguments );
@@ -3239,38 +3239,89 @@ function strJoin_body( o )
   if( o.join === null || _.strIs( o.join ) )
   o.join = join;
 
+  debugger;
+
+  if( !o.srcs.length )
+  return [];
+
+  /* */
+
   for( let a = 0 ; a < o.srcs.length ; a++ )
   {
     let src = o.srcs[ a ];
-    let srcStr = o.str( src );
-
-    _.assert( _.strIs( srcStr ) || _.arrayIs( src ), () => 'Expects primitive or array, but got ' + _.strType( src ) );
-    // _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
 
     if( _.arrayIs( src ) )
     {
-
-      if( arrayEncountered === 0 )
-      for( let s = 1 ; s < src.length ; s++ )
-      result[ s ] = result[ 0 ];
-
       _.assert( arrayLength === undefined || arrayLength === src.length, 'All arrays should have the same length' );
       arrayLength = src.length;
-
-      arrayEncountered = 1;
-      for( let s = 0 ; s < src.length ; s++ )
-      result[ s ] = o.join( result[ s ], src[ s ], a );
-
-    }
-    else
-    {
-
-      for( let s = 0 ; s < result.length ; s++ )
-      result[ s ] = o.join( result[ s ], srcStr, a );
-
     }
 
   }
+
+  if( arrayLength === 0 )
+  return [];
+
+  /* */
+
+  if( arrayLength === undefined )
+  {
+    let result = '';
+
+    for( let a = 0 ; a < o.srcs.length ; a++ )
+    {
+      let src = o.srcs[ a ];
+      let srcStr = o.str( src );
+      _.assert( _.strIs( srcStr ), () => 'Expects primitive or array, but got ' + _.strType( src ) );
+      result = o.join( result, srcStr, a );
+    }
+
+    return result;
+  }
+  else
+  {
+
+    let result = [];
+    for( let i = 0 ; i < arrayLength ; i++ )
+    result[ i ] = '';
+
+    for( let a = 0 ; a < o.srcs.length ; a++ )
+    {
+      let src = o.srcs[ a ];
+
+      // _.assert( _.strIs( srcStr ) || _.arrayIs( src ), () => 'Expects primitive or array, but got ' + _.strType( src ) );
+      // _.assert( _.strIs( src ) || _.numberIs( src ) || _.arrayIs( src ) );
+
+      if( _.arrayIs( src ) )
+      {
+
+        // if( arrayEncountered === 0 )
+        // for( let s = 1 ; s < src.length ; s++ )
+        // result[ s ] = result[ 0 ];
+
+        // _.assert( arrayLength === undefined || arrayLength === src.length, 'All arrays should have the same length' );
+        // arrayLength = src.length;
+
+        // arrayEncountered = 1;
+        for( let s = 0 ; s < result.length ; s++ )
+        result[ s ] = o.join( result[ s ], src[ s ], a );
+
+      }
+      else
+      {
+
+        let srcStr = o.str( src );
+        _.assert( _.strIs( srcStr ), () => 'Expects primitive or array, but got ' + _.strType( src ) );
+        for( let s = 0 ; s < result.length ; s++ )
+        result[ s ] = o.join( result[ s ], srcStr, a );
+
+      }
+
+    }
+
+    return result;
+  }
+
+  /* */
 
   if( arrayEncountered )
   return result;
