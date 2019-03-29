@@ -602,7 +602,6 @@ function _strReplaced( srcStr, insStr, subStr )
   _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
 
   let result = srcStr;
-  debugger;
 
   if( !_.longIs( insStr ) )
   {
@@ -2605,6 +2604,26 @@ var defaults = strSplitNonPreserving.defaults;
 defaults.preservingEmpty = 0
 defaults.preservingDelimeters = 0;
 
+//
+
+/*
+qqq : cover it by test
+*/
+
+function strSplitCamel( src )
+{
+
+  let splits = _.strSplitFast( src, /[A-Z]/ );
+
+  for( let s = splits.length-2 ; s >= 0 ; s-- )
+  {
+    if( s % 2 === 1 )
+    splits.splice( s, 2, splits[ s ].toLowerCase() + splits[ s + 1 ] );
+  }
+
+  return splits;
+}
+
 // --
 // extractor
 // --
@@ -3239,7 +3258,7 @@ function strJoin_body( o )
   if( o.join === null || _.strIs( o.join ) )
   o.join = join;
 
-  debugger;
+  // debugger;
 
   if( !o.srcs.length )
   return [];
@@ -4319,6 +4338,8 @@ let Proto =
   strSplitFast,
   strSplit,
   strSplitNonPreserving,
+
+  strSplitCamel,
 
   // strSplitNaive : strSplitNaive,
 

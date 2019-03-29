@@ -1879,16 +1879,31 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 // map manipulator
 // --
 
-function mapSetWithKeys( dstMap, srcArray, val )
+/*
+  qqq : add test
+*/
+
+function mapSetWithKeys( dstMap, src, val )
 {
 
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
   _.assert( _.objectIs( dstMap ) );
-  _.assert( _.arrayIs( srcArray ) );
+  _.assert( _.arrayIs( src ) || _.strIs( src ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  for( let s = 0 ; s < srcArray.length ; s++ )
-  dstMap[ srcArray[ s ] ] = val;
+  if( _.arrayIs( src ) )
+  {
+    for( let s = 0 ; s < src.length ; s++ )
+    dstMap[ src[ s ] ] = val;
+  }
+  else
+  {
+    dstMap[ src ] = val;
+  }
 
+  return dstMap;
 }
 
 // --
