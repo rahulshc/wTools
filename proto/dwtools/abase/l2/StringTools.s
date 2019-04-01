@@ -3479,9 +3479,10 @@ function strConcat( srcs, o )
     src = _.toStr( src, o.optionsForToStr );
     if( !nl )
     {
-      let i = src.lastIndexOf( o.lineDelimter );
+      let i = src.trim().lastIndexOf( o.lineDelimter );
       if( i === -1 )
       {
+        if( result[ result.length-1 ] !== ' ' && src[ 0 ] !== ' ' )
         result += o.delimeter;
       }
       else
